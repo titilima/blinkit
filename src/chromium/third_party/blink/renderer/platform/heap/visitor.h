@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <unordered_map>
+#include <vector>
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/heap/member.h"
 
@@ -27,9 +29,29 @@ public:
     {
         TraceImpl(o.Get());
     }
+    template <typename T>
+    inline void Trace(GarbageCollected<T> *po)
+    {
+        TraceImpl(po);
+    }
+    template <typename T, typename K, typename H>
+    void Trace(const std::unordered_map<K, GarbageCollected<T> *, H> &m)
+    {
+        for (auto &it : m)
+            TraceImpl(it.second);
+    }
+    template <typename T>
+    void Trace(const std::vector<GarbageCollected<T> *> &v)
+    {
+        for (GarbageCollected<T> *po : v)
+            TraceImpl(po);
+    }
 
     template <typename T>
-    inline void Trace(const T &) {}
+    inline void Trace(const T &)
+    {
+        NOTREACHED();
+    }
 protected:
     Visitor(void) = default;
 

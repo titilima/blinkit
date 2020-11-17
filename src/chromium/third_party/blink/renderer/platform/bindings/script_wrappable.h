@@ -20,7 +20,6 @@
 
 namespace BlinKit {
 class DukScriptObject;
-class GCPool;
 class PushWrapper;
 } // namespace BlinKit
 
@@ -30,41 +29,16 @@ class ScriptWrappable : public GarbageCollectedFinalized<ScriptWrappable>
 {
     WTF_MAKE_NONCOPYABLE(ScriptWrappable);
 public:
+    BK_DECLARE_GC_NAME(ScriptWrappable)
+
     virtual ~ScriptWrappable(void) = default;
-
-    enum GCType {
-        GC_MANUAL = 0,
-        GC_IN_FINALIZER,
-        GC_IN_POOL
-    };
-    virtual GCType GetGCType(void) const = 0;
-
-    bool IsRetainedByContext(void) const { return nullptr != m_contextObject; }
-
-    bool IsMarkedForGC(void) const
-    {
-        ASSERT(GetGCType() != GC_MANUAL);
-        return m_garbageFlag;
-    }
-    void SetGarbageFlag(void)
-    {
-        ASSERT(GetGCType() != GC_MANUAL);
-        m_garbageFlag = true;
-    }
-    void ClearGarbageFlag(void)
-    {
-        ASSERT(GetGCType() != GC_MANUAL);
-        m_garbageFlag = false;
-    }
-
-    virtual void GetChildrenForGC(std::vector<ScriptWrappable *> &dst) {}
+    virtual void Trace(Visitor *visitor) {}
 protected:
     ScriptWrappable(void) = default;
 private:
     friend class BlinKit::DukScriptObject;
     friend class BlinKit::PushWrapper;
 
-    bool m_garbageFlag = false;
     void *m_contextObject = nullptr;
 };
 

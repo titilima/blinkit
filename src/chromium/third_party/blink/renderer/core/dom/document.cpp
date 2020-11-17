@@ -71,7 +71,6 @@
 #include "third_party/blink/renderer/core/loader/text_resource_decoder_builder.h"
 #include "third_party/blink/renderer/core/script/script_runner.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
-#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 #include "third_party/blink/renderer/platform/network/http_parsers.h"
@@ -296,19 +295,6 @@ Document::Document(const DocumentInit &initializer)
 
 Document::~Document(void)
 {
-    if (Node *n = firstChild())
-    {
-        GCPool gcPool;
-        do {
-            n->SetGarbageFlag();
-            gcPool.Save(*n);
-            n = n->nextSibling();
-        } while (nullptr != n);
-
-        SetFirstChild(nullptr);
-        SetLastChild(nullptr);
-    }
-
 #ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(nullptr == GetLayoutView());
 #endif
@@ -1244,16 +1230,7 @@ void Document::ImplicitClose(void)
 
 std::shared_ptr<DocumentParser> Document::ImplicitOpen(void)
 {
-    NodeVector oldChilden;
-    RemoveChildren(oldChilden);
-    {
-        GCPool gcPool;
-        for (Node *child : oldChilden)
-        {
-            child->SetGarbageFlag();
-            gcPool.Save(*child);
-        }
-    }
+    RemoveChildren();
 #ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(!m_focusedElement);
 #endif
@@ -1795,8 +1772,7 @@ void Document::SetEncodingData(const DocumentEncodingData &newData)
         String correctlyDecodedTitle = codec->Decode(originalBytes.data(), originalBytes.length(),
             WTF::FlushBehavior::kDataEOF);
 
-        NodeVector detachedChildren;
-        m_titleElement->setTextContent(correctlyDecodedTitle, detachedChildren);
+        m_titleElement->setTextContent(correctlyDecodedTitle);
     }
 
     ASSERT(newData.Encoding().IsValid());
@@ -2111,6 +2087,28 @@ void Document::SuppressLoadEvent(void)
 {
     if (!LoadEventFinished())
         m_loadEventProgress = kLoadEventCompleted;
+}
+
+void Document::Trace(Visitor *visitor)
+{
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+    {
+        visitor->Trace(m_templateDocumentHost);
+        visitor->Trace(m_activeElement);
+        visitor->Trace(m_hoverElement);
+        visitor->Trace(m_focusedElement);
+        visitor->Trace(m_autofocusElement);
+    }
+#endif
+    visitor->Trace(m_documentElement);
+    visitor->Trace(m_titleElement);
+    visitor->Trace(m_docType);
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    Supplementable<Document>::Trace(visitor);
+#endif
+    ContainerNode::Trace(visitor);
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY

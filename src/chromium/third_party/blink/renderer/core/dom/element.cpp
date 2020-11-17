@@ -255,8 +255,7 @@ NamedNodeMap* Element::attributes(void) const
     if (NamedNodeMap *attributeMap = rareData.AttributeMap())
         return attributeMap;
 
-    std::unique_ptr<NamedNodeMap> attributeMap = NamedNodeMap::Create(const_cast<Element *>(this));
-    rareData.SetAttributeMap(attributeMap);
+    rareData.SetAttributeMap(NamedNodeMap::Create(const_cast<Element *>(this)));
     return rareData.AttributeMap();
 }
 
@@ -1375,11 +1374,11 @@ void Element::SetElementFlag(ElementFlags mask, bool value)
     EnsureElementRareData().SetElementFlag(mask, value);
 }
 
-void Element::setInnerHTML(const String &html, NodeVector &detachedChildren, ExceptionState &exceptionState)
+void Element::setInnerHTML(const String &html, ExceptionState &exceptionState)
 {
     if (html.IsEmpty() && !HasNonInBodyInsertionMode())
     {
-        setTextContent(html, detachedChildren);
+        setTextContent(html);
     }
     else
     {
@@ -1392,12 +1391,12 @@ void Element::setInnerHTML(const String &html, NodeVector &detachedChildren, Exc
             if (auto* template_element = ToHTMLTemplateElementOrNull(*this))
                 container = template_element->content();
 #endif
-            ReplaceChildrenWithFragment(container, fragment, detachedChildren, exceptionState);
+            ReplaceChildrenWithFragment(container, fragment, exceptionState);
         }
     }
 }
 
-void Element::setOuterHTML(const String &html, NodeVector &detachedNodes, ExceptionState &exceptionState)
+void Element::setOuterHTML(const String &html, ExceptionState &exceptionState)
 {
     Node *p = parentNode();
     if (nullptr == p)
@@ -1421,13 +1420,13 @@ void Element::setOuterHTML(const String &html, NodeVector &detachedNodes, Except
     if (exceptionState.HadException())
         return;
 
-    parent->ReplaceChild(fragment, this, detachedNodes, exceptionState);
+    parent->ReplaceChild(fragment, this, exceptionState);
     Node *node = nullptr != next ? next->previousSibling() : nullptr;
     if (!exceptionState.HadException() && nullptr != node && node->IsTextNode())
-        MergeWithNextTextNode(ToText(node), detachedNodes, exceptionState);
+        MergeWithNextTextNode(ToText(node), exceptionState);
 
     if (!exceptionState.HadException() && nullptr != prev && prev->IsTextNode())
-        MergeWithNextTextNode(ToText(prev), detachedNodes, exceptionState);
+        MergeWithNextTextNode(ToText(prev), exceptionState);
 }
 
 void Element::SetIsValue(const AtomicString &isValue)

@@ -37,6 +37,12 @@ public:
     T* operator->() const { return m_rawPtr; }
     bool operator!() const { return !m_rawPtr; }
 
+    MemberBase& operator=(const MemberBase &other)
+    {
+        m_rawPtr = other.m_rawPtr;
+        return *this;
+    }
+
     void Swap(MemberBase<T> &other)
     {
         std::swap(m_rawPtr, other.m_rawPtr);

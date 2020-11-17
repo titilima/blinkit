@@ -61,9 +61,10 @@ class LocalDOMWindow final : public DOMWindow
 public:
     static std::unique_ptr<LocalDOMWindow> Create(LocalFrame &frame)
     {
-        return base::WrapUnique(new LocalDOMWindow(frame));
+        return base::WrapUnique(new (BlinKit::GCObjectType::Root) LocalDOMWindow(frame));
     }
     ~LocalDOMWindow(void) override;
+    void Trace(Visitor *visitor) override;
 
     // Exports for JS
     unsigned AddTimer(std::unique_ptr<BlinKit::DukTimer> &timer);
@@ -107,7 +108,7 @@ private:
 
     std::unique_ptr<Document> m_document;
 
-    mutable std::unique_ptr<Navigator> m_navigator;
+    mutable Member<Navigator> m_navigator;
     
     std::unordered_set<EventListenerObserver *> m_eventListenerObservers;
 

@@ -62,6 +62,7 @@ public:
     }
 #endif
     ~ElementRareData(void);
+    void TraceAfterDispatch(Visitor *visitor);
 
     bool HasPseudoElements(void) const
     {
@@ -69,11 +70,8 @@ public:
         return false;
     }
 
-    NamedNodeMap* AttributeMap(void) const { return m_attributeMap.get(); }
-    void SetAttributeMap(std::unique_ptr<NamedNodeMap> &attributeMap)
-    {
-        m_attributeMap = std::move(attributeMap);
-    }
+    NamedNodeMap* AttributeMap(void) const { return m_attributeMap.Get(); }
+    void SetAttributeMap(NamedNodeMap *attributeMap) { m_attributeMap = attributeMap; }
 
     AttrNodeList& EnsureAttrNodeList(void);
     AttrNodeList* GetAttrNodeList(void) { return m_attrNodeList.get(); }
@@ -108,7 +106,7 @@ private:
     scoped_refptr<ComputedStyle> m_computedStyle;
     Member<ElementAnimations> m_elementAnimations;
 #endif
-    std::unique_ptr<NamedNodeMap> m_attributeMap;
+    Member<NamedNodeMap> m_attributeMap;
     std::unique_ptr<AttrNodeList> m_attrNodeList;
 
     std::unique_ptr<ElementIntersectionObserverData> m_intersectionObserverData;

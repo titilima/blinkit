@@ -22,7 +22,6 @@
 #include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/dom/non_document_type_child_node.h"
 #include "third_party/blink/renderer/core/dom/parent_node.h"
-#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappers.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
@@ -78,13 +77,10 @@ static duk_ret_t InnerHTMLSetter(duk_context *ctx)
     duk_push_this(ctx);
     Element *element = DukScriptObject::To<Element>(ctx, -1);
 
-    NodeVector detachedChildren;
     DukExceptionState exceptionState(ctx);
-    element->setInnerHTML(Duk::To<String>(ctx, 0), detachedChildren, exceptionState);
+    element->setInnerHTML(Duk::To<String>(ctx, 0), exceptionState);
     if (exceptionState.HadException())
         exceptionState.ThrowIfNeeded();
-
-    GCPool::From(ctx)->Save(detachedChildren);
     return 0;
 }
 
@@ -130,11 +126,9 @@ static duk_ret_t OuterHTMLSetter(duk_context *ctx)
 
     NodeVector detachedNodes;
     DukExceptionState exceptionState(ctx);
-    element->setOuterHTML(Duk::To<String>(ctx, 0), detachedNodes, exceptionState);
+    element->setOuterHTML(Duk::To<String>(ctx, 0), exceptionState);
     if (exceptionState.HadException())
         exceptionState.ThrowIfNeeded();
-
-    GCPool::From(ctx)->Save(detachedNodes);
     return 0;
 }
 
@@ -246,7 +240,7 @@ const std::unordered_map<std::string, const char *>& DukElement::PrototypeMapFor
 
 duk_idx_t DukElement::Push(duk_context *ctx, Element *element)
 {
-    NodePushWrapper w(ctx, element);
+    PushWrapper w(ctx, element);
     if (!DukScriptObject::Push(ctx, element))
     {
         ASSERT(nullptr != element);

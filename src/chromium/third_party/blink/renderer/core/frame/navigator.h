@@ -31,7 +31,6 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_NAVIGATOR_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_NAVIGATOR_H_
 
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/frame/navigator_id.h"
 #include "third_party/blink/renderer/core/frame/navigator_language.h"
@@ -50,7 +49,7 @@ class CORE_EXPORT Navigator final : public ScriptWrappable,
   USING_GARBAGE_COLLECTED_MIXIN(Navigator);
 
  public:
-  static std::unique_ptr<Navigator> Create(LocalFrame* frame) { return base::WrapUnique(new Navigator(frame)); }
+  static Navigator* Create(LocalFrame* frame) { return new Navigator(frame); }
 
   // NavigatorCookies
   bool cookieEnabled() const;
@@ -68,8 +67,6 @@ class CORE_EXPORT Navigator final : public ScriptWrappable,
 
  private:
   explicit Navigator(LocalFrame*);
-
-  GCType GetGCType(void) const override { return GC_MANUAL; }
 
   LocalFrame *m_frame;
 };

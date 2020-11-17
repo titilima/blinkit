@@ -19,7 +19,6 @@
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 
 namespace blink {
-class Node;
 class ScriptWrappable;
 }
 
@@ -35,12 +34,6 @@ public:
 private:
     duk_context *m_ctx;
     blink::ScriptWrappable *m_nativeObject;
-};
-
-class NodePushWrapper : public PushWrapper
-{
-public:
-    NodePushWrapper(duk_context *ctx, blink::Node *node);
 };
 
 } // namespace BlinKit

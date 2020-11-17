@@ -48,7 +48,6 @@
 #include "third_party/blink/renderer/core/html_element_type_helpers.h"
 #include "third_party/blink/renderer/core/html/html_tag_collection.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
-#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/css/style_engine.h"
@@ -117,7 +116,6 @@ public:
     {
         container.GetTreeScope().AdoptIfNeeded(child);
         container.AppendChildCommon(child);
-        child.ClearGarbageFlag();
     }
 };
 
@@ -130,7 +128,6 @@ public:
         ASSERT(next->parentNode() == &container);
         container.GetTreeScope().AdoptIfNeeded(child);
         container.InsertBeforeCommon(*next, child);
-        child.ClearGarbageFlag();
     }
 };
 
@@ -156,17 +153,16 @@ static inline bool CheckReferenceChildParent(const Node &parent, const Node *nex
 // Returns true if DOM mutation should be proceeded.
 static inline bool CollectChildrenAndRemoveFromOldParent(Node &node, NodeVector &nodes, ExceptionState &exceptionState)
 {
-    NodeVector placeholder;
     if (node.IsDocumentFragment())
     {
         DocumentFragment &fragment = ToDocumentFragment(node);
         GetChildNodes(fragment, nodes);
-        fragment.RemoveChildren(placeholder);
+        fragment.RemoveChildren();
         return !nodes.empty();
     }
     nodes.push_back(&node);
     if (ContainerNode *oldParent = node.parentNode())
-        oldParent->removeChild(&node, placeholder, exceptionState);
+        oldParent->removeChild(&node, exceptionState);
     return !exceptionState.HadException() && !nodes.empty();
 }
 
@@ -595,25 +591,6 @@ bool ContainerNode::EnsurePreInsertionValidity(const Node &newChild, const Node 
     return true;
 }
 
-void ContainerNode::GetChildrenForGC(std::vector<ScriptWrappable *> &dst)
-{
-    ASSERT(IsMarkedForGC());
-    Node *n = NodeTraversal::FirstWithin(*this);
-    while (nullptr != n)
-    {
-        n->SetGarbageFlag();
-        if (n->IsRetainedByContext())
-        {
-            n = NodeTraversal::NextSkippingChildren(*n);
-        }
-        else
-        {
-            dst.push_back(n);
-            n = NodeTraversal::Next(*n);
-        }
-    }
-}
-
 Element* ContainerNode::GetElementById(const AtomicString &id) const
 {
     if (IsInTreeScope())
@@ -973,7 +950,7 @@ bool ContainerNode::RecheckNodeInsertionStructuralPrereq(const NodeVector &newCh
     return false;
 }
 
-void ContainerNode::RemoveBetween(Node *previousChild, Node* nextChild, Node &oldChild, NodeVector &detachedChildren)
+void ContainerNode::RemoveBetween(Node *previousChild, Node* nextChild, Node &oldChild)
 {
     EventDispatchForbiddenScope assertNoEventDispatch;
 
@@ -1000,12 +977,11 @@ void ContainerNode::RemoveBetween(Node *previousChild, Node* nextChild, Node &ol
     oldChild.SetPreviousSibling(nullptr);
     oldChild.SetNextSibling(nullptr);
     oldChild.SetParentOrShadowHostNode(nullptr);
-    detachedChildren.push_back(&oldChild);
 
     GetDocument().AdoptIfNeeded(oldChild);
 }
 
-Node* ContainerNode::RemoveChild(Node *oldChild, NodeVector &detachedChildren, ExceptionState &exceptionState)
+Node* ContainerNode::RemoveChild(Node *oldChild, ExceptionState &exceptionState)
 {
     // NotFoundError: Raised if oldChild is not a child of this node.
     // FIXME: We should never really get PseudoElements in here, but editing will
@@ -1052,7 +1028,7 @@ Node* ContainerNode::RemoveChild(Node *oldChild, NodeVector &detachedChildren, E
             SlotAssignmentRecalcForbiddenScope forbid_slot_recalc(GetDocument());
             StyleEngine::DOMRemovalScope styleScope(GetDocument().GetStyleEngine());
 #endif
-            RemoveBetween(prev, next, *child, detachedChildren);
+            RemoveBetween(prev, next, *child);
             NotifyNodeRemoved(*child);
         }
         ChildrenChanged(ChildrenChange::ForRemoval(*child, prev, next, kChildrenChangeSourceAPI));
@@ -1061,7 +1037,7 @@ Node* ContainerNode::RemoveChild(Node *oldChild, NodeVector &detachedChildren, E
     return child;
 }
 
-void ContainerNode::RemoveChildren(NodeVector &detachedChildren, SubtreeModificationAction action)
+void ContainerNode::RemoveChildren(SubtreeModificationAction action)
 {
     if (!m_firstChild)
     {
@@ -1096,7 +1072,7 @@ void ContainerNode::RemoveChildren(NodeVector &detachedChildren, SubtreeModifica
 
             while (Node *child = m_firstChild)
             {
-                RemoveBetween(nullptr, child->nextSibling(), *child, detachedChildren);
+                RemoveBetween(nullptr, child->nextSibling(), *child);
                 NotifyNodeRemoved(*child);
             }
         }
@@ -1110,7 +1086,7 @@ void ContainerNode::RemoveChildren(NodeVector &detachedChildren, SubtreeModifica
         DispatchSubtreeModifiedEvent();
 }
 
-Node* ContainerNode::ReplaceChild(Node *newChild, Node *oldChild, NodeVector &detachedChildren, ExceptionState &exceptionState)
+Node* ContainerNode::ReplaceChild(Node *newChild, Node *oldChild, ExceptionState &exceptionState)
 {
     DCHECK(nullptr != newChild);
     // https://dom.spec.whatwg.org/#concept-node-replace
@@ -1142,7 +1118,7 @@ Node* ContainerNode::ReplaceChild(Node *newChild, Node *oldChild, NodeVector &de
     if (ContainerNode *newChildParent = newChild->parentNode())
     {
         DOMTreeMutationDetector detector(*newChild, *this);
-        newChildParent->RemoveChild(newChild, detachedChildren, exceptionState);
+        newChildParent->RemoveChild(newChild, exceptionState);
         if (exceptionState.HadException())
             return nullptr;
         if (!detector.NeedsRecheck())
@@ -1165,7 +1141,7 @@ Node* ContainerNode::ReplaceChild(Node *newChild, Node *oldChild, NodeVector &de
         if (ContainerNode *oldChildParent = oldChild->parentNode())
         {
             DOMTreeMutationDetector detector(*oldChild, *this);
-            oldChildParent->RemoveChild(oldChild, detachedChildren, exceptionState);
+            oldChildParent->RemoveChild(oldChild, exceptionState);
             if (exceptionState.HadException())
                 return nullptr;
             if (!detector.NeedsRecheck())
@@ -1205,6 +1181,13 @@ void ContainerNode::SetRestyleFlag(DynamicRestyleFlags mask)
 {
     ASSERT(IsElementNode() || IsShadowRoot());
     EnsureRareData().SetRestyleFlag(mask);
+}
+
+void ContainerNode::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_firstChild);
+    visitor->Trace(m_lastChild);
+    Node::Trace(visitor);
 }
 
 void ContainerNode::WillRemoveChild(Node &child)

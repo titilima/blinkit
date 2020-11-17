@@ -77,7 +77,6 @@ class ChildNodeList final : public NodeList {
  private:
   explicit ChildNodeList(ContainerNode& root_node);
 
-  GCType GetGCType(void) const override { return GC_MANUAL; }
   bool IsChildNodeList() const override { return true; }
   Node* VirtualOwnerNode() const override;
 

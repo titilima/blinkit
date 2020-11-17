@@ -38,7 +38,6 @@
 #include <unordered_map>
 #include <utility>
 #include "base/macros.h"
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/css/css_selector.h"
 #include "third_party/blink/renderer/core/dom/child_node_list.h"
 #include "third_party/blink/renderer/core/dom/container_node.h"
@@ -54,27 +53,30 @@ namespace blink {
 
 class ChildNodeList;
 
-class NodeListsNodeData final
+class NodeListsNodeData final : public GarbageCollectedFinalized<NodeListsNodeData>
 {
 public:
-    static std::unique_ptr<NodeListsNodeData> Create(void) { return base::WrapUnique(new NodeListsNodeData); }
+    BK_DECLARE_GC_NAME(NodeListsNodeData)
+
+    static NodeListsNodeData* Create(void) { return new NodeListsNodeData; }
+    void Trace(Visitor *visitor);
 
     ChildNodeList* GetChildNodeList(ContainerNode &node)
     {
         ASSERT(!m_childNodeList || node == m_childNodeList->VirtualOwnerNode());
-        return ToChildNodeList(m_childNodeList.get());
+        return ToChildNodeList(m_childNodeList.Get());
     }
     ChildNodeList* EnsureChildNodeList(ContainerNode &node)
     {
         if (!m_childNodeList)
-            m_childNodeList.reset(ChildNodeList::Create(node));
-        return ToChildNodeList(m_childNodeList.get());
+            m_childNodeList = ChildNodeList::Create(node);
+        return ToChildNodeList(m_childNodeList.Get());
     }
     EmptyNodeList* EnsureEmptyChildNodeList(Node &node)
     {
         if (!m_childNodeList)
-            m_childNodeList.reset(EmptyNodeList::Create(node));
-        return ToEmptyNodeList(m_childNodeList.get());
+            m_childNodeList = EmptyNodeList::Create(node);
+        return ToEmptyNodeList(m_childNodeList.Get());
     }
 
     void InvalidateCaches(const QualifiedName *attrName = nullptr);
@@ -91,7 +93,7 @@ public:
         }
     };
 
-    typedef std::unordered_map<NamedNodeListKey, std::unique_ptr<LiveNodeListBase>, NodeListAtomicCacheMapEntryHash>
+    typedef std::unordered_map<NamedNodeListKey, LiveNodeListBase *, NodeListAtomicCacheMapEntryHash>
         NodeListAtomicNameCacheMap;
 
     template <typename T>
@@ -100,17 +102,17 @@ public:
         NamedNodeListKey key = std::make_pair(collectionType, name);
         auto it = m_atomicNameCaches.find(key);
         if (std::end(m_atomicNameCaches) != it)
-            return static_cast<T *>(it->second.get());
+            return static_cast<T *>(it->second);
 
         T *list = T::Create(node, collectionType, name);
-        m_atomicNameCaches[key] = base::WrapUnique(list);
+        m_atomicNameCaches[key] = list;
         return list;
     }
 private:
     NodeListsNodeData(void) = default;
 
     // Can be a ChildNodeList or an EmptyNodeList.
-    std::unique_ptr<NodeList> m_childNodeList;
+    Member<NodeList> m_childNodeList;
     NodeListAtomicNameCacheMap m_atomicNameCaches;
     DISALLOW_COPY_AND_ASSIGN(NodeListsNodeData);
 };

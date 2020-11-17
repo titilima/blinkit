@@ -137,6 +137,7 @@ public:
     void Initialize(void);
     virtual void Shutdown(void);
     bool IsHTMLDocument(void) const { return true; } // Just a placeholder.
+    void Trace(Visitor *visitor) override;
 
     uint64_t DomTreeVersion(void) const { return m_domTreeVersion; }
     void IncDOMTreeVersion(void)
@@ -464,7 +465,6 @@ private:
 
     void LoadEventDelayTimerFired(TimerBase *);
 
-    GCType GetGCType(void) const final { return GC_MANUAL; }
     // EventTarget overrides
     void RemoveAllEventListeners(void) final;
     // Node overrides

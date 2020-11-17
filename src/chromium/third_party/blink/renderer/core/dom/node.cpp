@@ -864,10 +864,10 @@ Node* Node::PseudoAwareLastChild(void) const
     return nullptr;
 }
 
-void Node::remove(NodeVector &detached, ExceptionState &exceptionState)
+void Node::remove(ExceptionState &exceptionState)
 {
     if (ContainerNode *parent = parentNode())
-        parent->RemoveChild(this, detached, exceptionState);
+        parent->RemoveChild(this, exceptionState);
 }
 
 void Node::RemoveAllEventListenersRecursively(void)
@@ -883,10 +883,10 @@ void Node::RemoveAllEventListenersRecursively(void)
     }
 }
 
-Node* Node::removeChild(Node *child, NodeVector &detachedChildren, ExceptionState &exceptionState)
+Node* Node::removeChild(Node *child, ExceptionState &exceptionState)
 {
     if (IsContainerNode())
-        return ToContainerNode(this)->RemoveChild(child, detachedChildren, exceptionState);
+        return ToContainerNode(this)->RemoveChild(child, exceptionState);
 
     exceptionState.ThrowDOMException(DOMExceptionCode::kNotFoundError,
         "This node type does not support this method.");
@@ -1011,7 +1011,7 @@ void Node::SetParentOrShadowHostNode(ContainerNode *parent)
     m_parentOrShadowHostNode = parent;
 }
 
-void Node::setTextContent(const String &text, NodeVector &detachedChildren)
+void Node::setTextContent(const String &text)
 {
     switch (getNodeType())
     {
@@ -1042,16 +1042,13 @@ void Node::setTextContent(const String &text, NodeVector &detachedChildren)
             // https://dom.spec.whatwg.org/#dom-node-textcontent
             if (text.IsEmpty())
             {
-                container->RemoveChildren(detachedChildren, kDispatchSubtreeModifiedEvent);
+                container->RemoveChildren(kDispatchSubtreeModifiedEvent);
             }
             else
             {
-                ASSERT(false); // BKTODO:
-#if 0
                 container->RemoveChildren(kOmitSubtreeModifiedEvent);
                 container->AppendChild(GetDocument().createTextNode(text), ASSERT_NO_EXCEPTION);
-#endif
-        }
+            }
             return;
         }
         case kDocumentNode:
@@ -1103,6 +1100,16 @@ String Node::textContent(bool convertBrsToNewlines) const
             content.Append(ToText(node).data());
     }
     return content.ToString();
+}
+
+void Node::Trace(Visitor *visitor)
+{
+    if (HasRareData())
+        visitor->Trace(RareData());
+    visitor->Trace(m_previous);
+    visitor->Trace(m_next);
+    visitor->Trace(m_parentOrShadowHostNode);
+    EventTarget::Trace(visitor);
 }
 
 Node& Node::TreeRoot(void) const

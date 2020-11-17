@@ -42,7 +42,6 @@
 
 #pragma once
 
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
@@ -62,9 +61,9 @@ class ExceptionState;
 class Location final : public ScriptWrappable
 {
 public:
-    static std::unique_ptr<Location> Create(DOMWindow *domWindow)
+    static Location* Create(DOMWindow *domWindow)
     {
-        return base::WrapUnique(new Location(domWindow));
+        return new Location(domWindow);
     }
 
     // Exports for JS
@@ -82,8 +81,6 @@ private:
     Document* GetDocument(void) const;
 
     const GURL& Url(void) const;
-
-    GCType GetGCType(void) const override { return GC_MANUAL; }
 
     const Member<DOMWindow> m_domWindow;
 };

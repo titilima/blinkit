@@ -98,6 +98,8 @@ protected:
 class NodeRareData : public GarbageCollectedFinalized<NodeRareData>, public NodeRareDataBase
 {
 public:
+    BK_DECLARE_GC_NAME(NodeRareData)
+
 #ifdef BLINKIT_CRAWLER_ONLY
     static NodeRareData* Create(void) { return new NodeRareData; }
 #else
@@ -107,8 +109,11 @@ public:
     }
 #endif
     ~NodeRareData(void);
+    void FinalizeGarbageCollectedObject(void);
+    void Trace(Visitor *visitor);
+    void TraceAfterDispatch(Visitor *visitor);
 
-    NodeListsNodeData* NodeLists(void) const { return m_nodeLists.get(); }
+    NodeListsNodeData* NodeLists(void) const { return m_nodeLists.Get(); }
     // EnsureNodeLists() and a following NodeListsNodeData functions must be
     // wrapped with a ThreadState::GCForbiddenScope in order to avoid an
     // initialized node_lists_ is cleared by NodeRareData::TraceAfterDispatch().
@@ -151,10 +156,12 @@ protected:
 private:
     void CreateNodeLists(void);
 
-    std::unique_ptr<NodeListsNodeData> m_nodeLists;
+    Member<NodeListsNodeData> m_nodeLists;
 
     unsigned m_elementFlags : kNumberOfElementFlags;
     unsigned m_restyleFlags : kNumberOfDynamicRestyleFlags;
+protected:
+    unsigned m_isElementRareData : 1;
 
     DISALLOW_COPY_AND_ASSIGN(NodeRareData);
 };

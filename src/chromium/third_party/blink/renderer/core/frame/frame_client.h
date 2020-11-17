@@ -23,7 +23,7 @@ namespace blink {
 class Frame;
 enum class FrameDetachType;
 
-class FrameClient : public GarbageCollectedFinalized<FrameClient>
+class FrameClient
 {
 public:
     virtual ~FrameClient(void) = default;

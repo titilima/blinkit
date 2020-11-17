@@ -57,4 +57,10 @@ void NodeListsNodeData::InvalidateCaches(const QualifiedName *attrName)
 #endif
 }
 
+void NodeListsNodeData::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_childNodeList);
+    visitor->Trace(m_atomicNameCaches);
+}
+
 }  // namespace blink

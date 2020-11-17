@@ -20,10 +20,6 @@
 #include "blinkit/js/heap_retained.h"
 #include "duktape/duktape.h"
 
-namespace BlinKit {
-class GCPool;
-}
-
 class JSCallerContextImpl : public BlinKit::HeapRetainedValue
 {
 public:
@@ -35,7 +31,6 @@ public:
     int Call(BkJSValue *retVal);
 private:
     void *m_thisPtr = nullptr;
-    std::unique_ptr<BlinKit::GCPool> m_gcPool;
 };
 
 #endif // BLINKIT_BLINKIT_JS_CALLER_CONTEXT_IMPL_H

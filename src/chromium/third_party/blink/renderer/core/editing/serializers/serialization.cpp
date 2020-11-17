@@ -86,7 +86,7 @@ String CreateMarkup(const Node *node, EChildrenOnly childrenOnly, EAbsoluteURLs 
     return SerializeNodes<EditingStrategy>(accumulator, const_cast<Node &>(*node), childrenOnly);
 }
 
-void MergeWithNextTextNode(Text *textNode, std::vector<Node *> &detachedNodes, ExceptionState &exceptionState)
+void MergeWithNextTextNode(Text *textNode, ExceptionState &exceptionState)
 {
     ASSERT(nullptr != textNode);
     Node *next = textNode->nextSibling();
@@ -96,10 +96,10 @@ void MergeWithNextTextNode(Text *textNode, std::vector<Node *> &detachedNodes, E
     Text *textNext = ToText(next);
     textNode->appendData(textNext->data());
     if (nullptr != textNext->parentNode())  // Might have been removed by mutation event.
-        textNext->remove(detachedNodes, exceptionState);
+        textNext->remove(exceptionState);
 }
 
-void ReplaceChildrenWithFragment(ContainerNode *container, DocumentFragment *fragment, std::vector<Node *> &detachedChildren, ExceptionState &exceptionState)
+void ReplaceChildrenWithFragment(ContainerNode *container, DocumentFragment *fragment, ExceptionState &exceptionState)
 {
     ASSERT(nullptr != container);
     ContainerNode *containerNode = container;
@@ -108,7 +108,7 @@ void ReplaceChildrenWithFragment(ContainerNode *container, DocumentFragment *fra
 
     if (nullptr == fragment->firstChild())
     {
-        containerNode->RemoveChildren(detachedChildren);
+        containerNode->RemoveChildren();
         return;
     }
 
@@ -116,11 +116,11 @@ void ReplaceChildrenWithFragment(ContainerNode *container, DocumentFragment *fra
     // already == text.
     if (containerNode->HasOneChild())
     {
-        containerNode->ReplaceChild(fragment, containerNode->firstChild(), detachedChildren, exceptionState);
+        containerNode->ReplaceChild(fragment, containerNode->firstChild(), exceptionState);
         return;
     }
 
-    containerNode->RemoveChildren(detachedChildren);
+    containerNode->RemoveChildren();
     containerNode->appendChild(fragment, exceptionState);
 }
 

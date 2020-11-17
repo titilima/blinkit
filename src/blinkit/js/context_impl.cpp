@@ -17,7 +17,6 @@
 #include "blinkit/js/js_value_impl.h"
 #include "blinkit/js/simple_context.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
-#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 
 using namespace BlinKit;
 
@@ -39,14 +38,11 @@ ContextImpl::ContextImpl(void)
 
 ContextImpl::~ContextImpl(void)
 {
-    GCPool pool(m_ctx);
     duk_destroy_heap(m_ctx);
-    pool.DetachContext();
 }
 
 void ContextImpl::Eval(const std::string_view code, const Callback &callback, const char *fileName)
 {
-    GCPool gcPool(m_ctx);
     Duk::StackGuard sg(m_ctx);
 
     int r;

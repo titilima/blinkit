@@ -41,6 +41,7 @@
 
 #include "node_rare_data.h"
 
+#include "third_party/blink/renderer/core/dom/element_rare_data.h"
 #include "third_party/blink/renderer/core/dom/node_lists_node_data.h"
 
 namespace blink {
@@ -72,12 +73,13 @@ NodeRenderingData* NodeRenderingData::SharedEmptyData(void)
 #endif
 
 #ifdef BLINKIT_CRAWLER_ONLY
-NodeRareData::NodeRareData(void) : m_elementFlags(0), m_restyleFlags(0) {}
+NodeRareData::NodeRareData(void) : m_elementFlags(0), m_restyleFlags(0), m_isElementRareData(false) {}
 #else
 NodeRareData::NodeRareData(NodeRenderingData *nodeLayoutData)
     : NodeRareDataBase(nodeLayoutData)
     , m_elementFlags(0)
     , m_restyleFlags(0)
+    , m_isElementRareData(false)
 {
     ASSERT(nullptr != nodeLayoutData);
 }
@@ -88,6 +90,27 @@ NodeRareData::~NodeRareData(void) = default;
 void NodeRareData::CreateNodeLists(void)
 {
     m_nodeLists = NodeListsNodeData::Create();
+}
+
+void NodeRareData::FinalizeGarbageCollectedObject(void)
+{
+    if (m_isElementRareData)
+        static_cast<ElementRareData *>(this)->~ElementRareData();
+    else
+        this->~NodeRareData();
+}
+
+void NodeRareData::Trace(Visitor *visitor)
+{
+    if (m_isElementRareData)
+        static_cast<ElementRareData *>(this)->TraceAfterDispatch(visitor);
+    else
+        TraceAfterDispatch(visitor);
+}
+
+void NodeRareData::TraceAfterDispatch(Visitor *visitor)
+{
+    visitor->Trace(m_nodeLists);
 }
 
 } // namespace blink

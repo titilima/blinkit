@@ -94,8 +94,8 @@ public:
     String innerHTML(void) const;
     String outerHTML(void) const;
     void setAttribute(const AtomicString &localName, const AtomicString &value, ExceptionState &exceptionState);
-    void setInnerHTML(const String &html, NodeVector &detachedChildren, ExceptionState &exceptionState);
-    void setOuterHTML(const String &html, NodeVector &detachedNodes, ExceptionState &exceptionState);
+    void setInnerHTML(const String &html, ExceptionState &exceptionState);
+    void setOuterHTML(const String &html, ExceptionState &exceptionState);
     String tagName(void) const { return nodeName(); }
 
     const QualifiedName& TagQName(void) const { return m_tagName; }

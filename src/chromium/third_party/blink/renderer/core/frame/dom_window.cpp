@@ -33,7 +33,13 @@ Location* DOMWindow::location(void) const
 {
     if (!m_location)
         m_location = Location::Create(const_cast<DOMWindow *>(this));
-    return m_location.get();
+    return m_location.Get();
+}
+
+void DOMWindow::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_location);
+    EventTargetWithInlineData::Trace(visitor);
 }
 
 }  // namespace blink

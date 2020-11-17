@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 
 namespace BlinKit {
@@ -21,8 +22,13 @@ namespace BlinKit {
 class CrawlerDocument final : public blink::Document
 {
 public:
-    CrawlerDocument(const blink::DocumentInit &init);
+    static std::unique_ptr<blink::Document> Create(const blink::DocumentInit &init)
+    {
+        return base::WrapUnique(new (GCObjectType::Root) CrawlerDocument(init));
+    }
 private:
+    CrawlerDocument(const blink::DocumentInit &init);
+
     blink::Element* CreateElement(const AtomicString &localName, CreateElementFlags flags) override;
 };
 

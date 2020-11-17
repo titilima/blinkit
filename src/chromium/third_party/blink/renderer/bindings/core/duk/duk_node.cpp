@@ -16,7 +16,6 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_node_list.h"
-#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappers.h"
 
 using namespace blink;
@@ -165,13 +164,10 @@ static duk_ret_t Remove(duk_context *ctx)
     duk_push_this(ctx);
     Node *node = DukScriptObject::To<Node>(ctx, -1);
 
-    NodeVector detached;
     DukExceptionState exceptionState(ctx);
-    node->remove(detached, exceptionState);
+    node->remove(exceptionState);
     if (exceptionState.HadException())
         exceptionState.ThrowIfNeeded();
-
-    GCPool::From(ctx)->Save(detached);
     return 0;
 }
 
@@ -182,9 +178,8 @@ static duk_ret_t RemoveChild(duk_context *ctx)
 
     Node *child = DukScriptObject::To<Node>(ctx, 0);
 
-    NodeVector detachedChildren;
     DukExceptionState exceptionState(ctx);
-    Node *ret = node->removeChild(child, detachedChildren, exceptionState);
+    Node *ret = node->removeChild(child, exceptionState);
     if (exceptionState.HadException())
     {
         exceptionState.ThrowIfNeeded();
@@ -226,7 +221,7 @@ void DukNode::FillPrototypeEntry(PrototypeEntry &entry)
 
 duk_idx_t DukNode::Push(duk_context *ctx, Node *node)
 {
-    NodePushWrapper w(ctx, node);
+    PushWrapper w(ctx, node);
     do {
         if (DukScriptObject::Push(ctx, node))
             break;
@@ -287,9 +282,7 @@ duk_ret_t DukNode::TextContentSetter(duk_context *ctx)
     duk_push_this(ctx);
     Node *node = DukScriptObject::To<Node>(ctx, -1);
 
-    NodeVector detachedChildren;
-    node->setTextContent(Duk::To<String>(ctx, 0), detachedChildren);
-    GCPool::From(ctx)->Save(detachedChildren);
+    node->setTextContent(Duk::To<String>(ctx, 0));
     return 0;
 }
 

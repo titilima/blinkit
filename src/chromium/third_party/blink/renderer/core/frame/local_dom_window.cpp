@@ -39,6 +39,7 @@
 
 #include "base/single_thread_task_runner.h"
 #include "blinkit/crawler/dom/crawler_document.h"
+#include "blinkit/gc/gc_heap.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_timer.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/dom/document_init.h"
@@ -184,7 +185,7 @@ Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
 
 #ifdef BLINKIT_CRAWLER_ONLY
     ASSERT(init.GetFrame()->Client()->IsCrawler());
-    m_document = std::make_unique<CrawlerDocument>(init);
+    m_document = CrawlerDocument::Create(init);
 #else
     const bool isCrawler = init.GetFrame()->Client()->IsCrawler();
     if (isCrawler)
@@ -219,7 +220,7 @@ Navigator* LocalDOMWindow::navigator(void) const
 {
     if (!m_navigator)
         m_navigator = Navigator::Create(GetFrame());
-    return m_navigator.get();
+    return m_navigator.Get();
 }
 
 void LocalDOMWindow::ProcessTimer(unsigned id)
@@ -261,7 +262,13 @@ void LocalDOMWindow::Reset(void)
     ASSERT(document()->IsContextDestroyed());
     FrameDestroyed();
 
-    m_navigator.reset();
+    m_navigator = nullptr;
 }
 
-}  // namespace blink
+void LocalDOMWindow::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_navigator);
+    DOMWindow::Trace(visitor);
+}
+
+} // namespace blink

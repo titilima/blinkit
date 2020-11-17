@@ -12,7 +12,6 @@
 #include "duk_script_object.h"
 
 #include "blinkit/js/context_impl.h"
-#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappers.h"
 
@@ -59,25 +58,7 @@ duk_ret_t DukScriptObject::DefaultFinalizer(duk_context *ctx)
 {
     ScriptWrappable *nativeThis = DukScriptObject::ToScriptWrappable(ctx, 0);
     if (nullptr != nativeThis)
-    {
         nativeThis->m_contextObject = nullptr;
-
-        ScriptWrappable::GCType gcType = nativeThis->GetGCType();
-        if (ScriptWrappable::GC_MANUAL != gcType && nativeThis->IsMarkedForGC())
-        {
-            switch (gcType)
-            {
-                case ScriptWrappable::GC_IN_FINALIZER:
-                    delete nativeThis;
-                    break;
-                case ScriptWrappable::GC_IN_POOL:
-                    GCPool::From(ctx)->Save(*nativeThis);
-                    break;
-                default:
-                    NOTREACHED();
-            }
-        }
-    }
     return 0;
 }
 

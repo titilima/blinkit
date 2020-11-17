@@ -18,7 +18,6 @@
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 
 using namespace blink;
 
@@ -43,11 +42,8 @@ BrowserContext::~BrowserContext(void) = default;
 
 void BrowserContext::Clear(void)
 {
-    duk_context *ctx = GetRawContext();
-
-    GCPool gcPool(ctx);
     NewGlobalObject();
-    duk_gc(ctx, 0);
+    duk_gc(GetRawContext(), 0);
 }
 
 void BrowserContext::ExposeGlobals(duk_context *ctx, duk_idx_t dst)

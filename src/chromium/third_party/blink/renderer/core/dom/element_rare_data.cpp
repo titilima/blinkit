@@ -58,25 +58,17 @@ struct SameSizeAsElementRareData : NodeRareData
 };
 
 #ifdef BLINKIT_CRAWLER_ONLY
-ElementRareData::ElementRareData(void) = default;
+ElementRareData::ElementRareData(void)
 #else
 ElementRareData::ElementRareData(NodeRenderingData *nodeLayoutData) : NodeRareData(nullptr)
+#endif
 {
+    m_isElementRareData = true;
     ASSERT(false); // BKTODO:
 }
-#endif
 
 ElementRareData::~ElementRareData(void)
 {
-    if (m_attrNodeList)
-    {
-        for (Attr *attr : *m_attrNodeList)
-        {
-            if (!attr->IsMarkedForGC())
-                delete attr;
-        }
-        m_attrNodeList->clear();
-    }
     ASSERT(!m_pseudoElementData);
 }
 
@@ -85,6 +77,14 @@ AttrNodeList& ElementRareData::EnsureAttrNodeList(void)
     if (!m_attrNodeList)
         m_attrNodeList = std::make_unique<AttrNodeList>();
     return *m_attrNodeList;
+}
+
+void ElementRareData::TraceAfterDispatch(Visitor *visitor)
+{
+    visitor->Trace(m_attributeMap);
+    if (m_attrNodeList)
+        visitor->Trace(*m_attrNodeList);
+    NodeRareData::TraceAfterDispatch(visitor);
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY

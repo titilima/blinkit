@@ -57,11 +57,6 @@ void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr, const char *na
 #endif
 void GCHeapFreeRootObject(void *p);
 
-template <class T>
-class GCRootImpl
-{
-};
-
 } // namespace BlinKit
 
 #ifdef NDEBUG

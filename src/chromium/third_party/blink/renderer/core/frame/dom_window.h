@@ -30,6 +30,7 @@ class DOMWindow : public EventTargetWithInlineData
 {
 public:
     ~DOMWindow(void) override;
+    void Trace(Visitor *visitor) override;
 
     // Exports for JS
     Location* location(void) const;
@@ -44,10 +45,8 @@ public:
 protected:
     explicit DOMWindow(Frame &frame);
 private:
-    GCType GetGCType(void) const final { return GC_MANUAL; }
-
     Member<Frame> m_frame;
-    mutable std::unique_ptr<Location> m_location;
+    mutable Member<Location> m_location;
 };
 
 }  // namespace blink

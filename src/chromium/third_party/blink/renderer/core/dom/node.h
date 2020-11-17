@@ -115,6 +115,7 @@ public:
     };
 
     ~Node(void) override;
+    void Trace(Visitor *visitor) override;
 
     // Exports for JS
     Node* appendChild(Node *newChild, ExceptionState &exceptionState);
@@ -128,10 +129,10 @@ public:
     // except in the case of a Document node.
     Document* ownerDocument(void) const;
     Element* parentElement(void) const;
-    void remove(NodeVector &detached, ExceptionState &exceptionState);
-    Node* removeChild(Node *child, NodeVector &detachedChildren, ExceptionState &exceptionState);
+    void remove(ExceptionState &exceptionState);
+    Node* removeChild(Node *child, ExceptionState &exceptionState);
     String textContent(bool convertBrsToNewlines = false) const;
-    void setTextContent(const String &text, NodeVector &detachedChildren);
+    void setTextContent(const String &text);
 
     Document& GetDocument(void) const { return GetTreeScope().GetDocument(); }
     TreeScope& GetTreeScope(void) const
@@ -544,7 +545,6 @@ private:
     virtual const ComputedStyle* VirtualEnsureComputedStyle(PseudoId pseudoElementSpecifier = kPseudoIdNone);
 #endif
 
-    GCType GetGCType(void) const override { return GC_IN_POOL; }
     // EventTarget overrides
     ExecutionContext* GetExecutionContext(void) const final;
     EventTargetData* GetEventTargetData(void) override;
@@ -569,7 +569,7 @@ private:
         NodeRareDataBase *m_rareData;
     } m_data;
 #endif
- };
+};
 
 DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES(Node)
 
