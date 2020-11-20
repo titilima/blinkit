@@ -94,7 +94,7 @@ LayoutView* LocalFrame::ContentLayoutObject(void) const
 
 std::unique_ptr<LocalFrame> LocalFrame::Create(LocalFrameClient *client, Page *page)
 {
-    return base::WrapUnique(new LocalFrame(client, page));
+    return base::WrapUnique(new (ObjectType::Owner) LocalFrame(client, page));
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -320,6 +320,11 @@ void LocalFrame::SetView(const std::shared_ptr<LocalFrameView> &view)
 bool LocalFrame::ShouldReuseDefaultView(void) const
 {
     return m_loader.StateMachine()->IsDisplayingInitialEmptyDocument();
+}
+
+void LocalFrame::Trace(Visitor *visitor)
+{
+    m_loader.Trace(visitor);
 }
 
 } // namespace blink

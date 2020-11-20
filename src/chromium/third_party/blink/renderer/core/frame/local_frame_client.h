@@ -63,7 +63,7 @@ public:
     virtual bool IsCrawler(void) const = 0;
     virtual bool HasWebView(void) const = 0;  // mainly for assertions
 
-    virtual std::unique_ptr<DocumentLoader> CreateDocumentLoader(LocalFrame *frame, const ResourceRequest &request,
+    virtual DocumentLoader* CreateDocumentLoader(LocalFrame *frame, const ResourceRequest &request,
         const SubstituteData &data, std::unique_ptr<WebDocumentLoader::ExtraData> extraData) = 0;
 
     virtual String UserAgent(void) = 0;

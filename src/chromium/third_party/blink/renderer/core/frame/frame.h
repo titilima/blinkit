@@ -56,10 +56,13 @@ class Page;
 
 enum class FrameDetachType { kRemove, kSwap };
 
-class Frame
+class Frame : public GarbageCollectedFinalized<Frame>
 {
 public:
+    BK_DECLARE_GC_NAME(Frame)
+
     virtual ~Frame(void);
+    virtual void Trace(Visitor *visitor) {}
 
     virtual bool IsLocalFrame(void) const = 0;
 

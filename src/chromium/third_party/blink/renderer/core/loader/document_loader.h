@@ -65,7 +65,10 @@ class ResourceFetcher;
 class DocumentLoader : public GarbageCollectedFinalized<DocumentLoader>, private RawResourceClient
 {
 public:
+    BK_DECLARE_GC_NAME(DocumentLoader)
+
     ~DocumentLoader(void) override;
+    void Trace(Visitor *visitor) override {}
 
     LocalFrame* GetFrame(void) const { return m_frame; }
     std::shared_ptr<ResourceFetcher> Fetcher(void) const { return m_fetcher; }

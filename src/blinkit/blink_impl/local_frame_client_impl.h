@@ -25,9 +25,8 @@ protected:
 private:
     bool HasWebView(void) const override { return false; }
     void Detached(blink::FrameDetachType) override {}
-    std::unique_ptr<blink::DocumentLoader> CreateDocumentLoader(blink::LocalFrame *frame,
-        const blink::ResourceRequest &request, const blink::SubstituteData &data,
-        std::unique_ptr<blink::WebDocumentLoader::ExtraData> extraData) override;
+    blink::DocumentLoader* CreateDocumentLoader(blink::LocalFrame *frame, const blink::ResourceRequest &request,
+        const blink::SubstituteData &data, std::unique_ptr<blink::WebDocumentLoader::ExtraData> extraData) override;
     void DispatchWillSendRequest(blink::ResourceRequest &request) override {}
     void DidCreateNewDocument(void) override {}
     void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) override {}

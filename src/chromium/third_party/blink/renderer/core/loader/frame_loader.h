@@ -69,10 +69,11 @@ class FrameLoader final
 public:
     explicit FrameLoader(LocalFrame *frame);
     ~FrameLoader(void);
+    void Trace(Visitor *visitor);
 
     FrameLoaderStateMachine* StateMachine(void) const { return &m_stateMachine; }
-    DocumentLoader* GetDocumentLoader(void) const { return m_documentLoader.get(); }
-    DocumentLoader* GetProvisionalDocumentLoader(void) const { return m_provisionalDocumentLoader.get(); }
+    DocumentLoader* GetDocumentLoader(void) const { return m_documentLoader.Get(); }
+    DocumentLoader* GetProvisionalDocumentLoader(void) const { return m_provisionalDocumentLoader.Get(); }
     // Note: When a PlzNavigtate navigation is handled by the client, we will
     // have created a dummy provisional DocumentLoader, so this will return true
     // while the client handles the navigation.
@@ -109,21 +110,20 @@ public:
 private:
     LocalFrameClient* Client(void) const;
 
-    std::unique_ptr<DocumentLoader> CreateDocumentLoader(const ResourceRequest &request,
-        const SubstituteData &substituteData, WebFrameLoadType loadType,
-        std::unique_ptr<WebDocumentLoader::ExtraData> extraData);
+    DocumentLoader* CreateDocumentLoader(const ResourceRequest &request, const SubstituteData &substituteData,
+        WebFrameLoadType loadType, std::unique_ptr<WebDocumentLoader::ExtraData> extraData);
     SubstituteData DefaultSubstituteDataForURL(const GURL &url);
 
     // Returns whether we should continue with new navigation.
     bool CancelProvisionalLoaderForNewNavigation(bool cancelScheduledNavigations);
     bool ShouldPerformFragmentNavigation(bool isFormSubmission, const String &httpMethod, WebFrameLoadType loadType,
         const GURL &url);
-    std::unique_ptr<DocumentLoader> DetachDocumentLoader(std::unique_ptr<DocumentLoader> &loader, bool flushMicrotaskQueue = false);
+    void DetachDocumentLoader(Member<DocumentLoader> &loader, bool flushMicrotaskQueue = false);
 
     Member<LocalFrame> m_frame;
     mutable FrameLoaderStateMachine m_stateMachine;
-    std::unique_ptr<DocumentLoader> m_documentLoader;
-    std::unique_ptr<DocumentLoader> m_provisionalDocumentLoader;
+    Member<DocumentLoader> m_documentLoader;
+    Member<DocumentLoader> m_provisionalDocumentLoader;
 
     bool m_inStopAllLoaders = false;
     bool m_protectProvisionalLoader = false;

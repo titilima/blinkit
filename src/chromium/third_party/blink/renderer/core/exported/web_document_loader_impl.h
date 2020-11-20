@@ -50,7 +50,7 @@ namespace blink {
 class WebDocumentLoaderImpl final : public DocumentLoader, public WebDocumentLoader
 {
 public:
-    static std::unique_ptr<WebDocumentLoaderImpl> Create(LocalFrame *frame, const ResourceRequest &request,
+    static WebDocumentLoaderImpl* Create(LocalFrame *frame, const ResourceRequest &request,
         const SubstituteData &substituteData);
 
     // WebDocumentLoader

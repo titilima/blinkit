@@ -18,12 +18,12 @@ using namespace blink;
 
 namespace BlinKit {
 
-std::unique_ptr<DocumentLoader> LocalFrameClientImpl::CreateDocumentLoader(
+DocumentLoader* LocalFrameClientImpl::CreateDocumentLoader(
     LocalFrame *frame,
-    const ResourceRequest &request,
-    const SubstituteData &data, std::unique_ptr<WebDocumentLoader::ExtraData> extraData)
+    const ResourceRequest &request, const SubstituteData &data,
+    std::unique_ptr<WebDocumentLoader::ExtraData> extraData)
 {
-    std::unique_ptr<WebDocumentLoaderImpl> ret = WebDocumentLoaderImpl::Create(frame, request, data);
+    WebDocumentLoaderImpl *ret = WebDocumentLoaderImpl::Create(frame, request, data);
     ret->SetExtraData(std::move(extraData));
     return ret;
 }

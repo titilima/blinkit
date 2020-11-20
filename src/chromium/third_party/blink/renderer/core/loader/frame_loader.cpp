@@ -161,7 +161,7 @@ void FrameLoader::CommitNavigation(
 #if 0 // BKTODO: Check if necessary.
     m_frame->GetFrameScheduler()->DidStartProvisionalLoad(frame_->IsMainFrame());
 #endif
-    Client()->DispatchDidStartProvisionalLoad(m_provisionalDocumentLoader.get(), resourceRequest);
+    Client()->DispatchDidStartProvisionalLoad(m_provisionalDocumentLoader.Get(), resourceRequest);
 
     m_provisionalDocumentLoader->StartLoading();
 }
@@ -176,13 +176,11 @@ void FrameLoader::CommitProvisionalLoad(void)
     m_frame->GetNavigationScheduler().Cancel();
 }
 
-std::unique_ptr<DocumentLoader> FrameLoader::CreateDocumentLoader(
-    const ResourceRequest &request,
-    const SubstituteData &substituteData,
-    WebFrameLoadType loadType,
-    std::unique_ptr<WebDocumentLoader::ExtraData> extraData)
+DocumentLoader* FrameLoader::CreateDocumentLoader(
+    const ResourceRequest &request, const SubstituteData &substituteData,
+    WebFrameLoadType loadType, std::unique_ptr<WebDocumentLoader::ExtraData> extraData)
 {
-    std::unique_ptr<DocumentLoader> loader = Client()->CreateDocumentLoader(m_frame, request,
+    DocumentLoader *loader = Client()->CreateDocumentLoader(m_frame, request,
         substituteData.IsValid() ? substituteData : DefaultSubstituteDataForURL(request.Url()),
         std::move(extraData));
     loader->SetLoadType(loadType);
@@ -203,31 +201,21 @@ void FrameLoader::Detach(void)
     m_detached = true;
 }
 
-std::unique_ptr<DocumentLoader> FrameLoader::DetachDocumentLoader(std::unique_ptr<DocumentLoader> &loader, bool flushMicrotaskQueue)
+void FrameLoader::DetachDocumentLoader(Member<DocumentLoader> &loader, bool flushMicrotaskQueue)
 {
     if (!loader)
-        return nullptr;
+        return;
 
     FrameNavigationDisabler navigationDisabler(*m_frame);
     loader->DetachFromFrame(flushMicrotaskQueue);
-    return std::move(loader);
-}
-
-static void DestroyDocumentLoaderTask(DocumentLoader *loader)
-{
-    delete loader;
+    loader = nullptr;
 }
 
 void FrameLoader::DetachProvisionalDocumentLoader(DocumentLoader *loader)
 {
-    ASSERT(m_provisionalDocumentLoader.get() == loader);
-    std::unique_ptr<DocumentLoader> detachedLoader = DetachDocumentLoader(m_provisionalDocumentLoader);
+    ASSERT(m_provisionalDocumentLoader == loader);
+    DetachDocumentLoader(m_provisionalDocumentLoader);
     DidFinishNavigation();
-    if (detachedLoader)
-    {
-        std::function<void()> task = std::bind(DestroyDocumentLoaderTask, detachedLoader.release());
-        m_frame->GetTaskRunner(TaskType::kInternalLoading)->PostTask(FROM_HERE, task);
-    }
 }
 
 void FrameLoader::DidFinishNavigation(void)
@@ -339,7 +327,7 @@ void FrameLoader::Init(void)
 
 bool FrameLoader::PrepareForCommit(void)
 {
-    DocumentLoader *pdl = m_provisionalDocumentLoader.get();
+    DocumentLoader *pdl = m_provisionalDocumentLoader;
 
     if (m_documentLoader)
     {
@@ -351,7 +339,7 @@ bool FrameLoader::PrepareForCommit(void)
     // execute arbitrary script via things like unload events. If the executed
     // script intiates a new load or causes the current frame to be detached, we
     // need to abandon the current load.
-    if (pdl != m_provisionalDocumentLoader.get())
+    if (pdl != m_provisionalDocumentLoader)
         return false;
 
     // detachFromFrame() will abort XHRs that haven't completed, which can trigger
@@ -367,14 +355,14 @@ bool FrameLoader::PrepareForCommit(void)
     // 'abort' listeners can also detach the frame.
     if (nullptr == m_frame->Client())
         return false;
-    ASSERT(m_provisionalDocumentLoader.get() == pdl);
+    ASSERT(m_provisionalDocumentLoader == pdl);
 
     // No more events will be dispatched so detach the Document.
     // TODO(yoav): Should we also be nullifying domWindow's document (or
     // domWindow) since the doc is now detached?
     if (Document *document = m_frame->GetDocument())
         document->Shutdown();
-    m_documentLoader = std::move(m_provisionalDocumentLoader);
+    m_documentLoader = m_provisionalDocumentLoader.Release();
     if (m_documentLoader)
         m_documentLoader->MarkAsCommitted();
     return true;
@@ -511,6 +499,12 @@ void FrameLoader::StopAllLoaders(void)
         DetachDocumentLoader(m_provisionalDocumentLoader);
     m_frame->GetNavigationScheduler().Cancel();
     DidFinishNavigation();
+}
+
+void FrameLoader::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_documentLoader);
+    visitor->Trace(m_provisionalDocumentLoader);
 }
 
 String FrameLoader::UserAgent(void) const

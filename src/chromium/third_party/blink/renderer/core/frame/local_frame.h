@@ -72,6 +72,7 @@ class LocalFrame final : public Frame
 public:
     static std::unique_ptr<LocalFrame> Create(LocalFrameClient *client, Page *page = nullptr);
     ~LocalFrame(void) override;
+    void Trace(Visitor *visitor) override;
 
     void Init(void) { m_loader.Init(); }
 

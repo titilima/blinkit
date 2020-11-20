@@ -41,11 +41,17 @@ enum class GCObjectFlag {
 void GCSetFlag(void *p, GCObjectFlag flag);
 void GCClearFlag(void *p, GCObjectFlag flag);
 
+enum class GCType {
+    Auto = 0, Full
+};
+
 class AutoGarbageCollector
 {
 public:
-    AutoGarbageCollector(void) = default;
+    AutoGarbageCollector(GCType type = GCType::Auto) : m_type(type) {}
     ~AutoGarbageCollector(void);
+private:
+    GCType m_type;
 };
 
 } // namespace BlinKit

@@ -50,8 +50,7 @@ class ScriptableDocumentParser;
 class TextResourceDecoder;
 
 class CORE_EXPORT DocumentParser
-    : public GarbageCollectedFinalized<DocumentParser>,
-      public NameClient {
+    : public NameClient {
  public:
   virtual ~DocumentParser();
   const char* NameInHeapSnapshot() const override { return "DocumentParser"; }

@@ -34,7 +34,7 @@ public:
     GCObjectHeader* Alloc(GCObjectType type, size_t totalSize, GCTable *gcPtr, const char *name);
 #endif
 
-    void CollectGarbage(void);
+    void CollectGarbage(GCType type);
 
     static void SetObjectFlag(void *p, GCObjectFlag flag, bool b);
     static void Trace(void *p, blink::Visitor *visitor);

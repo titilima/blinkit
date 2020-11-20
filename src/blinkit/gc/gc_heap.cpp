@@ -52,7 +52,7 @@ GCHeap::GCHeap(void)
 GCHeap::~GCHeap(void)
 {
     ASSERT(this == theHeap);
-    CollectGarbage();
+    CollectGarbage(GCType::Full);
     ASSERT(m_ownerObjects.empty());
     ASSERT(m_memberObjects.empty());
     ASSERT(m_stashObjects.empty());
@@ -92,7 +92,7 @@ GCObjectHeader* GCHeap::Alloc(GCObjectType type, size_t totalSize, GCTable *gcPt
     return nullptr;
 }
 
-void GCHeap::CollectGarbage(void)
+void GCHeap::CollectGarbage(GCType type)
 {
     ASSERT(IsMainThread());
 
@@ -108,7 +108,7 @@ void GCHeap::CollectGarbage(void)
         free(hdr);
     }
 
-    if (!objectsToGC.empty())
+    if (!objectsToGC.empty() || GCType::Full == type)
     {
         for (void *o : objectsToGC)
             m_ownerObjects.erase(o);
@@ -209,7 +209,7 @@ void GCSetFlag(void *p, GCObjectFlag flag)
 
 AutoGarbageCollector::~AutoGarbageCollector(void)
 {
-    theHeap->CollectGarbage();
+    theHeap->CollectGarbage(m_type);
 }
 
 } // namespace BlinKit
