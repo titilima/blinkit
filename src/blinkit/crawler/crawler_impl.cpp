@@ -57,6 +57,7 @@ void CrawlerImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
     std::string URL = error.FailingURL();
     const auto task = [this, errorCode, URL]
     {
+        AutoGarbageCollector gc;
         m_client.Error(errorCode, URL.c_str(), m_client.UserData);
     };
     m_frame->GetTaskRunner(TaskType::kInternalLoading)->PostTask(FROM_HERE, task);
@@ -66,6 +67,7 @@ void CrawlerImpl::DispatchDidFinishLoad(void)
 {
     const auto task = [this]
     {
+        AutoGarbageCollector gc;
         m_client.DocumentReady(m_client.UserData);
     };
     m_frame->GetTaskRunner(TaskType::kInternalLoading)->PostTask(FROM_HERE, task);

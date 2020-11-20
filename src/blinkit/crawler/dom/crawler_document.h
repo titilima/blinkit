@@ -24,7 +24,7 @@ class CrawlerDocument final : public blink::Document
 public:
     static std::unique_ptr<blink::Document> Create(const blink::DocumentInit &init)
     {
-        return base::WrapUnique(new (GCObjectType::Root) CrawlerDocument(init));
+        return base::WrapUnique(new (ObjectType::Owner) CrawlerDocument(init));
     }
 private:
     CrawlerDocument(const blink::DocumentInit &init);

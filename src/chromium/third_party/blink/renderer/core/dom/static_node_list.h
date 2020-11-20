@@ -70,7 +70,7 @@ using StaticNodeList = StaticNodeTypeList<Node>;
 template <typename NodeType>
 StaticNodeTypeList<NodeType>* StaticNodeTypeList<NodeType>::Adopt(
     std::vector<NodeType *>& nodes) {
-  StaticNodeTypeList<NodeType>* node_list = new StaticNodeTypeList<NodeType>;
+  StaticNodeTypeList<NodeType>* node_list = new (ObjectType::Stash) StaticNodeTypeList<NodeType>;
   swap(node_list->nodes_, nodes);
   return node_list;
 }

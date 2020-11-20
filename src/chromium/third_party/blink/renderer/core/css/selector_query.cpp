@@ -392,7 +392,7 @@ StaticElementList* SelectorQuery::QueryAll(ContainerNode &rootNode) const
     NthIndexCache nthIndexCache(rootNode.GetDocument());
     std::vector<Element *> result;
     Execute<AllElementsSelectorQueryTrait>(rootNode, result);
-    return StaticElementList::Adopt(result, ScriptWrappable::GC_IN_FINALIZER);
+    return StaticElementList::Adopt(result);
 }
 
 Element* SelectorQuery::QueryFirst(ContainerNode &rootNode) const

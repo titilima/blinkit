@@ -38,7 +38,6 @@
 
 #pragma once
 
-#include "base/memory/scoped_refptr.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_result.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
@@ -50,7 +49,7 @@ class EventDispatcher;
 class EventPath;
 class EventTarget;
 
-class Event : public WTF::RefCounted<Event>, public ScriptWrappable
+class Event : public ScriptWrappable
 {
 public:
     enum class Bubbles {
@@ -85,13 +84,13 @@ public:
         kPassiveDefault,
     };
 
-    static scoped_refptr<Event> Create(const AtomicString &type)
+    static Event* Create(const AtomicString &type)
     {
-        return AdoptRef(new Event(type, Bubbles::kNo, Cancelable::kNo));
+        return new (ObjectType::Stash) Event(type, Bubbles::kNo, Cancelable::kNo);
     }
-    static scoped_refptr<Event> CreateBubble(const AtomicString &type)
+    static Event* CreateBubble(const AtomicString &type)
     {
-        return AdoptRef(new Event(type, Bubbles::kYes, Cancelable::kNo));
+        return new (ObjectType::Stash) Event(type, Bubbles::kYes, Cancelable::kNo);
     }
     ~Event(void) override;
 
@@ -176,8 +175,6 @@ protected:
 
     virtual void ReceivedTarget(void) {}
 private:
-    GCType GetGCType(void) const override { return GC_MANUAL; }
-
     AtomicString m_type;
     unsigned m_bubbles : 1;
     unsigned m_cancelable : 1;

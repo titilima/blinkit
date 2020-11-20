@@ -20,34 +20,13 @@ class Visitor;
 
 namespace BlinKit {
 
-class GCHeap;
-
 struct GCTable {
     void (*Deleter)(void *);
     void (*Tracer)(void *, blink::Visitor *);
 };
 
-struct GCObjectHeader {
-    GCTable *gcPtr;
-#ifndef NDEBUG
-    const char *name;
-#endif
-
-    void* Object(void) { return this + 1; }
-
-    static GCObjectHeader* From(void *p)
-    {
-        return reinterpret_cast<GCObjectHeader *>(p) - 1;
-    }
-    template <class T>
-    T* To(void)
-    {
-        return reinterpret_cast<T *>(this->Object());
-    }
-};
-
 enum class GCObjectType {
-    Member = 0, Root
+    Member = 0, Owner, Stash
 };
 
 #ifdef NDEBUG
@@ -55,7 +34,19 @@ void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr);
 #else
 void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr, const char *name);
 #endif
-void GCHeapFreeRootObject(void *p);
+
+enum class GCObjectFlag {
+    Deleted = 0, JSRetained
+};
+void GCSetFlag(void *p, GCObjectFlag flag);
+void GCClearFlag(void *p, GCObjectFlag flag);
+
+class AutoGarbageCollector
+{
+public:
+    AutoGarbageCollector(void) = default;
+    ~AutoGarbageCollector(void);
+};
 
 } // namespace BlinKit
 

@@ -20,6 +20,8 @@
 
 namespace BlinKit {
 
+struct GCObjectHeader;
+
 class GCHeap
 {
 public:
@@ -31,9 +33,16 @@ public:
 #else
     GCObjectHeader* Alloc(GCObjectType type, size_t totalSize, GCTable *gcPtr, const char *name);
 #endif
-    void FreeRootObject(GCObjectHeader *hdr);
+
+    void CollectGarbage(void);
+
+    static void SetObjectFlag(void *p, GCObjectFlag flag, bool b);
+    static void Trace(void *p, blink::Visitor *visitor);
 private:
-    std::unordered_set<void *> m_rootObjects, m_memberObjects;
+    using GCObjectSet = std::unordered_set<void *>;
+    static void FreeObjects(const GCObjectSet &objectsToGC, GCObjectSet *sourcePool = nullptr);
+
+    GCObjectSet m_ownerObjects, m_memberObjects, m_stashObjects;
 };
 
 } // namespace BlinKit

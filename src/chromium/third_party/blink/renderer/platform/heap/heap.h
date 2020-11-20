@@ -27,7 +27,8 @@ template <typename T>
 class GarbageCollected
 {
 public:
-    void* operator new(size_t size, BlinKit::GCObjectType type = BlinKit::GCObjectType::Member)
+    using ObjectType = BlinKit::GCObjectType;
+    void* operator new(size_t size, ObjectType type = ObjectType::Member)
     {
 #ifdef NDEBUG
         return BlinKit::GCHeapAlloc(type, size, T::GCPtr());
@@ -37,14 +38,12 @@ public:
     }
     void operator delete(void *p)
     {
-        BlinKit::GCHeapFreeRootObject(p);
+        BlinKit::GCSetFlag(p, BlinKit::GCObjectFlag::Deleted);
     }
 protected:
     GarbageCollected(void) = default;
 
 private:
-    friend class BlinKit::GCHeap;
-
     static BlinKit::GCTable* GCPtr(void)
     {
         static BlinKit::GCTable *s_gcPtr = nullptr;

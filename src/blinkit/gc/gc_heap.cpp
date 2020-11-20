@@ -19,6 +19,30 @@ namespace BlinKit {
 
 static GCHeap *theHeap = nullptr;
 
+struct GCObjectHeader {
+    GCTable *gcPtr;
+
+    // Flags
+    unsigned deleted    : 1;
+    unsigned jsRetained : 1;
+
+#ifndef NDEBUG
+    const char *name;
+#endif
+
+    void* Object(void) { return this + 1; }
+
+    static GCObjectHeader* From(void *p)
+    {
+        return reinterpret_cast<GCObjectHeader *>(p) - 1;
+    }
+    template <class T>
+    T* To(void)
+    {
+        return reinterpret_cast<T *>(this->Object());
+    }
+};
+
 GCHeap::GCHeap(void)
 {
     ASSERT(nullptr == theHeap);
@@ -28,8 +52,10 @@ GCHeap::GCHeap(void)
 GCHeap::~GCHeap(void)
 {
     ASSERT(this == theHeap);
+    CollectGarbage();
+    ASSERT(m_ownerObjects.empty());
     ASSERT(m_memberObjects.empty());
-    ASSERT(m_rootObjects.empty());
+    ASSERT(m_stashObjects.empty());
     theHeap = nullptr;
 }
 
@@ -44,39 +70,120 @@ GCObjectHeader* GCHeap::Alloc(GCObjectType type, size_t totalSize, GCTable *gcPt
     if (GCObjectHeader *ret = reinterpret_cast<GCObjectHeader *>(malloc(totalSize)))
     {
         ret->gcPtr = gcPtr;
+        ret->deleted    = false;
+        ret->jsRetained = false;
 #ifndef NDEBUG
         ret->name = name;
 #endif
-        if (GCObjectType::Root == type)
-            m_rootObjects.insert(ret->Object());
-        else
-            m_memberObjects.insert(ret->Object());
+        switch (type)
+        {
+            case GCObjectType::Owner:
+                m_ownerObjects.insert(ret->Object());
+                break;
+            case GCObjectType::Stash:
+                m_stashObjects.insert(ret->Object());
+                break;
+            default:
+                ASSERT(GCObjectType::Member == type);
+                m_memberObjects.insert(ret->Object());
+        }
         return ret;
     }
     return nullptr;
 }
 
-void GCHeap::FreeRootObject(GCObjectHeader *hdr)
+void GCHeap::CollectGarbage(void)
 {
     ASSERT(IsMainThread());
 
-    ASSERT(std::end(m_rootObjects) != m_rootObjects.find(hdr->Object()));
-    m_rootObjects.erase(hdr->Object());
-    free(hdr);
+    GCObjectSet objectsToGC;
 
-    GCVisitor visitor(m_memberObjects);
-    for (void *rootObject : m_rootObjects)
+    for (void *o : m_ownerObjects)
     {
-        GCObjectHeader::From(rootObject)->gcPtr->Tracer(rootObject, &visitor);
-    }
-    for (void *memberObject : visitor.ObjectsToGC())
-    {
-        m_memberObjects.erase(memberObject);
+        GCObjectHeader *hdr = GCObjectHeader::From(o);
+        if (!hdr->deleted)
+            continue;
 
-        hdr = GCObjectHeader::From(memberObject);
-        hdr->gcPtr->Deleter(memberObject);
+        objectsToGC.insert(o);
         free(hdr);
     }
+
+    if (!objectsToGC.empty())
+    {
+        for (void *o : objectsToGC)
+            m_ownerObjects.erase(o);
+        objectsToGC.clear();
+
+        GCVisitor visitor(objectsToGC);
+        objectsToGC.insert(m_memberObjects.begin(), m_memberObjects.end());
+        for (void *o : m_ownerObjects)
+            Trace(o, &visitor);
+
+        FreeObjects(objectsToGC, &m_memberObjects);
+        objectsToGC.clear();
+    }
+
+    for (void *o : m_stashObjects)
+    {
+        GCObjectHeader *hdr = GCObjectHeader::From(o);
+        if (hdr->jsRetained)
+            continue;
+
+        objectsToGC.insert(o);
+    }
+    FreeObjects(objectsToGC, &m_stashObjects);
+}
+
+void GCHeap::FreeObjects(const GCObjectSet &objectsToGC, GCObjectSet *sourcePool)
+{
+    if (nullptr != sourcePool)
+    {
+        for (void *o : objectsToGC)
+        {
+            sourcePool->erase(o);
+
+            GCObjectHeader *hdr = GCObjectHeader::From(o);
+            hdr->gcPtr->Deleter(o);
+            free(hdr);
+        }
+    }
+    else
+    {
+        for (void *o : objectsToGC)
+        {
+            GCObjectHeader *hdr = GCObjectHeader::From(o);
+            hdr->gcPtr->Deleter(o);
+            free(hdr);
+        }
+    }
+}
+
+void GCHeap::SetObjectFlag(void *p, GCObjectFlag flag, bool b)
+{
+    GCObjectHeader *hdr = GCObjectHeader::From(p);
+    switch (flag)
+    {
+        case GCObjectFlag::Deleted:
+            hdr->deleted = b;
+            break;
+        case GCObjectFlag::JSRetained:
+            hdr->jsRetained = b;
+            break;
+        default:
+            NOTREACHED();
+    }
+}
+
+void GCHeap::Trace(void *p, blink::Visitor *visitor)
+{
+    GCObjectHeader::From(p)->gcPtr->Tracer(p, visitor);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GCClearFlag(void *p, GCObjectFlag flag)
+{
+    GCHeap::SetObjectFlag(p, flag, false);
 }
 
 #ifdef NDEBUG
@@ -93,9 +200,16 @@ void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr, const char *na
 }
 #endif
 
-void GCHeapFreeRootObject(void *p)
+void GCSetFlag(void *p, GCObjectFlag flag)
 {
-    theHeap->FreeRootObject(GCObjectHeader::From(p));
+    GCHeap::SetObjectFlag(p, flag, true);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+AutoGarbageCollector::~AutoGarbageCollector(void)
+{
+    theHeap->CollectGarbage();
 }
 
 } // namespace BlinKit

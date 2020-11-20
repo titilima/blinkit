@@ -126,7 +126,7 @@ DispatchEventResult LocalDOMWindow::DispatchEvent(Event &event, EventTarget *tar
 
 void LocalDOMWindow::DispatchLoadEvent(void)
 {
-    scoped_refptr<Event> loadEvent = Event::Create(event_type_names::kLoad);
+    Event *loadEvent = Event::Create(event_type_names::kLoad);
     DispatchEvent(*loadEvent, document());
 }
 

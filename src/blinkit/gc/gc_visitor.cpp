@@ -11,11 +11,11 @@
 
 #include "gc_visitor.h"
 
-#include "blinkit/gc/gc_def.h"
+#include "blinkit/gc/gc_heap.h"
 
 namespace BlinKit {
 
-GCVisitor::GCVisitor(const std::unordered_set<void *> &memberObjects) : m_objectsToGC(memberObjects)
+GCVisitor::GCVisitor(std::unordered_set<void *> &objectsToGC) : m_objectsToGC(objectsToGC)
 {
 }
 
@@ -29,7 +29,7 @@ void GCVisitor::TraceImpl(void *p)
         return;
 
     m_objectsToGC.erase(p);
-    GCObjectHeader::From(p)->gcPtr->Tracer(p, this);
+    GCHeap::Trace(p, this);
 }
 
 } // namespace BlinKit

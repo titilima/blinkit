@@ -61,7 +61,7 @@ class LocalDOMWindow final : public DOMWindow
 public:
     static std::unique_ptr<LocalDOMWindow> Create(LocalFrame &frame)
     {
-        return base::WrapUnique(new (BlinKit::GCObjectType::Root) LocalDOMWindow(frame));
+        return base::WrapUnique(new (ObjectType::Owner) LocalDOMWindow(frame));
     }
     ~LocalDOMWindow(void) override;
     void Trace(Visitor *visitor) override;

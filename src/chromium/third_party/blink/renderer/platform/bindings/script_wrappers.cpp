@@ -11,6 +11,8 @@
 
 #include "script_wrappers.h"
 
+#include "blinkit/gc/gc_def.h"
+
 using namespace blink;
 
 namespace BlinKit {
@@ -25,7 +27,10 @@ PushWrapper::~PushWrapper(void)
         return;
 
     if (nullptr == m_nativeObject->m_contextObject)
+    {
         m_nativeObject->m_contextObject = duk_get_heapptr(m_ctx, -1);
+        GCSetFlag(m_nativeObject, GCObjectFlag::JSRetained);
+    }
 
     ASSERT(duk_get_heapptr(m_ctx, -1) == m_nativeObject->m_contextObject);
 }
