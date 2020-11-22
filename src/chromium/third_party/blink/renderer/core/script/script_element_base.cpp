@@ -131,6 +131,11 @@ String ScriptElementBase::TextFromChildren(void) const
     return GetElement().TextFromChildren();
 }
 
+void ScriptElementBase::Trace(Visitor *visitor)
+{
+    m_loader->Trace(visitor);
+}
+
 String ScriptElementBase::TypeAttributeValue(void) const
 {
     return GetElement().getAttribute(kTypeAttr).GetString();

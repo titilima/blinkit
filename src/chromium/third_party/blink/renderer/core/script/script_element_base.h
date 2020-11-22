@@ -39,6 +39,7 @@ ScriptLoader* ScriptLoaderFromElement(Element*);
 class CORE_EXPORT ScriptElementBase : public GarbageCollectedMixin {
  public:
   virtual ~ScriptElementBase(void);
+  void Trace(Visitor *visitor) override;
 
   ScriptLoader* Loader(void) const { return m_loader.get(); }
 

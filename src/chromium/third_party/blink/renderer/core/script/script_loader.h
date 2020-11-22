@@ -47,13 +47,13 @@ namespace blink {
 class Resource;
 class ScriptElementBase;
 
-class ScriptLoader final : public GarbageCollectedFinalized<ScriptLoader>
-                         , public PendingScriptClient
+class ScriptLoader final : public PendingScriptClient
                          , public NameClient
 {
 public:
     static std::unique_ptr<ScriptLoader> Create(ScriptElementBase *element, bool createdByParser, bool isEvaluated);
     ~ScriptLoader(void); // BKTODO: override;
+    void Trace(Visitor *visitor) override;
 
     bool IsParserInserted(void) const { return m_parserInserted; }
     bool ReadyToBeParserExecuted(void) const { return m_readyToBeParserExecuted; }
@@ -74,7 +74,7 @@ public:
     void DidNotifySubtreeInsertionsToDocument(void);
     void ChildrenChanged(void);
 
-    std::shared_ptr<PendingScript> TakePendingScript(ScriptSchedulingType schedulingType);
+    PendingScript* TakePendingScript(ScriptSchedulingType schedulingType);
 
     bool PrepareScript(const TextPosition &scriptStartPosition = TextPosition::MinimumPosition(),
         LegacyTypeSupport supportLegacyTypes = kDisallowLegacyTypeInTypeAttribute);
@@ -139,14 +139,14 @@ private:
     // |prepared_pending_script_|.
     // Later, TakePendingScript() is called, and its caller holds a reference
     // to the PendingScript instead and |prepared_pending_script_| is cleared.
-    std::shared_ptr<PendingScript> m_preparedPendingScript;
+    Member<PendingScript> m_preparedPendingScript;
 
     // If the script is controlled by ScriptRunner, then
     // ScriptLoader::pending_script_ holds a reference to the PendingScript and
     // ScriptLoader is its client.
     // Otherwise, HTMLParserScriptRunner or XMLParserScriptRunner holds the
     // reference and |pending_script_| here is null.
-    std::shared_ptr<PendingScript> m_pendingScript;
+    Member<PendingScript> m_pendingScript;
 
     // This is used only to keep the ScriptResource of a classic script alive
     // and thus to keep it on MemoryCache, even after script execution, as long

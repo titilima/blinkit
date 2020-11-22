@@ -108,11 +108,9 @@ void ScriptLoader::DidNotifySubtreeInsertionsToDocument(void)
 // https://html.spec.whatwg.org/multipage/webappapis.html#fetch-a-classic-script
 void ScriptLoader::FetchClassicScript(const GURL &url, Document &elementDocument, const WTF::TextEncoding &encoding)
 {
-    std::shared_ptr<ClassicPendingScript> pendingScript = ClassicPendingScript::Fetch(url, elementDocument,
-        encoding, m_element);
-    ResourceClient *resourceClient = pendingScript.get();
+    ClassicPendingScript *pendingScript = ClassicPendingScript::Fetch(url, elementDocument, encoding, m_element);
     m_preparedPendingScript = pendingScript;
-    m_resourceKeepAlive = resourceClient->GetResource();
+    m_resourceKeepAlive = pendingScript->GetResource();
 }
 
 void ScriptLoader::HandleSourceAttribute(const String &sourceUrl)
@@ -224,7 +222,7 @@ const char* ScriptLoader::NameInHeapSnapshot(void) const
 void ScriptLoader::PendingScriptFinished(PendingScript *pendingScript)
 {
     ASSERT(!m_willBeParserExecuted);
-    ASSERT(m_pendingScript.get() == pendingScript);
+    ASSERT(m_pendingScript == pendingScript);
     ASSERT(m_pendingScript->GetScriptType() == GetScriptType());
     ASSERT(pendingScript->IsControlledByScriptRunner());
 
@@ -237,7 +235,7 @@ void ScriptLoader::PendingScriptFinished(PendingScript *pendingScript)
 
     contextDocument->GetScriptRunner()->NotifyScriptReady(pendingScript);
     pendingScript->StopWatchingForLoad();
-    m_pendingScript.reset();
+    m_pendingScript.Clear();
 }
 
 bool ScriptLoader::PrepareScript(const TextPosition &scriptStartPosition, LegacyTypeSupport supportLegacyTypes)
@@ -704,7 +702,7 @@ bool ScriptLoader::PrepareScript(const TextPosition &scriptStartPosition, Legacy
     return true;
 }
 
-std::shared_ptr<PendingScript> ScriptLoader::TakePendingScript(ScriptSchedulingType schedulingType)
+PendingScript* ScriptLoader::TakePendingScript(ScriptSchedulingType schedulingType)
 {
     ASSERT(m_preparedPendingScript);
 
@@ -724,9 +722,17 @@ std::shared_ptr<PendingScript> ScriptLoader::TakePendingScript(ScriptSchedulingT
             break;
     }
 
-    std::shared_ptr<PendingScript> pendingScript = std::move(m_preparedPendingScript);
+    PendingScript *pendingScript = m_preparedPendingScript.Release();
     pendingScript->SetSchedulingType(schedulingType);
     return pendingScript;
+}
+
+void ScriptLoader::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_pendingScript);
+    visitor->Trace(m_preparedPendingScript);
+    visitor->Trace(m_resourceKeepAlive);
+    PendingScriptClient::Trace(visitor);
 }
 
 }  // namespace blink
