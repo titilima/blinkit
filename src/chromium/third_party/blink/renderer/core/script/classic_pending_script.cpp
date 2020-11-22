@@ -118,7 +118,7 @@ void ClassicPendingScript::CancelStreaming(void)
         return;
 
     m_streamer->Cancel();
-    m_streamer.reset();
+    m_streamer.Clear();
     m_streamerDone = std::function<void()>();
     m_isCurrentlyStreaming = false;
     ASSERT(!IsCurrentlyStreaming());
@@ -132,7 +132,7 @@ void ClassicPendingScript::CheckState(void) const
     ASSERT(nullptr != GetResource() || !m_streamer);
 }
 
-std::shared_ptr<ClassicPendingScript> ClassicPendingScript::CreateInline(
+ClassicPendingScript* ClassicPendingScript::CreateInline(
     ScriptElementBase *element,
     const TextPosition &startingPosition,
     ScriptSourceLocationType sourceLocationType)
@@ -159,7 +159,7 @@ void ClassicPendingScript::DisposeInternal(void)
     CancelStreaming();
 }
 
-std::shared_ptr<ClassicPendingScript> ClassicPendingScript::Fetch(
+ClassicPendingScript* ClassicPendingScript::Fetch(
     const GURL &url,
     Document &elementDocument,
     const WTF::TextEncoding &encoding,
@@ -270,7 +270,7 @@ std::unique_ptr<Script> ClassicPendingScript::GetSource(const GURL &documentURL)
         }
     }
 
-    ScriptSourceCode sourceCode(streamerReady ? m_streamer.get() : nullptr, resource, notStreamedReason);
+    ScriptSourceCode sourceCode(streamerReady ? m_streamer : nullptr, resource, notStreamedReason);
     // The base URL for external classic script is
     // "the URL from which the script was obtained" [spec text]
     // https://html.spec.whatwg.org/multipage/webappapis.html#concept-script-base-url
@@ -319,17 +319,17 @@ void ClassicPendingScript::NotifyFinished(Resource *resource)
         FinishWaitingForStreaming();
 }
 
-void ClassicPendingScript::SetStreamer(std::unique_ptr<ScriptStreamer> &streamer)
+void ClassicPendingScript::SetStreamer(ScriptStreamer *streamer)
 {
-    ASSERT(streamer);
+    ASSERT(nullptr != streamer);
     ASSERT(!m_streamer);
     ASSERT(!IsWatchingForLoad() || kWaitingForResource != m_readyState);
     ASSERT(!streamer->IsFinished());
     ASSERT(kWaitingForResource == m_readyState || kReady == m_readyState);
 
-    m_streamer = std::move(streamer);
+    m_streamer = streamer;
     m_isCurrentlyStreaming = true;
-    if (streamer && kReady == m_readyState)
+    if (nullptr != streamer && kReady == m_readyState)
         AdvanceReadyState(kReadyStreaming);
 
     CheckState();
@@ -357,7 +357,7 @@ bool ClassicPendingScript::StartStreamingIfPossible(const std::function<void()> 
         ASSERT(kReady == m_readyState);
         ASSERT(!m_streamerDone);
         ASSERT(!IsCurrentlyStreaming());
-        m_streamer.reset();
+        m_streamer.Clear();
     }
 
     if (m_streamer)
@@ -392,10 +392,8 @@ bool ClassicPendingScript::StartStreamingIfPossible(const std::function<void()> 
 
 void ClassicPendingScript::StreamingFinished(void)
 {
-    std::shared_ptr<ClassicPendingScript> guard(shared_from_this());
-
     CheckState();
-    // BKTODO: DCHECK(streamer_);  // Should only be called by ScriptStreamer.
+    ASSERT(m_streamer);  // Should only be called by ScriptStreamer.
     ASSERT(IsCurrentlyStreaming());
 
     if (kWaitingForStreaming == m_readyState)
@@ -406,6 +404,13 @@ void ClassicPendingScript::StreamingFinished(void)
         NOTREACHED();
 
     ASSERT(!IsCurrentlyStreaming());
+}
+
+void ClassicPendingScript::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_streamer);
+    ResourceClient::Trace(visitor);
+    PendingScript::Trace(visitor);
 }
 
 bool ClassicPendingScript::WasCanceled(void) const

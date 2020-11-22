@@ -15,7 +15,6 @@
 
 #include "script_streamer.h"
 
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/script/classic_pending_script.h"
 #include "third_party/blink/renderer/platform/shared_buffer.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
@@ -242,7 +241,7 @@ void ScriptStreamer::StartStreaming(
     // to arrive: the Content-Length HTTP header is not sent for chunked
     // downloads.
 
-    std::unique_ptr<ScriptStreamer> streamer = base::WrapUnique(new ScriptStreamer(script, loadingTaskRunner));
+    ScriptStreamer *streamer = new ScriptStreamer(script, loadingTaskRunner);
 
     // If this script was ready when streaming began, no callbacks will be
     // received to populate the data for the ScriptStreamer, so send them now.
@@ -264,14 +263,13 @@ void ScriptStreamer::StartStreaming(
 #endif
     }
 
-    ScriptStreamer *tmp = streamer.get();
     // The Resource might go out of scope if the script is no longer needed.
     // This makes ClassicPendingScript notify the ScriptStreamer when it is
     // destroyed.
     script->SetStreamer(streamer);
 
     if (script->IsReady())
-        tmp->NotifyFinished();
+        streamer->NotifyFinished();
 }
 
 void ScriptStreamer::SuppressStreaming(NotStreamingReason reason)
@@ -284,6 +282,11 @@ void ScriptStreamer::SuppressStreaming(NotStreamingReason reason)
     // a parse error).
     m_streamingSuppressed = true;
     m_suppressedReason = reason;
+}
+
+void ScriptStreamer::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_pendingScript);
 }
 
 } // namespace blink

@@ -36,7 +36,6 @@ namespace blink {
 // guarantee that the data buffer will not be purged.
 class ClassicPendingScript final : public PendingScript
                                  , public ResourceClient
-                                 , public std::enable_shared_from_this<ClassicPendingScript>
 {
     USING_GARBAGE_COLLECTED_MIXIN(ClassicPendingScript);
 public:
@@ -44,15 +43,16 @@ public:
     //
     // For a script from an external file, calls ScriptResource::Fetch() and
     // creates ClassicPendingScript. Returns nullptr if Fetch() returns nullptr.
-    static std::shared_ptr<ClassicPendingScript> Fetch(const GURL &url, Document &elementDocument,
+    static ClassicPendingScript* Fetch(const GURL &url, Document &elementDocument,
         const WTF::TextEncoding &encoding, ScriptElementBase *element);
     // For an inline script.
-    static std::shared_ptr<ClassicPendingScript> CreateInline(ScriptElementBase *element,
+    static ClassicPendingScript* CreateInline(ScriptElementBase *element,
         const TextPosition &startingPosition, ScriptSourceLocationType sourceLocationType);
     ~ClassicPendingScript(void) override;
+    void Trace(Visitor *visitor) override;
 
     // ScriptStreamer callbacks.
-    void SetStreamer(std::unique_ptr<ScriptStreamer> &streamer);
+    void SetStreamer(ScriptStreamer *streamer);
     void StreamingFinished(void);
 
     std::unique_ptr<Script> GetSource(const GURL &documentURL) const override;
@@ -107,7 +107,7 @@ private:
     ReadyState m_readyState;
     bool m_integrityFailure = false;
 
-    std::unique_ptr<ScriptStreamer> m_streamer;
+    Member<ScriptStreamer> m_streamer;
     std::function<void()> m_streamerDone;
 
     // This flag tracks whether streamer_ is currently streaming. It is used

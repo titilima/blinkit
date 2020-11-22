@@ -21,18 +21,22 @@
 
 namespace blink {
 
+template <typename T>
+class GarbageCollected;
+class ScriptWrappable;
+
 class Visitor
 {
 public:
-    template <typename T>
-    inline void Trace(Member<T> &o)
+    template <class T, typename = std::enable_if<std::is_base_of<ScriptWrappable, T>::value>>
+    inline void Trace(const T *po)
     {
-        TraceImpl(o.Get());
+        TraceImpl(const_cast<T *>(po));
     }
     template <typename T>
-    inline void Trace(GarbageCollected<T> *po)
+    inline void Trace(const Member<T> &m)
     {
-        TraceImpl(po);
+        TraceImpl(m.Get());
     }
     template <typename T, typename K, typename H>
     void Trace(const std::unordered_map<K, T, H> &m)
@@ -41,16 +45,10 @@ public:
             Trace(it.second);
     }
     template <typename T>
-    void Trace(const std::vector<GarbageCollected<T> *> &v)
+    void Trace(const std::vector<T> &v)
     {
-        for (GarbageCollected<T> *po : v)
-            TraceImpl(po);
-    }
-
-    template <typename T>
-    inline void Trace(const T &)
-    {
-        NOTREACHED();
+        for (const T &o : v)
+            Trace(o);
     }
 protected:
     Visitor(void) = default;

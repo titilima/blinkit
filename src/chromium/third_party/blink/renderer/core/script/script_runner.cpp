@@ -87,7 +87,7 @@ bool ScriptRunner::ExecuteAsyncTask(void)
 {
     // Find an async script loader which is not currently streaming.
     auto it = std::find_if(m_asyncScriptsToExecuteSoon.begin(), m_asyncScriptsToExecuteSoon.end(),
-        [](std::shared_ptr<PendingScript> &pendingScript)
+        [](Member<PendingScript> &pendingScript)
         {
             ASSERT(pendingScript);
             return !pendingScript->IsCurrentlyStreaming();
@@ -97,7 +97,7 @@ bool ScriptRunner::ExecuteAsyncTask(void)
         return false;
 
     // Remove the async script loader from the ready-to-exec set and execute.
-    std::shared_ptr<PendingScript> pendingScript(*it);
+    PendingScript *pendingScript = *it;
     m_asyncScriptsToExecuteSoon.erase(it);
 
     // Async scripts queue should not contain any in-order script.
@@ -111,12 +111,11 @@ bool ScriptRunner::ExecuteAsyncTask(void)
 
 bool ScriptRunner::ExecuteInOrderTask(void)
 {
-    if (m_inOrderScriptsToExecuteSoon.empty())
+    if (m_inOrderScriptsToExecuteSoon.IsEmpty())
         return false;
 
-    std::shared_ptr<PendingScript> pendingScript(m_inOrderScriptsToExecuteSoon.front());
-    m_inOrderScriptsToExecuteSoon.pop_front();
-    ASSERT(pendingScript);
+    PendingScript *pendingScript = m_inOrderScriptsToExecuteSoon.TakeFirst();
+    ASSERT(nullptr != pendingScript);
     // In-order scripts queue should not contain any async script.
     ASSERT(pendingScript->GetSchedulingType() == ScriptSchedulingType::kInOrder);
 
@@ -152,11 +151,10 @@ void ScriptRunner::NotifyScriptReady(PendingScript *pendingScript)
     {
         case ScriptSchedulingType::kAsync:
         {
-            auto it = m_pendingAsyncScripts.find(pendingScript);
-            ASSERT(std::end(m_pendingAsyncScripts) != it);
+            ASSERT(std::end(m_pendingAsyncScripts) != m_pendingAsyncScripts.find(pendingScript));
 
-            m_asyncScriptsToExecuteSoon.push_back(it->second);
-            m_pendingAsyncScripts.erase(it);
+            m_pendingAsyncScripts.erase(pendingScript);
+            m_asyncScriptsToExecuteSoon.push_back(pendingScript);
 
             PostTask(FROM_HERE);
             TryStreamAny();
@@ -190,15 +188,15 @@ void ScriptRunner::PostTask(const base::Location &webTraceLocation)
     m_taskRunner->PostTask(webTraceLocation, task);
 }
 
-void ScriptRunner::QueueScriptForExecution(std::shared_ptr<PendingScript> &pendingScript)
+void ScriptRunner::QueueScriptForExecution(PendingScript *pendingScript)
 {
     ASSERT(nullptr != pendingScript);
     m_document->IncrementLoadEventDelayCount();
     switch (pendingScript->GetSchedulingType())
     {
         case ScriptSchedulingType::kAsync:
-            m_pendingAsyncScripts[pendingScript.get()] = pendingScript;
-            TryStream(pendingScript.get());
+            m_pendingAsyncScripts.insert(pendingScript);
+            TryStream(pendingScript);
             break;
 
         case ScriptSchedulingType::kInOrder:
@@ -213,6 +211,13 @@ void ScriptRunner::QueueScriptForExecution(std::shared_ptr<PendingScript> &pendi
             NOTREACHED();
             break;
     }
+}
+
+void ScriptRunner::Trace(Visitor *visitor)
+{
+    m_pendingAsyncScripts.Trace(visitor);
+    m_asyncScriptsToExecuteSoon.Trace(visitor);
+    m_inOrderScriptsToExecuteSoon.Trace(visitor);
 }
 
 void ScriptRunner::TryStream(PendingScript *pendingScript)
@@ -232,7 +237,7 @@ void ScriptRunner::TryStreamAny(void)
     // Look through async_scripts_to_execute_soon_, and stream any one of them.
     for (auto pendingScript : m_asyncScriptsToExecuteSoon)
     {
-        if (DoTryStream(pendingScript.get()))
+        if (DoTryStream(pendingScript))
             return;
     }
 }

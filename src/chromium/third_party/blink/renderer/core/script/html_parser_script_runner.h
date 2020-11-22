@@ -39,6 +39,7 @@
 
 #include <queue>
 #include "base/macros.h"
+#include "base/memory/ptr_util.h"
 #include "base/memory/scoped_refptr.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_reentry_permit.h"
 #include "third_party/blink/renderer/core/script/pending_script.h"
@@ -64,16 +65,15 @@ class ScriptLoader;
 //
 // An HTMLParserScriptRunner is owned by its host, an HTMLDocumentParser.
 class HTMLParserScriptRunner final
-    : public GarbageCollectedFinalized<HTMLParserScriptRunner>,
-      public PendingScriptClient,
+    : public PendingScriptClient,
       public NameClient {
   USING_GARBAGE_COLLECTED_MIXIN(HTMLParserScriptRunner);
 
  public:
-  static HTMLParserScriptRunner* Create(HTMLParserReentryPermit* reentry_permit,
-                                        Document* document,
-                                        HTMLParserScriptRunnerHost* host) {
-    return new HTMLParserScriptRunner(reentry_permit, document, host);
+  static std::unique_ptr<HTMLParserScriptRunner> Create(HTMLParserReentryPermit* reentry_permit,
+                                                        Document* document,
+                                                        HTMLParserScriptRunnerHost* host) {
+    return base::WrapUnique(new HTMLParserScriptRunner(reentry_permit, document, host));
   }
   ~HTMLParserScriptRunner() override;
 
@@ -106,6 +106,7 @@ class HTMLParserScriptRunner final
     return !!reentry_permit_->ScriptNestingLevel();
   }
 
+  void Trace(blink::Visitor*) override;
   const char* NameInHeapSnapshot() const override {
     return "HTMLParserScriptRunner";
   }
@@ -131,7 +132,7 @@ class HTMLParserScriptRunner final
                                     const TextPosition& script_start_position);
 
   const PendingScript* ParserBlockingScript() const {
-    return parser_blocking_script_.get();
+    return parser_blocking_script_.Get();
   }
 
   bool IsParserBlockingScriptReady();
@@ -143,10 +144,10 @@ class HTMLParserScriptRunner final
   Member<HTMLParserScriptRunnerHost> host_;
 
   // https://html.spec.whatwg.org/multipage/scripting.html#pending-parsing-blocking-script
-  std::shared_ptr<PendingScript> parser_blocking_script_;
+  Member<PendingScript> parser_blocking_script_;
 
   // https://html.spec.whatwg.org/multipage/scripting.html#list-of-scripts-that-will-execute-when-the-document-has-finished-parsing
-  std::queue<std::shared_ptr<PendingScript>>
+  HeapDeque<Member<PendingScript>>
       scripts_to_execute_after_parsing_;
 
   DISALLOW_COPY_AND_ASSIGN(HTMLParserScriptRunner);

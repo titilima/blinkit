@@ -38,10 +38,12 @@ class ScriptResource;
 // while we're streaming. It is possible, though, that Document and the
 // ClassicPendingScript are destroyed while the streaming is in progress, and
 // ScriptStreamer handles it gracefully.
-class ScriptStreamer final
+class ScriptStreamer final : public GarbageCollectedFinalized<ScriptStreamer>
 {
     WTF_MAKE_NONCOPYABLE(ScriptStreamer);
 public:
+    BK_DECLARE_GC_NAME(ScriptStreamer)
+
     // For tracking why some scripts are not streamed. Not streaming is part of
     // normal operation (e.g., script already loaded, script too small) and
     // doesn't necessarily indicate a failure.
@@ -67,6 +69,7 @@ public:
     };
 
     ~ScriptStreamer(void);
+    void Trace(Visitor *visitor);
 
     // Launches a task (on a background thread) which will stream the given
     // ClassicPendingScript into V8 as it loads.

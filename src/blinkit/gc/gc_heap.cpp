@@ -143,7 +143,7 @@ void GCHeap::FreeObjects(const GCObjectSet &objectsToGC, GCObjectSet *sourcePool
             sourcePool->erase(o);
 
             GCObjectHeader *hdr = GCObjectHeader::From(o);
-            if (nullptr != hdr->gcPtr)
+            if (nullptr != hdr->gcPtr->Deleter)
                 hdr->gcPtr->Deleter(o);
             free(hdr);
         }
@@ -153,7 +153,7 @@ void GCHeap::FreeObjects(const GCObjectSet &objectsToGC, GCObjectSet *sourcePool
         for (void *o : objectsToGC)
         {
             GCObjectHeader *hdr = GCObjectHeader::From(o);
-            if (nullptr != hdr->gcPtr)
+            if (nullptr != hdr->gcPtr->Deleter)
                 hdr->gcPtr->Deleter(o);
             free(hdr);
         }

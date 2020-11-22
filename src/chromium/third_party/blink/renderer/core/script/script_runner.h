@@ -39,8 +39,6 @@
 
 #pragma once
 
-#include <deque>
-#include <unordered_map>
 #include "base/location.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
@@ -60,8 +58,9 @@ public:
     {
         return base::WrapUnique(new ScriptRunner(document));
     }
+    void Trace(Visitor *visitor);
 
-    void QueueScriptForExecution(std::shared_ptr<PendingScript> &pendingScript);
+    void QueueScriptForExecution(PendingScript *pendingScript);
     void NotifyScriptReady(PendingScript *pendingScript);
     void NotifyScriptStreamerFinished(void);
 private:
@@ -84,11 +83,11 @@ private:
 
     Member<Document> m_document;
 
-    std::unordered_map<PendingScript *, std::shared_ptr<PendingScript>> m_pendingAsyncScripts;
+    HeapHashSet<Member<PendingScript>> m_pendingAsyncScripts;
 
     // http://www.whatwg.org/specs/web-apps/current-work/#set-of-scripts-that-will-execute-as-soon-as-possible
-    std::deque<std::shared_ptr<PendingScript>> m_asyncScriptsToExecuteSoon;
-    std::deque<std::shared_ptr<PendingScript>> m_inOrderScriptsToExecuteSoon;
+    HeapDeque<Member<PendingScript>> m_asyncScriptsToExecuteSoon;
+    HeapDeque<Member<PendingScript>> m_inOrderScriptsToExecuteSoon;
 
     std::shared_ptr<base::SingleThreadTaskRunner> m_taskRunner;
 

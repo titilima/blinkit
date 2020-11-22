@@ -62,6 +62,7 @@ class PendingScript : public GarbageCollectedFinalized<PendingScript>
 {
 public:
     virtual ~PendingScript(void) = default;
+    virtual void Trace(Visitor *visitor) {}
 
     TextPosition StartingPosition(void) const { return m_startingPosition; }
     void MarkParserBlockingLoadStartTime(void);

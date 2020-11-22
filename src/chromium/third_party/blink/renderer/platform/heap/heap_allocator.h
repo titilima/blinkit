@@ -14,9 +14,9 @@
 
 #pragma once
 
-#include <deque>
-#include <vector>
+#include <list>
 #include <unordered_map>
+#include <unordered_set>
 #include "third_party/blink/renderer/platform/heap/heap.h"
 #include "third_party/blink/renderer/platform/wtf/linked_hash_set.h"
 #include "third_party/blink/renderer/platform/wtf/list_hash_set.h"
@@ -27,10 +27,29 @@
 namespace blink {
 
 template <typename T>
-class HeapDeque : public std::deque<T>
+class HeapDeque : private std::list<T>
 {
 public:
+    using std::list<T>::begin;
+    using std::list<T>::end;
+    using std::list<T>::erase;
+    using std::list<T>::front;
+    using std::list<T>::push_back;
+
     bool IsEmpty(void) const { return this->empty(); }
+
+    T TakeFirst(void)
+    {
+        T first = this->front();
+        this->pop_front();
+        return first;
+    }
+
+    void Trace(Visitor *visitor)
+    {
+        for (auto it = this->begin(); it != this->end(); ++it)
+            visitor->Trace(*it);
+    }
 };
 
 template <typename K, typename V>
@@ -48,15 +67,27 @@ public:
 };
 
 template <typename T>
-class HeapHashSet : public std::unordered_set<T>
+class HeapHashSet : private std::unordered_set<T>
 {
 public:
+    using std::unordered_set<T>::begin;
+    using std::unordered_set<T>::end;
+    using std::unordered_set<T>::erase;
+    using std::unordered_set<T>::find;
+    using std::unordered_set<T>::insert;
+
     bool Contains(const T& o) const
     {
         auto it = this->find(o);
         return this->end() != it;
     }
     bool IsEmpty(void) const { return this->empty(); }
+
+    void Trace(Visitor *visitor)
+    {
+        for (auto it = this->begin(); it != this->end(); ++it)
+            visitor->Trace(*it);
+    }
 };
 
 template <typename T>
