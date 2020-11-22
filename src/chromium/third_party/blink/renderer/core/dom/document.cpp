@@ -765,7 +765,7 @@ Element* Document::createElement(const AtomicString &name, ExceptionState &excep
 #endif
 }
 
-std::shared_ptr<DocumentParser> Document::CreateParser(void)
+DocumentParser* Document::CreateParser(void)
 {
     return HTMLDocumentParser::Create(*this);
 }
@@ -790,7 +790,7 @@ void Document::DetachParser(void)
     if (m_parser)
     {
         m_parser->Detach();
-        m_parser.reset();
+        m_parser.Clear();
     }
 }
 
@@ -1228,7 +1228,7 @@ void Document::ImplicitClose(void)
     m_loadEventProgress = kLoadEventCompleted;
 }
 
-std::shared_ptr<DocumentParser> Document::ImplicitOpen(void)
+DocumentParser* Document::ImplicitOpen(void)
 {
     RemoveChildren();
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -1540,9 +1540,9 @@ void Document::open(Document *enteredDocument, ExceptionState &exceptionState)
     ASSERT(false); // BKTODO:
 }
 
-std::shared_ptr<DocumentParser> Document::OpenForNavigation(const AtomicString &mimeType, const AtomicString &encoding)
+DocumentParser* Document::OpenForNavigation(const AtomicString &mimeType, const AtomicString &encoding)
 {
-    std::shared_ptr<DocumentParser> parser = ImplicitOpen();
+    DocumentParser *parser = ImplicitOpen();
     if (parser->NeedsDecoder())
         parser->SetDecoder(BuildTextResourceDecoderFor(this, mimeType, encoding));
     return parser;
@@ -2101,6 +2101,7 @@ void Document::Trace(Visitor *visitor)
         visitor->Trace(m_autofocusElement);
     }
 #endif
+    visitor->Trace(m_parser);
     visitor->Trace(m_documentElement);
     visitor->Trace(m_titleElement);
     visitor->Trace(m_docType);

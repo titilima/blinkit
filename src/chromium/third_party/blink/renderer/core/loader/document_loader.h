@@ -68,7 +68,7 @@ public:
     BK_DECLARE_GC_NAME(DocumentLoader)
 
     ~DocumentLoader(void) override;
-    void Trace(Visitor *visitor) override {}
+    void Trace(Visitor *visitor) override;
 
     LocalFrame* GetFrame(void) const { return m_frame; }
     std::shared_ptr<ResourceFetcher> Fetcher(void) const { return m_fetcher; }
@@ -129,7 +129,7 @@ private:
 
     Member<LocalFrame> m_frame;
     std::shared_ptr<ResourceFetcher> m_fetcher;
-    std::shared_ptr<DocumentParser> m_parser;
+    Member<DocumentParser> m_parser;
     ResourceRequest m_originalRequest, m_currentRequest;
     SubstituteData m_substituteData;
     ResourceResponse m_response;

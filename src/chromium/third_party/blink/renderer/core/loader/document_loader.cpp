@@ -237,7 +237,7 @@ void DocumentLoader::FinishedLoading(void)
     if (m_parser)
     {
         m_parser->Finish();
-        m_parser.reset();
+        m_parser.Clear();
     }
     ClearResource();
 }
@@ -449,6 +449,12 @@ void DocumentLoader::StopLoading(void)
     m_fetcher->StopFetching();
     if (m_frame && !SentDidFinishLoad())
         LoadFailed(ResourceError(BK_ERR_CANCELLED, Url()));
+}
+
+void DocumentLoader::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_parser);
+    RawResourceClient::Trace(visitor);
 }
 
 void DocumentLoader::WillCommitNavigation(void)

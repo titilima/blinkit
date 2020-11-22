@@ -50,10 +50,12 @@ class ScriptableDocumentParser;
 class TextResourceDecoder;
 
 class CORE_EXPORT DocumentParser
-    : public NameClient {
+    : public GarbageCollectedFinalized<DocumentParser> {
  public:
+  BK_DECLARE_GC_NAME(DocumentParser)
+
   virtual ~DocumentParser();
-  const char* NameInHeapSnapshot() const override { return "DocumentParser"; }
+  virtual void Trace(blink::Visitor*) {}
 
   virtual ScriptableDocumentParser* AsScriptableDocumentParser() {
     return nullptr;

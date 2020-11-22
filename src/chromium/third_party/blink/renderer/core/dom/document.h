@@ -341,11 +341,11 @@ public:
     void CheckLoadEventSoon(void);
     bool IsDelayingLoadEvent(void) { return 0 != m_loadEventDelayCount; }
 
-    DocumentParser* Parser(void) const { return m_parser.get(); }
+    DocumentParser* Parser(void) const { return m_parser.Get(); }
     ScriptableDocumentParser* GetScriptableDocumentParser(void) const;
-    std::shared_ptr<DocumentParser> OpenForNavigation(const AtomicString &mimeType, const AtomicString &encoding);
-    std::shared_ptr<DocumentParser> ImplicitOpen(void);
-    std::shared_ptr<DocumentParser> CreateParser(void);
+    DocumentParser* OpenForNavigation(const AtomicString &mimeType, const AtomicString &encoding);
+    DocumentParser* ImplicitOpen(void);
+    DocumentParser* CreateParser(void);
 
     enum HttpRefreshType { kHttpRefreshFromHeader, kHttpRefreshFromMetaTag };
     void MaybeHandleHttpRefresh(const String &content, HttpRefreshType refreshType);
@@ -551,7 +551,7 @@ private:
     TaskRunnerTimer<Document> m_loadEventDelayTimer;
 
     std::shared_ptr<ResourceFetcher> m_fetcher;
-    std::shared_ptr<DocumentParser> m_parser;
+    Member<DocumentParser> m_parser;
     std::unique_ptr<ScriptRunner> m_scriptRunner;
 
     std::unique_ptr<ElementDataCache> m_elementDataCache;
