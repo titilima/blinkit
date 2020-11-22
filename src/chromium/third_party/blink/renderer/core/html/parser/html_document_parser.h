@@ -236,7 +236,7 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
   // and passed between threads together.
   std::unique_ptr<TokenizedChunk> last_chunk_before_pause_;
   Deque<std::unique_ptr<TokenizedChunk>> speculations_;
-  std::unique_ptr<HTMLResourcePreloader> preloader_;
+  Member<HTMLResourcePreloader> preloader_;
   PreloadRequestStream queued_preloads_;
 
   // If this is non-null, then there is a meta CSP token somewhere in the

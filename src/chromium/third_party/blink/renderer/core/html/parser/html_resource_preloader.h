@@ -56,7 +56,11 @@ class CORE_EXPORT HTMLResourcePreloader
   friend class HTMLResourcePreloaderTest;
 
  public:
+  BK_DECLARE_GC_NAME(HTMLResourcePreloader)
+
   static HTMLResourcePreloader* Create(Document&);
+  void Trace(Visitor *) {}
+
   Document* GetDocument() { return document_.Get(); }
 
  protected:

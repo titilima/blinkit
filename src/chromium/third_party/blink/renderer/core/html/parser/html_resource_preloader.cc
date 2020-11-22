@@ -38,8 +38,8 @@
 
 #include <memory>
 #include "third_party/blink/renderer/core/dom/document.h"
-//#include "third_party/blink/renderer/core/frame/deprecation.h"
-//#include "third_party/blink/renderer/core/frame/settings.h"
+#include "third_party/blink/renderer/core/frame/deprecation.h"
+#include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/loader/document_loader.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"

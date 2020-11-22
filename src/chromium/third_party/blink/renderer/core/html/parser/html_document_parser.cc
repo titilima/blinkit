@@ -162,10 +162,9 @@ void HTMLDocumentParser::Trace(blink::Visitor* visitor) {
   visitor->Trace(tree_builder_);
 #if 0 // BKTODO:
   visitor->Trace(parser_scheduler_);
-  visitor->Trace(xss_auditor_delegate_);
   visitor->Trace(script_runner_);
-  visitor->Trace(preloader_);
 #endif
+  visitor->Trace(preloader_);
   ScriptableDocumentParser::Trace(visitor);
   HTMLParserScriptRunnerHost::Trace(visitor);
 }
