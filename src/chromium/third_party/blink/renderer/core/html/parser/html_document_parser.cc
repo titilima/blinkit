@@ -55,8 +55,8 @@
 #include "third_party/blink/renderer/core/loader/navigation_scheduler.h"
 #include "third_party/blink/renderer/core/script/html_parser_script_runner.h"
 // BKTODO: #include "third_party/blink/renderer/platform/cross_thread_functional.h"
-// BKTODO: #include "third_party/blink/renderer/platform/heap/handle.h"
-// BKTODO: #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
+#include "third_party/blink/renderer/platform/heap/handle.h"
+#include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 // BKTODO: #include "third_party/blink/renderer/platform/scheduler/public/thread.h"
 // BKTODO: #include "third_party/blink/renderer/platform/scheduler/public/thread_scheduler.h"
@@ -71,7 +71,7 @@
 
 namespace blink {
 
-using namespace html_names;
+using namespace HTMLNames;
 
 class PumpSession final : public NestingLevelIncrementer
 {
@@ -91,18 +91,18 @@ static HTMLTokenizer::State TokenizerStateForContextElement(
 
   const QualifiedName& context_tag = context_element->TagQName();
 
-  if (context_tag.Matches(kTitleTag) || context_tag.Matches(kTextareaTag))
+  if (context_tag.Matches(titleTag) || context_tag.Matches(textareaTag))
     return HTMLTokenizer::kRCDATAState;
-  if (context_tag.Matches(kStyleTag) || context_tag.Matches(kXmpTag) ||
-      context_tag.Matches(kIFrameTag) ||
-      (context_tag.Matches(kNoscriptTag) && options.script_enabled) ||
-      context_tag.Matches(kNoframesTag))
+  if (context_tag.Matches(styleTag) || context_tag.Matches(xmpTag) ||
+      context_tag.Matches(iframeTag) ||
+      (context_tag.Matches(noscriptTag) && options.script_enabled) ||
+      context_tag.Matches(noframesTag))
     return report_errors ? HTMLTokenizer::kRAWTEXTState
                          : HTMLTokenizer::kPLAINTEXTState;
-  if (context_tag.Matches(kScriptTag))
+  if (context_tag.Matches(scriptTag))
     return report_errors ? HTMLTokenizer::kScriptDataState
                          : HTMLTokenizer::kPLAINTEXTState;
-  if (context_tag.Matches(kPlaintextTag))
+  if (context_tag.Matches(plaintextTag))
     return HTMLTokenizer::kPLAINTEXTState;
   return HTMLTokenizer::kDataState;
 }
@@ -156,6 +156,18 @@ HTMLDocumentParser::~HTMLDocumentParser() = default;
 
 void HTMLDocumentParser::Dispose() {
   // Nothing to do in BlinKit.
+}
+
+void HTMLDocumentParser::Trace(blink::Visitor* visitor) {
+  visitor->Trace(tree_builder_);
+#if 0 // BKTODO:
+  visitor->Trace(parser_scheduler_);
+  visitor->Trace(xss_auditor_delegate_);
+  visitor->Trace(script_runner_);
+  visitor->Trace(preloader_);
+#endif
+  ScriptableDocumentParser::Trace(visitor);
+  HTMLParserScriptRunnerHost::Trace(visitor);
 }
 
 void HTMLDocumentParser::Detach() {
@@ -260,6 +272,8 @@ bool HTMLDocumentParser::CanTakeNextToken() {
 
 void HTMLDocumentParser::EnqueueTokenizedChunk(
     std::unique_ptr<TokenizedChunk> chunk) {
+  TRACE_EVENT0("blink", "HTMLDocumentParser::EnqueueTokenizedChunk");
+
   DCHECK(chunk);
   if (!IsParsing())
     return;
@@ -416,6 +430,9 @@ void HTMLDocumentParser::insert(const String& source) {
   if (IsStopped())
     return;
 
+  TRACE_EVENT1("blink", "HTMLDocumentParser::insert", "source_length",
+               source.length());
+
   if (!tokenizer_) {
     DCHECK(!InPumpSession());
     DCHECK(WasCreatedByScript());
@@ -496,8 +513,6 @@ void HTMLDocumentParser::Append(const String& input_source) {
 
 void HTMLDocumentParser::end() {
   DCHECK(!IsDetached());
-
-  std::shared_ptr<HTMLDocumentParser> protect(shared_from_this());
 
   // Informs the the rest of WebCore that parsing is really finished (and
   // deletes this).
@@ -702,7 +717,7 @@ void HTMLDocumentParser::ParseDocumentFragment(
     DocumentFragment* fragment,
     Element* context_element,
     ParserContentPolicy parser_content_policy) {
-  std::shared_ptr<HTMLDocumentParser> parser = HTMLDocumentParser::Create(
+  HTMLDocumentParser* parser = HTMLDocumentParser::Create(
       fragment, context_element, parser_content_policy);
   parser->Append(source);
   parser->Finish();
@@ -742,6 +757,7 @@ void HTMLDocumentParser::SetDecoder(
 }
 
 void HTMLDocumentParser::DocumentElementAvailable() {
+  TRACE_EVENT0("blink,loader", "HTMLDocumentParser::documentElementAvailable");
   DCHECK(GetDocument()->documentElement());
   FetchQueuedPreloads();
 }

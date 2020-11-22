@@ -74,18 +74,17 @@ class HTMLPreloadScanner;
 class HTMLResourcePreloader;
 class HTMLTreeBuilder;
 
-class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser
-                                     , private HTMLParserScriptRunnerHost
-                                     , public std::enable_shared_from_this<HTMLDocumentParser>
-{
+class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
+                                       private HTMLParserScriptRunnerHost {
   USING_GARBAGE_COLLECTED_MIXIN(HTMLDocumentParser);
 
  public:
-  static std::shared_ptr<HTMLDocumentParser> Create(Document& document)
-  {
-    return base::WrapShared(new HTMLDocumentParser(document));
+  static HTMLDocumentParser* Create(
+      Document& document) {
+    return new HTMLDocumentParser(document);
   }
   ~HTMLDocumentParser() override;
+  void Trace(blink::Visitor*) override;
 
   // TODO(alexclarke): Remove when background parser goes away.
   void Dispose();
@@ -154,11 +153,11 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser
   void ForcePlaintextForTextDocument();
 
  private:
-  static std::shared_ptr<HTMLDocumentParser> Create(DocumentFragment* fragment,
+  static HTMLDocumentParser* Create(DocumentFragment* fragment,
                                     Element* context_element,
                                     ParserContentPolicy parser_content_policy) {
-    return base::WrapShared(new HTMLDocumentParser(fragment, context_element,
-                                  parser_content_policy));
+    return new HTMLDocumentParser(fragment, context_element,
+                                  parser_content_policy);
   }
   HTMLDocumentParser(Document&,
                      ParserContentPolicy);
@@ -221,7 +220,7 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser
 
   std::unique_ptr<HTMLToken> token_;
   std::unique_ptr<HTMLTokenizer> tokenizer_;
-  Member<HTMLParserScriptRunner> script_runner_;
+  std::unique_ptr<HTMLParserScriptRunner> script_runner_;
   Member<HTMLTreeBuilder> tree_builder_;
 
   std::unique_ptr<HTMLPreloadScanner> preload_scanner_;
@@ -237,7 +236,7 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser
   // and passed between threads together.
   std::unique_ptr<TokenizedChunk> last_chunk_before_pause_;
   Deque<std::unique_ptr<TokenizedChunk>> speculations_;
-  Member<HTMLResourcePreloader> preloader_;
+  std::unique_ptr<HTMLResourcePreloader> preloader_;
   PreloadRequestStream queued_preloads_;
 
   // If this is non-null, then there is a meta CSP token somewhere in the

@@ -33,8 +33,8 @@ protected:
 
     static void FillGCTable(BlinKit::GCTable &gcTable)
     {
+        GarbageCollected<T>::FillGCTable(gcTable);
         gcTable.Deleter = Deleter;
-        gcTable.Tracer = Tracer;
     }
 
     // FinalizeGarbageCollectedObject is called when the object is freed from
@@ -48,10 +48,6 @@ private:
     static void Deleter(void *ptr)
     {
         reinterpret_cast<T *>(ptr)->FinalizeGarbageCollectedObject();
-    }
-    static void Tracer(void *ptr, Visitor *visitor)
-    {
-        reinterpret_cast<T *>(ptr)->Trace(visitor);
     }
 
     DISALLOW_COPY_AND_ASSIGN(GarbageCollectedFinalized);

@@ -85,7 +85,7 @@ using namespace BlinKit;
 
 namespace blink {
 
-using namespace html_names;
+using namespace HTMLNames;
 
 static const unsigned kMaximumHTMLParserDOMTreeDepth = 512;
 
@@ -102,11 +102,11 @@ static inline void SetAttributes(Element* element,
 }
 
 static bool HasImpliedEndTag(const HTMLStackItem* item) {
-  return item->HasTagName(kDdTag) || item->HasTagName(kDtTag) ||
-         item->HasTagName(kLiTag) || item->HasTagName(kOptionTag) ||
-         item->HasTagName(kOptgroupTag) || item->HasTagName(kPTag) ||
-         item->HasTagName(kRbTag) || item->HasTagName(kRpTag) ||
-         item->HasTagName(kRtTag) || item->HasTagName(kRTCTag);
+  return item->HasTagName(ddTag) || item->HasTagName(dtTag) ||
+         item->HasTagName(liTag) || item->HasTagName(optionTag) ||
+         item->HasTagName(optgroupTag) || item->HasTagName(pTag) ||
+         item->HasTagName(rbTag) || item->HasTagName(rpTag) ||
+         item->HasTagName(rtTag) || item->HasTagName(rtcTag);
 }
 
 static bool ShouldUseLengthLimit(const ContainerNode& node) {
@@ -414,6 +414,10 @@ HTMLConstructionSite::~HTMLConstructionSite() {
   // Currently we assume that text will never be the last token in the document
   // and that we'll always queue some additional task to cause it to flush.
   DCHECK(pending_text_.IsEmpty());
+}
+
+void HTMLConstructionSite::Trace(blink::Visitor* visitor) {
+  open_elements_.Trace(visitor);
 }
 
 void HTMLConstructionSite::Detach() {
@@ -879,7 +883,7 @@ CustomElementDefinition* HTMLConstructionSite::LookUpCustomElementDefinition(
   return nullptr;
 #else
   // "1. If namespace is not the HTML namespace, return null."
-  if (tag_name.NamespaceURI() != html_names::xhtmlNamespaceURI)
+  if (tag_name.NamespaceURI() != HTMLNames::xhtmlNamespaceURI)
     return nullptr;
 
   // "2. If document does not have a browsing context, return null."
@@ -917,7 +921,7 @@ Element* HTMLConstructionSite::CreateElement(
   // "2. Let local name be the tag name of the token."
   QualifiedName tag_name(g_null_atom, token->GetName(), namespace_uri);
   // "3. Let is be the value of the "is" attribute in the given token ..." etc.
-  const Attribute* is_attribute = token->GetAttributeItem(html_names::kIsAttr);
+  const Attribute* is_attribute = token->GetAttributeItem(HTMLNames::isAttr);
   const AtomicString& is = is_attribute ? is_attribute->Value() : g_null_atom;
   // "4. Let definition be the result of looking up a custom element ..." etc.
   auto* definition = LookUpCustomElementDefinition(document, tag_name, is);
@@ -1116,11 +1120,11 @@ bool HTMLConstructionSite::InQuirksMode() {
 void HTMLConstructionSite::FindFosterSite(HTMLConstructionSiteTask& task) {
   // 2.1
   HTMLElementStack::ElementRecord* last_template =
-      open_elements_.Topmost(kTemplateTag.LocalName());
+      open_elements_.Topmost(templateTag.LocalName());
 
   // 2.2
   HTMLElementStack::ElementRecord* last_table =
-      open_elements_.Topmost(kTableTag.LocalName());
+      open_elements_.Topmost(tableTag.LocalName());
 
   // 2.3
   if (last_template && (!last_table || last_template->IsAbove(last_table))) {

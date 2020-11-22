@@ -59,6 +59,8 @@ class HTMLDocumentParser;
 class HTMLTreeBuilder final
     : public GarbageCollectedFinalized<HTMLTreeBuilder> {
  public:
+  BK_DECLARE_GC_NAME(HTMLTreeBuilder)
+
   // HTMLTreeBuilder can be created for non-HTMLDocument (XHTMLDocument) from
   // editing code.
   // TODO(kouhei): Fix editing code to always invoke HTML parser on
@@ -79,6 +81,7 @@ class HTMLTreeBuilder final
                                parser_content_policy, options);
   }
   ~HTMLTreeBuilder();
+  void Trace(blink::Visitor*);
 
   const HTMLElementStack* OpenElements() const { return tree_.OpenElements(); }
 
@@ -242,6 +245,8 @@ class HTMLTreeBuilder final
       DCHECK(fragment_);
       return context_element_stack_item_.Get();
     }
+
+    void Trace(blink::Visitor*);
 
    private:
     Member<DocumentFragment> fragment_;

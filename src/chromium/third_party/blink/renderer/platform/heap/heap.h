@@ -43,6 +43,10 @@ public:
 protected:
     GarbageCollected(void) = default;
 
+    static void FillGCTable(BlinKit::GCTable &gcTable)
+    {
+        gcTable.Tracer = Tracer;
+    }
 private:
     static BlinKit::GCTable* GCPtr(void)
     {
@@ -51,15 +55,14 @@ private:
         {
             static BlinKit::GCTable s_gcTable = { 0 };
             T::FillGCTable(s_gcTable);
-            ASSERT(nullptr != s_gcTable.Deleter);
             ASSERT(nullptr != s_gcTable.Tracer);
             s_gcPtr = &s_gcTable;
         }
         return s_gcPtr;
     }
-    static void FillGCTable(BlinKit::GCTable &)
+    static void Tracer(void *ptr, Visitor *visitor)
     {
-        NOTREACHED();
+        reinterpret_cast<T *>(ptr)->Trace(visitor);
     }
 
     DISALLOW_COPY_AND_ASSIGN(GarbageCollected);

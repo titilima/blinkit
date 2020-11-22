@@ -328,8 +328,6 @@ class HTMLConstructionSite final {
       return string_builder.IsEmpty();
     }
 
-    void Trace(blink::Visitor*);
-
     Member<ContainerNode> parent;
     Member<Node> next_child;
     StringBuilder string_builder;
