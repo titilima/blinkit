@@ -428,7 +428,7 @@ void Element::CloneAttributesFrom(const Element &other)
     other.SynchronizeAllAttributes();
     if (!other.m_elementData)
     {
-        m_elementData.reset();
+        m_elementData.Clear();
         return;
     }
 
@@ -458,7 +458,7 @@ void Element::CloneAttributesFrom(const Element &other)
     if (other.m_elementData->IsUnique() && !ownerDocumentsHaveDifferentCaseSensitivity
         && nullptr == other.m_elementData->PresentationAttributeStyle())
     {
-        const_cast<Element &>(other).m_elementData = ToUniqueElementData(other.m_elementData.get())->MakeShareableCopy();
+        const_cast<Element &>(other).m_elementData = ToUniqueElementData(other.m_elementData)->MakeShareableCopy();
     }
 
     ASSERT(GetDocument() == other.GetDocument()); // Old logic from NeedsURLResolutionForInlineStyle
@@ -682,7 +682,7 @@ UniqueElementData& Element::EnsureUniqueElementData(void)
     if (!m_elementData)
         m_elementData = UniqueElementData::Create();
     else if (!m_elementData->IsUnique())
-        m_elementData = ToShareableElementData(m_elementData.get())->MakeUniqueCopy();
+        m_elementData = ToShareableElementData(m_elementData)->MakeUniqueCopy();
     return ToUniqueElementData(*m_elementData);
 }
 
@@ -1688,6 +1688,12 @@ String Element::TextFromChildren(void) const
 
     ASSERT(content.length() == totalLength);
     return content.ToString();
+}
+
+void Element::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_elementData);
+    ContainerNode::Trace(visitor);
 }
 
 Element::AttributeTriggers* Element::TriggersForAttributeName(const QualifiedName &attrName)

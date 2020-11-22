@@ -47,7 +47,6 @@ protected:
     {
         gcTable.Tracer = Tracer;
     }
-private:
     static BlinKit::GCTable* GCPtr(void)
     {
         static BlinKit::GCTable *s_gcPtr = nullptr;
@@ -60,6 +59,7 @@ private:
         }
         return s_gcPtr;
     }
+private:
     static void Tracer(void *ptr, Visitor *visitor)
     {
         reinterpret_cast<T *>(ptr)->Trace(visitor);

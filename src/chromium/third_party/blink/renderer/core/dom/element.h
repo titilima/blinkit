@@ -87,6 +87,7 @@ class Element : public ContainerNode
 {
 public:
     ~Element(void) override;
+    void Trace(Visitor *visitor) override;
 
     // Exports for JS
     NamedNodeMap* attributes(void) const;
@@ -264,7 +265,7 @@ public:
 protected:
     Element(const QualifiedName &tagName, Document *document, ConstructionType type);
 
-    const ElementData* GetElementData(void) const { return m_elementData.get(); }
+    const ElementData* GetElementData(void) const { return m_elementData.Get(); }
 
     virtual void ParserDidSetAttributes(void) {}
 
@@ -353,7 +354,7 @@ private:
 
     QualifiedName m_tagName;
 
-    std::shared_ptr<ElementData> m_elementData;
+    Member<ElementData> m_elementData;
 };
 
 DEFINE_NODE_TYPE_CASTS(Element, IsElementNode());

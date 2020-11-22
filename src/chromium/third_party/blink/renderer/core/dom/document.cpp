@@ -899,7 +899,7 @@ void Document::DispatchUnloadEvents(void)
 
 void Document::ElementDataCacheClearTimerFired(TimerBase *)
 {
-    m_elementDataCache.reset();
+    m_elementDataCache.Clear();
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -2101,6 +2101,7 @@ void Document::Trace(Visitor *visitor)
         visitor->Trace(m_autofocusElement);
     }
 #endif
+    visitor->Trace(m_elementDataCache);
     visitor->Trace(m_parser);
     visitor->Trace(m_documentElement);
     visitor->Trace(m_titleElement);

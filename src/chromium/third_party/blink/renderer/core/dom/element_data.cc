@@ -41,14 +41,31 @@
 
 #include "third_party/blink/renderer/core/dom/element_data.h"
 
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/css/css_property_value_set.h"
 #endif
 
+using namespace BlinKit;
+
 namespace blink {
+
+struct SameSizeAsElementData
+    : public GarbageCollectedFinalized<SameSizeAsElementData> {
+  unsigned bitfield;
+#ifndef BLINKIT_CRAWLER_ONLY
+  Member<void*> willbe_member;
+#endif
+  void* pointers[2];
+};
+
+static_assert(sizeof(ElementData) == sizeof(SameSizeAsElementData),
+              "ElementData should stay small");
+
+static size_t SizeForShareableElementDataWithAttributeCount(unsigned count) {
+  return sizeof(ShareableElementData) + sizeof(Attribute) * count;
+}
 
 ElementData::ElementData()
     : is_unique_(true),
@@ -78,10 +95,17 @@ ElementData::ElementData(const ElementData& other, bool is_unique)
   // don't know what to do with it here.
 }
 
-std::shared_ptr<UniqueElementData> ElementData::MakeUniqueCopy() const {
+void ElementData::FinalizeGarbageCollectedObject() {
+  if (is_unique_)
+    ToUniqueElementData(this)->~UniqueElementData();
+  else
+    ToShareableElementData(this)->~ShareableElementData();
+}
+
+UniqueElementData* ElementData::MakeUniqueCopy() const {
   if (IsUnique())
-    return base::WrapShared(new UniqueElementData(ToUniqueElementData(*this)));
-  return base::WrapShared(new UniqueElementData(ToShareableElementData(*this)));
+    return new UniqueElementData(ToUniqueElementData(*this));
+  return new UniqueElementData(ToShareableElementData(*this));
 }
 
 bool ElementData::IsEquivalent(const ElementData* other) const {
@@ -101,9 +125,21 @@ bool ElementData::IsEquivalent(const ElementData* other) const {
   return true;
 }
 
+void ElementData::Trace(blink::Visitor* visitor) {
+  if (is_unique_)
+    ToUniqueElementData(this)->TraceAfterDispatch(visitor);
+  else
+    ToShareableElementData(this)->TraceAfterDispatch(visitor);
+}
+
+void ElementData::TraceAfterDispatch(blink::Visitor* visitor) {
+#ifndef BLINKIT_CRAWLER_ONLY
+  visitor->Trace(inline_style_);
+#endif
+}
+
 ShareableElementData::ShareableElementData(const Vector<Attribute>& attributes)
     : ElementData(attributes.size()) {
-  attribute_array_ = reinterpret_cast<Attribute *>(malloc(sizeof(Attribute) * array_size_));
   for (unsigned i = 0; i < array_size_; ++i)
     new (&attribute_array_[i]) Attribute(attributes[i]);
 }
@@ -111,7 +147,6 @@ ShareableElementData::ShareableElementData(const Vector<Attribute>& attributes)
 ShareableElementData::~ShareableElementData() {
   for (unsigned i = 0; i < array_size_; ++i)
     attribute_array_[i].~Attribute();
-  free(attribute_array_);
 }
 
 ShareableElementData::ShareableElementData(const UniqueElementData& other)
@@ -124,14 +159,20 @@ ShareableElementData::ShareableElementData(const UniqueElementData& other)
   }
 #endif
 
-  attribute_array_ = reinterpret_cast<Attribute *>(malloc(sizeof(Attribute) * array_size_));
   for (unsigned i = 0; i < array_size_; ++i)
     new (&attribute_array_[i]) Attribute(other.attribute_vector_.at(i));
 }
 
-std::shared_ptr<ShareableElementData> ShareableElementData::CreateWithAttributes(
+ShareableElementData* ShareableElementData::CreateWithAttributes(
     const Vector<Attribute>& attributes) {
-  return base::WrapShared(new ShareableElementData(attributes));
+  void* slot = GCHeapAlloc(ObjectType::Member,
+      SizeForShareableElementDataWithAttributeCount(attributes.size()),
+#ifdef NDEBUG
+      GCPtr());
+#else
+      GCPtr(), "ShareableElementData");
+#endif
+  return new (slot) ShareableElementData(attributes);
 }
 
 UniqueElementData::UniqueElementData() = default;
@@ -161,12 +202,24 @@ UniqueElementData::UniqueElementData(const ShareableElementData& other)
     attribute_vector_.UncheckedAppend(other.attribute_array_[i]);
 }
 
-std::shared_ptr<UniqueElementData> UniqueElementData::Create() {
-  return base::WrapShared(new UniqueElementData);
+UniqueElementData* UniqueElementData::Create() {
+  return new UniqueElementData;
 }
 
-std::shared_ptr<ShareableElementData> UniqueElementData::MakeShareableCopy() const {
-  return base::WrapShared(new ShareableElementData(*this));
+ShareableElementData* UniqueElementData::MakeShareableCopy() const {
+  void* slot = GCHeapAlloc(ObjectType::Member,
+      SizeForShareableElementDataWithAttributeCount(attribute_vector_.size()),
+#ifdef NDEBUG
+      GCPtr());
+#else
+      GCPtr(), "ShareableElementData");
+#endif
+  return new (slot) ShareableElementData(*this);
+}
+
+void UniqueElementData::TraceAfterDispatch(blink::Visitor* visitor) {
+  visitor->Trace(presentation_attribute_style_);
+  ElementData::TraceAfterDispatch(visitor);
 }
 
 }  // namespace blink

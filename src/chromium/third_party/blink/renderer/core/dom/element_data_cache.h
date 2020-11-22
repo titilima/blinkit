@@ -41,30 +41,31 @@
 #pragma once
 
 #include <unordered_map>
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 
 namespace blink {
 
 class Attribute;
-class ElementData;
 class ShareableElementData;
 
-class ElementDataCache final
+class ElementDataCache final : public GarbageCollectedFinalized<ElementDataCache>
 {
 public:
-    static std::unique_ptr<ElementDataCache> Create(void)
+    BK_DECLARE_GC_NAME(ElementDataCache)
+
+    static ElementDataCache* Create(void)
     {
-        return base::WrapUnique(new ElementDataCache);
+        return new ElementDataCache;
     }
     ~ElementDataCache(void);
+    void Trace(Visitor *visitor);
 
-    std::shared_ptr<ElementData> CachedShareableElementDataWithAttributes(const Vector<Attribute> &attributes);
+    ShareableElementData* CachedShareableElementDataWithAttributes(const Vector<Attribute> &attributes);
 private:
     ElementDataCache(void) = default;
 
-    std::unordered_map<unsigned, std::shared_ptr<ShareableElementData>> m_shareableElementDataCache;
+    std::unordered_map<unsigned, Member<ShareableElementData>> m_shareableElementDataCache;
 };
 
 }  // namespace blink

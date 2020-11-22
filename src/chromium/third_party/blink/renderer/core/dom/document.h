@@ -261,7 +261,7 @@ public:
         --m_nodeCount;
     }
 
-    ElementDataCache* GetElementDataCache(void) { return m_elementDataCache.get(); }
+    ElementDataCache* GetElementDataCache(void) { return m_elementDataCache.Get(); }
     SelectorQueryCache& GetSelectorQueryCache(void);
 
     NthIndexCache* GetNthIndexCache(void) const { return m_nthIndexCache; }
@@ -554,7 +554,7 @@ private:
     Member<DocumentParser> m_parser;
     std::unique_ptr<ScriptRunner> m_scriptRunner;
 
-    std::unique_ptr<ElementDataCache> m_elementDataCache;
+    Member<ElementDataCache> m_elementDataCache;
     std::unique_ptr<SelectorQueryCache> m_selectorQueryCache;
 
     // It is safe to keep a raw, untraced pointer to this stack-allocated

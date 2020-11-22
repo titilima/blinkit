@@ -56,11 +56,9 @@ inline bool HasSameAttributes(const Vector<Attribute> &attributes, ShareableElem
     return 0 == memcmp(attributes.data(), elementData.attribute_array_, attributes.size() * sizeof(Attribute));
 }
 
-std::shared_ptr<ElementData> ElementDataCache::CachedShareableElementDataWithAttributes(const Vector<Attribute> &attributes)
+ShareableElementData* ElementDataCache::CachedShareableElementDataWithAttributes(const Vector<Attribute> &attributes)
 {
     ASSERT(!attributes.IsEmpty());
-
-    std::shared_ptr<ShareableElementData> ret;
 
     unsigned hash = AttributeHash(attributes);
 
@@ -68,17 +66,19 @@ std::shared_ptr<ElementData> ElementDataCache::CachedShareableElementDataWithAtt
     if (std::end(m_shareableElementDataCache) != it)
     {
         if (HasSameAttributes(attributes, *it->second))
-            ret = it->second;
+            return it->second;
         else
-            ret = ShareableElementData::CreateWithAttributes(attributes);
-    }
-    else
-    {
-        ret = ShareableElementData::CreateWithAttributes(attributes);
-        m_shareableElementDataCache[hash] = ret;
+            return ShareableElementData::CreateWithAttributes(attributes);
     }
 
+    ShareableElementData *ret = ShareableElementData::CreateWithAttributes(attributes);
+    m_shareableElementDataCache[hash] = ret;
     return ret;
+}
+
+void ElementDataCache::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_shareableElementDataCache);
 }
 
 }  // namespace blink

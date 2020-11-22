@@ -35,10 +35,10 @@ public:
         TraceImpl(po);
     }
     template <typename T, typename K, typename H>
-    void Trace(const std::unordered_map<K, GarbageCollected<T> *, H> &m)
+    void Trace(const std::unordered_map<K, T, H> &m)
     {
         for (auto &it : m)
-            TraceImpl(it.second);
+            Trace(it.second);
     }
     template <typename T>
     void Trace(const std::vector<GarbageCollected<T> *> &v)

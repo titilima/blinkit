@@ -60,7 +60,10 @@ class UniqueElementData;
 // data such as attributes, inline style, and parsed class names and ids.
 class ElementData : public GarbageCollectedFinalized<ElementData> {
  public:
-  virtual ~ElementData(void) = default;
+  BK_DECLARE_GC_NAME(ElementData)
+  // Override GarbageCollectedFinalized's finalizeGarbageCollectedObject to
+  // dispatch to the correct subclass destructor.
+  void FinalizeGarbageCollectedObject();
 
   void ClearClass() const { class_names_.Clear(); }
   void SetClass(const AtomicString& class_name, bool should_fold_case) const {
@@ -90,12 +93,16 @@ class ElementData : public GarbageCollectedFinalized<ElementData> {
 
   bool IsUnique() const { return is_unique_; }
 
+  void TraceAfterDispatch(blink::Visitor*);
+  void Trace(blink::Visitor*);
+
  protected:
   ElementData();
   explicit ElementData(unsigned array_size);
   ElementData(const ElementData&, bool is_unique);
 
-  // Keep the type in a bitfield instead of using a virtual 'IsUnique' function member.
+  // Keep the type in a bitfield instead of using virtual destructors to avoid
+  // adding a vtable.
   unsigned is_unique_ : 1;
   unsigned array_size_ : 28;
   mutable unsigned presentation_attribute_style_is_dirty_ : 1;
@@ -114,7 +121,7 @@ class ElementData : public GarbageCollectedFinalized<ElementData> {
   friend class UniqueElementData;
   friend class SVGElement;
 
-  std::shared_ptr<UniqueElementData> MakeUniqueCopy() const;
+  UniqueElementData* MakeUniqueCopy() const;
 };
 
 #define DEFINE_ELEMENT_DATA_TYPE_CASTS(thisType, pointerPredicate, \
@@ -134,16 +141,26 @@ class ElementData : public GarbageCollectedFinalized<ElementData> {
 // duplicate sets of attributes (ex. the same classes).
 class ShareableElementData final : public ElementData {
  public:
-  static std::shared_ptr<ShareableElementData> CreateWithAttributes(const Vector<Attribute>&);
-  ~ShareableElementData(void) override;
+  static ShareableElementData* CreateWithAttributes(const Vector<Attribute>&);
+
+  explicit ShareableElementData(const Vector<Attribute>&);
+  explicit ShareableElementData(const UniqueElementData&);
+  ~ShareableElementData();
+
+  void TraceAfterDispatch(blink::Visitor* visitor) {
+    ElementData::TraceAfterDispatch(visitor);
+  }
+
+  // Add support for placement new as ShareableElementData is not allocated
+  // with a fixed size. Instead the allocated memory size is computed based on
+  // the number of attributes. This requires us to use ThreadHeap::allocate
+  // directly with the computed size and subsequently call placement new with
+  // the allocated memory address.
+  void* operator new(std::size_t, void* location) { return location; }
 
   AttributeCollection Attributes() const;
 
-  Attribute *attribute_array_;
-private:
-  friend class UniqueElementData;
-  explicit ShareableElementData(const Vector<Attribute>&);
-  explicit ShareableElementData(const UniqueElementData&);
+  Attribute attribute_array_[0];
 };
 
 DEFINE_ELEMENT_DATA_TYPE_CASTS(ShareableElementData,
@@ -162,8 +179,8 @@ DEFINE_ELEMENT_DATA_TYPE_CASTS(ShareableElementData,
 // attribute will have the same inline style.
 class UniqueElementData final : public ElementData {
  public:
-  static std::shared_ptr<UniqueElementData> Create();
-  std::shared_ptr<ShareableElementData> MakeShareableCopy() const;
+  static UniqueElementData* Create();
+  ShareableElementData* MakeShareableCopy() const;
 
   MutableAttributeCollection Attributes();
   AttributeCollection Attributes() const;
