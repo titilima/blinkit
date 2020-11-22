@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: html_element_stack.h
-// Description: HTMLElementStack Class
-//      Author: Ziming Li
-//     Created: 2019-10-18
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -60,26 +49,30 @@ class HTMLElementStack {
 
   class ElementRecord final : public GarbageCollected<ElementRecord> {
    public:
+    BK_DECLARE_GC_NAME(ElementRecord)
+
     Element* GetElement() const { return item_->GetElement(); }
     ContainerNode* GetNode() const { return item_->GetNode(); }
     const AtomicString& NamespaceURI() const { return item_->NamespaceURI(); }
-    HTMLStackItem* StackItem() const { return item_.get(); }
+    HTMLStackItem* StackItem() const { return item_; }
     void ReplaceElement(HTMLStackItem*);
 
     bool IsAbove(ElementRecord*) const;
 
-    ElementRecord* Next() const { return next_.get(); }
+    ElementRecord* Next() const { return next_.Get(); }
+
+    void Trace(blink::Visitor*);
 
    private:
     friend class HTMLElementStack;
 
     ElementRecord(HTMLStackItem*, ElementRecord*);
 
-    ElementRecord* ReleaseNext() { return next_.release(); }
-    void SetNext(ElementRecord* next) { next_.reset(next); }
+    ElementRecord* ReleaseNext() { return next_.Release(); }
+    void SetNext(ElementRecord* next) { next_ = next; }
 
-    std::unique_ptr<HTMLStackItem> item_;
-    std::unique_ptr<ElementRecord> next_;
+    Member<HTMLStackItem> item_;
+    Member<ElementRecord> next_;
 
     DISALLOW_COPY_AND_ASSIGN(ElementRecord);
   };
@@ -173,6 +166,12 @@ class HTMLElementStack {
   Element* BodyElement() const;
 
   ContainerNode* RootNode() const;
+
+  void Trace(blink::Visitor*);
+
+#ifndef NDEBUG
+  void Show();
+#endif
 
  private:
   void PushCommon(HTMLStackItem*);
