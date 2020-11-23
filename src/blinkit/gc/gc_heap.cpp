@@ -52,10 +52,10 @@ GCHeap::GCHeap(void)
 GCHeap::~GCHeap(void)
 {
     ASSERT(this == theHeap);
+
     CollectGarbage(GCType::Full);
-    ASSERT(m_ownerObjects.empty());
     ASSERT(m_memberObjects.empty());
-    ASSERT(m_stashObjects.empty());
+
     theHeap = nullptr;
 }
 
@@ -98,6 +98,12 @@ void GCHeap::CollectGarbage(GCType type)
 
     GCObjectSet objectsToGC;
 
+#ifndef NDEBUG
+    size_t ownerCount = m_ownerObjects.size();
+    size_t memberCount = m_memberObjects.size();
+    size_t stashCount = m_stashObjects.size();
+#endif
+
     for (void *o : m_ownerObjects)
     {
         GCObjectHeader *hdr = GCObjectHeader::From(o);
@@ -132,6 +138,29 @@ void GCHeap::CollectGarbage(GCType type)
         objectsToGC.insert(o);
     }
     FreeObjects(objectsToGC, &m_stashObjects);
+
+#ifndef NDEBUG
+    const char *szType = nullptr;
+    switch (type)
+    {
+        case GCType::Auto:
+            szType = "auto";
+            break;
+        case GCType::Full:
+            szType = "full";
+            break;
+        default:
+            NOTREACHED();
+    }
+
+    BKLOG(
+        "GC (%s)\n    Owner: %u -> %u\n    Member: %u -> %u\n    Stash: %u -> %u",
+        szType,
+        ownerCount, m_ownerObjects.size(),
+        memberCount, m_memberObjects.size(),
+        stashCount, m_stashObjects.size()
+    );
+#endif
 }
 
 void GCHeap::FreeObjects(const GCObjectSet &objectsToGC, GCObjectSet *sourcePool)

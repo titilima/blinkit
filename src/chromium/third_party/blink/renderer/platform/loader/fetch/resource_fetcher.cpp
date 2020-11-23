@@ -51,9 +51,8 @@ namespace blink {
 
 ResourceFetcher::ResourceFetcher(void) : m_imageFetched(false) {}
 
-ResourceFetcher::ResourceFetcher(std::unique_ptr<FetchContext> &context)
-    : m_context(std::move(context))
-    , m_imageFetched(false)
+ResourceFetcher::ResourceFetcher(FetchContext *context)
+    : m_context(context), m_imageFetched(false)
 {
 }
 
@@ -69,9 +68,7 @@ void ResourceFetcher::ClearContext(void)
     ASSERT(m_resourcesFromPreviousFetcher.empty());
     // BKTODO: m_scheduler->Shutdown();
     // BKTODO: ClearPreloads(ResourceFetcher::kClearAllPreloads);
-    FetchContext *detachedContext = Context().Detach();
-    if (detachedContext != m_context.get())
-        m_context.reset(detachedContext);
+    m_context = Context().Detach();
 
     // Make sure the only requests still going are keepalive requests.
     // Callers of ClearContext() should be calling StopFetching() prior
@@ -201,7 +198,7 @@ FetchContext& ResourceFetcher::Context(void) const
     return *m_context;
 }
 
-std::shared_ptr<Resource> ResourceFetcher::CreateResourceForLoading(
+Resource* ResourceFetcher::CreateResourceForLoading(
     const FetchParameters &params,
     const ResourceFactory &factory)
 {
@@ -211,7 +208,7 @@ std::shared_ptr<Resource> ResourceFetcher::CreateResourceForLoading(
             cache_identifier));
 #endif
 
-    std::shared_ptr<Resource> resource = factory.Create(params.GetResourceRequest(), params.Options(),
+    Resource *resource = factory.Create(params.GetResourceRequest(), params.Options(),
         params.DecoderOptions());
     resource->SetLinkPreload(params.IsLinkPreload());
 
@@ -390,7 +387,7 @@ void ResourceFetcher::RemoveResourceLoader(ResourceLoader *loader)
     }
 }
 
-std::shared_ptr<Resource> ResourceFetcher::RequestResource(
+Resource* ResourceFetcher::RequestResource(
     FetchParameters &params,
     const ResourceFactory &factory,
     ResourceClient *client,
@@ -417,7 +414,7 @@ std::shared_ptr<Resource> ResourceFetcher::RequestResource(
 
     ResourceType resourceType = factory.GetType();
 
-    std::shared_ptr<Resource> resource;
+    Resource *resource = nullptr;
     RevalidationPolicy policy = kLoad;
 
 #ifdef BLINKIT_CRAWLER_ONLY
@@ -542,7 +539,7 @@ std::shared_ptr<Resource> ResourceFetcher::RequestResource(
     // loading immediately. If revalidation policy was determined as |Revalidate|,
     // the resource was already initialized for the revalidation here, but won't
     // start loading.
-    if (ResourceNeedsLoad(resource.get(), params, policy))
+    if (ResourceNeedsLoad(resource, params, policy))
     {
         if (!StartLoad(resource))
         {
@@ -555,12 +552,12 @@ std::shared_ptr<Resource> ResourceFetcher::RequestResource(
     }
 
     if (policy != kUse)
-        InsertAsPreloadIfNecessary(resource.get(), params, resourceType);
+        InsertAsPreloadIfNecessary(resource, params, resourceType);
 
     return resource;
 }
 
-std::shared_ptr<Resource> ResourceFetcher::ResourceForBlockedRequest(
+Resource* ResourceFetcher::ResourceForBlockedRequest(
     const FetchParameters &params,
     const ResourceFactory &factory,
     ResourceRequestBlockedReason blockedReason,
@@ -568,8 +565,7 @@ std::shared_ptr<Resource> ResourceFetcher::ResourceForBlockedRequest(
 {
     std::shared_ptr<base::SingleThreadTaskRunner> taskRunner = Context().GetLoadingTaskRunner();
 
-    std::shared_ptr<Resource> resource = factory.Create(params.GetResourceRequest(), params.Options(),
-        params.DecoderOptions());
+    Resource *resource = factory.Create(params.GetResourceRequest(), params.Options(), params.DecoderOptions());
     if (nullptr != client)
         client->SetResource(resource, taskRunner.get());
     ASSERT(false); // BKTODO:
@@ -646,7 +642,7 @@ bool ResourceFetcher::ResourceNeedsLoad(Resource *resource, const FetchParameter
     return policy != kUse || resource->StillNeedsLoad();
 }
 
-bool ResourceFetcher::StartLoad(std::shared_ptr<Resource> &resource)
+bool ResourceFetcher::StartLoad(Resource *resource)
 {
     ASSERT(nullptr != resource);
     ASSERT(resource->StillNeedsLoad());
@@ -657,7 +653,7 @@ bool ResourceFetcher::StartLoad(std::shared_ptr<Resource> &resource)
     {
         // Forbids JavaScript/revalidation until start()
         // to prevent unintended state transitions.
-        Resource::RevalidationStartForbiddenScope revalidationStartForbiddenScope(resource.get());
+        Resource::RevalidationStartForbiddenScope revalidationStartForbiddenScope(resource);
         ScriptForbiddenScope scriptForbiddenScope;
 
         if (!Context().ShouldLoadNewResource(resource->GetType()) && IsMainThread())
@@ -707,11 +703,11 @@ bool ResourceFetcher::StartLoad(std::shared_ptr<Resource> &resource)
     loader->Start();
 
     {
-        Resource::RevalidationStartForbiddenScope revalidationStartForbiddenScope(resource.get());
+        Resource::RevalidationStartForbiddenScope revalidationStartForbiddenScope(resource);
         ScriptForbiddenScope scriptForbiddenScope;
 
         // NotifyStartLoad() shouldn't cause AddClient/RemoveClient().
-        Resource::ProhibitAddRemoveClientInScope prohibitAddRemoveClientInScope(resource.get());
+        Resource::ProhibitAddRemoveClientInScope prohibitAddRemoveClientInScope(resource);
         if (!resource->IsLoaded())
             resource->NotifyStartLoad();
     }
@@ -734,6 +730,11 @@ void ResourceFetcher::StopFetching(void)
             loader->Cancel();
         }
     }
+}
+
+void ResourceFetcher::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_context);
 }
 
 } // namespace blink

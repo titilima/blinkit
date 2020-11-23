@@ -53,6 +53,7 @@ class ResourceClient : public GarbageCollectedMixin
 {
 public:
     virtual ~ResourceClient(void);
+    void Trace(Visitor *visitor) override;
 
     // DataReceived() is called each time a chunk of data is received.
     // For cache hits, the data is replayed before NotifyFinished() is called.
@@ -68,7 +69,7 @@ public:
     virtual bool IsFontResourceClient(void) const { return false; }
     virtual bool IsRawResourceClient(void) const { return false; }
 
-    Resource* GetResource(void) const { return m_resource.get(); }
+    Resource* GetResource(void) const { return m_resource.Get(); }
 
 #ifndef BLINKIT_CRAWLER_ONLY
     // Name for debugging, e.g. shown in memory-infra.
@@ -82,9 +83,9 @@ protected:
 private:
     friend class ResourceFetcher;
 
-    void SetResource(const std::shared_ptr<Resource> &newResource, base::SingleThreadTaskRunner *taskRunner);
+    void SetResource(Resource *newResource, base::SingleThreadTaskRunner *taskRunner);
 
-    std::shared_ptr<Resource> m_resource;
+    Member<Resource> m_resource;
 };
 
 }  // namespace blink

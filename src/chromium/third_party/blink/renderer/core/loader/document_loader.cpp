@@ -433,8 +433,7 @@ void DocumentLoader::StartLoading(void)
     // BKTODO: options.data_buffering_policy = kDoNotBufferData;
     // BKTODO: options.initiator_info.name = FetchInitiatorTypeNames::document;
     FetchParameters fetchParams(m_currentRequest, options);
-    std::shared_ptr<ResourceFetcher> fetcher = Fetcher();
-    RawResource::FetchMainResource(fetchParams, fetcher.get(), this, m_substituteData);
+    RawResource::FetchMainResource(fetchParams, Fetcher(), this, m_substituteData);
     // A bunch of headers are set when the underlying resource load begins, and
     // request_ needs to include those. Even when using a cached resource, we may
     // make some modification to the request, e.g. adding the referer header.
@@ -453,6 +452,7 @@ void DocumentLoader::StopLoading(void)
 
 void DocumentLoader::Trace(Visitor *visitor)
 {
+    visitor->Trace(m_fetcher);
     visitor->Trace(m_parser);
     RawResourceClient::Trace(visitor);
 }

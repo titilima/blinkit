@@ -74,9 +74,9 @@ FrameFetchContext::FrameFetchContext(DocumentLoader *loader, Document *document)
 
 FrameFetchContext::~FrameFetchContext(void) = default;
 
-std::shared_ptr<ResourceFetcher> FrameFetchContext::CreateFetcher(DocumentLoader *loader, Document *document)
+ResourceFetcher* FrameFetchContext::CreateFetcher(DocumentLoader *loader, Document *document)
 {
-    std::unique_ptr<FetchContext> context(new FrameFetchContext(loader, document));
+    FetchContext *context = new FrameFetchContext(loader, document);
     return ResourceFetcher::Create(context);
 }
 
@@ -249,6 +249,12 @@ bool FrameFetchContext::ShouldLoadNewResource(ResourceType type) const
     if (type == ResourceType::kMainResource)
         return loader.GetProvisionalDocumentLoader() == m_documentLoader;
     return loader.GetDocumentLoader() == m_documentLoader;
+}
+
+void FrameFetchContext::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_documentLoader);
+    BaseFetchContext::Trace(visitor);
 }
 
 }  // namespace blink

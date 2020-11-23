@@ -52,11 +52,12 @@
 
 namespace blink {
 
-ResourceLoader::ResourceLoader(ResourceFetcher *fetcher, std::shared_ptr<Resource> &resource, uint32_t inflightKeepaliveBytes)
+ResourceLoader::ResourceLoader(ResourceFetcher *fetcher, Resource *resource, uint32_t inflightKeepaliveBytes)
     : m_fetcher(fetcher), m_resource(resource)
 {
     ASSERT(m_fetcher);
     ASSERT(m_resource);
+    m_resource->SetLoader(this);
 }
 
 ResourceLoader::~ResourceLoader(void) = default;
@@ -89,11 +90,9 @@ FetchContext& ResourceLoader::Context(void) const
     return m_fetcher->Context();
 }
 
-ResourceLoader* ResourceLoader::Create(ResourceFetcher *fetcher, std::shared_ptr<Resource> &resource, uint32_t inflightKeepaliveBytes)
+ResourceLoader* ResourceLoader::Create(ResourceFetcher *fetcher, Resource *resource, uint32_t inflightKeepaliveBytes)
 {
-    std::unique_ptr<ResourceLoader> loader = base::WrapUnique(new ResourceLoader(fetcher, resource, inflightKeepaliveBytes));
-    resource->SetLoader(loader);
-    return resource->Loader();
+    return new ResourceLoader(fetcher, resource, inflightKeepaliveBytes);
 }
 
 void ResourceLoader::DidFail(const ResourceError &error)
@@ -128,8 +127,7 @@ void ResourceLoader::DidFinishLoading(void)
     code_cache_request_.reset();
 #endif
 
-    std::shared_ptr<Resource> resource(m_resource);
-    m_fetcher->HandleLoaderFinish(resource.get(), ResourceFetcher::kDidFinishLoading);
+    m_fetcher->HandleLoaderFinish(m_resource.Get(), ResourceFetcher::kDidFinishLoading);
 #if 0 // BKTODO:
     m_fetcher->HandleLoaderFinish(
         resource_.Get(), finish_time, ResourceFetcher::kDidFinishLoading,
@@ -164,7 +162,7 @@ void ResourceLoader::DidReceiveResponse(const ResourceResponse &response)
     const ResourceRequest &initialRequest = m_resource->GetResourceRequest();
     const ResourceLoaderOptions &options = m_resource->Options();
 
-    Context().DispatchDidReceiveResponse(m_resource->Identifier(), response, m_resource.get());
+    Context().DispatchDidReceiveResponse(m_resource->Identifier(), response, m_resource);
 
     m_resource->ResponseReceived(response);
 
@@ -192,7 +190,7 @@ void ResourceLoader::HandleError(const ResourceError &error)
     code_cache_request_.reset();
 #endif
 
-    m_fetcher->HandleLoaderError(m_resource.get(), error);
+    m_fetcher->HandleLoaderError(m_resource.Get(), error);
 }
 
 void ResourceLoader::ScheduleCancel(void)
@@ -282,6 +280,12 @@ void ResourceLoader::StartWith(const ResourceRequest &request)
         }
 #endif
     }
+}
+
+void ResourceLoader::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_fetcher);
+    visitor->Trace(m_resource);
 }
 
 } // namespace blink

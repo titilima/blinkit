@@ -71,7 +71,10 @@ class FetchContext : public GarbageCollectedFinalized<FetchContext>
 {
     WTF_MAKE_NONCOPYABLE(FetchContext);
 public:
+    BK_DECLARE_GC_NAME(FetchContext)
+
     virtual ~FetchContext(void);
+    virtual void Trace(Visitor *visitor) {}
 
     virtual bool IsFrameFetchContext(void) { return false; }
 

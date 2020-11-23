@@ -42,7 +42,6 @@
 
 #include <optional>
 #include <unordered_set>
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/public/platform/resource_request_blocked_reason.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_parameters.h"
@@ -66,15 +65,18 @@ class ResourceFetcher : public GarbageCollectedFinalized<ResourceFetcher>
 {
     WTF_MAKE_NONCOPYABLE(ResourceFetcher);
 public:
-    static std::shared_ptr<ResourceFetcher> Create(void)
+    BK_DECLARE_GC_NAME(ResourceFetcher)
+
+    static ResourceFetcher* Create(void)
     {
-        return base::WrapShared(new ResourceFetcher);
+        return new ResourceFetcher;
     }
-    static std::shared_ptr<ResourceFetcher> Create(std::unique_ptr<FetchContext> &context)
+    static ResourceFetcher* Create(FetchContext *context)
     {
-        return base::WrapShared(new ResourceFetcher(context));
+        return new ResourceFetcher(context);
     }
     ~ResourceFetcher(void);
+    void Trace(Visitor *visitor);
 
     FetchContext& Context(void) const;
     void ClearContext(void);
@@ -83,15 +85,15 @@ public:
     // suitable Resource already cached) and registers the given ResourceClient
     // with the Resource. Guaranteed to return a non-null Resource of the subtype
     // specified by ResourceFactory::GetType().
-    std::shared_ptr<Resource> RequestResource(FetchParameters &params, const ResourceFactory &factory,
-        ResourceClient *client, const SubstituteData &substituteData = SubstituteData());
+    Resource* RequestResource(FetchParameters &params, const ResourceFactory &factory, ResourceClient *client,
+        const SubstituteData &substituteData = SubstituteData());
 
     // Binds the given Resource instance to this ResourceFetcher instance to
     // start loading the Resource actually.
     // Usually, RequestResource() calls this method internally, but needs to
     // call this method explicitly on cases such as ResourceNeedsLoad() returning
     // false.
-    bool StartLoad(std::shared_ptr<Resource> &resource);
+    bool StartLoad(Resource *resource);
     void StopFetching(void);
     enum LoaderFinishType { kDidFinishLoading, kDidFinishFirstPartInMultipart };
     void HandleLoaderFinish(Resource *resource, LoaderFinishType type);
@@ -102,9 +104,9 @@ public:
     int BlockingRequestCount(void) const;
 private:
     ResourceFetcher(void);
-    ResourceFetcher(std::unique_ptr<FetchContext> &context);
+    ResourceFetcher(FetchContext *context);
 
-    std::shared_ptr<Resource> CreateResourceForLoading(const FetchParameters &params, const ResourceFactory &factory);
+    Resource* CreateResourceForLoading(const FetchParameters &params, const ResourceFactory &factory);
 
     ResourceLoadPriority ComputeLoadPriority(ResourceType type, const ResourceRequest &resourceRequest,
         ResourcePriority::VisibilityStatus visibility, FetchParameters::DeferOption deferOption = FetchParameters::kNoDefer,
@@ -114,7 +116,7 @@ private:
     std::optional<ResourceRequestBlockedReason> PrepareRequest(FetchParameters &params, const ResourceFactory &factory,
         const SubstituteData &substituteData, unsigned long identifier);
 
-    std::shared_ptr<Resource> ResourceForBlockedRequest(const FetchParameters &params, const ResourceFactory &factory,
+    Resource* ResourceForBlockedRequest(const FetchParameters &params, const ResourceFactory &factory,
         ResourceRequestBlockedReason blockedReason, ResourceClient *client);
 
     void InsertAsPreloadIfNecessary(Resource *resource, const FetchParameters &params, ResourceType type);
@@ -130,7 +132,7 @@ private:
     void RemoveResourceLoader(ResourceLoader *loader);
     void HandleLoadCompletion(Resource *resource);
 
-    std::unique_ptr<FetchContext> m_context;
+    Member<FetchContext> m_context;
     std::unordered_set<ResourceLoader *> m_loaders;
     std::unordered_set<ResourceLoader *> m_nonBlockingLoaders;
 

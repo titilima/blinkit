@@ -45,11 +45,11 @@ class ResourceFetcher;
 class SourceKeyedCachedMetadataHandler;
 class SubstituteData;
 
-class RawResource final : public Resource, public std::enable_shared_from_this<RawResource>
+class RawResource final : public Resource
 {
 public:
-    static std::shared_ptr<RawResource> FetchMainResource(FetchParameters &params, ResourceFetcher *fetcher,
-        RawResourceClient *client, const SubstituteData &substituteData);
+    static RawResource* FetchMainResource(FetchParameters &params, ResourceFetcher *fetcher, RawResourceClient *client,
+        const SubstituteData &substituteData);
 
     // Used for code caching of scripts with source code inline in the HTML.
     // Returns a cache handler which can store multiple cache metadata entries,
@@ -62,7 +62,7 @@ private:
     public:
         explicit RawResourceFactory(ResourceType type) : NonTextResourceFactory(type) {}
 
-        std::shared_ptr<Resource> Create(const ResourceRequest &request, const ResourceLoaderOptions &options) const override;
+        Resource* Create(const ResourceRequest &request, const ResourceLoaderOptions &options) const override;
     };
 
     RawResource(const ResourceRequest &resourceRequest, ResourceType type, const ResourceLoaderOptions &options);
@@ -91,12 +91,6 @@ inline bool IsRawResource(ResourceType type)
 inline bool IsRawResource(const Resource &resource)
 {
     return IsRawResource(resource.GetType());
-}
-
-inline std::shared_ptr<RawResource> ToRawResource(const std::shared_ptr<Resource> &resource)
-{
-    ASSERT(!resource || IsRawResource(*resource));
-    return static_cast<RawResource *>(resource.get())->shared_from_this();
 }
 
 inline RawResource* ToRawResource(Resource *resource)

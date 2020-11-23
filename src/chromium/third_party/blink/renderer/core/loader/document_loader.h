@@ -71,7 +71,7 @@ public:
     void Trace(Visitor *visitor) override;
 
     LocalFrame* GetFrame(void) const { return m_frame; }
-    std::shared_ptr<ResourceFetcher> Fetcher(void) const { return m_fetcher; }
+    ResourceFetcher* Fetcher(void) const { return m_fetcher.Get(); }
     const ResourceResponse& GetResponse(void) const { return m_response; }
     const GURL& Url(void) const { return m_currentRequest.Url(); }
     WebFrameLoadType LoadType(void) const { return m_loadType; }
@@ -128,7 +128,7 @@ private:
     void ResponseReceived(Resource *resource, const ResourceResponse &response) final;
 
     Member<LocalFrame> m_frame;
-    std::shared_ptr<ResourceFetcher> m_fetcher;
+    Member<ResourceFetcher> m_fetcher;
     Member<DocumentParser> m_parser;
     ResourceRequest m_originalRequest, m_currentRequest;
     SubstituteData m_substituteData;

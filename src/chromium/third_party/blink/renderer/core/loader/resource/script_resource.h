@@ -49,10 +49,10 @@ namespace blink {
 class FetchParameters;
 class ResourceFetcher;
 
-class ScriptResource final : public TextResource, public std::enable_shared_from_this<ScriptResource>
+class ScriptResource final : public TextResource
 {
 public:
-    static std::shared_ptr<ScriptResource> Fetch(FetchParameters &params, ResourceFetcher *fetcher, ResourceClient *client);
+    static ScriptResource* Fetch(FetchParameters &params, ResourceFetcher *fetcher, ResourceClient *client);
     ~ScriptResource(void) override;
 
     const std::string& SourceText(void);
@@ -62,7 +62,7 @@ private:
     public:
         ScriptResourceFactory(void);
 
-        std::shared_ptr<Resource> Create(const ResourceRequest &request, const ResourceLoaderOptions &options,
+        Resource* Create(const ResourceRequest &request, const ResourceLoaderOptions &options,
             const TextResourceDecoderOptions &decoderOptions) const override;
     };
 
@@ -81,12 +81,6 @@ inline ScriptResource* ToScriptResource(Resource *resource)
 {
     ASSERT(!resource || IsScriptResource(*resource));
     return static_cast<ScriptResource *>(resource);
-}
-
-inline std::shared_ptr<ScriptResource> ToScriptResource(const std::shared_ptr<Resource> &resource)
-{
-    ASSERT(!resource || IsScriptResource(*resource));
-    return static_cast<ScriptResource *>(resource.get())->shared_from_this();
 }
 
 } // namespace blink

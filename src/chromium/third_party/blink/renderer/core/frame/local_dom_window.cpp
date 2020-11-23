@@ -107,7 +107,7 @@ void LocalDOMWindow::ClearDocument(void)
     ASSERT(!m_document->IsActive());
 
     m_document->ClearDOMWindow();
-    m_document.reset(nullptr);
+    m_document.Clear();
 }
 
 DispatchEventResult LocalDOMWindow::DispatchEvent(Event &event, EventTarget *target)
@@ -168,7 +168,7 @@ void LocalDOMWindow::FrameDestroyed(void)
 
 ExecutionContext* LocalDOMWindow::GetExecutionContext(void) const
 {
-    return m_document.get();
+    return m_document.Get();
 }
 
 LocalFrame* LocalDOMWindow::GetFrame(void) const
@@ -185,11 +185,11 @@ Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
 
 #ifdef BLINKIT_CRAWLER_ONLY
     ASSERT(init.GetFrame()->Client()->IsCrawler());
-    m_document = CrawlerDocument::Create(init);
+    m_document = new CrawlerDocument(init);
 #else
     const bool isCrawler = init.GetFrame()->Client()->IsCrawler();
     if (isCrawler)
-        m_document = std::make_unique<CrawlerDocument>(init);
+        m_document = new CrawlerDocument(init);
     else
         m_document = std::make_unique<HTMLDocument>(init);
 #endif
@@ -204,7 +204,7 @@ Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
 #endif
     }
 
-    return m_document.get();
+    return m_document.Get();
 }
 
 void LocalDOMWindow::LaunchTimer(unsigned id, unsigned delayInMs)
@@ -267,6 +267,7 @@ void LocalDOMWindow::Reset(void)
 
 void LocalDOMWindow::Trace(Visitor *visitor)
 {
+    visitor->Trace(m_document);
     visitor->Trace(m_navigator);
     DOMWindow::Trace(visitor);
 }

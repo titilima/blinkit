@@ -37,7 +37,6 @@
 
 #include "script_resource.h"
 
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 
 namespace blink {
@@ -47,12 +46,12 @@ ScriptResource::ScriptResourceFactory::ScriptResourceFactory(void)
 {
 }
 
-std::shared_ptr<Resource> ScriptResource::ScriptResourceFactory::Create(
+Resource* ScriptResource::ScriptResourceFactory::Create(
     const ResourceRequest &request,
     const ResourceLoaderOptions &options,
     const TextResourceDecoderOptions &decoderOptions) const
 {
-    return base::WrapShared(new ScriptResource(request, options, decoderOptions));
+    return new ScriptResource(request, options, decoderOptions);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,9 +66,9 @@ ScriptResource::ScriptResource(
 
 ScriptResource::~ScriptResource(void) = default;
 
-std::shared_ptr<ScriptResource> ScriptResource::Fetch(FetchParameters &params, ResourceFetcher *fetcher, ResourceClient *client)
+ScriptResource* ScriptResource::Fetch(FetchParameters &params, ResourceFetcher *fetcher, ResourceClient *client)
 {
-    std::shared_ptr<Resource> resource = fetcher->RequestResource(params, ScriptResourceFactory(), client);
+    Resource *resource = fetcher->RequestResource(params, ScriptResourceFactory(), client);
     return ToScriptResource(resource);
 }
 

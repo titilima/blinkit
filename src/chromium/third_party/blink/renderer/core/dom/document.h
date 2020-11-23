@@ -373,7 +373,7 @@ public:
     // Depending on base URL value it is possible that parent document
     // base URL will be used instead. Uses CompleteURLWithOverride internally.
     GURL CompleteURL(const String &url) const final;
-    ResourceFetcher* Fetcher(void) const override { return m_fetcher.get(); }
+    ResourceFetcher* Fetcher(void) const override { return m_fetcher.Get(); }
     bool CanExecuteScripts(ReasonForCallingCanExecuteScripts reason) override;
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType type) override;
 
@@ -550,7 +550,7 @@ private:
     int m_loadEventDelayCount = 0;
     TaskRunnerTimer<Document> m_loadEventDelayTimer;
 
-    std::shared_ptr<ResourceFetcher> m_fetcher;
+    Member<ResourceFetcher> m_fetcher;
     Member<DocumentParser> m_parser;
     std::unique_ptr<ScriptRunner> m_scriptRunner;
 

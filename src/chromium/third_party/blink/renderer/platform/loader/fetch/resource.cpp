@@ -199,7 +199,7 @@ void Resource::Finish(base::SingleThreadTaskRunner *taskRunner)
 #endif
     if (!ErrorOccurred())
         m_status = ResourceStatus::kCached;
-    m_loader.reset();
+    m_loader.Clear();
     // BKTODO: CheckResourceIntegrity();
     TriggerNotificationForFinishObservers(taskRunner);
     NotifyFinished();
@@ -378,11 +378,11 @@ void Resource::SetEncodedSize(size_t encodedSize)
     // BKTODO:
 }
 
-void Resource::SetLoader(std::unique_ptr<ResourceLoader> &loader)
+void Resource::SetLoader(ResourceLoader *loader)
 {
     ASSERT(!m_loader);
     ASSERT(StillNeedsLoad());
-    m_loader = std::move(loader);
+    m_loader = loader;
 }
 
 void Resource::SetResponse(const ResourceResponse &response)
@@ -406,6 +406,11 @@ bool Resource::ShouldBlockLoadEvent(void) const
     return !m_linkPreload && IsLoadEventBlockingResourceType();
 }
 
+void Resource::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_loader);
+}
+
 void Resource::TriggerNotificationForFinishObservers(base::SingleThreadTaskRunner *taskRunner)
 {
     if (m_finishObservers.empty())
@@ -427,7 +432,7 @@ NonTextResourceFactory::NonTextResourceFactory(ResourceType type)
 {
 }
 
-std::shared_ptr<Resource> NonTextResourceFactory::Create(const ResourceRequest &request, const ResourceLoaderOptions &options, const TextResourceDecoderOptions &) const
+Resource* NonTextResourceFactory::Create(const ResourceRequest &request, const ResourceLoaderOptions &options, const TextResourceDecoderOptions &) const
 {
     return Create(request, options);
 }

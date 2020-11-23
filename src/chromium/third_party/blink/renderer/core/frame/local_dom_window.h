@@ -71,7 +71,7 @@ public:
     Navigator* navigator(void) const;
 
     LocalFrame* GetFrame(void) const;
-    Document* document(void) const { return m_document.get(); }
+    Document* document(void) const { return m_document.Get(); }
 
     void Reset(void);
 
@@ -106,10 +106,10 @@ private:
     ExecutionContext* GetExecutionContext(void) const final;
     const LocalDOMWindow* ToLocalDOMWindow(void) const final { return this; }
 
-    std::unique_ptr<Document> m_document;
+    Member<Document> m_document;
 
     mutable Member<Navigator> m_navigator;
-    
+
     std::unordered_set<EventListenerObserver *> m_eventListenerObservers;
 
     unsigned m_nextTimerId = 1;

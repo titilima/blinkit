@@ -59,8 +59,9 @@ class FrameFetchContext final : public BaseFetchContext
 {
 public:
     ~FrameFetchContext(void) override;
+    void Trace(Visitor *visitor) override;
 
-    static std::shared_ptr<ResourceFetcher> CreateFetcherFromDocumentLoader(DocumentLoader *loader)
+    static ResourceFetcher* CreateFetcherFromDocumentLoader(DocumentLoader *loader)
     {
         return CreateFetcher(loader, nullptr);
     }
@@ -70,7 +71,7 @@ public:
 private:
     FrameFetchContext(DocumentLoader *loader, Document *document);
 
-    static std::shared_ptr<ResourceFetcher> CreateFetcher(DocumentLoader *loader, Document *document);
+    static ResourceFetcher* CreateFetcher(DocumentLoader *loader, Document *document);
 
     LocalFrame* GetFrame(void) const;
     LocalFrameClient* GetLocalFrameClient(void) const;

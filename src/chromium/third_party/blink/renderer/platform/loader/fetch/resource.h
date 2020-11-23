@@ -80,7 +80,10 @@ enum class ResourceType : uint8_t {
 class Resource : public GarbageCollectedFinalized<Resource>
 {
 public:
+    BK_DECLARE_GC_NAME(Resource)
+
     virtual ~Resource(void);
+    virtual void Trace(Visitor *visitor);
 
     virtual WTF::TextEncoding Encoding(void) const { return WTF::TextEncoding(); }
     ResourceType GetType(void) const { return m_type; }
@@ -112,9 +115,9 @@ public:
     void SetResourceRequest(const ResourceRequest &resourceRequest) { m_resourceRequest = resourceRequest; }
     const ResourceRequest& LastResourceRequest(void) const;
     const GURL& Url(void) const { return GetResourceRequest().Url(); }
-    
-    ResourceLoader* Loader(void) const { return m_loader.get(); }
-    void SetLoader(std::unique_ptr<ResourceLoader> &loader);
+
+    ResourceLoader* Loader(void) const { return m_loader.Get(); }
+    void SetLoader(ResourceLoader *loader);
 
     virtual std::shared_ptr<const SharedBuffer> ResourceBuffer(void) const
     {
@@ -229,7 +232,7 @@ private:
     // BKTODO: double m_responseTimestamp;
 
     ResourceRequest m_resourceRequest;
-    std::unique_ptr<ResourceLoader> m_loader;
+    Member<ResourceLoader> m_loader;
     ResourceResponse m_response;
 
     std::shared_ptr<SharedBuffer> m_data;
@@ -239,7 +242,7 @@ class ResourceFactory
 {
     STACK_ALLOCATED();
 public:
-    virtual std::shared_ptr<Resource> Create(const ResourceRequest &request, const ResourceLoaderOptions &options,
+    virtual Resource* Create(const ResourceRequest &request, const ResourceLoaderOptions &options,
         const TextResourceDecoderOptions &decoderOptions) const = 0;
 
     ResourceType GetType(void) const { return m_type; }
@@ -259,9 +262,9 @@ class NonTextResourceFactory : public ResourceFactory
 protected:
     explicit NonTextResourceFactory(ResourceType type);
 private:
-    virtual std::shared_ptr<Resource> Create(const ResourceRequest &request, const ResourceLoaderOptions &options) const = 0;
+    virtual Resource* Create(const ResourceRequest &request, const ResourceLoaderOptions &options) const = 0;
 
-    std::shared_ptr<Resource> Create(const ResourceRequest &request, const ResourceLoaderOptions &options,
+    Resource* Create(const ResourceRequest &request, const ResourceLoaderOptions &options,
         const TextResourceDecoderOptions &) const final;
 };
 

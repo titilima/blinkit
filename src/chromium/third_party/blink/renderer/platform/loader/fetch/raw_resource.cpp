@@ -36,15 +36,14 @@
 
 #include "raw_resource.h"
 
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 #include "third_party/blink/renderer/platform/loader/fetch/source_keyed_cached_metadata_handler.h"
 
 namespace blink {
 
-std::shared_ptr<Resource> RawResource::RawResourceFactory::Create(const ResourceRequest &request, const ResourceLoaderOptions & options) const
+Resource* RawResource::RawResourceFactory::Create(const ResourceRequest &request, const ResourceLoaderOptions &options) const
 {
-    return base::WrapShared(new RawResource(request, m_type, options));
+    return new RawResource(request, m_type, options);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,14 +87,14 @@ void RawResource::DidAddClient(ResourceClient *c)
     Resource::DidAddClient(c);
 }
 
-std::shared_ptr<RawResource> RawResource::FetchMainResource(
+RawResource* RawResource::FetchMainResource(
     FetchParameters &params,
     ResourceFetcher *fetcher,
     RawResourceClient *client,
     const SubstituteData &substituteData)
 {
     RawResourceFactory factory(ResourceType::kMainResource);
-    std::shared_ptr<Resource> resource = fetcher->RequestResource(params, factory, client, substituteData);
+    Resource *resource = fetcher->RequestResource(params, factory, client, substituteData);
     return ToRawResource(resource);
 }
 
