@@ -163,7 +163,7 @@ unsigned NthIndexCache::NthLastOfTypeIndex(Element& element) {
 void NthIndexCache::CacheNthIndexDataForParent(Element& element) {
   DCHECK(element.parentNode());
   if (!parent_map_)
-    parent_map_ = new ParentMap();
+    parent_map_ = std::make_unique<ParentMap>();
 
   parent_map_->insert_or_assign(element.parentNode(), std::make_unique<NthIndexData>(*element.parentNode()));
 }
@@ -171,7 +171,7 @@ void NthIndexCache::CacheNthIndexDataForParent(Element& element) {
 NthIndexCache::IndexByType& NthIndexCache::EnsureTypeIndexMap(
     ContainerNode& parent) {
   if (!parent_map_for_type_)
-    parent_map_for_type_ = new ParentMapForType();
+    parent_map_for_type_ = std::make_unique<ParentMapForType>();
 
   auto it = parent_map_for_type_->find(&parent);
   if (std::end(*parent_map_for_type_) != it)

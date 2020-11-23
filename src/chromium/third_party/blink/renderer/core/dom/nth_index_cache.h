@@ -27,7 +27,7 @@ namespace blink {
 
 class Document;
 
-class CORE_EXPORT NthIndexData final : public GarbageCollected<NthIndexData> {
+class CORE_EXPORT NthIndexData final {
  public:
   NthIndexData(ContainerNode&);
   NthIndexData(ContainerNode&, const QualifiedName& type);
@@ -66,8 +66,8 @@ class CORE_EXPORT NthIndexCache final {
   NthIndexData* NthTypeIndexDataForParent(Element&) const;
 
   Member<Document> document_;
-  Member<ParentMap> parent_map_;
-  Member<ParentMapForType> parent_map_for_type_;
+  std::unique_ptr<ParentMap> parent_map_;
+  std::unique_ptr<ParentMapForType> parent_map_for_type_;
 
 #if DCHECK_IS_ON()
   uint64_t dom_tree_version_;
