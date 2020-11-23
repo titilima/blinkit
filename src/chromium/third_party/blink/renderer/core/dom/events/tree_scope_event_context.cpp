@@ -37,7 +37,6 @@
 
 #include "tree_scope_event_context.h"
 
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/dom/node.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/dom/shadow_root.h"
@@ -87,9 +86,9 @@ inline void TreeScopeEventContext::CheckReachableNode(EventTarget &target)
 #endif
 }
 
-std::shared_ptr<TreeScopeEventContext> TreeScopeEventContext::Create(TreeScope &treeScope)
+TreeScopeEventContext* TreeScopeEventContext::Create(TreeScope &treeScope)
 {
-    return base::WrapShared(new TreeScopeEventContext(treeScope));
+    return new TreeScopeEventContext(treeScope);
 }
 
 void TreeScopeEventContext::SetRelatedTarget(EventTarget *relatedTarget)
@@ -104,6 +103,12 @@ void TreeScopeEventContext::SetTarget(EventTarget *target)
     ASSERT(nullptr != target);
     CheckReachableNode(*target);
     m_target = target;
+}
+
+void TreeScopeEventContext::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_containingClosedShadowTree);
+    visitor->Trace(m_children);
 }
 
 }  // namespace blink

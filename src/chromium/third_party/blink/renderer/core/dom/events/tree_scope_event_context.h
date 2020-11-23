@@ -52,11 +52,14 @@ class TreeScope;
 class TouchEventContext;
 #endif
 
-class TreeScopeEventContext final : public GarbageCollected<TreeScopeEventContext>
+class TreeScopeEventContext final : public GarbageCollectedFinalized<TreeScopeEventContext>
 {
 public:
-    static std::shared_ptr<TreeScopeEventContext> Create(TreeScope &treeScope);
+    BK_DECLARE_GC_NAME(TreeScopeEventContext)
+
+    static TreeScopeEventContext* Create(TreeScope &treeScope);
     ~TreeScopeEventContext(void);
+    void Trace(Visitor *visitor);
 
     TreeScope& GetTreeScope(void) const { return *m_treeScope; }
     ContainerNode& RootNode(void) const { return m_treeScope->RootNode(); }

@@ -83,7 +83,7 @@ void Event::DoneDispatchingEventAtCurrentTarget(void)
 void Event::InitEventPath(Node &node)
 {
     if (!m_eventPath)
-        m_eventPath = std::make_unique<EventPath>(node, this);
+        m_eventPath = new EventPath(node, this);
     else
         m_eventPath->InitializeWith(node, this);
 }
@@ -141,6 +141,12 @@ void Event::SetTarget(EventTarget *target)
     m_target = target;
     if (m_target)
         ReceivedTarget();
+}
+
+void Event::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_eventPath);
+    ScriptWrappable::Trace(visitor);
 }
 
 } // namespace blink

@@ -93,6 +93,7 @@ public:
         return new (ObjectType::Stash) Event(type, Bubbles::kYes, Cancelable::kNo);
     }
     ~Event(void) override;
+    void Trace(Visitor *visitor) override;
 
     const AtomicString& type(void) const { return m_type; }
     void SetType(const AtomicString &type) { m_type = type; }
@@ -201,7 +202,7 @@ private:
     PassiveMode m_handlingPassive = PassiveMode::kNotPassiveDefault;
     unsigned short m_eventPhase = 0;
     Member<EventTarget> m_target, m_currentTarget;
-    std::unique_ptr<EventPath> m_eventPath;
+    Member<EventPath> m_eventPath;
     // The monotonic platform time in seconds, for input events it is the
     // event timestamp provided by the host OS and reported in the original
     // WebInputEvent instance.

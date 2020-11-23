@@ -54,11 +54,12 @@ class CORE_EXPORT NodeEventContext {
  public:
   // FIXME: Use ContainerNode instead of Node.
   NodeEventContext(Node*, EventTarget* current_target);
+  void Trace(blink::Visitor*);
 
   Node* GetNode() const { return node_.Get(); }
 
-  void SetTreeScopeEventContext(const std::shared_ptr<TreeScopeEventContext> &tree_scope_event_context)
-  {
+  void SetTreeScopeEventContext(
+      TreeScopeEventContext* tree_scope_event_context) {
     tree_scope_event_context_ = tree_scope_event_context;
   }
   TreeScopeEventContext& GetTreeScopeEventContext() {
@@ -84,7 +85,7 @@ class CORE_EXPORT NodeEventContext {
  private:
   Member<Node> node_;
   Member<EventTarget> current_target_;
-  std::shared_ptr<TreeScopeEventContext> tree_scope_event_context_;
+  Member<TreeScopeEventContext> tree_scope_event_context_;
 };
 
 }  // namespace blink

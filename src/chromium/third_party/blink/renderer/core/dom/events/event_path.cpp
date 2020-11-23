@@ -61,7 +61,7 @@ NodeEventContext & EventPath::at(wtf_size_t index)
 void EventPath::CalculateAdjustedTargets(void)
 {
     const TreeScope *lastTreeScope = nullptr;
-    std::shared_ptr<TreeScopeEventContext> lastTreeScopeEventContext;
+    TreeScopeEventContext *lastTreeScopeEventContext = nullptr;
 
     for (auto &context : m_nodeEventContexts)
     {
@@ -154,36 +154,36 @@ void EventPath::CalculateTreeOrderAndSetNearestAncestorClosedTree(void)
     //   - TreeScopes in tree_scope_event_contexts_ must be *connected* in the
     //     same composed tree.
     //   - The root tree must be included.
-    std::shared_ptr<TreeScopeEventContext> rootTree;
-    for (const auto &treeScopeEventContext : m_treeScopeEventContexts)
+    TreeScopeEventContext *rootTree = nullptr;
+    for (TreeScopeEventContext *treeScopeEventContext : m_treeScopeEventContexts)
     {
         TreeScope *parent = treeScopeEventContext->GetTreeScope().ParentTreeScope();
         if (nullptr == parent)
         {
-            ASSERT(!rootTree);
+            ASSERT(nullptr == rootTree);
             rootTree = treeScopeEventContext;
             continue;
         }
-        std::shared_ptr<TreeScopeEventContext> parentTreeScopeEventContext = GetTreeScopeEventContext(parent);
-        DCHECK(parentTreeScopeEventContext);
+        TreeScopeEventContext *parentTreeScopeEventContext = GetTreeScopeEventContext(parent);
+        ASSERT(nullptr != parentTreeScopeEventContext);
         parentTreeScopeEventContext->AddChild(*treeScopeEventContext);
     }
-    ASSERT(rootTree);
+    ASSERT(nullptr != rootTree);
     rootTree->CalculateTreeOrderAndSetNearestAncestorClosedTree(0, nullptr);
 }
 
-std::shared_ptr<TreeScopeEventContext> EventPath::EnsureTreeScopeEventContext(Node *currentTarget, TreeScope *treeScope)
+TreeScopeEventContext* EventPath::EnsureTreeScopeEventContext(Node *currentTarget, TreeScope *treeScope)
 {
     if (nullptr == treeScope)
         return nullptr;
-    std::shared_ptr<TreeScopeEventContext> treeScopeEventContext = GetTreeScopeEventContext(treeScope);
-    if (!treeScopeEventContext)
+    TreeScopeEventContext *treeScopeEventContext = GetTreeScopeEventContext(treeScope);
+    if (nullptr == treeScopeEventContext)
     {
         treeScopeEventContext = TreeScopeEventContext::Create(*treeScope);
         m_treeScopeEventContexts.push_back(treeScopeEventContext);
 
-        std::shared_ptr<TreeScopeEventContext> parentTreeScopeEventContext = EnsureTreeScopeEventContext(nullptr, treeScope->ParentTreeScope());
-        if (parentTreeScopeEventContext && nullptr != parentTreeScopeEventContext->Target())
+        TreeScopeEventContext *parentTreeScopeEventContext = EnsureTreeScopeEventContext(nullptr, treeScope->ParentTreeScope());
+        if (nullptr != parentTreeScopeEventContext && nullptr != parentTreeScopeEventContext->Target())
             treeScopeEventContext->SetTarget(parentTreeScopeEventContext->Target());
         else if (nullptr != currentTarget)
             treeScopeEventContext->SetTarget(EventTargetRespectingTargetRules(*currentTarget));
@@ -213,10 +213,10 @@ EventTarget* EventPath::EventTargetRespectingTargetRules(Node &referenceNode)
     return &referenceNode;
 }
 
-std::shared_ptr<TreeScopeEventContext> EventPath::GetTreeScopeEventContext(TreeScope *treeScope)
+TreeScopeEventContext* EventPath::GetTreeScopeEventContext(TreeScope *treeScope)
 {
     ASSERT(nullptr != treeScope);
-    for (auto &treeScopeEventContext : m_treeScopeEventContexts)
+    for (TreeScopeEventContext *treeScopeEventContext : m_treeScopeEventContexts)
     {
         if (treeScopeEventContext->GetTreeScope() == treeScope)
             return treeScopeEventContext;
@@ -258,6 +258,11 @@ NodeEventContext& EventPath::TopNodeEventContext(void)
 {
     ASSERT(!IsEmpty());
     return Last();
+}
+
+void EventPath::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_treeScopeEventContexts);
 }
 
 }  // namespace blink

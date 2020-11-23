@@ -55,11 +55,14 @@ class TreeScope;
 class TreeScopeEventContext;
 class WindowEventContext;
 
-class EventPath final
+class EventPath final : public GarbageCollectedFinalized<EventPath>
 {
 public:
+    BK_DECLARE_GC_NAME(EventPath)
+
     explicit EventPath(Node &node, Event *event = nullptr);
     ~EventPath(void);
+    void Trace(Visitor *visitor);
 
     void InitializeWith(Node &node, Event *event);
 
@@ -87,13 +90,13 @@ private:
     void CalculateAdjustedTargets(void);
     void CalculateTreeOrderAndSetNearestAncestorClosedTree(void);
 
-    std::shared_ptr<TreeScopeEventContext> GetTreeScopeEventContext(TreeScope *treeScope);
-    std::shared_ptr<TreeScopeEventContext> EnsureTreeScopeEventContext(Node *currentTarget, TreeScope *treeScope);
+    TreeScopeEventContext* GetTreeScopeEventContext(TreeScope *treeScope);
+    TreeScopeEventContext* EnsureTreeScopeEventContext(Node *currentTarget, TreeScope *treeScope);
 
     std::vector<NodeEventContext> m_nodeEventContexts;
     Member<Node> m_node;
     Member<Event> m_event;
-    std::vector<std::shared_ptr<TreeScopeEventContext>> m_treeScopeEventContexts;
+    std::vector<TreeScopeEventContext *> m_treeScopeEventContexts;
     std::unique_ptr<WindowEventContext> m_windowEventContext;
 
     DISALLOW_COPY_AND_ASSIGN(EventPath);

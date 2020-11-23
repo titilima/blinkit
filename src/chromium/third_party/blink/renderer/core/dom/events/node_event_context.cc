@@ -56,6 +56,12 @@ NodeEventContext::NodeEventContext(Node* node, EventTarget* current_target)
   DCHECK(node_);
 }
 
+void NodeEventContext::Trace(blink::Visitor* visitor) {
+  visitor->Trace(node_);
+  visitor->Trace(current_target_);
+  visitor->Trace(tree_scope_event_context_);
+}
+
 void NodeEventContext::HandleLocalEvents(Event& event) const {
 #ifdef BLINKIT_CRAWLER_ONLY
   if (EventTarget *relatedTarget = RelatedTarget())
