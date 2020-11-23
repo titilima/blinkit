@@ -274,10 +274,7 @@ void DocumentLoader::InstallNewDocument(
         stateMachine->AdvanceTo(FrameLoaderStateMachine::kCommittedFirstRealLoad);
 
     if (WebGlobalObjectReusePolicy::kUseExisting != reusePolicy)
-    {
-        std::unique_ptr<LocalDOMWindow> window = LocalDOMWindow::Create(*m_frame);
-        m_frame->SetDOMWindow(window);
-    }
+        m_frame->SetDOMWindow(LocalDOMWindow::Create(*m_frame));
 
     WillCommitNavigation();
 

@@ -80,7 +80,7 @@ public:
     FrameLoader& Loader(void) const { return m_loader; }
     NavigationScheduler& GetNavigationScheduler(void) const { return *m_navigationScheduler; }
     LocalDOMWindow* DomWindow(void) const;
-    void SetDOMWindow(std::unique_ptr<LocalDOMWindow> &domWindow);
+    void SetDOMWindow(LocalDOMWindow *domWindow);
 #ifndef BLINKIT_CRAWLER_ONLY
     // Root of the layout tree for the document contained in this frame.
     LayoutView* ContentLayoutObject(void) const;

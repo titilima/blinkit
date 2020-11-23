@@ -97,4 +97,9 @@ Page* Frame::GetPage(void) const
 }
 #endif
 
+void Frame::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_domWindow);
+}
+
 } // namespace blink

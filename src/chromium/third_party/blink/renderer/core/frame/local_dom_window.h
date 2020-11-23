@@ -40,7 +40,6 @@
 
 #include <unordered_map>
 #include <unordered_set>
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/frame/dom_window.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
@@ -59,9 +58,9 @@ class Navigator;
 class LocalDOMWindow final : public DOMWindow
 {
 public:
-    static std::unique_ptr<LocalDOMWindow> Create(LocalFrame &frame)
+    static LocalDOMWindow* Create(LocalFrame &frame)
     {
-        return base::WrapUnique(new (ObjectType::Owner) LocalDOMWindow(frame));
+        return new LocalDOMWindow(frame);
     }
     ~LocalDOMWindow(void) override;
     void Trace(Visitor *visitor) override;

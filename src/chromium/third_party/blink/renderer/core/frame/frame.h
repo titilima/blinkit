@@ -62,12 +62,12 @@ public:
     BK_DECLARE_GC_NAME(Frame)
 
     virtual ~Frame(void);
-    virtual void Trace(Visitor *visitor) {}
+    virtual void Trace(Visitor *visitor);
 
     virtual bool IsLocalFrame(void) const = 0;
 
     FrameClient* Client(void) const { return m_client; }
-    DOMWindow* DomWindow(void) const { return m_domWindow.get(); }
+    DOMWindow* DomWindow(void) const { return m_domWindow.Get(); }
 #ifndef BLINKIT_CRAWLER_ONLY
     Page* GetPage(void) const;  // Null when the frame is detached.
     virtual FrameView* View(void) const = 0;
@@ -97,7 +97,7 @@ protected:
 #ifndef BLINKIT_CRAWLER_ONLY
     Member<Page> m_page;
 #endif
-    std::unique_ptr<DOMWindow> m_domWindow;
+    Member<DOMWindow> m_domWindow;
 private:
     Member<FrameClient> m_client;
     FrameLifecycle m_lifecycle;

@@ -94,7 +94,7 @@ LayoutView* LocalFrame::ContentLayoutObject(void) const
 
 std::unique_ptr<LocalFrame> LocalFrame::Create(LocalFrameClient *client, Page *page)
 {
-    return base::WrapUnique(new (ObjectType::Owner) LocalFrame(client, page));
+    return base::WrapUnique(new (ObjectType::Root) LocalFrame(client, page));
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -285,14 +285,14 @@ std::shared_ptr<base::SingleThreadTaskRunner> LocalFrame::GetTaskRunner(TaskType
     return m_frameScheduler->GetTaskRunner(type);
 }
 
-void LocalFrame::SetDOMWindow(std::unique_ptr<LocalDOMWindow> &domWindow)
+void LocalFrame::SetDOMWindow(LocalDOMWindow *domWindow)
 {
-    if (domWindow)
+    if (nullptr != domWindow)
         GetScriptController().ClearWindowProxy();
 
     if (LocalDOMWindow *currentDomWindow = DomWindow())
         currentDomWindow->Reset();
-    m_domWindow = std::move(domWindow);
+    m_domWindow = domWindow;
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -325,6 +325,7 @@ bool LocalFrame::ShouldReuseDefaultView(void) const
 void LocalFrame::Trace(Visitor *visitor)
 {
     m_loader.Trace(visitor);
+    Frame::Trace(visitor);
 }
 
 } // namespace blink
