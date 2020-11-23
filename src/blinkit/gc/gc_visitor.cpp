@@ -15,7 +15,7 @@
 
 namespace BlinKit {
 
-GCVisitor::GCVisitor(std::unordered_set<void *> &objectsToGC) : m_objectsToGC(objectsToGC)
+GCVisitor::GCVisitor(const std::unordered_set<void *> &memberObjects) : m_objectsToGC(memberObjects)
 {
 }
 

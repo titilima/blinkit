@@ -52,10 +52,7 @@ GCHeap::GCHeap(void)
 GCHeap::~GCHeap(void)
 {
     ASSERT(this == theHeap);
-
-    CollectGarbage(GCType::Full);
-    ASSERT(m_memberObjects.empty());
-
+    CollectGarbage();
     theHeap = nullptr;
 }
 
@@ -77,8 +74,8 @@ GCObjectHeader* GCHeap::Alloc(GCObjectType type, size_t totalSize, GCTable *gcPt
 #endif
         switch (type)
         {
-            case GCObjectType::Owner:
-                m_ownerObjects.insert(ret->Object());
+            case GCObjectType::Root:
+                m_rootObjects.insert(ret->Object());
                 break;
             case GCObjectType::Stash:
                 m_stashObjects.insert(ret->Object());
@@ -92,43 +89,26 @@ GCObjectHeader* GCHeap::Alloc(GCObjectType type, size_t totalSize, GCTable *gcPt
     return nullptr;
 }
 
-void GCHeap::CollectGarbage(GCType type)
+void GCHeap::CleanupRoots(void)
 {
-    ASSERT(IsMainThread());
-
-    GCObjectSet objectsToGC;
-
-#ifndef NDEBUG
-    size_t ownerCount = m_ownerObjects.size();
-    size_t memberCount = m_memberObjects.size();
-    size_t stashCount = m_stashObjects.size();
-#endif
-
-    for (void *o : m_ownerObjects)
+    std::vector<void *> deletedRoots;
+    for (void *o : m_rootObjects)
     {
         GCObjectHeader *hdr = GCObjectHeader::From(o);
         if (!hdr->deleted)
             continue;
 
-        objectsToGC.insert(o);
+        deletedRoots.push_back(o);
         free(hdr);
     }
 
-    if (!objectsToGC.empty() || GCType::Full == type)
-    {
-        for (void *o : objectsToGC)
-            m_ownerObjects.erase(o);
-        objectsToGC.clear();
+    for (void *o : deletedRoots)
+        m_rootObjects.erase(o);
+}
 
-        GCVisitor visitor(objectsToGC);
-        objectsToGC.insert(m_memberObjects.begin(), m_memberObjects.end());
-        for (void *o : m_ownerObjects)
-            Trace(o, &visitor);
-
-        FreeObjects(objectsToGC, &m_memberObjects);
-        objectsToGC.clear();
-    }
-
+void GCHeap::CleanupStashObjects(void)
+{
+    GCObjectSet objectsToGC;
     for (void *o : m_stashObjects)
     {
         GCObjectHeader *hdr = GCObjectHeader::From(o);
@@ -138,25 +118,30 @@ void GCHeap::CollectGarbage(GCType type)
         objectsToGC.insert(o);
     }
     FreeObjects(objectsToGC, &m_stashObjects);
+}
+
+void GCHeap::CollectGarbage(void)
+{
+    ASSERT(IsMainThread());
 
 #ifndef NDEBUG
-    const char *szType = nullptr;
-    switch (type)
-    {
-        case GCType::Auto:
-            szType = "auto";
-            break;
-        case GCType::Full:
-            szType = "full";
-            break;
-        default:
-            NOTREACHED();
-    }
+    size_t rootCount = m_rootObjects.size();
+    size_t memberCount = m_memberObjects.size();
+    size_t stashCount = m_stashObjects.size();
+#endif
 
+    CleanupRoots();
+    CleanupStashObjects();
+
+    GCVisitor visitor(m_memberObjects);
+    TraceObjects(m_rootObjects, visitor);
+    TraceObjects(m_stashObjects, visitor);
+    FreeObjects(visitor.ObjectsToGC(), &m_memberObjects);
+
+#ifndef NDEBUG
     BKLOG(
-        "GC (%s)\n    Owner: %u -> %u\n    Member: %u -> %u\n    Stash: %u -> %u",
-        szType,
-        ownerCount, m_ownerObjects.size(),
+        "[GC]\n    Roots: %u -> %u\n    Members: %u -> %u\n    Stash Objects: %u -> %u",
+        rootCount, m_rootObjects.size(),
         memberCount, m_memberObjects.size(),
         stashCount, m_stashObjects.size()
     );
@@ -210,6 +195,19 @@ void GCHeap::Trace(void *p, blink::Visitor *visitor)
     GCObjectHeader::From(p)->gcPtr->Tracer(p, visitor);
 }
 
+void GCHeap::TraceObjects(const GCObjectSet &owners, GCVisitor &visitor)
+{
+    if (visitor.ObjectsToGC().empty())
+        return;
+
+    for (void *o : owners)
+    {
+        Trace(o, &visitor);
+        if (visitor.ObjectsToGC().empty())
+            return;
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void GCClearFlag(void *p, GCObjectFlag flag)
@@ -240,7 +238,7 @@ void GCSetFlag(void *p, GCObjectFlag flag)
 
 AutoGarbageCollector::~AutoGarbageCollector(void)
 {
-    theHeap->CollectGarbage(m_type);
+    theHeap->CollectGarbage();
 }
 
 } // namespace BlinKit

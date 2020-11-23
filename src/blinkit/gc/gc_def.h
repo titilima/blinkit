@@ -26,7 +26,7 @@ struct GCTable {
 };
 
 enum class GCObjectType {
-    Member = 0, Owner, Stash
+    Member = 0, Root, Stash
 };
 
 #ifdef NDEBUG
@@ -41,17 +41,11 @@ enum class GCObjectFlag {
 void GCSetFlag(void *p, GCObjectFlag flag);
 void GCClearFlag(void *p, GCObjectFlag flag);
 
-enum class GCType {
-    Auto = 0, Full
-};
-
 class AutoGarbageCollector
 {
 public:
-    AutoGarbageCollector(GCType type = GCType::Auto) : m_type(type) {}
+    AutoGarbageCollector(void) = default;
     ~AutoGarbageCollector(void);
-private:
-    GCType m_type;
 };
 
 } // namespace BlinKit
