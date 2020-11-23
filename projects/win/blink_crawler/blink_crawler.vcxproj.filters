@@ -1112,9 +1112,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\serializers\serialization.h">
       <Filter>renderer\core\editing\serializers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\gc_pool.h">
-      <Filter>renderer\platform\bindings</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\script_wrappers.h">
       <Filter>renderer\platform\bindings</Filter>
     </ClInclude>
@@ -1872,9 +1869,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node_lists_node_data.cpp">
       <Filter>renderer\core\dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\gc_pool.cpp">
-      <Filter>renderer\platform\bindings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\script_wrappers.cpp">
       <Filter>renderer\platform\bindings</Filter>

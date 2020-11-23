@@ -1526,7 +1526,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\animation\timing_function.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\exception_messages.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\exception_state.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\gc_pool.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\script_forbidden_scope.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\script_wrappers.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\color_data.cc" />
@@ -3473,7 +3472,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\exception_code.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\exception_messages.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\exception_state.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\gc_pool.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\name_client.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\script_forbidden_scope.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\script_wrappable.h" />
