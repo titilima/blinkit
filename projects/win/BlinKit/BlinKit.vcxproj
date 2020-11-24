@@ -173,6 +173,8 @@
     <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\hijack_response.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\gc\gc_heap.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\gc\gc_visitor.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\browser_context.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\context_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\crawler_context.cpp" />
@@ -217,6 +219,9 @@
     <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\hijack_response.h" />
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_def.h" />
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_heap.h" />
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_visitor.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\browser_context.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\context_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\crawler_context.h" />

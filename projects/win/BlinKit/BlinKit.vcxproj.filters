@@ -40,6 +40,9 @@
     <Filter Include="win">
       <UniqueIdentifier>{6a592369-c6ef-47ca-8f94-9fd28b6f489e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gc">
+      <UniqueIdentifier>{774fdfd2-a170-4086-b893-e8c88f4bc13d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -140,6 +143,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp">
       <Filter>win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\gc\gc_heap.cpp">
+      <Filter>gc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\gc\gc_visitor.cpp">
+      <Filter>gc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -256,6 +265,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\res_loader_task.h">
       <Filter>loader\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_def.h">
+      <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_heap.h">
+      <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_visitor.h">
+      <Filter>gc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
