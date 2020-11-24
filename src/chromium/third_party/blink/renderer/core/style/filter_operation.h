@@ -59,6 +59,8 @@ class CORE_EXPORT FilterOperation
     : public GarbageCollectedFinalized<FilterOperation> {
 
  public:
+  BK_DECLARE_GC_NAME(FilterOperation)
+
   enum OperationType {
     REFERENCE,  // url(#somefilter)
     GRAYSCALE,
@@ -99,6 +101,7 @@ class CORE_EXPORT FilterOperation
   }
 
   virtual ~FilterOperation() = default;
+  virtual void Trace(blink::Visitor* visitor) {}
 
   static FilterOperation* Blend(const FilterOperation* from,
                                 const FilterOperation* to,
@@ -158,6 +161,8 @@ class CORE_EXPORT ReferenceFilterOperation : public FilterOperation {
 
   void AddClient(SVGResourceClient&);
   void RemoveClient(SVGResourceClient&);
+
+  void Trace(blink::Visitor*) override;
 
  private:
   ReferenceFilterOperation(const AtomicString& url, SVGResource*);

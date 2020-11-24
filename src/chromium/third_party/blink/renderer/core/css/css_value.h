@@ -45,6 +45,16 @@ class Length;
 
 class CORE_EXPORT CSSValue : public GarbageCollectedFinalized<CSSValue> {
  public:
+  void* operator new(size_t size) {
+    return BlinKit::GCHeapAlloc(ObjectType::Member, size,
+#ifdef NDEBUG
+      GCPtr()
+#else
+      GCPtr(), "CSSValue"
+#endif
+    );
+  }
+
   // TODO(sashab): Remove this method and move logic to the caller.
   static CSSValue* Create(const Length& value, float zoom);
 
