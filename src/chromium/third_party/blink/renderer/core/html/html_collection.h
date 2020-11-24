@@ -89,8 +89,6 @@ private:
     virtual Element* VirtualItemAfter(Element *element) const;
     bool ShouldOnlyIncludeDirectChildren(void) const { return m_shouldOnlyIncludeDirectChildren; }
 
-    GCType GetGCType(void) const final { return GC_MANUAL; }
-
     const unsigned m_overridesItemAfter : 1;
     const unsigned m_shouldOnlyIncludeDirectChildren : 1;
     mutable std::unique_ptr<NamedItemCache> m_namedItemCache;

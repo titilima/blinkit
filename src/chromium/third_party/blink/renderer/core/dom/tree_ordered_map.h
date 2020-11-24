@@ -57,7 +57,7 @@ namespace blink {
 class Element;
 class TreeScope;
 
-class TreeOrderedMap : public GarbageCollected<TreeOrderedMap>
+class TreeOrderedMap
 {
 public:
     static std::unique_ptr<TreeOrderedMap> Create(void);
