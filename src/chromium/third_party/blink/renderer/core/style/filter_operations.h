@@ -94,8 +94,10 @@ class CORE_EXPORT FilterOperations {
 
 // Wrapper object for the FilterOperations part object.
 class FilterOperationsWrapper
-    : public GarbageCollected<FilterOperationsWrapper> {
+    : public GarbageCollectedFinalized<FilterOperationsWrapper> {
  public:
+  BK_DECLARE_GC_NAME(FilterOperationsWrapper)
+
   static FilterOperationsWrapper* Create() {
     return new FilterOperationsWrapper();
   }
@@ -105,6 +107,8 @@ class FilterOperationsWrapper
   }
 
   const FilterOperations& Operations() const { return operations_; }
+
+  void Trace(blink::Visitor* visitor) { operations_.Trace(visitor); }
 
  private:
   FilterOperationsWrapper() = default;
