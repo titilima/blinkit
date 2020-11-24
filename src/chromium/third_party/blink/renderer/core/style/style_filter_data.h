@@ -42,14 +42,18 @@
 
 namespace blink {
 
-class StyleFilterData final : public GarbageCollected<StyleFilterData> {
+class StyleFilterData final : public GarbageCollectedFinalized<StyleFilterData> {
  public:
+  BK_DECLARE_GC_NAME(StyleFilterData)
+
   static StyleFilterData* Create() { return new StyleFilterData; }
 
   StyleFilterData* Copy() const { return new StyleFilterData(*this); }
 
   bool operator==(const StyleFilterData&) const;
   bool operator!=(const StyleFilterData& o) const { return !(*this == o); }
+
+  void Trace(blink::Visitor* visitor) { operations_.Trace(visitor); }
 
   FilterOperations operations_;
 
