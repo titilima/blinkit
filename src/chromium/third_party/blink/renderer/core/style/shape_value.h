@@ -51,6 +51,8 @@ namespace blink {
 
 class ShapeValue final : public GarbageCollectedFinalized<ShapeValue> {
  public:
+  BK_DECLARE_GC_NAME(ShapeValue)
+
   enum ShapeValueType {
     // The Auto value is defined by a null ShapeValue*
     kShape,
@@ -84,6 +86,8 @@ class ShapeValue final : public GarbageCollectedFinalized<ShapeValue> {
   CSSBoxType CssBox() const { return css_box_; }
 
   bool operator==(const ShapeValue& other) const;
+
+  virtual void Trace(blink::Visitor* visitor) { visitor->Trace(image_); }
 
  private:
   ShapeValue(scoped_refptr<BasicShape> shape, CSSBoxType css_box)
