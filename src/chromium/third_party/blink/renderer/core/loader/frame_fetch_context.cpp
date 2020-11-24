@@ -213,7 +213,7 @@ void FrameFetchContext::PrepareRequest(ResourceRequest &request, RedirectType re
 
 void FrameFetchContext::ProvideDocumentToContext(FetchContext &context, Document *document)
 {
-    ASSERT(document);
+    ASSERT(nullptr != document);
     ASSERT(context.IsFrameFetchContext());
     static_cast<FrameFetchContext &>(context).m_document = document;
     static_cast<FrameFetchContext &>(context).m_fetchClientSettingsObject = std::make_unique<FetchClientSettingsObjectImpl>(*document);

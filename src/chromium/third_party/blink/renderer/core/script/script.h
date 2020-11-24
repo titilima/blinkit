@@ -31,7 +31,7 @@ class LocalFrame;
 enum class ScriptType { kClassic, kModule };
 
 // https://html.spec.whatwg.org/multipage/webappapis.html#concept-script
-class CORE_EXPORT Script : public GarbageCollectedFinalized<Script> {
+class CORE_EXPORT Script /* // BKTODO: public GarbageCollectedFinalized<Script> */ {
  public:
   virtual ~Script(void) = default;
 
