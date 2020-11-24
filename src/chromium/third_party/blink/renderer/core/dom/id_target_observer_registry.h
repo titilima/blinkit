@@ -49,7 +49,7 @@ namespace blink {
 
 class IdTargetObserver;
 
-class IdTargetObserverRegistry final : public GarbageCollected<IdTargetObserverRegistry>
+class IdTargetObserverRegistry final // BKTODO: public GarbageCollected<IdTargetObserverRegistry>
 {
 public:
     static std::unique_ptr<IdTargetObserverRegistry> Create(void);
