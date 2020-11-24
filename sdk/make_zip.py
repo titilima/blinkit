@@ -10,6 +10,7 @@ files = (
     'include/bk_helper.h',
     'include/bk_http.h',
     'include/bk_js.h',
+    'include/bk_ui.h',
     'win32/BkBase.dll',
     'win32/BkBase.lib',
     'win32/BkCrawler.dll',
