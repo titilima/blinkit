@@ -16,6 +16,8 @@
 
 using namespace bk;
 
+// #define TEST_CRAWLER_ONLY
+
 static const char UserScript[] = R"(
 ({
 })
@@ -75,6 +77,7 @@ private:
     BkCrawler m_crawler = nullptr;
 };
 
+#ifndef TEST_CRAWLER_ONLY
 static void BKAPI DocumentReady(void *)
 {
     assert(false); // BKTODO:
@@ -138,18 +141,19 @@ static int Run(HINSTANCE hInstance, int nShowCmd)
     }
     return EXIT_SUCCESS;
 }
+#endif // TEST_CRAWLER_ONLY
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE, PTSTR, int nShowCmd)
 {
-#if 1
+#ifdef TEST_CRAWLER_ONLY
+    Client client;
+    return client.Run(URL);
+#else
     int r;
 
     BkInitialize(BK_APP_MAINTHREAD_MODE, nullptr);
     r = Run(hInstance, nShowCmd);
     BkFinalize();
     return r;
-#else
-    Client client;
-    return client.Run(URL);
 #endif
 }
