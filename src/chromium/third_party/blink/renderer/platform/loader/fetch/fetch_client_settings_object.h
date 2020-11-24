@@ -32,7 +32,7 @@ namespace blink {
 // currently implemented by ResourceFetcher and FetchContext, and this class is
 // used together with them.
 // https://html.spec.whatwg.org/multipage/webappapis.html#fetch-a-module-worker-script-tree
-class FetchClientSettingsObject : public GarbageCollectedFinalized<FetchClientSettingsObject>
+class FetchClientSettingsObject // BKTODO: public GarbageCollectedFinalized<FetchClientSettingsObject>
 {
 public:
     virtual ~FetchClientSettingsObject(void) = default;
