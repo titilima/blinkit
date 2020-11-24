@@ -15,9 +15,9 @@
 
 #include "third_party/blink/renderer/core/css/parser/css_parser_context.h"
 
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/frame/settings.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/css/css_style_sheet.h"
 #   include "third_party/blink/renderer/core/css/style_sheet_contents.h"
@@ -128,7 +128,8 @@ std::shared_ptr<CSSParserContext> CSSParserContext::Create(const Document& docum
 #endif // BLINKIT_CRAWLER_ONLY
 
 // static
-std::shared_ptr<CSSParserContext> CSSParserContext::Create(
+CSSParserContext* CSSParserContext::Create(
+    ObjectType gcType,
     const Document& document,
     const GURL& base_url_override,
     bool is_opaque_response_from_service_worker,
@@ -140,40 +141,35 @@ std::shared_ptr<CSSParserContext> CSSParserContext::Create(
   CSSParserMode match_mode = mode;
 #else
   CSSParserMode match_mode;
-  ASSERT(document.ForCrawler()); // BKTODO:
-#if 0
-  HTMLImportsController* imports_controller = document.ImportsController();
-  if (imports_controller && profile == kLiveProfile) {
-    match_mode = imports_controller->Master()->InQuirksMode()
-                     ? kHTMLQuirksMode
-                     : kHTMLStandardMode;
-  } else {
+  if (document.ForCrawler()) {
     match_mode = mode;
-  }
-#else
-  match_mode = mode;
+  } else {
+    ASSERT(false); // BKTODO:
+    match_mode = mode;
+#if 0
+    HTMLImportsController* imports_controller = document.ImportsController();
+    if (imports_controller && profile == kLiveProfile) {
+      match_mode = imports_controller->Master()->InQuirksMode()
+                   ? kHTMLQuirksMode
+                   : kHTMLStandardMode;
+    } else {
+      match_mode = mode;
+    }
 #endif
+  }
 #endif
 
   const std::string referrer = base_url_override.GetAsReferrer().spec();
 
-  bool use_legacy_background_size_shorthand_behavior = false;
-#if 0 // BKTODO: Check below
-      document.GetSettings()
-          ? document.GetSettings()
-                ->GetUseLegacyBackgroundSizeShorthandBehavior()
-          : false;
-#endif
-
   ContentSecurityPolicyDisposition policy_disposition = kDoNotCheckContentSecurityPolicy;
 
-  return base::WrapShared(new CSSParserContext(
+  return new (gcType) CSSParserContext(
       base_url_override, is_opaque_response_from_service_worker, charset, mode,
       match_mode, profile, referrer, document.IsHTMLDocument(),
-      use_legacy_background_size_shorthand_behavior,
+      Settings::UseLegacyBackgroundSizeShorthandBehavior,
       SecureContextMode::kSecureContext,
       // BKTODO: document.GetSecureContextMode(),
-      policy_disposition, &document));
+      policy_disposition, &document);
 }
 
 CSSParserContext::CSSParserContext(

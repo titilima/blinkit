@@ -47,6 +47,8 @@
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace html_names;
@@ -417,8 +419,9 @@ SelectorQuery* SelectorQueryCache::Add(const AtomicString &selectors, const Docu
     if (std::end(m_entries) != it)
         return it->second.get();
 
-    std::shared_ptr<CSSParserContext> context(CSSParserContext::Create(document, document.BaseURL(), false, WTF::TextEncoding(), CSSParserContext::kSnapshotProfile));
-    CSSSelectorList selectorList = CSSParser::ParseSelector(context.get(), nullptr, selectors);
+    CSSParserContext *context = CSSParserContext::Create(GCObjectType::Stash, document, document.BaseURL(), false,
+        WTF::TextEncoding(), CSSParserContext::kSnapshotProfile);
+    CSSSelectorList selectorList = CSSParser::ParseSelector(context, nullptr, selectors);
     if (nullptr == selectorList.First())
     {
         exceptionState.ThrowDOMException(DOMExceptionCode::kSyntaxError,
