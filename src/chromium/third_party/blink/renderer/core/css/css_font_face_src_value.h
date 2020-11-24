@@ -121,10 +121,16 @@ class CORE_EXPORT CSSFontFaceSrcValue : public CSSValue {
     USING_GARBAGE_COLLECTED_MIXIN(FontResourceHelper);
 
    public:
+    BK_DECLARE_GC_NAME(FontResourceHelper)
+
     static FontResourceHelper* Create(
         FontResource* resource,
         base::SingleThreadTaskRunner* task_runner) {
       return new FontResourceHelper(resource, task_runner);
+    }
+
+    void Trace(blink::Visitor* visitor) override {
+      FontResourceClient::Trace(visitor);
     }
 
    private:

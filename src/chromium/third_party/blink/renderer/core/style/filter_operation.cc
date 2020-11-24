@@ -57,6 +57,12 @@ FilterOperation* FilterOperation::Blend(const FilterOperation* from,
   return from->Blend(nullptr, 1 - progress);
 }
 
+void ReferenceFilterOperation::Trace(blink::Visitor* visitor) {
+  visitor->Trace(resource_);
+  visitor->Trace(filter_);
+  FilterOperation::Trace(visitor);
+}
+
 FloatRect ReferenceFilterOperation::MapRect(const FloatRect& rect) const {
   ASSERT(false); // BKTODO:
   return FloatRect();

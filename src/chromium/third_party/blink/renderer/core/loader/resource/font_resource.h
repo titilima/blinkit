@@ -90,9 +90,9 @@ class CORE_EXPORT FontResource final : public Resource {
    public:
     FontResourceFactory() : NonTextResourceFactory(ResourceType::kFont) {}
 
-    std::shared_ptr<Resource> Create(const ResourceRequest& request,
+    Resource* Create(const ResourceRequest& request,
                      const ResourceLoaderOptions& options) const override {
-      return std::shared_ptr<Resource>(new FontResource(request, options));
+      return new FontResource(request, options);
     }
   };
   FontResource(const ResourceRequest&, const ResourceLoaderOptions&);

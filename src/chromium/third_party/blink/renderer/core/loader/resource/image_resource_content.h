@@ -57,6 +57,8 @@ class CORE_EXPORT ImageResourceContent final
   USING_GARBAGE_COLLECTED_MIXIN(ImageResourceContent);
 
  public:
+  BK_DECLARE_GC_NAME(ImageResourceContent)
+
   // Used for loading.
   // Returned content will be associated immediately later with ImageResource.
   static ImageResourceContent* CreateNotStarted() {
@@ -93,6 +95,8 @@ class CORE_EXPORT ImageResourceContent final
   bool IsSizeAvailable() const {
     return size_available_ != Image::kSizeUnavailable;
   }
+
+  void Trace(blink::Visitor*) override;
 
   // Content status and deriving predicates.
   // https://docs.google.com/document/d/1O-fB83mrE0B_V8gzXNqHgmRLCvstTB4MMi3RnVLr8bE/edit#heading=h.6cyqmir0f30h
