@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: css_animations.h
-// Description: CSSAnimations Class
-//      Author: Ziming Li
-//     Created: 2020-09-03
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -220,6 +209,7 @@ class CSSAnimations final {
           previous_iteration_(NullValue()) {}
     bool RequiresIterationEvents(const AnimationEffect&) override;
     void OnEventCondition(const AnimationEffect&) override;
+    void Trace(blink::Visitor*) override;
 
    private:
     const Element& AnimationTarget() const { return *animation_target_; }
@@ -246,6 +236,7 @@ class CSSAnimations final {
       return false;
     }
     void OnEventCondition(const AnimationEffect&) override;
+    void Trace(blink::Visitor*) override;
 
    private:
     const Element& TransitionTarget() const { return *transition_target_; }
