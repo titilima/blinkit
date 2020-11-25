@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: style_image.h
-// Description: StyleImage
-//      Author: Ziming Li
-//     Created: 2020-10-08
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -151,6 +140,8 @@ class CORE_EXPORT StyleImage : public GarbageCollectedFinalized<StyleImage> {
   bool IsLazyloadPossiblyDeferred() const {
     return is_lazyload_possibly_deferred_;
   }
+
+  virtual void Trace(blink::Visitor* visitor) {}
 
  protected:
   StyleImage()
