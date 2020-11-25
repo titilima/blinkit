@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: animation_timeline.h
-// Description: AnimationTimeline Class
-//      Author: Ziming Li
-//     Created: 2020-09-06
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -31,8 +20,6 @@ class CORE_EXPORT AnimationTimeline : public ScriptWrappable {
 
   virtual bool IsDocumentTimeline() const { return false; }
   virtual bool IsScrollTimeline() const { return false; }
-private:
-  GCType GetGCType(void) const final { return GC_MANUAL; }
 };
 
 }  // namespace blink
