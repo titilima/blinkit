@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: css_rule_list.h
-// Description: CSSRuleList Classes
-//      Author: Ziming Li
-//     Created: 2020-08-04
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -34,7 +23,6 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_CSS_RULE_LIST_H_
 
 #include "base/macros.h"
-#include "base/memory/ptr_util.h"
 #include "base/memory/scoped_refptr.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
@@ -58,18 +46,18 @@ class CSSRuleList : public ScriptWrappable {
   CSSRuleList() = default;
 
  private:
-  GCType GetGCType(void) const final { return GC_MANUAL; }
-
   DISALLOW_COPY_AND_ASSIGN(CSSRuleList);
 };
 
 class StaticCSSRuleList final : public CSSRuleList {
  public:
-  static std::unique_ptr<StaticCSSRuleList> Create() { return base::WrapUnique(new StaticCSSRuleList); }
+  static StaticCSSRuleList* Create() { return new StaticCSSRuleList(); }
 
   HeapVector<Member<CSSRule>>& Rules() { return rules_; }
 
   CSSStyleSheet* GetStyleSheet() const override { return nullptr; }
+
+  void Trace(blink::Visitor*) override;
 
  private:
   StaticCSSRuleList();
@@ -85,8 +73,13 @@ class StaticCSSRuleList final : public CSSRuleList {
 template <class Rule>
 class LiveCSSRuleList final : public CSSRuleList {
  public:
-  static std::unique_ptr<LiveCSSRuleList<Rule>> Create(Rule* rule) {
-    return base::WrapUnique(new LiveCSSRuleList(rule));
+  static LiveCSSRuleList* Create(Rule* rule) {
+    return new LiveCSSRuleList(rule);
+  }
+
+  void Trace(blink::Visitor* visitor) override {
+    visitor->Trace(rule_);
+    CSSRuleList::Trace(visitor);
   }
 
  private:
