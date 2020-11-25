@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: css_keyframes_rule.h
-// Description: CSSKeyframesRule Class
-//      Author: Ziming Li
-//     Created: 2020-08-02
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2007, 2008, 2012 Apple Inc. All rights reserved.
  *
@@ -72,6 +61,8 @@ class StyleRuleKeyframes final : public StyleRuleBase {
 
   StyleRuleKeyframes* Copy() const { return new StyleRuleKeyframes(*this); }
 
+  void TraceAfterDispatch(blink::Visitor*);
+
   void StyleChanged() { version_++; }
   unsigned Version() const { return version_; }
 
@@ -122,6 +113,8 @@ class CSSKeyframesRule final : public CSSRule {
 
   void StyleChanged() { keyframes_rule_->StyleChanged(); }
 
+  void Trace(blink::Visitor*) override;
+
  private:
   CSSKeyframesRule(StyleRuleKeyframes*, CSSStyleSheet* parent);
 
@@ -129,7 +122,7 @@ class CSSKeyframesRule final : public CSSRule {
 
   Member<StyleRuleKeyframes> keyframes_rule_;
   mutable HeapVector<Member<CSSKeyframeRule>> child_rule_cssom_wrappers_;
-  mutable std::unique_ptr<CSSRuleList> rule_list_cssom_wrapper_;
+  mutable Member<CSSRuleList> rule_list_cssom_wrapper_;
   bool is_prefixed_;
 };
 
