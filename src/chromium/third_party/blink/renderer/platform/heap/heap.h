@@ -61,6 +61,9 @@ protected:
         return s_gcPtr;
     }
 private:
+#ifndef NDEBUG
+    static const char* NameForDebug(void) { return "GarbageCollected"; }
+#endif
     static void Tracer(void *ptr, Visitor *visitor)
     {
         reinterpret_cast<T *>(ptr)->Trace(visitor);

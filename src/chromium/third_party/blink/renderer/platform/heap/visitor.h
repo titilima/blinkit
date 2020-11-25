@@ -36,7 +36,8 @@ public:
     template <typename T>
     inline void Trace(const Member<T> &m)
     {
-        TraceImpl(m.Get());
+        const void *pm = m.Get();
+        TraceImpl(const_cast<void *>(pm));
     }
     template <typename T, typename K, typename H>
     void Trace(const std::unordered_map<K, T, H> &m)
@@ -50,6 +51,8 @@ public:
         for (const T &o : v)
             Trace(o);
     }
+
+    template <typename T> void Trace(T &o);
 protected:
     Visitor(void) = default;
 
