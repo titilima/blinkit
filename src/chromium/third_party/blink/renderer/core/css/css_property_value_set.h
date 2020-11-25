@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: css_property_value_set.h
-// Description: CSSPropertyValueSet Class
-//      Author: Ziming Li
-//     Created: 2020-08-07
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2008, 2012 Apple Inc. All rights reserved.
@@ -145,6 +134,9 @@ class CORE_EXPORT CSSPropertyValueSet
 
   bool PropertyMatches(CSSPropertyID, const CSSValue&) const;
 
+  void Trace(blink::Visitor*);
+  void TraceAfterDispatch(blink::Visitor* visitor) {}
+
  protected:
   enum { kMaxArraySize = (1 << 28) - 1 };
 
@@ -177,6 +169,7 @@ class CSSLazyPropertyParser
   CSSLazyPropertyParser() = default;
   virtual ~CSSLazyPropertyParser() = default;
   virtual CSSPropertyValueSet* ParseProperties() = 0;
+  virtual void Trace(blink::Visitor*);
   DISALLOW_COPY_AND_ASSIGN(CSSLazyPropertyParser);
 };
 
@@ -193,6 +186,8 @@ class CORE_EXPORT ImmutableCSSPropertyValueSet : public CSSPropertyValueSet {
 
   template <typename T>  // CSSPropertyID or AtomicString
   int FindPropertyIndex(T property) const;
+
+  void TraceAfterDispatch(blink::Visitor*);
 
   void* operator new(std::size_t, void* location) { return location; }
 
@@ -278,6 +273,8 @@ class CORE_EXPORT MutableCSSPropertyValueSet : public CSSPropertyValueSet {
 
   template <typename T>  // CSSPropertyID or AtomicString
   int FindPropertyIndex(T property) const;
+
+  void TraceAfterDispatch(blink::Visitor*);
 
  private:
   explicit MutableCSSPropertyValueSet(CSSParserMode);
