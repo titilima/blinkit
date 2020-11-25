@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: css_import_rule.h
-// Description: CSSImportRule Class
-//      Author: Ziming Li
-//     Created: 2020-08-04
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -33,7 +22,6 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_CSS_CSS_IMPORT_RULE_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_CSS_IMPORT_RULE_H_
 
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/css/css_rule.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 
@@ -46,8 +34,8 @@ class CSSImportRule final : public CSSRule {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
-  static std::shared_ptr<CSSImportRule> Create(StyleRuleImport* rule, CSSStyleSheet* sheet) {
-    return base::WrapShared(new CSSImportRule(rule, sheet));
+  static CSSImportRule* Create(StyleRuleImport* rule, CSSStyleSheet* sheet) {
+    return new CSSImportRule(rule, sheet);
   }
 
   ~CSSImportRule() override;
@@ -59,14 +47,16 @@ class CSSImportRule final : public CSSRule {
   MediaList* media() const;
   CSSStyleSheet* styleSheet() const;
 
+  void Trace(blink::Visitor*) override;
+
  private:
   CSSImportRule(StyleRuleImport*, CSSStyleSheet*);
 
   CSSRule::Type type() const override { return kImportRule; }
 
-  std::shared_ptr<StyleRuleImport> import_rule_;
-  mutable std::shared_ptr<MediaList> media_cssom_wrapper_;
-  mutable std::shared_ptr<CSSStyleSheet> style_sheet_cssom_wrapper_;
+  Member<StyleRuleImport> import_rule_;
+  mutable Member<MediaList> media_cssom_wrapper_;
+  mutable Member<CSSStyleSheet> style_sheet_cssom_wrapper_;
 };
 
 DEFINE_CSS_RULE_TYPE_CASTS(CSSImportRule, kImportRule);

@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: css_import_rule.cc
-// Description: CSSImportRule Class
-//      Author: Ziming Li
-//     Created: 2020-08-06
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -55,7 +44,7 @@ MediaList* CSSImportRule::media() const {
   if (!media_cssom_wrapper_)
     media_cssom_wrapper_ = MediaList::Create(import_rule_->MediaQueries(),
                                              const_cast<CSSImportRule*>(this));
-  return media_cssom_wrapper_.get();
+  return media_cssom_wrapper_.Get();
 }
 
 String CSSImportRule::cssText() const {
@@ -85,12 +74,19 @@ CSSStyleSheet* CSSImportRule::styleSheet() const {
   if (!style_sheet_cssom_wrapper_)
     style_sheet_cssom_wrapper_ = CSSStyleSheet::Create(
         import_rule_->GetStyleSheet(), const_cast<CSSImportRule*>(this));
-  return style_sheet_cssom_wrapper_.get();
+  return style_sheet_cssom_wrapper_.Get();
 }
 
 void CSSImportRule::Reattach(StyleRuleBase*) {
   // FIXME: Implement when enabling caching for stylesheets with import rules.
   NOTREACHED();
+}
+
+void CSSImportRule::Trace(blink::Visitor* visitor) {
+  visitor->Trace(import_rule_);
+  visitor->Trace(media_cssom_wrapper_);
+  visitor->Trace(style_sheet_cssom_wrapper_);
+  CSSRule::Trace(visitor);
 }
 
 }  // namespace blink
