@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: inert_effect.h
-// Description: InertEffect Class
-//      Author: Ziming Li
-//     Created: 2020-08-29
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -62,6 +51,8 @@ class CORE_EXPORT InertEffect final : public AnimationEffect {
   bool Paused() const { return paused_; }
 
   bool IsInertEffect() const final { return true; }
+
+  void Trace(blink::Visitor*) override;
 
  protected:
   void UpdateChildrenAndEffects() const override {}
