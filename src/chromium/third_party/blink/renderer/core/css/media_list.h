@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: media_list.h
-// Description: MediaList Class
-//      Author: Ziming Li
-//     Created: 2020-08-02
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2008, 2009, 2010, 2012 Apple Inc. All rights
@@ -33,7 +22,6 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_CSS_MEDIA_LIST_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_MEDIA_LIST_H_
 
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/media_query.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
@@ -84,14 +72,14 @@ class MediaList final : public ScriptWrappable {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
-  static std::shared_ptr<MediaList> Create(scoped_refptr<MediaQuerySet> media_queries,
-                                           CSSStyleSheet* parent_sheet) {
-    return base::WrapShared(new MediaList(std::move(media_queries), parent_sheet));
+  static MediaList* Create(scoped_refptr<MediaQuerySet> media_queries,
+                           CSSStyleSheet* parent_sheet) {
+    return new MediaList(std::move(media_queries), parent_sheet);
   }
 
-  static std::shared_ptr<MediaList> Create(scoped_refptr<MediaQuerySet> media_queries,
+  static MediaList* Create(scoped_refptr<MediaQuerySet> media_queries,
                            CSSRule* parent_rule) {
-    return base::WrapShared(new MediaList(std::move(media_queries), parent_rule));
+    return new MediaList(std::move(media_queries), parent_rule);
   }
 
   unsigned length() const { return media_queries_->QueryVector().size(); }
@@ -110,15 +98,11 @@ class MediaList final : public ScriptWrappable {
 
   void Reattach(scoped_refptr<MediaQuerySet>);
 
+  void Trace(blink::Visitor*) override;
+
  private:
   MediaList(scoped_refptr<MediaQuerySet>, CSSStyleSheet* parent_sheet);
   MediaList(scoped_refptr<MediaQuerySet>, CSSRule* parent_rule);
-
-  GCType GetGCType(void) const override
-  {
-      ASSERT(false); // BKTODO:
-      return GC_MANUAL;
-  }
 
   scoped_refptr<MediaQuerySet> media_queries_;
   Member<CSSStyleSheet> parent_style_sheet_;
