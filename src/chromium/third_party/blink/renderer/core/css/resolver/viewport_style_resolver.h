@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: viewport_style_resolver.h
-// Description: ViewportStyleResolver Class
-//      Author: Ziming Li
-//     Created: 2020-09-18
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2012 Intel Corporation. All rights reserved.
  *
@@ -58,8 +47,8 @@ class StyleRuleViewport;
 class CORE_EXPORT ViewportStyleResolver
     : public GarbageCollectedFinalized<ViewportStyleResolver> {
  public:
-  static std::unique_ptr<ViewportStyleResolver> Create(Document& document) {
-    return base::WrapUnique(new ViewportStyleResolver(document));
+  static ViewportStyleResolver* Create(Document& document) {
+    return new ViewportStyleResolver(document);
   }
 
   void InitialStyleChanged();
