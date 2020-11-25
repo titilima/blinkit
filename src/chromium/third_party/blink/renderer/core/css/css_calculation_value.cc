@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: css_calculation_value.cc
-// Description: CSSCalcValue Class
-//      Author: Ziming Li
-//     Created: 2020-08-06
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2011, 2012 Google Inc. All rights reserved.
  *
@@ -281,6 +270,11 @@ class CSSCalcPrimitiveValue final : public CSSCalcExpressionNode {
   CalcOperator OperatorType() const override {
     NOTREACHED();
     return kCalcAdd;
+  }
+
+  void Trace(blink::Visitor* visitor) override {
+    visitor->Trace(value_);
+    CSSCalcExpressionNode::Trace(visitor);
   }
 
  private:
@@ -624,6 +618,12 @@ class CSSCalcBinaryOperation final : public CSSCalcExpressionNode {
     }
     NOTREACHED();
     return CSSPrimitiveValue::UnitType::kUnknown;
+  }
+
+  void Trace(blink::Visitor* visitor) override {
+    visitor->Trace(left_side_);
+    visitor->Trace(right_side_);
+    CSSCalcExpressionNode::Trace(visitor);
   }
 
  private:
