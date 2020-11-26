@@ -52,6 +52,11 @@ class NewCSSAnimation {
         style_rule_version(this->style_rule->Version()),
         play_state_list(play_state_list) {}
 
+  void Trace(blink::Visitor* visitor) {
+    visitor->Trace(effect);
+    visitor->Trace(style_rule);
+  }
+
   AtomicString name;
   size_t name_index;
   Member<const InertEffect> effect;
@@ -78,6 +83,12 @@ class UpdatedCSSAnimation {
         style_rule(style_rule),
         style_rule_version(this->style_rule->Version()),
         play_state_list(play_state_list) {}
+
+  void Trace(blink::Visitor* visitor) {
+    visitor->Trace(animation);
+    visitor->Trace(effect);
+    visitor->Trace(style_rule);
+  }
 
   wtf_size_t index;
   Member<Animation> animation;
@@ -180,6 +191,7 @@ class CSSAnimationUpdate final {
    public:
     NewTransition();
     ~NewTransition();
+    void Trace(blink::Visitor* visitor) { visitor->Trace(effect); }
 
     PropertyHandle property = HashTraits<blink::PropertyHandle>::EmptyValue();
     scoped_refptr<const ComputedStyle> from;
@@ -251,6 +263,18 @@ class CSSAnimationUpdate final {
            updated_compositor_keyframes_.IsEmpty();
   }
 
+  void Trace(blink::Visitor* visitor) {
+    visitor->Trace(new_transitions_);
+    visitor->Trace(new_animations_);
+    visitor->Trace(suppressed_animations_);
+    visitor->Trace(animations_with_updates_);
+    visitor->Trace(updated_compositor_keyframes_);
+    visitor->Trace(active_interpolations_for_custom_animations_);
+    visitor->Trace(active_interpolations_for_standard_animations_);
+    visitor->Trace(active_interpolations_for_custom_transitions_);
+    visitor->Trace(active_interpolations_for_standard_transitions_);
+  }
+
  private:
   // Order is significant since it defines the order in which new animations
   // will be started. Note that there may be multiple animations present
@@ -277,5 +301,37 @@ class CSSAnimationUpdate final {
 };
 
 }  // namespace blink
+
+namespace BlinKit {
+
+template <>
+struct TracePolicy<blink::NewCSSAnimation> {
+  static void Impl(blink::NewCSSAnimation &o, blink::Visitor *visitor) {
+    o.Trace(visitor);
+  }
+};
+
+template <>
+struct TracePolicy<blink::UpdatedCSSAnimation> {
+  static void Impl(blink::UpdatedCSSAnimation &o, blink::Visitor *visitor) {
+    o.Trace(visitor);
+  }
+};
+
+template <>
+struct TracePolicy<blink::CSSAnimationUpdate> {
+  static void Impl(blink::CSSAnimationUpdate &o, blink::Visitor *visitor) {
+    o.Trace(visitor);
+  }
+};
+
+template <>
+struct TracePolicy<blink::CSSAnimationUpdate::NewTransition> {
+  static void Impl(blink::CSSAnimationUpdate::NewTransition &o, blink::Visitor *visitor) {
+    o.Trace(visitor);
+  }
+};
+
+}
 
 #endif
