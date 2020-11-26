@@ -41,12 +41,14 @@ public:
     template <typename T>
     void Trace(blink::Member<T> &m)
     {
-        TraceImpl(m.Get());
+        const void *p = m.Get();
+        TraceImpl(const_cast<void *>(p));
     }
     template <typename T>
     void Trace(const blink::Member<T> &m)
     {
-        TraceImpl(m.Get());
+        const void *p = m.Get();
+        TraceImpl(const_cast<void *>(p));
     }
 
     template <typename T>
