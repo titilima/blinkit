@@ -163,6 +163,16 @@ struct TracePolicy<blink::HeapHashSet<T>>
     }
 };
 
+template <typename T, wtf_size_t inlineCapacity>
+struct TracePolicy<blink::HeapVector<T, inlineCapacity>>
+{
+    static void Impl(blink::HeapVector<T, inlineCapacity> &v, blink::Visitor *visitor)
+    {
+        for (auto &o : v)
+            visitor->Trace(o);
+    }
+};
+
 } // namespace BlinKit
 
 #endif // BLINKIT_BLINK_HEAP_ALLOCATOR_H
