@@ -34,6 +34,7 @@ public:
     using std::list<T>::end;
     using std::list<T>::erase;
     using std::list<T>::front;
+    using std::list<T>::pop_front;
     using std::list<T>::push_back;
 
     bool IsEmpty(void) const { return this->empty(); }
@@ -43,12 +44,6 @@ public:
         T first = this->front();
         this->pop_front();
         return first;
-    }
-
-    void Trace(Visitor *visitor)
-    {
-        for (auto it = this->begin(); it != this->end(); ++it)
-            visitor->Trace(*it);
     }
 };
 
@@ -71,10 +66,12 @@ class HeapHashSet : private std::unordered_set<T>
 {
 public:
     using std::unordered_set<T>::begin;
+    using std::unordered_set<T>::clear;
     using std::unordered_set<T>::end;
     using std::unordered_set<T>::erase;
     using std::unordered_set<T>::find;
     using std::unordered_set<T>::insert;
+    using std::unordered_set<T>::size;
 
     bool Contains(const T& o) const
     {
@@ -82,12 +79,6 @@ public:
         return this->end() != it;
     }
     bool IsEmpty(void) const { return this->empty(); }
-
-    void Trace(Visitor *visitor)
-    {
-        for (auto it = this->begin(); it != this->end(); ++it)
-            visitor->Trace(*it);
-    }
 };
 
 template <typename T>
@@ -139,5 +130,39 @@ class HeapHashCountedSet : public HashCountedSet<T>
 };
 
 } // namespace blink
+
+namespace BlinKit {
+
+template <typename T>
+struct TracePolicy<blink::HeapDeque<T>>
+{
+    static void Impl(blink::HeapDeque<T> &q, blink::Visitor *visitor)
+    {
+        for (auto &o : q)
+            visitor->Trace(o);
+    }
+};
+
+template <typename K, typename V>
+struct TracePolicy<blink::HeapHashMap<K, V>>
+{
+    static void Impl(blink::HeapHashMap<K, V> &m, blink::Visitor *visitor)
+    {
+        for (auto &it : m)
+            visitor->Trace(it.second);
+    }
+};
+
+template <typename T>
+struct TracePolicy<blink::HeapHashSet<T>>
+{
+    static void Impl(blink::HeapHashSet<T> &s, blink::Visitor *visitor)
+    {
+        for (auto &o : s)
+            visitor->Trace(o);
+    }
+};
+
+} // namespace BlinKit
 
 #endif // BLINKIT_BLINK_HEAP_ALLOCATOR_H

@@ -16,8 +16,11 @@
 
 #include <unordered_map>
 #include <vector>
-#include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/heap/member.h"
+
+namespace BlinKit {
+template <typename T> struct TracePolicy {};
+}
 
 namespace blink {
 
@@ -27,32 +30,30 @@ class ScriptWrappable;
 
 class Visitor
 {
+    template <typename T> friend struct BlinKit::TracePolicy;
 public:
-    template <class T, typename = std::enable_if<std::is_base_of<ScriptWrappable, T>::value>>
-    inline void Trace(const T *po)
-    {
-        TraceImpl(const_cast<T *>(po));
-    }
     template <typename T>
-    inline void Trace(const Member<T> &m)
+    void Trace(T *po)
     {
-        const void *pm = m.Get();
-        TraceImpl(const_cast<void *>(pm));
-    }
-    template <typename T, typename K, typename H>
-    void Trace(const std::unordered_map<K, T, H> &m)
-    {
-        for (auto &it : m)
-            Trace(it.second);
-    }
-    template <typename T>
-    void Trace(const std::vector<T> &v)
-    {
-        for (const T &o : v)
-            Trace(o);
+        TraceImpl(po);
     }
 
-    template <typename T> void Trace(T &o);
+    template <typename T>
+    void Trace(blink::Member<T> &m)
+    {
+        TraceImpl(m.Get());
+    }
+    template <typename T>
+    void Trace(const blink::Member<T> &m)
+    {
+        TraceImpl(m.Get());
+    }
+
+    template <typename T>
+    void Trace(T &o)
+    {
+        BlinKit::TracePolicy<T>::Impl(o, this);
+    }
 protected:
     Visitor(void) = default;
 
@@ -60,5 +61,29 @@ protected:
 };
 
 } // namespace blink
+
+namespace BlinKit {
+
+template <typename T, typename K, typename H>
+struct TracePolicy<std::unordered_map<K, T, H>>
+{
+    static void Impl(std::unordered_map<K, T, H> &m, blink::Visitor *visitor)
+    {
+        for (auto &it : m)
+            visitor->Trace(it.second);
+    }
+};
+
+template <typename T>
+struct TracePolicy<std::vector<T>>
+{
+    static void Impl(std::vector<T> &v, blink::Visitor *visitor)
+    {
+        for (auto &o : v)
+            visitor->Trace(o);
+    }
+};
+
+} // namespace BlinKit
 
 #endif // BLINKIT_BLINK_VISITOR_H
