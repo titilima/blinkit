@@ -100,6 +100,8 @@ class CORE_EXPORT FontFaceSet : public EventTargetWithInlineData,
   wtf_size_t size() const;
   virtual AtomicString status() const = 0;
 
+  void Trace(blink::Visitor*) override;
+
  protected:
   static const int kDefaultFontSize;
   static const char kDefaultFontFamily[];
@@ -137,7 +139,7 @@ class CORE_EXPORT FontFaceSet : public EventTargetWithInlineData,
   Member<ReadyProperty> ready_;
 #endif
 
-  std::unique_ptr<AsyncMethodRunner<FontFaceSet>> async_runner_;
+  Member<AsyncMethodRunner<FontFaceSet>> async_runner_;
 
 #if 0 // BKTODO:
   class IterationSource final : public FontFaceSetIterable::IterationSource {
@@ -180,6 +182,8 @@ class CORE_EXPORT FontFaceSet : public EventTargetWithInlineData,
 
     void NotifyLoaded(FontFace*) override;
     void NotifyError(FontFace*) override;
+
+    void Trace(blink::Visitor*) override;
 
    private:
 #if 0 // BKTODO:

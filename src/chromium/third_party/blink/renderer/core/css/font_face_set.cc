@@ -122,6 +122,18 @@ bool FontFaceSet::hasForBinding(ScriptState*,
 }
 #endif
 
+void FontFaceSet::Trace(blink::Visitor* visitor) {
+  visitor->Trace(non_css_connected_faces_);
+  visitor->Trace(loading_fonts_);
+  visitor->Trace(loaded_fonts_);
+  visitor->Trace(failed_fonts_);
+  // BKTODO: visitor->Trace(ready_);
+  visitor->Trace(async_runner_);
+  PausableObject::Trace(visitor);
+  EventTargetWithInlineData::Trace(visitor);
+  FontFace::LoadFontCallback::Trace(visitor);
+}
+
 wtf_size_t FontFaceSet::size() const {
   if (!InActiveContext())
     return non_css_connected_faces_.size();
@@ -301,6 +313,12 @@ void FontFaceSet::LoadFontPromiseResolver::NotifyError(FontFace* font_face) {
     resolver_->Reject(font_face->GetError());
 #endif
   }
+}
+
+void FontFaceSet::LoadFontPromiseResolver::Trace(blink::Visitor* visitor) {
+  visitor->Trace(font_faces_);
+  // BKTODO: visitor->Trace(resolver_);
+  LoadFontCallback::Trace(visitor);
 }
 
 #if 0 // BKTODO:
