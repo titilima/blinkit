@@ -129,7 +129,7 @@ ScriptPromise FontFaceSetDocument::ready(ScriptState* script_state) {
 const HeapLinkedHashSet<Member<FontFace>>&
 FontFaceSetDocument::CSSConnectedFontFaceList() const {
   Document* document = this->GetDocument();
-  ASSERT(false); // BKTODO: document->UpdateActiveStyle();
+  document->UpdateActiveStyle();
   return GetFontSelector()->GetFontFaceCache()->CssConnectedFontFaces();
 }
 
@@ -142,14 +142,11 @@ void FontFaceSetDocument::FireDoneEventIfPossible() {
   if (!d)
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   // If the layout was invalidated in between when we thought layout
   // was updated and when we're ready to fire the event, just wait
   // until after the next layout before firing events.
   if (!d->View() || d->View()->NeedsLayout())
     return;
-#endif
 
   FireDoneEvent();
 }
@@ -187,11 +184,8 @@ bool FontFaceSetDocument::ResolveFontStyle(const String& font_string,
 
   style->GetFont().Update(style->GetFont().GetFontSelector());
 
-  ASSERT(false); // BKTODO:
-#if 0
   GetDocument()->UpdateActiveStyle();
   GetDocument()->EnsureStyleResolver().ComputeFont(style.get(), *parsed_style);
-#endif
 
   font = style->GetFont();
   font.Update(GetFontSelector());
@@ -203,9 +197,7 @@ FontFaceSetDocument* FontFaceSetDocument::From(Document& document) {
       Supplement<Document>::From<FontFaceSetDocument>(document);
   if (!fonts) {
     fonts = FontFaceSetDocument::Create(document);
-
-    auto p = base::WrapUnique(fonts);
-    Supplement<Document>::ProvideTo(document, p);
+    Supplement<Document>::ProvideTo(document, fonts);
   }
 
   return fonts;
@@ -222,6 +214,11 @@ size_t FontFaceSetDocument::ApproximateBlankCharacterCount(Document& document) {
           Supplement<Document>::From<FontFaceSetDocument>(document))
     return fonts->ApproximateBlankCharacterCount();
   return 0;
+}
+
+void FontFaceSetDocument::Trace(blink::Visitor* visitor) {
+  Supplement<Document>::Trace(visitor);
+  FontFaceSet::Trace(visitor);
 }
 
 void FontFaceSetDocument::FontLoadHistogram::UpdateStatus(FontFace* font_face) {

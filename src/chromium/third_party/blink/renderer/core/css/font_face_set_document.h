@@ -84,6 +84,8 @@ class CORE_EXPORT FontFaceSetDocument final : public FontFaceSet,
   static void DidLayout(Document&);
   static size_t ApproximateBlankCharacterCount(Document&);
 
+  void Trace(blink::Visitor*) override;
+
  protected:
   bool InActiveContext() const override;
   FontSelector* GetFontSelector() const override {
@@ -99,11 +101,6 @@ class CORE_EXPORT FontFaceSetDocument final : public FontFaceSet,
 
   explicit FontFaceSetDocument(Document&);
 
-  GCType GetGCType(void) const override
-  {
-    ASSERT(false); // BKTODO:
-    return GC_MANUAL;
-  }
   void FireDoneEventIfPossible() override;
   const HeapLinkedHashSet<Member<FontFace>>& CSSConnectedFontFaceList()
       const override;
