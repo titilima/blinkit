@@ -215,9 +215,9 @@ void ScriptRunner::QueueScriptForExecution(PendingScript *pendingScript)
 
 void ScriptRunner::Trace(Visitor *visitor)
 {
-    m_pendingAsyncScripts.Trace(visitor);
-    m_asyncScriptsToExecuteSoon.Trace(visitor);
-    m_inOrderScriptsToExecuteSoon.Trace(visitor);
+    visitor->Trace(m_pendingAsyncScripts);
+    visitor->Trace(m_asyncScriptsToExecuteSoon);
+    visitor->Trace(m_inOrderScriptsToExecuteSoon);
 }
 
 void ScriptRunner::TryStream(PendingScript *pendingScript)
