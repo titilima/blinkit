@@ -532,7 +532,7 @@ void HTMLParserScriptRunner::Trace(blink::Visitor* visitor) {
   visitor->Trace(document_);
   visitor->Trace(host_);
   visitor->Trace(parser_blocking_script_);
-  scripts_to_execute_after_parsing_.Trace(visitor);
+  visitor->Trace(scripts_to_execute_after_parsing_);
   PendingScriptClient::Trace(visitor);
 }
 
