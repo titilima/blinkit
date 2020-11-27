@@ -41,7 +41,8 @@ public:
         std::unique_lock<std::mutex> lock(m_mutex);
         while (!Traits::Wait(m_signalData))
             m_cond.wait(lock);
-        accessor(m_signalData);
+        if (accessor)
+            accessor(m_signalData);
     }
 protected:
     BkConditionImpl(const Data &initialData = Data()) : m_signalData(initialData) {}
