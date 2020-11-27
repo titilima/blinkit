@@ -51,6 +51,8 @@ class CSSURIValue : public CSSValue {
 
   bool Equals(const CSSURIValue&) const;
 
+  void TraceAfterDispatch(blink::Visitor*);
+
  private:
   CSSURIValue(const AtomicString&, const GURL&);
   CSSURIValue(const AtomicString& relative_url,

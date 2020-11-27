@@ -88,4 +88,9 @@ bool CSSURIValue::Equals(const CSSURIValue& other) const {
   return absolute_url_ == other.absolute_url_;
 }
 
+void CSSURIValue::TraceAfterDispatch(blink::Visitor* visitor) {
+  // BKTODO: visitor->Trace(resource_);
+  CSSValue::TraceAfterDispatch(visitor);
+}
+
 }  // namespace blink
