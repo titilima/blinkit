@@ -94,4 +94,9 @@ void PaintLayerResourceInfo::InvalidateFilterChain() {
   last_effect_ = nullptr;
 }
 
+void PaintLayerResourceInfo::Trace(blink::Visitor* visitor) {
+  visitor->Trace(last_effect_);
+  // BKTODO: SVGResourceClient::Trace(visitor);
+}
+
 }  // namespace blink
