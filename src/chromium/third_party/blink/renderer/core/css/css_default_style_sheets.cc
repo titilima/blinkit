@@ -59,7 +59,7 @@
 
 namespace blink {
 
-using namespace html_names;
+using namespace HTMLNames;
 
 CSSDefaultStyleSheets& CSSDefaultStyleSheets::Instance() {
   static CSSDefaultStyleSheets css_default_style_sheets;
@@ -79,10 +79,11 @@ static const MediaQueryEvaluator& PrintEval() {
 }
 #endif
 
-static std::shared_ptr<StyleSheetContents> ParseUASheet(const String& str) {
+static StyleSheetContents* ParseUASheet(const String& str) {
   // UA stylesheets always parse in the insecure context mode.
-  std::shared_ptr<CSSParserContext> context = CSSParserContext::Create(kUASheetMode, SecureContextMode::kInsecureContext);
-  std::shared_ptr<StyleSheetContents> sheet = StyleSheetContents::Create(context);
+  StyleSheetContents* sheet =
+      StyleSheetContents::Create(CSSParserContext::Create(
+          kUASheetMode, SecureContextMode::kInsecureContext));
   sheet->ParseString(str);
   // User Agent stylesheets are parsed once for the lifetime of the renderer
   // process and are intentionally leaked.
@@ -144,7 +145,7 @@ CSSDefaultStyleSheets::EnsureXHTMLMobileProfileStyleSheet() {
         ParseUASheet(GetDataResourceAsASCIIString("xhtmlmp.css"));
 #endif
   }
-  return xhtml_mobile_profile_style_sheet_.get();
+  return xhtml_mobile_profile_style_sheet_;
 }
 
 StyleSheetContents* CSSDefaultStyleSheets::EnsureMobileViewportStyleSheet() {
@@ -155,7 +156,7 @@ StyleSheetContents* CSSDefaultStyleSheets::EnsureMobileViewportStyleSheet() {
         ParseUASheet(GetDataResourceAsASCIIString("viewportAndroid.css"));
 #endif
   }
-  return mobile_viewport_style_sheet_.get();
+  return mobile_viewport_style_sheet_;
 }
 
 StyleSheetContents*
@@ -167,7 +168,7 @@ CSSDefaultStyleSheets::EnsureTelevisionViewportStyleSheet() {
         ParseUASheet(GetDataResourceAsASCIIString("viewportTelevision.css"));
 #endif
   }
-  return television_viewport_style_sheet_.get();
+  return television_viewport_style_sheet_;
 }
 
 bool CSSDefaultStyleSheets::EnsureDefaultStyleSheetsForElement(
@@ -205,6 +206,18 @@ bool CSSDefaultStyleSheets::EnsureDefaultStyleSheetsForElement(
 void CSSDefaultStyleSheets::SetMediaControlsStyleSheetLoader(
     std::unique_ptr<UAStyleSheetLoader> loader) {
   media_controls_style_sheet_loader_.swap(loader);
+}
+
+void CSSDefaultStyleSheets::Trace(blink::Visitor* visitor) {
+  visitor->Trace(default_style_);
+  visitor->Trace(default_quirks_style_);
+  visitor->Trace(default_style_sheet_);
+  visitor->Trace(mobile_viewport_style_sheet_);
+  visitor->Trace(television_viewport_style_sheet_);
+  visitor->Trace(xhtml_mobile_profile_style_sheet_);
+  visitor->Trace(quirks_style_sheet_);
+  visitor->Trace(mathml_style_sheet_);
+  visitor->Trace(media_controls_style_sheet_);
 }
 
 }  // namespace blink

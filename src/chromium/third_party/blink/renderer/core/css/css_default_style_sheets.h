@@ -51,22 +51,24 @@ class CSSDefaultStyleSheets
     : public GarbageCollectedFinalized<CSSDefaultStyleSheets> {
 
  public:
+  BK_DECLARE_GC_NAME(CSSDefaultStyleSheets)
+
   CORE_EXPORT static CSSDefaultStyleSheets& Instance();
 
   bool EnsureDefaultStyleSheetsForElement(const Element&);
 
-  RuleSet* DefaultStyle() { return default_style_.get(); }
-  RuleSet* DefaultQuirksStyle() { return default_quirks_style_.get(); }
+  RuleSet* DefaultStyle() { return default_style_.Get(); }
+  RuleSet* DefaultQuirksStyle() { return default_quirks_style_.Get(); }
 
   StyleSheetContents* EnsureMobileViewportStyleSheet();
   StyleSheetContents* EnsureTelevisionViewportStyleSheet();
   StyleSheetContents* EnsureXHTMLMobileProfileStyleSheet();
 
-  StyleSheetContents* DefaultStyleSheet() { return default_style_sheet_.get(); }
-  StyleSheetContents* QuirksStyleSheet() { return quirks_style_sheet_.get(); }
-  StyleSheetContents* MathmlStyleSheet() { return mathml_style_sheet_.get(); }
+  StyleSheetContents* DefaultStyleSheet() { return default_style_sheet_.Get(); }
+  StyleSheetContents* QuirksStyleSheet() { return quirks_style_sheet_.Get(); }
+  StyleSheetContents* MathmlStyleSheet() { return mathml_style_sheet_.Get(); }
   StyleSheetContents* MediaControlsStyleSheet() {
-    return media_controls_style_sheet_.get();
+    return media_controls_style_sheet_.Get();
   }
 
   CORE_EXPORT void PrepareForLeakDetection();
@@ -87,20 +89,22 @@ class CSSDefaultStyleSheets
     return media_controls_style_sheet_loader_.get();
   }
 
+  void Trace(blink::Visitor*);
+
  private:
   CSSDefaultStyleSheets();
   void InitializeDefaultStyles();
 
-  std::unique_ptr<RuleSet> default_style_;
-  std::unique_ptr<RuleSet> default_quirks_style_;
+  Member<RuleSet> default_style_;
+  Member<RuleSet> default_quirks_style_;
 
-  std::shared_ptr<StyleSheetContents> default_style_sheet_;
-  std::shared_ptr<StyleSheetContents> mobile_viewport_style_sheet_;
-  std::shared_ptr<StyleSheetContents> television_viewport_style_sheet_;
-  std::shared_ptr<StyleSheetContents> xhtml_mobile_profile_style_sheet_;
-  std::shared_ptr<StyleSheetContents> quirks_style_sheet_;
-  std::shared_ptr<StyleSheetContents> mathml_style_sheet_;
-  std::shared_ptr<StyleSheetContents> media_controls_style_sheet_;
+  Member<StyleSheetContents> default_style_sheet_;
+  Member<StyleSheetContents> mobile_viewport_style_sheet_;
+  Member<StyleSheetContents> television_viewport_style_sheet_;
+  Member<StyleSheetContents> xhtml_mobile_profile_style_sheet_;
+  Member<StyleSheetContents> quirks_style_sheet_;
+  Member<StyleSheetContents> mathml_style_sheet_;
+  Member<StyleSheetContents> media_controls_style_sheet_;
 
   std::unique_ptr<UAStyleSheetLoader> media_controls_style_sheet_loader_;
   DISALLOW_COPY_AND_ASSIGN(CSSDefaultStyleSheets);
