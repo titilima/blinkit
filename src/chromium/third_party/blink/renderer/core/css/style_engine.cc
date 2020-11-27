@@ -610,7 +610,7 @@ RuleSet* StyleEngine::RuleSetForSheet(CSSStyleSheet& sheet) {
 }
 
 void StyleEngine::CreateResolver() {
-  resolver_.reset(StyleResolver::Create(*document_));
+  resolver_ = StyleResolver::Create(*document_);
   resolver_->SetRuleUsageTracker(tracker_);
 }
 
@@ -626,7 +626,7 @@ void StyleEngine::ClearResolvers() {
     TRACE_EVENT1("blink", "StyleEngine::clearResolver", "frame",
                  ToTraceValue(GetDocument().GetFrame()));
     resolver_->Dispose();
-    resolver_.reset();
+    resolver_.Clear();
   }
 }
 
@@ -1783,6 +1783,36 @@ void StyleEngine::UpdateLayoutTreeRebuildRoot(ContainerNode* ancestor,
                                               Node* dirty_node) {
   if (GetDocument().IsActive())
     layout_tree_rebuild_root_.Update(ancestor, dirty_node);
+}
+
+void StyleEngine::Trace(blink::Visitor* visitor) {
+  ASSERT(false); // BKTODO: Check unnecessary traces.
+  visitor->Trace(document_);
+  visitor->Trace(injected_user_style_sheets_);
+  visitor->Trace(injected_author_style_sheets_);
+  visitor->Trace(active_user_style_sheets_);
+  visitor->Trace(custom_element_default_style_sheets_);
+  visitor->Trace(keyframes_rule_map_);
+  visitor->Trace(inspector_style_sheet_);
+  visitor->Trace(document_style_sheet_collection_);
+  visitor->Trace(style_sheet_collection_map_);
+  visitor->Trace(dirty_tree_scopes_);
+  visitor->Trace(active_tree_scopes_);
+  visitor->Trace(tree_boundary_crossing_scopes_);
+  visitor->Trace(resolver_);
+  visitor->Trace(viewport_resolver_);
+  visitor->Trace(media_query_evaluator_);
+  visitor->Trace(global_rule_set_);
+  // BKTODO: visitor->Trace(pending_invalidations_);
+  visitor->Trace(style_invalidation_root_);
+  visitor->Trace(style_recalc_root_);
+  visitor->Trace(layout_tree_rebuild_root_);
+  visitor->Trace(whitespace_reattach_set_);
+  visitor->Trace(font_selector_);
+  visitor->Trace(text_to_sheet_cache_);
+  // BKTODO: visitor->Trace(sheet_to_text_cache_);
+  visitor->Trace(tracker_);
+  FontSelectorClient::Trace(visitor);
 }
 
 }  // namespace blink

@@ -94,6 +94,8 @@ class CORE_EXPORT StyleEngine final
   USING_GARBAGE_COLLECTED_MIXIN(StyleEngine);
 
  public:
+  BK_DECLARE_GC_NAME(StyleEngine)
+
   class IgnoringPendingStylesheet {
     STACK_ALLOCATED();
 
@@ -115,17 +117,17 @@ class CORE_EXPORT StyleEngine final
     base::AutoReset<bool> in_removal_;
   };
 
-  static std::unique_ptr<StyleEngine> Create(Document& document) {
-    return base::WrapUnique(new StyleEngine(document));
+  static StyleEngine* Create(Document& document) {
+    return new StyleEngine(document);
   }
 
   ~StyleEngine() override;
 
-  const HeapVector<std::unique_ptr<StyleSheet>>&
+  const HeapVector<Member<StyleSheet>>&
   StyleSheetsForStyleSheetList(TreeScope&);
 
   const HeapVector<
-      std::pair<StyleSheetKey, std::unique_ptr<CSSStyleSheet>>>&
+      std::pair<StyleSheetKey, Member<CSSStyleSheet>>>&
   InjectedAuthorStyleSheets() const {
     return injected_author_style_sheets_;
   }
@@ -226,7 +228,7 @@ class CORE_EXPORT StyleEngine final
   }
   void ResetAuthorStyle(TreeScope&);
 
-  StyleResolver* Resolver() const { return resolver_.get(); }
+  StyleResolver* Resolver() const { return resolver_; }
 
   void SetRuleUsageTracker(StyleRuleUsageTracker*);
 
@@ -350,6 +352,7 @@ class CORE_EXPORT StyleEngine final
   void RebuildLayoutTree();
   bool InRebuildLayoutTree() const { return in_layout_tree_rebuild_; }
 
+  void Trace(blink::Visitor*) override;
   const char* NameInHeapSnapshot() const override { return "StyleEngine"; }
 
  private:
@@ -454,7 +457,7 @@ class CORE_EXPORT StyleEngine final
 
   Member<CSSStyleSheet> inspector_style_sheet_;
 
-  std::unique_ptr<DocumentStyleSheetCollection>
+  Member<DocumentStyleSheetCollection>
       document_style_sheet_collection_;
 
   Member<StyleRuleUsageTracker> tracker_;
@@ -479,10 +482,10 @@ class CORE_EXPORT StyleEngine final
   bool in_layout_tree_rebuild_ = false;
   bool in_dom_removal_ = false;
 
-  std::unique_ptr<StyleResolver> resolver_;
-  std::unique_ptr<ViewportStyleResolver> viewport_resolver_;
+  Member<StyleResolver> resolver_;
+  Member<ViewportStyleResolver> viewport_resolver_;
   Member<MediaQueryEvaluator> media_query_evaluator_;
-  std::unique_ptr<CSSGlobalRuleSet> global_rule_set_;
+  Member<CSSGlobalRuleSet> global_rule_set_;
 
   PendingInvalidations pending_invalidations_;
 
@@ -503,9 +506,9 @@ class CORE_EXPORT StyleEngine final
   HeapHashMap<WeakMember<StyleSheetContents>, AtomicString>
       sheet_to_text_cache_;
 
-  HeapVector<std::pair<StyleSheetKey, std::unique_ptr<CSSStyleSheet>>>
+  HeapVector<std::pair<StyleSheetKey, Member<CSSStyleSheet>>>
       injected_user_style_sheets_;
-  HeapVector<std::pair<StyleSheetKey, std::unique_ptr<CSSStyleSheet>>>
+  HeapVector<std::pair<StyleSheetKey, Member<CSSStyleSheet>>>
       injected_author_style_sheets_;
 
   ActiveStyleSheetVector active_user_style_sheets_;
@@ -521,5 +524,19 @@ class CORE_EXPORT StyleEngine final
 };
 
 }  // namespace blink
+
+namespace BlinKit {
+
+template <>
+struct TracePolicy<blink::HeapVector<std::pair<blink::StyleSheetKey, blink::Member<blink::CSSStyleSheet>>>>
+{
+    static void Impl(blink::HeapVector<std::pair<blink::StyleSheetKey, blink::Member<blink::CSSStyleSheet>>> &v, blink::Visitor *visitor)
+    {
+        for (auto &p : v)
+            visitor->Trace(p.second);
+    }
+};
+
+}
 
 #endif
