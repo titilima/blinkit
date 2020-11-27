@@ -19,7 +19,8 @@
 #include "third_party/blink/renderer/platform/heap/member.h"
 
 namespace BlinKit {
-template <typename T> struct TracePolicy {};
+template <typename T>
+struct TracePolicy;
 }
 
 namespace blink {
@@ -52,6 +53,17 @@ public:
     }
 
     template <typename T>
+    void Trace(blink::WeakMember<T> &m)
+    {
+        ASSERT(false); // BKTODO:
+    }
+    template <typename T>
+    void Trace(const blink::WeakMember<T> &m)
+    {
+        ASSERT(false); // BKTODO:
+    }
+
+    template <typename T>
     void Trace(T &o)
     {
         BlinKit::TracePolicy<T>::Impl(o, this);
@@ -65,6 +77,15 @@ protected:
 } // namespace blink
 
 namespace BlinKit {
+
+template <typename T>
+struct TracePolicy
+{
+    static void Impl(T &o, blink::Visitor *visitor)
+    {
+        o.Trace(visitor);
+    }
+};
 
 template <typename T, typename K, typename H>
 struct TracePolicy<std::unordered_map<K, T, H>>
