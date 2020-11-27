@@ -43,9 +43,11 @@ class MediaQuerySet;
 class StyleSheetContents;
 
 class StyleRuleImport : public StyleRuleBase {
+  // BKTODO: USING_PRE_FINALIZER(StyleRuleImport, Dispose);
+
  public:
-  static std::shared_ptr<StyleRuleImport> Create(const String& href,
-                                                 scoped_refptr<MediaQuerySet>);
+  static StyleRuleImport* Create(const String& href,
+                                 scoped_refptr<MediaQuerySet>);
 
   ~StyleRuleImport();
 
@@ -57,7 +59,7 @@ class StyleRuleImport : public StyleRuleBase {
   void ClearParentStyleSheet() { parent_style_sheet_ = nullptr; }
 
   String Href() const { return str_href_; }
-  StyleSheetContents* GetStyleSheet() const { return style_sheet_.get(); }
+  StyleSheetContents* GetStyleSheet() const { return style_sheet_.Get(); }
 
   bool IsLoading() const;
   MediaQuerySet* MediaQueries() { return media_queries_.get(); }
@@ -77,7 +79,7 @@ class StyleRuleImport : public StyleRuleBase {
     USING_GARBAGE_COLLECTED_MIXIN(ImportedStyleSheetClient);
 
    public:
-    ImportedStyleSheetClient(const std::shared_ptr<StyleRuleImport> &owner_rule)
+    ImportedStyleSheetClient(StyleRuleImport* owner_rule)
         : owner_rule_(owner_rule) {}
     ~ImportedStyleSheetClient() override = default;
     void NotifyFinished(Resource* resource) override {
@@ -87,8 +89,13 @@ class StyleRuleImport : public StyleRuleBase {
 
     String DebugName() const override { return "ImportedStyleSheetClient"; }
 
+    void Trace(blink::Visitor* visitor) override {
+      visitor->Trace(owner_rule_);
+      ResourceClient::Trace(visitor);
+    }
+
    private:
-    std::shared_ptr<StyleRuleImport> owner_rule_;
+    Member<StyleRuleImport> owner_rule_;
   };
 
   void NotifyFinished(Resource*);
@@ -102,7 +109,7 @@ class StyleRuleImport : public StyleRuleBase {
   Member<ImportedStyleSheetClient> style_sheet_client_;
   String str_href_;
   scoped_refptr<MediaQuerySet> media_queries_;
-  std::shared_ptr<StyleSheetContents> style_sheet_;
+  Member<StyleSheetContents> style_sheet_;
   bool loading_;
 };
 

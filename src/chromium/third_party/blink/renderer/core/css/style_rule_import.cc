@@ -33,7 +33,6 @@
 
 #include "third_party/blink/renderer/core/css/style_rule_import.h"
 
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.h"
@@ -44,9 +43,9 @@
 
 namespace blink {
 
-std::shared_ptr<StyleRuleImport> StyleRuleImport::Create(const String& href,
+StyleRuleImport* StyleRuleImport::Create(const String& href,
                                          scoped_refptr<MediaQuerySet> media) {
-  return base::WrapShared(new StyleRuleImport(href, media));
+  return new StyleRuleImport(href, media);
 }
 
 StyleRuleImport::StyleRuleImport(const String& href,
@@ -62,9 +61,7 @@ StyleRuleImport::StyleRuleImport(const String& href,
     media_queries_ = MediaQuerySet::Create(String());
 }
 
-StyleRuleImport::~StyleRuleImport() {
-  Dispose();
-}
+StyleRuleImport::~StyleRuleImport() = default;
 
 void StyleRuleImport::Dispose() {
   style_sheet_client_->Dispose();
@@ -87,7 +84,7 @@ void StyleRuleImport::NotifyFinished(Resource* resource) {
   // Fallback to an insecure context parser if we don't have a parent style
   // sheet.
   const CSSParserContext* context =
-      StrictCSSParserContext(SecureContextMode::kInsecureContext).get();
+      StrictCSSParserContext(SecureContextMode::kInsecureContext);
 
   if (parent_style_sheet_) {
     document = parent_style_sheet_->SingleOwnerDocument();
