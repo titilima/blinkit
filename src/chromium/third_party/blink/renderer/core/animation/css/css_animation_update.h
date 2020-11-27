@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: css_animation_update.h
-// Description: CSSAnimationUpdate Class
-//      Author: Ziming Li
-//     Created: 2020-08-29
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -301,37 +290,5 @@ class CSSAnimationUpdate final {
 };
 
 }  // namespace blink
-
-namespace BlinKit {
-
-template <>
-struct TracePolicy<blink::NewCSSAnimation> {
-  static void Impl(blink::NewCSSAnimation &o, blink::Visitor *visitor) {
-    o.Trace(visitor);
-  }
-};
-
-template <>
-struct TracePolicy<blink::UpdatedCSSAnimation> {
-  static void Impl(blink::UpdatedCSSAnimation &o, blink::Visitor *visitor) {
-    o.Trace(visitor);
-  }
-};
-
-template <>
-struct TracePolicy<blink::CSSAnimationUpdate> {
-  static void Impl(blink::CSSAnimationUpdate &o, blink::Visitor *visitor) {
-    o.Trace(visitor);
-  }
-};
-
-template <>
-struct TracePolicy<blink::CSSAnimationUpdate::NewTransition> {
-  static void Impl(blink::CSSAnimationUpdate::NewTransition &o, blink::Visitor *visitor) {
-    o.Trace(visitor);
-  }
-};
-
-}
 
 #endif
