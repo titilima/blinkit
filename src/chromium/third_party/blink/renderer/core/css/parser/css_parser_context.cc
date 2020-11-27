@@ -30,7 +30,7 @@ namespace blink {
 
 #ifndef BLINKIT_CRAWLER_ONLY
 // static
-std::shared_ptr<CSSParserContext> CSSParserContext::Create(const ExecutionContext& context) {
+CSSParserContext* CSSParserContext::Create(const ExecutionContext& context) {
   ASSERT(false); // BKTODO:
   return nullptr;
 #if 0
@@ -52,7 +52,7 @@ std::shared_ptr<CSSParserContext> CSSParserContext::Create(const ExecutionContex
 }
 
 // static
-std::shared_ptr<CSSParserContext> CSSParserContext::CreateWithStyleSheet(
+CSSParserContext* CSSParserContext::CreateWithStyleSheet(
     const CSSParserContext* other,
     const CSSStyleSheet* style_sheet) {
   return CSSParserContext::Create(
@@ -60,7 +60,7 @@ std::shared_ptr<CSSParserContext> CSSParserContext::CreateWithStyleSheet(
 }
 
 // static
-std::shared_ptr<CSSParserContext> CSSParserContext::CreateWithStyleSheetContents(
+CSSParserContext* CSSParserContext::CreateWithStyleSheetContents(
     const CSSParserContext* other,
     const StyleSheetContents* style_sheet_contents) {
   return CSSParserContext::Create(
@@ -68,20 +68,20 @@ std::shared_ptr<CSSParserContext> CSSParserContext::CreateWithStyleSheetContents
 }
 
 // static
-std::shared_ptr<CSSParserContext> CSSParserContext::Create(
+CSSParserContext* CSSParserContext::Create(
     const CSSParserContext* other,
     const Document* use_counter_document) {
-  return base::WrapShared(new CSSParserContext(
+  return new CSSParserContext(
       other->base_url_, other->is_opaque_response_from_service_worker_,
       other->charset_, other->mode_, other->match_mode_, other->profile_,
       other->referrer_, other->is_html_document_,
       other->use_legacy_background_size_shorthand_behavior_,
       other->secure_context_mode_, other->should_check_content_security_policy_,
-      use_counter_document));
+      use_counter_document);
 }
 
 // static
-std::shared_ptr<CSSParserContext> CSSParserContext::Create(
+CSSParserContext* CSSParserContext::Create(
     const CSSParserContext* other,
     const GURL& base_url,
     bool is_opaque_response_from_service_worker,
@@ -102,20 +102,20 @@ std::shared_ptr<CSSParserContext> CSSParserContext::Create(
 }
 
 // static
-std::shared_ptr<CSSParserContext> CSSParserContext::Create(
+CSSParserContext* CSSParserContext::Create(
     CSSParserMode mode,
     SecureContextMode secure_context_mode,
     SelectorProfile profile,
     const Document* use_counter_document) {
-  return base::WrapShared(new CSSParserContext(
+  return new CSSParserContext(
       GURL(), false /* is_opaque_response_from_service_worker */,
       WTF::TextEncoding(), mode, mode, profile, std::string(), false, false,
       secure_context_mode, kDoNotCheckContentSecurityPolicy,
-      use_counter_document));
+      use_counter_document);
 }
 
 // static
-std::shared_ptr<CSSParserContext> CSSParserContext::Create(const Document& document) {
+CSSParserContext* CSSParserContext::Create(const Document& document) {
   ASSERT(false); // BKTODO:
   return nullptr;
 #if 0
@@ -211,9 +211,9 @@ bool CSSParserContext::operator==(const CSSParserContext& other) const {
          secure_context_mode_ == other.secure_context_mode_;
 }
 
-const std::shared_ptr<CSSParserContext>& StrictCSSParserContext(
+const CSSParserContext* StrictCSSParserContext(
     SecureContextMode secure_context_mode) {
-  static std::shared_ptr<CSSParserContext> s_strict_context;
+  static CSSParserContext* s_strict_context = nullptr;
   if (!s_strict_context)
     ASSERT(false); // BKTODO:
   return s_strict_context;

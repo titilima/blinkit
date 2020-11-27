@@ -163,7 +163,7 @@ class CORE_EXPORT CSSParserContext
 };
 
 #ifndef BLINKIT_CRAWLER_ONLY
-CORE_EXPORT const std::shared_ptr<CSSParserContext>& StrictCSSParserContext(SecureContextMode);
+CORE_EXPORT const CSSParserContext* StrictCSSParserContext(SecureContextMode);
 #endif
 
 }  // namespace blink

@@ -204,7 +204,7 @@ MutableCSSPropertyValueSet::SetResult CSSParser::ParseValue(
 
 const CSSValue* CSSParser::ParseSingleValue(CSSPropertyID property_id,
                                             const String& string,
-                                            const std::shared_ptr<const CSSParserContext>& context) {
+                                            const CSSParserContext* context) {
   if (string.IsEmpty())
     return nullptr;
   if (CSSValue* value = CSSParserFastPaths::MaybeParseValue(property_id, string,

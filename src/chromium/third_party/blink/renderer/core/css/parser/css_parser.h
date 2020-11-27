@@ -95,7 +95,7 @@ class CORE_EXPORT CSSParser {
   // This is for non-shorthands only
   static const CSSValue* ParseSingleValue(CSSPropertyID,
                                           const String&,
-                                          const std::shared_ptr<const CSSParserContext>&);
+                                          const CSSParserContext*);
 
   static const CSSValue* ParseFontFaceDescriptor(CSSPropertyID,
                                                  const String&,
