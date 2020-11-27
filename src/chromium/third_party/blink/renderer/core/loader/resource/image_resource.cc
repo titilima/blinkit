@@ -90,6 +90,10 @@ class ImageResource::ImageResourceInfoImpl final
       : resource_(resource) {
     DCHECK(resource_);
   }
+  void Trace(blink::Visitor* visitor) override {
+    visitor->Trace(resource_);
+    ImageResourceInfo::Trace(visitor);
+  }
 
  private:
   const GURL& Url() const override { return resource_->Url(); }
@@ -176,7 +180,7 @@ class ImageResource::ImageResourceFactory : public NonTextResourceFactory {
       : NonTextResourceFactory(ResourceType::kImage),
         fetch_params_(&fetch_params) {}
 
-  std::shared_ptr<Resource> Create(const ResourceRequest& request,
+  Resource* Create(const ResourceRequest& request,
                    const ResourceLoaderOptions& options) const override {
     ASSERT(false); // BKTODO:
     return nullptr;
@@ -288,6 +292,13 @@ void ImageResource::OnMemoryDump(WebMemoryDumpLevelOfDetail level_of_detail,
     dump->AddScalar("size", "bytes", content_->GetImage()->Data()->size());
 }
 #endif
+
+void ImageResource::Trace(blink::Visitor* visitor) {
+  // BKTODO: visitor->Trace(multipart_parser_);
+  visitor->Trace(content_);
+  Resource::Trace(visitor);
+  // BKTODO: MultipartImageResourceParser::Client::Trace(visitor);
+}
 
 void ImageResource::NotifyFinished() {
   // Don't notify clients of completion if this ImageResource is
@@ -800,7 +811,7 @@ const ImageResourceContent* ImageResource::GetContent() const {
 #if 0 // BKTODO:
 ResourcePriority ImageResource::PriorityFromObservers() {
   return GetContent()->PriorityFromObservers();
-}#endif
+}
 
 void ImageResource::UpdateImage(
     scoped_refptr<SharedBuffer> shared_buffer,

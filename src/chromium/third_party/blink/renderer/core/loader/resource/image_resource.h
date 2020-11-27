@@ -135,6 +135,8 @@ class CORE_EXPORT ImageResource final
                     WebProcessMemoryDump*) const override;
 #endif
 
+  void Trace(blink::Visitor*) override;
+
  private:
   enum class MultipartParsingState : uint8_t {
     kWaitingForFirstPart,
