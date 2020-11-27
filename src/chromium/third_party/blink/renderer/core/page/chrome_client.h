@@ -105,8 +105,7 @@ struct WebPoint;
 struct WebScreenInfo;
 struct WebWindowFeatures;
 
-class CORE_EXPORT ChromeClient
-    : public GarbageCollectedFinalized<ChromeClient> {
+class CORE_EXPORT ChromeClient {
   DISALLOW_COPY_AND_ASSIGN(ChromeClient);
 
  public:
