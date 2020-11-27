@@ -63,19 +63,19 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
  public:
   static const Document* SingleOwnerDocument(const CSSStyleSheet*);
 
-  static std::shared_ptr<CSSStyleSheet> Create(Document&,
-                                               const CSSStyleSheetInit&,
-                                               ExceptionState&);
+  static CSSStyleSheet* Create(Document&,
+                               const CSSStyleSheetInit&,
+                               ExceptionState&);
 
-  static std::shared_ptr<CSSStyleSheet> Create(StyleSheetContents*,
-                                               CSSImportRule* owner_rule = nullptr);
-  static std::shared_ptr<CSSStyleSheet> Create(StyleSheetContents*, Node& owner_node);
-  static std::shared_ptr<CSSStyleSheet> CreateInline(
+  static CSSStyleSheet* Create(StyleSheetContents*,
+                               CSSImportRule* owner_rule = nullptr);
+  static CSSStyleSheet* Create(StyleSheetContents*, Node& owner_node);
+  static CSSStyleSheet* CreateInline(
       Node&,
       const GURL&,
       const TextPosition& start_position = TextPosition::MinimumPosition(),
       const WTF::TextEncoding& = WTF::TextEncoding());
-  static std::shared_ptr<CSSStyleSheet> CreateInline(
+  static CSSStyleSheet* CreateInline(
       StyleSheetContents*,
       Node& owner_node,
       const TextPosition& start_position = TextPosition::MinimumPosition());
@@ -182,7 +182,7 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
   void EnableRuleAccessForInspector();
   void DisableRuleAccessForInspector();
 
-  StyleSheetContents* Contents() const { return contents_.get(); }
+  StyleSheetContents* Contents() const { return contents_.Get(); }
 
   bool IsInline() const { return is_inline_stylesheet_; }
   TextPosition StartPositionInSource() const { return start_position_; }
@@ -191,10 +191,12 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
   bool LoadCompleted() const { return load_completed_; }
   void StartLoadingDynamicSheet();
   void SetText(const String&, bool allow_import_rules, ExceptionState&);
-  void SetMedia(const std::shared_ptr<MediaList> &);
+  void SetMedia(MediaList*);
   void SetAlternateFromConstructor(bool);
   bool IsAlternate() const;
   bool CanBeActivated(const String& current_preferrable_name) const;
+
+  void Trace(blink::Visitor*) override;
 
  private:
   CSSStyleSheet(StyleSheetContents*, CSSImportRule* owner_rule);
@@ -231,9 +233,7 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
 
   bool AlternateFromConstructor() const { return alternate_from_constructor_; }
 
-  GCType GetGCType(void) const override { return GC_MANUAL; }
-
-  std::shared_ptr<StyleSheetContents> contents_;
+  Member<StyleSheetContents> contents_;
   bool is_inline_stylesheet_ = false;
   bool is_disabled_ = false;
   bool load_completed_ = false;
@@ -254,9 +254,9 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
   std::unordered_set<AtomicString> custom_element_tag_names_;
 
   TextPosition start_position_;
-  std::shared_ptr<MediaList> media_cssom_wrapper_;
-  mutable HeapVector<std::unique_ptr<CSSRule>> child_rule_cssom_wrappers_;
-  mutable std::unique_ptr<CSSRuleList> rule_list_cssom_wrapper_;
+  Member<MediaList> media_cssom_wrapper_;
+  mutable HeapVector<Member<CSSRule>> child_rule_cssom_wrappers_;
+  mutable Member<CSSRuleList> rule_list_cssom_wrapper_;
   DISALLOW_COPY_AND_ASSIGN(CSSStyleSheet);
 };
 
