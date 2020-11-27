@@ -592,8 +592,8 @@ private:
     std::unique_ptr<RootScrollerController> m_rootScrollerController;
     Member<Document> m_templateDocumentHost;
 
-    std::shared_ptr<CSSStyleSheet> m_elemSheet;
-    std::unique_ptr<StyleEngine> m_styleEngine;
+    Member<CSSStyleSheet> m_elemSheet;
+    Member<StyleEngine> m_styleEngine;
 
     bool m_evaluateMediaQueriesOnStyleRecalc = false;
 

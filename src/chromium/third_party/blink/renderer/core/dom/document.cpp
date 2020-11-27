@@ -2094,6 +2094,8 @@ void Document::Trace(Visitor *visitor)
 #ifndef BLINKIT_CRAWLER_ONLY
     if (!ForCrawler())
     {
+        visitor->Trace(m_styleEngine);
+        visitor->Trace(m_elemSheet);
         visitor->Trace(m_templateDocumentHost);
         visitor->Trace(m_activeElement);
         visitor->Trace(m_hoverElement);
