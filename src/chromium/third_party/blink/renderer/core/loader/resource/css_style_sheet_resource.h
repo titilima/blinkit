@@ -63,6 +63,7 @@ class CORE_EXPORT CSSStyleSheetResource final : public TextResource {
                                               const WTF::TextEncoding&);
 
   ~CSSStyleSheetResource() override;
+  void Trace(blink::Visitor*) override;
 
   const String SheetText(const CSSParserContext*,
                          MIMETypeCheck = MIMETypeCheck::kStrict) const;
@@ -79,7 +80,7 @@ class CORE_EXPORT CSSStyleSheetResource final : public TextResource {
         : ResourceFactory(ResourceType::kCSSStyleSheet,
                           TextResourceDecoderOptions::kCSSContent) {}
 
-    std::shared_ptr<Resource> Create(
+    Resource* Create(
         const ResourceRequest& request,
         const ResourceLoaderOptions& options,
         const TextResourceDecoderOptions& decoder_options) const override {
