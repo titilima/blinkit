@@ -86,6 +86,8 @@ class StyleFetchedImage final : public StyleImage,
 
   void LoadDeferredImage(const Document& document);
 
+  void Trace(blink::Visitor*) override;
+
  private:
   StyleFetchedImage(const Document&,
                     FetchParameters&,

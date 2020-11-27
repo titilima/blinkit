@@ -206,4 +206,10 @@ bool StyleFetchedImage::GetImageAnimationPolicy(ImageAnimationPolicy& policy) {
   return true;
 }
 
+void StyleFetchedImage::Trace(blink::Visitor* visitor) {
+  visitor->Trace(image_);
+  visitor->Trace(document_);
+  StyleImage::Trace(visitor);
+}
+
 }  // namespace blink
