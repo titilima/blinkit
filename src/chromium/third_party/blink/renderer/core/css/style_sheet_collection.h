@@ -65,7 +65,7 @@ class CORE_EXPORT StyleSheetCollection
   const ActiveStyleSheetVector& ActiveAuthorStyleSheets() const {
     return active_author_style_sheets_;
   }
-  const HeapVector<std::unique_ptr<StyleSheet>>&
+  const HeapVector<Member<StyleSheet>>&
   StyleSheetsForStyleSheetList() const {
     return style_sheets_for_style_sheet_list_;
   }
@@ -86,7 +86,7 @@ class CORE_EXPORT StyleSheetCollection
  protected:
   StyleSheetCollection();
 
-  HeapVector<std::unique_ptr<StyleSheet>> style_sheets_for_style_sheet_list_;
+  HeapVector<Member<StyleSheet>> style_sheets_for_style_sheet_list_;
   ActiveStyleSheetVector active_author_style_sheets_;
   bool sheet_list_dirty_ = true;
 
