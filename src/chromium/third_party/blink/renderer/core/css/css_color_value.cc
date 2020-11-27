@@ -20,7 +20,7 @@
 namespace blink {
 namespace cssvalue {
 
-std::shared_ptr<CSSColorValue> CSSColorValue::Create(RGBA32 color) {
+CSSColorValue* CSSColorValue::Create(RGBA32 color) {
   // These are the empty and deleted values of the hash table.
   if (color == Color::kTransparent)
     return CssValuePool().TransparentColor();
@@ -30,10 +30,10 @@ std::shared_ptr<CSSColorValue> CSSColorValue::Create(RGBA32 color) {
   if (color == Color::kBlack)
     return CssValuePool().BlackColor();
 
-  std::shared_ptr<CSSColorValue> &entry =
+  Member<CSSColorValue> &entry =
       CssValuePool().GetColorCacheEntry(color);
   if (!entry)
-    entry.reset(new CSSColorValue(color));
+    entry = new CSSColorValue(color);
   return entry;
 }
 
