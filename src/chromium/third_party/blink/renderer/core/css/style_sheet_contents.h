@@ -33,7 +33,6 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_CSS_STYLE_SHEET_CONTENTS_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_STYLE_SHEET_CONTENTS_H_
 
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/parser/css_parser_context.h"
 #include "third_party/blink/renderer/core/css/rule_set.h"
@@ -58,27 +57,26 @@ class StyleRuleNamespace;
 enum class ParseSheetResult;
 
 class CORE_EXPORT StyleSheetContents
-    : public GarbageCollectedFinalized<StyleSheetContents>
-    , public std::enable_shared_from_this<StyleSheetContents> {
+    : public GarbageCollectedFinalized<StyleSheetContents> {
  public:
-  static std::shared_ptr<StyleSheetContents> Create(const std::shared_ptr<CSSParserContext> &context) {
-    return base::WrapShared(new StyleSheetContents(nullptr, String(), context));
+  static StyleSheetContents* Create(const CSSParserContext* context) {
+    return new StyleSheetContents(nullptr, String(), context);
   }
-  static std::shared_ptr<StyleSheetContents> Create(const String& original_url,
-                                                    const std::shared_ptr<CSSParserContext> &context) {
-    return base::WrapShared(new StyleSheetContents(nullptr, original_url, context));
+  static StyleSheetContents* Create(const String& original_url,
+                                    const CSSParserContext* context) {
+    return new StyleSheetContents(nullptr, original_url, context);
   }
-  static std::shared_ptr<StyleSheetContents> Create(StyleRuleImport* owner_rule,
-                                                    const String& original_url,
-                                                    const std::shared_ptr<CSSParserContext> &context) {
-    return base::WrapShared(new StyleSheetContents(owner_rule, original_url, context));
+  static StyleSheetContents* Create(StyleRuleImport* owner_rule,
+                                    const String& original_url,
+                                    const CSSParserContext* context) {
+    return new StyleSheetContents(owner_rule, original_url, context);
   }
 
   static const Document* SingleOwnerDocument(const StyleSheetContents*);
 
   ~StyleSheetContents();
 
-  const CSSParserContext* ParserContext() const { return parser_context_.get(); }
+  const CSSParserContext* ParserContext() const { return parser_context_; }
 
   const AtomicString& DefaultNamespace() const { return default_namespace_; }
   const AtomicString& NamespaceURIFromPrefix(const AtomicString& prefix) const;
@@ -188,7 +186,7 @@ class CORE_EXPORT StyleSheetContents
   bool WrapperInsertRule(StyleRuleBase*, unsigned index);
   bool WrapperDeleteRule(unsigned index);
 
-  std::unique_ptr<StyleSheetContents> Copy() const { return base::WrapUnique(new StyleSheetContents(*this)); }
+  StyleSheetContents* Copy() const { return new StyleSheetContents(*this); }
 
   void RegisterClient(CSSStyleSheet*);
   void UnregisterClient(CSSStyleSheet*);
@@ -230,7 +228,7 @@ class CORE_EXPORT StyleSheetContents
  private:
   StyleSheetContents(StyleRuleImport* owner_rule,
                      const String& original_url,
-                     const std::shared_ptr<CSSParserContext> &);
+                     const CSSParserContext*);
   StyleSheetContents(const StyleSheetContents&);
   StyleSheetContents() = delete;
   StyleSheetContents& operator=(const StyleSheetContents&) = delete;
@@ -260,7 +258,7 @@ class CORE_EXPORT StyleSheetContents
   bool has_single_owner_document_ : 1;
   bool is_used_from_text_cache_ : 1;
 
-  std::shared_ptr<const CSSParserContext> parser_context_;
+  Member<const CSSParserContext> parser_context_;
 
   HeapHashSet<WeakMember<CSSStyleSheet>> loading_clients_;
   HeapHashSet<WeakMember<CSSStyleSheet>> completed_clients_;

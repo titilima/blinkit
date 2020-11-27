@@ -79,7 +79,7 @@ unsigned StyleSheetContents::EstimatedSizeInBytes() const {
 
 StyleSheetContents::StyleSheetContents(StyleRuleImport* owner_rule,
                                        const String& original_url,
-                                       const std::shared_ptr<CSSParserContext> &context)
+                                       const CSSParserContext* context)
     : owner_rule_(owner_rule),
       original_url_(original_url),
       default_namespace_(g_star_atom),
@@ -409,9 +409,9 @@ ParseSheetResult StyleSheetContents::ParseStringAtPosition(
     const String& sheet_text,
     const TextPosition& start_position,
     bool allow_import_rules) {
-  std::shared_ptr<CSSParserContext> context =
-      CSSParserContext::CreateWithStyleSheetContents(parser_context_.get(), this);
-  return CSSParser::ParseSheet(context.get(), this, sheet_text,
+  const CSSParserContext* context =
+      CSSParserContext::CreateWithStyleSheetContents(ParserContext(), this);
+  return CSSParser::ParseSheet(context, this, sheet_text,
                                CSSDeferPropertyParsing::kNo,
                                allow_import_rules);
 }
