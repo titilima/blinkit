@@ -17,7 +17,6 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_CSS_GLOBAL_RULE_SET_H_
 
 #include "base/macros.h"
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/css/rule_feature_set.h"
 
 namespace blink {
@@ -36,7 +35,9 @@ class RuleSet;
 
 class CSSGlobalRuleSet : public GarbageCollectedFinalized<CSSGlobalRuleSet> {
  public:
-  static std::unique_ptr<CSSGlobalRuleSet> Create() { return base::WrapUnique(new CSSGlobalRuleSet); }
+  BK_DECLARE_GC_NAME(CSSGlobalRuleSet)
+
+  static CSSGlobalRuleSet* Create() { return new CSSGlobalRuleSet(); }
 
   void Dispose();
   void InitWatchedSelectorsRuleSet(Document&);
@@ -49,8 +50,10 @@ class CSSGlobalRuleSet : public GarbageCollectedFinalized<CSSGlobalRuleSet> {
     return features_;
   }
   RuleSet* WatchedSelectorsRuleSet() const {
-    return watched_selectors_rule_set_.get();
+    return watched_selectors_rule_set_;
   }
+
+  void Trace(blink::Visitor*);
 
  private:
   CSSGlobalRuleSet() = default;
@@ -59,7 +62,7 @@ class CSSGlobalRuleSet : public GarbageCollectedFinalized<CSSGlobalRuleSet> {
   RuleFeatureSet features_;
 
   // Rules injected from extensions.
-  std::unique_ptr<RuleSet> watched_selectors_rule_set_;
+  Member<RuleSet> watched_selectors_rule_set_;
 
   bool is_dirty_ = true;
   DISALLOW_COPY_AND_ASSIGN(CSSGlobalRuleSet);
