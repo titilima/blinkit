@@ -37,7 +37,7 @@ class CORE_EXPORT StyleValueFactory {
       const AtomicString& custom_property_name,
       const PropertyRegistration*,
       const String&,
-      const std::shared_ptr<CSSParserContext> &);
+      const CSSParserContext*);
   static CSSStyleValue* CssValueToStyleValue(
       CSSPropertyID,
       const AtomicString& custom_property_name,
