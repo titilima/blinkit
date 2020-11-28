@@ -16,18 +16,18 @@
 
 namespace blink {
 namespace probe {
-inline void nothingToDo(...) {}
+inline void nothingToDo(void) {}
 } // namespace probe
 } // namespace blink
 
-#define activeStyleSheetsUpdated    nothingToDo
-#define animationPlayStateChanged   nothingToDo
-#define didChangeViewport           nothingToDo
-#define didCreateAnimation          nothingToDo
-#define didInvalidateStyleAttr      nothingToDo
-#define didPaint                    nothingToDo
-#define fontsUpdated                nothingToDo
-#define layerTreeDidChange          nothingToDo
-#define pseudoElementDestroyed      nothingToDo
+#define activeStyleSheetsUpdated(...)   nothingToDo()
+#define animationPlayStateChanged(...)  nothingToDo()
+#define didChangeViewport(...)          nothingToDo()
+#define didCreateAnimation(...)         nothingToDo()
+#define didInvalidateStyleAttr(...)     nothingToDo()
+#define didPaint(...)                   nothingToDo()
+#define fontsUpdated(...)               nothingToDo()
+#define layerTreeDidChange(...)         nothingToDo()
+#define pseudoElementDestroyed(...)     nothingToDo()
 
 #endif // BLINKIT_BLINK_CORE_PROBES_H
