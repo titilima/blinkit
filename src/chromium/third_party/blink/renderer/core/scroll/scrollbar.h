@@ -59,6 +59,8 @@ class WebMouseEvent;
 class CORE_EXPORT Scrollbar : public GarbageCollectedFinalized<Scrollbar>,
                               public DisplayItemClient {
  public:
+  BK_DECLARE_GC_NAME(Scrollbar)
+
   static Scrollbar* Create(ScrollableArea* scrollable_area,
                            ScrollbarOrientation orientation,
                            ScrollbarControlSize size,
@@ -207,6 +209,7 @@ class CORE_EXPORT Scrollbar : public GarbageCollectedFinalized<Scrollbar>,
   EAGERLY_FINALIZE();
   DECLARE_EAGER_FINALIZATION_OPERATOR_NEW();
 #endif
+  virtual void Trace(blink::Visitor*);
 
  protected:
   Scrollbar(ScrollableArea*,

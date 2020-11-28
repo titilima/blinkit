@@ -326,4 +326,10 @@ const Animation* AnimationEffect::GetAnimation() const {
   return owner_ ? owner_->GetAnimation() : nullptr;
 }
 
+void AnimationEffect::Trace(blink::Visitor* visitor) {
+  visitor->Trace(owner_);
+  visitor->Trace(event_delegate_);
+  ScriptWrappable::Trace(visitor);
+}
+
 }  // namespace blink

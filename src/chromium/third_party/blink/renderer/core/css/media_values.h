@@ -32,7 +32,10 @@ enum class ColorSpaceGamut;
 
 class CORE_EXPORT MediaValues : public GarbageCollectedFinalized<MediaValues> {
  public:
+  BK_DECLARE_GC_NAME(MediaValues)
+
   virtual ~MediaValues() = default;
+  virtual void Trace(blink::Visitor* visitor) {}
 
   static MediaValues* CreateDynamicIfFrameExists(LocalFrame*);
   virtual MediaValues* Copy() const = 0;

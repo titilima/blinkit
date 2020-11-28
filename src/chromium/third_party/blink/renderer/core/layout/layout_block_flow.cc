@@ -4690,7 +4690,7 @@ void LayoutBlockFlow::SimplifiedNormalFlowInlineLayout() {
       o->LayoutIfNeeded();
       if (ToLayoutBox(o)->InlineBoxWrapper()) {
         RootInlineBox& box = ToLayoutBox(o)->InlineBoxWrapper()->Root();
-        line_boxes.insert(&box);
+        ASSERT(false); // BKTODO: line_boxes.insert(&box);
       }
     } else if (o->IsText() ||
                (o->IsLayoutInline() && !walker.AtEndOfInline())) {
@@ -4701,11 +4701,14 @@ void LayoutBlockFlow::SimplifiedNormalFlowInlineLayout() {
   // FIXME: Glyph overflow will get lost in this case, but not really a big
   // deal.
   GlyphOverflowAndFallbackFontsMap text_box_data_map;
+  ASSERT(false); // BKTODO:
+#if 0
   for (ListHashSet<RootInlineBox*>::const_iterator it = line_boxes.begin();
        it != line_boxes.end(); ++it) {
     RootInlineBox* box = *it;
     box->ComputeOverflow(box->LineTop(), box->LineBottom(), text_box_data_map);
   }
+#endif
 }
 
 bool LayoutBlockFlow::RecalcInlineChildrenOverflow() {
@@ -4720,7 +4723,7 @@ bool LayoutBlockFlow::RecalcInlineChildrenOverflow() {
       if (layout_object->IsLayoutBlock()) {
         if (InlineBox* inline_box_wrapper =
                 ToLayoutBlock(layout_object)->InlineBoxWrapper())
-          line_boxes.insert(&inline_box_wrapper->Root());
+          ASSERT(false); // BKTODO: line_boxes.insert(&inline_box_wrapper->Root());
       }
     }
   }
@@ -4728,12 +4731,15 @@ bool LayoutBlockFlow::RecalcInlineChildrenOverflow() {
   // FIXME: Glyph overflow will get lost in this case, but not really a big
   // deal.
   GlyphOverflowAndFallbackFontsMap text_box_data_map;
+  ASSERT(false); // BKTODO:
+#if 0
   for (ListHashSet<RootInlineBox*>::const_iterator it = line_boxes.begin();
        it != line_boxes.end(); ++it) {
     RootInlineBox* box = *it;
     box->ClearKnownToHaveNoOverflow();
     box->ComputeOverflow(box->LineTop(), box->LineBottom(), text_box_data_map);
   }
+#endif
   return children_overflow_changed;
 }
 

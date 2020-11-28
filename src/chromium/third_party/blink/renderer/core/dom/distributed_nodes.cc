@@ -79,7 +79,7 @@ Node* DistributedNodes::PreviousTo(const Node* node) const {
 
 void DistributedNodes::Trace(blink::Visitor* visitor) {
   visitor->Trace(nodes_);
-  visitor->Trace(indices_);
+  // BKTODO: visitor->Trace(indices_);
 }
 
 }  // namespace blink

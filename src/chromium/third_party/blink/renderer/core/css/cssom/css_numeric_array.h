@@ -37,6 +37,11 @@ class CORE_EXPORT CSSNumericArray final : public ScriptWrappable {
   }
 #endif
 
+  void Trace(blink::Visitor* visitor) override {
+    visitor->Trace(values_);
+    ScriptWrappable::Trace(visitor);
+  }
+
   unsigned length() const { return values_.size(); }
   CSSNumericValue* AnonymousIndexedGetter(unsigned index) {
     if (index < values_.size())
@@ -49,12 +54,6 @@ class CORE_EXPORT CSSNumericArray final : public ScriptWrappable {
  private:
   explicit CSSNumericArray(CSSNumericValueVector values)
       : values_(std::move(values)) {}
-
-  GCType GetGCType(void) const override
-  {
-    ASSERT(false); // BKTODO:
-    return GC_MANUAL;
-  }
 
   CSSNumericValueVector values_;
   DISALLOW_COPY_AND_ASSIGN(CSSNumericArray);

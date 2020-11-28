@@ -45,7 +45,9 @@
 namespace blink {
 
 void TreeOrderedList::Add(Node* node) {
-  if (nodes_.empty()) {
+  ASSERT(false); // BKTODO:
+#if 0
+  if (nodes_.IsEmpty()) {
     nodes_.insert(node);
     return;
   }
@@ -55,8 +57,6 @@ void TreeOrderedList::Add(Node* node) {
   iterator end = nodes_.end();
   iterator it = end;
   Node* following_node = nullptr;
-  ASSERT(false); // BKTODO:
-#if 0
   do {
     --it;
     Node* n = *it;
@@ -74,7 +74,7 @@ void TreeOrderedList::Add(Node* node) {
 }
 
 void TreeOrderedList::Remove(const Node* node) {
-  nodes_.erase(const_cast<Node*>(node));
+  ASSERT(false); // BKTODO: nodes_.erase(const_cast<Node*>(node));
 }
 
 void TreeOrderedList::Trace(blink::Visitor* visitor) {

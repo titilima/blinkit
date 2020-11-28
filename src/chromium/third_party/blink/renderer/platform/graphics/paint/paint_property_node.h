@@ -168,7 +168,7 @@ class PropertyTreePrinter {
  public:
   void AddNode(const NodeType* node) {
     if (node)
-      nodes_.insert(node);
+      ASSERT(false); // BKTODO: nodes_.insert(node);
   }
 
   String NodesAsTreeString() {

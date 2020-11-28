@@ -73,6 +73,8 @@ class V8ObjectBuilder;
 // FIXME: Make Keyframe immutable
 class CORE_EXPORT Keyframe : public GarbageCollectedFinalized<Keyframe> {
  public:
+  BK_DECLARE_GC_NAME(Keyframe)
+
   virtual ~Keyframe() = default;
 
   // TODO(smcgruer): The keyframe offset should be immutable.
@@ -124,6 +126,8 @@ class CORE_EXPORT Keyframe : public GarbageCollectedFinalized<Keyframe> {
   virtual bool IsStringKeyframe() const { return false; }
   virtual bool IsTransitionKeyframe() const { return false; }
 
+  virtual void Trace(Visitor*) { ASSERT(false); } // BKTODO: Check child overrides.
+
   // Represents a property-specific keyframe as defined in the spec. Refer to
   // the Keyframe class-level documentation for more details.
   class CORE_EXPORT PropertySpecificKeyframe
@@ -164,6 +168,8 @@ class CORE_EXPORT Keyframe : public GarbageCollectedFinalized<Keyframe> {
     virtual Interpolation* CreateInterpolation(
         const PropertyHandle&,
         const Keyframe::PropertySpecificKeyframe& end) const;
+
+    virtual void Trace(Visitor*){ ASSERT(false); }; // BKTODO: Check child overrides.
 
    protected:
     PropertySpecificKeyframe(double offset,

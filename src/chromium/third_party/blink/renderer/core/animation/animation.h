@@ -237,6 +237,8 @@ class CORE_EXPORT Animation final : public EventTargetWithInlineData,
 
   void InvalidateKeyframeEffect(const TreeScope&);
 
+  void Trace(blink::Visitor*) override;
+
   bool CompositorPendingForTesting() const { return compositor_pending_; }
 
  protected:
@@ -273,7 +275,6 @@ class CORE_EXPORT Animation final : public EventTargetWithInlineData,
   void DetachCompositorTimeline();
   void AttachCompositedLayers();
   void DetachCompositedLayers();
-  GCType GetGCType(void) const override { return GC_MANUAL; }
   // CompositorAnimationDelegate implementation.
   void NotifyAnimationStarted(double monotonic_time, int group) override;
   void NotifyAnimationFinished(double monotonic_time, int group) override {}
@@ -374,6 +375,8 @@ class CORE_EXPORT Animation final : public EventTargetWithInlineData,
     static CompositorAnimationHolder* Create(Animation*);
 
     void Detach();
+
+    void Trace(blink::Visitor* visitor) { visitor->Trace(animation_); }
 
     CompositorAnimation* GetAnimation() const {
       return compositor_animation_.get();

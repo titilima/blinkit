@@ -1248,6 +1248,11 @@ void CSSAnimations::AnimationEventDelegate::OnEventCondition(
   previous_iteration_ = current_iteration;
 }
 
+void CSSAnimations::AnimationEventDelegate::Trace(blink::Visitor* visitor) {
+  visitor->Trace(animation_target_);
+  AnimationEffect::EventDelegate::Trace(visitor);
+}
+
 EventTarget* CSSAnimations::TransitionEventDelegate::GetEventTarget() const {
   return EventPath::EventTargetRespectingTargetRules(*transition_target_);
 }
@@ -1277,6 +1282,11 @@ void CSSAnimations::TransitionEventDelegate::OnEventCondition(
   }
 
   previous_phase_ = current_phase;
+}
+
+void CSSAnimations::TransitionEventDelegate::Trace(blink::Visitor* visitor) {
+  visitor->Trace(transition_target_);
+  AnimationEffect::EventDelegate::Trace(visitor);
 }
 
 const StylePropertyShorthand& CSSAnimations::PropertiesForTransitionAll() {

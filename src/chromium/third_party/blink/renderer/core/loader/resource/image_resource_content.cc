@@ -46,6 +46,10 @@ class NullImageResourceInfo final
  public:
   NullImageResourceInfo() = default;
 
+  void Trace(blink::Visitor* visitor) override {
+    ImageResourceInfo::Trace(visitor);
+  }
+
  private:
   const GURL& Url() const override { return url_; }
   bool IsSchedulingReload() const override { return false; }
@@ -144,6 +148,11 @@ ImageResourceContent* ImageResourceContent::Fetch(FetchParameters& params,
 
 void ImageResourceContent::SetImageResourceInfo(ImageResourceInfo* info) {
   info_ = info;
+}
+
+void ImageResourceContent::Trace(blink::Visitor* visitor) {
+  visitor->Trace(info_);
+  ImageObserver::Trace(visitor);
 }
 
 void ImageResourceContent::MarkObserverFinished(

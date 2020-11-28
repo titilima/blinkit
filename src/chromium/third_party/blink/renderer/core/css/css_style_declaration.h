@@ -119,8 +119,6 @@ class CORE_EXPORT CSSStyleDeclaration : public ScriptWrappable {
   CSSStyleDeclaration() = default;
 
  private:
-  GCType GetGCType(void) const override final { return GC_MANUAL; }
-
   DISALLOW_COPY_AND_ASSIGN(CSSStyleDeclaration);
 };
 

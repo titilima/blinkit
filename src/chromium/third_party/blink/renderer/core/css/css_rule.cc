@@ -52,7 +52,7 @@ const CSSParserContext* CSSRule::ParserContext(
     SecureContextMode secure_context_mode) const {
   CSSStyleSheet* style_sheet = parentStyleSheet();
   return style_sheet ? style_sheet->Contents()->ParserContext()
-                     : StrictCSSParserContext(secure_context_mode).get();
+                     : StrictCSSParserContext(secure_context_mode);
 }
 
 void CSSRule::SetParentStyleSheet(CSSStyleSheet* style_sheet) {
@@ -63,6 +63,17 @@ void CSSRule::SetParentStyleSheet(CSSStyleSheet* style_sheet) {
 void CSSRule::SetParentRule(CSSRule* rule) {
   parent_is_rule_ = true;
   parent_rule_ = rule;
+}
+
+void CSSRule::Trace(blink::Visitor* visitor) {
+  // This makes the parent link strong, which is different from the
+  // pre-oilpan world, where the parent link is mysteriously zeroed under
+  // some circumstances.
+  if (parent_is_rule_)
+    visitor->Trace(parent_rule_);
+  else
+    visitor->Trace(parent_style_sheet_);
+  ScriptWrappable::Trace(visitor);
 }
 
 }  // namespace blink

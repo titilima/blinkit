@@ -221,6 +221,11 @@ void DocumentTimeline::DocumentTimelineTiming::ServiceOnNextFrame() {
 #endif
 }
 
+void DocumentTimeline::DocumentTimelineTiming::Trace(blink::Visitor* visitor) {
+  visitor->Trace(timeline_);
+  DocumentTimeline::PlatformTiming::Trace(visitor);
+}
+
 TimeTicks DocumentTimeline::ZeroTime() {
   if (!zero_time_initialized_ && document_->Loader()) {
     ASSERT(false); // BKTODO:
@@ -350,6 +355,14 @@ double DocumentTimeline::PlaybackRate() const {
 void DocumentTimeline::InvalidateKeyframeEffects(const TreeScope& tree_scope) {
   for (const auto& animation : animations_)
     animation->InvalidateKeyframeEffect(tree_scope);
+}
+
+void DocumentTimeline::Trace(blink::Visitor* visitor) {
+  visitor->Trace(document_);
+  visitor->Trace(timing_);
+  visitor->Trace(animations_needing_update_);
+  ASSERT(false); // BKTODO: visitor->Trace(animations_);
+  AnimationTimeline::Trace(visitor);
 }
 
 }  // namespace blink

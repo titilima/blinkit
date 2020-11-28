@@ -67,8 +67,7 @@ CSSSelectorWatch& CSSSelectorWatch::From(Document& document) {
   CSSSelectorWatch* watch = FromIfExists(document);
   if (!watch) {
     watch = new CSSSelectorWatch(document);
-    std::unique_ptr<CSSSelectorWatch> p(watch);
-    ProvideTo(document, p);
+    ProvideTo(document, watch);
   }
   return *watch;
 }
@@ -168,11 +167,11 @@ void CSSSelectorWatch::WatchCSSSelectors(const Vector<String>& selectors) {
       ImmutableCSSPropertyValueSet::Create(nullptr, 0, kUASheetMode);
 
   // UA stylesheets always parse in the insecure context mode.
-  std::shared_ptr<CSSParserContext> context = CSSParserContext::Create(
+  CSSParserContext* context = CSSParserContext::Create(
       kUASheetMode, SecureContextMode::kInsecureContext);
   for (const auto& selector : selectors) {
     CSSSelectorList selector_list =
-        CSSParser::ParseSelector(context.get(), nullptr, selector);
+        CSSParser::ParseSelector(context, nullptr, selector);
     if (!selector_list.IsValid())
       continue;
 
@@ -184,6 +183,11 @@ void CSSSelectorWatch::WatchCSSSelectors(const Vector<String>& selectors) {
         StyleRule::Create(std::move(selector_list), callback_property_set));
   }
   GetSupplementable()->GetStyleEngine().WatchedSelectorsChanged();
+}
+
+void CSSSelectorWatch::Trace(blink::Visitor* visitor) {
+  visitor->Trace(watched_callback_selectors_);
+  Supplement<Document>::Trace(visitor);
 }
 
 }  // namespace blink

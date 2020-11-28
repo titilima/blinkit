@@ -102,6 +102,11 @@ Scrollbar::~Scrollbar() {
   ASSERT(false); // BKTODO: theme_.UnregisterScrollbar(*this);
 }
 
+void Scrollbar::Trace(blink::Visitor* visitor) {
+  visitor->Trace(scrollable_area_);
+  visitor->Trace(chrome_client_);
+}
+
 void Scrollbar::SetFrameRect(const IntRect& frame_rect) {
   if (frame_rect == frame_rect_)
     return;

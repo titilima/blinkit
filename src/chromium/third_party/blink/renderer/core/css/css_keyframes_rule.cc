@@ -81,6 +81,11 @@ int StyleRuleKeyframes::FindKeyframeIndex(const String& key) const {
   return -1;
 }
 
+void StyleRuleKeyframes::TraceAfterDispatch(blink::Visitor* visitor) {
+  visitor->Trace(keyframes_);
+  StyleRuleBase::TraceAfterDispatch(visitor);
+}
+
 CSSKeyframesRule::CSSKeyframesRule(StyleRuleKeyframes* keyframes_rule,
                                    CSSStyleSheet* parent)
     : CSSRule(parent),
@@ -102,10 +107,10 @@ void CSSKeyframesRule::appendRule(const ExecutionContext* execution_context,
             keyframes_rule_->Keyframes().size());
 
   CSSStyleSheet* style_sheet = parentStyleSheet();
-  std::shared_ptr<CSSParserContext> context = CSSParserContext::CreateWithStyleSheet(
+  CSSParserContext* context = CSSParserContext::CreateWithStyleSheet(
       ParserContext(execution_context->GetSecureContextMode()), style_sheet);
   StyleRuleKeyframe* keyframe =
-      CSSParser::ParseKeyframeRule(context.get(), rule_text);
+      CSSParser::ParseKeyframeRule(context, rule_text);
   if (!keyframe)
     return;
 
@@ -184,12 +189,19 @@ CSSRuleList* CSSKeyframesRule::cssRules() const {
   if (!rule_list_cssom_wrapper_)
     rule_list_cssom_wrapper_ = LiveCSSRuleList<CSSKeyframesRule>::Create(
         const_cast<CSSKeyframesRule*>(this));
-  return rule_list_cssom_wrapper_.get();
+  return rule_list_cssom_wrapper_.Get();
 }
 
 void CSSKeyframesRule::Reattach(StyleRuleBase* rule) {
   DCHECK(rule);
   keyframes_rule_ = ToStyleRuleKeyframes(rule);
+}
+
+void CSSKeyframesRule::Trace(blink::Visitor* visitor) {
+  CSSRule::Trace(visitor);
+  visitor->Trace(child_rule_cssom_wrappers_);
+  visitor->Trace(keyframes_rule_);
+  visitor->Trace(rule_list_cssom_wrapper_);
 }
 
 }  // namespace blink

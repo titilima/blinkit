@@ -191,7 +191,7 @@ Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
     if (isCrawler)
         m_document = new CrawlerDocument(init);
     else
-        m_document = std::make_unique<HTMLDocument>(init);
+        m_document = new HTMLDocument(init);
 #endif
     m_document->Initialize();
 

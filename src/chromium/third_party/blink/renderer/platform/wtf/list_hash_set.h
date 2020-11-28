@@ -20,9 +20,28 @@
 namespace WTF {
 
 template <typename T>
-class ListHashSet : public std::unordered_set<T>
+class ListHashSet : std::list<T>
 {
 public:
+    using std::list<T>::begin;
+    using std::list<T>::end;
+    using std::list<T>::rbegin;
+    using std::list<T>::rend;
+    using std::list<T>::size;
+
+    void clear(void)
+    {
+        ASSERT(false); // BKTODO:
+    }
+    void erase(typename std::list<T>::iterator it)
+    {
+        ASSERT(false); // BKTODO:
+    }
+    auto find(const T &)
+    {
+        ASSERT(false); // BKTODO:
+        return this->begin();
+    }
     bool IsEmpty(void) const { return this->empty(); }
 };
 

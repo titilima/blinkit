@@ -64,6 +64,7 @@ ImmutableCSSPropertyValueSet* ImmutableCSSPropertyValueSet::Create(
     unsigned count,
     CSSParserMode css_parser_mode) {
   DCHECK_LE(count, static_cast<unsigned>(kMaxArraySize));
+  ASSERT(false); // BKTODO:
   void* slot = malloc(
       SizeForImmutableCSSPropertyValueSetWithPropertyCount(count));
   return new (slot)
@@ -177,6 +178,13 @@ template CORE_EXPORT int ImmutableCSSPropertyValueSet::FindPropertyIndex(
 template CORE_EXPORT int ImmutableCSSPropertyValueSet::FindPropertyIndex(
     AtRuleDescriptorID) const;
 
+void ImmutableCSSPropertyValueSet::TraceAfterDispatch(blink::Visitor* visitor) {
+  const Member<const CSSValue>* values = ValueArray();
+  for (unsigned i = 0; i < array_size_; i++)
+    visitor->Trace(values[i]);
+  CSSPropertyValueSet::TraceAfterDispatch(visitor);
+}
+
 MutableCSSPropertyValueSet::MutableCSSPropertyValueSet(
     const CSSPropertyValueSet& other)
     : CSSPropertyValueSet(other.CssParserMode()) {
@@ -244,6 +252,13 @@ template CORE_EXPORT const CSSValue* CSSPropertyValueSet::GetPropertyCSSValue<
     AtRuleDescriptorID>(AtRuleDescriptorID) const;
 template CORE_EXPORT const CSSValue*
     CSSPropertyValueSet::GetPropertyCSSValue<AtomicString>(AtomicString) const;
+
+void CSSPropertyValueSet::Trace(blink::Visitor* visitor) {
+  if (is_mutable_)
+    ToMutableCSSPropertyValueSet(this)->TraceAfterDispatch(visitor);
+  else
+    ToImmutableCSSPropertyValueSet(this)->TraceAfterDispatch(visitor);
+}
 
 void CSSPropertyValueSet::FinalizeGarbageCollectedObject() {
   if (is_mutable_)
@@ -438,7 +453,7 @@ void MutableCSSPropertyValueSet::ParseDeclarationList(
     StyleSheetContents* context_style_sheet) {
   property_vector_.clear();
 
-  std::shared_ptr<CSSParserContext> context;
+  CSSParserContext* context;
   if (context_style_sheet) {
     context = CSSParserContext::CreateWithStyleSheetContents(
         context_style_sheet->ParserContext(), context_style_sheet);
@@ -447,7 +462,7 @@ void MutableCSSPropertyValueSet::ParseDeclarationList(
     context = CSSParserContext::Create(CssParserMode(), secure_context_mode);
   }
 
-  CSSParser::ParseDeclarationList(context.get(), this, style_declaration);
+  CSSParser::ParseDeclarationList(context, this, style_declaration);
 }
 
 bool MutableCSSPropertyValueSet::AddParsedProperties(
@@ -638,6 +653,12 @@ template CORE_EXPORT int MutableCSSPropertyValueSet::FindPropertyIndex(
 template CORE_EXPORT int MutableCSSPropertyValueSet::FindPropertyIndex(
     AtomicString) const;
 
+void MutableCSSPropertyValueSet::TraceAfterDispatch(blink::Visitor* visitor) {
+  visitor->Trace(cssom_wrapper_);
+  visitor->Trace(property_vector_);
+  CSSPropertyValueSet::TraceAfterDispatch(visitor);
+}
+
 unsigned CSSPropertyValueSet::AverageSizeInBytes() {
   // Please update this if the storage scheme changes so that this longer
   // reflects the actual size.
@@ -669,5 +690,7 @@ MutableCSSPropertyValueSet* MutableCSSPropertyValueSet::Create(
     unsigned count) {
   return new MutableCSSPropertyValueSet(properties, count);
 }
+
+void CSSLazyPropertyParser::Trace(blink::Visitor* visitor) {}
 
 }  // namespace blink

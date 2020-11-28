@@ -1342,6 +1342,20 @@ void Animation::RejectAndResetPromiseMaybeAsync(AnimationPromise* promise) {
 }
 #endif // 0
 
+void Animation::Trace(blink::Visitor* visitor) {
+  visitor->Trace(content_);
+  visitor->Trace(timeline_);
+  visitor->Trace(pending_finished_event_);
+  visitor->Trace(pending_cancelled_event_);
+#if 0 // BKTODO:
+  visitor->Trace(finished_promise_);
+  visitor->Trace(ready_promise_);
+#endif
+  visitor->Trace(compositor_animation_);
+  EventTargetWithInlineData::Trace(visitor);
+  ContextLifecycleObserver::Trace(visitor);
+}
+
 Animation::CompositorAnimationHolder*
 Animation::CompositorAnimationHolder::Create(Animation* animation) {
   return new CompositorAnimationHolder(animation);

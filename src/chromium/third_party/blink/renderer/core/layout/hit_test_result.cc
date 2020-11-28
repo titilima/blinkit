@@ -450,7 +450,7 @@ ListBasedHitTestBehavior HitTestResult::AddNodeToListBasedTestResult(
   if (!node)
     return kContinueHitTesting;
 
-  MutableListBasedTestResult().insert(node);
+  ASSERT(false); // BKTODO: MutableListBasedTestResult().insert(node);
 
   if (GetHitTestRequest().PenetratingList())
     return kContinueHitTesting;
@@ -470,7 +470,7 @@ ListBasedHitTestBehavior HitTestResult::AddNodeToListBasedTestResult(
   if (!node)
     return kContinueHitTesting;
 
-  MutableListBasedTestResult().insert(node);
+  ASSERT(false); // BKTODO: MutableListBasedTestResult().insert(node);
 
   if (GetHitTestRequest().PenetratingList())
     return kContinueHitTesting;
@@ -498,10 +498,13 @@ void HitTestResult::Append(const HitTestResult& other) {
 
   if (other.list_based_test_result_) {
     NodeSet& set = MutableListBasedTestResult();
+    ASSERT(false); // BKTODO:
+#if 0
     for (NodeSet::const_iterator it = other.list_based_test_result_->begin(),
                                  last = other.list_based_test_result_->end();
          it != last; ++it)
       set.insert(it->Get());
+#endif
   }
 }
 

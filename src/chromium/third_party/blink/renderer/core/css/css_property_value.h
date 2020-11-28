@@ -108,6 +108,8 @@ class CSSPropertyValue {
 
   bool operator==(const CSSPropertyValue& other) const;
 
+  void Trace(blink::Visitor* visitor) { visitor->Trace(value_); }
+
  private:
   CSSPropertyValueMetadata metadata_;
   Member<const CSSValue> value_;

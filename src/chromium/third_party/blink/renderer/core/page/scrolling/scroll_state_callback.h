@@ -29,6 +29,8 @@ class ScrollStateCallback
  public:
   virtual ~ScrollStateCallback() = default;
 
+  virtual void Trace(blink::Visitor* visitor) {}
+
   virtual void Invoke(ScrollState*) = 0;
 
   WebNativeScrollBehavior NativeScrollBehavior() const {

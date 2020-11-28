@@ -15,20 +15,19 @@
 
 #include "third_party/blink/renderer/core/css/css_font_family_value.h"
 
-#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/css/css_markup.h"
 #include "third_party/blink/renderer/core/css/css_value_pool.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace blink {
 
-std::shared_ptr<CSSFontFamilyValue> CSSFontFamilyValue::Create(const String& family_name) {
+CSSFontFamilyValue* CSSFontFamilyValue::Create(const String& family_name) {
   if (family_name.IsNull())
-    return base::WrapShared(new CSSFontFamilyValue(family_name));
-  std::shared_ptr<CSSFontFamilyValue> &entry =
+    return new CSSFontFamilyValue(family_name);
+  Member<CSSFontFamilyValue> &entry =
       CssValuePool().GetFontFamilyCacheEntry(family_name);
   if (!entry)
-    entry.reset(new CSSFontFamilyValue(family_name));
+    entry = new CSSFontFamilyValue(family_name);
   return entry;
 }
 
@@ -37,6 +36,10 @@ CSSFontFamilyValue::CSSFontFamilyValue(const String& str)
 
 String CSSFontFamilyValue::CustomCSSText() const {
   return SerializeFontFamily(string_);
+}
+
+void CSSFontFamilyValue::TraceAfterDispatch(blink::Visitor* visitor) {
+  CSSValue::TraceAfterDispatch(visitor);
 }
 
 }  // namespace blink

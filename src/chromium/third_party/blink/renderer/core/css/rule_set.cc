@@ -61,7 +61,7 @@
 
 namespace blink {
 
-using namespace html_names;
+using namespace HTMLNames;
 
 static inline PropertyWhitelistType DeterminePropertyWhitelistType(
     const AddRuleFlags add_rule_flags,
@@ -81,11 +81,11 @@ static inline PropertyWhitelistType DeterminePropertyWhitelistType(
   return kPropertyWhitelistNone;
 }
 
-RuleData::RuleData(std::unique_ptr<StyleRule> &rule,
+RuleData::RuleData(StyleRule* rule,
                    unsigned selector_index,
                    unsigned position,
                    AddRuleFlags add_rule_flags)
-    : rule_(std::move(rule)),
+    : rule_(rule),
       selector_index_(selector_index),
       position_(position),
       specificity_(Selector().Specificity()),
@@ -409,6 +409,14 @@ void RuleSet::CompactRules() {
   part_pseudo_rules_.shrink_to_fit();
   content_pseudo_element_rules_.shrink_to_fit();
   slotted_pseudo_element_rules_.shrink_to_fit();
+}
+
+void MinimalRuleData::Trace(blink::Visitor* visitor) {
+  visitor->Trace(rule_);
+}
+
+void RuleData::Trace(blink::Visitor* visitor) {
+  visitor->Trace(rule_);
 }
 
 void RuleSet::PendingRuleMaps::Trace(blink::Visitor* visitor) {

@@ -143,7 +143,7 @@ class Supplement : public GarbageCollectedMixin {
 
   template <typename SupplementType>
   static void ProvideTo(Supplementable<T>& supplementable,
-                        std::unique_ptr<SupplementType> &supplement) {
+                        SupplementType* supplement) {
     supplementable.ProvideSupplement(supplement);
   }
 
@@ -159,6 +159,10 @@ class Supplement : public GarbageCollectedMixin {
                : nullptr;
   }
 
+  void Trace(blink::Visitor* visitor) override {
+    visitor->Trace(supplementable_);
+  }
+
  private:
   Member<T> supplementable_;
 };
@@ -169,7 +173,7 @@ class Supplementable : public GarbageCollectedMixin {
 
  public:
   template <typename SupplementType>
-  void ProvideSupplement(std::unique_ptr<SupplementType> &supplement) {
+  void ProvideSupplement(SupplementType* supplement) {
 #if DCHECK_IS_ON()
     DCHECK_EQ(creation_thread_id_, CurrentThread());
 #endif
@@ -177,7 +181,7 @@ class Supplementable : public GarbageCollectedMixin {
         std::is_array<decltype(SupplementType::kSupplementName)>::value,
         "Declare a const char array kSupplementName. See Supplementable.h for "
         "details.");
-    this->supplements_.insert({ SupplementType::kSupplementName, std::move(supplement) });
+    this->supplements_.insert({ SupplementType::kSupplementName, supplement });
   }
 
   template <typename SupplementType>
@@ -204,7 +208,7 @@ class Supplementable : public GarbageCollectedMixin {
     auto it = this->supplements_.find(SupplementType::kSupplementName);
     if (std::end(this->supplements_) == it)
       return nullptr;
-    return static_cast<SupplementType *>(it->second.get());
+    return static_cast<SupplementType *>(it->second.Get());
   }
 
   void ReattachThread() {
@@ -213,8 +217,10 @@ class Supplementable : public GarbageCollectedMixin {
 #endif
   }
 
+  void Trace(blink::Visitor* visitor) override { visitor->Trace(supplements_); }
+
  protected:
-  using SupplementMap = std::unordered_map<const char *, std::unique_ptr<Supplement<T>>>;
+  using SupplementMap = std::unordered_map<const char *, Member<Supplement<T>>>;
   SupplementMap supplements_;
 
   Supplementable()

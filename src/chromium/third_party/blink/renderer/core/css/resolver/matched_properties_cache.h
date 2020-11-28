@@ -59,6 +59,7 @@ class CachedMatchedProperties final
            const ComputedStyle& parent_style,
            const MatchedPropertiesVector&);
   void Clear();
+  void Trace(blink::Visitor* visitor) { visitor->Trace(matched_properties); }
 };
 
 class CORE_EXPORT MatchedPropertiesCache {
