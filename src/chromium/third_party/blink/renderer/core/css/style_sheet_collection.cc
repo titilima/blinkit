@@ -52,21 +52,15 @@ void StyleSheetCollection::Dispose() {
 }
 
 void StyleSheetCollection::Swap(StyleSheetCollection& other) {
-  ASSERT(false); // BKTODO:
-#if 0
-  ::blink::swap(style_sheets_for_style_sheet_list_,
+  ::std::swap(style_sheets_for_style_sheet_list_,
                 other.style_sheets_for_style_sheet_list_);
-#endif
   active_author_style_sheets_.swap(other.active_author_style_sheets_);
   sheet_list_dirty_ = false;
 }
 
 void StyleSheetCollection::SwapSheetsForSheetList(
     HeapVector<Member<StyleSheet>>& sheets) {
-  ASSERT(false); // BKTODO:
-#if 0
-  ::blink::swap(style_sheets_for_style_sheet_list_, sheets);
-#endif
+  ::std::swap(style_sheets_for_style_sheet_list_, sheets);
   sheet_list_dirty_ = false;
 }
 
@@ -76,10 +70,7 @@ void StyleSheetCollection::AppendActiveStyleSheet(
 }
 
 void StyleSheetCollection::AppendSheetForList(StyleSheet* sheet) {
-  ASSERT(false); // BKTODO:
-#if 0
   style_sheets_for_style_sheet_list_.push_back(sheet);
-#endif
 }
 
 void StyleSheetCollection::Trace(blink::Visitor* visitor) {
