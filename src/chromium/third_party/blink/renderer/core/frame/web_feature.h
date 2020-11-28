@@ -141,6 +141,7 @@ enum class WebFeature {
     kShapeOutsidePaddingBoxDifferentFromMarginBox,
     kStyleSheetListAnonymousNamedGetter,
     kStyleSheetListNonNullAnonymousNamedGetter,
+    kSummaryElementWithDisplayBlockAuthorRule,
     kSyntheticKeyframesInCompositedCSSAnimation,
     kTableRowDirectionDifferentFromTable,
     kTableSectionDirectionDifferentFromTable,

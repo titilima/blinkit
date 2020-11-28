@@ -14,30 +14,20 @@
 
 #pragma once
 
-#include "third_party/blink/renderer/core/animation/animation.h"
-
 namespace blink {
-
-class FontCustomPlatformData;
-class FontFace;
-class GraphicsContext;
-class GraphicsLayer;
-class LayoutRect;
-class PseudoElement;
-
 namespace probe {
-
-inline void activeStyleSheetsUpdated(Document *) {}
-inline void animationPlayStateChanged(Document *, Animation *, Animation::AnimationPlayState, Animation::AnimationPlayState) {}
-inline void didChangeViewport(LocalFrame *) {}
-inline void didCreateAnimation(Document *, unsigned) {}
-inline void didInvalidateStyleAttr(Node *) {}
-inline void didPaint(LocalFrame *, const GraphicsLayer *, GraphicsContext &, const LayoutRect &) {}
-inline void fontsUpdated(ExecutionContext *, const FontFace *, const String &, const FontCustomPlatformData *) {}
-inline void layerTreeDidChange(LocalFrame *) {}
-inline void pseudoElementDestroyed(PseudoElement *) {}
-
+inline void nothingToDo(...) {}
 } // namespace probe
 } // namespace blink
+
+#define activeStyleSheetsUpdated    nothingToDo
+#define animationPlayStateChanged   nothingToDo
+#define didChangeViewport           nothingToDo
+#define didCreateAnimation          nothingToDo
+#define didInvalidateStyleAttr      nothingToDo
+#define didPaint                    nothingToDo
+#define fontsUpdated                nothingToDo
+#define layerTreeDidChange          nothingToDo
+#define pseudoElementDestroyed      nothingToDo
 
 #endif // BLINKIT_BLINK_CORE_PROBES_H
