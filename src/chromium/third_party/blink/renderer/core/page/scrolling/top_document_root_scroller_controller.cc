@@ -37,8 +37,6 @@
 
 namespace blink {
 
-TopDocumentRootScrollerController::~TopDocumentRootScrollerController(void) = default;
-
 // static
 TopDocumentRootScrollerController* TopDocumentRootScrollerController::Create(
     Page& page) {
@@ -243,9 +241,9 @@ void TopDocumentRootScrollerController::DidDisposeScrollableArea(
 void TopDocumentRootScrollerController::InitializeViewportScrollCallback(
     RootFrameViewport& root_frame_viewport) {
   DCHECK(page_);
-  viewport_apply_scroll_.reset(ViewportScrollCallback::Create(
+  viewport_apply_scroll_ = ViewportScrollCallback::Create(
       &page_->GetBrowserControls(), &page_->GetOverscrollController(),
-      root_frame_viewport));
+      root_frame_viewport);
 
   RecomputeGlobalRootScroller();
 }
