@@ -1177,4 +1177,22 @@ void Node::WillCallDefaultEventHandler(const Event &event)
 #endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+HTMLSlotElement* Node::AssignedSlot(void) const
+{
+    // assignedSlot doesn't need to call updateDistribution().
+    ASSERT(!IsPseudoElement());
+    if (ShadowRoot *root = V1ShadowRootOfParent())
+        ASSERT(false); // BKTODO: return root->AssignedSlotFor(*this);
+    return nullptr;
+}
+
+ShadowRoot* Node::V1ShadowRootOfParent(void) const
+{
+    if (Element *parent = parentElement())
+        return parent->ShadowRootIfV1();
+    return nullptr;
+}
+#endif // BLINKIT_CRAWLER_ONLY
+
 }  // namespace blink

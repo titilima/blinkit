@@ -102,6 +102,9 @@ public:
     const QualifiedName& TagQName(void) const { return m_tagName; }
     const AtomicString& prefix(void) const { return m_tagName.Prefix(); }
     const AtomicString& localName(void) const { return m_tagName.LocalName(); }
+#ifndef BLINKIT_CRAWLER_ONLY
+    AtomicString LocalNameForSelectorMatching(void) const;
+#endif
     const AtomicString& namespaceURI(void) const { return m_tagName.NamespaceURI(); }
     bool HasTagName(const QualifiedName &tagName) const { return m_tagName.Matches(tagName); }
     // A fast function for checking the local name against another atomic string.
@@ -204,6 +207,8 @@ public:
     bool HasAnimations(void) const;
     ElementAnimations* GetElementAnimations(void) const;
 
+    bool HasDisplayContentsStyle(void) const;
+
     void RecalcStyle(StyleRecalcChange change);
     void RecalcStyleForTraversalRootAncestor(void);
 
@@ -238,6 +243,7 @@ public:
 
     // Returns the shadow root attached to this element if it is a shadow host.
     ShadowRoot* GetShadowRoot(void) const;
+    ShadowRoot* ShadowRootIfV1(void) const;
 
     virtual const AtomicString& ShadowPseudoId(void) const;
     PseudoElement* GetPseudoElement(PseudoId pseudoid) const;
@@ -421,6 +427,18 @@ inline bool IsShadowHost(const Node &node)
     return nullptr != node.GetShadowRoot();
 #endif
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+inline bool IsAtShadowBoundary(const Element *element)
+{
+    if (nullptr != element)
+    {
+        if (ContainerNode *parentNode = element->parentNode())
+            return parentNode->IsShadowRoot();
+    }
+    return false;
+}
+#endif
 
 }  // namespace blink
 

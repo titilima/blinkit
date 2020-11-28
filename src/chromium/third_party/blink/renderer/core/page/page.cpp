@@ -124,6 +124,16 @@ TopDocumentRootScrollerController& Page::GlobalRootScrollerController(void) cons
     return *m_globalRootScrollerController;
 }
 
+void Page::SetDeviceScaleFactorDeprecated(float scaleFactor)
+{
+    if (m_deviceScaleFactor == scaleFactor)
+        return;
+
+    m_deviceScaleFactor = scaleFactor;
+    if (m_frame)
+        m_frame->DeviceScaleFactorChanged();
+}
+
 void Page::SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState)
 {
     if (m_visibilityState == visibilityState)

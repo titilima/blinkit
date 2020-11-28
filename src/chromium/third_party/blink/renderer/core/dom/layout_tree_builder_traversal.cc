@@ -45,11 +45,7 @@
 namespace blink {
 
 inline static bool HasDisplayContentsStyle(const Node& node) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return node.IsElementNode() && ToElement(node).HasDisplayContentsStyle();
-#endif
 }
 
 static bool IsLayoutObjectReparented(const LayoutObject* layout_object) {

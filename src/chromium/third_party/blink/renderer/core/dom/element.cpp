@@ -1810,10 +1810,22 @@ void Element::WillModifyAttribute(const QualifiedName &name, const AtomicString 
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+bool Element::HasDisplayContentsStyle(void) const
+{
+    if (const ComputedStyle *style = NonLayoutObjectComputedStyle())
+        return EDisplay::kContents == style->Display();
+    return false;
+}
+
+AtomicString Element::LocalNameForSelectorMatching(void) const
+{
+    return localName().DeprecatedLower();
+}
+
 void Element::WillRecalcStyle(StyleRecalcChange change)
 {
     ASSERT(false); // BKTODO:
 }
-#endif
+#endif // BLINKIT_CRAWLER_ONLY
 
 } // namespace blink

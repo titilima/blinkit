@@ -79,6 +79,11 @@ public:
 
     void SetInitialViewportSize(const IntSize &viewportSize);
 
+    // Viewport size that should be used for viewport units (i.e. 'vh'/'vw').
+    // May include the size of browser controls. See implementation for further
+    // documentation.
+    FloatSize ViewportSizeForViewportUnits(void) const;
+
     void SetBaseBackgroundColor(const Color &backgroundColor);
     void UpdateBaseBackgroundColorRecursively(const Color &baseBackgroundColor);
 

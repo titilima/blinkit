@@ -87,10 +87,15 @@ public:
     LocalFrameView* View(void) const override { return m_view.get(); }
     void CreateView(const IntSize &viewportSize, const Color &backgroundColor);
     void SetView(const std::shared_ptr<LocalFrameView> &view);
+
+    double DevicePixelRatio(void) const;
+    void DeviceScaleFactorChanged(void);
+
     float PageZoomFactor(void) const { return m_pageZoomFactor; }
     void SetPageZoomFactor(float factor);
     float TextZoomFactor(void) const { return m_textZoomFactor; }
     void SetTextZoomFactor(float factor);
+
     SmoothScrollSequencer& GetSmoothScrollSequencer(void);
 #endif
     Document* GetDocument(void) const;

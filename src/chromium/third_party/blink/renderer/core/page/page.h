@@ -57,6 +57,19 @@ public:
     LocalFrame* GetFrame(void) const { return m_frame.get(); }
     PageAnimator& Animator(void) { return *m_animator; }
 
+    // Corresponds to pixel density of the device where this Page is
+    // being displayed. In multi-monitor setups this can vary between pages.
+    // This value does not account for Page zoom, use LocalFrame::devicePixelRatio
+    // instead.  This is to be deprecated. Use this with caution.
+    // 1) If you need to scale the content per device scale factor, this is still
+    //    valid.  In use-zoom-for-dsf mode, this is always 1, and will be remove
+    //    when transition is complete.
+    // 2) If you want to compute the device related measure (such as device pixel
+    //    height, or the scale factor for drag image), use
+    //    ChromeClient::screenInfo() instead.
+    float DeviceScaleFactorDeprecated(void) const { return m_deviceScaleFactor; }
+    void SetDeviceScaleFactorDeprecated(float scaleFactor);
+
     PageScaleConstraintsSet& GetPageScaleConstraintsSet(void);
     const PageScaleConstraintsSet& GetPageScaleConstraintsSet(void) const;
 
@@ -77,18 +90,28 @@ public:
     ScrollingCoordinator* GetScrollingCoordinator(void);
 
     void DidCommitLoad(LocalFrame *frame);
+
+#if DCHECK_IS_ON()
+    bool IsPainting(void) const { return m_isPainting; }
+    void SetIsPainting(bool painting) { m_isPainting = painting; }
+#endif
 private:
     explicit Page(PageClients &pageClients);
 
     ChromeClient *m_chromeClient;
     std::unique_ptr<LocalFrame> m_frame;
     std::unique_ptr<PageAnimator> m_animator;
+    float m_deviceScaleFactor = 1.0;
     std::unique_ptr<PageScaleConstraintsSet> m_pageScaleConstraintsSet;
     const std::unique_ptr<BrowserControls> m_browserControls;
     const std::unique_ptr<TopDocumentRootScrollerController> m_globalRootScrollerController;
     const std::unique_ptr<VisualViewport> m_visualViewport;
     const std::unique_ptr<OverscrollController> m_overscrollController;
     PageVisibilityState m_visibilityState = PageVisibilityState::kVisible;
+
+#if DCHECK_IS_ON()
+    bool m_isPainting = false;
+#endif
 };
 
 } // namespace blink

@@ -174,8 +174,7 @@ CSSDefaultStyleSheets::EnsureTelevisionViewportStyleSheet() {
 bool CSSDefaultStyleSheets::EnsureDefaultStyleSheetsForElement(
     const Element& element) {
   bool changed_default_style = false;
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   // FIXME: We should assert that the sheet only styles MathML elements.
   if (element.namespaceURI() == MathMLNames::mathmlNamespaceURI &&
       !mathml_style_sheet_) {

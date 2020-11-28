@@ -396,6 +396,12 @@ public:
 
     void RemoveFocusedElementOfSubtree(Node *node, bool amongChildrenOnly = false);
 
+    bool HasNodesWithPlaceholderStyle(void) const { return m_hasNodesWithPlaceholderStyle; }
+    void SetHasNodesWithPlaceholderStyle(void) { m_hasNodesWithPlaceholderStyle = true; }
+
+    bool HasViewportUnits(void) const { return m_hasViewportUnits; }
+    void SetHasViewportUnits(void) { m_hasViewportUnits = true; }
+
     // A non-null template_document_host_ implies that |this| was created by
     // EnsureTemplateDocument().
     bool IsTemplateDocument(void) const { return !!m_templateDocumentHost; }
@@ -595,7 +601,9 @@ private:
     Member<CSSStyleSheet> m_elemSheet;
     Member<StyleEngine> m_styleEngine;
 
+    bool m_hasNodesWithPlaceholderStyle = false;
     bool m_evaluateMediaQueriesOnStyleRecalc = false;
+    bool m_hasViewportUnits = false;
 
     std::shared_ptr<V0CustomElementRegistrationContext> m_registrationContext;
 

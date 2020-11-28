@@ -198,8 +198,6 @@ void ElementRuleCollector::CollectMatchingRules(
   DCHECK(context_.GetElement());
 
   Element& element = *context_.GetElement();
-  ASSERT(false); // BKTODO:
-#if 0
   const AtomicString& pseudo_id = element.ShadowPseudoId();
   if (!pseudo_id.IsEmpty()) {
     DCHECK(element.IsStyledElement());
@@ -208,9 +206,11 @@ void ElementRuleCollector::CollectMatchingRules(
         cascade_order, match_request);
   }
 
+#if 0 // BKTODO: Check if necessary.
   if (element.IsVTTElement())
     CollectMatchingRulesForList(match_request.rule_set->CuePseudoRules(),
                                 cascade_order, match_request);
+#endif
   // Check whether other types of rules are applicable in the current tree
   // scope. Criteria for this:
   // a) the rules are UA rules.
@@ -246,7 +246,6 @@ void ElementRuleCollector::CollectMatchingRules(
       cascade_order, match_request);
   CollectMatchingRulesForList(match_request.rule_set->UniversalRules(),
                               cascade_order, match_request);
-#endif
 }
 
 void ElementRuleCollector::CollectMatchingShadowHostRules(

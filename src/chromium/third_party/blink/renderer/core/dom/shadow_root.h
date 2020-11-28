@@ -242,14 +242,12 @@ inline ShadowRoot* Node::GetShadowRoot() const {
   return ToElement(this)->GetShadowRoot();
 }
 
-#if 0 // BKTODO:
 inline ShadowRoot* Element::ShadowRootIfV1() const {
   ShadowRoot* root = GetShadowRoot();
   if (root && root->IsV1())
     return root;
   return nullptr;
 }
-#endif
 
 inline ShadowRootV0& ShadowRoot::V0() const {
   DCHECK(shadow_root_v0_);

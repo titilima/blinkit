@@ -668,23 +668,14 @@ void LayoutView::CommitPendingSelection() {
 }
 
 bool LayoutView::ShouldUsePrintingLayout() const {
-  ASSERT(false); // BKTODO:
   return false;
-#if 0
-  if (!GetDocument().Printing() || !frame_view_)
-    return false;
-  return frame_view_->GetFrame().ShouldUsePrintingLayout();
-#endif
 }
 
 LayoutRect LayoutView::ViewRect() const {
   if (ShouldUsePrintingLayout())
     return LayoutRect(LayoutPoint(), Size());
-  ASSERT(false); // BKTODO:
-#if 0
   if (frame_view_)
     return LayoutRect(LayoutPoint(), LayoutSize(frame_view_->Size()));
-#endif
   return LayoutRect();
 }
 
@@ -825,14 +816,10 @@ IntSize LayoutView::GetLayoutSize(
   if (!frame_view_)
     return IntSize();
 
-  ASSERT(false); // BKTODO:
-  return IntSize();
-#if 0
   IntSize result = frame_view_->GetLayoutSize();
   if (scrollbar_inclusion == kExcludeScrollbars)
     result = frame_view_->LayoutViewport()->ExcludeScrollbars(result);
   return result;
-#endif
 }
 
 int LayoutView::ViewLogicalWidth(
@@ -937,12 +924,8 @@ bool LayoutView::BackgroundIsKnownToBeOpaqueInRect(const LayoutRect&) const {
 }
 
 FloatSize LayoutView::ViewportSizeForViewportUnits() const {
-  ASSERT(false); // BKTODO:
-  return FloatSize();
-#if 0
   return GetFrameView() ? GetFrameView()->ViewportSizeForViewportUnits()
                         : FloatSize();
-#endif
 }
 
 void LayoutView::WillBeDestroyed() {

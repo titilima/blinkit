@@ -50,6 +50,7 @@
 #include "third_party/blink/renderer/platform/scheduler/main_thread/frame_scheduler_impl.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/frame/event_handler_registry.h"
 #   include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
 #endif
 
@@ -295,7 +296,33 @@ void LocalFrame::SetDOMWindow(LocalDOMWindow *domWindow)
     m_domWindow = domWindow;
 }
 
+bool LocalFrame::ShouldReuseDefaultView(void) const
+{
+    return m_loader.StateMachine()->IsDisplayingInitialEmptyDocument();
+}
+
+void LocalFrame::Trace(Visitor *visitor)
+{
+    m_loader.Trace(visitor);
+    Frame::Trace(visitor);
+}
+
 #ifndef BLINKIT_CRAWLER_ONLY
+double LocalFrame::DevicePixelRatio(void) const
+{
+    if (!m_page)
+        return 0;
+
+    double ratio = m_page->DeviceScaleFactorDeprecated();
+    ratio *= PageZoomFactor();
+    return ratio;
+}
+
+void LocalFrame::DeviceScaleFactorChanged(void)
+{
+    ASSERT(false); // BKTODO:
+}
+
 void LocalFrame::SetPageZoomFactor(float factor)
 {
     ASSERT(false); // BKTODO:
@@ -315,17 +342,6 @@ void LocalFrame::SetView(const std::shared_ptr<LocalFrameView> &view)
         m_view->WillBeRemovedFromFrame();
     m_view = view;
 }
-#endif
-
-bool LocalFrame::ShouldReuseDefaultView(void) const
-{
-    return m_loader.StateMachine()->IsDisplayingInitialEmptyDocument();
-}
-
-void LocalFrame::Trace(Visitor *visitor)
-{
-    m_loader.Trace(visitor);
-    Frame::Trace(visitor);
-}
+#endif // BLINKIT_CRAWLER_ONLY
 
 } // namespace blink

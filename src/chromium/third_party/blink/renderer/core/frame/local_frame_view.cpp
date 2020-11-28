@@ -465,6 +465,44 @@ void LocalFrameView::UpdateRenderThrottlingStatus(
     BKLOG("// BKTODO: Check if necessary.");
 }
 
+FloatSize LocalFrameView::ViewportSizeForViewportUnits(void) const
+{
+    LayoutView *layoutView = GetLayoutView();
+    if (nullptr == layoutView)
+        return FloatSize();
+
+    float zoom = m_frame->PageZoomFactor();
+
+    FloatSize layoutSize;
+    layoutSize.SetWidth(layoutView->ViewWidth(kIncludeScrollbars) / zoom);
+    layoutSize.SetHeight(layoutView->ViewHeight(kIncludeScrollbars) / zoom);
+
+#if 0 // BKTODO:
+    BrowserControls &browserControls = m_frame->GetPage()->GetBrowserControls();
+    if (browserControls.PermittedState() != cc::BrowserControlsState::kHidden)
+    {
+        // We use the layoutSize rather than frameRect to calculate viewport units
+        // so that we get correct results on mobile where the page is laid out into
+        // a rect that may be larger than the viewport (e.g. the 980px fallback
+        // width for desktop pages). Since the layout height is statically set to
+        // be the viewport with browser controls showing, we add the browser
+        // controls height, compensating for page scale as well, since we want to
+        // use the viewport with browser controls hidden for vh (to match Safari).
+        int viewport_width = frame_->GetPage()->GetVisualViewport().Size().Width();
+        if (frame_->IsMainFrame() && layout_size.Width() && viewport_width) {
+            // TODO(bokan/eirage): BrowserControl height may need to account for the
+            // zoom factor when use-zoom-for-dsf is enabled on Android. Confirm this
+            // works correctly when that's turned on. https://crbug.com/737777.
+            float page_scale_at_layout_width = viewport_width / layout_size.Width();
+            layout_size.Expand(
+                0, browser_controls.TotalHeight() / page_scale_at_layout_width);
+        }
+    }
+#endif
+
+    return layoutSize;
+}
+
 void LocalFrameView::WillBeRemovedFromFrame(void)
 {
 #if 0 // BKTODO: Check the logic

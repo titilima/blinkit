@@ -794,14 +794,6 @@ void Document::DetachParser(void)
     }
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
-float Document::DevicePixelRatio(void) const
-{
-    ASSERT(false); // BKTODO:
-    return 0;
-}
-#endif
-
 void Document::DispatchDidReceiveTitle(void)
 {
     m_frame->Client()->DispatchDidReceiveTitle(m_title);
@@ -2623,5 +2615,12 @@ void Document::writeln(LocalDOMWindow *callingWindow, const std::vector<std::str
         builder.append(s);
     writeln(String::FromStdUTF8(builder), callingWindow->document(), exceptionState);
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+float Document::DevicePixelRatio(void) const
+{
+    return m_frame ? m_frame->DevicePixelRatio() : 1.0;
+}
+#endif // BLINKIT_CRAWLER_ONLY
 
 }  // namespace blink

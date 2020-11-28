@@ -31,7 +31,7 @@ public:
 
     void clear(void)
     {
-        ASSERT(false); // BKTODO:
+        ASSERT(this->empty()); // BKTODO:
     }
     void erase(typename std::list<T>::iterator it)
     {

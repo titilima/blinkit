@@ -61,6 +61,7 @@ class StaticNodeTypeList;
 using StaticNodeList = StaticNodeTypeList<Node>;
 #ifndef BLINKIT_CRAWLER_ONLY
 class ComputedStyle;
+class HTMLSlotElement;
 class StyleChangeReasonForTracing;
 #endif
 
@@ -366,6 +367,9 @@ public:
     bool IsInV1ShadowTree(void) const;
     bool IsChildOfV0ShadowHost(void) const;
     bool IsChildOfV1ShadowHost(void) const;
+    ShadowRoot* V1ShadowRootOfParent(void) const;
+
+    HTMLSlotElement* AssignedSlot(void) const;
 
     ContainerNode* GetReattachParent(void) const;
 

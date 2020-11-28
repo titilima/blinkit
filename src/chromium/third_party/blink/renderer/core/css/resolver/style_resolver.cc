@@ -517,24 +517,15 @@ void StyleResolver::MatchUserRules(ElementRuleCollector& collector) {
 void StyleResolver::MatchUARules(ElementRuleCollector& collector) {
   collector.SetMatchingUARules(true);
 
-  ASSERT(false); // BKTODO:
-#if 0
   CSSDefaultStyleSheets& default_style_sheets =
       CSSDefaultStyleSheets::Instance();
   RuleSet* user_agent_style_sheet =
-      print_media_type_ ? default_style_sheets.DefaultPrintStyle()
-                        : default_style_sheets.DefaultStyle();
+      default_style_sheets.DefaultStyle();
   MatchRuleSet(collector, user_agent_style_sheet);
 
   // In quirks mode, we match rules from the quirks user agent sheet.
   if (GetDocument().InQuirksMode())
     MatchRuleSet(collector, default_style_sheets.DefaultQuirksStyle());
-
-  // If document uses view source styles (in view source mode or in xml viewer
-  // mode), then we match rules from the view source style sheet.
-  if (GetDocument().IsViewSource())
-    MatchRuleSet(collector, default_style_sheets.DefaultViewSourceStyle());
-#endif
 
   collector.FinishAddingUARules();
   collector.SetMatchingUARules(false);
@@ -680,14 +671,14 @@ static const ComputedStyle* CalculateBaseComputedStyle(
   if (!animating_element)
     return nullptr;
 
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   ElementAnimations* element_animations =
       animating_element->GetElementAnimations();
   if (!element_animations)
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (CSSAnimations::IsAnimatingCustomProperties(element_animations)) {
     state.SetIsAnimatingCustomProperties(true);
     // TODO(alancutter): Use the base computed style optimisation in the
@@ -725,10 +716,6 @@ scoped_refptr<ComputedStyle> StyleResolver::StyleForElement(
     const ComputedStyle* default_layout_parent,
     RuleMatchingBehavior matching_behavior) {
   DCHECK(GetDocument().GetFrame());
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
-  DCHECK(GetDocument().GetSettings());
 
   // Once an element has a layout object or non-layout style, we don't try to
   // destroy it, since that means it could be rendering already and we cannot
@@ -748,7 +735,6 @@ scoped_refptr<ComputedStyle> StyleResolver::StyleForElement(
     return style_not_yet_available_;
   }
 
-  GetDocument().GetStyleEngine().IncStyleForElementCount();
   INCREMENT_STYLE_STATS_COUNTER(GetDocument().GetStyleEngine(), elements_styled,
                                 1);
 
@@ -796,15 +782,7 @@ scoped_refptr<ComputedStyle> StyleResolver::StyleForElement(
 
   if (element->IsLink()) {
     state.Style()->SetIsLink();
-    EInsideLink link_state = state.ElementLinkState();
-    if (link_state != EInsideLink::kNotInsideLink) {
-      bool force_visited = false;
-      probe::forcePseudoState(element, CSSSelector::kPseudoVisited,
-                              &force_visited);
-      if (force_visited)
-        link_state = EInsideLink::kInsideVisitedLink;
-    }
-    state.Style()->SetInsideLink(link_state);
+    state.Style()->SetInsideLink(state.ElementLinkState());
   }
 
   if (!base_computed_style) {
@@ -887,7 +865,6 @@ scoped_refptr<ComputedStyle> StyleResolver::StyleForElement(
 
   // Now return the style.
   return state.TakeStyle();
-#endif
 }
 
 // TODO(alancutter): Create compositor keyframe values directly instead of

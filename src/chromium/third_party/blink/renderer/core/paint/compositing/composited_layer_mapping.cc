@@ -3624,14 +3624,11 @@ void CompositedLayerMapping::PaintContents(
   // GraphicsLayer::PaintContents) try to paint throttled content.
   DocumentLifecycle::AllowThrottlingScope allow_throttling(
       owning_layer_.GetLayoutObject().GetDocument().Lifecycle());
-  ASSERT(false); // BKTODO:
-#if 0
 #if DCHECK_IS_ON()
   // FIXME: once the state machine is ready, this can be removed and we can
   // refer to that instead.
   if (Page* page = GetLayoutObject().GetFrame()->GetPage())
     page->SetIsPainting(true);
-#endif
 #endif
 
   TRACE_EVENT1(
@@ -3696,11 +3693,8 @@ void CompositedLayerMapping::PaintContents(
   probe::didPaint(owning_layer_.GetLayoutObject().GetFrame(), graphics_layer,
                   context, LayoutRect(interest_rect));
 #if DCHECK_IS_ON()
-  ASSERT(false); // BKTODO:
-#if 0
   if (Page* page = GetLayoutObject().GetFrame()->GetPage())
     page->SetIsPainting(false);
-#endif
 #endif
 }
 
