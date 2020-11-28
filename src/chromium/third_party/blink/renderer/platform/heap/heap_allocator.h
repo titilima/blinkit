@@ -86,7 +86,7 @@ class HeapLinkedHashSet : public LinkedHashSet<T, int, int, int>
 {
 };
 
-template <typename T>
+template <typename T, size_t inlineCapacity = 0>
 class HeapListHashSet : public ListHashSet<T>
 {
 };
@@ -143,6 +143,16 @@ struct TracePolicy<blink::HeapDeque<T>>
     }
 };
 
+template <typename T>
+struct TracePolicy<blink::HeapHashCountedSet<T>>
+{
+    static void Impl(blink::HeapHashCountedSet<T> &s, blink::Visitor *visitor)
+    {
+        for (auto &it : s)
+            visitor->Trace(it.first);
+    }
+};
+
 template <typename K, typename V>
 struct TracePolicy<blink::HeapHashMap<K, V>>
 {
@@ -160,6 +170,24 @@ struct TracePolicy<blink::HeapHashSet<T>>
     {
         for (auto &o : s)
             visitor->Trace(o);
+    }
+};
+
+template <typename T>
+struct TracePolicy<blink::HeapLinkedHashSet<T>>
+{
+    static void Impl(blink::HeapLinkedHashSet<T> &s, blink::Visitor *visitor)
+    {
+        ASSERT(false); // BKTODO:
+    }
+};
+
+template <typename T, size_t inlineCapacity>
+struct TracePolicy<blink::HeapListHashSet<T, inlineCapacity>>
+{
+    static void Impl(blink::HeapListHashSet<T, inlineCapacity> &s, blink::Visitor *visitor)
+    {
+        ASSERT(false); // BKTODO:
     }
 };
 

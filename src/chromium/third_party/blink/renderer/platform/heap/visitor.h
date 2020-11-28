@@ -87,6 +87,16 @@ struct TracePolicy
     }
 };
 
+template <typename T1, typename T2>
+struct TracePolicy<std::pair<T1, T2>>
+{
+    static void Impl(std::pair<T1, T2> &p, blink::Visitor *visitor)
+    {
+        visitor->Trace(p.first);
+        visitor->Trace(p.second);
+    }
+};
+
 template <typename T, typename K, typename H>
 struct TracePolicy<std::unordered_map<K, T, H>>
 {
