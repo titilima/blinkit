@@ -83,14 +83,15 @@ namespace {
 TouchAction AdjustTouchActionForElement(TouchAction touch_action,
                                         const ComputedStyle& style,
                                         Element* element) {
-  ASSERT(false); // BKTODO:
-#if 0
   bool is_child_document =
+#if 0 // BKTODO: Check the logic below.
       element && element == element->GetDocument().documentElement() &&
       element->GetDocument().LocalOwner();
+#else
+      false;
+#endif
   if (style.ScrollsOverflow() || is_child_document)
     return touch_action | TouchAction::kTouchActionPan;
-#endif
   return touch_action;
 }
 
@@ -210,8 +211,19 @@ static bool IsOutermostSVGElement(const Element* element) {
 // considered to be atomic inline-level.
 static bool DoesNotInheritTextDecoration(const ComputedStyle& style,
                                          const Element* element) {
-  ASSERT(false); // BKTODO:
-  return false;
+  if (style.Display() == EDisplay::kInlineTable)
+    return true;
+  if (style.Display() == EDisplay::kInlineBlock)
+    return true;
+  if (style.Display() == EDisplay::kWebkitInlineBox)
+    return true;
+  if (IsAtShadowBoundary(element))
+    return true;
+  if (style.IsFloating())
+    return true;
+  if (style.HasOutOfFlowPosition())
+    return true;
+  return false; // BKTODO: Check if SVG & ruby necessary.
 #if 0
   return style.Display() == EDisplay::kInlineTable ||
          style.Display() == EDisplay::kInlineBlock ||
@@ -228,12 +240,8 @@ static bool DoesNotInheritTextDecoration(const ComputedStyle& style,
 // (https://html.spec.whatwg.org/multipage/rendering.html#phrasing-content-3)
 // The <a> behavior is non-standard.
 static bool OverridesTextDecorationColors(const Element* element) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return element &&
-         (IsHTMLFontElement(element) || IsHTMLAnchorElement(element));
-#endif
+         (IsHTMLFontElement(*element) || IsHTMLAnchorElement(*element));
 }
 
 // FIXME: This helper is only needed because pseudoStyleForElement passes a null
@@ -273,8 +281,6 @@ static void AdjustStyleForFirstLetter(ComputedStyle& style) {
 
 static void AdjustStyleForHTMLElement(ComputedStyle& style,
                                       HTMLElement& element) {
-  ASSERT(false); // BKTODO:
-#if 0
   // <div> and <span> are the most common elements on the web, we skip all the
   // work for them.
   if (IsHTMLDivElement(element) || IsHTMLSpanElement(element))
@@ -293,11 +299,14 @@ static void AdjustStyleForHTMLElement(ComputedStyle& style,
     return;
   }
 
+  ASSERT(!element.HasTagName(html_names::kImgTag)); // BKTODO:
+#if 0
   if (auto* image = ToHTMLImageElementOrNull(element)) {
     if (image->IsCollapsed() || style.Display() == EDisplay::kContents)
       style.SetDisplay(EDisplay::kNone);
     return;
   }
+#endif
 
   if (IsHTMLTableElement(element)) {
     // Tables never support the -webkit-* values for text-align and will reset
@@ -309,6 +318,7 @@ static void AdjustStyleForHTMLElement(ComputedStyle& style,
     return;
   }
 
+#if 0 // BKTODO: Check if necessary.
   if (IsHTMLFrameElement(element) || IsHTMLFrameSetElement(element)) {
     // Frames and framesets never honor position:relative or position:absolute.
     // This is necessary to fix a crash where a site tries to position these
@@ -338,6 +348,7 @@ static void AdjustStyleForHTMLElement(ComputedStyle& style,
     style.SetFloating(EFloat::kNone);
     return;
   }
+#endif
 
   if (IsHTMLLegendElement(element) && style.Display() != EDisplay::kContents) {
     // Allow any blockified display value for legends. Note that according to
@@ -371,6 +382,7 @@ static void AdjustStyleForHTMLElement(ComputedStyle& style,
     return;
   }
 
+#if 0 // BKTODO: Check if necessary.
   if (IsHTMLPlugInElement(element)) {
     style.SetRequiresAcceleratedCompositingForExternalReasons(
         ToHTMLPlugInElement(element).ShouldAccelerate());
@@ -378,8 +390,11 @@ static void AdjustStyleForHTMLElement(ComputedStyle& style,
       style.SetDisplay(EDisplay::kNone);
     return;
   }
+#endif
 
   if (style.Display() == EDisplay::kContents) {
+    ASSERT(false); // BKTODO:
+#if 0
     // See https://drafts.csswg.org/css-display/#unbox-html
     // Some of these elements are handled with other adjustments above.
     if (IsHTMLBRElement(element) || IsHTMLWBRElement(element) ||
@@ -389,8 +404,8 @@ static void AdjustStyleForHTMLElement(ComputedStyle& style,
         IsHTMLSelectElement(element)) {
       style.SetDisplay(EDisplay::kNone);
     }
-  }
 #endif
+  }
 }
 
 static void AdjustOverflow(ComputedStyle& style) {
@@ -524,12 +539,14 @@ static void AdjustEffectiveTouchAction(ComputedStyle& style,
                                        bool is_svg_root) {
   TouchAction inherited_action = parent_style.GetEffectiveTouchAction();
 
-  ASSERT(false); // BKTODO:
-#if 0
   bool is_replaced_canvas =
+#if 0 // BKTODO: Check the logic below.
       element && IsHTMLCanvasElement(element) &&
       element->GetDocument().GetFrame() &&
       element->GetDocument().CanExecuteScripts(kNotAboutToExecuteScript);
+#else
+      false;
+#endif
   bool is_non_replaced_inline_elements =
       style.IsDisplayInlineType() &&
       !(style.IsDisplayReplacedType() || is_svg_root ||
@@ -572,13 +589,16 @@ static void AdjustEffectiveTouchAction(ComputedStyle& style,
       AdjustTouchActionForElement(inherited_action, style, element);
 
   TouchAction enforced_by_policy = TouchAction::kTouchActionNone;
+#if 0 // BKTODO: Check if necessary.
   if (element->GetDocument().IsVerticalScrollEnforced())
     enforced_by_policy = TouchAction::kTouchActionPanY;
+#endif
 
   // Apply the adjusted parent effective touch actions.
   style.SetEffectiveTouchAction((element_touch_action & inherited_action) |
                                 enforced_by_policy);
 
+#if 0 // BKTODO: Check if necessary.
   // Propagate touch action to child frames.
   if (element->IsFrameOwnerElement()) {
     Frame* content_frame = ToHTMLFrameOwnerElement(element)->ContentFrame();
@@ -601,10 +621,7 @@ void StyleAdjuster::AdjustComputedStyle(StyleResolverState& state,
   if (element && element->IsHTMLElement() &&
       (style.Display() != EDisplay::kNone ||
        element->LayoutObjectIsNeeded(style))) {
-    ASSERT(false); // BKTODO:
-#if 0
     AdjustStyleForHTMLElement(style, ToHTMLElement(*element));
-#endif
   }
   if (style.Display() != EDisplay::kNone) {
     bool is_document_element =
@@ -680,8 +697,7 @@ void StyleAdjuster::AdjustComputedStyle(StyleResolverState& state,
   AdjustStyleForEditing(style);
 
   bool is_svg_root = false;
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   bool is_svg_element = element && element->IsSVGElement();
 
   if (is_svg_element) {

@@ -52,6 +52,84 @@ void HTMLElement::CollectStyleForPresentationAttribute(
     ASSERT(false); // BKTODO:
 }
 
+TextDirection HTMLElement::Directionality(Node **strongDirectionalityTextNode) const
+{
+    ASSERT(false); // BKTODO:
+#if 0
+    if (auto* input_element = ToHTMLInputElementOrNull(*this))
+    {
+        bool has_strong_directionality;
+        TextDirection text_direction = DetermineDirectionality(
+            input_element->value(), &has_strong_directionality);
+        if (strong_directionality_text_node) {
+            *strong_directionality_text_node =
+                has_strong_directionality
+                ? const_cast<HTMLInputElement*>(input_element)
+                : nullptr;
+        }
+        return text_direction;
+    }
+
+    Node* node = FlatTreeTraversal::FirstChild(*this);
+    while (node) {
+        // Skip bdi, script, style and text form controls.
+        if (DeprecatedEqualIgnoringCase(node->nodeName(), "bdi") ||
+            IsHTMLScriptElement(*node) || IsHTMLStyleElement(*node) ||
+            (node->IsElementNode() && ToElement(node)->IsTextControl()) ||
+            (node->IsElementNode() &&
+                ToElement(node)->ShadowPseudoId() == "-webkit-input-placeholder")) {
+            node = FlatTreeTraversal::NextSkippingChildren(*node, this);
+            continue;
+        }
+
+        // Skip elements with valid dir attribute
+        if (node->IsElementNode()) {
+            AtomicString dir_attribute_value =
+                ToElement(node)->FastGetAttribute(dirAttr);
+            if (IsValidDirAttribute(dir_attribute_value)) {
+                node = FlatTreeTraversal::NextSkippingChildren(*node, this);
+                continue;
+            }
+        }
+
+        if (node->IsTextNode()) {
+            bool has_strong_directionality;
+            TextDirection text_direction = DetermineDirectionality(
+                node->textContent(true), &has_strong_directionality);
+            if (has_strong_directionality) {
+                if (strong_directionality_text_node)
+                    *strong_directionality_text_node = node;
+                return text_direction;
+            }
+        }
+        node = FlatTreeTraversal::Next(*node, this);
+    }
+    if (strong_directionality_text_node)
+        *strong_directionality_text_node = nullptr;
+#endif
+    return TextDirection::kLtr;
+}
+
+TextDirection HTMLElement::DirectionalityIfhasDirAutoAttribute(bool &isAuto) const
+{
+    isAuto = HasDirectionAuto();
+    if (!isAuto)
+        return TextDirection::kLtr;
+    return Directionality();
+}
+
+bool HTMLElement::HasDirectionAuto(void) const
+{
+    // <bdi> defaults to dir="auto"
+    // https://html.spec.whatwg.org/multipage/semantics.html#the-bdi-element
+    const AtomicString &direction = FastGetAttribute(html_names::kDirAttr);
+    return DeprecatedEqualIgnoringCase(direction, "auto");
+#if 0 // BKTODO: Process <bdi>
+    return (IsHTMLBDIElement(*this) && direction == g_null_atom) ||
+        DeprecatedEqualIgnoringCase(direction, "auto");
+#endif
+}
+
 Node::InsertionNotificationRequest HTMLElement::InsertedInto(ContainerNode &insertionPoint)
 {
     // Process the superclass first to ensure that `InActiveDocument()` is

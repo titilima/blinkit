@@ -61,6 +61,28 @@ public:
     void ReserveCapacityForSize(size_t size) {}
 };
 
+template <typename K, typename T>
+class HeapHashMap<K, Member<T>> : public std::unordered_map<K, Member<T>>
+{
+public:
+    bool IsEmpty(void) const { return this->empty(); }
+
+    T* at(const K &k) const
+    {
+        auto it = this->find(k);
+        if (this->end() == it)
+            return nullptr;
+        return it->second.Get();
+    }
+
+    bool Contains(const K &k) const
+    {
+        auto it = this->find(k);
+        return this->end() != it;
+    }
+    void ReserveCapacityForSize(size_t size) {}
+};
+
 template <typename T>
 class HeapHashSet : private std::unordered_set<T>
 {
@@ -105,10 +127,18 @@ public:
     }
 
     bool IsEmpty(void) const { return this->empty(); }
-    void Grow(wtf_size_t size) { this->resize(size); }
+    void Grow(wtf_size_t size)
+    {
+        ASSERT(size >= this->size());
+        this->resize(size);
+    }
     void ReserveCapacity(wtf_size_t new_capacity) { this->reserve(new_capacity); }
     void ReserveInitialCapacity(wtf_size_t initial_capacity) { this->reserve(initial_capacity); }
-    void Shrink(wtf_size_t size) { this->resize(size); }
+    void Shrink(wtf_size_t size)
+    {
+        this->resize(size);
+        this->shrink_to_fit();
+    }
 
     void EraseAt(wtf_size_t position)
     {

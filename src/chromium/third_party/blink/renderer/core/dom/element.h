@@ -212,6 +212,9 @@ public:
     void RecalcStyle(StyleRecalcChange change);
     void RecalcStyleForTraversalRootAncestor(void);
 
+    const CSSPropertyValueSet* PresentationAttributeStyle(void);
+    virtual const CSSPropertyValueSet* AdditionalPresentationAttributeStyle(void) { return nullptr; }
+
     const CSSPropertyValueSet* InlineStyle(void) const
     {
         ASSERT(!ForCrawler());
@@ -347,6 +350,8 @@ private:
     // Returns true if we should traverse shadow including children and pseudo
     // elements for RecalcStyle.
     bool ShouldCallRecalcStyleForChildren(StyleRecalcChange change);
+
+    void UpdatePresentationAttributeStyle(void);
 
     void CancelFocusAppearanceUpdate(void);
 

@@ -64,6 +64,7 @@
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/dom/text_link_colors.h"
+#   include "third_party/blink/renderer/core/dom/user_action_element_set.h"
 #endif
 
 namespace blink {
@@ -164,6 +165,8 @@ public:
     StyleResolver* GetStyleResolver(void) const;
     StyleResolver& EnsureStyleResolver(void) const;
     VisitedLinkState& GetVisitedLinkState(void) const { return *m_visitedLinkState; }
+    UserActionElementSet& UserActionElements(void) { return m_userActionElements; }
+    const UserActionElementSet& UserActionElements(void) const { return m_userActionElements; }
     // to get visually ordered hebrew and arabic pages right
     bool VisuallyOrdered(void) const { return m_visuallyOrdered; }
     float DevicePixelRatio(void) const;
@@ -360,6 +363,7 @@ public:
     // nodeWillBeRemoved is only safe when removing one node at a time.
     void NodeWillBeRemoved(Node &n);
 
+    ShadowCascadeOrder GetShadowCascadeOrder(void) const { return m_shadowCascadeOrder; }
     bool ContainsV1ShadowTree(void) const { return ShadowCascadeOrder::kShadowCascadeV1 == m_shadowCascadeOrder; }
 
     bool IsInDocumentWrite(void) const { return m_writeRecursionDepth > 0; }
@@ -595,6 +599,7 @@ private:
     Member<Element> m_focusedElement;
     Member<Element> m_hoverElement;
     Member<Element> m_activeElement;
+    UserActionElementSet m_userActionElements;
     std::unique_ptr<RootScrollerController> m_rootScrollerController;
     Member<Document> m_templateDocumentHost;
 

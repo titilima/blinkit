@@ -230,6 +230,9 @@ public:
 #endif
     bool IsLink(void) const { return GetFlag(kIsLinkFlag); }
     bool IsUserActionElement(void) const { return GetFlag(kIsUserActionElementFlag); }
+#ifndef BLINKIT_CRAWLER_ONLY
+    void SetUserActionElement(bool flag) { SetFlag(flag, kIsUserActionElementFlag); }
+#endif
     bool isConnected(void) const { return GetFlag(kIsConnectedFlag); }
     bool IsInShadowTree(void) const { return GetFlag(kIsInShadowTreeFlag); }
     bool IsFinishedParsingChildren(void) const { return GetFlag(kIsFinishedParsingChildrenFlag); }
@@ -310,12 +313,12 @@ public:
 #endif
     bool ChildNeedsReattachLayoutTree(void) const { return GetFlag(kChildNeedsReattachLayoutTree); }
 #ifndef BLINKIT_CRAWLER_ONLY
+    void SetChildNeedsReattachLayoutTree(void) { SetFlag(kChildNeedsReattachLayoutTree); }
     void ClearChildNeedsReattachLayoutTree(void) { ClearFlag(kChildNeedsReattachLayoutTree); }
 #endif
     bool HasDuplicateAttribute(void) const { return GetFlag(kHasDuplicateAttributes); }
     void SetHasDuplicateAttributes(void) { SetFlag(kHasDuplicateAttributes); }
 
-    bool IsActive(void) const { return IsUserActionElement() && IsUserActionElementActive(); }
     bool IsInDocumentTree(void) const { return isConnected() && !IsInShadowTree(); }
     bool IsShadowRoot(void) const { return IsDocumentFragment() && IsTreeScope(); }
 
@@ -341,12 +344,6 @@ public:
     virtual void DidNotifySubtreeInsertionsToDocument(void);
     virtual void RemovedFrom(ContainerNode &insertionPoint);
 
-#ifndef BLINKIT_CRAWLER_ONLY
-    void CheckSlotChange(SlotChangeType slotChangeType);
-    void CheckSlotChangeAfterInserted(void) { CheckSlotChange(SlotChangeType::kSignalSlotChangeEvent); }
-    void CheckSlotChangeBeforeRemoved(void) { CheckSlotChange(SlotChangeType::kSignalSlotChangeEvent); }
-#endif
-
     bool MayContainLegacyNodeTreeWhereDistributionShouldBeSupported(void) const;
     // This is not what you might want to call in most cases.
     // You should call UpdateDistributionForFlatTreeTraversal, instead.
@@ -362,6 +359,14 @@ public:
     void NotifyMutationObserversNodeWillDetach(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    bool IsActive(void) const { return IsUserActionElement() && IsUserActionElementActive(); }
+    // Note: As a shadow host whose root with delegatesFocus=false may become
+    // focused state when an inner element gets focused, in that case more than
+    // one elements in a document can return true for |isFocused()|.  Use
+    // Element::isFocusedElementInDocument() or Document::focusedElement() to
+    // check which element is exactly focused.
+    bool IsFocused(void) const { return IsUserActionElement() && IsUserActionElementFocused(); }
+
     ShadowRoot* ParentElementShadowRoot(void) const;
     bool IsInV0ShadowTree(void) const;
     bool IsInV1ShadowTree(void) const;
@@ -421,7 +426,11 @@ public:
     virtual void AttachLayoutTree(AttachContext &context);
     virtual void DetachLayoutTree(const AttachContext &context = AttachContext());
     void LazyReattachIfAttached(void);
-#endif
+
+    void CheckSlotChange(SlotChangeType slotChangeType);
+    void CheckSlotChangeAfterInserted(void) { CheckSlotChange(SlotChangeType::kSignalSlotChangeEvent); }
+    void CheckSlotChangeBeforeRemoved(void) { CheckSlotChange(SlotChangeType::kSignalSlotChangeEvent); }
+#endif // BLINKIT_CRAWLER_ONLY
 private:
     enum NodeFlags {
         kHasRareDataFlag = 1,
@@ -533,14 +542,15 @@ protected:
     void AddedEventListener(const AtomicString& eventType, RegisteredEventListener &registeredListener) override;
     DispatchEventResult DispatchEventInternal(Event &event) override;
 private:
-    bool IsUserActionElementActive(void) const;
-
     void UpdateDistributionInternal(void);
 
     NodeRareData& CreateRareData(void);
     void ClearRareData(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    bool IsUserActionElementActive(void) const;
+    bool IsUserActionElementFocused(void) const;
+
     void SetStyleChange(StyleChangeType changeType)
     {
         m_nodeFlags = (m_nodeFlags & ~kStyleChangeMask) | changeType;

@@ -46,6 +46,7 @@
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/frame/frame_view.h"
+#   include "third_party/blink/renderer/platform/graphics/touch_action.h"
 #endif
 
 namespace blink {
@@ -83,6 +84,10 @@ public:
     // blink, you probably want Document::loadEventFinished() instead.
     bool IsLoading(void) const { return m_isLoading; }
     void SetIsLoading(bool isLoading) { m_isLoading = isLoading; }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    TouchAction InheritedEffectiveTouchAction(void) const { return m_inheritedEffectiveTouchAction; }
+#endif
 protected:
     Frame(FrameClient *client, Page *page);
 
@@ -94,10 +99,11 @@ protected:
     // that are detaching are considered to be in neither state.
     bool IsDetached(void) const { return m_lifecycle.GetState() == FrameLifecycle::kDetached; }
 
+    Member<DOMWindow> m_domWindow;
 #ifndef BLINKIT_CRAWLER_ONLY
     Member<Page> m_page;
+    TouchAction m_inheritedEffectiveTouchAction = TouchAction::kTouchActionAuto;
 #endif
-    Member<DOMWindow> m_domWindow;
 private:
     Member<FrameClient> m_client;
     FrameLifecycle m_lifecycle;

@@ -957,14 +957,6 @@ const AtomicString& Element::IsValue(void) const
     return g_null_atom;
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
-bool Element::LayoutObjectIsNeeded(const ComputedStyle &style) const
-{
-    ASSERT(false); // BKTODO: Check child classes.
-    return false;
-}
-#endif
-
 AtomicString Element::LowercaseIfNecessary(const AtomicString &name) const
 {
     return name.LowerASCII();
@@ -1442,7 +1434,11 @@ void Element::SetNeedsResizeObserverUpdate(void)
 
 const AtomicString& Element::ShadowPseudoId(void) const
 {
-    ASSERT(false); // BKTODO: Check child classes.
+    if (ShadowRoot *root = ContainingShadowRoot())
+    {
+        if (root->IsUserAgent())
+            ASSERT(false); // BKTODO: return FastGetAttribute(pseudoAttr);
+    }
     return g_null_atom;
 }
 
@@ -1817,9 +1813,40 @@ bool Element::HasDisplayContentsStyle(void) const
     return false;
 }
 
+bool Element::LayoutObjectIsNeeded(const ComputedStyle &style) const
+{
+    return style.Display() != EDisplay::kNone && style.Display() != EDisplay::kContents;
+}
+
 AtomicString Element::LocalNameForSelectorMatching(void) const
 {
     return localName().DeprecatedLower();
+}
+
+const CSSPropertyValueSet* Element::PresentationAttributeStyle(void)
+{
+    if (const ElementData *elementData = GetElementData())
+    {
+        if (elementData->presentation_attribute_style_is_dirty_)
+            UpdatePresentationAttributeStyle();
+        // Need to call elementData() again since updatePresentationAttributeStyle()
+        // might swap it with a UniqueElementData.
+        return elementData->PresentationAttributeStyle();
+    }
+    return nullptr;
+}
+
+void Element::UpdatePresentationAttributeStyle(void)
+{
+    SynchronizeAllAttributes();
+    ASSERT(false); // BKTODO:
+#if 0
+    // ShareableElementData doesn't store presentation attribute style, so make
+    // sure we have a UniqueElementData.
+    UniqueElementData &elementData = EnsureUniqueElementData();
+    elementData.presentation_attribute_style_is_dirty_ = false;
+    elementData.presentation_attribute_style_ = ComputePresentationAttributeStyle(*this);
+#endif
 }
 
 void Element::WillRecalcStyle(StyleRecalcChange change)

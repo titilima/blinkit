@@ -20,6 +20,11 @@
 
 namespace blink {
 
+inline bool IsHTMLAnchorElement(const Element &element)
+{
+    return element.HasTagName(html_names::kATag);
+}
+
 inline bool IsHTMLBodyElement(const Element &element)
 {
     return element.HasTagName(html_names::kBodyTag);
@@ -38,6 +43,16 @@ inline bool IsHTMLBRElement(const Element &element)
 inline bool IsHTMLBRElement(const Node &node)
 {
     return node.IsHTMLElement() && IsHTMLBRElement(ToElement(node));
+}
+
+inline bool IsHTMLDivElement(const Element &element)
+{
+    return element.HasTagName(html_names::kDivTag);
+}
+
+inline bool IsHTMLFontElement(const Element &element)
+{
+    return element.HasTagName(html_names::kFontTag);
 }
 
 inline bool IsHTMLFormElement(const Element &element)
@@ -65,6 +80,16 @@ inline bool IsHTMLHtmlElement(const Element &element)
     return element.HasTagName(html_names::kHTMLTag);
 }
 
+inline bool IsHTMLImageElement(const Element &element)
+{
+    return element.HasTagName(html_names::kImgTag);
+}
+
+inline bool IsHTMLImageElement(const Element *element)
+{
+    return nullptr != element && IsHTMLImageElement(*element);
+}
+
 inline bool IsHTMLInputElement(const Element &element)
 {
     return element.HasTagName(html_names::kInputTag);
@@ -73,6 +98,16 @@ inline bool IsHTMLInputElement(const Element &element)
 inline bool IsHTMLInputElement(const Node &node)
 {
     return node.IsHTMLElement() && IsHTMLInputElement(ToElement(node));
+}
+
+inline bool IsHTMLLegendElement(const Element &element)
+{
+    return element.HasTagName(html_names::kLegendTag);
+}
+
+inline bool IsHTMLMarqueeElement(const Element &element)
+{
+    return element.HasTagName(html_names::kMarqueeTag);
 }
 
 inline bool IsHTMLScriptElement(const Element &element)
@@ -99,6 +134,11 @@ inline bool IsHTMLSlotElement(const Node &node)
     return node.IsHTMLElement() && IsHTMLSlotElement(ToElement(node));
 }
 
+inline bool IsHTMLSpanElement(const Element &element)
+{
+    return element.HasTagName(html_names::kSpanTag);
+}
+
 inline bool IsHTMLStyleElement(const Element &element)
 {
     return element.HasTagName(html_names::kStyleTag);
@@ -107,6 +147,16 @@ inline bool IsHTMLStyleElement(const Element &element)
 inline bool IsHTMLStyleElement(const Node &node)
 {
     return node.IsHTMLElement() && IsHTMLStyleElement(ToElement(node));
+}
+
+inline bool IsHTMLTableCellElement(const Element &element)
+{
+    return element.HasTagName(html_names::kTdTag) || element.HasTagName(html_names::kThTag);
+}
+
+inline bool IsHTMLTableElement(const Element &element)
+{
+    return element.HasTagName(html_names::kTableTag);
 }
 
 inline bool IsHTMLTemplateElement(const Element &element)
@@ -127,6 +177,11 @@ inline bool IsHTMLTemplateElement(const Node &node)
 inline bool IsHTMLTemplateElement(const Node *node)
 {
     return nullptr != node && IsHTMLTemplateElement(*node);
+}
+
+inline bool IsHTMLTextAreaElement(const Element &element)
+{
+    return element.HasTagName(html_names::kTextareaTag);
 }
 
 inline bool IsHTMLTitleElement(const Element &element)

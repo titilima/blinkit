@@ -55,6 +55,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/dom/layout_tree_builder_traversal.h"
 #   include "third_party/blink/renderer/core/dom/shadow_root.h"
 #   include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
 #   include "third_party/blink/renderer/core/css/style_engine.h"
@@ -617,12 +618,6 @@ bool Node::IsTreeScope(void) const
     return &GetTreeScope().RootNode() == this;
 }
 
-bool Node::IsUserActionElementActive(void) const
-{
-    ASSERT(false); // BKTODO:
-    return false;
-}
-
 Node* Node::lastChild(void) const
 {
     if (!IsContainerNode())
@@ -655,11 +650,6 @@ void Node::MarkAncestorsWithChildNeedsDistributionRecalc(void)
 }
 
 void Node::MarkAncestorsWithChildNeedsStyleInvalidation(void)
-{
-    ASSERT(false); // BKTODO:
-}
-
-void Node::MarkAncestorsWithChildNeedsReattachLayoutTree(void)
 {
     ASSERT(false); // BKTODO:
 }
@@ -998,13 +988,6 @@ void Node::setNodeValue(const String &nodeValue)
     // By default, setting nodeValue has no effect.
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
-void Node::SetNonAttachedStyle(scoped_refptr<ComputedStyle> nonAttachedStyle)
-{
-    ASSERT(false); // BKTODO:
-}
-#endif
-
 void Node::SetParentOrShadowHostNode(ContainerNode *parent)
 {
     ASSERT(IsMainThread());
@@ -1185,6 +1168,70 @@ HTMLSlotElement* Node::AssignedSlot(void) const
     if (ShadowRoot *root = V1ShadowRootOfParent())
         ASSERT(false); // BKTODO: return root->AssignedSlotFor(*this);
     return nullptr;
+}
+
+bool Node::IsUserActionElementActive(void) const
+{
+    ASSERT(IsUserActionElement());
+    return GetDocument().UserActionElements().IsActive(this);
+}
+
+bool Node::IsUserActionElementFocused(void) const
+{
+    ASSERT(IsUserActionElement());
+    return GetDocument().UserActionElements().IsFocused(this);
+}
+
+void Node::MarkAncestorsWithChildNeedsReattachLayoutTree(void)
+{
+    ASSERT(isConnected());
+    ContainerNode *ancestor = GetReattachParent();
+    bool parentDirty = nullptr != ancestor && ancestor->NeedsReattachLayoutTree();
+    for (; nullptr != ancestor && !ancestor->ChildNeedsReattachLayoutTree(); ancestor = ancestor->GetReattachParent())
+    {
+        ancestor->SetChildNeedsReattachLayoutTree();
+        if (ancestor->NeedsReattachLayoutTree())
+            break;
+    }
+    // If the parent node is already dirty, we can keep the same rebuild root. The
+    // early return here is a performance optimization.
+    if (parentDirty)
+        return;
+    GetDocument().GetStyleEngine().UpdateLayoutTreeRebuildRoot(ancestor, this);
+}
+
+void Node::SetNonAttachedStyle(scoped_refptr<ComputedStyle> nonAttachedStyle)
+{
+    // We don't set non-attached style for text nodes.
+    ASSERT(IsElementNode());
+
+    NodeRenderingData *nodeLayoutData = HasRareData()
+        ? m_data.m_rareData->GetNodeRenderingData()
+        : m_data.m_nodeLayoutData;
+
+    // Already pointing to a non empty NodeRenderingData so just set the pointer
+    // to the new LayoutObject.
+    if (!nodeLayoutData->IsSharedEmptyData())
+    {
+        nodeLayoutData->SetNonAttachedStyle(nonAttachedStyle);
+        return;
+    }
+
+    if (!nonAttachedStyle)
+        return;
+
+    // Ensure we don't unnecessarily set non-attached style for elements which are
+    // not part of the flat tree and consequently won't be attached.
+    ASSERT(nullptr != LayoutTreeBuilderTraversal::Parent(*this));
+
+    // Swap the NodeRenderingData to point to a new NodeRenderingData instead of
+    // the static SharedEmptyData instance.
+    ASSERT(!nodeLayoutData->GetLayoutObject());
+    nodeLayoutData = new NodeRenderingData(nullptr, nonAttachedStyle);
+    if (HasRareData())
+        m_data.m_rareData->SetNodeRenderingData(nodeLayoutData);
+    else
+        m_data.m_nodeLayoutData = nodeLayoutData;
 }
 
 ShadowRoot* Node::V1ShadowRootOfParent(void) const

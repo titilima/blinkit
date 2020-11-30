@@ -134,10 +134,10 @@ SVGResource* ElementStyleResources::GetSVGResourceFromValue(
 
 void ElementStyleResources::LoadPendingSVGResources(
     ComputedStyle* computed_style) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (!computed_style->HasFilter())
     return;
+  ASSERT(false); // BKTODO: Check if necessary.
+#if 0
   FilterOperations::FilterOperationVector& filter_operations =
       computed_style->MutableFilter().Operations();
   for (auto& filter_operation : filter_operations) {

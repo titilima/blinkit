@@ -117,7 +117,7 @@ namespace blink {
 namespace {
 
 void SetAnimationUpdateIfNeeded(StyleResolverState& state, Element& element) {
-  ASSERT(false); // BKTODO:
+  ASSERT(state.AnimationUpdate().IsEmpty()); // BKTODO:
 #if 0
   // If any changes to CSS Animations were detected, stash the update away for
   // application after the layout object is updated if we're in the appropriate
@@ -159,12 +159,9 @@ static void CollectScopedResolversForHostedShadowTrees(
   if (!root)
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   // Adding scoped resolver for active shadow roots for shadow host styling.
   if (ScopedStyleResolver* resolver = root->GetScopedStyleResolver())
     resolvers.push_back(resolver);
-#endif
 }
 
 StyleResolver::StyleResolver(Document& document) : document_(document) {
@@ -196,17 +193,16 @@ static inline ScopedStyleResolver* ScopedResolverFor(const Element& element) {
   // author styling.
 
   TreeScope* tree_scope = &element.GetTreeScope();
-  ASSERT(false); // BKTODO:
-#if 0
   if (ScopedStyleResolver* resolver = tree_scope->GetScopedStyleResolver()) {
+#if 0 // BKTODO: Check if necessary.
 #if DCHECK_IS_ON()
     if (!element.HasMediaControlAncestor())
       DCHECK(element.ShadowPseudoId().IsEmpty());
 #endif
     DCHECK(!element.IsVTTElement());
+#endif
     return resolver;
   }
-#endif
 
   tree_scope = tree_scope->ParentTreeScope();
   if (!tree_scope)
@@ -259,13 +255,10 @@ static void MatchCustomElementRules(const Element& element,
 static void MatchHostAndCustomElementRules(const Element& element,
                                            ElementRuleCollector& collector) {
   ShadowRoot* shadow_root = element.GetShadowRoot();
-  ASSERT(false); // BKTODO:
-#if 0
   ScopedStyleResolver* resolver =
       shadow_root ? shadow_root->GetScopedStyleResolver() : nullptr;
   if (!resolver && !RuntimeEnabledFeatures::CustomElementDefaultStyleEnabled())
     return;
-#endif
   collector.ClearMatchedRules();
   MatchCustomElementRules(element, collector);
   MatchHostRules(element, collector);
@@ -279,13 +272,13 @@ static void MatchHostAndCustomElementRules(const Element& element,
 // descending from the element's own scope.
 static void MatchSlottedRules(const Element& element,
                               ElementRuleCollector& collector) {
-  ASSERT(false); // BKTODO:
-#if 0
   HTMLSlotElement* slot = element.AssignedSlot();
   if (!slot)
     return;
 
   HeapVector<Member<ScopedStyleResolver>> resolvers;
+  ASSERT(false); // BKTODO:
+#if 0
   for (; slot; slot = slot->AssignedSlot()) {
     if (ScopedStyleResolver* resolver =
             slot->GetTreeScope().GetScopedStyleResolver())
@@ -312,8 +305,6 @@ static void MatchElementScopeRules(const Element& element,
     collector.SortAndTransferMatchedRules();
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (element.IsStyledElement() && element.InlineStyle() &&
       !collector.IsCollectingForPseudoElement()) {
     // Inline style is immutable as long as there is no CSSOM wrapper.
@@ -321,7 +312,6 @@ static void MatchElementScopeRules(const Element& element,
     collector.AddElementStyleProperties(element.InlineStyle(),
                                         is_inline_style_cacheable);
   }
-#endif
 
   collector.FinishAddingAuthorRulesForTreeScope();
 }
@@ -393,15 +383,11 @@ static bool ShouldCheckScope(const Element& element,
           element.GetTreeScope().RootNode().ParentOrShadowHostNode())
     return true;
 
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   // Obviously cases when ancestor scope has /deep/ or ::shadow rule should be
   // included.  Skip otherwise.
   return scoping_node.GetTreeScope()
       .GetScopedStyleResolver()
       ->HasDeepOrShadowSelector();
-#endif
 }
 
 void StyleResolver::MatchScopedRulesV0(
@@ -414,8 +400,6 @@ void StyleResolver::MatchScopedRulesV0(
   // tree-of-trees order wins. From other treeScopes than the element's own
   // scope, only tree-boundary-crossing rules may match.
 
-  ASSERT(false); // BKTODO:
-#if 0
   bool match_element_scope_done =
       !element_scope_resolver && !element.InlineStyle();
 
@@ -427,6 +411,8 @@ void StyleResolver::MatchScopedRulesV0(
     ScopedStyleResolver* resolver = scope.GetScopedStyleResolver();
     DCHECK(resolver);
 
+    ASSERT(false); // BKTODO:
+#if 0
     bool is_inner_tree_scope =
         element.ContainingTreeScope().IsInclusiveAncestorOf(scope);
     if (!ShouldCheckScope(element, **it, is_inner_tree_scope))
@@ -448,6 +434,7 @@ void StyleResolver::MatchScopedRulesV0(
         continue;
       }
     }
+#endif
 
     collector.ClearMatchedRules();
     resolver->CollectMatchingTreeBoundaryCrossingRules(collector);
@@ -457,19 +444,15 @@ void StyleResolver::MatchScopedRulesV0(
 
   if (!match_element_scope_done)
     MatchElementScopeRules(element, element_scope_resolver, collector);
-#endif
 }
 
 void StyleResolver::MatchAuthorRules(const Element& element,
                                      ElementRuleCollector& collector) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (GetDocument().GetShadowCascadeOrder() ==
       ShadowCascadeOrder::kShadowCascadeV0) {
     MatchAuthorRulesV0(element, collector);
     return;
   }
-#endif
 
   MatchHostAndCustomElementRules(element, collector);
 
@@ -545,8 +528,6 @@ void StyleResolver::MatchAllRules(StyleResolverState& state,
   MatchUARules(collector);
   MatchUserRules(collector);
 
-  ASSERT(false); // BKTODO:
-#if 0
   // Now check author rules, beginning first with presentational attributes
   // mapped from HTML.
   if (state.GetElement()->IsStyledElement()) {
@@ -573,12 +554,9 @@ void StyleResolver::MatchAllRules(StyleResolverState& state,
       }
     }
   }
-#endif
 
   MatchAuthorRules(*state.GetElement(), collector);
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (state.GetElement()->IsStyledElement()) {
     // For Shadow DOM V1, inline style is already collected in
     // matchScopedRules().
@@ -592,13 +570,14 @@ void StyleResolver::MatchAllRules(StyleResolverState& state,
                                           is_inline_style_cacheable);
     }
 
+#if 0 // BKTODO: Check if necessary.
     // Now check SMIL animation override style.
     if (include_smil_properties && state.GetElement()->IsSVGElement())
       collector.AddElementStyleProperties(
           ToSVGElement(state.GetElement())->AnimatedSMILStyleProperties(),
           false /* isCacheable */);
-  }
 #endif
+  }
 
   collector.FinishAddingAuthorRulesForTreeScope();
 }
@@ -676,9 +655,6 @@ static const ComputedStyle* CalculateBaseComputedStyle(
   if (!element_animations)
     return nullptr;
 
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   if (CSSAnimations::IsAnimatingCustomProperties(element_animations)) {
     state.SetIsAnimatingCustomProperties(true);
     // TODO(alancutter): Use the base computed style optimisation in the
@@ -688,7 +664,6 @@ static const ComputedStyle* CalculateBaseComputedStyle(
   }
 
   return element_animations->BaseComputedStyle();
-#endif
 }
 
 static void UpdateBaseComputedStyle(StyleResolverState& state,
@@ -696,8 +671,6 @@ static void UpdateBaseComputedStyle(StyleResolverState& state,
   if (!animating_element)
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   ElementAnimations* element_animations =
       animating_element->GetElementAnimations();
   if (element_animations) {
@@ -707,7 +680,6 @@ static void UpdateBaseComputedStyle(StyleResolverState& state,
       element_animations->UpdateBaseComputedStyle(state.Style());
     }
   }
-#endif
 }
 
 scoped_refptr<ComputedStyle> StyleResolver::StyleForElement(
@@ -895,9 +867,6 @@ bool StyleResolver::PseudoStyleForElementInternal(
     const PseudoStyleRequest& pseudo_style_request,
     StyleResolverState& state) {
   DCHECK(GetDocument().GetFrame());
-  ASSERT(false); // BKTODO:
-#if 0
-  DCHECK(GetDocument().GetSettings());
   DCHECK(pseudo_style_request.pseudo_id != kPseudoIdFirstLineInherited);
   DCHECK(state.ParentStyle());
 
@@ -963,13 +932,11 @@ bool StyleResolver::PseudoStyleForElementInternal(
   if (ApplyAnimatedStandardProperties(state, pseudo_element))
     StyleAdjuster::AdjustComputedStyle(state, nullptr);
 
-  GetDocument().GetStyleEngine().IncStyleForElementCount();
   INCREMENT_STYLE_STATS_COUNTER(GetDocument().GetStyleEngine(),
                                 pseudo_elements_styled, 1);
 
   if (state.Style()->HasViewportUnits())
     GetDocument().SetHasViewportUnits();
-#endif
 
   return true;
 }
@@ -991,12 +958,9 @@ scoped_refptr<ComputedStyle> StyleResolver::PseudoStyleForElement(
     return state.TakeStyle();
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (PseudoElement* pseudo_element =
           element->GetPseudoElement(pseudo_style_request.pseudo_id))
     SetAnimationUpdateIfNeeded(state, *pseudo_element);
-#endif
 
   // Now return the style.
   return state.TakeStyle();
@@ -1018,15 +982,14 @@ scoped_refptr<ComputedStyle> StyleResolver::StyleForPage(int page_index) {
 
   PageRuleCollector collector(root_element_style, page_index);
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   collector.MatchPageRules(
       CSSDefaultStyleSheets::Instance().DefaultPrintStyle());
+#endif
 
   if (ScopedStyleResolver* scoped_resolver =
           GetDocument().GetScopedStyleResolver())
     scoped_resolver->MatchPageRules(collector);
-#endif
 
   bool inherited_only = false;
 
@@ -1161,8 +1124,6 @@ bool StyleResolver::ApplyAnimatedStandardProperties(
   DCHECK(animating_element == element || !animating_element ||
          animating_element->ParentOrShadowHostElement() == element);
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (state.Style()->Animations() ||
       (animating_element && animating_element->HasAnimations())) {
     if (!state.IsAnimationInterpolationMapReady())
@@ -1170,7 +1131,6 @@ bool StyleResolver::ApplyAnimatedStandardProperties(
   } else if (!state.Style()->Transitions()) {
     return false;
   }
-#endif
 
   CSSAnimations::CalculateCompositorAnimationUpdate(
       state.AnimationUpdate(), animating_element, *element, *state.Style(),
@@ -1218,12 +1178,9 @@ StyleRuleKeyframes* StyleResolver::FindKeyframesRule(
     const AtomicString& animation_name) {
   HeapVector<Member<ScopedStyleResolver>, 8> resolvers;
   CollectScopedResolversForHostedShadowTrees(*element, resolvers);
-  ASSERT(false); // BKTODO:
-#if 0
   if (ScopedStyleResolver* scoped_resolver =
           element->GetTreeScope().GetScopedStyleResolver())
     resolvers.push_back(scoped_resolver);
-#endif
 
   for (auto& resolver : resolvers) {
     if (StyleRuleKeyframes* keyframes_rule =
@@ -1656,8 +1613,6 @@ void StyleResolver::ApplyMatchedPropertiesAndCustomPropertyAnimations(
     ApplyMatchedAnimationProperties(state, match_result, cache_success,
                                     needs_apply_pass);
   }
-  ASSERT(false); // BKTODO:
-#if 0
   if (state.Style()->Animations() || state.Style()->Transitions() ||
       (animating_element && animating_element->HasAnimations())) {
     CalculateAnimationUpdate(state, animating_element);
@@ -1667,7 +1622,6 @@ void StyleResolver::ApplyMatchedPropertiesAndCustomPropertyAnimations(
                             cache_success, needs_apply_pass);
     }
   }
-#endif
   if (!cache_success.IsFullCacheHit()) {
     ApplyMatchedStandardProperties(state, match_result, cache_success,
                                    needs_apply_pass);
@@ -1702,8 +1656,6 @@ StyleResolver::CacheSuccess StyleResolver::ApplyMatchedCache(
     // reusing the style data structures.
     state.Style()->CopyNonInheritedFromCached(
         *cached_matched_properties->computed_style);
-    ASSERT(false); // BKTODO:
-#if 0
     if (state.ParentStyle()->InheritedDataShared(
             *cached_matched_properties->parent_computed_style) &&
         !IsAtShadowBoundary(element) &&
@@ -1725,7 +1677,6 @@ StyleResolver::CacheSuccess StyleResolver::ApplyMatchedCache(
       UpdateFont(state);
       is_inherited_cache_hit = true;
     }
-#endif
 
     is_non_inherited_cache_hit = true;
   }
@@ -1783,11 +1734,8 @@ void StyleResolver::ApplyMatchedAnimationProperties(
 
 void StyleResolver::CalculateAnimationUpdate(StyleResolverState& state,
                                              const Element* animating_element) {
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(state.Style()->Animations() || state.Style()->Transitions() ||
          (animating_element && animating_element->HasAnimations()));
-#endif
   DCHECK(!state.IsAnimationInterpolationMapReady());
 
   CSSAnimations::CalculateAnimationUpdate(
@@ -1843,8 +1791,7 @@ void StyleResolver::ApplyMatchedStandardProperties(
       state, match_result.UaRules(), true, apply_inherited_only,
       needs_apply_pass);
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   if (UNLIKELY(IsSVGForeignObjectElement(state.GetElement()))) {
     // LayoutSVGRoot handles zooming for the whole SVG subtree, so foreignObject
     // content should not be scaled again.

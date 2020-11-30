@@ -86,7 +86,8 @@ class CORE_EXPORT MatchedPropertiesCache {
   void Trace(blink::Visitor*);
 
  private:
-  using Cache = std::unordered_map<unsigned, CachedMatchedProperties>;
+  using Cache = HeapHashMap<unsigned,
+                            Member<CachedMatchedProperties>>;
   Cache cache_;
   DISALLOW_COPY_AND_ASSIGN(MatchedPropertiesCache);
 };

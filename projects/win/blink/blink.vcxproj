@@ -1054,6 +1054,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\tree_ordered_map.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\tree_scope.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\tree_scope_adopter.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\user_action_element_set.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\v0_insertion_point.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\visited_link_state.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\whitespace_attacher.cc" />
@@ -2866,6 +2867,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\tree_ordered_map.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\tree_scope.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\tree_scope_adopter.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\user_action_element_set.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\v0_insertion_point.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\visited_link_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\weak_identifier_map.h" />

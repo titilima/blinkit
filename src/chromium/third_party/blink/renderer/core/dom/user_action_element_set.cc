@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: user_action_element_set.cc
+// Description: UserActionElementSet Class
+//      Author: Ziming Li
+//     Created: 2020-11-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -65,7 +76,7 @@ inline bool UserActionElementSet::HasFlags(const Element* element,
       elements_.find(const_cast<Element*>(element));
   if (found == elements_.end())
     return false;
-  return found->value & flags;
+  return found->second & flags;
 }
 
 inline void UserActionElementSet::ClearFlags(Element* element, unsigned flags) {
@@ -80,30 +91,26 @@ inline void UserActionElementSet::ClearFlags(Element* element, unsigned flags) {
     return;
   }
 
-  unsigned updated = found->value & ~flags;
+  unsigned updated = found->second & ~flags;
   if (!updated) {
     element->SetUserActionElement(false);
     elements_.erase(found);
     return;
   }
 
-  found->value = updated;
+  found->second = updated;
 }
 
 inline void UserActionElementSet::SetFlags(Element* element, unsigned flags) {
   ElementFlagMap::iterator result = elements_.find(element);
   if (result != elements_.end()) {
     DCHECK(element->IsUserActionElement());
-    result->value |= flags;
+    result->second |= flags;
     return;
   }
 
   element->SetUserActionElement(true);
-  elements_.insert(element, flags);
-}
-
-void UserActionElementSet::Trace(blink::Visitor* visitor) {
-  visitor->Trace(elements_);
+  elements_.insert({ element, flags });
 }
 
 }  // namespace blink

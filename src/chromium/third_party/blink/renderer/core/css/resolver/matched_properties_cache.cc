@@ -50,10 +50,7 @@ namespace blink {
 void CachedMatchedProperties::Set(const ComputedStyle& style,
                                   const ComputedStyle& parent_style,
                                   const MatchedPropertiesVector& properties) {
-  ASSERT(false); // BKTODO:
-#if 0
-  matched_properties.AppendVector(properties);
-#endif
+  matched_properties.insert(matched_properties.end(), properties.begin(), properties.end());
 
   // Note that we don't cache the original ComputedStyle instance. It may be
   // further modified.  The ComputedStyle in the cache is really just a holder
@@ -105,18 +102,13 @@ void MatchedPropertiesCache::Add(const ComputedStyle& style,
                                  unsigned hash,
                                  const MatchedPropertiesVector& properties) {
   DCHECK(hash);
-  ASSERT(false); // BKTODO:
-#if 0
-  Cache::AddResult add_result = cache_.insert(hash, nullptr);
-  if (add_result.is_new_entry || !add_result.stored_value->value)
-    add_result.stored_value->value = new CachedMatchedProperties;
-
-  CachedMatchedProperties* cache_item = add_result.stored_value->value.Get();
-  if (!add_result.is_new_entry)
+  Member<CachedMatchedProperties> &cache_item = cache_[hash];
+  if (cache_item)
     cache_item->Clear();
+  else
+    cache_item = new CachedMatchedProperties;
 
   cache_item->Set(style, parent_style, properties);
-#endif
 }
 
 void MatchedPropertiesCache::Clear() {
@@ -124,11 +116,8 @@ void MatchedPropertiesCache::Clear() {
   // destructors in the properties (e.g., ~FontFallbackList) expect that
   // the destructors are called promptly without relying on a GC timing.
   for (auto& cache_entry : cache_) {
-    ASSERT(false); // BKTODO:
-#if 0
-    if (cache_entry.value)
-      cache_entry.value->Clear();
-#endif
+    if (cache_entry.second)
+      cache_entry.second->Clear();
   }
   cache_.clear();
 }

@@ -1055,8 +1055,14 @@ const PropertyRegistry* Document::GetPropertyRegistry(void) const
 
 PropertyRegistry* Document::GetPropertyRegistry(void)
 {
-    ASSERT(false); // BKTODO:
+    ASSERT(!RuntimeEnabledFeatures::CSSVariables2Enabled()); // BKTODO:
     return nullptr;
+#if 0
+    // TODO(timloh): When the flag is removed, return a reference instead.
+    if (!property_registry_ && RuntimeEnabledFeatures::CSSVariables2Enabled())
+        property_registry_ = PropertyRegistry::Create();
+    return property_registry_;
+#endif
 }
 #endif
 

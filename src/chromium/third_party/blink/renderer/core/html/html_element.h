@@ -24,6 +24,9 @@ public:
     typedef Element* (*Creator)(Document &);
 
     virtual bool IsHTMLUnknownElement(void) const { return false; }
+
+    bool HasDirectionAuto(void) const;
+    TextDirection DirectionalityIfhasDirAutoAttribute(bool &isAuto) const;
 protected:
     HTMLElement(const QualifiedName &tagName, Document &document, ConstructionType type = kCreateHTMLElement);
 
@@ -36,6 +39,8 @@ protected:
     void CollectStyleForPresentationAttribute(const QualifiedName &name, const AtomicString &value,
         MutableCSSPropertyValueSet *style) override;
 private:
+    TextDirection Directionality(Node **strongDirectionalityTextNode = nullptr) const;
+
     bool SelfOrAncestorHasDirAutoAttribute(void) const;
     void AdjustDirectionalityIfNeededAfterChildrenChanged(const ChildrenChange &change);
 };

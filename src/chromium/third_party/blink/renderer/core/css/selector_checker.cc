@@ -1608,11 +1608,7 @@ bool SelectorChecker::MatchesFocusPseudoClass(const Element& element) {
 #ifdef BLINKIT_CRAWLER_ONLY
   return false;
 #else
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return element.IsFocused() && IsFrameFocused(element);
-#endif
 #endif
 }
 
