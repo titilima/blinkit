@@ -83,6 +83,7 @@
     { "name": "label", "hash": 15092473, "is_tag": true, "is_attr": true },
     { "name": "lang", "hash": 3702417, "is_attr": true },
     { "name": "language", "hash": 4109061, "is_attr": true },
+    { "name": "legend", "hash": 16417202, "is_tag": true },
     { "name": "li", "hash": 11097939, "is_tag": true },
     { "name": "link", "hash": 7010491, "is_tag": true, "is_attr": true },
     { "name": "listing", "hash": 15674586, "is_tag": true },

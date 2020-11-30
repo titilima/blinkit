@@ -4,7 +4,7 @@
 //   File Name: html_names.h
 // Description: HTML Names
 //      Author: Ziming Li
-//     Created: 2020-11-02
+//     Created: 2020-11-30
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
@@ -81,6 +81,7 @@ extern const blink::HTMLQualifiedName &kImgTag;
 extern const blink::HTMLQualifiedName &kInputTag;
 extern const blink::HTMLQualifiedName &kKeygenTag;
 extern const blink::HTMLQualifiedName &kLabelTag;
+extern const blink::HTMLQualifiedName &kLegendTag;
 extern const blink::HTMLQualifiedName &kLiTag;
 extern const blink::HTMLQualifiedName &kLinkTag;
 extern const blink::HTMLQualifiedName &kListingTag;
@@ -138,7 +139,7 @@ extern const blink::HTMLQualifiedName &kVideoTag;
 extern const blink::HTMLQualifiedName &kWbrTag;
 extern const blink::HTMLQualifiedName &kXmpTag;
 
-constexpr unsigned kTagsCount = 112;
+constexpr unsigned kTagsCount = 113;
 
 // Attributes
 extern const blink::QualifiedName &kAcceptAttr;
@@ -312,6 +313,7 @@ namespace HTMLNames = html_names;
 #define labelAttr kLabelAttr
 #define langAttr kLangAttr
 #define languageAttr kLanguageAttr
+#define legendTag kLegendTag
 #define liTag kLiTag
 #define linkTag kLinkTag
 #define linkAttr kLinkAttr
