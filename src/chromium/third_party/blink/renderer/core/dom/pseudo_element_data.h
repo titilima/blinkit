@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: pseudo_element_data.h
-// Description: PseudoElementData Class
-//      Author: Ziming Li
-//     Created: 2020-03-22
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -24,7 +13,6 @@ namespace blink {
 
 class PseudoElementData final : public GarbageCollected<PseudoElementData> {
  public:
-#if 0 // BKTODO:
   static PseudoElementData* Create();
   void SetPseudoElement(PseudoId, PseudoElement*);
   PseudoElement* GetPseudoElement(PseudoId) const;
@@ -43,11 +31,9 @@ class PseudoElementData final : public GarbageCollected<PseudoElementData> {
   Member<PseudoElement> generated_after_;
   Member<PseudoElement> generated_first_letter_;
   Member<PseudoElement> backdrop_;
-#endif
   DISALLOW_COPY_AND_ASSIGN(PseudoElementData);
 };
 
-#if 0 // BKTODO:
 inline PseudoElementData* PseudoElementData::Create() {
   return new PseudoElementData();
 }
@@ -109,7 +95,6 @@ inline PseudoElement* PseudoElementData::GetPseudoElement(
     return generated_first_letter_;
   return nullptr;
 }
-#endif
 
 }  // namespace blink
 
