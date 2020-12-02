@@ -4,7 +4,7 @@
 //   File Name: html_names.h
 // Description: HTML Names
 //      Author: Ziming Li
-//     Created: 2020-11-30
+//     Created: 2020-12-02
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
@@ -111,6 +111,7 @@ extern const blink::HTMLQualifiedName &kSTag;
 extern const blink::HTMLQualifiedName &kScriptTag;
 extern const blink::HTMLQualifiedName &kSectionTag;
 extern const blink::HTMLQualifiedName &kSelectTag;
+extern const blink::HTMLQualifiedName &kSlotTag;
 extern const blink::HTMLQualifiedName &kSmallTag;
 extern const blink::HTMLQualifiedName &kSourceTag;
 extern const blink::HTMLQualifiedName &kSpanTag;
@@ -139,7 +140,7 @@ extern const blink::HTMLQualifiedName &kVideoTag;
 extern const blink::HTMLQualifiedName &kWbrTag;
 extern const blink::HTMLQualifiedName &kXmpTag;
 
-constexpr unsigned kTagsCount = 113;
+constexpr unsigned kTagsCount = 114;
 
 // Attributes
 extern const blink::QualifiedName &kAcceptAttr;
@@ -156,21 +157,25 @@ extern const blink::QualifiedName &kCodetypeAttr;
 extern const blink::QualifiedName &kColorAttr;
 extern const blink::QualifiedName &kCompactAttr;
 extern const blink::QualifiedName &kContentAttr;
+extern const blink::QualifiedName &kContenteditableAttr;
 extern const blink::QualifiedName &kDeclareAttr;
 extern const blink::QualifiedName &kDeferAttr;
 extern const blink::QualifiedName &kDirAttr;
 extern const blink::QualifiedName &kDirectionAttr;
 extern const blink::QualifiedName &kDisabledAttr;
+extern const blink::QualifiedName &kDraggableAttr;
 extern const blink::QualifiedName &kEnctypeAttr;
 extern const blink::QualifiedName &kEventAttr;
 extern const blink::QualifiedName &kFaceAttr;
 extern const blink::QualifiedName &kForAttr;
 extern const blink::QualifiedName &kFormAttr;
 extern const blink::QualifiedName &kFrameAttr;
+extern const blink::QualifiedName &kHiddenAttr;
 extern const blink::QualifiedName &kHrefAttr;
 extern const blink::QualifiedName &kHreflangAttr;
 extern const blink::QualifiedName &kHttpEquivAttr;
 extern const blink::QualifiedName &kIdAttr;
+extern const blink::QualifiedName &kInvisibleAttr;
 extern const blink::QualifiedName &kIsAttr;
 extern const blink::QualifiedName &kLabelAttr;
 extern const blink::QualifiedName &kLangAttr;
@@ -187,6 +192,8 @@ extern const blink::QualifiedName &kNoshadeAttr;
 extern const blink::QualifiedName &kNowrapAttr;
 extern const blink::QualifiedName &kObjectAttr;
 extern const blink::QualifiedName &kOnloadAttr;
+extern const blink::QualifiedName &kPartAttr;
+extern const blink::QualifiedName &kPseudoAttr;
 extern const blink::QualifiedName &kReadonlyAttr;
 extern const blink::QualifiedName &kReferrerpolicyAttr;
 extern const blink::QualifiedName &kRelAttr;
@@ -198,10 +205,12 @@ extern const blink::QualifiedName &kSelectAttr;
 extern const blink::QualifiedName &kSelectedAttr;
 extern const blink::QualifiedName &kShapeAttr;
 extern const blink::QualifiedName &kSizeAttr;
+extern const blink::QualifiedName &kSlotAttr;
 extern const blink::QualifiedName &kSpanAttr;
 extern const blink::QualifiedName &kSrcAttr;
 extern const blink::QualifiedName &kStyleAttr;
 extern const blink::QualifiedName &kSummaryAttr;
+extern const blink::QualifiedName &kTabindexAttr;
 extern const blink::QualifiedName &kTargetAttr;
 extern const blink::QualifiedName &kTextAttr;
 extern const blink::QualifiedName &kTitleAttr;
@@ -210,7 +219,7 @@ extern const blink::QualifiedName &kValignAttr;
 extern const blink::QualifiedName &kValuetypeAttr;
 extern const blink::QualifiedName &kVlinkAttr;
 
-constexpr unsigned kAttrsCount = 67;
+constexpr unsigned kAttrsCount = 75;
 
 void Init(void);
 
@@ -260,6 +269,7 @@ namespace HTMLNames = html_names;
 #define compactAttr kCompactAttr
 #define contentTag kContentTag
 #define contentAttr kContentAttr
+#define contenteditableAttr kContenteditableAttr
 #define ddTag kDdTag
 #define declareAttr kDeclareAttr
 #define deferAttr kDeferAttr
@@ -270,6 +280,7 @@ namespace HTMLNames = html_names;
 #define disabledAttr kDisabledAttr
 #define divTag kDivTag
 #define dlTag kDlTag
+#define draggableAttr kDraggableAttr
 #define dtTag kDtTag
 #define emTag kEmTag
 #define embedTag kEmbedTag
@@ -296,6 +307,7 @@ namespace HTMLNames = html_names;
 #define headTag kHeadTag
 #define headerTag kHeaderTag
 #define hgroupTag kHgroupTag
+#define hiddenAttr kHiddenAttr
 #define hrTag kHrTag
 #define hrefAttr kHrefAttr
 #define hreflangAttr kHreflangAttr
@@ -307,6 +319,7 @@ namespace HTMLNames = html_names;
 #define imageTag kImageTag
 #define imgTag kImgTag
 #define inputTag kInputTag
+#define invisibleAttr kInvisibleAttr
 #define isAttr kIsAttr
 #define keygenTag kKeygenTag
 #define labelTag kLabelTag
@@ -344,8 +357,10 @@ namespace HTMLNames = html_names;
 #define optionTag kOptionTag
 #define pTag kPTag
 #define paramTag kParamTag
+#define partAttr kPartAttr
 #define plaintextTag kPlaintextTag
 #define preTag kPreTag
+#define pseudoAttr kPseudoAttr
 #define rbTag kRbTag
 #define readonlyAttr kReadonlyAttr
 #define referrerpolicyAttr kReferrerpolicyAttr
@@ -366,6 +381,8 @@ namespace HTMLNames = html_names;
 #define selectedAttr kSelectedAttr
 #define shapeAttr kShapeAttr
 #define sizeAttr kSizeAttr
+#define slotTag kSlotTag
+#define slotAttr kSlotAttr
 #define smallTag kSmallTag
 #define sourceTag kSourceTag
 #define spanTag kSpanTag
@@ -379,6 +396,7 @@ namespace HTMLNames = html_names;
 #define summaryTag kSummaryTag
 #define summaryAttr kSummaryAttr
 #define supTag kSupTag
+#define tabindexAttr kTabindexAttr
 #define tableTag kTableTag
 #define targetAttr kTargetAttr
 #define tbodyTag kTbodyTag

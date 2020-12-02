@@ -30,6 +30,11 @@ inline bool IsHTMLBodyElement(const Element &element)
     return element.HasTagName(html_names::kBodyTag);
 }
 
+inline bool IsHTMLBodyElement(const Element *element)
+{
+    return nullptr != element && IsHTMLBodyElement(*element);
+}
+
 inline bool IsHTMLBodyElement(const Node &node)
 {
     return node.IsHTMLElement() && IsHTMLBodyElement(ToElement(node));
@@ -80,6 +85,11 @@ inline bool IsHTMLHtmlElement(const Element &element)
     return element.HasTagName(html_names::kHTMLTag);
 }
 
+inline bool IsHTMLHtmlElement(const Element *element)
+{
+    return nullptr != element && IsHTMLHtmlElement(*element);
+}
+
 inline bool IsHTMLImageElement(const Element &element)
 {
     return element.HasTagName(html_names::kImgTag);
@@ -110,6 +120,16 @@ inline bool IsHTMLMarqueeElement(const Element &element)
     return element.HasTagName(html_names::kMarqueeTag);
 }
 
+inline bool IsHTMLMarqueeElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLMarqueeElement(ToElement(node));
+}
+
+inline bool IsHTMLMarqueeElement(const Node *node)
+{
+    return nullptr != node && IsHTMLMarqueeElement(*node);
+}
+
 inline bool IsHTMLScriptElement(const Element &element)
 {
     return element.HasTagName(html_names::kScriptTag);
@@ -122,11 +142,7 @@ inline bool IsHTMLScriptElement(const Node &node)
 
 inline bool IsHTMLSlotElement(const Element &element)
 {
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
     return element.HasTagName(html_names::kSlotTag);
-#endif
 }
 
 inline bool IsHTMLSlotElement(const Node &node)
