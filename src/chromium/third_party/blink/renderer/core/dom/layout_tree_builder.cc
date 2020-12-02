@@ -53,10 +53,6 @@
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/layout/layout_text.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
-#if 0 // BKTODO:
-#include "third_party/blink/renderer/core/svg/svg_element.h"
-#include "third_party/blink/renderer/core/svg_names.h"
-#endif
 
 namespace blink {
 
@@ -145,14 +141,11 @@ bool LayoutTreeBuilderForElement::ShouldCreateLayoutObject() const {
 
 ComputedStyle& LayoutTreeBuilderForElement::Style() const {
   if (!style_) {
-    ASSERT(false); // BKTODO:
-#if 0
     // TODO(futhark@chromium.org): this should never happen, but we currently
     // have crashes in the wild because of this (https://crbug.com/875796).
     // Please report if you ever end up here.
     NOTREACHED();
     style_ = node_->StyleForLayoutObject();
-#endif
   }
   return *style_;
 }
@@ -166,8 +159,6 @@ void LayoutTreeBuilderForElement::CreateLayoutObject() {
     DCHECK(!node_->GetLayoutObject());
     style.SetForceLegacyLayout(true);
   }
-  ASSERT(false); // BKTODO:
-#if 0
   LayoutObject* new_layout_object = node_->CreateLayoutObject(style);
   if (!new_layout_object)
     return;
@@ -197,7 +188,6 @@ void LayoutTreeBuilderForElement::CreateLayoutObject() {
   if (!legacy_layout_objects.IsCollecting())
     return;
   legacy_layout_objects.AddForceLegacyAtBFCAncestor(*new_layout_object);
-#endif
 }
 
 LayoutObject*
@@ -226,8 +216,6 @@ LayoutTreeBuilderForText::CreateInlineWrapperForDisplayContentsIfNeeded() {
 void LayoutTreeBuilderForText::CreateLayoutObject() {
   ComputedStyle& style = *style_;
 
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(style_ == layout_object_parent_->Style() ||
          ToElement(LayoutTreeBuilderTraversal::Parent(*node_))
              ->HasDisplayContentsStyle());
@@ -256,7 +244,6 @@ void LayoutTreeBuilderForText::CreateLayoutObject() {
   node_->SetLayoutObject(new_layout_object);
   new_layout_object->SetStyle(&style);
   layout_object_parent_->AddChild(new_layout_object, next_layout_object);
-#endif
 }
 
 // ----
@@ -288,7 +275,7 @@ void ReattachLegacyLayoutObjectList::AddForceLegacyAtBFCAncestor(
   const LayoutObject* const bfc = FindBlockFormattingContext(start);
   if (start == bfc)
     return;
-  DCHECK(bfc); // BKTODO: << start;
+  DCHECK(bfc);
   if (std::any_of(blocks_.begin(), blocks_.end(),
                   [bfc](const LayoutObject* object) {
                     return bfc == object ||
@@ -317,11 +304,8 @@ void ReattachLegacyLayoutObjectList::ForceLegacyLayoutIfNeeded() {
   DCHECK_EQ(state, State::kCollecting);
   if (blocks_.IsEmpty())
     return;
-  ASSERT(false); // BKTODO:
-#if 0
   for (const LayoutObject* block : blocks_)
     ToElement(*block->GetNode()).LazyReattachIfAttached();
-#endif
   state_ = State::kForcingLegacyLayout;
   document_->GetStyleEngine().RecalcStyle(kNoChange);
   document_->GetStyleEngine().RebuildLayoutTree();
