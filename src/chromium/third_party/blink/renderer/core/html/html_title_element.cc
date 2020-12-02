@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: html_title_element.cc
-// Description: HTMLTitleElement Class
-//      Author: Ziming Li
-//     Created: 2020-11-09
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -89,7 +78,7 @@ void HTMLTitleElement::setText(const String& value) {
     // Avoid calling Document::setTitleElement() during intermediate steps.
     base::AutoReset<bool> inhibit_title_update_scope(
         &ignore_title_updates_when_children_change_, !value.IsEmpty());
-    ASSERT(false); // BKTODO: RemoveChildren(kOmitSubtreeModifiedEvent);
+    RemoveChildren(kOmitSubtreeModifiedEvent);
   }
 
   if (!value.IsEmpty()) {
