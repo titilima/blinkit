@@ -135,13 +135,6 @@ Element* TreeScope::getElementById(const AtomicString &elementId) const
     return element;
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
-bool TreeScope::HasAdoptedStyleSheets(void) const
-{
-    return m_adoptedStyleSheets && m_adoptedStyleSheets->length() > 0;
-}
-#endif
-
 bool TreeScope::IsInclusiveOlderSiblingShadowRootOrAncestorTreeScopeOf(const TreeScope &scope) const
 {
     for (const TreeScope *current = &scope; nullptr != current; current = current->ParentTreeScope())
@@ -156,5 +149,18 @@ void TreeScope::RemoveElementById(const AtomicString &elementId, Element &elemen
 {
     ASSERT(false); // BKTODO:
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+Element* TreeScope::AdjustedFocusedElement(void) const
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
+}
+
+bool TreeScope::HasAdoptedStyleSheets(void) const
+{
+    return m_adoptedStyleSheets && m_adoptedStyleSheets->length() > 0;
+}
+#endif
 
 }  // namespace blink

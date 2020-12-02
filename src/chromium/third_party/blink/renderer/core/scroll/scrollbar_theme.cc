@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scrollbar_theme.cc
+// Description: ScrollbarTheme Class
+//      Author: Ziming Li
+//     Created: 2020-12-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All Rights Reserved.
  *
@@ -28,12 +39,14 @@
 #include "base/optional.h"
 #include "build/build_config.h"
 #include "third_party/blink/public/platform/platform.h"
-#include "third_party/blink/public/platform/web_mouse_event.h"
+// BKTODO: #include "third_party/blink/public/platform/web_mouse_event.h"
 #include "third_party/blink/public/platform/web_point.h"
 #include "third_party/blink/public/platform/web_rect.h"
 #include "third_party/blink/renderer/core/scroll/scrollbar.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/scroll/scrollbar_theme_mock.h"
 #include "third_party/blink/renderer/core/scroll/scrollbar_theme_overlay_mock.h"
+#endif
 #include "third_party/blink/renderer/platform/graphics/color.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context_state_saver.h"
@@ -44,7 +57,7 @@
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 
 #if !defined(OS_MACOSX)
-#include "third_party/blink/public/platform/web_theme_engine.h"
+// BKTODO: #include "third_party/blink/public/platform/web_theme_engine.h"
 #endif
 
 namespace blink {
@@ -199,12 +212,15 @@ void ScrollbarTheme::PaintScrollCorner(
 
   DrawingRecorder recorder(context, display_item_client,
                            DisplayItem::kScrollbarCorner);
+  ASSERT(false); // BKTODO:
+#if 0
 #if defined(OS_MACOSX)
   context.FillRect(corner_rect, Color::kWhite);
 #else
   Platform::Current()->ThemeEngine()->Paint(
       context.Canvas(), WebThemeEngine::kPartScrollbarCorner,
       WebThemeEngine::kStateNormal, WebRect(corner_rect), nullptr);
+#endif
 #endif
 }
 
@@ -371,6 +387,7 @@ TimeDelta ScrollbarTheme::AutoscrollTimerDelay() {
 }
 
 ScrollbarTheme& ScrollbarTheme::DeprecatedStaticGetTheme() {
+#if 0 // BKTODO: Check if necessary.
   if (ScrollbarTheme::MockScrollbarsEnabled()) {
     if (RuntimeEnabledFeatures::OverlayScrollbarsEnabled()) {
       DEFINE_STATIC_LOCAL(ScrollbarThemeOverlayMock, overlay_mock_theme, ());
@@ -380,6 +397,7 @@ ScrollbarTheme& ScrollbarTheme::DeprecatedStaticGetTheme() {
     DEFINE_STATIC_LOCAL(ScrollbarThemeMock, mock_theme, ());
     return mock_theme;
   }
+#endif
   return NativeTheme();
 }
 

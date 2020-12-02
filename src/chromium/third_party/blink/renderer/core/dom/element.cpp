@@ -54,6 +54,11 @@
 #include "third_party/blink/renderer/platform/wtf/not_found.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/resolver/selector_filter_parent_scope.h"
+#   include "third_party/blink/renderer/core/css/style_change_reason.h"
+#   include "third_party/blink/renderer/core/dom/first_letter_pseudo_element.h"
+#   include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
+#   include "third_party/blink/renderer/core/layout/layout_text_fragment.h"
 #   include "third_party/blink/renderer/core/layout/layout_view.h"
 #endif
 
@@ -87,13 +92,6 @@ void Element::AppendAttributeInternal(
         DidAddAttribute(name, value);
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
-void Element::AttachLayoutTree(AttachContext &context)
-{
-    ASSERT(false); // BKTODO:
-}
-#endif
-
 Attr* Element::AttrIfExists(const QualifiedName &name)
 {
     if (AttrNodeList *attrNodeList = GetAttrNodeList())
@@ -123,20 +121,14 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
     {
         if (ShadowRoot *parentShadowRoot = ShadowRootWhereNodeCanBeDistributedForV0(*this))
         {
-            ASSERT(false); // BKTODO:
-#if 0
-            if (ShouldInvalidateDistributionWhenAttributeChanged(
-                *parent_shadow_root, name, params.new_value))
-                parent_shadow_root->SetNeedsDistributionRecalc();
-#endif
+            if (ShouldInvalidateDistributionWhenAttributeChanged(*parentShadowRoot, name, params.new_value))
+                parentShadowRoot->SetNeedsDistributionRecalc();
         }
-        ASSERT(name.LocalNameUpper() != "SLOT"); // BKTODO:
-#if 0
-        if (name == HTMLNames::slotAttr && params.old_value != params.new_value) {
-            if (ShadowRoot* root = V1ShadowRootOfParent())
-                root->DidChangeHostChildSlotName(params.old_value, params.new_value);
+        if (name == html_names::kSlotAttr && params.old_value != params.new_value)
+        {
+            if (ShadowRoot *root = V1ShadowRootOfParent())
+                ASSERT(false); // BKTODO: root->DidChangeHostChildSlotName(params.old_value, params.new_value);
         }
-#endif
     }
 #endif
 
@@ -179,15 +171,15 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
 #ifndef BLINKIT_CRAWLER_ONLY
     else if (forUI)
     {
-        BKLOG("// BKTODO: Process attribute `%s`", name.LocalName().StdUtf8().c_str());
-#if 0
-        if (name == HTMLNames::partAttr)
+        if (name == html_names::kPartAttr)
         {
-            if (RuntimeEnabledFeatures::CSSPartPseudoElementEnabled()) {
-                EnsureElementRareData().SetPart(params.new_value);
+            if (RuntimeEnabledFeatures::CSSPartPseudoElementEnabled())
+            {
+                ASSERT(false); // BKTODO: EnsureElementRareData().SetPart(params.new_value);
                 GetDocument().GetStyleEngine().PartChangedForElement(*this);
             }
         }
+#if 0 // BKTODO: Check if removed.
         else if (name == HTMLNames::partmapAttr)
         {
             if (RuntimeEnabledFeatures::CSSPartPseudoElementEnabled()) {
@@ -195,23 +187,23 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
                 GetDocument().GetStyleEngine().PartmapChangedForElement(*this);
             }
         }
+#endif
         else if (IsStyledElement())
         {
-            if (name == styleAttr) {
-                StyleAttributeChanged(params.new_value, params.reason);
+            if (name == html_names::kStyleAttr)
+            {
+                ASSERT(false); // BKTODO: StyleAttributeChanged(params.new_value, params.reason);
             }
-            else if (IsPresentationAttribute(name)) {
+            else if (IsPresentationAttribute(name))
+            {
                 GetElementData()->presentation_attribute_style_is_dirty_ = true;
-                SetNeedsStyleRecalc(kLocalStyleChange,
-                    StyleChangeReasonForTracing::FromAttribute(name));
+                SetNeedsStyleRecalc(kLocalStyleChange, StyleChangeReasonForTracing::FromAttribute(name));
             }
-            else if (RuntimeEnabledFeatures::InvisibleDOMEnabled() &&
-                name == HTMLNames::invisibleAttr &&
-                params.old_value != params.new_value) {
-                InvisibleAttributeChanged(params.old_value, params.new_value);
+            else if (RuntimeEnabledFeatures::InvisibleDOMEnabled() && name == html_names::kInvisibleAttr && params.old_value != params.new_value)
+            {
+                ASSERT(false); // BKTODO: InvisibleAttributeChanged(params.old_value, params.new_value);
             }
         }
-#endif
     }
 #endif
 
@@ -220,10 +212,8 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
 #ifndef BLINKIT_CRAWLER_ONLY
     if (forUI)
     {
-        ASSERT(name.LocalNameUpper() != "TABINDEX"); // BKTODO:
-#if 0
-        if (params.reason == AttributeModificationReason::kDirectly &&
-            name == tabindexAttr && AdjustedFocusedElementInTreeScope() == this)
+        if (params.reason == AttributeModificationReason::kDirectly && name == html_names::kTabindexAttr
+            && AdjustedFocusedElementInTreeScope() == this)
         {
             // The attribute change may cause supportsFocus() to return false
             // for the element which had focus.
@@ -232,9 +222,8 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
             // DOM-level focusability here.
             GetDocument().UpdateStyleAndLayoutTreeForNode(this);
             if (!SupportsFocus())
-                blur();
+                ASSERT(false); // BKTODO: blur();
         }
-#endif
     }
 #endif
 }
@@ -771,6 +760,13 @@ const AtomicString& Element::GetIdAttribute(void) const
     return HasID() ? FastGetAttribute(html_names::kIdAttr) : g_null_atom;
 }
 
+int Element::GetIntegralAttribute(const QualifiedName &name) const
+{
+    int n = 0;
+    ParseHTMLInteger(getAttribute(name), n);
+    return n;
+}
+
 const AtomicString& Element::GetNameAttribute(void) const
 {
     return HasName() ? FastGetAttribute(html_names::kNameAttr) : g_null_atom;
@@ -1238,25 +1234,21 @@ void Element::RecalcStyle(StyleRecalcChange change)
 
     if (change >= kUpdatePseudoElements || ChildNeedsStyleRecalc())
     {
-        ASSERT(false); // BKTODO:
-#if 0
         // ChildrenCanHaveStyle(), hence ShouldCallRecalcStyleForChildren(),
         // returns false for <object> elements below. Yet, they may have ::backdrop
         // elements.
         UpdatePseudoElement(kPseudoIdBackdrop, change);
-#endif
     }
 
     if (ShouldCallRecalcStyleForChildren(change))
     {
-        ASSERT(false); // BKTODO:
-#if 0
         UpdatePseudoElement(kPseudoIdBefore, change);
 
         if (change > kUpdatePseudoElements || ChildNeedsStyleRecalc())
         {
-            SelectorFilterParentScope filter_scope(*this);
-            if (ShadowRoot* root = GetShadowRoot()) {
+            SelectorFilterParentScope filterScope(*this);
+            if (ShadowRoot *root = GetShadowRoot())
+            {
                 if (root->ShouldCallRecalcStyle(change))
                     root->RecalcStyle(change);
             }
@@ -1269,8 +1261,7 @@ void Element::RecalcStyle(StyleRecalcChange change)
         // the descendants before we know if this element generates a ::first-letter
         // and which element the ::first-letter inherits style from.
         if (change < kReattach && !ChildNeedsReattachLayoutTree())
-            UpdateFirstLetterPseudoElement(StyleUpdatePhase::kRecalc);
-#endif
+            ASSERT(false); // BKTODO: UpdateFirstLetterPseudoElement(StyleUpdatePhase::kRecalc);
 
         ClearChildNeedsStyleRecalc();
     }
@@ -1425,37 +1416,6 @@ void Element::SetIsValue(const AtomicString &isValue)
 {
     ASSERT(false); // BKTODO:
 }
-
-#ifndef BLINKIT_CRAWLER_ONLY
-void Element::SetNeedsResizeObserverUpdate(void)
-{
-    ASSERT(!HasRareData()); // BKTODO:
-}
-
-const AtomicString& Element::ShadowPseudoId(void) const
-{
-    if (ShadowRoot *root = ContainingShadowRoot())
-    {
-        if (root->IsUserAgent())
-            ASSERT(false); // BKTODO: return FastGetAttribute(pseudoAttr);
-    }
-    return g_null_atom;
-}
-
-bool Element::ShouldCallRecalcStyleForChildren(StyleRecalcChange change)
-{
-    if (change != kReattach)
-        return change >= kUpdatePseudoElements || ChildNeedsStyleRecalc();
-    ASSERT(false); // BKTODO:
-#if 0
-    if (!ChildrenCanHaveStyle())
-        return false;
-    if (const ComputedStyle *newStyle = GetNonAttachedStyle())
-        return LayoutObjectIsNeeded(*newStyle) || ShouldStoreNonLayoutObjectComputedStyle(*newStyle);
-#endif
-    return !CanParticipateInFlatTree();
-}
-#endif
 
 bool Element::ShouldSerializeEndTag(void) const
 {
@@ -1805,7 +1765,201 @@ void Element::WillModifyAttribute(const QualifiedName &name, const AtomicString 
         ASSERT(false); // BKTODO: recipients->EnqueueMutationRecord(MutationRecord::CreateAttributes(this, name, oldValue));
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// UI implementations
+
 #ifndef BLINKIT_CRAWLER_ONLY
+void Element::AddCallbackSelectors(void)
+{
+    UpdateCallbackSelectors(nullptr, GetComputedStyle());
+}
+
+Element* Element::AdjustedFocusedElementInTreeScope(void) const
+{
+    return IsInTreeScope() ? ContainingTreeScope().AdjustedFocusedElement() : nullptr;
+}
+
+void Element::AttachLayoutTree(AttachContext &context)
+{
+    ASSERT(GetDocument().InStyleRecalc());
+
+    if (HasRareData() && NeedsAttach() && !IsPseudoElement())
+    {
+        // We have already been through detach when doing an attach, but we may have
+        // done a getComputedStyle() in between storing the ComputedStyle on rare
+        // data if the detach was a LazyReattachIfAttached().
+        //
+        // We do not clear it for pseudo elements because we store the original
+        // style in rare data for display:contents when the ComputedStyle used for
+        // the LayoutObject is an inline only inheriting properties from the element
+        // parent.
+        GetElementRareData()->ClearComputedStyle();
+}
+
+    if (CanParticipateInFlatTree())
+    {
+        LayoutTreeBuilderForElement builder(*this, GetNonAttachedStyle());
+        builder.CreateLayoutObjectIfNeeded();
+        if (ComputedStyle *style = builder.ResolvedStyle())
+        {
+            if (!GetLayoutObject() && ShouldStoreNonLayoutObjectComputedStyle(*style))
+                StoreNonLayoutObjectComputedStyle(style);
+        }
+    }
+
+    if (HasRareData() && !GetLayoutObject() && nullptr == GetElementRareData()->GetComputedStyle())
+    {
+        ElementRareData *rareData = GetElementRareData();
+        if (ElementAnimations *elementAnimations = rareData->GetElementAnimations())
+        {
+            elementAnimations->CssAnimations().Cancel();
+            elementAnimations->SetAnimationStyleChange(false);
+        }
+        rareData->ClearPseudoElements();
+    }
+
+    AttachContext childrenContext(context);
+
+    LayoutObject *layoutObject = GetLayoutObject();
+    if (nullptr != layoutObject)
+        childrenContext.previous_in_flow = nullptr;
+    childrenContext.use_previous_in_flow = true;
+
+    ClearNeedsReattachLayoutTree();
+    AttachPseudoElement(kPseudoIdBefore, childrenContext);
+
+    // When a shadow root exists, it does the work of attaching the children.
+    if (ShadowRoot *shadowRoot = GetShadowRoot())
+    {
+        if (shadowRoot->NeedsAttach())
+            shadowRoot->AttachLayoutTree(childrenContext);
+    }
+
+    ContainerNode::AttachLayoutTree(childrenContext);
+    SetNonAttachedStyle(nullptr);
+    AddCallbackSelectors();
+
+    AttachPseudoElement(kPseudoIdAfter, childrenContext);
+    AttachPseudoElement(kPseudoIdBackdrop, childrenContext);
+
+    UpdateFirstLetterPseudoElement(StyleUpdatePhase::kAttachLayoutTree);
+    AttachPseudoElement(kPseudoIdFirstLetter, childrenContext);
+
+    if (nullptr != layoutObject)
+    {
+        if (!layoutObject->IsFloatingOrOutOfFlowPositioned())
+            context.previous_in_flow = layoutObject;
+    }
+    else
+    {
+        context.previous_in_flow = childrenContext.previous_in_flow;
+    }
+}
+
+void Element::AttachPseudoElement(PseudoId pseudoId, AttachContext &context)
+{
+    if (PseudoElement *pseudoElement = GetPseudoElement(pseudoId))
+        pseudoElement->AttachLayoutTree(context);
+}
+
+bool Element::CanGeneratePseudoElement(PseudoId pseudoId) const
+{
+    if (kPseudoIdBackdrop == pseudoId && !IsInTopLayer())
+        return false;
+#if 0 // BKTODO: Check if necessary.
+    if (kPseudoIdFirstLetter == pseudoId && IsSVGElement())
+        return false;
+#endif
+    if (const ComputedStyle *style = GetComputedStyle())
+        return style->CanGeneratePseudoElement(pseudoId);
+    return false;
+}
+
+LayoutObject* Element::CreateLayoutObject(const ComputedStyle &style)
+{
+    ASSERT(!ForCrawler());
+    return LayoutObject::CreateObject(this, style);
+}
+
+PseudoElement* Element::CreatePseudoElementIfNeeded(PseudoId pseudoId)
+{
+    if (IsPseudoElement())
+        return nullptr;
+    if (!CanGeneratePseudoElement(pseudoId))
+        return nullptr;
+    if (kPseudoIdFirstLetter == pseudoId)
+    {
+        if (!FirstLetterPseudoElement::FirstLetterTextLayoutObject(*this))
+            return nullptr;
+    }
+
+    PseudoElement *pseudoElement = PseudoElement::Create(this, pseudoId);
+    EnsureElementRareData().SetPseudoElement(pseudoId, pseudoElement);
+    pseudoElement->InsertedInto(*this);
+
+    scoped_refptr<ComputedStyle> pseudoStyle = pseudoElement->StyleForLayoutObject();
+    if (!PseudoElementLayoutObjectIsNeeded(pseudoStyle.get()))
+    {
+        GetElementRareData()->SetPseudoElement(pseudoId, nullptr);
+        return nullptr;
+    }
+
+    if (kPseudoIdBackdrop == pseudoId)
+        ASSERT(false); // BKTODOl: GetDocument().AddToTopLayer(pseudoElement, this);
+
+    pseudoElement->SetNonAttachedStyle(std::move(pseudoStyle));
+    return pseudoElement;
+}
+
+const ComputedStyle* Element::EnsureComputedStyle(PseudoId pseudoElementSpecifier)
+{
+    ASSERT(!ForCrawler());
+
+    if (PseudoElement *element = GetPseudoElement(pseudoElementSpecifier))
+        return element->EnsureComputedStyle();
+
+    if (!InActiveDocument())
+    {
+        // FIXME: Try to do better than this. Ensure that styleForElement() works
+        // for elements that are not in the document tree and figure out when to
+        // destroy the computed style for such elements.
+        return nullptr;
+    }
+
+    // FIXME: Find and use the layoutObject from the pseudo element instead of the
+    // actual element so that the 'length' properties, which are only known by the
+    // layoutObject because it did the layout, will be correct and so that the
+    // values returned for the ":selection" pseudo-element will be correct.
+    ComputedStyle *elementStyle = MutableComputedStyle();
+    if (nullptr == elementStyle)
+    {
+        ElementRareData &rareData = EnsureElementRareData();
+        if (nullptr == rareData.GetComputedStyle())
+            rareData.SetComputedStyle(GetDocument().StyleForElementIgnoringPendingStylesheets(this));
+        elementStyle = rareData.GetComputedStyle();
+    }
+
+    if (kPseudoIdNone == pseudoElementSpecifier)
+        return elementStyle;
+
+    if (const ComputedStyle *pseudoElementStyle = elementStyle->GetCachedPseudoStyle(pseudoElementSpecifier))
+        return pseudoElementStyle;
+
+    const ComputedStyle *layoutParentStyle = elementStyle;
+    if (HasDisplayContentsStyle())
+    {
+        LayoutObject *parentLayoutObject = LayoutTreeBuilderTraversal::ParentLayoutObject(*this);
+        if (nullptr != parentLayoutObject)
+            layoutParentStyle = parentLayoutObject->Style();
+    }
+
+    scoped_refptr<ComputedStyle> result = GetDocument().EnsureStyleResolver().PseudoStyleForElement(this,
+            PseudoStyleRequest(pseudoElementSpecifier, PseudoStyleRequest::kForComputedStyle),
+            elementStyle, layoutParentStyle);
+    ASSERT(result);
+    return elementStyle->AddCachedPseudoStyle(std::move(result));
+}
+
 bool Element::HasDisplayContentsStyle(void) const
 {
     if (const ComputedStyle *style = NonLayoutObjectComputedStyle())
@@ -1836,17 +1990,290 @@ const CSSPropertyValueSet* Element::PresentationAttributeStyle(void)
     return nullptr;
 }
 
+void Element::RebuildFirstLetterLayoutTree(void)
+{
+    // Need to create a ::first-letter element here for the following case:
+    //
+    // <style>#outer::first-letter {...}</style>
+    // <div id=outer><div id=inner style="display:none">Text</div></div>
+    // <script> outer.offsetTop; inner.style.display = "block" </script>
+    //
+    // The creation of FirstLetterPseudoElement relies on the layout tree of the
+    // block contents. In this case, the ::first-letter element is not created
+    // initially since the #inner div is not displayed. On RecalcStyle it's not
+    // created since the layout tree is still not built, and AttachLayoutTree
+    // for #inner will not update the ::first-letter of outer. However, we end
+    // up here for #outer after AttachLayoutTree is called on #inner at which
+    // point the layout sub-tree is available for deciding on creating the
+    // ::first-letter.
+    UpdateFirstLetterPseudoElement(StyleUpdatePhase::kRebuildLayoutTree);
+    if (PseudoElement *element = GetPseudoElement(kPseudoIdFirstLetter))
+    {
+        WhitespaceAttacher whitespaceAttacher;
+        if (element->NeedsRebuildLayoutTree(whitespaceAttacher))
+            element->RebuildLayoutTree(whitespaceAttacher);
+    }
+}
+
+void Element::RebuildLayoutTree(WhitespaceAttacher &whitespaceAttacher)
+{
+    ASSERT(InActiveDocument());
+    ASSERT(nullptr != parentNode());
+
+    if (NeedsReattachLayoutTree())
+    {
+        AttachContext reattachContext;
+        ReattachLayoutTree(reattachContext);
+        whitespaceAttacher.DidReattachElement(this, reattachContext.previous_in_flow);
+    }
+    else
+    {
+        // We create a local WhitespaceAttacher when rebuilding children of an
+        // element with a LayoutObject since whitespace nodes do not rely on layout
+        // objects further up the tree. Also, if this Element's layout object is an
+        // out-of-flow box, in-flow children should not affect whitespace siblings
+        // of the out-of-flow box. However, if this element is a display:contents
+        // element. Continue using the passed in attacher as display:contents
+        // children may affect whitespace nodes further up the tree as they may be
+        // layout tree siblings.
+        WhitespaceAttacher localAttacher;
+        WhitespaceAttacher *childAttacher;
+        if (GetLayoutObject() || !HasDisplayContentsStyle())
+        {
+            whitespaceAttacher.DidVisitElement(this);
+            if (GetDocument().GetStyleEngine().NeedsWhitespaceReattachment(this))
+                localAttacher.SetReattachAllWhitespaceNodes();
+            childAttacher = &localAttacher;
+        }
+        else
+        {
+            childAttacher = &whitespaceAttacher;
+        }
+        RebuildPseudoElementLayoutTree(kPseudoIdAfter, *childAttacher);
+        if (GetShadowRoot())
+            RebuildShadowRootLayoutTree(*childAttacher);
+        else
+            RebuildChildrenLayoutTrees(*childAttacher);
+        RebuildPseudoElementLayoutTree(kPseudoIdBefore, *childAttacher);
+        RebuildPseudoElementLayoutTree(kPseudoIdBackdrop, *childAttacher);
+        RebuildFirstLetterLayoutTree();
+        ClearChildNeedsReattachLayoutTree();
+    }
+    ASSERT(!NeedsStyleRecalc());
+    ASSERT(!ChildNeedsStyleRecalc());
+    ASSERT(!NeedsReattachLayoutTree());
+    ASSERT(nullptr == GetNonAttachedStyle());
+    ASSERT(!ChildNeedsReattachLayoutTree());
+}
+
+void Element::RebuildPseudoElementLayoutTree(PseudoId pseudoId, WhitespaceAttacher &whitespaceAttacher)
+{
+    if (PseudoElement *element = GetPseudoElement(pseudoId))
+    {
+        if (element->NeedsRebuildLayoutTree(whitespaceAttacher))
+            element->RebuildLayoutTree(whitespaceAttacher);
+    }
+}
+
+void Element::RebuildShadowRootLayoutTree(WhitespaceAttacher &whitespaceAttacher)
+{
+    ASSERT(IsShadowHost(this));
+    GetShadowRoot()->RebuildLayoutTree(whitespaceAttacher);
+    RebuildNonDistributedChildren();
+}
+
+void Element::SetNeedsResizeObserverUpdate(void)
+{
+    ASSERT(!HasRareData()); // BKTODO:
+}
+
+const AtomicString& Element::ShadowPseudoId(void) const
+{
+    if (ShadowRoot *root = ContainingShadowRoot())
+    {
+        if (root->IsUserAgent())
+            return FastGetAttribute(html_names::kPseudoAttr);
+    }
+    return g_null_atom;
+}
+
+bool Element::ShouldCallRecalcStyleForChildren(StyleRecalcChange change)
+{
+    if (change != kReattach)
+        return change >= kUpdatePseudoElements || ChildNeedsStyleRecalc();
+    if (!ChildrenCanHaveStyle()) // BKTODO: Optimize this method. It always returns false while <object> is not supported in BlinKit.
+        return false;
+    if (const ComputedStyle *newStyle = GetNonAttachedStyle())
+        return LayoutObjectIsNeeded(*newStyle) || ShouldStoreNonLayoutObjectComputedStyle(*newStyle);
+    return !CanParticipateInFlatTree();
+}
+
+bool Element::ShouldInvalidateDistributionWhenAttributeChanged(
+    ShadowRoot &shadowRoot,
+    const QualifiedName &name, const AtomicString &newValue)
+{
+    if (shadowRoot.IsV1())
+        return false;
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
+    const SelectRuleFeatureSet& feature_set =
+        shadow_root.V0().EnsureSelectFeatureSet();
+
+    if (name == HTMLNames::idAttr) {
+        AtomicString old_id = GetElementData()->IdForStyleResolution();
+        AtomicString new_id =
+            MakeIdForStyleResolution(new_value, GetDocument().InQuirksMode());
+        if (new_id != old_id) {
+            if (!old_id.IsEmpty() && feature_set.HasSelectorForId(old_id))
+                return true;
+            if (!new_id.IsEmpty() && feature_set.HasSelectorForId(new_id))
+                return true;
+        }
+    }
+
+    if (name == HTMLNames::classAttr) {
+        const AtomicString& new_class_string = new_value;
+        if (ClassStringHasClassName(new_class_string) ==
+            ClassStringContent::kHasClasses) {
+            const SpaceSplitString& old_classes = GetElementData()->ClassNames();
+            const SpaceSplitString new_classes(GetDocument().InQuirksMode()
+                ? new_class_string.LowerASCII()
+                : new_class_string);
+            if (feature_set.CheckSelectorsForClassChange(old_classes, new_classes))
+                return true;
+        }
+        else {
+            const SpaceSplitString& old_classes = GetElementData()->ClassNames();
+            if (feature_set.CheckSelectorsForClassChange(old_classes))
+                return true;
+        }
+    }
+
+    return feature_set.HasSelectorForAttribute(name.LocalName());
+#endif
+}
+
+int Element::tabIndex(void) const
+{
+    return HasElementFlag(ElementFlags::kTabIndexWasSetExplicitly)
+        ? GetIntegralAttribute(html_names::kTabindexAttr)
+        : 0;
+}
+
+void Element::UpdateFirstLetterPseudoElement(StyleUpdatePhase phase)
+{
+    // Update the ::first-letter pseudo elements presence and its style. This
+    // method may be called from style recalc or layout tree rebuilding/
+    // reattachment. In order to know if an element generates a ::first-letter
+    // element, we need to know if:
+    //
+    // * The element generates a block level box to which ::first-letter applies.
+    // * The element's layout subtree generates any first letter text.
+    // * None of the descendant blocks generate a ::first-letter element.
+    //   (This is not correct according to spec as all block containers should be
+    //   able to generate ::first-letter elements around the first letter of the
+    //   first formatted text, but Blink is only supporting a single
+    //   ::first-letter element which is the innermost block generating a
+    //   ::first-letter).
+    //
+    // We do not always do this at style recalc time as that would have required
+    // us to collect the information about how the layout tree will look like
+    // after the layout tree is attached. So, instead we will wait until we have
+    // an up-to-date layout sub-tree for the element we are considering for
+    // ::first-letter.
+    //
+    // The StyleUpdatePhase tells where we are in the process of updating style
+    // and layout tree.
+
+    PseudoElement *element = GetPseudoElement(kPseudoIdFirstLetter);
+    if (nullptr == element)
+    {
+        element = CreatePseudoElementIfNeeded(kPseudoIdFirstLetter);
+        // If we are in Element::AttachLayoutTree, don't mess up the ancestor flags
+        // for layout tree attachment/rebuilding. We will unconditionally call
+        // AttachLayoutTree for the created pseudo element immediately after this
+        // call.
+        if (nullptr != element && phase != StyleUpdatePhase::kAttachLayoutTree)
+            element->SetNeedsReattachLayoutTree();
+        return;
+    }
+
+    if (StyleUpdatePhase::kRebuildLayoutTree == phase && element->NeedsReattachLayoutTree())
+    {
+        // We were already updated in RecalcStyle and ready for reattach.
+        ASSERT(element->GetNonAttachedStyle());
+        return;
+    }
+
+    if (!CanGeneratePseudoElement(kPseudoIdFirstLetter))
+    {
+        GetElementRareData()->SetPseudoElement(kPseudoIdFirstLetter, nullptr);
+        return;
+    }
+
+    LayoutObject *remainingTextLayoutObject = FirstLetterPseudoElement::FirstLetterTextLayoutObject(*element);
+    if (nullptr == remainingTextLayoutObject)
+    {
+        GetElementRareData()->SetPseudoElement(kPseudoIdFirstLetter, nullptr);
+        return;
+    }
+
+    bool textNodeChanged = (remainingTextLayoutObject != ToFirstLetterPseudoElement(element)->RemainingTextLayoutObject());
+
+    if (StyleUpdatePhase::kAttachLayoutTree == phase)
+    {
+        // RemainingTextLayoutObject should have been cleared from DetachLayoutTree.
+        ASSERT(nullptr == ToFirstLetterPseudoElement(element)->RemainingTextLayoutObject());
+        ASSERT(textNodeChanged);
+        scoped_refptr<ComputedStyle> pseudoStyle = element->StyleForLayoutObject();
+        if (PseudoElementLayoutObjectIsNeeded(pseudoStyle.get()))
+            element->SetNonAttachedStyle(std::move(pseudoStyle));
+        else
+            GetElementRareData()->SetPseudoElement(kPseudoIdFirstLetter, nullptr);
+        return;
+    }
+
+    element->RecalcStyle(textNodeChanged ? kReattach : kForce);
+
+    if (element->NeedsReattachLayoutTree() && !PseudoElementLayoutObjectIsNeeded(element->GetNonAttachedStyle()))
+        GetElementRareData()->SetPseudoElement(kPseudoIdFirstLetter, nullptr);
+}
+
 void Element::UpdatePresentationAttributeStyle(void)
 {
     SynchronizeAllAttributes();
-    ASSERT(false); // BKTODO:
-#if 0
     // ShareableElementData doesn't store presentation attribute style, so make
     // sure we have a UniqueElementData.
     UniqueElementData &elementData = EnsureUniqueElementData();
     elementData.presentation_attribute_style_is_dirty_ = false;
-    elementData.presentation_attribute_style_ = ComputePresentationAttributeStyle(*this);
-#endif
+    ASSERT(false); // BKTODO: elementData.presentation_attribute_style_ = ComputePresentationAttributeStyle(*this);
+}
+
+void Element::UpdatePseudoElement(PseudoId pseudoId, StyleRecalcChange change)
+{
+    PseudoElement *element = GetPseudoElement(pseudoId);
+    if (nullptr == element)
+    {
+        if (change < kUpdatePseudoElements)
+            return;
+        if ((element = CreatePseudoElementIfNeeded(pseudoId)))
+            element->SetNeedsReattachLayoutTree();
+        return;
+    }
+
+    if (change == kUpdatePseudoElements || element->ShouldCallRecalcStyle(change))
+    {
+        if (CanGeneratePseudoElement(pseudoId))
+        {
+            element->RecalcStyle(change == kUpdatePseudoElements ? kForce : change);
+            if (!element->NeedsReattachLayoutTree())
+                return;
+            if (PseudoElementLayoutObjectIsNeeded(element->GetNonAttachedStyle()))
+                return;
+        }
+        GetElementRareData()->SetPseudoElement(pseudoId, nullptr);
+    }
 }
 
 void Element::WillRecalcStyle(StyleRecalcChange change)

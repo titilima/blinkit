@@ -199,7 +199,7 @@ void LocalFrame::DetachImpl(FrameDetachType type)
 
 #ifndef BLINKIT_CRAWLER_ONLY
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-    ASSERT(Client()->IsCrawler()); // BKTODO: CHECK(!view_->IsAttached());
+    ASSERT(Client()->IsCrawler() || m_view->IsAttached());
 #endif
     Client()->WillBeDetached();
     // Notify ScriptController that the frame is closing, since its cleanup ends
@@ -207,12 +207,8 @@ void LocalFrame::DetachImpl(FrameDetachType type)
     GetScriptController().ClearForClose();
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(Client()->IsCrawler()); // BKTODO:
-#if 0
-    // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-    CHECK(!view_->IsAttached());
+    ASSERT(Client()->IsCrawler() || !m_view->IsAttached());
     SetView(nullptr);
-#endif
 #endif
 
 #if 0 // BKTODO:

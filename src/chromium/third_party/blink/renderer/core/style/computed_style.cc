@@ -102,16 +102,16 @@ struct SameSizeAsComputedStyle : public RefCounted<SameSizeAsComputedStyle> {
   } base_;
 
   void* own_ptrs[1];
+#if 0 // BKTODO: Cleanup SVG stuff.
   void* data_ref_svg_style;
+#endif
 };
 
-#if 0 // BKTODO:
 // If this assert fails, it means that size of ComputedStyle has changed. Please
 // check that you really *do* what to increase the size of ComputedStyle, then
 // update the SameSizeAsComputedStyle struct to match the updated storage of
 // ComputedStyle.
 ASSERT_SIZE(ComputedStyle, SameSizeAsComputedStyle);
-#endif
 
 SVGComputedStyle ComputedStyle::svg_style_;
 
@@ -363,8 +363,7 @@ void ComputedStyle::InheritFrom(const ComputedStyle& inherit_parent,
   EUserModify current_user_modify = UserModify();
 
   ComputedStyleBase::InheritFrom(inherit_parent, is_at_shadow_boundary);
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Remove later.
   if (svg_style_ != inherit_parent.svg_style_)
     svg_style_.Access()->InheritFrom(inherit_parent.svg_style_.Get());
 #endif
@@ -411,8 +410,7 @@ void ComputedStyle::CopyNonInheritedFromCached(const ComputedStyle& other) {
   // m_affectedByDrag
   // m_isLink
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Remove later.
   if (svg_style_ != other.svg_style_)
     svg_style_.Access()->CopyNonInheritedFromCached(other.svg_style_.Get());
 #endif
@@ -493,22 +491,22 @@ bool ComputedStyle::LoadingCustomFontsEqual(const ComputedStyle& other) const {
 }
 
 bool ComputedStyle::NonInheritedEqual(const ComputedStyle& other) const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
+#if 0 // BKTODO: Cleanup SVG stuff.
   // compare everything except the pseudoStyle pointer
   return ComputedStyleBase::NonInheritedEqual(other) &&
          svg_style_->NonInheritedEqual(*other.svg_style_);
+#else
+  return ComputedStyleBase::NonInheritedEqual(other);
 #endif
 }
 
 bool ComputedStyle::InheritedDataShared(const ComputedStyle& other) const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
+#if 0 // BKTODO: Cleanup SVG stuff.
   // This is a fast check that only looks if the data structures are shared.
   return ComputedStyleBase::InheritedDataShared(other) &&
          svg_style_.Get() == other.svg_style_.Get();
+#else
+  return ComputedStyleBase::InheritedDataShared(other);
 #endif
 }
 
@@ -530,8 +528,7 @@ StyleDifference ComputedStyle::VisualInvalidationDiff(
   // property inside this function anyway.
 
   StyleDifference diff;
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Cleanup SVG stuff.
   if (svg_style_.Get() != other.svg_style_.Get())
     diff = svg_style_->Diff(other.svg_style_.Get());
 #endif

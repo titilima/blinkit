@@ -148,8 +148,13 @@ Node::InsertionNotificationRequest HTMLElement::InsertedInto(ContainerNode &inse
 
 bool HTMLElement::IsPresentationAttribute(const QualifiedName &name) const
 {
-    ASSERT(false); // BKTODO:
-    return false;
+    using namespace html_names;
+    if (name == kAlignAttr || name == kContenteditableAttr || name == kHiddenAttr || name == kLangAttr
+        || name == kDraggableAttr || name == kDirAttr)
+    {
+        return true;
+    }
+    return Element::IsPresentationAttribute(name);
 }
 
 bool HTMLElement::ParseColorWithLegacyRules(const String &attributevalue, Color &parsedColor)
@@ -166,6 +171,13 @@ bool HTMLElement::SelfOrAncestorHasDirAutoAttribute(void) const
     if (const ComputedStyle *style = GetComputedStyle())
         return style->SelfOrAncestorHasDirAutoAttribute();
     return false;
+}
+
+int HTMLElement::tabIndex(void) const
+{
+    if (SupportsFocus())
+        return Element::tabIndex();
+    return -1;
 }
 
 } // namespace blink

@@ -246,9 +246,8 @@ bool LayoutView::IsChildAllowed(LayoutObject* child,
 }
 
 bool LayoutView::CanHaveChildren() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
+  return true;
+#if 0 // BKTODO: Check if necessary.
   FrameOwner* owner = GetFrame()->Owner();
   if (!owner)
     return true;

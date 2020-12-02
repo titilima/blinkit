@@ -76,9 +76,6 @@ const CachedMatchedProperties* MatchedPropertiesCache::Find(
   Cache::iterator it = cache_.find(hash);
   if (it == cache_.end())
     return nullptr;
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   CachedMatchedProperties* cache_item = it->second.Get();
   if (!cache_item)
     return nullptr;
@@ -94,7 +91,6 @@ const CachedMatchedProperties* MatchedPropertiesCache::Find(
       return nullptr;
   }
   return cache_item;
-#endif
 }
 
 void MatchedPropertiesCache::Add(const ComputedStyle& style,

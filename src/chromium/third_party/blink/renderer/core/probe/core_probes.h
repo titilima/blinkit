@@ -26,6 +26,7 @@ inline void nothingToDo(void) {}
 #define didCreateAnimation(...)         nothingToDo()
 #define didInvalidateStyleAttr(...)     nothingToDo()
 #define didPaint(...)                   nothingToDo()
+#define didPerformSlotDistribution(...) nothingToDo()
 #define fontsUpdated(...)               nothingToDo()
 #define layerTreeDidChange(...)         nothingToDo()
 #define pseudoElementDestroyed(...)     nothingToDo()

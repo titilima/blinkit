@@ -182,9 +182,11 @@ class CORE_EXPORT ShadowRoot final : public DocumentFragment, public TreeScope {
   bool ContainsShadowRoots() const { return child_shadow_root_count_; }
 
   StyleSheetList& StyleSheets();
-  void SetStyleSheets(const std::shared_ptr<StyleSheetList> &style_sheet_list) {
+  void SetStyleSheets(StyleSheetList* style_sheet_list) {
     style_sheet_list_ = style_sheet_list;
   }
+
+  void Trace(blink::Visitor*) override;
 
  private:
   ShadowRoot(Document&, ShadowRootType);
@@ -202,7 +204,7 @@ class CORE_EXPORT ShadowRoot final : public DocumentFragment, public TreeScope {
   }
   void Distribute();
 
-  std::shared_ptr<StyleSheetList> style_sheet_list_;
+  Member<StyleSheetList> style_sheet_list_;
   Member<SlotAssignment> slot_assignment_;
   Member<ShadowRootV0> shadow_root_v0_;
   unsigned short child_shadow_root_count_;
@@ -224,11 +226,9 @@ inline Element* ShadowRoot::ActiveElement() const {
 #endif
 }
 
-#if 0 // BKTODO:
 inline bool Node::IsInUserAgentShadowRoot() const {
   return ContainingShadowRoot() && ContainingShadowRoot()->IsUserAgent();
 }
-#endif
 
 inline void ShadowRoot::DistributeIfNeeded() {
   if (needs_distribution_recalc_)

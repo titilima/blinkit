@@ -46,10 +46,8 @@
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
 #include "third_party/blink/renderer/core/paint/paint_phase.h"
 #include "third_party/blink/renderer/core/paint/scoped_paint_state.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/scrollable_area_painter.h"
 #include "third_party/blink/renderer/core/paint/theme_painter.h"
-#endif
 #include "third_party/blink/renderer/platform/geometry/layout_rect_outsets.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context_state_saver.h"
 #include "third_party/blink/renderer/platform/graphics/paint/display_item_cache_skipper.h"
@@ -331,13 +329,10 @@ void NGBoxFragmentPainter::PaintBlockFlowContents(
   // trigger a full paint invalidation.
   // TODO(layout-dev): Handle without delegating to LayoutObject.
   LayoutObject* layout_object = box_fragment_.GetLayoutObject();
-  ASSERT(false); // BKTODO:
-#if 0
   if (layout_object->GetDocument().DidLayoutWithPendingStylesheets() &&
       !layout_object->IsLayoutView()) {
     return;
   }
-#endif
 
   DCHECK(PhysicalFragment().ChildrenInline());
 
@@ -593,8 +588,6 @@ void NGBoxFragmentPainter::PaintBoxDecorationBackgroundWithRect(
 
   IntRect snapped_paint_rect(PixelSnappedIntRect(paint_rect));
   ThemePainter& theme_painter = LayoutTheme::GetTheme().Painter();
-  ASSERT(false); // BKTODO:
-#if 0
   bool theme_painted =
       box_decoration_data.has_appearance &&
       !theme_painter.Paint(layout_box, paint_info, snapped_paint_rect);
@@ -636,7 +629,6 @@ void NGBoxFragmentPainter::PaintBoxDecorationBackgroundWithRect(
 
   if (needs_end_layer)
     paint_info.context.EndLayer();
-#endif
 }
 
 // TODO(kojii): This logic is kept in sync with BoxPainter. Not much efforts to
@@ -906,12 +898,9 @@ void NGBoxFragmentPainter::PaintOverflowControlsIfNeeded(
   if (box_fragment_.HasOverflowClip() &&
       box_fragment_.Style().Visibility() == EVisibility::kVisible &&
       ShouldPaintSelfBlockBackground(paint_info.phase)) {
-    ASSERT(false); // BKTODO:
-#if 0
     ScrollableAreaPainter(*PhysicalFragment().Layer()->GetScrollableArea())
         .PaintOverflowControls(paint_info, RoundedIntPoint(paint_offset),
                                false /* painting_overlay_controls */);
-#endif
   }
 }
 

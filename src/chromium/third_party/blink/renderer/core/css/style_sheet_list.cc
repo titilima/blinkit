@@ -40,15 +40,11 @@
 
 namespace blink {
 
-using namespace html_names;
+using namespace HTMLNames;
 
 StyleSheetList* StyleSheetList::Create() {
   DCHECK(RuntimeEnabledFeatures::ConstructableStylesheetsEnabled());
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return new StyleSheetList();
-#endif
 }
 
 StyleSheetList* StyleSheetList::Create(
@@ -58,11 +54,7 @@ StyleSheetList* StyleSheetList::Create(
     exception_state.ThrowTypeError("Illegal constructor");
     return nullptr;
   }
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return new StyleSheetList(style_sheet_vector);
-#endif
 }
 
 StyleSheetList::StyleSheetList(
@@ -141,6 +133,12 @@ CSSStyleSheet* StyleSheetList::AnonymousNamedGetter(const AtomicString& name) {
   }
   return sheet;
 #endif
+}
+
+void StyleSheetList::Trace(blink::Visitor* visitor) {
+  visitor->Trace(tree_scope_);
+  visitor->Trace(style_sheet_vector_);
+  ScriptWrappable::Trace(visitor);
 }
 
 }  // namespace blink

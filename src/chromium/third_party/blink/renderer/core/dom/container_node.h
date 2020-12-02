@@ -36,6 +36,8 @@
 #ifndef BLINKIT_BLINK_CONTAINER_NODE_H
 #define BLINKIT_BLINK_CONTAINER_NODE_H
 
+#pragma once
+
 #include "third_party/blink/renderer/core/dom/node.h"
 #include "third_party/blink/renderer/core/html/collection_type.h"
 
@@ -46,6 +48,9 @@ class NodeListsNodeData;
 template <typename NodeType>
 class StaticNodeTypeList;
 using StaticElementList = StaticNodeTypeList<Element>;
+#ifndef BLINKIT_CRAWLER_ONLY
+class WhitespaceAttacher;
+#endif
 
 enum class DynamicRestyleFlags {
     kChildrenOrSiblingsAffectedByFocus = 1 << 0,
@@ -158,6 +163,11 @@ public:
     };
     void CheckForSiblingStyleChanges(SiblingCheckType changeType, Element *changedElement,
         Node *nodeBeforeChange, Node *nodeAfterChange);
+    void RecalcDescendantStyles(StyleRecalcChange);
+
+    void RebuildChildrenLayoutTrees(WhitespaceAttacher &whitespaceAttacher);
+    void RebuildLayoutTreeForChild(Node *child, WhitespaceAttacher &whitespaceAttacher);
+    void RebuildNonDistributedChildren(void);
 
     void AttachLayoutTree(AttachContext &context) override;
     void DetachLayoutTree(const AttachContext &context = AttachContext()) override;

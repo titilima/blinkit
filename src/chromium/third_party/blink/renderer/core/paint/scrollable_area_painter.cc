@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scrollable_area_painter.cc
+// Description: ScrollableAreaPainter Class
+//      Author: Ziming Li
+//     Created: 2020-12-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -96,6 +107,8 @@ void ScrollableAreaPainter::DrawPlatformResizerImage(
                  resizer_corner_rect.Height() * 3 / 4);
   points[3].SetY(points[1].Y());
 
+  ASSERT(false); // BKTODO:
+#if 0
   PaintFlags paint_flags;
   paint_flags.setStyle(PaintFlags::kStroke_Style);
   paint_flags.setStrokeWidth(1);
@@ -119,6 +132,7 @@ void ScrollableAreaPainter::DrawPlatformResizerImage(
   line_path.lineTo(points[3].X() + (on_left ? -1 : 1), points[3].Y());
   paint_flags.setColor(SkColorSetARGB(153, 255, 255, 255));
   context.DrawPath(line_path, paint_flags);
+#endif
 }
 
 void ScrollableAreaPainter::PaintOverflowControls(

@@ -52,6 +52,12 @@ public:
     int Width(void) const { return Size().Width(); }
     int Height(void) const { return Size().Height(); }
     IntSize Size(void) const { return m_frameRect.Size(); }
+
+    // Returns the scrollable area for the frame. For the root frame, this will
+    // be the RootFrameViewport, which adds pinch-zoom semantics to scrolling.
+    // For non-root frames, this will be the ScrollableArea of the LayoutView.
+    ScrollableArea* GetScrollableArea(void);
+
     bool IsAttached(void) const { return m_isAttached; }
     bool IsSelfVisible(void) const { return m_selfVisible; }
     void SetSelfVisible(bool visible);
@@ -61,6 +67,8 @@ public:
     bool IsInPerformLayout(void) const;
     bool NeedsLayout(void) const;
     bool DidFirstLayout(void) const { return !m_firstLayout; }
+
+    LayoutRect FrameToDocument(const LayoutRect &rectInFrame) const;
 
     // FIXME: This should probably be renamed as the 'inSubtreeLayout' parameter
     // passed around the LocalFrameView layout methods can be true while this

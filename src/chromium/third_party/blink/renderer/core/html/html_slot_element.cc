@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_slot_element.cc
+// Description: HTMLSlotElement Class
+//      Author: Ziming Li
+//     Created: 2020-12-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2015 Google Inc. All rights reserved.
  *
@@ -34,18 +45,18 @@
 #include "third_party/blink/renderer/core/css/style_change_reason.h"
 #include "third_party/blink/renderer/core/css/style_engine.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
-#include "third_party/blink/renderer/core/dom/mutation_observer.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/mutation_observer.h"
 #include "third_party/blink/renderer/core/dom/node_computed_style.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
 #include "third_party/blink/renderer/core/dom/shadow_root.h"
-#include "third_party/blink/renderer/core/dom/slot_assignment.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/slot_assignment.h"
 #include "third_party/blink/renderer/core/dom/whitespace_attacher.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
-#include "third_party/blink/renderer/core/html/assigned_nodes_options.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/assigned_nodes_options.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
-#include "third_party/blink/renderer/platform/bindings/microtask.h"
+// BKTODO: #include "third_party/blink/renderer/platform/bindings/microtask.h"
 
 namespace blink {
 
@@ -55,7 +66,7 @@ namespace {
 constexpr size_t kLCSTableSizeLimit = 16;
 }
 
-HTMLSlotElement* HTMLSlotElement::Create(Document& document) {
+Element* HTMLSlotElement::Create(Document& document) {
   return new HTMLSlotElement(document);
 }
 
@@ -103,7 +114,7 @@ const HeapVector<Member<Node>>& HTMLSlotElement::AssignedNodes() const {
     DCHECK(assigned_nodes_.IsEmpty());
     return assigned_nodes_;
   }
-  ContainingShadowRoot()->GetSlotAssignment().RecalcAssignment();
+  ASSERT(false); // BKTODO: ContainingShadowRoot()->GetSlotAssignment().RecalcAssignment();
   return assigned_nodes_;
 }
 
@@ -149,8 +160,11 @@ const HeapVector<Member<Node>> HTMLSlotElement::FlattenedAssignedNodes() {
 
 const HeapVector<Member<Node>> HTMLSlotElement::AssignedNodesForBinding(
     const AssignedNodesOptions& options) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (options.hasFlatten() && options.flatten())
     return FlattenedAssignedNodes();
+#endif
   return AssignedNodes();
 }
 
@@ -175,7 +189,7 @@ const HeapVector<Member<Element>> HTMLSlotElement::AssignedElementsForBinding(
 
 void HTMLSlotElement::assign(HeapVector<Member<Node>> nodes) {
   if (SupportsAssignment())
-    ContainingShadowRoot()->GetSlotAssignment().SetNeedsAssignmentRecalc();
+    ASSERT(false); // BKTODO: ContainingShadowRoot()->GetSlotAssignment().SetNeedsAssignmentRecalc();
   assigned_nodes_candidates_.clear();
   for (auto& node : nodes) {
     assigned_nodes_candidates_.insert(node);
@@ -215,13 +229,19 @@ void HTMLSlotElement::RecalcFlatTreeChildren() {
 
 void HTMLSlotElement::DispatchSlotChangeEvent() {
   DCHECK(!IsInUserAgentShadowRoot());
+  ASSERT(false); // BKTODO:
+#if 0
   Event* event = Event::CreateBubble(EventTypeNames::slotchange);
   event->SetTarget(this);
   DispatchScopedEvent(*event);
+#endif
 }
 
 Node* HTMLSlotElement::AssignedNodeNextTo(const Node& node) const {
   DCHECK(SupportsAssignment());
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   ContainingShadowRoot()->GetSlotAssignment().RecalcAssignment();
   // TODO(crbug.com/776656): Use {node -> index} map to avoid O(N) lookup
   wtf_size_t index = assigned_nodes_.Find(&node);
@@ -229,10 +249,14 @@ Node* HTMLSlotElement::AssignedNodeNextTo(const Node& node) const {
   if (index + 1 == assigned_nodes_.size())
     return nullptr;
   return assigned_nodes_[index + 1].Get();
+#endif
 }
 
 Node* HTMLSlotElement::AssignedNodePreviousTo(const Node& node) const {
   DCHECK(SupportsAssignment());
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   ContainingShadowRoot()->GetSlotAssignment().RecalcAssignment();
   // TODO(crbug.com/776656): Use {node -> index} map to avoid O(N) lookup
   wtf_size_t index = assigned_nodes_.Find(&node);
@@ -240,6 +264,7 @@ Node* HTMLSlotElement::AssignedNodePreviousTo(const Node& node) const {
   if (index == 0)
     return nullptr;
   return assigned_nodes_[index - 1].Get();
+#endif
 }
 
 AtomicString HTMLSlotElement::GetName() const {
@@ -289,8 +314,11 @@ void HTMLSlotElement::AttributeChanged(
   if (params.name == nameAttr) {
     if (ShadowRoot* root = ContainingShadowRoot()) {
       if (root->IsV1() && params.old_value != params.new_value) {
+        ASSERT(false); // BKTODO:
+#if 0
         root->GetSlotAssignment().DidRenameSlot(
             NormalizeSlotName(params.old_value), *this);
+#endif
       }
     }
   }
@@ -306,7 +334,7 @@ Node::InsertionNotificationRequest HTMLSlotElement::InsertedInto(
     DCHECK(root->IsV1());
     if (root == insertion_point.ContainingShadowRoot()) {
       // This slot is inserted into the same tree of |insertion_point|
-      root->DidAddSlot(*this);
+      ASSERT(false); // BKTODO: root->DidAddSlot(*this);
     } else if (insertion_point.isConnected() &&
                root->NeedsSlotAssignmentRecalc()) {
       // Even when a slot and its containing shadow root is removed together
@@ -362,11 +390,14 @@ void HTMLSlotElement::RemovedFrom(ContainerNode& insertion_point) {
       // optimization.
     }
   } else if (insertion_point.IsInV1ShadowTree()) {
+    ASSERT(false); // BKTODO:
+#if 0
     // This slot was in a shadow tree and got disconnected from the shadow tree.
     // In the above example, (this slot == s1), (insertion point == d)
     // and (insertion_point->ContainingShadowRoot == sr1).
     insertion_point.ContainingShadowRoot()->GetSlotAssignment().DidRemoveSlot(
         *this);
+#endif
     ClearAssignedNodesAndFlatTreeChildren();
   } else {
     DCHECK(assigned_nodes_.IsEmpty());
@@ -476,7 +507,7 @@ void HTMLSlotElement::LazyReattachNodesNaive(
 
 void HTMLSlotElement::
     SetNeedsDistributionRecalcWillBeSetNeedsAssignmentRecalc() {
-  ContainingShadowRoot()->GetSlotAssignment().SetNeedsAssignmentRecalc();
+  ASSERT(false); // BKTODO: ContainingShadowRoot()->GetSlotAssignment().SetNeedsAssignmentRecalc();
 }
 
 void HTMLSlotElement::DidSlotChange(SlotChangeType slot_change_type) {
@@ -526,7 +557,7 @@ void HTMLSlotElement::EnqueueSlotChangeEvent() {
     return;
   if (slotchange_event_enqueued_)
     return;
-  MutationObserver::EnqueueSlotChange(*this);
+  ASSERT(false); // BKTODO: MutationObserver::EnqueueSlotChange(*this);
   slotchange_event_enqueued_ = true;
 }
 
@@ -535,9 +566,13 @@ bool HTMLSlotElement::HasAssignedNodesSlow() const {
   DCHECK(root);
   DCHECK(root->IsV1());
   SlotAssignment& assignment = root->GetSlotAssignment();
+  ASSERT(false); // BKTODO: 
+  return false;
+#if 0
   if (assignment.FindSlotByName(GetName()) != this)
     return false;
   return assignment.FindHostChildBySlotName(GetName());
+#endif
 }
 
 bool HTMLSlotElement::FindHostChildWithSameSlotName() const {
@@ -545,7 +580,11 @@ bool HTMLSlotElement::FindHostChildWithSameSlotName() const {
   DCHECK(root);
   DCHECK(root->IsV1());
   SlotAssignment& assignment = root->GetSlotAssignment();
+  ASSERT(false); // BKTODO: 
+  return false;
+#if 0
   return assignment.FindHostChildBySlotName(GetName());
+#endif
 }
 
 int HTMLSlotElement::tabIndex() const {

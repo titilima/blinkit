@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: snap_coordinator.cc
+// Description: SnapCoordinator Class
+//      Author: Ziming Li
+//     Created: 2020-12-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,7 +33,7 @@ constexpr float kProximityRaio = 1.0 / 3.0;
 }  // namespace
 // TODO(sunyunjia): Move the static functions to an anonymous namespace.
 
-SnapCoordinator::SnapCoordinator() : snap_container_map_() {}
+SnapCoordinator::SnapCoordinator() /* // BKTODO: snap_container_map_() */ {}
 
 SnapCoordinator::~SnapCoordinator() = default;
 
@@ -77,9 +88,12 @@ void SnapCoordinator::SnapAreaDidChange(LayoutBox& snap_area,
 }
 
 void SnapCoordinator::UpdateAllSnapContainerData() {
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& entry : snap_container_map_) {
     UpdateSnapContainerData(*entry.key);
   }
+#endif
 }
 
 static ScrollableArea* ScrollableAreaForSnapping(const LayoutBox& layout_box) {
@@ -110,6 +124,8 @@ void SnapCoordinator::UpdateSnapContainerData(const LayoutBox& snap_container) {
   if (snap_container.Style()->GetScrollSnapType().is_none)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   SnapContainerData snap_container_data(GetPhysicalSnapType(snap_container));
 
   ScrollableArea* scrollable_area = ScrollableAreaForSnapping(snap_container);
@@ -169,6 +185,7 @@ void SnapCoordinator::UpdateSnapContainerData(const LayoutBox& snap_container) {
     }
   }
   snap_container_map_.Set(&snap_container, snap_container_data);
+#endif
 }
 
 static ScrollSnapAlign GetPhysicalAlignment(
@@ -240,6 +257,8 @@ base::Optional<FloatPoint> SnapCoordinator::GetSnapPositionForPoint(
     const FloatPoint& point,
     bool did_scroll_x,
     bool did_scroll_y) {
+  ASSERT(false); // BKTODO:
+#if 0
   auto iter = snap_container_map_.find(&snap_container);
   if (iter == snap_container_map_.end())
     return base::nullopt;
@@ -254,6 +273,7 @@ base::Optional<FloatPoint> SnapCoordinator::GetSnapPositionForPoint(
     FloatPoint snap_point(snap_position.x(), snap_position.y());
     return snap_point;
   }
+#endif
   return base::nullopt;
 }
 
@@ -283,7 +303,7 @@ void SnapCoordinator::SnapContainerDidChange(LayoutBox& snap_container,
                                              ScrollSnapType scroll_snap_type) {
   snap_container.SetNeedsPaintPropertyUpdate();
   if (scroll_snap_type.is_none) {
-    snap_container_map_.erase(&snap_container);
+    ASSERT(false); // BKTODO: snap_container_map_.erase(&snap_container);
     snap_container.ClearSnapAreas();
     return;
   }
@@ -301,10 +321,13 @@ void SnapCoordinator::SnapContainerDidChange(LayoutBox& snap_container,
 
 base::Optional<SnapContainerData> SnapCoordinator::GetSnapContainerData(
     const LayoutBox& snap_container) const {
+  ASSERT(false); // BKTODO:
+#if 0
   auto iter = snap_container_map_.find(&snap_container);
   if (iter != snap_container_map_.end()) {
     return iter->value;
   }
+#endif
   return base::nullopt;
 }
 
@@ -335,24 +358,31 @@ bool SnapCoordinator::GetSnapFlingInfo(
 #ifndef NDEBUG
 
 void SnapCoordinator::ShowSnapAreaMap() {
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto* const container : snap_container_map_.Keys())
     ShowSnapAreasFor(container);
+#endif
 }
 
 void SnapCoordinator::ShowSnapAreasFor(const LayoutBox* container) {
+#if 0 // BKTODO: Cleanup later.
   LOG(INFO) << *container->GetNode();
   if (SnapAreaSet* snap_areas = container->SnapAreas()) {
     for (auto* const snap_area : *snap_areas) {
       LOG(INFO) << "    " << *snap_area->GetNode();
     }
   }
+#endif
 }
 
 void SnapCoordinator::ShowSnapDataFor(const LayoutBox* snap_container) {
+#if 0 // BKTODO: Cleanup later.
   auto iter = snap_container_map_.find(snap_container);
   if (iter == snap_container_map_.end())
     return;
   LOG(INFO) << iter->value;
+#endif
 }
 
 #endif

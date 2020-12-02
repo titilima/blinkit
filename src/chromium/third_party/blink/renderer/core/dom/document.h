@@ -88,6 +88,7 @@ class SelectorQueryCache;
 class Text;
 #ifndef BLINKIT_CRAWLER_ONLY
 class CSSStyleSheet;
+class HTMLBodyElement;
 class HTMLImportsController;
 class LayoutView;
 class LocalFrameView;
@@ -96,6 +97,7 @@ enum class PageVisibilityState;
 class PropertyRegistry;
 class ReattachLegacyLayoutObjectList;
 class RootScrollerController;
+class SnapCoordinator;
 class StyleEngine;
 class StyleResolver;
 class TextAutosizer;
@@ -182,6 +184,7 @@ public:
     {
         return m_registrationContext.get();
     }
+    SnapCoordinator* GetSnapCoordinator(void);
 #endif
 
     // Exports for JS
@@ -397,8 +400,14 @@ public:
 
     Element* FocusedElement(void) const { return m_focusedElement.Get(); }
     Element* HoverElement(void) const { return m_hoverElement.Get(); }
+    // "HTML body element" as defined by CSSOM View spec
+    // (https://drafts.csswg.org/cssom-view/#the-html-body-element).
+    // That is, the first body child of the document element.
+    HTMLBodyElement* FirstBodyElement(void) const;
 
     void RemoveFocusedElementOfSubtree(Node *node, bool amongChildrenOnly = false);
+
+    scoped_refptr<ComputedStyle> StyleForElementIgnoringPendingStylesheets(Element *element);
 
     bool HasNodesWithPlaceholderStyle(void) const { return m_hasNodesWithPlaceholderStyle; }
     void SetHasNodesWithPlaceholderStyle(void) { m_hasNodesWithPlaceholderStyle = true; }
@@ -411,6 +420,14 @@ public:
     bool IsTemplateDocument(void) const { return !!m_templateDocumentHost; }
 
     bool IsRenderingReady(void) const;
+
+    enum PendingSheetLayout {
+        kNoLayoutWithPendingSheets,
+        kDidLayoutWithPendingSheets,
+        kIgnoreLayoutWithPendingSheets
+    };
+    bool DidLayoutWithPendingStylesheets(void) const { return m_pendingSheetLayout == kDidLayoutWithPendingSheets; }
+    bool IgnoreLayoutWithPendingStylesheets(void) const { return m_pendingSheetLayout == kIgnoreLayoutWithPendingSheets; }
 
     bool ShouldScheduleLayout(void) const;
     bool NeedsLayoutTreeUpdate(void) const;
@@ -447,6 +464,8 @@ public:
 #   else
     bool IsSlotAssignmentRecalcForbidden(void) { return false; }
 #   endif
+
+    constexpr bool Printing(void) { return false; } // Just a placeholder.
 #endif // BLINKIT_CRAWLER_ONLY
 protected:
     Document(const DocumentInit &initializer);
@@ -591,6 +610,11 @@ private:
     std::stack<ScriptElementBase *> m_currentScriptStack;
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    // If we do ignore the pending stylesheet count, then we need to add a boolean
+    // to track that this happened so that we can do a full repaint when the
+    // stylesheets do eventually load.
+    PendingSheetLayout m_pendingSheetLayout = kNoLayoutWithPendingSheets;
+
     std::shared_ptr<HTMLImportsController> m_importsController;
 
     LayoutView *m_layoutView = nullptr;
@@ -618,6 +642,8 @@ private:
 
     // TODO(tkent): Should it be moved to LocalFrame or LocalFrameView?
     std::unique_ptr<ViewportData> m_viewportData;
+
+    Member<SnapCoordinator> m_snapCoordinator;
 
     friend class ReattachLegacyLayoutObjectList;
     // TODO(layout-dev): Once everything are LayoutNG, we can get rid of this.

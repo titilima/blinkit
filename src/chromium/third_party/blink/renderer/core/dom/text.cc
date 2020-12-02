@@ -78,9 +78,6 @@ Text* Text::CreateEditingText(Document& document, const String& data) {
 #endif
 
 Node* Text::MergeNextSiblingNodesIfPossible() {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   // Remove empty text nodes.
   if (!length()) {
     // Care must be taken to get the next node before removing the current node.
@@ -109,7 +106,7 @@ Node* Text::MergeNextSiblingNodesIfPossible() {
     SetDataWithoutUpdate(data() + next_text_data);
     UpdateTextLayoutObject(old_text_data.length(), 0);
 
-    GetDocument().DidMergeTextNodes(*this, *next_text, offset);
+    ASSERT(false); // BKTODO: GetDocument().DidMergeTextNodes(*this, *next_text, offset);
 
     // Empty nextText for layout update.
     next_text->SetDataWithoutUpdate(g_empty_string);
@@ -125,13 +122,9 @@ Node* Text::MergeNextSiblingNodesIfPossible() {
   }
 
   return NodeTraversal::NextPostOrder(*this);
-#endif
 }
 
 Text* Text::splitText(unsigned offset, ExceptionState& exception_state) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   // IndexSizeError: Raised if the specified offset is negative or greater than
   // the number of 16-bit units in data.
   if (offset > length()) {
@@ -142,6 +135,9 @@ Text* Text::splitText(unsigned offset, ExceptionState& exception_state) {
     return nullptr;
   }
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   EventQueueScope scope;
   String old_str = data();
   Text* new_text = CloneWithData(GetDocument(), old_str.Substring(offset));
@@ -426,8 +422,6 @@ void Text::ReattachLayoutTreeIfNeeded(const AttachContext& context) {
 }
 
 void Text::RecalcTextStyle(StyleRecalcChange change) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (LayoutText* layout_text = GetLayoutObject()) {
     if (change != kNoChange || NeedsStyleRecalc()) {
       scoped_refptr<ComputedStyle> new_style =
@@ -449,7 +443,6 @@ void Text::RecalcTextStyle(StyleRecalcChange change) {
   } else if (NeedsStyleRecalc() || NeedsWhitespaceLayoutObject()) {
     SetNeedsReattachLayoutTree();
   }
-#endif
 }
 
 void Text::RebuildTextLayoutTree(WhitespaceAttacher& whitespace_attacher) {

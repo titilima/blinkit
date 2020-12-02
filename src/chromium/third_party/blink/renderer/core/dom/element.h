@@ -115,6 +115,7 @@ public:
     AttributeCollection AttributesWithoutUpdate(void) const;
     const AtomicString& getAttribute(const QualifiedName &name) const;
     const AtomicString& FastGetAttribute(const QualifiedName &name) const;
+    int GetIntegralAttribute(const QualifiedName &name) const;
     GURL GetURLAttribute(const QualifiedName &name) const;
     bool hasAttribute(const QualifiedName &name) const;
     bool FastHasAttribute(const QualifiedName &name) const;
@@ -204,6 +205,10 @@ public:
     virtual void FinishParsingChildren(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    virtual bool IsFormControlElement(void) const { return false; }
+
+    Element* AdjustedFocusedElementInTreeScope(void) const;
+
     bool HasAnimations(void) const;
     ElementAnimations* GetElementAnimations(void) const;
 
@@ -226,6 +231,11 @@ public:
     {
         return const_cast<ComputedStyle *>(NonLayoutObjectComputedStyle());
     }
+    // Returns the Element¡¯s ComputedStyle. If the ComputedStyle is not already
+    // stored on the Element, computes the ComputedStyle and stores it on the
+    // Element¡¯s ElementRareData.  Used for getComputedStyle when Element is
+    // display none.
+    const ComputedStyle* EnsureComputedStyle(PseudoId pseudoElementSpecifier = kPseudoIdNone);
     const ComputedStyle* NonLayoutObjectComputedStyle(void) const;
     // FIXME: public for LayoutTreeBuilder, we shouldn't expose this though.
     scoped_refptr<ComputedStyle> StyleForLayoutObject(void);
@@ -244,6 +254,8 @@ public:
     // e.g. by calling Document::UpdateStyleAndLayoutTree().
     bool IsFocusable(void) const;
 
+    int tabIndex(void) const override;
+
     // Returns the shadow root attached to this element if it is a shadow host.
     ShadowRoot* GetShadowRoot(void) const;
     ShadowRoot* ShadowRootIfV1(void) const;
@@ -258,7 +270,18 @@ public:
     virtual const QualifiedName& SubResourceAttributeName(void) const { return QualifiedName::Null(); }
 
     virtual scoped_refptr<ComputedStyle> CustomStyleForLayoutObject(void);
+    virtual LayoutObject* CreateLayoutObject(const ComputedStyle &style);
     virtual bool LayoutObjectIsNeeded(const ComputedStyle &style) const;
+
+    void RebuildLayoutTreeForTraversalRootAncestor(void) { RebuildFirstLetterLayoutTree(); }
+    bool NeedsRebuildLayoutTree(const WhitespaceAttacher &whitespaceAttacher) const
+    {
+        // TODO(futhark@chromium.org): !CanParticipateInFlatTree() can be removed
+        // when Shadow DOM V0 support is removed.
+        return NeedsReattachLayoutTree() || ChildNeedsReattachLayoutTree() || !CanParticipateInFlatTree()
+            || (whitespaceAttacher.TraverseIntoDisplayContents() && HasDisplayContentsStyle());
+    }
+    void RebuildLayoutTree(WhitespaceAttacher &whitespaceAttacher);
 
     void SetNeedsResizeObserverUpdate(void);
 #endif
@@ -289,8 +312,11 @@ protected:
     virtual AttributeTriggers* TriggersForAttributeName(const QualifiedName &attrName);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    bool CanGeneratePseudoElement(PseudoId) const;
+
     scoped_refptr<ComputedStyle> OriginalStyleForLayoutObject(void);
 
+    virtual bool ChildrenCanHaveStyle(void) const { return true; }
     virtual void WillRecalcStyle(StyleRecalcChange change);
     virtual void DidRecalcStyle(StyleRecalcChange change);
 
@@ -350,13 +376,30 @@ private:
     // Returns true if we should traverse shadow including children and pseudo
     // elements for RecalcStyle.
     bool ShouldCallRecalcStyleForChildren(StyleRecalcChange change);
+    bool ShouldInvalidateDistributionWhenAttributeChanged(ShadowRoot &shadowRoot,
+        const QualifiedName &name, const AtomicString &newValue);
 
     void UpdatePresentationAttributeStyle(void);
 
     void CancelFocusAppearanceUpdate(void);
 
+    PseudoElement* CreatePseudoElementIfNeeded(PseudoId pseudoId);
+    void AttachPseudoElement(PseudoId pseudoId, AttachContext &context);
+    void UpdatePseudoElement(PseudoId pseudoId, StyleRecalcChange change);
     void DetachPseudoElement(PseudoId pseudoId, const AttachContext &context);
 
+    enum class StyleUpdatePhase {
+        kRecalc,
+        kRebuildLayoutTree,
+        kAttachLayoutTree,
+    };
+    void UpdateFirstLetterPseudoElement(StyleUpdatePhase phase);
+
+    void RebuildPseudoElementLayoutTree(PseudoId pseudoId, WhitespaceAttacher &whitespaceAttacher);
+    void RebuildFirstLetterLayoutTree(void);
+    void RebuildShadowRootLayoutTree(WhitespaceAttacher &whitespaceAttacher);
+
+    void AddCallbackSelectors(void);
     void UpdateCallbackSelectors(const ComputedStyle *oldStyle, const ComputedStyle *newStyle);
     void RemoveCallbackSelectors(void);
 

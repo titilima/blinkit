@@ -69,7 +69,7 @@
 #include "third_party/blink/renderer/core/layout/ng/ng_constraint_space.h"
 #include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #include "third_party/blink/renderer/core/page/page.h"
-// BKTODO: #include "third_party/blink/renderer/core/page/scrolling/root_scroller_controller.h"
+#include "third_party/blink/renderer/core/page/scrolling/root_scroller_controller.h"
 #include "third_party/blink/renderer/core/paint/block_paint_invalidator.h"
 #include "third_party/blink/renderer/core/paint/block_painter.h"
 #include "third_party/blink/renderer/core/paint/object_paint_invalidator.h"
@@ -128,8 +128,6 @@ LayoutBlock::LayoutBlock(ContainerNode* node)
 
 void LayoutBlock::RemoveFromGlobalMaps() {
   if (HasPositionedObjects()) {
-    ASSERT(false); // BKTODO:
-#if 0
     std::unique_ptr<TrackedLayoutBoxListHashSet> descendants =
         g_positioned_descendants_map->Take(this);
     DCHECK(!descendants->IsEmpty());
@@ -137,11 +135,8 @@ void LayoutBlock::RemoveFromGlobalMaps() {
       DCHECK_EQ(g_positioned_container_map->at(descendant), this);
       g_positioned_container_map->erase(descendant);
     }
-#endif
   }
   if (HasPercentHeightDescendants()) {
-    ASSERT(false); // BKTODO:
-#if 0
     std::unique_ptr<TrackedLayoutBoxListHashSet> descendants =
         g_percent_height_descendants_map->Take(this);
     DCHECK(!descendants->IsEmpty());
@@ -149,7 +144,6 @@ void LayoutBlock::RemoveFromGlobalMaps() {
       DCHECK_EQ(descendant->PercentHeightContainer(), this);
       descendant->SetPercentHeightContainer(nullptr);
     }
-#endif
   }
 }
 
@@ -311,7 +305,7 @@ void LayoutBlock::UpdateFromStyle() {
       !StyleRef().IsOverflowVisible() && AllowsOverflowClip();
   if (should_clip_overflow != HasOverflowClip()) {
     if (!should_clip_overflow)
-      ASSERT(false); // BKTODO: GetScrollableArea()->InvalidateAllStickyConstraints();
+      GetScrollableArea()->InvalidateAllStickyConstraints();
     SetSubtreeShouldCheckForPaintInvalidation();
     // The overflow clip paint property depends on whether overflow clip is
     // present so we need to update paint properties if this changes.

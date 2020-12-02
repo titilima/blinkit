@@ -53,6 +53,7 @@
 #   include "third_party/blink/renderer/core/css/style_engine.h"
 #   include "third_party/blink/renderer/core/dom/shadow_root.h"
 #   include "third_party/blink/renderer/core/dom/slot_assignment_recalc_forbidden_scope.h"
+#   include "third_party/blink/renderer/core/dom/text.h"
 #endif
 
 using namespace BlinKit;
@@ -1225,5 +1226,103 @@ void ContainerNode::WillRemoveChildren(void)
         DispatchChildRemovalEvents(*node);
     }
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void ContainerNode::RebuildChildrenLayoutTrees(WhitespaceAttacher &whitespaceAttacher)
+{
+    ASSERT(!NeedsReattachLayoutTree());
+
+    if (IsActiveSlotOrActiveV0InsertionPoint())
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        if (auto* slot = ToHTMLSlotElementOrNull(this)) {
+            slot->RebuildDistributedChildrenLayoutTrees(whitespace_attacher);
+        }
+        else {
+            ToV0InsertionPoint(this)->RebuildDistributedChildrenLayoutTrees(
+                whitespace_attacher);
+        }
+#endif
+        RebuildNonDistributedChildren();
+        return;
+    }
+
+    // This loop is deliberately backwards because we use insertBefore in the
+    // layout tree, and want to avoid a potentially n^2 loop to find the insertion
+    // point while building the layout tree.  Having us start from the last child
+    // and work our way back means in the common case, we'll find the insertion
+    // point in O(1) time.  See crbug.com/288225
+    for (Node *child = lastChild(); nullptr != child; child = child->previousSibling())
+        RebuildLayoutTreeForChild(child, whitespaceAttacher);
+
+    // This is done in ContainerNode::AttachLayoutTree but will never be cleared
+    // if we don't enter ContainerNode::AttachLayoutTree so we do it here.
+    ClearChildNeedsStyleRecalc();
+}
+
+void ContainerNode::RebuildLayoutTreeForChild(Node *child, WhitespaceAttacher &whitespaceAttacher)
+{
+    if (child->IsTextNode())
+    {
+        Text *textNode = ToText(child);
+        if (child->NeedsReattachLayoutTree())
+            textNode->RebuildTextLayoutTree(whitespaceAttacher);
+        else
+            whitespaceAttacher.DidVisitText(textNode);
+        return;
+    }
+
+    if (!child->IsElementNode())
+        return;
+
+    Element* element = ToElement(child);
+    if (element->NeedsRebuildLayoutTree(whitespaceAttacher))
+        element->RebuildLayoutTree(whitespaceAttacher);
+    else
+        whitespaceAttacher.DidVisitElement(element);
+}
+
+void ContainerNode::RebuildNonDistributedChildren(void)
+{
+    // Non-distributed children are:
+    // 1. Children of shadow hosts which are not slotted (v1) or distributed to an
+    //    insertion point (v0).
+    // 2. Children of <slot> (v1) and <content> (v0) elements which are not used
+    //    as fallback content when no nodes are slotted/distributed.
+    //
+    // These children will not take part in the flat tree, but we need to walk
+    // them in order to clear dirtiness flags during layout tree rebuild. We
+    // need to use a separate WhitespaceAttacher so that DidVisitText does not
+    // mess up the WhitespaceAttacher for the layout tree rebuild of the nodes
+    // which take part in the flat tree.
+    WhitespaceAttacher whitespaceAttacher;
+    for (Node *child = lastChild(); nullptr != child; child = child->previousSibling())
+        RebuildLayoutTreeForChild(child, whitespaceAttacher);
+    ClearChildNeedsStyleRecalc();
+    ClearChildNeedsReattachLayoutTree();
+}
+
+void ContainerNode::RecalcDescendantStyles(StyleRecalcChange change)
+{
+    ASSERT(GetDocument().InStyleRecalc());
+    ASSERT(change >= kUpdatePseudoElements || ChildNeedsStyleRecalc());
+    ASSERT(!NeedsStyleRecalc());
+
+    for (Node *child = firstChild(); nullptr != child; child = child->nextSibling())
+    {
+        if (child->IsTextNode())
+        {
+            ToText(child)->RecalcTextStyle(change);
+        }
+        else if (child->IsElementNode())
+        {
+            Element *element = ToElement(child);
+            if (element->ShouldCallRecalcStyle(change))
+                element->RecalcStyle(change);
+        }
+    }
+}
+#endif // BLINKIT_CRAWLER_ONLY
 
 }  // namespace blink

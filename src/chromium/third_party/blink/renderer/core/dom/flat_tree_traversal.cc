@@ -40,8 +40,8 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_shadow_element.h"
-#include "third_party/blink/renderer/core/html/html_slot_element.h"
 #endif
+#include "third_party/blink/renderer/core/html/html_slot_element.h"
 
 namespace blink {
 
@@ -51,8 +51,6 @@ bool CanBeDistributedToV0InsertionPoint(const Node& node) {
 
 Node* FlatTreeTraversal::TraverseChild(const Node& node,
                                        TraversalDirection direction) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (auto* slot = ToHTMLSlotElementIfSupportsAssignmentOrNull(node)) {
     if (slot->AssignedNodes().IsEmpty()) {
       return direction == kTraversalDirectionForward ? slot->firstChild()
@@ -61,7 +59,6 @@ Node* FlatTreeTraversal::TraverseChild(const Node& node,
     return direction == kTraversalDirectionForward ? slot->FirstAssignedNode()
                                                    : slot->LastAssignedNode();
   }
-#endif
   Node* child;
   if (ShadowRoot* shadow_root = node.GetShadowRoot()) {
     child = direction == kTraversalDirectionForward ? shadow_root->firstChild()
@@ -74,22 +71,16 @@ Node* FlatTreeTraversal::TraverseChild(const Node& node,
   if (!child)
     return nullptr;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (child->IsInV0ShadowTree()) {
     return V0ResolveDistributionStartingAt(*child, direction);
   }
-#endif
   return child;
 }
 
 Node* FlatTreeTraversal::V0ResolveDistributionStartingAt(
     const Node& node,
     TraversalDirection direction) {
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(!ToHTMLSlotElementIfSupportsAssignmentOrNull(node));
-#endif
   for (const Node* sibling = &node; sibling;
        sibling = (direction == kTraversalDirectionForward
                       ? sibling->nextSibling()
@@ -116,8 +107,6 @@ Node* FlatTreeTraversal::V0ResolveDistributionStartingAt(
 // details.
 Node* FlatTreeTraversal::TraverseSiblings(const Node& node,
                                           TraversalDirection direction) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (node.IsChildOfV1ShadowHost())
     return TraverseSiblingsForV1HostChild(node, direction);
 
@@ -135,23 +124,18 @@ Node* FlatTreeTraversal::TraverseSiblings(const Node& node,
     if (Node* found = V0ResolveDistributionStartingAt(*sibling, direction))
       return found;
   }
-#endif
   return nullptr;
 }
 
 Node* FlatTreeTraversal::TraverseSiblingsForV1HostChild(
     const Node& node,
     TraversalDirection direction) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   HTMLSlotElement* slot = node.AssignedSlot();
   if (!slot)
     return nullptr;
   return direction == kTraversalDirectionForward
              ? slot->AssignedNodeNextTo(node)
              : slot->AssignedNodePreviousTo(node);
-#endif
 }
 
 Node* FlatTreeTraversal::TraverseSiblingsForV0Distribution(
@@ -176,21 +160,14 @@ ContainerNode* FlatTreeTraversal::TraverseParent(
     return node.ParentOrShadowHostNode();
 
   if (node.IsChildOfV1ShadowHost())
-    ASSERT(false); // BKTODO: return node.AssignedSlot();
+    return node.AssignedSlot();
 
-#if 0
   if (auto* parent_slot =
           ToHTMLSlotElementIfSupportsAssignmentOrNull(node.parentElement())) {
     if (!parent_slot->AssignedNodes().IsEmpty())
       return nullptr;
     return parent_slot;
   }
-#else
-  if (Element *parent = node.parentElement())
-  {
-    ASSERT(parent->tagName().LowerASCII() != "slot"); // BKTODO:
-  }
-#endif
 
   if (CanBeDistributedToV0InsertionPoint(node))
     return TraverseParentForV0(node, details);

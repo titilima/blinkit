@@ -65,9 +65,9 @@
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/html/html_iframe_element.h"
 #include "third_party/blink/renderer/core/html/html_link_element.h"
-#include "third_party/blink/renderer/core/html/html_slot_element.h"
 #include "third_party/blink/renderer/core/html/imports/html_imports_controller.h"
 #endif
+#include "third_party/blink/renderer/core/html/html_slot_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/page/page.h"
@@ -1163,8 +1163,6 @@ void StyleEngine::InvalidateStyle() {
 }
 
 void StyleEngine::InvalidateSlottedElements(HTMLSlotElement& slot) {
-  ASSERT(false); // BKTODO:
-#if 0
   for (auto& node : slot.FlattenedAssignedNodes()) {
     if (node->IsElementNode()) {
       node->SetNeedsStyleRecalc(kLocalStyleChange,
@@ -1172,7 +1170,6 @@ void StyleEngine::InvalidateSlottedElements(HTMLSlotElement& slot) {
                                     StyleChangeReason::kStyleSheetChange));
     }
   }
-#endif
 }
 
 void StyleEngine::ScheduleInvalidationsForRuleSets(
@@ -1743,13 +1740,13 @@ void StyleEngine::RebuildLayoutTree() {
   Element& root_element = layout_tree_rebuild_root_.RootElement();
   {
     WhitespaceAttacher whitespace_attacher;
-    ASSERT(false); // BKTODO: root_element.RebuildLayoutTree(whitespace_attacher);
+    root_element.RebuildLayoutTree(whitespace_attacher);
   }
 
   for (ContainerNode* ancestor = root_element.GetReattachParent(); ancestor;
        ancestor = ancestor->GetReattachParent()) {
     if (ancestor->IsElementNode())
-      ASSERT(false); // BKTODO: ToElement(ancestor)->RebuildLayoutTreeForTraversalRootAncestor();
+      ToElement(ancestor)->RebuildLayoutTreeForTraversalRootAncestor();
     ancestor->ClearChildNeedsStyleRecalc();
     ancestor->ClearChildNeedsReattachLayoutTree();
   }

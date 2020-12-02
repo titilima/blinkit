@@ -37,10 +37,11 @@
 
 #include "third_party/blink/renderer/core/dom/named_node_map.h"
 #include "third_party/blink/renderer/core/dom/node_rare_data.h"
-#include "third_party/blink/renderer/core/dom/pseudo_element_data.h"
 #include "third_party/blink/renderer/core/intersection_observer/element_intersection_observer_data.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/animation/element_animations.h"
+#   include "third_party/blink/renderer/core/dom/pseudo_element.h"
+#   include "third_party/blink/renderer/core/dom/pseudo_element_data.h"
 #   if 0 // BKTODO:
 #       include "third_party/blink/renderer/core/dom/dataset_dom_string_map.h"
 #   else
@@ -66,8 +67,11 @@ public:
 
     bool HasPseudoElements(void) const
     {
-        ASSERT(!m_pseudoElementData); // BKTODO:
+#ifdef BLINKIT_CRAWLER_ONLY
         return false;
+#else
+        return m_pseudoElementData && m_pseudoElementData->HasPseudoElements();
+#endif
     }
 
     NamedNodeMap* AttributeMap(void) const { return m_attributeMap.Get(); }
@@ -84,6 +88,8 @@ public:
 
 #ifndef BLINKIT_CRAWLER_ONLY
     PseudoElement* GetPseudoElement(PseudoId pseudoId) const;
+    void SetPseudoElement(PseudoId pseudoId, PseudoElement *element);
+    void ClearPseudoElements(void);
 
     ShadowRoot* GetShadowRoot(void) const { return m_shadowRoot.get(); }
 
@@ -105,6 +111,7 @@ private:
     std::unique_ptr<ShadowRoot> m_shadowRoot;
     scoped_refptr<ComputedStyle> m_computedStyle;
     Member<ElementAnimations> m_elementAnimations;
+    Member<PseudoElementData> m_pseudoElementData;
 #endif
     Member<NamedNodeMap> m_attributeMap;
     std::unique_ptr<AttrNodeList> m_attrNodeList;
@@ -112,8 +119,6 @@ private:
     std::unique_ptr<ElementIntersectionObserverData> m_intersectionObserverData;
 
     AtomicString m_isValue;
-
-    std::unique_ptr<PseudoElementData> m_pseudoElementData;
 };
 
 } // namespace blink

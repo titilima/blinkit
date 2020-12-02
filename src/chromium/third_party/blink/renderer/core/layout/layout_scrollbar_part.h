@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_scrollbar_part.h
+// Description: LayoutScrollbarPart Class
+//      Author: Ziming Li
+//     Created: 2020-12-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -108,8 +119,8 @@ class LayoutScrollbarPart final : public LayoutBlock {
 
   bool AllowsOverflowClip() const override { return false; }
 
-  UntracedMember<ScrollableArea> scrollable_area_;
-  UntracedMember<LayoutScrollbar> scrollbar_;
+  Member<ScrollableArea> scrollable_area_;
+  Member<LayoutScrollbar> scrollbar_;
   ScrollbarPart part_;
 };
 

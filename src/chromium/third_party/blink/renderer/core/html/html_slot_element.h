@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_slot_element.h
+// Description: HTMLSlotElement Class
+//      Author: Ziming Li
+//     Created: 2020-12-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2015 Google Inc. All rights reserved.
  *
@@ -42,7 +53,7 @@ class CORE_EXPORT HTMLSlotElement final : public HTMLElement {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
-  static HTMLSlotElement* Create(Document&);
+  static Element* Create(Document&);
   static HTMLSlotElement* CreateUserAgentDefaultSlot(Document&);
   static HTMLSlotElement* CreateUserAgentCustomAssignSlot(Document&);
 
@@ -183,6 +194,12 @@ class CORE_EXPORT HTMLSlotElement final : public HTMLElement {
 
   friend class HTMLSlotElementTest;
 };
+
+inline const HTMLSlotElement* ToHTMLSlotElementOrNull(const Node &node) {
+  if (IsHTMLSlotElement(node))
+    return static_cast<const HTMLSlotElement *>(&node);
+  return nullptr;
+}
 
 inline const HTMLSlotElement* ToHTMLSlotElementIfSupportsAssignmentOrNull(
     const Node& node) {

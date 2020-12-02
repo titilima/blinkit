@@ -226,6 +226,7 @@ public:
     bool IsDocumentFragment(void) const { return GetFlag(kIsDocumentFragmentFlag); }
 #ifndef BLINKIT_CRAWLER_ONLY
     bool HasCustomStyleCallbacks(void) const { return GetFlag(kHasCustomStyleCallbacksFlag); }
+    void SetHasCustomStyleCallbacks(void) { SetFlag(true, kHasCustomStyleCallbacksFlag); }
     bool IsV0InsertionPoint(void) const { return GetFlag(kIsV0InsertionPointFlag); }
 #endif
     bool IsLink(void) const { return GetFlag(kIsLinkFlag); }
@@ -359,6 +360,8 @@ public:
     void NotifyMutationObserversNodeWillDetach(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    virtual int tabIndex(void) const { return 0; }
+
     bool IsActive(void) const { return IsUserActionElement() && IsUserActionElementActive(); }
     // Note: As a shadow host whose root with delegatesFocus=false may become
     // focused state when an inner element gets focused, in that case more than
@@ -366,18 +369,27 @@ public:
     // Element::isFocusedElementInDocument() or Document::focusedElement() to
     // check which element is exactly focused.
     bool IsFocused(void) const { return IsUserActionElement() && IsUserActionElementFocused(); }
+    // A re-distribution across v0 and v1 shadow trees is not supported.
+    bool IsSlotable(void) const { return IsTextNode() || (IsElementNode() && !IsV0InsertionPoint()); }
 
     ShadowRoot* ParentElementShadowRoot(void) const;
     bool IsInV0ShadowTree(void) const;
     bool IsInV1ShadowTree(void) const;
     bool IsChildOfV0ShadowHost(void) const;
     bool IsChildOfV1ShadowHost(void) const;
+    bool IsInUserAgentShadowRoot(void) const;
     ShadowRoot* V1ShadowRootOfParent(void) const;
+
+    bool IsActiveSlotOrActiveV0InsertionPoint(void) const;
 
     HTMLSlotElement* AssignedSlot(void) const;
 
     ContainerNode* GetReattachParent(void) const;
 
+    const ComputedStyle* EnsureComputedStyle(PseudoId pseudoElementSpecifier = kPseudoIdNone)
+    {
+        return VirtualEnsureComputedStyle(pseudoElementSpecifier);
+    }
     const ComputedStyle* GetComputedStyle(void) const;
     const ComputedStyle& ComputedStyleRef(void) const;
     ComputedStyle* MutableComputedStyle(void) const;
@@ -425,6 +437,12 @@ public:
     };
     virtual void AttachLayoutTree(AttachContext &context);
     virtual void DetachLayoutTree(const AttachContext &context = AttachContext());
+    void ReattachLayoutTree(void)
+    {
+        AttachContext context;
+        ReattachLayoutTree(context);
+    }
+    void ReattachLayoutTree(AttachContext &context);
     void LazyReattachIfAttached(void);
 
     void CheckSlotChange(SlotChangeType slotChangeType);

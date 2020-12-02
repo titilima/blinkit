@@ -59,6 +59,7 @@
 #   include "third_party/blink/renderer/core/dom/shadow_root.h"
 #   include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
 #   include "third_party/blink/renderer/core/css/style_engine.h"
+#   include "third_party/blink/renderer/core/html/html_slot_element.h"
 #endif
 
 using namespace BlinKit;
@@ -459,14 +460,6 @@ ExecutionContext* Node::GetExecutionContext(void) const
 {
     return GetDocument().ContextDocument();
 }
-
-#ifndef BLINKIT_CRAWLER_ONLY
-ContainerNode* Node::GetReattachParent(void) const
-{
-    ASSERT(false); // BKTODO:
-    return nullptr;
-}
-#endif
 
 #ifdef BLINKIT_CRAWLER_ONLY
 ShadowRoot* Node::GetShadowRoot(void) const
@@ -1109,16 +1102,13 @@ void Node::UpdateDistributionInternal(void)
 {
     if (!MayContainLegacyNodeTreeWhereDistributionShouldBeSupported())
         return;
-    ASSERT(false); // BKTODO:
-#if 0
     // Extra early out to avoid spamming traces.
     if (isConnected() && !GetDocument().ChildNeedsDistributionRecalc())
         return;
-    ScriptForbiddenScope forbid_script;
+    ScriptForbiddenScope forbidScript;
     Node& root = ShadowIncludingRoot();
     if (root.ChildNeedsDistributionRecalc())
-        root.RecalcDistribution();
-#endif
+        ASSERT(false); // BKTODO: root.RecalcDistribution();
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -1170,6 +1160,33 @@ HTMLSlotElement* Node::AssignedSlot(void) const
     return nullptr;
 }
 
+ContainerNode* Node::GetReattachParent(void) const
+{
+    if (IsPseudoElement())
+        return ParentOrShadowHostNode();
+
+    if (IsChildOfV1ShadowHost())
+    {
+        if (HTMLSlotElement *slot = AssignedSlot())
+            ASSERT(false); // BKTODO: return slot;
+    }
+
+    if (IsInV0ShadowTree() || IsChildOfV0ShadowHost())
+    {
+        if (ShadowRootWhereNodeCanBeDistributedForV0(*this))
+        {
+            if (const V0InsertionPoint *insertionPoint = ResolveReprojection(this))
+                return const_cast<V0InsertionPoint *>(insertionPoint);
+        }
+    }
+    return ParentOrShadowHostNode();
+}
+
+bool Node::IsActiveSlotOrActiveV0InsertionPoint(void) const
+{
+    return ToHTMLSlotElementIfSupportsAssignmentOrNull(*this) || IsActiveV0InsertionPoint(*this);
+}
+
 bool Node::IsUserActionElementActive(void) const
 {
     ASSERT(IsUserActionElement());
@@ -1198,6 +1215,19 @@ void Node::MarkAncestorsWithChildNeedsReattachLayoutTree(void)
     if (parentDirty)
         return;
     GetDocument().GetStyleEngine().UpdateLayoutTreeRebuildRoot(ancestor, this);
+}
+
+void Node::ReattachLayoutTree(AttachContext &context)
+{
+    context.performing_reattach = true;
+
+    // We only need to detach if the node has already been through
+    // attachLayoutTree().
+    if (GetStyleChangeType() < kNeedsReattachStyleChange)
+        DetachLayoutTree(context);
+    AttachLayoutTree(context);
+    ASSERT(!NeedsReattachLayoutTree());
+    ASSERT(nullptr == GetNonAttachedStyle());
 }
 
 void Node::SetNonAttachedStyle(scoped_refptr<ComputedStyle> nonAttachedStyle)

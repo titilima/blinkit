@@ -178,6 +178,16 @@ void LocalFrameView::EnqueueScrollAnchoringAdjustment(ScrollableArea *scrollable
     ASSERT(false); // BKTODO:
 }
 
+LayoutRect LocalFrameView::FrameToDocument(const LayoutRect &rectInFrame) const
+{
+    ASSERT(false); // BKTODO:
+    return LayoutRect();
+#if 0
+    return LayoutRect(FrameToDocument(rect_in_frame.Location()),
+        rect_in_frame.Size());
+#endif
+}
+
 LayoutView* LocalFrameView::GetLayoutView(void) const
 {
     return GetFrame().ContentLayoutObject();
@@ -186,6 +196,13 @@ LayoutView* LocalFrameView::GetLayoutView(void) const
 Page* LocalFrameView::GetPage(void) const
 {
     return GetFrame().GetPage();
+}
+
+ScrollableArea* LocalFrameView::GetScrollableArea(void)
+{
+    if (m_viewportScrollableArea)
+        return m_viewportScrollableArea.get();
+    return LayoutViewport();
 }
 
 ScrollingCoordinator* LocalFrameView::GetScrollingCoordinator(void) const

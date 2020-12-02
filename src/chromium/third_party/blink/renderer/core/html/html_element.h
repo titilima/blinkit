@@ -27,6 +27,8 @@ public:
 
     bool HasDirectionAuto(void) const;
     TextDirection DirectionalityIfhasDirAutoAttribute(bool &isAuto) const;
+
+    int tabIndex(void) const override;
 protected:
     HTMLElement(const QualifiedName &tagName, Document &document, ConstructionType type = kCreateHTMLElement);
 

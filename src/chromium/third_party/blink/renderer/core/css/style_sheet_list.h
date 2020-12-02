@@ -52,12 +52,8 @@ class CORE_EXPORT StyleSheetList final : public ScriptWrappable {
   static StyleSheetList* Create(const HeapVector<Member<CSSStyleSheet>>&,
                                 ExceptionState&);
 
-  static std::shared_ptr<StyleSheetList> Create(TreeScope* tree_scope) {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
+  static StyleSheetList* Create(TreeScope* tree_scope) {
     return new StyleSheetList(tree_scope);
-#endif
   }
 
   unsigned length();
@@ -70,6 +66,8 @@ class CORE_EXPORT StyleSheetList final : public ScriptWrappable {
   }
 
   CSSStyleSheet* AnonymousNamedGetter(const AtomicString&);
+
+  void Trace(blink::Visitor*) override;
 
  private:
   explicit StyleSheetList(const HeapVector<Member<CSSStyleSheet>>&);

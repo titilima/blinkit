@@ -92,7 +92,7 @@
 #include "third_party/blink/renderer/core/paint/filter_effect_builder.h"
 #include "third_party/blink/renderer/core/paint/object_paint_invalidator.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
-// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_painter.h"
+#include "third_party/blink/renderer/core/paint/paint_layer_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/style/reference_clip_path_operation.h"
 #include "third_party/blink/renderer/core/style/shape_clip_path_operation.h"
@@ -3260,8 +3260,6 @@ void PaintLayer::StyleDidChange(StyleDifference diff,
       // Raster invalidation will be issued if needed during paint.
       SetNeedsRepaint();
     } else if (old_style) {
-      ASSERT(false); // BKTODO:
-#if 0
       // Change of PaintedOutputInvisible() will affect existence of paint
       // chunks, so needs repaint.
       PaintLayerPainter painter(*this);
@@ -3271,7 +3269,6 @@ void PaintLayer::StyleDidChange(StyleDifference diff,
       if (painter.PaintedOutputInvisible(*old_style) !=
           painter.PaintedOutputInvisible(new_style))
         SetNeedsRepaint();
-#endif
     }
   }
 }

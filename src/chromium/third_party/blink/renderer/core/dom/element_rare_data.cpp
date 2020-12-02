@@ -51,7 +51,7 @@ namespace blink {
 struct SameSizeAsElementRareData : NodeRareData
 {
 #ifdef BLINKIT_CRAWLER_ONLY
-    void* pointersOrStrings[5];
+    void* pointersOrStrings[4];
 #else
     void* pointersOrStrings[8];
 #endif
@@ -69,7 +69,9 @@ ElementRareData::ElementRareData(NodeRenderingData *nodeLayoutData) : NodeRareDa
 
 ElementRareData::~ElementRareData(void)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(!m_pseudoElementData);
+#endif
 }
 
 AttrNodeList& ElementRareData::EnsureAttrNodeList(void)
@@ -81,6 +83,10 @@ AttrNodeList& ElementRareData::EnsureAttrNodeList(void)
 
 void ElementRareData::TraceAfterDispatch(Visitor *visitor)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
+    m_shadowRoot->Trace(visitor);
+    visitor->Trace(m_pseudoElementData);
+#endif
     visitor->Trace(m_attributeMap);
     if (m_attrNodeList)
         visitor->Trace(*m_attrNodeList);
@@ -93,20 +99,36 @@ void ElementRareData::ClearComputedStyle(void)
     m_computedStyle = nullptr;
 }
 
+void ElementRareData::ClearPseudoElements(void)
+{
+    if (m_pseudoElementData)
+    {
+        m_pseudoElementData->ClearPseudoElements();
+        m_pseudoElementData.Clear();
+    }
+}
+
 PseudoElement* ElementRareData::GetPseudoElement(PseudoId pseudoId) const
 {
     if (!m_pseudoElementData)
         return nullptr;
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     return m_pseudoElementData->GetPseudoElement(pseudoId);
-#endif
 }
 
 void ElementRareData::SetComputedStyle(scoped_refptr<ComputedStyle> computedStyle)
 {
     m_computedStyle = std::move(computedStyle);
+}
+
+void ElementRareData::SetPseudoElement(PseudoId pseudoId, PseudoElement *element)
+{
+    if (!m_pseudoElementData)
+    {
+        if (nullptr == element)
+            return;
+        m_pseudoElementData = PseudoElementData::Create();
+    }
+    m_pseudoElementData->SetPseudoElement(pseudoId, element);
 }
 #endif // BLINKIT_CRAWLER_ONLY
 

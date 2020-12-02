@@ -81,6 +81,8 @@ public:
     void AdoptIfNeeded(Node &node);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    Element* AdjustedFocusedElement(void) const;
+
     ScopedStyleResolver* GetScopedStyleResolver(void) const { return m_scopedStyleResolver.get(); }
     ScopedStyleResolver& EnsureScopedStyleResolver(void);
     void ClearScopedStyleResolver(void);

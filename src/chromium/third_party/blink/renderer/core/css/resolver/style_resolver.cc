@@ -98,8 +98,8 @@
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/custom/custom_element_definition.h"
 #include "third_party/blink/renderer/core/html/html_iframe_element.h"
-#include "third_party/blink/renderer/core/html/html_slot_element.h"
 #endif
+#include "third_party/blink/renderer/core/html/html_slot_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/media_type_names.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"
@@ -277,8 +277,6 @@ static void MatchSlottedRules(const Element& element,
     return;
 
   HeapVector<Member<ScopedStyleResolver>> resolvers;
-  ASSERT(false); // BKTODO:
-#if 0
   for (; slot; slot = slot->AssignedSlot()) {
     if (ScopedStyleResolver* resolver =
             slot->GetTreeScope().GetScopedStyleResolver())
@@ -290,7 +288,6 @@ static void MatchSlottedRules(const Element& element,
     collector.SortAndTransferMatchedRules();
     collector.FinishAddingAuthorRulesForTreeScope();
   }
-#endif
 }
 
 // Matches rules from the element's scope. The selectors may cross shadow

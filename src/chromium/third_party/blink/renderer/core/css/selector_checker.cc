@@ -66,10 +66,10 @@
 #   include "third_party/blink/renderer/core/html/forms/html_option_element.h"
 #   include "third_party/blink/renderer/core/html/forms/html_select_element.h"
 #   include "third_party/blink/renderer/core/html/html_frame_element_base.h"
-#   include "third_party/blink/renderer/core/html/html_slot_element.h"
 #   include "third_party/blink/renderer/core/html/media/html_video_element.h"
 #   include "third_party/blink/renderer/core/html/track/vtt/vtt_element.h"
 #endif
+#   include "third_party/blink/renderer/core/html/html_slot_element.h"
 #   include "third_party/blink/renderer/core/html_names.h"
 // BKTODO: #include "third_party/blink/renderer/core/page/focus_controller.h"
 #   include "third_party/blink/renderer/core/page/page.h"

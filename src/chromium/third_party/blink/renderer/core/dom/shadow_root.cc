@@ -56,8 +56,8 @@
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_content_element.h"
 #include "third_party/blink/renderer/core/html/html_shadow_element.h"
-#include "third_party/blink/renderer/core/html/html_slot_element.h"
 #endif
+#include "third_party/blink/renderer/core/html/html_slot_element.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 // BKTODO: #include "third_party/blink/renderer/core/trustedtypes/trusted_types_util.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
@@ -70,7 +70,7 @@ void ShadowRoot::Distribute() {
 }
 
 struct SameSizeAsShadowRoot : public DocumentFragment, public TreeScope {
-  char empty_class_fields_due_to_gc_mixin_marker[1];
+  // BKTODO: char empty_class_fields_due_to_gc_mixin_marker[1];
   Member<void*> member[3];
   unsigned counters_and_flags[1];
 };
@@ -310,6 +310,14 @@ void ShadowRoot::SetNeedsDistributionRecalc() {
   host().MarkAncestorsWithChildNeedsDistributionRecalc();
   if (!IsV1())
     V0().ClearDistribution();
+}
+
+void ShadowRoot::Trace(blink::Visitor* visitor) {
+  visitor->Trace(style_sheet_list_);
+  visitor->Trace(slot_assignment_);
+  visitor->Trace(shadow_root_v0_);
+  TreeScope::Trace(visitor);
+  DocumentFragment::Trace(visitor);
 }
 
 std::ostream& operator<<(std::ostream& ostream, const ShadowRootType& type) {

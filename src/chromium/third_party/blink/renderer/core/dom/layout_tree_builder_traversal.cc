@@ -109,11 +109,8 @@ Node* LayoutTreeBuilderTraversal::NextSibling(const Node& node) {
   }
 
   Node* parent = FlatTreeTraversal::Parent(node);
-  ASSERT(false); // BKTODO:
-#if 0
   if (parent && parent->IsElementNode())
     return ToElement(parent)->GetPseudoElement(kPseudoIdAfter);
-#endif
 
   return nullptr;
 }
@@ -131,11 +128,8 @@ Node* LayoutTreeBuilderTraversal::PreviousSibling(const Node& node) {
   }
 
   Node* parent = FlatTreeTraversal::Parent(node);
-  ASSERT(false); // BKTODO:
-#if 0
   if (parent && parent->IsElementNode())
     return ToElement(parent)->GetPseudoElement(kPseudoIdBefore);
-#endif
 
   return nullptr;
 }
@@ -144,9 +138,6 @@ Node* LayoutTreeBuilderTraversal::LastChild(const Node& node) {
   if (!node.IsElementNode())
     return FlatTreeTraversal::LastChild(node);
 
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   const Element& current_element = ToElement(node);
   Node* last = current_element.GetPseudoElement(kPseudoIdAfter);
   if (last)
@@ -155,7 +146,6 @@ Node* LayoutTreeBuilderTraversal::LastChild(const Node& node) {
   if (!last)
     last = current_element.GetPseudoElement(kPseudoIdBefore);
   return last;
-#endif
 }
 
 Node* LayoutTreeBuilderTraversal::Previous(const Node& node,
@@ -176,9 +166,6 @@ Node* LayoutTreeBuilderTraversal::FirstChild(const Node& node) {
     return FlatTreeTraversal::FirstChild(node);
 
   const Element& current_element = ToElement(node);
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   Node* first = current_element.GetPseudoElement(kPseudoIdBefore);
   if (first)
     return first;
@@ -186,7 +173,6 @@ Node* LayoutTreeBuilderTraversal::FirstChild(const Node& node) {
   if (!first)
     first = current_element.GetPseudoElement(kPseudoIdAfter);
   return first;
-#endif
 }
 
 static Node* NextAncestorSibling(const Node& node, const Node* stay_within) {
@@ -296,10 +282,7 @@ Node* LayoutTreeBuilderTraversal::FirstLayoutChild(const Node& node) {
 LayoutObject* LayoutTreeBuilderTraversal::NextSiblingLayoutObject(
     const Node& node,
     int32_t limit) {
-  ASSERT(false); // BKTODO:
-#if 0
-  DCHECK(limit == kTraverseAllSiblings || limit >= 0) << limit;
-#endif
+  DCHECK(limit == kTraverseAllSiblings || limit >= 0);
   for (Node* sibling = NextLayoutSibling(node, limit); sibling && limit != -1;
        sibling = NextLayoutSibling(*sibling, limit)) {
     LayoutObject* layout_object = sibling->GetLayoutObject();
@@ -312,10 +295,7 @@ LayoutObject* LayoutTreeBuilderTraversal::NextSiblingLayoutObject(
 LayoutObject* LayoutTreeBuilderTraversal::PreviousSiblingLayoutObject(
     const Node& node,
     int32_t limit) {
-  ASSERT(false); // BKTODO:
-#if 0
-  DCHECK(limit == kTraverseAllSiblings || limit >= 0) << limit;
-#endif
+  DCHECK(limit == kTraverseAllSiblings || limit >= 0);
   for (Node* sibling = PreviousLayoutSibling(node, limit);
        sibling && limit != -1;
        sibling = PreviousLayoutSibling(*sibling, limit)) {

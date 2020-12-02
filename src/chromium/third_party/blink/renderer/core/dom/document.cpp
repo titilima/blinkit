@@ -92,13 +92,18 @@
 #   include "third_party/blink/renderer/core/frame/viewport_data.h"
 #   include "third_party/blink/renderer/core/html/custom/v0_custom_element_registration_context.h"
 #   include "third_party/blink/renderer/core/html/imports/html_imports_controller.h"
+#   include "third_party/blink/renderer/core/html/html_body_element.h"
 #   include "third_party/blink/renderer/core/html/html_title_element.h"
 #   include "third_party/blink/renderer/core/layout/layout_view.h"
 #   include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #   include "third_party/blink/renderer/core/page/chrome_client.h"
 #   include "third_party/blink/renderer/core/page/page.h"
+#   include "third_party/blink/renderer/core/page/scrolling/overscroll_controller.h"
 #   include "third_party/blink/renderer/core/page/scrolling/root_scroller_controller.h"
+#   include "third_party/blink/renderer/core/page/scrolling/snap_coordinator.h"
 #   include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
+#   include "third_party/blink/renderer/core/paint/paint_layer.h"
+#   include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #endif
 
 using namespace BlinKit;
@@ -602,8 +607,7 @@ bool Document::CheckCompletedInternal(void)
         const bool forUI = !ForCrawler();
         if (forUI)
         {
-            ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
             if (frame_->IsMainFrame())
                 GetViewportData().GetViewportDescription().ReportMobilePageStats(frame_);
 #endif
@@ -1591,13 +1595,6 @@ void Document::PopCurrentScript(ScriptElementBase *script)
     m_currentScriptStack.pop();
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
-void Document::PropagateStyleToViewport(void)
-{
-    ASSERT(false); // BKTOOD:
-}
-#endif
-
 void Document::PushCurrentScript(ScriptElementBase *newCurrentScript)
 {
     m_currentScriptStack.push(newCurrentScript);
@@ -2099,6 +2096,7 @@ void Document::Trace(Visitor *visitor)
         visitor->Trace(m_hoverElement);
         visitor->Trace(m_focusedElement);
         visitor->Trace(m_autofocusElement);
+        visitor->Trace(m_snapCoordinator);
     }
 #endif
     visitor->Trace(m_elementDataCache);
@@ -2513,11 +2511,6 @@ Element* Document::ViewportDefiningElement(const ComputedStyle *rootStyle) const
         return bodyElement;
     return rootElement;
 }
-
-void Document::ViewportDefiningElementDidChange(void)
-{
-    ASSERT(false); // BKTODO:
-}
 #endif
 
 void Document::WillInsertBody(void)
@@ -2626,6 +2619,225 @@ void Document::writeln(LocalDOMWindow *callingWindow, const std::vector<std::str
 float Document::DevicePixelRatio(void) const
 {
     return m_frame ? m_frame->DevicePixelRatio() : 1.0;
+}
+
+HTMLBodyElement* Document::FirstBodyElement(void) const
+{
+    ASSERT(!ForCrawler());
+    if (Element *de = documentElement())
+    {
+        if (IsHTMLHtmlElement(*de))
+        {
+            for (Element *child = Traversal<Element>::FirstChild(*de);
+                nullptr != child;
+                child = Traversal<Element>::NextSibling(*child))
+            {
+                if (IsHTMLBodyElement(*child))
+                    return static_cast<HTMLBodyElement *>(child);
+            }
+        }
+    }
+    return nullptr;
+}
+
+SnapCoordinator* Document::GetSnapCoordinator(void)
+{
+    if (RuntimeEnabledFeatures::CSSScrollSnapPointsEnabled())
+    {
+        if (!m_snapCoordinator)
+            m_snapCoordinator = SnapCoordinator::Create();
+    }
+    return m_snapCoordinator.Get();
+}
+
+void Document::PropagateStyleToViewport(void)
+{
+    ASSERT(InStyleRecalc());
+    ASSERT(nullptr != documentElement());
+
+    Element *body = this->body();
+
+    const ComputedStyle *bodyStyle = nullptr != body ? body->EnsureComputedStyle() : nullptr;
+    const ComputedStyle *documentElementStyle = documentElement()->EnsureComputedStyle();
+
+    TouchAction effectiveTouchAction = documentElementStyle->GetEffectiveTouchAction();
+    WritingMode rootWritingMode = documentElementStyle->GetWritingMode();
+    TextDirection rootDirection = documentElementStyle->Direction();
+    if (nullptr != bodyStyle)
+    {
+        rootWritingMode = bodyStyle->GetWritingMode();
+        rootDirection = bodyStyle->Direction();
+    }
+
+    const ComputedStyle *backgroundStyle = documentElementStyle;
+    // http://www.w3.org/TR/css3-background/#body-background
+    // <html> root element with no background steals background from its first
+    // <body> child.
+    // Also see LayoutBoxModelObject::backgroundStolenForBeingBody()
+    if (IsHTMLHtmlElement(documentElement()) && IsHTMLBodyElement(body) && !backgroundStyle->HasBackground())
+        backgroundStyle = bodyStyle;
+
+    Color backgroundColor = backgroundStyle->VisitedDependentColor(GetCSSPropertyBackgroundColor());
+    FillLayer backgroundLayers = backgroundStyle->BackgroundLayers();
+    for (auto *currentLayer = &backgroundLayers; nullptr != currentLayer; currentLayer = currentLayer->Next())
+    {
+        // http://www.w3.org/TR/css3-background/#root-background
+        // The root element background always have painting area of the whole
+        // canvas.
+        currentLayer->SetClip(EFillBox::kBorder);
+
+        // The root element doesn't scroll. It always propagates its layout overflow
+        // to the viewport. Positioning background against either box is equivalent
+        // to positioning against the scrolled box of the viewport.
+        if (currentLayer->Attachment() == EFillAttachment::kScroll)
+            currentLayer->SetAttachment(EFillAttachment::kLocal);
+    }
+    EImageRendering imageRendering = backgroundStyle->ImageRendering();
+
+    const ComputedStyle *overflowStyle = nullptr;
+    if (Element *element = ViewportDefiningElement(documentElementStyle))
+    {
+        if (element == body)
+        {
+            overflowStyle = bodyStyle;
+        }
+        else
+        {
+            ASSERT(documentElement() == element);
+            overflowStyle = documentElementStyle;
+        }
+    }
+
+    EOverflowAnchor overflowAnchor = EOverflowAnchor::kAuto;
+    EOverflow overflowX = EOverflow::kAuto;
+    EOverflow overflowY = EOverflow::kAuto;
+    GapLength columnGap;
+    if (nullptr != overflowStyle)
+    {
+        overflowAnchor = overflowStyle->OverflowAnchor();
+        overflowX = overflowStyle->OverflowX();
+        overflowY = overflowStyle->OverflowY();
+        // Visible overflow on the viewport is meaningless, and the spec says to
+        // treat it as 'auto':
+        if (EOverflow::kVisible == overflowX)
+            overflowX = EOverflow::kAuto;
+        if (EOverflow::kVisible == overflowY)
+            overflowY = EOverflow::kAuto;
+        if (EOverflowAnchor::kVisible == overflowAnchor)
+            overflowAnchor = EOverflowAnchor::kAuto;
+        // Column-gap is (ab)used by the current paged overflow implementation (in
+        // lack of other ways to specify gaps between pages), so we have to
+        // propagate it too.
+        columnGap = overflowStyle->ColumnGap();
+    }
+
+    ScrollSnapType snapType = overflowStyle->GetScrollSnapType();
+    ScrollBehavior scrollBehavior = documentElementStyle->GetScrollBehavior();
+
+    EOverscrollBehavior overscrollBehaviorX = overflowStyle->OverscrollBehaviorX();
+    EOverscrollBehavior overscrollBehaviorY = overflowStyle->OverscrollBehaviorY();
+    using OverscrollBehaviorType = cc::OverscrollBehavior::OverscrollBehaviorType;
+    GetPage()->GetOverscrollController().SetOverscrollBehavior(cc::OverscrollBehavior(static_cast<OverscrollBehaviorType>(overscrollBehaviorX), static_cast<OverscrollBehaviorType>(overscrollBehaviorY)));
+
+    Length scrollPaddingTop = overflowStyle->ScrollPaddingTop();
+    Length scrollPaddingRight = overflowStyle->ScrollPaddingRight();
+    Length scrollPaddingBottom = overflowStyle->ScrollPaddingBottom();
+    Length scrollPaddingLeft = overflowStyle->ScrollPaddingLeft();
+
+    const ComputedStyle &viewportStyle = GetLayoutView()->StyleRef();
+    if (viewportStyle.GetWritingMode() != rootWritingMode
+        || viewportStyle.Direction() != rootDirection
+        || viewportStyle.VisitedDependentColor(GetCSSPropertyBackgroundColor()) != backgroundColor
+        || viewportStyle.BackgroundLayers() != backgroundLayers
+        || viewportStyle.ImageRendering() != imageRendering
+        || viewportStyle.OverflowAnchor() != overflowAnchor
+        || viewportStyle.OverflowX() != overflowX || viewportStyle.OverflowY() != overflowY
+        || viewportStyle.ColumnGap() != columnGap
+        || viewportStyle.GetScrollSnapType() != snapType
+        || viewportStyle.GetScrollBehavior() != scrollBehavior
+        || viewportStyle.OverscrollBehaviorX() != overscrollBehaviorX || viewportStyle.OverscrollBehaviorY() != overscrollBehaviorY
+        || viewportStyle.ScrollPaddingTop() != scrollPaddingTop || viewportStyle.ScrollPaddingRight() != scrollPaddingRight || viewportStyle.ScrollPaddingBottom() != scrollPaddingBottom || viewportStyle.ScrollPaddingLeft() != scrollPaddingLeft
+        || viewportStyle.GetEffectiveTouchAction() != effectiveTouchAction)
+    {
+        scoped_refptr<ComputedStyle> newStyle = ComputedStyle::Clone(viewportStyle);
+        newStyle->SetWritingMode(rootWritingMode);
+        newStyle->UpdateFontOrientation();
+        newStyle->SetDirection(rootDirection);
+        newStyle->SetBackgroundColor(backgroundColor);
+        newStyle->AccessBackgroundLayers() = backgroundLayers;
+        newStyle->SetImageRendering(imageRendering);
+        newStyle->SetOverflowAnchor(overflowAnchor);
+        newStyle->SetOverflowX(overflowX);
+        newStyle->SetOverflowY(overflowY);
+        newStyle->SetColumnGap(columnGap);
+        newStyle->SetScrollSnapType(snapType);
+        newStyle->SetScrollBehavior(scrollBehavior);
+        newStyle->SetOverscrollBehaviorX(overscrollBehaviorX);
+        newStyle->SetOverscrollBehaviorY(overscrollBehaviorY);
+        newStyle->SetScrollPaddingTop(scrollPaddingTop);
+        newStyle->SetScrollPaddingRight(scrollPaddingRight);
+        newStyle->SetScrollPaddingBottom(scrollPaddingBottom);
+        newStyle->SetScrollPaddingLeft(scrollPaddingLeft);
+        newStyle->SetEffectiveTouchAction(effectiveTouchAction);
+        GetLayoutView()->SetStyle(newStyle);
+        SetupFontBuilder(*newStyle);
+
+        if (PaintLayerScrollableArea *scrollableArea = GetLayoutView()->GetScrollableArea())
+        {
+            if (Scrollbar *hbar = scrollableArea->HorizontalScrollbar())
+            {
+                if (hbar->IsCustomScrollbar())
+                    hbar->StyleChanged();
+            }
+            if (Scrollbar *vbar = scrollableArea->VerticalScrollbar())
+            {
+                if (vbar->IsCustomScrollbar())
+                    vbar->StyleChanged();
+            }
+        }
+    }
+}
+
+scoped_refptr<ComputedStyle> Document::StyleForElementIgnoringPendingStylesheets(Element *element)
+{
+    ASSERT(element->GetDocument() == this);
+    StyleEngine::IgnoringPendingStylesheet ignoring(GetStyleEngine());
+    if (!element->CanParticipateInFlatTree())
+        return EnsureStyleResolver().StyleForElement(element, nullptr);
+
+    ContainerNode *parent = LayoutTreeBuilderTraversal::Parent(*element);
+    const ComputedStyle *parentStyle = nullptr != parent ? parent->EnsureComputedStyle() : nullptr;
+
+    ContainerNode *layoutParent = nullptr != parent ? LayoutTreeBuilderTraversal::LayoutParent(*element) : nullptr;
+    const ComputedStyle *layoutParentStyle = nullptr != layoutParent ? layoutParent->EnsureComputedStyle() : parentStyle;
+
+    return EnsureStyleResolver().StyleForElement(element, parentStyle, layoutParentStyle);
+}
+
+void Document::ViewportDefiningElementDidChange(void)
+{
+    HTMLBodyElement *body = FirstBodyElement();
+    if (nullptr == body)
+        return;
+
+    LayoutObject *layoutObject = body->GetLayoutObject();
+    if (nullptr == layoutObject || !layoutObject->IsLayoutBlock())
+        return;
+
+    // When the overflow style for documentElement changes to or from visible,
+    // it changes whether the body element's box should have scrollable overflow
+    // on its own box or propagated to the viewport. If the body style did not
+    // need a recalc, this will not be updated as its done as part of setting
+    // ComputedStyle on the LayoutObject. Force a SetStyle for body when the
+    // ViewportDefiningElement changes in order to trigger an update of
+    // HasOverflowClip() and the PaintLayer in StyleDidChange().
+    layoutObject->SetStyle(ComputedStyle::Clone(*layoutObject->Style()));
+    // CompositingReason::kClipsCompositingDescendants depends on the root
+    // element having a clip-related style. Since style update due to changes of
+    // viewport-defining element don't end up as a StyleDifference, we need a
+    // special dirty bit for this situation.
+    if (layoutObject->HasLayer())
+        ToLayoutBoxModelObject(layoutObject)->Layer()->SetNeeedsCompositingReasonsUpdate();
 }
 #endif // BLINKIT_CRAWLER_ONLY
 

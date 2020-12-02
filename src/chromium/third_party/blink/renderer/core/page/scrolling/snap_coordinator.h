@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: snap_coordinator.h
+// Description: SnapCoordinator Class
+//      Author: Ziming Li
+//     Created: 2020-12-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -77,7 +88,7 @@ class CORE_EXPORT SnapCoordinator final
   friend class SnapCoordinatorTest;
   explicit SnapCoordinator();
 
-  HashMap<const LayoutBox*, SnapContainerData> snap_container_map_;
+  // BKTODO: HashMap<const LayoutBox*, SnapContainerData> snap_container_map_;
   DISALLOW_COPY_AND_ASSIGN(SnapCoordinator);
 };
 
