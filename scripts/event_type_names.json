@@ -10,6 +10,7 @@
     { "name": "error", "hash": 6654137 },
     { "name": "load", "hash": 8207817 },
     { "name": "mousewheel", "hash": 15891108 },
+    { "name": "pageshow", "hash": 12320166 },
     { "name": "readystatechange", "hash": 11011948 },
     { "name": "scroll", "hash": 7626286 },
     { "name": "unload", "hash": 4411490 },
