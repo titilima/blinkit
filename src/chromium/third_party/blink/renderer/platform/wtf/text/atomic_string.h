@@ -346,16 +346,4 @@ using WTF::g_xmlns_atom;
 using WTF::g_xlink_atom;
 
 #include "third_party/blink/renderer/platform/wtf/text/string_concatenate.h"
-
-namespace std {
-
-template<>
-struct hash<WTF::AtomicString> {
-  std::size_t operator()(const WTF::AtomicString &s) const noexcept {
-    return s.Impl()->ExistingHash();
-  }
-};
-
-}
-
 #endif  // THIRD_PARTY_BLINK_RENDERER_PLATFORM_WTF_TEXT_ATOMIC_STRING_H_
