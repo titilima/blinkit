@@ -16,18 +16,13 @@
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "base/win/resource_util.h"
+#   include "blinkit/blink_impl/win_theme_engine.h"
 #   include "third_party/blink/renderer/platform/fonts/font_cache.h"
 #   include "third_party/skia/include/ports/SkTypeface_win.h"
 #endif
 
 #if 0 // BKTODO:
-
-#include "blink_impl/win_task_runner.h"
-#ifndef BLINKIT_CRAWLER_ONLY
 #   include "blink_impl/win_clipboard.h"
-#   include "blink_impl/win_theme_engine.h"
-#   include "view/win_view.h"
-#endif
 #endif // 0
 
 using namespace blink;
@@ -117,22 +112,6 @@ WinApp& WinApp::Get(void)
     return static_cast<WinApp &>(AppImpl::Get());
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
-std::string WinApp::GetDataResource(const char *name)
-{
-    static const PCSTR RT_HTMLA = MAKEINTRESOURCEA(23);
-
-    void *data;
-    size_t size;
-    if (!base::GetResourceFromModule(theModule, name, RT_HTMLA, &data, &size))
-    {
-        ASSERT(false); // Resource not found!
-        return AppImpl::GetDataResource(name);
-    }
-    return std::string(reinterpret_cast<const char *>(data), size);
-}
-#endif
-
 std::shared_ptr<base::SingleThreadTaskRunner> WinApp::GetTaskRunner(void) const
 {
     return m_taskRunner;
@@ -169,9 +148,31 @@ int WinApp::RunAndFinalize(void)
     return msg.wParam;
 }
 
-#if 0 // BKTODO:
 #ifndef BLINKIT_CRAWLER_ONLY
+std::string WinApp::GetDataResource(const char *name)
+{
+    static const PCSTR RT_HTMLA = MAKEINTRESOURCEA(23);
 
+    void *data;
+    size_t size;
+    if (!base::GetResourceFromModule(theModule, name, RT_HTMLA, &data, &size))
+    {
+        ASSERT(false); // Resource not found!
+        return AppImpl::GetDataResource(name);
+    }
+    return std::string(reinterpret_cast<const char *>(data), size);
+}
+
+WebThemeEngine* WinApp::ThemeEngine(void)
+{
+    ASSERT(IsMainThread());
+    if (!m_themeEngine)
+        m_themeEngine = std::make_unique<WinThemeEngine>();
+    return m_themeEngine.get();
+}
+#endif // BLINKIT_CRAWLER_ONLY
+
+#if 0 // BKTODO:
 blink::WebClipboard* WinApp::clipboard(void)
 {
     if (!m_clipboard)
@@ -182,24 +183,6 @@ blink::WebClipboard* WinApp::clipboard(void)
     }
     return m_clipboard.get();
 }
-
-BkView* BKAPI WinApp::CreateView(BkViewClient &client)
-{
-    return new WinView(client);
-}
-
-blink::WebThemeEngine* WinApp::themeEngine(void)
-{
-    if (!m_themeEngine)
-    {
-        AutoLock lock(m_lock);
-        if (!m_themeEngine)
-            m_themeEngine = std::make_unique<WinThemeEngine>();
-    }
-    return m_themeEngine.get();
-}
-
-#endif // BLINKIT_CRAWLER_ONLY
 #endif // 0
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

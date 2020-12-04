@@ -15,7 +15,7 @@
 #pragma once
 
 #include <Uxtheme.h>
-#include "public/platform/WebThemeEngine.h"
+#include "third_party/blink/public/platform/web_theme_engine.h"
 
 namespace BlinKit {
 

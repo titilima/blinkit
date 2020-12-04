@@ -40,6 +40,7 @@ private:
 #ifndef BLINKIT_CRAWLER_ONLY
     // Returns a blob of data corresponding to the named resource.
     std::string GetDataResource(const char *name) override;
+    blink::WebThemeEngine* ThemeEngine(void) override;
 #endif
     // blink::Thread
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const override;
@@ -51,18 +52,13 @@ private:
     HHOOK m_msgHook = nullptr;
     HANDLE m_backgroundThread;
     std::shared_ptr<WinSingleThreadTaskRunner> m_taskRunner;
+    std::unique_ptr<WinThemeEngine> m_themeEngine;
 
 #if 0 // BKTODO:
-#ifndef BLINKIT_CRAWLER_ONLY
-    // BkApp
-    BkView* BKAPI CreateView(BkViewClient &client) override;
     // blink::Platform
     blink::WebClipboard* clipboard(void) override;
-    blink::WebThemeEngine* themeEngine(void) override;
 
     std::unique_ptr<WinClipboard> m_clipboard;
-    std::unique_ptr<WinThemeEngine> m_themeEngine;
-#endif
 #endif // 0
 };
 

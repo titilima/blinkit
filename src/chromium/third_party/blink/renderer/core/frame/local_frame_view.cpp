@@ -854,13 +854,13 @@ void LocalFrameView::UpdateLayout(void)
                 {
                     m_firstLayout = false;
                     m_lastViewportSize = GetLayoutSize();
-                    m_lastZoomFactor = GetLayoutView()->StyleRef().Zoom();
+                    m_lastZoomFactor = layoutView->StyleRef().Zoom();
 
                     ScrollbarMode hMode;
                     ScrollbarMode vMode;
-                    GetLayoutView()->CalculateScrollbarModes(hMode, vMode);
+                    layoutView->CalculateScrollbarModes(hMode, vMode);
                     if (kScrollbarAuto == vMode)
-                        GetLayoutView()->GetScrollableArea()->ForceVerticalScrollbarForFirstLayout();
+                        layoutView->GetScrollableArea()->ForceVerticalScrollbarForFirstLayout();
                 }
 
                 LayoutSize oldSize = m_size;
