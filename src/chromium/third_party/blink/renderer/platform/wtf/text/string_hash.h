@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: string_hash.h
+// Description: String Hashers
+//      Author: Ziming Li
+//     Created: 2020-12-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2012, 2013 Apple Inc. All rights reserved
  * Copyright (C) Research In Motion Limited 2009. All rights reserved.
@@ -76,8 +87,6 @@ struct StringHash {
 };
 
 class CaseFoldingHash {
-  STATIC_ONLY(CaseFoldingHash);
-
  public:
   static unsigned GetHash(const UChar* data, unsigned length) {
     return StringHasher::ComputeHashAndMaskTop8Bits<UChar, FoldCase<UChar>>(
@@ -119,6 +128,9 @@ class CaseFoldingHash {
   }
 
   static unsigned GetHash(const String& key) { return GetHash(key.Impl()); }
+  std::size_t operator()(const String &s) const noexcept {
+    return CaseFoldingHash::GetHash(s.Impl());
+  }
   static unsigned GetHash(const AtomicString& key) {
     return GetHash(key.Impl());
   }
@@ -146,6 +158,13 @@ class CaseFoldingHash {
   }
 };
 
+class CaseFoldingEqual {
+ public:
+  bool operator()(const String &a, const String &b) const {
+    return CaseFoldingHash::Equal(a.Impl(), b.Impl());
+  }
+};
+
 // This hash can be used in cases where the key is a hash of a string, but we
 // don't want to store the string. It's not really specific to string hashing,
 // but all our current uses of it are for strings.
@@ -170,6 +189,7 @@ struct AlreadyHashed : IntHash<unsigned> {
 
 using WTF::AlreadyHashed;
 using WTF::CaseFoldingHash;
+using WTF::CaseFoldingEqual;
 using WTF::StringHash;
 
 #endif
