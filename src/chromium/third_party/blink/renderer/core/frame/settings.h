@@ -30,9 +30,12 @@ public:
     static const AtomicString& StandardFontFamilyName(void);
 
     static constexpr bool AcceleratedCompositingEnabled = false;
+    static constexpr bool AllowCustomScrollbarInMainFrame = true;
     static constexpr bool ForceZeroLayoutHeight = false;
     static constexpr bool IgnoreMainFrameOverflowHiddenQuirk = false;
+    static constexpr bool MainFrameResizesAreOrientationChanges = false;
     static constexpr bool PreferCompositingToLCDTextEnabled = false;
+    static constexpr bool ScrollAnimatorEnabled = true;
     static constexpr bool TextAutosizingEnabled = false;
     static constexpr bool UseLegacyBackgroundSizeShorthandBehavior = false;
     static constexpr bool ViewportEnabled = false;
