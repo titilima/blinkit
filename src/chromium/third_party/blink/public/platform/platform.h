@@ -55,6 +55,7 @@ class SingleThreadTaskRunner;
 
 namespace blink {
 
+class WebThemeEngine;
 class WebURLLoader;
 
 namespace scheduler {
@@ -76,6 +77,8 @@ public:
 #ifndef BLINKIT_CRAWLER_ONLY
     // Returns a blob of data corresponding to the named resource.
     virtual std::string GetDataResource(const char *name) { return std::string(); }
+    // May return null on some platforms.
+    virtual WebThemeEngine* ThemeEngine(void) { return nullptr; }
 #endif
 protected:
     void AttachMainThread(Thread *thread);

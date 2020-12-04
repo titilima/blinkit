@@ -130,6 +130,18 @@ public:
     bool ThrottlingAllowed(void) const;
     bool LifecyclePostponed(void) const { return m_lifeCyclePostponed; }
 
+    class Scope
+    {
+        STACK_ALLOCATED();
+    public:
+        Scope(DocumentLifecycle &lifecycle, LifecycleState finalState) : m_lifecycle(lifecycle), m_finalState(finalState) {}
+        ~Scope(void) { m_lifecycle.AdvanceTo(m_finalState); }
+    private:
+        DocumentLifecycle &m_lifecycle;
+        LifecycleState m_finalState;
+
+        DISALLOW_COPY_AND_ASSIGN(Scope);
+    };
     // Within this scope, state transitions are not allowed.
     // Any attempts to advance or rewind will result in a DCHECK.
     class DisallowTransitionScope

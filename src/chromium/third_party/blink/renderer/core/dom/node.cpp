@@ -60,6 +60,7 @@
 #   include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
 #   include "third_party/blink/renderer/core/css/style_engine.h"
 #   include "third_party/blink/renderer/core/html/html_slot_element.h"
+#   include "third_party/blink/renderer/core/layout/layout_box.h"
 #endif
 
 using namespace BlinKit;
@@ -1150,6 +1151,9 @@ void Node::WillCallDefaultEventHandler(const Event &event)
 #endif
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// UI Implementations
+
 #ifndef BLINKIT_CRAWLER_ONLY
 HTMLSlotElement* Node::AssignedSlot(void) const
 {
@@ -1157,6 +1161,16 @@ HTMLSlotElement* Node::AssignedSlot(void) const
     ASSERT(!IsPseudoElement());
     if (ShadowRoot *root = V1ShadowRootOfParent())
         ASSERT(false); // BKTODO: return root->AssignedSlotFor(*this);
+    return nullptr;
+}
+
+LayoutBox* Node::GetLayoutBox(void) const
+{
+    if (LayoutObject *layoutObject = GetLayoutObject())
+    {
+        if (layoutObject->IsBox())
+            return ToLayoutBox(layoutObject);
+    }
     return nullptr;
 }
 

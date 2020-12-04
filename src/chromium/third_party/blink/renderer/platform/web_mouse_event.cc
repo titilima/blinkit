@@ -22,11 +22,14 @@ WebMouseEvent::WebMouseEvent(WebInputEvent::Type type,
       click_count(click_count_param) {
   DCHECK_GE(type, kMouseTypeFirst);
   DCHECK_LE(type, kMouseTypeLast);
+  ASSERT(false); // BKTODO:
+#if 0
   SetPositionInWidget(gesture_event.PositionInWidget());
   SetPositionInScreen(gesture_event.PositionInScreen());
   SetFrameScale(gesture_event.FrameScale());
   SetFrameTranslate(gesture_event.FrameTranslate());
   SetMenuSourceType(gesture_event.GetType());
+#endif
 }
 
 WebFloatPoint WebMouseEvent::MovementInRootFrame() const {

@@ -50,6 +50,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/frame/navigator.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/events/page_transition_event.h"
 #   include "third_party/blink/renderer/core/frame/viewport_data.h"
 #   include "third_party/blink/renderer/core/html/html_document.h"
 #endif
@@ -144,9 +145,8 @@ void LocalDOMWindow::DocumentWasClosed(void)
 #ifndef BLINKIT_CRAWLER_ONLY
     if (!GetFrame()->Client()->IsCrawler())
     {
-        ASSERT(false); // BKTODO:
-#if 0
         EnqueuePageshowEvent(kPageshowEventNotPersisted);
+#if 0 // BKTODO: Check if necessary.
         if (pending_state_object_)
             EnqueuePopstateEvent(std::move(pending_state_object_));
 #endif
@@ -271,5 +271,26 @@ void LocalDOMWindow::Trace(Visitor *visitor)
     visitor->Trace(m_navigator);
     DOMWindow::Trace(visitor);
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void LocalDOMWindow::EnqueuePageshowEvent(PageshowEventPersistence persisted)
+{
+#if 0 // BKTODO: Check if necessary.
+    // FIXME: https://bugs.webkit.org/show_bug.cgi?id=36334 Pageshow event needs
+    // to fire asynchronously.  As per spec pageshow must be triggered
+    // asynchronously.  However to be compatible with other browsers blink fires
+    // pageshow synchronously unless we are in EventQueueScope.
+    if (ScopedEventQueue::Instance()->ShouldQueueEvents() && document_) {
+        // The task source should be kDOMManipulation, but the spec doesn't say
+        // anything about this.
+        EnqueueWindowEvent(
+            *PageTransitionEvent::Create(EventTypeNames::pageshow, persisted),
+            TaskType::kMiscPlatformAPI);
+        return;
+    }
+#endif
+    DispatchEvent(*PageTransitionEvent::Create(event_type_names::kPageshow, persisted), m_document.Get());
+}
+#endif
 
 } // namespace blink

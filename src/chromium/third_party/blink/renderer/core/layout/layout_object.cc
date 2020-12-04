@@ -62,15 +62,15 @@
 #include "third_party/blink/renderer/core/editing/visible_units.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/deprecated_schedule_style_recalc_during_layout.h"
-#include "third_party/blink/renderer/core/frame/event_handler_registry.h"
 #endif
+#include "third_party/blink/renderer/core/frame/event_handler_registry.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/core/html/html_element.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_html_element.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_table_cell_element.h"
 #include "third_party/blink/renderer/core/html/html_table_element.h"
 #include "third_party/blink/renderer/core/input/event_handler.h"
@@ -90,7 +90,7 @@
 #include "third_party/blink/renderer/core/layout/layout_list_item.h"
 #include "third_party/blink/renderer/core/layout/layout_multi_column_spanner_placeholder.h"
 #include "third_party/blink/renderer/core/layout/layout_object_factory.h"
-// BKTODO: #include "third_party/blink/renderer/core/layout/layout_scrollbar_part.h"
+#include "third_party/blink/renderer/core/layout/layout_scrollbar_part.h"
 #include "third_party/blink/renderer/core/layout/layout_table_caption.h"
 #include "third_party/blink/renderer/core/layout/layout_table_cell.h"
 #include "third_party/blink/renderer/core/layout/layout_table_col.h"
@@ -922,14 +922,11 @@ void LayoutObject::MarkContainerChainForLayout(bool schedule_relayout,
   DCHECK(!IsSetNeedsLayoutForbidden());
 #endif
   DCHECK(!layouter || this != layouter->Root());
-  ASSERT(false); // BKTODO:
-#if 0
   // When we're in layout, we're marking a descendant as needing layout with
   // the intention of visiting it during this layout. We shouldn't be
   // scheduling it to be laid out later. Also, scheduleRelayout() must not be
   // called while iterating LocalFrameView::layout_subtree_root_list_.
   schedule_relayout &= !GetFrameView()->IsInPerformLayout();
-#endif
 
   LayoutObject* object = Container();
   LayoutObject* last = this;
@@ -1096,11 +1093,8 @@ const LayoutBlock* LayoutObject::InclusiveContainingBlock() const {
 
 LayoutBlock* LayoutObject::ContainingBlock(AncestorSkipInfo* skip_info) const {
   LayoutObject* object = Parent();
-  ASSERT(false); // BKTODO:
-#if 0
   if (!object && IsLayoutScrollbarPart())
     object = ToLayoutScrollbarPart(this)->GetScrollableArea()->GetLayoutBox();
-#endif
   if (!IsTextOrSVGChild()) {
     if (style_->GetPosition() == EPosition::kFixed)
       return ContainingBlockForFixedPosition(skip_info);
@@ -1318,11 +1312,8 @@ bool LayoutObject::GetUpperLeftCorner(ExpandScrollMargin expand,
   // document. Scroll to the bottom.
   // FIXME: who said anything about scrolling?
   if (!runner && GetDocument().View()) {
-    ASSERT(false); // BKTODO:
-#if 0
     point = FloatPoint(
         0, GetDocument().View()->LayoutViewport()->ContentsSize().Height());
-#endif
     return true;
   }
   return false;
@@ -1788,9 +1779,6 @@ bool LayoutObject::MapToVisualRectInAncestorSpaceInternal(
 HitTestResult LayoutObject::HitTestForOcclusion(
     const LayoutRect& hit_rect) const {
   LocalFrame* frame = GetDocument().GetFrame();
-  ASSERT(false); // BKTODO:
-  return HitTestResult();
-#if 0
   DCHECK(!frame->View()->NeedsLayout());
   HitTestRequest::HitTestRequestType hit_type =
       HitTestRequest::kIgnorePointerEventsNone | HitTestRequest::kReadOnly |
@@ -1798,6 +1786,9 @@ HitTestResult LayoutObject::HitTestForOcclusion(
       HitTestRequest::kIgnoreZeroOpacityObjects |
       HitTestRequest::kHitTestVisualOverflow;
   HitTestLocation location(hit_rect);
+  ASSERT(false); // BKTODO:
+  return HitTestResult();
+#if 0
   return frame->GetEventHandler().HitTestResultAtLocation(location, hit_type,
                                                           this, true);
 #endif
@@ -2306,12 +2297,9 @@ void LayoutObject::ClearBaseComputedStyle() {
     return;
   if (!GetNode()->IsElementNode())
     return;
-  ASSERT(false); // BKTODO:
-#if 0
   if (ElementAnimations* animations =
           ToElement(GetNode())->GetElementAnimations())
     animations->ClearBaseComputedStyle();
-#endif
 }
 
 static bool AreNonIdenticalCursorListsEqual(const ComputedStyle* a,
@@ -2330,8 +2318,6 @@ void LayoutObject::SetScrollAnchorDisablingStyleChangedOnAncestor() {
   // Walk up the parent chain and find the first scrolling block to disable
   // scroll anchoring on.
   LayoutObject* object = Parent();
-  ASSERT(false); // BKTODO:
-#if 0
   Element* viewport_defining_element = GetDocument().ViewportDefiningElement();
   while (object) {
     if (object->IsLayoutBlock()) {
@@ -2344,7 +2330,6 @@ void LayoutObject::SetScrollAnchorDisablingStyleChangedOnAncestor() {
     }
     object = object->Parent();
   }
-#endif
 }
 
 void LayoutObject::StyleDidChange(StyleDifference diff,
@@ -2890,13 +2875,9 @@ LayoutSize LayoutObject::OffsetFromScrollableContainer(
   if (!ignore_scroll_offset)
     return -LayoutSize(box->ScrolledContentOffset());
 
-  ASSERT(false); // BKTODO:
-  return LayoutSize();
-#if 0
   // ScrollOrigin accounts for other writing modes whose content's origin is not
   // at the top-left.
   return LayoutSize(ToIntSize(box->GetScrollableArea()->ScrollOrigin()));
-#endif
 }
 
 LayoutSize LayoutObject::OffsetFromAncestor(
@@ -3283,8 +3264,6 @@ static bool FindReferencingScrollAnchors(
   while (layer) {
     if (PaintLayerScrollableArea* scrollable_area =
             layer->GetScrollableArea()) {
-      ASSERT(false); // BKTODO:
-#if 0
       ScrollAnchor* anchor = scrollable_area->GetScrollAnchor();
       DCHECK(anchor);
       if (anchor->RefersTo(layout_object)) {
@@ -3294,7 +3273,6 @@ static bool FindReferencingScrollAnchors(
         else
           return true;
       }
-#endif
     }
     layer = layer->Parent();
   }
@@ -3556,8 +3534,6 @@ bool LayoutObject::NodeAtPoint(HitTestResult&,
 }
 
 void LayoutObject::ScheduleRelayout() {
-  ASSERT(false); // BKTODO:
-#if 0
   if (IsLayoutView()) {
     LocalFrameView* view = ToLayoutView(this)->GetFrameView();
     if (view)
@@ -3566,11 +3542,10 @@ void LayoutObject::ScheduleRelayout() {
     if (IsRooted()) {
       if (LayoutView* layout_view = View()) {
         if (LocalFrameView* frame_view = layout_view->GetFrameView())
-          frame_view->ScheduleRelayoutOfSubtree(this);
+          ASSERT(false); // BKTODO: frame_view->ScheduleRelayoutOfSubtree(this);
       }
     }
   }
-#endif
 }
 
 void LayoutObject::ForceLayout() {
@@ -4021,12 +3996,9 @@ void LayoutObject::SetShouldDoFullPaintInvalidationWithoutGeometryChange(
     PaintInvalidationReason reason) {
   // Only full invalidation reasons are allowed.
   DCHECK(IsFullPaintInvalidationReason(reason));
-  ASSERT(false); // BKTODO:
-#if 0
   // This is before the early return to ensure visual update is always scheduled
   // in case that this is called not during a document lifecycle update.
   GetFrameView()->ScheduleVisualUpdateForPaintInvalidationIfNeeded();
-#endif
 
   if (ShouldDoFullPaintInvalidation())
     return;
@@ -4047,10 +4019,7 @@ void LayoutObject::SetShouldCheckForPaintInvalidation() {
 void LayoutObject::SetShouldCheckForPaintInvalidationWithoutGeometryChange() {
   if (ShouldCheckForPaintInvalidation())
     return;
-  ASSERT(false); // BKTODO:
-#if 0
   GetFrameView()->ScheduleVisualUpdateForPaintInvalidationIfNeeded();
-#endif
 
   bitfields_.SetShouldCheckForPaintInvalidation(true);
   for (LayoutObject* parent = ParentCrossingFrames();
@@ -4085,13 +4054,10 @@ void LayoutObject::SetShouldDelayFullPaintInvalidation() {
     // This will also schedule a visual update.
     SetShouldCheckForPaintInvalidationWithoutGeometryChange();
   } else {
-    ASSERT(false); // BKTODO:
-#if 0
     // Schedule visual update for the next document cycle in which we will
     // check if the delayed invalidation should be promoted to a real
     // invalidation.
     GetFrameView()->ScheduleVisualUpdateForPaintInvalidationIfNeeded();
-#endif
   }
 }
 

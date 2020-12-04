@@ -84,9 +84,9 @@ public:
 #ifndef BLINKIT_CRAWLER_ONLY
     // Root of the layout tree for the document contained in this frame.
     LayoutView* ContentLayoutObject(void) const;
-    LocalFrameView* View(void) const override { return m_view.get(); }
+    LocalFrameView* View(void) const override { return m_view.Get(); }
     void CreateView(const IntSize &viewportSize, const Color &backgroundColor);
-    void SetView(const std::shared_ptr<LocalFrameView> &view);
+    void SetView(LocalFrameView *view);
 
     double DevicePixelRatio(void) const;
     void DeviceScaleFactorChanged(void);
@@ -97,6 +97,9 @@ public:
     void SetTextZoomFactor(float factor);
 
     SmoothScrollSequencer& GetSmoothScrollSequencer(void);
+
+    bool ShouldThrottleRendering(void) const;
+    void ScheduleVisualUpdateUnlessThrottled(void);
 #endif
     Document* GetDocument(void) const;
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType type);
@@ -126,7 +129,7 @@ private:
 #ifndef BLINKIT_CRAWLER_ONLY
     // Cleared by LocalFrame::Detach(), so as to keep the observable lifespan
     // of LocalFrame::View().
-    std::shared_ptr<LocalFrameView> m_view;
+    Member<LocalFrameView> m_view;
     // SmoothScrollSequencer is only populated for local roots; all local frames
     // use the instance owned by their local root.
     std::unique_ptr<SmoothScrollSequencer> m_smoothScrollSequencer;

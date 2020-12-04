@@ -25,6 +25,7 @@
 namespace blink {
 
 class DocumentLifecycle;
+class FrameViewAutoSizeInfo;
 class LayoutBox;
 class LayoutView;
 class PaintLayerScrollableArea;
@@ -35,7 +36,8 @@ class ScrollingCoordinator;
 class LocalFrameView final : public FrameView
 {
 public:
-    static std::shared_ptr<LocalFrameView> Create(LocalFrame &frame, const IntSize &initialSize);
+    static LocalFrameView* Create(LocalFrame &frame, const IntSize &initialSize);
+    void Trace(Visitor *visitor) override;
     void Dispose(void);
 
     LocalFrame& GetFrame(void) const
@@ -53,6 +55,8 @@ public:
     int Height(void) const { return Size().Height(); }
     IntSize Size(void) const { return m_frameRect.Size(); }
 
+    void UpdateLayout(void);
+
     // Returns the scrollable area for the frame. For the root frame, this will
     // be the RootFrameViewport, which adds pinch-zoom semantics to scrolling.
     // For non-root frames, this will be the ScrollableArea of the LayoutView.
@@ -66,9 +70,14 @@ public:
     bool LayoutPending(void) const;
     bool IsInPerformLayout(void) const;
     bool NeedsLayout(void) const;
+    bool CheckDoesNotNeedLayout(void) const;
+    void SetNeedsLayout(void);
     bool DidFirstLayout(void) const { return !m_firstLayout; }
 
     LayoutRect FrameToDocument(const LayoutRect &rectInFrame) const;
+
+    void ScheduleVisualUpdateForPaintInvalidationIfNeeded(void);
+    void ScheduleRelayout(void);
 
     // FIXME: This should probably be renamed as the 'inSubtreeLayout' parameter
     // passed around the LocalFrameView layout methods can be true while this
@@ -132,7 +141,9 @@ public:
     typedef std::unordered_set<LayoutObject *> ViewportConstrainedObjectSet;
     void AddViewportConstrainedObject(LayoutObject &object);
     void RemoveViewportConstrainedObject(LayoutObject &object);
+    bool HasViewportConstrainedObjects(void) const { return m_viewportConstrainedObjects && !m_viewportConstrainedObjects->empty(); }
     const ViewportConstrainedObjectSet* ViewportConstrainedObjects(void) const { return m_viewportConstrainedObjects.get(); }
+    void MarkViewportConstrainedObjectsForLayout(bool widthChanged, bool heightChanged);
 
     // Returns true if this frame should not render or schedule visual updates.
     bool ShouldThrottleRendering(void) const;
@@ -150,6 +161,8 @@ public:
         ForceThrottlingInvalidationBehavior forceThrottlingInvalidationBehavior = kDontForceThrottlingInvalidation,
         NotifyChildrenBehavior notifyChildrenBehavior = kNotifyChildren);
 
+    void UpdateDocumentAnnotatedRegions(void) const;
+
     void DidAttachDocument(void);
     void HandleLoadCompleted(void);
     // Called when this view is going to be removed from its owning
@@ -163,6 +176,9 @@ public:
     void UpdateCountersAfterStyleChange(void);
 
     void IncrementLayoutObjectCount(void) {} // Just a placeholder
+    void IncrementVisuallyNonEmptyCharacterCount(unsigned count);
+    bool IsVisuallyNonEmpty(void) const { return m_isVisuallyNonEmpty; }
+    void SetIsVisuallyNonEmpty(void) { m_isVisuallyNonEmpty = true; }
 private:
     explicit LocalFrameView(LocalFrame &frame, const IntRect &frameRect);
 
@@ -170,17 +186,34 @@ private:
     void SetLayoutSizeInternal(const IntSize &size);
     void SetNeedsCompositingUpdate(CompositingUpdateType updateType);
 
+    void ClearLayoutSubtreeRootsAndMarkContainingBlocks(void);
+
+    bool WasViewportResized(void);
+
     DocumentLifecycle& Lifecycle(void) const;
 
+    void PerformPreLayoutTasks(void);
+    void PerformLayout(bool inSubtreeLayout);
+    void PerformPostLayoutTasks(void);
+
+    bool CheckLayoutInvalidationIsAllowed(void) const;
+
     void Show(void) override;
+
+    LayoutSize m_size;
 
     Member<LocalFrame> m_frame;
     IntRect m_frameRect;
     bool m_isAttached = false;
     bool m_selfVisible = false;
     bool m_canHaveScrollbars = true;
+
     bool m_hasPendingLayout = false;
     LayoutSubtreeRootList m_layoutSubtreeRootList;
+
+    bool m_layoutSchedulingEnabled = true;
+    unsigned m_nestedLayoutCount = 0;
+
     Member<Node> m_fragmentAnchor;
     std::unique_ptr<ScrollableAreaSet> m_scrollableAreas;
     std::unique_ptr<ScrollableAreaSet> m_animatingScrollableAreas;
@@ -188,8 +221,17 @@ private:
     std::unique_ptr<ViewportConstrainedObjectSet> m_viewportConstrainedObjects;
     IntSize m_layoutSize;
     IntSize m_initialViewportSize;
+
     bool m_firstLayout = true;
     Color m_baseBackgroundColor;
+    IntSize m_lastViewportSize;
+    float m_lastZoomFactor = 1.0;
+
+    unsigned m_visuallyNonEmptyCharacterCount = 0;
+    bool m_isVisuallyNonEmpty = false;
+
+    Member<FrameViewAutoSizeInfo> m_autoSizeInfo;
+
     bool m_layoutSizeFixedToFrameSize = true;
     bool m_needsUpdateGeometries = false;
     // Exists only on root frame.
@@ -205,6 +247,14 @@ private:
     bool m_subtreeThrottled = false;
     bool m_lifecycleUpdatesThrottled = false;
 
+    DocumentLifecycle::LifecycleState m_currentUpdateLifecyclePhasesTargetState = DocumentLifecycle::kUninitialized;
+
+    bool m_suppressAdjustViewSize = false;
+#if DCHECK_IS_ON()
+    // In DCHECK on builds, this is set to false when we're running lifecycle
+    // phases past layout to ensure that phases after layout don't dirty layout.
+    bool m_allowsLayoutInvalidationAfterLayoutClean = true;
+#endif
     bool m_needsForcedCompositingUpdate = false;
 
 #if DCHECK_IS_ON()

@@ -80,6 +80,8 @@
 #ifdef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/platform/wtf/text/character_names.h"
 #else
+#   include "third_party/blink/renderer/core/animation/document_animations.h"
+#   include "third_party/blink/renderer/core/animation/document_timeline.h"
 #   include "third_party/blink/renderer/core/css/css_font_selector.h"
 #   include "third_party/blink/renderer/core/css/css_style_sheet.h"
 #   include "third_party/blink/renderer/core/css/resolver/font_builder.h"
@@ -206,26 +208,24 @@ Document::Document(const DocumentInit &initializer)
     , m_elementDataCacheClearTimer(GetTaskRunner(TaskType::kInternalUserInteraction), this, &Document::ElementDataCacheClearTimerFired)
     , m_scriptRunner(ScriptRunner::Create(this))
     , m_loadEventDelayTimer(GetTaskRunner(TaskType::kNetworking), this, &Document::LoadEventDelayTimerFired)
-#ifndef BLINKIT_CRAWLER_ONLY
-#endif
 {
 #ifndef BLINKIT_CRAWLER_ONLY
-    const bool isCrawler = ForCrawler();
-    ASSERT(isCrawler == m_frame->Client()->IsCrawler());
-    if (!isCrawler)
+    ASSERT(m_frame->Client()->IsCrawler() == ForCrawler());
+    const bool isUI = !ForCrawler();
+    if (isUI)
     {
         m_importsController = initializer.ImportsController();
         m_registrationContext = initializer.RegistrationContext(this);
         m_viewportData = std::make_unique<ViewportData>(*this);
+        m_timeline = DocumentTimeline::Create(this);
     }
 #endif
     if (m_frame)
     {
 #ifndef BLINKIT_CRAWLER_ONLY
-        ASSERT(nullptr != m_frame->GetPage() || isCrawler);
-
+        ASSERT(nullptr != m_frame->GetPage() || ForCrawler());
 #if 0 // BKTODO: Are there any features to support?
-        if (!isCrawler)
+        if (isUI)
             ProvideContextFeaturesToDocumentFrom(*this, m_frame->GetPage());
 #endif
 #endif
@@ -234,7 +234,7 @@ Document::Document(const DocumentInit &initializer)
         FrameFetchContext::ProvideDocumentToContext(m_fetcher->Context(), this);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-        if (!isCrawler)
+        if (isUI)
         {
 #if 0 // BKTODO: CustomElement support.
             // TODO(dcheng): Why does this need to check that DOMWindow is non-null?
@@ -248,7 +248,7 @@ Document::Document(const DocumentInit &initializer)
 #endif
     }
 #ifndef BLINKIT_CRAWLER_ONLY
-    else if (!isCrawler)
+    else if (isUI)
     {
         if (m_importsController)
             ASSERT(false); // BKTODO: m_fetcher = FrameFetchContext::CreateFetcherFromDocument(this);
@@ -263,7 +263,7 @@ Document::Document(const DocumentInit &initializer)
     ASSERT(m_fetcher);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (!isCrawler)
+    if (isUI)
         m_rootScrollerController.reset(RootScrollerController::Create(*this));
 #endif
 
@@ -288,7 +288,7 @@ Document::Document(const DocumentInit &initializer)
     m_lifecycle.AdvanceTo(DocumentLifecycle::kInactive);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (!isCrawler)
+    if (isUI)
     {
         // Since CSSFontSelector requires Document::m_fetcher and StyleEngine owns
         // CSSFontSelector, need to initialize m_styleEngine after initializing
@@ -1204,26 +1204,23 @@ void Document::ImplicitClose(void)
 #ifndef BLINKIT_CRAWLER_ONLY
     if (!ForCrawler())
     {
-        ASSERT(false); // BKTODO:
-#if 0
         // We used to force a synchronous display and flush here.  This really isn't
         // necessary and can in fact be actively harmful if pages are loading at a
         // rate of > 60fps
         // (if your platform is syncing flushes and limiting them to 60fps).
-        if (!LocalOwner() || (LocalOwner()->GetLayoutObject() &&
-            !LocalOwner()->GetLayoutObject()->NeedsLayout()))
+        UpdateStyleAndLayoutTree();
+
+        if (LocalFrameView *view = View())
         {
-            UpdateStyleAndLayoutTree();
-
-            // Always do a layout after loading if needed.
-            if (View() && GetLayoutView() &&
-                (!GetLayoutView()->FirstChild() || GetLayoutView()->NeedsLayout()))
-                View()->UpdateLayout();
-        }
-
-        if (View())
-            View()->ScrollAndFocusFragmentAnchor();
+            if (LayoutView *layoutView = GetLayoutView())
+            {
+                if (nullptr == layoutView->FirstChild() || layoutView->NeedsLayout())
+                    view->UpdateLayout();
+            }
+#if 0 // BKTODO: Check if necessary.
+            view->ScrollAndFocusFragmentAnchor();
 #endif
+        }
     }
 #endif
 
@@ -1433,11 +1430,8 @@ bool Document::NeedsFullLayoutTreeUpdate(void) const
     // we should fix that.
     if (ChildNeedsDistributionRecalc())
         return true;
-    ASSERT(false); // BKTODO:
-#if 0
     if (DocumentAnimations::NeedsAnimationTimingUpdate(*this))
         return true;
-#endif
     return false;
 }
 
@@ -1529,13 +1523,6 @@ void Document::NodeWillBeRemoved(Node &n)
     }
 #endif
 }
-
-#ifndef BLINKIT_CRAWLER_ONLY
-void Document::NotifyLayoutTreeOfSubtreeChanges(void)
-{
-    ASSERT(false); // BKTODO:
-}
-#endif
 
 void Document::open(Document *enteredDocument, ExceptionState &exceptionState)
 {
@@ -2089,6 +2076,7 @@ void Document::Trace(Visitor *visitor)
 #ifndef BLINKIT_CRAWLER_ONLY
     if (!ForCrawler())
     {
+        visitor->Trace(m_mediaQueryMatcher);
         visitor->Trace(m_styleEngine);
         visitor->Trace(m_elemSheet);
         visitor->Trace(m_templateDocumentHost);
@@ -2097,6 +2085,7 @@ void Document::Trace(Visitor *visitor)
         visitor->Trace(m_focusedElement);
         visitor->Trace(m_autofocusElement);
         visitor->Trace(m_snapCoordinator);
+        visitor->Trace(m_timeline);
     }
 #endif
     visitor->Trace(m_elementDataCache);
@@ -2615,10 +2604,28 @@ void Document::writeln(LocalDOMWindow *callingWindow, const std::vector<std::str
     writeln(String::FromStdUTF8(builder), callingWindow->document(), exceptionState);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// UI Implementations
+
 #ifndef BLINKIT_CRAWLER_ONLY
+void Document::ClearResizedForViewportUnits(void)
+{
+    EnsureStyleResolver().ClearResizedForViewportUnits();
+}
+
 float Document::DevicePixelRatio(void) const
 {
     return m_frame ? m_frame->DevicePixelRatio() : 1.0;
+}
+
+void Document::Document::EnqueueVisualViewportResizeEvent(void)
+{
+    ASSERT(false); // BKTODO:
+#if 0
+    VisualViewportResizeEvent *event = VisualViewportResizeEvent::Create();
+    event->SetTarget(domWindow()->visualViewport());
+    EnsureScriptedAnimationController().EnqueuePerFrameEvent(event);
+#endif
 }
 
 HTMLBodyElement* Document::FirstBodyElement(void) const
@@ -2640,6 +2647,11 @@ HTMLBodyElement* Document::FirstBodyElement(void) const
     return nullptr;
 }
 
+AnimationClock& Document::GetAnimationClock(void)
+{
+    return GetPage()->Animator().Clock();
+}
+
 SnapCoordinator* Document::GetSnapCoordinator(void)
 {
     if (RuntimeEnabledFeatures::CSSScrollSnapPointsEnabled())
@@ -2648,6 +2660,65 @@ SnapCoordinator* Document::GetSnapCoordinator(void)
             m_snapCoordinator = SnapCoordinator::Create();
     }
     return m_snapCoordinator.Get();
+}
+
+void Document::LayoutUpdated(void)
+{
+    ASSERT(nullptr != GetFrame());
+    ASSERT(nullptr != View());
+
+    ASSERT(false); // BKTODO:
+#if 0
+    // If we're restoring a scroll position from history, that takes precedence
+    // over scrolling to the anchor in the URL.
+    View()->ScrollAndFocusFragmentAnchor();
+
+    // Script run in the call above may detach the document.
+    if (GetFrame() && View()) {
+        GetFrame()->Loader().RestoreScrollPositionAndViewState();
+
+        // The focus call above can execute JS which can dirty layout. Ensure
+        // layout is clean since this is called from UpdateLayout.
+        if (View()->NeedsLayout())
+            View()->UpdateLayout();
+    }
+
+    // Plugins can run script inside layout which can detach the page.
+    // TODO(dcheng): Does it make sense to do any of this work if detached?
+    if (GetFrame() && GetFrame()->IsMainFrame())
+        GetFrame()->GetPage()->GetChromeClient().MainFrameLayoutUpdated();
+
+    Markers().InvalidateRectsForAllTextMatchMarkers();
+
+    // The layout system may perform layouts with pending stylesheets. When
+    // recording first layout time, we ignore these layouts, since painting is
+    // suppressed for them. We're interested in tracking the time of the
+    // first real or 'paintable' layout.
+    // TODO(esprehn): This doesn't really make sense, why not track the first
+    // beginFrame? This will catch the first layout in a page that does lots
+    // of layout thrashing even though that layout might not be followed by
+    // a paint for many seconds.
+    if (IsRenderingReady() && body() && HaveRenderBlockingResourcesLoaded()) {
+        if (document_timing_.FirstLayout().is_null())
+            document_timing_.MarkFirstLayout();
+    }
+#endif
+}
+
+void Document::NotifyLayoutTreeOfSubtreeChanges(void)
+{
+    ASSERT(!ForCrawler());
+
+    LayoutView *layoutView = GetLayoutView();
+    if (!layoutView->WasNotifiedOfSubtreeChange())
+        return;
+
+    m_lifecycle.AdvanceTo(DocumentLifecycle::kInLayoutSubtreeChange);
+
+    layoutView->HandleSubtreeModifications();
+    DCHECK(!layoutView->WasNotifiedOfSubtreeChange());
+
+    m_lifecycle.AdvanceTo(DocumentLifecycle::kLayoutSubtreeChangeClean);
 }
 
 void Document::PropagateStyleToViewport(void)
@@ -2796,6 +2867,16 @@ void Document::PropagateStyleToViewport(void)
             }
         }
     }
+}
+
+void Document::SetResizedForViewportUnits(void)
+{
+    if (m_mediaQueryMatcher)
+        ASSERT(false); // BKTODO: m_mediaQueryMatcher->ViewportChanged();
+    if (!HasViewportUnits())
+        return;
+    EnsureStyleResolver().SetResizedForViewportUnits();
+    SetNeedsStyleRecalcForViewportUnits();
 }
 
 scoped_refptr<ComputedStyle> Document::StyleForElementIgnoringPendingStylesheets(Element *element)

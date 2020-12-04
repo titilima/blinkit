@@ -93,16 +93,14 @@ class CORE_EXPORT FontFaceCache final {
   // CSSSegmentedFontFace>>
   using CapabilitiesSet =
       HeapHashMap<FontSelectionCapabilities, Member<CSSSegmentedFontFace>>;
-#if 0 // BKTODO:
   using SegmentedFacesByFamily =
-      HeapHashMap<String, Member<CapabilitiesSet>, CaseFoldingHash>;
+      std::unordered_map<String, Member<CapabilitiesSet>, CaseFoldingHash, CaseFoldingEqual>;
   using FontSelectionQueryResult =
       HeapHashMap<FontSelectionRequestKey,
                   Member<CSSSegmentedFontFace>,
-                  FontSelectionRequestKeyHash,
-                  WTF::SimpleClassHashTraits<FontSelectionRequestKey>>;
+                  FontSelectionRequestKeyHash>;
   using FontSelectionQueryCache =
-      HeapHashMap<String, Member<FontSelectionQueryResult>, CaseFoldingHash>;
+      std::unordered_map<String, Member<FontSelectionQueryResult>, CaseFoldingHash, CaseFoldingEqual>;
 
   // All incoming faces added from JS or CSS, bucketed per family.
   SegmentedFacesByFamily segmented_faces_;
@@ -110,7 +108,6 @@ class CORE_EXPORT FontFaceCache final {
   // FontSelectionRequest. A family bucket of this cache gets invalidated when a
   // new face of the same family is added or removed.
   FontSelectionQueryCache font_selection_query_cache_;
-#endif
 
   // Used for removing font faces from the segmented_faces_ list when a CSS rule
   // is removed.

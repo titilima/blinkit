@@ -50,6 +50,7 @@
 #include "third_party/blink/public/web/web_frame_load_type.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/core/loader/frame_loader_state_machine.h"
+#include "third_party/blink/renderer/core/loader/frame_loader_types.h"
 
 class GURL;
 
@@ -113,6 +114,10 @@ private:
     DocumentLoader* CreateDocumentLoader(const ResourceRequest &request, const SubstituteData &substituteData,
         WebFrameLoadType loadType, std::unique_ptr<WebDocumentLoader::ExtraData> extraData);
     SubstituteData DefaultSubstituteDataForURL(const GURL &url);
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    void ProcessFragment(const GURL &url, WebFrameLoadType frameLoadType, LoadStartType loadStartType);
+#endif
 
     // Returns whether we should continue with new navigation.
     bool CancelProvisionalLoaderForNewNavigation(bool cancelScheduledNavigations);

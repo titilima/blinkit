@@ -346,20 +346,17 @@ bool Text::TextLayoutObjectIsNeeded(const AttachContext& context,
          !context.previous_in_flow->IsBR();
 }
 
+#if 0 // BKTODO: Remove later.
 static bool IsSVGText(Text* text) {
-  ASSERT(false); // BKTODO: Is this necessary?
-  return false;
-#if 0
   Node* parent_or_shadow_host_node = text->ParentOrShadowHostNode();
   DCHECK(parent_or_shadow_host_node);
   return parent_or_shadow_host_node->IsSVGElement() &&
          !IsSVGForeignObjectElement(*parent_or_shadow_host_node);
-#endif
 }
+#endif
 
 LayoutText* Text::CreateTextLayoutObject(const ComputedStyle& style) {
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Remove later.
   if (IsSVGText(this))
     return new LayoutSVGInlineText(this, DataImpl());
 #endif

@@ -25,6 +25,7 @@ class LocalFrame;
 class LocalFrameClient;
 class OverscrollController;
 class PageScaleConstraintsSet;
+class ScrollbarTheme;
 class ScrollingCoordinator;
 class TopDocumentRootScrollerController;
 class VisualViewport;
@@ -55,6 +56,7 @@ public:
         return *m_chromeClient;
     }
     LocalFrame* GetFrame(void) const { return m_frame.get(); }
+    ScrollbarTheme& GetScrollbarTheme(void) const;
     PageAnimator& Animator(void) { return *m_animator; }
 
     // Corresponds to pixel density of the device where this Page is

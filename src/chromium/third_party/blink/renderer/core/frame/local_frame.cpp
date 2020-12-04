@@ -111,10 +111,9 @@ void LocalFrame::CreateView(const IntSize &viewportSize, const Color &background
         View()->SetParentVisible(false);
 #endif
 
-    std::shared_ptr<LocalFrameView> previousView(m_view);
     SetView(nullptr);
 
-    std::shared_ptr<LocalFrameView> frameView = LocalFrameView::Create(*this, viewportSize);
+    LocalFrameView *frameView = LocalFrameView::Create(*this, viewportSize);
     // The layout size is set by WebViewImpl to support @viewport
     frameView->SetLayoutSizeFixedToFrameSize(false);
 
@@ -299,7 +298,8 @@ bool LocalFrame::ShouldReuseDefaultView(void) const
 
 void LocalFrame::Trace(Visitor *visitor)
 {
-    m_loader.Trace(visitor);
+    visitor->Trace(m_loader);
+    visitor->Trace(m_view);
     Frame::Trace(visitor);
 }
 
@@ -319,6 +319,13 @@ void LocalFrame::DeviceScaleFactorChanged(void)
     ASSERT(false); // BKTODO:
 }
 
+void LocalFrame::ScheduleVisualUpdateUnlessThrottled(void)
+{
+    if (ShouldThrottleRendering())
+        return;
+    GetPage()->Animator().ScheduleVisualUpdate(this);
+}
+
 void LocalFrame::SetPageZoomFactor(float factor)
 {
     ASSERT(false); // BKTODO:
@@ -329,7 +336,7 @@ void LocalFrame::SetTextZoomFactor(float factor)
     ASSERT(false); // BKTODO:
 }
 
-void LocalFrame::SetView(const std::shared_ptr<LocalFrameView> &view)
+void LocalFrame::SetView(LocalFrameView *view)
 {
     ASSERT(!m_view || m_view != view);
     ASSERT(nullptr == GetDocument() || !GetDocument()->IsActive());
@@ -337,6 +344,13 @@ void LocalFrame::SetView(const std::shared_ptr<LocalFrameView> &view)
     if (m_view)
         m_view->WillBeRemovedFromFrame();
     m_view = view;
+}
+
+bool LocalFrame::ShouldThrottleRendering(void) const
+{
+    if (m_view)
+        return m_view->ShouldThrottleRendering();
+    return false;
 }
 #endif // BLINKIT_CRAWLER_ONLY
 

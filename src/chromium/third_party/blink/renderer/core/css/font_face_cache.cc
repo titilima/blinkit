@@ -178,17 +178,17 @@ void FontFaceCache::IncrementVersion() {
 CSSSegmentedFontFace* FontFaceCache::Get(
     const FontDescription& font_description,
     const AtomicString& family) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   SegmentedFacesByFamily::iterator segmented_faces_for_family =
       segmented_faces_.find(family);
   if (segmented_faces_for_family == segmented_faces_.end() ||
-      segmented_faces_for_family->value->IsEmpty())
+      segmented_faces_for_family->second->IsEmpty())
     return nullptr;
 
-  auto family_faces = segmented_faces_for_family->value;
+  auto family_faces = segmented_faces_for_family->second;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // Either add or retrieve a cache entry in the selection query cache for the
   // specified family.
   FontSelectionQueryCache::AddResult cache_entry_for_family_add =

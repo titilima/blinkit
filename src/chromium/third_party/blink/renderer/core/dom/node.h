@@ -62,6 +62,7 @@ using StaticNodeList = StaticNodeTypeList<Node>;
 #ifndef BLINKIT_CRAWLER_ONLY
 class ComputedStyle;
 class HTMLSlotElement;
+class LayoutBox;
 class StyleChangeReasonForTracing;
 #endif
 
@@ -419,6 +420,7 @@ public:
             : m_data.m_nodeLayoutData->GetLayoutObject();
     }
     void SetLayoutObject(LayoutObject *layoutObject);
+    LayoutBox* GetLayoutBox(void) const;
 
     struct AttachContext {
         STACK_ALLOCATED();

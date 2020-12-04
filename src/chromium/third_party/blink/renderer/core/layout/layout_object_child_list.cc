@@ -244,8 +244,7 @@ void LayoutObjectChildList::InsertChildNode(LayoutObject* owner,
   if (!owner->DocumentBeingDestroyed())
     owner->NotifyOfSubtreeChange();
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   if (AXObjectCache* cache = owner->GetDocument().ExistingAXObjectCache())
     cache->ChildrenChanged(owner);
 #endif

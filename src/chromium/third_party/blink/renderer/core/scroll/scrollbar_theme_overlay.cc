@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scrollbar_theme_overlay.cc
+// Description: ScrollbarThemeOverlay Class
+//      Author: Ziming Li
+//     Created: 2020-12-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -191,16 +202,19 @@ void ScrollbarThemeOverlay::PaintThumb(GraphicsContext& context,
 
   // Horizontally flip the canvas if it is left vertical scrollbar.
   if (scrollbar.IsLeftSideVerticalScrollbar()) {
+    ASSERT(false); // BKTODO:
+#if 0
     canvas->save();
     canvas->translate(rect.Width(), 0);
     canvas->scale(-1, 1);
+#endif
   }
 
   Platform::Current()->ThemeEngine()->Paint(canvas, part, state, WebRect(rect),
                                             &params);
 
   if (scrollbar.IsLeftSideVerticalScrollbar())
-    canvas->restore();
+    ASSERT(false); // BKTODO: canvas->restore();
 }
 
 ScrollbarPart ScrollbarThemeOverlay::HitTest(const Scrollbar& scrollbar,

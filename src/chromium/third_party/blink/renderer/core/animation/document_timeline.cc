@@ -99,8 +99,7 @@ DocumentTimeline::DocumentTimeline(Document* document,
   else
     timing_ = timing;
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check the logic later
   if (Platform::Current()->IsThreadedAnimationEnabled())
     compositor_timeline_ = CompositorAnimationTimeline::Create();
 #endif
@@ -134,8 +133,6 @@ HeapVector<Member<Animation>> DocumentTimeline::getAnimations() {
   // https://drafts.csswg.org/web-animations-1/#dom-document-getanimations
   document_->UpdateStyleAndLayoutTree();
   HeapVector<Member<Animation>> animations;
-  ASSERT(false); // BKTODO:
-#if 0
   for (const auto& animation : animations_) {
     if (!animation->effect() || (!animation->effect()->IsCurrent() &&
                                  !animation->effect()->IsInEffect())) {
@@ -148,9 +145,8 @@ HeapVector<Member<Animation>> DocumentTimeline::getAnimations() {
         continue;
       }
     }
-    animations.push_back(animation);
+    ASSERT(false); // BKTODO: animations.push_back(animation);
   }
-#endif
   std::sort(animations.begin(), animations.end(), CompareAnimations);
   return animations;
 }
@@ -228,11 +224,8 @@ void DocumentTimeline::DocumentTimelineTiming::Trace(blink::Visitor* visitor) {
 
 TimeTicks DocumentTimeline::ZeroTime() {
   if (!zero_time_initialized_ && document_->Loader()) {
-    ASSERT(false); // BKTODO:
-#if 0
     zero_time_ = document_->Loader()->GetTiming().ReferenceMonotonicTime() +
                  origin_time_;
-#endif
     zero_time_initialized_ = true;
   }
   return zero_time_;
@@ -255,9 +248,6 @@ double DocumentTimeline::CurrentTimeInternal(bool& is_null) {
     is_null = true;
     return std::numeric_limits<double>::quiet_NaN();
   }
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   double result = playback_rate_ == 0
                       ? TimeTicksInSeconds(ZeroTime())
                       : (GetDocument()->GetAnimationClock().CurrentTime() -
@@ -267,7 +257,6 @@ double DocumentTimeline::CurrentTimeInternal(bool& is_null) {
   // This looks like it could never be NaN here.
   DCHECK(!is_null);
   return result;
-#endif
 }
 
 double DocumentTimeline::currentTime() {
@@ -316,11 +305,8 @@ void DocumentTimeline::SetOutdatedAnimation(Animation* animation) {
   DCHECK(animation->Outdated());
   outdated_animation_count_++;
   animations_needing_update_.insert(animation);
-  ASSERT(false); // BKTODO:
-#if 0
   if (IsActive() && !document_->GetPage()->Animator().IsServicingAnimations())
     timing_->ServiceOnNextFrame();
-#endif
 }
 
 void DocumentTimeline::SetPlaybackRate(double playback_rate) {
@@ -328,13 +314,10 @@ void DocumentTimeline::SetPlaybackRate(double playback_rate) {
     return;
   double current_time = CurrentTimeInternal();
   playback_rate_ = playback_rate;
-  ASSERT(false); // BKTODO:
-#if 0
   zero_time_ = TimeTicksFromSeconds(
       playback_rate == 0 ? current_time
                          : GetDocument()->GetAnimationClock().CurrentTime() -
                                current_time / playback_rate);
-#endif
   zero_time_initialized_ = true;
 
   // Corresponding compositor animation may need to be restarted to pick up
@@ -361,7 +344,7 @@ void DocumentTimeline::Trace(blink::Visitor* visitor) {
   visitor->Trace(document_);
   visitor->Trace(timing_);
   visitor->Trace(animations_needing_update_);
-  ASSERT(false); // BKTODO: visitor->Trace(animations_);
+  visitor->Trace(animations_);
   AnimationTimeline::Trace(visitor);
 }
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: document_animations.h
+// Description: DocumentAnimations Class
+//      Author: Ziming Li
+//     Created: 2020-12-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -46,6 +57,7 @@ class DocumentAnimations {
   static bool NeedsAnimationTimingUpdate(const Document&);
   static void UpdateAnimationTimingIfNeeded(Document&);
 
+#if 0 // BKTODO:
   // Updates existing animations as part of generating a new (document
   // lifecycle) frame. Note that this considers and updates state for
   // both composited and non-composited animations.
@@ -53,6 +65,7 @@ class DocumentAnimations {
       Document&,
       DocumentLifecycle::LifecycleState required_lifecycle_state,
       const base::Optional<CompositorElementIdSet>&);
+#endif
 
  private:
   DocumentAnimations() = default;

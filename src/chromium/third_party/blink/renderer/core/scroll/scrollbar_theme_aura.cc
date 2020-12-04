@@ -136,12 +136,14 @@ static int GetScrollbarThickness() {
 }  // namespace
 
 ScrollbarTheme& ScrollbarTheme::NativeTheme() {
+#if 0 // BKTODO: Check if necessary.
   if (RuntimeEnabledFeatures::OverlayScrollbarsEnabled()) {
     DEFINE_STATIC_LOCAL(
         ScrollbarThemeOverlay, theme,
         (GetScrollbarThickness(), 0, ScrollbarThemeOverlay::kAllowHitTest));
     return theme;
   }
+#endif
 
   DEFINE_STATIC_LOCAL(ScrollbarThemeAura, theme, ());
   return theme;

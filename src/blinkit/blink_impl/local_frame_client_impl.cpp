@@ -24,6 +24,9 @@ DocumentLoader* LocalFrameClientImpl::CreateDocumentLoader(
     std::unique_ptr<WebDocumentLoader::ExtraData> extraData)
 {
     WebDocumentLoaderImpl *ret = WebDocumentLoaderImpl::Create(frame, request, data);
+#ifndef BLINKIT_CRAWLER_ONLY
+    ret->GetTiming().SetNavigationStart(CurrentTimeTicks());
+#endif
     ret->SetExtraData(std::move(extraData));
     return ret;
 }

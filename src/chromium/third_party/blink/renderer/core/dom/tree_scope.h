@@ -94,6 +94,10 @@ protected:
     TreeScope(ContainerNode &rootNode, Document &document);
     TreeScope(Document &document);
     virtual ~TreeScope(void);
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    void SetNeedsStyleRecalcForViewportUnits(void);
+#endif
 private:
     Member<ContainerNode> m_rootNode;
     Member<Document> m_document;

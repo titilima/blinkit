@@ -17,6 +17,7 @@
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
 #include "third_party/blink/renderer/core/page/scrolling/overscroll_controller.h"
 #include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
+#include "third_party/blink/renderer/core/scroll/scrollbar_theme.h"
 
 namespace blink {
 
@@ -98,6 +99,15 @@ PageScaleConstraintsSet& Page::GetPageScaleConstraintsSet(void)
 const PageScaleConstraintsSet& Page::GetPageScaleConstraintsSet(void) const
 {
     return *m_pageScaleConstraintsSet;
+}
+
+ScrollbarTheme& Page::GetScrollbarTheme(void) const
+{
+#if 0 // BKTODO: Check the logic later.
+    if (settings_->GetForceAndroidOverlayScrollbar())
+        return ScrollbarThemeOverlay::MobileTheme();
+#endif
+    return ScrollbarTheme::DeprecatedStaticGetTheme();
 }
 
 ScrollingCoordinator* Page::GetScrollingCoordinator(void)

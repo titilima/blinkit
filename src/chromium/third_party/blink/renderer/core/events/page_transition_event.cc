@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: page_transition_event.cc
+// Description: PageTransitionEvent Class
+//      Author: Ziming Li
+//     Created: 2020-12-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All rights reserved.
  *
@@ -25,7 +36,7 @@
 
 #include "third_party/blink/renderer/core/events/page_transition_event.h"
 
-#include "third_party/blink/renderer/core/event_names.h"
+ // BKTODO: #include "third_party/blink/renderer/core/event_names.h"
 
 namespace blink {
 
@@ -35,6 +46,7 @@ PageTransitionEvent::PageTransitionEvent(const AtomicString& type,
                                          bool persisted)
     : Event(type, Bubbles::kYes, Cancelable::kYes), persisted_(persisted) {}
 
+#if 0 // BKTODO: Check if necessary.
 PageTransitionEvent::PageTransitionEvent(
     const AtomicString& type,
     const PageTransitionEventInit& initializer)
@@ -42,11 +54,16 @@ PageTransitionEvent::PageTransitionEvent(
   if (initializer.hasPersisted())
     persisted_ = initializer.persisted();
 }
+#endif
 
 PageTransitionEvent::~PageTransitionEvent() = default;
 
 const AtomicString& PageTransitionEvent::InterfaceName() const {
+  ASSERT(false); // BKTODO:
+  return g_null_atom;
+#if 0
   return EventNames::PageTransitionEvent;
+#endif
 }
 
 void PageTransitionEvent::Trace(blink::Visitor* visitor) {

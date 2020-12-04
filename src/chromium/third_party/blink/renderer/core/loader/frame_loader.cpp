@@ -291,13 +291,7 @@ void FrameLoader::FinishedParsing(void)
 
 #ifndef BLINKIT_CRAWLER_ONLY
     if (m_frame->View())
-    {
-        ASSERT(false); // BKTODO:
-#if 0
-        ProcessFragment(frame_->GetDocument()->Url(), document_loader_->LoadType(),
-            kNavigationToDifferentDocument);
-#endif
-    }
+        ProcessFragment(m_frame->GetDocument()->Url(), m_documentLoader->LoadType(), kNavigationToDifferentDocument);
 #endif
 
     m_frame->GetDocument()->CheckCompleted();
@@ -511,5 +505,12 @@ String FrameLoader::UserAgent(void) const
 {
     return Client()->UserAgent();
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void FrameLoader::ProcessFragment(const GURL &url, WebFrameLoadType frameLoadType, LoadStartType loadStartType)
+{
+    // BKTODO: Check if necessary.
+}
+#endif
 
 }  // namespace blink

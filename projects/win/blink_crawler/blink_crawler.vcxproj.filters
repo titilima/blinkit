@@ -1274,6 +1274,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_global.h">
       <Filter>renderer\bindings\core\duk</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_loader_types.h">
+      <Filter>renderer\core\loader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\platform.cpp">

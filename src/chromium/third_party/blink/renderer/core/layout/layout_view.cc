@@ -221,8 +221,7 @@ bool LayoutView::HitTestNoLifecycleUpdate(const HitTestLocation& location,
 
 void LayoutView::ClearHitTestCache() {
   hit_test_cache_->Clear();
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   auto* object = GetFrame()->OwnerLayoutObject();
   if (object)
     object->View()->ClearHitTestCache();

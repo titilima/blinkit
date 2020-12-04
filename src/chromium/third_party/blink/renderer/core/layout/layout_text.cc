@@ -154,11 +154,8 @@ LayoutText::LayoutText(Node* node, scoped_refptr<StringImpl> str)
 
   SetIsText();
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (node)
     GetFrameView()->IncrementVisuallyNonEmptyCharacterCount(text_.length());
-#endif
 }
 
 LayoutText::~LayoutText() {

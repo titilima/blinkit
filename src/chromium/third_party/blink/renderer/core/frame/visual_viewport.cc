@@ -53,7 +53,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/page_scale_constraints.h"
 #include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
- // BKTODO: #include "third_party/blink/renderer/core/frame/root_frame_viewport.h"
+#include "third_party/blink/renderer/core/frame/root_frame_viewport.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/fullscreen/fullscreen.h"
@@ -289,11 +289,8 @@ void VisualViewport::EnqueueScrollEvent() {
 }
 
 void VisualViewport::EnqueueResizeEvent() {
-  ASSERT(false); // BKTODO:
-#if 0
   if (Document* document = MainFrame()->GetDocument())
     document->EnqueueVisualViewportResizeEvent();
-#endif
 }
 
 void VisualViewport::SetSize(const IntSize& size) {
@@ -372,13 +369,9 @@ FloatRect VisualViewport::VisibleRectInDocument(
   if (!MainFrame() || !MainFrame()->View())
     return FloatRect();
 
-  ASSERT(false); // BKTODO:
-  return FloatRect();
-#if 0
   FloatPoint view_location =
       FloatPoint(MainFrame()->View()->GetScrollableArea()->GetScrollOffset());
   return FloatRect(view_location, VisibleRect(scrollbar_inclusion).Size());
-#endif
 }
 
 FloatPoint VisualViewport::ViewportCSSPixelsToRootFrame(
@@ -851,20 +844,15 @@ IntPoint VisualViewport::ClampDocumentOffsetAtScale(const IntPoint& offset,
 
   IntSize visual_viewport_max =
       FlooredIntSize(FloatSize(ContentsSize()) - scaled_size);
-  ASSERT(false); // BKTODO:
-#if 0
   IntSize max =
       view->LayoutViewport()->MaximumScrollOffsetInt() + visual_viewport_max;
   IntSize min =
       view->LayoutViewport()
           ->MinimumScrollOffsetInt();  // VisualViewportMin should be (0, 0)
-#endif
 
   IntSize clamped = ToIntSize(offset);
-#if 0
   clamped = clamped.ShrunkTo(max);
   clamped = clamped.ExpandedTo(min);
-#endif
   return IntPoint(clamped);
 }
 
@@ -968,11 +956,7 @@ RootFrameViewport* VisualViewport::GetRootFrameViewport() const {
   if (!MainFrame() || !MainFrame()->View())
     return nullptr;
 
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return MainFrame()->View()->GetRootFrameViewport();
-#endif
 }
 
 LocalFrame* VisualViewport::MainFrame() const {
@@ -982,11 +966,8 @@ LocalFrame* VisualViewport::MainFrame() const {
 IntSize VisualViewport::ExcludeScrollbars(const IntSize& size) const {
   IntSize excluded_size = size;
   if (RootFrameViewport* root_frame_viewport = GetRootFrameViewport()) {
-    ASSERT(false); // BKTODO:
-#if 0
     excluded_size.Expand(-root_frame_viewport->VerticalScrollbarWidth(),
                          -root_frame_viewport->HorizontalScrollbarHeight());
-#endif
   }
   return excluded_size;
 }
@@ -1114,9 +1095,6 @@ bool VisualViewport::ShouldDisableDesktopWorkarounds() const {
   if (!MainFrame() || !MainFrame()->View())
     return false;
 
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   if (!Settings::ViewportEnabled)
     return false;
 
@@ -1130,7 +1108,6 @@ bool VisualViewport::ShouldDisableDesktopWorkarounds() const {
   return MainFrame()->View()->GetLayoutSize().Width() == size_.Width() ||
          (constraints.minimum_scale == constraints.maximum_scale &&
           constraints.minimum_scale != -1);
-#endif
 }
 
 CompositorAnimationHost* VisualViewport::GetCompositorAnimationHost() const {
@@ -1158,7 +1135,7 @@ void VisualViewport::NotifyRootFrameViewport() const {
   if (!GetRootFrameViewport())
     return;
 
-  ASSERT(false); // BKTODO: GetRootFrameViewport()->DidUpdateVisualViewport();
+  GetRootFrameViewport()->DidUpdateVisualViewport();
 }
 
 ScrollbarTheme& VisualViewport::GetPageScrollbarTheme() const {

@@ -12,7 +12,9 @@
 #include "local_frame_view.h"
 
 #include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/frame/root_frame_viewport.h"
+#include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/layout/text_autosizer.h"
@@ -21,6 +23,19 @@
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+#include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
+
+// Used to check for dirty layouts violating document lifecycle rules.
+// If arg evaluates to true, the program will continue. If arg evaluates to
+// false, program will crash if DCHECK_IS_ON() or return false from the current
+// function.
+#define CHECK_FOR_DIRTY_LAYOUT(arg) \
+    do {                            \
+        if (!(arg)) {               \
+            NOTREACHED();           \
+            return false;           \
+        }                           \
+    } while (false)
 
 namespace blink {
 
@@ -103,10 +118,35 @@ void LocalFrameView::ClearLayoutSubtreeRoot(const LayoutObject &root)
     m_layoutSubtreeRootList.Remove(const_cast<LayoutObject &>(root));
 }
 
-std::shared_ptr<LocalFrameView> LocalFrameView::Create(LocalFrame &frame, const IntSize &initialSize)
+void LocalFrameView::ClearLayoutSubtreeRootsAndMarkContainingBlocks(void)
 {
-    IntRect frameRect(IntPoint(), initialSize);
-    std::shared_ptr<LocalFrameView> view = base::WrapShared(new LocalFrameView(frame, frameRect));
+    m_layoutSubtreeRootList.ClearAndMarkContainingBlocksForLayout();
+}
+
+bool LocalFrameView::CheckDoesNotNeedLayout(void) const
+{
+    CHECK_FOR_DIRTY_LAYOUT(!LayoutPending());
+    CHECK_FOR_DIRTY_LAYOUT(nullptr == GetLayoutView() || !GetLayoutView()->NeedsLayout());
+    CHECK_FOR_DIRTY_LAYOUT(!IsSubtreeLayout());
+    return true;
+}
+
+bool LocalFrameView::CheckLayoutInvalidationIsAllowed(void) const
+{
+#if DCHECK_IS_ON()
+    if (m_allowsLayoutInvalidationAfterLayoutClean)
+        return true;
+
+    // If we are updating all lifecycle phases beyond LayoutClean, we don't expect
+    // dirty layout after LayoutClean.
+    CHECK_FOR_DIRTY_LAYOUT(Lifecycle().GetState() < DocumentLifecycle::kLayoutClean);
+#endif
+    return true;
+}
+
+LocalFrameView* LocalFrameView::Create(LocalFrame &frame, const IntSize &initialSize)
+{
+    LocalFrameView *view = new LocalFrameView(frame, IntRect(IntPoint(), initialSize));
     view->SetLayoutSizeInternal(initialSize);
     view->Show();
     return view;
@@ -227,6 +267,19 @@ void LocalFrameView::HandleLoadCompleted(void)
         ClearFragmentAnchor();
 }
 
+void LocalFrameView::IncrementVisuallyNonEmptyCharacterCount(unsigned count)
+{
+    if (m_isVisuallyNonEmpty)
+        return;
+    m_visuallyNonEmptyCharacterCount += count;
+    // Use a threshold value to prevent very small amounts of visible content from
+    // triggering didMeaningfulLayout.  The first few hundred characters rarely
+    // contain the interesting content of the page.
+    static const unsigned kVisualCharacterThreshold = 200;
+    if (m_visuallyNonEmptyCharacterCount > kVisualCharacterThreshold)
+        SetIsVisuallyNonEmpty();
+}
+
 bool LocalFrameView::IsInPerformLayout(void) const
 {
     return Lifecycle().GetState() == DocumentLifecycle::kInPerformLayout;
@@ -273,6 +326,41 @@ IntPoint LocalFrameView::Location(void) const
     return location;
 }
 
+void LocalFrameView::MarkViewportConstrainedObjectsForLayout(bool widthChanged, bool heightChanged)
+{
+    if (!HasViewportConstrainedObjects() || !(widthChanged || heightChanged))
+        return;
+
+    ASSERT(false); // BKTODO:
+#if 0
+    for (auto* const viewport_constrained_object :
+    *viewport_constrained_objects_) {
+        LayoutObject* layout_object = viewport_constrained_object;
+        const ComputedStyle& style = layout_object->StyleRef();
+        if (width_changed) {
+            if (style.Width().IsFixed() &&
+                (style.Left().IsAuto() || style.Right().IsAuto())) {
+                layout_object->SetNeedsPositionedMovementLayout();
+            }
+            else {
+                layout_object->SetNeedsLayoutAndFullPaintInvalidation(
+                    LayoutInvalidationReason::kSizeChanged);
+            }
+        }
+        if (height_changed) {
+            if (style.Height().IsFixed() &&
+                (style.Top().IsAuto() || style.Bottom().IsAuto())) {
+                layout_object->SetNeedsPositionedMovementLayout();
+            }
+            else {
+                layout_object->SetNeedsLayoutAndFullPaintInvalidation(
+                    LayoutInvalidationReason::kSizeChanged);
+            }
+        }
+    }
+#endif
+}
+
 bool LocalFrameView::NeedsLayout(void) const
 {
     // This can return true in cases where the document does not have a body yet.
@@ -280,6 +368,149 @@ bool LocalFrameView::NeedsLayout(void) const
     // layout in that case.
     LayoutView *layoutView = GetLayoutView();
     return LayoutPending() || (nullptr != layoutView && layoutView->NeedsLayout()) || IsSubtreeLayout();
+}
+
+void LocalFrameView::PerformLayout(bool inSubtreeLayout)
+{
+    ASSERT(inSubtreeLayout || m_layoutSubtreeRootList.IsEmpty());
+
+    int contentsHeightBeforeLayout = GetLayoutView()->DocumentRect().Height();
+#if 0 // BKTODO:
+    PrepareLayoutAnalyzer();
+
+    ScriptForbiddenScope forbid_script;
+
+    if (in_subtree_layout && HasOrthogonalWritingModeRoots()) {
+        // If we're going to lay out from each subtree root, rather than once from
+        // LayoutView, we need to merge the depth-ordered orthogonal writing mode
+        // root list into the depth-ordered list of subtrees scheduled for
+        // layout. Otherwise, during layout of one such subtree, we'd risk skipping
+        // over a subtree of objects needing layout.
+        DCHECK(!layout_subtree_root_list_.IsEmpty());
+        ScheduleOrthogonalWritingModeRootsForLayout();
+    }
+
+    DCHECK(!IsInPerformLayout());
+    Lifecycle().AdvanceTo(DocumentLifecycle::kInPerformLayout);
+
+    // performLayout is the actual guts of layout().
+    // FIXME: The 300 other lines in layout() probably belong in other helper
+    // functions so that a single human could understand what layout() is actually
+    // doing.
+
+    {
+        // TODO(szager): Remove this after diagnosing crash.
+        DocumentLifecycle::CheckNoTransitionScope check_no_transition(Lifecycle());
+        if (in_subtree_layout) {
+            if (analyzer_) {
+                analyzer_->Increment(LayoutAnalyzer::kPerformLayoutRootLayoutObjects,
+                    layout_subtree_root_list_.size());
+            }
+            for (auto& root : layout_subtree_root_list_.Ordered()) {
+                if (!root->NeedsLayout())
+                    continue;
+                LayoutFromRootObject(*root);
+
+                // We need to ensure that we mark up all layoutObjects up to the
+                // LayoutView for paint invalidation. This simplifies our code as we
+                // just always do a full tree walk.
+                if (LayoutObject* container = root->Container())
+                    container->SetShouldCheckForPaintInvalidation();
+            }
+            layout_subtree_root_list_.Clear();
+        }
+        else {
+            if (HasOrthogonalWritingModeRoots())
+                LayoutOrthogonalWritingModeRoots();
+            GetLayoutView()->UpdateLayout();
+        }
+    }
+
+    frame_->GetDocument()->Fetcher()->UpdateAllImageResourcePriorities();
+
+    Lifecycle().AdvanceTo(DocumentLifecycle::kAfterPerformLayout);
+
+    FirstMeaningfulPaintDetector::From(*frame_->GetDocument())
+        .MarkNextPaintAsMeaningfulIfNeeded(
+            layout_object_counter_, contents_height_before_layout,
+            GetLayoutView()->DocumentRect().Height(), Height());
+#endif
+}
+
+void LocalFrameView::PerformPostLayoutTasks(void)
+{
+    // FIXME: We can reach here, even when the page is not active!
+    // http/tests/inspector/elements/html-link-import.html and many other
+    // tests hit that case.
+    // We should DCHECK(isActive()); or at least return early if we can!
+
+    // Always called before or after performLayout(), part of the highest-level
+    // layout() call.
+    ASSERT(!IsInPerformLayout());
+
+    ASSERT(false); // BKTODO:
+#if 0
+    frame_->Selection().DidLayout();
+
+    DCHECK(frame_->GetDocument());
+
+    FontFaceSetDocument::DidLayout(*frame_->GetDocument());
+    // Fire a fake a mouse move event to update hover state and mouse cursor, and
+    // send the right mouse out/over events.
+    frame_->GetEventHandler().MayUpdateHoverWhenContentUnderMouseChanged(
+        MouseEventManager::UpdateHoverReason::kLayoutOrStyleChanged);
+
+    UpdateGeometriesIfNeeded();
+
+    // Plugins could have torn down the page inside updateGeometries().
+    if (!GetLayoutView())
+        return;
+
+    ScheduleUpdatePluginsIfNecessary();
+
+    if (ScrollingCoordinator* scrolling_coordinator =
+        this->GetScrollingCoordinator()) {
+        scrolling_coordinator->NotifyGeometryChanged(this);
+    }
+
+    if (SnapCoordinator* snap_coordinator =
+        frame_->GetDocument()->GetSnapCoordinator())
+        snap_coordinator->UpdateAllSnapContainerData();
+
+    SendResizeEventIfNeeded();
+#endif
+}
+
+void LocalFrameView::PerformPreLayoutTasks(void)
+{
+    Lifecycle().AdvanceTo(DocumentLifecycle::kInPreLayout);
+
+    // Don't schedule more layouts, we're in one.
+    base::AutoReset<bool> changeSchedulingEnabled(&m_layoutSchedulingEnabled, false);
+
+    bool wasResized = WasViewportResized();
+    Document *document = m_frame->GetDocument();
+    if (wasResized)
+        document->SetResizedForViewportUnits();
+
+    // Viewport-dependent or device-dependent media queries may cause us to need
+    // completely different style information.
+    bool mainFrameRotation = Settings::MainFrameResizesAreOrientationChanges;
+    if ((wasResized && document->GetStyleEngine().MediaQueryAffectedByViewportChange())
+        || (wasResized && mainFrameRotation && document->GetStyleEngine().MediaQueryAffectedByDeviceChange()))
+    {
+        ASSERT(false); // BKTODO: document->MediaQueryAffectingValueChanged();
+    }
+    else if (wasResized)
+    {
+        document->EvaluateMediaQueryList();
+    }
+
+    document->UpdateStyleAndLayoutTree();
+    Lifecycle().AdvanceTo(DocumentLifecycle::kStyleClean);
+
+    if (wasResized)
+        document->ClearResizedForViewportUnits();
 }
 
 void LocalFrameView::RemoveAnimatingScrollableArea(PaintLayerScrollableArea *scrollableArea)
@@ -314,6 +545,44 @@ void LocalFrameView::RemoveViewportConstrainedObject(LayoutObject &object)
     ASSERT(false); // BKTODO:
 }
 
+void LocalFrameView::ScheduleRelayout(void)
+{
+    ASSERT(m_frame->View() == this);
+
+    if (!m_layoutSchedulingEnabled)
+        return;
+    // TODO(crbug.com/590856): It's still broken when we choose not to crash when
+    // the check fails.
+    if (!CheckLayoutInvalidationIsAllowed())
+        return;
+    if (!NeedsLayout())
+        return;
+    if (!m_frame->GetDocument()->ShouldScheduleLayout())
+        return;
+
+    ClearLayoutSubtreeRootsAndMarkContainingBlocks();
+
+    if (m_hasPendingLayout)
+        return;
+    m_hasPendingLayout = true;
+
+    if (!ShouldThrottleRendering())
+        GetPage()->Animator().ScheduleVisualUpdate(m_frame.Get());
+}
+
+void LocalFrameView::ScheduleVisualUpdateForPaintInvalidationIfNeeded(void)
+{
+    if (m_currentUpdateLifecyclePhasesTargetState < DocumentLifecycle::kPrePaintClean
+        || Lifecycle().GetState() >= DocumentLifecycle::kPrePaintClean)
+    {
+        // Schedule visual update to process the paint invalidation in the next
+        // cycle.
+        GetFrame().ScheduleVisualUpdateUnlessThrottled();
+    }
+    // Otherwise the paint invalidation will be handled in the pre-paint
+    // phase of this cycle.
+}
+
 void LocalFrameView::SetBaseBackgroundColor(const Color &backgroundColor)
 {
     if (m_baseBackgroundColor == backgroundColor)
@@ -338,11 +607,8 @@ void LocalFrameView::SetBaseBackgroundColor(const Color &backgroundColor)
         }
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
     if (!ShouldThrottleRendering())
-        GetPage()->Animator().ScheduleVisualUpdate(frame_.Get());
-#endif
+        GetPage()->Animator().ScheduleVisualUpdate(m_frame.Get());
 }
 
 void LocalFrameView::SetInitialViewportSize(const IntSize &viewportSize)
@@ -389,7 +655,7 @@ void LocalFrameView::SetLayoutSizeInternal(const IntSize &size)
             textAutosizer->UpdatePageInfoInAllFrames();
     }
 
-    ASSERT(false); // BKTODO: SetNeedsLayout();
+    SetNeedsLayout();
 }
 
 void LocalFrameView::SetNeedsCompositingUpdate(CompositingUpdateType updateType)
@@ -401,6 +667,15 @@ void LocalFrameView::SetNeedsCompositingUpdate(CompositingUpdateType updateType)
     }
 }
 
+void LocalFrameView::SetNeedsLayout(void)
+{
+    if (LayoutView *layoutView = GetLayoutView())
+    {
+        if (CheckLayoutInvalidationIsAllowed())
+            layoutView->SetNeedsLayout(LayoutInvalidationReason::kUnknown);
+    }
+}
+
 void LocalFrameView::SetSelfVisible(bool visible)
 {
     if (visible != m_selfVisible)
@@ -408,7 +683,7 @@ void LocalFrameView::SetSelfVisible(bool visible)
         // Frame view visibility affects PLC::CanBeComposited, which in turn
         // affects compositing inputs.
         if (LayoutView *view = GetLayoutView())
-            ASSERT(false); // BKTODO: view->Layer()->SetNeedsCompositingInputsUpdate();
+            view->Layer()->SetNeedsCompositingInputsUpdate();
     }
     m_selfVisible = visible;
 }
@@ -456,6 +731,12 @@ void LocalFrameView::Show(void)
     }
 }
 
+void LocalFrameView::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_autoSizeInfo);
+    FrameView::Trace(visitor);
+}
+
 void LocalFrameView::UpdateBaseBackgroundColorRecursively(const Color &baseBackgroundColor)
 {
 #if 0 // BKTODO: Check the logic
@@ -470,7 +751,205 @@ void LocalFrameView::UpdateBaseBackgroundColorRecursively(const Color &baseBackg
 
 void LocalFrameView::UpdateCountersAfterStyleChange(void)
 {
-    ASSERT(false); // BKTODO:
+    GetLayoutView()->UpdateCounters();
+}
+
+void LocalFrameView::UpdateDocumentAnnotatedRegions(void) const
+{
+#if 0 // BKTODO: Check if necessary.
+    Document *document = m_frame->GetDocument();
+    if (!document->HasAnnotatedRegions())
+        return;
+    Vector<AnnotatedRegionValue> new_regions;
+    CollectAnnotatedRegions(*(document->GetLayoutBox()), new_regions);
+    if (new_regions == document->AnnotatedRegions())
+        return;
+    document->SetAnnotatedRegions(new_regions);
+
+    DCHECK(frame_->Client());
+    frame_->Client()->AnnotatedRegionsChanged();
+#endif
+}
+
+void LocalFrameView::UpdateLayout(void)
+{
+    // We should never layout a Document which is not in a LocalFrame.
+    ASSERT(m_frame);
+    ASSERT(m_frame->View() == this);
+    ASSERT(nullptr != m_frame->GetPage());
+    ASSERT(!m_frame->Client()->IsCrawler());
+
+    {
+        ScriptForbiddenScope forbidScript;
+
+        if (IsInPerformLayout() || ShouldThrottleRendering() || !m_frame->GetDocument()->IsActive())
+            return;
+
+        // The actual call to UpdateGeometries is in PerformPostLayoutTasks.
+        SetNeedsUpdateGeometries();
+
+        if (m_autoSizeInfo)
+            ASSERT(false); // BKTODO: m_autoSizeInfo->AutoSizeIfNeeded();
+
+        m_hasPendingLayout = false;
+
+        Document *document = m_frame->GetDocument();
+
+        PerformPreLayoutTasks();
+
+        VisualViewport &visualViewport = m_frame->GetPage()->GetVisualViewport();
+        DoubleSize viewportSize(visualViewport.VisibleWidthCSSPx(), visualViewport.VisibleHeightCSSPx());
+
+        // TODO(crbug.com/460956): The notion of a single root for layout is no
+        // longer applicable. Remove or update this code.
+        LayoutView *layoutView = GetLayoutView();
+        LayoutObject *rootForThisLayout = layoutView;
+
+        FontCachePurgePreventer fontCachePurgePreventer;
+        {
+            base::AutoReset<bool> changeSchedulingEnabled(&m_layoutSchedulingEnabled, false);
+            ++m_nestedLayoutCount;
+
+            // If the layout view was marked as needing layout after we added items in
+            // the subtree roots we need to clear the roots and do the layout from the
+            // layoutView.
+            if (layoutView->NeedsLayout())
+                ClearLayoutSubtreeRootsAndMarkContainingBlocks();
+            layoutView->ClearHitTestCache();
+
+            bool inSubtreeLayout = IsSubtreeLayout();
+
+            // TODO(crbug.com/460956): The notion of a single root for layout is no
+            // longer applicable. Remove or update this code.
+            if (inSubtreeLayout)
+                rootForThisLayout = m_layoutSubtreeRootList.RandomRoot();
+
+            if (nullptr == rootForThisLayout)
+            {
+                // FIXME: Do we need to set m_size here?
+                NOTREACHED();
+                return;
+            }
+
+            if (!inSubtreeLayout)
+            {
+                ClearLayoutSubtreeRootsAndMarkContainingBlocks();
+                Node *body = document->body();
+                if (nullptr != body)
+                {
+                    if (LayoutObject *bodyLayoutObject = body->GetLayoutObject())
+                    {
+                        if (IsHTMLBodyElement(*body))
+                        {
+                            if (!m_firstLayout && m_size.Height() != GetLayoutSize().Height()
+                                && bodyLayoutObject->EnclosingBox()->StretchesToViewport())
+                            {
+                                bodyLayoutObject->SetChildNeedsLayout();
+                            }
+                        }
+                    }
+                }
+
+                if (m_firstLayout)
+                {
+                    m_firstLayout = false;
+                    m_lastViewportSize = GetLayoutSize();
+                    m_lastZoomFactor = GetLayoutView()->StyleRef().Zoom();
+
+                    ScrollbarMode hMode;
+                    ScrollbarMode vMode;
+                    GetLayoutView()->CalculateScrollbarModes(hMode, vMode);
+                    if (kScrollbarAuto == vMode)
+                        GetLayoutView()->GetScrollableArea()->ForceVerticalScrollbarForFirstLayout();
+                }
+
+                LayoutSize oldSize = m_size;
+
+                m_size = LayoutSize(GetLayoutSize());
+
+                if (oldSize != m_size && !m_firstLayout)
+                {
+                    LayoutBox *rootLayoutObject = nullptr != document->documentElement()
+                        ? document->documentElement()->GetLayoutBox()
+                        : nullptr;
+                    LayoutBox *bodyLayoutObject = nullptr != rootLayoutObject && nullptr != body
+                        ? body->GetLayoutBox()
+                        : nullptr;
+                    if (nullptr != bodyLayoutObject && bodyLayoutObject->StretchesToViewport())
+                        bodyLayoutObject->SetChildNeedsLayout();
+                    else if (nullptr != rootLayoutObject && rootLayoutObject->StretchesToViewport())
+                        rootLayoutObject->SetChildNeedsLayout();
+                }
+            }
+
+            IntSize oldSize(Size());
+
+            PerformLayout(inSubtreeLayout);
+
+            IntSize newSize(Size());
+            if (oldSize != newSize)
+            {
+                SetNeedsLayout();
+                MarkViewportConstrainedObjectsForLayout(
+                    oldSize.Width() != newSize.Width(),
+                    oldSize.Height() != newSize.Height()
+                );
+            }
+
+            if (NeedsLayout())
+            {
+                base::AutoReset<bool> suppress(&m_suppressAdjustViewSize, true);
+                UpdateLayout();
+            }
+
+            ASSERT(m_layoutSubtreeRootList.IsEmpty());
+        }  // Reset m_layoutSchedulingEnabled to its previous value.
+        CheckDoesNotNeedLayout();
+
+        DocumentLifecycle::Scope lifecycleScope(Lifecycle(), DocumentLifecycle::kLayoutClean);
+
+        // FIXME: Could find the common ancestor layer of all dirty subtrees and
+        // mark from there. crbug.com/462719
+        layoutView->EnclosingLayer()->UpdateLayerPositionsAfterLayout();
+
+        layoutView->Compositor()->DidLayout();
+
+#if 0 // BKTODO: Check if necessary.
+        if (AXObjectCache* cache = document->ExistingAXObjectCache()) {
+            const KURL& url = document->Url();
+            if (url.IsValid() && !url.IsAboutBlankURL()) {
+                cache->HandleLayoutComplete(document);
+                cache->ProcessUpdatesAfterLayout(*document);
+            }
+        }
+#endif
+        UpdateDocumentAnnotatedRegions();
+        CheckDoesNotNeedLayout();
+
+        if (1 == m_nestedLayoutCount)
+        {
+            PerformPostLayoutTasks();
+            CheckDoesNotNeedLayout();
+        }
+
+        --m_nestedLayoutCount;
+        if (0 != m_nestedLayoutCount)
+            return;
+
+#if DCHECK_IS_ON()
+        // Post-layout assert that nobody was re-marked as needing layout during
+        // layout.
+        layoutView->AssertSubtreeIsLaidOut();
+#endif
+
+        // Scrollbars changing state can cause a visual viewport size change.
+        DoubleSize newViewportSize(visualViewport.VisibleWidthCSSPx(), visualViewport.VisibleHeightCSSPx());
+        if (newViewportSize != viewportSize)
+            m_frame->GetDocument()->EnqueueVisualViewportResizeEvent();
+    }  // ScriptForbiddenScope
+
+    GetFrame().GetDocument()->LayoutUpdated();
+    CheckDoesNotNeedLayout();
 }
 
 void LocalFrameView::UpdateRenderThrottlingStatus(
@@ -518,6 +997,17 @@ FloatSize LocalFrameView::ViewportSizeForViewportUnits(void) const
 #endif
 
     return layoutSize;
+}
+
+bool LocalFrameView::WasViewportResized(void)
+{
+    ASSERT(m_frame);
+    if (LayoutView *layoutView = GetLayoutView())
+    {
+        return GetLayoutSize() != m_lastViewportSize
+            || layoutView->StyleRef().Zoom() != m_lastZoomFactor;
+    }
+    return false;
 }
 
 void LocalFrameView::WillBeRemovedFromFrame(void)

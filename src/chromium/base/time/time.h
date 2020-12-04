@@ -262,6 +262,7 @@ public:
     TimeTicks(void) : TimeBase(0) {}
 
     static TimeTicks Now(void);
+    static TimeTicks FromInternalValue(int64_t us) { return TimeTicks(us); }
 private:
     friend class time_internal::TimeBase<TimeTicks>;
 

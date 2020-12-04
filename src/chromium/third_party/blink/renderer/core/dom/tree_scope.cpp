@@ -44,6 +44,8 @@
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/css/resolver/scoped_style_resolver.h"
+#   include "third_party/blink/renderer/core/css/style_change_reason.h"
+#   include "third_party/blink/renderer/core/dom/element_traversal.h"
 #   include "third_party/blink/renderer/core/dom/shadow_root.h"
 #endif
 
@@ -160,6 +162,23 @@ Element* TreeScope::AdjustedFocusedElement(void) const
 bool TreeScope::HasAdoptedStyleSheets(void) const
 {
     return m_adoptedStyleSheets && m_adoptedStyleSheets->length() > 0;
+}
+
+void TreeScope::SetNeedsStyleRecalcForViewportUnits(void)
+{
+    for (Element *element = ElementTraversal::FirstWithin(RootNode());
+        nullptr != element;
+        element = ElementTraversal::NextIncludingPseudo(*element))
+    {
+        if (ShadowRoot *root = element->GetShadowRoot())
+            root->SetNeedsStyleRecalcForViewportUnits();
+
+        const ComputedStyle *style = element->GetComputedStyle();
+        if (nullptr == style || !style->HasViewportUnits())
+            continue;
+
+        element->SetNeedsStyleRecalc(kLocalStyleChange, StyleChangeReasonForTracing::Create(StyleChangeReason::kViewportUnits));
+    }
 }
 #endif
 

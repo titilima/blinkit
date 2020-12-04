@@ -55,6 +55,13 @@ class DocumentInit;
 class LocalFrame;
 class Navigator;
 
+#ifndef BLINKIT_CRAWLER_ONLY
+enum PageshowEventPersistence {
+    kPageshowEventNotPersisted = 0,
+    kPageshowEventPersisted = 1
+};
+#endif
+
 class LocalDOMWindow final : public DOMWindow
 {
 public:
@@ -78,6 +85,10 @@ public:
 
     DispatchEventResult DispatchEvent(Event &event, EventTarget *target);
     void DispatchWindowLoadEvent(void);
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    void EnqueuePageshowEvent(PageshowEventPersistence persisted);
+#endif
 
     void DocumentWasClosed(void);
     void FinishedLoading(void);

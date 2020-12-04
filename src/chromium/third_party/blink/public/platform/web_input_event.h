@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: web_input_event.h
+// Description: WebInputEvent Class
+//      Author: Ziming Li
+//     Created: 2020-12-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -298,7 +309,7 @@ class WebInputEvent {
   static const int kInputModifiers =
       kShiftKey | kControlKey | kAltKey | kMetaKey;
 
-  static constexpr base::TimeTicks GetStaticTimeStampForTests() {
+  static base::TimeTicks GetStaticTimeStampForTests() {
     // Note: intentionally use a relatively large delta from base::TimeTicks ==
     // 0. Otherwise, code that tracks the time ticks of the last event that
     // happened and computes a delta might get confused when the testing

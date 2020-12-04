@@ -16,10 +16,13 @@
 
 namespace blink {
 
-class FrameView
+class FrameView : public GarbageCollectedFinalized<FrameView>
 {
 public:
+    BK_DECLARE_GC_NAME(FrameView)
+
     virtual ~FrameView(void) = default;
+    virtual void Trace(Visitor *visitor) {}
 
     virtual void Show(void) = 0;
 };

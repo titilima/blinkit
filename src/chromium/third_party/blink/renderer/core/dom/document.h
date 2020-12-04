@@ -87,11 +87,14 @@ class ScriptRunner;
 class SelectorQueryCache;
 class Text;
 #ifndef BLINKIT_CRAWLER_ONLY
+class AnimationClock;
 class CSSStyleSheet;
+class DocumentTimeline;
 class HTMLBodyElement;
 class HTMLImportsController;
 class LayoutView;
 class LocalFrameView;
+class MediaQueryMatcher;
 class Page;
 enum class PageVisibilityState;
 class PropertyRegistry;
@@ -166,6 +169,8 @@ public:
     TextAutosizer* GetTextAutosizer(void);
     StyleResolver* GetStyleResolver(void) const;
     StyleResolver& EnsureStyleResolver(void) const;
+    AnimationClock& GetAnimationClock(void);
+    DocumentTimeline& Timeline(void) const { return *m_timeline; }
     VisitedLinkState& GetVisitedLinkState(void) const { return *m_visitedLinkState; }
     UserActionElementSet& UserActionElements(void) { return m_userActionElements; }
     const UserActionElementSet& UserActionElements(void) const { return m_userActionElements; }
@@ -414,6 +419,8 @@ public:
 
     bool HasViewportUnits(void) const { return m_hasViewportUnits; }
     void SetHasViewportUnits(void) { m_hasViewportUnits = true; }
+    void SetResizedForViewportUnits(void);
+    void ClearResizedForViewportUnits(void);
 
     // A non-null template_document_host_ implies that |this| was created by
     // EnsureTemplateDocument().
@@ -434,6 +441,7 @@ public:
     void UpdateStyleAndLayoutTree(void);
     void UpdateStyleAndLayoutTreeForNode(const Node *node);
     void ScheduleLayoutTreeUpdateIfNeeded(void);
+    void LayoutUpdated(void);
 
     RootScrollerController& GetRootScrollerController(void) const
     {
@@ -457,6 +465,8 @@ public:
     ReattachLegacyLayoutObjectList& GetReattachLegacyLayoutObjectList(void);
 
     ViewportData& GetViewportData(void) const { return *m_viewportData; }
+
+    void EnqueueVisualViewportResizeEvent(void);
 
 #   if DCHECK_IS_ON()
     unsigned& SlotAssignmentRecalcForbiddenRecursionDepth(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth; }
@@ -629,12 +639,15 @@ private:
 
     Member<CSSStyleSheet> m_elemSheet;
     Member<StyleEngine> m_styleEngine;
+    Member<MediaQueryMatcher> m_mediaQueryMatcher;
 
     bool m_hasNodesWithPlaceholderStyle = false;
     bool m_evaluateMediaQueriesOnStyleRecalc = false;
     bool m_hasViewportUnits = false;
 
     std::shared_ptr<V0CustomElementRegistrationContext> m_registrationContext;
+
+    Member<DocumentTimeline> m_timeline;
 
     TextLinkColors m_textLinkColors;
     const std::unique_ptr<VisitedLinkState> m_visitedLinkState;

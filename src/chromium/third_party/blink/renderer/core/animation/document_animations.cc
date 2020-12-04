@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: document_animations.cc
+// Description: DocumentAnimations Class
+//      Author: Ziming Li
+//     Created: 2020-12-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -33,13 +44,13 @@
 #include "third_party/blink/renderer/core/animation/animation_clock.h"
 #include "third_party/blink/renderer/core/animation/document_timeline.h"
 #include "third_party/blink/renderer/core/animation/pending_animations.h"
-#include "third_party/blink/renderer/core/animation/worklet_animation_controller.h"
+// BKTODO: #include "third_party/blink/renderer/core/animation/worklet_animation_controller.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/node.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
-#include "third_party/blink/renderer/platform/animation/compositor_animation_host.h"
+// BKTODO: #include "third_party/blink/renderer/platform/animation/compositor_animation_host.h"
 
 namespace blink {
 
@@ -47,7 +58,7 @@ namespace {
 
 void UpdateAnimationTiming(Document& document, TimingUpdateReason reason) {
   document.Timeline().ServiceAnimations(reason);
-  document.GetWorkletAnimationController().UpdateAnimationTimings(reason);
+  ASSERT(false); // BKTODO: document.GetWorkletAnimationController().UpdateAnimationTimings(reason);
 }
 
 }  // namespace
@@ -67,6 +78,7 @@ void DocumentAnimations::UpdateAnimationTimingIfNeeded(Document& document) {
     UpdateAnimationTiming(document, kTimingUpdateOnDemand);
 }
 
+#if 0 // BKTODO:
 void DocumentAnimations::UpdateAnimations(
     Document& document,
     DocumentLifecycle::LifecycleState required_lifecycle_state,
@@ -97,5 +109,6 @@ void DocumentAnimations::UpdateAnimations(
 
   document.Timeline().ScheduleNextService();
 }
+#endif
 
 }  // namespace blink
