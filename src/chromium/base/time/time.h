@@ -136,7 +136,7 @@ public:
         return T(time_internal::SaturatedAdd(delta, m_us));
     }
     T operator-(TimeDelta delta) const {
-        return T(time_internal::SaturatedSub(delta, m_us));
+        return T(-time_internal::SaturatedSub(delta, m_us));
     }
     TimeDelta operator-(T other) const {
         return TimeDelta::FromMicroseconds(m_us - other.m_us);
