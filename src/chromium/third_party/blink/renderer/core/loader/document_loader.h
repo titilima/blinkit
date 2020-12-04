@@ -51,6 +51,9 @@
 #include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
 #include "third_party/blink/renderer/platform/loader/fetch/substitute_data.h"
 #include "third_party/blink/renderer/platform/wtf/time.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/loader/document_load_timing.h"
+#endif
 
 namespace blink {
 
@@ -76,6 +79,10 @@ public:
     const GURL& Url(void) const { return m_currentRequest.Url(); }
     WebFrameLoadType LoadType(void) const { return m_loadType; }
     void SetLoadType(WebFrameLoadType loadType) { m_loadType = loadType; }
+#ifndef BLINKIT_CRAWLER_ONLY
+    DocumentLoadTiming& GetTiming(void) { return m_documentLoadTiming; }
+    const DocumentLoadTiming& GetTiming(void) const { return m_documentLoadTiming; }
+#endif
 
     void AppendRedirect(const GURL &url) { m_redirectChain.push_back(url); }
 
@@ -134,6 +141,10 @@ private:
     SubstituteData m_substituteData;
     ResourceResponse m_response;
     WebFrameLoadType m_loadType = WebFrameLoadType::kStandard;
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    DocumentLoadTiming m_documentLoadTiming;
+#endif
 
     enum State { kNotStarted, kProvisional, kCommitted, kSentDidFinishLoad };
     State m_state = kNotStarted;
