@@ -47,8 +47,8 @@ public:
     }
 };
 
-template <typename K, typename V>
-class HeapHashMap : public std::unordered_map<K, V>
+template <typename K, typename V, typename H = std::hash<K>>
+class HeapHashMap : public std::unordered_map<K, V, H>
 {
 public:
     bool IsEmpty(void) const { return this->empty(); }
@@ -61,8 +61,8 @@ public:
     void ReserveCapacityForSize(size_t size) {}
 };
 
-template <typename K, typename T>
-class HeapHashMap<K, Member<T>> : public std::unordered_map<K, Member<T>>
+template <typename K, typename T, typename H>
+class HeapHashMap<K, Member<T>, H> : public std::unordered_map<K, Member<T>, H>
 {
 public:
     bool IsEmpty(void) const { return this->empty(); }
