@@ -118,14 +118,12 @@ int64_t TimeDelta::InMilliseconds(void) const
 
 double TimeDelta::InMillisecondsF(void) const
 {
-    assert(false); // BKTODO:
-    return 0;
+    return DivideOrMax<double>(Time::kMicrosecondsPerMillisecond);
 }
 
 double TimeDelta::InSecondsF(void) const
 {
-    assert(false); // BKTODO:
-    return 0;
+    return DivideOrMax<double>(Time::kMicrosecondsPerSecond);
 }
 
 }  // namespace base
