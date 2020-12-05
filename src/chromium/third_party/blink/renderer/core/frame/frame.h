@@ -65,8 +65,6 @@ public:
     virtual ~Frame(void);
     virtual void Trace(Visitor *visitor);
 
-    virtual bool IsLocalFrame(void) const = 0;
-
     FrameClient* Client(void) const { return m_client; }
     DOMWindow* DomWindow(void) const { return m_domWindow.Get(); }
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -88,6 +86,9 @@ public:
 #ifndef BLINKIT_CRAWLER_ONLY
     TouchAction InheritedEffectiveTouchAction(void) const { return m_inheritedEffectiveTouchAction; }
 #endif
+
+    constexpr bool IsLocalFrame(void) const { return true; } // Just a placeholder.
+    constexpr bool IsMainFrame(void) const { return true; }  // Just a placeholder.
 protected:
     Frame(FrameClient *client, Page *page);
 

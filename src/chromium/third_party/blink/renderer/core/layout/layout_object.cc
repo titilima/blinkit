@@ -511,12 +511,8 @@ bool LayoutObject::HasClipRelatedProperty() const {
 }
 
 bool LayoutObject::IsRenderedLegend() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   if (!IsBox() || !IsHTMLLegendElement(GetNode()))
     return false;
-#endif
   if (IsFloatingOrOutOfFlowPositioned())
     return false;
   const auto* parent = Parent();
@@ -526,13 +522,9 @@ bool LayoutObject::IsRenderedLegend() const {
     if (parent->IsAnonymous() && parent->Parent()->IsLayoutNGFieldset())
       parent = parent->Parent();
   }
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return parent && parent->IsLayoutBlock() &&
          IsHTMLFieldSetElement(parent->GetNode()) &&
          LayoutFieldset::FindInFlowLegend(*ToLayoutBlock(parent)) == this;
-#endif
 }
 
 LayoutObject* LayoutObject::NextInPreOrderAfterChildren() const {

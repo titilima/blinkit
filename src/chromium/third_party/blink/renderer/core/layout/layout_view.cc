@@ -168,16 +168,16 @@ bool LayoutView::HitTestNoLifecycleUpdate(const HitTestLocation& location,
     LocalFrameView* frame_view = GetFrameView();
     LayoutRect hit_test_area;
     if (frame_view) {
-      ASSERT(false); // BKTODO:
-#if 0
       // Start with a rect sized to the frame, to ensure we include the
       // scrollbars.
       hit_test_area = LayoutRect(LayoutPoint(), LayoutSize(frame_view->Size()));
       if (result.GetHitTestRequest().IgnoreClipping()) {
+        ASSERT(false); // BKTODO:
+#if 0
         hit_test_area.Unite(
             frame_view->DocumentToFrame(LayoutRect(DocumentRect())));
-      }
 #endif
+      }
     }
 
     hit_layer = Layer()->HitTest(location, result, hit_test_area);
@@ -297,8 +297,7 @@ void LayoutView::SetShouldDoFullPaintInvalidationOnResizeIfNeeded(
 }
 
 bool LayoutView::ShouldPlaceBlockDirectionScrollbarOnLogicalLeft() const {
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   LocalFrame& frame = GetFrameView()->GetFrame();
   // See crbug.com/249860
   if (frame.IsMainFrame())
@@ -339,8 +338,7 @@ void LayoutView::UpdateBlockLayout(bool relayout_children) {
         layout_scope.SetChildNeedsLayout(child);
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
     if (GetDocument().SvgExtensions())
       GetDocument()
           .AccessSVGExtensions()
@@ -355,11 +353,8 @@ void LayoutView::UpdateBlockLayout(bool relayout_children) {
 }
 
 void LayoutView::UpdateLayout() {
-  ASSERT(false); // BKTODO:
-#if 0
   if (!GetDocument().Printing())
     SetPageLogicalHeight(LayoutUnit());
-#endif
 
   // TODO(wangxianzhu): Move this into ViewPaintInvalidator.
   SetShouldDoFullPaintInvalidationOnResizeIfNeeded(
@@ -505,15 +500,12 @@ void LayoutView::MapAncestorToLocal(const LayoutBoxModelObject* ancestor,
 
 void LayoutView::ComputeSelfHitTestRects(Vector<LayoutRect>& rects,
                                          const LayoutPoint&) const {
-  ASSERT(false); // BKTODO:
-#if 0
   // Record the entire size of the contents of the frame. Note that we don't
   // just use the viewport size (containing block) here because we want to
   // ensure this includes all children (so we can avoid walking them
   // explicitly).
   rects.push_back(
       LayoutRect(LayoutPoint::Zero(), LayoutSize(GetFrameView()->Size())));
-#endif
 }
 
 void LayoutView::Paint(const PaintInfo& paint_info) const {
@@ -839,11 +831,7 @@ LayoutUnit LayoutView::ViewLogicalHeightForPercentages() const {
 }
 
 float LayoutView::ZoomFactor() const {
-  ASSERT(false); // BKTODO:
-  return 1;
-#if 0
   return frame_view_->GetFrame().PageZoomFactor();
-#endif
 }
 
 const LayoutBox& LayoutView::RootBox() const {
@@ -855,8 +843,6 @@ const LayoutBox& LayoutView::RootBox() const {
 }
 
 void LayoutView::UpdateAfterLayout() {
-  ASSERT(false); // BKTODO:
-#if 0
   // Unlike every other layer, the root PaintLayer takes its size from the
   // layout viewport size.  The call to AdjustViewSize() will update the
   // frame's contents size, which will also update the page's minimum scale
@@ -864,13 +850,15 @@ void LayoutView::UpdateAfterLayout() {
   // size based on the page minimum scale factor, and then update the
   // LocalFrameView with the new size.
   LocalFrame& frame = GetFrameView()->GetFrame();
+  ASSERT(false); // BKTODO:
+#if 0
   if (!GetDocument().Printing())
     GetFrameView()->AdjustViewSize();
   if (frame.IsMainFrame())
     frame.GetChromeClient().ResizeAfterLayout();
+#endif
   if (HasOverflowClip())
     GetScrollableArea()->ClampScrollOffsetAfterOverflowChange();
-#endif
   LayoutBlockFlow::UpdateAfterLayout();
 }
 
@@ -910,13 +898,13 @@ IntervalArena* LayoutView::GetIntervalArena() {
 }
 
 bool LayoutView::BackgroundIsKnownToBeOpaqueInRect(const LayoutRect&) const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   // FIXME: Remove this main frame check. Same concept applies to subframes too.
   if (!GetFrame()->IsMainFrame())
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return frame_view_->HasOpaqueBackground();
 #endif
 }
@@ -1020,8 +1008,6 @@ void LayoutView::OverrideTickmarks(const Vector<IntRect>& tickmarks) {
 }
 
 void LayoutView::InvalidatePaintForTickmarks() {
-  ASSERT(false); // BKTODO:
-#if 0
   ScrollableArea* scrollable_area = GetScrollableArea();
   if (!scrollable_area)
     return;
@@ -1029,7 +1015,6 @@ void LayoutView::InvalidatePaintForTickmarks() {
   if (!scrollbar)
     return;
   scrollbar->SetNeedsPaintInvalidation(static_cast<ScrollbarPart>(~kThumbPart));
-#endif
 }
 
 }  // namespace blink

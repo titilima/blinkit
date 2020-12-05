@@ -228,7 +228,7 @@ class CORE_EXPORT LayoutBlockFlow : public LayoutBlock {
   void MarkSiblingsWithFloatsForLayout(LayoutBox* float_to_remove = nullptr);
 
   bool ContainsFloats() const {
-    ASSERT(false); // BKTODO:
+    ASSERT(!floating_objects_); // BKTODO:
     return false;
 #if 0
     return floating_objects_ && !floating_objects_->Set().empty();

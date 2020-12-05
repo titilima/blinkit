@@ -24,6 +24,7 @@
 #include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 
 // Used to check for dirty layouts violating document lifecycle rules.
 // If arg evaluates to true, the program will continue. If arg evaluates to
@@ -57,6 +58,12 @@ void LocalFrameView::AddResizerArea(LayoutBox &resizerBox)
 void LocalFrameView::AddScrollableArea(PaintLayerScrollableArea *scrollableArea)
 {
     ASSERT(false); // BKTODO:
+}
+
+void LocalFrameView::AddScrollbar(Scrollbar *scrollbar)
+{
+    ASSERT(!m_scrollbars.Contains(scrollbar));
+    m_scrollbars.insert(scrollbar);
 }
 
 void LocalFrameView::AddViewportConstrainedObject(LayoutObject &object)
@@ -285,6 +292,11 @@ bool LocalFrameView::IsInPerformLayout(void) const
     return Lifecycle().GetState() == DocumentLifecycle::kInPerformLayout;
 }
 
+void LocalFrameView::LayoutFromRootObject(LayoutObject &root)
+{
+    ASSERT(false); // BKTODO:
+}
+
 bool LocalFrameView::LayoutPending(void) const
 {
     // FIXME: This should check Document::lifecycle instead.
@@ -375,22 +387,24 @@ void LocalFrameView::PerformLayout(bool inSubtreeLayout)
     ASSERT(inSubtreeLayout || m_layoutSubtreeRootList.IsEmpty());
 
     int contentsHeightBeforeLayout = GetLayoutView()->DocumentRect().Height();
-#if 0 // BKTODO:
+#if 0 // BKTODO: Check if necessary.
     PrepareLayoutAnalyzer();
+#endif
 
-    ScriptForbiddenScope forbid_script;
+    ScriptForbiddenScope forbidScript;
 
-    if (in_subtree_layout && HasOrthogonalWritingModeRoots()) {
+    if (inSubtreeLayout && HasOrthogonalWritingModeRoots())
+    {
         // If we're going to lay out from each subtree root, rather than once from
         // LayoutView, we need to merge the depth-ordered orthogonal writing mode
         // root list into the depth-ordered list of subtrees scheduled for
         // layout. Otherwise, during layout of one such subtree, we'd risk skipping
         // over a subtree of objects needing layout.
-        DCHECK(!layout_subtree_root_list_.IsEmpty());
-        ScheduleOrthogonalWritingModeRootsForLayout();
+        ASSERT(!m_layoutSubtreeRootList.IsEmpty());
+        ASSERT(false); // BKTODO: ScheduleOrthogonalWritingModeRootsForLayout();
     }
 
-    DCHECK(!IsInPerformLayout());
+    ASSERT(!IsInPerformLayout());
     Lifecycle().AdvanceTo(DocumentLifecycle::kInPerformLayout);
 
     // performLayout is the actual guts of layout().
@@ -400,13 +414,17 @@ void LocalFrameView::PerformLayout(bool inSubtreeLayout)
 
     {
         // TODO(szager): Remove this after diagnosing crash.
-        DocumentLifecycle::CheckNoTransitionScope check_no_transition(Lifecycle());
-        if (in_subtree_layout) {
+        DocumentLifecycle::CheckNoTransitionScope checkNoTransition(Lifecycle());
+        if (inSubtreeLayout)
+        {
+#if 0 // BKTODO: Check if necessary.
             if (analyzer_) {
                 analyzer_->Increment(LayoutAnalyzer::kPerformLayoutRootLayoutObjects,
                     layout_subtree_root_list_.size());
             }
-            for (auto& root : layout_subtree_root_list_.Ordered()) {
+#endif
+            for (auto &root : m_layoutSubtreeRootList.Ordered())
+            {
                 if (!root->NeedsLayout())
                     continue;
                 LayoutFromRootObject(*root);
@@ -414,22 +432,24 @@ void LocalFrameView::PerformLayout(bool inSubtreeLayout)
                 // We need to ensure that we mark up all layoutObjects up to the
                 // LayoutView for paint invalidation. This simplifies our code as we
                 // just always do a full tree walk.
-                if (LayoutObject* container = root->Container())
+                if (LayoutObject *container = root->Container())
                     container->SetShouldCheckForPaintInvalidation();
             }
-            layout_subtree_root_list_.Clear();
+            m_layoutSubtreeRootList.Clear();
         }
-        else {
+        else
+        {
             if (HasOrthogonalWritingModeRoots())
-                LayoutOrthogonalWritingModeRoots();
+                ASSERT(false); // BKTODO: LayoutOrthogonalWritingModeRoots();
             GetLayoutView()->UpdateLayout();
         }
     }
 
-    frame_->GetDocument()->Fetcher()->UpdateAllImageResourcePriorities();
+    m_frame->GetDocument()->Fetcher()->UpdateAllImageResourcePriorities();
 
     Lifecycle().AdvanceTo(DocumentLifecycle::kAfterPerformLayout);
 
+#if 0 // BKTODO: Check if necessary.
     FirstMeaningfulPaintDetector::From(*frame_->GetDocument())
         .MarkNextPaintAsMeaningfulIfNeeded(
             layout_object_counter_, contents_height_before_layout,
@@ -535,6 +555,12 @@ void LocalFrameView::RemoveScrollableArea(PaintLayerScrollableArea *scrollableAr
         return;
 
     ASSERT(false); // BKTODO:
+}
+
+void LocalFrameView::RemoveScrollbar(Scrollbar *scrollbar)
+{
+    ASSERT(m_scrollbars.Contains(scrollbar));
+    m_scrollbars.erase(scrollbar);
 }
 
 void LocalFrameView::RemoveViewportConstrainedObject(LayoutObject &object)
@@ -734,6 +760,7 @@ void LocalFrameView::Show(void)
 void LocalFrameView::Trace(Visitor *visitor)
 {
     visitor->Trace(m_autoSizeInfo);
+    visitor->Trace(m_scrollbars);
     FrameView::Trace(visitor);
 }
 

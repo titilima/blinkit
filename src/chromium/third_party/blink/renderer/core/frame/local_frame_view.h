@@ -17,6 +17,7 @@
 #include <unordered_set>
 #include "third_party/blink/renderer/core/frame/frame_view.h"
 #include "third_party/blink/renderer/core/frame/layout_subtree_root_list.h"
+#include "third_party/blink/renderer/core/layout/depth_ordered_layout_object_list.h"
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/blink/renderer/platform/geometry/layout_size.h"
@@ -62,6 +63,9 @@ public:
     // For non-root frames, this will be the ScrollableArea of the LayoutView.
     ScrollableArea* GetScrollableArea(void);
 
+    void AddScrollbar(Scrollbar *scrollbar);
+    void RemoveScrollbar(Scrollbar *scrollbar);
+
     bool IsAttached(void) const { return m_isAttached; }
     bool IsSelfVisible(void) const { return m_selfVisible; }
     void SetSelfVisible(bool visible);
@@ -84,6 +88,8 @@ public:
     // returns false.
     bool IsSubtreeLayout(void) const { return !m_layoutSubtreeRootList.IsEmpty(); }
     void ClearLayoutSubtreeRoot(const LayoutObject &root);
+
+    bool HasOrthogonalWritingModeRoots(void) const { return !m_orthogonalWritingModeRootList.IsEmpty(); }
 
     bool LayoutSizeFixedToFrameSize(void) { return m_layoutSizeFixedToFrameSize; }
     // If this is set to false, the layout size will need to be explicitly set by
@@ -198,6 +204,8 @@ private:
 
     bool CheckLayoutInvalidationIsAllowed(void) const;
 
+    void LayoutFromRootObject(LayoutObject &root);
+
     void Show(void) override;
 
     LayoutSize m_size;
@@ -210,6 +218,7 @@ private:
 
     bool m_hasPendingLayout = false;
     LayoutSubtreeRootList m_layoutSubtreeRootList;
+    DepthOrderedLayoutObjectList m_orthogonalWritingModeRootList;
 
     bool m_layoutSchedulingEnabled = true;
     unsigned m_nestedLayoutCount = 0;
@@ -217,6 +226,7 @@ private:
     Member<Node> m_fragmentAnchor;
     std::unique_ptr<ScrollableAreaSet> m_scrollableAreas;
     std::unique_ptr<ScrollableAreaSet> m_animatingScrollableAreas;
+    HeapHashSet<Member<Scrollbar>> m_scrollbars;
     std::unique_ptr<ResizerAreaSet> m_resizerAreas;
     std::unique_ptr<ViewportConstrainedObjectSet> m_viewportConstrainedObjects;
     IntSize m_layoutSize;

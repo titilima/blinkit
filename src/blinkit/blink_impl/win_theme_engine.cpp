@@ -11,12 +11,14 @@
 
 #include "win_theme_engine.h"
 
+#if 0 // BKTODO:
 #include <vsstyle.h>
 #include <SkCanvas.h>
 #include <SkColorPriv.h>
 #include "public/platform/WebRect.h"
 
 #include "win/dib_section.h"
+#endif
 
 using namespace blink;
 
@@ -34,13 +36,16 @@ static HTHEME WINAPI OpenThemeWrapper(HWND h, PCWSTR classList, UINT)
 
 WinThemeEngine::WinThemeEngine(void)
     : m_getMetrics(GetMetricsWrapper)
+#if 0 // BKTODO:
     , m_paint(&WinThemeEngine::PaintByUser32)
+#endif
 {
     HMODULE user32 = GetModuleHandle(TEXT("User32.dll"));
     FARPROC getMetrics = GetProcAddress(user32, "GetSystemMetricsForDpi");
     if (nullptr != getMetrics)
         m_getMetrics = reinterpret_cast<GetMetricsType>(getMetrics);
 
+#if 0 // BKTODO:
     m_uxtheme = LoadLibrary(TEXT("UxTheme.dll"));
     if (nullptr == m_uxtheme)
         return;
@@ -53,14 +58,18 @@ WinThemeEngine::WinThemeEngine(void)
     m_openTheme = reinterpret_cast<OpenThemeType>(GetProcAddress(m_uxtheme, "OpenThemeDataForDpi"));
     if (nullptr == m_openTheme)
         m_openTheme = OpenThemeWrapper;
+#endif
 }
 
 WinThemeEngine::~WinThemeEngine(void)
 {
+#if 0 // BKTODO:
     if (nullptr != m_uxtheme)
         FreeLibrary(m_uxtheme);
+#endif
 }
 
+#if 0 // BKTODO:
 void WinThemeEngine::Draw(HDC hdc, PCWSTR classList, int partId, int stateId, const WebSize &size)
 {
     RECT rc;
@@ -75,40 +84,42 @@ void WinThemeEngine::Draw(HDC hdc, PCWSTR classList, int partId, int stateId, co
     DrawThemeBackground(t, hdc, partId, stateId, &rc, &rc);
     CloseThemeData(t);
 }
+#endif
 
-WebSize WinThemeEngine::getSize(Part part)
+WebSize WinThemeEngine::GetSize(Part part)
 {
     WebSize size;
     switch (part)
     {
-        case PartScrollbarDownArrow:
-        case PartScrollbarUpArrow:
-        case PartScrollbarVerticalThumb:
-        case PartScrollbarVerticalTrack:
+        case kPartScrollbarDownArrow:
+        case kPartScrollbarUpArrow:
+        case kPartScrollbarVerticalThumb:
+        case kPartScrollbarVerticalTrack:
             size.width = m_getMetrics(SM_CXVSCROLL, 96);
             if (0 == size.width)
                 size.width = 17;
             size.height = size.width;
             break;
-        case PartScrollbarLeftArrow:
-        case PartScrollbarRightArrow:
-        case PartScrollbarHorizontalThumb:
-        case PartScrollbarHorizontalTrack:
+        case kPartScrollbarLeftArrow:
+        case kPartScrollbarRightArrow:
+        case kPartScrollbarHorizontalThumb:
+        case kPartScrollbarHorizontalTrack:
             size.height = m_getMetrics(SM_CYHSCROLL, 96);
             if (0 == size.height)
                 size.height = 17;
             size.width = size.height;
             break;
-        case PartCheckbox:
-        case PartRadio:
+        case kPartCheckbox:
+        case kPartRadio:
             size.width = size.height = 13;
             break;
         default:
-            assert(false); // Not reached!
+            NOTREACHED();
     }
     return size;
 }
 
+#if 0 // BKTODO:
 void WinThemeEngine::paint(WebCanvas *canvas, Part part, State state, const WebRect &rect, const ExtraParams *extra)
 {
     if (0 == rect.width || 0 == rect.height)
@@ -358,5 +369,6 @@ void WinThemeEngine::PaintTextFieldByUxTheme(HDC hdc, State state, const WebSize
 
     Draw(hdc, VSCLASS_EDIT, EP_BACKGROUNDWITHBORDER, stateId, size);
 }
+#endif
 
 } // namespace BlinKit

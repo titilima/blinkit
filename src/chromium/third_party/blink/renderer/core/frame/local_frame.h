@@ -119,7 +119,6 @@ private:
     void DisableNavigation(void) { ++m_navigationDisableCount; }
 
     // Frame overrides
-    bool IsLocalFrame(void) const override { return true; }
     void DetachImpl(FrameDetachType type) override;
 
     std::unique_ptr<FrameScheduler> m_frameScheduler;

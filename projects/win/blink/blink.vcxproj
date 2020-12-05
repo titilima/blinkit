@@ -3424,6 +3424,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scrollbar_theme.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scrollbar_theme_aura.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scrollbar_theme_overlay.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scroll_animator_base.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scroll_customization.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\smooth_scroll_sequencer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\applied_text_decoration.h" />

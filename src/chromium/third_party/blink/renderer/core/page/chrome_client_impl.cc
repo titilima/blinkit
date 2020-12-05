@@ -514,9 +514,8 @@ IntRect ChromeClientImpl::ViewportToScreen(
 }
 
 float ChromeClientImpl::WindowToViewportScalar(const float scalar_value) const {
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
+  return scalar_value;
+#if 0 // BKTODO: Check the logic later.
   if (!web_view_->WidgetClient())
     return scalar_value;
   WebFloatRect viewport_rect(0, 0, scalar_value, 0);

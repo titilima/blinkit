@@ -3109,14 +3109,10 @@ bool LayoutBox::SizesLogicalWidthToFitContent(
 }
 
 bool LayoutBox::AutoWidthShouldFitContent() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return GetNode() &&
          (IsHTMLInputElement(*GetNode()) || IsHTMLSelectElement(*GetNode()) ||
           IsHTMLButtonElement(*GetNode()) ||
           IsHTMLTextAreaElement(*GetNode()) || IsRenderedLegend());
-#endif
 }
 
 void LayoutBox::ComputeMarginsForDirection(MarginDirection flow_direction,

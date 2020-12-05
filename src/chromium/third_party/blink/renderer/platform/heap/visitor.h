@@ -97,10 +97,10 @@ struct TracePolicy<std::pair<T1, T2>>
     }
 };
 
-template <typename T, typename K, typename H>
-struct TracePolicy<std::unordered_map<K, T, H>>
+template <typename T, typename K, typename H, typename E>
+struct TracePolicy<std::unordered_map<K, T, H, E>>
 {
-    static void Impl(std::unordered_map<K, T, H> &m, blink::Visitor *visitor)
+    static void Impl(std::unordered_map<K, T, H, E> &m, blink::Visitor *visitor)
     {
         for (auto &it : m)
             visitor->Trace(it.second);

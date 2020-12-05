@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_selector.h
+// Description: FontSelector Class
+//      Author: Ziming Li
+//     Created: 2020-12-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -76,7 +87,6 @@ class PLATFORM_EXPORT FontSelector : public FontCacheClient {
 
  protected:
   static AtomicString FamilyNameFromSettings(
-      const GenericFontFamilySettings&,
       const FontDescription&,
       const AtomicString& generic_family_name);
 };

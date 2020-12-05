@@ -106,9 +106,7 @@
 #include "third_party/blink/renderer/core/paint/find_paint_offset_and_visual_rect_needing_update.h"
 #include "third_party/blink/renderer/core/paint/paint_invalidator.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_fragment.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/scroll/scroll_animator_base.h"
-#endif
 #include "third_party/blink/renderer/core/scroll/scrollbar_theme.h"
 #include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
@@ -235,9 +233,9 @@ void PaintLayerScrollableArea::Dispose() {
 
   
   if (scroll_corner_)
-    ASSERT(false); // BKTODO: scroll_corner_->Destroy();
+    scroll_corner_->Destroy();
   if (resizer_)
-    ASSERT(false); // BKTODO: resizer_->Destroy();
+    resizer_->Destroy();
 
   ClearScrollableArea();
 
@@ -1027,8 +1025,7 @@ void PaintLayerScrollableArea::UpdateAfterLayout() {
 
     Layer()->UpdateSelfPaintingLayer();
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
     // Force an update since we know the scrollbars have changed things.
     if (GetLayoutBox()->GetDocument().HasAnnotatedRegions())
       GetLayoutBox()->GetDocument().SetAnnotatedRegionsDirty(true);
@@ -1156,14 +1153,10 @@ void PaintLayerScrollableArea::DidChangeGlobalRootScroller() {
 }
 
 bool PaintLayerScrollableArea::ShouldPerformScrollAnchoring() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return scroll_anchor_.HasScroller() && GetLayoutBox() &&
          GetLayoutBox()->StyleRef().OverflowAnchor() !=
              EOverflowAnchor::kNone &&
          !GetLayoutBox()->GetDocument().FinishingOrIsPrinting();
-#endif
 }
 
 bool PaintLayerScrollableArea::RestoreScrollAnchor(
@@ -1620,8 +1613,7 @@ bool PaintLayerScrollableArea::SetHasHorizontalScrollbar(bool has_scrollbar) {
 
   SetScrollCornerNeedsPaintInvalidation();
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   // Force an update since we know the scrollbars have changed things.
   if (GetLayoutBox()->GetDocument().HasAnnotatedRegions())
     GetLayoutBox()->GetDocument().SetAnnotatedRegionsDirty(true);
@@ -1651,8 +1643,7 @@ bool PaintLayerScrollableArea::SetHasVerticalScrollbar(bool has_scrollbar) {
 
   SetScrollCornerNeedsPaintInvalidation();
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   // Force an update since we know the scrollbars have changed things.
   if (GetLayoutBox()->GetDocument().HasAnnotatedRegions())
     GetLayoutBox()->GetDocument().SetAnnotatedRegionsDirty(true);
@@ -1928,17 +1919,14 @@ void PaintLayerScrollableArea::UpdateResizerStyle(
                 PseudoStyleRequest(kPseudoIdResizer), style_source.Style())
           : scoped_refptr<ComputedStyle>(nullptr);
   if (resizer) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (!resizer_) {
       resizer_ = LayoutScrollbarPart::CreateAnonymous(
           &GetLayoutBox()->GetDocument(), this);
       resizer_->SetDangerousOneWayParent(GetLayoutBox());
     }
     resizer_->SetStyleWithWritingModeOfParent(std::move(resizer));
-#endif
   } else if (resizer_) {
-    ASSERT(false); // BKTODO: resizer_->Destroy();
+    resizer_->Destroy();
     resizer_ = nullptr;
   }
 }
@@ -2419,12 +2407,12 @@ bool PaintLayerScrollableArea::VisualViewportSuppliesScrollbars() const {
   if (!Settings::ViewportEnabled)
     return false;
 
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   const TopDocumentRootScrollerController& controller =
       GetLayoutBox()->GetDocument().GetPage()->GlobalRootScrollerController();
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return RootScrollerUtil::ScrollableAreaForRootScroller(
              controller.GlobalRootScroller()) == this;
 #endif
@@ -2534,11 +2522,8 @@ Scrollbar* PaintLayerScrollableArea::ScrollbarManager::CreateScrollbar(
                                        ->GetPage()
                                        ->GetChromeClient());
   }
-  ASSERT(false); // BKTODO:
-#if 0
   ScrollableArea()->GetLayoutBox()->GetDocument().View()->AddScrollbar(
       scrollbar);
-#endif
   return scrollbar;
 }
 
@@ -2560,11 +2545,8 @@ void PaintLayerScrollableArea::ScrollbarManager::DestroyScrollbar(
   if (!scrollbar->IsCustomScrollbar())
     ScrollableArea()->WillRemoveScrollbar(*scrollbar, orientation);
 
-  ASSERT(false); // BKTODO:
-#if 0
   ScrollableArea()->GetLayoutBox()->GetDocument().View()->RemoveScrollbar(
       scrollbar);
-#endif
   scrollbar->DisconnectFromScrollableArea();
   scrollbar = nullptr;
 }
@@ -2876,20 +2858,14 @@ void PaintLayerScrollableArea::InvalidatePaintOfScrollControlsIfNeeded(
           paint_invalidation_container)) {
     SetScrollCornerAndResizerVisualRect(scroll_corner_and_resizer_visual_rect);
     if (LayoutScrollbarPart* scroll_corner = ScrollCorner()) {
-      ASSERT(false); // BKTODO:
-#if 0
       ObjectPaintInvalidator(*scroll_corner)
           .InvalidateDisplayItemClientsIncludingNonCompositingDescendants(
               PaintInvalidationReason::kScrollControl);
-#endif
     }
     if (LayoutScrollbarPart* resizer = Resizer()) {
-      ASSERT(false); // BKTODO:
-#if 0
       ObjectPaintInvalidator(*resizer)
           .InvalidateDisplayItemClientsIncludingNonCompositingDescendants(
               PaintInvalidationReason::kScrollControl);
-#endif
     }
   }
 

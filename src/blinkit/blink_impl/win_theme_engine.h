@@ -25,6 +25,7 @@ public:
     WinThemeEngine(void);
     ~WinThemeEngine(void);
 private:
+#if 0 // BKTODO:
     void PaintByUser32(HDC hdc, Part part, State state, const blink::WebSize &size, const ExtraParams *extra);
     void PaintByUxTheme(HDC hdc, Part part, State state, const blink::WebSize &size, const ExtraParams *extra);
     static void PaintScrollbarCorner(HDC hdc, const blink::WebSize &size);
@@ -33,10 +34,33 @@ private:
     void PaintScrollPartByUxTheme(HDC hdc, Part part, State state, const blink::WebSize &size, const ScrollbarTrackExtraParams *extra);
     void PaintTextFieldByUxTheme(HDC hdc, State state, const blink::WebSize &size, const TextFieldExtraParams *extra);
     void Draw(HDC hdc, PCWSTR classList, int partId, int stateId, const blink::WebSize &size);
+#endif
 
-    // blink::WebThemeEngine
-    blink::WebSize getSize(Part part) override;
-    void paint(blink::WebCanvas *canvas, Part part, State state, const blink::WebRect &rect, const ExtraParams *extra) override;
+    // WebThemeEngine
+    blink::WebSize GetSize(Part part) override;
+    bool SupportsNinePatch(Part) const override
+    {
+        ASSERT(false); // BKTODO:
+        return false;
+    }
+    blink::WebSize NinePatchCanvasSize(Part) const override
+    {
+        ASSERT(false); // BKTODO:
+        return blink::WebSize();
+    }
+    blink::WebRect NinePatchAperture(Part) const override
+    {
+        ASSERT(false); // BKTODO:
+        return blink::WebRect();
+    }
+    void GetOverlayScrollbarStyle(ScrollbarStyle *style) override
+    {
+        ASSERT(false); // BKTODO:
+    }
+    void Paint(cc::PaintCanvas*, Part, State, const blink::WebRect&, const ExtraParams*) override
+    {
+        ASSERT(false); // BKTODO:
+    }
 
     typedef int(WINAPI * GetMetricsType)(int, UINT);
     GetMetricsType m_getMetrics;

@@ -380,12 +380,8 @@ bool IsNodeFullyContained(const EphemeralRange& range, const Node& node) {
 // TODO(editing-dev): We should make |SelectionAdjuster| to use this funciton
 // instead of |isSelectionBondary()|.
 bool IsUserSelectContain(const Node& node) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return IsHTMLTextAreaElement(node) || IsHTMLInputElement(node) ||
          IsHTMLSelectElement(node);
-#endif
 }
 
 enum EditableLevel { kEditable, kRichlyEditable };

@@ -22,7 +22,6 @@
 namespace blink {
 
 AtomicString FontSelector::FamilyNameFromSettings(
-    const GenericFontFamilySettings& settings,
     const FontDescription& font_description,
     const AtomicString& generic_family_name) {
 #if defined(OS_ANDROID)

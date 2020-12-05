@@ -417,12 +417,8 @@ class ShadowBoundaryAdjuster final {
   }
 
   static bool IsSelectionBoundary(const Node& node) {
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
     return IsHTMLTextAreaElement(node) || IsHTMLInputElement(node) ||
            IsHTMLSelectElement(node);
-#endif
   }
 
   static Node* EnclosingShadowHostForStart(const PositionInFlatTree& position) {

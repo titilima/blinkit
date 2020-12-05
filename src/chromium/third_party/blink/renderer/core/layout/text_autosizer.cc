@@ -1368,12 +1368,7 @@ TextAutosizer::FingerprintMapper::GetTentativeClusterRoots(
 
 TextAutosizer::LayoutScope::LayoutScope(LayoutBlock* block,
                                         SubtreeLayoutScope* layouter)
-#if 0 // BKTODO:
     : text_autosizer_(block->GetDocument().GetTextAutosizer()), block_(block) {
-#else
-{
-  ASSERT(false);
-#endif
   if (!text_autosizer_)
     return;
 

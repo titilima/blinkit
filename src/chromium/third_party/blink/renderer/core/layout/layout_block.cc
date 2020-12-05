@@ -445,8 +445,6 @@ void LayoutBlock::UpdateAfterLayout() {
 }
 
 void LayoutBlock::UpdateLayout() {
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(!GetScrollableArea() || GetScrollableArea()->GetScrollAnchor());
 
   LayoutAnalyzer::Scope analyzer(*this);
@@ -455,7 +453,6 @@ void LayoutBlock::UpdateLayout() {
       HasOverflowClip() && GetScrollableArea()->ShouldPerformScrollAnchoring();
   if (needs_scroll_anchoring)
     GetScrollableArea()->GetScrollAnchor()->NotifyBeforeLayout();
-#endif
 
   // Table cells call UpdateBlockLayout directly, as does
   // PaintLayerScrollableArea for nested scrollbar layouts. Most logic should be
@@ -536,12 +533,9 @@ void LayoutBlock::ComputeVisualOverflow(
   AddVisualOverflowFromTheme();
 
   if (VisualOverflowRect() != previous_visual_overflow_rect) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (Layer())
       Layer()->SetNeedsCompositingInputsUpdate();
-    GetFrameView()->SetIntersectionObservationState(LocalFrameView::kDesired);
-#endif
+    ASSERT(false); // BKTODO: GetFrameView()->SetIntersectionObservationState(LocalFrameView::kDesired);
   }
 }
 
@@ -757,8 +751,7 @@ bool LayoutBlock::SimplifiedLayout() {
 
   ClearNeedsLayout();
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   if (LayoutAnalyzer* analyzer = GetFrameView()->GetLayoutAnalyzer())
     analyzer->Increment(LayoutAnalyzer::kLayoutObjectsThatNeedSimplifiedLayout);
 #endif
@@ -984,10 +977,7 @@ void LayoutBlock::InsertPositionedObject(LayoutBox* o) {
     if (container_map_it != g_positioned_container_map->end()) {
       if (container_map_it->value == this) {
         DCHECK(HasPositionedObjects());
-        ASSERT(false); // BKTODO:
-#if 0
         DCHECK(PositionedObjects()->Contains(o));
-#endif
         return;
       }
       RemovePositionedObject(o);
@@ -1021,15 +1011,12 @@ void LayoutBlock::RemovePositionedObject(LayoutBox* o) {
   TrackedLayoutBoxListHashSet* positioned_descendants =
       g_positioned_descendants_map->at(container);
   DCHECK(positioned_descendants);
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(positioned_descendants->Contains(o));
   positioned_descendants->erase(o);
   if (positioned_descendants->IsEmpty()) {
     g_positioned_descendants_map->erase(container);
     container->has_positioned_objects_ = false;
   }
-#endif
 
   // Need to clear the anchor of the positioned object in its container box.
   // The anchors are created in the logical container box, not in the CSS
@@ -1100,13 +1087,10 @@ void LayoutBlock::RemovePositionedObjects(
     positioned_descendants->erase(object);
     g_positioned_container_map->erase(object);
   }
-  ASSERT(false); // BKTODO:
-#if 0
   if (positioned_descendants->IsEmpty()) {
     g_positioned_descendants_map->erase(this);
     has_positioned_objects_ = false;
   }
-#endif
 }
 
 void LayoutBlock::AddPercentHeightDescendant(LayoutBox* descendant) {
@@ -1137,13 +1121,10 @@ void LayoutBlock::RemovePercentHeightDescendant(LayoutBox* descendant) {
   if (TrackedLayoutBoxListHashSet* descendants = PercentHeightDescendants()) {
     descendants->erase(descendant);
     descendant->SetPercentHeightContainer(nullptr);
-    ASSERT(false); // BKTODO:
-#if 0
     if (descendants->IsEmpty()) {
       g_percent_height_descendants_map->erase(this);
       has_percent_height_descendants_ = false;
     }
-#endif
   }
 }
 
@@ -1188,13 +1169,9 @@ bool LayoutBlock::IsPointInOverflowControl(
   if (!ScrollsOverflow())
     return false;
 
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return Layer()->GetScrollableArea()->HitTestOverflowControls(
       result, RoundedIntPoint(location_in_container -
                               ToLayoutSize(accumulated_offset)));
-#endif
 }
 
 bool LayoutBlock::HitTestOverflowControl(
@@ -2191,11 +2168,8 @@ bool LayoutBlock::RecalcSelfOverflow() {
                                          : ClientLogicalBottom();
   ComputeOverflow(old_client_after_edge, true);
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (HasOverflowClip())
     Layer()->GetScrollableArea()->UpdateAfterOverflowRecalc();
-#endif
 
   return !HasOverflowClip() || self_needs_overflow_recalc;
 }

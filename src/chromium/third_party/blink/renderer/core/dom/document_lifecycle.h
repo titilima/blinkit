@@ -44,6 +44,7 @@
 
 #pragma once
 
+#include "base/auto_reset.h"
 #include "base/macros.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 
@@ -187,6 +188,14 @@ public:
         AllowThrottlingScope(DocumentLifecycle &lifecycle);
         ~AllowThrottlingScope(void);
         DISALLOW_COPY_AND_ASSIGN(AllowThrottlingScope);
+    };
+    class CheckNoTransitionScope
+    {
+        STACK_ALLOCATED();
+    public:
+        explicit CheckNoTransitionScope(DocumentLifecycle &lifecycle) : m_autoReset(&lifecycle.m_checkNoTransition, true) {}
+    private:
+        base::AutoReset<bool> m_autoReset;
     };
 #endif
 

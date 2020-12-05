@@ -102,19 +102,15 @@ scoped_refptr<FontData> CSSFontSelector::GetFontData(
           font_face_cache_.Get(font_description, family_name))
     return face->GetFontData(font_description);
 
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   // Try to return the correct font based off our settings, in case we were
   // handed the generic font family name.
   AtomicString settings_family_name = FamilyNameFromSettings(
-      generic_font_family_settings_, font_description, family_name);
+      font_description, family_name);
   if (settings_family_name.IsEmpty())
     return nullptr;
 
   return FontCache::GetFontCache()->GetFontData(font_description,
                                                 settings_family_name);
-#endif
 }
 
 void CSSFontSelector::WillUseFontData(const FontDescription& font_description,
@@ -162,6 +158,13 @@ void CSSFontSelector::UpdateGenericFontFamilySettings(Document& document) {
 void CSSFontSelector::ReportNotDefGlyph() const {
   DCHECK(document_);
   UseCounter::Count(document_, WebFeature::kFontShapingNotDefGlyphObserved);
+}
+
+void CSSFontSelector::Trace(blink::Visitor* visitor) {
+  visitor->Trace(document_);
+  visitor->Trace(font_face_cache_);
+  visitor->Trace(clients_);
+  FontSelector::Trace(visitor);
 }
 
 }  // namespace blink

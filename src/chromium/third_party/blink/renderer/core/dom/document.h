@@ -475,7 +475,8 @@ public:
     bool IsSlotAssignmentRecalcForbidden(void) { return false; }
 #   endif
 
-    constexpr bool Printing(void) { return false; } // Just a placeholder.
+    constexpr bool Printing(void) { return false; }              // Just a placeholder.
+    constexpr bool FinishingOrIsPrinting(void) { return false; } // Just a placeholder.
 #endif // BLINKIT_CRAWLER_ONLY
 protected:
     Document(const DocumentInit &initializer);

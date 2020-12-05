@@ -48,9 +48,9 @@
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #if 0 // BKTODO: 
 #include "third_party/blink/renderer/core/scroll/programmatic_scroll_animator.h"
+#endif
 #include "third_party/blink/renderer/core/scroll/scroll_animator_base.h"
 #include "third_party/blink/renderer/core/scroll/scrollbar_theme.h"
-#endif
 #include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
@@ -120,12 +120,9 @@ void ScrollableArea::ClearScrollableArea() {
 }
 
 ScrollAnimatorBase& ScrollableArea::GetScrollAnimator() const {
-  ASSERT(false); // BKTODO:
-#if 0
   if (!scroll_animator_)
     scroll_animator_ =
         ScrollAnimatorBase::Create(const_cast<ScrollableArea*>(this));
-#endif
 
   return *scroll_animator_;
 }
@@ -476,13 +473,10 @@ void ScrollableArea::FinishCurrentScrollAnimations() const {
 
 void ScrollableArea::DidAddScrollbar(Scrollbar& scrollbar,
                                      ScrollbarOrientation orientation) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (orientation == kVerticalScrollbar)
     GetScrollAnimator().DidAddVerticalScrollbar(scrollbar);
   else
     GetScrollAnimator().DidAddHorizontalScrollbar(scrollbar);
-#endif
 
   // <rdar://problem/9797253> AppKit resets the scrollbar's style when you
   // attach a scrollbar
@@ -522,8 +516,6 @@ void ScrollableArea::SetScrollbarOverlayColorTheme(
     ScrollbarOverlayColorTheme overlay_theme) {
   scrollbar_overlay_color_theme_ = overlay_theme;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (Scrollbar* scrollbar = HorizontalScrollbar()) {
     GetPageScrollbarTheme().UpdateScrollbarOverlayColorTheme(*scrollbar);
     scrollbar->SetNeedsPaintInvalidation(kAllParts);
@@ -533,7 +525,6 @@ void ScrollableArea::SetScrollbarOverlayColorTheme(
     GetPageScrollbarTheme().UpdateScrollbarOverlayColorTheme(*scrollbar);
     scrollbar->SetNeedsPaintInvalidation(kAllParts);
   }
-#endif
 }
 
 void ScrollableArea::RecalculateScrollbarOverlayColorTheme(

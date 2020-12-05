@@ -737,4 +737,32 @@ void ResourceFetcher::Trace(Visitor *visitor)
     visitor->Trace(m_context);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+void ResourceFetcher::UpdateAllImageResourcePriorities(void)
+{
+#if 0 // BKTODO: Check if necessary.
+    for (Resource *resource : m_documentResources)
+    {
+        if (nullptr == resource || resource->GetType() != ResourceType::kImage || !resource->IsLoading())
+            continue;
+
+        ResourcePriority resource_priority = resource->PriorityFromObservers();
+        ResourceLoadPriority resource_load_priority = ComputeLoadPriority(
+            ResourceType::kImage, resource->GetResourceRequest(),
+            resource_priority.visibility);
+        if (resource_load_priority == resource->GetResourceRequest().Priority())
+            continue;
+
+        resource->DidChangePriority(resource_load_priority,
+            resource_priority.intra_priority_value);
+        network_instrumentation::ResourcePrioritySet(resource->Identifier(),
+            resource_load_priority);
+        Context().DispatchDidChangeResourcePriority(
+            resource->Identifier(), resource_load_priority,
+            resource_priority.intra_priority_value);
+    }
+#endif
+}
+#endif
+
 } // namespace blink

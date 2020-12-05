@@ -102,6 +102,10 @@ public:
     void LoosenLoadThrottlingPolicy(void) { BKLOG("// BKTODO: scheduler_->LoosenThrottlingPolicy();"); }
 
     int BlockingRequestCount(void) const;
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    void UpdateAllImageResourcePriorities(void);
+#endif
 private:
     ResourceFetcher(void);
     ResourceFetcher(FetchContext *context);

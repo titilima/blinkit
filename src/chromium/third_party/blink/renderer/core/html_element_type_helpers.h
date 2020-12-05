@@ -50,9 +50,34 @@ inline bool IsHTMLBRElement(const Node &node)
     return node.IsHTMLElement() && IsHTMLBRElement(ToElement(node));
 }
 
+inline bool IsHTMLButtonElement(const Element &element)
+{
+    return element.HasTagName(html_names::kButtonTag);
+}
+
+inline bool IsHTMLButtonElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLButtonElement(ToElement(node));
+}
+
 inline bool IsHTMLDivElement(const Element &element)
 {
     return element.HasTagName(html_names::kDivTag);
+}
+
+inline bool IsHTMLFieldSetElement(const Element &element)
+{
+    return element.HasTagName(html_names::kFieldsetTag);
+}
+
+inline bool IsHTMLFieldSetElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLFieldSetElement(ToElement(node));
+}
+
+inline bool IsHTMLFieldSetElement(const Node *node)
+{
+    return nullptr != node && IsHTMLFieldSetElement(*node);
 }
 
 inline bool IsHTMLFontElement(const Element &element)
@@ -115,6 +140,16 @@ inline bool IsHTMLLegendElement(const Element &element)
     return element.HasTagName(html_names::kLegendTag);
 }
 
+inline bool IsHTMLLegendElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLLegendElement(ToElement(node));
+}
+
+inline bool IsHTMLLegendElement(const Node *node)
+{
+    return nullptr != node && IsHTMLLegendElement(*node);
+}
+
 inline bool IsHTMLMarqueeElement(const Element &element)
 {
     return element.HasTagName(html_names::kMarqueeTag);
@@ -138,6 +173,16 @@ inline bool IsHTMLScriptElement(const Element &element)
 inline bool IsHTMLScriptElement(const Node &node)
 {
     return node.IsHTMLElement() && IsHTMLScriptElement(ToElement(node));
+}
+
+inline bool IsHTMLSelectElement(const Element &element)
+{
+    return element.HasTagName(html_names::kSelectTag);
+}
+
+inline bool IsHTMLSelectElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLSelectElement(ToElement(node));
 }
 
 inline bool IsHTMLSlotElement(const Element &element)
@@ -198,6 +243,11 @@ inline bool IsHTMLTemplateElement(const Node *node)
 inline bool IsHTMLTextAreaElement(const Element &element)
 {
     return element.HasTagName(html_names::kTextareaTag);
+}
+
+inline bool IsHTMLTextAreaElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLTextAreaElement(ToElement(node));
 }
 
 inline bool IsHTMLTitleElement(const Element &element)
