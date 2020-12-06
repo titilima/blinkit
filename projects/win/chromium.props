@@ -4,9 +4,6 @@
   <PropertyGroup Label="UserMacros">
     <CrRoot>$(SrcRoot)chromium\</CrRoot>
   </PropertyGroup>
-  <PropertyGroup>
-    <IncludePath>$(SrcRoot)stub\icu;$(IncludePath)</IncludePath>
-  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>$(CrRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -15,6 +12,7 @@
   <ItemGroup>
     <BuildMacro Include="CrRoot">
       <Value>$(CrRoot)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>
 </Project>
