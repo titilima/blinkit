@@ -26,11 +26,8 @@
     <ClCompile Include="..\_pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\cc\animation\timing_function.cc">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\cc\animation\keyframe_model.cc">
-      <Filter>animation</Filter>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_font.cc">
+      <Filter>paint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

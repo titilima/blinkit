@@ -61,16 +61,16 @@
     <Import Project="..\_debug.props" />
     <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
-    <Import Project="..\blink.props" />
     <Import Project="..\skia.props" />
+    <Import Project="..\chromium.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\_release.props" />
     <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
-    <Import Project="..\blink.props" />
     <Import Project="..\skia.props" />
+    <Import Project="..\chromium.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -81,10 +81,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SrcRoot)stub\icu;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(RepoRoot)sdk\win32\</OutDir>
+    <IncludePath>$(SrcRoot)stub\icu;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -255,6 +257,9 @@
     </ProjectReference>
     <ProjectReference Include="..\blink\blink.vcxproj">
       <Project>{fb173629-f68b-4830-9934-3378de76d6aa}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\cc\cc.vcxproj">
+      <Project>{4f52a414-a78a-4903-bcc7-c013481681be}</Project>
     </ProjectReference>
     <ProjectReference Include="..\duktape\duktape.vcxproj">
       <Project>{c8a7568b-b29b-430c-99a1-e43120933154}</Project>

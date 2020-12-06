@@ -62,7 +62,7 @@
     <Import Project="..\_debug.props" />
     <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
-    <Import Project="..\blink.props" />
+    <Import Project="..\chromium.props" />
     <Import Project="..\skia.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -70,7 +70,7 @@
     <Import Project="..\_release.props" />
     <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
-    <Import Project="..\blink.props" />
+    <Import Project="..\chromium.props" />
     <Import Project="..\skia.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -82,9 +82,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SrcRoot)stub\icu;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SrcRoot)stub\icu;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -1548,6 +1550,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\date_components.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\platform.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\web_cursor_info.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\bitmap_glyphs_blacklist.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_cache.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_custom_platform_data.cc" />
@@ -1579,6 +1582,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\simple_font_data.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\skia\font_cache_skia.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\skia\sktypeface_factory.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\small_caps_iterator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\string_truncator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\symbols_iterator.cc" />
@@ -3522,6 +3526,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\cursor.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\data_resource_helper.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\date_components.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\alternate_font_family.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\bitmap_glyphs_blacklist.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\canvas_rotation_in_vertical.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\character_range.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\custom_font_data.h" />
@@ -3565,6 +3571,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_cache.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\simple_font_data.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\skia\sktypeface_factory.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\small_caps_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\string_truncator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\symbols_iterator.h" />

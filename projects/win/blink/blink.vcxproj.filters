@@ -5153,6 +5153,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\web_mouse_event.cc">
       <Filter>renderer\platform</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\skia\sktypeface_factory.cc">
+      <Filter>renderer\platform\fonts\skia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\bitmap_glyphs_blacklist.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -11508,6 +11514,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scroll_animator_base.h">
       <Filter>renderer\core\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\alternate_font_family.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\skia\sktypeface_factory.h">
+      <Filter>renderer\platform\fonts\skia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\bitmap_glyphs_blacklist.h">
+      <Filter>renderer\platform\fonts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
