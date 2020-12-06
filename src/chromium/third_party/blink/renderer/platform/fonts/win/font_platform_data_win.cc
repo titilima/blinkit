@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: font_platform_data_win.cc
-// Description: FontPlatformData Class
-//      Author: Ziming Li
-//     Created: 2020-10-12
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2006, 2007 Apple Computer, Inc.
  * Copyright (c) 2006, 2007, 2008, 2009, 2012 Google Inc. All rights reserved.
@@ -45,6 +34,7 @@
 #include <windows.h>
 #include "SkTypeface.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache.h"
+#include "third_party/blink/renderer/platform/layout_test_support.h"
 
 namespace blink {
 
@@ -56,8 +46,6 @@ void FontPlatformData::SetupPaintFont(PaintFont* font,
                                       float,
                                       const Font*) const {
   const float ts = text_size_ >= 0 ? text_size_ : 12;
-  ASSERT(false); // BKTODO:
-#if 0
   font->SetTextSize(SkFloatToScalar(text_size_));
   font->SetTypeface(typeface_);
   font->SetFakeBoldText(synthetic_bold_);
@@ -82,13 +70,16 @@ void FontPlatformData::SetupPaintFont(PaintFont* font,
   if (text_flags & SkPaint::kAntiAlias_Flag)
     flags |= SkPaint::kSubpixelText_Flag;
 
+  if (LayoutTestSupport::IsRunningLayoutTest() &&
+      !LayoutTestSupport::IsTextSubpixelPositioningAllowedForTest())
+    flags &= ~SkPaint::kSubpixelText_Flag;
+
   SkASSERT(!(text_flags & ~kTextFlagsMask));
   flags |= text_flags;
 
   font->SetFlags(flags);
 
   font->SetEmbeddedBitmapText(!avoid_embedded_bitmaps_);
-#endif
 }
 
 static bool IsWebFont(const String& family_name) {
@@ -100,6 +91,11 @@ static bool IsWebFont(const String& family_name) {
 }
 
 static int ComputePaintTextFlags(String font_family_name) {
+  if (LayoutTestSupport::IsRunningLayoutTest())
+    return LayoutTestSupport::IsFontAntialiasingEnabledForTest()
+               ? SkPaint::kAntiAlias_Flag
+               : 0;
+
   int text_flags = 0;
   if (FontCache::GetFontCache()->AntialiasedTextEnabled()) {
     int lcd_flag = FontCache::GetFontCache()->LcdTextEnabled()
