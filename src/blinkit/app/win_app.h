@@ -20,7 +20,9 @@ namespace BlinKit {
 
 class WinClipboard;
 class WinSingleThreadTaskRunner;
+#ifndef BLINKIT_CRAWLER_ONLY
 class WinThemeEngine;
+#endif
 
 class WinApp final : public AppImpl
 {
@@ -52,7 +54,9 @@ private:
     HHOOK m_msgHook = nullptr;
     HANDLE m_backgroundThread;
     std::shared_ptr<WinSingleThreadTaskRunner> m_taskRunner;
+#ifndef BLINKIT_CRAWLER_ONLY
     std::unique_ptr<WinThemeEngine> m_themeEngine;
+#endif
 
 #if 0 // BKTODO:
     // blink::Platform

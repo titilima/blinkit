@@ -1107,9 +1107,13 @@ void Node::UpdateDistributionInternal(void)
     if (isConnected() && !GetDocument().ChildNeedsDistributionRecalc())
         return;
     ScriptForbiddenScope forbidScript;
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#else
     Node& root = ShadowIncludingRoot();
     if (root.ChildNeedsDistributionRecalc())
         ASSERT(false); // BKTODO: root.RecalcDistribution();
+#endif
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY

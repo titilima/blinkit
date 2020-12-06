@@ -299,7 +299,9 @@ bool LocalFrame::ShouldReuseDefaultView(void) const
 void LocalFrame::Trace(Visitor *visitor)
 {
     visitor->Trace(m_loader);
+#ifndef BLINKIT_CRAWLER_ONLY
     visitor->Trace(m_view);
+#endif
     Frame::Trace(visitor);
 }
 

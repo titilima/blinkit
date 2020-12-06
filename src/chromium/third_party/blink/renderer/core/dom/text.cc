@@ -104,6 +104,9 @@ Node* Text::MergeNextSiblingNodesIfPossible() {
     String next_text_data = next_text->data();
     String old_text_data = data();
     SetDataWithoutUpdate(data() + next_text_data);
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#else
     UpdateTextLayoutObject(old_text_data.length(), 0);
 
     ASSERT(false); // BKTODO: GetDocument().DidMergeTextNodes(*this, *next_text, offset);
@@ -115,6 +118,7 @@ Node* Text::MergeNextSiblingNodesIfPossible() {
     // Restore nextText for mutation event.
     next_text->SetDataWithoutUpdate(next_text_data);
     next_text->UpdateTextLayoutObject(0, 0);
+#endif
 
     GetDocument().IncDOMTreeVersion();
     DidModifyData(old_text_data, CharacterData::kUpdateFromNonParser);
