@@ -26,7 +26,7 @@ struct GCTable {
 };
 
 enum class GCObjectType {
-    Member = 0, Root, Stash
+    Member = 0, Root, Stash, Global
 };
 
 #ifdef NDEBUG

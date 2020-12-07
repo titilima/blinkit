@@ -52,7 +52,12 @@ GCHeap::GCHeap(void)
 GCHeap::~GCHeap(void)
 {
     ASSERT(this == theHeap);
+
+    CleanupGlobals();
+    ASSERT(m_rootObjects.empty());
     CollectGarbage();
+    ASSERT(m_memberObjects.empty());
+
     theHeap = nullptr;
 }
 
@@ -74,19 +79,33 @@ GCObjectHeader* GCHeap::Alloc(GCObjectType type, size_t totalSize, GCTable *gcPt
 #endif
         switch (type)
         {
-            case GCObjectType::Root:
-                m_rootObjects.insert(ret->Object());
+            case GCObjectType::Member:
+                m_memberObjects.insert(ret->Object());
                 break;
             case GCObjectType::Stash:
                 m_stashObjects.insert(ret->Object());
                 break;
+            case GCObjectType::Root:
+                m_rootObjects.insert(ret->Object());
+                break;
             default:
-                ASSERT(GCObjectType::Member == type);
-                m_memberObjects.insert(ret->Object());
+                ASSERT(GCObjectType::Global == type);
+                m_globalObjects.insert(ret->Object());
         }
         return ret;
     }
     return nullptr;
+}
+
+void GCHeap::CleanupGlobals(void)
+{
+    for (void *o : m_globalObjects)
+    {
+        GCObjectHeader *hdr = GCObjectHeader::From(o);
+        hdr->gcPtr->Deleter(o);
+        free(hdr);
+    }
+    m_globalObjects.clear();
 }
 
 void GCHeap::CleanupRoots(void)
@@ -134,13 +153,15 @@ void GCHeap::CollectGarbage(void)
     CleanupStashObjects();
 
     GCVisitor visitor(m_memberObjects);
+    TraceObjects(m_globalObjects, visitor);
     TraceObjects(m_rootObjects, visitor);
     TraceObjects(m_stashObjects, visitor);
     FreeObjects(visitor.ObjectsToGC(), &m_memberObjects);
 
 #ifndef NDEBUG
     BKLOG(
-        "[GC]\n    Roots: %u -> %u\n    Members: %u -> %u\n    Stash Objects: %u -> %u",
+        "[GC]\n    Globals: %u\nRoots: %u -> %u\n    Members: %u -> %u\n    Stash Objects: %u -> %u",
+        m_globalObjects.size(),
         rootCount, m_rootObjects.size(),
         memberCount, m_memberObjects.size(),
         stashCount, m_stashObjects.size()

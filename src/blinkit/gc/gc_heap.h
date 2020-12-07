@@ -46,8 +46,9 @@ private:
 
     void CleanupRoots(void);
     void CleanupStashObjects(void);
+    void CleanupGlobals(void);
 
-    GCObjectSet m_rootObjects, m_memberObjects, m_stashObjects;
+    GCObjectSet m_rootObjects, m_memberObjects, m_stashObjects, m_globalObjects;
 };
 
 } // namespace BlinKit
