@@ -49,7 +49,7 @@
 #include "build/build_config.h"
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/platform/font_family_names.h"
-// BKTODO: #include "third_party/blink/renderer/platform/fonts/alternate_font_family.h"
+#include "third_party/blink/renderer/platform/fonts/alternate_font_family.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache_client.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache_key.h"
 #include "third_party/blink/renderer/platform/fonts/font_data_cache.h"
@@ -169,8 +169,6 @@ FontPlatformData* FontCache::GetFontPlatformData(
     found_result = result || !add_result.is_new_entry;
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (!found_result &&
       alternate_font_name == AlternateFontName::kAllowAlternate &&
       creation_params.CreationType() == kCreateFontByFamily) {
@@ -192,7 +190,6 @@ FontPlatformData* FontCache::GetFontPlatformData(
       adding->Set(rounded_size, std::make_unique<FontPlatformData>(*result));
     }
   }
-#endif
 
   return result;
 }
@@ -241,8 +238,6 @@ scoped_refptr<SimpleFontData> FontCache::GetFontData(
     const AtomicString& family,
     AlternateFontName altername_font_name,
     ShouldRetain should_retain) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (FontPlatformData* platform_data = GetFontPlatformData(
           font_description,
           FontFaceCreationParams(
@@ -251,7 +246,6 @@ scoped_refptr<SimpleFontData> FontCache::GetFontData(
     return FontDataFromFontPlatformData(
         platform_data, should_retain, font_description.SubpixelAscentDescent());
   }
-#endif
 
   return nullptr;
 }

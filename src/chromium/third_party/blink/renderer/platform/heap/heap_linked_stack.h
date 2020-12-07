@@ -15,14 +15,27 @@
 #pragma once
 
 #include <stack>
+#include "third_party/blink/renderer/platform/heap/heap.h"
+#include "third_party/blink/renderer/platform/heap/visitor.h"
 
 namespace blink {
 
 template <typename T>
-class HeapLinkedStack : public std::stack<T>
+class HeapLinkedStack : public GarbageCollected<HeapLinkedStack<T>>, private std::vector<T>
 {
 public:
-    bool IsEmpty(void) const { return std::stack::empty(); }
+    using std::vector<T>::size;
+
+    void Trace(Visitor *visitor)
+    {
+        for (auto it = this->begin(); it != this->end(); ++it)
+            visitor->Trace(*it);
+    }
+
+    bool IsEmpty(void) const { return this->empty(); }
+    void Push(const T &o) { this->push_back(o); }
+    const T& Peek(void) { return this->back(); }
+    void Pop(void) { this->pop_back(); }
 };
 
 } // namespace blink

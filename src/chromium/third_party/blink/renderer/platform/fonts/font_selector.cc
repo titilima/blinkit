@@ -16,6 +16,7 @@
 #include "third_party/blink/renderer/platform/fonts/font_selector.h"
 
 #include "build/build_config.h"
+#include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache.h"
 #include "third_party/blink/renderer/platform/fonts/font_description.h"
 
@@ -35,26 +36,22 @@ AtomicString FontSelector::FamilyNameFromSettings(
                                                     font_description);
   }
 #else
-  ASSERT(false); // BKTODO:
-#if 0
-  UScriptCode script = font_description.GetScript();
   if (font_description.GenericFamily() == FontDescription::kStandardFamily)
-    return settings.Standard(script);
+    return Settings::StandardFontFamilyName();
   if (generic_family_name == FontFamilyNames::webkit_serif)
-    return settings.Serif(script);
+    ASSERT(false); // BKTODO: return settings.Serif(script);
   if (generic_family_name == FontFamilyNames::webkit_sans_serif)
-    return settings.SansSerif(script);
+    ASSERT(false); // BKTODO: return settings.SansSerif(script);
   if (generic_family_name == FontFamilyNames::webkit_cursive)
-    return settings.Cursive(script);
+    ASSERT(false); // BKTODO: return settings.Cursive(script);
   if (generic_family_name == FontFamilyNames::webkit_fantasy)
-    return settings.Fantasy(script);
+    ASSERT(false); // BKTODO: return settings.Fantasy(script);
   if (generic_family_name == FontFamilyNames::webkit_monospace)
-    return settings.Fixed(script);
+    ASSERT(false); // BKTODO: return settings.Fixed(script);
   if (generic_family_name == FontFamilyNames::webkit_pictograph)
-    return settings.Pictograph(script);
+    ASSERT(false); // BKTODO: return settings.Pictograph(script);
   if (generic_family_name == FontFamilyNames::webkit_standard)
-    return settings.Standard(script);
-#endif
+    ASSERT(false); // BKTODO: return settings.Standard(script);
 #endif
   return g_empty_atom;
 }

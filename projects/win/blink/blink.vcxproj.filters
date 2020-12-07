@@ -5159,6 +5159,18 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\bitmap_glyphs_blacklist.cc">
       <Filter>renderer\platform\fonts</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\skia\skia_text_metrics.cc">
+      <Filter>renderer\platform\fonts\skia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\bidi_run_for_line.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_theme_font_provider.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_theme_font_provider_win.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -11523,6 +11535,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\bitmap_glyphs_blacklist.h">
       <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\skia\skia_text_metrics.h">
+      <Filter>renderer\platform\fonts\skia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\bidi_run_for_line.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_theme_font_provider.h">
+      <Filter>renderer\core\layout</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

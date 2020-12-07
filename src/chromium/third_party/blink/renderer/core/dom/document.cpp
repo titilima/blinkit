@@ -2073,6 +2073,13 @@ void Document::SuppressLoadEvent(void)
 
 void Document::Trace(Visitor *visitor)
 {
+    // BKTODO: Are these elements needed to be traced?
+    //         - m_activeElement
+    //         - m_hoverElement
+    //         - m_focusedElement
+    //         - m_autofocusElement
+    //         - m_documentElement
+    //         - m_titleElement
 #ifndef BLINKIT_CRAWLER_ONLY
     if (!ForCrawler())
     {
@@ -2200,9 +2207,9 @@ void Document::UpdateStyle(void)
     {
         if (de->ShouldCallRecalcStyle(change))
         {
-            Element* viewport_defining = ViewportDefiningElement();
+            Element* viewportDefining = ViewportDefiningElement();
             GetStyleEngine().RecalcStyle(change);
-            if (viewport_defining != ViewportDefiningElement())
+            if (viewportDefining != ViewportDefiningElement())
                 ViewportDefiningElementDidChange();
         }
         GetStyleEngine().MarkForWhitespaceReattachment();
@@ -2616,6 +2623,13 @@ void Document::ClearResizedForViewportUnits(void)
 float Document::DevicePixelRatio(void) const
 {
     return m_frame ? m_frame->DevicePixelRatio() : 1.0;
+}
+
+CSSStyleSheet& Document::ElementSheet(void)
+{
+    if (!m_elemSheet)
+        m_elemSheet = CSSStyleSheet::CreateInline(*this, m_baseURL);
+    return *m_elemSheet;
 }
 
 void Document::Document::EnqueueVisualViewportResizeEvent(void)

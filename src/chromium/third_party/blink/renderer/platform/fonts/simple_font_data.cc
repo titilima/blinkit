@@ -55,7 +55,7 @@
 #include "build/build_config.h"
 #include "third_party/blink/renderer/platform/font_family_names.h"
 #include "third_party/blink/renderer/platform/fonts/font_description.h"
-// BKTODO: #include "third_party/blink/renderer/platform/fonts/skia/skia_text_metrics.h"
+#include "third_party/blink/renderer/platform/fonts/skia/skia_text_metrics.h"
 #include "third_party/blink/renderer/platform/geometry/float_rect.h"
 #include "third_party/blink/renderer/platform/wtf/allocator/partitions.h"
 #include "third_party/blink/renderer/platform/wtf/math_extras.h"
@@ -88,8 +88,6 @@ void SimpleFontData::PlatformInit(bool subpixel_ascent_descent) {
     return;
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   SkPaint::FontMetrics metrics;
 
   PaintFont font;
@@ -179,7 +177,6 @@ void SimpleFontData::PlatformInit(bool subpixel_ascent_descent) {
   DCHECK(face);
   if (int units_per_em = face->getUnitsPerEm())
     font_metrics_.SetUnitsPerEm(units_per_em);
-#endif
 }
 
 void SimpleFontData::PlatformGlyphInit() {
@@ -367,7 +364,7 @@ FloatRect SimpleFontData::PlatformBoundsForGlyph(Glyph glyph) const {
   static_assert(sizeof(glyph) == 2, "Glyph id should not be truncated.");
 
   SkRect bounds;
-  ASSERT(false); // BKTODO: SkiaTextMetrics(&paint_).GetSkiaBoundsForGlyph(glyph, &bounds);
+  SkiaTextMetrics(&paint_).GetSkiaBoundsForGlyph(glyph, &bounds);
   return FloatRect(bounds);
 }
 
@@ -379,7 +376,7 @@ void SimpleFontData::BoundsForGlyphs(const Vector<Glyph, 256>& glyphs,
     return;
 
   DCHECK_EQ(bounds->size(), glyphs.size());
-  ASSERT(false); // BKTODO: SkiaTextMetrics(&paint_).GetSkiaBoundsForGlyphs(glyphs, bounds->data());
+  SkiaTextMetrics(&paint_).GetSkiaBoundsForGlyphs(glyphs, bounds->data());
 }
 
 float SimpleFontData::PlatformWidthForGlyph(Glyph glyph) const {
@@ -388,11 +385,7 @@ float SimpleFontData::PlatformWidthForGlyph(Glyph glyph) const {
 
   static_assert(sizeof(glyph) == 2, "Glyph id should not be truncated.");
 
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   return SkiaTextMetrics(&paint_).GetSkiaWidthForGlyph(glyph);
-#endif
 }
 
 }  // namespace blink

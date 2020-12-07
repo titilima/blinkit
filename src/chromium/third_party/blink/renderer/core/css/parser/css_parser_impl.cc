@@ -82,8 +82,6 @@ MutableCSSPropertyValueSet::SetResult CSSParserImpl::ParseValue(
     const String& string,
     bool important,
     const CSSParserContext* context) {
-  ASSERT(false); // BKTODO:
-#if 0
   CSSParserImpl parser(context);
   StyleRule::RuleType rule_type = StyleRule::kStyle;
   if (declaration->CssParserMode() == kCSSViewportRuleMode)
@@ -94,15 +92,12 @@ MutableCSSPropertyValueSet::SetResult CSSParserImpl::ParseValue(
   // TODO(crbug.com/661854): Use streams instead of ranges
   parser.ConsumeDeclarationValue(CSSParserTokenRange(tokenizer.TokenizeToEOF()),
                                  unresolved_property, important, rule_type);
-#endif
   bool did_parse = false;
   bool did_change = false;
-#if 0 // BKTODO:
   if (!parser.parsed_properties_.IsEmpty()) {
     did_parse = true;
     did_change = declaration->AddParsedProperties(parser.parsed_properties_);
   }
-#endif
   return MutableCSSPropertyValueSet::SetResult{did_parse, did_change};
 }
 
@@ -114,8 +109,6 @@ MutableCSSPropertyValueSet::SetResult CSSParserImpl::ParseVariableValue(
     bool important,
     const CSSParserContext* context,
     bool is_animation_tainted) {
-  ASSERT(false); // BKTODO:
-#if 0
   CSSParserImpl parser(context);
   CSSTokenizer tokenizer(value);
   // TODO(crbug.com/661854): Use streams instead of ranges
@@ -123,10 +116,8 @@ MutableCSSPropertyValueSet::SetResult CSSParserImpl::ParseVariableValue(
   const CSSParserTokenRange range(tokens);
   parser.ConsumeVariableValue(range, property_name, important,
                               is_animation_tainted);
-#endif
   bool did_parse = false;
   bool did_change = false;
-#if 0 // BKTODO:
   if (!parser.parsed_properties_.IsEmpty()) {
     const CSSCustomPropertyDeclaration* parsed_declaration =
         ToCSSCustomPropertyDeclaration(parser.parsed_properties_[0].Value());
@@ -143,7 +134,6 @@ MutableCSSPropertyValueSet::SetResult CSSParserImpl::ParseVariableValue(
     did_parse = true;
     did_change = declaration->AddParsedProperties(parser.parsed_properties_);
   }
-#endif
   return MutableCSSPropertyValueSet::SetResult{did_parse, did_change};
 }
 
@@ -200,9 +190,6 @@ ImmutableCSSPropertyValueSet* CSSParserImpl::ParseInlineStyleDeclaration(
     const String& string,
     Element* element) {
   Document& document = element->GetDocument();
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   CSSParserContext* context = CSSParserContext::Create(
       document.ElementSheet().Contents()->ParserContext(), &document);
   CSSParserMode mode = element->IsHTMLElement() && !document.InQuirksMode()
@@ -214,16 +201,12 @@ ImmutableCSSPropertyValueSet* CSSParserImpl::ParseInlineStyleDeclaration(
   CSSParserTokenStream stream(tokenizer);
   parser.ConsumeDeclarationList(stream, StyleRule::kStyle);
   return CreateCSSPropertyValueSet(parser.parsed_properties_, mode);
-#endif
 }
 
 bool CSSParserImpl::ParseDeclarationList(
     MutableCSSPropertyValueSet* declaration,
     const String& string,
     const CSSParserContext* context) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   CSSParserImpl parser(context);
   StyleRule::RuleType rule_type = StyleRule::kStyle;
   if (declaration->CssParserMode() == kCSSViewportRuleMode)
@@ -245,7 +228,6 @@ bool CSSParserImpl::ParseDeclarationList(
   if (unused_entries)
     results.EraseAt(0, unused_entries);
   return declaration->AddParsedProperties(results);
-#endif
 }
 
 StyleRuleBase* CSSParserImpl::ParseRule(const String& string,
@@ -291,7 +273,6 @@ ParseSheetResult CSSParserImpl::ParseStyleSheet(
         new CSSLazyParsingState(context, string, parser.style_sheet_);
   }
   ParseSheetResult result = ParseSheetResult::kSucceeded;
-#if 0 // BKTODO:
   bool first_rule_valid = parser.ConsumeRuleList(
       stream, kTopLevelRuleList,
       [&style_sheet, &result, allow_import_rules](StyleRuleBase* rule) {
@@ -304,7 +285,6 @@ ParseSheetResult CSSParserImpl::ParseStyleSheet(
         style_sheet->ParserAppendRule(rule);
       });
   style_sheet->SetHasSyntacticallyValidCSSHeader(first_rule_valid);
-#endif
   TRACE_EVENT_END0("blink,blink_style", "CSSParserImpl::parseStyleSheet.parse");
 
   TRACE_EVENT_END2("blink,blink_style", "CSSParserImpl::parseStyleSheet",
@@ -386,7 +366,7 @@ void CSSParserImpl::ParseDeclarationListForInspector(
     const String& declaration,
     const CSSParserContext* context,
     CSSParserObserver& observer) {
-  ASSERT(false); // BKTODO:
+  ASSERT(false); // BKTODO: Is this necessary?
 #if 0
   CSSParserImpl parser(context);
   parser.observer_ = &observer;
@@ -425,13 +405,9 @@ CSSPropertyValueSet* CSSParserImpl::ParseDeclarationListForLazyStyle(
   CSSTokenizer tokenizer(string, offset);
   CSSParserTokenStream stream(tokenizer);
   CSSParserTokenStream::BlockGuard guard(stream);
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   CSSParserImpl parser(context);
   parser.ConsumeDeclarationList(stream, StyleRule::kStyle);
   return CreateCSSPropertyValueSet(parser.parsed_properties_, context->Mode());
-#endif
 }
 
 static CSSParserImpl::AllowedRulesType ComputeNewAllowedRules(
@@ -521,11 +497,8 @@ StyleRuleBase* CSSParserImpl::ConsumeAtRule(CSSParserTokenStream& stream,
   const RangeOffset prelude_offset(prelude_offset_start,
                                    stream.LookAheadOffset());
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (id != kCSSAtRuleInvalid && context_->IsUseCounterRecordingEnabled())
     CountAtRule(context_, id);
-#endif
 
   if (stream.AtEnd() || stream.UncheckedPeek().GetType() == kSemicolonToken) {
     if (!stream.UncheckedAtEnd())
@@ -639,12 +612,8 @@ StyleRuleImport* CSSParserImpl::ConsumeImportRule(
     observer_->EndRuleBody(prelude_offset.end);
   }
 
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return StyleRuleImport::Create(uri,
                                  MediaQueryParser::ParseMediaQuerySet(prelude));
-#endif
 }
 
 StyleRuleNamespace* CSSParserImpl::ConsumeNamespaceRule(
@@ -847,9 +816,6 @@ StyleRule* CSSParserImpl::ConsumeStyleRule(CSSParserTokenStream& stream) {
   if (observer_)
     observer_->StartRuleHeader(StyleRule::kStyle, stream.LookAheadOffset());
 
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   // Parse the prelude of the style rule
   CSSSelectorList selector_list = CSSSelectorParser::ConsumeSelector(
       stream, context_, style_sheet_, observer_);
@@ -887,7 +853,6 @@ StyleRule* CSSParserImpl::ConsumeStyleRule(CSSParserTokenStream& stream) {
   return StyleRule::Create(
       std::move(selector_list),
       CreateCSSPropertyValueSet(parsed_properties_, context_->Mode()));
-#endif
 }
 
 void CSSParserImpl::ConsumeDeclarationList(CSSParserTokenStream& stream,
@@ -1006,12 +971,6 @@ void CSSParserImpl::ConsumeDeclaration(CSSParserTokenRange range,
         range.MakeSubRange(&range.Peek(), declaration_value_end), variable_name,
         important, is_animation_tainted);
   } else if (unresolved_property != CSSPropertyInvalid) {
-    ASSERT(false); // BKTODO:
-#if 0
-    if (style_sheet_ && style_sheet_->SingleOwnerDocument())
-      Deprecation::WarnOnDeprecatedProperties(
-          style_sheet_->SingleOwnerDocument()->GetFrame(), unresolved_property);
-#endif
     ConsumeDeclarationValue(
         range.MakeSubRange(&range.Peek(), declaration_value_end),
         unresolved_property, important, rule_type);
@@ -1041,11 +1000,8 @@ void CSSParserImpl::ConsumeDeclarationValue(CSSParserTokenRange range,
                                             CSSPropertyID unresolved_property,
                                             bool important,
                                             StyleRule::RuleType rule_type) {
-  ASSERT(false); // BKTODO:
-#if 0
   CSSPropertyParser::ParseValue(unresolved_property, important, range, context_,
                                 parsed_properties_, rule_type);
-#endif
 }
 
 std::unique_ptr<Vector<double>> CSSParserImpl::ConsumeKeyframeKeyList(

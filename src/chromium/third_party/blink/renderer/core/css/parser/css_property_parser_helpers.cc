@@ -727,11 +727,7 @@ CSSValue* ConsumeColor(CSSParserTokenRange& range,
   if (!ParseHexColor(range, color, accept_quirky_colors) &&
       !ParseColorFunction(range, color))
     return nullptr;
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return CSSColorValue::Create(color);
-#endif
 }
 
 CSSValue* ConsumeLineWidth(CSSParserTokenRange& range,

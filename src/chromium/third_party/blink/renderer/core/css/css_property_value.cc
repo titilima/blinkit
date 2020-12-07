@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_property_value.cc
+// Description: CSSPropertyValue Class
+//      Author: Ziming Li
+//     Created: 2020-12-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.
@@ -35,6 +46,7 @@ static_assert(sizeof(CSSPropertyValue) == sizeof(SameSizeAsCSSPropertyValue),
               "CSSPropertyValue should stay small");
 
 CSSPropertyID CSSPropertyValueMetadata::ShorthandID() const {
+  ASSERT(valid_);
   if (!is_set_from_shorthand_)
     return CSSPropertyInvalid;
 

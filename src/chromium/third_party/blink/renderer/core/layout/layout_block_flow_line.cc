@@ -36,7 +36,7 @@
 // BKTODO: #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
 #include "third_party/blink/renderer/core/editing/editing_utilities.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_item.h"
-// BKTODO: #include "third_party/blink/renderer/core/layout/bidi_run_for_line.h"
+#include "third_party/blink/renderer/core/layout/bidi_run_for_line.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 // BKTODO: #include "third_party/blink/renderer/core/layout/layout_ruby_run.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
@@ -1006,11 +1006,8 @@ void LayoutBlockFlow::LayoutRunsAndFloats(LineLayoutState& layout_state) {
   InlineBidiResolver resolver;
   RootInlineBox* start_line = DetermineStartPosition(layout_state, resolver);
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (ContainsFloats())
-    layout_state.SetLastFloat(floating_objects_->Set().back().get());
-#endif
+    ASSERT(false); // BKTODO: layout_state.SetLastFloat(floating_objects_->Set().back().get());
 
   // We also find the first clean line and extract these lines.  We will add
   // them back if we determine that we're able to synchronize after handling all
@@ -1143,10 +1140,13 @@ void LayoutBlockFlow::LayoutRunsAndFloatsInRange(
     const InlineIterator previous_endof_line = end_of_line;
     bool is_new_uba_paragraph =
         layout_state.GetLineInfo().PreviousLineBrokeCleanly();
-    ASSERT(false); // BKTODO:
+    ASSERT(!ContainsFloats()); // BKTODO:
 #if 0
     FloatingObject* last_float_from_previous_line =
         (ContainsFloats()) ? floating_objects_->Set().back().get() : nullptr;
+#else
+    FloatingObject* last_float_from_previous_line = nullptr;
+#endif
 
     WordMeasurements word_measurements;
     end_of_line =
@@ -1318,7 +1318,6 @@ void LayoutBlockFlow::LayoutRunsAndFloatsInRange(
 
     line_midpoint_state.Reset();
     resolver.SetPosition(end_of_line, NumberOfIsolateAncestors(end_of_line));
-#endif
   }
 
   // The resolver runs should have been cleared, otherwise they're leaking.
@@ -2177,8 +2176,6 @@ RootInlineBox* LayoutBlockFlow::DetermineStartPosition(
     resolver.SetPosition(iter, NumberOfIsolateAncestors(iter));
     resolver.SetStatus(last->LineBreakBidiStatus());
   } else {
-    ASSERT(false); // BKTODO:
-#if 0
     TextDirection direction = StyleRef().Direction();
     if (StyleRef().GetUnicodeBidi() == UnicodeBidi::kPlaintext)
       direction = DeterminePlaintextDirectionality(LineLayoutItem(this));
@@ -2190,7 +2187,6 @@ RootInlineBox* LayoutBlockFlow::DetermineStartPosition(
                                       resolver.Runs(), &resolver),
         0);
     resolver.SetPosition(iter, NumberOfIsolateAncestors(iter));
-#endif
   }
   return curr;
 }

@@ -144,6 +144,10 @@ public:
     {
         this->erase(this->begin() + position);
     }
+    void EraseAt(wtf_size_t position, wtf_size_t length)
+    {
+        this->erase(this->begin() + position, this->begin() + position + length);
+    }
     void UncheckedAppend(const T &val)
     {
         this->push_back(val);

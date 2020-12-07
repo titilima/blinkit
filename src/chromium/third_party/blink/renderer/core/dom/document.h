@@ -169,6 +169,7 @@ public:
     TextAutosizer* GetTextAutosizer(void);
     StyleResolver* GetStyleResolver(void) const;
     StyleResolver& EnsureStyleResolver(void) const;
+    CSSStyleSheet& ElementSheet(void);
     AnimationClock& GetAnimationClock(void);
     DocumentTimeline& Timeline(void) const { return *m_timeline; }
     VisitedLinkState& GetVisitedLinkState(void) const { return *m_visitedLinkState; }

@@ -41,9 +41,11 @@ namespace blink {
 
 struct CSSPropertyValueMetadata {
   DISALLOW_NEW();
-  CSSPropertyValueMetadata(void) {
-    ASSERT(false); // BKTODO:
-  }
+#ifndef NDEBUG
+  CSSPropertyValueMetadata(void) : valid_(false) {}
+#else
+  CSSPropertyValueMetadata(void) = default;
+#endif
   CSSPropertyValueMetadata(const CSSProperty& property,
                            bool is_set_from_shorthand,
                            int index_in_shorthands_vector,
@@ -51,6 +53,9 @@ struct CSSPropertyValueMetadata {
                            bool implicit,
                            bool inherited)
       : property_(&property),
+#ifndef NDEBUG
+        valid_(true),
+#endif
         is_set_from_shorthand_(is_set_from_shorthand),
         index_in_shorthands_vector_(index_in_shorthands_vector),
         important_(important),
@@ -58,10 +63,16 @@ struct CSSPropertyValueMetadata {
         inherited_(inherited) {}
 
   CSSPropertyID ShorthandID() const;
-  const CSSProperty& Property() const { return *property_; }
+  const CSSProperty& Property() const {
+    ASSERT(valid_);
+    return *property_;
+  }
 
   const CSSProperty* property_;
 
+#ifndef NDEBUG
+  unsigned valid_ : 1;
+#endif
   unsigned is_set_from_shorthand_ : 1;
   // If this property was set as part of an ambiguous shorthand, gives the index
   // in the shorthands vector.
@@ -77,7 +88,7 @@ class CSSPropertyValue {
   DISALLOW_NEW();
 
  public:
-  CSSPropertyValue(void) {}
+  CSSPropertyValue(void) = default;
   CSSPropertyValue(const CSSProperty& property,
                    const CSSValue& value,
                    bool important = false,

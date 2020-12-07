@@ -1195,6 +1195,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html_tokenizer_names.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input_type_names.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\selection_state.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\bidi_run_for_line.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\collapsed_border_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\column_balancer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\counter_node.cc" />
@@ -1256,6 +1257,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_text_fragment.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_theme.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_theme_default.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_theme_font_provider.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_theme_font_provider_win.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_theme_win.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_view.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\abstract_inline_text_box.cc" />
@@ -1582,6 +1585,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\simple_font_data.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\skia\font_cache_skia.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\skia\skia_text_metrics.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\skia\sktypeface_factory.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\small_caps_iterator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\string_truncator.cc" />
@@ -3074,6 +3078,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\selection_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\background_bleed_avoidance.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\bidi_run.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\bidi_run_for_line.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\collapsed_border_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\column_balancer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\content_change_type.h" />
@@ -3141,6 +3146,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_text_fragment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_theme.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_theme_default.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_theme_font_provider.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_theme_win.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_view.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\abstract_inline_text_box.h" />
@@ -3571,6 +3577,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_cache.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\simple_font_data.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\skia\skia_text_metrics.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\skia\sktypeface_factory.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\small_caps_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\string_truncator.h" />

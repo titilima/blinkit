@@ -48,8 +48,8 @@
 // BKTODO: #include "third_party/blink/public/platform/linux/web_sandbox_support.h"
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/platform/font_family_names.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/fonts/alternate_font_family.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/fonts/bitmap_glyphs_blacklist.h"
 #endif
 #include "third_party/blink/renderer/platform/fonts/font_cache.h"
@@ -60,7 +60,7 @@
 #include "third_party/blink/renderer/platform/fonts/font_unique_name_lookup.h"
 #endif
 #include "third_party/blink/renderer/platform/fonts/simple_font_data.h"
-// BKTODO: #include "third_party/blink/renderer/platform/fonts/skia/sktypeface_factory.h"
+#include "third_party/blink/renderer/platform/fonts/skia/sktypeface_factory.h"
 #include "third_party/blink/renderer/platform/language.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
@@ -254,9 +254,6 @@ sk_sp<SkTypeface> FontCache::CreateTypeface(
     const FontDescription& font_description,
     const FontFaceCreationParams& creation_params,
     CString& name) {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
 #if !defined(OS_WIN) && !defined(OS_ANDROID) && !defined(OS_FUCHSIA)
   // TODO(fuchsia): Revisit this and other font code for Fuchsia.
 
@@ -307,7 +304,6 @@ sk_sp<SkTypeface> FontCache::CreateTypeface(
   // legacyCreateTypeface on all platforms.
   return SkTypeface_Factory::FromFamilyNameAndFontStyle(
       name.data(), font_description.SkiaFontStyle());
-#endif
 }
 
 #if !defined(OS_WIN)

@@ -47,8 +47,8 @@
 
 #if 0 // BKTODO:
 #include "base/debug/alias.h"
-#include "third_party/blink/renderer/platform/fonts/bitmap_glyphs_blacklist.h"
 #endif
+#include "third_party/blink/renderer/platform/fonts/bitmap_glyphs_blacklist.h"
 #include "third_party/blink/renderer/platform/fonts/font_description.h"
 #include "third_party/blink/renderer/platform/fonts/font_face_creation_params.h"
 #include "third_party/blink/renderer/platform/fonts/font_platform_data.h"
@@ -436,11 +436,8 @@ std::unique_ptr<FontPlatformData> FontCache::CreateFontPlatformData(
           font_description.IsSyntheticItalic(),
       font_description.Orientation());
 
-  ASSERT(false); // BKTODO:
-#if 0
   result->SetAvoidEmbeddedBitmaps(
       BitmapGlyphsBlacklist::AvoidEmbeddedBitmapsForTypeface(typeface.get()));
-#endif
 
   return result;
 }

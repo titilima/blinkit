@@ -23,6 +23,10 @@ class LayoutTestSupport final
     STATIC_ONLY(LayoutTestSupport);
 public:
     static constexpr bool IsRunningLayoutTest(void) { return false; }
+
+    static constexpr bool IsFontAntialiasingEnabledForTest(void) { return false; }
+    static constexpr bool IsMockThemeEnabledForTest(void) { return false; }
+    static constexpr bool IsTextSubpixelPositioningAllowedForTest(void) { return true; }
 };
 
 } // namespace blink

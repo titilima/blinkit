@@ -45,12 +45,8 @@
 #include "third_party/blink/renderer/core/css/rule_set.h"
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
-#if 0 // BKTODO:
-#include "third_party/blink/renderer/core/html/html_anchor_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_anchor_element.h"
 #include "third_party/blink/renderer/core/html/html_html_element.h"
-#else
-#include "third_party/blink/renderer/core/html_names.h"
-#endif
 #include "third_party/blink/renderer/core/layout/layout_theme.h"
 #include "third_party/blink/renderer/core/mathml_names.h"
 #include "third_party/blink/renderer/platform/data_resource_helper.h"
@@ -62,8 +58,8 @@ namespace blink {
 using namespace HTMLNames;
 
 CSSDefaultStyleSheets& CSSDefaultStyleSheets::Instance() {
-  static CSSDefaultStyleSheets css_default_style_sheets;
-  return css_default_style_sheets;
+  static CSSDefaultStyleSheets *css_default_style_sheets = new (ObjectType::Global) CSSDefaultStyleSheets;
+  return *css_default_style_sheets;
 }
 
 static const MediaQueryEvaluator& ScreenEval() {

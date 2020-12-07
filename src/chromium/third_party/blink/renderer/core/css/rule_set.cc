@@ -68,11 +68,13 @@ static inline PropertyWhitelistType DeterminePropertyWhitelistType(
     const CSSSelector& selector) {
   for (const CSSSelector* component = &selector; component;
        component = component->TagHistory()) {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if text tracks are necessary.
     if (component->GetPseudoType() == CSSSelector::kPseudoCue ||
         (component->Match() == CSSSelector::kPseudoElement &&
          component->Value() == TextTrackCue::CueShadowPseudoId()))
+      return kPropertyWhitelistCue;
+#else
+    if (component->GetPseudoType() == CSSSelector::kPseudoCue)
       return kPropertyWhitelistCue;
 #endif
     if (component->GetPseudoType() == CSSSelector::kPseudoFirstLetter)
@@ -103,14 +105,10 @@ RuleData::RuleData(StyleRule* rule,
 void RuleSet::AddToRuleSet(const AtomicString& key,
                            PendingRuleMap& map,
                            const RuleData* rule_data) {
-  ASSERT(false); // BKTODO:
-#if 0
-  Member<HeapLinkedStack<Member<const RuleData>>>& rules =
-      map.insert(key, nullptr).stored_value->value;
+  Member<HeapLinkedStack<Member<const RuleData>>>& rules = map[key];
   if (!rules)
     rules = new HeapLinkedStack<Member<const RuleData>>;
   rules->Push(rule_data);
-#endif
 }
 
 static void ExtractSelectorValues(const CSSSelector* selector,
@@ -254,8 +252,6 @@ void RuleSet::AddRule(StyleRule* rule,
   // See https://crbug.com/804179
   if (selector_index >= 8192)
     return;
-  ASSERT(false); // BKTODO:
-#if 0
   RuleData* rule_data =
       new RuleData(rule, selector_index, rule_count_++, add_rule_flags);
   if (features_.CollectFeaturesFromRuleData(rule_data) ==
@@ -267,7 +263,6 @@ void RuleSet::AddRule(StyleRule* rule,
     // rules.
     universal_rules_.push_back(rule_data);
   }
-#endif
 }
 
 void RuleSet::AddPageRule(StyleRulePage* rule) {
@@ -295,8 +290,6 @@ void RuleSet::AddChildRules(const HeapVector<Member<StyleRuleBase>>& rules,
       StyleRule* style_rule = ToStyleRule(rule);
 
       const CSSSelectorList& selector_list = style_rule->SelectorList();
-      ASSERT(false); // BKTODO:
-#if 0
       for (const CSSSelector* selector = selector_list.First(); selector;
            selector = selector_list.Next(*selector)) {
         wtf_size_t selector_index = selector_list.SelectorIndex(*selector);
@@ -313,7 +306,6 @@ void RuleSet::AddChildRules(const HeapVector<Member<StyleRuleBase>>& rules,
           AddRule(style_rule, selector_index, add_rule_flags);
         }
       }
-#endif
     } else if (rule->IsPageRule()) {
       AddPageRule(ToStyleRulePage(rule));
     } else if (rule->IsMediaRule()) {
@@ -369,12 +361,10 @@ void RuleSet::AddStyleRule(StyleRule* rule, AddRuleFlags add_rule_flags) {
 void RuleSet::CompactPendingRules(PendingRuleMap& pending_map,
                                   CompactRuleMap& compact_map) {
   for (auto& item : pending_map) {
-    ASSERT(false); // BKTODO:
-#if 0
     HeapLinkedStack<Member<const RuleData>>* pending_rules =
         item.second.Release();
     Member<HeapVector<Member<const RuleData>>>& rules =
-        compact_map.insert(item.first, nullptr).stored_value->value;
+        compact_map[item.first];
     if (!rules) {
       rules = new HeapVector<Member<const RuleData>>();
       rules->ReserveInitialCapacity(pending_rules->size());
@@ -385,7 +375,6 @@ void RuleSet::CompactPendingRules(PendingRuleMap& pending_map,
       rules->push_back(pending_rules->Peek());
       pending_rules->Pop();
     }
-#endif
   }
 }
 

@@ -50,6 +50,8 @@
 #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
 #endif
 
+using namespace BlinKit;
+
 namespace blink {
 
 static wtf_size_t SizeForImmutableCSSPropertyValueSetWithPropertyCount(
@@ -64,9 +66,14 @@ ImmutableCSSPropertyValueSet* ImmutableCSSPropertyValueSet::Create(
     unsigned count,
     CSSParserMode css_parser_mode) {
   DCHECK_LE(count, static_cast<unsigned>(kMaxArraySize));
-  ASSERT(false); // BKTODO:
-  void* slot = malloc(
-      SizeForImmutableCSSPropertyValueSetWithPropertyCount(count));
+  void *slot = GCHeapAlloc(
+      ObjectType::Member
+      , SizeForImmutableCSSPropertyValueSetWithPropertyCount(count)
+      , ImmutableCSSPropertyValueSet::GCPtr()
+#ifndef NDEBUG
+      , "ImmutableCSSPropertyValueSet"
+#endif
+  );
   return new (slot)
       ImmutableCSSPropertyValueSet(properties, count, css_parser_mode);
 }
