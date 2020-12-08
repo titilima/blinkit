@@ -130,13 +130,12 @@ struct LayoutTextSelectionStatus {
 };
 
 class CORE_EXPORT FrameSelection final
-    : public GarbageCollectedFinalized<FrameSelection>,
-      public SynchronousMutationObserver {
+    : public SynchronousMutationObserver {
   USING_GARBAGE_COLLECTED_MIXIN(FrameSelection);
 
  public:
-  static FrameSelection* Create(LocalFrame& frame) {
-    return new FrameSelection(frame);
+  static std::unique_ptr<FrameSelection> Create(LocalFrame& frame) {
+    return base::WrapUnique(new FrameSelection(frame));
   }
   ~FrameSelection();
 
