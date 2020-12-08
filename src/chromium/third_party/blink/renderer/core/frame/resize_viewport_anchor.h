@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: resize_viewport_anchor.h
+// Description: ResizeViewportAnchor Class
+//      Author: Ziming Li
+//     Created: 2020-12-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -21,8 +32,7 @@ class LocalFrameView;
 // It is needed when the layout viewport grows (causing its own scroll position
 // to be clamped) and also when it shrinks (causing the visual viewport's scroll
 // position to be clamped).
-class CORE_EXPORT ResizeViewportAnchor final
-    : public GarbageCollected<ResizeViewportAnchor> {
+class CORE_EXPORT ResizeViewportAnchor final {
  public:
   ResizeViewportAnchor(Page& page) : page_(page), scope_count_(0) {}
 
@@ -40,8 +50,6 @@ class CORE_EXPORT ResizeViewportAnchor final
   };
 
   void ResizeFrameView(const IntSize&);
-
-  void Trace(blink::Visitor* visitor) { visitor->Trace(page_); }
 
  private:
   void BeginScope() { scope_count_++; }
