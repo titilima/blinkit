@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: granularity_strategy.cc
-// Description: GranularityStrategy Class
-//      Author: Ziming Li
-//     Created: 2020-09-27
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -85,9 +74,6 @@ SelectionInDOMTree CharacterGranularityStrategy::UpdateExtent(
     LocalFrame* frame) {
   const VisiblePosition& extent_position =
       VisiblePositionForContentsPoint(extent_point, frame);
-  ASSERT(false); // BKTODO:
-  return SelectionInDOMTree();
-#if 0
   const VisibleSelection& selection =
       frame->Selection().ComputeVisibleSelectionInDOMTree();
   if (extent_position.IsNull() || selection.VisibleBase().DeepEquivalent() ==
@@ -98,7 +84,6 @@ SelectionInDOMTree CharacterGranularityStrategy::UpdateExtent(
       .Extend(extent_position.DeepEquivalent())
       .SetAffinity(selection.Affinity())
       .Build();
-#endif
 }
 
 DirectionGranularityStrategy::DirectionGranularityStrategy()
@@ -122,9 +107,6 @@ void DirectionGranularityStrategy::Clear() {
 SelectionInDOMTree DirectionGranularityStrategy::UpdateExtent(
     const IntPoint& extent_point,
     LocalFrame* frame) {
-  ASSERT(false); // BKTODO:
-  return SelectionInDOMTree();
-#if 0 // BKTODO:
   const VisibleSelection& selection =
       frame->Selection().ComputeVisibleSelectionInDOMTree();
 
@@ -304,7 +286,6 @@ SelectionInDOMTree DirectionGranularityStrategy::UpdateExtent(
       .Collapse(selection.Base())
       .Extend(new_selection_extent.DeepEquivalent())
       .Build();
-#endif
 }
 
 }  // namespace blink
