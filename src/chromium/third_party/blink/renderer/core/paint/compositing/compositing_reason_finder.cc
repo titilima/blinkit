@@ -22,7 +22,7 @@
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/page/page.h"
-// BKTODO: #include "third_party/blink/renderer/core/page/scrolling/root_scroller_util.h"
+#include "third_party/blink/renderer/core/page/scrolling/root_scroller_util.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 
@@ -284,8 +284,8 @@ bool CompositingReasonFinder::RequiresCompositingForRootScroller(
   const auto& settings = *layer.GetLayoutObject().GetDocument().GetSettings();
   if (!settings.GetAcceleratedCompositingEnabled())
     return false;
-  return RootScrollerUtil::IsGlobal(layer);
 #endif
+  return RootScrollerUtil::IsGlobal(layer);
 }
 
 bool CompositingReasonFinder::RequiresCompositingForScrollDependentPosition(

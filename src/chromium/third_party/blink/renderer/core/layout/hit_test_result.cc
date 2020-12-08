@@ -244,11 +244,8 @@ bool HitTestResult::IsSelected(const HitTestLocation& location) const {
   if (!inner_node_)
     return false;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (LocalFrame* frame = inner_node_->GetDocument().GetFrame())
     return frame->Selection().Contains(location.Point());
-#endif
   return false;
 }
 

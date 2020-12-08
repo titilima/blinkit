@@ -5171,6 +5171,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_theme_font_provider_win.cc">
       <Filter>renderer\core\layout</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\resize_viewport_anchor.cc">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\root_scroller_util.cc">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -11470,9 +11476,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_scrollbar_part.h">
       <Filter>renderer\core\layout</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_scrollbar_buttons_placement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_scrollbar_theme.h">
       <Filter>renderer\core\layout</Filter>
     </ClInclude>
@@ -11544,6 +11547,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_theme_font_provider.h">
       <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\resize_viewport_anchor.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_scrollbar_buttons_placement.h">
+      <Filter>public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\root_scroller_util.h">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\runtime_call_stats.h">
+      <Filter>renderer\platform\bindings</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

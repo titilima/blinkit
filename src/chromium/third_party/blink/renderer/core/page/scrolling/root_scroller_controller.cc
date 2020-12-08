@@ -29,7 +29,7 @@
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
-// BKTODO: #include "third_party/blink/renderer/core/page/scrolling/root_scroller_util.h"
+#include "third_party/blink/renderer/core/page/scrolling/root_scroller_util.h"
 #include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
@@ -466,11 +466,7 @@ void RootScrollerController::ProcessImplicitCandidates() {
 }
 
 PaintLayer* RootScrollerController::RootScrollerPaintLayer() const {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return RootScrollerUtil::PaintLayerForRootScroller(effective_root_scroller_);
-#endif
 }
 
 bool RootScrollerController::ScrollsViewport(const Element& element) const {

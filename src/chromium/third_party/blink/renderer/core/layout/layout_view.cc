@@ -651,10 +651,7 @@ void LayoutView::AbsoluteQuads(Vector<FloatQuad>& quads,
 void LayoutView::CommitPendingSelection() {
   TRACE_EVENT0("blink", "LayoutView::commitPendingSelection");
   DCHECK(!NeedsLayout());
-  ASSERT(false); // BKTODO:
-#if 0
   frame_view_->GetFrame().Selection().CommitAppearanceIfNeeded();
-#endif
 }
 
 bool LayoutView::ShouldUsePrintingLayout() const {
@@ -850,13 +847,10 @@ void LayoutView::UpdateAfterLayout() {
   // size based on the page minimum scale factor, and then update the
   // LocalFrameView with the new size.
   LocalFrame& frame = GetFrameView()->GetFrame();
-  ASSERT(false); // BKTODO:
-#if 0
   if (!GetDocument().Printing())
     GetFrameView()->AdjustViewSize();
   if (frame.IsMainFrame())
     frame.GetChromeClient().ResizeAfterLayout();
-#endif
   if (HasOverflowClip())
     GetScrollableArea()->ClampScrollOffsetAfterOverflowChange();
   LayoutBlockFlow::UpdateAfterLayout();

@@ -92,13 +92,9 @@ Color SelectionColor(const Document& document,
     return pseudo_style->VisitedDependentColor(color_property);
   if (!LayoutTheme::GetTheme().SupportsSelectionForegroundColors())
     return style.VisitedDependentColor(color_property);
-  ASSERT(false); // BKTODO:
-  return style.VisitedDependentColor(color_property);
-#if 0
   return document.GetFrame()->Selection().FrameIsFocusedAndActive()
              ? LayoutTheme::GetTheme().ActiveSelectionForegroundColor()
              : LayoutTheme::GetTheme().InactiveSelectionForegroundColor();
-#endif
 }
 
 const ComputedStyle* SelectionPseudoStyle(Node* node) {
@@ -130,13 +126,9 @@ Color SelectionPaintingUtils::SelectionBackgroundColor(
         .BlendWithWhite();
   }
 
-  ASSERT(false); // BKTODO:
-  return Color::kTransparent;
-#if 0
   return document.GetFrame()->Selection().FrameIsFocusedAndActive()
              ? LayoutTheme::GetTheme().ActiveSelectionBackgroundColor()
              : LayoutTheme::GetTheme().InactiveSelectionBackgroundColor();
-#endif
 }
 
 Color SelectionPaintingUtils::SelectionForegroundColor(

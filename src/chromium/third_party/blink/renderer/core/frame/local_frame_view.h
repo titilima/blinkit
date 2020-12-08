@@ -49,13 +49,17 @@ public:
     Page* GetPage(void) const;
     LayoutView* GetLayoutView(void) const;
     IntRect FrameRect(void) const { return IntRect(Location(), Size()); }
+    void SetFrameRect(const IntRect &unclampedFrameRect);
     IntPoint Location(void) const;
     int X(void) const { return Location().X(); }
     int Y(void) const { return Location().Y(); }
     int Width(void) const { return Size().Width(); }
     int Height(void) const { return Size().Height(); }
     IntSize Size(void) const { return m_frameRect.Size(); }
+    void Resize(const IntSize &size) { SetFrameRect(IntRect(m_frameRect.Location(), size)); }
 
+    void AdjustViewSize(void);
+    void SetLayoutOverflowSize(const IntSize &size);
     void UpdateLayout(void);
 
     // Returns the scrollable area for the frame. For the root frame, this will
@@ -175,6 +179,11 @@ public:
     // LocalFrame.
     void WillBeRemovedFromFrame(void);
 
+    // Called when our frame rect changes (or the rect/scroll offset of an
+    // ancestor changes).
+    void FrameRectsChanged(void);
+    void ViewportSizeChanged(bool widthChanged, bool heightChanged);
+
     void BeginLifecycleUpdates(void);
 
     void ClearFragmentAnchor(void);
@@ -227,6 +236,11 @@ private:
     std::unique_ptr<ScrollableAreaSet> m_scrollableAreas;
     std::unique_ptr<ScrollableAreaSet> m_animatingScrollableAreas;
     HeapHashSet<Member<Scrollbar>> m_scrollbars;
+
+    // TODO(bokan): This is unneeded when root-layer-scrolls is turned on.
+    // crbug.com/417782.
+    IntSize m_layoutOverflowSize;
+
     std::unique_ptr<ResizerAreaSet> m_resizerAreas;
     std::unique_ptr<ViewportConstrainedObjectSet> m_viewportConstrainedObjects;
     IntSize m_layoutSize;

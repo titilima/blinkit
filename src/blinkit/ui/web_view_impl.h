@@ -17,6 +17,7 @@
 #include "bk_ui.h"
 #include "blinkit/blink_impl/local_frame_client_impl.h"
 #include "third_party/blink/public/platform/web_size.h"
+#include "third_party/blink/renderer/core/frame/resize_viewport_anchor.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page_visibility_state.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
@@ -43,10 +44,20 @@ public:
     // Returns the page object associated with this view. This may be null when
     // the page is shutting down, but will be valid at all other times.
     blink::Page* GetPage(void) const { return m_page.get(); }
+    float PageScaleFactor(void) const;
+    void SetPageScaleFactor(float scaleFactor);
+    blink::IntSize MainFrameSize(void);
 
+    float ClampPageScaleFactorToLimits(float scaleFactor) const;
     void ScheduleAnimation(void);
     void UpdateMainFrameLayoutSize(void);
     void UpdatePageDefinedViewportConstraints(const blink::ViewportDescription &description);
+    void UpdateLayerTreeViewport(void);
+
+    void ResizeAfterLayout(void);
+    void RefreshPageScaleFactor(void);
+
+    void DidChangeContentsSize(void);
 
     void StopDeferringCommits(void) {
         // BKTODO: Check this later.
@@ -57,6 +68,7 @@ protected:
     bool ProcessTitleChange(const std::string &newTitle) const;
 private:
     blink::IntSize FrameSize(void);
+    blink::IntSize ContentsSize(void) const;
     blink::Color BaseBackgroundColor(void) const;
     blink::PageScaleConstraintsSet& GetPageScaleConstraintsSet(void) const;
     float MinimumPageScaleFactor(void) const;
@@ -77,6 +89,8 @@ private:
     bool m_shouldAutoResize = false;
     std::unique_ptr<blink::Page> m_page;
     SkColor m_baseBackgroundColor;
+
+    std::unique_ptr<blink::ResizeViewportAnchor> m_resizeViewportAnchor;
 };
 
 #endif // BLINKIT_BLINKIT_WEB_VIEW_IMPL_H

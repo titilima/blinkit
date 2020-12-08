@@ -96,8 +96,8 @@
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/style/reference_clip_path_operation.h"
 #include "third_party/blink/renderer/core/style/shape_clip_path_operation.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/bindings/runtime_call_stats.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
 #endif
 #include "third_party/blink/renderer/platform/geometry/float_point_3d.h"
@@ -320,7 +320,7 @@ void PaintLayer::SetSubpixelAccumulation(const LayoutSize& size) {
   if (rare_data_ || !size.IsZero()) {
     EnsureRareData().subpixel_accumulation = size;
     if (PaintLayerScrollableArea* scrollable_area = GetScrollableArea()) {
-      ASSERT(false); // BKTODO: scrollable_area->PositionOverflowControls();
+      scrollable_area->PositionOverflowControls();
     }
   }
 }
@@ -328,12 +328,9 @@ void PaintLayer::SetSubpixelAccumulation(const LayoutSize& size) {
 void PaintLayer::UpdateLayerPositionsAfterLayout() {
   TRACE_EVENT0("blink,benchmark",
                "PaintLayer::updateLayerPositionsAfterLayout");
-  ASSERT(false); // BKTODO:
-#if 0
   RUNTIME_CALL_TIMER_SCOPE(
       V8PerIsolateData::MainThreadIsolate(),
       RuntimeCallStats::CounterId::kUpdateLayerPositionsAfterLayout);
-#endif
 
   ClearClipRects();
   UpdateLayerPositionRecursive();
@@ -1680,11 +1677,8 @@ void PaintLayer::UpdateScrollableArea() {
     scrollable_area_ = PaintLayerScrollableArea::Create(*this);
     Compositor()->SetNeedsCompositingUpdate(kCompositingUpdateRebuildTree);
   } else if (!RequiresScrollableArea() && scrollable_area_) {
-    ASSERT(false); // BKTODO:
-#if 0
     scrollable_area_->Dispose();
-    scrollable_area_.Clear();
-#endif
+    scrollable_area_.reset();
     Compositor()->SetNeedsCompositingUpdate(kCompositingUpdateRebuildTree);
   }
 }
@@ -1843,12 +1837,9 @@ bool PaintLayer::HitTest(const HitTestLocation& hit_test_location,
                          const LayoutRect& hit_test_area) {
   DCHECK(IsSelfPaintingLayer() || HasSelfPaintingLayerDescendant());
 
-  ASSERT(false); // BKTODO:
-#if 0
   // LayoutView should make sure to update layout before entering hit testing
   DCHECK(!GetLayoutObject().GetFrame()->View()->LayoutPending());
   DCHECK(!GetLayoutObject().GetDocument().GetLayoutView()->NeedsLayout());
-#endif
 
   const HitTestRequest& request = result.GetHitTestRequest();
 
@@ -3355,11 +3346,8 @@ void PaintLayer::RemoveAncestorOverflowLayer(const PaintLayer* removed_layer) {
     // constrained by the root.
     if (AncestorOverflowLayer()->IsRootLayer() &&
         GetLayoutObject().StyleRef().HasStickyConstrainedPosition()) {
-      ASSERT(false); // BKTODO:
-#if 0
       if (LocalFrameView* frame_view = GetLayoutObject().GetFrameView())
         frame_view->RemoveViewportConstrainedObject(GetLayoutObject());
-#endif
     }
 
     if (PaintLayerScrollableArea* ancestor_scrollable_area =
@@ -3445,8 +3433,6 @@ void PaintLayer::ComputeSelfHitTestRects(
         supported_fast_actions;
 
     if (GetLayoutBox() && GetLayoutBox()->ScrollsOverflow()) {
-      ASSERT(false); // BKTODO:
-#if 0
       // For scrolling layers, rects are taken to be in the space of the
       // contents.  We need to include the bounding box of the layer in the
       // space of its parent (eg. for border / scroll bars) and if it's
@@ -3457,7 +3443,6 @@ void PaintLayer::ComputeSelfHitTestRects(
         rect.push_back(HitTestRect(scrollable_area_->OverflowRect(),
                                    whitelisted_touch_action));
       }
-#endif
 
       rects.Set(this, rect);
       if (const PaintLayer* parent_layer = Parent()) {

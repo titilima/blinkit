@@ -11,6 +11,8 @@
 
 #include "local_frame_view.h"
 
+#include "third_party/blink/renderer/core/editing/frame_selection.h"
+#include "third_party/blink/renderer/core/frame/browser_controls.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/frame/root_frame_viewport.h"
@@ -69,6 +71,18 @@ void LocalFrameView::AddScrollbar(Scrollbar *scrollbar)
 void LocalFrameView::AddViewportConstrainedObject(LayoutObject &object)
 {
     ASSERT(false); // BKTODO:
+}
+
+void LocalFrameView::AdjustViewSize(void)
+{
+    if (m_suppressAdjustViewSize)
+        return;
+
+    if (LayoutView *layoutView = GetLayoutView())
+    {
+        ASSERT(m_frame->View() == this);
+        SetLayoutOverflowSize(layoutView->DocumentRect().Size());
+    }
 }
 
 void LocalFrameView::BeginLifecycleUpdates(void)
@@ -223,6 +237,15 @@ void LocalFrameView::Dispose(void)
 void LocalFrameView::EnqueueScrollAnchoringAdjustment(ScrollableArea *scrollableArea)
 {
     ASSERT(false); // BKTODO:
+}
+
+void LocalFrameView::FrameRectsChanged(void)
+{
+    if (LayoutSizeFixedToFrameSize())
+        SetLayoutSizeInternal(Size());
+#if 0 // BKTODO: May be useful in the future, leave it here.
+    GetFrame().Client()->FrameRectsChanged(FrameRect());
+#endif
 }
 
 LayoutRect LocalFrameView::FrameToDocument(const LayoutRect &rectInFrame) const
@@ -468,12 +491,12 @@ void LocalFrameView::PerformPostLayoutTasks(void)
     // layout() call.
     ASSERT(!IsInPerformLayout());
 
+    m_frame->Selection().DidLayout();
+
+    ASSERT(nullptr != m_frame->GetDocument());
+
     ASSERT(false); // BKTODO:
 #if 0
-    frame_->Selection().DidLayout();
-
-    DCHECK(frame_->GetDocument());
-
     FontFaceSetDocument::DidLayout(*frame_->GetDocument());
     // Fire a fake a mouse move event to update hover state and mouse cursor, and
     // send the right mouse out/over events.
@@ -637,6 +660,33 @@ void LocalFrameView::SetBaseBackgroundColor(const Color &backgroundColor)
         GetPage()->Animator().ScheduleVisualUpdate(m_frame.Get());
 }
 
+void LocalFrameView::SetFrameRect(const IntRect &unclampedFrameRect)
+{
+    const IntRect frameRect(SaturatedRect(unclampedFrameRect));
+
+    if (frameRect == m_frameRect)
+        return;
+
+    const bool widthChanged = m_frameRect.Width() != frameRect.Width();
+    const bool heightChanged = m_frameRect.Height() != frameRect.Height();
+    m_frameRect = frameRect;
+
+    FrameRectsChanged();
+
+    if (LayoutView *layoutView = GetLayoutView())
+        layoutView->SetShouldCheckForPaintInvalidation();
+
+    if (widthChanged || heightChanged)
+    {
+        ViewportSizeChanged(widthChanged, heightChanged);
+
+        m_frame->GetPage()->GetVisualViewport().MainFrameDidChangeSize();
+#if 0 // BKTODO: Check if necessary.
+        m_frame->Loader().RestoreScrollPositionAndViewState();
+#endif
+    }
+}
+
 void LocalFrameView::SetInitialViewportSize(const IntSize &viewportSize)
 {
     if (viewportSize == m_initialViewportSize)
@@ -645,6 +695,17 @@ void LocalFrameView::SetInitialViewportSize(const IntSize &viewportSize)
     m_initialViewportSize = viewportSize;
     if (Document *document = m_frame->GetDocument())
         document->GetStyleEngine().InitialViewportChanged();
+}
+
+void LocalFrameView::SetLayoutOverflowSize(const IntSize &size)
+{
+    if (size == m_layoutOverflowSize)
+        return;
+
+    m_layoutOverflowSize = size;
+
+    if (Page *page = GetFrame().GetPage())
+        page->GetChromeClient().ContentsSizeChanged(m_frame.Get(), size);
 }
 
 void LocalFrameView::SetLayoutSize(const IntSize &size)
@@ -986,6 +1047,57 @@ void LocalFrameView::UpdateRenderThrottlingStatus(
     NotifyChildrenBehavior notifyChildrenBehavior)
 {
     BKLOG("// BKTODO: Check if necessary.");
+}
+
+void LocalFrameView::ViewportSizeChanged(bool widthChanged, bool heightChanged)
+{
+    ASSERT(widthChanged || heightChanged);
+    ASSERT(nullptr != m_frame->GetPage());
+
+    Document *document = m_frame->GetDocument();
+    if (nullptr != document && document->Lifecycle().LifecyclePostponed())
+        return;
+
+    LayoutView *layoutView = GetLayoutView();
+    if (nullptr != layoutView)
+    {
+        // If this is the main frame, we might have got here by hiding/showing the
+        // top controls.  In that case, layout won't be triggered, so we need to
+        // clamp the scroll offset here.
+        layoutView->Layer()->UpdateSize();
+        layoutView->GetScrollableArea()->ClampScrollOffsetAfterOverflowChange();
+
+        if (layoutView->UsesCompositing())
+        {
+            layoutView->Layer()->SetNeedsCompositingInputsUpdate();
+            ASSERT(false); // BKTODO: SetNeedsPaintPropertyUpdate();
+        }
+    }
+
+    if (nullptr != document)
+        document->GetRootScrollerController().DidResizeFrameView();
+
+    if (nullptr != layoutView && m_frame->GetPage()->GetBrowserControls().TotalHeight())
+    {
+        if (layoutView->StyleRef().HasFixedBackgroundImage())
+        {
+            // We've already issued a full invalidation above.
+            layoutView->SetShouldDoFullPaintInvalidationOnResizeIfNeeded(widthChanged, heightChanged);
+        }
+        else if (heightChanged)
+        {
+            // If the document rect doesn't fill the full view height, hiding the
+            // URL bar will expose area outside the current LayoutView so we need to
+            // paint additional background. If RLS is on, we've already invalidated
+            // above.
+            ASSERT(nullptr != layoutView);
+            if (layoutView->DocumentRect().Height() < layoutView->ViewRect().Height())
+                layoutView->SetShouldDoFullPaintInvalidation(PaintInvalidationReason::kGeometry);
+        }
+    }
+
+    if (nullptr != document && !IsInPerformLayout())
+        MarkViewportConstrainedObjectsForLayout(widthChanged, heightChanged);
 }
 
 FloatSize LocalFrameView::ViewportSizeForViewportUnits(void) const

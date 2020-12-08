@@ -73,11 +73,7 @@ float ScrollableArea::MinFractionToStepWhenPaging() {
 }
 
 int ScrollableArea::MaxOverlapBetweenPages() const {
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   return GetPageScrollbarTheme().MaxOverlapBetweenPages();
-#endif
 }
 
 // static
@@ -486,22 +482,16 @@ void ScrollableArea::DidAddScrollbar(Scrollbar& scrollbar,
 void ScrollableArea::WillRemoveScrollbar(Scrollbar& scrollbar,
                                          ScrollbarOrientation orientation) {
   if (ScrollAnimatorBase* scroll_animator = ExistingScrollAnimator()) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (orientation == kVerticalScrollbar)
       scroll_animator->WillRemoveVerticalScrollbar(scrollbar);
     else
       scroll_animator->WillRemoveHorizontalScrollbar(scrollbar);
-#endif
   }
 }
 
 void ScrollableArea::ContentsResized() {
-  ASSERT(false); // BKTODO:
-#if 0
   if (ScrollAnimatorBase* scroll_animator = ExistingScrollAnimator())
     scroll_animator->ContentsResized();
-#endif
 }
 
 bool ScrollableArea::HasOverlayScrollbars() const {
@@ -678,11 +668,8 @@ void ScrollableArea::SetScrollbarsHiddenIfOverlay(bool hidden) {
   if (HasBeenDisposed())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (!GetPageScrollbarTheme().UsesOverlayScrollbars())
     return;
-#endif
 
   if (scrollbars_hidden_if_overlay_ == static_cast<unsigned>(hidden))
     return;
@@ -696,17 +683,12 @@ void ScrollableArea::FadeOverlayScrollbarsTimerFired(TimerBase*) {
 }
 
 void ScrollableArea::ShowOverlayScrollbars() {
-  ASSERT(false); // BKTODO:
-#if 0
   if (!GetPageScrollbarTheme().UsesOverlayScrollbars())
     return;
-#endif
 
   SetScrollbarsHiddenIfOverlay(false);
   needs_show_scrollbar_layers_ = true;
 
-  ASSERT(false); // BKTODO:
-#if 0
   const TimeDelta time_until_disable =
       GetPageScrollbarTheme().OverlayScrollbarFadeOutDelay() +
       GetPageScrollbarTheme().OverlayScrollbarFadeOutDuration();
@@ -721,15 +703,17 @@ void ScrollableArea::ShowOverlayScrollbars() {
     return;
 
   if (!fade_overlay_scrollbars_timer_) {
+    ASSERT(false); // BKTODO:
+#if 0
     fade_overlay_scrollbars_timer_.reset(new TaskRunnerTimer<ScrollableArea>(
         Platform::Current()->MainThread()->Scheduler()->CompositorTaskRunner(),
         this, &ScrollableArea::FadeOverlayScrollbarsTimerFired));
+#endif
   }
 
   if (!scrollbar_captured_ && !mouse_over_scrollbar_) {
     fade_overlay_scrollbars_timer_->StartOneShot(time_until_disable, FROM_HERE);
   }
-#endif
 }
 
 IntSize ScrollableArea::ClampScrollOffset(const IntSize& scroll_offset) const {

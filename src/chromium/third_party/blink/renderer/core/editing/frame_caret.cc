@@ -222,15 +222,11 @@ bool FrameCaret::ShouldBlinkCaret() const {
   if (!root)
     return false;
 
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   Element* focused_element = root->GetDocument().FocusedElement();
   if (!focused_element)
     return false;
 
   return frame_->Selection().SelectionHasFocus();
-#endif
 }
 
 void FrameCaret::CaretBlinkTimerFired(TimerBase*) {
@@ -242,11 +238,8 @@ void FrameCaret::CaretBlinkTimerFired(TimerBase*) {
 }
 
 void FrameCaret::ScheduleVisualUpdateForPaintInvalidationIfNeeded() {
-  ASSERT(false); // BKTODO:
-#if 0
   if (LocalFrameView* frame_view = frame_->View())
     frame_view->ScheduleVisualUpdateForPaintInvalidationIfNeeded();
-#endif
 }
 
 #if 0 // BKTODO:

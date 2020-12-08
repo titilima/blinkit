@@ -156,9 +156,9 @@ void LayoutBlock::WillBeDestroyed() {
     Parent()->DirtyLinesFromChangedChild(this);
 
   if (LocalFrame* frame = GetFrame()) {
-    BKLOG("// BKTODO: Process selection & drag caret.");
-#if 0 // BKTODO:
     frame->Selection().LayoutBlockWillBeDestroyed(*this);
+    BKLOG("// BKTODO: Process drag caret.");
+#if 0 // BKTODO:
     frame->GetPage()->GetDragCaret().LayoutBlockWillBeDestroyed(*this);
 #endif
   }
@@ -1915,11 +1915,7 @@ inline bool LayoutBlock::IsInlineBoxWrapperActuallyChild() const {
 }
 
 bool LayoutBlock::ShouldPaintCursorCaret() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return GetFrame()->Selection().ShouldPaintCaret(*this);
-#endif
 }
 
 bool LayoutBlock::ShouldPaintDragCaret() const {

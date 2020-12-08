@@ -543,10 +543,9 @@ base::Optional<IntRect> ChromeClientImpl::VisibleContentRectForPainting()
 
 void ChromeClientImpl::ContentsSizeChanged(LocalFrame* frame,
                                            const IntSize& size) const {
-  ASSERT(false); // BKTODO:
-#if 0
   web_view_->DidChangeContentsSize();
 
+#if 0 // BKTODO: Check if necessary (text finder stuff).
   WebLocalFrameImpl* webframe = WebLocalFrameImpl::FromFrame(frame);
   webframe->DidChangeContentsSize(size);
 #endif
@@ -569,7 +568,7 @@ float ChromeClientImpl::ClampPageScaleFactorToLimits(float scale) const {
 }
 
 void ChromeClientImpl::ResizeAfterLayout() const {
-  ASSERT(false); // BKTODO: web_view_->ResizeAfterLayout();
+  web_view_->ResizeAfterLayout();
 }
 
 void ChromeClientImpl::MainFrameLayoutUpdated() const {

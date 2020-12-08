@@ -49,13 +49,13 @@ void ImagePainter::Paint(const PaintInfo& paint_info) {
 void ImagePainter::PaintAreaElementFocusRing(const PaintInfo& paint_info) {
   Document& document = layout_image_.GetDocument();
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (paint_info.IsPrinting() ||
       !document.GetFrame()->Selection().FrameIsFocusedAndActive())
     return;
 
   Element* focused_element = document.FocusedElement();
+  ASSERT(false); // BKTODO:
+#if 0
   if (!IsHTMLAreaElement(focused_element))
     return;
 

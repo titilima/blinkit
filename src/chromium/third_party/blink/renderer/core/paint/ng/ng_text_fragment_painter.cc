@@ -302,8 +302,6 @@ void NGTextFragmentPainter::Paint(const PaintInfo& paint_info,
 
   bool is_printing = paint_info.IsPrinting();
 
-  ASSERT(false); // BKTODO:
-#if 0
   // Determine whether or not we're selected.
   const LayoutSelectionStatus& selection_status =
       document.GetFrame()->Selection().ComputeLayoutSelectionStatus(fragment_);
@@ -332,6 +330,8 @@ void NGTextFragmentPainter::Paint(const PaintInfo& paint_info,
   LayoutRect box_rect(box_origin, fragment_.Size().ToLayoutSize());
   base::Optional<GraphicsContextStateSaver> state_saver;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // 1. Paint backgrounds behind text if needed. Examples of such backgrounds
   // include selection and composition highlights.
   // Since NGPaintFragment::ComputeLocalSelectionRectForText() returns

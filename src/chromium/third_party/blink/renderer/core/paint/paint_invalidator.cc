@@ -184,9 +184,6 @@ static LayoutRect ComputeFragmentLocalSelectionRect(
     const NGPaintFragment& fragment) {
   if (!fragment.PhysicalFragment().IsText())
     return LayoutRect();
-  ASSERT(false); // BKTODO:
-  return LayoutRect();
-#if 0
   const FrameSelection& frame_selection =
       fragment.GetLayoutObject()->GetFrame()->Selection();
   const LayoutSelectionStatus status =
@@ -194,7 +191,6 @@ static LayoutRect ComputeFragmentLocalSelectionRect(
   if (status.start == status.end)
     return LayoutRect();
   return fragment.ComputeLocalSelectionRectForText(status).ToLayoutRect();
-#endif
 }
 
 LayoutRect PaintInvalidator::MapFragmentLocalRectToVisualRect(

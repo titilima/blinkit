@@ -53,7 +53,10 @@ namespace blink {
 
 class DOMWindow;
 class FrameClient;
+#ifndef BLINKIT_CRAWLER_ONLY
+class ChromeClient;
 class Page;
+#endif
 
 enum class FrameDetachType { kRemove, kSwap };
 
@@ -69,6 +72,7 @@ public:
     DOMWindow* DomWindow(void) const { return m_domWindow.Get(); }
 #ifndef BLINKIT_CRAWLER_ONLY
     Page* GetPage(void) const;  // Null when the frame is detached.
+    ChromeClient& GetChromeClient(void) const;
     virtual FrameView* View(void) const = 0;
 #endif
 

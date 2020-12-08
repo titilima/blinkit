@@ -26,9 +26,7 @@
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/page/scrolling/overscroll_controller.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/page/scrolling/root_scroller_util.h"
-#endif
 #include "third_party/blink/renderer/core/page/scrolling/viewport_scroll_callback.h"
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
@@ -69,11 +67,7 @@ void TopDocumentRootScrollerController::DidResizeViewport() {
 }
 
 ScrollableArea* TopDocumentRootScrollerController::RootScrollerArea() const {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return RootScrollerUtil::ScrollableAreaForRootScroller(GlobalRootScroller());
-#endif
 }
 
 IntSize TopDocumentRootScrollerController::RootScrollerVisibleArea() const {
@@ -134,14 +128,14 @@ void SetNeedsCompositingUpdateOnAncestors(Element* element) {
   if (!element || !element->GetDocument().IsActive())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   ScrollableArea* area =
       RootScrollerUtil::ScrollableAreaForRootScroller(element);
 
   if (!area || !area->Layer())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   Frame* frame = area->Layer()->GetLayoutObject().GetFrame();
   for (; frame; frame = frame->Tree().Parent()) {
     if (!frame->IsLocalFrame())
@@ -163,8 +157,6 @@ void TopDocumentRootScrollerController::RecomputeGlobalRootScroller() {
   if (target == global_root_scroller_)
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   ScrollableArea* target_scroller =
       RootScrollerUtil::ScrollableAreaForRootScroller(target);
 
@@ -172,12 +164,12 @@ void TopDocumentRootScrollerController::RecomputeGlobalRootScroller() {
     return;
 
   if (global_root_scroller_)
-    global_root_scroller_->RemoveApplyScroll();
+    ASSERT(false); // BKTODO: global_root_scroller_->RemoveApplyScroll();
 
   // Use disable-native-scroll since the ViewportScrollCallback needs to
   // apply scroll actions both before (BrowserControls) and after (overscroll)
   // scrolling the element so it will apply scroll to the element itself.
-  target->SetApplyScroll(viewport_apply_scroll_);
+  ASSERT(false); // BKTODO: target->SetApplyScroll(viewport_apply_scroll_);
 
   Element* old_root_scroller = global_root_scroller_;
 
@@ -200,7 +192,6 @@ void TopDocumentRootScrollerController::RecomputeGlobalRootScroller() {
   }
 
   target_scroller->DidChangeGlobalRootScroller();
-#endif
 }
 
 Document* TopDocumentRootScrollerController::TopDocument() const {
@@ -261,9 +252,6 @@ bool TopDocumentRootScrollerController::IsViewportScrollCallback(
 }
 
 GraphicsLayer* TopDocumentRootScrollerController::RootScrollerLayer() const {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   ScrollableArea* area =
       RootScrollerUtil::ScrollableAreaForRootScroller(global_root_scroller_);
 
@@ -277,26 +265,17 @@ GraphicsLayer* TopDocumentRootScrollerController::RootScrollerLayer() const {
   // the root scroller gets composited.
 
   return graphics_layer;
-#endif
 }
 
 GraphicsLayer* TopDocumentRootScrollerController::RootContainerLayer() const {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   ScrollableArea* area =
       RootScrollerUtil::ScrollableAreaForRootScroller(global_root_scroller_);
 
   return area ? area->LayerForContainer() : nullptr;
-#endif
 }
 
 PaintLayer* TopDocumentRootScrollerController::RootScrollerPaintLayer() const {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return RootScrollerUtil::PaintLayerForRootScroller(global_root_scroller_);
-#endif
 }
 
 Element* TopDocumentRootScrollerController::GlobalRootScroller() const {

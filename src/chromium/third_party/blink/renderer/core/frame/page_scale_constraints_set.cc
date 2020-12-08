@@ -114,14 +114,11 @@ void PageScaleConstraintsSet::ComputeFinalConstraints() {
 }
 
 void PageScaleConstraintsSet::AdjustFinalConstraintsToContentsSize() {
-  ASSERT(false); // BKTODO:
-#if 0
-  if (page_->GetSettings().GetShrinksViewportContentToFit()) {
+  if (Settings::ShrinksViewportContentToFit) {
     final_constraints_.FitToContentsWidth(
         last_contents_width_,
         icb_size_.Width() - last_vertical_scrollbar_width_);
   }
-#endif
 
   final_constraints_.ResolveAutoInitialScale();
 }

@@ -85,14 +85,10 @@ using namespace html_names;
 
 #ifndef BLINKIT_CRAWLER_ONLY
 static bool IsFrameFocused(const Element& element) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return element.GetDocument().GetFrame() && element.GetDocument()
                                                  .GetFrame()
                                                  ->Selection()
                                                  .FrameIsFocusedAndActive();
-#endif
 }
 #endif
 

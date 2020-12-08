@@ -215,8 +215,7 @@ void ObjectPaintInvalidator::InvalidateDisplayItemClient(
 
   client.Invalidate(reason);
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   if (LocalFrameView* frame_view = object_.GetFrameView())
     frame_view->TrackObjectPaintInvalidation(client, reason);
 #endif

@@ -1301,11 +1301,7 @@ void SelectionController::NotifySelectionChanged() {
 }
 
 FrameSelection& SelectionController::Selection() const {
-  ASSERT(false); // BKTODO:
-  exit(0);
-#if 0
   return frame_->Selection();
-#endif
 }
 
 #if 0 // BKTODO:

@@ -591,12 +591,9 @@ VisiblePosition VisiblePositionForContentsPoint(const IntPoint& contents_point,
   frame->GetDocument()->GetLayoutView()->HitTest(location, result);
 
   if (Node* node = result.InnerNode()) {
-    ASSERT(false); // BKTODO:
-#if 0
     return CreateVisiblePosition(PositionRespectingEditingBoundary(
         frame->Selection().ComputeVisibleSelectionInDOMTreeDeprecated().Start(),
         result.LocalPoint(), node));
-#endif
   }
   return VisiblePosition();
 }

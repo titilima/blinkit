@@ -95,8 +95,8 @@
 // BKTODO: #include "third_party/blink/renderer/core/page/focus_controller.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/page/scrolling/root_scroller_controller.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/page/scrolling/root_scroller_util.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/page/scrolling/scrolling_coordinator.h"
 #endif
 #include "third_party/blink/renderer/core/page/scrolling/snap_coordinator.h"
@@ -1008,8 +1008,6 @@ void PaintLayerScrollableArea::UpdateAfterLayout() {
     // needs to update paint properties to account for the correct
     // scrollbounds.
     if (LocalFrameView* frame_view = GetLayoutBox()->GetFrameView()) {
-      ASSERT(false); // BKTODO:
-#if 0
       if (this == frame_view->LayoutViewport()) {
         GetLayoutBox()
             ->GetFrame()
@@ -1017,7 +1015,6 @@ void PaintLayerScrollableArea::UpdateAfterLayout() {
             ->GetVisualViewport()
             .SetNeedsPaintPropertyUpdate();
       }
-#endif
     }
 
     if (HasScrollbar())
@@ -2410,12 +2407,8 @@ bool PaintLayerScrollableArea::VisualViewportSuppliesScrollbars() const {
   const TopDocumentRootScrollerController& controller =
       GetLayoutBox()->GetDocument().GetPage()->GlobalRootScrollerController();
 
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return RootScrollerUtil::ScrollableAreaForRootScroller(
              controller.GlobalRootScroller()) == this;
-#endif
 }
 
 bool PaintLayerScrollableArea::ScheduleAnimation() {

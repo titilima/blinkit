@@ -2115,13 +2115,12 @@ LayoutRect LayoutText::LocalSelectionRect() const {
   if (!cb)
     return LayoutRect();
 
-  ASSERT(false); // BKTODO:
-  return LayoutRect();
-#if 0
   const FrameSelection& frame_selection = GetFrame()->Selection();
   const auto fragments = NGPaintFragment::InlineFragmentsFor(this);
   if (fragments.IsInLayoutNGInlineFormattingContext()) {
     LayoutRect rect;
+    ASSERT(false); // BKTODO:
+#if 0
     for (const NGPaintFragment* fragment : fragments) {
       const LayoutSelectionStatus status =
           frame_selection.ComputeLayoutSelectionStatus(*fragment);
@@ -2132,6 +2131,7 @@ LayoutRect LayoutText::LocalSelectionRect() const {
       fragment_rect.offset += fragment->InlineOffsetToContainerBox();
       rect.Unite(fragment_rect.ToLayoutRect());
     }
+#endif
     return rect;
   }
 
@@ -2147,7 +2147,6 @@ LayoutRect LayoutText::LocalSelectionRect() const {
   }
 
   return rect;
-#endif
 }
 
 const NGOffsetMapping* LayoutText::GetNGOffsetMapping() const {

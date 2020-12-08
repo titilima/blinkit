@@ -15,9 +15,12 @@
 #include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/viewport_data.h"
+#include "third_party/blink/renderer/core/frame/visual_viewport.h"
+#include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"
 #include "third_party/blink/renderer/core/page/chrome_client_impl.h"
 #include "third_party/blink/renderer/core/page/page.h"
+#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "url/gurl.h"
 
 using namespace blink;
@@ -48,8 +51,8 @@ WebViewImpl::WebViewImpl(PageVisibilityState visibilityState)
     AllInstances().insert(this);
 
     page_importance_signals_.SetObserver(client);
-    resize_viewport_anchor_ = new ResizeViewportAnchor(*page_);
 #endif
+    m_resizeViewportAnchor = std::make_unique<ResizeViewportAnchor>(*m_page);
 }
 
 WebViewImpl::~WebViewImpl(void) = default;
@@ -57,6 +60,35 @@ WebViewImpl::~WebViewImpl(void) = default;
 Color WebViewImpl::BaseBackgroundColor(void) const
 {
     return m_baseBackgroundColor;
+}
+
+float WebViewImpl::ClampPageScaleFactorToLimits(float scaleFactor) const
+{
+    return GetPageScaleConstraintsSet().FinalConstraints().ClampToConstraints(scaleFactor);
+}
+
+IntSize WebViewImpl::ContentsSize(void) const {
+    if (LayoutView *layoutView = GetPage()->GetFrame()->ContentLayoutObject())
+        return layoutView->DocumentRect().Size();
+    return IntSize();
+}
+
+void WebViewImpl::DidChangeContentsSize(void)
+{
+    LocalFrameView *view = GetPage()->GetFrame()->View();
+
+    int verticalScrollbarWidth = 0;
+    if (nullptr != view)
+    {
+        if (PaintLayerScrollableArea *layoutViewport = view->LayoutViewport())
+        {
+            Scrollbar *verticalScrollbar = layoutViewport->VerticalScrollbar();
+            if (nullptr != verticalScrollbar && !verticalScrollbar->IsOverlayScrollbar())
+                verticalScrollbarWidth = verticalScrollbar->Width();
+        }
+    }
+
+    GetPageScaleConstraintsSet().DidChangeContentsSize(ContentsSize(), verticalScrollbarWidth, PageScaleFactor());
 }
 
 void WebViewImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
@@ -102,9 +134,25 @@ int WebViewImpl::LoadUI(const char *URI)
     return BK_ERR_SUCCESS;
 }
 
+IntSize WebViewImpl::MainFrameSize(void)
+{
+    // The frame size should match the viewport size at minimum scale, since the
+    // viewport must always be contained by the frame.
+    FloatSize frameSize(m_size);
+    frameSize.Scale(1 / MinimumPageScaleFactor());
+    return ExpandedIntSize(frameSize);
+}
+
 float WebViewImpl::MinimumPageScaleFactor(void) const
 {
     return GetPageScaleConstraintsSet().FinalConstraints().minimum_scale;
+}
+
+float WebViewImpl::PageScaleFactor(void) const
+{
+    if (Page *page = GetPage())
+        return page->GetVisualViewport().Scale();
+    return 1.0;
 }
 
 bool WebViewImpl::ProcessTitleChange(const std::string &title) const
@@ -112,6 +160,67 @@ bool WebViewImpl::ProcessTitleChange(const std::string &title) const
     if (nullptr == m_client.TitleChange)
         return false;
     return m_client.TitleChange(title.c_str(), m_client.UserData);
+}
+
+void WebViewImpl::RefreshPageScaleFactor(void)
+{
+    Page *page = GetPage();
+    if (nullptr == page)
+        return;
+
+    LocalFrame *mainFrame = page->MainFrame();
+    if (nullptr == mainFrame)
+        return;
+
+    LocalFrameView *view = mainFrame->View();
+    if (nullptr == view)
+        return;
+
+    UpdatePageDefinedViewportConstraints(mainFrame->GetDocument()->GetViewportData().GetViewportDescription());
+
+    PageScaleConstraintsSet &pageScaleConstraints = GetPageScaleConstraintsSet();
+    pageScaleConstraints.ComputeFinalConstraints();
+
+    float newPageScaleFactor = PageScaleFactor();
+    if (pageScaleConstraints.NeedsReset() && pageScaleConstraints.FinalConstraints().initial_scale != -1)
+    {
+        newPageScaleFactor = GetPageScaleConstraintsSet().FinalConstraints().initial_scale;
+        pageScaleConstraints.SetNeedsReset(false);
+    }
+    SetPageScaleFactor(newPageScaleFactor);
+
+    UpdateLayerTreeViewport();
+}
+
+void WebViewImpl::ResizeAfterLayout(void)
+{
+    Page *page = GetPage();
+    ASSERT(nullptr != page->GetFrame());
+
+    if (m_shouldAutoResize)
+    {
+        LocalFrameView *view = page->GetFrame()->View();
+        WebSize frameSize = view->Size();
+        if (frameSize != m_size)
+        {
+            m_size = frameSize;
+
+            page->GetVisualViewport().SetSize(m_size);
+            GetPageScaleConstraintsSet().DidChangeInitialContainingBlockSize(m_size);
+            view->SetInitialViewportSize(m_size);
+
+            ASSERT(false); // BKTODO:
+#if 0
+            client_->DidAutoResize(size_);
+            SendResizeEventAndRepaint();
+#endif
+        }
+    }
+
+    if (GetPageScaleConstraintsSet().ConstraintsDirty())
+        RefreshPageScaleFactor();
+
+    m_resizeViewportAnchor->ResizeFrameView(MainFrameSize());
 }
 
 void WebViewImpl::ScheduleAnimation(void)
@@ -136,6 +245,18 @@ void WebViewImpl::SetClient(const BkWebViewClient &client)
     m_client.TitleChange = client.TitleChange;
 
     // Use `offsetof` macro for different client versions.
+}
+
+void WebViewImpl::SetPageScaleFactor(float scaleFactor)
+{
+    Page *page = GetPage();
+    ASSERT(nullptr != page);
+
+    scaleFactor = ClampPageScaleFactorToLimits(scaleFactor);
+    if (scaleFactor == PageScaleFactor())
+        return;
+
+    page->GetVisualViewport().SetScale(scaleFactor);
 }
 
 void WebViewImpl::SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState)
@@ -180,6 +301,11 @@ void WebViewImpl::TransitionToCommittedForNewPage(void)
     if (frame_widget_)
         frame_widget_->DidCreateLocalRootView();
 #endif
+}
+
+void WebViewImpl::UpdateLayerTreeViewport(void)
+{
+    BKLOG("// BKTODO: LayerTreeViewport support.");
 }
 
 void WebViewImpl::UpdateMainFrameLayoutSize(void)

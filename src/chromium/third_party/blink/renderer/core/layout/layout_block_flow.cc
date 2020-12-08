@@ -541,11 +541,8 @@ void LayoutBlockFlow::UpdateBlockLayout(bool relayout_children) {
 
   UpdateAfterLayout();
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (IsHTMLDialogElement(GetNode()) && IsOutOfFlowPositioned())
     PositionDialog();
-#endif
 
   ClearNeedsLayout();
   UpdateIsSelfCollapsing();

@@ -21,6 +21,7 @@
 namespace blink {
 
 class BrowserControls;
+class ChromeClient;
 class LocalFrame;
 class LocalFrameClient;
 class OverscrollController;
@@ -56,6 +57,7 @@ public:
         return *m_chromeClient;
     }
     LocalFrame* GetFrame(void) const { return m_frame.get(); }
+    LocalFrame* MainFrame(void) const { return m_frame.get(); }
     ScrollbarTheme& GetScrollbarTheme(void) const;
     PageAnimator& Animator(void) { return *m_animator; }
 

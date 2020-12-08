@@ -50,6 +50,7 @@
 #include "third_party/blink/renderer/platform/scheduler/main_thread/frame_scheduler_impl.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/editing/frame_selection.h"
 #   include "third_party/blink/renderer/core/frame/event_handler_registry.h"
 #   include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
 #endif
@@ -70,6 +71,11 @@ LocalFrame::LocalFrame(LocalFrameClient *client, Page *page)
     , m_navigationScheduler(NavigationScheduler::Create(this))
     , m_scriptController(ScriptController::Create(*this))
 {
+#ifndef BLINKIT_CRAWLER_ONLY
+    bool isUI = !client->IsCrawler();
+    if (isUI)
+        m_selection = FrameSelection::Create(*this);
+#endif
 }
 
 LocalFrame::~LocalFrame(void)
@@ -244,7 +250,9 @@ void LocalFrame::DocumentAttached(void)
 #if 0 // BKTODO:
     GetEditor().Clear();
     GetEventHandler().Clear();
-    Selection().DocumentAttached(GetDocument());
+#endif
+    Selection().DocumentAttached(document);
+#if 0 // BKTODO:
     GetInputMethodController().DocumentAttached(GetDocument());
     GetSpellChecker().DocumentAttached(GetDocument());
     GetTextSuggestionController().DocumentAttached(GetDocument());

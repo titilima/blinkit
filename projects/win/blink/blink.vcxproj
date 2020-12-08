@@ -1148,6 +1148,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_language.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints_set.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\resize_viewport_anchor.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\root_frame_viewport.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\settings.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\viewport_data.cc" />
@@ -1401,6 +1402,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_animator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\overscroll_controller.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\root_scroller_controller.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\root_scroller_util.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state_callback.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\snap_coordinator.cc" />
@@ -3003,6 +3005,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_language.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints_set.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\resize_viewport_anchor.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\root_frame_viewport.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\settings.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\use_counter.h" />
@@ -3320,6 +3323,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_visibility_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\overscroll_controller.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\root_scroller_controller.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\root_scroller_util.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state_callback.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state_init.h" />
@@ -3523,6 +3527,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\exception_messages.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\exception_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\name_client.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\runtime_call_stats.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\script_forbidden_scope.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\script_wrappable.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\script_wrappers.h" />

@@ -308,16 +308,16 @@ void NGBoxFragmentPainter::PaintCarets(const PaintInfo& paint_info,
                                        const LayoutPoint& paint_offset) {
   LocalFrame* frame = box_fragment_.GetLayoutObject()->GetFrame();
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (box_fragment_.ShouldPaintCursorCaret())
     frame->Selection().PaintCaret(paint_info.context, paint_offset);
 
   if (box_fragment_.ShouldPaintDragCaret()) {
+    ASSERT(false); // BKTODO:
+#if 0
     frame->GetPage()->GetDragCaret().PaintDragCaret(frame, paint_info.context,
                                                     paint_offset);
-  }
 #endif
+  }
 }
 
 void NGBoxFragmentPainter::PaintBlockFlowContents(

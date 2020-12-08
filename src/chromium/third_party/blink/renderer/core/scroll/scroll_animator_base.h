@@ -27,6 +27,12 @@ public:
     }
     void Trace(Visitor *) {}
 
+    void ContentsResized(void) const
+    {
+#ifdef OS_MACOSX
+        static_cast(false); // BKTODO: ScrollAnimatorMac
+#endif
+}
     void DidAddVerticalScrollbar(Scrollbar &)
     {
 #ifdef OS_MACOSX

@@ -43,6 +43,10 @@
 
 #include "third_party/blink/renderer/core/frame/dom_window.h"
 #include "third_party/blink/renderer/core/frame/frame_client.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/loader/empty_clients.h"
+#   include "third_party/blink/renderer/core/page/page.h"
+#endif
 
 namespace blink {
 
@@ -90,16 +94,25 @@ void Frame::Detach(FrameDetachType type)
 #endif
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
-Page* Frame::GetPage(void) const
-{
-    return m_page;
-}
-#endif
-
 void Frame::Trace(Visitor *visitor)
 {
     visitor->Trace(m_domWindow);
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+ChromeClient& Frame::GetChromeClient(void) const
+{
+    if (Page *page = GetPage())
+        return page->GetChromeClient();
+
+    static EmptyChromeClient s_emptyClient;
+    return s_emptyClient;
+}
+
+Page* Frame::GetPage(void) const
+{
+    return m_page;
+}
+#endif // BLINKIT_CRAWLER_ONLY
 
 } // namespace blink

@@ -252,26 +252,18 @@ bool Editor::HandleTextEvent(TextEvent* event) {
 }
 
 bool Editor::CanEdit() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return GetFrame()
       .Selection()
       .ComputeVisibleSelectionInDOMTreeDeprecated()
       .RootEditableElement();
-#endif
 }
 
 bool Editor::CanEditRichly() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return IsRichlyEditablePosition(
       GetFrame()
           .Selection()
           .ComputeVisibleSelectionInDOMTreeDeprecated()
           .Base());
-#endif
 }
 
 bool Editor::CanCut() const {
@@ -328,8 +320,6 @@ void Editor::DeleteSelectionWithSmartDelete(
     DeleteMode delete_mode,
     InputEvent::InputType input_type,
     const Position& reference_move_position) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (GetFrame()
           .Selection()
           .ComputeVisibleSelectionInDOMTreeDeprecated()
@@ -337,6 +327,8 @@ void Editor::DeleteSelectionWithSmartDelete(
     return;
 
   DCHECK(GetFrame().GetDocument());
+  ASSERT(false); // BKTODO:
+#if 0
   DeleteSelectionCommand::Create(
       *GetFrame().GetDocument(),
       DeleteSelectionOptions::Builder()
@@ -474,14 +466,10 @@ bool Editor::ReplaceSelectionAfterDraggingWithEvents(
 }
 
 EphemeralRange Editor::SelectedRange() {
-  ASSERT(false); // BKTODO:
-  return EphemeralRange();
-#if 0
   return GetFrame()
       .Selection()
       .ComputeVisibleSelectionInDOMTreeDeprecated()
       .ToNormalizedEphemeralRange();
-#endif
 }
 
 void Editor::RespondToChangedContents(const Position& position) {
@@ -507,8 +495,6 @@ void Editor::RegisterCommandGroup(CompositeEditCommand* command_group_wrapper) {
 
 void Editor::ApplyParagraphStyle(CSSPropertyValueSet* style,
                                  InputEvent::InputType input_type) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (GetFrame()
           .Selection()
           .ComputeVisibleSelectionInDOMTreeDeprecated()
@@ -516,6 +502,8 @@ void Editor::ApplyParagraphStyle(CSSPropertyValueSet* style,
       !style)
     return;
   DCHECK(GetFrame().GetDocument());
+  ASSERT(false); // BKTODO:
+#if 0
   ApplyStyleCommand::Create(*GetFrame().GetDocument(),
                             EditingStyle::Create(style), input_type,
                             ApplyStyleCommand::kForceBlockProperties)
@@ -853,8 +841,6 @@ void Editor::ComputeAndSetTypingStyle(CSSPropertyValueSet* style,
   else
     typing_style_ = EditingStyle::Create(style);
 
-  ASSERT(false); // BKTODO:
-#if 0
   typing_style_->PrepareToApplyAt(
       GetFrame()
           .Selection()
@@ -862,7 +848,6 @@ void Editor::ComputeAndSetTypingStyle(CSSPropertyValueSet* style,
           .VisibleStart()
           .DeepEquivalent(),
       EditingStyle::kPreserveWritingDirection);
-#endif
 
   // Handle block styles, substracting these from the typing style.
   EditingStyle* block_style = typing_style_->ExtractAndRemoveBlockProperties();
@@ -1057,11 +1042,7 @@ SpellChecker& Editor::GetSpellChecker() const {
 }
 
 FrameSelection& Editor::GetFrameSelection() const {
-  ASSERT(false); // BKTODO:
-  exit(0);
-#if 0
   return GetFrame().Selection();
-#endif
 }
 
 void Editor::SetMark() {

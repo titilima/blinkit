@@ -27,22 +27,16 @@
 namespace blink {
 
 void BlockPaintInvalidator::ClearPreviousVisualRects() {
-  ASSERT(false); // BKTODO:
-#if 0
   block_.GetFrame()->Selection().ClearPreviousCaretVisualRect(block_);
-  block_.GetFrame()->GetPage()->GetDragCaret().ClearPreviousVisualRect(block_);
-#endif
+  ASSERT(false); // BKTODO: block_.GetFrame()->GetPage()->GetDragCaret().ClearPreviousVisualRect(block_);
 }
 
 void BlockPaintInvalidator::InvalidatePaint(
     const PaintInvalidatorContext& context) {
   BoxPaintInvalidator(block_, context).InvalidatePaint();
 
-  ASSERT(false); // BKTODO:
-#if 0
   block_.GetFrame()->Selection().InvalidatePaint(block_, context);
-  block_.GetFrame()->GetPage()->GetDragCaret().InvalidatePaint(block_, context);
-#endif
+  ASSERT(false); // BKTODO: block_.GetFrame()->GetPage()->GetDragCaret().InvalidatePaint(block_, context);
 }
 
 }  // namespace blink

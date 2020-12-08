@@ -45,8 +45,7 @@ LayoutAnalyzer::BlockScope::BlockScope(const LayoutBlock& block)
       height_(block.FrameRect().Height()) {}
 
 LayoutAnalyzer::BlockScope::~BlockScope() {
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   LayoutAnalyzer* analyzer = block_.GetFrameView()->GetLayoutAnalyzer();
   if (!analyzer)
     return;
