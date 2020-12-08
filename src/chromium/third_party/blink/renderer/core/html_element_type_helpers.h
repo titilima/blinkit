@@ -60,6 +60,21 @@ inline bool IsHTMLButtonElement(const Node &node)
     return node.IsHTMLElement() && IsHTMLButtonElement(ToElement(node));
 }
 
+inline bool IsHTMLDialogElement(const Element &element)
+{
+    return element.HasTagName(html_names::kDialogTag);
+}
+
+inline bool IsHTMLDialogElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLDialogElement(ToElement(node));
+}
+
+inline bool IsHTMLDialogElement(const Node *node)
+{
+    return nullptr != node && IsHTMLDialogElement(*node);
+}
+
 inline bool IsHTMLDivElement(const Element &element)
 {
     return element.HasTagName(html_names::kDivTag);

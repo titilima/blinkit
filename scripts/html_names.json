@@ -39,6 +39,7 @@
     { "name": "declare", "hash": 13440114, "is_attr": true },
     { "name": "defer", "hash": 13832204, "is_attr": true },
     { "name": "details", "hash": 4653180, "is_tag": true },
+    { "name": "dialog", "hash": 1232842, "is_tag": true },
     { "name": "dir", "hash": 5122803, "is_tag": true, "is_attr": true },
     { "name": "direction", "hash": 16092904, "is_attr": true },
     { "name": "disabled", "hash": 12237545, "is_attr": true },
