@@ -36,6 +36,7 @@ public:
     static constexpr bool MainFrameResizesAreOrientationChanges = false;
     static constexpr bool PreferCompositingToLCDTextEnabled = false;
     static constexpr bool ScrollAnimatorEnabled = true;
+    static constexpr bool ShrinksViewportContentToFit = true;
     static constexpr bool TextAutosizingEnabled = false;
     static constexpr bool UseLegacyBackgroundSizeShorthandBehavior = false;
     static constexpr bool ViewportEnabled = false;
