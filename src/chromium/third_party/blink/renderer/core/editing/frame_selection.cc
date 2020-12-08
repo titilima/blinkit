@@ -79,7 +79,9 @@
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_select_element.h"
+#endif
 #include "third_party/blink/renderer/core/html/html_body_element.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_frame_element_base.h"
 #endif
 #include "third_party/blink/renderer/core/html_names.h"
@@ -102,7 +104,7 @@
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/geometry/float_quad.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context.h"
-// BKTODO: #include "third_party/blink/renderer/platform/text/unicode_utilities.h"
+#include "third_party/blink/renderer/platform/text/unicode_utilities.h"
 #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
 
 #define EDIT_DEBUG 0
@@ -112,11 +114,7 @@ namespace blink {
 using namespace html_names;
 
 static inline bool ShouldAlwaysUseDirectionalSelection(LocalFrame* frame) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return frame->GetEditor().Behavior().ShouldConsiderSelectionAsDirectional();
-#endif
 }
 
 FrameSelection::FrameSelection(LocalFrame& frame)
@@ -164,14 +162,14 @@ Element* FrameSelection::RootEditableElementOrDocumentElement() const {
 }
 
 size_t FrameSelection::CharacterIndexForPoint(const IntPoint& point) const {
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   const EphemeralRange range = GetFrame()->GetEditor().RangeForPoint(point);
   if (range.IsNull())
     return kNotFound;
   Element* const editable = RootEditableElementOrDocumentElement();
   DCHECK(editable);
+  ASSERT(false); // BKTODO:
+  return kNotFound;
+#if 0
   return PlainTextRange::Create(*editable, range).Start();
 #endif
 }
@@ -246,10 +244,10 @@ bool FrameSelection::SetSelectionDeprecated(
   // |Editor| class.
   if (options.ShouldCloseTyping())
     TypingCommand::CloseTyping(frame_);
+#endif
 
   if (options.ShouldClearTypingStyle())
     frame_->GetEditor().ClearTypingStyle();
-#endif
 
   const SelectionInDOMTree old_selection_in_dom_tree =
       selection_editor_->GetSelectionInDOMTree();
@@ -265,12 +263,9 @@ bool FrameSelection::SetSelectionDeprecated(
   is_handle_visible_ = should_show_handle;
   ScheduleVisualUpdateForPaintInvalidationIfNeeded();
 
-  ASSERT(false); // BKTODO:
-#if 0
   const Document& current_document = GetDocument();
   frame_->GetEditor().RespondToChangedSelection();
   DCHECK_EQ(current_document, GetDocument());
-#endif
   return true;
 }
 
@@ -313,8 +308,6 @@ void FrameSelection::DidSetSelectionDeprecated(
     const CursorAlignOnScroll align = options.GetCursorAlignOnScroll();
     ScrollAlignment alignment;
 
-    ASSERT(false); // BKTODO:
-#if 0
     if (frame_->GetEditor()
             .Behavior()
             .ShouldCenterAlignWhenSelectionIsRevealed())
@@ -325,7 +318,6 @@ void FrameSelection::DidSetSelectionDeprecated(
       alignment = (align == CursorAlignOnScroll::kAlways)
                       ? ScrollAlignment::kAlignTopAlways
                       : ScrollAlignment::kAlignToEdgeIfNeeded;
-#endif
 
     RevealSelection(alignment, kRevealExtent);
   }
@@ -546,10 +538,7 @@ void FrameSelection::ContextDestroyed(Document* document) {
 
   layout_selection_->OnDocumentShutdown();
 
-  ASSERT(false); // BKTODO:
-#if 0
   frame_->GetEditor().ClearTypingStyle();
-#endif
 }
 
 void FrameSelection::ClearPreviousCaretVisualRect(const LayoutBlock& block) {

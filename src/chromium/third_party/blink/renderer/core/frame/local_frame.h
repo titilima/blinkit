@@ -63,6 +63,7 @@ class LocalFrameClient;
 class NavigationScheduler;
 class ScriptController;
 #ifndef BLINKIT_CRAWLER_ONLY
+class Editor;
 class FrameSelection;
 class LayoutView;
 class SmoothScrollSequencer;
@@ -89,6 +90,7 @@ public:
     void CreateView(const IntSize &viewportSize, const Color &backgroundColor);
     void SetView(LocalFrameView *view);
 
+    Editor& GetEditor(void) const { return *m_editor; }
     FrameSelection& Selection(void) const { return *m_selection; }
 
     double DevicePixelRatio(void) const;
@@ -132,6 +134,7 @@ private:
     // Cleared by LocalFrame::Detach(), so as to keep the observable lifespan
     // of LocalFrame::View().
     Member<LocalFrameView> m_view;
+    std::unique_ptr<Editor> m_editor;
     std::unique_ptr<FrameSelection> m_selection;
     // SmoothScrollSequencer is only populated for local roots; all local frames
     // use the instance owned by their local root.

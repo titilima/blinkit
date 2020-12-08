@@ -50,6 +50,7 @@
 #include "third_party/blink/renderer/platform/scheduler/main_thread/frame_scheduler_impl.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/editing/editor.h"
 #   include "third_party/blink/renderer/core/editing/frame_selection.h"
 #   include "third_party/blink/renderer/core/frame/event_handler_registry.h"
 #   include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
@@ -74,7 +75,10 @@ LocalFrame::LocalFrame(LocalFrameClient *client, Page *page)
 #ifndef BLINKIT_CRAWLER_ONLY
     bool isUI = !client->IsCrawler();
     if (isUI)
+    {
+        m_editor = Editor::Create(*this);
         m_selection = FrameSelection::Create(*this);
+    }
 #endif
 }
 
@@ -247,8 +251,8 @@ void LocalFrame::DocumentAttached(void)
         return;
 
     Document *document = GetDocument();
-#if 0 // BKTODO:
     GetEditor().Clear();
+#if 0 // BKTODO:
     GetEventHandler().Clear();
 #endif
     Selection().DocumentAttached(document);

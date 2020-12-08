@@ -1251,14 +1251,11 @@ void EditingStyle::PrepareToApplyAt(
 void EditingStyle::MergeTypingStyle(Document* document) {
   DCHECK(document);
 
-  ASSERT(false); // BKTODO:
-#if 0
   EditingStyle* typing_style = document->GetFrame()->GetEditor().TypingStyle();
   if (!typing_style || typing_style == this)
     return;
 
   MergeStyle(typing_style->Style(), kOverrideValues);
-#endif
 }
 
 void EditingStyle::MergeInlineStyleOfElement(
@@ -1628,12 +1625,9 @@ StyleChange::StyleChange(EditingStyle* style, const Position& position)
 
   ReconcileTextDecorationProperties(mutable_style,
                                     document->GetSecureContextMode());
-  ASSERT(false); // BKTODO:
-#if 0
   if (!document->GetFrame()->GetEditor().ShouldStyleWithCSS())
     ExtractTextStyles(document, mutable_style,
                       computed_style->IsMonospaceFont());
-#endif
 
   // Changing the whitespace style in a tab span would collapse the tab into a
   // space.

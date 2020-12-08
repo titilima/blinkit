@@ -72,9 +72,9 @@ enum class EditorParagraphSeparator { kIsDiv, kIsP };
 enum class EditorCommandSource { kMenuOrKeyBinding, kDOM };
 enum class WritingDirection;
 
-class CORE_EXPORT Editor final : public GarbageCollectedFinalized<Editor> {
+class CORE_EXPORT Editor final {
  public:
-  static Editor* Create(LocalFrame&);
+  static std::unique_ptr<Editor> Create(LocalFrame&);
   ~Editor();
 
   CompositeEditCommand* LastEditCommand() { return last_edit_command_.Get(); }

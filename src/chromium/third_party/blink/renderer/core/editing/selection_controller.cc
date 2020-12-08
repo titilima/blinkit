@@ -833,8 +833,6 @@ void SelectionController::SetNonDirectionalSelectionIfNeeded(
     original_base_in_flat_tree_ = PositionInFlatTreeWithAffinity();
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   const bool selection_is_directional =
       frame_->GetEditor().Behavior().ShouldConsiderSelectionAsDirectional() ||
       set_selection_options.IsDirectional();
@@ -858,7 +856,6 @@ void SelectionController::SetNonDirectionalSelectionIfNeeded(
           .SetIsDirectional(selection_is_directional)
           .SetCursorAlignOnScroll(CursorAlignOnScroll::kIfNeeded)
           .Build());
-#endif
 }
 
 void SelectionController::SetCaretAtHitTestResult(

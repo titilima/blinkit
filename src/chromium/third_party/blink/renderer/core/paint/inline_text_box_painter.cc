@@ -849,14 +849,14 @@ void InlineTextBoxPainter::PaintTextMatchMarkerForeground(
     const TextMatchMarker& marker,
     const ComputedStyle& style,
     const Font& font) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (!InlineLayoutObject()
            .GetFrame()
            ->GetEditor()
            .MarkedTextMatchesAreHighlighted())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   const auto paint_offsets =
       GetTextMatchMarkerPaintOffsets(marker, inline_text_box_);
   TextRun run = inline_text_box_.ConstructTextRun(style);
@@ -889,14 +889,14 @@ void InlineTextBoxPainter::PaintTextMatchMarkerBackground(
     const TextMatchMarker& marker,
     const ComputedStyle& style,
     const Font& font) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (!LineLayoutAPIShim::LayoutObjectFrom(inline_text_box_.GetLineLayoutItem())
            ->GetFrame()
            ->GetEditor()
            .MarkedTextMatchesAreHighlighted())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   const auto paint_offsets =
       GetTextMatchMarkerPaintOffsets(marker, inline_text_box_);
   TextRun run = inline_text_box_.ConstructTextRun(style);

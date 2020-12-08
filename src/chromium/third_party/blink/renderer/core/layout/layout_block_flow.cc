@@ -4809,8 +4809,6 @@ PositionWithAffinity LayoutBlockFlow::PositionForPoint(
     }
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   bool move_caret_to_boundary =
       GetDocument()
           .GetFrame()
@@ -4872,7 +4870,6 @@ PositionWithAffinity LayoutBlockFlow::PositionForPoint(
           PositionForBox(const_cast<InlineBox*>(logically_last_box), false));
     }
   }
-#endif
 
   // Can't reach this. We have a root line box, but it has no kids.
   // FIXME: This should NOTREACHED(), but clicking on placeholder text

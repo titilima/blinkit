@@ -363,14 +363,10 @@ void SelectionEditor::DidSplitTextNode(const Text& old_node) {
 }
 
 bool SelectionEditor::ShouldAlwaysUseDirectionalSelection() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return GetFrame()
       ->GetEditor()
       .Behavior()
       .ShouldConsiderSelectionAsDirectional();
-#endif
 }
 
 bool SelectionEditor::NeedsUpdateVisibleSelection() const {

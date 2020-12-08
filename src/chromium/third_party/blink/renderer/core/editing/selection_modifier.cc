@@ -112,11 +112,7 @@ LayoutUnit NoXPosForVerticalArrowNavigation() {
 
 bool SelectionModifier::ShouldAlwaysUseDirectionalSelection(
     const LocalFrame& frame) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return frame.GetEditor().Behavior().ShouldConsiderSelectionAsDirectional();
-#endif
 }
 
 SelectionModifier::SelectionModifier(
@@ -276,11 +272,8 @@ VisiblePosition SelectionModifier::NextWordPositionForPlatform(
   VisiblePosition position_after_current_word =
       NextWordPosition(original_position);
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (!GetFrame().GetEditor().Behavior().ShouldSkipSpaceWhenMovingRight())
     return position_after_current_word;
-#endif
   return CreateVisiblePosition(
       SkipWhitespace(position_after_current_word.DeepEquivalent()));
 }
@@ -406,13 +399,10 @@ VisiblePosition SelectionModifier::ModifyMovingRight(
         return CreateVisiblePosition(selection_.End(), selection_.Affinity());
       return CreateVisiblePosition(selection_.Start(), selection_.Affinity());
     case TextGranularity::kWord: {
-      ASSERT(false); // BKTODO:
-#if 0
       const bool skips_space_when_moving_right =
           GetFrame().GetEditor().Behavior().ShouldSkipSpaceWhenMovingRight();
       return RightWordPosition(ComputeVisibleExtent(selection_),
                                skips_space_when_moving_right);
-#endif
     }
     case TextGranularity::kSentence:
     case TextGranularity::kLine:
@@ -579,13 +569,10 @@ VisiblePosition SelectionModifier::ModifyMovingLeft(
         return CreateVisiblePosition(selection_.Start(), selection_.Affinity());
       return CreateVisiblePosition(selection_.End(), selection_.Affinity());
     case TextGranularity::kWord: {
-      ASSERT(false); // BKTODO:
-#if 0
       const bool skips_space_when_moving_right =
           GetFrame().GetEditor().Behavior().ShouldSkipSpaceWhenMovingRight();
       return LeftWordPosition(ComputeVisibleExtent(selection_),
                               skips_space_when_moving_right);
-#endif
     }
     case TextGranularity::kSentence:
     case TextGranularity::kLine:
@@ -690,8 +677,6 @@ bool SelectionModifier::Modify(SelectionModifyAlteration alter,
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       GetFrame().GetDocument()->Lifecycle());
 
-  ASSERT(false); // BKTODO:
-#if 0
   selection_ = PrepareToModifySelection(alter, direction);
   if (selection_.IsNone())
     return false;
@@ -703,11 +688,14 @@ bool SelectionModifier::Modify(SelectionModifyAlteration alter,
   if (position.IsNull())
     return false;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsSpatialNavigationEnabled(&GetFrame())) {
     if (!was_range && alter == SelectionModifyAlteration::kMove &&
         position.DeepEquivalent() == original_start_position.DeepEquivalent())
       return false;
   }
+#endif
 
   // Some of the above operations set an xPosForVerticalArrowNavigation.
   // Setting a selection will clear it, so save it to possibly restore later.
@@ -790,7 +778,6 @@ bool SelectionModifier::Modify(SelectionModifyAlteration alter,
   if (granularity == TextGranularity::kLine ||
       granularity == TextGranularity::kParagraph)
     x_pos_for_vertical_arrow_navigation_ = x;
-#endif
 
   return true;
 }

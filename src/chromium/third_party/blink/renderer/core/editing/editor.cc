@@ -519,8 +519,8 @@ void Editor::ApplyParagraphStyleToSelection(CSSPropertyValueSet* style,
   ApplyParagraphStyle(style, input_type);
 }
 
-Editor* Editor::Create(LocalFrame& frame) {
-  return new Editor(frame);
+std::unique_ptr<Editor> Editor::Create(LocalFrame& frame) {
+  return base::WrapUnique(new Editor(frame));
 }
 
 Editor::Editor(LocalFrame& frame)
@@ -1067,6 +1067,7 @@ void Editor::ReplaceSelection(const String& text) {
 }
 
 void Editor::Trace(blink::Visitor* visitor) {
+  // BKTODO: Remove trace.
   visitor->Trace(frame_);
   visitor->Trace(last_edit_command_);
   visitor->Trace(undo_stack_);
