@@ -30,12 +30,19 @@ template <typename T>
 class HeapDeque : private std::list<T>
 {
 public:
+    using std::list<T>::back;
     using std::list<T>::begin;
+    using std::list<T>::clear;
+    using std::list<T>::const_reverse_iterator;
     using std::list<T>::end;
     using std::list<T>::erase;
     using std::list<T>::front;
+    using std::list<T>::iterator;
     using std::list<T>::pop_front;
     using std::list<T>::push_back;
+    using std::list<T>::rbegin;
+    using std::list<T>::rend;
+    using std::list<T>::size;
 
     bool IsEmpty(void) const { return this->empty(); }
 
