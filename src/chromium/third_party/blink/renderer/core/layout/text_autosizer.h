@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_autosizer.h
+// Description: TextAutosizer Class
+//      Author: Ziming Li
+//     Created: 2020-10-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -57,12 +68,11 @@ class SubtreeLayoutScope;
 // Single-pass text autosizer. Documentation at:
 // http://tinyurl.com/TextAutosizer
 
-class CORE_EXPORT TextAutosizer final
-    : public GarbageCollectedFinalized<TextAutosizer> {
+class CORE_EXPORT TextAutosizer final {
  public:
   ~TextAutosizer();
-  static TextAutosizer* Create(const Document* document) {
-    return new TextAutosizer(document);
+  static std::unique_ptr<TextAutosizer> Create(const Document* document) {
+    return base::WrapUnique(new TextAutosizer(document));
   }
 
   // computed_size should include zoom.
