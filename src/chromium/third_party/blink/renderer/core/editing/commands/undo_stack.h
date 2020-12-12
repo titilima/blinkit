@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: undo_stack.h
+// Description: UndoStack Class
+//      Author: Ziming Li
+//     Created: 2020-12-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -43,11 +54,11 @@ class UndoStep;
 
 // |UndoStack| is owned by and always 1:1 to |Editor|. Since |Editor| is 1:1 to
 // |LocalFrame|, |UndoStack| is also 1:1 to |LocalFrame|.
-class UndoStack final : public GarbageCollected<UndoStack> {
+class UndoStack final {
   using UndoStepStack = HeapDeque<Member<UndoStep>>;
 
  public:
-  static UndoStack* Create();
+  static std::unique_ptr<UndoStack> Create();
 
   void RegisterUndoStep(UndoStep*);
   void RegisterRedoStep(UndoStep*);

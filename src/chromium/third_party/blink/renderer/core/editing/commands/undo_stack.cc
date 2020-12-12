@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: undo_stack.cc
+// Description: UndoStack Class
+//      Author: Ziming Li
+//     Created: 2020-12-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple, Inc.  All rights reserved.
  * Copyright (C) 2012 Google, Inc.  All rights reserved.
@@ -40,8 +51,8 @@ static const size_t kMaximumUndoStackDepth = 1000;
 
 UndoStack::UndoStack() : in_redo_(false) {}
 
-UndoStack* UndoStack::Create() {
-  return new UndoStack();
+std::unique_ptr<UndoStack> UndoStack::Create() {
+  return base::WrapUnique(new UndoStack);
 }
 
 void UndoStack::RegisterUndoStep(UndoStep* step) {
