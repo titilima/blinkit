@@ -18,7 +18,6 @@
 #include <unordered_map>
 #include <unordered_set>
 #include "third_party/blink/renderer/platform/heap/heap.h"
-#include "third_party/blink/renderer/platform/wtf/linked_hash_set.h"
 #include "third_party/blink/renderer/platform/wtf/list_hash_set.h"
 #include "third_party/blink/renderer/platform/wtf/hash_counted_set.h"
 #include "third_party/blink/renderer/platform/wtf/hash_set.h"
@@ -111,12 +110,12 @@ public:
 };
 
 template <typename T>
-class HeapLinkedHashSet : public LinkedHashSet<T, int, int, int>
+class HeapLinkedHashSet : public LinkedHashSet<T>
 {
 };
 
 template <typename T, size_t inlineCapacity = 0>
-class HeapListHashSet : public ListHashSet<T>
+class HeapListHashSet : public ListHashSet<T, inlineCapacity>
 {
 };
 
@@ -219,7 +218,8 @@ struct TracePolicy<blink::HeapLinkedHashSet<T>>
 {
     static void Impl(blink::HeapLinkedHashSet<T> &s, blink::Visitor *visitor)
     {
-        ASSERT(false); // BKTODO:
+        for (auto it = s.begin(); it != s.end(); ++it)
+            visitor->Trace(*it);
     }
 };
 
@@ -228,7 +228,8 @@ struct TracePolicy<blink::HeapListHashSet<T, inlineCapacity>>
 {
     static void Impl(blink::HeapListHashSet<T, inlineCapacity> &s, blink::Visitor *visitor)
     {
-        ASSERT(false); // BKTODO:
+        for (auto it = s.begin(); it != s.end(); ++it)
+            visitor->Trace(*it);
     }
 };
 
