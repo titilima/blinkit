@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: selection_modifier_word.cc
+// Description: SelectionModifier Class
+//      Author: Ziming Li
+//     Created: 2020-12-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights
  * reserved.
@@ -128,7 +139,7 @@ const InlineTextBox* LogicallyPreviousBox(
     const InlineTextBox* text_box,
     bool& previous_box_in_different_block,
     CachedLogicallyOrderedLeafBoxes& leaf_boxes) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   const InlineBox* start_box = text_box;
 
   const InlineTextBox* previous_box =
@@ -177,7 +188,7 @@ const InlineTextBox* LogicallyNextBox(
     const InlineTextBox* text_box,
     bool& next_box_in_different_block,
     CachedLogicallyOrderedLeafBoxes& leaf_boxes) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   const InlineBox* start_box = text_box;
 
   const InlineTextBox* next_box =
@@ -227,7 +238,7 @@ TextBreakIterator* WordBreakIteratorForMinOffsetBoundary(
     bool& previous_box_in_different_block,
     Vector<UChar, 1024>& string,
     CachedLogicallyOrderedLeafBoxes& leaf_boxes) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   previous_box_in_different_block = false;
 
   // TODO(editing-dev) Handle the case when we don't have an inline text box.
@@ -255,7 +266,7 @@ TextBreakIterator* WordBreakIteratorForMaxOffsetBoundary(
     bool& next_box_in_different_block,
     Vector<UChar, 1024>& string,
     CachedLogicallyOrderedLeafBoxes& leaf_boxes) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   next_box_in_different_block = false;
 
   // TODO(editing-dev) Handle the case when we don't have an inline text box.
@@ -306,7 +317,7 @@ enum CursorMovementDirection { kMoveLeft, kMoveRight };
 VisiblePosition VisualWordPosition(const VisiblePosition& visible_position,
                                    CursorMovementDirection direction,
                                    bool skips_space_when_moving_right) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   if (visible_position.IsNull())
     return VisiblePosition();
 
@@ -406,7 +417,7 @@ VisiblePosition VisualWordPosition(const VisiblePosition& visible_position,
 VisiblePosition SelectionModifier::LeftWordPosition(
     const VisiblePosition& visible_position,
     bool skips_space_when_moving_right) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   const VisiblePosition& left_word_break = VisualWordPosition(
       visible_position, kMoveLeft, skips_space_when_moving_right);
   if (left_word_break.IsNotNull())
@@ -424,7 +435,7 @@ VisiblePosition SelectionModifier::LeftWordPosition(
 VisiblePosition SelectionModifier::RightWordPosition(
     const VisiblePosition& visible_position,
     bool skips_space_when_moving_right) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   const VisiblePosition& right_word_break = VisualWordPosition(
       visible_position, kMoveRight, skips_space_when_moving_right);
   if (right_word_break.IsNotNull())

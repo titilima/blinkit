@@ -90,6 +90,8 @@ class Text;
 class AnimationClock;
 class CSSStyleSheet;
 class DocumentTimeline;
+template <typename EventType>
+class EventWithHitTestResults;
 class HTMLBodyElement;
 class HTMLImportsController;
 class LayoutView;
@@ -107,6 +109,9 @@ class TextAutosizer;
 class V0CustomElementRegistrationContext;
 class ViewportData;
 class VisitedLinkState;
+class WebMouseEvent;
+
+using MouseEventWithHitTestResults = EventWithHitTestResults<WebMouseEvent>;
 #endif
 
 enum NodeListInvalidationType : int {
@@ -467,6 +472,7 @@ public:
 
     ViewportData& GetViewportData(void) const { return *m_viewportData; }
 
+    void EnqueueResizeEvent(void);
     void EnqueueVisualViewportResizeEvent(void);
 
 #   if DCHECK_IS_ON()

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: mouse_event_manager.h
+// Description: MouseEventManager Class
+//      Author: Ziming Li
+//     Created: 2020-12-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,7 +21,7 @@
 #include "third_party/blink/public/platform/web_mouse_event.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/synchronous_mutation_observer.h"
-#include "third_party/blink/renderer/core/input/boundary_event_dispatcher.h"
+// BKTODO: #include "third_party/blink/renderer/core/input/boundary_event_dispatcher.h"
 #include "third_party/blink/renderer/core/page/drag_actions.h"
 #include "third_party/blink/renderer/core/page/event_with_hit_test_results.h"
 #include "third_party/blink/renderer/platform/timer.h"
@@ -155,6 +166,7 @@ class CORE_EXPORT MouseEventManager final
   bool FakeMouseMovePending() const;
 
  private:
+#if 0 // BKTODO:
   class MouseEventBoundaryEventDispatcher : public BoundaryEventDispatcher {
    public:
     MouseEventBoundaryEventDispatcher(MouseEventManager*,
@@ -187,6 +199,7 @@ class CORE_EXPORT MouseEventManager final
     String canvas_region_id_;
     DISALLOW_COPY_AND_ASSIGN(MouseEventBoundaryEventDispatcher);
   };
+#endif
 
   // If the given element is a shadow host and its root has delegatesFocus=false
   // flag, slide focus to its inner element. Returns true if the resulting focus

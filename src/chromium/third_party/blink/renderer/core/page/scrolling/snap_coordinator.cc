@@ -88,8 +88,7 @@ void SnapCoordinator::SnapAreaDidChange(LayoutBox& snap_area,
 }
 
 void SnapCoordinator::UpdateAllSnapContainerData() {
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
   for (const auto& entry : snap_container_map_) {
     UpdateSnapContainerData(*entry.key);
   }

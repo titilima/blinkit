@@ -1064,8 +1064,7 @@ void VisualViewport::UserDidChangeScale() {
 }
 
 void VisualViewport::SendUMAMetrics() {
-  ASSERT(false); // BKTODO: Check if necessary.
-#if 0
+#if 0 // BKTODO: Check if necessary.
   if (track_pinch_zoom_stats_for_page_) {
     bool did_scale = max_page_scale_ > 0;
 

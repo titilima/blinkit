@@ -96,6 +96,7 @@
 #   include "third_party/blink/renderer/core/html/imports/html_imports_controller.h"
 #   include "third_party/blink/renderer/core/html/html_body_element.h"
 #   include "third_party/blink/renderer/core/html/html_title_element.h"
+#   include "third_party/blink/renderer/core/input/event_handler.h"
 #   include "third_party/blink/renderer/core/layout/layout_view.h"
 #   include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #   include "third_party/blink/renderer/core/page/chrome_client.h"
@@ -264,7 +265,7 @@ Document::Document(const DocumentInit &initializer)
 
 #ifndef BLINKIT_CRAWLER_ONLY
     if (isUI)
-        m_rootScrollerController.reset(RootScrollerController::Create(*this));
+        m_rootScrollerController = RootScrollerController::Create(*this);
 #endif
 
     // We depend on the url getting immediately set in subframes, but we
@@ -619,8 +620,10 @@ bool Document::CheckCompletedInternal(void)
             return false;
 
 #ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO: Check if necessary.
         if (forUI)
-            ASSERT(false); // BKTODO: AnchorElementMetrics::MaybeReportViewportMetricsOnLoad(*this);
+            AnchorElementMetrics::MaybeReportViewportMetricsOnLoad(*this);
+#endif
 #endif
     }
 
@@ -1101,7 +1104,7 @@ std::shared_ptr<base::SingleThreadTaskRunner> Document::GetTaskRunner(TaskType t
 TextAutosizer* Document::GetTextAutosizer(void)
 {
     if (!m_textAutosizer)
-        m_textAutosizer.reset(TextAutosizer::Create(this));
+        m_textAutosizer = TextAutosizer::Create(this);
     return m_textAutosizer.get();
 }
 
@@ -2087,6 +2090,8 @@ void Document::Trace(Visitor *visitor)
         visitor->Trace(m_styleEngine);
         visitor->Trace(m_elemSheet);
         visitor->Trace(m_templateDocumentHost);
+        if (m_rootScrollerController)
+            m_rootScrollerController->Trace(visitor);
         visitor->Trace(m_activeElement);
         visitor->Trace(m_hoverElement);
         visitor->Trace(m_focusedElement);
@@ -2318,10 +2323,7 @@ void Document::UpdateStyleAndLayoutTree(void)
     // states not allowing tree mutations.
     ASSERT(Lifecycle().StateAllowsTreeMutations());
 
-    BKLOG("// BKTODO: UpdateAnimationTimingIfNeeded");
-#if 0
     DocumentAnimations::UpdateAnimationTimingIfNeeded(*this);
-#endif
     EvaluateMediaQueryListIfNeeded();
     UpdateUseShadowTreesIfNeeded();
 
@@ -2354,11 +2356,8 @@ void Document::UpdateStyleAndLayoutTree(void)
         {
             if (LocalFrame *frame = GetFrame())
             {
-                ASSERT(false); // BKTODO:
-#if 0
                 frame->GetEventHandler().MayUpdateHoverWhenContentUnderMouseChanged(
                     MouseEventManager::UpdateHoverReason::kLayoutOrStyleChanged);
-#endif
             }
         }
     }
@@ -2367,10 +2366,7 @@ void Document::UpdateStyleAndLayoutTree(void)
         ClearFocusedElementSoon();
     GetLayoutView()->ClearHitTestCache();
 
-    BKLOG("// BKTODO: NeedsAnimationTimingUpdate");
-#if 0
     DCHECK(!DocumentAnimations::NeedsAnimationTimingUpdate(*this));
-#endif
 
 #if DCHECK_IS_ON()
     AssertLayoutTreeUpdated(*this);
@@ -2632,6 +2628,16 @@ CSSStyleSheet& Document::ElementSheet(void)
     return *m_elemSheet;
 }
 
+void Document::EnqueueResizeEvent(void)
+{
+    ASSERT(false); // BKTODO:
+#if 0
+    Event* event = Event::Create(EventTypeNames::resize);
+    event->SetTarget(domWindow());
+    EnsureScriptedAnimationController().EnqueuePerFrameEvent(event);
+#endif
+}
+
 void Document::Document::EnqueueVisualViewportResizeEvent(void)
 {
     ASSERT(false); // BKTODO:
@@ -2678,30 +2684,35 @@ SnapCoordinator* Document::GetSnapCoordinator(void)
 
 void Document::LayoutUpdated(void)
 {
-    ASSERT(nullptr != GetFrame());
-    ASSERT(nullptr != View());
+    LocalFrame *frame = GetFrame();
+    LocalFrameView *view = View();
+    ASSERT(nullptr != frame);
+    ASSERT(nullptr != view);
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
     // If we're restoring a scroll position from history, that takes precedence
     // over scrolling to the anchor in the URL.
     View()->ScrollAndFocusFragmentAnchor();
+#endif
 
     // Script run in the call above may detach the document.
-    if (GetFrame() && View()) {
-        GetFrame()->Loader().RestoreScrollPositionAndViewState();
+    if (nullptr != frame)
+    {
+#if 0 // BKTODO: Check if necessary.
+        frame->Loader().RestoreScrollPositionAndViewState();
+#endif
 
         // The focus call above can execute JS which can dirty layout. Ensure
         // layout is clean since this is called from UpdateLayout.
-        if (View()->NeedsLayout())
-            View()->UpdateLayout();
+        if (nullptr != view && view->NeedsLayout())
+            view->UpdateLayout();
+
+        // Plugins can run script inside layout which can detach the page.
+        // TODO(dcheng): Does it make sense to do any of this work if detached?
+        frame->GetPage()->GetChromeClient().MainFrameLayoutUpdated();
     }
 
-    // Plugins can run script inside layout which can detach the page.
-    // TODO(dcheng): Does it make sense to do any of this work if detached?
-    if (GetFrame() && GetFrame()->IsMainFrame())
-        GetFrame()->GetPage()->GetChromeClient().MainFrameLayoutUpdated();
-
+#if 0 // BKTODO: Check if necessary.
     Markers().InvalidateRectsForAllTextMatchMarkers();
 
     // The layout system may perform layouts with pending stylesheets. When
@@ -2712,9 +2723,10 @@ void Document::LayoutUpdated(void)
     // beginFrame? This will catch the first layout in a page that does lots
     // of layout thrashing even though that layout might not be followed by
     // a paint for many seconds.
-    if (IsRenderingReady() && body() && HaveRenderBlockingResourcesLoaded()) {
-        if (document_timing_.FirstLayout().is_null())
-            document_timing_.MarkFirstLayout();
+    if (IsRenderingReady() && nullptr != body() && HaveRenderBlockingResourcesLoaded())
+    {
+        if (m_documentTiming.FirstLayout().is_null())
+            m_documentTiming.MarkFirstLayout();
     }
 #endif
 }

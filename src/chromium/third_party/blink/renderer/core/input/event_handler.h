@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: event_handler.h
+// Description: EventHandler Class
+//      Author: Ziming Li
+//     Created: 2020-12-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2009, 2010, 2011 Apple Inc. All rights reserved.
  *
@@ -33,16 +44,20 @@
 #include "third_party/blink/public/platform/web_input_event_result.h"
 #include "third_party/blink/public/platform/web_menu_source_type.h"
 #include "third_party/blink/renderer/core/core_export.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/dom/user_gesture_indicator.h"
 #include "third_party/blink/renderer/core/events/text_event_input_type.h"
 #include "third_party/blink/renderer/core/input/gesture_manager.h"
 #include "third_party/blink/renderer/core/input/keyboard_event_manager.h"
+#endif
 #include "third_party/blink/renderer/core/input/mouse_event_manager.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/input/mouse_wheel_event_manager.h"
 #include "third_party/blink/renderer/core/input/pointer_event_manager.h"
 #include "third_party/blink/renderer/core/input/scroll_manager.h"
+#endif
 #include "third_party/blink/renderer/core/layout/hit_test_request.h"
-#include "third_party/blink/renderer/core/page/drag_actions.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/drag_actions.h"
 #include "third_party/blink/renderer/core/page/event_with_hit_test_results.h"
 #include "third_party/blink/renderer/core/style/computed_style_constants.h"
 #include "third_party/blink/renderer/platform/cursor.h"
@@ -78,8 +93,7 @@ class WebGestureEvent;
 class WebMouseEvent;
 class WebMouseWheelEvent;
 
-class CORE_EXPORT EventHandler final
-    : public GarbageCollectedFinalized<EventHandler> {
+class CORE_EXPORT EventHandler final {
  public:
   explicit EventHandler(LocalFrame&);
   void Trace(blink::Visitor*);
@@ -150,9 +164,11 @@ class CORE_EXPORT EventHandler final
       const Vector<WebMouseEvent>& coalesced_events);
   void HandleMouseLeaveEvent(const WebMouseEvent&);
 
+#if 0 // BKTODO:
   WebInputEventResult HandlePointerEvent(
       const WebPointerEvent&,
       const Vector<WebPointerEvent>& coalesced_events);
+#endif
 
   WebInputEventResult DispatchBufferedTouchEvents();
 
@@ -228,6 +244,7 @@ class CORE_EXPORT EventHandler final
 
   void SetMouseDownMayStartAutoscroll();
 
+#if 0 // BKTODO:
   bool HandleAccessKey(const WebKeyboardEvent&);
   WebInputEventResult KeyEvent(const WebKeyboardEvent&);
   void DefaultKeyboardEventHandler(KeyboardEvent*);
@@ -235,6 +252,7 @@ class CORE_EXPORT EventHandler final
   bool HandleTextInputEvent(const String& text,
                             Event* underlying_event = nullptr,
                             TextEventInputType = kTextEventInputKeyboard);
+#endif
   void DefaultTextInputEventHandler(TextEvent*);
 
   void DragSourceEndedAt(const WebMouseEvent&, DragOperation);
@@ -245,9 +263,11 @@ class CORE_EXPORT EventHandler final
 
   void NotifyElementActivated();
 
+#if 0 // BKTODO:
   scoped_refptr<UserGestureToken> TakeLastMouseDownGestureToken() {
     return std::move(last_mouse_down_user_gesture_token_);
   }
+#endif
 
   SelectionController& GetSelectionController() const {
     return *selection_controller_;
@@ -276,9 +296,11 @@ class CORE_EXPORT EventHandler final
   // canceled.
   void ClearDragState();
 
+#if 0 // BKTODO:
   EventHandlerRegistry& GetEventHandlerRegistry() const {
     return *event_handler_registry_;
   }
+#endif
 
   void AnimateSnapFling(base::TimeTicks monotonic_time);
 
@@ -372,11 +394,13 @@ class CORE_EXPORT EventHandler final
 
   bool PassMousePressEventToScrollbar(MouseEventWithHitTestResults&);
 
+#if 0 // BKTODO:
   void DefaultSpaceEventHandler(KeyboardEvent*);
   void DefaultBackspaceEventHandler(KeyboardEvent*);
   void DefaultTabEventHandler(KeyboardEvent*);
   void DefaultEscapeEventHandler(KeyboardEvent*);
   void DefaultArrowEventHandler(WebFocusType, KeyboardEvent*);
+#endif
 
   // |last_scrollbar_under_mouse_| is set when the mouse moves off of a
   // scrollbar, and used to notify it of MouseUp events to release mouse
@@ -420,16 +444,20 @@ class CORE_EXPORT EventHandler final
 
   Member<HTMLFrameSetElement> frame_set_being_resized_;
 
+#if 0 // BKTODO:
   scoped_refptr<UserGestureToken> last_mouse_down_user_gesture_token_;
 
   // Local frames in the same local root share the same EventHandlerRegistry.
   Member<EventHandlerRegistry> event_handler_registry_;
+#endif
   Member<ScrollManager> scroll_manager_;
   Member<MouseEventManager> mouse_event_manager_;
+#if 0 // BKTODO:
   Member<MouseWheelEventManager> mouse_wheel_event_manager_;
   Member<KeyboardEventManager> keyboard_event_manager_;
   Member<PointerEventManager> pointer_event_manager_;
   Member<GestureManager> gesture_manager_;
+#endif
 
   double max_mouse_moved_duration_;
 
@@ -449,9 +477,11 @@ class CORE_EXPORT EventHandler final
   // touchstart event id.
   bool should_use_touch_event_adjusted_point_;
 
+#if 0 // BKTODO:
   // Stored the last touch type primary pointer down adjustment result.
   // This is used in gesture event hit test.
   TouchAdjustmentResult touch_adjustment_result_;
+#endif
 
   // ShouldShowIBeamForNode's unit tests:
   FRIEND_TEST_ALL_PREFIXES(EventHandlerTest, HitOnNothingDoesNotShowIBeam);

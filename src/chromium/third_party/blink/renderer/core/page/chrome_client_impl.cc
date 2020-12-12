@@ -572,7 +572,7 @@ void ChromeClientImpl::ResizeAfterLayout() const {
 }
 
 void ChromeClientImpl::MainFrameLayoutUpdated() const {
-  ASSERT(false); // BKTODO: web_view_->MainFrameLayoutUpdated();
+  web_view_->MainFrameLayoutUpdated();
 }
 
 void ChromeClientImpl::ShowMouseOverURL(const HitTestResult& result) {

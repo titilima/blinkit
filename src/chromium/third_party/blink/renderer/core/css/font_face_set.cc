@@ -286,11 +286,7 @@ void FontFaceSet::FireDoneEvent() {
 bool FontFaceSet::ShouldSignalReady() const {
   if (!loading_fonts_.IsEmpty())
     return false;
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
-  return is_loading_ || ready_->GetState() == ReadyProperty::kPending;
-#endif
+  return is_loading_; // BKTODO: || ready_->GetState() == ReadyProperty::kPending;
 }
 
 void FontFaceSet::LoadFontPromiseResolver::NotifyLoaded(FontFace* font_face) {

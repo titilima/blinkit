@@ -15,6 +15,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
+#include "third_party/blink/renderer/core/page/drag_controller.h"
 #include "third_party/blink/renderer/core/page/scrolling/overscroll_controller.h"
 #include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
 #include "third_party/blink/renderer/core/scroll/scrollbar_theme.h"
@@ -23,8 +24,8 @@ namespace blink {
 
 Page::Page(PageClients &pageClients)
     : m_chromeClient(pageClients.chromeClient)
-    , m_frame(LocalFrame::Create(pageClients.frameClient, this))
     , m_animator(PageAnimator::Create(*this))
+    , m_dragController(DragController::Create(this))
     , m_pageScaleConstraintsSet(PageScaleConstraintsSet::Create(this))
     , m_browserControls(BrowserControls::Create(*this))
     , m_globalRootScrollerController(TopDocumentRootScrollerController::Create(*this))
@@ -33,7 +34,11 @@ Page::Page(PageClients &pageClients)
 {
 }
 
-Page::~Page(void) = default;
+Page::~Page(void)
+{
+    // WillBeDestroyed() must be called before Page destruction.
+    ASSERT(nullptr == m_mainFrame);
+}
 
 std::unique_ptr<Page> Page::Create(PageClients &pageClients)
 {
@@ -134,14 +139,20 @@ TopDocumentRootScrollerController& Page::GlobalRootScrollerController(void) cons
     return *m_globalRootScrollerController;
 }
 
+void Page::SetMainFrame(Frame *mainFrame)
+{
+    ASSERT(mainFrame->IsLocalFrame());
+    m_mainFrame = static_cast<LocalFrame *>(mainFrame);
+}
+
 void Page::SetDeviceScaleFactorDeprecated(float scaleFactor)
 {
     if (m_deviceScaleFactor == scaleFactor)
         return;
 
     m_deviceScaleFactor = scaleFactor;
-    if (m_frame)
-        m_frame->DeviceScaleFactorChanged();
+    if (nullptr != m_mainFrame)
+        m_mainFrame->DeviceScaleFactorChanged();
 }
 
 void Page::SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState)

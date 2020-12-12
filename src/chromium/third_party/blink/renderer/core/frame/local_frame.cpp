@@ -53,6 +53,7 @@
 #   include "third_party/blink/renderer/core/editing/editor.h"
 #   include "third_party/blink/renderer/core/editing/frame_selection.h"
 #   include "third_party/blink/renderer/core/frame/event_handler_registry.h"
+#   include "third_party/blink/renderer/core/input/event_handler.h"
 #   include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
 #endif
 
@@ -78,6 +79,7 @@ LocalFrame::LocalFrame(LocalFrameClient *client, Page *page)
     {
         m_editor = Editor::Create(*this);
         m_selection = FrameSelection::Create(*this);
+        m_eventHandler = std::make_unique<EventHandler>(*this);
     }
 #endif
 }
@@ -252,9 +254,7 @@ void LocalFrame::DocumentAttached(void)
 
     Document *document = GetDocument();
     GetEditor().Clear();
-#if 0 // BKTODO:
     GetEventHandler().Clear();
-#endif
     Selection().DocumentAttached(document);
 #if 0 // BKTODO:
     GetInputMethodController().DocumentAttached(GetDocument());
@@ -313,6 +313,10 @@ void LocalFrame::Trace(Visitor *visitor)
     visitor->Trace(m_loader);
 #ifndef BLINKIT_CRAWLER_ONLY
     visitor->Trace(m_view);
+    if (m_editor)
+        m_editor->Trace(visitor);
+    if (m_eventHandler)
+        m_eventHandler->Trace(visitor);
 #endif
     Frame::Trace(visitor);
 }

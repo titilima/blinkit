@@ -236,9 +236,11 @@ void FrameLoader::DidFinishNavigation(void)
 #ifndef BLINKIT_CRAWLER_ONLY
         if (!Client()->IsCrawler())
         {
+#if 0 // BKTODO: Check if necessary.
             // Retry restoring scroll offset since finishing loading disables content
             // size clamping.
-            ASSERT(false); // BKTODO: RestoreScrollPositionAndViewState();
+            RestoreScrollPositionAndViewState();
+#endif
         }
 #endif
         if (m_documentLoader)

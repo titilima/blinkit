@@ -87,8 +87,8 @@
 #include "third_party/blink/renderer/core/html_names.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/input/context_menu_allowed_scope.h"
-#include "third_party/blink/renderer/core/input/event_handler.h"
 #endif
+#include "third_party/blink/renderer/core/input/event_handler.h"
 #include "third_party/blink/renderer/core/layout/hit_test_request.h"
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
 // BKTODO: #include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
@@ -920,11 +920,8 @@ void FrameSelection::FocusedOrActiveStateChanged() {
                                        ? CaretVisibility::kVisible
                                        : CaretVisibility::kHidden);
 
-  ASSERT(false); // BKTODO:
-#if 0
   // Update for caps lock state
   frame_->GetEventHandler().CapsLockStateMayHaveChanged();
-#endif
 }
 
 void FrameSelection::PageActivationChanged() {
@@ -957,10 +954,7 @@ void FrameSelection::DidLayout() {
 }
 
 void FrameSelection::UpdateAppearance() {
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(frame_->ContentLayoutObject());
-#endif
   frame_caret_->ScheduleVisualUpdateForPaintInvalidationIfNeeded();
   layout_selection_->SetHasPendingSelection();
 }
@@ -1191,11 +1185,8 @@ void FrameSelection::ShowTreeForThis() const {
 #endif
 
 void FrameSelection::ScheduleVisualUpdate() const {
-  ASSERT(false); // BKTODO:
-#if 0
   if (Page* page = frame_->GetPage())
-    page->Animator().ScheduleVisualUpdate(&frame_->LocalFrameRoot());
-#endif
+    page->Animator().ScheduleVisualUpdate(frame_.Get());
 }
 
 void FrameSelection::ScheduleVisualUpdateForPaintInvalidationIfNeeded() const {

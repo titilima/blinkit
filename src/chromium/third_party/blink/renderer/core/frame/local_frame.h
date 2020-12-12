@@ -64,6 +64,7 @@ class NavigationScheduler;
 class ScriptController;
 #ifndef BLINKIT_CRAWLER_ONLY
 class Editor;
+class EventHandler;
 class FrameSelection;
 class LayoutView;
 class SmoothScrollSequencer;
@@ -92,6 +93,7 @@ public:
 
     Editor& GetEditor(void) const { return *m_editor; }
     FrameSelection& Selection(void) const { return *m_selection; }
+    EventHandler& GetEventHandler(void) const { return *m_eventHandler; }
 
     double DevicePixelRatio(void) const;
     void DeviceScaleFactorChanged(void);
@@ -136,6 +138,7 @@ private:
     Member<LocalFrameView> m_view;
     std::unique_ptr<Editor> m_editor;
     std::unique_ptr<FrameSelection> m_selection;
+    std::unique_ptr<EventHandler> m_eventHandler;
     // SmoothScrollSequencer is only populated for local roots; all local frames
     // use the instance owned by their local root.
     std::unique_ptr<SmoothScrollSequencer> m_smoothScrollSequencer;

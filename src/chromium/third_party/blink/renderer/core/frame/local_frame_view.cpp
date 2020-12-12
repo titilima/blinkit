@@ -11,6 +11,7 @@
 
 #include "local_frame_view.h"
 
+#include "third_party/blink/renderer/core/css/font_face_set_document.h"
 #include "third_party/blink/renderer/core/editing/frame_selection.h"
 #include "third_party/blink/renderer/core/frame/browser_controls.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -18,11 +19,13 @@
 #include "third_party/blink/renderer/core/frame/root_frame_viewport.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
+#include "third_party/blink/renderer/core/input/event_handler.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
+#include "third_party/blink/renderer/core/page/scrolling/snap_coordinator.h"
 #include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
@@ -495,33 +498,29 @@ void LocalFrameView::PerformPostLayoutTasks(void)
 
     ASSERT(nullptr != m_frame->GetDocument());
 
-    ASSERT(false); // BKTODO:
-#if 0
-    FontFaceSetDocument::DidLayout(*frame_->GetDocument());
+    FontFaceSetDocument::DidLayout(*m_frame->GetDocument());
     // Fire a fake a mouse move event to update hover state and mouse cursor, and
     // send the right mouse out/over events.
-    frame_->GetEventHandler().MayUpdateHoverWhenContentUnderMouseChanged(
+    m_frame->GetEventHandler().MayUpdateHoverWhenContentUnderMouseChanged(
         MouseEventManager::UpdateHoverReason::kLayoutOrStyleChanged);
 
     UpdateGeometriesIfNeeded();
 
     // Plugins could have torn down the page inside updateGeometries().
-    if (!GetLayoutView())
+    if (nullptr == GetLayoutView())
         return;
 
+#if 0 // BKTODO: Check if necessary.
     ScheduleUpdatePluginsIfNecessary();
+#endif
 
-    if (ScrollingCoordinator* scrolling_coordinator =
-        this->GetScrollingCoordinator()) {
-        scrolling_coordinator->NotifyGeometryChanged(this);
-    }
+    if (ScrollingCoordinator *scrollingCoordinator = GetScrollingCoordinator())
+        ASSERT(false); // BKTODO: scrollingCoordinator->NotifyGeometryChanged(this);
 
-    if (SnapCoordinator* snap_coordinator =
-        frame_->GetDocument()->GetSnapCoordinator())
-        snap_coordinator->UpdateAllSnapContainerData();
+    if (SnapCoordinator *snapCoordinator = m_frame->GetDocument()->GetSnapCoordinator())
+        snapCoordinator->UpdateAllSnapContainerData();
 
     SendResizeEventIfNeeded();
-#endif
 }
 
 void LocalFrameView::PerformPreLayoutTasks(void)
@@ -630,6 +629,25 @@ void LocalFrameView::ScheduleVisualUpdateForPaintInvalidationIfNeeded(void)
     }
     // Otherwise the paint invalidation will be handled in the pre-paint
     // phase of this cycle.
+}
+
+void LocalFrameView::SendResizeEventIfNeeded(void)
+{
+    ASSERT(m_frame);
+
+    LayoutView *layoutView = GetLayoutView();
+    if (nullptr == layoutView)
+        return;
+
+    if (!WasViewportResized())
+        return;
+
+    m_lastViewportSize = GetLayoutSize();
+    m_lastZoomFactor = layoutView->StyleRef().Zoom();
+
+    Document *document = m_frame->GetDocument();
+    document->EnqueueVisualViewportResizeEvent();
+    document->EnqueueResizeEvent();
 }
 
 void LocalFrameView::SetBaseBackgroundColor(const Color &backgroundColor)
@@ -856,6 +874,27 @@ void LocalFrameView::UpdateDocumentAnnotatedRegions(void) const
 
     DCHECK(frame_->Client());
     frame_->Client()->AnnotatedRegionsChanged();
+#endif
+}
+
+void LocalFrameView::UpdateGeometriesIfNeeded(void)
+{
+    if (!m_needsUpdateGeometries)
+        return;
+    m_needsUpdateGeometries = false;
+#if 0 // BKTODO: Check the logic below.
+    HeapVector<Member<EmbeddedContentView>> views;
+    ForAllChildViewsAndPlugins(
+        [&](EmbeddedContentView& view) { views.push_back(view); });
+
+    for (const auto& view : views) {
+        // Script or plugins could detach the frame so abort processing if that
+        // happens.
+        if (!GetLayoutView())
+            break;
+
+        view->UpdateGeometry();
+    }
 #endif
 }
 

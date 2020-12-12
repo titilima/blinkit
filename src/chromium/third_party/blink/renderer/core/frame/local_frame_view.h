@@ -215,6 +215,10 @@ private:
 
     void LayoutFromRootObject(LayoutObject &root);
 
+    void UpdateGeometriesIfNeeded(void);
+
+    void SendResizeEventIfNeeded(void);
+
     void Show(void) override;
 
     LayoutSize m_size;
@@ -243,8 +247,11 @@ private:
 
     std::unique_ptr<ResizerAreaSet> m_resizerAreas;
     std::unique_ptr<ViewportConstrainedObjectSet> m_viewportConstrainedObjects;
+
     IntSize m_layoutSize;
     IntSize m_initialViewportSize;
+
+    bool m_needsUpdateGeometries = false;
 
     bool m_firstLayout = true;
     Color m_baseBackgroundColor;
@@ -257,7 +264,6 @@ private:
     Member<FrameViewAutoSizeInfo> m_autoSizeInfo;
 
     bool m_layoutSizeFixedToFrameSize = true;
-    bool m_needsUpdateGeometries = false;
     // Exists only on root frame.
     // TODO(bokan): crbug.com/484188. We should specialize LocalFrameView for the
     // main frame.

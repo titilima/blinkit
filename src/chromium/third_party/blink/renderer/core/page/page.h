@@ -22,6 +22,8 @@ namespace blink {
 
 class BrowserControls;
 class ChromeClient;
+class DragController;
+class Frame;
 class LocalFrame;
 class LocalFrameClient;
 class OverscrollController;
@@ -56,8 +58,10 @@ public:
         ASSERT(nullptr != m_chromeClient);
         return *m_chromeClient;
     }
-    LocalFrame* GetFrame(void) const { return m_frame.get(); }
-    LocalFrame* MainFrame(void) const { return m_frame.get(); }
+    DragController& GetDragController(void) const { return *m_dragController; }
+    LocalFrame* GetFrame(void) const { return m_mainFrame; }
+    LocalFrame* MainFrame(void) const { return m_mainFrame; }
+    void SetMainFrame(Frame *mainFrame);
     ScrollbarTheme& GetScrollbarTheme(void) const;
     PageAnimator& Animator(void) { return *m_animator; }
 
@@ -102,9 +106,10 @@ public:
 private:
     explicit Page(PageClients &pageClients);
 
+    LocalFrame *m_mainFrame = nullptr;
     ChromeClient *m_chromeClient;
-    std::unique_ptr<LocalFrame> m_frame;
     std::unique_ptr<PageAnimator> m_animator;
+    const std::unique_ptr<DragController> m_dragController;
     float m_deviceScaleFactor = 1.0;
     std::unique_ptr<PageScaleConstraintsSet> m_pageScaleConstraintsSet;
     const std::unique_ptr<BrowserControls> m_browserControls;

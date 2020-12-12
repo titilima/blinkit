@@ -88,7 +88,7 @@ class CORE_EXPORT SnapCoordinator final
   friend class SnapCoordinatorTest;
   explicit SnapCoordinator();
 
-  // BKTODO: HashMap<const LayoutBox*, SnapContainerData> snap_container_map_;
+  // BKTODO: std::unordered_map<const LayoutBox*, SnapContainerData> snap_container_map_;
   DISALLOW_COPY_AND_ASSIGN(SnapCoordinator);
 };
 

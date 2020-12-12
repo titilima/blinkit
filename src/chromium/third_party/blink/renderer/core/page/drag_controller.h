@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: drag_controller.h
+// Description: DragController Class
+//      Author: Ziming Li
+//     Created: 2020-12-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2009 Apple Inc. All rights reserved.
  *
@@ -50,10 +61,9 @@ class Node;
 class Page;
 class WebMouseEvent;
 
-class CORE_EXPORT DragController final
-    : public GarbageCollected<DragController> {
+class CORE_EXPORT DragController final {
  public:
-  static DragController* Create(Page*);
+  static std::unique_ptr<DragController> Create(Page*);
 
   DragOperation DragEnteredOrUpdated(DragData*, LocalFrame& local_root);
   void DragExited(DragData*, LocalFrame& local_root);
@@ -80,8 +90,10 @@ class CORE_EXPORT DragController final
 
   DragState& GetDragState();
 
+#if 0 // BKTODO:
   static std::unique_ptr<DragImage> DragImageForSelection(const LocalFrame&,
                                                           float);
+#endif
 
   // Return the selection bounds in absolute coordinates for the frame, clipped
   // to the visual viewport.

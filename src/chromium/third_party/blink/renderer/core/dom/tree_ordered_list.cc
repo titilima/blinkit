@@ -78,7 +78,7 @@ void TreeOrderedList::Remove(const Node* node) {
 }
 
 void TreeOrderedList::Trace(blink::Visitor* visitor) {
-  visitor->Trace(nodes_);
+  // BKTODO: visitor->Trace(nodes_);
 }
 
 }  // namespace blink

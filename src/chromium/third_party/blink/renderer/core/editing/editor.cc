@@ -62,8 +62,8 @@
 #include "third_party/blink/renderer/core/editing/commands/replace_selection_command.h"
 #include "third_party/blink/renderer/core/editing/commands/simplify_markup_command.h"
 #include "third_party/blink/renderer/core/editing/commands/typing_command.h"
-#include "third_party/blink/renderer/core/editing/commands/undo_stack.h"
 #endif
+#include "third_party/blink/renderer/core/editing/commands/undo_stack.h"
 #include "third_party/blink/renderer/core/editing/editing_behavior.h"
 #include "third_party/blink/renderer/core/editing/editing_style_utilities.h"
 #include "third_party/blink/renderer/core/editing/editing_tri_state.h"
@@ -164,13 +164,12 @@ SelectionInDOMTree Editor::SelectionForCommand(Event* event) {
 // Function considers Mac editing behavior a fallback when Page or Settings is
 // not available.
 EditingBehavior Editor::Behavior() const {
-  ASSERT(false); // BKTODO:
+#if defined(OS_WIN)
+  return EditingBehavior(kEditingWindowsBehavior);
+#elif defined(OS_MACOSX)
   return EditingBehavior(kEditingMacBehavior);
-#if 0
-  if (!GetFrame().GetSettings())
-    return EditingBehavior(kEditingMacBehavior);
-
-  return EditingBehavior(GetFrame().GetSettings()->GetEditingBehaviorType());
+#else
+  static_assert(false); // Unsupported platform!
 #endif
 }
 
@@ -525,7 +524,7 @@ std::unique_ptr<Editor> Editor::Create(LocalFrame& frame) {
 
 Editor::Editor(LocalFrame& frame)
     : frame_(&frame),
-      // BKTODO: undo_stack_(UndoStack::Create()),
+      undo_stack_(UndoStack::Create()),
       prevent_reveal_selection_(0),
       should_start_new_kill_ring_sequence_(false),
       // This is off by default, since most editors want this behavior (this
@@ -542,10 +541,7 @@ void Editor::Clear() {
   should_style_with_css_ = false;
   default_paragraph_separator_ = EditorParagraphSeparator::kIsDiv;
   last_edit_command_ = nullptr;
-  ASSERT(false); // BKTODO:
-#if 0
   undo_stack_->Clear();
-#endif
 }
 
 #if 0 // BKTODO:
@@ -1067,10 +1063,10 @@ void Editor::ReplaceSelection(const String& text) {
 }
 
 void Editor::Trace(blink::Visitor* visitor) {
-  // BKTODO: Remove trace.
+  // BKTODO: Cleanup trace.
   visitor->Trace(frame_);
   visitor->Trace(last_edit_command_);
-  visitor->Trace(undo_stack_);
+  undo_stack_->Trace(visitor);
   visitor->Trace(mark_);
   visitor->Trace(typing_style_);
 }

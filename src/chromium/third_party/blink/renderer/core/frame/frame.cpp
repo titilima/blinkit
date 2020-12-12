@@ -58,6 +58,9 @@ Frame::Frame(FrameClient *client, Page *page)
 {
 #ifdef BLINKIT_CRAWLER_ONLY
     ASSERT(nullptr == page);
+#else
+    if (m_page)
+        m_page->SetMainFrame(this);
 #endif
 }
 

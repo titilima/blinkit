@@ -81,9 +81,9 @@
 #include "third_party/blink/renderer/core/fullscreen/fullscreen.h"
 #include "third_party/blink/renderer/core/html/forms/text_control_element.h"
 #include "third_party/blink/renderer/core/html/html_frame_owner_element.h"
-#include "third_party/blink/renderer/core/input/event_handler.h"
-#include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
 #endif
+#include "third_party/blink/renderer/core/input/event_handler.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
 #include "third_party/blink/renderer/core/layout/layout_flexible_box.h"
 #include "third_party/blink/renderer/core/layout/layout_scrollbar.h"
 #include "third_party/blink/renderer/core/layout/layout_scrollbar_part.h"
@@ -190,7 +190,7 @@ void PaintLayerScrollableArea::DidScroll(const FloatPoint& position) {
 void PaintLayerScrollableArea::Dispose() {
   if (InResizeMode() && !GetLayoutBox()->DocumentBeingDestroyed()) {
     if (LocalFrame* frame = GetLayoutBox()->GetFrame())
-      ASSERT(false); // BKTODO: frame->GetEventHandler().ResizeScrollableAreaDestroyed();
+      frame->GetEventHandler().ResizeScrollableAreaDestroyed();
   }
 
   if (LocalFrame* frame = GetLayoutBox()->GetFrame()) {
@@ -492,11 +492,8 @@ void PaintLayerScrollableArea::UpdateScrollOffset(
   }
   UpdateCompositingLayersAfterScroll();
 
-  ASSERT(false); // BKTODO:
-#if 0
   GetLayoutBox()->MayUpdateHoverWhenContentUnderMouseChanged(
       frame->GetEventHandler());
-#endif
 
   if (scroll_type == kUserScroll || scroll_type == kCompositorScroll) {
     Page* page = frame->GetPage();
@@ -741,15 +738,11 @@ void PaintLayerScrollableArea::ContentsResized() {
 }
 
 IntPoint PaintLayerScrollableArea::LastKnownMousePosition() const {
-  ASSERT(false); // BKTODO:
-  return IntPoint();
-#if 0
   return GetLayoutBox()->GetFrame() ? GetLayoutBox()
                                           ->GetFrame()
                                           ->GetEventHandler()
                                           .LastKnownMousePositionInRootFrame()
                                     : IntPoint();
-#endif
 }
 
 bool PaintLayerScrollableArea::ScrollAnimatorEnabled() const {

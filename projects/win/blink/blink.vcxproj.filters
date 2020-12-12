@@ -288,6 +288,12 @@
     <Filter Include="renderer\core\html\custom">
       <UniqueIdentifier>{19f71357-0573-476b-8f61-0eca484b1474}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\editing\commands">
+      <UniqueIdentifier>{7647e007-4db2-4170-9713-70b68b4564ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\input">
+      <UniqueIdentifier>{f032143f-b7e9-4f3b-9a40-0ef4d116d458}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -5176,6 +5182,27 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\root_scroller_util.cc">
       <Filter>renderer\core\page\scrolling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\selection_modifier_word.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\commands\undo_stack.cc">
+      <Filter>renderer\core\editing\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\commands\undo_step.cc">
+      <Filter>renderer\core\editing\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\commands\selection_for_undo_step.cc">
+      <Filter>renderer\core\editing\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\event_handler.cc">
+      <Filter>renderer\core\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\mouse_event_manager.cc">
+      <Filter>renderer\core\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\drag_controller.cc">
+      <Filter>renderer\core\page</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -11559,6 +11586,33 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\runtime_call_stats.h">
       <Filter>renderer\platform\bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\commands\undo_stack.h">
+      <Filter>renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\commands\undo_step.h">
+      <Filter>renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\commands\selection_for_undo_step.h">
+      <Filter>renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\event_handler.h">
+      <Filter>renderer\core\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\mouse_event_manager.h">
+      <Filter>renderer\core\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_input_event_result.h">
+      <Filter>public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\drag_actions.h">
+      <Filter>renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\drag_controller.h">
+      <Filter>renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\drag_state.h">
+      <Filter>renderer\core\page</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

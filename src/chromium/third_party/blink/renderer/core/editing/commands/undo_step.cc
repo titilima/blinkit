@@ -1,12 +1,25 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: undo_step.cc
+// Description: UndoStep Class
+//      Author: Ziming Li
+//     Created: 2020-12-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/editing/commands/undo_step.h"
 
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/dom/events/scoped_event_queue.h"
 #include "third_party/blink/renderer/core/editing/commands/edit_command.h"
 #include "third_party/blink/renderer/core/editing/commands/editing_commands_utilities.h"
+#endif
 #include "third_party/blink/renderer/core/editing/commands/undo_stack.h"
 #include "third_party/blink/renderer/core/editing/editing_utilities.h"
 #include "third_party/blink/renderer/core/editing/editor.h"
@@ -47,6 +60,8 @@ void UndoStep::Unapply() {
   LocalFrame* frame = document_->GetFrame();
   DCHECK(frame);
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Changes to the document may have been made since the last editing operation
   // that require a layout, as in <rdar://problem/5658603>. Low level
   // operations, like RemoveNodeCommand, don't require a layout because the high
@@ -82,6 +97,7 @@ void UndoStep::Unapply() {
   editor.SetLastEditCommand(nullptr);
   editor.GetUndoStack().RegisterRedoStep(this);
   editor.RespondToChangedContents(new_selection.Base());
+#endif
 }
 
 void UndoStep::Reapply() {
@@ -89,6 +105,8 @@ void UndoStep::Reapply() {
   LocalFrame* frame = document_->GetFrame();
   DCHECK(frame);
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Changes to the document may have been made since the last editing operation
   // that require a layout, as in <rdar://problem/5658603>. Low level
   // operations, like RemoveNodeCommand, don't require a layout because the high
@@ -123,6 +141,7 @@ void UndoStep::Reapply() {
   editor.SetLastEditCommand(nullptr);
   editor.GetUndoStack().RegisterUndoStep(this);
   editor.RespondToChangedContents(new_selection.Base());
+#endif
 }
 
 InputEvent::InputType UndoStep::GetInputType() const {

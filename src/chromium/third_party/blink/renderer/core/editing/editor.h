@@ -250,7 +250,7 @@ class CORE_EXPORT Editor final {
  private:
   Member<LocalFrame> frame_;
   Member<CompositeEditCommand> last_edit_command_;
-  const Member<UndoStack> undo_stack_;
+  const std::unique_ptr<UndoStack> undo_stack_;
   int prevent_reveal_selection_;
   bool should_start_new_kill_ring_sequence_;
   bool should_style_with_css_;
@@ -300,7 +300,7 @@ inline EditingStyle* Editor::TypingStyle() const {
 }
 
 inline void Editor::ClearTypingStyle() {
-  ASSERT(false); // BKTODO: typing_style_.Clear();
+  typing_style_.Clear();
 }
 
 inline void Editor::SetTypingStyle(EditingStyle* style) {

@@ -21,9 +21,9 @@
 #include "third_party/blink/renderer/core/page/chrome_client_impl.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
-#include "url/gurl.h"
 
 using namespace blink;
+using namespace BlinKit;
 
 WebViewImpl::WebViewImpl(PageVisibilityState visibilityState)
     : m_chromeClient(ChromeClientImpl::Create(this)), m_baseBackgroundColor(Color::kWhite)
@@ -98,7 +98,12 @@ void WebViewImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 
 void WebViewImpl::DispatchDidFinishLoad(void)
 {
-    ASSERT(false); // BKTODO:
+    AutoGarbageCollector gc;
+    const auto task = [this]
+    {
+        m_client.DocumentReady(m_client.UserData);
+    };
+    m_frame->GetTaskRunner(TaskType::kInternalLoading)->PostTask(FROM_HERE, task);
 }
 
 IntSize WebViewImpl::FrameSize(void)
@@ -117,7 +122,8 @@ PageScaleConstraintsSet& WebViewImpl::GetPageScaleConstraintsSet(void) const
 
 void WebViewImpl::Initialize(void)
 {
-    m_page->GetFrame()->Init();
+    m_frame = LocalFrame::Create(this, m_page.get());
+    m_frame->Init();
 }
 
 int WebViewImpl::LoadUI(const char *URI)
@@ -130,8 +136,13 @@ int WebViewImpl::LoadUI(const char *URI)
     }
 
     FrameLoadRequest request(nullptr, ResourceRequest(u));
-    m_page->GetFrame()->Loader().StartNavigation(request);
+    m_frame->Loader().StartNavigation(request);
     return BK_ERR_SUCCESS;
+}
+
+void WebViewImpl::MainFrameLayoutUpdated(void)
+{
+    // May be useful, leave it here.
 }
 
 IntSize WebViewImpl::MainFrameSize(void)

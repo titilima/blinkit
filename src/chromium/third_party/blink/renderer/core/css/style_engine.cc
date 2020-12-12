@@ -1783,8 +1783,7 @@ void StyleEngine::UpdateLayoutTreeRebuildRoot(ContainerNode* ancestor,
 }
 
 void StyleEngine::Trace(blink::Visitor* visitor) {
-  ASSERT(false); // BKTODO: Check unnecessary traces.
-  visitor->Trace(document_);
+  // BKTODO: visitor->Trace(document_);
   visitor->Trace(injected_user_style_sheets_);
   visitor->Trace(injected_author_style_sheets_);
   visitor->Trace(active_user_style_sheets_);

@@ -79,8 +79,7 @@ AtomicString FontFaceSetDocument::status() const {
 }
 
 void FontFaceSetDocument::DidLayout() {
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTDO: Check if necessary.
   if (GetDocument()->GetFrame()->IsMainFrame() && loading_fonts_.IsEmpty())
     histogram_.Record();
 #endif

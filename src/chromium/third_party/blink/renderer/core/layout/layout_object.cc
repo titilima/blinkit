@@ -73,9 +73,9 @@
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_table_cell_element.h"
 #include "third_party/blink/renderer/core/html/html_table_element.h"
-#include "third_party/blink/renderer/core/input/event_handler.h"
-#include "third_party/blink/renderer/core/layout/custom/layout_custom.h"
 #endif
+#include "third_party/blink/renderer/core/input/event_handler.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/custom/layout_custom.h"
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
 #include "third_party/blink/renderer/core/layout/layout_counter.h"
 #include "third_party/blink/renderer/core/layout/layout_deprecated_flexible_box.h"
@@ -1778,12 +1778,8 @@ HitTestResult LayoutObject::HitTestForOcclusion(
       HitTestRequest::kIgnoreZeroOpacityObjects |
       HitTestRequest::kHitTestVisualOverflow;
   HitTestLocation location(hit_rect);
-  ASSERT(false); // BKTODO:
-  return HitTestResult();
-#if 0
   return frame->GetEventHandler().HitTestResultAtLocation(location, hit_type,
                                                           this, true);
-#endif
 }
 
 void LayoutObject::DirtyLinesFromChangedChild(LayoutObject*, MarkingBehavior) {}
@@ -2368,16 +2364,8 @@ void LayoutObject::StyleDidChange(StyleDifference diff,
   // paints (in setStyle()).
 
   if (old_style && !AreCursorsEqual(old_style, Style())) {
-    if (LocalFrame* frame = GetFrame()) {
-      ASSERT(false); // BKTODO:
-#if 0
-      // Cursor update scheduling is done by the local root, which is the main
-      // frame if there are no RemoteFrame ancestors in the frame tree. Use of
-      // localFrameRoot() is discouraged but will change when cursor update
-      // scheduling is moved from EventHandler to PageEventHandler.
-      frame->LocalFrameRoot().GetEventHandler().ScheduleCursorUpdate();
-#endif
-    }
+    if (LocalFrame* frame = GetFrame())
+      frame->GetEventHandler().ScheduleCursorUpdate();
   }
 
   if (diff.NeedsFullPaintInvalidation() && old_style) {
