@@ -42,25 +42,25 @@ public:
     template <typename T>
     void Trace(blink::Member<T> &m)
     {
-        const void *p = m.Get();
-        TraceImpl(const_cast<void *>(p));
+        TraceImpl(trace_cast<void *>(m.Get()));
     }
     template <typename T>
     void Trace(const blink::Member<T> &m)
     {
-        const void *p = m.Get();
-        TraceImpl(const_cast<void *>(p));
+        TraceImpl(trace_cast<void *>(m.Get()));
     }
 
     template <typename T>
     void Trace(blink::WeakMember<T> &m)
     {
-        ASSERT(false); // BKTODO:
+        if (m)
+            RegisterWeakSlot(trace_cast<void **>(&m.m_rawPtr));
     }
     template <typename T>
     void Trace(const blink::WeakMember<T> &m)
     {
-        ASSERT(false); // BKTODO:
+        if (m)
+            RegisterWeakSlot(trace_cast<void **>(&m.m_rawPtr));
     }
 
     template <typename T>
@@ -71,7 +71,19 @@ public:
 protected:
     Visitor(void) = default;
 
+    template <typename To, typename From>
+    static To trace_cast(From from)
+    {
+        union {
+            From f;
+            To t;
+        } u;
+        u.f = from;
+        return u.t;
+    }
+
     virtual void TraceImpl(void *p) = 0;
+    virtual void RegisterWeakSlot(void **slot) = 0;
 };
 
 } // namespace blink

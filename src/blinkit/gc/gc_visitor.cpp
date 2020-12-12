@@ -19,6 +19,21 @@ GCVisitor::GCVisitor(const std::unordered_set<void *> &memberObjects) : m_object
 {
 }
 
+void GCVisitor::FlushWeakSlots(void)
+{
+    for (void **slot : m_weakSlots)
+    {
+        if (std::end(m_objectsToGC) != m_objectsToGC.find(*slot))
+            *slot = nullptr;
+    }
+}
+
+void GCVisitor::RegisterWeakSlot(void **pp)
+{
+    if (nullptr != *pp)
+        m_weakSlots.push_back(pp);
+}
+
 void GCVisitor::TraceImpl(void *p)
 {
     if (nullptr == p)

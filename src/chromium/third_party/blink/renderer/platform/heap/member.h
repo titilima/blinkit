@@ -52,6 +52,7 @@ protected:
     MemberBase(const MemberBase &other) : m_rawPtr(other.Get()) {}
     MemberBase(T &rawObj) : m_rawPtr(&rawObj) {}
 private:
+    friend class Visitor;
     T *m_rawPtr;
 };
 

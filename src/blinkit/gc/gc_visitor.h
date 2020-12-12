@@ -25,10 +25,14 @@ public:
     GCVisitor(const std::unordered_set<void *> &memberObjects);
 
     const std::unordered_set<void *>& ObjectsToGC(void) const { return m_objectsToGC; }
+
+    void FlushWeakSlots(void);
 private:
     void TraceImpl(void *p) override;
+    void RegisterWeakSlot(void **pp) override;
 
     std::unordered_set<void *> m_objectsToGC;
+    std::vector<void **> m_weakSlots;
 };
 
 } // namespace BlinKit

@@ -156,6 +156,7 @@ void GCHeap::CollectGarbage(void)
     TraceObjects(m_globalObjects, visitor);
     TraceObjects(m_rootObjects, visitor);
     TraceObjects(m_stashObjects, visitor);
+    visitor.FlushWeakSlots();
     FreeObjects(visitor.ObjectsToGC(), &m_memberObjects);
 
 #ifndef NDEBUG
