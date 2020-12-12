@@ -21,7 +21,6 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_error.h"
-#include "url/gurl.h"
 
 using namespace blink;
 using namespace BlinKit;
