@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: root_scroller_controller.h
+// Description: RootScrollerController Class
+//      Author: Ziming Li
+//     Created: 2020-12-12
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -35,12 +46,11 @@ class PaintLayer;
 // rules for what makes an element a valid root scroller are set in
 // isValidRootScroller(). The validity of the current root scroller is
 // re-checked after layout as part of the document lifecycle.
-class CORE_EXPORT RootScrollerController
-    : public GarbageCollected<RootScrollerController> {
+class CORE_EXPORT RootScrollerController {
  public:
   // Creates a RootScrollerController for the given document. Note: instances
   // of this class need to be made aware of layout updates.
-  static RootScrollerController* Create(Document&);
+  static std::unique_ptr<RootScrollerController> Create(Document&);
 
   void Trace(blink::Visitor*);
 

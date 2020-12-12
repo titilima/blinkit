@@ -125,8 +125,8 @@ bool ScrollsVerticalOverflow(LayoutView& layout_view) {
 }  // namespace
 
 // static
-RootScrollerController* RootScrollerController::Create(Document& document) {
-  return new RootScrollerController(document);
+std::unique_ptr<RootScrollerController> RootScrollerController::Create(Document& document) {
+  return base::WrapUnique(new RootScrollerController(document));
 }
 
 RootScrollerController::RootScrollerController(Document& document)
