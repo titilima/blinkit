@@ -25,6 +25,7 @@ struct GCObjectHeader {
     // Flags
     unsigned deleted    : 1;
     unsigned jsRetained : 1;
+    unsigned persistent : 1;
 
 #ifndef NDEBUG
     const char *name;
@@ -156,8 +157,11 @@ void GCHeap::CollectGarbage(void)
     TraceObjects(m_globalObjects, visitor);
     TraceObjects(m_rootObjects, visitor);
     TraceObjects(m_stashObjects, visitor);
-    visitor.FlushWeakSlots();
-    FreeObjects(visitor.ObjectsToGC(), &m_memberObjects);
+
+    const GCObjectSet &objectsToGC = visitor.ObjectsToGC();
+    for (void **slot : visitor.WeakSlots())
+        FlushWeakSlot(slot, objectsToGC);
+    FreeObjects(objectsToGC, &m_memberObjects);
 
 #ifndef NDEBUG
     BKLOG(
@@ -170,15 +174,34 @@ void GCHeap::CollectGarbage(void)
 #endif
 }
 
+void GCHeap::FlushWeakSlot(void **slot, const GCObjectSet &objectsToGC)
+{
+    void *o = *slot;
+    if (nullptr == o)
+        return;
+
+    GCObjectHeader *hdr = GCObjectHeader::From(o);
+    if (hdr->persistent)
+        return;
+
+    auto it = objectsToGC.find(o);
+    if (std::end(objectsToGC) == it)
+        return;
+
+    *slot = nullptr;
+}
+
 void GCHeap::FreeObjects(const GCObjectSet &objectsToGC, GCObjectSet *sourcePool)
 {
     if (nullptr != sourcePool)
     {
         for (void *o : objectsToGC)
         {
-            sourcePool->erase(o);
-
             GCObjectHeader *hdr = GCObjectHeader::From(o);
+            if (hdr->persistent)
+                continue;
+
+            sourcePool->erase(o);
             if (nullptr != hdr->gcPtr->Deleter)
                 hdr->gcPtr->Deleter(o);
             free(hdr);
@@ -196,9 +219,9 @@ void GCHeap::FreeObjects(const GCObjectSet &objectsToGC, GCObjectSet *sourcePool
     }
 }
 
-void GCHeap::SetObjectFlag(void *p, GCObjectFlag flag, bool b)
+void GCHeap::SetObjectFlag(const void *p, GCObjectFlag flag, bool b)
 {
-    GCObjectHeader *hdr = GCObjectHeader::From(p);
+    GCObjectHeader *hdr = GCObjectHeader::From(const_cast<void *>(p));
     switch (flag)
     {
         case GCObjectFlag::Deleted:
@@ -206,6 +229,9 @@ void GCHeap::SetObjectFlag(void *p, GCObjectFlag flag, bool b)
             break;
         case GCObjectFlag::JSRetained:
             hdr->jsRetained = b;
+            break;
+        case GCObjectFlag::Persistent:
+            hdr->persistent = b;
             break;
         default:
             NOTREACHED();
@@ -232,7 +258,7 @@ void GCHeap::TraceObjects(const GCObjectSet &owners, GCVisitor &visitor)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void GCClearFlag(void *p, GCObjectFlag flag)
+void GCClearFlag(const void *p, GCObjectFlag flag)
 {
     GCHeap::SetObjectFlag(p, flag, false);
 }
@@ -251,7 +277,7 @@ void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr, const char *na
 }
 #endif
 
-void GCSetFlag(void *p, GCObjectFlag flag)
+void GCSetFlag(const void *p, GCObjectFlag flag)
 {
     GCHeap::SetObjectFlag(p, flag, true);
 }

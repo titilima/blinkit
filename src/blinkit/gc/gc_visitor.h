@@ -25,8 +25,7 @@ public:
     GCVisitor(const std::unordered_set<void *> &memberObjects);
 
     const std::unordered_set<void *>& ObjectsToGC(void) const { return m_objectsToGC; }
-
-    void FlushWeakSlots(void);
+    const std::vector<void **> WeakSlots(void) const { return m_weakSlots; }
 private:
     void TraceImpl(void *p) override;
     void RegisterWeakSlot(void **pp) override;

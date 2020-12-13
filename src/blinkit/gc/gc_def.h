@@ -36,10 +36,10 @@ void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr, const char *na
 #endif
 
 enum class GCObjectFlag {
-    Deleted = 0, JSRetained
+    Deleted = 0, JSRetained, Persistent
 };
-void GCSetFlag(void *p, GCObjectFlag flag);
-void GCClearFlag(void *p, GCObjectFlag flag);
+void GCSetFlag(const void *p, GCObjectFlag flag);
+void GCClearFlag(const void *p, GCObjectFlag flag);
 
 class AutoGarbageCollector
 {

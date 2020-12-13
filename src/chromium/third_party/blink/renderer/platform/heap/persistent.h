@@ -14,7 +14,6 @@
 
 #pragma once
 
-#include "blinkit/app/heap_storage.h"
 #include "third_party/blink/renderer/platform/heap/heap_allocator.h"
 
 namespace blink {
@@ -26,13 +25,19 @@ public:
     Persistent(void) = default;
     Persistent(T *raw) : m_raw(raw)
     {
-        if (nullptr != raw)
-            BlinKit::HeapStorage::SavePersistentObject(*raw);
+        if (nullptr != m_raw)
+            BlinKit::GCSetFlag(m_raw, BlinKit::GCObjectFlag::Persistent);
     }
     Persistent(T &raw)
     {
         ASSERT(false); // BKTODO:
     }
+    ~Persistent(void)
+    {
+        if (nullptr != m_raw)
+            BlinKit::GCClearFlag(m_raw, BlinKit::GCObjectFlag::Persistent);
+    }
+
     explicit operator bool() const { return nullptr != m_raw; }
     T* operator->() const { return m_raw; }
     T& operator*() const { return *m_raw; }
@@ -59,7 +64,7 @@ inline bool operator!=(const Persistent<T> &a, const Persistent<U> &b)
     return a.Get() != b.Get();
 }
 
-template <class T> using WeakPersistent = Persistent<T>;
+template <class T> using WeakPersistent = WeakMember<T>;
 
 } // BLINKIT_BLINK_PERSISTENT_H
 

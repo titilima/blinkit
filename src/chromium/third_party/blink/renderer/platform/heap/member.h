@@ -70,6 +70,7 @@ class WeakMember : public MemberBase<T>
 {
 public:
     WeakMember(T *ptr = nullptr) : MemberBase<T>(ptr) {}
+    WeakMember(T &rawObj) : MemberBase<T>(rawObj) {}
 };
 
 } // namespace blink

@@ -37,10 +37,11 @@ public:
 
     void CollectGarbage(void);
 
-    static void SetObjectFlag(void *p, GCObjectFlag flag, bool b);
+    static void SetObjectFlag(const void *p, GCObjectFlag flag, bool b);
     static void Trace(void *p, blink::Visitor *visitor);
 private:
     using GCObjectSet = std::unordered_set<void *>;
+    static void FlushWeakSlot(void **slot, const GCObjectSet &objectsToGC);
     static void FreeObjects(const GCObjectSet &objectsToGC, GCObjectSet *sourcePool = nullptr);
     static void TraceObjects(const GCObjectSet &owners, GCVisitor &visitor);
 
