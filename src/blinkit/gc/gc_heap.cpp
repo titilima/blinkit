@@ -161,7 +161,7 @@ void GCHeap::CollectGarbage(void)
 
 #ifndef NDEBUG
     BKLOG(
-        "[GC]\n    Globals: %u\nRoots: %u -> %u\n    Members: %u -> %u\n    Stash Objects: %u -> %u",
+        "[GC]\n    Globals: %u\n    Roots: %u -> %u\n    Members: %u -> %u\n    Stash Objects: %u -> %u",
         m_globalObjects.size(),
         rootCount, m_rootObjects.size(),
         memberCount, m_memberObjects.size(),
