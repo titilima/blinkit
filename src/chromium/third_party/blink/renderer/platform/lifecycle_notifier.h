@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: lifecycle_notifier.h
-// Description: LifecycleNotifier Class
-//      Author: Ziming Li
-//     Created: 2019-11-18
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2013 Google Inc. All Rights Reserved.
@@ -38,9 +27,9 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_LIFECYCLE_NOTIFIER_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_LIFECYCLE_NOTIFIER_H_
 
-#include <unordered_set>
 #include "base/auto_reset.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
+#include "third_party/blink/renderer/platform/heap/heap_allocator.h"
 
 namespace blink {
 
@@ -62,6 +51,8 @@ class LifecycleNotifier : public GarbageCollectedMixin {
   // an argument, but the observer's LifecycleContext() is still valid
   // and safe to use while handling the notification.
   virtual void NotifyContextDestroyed();
+
+  void Trace(blink::Visitor* visitor) override { visitor->Trace(observers_); }
 
   bool IsIteratingOverObservers() const {
     return iteration_state_ != kNotIterating;
@@ -91,7 +82,7 @@ class LifecycleNotifier : public GarbageCollectedMixin {
   }
 
  private:
-  using ObserverSet = std::unordered_set<LifecycleObserverBase *>;
+  using ObserverSet = HeapLinkedHashSet<WeakMember<LifecycleObserverBase>>;
 
   enum IterationState {
     kAllowingNone = 0,
@@ -163,7 +154,7 @@ inline void LifecycleNotifier<T, Observer>::NotifyContextDestroyed() {
   // Observer unregistration is allowed, but effectively a no-op.
   base::AutoReset<IterationState> scope(&iteration_state_, kAllowingRemoval);
   ObserverSet observers;
-  observers_.swap(observers);
+  observers_.Swap(observers);
   for (LifecycleObserverBase* observer_base : observers) {
     Observer* observer = static_cast<Observer*>(observer_base);
     DCHECK(observer->LifecycleContext() == Context());
