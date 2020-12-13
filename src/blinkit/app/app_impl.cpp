@@ -12,7 +12,6 @@
 #include "app_impl.h"
 
 #include "base/single_thread_task_runner.h"
-#include "blinkit/app/heap_storage.h"
 #include "blinkit/blink_impl/url_loader_impl.h"
 #include "blinkit/gc/gc_heap.h"
 #include "blinkit/loader/loader_thread.h"
@@ -29,9 +28,6 @@ namespace BlinKit {
 AppImpl::AppImpl(int mode, BkAppClient *client)
     : m_mode(mode)
     , m_gcHeap(std::make_unique<GCHeap>())
-#ifndef BLINKIT_CRAWLER_ONLY
-    , m_heapStorage(new HeapStorage)
-#endif
 {
     memset(&m_client, 0, sizeof(BkAppClient));
     if (nullptr != client)
