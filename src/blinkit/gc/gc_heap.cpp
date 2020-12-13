@@ -72,9 +72,8 @@ GCObjectHeader* GCHeap::Alloc(GCObjectType type, size_t totalSize, GCTable *gcPt
     ASSERT(sizeof(GCObjectHeader) < totalSize);
     if (GCObjectHeader *ret = reinterpret_cast<GCObjectHeader *>(malloc(totalSize)))
     {
+        memset(ret, 0, totalSize);
         ret->gcPtr = gcPtr;
-        ret->deleted    = false;
-        ret->jsRetained = false;
 #ifndef NDEBUG
         ret->name = name;
 #endif
