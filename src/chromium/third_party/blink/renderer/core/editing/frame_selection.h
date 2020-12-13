@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: frame_selection.h
-// Description: FrameSelection Class
-//      Author: Ziming Li
-//     Created: 2020-08-29
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights
  * reserved.
@@ -130,12 +119,13 @@ struct LayoutTextSelectionStatus {
 };
 
 class CORE_EXPORT FrameSelection final
-    : public SynchronousMutationObserver {
+    : public GarbageCollectedFinalized<FrameSelection>,
+      public SynchronousMutationObserver {
   USING_GARBAGE_COLLECTED_MIXIN(FrameSelection);
 
  public:
-  static std::unique_ptr<FrameSelection> Create(LocalFrame& frame) {
-    return base::WrapUnique(new FrameSelection(frame));
+  static FrameSelection* Create(LocalFrame& frame) {
+    return new FrameSelection(frame);
   }
   ~FrameSelection();
 
@@ -285,6 +275,8 @@ class CORE_EXPORT FrameSelection final
   LayoutSelectionStatus ComputeLayoutSelectionStatus(
       const NGPaintFragment&) const;
 
+  void Trace(blink::Visitor*) override;
+
  private:
   friend class CaretDisplayItemClientTest;
   friend class FrameSelectionTest;
@@ -340,5 +332,11 @@ class CORE_EXPORT FrameSelection final
 };
 
 }  // namespace blink
+
+#ifndef NDEBUG
+// Outside the WebCore namespace for ease of invocation from gdb.
+void showTree(const blink::FrameSelection&);
+void showTree(const blink::FrameSelection*);
+#endif
 
 #endif  // THIRD_PARTY_BLINK_RENDERER_CORE_EDITING_FRAME_SELECTION_H_
