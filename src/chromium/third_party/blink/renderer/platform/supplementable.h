@@ -136,6 +136,8 @@ class Supplement : public GarbageCollectedMixin {
 
   virtual ~Supplement(void) = default;
 
+  virtual void* GCObject(void) = 0;
+
   // Supplementable and its supplements live and die together.
   // Thus supplementable() should never return null (if the default constructor
   // is completely removed).
@@ -217,7 +219,11 @@ class Supplementable : public GarbageCollectedMixin {
 #endif
   }
 
-  void Trace(blink::Visitor* visitor) override { visitor->Trace(supplements_); }
+  void Trace(blink::Visitor* visitor) override
+  {
+    for (auto it : supplements_)
+      visitor->Trace(it.second->GCObject());
+  }
 
  protected:
   using SupplementMap = std::unordered_map<const char *, Member<Supplement<T>>>;
