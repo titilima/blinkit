@@ -104,6 +104,7 @@ class CORE_EXPORT FontFaceSetDocument final : public FontFaceSet,
   void FireDoneEventIfPossible() override;
   const HeapLinkedHashSet<Member<FontFace>>& CSSConnectedFontFaceList()
       const override;
+  void* GCObject(void) override { return this; }
 
   class FontLoadHistogram {
     DISALLOW_NEW();
