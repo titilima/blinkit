@@ -73,6 +73,11 @@ public:
 
     bool Contains(const T &o) const { return end() != find(o); }
     bool IsEmpty(void) const { return std::list<T>::empty(); }
+    void Swap(LinkedHashSet<T, U, V, W> &other)
+    {
+        std::list<T>::swap(other);
+        std::swap(m_indices, other.m_indices);
+    }
 private:
     std::unordered_map<size_t, iterator> m_indices;
 };
