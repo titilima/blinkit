@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_selector_watch.h
+// Description: CSSSelectorWatch Class
+//      Author: Ziming Li
+//     Created: 2020-12-13
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -68,6 +79,7 @@ class CORE_EXPORT CSSSelectorWatch final
  private:
   explicit CSSSelectorWatch(Document&);
   void CallbackSelectorChangeTimerFired(TimerBase*);
+  void* GCObject(void) override { return this; }
 
   HeapVector<Member<StyleRule>> watched_callback_selectors_;
 
