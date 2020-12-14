@@ -97,13 +97,12 @@ struct PaintPropertyTreeBuilderFragmentContext;
 //     +- PLC::m_layerForScrollCorner (non-overlay only)
 //
 class CORE_EXPORT VisualViewport final
-    : public GarbageCollectedFinalized<VisualViewport>,
-      public GraphicsLayerClient,
+    : public GraphicsLayerClient,
       public ScrollableArea {
   USING_GARBAGE_COLLECTED_MIXIN(VisualViewport);
 
  public:
-  static VisualViewport* Create(Page& host) { return new VisualViewport(host); }
+  static std::unique_ptr<VisualViewport> Create(Page& host) { return base::WrapUnique(new VisualViewport(host)); }
   ~VisualViewport() override;
 
   void CreateLayerTree();
