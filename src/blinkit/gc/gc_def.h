@@ -26,7 +26,10 @@ struct GCTable {
 };
 
 enum class GCObjectType {
-    Member = 0, Root, Stash, Global
+    Member = 0, // Member objects, using tracing to keep alive.
+    Root   = 1, // Root objects, using new/delete to manage lifecycle.
+    Stash  = 2, // Stash objects, will be finalized while performing GC.
+    Global = 3, // Global objects, will be auto finalized in `BkFinalize`.
 };
 
 #ifdef NDEBUG
@@ -36,10 +39,13 @@ void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr, const char *na
 #endif
 
 enum class GCObjectFlag {
-    Deleted = 0, JSRetained, Persistent
+    Deleted = 0, JSRetained
 };
 void GCSetFlag(const void *p, GCObjectFlag flag);
 void GCClearFlag(const void *p, GCObjectFlag flag);
+
+void GCPersist(const void *p);
+void GCUnpersist(const void *p);
 
 class AutoGarbageCollector
 {

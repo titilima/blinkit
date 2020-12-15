@@ -23,30 +23,48 @@ class Persistent
 {
 public:
     Persistent(void) = default;
+    Persistent(const Persistent &other) : m_raw(other.m_raw)
+    {
+        if (nullptr != m_raw)
+            BlinKit::GCPersist(m_raw);
+    }
     Persistent(T *raw) : m_raw(raw)
     {
         if (nullptr != m_raw)
-            BlinKit::GCSetFlag(m_raw, BlinKit::GCObjectFlag::Persistent);
+            BlinKit::GCPersist(m_raw);
     }
-    Persistent(T &raw)
+    Persistent(T &raw) : m_raw(&raw)
     {
-        ASSERT(false); // BKTODO:
+        BlinKit::GCPersist(m_raw);
     }
     ~Persistent(void)
     {
         if (nullptr != m_raw)
-            BlinKit::GCClearFlag(m_raw, BlinKit::GCObjectFlag::Persistent);
+            BlinKit::GCUnpersist(m_raw);
     }
 
     explicit operator bool() const { return nullptr != m_raw; }
     T* operator->() const { return m_raw; }
     T& operator*() const { return *m_raw; }
+    Persistent& operator=(const Persistent &other)
+    {
+        if (nullptr != m_raw)
+            BlinKit::GCUnpersist(m_raw);
+        m_raw = other.m_raw;
+        if (nullptr != m_raw)
+            BlinKit::GCPersist(m_raw);
+        return *this;
+    }
     operator T*() const { return m_raw; }
     T* Get(void) const { return m_raw; }
 
     void Clear(void)
     {
-        ASSERT(false); // BKTODO:
+        if (nullptr != m_raw)
+        {
+            BlinKit::GCUnpersist(m_raw);
+            m_raw = nullptr;
+        }
     }
 private:
     T *m_raw = nullptr;

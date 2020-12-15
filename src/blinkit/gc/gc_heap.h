@@ -14,8 +14,8 @@
 
 #pragma once
 
+#include <unordered_map>
 #include <unordered_set>
-#include <utility>
 #include "blinkit/gc/gc_def.h"
 
 namespace BlinKit {
@@ -36,19 +36,25 @@ public:
 #endif
 
     void CollectGarbage(void);
+    void Persist(void *p);
+    void Unpersist(void *p);
 
     static void SetObjectFlag(const void *p, GCObjectFlag flag, bool b);
     static void Trace(void *p, blink::Visitor *visitor);
 private:
     using GCObjectSet = std::unordered_set<void *>;
     static void FlushWeakSlot(void **slot, const GCObjectSet &objectsToGC);
-    static void FreeObjects(const GCObjectSet &objectsToGC, GCObjectSet *sourcePool = nullptr);
     static void TraceObjects(const GCObjectSet &owners, GCVisitor &visitor);
 
+    void CleanupGlobals(void);
     void CleanupRoots(void);
     void CleanupStashObjects(void);
-    void CleanupGlobals(void);
+    void CleanupPersistentMembers(void);
+    void CleanupMembers(GCVisitor &visitor);
 
+    void TracePersistentMembers(GCVisitor &visitor);
+
+    std::unordered_map<void *, unsigned> m_persistentMembers;
     GCObjectSet m_rootObjects, m_memberObjects, m_stashObjects, m_globalObjects;
 };
 

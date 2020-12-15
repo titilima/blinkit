@@ -25,10 +25,10 @@ struct GCObjectHeader {
     // Flags
     unsigned deleted    : 1;
     unsigned jsRetained : 1;
-    unsigned persistent : 1;
 
 #ifndef NDEBUG
     const char *name;
+    GCObjectType type;
 #endif
 
     void* Object(void) { return this + 1; }
@@ -55,9 +55,17 @@ GCHeap::~GCHeap(void)
     ASSERT(this == theHeap);
 
     CleanupGlobals();
-    ASSERT(m_rootObjects.empty());
-    CollectGarbage();
-    ASSERT(m_memberObjects.empty());
+
+    size_t count = m_rootObjects.size() + m_memberObjects.size();
+    for (;;)
+    {
+        size_t count0 = count;
+        CollectGarbage();
+        count = m_rootObjects.size() + m_memberObjects.size();
+        if (0 == count || count == count0)
+            break;
+    }
+    ASSERT(0 == count);
 
     theHeap = nullptr;
 }
@@ -76,6 +84,7 @@ GCObjectHeader* GCHeap::Alloc(GCObjectType type, size_t totalSize, GCTable *gcPt
         ret->gcPtr = gcPtr;
 #ifndef NDEBUG
         ret->name = name;
+        ret->type = type;
 #endif
         switch (type)
         {
@@ -108,35 +117,74 @@ void GCHeap::CleanupGlobals(void)
     m_globalObjects.clear();
 }
 
-void GCHeap::CleanupRoots(void)
+void GCHeap::CleanupMembers(GCVisitor &visitor)
 {
-    std::vector<void *> deletedRoots;
-    for (void *o : m_rootObjects)
-    {
-        GCObjectHeader *hdr = GCObjectHeader::From(o);
-        if (!hdr->deleted)
-            continue;
+    const GCObjectSet &objectsToGC = visitor.ObjectsToGC();
 
-        deletedRoots.push_back(o);
+    for (void **slot : visitor.WeakSlots())
+        FlushWeakSlot(slot, objectsToGC);
+
+    for (void *o : objectsToGC)
+    {
+        m_memberObjects.erase(o);
+
+        GCObjectHeader *hdr = GCObjectHeader::From(o);
+        if (nullptr != hdr->gcPtr->Deleter)
+            hdr->gcPtr->Deleter(o);
         free(hdr);
     }
+}
 
-    for (void *o : deletedRoots)
-        m_rootObjects.erase(o);
+void GCHeap::CleanupPersistentMembers(void)
+{
+    auto it = m_persistentMembers.begin();
+    while (m_persistentMembers.end() != it)
+    {
+        if (0 == it->second)
+            it = m_persistentMembers.erase(it);
+        else
+            ++it;
+    }
+}
+
+void GCHeap::CleanupRoots(void)
+{
+    auto it = m_rootObjects.begin();
+    while (m_rootObjects.end() != it)
+    {
+        GCObjectHeader *hdr = GCObjectHeader::From(*it);
+        if (hdr->deleted)
+        {
+            free(hdr);
+            it = m_rootObjects.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
 }
 
 void GCHeap::CleanupStashObjects(void)
 {
-    GCObjectSet objectsToGC;
-    for (void *o : m_stashObjects)
+    auto it = m_stashObjects.begin();
+    while (m_stashObjects.end() != it)
     {
-        GCObjectHeader *hdr = GCObjectHeader::From(o);
-        if (hdr->jsRetained)
-            continue;
+        void *o = *it;
 
-        objectsToGC.insert(o);
+        GCObjectHeader *hdr = GCObjectHeader::From(o);
+        if (!hdr->jsRetained)
+        {
+            if (nullptr != hdr->gcPtr->Deleter)
+                hdr->gcPtr->Deleter(o);
+            free(hdr);
+            it = m_stashObjects.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
     }
-    FreeObjects(objectsToGC, &m_stashObjects);
 }
 
 void GCHeap::CollectGarbage(void)
@@ -146,28 +194,34 @@ void GCHeap::CollectGarbage(void)
 #ifndef NDEBUG
     size_t rootCount = m_rootObjects.size();
     size_t memberCount = m_memberObjects.size();
+    size_t persistentCount = m_persistentMembers.size();
     size_t stashCount = m_stashObjects.size();
 #endif
 
     CleanupRoots();
     CleanupStashObjects();
+    CleanupPersistentMembers();
 
     GCVisitor visitor(m_memberObjects);
     TraceObjects(m_globalObjects, visitor);
     TraceObjects(m_rootObjects, visitor);
+    TracePersistentMembers(visitor);
     TraceObjects(m_stashObjects, visitor);
 
-    const GCObjectSet &objectsToGC = visitor.ObjectsToGC();
-    for (void **slot : visitor.WeakSlots())
-        FlushWeakSlot(slot, objectsToGC);
-    FreeObjects(objectsToGC, &m_memberObjects);
+    CleanupMembers(visitor);
 
 #ifndef NDEBUG
     BKLOG(
-        "[GC]\n    Globals: %u\n    Roots: %u -> %u\n    Members: %u -> %u\n    Stash Objects: %u -> %u",
+        "[GC]\n"
+        "    Globals: %u\n"
+        "    Roots: %u -> %u\n"
+        "    Members: %u -> %u\n"
+        "    Persistent Members: %u -> %u\n"
+        "    Stash Objects: %u -> %u",
         m_globalObjects.size(),
         rootCount, m_rootObjects.size(),
         memberCount, m_memberObjects.size(),
+        persistentCount, m_persistentMembers.size(),
         stashCount, m_stashObjects.size()
     );
 #endif
@@ -179,10 +233,6 @@ void GCHeap::FlushWeakSlot(void **slot, const GCObjectSet &objectsToGC)
     if (nullptr == o)
         return;
 
-    GCObjectHeader *hdr = GCObjectHeader::From(o);
-    if (hdr->persistent)
-        return;
-
     auto it = objectsToGC.find(o);
     if (std::end(objectsToGC) == it)
         return;
@@ -190,32 +240,10 @@ void GCHeap::FlushWeakSlot(void **slot, const GCObjectSet &objectsToGC)
     *slot = nullptr;
 }
 
-void GCHeap::FreeObjects(const GCObjectSet &objectsToGC, GCObjectSet *sourcePool)
+void GCHeap::Persist(void *p)
 {
-    if (nullptr != sourcePool)
-    {
-        for (void *o : objectsToGC)
-        {
-            GCObjectHeader *hdr = GCObjectHeader::From(o);
-            if (hdr->persistent)
-                continue;
-
-            sourcePool->erase(o);
-            if (nullptr != hdr->gcPtr->Deleter)
-                hdr->gcPtr->Deleter(o);
-            free(hdr);
-        }
-    }
-    else
-    {
-        for (void *o : objectsToGC)
-        {
-            GCObjectHeader *hdr = GCObjectHeader::From(o);
-            if (nullptr != hdr->gcPtr->Deleter)
-                hdr->gcPtr->Deleter(o);
-            free(hdr);
-        }
-    }
+    ASSERT(std::end(m_memberObjects) != m_memberObjects.find(p));
+    ++m_persistentMembers[p];
 }
 
 void GCHeap::SetObjectFlag(const void *p, GCObjectFlag flag, bool b)
@@ -229,9 +257,6 @@ void GCHeap::SetObjectFlag(const void *p, GCObjectFlag flag, bool b)
         case GCObjectFlag::JSRetained:
             hdr->jsRetained = b;
             break;
-        case GCObjectFlag::Persistent:
-            hdr->persistent = b;
-            break;
         default:
             NOTREACHED();
     }
@@ -244,15 +269,41 @@ void GCHeap::Trace(void *p, blink::Visitor *visitor)
 
 void GCHeap::TraceObjects(const GCObjectSet &owners, GCVisitor &visitor)
 {
-    if (visitor.ObjectsToGC().empty())
+    const GCObjectSet &objectsToGC = visitor.ObjectsToGC();
+    if (objectsToGC.empty())
         return;
 
     for (void *o : owners)
     {
         Trace(o, &visitor);
-        if (visitor.ObjectsToGC().empty())
+        if (objectsToGC.empty())
             return;
     }
+}
+
+void GCHeap::TracePersistentMembers(GCVisitor &visitor)
+{
+    const GCObjectSet &objectsToGC = visitor.ObjectsToGC();
+    if (objectsToGC.empty())
+        return;
+
+    for (auto &it : m_persistentMembers)
+    {
+        visitor.Trace(it.first);
+        if (objectsToGC.empty())
+            return;
+
+        Trace(it.first, &visitor);
+        if (objectsToGC.empty())
+            return;
+    }
+}
+
+void GCHeap::Unpersist(void *p)
+{
+    ASSERT(std::end(m_persistentMembers) != m_persistentMembers.find(p));
+    ASSERT(m_persistentMembers[p] > 0);
+    --m_persistentMembers[p];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -276,9 +327,19 @@ void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr, const char *na
 }
 #endif
 
+void GCPersist(const void *p)
+{
+    theHeap->Persist(const_cast<void *>(p));
+}
+
 void GCSetFlag(const void *p, GCObjectFlag flag)
 {
     GCHeap::SetObjectFlag(p, flag, true);
+}
+
+void GCUnpersist(const void *p)
+{
+    theHeap->Unpersist(const_cast<void *>(p));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
