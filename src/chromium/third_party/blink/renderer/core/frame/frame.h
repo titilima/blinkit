@@ -94,7 +94,11 @@ public:
     constexpr bool IsLocalFrame(void) const { return true; } // Just a placeholder.
     constexpr bool IsMainFrame(void) const { return true; }  // Just a placeholder.
 protected:
+#ifdef BLINKIT_CRAWLER_ONLY
+    Frame(FrameClient *client);
+#else
     Frame(FrameClient *client, Page *page);
+#endif
 
     // DetachImpl() may be re-entered multiple times, if a frame is detached while
     // already being detached.

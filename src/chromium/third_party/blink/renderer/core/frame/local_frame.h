@@ -77,7 +77,11 @@ class LocalFrame final : public Frame
 #endif
 {
 public:
+#ifdef BLINKIT_CRAWLER_ONLY
+    static std::unique_ptr<LocalFrame> Create(LocalFrameClient *client);
+#else
     static std::unique_ptr<LocalFrame> Create(LocalFrameClient *client, Page *page = nullptr);
+#endif
     ~LocalFrame(void) override;
     void Trace(Visitor *visitor) override;
 
@@ -124,7 +128,11 @@ public:
 private:
     friend class FrameNavigationDisabler;
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    LocalFrame(LocalFrameClient *client);
+#else
     LocalFrame(LocalFrameClient *client, Page *page);
+#endif
 
     void EnableNavigation(void) { --m_navigationDisableCount; }
     void DisableNavigation(void) { ++m_navigationDisableCount; }

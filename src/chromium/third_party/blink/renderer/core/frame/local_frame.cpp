@@ -61,19 +61,28 @@ using namespace BlinKit;
 
 namespace blink {
 
-static std::unique_ptr<FrameScheduler> CreateFrameScheduler(Page *)
+static std::unique_ptr<FrameScheduler> CreateFrameScheduler(void)
 {
     return scheduler::FrameSchedulerImpl::Create();
 }
 
-LocalFrame::LocalFrame(LocalFrameClient *client, Page *page)
-    : Frame(client, page)
-    , m_frameScheduler(CreateFrameScheduler(page))
+#ifdef BLINKIT_CRAWLER_ONLY
+LocalFrame::LocalFrame(LocalFrameClient *client)
+    : Frame(client)
+    , m_frameScheduler(CreateFrameScheduler())
     , m_loader(this)
     , m_navigationScheduler(NavigationScheduler::Create(this))
     , m_scriptController(ScriptController::Create(*this))
 {
-#ifndef BLINKIT_CRAWLER_ONLY
+}
+#else
+LocalFrame::LocalFrame(LocalFrameClient *client, Page *page)
+    : Frame(client, page)
+    , m_frameScheduler(CreateFrameScheduler())
+    , m_loader(this)
+    , m_navigationScheduler(NavigationScheduler::Create(this))
+    , m_scriptController(ScriptController::Create(*this))
+{
     bool isUI = !client->IsCrawler();
     if (isUI)
     {
@@ -81,8 +90,8 @@ LocalFrame::LocalFrame(LocalFrameClient *client, Page *page)
         m_selection = FrameSelection::Create(*this);
         m_eventHandler = std::make_unique<EventHandler>(*this);
     }
-#endif
 }
+#endif
 
 LocalFrame::~LocalFrame(void)
 {
@@ -96,21 +105,24 @@ LocalFrameClient* LocalFrame::Client(void) const
     return static_cast<LocalFrameClient *>(Frame::Client());
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
+#ifdef BLINKIT_CRAWLER_ONLY
+std::unique_ptr<LocalFrame> LocalFrame::Create(LocalFrameClient *client)
+{
+    return base::WrapUnique(new (ObjectType::Root) LocalFrame(client));
+}
+#else
 LayoutView* LocalFrame::ContentLayoutObject(void) const
 {
     if (Document *document = GetDocument())
         return document->GetLayoutView();
     return nullptr;
 }
-#endif
 
 std::unique_ptr<LocalFrame> LocalFrame::Create(LocalFrameClient *client, Page *page)
 {
     return base::WrapUnique(new (ObjectType::Root) LocalFrame(client, page));
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 void LocalFrame::CreateView(const IntSize &viewportSize, const Color &backgroundColor)
 {
     ASSERT(nullptr != this);
@@ -154,7 +166,7 @@ void LocalFrame::CreateView(const IntSize &viewportSize, const Color &background
             kScrollbarAlwaysOff);
 #endif
 }
-#endif
+#endif // BLINKIT_CRAWLER_ONLY
 
 void LocalFrame::DetachImpl(FrameDetachType type)
 {

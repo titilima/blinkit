@@ -50,19 +50,17 @@
 
 namespace blink {
 
+#ifdef BLINKIT_CRAWLER_ONLY
+Frame::Frame(FrameClient *client) : m_client(client) {}
+#else
 Frame::Frame(FrameClient *client, Page *page)
     : m_client(client)
-#ifndef BLINKIT_CRAWLER_ONLY
     , m_page(page)
-#endif
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    ASSERT(nullptr == page);
-#else
     if (m_page)
         m_page->SetMainFrame(this);
-#endif
 }
+#endif
 
 Frame::~Frame(void) = default;
 
