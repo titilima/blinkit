@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: paint_canvas.h
+// Description: PaintCanvas Class
+//      Author: Ziming Li
+//     Created: 2020-12-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,8 +21,10 @@
 #include "base/memory/ref_counted.h"
 #include "build/build_config.h"
 #include "cc/paint/paint_export.h"
+#if 0 // BKTODO:
 #include "cc/paint/paint_image.h"
 #include "cc/paint/paint_text_blob.h"
+#endif
 #include "third_party/skia/include/core/SkCanvas.h"
 
 namespace cc {
@@ -114,6 +127,7 @@ class CC_PAINT_EXPORT PaintCanvas {
                              SkScalar ry,
                              const PaintFlags& flags) = 0;
   virtual void drawPath(const SkPath& path, const PaintFlags& flags) = 0;
+#if 0 // BKTODO:
   virtual void drawImage(const PaintImage& image,
                          SkScalar left,
                          SkScalar top,
@@ -121,12 +135,14 @@ class CC_PAINT_EXPORT PaintCanvas {
   void drawImage(const PaintImage& image, SkScalar left, SkScalar top) {
     drawImage(image, left, top, nullptr);
   }
+#endif
 
   enum SrcRectConstraint {
     kStrict_SrcRectConstraint = SkCanvas::kStrict_SrcRectConstraint,
     kFast_SrcRectConstraint = SkCanvas::kFast_SrcRectConstraint,
   };
 
+#if 0 // BKTODO:
   virtual void drawImageRect(const PaintImage& image,
                              const SkRect& src,
                              const SkRect& dst,
@@ -137,6 +153,7 @@ class CC_PAINT_EXPORT PaintCanvas {
                             SkScalar x,
                             SkScalar y,
                             const PaintFlags& flags) = 0;
+#endif
 
   // Unlike SkCanvas::drawPicture, this only plays back the PaintRecord and does
   // not add an additional clip.  This is closer to SkPicture::playback.

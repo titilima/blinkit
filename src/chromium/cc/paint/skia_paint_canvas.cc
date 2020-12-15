@@ -1,12 +1,25 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: skia_paint_canvas.cc
+// Description: SkiaPaintCanvas Class
+//      Author: Ziming Li
+//     Created: 2020-12-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "cc/paint/skia_paint_canvas.h"
 
+#if 0 // BKTODO:
 #include "cc/paint/display_item_list.h"
 #include "cc/paint/paint_recorder.h"
 #include "cc/paint/scoped_raster_flags.h"
+#endif
 #include "third_party/skia/include/core/SkAnnotation.h"
 #include "third_party/skia/include/core/SkColorSpaceXformCanvas.h"
 #include "third_party/skia/include/core/SkMetaData.h"
@@ -77,8 +90,12 @@ int SkiaPaintCanvas::saveLayer(const SkRect* bounds, const PaintFlags* flags) {
   if (!flags)
     return canvas_->saveLayer(bounds, nullptr);
 
+  ASSERT(false); // BKTODO:
+  return -1;
+#if 0
   SkPaint paint = flags->ToSkPaint();
   return canvas_->saveLayer(bounds, &paint);
+#endif
 }
 
 int SkiaPaintCanvas::saveLayerAlpha(const SkRect* bounds,
@@ -171,6 +188,8 @@ void SkiaPaintCanvas::drawLine(SkScalar x0,
                                SkScalar x1,
                                SkScalar y1,
                                const PaintFlags& flags) {
+  ASSERT(false); // BKTODO:
+#if 0
   ScopedRasterFlags raster_flags(&flags, image_provider_,
                                  canvas_->getTotalMatrix(), 255u);
   if (!raster_flags.flags())
@@ -178,10 +197,13 @@ void SkiaPaintCanvas::drawLine(SkScalar x0,
   SkPaint paint = raster_flags.flags()->ToSkPaint();
 
   SkiaPaintCanvas::canvas_->drawLine(x0, y0, x1, y1, paint);
+#endif
   FlushAfterDrawIfNeeded();
 }
 
 void SkiaPaintCanvas::drawRect(const SkRect& rect, const PaintFlags& flags) {
+  ASSERT(false); // BKTODO:
+#if 0
   ScopedRasterFlags raster_flags(&flags, image_provider_,
                                  canvas_->getTotalMatrix(), 255u);
   if (!raster_flags.flags())
@@ -189,10 +211,13 @@ void SkiaPaintCanvas::drawRect(const SkRect& rect, const PaintFlags& flags) {
   SkPaint paint = raster_flags.flags()->ToSkPaint();
 
   canvas_->drawRect(rect, paint);
+#endif
   FlushAfterDrawIfNeeded();
 }
 
 void SkiaPaintCanvas::drawIRect(const SkIRect& rect, const PaintFlags& flags) {
+  ASSERT(false); // BKTODO:
+#if 0
   ScopedRasterFlags raster_flags(&flags, image_provider_,
                                  canvas_->getTotalMatrix(), 255u);
   if (!raster_flags.flags())
@@ -200,10 +225,13 @@ void SkiaPaintCanvas::drawIRect(const SkIRect& rect, const PaintFlags& flags) {
   SkPaint paint = raster_flags.flags()->ToSkPaint();
 
   canvas_->drawIRect(rect, paint);
+#endif
   FlushAfterDrawIfNeeded();
 }
 
 void SkiaPaintCanvas::drawOval(const SkRect& oval, const PaintFlags& flags) {
+  ASSERT(false); // BKTODO:
+#if 0
   ScopedRasterFlags raster_flags(&flags, image_provider_,
                                  canvas_->getTotalMatrix(), 255u);
   if (!raster_flags.flags())
@@ -211,10 +239,13 @@ void SkiaPaintCanvas::drawOval(const SkRect& oval, const PaintFlags& flags) {
   SkPaint paint = raster_flags.flags()->ToSkPaint();
 
   canvas_->drawOval(oval, paint);
+#endif
   FlushAfterDrawIfNeeded();
 }
 
 void SkiaPaintCanvas::drawRRect(const SkRRect& rrect, const PaintFlags& flags) {
+  ASSERT(false); // BKTODO:
+#if 0
   ScopedRasterFlags raster_flags(&flags, image_provider_,
                                  canvas_->getTotalMatrix(), 255u);
   if (!raster_flags.flags())
@@ -222,12 +253,15 @@ void SkiaPaintCanvas::drawRRect(const SkRRect& rrect, const PaintFlags& flags) {
   SkPaint paint = raster_flags.flags()->ToSkPaint();
 
   canvas_->drawRRect(rrect, paint);
+#endif
   FlushAfterDrawIfNeeded();
 }
 
 void SkiaPaintCanvas::drawDRRect(const SkRRect& outer,
                                  const SkRRect& inner,
                                  const PaintFlags& flags) {
+  ASSERT(false); // BKTODO:
+#if 0
   ScopedRasterFlags raster_flags(&flags, image_provider_,
                                  canvas_->getTotalMatrix(), 255u);
   if (!raster_flags.flags())
@@ -235,6 +269,7 @@ void SkiaPaintCanvas::drawDRRect(const SkRRect& outer,
   SkPaint paint = raster_flags.flags()->ToSkPaint();
 
   canvas_->drawDRRect(outer, inner, paint);
+#endif
   FlushAfterDrawIfNeeded();
 }
 
@@ -242,6 +277,8 @@ void SkiaPaintCanvas::drawRoundRect(const SkRect& rect,
                                     SkScalar rx,
                                     SkScalar ry,
                                     const PaintFlags& flags) {
+  ASSERT(false); // BKTODO:
+#if 0
   ScopedRasterFlags raster_flags(&flags, image_provider_,
                                  canvas_->getTotalMatrix(), 255u);
   if (!raster_flags.flags())
@@ -249,10 +286,13 @@ void SkiaPaintCanvas::drawRoundRect(const SkRect& rect,
   SkPaint paint = raster_flags.flags()->ToSkPaint();
 
   canvas_->drawRoundRect(rect, rx, ry, paint);
+#endif
   FlushAfterDrawIfNeeded();
 }
 
 void SkiaPaintCanvas::drawPath(const SkPath& path, const PaintFlags& flags) {
+  ASSERT(false); // BKTODO:
+#if 0
   ScopedRasterFlags raster_flags(&flags, image_provider_,
                                  canvas_->getTotalMatrix(), 255u);
   if (!raster_flags.flags())
@@ -260,9 +300,11 @@ void SkiaPaintCanvas::drawPath(const SkPath& path, const PaintFlags& flags) {
   SkPaint paint = raster_flags.flags()->ToSkPaint();
 
   canvas_->drawPath(path, paint);
+#endif
   FlushAfterDrawIfNeeded();
 }
 
+#if 0 // BKTODO:
 void SkiaPaintCanvas::drawImage(const PaintImage& image,
                                 SkScalar left,
                                 SkScalar top,
@@ -317,8 +359,9 @@ void SkiaPaintCanvas::drawTextBlob(scoped_refptr<PaintTextBlob> blob,
 }
 
 void SkiaPaintCanvas::drawPicture(sk_sp<const PaintRecord> record) {
-  drawPicture(record, PlaybackParams::CustomDataRasterCallback());
+  ASSERT(false); // BKTODO: drawPicture(record, PlaybackParams::CustomDataRasterCallback());
 }
+#endif
 
 bool SkiaPaintCanvas::isClipEmpty() const {
   return canvas_->isClipEmpty();
@@ -350,6 +393,7 @@ void SkiaPaintCanvas::Annotate(AnnotationType type,
   }
 }
 
+#if 0 // BKTODO:
 void SkiaPaintCanvas::drawPicture(
     sk_sp<const PaintRecord> record,
     PlaybackParams::CustomDataRasterCallback custom_raster_callback) {
@@ -362,6 +406,7 @@ void SkiaPaintCanvas::drawPicture(
                         custom_raster_callback, did_draw_op_cb);
   record->Playback(canvas_, params);
 }
+#endif
 
 void SkiaPaintCanvas::FlushAfterDrawIfNeeded() {
   if (!context_flushes_.enable)
@@ -370,8 +415,11 @@ void SkiaPaintCanvas::FlushAfterDrawIfNeeded() {
   if (++num_of_ops_ > context_flushes_.max_draws_before_flush) {
     num_of_ops_ = 0;
     if (auto* context = canvas_->getGrContext()) {
+      ASSERT(false); // BKTODO:
+#if 0
       TRACE_EVENT0("cc",
                    "SkiaPaintCanvas::FlushAfterDrawIfNeeded::FlushGrContext");
+#endif
       context->flush();
     }
   }

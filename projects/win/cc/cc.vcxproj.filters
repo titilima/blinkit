@@ -29,6 +29,9 @@
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_font.cc">
       <Filter>paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\skia_paint_canvas.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\cc\_pc.h">
@@ -62,6 +65,12 @@
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_export.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_canvas.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\skia_paint_canvas.h">
       <Filter>paint</Filter>
     </ClInclude>
   </ItemGroup>
