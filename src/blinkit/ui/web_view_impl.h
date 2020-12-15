@@ -16,10 +16,12 @@
 
 #include "bk_ui.h"
 #include "blinkit/blink_impl/local_frame_client_impl.h"
+#include "third_party/blink/public/platform/web_rect.h"
 #include "third_party/blink/public/platform/web_size.h"
 #include "third_party/blink/renderer/core/frame/resize_viewport_anchor.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page_visibility_state.h"
+#include "third_party/blink/renderer/core/page/page_widget_delegate.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
 
@@ -48,6 +50,8 @@ public:
     void SetPageScaleFactor(float scaleFactor);
     blink::IntSize MainFrameSize(void);
 
+    void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
+
     float ClampPageScaleFactorToLimits(float scaleFactor) const;
     void ScheduleAnimation(void);
     void UpdateMainFrameLayoutSize(void);
@@ -75,6 +79,8 @@ private:
     float MinimumPageScaleFactor(void) const;
     void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState);
     bool ShouldAutoResize(void) const { return m_shouldAutoResize; }
+
+    bool IsAcceleratedCompositingActive(void) const;
 
     // LocalFrameClient
     bool IsCrawler(void) const final { return false; }

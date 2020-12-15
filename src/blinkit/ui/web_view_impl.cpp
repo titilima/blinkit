@@ -129,6 +129,11 @@ void WebViewImpl::Initialize(void)
     m_frame->Init();
 }
 
+bool WebViewImpl::IsAcceleratedCompositingActive(void) const
+{
+    return false; // BKTODO: Support GPU.
+}
+
 int WebViewImpl::LoadUI(const char *URI)
 {
     GURL u(URI);
@@ -167,6 +172,14 @@ float WebViewImpl::PageScaleFactor(void) const
     if (Page *page = GetPage())
         return page->GetVisualViewport().Scale();
     return 1.0;
+}
+
+void WebViewImpl::PaintContent(cc::PaintCanvas *canvas, const WebRect &rect)
+{
+    // This should only be used when compositing is not being used for this
+    // WebView, and it is painting into the recording of its parent.
+    ASSERT(!IsAcceleratedCompositingActive());
+    PageWidgetDelegate::PaintContent(*m_page, canvas, rect, *m_page->MainFrame());
 }
 
 bool WebViewImpl::ProcessTitleChange(const std::string &title) const

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: page_widget_delegate.h
+// Description: PageWidgetDelegate Class
+//      Author: Ziming Li
+//     Created: 2020-12-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -57,6 +68,7 @@ class CORE_EXPORT PageWidgetEventHandler {
   virtual void HandleMouseLeave(LocalFrame& main_frame, const WebMouseEvent&);
   virtual void HandleMouseDown(LocalFrame& main_frame, const WebMouseEvent&);
   virtual void HandleMouseUp(LocalFrame& main_frame, const WebMouseEvent&);
+#if 0 // BKTODO:
   virtual WebInputEventResult HandleMouseWheel(LocalFrame& main_frame,
                                                const WebMouseWheelEvent&);
   virtual WebInputEventResult HandleKeyEvent(const WebKeyboardEvent&) = 0;
@@ -66,6 +78,7 @@ class CORE_EXPORT PageWidgetEventHandler {
       LocalFrame& main_frame,
       const WebPointerEvent&,
       const std::vector<const WebInputEvent*>&);
+#endif
   virtual ~PageWidgetEventHandler() {}
 };
 
@@ -77,10 +90,12 @@ class CORE_EXPORT PageWidgetDelegate {
   // For the following methods, the |root| argument indicates a root localFrame
   // from which to start performing the specified operation.
 
+#if 0 // BKTODO:
   // See comment of WebWidget::UpdateLifecycle.
   static void UpdateLifecycle(Page&,
                               LocalFrame& root,
                               WebWidget::LifecycleUpdate requested_update);
+#endif
 
   // See documents of methods with the same names in FrameView class.
   static void PaintContent(Page&,

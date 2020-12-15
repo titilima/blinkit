@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: page_widget_delegate.cc
+// Description: PageWidgetDelegate Class
+//      Author: Ziming Li
+//     Created: 2020-12-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -31,22 +42,26 @@
 #include "third_party/blink/renderer/core/page/page_widget_delegate.h"
 
 #include "third_party/blink/public/platform/web_input_event.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
 #include "third_party/blink/renderer/core/events/web_input_event_conversion.h"
+#endif
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/input/event_handler.h"
-#include "third_party/blink/renderer/core/layout/jank_tracker.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/jank_tracker.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/loader/interactive_detector.h"
 #include "third_party/blink/renderer/core/page/autoscroll_controller.h"
+#endif
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context.h"
 #include "third_party/blink/renderer/platform/graphics/paint/cull_rect.h"
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_recorder.h"
-#include "third_party/blink/renderer/platform/graphics/paint/paint_record_builder.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/paint/paint_record_builder.h"
 #include "third_party/blink/renderer/platform/transforms/affine_transform.h"
 #include "third_party/blink/renderer/platform/wtf/time.h"
 
@@ -54,10 +69,11 @@ namespace blink {
 
 void PageWidgetDelegate::Animate(Page& page,
                                  base::TimeTicks monotonic_frame_begin_time) {
-  page.GetAutoscrollController().Animate();
+  ASSERT(false); // BKTODO: page.GetAutoscrollController().Animate();
   page.Animator().ServiceScriptedAnimations(monotonic_frame_begin_time);
 }
 
+#if 0 // BKTODO:
 void PageWidgetDelegate::UpdateLifecycle(
     Page& page,
     LocalFrame& root,
@@ -70,6 +86,7 @@ void PageWidgetDelegate::UpdateLifecycle(
     page.Animator().UpdateAllLifecyclePhases(root);
   }
 }
+#endif
 
 static void PaintContentInternal(Page& page,
                                  cc::PaintCanvas* canvas,
@@ -92,6 +109,8 @@ static void PaintContentInternal(Page& page,
            DocumentLifecycle::kPaintClean);
     canvas->clipRect(dirty_rect);
 
+    ASSERT(false); // BKTODO:
+#if 0
     PaintRecordBuilder builder;
     builder.Context().SetDeviceScaleFactor(scale_factor);
     view->PaintWithLifecycleUpdate(builder.Context(), global_paint_flags,
@@ -99,10 +118,14 @@ static void PaintContentInternal(Page& page,
     builder.EndRecording(
         *canvas,
         view->GetLayoutView()->FirstFragment().LocalBorderBoxProperties());
+#endif
   } else {
+    ASSERT(false); // BKTODO:
+#if 0
     PaintFlags flags;
     flags.setColor(SK_ColorWHITE);
     canvas->drawRect(dirty_rect, flags);
+#endif
   }
 
   canvas->restore();
@@ -133,6 +156,8 @@ WebInputEventResult PageWidgetDelegate::HandleInputEvent(
     Document* document = root->GetDocument();
     DCHECK(document);
 
+    ASSERT(false); // BKTODO:
+#if 0
     InteractiveDetector* interactive_detector(
         InteractiveDetector::From(*document));
 
@@ -145,10 +170,13 @@ WebInputEventResult PageWidgetDelegate::HandleInputEvent(
       if (LocalFrameView* view = document->View())
         view->GetJankTracker().NotifyInput(event);
     }
+#endif
   }
 
   if (event.GetModifiers() & WebInputEvent::kIsTouchAccessibility &&
       WebInputEvent::IsMouseEventType(event.GetType())) {
+    ASSERT(false); // BKTODO:
+#if 0
     WebMouseEvent mouse_event = TransformWebMouseEvent(
         root->View(), static_cast<const WebMouseEvent&>(event));
 
@@ -167,6 +195,7 @@ WebInputEventResult PageWidgetDelegate::HandleInputEvent(
         }
       }
     }
+#endif
   }
 
   switch (event.GetType()) {
@@ -199,18 +228,27 @@ WebInputEventResult PageWidgetDelegate::HandleInputEvent(
     case WebInputEvent::kMouseWheel:
       if (!root || !root->View())
         return WebInputEventResult::kNotHandled;
+      ASSERT(false); // BKTODO:
+#if 0
       return handler.HandleMouseWheel(
           *root, static_cast<const WebMouseWheelEvent&>(event));
+#endif
 
     case WebInputEvent::kRawKeyDown:
     case WebInputEvent::kKeyDown:
     case WebInputEvent::kKeyUp:
+      ASSERT(false); // BKTODO:
+#if 0
       return handler.HandleKeyEvent(
           static_cast<const WebKeyboardEvent&>(event));
+#endif
 
     case WebInputEvent::kChar:
+      ASSERT(false); // BKTODO:
+#if 0
       return handler.HandleCharEvent(
           static_cast<const WebKeyboardEvent&>(event));
+#endif
     case WebInputEvent::kGestureScrollBegin:
     case WebInputEvent::kGestureScrollEnd:
     case WebInputEvent::kGestureScrollUpdate:
@@ -225,8 +263,11 @@ WebInputEventResult PageWidgetDelegate::HandleInputEvent(
     case WebInputEvent::kGestureTwoFingerTap:
     case WebInputEvent::kGestureLongPress:
     case WebInputEvent::kGestureLongTap:
+      ASSERT(false); // BKTODO:
+#if 0
       return handler.HandleGestureEvent(
           static_cast<const WebGestureEvent&>(event));
+#endif
 
     case WebInputEvent::kPointerDown:
     case WebInputEvent::kPointerUp:
@@ -236,9 +277,12 @@ WebInputEventResult PageWidgetDelegate::HandleInputEvent(
     case WebInputEvent::kPointerCausedUaAction:
       if (!root || !root->View())
         return WebInputEventResult::kNotHandled;
+      ASSERT(false); // BKTODO:
+#if 0
       return handler.HandlePointerEvent(
           *root, static_cast<const WebPointerEvent&>(event),
           coalesced_event.GetCoalescedEventsPointers());
+#endif
 
     case WebInputEvent::kTouchStart:
     case WebInputEvent::kTouchMove:
@@ -250,7 +294,7 @@ WebInputEventResult PageWidgetDelegate::HandleInputEvent(
 
     case WebInputEvent::kGesturePinchBegin:
       // Gesture pinch events are handled entirely on the compositor.
-      DLOG(INFO) << "Gesture pinch ignored by main thread.";
+      BKLOG("Gesture pinch ignored by main thread.");
       FALLTHROUGH;
     case WebInputEvent::kGesturePinchEnd:
     case WebInputEvent::kGesturePinchUpdate:
@@ -267,34 +311,47 @@ void PageWidgetEventHandler::HandleMouseMove(
     LocalFrame& main_frame,
     const WebMouseEvent& event,
     const std::vector<const WebInputEvent*>& coalesced_events) {
+  ASSERT(false); // BKTODO:
+#if 0
   WebMouseEvent transformed_event =
       TransformWebMouseEvent(main_frame.View(), event);
   main_frame.GetEventHandler().HandleMouseMoveEvent(
       transformed_event,
       TransformWebMouseEventVector(main_frame.View(), coalesced_events));
+#endif
 }
 
 void PageWidgetEventHandler::HandleMouseLeave(LocalFrame& main_frame,
                                               const WebMouseEvent& event) {
+  ASSERT(false); // BKTODO:
+#if 0
   WebMouseEvent transformed_event =
       TransformWebMouseEvent(main_frame.View(), event);
   main_frame.GetEventHandler().HandleMouseLeaveEvent(transformed_event);
+#endif
 }
 
 void PageWidgetEventHandler::HandleMouseDown(LocalFrame& main_frame,
                                              const WebMouseEvent& event) {
+  ASSERT(false); // BKTODO:
+#if 0
   WebMouseEvent transformed_event =
       TransformWebMouseEvent(main_frame.View(), event);
   main_frame.GetEventHandler().HandleMousePressEvent(transformed_event);
+#endif
 }
 
 void PageWidgetEventHandler::HandleMouseUp(LocalFrame& main_frame,
                                            const WebMouseEvent& event) {
+  ASSERT(false); // BKTODO:
+#if 0
   WebMouseEvent transformed_event =
       TransformWebMouseEvent(main_frame.View(), event);
   main_frame.GetEventHandler().HandleMouseReleaseEvent(transformed_event);
+#endif
 }
 
+#if 0 // BKTODO:
 WebInputEventResult PageWidgetEventHandler::HandleMouseWheel(
     LocalFrame& frame,
     const WebMouseWheelEvent& event) {
@@ -313,5 +370,6 @@ WebInputEventResult PageWidgetEventHandler::HandlePointerEvent(
       transformed_event,
       TransformWebPointerEventVector(main_frame.View(), coalesced_events));
 }
+#endif
 
 }  // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: web_coalesced_input_event.cc
+// Description: WebCoalescedInputEvent Class
+//      Author: Ziming Li
+//     Created: 2020-12-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,10 +16,12 @@
 #include "third_party/blink/public/platform/web_coalesced_input_event.h"
 
 #include "third_party/blink/public/platform/web_gesture_event.h"
+#if 0 // BKTODO:
 #include "third_party/blink/public/platform/web_keyboard_event.h"
 #include "third_party/blink/public/platform/web_mouse_wheel_event.h"
 #include "third_party/blink/public/platform/web_pointer_event.h"
 #include "third_party/blink/public/platform/web_touch_event.h"
+#endif
 
 namespace blink {
 
@@ -28,19 +41,19 @@ struct WebInputEventDelete {
 template <typename Operator, typename ArgIn>
 bool Apply(Operator op, WebInputEvent::Type type, const ArgIn& arg_in) {
   if (WebInputEvent::IsMouseEventType(type))
-    return op.template Execute<WebMouseEvent>(arg_in);
+    ASSERT(false); // BKTODO: return op.template Execute<WebMouseEvent>(arg_in);
   if (type == WebInputEvent::kMouseWheel)
-    return op.template Execute<WebMouseWheelEvent>(arg_in);
+    ASSERT(false); // BKTODO: return op.template Execute<WebMouseWheelEvent>(arg_in);
   if (WebInputEvent::IsKeyboardEventType(type))
-    return op.template Execute<WebKeyboardEvent>(arg_in);
+    ASSERT(false); // BKTODO: return op.template Execute<WebKeyboardEvent>(arg_in);
   if (WebInputEvent::IsTouchEventType(type))
-    return op.template Execute<WebTouchEvent>(arg_in);
+    ASSERT(false); // BKTODO: return op.template Execute<WebTouchEvent>(arg_in);
   if (WebInputEvent::IsGestureEventType(type))
-    return op.template Execute<WebGestureEvent>(arg_in);
+    ASSERT(false); // BKTODO: return op.template Execute<WebGestureEvent>(arg_in);
   if (WebInputEvent::IsPointerEventType(type))
-    return op.template Execute<WebPointerEvent>(arg_in);
+    ASSERT(false); // BKTODO: return op.template Execute<WebPointerEvent>(arg_in);
 
-  NOTREACHED() << "Unknown webkit event type " << type;
+  NOTREACHED(); // Unknown webkit event type
   return false;
 }
 }
@@ -95,6 +108,7 @@ WebCoalescedInputEvent::WebCoalescedInputEvent(
     coalesced_events_.push_back(MakeWebScopedInputEvent(*coalesced_event));
 }
 
+#if 0 // BKTODO:
 WebCoalescedInputEvent::WebCoalescedInputEvent(
     const WebPointerEvent& event,
     const std::vector<WebPointerEvent>& coalesced_events) {
@@ -102,6 +116,7 @@ WebCoalescedInputEvent::WebCoalescedInputEvent(
   for (const auto& coalesced_event : coalesced_events)
     coalesced_events_.push_back(MakeWebScopedInputEvent(coalesced_event));
 }
+#endif
 
 WebCoalescedInputEvent::WebCoalescedInputEvent(
     const WebCoalescedInputEvent& event)
@@ -112,28 +127,46 @@ WebCoalescedInputEvent::WebScopedInputEvent
 WebCoalescedInputEvent::MakeWebScopedInputEvent(
     const blink::WebInputEvent& event) {
   if (blink::WebInputEvent::IsGestureEventType(event.GetType())) {
+    ASSERT(false); // BKTODO:
+#if 0
     return WebScopedInputEvent(new blink::WebGestureEvent(
         static_cast<const blink::WebGestureEvent&>(event)));
+#endif
   }
   if (blink::WebInputEvent::IsMouseEventType(event.GetType())) {
+    ASSERT(false); // BKTODO:
+#if 0
     return WebScopedInputEvent(new blink::WebMouseEvent(
         static_cast<const blink::WebMouseEvent&>(event)));
+#endif
   }
   if (blink::WebInputEvent::IsTouchEventType(event.GetType())) {
+    ASSERT(false); // BKTODO:
+#if 0
     return WebScopedInputEvent(new blink::WebTouchEvent(
         static_cast<const blink::WebTouchEvent&>(event)));
+#endif
   }
   if (event.GetType() == blink::WebInputEvent::kMouseWheel) {
+    ASSERT(false); // BKTODO:
+#if 0
     return WebScopedInputEvent(new blink::WebMouseWheelEvent(
         static_cast<const blink::WebMouseWheelEvent&>(event)));
+#endif
   }
   if (blink::WebInputEvent::IsKeyboardEventType(event.GetType())) {
+    ASSERT(false); // BKTODO:
+#if 0
     return WebScopedInputEvent(new blink::WebKeyboardEvent(
         static_cast<const blink::WebKeyboardEvent&>(event)));
+#endif
   }
   if (blink::WebInputEvent::IsPointerEventType(event.GetType())) {
+    ASSERT(false); // BKTODO:
+#if 0
     return WebScopedInputEvent(new blink::WebPointerEvent(
         static_cast<const blink::WebPointerEvent&>(event)));
+#endif
   }
   NOTREACHED();
   return WebScopedInputEvent();
