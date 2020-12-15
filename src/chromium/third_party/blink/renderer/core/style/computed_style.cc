@@ -38,6 +38,7 @@
 #include <memory>
 #include <utility>
 
+#include "blinkit/gc/gc_static.h"
 #include "build/build_config.h"
 #include "cc/input/overscroll_behavior.h"
 #include "third_party/blink/renderer/core/animation/css/css_animation_data.h"
@@ -84,6 +85,8 @@
 #include "third_party/blink/renderer/platform/wtf/saturated_arithmetic.h"
 #include "third_party/blink/renderer/platform/wtf/size_assertions.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 struct SameSizeAsBorderValue {
@@ -124,8 +127,8 @@ scoped_refptr<ComputedStyle> ComputedStyle::CreateInitialStyle() {
 }
 
 ComputedStyle& ComputedStyle::MutableInitialStyle() {
-  static scoped_refptr<ComputedStyle> initial_style = CreateInitialStyle();
-  return *initial_style;
+  static GCStaticWrapper<scoped_refptr<ComputedStyle>> initial_style = CreateInitialStyle();
+  return *(initial_style.GetAsReference());
 }
 
 void ComputedStyle::InvalidateInitialStyle() {

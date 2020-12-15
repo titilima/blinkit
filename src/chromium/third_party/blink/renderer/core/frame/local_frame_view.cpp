@@ -192,7 +192,7 @@ void LocalFrameView::DidAttachDocument(void)
     ScrollableArea *layoutViewport = LayoutViewport();
     ASSERT(nullptr != layoutViewport);
 
-    m_viewportScrollableArea.reset(RootFrameViewport::Create(visualViewport, *layoutViewport));
+    m_viewportScrollableArea = RootFrameViewport::Create(visualViewport, *layoutViewport);
 
     page->GlobalRootScrollerController().InitializeViewportScrollCallback(*m_viewportScrollableArea);
 }
@@ -274,7 +274,7 @@ Page* LocalFrameView::GetPage(void) const
 ScrollableArea* LocalFrameView::GetScrollableArea(void)
 {
     if (m_viewportScrollableArea)
-        return m_viewportScrollableArea.get();
+        return m_viewportScrollableArea.Get();
     return LayoutViewport();
 }
 
@@ -840,6 +840,7 @@ void LocalFrameView::Trace(Visitor *visitor)
 {
     visitor->Trace(m_autoSizeInfo);
     visitor->Trace(m_scrollbars);
+    visitor->Trace(m_viewportScrollableArea);
     FrameView::Trace(visitor);
 }
 

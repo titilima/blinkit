@@ -210,7 +210,7 @@ void LocalFrame::DetachImpl(FrameDetachType type)
 
 #ifndef BLINKIT_CRAWLER_ONLY
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-    ASSERT(Client()->IsCrawler() || m_view->IsAttached());
+    ASSERT(Client()->IsCrawler() || !m_view->IsAttached());
 #endif
     Client()->WillBeDetached();
     // Notify ScriptController that the frame is closing, since its cleanup ends
@@ -229,16 +229,17 @@ void LocalFrame::DetachImpl(FrameDetachType type)
     DomWindow()->FrameDestroyed();
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(Client()->IsCrawler()); // BKTODO:
-#if 0
-    if (GetPage() && GetPage()->GetFocusController().FocusedFrame() == this)
-        GetPage()->GetFocusController().SetFocusedFrame(nullptr);
+    if (Page *page = GetPage())
+    {
+#if 0 // BKTODO: GetFocusController
+        if (page->GetFocusController().FocusedFrame() == this)
+            GetPage()->GetFocusController().SetFocusedFrame(nullptr);
 #endif
-#endif
+    }
 
-#if 0 // BKTODO:
     supplements_.clear();
 #endif
+
     m_frameScheduler.reset();
 #if 0 // BKTODO: Check the code below.
     WeakIdentifierMap<LocalFrame>::NotifyObjectDestroyed(this);
@@ -312,11 +313,15 @@ void LocalFrame::Trace(Visitor *visitor)
 {
     visitor->Trace(m_loader);
 #ifndef BLINKIT_CRAWLER_ONLY
-    visitor->Trace(m_view);
-    if (m_editor)
+    if (!Client()->IsCrawler())
+    {
+        visitor->Trace(m_view);
         m_editor->Trace(visitor);
-    if (m_eventHandler)
+        visitor->Trace(m_selection);
         m_eventHandler->Trace(visitor);
+        if (m_smoothScrollSequencer)
+            m_smoothScrollSequencer->Trace(visitor);
+    }
 #endif
     Frame::Trace(visitor);
 }

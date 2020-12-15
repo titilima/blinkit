@@ -382,7 +382,7 @@ void FontCache::Purge(PurgeSeverity purge_severity) {
 void FontCache::AddClient(FontCacheClient* client) {
   CHECK(client);
   if (!font_cache_clients_) {
-    font_cache_clients_ = new std::unordered_set<FontCacheClient *>();
+    font_cache_clients_ = std::make_unique<std::unordered_set<FontCacheClient *>>();
   }
   DCHECK(std::end(*font_cache_clients_) == font_cache_clients_->find(client));
   font_cache_clients_->insert(client);

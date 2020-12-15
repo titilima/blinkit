@@ -275,6 +275,9 @@
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_theme_engine.h">
       <Filter>blink_impl</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_static.h">
+      <Filter>gc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BlinKit.def">

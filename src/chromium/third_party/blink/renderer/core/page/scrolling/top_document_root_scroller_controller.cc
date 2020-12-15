@@ -47,7 +47,6 @@ TopDocumentRootScrollerController::TopDocumentRootScrollerController(Page& page)
 void TopDocumentRootScrollerController::Trace(blink::Visitor* visitor) {
   visitor->Trace(viewport_apply_scroll_);
   visitor->Trace(global_root_scroller_);
-  visitor->Trace(page_);
 }
 
 void TopDocumentRootScrollerController::DidChangeRootScroller() {

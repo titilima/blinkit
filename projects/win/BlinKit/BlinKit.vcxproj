@@ -223,6 +223,7 @@
     <ClInclude Include="..\..\..\src\blinkit\crawler\hijack_response.h" />
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_def.h" />
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_heap.h" />
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_static.h" />
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_visitor.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\browser_context.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\context_impl.h" />

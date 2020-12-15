@@ -111,7 +111,7 @@
 
 namespace blink {
 
-using namespace html_names;
+using namespace HTMLNames;
 
 static inline bool ShouldAlwaysUseDirectionalSelection(LocalFrame* frame) {
   return frame->GetEditor().Behavior().ShouldConsiderSelectionAsDirectional();
@@ -1183,6 +1183,13 @@ void FrameSelection::ShowTreeForThis() const {
 }
 
 #endif
+
+void FrameSelection::Trace(blink::Visitor* visitor) {
+  visitor->Trace(layout_selection_);
+  visitor->Trace(selection_editor_);
+  visitor->Trace(frame_caret_);
+  SynchronousMutationObserver::Trace(visitor);
+}
 
 void FrameSelection::ScheduleVisualUpdate() const {
   if (Page* page = frame_->GetPage())

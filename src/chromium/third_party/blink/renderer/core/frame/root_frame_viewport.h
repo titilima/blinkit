@@ -46,6 +46,8 @@ class CORE_EXPORT RootFrameViewport final
     return new RootFrameViewport(visual_viewport, layout_viewport);
   }
 
+  void Trace(blink::Visitor*) override;
+
   void SetLayoutViewport(ScrollableArea&);
   ScrollableArea& LayoutViewport() const;
 
@@ -150,13 +152,12 @@ class CORE_EXPORT RootFrameViewport final
   void UpdateScrollAnimator();
 
   ScrollableArea& VisualViewport() const {
-    DCHECK(visual_viewport_);
-    return *visual_viewport_;
+    return visual_viewport_;
   }
 
   ScrollOffset ClampToUserScrollableOffset(const ScrollOffset&) const;
 
-  Member<ScrollableArea> visual_viewport_;
+  ScrollableArea &visual_viewport_;
   Member<ScrollableArea> layout_viewport_;
 };
 

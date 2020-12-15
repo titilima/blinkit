@@ -33,10 +33,10 @@ class ScrollingCoordinator;
 class TopDocumentRootScrollerController;
 class VisualViewport;
 
-class Page
+class Page : public GarbageCollectedFinalized<Page>
 {
 public:
-    ~Page(void);
+    BK_DECLARE_GC_NAME(Page)
 
     // It is up to the platform to ensure that non-null clients are provided where
     // required.
@@ -51,6 +51,9 @@ public:
     };
 
     static std::unique_ptr<Page> Create(PageClients &pageClients);
+    ~Page(void);
+    void Trace(Visitor *visitor);
+
     void DocumentDetached(Document *document);
 
     ChromeClient& GetChromeClient(void) const
@@ -98,6 +101,7 @@ public:
     ScrollingCoordinator* GetScrollingCoordinator(void);
 
     void DidCommitLoad(LocalFrame *frame);
+    void WillBeDestroyed(void);
 
 #if DCHECK_IS_ON()
     bool IsPainting(void) const { return m_isPainting; }
@@ -113,7 +117,7 @@ private:
     float m_deviceScaleFactor = 1.0;
     std::unique_ptr<PageScaleConstraintsSet> m_pageScaleConstraintsSet;
     const std::unique_ptr<BrowserControls> m_browserControls;
-    const std::unique_ptr<TopDocumentRootScrollerController> m_globalRootScrollerController;
+    const Member<TopDocumentRootScrollerController> m_globalRootScrollerController;
     const std::unique_ptr<VisualViewport> m_visualViewport;
     const std::unique_ptr<OverscrollController> m_overscrollController;
     PageVisibilityState m_visibilityState = PageVisibilityState::kVisible;

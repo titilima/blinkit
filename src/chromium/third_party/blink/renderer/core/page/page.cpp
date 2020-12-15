@@ -15,6 +15,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
+#include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/drag_controller.h"
 #include "third_party/blink/renderer/core/page/scrolling/overscroll_controller.h"
 #include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
@@ -42,7 +43,7 @@ Page::~Page(void)
 
 std::unique_ptr<Page> Page::Create(PageClients &pageClients)
 {
-    return base::WrapUnique(new Page(pageClients));
+    return base::WrapUnique(new (ObjectType::Root) Page(pageClients));
 }
 
 void Page::DidCommitLoad(LocalFrame *frame)
@@ -172,6 +173,34 @@ void Page::SetVisibilityState(PageVisibilityState visibilityState, bool isInitia
             RestoreSVGImageAnimations();
         main_frame_->DidChangeVisibilityState();
     }
+#endif
+}
+
+void Page::Trace(Visitor *visitor)
+{
+    visitor->Trace(m_globalRootScrollerController);
+}
+
+void Page::WillBeDestroyed(void)
+{
+    m_mainFrame->Detach(FrameDetachType::kRemove);
+
+#if 0 // BKTODO:
+    if (m_scrollingCoordinator)
+        scrolling_coordinator_->WillBeDestroyed();
+#endif
+
+    GetChromeClient().ChromeDestroyed();
+#if 0 // BKTODO:
+    if (m_validationMessageClient)
+        validation_message_client_->WillBeDestroyed();
+#endif
+    m_mainFrame = nullptr;
+
+#if 0 // BKTODO:
+    PageVisibilityNotifier::NotifyContextDestroyed();
+
+    m_pageScheduler.reset();
 #endif
 }
 

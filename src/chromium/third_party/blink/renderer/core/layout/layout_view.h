@@ -8,6 +8,7 @@
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2006 Apple Computer, Inc.
@@ -326,7 +327,7 @@ class CORE_EXPORT LayoutView final : public LayoutBlockFlow {
 
   unsigned hit_test_count_;
   unsigned hit_test_cache_hits_;
-  std::unique_ptr<HitTestCache> hit_test_cache_;
+  Persistent<HitTestCache> hit_test_cache_;
 
   // FrameViewAutoSizeInfo controls scrollbar appearance manually rather than
   // relying on layout. These members are used to override the ScrollbarModes

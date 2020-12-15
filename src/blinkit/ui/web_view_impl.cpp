@@ -55,7 +55,10 @@ WebViewImpl::WebViewImpl(PageVisibilityState visibilityState)
     m_resizeViewportAnchor = std::make_unique<ResizeViewportAnchor>(*m_page);
 }
 
-WebViewImpl::~WebViewImpl(void) = default;
+WebViewImpl::~WebViewImpl(void)
+{
+    m_page->WillBeDestroyed();
+}
 
 Color WebViewImpl::BaseBackgroundColor(void) const
 {

@@ -150,10 +150,8 @@ FloatQuad RootFrameViewport::LocalToVisibleContentQuad(
     return quad;
   FloatQuad viewport_quad =
       layout_viewport_->LocalToVisibleContentQuad(quad, local_object, flags);
-  if (visual_viewport_) {
-    viewport_quad = visual_viewport_->LocalToVisibleContentQuad(
-        viewport_quad, local_object, flags);
-  }
+  viewport_quad = visual_viewport_.LocalToVisibleContentQuad(
+      viewport_quad, local_object, flags);
   return viewport_quad;
 }
 
@@ -602,6 +600,11 @@ void RootFrameViewport::ClearScrollableArea() {
 
 ScrollbarTheme& RootFrameViewport::GetPageScrollbarTheme() const {
   return LayoutViewport().GetPageScrollbarTheme();
+}
+
+void RootFrameViewport::Trace(blink::Visitor* visitor) {
+  visitor->Trace(layout_viewport_);
+  ScrollableArea::Trace(visitor);
 }
 
 }  // namespace blink

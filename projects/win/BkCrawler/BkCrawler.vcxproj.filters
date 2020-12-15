@@ -147,6 +147,9 @@
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_visitor.h">
       <Filter>gc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_static.h">
+      <Filter>gc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">

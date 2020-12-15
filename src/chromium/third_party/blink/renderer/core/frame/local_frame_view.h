@@ -124,7 +124,7 @@ public:
     // to scroll the main frame. Otherwise returns nullptr. Unless you need a
     // unique method on RootFrameViewport, you should probably use
     // getScrollableArea.
-    RootFrameViewport* GetRootFrameViewport(void) { return m_viewportScrollableArea.get(); }
+    RootFrameViewport* GetRootFrameViewport(void) { return m_viewportScrollableArea.Get(); }
 
     using ScrollableAreaSet = std::unordered_set<PaintLayerScrollableArea *>;
     void AddScrollableArea(PaintLayerScrollableArea *scrollableArea);
@@ -267,7 +267,7 @@ private:
     // Exists only on root frame.
     // TODO(bokan): crbug.com/484188. We should specialize LocalFrameView for the
     // main frame.
-    std::unique_ptr<RootFrameViewport> m_viewportScrollableArea;
+    Member<RootFrameViewport> m_viewportScrollableArea;
 
     // BKTODO: Check if necessary.
     // The following members control rendering pipeline throttling for this

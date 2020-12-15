@@ -48,6 +48,7 @@
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/frame/local_frame_view.h"
+#   include "third_party/blink/renderer/platform/supplementable.h"
 #endif
 
 namespace base {
@@ -71,6 +72,9 @@ class SmoothScrollSequencer;
 #endif
 
 class LocalFrame final : public Frame
+#ifndef BLINKIT_CRAWLER_ONLY
+                       , public Supplementable<LocalFrame>
+#endif
 {
 public:
     static std::unique_ptr<LocalFrame> Create(LocalFrameClient *client, Page *page = nullptr);
@@ -137,7 +141,7 @@ private:
     // of LocalFrame::View().
     Member<LocalFrameView> m_view;
     std::unique_ptr<Editor> m_editor;
-    std::unique_ptr<FrameSelection> m_selection;
+    Member<FrameSelection> m_selection;
     std::unique_ptr<EventHandler> m_eventHandler;
     // SmoothScrollSequencer is only populated for local roots; all local frames
     // use the instance owned by their local root.

@@ -172,7 +172,7 @@ ChromeClientImpl::ChromeClientImpl(WebViewImpl* web_view)
       did_request_non_empty_tool_tip_(false) {}
 
 ChromeClientImpl::~ChromeClientImpl() {
-  ASSERT(false); // BKTODO: DCHECK(file_chooser_queue_.IsEmpty());
+  // BKTODO: DCHECK(file_chooser_queue_.IsEmpty());
 }
 
 std::unique_ptr<ChromeClientImpl> ChromeClientImpl::Create(WebViewImpl* web_view) {

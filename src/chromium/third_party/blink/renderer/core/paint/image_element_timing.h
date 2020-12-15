@@ -57,6 +57,7 @@ class CORE_EXPORT ImageElementTiming final
  private:
   explicit ImageElementTiming(LocalDOMWindow&);
 
+  void* GCObject(void) override { return this; }
 #if 0 // BKTODO:
   // Callback for the swap promise. Reports paint timestamps.
   void ReportImagePaintSwapTime(WebLayerTreeView::SwapResult,

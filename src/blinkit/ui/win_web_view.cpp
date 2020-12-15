@@ -103,6 +103,9 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
         case WM_PAINT:
             HANDLE_WM_PAINT(hWnd, wParam, lParam, OnPaint);
             break;
+        case WM_NCDESTROY:
+            delete this;
+            break;
         default:
             return false;
     }
