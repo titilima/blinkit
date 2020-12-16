@@ -26,12 +26,12 @@ DIBSection::DIBSection(int width, int height, HDC hdc)
 
     PVOID bits = nullptr;
     m_hBitmap = CreateDIBSection(hdc, reinterpret_cast<BITMAPINFO *>(&bih), 0, &bits, nullptr, 0);
-    assert(nullptr != m_hBitmap);
+    ASSERT(nullptr != m_hBitmap);
 
     if (nullptr != m_hBitmap)
     {
         const SkImageInfo info = SkImageInfo::MakeN32(width, height, kOpaque_SkAlphaType);
-        installPixels(info, bits, info.minRowBytes(), nullptr, OnFinalize, m_hBitmap);
+        installPixels(info, bits, info.minRowBytes(), OnFinalize, m_hBitmap);
     }
 }
 
