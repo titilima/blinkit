@@ -25,8 +25,8 @@
 using namespace blink;
 using namespace BlinKit;
 
-WebViewImpl::WebViewImpl(PageVisibilityState visibilityState)
-    : m_chromeClient(ChromeClientImpl::Create(this)), m_baseBackgroundColor(Color::kWhite)
+WebViewImpl::WebViewImpl(PageVisibilityState visibilityState, SkColor baseBackgroundColor)
+    : m_chromeClient(ChromeClientImpl::Create(this)), m_baseBackgroundColor(baseBackgroundColor)
 {
     memset(&m_client, 0, sizeof(m_client));
 
@@ -217,6 +217,21 @@ void WebViewImpl::RefreshPageScaleFactor(void)
     SetPageScaleFactor(newPageScaleFactor);
 
     UpdateLayerTreeViewport();
+}
+
+void WebViewImpl::Resize(const WebSize &size)
+{
+    if (size.IsEmpty() || m_shouldAutoResize || m_size == size)
+        return;
+
+    m_canvas = CreateCanvas(size);
+    m_canvas->drawColor(m_baseBackgroundColor);
+    ASSERT(false); // BKTODO:
+#if 0
+    ResizeWithBrowserControls(new_size, GetBrowserControls().TopHeight(),
+        GetBrowserControls().BottomHeight(),
+        GetBrowserControls().ShrinkViewport());
+#endif
 }
 
 void WebViewImpl::ResizeAfterLayout(void)

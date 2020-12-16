@@ -15,6 +15,7 @@
 #pragma once
 
 #include "bk_ui.h"
+#include "cc/paint/skia_paint_canvas.h"
 #include "blinkit/blink_impl/local_frame_client_impl.h"
 #include "third_party/blink/public/platform/web_rect.h"
 #include "third_party/blink/public/platform/web_size.h"
@@ -41,7 +42,6 @@ public:
     // Exports
     int LoadUI(const char *URI);
     void SetClient(const BkWebViewClient &client);
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Returns the page object associated with this view. This may be null when
     // the page is shutting down, but will be valid at all other times.
@@ -49,8 +49,6 @@ public:
     float PageScaleFactor(void) const;
     void SetPageScaleFactor(float scaleFactor);
     blink::IntSize MainFrameSize(void);
-
-    void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
 
     float ClampPageScaleFactorToLimits(float scaleFactor) const;
     void ScheduleAnimation(void);
@@ -68,9 +66,11 @@ public:
         // BKTODO: Check this later.
     }
 protected:
-    WebViewImpl(blink::PageVisibilityState visibilityState);
+    WebViewImpl(blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor = SK_ColorWHITE);
 
     bool ProcessTitleChange(const std::string &newTitle) const;
+    void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
+    void Resize(const blink::WebSize &size);
 private:
     blink::IntSize FrameSize(void);
     blink::IntSize ContentsSize(void) const;
@@ -81,6 +81,7 @@ private:
     bool ShouldAutoResize(void) const { return m_shouldAutoResize; }
 
     bool IsAcceleratedCompositingActive(void) const;
+    virtual std::unique_ptr<cc::SkiaPaintCanvas> CreateCanvas(const blink::WebSize &size) = 0;
 
     // LocalFrameClient
     bool IsCrawler(void) const final { return false; }
@@ -97,6 +98,7 @@ private:
     std::unique_ptr<blink::Page> m_page;
     std::unique_ptr<blink::LocalFrame> m_frame;
     SkColor m_baseBackgroundColor;
+    std::unique_ptr<cc::SkiaPaintCanvas> m_canvas;
 
     std::unique_ptr<blink::ResizeViewportAnchor> m_resizeViewportAnchor;
 };

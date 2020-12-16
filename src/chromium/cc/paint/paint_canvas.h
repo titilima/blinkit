@@ -153,11 +153,11 @@ class CC_PAINT_EXPORT PaintCanvas {
                             SkScalar x,
                             SkScalar y,
                             const PaintFlags& flags) = 0;
-#endif
 
   // Unlike SkCanvas::drawPicture, this only plays back the PaintRecord and does
   // not add an additional clip.  This is closer to SkPicture::playback.
   virtual void drawPicture(sk_sp<const PaintRecord> record) = 0;
+#endif
 
   virtual bool isClipEmpty() const = 0;
   virtual bool isClipRect() const = 0;

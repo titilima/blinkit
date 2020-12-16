@@ -33,12 +33,18 @@ private:
     bool ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
     static BOOL OnNCCreate(HWND hwnd, LPCREATESTRUCT cs);
     void OnPaint(HWND hwnd);
+    void OnSize(HWND hwnd, UINT state, int cx, int cy);
 
     // LocalFrameClient
     void DispatchDidReceiveTitle(const String &title) override;
+    // WebViewImpl
+    std::unique_ptr<cc::SkiaPaintCanvas> CreateCanvas(const blink::WebSize &size) override;
 
     static std::unordered_map<HWND, WinWebView *> s_viewMap;
     HWND m_hWnd;
+    HDC m_memoryDC = nullptr;
+    HGDIOBJ m_oldBitmap = nullptr;
+    UINT m_dpi = 96;
 };
 
 } // namespace BlinKit

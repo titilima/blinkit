@@ -150,6 +150,9 @@
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_theme_engine.cpp">
       <Filter>blink_impl</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\win\dib_section.cpp">
+      <Filter>win</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -277,6 +280,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_static.h">
       <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\win\dib_section.h">
+      <Filter>win</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

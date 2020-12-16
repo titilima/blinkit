@@ -13,6 +13,7 @@
 
 #include <windowsx.h>
 #include "base/strings/sys_string_conversions.h"
+#include "blinkit/win/dib_section.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 using namespace blink;
@@ -21,20 +22,50 @@ namespace BlinKit {
 
 std::unordered_map<HWND, WinWebView *> WinWebView::s_viewMap;
 
+static SkColor WindowColor(void)
+{
+    COLORREF color = GetSysColor(COLOR_WINDOW);
+    return SkColorSetARGB(0xff, GetRValue(color), GetGValue(color), GetBValue(color));
+}
+
 WinWebView::WinWebView(HWND hWnd, bool isWindowVisible)
-    : WebViewImpl(isWindowVisible ? PageVisibilityState::kVisible : PageVisibilityState::kHidden)
+    : WebViewImpl(isWindowVisible ? PageVisibilityState::kVisible : PageVisibilityState::kHidden, WindowColor())
     , m_hWnd(hWnd)
 {
     ASSERT(IsMainThread());
     ASSERT(Lookup(m_hWnd) == nullptr);
     s_viewMap[m_hWnd] = this;
+
+    HDC dc = GetDC(m_hWnd);
+    m_dpi = GetDeviceCaps(dc, LOGPIXELSY);
+    ASSERT(GetDeviceCaps(dc, LOGPIXELSX) == m_dpi);
+    m_memoryDC = CreateCompatibleDC(dc);
+    ReleaseDC(m_hWnd, dc);
 }
 
 WinWebView::~WinWebView(void)
 {
     ASSERT(IsMainThread());
     ASSERT(Lookup(m_hWnd) == this);
+
+    if (nullptr != m_memoryDC)
+    {
+        ASSERT(nullptr != m_oldBitmap);
+        SelectBitmap(m_memoryDC, m_oldBitmap);
+        DeleteDC(m_memoryDC);
+    }
+
     s_viewMap.erase(m_hWnd);
+}
+
+std::unique_ptr<cc::SkiaPaintCanvas> WinWebView::CreateCanvas(const WebSize &size)
+{
+    if (nullptr != m_oldBitmap)
+        SelectBitmap(m_memoryDC, m_oldBitmap);
+
+    DIBSection bitmap(size.width, size.height, m_memoryDC);
+    m_oldBitmap = SelectObject(m_memoryDC, bitmap.GetHBITMAP());
+    return std::make_unique<cc::SkiaPaintCanvas>(bitmap); // BKTODO: Is ImageProvider needed?
 }
 
 void WinWebView::DispatchDidReceiveTitle(const String &title)
@@ -76,9 +107,22 @@ void WinWebView::OnPaint(HWND hwnd)
     PAINTSTRUCT ps;
     HDC hdc = BeginPaint(hwnd, &ps);
 
-    ASSERT(false); // BKTODO:
+    int x = ps.rcPaint.left;
+    int y = ps.rcPaint.top;
+    int w = ps.rcPaint.right - ps.rcPaint.left;
+    int h = ps.rcPaint.bottom - ps.rcPaint.top;
+    BitBlt(hdc, x, y, w, h, m_memoryDC, x, y, SRCCOPY);
 
     EndPaint(hwnd, &ps);
+}
+
+void WinWebView::OnSize(HWND, UINT state, int cx, int cy)
+{
+    if (SIZE_MINIMIZED == state)
+        return;
+
+    Resize(WebSize(cx, cy));
+    ASSERT(false); // BKTODO: Update
 }
 
 bool WinWebView::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
@@ -102,6 +146,9 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
     {
         case WM_PAINT:
             HANDLE_WM_PAINT(hWnd, wParam, lParam, OnPaint);
+            break;
+        case WM_SIZE:
+            HANDLE_WM_SIZE(hWnd, wParam, lParam, OnSize);
             break;
         case WM_NCDESTROY:
             delete this;

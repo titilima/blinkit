@@ -419,8 +419,8 @@ void SkiaPaintCanvas::FlushAfterDrawIfNeeded() {
 #if 0
       TRACE_EVENT0("cc",
                    "SkiaPaintCanvas::FlushAfterDrawIfNeeded::FlushGrContext");
-#endif
       context->flush();
+#endif
     }
   }
 }
