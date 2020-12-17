@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: visual_viewport_resize_event.cc
+// Description: VisualViewportResizeEvent Class
+//      Author: Ziming Li
+//     Created: 2020-12-17
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -13,7 +24,7 @@ namespace blink {
 VisualViewportResizeEvent::~VisualViewportResizeEvent() = default;
 
 VisualViewportResizeEvent::VisualViewportResizeEvent()
-    : Event(EventTypeNames::resize, Bubbles::kNo, Cancelable::kNo) {}
+    : Event(event_type_names::kResize, Bubbles::kNo, Cancelable::kNo) {}
 
 void VisualViewportResizeEvent::DoneDispatchingEventAtCurrentTarget() {
   UseCounter::Count(currentTarget()->GetExecutionContext(),
