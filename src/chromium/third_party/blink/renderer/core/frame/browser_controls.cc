@@ -20,12 +20,8 @@ BrowserControls::BrowserControls(const Page& page)
       shown_ratio_(0),
       baseline_content_offset_(0),
       accumulated_scroll_delta_(0),
-#if 0 // BKTODO:
       shrink_viewport_(false),
       permitted_state_(cc::BrowserControlsState::kBoth) {}
-#else
-      shrink_viewport_(false) {}
-#endif
 
 void BrowserControls::Trace(blink::Visitor* visitor) {
   visitor->Trace(page_);
@@ -36,9 +32,6 @@ void BrowserControls::ScrollBegin() {
 }
 
 FloatSize BrowserControls::ScrollBy(FloatSize pending_delta) {
-  ASSERT(false); // BKTODO:
-  return pending_delta;
-#if 0
   if ((permitted_state_ == cc::BrowserControlsState::kShown &&
        pending_delta.Height() > 0) ||
       (permitted_state_ == cc::BrowserControlsState::kHidden &&
@@ -79,7 +72,6 @@ FloatSize BrowserControls::ScrollBy(FloatSize pending_delta) {
   FloatSize applied_delta(
       0, top_height_ ? (old_offset - new_content_offset) / page_scale : 0);
   return pending_delta - applied_delta;
-#endif
 }
 
 void BrowserControls::ResetBaseline() {
@@ -111,7 +103,6 @@ void BrowserControls::SetShownRatio(float shown_ratio) {
   page_->GetChromeClient().DidUpdateBrowserControls();
 }
 
-#if 0 // BKTODO:
 void BrowserControls::UpdateConstraintsAndState(
     cc::BrowserControlsState constraints,
     cc::BrowserControlsState current,
@@ -139,7 +130,6 @@ void BrowserControls::UpdateConstraintsAndState(
   else
     SetShownRatio(1.f);
 }
-#endif
 
 void BrowserControls::SetHeight(float top_height,
                                 float bottom_height,
