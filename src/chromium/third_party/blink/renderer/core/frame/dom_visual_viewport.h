@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: dom_visual_viewport.h
+// Description: DOMVisualViewport Class
+//      Author: Ziming Li
+//     Created: 2020-12-17
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2016 Google Inc. All rights reserved.
  *
@@ -56,7 +67,7 @@ class CORE_EXPORT DOMVisualViewport final : public EventTargetWithInlineData {
   void Trace(blink::Visitor*) override;
 
   // EventTarget overrides:
-  const AtomicString& InterfaceName() const override;
+  // BKTODO: const AtomicString& InterfaceName() const override;
   ExecutionContext* GetExecutionContext() const override;
 
   float offsetLeft() const;
@@ -67,8 +78,10 @@ class CORE_EXPORT DOMVisualViewport final : public EventTargetWithInlineData {
   double height() const;
   double scale() const;
 
+#if 0 // BKTODO:
   DEFINE_ATTRIBUTE_EVENT_LISTENER(resize);
   DEFINE_ATTRIBUTE_EVENT_LISTENER(scroll);
+#endif
 
  private:
   explicit DOMVisualViewport(LocalDOMWindow*);

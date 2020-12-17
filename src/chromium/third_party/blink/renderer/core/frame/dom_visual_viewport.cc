@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: dom_visual_viewport.cc
+// Description: DOMVisualViewport Class
+//      Author: Ziming Li
+//     Created: 2020-12-17
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2016 Google Inc. All rights reserved.
  *
@@ -48,9 +59,11 @@ void DOMVisualViewport::Trace(blink::Visitor* visitor) {
   EventTargetWithInlineData::Trace(visitor);
 }
 
+#if 0 // BKTODO:
 const AtomicString& DOMVisualViewport::InterfaceName() const {
   return EventTargetNames::DOMVisualViewport;
 }
+#endif
 
 ExecutionContext* DOMVisualViewport::GetExecutionContext() const {
   return window_->GetExecutionContext();
