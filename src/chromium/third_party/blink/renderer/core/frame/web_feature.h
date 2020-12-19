@@ -160,6 +160,7 @@ enum class WebFeature {
     kUnitlessZeroAngleFilter,
     kUnitlessZeroAngleGradient,
     kUnitlessZeroAngleTransform,
+    kVisualViewportResizeFired,
     kWebkitBoxAlignNotInitial,
     kWebkitBoxChildFlexNotInitial,
     kWebkitBoxChildOrdinalGroupNotInitial,

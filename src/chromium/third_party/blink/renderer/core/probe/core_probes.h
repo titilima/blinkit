@@ -20,6 +20,7 @@ inline void nothingToDo(void) {}
 } // namespace probe
 } // namespace blink
 
+#define AsyncTaskScheduled(...)         nothingToDo()
 #define activeStyleSheetsUpdated(...)   nothingToDo()
 #define animationPlayStateChanged(...)  nothingToDo()
 #define didChangeViewport(...)          nothingToDo()

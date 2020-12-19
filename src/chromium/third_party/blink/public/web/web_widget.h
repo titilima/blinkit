@@ -19,6 +19,14 @@
 
 namespace blink {
 
+class WebWidget
+{
+public:
+    enum class LifecycleUpdate { kLayout, kPrePaint, kAll };
+protected:
+    WebWidget(void) = default;
+};
+
 } // namespace blink
 
 #endif // BLINKIT_BLINK_WEB_WIDGET_H
