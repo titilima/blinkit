@@ -4,7 +4,7 @@
 //   File Name: event_type_names.cpp
 // Description: Event Type Names
 //      Author: Ziming Li
-//     Created: 2020-12-03
+//     Created: 2020-12-17
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
@@ -31,9 +31,10 @@ const AtomicString &kLoad = reinterpret_cast<AtomicString *>(&names_storage)[9];
 const AtomicString &kMousewheel = reinterpret_cast<AtomicString *>(&names_storage)[10];
 const AtomicString &kPageshow = reinterpret_cast<AtomicString *>(&names_storage)[11];
 const AtomicString &kReadystatechange = reinterpret_cast<AtomicString *>(&names_storage)[12];
-const AtomicString &kScroll = reinterpret_cast<AtomicString *>(&names_storage)[13];
-const AtomicString &kUnload = reinterpret_cast<AtomicString *>(&names_storage)[14];
-const AtomicString &kWheel = reinterpret_cast<AtomicString *>(&names_storage)[15];
+const AtomicString &kResize = reinterpret_cast<AtomicString *>(&names_storage)[13];
+const AtomicString &kScroll = reinterpret_cast<AtomicString *>(&names_storage)[14];
+const AtomicString &kUnload = reinterpret_cast<AtomicString *>(&names_storage)[15];
+const AtomicString &kWheel = reinterpret_cast<AtomicString *>(&names_storage)[16];
 
 void Init(void)
 {
@@ -62,6 +63,7 @@ void Init(void)
         { "mousewheel", 15891108, 10 },
         { "pageshow", 12320166, 8 },
         { "readystatechange", 11011948, 16 },
+        { "resize", 11716975, 6 },
         { "scroll", 7626286, 6 },
         { "unload", 4411490, 6 },
         { "wheel", 5389519, 5 },
