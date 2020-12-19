@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <utility>
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 
 namespace BlinKit {
@@ -22,19 +23,24 @@ template <typename T>
 class GCStaticWrapper
 {
 public:
-    GCStaticWrapper(const T &other)
+    template <typename... Args>
+    GCStaticWrapper(Args&&... args) : m_ptr(Alloc(std::forward<Args>(args)...))
+    {
+    }
+
+    T* GetAsPointer(void) { return m_ptr; }
+    T& GetAsReference(void) { return *m_ptr; }
+private:
+    template <typename... Args>
+    static T* Alloc(Args&&... args)
     {
         void *p = GCHeapAlloc(GCObjectType::Global, sizeof(T), GCPtr()
 #ifndef NDEBUG
             , "GCStaticObject"
 #endif
         );
-        m_ptr = new (p) T(other);
+        return new (p) T(std::forward<Args>(args)...);
     }
-
-    T* GetAsPointer(void) { return m_ptr; }
-    T& GetAsReference(void) { return *m_ptr; }
-private:
     static GCTable* GCPtr(void)
     {
         static GCTable s_gcTable = { Deleter, Tracer };
