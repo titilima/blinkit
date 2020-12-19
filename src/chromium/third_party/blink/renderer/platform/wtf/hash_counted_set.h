@@ -26,6 +26,7 @@ public:
 
     auto begin(void) { return m_impl.begin(); }
     auto end(void) { return m_impl.end(); }
+    auto find(const T &o) { return m_impl.find(o); }
 
     struct AddResult {
         bool is_new_entry;
