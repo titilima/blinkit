@@ -78,13 +78,10 @@ std::unique_ptr<JSONObject> EffectPaintPropertyNode::ToJSON() const {
         "directCompositingReasons",
         CompositingReason::ToString(state_.direct_compositing_reasons));
   }
-  ASSERT(false); // BKTODO:
-#if 0
   if (state_.compositor_element_id) {
     json->SetString("compositorElementId",
                     state_.compositor_element_id.ToString().c_str());
   }
-#endif
   if (state_.filters_origin != FloatPoint())
     json->SetString("filtersOrigin", state_.filters_origin.ToString());
   return json;
