@@ -19,6 +19,9 @@
 
 namespace blink {
 
+template <typename T>
+class WeakMember;
+
 template<typename T>
 class MemberBase
 {
@@ -37,9 +40,10 @@ public:
     T* operator->() const { return m_rawPtr; }
     bool operator!() const { return !m_rawPtr; }
 
-    MemberBase& operator=(const MemberBase &other)
+    template <typename U>
+    MemberBase& operator=(const MemberBase<U> &other)
     {
-        m_rawPtr = other.m_rawPtr;
+        m_rawPtr = other;
         return *this;
     }
 
@@ -63,6 +67,19 @@ public:
     Member(T *ptr = nullptr) : MemberBase<T>(ptr) {}
     Member(const Member &other) : MemberBase<T>(other) {}
     Member(T &rawObj) : MemberBase<T>(rawObj) {}
+
+    template <typename U>
+    Member& operator=(const Member<U> &other)
+    {
+        MemberBase<T>::operator=(other);
+        return *this;
+    }
+    template <typename U>
+    Member& operator=(const WeakMember<U> &other)
+    {
+        MemberBase<T>::operator=(other);
+        return *this;
+    }
 };
 
 template<typename T>
@@ -70,6 +87,7 @@ class WeakMember : public MemberBase<T>
 {
 public:
     WeakMember(T *ptr = nullptr) : MemberBase<T>(ptr) {}
+    WeakMember(const WeakMember &other) : MemberBase<T>(other) {}
     WeakMember(T &rawObj) : MemberBase<T>(rawObj) {}
 };
 
