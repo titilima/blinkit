@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: element_id.h
+// Description: ElementId Class
+//      Author: Ziming Li
+//     Created: 2020-12-20
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -58,7 +69,9 @@ struct CC_EXPORT ElementId {
   explicit operator bool() const;
 
   void AddToTracedValue(base::trace_event::TracedValue* res) const;
+#if 0 // BKTODO:
   std::unique_ptr<base::Value> AsValue() const;
+#endif
 
   ElementIdType GetInternalValue() const;
 
