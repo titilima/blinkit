@@ -16,6 +16,10 @@
 
 #include "build/build_config.h"
 
+#if OS_WIN
+#   pragma warning(disable: 4244)
+#endif
+
 #include <memory>
 
 #include "base/logging.h"
