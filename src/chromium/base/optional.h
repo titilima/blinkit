@@ -23,6 +23,19 @@ template <typename T> using Optional = std::optional<T>;
 using std::make_optional;
 using std::nullopt;
 
+// Helper for returning the optional value's address, or nullptr.
+template <class T>
+inline T* OptionalOrNullptr(base::Optional<T> &optional)
+{
+    return optional.has_value() ? &optional.value() : nullptr;
+}
+
+template <class T>
+const T* OptionalOrNullptr(const base::Optional<T> &optional)
+{
+    return optional.has_value() ? &optional.value() : nullptr;
+}
+
 } // namespace base
 
 #endif // BLINKIT_BASE_OPTIONAL_H
