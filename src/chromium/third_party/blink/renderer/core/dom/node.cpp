@@ -57,6 +57,8 @@
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/dom/layout_tree_builder_traversal.h"
 #   include "third_party/blink/renderer/core/dom/shadow_root.h"
+#   include "third_party/blink/renderer/core/dom/slot_assignment.h"
+#   include "third_party/blink/renderer/core/dom/slot_assignment_engine.h"
 #   include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
 #   include "third_party/blink/renderer/core/css/style_engine.h"
 #   include "third_party/blink/renderer/core/html/html_slot_element.h"
@@ -1178,6 +1180,16 @@ LayoutBox* Node::GetLayoutBox(void) const
     return nullptr;
 }
 
+LayoutBoxModelObject* Node::GetLayoutBoxModelObject(void) const
+{
+    if (LayoutObject *layoutObject = GetLayoutObject())
+    {
+        if (layoutObject->IsBoxModelObject())
+            return ToLayoutBoxModelObject(layoutObject);
+    }
+    return nullptr;
+}
+
 ContainerNode* Node::GetReattachParent(void) const
 {
     if (IsPseudoElement())
@@ -1186,7 +1198,7 @@ ContainerNode* Node::GetReattachParent(void) const
     if (IsChildOfV1ShadowHost())
     {
         if (HTMLSlotElement *slot = AssignedSlot())
-            ASSERT(false); // BKTODO: return slot;
+            return slot;
     }
 
     if (IsInV0ShadowTree() || IsChildOfV0ShadowHost())

@@ -25,7 +25,7 @@
 
 #include "third_party/blink/renderer/core/dom/scripted_animation_controller.h"
 
-#include "third_party/blink/renderer/core/css/media_query_list_listener.h"
+// BKTODO: #include "third_party/blink/renderer/core/css/media_query_list_listener.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
@@ -42,14 +42,18 @@ std::pair<EventTarget*, StringImpl*> EventTargetKey(const Event* event) {
 }
 
 ScriptedAnimationController::ScriptedAnimationController(Document* document)
+#if 0 // BKTODO:
     : document_(document), callback_collection_(document), suspend_count_(0) {}
+#else
+    : document_(document), suspend_count_(0) {}
+#endif
 
 void ScriptedAnimationController::Trace(blink::Visitor* visitor) {
   visitor->Trace(document_);
-  visitor->Trace(callback_collection_);
+  // BKTODO: visitor->Trace(callback_collection_);
   visitor->Trace(event_queue_);
   visitor->Trace(media_query_list_listeners_);
-  visitor->Trace(per_frame_events_);
+  // BKTODO: visitor->Trace(per_frame_events_);
 }
 
 void ScriptedAnimationController::Pause() {
@@ -66,10 +70,14 @@ void ScriptedAnimationController::Unpause() {
 }
 
 void ScriptedAnimationController::DispatchEventsAndCallbacksForPrinting() {
+  ASSERT(false); // BKTODO: Check if necessary.
+#if 0
   DispatchEvents(EventNames::MediaQueryListEvent);
+#endif
   CallMediaQueryListListeners();
 }
 
+#if 0 // BKTODO:
 ScriptedAnimationController::CallbackId
 ScriptedAnimationController::RegisterCallback(
     FrameRequestCallbackCollection::FrameCallback* callback) {
@@ -77,20 +85,28 @@ ScriptedAnimationController::RegisterCallback(
   ScheduleAnimationIfNeeded();
   return id;
 }
+#endif
 
 void ScriptedAnimationController::CancelCallback(CallbackId id) {
-  callback_collection_.CancelCallback(id);
+  ASSERT(false); // BKTODO: callback_collection_.CancelCallback(id);
 }
 
 bool ScriptedAnimationController::HasCallback() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return !callback_collection_.IsEmpty();
+#endif
 }
 
 void ScriptedAnimationController::RunTasks() {
+  ASSERT(false); // BKTODO:
+#if 0
   Vector<base::OnceClosure> tasks;
   tasks.swap(task_queue_);
   for (auto& task : tasks)
     std::move(task).Run();
+#endif
 }
 
 void ScriptedAnimationController::DispatchEvents(
@@ -98,12 +114,12 @@ void ScriptedAnimationController::DispatchEvents(
   HeapVector<Member<Event>> events;
   if (event_interface_filter.IsEmpty()) {
     events.swap(event_queue_);
-    per_frame_events_.clear();
+    ASSERT(false); // BKTODO: per_frame_events_.clear();
   } else {
     HeapVector<Member<Event>> remaining;
     for (auto& event : event_queue_) {
       if (event && event->InterfaceName() == event_interface_filter) {
-        per_frame_events_.erase(EventTargetKey(event.Get()));
+        ASSERT(false); // BKTODO: per_frame_events_.erase(EventTargetKey(event.Get()));
         events.push_back(event.Release());
       } else {
         remaining.push_back(event.Release());
@@ -114,6 +130,8 @@ void ScriptedAnimationController::DispatchEvents(
 
   for (const auto& event : events) {
     EventTarget* event_target = event->target();
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: we should figure out how to make dispatchEvent properly virtual to
     // avoid special casting window.
     // FIXME: We should not fire events for nodes that are no longer in the
@@ -123,6 +141,7 @@ void ScriptedAnimationController::DispatchEvents(
       window->DispatchEvent(*event, nullptr);
     else
       event_target->DispatchEvent(*event);
+#endif
   }
 }
 
@@ -132,6 +151,8 @@ void ScriptedAnimationController::ExecuteCallbacks(
   if (!document_)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   double high_res_now_ms =
       document_->Loader()
           ->GetTiming()
@@ -144,6 +165,7 @@ void ScriptedAnimationController::ExecuteCallbacks(
           .InMillisecondsF();
   callback_collection_.ExecuteCallbacks(high_res_now_ms,
                                         legacy_high_res_now_ms);
+#endif
 }
 
 void ScriptedAnimationController::CallMediaQueryListListeners() {
@@ -151,7 +173,7 @@ void ScriptedAnimationController::CallMediaQueryListListeners() {
   listeners.Swap(media_query_list_listeners_);
 
   for (const auto& listener : listeners) {
-    listener->NotifyMediaQueryChanged();
+    ASSERT(false); // BKTODO: listener->NotifyMediaQueryChanged();
   }
 }
 
@@ -159,8 +181,15 @@ bool ScriptedAnimationController::HasScheduledItems() const {
   if (suspend_count_)
     return false;
 
+#if 0 // BKTODO:
   return !callback_collection_.IsEmpty() || !task_queue_.IsEmpty() ||
          !event_queue_.IsEmpty() || !media_query_list_listeners_.IsEmpty();
+#else
+  if (!event_queue_.IsEmpty())
+    return true;
+  ASSERT(false); // BKTODO:
+  return false;
+#endif
 }
 
 void ScriptedAnimationController::ServiceScriptedAnimations(
@@ -178,10 +207,12 @@ void ScriptedAnimationController::ServiceScriptedAnimations(
   ScheduleAnimationIfNeeded();
 }
 
+#if 0 // BKTODO:
 void ScriptedAnimationController::EnqueueTask(base::OnceClosure task) {
   task_queue_.push_back(std::move(task));
   ScheduleAnimationIfNeeded();
 }
+#endif
 
 void ScriptedAnimationController::EnqueueEvent(Event* event) {
   probe::AsyncTaskScheduled(event->target()->GetExecutionContext(),
@@ -191,8 +222,11 @@ void ScriptedAnimationController::EnqueueEvent(Event* event) {
 }
 
 void ScriptedAnimationController::EnqueuePerFrameEvent(Event* event) {
-  if (!per_frame_events_.insert(EventTargetKey(event)).is_new_entry)
+  EventData d = EventTargetKey(event);
+  auto it = per_frame_events_.find(d);
+  if (per_frame_events_.end() != it)
     return;
+  per_frame_events_.insert(d);
   EnqueueEvent(event);
 }
 

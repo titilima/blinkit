@@ -51,6 +51,7 @@
 #include "third_party/blink/renderer/core/frame/navigator.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/events/page_transition_event.h"
+#   include "third_party/blink/renderer/core/frame/dom_visual_viewport.h"
 #   include "third_party/blink/renderer/core/frame/viewport_data.h"
 #   include "third_party/blink/renderer/core/html/html_document.h"
 #endif
@@ -269,6 +270,9 @@ void LocalDOMWindow::Trace(Visitor *visitor)
 {
     visitor->Trace(m_document);
     visitor->Trace(m_navigator);
+#ifndef BLINKIT_CRAWLER_ONLY
+    visitor->Trace(m_visualViewport);
+#endif
     DOMWindow::Trace(visitor);
 }
 
@@ -290,6 +294,11 @@ void LocalDOMWindow::EnqueuePageshowEvent(PageshowEventPersistence persisted)
     }
 #endif
     DispatchEvent(*PageTransitionEvent::Create(event_type_names::kPageshow, persisted), m_document.Get());
+}
+
+DOMVisualViewport* LocalDOMWindow::visualViewport(void)
+{
+    return m_visualViewport.Get();
 }
 #endif
 

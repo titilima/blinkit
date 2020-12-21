@@ -1429,8 +1429,7 @@ const LayoutBoxModelObject& LayoutObject::ContainerForPaintInvalidation()
   // If the current frame is not composited, we send just return the main
   // frame's LayoutView so that we generate invalidations on the window.
   const LayoutView* layout_view = View();
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   while (const LayoutObject* owner_object =
              layout_view->GetFrame()->OwnerLayoutObject())
     layout_view = owner_object->View();

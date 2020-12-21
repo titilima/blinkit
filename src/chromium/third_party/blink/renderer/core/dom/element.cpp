@@ -60,6 +60,7 @@
 #   include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
 #   include "third_party/blink/renderer/core/layout/layout_text_fragment.h"
 #   include "third_party/blink/renderer/core/layout/layout_view.h"
+#   include "third_party/blink/renderer/core/page/scrolling/scroll_customization_callbacks.h"
 #endif
 
 using namespace BlinKit;
@@ -67,6 +68,19 @@ using namespace BlinKit;
 namespace blink {
 
 enum class ClassStringContent { kEmpty, kWhiteSpaceOnly, kHasClasses };
+
+// We need to retain the scroll customization callbacks until the element
+// they're associated with is destroyed. It would be simplest if the callbacks
+// could be stored in ElementRareData, but we can't afford the space increase.
+// Instead, keep the scroll customization callbacks here. The other option would
+// be to store these callbacks on the Page or document, but that necessitates a
+// bunch more logic for transferring the callbacks between Pages when elements
+// are moved around.
+static ScrollCustomizationCallbacks& GetScrollCustomizationCallbacks(void)
+{
+    static ScrollCustomizationCallbacks *scrollCustomizationCallbacks = new (GCObjectType::Global) ScrollCustomizationCallbacks;
+    return *scrollCustomizationCallbacks;
+}
 
 Element::Element(const QualifiedName &tagName, Document *document, ConstructionType type)
     : ContainerNode(document, type), m_tagName(tagName)
@@ -2080,6 +2094,11 @@ void Element::RebuildShadowRootLayoutTree(WhitespaceAttacher &whitespaceAttacher
     ASSERT(IsShadowHost(this));
     GetShadowRoot()->RebuildLayoutTree(whitespaceAttacher);
     RebuildNonDistributedChildren();
+}
+
+void Element::SetApplyScroll(ScrollStateCallback *scrollStateCallback)
+{
+    GetScrollCustomizationCallbacks().SetApplyScroll(this, scrollStateCallback);
 }
 
 void Element::SetNeedsResizeObserverUpdate(void)

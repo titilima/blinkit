@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: link_highlight_impl.h
+// Description: LinkHighlightImpl Class
+//      Author: Ziming Li
+//     Created: 2020-12-20
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -28,7 +39,7 @@
 
 #include <memory>
 
-#include "cc/layers/content_layer_client.h"
+// BKTODO: #include "cc/layers/content_layer_client.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/animation/compositor_animation.h"
 #include "third_party/blink/renderer/platform/animation/compositor_animation_client.h"
@@ -52,7 +63,7 @@ class LayoutBoxModelObject;
 class Node;
 
 class CORE_EXPORT LinkHighlightImpl final : public LinkHighlight,
-                                            public cc::ContentLayerClient,
+                                            // BKTODO: public cc::ContentLayerClient,
                                             public CompositorAnimationDelegate,
                                             public CompositorAnimationClient {
  public:
@@ -67,12 +78,14 @@ class CORE_EXPORT LinkHighlightImpl final : public LinkHighlight,
   // invalidation of the owning graphics layer.
   void UpdateGeometry();
 
+#if 0 // BKTODO:
   // cc::ContentLayerClient implementation.
   gfx::Rect PaintableRegion() override;
   scoped_refptr<cc::DisplayItemList> PaintContentsToDisplayList(
       PaintingControlSetting painting_control) override;
   bool FillsBoundsCompletely() const override { return false; }
   size_t GetApproximateUnsharedMemoryUsage() const override { return 0; }
+#endif
 
   // CompositorAnimationDelegate implementation.
   void NotifyAnimationStarted(double monotonic_time, int group) override;
@@ -110,7 +123,7 @@ class CORE_EXPORT LinkHighlightImpl final : public LinkHighlight,
   // changed size since the last call to this function.
   bool ComputeHighlightLayerPathAndPosition(const LayoutBoxModelObject&);
 
-  scoped_refptr<cc::PictureLayer> content_layer_;
+  // BKTODO: scoped_refptr<cc::PictureLayer> content_layer_;
   Path path_;
 
   Persistent<Node> node_;

@@ -549,9 +549,7 @@ class CORE_EXPORT PaintLayerScrollableArea final
   void ClearPreviousVisualRects();
 
   void DidScrollWithScrollbar(ScrollbarPart, ScrollbarOrientation) override;
-#if 0 // BKTODO:
   CompositorElementId GetCompositorElementId() const override;
-#endif
 
   bool VisualViewportSuppliesScrollbars() const override;
 

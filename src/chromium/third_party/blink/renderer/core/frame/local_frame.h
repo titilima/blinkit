@@ -125,6 +125,8 @@ public:
     bool ShouldReuseDefaultView(void) const;
 
     void DocumentAttached(void);
+
+    constexpr bool IsLocalRoot(void) const { return true; } // Just a placeholder.
 private:
     friend class FrameNavigationDisabler;
 

@@ -62,8 +62,8 @@
 #if 0 // BKTODO:
 #include "third_party/blink/public/platform/web_scroll_into_view_params.h"
 #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
-#include "third_party/blink/renderer/core/animation/scroll_timeline.h"
 #endif
+#include "third_party/blink/renderer/core/animation/scroll_timeline.h"
 #include "third_party/blink/renderer/core/css/pseudo_style_request.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "third_party/blink/renderer/core/dom/node.h"
@@ -2306,13 +2306,10 @@ bool PaintLayerScrollableArea::ComputeNeedsCompositedScrolling(
   // TODO(crbug.com/839341): Remove ScrollTimeline check once we support
   // main-thread AnimationWorklet and don't need to promote the scroll-source.
   Node* node = layer->GetLayoutObject().GetNode();
-  ASSERT(false); // BKTODO:
-#if 0
   if (!layer->ScrollsOverflow() &&
       !ScrollTimeline::HasActiveScrollTimeline(node)) {
     return false;
   }
-#endif
 
   if (layer->Size().IsEmpty())
     return false;
@@ -2335,8 +2332,6 @@ bool PaintLayerScrollableArea::ComputeNeedsCompositedScrolling(
           ToLayoutBox(layer->GetLayoutObject()).PhysicalPaddingBoxRect()) &&
       !layer->CompositesWithTransform() && !layer->CompositesWithOpacity();
 
-  ASSERT(false); // BKTODO:
-#if 0
   // TODO(crbug.com/839341): Remove ScrollTimeline check once we support
   // main-thread AnimationWorklet and don't need to promote the scroll-source.
   if (!ScrollTimeline::HasActiveScrollTimeline(node) &&
@@ -2363,7 +2358,6 @@ bool PaintLayerScrollableArea::ComputeNeedsCompositedScrolling(
 
     needs_composited_scrolling = false;
   }
-#endif
 
   if (layer->GetLayoutObject().HasClip() ||
       layer->HasDescendantWithClipPath() || !!layer->ClipPathAncestor()) {
@@ -2925,11 +2919,9 @@ void PaintLayerScrollableArea::DidScrollWithScrollbar(
   UseCounter::Count(GetLayoutBox()->GetDocument(), scrollbar_use_uma);
 }
 
-#if 0 // BKTODO:
 CompositorElementId PaintLayerScrollableArea::GetCompositorElementId() const {
   return CompositorElementIdFromUniqueObjectId(
       GetLayoutBox()->UniqueId(), CompositorElementIdNamespace::kScroll);
 }
-#endif
 
 }  // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: slot_assignment.cc
+// Description: SlotAssignment Class
+//      Author: Ziming Li
+//     Created: 2020-12-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -9,21 +20,26 @@
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
 #include "third_party/blink/renderer/core/dom/shadow_root.h"
 #include "third_party/blink/renderer/core/dom/slot_assignment_engine.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_opt_group_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_select_element.h"
 #include "third_party/blink/renderer/core/html/html_details_element.h"
+#endif
 #include "third_party/blink/renderer/core/html/html_slot_element.h"
 
 namespace blink {
 
 namespace {
 bool ShouldAssignToCustomSlot(const Node& node) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsHTMLDetailsElement(node.parentElement()))
     return HTMLDetailsElement::IsFirstSummary(node);
   if (IsHTMLSelectElement(node.parentElement()))
     return HTMLSelectElement::CanAssignToSelectSlot(node);
   if (IsHTMLOptGroupElement(node.parentElement()))
     return HTMLOptGroupElement::CanAssignToOptGroupSlot(node);
+#endif
   return false;
 }
 }  // anonymous namespace
@@ -43,8 +59,11 @@ void SlotAssignment::DidAddSlot(HTMLSlotElement& slot) {
     return;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!slot_map_->Contains(slot.GetName()) ||
          GetCachedFirstSlotWithoutAccessingNodeTree(slot.GetName()));
+#endif
   DidAddSlotInternal(slot);
   // Ensures that TreeOrderedMap has a cache if there is a slot for the name.
   DCHECK(GetCachedFirstSlotWithoutAccessingNodeTree(slot.GetName()));
@@ -68,9 +87,12 @@ void SlotAssignment::DidRemoveSlot(HTMLSlotElement& slot) {
 
   DCHECK(GetCachedFirstSlotWithoutAccessingNodeTree(slot.GetName()));
   DidRemoveSlotInternal(slot, slot.GetName(), SlotMutationType::kRemoved);
+  ASSERT(false); // BKTODO:
+#if 0
   // Ensures that TreeOrderedMap has a cache if there is a slot for the name.
   DCHECK(!slot_map_->Contains(slot.GetName()) ||
          GetCachedFirstSlotWithoutAccessingNodeTree(slot.GetName()));
+#endif
 }
 
 void SlotAssignment::DidAddSlotInternal(HTMLSlotElement& slot) {
@@ -140,7 +162,7 @@ void SlotAssignment::DidRemoveSlotInternal(
   HTMLSlotElement* old_active =
       GetCachedFirstSlotWithoutAccessingNodeTree(slot_name);
   DCHECK(old_active);
-  slot_map_->Remove(slot_name, slot);
+  ASSERT(false); // BKTODO: slot_map_->Remove(slot_name, slot);
   // This also ensures that TreeOrderedMap has a cache for the first element.
   HTMLSlotElement* new_active = FindSlotByName(slot_name);
   DCHECK(!new_active || new_active != slot);
@@ -176,8 +198,11 @@ bool SlotAssignment::FindHostChildBySlotName(
   for (Node& child : NodeTraversal::ChildrenOf(owner_->host())) {
     if (!child.IsSlotable())
       continue;
+    ASSERT(false); // BKTODO:
+#if 0
     if (child.SlotName() == slot_name)
       return true;
+#endif
   }
   return false;
 }
@@ -256,7 +281,10 @@ void SlotAssignment::RecalcAssignment() {
           }
         }
       } else {
+        ASSERT(false); // BKTODO:
+#if 0
         slot = FindSlotByName(child.SlotName());
+#endif
       }
     } else {
       if (user_agent_custom_assign_slot && ShouldAssignToCustomSlot(child)) {
@@ -293,14 +321,22 @@ HTMLSlotElement* SlotAssignment::FindSlot(const Node& node) {
     return nullptr;
   if (owner_->IsUserAgent())
     return FindSlotInUserAgentShadow(node);
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return owner_->IsManualSlotting()
              ? FindSlotInManualSlotting(const_cast<Node&>(node))
              : FindSlotByName(node.SlotName());
+#endif
 }
 
 HTMLSlotElement* SlotAssignment::FindSlotByName(
     const AtomicString& slot_name) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return slot_map_->GetSlotByName(slot_name, *owner_);
+#endif
 }
 
 HTMLSlotElement* SlotAssignment::FindSlotInUserAgentShadow(
@@ -327,26 +363,32 @@ void SlotAssignment::CollectSlots() {
   slots_.clear();
 
   slots_.ReserveCapacity(slot_count_);
+  ASSERT(false); // BKTODO:
+#if 0
   for (HTMLSlotElement& slot :
        Traversal<HTMLSlotElement>::DescendantsOf(*owner_)) {
     slots_.push_back(&slot);
   }
+#endif
   needs_collect_slots_ = false;
   DCHECK_EQ(slots_.size(), slot_count_);
 }
 
 HTMLSlotElement* SlotAssignment::GetCachedFirstSlotWithoutAccessingNodeTree(
     const AtomicString& slot_name) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (Element* slot =
           slot_map_->GetCachedFirstElementWithoutAccessingNodeTree(slot_name)) {
     return ToHTMLSlotElement(slot);
   }
+#endif
   return nullptr;
 }
 
 void SlotAssignment::Trace(blink::Visitor* visitor) {
   visitor->Trace(slots_);
-  visitor->Trace(slot_map_);
+  // BKTODO: visitor->Trace(slot_map_);
   visitor->Trace(owner_);
 }
 

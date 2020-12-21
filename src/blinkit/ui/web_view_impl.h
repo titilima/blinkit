@@ -27,11 +27,12 @@
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
 
 namespace blink {
+class BrowserControls;
 class PageScaleConstraintsSet;
 struct ViewportDescription;
 }
 
-class WebViewImpl : public BlinKit::LocalFrameClientImpl
+class WebViewImpl : public blink::WebWidget, public BlinKit::LocalFrameClientImpl
 {
 public:
     virtual ~WebViewImpl(void);
@@ -49,6 +50,13 @@ public:
     float PageScaleFactor(void) const;
     void SetPageScaleFactor(float scaleFactor);
     blink::IntSize MainFrameSize(void);
+
+    void InvalidateRect(const blink::IntRect &rect);
+
+    // By default, all phases are updated by |UpdateLifecycle| (e.g., style,
+    // layout, prepaint, paint, etc. See: document_lifecycle.h). |LifecycleUpdate|
+    // can be used to only update to a specific lifecycle phase.
+    void UpdateLifecycle(LifecycleUpdate requestedUpdate = LifecycleUpdate::kAll);
 
     float ClampPageScaleFactorToLimits(float scaleFactor) const;
     void ScheduleAnimation(void);
@@ -71,7 +79,10 @@ protected:
     bool ProcessTitleChange(const std::string &newTitle) const;
     void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
     void Resize(const blink::WebSize &size);
+    void UpdateAndPaint(void);
 private:
+    blink::BrowserControls& GetBrowserControls(void);
+
     blink::IntSize FrameSize(void);
     blink::IntSize ContentsSize(void) const;
     blink::Color BaseBackgroundColor(void) const;
@@ -79,6 +90,13 @@ private:
     float MinimumPageScaleFactor(void) const;
     void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState);
     bool ShouldAutoResize(void) const { return m_shouldAutoResize; }
+    void UpdateICBAndResizeViewport(void);
+    void ResizeWithBrowserControls(const blink::WebSize &newSize, float topControlsHeight, float bottomControlsHeight,
+        bool browserControlsShrinkLayout);
+    void ResizeViewWhileAnchored(float topControlsHeight, float bottomControlsHeight, bool browserControlsShrinkLayout);
+    void SendResizeEventAndRepaint(void);
+
+    void UpdateLayerTreeBackgroundColor(void);
 
     bool IsAcceleratedCompositingActive(void) const;
     virtual std::unique_ptr<cc::SkiaPaintCanvas> CreateCanvas(const blink::WebSize &size) = 0;
@@ -99,6 +117,10 @@ private:
     std::unique_ptr<blink::LocalFrame> m_frame;
     SkColor m_baseBackgroundColor;
     std::unique_ptr<cc::SkiaPaintCanvas> m_canvas;
+
+    bool m_shouldDispatchFirstVisuallyNonEmptyLayout = false;
+    bool m_shouldDispatchFirstLayoutAfterFinishedParsing = false;
+    bool m_shouldDispatchFirstLayoutAfterFinishedLoading = false;
 
     std::unique_ptr<blink::ResizeViewportAnchor> m_resizeViewportAnchor;
 };

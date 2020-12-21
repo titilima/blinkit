@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: pre_paint_tree_walk.cc
+// Description: PrePaintTreeWalk Class
+//      Author: Ziming Li
+//     Created: 2020-12-19
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -12,8 +23,10 @@
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/layout/jank_tracker.h"
 #include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
+#endif
 #include "third_party/blink/renderer/core/layout/layout_multi_column_spanner_placeholder.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/page/page.h"
@@ -21,8 +34,10 @@
 #include "third_party/blink/renderer/core/paint/compositing/compositing_layer_property_updater.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/paint_property_tree_printer.h"
 #include "third_party/blink/renderer/core/paint/paint_tracker.h"
+#endif
 #include "third_party/blink/renderer/platform/graphics/paint/geometry_mapper.h"
 
 namespace blink {
@@ -60,6 +75,7 @@ void PrePaintTreeWalk::WalkTree(LocalFrameView& root_frame_view) {
 #if DCHECK_IS_ON()
   if (!needs_tree_builder_context_update)
     return;
+#if 0 // BKTODO: Check the logic below.
   if (VLOG_IS_ON(2) && root_frame_view.GetLayoutView()) {
     LOG(ERROR) << "PrePaintTreeWalk::Walk(root_frame_view=" << &root_frame_view
                << ")\nPaintLayer tree:";
@@ -67,6 +83,7 @@ void PrePaintTreeWalk::WalkTree(LocalFrameView& root_frame_view) {
   }
   if (VLOG_IS_ON(1))
     showAllPropertyTrees(root_frame_view);
+#endif
 #endif
 }
 
@@ -113,16 +130,18 @@ void PrePaintTreeWalk::Walk(LocalFrameView& frame_view) {
       context().paint_invalidator_context);
   if (context().tree_builder_context) {
     context().tree_builder_context->supports_composited_raster_invalidation =
-        frame_view.GetFrame().GetSettings()->GetAcceleratedCompositingEnabled();
+        Settings::AcceleratedCompositingEnabled;
   }
 
   if (LayoutView* view = frame_view.GetLayoutView()) {
 #ifndef NDEBUG
+#if 0 // BKTODO: Check the logic below.
     if (VLOG_IS_ON(3) && needs_tree_builder_context_update) {
       LOG(ERROR) << "PrePaintTreeWalk::Walk(frame_view=" << &frame_view
                  << ")\nLayout tree:";
       showLayoutTree(view);
     }
+#endif
 #endif
 
     Walk(*view);
@@ -132,9 +151,9 @@ void PrePaintTreeWalk::Walk(LocalFrameView& frame_view) {
   }
 
   if (RuntimeEnabledFeatures::JankTrackingEnabled())
-    frame_view.GetJankTracker().NotifyPrePaintFinished();
+    ASSERT(false); // BKTODO: frame_view.GetJankTracker().NotifyPrePaintFinished();
   if (RuntimeEnabledFeatures::PaintTrackingEnabled())
-    frame_view.GetPaintTracker().NotifyPrePaintFinished();
+    ASSERT(false); // BKTODO: frame_view.GetPaintTracker().NotifyPrePaintFinished();
 
   context_storage_.pop_back();
 }
@@ -152,6 +171,9 @@ bool PrePaintTreeWalk::NeedsEffectiveWhitelistedTouchActionUpdate(
 namespace {
 bool HasBlockingTouchEventHandler(const LocalFrame& frame,
                                   EventTarget& target) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (!target.HasEventListeners())
     return false;
   const auto& registry = frame.GetEventHandlerRegistry();
@@ -160,6 +182,7 @@ bool HasBlockingTouchEventHandler(const LocalFrame& frame,
   const auto* blocking_low_latency = registry.EventHandlerTargets(
       EventHandlerRegistry::kTouchStartOrMoveEventBlocking);
   return blocking->Contains(&target) || blocking_low_latency->Contains(&target);
+#endif
 }
 
 bool HasBlockingTouchEventHandler(const LayoutObject& object) {
@@ -285,27 +308,24 @@ bool PrePaintTreeWalk::NeedsTreeBuilderContextUpdate(
   }
   // The following CHECKs are for debugging crbug.com/816810.
   if (object.NeedsPaintPropertyUpdate()) {
-    CHECK(parent_context.tree_builder_context) << "NeedsPaintPropertyUpdate";
+    CHECK(parent_context.tree_builder_context); // NeedsPaintPropertyUpdate
     return true;
   }
   if (object.DescendantNeedsPaintPropertyUpdate()) {
-    CHECK(parent_context.tree_builder_context)
-        << "DescendantNeedsPaintPropertyUpdate";
+    CHECK(parent_context.tree_builder_context); // DescendantNeedsPaintPropertyUpdate
     return true;
   }
   if (object.DescendantNeedsPaintOffsetAndVisualRectUpdate()) {
-    CHECK(parent_context.tree_builder_context)
-        << "DescendantNeedsPaintOffsetAndVisualRectUpdate";
+    CHECK(parent_context.tree_builder_context); // DescendantNeedsPaintOffsetAndVisualRectUpdate
     return true;
   }
   if (parent_context.paint_invalidator_context.NeedsVisualRectUpdate(object)) {
     // If the object needs visual rect update, we should update tree
     // builder context which is needed by visual rect update.
     if (object.NeedsPaintOffsetAndVisualRectUpdate()) {
-      CHECK(parent_context.tree_builder_context)
-          << "NeedsPaintOffsetAndVisualRectUpdate";
+      CHECK(parent_context.tree_builder_context); // NeedsPaintOffsetAndVisualRectUpdate
     } else {
-      CHECK(parent_context.tree_builder_context) << "kSubtreeVisualRectUpdate";
+      CHECK(parent_context.tree_builder_context); // kSubtreeVisualRectUpdate
     }
     return true;
   }
@@ -371,13 +391,19 @@ void PrePaintTreeWalk::WalkInternal(const LayoutObject& object,
   CompositingLayerPropertyUpdater::Update(object);
 
   if (RuntimeEnabledFeatures::JankTrackingEnabled()) {
+    ASSERT(false); // BKTODO:
+#if 0
     object.GetFrameView()->GetJankTracker().NotifyObjectPrePaint(
         object, paint_invalidator_context.old_visual_rect,
         *paint_invalidator_context.painting_layer);
+#endif
   }
   if (RuntimeEnabledFeatures::PaintTrackingEnabled()) {
+    ASSERT(false); // BKTODO:
+#if 0
     object.GetFrameView()->GetPaintTracker().NotifyObjectPrePaint(
         object, *paint_invalidator_context.painting_layer);
+#endif
   }
 }
 
@@ -432,6 +458,8 @@ void PrePaintTreeWalk::Walk(const LayoutObject& object) {
   }
 
   if (object.IsLayoutEmbeddedContent()) {
+    ASSERT(false); // BKTODO:
+#if 0
     const LayoutEmbeddedContent& layout_embedded_content =
         ToLayoutEmbeddedContent(object);
     FrameView* frame_view = layout_embedded_content.ChildFrameView();
@@ -448,6 +476,7 @@ void PrePaintTreeWalk::Walk(const LayoutObject& object) {
       }
       Walk(*local_frame_view);
     }
+#endif
     // TODO(pdr): Investigate RemoteFrameView (crbug.com/579281).
   }
 

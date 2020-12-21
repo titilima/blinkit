@@ -11,7 +11,9 @@
 
 #include "page.h"
 
+#include "third_party/blink/renderer/core/editing/drag_caret.h"
 #include "third_party/blink/renderer/core/frame/browser_controls.h"
+#include "third_party/blink/renderer/core/frame/link_highlights.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
@@ -25,12 +27,14 @@ namespace blink {
 
 Page::Page(PageClients &pageClients)
     : m_chromeClient(pageClients.chromeClient)
+    , m_dragCaret(DragCaret::Create())
     , m_animator(PageAnimator::Create(*this))
     , m_dragController(DragController::Create(this))
     , m_pageScaleConstraintsSet(PageScaleConstraintsSet::Create(this))
     , m_browserControls(BrowserControls::Create(*this))
     , m_globalRootScrollerController(TopDocumentRootScrollerController::Create(*this))
     , m_visualViewport(VisualViewport::Create(*this))
+    , m_linkHighlights(LinkHighlights::Create(*this))
     , m_overscrollController(OverscrollController::Create(GetVisualViewport(), GetChromeClient()))
 {
 }
@@ -178,6 +182,7 @@ void Page::SetVisibilityState(PageVisibilityState visibilityState, bool isInitia
 
 void Page::Trace(Visitor *visitor)
 {
+    m_dragCaret->Trace(visitor);
     visitor->Trace(m_globalRootScrollerController);
 }
 

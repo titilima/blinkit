@@ -789,7 +789,6 @@ void ScrollableArea::DidScroll(const FloatPoint& position) {
   SetScrollOffset(new_offset, kCompositorScroll);
 }
 
-#if 0 // BKTODO:
 CompositorElementId ScrollableArea::GetScrollbarElementId(
     ScrollbarOrientation orientation) {
   CompositorElementId scrollable_element_id = GetCompositorElementId();
@@ -801,6 +800,5 @@ CompositorElementId ScrollableArea::GetScrollbarElementId(
   return CompositorElementIdFromUniqueObjectId(
       scrollable_element_id.GetInternalValue(), element_id_namespace);
 }
-#endif
 
 }  // namespace blink

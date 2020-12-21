@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: link_highlights.h
+// Description: LinkHighlights Class
+//      Author: Ziming Li
+//     Created: 2020-12-20
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -21,13 +32,10 @@ class WebLayerTreeView;
 class LocalFrame;
 class LayoutObject;
 
-class CORE_EXPORT LinkHighlights final
-    : public GarbageCollectedFinalized<LinkHighlights> {
+class CORE_EXPORT LinkHighlights final {
  public:
-  static LinkHighlights* Create(Page& page) { return new LinkHighlights(page); }
-  virtual ~LinkHighlights();
-
-  virtual void Trace(blink::Visitor*);
+  static std::unique_ptr<LinkHighlights> Create(Page& page) { return base::WrapUnique(new LinkHighlights(page)); }
+  ~LinkHighlights();
 
   void ResetForPageNavigation();
 
@@ -73,7 +81,7 @@ class CORE_EXPORT LinkHighlights final
 
   Member<Page> page_;
   Vector<std::unique_ptr<LinkHighlightImpl>> link_highlights_;
-  std::unique_ptr<CompositorAnimationHost> animation_host_;
+  // BKTODO: std::unique_ptr<CompositorAnimationHost> animation_host_;
   std::unique_ptr<CompositorAnimationTimeline> timeline_;
 };
 

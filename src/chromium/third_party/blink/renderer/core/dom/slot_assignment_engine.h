@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: slot_assignment_engine.h
+// Description: SlotAssignmentEngine Class
+//      Author: Ziming Li
+//     Created: 2020-12-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -11,10 +22,9 @@ namespace blink {
 
 class ShadowRoot;
 
-class SlotAssignmentEngine final
-    : public GarbageCollected<SlotAssignmentEngine> {
+class SlotAssignmentEngine final {
  public:
-  static SlotAssignmentEngine* Create() { return new SlotAssignmentEngine(); }
+  static std::unique_ptr<SlotAssignmentEngine> Create() { return base::WrapUnique(new SlotAssignmentEngine); }
 
   void AddShadowRootNeedingRecalc(ShadowRoot&);
   void RemoveShadowRootNeedingRecalc(ShadowRoot&);

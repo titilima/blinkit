@@ -1094,21 +1094,22 @@ PaintLayer* PaintLayer::EnclosingLayerWithCompositedLayerMapping(
 // including crossing frame boundaries.
 PaintLayer*
 PaintLayer::EnclosingLayerForPaintInvalidationCrossingFrameBoundaries() const {
+#if 0 // BKTODO: Check the logic below.
   const PaintLayer* layer = this;
   PaintLayer* composited_layer = nullptr;
   while (!composited_layer) {
     composited_layer = layer->EnclosingLayerForPaintInvalidation();
     if (!composited_layer) {
       CHECK(layer->GetLayoutObject().GetFrame());
-      ASSERT(false); // BKTODO:
-#if 0
       auto* owner = layer->GetLayoutObject().GetFrame()->OwnerLayoutObject();
       if (!owner)
         break;
       layer = owner->EnclosingLayer();
-#endif
     }
   }
+#else
+  PaintLayer* composited_layer = nullptr;
+#endif
   return composited_layer;
 }
 
@@ -1166,7 +1167,7 @@ bool PaintLayer::HasNonIsolatedDescendantWithBlendMode() const {
   DCHECK(!needs_descendant_dependent_flags_update_);
   if (has_non_isolated_descendant_with_blend_mode_)
     return true;
-  ASSERT(false); // BKTODO:
+  ASSERT(!GetLayoutObject().IsSVGRoot()); // BKTODO: Remove this later.
 #if 0
   if (GetLayoutObject().IsSVGRoot())
     return ToLayoutSVGRoot(GetLayoutObject())

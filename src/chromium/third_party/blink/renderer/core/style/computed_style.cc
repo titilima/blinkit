@@ -127,7 +127,7 @@ scoped_refptr<ComputedStyle> ComputedStyle::CreateInitialStyle() {
 }
 
 ComputedStyle& ComputedStyle::MutableInitialStyle() {
-  static GCStaticWrapper<scoped_refptr<ComputedStyle>> initial_style = CreateInitialStyle();
+  static GCStaticWrapper<scoped_refptr<ComputedStyle>> initial_style(CreateInitialStyle());
   return *(initial_style.GetAsReference());
 }
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: link_highlight_impl.cc
+// Description: LinkHighlightImpl Class
+//      Author: Ziming Li
+//     Created: 2020-12-20
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -29,8 +40,10 @@
 #include <utility>
 
 #include "base/memory/ptr_util.h"
+#if 0 // BKTODO:
 #include "cc/layers/picture_layer.h"
 #include "cc/paint/display_item_list.h"
+#endif
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/public/platform/web_float_point.h"
 #include "third_party/blink/public/platform/web_rect.h"
@@ -38,12 +51,14 @@
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/renderer/core/dom/layout_tree_builder_traversal.h"
 #include "third_party/blink/renderer/core/dom/node.h"
-#include "third_party/blink/renderer/core/exported/web_view_impl.h"
+// BKTODO: #include "third_party/blink/renderer/core/exported/web_view_impl.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/web_frame_widget_base.h"
 #include "third_party/blink/renderer/core/frame/web_local_frame_impl.h"
+#endif
 #include "third_party/blink/renderer/core/layout/layout_box_model_object.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/paint/compositing/composited_layer_mapping.h"
@@ -57,13 +72,13 @@
 #include "third_party/blink/renderer/platform/graphics/color.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_recorder.h"
-#include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_recorder.h"
 #include "third_party/blink/renderer/platform/layout_test_support.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 #include "third_party/skia/include/core/SkMatrix44.h"
 #include "ui/gfx/geometry/rect.h"
-#include "ui/gfx/geometry/rect_conversions.h"
+// BKTODO: #include "ui/gfx/geometry/rect_conversions.h"
 #include "ui/gfx/geometry/size_f.h"
 
 namespace blink {
@@ -81,6 +96,8 @@ LinkHighlightImpl::LinkHighlightImpl(Node* node)
       start_time_(CurrentTimeTicks()),
       unique_id_(NewUniqueObjectId()) {
   DCHECK(node_);
+  ASSERT(false); // BKTODO:
+#if 0
   content_layer_ = cc::PictureLayer::Create(this);
   content_layer_->SetTransformOrigin(FloatPoint3D());
 
@@ -92,6 +109,7 @@ LinkHighlightImpl::LinkHighlightImpl(Node* node)
   content_layer_->SetIsDrawable(true);
   content_layer_->SetOpacity(1);
   content_layer_->SetElementId(element_id());
+#endif
   geometry_needs_update_ = true;
 }
 
@@ -217,6 +235,8 @@ bool LinkHighlightImpl::ComputeHighlightLayerPathAndPosition(
 
     transformed_quad.Move(ToFloatSize(offset_to_backing));
 
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: for now, we'll only use rounded paths if we have a single node
     // quad. The reason for this is that we may sometimes get a chain of
     // adjacent boxes (e.g. for text nodes) which end up looking like sausage
@@ -232,6 +252,7 @@ bool LinkHighlightImpl::ComputeHighlightLayerPathAndPosition(
     } else {
       AddQuadToPath(transformed_quad, new_path);
     }
+#endif
   }
 
   FloatRect bounding_rect = new_path.BoundingRect();
@@ -240,15 +261,19 @@ bool LinkHighlightImpl::ComputeHighlightLayerPathAndPosition(
   bool path_has_changed = !(new_path == path_);
   if (path_has_changed) {
     path_ = new_path;
+    ASSERT(false); // BKTODO:
+#if 0
     content_layer_->SetBounds(
         static_cast<gfx::Size>(EnclosingIntRect(bounding_rect).Size()));
+#endif
   }
 
-  content_layer_->SetPosition(bounding_rect.Location());
+  ASSERT(false); // BKTODO: content_layer_->SetPosition(bounding_rect.Location());
 
   return path_has_changed;
 }
 
+#if 0 // BKTODO:
 gfx::Rect LinkHighlightImpl::PaintableRegion() {
   return gfx::Rect(content_layer_->bounds());
 }
@@ -281,6 +306,7 @@ LinkHighlightImpl::PaintContentsToDisplayList(
   display_list->Finalize();
   return display_list;
 }
+#endif
 
 void LinkHighlightImpl::StartHighlightAnimationIfNeeded() {
   if (is_animating_)
@@ -289,9 +315,11 @@ void LinkHighlightImpl::StartHighlightAnimationIfNeeded() {
   is_animating_ = true;
   const float kStartOpacity = 1;
   // FIXME: Should duration be configurable?
-  constexpr auto kFadeDuration = TimeDelta::FromMilliseconds(100);
-  constexpr auto kMinPreFadeDuration = TimeDelta::FromMilliseconds(100);
+  const auto kFadeDuration = TimeDelta::FromMilliseconds(100);
+  const auto kMinPreFadeDuration = TimeDelta::FromMilliseconds(100);
 
+  ASSERT(false); // BKTODO:
+#if 0
   content_layer_->SetOpacity(kStartOpacity);
 
   std::unique_ptr<CompositorFloatAnimationCurve> curve =
@@ -322,6 +350,7 @@ void LinkHighlightImpl::StartHighlightAnimationIfNeeded() {
 
   content_layer_->SetIsDrawable(true);
   compositor_animation_->AddKeyframeModel(std::move(keyframe_model));
+#endif
 
   Invalidate();
 }
@@ -361,6 +390,8 @@ void LinkHighlightImpl::UpdateGeometry() {
         node_->GetLayoutObject()->ContainerForPaintInvalidation();
     AttachLinkHighlightToCompositingLayer(paint_invalidation_container);
     if (ComputeHighlightLayerPathAndPosition(paint_invalidation_container)) {
+      ASSERT(false); // BKTODO:
+#if 0
       // We only need to invalidate the layer if the highlight size has changed,
       // otherwise we can just re-position the layer without needing to
       // repaint.
@@ -373,6 +404,7 @@ void LinkHighlightImpl::UpdateGeometry() {
             LinkHighlightDisplayItemClientForTracking(), IntRect(rect),
             PaintInvalidationReason::kFullLayer);
       }
+#endif
     }
   } else {
     ClearGraphicsLayerLinkHighlightPointer();
@@ -392,7 +424,11 @@ void LinkHighlightImpl::Invalidate() {
 }
 
 cc::Layer* LinkHighlightImpl::Layer() {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return content_layer_.get();
+#endif
 }
 
 CompositorAnimation* LinkHighlightImpl::GetCompositorAnimation() const {

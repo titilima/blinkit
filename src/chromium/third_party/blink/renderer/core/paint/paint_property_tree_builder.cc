@@ -16,13 +16,13 @@
 #include "third_party/blink/renderer/core/paint/paint_property_tree_builder.h"
 
 #include <memory>
-// BKTODO: #include "third_party/blink/renderer/core/animation/scroll_timeline.h"
+#include "third_party/blink/renderer/core/animation/scroll_timeline.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
-// BKTODO: #include "third_party/blink/renderer/core/frame/link_highlights.h"
+#include "third_party/blink/renderer/core/frame/link_highlights.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
-// BKTODO: #include "third_party/blink/renderer/core/frame/visual_viewport.h"
+#include "third_party/blink/renderer/core/frame/visual_viewport.h"
 #include "third_party/blink/renderer/core/layout/fragmentainer_iterator.h"
 #include "third_party/blink/renderer/core/layout/layout_image.h"
 #include "third_party/blink/renderer/core/layout/layout_inline.h"
@@ -101,8 +101,6 @@ void VisualViewportPaintPropertyTreeBuilder::Update(
 
   PaintPropertyTreeBuilderFragmentContext& context = full_context.fragments[0];
 
-  ASSERT(false); // BKTODO:
-#if 0
   visual_viewport.UpdatePaintPropertyNodesIfNeeded(context);
 
   context.current.transform = visual_viewport.GetScrollTranslationNode();
@@ -114,6 +112,7 @@ void VisualViewportPaintPropertyTreeBuilder::Update(
   context.absolute_position.scroll = visual_viewport.GetScrollNode();
   context.fixed_position.scroll = visual_viewport.GetScrollNode();
 
+#if 0 // BKTODO: Check if necessary.
 #if DCHECK_IS_ON()
   PaintPropertyTreePrinter::UpdateDebugNames(visual_viewport);
 #endif
@@ -127,7 +126,7 @@ void PaintPropertyTreeBuilder::SetupContextForFrame(
     full_context.fragments.push_back(PaintPropertyTreeBuilderFragmentContext());
 
   PaintPropertyTreeBuilderFragmentContext& context = full_context.fragments[0];
-  ASSERT(false); // BKTODO: context.current.paint_offset.MoveBy(frame_view.Location());
+  context.current.paint_offset.MoveBy(frame_view.Location());
   context.current.rendering_context_id = 0;
   context.current.should_flatten_inherited_transform = true;
   context.absolute_position = context.current;
@@ -158,8 +157,7 @@ class FragmentPaintPropertyTreeBuilder {
       full_context_.force_subtree_update_reasons |=
           PaintPropertyTreeBuilderContext::kSubtreeUpdateIsolationBlocked;
     }
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
 #if DCHECK_IS_ON()
     if (properties_)
       PaintPropertyTreePrinter::UpdateDebugNames(object_, *properties_);
@@ -257,24 +255,16 @@ class FragmentPaintPropertyTreeBuilder {
 static bool IsRootScroller(const LayoutBox& box) {
   auto* scrollable_area = box.GetScrollableArea();
   DCHECK(scrollable_area);
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   auto* layer = scrollable_area->Layer();
   return layer &&
          CompositingReasonFinder::RequiresCompositingForRootScroller(*layer);
-#endif
 }
 
 static bool HasScrollsOverflow(const LayoutBox& box) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   // TODO(crbug.com/839341): Remove ScrollTimeline check once we support
   // main-thread AnimationWorklet and don't need to promote the scroll-source.
   return box.GetScrollableArea()->ScrollsOverflow() ||
          ScrollTimeline::HasActiveScrollTimeline(box.GetNode());
-#endif
 }
 
 static bool NeedsScrollNode(const LayoutObject& object) {
@@ -335,11 +325,8 @@ static bool NeedsReplacedContentTransform(const LayoutObject& object) {
 static bool NeedsPaintOffsetTranslationForScrollbars(
     const LayoutBoxModelObject& object) {
   if (auto* area = object.GetScrollableArea()) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (area->HorizontalScrollbar() || area->VerticalScrollbar())
       return true;
-#endif
   }
   return false;
 }
@@ -352,15 +339,14 @@ static bool NeedsIsolationNodes(const LayoutObject& object) {
   if (object.ShouldApplyPaintContainment())
     return true;
 
+#if 0 // BKTODO: Check if necessary.
   // Layout view establishes isolation with the exception of local roots (since
   // they are already essentially isolated).
   if (object.IsLayoutView()) {
-    ASSERT(false); // BKTODO:
-#if 0
     const auto* parent_frame = object.GetFrame()->Tree().Parent();
     return parent_frame && parent_frame->IsLocalFrame();
-#endif
   }
+#endif
   return false;
 }
 
@@ -502,12 +488,9 @@ void FragmentPaintPropertyTreeBuilder::UpdateStickyTranslation() {
       TransformPaintPropertyNode::State state{AffineTransform::Translation(
           sticky_offset.Width(), sticky_offset.Height())};
       state.is_identity_or_2d_translation = true;
-      ASSERT(false); // BKTODO:
-#if 0
       state.compositor_element_id = CompositorElementIdFromUniqueObjectId(
           box_model.UniqueId(),
           CompositorElementIdNamespace::kStickyTranslation);
-#endif
 
       auto* layer = box_model.Layer();
       const auto* scroller_properties = layer->AncestorOverflowLayer()
@@ -527,13 +510,13 @@ void FragmentPaintPropertyTreeBuilder::UpdateStickyTranslation() {
       // incorrectly with clip escaping involved.
       if (scroller_properties &&
           scroller_properties->Scroll() == context_.current.scroll) {
-        ASSERT(false); // BKTODO:
-#if 0
         const StickyPositionScrollingConstraints& layout_constraint =
             layer->AncestorOverflowLayer()
                 ->GetScrollableArea()
                 ->GetStickyConstraintsMap()
                 .at(layer);
+        ASSERT(false); // BKTODO:
+#if 0
         auto constraint = std::make_unique<CompositorStickyConstraint>();
         constraint->is_sticky = true;
         constraint->is_anchored_left = layout_constraint.is_anchored_left;
@@ -721,11 +704,8 @@ void FragmentPaintPropertyTreeBuilder::UpdateTransform() {
             object_.HasHiddenBackface()
                 ? TransformPaintPropertyNode::BackfaceVisibility::kHidden
                 : TransformPaintPropertyNode::BackfaceVisibility::kVisible;
-        ASSERT(false); // BKTODO:
-#if 0
         state.compositor_element_id = CompositorElementIdFromUniqueObjectId(
             object_.UniqueId(), CompositorElementIdNamespace::kPrimary);
-#endif
       }
 
       OnUpdate(properties_->UpdateTransform(*context_.current.transform,
@@ -935,11 +915,8 @@ void FragmentPaintPropertyTreeBuilder::UpdateEffect() {
           state.direct_compositing_reasons =
               CompositingReason::kActiveOpacityAnimation;
         }
-        ASSERT(false); // BKTODO:
-#if 0
         state.compositor_element_id = CompositorElementIdFromUniqueObjectId(
             object_.UniqueId(), CompositorElementIdNamespace::kPrimary);
-#endif
       }
       OnUpdate(properties_->UpdateEffect(*context_.current_effect,
                                          std::move(state)));
@@ -952,13 +929,10 @@ void FragmentPaintPropertyTreeBuilder::UpdateEffect() {
         mask_state.blend_mode = SkBlendMode::kDstIn;
         if (RuntimeEnabledFeatures::SlimmingPaintV2Enabled() ||
             RuntimeEnabledFeatures::BlinkGenPropertyTreesEnabled()) {
-          ASSERT(false); // BKTODO:
-#if 0
           mask_state.compositor_element_id =
               CompositorElementIdFromUniqueObjectId(
                   object_.UniqueId(),
                   CompositorElementIdNamespace::kEffectMask);
-#endif
         }
         OnUpdate(properties_->UpdateMask(*properties_->Effect(),
                                          std::move(mask_state)));
@@ -976,13 +950,10 @@ void FragmentPaintPropertyTreeBuilder::UpdateEffect() {
         clip_path_state.blend_mode = SkBlendMode::kDstIn;
         if (RuntimeEnabledFeatures::SlimmingPaintV2Enabled() ||
             RuntimeEnabledFeatures::BlinkGenPropertyTreesEnabled()) {
-          ASSERT(false); // BKTODO:
-#if 0
           clip_path_state.compositor_element_id =
               CompositorElementIdFromUniqueObjectId(
                   object_.UniqueId(),
                   CompositorElementIdNamespace::kEffectClipPath);
-#endif
         }
         OnUpdate(
             properties_->UpdateClipPath(parent, std::move(clip_path_state)));
@@ -1007,12 +978,8 @@ void FragmentPaintPropertyTreeBuilder::UpdateEffect() {
 }
 
 static bool NeedsLinkHighlightEffect(const LayoutObject& object) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   auto* page = object.GetFrame()->GetPage();
   return page->GetLinkHighlights().NeedsHighlightEffect(object);
-#endif
 }
 
 void FragmentPaintPropertyTreeBuilder::UpdateLinkHighlightEffect() {
@@ -1124,11 +1091,8 @@ void FragmentPaintPropertyTreeBuilder::UpdateFilter() {
         DCHECK(!style.HasCurrentFilterAnimation() ||
                state.direct_compositing_reasons != CompositingReason::kNone);
 
-        ASSERT(false); // BKTODO:
-#if 0
         state.compositor_element_id = CompositorElementIdFromUniqueObjectId(
             object_.UniqueId(), CompositorElementIdNamespace::kEffectFilter);
-#endif
       }
 
       OnUpdate(properties_->UpdateFilter(*context_.current_effect,
@@ -1229,12 +1193,12 @@ void FragmentPaintPropertyTreeBuilder::UpdateClipPathClip(
   }
 }
 
-#if 0 // BKTODO:
 // Returns true if we are printing which was initiated by the frame. We should
 // ignore clipping and scroll transform on contents. WebLocalFrameImpl will
 // issue artificial page clip for each page, and always print from the origin
 // of the contents for which no scroll offset should be applied.
 static bool IsPrintingRootLayoutView(const LayoutObject& object) {
+#if 0 // BKTODO: Remove this later.
   if (!object.IsLayoutView())
     return false;
 
@@ -1252,8 +1216,10 @@ static bool IsPrintingRootLayoutView(const LayoutObject& object) {
 
   // If the parent frame is printing, this frame should clip normally.
   return !ToLocalFrame(parent_frame)->GetDocument()->Printing();
-}
+#else
+  return false;
 #endif
+}
 
 static bool NeedsOverflowClipForReplacedContents(
     const LayoutReplaced& replaced) {
@@ -1286,16 +1252,16 @@ static bool NeedsOverflowClip(const LayoutObject& object) {
   if (object.IsLayoutReplaced())
     return NeedsOverflowClipForReplacedContents(ToLayoutReplaced(object));
 
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
+#if 0 // BKTODO: Remove this later.
   if (object.IsSVGViewportContainer() &&
       SVGLayoutSupport::IsOverflowHidden(object))
     return true;
+#else
+  ASSERT(!object.IsSVGViewportContainer());
+#endif
 
   return object.IsBox() && ToLayoutBox(object).ShouldClipOverflow() &&
          !IsPrintingRootLayoutView(object);
-#endif
 }
 
 void FragmentPaintPropertyTreeBuilder::UpdateLocalBorderBoxContext() {
@@ -1324,9 +1290,6 @@ bool FragmentPaintPropertyTreeBuilder::NeedsOverflowControlsClip() const {
 
   const auto& box = ToLayoutBox(object_);
   const auto* scrollable_area = box.GetScrollableArea();
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   IntRect scroll_controls_bounds =
       scrollable_area->ScrollCornerAndResizerRect();
   if (const auto* scrollbar = scrollable_area->HorizontalScrollbar())
@@ -1337,7 +1300,6 @@ bool FragmentPaintPropertyTreeBuilder::NeedsOverflowControlsClip() const {
       ToLayoutSize(context_.current.paint_offset));
   pixel_snapped_border_box_rect.SetLocation(IntPoint());
   return !pixel_snapped_border_box_rect.Contains(scroll_controls_bounds);
-#endif
 }
 
 static bool NeedsInnerBorderRadiusClip(const LayoutObject& object) {
@@ -1677,8 +1639,6 @@ void FragmentPaintPropertyTreeBuilder::UpdateScrollAndScrollTranslation() {
       // integer offsets used in CompositedLayerMapping.
       state.container_rect = PixelSnappedIntRect(
           box.OverflowClipRect(context_.current.paint_offset));
-      ASSERT(false); // BKTODO:
-#if 0
       state.contents_size = scrollable_area->PixelSnappedContentsSize(
           context_.current.paint_offset);
 
@@ -1715,7 +1675,7 @@ void FragmentPaintPropertyTreeBuilder::UpdateScrollAndScrollTranslation() {
 
       auto* snap_coordinator = box.GetDocument().GetSnapCoordinator();
       if (snap_coordinator) {
-        state.snap_container_data = snap_coordinator->GetSnapContainerData(box);
+        ASSERT(false); // BKTODO: state.snap_container_data = snap_coordinator->GetSnapContainerData(box);
       }
 
       OnUpdate(properties_->UpdateScroll(*context_.current.scroll,
@@ -1748,7 +1708,6 @@ void FragmentPaintPropertyTreeBuilder::UpdateScrollAndScrollTranslation() {
       } else {
         OnClear(properties_->ClearHorizontalScrollbarEffect());
       }
-#endif
     } else {
       OnClear(properties_->ClearScroll());
       OnClear(properties_->ClearVerticalScrollbarEffect());
@@ -2199,11 +2158,8 @@ void FragmentPaintPropertyTreeBuilder::UpdateForObjectLocationAndSize(
     fragment_data_.SetPaintOffset(context_.current.paint_offset);
     fragment_data_.InvalidateClipPathCache();
 
-    ASSERT(false); // BKTODO:
-#if 0
     object_.GetFrameView()->SetIntersectionObservationState(
         LocalFrameView::kDesired);
-#endif
   }
 
   if (paint_offset_translation)

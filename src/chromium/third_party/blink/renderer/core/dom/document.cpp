@@ -90,7 +90,11 @@
 #   include "third_party/blink/renderer/core/dom/document_type.h"
 #   include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
 #   include "third_party/blink/renderer/core/dom/nth_index_cache.h"
+#   include "third_party/blink/renderer/core/dom/scripted_animation_controller.h"
+#   include "third_party/blink/renderer/core/dom/slot_assignment_engine.h"
 #   include "third_party/blink/renderer/core/dom/visited_link_state.h"
+#   include "third_party/blink/renderer/core/events/visual_viewport_resize_event.h"
+#   include "third_party/blink/renderer/core/frame/dom_visual_viewport.h"
 #   include "third_party/blink/renderer/core/frame/viewport_data.h"
 #   include "third_party/blink/renderer/core/html/custom/v0_custom_element_registration_context.h"
 #   include "third_party/blink/renderer/core/html/imports/html_imports_controller.h"
@@ -112,6 +116,14 @@
 using namespace BlinKit;
 
 namespace blink {
+
+class IntersectionObserverController // BKTODO:
+{
+};
+
+class ResizeObserverController // BKTODO:
+{
+};
 
 uint64_t Document::m_globalTreeVersion = 0;
 
@@ -910,7 +922,8 @@ StyleResolver& Document::EnsureStyleResolver(void) const
 
 void Document::EvaluateMediaQueryList(void)
 {
-    ASSERT(false); // BKTODO:
+    if (m_mediaQueryMatcher)
+        ASSERT(false); // BKTODO: m_mediaQueryMatcher->MediaFeaturesChanged();
 }
 
 void Document::EvaluateMediaQueryListIfNeeded(void)
@@ -2086,6 +2099,8 @@ void Document::Trace(Visitor *visitor)
 #ifndef BLINKIT_CRAWLER_ONLY
     if (!ForCrawler())
     {
+        if (m_scriptedAnimationController)
+            m_scriptedAnimationController->Trace(visitor);
         visitor->Trace(m_mediaQueryMatcher);
         visitor->Trace(m_styleEngine);
         visitor->Trace(m_elemSheet);
@@ -2096,6 +2111,9 @@ void Document::Trace(Visitor *visitor)
         visitor->Trace(m_hoverElement);
         visitor->Trace(m_focusedElement);
         visitor->Trace(m_autofocusElement);
+        ASSERT(!m_resizeObserverController); // BKTODO:
+        if (m_slotAssignmentEngine)
+            m_slotAssignmentEngine->Trace(visitor);
         visitor->Trace(m_snapCoordinator);
         visitor->Trace(m_timeline);
     }
@@ -2630,22 +2648,26 @@ CSSStyleSheet& Document::ElementSheet(void)
 
 void Document::EnqueueResizeEvent(void)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    Event* event = Event::Create(EventTypeNames::resize);
+    Event *event = Event::Create(event_type_names::kResize);
     event->SetTarget(domWindow());
     EnsureScriptedAnimationController().EnqueuePerFrameEvent(event);
-#endif
 }
 
 void Document::Document::EnqueueVisualViewportResizeEvent(void)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     VisualViewportResizeEvent *event = VisualViewportResizeEvent::Create();
     event->SetTarget(domWindow()->visualViewport());
     EnsureScriptedAnimationController().EnqueuePerFrameEvent(event);
-#endif
+}
+
+ScriptedAnimationController& Document::EnsureScriptedAnimationController(void)
+{
+    if (!m_scriptedAnimationController)
+    {
+        m_scriptedAnimationController = ScriptedAnimationController::Create(this);
+        ASSERT(nullptr != GetPage());
+    }
+    return *m_scriptedAnimationController;
 }
 
 HTMLBodyElement* Document::FirstBodyElement(void) const
@@ -2672,6 +2694,13 @@ AnimationClock& Document::GetAnimationClock(void)
     return GetPage()->Animator().Clock();
 }
 
+SlotAssignmentEngine& Document::GetSlotAssignmentEngine(void)
+{
+    if (!m_slotAssignmentEngine)
+        m_slotAssignmentEngine = SlotAssignmentEngine::Create();
+    return *m_slotAssignmentEngine;
+}
+
 SnapCoordinator* Document::GetSnapCoordinator(void)
 {
     if (RuntimeEnabledFeatures::CSSScrollSnapPointsEnabled())
@@ -2680,6 +2709,15 @@ SnapCoordinator* Document::GetSnapCoordinator(void)
             m_snapCoordinator = SnapCoordinator::Create();
     }
     return m_snapCoordinator.Get();
+}
+
+bool Document::IsSlotAssignmentOrLegacyDistributionDirty(void)
+{
+    if (ChildNeedsDistributionRecalc())
+        return true;
+    if (GetSlotAssignmentEngine().HasPendingSlotAssignmentRecalc())
+        return true;
+    return false;
 }
 
 void Document::LayoutUpdated(void)
@@ -2919,6 +2957,33 @@ scoped_refptr<ComputedStyle> Document::StyleForElementIgnoringPendingStylesheets
     const ComputedStyle *layoutParentStyle = nullptr != layoutParent ? layoutParent->EnsureComputedStyle() : parentStyle;
 
     return EnsureStyleResolver().StyleForElement(element, parentStyle, layoutParentStyle);
+}
+
+void Document::UpdateStyleAndLayoutIgnorePendingStylesheets(RunPostLayoutTasks runPostLayoutTasks)
+{
+    LocalFrameView *localView = View();
+    if (nullptr != localView)
+        localView->WillStartForcedLayout();
+
+    UpdateStyleAndLayoutTreeIgnorePendingStylesheets();
+    UpdateStyleAndLayout();
+
+    if (nullptr != localView)
+    {
+        if (kRunPostLayoutTasksSynchronously == runPostLayoutTasks)
+            localView->FlushAnyPendingPostLayoutTasks();
+        localView->DidFinishForcedLayout();
+    }
+}
+
+void Document::UpdateStyleAndLayout(void)
+{
+    ASSERT(false); // BKTODO:
+}
+
+void Document::UpdateStyleAndLayoutTreeIgnorePendingStylesheets(void)
+{
+    ASSERT(false); // BKTODO:
 }
 
 void Document::ViewportDefiningElementDidChange(void)

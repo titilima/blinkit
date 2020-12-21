@@ -33,13 +33,9 @@ MediaValues* MediaValuesDynamic::Create(Document& document) {
 }
 
 MediaValues* MediaValuesDynamic::Create(LocalFrame* frame) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   if (!frame || !frame->View() || !frame->GetDocument() ||
       !frame->GetDocument()->GetLayoutView())
     return MediaValuesCached::Create();
-#endif
   return new MediaValuesDynamic(frame);
 }
 

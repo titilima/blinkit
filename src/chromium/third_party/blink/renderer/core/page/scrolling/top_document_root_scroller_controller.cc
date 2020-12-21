@@ -133,8 +133,7 @@ void SetNeedsCompositingUpdateOnAncestors(Element* element) {
   if (!area || !area->Layer())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check the logic below.
   Frame* frame = area->Layer()->GetLayoutObject().GetFrame();
   for (; frame; frame = frame->Tree().Parent()) {
     if (!frame->IsLocalFrame())
@@ -145,6 +144,8 @@ void SetNeedsCompositingUpdateOnAncestors(Element* element) {
     DCHECK(frame_root_layer);
     frame_root_layer->SetNeedsCompositingInputsUpdate();
   }
+#else
+  area->Layer()->SetNeedsCompositingInputsUpdate();
 #endif
 }
 
@@ -168,7 +169,7 @@ void TopDocumentRootScrollerController::RecomputeGlobalRootScroller() {
   // Use disable-native-scroll since the ViewportScrollCallback needs to
   // apply scroll actions both before (BrowserControls) and after (overscroll)
   // scrolling the element so it will apply scroll to the element itself.
-  ASSERT(false); // BKTODO: target->SetApplyScroll(viewport_apply_scroll_);
+  target->SetApplyScroll(viewport_apply_scroll_);
 
   Element* old_root_scroller = global_root_scroller_;
 

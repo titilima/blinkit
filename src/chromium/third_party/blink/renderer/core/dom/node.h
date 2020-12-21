@@ -63,6 +63,7 @@ using StaticNodeList = StaticNodeTypeList<Node>;
 class ComputedStyle;
 class HTMLSlotElement;
 class LayoutBox;
+class LayoutBoxModelObject;
 class StyleChangeReasonForTracing;
 #endif
 
@@ -421,6 +422,7 @@ public:
     }
     void SetLayoutObject(LayoutObject *layoutObject);
     LayoutBox* GetLayoutBox(void) const;
+    LayoutBoxModelObject* GetLayoutBoxModelObject(void) const;
 
     struct AttachContext {
         STACK_ALLOCATED();

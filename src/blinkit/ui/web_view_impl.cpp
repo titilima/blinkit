@@ -11,12 +11,14 @@
 
 #include "web_view_impl.h"
 
+#include "third_party/blink/renderer/core/frame/browser_controls.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/viewport_data.h"
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
+#include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"
 #include "third_party/blink/renderer/core/page/chrome_client_impl.h"
 #include "third_party/blink/renderer/core/page/page.h"
@@ -24,6 +26,10 @@
 
 using namespace blink;
 using namespace BlinKit;
+
+// Constants for viewport anchoring on resize.
+static const float ViewportAnchorCoordX = 0.5f;
+static const float ViewportAnchorCoordY = 0;
 
 WebViewImpl::WebViewImpl(PageVisibilityState visibilityState, SkColor baseBackgroundColor)
     : m_chromeClient(ChromeClientImpl::Create(this)), m_baseBackgroundColor(baseBackgroundColor)
@@ -118,6 +124,11 @@ IntSize WebViewImpl::FrameSize(void)
     return ExpandedIntSize(frameSize);
 }
 
+BrowserControls& WebViewImpl::GetBrowserControls(void)
+{
+    return m_page->GetBrowserControls();
+}
+
 PageScaleConstraintsSet& WebViewImpl::GetPageScaleConstraintsSet(void) const
 {
     return m_page->GetPageScaleConstraintsSet();
@@ -127,6 +138,19 @@ void WebViewImpl::Initialize(void)
 {
     m_frame = LocalFrame::Create(this, m_page.get());
     m_frame->Init();
+}
+
+void WebViewImpl::InvalidateRect(const IntRect &rect)
+{
+#if 0 // BKTODO: Check this logic later.
+    if (layer_tree_view_) {
+        UpdateLayerTreeViewport();
+    }
+    else if (client_) {
+        // This is only for WebViewPlugin.
+        client_->WidgetClient()->DidInvalidateRect(rect);
+    }
+#endif
 }
 
 bool WebViewImpl::IsAcceleratedCompositingActive(void) const
@@ -226,12 +250,10 @@ void WebViewImpl::Resize(const WebSize &size)
 
     m_canvas = CreateCanvas(size);
     m_canvas->drawColor(m_baseBackgroundColor);
-    ASSERT(false); // BKTODO:
-#if 0
-    ResizeWithBrowserControls(new_size, GetBrowserControls().TopHeight(),
-        GetBrowserControls().BottomHeight(),
-        GetBrowserControls().ShrinkViewport());
-#endif
+
+    BrowserControls& browserControls = GetBrowserControls();
+    ResizeWithBrowserControls(size, browserControls.TopHeight(), browserControls.BottomHeight(),
+        browserControls.ShrinkViewport());
 }
 
 void WebViewImpl::ResizeAfterLayout(void)
@@ -254,8 +276,8 @@ void WebViewImpl::ResizeAfterLayout(void)
             ASSERT(false); // BKTODO:
 #if 0
             client_->DidAutoResize(size_);
-            SendResizeEventAndRepaint();
 #endif
+            SendResizeEventAndRepaint();
         }
     }
 
@@ -263,6 +285,92 @@ void WebViewImpl::ResizeAfterLayout(void)
         RefreshPageScaleFactor();
 
     m_resizeViewportAnchor->ResizeFrameView(MainFrameSize());
+}
+
+void WebViewImpl::ResizeViewWhileAnchored(
+    float topControlsHeight, float bottomControlsHeight,
+    bool browserControlsShrinkLayout)
+{
+    LocalFrame *mainFrame = m_page->MainFrame();
+    ASSERT(nullptr != mainFrame);
+
+    GetBrowserControls().SetHeight(topControlsHeight, bottomControlsHeight, browserControlsShrinkLayout);
+
+    {
+        // Avoids unnecessary invalidations while various bits of state in
+        // TextAutosizer are updated.
+        TextAutosizer::DeferUpdatePageInfo deferUpdatePageInfo(GetPage());
+        LocalFrameView *frameView = mainFrame->View();
+        IntSize oldSize = frameView->Size();
+        UpdateICBAndResizeViewport();
+        IntSize newSize = frameView->Size();
+        frameView->MarkViewportConstrainedObjectsForLayout(
+            oldSize.Width() != newSize.Width(),
+            oldSize.Height() != newSize.Height()
+        );
+    }
+
+    // BKTODO: fullscreen_controller_->UpdateSize();
+
+    // Update lifecyle phases immediately to recalculate the minimum scale limit
+    // for rotation anchoring, and to make sure that no lifecycle states are
+    // stale if this WebView is embedded in another one.
+    UpdateLifecycle();
+}
+
+void WebViewImpl::ResizeWithBrowserControls(
+    const WebSize &newSize,
+    float topControlsHeight, float bottomControlsHeight,
+    bool browserControlsShrinkLayout)
+{
+    if (m_shouldAutoResize)
+        return;
+
+    if (m_size == newSize)
+    {
+        BrowserControls &browserControls = GetBrowserControls();
+        if (browserControls.TopHeight() == topControlsHeight
+            && browserControls.BottomHeight() == bottomControlsHeight
+            && browserControls.ShrinkViewport() == browserControlsShrinkLayout)
+        {
+            return;
+        }
+    }
+
+    LocalFrame *mainFrame = m_page->MainFrame();
+    if (nullptr == mainFrame)
+        return;
+
+    LocalFrameView *view = mainFrame->View();
+    if (nullptr == view)
+        return;
+
+    VisualViewport &visualViewport = m_page->GetVisualViewport();
+
+    bool isRotation = Settings::MainFrameResizesAreOrientationChanges
+        && 0 != m_size.width
+        && 0 != ContentsSize().Width()
+        && newSize.width != m_size.width;
+    m_size = newSize;
+
+    FloatSize viewportAnchorCoords(ViewportAnchorCoordX, ViewportAnchorCoordY);
+    if (isRotation)
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        RotationViewportAnchor anchor(*view, visualViewport,
+            viewportAnchorCoords,
+            GetPageScaleConstraintsSet());
+        ResizeViewWhileAnchored(top_controls_height, bottom_controls_height,
+            browser_controls_shrink_layout);
+#endif
+    }
+    else
+    {
+        ResizeViewportAnchor::ResizeScope resizeScope(*m_resizeViewportAnchor);
+        ResizeViewWhileAnchored(topControlsHeight, bottomControlsHeight, browserControlsShrinkLayout);
+    }
+    SendResizeEventAndRepaint();
 }
 
 void WebViewImpl::ScheduleAnimation(void)
@@ -275,6 +383,30 @@ void WebViewImpl::ScheduleAnimation(void)
     }
     if (client_)
         client_->WidgetClient()->ScheduleAnimation();
+#endif
+}
+
+void WebViewImpl::SendResizeEventAndRepaint(void)
+{
+    // FIXME: This is wrong. The LocalFrameView is responsible sending a
+    // resizeEvent as part of layout. Layout is also responsible for sending
+    // invalidations to the embedder. This method and all callers may be wrong. --
+    // eseidel.
+    LocalFrame *mainFrame = m_page->MainFrame();
+    if (nullptr != mainFrame->View())
+        mainFrame->GetDocument()->EnqueueResizeEvent(); // Enqueues the resize event.
+
+#if 0 // BKTODO: Check the logic below.
+    if (client_)
+    {
+        if (layer_tree_view_) {
+            UpdateLayerTreeViewport();
+        }
+        else {
+            WebRect damaged_rect(0, 0, size_.width, size_.height);
+            client_->WidgetClient()->DidInvalidateRect(damaged_rect);
+        }
+    }
 #endif
 }
 
@@ -345,9 +477,98 @@ void WebViewImpl::TransitionToCommittedForNewPage(void)
 #endif
 }
 
+void WebViewImpl::UpdateAndPaint(void)
+{
+    UpdateLifecycle();
+    PaintContent(m_canvas.get(), IntRect(IntPoint(), m_size));
+}
+
+void WebViewImpl::UpdateICBAndResizeViewport(void)
+{
+    // We'll keep the initial containing block size from changing when the top
+    // controls hide so that the ICB will always be the same size as the
+    // viewport with the browser controls shown.
+    IntSize icbSize = m_size;
+
+    BrowserControls &browserControls = GetBrowserControls();
+    if (browserControls.PermittedState() == cc::BrowserControlsState::kBoth && !browserControls.ShrinkViewport())
+        icbSize.Expand(0, -browserControls.TotalHeight());
+
+    GetPageScaleConstraintsSet().DidChangeInitialContainingBlockSize(icbSize);
+
+    LocalFrame *mainFrame = m_page->MainFrame();
+    UpdatePageDefinedViewportConstraints(mainFrame->GetDocument()->GetViewportData().GetViewportDescription());
+    UpdateMainFrameLayoutSize();
+
+    m_page->GetVisualViewport().SetSize(m_size);
+
+    if (LocalFrameView *frameView = mainFrame->View())
+    {
+        frameView->SetInitialViewportSize(icbSize);
+        if (!frameView->NeedsLayout())
+            m_resizeViewportAnchor->ResizeFrameView(MainFrameSize());
+    }
+}
+
+void WebViewImpl::UpdateLayerTreeBackgroundColor(void)
+{
+#if 0 // BKTODO:
+    if (!layer_tree_view_)
+        return;
+    layer_tree_view_->SetBackgroundColor(BackgroundColor());
+#endif
+}
+
 void WebViewImpl::UpdateLayerTreeViewport(void)
 {
     BKLOG("// BKTODO: LayerTreeViewport support.");
+}
+
+void WebViewImpl::UpdateLifecycle(LifecycleUpdate requestedUpdate)
+{
+    LocalFrame *mainFrame = m_page->MainFrame();
+    if (nullptr == mainFrame)
+        return;
+
+    DocumentLifecycle::AllowThrottlingScope throttlingScope(mainFrame->GetDocument()->Lifecycle());
+
+    PageWidgetDelegate::UpdateLifecycle(*m_page, *mainFrame, requestedUpdate);
+    if (LifecycleUpdate::kLayout == requestedUpdate)
+        return;
+
+    UpdateLayerTreeBackgroundColor();
+
+    if (LifecycleUpdate::kPrePaint == requestedUpdate)
+        return;
+
+    if (LocalFrameView *view = mainFrame->View())
+    {
+#if 0 // BKTODO:
+        LocalFrame* frame = MainFrameImpl()->GetFrame();
+        WebWidgetClient* client =
+            WebLocalFrameImpl::FromFrame(frame)->FrameWidgetImpl()->Client();
+#endif
+
+        if (m_shouldDispatchFirstVisuallyNonEmptyLayout && view->IsVisuallyNonEmpty())
+        {
+            m_shouldDispatchFirstVisuallyNonEmptyLayout = false;
+            // TODO(esprehn): Move users of this callback to something
+            // better, the heuristic for "visually non-empty" is bad.
+            ASSERT(false); // BKTODO: client->DidMeaningfulLayout(WebMeaningfulLayout::kVisuallyNonEmpty);
+        }
+
+        Document *document = mainFrame->GetDocument();
+        if (m_shouldDispatchFirstLayoutAfterFinishedParsing && document->HasFinishedParsing())
+        {
+            m_shouldDispatchFirstLayoutAfterFinishedParsing = false;
+            ASSERT(false); // BKTODO: client->DidMeaningfulLayout(WebMeaningfulLayout::kFinishedParsing);
+        }
+        if (m_shouldDispatchFirstLayoutAfterFinishedLoading && document->IsLoadCompleted())
+        {
+            m_shouldDispatchFirstLayoutAfterFinishedLoading = false;
+            ASSERT(false); // BKTODO: client->DidMeaningfulLayout(WebMeaningfulLayout::kFinishedLoading);
+        }
+    }
 }
 
 void WebViewImpl::UpdateMainFrameLayoutSize(void)

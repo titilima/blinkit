@@ -57,18 +57,17 @@ class PLATFORM_EXPORT EffectPaintPropertyNode
     SkBlendMode blend_mode = SkBlendMode::kSrcOver;
     // === End of effects ===
     CompositingReasons direct_compositing_reasons = CompositingReason::kNone;
-    // BKTODO: CompositorElementId compositor_element_id;
+    CompositorElementId compositor_element_id;
     // The offset of the origin of filters in local_transform_space.
     FloatPoint filters_origin;
 
     bool operator==(const State& o) const {
-      ASSERT(false); // BKTODO:
       return local_transform_space == o.local_transform_space &&
              output_clip == o.output_clip && color_filter == o.color_filter &&
              filter == o.filter && opacity == o.opacity &&
              blend_mode == o.blend_mode &&
              direct_compositing_reasons == o.direct_compositing_reasons &&
-             // BKTODO: compositor_element_id == o.compositor_element_id &&
+             compositor_element_id == o.compositor_element_id &&
              filters_origin == o.filters_origin;
     }
   };
@@ -161,12 +160,10 @@ class PLATFORM_EXPORT EffectPaintPropertyNode
            CompositingReason::kComboActiveAnimation;
   }
 
-#if 0 // BKTODO:
   const CompositorElementId& GetCompositorElementId() const {
     DCHECK(!Parent() || !IsParentAlias());
     return state_.compositor_element_id;
   }
-#endif
 
   std::unique_ptr<JSONObject> ToJSON() const;
 

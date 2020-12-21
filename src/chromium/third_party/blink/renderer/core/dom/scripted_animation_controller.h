@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scripted_animation_controller.h
+// Description: ScriptedAnimationController Class
+//      Author: Ziming Li
+//     Created: 2020-12-17
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All Rights Reserved.
  *
@@ -27,7 +38,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_DOM_SCRIPTED_ANIMATION_CONTROLLER_H_
 
 #include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/core/dom/frame_request_callback_collection.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/frame_request_callback_collection.h"
 #include "third_party/blink/renderer/platform/bindings/name_client.h"
 #include "third_party/blink/renderer/platform/bindings/trace_wrapper_member.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
@@ -43,11 +54,12 @@ class EventTarget;
 class MediaQueryListListener;
 
 class CORE_EXPORT ScriptedAnimationController
-    : public GarbageCollectedFinalized<ScriptedAnimationController>,
-      public NameClient {
+    : public NameClient {
  public:
-  static ScriptedAnimationController* Create(Document* document) {
-    return new ScriptedAnimationController(document);
+  using EventData = std::pair<Member<const EventTarget>, const StringImpl *>;
+
+  static std::unique_ptr<ScriptedAnimationController> Create(Document* document) {
+    return base::WrapUnique(new ScriptedAnimationController(document));
   }
   virtual ~ScriptedAnimationController() = default;
 
@@ -59,7 +71,9 @@ class CORE_EXPORT ScriptedAnimationController
 
   // Animation frame callbacks are used for requestAnimationFrame().
   typedef int CallbackId;
+#if 0 // BKTODO:
   CallbackId RegisterCallback(FrameRequestCallbackCollection::FrameCallback*);
+#endif
   void CancelCallback(CallbackId);
   // Returns true if any callback is currently registered.
   bool HasCallback() const;
@@ -68,8 +82,10 @@ class CORE_EXPORT ScriptedAnimationController
   void EnqueueEvent(Event*);
   void EnqueuePerFrameEvent(Event*);
 
+#if 0 // BKTODO:
   // Animation frame tasks are used for Fullscreen.
   void EnqueueTask(base::OnceClosure);
+#endif
 
   // Used for the MediaQueryList change event.
   void EnqueueMediaQueryChangeListeners(
@@ -101,12 +117,15 @@ class CORE_EXPORT ScriptedAnimationController
   bool HasScheduledItems() const;
 
   Member<Document> document_;
+#if 0 // BKTODO:
   FrameRequestCallbackCollection callback_collection_;
+#endif
   int suspend_count_;
+#if 0 // BKTODO:
   Vector<base::OnceClosure> task_queue_;
+#endif
   HeapVector<Member<Event>> event_queue_;
-  HeapListHashSet<std::pair<Member<const EventTarget>, const StringImpl*>>
-      per_frame_events_;
+  HeapListHashSet<EventData> per_frame_events_;
   using MediaQueryListListeners =
       HeapListHashSet<Member<MediaQueryListListener>>;
   MediaQueryListListeners media_query_list_listeners_;
@@ -117,5 +136,16 @@ class CORE_EXPORT ScriptedAnimationController
 };
 
 }  // namespace blink
+
+namespace std {
+
+template<>
+struct hash<blink::ScriptedAnimationController::EventData> {
+  std::size_t operator()(const blink::ScriptedAnimationController::EventData &d) const noexcept {
+    return WTF::HashInts(reinterpret_cast<unsigned>(d.first.Get()), reinterpret_cast<unsigned>(d.second));
+  }
+};
+
+}
 
 #endif  // THIRD_PARTY_BLINK_RENDERER_CORE_DOM_SCRIPTED_ANIMATION_CONTROLLER_H_

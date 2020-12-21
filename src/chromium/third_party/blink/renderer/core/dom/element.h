@@ -60,6 +60,7 @@ class NamedNodeMap;
 class ElementAnimations;
 class MutableCSSPropertyValueSet;
 class PseudoElement;
+class ScrollStateCallback;
 #endif
 
 enum class ElementFlags {
@@ -282,6 +283,8 @@ public:
             || (whitespaceAttacher.TraverseIntoDisplayContents() && HasDisplayContentsStyle());
     }
     void RebuildLayoutTree(WhitespaceAttacher &whitespaceAttacher);
+
+    void SetApplyScroll(ScrollStateCallback *scrollStateCallback);
 
     void SetNeedsResizeObserverUpdate(void);
 #endif

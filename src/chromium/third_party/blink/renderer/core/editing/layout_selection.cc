@@ -363,11 +363,7 @@ static void VisitSelectedInclusiveDescendantsOfInternal(const Node& node,
 }
 
 static inline bool IsFlatTreeClean(const Node& node) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return !node.GetDocument().IsSlotAssignmentOrLegacyDistributionDirty();
-#endif
 }
 
 template <typename Visitor>

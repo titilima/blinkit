@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scroll_customization_callbacks.h
+// Description: ScrollCustomizationCallbacks Class
+//      Author: Ziming Li
+//     Created: 2020-12-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -30,7 +41,7 @@ class CORE_EXPORT ScrollCustomizationCallbacks
   void Trace(blink::Visitor* visitor) {
     visitor->Trace(apply_scroll_callbacks_);
     visitor->Trace(distribute_scroll_callbacks_);
-    visitor->Trace(in_scrolling_phase_);
+    // BKTODO: visitor->Trace(in_scrolling_phase_);
   };
 
  private:

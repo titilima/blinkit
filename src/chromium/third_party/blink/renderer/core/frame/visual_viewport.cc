@@ -139,7 +139,7 @@ void VisualViewport::UpdatePaintPropertyNodesIfNeeded(
 
   {
     TransformPaintPropertyNode::State state;
-    ASSERT(false); // BKTODO: state.compositor_element_id = GetCompositorOverscrollElasticityElementId();
+    state.compositor_element_id = GetCompositorOverscrollElasticityElementId();
     // TODO(crbug.com/877794) Should create overscroll elasticity transform node
     // based on settings.
     if (!overscroll_elasticity_transform_node_) {
@@ -155,7 +155,7 @@ void VisualViewport::UpdatePaintPropertyNodesIfNeeded(
   {
     TransformPaintPropertyNode::State state;
     state.matrix.Scale(Scale());
-    ASSERT(false); // BKTODO: state.compositor_element_id = GetCompositorElementId();
+    state.compositor_element_id = GetCompositorElementId();
 
     if (!scale_transform_node_) {
       scale_transform_node_ = TransformPaintPropertyNode::Create(
@@ -183,7 +183,7 @@ void VisualViewport::UpdatePaintPropertyNodesIfNeeded(
     state.user_scrollable_vertical = UserInputScrollable(kVerticalScrollbar);
     state.scrolls_inner_viewport = true;
     state.max_scroll_offset_affected_by_page_scale = true;
-    ASSERT(false); // BKTODO: state.compositor_element_id = GetCompositorScrollElementId();
+    state.compositor_element_id = GetCompositorScrollElementId();
 
     if (!scroll_node_) {
       scroll_node_ =
@@ -741,11 +741,9 @@ bool VisualViewport::VisualViewportSuppliesScrollbars() const {
   return Settings::ViewportEnabled;
 }
 
-#if 0 // BKTODO:
 CompositorElementId VisualViewport::GetCompositorElementId() const {
   return element_id_;
 }
-#endif
 
 CompositorElementId VisualViewport::GetCompositorScrollElementId() const {
   return scroll_element_id_;
@@ -757,11 +755,7 @@ CompositorElementId VisualViewport::GetCompositorOverscrollElasticityElementId()
 }
 
 bool VisualViewport::ScrollAnimatorEnabled() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
-  return GetPage().GetSettings().GetScrollAnimatorEnabled();
-#endif
+  return Settings::ScrollAnimatorEnabled;
 }
 
 ChromeClient* VisualViewport::GetChromeClient() const {
@@ -882,18 +876,17 @@ IntRect VisualViewport::ScrollableAreaBoundingBox() const {
 }
 
 bool VisualViewport::UserInputScrollable(ScrollbarOrientation) const {
+#if 0 // BKTODO: Check the logic below.
   // If there is a non-root fullscreen element, prevent the viewport from
   // scrolling.
   Document* main_document = MainFrame() ? MainFrame()->GetDocument() : nullptr;
   if (main_document) {
-    ASSERT(false); // BKTODO:
-#if 0
     Element* fullscreen_element =
         Fullscreen::FullscreenElementFrom(*main_document);
     if (fullscreen_element)
       return false;
-#endif
   }
+#endif
   return true;
 }
 
@@ -1138,11 +1131,7 @@ void VisualViewport::NotifyRootFrameViewport() const {
 }
 
 ScrollbarTheme& VisualViewport::GetPageScrollbarTheme() const {
-  ASSERT(false); // BKTODO:
-  exit(0);
-#if 0
   return GetPage().GetScrollbarTheme();
-#endif
 }
 
 void VisualViewport::SetOverlayScrollbarsHidden(bool hidden) {

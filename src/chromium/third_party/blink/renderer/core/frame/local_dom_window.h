@@ -54,8 +54,9 @@ class Document;
 class DocumentInit;
 class LocalFrame;
 class Navigator;
-
 #ifndef BLINKIT_CRAWLER_ONLY
+class DOMVisualViewport;
+
 enum PageshowEventPersistence {
     kPageshowEventNotPersisted = 0,
     kPageshowEventPersisted = 1
@@ -78,6 +79,10 @@ public:
 
     LocalFrame* GetFrame(void) const;
     Document* document(void) const { return m_document.Get(); }
+    ExecutionContext* GetExecutionContext(void) const final;
+#ifndef BLINKIT_CRAWLER_ONLY
+    DOMVisualViewport* visualViewport(void);
+#endif
 
     void Reset(void);
 
@@ -113,7 +118,6 @@ private:
     void LaunchTimer(unsigned id, unsigned delayInMs);
     void ProcessTimer(unsigned id);
 
-    ExecutionContext* GetExecutionContext(void) const final;
     const LocalDOMWindow* ToLocalDOMWindow(void) const final { return this; }
 
     Member<Document> m_document;
@@ -124,6 +128,10 @@ private:
 
     unsigned m_nextTimerId = 1;
     std::unordered_map<unsigned, std::unique_ptr<BlinKit::DukTimer>> m_timers;
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    Member<DOMVisualViewport> m_visualViewport;
+#endif
 };
 
 DEFINE_TYPE_CASTS(LocalDOMWindow, DOMWindow, x, x->IsLocalDOMWindow(), x.IsLocalDOMWindow());

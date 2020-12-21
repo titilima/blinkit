@@ -61,7 +61,7 @@
 #include "third_party/blink/renderer/platform/graphics/graphics_context.h"
 #include "third_party/blink/renderer/platform/graphics/paint/cull_rect.h"
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_recorder.h"
-// BKTODO: #include "third_party/blink/renderer/platform/graphics/paint/paint_record_builder.h"
+#include "third_party/blink/renderer/platform/graphics/paint/paint_record_builder.h"
 #include "third_party/blink/renderer/platform/transforms/affine_transform.h"
 #include "third_party/blink/renderer/platform/wtf/time.h"
 
@@ -73,7 +73,6 @@ void PageWidgetDelegate::Animate(Page& page,
   page.Animator().ServiceScriptedAnimations(monotonic_frame_begin_time);
 }
 
-#if 0 // BKTODO:
 void PageWidgetDelegate::UpdateLifecycle(
     Page& page,
     LocalFrame& root,
@@ -86,7 +85,6 @@ void PageWidgetDelegate::UpdateLifecycle(
     page.Animator().UpdateAllLifecyclePhases(root);
   }
 }
-#endif
 
 static void PaintContentInternal(Page& page,
                                  cc::PaintCanvas* canvas,
@@ -109,8 +107,6 @@ static void PaintContentInternal(Page& page,
            DocumentLifecycle::kPaintClean);
     canvas->clipRect(dirty_rect);
 
-    ASSERT(false); // BKTODO:
-#if 0
     PaintRecordBuilder builder;
     builder.Context().SetDeviceScaleFactor(scale_factor);
     view->PaintWithLifecycleUpdate(builder.Context(), global_paint_flags,
@@ -118,7 +114,6 @@ static void PaintContentInternal(Page& page,
     builder.EndRecording(
         *canvas,
         view->GetLayoutView()->FirstFragment().LocalBorderBoxProperties());
-#endif
   } else {
     ASSERT(false); // BKTODO:
 #if 0

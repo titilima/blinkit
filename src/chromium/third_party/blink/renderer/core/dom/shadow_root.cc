@@ -45,10 +45,8 @@
 #include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 #include "third_party/blink/renderer/core/dom/shadow_root_v0.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/dom/slot_assignment.h"
 #include "third_party/blink/renderer/core/dom/slot_assignment_engine.h"
-#endif
 #include "third_party/blink/renderer/core/dom/text.h"
 #include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
 // BKTODO: #include "third_party/blink/renderer/core/dom/whitespace_attacher.h"
@@ -95,7 +93,6 @@ ShadowRoot::ShadowRoot(Document& document, ShadowRootType type)
 
 ShadowRoot::~ShadowRoot() = default;
 
-#if 0 // BKTODO:
 SlotAssignment& ShadowRoot::EnsureSlotAssignment() {
   if (!slot_assignment_)
     slot_assignment_ = SlotAssignment::Create(*this);
@@ -119,7 +116,6 @@ void ShadowRoot::DidChangeHostChildSlotName(const AtomicString& old_value,
     return;
   slot_assignment_->DidChangeHostChildSlotName(old_value, new_value);
 }
-#endif
 
 Node* ShadowRoot::Clone(Document&, CloneChildrenFlag) const {
   NOTREACHED(); // ShadowRoot nodes are not clonable.

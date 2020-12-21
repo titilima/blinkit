@@ -25,6 +25,7 @@
 
 namespace blink {
 
+class ChromeClient;
 class DocumentLifecycle;
 class FrameViewAutoSizeInfo;
 class LayoutBox;
@@ -48,6 +49,10 @@ public:
     }
     Page* GetPage(void) const;
     LayoutView* GetLayoutView(void) const;
+    // The window that hosts the LocalFrameView. The LocalFrameView will
+    // communicate scrolls and repaints to the host window in the window's
+    // coordinate space.
+    ChromeClient* GetChromeClient(void) const;
     IntRect FrameRect(void) const { return IntRect(Location(), Size()); }
     void SetFrameRect(const IntRect &unclampedFrameRect);
     IntPoint Location(void) const;
@@ -57,6 +62,23 @@ public:
     int Height(void) const { return Size().Height(); }
     IntSize Size(void) const { return m_frameRect.Size(); }
     void Resize(const IntSize &size) { SetFrameRect(IntRect(m_frameRect.Location(), size)); }
+
+    void ScheduleAnimation(void);
+
+    // Run all needed lifecycle stages. After calling this method, all frames will
+    // be in the lifecycle state PaintClean.  If lifecycle throttling is allowed
+    // (see DocumentLifecycle::AllowThrottlingScope), some frames may skip the
+    // lifecycle update (e.g., based on visibility) and will not end up being
+    // PaintClean.
+    void UpdateAllLifecyclePhases(void);
+
+    // Computes the style, layout, compositing and pre-paint lifecycle stages
+    // if needed.
+    // After calling this method, all frames will be in a lifecycle
+    // state >= PrePaintClean, unless the frame was throttled or inactive.
+    // Returns whether the lifecycle was successfully updated to the
+    // desired state.
+    bool UpdateAllLifecyclePhasesExceptPaint(void);
 
     void AdjustViewSize(void);
     void SetLayoutOverflowSize(const IntSize &size);
@@ -72,6 +94,7 @@ public:
 
     bool IsAttached(void) const { return m_isAttached; }
     bool IsSelfVisible(void) const { return m_selfVisible; }
+    bool IsVisible(void) const { return IsSelfVisible(); }
     void SetSelfVisible(bool visible);
     bool CanHaveScrollbars(void) const { return m_canHaveScrollbars; }
 
@@ -81,6 +104,8 @@ public:
     bool CheckDoesNotNeedLayout(void) const;
     void SetNeedsLayout(void);
     bool DidFirstLayout(void) const { return !m_firstLayout; }
+
+    void ResetNeedsForcedCompositingUpdate(void) { m_needsForcedCompositingUpdate = false; }
 
     LayoutRect FrameToDocument(const LayoutRect &rectInFrame) const;
 
@@ -100,6 +125,23 @@ public:
     // the owner.  E.g. WebViewImpl sets its mainFrame's layout size manually
     void SetLayoutSizeFixedToFrameSize(bool isFixed);
     void SetNeedsUpdateGeometries(void) { m_needsUpdateGeometries = true; }
+
+    // Marks this frame, and ancestor frames, as needing one intersection
+    // observervation. This overrides throttling for one frame, up to
+    // kLayoutClean. The order of these enums is important - they must proceed
+    // from "least required to most required".
+    enum IntersectionObservationState {
+        // The next painting frame does not need an intersection observation.
+        kNotNeeded = 0,
+        // The next painting frame needs an intersection observation.
+        kDesired = 1,
+        // The next painting frame must be generated up to intersection observation
+        // (even if frame is throttled).
+        kRequired = 2
+    };
+    // Sets the internal IntersectionObservationState to the max of the
+    // current value and the provided one.
+    void SetIntersectionObservationState(IntersectionObservationState);
 
     IntSize GetLayoutSize(void) const { return m_layoutSize; }
     void SetLayoutSize(const IntSize &size);
@@ -146,6 +188,7 @@ public:
 
     void EnqueueScrollAnchoringAdjustment(ScrollableArea *scrollableArea);
     void DequeueScrollAnchoringAdjustment(ScrollableArea *scrollableArea);
+    void PerformScrollAnchoringAdjustments(void);
 
     // Fixed-position objects.
     typedef std::unordered_set<LayoutObject *> ViewportConstrainedObjectSet;
@@ -171,13 +214,22 @@ public:
         ForceThrottlingInvalidationBehavior forceThrottlingInvalidationBehavior = kDontForceThrottlingInvalidation,
         NotifyChildrenBehavior notifyChildrenBehavior = kNotifyChildren);
 
+    // FIXME: Remove this method once plugin loading is decoupled from layout.
+    void FlushAnyPendingPostLayoutTasks(void);
+
     void UpdateDocumentAnnotatedRegions(void) const;
+
+    void NotifyResizeObservers(void);
 
     void DidAttachDocument(void);
     void HandleLoadCompleted(void);
     // Called when this view is going to be removed from its owning
     // LocalFrame.
     void WillBeRemovedFromFrame(void);
+
+    // Methods to capture forced layout metrics.
+    void WillStartForcedLayout(void);
+    void DidFinishForcedLayout(void);
 
     // Called when our frame rect changes (or the rect/scroll offset of an
     // ancestor changes).
@@ -194,11 +246,51 @@ public:
     void IncrementVisuallyNonEmptyCharacterCount(unsigned count);
     bool IsVisuallyNonEmpty(void) const { return m_isVisuallyNonEmpty; }
     void SetIsVisuallyNonEmpty(void) { m_isVisuallyNonEmpty = true; }
+protected:
+    void NotifyFrameRectsChangedIfNeeded(void);
 private:
+#if DCHECK_IS_ON()
+    class DisallowLayoutInvalidationScope {
+    public:
+        DisallowLayoutInvalidationScope(LocalFrameView &view) : m_localFrameView(view) {
+            m_localFrameView.m_allowsLayoutInvalidationAfterLayoutClean = false;
+        }
+        ~DisallowLayoutInvalidationScope(void) {
+            m_localFrameView.m_allowsLayoutInvalidationAfterLayoutClean = true;
+        }
+    private:
+        LocalFrameView &m_localFrameView;
+    };
+#endif
     explicit LocalFrameView(LocalFrame &frame, const IntRect &frameRect);
+
+    template <typename Function>
+    void ForAllNonThrottledLocalFrameViews(const Function &function);
+
+    void UpdateViewportIntersectionsForSubtree(void);
+    void UpdateThrottlingStatusForSubtree();
+
+    // Returns whether the lifecycle was succesfully updated to the
+    // target state.
+    bool UpdateLifecyclePhases(DocumentLifecycle::LifecycleState targetState);
+    // The internal version that does the work after the proper context and checks
+    // have passed in the above function call.
+    void UpdateLifecyclePhasesInternal(DocumentLifecycle::LifecycleState targetState);
+    // Four lifecycle phases helper functions corresponding to StyleAndLayout,
+    // Compositing, PrePaint, and Paint phases. If the return value is true, it
+    // means further lifecycle phases need to be run. This is used to abort
+    // earlier if we don't need to run future lifecycle phases.
+    bool RunStyleAndLayoutLifecyclePhases(DocumentLifecycle::LifecycleState targetState);
+    bool RunCompositingLifecyclePhase(DocumentLifecycle::LifecycleState targetState);
+    bool RunPrePaintLifecyclePhase(DocumentLifecycle::LifecycleState targetState);
+    void RunPaintLifecyclePhase(void);
+    void UpdateStyleAndLayoutIfNeededRecursive(void);
+    void PaintTree(void);
 
     ScrollingCoordinator* GetScrollingCoordinator(void) const;
     void SetLayoutSizeInternal(const IntSize &size);
+
+    void UpdateCompositedSelectionIfNeeded(void);
     void SetNeedsCompositingUpdate(CompositingUpdateType updateType);
 
     void ClearLayoutSubtreeRootsAndMarkContainingBlocks(void);
@@ -218,6 +310,7 @@ private:
     void UpdateGeometriesIfNeeded(void);
 
     void SendResizeEventIfNeeded(void);
+    void NotifyFrameRectsChangedIfNeededRecursive(void);
 
     void Show(void) override;
 
@@ -244,6 +337,8 @@ private:
     // TODO(bokan): This is unneeded when root-layer-scrolls is turned on.
     // crbug.com/417782.
     IntSize m_layoutOverflowSize;
+
+    bool m_rootLayerDidScroll = false;
 
     std::unique_ptr<ResizerAreaSet> m_resizerAreas;
     std::unique_ptr<ViewportConstrainedObjectSet> m_viewportConstrainedObjects;
@@ -278,6 +373,10 @@ private:
     bool m_lifecycleUpdatesThrottled = false;
 
     DocumentLifecycle::LifecycleState m_currentUpdateLifecyclePhasesTargetState = DocumentLifecycle::kUninitialized;
+    bool m_pastLayoutLifecycleUpdate = false;
+
+    using AnchoringAdjustmentQueue = HeapLinkedHashSet<WeakMember<ScrollableArea>>;
+    AnchoringAdjustmentQueue m_anchoringAdjustmentQueue;
 
     bool m_suppressAdjustViewSize = false;
 #if DCHECK_IS_ON()
@@ -285,6 +384,7 @@ private:
     // phases past layout to ensure that phases after layout don't dirty layout.
     bool m_allowsLayoutInvalidationAfterLayoutClean = true;
 #endif
+    IntersectionObservationState m_intersectionObservationState = kNotNeeded;
     bool m_needsForcedCompositingUpdate = false;
 
 #if DCHECK_IS_ON()

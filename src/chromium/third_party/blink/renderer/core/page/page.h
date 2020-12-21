@@ -22,8 +22,10 @@ namespace blink {
 
 class BrowserControls;
 class ChromeClient;
+class DragCaret;
 class DragController;
 class Frame;
+class LinkHighlights;
 class LocalFrame;
 class LocalFrameClient;
 class OverscrollController;
@@ -61,6 +63,7 @@ public:
         ASSERT(nullptr != m_chromeClient);
         return *m_chromeClient;
     }
+    DragCaret& GetDragCaret(void) const { return *m_dragCaret; }
     DragController& GetDragController(void) const { return *m_dragController; }
     LocalFrame* GetFrame(void) const { return m_mainFrame; }
     LocalFrame* MainFrame(void) const { return m_mainFrame; }
@@ -90,6 +93,8 @@ public:
     VisualViewport& GetVisualViewport(void);
     const VisualViewport& GetVisualViewport(void) const;
 
+    LinkHighlights& GetLinkHighlights(void) { return *m_linkHighlights; }
+
     OverscrollController& GetOverscrollController(void);
     const OverscrollController& GetOverscrollController(void) const;
 
@@ -112,6 +117,7 @@ private:
 
     LocalFrame *m_mainFrame = nullptr;
     ChromeClient *m_chromeClient;
+    const std::unique_ptr<DragCaret> m_dragCaret;
     std::unique_ptr<PageAnimator> m_animator;
     const std::unique_ptr<DragController> m_dragController;
     float m_deviceScaleFactor = 1.0;
@@ -119,6 +125,7 @@ private:
     const std::unique_ptr<BrowserControls> m_browserControls;
     const Member<TopDocumentRootScrollerController> m_globalRootScrollerController;
     const std::unique_ptr<VisualViewport> m_visualViewport;
+    const std::unique_ptr<LinkHighlights> m_linkHighlights;
     const std::unique_ptr<OverscrollController> m_overscrollController;
     PageVisibilityState m_visibilityState = PageVisibilityState::kVisible;
 

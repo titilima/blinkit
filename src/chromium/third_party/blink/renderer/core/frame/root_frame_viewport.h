@@ -113,11 +113,9 @@ class CORE_EXPORT RootFrameViewport final
       OverlayScrollbarClipBehavior =
           kIgnorePlatformOverlayScrollbarSize) const override;
   ScrollResult UserScroll(ScrollGranularity, const FloatSize&) override;
-#if 0 // BKTODO:
   CompositorElementId GetCompositorElementId() const override;
   CompositorElementId GetScrollbarElementId(
       ScrollbarOrientation orientation) override;
-#endif
   bool ScrollAnimatorEnabled() const override;
   ChromeClient* GetChromeClient() const override;
   SmoothScrollSequencer* GetSmoothScrollSequencer() const override;

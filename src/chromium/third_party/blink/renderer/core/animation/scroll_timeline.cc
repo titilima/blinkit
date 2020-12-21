@@ -1,9 +1,21 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scroll_timeline.cc
+// Description: ScrollTimeline Class
+//      Author: Ziming Li
+//     Created: 2020-12-19
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/animation/scroll_timeline.h"
 
+#include "blinkit/gc/gc_static.h"
 #include "third_party/blink/renderer/core/css/css_calculation_value.h"
 #include "third_party/blink/renderer/core/css/css_to_length_conversion_data.h"
 #include "third_party/blink/renderer/core/css/parser/css_tokenizer.h"
@@ -16,14 +28,15 @@
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/platform/length_functions.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 namespace {
 using ActiveScrollTimelineSet = HeapHashCountedSet<WeakMember<Node>>;
 ActiveScrollTimelineSet& GetActiveScrollTimelineSet() {
-  DEFINE_STATIC_LOCAL(Persistent<ActiveScrollTimelineSet>, set,
-                      (new ActiveScrollTimelineSet));
-  return *set;
+  static GCStaticWrapper<ActiveScrollTimelineSet> set;
+  return set.GetAsReference();
 }
 
 bool StringToScrollDirection(String scroll_direction,
@@ -62,6 +75,7 @@ bool StringToScrollOffset(String scroll_offset, CSSPrimitiveValue** result) {
 }
 }  // namespace
 
+#if 0 // BKTODO:
 ScrollTimeline* ScrollTimeline::Create(Document& document,
                                        ScrollTimelineOptions options,
                                        ExceptionState& exception_state) {
@@ -100,6 +114,7 @@ ScrollTimeline* ScrollTimeline::Create(Document& document,
                             end_scroll_offset,
                             options.timeRange().GetAsDouble());
 }
+#endif
 
 ScrollTimeline::ScrollTimeline(Element* scroll_source,
                                ScrollDirection orientation,
@@ -263,15 +278,20 @@ String ScrollTimeline::endScrollOffset() {
   return end_scroll_offset_ ? end_scroll_offset_->CssText() : "auto";
 }
 
+#if 0 // BKTODO:
 void ScrollTimeline::timeRange(DoubleOrScrollTimelineAutoKeyword& result) {
   result.SetDouble(time_range_);
 }
+#endif
 
 Node* ScrollTimeline::ResolvedScrollSource() const {
+  ASSERT(false); // BKTODO:
+#if 0
   // When in quirks mode we need the style to be clean, so we don't use
   // |ScrollingElementNoLayout|.
   if (scroll_source_ == scroll_source_->GetDocument().scrollingElement())
     return &scroll_source_->GetDocument();
+#endif
   return scroll_source_;
 }
 
@@ -279,7 +299,7 @@ void ScrollTimeline::AttachAnimation() {
   Node* resolved_scroll_source = ResolvedScrollSource();
   GetActiveScrollTimelineSet().insert(resolved_scroll_source);
   if (resolved_scroll_source->IsElementNode())
-    ToElement(resolved_scroll_source)->SetNeedsCompositingUpdate();
+    ASSERT(false); // BKTODO: ToElement(resolved_scroll_source)->SetNeedsCompositingUpdate();
   resolved_scroll_source->GetDocument()
       .GetLayoutView()
       ->Compositor()
@@ -295,7 +315,7 @@ void ScrollTimeline::DetachAnimation() {
   Node* resolved_scroll_source = ResolvedScrollSource();
   GetActiveScrollTimelineSet().erase(resolved_scroll_source);
   if (resolved_scroll_source->IsElementNode())
-    ToElement(resolved_scroll_source)->SetNeedsCompositingUpdate();
+    ASSERT(false); // BKTODO: ToElement(resolved_scroll_source)->SetNeedsCompositingUpdate();
   auto* layout_view = resolved_scroll_source->GetDocument().GetLayoutView();
   if (layout_view && layout_view->Compositor()) {
     layout_view->Compositor()->SetNeedsCompositingUpdate(
@@ -319,7 +339,7 @@ void ScrollTimeline::Trace(blink::Visitor* visitor) {
 bool ScrollTimeline::HasActiveScrollTimeline(Node* node) {
   ActiveScrollTimelineSet& set = GetActiveScrollTimelineSet();
   auto it = set.find(node);
-  return it != set.end() && it->value > 0;
+  return it != set.end() && it->second > 0;
 }
 
 }  // namespace blink

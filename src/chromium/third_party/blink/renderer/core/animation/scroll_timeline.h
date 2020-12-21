@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scroll_timeline.h
+// Description: ScrollTimeline Class
+//      Author: Ziming Li
+//     Created: 2020-12-19
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_ANIMATION_SCROLL_TIMELINE_H_
 
 #include "third_party/blink/renderer/core/animation/animation_timeline.h"
-#include "third_party/blink/renderer/core/animation/scroll_timeline_options.h"
+// BKTODO: #include "third_party/blink/renderer/core/animation/scroll_timeline_options.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/css_primitive_value.h"
 #include "third_party/blink/renderer/core/dom/element.h"
@@ -35,9 +46,11 @@ class CORE_EXPORT ScrollTimeline final : public AnimationTimeline {
     Vertical,
   };
 
+#if 0 // BKTODO:
   static ScrollTimeline* Create(Document&,
                                 ScrollTimelineOptions,
                                 ExceptionState&);
+#endif
 
   // AnimationTimeline implementation.
   double currentTime(bool& is_null) final;
@@ -48,7 +61,9 @@ class CORE_EXPORT ScrollTimeline final : public AnimationTimeline {
   String orientation();
   String startScrollOffset();
   String endScrollOffset();
+#if 0 // BKTODO:
   void timeRange(DoubleOrScrollTimelineAutoKeyword&);
+#endif
 
   // Returns the Node that should actually have the ScrollableArea (if one
   // exists). This can differ from |scrollSource| when |scroll_source_| is the

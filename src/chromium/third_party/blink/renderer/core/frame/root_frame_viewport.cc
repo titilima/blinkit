@@ -553,7 +553,6 @@ bool RootFrameViewport::ScrollAnimatorEnabled() const {
   return LayoutViewport().ScrollAnimatorEnabled();
 }
 
-#if 0 // BKTODO:
 CompositorElementId RootFrameViewport::GetCompositorElementId() const {
   return LayoutViewport().GetCompositorElementId();
 }
@@ -564,7 +563,6 @@ CompositorElementId RootFrameViewport::GetScrollbarElementId(
              ? VisualViewport().GetScrollbarElementId(orientation)
              : LayoutViewport().GetScrollbarElementId(orientation);
 }
-#endif
 
 ChromeClient* RootFrameViewport::GetChromeClient() const {
   return LayoutViewport().GetChromeClient();

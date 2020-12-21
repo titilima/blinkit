@@ -51,8 +51,8 @@
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/viewport_data.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_text_area_element.h"
 #endif
 #include "third_party/blink/renderer/core/layout/layout_block.h"
@@ -573,10 +573,9 @@ void TextAutosizer::MarkSuperclusterForConsistencyCheck(LayoutObject* object) {
 }
 
 void TextAutosizer::UpdatePageInfoInAllFrames() {
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(!document_->GetFrame() || document_->GetFrame()->IsMainFrame());
 
+#if 0 // BKTODO: Check the logic below.
   for (Frame* frame = document_->GetFrame(); frame;
        frame = frame->Tree().TraverseNext()) {
     if (!frame->IsLocalFrame())
@@ -1392,20 +1391,12 @@ TextAutosizer::TableLayoutScope::TableLayoutScope(LayoutTable* table)
 }
 
 TextAutosizer::DeferUpdatePageInfo::DeferUpdatePageInfo(Page* page)
-#if 0 // BKTODO:
-    : main_frame_(page->DeprecatedLocalMainFrame()) {
-#else
-{
-  ASSERT(false); // BKTODO:
-#endif
-  ASSERT(false); // BKTODO:
-#if 0
+    : main_frame_(page->MainFrame()) {
   if (TextAutosizer* text_autosizer =
           main_frame_->GetDocument()->GetTextAutosizer()) {
     DCHECK(!text_autosizer->update_page_info_deferred_);
     text_autosizer->update_page_info_deferred_ = true;
   }
-#endif
 }
 
 TextAutosizer::NGLayoutScope::NGLayoutScope(const NGBlockNode& node,
@@ -1443,15 +1434,12 @@ TextAutosizer::NGLayoutScope::~NGLayoutScope() {
 }
 
 TextAutosizer::DeferUpdatePageInfo::~DeferUpdatePageInfo() {
-  ASSERT(false); // BKTODO:
-#if 0
   if (TextAutosizer* text_autosizer =
           main_frame_->GetDocument()->GetTextAutosizer()) {
     DCHECK(text_autosizer->update_page_info_deferred_);
     text_autosizer->update_page_info_deferred_ = false;
     text_autosizer->UpdatePageInfoInAllFrames();
   }
-#endif
 }
 
 float TextAutosizer::ComputeAutosizedFontSize(float computed_size,

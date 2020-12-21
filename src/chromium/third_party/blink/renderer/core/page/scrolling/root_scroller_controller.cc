@@ -20,8 +20,8 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/frame/browser_controls.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/fullscreen/document_fullscreen.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_frame_owner_element.h"
 #endif
 #include "third_party/blink/renderer/core/layout/layout_box.h"
@@ -168,11 +168,10 @@ void RootScrollerController::DidResizeFrameView() {
   DCHECK(document_);
 
   Page* page = document_->GetPage();
-  ASSERT(false); // BKTODO:
-#if 0
   if (document_->GetFrame() && document_->GetFrame()->IsMainFrame() && page)
     page->GlobalRootScrollerController().DidResizeViewport();
 
+#if 0 // BKTODO: Check if necessary.
   // If the effective root scroller in this Document is a Frame, it'll match
   // its parent's frame rect. We can't rely on layout to kick it to update its
   // geometry so we do so explicitly here.
@@ -208,8 +207,6 @@ void RootScrollerController::RecomputeEffectiveRootScroller() {
 
   Node* new_effective_root_scroller = document_;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (!DocumentFullscreen::fullscreenElement(*document_)) {
     bool root_scroller_valid =
         root_scroller_ && IsValidRootScroller(*root_scroller_);
@@ -218,7 +215,6 @@ void RootScrollerController::RecomputeEffectiveRootScroller() {
     else if (implicit_root_scroller_)
       new_effective_root_scroller = implicit_root_scroller_;
   }
-#endif
 
   // TODO(bokan): This is a terrible hack but required because the viewport
   // apply scroll works on Elements rather than Nodes. If we're going from
@@ -239,8 +235,6 @@ void RootScrollerController::RecomputeEffectiveRootScroller() {
   effective_root_scroller_ = new_effective_root_scroller;
 
   if (new_effective_root_scroller != old_effective_root_scroller) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (LayoutBoxModelObject* new_obj =
             new_effective_root_scroller->GetLayoutBoxModelObject()) {
       if (new_obj->Layer()) {
@@ -259,7 +253,6 @@ void RootScrollerController::RecomputeEffectiveRootScroller() {
         }
       }
     }
-#endif
     if (auto* object = old_effective_root_scroller->GetLayoutObject())
       object->SetIsEffectiveRootScroller(false);
 
@@ -359,6 +352,7 @@ bool RootScrollerController::IsValidImplicit(const Element& element) const {
 }
 
 void RootScrollerController::ApplyRootScrollerProperties(Node& node) {
+#if 0 // BKTODO: Check if necessary.
   DCHECK(document_->GetFrame());
   DCHECK(document_->GetFrame()->View());
 
@@ -367,8 +361,6 @@ void RootScrollerController::ApplyRootScrollerProperties(Node& node) {
   if (!node.IsInTreeScope())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (!node.IsFrameOwnerElement())
     return;
 
@@ -480,12 +472,9 @@ void RootScrollerController::ElementRemoved(const Element& element) {
   if (element != effective_root_scroller_.Get())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   effective_root_scroller_ = document_;
   if (Page* page = document_->GetPage())
     page->GlobalRootScrollerController().DidChangeRootScroller();
-#endif
 }
 
 void RootScrollerController::ConsiderForImplicit(Node& node) {
@@ -510,12 +499,11 @@ void RootScrollerController::ForAllNonThrottledLocalControllers(
     return;
 
   LocalFrameView* frame_view = document_->View();
-  ASSERT(false); // BKTODO:
-#if 0
   if (frame_view->ShouldThrottleRendering())
     return;
 
   LocalFrame* frame = document_->GetFrame();
+#if 0 // BKTODO: Check if necessary.
   for (Frame* child = frame->Tree().FirstChild(); child;
        child = child->Tree().NextSibling()) {
     if (!child->IsLocalFrame())
@@ -533,8 +521,6 @@ void RootScrollerController::ForAllNonThrottledLocalControllers(
 void RootScrollerController::PerformRootScrollerSelection() {
   TRACE_EVENT0("blink", "RootScrollerController::PerformRootScrollerSelection");
 
-  ASSERT(false); // BKTODO:
-#if 0
   // Printing can cause a lifecycle update on a detached frame. In that case,
   // don't make any changes.
   if (!document_->GetFrame() || !document_->GetFrame()->IsLocalRoot())
@@ -545,7 +531,6 @@ void RootScrollerController::PerformRootScrollerSelection() {
   ForAllNonThrottledLocalControllers([](RootScrollerController& controller) {
     controller.RecomputeEffectiveRootScroller();
   });
-#endif
 }
 
 }  // namespace blink

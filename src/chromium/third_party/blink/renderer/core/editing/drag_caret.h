@@ -51,12 +51,11 @@ namespace blink {
 class LayoutBlock;
 struct PaintInvalidatorContext;
 
-class DragCaret final : public GarbageCollectedFinalized<DragCaret>,
-                        public SynchronousMutationObserver {
+class DragCaret final : public SynchronousMutationObserver {
   USING_GARBAGE_COLLECTED_MIXIN(DragCaret);
 
  public:
-  static DragCaret* Create();
+  static std::unique_ptr<DragCaret> Create();
 
   virtual ~DragCaret();
 
@@ -77,6 +76,8 @@ class DragCaret final : public GarbageCollectedFinalized<DragCaret>,
   const PositionWithAffinity& CaretPosition() { return position_; }
   void SetCaretPosition(const PositionWithAffinity&);
   void Clear() { SetCaretPosition(PositionWithAffinity()); }
+
+  void Trace(blink::Visitor*) override;
 
  private:
   DragCaret();

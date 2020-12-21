@@ -144,12 +144,10 @@ class CORE_EXPORT ShadowRoot final : public DocumentFragment, public TreeScope {
     return *slot_assignment_;
   }
 
-#if 0 // BKTODO:
   HTMLSlotElement* AssignedSlotFor(const Node&);
   void DidAddSlot(HTMLSlotElement&);
   void DidChangeHostChildSlotName(const AtomicString& old_value,
                                   const AtomicString& new_value);
-#endif
 
   void SetNeedsDistributionRecalcWillBeSetNeedsAssignmentRecalc();
   void SetNeedsDistributionRecalc();
@@ -193,9 +191,7 @@ class CORE_EXPORT ShadowRoot final : public DocumentFragment, public TreeScope {
 
   void ChildrenChanged(const ChildrenChange&) override;
 
-#if 0 // BKTODO:
   SlotAssignment& EnsureSlotAssignment();
-#endif
 
   void AddChildShadowRoot() { ++child_shadow_root_count_; }
   void RemoveChildShadowRoot() {

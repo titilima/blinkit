@@ -15,7 +15,7 @@
 
 #include "third_party/blink/renderer/core/paint/compositing/compositing_reason_finder.h"
 
-// BKTODO: #include "third_party/blink/renderer/core/animation/scroll_timeline.h"
+#include "third_party/blink/renderer/core/animation/scroll_timeline.h"
 #include "third_party/blink/renderer/core/css_property_names.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
@@ -48,11 +48,7 @@ void CompositingReasonFinder::UpdateTriggers() {
 }
 
 bool CompositingReasonFinder::IsMainFrame() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return layout_view_.GetDocument().IsInMainFrame();
-#endif
 }
 
 CompositingReasons CompositingReasonFinder::DirectReasons(
@@ -196,8 +192,6 @@ CompositingReasons CompositingReasonFinder::NonStyleDeterminedDirectReasons(
   if (RequiresCompositingForScrollDependentPosition(layer, ignore_lcd_text))
     direct_reasons |= CompositingReason::kScrollDependentPosition;
 
-  ASSERT(false); // BKTODO:
-#if 0
   // TODO(crbug.com/839341): Remove once we support main-thread AnimationWorklet
   // and don't need to promote the scroll-source.
   if (layer->GetScrollableArea() && layer->GetLayoutObject().GetNode() &&
@@ -205,7 +199,6 @@ CompositingReasons CompositingReasonFinder::NonStyleDeterminedDirectReasons(
           layer->GetLayoutObject().GetNode())) {
     direct_reasons |= CompositingReason::kScrollTimelineTarget;
   }
-#endif
 
   // Video is special. It's the only PaintLayer type that can both have
   // PaintLayer children and whose children can't use its backing to render
@@ -215,13 +208,10 @@ CompositingReasons CompositingReasonFinder::NonStyleDeterminedDirectReasons(
       layer->CompositingContainer()->GetLayoutObject().IsVideo())
     direct_reasons |= CompositingReason::kVideoOverlay;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (layer->IsRootLayer() && (RequiresCompositingForScrollableFrame() ||
                                layout_view_.GetFrame()->IsLocalRoot())) {
     direct_reasons |= CompositingReason::kRoot;
   }
-#endif
 
   direct_reasons |= layout_object.AdditionalCompositingReasons();
 
@@ -274,17 +264,12 @@ bool CompositingReasonFinder::RequiresCompositingForTransformAnimation(
 
 bool CompositingReasonFinder::RequiresCompositingForRootScroller(
     const PaintLayer& layer) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   // The root scroller needs composited scrolling layers even if it doesn't
   // actually have scrolling since CC has these assumptions baked in for the
   // viewport. Because this is only needed for CC, we can skip it if compositing
   // is not enabled.
-  const auto& settings = *layer.GetLayoutObject().GetDocument().GetSettings();
-  if (!settings.GetAcceleratedCompositingEnabled())
+  if (!Settings::AcceleratedCompositingEnabled)
     return false;
-#endif
   return RootScrollerUtil::IsGlobal(layer);
 }
 

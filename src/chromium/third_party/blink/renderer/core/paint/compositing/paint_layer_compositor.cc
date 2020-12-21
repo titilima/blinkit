@@ -37,7 +37,7 @@
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 
 #include "base/optional.h"
-// BKTODO: #include "third_party/blink/renderer/core/animation/document_animations.h"
+#include "third_party/blink/renderer/core/animation/document_animations.h"
 #include "third_party/blink/renderer/core/animation/document_timeline.h"
 #include "third_party/blink/renderer/core/animation/element_animations.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
@@ -46,8 +46,8 @@
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/fullscreen/fullscreen.h"
 #include "third_party/blink/renderer/core/html/html_iframe_element.h"
 #include "third_party/blink/renderer/core/html/media/html_video_element.h"
@@ -59,11 +59,11 @@
 #include "third_party/blink/renderer/core/page/page.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/page/scrolling/scrolling_coordinator.h"
-#include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
 #endif
+#include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
 #include "third_party/blink/renderer/core/paint/compositing/composited_layer_mapping.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/compositing/compositing_inputs_updater.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/compositing/compositing_layer_assigner.h"
 #include "third_party/blink/renderer/core/paint/compositing/compositing_requirements_updater.h"
 #include "third_party/blink/renderer/core/paint/compositing/graphics_layer_tree_builder.h"
@@ -151,12 +151,8 @@ void PaintLayerCompositor::EnableCompositingModeIfNeeded() {
 bool PaintLayerCompositor::RootShouldAlwaysComposite() const {
   if (!has_accelerated_compositing_)
     return false;
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return layout_view_.GetFrame()->IsLocalRoot() ||
          compositing_reason_finder_.RequiresCompositingForScrollableFrame();
-#endif
 }
 
 void PaintLayerCompositor::UpdateAcceleratedCompositingSettings() {
@@ -218,14 +214,13 @@ void PaintLayerCompositor::UpdateIfNeededRecursiveInternal(
     CompositingReasonsStats& compositing_reasons_stats) {
   DCHECK(target_state >= DocumentLifecycle::kCompositingInputsClean);
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (layout_view_.GetFrameView()->ShouldThrottleRendering())
     return;
 
   LocalFrameView* view = layout_view_.GetFrameView();
   view->ResetNeedsForcedCompositingUpdate();
 
+#if 0 // BKTODO: Check if necessary.
   for (Frame* child =
            layout_view_.GetFrameView()->GetFrame().Tree().FirstChild();
        child; child = child->Tree().NextSibling()) {
@@ -268,8 +263,7 @@ void PaintLayerCompositor::UpdateIfNeededRecursiveInternal(
   if (target_state == DocumentLifecycle::kCompositingInputsClean)
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   // When printing a document, there is no use in updating composited animations
   // since we won't use the results.
   //
@@ -304,11 +298,10 @@ void PaintLayerCompositor::UpdateIfNeededRecursiveInternal(
   }
 #endif
 
-  ASSERT(false); // BKTODO:
-#if 0
 #if DCHECK_IS_ON()
   DCHECK_EQ(Lifecycle().GetState(), DocumentLifecycle::kCompositingClean);
   AssertNoUnresolvedDirtyBits();
+#if 0 // BKTODO: Check if necessary.
   for (Frame* child =
            layout_view_.GetFrameView()->GetFrame().Tree().FirstChild();
        child; child = child->Tree().NextSibling()) {
@@ -404,15 +397,12 @@ void PaintLayerCompositor::UpdateWithoutAcceleratedCompositing(
     CompositingUpdateType update_type) {
   DCHECK(!HasAcceleratedCompositing());
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (update_type >= kCompositingUpdateAfterCompositingInputChange)
     CompositingInputsUpdater(RootLayer(), compositing_reason_finder_).Update();
 
 #if DCHECK_IS_ON()
   CompositingInputsUpdater::AssertNeedsCompositingInputsUpdateBitsCleared(
       RootLayer());
-#endif
 #endif
 }
 
@@ -440,15 +430,11 @@ GraphicsLayer* PaintLayerCompositor::ParentForContentLayers(
   if (!IsMainFrame())
     return child_frame_parent_candidate;
 
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   // If this is a popup, don't hook into the VisualViewport layers.
   if (layout_view_.GetDocument().GetPage()->GetChromeClient().IsPopup())
     return nullptr;
 
   return GetVisualViewport().ScrollLayer();
-#endif
 }
 
 #if DCHECK_IS_ON()
@@ -498,8 +484,6 @@ void PaintLayerCompositor::UpdateIfNeeded(
   Vector<PaintLayer*> layers_needing_paint_invalidation;
 
   if (update_type >= kCompositingUpdateAfterCompositingInputChange) {
-    ASSERT(false); // BKTODO:
-#if 0
     CompositingInputsUpdater(update_root, compositing_reason_finder_).Update();
 
 #if DCHECK_IS_ON()
@@ -518,6 +502,8 @@ void PaintLayerCompositor::UpdateIfNeeded(
       return;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     CompositingRequirementsUpdater(layout_view_, compositing_reason_finder_)
         .Update(update_root, compositing_reasons_stats);
 
@@ -594,14 +580,11 @@ void PaintLayerCompositor::UpdateIfNeeded(
   }
 
   if (root_layer_attachment_ == kRootLayerPendingAttachViaChromeClient) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (Page* page = layout_view_.GetFrame()->GetPage()) {
       page->GetChromeClient().AttachRootGraphicsLayer(RootGraphicsLayer(),
                                                       layout_view_.GetFrame());
       root_layer_attachment_ = kRootLayerAttachedViaChromeClient;
     }
-#endif
   }
 
   // Inform the inspector that the layer tree has changed.
@@ -613,14 +596,11 @@ void PaintLayerCompositor::UpdateIfNeeded(
 
 static void RestartAnimationOnCompositor(const LayoutObject& layout_object) {
   Node* node = layout_object.GetNode();
-  ASSERT(false); // BKTODO:
-#if 0
   ElementAnimations* element_animations =
       (node && node->IsElementNode()) ? ToElement(node)->GetElementAnimations()
                                       : nullptr;
   if (element_animations)
     element_animations->RestartAnimationOnCompositor();
-#endif
 }
 
 bool PaintLayerCompositor::AllocateOrClearCompositedLayerMapping(
@@ -656,18 +636,18 @@ bool PaintLayerCompositor::AllocateOrClearCompositedLayerMapping(
 
       RestartAnimationOnCompositor(layer->GetLayoutObject());
 
-      ASSERT(false); // BKTODO:
-#if 0
       // At this time, the ScrollingCoordinator only supports the top-level
       // frame.
       if (layer->IsRootLayer() && layout_view_.GetFrame()->IsLocalRoot()) {
         if (ScrollingCoordinator* scrolling_coordinator =
                 GetScrollingCoordinator()) {
+          ASSERT(false); // BKTODO:
+#if 0
           scrolling_coordinator->FrameViewRootLayerDidChange(
               layout_view_.GetFrameView());
+#endif
         }
       }
-#endif
       break;
     case kRemoveOwnCompositedLayerMapping:
     // PutInSquashingLayer means you might have to remove the composited layer
@@ -805,8 +785,6 @@ GraphicsLayer* PaintLayerCompositor::RootGraphicsLayer() const {
 
 GraphicsLayer* PaintLayerCompositor::PaintRootGraphicsLayer() const {
   if (RuntimeEnabledFeatures::BlinkGenPropertyTreesEnabled()) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (layout_view_.GetDocument().GetPage()->GetChromeClient().IsPopup())
       return RootGraphicsLayer();
 
@@ -814,7 +792,6 @@ GraphicsLayer* PaintLayerCompositor::PaintRootGraphicsLayer() const {
     // of both the main contents layers and the scrollbar layers.
     if (IsMainFrame() && GetVisualViewport().ContainerLayer())
       return GetVisualViewport().ContainerLayer();
-#endif
 
     return RootGraphicsLayer();
   }
@@ -828,12 +805,9 @@ GraphicsLayer* PaintLayerCompositor::PaintRootGraphicsLayer() const {
 }
 
 GraphicsLayer* PaintLayerCompositor::ScrollLayer() const {
-  ASSERT(false); // BKTODO:
-#if 0
   if (ScrollableArea* scrollable_area =
           layout_view_.GetFrameView()->GetScrollableArea())
     return scrollable_area->LayerForScrolling();
-#endif
   return nullptr;
 }
 
@@ -865,9 +839,6 @@ void PaintLayerCompositor::UpdatePotentialCompositingReasonsFromStyle(
 
 bool PaintLayerCompositor::CanBeComposited(const PaintLayer* layer) const {
   LocalFrameView* frame_view = layer->GetLayoutObject().GetFrameView();
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   // Elements within an invisible frame must not be composited because they are
   // not drawn.
   if (frame_view && !frame_view->IsVisible())
@@ -883,7 +854,6 @@ bool PaintLayerCompositor::CanBeComposited(const PaintLayer* layer) const {
          // Don't composite <foreignObject> for the moment, to reduce
          // instances of the "fundamental compositing bug" breaking content.
          !layer->GetLayoutObject().IsSVGForeignObject();
-#endif
 }
 
 // Return true if the given layer is a stacking context and has compositing
@@ -931,12 +901,9 @@ static void UpdateTrackingRasterInvalidationsRecursive(
 }
 
 void PaintLayerCompositor::UpdateTrackingRasterInvalidations() {
-  ASSERT(false); // BKTODO:
-#if 0
 #if DCHECK_IS_ON()
   DCHECK(Lifecycle().GetState() == DocumentLifecycle::kPaintClean ||
          layout_view_.GetFrameView()->ShouldThrottleRendering());
-#endif
 #endif
 
   if (GraphicsLayer* root_layer = RootGraphicsLayer())
@@ -947,11 +914,8 @@ void PaintLayerCompositor::EnsureRootLayer() {
   if (root_layer_attachment_ != kRootLayerUnattached)
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (IsMainFrame())
     GetVisualViewport().CreateLayerTree();
-#endif
 
   AttachCompositorTimeline();
   AttachRootLayer();
@@ -967,11 +931,11 @@ void PaintLayerCompositor::AttachRootLayer() {
   if (RuntimeEnabledFeatures::SlimmingPaintV2Enabled())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (layout_view_.GetFrame()->IsLocalRoot()) {
     root_layer_attachment_ = kRootLayerPendingAttachViaChromeClient;
   } else {
+    ASSERT(false); // BKTODO: Check if necessary
+#if 0
     HTMLFrameOwnerElement* owner_element =
         layout_view_.GetDocument().LocalOwner();
     DCHECK(owner_element);
@@ -984,9 +948,9 @@ void PaintLayerCompositor::AttachRootLayer() {
           ->Layer()
           ->SetNeedsCompositingInputsUpdate();
     }
+#endif
     root_layer_attachment_ = kRootLayerAttachedViaEnclosingFrame;
   }
-#endif
 }
 
 void PaintLayerCompositor::DetachRootLayer() {
@@ -1007,14 +971,11 @@ void PaintLayerCompositor::DetachRootLayer() {
       break;
     }
     case kRootLayerAttachedViaChromeClient: {
-      ASSERT(false); // BKTODO:
-#if 0
       LocalFrame& frame = layout_view_.GetFrameView()->GetFrame();
       Page* page = frame.GetPage();
       if (!page)
         return;
       page->GetChromeClient().AttachRootGraphicsLayer(nullptr, &frame);
-#endif
       break;
     }
     case kRootLayerPendingAttachViaChromeClient:
@@ -1026,8 +987,6 @@ void PaintLayerCompositor::DetachRootLayer() {
 }
 
 void PaintLayerCompositor::AttachCompositorTimeline() {
-  ASSERT(false); // BKTODO:
-#if 0
   LocalFrame& frame = layout_view_.GetFrameView()->GetFrame();
   Page* page = frame.GetPage();
   if (!page || !frame.GetDocument())
@@ -1039,12 +998,9 @@ void PaintLayerCompositor::AttachCompositorTimeline() {
     page->GetChromeClient().AttachCompositorAnimationTimeline(
         compositor_timeline, &frame);
   }
-#endif
 }
 
 void PaintLayerCompositor::DetachCompositorTimeline() {
-  ASSERT(false); // BKTODO:
-#if 0
   LocalFrame& frame = layout_view_.GetFrameView()->GetFrame();
   Page* page = frame.GetPage();
   if (!page || !frame.GetDocument())
@@ -1056,15 +1012,11 @@ void PaintLayerCompositor::DetachCompositorTimeline() {
     page->GetChromeClient().DetachCompositorAnimationTimeline(
         compositor_timeline, &frame);
   }
-#endif
 }
 
 ScrollingCoordinator* PaintLayerCompositor::GetScrollingCoordinator() const {
-  ASSERT(false); // BKTODO:
-#if 0
   if (Page* page = GetPage())
     return page->GetScrollingCoordinator();
-#endif
 
   return nullptr;
 }
@@ -1078,24 +1030,14 @@ DocumentLifecycle& PaintLayerCompositor::Lifecycle() const {
 }
 
 bool PaintLayerCompositor::IsMainFrame() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return layout_view_.GetFrame()->IsMainFrame();
-#endif
 }
 
 VisualViewport& PaintLayerCompositor::GetVisualViewport() const {
-  ASSERT(false); // BKTODO:
-  exit(0);
-#if 0
   return layout_view_.GetFrameView()->GetPage()->GetVisualViewport();
-#endif
 }
 
 bool PaintLayerCompositor::IsRootScrollerAncestor() const {
-  ASSERT(false); // BKTODO:
-#if 0
   const TopDocumentRootScrollerController& global_rsc =
       layout_view_.GetDocument().GetPage()->GlobalRootScrollerController();
   PaintLayer* root_scroller_layer = global_rsc.RootScrollerPaintLayer();
@@ -1110,10 +1052,9 @@ bool PaintLayerCompositor::IsRootScrollerAncestor() const {
           return true;
       }
 
-      frame = frame->Tree().Parent();
+      ASSERT(false); // BKTODO: frame = frame->Tree().Parent();
     }
   }
-#endif
 
   return false;
 }

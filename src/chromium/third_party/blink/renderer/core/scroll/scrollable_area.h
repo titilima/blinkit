@@ -280,12 +280,10 @@ class CORE_EXPORT ScrollableArea : public GarbageCollectedMixin {
   // of the top-level FrameView.
   virtual IntRect ScrollableAreaBoundingBox() const = 0;
 
-#if 0 // BKTODO:
   virtual CompositorElementId GetCompositorElementId() const = 0;
 
   virtual CompositorElementId GetScrollbarElementId(
       ScrollbarOrientation orientation);
-#endif
 
   virtual bool ScrollAnimatorEnabled() const { return false; }
 

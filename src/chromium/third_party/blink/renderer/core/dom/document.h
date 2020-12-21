@@ -94,6 +94,7 @@ template <typename EventType>
 class EventWithHitTestResults;
 class HTMLBodyElement;
 class HTMLImportsController;
+class IntersectionObserverController;
 class LayoutView;
 class LocalFrameView;
 class MediaQueryMatcher;
@@ -101,7 +102,10 @@ class Page;
 enum class PageVisibilityState;
 class PropertyRegistry;
 class ReattachLegacyLayoutObjectList;
+class ResizeObserverController;
 class RootScrollerController;
+class ScriptedAnimationController;
+class SlotAssignmentEngine;
 class SnapCoordinator;
 class StyleEngine;
 class StyleResolver;
@@ -147,7 +151,6 @@ public:
 
     void Initialize(void);
     virtual void Shutdown(void);
-    bool IsHTMLDocument(void) const { return true; } // Just a placeholder.
     void Trace(Visitor *visitor) override;
 
     uint64_t DomTreeVersion(void) const { return m_domTreeVersion; }
@@ -195,6 +198,8 @@ public:
     {
         return m_registrationContext.get();
     }
+    IntersectionObserverController* GetIntersectionObserverController(void) { return m_intersectionObserverController.get(); }
+    ResizeObserverController* GetResizeObserverController(void) const { return m_resizeObserverController.get(); }
     SnapCoordinator* GetSnapCoordinator(void);
 #endif
 
@@ -307,6 +312,7 @@ public:
     void SetEncodingData(const DocumentEncodingData &newData);
 
     enum DocumentReadyState { kLoading, kInteractive, kComplete };
+    bool IsLoadCompleted(void) const { return kComplete == m_readyState; }
     void SetReadyState(DocumentReadyState readyState);
 
     enum ParsingState { kParsing, kInDOMContentLoaded, kFinishedParsing };
@@ -449,6 +455,15 @@ public:
     void ScheduleLayoutTreeUpdateIfNeeded(void);
     void LayoutUpdated(void);
 
+    enum RunPostLayoutTasks {
+        kRunPostLayoutTasksAsyhnchronously,
+        kRunPostLayoutTasksSynchronously,
+    };
+    void UpdateStyleAndLayoutIgnorePendingStylesheets(RunPostLayoutTasks runPostLayoutTasks = kRunPostLayoutTasksAsyhnchronously);
+    // Same as UpdateStyleAndLayoutTree() except ignoring pending stylesheets.
+    void UpdateStyleAndLayoutTreeIgnorePendingStylesheets(void);
+    void UpdateStyleAndLayout(void);
+
     RootScrollerController& GetRootScrollerController(void) const
     {
         ASSERT(m_rootScrollerController);
@@ -475,6 +490,8 @@ public:
     void EnqueueResizeEvent(void);
     void EnqueueVisualViewportResizeEvent(void);
 
+    SlotAssignmentEngine& GetSlotAssignmentEngine(void);
+    bool IsSlotAssignmentOrLegacyDistributionDirty(void);
 #   if DCHECK_IS_ON()
     unsigned& SlotAssignmentRecalcForbiddenRecursionDepth(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth; }
     bool IsSlotAssignmentRecalcForbidden(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth > 0; }
@@ -482,9 +499,15 @@ public:
     bool IsSlotAssignmentRecalcForbidden(void) { return false; }
 #   endif
 
-    constexpr bool Printing(void) { return false; }              // Just a placeholder.
-    constexpr bool FinishingOrIsPrinting(void) { return false; } // Just a placeholder.
 #endif // BLINKIT_CRAWLER_ONLY
+
+    /**
+     * Placeholders
+     */
+    constexpr bool FinishingOrIsPrinting(void) { return false; }
+    constexpr bool IsHTMLDocument(void) const { return true; }
+    constexpr bool IsInMainFrame(void) const { return true; }
+    constexpr bool Printing(void) const { return false; }
 protected:
     Document(const DocumentInit &initializer);
 private:
@@ -525,6 +548,8 @@ private:
     bool IsDocument(void) const final { return true; }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ScriptedAnimationController& EnsureScriptedAnimationController(void);
+
     void ClearFocusedElementSoon(void);
 
     void BeginLifecycleUpdatesIfRenderingReady(void);
@@ -634,6 +659,7 @@ private:
     PendingSheetLayout m_pendingSheetLayout = kNoLayoutWithPendingSheets;
 
     std::shared_ptr<HTMLImportsController> m_importsController;
+    std::unique_ptr<ScriptedAnimationController> m_scriptedAnimationController;
 
     LayoutView *m_layoutView = nullptr;
     std::unique_ptr<TextAutosizer> m_textAutosizer;
@@ -661,9 +687,13 @@ private:
     const std::unique_ptr<VisitedLinkState> m_visitedLinkState;
     bool m_visuallyOrdered = false;
 
+    std::unique_ptr<SlotAssignmentEngine> m_slotAssignmentEngine;
+
     // TODO(tkent): Should it be moved to LocalFrame or LocalFrameView?
     std::unique_ptr<ViewportData> m_viewportData;
 
+    std::unique_ptr<IntersectionObserverController> m_intersectionObserverController;
+    std::unique_ptr<ResizeObserverController> m_resizeObserverController;
     Member<SnapCoordinator> m_snapCoordinator;
 
     friend class ReattachLegacyLayoutObjectList;

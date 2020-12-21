@@ -478,11 +478,8 @@ bool ChromeClientImpl::TabsToLinks() {
 }
 
 void ChromeClientImpl::InvalidateRect(const IntRect& update_rect) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (!update_rect.IsEmpty())
     web_view_->InvalidateRect(update_rect);
-#endif
 }
 
 void ChromeClientImpl::ScheduleAnimation(const LocalFrameView* frame_view) {
@@ -1325,8 +1322,7 @@ void ChromeClientImpl::AjaxSucceeded(LocalFrame* frame) {
 }
 
 void ChromeClientImpl::RegisterViewportLayers() const {
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: LayerTreeView
   if (web_view_->RootGraphicsLayer() && web_view_->LayerTreeView())
     web_view_->RegisterViewportLayersWithCompositor();
 #endif

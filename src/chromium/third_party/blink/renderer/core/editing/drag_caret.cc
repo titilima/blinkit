@@ -49,8 +49,8 @@ DragCaret::DragCaret() : display_item_client_(new CaretDisplayItemClient()) {}
 
 DragCaret::~DragCaret() = default;
 
-DragCaret* DragCaret::Create() {
-  return new DragCaret;
+std::unique_ptr<DragCaret> DragCaret::Create() {
+  return base::WrapUnique(new DragCaret);
 }
 
 void DragCaret::ClearPreviousVisualRect(const LayoutBlock& block) {
@@ -105,6 +105,11 @@ void DragCaret::NodeWillBeRemoved(Node& node) {
   if (!node.IsShadowIncludingInclusiveAncestorOf(anchor_node))
     return;
   Clear();
+}
+
+void DragCaret::Trace(blink::Visitor* visitor) {
+  visitor->Trace(position_);
+  SynchronousMutationObserver::Trace(visitor);
 }
 
 bool DragCaret::ShouldPaintCaret(const LayoutBlock& block) const {

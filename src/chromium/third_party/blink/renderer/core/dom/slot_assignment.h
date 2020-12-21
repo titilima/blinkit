@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: slot_assignment.h
+// Description: SlotAssignment Class
+//      Author: Ziming Li
+//     Created: 2020-12-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -80,7 +91,7 @@ class SlotAssignment final : public GarbageCollected<SlotAssignment> {
                              SlotMutationType);
 
   HeapVector<Member<HTMLSlotElement>> slots_;
-  Member<TreeOrderedMap> slot_map_;
+  std::unique_ptr<TreeOrderedMap> slot_map_;
   WeakMember<ShadowRoot> owner_;
   unsigned needs_collect_slots_ : 1;
   unsigned needs_assignment_recalc_ : 1;

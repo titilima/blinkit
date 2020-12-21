@@ -122,7 +122,7 @@ void WinWebView::OnSize(HWND, UINT state, int cx, int cy)
         return;
 
     Resize(WebSize(cx, cy));
-    ASSERT(false); // BKTODO: Update
+    UpdateAndPaint();
 }
 
 bool WinWebView::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)

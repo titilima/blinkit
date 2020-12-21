@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: compositing_layer_property_updater.cc
+// Description: CompositingLayerPropertyUpdater Class
+//      Author: Ziming Li
+//     Created: 2020-12-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -54,8 +65,7 @@ void CompositingLayerPropertyUpdater::Update(const LayoutObject& object) {
   // resulted in the paint offset used by CompositedLayerMapping to mismatch.
   bool subpixel_accumulation_may_be_bogus = paint_layer->SubtreeIsInvisible();
   if (!subpixel_accumulation_may_be_bogus) {
-    DCHECK_EQ(layout_snapped_paint_offset, snapped_paint_offset)
-        << object.DebugName();
+    DCHECK_EQ(layout_snapped_paint_offset, snapped_paint_offset);
   }
 #endif
 
@@ -163,11 +173,14 @@ void CompositingLayerPropertyUpdater::Update(const LayoutObject& object) {
 
   auto* main_graphics_layer = mapping->MainGraphicsLayer();
   if (const auto* contents_layer = main_graphics_layer->ContentsLayer()) {
+    ASSERT(false); // BKTODO:
+#if 0
     auto position = contents_layer->position();
     main_graphics_layer->SetContentsLayerState(
         fragment_data.ContentsProperties(),
         snapped_paint_offset + main_graphics_layer->OffsetFromLayoutObject() +
             IntSize(position.x(), position.y()));
+#endif
   }
 
   if (auto* squashing_layer = mapping->SquashingLayer()) {
