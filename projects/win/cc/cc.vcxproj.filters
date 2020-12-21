@@ -32,6 +32,15 @@
     <ClCompile Include="..\..\..\src\chromium\cc\paint\skia_paint_canvas.cc">
       <Filter>paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\trees\element_id.cc">
+      <Filter>trees</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_record.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_op_buffer.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\cc\_pc.h">
@@ -71,6 +80,18 @@
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\cc\paint\skia_paint_canvas.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\input\browser_controls_state.h">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\trees\element_id.h">
+      <Filter>trees</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_record.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_op_buffer.h">
       <Filter>paint</Filter>
     </ClInclude>
   </ItemGroup>
