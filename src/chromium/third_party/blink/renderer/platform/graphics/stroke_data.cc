@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: stroke_data.cc
-// Description: StrokeData Class
-//      Author: Ziming Li
-//     Created: 2020-10-10
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 // Copyright (C) 2013 Google Inc. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -65,7 +54,6 @@ void StrokeData::SetLineDash(const DashArray& dashes, float dash_offset) {
   dash_ = SkDashPathEffect::Make(intervals.get(), count, dash_offset);
 }
 
-#if 0 // BKTODO:
 void StrokeData::SetupPaint(PaintFlags* flags,
                             const int length,
                             const int dash_thickness) const {
@@ -130,7 +118,6 @@ void StrokeData::SetupPaintDashPathEffect(PaintFlags* flags,
     flags->setPathEffect(nullptr);
   }
 }
-#endif
 
 bool StrokeData::StrokeIsDashed(float width, StrokeStyle style) {
   return style == kDashedStroke || (style == kDottedStroke && width <= 3);
