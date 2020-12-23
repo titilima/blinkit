@@ -34,21 +34,12 @@ class ContiguousContainerBase::Buffer {
 
  public:
   Buffer(size_t buffer_size, const char* type_name) {
-    ASSERT(false); // BKTODO:
-#if 0
-    capacity_ = WTF::Partitions::BufferActualSize(buffer_size);
-    begin_ = end_ =
-        static_cast<char*>(WTF::Partitions::BufferMalloc(capacity_, type_name));
-    ANNOTATE_NEW_BUFFER(begin_, capacity_, 0);
-#endif
+    capacity_ = buffer_size;
+    begin_ = end_ = static_cast<char*>(malloc(capacity_));
   }
 
   ~Buffer() {
-    ASSERT(false); // BKTODO:
-#if 0
-    ANNOTATE_DELETE_BUFFER(begin_, capacity_, UsedCapacity());
-    WTF::Partitions::BufferFree(begin_);
-#endif
+    free(begin_);
   }
 
   size_t Capacity() const { return capacity_; }
