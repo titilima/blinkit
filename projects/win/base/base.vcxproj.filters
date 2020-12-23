@@ -42,6 +42,15 @@
     <Filter Include="base\debug">
       <UniqueIdentifier>{06f468ff-147e-4bde-a61b-491ee581cfab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="base\third_party\superfasthash">
+      <UniqueIdentifier>{6b1fb633-630a-42cb-8140-ebf66b801bcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base\trace_event">
+      <UniqueIdentifier>{7f6f3dbf-d16c-402d-8320-b98e1a570ba2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base\trace_event\common">
+      <UniqueIdentifier>{94b3f5c0-4e88-42c9-b714-3c92b5f5ebfa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -106,6 +115,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\base\strings\string_number_conversions.cpp">
       <Filter>base\strings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\third_party\superfasthash\superfasthash.c">
+      <Filter>base\third_party\superfasthash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\debug\alias.cc">
+      <Filter>base\debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -270,6 +285,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\base\optional.h">
       <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\trace_event\common\trace_event_common.h">
+      <Filter>base\trace_event\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\trace_event\trace_event.h">
+      <Filter>base\trace_event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\memory\aligned_memory.h">
+      <Filter>base\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\debug\alias.h">
+      <Filter>base\debug</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

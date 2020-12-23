@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: scoped_raster_flags.h
+// Description: ScopedRasterFlags Class
+//      Author: Ziming Li
+//     Created: 2020-12-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,9 +16,9 @@
 #ifndef CC_PAINT_SCOPED_RASTER_FLAGS_H_
 #define CC_PAINT_SCOPED_RASTER_FLAGS_H_
 
-#include "base/containers/stack_container.h"
+// BKTODO: #include "base/containers/stack_container.h"
 #include "base/macros.h"
-#include "cc/paint/decode_stashing_image_provider.h"
+// BKTODO: #include "cc/paint/decode_stashing_image_provider.h"
 #include "cc/paint/paint_export.h"
 #include "cc/paint/paint_flags.h"
 
@@ -48,7 +59,7 @@ class CC_PAINT_EXPORT ScopedRasterFlags {
 
   const PaintFlags* original_flags_;
   base::Optional<PaintFlags> modified_flags_;
-  base::Optional<DecodeStashingImageProvider> decode_stashing_image_provider_;
+  // bktodo: base::Optional<DecodeStashingImageProvider> decode_stashing_image_provider_;
   bool decode_failed_ = false;
 
   DISALLOW_COPY_AND_ASSIGN(ScopedRasterFlags);

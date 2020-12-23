@@ -60,8 +60,7 @@ void LineBoxListPainter::Paint(const LayoutBoxModelObject& layout_object,
   DCHECK(layout_object.IsLayoutBlock() ||
          (layout_object.IsLayoutInline() && layout_object.HasLayer()));
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   if (paint_info.phase == PaintPhase::kForeground && paint_info.IsPrinting())
     AddPDFURLRectsForInlineChildrenRecursively(layout_object, paint_info,
                                                paint_offset);

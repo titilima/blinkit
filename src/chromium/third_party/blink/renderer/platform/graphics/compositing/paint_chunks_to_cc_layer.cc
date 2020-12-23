@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_chunks_to_cc_layer.cc
+// Description: PaintChunksToCcLayer Class
+//      Author: Ziming Li
+//     Created: 2020-12-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 
 #include "cc/paint/display_item_list.h"
 #include "cc/paint/paint_op_buffer.h"
-#include "cc/paint/render_surface_filters.h"
+// BKTODO: #include "cc/paint/render_surface_filters.h"
 #include "third_party/blink/renderer/platform/graphics/compositing/chunk_to_layer_mapper.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context.h"
 #include "third_party/blink/renderer/platform/graphics/paint/display_item_list.h"
@@ -331,6 +342,8 @@ void ConversionContext::SwitchToClip(const ClipPaintPropertyNode* target_clip) {
       LowestCommonAncestor(*target_clip, *current_clip_).Unalias();
   while (current_clip_ != lca_clip) {
     if (!state_stack_.size() || state_stack_.back().type != StateEntry::kClip) {
+      ASSERT(false); // BKTODO:
+#if 0
 #if DCHECK_IS_ON()
       DLOG(ERROR) << "Error: Chunk has a clip that escaped its layer's or "
                      "effect's clip."
@@ -338,6 +351,7 @@ void ConversionContext::SwitchToClip(const ClipPaintPropertyNode* target_clip) {
                   << target_clip->ToTreeString().Utf8().data()
                   << "current_clip_:\n"
                   << current_clip_->ToTreeString().Utf8().data();
+#endif
 #endif
       // This bug is known to happen in SPv1 due to some clip-escaping corner
       // cases that are very difficult to fix in legacy architecture.
@@ -405,6 +419,8 @@ void ConversionContext::StartClip(
   cc_list_.push<cc::SaveOp>();
   ApplyTransform(local_transform);
   const bool antialias = true;
+  ASSERT(false); // BKTODO:
+#if 0
   if (combined_clip_rect.IsRounded()) {
     cc_list_.push<cc::ClipRRectOp>(combined_clip_rect, SkClipOp::kIntersect,
                                    antialias);
@@ -417,6 +433,7 @@ void ConversionContext::StartClip(
         lowest_combined_clip_node->ClipPath()->GetSkPath(),
         SkClipOp::kIntersect, antialias);
   }
+#endif
   cc_list_.EndPaintOfPairedBegin();
 
   PushState(StateEntry::kClip, 1);
@@ -436,12 +453,15 @@ void ConversionContext::SwitchToEffect(
   while (current_effect_ != lca_effect) {
     // This EndClips() and the later EndEffect() pop to the parent effect.
     EndClips();
+    ASSERT(false); // BKTODO:
+#if 0
 #if DCHECK_IS_ON()
     DCHECK(state_stack_.size())
         << "Error: Chunk has an effect that escapes layer's effect.\n"
         << "target_effect:\n"
         << target_effect->ToTreeString().Utf8().data() << "current_effect_:\n"
         << current_effect_->ToTreeString().Utf8().data();
+#endif
 #endif
     if (!state_stack_.size())
       break;
@@ -510,11 +530,14 @@ void ConversionContext::StartEffect(const EffectPaintPropertyNode* effect) {
       flags.setAlpha(alpha);
       flags.setColorFilter(GraphicsContext::WebCoreColorFilterToSkiaColorFilter(
           effect->GetColorFilter()));
-      save_layer_id = cc_list_.push<cc::SaveLayerOp>(nullptr, &flags);
+      ASSERT(false); // BKTODO: save_layer_id = cc_list_.push<cc::SaveLayerOp>(nullptr, &flags);
     } else {
       constexpr bool preserve_lcd_text_requests = false;
+      ASSERT(false); // BKTODO:
+#if 0
       save_layer_id = cc_list_.push<cc::SaveLayerAlphaOp>(
           nullptr, alpha, preserve_lcd_text_requests);
+#endif
     }
     saved_count++;
   } else {
@@ -530,9 +553,12 @@ void ConversionContext::StartEffect(const EffectPaintPropertyNode* effect) {
     // operation, which we never generate.
     gfx::SizeF empty;
     PaintFlags filter_flags;
+    ASSERT(false); // BKTODO:
+#if 0
     filter_flags.setImageFilter(cc::RenderSurfaceFilters::BuildImageFilter(
         effect->Filter().AsCcFilterOperations(), empty));
     save_layer_id = cc_list_.push<cc::SaveLayerOp>(nullptr, &filter_flags);
+#endif
     saved_count++;
 
     if (filter_origin != FloatPoint())
@@ -736,6 +762,8 @@ scoped_refptr<cc::DisplayItemList> PaintChunksToCcLayer::Convert(
     ConvertInto(paint_chunks, layer_state, layer_offset, FloatSize(),
                 display_items, *list_clone);
     recorder.getRecordingCanvas()->drawPicture(list_clone->ReleaseAsRecord());
+    ASSERT(false); // BKTODO:
+#if 0
     params.tracking.CheckUnderInvalidations(params.debug_name,
                                             recorder.finishRecordingAsPicture(),
                                             params.interest_rect);
@@ -744,6 +772,7 @@ scoped_refptr<cc::DisplayItemList> PaintChunksToCcLayer::Convert(
       cc_list->push<cc::DrawRecordOp>(std::move(record));
       cc_list->EndPaintOfUnpaired(params.interest_rect);
     }
+#endif
   }
 
   cc_list->Finalize();

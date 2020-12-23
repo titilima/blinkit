@@ -19,6 +19,7 @@
 #include "third_party/blink/renderer/core/frame/layout_subtree_root_list.h"
 #include "third_party/blink/renderer/core/layout/depth_ordered_layout_object_list.h"
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
+#include "third_party/blink/renderer/core/paint/paint_phase.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/blink/renderer/platform/geometry/layout_size.h"
 #include "third_party/blink/renderer/platform/graphics/color.h"
@@ -26,8 +27,10 @@
 namespace blink {
 
 class ChromeClient;
+class CullRect;
 class DocumentLifecycle;
 class FrameViewAutoSizeInfo;
+class GraphicsContext;
 class LayoutBox;
 class LayoutView;
 class PaintLayerScrollableArea;
@@ -83,6 +86,11 @@ public:
     void AdjustViewSize(void);
     void SetLayoutOverflowSize(const IntSize &size);
     void UpdateLayout(void);
+
+    // Paints, and also updates the lifecycle to in-paint and paint clean
+    // beforehand.  Call this for painting use-cases outside of the lifecycle.
+    void PaintWithLifecycleUpdate(GraphicsContext &context, const GlobalPaintFlags globalPaintFlags,
+        const CullRect &cullRect);
 
     // Returns the scrollable area for the frame. For the root frame, this will
     // be the RootFrameViewport, which adds pinch-zoom semantics to scrolling.
@@ -153,6 +161,7 @@ public:
     // documentation.
     FloatSize ViewportSizeForViewportUnits(void) const;
 
+    Color BaseBackgroundColor(void) const { return m_baseBackgroundColor; }
     void SetBaseBackgroundColor(const Color &backgroundColor);
     void UpdateBaseBackgroundColorRecursively(const Color &baseBackgroundColor);
 
@@ -219,6 +228,7 @@ public:
 
     void UpdateDocumentAnnotatedRegions(void) const;
 
+    void NotifyPageThatContentAreaWillPaint(void) const;
     void NotifyResizeObservers(void);
 
     void DidAttachDocument(void);

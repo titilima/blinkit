@@ -274,6 +274,9 @@
     <ProjectReference Include="..\stub\stub.vcxproj">
       <Project>{5c7fcbe4-3630-4def-ac58-916eafbe1e97}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\ui\ui.vcxproj">
+      <Project>{bbc8aaa9-2ae8-41a5-b94f-e6a5c98ef7ab}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\url\url.vcxproj">
       <Project>{849ce42e-6457-4c6d-8ba0-854932a2aedb}</Project>
     </ProjectReference>

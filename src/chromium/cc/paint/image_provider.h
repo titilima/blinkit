@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: image_provider.h
+// Description: ImageProvider Class
+//      Author: Ziming Li
+//     Created: 2020-12-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,9 +16,12 @@
 #ifndef CC_PAINT_IMAGE_PROVIDER_H_
 #define CC_PAINT_IMAGE_PROVIDER_H_
 
+#if 0 // BKTODO:
 #include "base/callback.h"
 #include "cc/paint/decoded_draw_image.h"
 #include "cc/paint/draw_image.h"
+#else
+#endif
 #include "cc/paint/paint_export.h"
 
 #include <vector>
@@ -19,6 +33,7 @@ class PaintImage;
 // rasterization.
 class CC_PAINT_EXPORT ImageProvider {
  public:
+#if 0 // BKTODO:
   class CC_PAINT_EXPORT ScopedDecodedDrawImage {
    public:
     using DestructionCallback = base::OnceClosure;
@@ -46,13 +61,16 @@ class CC_PAINT_EXPORT ImageProvider {
 
     DISALLOW_COPY_AND_ASSIGN(ScopedDecodedDrawImage);
   };
+#endif
 
   virtual ~ImageProvider() {}
 
+#if 0 // BKTODO:
   // Returns the DecodedDrawImage to use for this PaintImage. If no image is
   // provided, the draw for this image will be skipped during raster.
   virtual ScopedDecodedDrawImage GetDecodedDrawImage(
       const DrawImage& draw_image) = 0;
+#endif
 };
 
 }  // namespace cc

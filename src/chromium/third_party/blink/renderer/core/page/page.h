@@ -35,6 +35,8 @@ class ScrollingCoordinator;
 class TopDocumentRootScrollerController;
 class VisualViewport;
 
+float DeviceScaleFactorDeprecated(LocalFrame *frame);
+
 class Page : public GarbageCollectedFinalized<Page>
 {
 public:

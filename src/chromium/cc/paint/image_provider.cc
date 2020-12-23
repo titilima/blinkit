@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: image_provider.cc
+// Description: ImageProvider Class
+//      Author: Ziming Li
+//     Created: 2020-12-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,6 +17,7 @@
 
 namespace cc {
 
+#if 0 // BKTODO:
 ImageProvider::ScopedDecodedDrawImage::ScopedDecodedDrawImage() = default;
 
 ImageProvider::ScopedDecodedDrawImage::ScopedDecodedDrawImage(
@@ -40,5 +52,6 @@ void ImageProvider::ScopedDecodedDrawImage::DestroyDecode() {
   if (!destruction_callback_.is_null())
     std::move(destruction_callback_).Run();
 }
+#endif
 
 }  // namespace cc

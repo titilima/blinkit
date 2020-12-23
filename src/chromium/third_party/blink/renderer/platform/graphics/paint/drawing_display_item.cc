@@ -15,9 +15,9 @@
 
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_display_item.h"
 
-// BKTODO: #include "cc/paint/display_item_list.h"
+#include "cc/paint/display_item_list.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context.h"
-// BKTODO: #include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
+#include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkData.h"
@@ -25,18 +25,13 @@
 namespace blink {
 
 void DrawingDisplayItem::Replay(GraphicsContext& context) const {
-  ASSERT(false); // BKTODO:
-#if 0
-  if (record_)
-    context.DrawRecord(record_);
-#endif
+    if (record_)
+      ASSERT(false); // BKTODO: context.DrawRecord(record_);
 }
 
 void DrawingDisplayItem::AppendToDisplayItemList(
     const FloatSize& visual_rect_offset,
     cc::DisplayItemList& list) const {
-  ASSERT(false); // BKTODO:
-#if 0
   if (record_) {
     list.StartPaint();
     list.push<cc::DrawRecordOp>(record_);
@@ -45,15 +40,10 @@ void DrawingDisplayItem::AppendToDisplayItemList(
     visual_rect.Move(-visual_rect_offset);
     list.EndPaintOfUnpaired(EnclosingIntRect(visual_rect));
   }
-#endif
 }
 
 bool DrawingDisplayItem::DrawsContent() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return record_.get();
-#endif
 }
 
 #if DCHECK_IS_ON()

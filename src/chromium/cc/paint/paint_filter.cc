@@ -1,12 +1,25 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: paint_filter.cc
+// Description: PaintFilter Classes
+//      Author: Ziming Li
+//     Created: 2020-12-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "cc/paint/paint_filter.h"
 
+#if 0 // BKTODO:
 #include "cc/paint/filter_operations.h"
 #include "cc/paint/paint_image_builder.h"
 #include "cc/paint/paint_op_writer.h"
+#endif
 #include "cc/paint/paint_record.h"
 #include "third_party/skia/include/core/SkColorFilter.h"
 #include "third_party/skia/include/core/SkMath.h"
@@ -128,7 +141,11 @@ size_t PaintFilter::GetFilterSize(const PaintFilter* filter) {
   // A null type is used to indicate no filter.
   if (!filter)
     return sizeof(uint32_t);
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return filter->SerializedSize() + PaintOpWriter::Alignment();
+#endif
 }
 
 size_t PaintFilter::BaseSerializedSize() const {
@@ -256,7 +273,7 @@ ColorFilterPaintFilter::~ColorFilterPaintFilter() = default;
 size_t ColorFilterPaintFilter::SerializedSize() const {
   base::CheckedNumeric<size_t> total_size = 0u;
   total_size += BaseSerializedSize();
-  total_size += PaintOpWriter::GetFlattenableSize(color_filter_.get());
+  ASSERT(false); // BKTODO: total_size += PaintOpWriter::GetFlattenableSize(color_filter_.get());
   total_size += GetFilterSize(input_.get());
   return total_size.ValueOrDefault(0u);
 }
@@ -269,9 +286,13 @@ sk_sp<PaintFilter> ColorFilterPaintFilter::SnapshotWithImagesInternal(
 
 bool ColorFilterPaintFilter::operator==(
     const ColorFilterPaintFilter& other) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return PaintOp::AreSkFlattenablesEqual(color_filter_.get(),
                                          other.color_filter_.get()) &&
          AreFiltersEqual(input_.get(), other.input_.get());
+#endif
 }
 
 BlurPaintFilter::BlurPaintFilter(SkScalar sigma_x,
@@ -577,9 +598,9 @@ MatrixConvolutionPaintFilter::MatrixConvolutionPaintFilter(
       input_(std::move(input)) {
   auto len = static_cast<size_t>(
       sk_64_mul(kernel_size_.width(), kernel_size_.height()));
-  kernel_->reserve(len);
+  ASSERT(false); // BKTODO: kernel_->reserve(len);
   for (size_t i = 0; i < len; ++i)
-    kernel_->push_back(kernel[i]);
+    ASSERT(false); // BKTODO: kernel_->push_back(kernel[i]);
 
   cached_sk_filter_ = SkMatrixConvolutionImageFilter::Make(
       kernel_size_, kernel, gain_, bias_, kernel_offset_, tile_mode_,
@@ -589,23 +610,34 @@ MatrixConvolutionPaintFilter::MatrixConvolutionPaintFilter(
 MatrixConvolutionPaintFilter::~MatrixConvolutionPaintFilter() = default;
 
 size_t MatrixConvolutionPaintFilter::SerializedSize() const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   base::CheckedNumeric<size_t> total_size =
       BaseSerializedSize() + sizeof(kernel_size_) + sizeof(size_t) +
       kernel_->size() * sizeof(SkScalar) + sizeof(gain_) + sizeof(bias_) +
       sizeof(kernel_offset_) + sizeof(tile_mode_) + sizeof(convolve_alpha_);
   total_size += GetFilterSize(input_.get());
   return total_size.ValueOrDefault(0u);
+#endif
 }
 
 sk_sp<PaintFilter> MatrixConvolutionPaintFilter::SnapshotWithImagesInternal(
     ImageProvider* image_provider) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return sk_make_sp<MatrixConvolutionPaintFilter>(
       kernel_size_, &kernel_[0], gain_, bias_, kernel_offset_, tile_mode_,
       convolve_alpha_, Snapshot(input_, image_provider), crop_rect());
+#endif
 }
 
 bool MatrixConvolutionPaintFilter::operator==(
     const MatrixConvolutionPaintFilter& other) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return kernel_size_ == other.kernel_size_ &&
          std::equal(kernel_.container().begin(), kernel_.container().end(),
                     other.kernel_.container().begin(), AreScalarsEqual) &&
@@ -615,6 +647,7 @@ bool MatrixConvolutionPaintFilter::operator==(
          tile_mode_ == other.tile_mode_ &&
          convolve_alpha_ == other.convolve_alpha_ &&
          AreFiltersEqual(input_.get(), other.input_.get());
+#endif
 }
 
 DisplacementMapEffectPaintFilter::DisplacementMapEffectPaintFilter(
@@ -683,12 +716,15 @@ size_t ImagePaintFilter::SerializedSize() const {
   base::CheckedNumeric<size_t> total_size =
       BaseSerializedSize() + sizeof(src_rect_) + sizeof(dst_rect_) +
       sizeof(filter_quality_);
-  total_size += PaintOpWriter::GetImageSize(image_);
+  ASSERT(false); // BKTODO: total_size += PaintOpWriter::GetImageSize(image_);
   return total_size.ValueOrDefault(0u);
 }
 
 sk_sp<PaintFilter> ImagePaintFilter::SnapshotWithImagesInternal(
     ImageProvider* image_provider) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   DrawImage draw_image(image_, SkIRect::MakeWH(image_.width(), image_.height()),
                        filter_quality_, SkMatrix::I());
   auto scoped_decoded_image = image_provider->GetDecodedDrawImage(draw_image);
@@ -705,6 +741,7 @@ sk_sp<PaintFilter> ImagePaintFilter::SnapshotWithImagesInternal(
 
   return sk_make_sp<ImagePaintFilter>(std::move(decoded_paint_image), src_rect_,
                                       dst_rect_, filter_quality_);
+#endif
 }
 
 bool ImagePaintFilter::operator==(const ImagePaintFilter& other) const {
@@ -733,7 +770,7 @@ RecordPaintFilter::~RecordPaintFilter() = default;
 size_t RecordPaintFilter::SerializedSize() const {
   base::CheckedNumeric<size_t> total_size =
       BaseSerializedSize() + sizeof(record_bounds_);
-  total_size += PaintOpWriter::GetRecordSize(record_.get());
+  ASSERT(false); // BKTODO: total_size += PaintOpWriter::GetRecordSize(record_.get());
   return total_size.ValueOrDefault(0u);
 }
 
@@ -764,8 +801,11 @@ MergePaintFilter::MergePaintFilter(const sk_sp<PaintFilter>* const filters,
   for (int i = 0; i < count; ++i) {
     auto filter =
         image_provider ? Snapshot(filters[i], image_provider) : filters[i];
+    ASSERT(false); // BKTODO: 
+#if 0
     inputs_->push_back(std::move(filter));
     sk_filters.push_back(GetSkFilter(inputs_->back().get()));
+#endif
   }
 
   cached_sk_filter_ = SkMergeImageFilter::Make(
@@ -776,26 +816,36 @@ MergePaintFilter::~MergePaintFilter() = default;
 
 size_t MergePaintFilter::SerializedSize() const {
   base::CheckedNumeric<size_t> total_size = 0u;
+  ASSERT(false); // BKTODO:
+#if 0
   for (size_t i = 0; i < input_count(); ++i)
     total_size += GetFilterSize(input_at(i));
+#endif
   total_size += BaseSerializedSize();
-  total_size += sizeof(input_count());
+  ASSERT(false); // BKTODO: total_size += sizeof(input_count());
   return total_size.ValueOrDefault(0u);
 }
 
 sk_sp<PaintFilter> MergePaintFilter::SnapshotWithImagesInternal(
     ImageProvider* image_provider) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return sk_sp<MergePaintFilter>(new MergePaintFilter(
       &inputs_[0], inputs_->size(), crop_rect(), image_provider));
+#endif
 }
 
 bool MergePaintFilter::operator==(const MergePaintFilter& other) const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (inputs_->size() != other.inputs_->size())
     return false;
   for (size_t i = 0; i < inputs_->size(); ++i) {
     if (!AreFiltersEqual(inputs_[i].get(), other.inputs_[i].get()))
       return false;
   }
+#endif
   return true;
 }
 
@@ -979,12 +1029,15 @@ PaintFlagsPaintFilter::PaintFlagsPaintFilter(PaintFlags flags,
                                              const CropRect* crop_rect)
     : PaintFilter(kType, crop_rect, flags.HasDiscardableImages()),
       flags_(std::move(flags)) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (image_provider) {
     raster_flags_.emplace(&flags_, image_provider, SkMatrix::I(), 255u);
   }
   cached_sk_filter_ = SkPaintImageFilter::Make(
       raster_flags_ ? raster_flags_->flags()->ToSkPaint() : flags_.ToSkPaint(),
       crop_rect);
+#endif
 }
 
 PaintFlagsPaintFilter::~PaintFlagsPaintFilter() = default;

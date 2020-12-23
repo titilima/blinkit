@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: scoped_raster_flags.CC
+// Description: ScopedRasterFlags Class
+//      Author: Ziming Li
+//     Created: 2020-12-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,9 +16,9 @@
 #include "cc/paint/scoped_raster_flags.h"
 
 #include "cc/paint/image_provider.h"
-#include "cc/paint/image_transfer_cache_entry.h"
+// BKTODO: #include "cc/paint/image_transfer_cache_entry.h"
 #include "cc/paint/paint_filter.h"
-#include "cc/paint/paint_image_builder.h"
+// BKTODO: #include "cc/paint/paint_image_builder.h"
 
 namespace cc {
 ScopedRasterFlags::ScopedRasterFlags(const PaintFlags* flags,
@@ -16,7 +27,7 @@ ScopedRasterFlags::ScopedRasterFlags(const PaintFlags* flags,
                                      uint8_t alpha)
     : original_flags_(flags) {
   if (image_provider) {
-    decode_stashing_image_provider_.emplace(image_provider);
+    ASSERT(false); // BKTODO: decode_stashing_image_provider_.emplace(image_provider);
 
     // We skip the op if any images fail to decode.
     DecodeImageShader(ctm);
@@ -45,6 +56,8 @@ void ScopedRasterFlags::DecodeImageShader(const SkMatrix& ctm) {
       flags()->getShader()->shader_type() != PaintShader::Type::kImage)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   uint32_t transfer_cache_entry_id = kInvalidImageTransferCacheEntryId;
   SkFilterQuality raster_quality = flags()->getFilterQuality();
   bool transfer_cache_entry_needs_mips = false;
@@ -62,6 +75,7 @@ void ScopedRasterFlags::DecodeImageShader(const SkMatrix& ctm) {
 
   MutableFlags()->setFilterQuality(raster_quality);
   MutableFlags()->setShader(decoded_shader);
+#endif
 }
 
 void ScopedRasterFlags::DecodeRecordShader(const SkMatrix& ctm) {
@@ -69,6 +83,8 @@ void ScopedRasterFlags::DecodeRecordShader(const SkMatrix& ctm) {
       flags()->getShader()->shader_type() != PaintShader::Type::kPaintRecord)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Only replace shaders with animated images. Creating transient shaders for
   // replacing decodes during raster results in cache misses in skia's picture
   // shader cache, which results in re-rasterizing the picture for every draw.
@@ -83,9 +99,12 @@ void ScopedRasterFlags::DecodeRecordShader(const SkMatrix& ctm) {
   decoded_shader->CreateSkShader(&raster_scale,
                                  &*decode_stashing_image_provider_);
   MutableFlags()->setShader(std::move(decoded_shader));
+#endif
 }
 
 void ScopedRasterFlags::DecodeFilter() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!flags()->getImageFilter() ||
       !flags()->getImageFilter()->has_discardable_images() ||
       flags()->getImageFilter()->image_analysis_state() !=
@@ -95,6 +114,7 @@ void ScopedRasterFlags::DecodeFilter() {
 
   MutableFlags()->setImageFilter(flags()->getImageFilter()->SnapshotWithImages(
       &*decode_stashing_image_provider_));
+#endif
 }
 
 void ScopedRasterFlags::AdjustStrokeIfNeeded(const SkMatrix& ctm) {

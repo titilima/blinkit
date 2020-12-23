@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: math_util.h
+// Description: MathUtil Class
+//      Author: Ziming Li
+//     Created: 2020-12-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -12,12 +23,12 @@
 #include "base/logging.h"
 #include "build/build_config.h"
 #include "cc/base/base_export.h"
-#include "ui/gfx/geometry/box_f.h"
+// BKTODO: #include "ui/gfx/geometry/box_f.h"
 #include "ui/gfx/geometry/point3_f.h"
 #include "ui/gfx/geometry/point_f.h"
 #include "ui/gfx/geometry/scroll_offset.h"
 #include "ui/gfx/geometry/size.h"
-#include "ui/gfx/transform.h"
+// BKTODO: #include "ui/gfx/transform.h"
 
 namespace base {
 class Value;
@@ -39,6 +50,7 @@ class Vector3dF;
 
 namespace cc {
 
+#if 0 // BKTODO:
 struct HomogeneousCoordinate {
   HomogeneousCoordinate(SkMScalar x, SkMScalar y, SkMScalar z, SkMScalar w) {
     vec[0] = x;
@@ -78,6 +90,7 @@ struct HomogeneousCoordinate {
 
   SkMScalar vec[4];
 };
+#endif
 
 class CC_BASE_EXPORT MathUtil {
  public:
@@ -159,12 +172,14 @@ class CC_BASE_EXPORT MathUtil {
   static gfx::RectF ProjectClippedRect(const gfx::Transform& transform,
                                        const gfx::RectF& rect);
 
+#if 0 // BKTODO:
   // Map device space quad to local space. Device_transform has no 3d
   // component since it was flattened, so we don't need to project.  We should
   // have already checked that the transform was invertible before this call.
   static gfx::QuadF InverseMapQuadToLocalSpace(
       const gfx::Transform& device_transform,
       const gfx::QuadF& device_quad);
+#endif
 
   // This function is only valid when the transform preserves 2d axis
   // alignment and the resulting rect will not be clipped.
@@ -184,6 +199,7 @@ class CC_BASE_EXPORT MathUtil {
 
   static gfx::RectF ComputeEnclosingRectOfVertices(const gfx::PointF vertices[],
                                                    int num_vertices);
+#if 0 // BKTODO:
   static gfx::RectF ComputeEnclosingClippedRect(
       const HomogeneousCoordinate& h1,
       const HomogeneousCoordinate& h2,
@@ -195,6 +211,7 @@ class CC_BASE_EXPORT MathUtil {
   static gfx::QuadF MapQuad(const gfx::Transform& transform,
                             const gfx::QuadF& quad,
                             bool* clipped);
+#endif
   static gfx::PointF MapPoint(const gfx::Transform& transform,
                               const gfx::PointF& point,
                               bool* clipped);
@@ -233,6 +250,7 @@ class CC_BASE_EXPORT MathUtil {
   static gfx::Vector2dF ProjectVector(const gfx::Vector2dF& source,
                                       const gfx::Vector2dF& destination);
 
+#if 0 // BKTODO:
   // Conversion to value.
   static std::unique_ptr<base::Value> AsValue(const gfx::Size& s);
   static std::unique_ptr<base::Value> AsValue(const gfx::Rect& r);
@@ -278,6 +296,7 @@ class CC_BASE_EXPORT MathUtil {
   static void AddToTracedValue(const char* name,
                                const gfx::BoxF& box,
                                base::trace_event::TracedValue* res);
+#endif
 
   // Returns a base::Value representation of the floating point value.
   // If the value is inf, returns max double/float representation.

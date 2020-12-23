@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: display_item_list.h
+// Description: DisplayItemList Class
+//      Author: Ziming Li
+//     Created: 2020-12-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -14,16 +25,18 @@
 #include "base/gtest_prod_util.h"
 #include "base/macros.h"
 #include "base/memory/ref_counted.h"
+#if 0 // BKTODO:
 #include "base/trace_event/trace_event.h"
 #include "cc/base/rtree.h"
 #include "cc/paint/discardable_image_map.h"
 #include "cc/paint/image_id.h"
+#endif
 #include "cc/paint/paint_export.h"
 #include "cc/paint/paint_op_buffer.h"
 #include "third_party/skia/include/core/SkPicture.h"
-#include "ui/gfx/color_space.h"
+// BKTODO: #include "ui/gfx/color_space.h"
 #include "ui/gfx/geometry/rect.h"
-#include "ui/gfx/geometry/rect_conversions.h"
+// BKTODO: #include "ui/gfx/geometry/rect_conversions.h"
 
 class SkCanvas;
 
@@ -167,6 +180,7 @@ class CC_PAINT_EXPORT DisplayItemList
   size_t TotalOpCount() const { return paint_op_buffer_.total_op_count(); }
   size_t BytesUsed() const;
 
+#if 0 // BKTODO:
   const DiscardableImageMap& discardable_image_map() const {
     return image_map_;
   }
@@ -174,6 +188,7 @@ class CC_PAINT_EXPORT DisplayItemList
   TakeDecodingModeMap() {
     return image_map_.TakeDecodingModeMap();
   }
+#endif
 
   void EmitTraceSnapshot() const;
   void GenerateDiscardableImagesMetadata();
@@ -201,8 +216,10 @@ class CC_PAINT_EXPORT DisplayItemList
 
   void Reset();
 
+#if 0 // BKTODO:
   std::unique_ptr<base::trace_event::TracedValue> CreateTracedValue(
       bool include_items) const;
+#endif
 
   // If we're currently within a paired display item block, unions the
   // given visual rect with the begin display item's visual rect.
@@ -212,10 +229,12 @@ class CC_PAINT_EXPORT DisplayItemList
       visual_rects_[begin_paired_indices_.back().first].Union(visual_rect);
   }
 
+#if 0 // BKTODO:
   // RTree stores indices into the paint op buffer.
   // TODO(vmpstr): Update the rtree to store offsets instead.
   RTree<size_t> rtree_;
   DiscardableImageMap image_map_;
+#endif
   PaintOpBuffer paint_op_buffer_;
 
   // The visual rects associated with each of the display items in the

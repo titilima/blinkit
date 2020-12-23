@@ -127,9 +127,7 @@ class PLATFORM_EXPORT GraphicsContext {
     MutableState()->SetStrokeStyle(style);
   }
 
-#if 0 // BKTODO:
   Color StrokeColor() const { return ImmutableState()->StrokeColor(); }
-#endif
   void SetStrokeColor(const Color& color) {
     MutableState()->SetStrokeColor(color);
   }
@@ -141,9 +139,7 @@ class PLATFORM_EXPORT GraphicsContext {
   void SetLineJoin(LineJoin join) { MutableState()->SetLineJoin(join); }
   void SetMiterLimit(float limit) { MutableState()->SetMiterLimit(limit); }
 
-#if 0 // BKTODO:
   Color FillColor() const { return ImmutableState()->FillColor(); }
-#endif
   void SetFillColor(const Color& color) { MutableState()->SetFillColor(color); }
 
   void SetShouldAntialias(bool antialias) {
@@ -263,7 +259,9 @@ class PLATFORM_EXPORT GraphicsContext {
   // fillRoundedRect().
   void DrawOval(const SkRect&, const PaintFlags&);
   void DrawPath(const SkPath&, const PaintFlags&);
+#endif
   void DrawRect(const SkRect&, const PaintFlags&);
+#if 0 // BKTODO:
   void DrawRRect(const SkRRect&, const PaintFlags&);
 #endif
 
@@ -325,7 +323,6 @@ class PLATFORM_EXPORT GraphicsContext {
 
   void DrawLineForText(const FloatPoint&, float width);
 
-#if 0 // BKTODO:
   // beginLayer()/endLayer() behave like save()/restore() for CTM and clip
   // states. Apply SkBlendMode when the layer is composited on the backdrop
   // (i.e. endLayer()).
@@ -334,7 +331,6 @@ class PLATFORM_EXPORT GraphicsContext {
                   const FloatRect* = nullptr,
                   ColorFilter = kColorFilterNone,
                   sk_sp<PaintFilter> = nullptr);
-#endif
   void EndLayer();
 
   // Instead of being dispatched to the active canvas, draw commands following
@@ -342,12 +338,10 @@ class PLATFORM_EXPORT GraphicsContext {
   // later time. Pass in the bounding rectangle for the content in the list.
   void BeginRecording(const FloatRect&);
 
-#if 0 // BKTODO:
   // Returns a record with any recorded draw commands since the prerequisite
   // call to beginRecording().  The record is guaranteed to be non-null (but
   // not necessarily non-empty), even when the context is disabled.
   sk_sp<PaintRecord> EndRecording();
-#endif
 
   void SetShadow(const FloatSize& offset,
                  float blur,
@@ -381,7 +375,6 @@ class PLATFORM_EXPORT GraphicsContext {
                        float shadow_spread,
                        Edges clipped_edges = kNoEdge);
 
-#if 0 // BKTODO:
   const PaintFlags& FillFlags() const { return ImmutableState()->FillFlags(); }
   // If the length of the path to be stroked is known, pass it in for correct
   // dash or dot placement. Border painting uses a stroke thickness determined
@@ -391,7 +384,6 @@ class PLATFORM_EXPORT GraphicsContext {
                                 const int dash_thickness = 0) const {
     return ImmutableState()->StrokeFlags(length, dash_thickness);
   }
-#endif
 
   // ---------- Transformation methods -----------------
   void ConcatCTM(const AffineTransform&);
@@ -456,9 +448,7 @@ class PLATFORM_EXPORT GraphicsContext {
   template <typename DrawTextFunc>
   void DrawTextPasses(const DrawTextFunc&);
 
-#if 0 // BKTODO:
   void SaveLayer(const SkRect* bounds, const PaintFlags*);
-#endif
   void RestoreLayer();
 
   // Helpers for drawing a focus ring (drawFocusRing)
@@ -499,9 +489,7 @@ class PLATFORM_EXPORT GraphicsContext {
 
   bool ShouldApplyHighContrastFilterToImage(Image&);
   Color ApplyHighContrastFilter(const Color& input) const;
-#if 0 // BKTODO:
   PaintFlags ApplyHighContrastFilter(const PaintFlags* input) const;
-#endif
 
   // null indicates painting is contextDisabled. Never delete this object.
   cc::PaintCanvas* canvas_;
@@ -519,9 +507,7 @@ class PLATFORM_EXPORT GraphicsContext {
   // Raw pointer to the current state.
   GraphicsContextState* paint_state_;
 
-#if 0 // BKTODO:
   PaintRecorder paint_recorder_;
-#endif
 
   SkMetaData meta_data_;
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: paint_recorder.cc
+// Description: PaintRecorder Class
+//      Author: Ziming Li
+//     Created: 2020-12-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,9 @@
 #include "cc/paint/paint_recorder.h"
 
 #include "cc/paint/display_item_list.h"
+#if 0 // BKTODO:
 #include "ui/gfx/skia_util.h"
+#endif
 
 namespace cc {
 

@@ -237,6 +237,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\base\cpu.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\debug\alias.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\hash.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\location.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\logging_win.cpp" />
@@ -251,6 +252,17 @@
     <ClCompile Include="..\..\..\src\chromium\base\strings\utf_string_conversion_utils.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\task_runner.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\third_party\nspr\prtime.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\third_party\superfasthash\superfasthash.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|Win32'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\base\threading\thread_local_storage.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\threading\thread_local_storage_win.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\time\time.cpp" />
@@ -272,6 +284,7 @@
     <ClInclude Include="..\..\..\src\chromium\base\callback_internal.h" />
     <ClInclude Include="..\..\..\src\chromium\base\compiler_specific.h" />
     <ClInclude Include="..\..\..\src\chromium\base\cpu.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\debug\alias.h" />
     <ClInclude Include="..\..\..\src\chromium\base\debug\debugging_buildflags.h" />
     <ClInclude Include="..\..\..\src\chromium\base\debug\leak_annotations.h" />
     <ClInclude Include="..\..\..\src\chromium\base\format_macros.h" />
@@ -280,6 +293,7 @@
     <ClInclude Include="..\..\..\src\chromium\base\location.h" />
     <ClInclude Include="..\..\..\src\chromium\base\logging.h" />
     <ClInclude Include="..\..\..\src\chromium\base\macros.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\memory\aligned_memory.h" />
     <ClInclude Include="..\..\..\src\chromium\base\memory\ptr_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\memory\ref_counted.h" />
     <ClInclude Include="..\..\..\src\chromium\base\memory\scoped_policy.h" />
@@ -316,6 +330,8 @@
     <ClInclude Include="..\..\..\src\chromium\base\third_party\nspr\prtime.h" />
     <ClInclude Include="..\..\..\src\chromium\base\threading\thread_local_storage.h" />
     <ClInclude Include="..\..\..\src\chromium\base\time\time.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\trace_event\common\trace_event_common.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\trace_event\trace_event.h" />
     <ClInclude Include="..\..\..\src\chromium\base\win\resource_util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

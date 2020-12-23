@@ -27,8 +27,10 @@ namespace blink {
 class ScrollStateCallback;
 
 class CORE_EXPORT ScrollCustomizationCallbacks
-    : public GarbageCollected<ScrollCustomizationCallbacks> {
+    : public GarbageCollectedFinalized<ScrollCustomizationCallbacks> {
  public:
+  BK_DECLARE_GC_NAME(ScrollCustomizationCallbacks)
+
   ScrollCustomizationCallbacks() = default;
   void SetDistributeScroll(Element*, ScrollStateCallback*);
   ScrollStateCallback* GetDistributeScroll(Element*);

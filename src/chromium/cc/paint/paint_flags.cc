@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: paint_flags.cc
+// Description: PaintFlags Class
+//      Author: Ziming Li
+//     Created: 2020-12-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 
 #include "cc/paint/paint_filter.h"
 #include "cc/paint/paint_op_buffer.h"
-#include "cc/paint/paint_op_writer.h"
+// BKTODO: #include "cc/paint/paint_op_writer.h"
 
 namespace {
 
@@ -182,6 +193,8 @@ bool PaintFlags::operator==(const PaintFlags& other) const {
   if (getFilterQuality() != other.getFilterQuality())
     return false;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // TODO(enne): compare typeface too
   if (!PaintOp::AreSkFlattenablesEqual(getPathEffect().get(),
                                        other.getPathEffect().get())) {
@@ -199,6 +212,7 @@ bool PaintFlags::operator==(const PaintFlags& other) const {
                                        other.getLooper().get())) {
     return false;
   }
+#endif
 
   if (!getImageFilter() != !other.getImageFilter())
     return false;
@@ -218,6 +232,9 @@ bool PaintFlags::HasDiscardableImages() const {
 }
 
 size_t PaintFlags::GetSerializedSize() const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return sizeof(text_size_) + sizeof(color_) + sizeof(width_) +
          sizeof(miter_limit_) + sizeof(blend_mode_) + sizeof(bitfields_uint_) +
          PaintOpWriter::GetFlattenableSize(path_effect_.get()) +
@@ -229,6 +246,7 @@ size_t PaintFlags::GetSerializedSize() const {
          PaintOpWriter::GetFlattenableSize(draw_looper_.get()) +
          PaintFilter::GetFilterSize(image_filter_.get()) +
          PaintShader::GetSerializedSize(shader_.get());
+#endif
 }
 
 }  // namespace cc

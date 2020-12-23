@@ -21,6 +21,9 @@
     <Filter Include="paint">
       <UniqueIdentifier>{fefbfa43-f976-425c-93eb-d075c4db23c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="base">
+      <UniqueIdentifier>{996c7e79-7d5b-4b89-9045-5e366f779834}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -39,6 +42,39 @@
       <Filter>paint</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_op_buffer.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\image_provider.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_recorder.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_flags.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_filter.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_image.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\display_item_list.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\record_paint_canvas.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_shader.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\base\math_util.cc">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\scoped_raster_flags.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_text_blob.cc">
       <Filter>paint</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,6 +128,45 @@
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_op_buffer.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\image_provider.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_recorder.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_flags.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_filter.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_image.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\image_animation_count.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\display_item_list.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\record_paint_canvas.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_shader.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\base\base_export.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\base\math_util.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\scoped_raster_flags.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_text_blob.h">
       <Filter>paint</Filter>
     </ClInclude>
   </ItemGroup>

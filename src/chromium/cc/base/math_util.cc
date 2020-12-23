@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: math_util.cc
+// Description: MathUtil Class
+//      Author: Ziming Li
+//     Created: 2020-12-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -12,18 +23,21 @@
 #endif
 
 #include "base/trace_event/trace_event_argument.h"
+#if 0 // BKTODO:
 #include "base/values.h"
 #include "ui/gfx/geometry/angle_conversions.h"
 #include "ui/gfx/geometry/quad_f.h"
+#endif
 #include "ui/gfx/geometry/rect.h"
-#include "ui/gfx/geometry/rect_conversions.h"
+// BKTODO: #include "ui/gfx/geometry/rect_conversions.h"
 #include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/geometry/vector2d_f.h"
 #include "ui/gfx/geometry/vector3d_f.h"
-#include "ui/gfx/transform.h"
+// BKTODO: #include "ui/gfx/transform.h"
 
 namespace cc {
 
+#if 0 // BKTODO:
 static HomogeneousCoordinate ProjectHomogeneousPoint(
     const gfx::Transform& transform,
     const gfx::PointF& p) {
@@ -141,6 +155,7 @@ static gfx::Point3F ComputeClippedCartesianPoint3dForEdge(
 
   return gfx::Point3F(x, y, z);
 }
+#endif
 
 static inline void ExpandBoundsToIncludePoint(float* xmin,
                                               float* xmax,
@@ -189,6 +204,9 @@ static inline void AddVertexToClippedQuad3d(const gfx::Point3F& new_vertex,
 
 gfx::Rect MathUtil::MapEnclosingClippedRect(const gfx::Transform& transform,
                                             const gfx::Rect& src_rect) {
+  ASSERT(false); // BKTODO:
+  return gfx::Rect();
+#if 0
   if (transform.IsIdentityOrIntegerTranslation()) {
     gfx::Vector2d offset(static_cast<int>(transform.matrix().getFloat(0, 3)),
                          static_cast<int>(transform.matrix().getFloat(1, 3)));
@@ -202,10 +220,14 @@ gfx::Rect MathUtil::MapEnclosingClippedRect(const gfx::Transform& transform,
     return gfx::Rect();
 
   return gfx::ToEnclosingRect(mapped_rect);
+#endif
 }
 
 gfx::RectF MathUtil::MapClippedRect(const gfx::Transform& transform,
                                     const gfx::RectF& src_rect) {
+  ASSERT(false); // BKTODO:
+  return gfx::RectF();
+#if 0
   if (transform.IsIdentityOrTranslation()) {
     gfx::Vector2dF offset(transform.matrix().getFloat(0, 3),
                           transform.matrix().getFloat(1, 3));
@@ -232,10 +254,14 @@ gfx::RectF MathUtil::MapClippedRect(const gfx::Transform& transform,
   HomogeneousCoordinate hc2(result[8], result[9], result[10], result[11]);
   HomogeneousCoordinate hc3(result[12], result[13], result[14], result[15]);
   return ComputeEnclosingClippedRect(hc0, hc1, hc2, hc3);
+#endif
 }
 
 gfx::Rect MathUtil::ProjectEnclosingClippedRect(const gfx::Transform& transform,
                                                 const gfx::Rect& src_rect) {
+  ASSERT(false); // BKTODO:
+  return gfx::Rect();
+#if 0
   if (transform.IsIdentityOrIntegerTranslation()) {
     gfx::Vector2d offset(static_cast<int>(transform.matrix().getFloat(0, 3)),
                          static_cast<int>(transform.matrix().getFloat(1, 3)));
@@ -250,10 +276,14 @@ gfx::Rect MathUtil::ProjectEnclosingClippedRect(const gfx::Transform& transform,
     return gfx::Rect();
 
   return gfx::ToEnclosingRect(projected_rect);
+#endif
 }
 
 gfx::RectF MathUtil::ProjectClippedRect(const gfx::Transform& transform,
                                         const gfx::RectF& src_rect) {
+  ASSERT(false); // BKTODO:
+  return gfx::RectF();
+#if 0
   if (transform.IsIdentityOrTranslation()) {
     gfx::Vector2dF offset(transform.matrix().getFloat(0, 3),
                           transform.matrix().getFloat(1, 3));
@@ -268,8 +298,10 @@ gfx::RectF MathUtil::ProjectClippedRect(const gfx::Transform& transform,
   HomogeneousCoordinate h4 = ProjectHomogeneousPoint(transform, q.p4());
 
   return ComputeEnclosingClippedRect(h1, h2, h3, h4);
+#endif
 }
 
+#if 0 // BKTODO:
 gfx::QuadF MathUtil::InverseMapQuadToLocalSpace(
     const gfx::Transform& device_transform,
     const gfx::QuadF& device_quad) {
@@ -285,10 +317,14 @@ gfx::QuadF MathUtil::InverseMapQuadToLocalSpace(
   // not need to be handled differently than the unclipped case.
   return local_quad;
 }
+#endif
 
 gfx::Rect MathUtil::MapEnclosedRectWith2dAxisAlignedTransform(
     const gfx::Transform& transform,
     const gfx::Rect& rect) {
+  ASSERT(false); // BKTODO:
+  return gfx::Rect();
+#if 0
   DCHECK(transform.Preserves2dAxisAlignment());
 
   if (transform.IsIdentityOrIntegerTranslation()) {
@@ -319,12 +355,16 @@ gfx::Rect MathUtil::MapEnclosedRectWith2dAxisAlignedTransform(
   gfx::PointF top_left(hc0.CartesianPoint2d());
   gfx::PointF bottom_right(hc1.CartesianPoint2d());
   return gfx::ToEnclosedRect(gfx::BoundingRect(top_left, bottom_right));
+#endif
 }
 
 bool MathUtil::MapClippedQuad3d(const gfx::Transform& transform,
                                 const gfx::QuadF& src_quad,
                                 gfx::Point3F clipped_quad[6],
                                 int* num_vertices_in_clipped_quad) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   HomogeneousCoordinate h1 =
       MapHomogeneousPoint(transform, gfx::Point3F(src_quad.p1()));
   HomogeneousCoordinate h2 =
@@ -386,6 +426,7 @@ bool MathUtil::MapClippedQuad3d(const gfx::Transform& transform,
 
   DCHECK_LE(*num_vertices_in_clipped_quad, 6);
   return (*num_vertices_in_clipped_quad >= 4);
+#endif
 }
 
 gfx::RectF MathUtil::ComputeEnclosingRectOfVertices(
@@ -406,6 +447,7 @@ gfx::RectF MathUtil::ComputeEnclosingRectOfVertices(
                     gfx::SizeF(xmax - xmin, ymax - ymin));
 }
 
+#if 0 // BKTODO:
 gfx::RectF MathUtil::ComputeEnclosingClippedRect(
     const HomogeneousCoordinate& h1,
     const HomogeneousCoordinate& h2,
@@ -503,10 +545,14 @@ gfx::QuadF MathUtil::MapQuad(const gfx::Transform& transform,
                     h3.CartesianPoint2d(),
                     h4.CartesianPoint2d());
 }
+#endif
 
 gfx::PointF MathUtil::MapPoint(const gfx::Transform& transform,
                                const gfx::PointF& p,
                                bool* clipped) {
+  ASSERT(false); // BKTODO:
+  return gfx::PointF();
+#if 0
   HomogeneousCoordinate h = MapHomogeneousPoint(transform, gfx::Point3F(p));
 
   if (h.w() > 0) {
@@ -526,11 +572,15 @@ gfx::PointF MathUtil::MapPoint(const gfx::Transform& transform,
   // and (2) this behavior is more consistent with existing behavior of WebKit
   // transforms if the user really does not ignore the return value.
   return h.CartesianPoint2d();
+#endif
 }
 
 gfx::PointF MathUtil::ProjectPoint(const gfx::Transform& transform,
                                    const gfx::PointF& p,
                                    bool* clipped) {
+  ASSERT(false); // BKTODO:
+  return gfx::PointF();
+#if 0
   HomogeneousCoordinate h = ProjectHomogeneousPoint(transform, p, clipped);
   // Avoid dividing by w if w == 0.
   if (!h.w())
@@ -541,15 +591,20 @@ gfx::PointF MathUtil::ProjectPoint(const gfx::Transform& transform,
   // and (2) this behavior is more consistent with existing behavior of WebKit
   // transforms if the user really does not ignore the return value.
   return h.CartesianPoint2d();
+#endif
 }
 
 gfx::Point3F MathUtil::ProjectPoint3D(const gfx::Transform& transform,
                                       const gfx::PointF& p,
                                       bool* clipped) {
+  ASSERT(false); // BKTODO:
+  return gfx::Point3F();
+#if 0
   HomogeneousCoordinate h = ProjectHomogeneousPoint(transform, p, clipped);
   if (!h.w())
     return gfx::Point3F();
   return h.CartesianPoint3d();
+#endif
 }
 
 gfx::RectF MathUtil::ScaleRectProportional(const gfx::RectF& input_outer_rect,
@@ -591,6 +646,9 @@ static inline float ScaleOnAxis(double a, double b, double c) {
 gfx::Vector2dF MathUtil::ComputeTransform2dScaleComponents(
     const gfx::Transform& transform,
     float fallback_value) {
+  ASSERT(false); // BKTODO:
+  return gfx::Vector2dF();
+#if 0
   if (transform.HasPerspective())
     return gfx::Vector2dF(fallback_value, fallback_value);
   float x_scale = ScaleOnAxis(transform.matrix().getDouble(0, 0),
@@ -600,12 +658,17 @@ gfx::Vector2dF MathUtil::ComputeTransform2dScaleComponents(
                               transform.matrix().getDouble(1, 1),
                               transform.matrix().getDouble(2, 1));
   return gfx::Vector2dF(x_scale, y_scale);
+#endif
 }
 
 float MathUtil::ComputeApproximateMaxScale(const gfx::Transform& transform) {
   gfx::RectF unit(0.f, 0.f, 1.f, 1.f);
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   transform.TransformRect(&unit);
   return std::max(unit.width(), unit.height());
+#endif
 }
 
 float MathUtil::SmallestAngleBetweenVectors(const gfx::Vector2dF& v1,
@@ -613,7 +676,11 @@ float MathUtil::SmallestAngleBetweenVectors(const gfx::Vector2dF& v1,
   double dot_product = gfx::DotProduct(v1, v2) / v1.Length() / v2.Length();
   // Clamp to compensate for rounding errors.
   dot_product = std::max(-1.0, std::min(1.0, dot_product));
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return static_cast<float>(gfx::RadToDeg(std::acos(dot_product)));
+#endif
 }
 
 gfx::Vector2dF MathUtil::ProjectVector(const gfx::Vector2dF& source,
@@ -624,6 +691,7 @@ gfx::Vector2dF MathUtil::ProjectVector(const gfx::Vector2dF& source,
                         projected_length * destination.y());
 }
 
+#if 0 // BKTODO:
 std::unique_ptr<base::Value> MathUtil::AsValue(const gfx::Size& s) {
   std::unique_ptr<base::DictionaryValue> res(new base::DictionaryValue());
   res->SetDouble("width", s.width());
@@ -802,6 +870,7 @@ void MathUtil::AddToTracedValue(const char* name,
   res->AppendInteger(box.depth());
   res->EndArray();
 }
+#endif
 
 double MathUtil::AsDoubleSafely(double value) {
   return std::min(value, std::numeric_limits<double>::max());
@@ -812,15 +881,23 @@ float MathUtil::AsFloatSafely(float value) {
 }
 
 gfx::Vector3dF MathUtil::GetXAxis(const gfx::Transform& transform) {
+  ASSERT(false); // BKTODO:
+  return gfx::Vector3dF();
+#if 0
   return gfx::Vector3dF(transform.matrix().getFloat(0, 0),
                         transform.matrix().getFloat(1, 0),
                         transform.matrix().getFloat(2, 0));
+#endif
 }
 
 gfx::Vector3dF MathUtil::GetYAxis(const gfx::Transform& transform) {
+  ASSERT(false); // BKTODO:
+  return gfx::Vector3dF();
+#if 0
   return gfx::Vector3dF(transform.matrix().getFloat(0, 1),
                         transform.matrix().getFloat(1, 1),
                         transform.matrix().getFloat(2, 1));
+#endif
 }
 
 ScopedSubnormalFloatDisabler::ScopedSubnormalFloatDisabler() {

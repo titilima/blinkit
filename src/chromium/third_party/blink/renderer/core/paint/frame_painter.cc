@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: frame_painter.cc
+// Description: FramePainter Class
+//      Author: Ziming Li
+//     Created: 2020-12-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -17,7 +28,7 @@
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
 #include "third_party/blink/renderer/platform/graphics/paint/cull_rect.h"
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_recorder.h"
-#include "third_party/blink/renderer/platform/loader/fetch/memory_cache.h"
+// BKTODO: #include "third_party/blink/renderer/platform/loader/fetch/memory_cache.h"
 
 namespace blink {
 
@@ -51,7 +62,7 @@ void FramePainter::PaintContents(GraphicsContext& context,
 
   LayoutView* layout_view = GetFrameView().GetLayoutView();
   if (!layout_view) {
-    DLOG(ERROR) << "called FramePainter::paint with nil layoutObject";
+    BKLOG("called FramePainter::Paint with nil layoutObject.");
     return;
   }
 
@@ -109,15 +120,19 @@ void FramePainter::PaintContents(GraphicsContext& context,
                                          updated_global_paint_flags);
   }
 
+#if 0 // BKTODO: Check if necessary.
   // Regions may have changed as a result of the visibility/z-index of element
   // changing.
   if (document->AnnotatedRegionsDirty())
     GetFrameView().UpdateDocumentAnnotatedRegions();
+#endif
 
   if (is_top_level_painter) {
     // Everything that happens after paintContents completions is considered
     // to be part of the next frame.
+#if 0 // BKTODO: Check if necessary.
     GetMemoryCache()->UpdateFramePaintTimestamp();
+#endif
     in_paint_contents_ = false;
   }
 

@@ -1,15 +1,30 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: paint_op_buffer.cc
+// Description: PaintOpBuffer Class
+//      Author: Ziming Li
+//     Created: 2020-12-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "cc/paint/paint_op_buffer.h"
 
+#if 0 // BKTODO:
 #include "cc/paint/decoded_draw_image.h"
 #include "cc/paint/display_item_list.h"
+#endif
 #include "cc/paint/image_provider.h"
+#if 0 // BKTODO:
 #include "cc/paint/paint_image_builder.h"
 #include "cc/paint/paint_op_reader.h"
 #include "cc/paint/paint_op_writer.h"
+#endif
 #include "cc/paint/paint_record.h"
 #include "cc/paint/scoped_raster_flags.h"
 #include "third_party/skia/include/core/SkAnnotation.h"
@@ -19,6 +34,7 @@
 
 namespace cc {
 namespace {
+#if 0 // BKTODO:
 DrawImage CreateDrawImage(const PaintImage& image,
                           const PaintFlags* flags,
                           const SkMatrix& matrix) {
@@ -28,6 +44,7 @@ DrawImage CreateDrawImage(const PaintImage& image,
                    flags ? flags->getFilterQuality() : kLow_SkFilterQuality,
                    matrix);
 }
+#endif
 
 bool IsScaleAdjustmentIdentity(const SkSize& scale_adjustment) {
   return std::abs(scale_adjustment.width() - 1.f) < FLT_EPSILON &&
@@ -158,6 +175,7 @@ static const RasterWithFlagsFunction
     g_raster_with_flags_functions[kNumOpTypes] = {TYPES(M)};
 #undef M
 
+#if 0 // BKTODO:
 using SerializeFunction = size_t (*)(const PaintOp* op,
                                      void* memory,
                                      size_t size,
@@ -177,6 +195,7 @@ using DeserializeFunction =
 static const DeserializeFunction g_deserialize_functions[kNumOpTypes] = {
     TYPES(M)};
 #undef M
+#endif
 
 using EqualsFunction = bool (*)(const PaintOp* left, const PaintOp* right);
 #define M(T) &T::AreEqual,
@@ -225,7 +244,7 @@ static const AnalyzeOpFunc g_analyze_op_functions[kNumOpTypes] = {TYPES(M)};
 #undef TYPES
 
 const SkRect PaintOp::kUnsetRect = {SK_ScalarInfinity, 0, 0, 0};
-const size_t PaintOp::kMaxSkip;
+// BKTODO: const size_t PaintOp::kMaxSkip;
 
 std::string PaintOpTypeToString(PaintOpType type) {
   switch (type) {
@@ -320,6 +339,7 @@ PlaybackParams::PlaybackParams(const PlaybackParams& other) = default;
 PlaybackParams& PlaybackParams::operator=(const PlaybackParams& other) =
     default;
 
+#if 0 // BKTODO:
 PaintOp::SerializeOptions::SerializeOptions(
     ImageProvider* image_provider,
     TransferCacheSerializeHelper* transfer_cache,
@@ -342,11 +362,13 @@ PaintOp::SerializeOptions::SerializeOptions(
       max_texture_size(max_texture_size),
       max_texture_bytes(max_texture_bytes),
       original_ctm(original_ctm) {}
+#endif
 
 PaintOp::SerializeOptions::SerializeOptions(const SerializeOptions&) = default;
 PaintOp::SerializeOptions& PaintOp::SerializeOptions::operator=(
     const SerializeOptions&) = default;
 
+#if 0 // BKTODO:
 PaintOp::DeserializeOptions::DeserializeOptions(
     TransferCacheDeserializeHelper* transfer_cache,
     SkStrikeClient* strike_client)
@@ -669,6 +691,7 @@ size_t TranslateOp::Serialize(const PaintOp* op,
                               const SerializeOptions& options) {
   return SimpleSerialize<TranslateOp>(op, memory, size);
 }
+#endif
 
 template <typename T>
 void UpdateTypeAndSkip(T* op) {
@@ -694,6 +717,7 @@ T* SimpleDeserialize(const volatile void* input,
   return op;
 }
 
+#if 0 // BKTODO:
 PaintOp* AnnotateOp::Deserialize(const volatile void* input,
                                  size_t input_size,
                                  void* output,
@@ -1105,6 +1129,7 @@ PaintOp* TranslateOp::Deserialize(const volatile void* input,
   DCHECK_GE(output_size, sizeof(TranslateOp));
   return SimpleDeserialize<TranslateOp>(input, input_size, output, output_size);
 }
+#endif
 
 void AnnotateOp::Raster(const AnnotateOp* op,
                         SkCanvas* canvas,
@@ -1127,7 +1152,10 @@ void AnnotateOp::Raster(const AnnotateOp* op,
 void ClipPathOp::Raster(const ClipPathOp* op,
                         SkCanvas* canvas,
                         const PlaybackParams& params) {
+  ASSERT(false); // BKTODO:
+#if 0
   canvas->clipPath(op->path, op->op, op->antialias);
+#endif
 }
 
 void ClipRectOp::Raster(const ClipRectOp* op,
@@ -1152,7 +1180,7 @@ void CustomDataOp::Raster(const CustomDataOp* op,
                           SkCanvas* canvas,
                           const PlaybackParams& params) {
   if (params.custom_callback)
-    params.custom_callback.Run(canvas, op->id);
+    ASSERT(false); // BKTODO: params.custom_callback.Run(canvas, op->id);
 }
 
 void DrawColorOp::Raster(const DrawColorOp* op,
@@ -1165,14 +1193,19 @@ void DrawDRRectOp::RasterWithFlags(const DrawDRRectOp* op,
                                    const PaintFlags* flags,
                                    SkCanvas* canvas,
                                    const PlaybackParams& params) {
+  ASSERT(false); // BKTODO:
+#if 0
   SkPaint paint = flags->ToSkPaint();
   canvas->drawDRRect(op->outer, op->inner, paint);
+#endif
 }
 
 void DrawImageOp::RasterWithFlags(const DrawImageOp* op,
                                   const PaintFlags* flags,
                                   SkCanvas* canvas,
                                   const PlaybackParams& params) {
+  ASSERT(false); // BKTODO:
+#if 0
   SkPaint paint = flags ? flags->ToSkPaint() : SkPaint();
 
   if (!params.image_provider) {
@@ -1212,12 +1245,15 @@ void DrawImageOp::RasterWithFlags(const DrawImageOp* op,
   }
   paint.setFilterQuality(decoded_image.filter_quality());
   canvas->drawImage(decoded_image.image().get(), op->left, op->top, &paint);
+#endif
 }
 
 void DrawImageRectOp::RasterWithFlags(const DrawImageRectOp* op,
                                       const PaintFlags* flags,
                                       SkCanvas* canvas,
                                       const PlaybackParams& params) {
+  ASSERT(false); // BKTODO:
+#if 0
   // TODO(enne): Probably PaintCanvas should just use the skia enum directly.
   SkCanvas::SrcRectConstraint skconstraint =
       static_cast<SkCanvas::SrcRectConstraint>(op->constraint);
@@ -1259,38 +1295,51 @@ void DrawImageRectOp::RasterWithFlags(const DrawImageRectOp* op,
   paint.setFilterQuality(decoded_image.filter_quality());
   canvas->drawImageRect(decoded_image.image().get(), adjusted_src, op->dst,
                         &paint, skconstraint);
+#endif
 }
 
 void DrawIRectOp::RasterWithFlags(const DrawIRectOp* op,
                                   const PaintFlags* flags,
                                   SkCanvas* canvas,
                                   const PlaybackParams& params) {
+  ASSERT(false); // BKTODO:
+#if 0
   SkPaint paint = flags->ToSkPaint();
   canvas->drawIRect(op->rect, paint);
+#endif
 }
 
 void DrawLineOp::RasterWithFlags(const DrawLineOp* op,
                                  const PaintFlags* flags,
                                  SkCanvas* canvas,
                                  const PlaybackParams& params) {
+  ASSERT(false); // BKTODO:
+#if 0
   SkPaint paint = flags->ToSkPaint();
   canvas->drawLine(op->x0, op->y0, op->x1, op->y1, paint);
+#endif
 }
 
 void DrawOvalOp::RasterWithFlags(const DrawOvalOp* op,
                                  const PaintFlags* flags,
                                  SkCanvas* canvas,
                                  const PlaybackParams& params) {
+  ASSERT(false); // BKTODO:
+#if 0
   SkPaint paint = flags->ToSkPaint();
   canvas->drawOval(op->oval, paint);
+#endif
 }
 
 void DrawPathOp::RasterWithFlags(const DrawPathOp* op,
                                  const PaintFlags* flags,
                                  SkCanvas* canvas,
                                  const PlaybackParams& params) {
+  ASSERT(false); // BKTODO:
+#if 0
   SkPaint paint = flags->ToSkPaint();
   canvas->drawPath(op->path, paint);
+#endif
 }
 
 void DrawRecordOp::Raster(const DrawRecordOp* op,
@@ -1398,12 +1447,15 @@ bool PaintOp::AreSkPointsEqual(const SkPoint& left, const SkPoint& right) {
 
 // static
 bool PaintOp::AreSkPoint3sEqual(const SkPoint3& left, const SkPoint3& right) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!AreEqualEvenIfNaN(left.fX, right.fX))
     return false;
   if (!AreEqualEvenIfNaN(left.fY, right.fY))
     return false;
   if (!AreEqualEvenIfNaN(left.fZ, right.fZ))
     return false;
+#endif
   return true;
 }
 
@@ -1422,11 +1474,15 @@ bool PaintOp::AreSkRectsEqual(const SkRect& left, const SkRect& right) {
 
 // static
 bool PaintOp::AreSkRRectsEqual(const SkRRect& left, const SkRRect& right) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   char left_buffer[SkRRect::kSizeInMemory];
   left.writeToMemory(left_buffer);
   char right_buffer[SkRRect::kSizeInMemory];
   right.writeToMemory(right_buffer);
   return !memcmp(left_buffer, right_buffer, SkRRect::kSizeInMemory);
+#endif
 }
 
 // static
@@ -1836,6 +1892,9 @@ void PaintOp::Raster(SkCanvas* canvas, const PlaybackParams& params) const {
 size_t PaintOp::Serialize(void* memory,
                           size_t size,
                           const SerializeOptions& options) const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   DCHECK(options.transfer_cache);
   DCHECK(options.canvas);
 
@@ -1862,8 +1921,10 @@ size_t PaintOp::Serialize(void* memory,
   uint32_t skip = static_cast<uint32_t>(aligned_written);
   static_cast<uint32_t*>(memory)[0] = type | skip << 8;
   return skip;
+#endif
 }
 
+#if 0 // BKTODO:
 PaintOp* PaintOp::Deserialize(const volatile void* input,
                               size_t input_size,
                               void* output,
@@ -1881,6 +1942,7 @@ PaintOp* PaintOp::Deserialize(const volatile void* input,
   return g_deserialize_functions[type](input, skip, output, output_size,
                                        options);
 }
+#endif
 
 // static
 bool PaintOp::GetBounds(const PaintOp* op, SkRect* rect) {
@@ -2288,22 +2350,27 @@ void PaintOpBuffer::PlaybackFoldingIterator::FindNextOp() {
       }
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     // If we get here, then we could not find a foldable sequence after
     // this SaveLayerAlpha, so store any peeked at ops.
     stack_->push_back(second);
     if (third)
       stack_->push_back(third);
+#endif
     break;
   }
 }
 
 const PaintOp* PaintOpBuffer::PlaybackFoldingIterator::NextUnfoldedOp() {
+#if 0 // BKTODO:
   if (stack_->size()) {
     const PaintOp* op = stack_->front();
     // Shift paintops forward.
     stack_->erase(stack_->begin());
     return op;
   }
+#endif
   if (!iter_)
     return nullptr;
   const PaintOp* op = *iter_;
@@ -2360,11 +2427,15 @@ void PaintOpBuffer::Playback(SkCanvas* canvas,
       op->Raster(canvas, new_params);
     }
 
+    ASSERT(!new_params.did_draw_op_callback); // BKTODO:
+#if 0
     if (!new_params.did_draw_op_callback.is_null())
       new_params.did_draw_op_callback.Run();
+#endif
   }
 }
 
+#if 0 // BKTODO:
 sk_sp<PaintOpBuffer> PaintOpBuffer::MakeFromMemory(
     const volatile void* input,
     size_t input_size,
@@ -2404,6 +2475,7 @@ sk_sp<PaintOpBuffer> PaintOpBuffer::MakeFromMemory(
   DCHECK_GT(buffer->size(), 0u);
   return buffer;
 }
+#endif
 
 void PaintOpBuffer::ReallocBuffer(size_t new_size) {
   DCHECK_GE(new_size, used_);

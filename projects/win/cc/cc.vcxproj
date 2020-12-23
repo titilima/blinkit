@@ -155,9 +155,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\chromium\cc\base\math_util.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\display_item_list.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\image_provider.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_filter.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_flags.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_font.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_image.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_op_buffer.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_record.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_recorder.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_shader.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_text_blob.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\record_paint_canvas.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\scoped_raster_flags.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\skia_paint_canvas.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\trees\element_id.cc" />
     <ClCompile Include="..\_pch.cpp">
@@ -170,16 +181,29 @@
     <ClInclude Include="..\..\..\src\chromium\cc\animation\animation_export.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\animation\keyframe_model.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\animation\timing_function.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\base\base_export.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\base\math_util.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\cc_export.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\input\browser_controls_state.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\input\scroll_snap_data.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\input\snap_fling_controller.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\input\touch_action.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\display_item_list.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\image_animation_count.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\image_provider.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_canvas.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_export.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_filter.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_flags.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_font.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_image.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_op_buffer.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_record.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_recorder.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_shader.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_text_blob.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\record_paint_canvas.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\scoped_raster_flags.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\skia_paint_canvas.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\trees\element_id.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\trees\target_property.h" />

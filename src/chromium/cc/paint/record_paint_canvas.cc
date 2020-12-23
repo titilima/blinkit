@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: record_paint_canvas.cc
+// Description: RecordPaintCanvas Class
+//      Author: Ziming Li
+//     Created: 2020-12-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #include "cc/paint/record_paint_canvas.h"
 
 #include "cc/paint/display_item_list.h"
-#include "cc/paint/paint_image_builder.h"
+// BKTODO: #include "cc/paint/paint_image_builder.h"
 #include "cc/paint/paint_record.h"
 #include "cc/paint/paint_recorder.h"
 #include "third_party/skia/include/core/SkAnnotation.h"

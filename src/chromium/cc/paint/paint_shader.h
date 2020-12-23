@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: paint_shader.h
+// Description: PaintShader Classes
+//      Author: Ziming Li
+//     Created: 2020-12-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,13 +21,13 @@
 
 #include "base/optional.h"
 #include "base/stl_util.h"
-#include "cc/paint/image_analysis_state.h"
+// BKTODO: #include "cc/paint/image_analysis_state.h"
 #include "cc/paint/paint_export.h"
 #include "cc/paint/paint_image.h"
 #include "third_party/skia/include/core/SkImage.h"
 #include "third_party/skia/include/core/SkScalar.h"
 #include "third_party/skia/include/core/SkShader.h"
-#include "ui/gfx/color_space.h"
+// BKTODO: #include "ui/gfx/color_space.h"
 #include "ui/gfx/geometry/size_f.h"
 
 namespace cc {
@@ -111,6 +122,7 @@ class CC_PAINT_EXPORT PaintShader : public SkRefCnt {
 
   ~PaintShader() override;
 
+#if 0 // BKTODO:
   void set_has_animated_images(bool has_animated_images) {
     image_analysis_state_ = has_animated_images
                                 ? ImageAnalysisState::kAnimatedImages
@@ -119,6 +131,7 @@ class CC_PAINT_EXPORT PaintShader : public SkRefCnt {
   ImageAnalysisState image_analysis_state() const {
     return image_analysis_state_;
   }
+#endif
 
   bool has_discardable_images() const;
 
@@ -240,7 +253,7 @@ class CC_PAINT_EXPORT PaintShader : public SkRefCnt {
   // accesses to it are thread-safe.
   sk_sp<SkShader> cached_shader_;
 
-  ImageAnalysisState image_analysis_state_ = ImageAnalysisState::kNoAnalysis;
+  // BKTODO: ImageAnalysisState image_analysis_state_ = ImageAnalysisState::kNoAnalysis;
 
   DISALLOW_COPY_AND_ASSIGN(PaintShader);
 };

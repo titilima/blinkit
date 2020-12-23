@@ -29,6 +29,7 @@
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/page/scrolling/snap_coordinator.h"
 #include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
+#include "third_party/blink/renderer/core/paint/frame_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/paint/pre_paint_tree_walk.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
@@ -467,6 +468,24 @@ void LocalFrameView::NotifyFrameRectsChangedIfNeededRecursive(void)
     );
 }
 
+void LocalFrameView::NotifyPageThatContentAreaWillPaint(void) const
+{
+    Page *page = m_frame->GetPage();
+    if (nullptr == page)
+        return;
+
+    if (nullptr == m_scrollableAreas)
+        return;
+
+    for (const auto &scrollable_area : *m_scrollableAreas)
+    {
+        if (!scrollable_area->ScrollbarsCanBeActive())
+            continue;
+
+        scrollable_area->ContentAreaWillPaint();
+    }
+}
+
 void LocalFrameView::NotifyResizeObservers(void)
 {
   // Controller exists only if ResizeObserver was created.
@@ -629,6 +648,28 @@ void LocalFrameView::PaintTree(void)
         paint_controller_->CommitNewDisplayItems();
 #endif
     }
+}
+
+void LocalFrameView::PaintWithLifecycleUpdate(
+    GraphicsContext &context,
+    const GlobalPaintFlags globalPaintFlags,
+    const CullRect &cullRect)
+{
+    ForAllNonThrottledLocalFrameViews(
+        [](LocalFrameView &frameView)
+        {
+            frameView.Lifecycle().AdvanceTo(DocumentLifecycle::kInPaint);
+        }
+    );
+
+    FramePainter(*this).Paint(context, globalPaintFlags, cullRect);
+
+    ForAllNonThrottledLocalFrameViews(
+        [](LocalFrameView &frameView)
+        {
+            frameView.Lifecycle().AdvanceTo(DocumentLifecycle::kPaintClean);
+        }
+    );
 }
 
 void LocalFrameView::PerformLayout(bool inSubtreeLayout)

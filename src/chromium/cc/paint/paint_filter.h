@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: paint_filter.h
+// Description: PaintFilter Classes
+//      Author: Ziming Li
+//     Created: 2020-12-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #ifndef CC_PAINT_PAINT_FILTER_H_
 #define CC_PAINT_PAINT_FILTER_H_
 
-#include "base/containers/stack_container.h"
+// BKTODO: #include "base/containers/stack_container.h"
 #include "base/logging.h"
 #include "base/optional.h"
 #include "base/stl_util.h"
@@ -98,13 +109,18 @@ class CC_PAINT_EXPORT PaintFilter : public SkRefCnt {
   }
 
   bool has_discardable_images() const { return has_discardable_images_; }
+#if 0 // BKTODO:
   ImageAnalysisState image_analysis_state() const {
     return image_analysis_state_;
   }
+#endif
   void set_has_animated_images(bool has_animated_images) {
+    ASSERT(false); // BKTODO:
+#if 0
     image_analysis_state_ = has_animated_images
                                 ? ImageAnalysisState::kAnimatedImages
                                 : ImageAnalysisState::kNoAnimatedImages;
+#endif
   }
 
   virtual size_t SerializedSize() const = 0;
@@ -155,7 +171,9 @@ class CC_PAINT_EXPORT PaintFilter : public SkRefCnt {
   base::Optional<CropRect> crop_rect_;
   const bool has_discardable_images_;
 
+#if 0 // BKTODO:
   ImageAnalysisState image_analysis_state_ = ImageAnalysisState::kNoAnalysis;
+#endif
 
   DISALLOW_COPY_AND_ASSIGN(PaintFilter);
 };
@@ -409,7 +427,9 @@ class CC_PAINT_EXPORT MatrixConvolutionPaintFilter final : public PaintFilter {
   ~MatrixConvolutionPaintFilter() override;
 
   const SkISize& kernel_size() const { return kernel_size_; }
+#if 0 // BKTODO:
   SkScalar kernel_at(size_t i) const { return kernel_[i]; }
+#endif
   SkScalar gain() const { return gain_; }
   SkScalar bias() const { return bias_; }
   SkIPoint kernel_offset() const { return kernel_offset_; }
@@ -426,7 +446,9 @@ class CC_PAINT_EXPORT MatrixConvolutionPaintFilter final : public PaintFilter {
 
  private:
   SkISize kernel_size_;
+#if 0 // BKTODO:
   base::StackVector<SkScalar, 3> kernel_;
+#endif
   SkScalar gain_;
   SkScalar bias_;
   SkIPoint kernel_offset_;
@@ -530,11 +552,13 @@ class CC_PAINT_EXPORT MergePaintFilter final : public PaintFilter {
                    const CropRect* crop_rect = nullptr);
   ~MergePaintFilter() override;
 
+#if 0 // BKTODO:
   size_t input_count() const { return inputs_->size(); }
   const PaintFilter* input_at(size_t i) const {
     DCHECK_LT(i, input_count());
     return inputs_[i].get();
   }
+#endif
 
   size_t SerializedSize() const override;
   bool operator==(const MergePaintFilter& other) const;
@@ -548,7 +572,9 @@ class CC_PAINT_EXPORT MergePaintFilter final : public PaintFilter {
                    int count,
                    const CropRect* crop_rect,
                    ImageProvider* image_provider);
+#if 0 // BKTODO:
   base::StackVector<sk_sp<PaintFilter>, 2> inputs_;
+#endif
 };
 
 class CC_PAINT_EXPORT MorphologyPaintFilter final : public PaintFilter {

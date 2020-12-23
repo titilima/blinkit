@@ -209,4 +209,16 @@ void Page::WillBeDestroyed(void)
 #endif
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+float DeviceScaleFactorDeprecated(LocalFrame *frame)
+{
+    if (nullptr == frame)
+        return 1;
+    Page *page = frame->GetPage();
+    if (nullptr == page)
+        return 1;
+    return page->DeviceScaleFactorDeprecated();
+}
+
 } // namespace blink

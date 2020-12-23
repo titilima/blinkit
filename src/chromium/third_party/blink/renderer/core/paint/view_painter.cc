@@ -36,7 +36,7 @@ void ViewPainter::Paint(const PaintInfo& paint_info) {
   // If we ever require layout but receive a paint anyway, something has gone
   // horribly wrong.
   DCHECK(!layout_view_.NeedsLayout());
-  ASSERT(false); // BKTODO: DCHECK(!layout_view_.GetFrameView()->ShouldThrottleRendering());
+  DCHECK(!layout_view_.GetFrameView()->ShouldThrottleRendering());
 
   BlockPainter(layout_view_).Paint(paint_info);
 }
@@ -94,15 +94,12 @@ void ViewPainter::PaintBoxDecorationBackground(const PaintInfo& paint_info) {
 
   const Document& document = layout_view_.GetDocument();
   const LocalFrameView& frame_view = *layout_view_.GetFrameView();
-  ASSERT(false); // BKTODO:
-#if 0
   bool is_main_frame = document.IsInMainFrame();
   bool paints_base_background =
       is_main_frame && (frame_view.BaseBackgroundColor().Alpha() > 0);
   bool should_clear_canvas =
       paints_base_background &&
-      (document.GetSettings() &&
-       document.GetSettings()->GetShouldClearDocumentBackground());
+      Settings::ShouldClearDocumentBackground;
   Color base_background_color =
       paints_base_background ? frame_view.BaseBackgroundColor() : Color();
   Color root_background_color = layout_view_.StyleRef().VisitedDependentColor(
@@ -254,7 +251,6 @@ void ViewPainter::PaintBoxDecorationBackground(const PaintInfo& paint_info) {
 
   if (should_draw_background_in_separate_buffer)
     context.EndLayer();
-#endif
 }
 
 }  // namespace blink

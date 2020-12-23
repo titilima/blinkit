@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: paint_op_buffer.h
+// Description: PaintOpBuffer Class
+//      Author: Ziming Li
+//     Created: 2020-12-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,12 +18,15 @@
 
 #include <stdint.h>
 
+#include <functional>
 #include <limits>
 #include <string>
 #include <type_traits>
 
+#if 0 // BKTODO:
 #include "base/callback.h"
 #include "base/containers/stack_container.h"
+#endif
 #include "base/debug/alias.h"
 #include "base/logging.h"
 #include "base/memory/aligned_memory.h"
@@ -22,14 +36,16 @@
 #include "cc/paint/paint_canvas.h"
 #include "cc/paint/paint_export.h"
 #include "cc/paint/paint_flags.h"
+#if 0 // BKTODO:
 #include "cc/paint/transfer_cache_deserialize_helper.h"
 #include "cc/paint/transfer_cache_serialize_helper.h"
+#endif
 #include "third_party/skia/include/core/SkColor.h"
 #include "third_party/skia/include/core/SkPicture.h"
 #include "third_party/skia/include/core/SkRect.h"
 #include "third_party/skia/include/core/SkScalar.h"
 #include "third_party/skia/include/core/SkTextBlob.h"
-#include "ui/gfx/color_space.h"
+// BKTODO: #include "ui/gfx/color_space.h"
 
 class SkColorSpace;
 class SkStrikeClient;
@@ -100,8 +116,8 @@ CC_PAINT_EXPORT std::ostream& operator<<(std::ostream&, PaintOpType);
 
 struct CC_PAINT_EXPORT PlaybackParams {
   using CustomDataRasterCallback =
-      base::RepeatingCallback<void(SkCanvas* canvas, uint32_t id)>;
-  using DidDrawOpCallback = base::RepeatingCallback<void()>;
+      std::function<void(SkCanvas* canvas, uint32_t id)>;
+  using DidDrawOpCallback = std::function<void()>;
 
   explicit PlaybackParams(ImageProvider* image_provider);
   PlaybackParams(
@@ -141,6 +157,7 @@ class CC_PAINT_EXPORT PaintOp {
   bool operator!=(const PaintOp& other) const { return !(*this == other); }
 
   struct CC_PAINT_EXPORT SerializeOptions {
+#if 0 // BKTODO:
     SerializeOptions(ImageProvider* image_provider,
                      TransferCacheSerializeHelper* transfer_cache,
                      SkCanvas* canvas,
@@ -151,12 +168,13 @@ class CC_PAINT_EXPORT PaintOp {
                      int max_texture_size,
                      size_t max_texture_bytes,
                      const SkMatrix& original_ctm);
+#endif
     SerializeOptions(const SerializeOptions&);
     SerializeOptions& operator=(const SerializeOptions&);
 
     // Required.
     ImageProvider* image_provider = nullptr;
-    TransferCacheSerializeHelper* transfer_cache = nullptr;
+    // BKTODO: TransferCacheSerializeHelper* transfer_cache = nullptr;
     SkCanvas* canvas = nullptr;
     SkStrikeServer* strike_server = nullptr;
     SkColorSpace* color_space = nullptr;
@@ -172,6 +190,7 @@ class CC_PAINT_EXPORT PaintOp {
     const PaintFlags* flags_to_serialize = nullptr;
   };
 
+#if 0 // BKTODO:
   struct CC_PAINT_EXPORT DeserializeOptions {
     DeserializeOptions(TransferCacheDeserializeHelper* transfer_cache,
                        SkStrikeClient* strike_client);
@@ -179,6 +198,7 @@ class CC_PAINT_EXPORT PaintOp {
     uint32_t raster_color_space_id = gfx::ColorSpace::kInvalidId;
     SkStrikeClient* strike_client = nullptr;
   };
+#endif
 
   // Indicates how PaintImages are serialized.
   enum class SerializedImageType : uint8_t {
@@ -195,6 +215,7 @@ class CC_PAINT_EXPORT PaintOp {
                    size_t size,
                    const SerializeOptions& options) const;
 
+#if 0 // BKTODO:
   // Deserializes a PaintOp of this type from a given buffer |input| of
   // at most |input_size| bytes.  Returns null on any errors.
   // The PaintOp is deserialized into the |output| buffer and returned
@@ -208,6 +229,7 @@ class CC_PAINT_EXPORT PaintOp {
                               size_t output_size,
                               size_t* read_bytes,
                               const DeserializeOptions& options);
+#endif
 
   // For draw ops, returns true if a conservative bounding rect can be provided
   // for the op.
@@ -261,7 +283,11 @@ class CC_PAINT_EXPORT PaintOp {
   }
 
   static bool IsValidPath(const SkPath& path) {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return path.isValid() && path.pathRefIsValid();
+#endif
   }
 
   static bool IsUnsetRect(const SkRect& rect) {
@@ -332,7 +358,9 @@ class CC_PAINT_EXPORT AnnotateOp final : public PaintOp {
                      const PlaybackParams& params);
   bool IsValid() const { return rect.isFinite(); }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   PaintCanvas::AnnotationType annotation_type;
   SkRect rect;
@@ -354,7 +382,9 @@ class CC_PAINT_EXPORT ClipPathOp final : public PaintOp {
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
   int CountSlowPaths() const;
   bool HasNonAAPaint() const { return !antialias; }
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   ThreadsafePath path;
   SkClipOp op;
@@ -374,7 +404,9 @@ class CC_PAINT_EXPORT ClipRectOp final : public PaintOp {
                      const PlaybackParams& params);
   bool IsValid() const { return IsValidSkClipOp(op) && rect.isFinite(); }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   SkRect rect;
   SkClipOp op;
@@ -392,7 +424,9 @@ class CC_PAINT_EXPORT ClipRRectOp final : public PaintOp {
   bool IsValid() const { return IsValidSkClipOp(op) && rrect.isValid(); }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
   bool HasNonAAPaint() const { return !antialias; }
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   SkRRect rrect;
   SkClipOp op;
@@ -408,7 +442,9 @@ class CC_PAINT_EXPORT ConcatOp final : public PaintOp {
                      const PlaybackParams& params);
   bool IsValid() const { return true; }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   ThreadsafeMatrix matrix;
 };
@@ -422,7 +458,9 @@ class CC_PAINT_EXPORT CustomDataOp final : public PaintOp {
                      const PlaybackParams& params);
   bool IsValid() const { return true; }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   // Stores user defined id as a placeholder op.
   uint32_t id;
@@ -439,7 +477,9 @@ class CC_PAINT_EXPORT DrawColorOp final : public PaintOp {
                      const PlaybackParams& params);
   bool IsValid() const { return IsValidDrawColorSkBlendMode(mode); }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   SkColor color;
   SkBlendMode mode;
@@ -461,7 +501,9 @@ class CC_PAINT_EXPORT DrawDRRectOp final : public PaintOpWithFlags {
     return flags.IsValid() && outer.isValid() && inner.isValid();
   }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   SkRRect outer;
   SkRRect inner;
@@ -490,7 +532,9 @@ class CC_PAINT_EXPORT DrawImageOp final : public PaintOpWithFlags {
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
   bool HasDiscardableImages() const;
   bool HasNonAAPaint() const { return false; }
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   PaintImage image;
   SkScalar left;
@@ -525,7 +569,9 @@ class CC_PAINT_EXPORT DrawImageRectOp final : public PaintOpWithFlags {
   }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
   bool HasDiscardableImages() const;
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   PaintImage image;
   SkRect src;
@@ -553,7 +599,9 @@ class CC_PAINT_EXPORT DrawIRectOp final : public PaintOpWithFlags {
   bool IsValid() const { return flags.IsValid(); }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
   bool HasNonAAPaint() const { return false; }
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   SkIRect rect;
 
@@ -577,7 +625,9 @@ class CC_PAINT_EXPORT DrawLineOp final : public PaintOpWithFlags {
                               const PlaybackParams& params);
   bool IsValid() const { return flags.IsValid(); }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   int CountSlowPaths() const;
 
@@ -605,7 +655,9 @@ class CC_PAINT_EXPORT DrawOvalOp final : public PaintOpWithFlags {
     return flags.IsValid() && oval.isFinite() && oval.isSorted();
   }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   SkRect oval;
 
@@ -626,7 +678,9 @@ class CC_PAINT_EXPORT DrawPathOp final : public PaintOpWithFlags {
   bool IsValid() const { return flags.IsValid() && IsValidPath(path); }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
   int CountSlowPaths() const;
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   ThreadsafePath path;
 
@@ -650,7 +704,9 @@ class CC_PAINT_EXPORT DrawRecordOp final : public PaintOp {
   bool HasDiscardableImages() const;
   int CountSlowPaths() const;
   bool HasNonAAPaint() const;
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   sk_sp<const PaintRecord> record;
 };
@@ -667,7 +723,9 @@ class CC_PAINT_EXPORT DrawRectOp final : public PaintOpWithFlags {
                               const PlaybackParams& params);
   bool IsValid() const { return flags.IsValid() && rect.isFinite(); }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   SkRect rect;
 
@@ -687,7 +745,9 @@ class CC_PAINT_EXPORT DrawRRectOp final : public PaintOpWithFlags {
                               const PlaybackParams& params);
   bool IsValid() const { return flags.IsValid() && rrect.isValid(); }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   SkRRect rrect;
 
@@ -710,7 +770,9 @@ class CC_PAINT_EXPORT DrawTextBlobOp final : public PaintOpWithFlags {
                               const PlaybackParams& params);
   bool IsValid() const { return flags.IsValid(); }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   scoped_refptr<PaintTextBlob> blob;
   SkScalar x;
@@ -729,7 +791,9 @@ class CC_PAINT_EXPORT NoopOp final : public PaintOp {
                      const PlaybackParams& params) {}
   bool IsValid() const { return true; }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 };
 
 class CC_PAINT_EXPORT RestoreOp final : public PaintOp {
@@ -741,7 +805,9 @@ class CC_PAINT_EXPORT RestoreOp final : public PaintOp {
                      const PlaybackParams& params);
   bool IsValid() const { return true; }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 };
 
 class CC_PAINT_EXPORT RotateOp final : public PaintOp {
@@ -753,7 +819,9 @@ class CC_PAINT_EXPORT RotateOp final : public PaintOp {
                      const PlaybackParams& params);
   bool IsValid() const { return true; }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   SkScalar degrees;
 };
@@ -767,7 +835,9 @@ class CC_PAINT_EXPORT SaveOp final : public PaintOp {
                      const PlaybackParams& params);
   bool IsValid() const { return true; }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 };
 
 class CC_PAINT_EXPORT SaveLayerOp final : public PaintOpWithFlags {
@@ -783,7 +853,9 @@ class CC_PAINT_EXPORT SaveLayerOp final : public PaintOpWithFlags {
   bool IsValid() const { return flags.IsValid() && IsValidOrUnsetRect(bounds); }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
   bool HasNonAAPaint() const { return false; }
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   SkRect bounds;
 
@@ -806,7 +878,9 @@ class CC_PAINT_EXPORT SaveLayerAlphaOp final : public PaintOp {
                      const PlaybackParams& params);
   bool IsValid() const { return IsValidOrUnsetRect(bounds); }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   SkRect bounds;
   uint8_t alpha;
@@ -822,7 +896,9 @@ class CC_PAINT_EXPORT ScaleOp final : public PaintOp {
                      const PlaybackParams& params);
   bool IsValid() const { return true; }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   SkScalar sx;
   SkScalar sy;
@@ -847,7 +923,9 @@ class CC_PAINT_EXPORT SetMatrixOp final : public PaintOp {
                      const PlaybackParams& params);
   bool IsValid() const { return true; }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   ThreadsafeMatrix matrix;
 };
@@ -861,7 +939,9 @@ class CC_PAINT_EXPORT TranslateOp final : public PaintOp {
                      const PlaybackParams& params);
   bool IsValid() const { return true; }
   static bool AreEqual(const PaintOp* left, const PaintOp* right);
+#if 0 // BKTODO:
   HAS_SERIALIZATION_FUNCTIONS();
+#endif
 
   SkScalar dx;
   SkScalar dy;
@@ -895,10 +975,12 @@ class CC_PAINT_EXPORT PaintOpBuffer : public SkRefCnt {
   void Playback(SkCanvas* canvas) const;
   void Playback(SkCanvas* canvas, const PlaybackParams& params) const;
 
+#if 0 // BKTODO:
   static sk_sp<PaintOpBuffer> MakeFromMemory(
       const volatile void* input,
       size_t input_size,
       const PaintOp::DeserializeOptions& options);
+#endif
 
   // Returns the size of the paint op buffer. That is, the number of ops
   // contained in it.
@@ -924,7 +1006,11 @@ class CC_PAINT_EXPORT PaintOpBuffer : public SkRefCnt {
   void ShrinkToFit();
 
   const PaintOp* GetFirstOp() const {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return reinterpret_cast<const PaintOp*>(data_.get());
+#endif
   }
 
   template <typename T, typename... Args>
@@ -946,6 +1032,8 @@ class CC_PAINT_EXPORT PaintOpBuffer : public SkRefCnt {
     CHECK_LT(offset, used_);
     CHECK_LE(offset + sizeof(PaintOp), used_);
 
+    ASSERT(false); // BKTODO:
+#if 0
     auto* op = reinterpret_cast<PaintOp*>(data_.get() + offset);
     switch (op->GetType()) {
       case SaveLayerOp::kType:
@@ -959,6 +1047,7 @@ class CC_PAINT_EXPORT PaintOpBuffer : public SkRefCnt {
       default:
         NOTREACHED();
     }
+#endif
   }
 
   template <typename T>
@@ -981,10 +1070,13 @@ class CC_PAINT_EXPORT PaintOpBuffer : public SkRefCnt {
   template <typename T>
   const T* GetOpAtForTesting(size_t index) const {
     size_t i = 0;
+    ASSERT(false); // BKTODO:
+#if 0
     for (PaintOpBuffer::Iterator it(this); it && i <= index; ++it, ++i) {
       if (i == index && (*it)->GetType() == T::kType)
         return static_cast<const T*>(*it);
     }
+#endif
     return nullptr;
   }
 
@@ -1158,7 +1250,9 @@ class CC_PAINT_EXPORT PaintOpBuffer : public SkRefCnt {
     PaintOpBuffer::CompositeIterator iter_;
 
     // FIFO queue of paint ops that have been peeked at.
+#if 0 // BKTODO:
     base::StackVector<const PaintOp*, 3> stack_;
+#endif
     DrawColorOp folded_draw_color_;
     const PaintOp* current_op_ = nullptr;
     uint8_t current_alpha_ = 255;

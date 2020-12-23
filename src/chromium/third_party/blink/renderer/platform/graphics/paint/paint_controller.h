@@ -133,14 +133,11 @@ class PLATFORM_EXPORT PaintController {
       return;
 
     EnsureNewDisplayItemListInitialCapacity();
-    ASSERT(false); // BKTODO:
-#if 0
     DisplayItemClass& display_item =
         new_display_item_list_.AllocateAndConstruct<DisplayItemClass>(
             std::forward<Args>(args)...);
     display_item.SetFragment(current_fragment_);
     ProcessNewItem(display_item);
-#endif
   }
 
   // Tries to find the cached drawing display item corresponding to the given

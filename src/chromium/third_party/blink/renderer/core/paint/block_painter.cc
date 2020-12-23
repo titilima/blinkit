@@ -29,7 +29,7 @@
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
 #include "third_party/blink/renderer/core/paint/scoped_paint_state.h"
-// BKTODO: #include "third_party/blink/renderer/core/paint/scrollable_area_painter.h"
+#include "third_party/blink/renderer/core/paint/scrollable_area_painter.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_recorder.h"
 // BKTODO: #include "third_party/blink/renderer/platform/graphics/paint/scroll_hit_test_display_item.h"
@@ -105,12 +105,9 @@ void BlockPainter::PaintOverflowControlsIfNeeded(
   if (layout_block_.HasOverflowClip() &&
       layout_block_.StyleRef().Visibility() == EVisibility::kVisible &&
       ShouldPaintSelfBlockBackground(paint_info.phase)) {
-    ASSERT(false); // BKTODO:
-#if 0
     ScrollableAreaPainter(*layout_block_.Layer()->GetScrollableArea())
         .PaintOverflowControls(paint_info, RoundedIntPoint(paint_offset),
                                false /* painting_overlay_controls */);
-#endif
   }
 }
 
@@ -264,14 +261,14 @@ void BlockPainter::PaintObject(const PaintInfo& paint_info,
   if (layout_block_.IsTruncated())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   // If we're *printing* the foreground, paint the URL.
   if (paint_phase == PaintPhase::kForeground && paint_info.IsPrinting()) {
+    ASSERT(false); // BKTODO: Check if necessary.
+#if 0
     ObjectPainter(layout_block_)
         .AddPDFURLRectIfNeeded(paint_info, paint_offset);
-  }
 #endif
+  }
 
   // If we're painting our background (either 1. kBlockBackground - background
   // of the current object and non-self-painting descendants, or 2.
@@ -309,13 +306,10 @@ void BlockPainter::PaintObject(const PaintInfo& paint_info,
     }
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   // If we're painting the outline, paint it now. This is step #10 of the CSS
   // spec (see above).
   if (ShouldPaintSelfOutline(paint_phase))
-    ObjectPainter(layout_block_).PaintOutline(paint_info, paint_offset);
-#endif
+    ASSERT(false); // BKTODO: ObjectPainter(layout_block_).PaintOutline(paint_info, paint_offset);
 
   // If we're painting a visible mask, paint it now. (This does not correspond
   // to any painting order steps within the CSS spec.)

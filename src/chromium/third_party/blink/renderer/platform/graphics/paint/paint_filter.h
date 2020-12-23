@@ -16,11 +16,11 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_PAINT_PAINT_FILTER_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_PAINT_PAINT_FILTER_H_
 
-#if 0 // BKTODO:
 #include "cc/paint/paint_filter.h"
 
 namespace blink {
 using cc::PaintFilter;
+#if 0 // BKTODO:
 using cc::ColorFilterPaintFilter;
 using cc::BlurPaintFilter;
 using cc::DropShadowPaintFilter;
@@ -43,7 +43,7 @@ using cc::MatrixPaintFilter;
 using cc::LightingDistantPaintFilter;
 using cc::LightingPointPaintFilter;
 using cc::LightingSpotPaintFilter;
-}  // namespace blink
 #endif
+}  // namespace blink
 
 #endif  // THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_PAINT_PAINT_FILTER_H_

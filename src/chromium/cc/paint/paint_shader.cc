@@ -1,19 +1,32 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: paint_shader.cc
+// Description: PaintShader Classes
+//      Author: Ziming Li
+//     Created: 2020-12-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "cc/paint/paint_shader.h"
 
+#if 0 // BKTODO:
 #include "base/atomic_sequence_num.h"
 #include "cc/paint/paint_image_builder.h"
 #include "cc/paint/paint_op_writer.h"
+#endif
 #include "cc/paint/paint_record.h"
 #include "third_party/skia/include/core/SkPictureRecorder.h"
 #include "third_party/skia/include/effects/SkGradientShader.h"
 
 namespace cc {
 namespace {
-base::AtomicSequenceNumber g_next_shader_id;
+// BKTODO: base::AtomicSequenceNumber g_next_shader_id;
 
 sk_sp<SkPicture> ToSkPicture(sk_sp<PaintRecord> record,
                              const SkRect& bounds,
@@ -177,7 +190,7 @@ sk_sp<PaintShader> PaintShader::MakePaintRecord(
   sk_sp<PaintShader> shader(new PaintShader(Type::kPaintRecord));
 
   shader->record_ = std::move(record);
-  shader->id_ = g_next_shader_id.GetNext();
+  ASSERT(false); // BKTODO: shader->id_ = g_next_shader_id.GetNext();
   shader->tile_ = tile;
   shader->scaling_behavior_ = scaling_behavior;
   shader->SetMatrixAndTiling(local_matrix, tx, ty);
@@ -192,6 +205,9 @@ size_t PaintShader::GetSerializedSize(const PaintShader* shader) {
   if (!shader)
     return bool_size;
 
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return bool_size + sizeof(shader->shader_type_) + sizeof(shader->flags_) +
          sizeof(shader->end_radius_) + sizeof(shader->start_radius_) +
          sizeof(shader->tx_) + sizeof(shader->ty_) +
@@ -208,6 +224,7 @@ size_t PaintShader::GetSerializedSize(const PaintShader* shader) {
          shader->colors_.size() * sizeof(SkColor) +
          sizeof(shader->positions_.size()) +
          shader->positions_.size() * sizeof(SkScalar);
+#endif
 }
 
 PaintShader::PaintShader(Type type) : shader_type_(type) {}
@@ -316,6 +333,9 @@ sk_sp<PaintShader> PaintShader::CreateDecodedImage(
   if (!image_)
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   SkMatrix total_image_matrix = GetLocalMatrix();
   total_image_matrix.preConcat(ctm);
   SkRect src_rect = SkRect::MakeIWH(image_.width(), image_.height());
@@ -356,6 +376,7 @@ sk_sp<PaintShader> PaintShader::CreateDecodedImage(
   *raster_quality = decoded_image.filter_quality();
   *needs_mips = decoded_image.transfer_cache_entry_needs_mips();
   return PaintShader::MakeImage(decoded_paint_image, tx_, ty_, &final_matrix);
+#endif
 }
 
 sk_sp<SkShader> PaintShader::GetSkShader() const {

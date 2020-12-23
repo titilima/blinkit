@@ -69,6 +69,7 @@ namespace blink {
 
 enum class ClassStringContent { kEmpty, kWhiteSpaceOnly, kHasClasses };
 
+#ifndef BLINKIT_CRAWLER_ONLY
 // We need to retain the scroll customization callbacks until the element
 // they're associated with is destroyed. It would be simplest if the callbacks
 // could be stored in ElementRareData, but we can't afford the space increase.
@@ -81,6 +82,7 @@ static ScrollCustomizationCallbacks& GetScrollCustomizationCallbacks(void)
     static ScrollCustomizationCallbacks *scrollCustomizationCallbacks = new (GCObjectType::Global) ScrollCustomizationCallbacks;
     return *scrollCustomizationCallbacks;
 }
+#endif
 
 Element::Element(const QualifiedName &tagName, Document *document, ConstructionType type)
     : ContainerNode(document, type), m_tagName(tagName)

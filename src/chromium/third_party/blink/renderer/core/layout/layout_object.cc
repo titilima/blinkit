@@ -3309,15 +3309,12 @@ void LayoutObject::SetNeedsPaintPropertyUpdate() {
   if (bitfields_.NeedsPaintPropertyUpdate())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   // Anytime a layout object needs a paint property update, we should also do
   // intersection observation.
   // TODO(vmpstr): Figure out if there's a cleaner way to do this outside of
   // this function, since this is potentially called many times for a single
   // frame view subtree.
   GetFrameView()->SetIntersectionObservationState(LocalFrameView::kDesired);
-#endif
 
   bitfields_.SetNeedsPaintPropertyUpdate(true);
   for (auto* ancestor = ParentCrossingFrames();

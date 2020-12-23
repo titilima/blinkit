@@ -10,14 +10,18 @@
 
 #include "base/trace_event/trace_event.h"
 #include "base/trace_event/trace_event_argument.h"
+#if 0 // BKTODO:
 #include "cc/base/math_util.h"
 #include "cc/debug/picture_debug_util.h"
 #include "cc/paint/solid_color_analyzer.h"
+#endif
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkPictureRecorder.h"
 #include "ui/gfx/geometry/rect.h"
+#if 0 // BKTODO:
 #include "ui/gfx/geometry/rect_conversions.h"
 #include "ui/gfx/skia_util.h"
+#endif
 
 namespace cc {
 
@@ -27,7 +31,7 @@ bool GetCanvasClipBounds(SkCanvas* canvas, gfx::Rect* clip_bounds) {
   SkRect canvas_clip_bounds;
   if (!canvas->getLocalClipBounds(&canvas_clip_bounds))
     return false;
-  *clip_bounds = ToEnclosingRect(gfx::SkRectToRectF(canvas_clip_bounds));
+  ASSERT(false); // BKTODO: *clip_bounds = ToEnclosingRect(gfx::SkRectToRectF(canvas_clip_bounds));
   return true;
 }
 
@@ -51,8 +55,11 @@ void DisplayItemList::Raster(SkCanvas* canvas,
   if (!GetCanvasClipBounds(canvas, &canvas_playback_rect))
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   std::vector<size_t> offsets = rtree_.Search(canvas_playback_rect);
   paint_op_buffer_.Playback(canvas, PlaybackParams(image_provider), &offsets);
+#endif
 }
 
 void DisplayItemList::Finalize() {
@@ -68,6 +75,8 @@ void DisplayItemList::Finalize() {
 #endif
 
   if (usage_hint_ == kTopLevelDisplayItemList) {
+    ASSERT(false); // BKTODO:
+#if 0
     rtree_.Build(visual_rects_,
                  [](const std::vector<gfx::Rect>& rects, size_t index) {
                    return rects[index];
@@ -78,6 +87,7 @@ void DisplayItemList::Finalize() {
                    // into offsets.
                    return offsets_[index];
                  });
+#endif
   }
   paint_op_buffer_.ShrinkToFit();
   visual_rects_.clear();
@@ -95,7 +105,7 @@ size_t DisplayItemList::BytesUsed() const {
 }
 
 void DisplayItemList::EmitTraceSnapshot() const {
-  bool include_items;
+  // BKOMIT: bool include_items;
   TRACE_EVENT_CATEGORY_GROUP_ENABLED(
       TRACE_DISABLED_BY_DEFAULT("cc.debug.display_items"), &include_items);
   TRACE_EVENT_OBJECT_SNAPSHOT_WITH_ID(
@@ -106,6 +116,7 @@ void DisplayItemList::EmitTraceSnapshot() const {
       CreateTracedValue(include_items));
 }
 
+#if 0 // BKTODO:
 std::unique_ptr<base::trace_event::TracedValue>
 DisplayItemList::CreateTracedValue(bool include_items) const {
   auto state = std::make_unique<base::trace_event::TracedValue>();
@@ -158,10 +169,11 @@ DisplayItemList::CreateTracedValue(bool include_items) const {
   }
   return state;
 }
+#endif
 
 void DisplayItemList::GenerateDiscardableImagesMetadata() {
   DCHECK(usage_hint_ == kTopLevelDisplayItemList);
-  image_map_.Generate(&paint_op_buffer_, rtree_.GetBounds());
+  ASSERT(false); // BKTODO: image_map_.Generate(&paint_op_buffer_, rtree_.GetBounds());
 }
 
 void DisplayItemList::Reset() {
@@ -170,8 +182,10 @@ void DisplayItemList::Reset() {
   DCHECK(begin_paired_indices_.empty());
 #endif
 
+#if 0 // BKTODO:
   rtree_.Reset();
   image_map_.Reset();
+#endif
   paint_op_buffer_.Reset();
   visual_rects_.clear();
   visual_rects_.shrink_to_fit();
@@ -195,6 +209,8 @@ bool DisplayItemList::GetColorIfSolidInRect(const gfx::Rect& rect,
   DCHECK(usage_hint_ == kTopLevelDisplayItemList);
   std::vector<size_t>* offsets_to_use = nullptr;
   std::vector<size_t> offsets;
+  ASSERT(false); // BKTODO:
+#if 0
   if (!rect.Contains(rtree_.GetBounds())) {
     offsets = rtree_.Search(rect);
     offsets_to_use = &offsets;
@@ -207,6 +223,7 @@ bool DisplayItemList::GetColorIfSolidInRect(const gfx::Rect& rect,
     *color = *solid_color;
     return true;
   }
+#endif
   return false;
 }
 

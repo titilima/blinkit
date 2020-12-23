@@ -157,10 +157,7 @@ void LayoutBlock::WillBeDestroyed() {
 
   if (LocalFrame* frame = GetFrame()) {
     frame->Selection().LayoutBlockWillBeDestroyed(*this);
-    BKLOG("// BKTODO: Process drag caret.");
-#if 0 // BKTODO:
     frame->GetPage()->GetDragCaret().LayoutBlockWillBeDestroyed(*this);
-#endif
   }
 
 #if 0 // BKTODO: Check if necessary
@@ -535,7 +532,7 @@ void LayoutBlock::ComputeVisualOverflow(
   if (VisualOverflowRect() != previous_visual_overflow_rect) {
     if (Layer())
       Layer()->SetNeedsCompositingInputsUpdate();
-    ASSERT(false); // BKTODO: GetFrameView()->SetIntersectionObservationState(LocalFrameView::kDesired);
+    GetFrameView()->SetIntersectionObservationState(LocalFrameView::kDesired);
   }
 }
 
@@ -1919,11 +1916,7 @@ bool LayoutBlock::ShouldPaintCursorCaret() const {
 }
 
 bool LayoutBlock::ShouldPaintDragCaret() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return GetFrame()->GetPage()->GetDragCaret().ShouldPaintCaret(*this);
-#endif
 }
 
 LayoutRect LayoutBlock::LocalCaretRect(

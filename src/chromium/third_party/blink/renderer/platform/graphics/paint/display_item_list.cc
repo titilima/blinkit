@@ -21,7 +21,6 @@
 
 namespace blink {
 
-#if 0 // BKTODO:
 DisplayItemList::Range<DisplayItemList::iterator>
 DisplayItemList::ItemsInPaintChunk(const PaintChunk& paint_chunk) {
   return Range<iterator>(begin() + paint_chunk.begin_index,
@@ -33,7 +32,6 @@ DisplayItemList::ItemsInPaintChunk(const PaintChunk& paint_chunk) const {
   return Range<const_iterator>(begin() + paint_chunk.begin_index,
                                begin() + paint_chunk.end_index);
 }
-#endif
 
 #if DCHECK_IS_ON()
 

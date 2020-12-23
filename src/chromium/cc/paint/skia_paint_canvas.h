@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - cc Library
-// -------------------------------------------------
-//   File Name: skia_paint_canvas.h
-// Description: SkiaPaintCanvas Class
-//      Author: Ziming Li
-//     Created: 2020-12-15
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -23,11 +12,9 @@
 #include "base/macros.h"
 #include "build/build_config.h"
 #include "cc/paint/paint_canvas.h"
-#if 0 // BKTODO:
 #include "cc/paint/paint_flags.h"
 #include "cc/paint/paint_record.h"
 #include "cc/paint/paint_text_blob.h"
-#endif
 #include "third_party/skia/include/core/SkCanvas.h"
 
 namespace cc {
@@ -111,7 +98,6 @@ class CC_PAINT_EXPORT SkiaPaintCanvas final : public PaintCanvas {
                      SkScalar ry,
                      const PaintFlags& flags) override;
   void drawPath(const SkPath& path, const PaintFlags& flags) override;
-#if 0 // BKTODO:
   void drawImage(const PaintImage& image,
                  SkScalar left,
                  SkScalar top,
@@ -128,7 +114,6 @@ class CC_PAINT_EXPORT SkiaPaintCanvas final : public PaintCanvas {
                     const PaintFlags& flags) override;
 
   void drawPicture(sk_sp<const PaintRecord> record) override;
-#endif
 
   bool isClipEmpty() const override;
   bool isClipRect() const override;
@@ -143,7 +128,6 @@ class CC_PAINT_EXPORT SkiaPaintCanvas final : public PaintCanvas {
   using PaintCanvas::clipRRect;
   using PaintCanvas::clipPath;
   using PaintCanvas::drawColor;
-#if 0 // BKTODO:
   using PaintCanvas::drawImage;
   using PaintCanvas::drawPicture;
 
@@ -152,7 +136,6 @@ class CC_PAINT_EXPORT SkiaPaintCanvas final : public PaintCanvas {
   void drawPicture(
       sk_sp<const PaintRecord> record,
       PlaybackParams::CustomDataRasterCallback custom_raster_callback);
-#endif
 
  private:
   void WrapCanvasInColorSpaceXformCanvas(
