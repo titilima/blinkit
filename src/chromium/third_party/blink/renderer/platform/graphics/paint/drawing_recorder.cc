@@ -69,8 +69,6 @@ DrawingRecorder::~DrawingRecorder() {
   }
 #endif
 
-  ASSERT(false); // BKTODO:
-#if 0
   sk_sp<const PaintRecord> picture = context_.EndRecording();
 
 #if DCHECK_IS_ON()
@@ -79,13 +77,12 @@ DrawingRecorder::~DrawingRecorder() {
   // painting.
   if (!context_.GetPaintController().IsSkippingCache() &&
       client_.PaintedOutputOfObjectHasNoEffectRegardlessOfSize()) {
-    DCHECK_EQ(0u, picture->size()) << client_.DebugName();
+    DCHECK_EQ(0u, picture->size());
   }
 #endif
 
   context_.GetPaintController().CreateAndAppend<DrawingDisplayItem>(
       client_, type_, picture, known_to_be_opaque_);
-#endif
 }
 
 }  // namespace blink
