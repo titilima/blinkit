@@ -17,7 +17,7 @@
 #include "build/build_config.h"
 
 #if OS_WIN
-#   pragma warning(disable: 4244)
+#   pragma warning(disable: 4244 4819)
 #endif
 
 #include <memory>
