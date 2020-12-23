@@ -20,6 +20,8 @@
 
 namespace base {
 
+namespace subtle {
+
 template <typename REF_COUNT>
 class RefCountedBase
 {
@@ -33,12 +35,15 @@ public:
         ++m_refCount;
     }
 protected:
+    explicit RefCountedBase(StartRefCountFromZeroTag) : m_refCount(0) {}
+    explicit RefCountedBase(StartRefCountFromOneTag) : m_refCount(1) {}
 #ifndef NDEBUG
     ~RefCountedBase(void)
     {
         assert(m_inDtor); // RefCounted object deleted without calling Release()!
     }
 #endif
+
     bool Release(void) const
     {
 #ifndef NDEBUG
@@ -54,11 +59,13 @@ protected:
         return false;
     }
 private:
-    mutable REF_COUNT m_refCount{ 0 };
+    mutable REF_COUNT m_refCount;
 #ifndef NDEBUG
     mutable bool m_inDtor = false;
 #endif
 };
+
+} // namespace subtle
 
 template <class T, typename Traits>
 class RefCounted;
@@ -68,21 +75,23 @@ struct DefaultRefCountedTraits
 {
     static void Destruct(const T *x)
     {
-        RefCounted<T, DefaultRefCountedTraits>::DeleteInternal(x);
+        T::DeleteInternal(x);
     }
 };
 
 template <class T, typename Traits = DefaultRefCountedTraits<T>>
-class RefCounted : public RefCountedBase<unsigned>
+class RefCounted : public subtle::RefCountedBase<unsigned>
 {
 public:
+    static constexpr subtle::StartRefCountFromZeroTag kRefCountPreference = subtle::kStartRefCountFromZeroTag;
+
     void Release(void) const
     {
         if (RefCountedBase::Release())
             Traits::Destruct(static_cast<const T *>(this));
     }
 protected:
-    RefCounted(void) = default;
+    RefCounted(void) : RefCountedBase(T::kRefCountPreference) {}
     ~RefCounted(void) = default;
 private:
     friend struct DefaultRefCountedTraits<T>;
@@ -96,16 +105,18 @@ private:
 };
 
 template <class T, typename Traits = DefaultRefCountedTraits<T>>
-class RefCountedThreadSafe : public RefCountedBase<std::atomic<unsigned>>
+class RefCountedThreadSafe : public subtle::RefCountedBase<std::atomic<unsigned>>
 {
 public:
+    static constexpr subtle::StartRefCountFromZeroTag kRefCountPreference = subtle::kStartRefCountFromZeroTag;
+
     void Release(void) const
     {
         if (RefCountedBase::Release())
             Traits::Destruct(static_cast<const T *>(this));
     }
 protected:
-    RefCountedThreadSafe(void) = default;
+    RefCountedThreadSafe(void) : RefCountedBase(T::kRefCountPreference) {}
     ~RefCountedThreadSafe(void) = default;
 private:
     friend struct DefaultRefCountedTraits<T>;

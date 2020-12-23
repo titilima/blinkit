@@ -21,6 +21,8 @@ namespace base {
 
 namespace subtle {
 enum AdoptRefTag { kAdoptRefTag };
+enum StartRefCountFromZeroTag { kStartRefCountFromZeroTag };
+enum StartRefCountFromOneTag { kStartRefCountFromOneTag };
 }
 
 template <typename T>
@@ -182,12 +184,37 @@ bool operator!=(const T *lhs, const scoped_refptr<U> &rhs)
 
 namespace base {
 
+namespace subtle {
+
+template <typename T>
+scoped_refptr<T> AdoptRefIfNeeded(T *obj, StartRefCountFromZeroTag)
+{
+    return scoped_refptr<T>(obj);
+}
+
+template <typename T>
+scoped_refptr<T> AdoptRefIfNeeded(T *obj, StartRefCountFromOneTag)
+{
+    return AdoptRef(obj);
+}
+
+}
+
 template <typename T>
 scoped_refptr<T> AdoptRef(T *obj)
 {
     DCHECK(obj);
     DCHECK(obj->HasOneRef());
     return scoped_refptr<T>(obj, subtle::kAdoptRefTag);
+}
+
+// Constructs an instance of T, which is a ref counted type, and wraps the
+// object into a scoped_refptr<T>.
+template <typename T, typename... Args>
+scoped_refptr<T> MakeRefCounted(Args&&... args)
+{
+    T* obj = new T(std::forward<Args>(args)...);
+    return AdoptRefIfNeeded(obj, T::kRefCountPreference);
 }
 
 } // namespace base

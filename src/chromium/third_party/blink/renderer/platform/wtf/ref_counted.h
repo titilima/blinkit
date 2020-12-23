@@ -54,11 +54,8 @@ struct DefaultRefCountedTraits
 template <class T, typename Traits = DefaultRefCountedTraits<T>>
 class RefCounted : public base::RefCounted<T, Traits>
 {
-protected:
-    RefCounted(void)
-    {
-        this->AddRef(); // Adoption required
-    }
+public:
+    static constexpr base::subtle::StartRefCountFromOneTag kRefCountPreference = base::subtle::kStartRefCountFromOneTag;
 private:
     friend struct DefaultRefCountedTraits<T>;
 
