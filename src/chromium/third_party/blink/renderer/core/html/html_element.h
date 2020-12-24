@@ -21,7 +21,7 @@ namespace blink {
 class HTMLElement : public Element
 {
 public:
-    typedef Element* (*Creator)(Document &);
+    typedef Element* (*Creator)(Document &, const CreateElementFlags);
 
     virtual bool IsHTMLUnknownElement(void) const { return false; }
 
@@ -51,12 +51,12 @@ DEFINE_ELEMENT_TYPE_CASTS(HTMLElement, IsHTMLElement());
 
 } // namespace blink
 
-#define DECLARE_NODE_FACTORY(T) static Element* Create(Document &)
+#define DECLARE_NODE_FACTORY(T) static Element* Create(Document &, const CreateElementFlags)
 
-#define DEFINE_NODE_FACTORY(T)              \
-    Element* T::Create(Document &document)  \
-    {                                       \
-        return new T(document);             \
+#define DEFINE_NODE_FACTORY(T)                                          \
+    Element* T::Create(Document &document, const CreateElementFlags)    \
+    {                                                                   \
+        return new T(document);                                         \
     }
 
 #define DEFINE_HTMLELEMENT_TYPE_CASTS_WITH_FUNCTION(...)

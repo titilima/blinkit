@@ -43,7 +43,7 @@ static void FillElementCreators(HTMLElementCreators &dst)
     }
 }
 
-Element* HTMLDocument::CreateElement(const AtomicString &localName, CreateElementFlags)
+Element* HTMLDocument::CreateElement(const AtomicString &localName, CreateElementFlags flags)
 {
     static std::unordered_map<AtomicString, HTMLElement::Creator> s_creators;
     if (s_creators.empty())
@@ -57,7 +57,7 @@ Element* HTMLDocument::CreateElement(const AtomicString &localName, CreateElemen
         return nullptr;
     }
 
-    return it->second(*this);
+    return it->second(*this, flags);
 }
 
 } // namespace blink
