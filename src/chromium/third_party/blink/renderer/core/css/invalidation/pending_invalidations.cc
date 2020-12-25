@@ -157,16 +157,7 @@ void PendingInvalidations::ClearInvalidation(ContainerNode& node) {
 
 NodeInvalidationSets& PendingInvalidations::EnsurePendingInvalidations(
     ContainerNode& node) {
-  auto it = pending_invalidation_map_.find(&node);
-  if (it != pending_invalidation_map_.end())
-    return it->second;
-  ASSERT(false); // BKTODO:
-  return it->second;
-#if 0
-  PendingInvalidationMap::AddResult add_result =
-      pending_invalidation_map_.insert(&node, NodeInvalidationSets());
-  return add_result.stored_value->value;
-#endif
+  return pending_invalidation_map_[&node];
 }
 
 }  // namespace blink
