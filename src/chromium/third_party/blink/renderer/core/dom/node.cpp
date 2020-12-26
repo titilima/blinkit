@@ -645,11 +645,6 @@ void Node::MarkAncestorsWithChildNeedsDistributionRecalc(void)
     ASSERT(false); // BKTODO:
 }
 
-void Node::MarkAncestorsWithChildNeedsStyleInvalidation(void)
-{
-    ASSERT(false); // BKTODO:
-}
-
 void Node::MarkAncestorsWithChildNeedsStyleRecalc(void)
 {
     ContainerNode *ancestor = ParentOrShadowHostNode();
@@ -1245,6 +1240,36 @@ void Node::MarkAncestorsWithChildNeedsReattachLayoutTree(void)
     if (parentDirty)
         return;
     GetDocument().GetStyleEngine().UpdateLayoutTreeRebuildRoot(ancestor, this);
+}
+
+void Node::MarkAncestorsWithChildNeedsStyleInvalidation(void)
+{
+    ScriptForbiddenScope forbidScriptDuringRawIteration;
+
+    bool parentDirty = false;
+    ContainerNode *ancestor = ParentOrShadowHostNode();
+    if (nullptr != ancestor)
+    {
+        parentDirty = ancestor->NeedsStyleInvalidation();
+        while (nullptr != ancestor && !ancestor->ChildNeedsStyleInvalidation())
+        {
+            ancestor->SetChildNeedsStyleInvalidation();
+            if (ancestor->NeedsStyleInvalidation())
+                break;
+            ancestor = ancestor->ParentOrShadowHostNode();
+        }
+    }
+
+    if (!isConnected())
+        return;
+    // If the parent node is already dirty, we can keep the same invalidation
+    // root. The early return here is a performance optimization.
+    if (parentDirty)
+        return;
+
+    Document &document = GetDocument();
+    document.GetStyleEngine().UpdateStyleInvalidationRoot(ancestor, this);
+    document.ScheduleLayoutTreeUpdateIfNeeded();
 }
 
 void Node::ReattachLayoutTree(AttachContext &context)

@@ -95,6 +95,7 @@ class HeapHashSet : private std::unordered_set<T>
 public:
     using std::unordered_set<T>::begin;
     using std::unordered_set<T>::clear;
+    using std::unordered_set<T>::const_iterator;
     using std::unordered_set<T>::end;
     using std::unordered_set<T>::erase;
     using std::unordered_set<T>::find;
@@ -125,6 +126,12 @@ class HeapVector : public std::vector<T>
 public:
     HeapVector(void) = default;
     explicit HeapVector(wtf_size_t size) : std::vector<T>(size) {}
+
+    class GCForbiddenScope // Just a placeholder.
+    {
+    public:
+        GCForbiddenScope(void) {}
+    };
 
     template <typename U>
     void push_front(U &&v)

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_element.cc
+// Description: StyleElement Class
+//      Author: Ziming Li
+//     Created: 2020-12-24
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Rob Buis
  * Copyright (C) 2008 Apple, Inc. All rights reserved.
@@ -20,7 +31,7 @@
 
 #include "third_party/blink/renderer/core/css/style_element.h"
 
-#include "third_party/blink/renderer/bindings/core/v8/script_controller.h"
+#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/css/media_list.h"
 #include "third_party/blink/renderer/core/css/media_query_evaluator.h"
 #include "third_party/blink/renderer/core/css/style_engine.h"
@@ -29,11 +40,11 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/scriptable_document_parser.h"
 #include "third_party/blink/renderer/core/dom/shadow_root.h"
-#include "third_party/blink/renderer/core/frame/csp/content_security_policy.h"
+// BKTODO: #include "third_party/blink/renderer/core/frame/csp/content_security_policy.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/html/html_style_element.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"
-#include "third_party/blink/renderer/core/svg/svg_style_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_style_element.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
@@ -121,31 +132,12 @@ void StyleElement::ClearSheet(Element& owner_element) {
   sheet_.Release()->ClearOwnerNode();
 }
 
-static bool ShouldBypassMainWorldCSP(const Element& element) {
-  // Main world CSP is bypassed within an isolated world.
-  LocalFrame* frame = element.GetDocument().GetFrame();
-  if (frame && frame->GetScriptController().ShouldBypassMainWorldCSP())
-    return true;
-
-  // Main world CSP is bypassed for style elements in user agent shadow DOM.
-  ShadowRoot* root = element.ContainingShadowRoot();
-  if (root && root->IsUserAgent())
-    return true;
-
-  return false;
-}
-
 StyleElement::ProcessingResult StyleElement::CreateSheet(Element& element,
                                                          const String& text) {
   DCHECK(element.isConnected());
   Document& document = element.GetDocument();
 
-  const ContentSecurityPolicy* csp = document.GetContentSecurityPolicy();
-  bool passes_content_security_policy_checks =
-      ShouldBypassMainWorldCSP(element) ||
-      csp->AllowInlineStyle(&element, document.Url(), element.nonce(),
-                            start_position_.line_, text,
-                            ContentSecurityPolicy::InlineType::kBlock);
+  constexpr bool passes_content_security_policy_checks = true;
 
   // Clearing the current sheet may remove the cache entry so create the new
   // sheet first

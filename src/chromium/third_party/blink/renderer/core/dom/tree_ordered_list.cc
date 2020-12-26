@@ -45,13 +45,13 @@
 namespace blink {
 
 void TreeOrderedList::Add(Node* node) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (nodes_.IsEmpty()) {
     nodes_.insert(node);
     return;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Determine an appropriate insertion point.
   iterator begin = nodes_.begin();
   iterator end = nodes_.end();

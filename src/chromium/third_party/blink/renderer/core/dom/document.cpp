@@ -804,6 +804,15 @@ void Document::DecrementLoadEventDelayCount(void)
         CheckLoadEventSoon();
 }
 
+void Document::DecrementLoadEventDelayCountAndCheckLoadEvent(void)
+{
+    ASSERT(m_loadEventDelayCount > 0);
+    --m_loadEventDelayCount;
+
+    if (0 == m_loadEventDelayCount)
+        CheckCompleted();
+}
+
 void Document::DetachParser(void)
 {
     if (m_parser)
@@ -1156,8 +1165,7 @@ bool Document::HaveScriptBlockingStylesheetsLoaded(void) const
 #else
     if (ForCrawler())
         return true;
-    ASSERT(false); // BKTODO:
-    return false;
+    return m_styleEngine->HaveScriptBlockingStylesheetsLoaded();
 #endif
 }
 
@@ -1663,14 +1671,11 @@ void Document::ScheduleLayoutTreeUpdate(void)
     ASSERT(ShouldScheduleLayoutTreeUpdate());
     ASSERT(NeedsLayoutTreeUpdate());
 
-    ASSERT(false); // BKTOOD:
-#if 0
     if (!View()->CanThrottleRendering())
         GetPage()->Animator().ScheduleVisualUpdate(GetFrame());
     m_lifecycle.EnsureStateAtMost(DocumentLifecycle::kVisualUpdatePending);
 
     ++m_styleVersion;
-#endif
 }
 
 void Document::ScheduleLayoutTreeUpdateIfNeeded(void)
@@ -2129,6 +2134,7 @@ void Document::Trace(Visitor *visitor)
 #ifndef BLINKIT_CRAWLER_ONLY
     Supplementable<Document>::Trace(visitor);
 #endif
+    TreeScope::Trace(visitor);
     ContainerNode::Trace(visitor);
 }
 
@@ -2639,6 +2645,40 @@ float Document::DevicePixelRatio(void) const
     return m_frame ? m_frame->DevicePixelRatio() : 1.0;
 }
 
+void Document::DidLoadAllScriptBlockingResources(void)
+{
+    const auto task = std::bind(&Document::ExecuteScriptsWaitingForResources, this);
+#if 0 // BKTODO: Post a cancellable task instead.
+    // Use wrapWeakPersistent because the task should not keep this Document alive
+    // just for executing scripts.
+    execute_scripts_waiting_for_resources_task_handle_ = PostCancellableTask(
+        *GetTaskRunner(TaskType::kNetworking), FROM_HERE,
+        WTF::Bind(&Document::ExecuteScriptsWaitingForResources,
+            WrapWeakPersistent(this)));
+#else
+    GetTaskRunner(TaskType::kNetworking)->PostTask(FROM_HERE, task);
+#endif
+
+    if (nullptr != body())
+    {
+        // For HTML if we have no more stylesheets to load and we're past the body
+        // tag, we should have something to paint so resume.
+        BeginLifecycleUpdatesIfRenderingReady();
+    }
+}
+
+void Document::DidRemoveAllPendingStylesheet(void)
+{
+    StyleResolverMayHaveChanged();
+
+    // Only imports on master documents can trigger rendering.
+    if (HTMLImportLoader *import = ImportLoader())
+        ASSERT(false); // BKTODO: import->DidRemoveAllPendingStylesheet();
+    if (!HaveImportsLoaded())
+        return;
+    DidLoadAllScriptBlockingResources();
+}
+
 CSSStyleSheet& Document::ElementSheet(void)
 {
     if (!m_elemSheet)
@@ -2668,6 +2708,14 @@ ScriptedAnimationController& Document::EnsureScriptedAnimationController(void)
         ASSERT(nullptr != GetPage());
     }
     return *m_scriptedAnimationController;
+}
+
+void Document::ExecuteScriptsWaitingForResources(void)
+{
+    if (!IsScriptExecutionReady())
+        return;
+    if (ScriptableDocumentParser *parser = GetScriptableDocumentParser())
+        parser->ExecuteScriptsWaitingForResources();
 }
 
 HTMLBodyElement* Document::FirstBodyElement(void) const
@@ -2709,6 +2757,17 @@ SnapCoordinator* Document::GetSnapCoordinator(void)
             m_snapCoordinator = SnapCoordinator::Create();
     }
     return m_snapCoordinator.Get();
+}
+
+HTMLImportLoader* Document::ImportLoader(void) const
+{
+    if (!m_importsController)
+        return nullptr;
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
+    return imports_controller_->LoaderFor(*this);
+#endif
 }
 
 bool Document::IsSlotAssignmentOrLegacyDistributionDirty(void)
@@ -2957,6 +3016,25 @@ scoped_refptr<ComputedStyle> Document::StyleForElementIgnoringPendingStylesheets
     const ComputedStyle *layoutParentStyle = nullptr != layoutParent ? layoutParent->EnsureComputedStyle() : parentStyle;
 
     return EnsureStyleResolver().StyleForElement(element, parentStyle, layoutParentStyle);
+}
+
+void Document::StyleResolverMayHaveChanged(void)
+{
+    if (HasNodesWithPlaceholderStyle())
+    {
+        StyleChangeReasonForTracing reason = StyleChangeReasonForTracing::Create(StyleChangeReason::kCleanupPlaceholderStyles);
+        SetNeedsStyleRecalc(kSubtreeStyleChange, reason);
+    }
+
+    if (DidLayoutWithPendingStylesheets() && HaveRenderBlockingResourcesLoaded())
+    {
+        // We need to manually repaint because we avoid doing all repaints in layout
+        // or style recalc while sheets are still loading to avoid FOUC.
+        m_pendingSheetLayout = kIgnoreLayoutWithPendingSheets;
+        ASSERT(GetLayoutView() || ImportsController());
+        if (LayoutView *layoutView = GetLayoutView())
+            layoutView->InvalidatePaintForViewAndCompositedLayers();
+    }
 }
 
 void Document::UpdateStyleAndLayoutIgnorePendingStylesheets(RunPostLayoutTasks runPostLayoutTasks)

@@ -271,8 +271,6 @@ void StyleInvalidator::Invalidate(Element& element, SiblingData& sibling_data) {
     if (UNLIKELY(element.NeedsStyleInvalidation()))
       PushInvalidationSetsForContainerNode(element, sibling_data);
 
-    ASSERT(false); // BKTODO:
-#if 0
     // When a slot element is invalidated, the slotted elements are also
     // invalidated by HTMLSlotElement::DidRecalcStyle. So if WholeSubtreeInvalid
     // is true, they will be included even though they are not part of the
@@ -282,8 +280,7 @@ void StyleInvalidator::Invalidate(Element& element, SiblingData& sibling_data) {
     // PushInvalidationSetsForContainerNode above need to move out of the
     // if-block.
     if (InvalidatesSlotted() && IsHTMLSlotElement(element))
-      InvalidateSlotDistributedElements(ToHTMLSlotElement(element));
-#endif
+      ASSERT(false); // BKTODO: InvalidateSlotDistributedElements(ToHTMLSlotElement(element));
 
     if (InsertionPointCrossing() && element.IsV0InsertionPoint()) {
       element.SetNeedsStyleRecalc(kSubtreeStyleChange,

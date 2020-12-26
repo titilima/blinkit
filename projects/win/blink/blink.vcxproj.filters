@@ -5264,6 +5264,15 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\compositing\chunk_to_layer_mapper.cc">
       <Filter>renderer\platform\graphics\compositing</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_style_element.cc">
+      <Filter>renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_element.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\increment_load_event_delay_count.cc">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -11742,6 +11751,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\compositing\chunk_to_layer_mapper.h">
       <Filter>renderer\platform\graphics\compositing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_style_element.h">
+      <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_element.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\increment_load_event_delay_count.h">
+      <Filter>renderer\core\dom</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_style_element.cc
+// Description: HTMLStyleElement Class
+//      Author: Ziming Li
+//     Created: 2020-12-24
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -44,7 +55,7 @@ inline HTMLStyleElement::HTMLStyleElement(Document& document,
 
 HTMLStyleElement::~HTMLStyleElement() = default;
 
-HTMLStyleElement* HTMLStyleElement::Create(Document& document,
+Element* HTMLStyleElement::Create(Document& document,
                                            const CreateElementFlags flags) {
   return new HTMLStyleElement(document, flags);
 }
@@ -113,9 +124,9 @@ void HTMLStyleElement::DispatchPendingEvent(
   if (loaded_sheet_) {
     if (GetDocument().HasListenerType(
             Document::kLoadListenerAtCapturePhaseOrAtStyleElement))
-      DispatchEvent(*Event::Create(EventTypeNames::load));
+      DispatchEvent(*Event::Create(event_type_names::kLoad));
   } else {
-    DispatchEvent(*Event::Create(EventTypeNames::error));
+    DispatchEvent(*Event::Create(event_type_names::kError));
   }
   // Checks Document's load event synchronously here for performance.
   // This is safe because dispatchPendingEvent() is called asynchronously.
@@ -128,13 +139,15 @@ void HTMLStyleElement::NotifyLoadedSheetAndAllCriticalSubresources(
   if (fired_load_ && is_load_event)
     return;
   loaded_sheet_ = is_load_event;
-  GetDocument()
-      .GetTaskRunner(TaskType::kDOMManipulation)
-      ->PostTask(FROM_HERE,
-                 WTF::Bind(&HTMLStyleElement::DispatchPendingEvent,
-                           WrapPersistent(this),
-                           WTF::Passed(IncrementLoadEventDelayCount::Create(
-                               GetDocument()))));
+
+  Document &document = GetDocument();
+  auto count = IncrementLoadEventDelayCount::Create(document);
+  auto task = [this, count = count.release()]
+  {
+    DispatchPendingEvent(base::WrapUnique(count));
+  };
+  document.GetTaskRunner(TaskType::kDOMManipulation)->PostTask(FROM_HERE, task);
+
   fired_load_ = true;
 }
 

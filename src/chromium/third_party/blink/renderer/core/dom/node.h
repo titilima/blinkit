@@ -404,7 +404,14 @@ public:
     }
     void SetNonAttachedStyle(scoped_refptr<ComputedStyle> nonAttachedStyle);
 
+    // For <link> and <style> elements.
     virtual bool SheetLoaded(void) { return true; }
+    enum LoadedSheetErrorStatus {
+        kNoErrorLoadingSubresource,
+        kErrorOccurredLoadingSubresource
+    };
+    virtual void NotifyLoadedSheetAndAllCriticalSubresources(LoadedSheetErrorStatus errorStatus) {}
+    virtual void StartLoadingDynamicSheet(void) { NOTREACHED(); }
 
     bool CanParticipateInFlatTree(void) const;
     // Whether or not a selection can be started in this object

@@ -67,10 +67,10 @@ void DocumentStyleSheetCollection::CollectStyleSheetsFromCandidates(
   CHECK(ThreadState::Current()->IsOnThreadHeap(this));
 #endif
   for (Node* n : style_sheet_candidate_nodes_) {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
     CHECK(HeapObjectHeader::FromPayload(n)->IsValid());
     CHECK(ThreadState::Current()->IsOnThreadHeap(n));
+#endif
     StyleSheetCandidate candidate(*n);
 
     DCHECK(!candidate.IsXSL());
@@ -102,7 +102,6 @@ void DocumentStyleSheetCollection::CollectStyleSheetsFromCandidates(
     CSSStyleSheet* css_sheet = ToCSSStyleSheet(sheet);
     collector.AppendActiveStyleSheet(
         std::make_pair(css_sheet, master_engine.RuleSetForSheet(*css_sheet)));
-#endif
   }
   if (!GetTreeScope().HasAdoptedStyleSheets())
     return;

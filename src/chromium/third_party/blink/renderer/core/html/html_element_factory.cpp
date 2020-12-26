@@ -17,6 +17,7 @@
 #include "third_party/blink/renderer/core/html/html_html_element.h"
 #include "third_party/blink/renderer/core/html/html_meta_element.h"
 #include "third_party/blink/renderer/core/html/html_slot_element.h"
+#include "third_party/blink/renderer/core/html/html_style_element.h"
 #include "third_party/blink/renderer/core/html/html_title_element.h"
 
 namespace blink {
@@ -35,6 +36,7 @@ static void FillElementCreators(HTMLElementCreators &dst)
         { html_names::kHTMLTag,  HTMLHtmlElement::Create  },
         { html_names::kMetaTag,  HTMLMetaElement::Create  },
         { html_names::kSlotTag,  HTMLSlotElement::Create  },
+        { html_names::kStyleTag, HTMLStyleElement::Create },
         { html_names::kTitleTag, HTMLTitleElement::Create }
     };
     for (const auto &e : data)

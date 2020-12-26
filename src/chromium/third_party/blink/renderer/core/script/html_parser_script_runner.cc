@@ -65,11 +65,8 @@ static GURL DocumentURLForScriptExecution(Document* document) {
 
   if (!document->GetFrame()) {
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#if 0
     if (document->ImportsController())
       return document->Url();
-#endif
 #endif
     return GURL();
   }

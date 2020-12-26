@@ -83,7 +83,7 @@ public:
 #ifndef BLINKIT_CRAWLER_ONLY
     Element* AdjustedFocusedElement(void) const;
 
-    ScopedStyleResolver* GetScopedStyleResolver(void) const { return m_scopedStyleResolver.get(); }
+    ScopedStyleResolver* GetScopedStyleResolver(void) const { return m_scopedStyleResolver.Get(); }
     ScopedStyleResolver& EnsureScopedStyleResolver(void);
     void ClearScopedStyleResolver(void);
 
@@ -94,6 +94,7 @@ protected:
     TreeScope(ContainerNode &rootNode, Document &document);
     TreeScope(Document &document);
     virtual ~TreeScope(void);
+    void Trace(Visitor *visitor) override;
 
 #ifndef BLINKIT_CRAWLER_ONLY
     void SetNeedsStyleRecalcForViewportUnits(void);
@@ -108,8 +109,8 @@ private:
     std::unique_ptr<IdTargetObserverRegistry> m_idTargetObserverRegistry;
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    std::unique_ptr<ScopedStyleResolver> m_scopedStyleResolver;
-    std::unique_ptr<StyleSheetList> m_adoptedStyleSheets;
+    Member<ScopedStyleResolver> m_scopedStyleResolver;
+    Member<StyleSheetList> m_adoptedStyleSheets;
 #endif
 };
 

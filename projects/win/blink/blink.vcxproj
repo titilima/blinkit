@@ -964,6 +964,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_attribute_mutation_scope.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_change_reason.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_color.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_element.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine_context.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_environment_variables.cc" />
@@ -1026,6 +1027,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\first_letter_pseudo_element.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\flat_tree_traversal.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\id_target_observer_registry.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\increment_load_event_delay_count.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\layout_tree_builder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\layout_tree_builder_traversal.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\live_node_list_base.cpp" />
@@ -1176,6 +1178,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_html_element.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_meta_element.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_slot_element.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_style_element.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_tag_collection.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_title_element.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_unknown_element.cc" />
@@ -2805,6 +2808,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_auto_color.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_change_reason.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_color.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_environment_variables.h" />
@@ -2881,6 +2885,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\id_target_observer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\id_target_observer_registry.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\ignore_opens_during_unload_count_incrementer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\increment_load_event_delay_count.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\layout_tree_builder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\layout_tree_builder_traversal.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\live_node_list_base.h" />
@@ -3065,6 +3070,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_html_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_meta_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_slot_element.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_style_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_tag_collection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_title_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_unknown_element.h" />

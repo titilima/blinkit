@@ -141,21 +141,18 @@ CSSParserContext* CSSParserContext::Create(
   CSSParserMode match_mode = mode;
 #else
   CSSParserMode match_mode;
-  if (document.ForCrawler()) {
-    match_mode = mode;
-  } else {
+  HTMLImportsController* imports_controller = document.ImportsController();
+  if (imports_controller && profile == kLiveProfile) {
     ASSERT(false); // BKTODO:
-    match_mode = mode;
 #if 0
-    HTMLImportsController* imports_controller = document.ImportsController();
-    if (imports_controller && profile == kLiveProfile) {
-      match_mode = imports_controller->Master()->InQuirksMode()
-                   ? kHTMLQuirksMode
-                   : kHTMLStandardMode;
-    } else {
-      match_mode = mode;
-    }
+    match_mode = imports_controller->Master()->InQuirksMode()
+                     ? kHTMLQuirksMode
+                     : kHTMLStandardMode;
+#else
+    match_mode = mode;
 #endif
+  } else {
+    match_mode = mode;
   }
 #endif
 

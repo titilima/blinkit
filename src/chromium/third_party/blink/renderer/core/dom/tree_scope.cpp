@@ -90,27 +90,10 @@ void TreeScope::AdoptIfNeeded(Node &node)
         adopter.Execute();
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
-void TreeScope::ClearScopedStyleResolver(void)
-{
-    m_scopedStyleResolver.reset();
-}
-#endif
-
 bool TreeScope::ContainsMultipleElementsWithId(const AtomicString &id) const
 {
     return m_elementsById && m_elementsById->ContainsMultiple(id);
 }
-
-#ifndef BLINKIT_CRAWLER_ONLY
-ScopedStyleResolver& TreeScope::EnsureScopedStyleResolver(void)
-{
-    ASSERT(nullptr != this);
-    if (!m_scopedStyleResolver)
-        m_scopedStyleResolver.reset(ScopedStyleResolver::Create(*this));
-    return *m_scopedStyleResolver;
-}
-#endif
 
 const std::vector<Member<Element>>& TreeScope::GetAllElementsById(const AtomicString &id) const
 {
@@ -152,11 +135,35 @@ void TreeScope::RemoveElementById(const AtomicString &elementId, Element &elemen
     ASSERT(false); // BKTODO:
 }
 
+void TreeScope::Trace(Visitor *visitor)
+{
+#ifndef BLINKIT_CRAWLER_ONLY
+    visitor->Trace(m_scopedStyleResolver);
+    visitor->Trace(m_adoptedStyleSheets);
+#endif
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// UI Implementations
+
 #ifndef BLINKIT_CRAWLER_ONLY
 Element* TreeScope::AdjustedFocusedElement(void) const
 {
     ASSERT(false); // BKTODO:
     return nullptr;
+}
+
+void TreeScope::ClearScopedStyleResolver(void)
+{
+    m_scopedStyleResolver.Clear();
+}
+
+ScopedStyleResolver& TreeScope::EnsureScopedStyleResolver(void)
+{
+    ASSERT(nullptr != this);
+    if (!m_scopedStyleResolver)
+        m_scopedStyleResolver = ScopedStyleResolver::Create(*this);
+    return *m_scopedStyleResolver;
 }
 
 bool TreeScope::HasAdoptedStyleSheets(void) const

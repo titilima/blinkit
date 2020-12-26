@@ -255,6 +255,7 @@ public:
     // e.g. by calling Document::UpdateStyleAndLayoutTree().
     bool IsFocusable(void) const;
 
+    virtual String title(void) const { return String(); }
     int tabIndex(void) const override;
 
     // Returns the shadow root attached to this element if it is a shadow host.

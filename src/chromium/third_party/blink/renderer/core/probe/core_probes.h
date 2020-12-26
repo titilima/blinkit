@@ -31,5 +31,6 @@ inline void nothingToDo(void) {}
 #define fontsUpdated(...)               nothingToDo()
 #define layerTreeDidChange(...)         nothingToDo()
 #define pseudoElementDestroyed(...)     nothingToDo()
+#define willChangeStyleElement(...)     nothingToDo()
 
 #endif // BLINKIT_BLINK_CORE_PROBES_H

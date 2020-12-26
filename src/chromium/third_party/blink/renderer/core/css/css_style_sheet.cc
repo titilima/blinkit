@@ -45,9 +45,8 @@
 #include "third_party/blink/renderer/core/dom/node.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_link_element.h"
-#include "third_party/blink/renderer/core/html/html_style_element.h"
 #endif
-#include "third_party/blink/renderer/core/html_names.h"
+#include "third_party/blink/renderer/core/html/html_style_element.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
@@ -81,15 +80,11 @@ class StyleSheetCSSRuleList final : public CSSRuleList {
 
 #if DCHECK_IS_ON()
 static bool IsAcceptableCSSStyleSheetParent(const Node& parent_node) {
-  ASSERT(false); // BKTODO:
-  return true;
-#if 0
   // Only these nodes can be parents of StyleSheets, and they need to call
   // clearOwnerNode() when moved out of document. Note that destructor of
   // the nodes don't call clearOwnerNode() with Oilpan.
   return parent_node.IsDocumentNode() || IsHTMLLinkElement(parent_node) || IsHTMLStyleElement(parent_node)
     || parent_node.getNodeType() == Node::kProcessingInstructionNode;
-#endif
 }
 #endif
 
@@ -317,11 +312,8 @@ CSSRule* CSSStyleSheet::item(unsigned index) {
   DCHECK_EQ(child_rule_cssom_wrappers_.size(), rule_count);
 
   Member<CSSRule>& css_rule = child_rule_cssom_wrappers_[index];
-  ASSERT(false); // BKTODO:
-#if 0
   if (!css_rule)
     css_rule = contents_->RuleAt(index)->CreateCSSOMWrapper(this);
-#endif
   return css_rule.Get();
 }
 
@@ -388,8 +380,6 @@ unsigned CSSStyleSheet::insertRule(const String& rule_string,
   }
   const CSSParserContext* context =
       CSSParserContext::CreateWithStyleSheet(contents_->ParserContext(), this);
-  ASSERT(false); // BKTODO:
-#if 0
   StyleRuleBase* rule =
       CSSParser::ParseRule(context, contents_.Get(), rule_string);
 
@@ -413,7 +403,6 @@ unsigned CSSStyleSheet::insertRule(const String& rule_string,
   }
   if (!child_rule_cssom_wrappers_.IsEmpty())
       child_rule_cssom_wrappers_.insert(child_rule_cssom_wrappers_.begin() + index, nullptr);
-#endif
 
   return index;
 }
@@ -525,13 +514,13 @@ Document* CSSStyleSheet::OwnerDocument() const {
 
 bool CSSStyleSheet::SheetLoaded() {
   DCHECK(owner_node_);
-  ASSERT(false); // BKTODO: SetLoadCompleted(owner_node_->SheetLoaded());
+  SetLoadCompleted(owner_node_->SheetLoaded());
   return load_completed_;
 }
 
 void CSSStyleSheet::StartLoadingDynamicSheet() {
   SetLoadCompleted(false);
-  ASSERT(false); // BKTODO: owner_node_->StartLoadingDynamicSheet();
+  owner_node_->StartLoadingDynamicSheet();
 }
 
 void CSSStyleSheet::SetLoadCompleted(bool completed) {
@@ -579,20 +568,37 @@ bool CSSStyleSheet::CanBeActivated(
   if (disabled())
     return false;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (owner_node_ && owner_node_->IsInShadowTree()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (IsHTMLStyleElement(owner_node_) || IsSVGStyleElement(owner_node_))
       return true;
     if (IsHTMLLinkElement(owner_node_) &&
         ToHTMLLinkElement(owner_node_)->IsImport())
       return !IsAlternate();
+#endif
   }
 
+#if 0 // BKTODO:
   if (!owner_node_ ||
       owner_node_->getNodeType() == Node::kProcessingInstructionNode ||
       !IsHTMLLinkElement(owner_node_) ||
       !ToHTMLLinkElement(owner_node_)->IsEnabledViaScript()) {
+    if (!title_.IsEmpty() && title_ != current_preferrable_name)
+      return false;
+  }
+#else
+  bool b = true;
+  do {
+    if (!owner_node_)
+      break;
+    if (owner_node_->getNodeType() == Node::kProcessingInstructionNode)
+      break;
+    if (!IsHTMLLinkElement(owner_node_))
+      break;
+    ASSERT(false); // BKTODO:
+  } while (false);
+  if (b) {
     if (!title_.IsEmpty() && title_ != current_preferrable_name)
       return false;
   }

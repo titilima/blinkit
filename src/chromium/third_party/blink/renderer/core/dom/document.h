@@ -46,6 +46,7 @@
 #include <stack>
 #include <unordered_set>
 #include <vector>
+#include "base/single_thread_task_runner.h"
 #include "third_party/blink/renderer/core/dom/container_node.h"
 #include "third_party/blink/renderer/core/dom/create_element_flags.h"
 #include "third_party/blink/renderer/core/dom/document_encoding_data.h"
@@ -93,6 +94,7 @@ class DocumentTimeline;
 template <typename EventType>
 class EventWithHitTestResults;
 class HTMLBodyElement;
+class HTMLImportLoader;
 class HTMLImportsController;
 class IntersectionObserverController;
 class LayoutView;
@@ -329,6 +331,7 @@ public:
     void DispatchUnloadEvents(void);
 
     bool IsActive(void) const { return m_lifecycle.IsActive(); }
+    bool IsDetached(void) const { return m_lifecycle.GetState() >= DocumentLifecycle::kStopping; }
     bool InStyleRecalc(void) const { return m_lifecycle.GetState() == DocumentLifecycle::kInStyleRecalc; }
 
     enum PageDismissalType {
@@ -361,6 +364,8 @@ public:
     // to delay the 'load' event.
     void IncrementLoadEventDelayCount(void) { ++m_loadEventDelayCount; }
     void DecrementLoadEventDelayCount(void);
+    // This calls CheckCompleted() sync and thus can cause JavaScript execution.
+    void DecrementLoadEventDelayCountAndCheckLoadEvent(void);
     void CheckLoadEventSoon(void);
     bool IsDelayingLoadEvent(void) { return 0 != m_loadEventDelayCount; }
 
@@ -413,6 +418,9 @@ public:
     void CountDetachingNodeAccessInDOMNodeRemovedHandler(void) { ASSERT(GetInDOMNodeRemovedHandlerState() != InDOMNodeRemovedHandlerState::kNone); } // Just a placeholder
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    HTMLImportLoader* ImportLoader(void) const;
+    HTMLImportsController* ImportsController(void) const { return m_importsController.get(); }
+
     PageVisibilityState GetPageVisibilityState(void) const;
 
     Element* FocusedElement(void) const { return m_focusedElement.Get(); }
@@ -499,6 +507,11 @@ public:
     bool IsSlotAssignmentRecalcForbidden(void) { return false; }
 #   endif
 
+    void ExecuteScriptsWaitingForResources(void);
+
+    void DidLoadAllScriptBlockingResources(void);
+    void DidRemoveAllPendingStylesheet(void);
+    void StyleResolverMayHaveChanged(void);
 #endif // BLINKIT_CRAWLER_ONLY
 
     /**
@@ -653,6 +666,8 @@ private:
     std::stack<ScriptElementBase *> m_currentScriptStack;
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    uint64_t m_styleVersion = 0;
+
     // If we do ignore the pending stylesheet count, then we need to add a boolean
     // to track that this happened so that we can do a full repaint when the
     // stylesheets do eventually load.

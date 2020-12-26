@@ -165,6 +165,21 @@ inline bool IsHTMLLegendElement(const Node *node)
     return nullptr != node && IsHTMLLegendElement(*node);
 }
 
+inline bool IsHTMLLinkElement(const Element &element)
+{
+    return element.HasTagName(html_names::kLinkTag);
+}
+
+inline bool IsHTMLLinkElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLLinkElement(ToElement(node));
+}
+
+inline bool IsHTMLLinkElement(const Node *node)
+{
+    return nullptr != node && IsHTMLLinkElement(*node);
+}
+
 inline bool IsHTMLMarqueeElement(const Element &element)
 {
     return element.HasTagName(html_names::kMarqueeTag);
@@ -205,6 +220,11 @@ inline bool IsHTMLSlotElement(const Element &element)
     return element.HasTagName(html_names::kSlotTag);
 }
 
+inline bool IsHTMLSlotElement(const Element *element)
+{
+    return nullptr != element && IsHTMLSlotElement(*element);
+}
+
 inline bool IsHTMLSlotElement(const Node &node)
 {
     return node.IsHTMLElement() && IsHTMLSlotElement(ToElement(node));
@@ -215,6 +235,8 @@ inline bool IsHTMLSpanElement(const Element &element)
     return element.HasTagName(html_names::kSpanTag);
 }
 
+class HTMLStyleElement;
+
 inline bool IsHTMLStyleElement(const Element &element)
 {
     return element.HasTagName(html_names::kStyleTag);
@@ -223,6 +245,12 @@ inline bool IsHTMLStyleElement(const Element &element)
 inline bool IsHTMLStyleElement(const Node &node)
 {
     return node.IsHTMLElement() && IsHTMLStyleElement(ToElement(node));
+}
+
+template<>
+inline bool IsElementOfType<const HTMLStyleElement>(const Node &node)
+{
+    return IsHTMLStyleElement(node);
 }
 
 inline bool IsHTMLTableCellElement(const Element &element)
@@ -271,5 +299,7 @@ inline bool IsHTMLTitleElement(const Element &element)
 }
 
 } // namespace blink
+
+#define ToHTMLStyleElement(x)   blink::ToElement<blink::HTMLStyleElement>(x)
 
 #endif // BLINKIT_BLINK_HTML_ELEMENT_TYPE_HELPERS_H

@@ -180,4 +180,9 @@ int HTMLElement::tabIndex(void) const
     return -1;
 }
 
+String HTMLElement::title(void) const
+{
+    return FastGetAttribute(html_names::kTitleAttr);
+}
+
 } // namespace blink

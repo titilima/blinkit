@@ -40,12 +40,9 @@
 #include "third_party/blink/renderer/core/css/style_engine.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/processing_instruction.h"
-#if 0 // BKTODO:
-#include "third_party/blink/renderer/core/html/html_link_element.h"
+ // BKTODO: #include "third_party/blink/renderer/core/html/html_link_element.h"
 #include "third_party/blink/renderer/core/html/html_style_element.h"
-#include "third_party/blink/renderer/core/html/imports/html_import.h"
-#endif
-#include "third_party/blink/renderer/core/html_names.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/imports/html_import.h"
 // BKTODO: #include "third_party/blink/renderer/core/svg/svg_style_element.h"
 
 namespace blink {
@@ -63,7 +60,7 @@ bool StyleSheetCandidate::IsXSL() const {
 }
 
 bool StyleSheetCandidate::IsImport() const {
-  ASSERT(false); // BKTODO:
+  ASSERT(type_ != kHTMLLink); // BKTODO:
   return false;
 #if 0
   return type_ == kHTMLLink && ToHTMLLinkElement(GetNode()).IsImport();
@@ -92,7 +89,7 @@ bool StyleSheetCandidate::IsEnabledViaScript() const {
 }
 
 bool StyleSheetCandidate::IsEnabledAndLoading() const {
-  ASSERT(false); // BKTODO:
+  ASSERT(!IsHTMLLink()); // BKTODO:
   return false;
 #if 0
   return IsHTMLLink() && !ToHTMLLinkElement(GetNode()).IsDisabled() &&
@@ -113,20 +110,16 @@ StyleSheetCandidate::Type StyleSheetCandidate::TypeOf(Node& node) {
     return kPi;
 
   if (node.IsHTMLElement()) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (IsHTMLLinkElement(node))
       return kHTMLLink;
     if (IsHTMLStyleElement(node))
       return kHTMLStyle;
-#endif
 
     NOTREACHED();
     return kInvalid;
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   if (IsSVGStyleElement(node))
     return kSVGStyle;
 #endif
@@ -140,8 +133,10 @@ StyleSheet* StyleSheetCandidate::Sheet() const {
 #if 0 // BKTODO:
     case kHTMLLink:
       return ToHTMLLinkElement(GetNode()).sheet();
+#endif
     case kHTMLStyle:
       return ToHTMLStyleElement(GetNode()).sheet();
+#if 0 // BKTODO: Check if necessary.
     case kSVGStyle:
       return ToSVGStyleElement(GetNode()).sheet();
 #endif

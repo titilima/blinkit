@@ -37,7 +37,6 @@
 
 #include "local_dom_window.h"
 
-#include "base/single_thread_task_runner.h"
 #include "blinkit/crawler/dom/crawler_document.h"
 #include "blinkit/gc/gc_heap.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_timer.h"

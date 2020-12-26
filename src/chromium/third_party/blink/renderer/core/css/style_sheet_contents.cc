@@ -456,9 +456,7 @@ void StyleSheetContents::CheckLoaded() {
   // to the set of completed clients. We therefore need the copy in order to
   // not modify the set while iterating it.
   HeapVector<Member<CSSStyleSheet>> loading_clients;
-  ASSERT(false); // BKTODO:
-#if 0
-  CopyToVector(loading_clients_, loading_clients);
+  WTF::CopyToVector(loading_clients_, loading_clients); // BKTODO: Remove `WTF::`. (Why origin code has no errors?)
 
   for (unsigned i = 0; i < loading_clients.size(); ++i) {
     if (loading_clients[i]->LoadCompleted())
@@ -473,7 +471,6 @@ void StyleSheetContents::CheckLoaded() {
                                   : Node::kNoErrorLoadingSubresource);
     }
   }
-#endif
 }
 
 void StyleSheetContents::NotifyLoadedSheet(const CSSStyleSheetResource* sheet) {
@@ -651,10 +648,7 @@ void StyleSheetContents::ClearReferencedFromResource() {
 RuleSet& StyleSheetContents::EnsureRuleSet(const MediaQueryEvaluator& medium,
                                            AddRuleFlags add_rule_flags) {
   if (!rule_set_) {
-    ASSERT(false); // BKTODO:
-#if 0
     rule_set_ = RuleSet::Create();
-#endif
     rule_set_->AddRulesFromSheet(this, medium, add_rule_flags);
   }
   return *rule_set_.Get();
@@ -678,10 +672,7 @@ void StyleSheetContents::ClearRuleSet() {
   if (!rule_set_)
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   rule_set_.Clear();
-#endif
   SetNeedsActiveStyleUpdateForClients(loading_clients_);
   SetNeedsActiveStyleUpdateForClients(completed_clients_);
 }
