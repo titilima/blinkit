@@ -31,10 +31,8 @@
 // BKTODO: #include "third_party/blink/renderer/core/paint/object_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/paint/scoped_paint_state.h"
-#if 0 // BKTODO:
-#include "third_party/blink/renderer/core/paint/svg_foreign_object_painter.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/svg_foreign_object_painter.h"
 #include "third_party/blink/renderer/core/paint/theme_painter.h"
-#endif
 #include "third_party/blink/renderer/platform/geometry/layout_point.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context_state_saver.h"
 #include "third_party/blink/renderer/platform/graphics/paint/display_item_cache_skipper.h"
@@ -160,7 +158,7 @@ void BoxPainter::PaintBoxDecorationBackgroundWithRect(
       paint_info.context.ClipRoundedRect(border);
 
       if (box_decoration_data.bleed_avoidance == kBackgroundBleedClipLayer) {
-        ASSERT(false); // BKTODO: paint_info.context.BeginLayer();
+        paint_info.context.BeginLayer();
         needs_end_layer = true;
       }
     }
@@ -171,8 +169,6 @@ void BoxPainter::PaintBoxDecorationBackgroundWithRect(
   // CSS background.
   IntRect snapped_paint_rect(PixelSnappedIntRect(paint_rect));
   ThemePainter& theme_painter = LayoutTheme::GetTheme().Painter();
-  ASSERT(false); // BKTODO:
-#if 0
   bool theme_painted =
       box_decoration_data.has_appearance &&
       !theme_painter.Paint(layout_box_, paint_info, snapped_paint_rect);
@@ -209,7 +205,6 @@ void BoxPainter::PaintBoxDecorationBackgroundWithRect(
           paint_info, paint_rect, style, box_decoration_data.bleed_avoidance);
     }
   }
-#endif
 
   if (needs_end_layer)
     paint_info.context.EndLayer();
