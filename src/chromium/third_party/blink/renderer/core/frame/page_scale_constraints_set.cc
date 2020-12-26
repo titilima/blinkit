@@ -58,10 +58,6 @@ PageScaleConstraintsSet::PageScaleConstraintsSet(Page* page)
       needs_reset_(false),
       constraints_dirty_(false) {}
 
-void PageScaleConstraintsSet::Trace(blink::Visitor* visitor) {
-  visitor->Trace(page_);
-}
-
 void PageScaleConstraintsSet::SetDefaultConstraints(
     const PageScaleConstraints& default_constraints) {
   default_constraints_ = default_constraints;

@@ -59,14 +59,11 @@ class Page;
 
 // This class harmonizes the viewport (particularly page scale) constraints from
 // the meta viewport tag and other sources.
-class CORE_EXPORT PageScaleConstraintsSet
-    : public GarbageCollected<PageScaleConstraintsSet> {
+class CORE_EXPORT PageScaleConstraintsSet {
  public:
   static std::unique_ptr<PageScaleConstraintsSet> Create(Page* page) {
     return base::WrapUnique(new PageScaleConstraintsSet(page));
   }
-
-  void Trace(blink::Visitor*);
 
   void SetDefaultConstraints(const PageScaleConstraints&);
   const PageScaleConstraints& DefaultConstraints() const;
