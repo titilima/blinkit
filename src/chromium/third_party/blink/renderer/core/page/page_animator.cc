@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: page_animator.cc
+// Description: PageAnimator Class
+//      Author: Ziming Li
+//     Created: 2020-10-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #include "third_party/blink/renderer/core/page/page_animator.h"
 
 #include "base/auto_reset.h"
-// BKTODO: #include "third_party/blink/renderer/core/animation/document_animations.h"
+#include "third_party/blink/renderer/core/animation/document_animations.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
@@ -22,12 +33,8 @@ PageAnimator::PageAnimator(Page& page)
       servicing_animations_(false),
       updating_layout_and_style_for_painting_(false) {}
 
-PageAnimator* PageAnimator::Create(Page& page) {
-  return new PageAnimator(page);
-}
-
-void PageAnimator::Trace(blink::Visitor* visitor) {
-  visitor->Trace(page_);
+std::unique_ptr<PageAnimator> PageAnimator::Create(Page& page) {
+  return base::WrapUnique(new PageAnimator(page));
 }
 
 void PageAnimator::ServiceScriptedAnimations(
