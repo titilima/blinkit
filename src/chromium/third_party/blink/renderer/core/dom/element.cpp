@@ -61,6 +61,7 @@
 #   include "third_party/blink/renderer/core/layout/layout_text_fragment.h"
 #   include "third_party/blink/renderer/core/layout/layout_view.h"
 #   include "third_party/blink/renderer/core/page/scrolling/scroll_customization_callbacks.h"
+#   include "third_party/blink/renderer/core/paint/paint_layer.h"
 #endif
 
 using namespace BlinKit;
@@ -2101,6 +2102,22 @@ void Element::RebuildShadowRootLayoutTree(WhitespaceAttacher &whitespaceAttacher
 void Element::SetApplyScroll(ScrollStateCallback *scrollStateCallback)
 {
     GetScrollCustomizationCallbacks().SetApplyScroll(this, scrollStateCallback);
+}
+
+void Element::SetNeedsCompositingUpdate(void)
+{
+    if (!GetDocument().IsActive())
+        return;
+
+    LayoutBoxModelObject *layoutObject = GetLayoutBoxModelObject();
+    if (nullptr == layoutObject || !layoutObject->HasLayer())
+        return;
+
+    PaintLayer *layer = layoutObject->Layer();
+    layer->SetNeedsCompositingInputsUpdate();
+    // Changes in the return value of requiresAcceleratedCompositing change if
+    // the PaintLayer is self-painting.
+    layer->UpdateSelfPaintingLayer();
 }
 
 void Element::SetNeedsResizeObserverUpdate(void)

@@ -59,7 +59,7 @@ void TopDocumentRootScrollerController::DidResizeViewport() {
 
   // Top controls can resize the viewport without invalidating compositing or
   // paint so we need to do that manually here.
-  ASSERT(false); // BKTODO: GlobalRootScroller()->SetNeedsCompositingUpdate();
+  GlobalRootScroller()->SetNeedsCompositingUpdate();
 
   if (GlobalRootScroller()->GetLayoutObject())
     GlobalRootScroller()->GetLayoutObject()->SetNeedsPaintPropertyUpdate();

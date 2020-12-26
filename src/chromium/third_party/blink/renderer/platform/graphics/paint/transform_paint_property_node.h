@@ -74,9 +74,7 @@ class PLATFORM_EXPORT TransformPaintPropertyNode
 #endif
 
     bool operator==(const State& o) const {
-      ASSERT(false); // BKTODO:
-      return false;
-#if 0
+#if 0 // BKTODO: Check sticky_constraint
       return matrix == o.matrix && origin == o.origin &&
              flattens_inherited_transform == o.flattens_inherited_transform &&
              backface_visibility == o.backface_visibility &&
@@ -89,6 +87,16 @@ class PLATFORM_EXPORT TransformPaintPropertyNode
              ((!sticky_constraint && !o.sticky_constraint) ||
               (sticky_constraint && o.sticky_constraint &&
                *sticky_constraint == *o.sticky_constraint));
+#else
+      return matrix == o.matrix && origin == o.origin &&
+             flattens_inherited_transform == o.flattens_inherited_transform &&
+             backface_visibility == o.backface_visibility &&
+             rendering_context_id == o.rendering_context_id &&
+             direct_compositing_reasons == o.direct_compositing_reasons &&
+             compositor_element_id == o.compositor_element_id &&
+             scroll == o.scroll &&
+             affected_by_outer_viewport_bounds_delta ==
+                 o.affected_by_outer_viewport_bounds_delta;
 #endif
     }
   };

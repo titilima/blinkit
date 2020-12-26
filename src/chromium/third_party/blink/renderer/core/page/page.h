@@ -123,7 +123,7 @@ private:
     std::unique_ptr<PageAnimator> m_animator;
     const std::unique_ptr<DragController> m_dragController;
     float m_deviceScaleFactor = 1.0;
-    std::unique_ptr<PageScaleConstraintsSet> m_pageScaleConstraintsSet;
+    const std::unique_ptr<PageScaleConstraintsSet> m_pageScaleConstraintsSet;
     const std::unique_ptr<BrowserControls> m_browserControls;
     const Member<TopDocumentRootScrollerController> m_globalRootScrollerController;
     const std::unique_ptr<VisualViewport> m_visualViewport;

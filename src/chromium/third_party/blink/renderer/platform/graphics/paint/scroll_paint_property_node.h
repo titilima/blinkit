@@ -66,7 +66,6 @@ class PLATFORM_EXPORT ScrollPaintPropertyNode
     // BKTODO: std::optional<SnapContainerData> snap_container_data;
 
     bool operator==(const State& o) const {
-      ASSERT(false); // BKTODO:
       return container_rect == o.container_rect &&
              contents_size == o.contents_size &&
              user_scrollable_horizontal == o.user_scrollable_horizontal &&
@@ -77,7 +76,7 @@ class PLATFORM_EXPORT ScrollPaintPropertyNode
                  o.max_scroll_offset_affected_by_page_scale &&
              main_thread_scrolling_reasons == o.main_thread_scrolling_reasons &&
              compositor_element_id == o.compositor_element_id &&
-#if 0 // BKTODO:
+#if 0 // BKTODO: Check snap_container_data
              overscroll_behavior == o.overscroll_behavior &&
              snap_container_data == o.snap_container_data;
 #else

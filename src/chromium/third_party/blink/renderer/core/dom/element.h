@@ -287,6 +287,7 @@ public:
 
     void SetApplyScroll(ScrollStateCallback *scrollStateCallback);
 
+    void SetNeedsCompositingUpdate(void);
     void SetNeedsResizeObserverUpdate(void);
 #endif
 
