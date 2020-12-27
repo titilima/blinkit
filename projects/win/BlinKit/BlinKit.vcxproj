@@ -265,6 +265,9 @@
     <ProjectReference Include="..\duktape\duktape.vcxproj">
       <Project>{c8a7568b-b29b-430c-99a1-e43120933154}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\harfbuzz\harfbuzz.vcxproj">
+      <Project>{43f87c52-7fd3-43ec-b9b3-fc3ef9ccfdf1}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\net\net.vcxproj">
       <Project>{103e87cb-36eb-49c3-adfc-6c036aa14b21}</Project>
     </ProjectReference>
