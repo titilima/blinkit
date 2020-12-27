@@ -80,7 +80,7 @@ private:
 #ifndef TEST_CRAWLER_ONLY
 static void BKAPI DocumentReady(void *)
 {
-    assert(false); // BKTODO:
+    // BKTODO: Add test code here.
 }
 
 static LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
@@ -100,6 +100,10 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
             BkLoadUI(v, "res:ui.html");
             break;
         }
+
+        case WM_DESTROY:
+            PostQuitMessage(EXIT_SUCCESS);
+            break;
         default:
             r = BkDefWindowProc(hWnd, Msg, wParam, lParam);
     }
