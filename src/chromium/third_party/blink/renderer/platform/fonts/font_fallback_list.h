@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: font_fallback_list.h
-// Description: FontFallbackList Class
-//      Author: Ziming Li
-//     Created: 2020-08-03
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2006, 2010 Apple Inc. All rights reserved.
  *
@@ -32,6 +21,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_FONTS_FONT_FALLBACK_LIST_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_FONTS_FONT_FALLBACK_LIST_H_
 
+#include "base/memory/weak_ptr.h"
 #include "third_party/blink/renderer/platform/fonts/fallback_list_composite_key.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache.h"
 #include "third_party/blink/renderer/platform/fonts/font_selector.h"
@@ -68,17 +58,16 @@ class PLATFORM_EXPORT FontFallbackList : public RefCounted<FontFallbackList> {
   unsigned FontSelectorVersion() const { return font_selector_version_; }
   unsigned Generation() const { return generation_; }
 
-  std::shared_ptr<ShapeCache> GetShapeCache(const FontDescription& font_description) const {
-    if (shape_cache_.expired()) {
+  ShapeCache* GetShapeCache(const FontDescription& font_description) const {
+    if (!shape_cache_) {
       FallbackListCompositeKey key = CompositeKey(font_description);
       shape_cache_ =
           FontCache::GetFontCache()->GetShapeCache(key)->GetWeakPtr();
     }
-    DCHECK(!shape_cache_.expired());
-    std::shared_ptr<ShapeCache> ret = shape_cache_.lock();
+    DCHECK(shape_cache_);
     if (GetFontSelector())
-        ret->ClearIfVersionChanged(GetFontSelector()->Version());
-    return ret;
+      shape_cache_->ClearIfVersionChanged(GetFontSelector()->Version());
+    return shape_cache_.get();
   }
 
   const SimpleFontData* PrimarySimpleFontData(
@@ -111,7 +100,7 @@ class PLATFORM_EXPORT FontFallbackList : public RefCounted<FontFallbackList> {
   mutable int family_index_;
   unsigned short generation_;
   mutable bool has_loading_fallback_ : 1;
-  mutable std::weak_ptr<ShapeCache> shape_cache_;
+  mutable base::WeakPtr<ShapeCache> shape_cache_;
 };
 
 }  // namespace blink

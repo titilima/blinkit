@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: shape_cache.h
-// Description: ShapeCache Class
-//      Author: Ziming Li
-//     Created: 2020-08-03
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  * Copyright (C) 2015 Google Inc. All rights reserved.
@@ -38,6 +27,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_FONTS_SHAPING_SHAPE_CACHE_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_FONTS_SHAPING_SHAPE_CACHE_H_
 
+#include "base/memory/weak_ptr.h"
 #include "third_party/blink/renderer/platform/fonts/shaping/shape_result.h"
 #include "third_party/blink/renderer/platform/text/text_run.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
@@ -120,10 +110,9 @@ class ShapeCache {
   };
 
  public:
-  static std::shared_ptr<ShapeCache> Create(void) {
-    std::shared_ptr<ShapeCache> ret(new ShapeCache);
-    ret->weak_factory_ = ret;
-    return ret;
+  ShapeCache() : weak_factory_(this) {
+    // TODO(cavalcantii): Investigate tradeoffs of reserving space
+    // in short_string_map.
   }
 
   ShapeCacheEntry* Add(const TextRun& run, ShapeCacheEntry entry) {
@@ -160,11 +149,9 @@ class ShapeCache {
     return self_byte_size;
   }
 
-  std::weak_ptr<ShapeCache> GetWeakPtr() { return weak_factory_; }
+  base::WeakPtr<ShapeCache> GetWeakPtr() { return weak_factory_.GetWeakPtr(); }
 
  private:
-  ShapeCache(void) = default;
-
   ShapeCacheEntry* AddSlowCase(const TextRun& run, ShapeCacheEntry entry) {
     unsigned length = run.length();
     bool is_new_entry;
@@ -250,7 +237,7 @@ class ShapeCache {
   SingleCharMap single_char_map_;
   SmallStringMap short_string_map_;
   unsigned version_ = 0;
-  std::weak_ptr<ShapeCache> weak_factory_;
+  base::WeakPtrFactory<ShapeCache> weak_factory_;
 };
 
 inline bool operator==(const ShapeCache::SmallStringKey& a,
