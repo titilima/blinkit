@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: open_type_vertical_data.cc
+// Description: OpenTypeVerticalData Class
+//      Author: Ziming Li
+//     Created: 2020-12-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Koji Ishii <kojiishi@gmail.com>
  *
@@ -153,7 +164,7 @@ void OpenTypeVerticalData::LoadMetrics(sk_sp<SkTypeface> typeface) {
     return;
   uint16_t count_hmtx_entries = hhea->number_of_h_metrics;
   if (!count_hmtx_entries) {
-    DLOG(ERROR) << "Invalid numberOfHMetrics";
+    BKLOG("ERROR: Invalid numberOfHMetrics.");
     return;
   }
 
@@ -161,7 +172,7 @@ void OpenTypeVerticalData::LoadMetrics(sk_sp<SkTypeface> typeface) {
   const OpenType::HmtxTable* hmtx =
       OpenType::ValidateTable<OpenType::HmtxTable>(buffer, count_hmtx_entries);
   if (!hmtx) {
-    DLOG(ERROR) << "hhea exists but hmtx does not (or broken)";
+    BKLOG("ERROR: hhea exists but hmtx does not (or broken).");
     return;
   }
   advance_widths_.resize(count_hmtx_entries);
@@ -177,7 +188,7 @@ void OpenTypeVerticalData::LoadMetrics(sk_sp<SkTypeface> typeface) {
     return;
   uint16_t count_vmtx_entries = vhea->num_of_long_ver_metrics;
   if (!count_vmtx_entries) {
-    DLOG(ERROR) << "Invalid numOfLongVerMetrics";
+    BKLOG("ERROR: Invalid numOfLongVerMetrics");
     return;
   }
 
@@ -206,7 +217,7 @@ void OpenTypeVerticalData::LoadMetrics(sk_sp<SkTypeface> typeface) {
   const OpenType::VmtxTable* vmtx =
       OpenType::ValidateTable<OpenType::VmtxTable>(buffer, count_vmtx_entries);
   if (!vmtx) {
-    DLOG(ERROR) << "vhea exists but vmtx does not (or broken)";
+    BKLOG("ERROR: vhea exists but vmtx does not (or broken)");
     return;
   }
   advance_heights_.resize(count_vmtx_entries);
@@ -221,7 +232,7 @@ void OpenTypeVerticalData::LoadMetrics(sk_sp<SkTypeface> typeface) {
   wtf_size_t size_extra =
       buffer.size() - sizeof(OpenType::VmtxTable::Entry) * count_vmtx_entries;
   if (size_extra % sizeof(OpenType::Int16)) {
-    DLOG(ERROR) << "vmtx has incorrect tsb count";
+    BKLOG("ERROR: vmtx has incorrect tsb count");
     return;
   }
   wtf_size_t count_top_side_bearings =

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: harfbuzz_font_cache.h
+// Description: HarfBuzzFontCache Stuff
+//      Author: Ziming Li
+//     Created: 2020-12-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -71,10 +82,8 @@ struct HarfBuzzFontData {
 
       int units_per_em =
           platform_data.GetHarfBuzzFace()->UnitsPerEmFromHeadTable();
-      if (!units_per_em) {
-        DLOG(ERROR)
-            << "Units per EM is 0 for font used in vertical writing mode.";
-      }
+      if (!units_per_em)
+        BKLOG("ERROR: Units per EM is 0 for font used in vertical writing mode.");
       size_per_unit_ = platform_data.size() / (units_per_em ? units_per_em : 1);
     } else {
       ascent_fallback_ = kInvalidFallbackMetricsValue;

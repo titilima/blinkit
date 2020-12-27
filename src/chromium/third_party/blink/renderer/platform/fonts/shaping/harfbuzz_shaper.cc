@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: harfbuzz_shaper.cc
+// Description: HarfBuzzShaper Class
+//      Author: Ziming Li
+//     Created: 2020-12-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2012 Google Inc. All rights reserved.
  * Copyright (C) 2013 BlackBerry Limited. All rights reserved.
@@ -107,7 +118,7 @@ void CheckShapeResultRange(const ShapeResult* result,
   log.Append(", result=");
   result->ToString(&log);
 
-  NOTREACHED() << log.ToString();
+  NOTREACHED();
 }
 #endif
 
@@ -188,7 +199,11 @@ static inline hb_script_t ICUScriptToHBScript(UScriptCode script) {
   if (UNLIKELY(script == USCRIPT_INVALID_CODE))
     return HB_SCRIPT_INVALID;
 
+  ASSERT(false); // BKTODO:
+  return HB_SCRIPT_INVALID;
+#if 0
   return hb_script_from_string(uscript_getShortName(script), -1);
+#endif
 }
 
 void RoundHarfBuzzPosition(hb_position_t* value) {
@@ -224,7 +239,7 @@ inline bool ShapeRange(hb_buffer_t* buffer,
   const FontPlatformData* platform_data = &(current_font->PlatformData());
   HarfBuzzFace* face = platform_data->GetHarfBuzzFace();
   if (!face) {
-    DLOG(ERROR) << "Could not create HarfBuzzFace from FontPlatformData.";
+    BKLOG("ERROR: Could not create HarfBuzzFace from FontPlatformData.");
     return false;
   }
 
@@ -939,7 +954,7 @@ void HarfBuzzShaper::ShapeSegment(
                     range_data->font_features.size(), adjusted_font,
                     current_font_data_for_range_set->Ranges(), segment.script,
                     direction, language))
-      DLOG(ERROR) << "Shaping range failed.";
+      BKLOG("ERROR: Shaping range failed.");
 
     ExtractShapeResults(range_data, font_cycle_queued, current_queue_item,
                         adjusted_font, segment.script, canvas_rotation,

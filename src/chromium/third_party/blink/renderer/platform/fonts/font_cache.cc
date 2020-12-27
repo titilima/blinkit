@@ -43,7 +43,7 @@
 #include <limits>
 #include <memory>
 
-// BKTODO: #include "base/debug/alias.h"
+#include "base/debug/alias.h"
 #include "base/memory/ptr_util.h"
 // BKTODO: #include "base/trace_event/process_memory_dump.h"
 #include "build/build_config.h"
@@ -210,11 +210,8 @@ ShapeCache* FontCache::GetShapeCache(const FallbackListCompositeKey& key) {
   FallbackListShaperCache::iterator it = fallback_list_shaper_cache_.find(key);
   ShapeCache* result = nullptr;
   if (it == fallback_list_shaper_cache_.end()) {
-    ASSERT(false); // BKTODO:
-#if 0
     result = new ShapeCache();
     fallback_list_shaper_cache_.Set(key, base::WrapUnique(result));
-#endif
   } else {
     result = it->value.get();
   }

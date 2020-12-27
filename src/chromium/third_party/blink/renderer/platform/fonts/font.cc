@@ -35,20 +35,16 @@
 
 #include "third_party/blink/renderer/platform/fonts/font.h"
 
-#if 0 // BKTODO:
 #include "cc/paint/paint_canvas.h"
 #include "cc/paint/paint_flags.h"
-#endif
 #include "third_party/blink/renderer/platform/fonts/character_range.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache.h"
 #include "third_party/blink/renderer/platform/fonts/font_fallback_iterator.h"
 #include "third_party/blink/renderer/platform/fonts/font_fallback_list.h"
 #include "third_party/blink/renderer/platform/fonts/ng_text_fragment_paint_info.h"
-#if 0 // BKTODO:
-#include "third_party/blink/renderer/platform/fonts/paint_text_blob.h"
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/paint_text_blob.h"
 #include "third_party/blink/renderer/platform/fonts/shaping/caching_word_shaper.h"
-#include "third_party/blink/renderer/platform/fonts/shaping/shape_result_bloberizer.h"
-#endif
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/shaping/shape_result_bloberizer.h"
 #include "third_party/blink/renderer/platform/fonts/simple_font_data.h"
 #include "third_party/blink/renderer/platform/fonts/text_run_paint_info.h"
 #include "third_party/blink/renderer/platform/geometry/float_rect.h"
@@ -215,8 +211,6 @@ bool Font::DrawBidiText(cc::PaintCanvas* canvas,
 
   FloatPoint curr_point = point;
   BidiCharacterRun* bidi_run = bidi_runs.FirstRun();
-  ASSERT(false); // BKTODO:
-#if 0
   CachingWordShaper word_shaper(*this);
   while (bidi_run) {
     TextRun subrun =
@@ -228,6 +222,8 @@ bool Font::DrawBidiText(cc::PaintCanvas* canvas,
     TextRunPaintInfo subrun_info(subrun);
     subrun_info.bounds = run_info.bounds;
 
+    ASSERT(false); // BKTODO:
+#if 0
     ShapeResultBloberizer bloberizer(*this, device_scale_factor);
     ShapeResultBuffer buffer;
     word_shaper.FillResultBuffer(subrun_info, &buffer);
@@ -236,8 +232,8 @@ bool Font::DrawBidiText(cc::PaintCanvas* canvas,
 
     bidi_run = bidi_run->Next();
     curr_point.Move(run_width, 0);
-  }
 #endif
+  }
 
   bidi_runs.DeleteRuns();
   return true;
@@ -297,12 +293,8 @@ float Font::Width(const TextRun& run,
                   HashSet<const SimpleFontData*>* fallback_fonts,
                   FloatRect* glyph_bounds) const {
   FontCachePurgePreventer purge_preventer;
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   CachingWordShaper shaper(*this);
   return shaper.Width(run, fallback_fonts, glyph_bounds);
-#endif
 }
 
 namespace {  // anonymous namespace
@@ -413,27 +405,19 @@ FloatRect Font::SelectionRectForText(const TextRun& run,
 
   FontCachePurgePreventer purge_preventer;
 
-  ASSERT(false); // BKTODO:
-  return FloatRect();
-#if 0
   CachingWordShaper shaper(*this);
   CharacterRange range = shaper.GetCharacterRange(run, from, to);
 
   return PixelSnappedSelectionRect(
       FloatRect(point.X() + range.start, point.Y(), range.Width(), height));
-#endif
 }
 
 FloatRect Font::BoundingBox(const TextRun& run, int from, int to) const {
   to = (to == -1 ? run.length() : to);
   FontCachePurgePreventer purge_preventer;
-  ASSERT(false); // BKTODO:
-  return FloatRect();
-#if 0
   CachingWordShaper shaper(*this);
   CharacterRange range = shaper.GetCharacterRange(run, from, to);
   return FloatRect(range.start, -range.ascent, range.Width(), range.Height());
-#endif
 }
 
 int Font::OffsetForPosition(const TextRun& run,
@@ -441,12 +425,8 @@ int Font::OffsetForPosition(const TextRun& run,
                             IncludePartialGlyphsOption partial_glyphs,
                             BreakGlyphsOption break_glyphs) const {
   FontCachePurgePreventer purge_preventer;
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   CachingWordShaper shaper(*this);
   return shaper.OffsetForPosition(run, x_float, partial_glyphs, break_glyphs);
-#endif
 }
 
 ShapeCache* Font::GetShapeCache() const {
@@ -506,11 +486,7 @@ GlyphData Font::GetEmphasisMarkGlyphData(const AtomicString& mark) const {
     return GlyphData();
 
   TextRun emphasis_mark_run(mark, mark.length());
-  ASSERT(false); // BKTODO:
-  return GlyphData();
-#if 0
   return CachingWordShaper(*this).EmphasisMarkGlyphData(emphasis_mark_run);
-#endif
 }
 
 int Font::EmphasisMarkAscent(const AtomicString& mark) const {
@@ -550,20 +526,13 @@ CharacterRange Font::GetCharacterRange(const TextRun& run,
                                        unsigned from,
                                        unsigned to) const {
   FontCachePurgePreventer purge_preventer;
-  ASSERT(false); // BKTODO:
-  exit(0);
-#if 0
   CachingWordShaper shaper(*this);
   return shaper.GetCharacterRange(run, from, to);
-#endif
 }
 
 Vector<CharacterRange> Font::IndividualCharacterRanges(
     const TextRun& run) const {
   FontCachePurgePreventer purge_preventer;
-  ASSERT(false); // BKTODO:
-  return Vector<CharacterRange>();
-#if 0
   CachingWordShaper shaper(*this);
   auto ranges = shaper.IndividualCharacterRanges(run);
   // The shaper should return ranges.size == run.length but on some platforms
@@ -572,17 +541,12 @@ Vector<CharacterRange> Font::IndividualCharacterRanges(
   // more popular platforms, and to protect users, we are using a CHECK here.
   CHECK_EQ(ranges.size(), run.length());
   return ranges;
-#endif
 }
 
 Vector<double> Font::IndividualCharacterAdvances(const TextRun& run) const {
   FontCachePurgePreventer purge_preventer;
-  ASSERT(false); // BKTODO:
-  return Vector<double>();
-#if 0
   CachingWordShaper shaper(*this);
   return shaper.IndividualCharacterAdvances(run);
-#endif
 }
 
 void Font::ExpandRangeToIncludePartialGlyphs(const TextRun& text_run,
@@ -591,13 +555,10 @@ void Font::ExpandRangeToIncludePartialGlyphs(const TextRun& text_run,
   TextRunPaintInfo run_info(text_run);
   run_info.from = *from;
   run_info.to = *to;
-  ASSERT(false); // BKTODO:
-#if 0
   CachingWordShaper word_shaper(*this);
   ShapeResultBuffer buffer;
   word_shaper.FillResultBuffer(run_info, &buffer);
   buffer.ExpandRangeToIncludePartialGlyphs(from, to);
-#endif
 }
 
 LayoutUnit Font::TabWidth(const TabSize& tab_size, LayoutUnit position) const {

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: harfbuzz_face.cc
+// Description: HarfBuzzFace Class
+//      Author: Ziming Li
+//     Created: 2020-12-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2012 Google Inc. All rights reserved.
  *
@@ -379,8 +390,6 @@ hb_face_t* HarfBuzzFace::CreateFace() {
 #endif
   hb_face_t* face = nullptr;
 
-  DEFINE_THREAD_SAFE_STATIC_LOCAL(BooleanHistogram, zero_copy_success_histogram,
-                                  ("Blink.Fonts.HarfBuzzFaceZeroCopyAccess"));
   SkTypeface* typeface = platform_data_->Typeface();
   CHECK(typeface);
   int ttc_index = 0;
@@ -399,9 +408,6 @@ hb_face_t* HarfBuzzFace::CreateFace() {
   if (!face) {
     face = hb_face_create_for_tables(HarfBuzzSkiaGetTable,
                                      platform_data_->Typeface(), nullptr);
-    zero_copy_success_histogram.Count(false);
-  } else {
-    zero_copy_success_histogram.Count(true);
   }
 
   DCHECK(face);
