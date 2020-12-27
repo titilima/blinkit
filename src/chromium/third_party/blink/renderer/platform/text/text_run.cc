@@ -98,7 +98,7 @@ String TextRun::NormalizedUTF16() const {
       character = kZeroWidthSpaceCharacter;
     }
 
-    ASSERT(false); // BKTODO: U16_APPEND(buffer.Characters(), result_length, len_, character, error);
+    U16_APPEND(buffer.Characters(), result_length, len_, character, error);
     DCHECK(!error);
   }
 

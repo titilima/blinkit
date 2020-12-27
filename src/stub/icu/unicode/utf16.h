@@ -37,6 +37,17 @@
 
 #define U16_LENGTH(c) ((uint32_t)(c)<=0xffff ? 1 : 2)
 
+#define U16_APPEND(s, i, capacity, c, isError) { \
+    if((uint32_t)(c)<=0xffff) { \
+        (s)[(i)++]=(uint16_t)(c); \
+    } else if((uint32_t)(c)<=0x10ffff && (i)+1<(capacity)) { \
+        (s)[(i)++]=(uint16_t)(((c)>>10)+0xd7c0); \
+        (s)[(i)++]=(uint16_t)(((c)&0x3ff)|0xdc00); \
+    } else /* c>0x10ffff or not enough space */ { \
+        (isError)=true; \
+    } \
+}
+
 #define U16_GET(s, start, i, length, c) { \
     (c)=(s)[i]; \
     if(U16_IS_SURROGATE(c)) { \
