@@ -298,5 +298,8 @@
     <ClInclude Include="..\..\..\src\chromium\base\debug\alias.h">
       <Filter>base\debug</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\memory\weak_ptr.h">
+      <Filter>base\memory</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
