@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: skia_text_metrics.cc
-// Description: SkiaTextMetrics Class
-//      Author: Ziming Li
-//     Created: 2020-12-06
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -35,7 +24,6 @@ SkiaTextMetrics::SkiaTextMetrics(const SkPaint* paint) : paint_(paint) {
   CHECK(paint_->getTextEncoding() == SkPaint::kGlyphID_TextEncoding);
 }
 
-#if 0 // BKTODO:
 void SkiaTextMetrics::GetGlyphWidthForHarfBuzz(hb_codepoint_t codepoint,
                                                hb_position_t* width) {
   DCHECK_LE(codepoint, 0xFFFFu);
@@ -103,7 +91,6 @@ void SkiaTextMetrics::GetGlyphExtentsForHarfBuzz(hb_codepoint_t codepoint,
   extents->width = SkiaScalarToHarfBuzzPosition(sk_bounds.width());
   extents->height = SkiaScalarToHarfBuzzPosition(-sk_bounds.height());
 }
-#endif
 
 void SkiaTextMetrics::GetSkiaBoundsForGlyph(Glyph glyph, SkRect* bounds) {
 #if defined(OS_MACOSX)
@@ -154,12 +141,10 @@ float SkiaTextMetrics::GetSkiaWidthForGlyph(Glyph glyph) {
   return SkScalarToFloat(sk_width);
 }
 
-#if 0 // BKTODO:
 hb_position_t SkiaTextMetrics::SkiaScalarToHarfBuzzPosition(SkScalar value) {
   // We treat HarfBuzz hb_position_t as 16.16 fixed-point.
   static const int kHbPosition1 = 1 << 16;
   return clampTo<int>(value * kHbPosition1);
 }
-#endif
 
 }  // namespace blink
