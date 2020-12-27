@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: shape_result.h
-// Description: ShapeResult Class
-//      Author: Ziming Li
-//     Created: 2020-10-09
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -410,9 +399,7 @@ class PLATFORM_EXPORT ShapeResult : public RefCounted<ShapeResult> {
 
   float width_;
   FloatRect glyph_bounding_box_;
-#if 0 // BKTODO:
   Vector<std::unique_ptr<RunInfo>> runs_;
-#endif
   scoped_refptr<const SimpleFontData> primary_font_;
   mutable std::unique_ptr<CharacterPositionData> character_position_;
 
