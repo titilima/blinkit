@@ -301,5 +301,8 @@
     <ClInclude Include="..\..\..\src\chromium\base\memory\weak_ptr.h">
       <Filter>base\memory</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\sys_byteorder.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

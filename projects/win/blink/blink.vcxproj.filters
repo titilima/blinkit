@@ -5273,6 +5273,36 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\increment_load_event_delay_count.cc">
       <Filter>renderer\core\dom</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\caching_word_shaper.cc">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result_buffer.cc">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\caching_word_shape_iterator.cc">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result_spacing.cc">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\harfbuzz_shaper.cc">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\opentype\open_type_caps_support.cc">
+      <Filter>renderer\platform\fonts\opentype</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\case_mapping_harfbuzz_buffer_filler.cc">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\harfbuzz_face.cc">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\opentype\open_type_vertical_data.cc">
+      <Filter>renderer\platform\fonts\opentype</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_unique_name_lookup.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -11760,6 +11790,45 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\increment_load_event_delay_count.h">
       <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\caching_word_shaper.h">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result_buffer.h">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\caching_word_shape_iterator.h">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result_spacing.h">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result_inline_headers.h">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\harfbuzz_shaper.h">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\opentype\open_type_caps_support.h">
+      <Filter>renderer\platform\fonts\opentype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\case_mapping_harfbuzz_buffer_filler.h">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\harfbuzz_face.h">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\harfbuzz_font_cache.h">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\opentype\open_type_vertical_data.h">
+      <Filter>renderer\platform\fonts\opentype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_unique_name_lookup.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\opentype\open_type_types.h">
+      <Filter>renderer\platform\fonts\opentype</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

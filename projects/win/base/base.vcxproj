@@ -326,6 +326,7 @@
     <ClInclude Include="..\..\..\src\chromium\base\strings\sys_string_conversions.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\utf_string_conversions.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\utf_string_conversion_utils.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\sys_byteorder.h" />
     <ClInclude Include="..\..\..\src\chromium\base\task_runner.h" />
     <ClInclude Include="..\..\..\src\chromium\base\template_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\third_party\nspr\prtime.h" />
