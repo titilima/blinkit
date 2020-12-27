@@ -77,6 +77,12 @@ TextBreakIterator* AcquireLineBreakIterator(
     return nullptr;
 }
 
+TextBreakIterator* CursorMovementIterator(const UChar *string, int length)
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
+}
+
 bool IsWordTextBreak(TextBreakIterator *iterator)
 {
     ASSERT(false); // BKTODO:
