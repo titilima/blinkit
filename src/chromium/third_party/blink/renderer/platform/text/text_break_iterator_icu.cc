@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_break_iterator.cc
+// Description: TextBreakIterator Implementations
+//      Author: Ziming Li
+//     Created: 2020-12-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Lars Knoll <lars@trolltech.com>
  * Copyright (C) 2007, 2011, 2012 Apple Inc. All rights reserved.
@@ -37,7 +48,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string_hash.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 #include "third_party/blink/renderer/platform/wtf/thread_specific.h"
-#include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
+// BKTODO: #include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
 
 namespace blink {
 
@@ -81,8 +92,7 @@ class LineBreakIteratorPool final {
       }
 
       if (U_FAILURE(open_status)) {
-        DLOG(ERROR) << "icu::BreakIterator construction failed with status "
-                    << open_status;
+        BKLOG("ERROR: icu::BreakIterator construction failed with status %d", open_status);
         return nullptr;
       }
     }
@@ -123,7 +133,7 @@ enum TextContext { kNoContext, kPriorContext, kPrimaryContext };
 
 const int kTextBufferCapacity = 16;
 
-typedef struct {
+typedef struct UTextWithBuffer {
   DISALLOW_NEW();
   UText text;
   UChar buffer[kTextBufferCapacity];
@@ -591,9 +601,7 @@ static TextBreakIterator* WordBreakIterator(const LChar* string, int length) {
   if (!break_iter) {
     break_iter = icu::BreakIterator::createWordInstance(
         icu::Locale(CurrentTextBreakLocaleID()), error_code);
-    DCHECK(U_SUCCESS(error_code))
-        << "ICU could not open a break iterator: " << u_errorName(error_code)
-        << " (" << error_code << ")";
+    DCHECK(U_SUCCESS(error_code)); // ICU could not open a break iterator
     if (!break_iter)
       return nullptr;
   }
@@ -607,15 +615,14 @@ static TextBreakIterator* WordBreakIterator(const LChar* string, int length) {
   UText* text =
       TextOpenLatin1(&text_local, string, length, nullptr, 0, &open_status);
   if (U_FAILURE(open_status)) {
-    DLOG(ERROR) << "textOpenLatin1 failed with status " << open_status;
+    BKLOG("ERROR: textOpenLatin1 failed with status %d", open_status);
     return nullptr;
   }
 
   UErrorCode set_text_status = U_ZERO_ERROR;
   break_iter->setText(text, set_text_status);
   if (U_FAILURE(set_text_status))
-    DLOG(ERROR) << "BreakIterator::seText failed with status "
-                << set_text_status;
+    BKLOG("ERROR: BreakIterator::seText failed with status %d", set_text_status);
 
   utext_close(text);
 
@@ -639,9 +646,7 @@ TextBreakIterator* WordBreakIterator(const UChar* string, int length) {
   if (!break_iter) {
     break_iter = icu::BreakIterator::createWordInstance(
         icu::Locale(CurrentTextBreakLocaleID()), error_code);
-    DCHECK(U_SUCCESS(error_code))
-        << "ICU could not open a break iterator: " << u_errorName(error_code)
-        << " (" << error_code << ")";
+    DCHECK(U_SUCCESS(error_code)); // ICU could not open a break iterator
     if (!break_iter)
       return nullptr;
   }
@@ -678,14 +683,14 @@ TextBreakIterator* AcquireLineBreakIterator(const LChar* string,
   UText* text = TextOpenLatin1(&text_local, string, length, prior_context,
                                prior_context_length, &open_status);
   if (U_FAILURE(open_status)) {
-    DLOG(ERROR) << "textOpenLatin1 failed with status " << open_status;
+    BKLOG("ERROR: textOpenLatin1 failed with status %d", open_status);
     return nullptr;
   }
 
   UErrorCode set_text_status = U_ZERO_ERROR;
   iterator->setText(text, set_text_status);
   if (U_FAILURE(set_text_status)) {
-    DLOG(ERROR) << "ubrk_setUText failed with status " << set_text_status;
+    BKLOG("ERROR: ubrk_setUText failed with status %d", set_text_status);
     return nullptr;
   }
 
@@ -710,14 +715,14 @@ TextBreakIterator* AcquireLineBreakIterator(const UChar* string,
   UText* text = TextOpenUTF16(&text_local, string, length, prior_context,
                               prior_context_length, &open_status);
   if (U_FAILURE(open_status)) {
-    DLOG(ERROR) << "textOpenUTF16 failed with status " << open_status;
+    BKLOG("ERROR: textOpenUTF16 failed with status %d", open_status);
     return nullptr;
   }
 
   UErrorCode set_text_status = U_ZERO_ERROR;
   iterator->setText(text, set_text_status);
   if (U_FAILURE(set_text_status)) {
-    DLOG(ERROR) << "ubrk_setUText failed with status " << set_text_status;
+    BKLOG("ERROR: ubrk_setUText failed with status %d", set_text_status);
     return nullptr;
   }
 
@@ -741,9 +746,7 @@ static TextBreakIterator* GetNonSharedCharacterBreakIterator() {
     ICUError error_code;
     iterator = base::WrapUnique(icu::BreakIterator::createCharacterInstance(
         icu::Locale(CurrentTextBreakLocaleID()), error_code));
-    CHECK(U_SUCCESS(error_code) && iterator)
-        << "ICU could not open a break iterator: " << u_errorName(error_code)
-        << " (" << error_code << ")";
+    CHECK(U_SUCCESS(error_code) && iterator); // ICU could not open a break iterator
   }
 
   DCHECK(iterator);
@@ -842,9 +845,7 @@ TextBreakIterator* SentenceBreakIterator(const UChar* string, int length) {
   if (!iterator) {
     iterator = icu::BreakIterator::createSentenceInstance(
         icu::Locale(CurrentTextBreakLocaleID()), open_status);
-    DCHECK(U_SUCCESS(open_status))
-        << "ICU could not open a break iterator: " << u_errorName(open_status)
-        << " (" << open_status << ")";
+    DCHECK(U_SUCCESS(open_status)); // ICU could not open a break iterator
     if (!iterator)
       return nullptr;
   }
@@ -965,9 +966,7 @@ TextBreakIterator* CursorMovementIterator(const UChar* string, int length) {
     // break_rules is ASCII. Pick the most efficient UnicodeString ctor.
     iterator = std::make_unique<icu::RuleBasedBreakIterator>(
         icu::UnicodeString(kRules, -1, US_INV), parse_status, open_status);
-    DCHECK(U_SUCCESS(open_status))
-        << "ICU could not open a break iterator: " << u_errorName(open_status)
-        << " (" << open_status << ")";
+    DCHECK(U_SUCCESS(open_status)); // ICU could not open a break iterator
   }
 
   SetText16(iterator.get(), string, length);
