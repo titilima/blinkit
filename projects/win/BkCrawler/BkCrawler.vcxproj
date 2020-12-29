@@ -80,7 +80,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SrcRoot)stub\icu;$(IncludePath)</IncludePath>
+    <IncludePath>$(CrRoot)third_party\icu\source\common;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -88,7 +88,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(RepoRoot)sdk\win32\</OutDir>
-    <IncludePath>$(SrcRoot)stub\icu;$(IncludePath)</IncludePath>
+    <IncludePath>$(CrRoot)third_party\icu\source\common;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -257,11 +257,11 @@
     <ProjectReference Include="..\duktape\duktape.vcxproj">
       <Project>{c8a7568b-b29b-430c-99a1-e43120933154}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\icu\icu.vcxproj">
+      <Project>{289190e9-30a8-4f11-befb-1d2026419b77}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\net\net.vcxproj">
       <Project>{103e87cb-36eb-49c3-adfc-6c036aa14b21}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\stub\stub.vcxproj">
-      <Project>{5c7fcbe4-3630-4def-ac58-916eafbe1e97}</Project>
     </ProjectReference>
     <ProjectReference Include="..\url\url.vcxproj">
       <Project>{849ce42e-6457-4c6d-8ba0-854932a2aedb}</Project>

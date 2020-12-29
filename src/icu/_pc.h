@@ -16,4 +16,9 @@
 
 #include "chromium/build/build_config.h"
 
+#if OS_WIN
+#   pragma warning(disable: 4819)
+#   define UCHAR_TYPE   wchar_t
+#endif
+
 #endif // BLINKIT_ICU__PC_H
