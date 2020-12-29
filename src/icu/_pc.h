@@ -18,7 +18,10 @@
 
 #if OS_WIN
 #   pragma warning(disable: 4819)
-#   define UCHAR_TYPE   wchar_t
+#   define _CRT_SECURE_NO_WARNINGS
+#   define U_COMMON_IMPLEMENTATION
+#   define U_STATIC_IMPLEMENTATION
+#   define UCHAR_TYPE               char16_t
 #endif
 
 #endif // BLINKIT_ICU__PC_H

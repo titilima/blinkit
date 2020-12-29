@@ -41,7 +41,7 @@
 
 #include "third_party/blink/renderer/platform/text/character.h"
 
-// BKTODO: #include <unicode/uobject.h>
+#include <unicode/uobject.h>
 #include <unicode/uscript.h>
 #include <algorithm>
 // BKTODO: #include "third_party/blink/renderer/platform/text/icu_error.h"

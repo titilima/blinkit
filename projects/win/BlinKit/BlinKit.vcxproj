@@ -81,12 +81,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SrcRoot)stub\icu;$(IncludePath)</IncludePath>
+    <IncludePath>$(CrRoot)third_party\icu\source\common;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(RepoRoot)sdk\win32\</OutDir>
-    <IncludePath>$(SrcRoot)stub\icu;$(IncludePath)</IncludePath>
+    <IncludePath>$(CrRoot)third_party\icu\source\common;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -268,14 +268,14 @@
     <ProjectReference Include="..\harfbuzz\harfbuzz.vcxproj">
       <Project>{43f87c52-7fd3-43ec-b9b3-fc3ef9ccfdf1}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\icu\icu.vcxproj">
+      <Project>{289190e9-30a8-4f11-befb-1d2026419b77}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\net\net.vcxproj">
       <Project>{103e87cb-36eb-49c3-adfc-6c036aa14b21}</Project>
     </ProjectReference>
     <ProjectReference Include="..\skia\skia.vcxproj">
       <Project>{a31e4f43-99e2-4dd2-b26d-2bf134ed2cba}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\stub\stub.vcxproj">
-      <Project>{5c7fcbe4-3630-4def-ac58-916eafbe1e97}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ui\ui.vcxproj">
       <Project>{bbc8aaa9-2ae8-41a5-b94f-e6a5c98ef7ab}</Project>

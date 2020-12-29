@@ -82,11 +82,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SrcRoot)stub\icu;$(RepoRoot)third_party\harfbuzz\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(CrRoot)third_party\icu\source\common;$(RepoRoot)third_party\harfbuzz\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SrcRoot)stub\icu;$(RepoRoot)third_party\harfbuzz\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(CrRoot)third_party\icu\source\common;$(RepoRoot)third_party\harfbuzz\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>

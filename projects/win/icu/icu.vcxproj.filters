@@ -12,6 +12,9 @@
     <Filter Include="common">
       <UniqueIdentifier>{a3002353-4a4e-408b-b717-73263c9289a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="stubdata">
+      <UniqueIdentifier>{6cddea1a-e3ce-45c3-85fb-801e2b6ea1cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -28,6 +31,171 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\utf_impl.cpp">
       <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\uprops.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\ubidi_props.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\normalizer2.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\ustring.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\ustrcase.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\uobject.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\unistr.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\unistr_case.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\loadednormalizer2impl.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\normalizer2impl.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\ucase.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\edits.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\umutex.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\ucln_cmn.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\uinvchar.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\cstring.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\udata.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\appendable.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\ustrtrns.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\udatamem.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\uhash.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\uniset_closure.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\utrie2_builder.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\bytesinkutil.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\udataswp.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\utrace.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\uniset.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\uvector.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\putil.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\charstr.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\bmpset.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\patternprops.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\stringpiece.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\uarrsort.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\ucmndata.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\umapfile.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\unifilt.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\unifunct.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\unisetspan.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\utrie.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\util.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\ucol_swp.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\uloc.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\wintz.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\uenum.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\uloc_tag.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\uloc_keytype.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\uresbund.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\umath.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\locmap.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\locid.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\uresdata.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\ustrenum.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\common\resource.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\icu\source\stubdata\stubdata.cpp">
+      <Filter>stubdata</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
