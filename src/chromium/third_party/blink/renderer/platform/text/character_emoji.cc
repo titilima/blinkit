@@ -15,24 +15,24 @@
 
 #include "third_party/blink/renderer/platform/text/character.h"
 
-#if 0 // BKTODO:
 #include <unicode/uvernum.h>
 #include "third_party/blink/renderer/platform/text/icu_error.h"
-#include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
+// BKTODO: #include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
 
 #if defined(USING_SYSTEM_ICU) || (U_ICU_VERSION_MAJOR_NUM <= 61)
 #include <unicode/uniset.h>
 
+#if 0 // BKTODO:
 namespace {
 Mutex& GetFreezePatternMutex() {
   DEFINE_THREAD_SAFE_STATIC_LOCAL(Mutex, mutex, ());
   return mutex;
 }
 }  // namespace
+#endif
 
 #else
 #include <unicode/uchar.h>
-#endif
 #endif
 
 namespace blink {
@@ -217,10 +217,9 @@ static const char kEmojiModifierBasePattern[] =
     R"([\U0001F933-\U0001F939][\U0001F93D-\U0001F93E][\U0001F9B5-\U0001F9B6])"
     R"([\U0001F9B8-\U0001F9B9][\U0001F9D1-\U0001F9DD]])";
 
-#if 0 // BKTODO:
 static void applyPatternAndFreezeIfEmpty(icu::UnicodeSet* unicodeSet,
                                          const char* pattern) {
-  MutexLocker mutexLocker(GetFreezePatternMutex());
+  // BKTODO: MutexLocker mutexLocker(GetFreezePatternMutex());
   if (!unicodeSet->isEmpty())
     return;
   ICUError err;
@@ -229,7 +228,6 @@ static void applyPatternAndFreezeIfEmpty(icu::UnicodeSet* unicodeSet,
   unicodeSet->freeze();
   DCHECK_EQ(err, U_ZERO_ERROR);
 }
-#endif
 
 bool Character::IsEmoji(UChar32 ch) {
   return Character::IsEmojiTextDefault(ch) ||
@@ -237,34 +235,25 @@ bool Character::IsEmoji(UChar32 ch) {
 }
 
 bool Character::IsEmojiTextDefault(UChar32 ch) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
-  DEFINE_THREAD_SAFE_STATIC_LOCAL(icu::UnicodeSet, emojiTextSet, ());
+  ASSERT(IsMainThread());
+  static icu::UnicodeSet emojiTextSet;
   applyPatternAndFreezeIfEmpty(&emojiTextSet, kEmojiTextPattern);
   return emojiTextSet.contains(ch) && !IsEmojiEmojiDefault(ch);
-#endif
 }
 
 bool Character::IsEmojiEmojiDefault(UChar32 ch) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
-  DEFINE_THREAD_SAFE_STATIC_LOCAL(icu::UnicodeSet, emojiEmojiSet, ());
+  ASSERT(IsMainThread());
+  static icu::UnicodeSet emojiEmojiSet;
   applyPatternAndFreezeIfEmpty(&emojiEmojiSet, kEmojiEmojiPattern);
   return emojiEmojiSet.contains(ch);
-#endif
 }
 
 bool Character::IsEmojiModifierBase(UChar32 ch) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
-  DEFINE_THREAD_SAFE_STATIC_LOCAL(icu::UnicodeSet, emojieModifierBaseSet, ());
+  ASSERT(IsMainThread());
+  static icu::UnicodeSet emojieModifierBaseSet;
   applyPatternAndFreezeIfEmpty(&emojieModifierBaseSet,
                                kEmojiModifierBasePattern);
   return emojieModifierBaseSet.contains(ch);
-#endif
 }
 #else
 bool Character::IsEmoji(UChar32 ch) {

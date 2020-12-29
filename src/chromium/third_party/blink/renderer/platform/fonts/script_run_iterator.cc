@@ -16,7 +16,7 @@
 #include "third_party/blink/renderer/platform/fonts/script_run_iterator.h"
 
 #include <algorithm>
-// BKTODO:#include "third_party/blink/renderer/platform/text/icu_error.h"
+#include "third_party/blink/renderer/platform/text/icu_error.h"
 #include "third_party/blink/renderer/platform/wtf/threading.h"
 
 namespace blink {
@@ -29,8 +29,6 @@ constexpr int ScriptData::kMaxScriptCount;
 ScriptData::~ScriptData() = default;
 
 void ICUScriptData::GetScripts(UChar32 ch, UScriptCodeList& dst) const {
-  ASSERT(false); // BKTODO:
-#if 0
   ICUError status;
   // Leave room to insert primary script. It's not strictly necessary but
   // it ensures that the result won't ever be greater than kMaxScriptCount,
@@ -43,16 +41,14 @@ void ICUScriptData::GetScripts(UChar32 ch, UScriptCodeList& dst) const {
   int count = uscript_getScriptExtensions(ch, &dst[0], dst.size(), &status);
   if (status == U_BUFFER_OVERFLOW_ERROR) {
     // Allow this, we'll just use what we have.
-    DLOG(ERROR) << "Exceeded maximum script count of " << kMaxScriptCount
-                << " for 0x" << std::hex << ch;
+    BKLOG("ERROR: Exceeded maximum script count of %d for 0x%x", kMaxScriptCount, ch);
     count = dst.size();
     status = U_ZERO_ERROR;
   }
   UScriptCode primary_script = uscript_getScript(ch, &status);
 
   if (U_FAILURE(status)) {
-    DLOG(ERROR) << "Could not get icu script data: " << status << " for 0x"
-                << std::hex << ch;
+    BKLOG("ERROR: Could not get icu script data: %d for 0x%x", static_cast<UErrorCode>(status), ch);
     dst.clear();
     return;
   }
@@ -110,7 +106,6 @@ void ICUScriptData::GetScripts(UChar32 ch, UScriptCodeList& dst) const {
       std::swap(dst.at(1), dst.at(i));
     }
   }
-#endif
 }
 
 UChar32 ICUScriptData::GetPairedBracket(UChar32 ch) const {
@@ -122,12 +117,8 @@ UChar32 ICUScriptData::GetPairedBracket(UChar32 ch) const {
 }
 
 PairedBracketType ICUScriptData::GetPairedBracketType(UChar32 ch) const {
-  ASSERT(false); // BKTODO:
-  return ScriptData::kBracketTypeNone;
-#if 0
   return static_cast<PairedBracketType>(
       u_getIntPropertyValue(ch, UCHAR_BIDI_PAIRED_BRACKET_TYPE));
-#endif
 }
 
 const ICUScriptData* ICUScriptData::Instance() {

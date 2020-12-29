@@ -44,7 +44,7 @@
 #include <unicode/uobject.h>
 #include <unicode/uscript.h>
 #include <algorithm>
-// BKTODO: #include "third_party/blink/renderer/platform/text/icu_error.h"
+#include "third_party/blink/renderer/platform/text/icu_error.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
@@ -331,16 +331,12 @@ bool Character::IsNonCharacter(UChar32 character) {
 }
 
 bool Character::HasDefiniteScript(UChar32 character) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   ICUError err;
   UScriptCode hint_char_script = uscript_getScript(character, &err);
   if (!U_SUCCESS(err))
     return false;
   return hint_char_script != USCRIPT_INHERITED &&
          hint_char_script != USCRIPT_COMMON;
-#endif
 }
 
 }  // namespace blink

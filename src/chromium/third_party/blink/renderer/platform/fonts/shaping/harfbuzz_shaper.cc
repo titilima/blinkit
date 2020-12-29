@@ -199,11 +199,7 @@ static inline hb_script_t ICUScriptToHBScript(UScriptCode script) {
   if (UNLIKELY(script == USCRIPT_INVALID_CODE))
     return HB_SCRIPT_INVALID;
 
-  ASSERT(false); // BKTODO:
-  return HB_SCRIPT_INVALID;
-#if 0
   return hb_script_from_string(uscript_getShortName(script), -1);
-#endif
 }
 
 void RoundHarfBuzzPosition(hb_position_t* value) {

@@ -3668,9 +3668,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\win\font_cache_skia_win.cc">
       <Filter>renderer\platform\fonts\win</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_break_iterator_impl.cpp">
-      <Filter>renderer\platform\text</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\win\hyphenation_win.cc">
       <Filter>renderer\platform\text\win</Filter>
     </ClCompile>
@@ -5305,6 +5302,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\opentype\open_type_caps_support_mpl.cc">
       <Filter>renderer\platform\fonts\opentype</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_break_iterator_icu.cc">
+      <Filter>renderer\platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\icu_error.cc">
+      <Filter>renderer\platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_break_iterator_internal_icu.cc">
+      <Filter>renderer\platform\text</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -11832,6 +11838,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\opentype\open_type_types.h">
       <Filter>renderer\platform\fonts\opentype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\icu_error.h">
+      <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_break_iterator_internal_icu.h">
+      <Filter>renderer\platform\text</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
