@@ -22,6 +22,7 @@
 #   define _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING
 #   define NOMINMAX
 #   define WIN32_LEAN_AND_MEAN
+#   define U_STATIC_IMPLEMENTATION
 #   define UCHAR_TYPE   wchar_t
 #endif
 

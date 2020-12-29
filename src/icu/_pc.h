@@ -17,7 +17,7 @@
 #include "chromium/build/build_config.h"
 
 #if OS_WIN
-#   pragma warning(disable: 4819)
+#   pragma warning(disable: 4244 4819)
 #   define _CRT_SECURE_NO_WARNINGS
 #   define U_COMMON_IMPLEMENTATION
 #   define U_STATIC_IMPLEMENTATION
