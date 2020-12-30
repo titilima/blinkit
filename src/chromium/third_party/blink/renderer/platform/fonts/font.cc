@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: font.cc
-// Description: Font Class
-//      Author: Ziming Li
-//     Created: 2020-10-09
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -42,9 +31,9 @@
 #include "third_party/blink/renderer/platform/fonts/font_fallback_iterator.h"
 #include "third_party/blink/renderer/platform/fonts/font_fallback_list.h"
 #include "third_party/blink/renderer/platform/fonts/ng_text_fragment_paint_info.h"
-// BKTODO: #include "third_party/blink/renderer/platform/fonts/paint_text_blob.h"
+#include "third_party/blink/renderer/platform/fonts/paint_text_blob.h"
 #include "third_party/blink/renderer/platform/fonts/shaping/caching_word_shaper.h"
-// BKTODO: #include "third_party/blink/renderer/platform/fonts/shaping/shape_result_bloberizer.h"
+#include "third_party/blink/renderer/platform/fonts/shaping/shape_result_bloberizer.h"
 #include "third_party/blink/renderer/platform/fonts/simple_font_data.h"
 #include "third_party/blink/renderer/platform/fonts/text_run_paint_info.h"
 #include "third_party/blink/renderer/platform/geometry/float_rect.h"
@@ -117,7 +106,6 @@ void Font::Update(FontSelector* font_selector) const {
 
 namespace {
 
-#if 0 // BKTODO:
 void DrawBlobs(cc::PaintCanvas* canvas,
                const cc::PaintFlags& flags,
                const ShapeResultBloberizer::BlobBuffer& blobs,
@@ -136,7 +124,6 @@ void DrawBlobs(cc::PaintCanvas* canvas,
     canvas->drawTextBlob(blob_info.blob, point.X(), point.Y(), flags);
   }
 }
-#endif
 
 }  // anonymous ns
 
@@ -150,15 +137,12 @@ void Font::DrawText(cc::PaintCanvas* canvas,
   if (ShouldSkipDrawing())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   ShapeResultBloberizer bloberizer(*this, device_scale_factor);
   CachingWordShaper word_shaper(*this);
   ShapeResultBuffer buffer;
   word_shaper.FillResultBuffer(run_info, &buffer);
   bloberizer.FillGlyphs(run_info, buffer);
   DrawBlobs(canvas, flags, bloberizer.Blobs(), point);
-#endif
 }
 
 void Font::DrawText(cc::PaintCanvas* canvas,
@@ -171,13 +155,10 @@ void Font::DrawText(cc::PaintCanvas* canvas,
   if (ShouldSkipDrawing())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   ShapeResultBloberizer bloberizer(*this, device_scale_factor);
   bloberizer.FillGlyphs(text_info.text, text_info.from, text_info.to,
                         text_info.shape_result);
   DrawBlobs(canvas, flags, bloberizer.Blobs(), point);
-#endif
 }
 
 bool Font::DrawBidiText(cc::PaintCanvas* canvas,
@@ -222,8 +203,6 @@ bool Font::DrawBidiText(cc::PaintCanvas* canvas,
     TextRunPaintInfo subrun_info(subrun);
     subrun_info.bounds = run_info.bounds;
 
-    ASSERT(false); // BKTODO:
-#if 0
     ShapeResultBloberizer bloberizer(*this, device_scale_factor);
     ShapeResultBuffer buffer;
     word_shaper.FillResultBuffer(subrun_info, &buffer);
@@ -232,7 +211,6 @@ bool Font::DrawBidiText(cc::PaintCanvas* canvas,
 
     bidi_run = bidi_run->Next();
     curr_point.Move(run_width, 0);
-#endif
   }
 
   bidi_runs.DeleteRuns();
@@ -254,15 +232,12 @@ void Font::DrawEmphasisMarks(cc::PaintCanvas* canvas,
   if (!emphasis_glyph_data.font_data)
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   ShapeResultBloberizer bloberizer(*this, device_scale_factor);
   CachingWordShaper word_shaper(*this);
   ShapeResultBuffer buffer;
   word_shaper.FillResultBuffer(run_info, &buffer);
   bloberizer.FillTextEmphasisGlyphs(run_info, emphasis_glyph_data, buffer);
   DrawBlobs(canvas, flags, bloberizer.Blobs(), point);
-#endif
 }
 
 void Font::DrawEmphasisMarks(cc::PaintCanvas* canvas,
@@ -279,14 +254,11 @@ void Font::DrawEmphasisMarks(cc::PaintCanvas* canvas,
   if (!emphasis_glyph_data.font_data)
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   ShapeResultBloberizer bloberizer(*this, device_scale_factor);
   bloberizer.FillTextEmphasisGlyphs(text_info.text, text_info.from,
                                     text_info.to, emphasis_glyph_data,
                                     text_info.shape_result);
   DrawBlobs(canvas, flags, bloberizer.Blobs(), point);
-#endif
 }
 
 float Font::Width(const TextRun& run,
@@ -299,7 +271,6 @@ float Font::Width(const TextRun& run,
 
 namespace {  // anonymous namespace
 
-#if 0 // BKTODO:
 unsigned InterceptsFromBlobs(const ShapeResultBloberizer::BlobBuffer& blobs,
                              const SkPaint& paint,
                              const std::tuple<float, float>& bounds,
@@ -344,7 +315,6 @@ void GetTextInterceptsInternal(const ShapeResultBloberizer::BlobBuffer& blobs,
   InterceptsFromBlobs(blobs, paint, bounds,
                       reinterpret_cast<SkScalar*>(intercepts.data()));
 }
-#endif
 
 }  // anonymous namespace
 
@@ -356,8 +326,6 @@ void Font::GetTextIntercepts(const TextRunPaintInfo& run_info,
   if (ShouldSkipDrawing())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   ShapeResultBloberizer bloberizer(
       *this, device_scale_factor, ShapeResultBloberizer::Type::kTextIntercepts);
   CachingWordShaper word_shaper(*this);
@@ -366,7 +334,6 @@ void Font::GetTextIntercepts(const TextRunPaintInfo& run_info,
   bloberizer.FillGlyphs(run_info, buffer);
 
   GetTextInterceptsInternal(bloberizer.Blobs(), flags, bounds, intercepts);
-#endif
 }
 
 void Font::GetTextIntercepts(const NGTextFragmentPaintInfo& text_info,
@@ -377,15 +344,12 @@ void Font::GetTextIntercepts(const NGTextFragmentPaintInfo& text_info,
   if (ShouldSkipDrawing())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   ShapeResultBloberizer bloberizer(
       *this, device_scale_factor, ShapeResultBloberizer::Type::kTextIntercepts);
   bloberizer.FillGlyphs(text_info.text, text_info.from, text_info.to,
                         text_info.shape_result);
 
   GetTextInterceptsInternal(bloberizer.Blobs(), flags, bounds, intercepts);
-#endif
 }
 
 static inline FloatRect PixelSnappedSelectionRect(FloatRect rect) {
@@ -430,11 +394,7 @@ int Font::OffsetForPosition(const TextRun& run,
 }
 
 ShapeCache* Font::GetShapeCache() const {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return font_fallback_list_->GetShapeCache(font_description_);
-#endif
 }
 
 bool Font::CanShapeWordByWord() const {
