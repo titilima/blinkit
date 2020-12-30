@@ -283,16 +283,16 @@ void InlineTextBoxPainter::Paint(const PaintInfo& paint_info,
   int ascent = font_data ? font_data->GetFontMetrics().Ascent() : 0;
   LayoutPoint text_origin(box_origin.X(), box_origin.Y() + ascent);
 
-  ASSERT(false); // BKTODO:
-#if 0
-  const DocumentMarkerVector& markers_to_paint = ComputeMarkersToPaint();
+  // BKTODO: const DocumentMarkerVector& markers_to_paint = ComputeMarkersToPaint();
 
   // 1. Paint backgrounds behind text if needed. Examples of such backgrounds
   // include selection and composition highlights.
   if (paint_info.phase != PaintPhase::kSelection &&
       paint_info.phase != PaintPhase::kTextClip && !is_printing) {
+#if 0 // BKTODO: Check the logic
     PaintDocumentMarkers(markers_to_paint, paint_info, box_origin, style_to_use,
                          font, DocumentMarkerPaintPhase::kBackground);
+#endif
     if (have_selection) {
       if (combined_text)
         PaintSelection<InlineTextBoxPainter::PaintOptions::kCombinedText>(
@@ -303,7 +303,6 @@ void InlineTextBoxPainter::Paint(const PaintInfo& paint_info,
             context, box_rect, style_to_use, font, selection_style.fill_color);
     }
   }
-#endif
 
   // 2. Now paint the foreground, including text and decorations.
   int selection_start = 0;
@@ -429,8 +428,7 @@ void InlineTextBoxPainter::Paint(const PaintInfo& paint_info,
   }
 
   if (paint_info.phase == PaintPhase::kForeground) {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check the logic
     PaintDocumentMarkers(markers_to_paint, paint_info, box_origin, style_to_use,
                          font, DocumentMarkerPaintPhase::kForeground);
 #endif

@@ -340,13 +340,12 @@ RootInlineBox* LayoutBlockFlow::ConstructLine(BidiRunList<BidiRun>& bidi_runs,
 
     box->SetBidiLevel(r->Level());
 
+#if 0 // BKTODO: Check if necessary.
     if (box->IsInlineTextBox()) {
-      ASSERT(false); // BKTODO:
-#if 0
       if (AXObjectCache* cache = GetDocument().ExistingAXObjectCache())
         cache->InlineTextBoxesUpdated(r->line_layout_item_);
-#endif
     }
+#endif
   }
 
   // We should have a root inline box.  It should be unconstructed and
@@ -967,8 +966,7 @@ RootInlineBox* LayoutBlockFlow::CreateLineBoxesFromBidiRuns(
                                         text_box_data_map,
                                         vertical_position_cache);
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   // SVG text layout code computes vertical & horizontal positions on its own.
   // Note that we still need to execute computeVerticalPositionsForLine() as
   // it calls InlineTextBox::positionLineBox(), which tracks whether the box

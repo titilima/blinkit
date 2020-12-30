@@ -481,11 +481,11 @@ bool ComputedStyle::IndependentInheritedEqual(
 
 bool ComputedStyle::NonIndependentInheritedEqual(
     const ComputedStyle& other) const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
+#if 0 // BKTODO: Cleanup.
   return ComputedStyleBase::NonIndependentInheritedEqual(other) &&
          svg_style_->InheritedEqual(*other.svg_style_);
+#else
+  return ComputedStyleBase::NonIndependentInheritedEqual(other);
 #endif
 }
 

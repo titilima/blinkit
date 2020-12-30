@@ -431,9 +431,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_position.cc">
       <Filter>renderer\platform\wtf\text</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\unicode_win.cpp">
-      <Filter>renderer\platform\wtf\text</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\utf8.cc">
       <Filter>renderer\platform\wtf\text</Filter>
     </ClCompile>
@@ -5311,6 +5308,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_break_iterator_internal_icu.cc">
       <Filter>renderer\platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\unicode_icu.cpp">
+      <Filter>renderer\platform\wtf\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result_bloberizer.cc">
+      <Filter>renderer\platform\fonts\shaping</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -11844,6 +11847,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_break_iterator_internal_icu.h">
       <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result_bloberizer.h">
+      <Filter>renderer\platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\paint_text_blob.h">
+      <Filter>renderer\platform\fonts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

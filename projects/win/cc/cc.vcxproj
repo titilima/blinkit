@@ -167,6 +167,7 @@
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_recorder.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_shader.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_text_blob.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_text_blob_builder.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\record_paint_canvas.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\scoped_raster_flags.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\skia_paint_canvas.cc" />
@@ -202,6 +203,7 @@
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_recorder.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_shader.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_text_blob.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_text_blob_builder.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\record_paint_canvas.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\scoped_raster_flags.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\skia_paint_canvas.h" />

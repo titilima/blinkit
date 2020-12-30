@@ -77,6 +77,9 @@
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_text_blob.cc">
       <Filter>paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_text_blob_builder.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\cc\_pc.h">
@@ -167,6 +170,9 @@
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_text_blob.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_text_blob_builder.h">
       <Filter>paint</Filter>
     </ClInclude>
   </ItemGroup>

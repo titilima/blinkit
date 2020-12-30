@@ -90,19 +90,11 @@ void InlineBox::Remove(MarkLineBoxes mark_line_boxes) {
 }
 
 void* InlineBox::operator new(size_t sz) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
-  return WTF::Partitions::LayoutPartition()->Alloc(
-      sz, WTF_HEAP_PROFILER_TYPE_NAME(InlineBox));
-#endif
+  return malloc(sz);
 }
 
 void InlineBox::operator delete(void* ptr) {
-  ASSERT(false); // BKTODO:
-#if 0
-  base::PartitionFree(ptr);
-#endif
+  free(ptr);
 }
 
 const char* InlineBox::BoxName() const {

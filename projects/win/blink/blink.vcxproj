@@ -1619,6 +1619,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\run_segmenter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_cache.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result_bloberizer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result_buffer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result_spacing.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\simple_font_data.cc" />
@@ -1816,7 +1817,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_encoding_registry.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_position.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_stream.cc" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\unicode_win.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\unicode_icu.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\utf8.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\wtf_string.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\threading.cc" />
@@ -3651,6 +3652,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\opentype\open_type_vertical_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\orientation_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\paint_font.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\paint_text_blob.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\script_run_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\segmented_font_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\caching_word_shaper.h" />
@@ -3662,6 +3664,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\run_segmenter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_cache.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result_bloberizer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result_buffer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result_inline_headers.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result_spacing.h" />

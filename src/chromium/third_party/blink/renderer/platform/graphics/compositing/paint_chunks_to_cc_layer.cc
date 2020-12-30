@@ -419,8 +419,6 @@ void ConversionContext::StartClip(
   cc_list_.push<cc::SaveOp>();
   ApplyTransform(local_transform);
   const bool antialias = true;
-  ASSERT(false); // BKTODO:
-#if 0
   if (combined_clip_rect.IsRounded()) {
     cc_list_.push<cc::ClipRRectOp>(combined_clip_rect, SkClipOp::kIntersect,
                                    antialias);
@@ -433,7 +431,6 @@ void ConversionContext::StartClip(
         lowest_combined_clip_node->ClipPath()->GetSkPath(),
         SkClipOp::kIntersect, antialias);
   }
-#endif
   cc_list_.EndPaintOfPairedBegin();
 
   PushState(StateEntry::kClip, 1);
@@ -530,14 +527,11 @@ void ConversionContext::StartEffect(const EffectPaintPropertyNode* effect) {
       flags.setAlpha(alpha);
       flags.setColorFilter(GraphicsContext::WebCoreColorFilterToSkiaColorFilter(
           effect->GetColorFilter()));
-      ASSERT(false); // BKTODO: save_layer_id = cc_list_.push<cc::SaveLayerOp>(nullptr, &flags);
+      save_layer_id = cc_list_.push<cc::SaveLayerOp>(nullptr, &flags);
     } else {
       constexpr bool preserve_lcd_text_requests = false;
-      ASSERT(false); // BKTODO:
-#if 0
       save_layer_id = cc_list_.push<cc::SaveLayerAlphaOp>(
           nullptr, alpha, preserve_lcd_text_requests);
-#endif
     }
     saved_count++;
   } else {

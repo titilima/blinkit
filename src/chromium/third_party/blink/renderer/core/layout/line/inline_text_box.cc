@@ -175,9 +175,6 @@ LayoutUnit InlineTextBox::VerticalPosition(
 
 // Compute if selection includes end of the InlineTextBox.
 bool InlineTextBox::IsBoxEndIncludedInSelection() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   const LayoutTextSelectionStatus& status =
       GetLineLayoutItem().SelectionStatus();
   if (status.IsEmpty())
@@ -191,19 +188,15 @@ bool InlineTextBox::IsBoxEndIncludedInSelection() const {
     return true;
   // status.end == box_end
   return status.include_end == SelectionIncludeEnd::kInclude;
-#endif
 }
 
 bool InlineTextBox::IsSelected() const {
-  ASSERT(false); // BKTODO:
-#if 0
   const LayoutTextSelectionStatus& status =
       GetLineLayoutItem().SelectionStatus();
   if (status.IsEmpty())
     return false;
   if (Start() < status.end && status.start < Start() + Len())
     return true;
-#endif
   return IsBoxEndIncludedInSelection();
 }
 
@@ -522,13 +515,10 @@ void InlineTextBox::Paint(const PaintInfo& paint_info,
 }
 
 void InlineTextBox::SelectionStartEnd(int& s_pos, int& e_pos) const {
-  ASSERT(false); // BKTODO:
-#if 0
   const LayoutTextSelectionStatus& status =
       GetLineLayoutItem().SelectionStatus();
   s_pos = std::max(static_cast<int>(status.start) - start_, 0);
   e_pos = std::min(static_cast<int>(status.end) - start_, (int)len_);
-#endif
 }
 
 void InlineTextBox::PaintDocumentMarker(GraphicsContext& pt,
