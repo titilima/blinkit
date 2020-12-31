@@ -11,29 +11,27 @@
 
 #include "file_loader_task.h"
 
-#include "sdk/include/BlinKit.h"
+#include "base/strings/sys_string_conversions.h"
 
 using namespace blink;
 
 namespace BlinKit {
 
-int FileLoaderTask::LoadFileData(const KURL &URI, std::vector<unsigned char> &dst)
+int FileLoaderTask::LoadFileData(const GURL &URI, std::string &dst)
 {
-    String host = URI.host(), path = URI.path();
-    path.ensure16Bit();
+    std::string host = URI.host();
+    std::string path = URI.path();
 
     std::wstring filePath;
-    if (!host.isEmpty())
+    if (!host.empty())
     {
-        host.ensure16Bit();
-
         filePath.assign(L"//");
-        filePath.append(host.characters16(), host.length());
-        filePath.append(path.characters16(), path.length());
+        filePath.append(base::SysUTF8ToWide(host));
+        filePath.append(base::SysUTF8ToWide(path));
     }
     else
     {
-        filePath.assign(path.characters16() + 1, path.length() - 1);
+        filePath = base::SysUTF8ToWide(std::string_view(path.data() + 1, path.length() - 1));
     }
     std::replace(filePath.begin(), filePath.end(), L'/', L'\\');
 
@@ -41,14 +39,16 @@ int FileLoaderTask::LoadFileData(const KURL &URI, std::vector<unsigned char> &ds
     if (INVALID_HANDLE_VALUE == hFile)
     {
         DWORD lastError = GetLastError();
-        assert(INVALID_HANDLE_VALUE != hFile);
+        ASSERT(INVALID_HANDLE_VALUE != hFile);
 
         switch (lastError)
         {
             case ERROR_FILE_NOT_FOUND:
-                return BkError::NotFound;
+                return BK_ERR_NOT_FOUND;
+            case ERROR_ACCESS_DENIED:
+                return BK_ERR_FORBIDDEN;
             default:
-                return BkError::UnknownError;
+                return BK_ERR_UNKNOWN;
         }
     }
 
@@ -56,10 +56,10 @@ int FileLoaderTask::LoadFileData(const KURL &URI, std::vector<unsigned char> &ds
     dst.resize(size);
     ReadFile(hFile, dst.data(), dst.size(), &size, nullptr);
 
-    assert(dst.size() == size);
+    ASSERT(dst.size() == size);
 
     CloseHandle(hFile);
-    return BkError::Success;
+    return BK_ERR_SUCCESS;
 }
 
 } // namespace BlinKit

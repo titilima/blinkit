@@ -14,19 +14,21 @@
 
 #pragma once
 
-#include "loader_task.h"
+#include "blinkit/loader/loader_task.h"
 
 namespace BlinKit {
 
-class FileLoaderTask final : public LoaderTask
+class FileLoaderTask final : public LoaderTaskForUI
 {
 public:
-    FileLoaderTask(const blink::KURL &URI, blink::WebURLLoaderClient *client);
+    FileLoaderTask(const blink::ResourceRequest &request, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
 private:
-    static int LoadFileData(const blink::KURL &URI, std::vector<unsigned char> &dst);
+    static int LoadFileData(const GURL &URI, std::string &dst);
 
-    // blink::WebTaskRunner::Task
-    void run(void) override;
+    int PerformRequest(void) override;
+    int PopulateResponse(blink::ResourceResponse &resourceResponse, std::string_view &body) const override;
+
+    int m_statusCode = 200;
 };
 
 } // namespace BlinKit

@@ -17,6 +17,7 @@
 #include "blinkit/loader/tasks/http_loader_task.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "blinkit/loader/tasks/file_loader_task.h"
 #   include "blinkit/loader/tasks/res_loader_task.h"
 #endif
 
@@ -47,6 +48,14 @@ void URLLoaderImpl::LoadAsynchronously(const ResourceRequest &request, WebURLLoa
         }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+        if (request.ForCrawler())
+            break;
+
+        if (url.SchemeIsFile())
+        {
+            task = new FileLoaderTask(request, m_taskRunner, client);
+            break;
+        }
         if (url.SchemeIs("res"))
         {
             task = new ResLoaderTask(request, m_taskRunner, client);

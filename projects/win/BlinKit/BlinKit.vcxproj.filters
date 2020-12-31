@@ -153,6 +153,12 @@
     <ClCompile Include="..\..\..\src\blinkit\win\dib_section.cpp">
       <Filter>win</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader\tasks\file_loader_task.cpp">
+      <Filter>loader\tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader\tasks\file_loader_task_win.cpp">
+      <Filter>loader\tasks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -283,6 +289,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\dib_section.h">
       <Filter>win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader\tasks\file_loader_task.h">
+      <Filter>loader\tasks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
