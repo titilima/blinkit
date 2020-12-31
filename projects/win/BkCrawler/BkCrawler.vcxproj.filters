@@ -37,6 +37,12 @@
     <Filter Include="gc">
       <UniqueIdentifier>{175564ad-a6a9-42ec-bb4c-1f3b29033f7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="stub">
+      <UniqueIdentifier>{c4ec670b-b1b4-4453-9006-d866c765e7fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="stub\icu">
+      <UniqueIdentifier>{124a9360-1f41-4014-a036-b26fbda740e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\bk_app.h">
@@ -150,6 +156,9 @@
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_static.h">
       <Filter>gc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\stub\icu\char_type.h">
+      <Filter>stub\icu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
@@ -243,6 +252,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_visitor.cpp">
       <Filter>gc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\stub\icu\char_type.cpp">
+      <Filter>stub\icu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

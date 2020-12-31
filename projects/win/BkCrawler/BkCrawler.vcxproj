@@ -201,6 +201,7 @@
     <ClInclude Include="..\..\..\src\blinkit\loader\loader_thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\http_loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\win_loader_thread.h" />
+    <ClInclude Include="..\..\..\src\blinkit\stub\icu\char_type.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -240,6 +241,7 @@
     <ClCompile Include="..\..\..\src\blinkit\loader\loader_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\tasks\http_loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\win_loader_thread.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\stub\icu\char_type.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\base\base.vcxproj">
@@ -256,9 +258,6 @@
     </ProjectReference>
     <ProjectReference Include="..\duktape\duktape.vcxproj">
       <Project>{c8a7568b-b29b-430c-99a1-e43120933154}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\icu\icu.vcxproj">
-      <Project>{289190e9-30a8-4f11-befb-1d2026419b77}</Project>
     </ProjectReference>
     <ProjectReference Include="..\net\net.vcxproj">
       <Project>{103e87cb-36eb-49c3-adfc-6c036aa14b21}</Project>

@@ -78,6 +78,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding_registry.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifdef BLINKIT_CRAWLER_ONLY
+#   include "blinkit/stub/icu/char_type.h"
 #   include "third_party/blink/renderer/platform/wtf/text/character_names.h"
 #else
 #   include "third_party/blink/renderer/core/animation/document_animations.h"
@@ -163,10 +164,15 @@ static inline bool IsValidNameStart(UChar32 c)
         return true;
 
     // rules (a) and (f) above
+#ifdef BLINKIT_CRAWLER_ONLY
+    if (!base::IsAsciiAlpha(c) && !IsOtherLetter(c) && !IsTitlecaseLetter(c) && !IsNumberLetter(c))
+        return false;
+#else
     const uint32_t kNameStartMask = WTF::Unicode::kLetter_Lowercase | WTF::Unicode::kLetter_Uppercase
         | WTF::Unicode::kLetter_Other | WTF::Unicode::kLetter_Titlecase | WTF::Unicode::kNumber_Letter;
     if (0 == (WTF::Unicode::Category(c) & kNameStartMask))
         return false;
+#endif
 
     // rule (c) above
     if (c >= 0xF900 && c < 0xFFFE)
@@ -195,10 +201,18 @@ static inline bool IsValidNamePart(UChar32 c)
         return true;
 
     // rules (b) and (f) above
+#ifdef BLINKIT_CRAWLER_ONLY
+    if (!IsNonSpacingMark(c) && !IsEnclosingMark(c) && !IsSpacingCombiningMark(c) && !IsModifierLetter(c)
+        && !IsDecimalDigit(c))
+    {
+        return false;
+    }
+#else
     const uint32_t kOtherNamePartMask = WTF::Unicode::kMark_NonSpacing | WTF::Unicode::kMark_Enclosing
         | WTF::Unicode::kMark_SpacingCombining | WTF::Unicode::kLetter_Modifier | WTF::Unicode::kNumber_DecimalDigit;
-    if (!(WTF::Unicode::Category(c) & kOtherNamePartMask))
+    if (0 == (WTF::Unicode::Category(c) & kOtherNamePartMask))
         return false;
+#endif
 
     // rule (c) above
     if (c >= 0xF900 && c < 0xFFFE)
