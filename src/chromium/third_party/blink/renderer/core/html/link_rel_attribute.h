@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: link_rel_attribute.h
+// Description: LinkRelAttribute Class
+//      Author: Ziming Li
+//     Created: 2020-12-31
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -33,7 +44,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_HTML_LINK_REL_ATTRIBUTE_H_
 
 #include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/core/dom/icon_url.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/icon_url.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
@@ -47,7 +58,7 @@ class CORE_EXPORT LinkRelAttribute {
   explicit LinkRelAttribute(const String&);
 
   bool IsStyleSheet() const { return is_style_sheet_; }
-  IconType GetIconType() const { return icon_type_; }
+  // BKTODO: IconType GetIconType() const { return icon_type_; }
   bool IsAlternate() const { return is_alternate_; }
   bool IsDNSPrefetch() const { return is_dns_prefetch_; }
   bool IsPreconnect() const { return is_preconnect_; }
@@ -62,7 +73,7 @@ class CORE_EXPORT LinkRelAttribute {
   bool IsCanonical() const { return is_canonical_; }
 
  private:
-  IconType icon_type_;
+  // BKTODO: IconType icon_type_;
   bool is_style_sheet_ : 1;
   bool is_alternate_ : 1;
   bool is_dns_prefetch_ : 1;

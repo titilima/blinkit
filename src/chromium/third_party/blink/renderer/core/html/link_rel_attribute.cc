@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: link_rel_attribute.CC
+// Description: LinkRelAttribute Class
+//      Author: Ziming Li
+//     Created: 2020-12-31
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -36,7 +47,7 @@
 namespace blink {
 
 LinkRelAttribute::LinkRelAttribute()
-    : icon_type_(kInvalidIcon),
+    : // BKTODO: icon_type_(kInvalidIcon),
       is_style_sheet_(false),
       is_alternate_(false),
       is_dns_prefetch_(false),
@@ -68,12 +79,15 @@ LinkRelAttribute::LinkRelAttribute(const String& rel) : LinkRelAttribute() {
     } else if (DeprecatedEqualIgnoringCase(link_type, "alternate")) {
       is_alternate_ = true;
     } else if (DeprecatedEqualIgnoringCase(link_type, "icon")) {
+      ASSERT(false); // BKTODO:
+#if 0
       // This also allows "shortcut icon" since we just ignore the non-standard
       // "shortcut" token.
       // FIXME: This doesn't really follow the spec that requires "shortcut
       // icon" to be the entire string
       // http://www.whatwg.org/specs/web-apps/current-work/multipage/links.html#rel-icon
       icon_type_ = kFavicon;
+#endif
     } else if (DeprecatedEqualIgnoringCase(link_type, "prefetch")) {
       is_link_prefetch_ = true;
     } else if (DeprecatedEqualIgnoringCase(link_type, "dns-prefetch")) {
@@ -87,15 +101,18 @@ LinkRelAttribute::LinkRelAttribute(const String& rel) : LinkRelAttribute() {
     } else if (DeprecatedEqualIgnoringCase(link_type, "next")) {
       is_link_next_ = true;
     } else if (DeprecatedEqualIgnoringCase(link_type, "apple-touch-icon")) {
-      icon_type_ = kTouchIcon;
+      ASSERT(false); // BKTODO: icon_type_ = kTouchIcon;
     } else if (DeprecatedEqualIgnoringCase(link_type,
                                            "apple-touch-icon-precomposed")) {
-      icon_type_ = kTouchPrecomposedIcon;
+      ASSERT(false); // BKTODO: icon_type_ = kTouchPrecomposedIcon;
     } else if (DeprecatedEqualIgnoringCase(link_type, "manifest")) {
       is_manifest_ = true;
     } else if (DeprecatedEqualIgnoringCase(link_type, "modulepreload")) {
+      ASSERT(false); // BKTODO:
+#if 0
       if (RuntimeEnabledFeatures::ModulePreloadEnabled())
         is_module_preload_ = true;
+#endif
     } else if (DeprecatedEqualIgnoringCase(link_type, "serviceworker")) {
       is_service_worker_ = true;
     } else if (DeprecatedEqualIgnoringCase(link_type, "canonical")) {
