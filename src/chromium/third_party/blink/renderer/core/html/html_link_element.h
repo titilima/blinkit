@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_link_element.h
+// Description: HTMLLinkElement Class
+//      Author: Ziming Li
+//     Created: 2020-12-31
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -28,7 +39,7 @@
 #include "base/single_thread_task_runner.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/create_element_flags.h"
-#include "third_party/blink/renderer/core/dom/dom_token_list.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/dom_token_list.h"
 #include "third_party/blink/renderer/core/dom/increment_load_event_delay_count.h"
 #include "third_party/blink/renderer/core/html/html_element.h"
 #include "third_party/blink/renderer/core/html/link_rel_attribute.h"
@@ -42,7 +53,6 @@
 
 namespace blink {
 
-class KURL;
 class LinkImport;
 struct LinkLoadParameters;
 
@@ -52,20 +62,22 @@ class CORE_EXPORT HTMLLinkElement final : public HTMLElement,
   USING_GARBAGE_COLLECTED_MIXIN(HTMLLinkElement);
 
  public:
-  static HTMLLinkElement* Create(Document&, const CreateElementFlags);
+  static Element* Create(Document&, const CreateElementFlags);
   ~HTMLLinkElement() override;
 
   // Returns attributes that should be checked against Trusted Types
   const HashSet<AtomicString>& GetCheckedAttributeNames() const override;
 
-  KURL Href() const;
+  GURL Href() const;
   const AtomicString& Rel() const;
+#if 0 // BKTODO:
   String Media() const { return media_; }
   String TypeValue() const { return type_; }
   String AsValue() const { return as_; }
   String IntegrityValue() const { return integrity_; }
   String ImportanceValue() const { return importance_; }
-  ReferrerPolicy GetReferrerPolicy() const { return referrer_policy_; }
+#endif
+  // BKTODO: ReferrerPolicy GetReferrerPolicy() const { return referrer_policy_; }
   const LinkRelAttribute& RelAttribute() const { return rel_attribute_; }
   DOMTokenList& relList() const {
     return static_cast<DOMTokenList&>(*rel_list_);
@@ -74,10 +86,12 @@ class CORE_EXPORT HTMLLinkElement final : public HTMLElement,
 
   const AtomicString& GetType() const;
 
+#if 0 // BKTODO:
   IconType GetIconType() const;
 
   // the icon sizes as parsed from the HTML attribute
   const Vector<IntSize>& IconSizes() const;
+#endif
 
   bool Async() const;
 
@@ -155,12 +169,13 @@ class CORE_EXPORT HTMLLinkElement final : public HTMLElement,
   void DidStopLinkPrerender() override;
   void DidSendLoadForLinkPrerender() override;
   void DidSendDOMContentLoadedForLinkPrerender() override;
-  scoped_refptr<base::SingleThreadTaskRunner> GetLoadingTaskRunner() override;
+  std::shared_ptr<base::SingleThreadTaskRunner> GetLoadingTaskRunner() override;
 
   Member<LinkResource> link_;
   Member<LinkLoader> link_loader_;
 
   String type_;
+#if 0 // BKTODO:
   String as_;
   String media_;
   String integrity_;
@@ -168,7 +183,8 @@ class CORE_EXPORT HTMLLinkElement final : public HTMLElement,
   ReferrerPolicy referrer_policy_;
   Member<DOMTokenList> sizes_;
   Vector<IntSize> icon_sizes_;
-  TraceWrapperMember<RelList> rel_list_;
+#endif
+  Member<RelList> rel_list_;
   LinkRelAttribute rel_attribute_;
   String scope_;
 

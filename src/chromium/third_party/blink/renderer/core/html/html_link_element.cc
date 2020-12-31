@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_link_element.cc
+// Description: HTMLLinkElement Class
+//      Author: Ziming Li
+//     Created: 2020-12-31
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -26,23 +37,29 @@
 #include "third_party/blink/renderer/core/html/html_link_element.h"
 
 #include "third_party/blink/public/platform/task_type.h"
-#include "third_party/blink/public/platform/web_icon_sizes_parser.h"
+// BKTODO: #include "third_party/blink/public/platform/web_icon_sizes_parser.h"
 #include "third_party/blink/public/platform/web_size.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/bindings/core/v8/script_event_listener.h"
 #include "third_party/blink/renderer/core/core_initializer.h"
+#endif
 #include "third_party/blink/renderer/core/dom/attribute.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/frame/deprecation.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/cross_origin_attribute.h"
 #include "third_party/blink/renderer/core/html/imports/link_import.h"
 #include "third_party/blink/renderer/core/html/link_manifest.h"
+#endif
 #include "third_party/blink/renderer/core/html_names.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/inspector/console_message.h"
 #include "third_party/blink/renderer/core/loader/network_hints_interface.h"
 #include "third_party/blink/renderer/core/origin_trials/origin_trials.h"
+#endif
 #include "third_party/blink/renderer/platform/weborigin/security_policy.h"
 
 namespace blink {
@@ -53,13 +70,15 @@ inline HTMLLinkElement::HTMLLinkElement(Document& document,
                                         const CreateElementFlags flags)
     : HTMLElement(linkTag, document),
       link_loader_(LinkLoader::Create(this)),
+#if 0 // BKTODO:
       referrer_policy_(kReferrerPolicyDefault),
       sizes_(DOMTokenList::Create(*this, HTMLNames::sizesAttr)),
+#endif
       rel_list_(RelList::Create(this)),
       created_by_parser_(flags.IsCreatedByParser()) {}
 
-HTMLLinkElement* HTMLLinkElement::Create(Document& document,
-                                         const CreateElementFlags flags) {
+Element* HTMLLinkElement::Create(Document& document,
+                                 const CreateElementFlags flags) {
   return new HTMLLinkElement(document, flags);
 }
 
@@ -76,18 +95,22 @@ void HTMLLinkElement::ParseAttribute(
   const AtomicString& value = params.new_value;
   if (name == relAttr) {
     rel_attribute_ = LinkRelAttribute(value);
+    ASSERT(false); // BKTODO:
+#if 0
     if (rel_attribute_.IsImport()) {
       Deprecation::CountDeprecation(GetDocument(), WebFeature::kHTMLImports);
     }
+#endif
     rel_list_->DidUpdateAttributeValue(params.old_value, value);
     Process();
   } else if (name == hrefAttr) {
     // Log href attribute before logging resource fetching in process().
-    LogUpdateAttributeIfIsolatedWorldAndInDocument("link", params);
+    ASSERT(false); // BKTODO: LogUpdateAttributeIfIsolatedWorldAndInDocument("link", params);
     Process();
   } else if (name == typeAttr) {
     type_ = value;
     Process();
+#if 0 // BKTODO:
   } else if (name == asAttr) {
     as_ = value;
     Process();
@@ -109,20 +132,26 @@ void HTMLLinkElement::ParseAttribute(
   } else if (name == mediaAttr) {
     media_ = value.DeprecatedLower();
     Process();
+#endif
   } else if (name == scopeAttr) {
     scope_ = value;
     Process();
+#if 0 // BKTODO:
   } else if (name == integrityAttr) {
     integrity_ = value;
   } else if (name == importanceAttr &&
              RuntimeEnabledFeatures::PriorityHintsEnabled()) {
     importance_ = value;
+#endif
   } else if (name == disabledAttr) {
+    ASSERT(false); // BKTODO:
+#if 0
     UseCounter::Count(GetDocument(), WebFeature::kHTMLLinkElementDisabled);
     if (params.reason == AttributeModificationReason::kByParser)
       UseCounter::Count(GetDocument(), WebFeature::kHTMLLinkElementDisabledByParser);
     if (LinkStyle* link = GetLinkStyle())
       link->SetDisabledState(!value.IsNull());
+#endif
   } else {
     if (name == titleAttr) {
       if (LinkStyle* link = GetLinkStyle())
@@ -134,10 +163,14 @@ void HTMLLinkElement::ParseAttribute(
 }
 
 bool HTMLLinkElement::ShouldLoadLink() {
-  const KURL& href = GetNonEmptyURLAttribute(hrefAttr);
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
+  const GURL& href = GetNonEmptyURLAttribute(hrefAttr);
   return (IsInDocumentTree() ||
           (isConnected() && rel_attribute_.IsStyleSheet())) &&
          !href.PotentiallyDanglingMarkup();
+#endif
 }
 
 bool HTMLLinkElement::IsLinkCreatedByParser() {
@@ -145,8 +178,12 @@ bool HTMLLinkElement::IsLinkCreatedByParser() {
 }
 
 bool HTMLLinkElement::LoadLink(const LinkLoadParameters& params) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return link_loader_->LoadLink(params, GetDocument(),
                                 NetworkHintsInterfaceImpl());
+#endif
 }
 
 void HTMLLinkElement::LoadStylesheet(const LinkLoadParameters& params,
@@ -170,6 +207,8 @@ LinkResource* HTMLLinkElement::LinkResourceToProcess() {
   }
 
   if (!link_) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (rel_attribute_.IsImport() &&
         RuntimeEnabledFeatures::HTMLImportsEnabled()) {
       link_ = LinkImport::Create(this);
@@ -183,6 +222,7 @@ LinkResource* HTMLLinkElement::LinkResourceToProcess() {
       }
       link_ = link;
     }
+#endif
   }
 
   return link_.Get();
@@ -197,12 +237,16 @@ LinkStyle* HTMLLinkElement::GetLinkStyle() const {
 LinkImport* HTMLLinkElement::GetLinkImport() const {
   if (!link_ || link_->GetType() != LinkResource::kImport)
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return static_cast<LinkImport*>(link_.Get());
+#endif
 }
 
 Document* HTMLLinkElement::import() const {
   if (LinkImport* link = GetLinkImport())
-    return link->ImportedDocument();
+    ASSERT(false); // BKTODO: return link->ImportedDocument();
   return nullptr;
 }
 
@@ -214,7 +258,7 @@ void HTMLLinkElement::Process() {
 Node::InsertionNotificationRequest HTMLLinkElement::InsertedInto(
     ContainerNode& insertion_point) {
   HTMLElement::InsertedInto(insertion_point);
-  LogAddElementIfIsolatedWorldAndInDocument("link", relAttr, hrefAttr);
+  ASSERT(false); // BKTODO: LogAddElementIfIsolatedWorldAndInDocument("link", relAttr, hrefAttr);
   if (!insertion_point.isConnected())
     return kInsertionDone;
   DCHECK(isConnected());
@@ -223,8 +267,11 @@ Node::InsertionNotificationRequest HTMLLinkElement::InsertedInto(
 
   if (!ShouldLoadLink() && IsInShadowTree()) {
     String message = "HTML element <link> is ignored in shadow tree.";
+    ASSERT(false); // BKTODO:
+#if 0
     GetDocument().AddConsoleMessage(ConsoleMessage::Create(
         kJSMessageSource, kWarningMessageLevel, message));
+#endif
     return kInsertionDone;
   }
 
@@ -271,31 +318,34 @@ bool HTMLLinkElement::StyleSheetIsLoading() const {
 }
 
 void HTMLLinkElement::LinkLoaded() {
-  DispatchEvent(*Event::Create(EventTypeNames::load));
+  ASSERT(false); // BKTODO: DispatchEvent(*Event::Create(EventTypeNames::load));
 }
 
 void HTMLLinkElement::LinkLoadingErrored() {
-  DispatchEvent(*Event::Create(EventTypeNames::error));
+  ASSERT(false); // BKTODO: DispatchEvent(*Event::Create(EventTypeNames::error));
 }
 
 void HTMLLinkElement::DidStartLinkPrerender() {
-  DispatchEvent(*Event::Create(EventTypeNames::webkitprerenderstart));
+  ASSERT(false); // BKTODO: DispatchEvent(*Event::Create(EventTypeNames::webkitprerenderstart));
 }
 
 void HTMLLinkElement::DidStopLinkPrerender() {
-  DispatchEvent(*Event::Create(EventTypeNames::webkitprerenderstop));
+  ASSERT(false); // BKTODO: DispatchEvent(*Event::Create(EventTypeNames::webkitprerenderstop));
 }
 
 void HTMLLinkElement::DidSendLoadForLinkPrerender() {
-  DispatchEvent(*Event::Create(EventTypeNames::webkitprerenderload));
+  ASSERT(false); // BKTODO: DispatchEvent(*Event::Create(EventTypeNames::webkitprerenderload));
 }
 
 void HTMLLinkElement::DidSendDOMContentLoadedForLinkPrerender() {
+  ASSERT(false); // BKTODO: 
+#if 0
   DispatchEvent(
       *Event::Create(EventTypeNames::webkitprerenderdomcontentloaded));
+#endif
 }
 
-scoped_refptr<base::SingleThreadTaskRunner>
+std::shared_ptr<base::SingleThreadTaskRunner>
 HTMLLinkElement::GetLoadingTaskRunner() {
   return GetDocument().GetTaskRunner(TaskType::kNetworking);
 }
@@ -325,6 +375,8 @@ void HTMLLinkElement::DispatchPendingEvent(
 }
 
 void HTMLLinkElement::ScheduleEvent() {
+  ASSERT(false); // BKTODO: 
+#if 0
   GetDocument()
       .GetTaskRunner(TaskType::kDOMManipulation)
       ->PostTask(FROM_HERE,
@@ -332,6 +384,7 @@ void HTMLLinkElement::ScheduleEvent() {
                            WrapPersistent(this),
                            WTF::Passed(IncrementLoadEventDelayCount::Create(
                                GetDocument()))));
+#endif
 }
 
 void HTMLLinkElement::StartLoadingDynamicSheet() {
@@ -358,10 +411,10 @@ const QualifiedName& HTMLLinkElement::SubResourceAttributeName() const {
   return HTMLElement::SubResourceAttributeName();
 }
 
-KURL HTMLLinkElement::Href() const {
+GURL HTMLLinkElement::Href() const {
   const String& url = getAttribute(hrefAttr);
   if (url.IsEmpty())
-    return KURL();
+    return GURL();
   return GetDocument().CompleteURL(url);
 }
 
@@ -374,9 +427,14 @@ const AtomicString& HTMLLinkElement::GetType() const {
 }
 
 bool HTMLLinkElement::Async() const {
+  ASSERT(false); // BKTODO: 
+  return false;
+#if 0
   return FastHasAttribute(HTMLNames::asyncAttr);
+#endif
 }
 
+#if 0 // BKTODO:
 IconType HTMLLinkElement::GetIconType() const {
   return rel_attribute_.GetIconType();
 }
@@ -388,10 +446,11 @@ const Vector<IntSize>& HTMLLinkElement::IconSizes() const {
 DOMTokenList* HTMLLinkElement::sizes() const {
   return sizes_.Get();
 }
+#endif
 
 void HTMLLinkElement::Trace(blink::Visitor* visitor) {
   visitor->Trace(link_);
-  visitor->Trace(sizes_);
+  // BKTODO: visitor->Trace(sizes_);
   visitor->Trace(link_loader_);
   visitor->Trace(rel_list_);
   HTMLElement::Trace(visitor);
