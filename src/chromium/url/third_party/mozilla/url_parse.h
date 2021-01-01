@@ -177,6 +177,13 @@ struct URL_EXPORT Parsed {
   // the string with the scheme stripped off.
   Component GetContent() const;
 
+  // True if the URL's source contained a raw `<` character, and whitespace was
+  // removed from the URL during parsing
+  //
+  // TODO(mkwst): Link this to something in a spec if
+  // https://github.com/whatwg/url/pull/284 lands.
+  bool potentially_dangling_markup;
+
   // This is used for nested URL types, currently only filesystem.  If you
   // parse a filesystem URL, the resulting Parsed will have a nested
   // inner_parsed_ to hold the parsed inner URL's component information.
