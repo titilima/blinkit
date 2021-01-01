@@ -56,7 +56,7 @@ BEGIN
             VALUE "FileDescription", "BlinKit - Crawler & WebUI Framework Based on Blink"
             VALUE "FileVersion", "1.2.0.34"
             VALUE "InternalName", "BlinKit.dll"
-            VALUE "LegalCopyright", "Copyright (C) 2001-2020"
+            VALUE "LegalCopyright", "Copyright (C) 2001-2021"
             VALUE "OriginalFilename", "BlinKit.dll"
             VALUE "ProductName", "BlinKit"
             VALUE "ProductVersion", "1.2.0.34"

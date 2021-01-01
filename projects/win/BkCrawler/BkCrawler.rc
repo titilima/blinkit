@@ -45,7 +45,7 @@ BEGIN
             VALUE "FileDescription", "BkCrawler - Crawler Module in BlinKit Framework"
             VALUE "FileVersion", "1.2.2.19"
             VALUE "InternalName", "BkCrawler.dll"
-            VALUE "LegalCopyright", "Copyright (C) 2001-2020"
+            VALUE "LegalCopyright", "Copyright (C) 2001-2021"
             VALUE "OriginalFilename", "BkCrawler.dll"
             VALUE "ProductName", "BlinKit"
             VALUE "ProductVersion", "1.2.0.34"
