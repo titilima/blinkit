@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: link_resource.cc
-// Description: LinkResource Class
-//      Author: Ziming Li
-//     Created: 2020-12-31
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -58,11 +47,7 @@ bool LinkResource::ShouldLoadResource() const {
 }
 
 LocalFrame* LinkResource::LoadingFrame() const {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return owner_->GetDocument().MasterDocument().GetFrame();
-#endif
 }
 
 Document& LinkResource::GetDocument() {
