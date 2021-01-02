@@ -134,8 +134,49 @@ wtf_size_t TextResourceDecoder::CheckForBOM(const char *data, wtf_size_t len)
 
 bool TextResourceDecoder::CheckForCSSCharset(const char *data, wtf_size_t len, bool &movedDataToBuffer)
 {
-    ASSERT(false); // BKTODO:
-    return false;
+    if (kDefaultEncoding != m_source && kEncodingFromParentFrame != m_source)
+    {
+        m_checkedForCssCharset = true;
+        return true;
+    }
+
+    wtf_size_t oldSize = m_buffer.size();
+    m_buffer.Grow(oldSize + len);
+    memcpy(m_buffer.data() + oldSize, data, len);
+
+    movedDataToBuffer = true;
+
+    if (m_buffer.size() <= 13)  // strlen('@charset "x";') == 13
+        return false;
+
+    const char *dataStart = m_buffer.data();
+    const char *dataEnd = dataStart + m_buffer.size();
+
+    if (0 == memcmp(dataStart, "@charset \"", 10))
+    {
+        dataStart += 10;
+        const char *pos = dataStart;
+
+        while (pos < dataEnd && *pos != '"')
+            ++pos;
+        if (pos == dataEnd)
+            return false;
+
+        wtf_size_t encodingNameLength = static_cast<wtf_size_t>(pos - dataStart);
+
+        ++pos;
+        if (pos == dataEnd)
+            return false;
+
+        if (*pos == ';')
+        {
+            std::string encodingName(dataStart, encodingNameLength);
+            SetEncoding(WTF::TextEncoding(encodingName.c_str()), kEncodingFromCSSCharset);
+        }
+    }
+
+    m_checkedForCssCharset = true;
+    return true;
 }
 
 void TextResourceDecoder::CheckForMetaCharset(const char *data, wtf_size_t length)

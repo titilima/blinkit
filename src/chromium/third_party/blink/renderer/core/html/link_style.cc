@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: link_style.cc
+// Description: LinkStyle Class
+//      Author: Ziming Li
+//     Created: 2020-12-31
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,18 +17,18 @@
 
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #include "third_party/blink/renderer/core/dom/document.h"
-#include "third_party/blink/renderer/core/frame/csp/content_security_policy.h"
+// BKTODO: #include "third_party/blink/renderer/core/frame/csp/content_security_policy.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
-#include "third_party/blink/renderer/core/html/cross_origin_attribute.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/cross_origin_attribute.h"
 #include "third_party/blink/renderer/core/html/html_link_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
-#include "third_party/blink/renderer/core/loader/importance_attribute.h"
+// BKTODO: #include "third_party/blink/renderer/core/loader/importance_attribute.h"
 #include "third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.h"
-#include "third_party/blink/renderer/core/loader/subresource_integrity_helper.h"
+// BKTODO: #include "third_party/blink/renderer/core/loader/subresource_integrity_helper.h"
 #include "third_party/blink/renderer/platform/histogram.h"
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_parameters.h"
-#include "third_party/blink/renderer/platform/loader/subresource_integrity.h"
+// BKTODO: #include "third_party/blink/renderer/platform/loader/subresource_integrity.h"
 #include "third_party/blink/renderer/platform/network/mime/content_type.h"
 #include "third_party/blink/renderer/platform/network/mime/mime_type_registry.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
@@ -70,6 +81,7 @@ void LinkStyle::NotifyFinished(Resource* resource) {
   }
 
   CSSStyleSheetResource* cached_style_sheet = ToCSSStyleSheetResource(resource);
+#if 0 // BKTODO: Check if necessary.
   // See the comment in pending_script.cc about why this check is necessary
   // here, instead of in the resource fetcher. https://crbug.com/500701.
   if (!cached_style_sheet->ErrorOccurred() &&
@@ -89,11 +101,12 @@ void LinkStyle::NotifyFinished(Resource* resource) {
       return;
     }
   }
+#endif
 
-  CSSParserContext* parser_context = CSSParserContext::Create(
+  CSSParserContext* parser_context = CSSParserContext::Create(ObjectType::Member,
       GetDocument(), cached_style_sheet->GetResponse().Url(),
-      cached_style_sheet->GetResponse().IsOpaqueResponseFromServiceWorker(),
-      cached_style_sheet->GetReferrerPolicy(), cached_style_sheet->Encoding());
+      false, // BKTODO: cached_style_sheet->GetResponse().IsOpaqueResponseFromServiceWorker(),
+      cached_style_sheet->Encoding());
 
   if (StyleSheetContents* parsed_sheet =
           cached_style_sheet->CreateParsedStyleSheetFromCache(parser_context)) {
@@ -112,7 +125,7 @@ void LinkStyle::NotifyFinished(Resource* resource) {
   }
 
   StyleSheetContents* style_sheet =
-      StyleSheetContents::Create(cached_style_sheet->Url(), parser_context);
+      StyleSheetContents::Create(String::FromStdUTF8(cached_style_sheet->Url().spec()), parser_context);
 
   if (sheet_)
     ClearSheet();
@@ -123,8 +136,7 @@ void LinkStyle::NotifyFinished(Resource* resource) {
     SetSheetTitle(owner_->title());
   SetCrossOriginStylesheetStatus(sheet_.Get());
 
-  style_sheet->ParseAuthorStyleSheet(cached_style_sheet,
-                                     GetDocument().GetSecurityOrigin());
+  style_sheet->ParseAuthorStyleSheet(cached_style_sheet);
 
   loading_ = false;
   style_sheet->NotifyLoadedSheet(cached_style_sheet);
@@ -242,6 +254,7 @@ void LinkStyle::SetDisabledState(bool disabled) {
 }
 
 void LinkStyle::SetCrossOriginStylesheetStatus(CSSStyleSheet* sheet) {
+#if 0 // BKTODO: Check if necessary.
   if (fetch_following_cors_ && GetResource() &&
       !GetResource()->ErrorOccurred()) {
     // Record the security origin the CORS access check succeeded at, if cross
@@ -249,6 +262,7 @@ void LinkStyle::SetCrossOriginStylesheetStatus(CSSStyleSheet* sheet) {
     // stylesheet's rules.
     sheet->SetAllowRuleAccessFromOrigin(GetDocument().GetSecurityOrigin());
   }
+#endif
   fetch_following_cors_ = false;
 }
 
@@ -257,7 +271,7 @@ LinkStyle::LoadReturnValue LinkStyle::LoadStylesheetIfNeeded(
     const WTF::TextEncoding& charset) {
   if (disabled_state_ == kDisabled || !owner_->RelAttribute().IsStyleSheet() ||
       !StyleSheetTypeIsSupported(params.type) || !ShouldLoadResource() ||
-      !params.href.IsValid())
+      !params.href.is_valid())
     return kNotNeeded;
 
   if (GetResource()) {
@@ -291,9 +305,11 @@ LinkStyle::LoadReturnValue LinkStyle::LoadStylesheetIfNeeded(
                   owner_->IsCreatedByParser();
   AddPendingSheet(blocking ? kBlocking : kNonBlocking);
 
+#if 0 // BKTODO: Check if necessary.
   if (params.cross_origin != kCrossOriginAttributeNotSet) {
     SetFetchFollowingCORS();
   }
+#endif
 
   // Load stylesheets that are not needed for the layout immediately with low
   // priority.  When the link element is created by scripts, load the
@@ -321,36 +337,14 @@ void LinkStyle::Process() {
   DCHECK(owner_->ShouldProcessStyle());
   const LinkLoadParameters params(
       owner_->RelAttribute(),
-      GetCrossOriginAttributeValue(owner_->FastGetAttribute(crossoriginAttr)),
       owner_->TypeValue().DeprecatedLower(),
       owner_->AsValue().DeprecatedLower(), owner_->Media().DeprecatedLower(),
-      owner_->nonce(), owner_->IntegrityValue(),
-      owner_->ImportanceValue().LowerASCII(), owner_->GetReferrerPolicy(),
-      owner_->GetNonEmptyURLAttribute(hrefAttr),
-      owner_->FastGetAttribute(srcsetAttr),
-      owner_->FastGetAttribute(imgsizesAttr));
-
-  WTF::TextEncoding charset = GetCharset();
-
-  if (owner_->RelAttribute().GetIconType() != kInvalidIcon &&
-      params.href.IsValid() && !params.href.IsEmpty()) {
-    if (!owner_->ShouldLoadLink())
-      return;
-    if (!GetDocument().GetSecurityOrigin()->CanDisplay(params.href))
-      return;
-    if (!GetDocument().GetContentSecurityPolicy()->AllowImageFromSource(
-            params.href))
-      return;
-    if (GetDocument().GetFrame() && GetDocument().GetFrame()->Client()) {
-      GetDocument().GetFrame()->Client()->DispatchDidChangeIcons(
-          owner_->RelAttribute().GetIconType());
-    }
-  }
+      owner_->GetNonEmptyURLAttribute(hrefAttr));
 
   if (!sheet_ && !owner_->LoadLink(params))
     return;
 
-  if (LoadStylesheetIfNeeded(params, charset) == kNotNeeded && sheet_) {
+  if (LoadStylesheetIfNeeded(params, GetCharset()) == kNotNeeded && sheet_) {
     // we no longer contain a stylesheet, e.g. perhaps rel or type was changed
     ClearSheet();
     GetDocument().GetStyleEngine().SetNeedsActiveStyleUpdate(
@@ -368,9 +362,12 @@ void LinkStyle::SetSheetTitle(const String& title) {
   if (title.IsEmpty() || !IsUnset() || owner_->IsAlternate())
     return;
 
-  const KURL& href = owner_->GetNonEmptyURLAttribute(hrefAttr);
+  ASSERT(false); // BKTODO:
+#if 0
+  const GURL& href = owner_->GetNonEmptyURLAttribute(hrefAttr);
   if (href.IsValid() && !href.IsEmpty())
     GetDocument().GetStyleEngine().SetPreferredStylesheetSetNameIfNotSet(title);
+#endif
 }
 
 void LinkStyle::OwnerRemoved() {

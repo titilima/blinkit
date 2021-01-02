@@ -549,11 +549,10 @@ scoped_refptr<ComputedStyle> Element::CustomStyleForLayoutObject(void)
 
 void Element::DefaultEventHandler(Event &event)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    if (RuntimeEnabledFeatures::InvisibleDOMEnabled() &&
-        event.type() == EventTypeNames::activateinvisible &&
-        event.target() == this) {
+#if 0 // BKTODO:
+    if (RuntimeEnabledFeatures::InvisibleDOMEnabled() && event.type() == event_type_names::activateinvisible
+        && event.target() == this)
+    {
         removeAttribute(invisibleAttr);
         event.SetDefaultHandled();
         return;
@@ -1568,18 +1567,20 @@ bool Element::SupportsFocus(void) const
 void Element::SynchronizeAllAttributes(void) const
 {
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (!GetElementData())
+    if (ForCrawler())
         return;
+
+    const ElementData *elementData = GetElementData();
+    if (nullptr == elementData)
+        return;
+
     // NOTE: AnyAttributeMatches in selector_checker.cc currently assumes that all
     // lazy attributes have a null namespace.  If that ever changes we'll need to
     // fix that code.
-    if (GetElementData()->style_attribute_is_dirty_)
+    if (elementData->style_attribute_is_dirty_)
     {
-        ASSERT(false); // BKTODO:
-#if 0
-        DCHECK(IsStyledElement());
-        SynchronizeStyleAttributeInternal();
-#endif
+        ASSERT(IsStyledElement());
+        ASSERT(false); // BKTODO: SynchronizeStyleAttributeInternal();
     }
 #endif
 }
@@ -1587,36 +1588,41 @@ void Element::SynchronizeAllAttributes(void) const
 void Element::SynchronizeAttribute(const AtomicString &localName) const
 {
 #ifndef BLINKIT_CRAWLER_ONLY
+    if (ForCrawler())
+        return;
+
     // This version of synchronizeAttribute() is streamlined for the case where
     // you don't have a full QualifiedName, e.g when called from DOM API.
-    if (!GetElementData())
+    const ElementData *elementData = GetElementData();
+    if (nullptr == elementData)
         return;
-    ASSERT(false); // BKTODO:
-#if 0
-    if (GetElementData()->style_attribute_is_dirty_ &&
-        LowercaseIfNecessary(localName) == kStyleAttr.LocalName()) {
-        DCHECK(IsStyledElement());
-        SynchronizeStyleAttributeInternal();
+
+    if (elementData->style_attribute_is_dirty_
+        && LowercaseIfNecessary(localName) == html_names::kStyleAttr.LocalName())
+    {
+        ASSERT(IsStyledElement());
+        ASSERT(false); // BKTODO: SynchronizeStyleAttributeInternal();
         return;
     }
-#endif
 #endif
 }
 
 void Element::SynchronizeAttribute(const QualifiedName &name) const
 {
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (!GetElementData())
+    if (ForCrawler())
         return;
-    ASSERT(false); // BKTODO:
-#if 0
-    if (UNLIKELY(name == styleAttr &&
-        GetElementData()->style_attribute_is_dirty_)) {
-        DCHECK(IsStyledElement());
-        SynchronizeStyleAttributeInternal();
+
+    const ElementData *elementData = GetElementData();
+    if (nullptr == elementData)
+        return;
+
+    if (name == html_names::kStyleAttr && elementData->style_attribute_is_dirty_)
+    {
+        ASSERT(IsStyledElement());
+        ASSERT(false); // BKTODO: SynchronizeStyleAttributeInternal();
         return;
     }
-#endif
 #endif
 }
 
@@ -1977,6 +1983,27 @@ const ComputedStyle* Element::EnsureComputedStyle(PseudoId pseudoElementSpecifie
     return elementStyle->AddCachedPseudoStyle(std::move(result));
 }
 
+const HashSet<AtomicString>& Element::GetCheckedAttributeNames(void) const
+{
+    static HashSet<AtomicString> attributeSet;
+    return attributeSet;
+}
+
+GURL Element::GetNonEmptyURLAttribute(const QualifiedName &name) const
+{
+#if DCHECK_IS_ON()
+    if (nullptr != GetElementData())
+    {
+        if (const Attribute *attribute = Attributes().Find(name))
+            DCHECK(IsURLAttribute(*attribute));
+    }
+#endif
+    String value = StripLeadingAndTrailingHTMLSpaces(getAttribute(name));
+    if (value.IsEmpty())
+        return GURL();
+    return GetDocument().CompleteURL(value);
+}
+
 bool Element::HasDisplayContentsStyle(void) const
 {
     if (const ComputedStyle *style = NonLayoutObjectComputedStyle())
@@ -2097,6 +2124,16 @@ void Element::RebuildShadowRootLayoutTree(WhitespaceAttacher &whitespaceAttacher
     ASSERT(IsShadowHost(this));
     GetShadowRoot()->RebuildLayoutTree(whitespaceAttacher);
     RebuildNonDistributedChildren();
+}
+
+void Element::SetAnimationStyleChange(bool animationStyleChange)
+{
+    if (animationStyleChange && GetDocument().InStyleRecalc())
+        return;
+    if (!HasRareData())
+        return;
+    if (ElementAnimations *elementAnimations = GetElementRareData()->GetElementAnimations())
+        elementAnimations->SetAnimationStyleChange(animationStyleChange);
 }
 
 void Element::SetApplyScroll(ScrollStateCallback *scrollStateCallback)

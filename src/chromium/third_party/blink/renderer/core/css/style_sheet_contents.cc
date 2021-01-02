@@ -349,17 +349,14 @@ const AtomicString& StyleSheetContents::NamespaceURIFromPrefix(
   return namespaces_.at(prefix);
 }
 
-#if 0 // BKTODO:
 void StyleSheetContents::ParseAuthorStyleSheet(
-    const CSSStyleSheetResource* cached_style_sheet,
-    const SecurityOrigin* security_origin) {
+    const CSSStyleSheetResource* cached_style_sheet) {
   TRACE_EVENT1("blink,devtools.timeline", "ParseAuthorStyleSheet", "data",
                InspectorParseAuthorStyleSheetEvent::Data(cached_style_sheet));
-  TimeTicks start_time = CurrentTimeTicks();
 
-  bool is_same_origin_request =
-      security_origin && security_origin->CanRequest(BaseURL());
+  bool is_same_origin_request = true;
 
+#if 0 // BKTODO: Check if necessary.
   // When the response was fetched via the Service Worker, the original URL may
   // not be same as the base URL.
   // TODO(horo): When we will use the original URL as the base URL, we can
@@ -372,6 +369,7 @@ void StyleSheetContents::ParseAuthorStyleSheet(
     if (!original_url.IsEmpty() && !security_origin->CanRequest(original_url))
       is_same_origin_request = false;
   }
+#endif
 
   CSSStyleSheetResource::MIMETypeCheck mime_type_check =
       IsQuirksModeBehavior(parser_context_->Mode()) && is_same_origin_request
@@ -380,24 +378,20 @@ void StyleSheetContents::ParseAuthorStyleSheet(
   String sheet_text =
       cached_style_sheet->SheetText(parser_context_, mime_type_check);
 
+#if 0 // BKTODO: Check if necessary.
   const ResourceResponse& response = cached_style_sheet->GetResponse();
   source_map_url_ = response.HttpHeaderField(HTTPNames::SourceMap);
   if (source_map_url_.IsEmpty()) {
     // Try to get deprecated header.
     source_map_url_ = response.HttpHeaderField(HTTPNames::X_SourceMap);
   }
+#endif
 
   const CSSParserContext* context =
       CSSParserContext::CreateWithStyleSheetContents(ParserContext(), this);
   CSSParser::ParseSheet(context, this, sheet_text,
                         CSSDeferPropertyParsing::kYes);
-
-  DEFINE_STATIC_LOCAL(CustomCountHistogram, parse_histogram,
-                      ("Style.AuthorStyleSheet.ParseTime", 0, 10000000, 50));
-  TimeDelta parse_duration = (CurrentTimeTicks() - start_time);
-  parse_histogram.CountMicroseconds(parse_duration);
 }
-#endif
 
 ParseSheetResult StyleSheetContents::ParseString(const String& sheet_text,
                                                  bool allow_import_rules) {

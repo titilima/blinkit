@@ -112,6 +112,7 @@ enum class WebFeature {
     kGetComputedStyleWebkitAppearance,
     kHasBeforeOrAfterPseudoElement,
     kHasIDClassTagAttribute,
+    kHTMLLinkElementDisabled,
     kHTMLParseErrorNestedForm,
     kHTMLSlotElement,
     kInnerTextWithShadowTree,

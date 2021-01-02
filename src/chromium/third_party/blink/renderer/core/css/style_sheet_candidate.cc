@@ -40,7 +40,7 @@
 #include "third_party/blink/renderer/core/css/style_engine.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/processing_instruction.h"
- // BKTODO: #include "third_party/blink/renderer/core/html/html_link_element.h"
+ #include "third_party/blink/renderer/core/html/html_link_element.h"
 #include "third_party/blink/renderer/core/html/html_style_element.h"
 // BKTODO: #include "third_party/blink/renderer/core/html/imports/html_import.h"
 // BKTODO: #include "third_party/blink/renderer/core/svg/svg_style_element.h"
@@ -60,11 +60,7 @@ bool StyleSheetCandidate::IsXSL() const {
 }
 
 bool StyleSheetCandidate::IsImport() const {
-  ASSERT(type_ != kHTMLLink); // BKTODO:
-  return false;
-#if 0
   return type_ == kHTMLLink && ToHTMLLinkElement(GetNode()).IsImport();
-#endif
 }
 
 bool StyleSheetCandidate::IsCSSStyle() const {
@@ -73,28 +69,16 @@ bool StyleSheetCandidate::IsCSSStyle() const {
 
 Document* StyleSheetCandidate::ImportedDocument() const {
   DCHECK(IsImport());
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return ToHTMLLinkElement(GetNode()).import();
-#endif
 }
 
 bool StyleSheetCandidate::IsEnabledViaScript() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return IsHTMLLink() && ToHTMLLinkElement(GetNode()).IsEnabledViaScript();
-#endif
 }
 
 bool StyleSheetCandidate::IsEnabledAndLoading() const {
-  ASSERT(!IsHTMLLink()); // BKTODO:
-  return false;
-#if 0
   return IsHTMLLink() && !ToHTMLLinkElement(GetNode()).IsDisabled() &&
          ToHTMLLinkElement(GetNode()).StyleSheetIsLoading();
-#endif
 }
 
 bool StyleSheetCandidate::CanBeActivated(
@@ -130,10 +114,8 @@ StyleSheetCandidate::Type StyleSheetCandidate::TypeOf(Node& node) {
 
 StyleSheet* StyleSheetCandidate::Sheet() const {
   switch (type_) {
-#if 0 // BKTODO:
     case kHTMLLink:
       return ToHTMLLinkElement(GetNode()).sheet();
-#endif
     case kHTMLStyle:
       return ToHTMLStyleElement(GetNode()).sheet();
 #if 0 // BKTODO: Check if necessary.

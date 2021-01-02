@@ -420,6 +420,8 @@ public:
 #ifndef BLINKIT_CRAWLER_ONLY
     HTMLImportLoader* ImportLoader(void) const;
     HTMLImportsController* ImportsController(void) const { return m_importsController.get(); }
+    // TODO(kochi): Audit usage of this interface (crbug.com/746150).
+    Document& MasterDocument(void) const;
 
     PageVisibilityState GetPageVisibilityState(void) const;
 

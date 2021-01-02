@@ -1714,9 +1714,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame_lifecycle.cc">
       <Filter>renderer\core\frame</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_parameters.cpp">
-      <Filter>renderer\platform\loader\fetch</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\unique_identifier.cc">
       <Filter>renderer\platform\loader\fetch</Filter>
     </ClCompile>
@@ -2004,6 +2001,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\range.cc">
       <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_parameters.cc">
+      <Filter>renderer\platform\loader\fetch</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

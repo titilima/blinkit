@@ -153,14 +153,6 @@ void Node::CheckSlotChange(SlotChangeType slotChangeType)
 {
     ASSERT(false); // BKTODO:
 }
-
-void Node::ClearNeedsStyleRecalc(void)
-{
-    m_nodeFlags &= ~kStyleChangeMask;
-
-    if (IsElementNode() && HasRareData())
-        ASSERT(false); // BKTODO: ToElement(*this).SetAnimationStyleChange(false);
-}
 #endif
 
 void Node::ClearRareData(void)
@@ -967,11 +959,6 @@ void Node::SetNeedsStyleInvalidation(void)
     SetFlag(kNeedsStyleInvalidationFlag);
     MarkAncestorsWithChildNeedsStyleInvalidation();
 }
-
-void Node::SetNeedsStyleRecalc(StyleChangeType changeType, const StyleChangeReasonForTracing &)
-{
-    ASSERT(false); // BKTODO:
-}
 #endif // BLINKIT_CRAWLER_ONLY
 
 void Node::setNodeValue(const String &nodeValue)
@@ -1113,14 +1100,6 @@ void Node::UpdateDistributionInternal(void)
 #endif
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
-const ComputedStyle* Node::VirtualEnsureComputedStyle(PseudoId pseudoElementSpecifier)
-{
-    ASSERT(false); // BKTODO: Check child classes.
-    return nullptr;
-}
-#endif
-
 void Node::WillCallDefaultEventHandler(const Event &event)
 {
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -1163,6 +1142,14 @@ HTMLSlotElement* Node::AssignedSlot(void) const
     if (ShadowRoot *root = V1ShadowRootOfParent())
         ASSERT(false); // BKTODO: return root->AssignedSlotFor(*this);
     return nullptr;
+}
+
+void Node::ClearNeedsStyleRecalc(void)
+{
+    m_nodeFlags &= ~kStyleChangeMask;
+
+    if (IsElementNode() && HasRareData())
+        ToElement(*this).SetAnimationStyleChange(false);
 }
 
 LayoutBox* Node::GetLayoutBox(void) const
@@ -1285,6 +1272,26 @@ void Node::ReattachLayoutTree(AttachContext &context)
     ASSERT(nullptr == GetNonAttachedStyle());
 }
 
+void Node::SetNeedsStyleRecalc(StyleChangeType changeType, const StyleChangeReasonForTracing &)
+{
+    ASSERT(!GetDocument().GetStyleEngine().InRebuildLayoutTree());
+    ASSERT(kNoStyleChange != changeType);
+    if (!InActiveDocument())
+        return;
+    if (!IsContainerNode() && !IsTextNode())
+        return;
+
+    StyleChangeType existingChangeType = GetStyleChangeType();
+    if (changeType > existingChangeType)
+        SetStyleChange(changeType);
+
+    if (kNoStyleChange == existingChangeType)
+        MarkAncestorsWithChildNeedsStyleRecalc();
+
+    if (IsElementNode() && HasRareData())
+        ToElement(*this).SetAnimationStyleChange(false);
+}
+
 void Node::SetNonAttachedStyle(scoped_refptr<ComputedStyle> nonAttachedStyle)
 {
     // We don't set non-attached style for text nodes.
@@ -1317,6 +1324,13 @@ void Node::SetNonAttachedStyle(scoped_refptr<ComputedStyle> nonAttachedStyle)
         m_data.m_rareData->SetNodeRenderingData(nodeLayoutData);
     else
         m_data.m_nodeLayoutData = nodeLayoutData;
+}
+
+const ComputedStyle* Node::VirtualEnsureComputedStyle(PseudoId pseudoElementSpecifier)
+{
+    if (ContainerNode *n = ParentOrShadowHostNode())
+        return n->EnsureComputedStyle(pseudoElementSpecifier);
+    return nullptr;
 }
 
 ShadowRoot* Node::V1ShadowRootOfParent(void) const

@@ -95,17 +95,9 @@ void HTMLLinkElement::ParseAttribute(
   const AtomicString& value = params.new_value;
   if (name == relAttr) {
     rel_attribute_ = LinkRelAttribute(value);
-    ASSERT(false); // BKTODO:
-#if 0
-    if (rel_attribute_.IsImport()) {
-      Deprecation::CountDeprecation(GetDocument(), WebFeature::kHTMLImports);
-    }
-#endif
     rel_list_->DidUpdateAttributeValue(params.old_value, value);
     Process();
   } else if (name == hrefAttr) {
-    // Log href attribute before logging resource fetching in process().
-    ASSERT(false); // BKTODO: LogUpdateAttributeIfIsolatedWorldAndInDocument("link", params);
     Process();
   } else if (name == typeAttr) {
     type_ = value;
@@ -129,10 +121,10 @@ void HTMLLinkElement::ParseAttribute(
     for (wtf_size_t i = 0; i < icon_sizes_.size(); ++i)
       icon_sizes_[i] = web_icon_sizes[i];
     Process();
+#endif
   } else if (name == mediaAttr) {
     media_ = value.DeprecatedLower();
     Process();
-#endif
   } else if (name == scopeAttr) {
     scope_ = value;
     Process();
@@ -163,14 +155,10 @@ void HTMLLinkElement::ParseAttribute(
 }
 
 bool HTMLLinkElement::ShouldLoadLink() {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
-  const GURL& href = GetNonEmptyURLAttribute(hrefAttr);
+  const GURL href = GetNonEmptyURLAttribute(hrefAttr);
   return (IsInDocumentTree() ||
           (isConnected() && rel_attribute_.IsStyleSheet())) &&
-         !href.PotentiallyDanglingMarkup();
-#endif
+         !href.parsed_for_possibly_invalid_spec().potentially_dangling_markup;
 }
 
 bool HTMLLinkElement::IsLinkCreatedByParser() {
@@ -178,12 +166,7 @@ bool HTMLLinkElement::IsLinkCreatedByParser() {
 }
 
 bool HTMLLinkElement::LoadLink(const LinkLoadParameters& params) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
-  return link_loader_->LoadLink(params, GetDocument(),
-                                NetworkHintsInterfaceImpl());
-#endif
+  return link_loader_->LoadLink(params, GetDocument());
 }
 
 void HTMLLinkElement::LoadStylesheet(const LinkLoadParameters& params,
@@ -207,13 +190,11 @@ LinkResource* HTMLLinkElement::LinkResourceToProcess() {
   }
 
   if (!link_) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (rel_attribute_.IsImport() &&
         RuntimeEnabledFeatures::HTMLImportsEnabled()) {
-      link_ = LinkImport::Create(this);
+      ASSERT(false); // BKTODO: link_ = LinkImport::Create(this);
     } else if (rel_attribute_.IsManifest()) {
-      link_ = LinkManifest::Create(this);
+      ASSERT(false); // BKTODO: link_ = LinkManifest::Create(this);
     } else {
       LinkStyle* link = LinkStyle::Create(this);
       if (FastHasAttribute(disabledAttr)) {
@@ -222,7 +203,6 @@ LinkResource* HTMLLinkElement::LinkResourceToProcess() {
       }
       link_ = link;
     }
-#endif
   }
 
   return link_.Get();
@@ -258,7 +238,6 @@ void HTMLLinkElement::Process() {
 Node::InsertionNotificationRequest HTMLLinkElement::InsertedInto(
     ContainerNode& insertion_point) {
   HTMLElement::InsertedInto(insertion_point);
-  ASSERT(false); // BKTODO: LogAddElementIfIsolatedWorldAndInDocument("link", relAttr, hrefAttr);
   if (!insertion_point.isConnected())
     return kInsertionDone;
   DCHECK(isConnected());
@@ -318,11 +297,11 @@ bool HTMLLinkElement::StyleSheetIsLoading() const {
 }
 
 void HTMLLinkElement::LinkLoaded() {
-  ASSERT(false); // BKTODO: DispatchEvent(*Event::Create(EventTypeNames::load));
+  DispatchEvent(*Event::Create(event_type_names::kLoad));
 }
 
 void HTMLLinkElement::LinkLoadingErrored() {
-  ASSERT(false); // BKTODO: DispatchEvent(*Event::Create(EventTypeNames::error));
+  DispatchEvent(*Event::Create(event_type_names::kError));
 }
 
 void HTMLLinkElement::DidStartLinkPrerender() {
@@ -375,16 +354,13 @@ void HTMLLinkElement::DispatchPendingEvent(
 }
 
 void HTMLLinkElement::ScheduleEvent() {
-  ASSERT(false); // BKTODO: 
-#if 0
-  GetDocument()
-      .GetTaskRunner(TaskType::kDOMManipulation)
-      ->PostTask(FROM_HERE,
-                 WTF::Bind(&HTMLLinkElement::DispatchPendingEvent,
-                           WrapPersistent(this),
-                           WTF::Passed(IncrementLoadEventDelayCount::Create(
-                               GetDocument()))));
-#endif
+  Document &document = GetDocument();
+  auto count = IncrementLoadEventDelayCount::Create(document);
+  auto task = [this, count = count.release()]
+  {
+    DispatchPendingEvent(base::WrapUnique(count));
+  };
+  document.GetTaskRunner(TaskType::kDOMManipulation)->PostTask(FROM_HERE, task);
 }
 
 void HTMLLinkElement::StartLoadingDynamicSheet() {

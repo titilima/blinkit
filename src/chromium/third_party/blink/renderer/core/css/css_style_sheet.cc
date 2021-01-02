@@ -43,9 +43,7 @@
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/node.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_link_element.h"
-#endif
 #include "third_party/blink/renderer/core/html/html_style_element.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
@@ -569,17 +567,13 @@ bool CSSStyleSheet::CanBeActivated(
     return false;
 
   if (owner_node_ && owner_node_->IsInShadowTree()) {
-    ASSERT(false); // BKTODO:
-#if 0
-    if (IsHTMLStyleElement(owner_node_) || IsSVGStyleElement(owner_node_))
+    if (IsHTMLStyleElement(owner_node_)) // BKTODO: || IsSVGStyleElement(owner_node_))
       return true;
     if (IsHTMLLinkElement(owner_node_) &&
         ToHTMLLinkElement(owner_node_)->IsImport())
       return !IsAlternate();
-#endif
   }
 
-#if 0 // BKTODO:
   if (!owner_node_ ||
       owner_node_->getNodeType() == Node::kProcessingInstructionNode ||
       !IsHTMLLinkElement(owner_node_) ||
@@ -587,22 +581,6 @@ bool CSSStyleSheet::CanBeActivated(
     if (!title_.IsEmpty() && title_ != current_preferrable_name)
       return false;
   }
-#else
-  bool b = true;
-  do {
-    if (!owner_node_)
-      break;
-    if (owner_node_->getNodeType() == Node::kProcessingInstructionNode)
-      break;
-    if (!IsHTMLLinkElement(owner_node_))
-      break;
-    ASSERT(false); // BKTODO:
-  } while (false);
-  if (b) {
-    if (!title_.IsEmpty() && title_ != current_preferrable_name)
-      return false;
-  }
-#endif
 
   if (IsAlternate() && title_.IsEmpty())
     return false;

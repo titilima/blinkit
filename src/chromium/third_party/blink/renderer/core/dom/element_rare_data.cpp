@@ -60,11 +60,10 @@ struct SameSizeAsElementRareData : NodeRareData
 #ifdef BLINKIT_CRAWLER_ONLY
 ElementRareData::ElementRareData(void)
 #else
-ElementRareData::ElementRareData(NodeRenderingData *nodeLayoutData) : NodeRareData(nullptr)
+ElementRareData::ElementRareData(NodeRenderingData *nodeLayoutData) : NodeRareData(nodeLayoutData)
 #endif
 {
     m_isElementRareData = true;
-    ASSERT(false); // BKTODO:
 }
 
 ElementRareData::~ElementRareData(void)

@@ -127,6 +127,11 @@ public:
     Attr* AttrIfExists(const QualifiedName &name);
     Attr* EnsureAttr(const QualifiedName &name);
     AttrNodeList* GetAttrNodeList(void);
+#ifndef BLINKIT_CRAWLER_ONLY
+    // Returns attributes that should be checked against Trusted Types
+    virtual const HashSet<AtomicString>& GetCheckedAttributeNames(void) const;
+    GURL GetNonEmptyURLAttribute(const QualifiedName &name) const;
+#endif
 
     bool HasID(void) const;
     bool HasClass(void) const;
@@ -240,6 +245,8 @@ public:
     const ComputedStyle* NonLayoutObjectComputedStyle(void) const;
     // FIXME: public for LayoutTreeBuilder, we shouldn't expose this though.
     scoped_refptr<ComputedStyle> StyleForLayoutObject(void);
+
+    void SetAnimationStyleChange(bool animationStyleChange);
 
     bool ShouldStoreNonLayoutObjectComputedStyle(const ComputedStyle &style) const;
     void StoreNonLayoutObjectComputedStyle(scoped_refptr<ComputedStyle> style);
@@ -380,6 +387,11 @@ private:
     scoped_refptr<ComputedStyle> PropagateInheritedProperties(StyleRecalcChange change);
     // Returns true if we should traverse shadow including children and pseudo
     // elements for RecalcStyle.
+    const ComputedStyle* VirtualEnsureComputedStyle(PseudoId pseudoElementSpecifier = kPseudoIdNone) override
+    {
+        return EnsureComputedStyle(pseudoElementSpecifier);
+    }
+
     bool ShouldCallRecalcStyleForChildren(StyleRecalcChange change);
     bool ShouldInvalidateDistributionWhenAttributeChanged(ShadowRoot &shadowRoot,
         const QualifiedName &name, const AtomicString &newValue);

@@ -2842,6 +2842,20 @@ void Document::LayoutUpdated(void)
 #endif
 }
 
+Document& Document::MasterDocument(void) const
+{
+    if (m_importsController)
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        Document *master = m_importsController->Master();
+        ASSERT(nullptr != master);
+        return *master;
+#endif
+    }
+    return const_cast<Document &>(*this);
+}
+
 void Document::NotifyLayoutTreeOfSubtreeChanges(void)
 {
     ASSERT(!ForCrawler());

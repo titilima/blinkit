@@ -373,6 +373,11 @@ void Resource::ResponseReceived(const ResourceResponse &response)
         SetEncoding(encoding);
 }
 
+void Resource::SetDecodedSize(size_t decodedSize)
+{
+    // BKTODO:
+}
+
 void Resource::SetEncodedSize(size_t encodedSize)
 {
     // BKTODO:

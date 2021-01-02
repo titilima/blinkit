@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: link_header.cc
+// Description: LinkHeader Class
+//      Author: Ziming Li
+//     Created: 2021-01-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #include "third_party/blink/renderer/platform/loader/link_header.h"
 
 #include "base/strings/string_util.h"
-#include "components/link_header_util/link_header_util.h"
+// BKTODO: #include "components/link_header_util/link_header_util.h"
 #include "third_party/blink/renderer/platform/wtf/text/parsing_utilities.h"
 
 namespace blink {
@@ -74,6 +85,8 @@ template <typename Iterator>
 LinkHeader::LinkHeader(Iterator begin, Iterator end) : is_valid_(true) {
   std::string url;
   std::unordered_map<std::string, base::Optional<std::string>> params;
+  ASSERT(false); // BKTODO:
+#if 0
   is_valid_ = link_header_util::ParseLinkHeaderValue(begin, end, &url, &params);
   if (!is_valid_)
     return;
@@ -86,17 +99,21 @@ LinkHeader::LinkHeader(Iterator begin, Iterator end) : is_valid_(true) {
     std::string value = param.second.value_or("");
     SetValue(name, String(&value[0], value.length()));
   }
+#endif
 }
 
 LinkHeaderSet::LinkHeaderSet(const String& header) {
   if (header.IsNull())
     return;
 
-  DCHECK(header.Is8Bit()) << "Headers should always be 8 bit";
+  DCHECK(header.Is8Bit()); // Headers should always be 8 bit
   std::string header_string(reinterpret_cast<const char*>(header.Characters8()),
                             header.length());
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& value : link_header_util::SplitLinkHeader(header_string))
     header_set_.push_back(LinkHeader(value.first, value.second));
+#endif
 }
 
 }  // namespace blink

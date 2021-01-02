@@ -129,7 +129,12 @@ void Event::SetHandlingPassive(PassiveMode mode)
 void Event::SetRelatedTargetIfExists(EventTarget *relatedTarget)
 {
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    if (IsMouseEvent())
+        ASSERT(false); // BKTODO: ToMouseEvent(this)->SetRelatedTarget(relatedTarget);
+    else if (IsPointerEvent())
+        ASSERT(false); // BKTODO: ToPointerEvent(this)->SetRelatedTarget(relatedTarget);
+    else if (IsFocusEvent())
+        ASSERT(false); // BKTODO: ToFocusEvent(this)->SetRelatedTarget(relatedTarget);
 #endif
 }
 

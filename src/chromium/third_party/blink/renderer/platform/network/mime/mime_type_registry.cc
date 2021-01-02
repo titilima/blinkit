@@ -31,6 +31,7 @@
 namespace blink {
 
 namespace MIMETypes {
+static const char TextCSS[] = "text/css";
 static const char TextHTML[] = "text/html";
 }
 
@@ -83,6 +84,8 @@ String MIMETypeRegistry::GetMIMETypeForExtension(const String& ext) {
 
 String MIMETypeRegistry::GetWellKnownMIMETypeForExtension(const String& ext) {
   using namespace WTF;
+  if (0 == CodePointCompareIgnoringASCIICase(ext, "css"))
+    return String::FromUTF8(MIMETypes::TextCSS);
   if (0 == CodePointCompareIgnoringASCIICase(ext, "html"))
     return String::FromUTF8(MIMETypes::TextHTML);
 #ifndef NDEBUG
@@ -95,8 +98,11 @@ String MIMETypeRegistry::GetWellKnownMIMETypeForExtension(const String& ext) {
 bool MIMETypeRegistry::IsSupportedMIMEType(const String &mime_type)
 {
   using namespace WTF;
-  if (0 == CodePointCompareIgnoringASCIICase(mime_type, MIMETypes::TextHTML))
+  if (0 == CodePointCompareIgnoringASCIICase(mime_type, MIMETypes::TextCSS)
+      || 0 == CodePointCompareIgnoringASCIICase(mime_type, MIMETypes::TextHTML))
+  {
     return true;
+  }
 #ifndef NDEBUG
   const std::string s = mime_type.StdUtf8();
   ASSERT(false); // BKTODO:

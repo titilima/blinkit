@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: link_loader.h
+// Description: LinkLoader Class
+//      Author: Ziming Li
+//     Created: 2020-12-31
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -37,7 +48,6 @@
 #include "third_party/blink/renderer/core/html/link_rel_attribute.h"
 #include "third_party/blink/renderer/core/loader/link_loader_client.h"
 #include "third_party/blink/renderer/core/script/modulator.h"
-#include "third_party/blink/renderer/platform/cross_origin_attribute_value.h"
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_parameters.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/prerender_client.h"
@@ -47,7 +57,6 @@ namespace blink {
 class Document;
 class LinkHeader;
 class LocalFrame;
-class NetworkHintsInterface;
 class PrerenderHandle;
 class Resource;
 enum class ResourceType : uint8_t;
@@ -56,43 +65,22 @@ struct ViewportDescriptionWrapper;
 // The parameter object for LinkLoader::LoadLink().
 struct LinkLoadParameters {
   LinkLoadParameters(const LinkRelAttribute& rel,
-                     const CrossOriginAttributeValue& cross_origin,
                      const String& type,
                      const String& as,
                      const String& media,
-                     const String& nonce,
-                     const String& integrity,
-                     const String& importance,
-                     const ReferrerPolicy& referrer_policy,
-                     const KURL& href,
-                     const String& srcset,
-                     const String& sizes)
+                     const GURL& href)
       : rel(rel),
-        cross_origin(cross_origin),
         type(type),
         as(as),
         media(media),
-        nonce(nonce),
-        integrity(integrity),
-        importance(importance),
-        referrer_policy(referrer_policy),
-        href(href),
-        srcset(srcset),
-        sizes(sizes) {}
-  LinkLoadParameters(const LinkHeader&, const KURL& base_url);
+        href(href) {}
+  LinkLoadParameters(const LinkHeader&, const GURL& base_url);
 
   LinkRelAttribute rel;
-  CrossOriginAttributeValue cross_origin;
   String type;
   String as;
   String media;
-  String nonce;
-  String integrity;
-  String importance;
-  ReferrerPolicy referrer_policy;
-  KURL href;
-  String srcset;
-  String sizes;
+  GURL href;
 };
 
 // The LinkLoader can load link rel types icon, dns-prefetch, prefetch, and
@@ -115,8 +103,7 @@ class CORE_EXPORT LinkLoader final : public SingleModuleClient,
 
   void Abort();
   bool LoadLink(const LinkLoadParameters&,
-                Document&,
-                const NetworkHintsInterface&);
+                Document&);
   void LoadStylesheet(const LinkLoadParameters&,
                       const AtomicString&,
                       const WTF::TextEncoding&,
@@ -134,10 +121,9 @@ class CORE_EXPORT LinkLoader final : public SingleModuleClient,
   // can be preloaded at commit time.
   enum MediaPreloadPolicy { kLoadAll, kOnlyLoadNonMedia, kOnlyLoadMedia };
   static void LoadLinksFromHeader(const String& header_value,
-                                  const KURL& base_url,
+                                  const GURL& base_url,
                                   LocalFrame&,
                                   Document*,  // can be nullptr
-                                  const NetworkHintsInterface&,
                                   CanLoadResources,
                                   MediaPreloadPolicy,
                                   ViewportDescriptionWrapper*);
@@ -150,13 +136,13 @@ class CORE_EXPORT LinkLoader final : public SingleModuleClient,
 
  private:
   class FinishObserver;
-  LinkLoader(LinkLoaderClient*, scoped_refptr<base::SingleThreadTaskRunner>);
+  LinkLoader(LinkLoaderClient*, const std::shared_ptr<base::SingleThreadTaskRunner>&);
 
   void NotifyFinished();
   // SingleModuleClient implementation
   void NotifyModuleLoadFinished(ModuleScript*) override;
 
-  Member<FinishObserver> finish_observer_;
+  std::unique_ptr<FinishObserver> finish_observer_;
   Member<LinkLoaderClient> client_;
 
   Member<PrerenderHandle> prerender_;

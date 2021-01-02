@@ -84,11 +84,7 @@ class CORE_EXPORT CSSStyleSheetResource final : public TextResource {
         const ResourceRequest& request,
         const ResourceLoaderOptions& options,
         const TextResourceDecoderOptions& decoder_options) const override {
-      ASSERT(false); // BKTODO:
-      return nullptr;
-#if 0
       return new CSSStyleSheetResource(request, options, decoder_options);
-#endif
     }
   };
   CSSStyleSheetResource(const ResourceRequest&,

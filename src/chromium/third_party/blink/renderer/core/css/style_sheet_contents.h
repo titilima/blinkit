@@ -81,10 +81,7 @@ class CORE_EXPORT StyleSheetContents
   const AtomicString& DefaultNamespace() const { return default_namespace_; }
   const AtomicString& NamespaceURIFromPrefix(const AtomicString& prefix) const;
 
-#if 0 // BKTODO:
-  void ParseAuthorStyleSheet(const CSSStyleSheetResource*,
-                             const SecurityOrigin*);
-#endif
+  void ParseAuthorStyleSheet(const CSSStyleSheetResource*);
   ParseSheetResult ParseString(const String&, bool allow_import_rules = true);
   ParseSheetResult ParseStringAtPosition(const String&,
                                          const TextPosition&,

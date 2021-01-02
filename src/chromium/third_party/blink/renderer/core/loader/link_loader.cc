@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: link_loader.cc
+// Description: LinkLoader Class
+//      Author: Ziming Li
+//     Created: 2020-12-31
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -31,41 +42,49 @@
 
 #include "third_party/blink/renderer/core/loader/link_loader.h"
 
+#if 0 // BKTODO:
 #include "third_party/blink/public/platform/web_prerender.h"
 #include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
+#endif
 #include "third_party/blink/renderer/core/css/media_list.h"
 #include "third_party/blink/renderer/core/css/media_query_evaluator.h"
 #include "third_party/blink/renderer/core/css/parser/sizes_attribute_parser.h"
 #include "third_party/blink/renderer/core/dom/document.h"
-#include "third_party/blink/renderer/core/frame/frame_console.h"
+// BKTODO: #include "third_party/blink/renderer/core/frame/frame_console.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
-#include "third_party/blink/renderer/core/html/cross_origin_attribute.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/cross_origin_attribute.h"
 #include "third_party/blink/renderer/core/html/link_rel_attribute.h"
 #include "third_party/blink/renderer/core/html/parser/html_preload_scanner.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/parser/html_srcset_parser.h"
 #include "third_party/blink/renderer/core/inspector/console_message.h"
+#endif
 #include "third_party/blink/renderer/core/loader/document_loader.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/loader/importance_attribute.h"
 #include "third_party/blink/renderer/core/loader/modulescript/module_script_fetch_request.h"
 #include "third_party/blink/renderer/core/loader/network_hints_interface.h"
 #include "third_party/blink/renderer/core/loader/private/prerender_handle.h"
+#endif
 #include "third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/loader/resource/link_fetch_resource.h"
 #include "third_party/blink/renderer/core/loader/subresource_integrity_helper.h"
 #include "third_party/blink/renderer/core/script/module_script.h"
+#endif
 #include "third_party/blink/renderer/core/script/script_loader.h"
-#include "third_party/blink/renderer/platform/loader/fetch/fetch_client_settings_object_snapshot.h"
+// BKTODO: #include "third_party/blink/renderer/platform/loader/fetch/fetch_client_settings_object_snapshot.h"
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_initiator_type_names.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_client.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_finish_observer.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
 #include "third_party/blink/renderer/platform/loader/link_header.h"
-#include "third_party/blink/renderer/platform/loader/subresource_integrity.h"
+// BKTODO: #include "third_party/blink/renderer/platform/loader/subresource_integrity.h"
 #include "third_party/blink/renderer/platform/network/mime/mime_type_registry.h"
-#include "third_party/blink/renderer/platform/prerender.h"
+// BKTODO: #include "third_party/blink/renderer/platform/prerender.h"
 
 namespace blink {
 
@@ -74,12 +93,18 @@ static unsigned PrerenderRelTypesFromRelAttribute(
     Document& document) {
   unsigned result = 0;
   if (rel_attribute.IsLinkPrerender()) {
+    ASSERT(false); // BKTODO:
+#if 0
     result |= kPrerenderRelTypePrerender;
     UseCounter::Count(document, WebFeature::kLinkRelPrerender);
+#endif
   }
   if (rel_attribute.IsLinkNext()) {
+    ASSERT(false); // BKTODO:
+#if 0
     result |= kPrerenderRelTypeNext;
     UseCounter::Count(document, WebFeature::kLinkRelNext);
+#endif
   }
 
   return result;
@@ -91,30 +116,26 @@ static unsigned PrerenderRelTypesFromRelAttribute(
 // to LinkLoadParameters here, likely after modifying the LinkHeader
 // class. See https://crbug.com/821464 for info on Priority Hints.
 LinkLoadParameters::LinkLoadParameters(const LinkHeader& header,
-                                       const KURL& base_url)
+                                       const GURL& base_url)
     : rel(LinkRelAttribute(header.Rel())),
-      cross_origin(GetCrossOriginAttributeValue(header.CrossOrigin())),
       type(header.MimeType()),
       as(header.As()),
       media(header.Media()),
-      nonce(header.Nonce()),
-      integrity(header.Integrity()),
-      referrer_policy(kReferrerPolicyDefault),
-      href(KURL(base_url, header.Url())),
-      srcset(header.Srcset()),
-      sizes(header.Imgsizes()) {}
+      href(base_url.Resolve(header.Url().StdUtf8())) {}
 
 class LinkLoader::FinishObserver final
-    : public GarbageCollectedFinalized<ResourceFinishObserver>,
-      public ResourceFinishObserver {
+    : public ResourceFinishObserver {
   USING_GARBAGE_COLLECTED_MIXIN(FinishObserver);
-  USING_PRE_FINALIZER(FinishObserver, ClearResource);
+  // BKTODO: USING_PRE_FINALIZER(FinishObserver, ClearResource);
 
  public:
   FinishObserver(LinkLoader* loader, Resource* resource)
       : loader_(loader), resource_(resource) {
+    ASSERT(false); // BKTODO:
+#if 0
     resource_->AddFinishObserver(
         this, loader_->client_->GetLoadingTaskRunner().get());
+#endif
   }
 
   // ResourceFinishObserver implementation
@@ -132,7 +153,7 @@ class LinkLoader::FinishObserver final
   void ClearResource() {
     if (!resource_)
       return;
-    resource_->RemoveFinishObserver(this);
+    ASSERT(false); // BKTODO: resource_->RemoveFinishObserver(this);
     resource_ = nullptr;
   }
 
@@ -148,7 +169,7 @@ class LinkLoader::FinishObserver final
 };
 
 LinkLoader::LinkLoader(LinkLoaderClient* client,
-                       scoped_refptr<base::SingleThreadTaskRunner> task_runner)
+                       const std::shared_ptr<base::SingleThreadTaskRunner>& task_runner)
     : client_(client) {
   DCHECK(client_);
 }
@@ -196,6 +217,7 @@ enum LinkCaller {
   kLinkCalledFromMarkup,
 };
 
+#if 0 // BKTODO:
 static void SendMessageToConsoleForPossiblyNullDocument(
     ConsoleMessage* console_message,
     Document* document,
@@ -271,6 +293,7 @@ static void PreconnectIfNeeded(
     network_hints_interface.PreconnectHost(params.href, params.cross_origin);
   }
 }
+#endif
 
 base::Optional<ResourceType> LinkLoader::GetResourceTypeFromAsAttribute(
     const String& as) {
@@ -299,6 +322,7 @@ Resource* LinkLoader::GetResourceForTesting() {
   return finish_observer_ ? finish_observer_->GetResource() : nullptr;
 }
 
+#if 0 // BKTODO:
 static bool IsSupportedType(ResourceType resource_type,
                             const String& mime_type) {
   if (mime_type.IsEmpty())
@@ -343,6 +367,7 @@ static bool MediaMatches(const String& media, MediaValues* media_values) {
   MediaQueryEvaluator evaluator(*media_values);
   return evaluator.Eval(*media_queries);
 }
+#endif
 
 // |base_url| is used in Link HTTP Header based preloads to resolve relative
 // URLs in srcset, which should be based on the resource's URL, not the
@@ -350,7 +375,7 @@ static bool MediaMatches(const String& media, MediaValues* media_values) {
 // using |document.CompleteURL()|.
 static Resource* PreloadIfNeeded(const LinkLoadParameters& params,
                                  Document& document,
-                                 const KURL& base_url,
+                                 const GURL& base_url,
                                  LinkCaller caller,
                                  ViewportDescription* viewport_description,
                                  ParserDisposition parser_disposition) {
@@ -361,7 +386,10 @@ static Resource* PreloadIfNeeded(const LinkLoadParameters& params,
       LinkLoader::GetResourceTypeFromAsAttribute(params.as);
 
   MediaValues* media_values = nullptr;
-  KURL url;
+  GURL url;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (resource_type == ResourceType::kImage && !params.srcset.IsEmpty() &&
       RuntimeEnabledFeatures::PreloadImageSrcSetEnabled()) {
     media_values = CreateMediaValues(document, viewport_description);
@@ -436,6 +464,7 @@ static Resource* PreloadIfNeeded(const LinkLoadParameters& params,
   link_fetch_params.SetLinkPreload(true);
   return document.Loader()->StartPreload(resource_type.value(),
                                          link_fetch_params);
+#endif
 }
 
 // https://html.spec.whatwg.org/multipage/links.html#link-type-modulepreload
@@ -446,6 +475,8 @@ static void ModulePreloadIfNeeded(const LinkLoadParameters& params,
   if (!document.Loader() || !params.rel.IsModulePreload())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   UseCounter::Count(document, WebFeature::kLinkRelModulePreload);
 
   // Step 1. "If the href attribute's value is the empty string, then return."
@@ -560,6 +591,7 @@ static void ModulePreloadIfNeeded(const LinkLoadParameters& params,
                                "Module preload triggered for " +
                                    params.href.Host() + params.href.GetPath()));
   }
+#endif
 
   // Asynchronously continue processing after
   // LinkLoader::NotifyModuleLoadFinished() is called.
@@ -567,8 +599,10 @@ static void ModulePreloadIfNeeded(const LinkLoadParameters& params,
 
 static Resource* PrefetchIfNeeded(const LinkLoadParameters& params,
                                   Document& document) {
-  if (params.rel.IsLinkPrefetch() && params.href.IsValid() &&
+  if (params.rel.IsLinkPrefetch() && params.href.is_valid() &&
       document.GetFrame()) {
+    ASSERT(false); // BKTODO:
+#if 0
     UseCounter::Count(document, WebFeature::kLinkRelPrefetch);
 
     ResourceRequest resource_request(params.href);
@@ -586,16 +620,16 @@ static Resource* PrefetchIfNeeded(const LinkLoadParameters& params,
     }
     return LinkFetchResource::Fetch(ResourceType::kLinkPrefetch,
                                     link_fetch_params, document.Fetcher());
+#endif
   }
   return nullptr;
 }
 
 void LinkLoader::LoadLinksFromHeader(
     const String& header_value,
-    const KURL& base_url,
+    const GURL& base_url,
     LocalFrame& frame,
     Document* document,
-    const NetworkHintsInterface& network_hints_interface,
     CanLoadResources can_load_resources,
     MediaPreloadPolicy media_policy,
     ViewportDescriptionWrapper* viewport_description_wrapper) {
@@ -616,11 +650,14 @@ void LinkLoader::LoadLinksFromHeader(
     if (params.href == base_url)
       continue;
     if (can_load_resources != kOnlyLoadResources) {
+      ASSERT(false); // BKTODO:
+#if 0
       DnsPrefetchIfNeeded(params, document, &frame, network_hints_interface,
                           kLinkCalledFromHeader);
 
       PreconnectIfNeeded(params, document, &frame, network_hints_interface,
                          kLinkCalledFromHeader);
+#endif
     }
     if (can_load_resources != kDoNotLoadResources) {
       DCHECK(document);
@@ -629,13 +666,16 @@ void LinkLoader::LoadLinksFromHeader(
               ? &(viewport_description_wrapper->description)
               : nullptr;
 
+      ASSERT(false); // BKTODO:
+#if 0
       PreloadIfNeeded(params, *document, base_url, kLinkCalledFromHeader,
                       viewport_description, kNotParserInserted);
       PrefetchIfNeeded(params, *document);
       ModulePreloadIfNeeded(params, *document, viewport_description, nullptr);
+#endif
     }
     if (params.rel.IsServiceWorker()) {
-      UseCounter::Count(&frame, WebFeature::kLinkHeaderServiceWorker);
+      ASSERT(false); // BKTODO: UseCounter::Count(&frame, WebFeature::kLinkHeaderServiceWorker);
     }
     // TODO(yoav): Add more supported headers as needed.
   }
@@ -643,33 +683,36 @@ void LinkLoader::LoadLinksFromHeader(
 
 bool LinkLoader::LoadLink(
     const LinkLoadParameters& params,
-    Document& document,
-    const NetworkHintsInterface& network_hints_interface) {
+    Document& document) {
   // If any loading process is in progress, abort it.
   Abort();
 
   if (!client_->ShouldLoadLink())
     return false;
 
+#if 0 // BKTODO: Check if necessary.
   DnsPrefetchIfNeeded(params, &document, document.GetFrame(),
                       network_hints_interface, kLinkCalledFromMarkup);
 
   PreconnectIfNeeded(params, &document, document.GetFrame(),
                      network_hints_interface, kLinkCalledFromMarkup);
+#endif
 
   Resource* resource = PreloadIfNeeded(
-      params, document, NullURL(), kLinkCalledFromMarkup, nullptr,
+      params, document, GURL(), kLinkCalledFromMarkup, nullptr,
       client_->IsLinkCreatedByParser() ? kParserInserted : kNotParserInserted);
   if (!resource) {
     resource = PrefetchIfNeeded(params, document);
   }
   if (resource)
-    finish_observer_ = new FinishObserver(this, resource);
+    finish_observer_ = std::make_unique<FinishObserver>(this, resource);
 
   ModulePreloadIfNeeded(params, document, nullptr, this);
 
   if (const unsigned prerender_rel_types =
           PrerenderRelTypesFromRelAttribute(params.rel, document)) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!prerender_) {
       prerender_ = PrerenderHandle::Create(document, this, params.href,
                                            prerender_rel_types);
@@ -678,9 +721,10 @@ bool LinkLoader::LoadLink(
       prerender_ = PrerenderHandle::Create(document, this, params.href,
                                            prerender_rel_types);
     }
+#endif
     // TODO(gavinp): Handle changes to rel types of existing prerenders.
   } else if (prerender_) {
-    prerender_->Cancel();
+    ASSERT(false); // BKTODO: prerender_->Cancel();
     prerender_.Clear();
   }
   return true;
@@ -692,7 +736,8 @@ void LinkLoader::LoadStylesheet(const LinkLoadParameters& params,
                                 FetchParameters::DeferOption defer_option,
                                 Document& document,
                                 ResourceClient* link_client) {
-  ResourceRequest resource_request(document.CompleteURL(params.href));
+  ResourceRequest resource_request(document.Url().Resolve(params.href.spec()));
+#if 0 // BKTODO: Check if necessary.
   resource_request.SetReferrerPolicy(params.referrer_policy);
 
   mojom::FetchImportanceMode importance_mode =
@@ -700,6 +745,7 @@ void LinkLoader::LoadStylesheet(const LinkLoadParameters& params,
   DCHECK(importance_mode == mojom::FetchImportanceMode::kImportanceAuto ||
          RuntimeEnabledFeatures::PriorityHintsEnabled());
   resource_request.SetFetchImportanceMode(importance_mode);
+#endif
 
   ResourceLoaderOptions options;
   options.initiator_info.name = local_name;
@@ -708,6 +754,7 @@ void LinkLoader::LoadStylesheet(const LinkLoadParameters& params,
 
   link_fetch_params.SetDefer(defer_option);
 
+#if 0 // BKTODO: Check if necessary.
   link_fetch_params.SetContentSecurityPolicyNonce(params.nonce);
 
   CrossOriginAttributeValue cross_origin = params.cross_origin;
@@ -726,30 +773,38 @@ void LinkLoader::LoadStylesheet(const LinkLoadParameters& params,
     link_fetch_params.MutableResourceRequest().SetFetchIntegrity(
         integrity_attr);
   }
+#endif
 
   CSSStyleSheetResource::Fetch(link_fetch_params, document.Fetcher(),
                                link_client);
 }
 
 void LinkLoader::DispatchLinkLoadingErroredAsync() {
+  ASSERT(false); // BKTODO:
+#if 0
   client_->GetLoadingTaskRunner()->PostTask(
       FROM_HERE, WTF::Bind(&LinkLoaderClient::LinkLoadingErrored,
                            WrapPersistent(client_.Get())));
+#endif
 }
 
 void LinkLoader::Abort() {
+  ASSERT(!prerender_); // BKTODO:
+#if 0
   if (prerender_) {
     prerender_->Cancel();
     prerender_.Clear();
   }
+#endif
   if (finish_observer_) {
     finish_observer_->ClearResource();
-    finish_observer_ = nullptr;
+    finish_observer_.reset();
   }
 }
 
 void LinkLoader::Trace(blink::Visitor* visitor) {
-  visitor->Trace(finish_observer_);
+  if (finish_observer_)
+    finish_observer_->Trace(visitor);
   visitor->Trace(client_);
   visitor->Trace(prerender_);
   SingleModuleClient::Trace(visitor);

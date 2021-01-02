@@ -15,6 +15,7 @@
 #include "third_party/blink/renderer/core/html/html_body_element.h"
 #include "third_party/blink/renderer/core/html/html_head_element.h"
 #include "third_party/blink/renderer/core/html/html_html_element.h"
+#include "third_party/blink/renderer/core/html/html_link_element.h"
 #include "third_party/blink/renderer/core/html/html_meta_element.h"
 #include "third_party/blink/renderer/core/html/html_slot_element.h"
 #include "third_party/blink/renderer/core/html/html_style_element.h"
@@ -34,6 +35,7 @@ static void FillElementCreators(HTMLElementCreators &dst)
         { html_names::kBodyTag,  HTMLBodyElement::Create  },
         { html_names::kHeadTag,  HTMLHeadElement::Create  },
         { html_names::kHTMLTag,  HTMLHtmlElement::Create  },
+        { html_names::kLinkTag,  HTMLLinkElement::Create  },
         { html_names::kMetaTag,  HTMLMetaElement::Create  },
         { html_names::kSlotTag,  HTMLSlotElement::Create  },
         { html_names::kStyleTag, HTMLStyleElement::Create },

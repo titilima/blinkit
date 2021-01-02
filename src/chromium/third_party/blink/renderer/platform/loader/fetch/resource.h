@@ -87,6 +87,7 @@ public:
 
     virtual WTF::TextEncoding Encoding(void) const { return WTF::TextEncoding(); }
     ResourceType GetType(void) const { return m_type; }
+    ResourceStatus GetStatus(void) const { return m_status; }
     void SetStatus(ResourceStatus status) { m_status = status; }
     bool IsLoading(void) const { return ResourceStatus::kPending == m_status; }
     bool ErrorOccurred(void) const { return ResourceStatus::kLoadError == m_status || ResourceStatus::kDecodeError == m_status; }
@@ -127,6 +128,7 @@ public:
 
     const ResourceResponse& GetResponse(void) const { return m_response; }
     void SetResponse(const ResourceResponse &response);
+    AtomicString HttpContentType(void) const { return GetResponse().HttpContentType(); }
 
     virtual void AppendData(const char *data, size_t length);
     virtual void FinishAsError(const ResourceError &error, base::SingleThreadTaskRunner *taskRunner);
@@ -171,6 +173,7 @@ protected:
     Resource(const ResourceRequest &request, ResourceType type, const ResourceLoaderOptions &options);
 
     void SetEncodedSize(size_t encodedSize);
+    void SetDecodedSize(size_t decodedSize);
 
     bool HasClient(ResourceClient *client) const;
     std::shared_ptr<SharedBuffer> Data(void) const { return m_data; }

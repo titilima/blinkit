@@ -70,10 +70,10 @@ class CORE_EXPORT HTMLLinkElement final : public HTMLElement,
 
   GURL Href() const;
   const AtomicString& Rel() const;
-#if 0 // BKTODO:
   String Media() const { return media_; }
   String TypeValue() const { return type_; }
   String AsValue() const { return as_; }
+#if 0 // BKTODO:
   String IntegrityValue() const { return integrity_; }
   String ImportanceValue() const { return importance_; }
 #endif
@@ -175,10 +175,10 @@ class CORE_EXPORT HTMLLinkElement final : public HTMLElement,
   Member<LinkLoader> link_loader_;
 
   String type_;
-#if 0 // BKTODO:
   String as_;
   String media_;
   String integrity_;
+#if 0 // BKTODO:
   String importance_;
   ReferrerPolicy referrer_policy_;
   Member<DOMTokenList> sizes_;

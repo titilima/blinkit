@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: link_loader_client.h
+// Description: LinkLoaderClient Class
+//      Author: Ziming Li
+//     Created: 2020-12-31
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -55,7 +66,7 @@ class CORE_EXPORT LinkLoaderClient : public GarbageCollectedMixin {
   virtual void DidSendDOMContentLoadedForLinkPrerender() = 0;
   virtual bool IsLinkCreatedByParser() = 0;
 
-  virtual scoped_refptr<base::SingleThreadTaskRunner>
+  virtual std::shared_ptr<base::SingleThreadTaskRunner>
   GetLoadingTaskRunner() = 0;
 };
 

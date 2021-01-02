@@ -165,6 +165,8 @@ inline bool IsHTMLLegendElement(const Node *node)
     return nullptr != node && IsHTMLLegendElement(*node);
 }
 
+class HTMLLinkElement;
+
 inline bool IsHTMLLinkElement(const Element &element)
 {
     return element.HasTagName(html_names::kLinkTag);
@@ -178,6 +180,12 @@ inline bool IsHTMLLinkElement(const Node &node)
 inline bool IsHTMLLinkElement(const Node *node)
 {
     return nullptr != node && IsHTMLLinkElement(*node);
+}
+
+template<>
+inline bool IsElementOfType<const HTMLLinkElement>(const Node &node)
+{
+    return IsHTMLLinkElement(node);
 }
 
 inline bool IsHTMLMarqueeElement(const Element &element)
@@ -247,6 +255,11 @@ inline bool IsHTMLStyleElement(const Node &node)
     return node.IsHTMLElement() && IsHTMLStyleElement(ToElement(node));
 }
 
+inline bool IsHTMLStyleElement(const Node *node)
+{
+    return nullptr != node && IsHTMLStyleElement(node);
+}
+
 template<>
 inline bool IsElementOfType<const HTMLStyleElement>(const Node &node)
 {
@@ -300,6 +313,7 @@ inline bool IsHTMLTitleElement(const Element &element)
 
 } // namespace blink
 
+#define ToHTMLLinkElement(x)    blink::ToElement<blink::HTMLLinkElement>(x)
 #define ToHTMLStyleElement(x)   blink::ToElement<blink::HTMLStyleElement>(x)
 
 #endif // BLINKIT_BLINK_HTML_ELEMENT_TYPE_HELPERS_H

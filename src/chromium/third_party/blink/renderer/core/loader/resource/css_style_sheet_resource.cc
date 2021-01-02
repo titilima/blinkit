@@ -56,16 +56,14 @@ namespace blink {
 CSSStyleSheetResource* CSSStyleSheetResource::Fetch(FetchParameters& params,
                                                     ResourceFetcher* fetcher,
                                                     ResourceClient* client) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
+#if 0 // BKTODO: Check the logic later.
   DCHECK_EQ(params.GetResourceRequest().GetFrameType(),
             network::mojom::RequestContextFrameType::kNone);
   params.SetRequestContext(mojom::RequestContextType::STYLE);
+#endif
   CSSStyleSheetResource* resource = ToCSSStyleSheetResource(
       fetcher->RequestResource(params, CSSStyleSheetResourceFactory(), client));
   return resource;
-#endif
 }
 
 CSSStyleSheetResource* CSSStyleSheetResource::CreateForTest(
@@ -135,7 +133,7 @@ const String CSSStyleSheetResource::SheetText(
   if (!decoded_sheet_text_.IsNull()) {
     // We should have the decoded sheet text cached when the resource is fully
     // loaded.
-    ASSERT(false); // BKTODO: DCHECK_EQ(GetStatus(), ResourceStatus::kCached);
+    DCHECK_EQ(GetStatus(), ResourceStatus::kCached);
 
     return decoded_sheet_text_;
   }
@@ -220,15 +218,11 @@ bool CSSStyleSheetResource::CanUseSheet(const CSSParserContext* parser_context,
   // folks can use standards mode for local HTML documents.
   if (mime_type_check == MIMETypeCheck::kLax)
     return true;
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   AtomicString content_type = HttpContentType();
   return content_type.IsEmpty() ||
          DeprecatedEqualIgnoringCase(content_type, "text/css") ||
          DeprecatedEqualIgnoringCase(content_type,
                                      "application/x-unknown-content-type");
-#endif
 }
 
 StyleSheetContents* CSSStyleSheetResource::CreateParsedStyleSheetFromCache(
@@ -264,8 +258,7 @@ void CSSStyleSheetResource::SaveParsedStyleSheet(StyleSheetContents* sheet) {
   DCHECK(sheet);
   DCHECK(sheet->IsCacheableForResource());
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check the logic
   if (!GetMemoryCache()->Contains(this)) {
     // This stylesheet resource did conflict with another resource and was not
     // added to the cache.
@@ -286,7 +279,7 @@ void CSSStyleSheetResource::UpdateDecodedSize() {
   size_t decoded_size = decoded_sheet_text_.CharactersSizeInBytes();
   if (parsed_style_sheet_cache_)
     decoded_size += parsed_style_sheet_cache_->EstimatedSizeInBytes();
-  ASSERT(false); // BKTODO: SetDecodedSize(decoded_size);
+  SetDecodedSize(decoded_size);
 }
 
 }  // namespace blink

@@ -364,6 +364,10 @@ public:
 #ifndef BLINKIT_CRAWLER_ONLY
     virtual int tabIndex(void) const { return 0; }
 
+    // Should return true if this Node has activation behavior.
+    // https://dom.spec.whatwg.org/#eventtarget-activation-behavior
+    virtual bool HasActivationBehavior(void) const { return false; }
+
     bool IsActive(void) const { return IsUserActionElement() && IsUserActionElementActive(); }
     // Note: As a shadow host whose root with delegatesFocus=false may become
     // focused state when an inner element gets focused, in that case more than
