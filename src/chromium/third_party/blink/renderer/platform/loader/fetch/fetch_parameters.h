@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: fetch_parameters.h
-// Description: FetchParameters Class
-//      Author: Ziming Li
-//     Created: 2019-11-27
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2012 Google, Inc. All rights reserved.
  *
@@ -34,76 +23,190 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef BLINKIT_BLINK_FETCH_PARAMETERS_H
-#define BLINKIT_BLINK_FETCH_PARAMETERS_H
+#ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_FETCH_PARAMETERS_H_
+#define THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_FETCH_PARAMETERS_H_
 
-#pragma once
-
+#include "third_party/blink/public/platform/web_url_request.h"
+#include "third_party/blink/renderer/platform/cross_origin_attribute_value.h"
+#include "third_party/blink/renderer/platform/loader/fetch/client_hints_preferences.h"
+#include "third_party/blink/renderer/platform/loader/fetch/integrity_metadata.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 #include "third_party/blink/renderer/platform/loader/fetch/text_resource_decoder_options.h"
+#include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
 
 namespace blink {
 
-struct ResourceLoaderOptions;
-class ResourceRequest;
+class SecurityOrigin;
 
-class FetchParameters
-{
+// A FetchParameters is a "parameter object" for
+// ResourceFetcher::requestResource to avoid the method having too many
+// arguments.
+//
+// This class is thread-bound. Do not copy/pass an instance across threads.
+class PLATFORM_EXPORT FetchParameters {
+  DISALLOW_NEW();
+
+ public:
+  enum DeferOption { kNoDefer, kLazyLoad, kIdleLoad };
+  enum class SpeculativePreloadType {
+    kNotSpeculative,
+    kInDocument,  // The request was discovered in the main document
+    kInserted     // The request was discovered in a document.write()
+  };
+  enum ImageRequestOptimization {
+    kNone = 0,          // No optimization.
+    kAllowPlaceholder,  // The image is allowed to be a placeholder.
+    kDeferImageLoad,  // Defer loading the image from network. Full image might
+                      // still load if the request is already-loaded or in
+                      // memory cache.
+  };
+  struct ResourceWidth {
     DISALLOW_NEW();
-public:
-    enum DeferOption { kNoDefer, kLazyLoad, kIdleLoad };
-    enum class SpeculativePreloadType {
-        kNotSpeculative,
-        kInDocument,  // The request was discovered in the main document
-        kInserted     // The request was discovered in a document.write()
-    };
-#ifndef BLINKIT_CRAWLER_ONLY
-    enum ImageRequestOptimization {
-        kNone = 0,          // No optimization.
-        kAllowPlaceholder,  // The image is allowed to be a placeholder.
-        kDeferImageLoad,  // Defer loading the image from network. Full image might
-                          // still load if the request is already-loaded or in
-                          // memory cache.
-    };
-#endif
+    float width;
+    bool is_set;
 
-    FetchParameters(const ResourceRequest &resourceRequest, const ResourceLoaderOptions &options);
+    ResourceWidth() : width(0), is_set(false) {}
+  };
 
-    ResourceRequest& MutableResourceRequest(void) { return m_resourceRequest; }
-    const ResourceRequest& GetResourceRequest(void) const { return m_resourceRequest; }
-    bool ForCrawler(void) const { return m_resourceRequest.ForCrawler(); }
+  explicit FetchParameters(const ResourceRequest&);
+  FetchParameters(const ResourceRequest&, const ResourceLoaderOptions&);
+  ~FetchParameters();
 
-    const GURL& Url(void) const { return m_resourceRequest.Url(); }
+  ResourceRequest& MutableResourceRequest() { return resource_request_; }
+  const ResourceRequest& GetResourceRequest() const {
+    return resource_request_;
+  }
+  const KURL& Url() const { return resource_request_.Url(); }
 
-    const TextResourceDecoderOptions& DecoderOptions(void) const { return m_decoderOptions; }
+  void SetRequestContext(mojom::RequestContextType context) {
+    resource_request_.SetRequestContext(context);
+  }
 
-    const ResourceLoaderOptions& Options(void) const { return m_options; }
-    bool IsLinkPreload(void) const { return m_options.initiator_info.is_link_preload; }
-    
-    SpeculativePreloadType GetSpeculativePreloadType(void) const { return m_speculativePreloadType; }
-    bool IsSpeculativePreload(void) const { return SpeculativePreloadType::kNotSpeculative != m_speculativePreloadType; }
+  void SetFetchImportanceMode(mojom::FetchImportanceMode importance_mode) {
+    resource_request_.SetFetchImportanceMode(importance_mode);
+  }
 
-    DeferOption Defer(void) const { return m_defer; }
+  const TextResourceDecoderOptions& DecoderOptions() const {
+    return decoder_options_;
+  }
+  void SetDecoderOptions(const TextResourceDecoderOptions& decoder_options) {
+    decoder_options_ = decoder_options;
+  }
+  void OverrideContentType(
+      TextResourceDecoderOptions::ContentType content_type) {
+    decoder_options_.OverrideContentType(content_type);
+  }
+  void SetCharset(const WTF::TextEncoding& charset) {
+    SetDecoderOptions(TextResourceDecoderOptions(
+        TextResourceDecoderOptions::kPlainTextContent, charset));
+  }
 
-    bool IsStaleRevalidation(void) const { return m_isStaleRevalidation; }
-    void SetStaleRevalidation(bool isStaleRevalidation) { m_isStaleRevalidation = isStaleRevalidation; }
+  ResourceLoaderOptions& MutableOptions() { return options_; }
+  const ResourceLoaderOptions& Options() const { return options_; }
 
-    void OverrideContentType(TextResourceDecoderOptions::ContentType contentType) { m_decoderOptions.OverrideContentType(contentType); }
-private:
-    ResourceRequest m_resourceRequest;
-    // |decoder_options_|'s ContentType is set to |kPlainTextContent| in
-    // FetchParameters but is later overridden by ResourceFactory::ContentType()
-    // in ResourceFetcher::PrepareRequest() before actual use.
-    TextResourceDecoderOptions m_decoderOptions { TextResourceDecoderOptions::kPlainTextContent };
-    ResourceLoaderOptions m_options;
-    SpeculativePreloadType m_speculativePreloadType = SpeculativePreloadType::kNotSpeculative;
-    DeferOption m_defer = kNoDefer;
-    bool m_isStaleRevalidation = false;
+  DeferOption Defer() const { return defer_; }
+  void SetDefer(DeferOption defer) { defer_ = defer; }
+
+  ResourceWidth GetResourceWidth() const { return resource_width_; }
+  void SetResourceWidth(ResourceWidth);
+
+  ClientHintsPreferences& GetClientHintsPreferences() {
+    return client_hint_preferences_;
+  }
+
+  bool IsSpeculativePreload() const {
+    return speculative_preload_type_ != SpeculativePreloadType::kNotSpeculative;
+  }
+  SpeculativePreloadType GetSpeculativePreloadType() const {
+    return speculative_preload_type_;
+  }
+  void SetSpeculativePreloadType(SpeculativePreloadType,
+                                 double discovery_time = 0);
+
+  bool IsLinkPreload() const { return options_.initiator_info.is_link_preload; }
+  void SetLinkPreload(bool is_link_preload) {
+    options_.initiator_info.is_link_preload = is_link_preload;
+  }
+
+  bool IsStaleRevalidation() const { return is_stale_revalidation_; }
+  void SetStaleRevalidation(bool is_stale_revalidation) {
+    is_stale_revalidation_ = is_stale_revalidation;
+  }
+
+  void SetContentSecurityCheck(
+      ContentSecurityPolicyDisposition content_security_policy_option) {
+    options_.content_security_policy_option = content_security_policy_option;
+  }
+  // Configures the request to use the "cors" mode and the credentials mode
+  // specified by the crossOrigin attribute.
+  void SetCrossOriginAccessControl(const SecurityOrigin*,
+                                   CrossOriginAttributeValue);
+  // Configures the request to use the "cors" mode and the specified
+  // credentials mode.
+  void SetCrossOriginAccessControl(const SecurityOrigin*,
+                                   network::mojom::FetchCredentialsMode);
+  const IntegrityMetadataSet IntegrityMetadata() const {
+    return options_.integrity_metadata;
+  }
+  void SetIntegrityMetadata(const IntegrityMetadataSet& metadata) {
+    options_.integrity_metadata = metadata;
+  }
+
+  String ContentSecurityPolicyNonce() const {
+    return options_.content_security_policy_nonce;
+  }
+  void SetContentSecurityPolicyNonce(const String& nonce) {
+    options_.content_security_policy_nonce = nonce;
+  }
+
+  void SetParserDisposition(ParserDisposition parser_disposition) {
+    options_.parser_disposition = parser_disposition;
+  }
+
+  void SetCacheAwareLoadingEnabled(
+      CacheAwareLoadingEnabled cache_aware_loading_enabled) {
+    options_.cache_aware_loading_enabled = cache_aware_loading_enabled;
+  }
+
+  void MakeSynchronous();
+
+  ImageRequestOptimization GetImageRequestOptimization() const {
+    return image_request_optimization_;
+  }
+
+  // Configures the request to load an image as a placeholder and sets the
+  // Client LoFi preview bit.
+  void SetClientLoFiPlaceholder();
+
+  // Configures the request to load an image as a placeholder and sets the
+  // lazy image load bit.
+  void SetLazyImagePlaceholder();
+
+  // Configures the request to load an image placeholder if the request is
+  // eligible (e.g. the url's protocol is HTTP, etc.). If this request is
+  // non-eligible, this method doesn't modify the ResourceRequest. Calling this
+  // method sets image_request_optimization_ to the appropriate value.
+  void SetAllowImagePlaceholder();
+
+ private:
+  ResourceRequest resource_request_;
+  // |decoder_options_|'s ContentType is set to |kPlainTextContent| in
+  // FetchParameters but is later overridden by ResourceFactory::ContentType()
+  // in ResourceFetcher::PrepareRequest() before actual use.
+  TextResourceDecoderOptions decoder_options_;
+  ResourceLoaderOptions options_;
+  SpeculativePreloadType speculative_preload_type_;
+  DeferOption defer_;
+  ResourceWidth resource_width_;
+  ClientHintsPreferences client_hint_preferences_;
+  ImageRequestOptimization image_request_optimization_;
+  bool is_stale_revalidation_ = false;
 };
 
-} // namespace blink
+}  // namespace blink
 
-#endif // BLINKIT_BLINK_FETCH_PARAMETERS_H
+#endif
