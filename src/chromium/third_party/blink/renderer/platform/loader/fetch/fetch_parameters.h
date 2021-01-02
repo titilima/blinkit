@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: fetch_parameters.h
+// Description: FetchParameters Class
+//      Author: Ziming Li
+//     Created: 2021-01-02
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google, Inc. All rights reserved.
  *
@@ -26,10 +37,6 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_FETCH_PARAMETERS_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_FETCH_PARAMETERS_H_
 
-#include "third_party/blink/public/platform/web_url_request.h"
-#include "third_party/blink/renderer/platform/cross_origin_attribute_value.h"
-#include "third_party/blink/renderer/platform/loader/fetch/client_hints_preferences.h"
-#include "third_party/blink/renderer/platform/loader/fetch/integrity_metadata.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 #include "third_party/blink/renderer/platform/loader/fetch/text_resource_decoder_options.h"
@@ -39,8 +46,6 @@
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
 
 namespace blink {
-
-class SecurityOrigin;
 
 // A FetchParameters is a "parameter object" for
 // ResourceFetcher::requestResource to avoid the method having too many
@@ -57,6 +62,7 @@ class PLATFORM_EXPORT FetchParameters {
     kInDocument,  // The request was discovered in the main document
     kInserted     // The request was discovered in a document.write()
   };
+#ifndef BLINKIT_CRAWLER_ONLY
   enum ImageRequestOptimization {
     kNone = 0,          // No optimization.
     kAllowPlaceholder,  // The image is allowed to be a placeholder.
@@ -64,13 +70,7 @@ class PLATFORM_EXPORT FetchParameters {
                       // still load if the request is already-loaded or in
                       // memory cache.
   };
-  struct ResourceWidth {
-    DISALLOW_NEW();
-    float width;
-    bool is_set;
-
-    ResourceWidth() : width(0), is_set(false) {}
-  };
+#endif
 
   explicit FetchParameters(const ResourceRequest&);
   FetchParameters(const ResourceRequest&, const ResourceLoaderOptions&);
@@ -80,15 +80,8 @@ class PLATFORM_EXPORT FetchParameters {
   const ResourceRequest& GetResourceRequest() const {
     return resource_request_;
   }
-  const KURL& Url() const { return resource_request_.Url(); }
-
-  void SetRequestContext(mojom::RequestContextType context) {
-    resource_request_.SetRequestContext(context);
-  }
-
-  void SetFetchImportanceMode(mojom::FetchImportanceMode importance_mode) {
-    resource_request_.SetFetchImportanceMode(importance_mode);
-  }
+  bool ForCrawler(void) const { return resource_request_.ForCrawler(); }
+  const GURL& Url() const { return resource_request_.Url(); }
 
   const TextResourceDecoderOptions& DecoderOptions() const {
     return decoder_options_;
@@ -111,13 +104,6 @@ class PLATFORM_EXPORT FetchParameters {
   DeferOption Defer() const { return defer_; }
   void SetDefer(DeferOption defer) { defer_ = defer; }
 
-  ResourceWidth GetResourceWidth() const { return resource_width_; }
-  void SetResourceWidth(ResourceWidth);
-
-  ClientHintsPreferences& GetClientHintsPreferences() {
-    return client_hint_preferences_;
-  }
-
   bool IsSpeculativePreload() const {
     return speculative_preload_type_ != SpeculativePreloadType::kNotSpeculative;
   }
@@ -137,60 +123,11 @@ class PLATFORM_EXPORT FetchParameters {
     is_stale_revalidation_ = is_stale_revalidation;
   }
 
-  void SetContentSecurityCheck(
-      ContentSecurityPolicyDisposition content_security_policy_option) {
-    options_.content_security_policy_option = content_security_policy_option;
-  }
-  // Configures the request to use the "cors" mode and the credentials mode
-  // specified by the crossOrigin attribute.
-  void SetCrossOriginAccessControl(const SecurityOrigin*,
-                                   CrossOriginAttributeValue);
-  // Configures the request to use the "cors" mode and the specified
-  // credentials mode.
-  void SetCrossOriginAccessControl(const SecurityOrigin*,
-                                   network::mojom::FetchCredentialsMode);
-  const IntegrityMetadataSet IntegrityMetadata() const {
-    return options_.integrity_metadata;
-  }
-  void SetIntegrityMetadata(const IntegrityMetadataSet& metadata) {
-    options_.integrity_metadata = metadata;
-  }
-
-  String ContentSecurityPolicyNonce() const {
-    return options_.content_security_policy_nonce;
-  }
-  void SetContentSecurityPolicyNonce(const String& nonce) {
-    options_.content_security_policy_nonce = nonce;
-  }
-
-  void SetParserDisposition(ParserDisposition parser_disposition) {
-    options_.parser_disposition = parser_disposition;
-  }
-
-  void SetCacheAwareLoadingEnabled(
-      CacheAwareLoadingEnabled cache_aware_loading_enabled) {
-    options_.cache_aware_loading_enabled = cache_aware_loading_enabled;
-  }
-
-  void MakeSynchronous();
-
+#ifndef BLINKIT_CRAWLER_ONLY
   ImageRequestOptimization GetImageRequestOptimization() const {
     return image_request_optimization_;
   }
-
-  // Configures the request to load an image as a placeholder and sets the
-  // Client LoFi preview bit.
-  void SetClientLoFiPlaceholder();
-
-  // Configures the request to load an image as a placeholder and sets the
-  // lazy image load bit.
-  void SetLazyImagePlaceholder();
-
-  // Configures the request to load an image placeholder if the request is
-  // eligible (e.g. the url's protocol is HTTP, etc.). If this request is
-  // non-eligible, this method doesn't modify the ResourceRequest. Calling this
-  // method sets image_request_optimization_ to the appropriate value.
-  void SetAllowImagePlaceholder();
+#endif
 
  private:
   ResourceRequest resource_request_;
@@ -201,9 +138,9 @@ class PLATFORM_EXPORT FetchParameters {
   ResourceLoaderOptions options_;
   SpeculativePreloadType speculative_preload_type_;
   DeferOption defer_;
-  ResourceWidth resource_width_;
-  ClientHintsPreferences client_hint_preferences_;
-  ImageRequestOptimization image_request_optimization_;
+#ifndef BLINKIT_CRAWLER_ONLY
+  ImageRequestOptimization image_request_optimization_ = kNone;
+#endif
   bool is_stale_revalidation_ = false;
 };
 
