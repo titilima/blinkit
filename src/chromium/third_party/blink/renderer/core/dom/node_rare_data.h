@@ -81,7 +81,7 @@ public:
     void SetNodeRenderingData(NodeRenderingData *nodeLayoutData)
     {
         ASSERT(nullptr != nodeLayoutData);
-        m_nodeLayoutData = m_nodeLayoutData;
+        m_nodeLayoutData = nodeLayoutData;
     }
 protected:
     explicit NodeRareDataBase(NodeRenderingData *nodeLayoutData) : m_nodeLayoutData(nodeLayoutData) {}
