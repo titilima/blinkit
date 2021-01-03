@@ -300,6 +300,9 @@
     <Filter Include="renderer\platform\graphics\compositing">
       <UniqueIdentifier>{7d54ec30-742a-4d01-ad09-2a8ad6b2ca48}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\resize_observer">
+      <UniqueIdentifier>{9b4f084c-8ed0-4696-b36b-e77c641f21ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -11913,6 +11916,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_finish_observer.h">
       <Filter>renderer\platform\loader\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\resize_observer\resize_observer_data_map.h">
+      <Filter>renderer\core\resize_observer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

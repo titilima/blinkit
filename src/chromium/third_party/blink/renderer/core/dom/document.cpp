@@ -2208,79 +2208,6 @@ void Document::UpdateBaseURL(void)
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-void Document::UpdateStyle(void)
-{
-    ASSERT(!ForCrawler());
-    ASSERT(!View()->ShouldThrottleRendering());
-
-    m_lifecycle.AdvanceTo(DocumentLifecycle::kInStyleRecalc);
-
-    StyleRecalcChange change = kNoChange;
-    if (GetStyleChangeType() >= kSubtreeStyleChange)
-        change = kForce;
-
-    NthIndexCache nthIndexCache(*this);
-
-    // TODO(futhark@chromium.org): Cannot access the EnsureStyleResolver() before
-    // calling StyleForViewport() below because apparently the StyleResolver's
-    // constructor has side effects. We should fix it. See
-    // printing/setPrinting.html, printing/width-overflow.html though they only
-    // fail on mac when accessing the resolver by what appears to be a viewport
-    // size difference.
-
-    if (kForce == change)
-    {
-        ASSERT(false); // BKTODO:
-#if 0
-        has_nodes_with_placeholder_style_ = false;
-        scoped_refptr<ComputedStyle> viewport_style =
-            StyleResolver::StyleForViewport(*this);
-        StyleRecalcChange local_change = ComputedStyle::StylePropagationDiff(
-            viewport_style.get(), GetLayoutView()->Style());
-        if (local_change != kNoChange)
-            GetLayoutView()->SetStyle(std::move(viewport_style));
-#endif
-    }
-
-    ClearNeedsStyleRecalc();
-    ClearNeedsReattachLayoutTree();
-
-    StyleResolver &resolver = EnsureStyleResolver();
-    if (Element *de = documentElement())
-    {
-        if (de->ShouldCallRecalcStyle(change))
-        {
-            Element* viewportDefining = ViewportDefiningElement();
-            GetStyleEngine().RecalcStyle(change);
-            if (viewportDefining != ViewportDefiningElement())
-                ViewportDefiningElementDidChange();
-        }
-        GetStyleEngine().MarkForWhitespaceReattachment();
-        PropagateStyleToViewport();
-        if (de->NeedsReattachLayoutTree() || de->ChildNeedsReattachLayoutTree())
-        {
-            ReattachLegacyLayoutObjectList legacy_layout_objects(*this);
-            GetStyleEngine().RebuildLayoutTree();
-            legacy_layout_objects.ForceLegacyLayoutIfNeeded();
-        }
-    }
-    GetStyleEngine().ClearWhitespaceReattachSet();
-
-    View()->UpdateCountersAfterStyleChange();
-    GetLayoutView()->RecalcOverflow();
-
-    ClearChildNeedsStyleRecalc();
-    ClearChildNeedsReattachLayoutTree();
-
-    ASSERT(!NeedsStyleRecalc());
-    ASSERT(!ChildNeedsStyleRecalc());
-    ASSERT(!NeedsReattachLayoutTree());
-    ASSERT(!ChildNeedsReattachLayoutTree());
-    ASSERT(InStyleRecalc());
-    ASSERT(GetStyleResolver() == &resolver);
-    m_lifecycle.AdvanceTo(DocumentLifecycle::kStyleClean);
-}
-
 #if DCHECK_IS_ON()
 static void AssertLayoutTreeUpdated(Node &root)
 {
@@ -3063,6 +2990,75 @@ void Document::StyleResolverMayHaveChanged(void)
         if (LayoutView *layoutView = GetLayoutView())
             layoutView->InvalidatePaintForViewAndCompositedLayers();
     }
+}
+
+void Document::UpdateStyle(void)
+{
+    ASSERT(!ForCrawler());
+    ASSERT(!View()->ShouldThrottleRendering());
+
+    m_lifecycle.AdvanceTo(DocumentLifecycle::kInStyleRecalc);
+
+    StyleRecalcChange change = kNoChange;
+    if (GetStyleChangeType() >= kSubtreeStyleChange)
+        change = kForce;
+
+    NthIndexCache nthIndexCache(*this);
+
+    // TODO(futhark@chromium.org): Cannot access the EnsureStyleResolver() before
+    // calling StyleForViewport() below because apparently the StyleResolver's
+    // constructor has side effects. We should fix it. See
+    // printing/setPrinting.html, printing/width-overflow.html though they only
+    // fail on mac when accessing the resolver by what appears to be a viewport
+    // size difference.
+
+    if (kForce == change)
+    {
+        m_hasNodesWithPlaceholderStyle = false;
+        scoped_refptr<ComputedStyle> viewportStyle = StyleResolver::StyleForViewport(*this);
+        LayoutView *layoutView = GetLayoutView();
+        StyleRecalcChange localChange = ComputedStyle::StylePropagationDiff(viewportStyle.get(), layoutView->Style());
+        if (localChange != kNoChange)
+            layoutView->SetStyle(std::move(viewportStyle));
+    }
+
+    ClearNeedsStyleRecalc();
+    ClearNeedsReattachLayoutTree();
+
+    StyleResolver &resolver = EnsureStyleResolver();
+    if (Element *de = documentElement())
+    {
+        if (de->ShouldCallRecalcStyle(change))
+        {
+            Element* viewportDefining = ViewportDefiningElement();
+            GetStyleEngine().RecalcStyle(change);
+            if (viewportDefining != ViewportDefiningElement())
+                ViewportDefiningElementDidChange();
+        }
+        GetStyleEngine().MarkForWhitespaceReattachment();
+        PropagateStyleToViewport();
+        if (de->NeedsReattachLayoutTree() || de->ChildNeedsReattachLayoutTree())
+        {
+            ReattachLegacyLayoutObjectList legacy_layout_objects(*this);
+            GetStyleEngine().RebuildLayoutTree();
+            legacy_layout_objects.ForceLegacyLayoutIfNeeded();
+        }
+    }
+    GetStyleEngine().ClearWhitespaceReattachSet();
+
+    View()->UpdateCountersAfterStyleChange();
+    GetLayoutView()->RecalcOverflow();
+
+    ClearChildNeedsStyleRecalc();
+    ClearChildNeedsReattachLayoutTree();
+
+    ASSERT(!NeedsStyleRecalc());
+    ASSERT(!ChildNeedsStyleRecalc());
+    ASSERT(!NeedsReattachLayoutTree());
+    ASSERT(!ChildNeedsReattachLayoutTree());
+    ASSERT(InStyleRecalc());
+    ASSERT(GetStyleResolver() == &resolver);
+    m_lifecycle.AdvanceTo(DocumentLifecycle::kStyleClean);
 }
 
 void Document::UpdateStyleAndLayoutIgnorePendingStylesheets(RunPostLayoutTasks runPostLayoutTasks)

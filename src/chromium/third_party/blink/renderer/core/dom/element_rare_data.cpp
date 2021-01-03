@@ -53,7 +53,7 @@ struct SameSizeAsElementRareData : NodeRareData
 #ifdef BLINKIT_CRAWLER_ONLY
     void* pointersOrStrings[4];
 #else
-    void* pointersOrStrings[8];
+    void* pointersOrStrings[9];
 #endif
 };
 
@@ -83,7 +83,9 @@ AttrNodeList& ElementRareData::EnsureAttrNodeList(void)
 void ElementRareData::TraceAfterDispatch(Visitor *visitor)
 {
 #ifndef BLINKIT_CRAWLER_ONLY
-    m_shadowRoot->Trace(visitor);
+    if (m_shadowRoot)
+        m_shadowRoot->Trace(visitor);
+    ASSERT(!m_resizeObserverData); // BKTODO:
     visitor->Trace(m_pseudoElementData);
 #endif
     visitor->Trace(m_attributeMap);

@@ -568,76 +568,6 @@ void Element::DetachAllAttrNodesFromElement(void)
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-void Element::DetachLayoutTree(const AttachContext &context)
-{
-    CancelFocusAppearanceUpdate();
-    RemoveCallbackSelectors();
-    if (HasRareData())
-    {
-        ASSERT(false); // BKTODO:
-#if 0
-        ElementRareData* data = GetElementRareData();
-        if (!context.performing_reattach)
-            data->ClearPseudoElements();
-
-        // attachLayoutTree() will clear the computed style for us when inside
-        // recalcStyle.
-        if (!GetDocument().InStyleRecalc())
-            data->ClearComputedStyle();
-
-        if (ElementAnimations* element_animations = data->GetElementAnimations()) {
-            if (context.performing_reattach) {
-                // FIXME: We call detach from within style recalc, so compositingState
-                // is not up to date.
-                // https://code.google.com/p/chromium/issues/detail?id=339847
-                DisableCompositingQueryAsserts disabler;
-
-                // FIXME: restart compositor animations rather than pull back to the
-                // main thread
-                element_animations->RestartAnimationOnCompositor();
-            }
-            else {
-                element_animations->CssAnimations().Cancel();
-                element_animations->SetAnimationStyleChange(false);
-            }
-            element_animations->ClearBaseComputedStyle();
-        }
-
-        DetachPseudoElement(kPseudoIdBefore, context);
-
-        if (ShadowRoot* shadow_root = data->GetShadowRoot())
-            shadow_root->DetachLayoutTree(context);
-#endif
-    }
-
-    ContainerNode::DetachLayoutTree(context);
-
-    DetachPseudoElement(kPseudoIdAfter, context);
-    DetachPseudoElement(kPseudoIdBackdrop, context);
-    DetachPseudoElement(kPseudoIdFirstLetter, context);
-
-    if (!context.performing_reattach && IsUserActionElement())
-    {
-        ASSERT(false); // BKTODO:
-#if 0
-        if (IsHovered())
-            GetDocument().HoveredElementDetached(*this);
-        if (InActiveChain())
-            GetDocument().ActiveChainNodeDetached(*this);
-        GetDocument().UserActionElements().DidDetach(*this);
-#endif
-    }
-
-    if (context.clear_invalidation)
-    {
-        GetDocument().GetStyleEngine().GetPendingNodeInvalidations().ClearInvalidation(*this);
-    }
-
-    SetNeedsResizeObserverUpdate();
-
-    DCHECK(NeedsAttach());
-}
-
 void Element::DetachPseudoElement(PseudoId pseudoId, const AttachContext &context)
 {
     if (PseudoElement *pseudoElement = GetPseudoElement(pseudoId))
@@ -1825,12 +1755,12 @@ void Element::AttachLayoutTree(AttachContext &context)
         builder.CreateLayoutObjectIfNeeded();
         if (ComputedStyle *style = builder.ResolvedStyle())
         {
-            if (!GetLayoutObject() && ShouldStoreNonLayoutObjectComputedStyle(*style))
+            if (nullptr == GetLayoutObject() && ShouldStoreNonLayoutObjectComputedStyle(*style))
                 StoreNonLayoutObjectComputedStyle(style);
         }
     }
 
-    if (HasRareData() && !GetLayoutObject() && nullptr == GetElementRareData()->GetComputedStyle())
+    if (HasRareData() && nullptr == GetLayoutObject() && nullptr == GetElementRareData()->GetComputedStyle())
     {
         ElementRareData *rareData = GetElementRareData();
         if (ElementAnimations *elementAnimations = rareData->GetElementAnimations())
@@ -1932,6 +1862,75 @@ PseudoElement* Element::CreatePseudoElementIfNeeded(PseudoId pseudoId)
 
     pseudoElement->SetNonAttachedStyle(std::move(pseudoStyle));
     return pseudoElement;
+}
+
+void Element::DetachLayoutTree(const AttachContext &context)
+{
+    Document &document = GetDocument();
+
+    CancelFocusAppearanceUpdate();
+    RemoveCallbackSelectors();
+    if (HasRareData())
+    {
+        ElementRareData *data = GetElementRareData();
+        if (!context.performing_reattach)
+            data->ClearPseudoElements();
+
+        // attachLayoutTree() will clear the computed style for us when inside
+        // recalcStyle.
+        if (!document.InStyleRecalc())
+            data->ClearComputedStyle();
+
+        if (ElementAnimations *elementAnimations = data->GetElementAnimations())
+        {
+            if (context.performing_reattach)
+            {
+                // FIXME: We call detach from within style recalc, so compositingState
+                // is not up to date.
+                // https://code.google.com/p/chromium/issues/detail?id=339847
+                DisableCompositingQueryAsserts disabler;
+                // FIXME: restart compositor animations rather than pull back to the
+                // main thread
+                elementAnimations->RestartAnimationOnCompositor();
+            }
+            else
+            {
+                elementAnimations->CssAnimations().Cancel();
+                elementAnimations->SetAnimationStyleChange(false);
+            }
+            elementAnimations->ClearBaseComputedStyle();
+        }
+
+        DetachPseudoElement(kPseudoIdBefore, context);
+
+        if (ShadowRoot *shadowRoot = data->GetShadowRoot())
+            shadowRoot->DetachLayoutTree(context);
+    }
+
+    ContainerNode::DetachLayoutTree(context);
+
+    DetachPseudoElement(kPseudoIdAfter, context);
+    DetachPseudoElement(kPseudoIdBackdrop, context);
+    DetachPseudoElement(kPseudoIdFirstLetter, context);
+
+    if (!context.performing_reattach && IsUserActionElement())
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        if (IsHovered())
+            document.HoveredElementDetached(*this);
+        if (InActiveChain())
+            document.ActiveChainNodeDetached(*this);
+#endif
+        document.UserActionElements().DidDetach(*this);
+    }
+
+    if (context.clear_invalidation)
+        document.GetStyleEngine().GetPendingNodeInvalidations().ClearInvalidation(*this);
+
+    SetNeedsResizeObserverUpdate();
+
+    ASSERT(NeedsAttach());
 }
 
 const ComputedStyle* Element::EnsureComputedStyle(PseudoId pseudoElementSpecifier)
@@ -2126,6 +2125,13 @@ void Element::RebuildShadowRootLayoutTree(WhitespaceAttacher &whitespaceAttacher
     RebuildNonDistributedChildren();
 }
 
+ResizeObserverDataMap* Element::ResizeObserverData(void) const
+{
+    if (HasRareData())
+        return GetElementRareData()->ResizeObserverData();
+    return nullptr;
+}
+
 void Element::SetAnimationStyleChange(bool animationStyleChange)
 {
     if (animationStyleChange && GetDocument().InStyleRecalc())
@@ -2159,7 +2165,14 @@ void Element::SetNeedsCompositingUpdate(void)
 
 void Element::SetNeedsResizeObserverUpdate(void)
 {
-    ASSERT(!HasRareData()); // BKTODO:
+    if (ResizeObserverDataMap *data = ResizeObserverData())
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        for (auto& observation : data->Values())
+            observation->ElementSizeChanged();
+#endif
+    }
 }
 
 const AtomicString& Element::ShadowPseudoId(void) const

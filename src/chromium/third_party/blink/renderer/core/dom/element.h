@@ -47,6 +47,7 @@
 #include "url/gurl.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/dom/whitespace_attacher.h"
+#   include "third_party/blink/renderer/core/resize_observer/resize_observer_data_map.h"
 #endif
 
 namespace blink {
@@ -272,6 +273,8 @@ public:
     virtual const AtomicString& ShadowPseudoId(void) const;
     PseudoElement* GetPseudoElement(PseudoId pseudoid) const;
     void PseudoStateChanged(CSSSelector::PseudoType pseudo);
+
+    ResizeObserverDataMap* ResizeObserverData(void) const;
 
     virtual bool IsPresentationAttribute(const QualifiedName &) const { return false; }
     virtual void CollectStyleForPresentationAttribute(const QualifiedName &name, const AtomicString &value, MutableCSSPropertyValueSet *style) {}

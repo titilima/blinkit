@@ -48,6 +48,7 @@
 #       include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #   endif
 #   include "third_party/blink/renderer/core/dom/shadow_root.h"
+#   include "third_party/blink/renderer/core/resize_observer/resize_observer_data_map.h"
 #endif
 
 namespace blink {
@@ -58,8 +59,9 @@ public:
 #ifdef BLINKIT_CRAWLER_ONLY
     static ElementRareData* Create(void) { return new ElementRareData; }
 #else
-    static ElementRareData* Create(NodeRenderingData* node_layout_data) {
-        return new ElementRareData(node_layout_data);
+    static ElementRareData* Create(NodeRenderingData *nodeLayoutData)
+    {
+        return new ElementRareData(nodeLayoutData);
     }
 #endif
     ~ElementRareData(void);
@@ -98,8 +100,9 @@ public:
     void ClearComputedStyle(void);
 
     ElementAnimations* GetElementAnimations(void) { return m_elementAnimations.Get(); }
-#endif
 
+    ResizeObserverDataMap* ResizeObserverData(void) const { return m_resizeObserverData.get(); }
+#endif
 private:
 #ifdef BLINKIT_CRAWLER_ONLY
     ElementRareData(void);
@@ -111,6 +114,7 @@ private:
     std::unique_ptr<ShadowRoot> m_shadowRoot;
     scoped_refptr<ComputedStyle> m_computedStyle;
     Member<ElementAnimations> m_elementAnimations;
+    std::unique_ptr<ResizeObserverDataMap> m_resizeObserverData;
     Member<PseudoElementData> m_pseudoElementData;
 #endif
     Member<NamedNodeMap> m_attributeMap;

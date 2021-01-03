@@ -3508,6 +3508,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\theme_painter_default.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\view_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\probe\core_probes.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\resize_observer\resize_observer_data_map.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_pending_script.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_script.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\fetch_client_settings_object_impl.h" />
