@@ -88,11 +88,8 @@ Node::~Node(void)
 {
     if (HasEventTargetData())
         GetEventTargetDataMap().erase(this);
-
-    if (HasRareData())
-        ClearRareData();
 #ifndef BLINKIT_CRAWLER_ONLY
-    else if (!HasRareData() && !m_data.m_nodeLayoutData->IsSharedEmptyData())
+    if (!HasRareData() && !m_data.m_nodeLayoutData->IsSharedEmptyData())
         delete m_data.m_nodeLayoutData;
 #endif
 }
