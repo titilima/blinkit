@@ -308,11 +308,13 @@ public:
 #ifndef BLINKIT_CRAWLER_ONLY
     void DefaultEventHandler(Event &event) override;
 #endif
-    InsertionNotificationRequest InsertedInto(ContainerNode &insertionPoint) override;
 protected:
     Element(const QualifiedName &tagName, Document *document, ConstructionType type);
 
     const ElementData* GetElementData(void) const { return m_elementData.Get(); }
+
+    InsertionNotificationRequest InsertedInto(ContainerNode &insertionPoint) override;
+    void RemovedFrom(ContainerNode &insertionPoint) override;
 
     virtual void ParserDidSetAttributes(void) {}
 

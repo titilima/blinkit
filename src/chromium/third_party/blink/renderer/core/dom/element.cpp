@@ -1227,6 +1227,94 @@ void Element::RemoveCallbackSelectors(void)
 }
 #endif
 
+void Element::RemovedFrom(ContainerNode &insertionPoint)
+{
+    ASSERT(false); // BKTODO:
+#if 0
+    bool was_in_document = insertion_point.isConnected();
+    if (HasRareData()) {
+        // If we detached the layout tree with LazyReattachIfAttached, we might not
+        // have cleared the pseudo elements if we remove the element before calling
+        // AttachLayoutTree again. We don't clear pseudo elements on
+        // DetachLayoutTree() if we intend to attach again to avoid recreating the
+        // pseudo elements.
+        GetElementRareData()->ClearPseudoElements();
+    }
+
+    if (Fullscreen::IsFullscreenElement(*this)) {
+        SetContainsFullScreenElementOnAncestorsCrossingFrameBoundaries(false);
+        if (insertion_point.IsElementNode()) {
+            ToElement(insertion_point).SetContainsFullScreenElement(false);
+            ToElement(insertion_point)
+                .SetContainsFullScreenElementOnAncestorsCrossingFrameBoundaries(
+                    false);
+        }
+    }
+
+    if (GetDocument().GetPage())
+        GetDocument().GetPage()->GetPointerLockController().ElementRemoved(this);
+
+    SetSavedLayerScrollOffset(ScrollOffset());
+
+    if (insertion_point.IsInTreeScope() && GetTreeScope() == GetDocument()) {
+        const AtomicString& id_value = GetIdAttribute();
+        if (!id_value.IsNull())
+            UpdateId(insertion_point.GetTreeScope(), id_value, g_null_atom);
+
+        const AtomicString& name_value = GetNameAttribute();
+        if (!name_value.IsNull())
+            UpdateName(name_value, g_null_atom);
+    }
+
+    ContainerNode::RemovedFrom(insertion_point);
+    if (was_in_document) {
+        if (this == GetDocument().CssTarget())
+            GetDocument().SetCSSTarget(nullptr);
+
+        if (GetCustomElementState() == CustomElementState::kCustom)
+            CustomElement::EnqueueDisconnectedCallback(this);
+        else if (IsUpgradedV0CustomElement())
+            V0CustomElement::DidDetach(this, insertion_point.GetDocument());
+
+        if (NeedsStyleInvalidation()) {
+            GetDocument()
+                .GetStyleEngine()
+                .GetPendingNodeInvalidations()
+                .ClearInvalidation(*this);
+        }
+    }
+
+    GetDocument().GetRootScrollerController().ElementRemoved(*this);
+
+    if (IsInTopLayer()) {
+        Fullscreen::ElementRemoved(*this);
+        GetDocument().RemoveFromTopLayer(this);
+    }
+
+    ClearElementFlag(ElementFlags::kIsInCanvasSubtree);
+
+    if (HasRareData()) {
+        ElementRareData* data = GetElementRareData();
+
+        data->ClearRestyleFlags();
+
+        if (ElementAnimations* element_animations = data->GetElementAnimations())
+            element_animations->CssAnimations().Cancel();
+
+        if (data->IntersectionObserverData()) {
+            data->IntersectionObserverData()->ComputeObservations(
+                IntersectionObservation::kExplicitRootObserversNeedUpdate |
+                IntersectionObservation::kImplicitRootObserversNeedUpdate);
+            GetDocument().EnsureIntersectionObserverController().RemoveTrackedTarget(
+                *this);
+        }
+    }
+
+    if (GetDocument().GetFrame())
+        GetDocument().GetFrame()->GetEventHandler().ElementRemoved(this);
+#endif
+}
+
 void Element::setAttribute(const QualifiedName &name, const AtomicString &value)
 {
     SynchronizeAttribute(name);
