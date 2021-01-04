@@ -79,6 +79,7 @@ protected:
     bool ProcessTitleChange(const std::string &newTitle) const;
     void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
     void Resize(const blink::WebSize &size);
+    void SetScaleFactor(float scaleFactor);
     void UpdateAndPaint(void);
 private:
     blink::BrowserControls& GetBrowserControls(void);

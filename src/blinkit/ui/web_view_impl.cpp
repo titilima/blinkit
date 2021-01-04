@@ -433,6 +433,18 @@ void WebViewImpl::SetPageScaleFactor(float scaleFactor)
     page->GetVisualViewport().SetScale(scaleFactor);
 }
 
+void WebViewImpl::SetScaleFactor(float scaleFactor)
+{
+    Page *page = GetPage();
+    if (nullptr == page)
+        return;
+
+    if (page->DeviceScaleFactorDeprecated() == scaleFactor)
+        return;
+
+    page->SetDeviceScaleFactorDeprecated(scaleFactor);
+}
+
 void WebViewImpl::SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState)
 {
     ASSERT(m_page);

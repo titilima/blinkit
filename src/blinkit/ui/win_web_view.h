@@ -30,7 +30,10 @@ private:
     WinWebView(HWND hWnd, bool isWindowVisible);
     ~WinWebView(void);
 
+    void UpdateScaleFactor(void);
+
     bool ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
+    void OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc);
     static BOOL OnNCCreate(HWND hwnd, LPCREATESTRUCT cs);
     void OnPaint(HWND hwnd);
     void OnSize(HWND hwnd, UINT state, int cx, int cy);

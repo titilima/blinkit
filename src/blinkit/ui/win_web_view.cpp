@@ -41,6 +41,7 @@ WinWebView::WinWebView(HWND hWnd, bool isWindowVisible)
     ASSERT(GetDeviceCaps(dc, LOGPIXELSX) == m_dpi);
     m_memoryDC = CreateCompatibleDC(dc);
     ReleaseDC(m_hWnd, dc);
+    UpdateScaleFactor();
 }
 
 WinWebView::~WinWebView(void)
@@ -82,6 +83,14 @@ WinWebView* WinWebView::Lookup(HWND hWnd)
 {
     auto it = s_viewMap.find(hWnd);
     return std::end(s_viewMap) != it ? it->second : nullptr;
+}
+
+void WinWebView::OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc)
+{
+    m_dpi = newDPI;
+    UpdateScaleFactor();
+    SetWindowPos(hwnd, nullptr, rc->left, rc->top, rc->right - rc->left, rc->bottom - rc->top,
+        SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
 BOOL WinWebView::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
@@ -150,6 +159,10 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
         case WM_SIZE:
             HANDLE_WM_SIZE(hWnd, wParam, lParam, OnSize);
             break;
+        case WM_DPICHANGED:
+            ASSERT(HIWORD(wParam) == LOWORD(lParam));
+            OnDPIChanged(hWnd, HIWORD(wParam), reinterpret_cast<LPRECT>(lParam));
+            break;
         case WM_NCDESTROY:
             delete this;
             break;
@@ -157,6 +170,29 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
             return false;
     }
     return true;
+}
+
+void WinWebView::UpdateScaleFactor(void)
+{
+    float scaleFactor = 1.0;
+    switch (m_dpi)
+    {
+        case 96:
+            break;
+        case 120:
+            scaleFactor = 1.25;
+            break;
+        case 144:
+            scaleFactor = 1.5;
+            break;
+        case 192:
+            scaleFactor = 2.0;
+            break;
+        default:
+            NOTREACHED();
+            return;
+    }
+    SetScaleFactor(scaleFactor);
 }
 
 } // namespace BlinKit
