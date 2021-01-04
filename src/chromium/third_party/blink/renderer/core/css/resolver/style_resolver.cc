@@ -41,6 +41,7 @@
 
 #include "third_party/blink/renderer/core/css/resolver/style_resolver.h"
 
+#include "blinkit/gc/gc_static.h"
 #include "third_party/blink/renderer/core/animation/animatable/animatable_value.h"
 #include "third_party/blink/renderer/core/animation/css/css_animatable_value_factory.h"
 #include "third_party/blink/renderer/core/animation/css/css_animations.h"
@@ -111,6 +112,8 @@
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string_hash.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -224,11 +227,8 @@ static void MatchHostRules(const Element& element,
   ShadowRoot* shadow_root = element.GetShadowRoot();
   if (!shadow_root)
     return;
-  ASSERT(false); // BKTODO:
-#if 0
   if (ScopedStyleResolver* resolver = shadow_root->GetScopedStyleResolver())
     resolver->CollectMatchingShadowHostRules(collector);
-#endif
 }
 
 // Matches custom element rules from Custom Element Default Style.
@@ -692,9 +692,8 @@ scoped_refptr<ComputedStyle> StyleResolver::StyleForElement(
   if (!GetDocument().IsRenderingReady() && !element->GetLayoutObject() &&
       !element->NonLayoutObjectComputedStyle()) {
     if (!style_not_yet_available_) {
-      auto style = ComputedStyle::Create();
-      style->AddRef();
-      style_not_yet_available_ = style.get();
+      static GCStaticWrapper<scoped_refptr<ComputedStyle>> non_layout_style(ComputedStyle::Create());
+      style_not_yet_available_ = non_layout_style.GetAsReference().get();
       style_not_yet_available_->SetDisplay(EDisplay::kNone);
       style_not_yet_available_->GetFont().Update(
           GetDocument().GetStyleEngine().GetFontSelector());
