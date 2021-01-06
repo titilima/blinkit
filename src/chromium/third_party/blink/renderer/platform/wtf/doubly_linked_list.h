@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: doubly_linked_list.h
+// Description: DoublyLinkedList Class
+//      Author: Ziming Li
+//     Created: 2021-01-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -26,7 +37,8 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_WTF_DOUBLY_LINKED_LIST_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_WTF_DOUBLY_LINKED_LIST_H_
 
-#include "base/callback.h"
+#include <functional>
+// BKTODO: #include "base/callback.h"
 #include "base/macros.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/wtf_size_t.h"
@@ -101,7 +113,7 @@ class DoublyLinkedList {
 
   // This function should return -1 if the first argument is strictly
   // less than the second, 0 if they are equal or 1 otherwise.
-  using CompareFunc = base::RepeatingCallback<int(T*, T*)>;
+  using CompareFunc = std::function<int(T*, T*)>;
 
   // The following two functions can be used to implement a sorted
   // version of the doubly linked list. It's guaranteed that the list
