@@ -85,7 +85,7 @@ scoped_refptr<SimpleFontData> FontDataCache::Get(const FontPlatformData* platfor
   }
 
   if (!result.Get()->value.second) {
-    ASSERT(false); // BKTODO: DCHECK(inactive_font_data_.Contains(result.Get()->value.first));
+    DCHECK(inactive_font_data_.Contains(result.Get()->value.first));
     inactive_font_data_.erase(result.Get()->value.first);
   }
 
@@ -142,14 +142,11 @@ bool FontDataCache::PurgeLeastRecentlyUsed(int count) {
   auto end = inactive_font_data_.end();
   auto it = inactive_font_data_.begin();
   for (int i = 0; i < count && it != end; ++it, ++i) {
-    ASSERT(false); // BKTODO:
-#if 0
-    scoped_refptr<SimpleFontData>& font_data = *it.Get();
+    scoped_refptr<SimpleFontData>& font_data = *it;
     cache_.erase(&(font_data->PlatformData()));
     // We should not delete SimpleFontData here because deletion can modify
     // m_inactiveFontData. See http://trac.webkit.org/changeset/44011
     font_data_to_delete.push_back(font_data);
-#endif
   }
 
   if (it == end) {
