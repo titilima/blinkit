@@ -219,4 +219,14 @@ scoped_refptr<T> MakeRefCounted(Args&&... args)
 
 } // namespace base
 
+namespace std {
+
+template <typename T>
+struct hash<scoped_refptr<T>> {
+  std::size_t operator()(const scoped_refptr<T> &p) const noexcept {
+    return reinterpret_cast<std::size_t>(p.get());
+  }
+};
+
+}
 #endif // BLINKIT_BASE_SCOPED_REFPTR_H
