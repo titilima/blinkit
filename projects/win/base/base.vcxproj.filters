@@ -304,5 +304,8 @@
     <ClInclude Include="..\..\..\src\chromium\base\sys_byteorder.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\atomic_sequence_num.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
