@@ -93,6 +93,32 @@ public:
     constexpr TimeDelta operator%(TimeDelta a) const {
         return TimeDelta(m_delta % a.m_delta);
     }
+
+    // Comparison operators.
+    constexpr bool operator==(const TimeDelta &other) const
+    {
+        return m_delta == other.m_delta;
+    }
+    constexpr bool operator!=(const TimeDelta &other) const
+    {
+        return m_delta != other.m_delta;
+    }
+    constexpr bool operator<(const TimeDelta &other) const
+    {
+        return m_delta < other.m_delta;
+    }
+    constexpr bool operator<=(const TimeDelta &other) const
+    {
+        return m_delta <= other.m_delta;
+    }
+    constexpr bool operator>(const TimeDelta &other) const
+    {
+        return m_delta > other.m_delta;
+    }
+    constexpr bool operator>=(const TimeDelta &other) const
+    {
+        return m_delta >= other.m_delta;
+    }
 private:
     friend int64_t time_internal::SaturatedAdd(TimeDelta delta, int64_t value);
     friend int64_t time_internal::SaturatedSub(TimeDelta delta, int64_t value);
