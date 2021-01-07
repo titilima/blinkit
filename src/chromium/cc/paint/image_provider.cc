@@ -17,7 +17,6 @@
 
 namespace cc {
 
-#if 0 // BKTODO:
 ImageProvider::ScopedDecodedDrawImage::ScopedDecodedDrawImage() = default;
 
 ImageProvider::ScopedDecodedDrawImage::ScopedDecodedDrawImage(
@@ -49,9 +48,10 @@ ImageProvider::ScopedDecodedDrawImage::~ScopedDecodedDrawImage() {
 }
 
 void ImageProvider::ScopedDecodedDrawImage::DestroyDecode() {
-  if (!destruction_callback_.is_null())
-    std::move(destruction_callback_).Run();
+  if (!destruction_callback_) {
+    destruction_callback_();
+    destruction_callback_ = DestructionCallback();
+  }
 }
-#endif
 
 }  // namespace cc

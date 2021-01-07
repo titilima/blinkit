@@ -16,15 +16,11 @@
 #ifndef CC_PAINT_IMAGE_PROVIDER_H_
 #define CC_PAINT_IMAGE_PROVIDER_H_
 
-#if 0 // BKTODO:
-#include "base/callback.h"
+#include <functional>
+#include <vector>
 #include "cc/paint/decoded_draw_image.h"
 #include "cc/paint/draw_image.h"
-#else
-#endif
 #include "cc/paint/paint_export.h"
-
-#include <vector>
 
 namespace cc {
 class PaintImage;
@@ -33,10 +29,9 @@ class PaintImage;
 // rasterization.
 class CC_PAINT_EXPORT ImageProvider {
  public:
-#if 0 // BKTODO:
   class CC_PAINT_EXPORT ScopedDecodedDrawImage {
    public:
-    using DestructionCallback = base::OnceClosure;
+    using DestructionCallback = std::function<void()>;
 
     ScopedDecodedDrawImage();
     explicit ScopedDecodedDrawImage(DecodedDrawImage image);
@@ -51,7 +46,7 @@ class CC_PAINT_EXPORT ImageProvider {
       return image_.image() || image_.transfer_cache_entry_id();
     }
     const DecodedDrawImage& decoded_image() const { return image_; }
-    bool needs_unlock() const { return !destruction_callback_.is_null(); }
+    bool needs_unlock() const { return !destruction_callback_; }
 
    private:
     void DestroyDecode();
@@ -61,16 +56,13 @@ class CC_PAINT_EXPORT ImageProvider {
 
     DISALLOW_COPY_AND_ASSIGN(ScopedDecodedDrawImage);
   };
-#endif
 
   virtual ~ImageProvider() {}
 
-#if 0 // BKTODO:
   // Returns the DecodedDrawImage to use for this PaintImage. If no image is
   // provided, the draw for this image will be skipped during raster.
   virtual ScopedDecodedDrawImage GetDecodedDrawImage(
       const DrawImage& draw_image) = 0;
-#endif
 };
 
 }  // namespace cc
