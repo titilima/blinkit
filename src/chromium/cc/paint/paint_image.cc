@@ -17,7 +17,7 @@
 
 #include <memory>
 
-// BKTODO: #include "base/atomic_sequence_num.h"
+#include "base/atomic_sequence_num.h"
 #include "base/hash.h"
 #include "cc/paint/paint_image_builder.h"
 #include "cc/paint/paint_image_generator.h"
@@ -27,11 +27,9 @@
 
 namespace cc {
 namespace {
-#if 0 // BKTODO:
 base::AtomicSequenceNumber g_next_image_id;
 base::AtomicSequenceNumber g_next_image_content_id;
 base::AtomicSequenceNumber g_next_generator_client_id;
-#endif
 }  // namespace
 
 const PaintImage::Id PaintImage::kNonLazyStableId = -1;
@@ -88,30 +86,18 @@ PaintImage::DecodingMode PaintImage::GetConservative(DecodingMode one,
 
 // static
 PaintImage::Id PaintImage::GetNextId() {
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   return g_next_image_id.GetNext();
-#endif
 }
 
 // static
 PaintImage::ContentId PaintImage::GetNextContentId() {
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   return g_next_image_content_id.GetNext();
-#endif
 }
 
 // static
 PaintImage::GeneratorClientId PaintImage::GetNextGeneratorClientId() {
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   // These IDs must start from 1, since 0 is the kDefaultGeneratorClientId.
   return g_next_generator_client_id.GetNext() + 1;
-#endif
 }
 
 // static

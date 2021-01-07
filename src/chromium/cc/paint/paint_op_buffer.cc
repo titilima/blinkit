@@ -15,13 +15,11 @@
 
 #include "cc/paint/paint_op_buffer.h"
 
-#if 0 // BKTODO:
 #include "cc/paint/decoded_draw_image.h"
 #include "cc/paint/display_item_list.h"
-#endif
 #include "cc/paint/image_provider.h"
-#if 0 // BKTODO:
 #include "cc/paint/paint_image_builder.h"
+#if 0 // BKTODO:
 #include "cc/paint/paint_op_reader.h"
 #include "cc/paint/paint_op_writer.h"
 #endif
@@ -34,7 +32,6 @@
 
 namespace cc {
 namespace {
-#if 0 // BKTODO:
 DrawImage CreateDrawImage(const PaintImage& image,
                           const PaintFlags* flags,
                           const SkMatrix& matrix) {
@@ -44,7 +41,6 @@ DrawImage CreateDrawImage(const PaintImage& image,
                    flags ? flags->getFilterQuality() : kLow_SkFilterQuality,
                    matrix);
 }
-#endif
 
 bool IsScaleAdjustmentIdentity(const SkSize& scale_adjustment) {
   return std::abs(scale_adjustment.width() - 1.f) < FLT_EPSILON &&
@@ -1152,10 +1148,7 @@ void AnnotateOp::Raster(const AnnotateOp* op,
 void ClipPathOp::Raster(const ClipPathOp* op,
                         SkCanvas* canvas,
                         const PlaybackParams& params) {
-  ASSERT(false); // BKTODO:
-#if 0
   canvas->clipPath(op->path, op->op, op->antialias);
-#endif
 }
 
 void ClipRectOp::Raster(const ClipRectOp* op,
@@ -1193,19 +1186,14 @@ void DrawDRRectOp::RasterWithFlags(const DrawDRRectOp* op,
                                    const PaintFlags* flags,
                                    SkCanvas* canvas,
                                    const PlaybackParams& params) {
-  ASSERT(false); // BKTODO:
-#if 0
   SkPaint paint = flags->ToSkPaint();
   canvas->drawDRRect(op->outer, op->inner, paint);
-#endif
 }
 
 void DrawImageOp::RasterWithFlags(const DrawImageOp* op,
                                   const PaintFlags* flags,
                                   SkCanvas* canvas,
                                   const PlaybackParams& params) {
-  ASSERT(false); // BKTODO:
-#if 0
   SkPaint paint = flags ? flags->ToSkPaint() : SkPaint();
 
   if (!params.image_provider) {
@@ -1245,15 +1233,12 @@ void DrawImageOp::RasterWithFlags(const DrawImageOp* op,
   }
   paint.setFilterQuality(decoded_image.filter_quality());
   canvas->drawImage(decoded_image.image().get(), op->left, op->top, &paint);
-#endif
 }
 
 void DrawImageRectOp::RasterWithFlags(const DrawImageRectOp* op,
                                       const PaintFlags* flags,
                                       SkCanvas* canvas,
                                       const PlaybackParams& params) {
-  ASSERT(false); // BKTODO:
-#if 0
   // TODO(enne): Probably PaintCanvas should just use the skia enum directly.
   SkCanvas::SrcRectConstraint skconstraint =
       static_cast<SkCanvas::SrcRectConstraint>(op->constraint);
@@ -1295,51 +1280,38 @@ void DrawImageRectOp::RasterWithFlags(const DrawImageRectOp* op,
   paint.setFilterQuality(decoded_image.filter_quality());
   canvas->drawImageRect(decoded_image.image().get(), adjusted_src, op->dst,
                         &paint, skconstraint);
-#endif
 }
 
 void DrawIRectOp::RasterWithFlags(const DrawIRectOp* op,
                                   const PaintFlags* flags,
                                   SkCanvas* canvas,
                                   const PlaybackParams& params) {
-  ASSERT(false); // BKTODO:
-#if 0
   SkPaint paint = flags->ToSkPaint();
   canvas->drawIRect(op->rect, paint);
-#endif
 }
 
 void DrawLineOp::RasterWithFlags(const DrawLineOp* op,
                                  const PaintFlags* flags,
                                  SkCanvas* canvas,
                                  const PlaybackParams& params) {
-  ASSERT(false); // BKTODO:
-#if 0
   SkPaint paint = flags->ToSkPaint();
   canvas->drawLine(op->x0, op->y0, op->x1, op->y1, paint);
-#endif
 }
 
 void DrawOvalOp::RasterWithFlags(const DrawOvalOp* op,
                                  const PaintFlags* flags,
                                  SkCanvas* canvas,
                                  const PlaybackParams& params) {
-  ASSERT(false); // BKTODO:
-#if 0
   SkPaint paint = flags->ToSkPaint();
   canvas->drawOval(op->oval, paint);
-#endif
 }
 
 void DrawPathOp::RasterWithFlags(const DrawPathOp* op,
                                  const PaintFlags* flags,
                                  SkCanvas* canvas,
                                  const PlaybackParams& params) {
-  ASSERT(false); // BKTODO:
-#if 0
   SkPaint paint = flags->ToSkPaint();
   canvas->drawPath(op->path, paint);
-#endif
 }
 
 void DrawRecordOp::Raster(const DrawRecordOp* op,

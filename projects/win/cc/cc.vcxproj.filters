@@ -89,6 +89,12 @@
     <ClCompile Include="..\..\..\src\chromium\cc\paint\skia_paint_image_generator.cc">
       <Filter>paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\draw_image.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\decoded_draw_image.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\cc\_pc.h">
@@ -194,6 +200,12 @@
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\cc\paint\skia_paint_image_generator.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\draw_image.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\decoded_draw_image.h">
       <Filter>paint</Filter>
     </ClInclude>
   </ItemGroup>

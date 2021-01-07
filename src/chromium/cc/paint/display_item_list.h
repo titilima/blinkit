@@ -25,8 +25,8 @@
 #include "base/gtest_prod_util.h"
 #include "base/macros.h"
 #include "base/memory/ref_counted.h"
-#if 0 // BKTODO:
 #include "base/trace_event/trace_event.h"
+#if 0 // BKTODO:
 #include "cc/base/rtree.h"
 #include "cc/paint/discardable_image_map.h"
 #include "cc/paint/image_id.h"

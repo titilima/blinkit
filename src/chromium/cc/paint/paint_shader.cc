@@ -15,18 +15,16 @@
 
 #include "cc/paint/paint_shader.h"
 
-#if 0 // BKTODO:
 #include "base/atomic_sequence_num.h"
 #include "cc/paint/paint_image_builder.h"
-#include "cc/paint/paint_op_writer.h"
-#endif
+// BKTODO: #include "cc/paint/paint_op_writer.h"
 #include "cc/paint/paint_record.h"
 #include "third_party/skia/include/core/SkPictureRecorder.h"
 #include "third_party/skia/include/effects/SkGradientShader.h"
 
 namespace cc {
 namespace {
-// BKTODO: base::AtomicSequenceNumber g_next_shader_id;
+base::AtomicSequenceNumber g_next_shader_id;
 
 sk_sp<SkPicture> ToSkPicture(sk_sp<PaintRecord> record,
                              const SkRect& bounds,
@@ -190,7 +188,7 @@ sk_sp<PaintShader> PaintShader::MakePaintRecord(
   sk_sp<PaintShader> shader(new PaintShader(Type::kPaintRecord));
 
   shader->record_ = std::move(record);
-  ASSERT(false); // BKTODO: shader->id_ = g_next_shader_id.GetNext();
+  shader->id_ = g_next_shader_id.GetNext();
   shader->tile_ = tile;
   shader->scaling_behavior_ = scaling_behavior;
   shader->SetMatrixAndTiling(local_matrix, tx, ty);
