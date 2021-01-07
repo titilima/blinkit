@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: paint_image_builder.cc
+// Description: PaintImageBuilder Classes
+//      Author: Ziming Li
+//     Created: 2021-01-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -63,8 +74,7 @@ PaintImage PaintImageBuilder::TakePaintImage() {
   }
 
   if (paint_image_.ShouldAnimate()) {
-    DCHECK(paint_image_.paint_image_generator_)
-        << "Animated images must provide a generator";
+    DCHECK(paint_image_.paint_image_generator_); // Animated images must provide a generator
     for (const auto& frame : paint_image_.GetFrameMetadata())
       DCHECK_GT(frame.duration, base::TimeDelta());
   }
