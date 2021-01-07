@@ -63,6 +63,7 @@
     <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
     <Import Project="..\chromium.props" />
+    <Import Project="..\skia.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -70,6 +71,7 @@
     <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
     <Import Project="..\chromium.props" />
+    <Import Project="..\skia.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -96,7 +98,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)ui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SrcRoot)ui;$(RepoRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -112,7 +114,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)ui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SrcRoot)ui;$(RepoRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -153,6 +155,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\chromium\ui\gfx\color_space.h" />
+    <ClInclude Include="..\..\..\src\chromium\ui\gfx\color_space_export.h" />
     <ClInclude Include="..\..\..\src\chromium\ui\gfx\geometry\cubic_bezier.h" />
     <ClInclude Include="..\..\..\src\chromium\ui\gfx\geometry\geometry_export.h" />
     <ClInclude Include="..\..\..\src\chromium\ui\gfx\geometry\insets.h" />
@@ -174,6 +178,7 @@
     <ClInclude Include="..\..\..\src\ui\_pc.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\chromium\ui\gfx\color_space.cc" />
     <ClCompile Include="..\..\..\src\chromium\ui\gfx\geometry\point.cc" />
     <ClCompile Include="..\..\..\src\chromium\ui\gfx\geometry\point_conversions.cc" />
     <ClCompile Include="..\..\..\src\chromium\ui\gfx\geometry\point_f.cc" />

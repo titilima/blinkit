@@ -74,6 +74,12 @@
     <ClInclude Include="..\..\..\src\chromium\ui\gfx\geometry\size_conversions.h">
       <Filter>gfx\geometry</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\ui\gfx\color_space.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\ui\gfx\color_space_export.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -102,6 +108,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\ui\gfx\geometry\vector2d_f.cc">
       <Filter>gfx\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\ui\gfx\color_space.cc">
+      <Filter>gfx</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - ui Library
+// -------------------------------------------------
+//   File Name: color_space.cc
+// Description: ColorSpace Class
+//      Author: Ziming Li
+//     Created: 2021-01-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,14 +21,18 @@
 #include <sstream>
 
 #include "base/atomic_sequence_num.h"
+#if 0 // BKTODO:
 #include "base/containers/mru_cache.h"
 #include "base/lazy_instance.h"
 #include "base/synchronization/lock.h"
+#endif
 #include "third_party/skia/include/core/SkColorSpace.h"
 #include "third_party/skia/include/core/SkData.h"
 #include "third_party/skia/include/core/SkICC.h"
+#if 0 // BKTODO:
 #include "ui/gfx/icc_profile.h"
 #include "ui/gfx/skia_color_space_util.h"
+#endif
 
 namespace gfx {
 
@@ -28,6 +43,7 @@ base::AtomicSequenceNumber g_color_space_id;
 // See comments in ToSkColorSpace about this cache. This cache may only be
 // accessed while holding g_sk_color_space_cache_lock.
 static const size_t kMaxCachedSkColorSpaces = 16;
+#if 0 // BKTODO:
 using SkColorSpaceCacheBase =
     base::MRUCache<gfx::ColorSpace, sk_sp<SkColorSpace>>;
 class SkColorSpaceCache : public SkColorSpaceCacheBase {
@@ -38,6 +54,7 @@ base::LazyInstance<SkColorSpaceCache>::Leaky g_sk_color_space_cache =
     LAZY_INSTANCE_INITIALIZER;
 base::LazyInstance<base::Lock>::Leaky g_sk_color_space_cache_lock =
     LAZY_INSTANCE_INITIALIZER;
+#endif
 
 static bool IsAlmostZero(float value) {
   return std::abs(value) < std::numeric_limits<float>::epsilon();
@@ -450,25 +467,28 @@ sk_sp<SkColorSpace> ColorSpace::ToSkColorSpace() const {
 
   // Handle only full-range RGB spaces.
   if (matrix_ != MatrixID::RGB) {
-    DLOG(ERROR) << "Not creating non-RGB SkColorSpace";
+    BKLOG("ERROR: Not creating non-RGB SkColorSpace");
     return nullptr;
   }
   if (range_ != RangeID::FULL) {
-    DLOG(ERROR) << "Not creating non-full-range SkColorSpace";
+    BKLOG("ERROR: Not creating non-full-range SkColorSpace");
     return nullptr;
   }
 
   // If we got a specific SkColorSpace from the ICCProfile that this color space
   // was created from, use that.
   if (icc_profile_id_) {
+    ASSERT(false); // BKTODO:
+#if 0
     sk_sp<SkColorSpace> result =
         ICCProfile::GetSkColorSpaceFromId(icc_profile_id_);
     if (result)
       return result;
+#endif
 
     // This will fall through to creating a parametric approximation. The
     // result will be that we will use an inaccurate transfer function.
-    DLOG(ERROR) << "Unable to find ICCProfile for SkColorSpace.";
+    BKLOG("ERROR: Unable to find ICCProfile for SkColorSpace.");
   }
 
   // Use the named SRGB and linear-SRGB instead of the generic constructors.
@@ -496,7 +516,7 @@ sk_sp<SkColorSpace> ColorSpace::ToSkColorSpace() const {
     default:
       has_named_gamma = false;
       if (!GetTransferFunction(&custom_gamma)) {
-        DLOG(ERROR) << "Failed to transfer function for SkColorSpace";
+        BKLOG("ERROR: Failed to transfer function for SkColorSpace");
         return nullptr;
       }
       break;
@@ -522,6 +542,8 @@ sk_sp<SkColorSpace> ColorSpace::ToSkColorSpace() const {
       break;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Maintain a gfx::ColorSpace to SkColorSpace map, so that pointer-based
   // comparisons of SkColorSpaces will be more likely to be accurate.
   // https://crbug.com/793116
@@ -530,6 +552,7 @@ sk_sp<SkColorSpace> ColorSpace::ToSkColorSpace() const {
   auto found = g_sk_color_space_cache.Get().Get(*this);
   if (found != g_sk_color_space_cache.Get().end())
     return found->second;
+#endif
 
   sk_sp<SkColorSpace> sk_color_space;
   if (has_named_gamma) {
@@ -544,9 +567,9 @@ sk_sp<SkColorSpace> ColorSpace::ToSkColorSpace() const {
       sk_color_space = SkColorSpace::MakeRGB(custom_gamma, custom_gamut);
   }
   if (!sk_color_space)
-    DLOG(ERROR) << "SkColorSpace::MakeRGB failed.";
+    BKLOG("ERROR: SkColorSpace::MakeRGB failed.");
 
-  g_sk_color_space_cache.Get().Put(*this, sk_color_space);
+  ASSERT(false); // BKTODO: g_sk_color_space_cache.Get().Put(*this, sk_color_space);
   return sk_color_space;
 }
 
@@ -803,7 +826,7 @@ bool ColorSpace::GetTransferFunction(SkColorSpaceTransferFn* fn) const {
 bool ColorSpace::GetInverseTransferFunction(SkColorSpaceTransferFn* fn) const {
   if (!GetTransferFunction(fn))
     return false;
-  *fn = SkTransferFnInverse(*fn);
+  ASSERT(false); // BKTODO: *fn = SkTransferFnInverse(*fn);
   return true;
 }
 
