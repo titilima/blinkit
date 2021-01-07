@@ -1441,7 +1441,7 @@ void LayoutBlock::ComputeIntrinsicLogicalWidths(
 
   max_logical_width = std::max(min_logical_width, max_logical_width);
 
-  ASSERT(false); // BKTODO:
+  ASSERT(!IsHTMLMarqueeElement(GetNode())); // BKTODO:
 #if 0
   if (IsHTMLMarqueeElement(GetNode()) &&
       ToHTMLMarqueeElement(GetNode())->IsHorizontal())

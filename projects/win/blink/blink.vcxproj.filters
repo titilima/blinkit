@@ -303,6 +303,9 @@
     <Filter Include="renderer\core\resize_observer">
       <UniqueIdentifier>{9b4f084c-8ed0-4696-b36b-e77c641f21ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\html\forms">
+      <UniqueIdentifier>{46d1c75e-8017-4914-8e01-b93a384d546d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -5341,6 +5344,48 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_parameters.cc">
       <Filter>renderer\platform\loader\fetch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\html_button_element.cc">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\html_form_control_element.cc">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\labelable_element.cc">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\listed_element.cc">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\html_data_list_element.cc">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\html_field_set_element.cc">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_button.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\html_input_element.cc">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\text_control_element.cc">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\html_form_control_element_with_state.cc">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\text_control_inner_elements.cc">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_div_element.cc">
+      <Filter>renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_painter.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_painter_base.cc">
+      <Filter>renderer\core\paint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -11919,6 +11964,57 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\resize_observer\resize_observer_data_map.h">
       <Filter>renderer\core\resize_observer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\html_button_element.h">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\html_form_control_element.h">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\form_associated.h">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\labelable_element.h">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\listed_element.h">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\html_data_list_element.h">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\html_field_set_element.h">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_button.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\html_input_element.h">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\text_control_element.h">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\html_form_control_element_with_state.h">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\text_control_inner_elements.h">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\doubly_linked_list.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_div_element.h">
+      <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\form_controller.h">
+      <Filter>renderer\core\html\forms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_painter.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_painter_base.h">
+      <Filter>renderer\core\paint</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

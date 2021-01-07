@@ -248,7 +248,7 @@ void WebViewImpl::Resize(const WebSize &size)
     if (size.IsEmpty() || m_shouldAutoResize || m_size == size)
         return;
 
-    m_canvas = CreateCanvas(size);
+    m_canvas = std::make_unique<cc::SkiaPaintCanvas>(PrepareBitmapForCanvas(size));
     m_canvas->drawColor(m_baseBackgroundColor);
 
     BrowserControls& browserControls = GetBrowserControls();

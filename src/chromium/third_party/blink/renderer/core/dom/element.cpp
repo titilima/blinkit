@@ -44,6 +44,7 @@
 #include "third_party/blink/renderer/core/dom/element_data.h"
 #include "third_party/blink/renderer/core/dom/element_data_cache.h"
 #include "third_party/blink/renderer/core/dom/element_rare_data.h"
+#include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 #include "third_party/blink/renderer/core/dom/mutation_observer_interest_group.h"
 #include "third_party/blink/renderer/core/dom/text.h"
 #include "third_party/blink/renderer/core/editing/serializers/serialization.h"
@@ -54,6 +55,7 @@
 #include "third_party/blink/renderer/platform/wtf/not_found.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/css_identifier_value.h"
 #   include "third_party/blink/renderer/core/css/resolver/selector_filter_parent_scope.h"
 #   include "third_party/blink/renderer/core/css/style_change_reason.h"
 #   include "third_party/blink/renderer/core/dom/first_letter_pseudo_element.h"
@@ -318,7 +320,7 @@ void Element::ChildrenChanged(const ChildrenChange &change)
 
     CheckForEmptyStyleChange(change.siblingBeforeChange, change.siblingAfterChange);
 
-    if (!change.byParser && change.IsChildElementChange())
+    if (kChildrenChangeSourceAPI == change.by_parser && change.IsChildElementChange())
     {
         auto changeType = kElementRemoved == change.type
             ? kSiblingElementRemoved
@@ -543,8 +545,8 @@ AtomicString Element::ComputeInheritedLanguage(void) const
 #ifndef BLINKIT_CRAWLER_ONLY
 scoped_refptr<ComputedStyle> Element::CustomStyleForLayoutObject(void)
 {
-    ASSERT(false); // BKTODO: Check child classes.
-    return nullptr;
+    ASSERT(HasCustomStyleCallbacks());
+    return OriginalStyleForLayoutObject();
 }
 
 void Element::DefaultEventHandler(Event &event)
@@ -1815,6 +1817,43 @@ void Element::AddCallbackSelectors(void)
     UpdateCallbackSelectors(nullptr, GetComputedStyle());
 }
 
+void Element::AddPropertyToPresentationAttributeStyle(
+    MutableCSSPropertyValueSet *style,
+    CSSPropertyID propertyId,
+    CSSValueID identifier)
+{
+    ASSERT(IsStyledElement());
+    style->SetProperty(propertyId, *CSSIdentifierValue::Create(identifier));
+}
+
+void Element::AddPropertyToPresentationAttributeStyle(
+    MutableCSSPropertyValueSet *style,
+    CSSPropertyID propertyId,
+    double value, CSSPrimitiveValue::UnitType unit)
+{
+    ASSERT(IsStyledElement());
+    style->SetProperty(propertyId, *CSSPrimitiveValue::Create(value, unit));
+}
+
+void Element::AddPropertyToPresentationAttributeStyle(
+    MutableCSSPropertyValueSet *style,
+    CSSPropertyID propertyId,
+    const String &value)
+{
+    ASSERT(IsStyledElement());
+    Document &document = GetDocument();
+    style->SetProperty(propertyId, value, false, document.GetSecureContextMode(), document.ElementSheet().Contents());
+}
+
+void Element::AddPropertyToPresentationAttributeStyle(
+    MutableCSSPropertyValueSet *style,
+    CSSPropertyID propertyId,
+    const CSSValue &value)
+{
+    ASSERT(IsStyledElement());
+    style->SetProperty(propertyId, value);
+}
+
 Element* Element::AdjustedFocusedElementInTreeScope(void) const
 {
     return IsInTreeScope() ? ContainingTreeScope().AdjustedFocusedElement() : nullptr;
@@ -1901,6 +1940,11 @@ void Element::AttachPseudoElement(PseudoId pseudoId, AttachContext &context)
 {
     if (PseudoElement *pseudoElement = GetPseudoElement(pseudoId))
         pseudoElement->AttachLayoutTree(context);
+}
+
+void Element::blur(void)
+{
+    ASSERT(false); // BKTODO:
 }
 
 bool Element::CanGeneratePseudoElement(PseudoId pseudoId) const
@@ -2021,6 +2065,41 @@ void Element::DetachLayoutTree(const AttachContext &context)
     ASSERT(NeedsAttach());
 }
 
+void Element::DispatchBlurEvent(Element *newFocusedElement, WebFocusType type, InputDeviceCapabilities *sourceCapabilities)
+{
+    ASSERT(false); // BKTODO:
+#if 0
+    DispatchEvent(*FocusEvent::Create(EventTypeNames::blur, Event::Bubbles::kNo,
+        GetDocument().domWindow(), 0,
+        new_focused_element, source_capabilities));
+#endif
+}
+
+void Element::DispatchFocusEvent(Element *oldFocusedElement, WebFocusType type, InputDeviceCapabilities *sourceCapabilities)
+{
+    ASSERT(false); // BKTODO:
+#if 0
+    DispatchEvent(*FocusEvent::Create(EventTypeNames::focus, Event::Bubbles::kNo,
+        GetDocument().domWindow(), 0,
+        old_focused_element, source_capabilities));
+#endif
+}
+
+void Element::DispatchFocusInEvent(const AtomicString &eventType, Element *oldFocusedElement, WebFocusType type, InputDeviceCapabilities *sourceCapabilities)
+{
+#if DCHECK_IS_ON()
+    ASSERT(!EventDispatchForbiddenScope::IsEventDispatchForbidden());
+#endif
+    ASSERT(false); // BKTODO:
+#if 0
+    DCHECK(event_type == EventTypeNames::focusin ||
+        event_type == EventTypeNames::DOMFocusIn);
+    DispatchScopedEvent(*FocusEvent::Create(
+        event_type, Event::Bubbles::kYes, GetDocument().domWindow(), 0,
+        old_focused_element, source_capabilities));
+#endif
+}
+
 const ComputedStyle* Element::EnsureComputedStyle(PseudoId pseudoElementSpecifier)
 {
     ASSERT(!ForCrawler());
@@ -2106,6 +2185,11 @@ bool Element::LayoutObjectIsNeeded(const ComputedStyle &style) const
 AtomicString Element::LocalNameForSelectorMatching(void) const
 {
     return localName().DeprecatedLower();
+}
+
+bool Element::MayTriggerVirtualKeyboard(void) const
+{
+    return HasEditableStyle(*this);
 }
 
 const CSSPropertyValueSet* Element::PresentationAttributeStyle(void)
@@ -2416,6 +2500,51 @@ void Element::UpdateFirstLetterPseudoElement(StyleUpdatePhase phase)
         GetElementRareData()->SetPseudoElement(kPseudoIdFirstLetter, nullptr);
 }
 
+void Element::UpdateFocusAppearanceWithOptions(SelectionBehaviorOnFocus selectionBehavior, const FocusOptions &options)
+{
+    if (SelectionBehaviorOnFocus::kNone == selectionBehavior)
+        return;
+
+    if (IsRootEditableElement(*this))
+    {
+        LocalFrame *frame = GetDocument().GetFrame();
+        if (nullptr == frame)
+            return;
+
+        ASSERT(false); // BKTODO:
+#if 0
+        // When focusing an editable element in an iframe, don't reset the selection
+        // if it already contains a selection.
+        if (this == frame->Selection().ComputeVisibleSelectionInDOMTreeDeprecated().RootEditableElement())
+            return;
+
+        // FIXME: We should restore the previous selection if there is one.
+        // Passing DoNotSetFocus as this function is called after
+        // FocusController::setFocusedElement() and we don't want to change the
+        // focus to a new Element.
+        frame->Selection().SetSelection(
+            SelectionInDOMTree::Builder()
+            .Collapse(FirstPositionInOrBeforeNode(*this))
+            .Build(),
+            SetSelectionOptions::Builder()
+            .SetShouldCloseTyping(true)
+            .SetShouldClearTypingStyle(true)
+            .SetDoNotSetFocus(true)
+            .Build());
+        if (!options.preventScroll())
+            frame->Selection().RevealSelection();
+#endif
+    }
+    else if (LayoutObject *layoutObject = GetLayoutObject())
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        if (!layoutObject->IsLayoutEmbeddedContent() && !options.preventScroll())
+            layoutObject->ScrollRectToVisible(BoundingBoxForScrollIntoView(), WebScrollIntoViewParams());
+#endif
+    }
+}
+
 void Element::UpdatePresentationAttributeStyle(void)
 {
     SynchronizeAllAttributes();
@@ -2454,7 +2583,7 @@ void Element::UpdatePseudoElement(PseudoId pseudoId, StyleRecalcChange change)
 
 void Element::WillRecalcStyle(StyleRecalcChange change)
 {
-    ASSERT(false); // BKTODO:
+    ASSERT(HasCustomStyleCallbacks());
 }
 #endif // BLINKIT_CRAWLER_ONLY
 

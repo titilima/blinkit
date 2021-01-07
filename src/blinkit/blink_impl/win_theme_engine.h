@@ -15,6 +15,7 @@
 #pragma once
 
 #include <Uxtheme.h>
+#include "blinkit/win/bk_bitmap.h"
 #include "third_party/blink/public/platform/web_theme_engine.h"
 
 namespace BlinKit {
@@ -25,16 +26,23 @@ public:
     WinThemeEngine(void);
     ~WinThemeEngine(void);
 private:
+    void PrepareDC(int width, int height);
+
+    void PaintByUser32(HDC hdc, Part part, State state, LPRECT rc, const ExtraParams *extra);
+    void PaintButtonByUser32(HDC hdc, State state, LPRECT rc, const ButtonExtraParams *extra);
+
+    static HMODULE LoadUxTheme(void);
+    void PaintByUxTheme(HDC hdc, Part part, State state, LPRECT rc, const ExtraParams *extra);
 #if 0 // BKTODO:
-    void PaintByUser32(HDC hdc, Part part, State state, const blink::WebSize &size, const ExtraParams *extra);
-    void PaintByUxTheme(HDC hdc, Part part, State state, const blink::WebSize &size, const ExtraParams *extra);
     static void PaintScrollbarCorner(HDC hdc, const blink::WebSize &size);
-    void PaintButtonByUxTheme(HDC hdc, State state, const blink::WebSize &size, const ButtonExtraParams *extra);
+#endif
+    void PaintButtonByUxTheme(HDC hdc, State state, LPCRECT rc, const ButtonExtraParams *extra);
+#if 0 // BKTODO:
     void PaintScrollArrowByUxTheme(HDC hdc, Part part, State state, const blink::WebSize &size, const ScrollbarTrackExtraParams *extra);
     void PaintScrollPartByUxTheme(HDC hdc, Part part, State state, const blink::WebSize &size, const ScrollbarTrackExtraParams *extra);
     void PaintTextFieldByUxTheme(HDC hdc, State state, const blink::WebSize &size, const TextFieldExtraParams *extra);
-    void Draw(HDC hdc, PCWSTR classList, int partId, int stateId, const blink::WebSize &size);
 #endif
+    void Draw(HDC hdc, PCWSTR classList, int partId, int stateId, LPCRECT rc);
 
     // WebThemeEngine
     blink::WebSize GetSize(Part part) override;
@@ -57,19 +65,21 @@ private:
     {
         ASSERT(false); // BKTODO:
     }
-    void Paint(cc::PaintCanvas*, Part, State, const blink::WebRect&, const ExtraParams*) override
-    {
-        ASSERT(false); // BKTODO:
-    }
+    void Paint(cc::PaintCanvas *canvas, Part part, State state, const blink::WebRect &rect,
+        const ExtraParams *extra) override;
+
+    HDC m_hdc;
+    HBITMAP m_oldBitmap = nullptr;
+    BkBitmap m_bitmap;
 
     typedef int(WINAPI * GetMetricsType)(int, UINT);
     GetMetricsType m_getMetrics;
 
-    HMODULE m_uxtheme;
-    void(WinThemeEngine::*m_paint)(HDC, Part, State, const blink::WebSize &, const ExtraParams *);
+    HMODULE m_uxtheme = nullptr;
+    void(WinThemeEngine::*m_paint)(HDC, Part, State, LPRECT, const ExtraParams *);
 
     typedef HTHEME(WINAPI * OpenThemeType)(HWND, PCWSTR, UINT);
-    OpenThemeType m_openTheme;
+    OpenThemeType m_openTheme = nullptr;
 };
 
 } // namespace BlinKit

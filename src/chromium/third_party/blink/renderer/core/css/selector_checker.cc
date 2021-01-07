@@ -1087,14 +1087,13 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
+      if (element.ForCrawler())
+        return false;
       if (mode_ == kResolvingStyle) {
-        ASSERT(false); // BKTODO:
-#if 0
         if (context.in_rightmost_compound)
           element_style_->SetAffectedByActive();
         else
-          element.SetChildrenOrSiblingsAffectedByActive();
-#endif
+          ASSERT(false); // BKTODO: element.SetChildrenOrSiblingsAffectedByActive();
       }
       if (!ShouldMatchHoverOrActive(context))
         return false;

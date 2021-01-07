@@ -25,7 +25,7 @@
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/paint/box_painter.h"
 #include "third_party/blink/renderer/core/paint/line_box_list_painter.h"
-// BKTODO: #include "third_party/blink/renderer/core/paint/object_painter.h"
+#include "third_party/blink/renderer/core/paint/object_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
 #include "third_party/blink/renderer/core/paint/scoped_paint_state.h"
@@ -163,11 +163,8 @@ void BlockPainter::PaintChildrenAtomically(const OrderIterator& order_iterator,
 
 void BlockPainter::PaintAllChildPhasesAtomically(const LayoutBox& child,
                                                  const PaintInfo& paint_info) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (!child.HasSelfPaintingLayer() && !child.IsFloating())
     ObjectPainter(child).PaintAllPhasesAtomically(paint_info);
-#endif
 }
 
 void BlockPainter::PaintInlineBox(const InlineBox& inline_box,
@@ -180,12 +177,9 @@ void BlockPainter::PaintInlineBox(const InlineBox& inline_box,
   // that has a text clip style on it, not block children.
   DCHECK(paint_info.phase != PaintPhase::kTextClip);
 
-  ASSERT(false); // BKTODO:
-#if 0
   ObjectPainter(
       *LineLayoutAPIShim::ConstLayoutObjectFrom(inline_box.GetLineLayoutItem()))
       .PaintAllPhasesAtomically(paint_info);
-#endif
 }
 
 void BlockPainter::PaintScrollHitTestDisplayItem(const PaintInfo& paint_info) {
@@ -261,14 +255,13 @@ void BlockPainter::PaintObject(const PaintInfo& paint_info,
   if (layout_block_.IsTruncated())
     return;
 
+#if 0 // BKTODO: Check if necessary.
   // If we're *printing* the foreground, paint the URL.
   if (paint_phase == PaintPhase::kForeground && paint_info.IsPrinting()) {
-    ASSERT(false); // BKTODO: Check if necessary.
-#if 0
     ObjectPainter(layout_block_)
         .AddPDFURLRectIfNeeded(paint_info, paint_offset);
-#endif
   }
+#endif
 
   // If we're painting our background (either 1. kBlockBackground - background
   // of the current object and non-self-painting descendants, or 2.
@@ -309,7 +302,7 @@ void BlockPainter::PaintObject(const PaintInfo& paint_info,
   // If we're painting the outline, paint it now. This is step #10 of the CSS
   // spec (see above).
   if (ShouldPaintSelfOutline(paint_phase))
-    ASSERT(false); // BKTODO: ObjectPainter(layout_block_).PaintOutline(paint_info, paint_offset);
+    ObjectPainter(layout_block_).PaintOutline(paint_info, paint_offset);
 
   // If we're painting a visible mask, paint it now. (This does not correspond
   // to any painting order steps within the CSS spec.)
@@ -327,10 +320,7 @@ void BlockPainter::PaintBlockFlowContents(const PaintInfo& paint_info,
     if (!layout_block_.ChildrenInline()) {
       PaintContents(paint_info, paint_offset);
     } else if (ShouldPaintDescendantOutlines(paint_info.phase)) {
-      ASSERT(false); // BKTODO:
-#if 0
       ObjectPainter(layout_block_).PaintInlineChildrenOutlines(paint_info);
-#endif
     } else {
       LineBoxListPainter(ToLayoutBlockFlow(layout_block_).LineBoxes())
           .Paint(layout_block_, paint_info, paint_offset);

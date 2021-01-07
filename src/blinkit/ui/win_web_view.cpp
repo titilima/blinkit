@@ -13,7 +13,7 @@
 
 #include <windowsx.h>
 #include "base/strings/sys_string_conversions.h"
-#include "blinkit/win/dib_section.h"
+#include "blinkit/win/bk_bitmap.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 using namespace blink;
@@ -49,24 +49,11 @@ WinWebView::~WinWebView(void)
     ASSERT(IsMainThread());
     ASSERT(Lookup(m_hWnd) == this);
 
-    if (nullptr != m_memoryDC)
-    {
-        ASSERT(nullptr != m_oldBitmap);
-        SelectBitmap(m_memoryDC, m_oldBitmap);
-        DeleteDC(m_memoryDC);
-    }
-
-    s_viewMap.erase(m_hWnd);
-}
-
-std::unique_ptr<cc::SkiaPaintCanvas> WinWebView::CreateCanvas(const WebSize &size)
-{
     if (nullptr != m_oldBitmap)
         SelectBitmap(m_memoryDC, m_oldBitmap);
+    DeleteDC(m_memoryDC);
 
-    DIBSection bitmap(size.width, size.height, m_memoryDC);
-    m_oldBitmap = SelectObject(m_memoryDC, bitmap.GetHBITMAP());
-    return std::make_unique<cc::SkiaPaintCanvas>(bitmap); // BKTODO: Is ImageProvider needed?
+    s_viewMap.erase(m_hWnd);
 }
 
 void WinWebView::DispatchDidReceiveTitle(const String &title)
@@ -132,6 +119,16 @@ void WinWebView::OnSize(HWND, UINT state, int cx, int cy)
 
     Resize(WebSize(cx, cy));
     UpdateAndPaint();
+}
+
+SkBitmap WinWebView::PrepareBitmapForCanvas(const WebSize &size)
+{
+    BkBitmap ret;
+    HBITMAP hBitmap = ret.InstallDIBSection(size.width, size.height, m_memoryDC);
+    HBITMAP oldBitmap = SelectBitmap(m_memoryDC, hBitmap);
+    if (nullptr == m_oldBitmap)
+        m_oldBitmap = oldBitmap;
+    return ret;
 }
 
 bool WinWebView::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)

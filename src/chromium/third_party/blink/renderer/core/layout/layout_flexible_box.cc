@@ -336,7 +336,7 @@ void LayoutFlexibleBox::UpdateBlockLayout(bool relayout_children) {
   LayoutUnit previous_height = LogicalHeight();
   SetLogicalHeight(BorderAndPaddingLogicalHeight() + ScrollbarLogicalHeight());
 
-  ASSERT(false); // BKTODO: PaintLayerScrollableArea::DelayScrollOffsetClampScope delay_clamp_scope;
+  PaintLayerScrollableArea::DelayScrollOffsetClampScope delay_clamp_scope;
 
   {
     TextAutosizer::LayoutScope text_autosizer_layout_scope(this, &layout_scope);
@@ -347,8 +347,6 @@ void LayoutFlexibleBox::UpdateBlockLayout(bool relayout_children) {
     PrepareOrderIteratorAndMargins();
 
     LayoutFlexItems(relayout_children, layout_scope);
-    ASSERT(false); // BKTODO:
-#if 0
     if (PaintLayerScrollableArea::PreventRelayoutScope::RelayoutNeeded()) {
       // Recompute the logical width, because children may have added or removed
       // scrollbars.
@@ -358,7 +356,6 @@ void LayoutFlexibleBox::UpdateBlockLayout(bool relayout_children) {
       LayoutFlexItems(true, layout_scope);
       PaintLayerScrollableArea::PreventRelayoutScope::ResetRelayoutNeeded();
     }
-#endif
 
     if (LogicalHeight() != previous_height)
       relayout_children = true;
@@ -823,11 +820,8 @@ LayoutUnit LayoutFlexibleBox::ComputeInnerFlexBaseSizeForChild(
 
 void LayoutFlexibleBox::LayoutFlexItems(bool relayout_children,
                                         SubtreeLayoutScope& layout_scope) {
-  ASSERT(false); // BKTODO:
-#if 0
   PaintLayerScrollableArea::PreventRelayoutScope prevent_relayout_scope(
       layout_scope);
-#endif
 
   // Set up our master list of flex items. All of the rest of the algorithm
   // should work off this list of a subset.

@@ -265,14 +265,10 @@ FontDescription::FamilyDescription StyleBuilderConverterBase::ConvertFontFamily(
 FontDescription::FamilyDescription StyleBuilderConverter::ConvertFontFamily(
     StyleResolverState& state,
     const CSSValue& value) {
-  ASSERT(false); // BKTODO:
-  return FontDescription::FamilyDescription(FontDescription::kNoFamily);
-#if 0
   return StyleBuilderConverterBase::ConvertFontFamily(
       value,
-      state.GetDocument().GetSettings() ? &state.GetFontBuilder() : nullptr,
+      &state.GetFontBuilder(),
       &state.GetDocument());
-#endif
 }
 
 scoped_refptr<FontFeatureSettings>

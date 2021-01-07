@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: labelable_element.cc
+// Description: LabelableElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -26,7 +37,7 @@
 
 #include "third_party/blink/renderer/core/dom/node_lists_node_data.h"
 #include "third_party/blink/renderer/core/dom/node_rare_data.h"
-#include "third_party/blink/renderer/core/html/forms/labels_node_list.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/labels_node_list.h"
 
 namespace blink {
 
@@ -40,7 +51,11 @@ LabelsNodeList* LabelableElement::labels() {
   if (!SupportLabels())
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return EnsureCachedCollection<LabelsNodeList>(kLabelsNodeListType);
+#endif
 }
 
 void LabelableElement::Trace(blink::Visitor* visitor) {

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_control_element.cc
+// Description: TextControlElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,7 +35,7 @@
 
 #include "third_party/blink/renderer/core/html/forms/text_control_element.h"
 
-#include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
+// BKTODO: #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
@@ -45,15 +56,15 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/core/html/forms/text_control_inner_elements.h"
-#include "third_party/blink/renderer/core/html/html_br_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_br_element.h"
 #include "third_party/blink/renderer/core/html/html_div_element.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
-#include "third_party/blink/renderer/core/html/shadow/shadow_element_names.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/shadow/shadow_element_names.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/layout/layout_block.h"
 #include "third_party/blink/renderer/core/layout/layout_block_flow.h"
 #include "third_party/blink/renderer/core/layout/layout_theme.h"
-#include "third_party/blink/renderer/core/page/focus_controller.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/focus_controller.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/platform/bindings/exception_messages.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
@@ -104,6 +115,8 @@ void TextControlElement::DispatchBlurEvent(
 }
 
 void TextControlElement::DefaultEventHandler(Event& event) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (event.type() == EventTypeNames::webkitEditableContentChanged &&
       GetLayoutObject() && GetLayoutObject()->IsTextControl()) {
     last_change_was_user_edit_ = !GetDocument().IsRunningExecCommand();
@@ -123,26 +136,35 @@ void TextControlElement::DefaultEventHandler(Event& event) {
     SubtreeHasChanged();
     return;
   }
+#endif
 
   HTMLFormControlElementWithState::DefaultEventHandler(event);
 }
 
 void TextControlElement::ForwardEvent(Event& event) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (event.type() == EventTypeNames::blur ||
       event.type() == EventTypeNames::focus)
     return;
+#endif
   InnerEditorElement()->DefaultEventHandler(event);
 }
 
 String TextControlElement::StrippedPlaceholder() const {
+  ASSERT(false); // BKTODO:
+#if 0
   // According to the HTML5 specification, we need to remove CR and LF from
   // the attribute value.
   const AtomicString& attribute_value = FastGetAttribute(placeholderAttr);
   if (!attribute_value.Contains(kNewlineCharacter) &&
       !attribute_value.Contains(kCarriageReturnCharacter))
     return attribute_value;
+#endif
 
   StringBuilder stripped;
+  ASSERT(false); // BKTODO:
+#if 0
   unsigned length = attribute_value.length();
   stripped.ReserveCapacity(length);
   for (unsigned i = 0; i < length; ++i) {
@@ -151,6 +173,7 @@ String TextControlElement::StrippedPlaceholder() const {
       continue;
     stripped.Append(character);
   }
+#endif
   return stripped.ToString();
 }
 
@@ -159,8 +182,12 @@ static bool IsNotLineBreak(UChar ch) {
 }
 
 bool TextControlElement::IsPlaceholderEmpty() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const AtomicString& attribute_value = FastGetAttribute(placeholderAttr);
   return attribute_value.GetString().Find(IsNotLineBreak) == kNotFound;
+#endif
 }
 
 bool TextControlElement::PlaceholderShouldBeVisible() const {
@@ -171,9 +198,13 @@ bool TextControlElement::PlaceholderShouldBeVisible() const {
 HTMLElement* TextControlElement::PlaceholderElement() const {
   if (!SupportsPlaceholder())
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   DCHECK(UserAgentShadowRoot());
   return ToHTMLElementOrDie(
       UserAgentShadowRoot()->getElementById(ShadowElementNames::Placeholder()));
+#endif
 }
 
 void TextControlElement::UpdatePlaceholderVisibility() {
@@ -186,11 +217,14 @@ void TextControlElement::UpdatePlaceholderVisibility() {
   bool place_holder_was_visible = IsPlaceholderVisible();
   SetPlaceholderVisibility(PlaceholderShouldBeVisible());
 
+  ASSERT(false); // BKTODO:
+#if 0
   placeholder->SetInlineStyleProperty(
       CSSPropertyDisplay,
       IsPlaceholderVisible() || !SuggestedValue().IsEmpty() ? CSSValueBlock
                                                             : CSSValueNone,
       true);
+#endif
 
   // If there was a visibility change not caused by the suggested value, set
   // that the pseudo state changed.
@@ -216,10 +250,13 @@ void TextControlElement::setSelectionDirection(const String& direction) {
 
 void TextControlElement::select() {
   setSelectionRangeForBinding(0, std::numeric_limits<unsigned>::max());
+  ASSERT(false); // BKTODO:
+#if 0
   // Avoid SelectionBehaviorOnFocus::Restore, which scrolls containers to show
   // the selection.
   focus(
       FocusParams(SelectionBehaviorOnFocus::kNone, kWebFocusTypeNone, nullptr));
+#endif
   RestoreCachedSelection();
 }
 
@@ -231,8 +268,7 @@ void TextControlElement::SetValueBeforeFirstUserEditIfNotSet() {
 }
 
 void TextControlElement::CheckIfValueWasReverted(const String& value) {
-  DCHECK(!value_before_first_user_edit_.IsNull())
-      << "setValueBeforeFirstUserEditIfNotSet should be called beforehand.";
+  DCHECK(!value_before_first_user_edit_.IsNull()); // setValueBeforeFirstUserEditIfNotSet should be called beforehand.
   String non_null_value = value.IsNull() ? g_empty_string : value;
   if (value_before_first_user_edit_ == non_null_value)
     ClearValueBeforeFirstUserEdit();
@@ -262,9 +298,12 @@ void TextControlElement::DispatchFormControlChangeEvent() {
 void TextControlElement::EnqueueChangeEvent() {
   if (!value_before_first_user_edit_.IsNull() &&
       !EqualIgnoringNullity(value_before_first_user_edit_, value())) {
+    ASSERT(false); // BKTODO:
+#if 0
     Event* event = Event::CreateBubble(EventTypeNames::change);
     event->SetTarget(this);
     GetDocument().EnqueueAnimationFrameEvent(event);
+#endif
   }
   ClearValueBeforeFirstUserEdit();
 }
@@ -288,8 +327,11 @@ void TextControlElement::setRangeText(const String& replacement,
             ").");
     return;
   }
+  ASSERT(false); // BKTODO:
+#if 0
   if (OpenShadowRoot())
     return;
+#endif
 
   String text = InnerEditorValue();
   unsigned text_length = text.length();
@@ -417,8 +459,11 @@ bool TextControlElement::SetSelectionRange(
     unsigned start,
     unsigned end,
     TextFieldSelectionDirection direction) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (OpenShadowRoot() || !IsTextControl())
     return false;
+#endif
   const unsigned editor_value_length = InnerEditorValue().length();
   end = std::min(end, editor_value_length);
   start = std::min(start, end);
@@ -484,9 +529,12 @@ VisiblePosition TextControlElement::VisiblePositionForIndex(int index) const {
   if (index <= 0)
     return VisiblePosition::FirstPositionInNode(*InnerEditorElement());
   Position start, end;
+  ASSERT(false); // BKTODO:
+#if 0
   bool selected = Range::selectNodeContents(InnerEditorElement(), start, end);
   if (!selected)
     return VisiblePosition();
+#endif
   CharacterIterator it(start, end);
   it.Advance(index - 1);
   return CreateVisiblePosition(it.EndPosition(), TextAffinity::kUpstream);
@@ -499,7 +547,7 @@ int TextControlElement::IndexForVisiblePosition(
   Position index_position = pos.DeepEquivalent().ParentAnchoredEquivalent();
   if (EnclosingTextControl(index_position) != this)
     return 0;
-  DCHECK(index_position.IsConnected()) << index_position;
+  DCHECK(index_position.IsConnected());
   return TextIterator::RangeLength(Position(InnerEditorElement(), 0),
                                    index_position);
 }
@@ -661,17 +709,25 @@ SelectionInDOMTree TextControlElement::Selection() const {
 }
 
 int TextControlElement::maxLength() const {
+  ASSERT(false); // BKTODO:
+  return -1;
+#if 0
   int value;
   if (!ParseHTMLInteger(FastGetAttribute(maxlengthAttr), value))
     return -1;
   return value >= 0 ? value : -1;
+#endif
 }
 
 int TextControlElement::minLength() const {
+  ASSERT(false); // BKTODO:
+  return -1;
+#if 0
   int value;
   if (!ParseHTMLInteger(FastGetAttribute(minlengthAttr), value))
     return -1;
   return value >= 0 ? value : -1;
+#endif
 }
 
 void TextControlElement::setMaxLength(int new_value,
@@ -688,7 +744,7 @@ void TextControlElement::setMaxLength(int new_value,
         ExceptionMessages::IndexExceedsMinimumBound("maxLength", new_value,
                                                     min));
   } else {
-    SetIntegralAttribute(maxlengthAttr, new_value);
+    ASSERT(false); // BKTODO: SetIntegralAttribute(maxlengthAttr, new_value);
   }
 }
 
@@ -706,7 +762,7 @@ void TextControlElement::setMinLength(int new_value,
         ExceptionMessages::IndexExceedsMaximumBound("minLength", new_value,
                                                     max));
   } else {
-    SetIntegralAttribute(minlengthAttr, new_value);
+    ASSERT(false); // BKTODO: SetIntegralAttribute(minlengthAttr, new_value);
   }
 }
 
@@ -732,17 +788,22 @@ void TextControlElement::SelectionChanged(bool user_triggered) {
       frame->Selection().GetSelectionInDOMTree();
   if (selection.Type() != kRangeSelection)
     return;
-  DispatchEvent(*Event::CreateBubble(EventTypeNames::select));
+  ASSERT(false); // BKTODO: DispatchEvent(*Event::CreateBubble(EventTypeNames::select));
 }
 
 void TextControlElement::ScheduleSelectEvent() {
+  ASSERT(false); // BKTODO:
+#if 0
   Event* event = Event::CreateBubble(EventTypeNames::select);
   event->SetTarget(this);
   GetDocument().EnqueueAnimationFrameEvent(event);
+#endif
 }
 
 void TextControlElement::ParseAttribute(
     const AttributeModificationParams& params) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (params.name == placeholderAttr) {
     UpdatePlaceholderText();
     UpdatePlaceholderVisibility();
@@ -750,6 +811,7 @@ void TextControlElement::ParseAttribute(
   } else {
     HTMLFormControlElementWithState::ParseAttribute(params);
   }
+#endif
 }
 
 bool TextControlElement::LastChangeWasUserEdit() const {
@@ -759,7 +821,11 @@ bool TextControlElement::LastChangeWasUserEdit() const {
 }
 
 Node* TextControlElement::CreatePlaceholderBreakElement() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return HTMLBRElement::Create(GetDocument());
+#endif
 }
 
 void TextControlElement::AddPlaceholderBreakElementIfNecessary() {
@@ -776,6 +842,8 @@ void TextControlElement::AddPlaceholderBreakElementIfNecessary() {
 }
 
 void TextControlElement::SetInnerEditorValue(const String& value) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!OpenShadowRoot());
   if (!IsTextControl() || OpenShadowRoot())
     return;
@@ -806,9 +874,13 @@ void TextControlElement::SetInnerEditorValue(const String& value) {
     if (AXObjectCache* cache = GetDocument().ExistingAXObjectCache())
       cache->HandleTextFormControlChanged(this);
   }
+#endif
 }
 
 String TextControlElement::InnerEditorValue() const {
+  ASSERT(false); // BKTODO:
+  return g_empty_string;
+#if 0
   DCHECK(!OpenShadowRoot());
   HTMLElement* inner_editor = InnerEditorElement();
   if (!inner_editor || !IsTextControl())
@@ -839,6 +911,7 @@ String TextControlElement::InnerEditorValue() const {
     }
   }
   return result.ToString();
+#endif
 }
 
 static void GetNextSoftBreak(RootInlineBox*& line,
@@ -976,6 +1049,8 @@ void TextControlElement::SetSuggestedValue(const String& value) {
 
   UpdatePlaceholderVisibility();
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (suggested_value_.IsEmpty()) {
     // Reset the pseudo-id for placeholders to use the appropriated style
     placeholder->SetShadowPseudoId(AtomicString("-webkit-input-placeholder"));
@@ -983,6 +1058,7 @@ void TextControlElement::SetSuggestedValue(const String& value) {
     // Set the pseudo-id for suggested values to use the appropriated style.
     placeholder->SetShadowPseudoId(AtomicString("-internal-input-suggested"));
   }
+#endif
 }
 
 HTMLElement* TextControlElement::CreateInnerEditorElement() {

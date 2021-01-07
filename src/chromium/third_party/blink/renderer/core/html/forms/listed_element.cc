@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: listed_element.cc
+// Description: ListedElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -27,15 +38,18 @@
 #include "third_party/blink/renderer/core/dom/id_target_observer.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
 #include "third_party/blink/renderer/core/html/forms/html_form_control_element.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_form_element.h"
 #include "third_party/blink/renderer/core/html/forms/validity_state.h"
 #include "third_party/blink/renderer/core/html/html_object_element.h"
+#endif
 #include "third_party/blink/renderer/core/html_names.h"
 
 namespace blink {
 
 using namespace HTMLNames;
 
+#if 0 // BKTODO:
 class FormAttributeTargetObserver : public IdTargetObserver {
  public:
   static FormAttributeTargetObserver* Create(const AtomicString& id,
@@ -48,6 +62,7 @@ class FormAttributeTargetObserver : public IdTargetObserver {
 
   Member<ListedElement> element_;
 };
+#endif
 
 ListedElement::ListedElement() : form_was_set_by_parser_(false) {}
 
@@ -63,7 +78,7 @@ void ListedElement::Trace(blink::Visitor* visitor) {
 
 ValidityState* ListedElement::validity() {
   if (!validity_state_)
-    validity_state_ = ValidityState::Create(this);
+    ASSERT(false); // BKTODO: validity_state_ = ValidityState::Create(this);
 
   return validity_state_.Get();
 }
@@ -75,10 +90,13 @@ void ListedElement::DidMoveToNewDocument(Document& old_document) {
 }
 
 void ListedElement::InsertedInto(ContainerNode& insertion_point) {
+  ASSERT(!form_was_set_by_parser_ || !form_); // BKTODO:
+#if 0
   if (!form_was_set_by_parser_ || !form_ ||
       NodeTraversal::HighestAncestorOrSelf(insertion_point) !=
           NodeTraversal::HighestAncestorOrSelf(*form_.Get()))
     ResetFormOwner();
+#endif
 
   if (!insertion_point.isConnected())
     return;
@@ -95,12 +113,15 @@ void ListedElement::RemovedFrom(ContainerNode& insertion_point) {
     ResetFormOwner();
     return;
   }
+  ASSERT(false); // BKTODO:
+#if 0
   // If the form and element are both in the same tree, preserve the connection
   // to the form.  Otherwise, null out our form and remove ourselves from the
   // form's list of elements.
   if (form_ && NodeTraversal::HighestAncestorOrSelf(*element) !=
                    NodeTraversal::HighestAncestorOrSelf(*form_.Get()))
     ResetFormOwner();
+#endif
 }
 
 HTMLFormElement* ListedElement::FindAssociatedForm(
@@ -110,6 +131,8 @@ HTMLFormElement* ListedElement::FindAssociatedForm(
   // 3. If the element is reassociateable, has a form content attribute, and
   // is itself in a Document, then run these substeps:
   if (!form_id.IsNull() && element->isConnected()) {
+    ASSERT(false); // BKTODO:
+#if 0
     // 3.1. If the first element in the Document to have an ID that is
     // case-sensitively equal to the element's form content attribute's
     // value is a form element, then associate the form-associated element
@@ -118,6 +141,7 @@ HTMLFormElement* ListedElement::FindAssociatedForm(
     Element* new_form_candidate =
         element->GetTreeScope().getElementById(form_id);
     return ToHTMLFormElementOrNull(new_form_candidate);
+#endif
   }
   // 4. Otherwise, if the form-associated element in question has an ancestor
   // form element, then associate the form-associated element with the nearest
@@ -133,17 +157,22 @@ void ListedElement::FormRemovedFromTree(const Node& form_root) {
 }
 
 void ListedElement::AssociateByParser(HTMLFormElement* form) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (form && form->isConnected()) {
     form_was_set_by_parser_ = true;
     SetForm(form);
     form->DidAssociateByParser();
   }
+#endif
 }
 
 void ListedElement::SetForm(HTMLFormElement* new_form) {
   if (form_.Get() == new_form)
     return;
   WillChangeForm();
+  ASSERT(false); // BKTODO:
+#if 0
   if (form_)
     form_->Disassociate(*this);
   if (new_form) {
@@ -152,22 +181,28 @@ void ListedElement::SetForm(HTMLFormElement* new_form) {
   } else {
     form_ = nullptr;
   }
+#endif
   DidChangeForm();
 }
 
 void ListedElement::WillChangeForm() {}
 
 void ListedElement::DidChangeForm() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!form_was_set_by_parser_ && form_ && form_->isConnected()) {
     HTMLElement* element = ToHTMLElement(this);
     element->GetDocument().DidAssociateFormControl(element);
   }
+#endif
 }
 
 void ListedElement::ResetFormOwner() {
   form_was_set_by_parser_ = false;
   HTMLElement* element = ToHTMLElement(this);
   const AtomicString& form_id(element->FastGetAttribute(formAttr));
+  ASSERT(false); // BKTODO:
+#if 0
   HTMLFormElement* nearest_form = element->FindFormAncestor();
   // 1. If the element's form owner is not null, and either the element is not
   // reassociateable or its form content attribute is not present, and the
@@ -177,6 +212,7 @@ void ListedElement::ResetFormOwner() {
     return;
 
   SetForm(FindAssociatedForm(element, form_id, nearest_form));
+#endif
 }
 
 void ListedElement::FormAttributeChanged() {
@@ -252,7 +288,7 @@ void ListedElement::setCustomValidity(const String& error) {
 void ListedElement::SetFormAttributeTargetObserver(
     FormAttributeTargetObserver* new_observer) {
   if (form_attribute_target_observer_)
-    form_attribute_target_observer_->Unregister();
+    ASSERT(false); // BKTODO: form_attribute_target_observer_->Unregister();
   form_attribute_target_observer_ = new_observer;
 }
 
@@ -260,8 +296,11 @@ void ListedElement::ResetFormAttributeTargetObserver() {
   HTMLElement* element = ToHTMLElement(this);
   const AtomicString& form_id(element->FastGetAttribute(formAttr));
   if (!form_id.IsNull() && element->isConnected()) {
+    ASSERT(false); // BKTODO:
+#if 0
     SetFormAttributeTargetObserver(
         FormAttributeTargetObserver::Create(form_id, this));
+#endif
   } else {
     SetFormAttributeTargetObserver(nullptr);
   }
@@ -283,7 +322,11 @@ bool ListedElement::IsFormControlElementWithState() const {
 const HTMLElement& ToHTMLElement(const ListedElement& listed_element) {
   if (listed_element.IsFormControlElement())
     return ToHTMLFormControlElement(listed_element);
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   return ToHTMLObjectElementFromListedElement(listed_element);
+#endif
 }
 
 const HTMLElement* ToHTMLElement(const ListedElement* listed_element) {
@@ -301,6 +344,7 @@ HTMLElement& ToHTMLElement(ListedElement& listed_element) {
       ToHTMLElement(static_cast<const ListedElement&>(listed_element)));
 }
 
+#if 0 // BKTODO:
 FormAttributeTargetObserver* FormAttributeTargetObserver::Create(
     const AtomicString& id,
     ListedElement* element) {
@@ -322,5 +366,6 @@ void FormAttributeTargetObserver::Trace(blink::Visitor* visitor) {
 void FormAttributeTargetObserver::IdTargetChanged() {
   element_->FormAttributeTargetChanged();
 }
+#endif
 
 }  // namespace blink

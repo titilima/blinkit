@@ -37,7 +37,7 @@
 
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/public/platform/web_rect.h"
-// BKTODO: #include "third_party/blink/public/platform/web_theme_engine.h"
+#include "third_party/blink/public/platform/web_theme_engine.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 // BKTODO: #include "third_party/blink/renderer/core/layout/layout_progress.h"
@@ -46,7 +46,7 @@
 #include "third_party/blink/renderer/platform/graphics/color.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context_state_saver.h"
-// BKTODO: #include "third_party/blink/renderer/platform/layout_test_support.h"
+#include "third_party/blink/renderer/platform/layout_test_support.h"
 
 namespace blink {
 
@@ -55,13 +55,9 @@ namespace {
 const unsigned kDefaultButtonBackgroundColor = 0xffdddddd;
 
 bool UseMockTheme() {
-  return false;
-#if 0 // BKTODO:
   return LayoutTestSupport::IsMockThemeEnabledForTest();
-#endif
 }
 
-#if 0 // BKTODO:
 WebThemeEngine::State GetWebThemeState(const Node* node) {
   if (!LayoutTheme::IsEnabled(node))
     return WebThemeEngine::kStateDisabled;
@@ -76,7 +72,6 @@ WebThemeEngine::State GetWebThemeState(const Node* node) {
 
   return WebThemeEngine::kStateNormal;
 }
-#endif
 
 class DirectionFlippingScope {
  public:
@@ -175,8 +170,6 @@ bool ThemePainterDefault::PaintCheckbox(const Node* node,
                                         const ComputedStyle& style,
                                         const PaintInfo& paint_info,
                                         const IntRect& rect) {
-  ASSERT(false); // BKTODO:
-#if 0
   WebThemeEngine::ExtraParams extra_params;
   cc::PaintCanvas* canvas = paint_info.context.Canvas();
   extra_params.button.checked = LayoutTheme::IsChecked(node);
@@ -197,7 +190,6 @@ bool ThemePainterDefault::PaintCheckbox(const Node* node,
   Platform::Current()->ThemeEngine()->Paint(
       canvas, WebThemeEngine::kPartCheckbox, GetWebThemeState(node),
       WebRect(unzoomed_rect), &extra_params);
-#endif
   return false;
 }
 
@@ -206,8 +198,6 @@ bool ThemePainterDefault::PaintRadio(const Node* node,
                                      const ComputedStyle&,
                                      const PaintInfo& paint_info,
                                      const IntRect& rect) {
-  ASSERT(false); // BKTODO:
-#if 0
   WebThemeEngine::ExtraParams extra_params;
   cc::PaintCanvas* canvas = paint_info.context.Canvas();
   extra_params.button.checked = LayoutTheme::IsChecked(node);
@@ -215,7 +205,6 @@ bool ThemePainterDefault::PaintRadio(const Node* node,
   Platform::Current()->ThemeEngine()->Paint(canvas, WebThemeEngine::kPartRadio,
                                             GetWebThemeState(node),
                                             WebRect(rect), &extra_params);
-#endif
   return false;
 }
 
@@ -224,8 +213,6 @@ bool ThemePainterDefault::PaintButton(const Node* node,
                                       const ComputedStyle& style,
                                       const PaintInfo& paint_info,
                                       const IntRect& rect) {
-  ASSERT(false); // BKTODO:
-#if 0
   WebThemeEngine::ExtraParams extra_params;
   cc::PaintCanvas* canvas = paint_info.context.Canvas();
   extra_params.button.has_border = true;
@@ -238,7 +225,6 @@ bool ThemePainterDefault::PaintButton(const Node* node,
   Platform::Current()->ThemeEngine()->Paint(canvas, WebThemeEngine::kPartButton,
                                             GetWebThemeState(node),
                                             WebRect(rect), &extra_params);
-#endif
   return false;
 }
 
@@ -253,8 +239,6 @@ bool ThemePainterDefault::PaintTextField(const Node* node,
 
   ControlPart part = style.Appearance();
 
-  ASSERT(false); // BKTODO:
-#if 0
   WebThemeEngine::ExtraParams extra_params;
   extra_params.text_field.is_text_area = part == kTextAreaPart;
   extra_params.text_field.is_listbox = part == kListboxPart;
@@ -268,7 +252,6 @@ bool ThemePainterDefault::PaintTextField(const Node* node,
   Platform::Current()->ThemeEngine()->Paint(
       canvas, WebThemeEngine::kPartTextField, GetWebThemeState(node),
       WebRect(rect), &extra_params);
-#endif
   return false;
 }
 
@@ -277,8 +260,6 @@ bool ThemePainterDefault::PaintMenuList(const Node* node,
                                         const ComputedStyle& style,
                                         const PaintInfo& i,
                                         const IntRect& rect) {
-  ASSERT(false); // BKTODO:
-#if 0
   WebThemeEngine::ExtraParams extra_params;
   // Match Chromium Win behaviour of showing all borders if any are shown.
   extra_params.menu_list.has_border = style.HasBorder();
@@ -305,7 +286,6 @@ bool ThemePainterDefault::PaintMenuList(const Node* node,
   Platform::Current()->ThemeEngine()->Paint(
       canvas, WebThemeEngine::kPartMenuList, GetWebThemeState(node),
       WebRect(rect), &extra_params);
-#endif
   return false;
 }
 
@@ -314,8 +294,6 @@ bool ThemePainterDefault::PaintMenuListButton(const Node* node,
                                               const ComputedStyle& style,
                                               const PaintInfo& paint_info,
                                               const IntRect& rect) {
-  ASSERT(false); // BKTODO:
-#if 0
   WebThemeEngine::ExtraParams extra_params;
   extra_params.menu_list.has_border = false;
   extra_params.menu_list.has_border_radius = style.HasBorderRadius();
@@ -327,11 +305,9 @@ bool ThemePainterDefault::PaintMenuListButton(const Node* node,
   Platform::Current()->ThemeEngine()->Paint(
       canvas, WebThemeEngine::kPartMenuList, GetWebThemeState(node),
       WebRect(rect), &extra_params);
-#endif
   return false;
 }
 
-#if 0 // BKTODO:
 void ThemePainterDefault::SetupMenuListArrow(
     const Document& document,
     const ComputedStyle& style,
@@ -376,13 +352,10 @@ void ThemePainterDefault::SetupMenuListArrow(
   extra_params.menu_list.arrow_color =
       style.VisitedDependentColor(GetCSSPropertyColor()).Rgb();
 }
-#endif
 
 bool ThemePainterDefault::PaintSliderTrack(const LayoutObject& o,
                                            const PaintInfo& i,
                                            const IntRect& rect) {
-  ASSERT(false); // BKTODO:
-#if 0
   WebThemeEngine::ExtraParams extra_params;
   cc::PaintCanvas* canvas = i.context.Canvas();
   extra_params.slider.vertical =
@@ -406,7 +379,6 @@ bool ThemePainterDefault::PaintSliderTrack(const LayoutObject& o,
   Platform::Current()->ThemeEngine()->Paint(
       canvas, WebThemeEngine::kPartSliderTrack, GetWebThemeState(o.GetNode()),
       WebRect(unzoomed_rect), &extra_params);
-#endif
   return false;
 }
 
@@ -414,8 +386,6 @@ bool ThemePainterDefault::PaintSliderThumb(const Node* node,
                                            const ComputedStyle& style,
                                            const PaintInfo& paint_info,
                                            const IntRect& rect) {
-  ASSERT(false); // BKTODO:
-#if 0
   WebThemeEngine::ExtraParams extra_params;
   cc::PaintCanvas* canvas = paint_info.context.Canvas();
   extra_params.slider.vertical = style.Appearance() == kSliderThumbVerticalPart;
@@ -437,7 +407,6 @@ bool ThemePainterDefault::PaintSliderThumb(const Node* node,
   Platform::Current()->ThemeEngine()->Paint(
       canvas, WebThemeEngine::kPartSliderThumb, GetWebThemeState(node),
       WebRect(unzoomed_rect), &extra_params);
-#endif
   return false;
 }
 
@@ -445,8 +414,6 @@ bool ThemePainterDefault::PaintInnerSpinButton(const Node* node,
                                                const ComputedStyle& style,
                                                const PaintInfo& paint_info,
                                                const IntRect& rect) {
-  ASSERT(false); // BKTODO:
-#if 0
   WebThemeEngine::ExtraParams extra_params;
   cc::PaintCanvas* canvas = paint_info.context.Canvas();
   extra_params.inner_spin.spin_up =
@@ -456,7 +423,6 @@ bool ThemePainterDefault::PaintInnerSpinButton(const Node* node,
   Platform::Current()->ThemeEngine()->Paint(
       canvas, WebThemeEngine::kPartInnerSpinButton, GetWebThemeState(node),
       WebRect(rect), &extra_params);
-#endif
   return false;
 }
 

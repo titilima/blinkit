@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_form_control_element_with_state.cc
+// Description: HTMLFormControlElementWithState Class
+//      Author: Ziming Li
+//     Created: 2021-01-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -27,8 +38,10 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/html/forms/form_controller.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_form_element.h"
 #include "third_party/blink/renderer/core/input_type_names.h"
+#endif
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 
 namespace blink {
@@ -123,7 +136,7 @@ HTMLFormControlElementWithState::~HTMLFormControlElementWithState() = default;
 Node::InsertionNotificationRequest
 HTMLFormControlElementWithState::InsertedInto(ContainerNode& insertion_point) {
   if (insertion_point.isConnected() && !ContainingShadowRoot())
-    GetDocument().GetFormController().RegisterStatefulFormControl(*this);
+    ASSERT(false); // BKTODO: GetDocument().GetFormController().RegisterStatefulFormControl(*this);
   return HTMLFormControlElement::InsertedInto(insertion_point);
 }
 
@@ -131,24 +144,35 @@ void HTMLFormControlElementWithState::RemovedFrom(
     ContainerNode& insertion_point) {
   if (insertion_point.isConnected() && !ContainingShadowRoot() &&
       !insertion_point.ContainingShadowRoot())
-    GetDocument().GetFormController().UnregisterStatefulFormControl(*this);
+    ASSERT(false); // BKTODO: GetDocument().GetFormController().UnregisterStatefulFormControl(*this);
   HTMLFormControlElement::RemovedFrom(insertion_point);
 }
 
 bool HTMLFormControlElementWithState::ShouldAutocomplete() const {
   if (!Form())
     return true;
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return Form()->ShouldAutocomplete();
+#endif
 }
 
 bool HTMLFormControlElementWithState::IsWearingAutofillAnchorMantle() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return FormControlType() == InputTypeNames::hidden;
+#endif
 }
 
 String HTMLFormControlElementWithState::IDLExposedAutofillValue() const {
   // TODO(tkent): Share the code with autofill::FormStructure::
   // ParseFieldTypesFromAutocompleteAttributes().
 
+  ASSERT(false); // BKTODO:
+  return g_empty_string;
+#if 0
   // https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill-processing-model
   // 1. If the element has no autocomplete attribute, then jump to the step
   // labeled default.
@@ -277,19 +301,22 @@ String HTMLFormControlElementWithState::IDLExposedAutofillValue() const {
   }
   // 24. Let the element's IDL-exposed autofill value be IDL value.
   return idl_value;
+#endif
 }
 
 void HTMLFormControlElementWithState::setIDLExposedAutofillValue(
     const String& autocomplete_value) {
-  setAttribute(HTMLNames::autocompleteAttr, AtomicString(autocomplete_value));
+  ASSERT(false); // BKTODO: setAttribute(HTMLNames::autocompleteAttr, AtomicString(autocomplete_value));
 }
 
 void HTMLFormControlElementWithState::NotifyFormStateChanged() {
+#if 0 // BKTODO: Check if necessary.
   // This can be called during fragment parsing as a result of option
   // selection before the document is active (or even in a frame).
   if (!GetDocument().IsActive())
     return;
   GetDocument().GetFrame()->Client()->DidUpdateCurrentHistoryItem();
+#endif
 }
 
 bool HTMLFormControlElementWithState::ShouldSaveAndRestoreFormControlState()
@@ -304,7 +331,7 @@ FormControlState HTMLFormControlElementWithState::SaveFormControlState() const {
 
 void HTMLFormControlElementWithState::FinishParsingChildren() {
   HTMLFormControlElement::FinishParsingChildren();
-  GetDocument().GetFormController().RestoreControlStateFor(*this);
+  ASSERT(false); // BKTODO: GetDocument().GetFormController().RestoreControlStateFor(*this);
 }
 
 bool HTMLFormControlElementWithState::IsFormControlElementWithState() const {

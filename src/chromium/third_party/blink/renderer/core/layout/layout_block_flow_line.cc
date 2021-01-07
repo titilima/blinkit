@@ -859,7 +859,7 @@ BidiRun* LayoutBlockFlow::ComputeInlineDirectionPositionsForSegment(
       if (!r->line_layout_item_.IsLayoutInline()) {
         LayoutBox* layout_box =
             ToLayoutBox(r->line_layout_item_.GetLayoutObject());
-        ASSERT(false); // BKTODO:
+        ASSERT(!layout_box->IsRubyRun()); // BKTODO:
 #if 0
         if (layout_box->IsRubyRun())
           SetMarginsForRubyRun(r, ToLayoutRubyRun(layout_box), previous_object,

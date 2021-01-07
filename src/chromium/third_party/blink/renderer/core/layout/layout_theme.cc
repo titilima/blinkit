@@ -48,15 +48,15 @@
 // BKTODO: #include "third_party/blink/renderer/core/fileapi/file_list.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_data_list_element.h"
-#include "third_party/blink/renderer/core/html/forms/html_data_list_options_collection.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/html_data_list_options_collection.h"
 #include "third_party/blink/renderer/core/html/forms/html_form_control_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_option_element.h"
 #include "third_party/blink/renderer/core/html/forms/spin_button_element.h"
-#include "third_party/blink/renderer/core/html/forms/text_control_inner_elements.h"
 #endif
+#include "third_party/blink/renderer/core/html/forms/text_control_inner_elements.h"
 #include "third_party/blink/renderer/core/html/html_collection.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 // BKTODO: #include "third_party/blink/renderer/core/html/shadow/shadow_element_names.h"
@@ -75,7 +75,7 @@
 #include "third_party/blink/renderer/platform/fonts/string_truncator.h"
 #include "third_party/blink/renderer/platform/graphics/color.h"
 #include "third_party/blink/renderer/platform/graphics/touch_action.h"
-// BKTODO: #include "third_party/blink/renderer/platform/layout_test_support.h"
+#include "third_party/blink/renderer/platform/layout_test_support.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/text/platform_locale.h"
 #include "third_party/blink/renderer/platform/theme.h"
@@ -476,13 +476,10 @@ bool LayoutTheme::ShouldDrawDefaultFocusRing(const Node* node,
     return true;
   if (!style.HasAppearance() && !node->IsLink())
     return true;
-  ASSERT(false); // BKTODO:
-#if 0
   // We can't use LayoutTheme::isFocused because outline:auto might be
   // specified to non-:focus rulesets.
   if (node->IsFocused() && !node->ShouldHaveFocusAppearance())
     return false;
-#endif
   return true;
 }
 
@@ -536,32 +533,26 @@ bool LayoutTheme::IsActive(const Node* node) {
   if (!node)
     return false;
 
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   Page* page = node->GetDocument().GetPage();
   if (!page)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return page->GetFocusController().IsActive();
 #endif
 }
 
 bool LayoutTheme::IsChecked(const Node* node) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (auto* input = ToHTMLInputElementOrNull(node))
     return input->ShouldAppearChecked();
-#endif
   return false;
 }
 
 bool LayoutTheme::IsIndeterminate(const Node* node) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (auto* input = ToHTMLInputElementOrNull(node))
     return input->ShouldAppearIndeterminate();
-#endif
   return false;
 }
 
@@ -594,37 +585,33 @@ bool LayoutTheme::IsPressed(const Node* node) {
 }
 
 bool LayoutTheme::IsSpinUpButtonPartPressed(const Node* node) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   if (!node || !node->IsActive() || !node->IsElementNode() ||
       !ToElement(node)->IsSpinButtonElement())
     return false;
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const SpinButtonElement* element = ToSpinButtonElement(node);
   return element->GetUpDownState() == SpinButtonElement::kUp;
 #endif
 }
 
 bool LayoutTheme::IsReadOnlyControl(const Node* node) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   if (!node || !node->IsElementNode() ||
       !ToElement(node)->IsFormControlElement())
     return false;
   const HTMLFormControlElement* element = ToHTMLFormControlElement(node);
   return element->IsReadOnly();
-#endif
 }
 
 bool LayoutTheme::IsHovered(const Node* node) {
   if (!node)
     return false;
+  if (!node->IsElementNode() || !ToElement(node)->IsSpinButtonElement())
+    return node->IsHovered();
   ASSERT(false); // BKTODO:
   return false;
 #if 0
-  if (!node->IsElementNode() || !ToElement(node)->IsSpinButtonElement())
-    return node->IsHovered();
   const SpinButtonElement* element = ToSpinButtonElement(node);
   return element->IsHovered() &&
          element->GetUpDownState() != SpinButtonElement::kIndeterminate;
@@ -632,12 +619,12 @@ bool LayoutTheme::IsHovered(const Node* node) {
 }
 
 bool LayoutTheme::IsSpinUpButtonPartHovered(const Node* node) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   if (!node || !node->IsElementNode() ||
       !ToElement(node)->IsSpinButtonElement())
     return false;
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const SpinButtonElement* element = ToSpinButtonElement(node);
   return element->GetUpDownState() == SpinButtonElement::kUp;
 #endif

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_form_control_element.cc
+// Description: HTMLFormControlElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,22 +36,24 @@
 #include "third_party/blink/renderer/core/html/forms/html_form_control_element.h"
 
 #include "third_party/blink/public/platform/task_type.h"
-#include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
+// BKTODO: #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
 #include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/core/html/forms/html_data_list_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_field_set_element.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_form_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_legend_element.h"
 #include "third_party/blink/renderer/core/html/forms/validity_state.h"
+#endif
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
-#include "third_party/blink/renderer/core/inspector/console_message.h"
+// BKTODO: #include "third_party/blink/renderer/core/inspector/console_message.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/page/page.h"
-#include "third_party/blink/renderer/core/page/validation_message_client.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/validation_message_client.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 #include "third_party/blink/renderer/platform/text/bidi_text_run.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
@@ -52,7 +65,7 @@ using namespace HTMLNames;
 HTMLFormControlElement::HTMLFormControlElement(const QualifiedName& tag_name,
                                                Document& document)
     : LabelableElement(tag_name, document),
-      autofill_state_(WebAutofillState::kNotFilled),
+      // bktodo: autofill_state_(WebAutofillState::kNotFilled),
       ancestor_disabled_state_(kAncestorDisabledStateUnknown),
       data_list_ancestor_state_(kUnknown),
       may_have_field_set_ancestor_(true),
@@ -75,41 +88,60 @@ void HTMLFormControlElement::Trace(blink::Visitor* visitor) {
 }
 
 String HTMLFormControlElement::formAction() const {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   const AtomicString& action = FastGetAttribute(formactionAttr);
   if (action.IsEmpty())
     return GetDocument().Url();
   return GetDocument().CompleteURL(StripLeadingAndTrailingHTMLSpaces(action));
+#endif
 }
 
 void HTMLFormControlElement::setFormAction(const AtomicString& value) {
+  ASSERT(false); // BKTODO:
+#if 0
   setAttribute(formactionAttr, value);
+#endif
 }
 
 String HTMLFormControlElement::formEnctype() const {
+  ASSERT(false); // BKTODO:
+  return g_empty_string;
+#if 0
   const AtomicString& form_enctype_attr = FastGetAttribute(formenctypeAttr);
   if (form_enctype_attr.IsNull())
     return g_empty_string;
   return FormSubmission::Attributes::ParseEncodingType(form_enctype_attr);
+#endif
 }
 
 void HTMLFormControlElement::setFormEnctype(const AtomicString& value) {
-  setAttribute(formenctypeAttr, value);
+  ASSERT(false); // BKTODO: setAttribute(formenctypeAttr, value);
 }
 
 String HTMLFormControlElement::formMethod() const {
+  ASSERT(false); // BKTODO:
+  return g_empty_string;
+#if 0
   const AtomicString& form_method_attr = FastGetAttribute(formmethodAttr);
   if (form_method_attr.IsNull())
     return g_empty_string;
   return FormSubmission::Attributes::MethodString(
       FormSubmission::Attributes::ParseMethodType(form_method_attr));
+#endif
 }
 
 void HTMLFormControlElement::setFormMethod(const AtomicString& value) {
-  setAttribute(formmethodAttr, value);
+  ASSERT(false); // BKTODO: setAttribute(formmethodAttr, value);
 }
 
 bool HTMLFormControlElement::FormNoValidate() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return FastHasAttribute(formnovalidateAttr);
+#endif
 }
 
 void HTMLFormControlElement::UpdateAncestorDisabledState() const {
@@ -129,8 +161,11 @@ void HTMLFormControlElement::UpdateAncestorDisabledState() const {
       may_have_field_set_ancestor_ = true;
       if (ancestor->IsDisabledFormControl()) {
         auto* fieldset = ToHTMLFieldSetElement(ancestor);
+        ASSERT(false); // BKTODO:
+#if 0
         if (last_legend_ancestor && last_legend_ancestor == fieldset->Legend())
           continue;
+#endif
         disabled_fieldset_ancestor = fieldset;
         break;
       }
@@ -147,7 +182,7 @@ void HTMLFormControlElement::AncestorDisabledStateWasChanged() {
 }
 
 void HTMLFormControlElement::Reset() {
-  SetAutofillState(WebAutofillState::kNotFilled);
+  ASSERT(false); // BKTODO: SetAutofillState(WebAutofillState::kNotFilled);
   ResetImpl();
 }
 
@@ -159,7 +194,7 @@ void HTMLFormControlElement::AttributeChanged(
     DisabledAttributeChanged();
     if (params.reason == AttributeModificationReason::kDirectly &&
         IsDisabledFormControl() && AdjustedFocusedElementInTreeScope() == this)
-      blur();
+      ASSERT(false); // BKTODO: blur();
   }
 }
 
@@ -177,6 +212,7 @@ void HTMLFormControlElement::ParseAttribute(
       if (LayoutObject* o = GetLayoutObject())
         o->InvalidateIfControlStateChanged(kReadOnlyControlState);
     }
+#if 0 // BKTODO:
   } else if (name == requiredAttr) {
     if (params.old_value.IsNull() != params.new_value.IsNull())
       RequiredAttributeChanged();
@@ -184,6 +220,7 @@ void HTMLFormControlElement::ParseAttribute(
   } else if (name == autofocusAttr) {
     HTMLElement::ParseAttribute(params);
     UseCounter::Count(GetDocument(), WebFeature::kAutoFocusAttribute);
+#endif
   } else {
     HTMLElement::ParseAttribute(params);
   }
@@ -200,20 +237,24 @@ void HTMLFormControlElement::DisabledAttributeChanged() {
   if (LayoutObject* o = GetLayoutObject())
     o->InvalidateIfControlStateChanged(kEnabledControlState);
 
+#if 0 // BKTODO: Check if necessary.
   // TODO(dmazzoni): http://crbug.com/699438.
   // Replace |CheckedStateChanged| with a generic tree changed event.
   if (AXObjectCache* cache = GetDocument().ExistingAXObjectCache())
     cache->CheckedStateChanged(this);
+#endif
 }
 
 void HTMLFormControlElement::RequiredAttributeChanged() {
   SetNeedsValidityCheck();
   PseudoStateChanged(CSSSelector::kPseudoRequired);
   PseudoStateChanged(CSSSelector::kPseudoOptional);
+#if 0 // BKTODO: Check if necessary.
   // TODO(dmazzoni): http://crbug.com/699438.
   // Replace |CheckedStateChanged| with a generic tree changed event.
   if (AXObjectCache* cache = GetDocument().ExistingAXObjectCache())
     cache->CheckedStateChanged(this);
+#endif
 }
 
 bool HTMLFormControlElement::IsReadOnly() const {
@@ -232,6 +273,7 @@ bool HTMLFormControlElement::IsAutofocusable() const {
   return FastHasAttribute(autofocusAttr) && SupportsAutofocus();
 }
 
+#if 0 // BKTODO:
 void HTMLFormControlElement::SetAutofillState(WebAutofillState autofill_state) {
   if (autofill_state == autofill_state_)
     return;
@@ -245,8 +287,11 @@ void HTMLFormControlElement::SetAutofillState(WebAutofillState autofill_state) {
 void HTMLFormControlElement::SetAutofillSection(const WebString& section) {
   autofill_section_ = section;
 }
+#endif
 
 const AtomicString& HTMLFormControlElement::autocapitalize() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!FastGetAttribute(autocapitalizeAttr).IsEmpty())
     return HTMLElement::autocapitalize();
 
@@ -255,6 +300,7 @@ const AtomicString& HTMLFormControlElement::autocapitalize() const {
   // set, we inherit from the form owner.
   if (HTMLFormElement* form = Form())
     return form->autocapitalize();
+#endif
 
   return g_empty_atom;
 }
@@ -262,6 +308,7 @@ const AtomicString& HTMLFormControlElement::autocapitalize() const {
 static bool ShouldAutofocusOnAttach(const HTMLFormControlElement* element) {
   if (!element->IsAutofocusable())
     return false;
+#if 0 // BKTODO: Check if necessary.
   if (element->GetDocument().IsSandboxed(kSandboxAutomaticFeatures)) {
     // FIXME: This message should be moved off the console once a solution to
     // https://bugs.webkit.org/show_bug.cgi?id=103274 exists.
@@ -271,6 +318,7 @@ static bool ShouldAutofocusOnAttach(const HTMLFormControlElement* element) {
         "sandboxed and the 'allow-scripts' permission is not set."));
     return false;
   }
+#endif
 
   return true;
 }
@@ -289,13 +337,15 @@ void HTMLFormControlElement::AttachLayoutTree(AttachContext& context) {
   // FIXME: Autofocus handling should be moved to insertedInto according to
   // the standard.
   if (ShouldAutofocusOnAttach(this))
-    GetDocument().SetAutofocusElement(this);
+    ASSERT(false); // BKTODO: GetDocument().SetAutofocusElement(this);
 }
 
+#if 0 // BKTODO:
 void HTMLFormControlElement::DidMoveToNewDocument(Document& old_document) {
   ListedElement::DidMoveToNewDocument(old_document);
   HTMLElement::DidMoveToNewDocument(old_document);
 }
+#endif
 
 Node::InsertionNotificationRequest HTMLFormControlElement::InsertedInto(
     ContainerNode& insertion_point) {
@@ -330,20 +380,23 @@ void HTMLFormControlElement::WillChangeForm() {
   ListedElement::WillChangeForm();
   FormOwnerSetNeedsValidityCheck();
   if (formOwner() && CanBeSuccessfulSubmitButton())
-    formOwner()->InvalidateDefaultButtonStyle();
+    ASSERT(false); // BKTODO: formOwner()->InvalidateDefaultButtonStyle();
 }
 
 void HTMLFormControlElement::DidChangeForm() {
   ListedElement::DidChangeForm();
   FormOwnerSetNeedsValidityCheck();
   if (formOwner() && isConnected() && CanBeSuccessfulSubmitButton())
-    formOwner()->InvalidateDefaultButtonStyle();
+    ASSERT(false); // BKTODO: formOwner()->InvalidateDefaultButtonStyle();
 }
 
 void HTMLFormControlElement::FormOwnerSetNeedsValidityCheck() {
   if (HTMLFormElement* form = formOwner()) {
+    ASSERT(false); // BKTODO:
+#if 0
     form->PseudoStateChanged(CSSSelector::kPseudoValid);
     form->PseudoStateChanged(CSSSelector::kPseudoInvalid);
+#endif
   }
 }
 
@@ -363,7 +416,7 @@ void HTMLFormControlElement::FieldSetAncestorsSetNeedsValidityCheck(
 }
 
 void HTMLFormControlElement::DispatchChangeEvent() {
-  DispatchScopedEvent(*Event::CreateBubble(EventTypeNames::change));
+  ASSERT(false); // BKTODO: DispatchScopedEvent(*Event::CreateBubble(EventTypeNames::change));
 }
 
 HTMLFormElement* HTMLFormControlElement::formOwner() const {
@@ -374,11 +427,13 @@ bool HTMLFormControlElement::IsDisabledFormControl() const {
   if (FastHasAttribute(disabledAttr))
     return true;
 
+#if 0 // BKTODO: Check if necessary.
   // Since the MHTML is loaded in sandboxing mode with form submission and
   // script execution disabled, we should gray out all form control elements
   // to indicate that the form cannot be worked on.
   if (GetDocument().Fetcher()->Archive())
     return true;
+#endif
 
   if (ancestor_disabled_state_ == kAncestorDisabledStateUnknown)
     UpdateAncestorDisabledState();
@@ -390,7 +445,11 @@ bool HTMLFormControlElement::MatchesEnabledPseudoClass() const {
 }
 
 bool HTMLFormControlElement::IsRequired() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return FastHasAttribute(requiredAttr);
+#endif
 }
 
 String HTMLFormControlElement::ResultForDialogSubmit() {
@@ -416,8 +475,12 @@ bool HTMLFormControlElement::MayTriggerVirtualKeyboard() const {
 }
 
 bool HTMLFormControlElement::ShouldHaveFocusAppearance() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return (GetDocument().LastFocusType() != kWebFocusTypeMouse) ||
          GetDocument().HadKeyboardEvent() || MayTriggerVirtualKeyboard();
+#endif
 }
 
 int HTMLFormControlElement::tabIndex() const {
@@ -484,6 +547,8 @@ void HTMLFormControlElement::FindCustomValidationMessageTextDirection(
 
 void HTMLFormControlElement::UpdateVisibleValidationMessage() {
   Page* page = GetDocument().GetPage();
+  ASSERT(false); // BKTODO:
+#if 0
   if (!page || !page->IsPageVisible() || GetDocument().UnloadStarted())
     return;
   if (page->Paused())
@@ -505,6 +570,7 @@ void HTMLFormControlElement::UpdateVisibleValidationMessage() {
   }
   client->ShowValidationMessage(*this, message, message_dir, sub_message,
                                 sub_message_dir);
+#endif
 }
 
 void HTMLFormControlElement::HideVisibleValidationMessage() {
@@ -512,7 +578,7 @@ void HTMLFormControlElement::HideVisibleValidationMessage() {
     return;
 
   if (ValidationMessageClient* client = GetValidationMessageClient())
-    client->HideValidationMessage(*this);
+    ASSERT(false); // BKTODO: client->HideValidationMessage(*this);
 }
 
 bool HTMLFormControlElement::IsValidationMessageVisible() const {
@@ -523,7 +589,11 @@ bool HTMLFormControlElement::IsValidationMessageVisible() const {
   if (!client)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return client->IsValidationMessageVisible(*this);
+#endif
 }
 
 ValidationMessageClient* HTMLFormControlElement::GetValidationMessageClient()
@@ -532,7 +602,11 @@ ValidationMessageClient* HTMLFormControlElement::GetValidationMessageClient()
   if (!page)
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return &page->GetValidationMessageClient();
+#endif
 }
 
 bool HTMLFormControlElement::checkValidity(
@@ -545,18 +619,24 @@ bool HTMLFormControlElement::checkValidity(
   if (event_behavior != kCheckValidityDispatchInvalidEvent)
     return false;
   Document* original_document = &GetDocument();
+  ASSERT(false); // BKTODO:
+#if 0
   DispatchEventResult dispatch_result =
       DispatchEvent(*Event::CreateCancelable(EventTypeNames::invalid));
   if (dispatch_result == DispatchEventResult::kNotCanceled &&
       unhandled_invalid_controls && isConnected() &&
       original_document == GetDocument())
     unhandled_invalid_controls->push_back(this);
+#endif
   return false;
 }
 
 void HTMLFormControlElement::ShowValidationMessage() {
+  ASSERT(false); // BKTODO:
+#if 0
   scrollIntoViewIfNeeded(false);
   focus();
+#endif
   UpdateVisibleValidationMessage();
 }
 
@@ -579,8 +659,11 @@ bool HTMLFormControlElement::reportValidity() {
     String message(
         "An invalid form control with name='%name' is not focusable.");
     message.Replace("%name", GetName());
+    ASSERT(false); // BKTODO:
+#if 0
     GetDocument().AddConsoleMessage(ConsoleMessage::Create(
         kRenderingMessageSource, kErrorMessageLevel, message));
+#endif
   }
   return false;
 }
@@ -618,8 +701,8 @@ void HTMLFormControlElement::SetNeedsValidityCheck() {
         .GetTaskRunner(TaskType::kDOMManipulation)
         ->PostTask(
             FROM_HERE,
-            WTF::Bind(&HTMLFormControlElement::UpdateVisibleValidationMessage,
-                      WrapPersistent(this)));
+            std::bind(&HTMLFormControlElement::UpdateVisibleValidationMessage,
+                      this));
   }
 }
 

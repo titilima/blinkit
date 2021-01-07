@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_field_set_element.cc
+// Description: HTMLFieldSetElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -27,7 +38,7 @@
 #include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 #include "third_party/blink/renderer/core/dom/node_lists_node_data.h"
-#include "third_party/blink/renderer/core/html/forms/html_legend_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/html_legend_element.h"
 #include "third_party/blink/renderer/core/html/html_collection.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/layout/layout_block.h"
@@ -42,7 +53,7 @@ using namespace HTMLNames;
 inline HTMLFieldSetElement::HTMLFieldSetElement(Document& document)
     : HTMLFormControlElement(fieldsetTag, document) {}
 
-HTMLFieldSetElement* HTMLFieldSetElement::Create(Document& document) {
+Element* HTMLFieldSetElement::Create(Document& document, const CreateElementFlags) {
   return new HTMLFieldSetElement(document);
 }
 
@@ -51,6 +62,8 @@ bool HTMLFieldSetElement::MatchesValidityPseudoClasses() const {
 }
 
 bool HTMLFieldSetElement::IsValidElement() {
+  ASSERT(false); // BKTODO:
+#if 0
   for (Element* element : *elements()) {
     if (element->IsFormControlElement()) {
       if (!ToHTMLFormControlElement(element)->checkValidity(
@@ -58,6 +71,7 @@ bool HTMLFieldSetElement::IsValidElement() {
         return false;
     }
   }
+#endif
   return true;
 }
 
@@ -89,7 +103,7 @@ void HTMLFieldSetElement::DisabledAttributeChanged() {
   HTMLFormControlElement::DisabledAttributeChanged();
   if (Element* focused_element =
           InvalidateDescendantDisabledStateAndFindFocusedOne(*this))
-    focused_element->blur();
+    ASSERT(false); // BKTODO: focused_element->blur();
 }
 
 void HTMLFieldSetElement::ChildrenChanged(const ChildrenChange& change) {
@@ -97,15 +111,18 @@ void HTMLFieldSetElement::ChildrenChanged(const ChildrenChange& change) {
   Element* focused_element = nullptr;
   {
     EventDispatchForbiddenScope event_forbidden;
+    ASSERT(false); // BKTODO:
+#if 0
     for (HTMLLegendElement& legend :
          Traversal<HTMLLegendElement>::ChildrenOf(*this)) {
       if (Element* element =
               InvalidateDescendantDisabledStateAndFindFocusedOne(legend))
         focused_element = element;
     }
+#endif
   }
   if (focused_element)
-    focused_element->blur();
+    ASSERT(false); // BKTODO: focused_element->blur();
 }
 
 bool HTMLFieldSetElement::SupportsFocus() const {
@@ -113,8 +130,7 @@ bool HTMLFieldSetElement::SupportsFocus() const {
 }
 
 const AtomicString& HTMLFieldSetElement::FormControlType() const {
-  DEFINE_STATIC_LOCAL(const AtomicString, fieldset, ("fieldset"));
-  return fieldset;
+  return html_names::kFieldsetTag.LocalName();
 }
 
 LayoutObject* HTMLFieldSetElement::CreateLayoutObject(
@@ -127,11 +143,19 @@ bool HTMLFieldSetElement::ShouldForceLegacyLayout() const {
 }
 
 HTMLLegendElement* HTMLFieldSetElement::Legend() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return Traversal<HTMLLegendElement>::FirstChild(*this);
+#endif
 }
 
 HTMLCollection* HTMLFieldSetElement::elements() {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return EnsureCachedCollection<HTMLCollection>(kFormControls);
+#endif
 }
 
 int HTMLFieldSetElement::tabIndex() const {

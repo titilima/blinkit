@@ -79,14 +79,11 @@ void LayoutObjectChildList::DestroyLeftoverChildren() {
       continue;
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
     // Destroy any anonymous children remaining in the layout tree, as well as
     // implicit (shadow) DOM elements like those used in the engine-based text
     // fields.
     if (FirstChild()->GetNode())
       FirstChild()->GetNode()->SetLayoutObject(nullptr);
-#endif
     FirstChild()->Destroy();
   }
 }

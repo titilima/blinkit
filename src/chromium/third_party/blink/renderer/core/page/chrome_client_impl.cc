@@ -1200,11 +1200,7 @@ void ChromeClientImpl::RequestPointerUnlock(LocalFrame* frame) {
 }
 
 void ChromeClientImpl::DidAssociateFormControlsAfterLoad(LocalFrame* frame) {
-  ASSERT(false); // BKTODO:
-#if 0
-  if (auto* fill_client = AutofillClientFromFrame(frame))
-    fill_client->DidAssociateFormControlsDynamically();
-#endif
+  // Do autofilling if necessary.
 }
 
 void ChromeClientImpl::ShowVirtualKeyboardOnElementFocus(LocalFrame& frame) {

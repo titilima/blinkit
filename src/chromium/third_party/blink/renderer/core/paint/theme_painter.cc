@@ -36,10 +36,10 @@
 #include "third_party/blink/public/platform/web_rect.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_data_list_element.h"
-#include "third_party/blink/renderer/core/html/forms/html_data_list_options_collection.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/html_data_list_options_collection.h"
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_option_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_select_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_text_area_element.h"
@@ -53,7 +53,7 @@
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context_state_saver.h"
-// BKTODO: #include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
+#include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
 #include "third_party/blink/renderer/platform/theme.h"
 // BKTODO: #include "ui/native_theme/native_theme.h"
 
@@ -80,8 +80,7 @@ ui::NativeTheme::State GetFallbackThemeState(const Node* node) {
 
 ThemePainter::ThemePainter() = default;
 
-#define COUNT_APPEARANCE(doc, feature) \
-  UseCounter::Count(doc, WebFeature::kCSSValueAppearance##feature##Rendered)
+#define COUNT_APPEARANCE(doc, feature)  ((void)0)
 
 bool ThemePainter::Paint(const LayoutObject& o,
                          const PaintInfo& paint_info,
@@ -96,8 +95,6 @@ bool ThemePainter::Paint(const LayoutObject& o,
 
   if (part == kButtonPart && node) {
     UseCounter::Count(doc, WebFeature::kCSSValueAppearanceButtonRendered);
-    ASSERT(false); // BKTODO:
-#if 0
     if (IsHTMLAnchorElement(node)) {
       UseCounter::Count(doc, WebFeature::kCSSValueAppearanceButtonForAnchor);
     } else if (IsHTMLButtonElement(node)) {
@@ -109,25 +106,28 @@ bool ThemePainter::Paint(const LayoutObject& o,
       UseCounter::Count(doc,
                         WebFeature::kCSSValueAppearanceButtonForOtherButtons);
     }
-#endif
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   // Call the appropriate paint method based off the appearance value.
   switch (part) {
     case kCheckboxPart: {
       COUNT_APPEARANCE(doc, Checkbox);
       auto* input = ToHTMLInputElementOrNull(node);
+      ASSERT(false); // BKTODO:
+#if 0
       if (!input || input->type() != InputTypeNames::checkbox)
         COUNT_APPEARANCE(doc, CheckboxForOthers);
+#endif
       return PaintCheckbox(node, o.GetDocument(), style, paint_info, r);
     }
     case kRadioPart: {
       COUNT_APPEARANCE(doc, Radio);
       auto* input = ToHTMLInputElementOrNull(node);
+      ASSERT(false); // BKTODO:
+#if 0
       if (!input || input->type() != InputTypeNames::radio)
         COUNT_APPEARANCE(doc, RadioForOthers);
+#endif
       return PaintRadio(node, o.GetDocument(), style, paint_info, r);
     }
     case kPushButtonPart: {
@@ -140,8 +140,11 @@ bool ThemePainter::Paint(const LayoutObject& o,
     case kSquareButtonPart: {
       COUNT_APPEARANCE(doc, SquareButton);
       auto* input = ToHTMLInputElementOrNull(node);
+      ASSERT(false); // BKTODO:
+#if 0
       if (!input || input->type() != InputTypeNames::color)
         COUNT_APPEARANCE(doc, SquareButtonForOthers);
+#endif
       return PaintButton(node, o.GetDocument(), style, paint_info, r);
     }
     case kButtonPart:
@@ -168,31 +171,43 @@ bool ThemePainter::Paint(const LayoutObject& o,
     case kSliderHorizontalPart: {
       COUNT_APPEARANCE(doc, SliderHorizontal);
       auto* input = ToHTMLInputElementOrNull(node);
+      ASSERT(false); // BKTODO:
+#if 0
       if (!input || input->type() != InputTypeNames::range)
         COUNT_APPEARANCE(doc, SliderHorizontalForOthers);
+#endif
       return PaintSliderTrack(o, paint_info, r);
     }
     case kSliderVerticalPart: {
       COUNT_APPEARANCE(doc, SliderVertical);
       auto* input = ToHTMLInputElementOrNull(node);
+      ASSERT(false); // BKTODO:
+#if 0
       if (!input || input->type() != InputTypeNames::range)
         COUNT_APPEARANCE(doc, SliderVerticalForOthers);
+#endif
       return PaintSliderTrack(o, paint_info, r);
     }
     case kSliderThumbHorizontalPart: {
       COUNT_APPEARANCE(doc, SliderThumbHorizontal);
       auto* input =
           ToHTMLInputElementOrNull(node ? node->OwnerShadowHost() : nullptr);
+      ASSERT(false); // BKTODO:
+#if 0
       if (!input || input->type() != InputTypeNames::range)
         COUNT_APPEARANCE(doc, SliderThumbHorizontalForOthers);
+#endif
       return PaintSliderThumb(node, style, paint_info, r);
     }
     case kSliderThumbVerticalPart: {
       COUNT_APPEARANCE(doc, SliderThumbVertical);
       auto* input =
           ToHTMLInputElementOrNull(node ? node->OwnerShadowHost() : nullptr);
+      ASSERT(false); // BKTODO:
+#if 0
       if (!input || input->type() != InputTypeNames::range)
         COUNT_APPEARANCE(doc, SliderThumbVerticalForOthers);
+#endif
       return PaintSliderThumb(node, style, paint_info, r);
     }
     case kMediaEnterFullscreenButtonPart:
@@ -225,23 +240,28 @@ bool ThemePainter::Paint(const LayoutObject& o,
     case kSearchFieldPart: {
       COUNT_APPEARANCE(doc, SearchField);
       auto* input = ToHTMLInputElementOrNull(node);
+      ASSERT(false); // BKTODO:
+#if 0
       if (!input || input->type() != InputTypeNames::search)
         COUNT_APPEARANCE(doc, SearchFieldForOthers);
+#endif
       return PaintSearchField(node, style, paint_info, r);
     }
     case kSearchFieldCancelButtonPart: {
       COUNT_APPEARANCE(doc, SearchCancel);
       auto* element = ToElementOrNull(node);
+      ASSERT(false); // BKTODO:
+#if 0
       if (!element || !element->OwnerShadowHost() ||
           element->FastGetAttribute(HTMLNames::idAttr) !=
               ShadowElementNames::SearchClearButton())
         COUNT_APPEARANCE(doc, SearchCancelForOthers);
+#endif
       return PaintSearchFieldCancelButton(o, paint_info, r);
     }
     default:
       break;
   }
-#endif
 
   // We don't support the appearance, so let the normal background/border paint.
   return true;
@@ -257,9 +277,9 @@ bool ThemePainter::PaintBorderOnly(const Node* node,
       if (node) {
         UseCounter::Count(node->GetDocument(),
                           WebFeature::kCSSValueAppearanceTextFieldRendered);
-        ASSERT(false); // BKTODO:
-#if 0
         if (auto* input = ToHTMLInputElementOrNull(node)) {
+          ASSERT(false); // BKTODO:
+#if 0
           if (input->type() == InputTypeNames::search) {
             UseCounter::Count(
                 node->GetDocument(),
@@ -269,19 +289,16 @@ bool ThemePainter::PaintBorderOnly(const Node* node,
                 node->GetDocument(),
                 WebFeature::kCSSValueAppearanceTextFieldForTextField);
           }
-        }
 #endif
+        }
       }
       return PaintTextField(node, style, paint_info, r);
     case kTextAreaPart:
       if (node) {
         const auto& doc = node->GetDocument();
         COUNT_APPEARANCE(doc, TextArea);
-        ASSERT(false); // BKTODO:
-#if 0
         if (!IsHTMLTextAreaElement(node))
           COUNT_APPEARANCE(doc, TextAreaForOthers);
-#endif
       }
       return PaintTextArea(node, style, paint_info, r);
     case kMenulistButtonPart:
@@ -317,11 +334,8 @@ bool ThemePainter::PaintDecorations(const Node* node,
   switch (style.Appearance()) {
     case kMenulistButtonPart:
       COUNT_APPEARANCE(document, MenuListButton);
-      ASSERT(false); // BKTODO:
-#if 0
       if (!IsHTMLSelectElement(node))
         COUNT_APPEARANCE(document, MenuListButtonForOthers);
-#endif
       return PaintMenuListButton(node, document, style, paint_info, r);
     case kTextFieldPart:
     case kTextAreaPart:
@@ -352,12 +366,12 @@ void ThemePainter::PaintSliderTicks(const LayoutObject& o,
                                     const PaintInfo& paint_info,
                                     const IntRect& rect) {
   Node* node = o.GetNode();
-  ASSERT(false); // BKTODO:
-#if 0
   if (!IsHTMLInputElement(node))
     return;
 
   HTMLInputElement* input = ToHTMLInputElement(node);
+  ASSERT(false); // BKTODO:
+#if 0
   if (input->type() != InputTypeNames::range ||
       !input->UserAgentShadowRoot()->HasChildren())
     return;

@@ -106,8 +106,9 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>Usp10.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Usp10.lib;UxTheme.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>BlinKit.def</ModuleDefinitionFile>
+      <DelayLoadDLLs>UxTheme.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -126,8 +127,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>Usp10.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Usp10.lib;UxTheme.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>BlinKit.def</ModuleDefinitionFile>
+      <DelayLoadDLLs>UxTheme.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -196,7 +198,7 @@
     <ClCompile Include="..\..\..\src\blinkit\loader\win_loader_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\web_view_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\win_web_view.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\win\dib_section.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\bk_bitmap.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -245,7 +247,7 @@
     <ClInclude Include="..\..\..\src\blinkit\loader\win_loader_thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\web_view_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\win_web_view.h" />
-    <ClInclude Include="..\..\..\src\blinkit\win\dib_section.h" />
+    <ClInclude Include="..\..\..\src\blinkit\win\bk_bitmap.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

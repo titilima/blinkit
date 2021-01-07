@@ -1208,6 +1208,12 @@ bool Node::IsUserActionElementFocused(void) const
     return GetDocument().UserActionElements().IsFocused(this);
 }
 
+bool Node::IsUserActionElementHovered(void) const
+{
+    ASSERT(IsUserActionElement());
+    return GetDocument().UserActionElements().IsHovered(this);
+}
+
 void Node::MarkAncestorsWithChildNeedsReattachLayoutTree(void)
 {
     ASSERT(isConnected());
@@ -1269,6 +1275,14 @@ void Node::ReattachLayoutTree(AttachContext &context)
     ASSERT(nullptr == GetNonAttachedStyle());
 }
 
+void Node::SetFocused(bool flag, WebFocusType focusType)
+{
+    Document &document = GetDocument();
+    if (!flag || kWebFocusTypeMouse == focusType)
+        ASSERT(false); // BKTODO: document.SetHadKeyboardEvent(false);
+    document.UserActionElements().SetFocused(this, flag);
+}
+
 void Node::SetNeedsStyleRecalc(StyleChangeType changeType, const StyleChangeReasonForTracing &)
 {
     ASSERT(!GetDocument().GetStyleEngine().InRebuildLayoutTree());
@@ -1321,6 +1335,28 @@ void Node::SetNonAttachedStyle(scoped_refptr<ComputedStyle> nonAttachedStyle)
         m_data.m_rareData->SetNodeRenderingData(nodeLayoutData);
     else
         m_data.m_nodeLayoutData = nodeLayoutData;
+}
+
+bool Node::ShouldHaveFocusAppearance(void) const
+{
+    ASSERT(IsFocused());
+    return true;
+}
+
+bool Node::WillRespondToMouseClickEvents(void)
+{
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
+    if (IsDisabledFormControl(this))
+        return false;
+    GetDocument().UpdateStyleAndLayoutTree();
+    return HasEditableStyle(*this) ||
+        HasEventListeners(EventTypeNames::mouseup) ||
+        HasEventListeners(EventTypeNames::mousedown) ||
+        HasEventListeners(EventTypeNames::click) ||
+        HasEventListeners(EventTypeNames::DOMActivate);
+#endif
 }
 
 const ComputedStyle* Node::VirtualEnsureComputedStyle(PseudoId pseudoElementSpecifier)

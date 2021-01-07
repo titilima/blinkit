@@ -647,19 +647,21 @@ inline void BreakingContext::HandleReplaced() {
   if (at_start_)
     width_.UpdateAvailableWidth(replaced_box.LogicalHeight());
 
-  ASSERT(false); // BKTODO:
-#if 0
   // Break on replaced elements if either has normal white-space,
   // or if the replaced element is ruby that can break before.
   if ((auto_wrap_ || ComputedStyle::AutoWrap(last_ws_)) &&
       (!current_.GetLineLayoutItem().IsImage() || allow_images_to_break_) &&
+#if 0 // BKTODO: Check the logic
       (!current_.GetLineLayoutItem().IsRubyRun() ||
        LineLayoutRubyRun(current_.GetLineLayoutItem())
            .CanBreakBefore(layout_text_info_.line_break_iterator_))) {
+#else
+      true) {
+    ASSERT(!current_.GetLineLayoutItem().IsRubyRun());
+#endif
     width_.Commit();
     line_break_.MoveToStartOf(current_.GetLineLayoutItem());
   }
-#endif
 
   if (ignoring_spaces_) {
     line_midpoint_state_.StopIgnoringSpaces(
@@ -691,7 +693,7 @@ inline void BreakingContext::HandleReplaced() {
   } else {
     width_.AddUncommittedWidth(replaced_logical_width.ToFloat());
   }
-  ASSERT(false); // BKTODO:
+  ASSERT(!current_.GetLineLayoutItem().IsRubyRun()); // BKTODO:
 #if 0
   if (current_.GetLineLayoutItem().IsRubyRun())
     width_.ApplyOverhang(LineLayoutRubyRun(current_.GetLineLayoutItem()),

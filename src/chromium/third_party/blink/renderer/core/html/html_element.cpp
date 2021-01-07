@@ -39,6 +39,33 @@ void HTMLElement::AdjustDirectionalityIfNeededAfterChildrenChanged(const Childre
 #endif
 }
 
+const AtomicString& HTMLElement::autocapitalize(void) const
+{
+    ASSERT(false); // BKTODO:
+#if 0
+    DEFINE_STATIC_LOCAL(const AtomicString, kOff, ("off"));
+    DEFINE_STATIC_LOCAL(const AtomicString, kNone, ("none"));
+    DEFINE_STATIC_LOCAL(const AtomicString, kCharacters, ("characters"));
+    DEFINE_STATIC_LOCAL(const AtomicString, kWords, ("words"));
+    DEFINE_STATIC_LOCAL(const AtomicString, kSentences, ("sentences"));
+
+    const AtomicString& value = FastGetAttribute(autocapitalizeAttr);
+    if (value.IsEmpty())
+        return g_empty_atom;
+
+    if (EqualIgnoringASCIICase(value, kNone) ||
+        EqualIgnoringASCIICase(value, kOff))
+        return kNone;
+    if (EqualIgnoringASCIICase(value, kCharacters))
+        return kCharacters;
+    if (EqualIgnoringASCIICase(value, kWords))
+        return kWords;
+    // "sentences", "on", or an invalid value
+    return kSentences;
+#endif
+    return g_empty_atom;
+}
+
 void HTMLElement::ChildrenChanged(const ChildrenChange &change)
 {
     Element::ChildrenChanged(change);

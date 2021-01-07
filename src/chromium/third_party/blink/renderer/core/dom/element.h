@@ -46,6 +46,7 @@
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
 #include "url/gurl.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/css_primitive_value.h"
 #   include "third_party/blink/renderer/core/dom/whitespace_attacher.h"
 #   include "third_party/blink/renderer/core/resize_observer/resize_observer_data_map.h"
 #endif
@@ -59,6 +60,8 @@ class ElementRareData;
 class NamedNodeMap;
 #ifndef BLINKIT_CRAWLER_ONLY
 class ElementAnimations;
+class FocusOptions;
+class InputDeviceCapabilities;
 class MutableCSSPropertyValueSet;
 class PseudoElement;
 class ScrollStateCallback;
@@ -82,6 +85,14 @@ enum class NamedItemType {
     kNameOrId,
     kNameOrIdWithName,
 };
+
+#ifndef BLINKIT_CRAWLER_ONLY
+enum class SelectionBehaviorOnFocus {
+    kReset,
+    kRestore,
+    kNone,
+};
+#endif
 
 typedef std::vector<Attr *> AttrNodeList;
 
@@ -213,6 +224,11 @@ public:
 
 #ifndef BLINKIT_CRAWLER_ONLY
     virtual bool IsFormControlElement(void) const { return false; }
+    virtual bool IsInRange(void) const { return false; }
+    virtual bool IsOutOfRange(void) const { return false; }
+    virtual bool IsSpinButtonElement(void) const { return false; }
+    // This returns true for <textarea> and some types of <input>.
+    virtual bool IsTextControl(void) const { return false; }
 
     Element* AdjustedFocusedElementInTreeScope(void) const;
 
@@ -262,9 +278,26 @@ public:
     // ComputedStyle is up to date;
     // e.g. by calling Document::UpdateStyleAndLayoutTree().
     bool IsFocusable(void) const;
+    virtual bool IsKeyboardFocusable(void) const { return IsFocusable() && tabIndex() >= 0; }
+    virtual bool willValidate(void) const { return false; }
+    virtual bool MayTriggerVirtualKeyboard(void) const;
+    virtual void AccessKeyAction(bool /*sendToAnyEvent*/) {}
 
     virtual String title(void) const { return String(); }
+    virtual String DefaultToolTip(void) const { return String(); }
     int tabIndex(void) const override;
+
+    virtual void blur(void);
+
+    virtual void DispatchFocusEvent(Element *oldFocusedElement, WebFocusType type,
+        InputDeviceCapabilities* sourceSapabilities = nullptr);
+    virtual void DispatchBlurEvent(Element *newFocusedElement, WebFocusType type,
+        InputDeviceCapabilities *sourceCapabilities = nullptr);
+    virtual void DispatchFocusInEvent(const AtomicString &eventType, Element *oldFocusedElement, WebFocusType type,
+        InputDeviceCapabilities *sourceCapabilities = nullptr);
+
+    virtual void UpdateFocusAppearanceWithOptions(SelectionBehaviorOnFocus selectionBehavior,
+        const FocusOptions &options);
 
     // Returns the shadow root attached to this element if it is a shadow host.
     ShadowRoot* GetShadowRoot(void) const;
@@ -281,6 +314,7 @@ public:
     virtual bool HasLegalLinkAttribute(const QualifiedName &) const { return false; }
     virtual const QualifiedName& SubResourceAttributeName(void) const { return QualifiedName::Null(); }
 
+    virtual bool ShouldForceLegacyLayout(void) const { return false; }
     virtual scoped_refptr<ComputedStyle> CustomStyleForLayoutObject(void);
     virtual LayoutObject* CreateLayoutObject(const ComputedStyle &style);
     virtual bool LayoutObjectIsNeeded(const ComputedStyle &style) const;
@@ -336,6 +370,15 @@ protected:
     virtual bool ChildrenCanHaveStyle(void) const { return true; }
     virtual void WillRecalcStyle(StyleRecalcChange change);
     virtual void DidRecalcStyle(StyleRecalcChange change);
+
+    void AddPropertyToPresentationAttributeStyle(MutableCSSPropertyValueSet *style, CSSPropertyID propertyId,
+        CSSValueID identifier);
+    void AddPropertyToPresentationAttributeStyle(MutableCSSPropertyValueSet *style, CSSPropertyID propertyId,
+        double value, CSSPrimitiveValue::UnitType unit);
+    void AddPropertyToPresentationAttributeStyle(MutableCSSPropertyValueSet *style, CSSPropertyID propertyId,
+        const String &value);
+    void AddPropertyToPresentationAttributeStyle(MutableCSSPropertyValueSet *style, CSSPropertyID propertyId,
+        const CSSValue &value);
 
     void ChildrenChanged(const ChildrenChange &change) override;
     void AttachLayoutTree(AttachContext &context) override;
@@ -426,6 +469,10 @@ private:
     void RemoveCallbackSelectors(void);
 
     void CheckForEmptyStyleChange(const Node *nodeBeforeChange, const Node *nodeAfterChange);
+
+    // FIXME: Everyone should allow author shadows.
+    virtual bool AreAuthorShadowsAllowed(void) const { return true; }
+    virtual bool AlwaysCreateUserAgentShadowRoot(void) const { return false; }
 #endif
 
     QualifiedName m_tagName;
@@ -480,6 +527,30 @@ inline const T* ToElement(const Node *node)
     return static_cast<const T *>(node);
 }
 
+template <typename T>
+inline T* ToElementOrNull(Node &node)
+{
+    return IsElementOfType<const T>(node) ? static_cast<T *>(&node) : nullptr;
+}
+
+template <typename T>
+inline T* ToElementOrNull(Node *node)
+{
+    return (nullptr != node && IsElementOfType<const T>(*node)) ? static_cast<T *>(node) : nullptr;
+}
+
+template <typename T>
+inline const T* ToElementOrNull(const Node &node)
+{
+    return IsElementOfType<const T>(node) ? static_cast<const T *>(&node) : nullptr;
+}
+
+template <typename T>
+inline const T* ToElementOrNull(const Node *node)
+{
+    return (nullptr != node && IsElementOfType<const T>(*node)) ? static_cast<const T *>(node) : nullptr;
+}
+
 inline bool IsShadowHost(const Node *node)
 {
 #ifdef BLINKIT_CRAWLER_ONLY
@@ -521,5 +592,12 @@ inline bool IsAtShadowBoundary(const Element *element)
         return node.predicate;                                      \
     }                                                               \
     DEFINE_NODE_TYPE_CASTS(thisType, predicate)
+
+#define DEFINE_ELEMENT_TYPE_CASTS_WITH_FUNCTION(ThisType)           \
+    template <>                                                     \
+    inline bool IsElementOfType<const ThisType>(const Node &node) { \
+        return Is##ThisType(node);                                  \
+    }                                                               \
+    DEFINE_NODE_TYPE_CASTS_WITH_FUNCTION(ThisType)
 
 #endif // BLINKIT_BLINK_ELEMENT_H

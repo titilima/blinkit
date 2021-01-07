@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_control_inner_elements.cc
+// Description: Text Control Inner Element Classes
+//      Author: Ziming Li
+//     Created: 2021-01-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2010 Google Inc. All rights reserved.
@@ -30,16 +41,18 @@
 #include "third_party/blink/renderer/core/css/style_change_reason.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/node_computed_style.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/dom/user_gesture_indicator.h"
 #include "third_party/blink/renderer/core/events/mouse_event.h"
 #include "third_party/blink/renderer/core/events/text_event.h"
 #include "third_party/blink/renderer/core/events/text_event_input_type.h"
+#endif
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
-#include "third_party/blink/renderer/core/html/shadow/shadow_element_names.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/shadow/shadow_element_names.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/input/event_handler.h"
-#include "third_party/blink/renderer/core/layout/layout_text_control_single_line.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_text_control_single_line.h"
 
 namespace blink {
 
@@ -51,13 +64,17 @@ TextControlInnerContainer::TextControlInnerContainer(Document& document)
 TextControlInnerContainer* TextControlInnerContainer::Create(
     Document& document) {
   TextControlInnerContainer* element = new TextControlInnerContainer(document);
-  element->setAttribute(idAttr, ShadowElementNames::TextFieldContainer());
+  ASSERT(false); // BKTODO: element->setAttribute(idAttr, ShadowElementNames::TextFieldContainer());
   return element;
 }
 
 LayoutObject* TextControlInnerContainer::CreateLayoutObject(
     const ComputedStyle&) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return new LayoutTextControlInnerContainer(this);
+#endif
 }
 
 // ---------------------------
@@ -69,7 +86,7 @@ EditingViewPortElement::EditingViewPortElement(Document& document)
 
 EditingViewPortElement* EditingViewPortElement::Create(Document& document) {
   EditingViewPortElement* element = new EditingViewPortElement(document);
-  element->setAttribute(idAttr, ShadowElementNames::EditingViewPort());
+  ASSERT(false); // BKTODO: element->setAttribute(idAttr, ShadowElementNames::EditingViewPort());
   return element;
 }
 
@@ -106,6 +123,8 @@ TextControlInnerEditorElement* TextControlInnerEditorElement::Create(
 }
 
 void TextControlInnerEditorElement::DefaultEventHandler(Event& event) {
+  ASSERT(false); // BKTODO:
+#if 0
   // FIXME: In the future, we should add a way to have default event listeners.
   // Then we would add one to the text field's inner div, and we wouldn't need
   // this subclass.
@@ -123,6 +142,7 @@ void TextControlInnerEditorElement::DefaultEventHandler(Event& event) {
   }
   if (!event.DefaultHandled())
     HTMLDivElement::DefaultEventHandler(event);
+#endif
 }
 
 void TextControlInnerEditorElement::SetVisibility(bool is_visible) {
@@ -136,7 +156,11 @@ void TextControlInnerEditorElement::SetVisibility(bool is_visible) {
 
 LayoutObject* TextControlInnerEditorElement::CreateLayoutObject(
     const ComputedStyle&) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return new LayoutTextControlInnerEditor(this);
+#endif
 }
 
 scoped_refptr<ComputedStyle>
@@ -169,6 +193,8 @@ TextControlInnerEditorElement::CreateInnerEditorStyle() const {
           : EUserModify::kReadWritePlaintextOnly);
   text_block_style->SetDisplay(EDisplay::kBlock);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!IsHTMLTextAreaElement(host)) {
     text_block_style->SetWhiteSpace(EWhiteSpace::kPre);
     text_block_style->SetOverflowWrap(EOverflowWrap::kNormal);
@@ -209,6 +235,7 @@ TextControlInnerEditorElement::CreateInnerEditorStyle() const {
     text_block_style->AddCachedPseudoStyle(no_scrollbar_style);
     text_block_style->SetHasPseudoStyle(kPseudoIdScrollbar);
   }
+#endif
 
   return text_block_style;
 }
@@ -223,8 +250,11 @@ SearchFieldCancelButtonElement* SearchFieldCancelButtonElement::Create(
     Document& document) {
   SearchFieldCancelButtonElement* element =
       new SearchFieldCancelButtonElement(document);
+  ASSERT(false); // BKTODO:
+#if 0
   element->SetShadowPseudoId(AtomicString("-webkit-search-cancel-button"));
   element->setAttribute(idAttr, ShadowElementNames::SearchClearButton());
+#endif
   return element;
 }
 
@@ -238,6 +268,8 @@ void SearchFieldCancelButtonElement::DetachLayoutTree(
 }
 
 void SearchFieldCancelButtonElement::DefaultEventHandler(Event& event) {
+  ASSERT(false); // BKTODO:
+#if 0
   // If the element is visible, on mouseup, clear the value, and set selection
   HTMLInputElement* input(ToHTMLInputElement(OwnerShadowHost()));
   if (!input || input->IsDisabledOrReadOnly()) {
@@ -257,12 +289,16 @@ void SearchFieldCancelButtonElement::DefaultEventHandler(Event& event) {
 
   if (!event.DefaultHandled())
     HTMLDivElement::DefaultEventHandler(event);
+#endif
 }
 
 bool SearchFieldCancelButtonElement::WillRespondToMouseClickEvents() {
+  ASSERT(false); // BKTODO:
+#if 0
   const HTMLInputElement* input = ToHTMLInputElement(OwnerShadowHost());
   if (input && !input->IsDisabledOrReadOnly())
     return true;
+#endif
 
   return HTMLDivElement::WillRespondToMouseClickEvents();
 }

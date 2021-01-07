@@ -100,7 +100,7 @@ private:
     void UpdateLayerTreeBackgroundColor(void);
 
     bool IsAcceleratedCompositingActive(void) const;
-    virtual std::unique_ptr<cc::SkiaPaintCanvas> CreateCanvas(const blink::WebSize &size) = 0;
+    virtual SkBitmap PrepareBitmapForCanvas(const blink::WebSize &size) = 0;
 
     // LocalFrameClient
     bool IsCrawler(void) const final { return false; }

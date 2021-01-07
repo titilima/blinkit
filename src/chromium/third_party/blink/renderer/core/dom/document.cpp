@@ -245,6 +245,9 @@ Document::Document(const DocumentInit &initializer)
         m_registrationContext = initializer.RegistrationContext(this);
         m_viewportData = std::make_unique<ViewportData>(*this);
         m_timeline = DocumentTimeline::Create(this);
+        m_didAssociateFormControlsTimer = std::make_unique<TaskRunnerTimer<Document>>(
+            GetTaskRunner(TaskType::kInternalLoading), this, &Document::DidAssociateFormControlsTimerFired
+        );
     }
 #endif
     if (m_frame)
@@ -2584,6 +2587,27 @@ void Document::ClearResizedForViewportUnits(void)
 float Document::DevicePixelRatio(void) const
 {
     return m_frame ? m_frame->DevicePixelRatio() : 1.0;
+}
+
+void Document::DidAssociateFormControl(Element *element)
+{
+    LocalFrame *frame = GetFrame();
+    if (nullptr == frame || nullptr == frame->GetPage() || !HasFinishedParsing())
+        return;
+
+    // We add a slight delay because this could be called rapidly.
+    if (!m_didAssociateFormControlsTimer->IsActive())
+        m_didAssociateFormControlsTimer->StartOneShot(TimeDelta::FromMilliseconds(300), FROM_HERE);
+}
+
+void Document::DidAssociateFormControlsTimerFired(TimerBase *timer)
+{
+    ASSERT(m_didAssociateFormControlsTimer.get() == timer);
+    if (LocalFrame *frame = GetFrame())
+    {
+        if (Page *page = frame->GetPage())
+            page->GetChromeClient().DidAssociateFormControlsAfterLoad(frame);
+    }
 }
 
 void Document::DidLoadAllScriptBlockingResources(void)

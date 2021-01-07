@@ -511,6 +511,9 @@ public:
 
     void ExecuteScriptsWaitingForResources(void);
 
+    // TODO(thestig): Rename these and related functions, since we can call them
+    // for controls outside of forms as well.
+    void DidAssociateFormControl(Element *element);
     void DidLoadAllScriptBlockingResources(void);
     void DidRemoveAllPendingStylesheet(void);
     void StyleResolverMayHaveChanged(void);
@@ -588,6 +591,8 @@ private:
 
     void AttachLayoutTree(AttachContext &) override { NOTREACHED(); }
     void DetachLayoutTree(const AttachContext & = AttachContext()) override { NOTREACHED(); }
+
+    void DidAssociateFormControlsTimerFired(TimerBase *timer);
 #endif
 
     static uint64_t m_globalTreeVersion;
@@ -717,6 +722,8 @@ private:
     // TODO(layout-dev): Once everything are LayoutNG, we can get rid of this.
     // Used for legacy layout tree fallback
     ReattachLegacyLayoutObjectList *reattach_legacy_object_list_ = nullptr;
+
+    std::unique_ptr<TaskRunnerTimer<Document>> m_didAssociateFormControlsTimer;
 
 #   if DCHECK_IS_ON()
     unsigned m_slotAssignmentRecalcForbiddenRecursionDepth = 0;

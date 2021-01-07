@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_button_element.cc
+// Description: HTMLButtonElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -26,9 +37,9 @@
 #include "third_party/blink/renderer/core/html/forms/html_button_element.h"
 
 #include "third_party/blink/renderer/core/dom/attribute.h"
-#include "third_party/blink/renderer/core/events/keyboard_event.h"
-#include "third_party/blink/renderer/core/html/forms/form_data.h"
-#include "third_party/blink/renderer/core/html/forms/html_form_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/events/keyboard_event.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/form_data.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/html_form_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/layout/layout_button.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
@@ -42,7 +53,7 @@ inline HTMLButtonElement::HTMLButtonElement(Document& document)
       type_(SUBMIT),
       is_activated_submit_(false) {}
 
-HTMLButtonElement* HTMLButtonElement::Create(Document& document) {
+Element* HTMLButtonElement::Create(Document& document, const CreateElementFlags) {
   return new HTMLButtonElement(document);
 }
 
@@ -96,15 +107,15 @@ void HTMLButtonElement::ParseAttribute(
       type_ = SUBMIT;
     SetNeedsWillValidateCheck();
     if (formOwner() && isConnected())
-      formOwner()->InvalidateDefaultButtonStyle();
+      ASSERT(false); // BKTODO: formOwner()->InvalidateDefaultButtonStyle();
   } else {
-    if (params.name == formactionAttr)
-      LogUpdateAttributeIfIsolatedWorldAndInDocument("button", params);
     HTMLFormControlElement::ParseAttribute(params);
   }
 }
 
 void HTMLButtonElement::DefaultEventHandler(Event& event) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (event.type() == EventTypeNames::DOMActivate && !IsDisabledFormControl()) {
     if (Form() && type_ == SUBMIT) {
       Form()->PrepareForSubmission(event, this);
@@ -143,6 +154,7 @@ void HTMLButtonElement::DefaultEventHandler(Event& event) {
       return;
     }
   }
+#endif
 
   HTMLFormControlElement::DefaultEventHandler(event);
 }
@@ -170,24 +182,38 @@ void HTMLButtonElement::SetActivatedSubmit(bool flag) {
 }
 
 void HTMLButtonElement::AppendToFormData(FormData& form_data) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (type_ == SUBMIT && !GetName().IsEmpty() && is_activated_submit_)
     form_data.AppendFromElement(GetName(), Value());
+#endif
 }
 
 void HTMLButtonElement::AccessKeyAction(bool send_mouse_events) {
+  ASSERT(false); // BKTODO:
+#if 0
   focus();
 
   DispatchSimulatedClick(
       nullptr, send_mouse_events ? kSendMouseUpDownEvents : kSendNoEvents);
+#endif
 }
 
 bool HTMLButtonElement::IsURLAttribute(const Attribute& attribute) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return attribute.GetName() == formactionAttr ||
          HTMLFormControlElement::IsURLAttribute(attribute);
+#endif
 }
 
 const AtomicString& HTMLButtonElement::Value() const {
+  ASSERT(false); // BKTODO:
+  return g_null_atom;
+#if 0
   return getAttribute(valueAttr);
+#endif
 }
 
 bool HTMLButtonElement::RecalcWillValidate() const {
@@ -203,18 +229,20 @@ bool HTMLButtonElement::SupportsAutofocus() const {
 }
 
 bool HTMLButtonElement::MatchesDefaultPseudoClass() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // HTMLFormElement::findDefaultButton() traverses the tree. So we check
   // canBeSuccessfulSubmitButton() first for early return.
   return CanBeSuccessfulSubmitButton() && Form() &&
          Form()->FindDefaultButton() == this;
+#endif
 }
 
 Node::InsertionNotificationRequest HTMLButtonElement::InsertedInto(
     ContainerNode& insertion_point) {
   InsertionNotificationRequest request =
       HTMLFormControlElement::InsertedInto(insertion_point);
-  LogAddElementIfIsolatedWorldAndInDocument("button", typeAttr, formmethodAttr,
-                                            formactionAttr);
   return request;
 }
 

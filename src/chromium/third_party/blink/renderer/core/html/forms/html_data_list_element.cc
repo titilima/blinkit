@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_data_list_element.cc
+// Description: HTMLDataListElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  * Copyright (C) 2010 Apple Inc. All rights reserved.
@@ -34,7 +45,7 @@
 #include "third_party/blink/renderer/core/dom/id_target_observer_registry.h"
 #include "third_party/blink/renderer/core/dom/node_lists_node_data.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
-#include "third_party/blink/renderer/core/html/forms/html_data_list_options_collection.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/html_data_list_options_collection.h"
 #include "third_party/blink/renderer/core/html_names.h"
 
 namespace blink {
@@ -42,32 +53,45 @@ namespace blink {
 inline HTMLDataListElement::HTMLDataListElement(Document& document)
     : HTMLElement(HTMLNames::datalistTag, document) {}
 
-HTMLDataListElement* HTMLDataListElement::Create(Document& document) {
+Element* HTMLDataListElement::Create(Document& document, const CreateElementFlags) {
   UseCounter::Count(document, WebFeature::kDataListElement);
   return new HTMLDataListElement(document);
 }
 
 HTMLDataListOptionsCollection* HTMLDataListElement::options() {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return EnsureCachedCollection<HTMLDataListOptionsCollection>(
       kDataListOptions);
+#endif
 }
 
 void HTMLDataListElement::ChildrenChanged(const ChildrenChange& change) {
   HTMLElement::ChildrenChanged(change);
   if (!change.by_parser) {
+    ASSERT(false); // BKTODO:
+#if 0
     GetTreeScope().GetIdTargetObserverRegistry().NotifyObservers(
         GetIdAttribute());
+#endif
   }
 }
 
 void HTMLDataListElement::FinishParsingChildren() {
+  ASSERT(false); // BKTODO:
+#if 0
   GetTreeScope().GetIdTargetObserverRegistry().NotifyObservers(
       GetIdAttribute());
+#endif
 }
 
 void HTMLDataListElement::OptionElementChildrenChanged() {
+  ASSERT(false); // BKTODO:
+#if 0
   GetTreeScope().GetIdTargetObserverRegistry().NotifyObservers(
       GetIdAttribute());
+#endif
 }
 
 }  // namespace blink

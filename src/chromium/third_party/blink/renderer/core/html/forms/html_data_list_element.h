@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_data_list_element.h
+// Description: HTMLDataListElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2009, Google Inc. All rights reserved.
  * Copyright (C) 2010 Apple Inc. All rights reserved.
@@ -42,7 +53,7 @@ class CORE_EXPORT HTMLDataListElement final : public HTMLElement {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
-  static HTMLDataListElement* Create(Document&);
+  static Element* Create(Document&, const CreateElementFlags);
 
   HTMLDataListOptionsCollection* options();
 

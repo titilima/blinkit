@@ -169,6 +169,8 @@ public:
     void RebuildLayoutTreeForChild(Node *child, WhitespaceAttacher &whitespaceAttacher);
     void RebuildNonDistributedChildren(void);
 
+    void SetFocused(bool received, WebFocusType focusType) override;
+
     void AttachLayoutTree(AttachContext &context) override;
     void DetachLayoutTree(const AttachContext &context = AttachContext()) override;
 #endif
@@ -229,7 +231,7 @@ public:
         change.siblingChanged      = &node;
         change.siblingBeforeChange = unchangedPrevious;
         change.siblingAfterChange  = unchangedNext;
-        change.byParser            = byParser;
+        change.by_parser           = byParser;
         return change;
     }
     static ChildrenChange ForRemoval(Node &node, Node *previousSibling, Node *nextSibling, ChildrenChangeSource byParser)
@@ -239,7 +241,7 @@ public:
         change.siblingChanged      = &node;
         change.siblingBeforeChange = previousSibling;
         change.siblingAfterChange  = nextSibling;
-        change.byParser            = byParser;
+        change.by_parser           = byParser;
         return change;
     }
 
@@ -260,7 +262,7 @@ public:
     //  - siblingChanged.nextSibling after single node insertion
     //  - nextSibling of the last inserted node after multiple node insertion.
     Member<Node> siblingAfterChange;
-    ChildrenChangeSource byParser;
+    ChildrenChangeSource by_parser;
 };
 
 inline void GetChildNodes(ContainerNode &node, NodeVector &nodes)

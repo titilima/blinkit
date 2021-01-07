@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_input_element.h
+// Description: HTMLInputElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -26,11 +37,13 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_HTML_FORMS_HTML_INPUT_ELEMENT_H_
 
 #include "base/gtest_prod_util.h"
-#include "third_party/blink/renderer/bindings/core/v8/active_script_wrappable.h"
+// BKTODO: #include "third_party/blink/renderer/bindings/core/v8/active_script_wrappable.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/create_element_flags.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/file_chooser.h"
 #include "third_party/blink/renderer/core/html/forms/step_range.h"
+#endif
 #include "third_party/blink/renderer/core/html/forms/text_control_element.h"
 
 namespace blink {
@@ -43,28 +56,29 @@ class HTMLDataListElement;
 class HTMLImageLoader;
 class InputType;
 class InputTypeView;
-class KURL;
 class ListAttributeTargetObserver;
 class RadioButtonGroupScope;
 struct DateTimeChooserParameters;
 
 class CORE_EXPORT HTMLInputElement
-    : public TextControlElement,
-      public ActiveScriptWrappable<HTMLInputElement> {
+    : public TextControlElement /*,
+      BKTODO: public ActiveScriptWrappable<HTMLInputElement> */ {
   DEFINE_WRAPPERTYPEINFO();
   USING_GARBAGE_COLLECTED_MIXIN(HTMLInputElement);
 
  public:
-  static HTMLInputElement* Create(Document&, const CreateElementFlags);
+  static Element* Create(Document&, const CreateElementFlags);
   ~HTMLInputElement() override;
   void Trace(blink::Visitor*) override;
 
   // Returns attributes that should be checked against Trusted Types
   const HashSet<AtomicString>& GetCheckedAttributeNames() const override;
 
+#if 0 // BKTODO:
   bool HasPendingActivity() const final;
 
   DEFINE_ATTRIBUTE_EVENT_LISTENER(webkitspeechchange);
+#endif
 
   bool ShouldAutocomplete() const final;
 
@@ -87,12 +101,14 @@ class CORE_EXPORT HTMLInputElement
   // Returns the maximum value for type=date, number, or range.  Don't call this
   // for other types.  This always returns a value which is >= minimum().
   double Maximum() const;
+#if 0 // BKTODO:
   // Sets the "allowed value step" defined in the HTML spec to the specified
   // double pointer.  Returns false if there is no "allowed value step."
   bool GetAllowedValueStep(Decimal*) const;
   StepRange CreateStepRange(AnyStepHandling) const;
 
   Decimal FindClosestTickMarkValue(const Decimal&);
+#endif
 
   // Implementations of HTMLInputElement::stepUp() and stepDown().
   void stepUp(int, ExceptionState&);
@@ -209,7 +225,7 @@ class CORE_EXPORT HTMLInputElement
 
   void setSize(unsigned, ExceptionState&);
 
-  KURL Src() const;
+  GURL Src() const;
   bool Multiple() const;
 
   FileList* files() const;
@@ -237,8 +253,10 @@ class CORE_EXPORT HTMLInputElement
   HTMLDataListElement* DataList() const;
   bool HasValidDataListOptions() const;
   void ListAttributeTargetChanged();
+#if 0 // BKTODO:
   // Associated <datalist> options which match to the current INPUT value.
   HeapVector<Member<HTMLOptionElement>> FilteredDataListOptions() const;
+#endif
 
   HTMLInputElement* CheckedRadioButtonForGroup();
   bool IsInRequiredRadioButtonGroup();
@@ -268,8 +286,10 @@ class CORE_EXPORT HTMLInputElement
 
   void EndEditing();
 
+#if 0 // BKTODO:
   static FileChooserFileInfoList FilesFromFileInputFormControlState(
       const FormControlState&);
+#endif
 
   bool MatchesReadOnlyPseudoClass() const final;
   bool MatchesReadWritePseudoClass() const final;
@@ -289,7 +309,9 @@ class CORE_EXPORT HTMLInputElement
 
   void SetShouldRevealPassword(bool value);
   bool ShouldRevealPassword() const { return should_reveal_password_; }
+#if 0 // BKTODO: Check if necessary.
   AXObject* PopupRootAXObject();
+#endif
   void DidNotifySubtreeInsertionsToDocument() override;
 
   virtual void EnsureFallbackContent();
@@ -319,7 +341,9 @@ class CORE_EXPORT HTMLInputElement
   void DidChangeForm() final;
   InsertionNotificationRequest InsertedInto(ContainerNode&) override;
   void RemovedFrom(ContainerNode&) final;
+#if 0 // BKTODO:
   void DidMoveToNewDocument(Document& old_document) final;
+#endif
   bool HasActivationBehavior() const override;
 
   bool HasCustomFocusLogic() const final;

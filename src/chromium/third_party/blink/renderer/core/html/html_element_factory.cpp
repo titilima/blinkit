@@ -12,7 +12,12 @@
 #include "html_document.h"
 
 #include <unordered_map>
+#include "third_party/blink/renderer/core/html/forms/html_button_element.h"
+#include "third_party/blink/renderer/core/html/forms/html_data_list_element.h"
+#include "third_party/blink/renderer/core/html/forms/html_field_set_element.h"
+#include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #include "third_party/blink/renderer/core/html/html_body_element.h"
+#include "third_party/blink/renderer/core/html/html_div_element.h"
 #include "third_party/blink/renderer/core/html/html_head_element.h"
 #include "third_party/blink/renderer/core/html/html_html_element.h"
 #include "third_party/blink/renderer/core/html/html_link_element.h"
@@ -32,14 +37,19 @@ static void FillElementCreators(HTMLElementCreators &dst)
         const QualifiedName &tag;
         HTMLElement::Creator creator;
     } data[] = {
-        { html_names::kBodyTag,  HTMLBodyElement::Create  },
-        { html_names::kHeadTag,  HTMLHeadElement::Create  },
-        { html_names::kHTMLTag,  HTMLHtmlElement::Create  },
-        { html_names::kLinkTag,  HTMLLinkElement::Create  },
-        { html_names::kMetaTag,  HTMLMetaElement::Create  },
-        { html_names::kSlotTag,  HTMLSlotElement::Create  },
-        { html_names::kStyleTag, HTMLStyleElement::Create },
-        { html_names::kTitleTag, HTMLTitleElement::Create }
+        { html_names::kBodyTag,     HTMLBodyElement::Create     },
+        { html_names::kButtonTag,   HTMLButtonElement::Create   },
+        { html_names::kDatalistTag, HTMLDataListElement::Create },
+        { html_names::kDivTag,      HTMLDivElement::Create      },
+        { html_names::kFieldsetTag, HTMLFieldSetElement::Create },
+        { html_names::kHeadTag,     HTMLHeadElement::Create     },
+        { html_names::kHTMLTag,     HTMLHtmlElement::Create     },
+        { html_names::kInputTag,    HTMLInputElement::Create    },
+        { html_names::kLinkTag,     HTMLLinkElement::Create     },
+        { html_names::kMetaTag,     HTMLMetaElement::Create     },
+        { html_names::kSlotTag,     HTMLSlotElement::Create     },
+        { html_names::kStyleTag,    HTMLStyleElement::Create    },
+        { html_names::kTitleTag,    HTMLTitleElement::Create    }
     };
     for (const auto &e : data)
     {

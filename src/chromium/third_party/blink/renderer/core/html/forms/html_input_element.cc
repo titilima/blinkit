@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_input_element.cc
+// Description: HTMLInputElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -31,37 +42,45 @@
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 
 #include "third_party/blink/public/platform/task_type.h"
+#if 0 // BKTODO:
 #include "third_party/blink/public/platform/web_scroll_into_view_params.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_event_listener.h"
 #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
+#endif
 #include "third_party/blink/renderer/core/css/style_change_reason.h"
 #include "third_party/blink/renderer/core/css_property_names.h"
 #include "third_party/blink/renderer/core/dom/document.h"
-#include "third_party/blink/renderer/core/dom/events/scoped_event_queue.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/events/scoped_event_queue.h"
 #include "third_party/blink/renderer/core/dom/id_target_observer.h"
 #include "third_party/blink/renderer/core/dom/shadow_root.h"
 #include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
 #include "third_party/blink/renderer/core/editing/frame_selection.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/editing/spellcheck/spell_checker.h"
 #include "third_party/blink/renderer/core/events/before_text_inserted_event.h"
 #include "third_party/blink/renderer/core/events/keyboard_event.h"
 #include "third_party/blink/renderer/core/events/mouse_event.h"
+#endif
 #include "third_party/blink/renderer/core/frame/deprecation.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/color_chooser.h"
 #include "third_party/blink/renderer/core/html/forms/date_time_chooser.h"
 #include "third_party/blink/renderer/core/html/forms/file_input_type.h"
+#endif
 #include "third_party/blink/renderer/core/html/forms/form_controller.h"
 #include "third_party/blink/renderer/core/html/forms/html_data_list_element.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_data_list_options_collection.h"
 #include "third_party/blink/renderer/core/html/forms/html_form_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_option_element.h"
 #include "third_party/blink/renderer/core/html/forms/input_type.h"
 #include "third_party/blink/renderer/core/html/forms/search_input_type.h"
+#endif
 #include "third_party/blink/renderer/core/html/html_collection.h"
-#include "third_party/blink/renderer/core/html/html_image_loader.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_image_loader.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/input_type_names.h"
@@ -77,9 +96,10 @@
 
 namespace blink {
 
-using ValueMode = InputType::ValueMode;
+// BKTODO: using ValueMode = InputType::ValueMode;
 using namespace HTMLNames;
 
+#if 0 // BKTODO:
 class ListAttributeTargetObserver : public IdTargetObserver {
  public:
   static ListAttributeTargetObserver* Create(const AtomicString& id,
@@ -92,6 +112,7 @@ class ListAttributeTargetObserver : public IdTargetObserver {
 
   Member<HTMLInputElement> element_;
 };
+#endif
 
 const int kDefaultSize = 20;
 
@@ -112,24 +133,31 @@ HTMLInputElement::HTMLInputElement(Document& document,
       should_reveal_password_(false),
       needs_to_update_view_value_(true),
       is_placeholder_visible_(false),
+#if 0 // BKTODO:
       has_been_password_field_(false),
-      // |input_type_| is lazily created when constructed by the parser to avoid
+    // |input_type_| is lazily created when constructed by the parser to avoid
       // constructing unnecessarily a text InputType and its shadow subtree,
       // just to destroy them when the |type| attribute gets set by the parser
       // to something else than 'text'.
       input_type_(flags.IsCreatedByParser() ? nullptr
                                             : InputType::CreateText(*this)),
       input_type_view_(input_type_ ? input_type_->CreateView() : nullptr) {
+#else
+    has_been_password_field_(false) {
+#endif
   SetHasCustomStyleCallbacks();
 }
 
-HTMLInputElement* HTMLInputElement::Create(Document& document,
-                                           const CreateElementFlags flags) {
+Element* HTMLInputElement::Create(Document& document,
+                                  const CreateElementFlags flags) {
   auto* input_element = new HTMLInputElement(document, flags);
   if (!flags.IsCreatedByParser()) {
+    ASSERT(false); // BKTODO:
+#if 0
     DCHECK(input_element->input_type_view_->NeedsShadowSubtree());
     input_element->CreateUserAgentShadowRoot();
     input_element->CreateShadowSubtree();
+#endif
   }
   return input_element;
 }
@@ -148,13 +176,15 @@ const HashSet<AtomicString>& HTMLInputElement::GetCheckedAttributeNames()
   return attribute_set;
 }
 
+#if 0 // BKTODO:
 bool HTMLInputElement::HasPendingActivity() const {
   return ImageLoader() && ImageLoader()->HasPendingActivity();
 }
+#endif
 
 HTMLImageLoader& HTMLInputElement::EnsureImageLoader() {
   if (!image_loader_)
-    image_loader_ = HTMLImageLoader::Create(this);
+    ASSERT(false); // BKTODO: image_loader_ = HTMLImageLoader::Create(this);
   return *image_loader_;
 }
 
@@ -164,10 +194,12 @@ const AtomicString& HTMLInputElement::GetName() const {
   return name_.IsNull() ? g_empty_atom : name_;
 }
 
+#if 0 // BKTODO:
 FileChooserFileInfoList HTMLInputElement::FilesFromFileInputFormControlState(
     const FormControlState& state) {
   return FileInputType::FilesFromFormControlState(state);
 }
+#endif
 
 bool HTMLInputElement::ShouldAutocomplete() const {
   if (autocomplete_ != kUninitialized)
@@ -176,6 +208,9 @@ bool HTMLInputElement::ShouldAutocomplete() const {
 }
 
 bool HTMLInputElement::IsValidValue(const String& value) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (!input_type_->CanSetStringValue()) {
     NOTREACHED();
     return false;
@@ -188,6 +223,7 @@ bool HTMLInputElement::IsValidValue(const String& value) const {
          !TooShort(value, kIgnoreDirtyFlag) &&
          !input_type_->PatternMismatch(value) &&
          !input_type_->ValueMissing(value);
+#endif
 }
 
 bool HTMLInputElement::TooLong() const {
@@ -199,37 +235,69 @@ bool HTMLInputElement::TooShort() const {
 }
 
 bool HTMLInputElement::TypeMismatch() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return willValidate() && input_type_->TypeMismatch();
+#endif
 }
 
 bool HTMLInputElement::ValueMissing() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return willValidate() && input_type_->ValueMissing(value());
+#endif
 }
 
 bool HTMLInputElement::HasBadInput() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return willValidate() && input_type_view_->HasBadInput();
+#endif
 }
 
 bool HTMLInputElement::PatternMismatch() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return willValidate() && input_type_->PatternMismatch(value());
+#endif
 }
 
 bool HTMLInputElement::TooLong(const String& value,
                                NeedsToCheckDirtyFlag check) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->TooLong(value, check);
+#endif
 }
 
 bool HTMLInputElement::TooShort(const String& value,
                                 NeedsToCheckDirtyFlag check) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->TooShort(value, check);
+#endif
 }
 
 bool HTMLInputElement::RangeUnderflow() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return willValidate() && input_type_->RangeUnderflow(value());
+#endif
 }
 
 bool HTMLInputElement::RangeOverflow() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return willValidate() && input_type_->RangeOverflow(value());
+#endif
 }
 
 String HTMLInputElement::validationMessage() const {
@@ -239,27 +307,48 @@ String HTMLInputElement::validationMessage() const {
   if (CustomError())
     return CustomValidationMessage();
 
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   return input_type_->ValidationMessage(*input_type_view_).first;
+#endif
 }
 
 String HTMLInputElement::ValidationSubMessage() const {
   if (!willValidate() || CustomError())
     return String();
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   return input_type_->ValidationMessage(*input_type_view_).second;
+#endif
 }
 
 double HTMLInputElement::Minimum() const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return input_type_->Minimum();
+#endif
 }
 
 double HTMLInputElement::Maximum() const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return input_type_->Maximum();
+#endif
 }
 
 bool HTMLInputElement::StepMismatch() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return willValidate() && input_type_->StepMismatch(value());
+#endif
 }
 
+#if 0 // BKTODO:
 bool HTMLInputElement::GetAllowedValueStep(Decimal* step) const {
   return input_type_->GetAllowedValueStep(step);
 }
@@ -272,17 +361,27 @@ StepRange HTMLInputElement::CreateStepRange(
 Decimal HTMLInputElement::FindClosestTickMarkValue(const Decimal& value) {
   return input_type_->FindClosestTickMarkValue(value);
 }
+#endif
 
 void HTMLInputElement::stepUp(int n, ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   input_type_->StepUp(n, exception_state);
+#endif
 }
 
 void HTMLInputElement::stepDown(int n, ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   input_type_->StepUp(-1.0 * n, exception_state);
+#endif
 }
 
 void HTMLInputElement::blur() {
+  ASSERT(false); // BKTODO:
+#if 0
   input_type_view_->Blur();
+#endif
 }
 
 void HTMLInputElement::DefaultBlur() {
@@ -290,15 +389,27 @@ void HTMLInputElement::DefaultBlur() {
 }
 
 bool HTMLInputElement::HasCustomFocusLogic() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_view_->HasCustomFocusLogic();
+#endif
 }
 
 bool HTMLInputElement::IsKeyboardFocusable() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->IsKeyboardFocusable();
+#endif
 }
 
 bool HTMLInputElement::MayTriggerVirtualKeyboard() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->MayTriggerVirtualKeyboard();
+#endif
 }
 
 void HTMLInputElement::UpdateFocusAppearanceWithOptions(
@@ -315,6 +426,8 @@ void HTMLInputElement::UpdateFocusAppearanceWithOptions(
       case SelectionBehaviorOnFocus::kNone:
         return;
     }
+    ASSERT(false); // BKTODO:
+#if 0
     // TODO(tkent): scrollRectToVisible is a workaround of a bug of
     // FrameSelection::revealSelection().  It doesn't scroll correctly in a
     // case of RangeSelection. crbug.com/443061.
@@ -327,6 +440,7 @@ void HTMLInputElement::UpdateFocusAppearanceWithOptions(
       if (GetDocument().GetFrame())
         GetDocument().GetFrame()->Selection().RevealSelection();
     }
+#endif
   } else {
     TextControlElement::UpdateFocusAppearanceWithOptions(selection_behavior,
                                                          options);
@@ -342,7 +456,9 @@ void HTMLInputElement::EndEditing() {
     return;
 
   LocalFrame* frame = GetDocument().GetFrame();
+#if 0 // BKTODO: Support spell checker?
   frame->GetSpellChecker().DidEndEditingOnTextField(this);
+#endif
   frame->GetPage()->GetChromeClient().DidEndEditingOnTextField(*this);
 }
 
@@ -351,14 +467,17 @@ void HTMLInputElement::DispatchFocusInEvent(
     Element* old_focused_element,
     WebFocusType type,
     InputDeviceCapabilities* source_capabilities) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (event_type == EventTypeNames::DOMFocusIn)
     input_type_view_->HandleFocusInEvent(old_focused_element, type);
+#endif
   HTMLFormControlElementWithState::DispatchFocusInEvent(
       event_type, old_focused_element, type, source_capabilities);
 }
 
 void HTMLInputElement::HandleBlurEvent() {
-  input_type_view_->HandleBlurEvent();
+  ASSERT(false); // BKTODO: input_type_view_->HandleBlurEvent();
 }
 
 void HTMLInputElement::setType(const AtomicString& type) {
@@ -370,6 +489,8 @@ void HTMLInputElement::InitializeTypeInParsing() {
   DCHECK(!input_type_);
   DCHECK(!input_type_view_);
 
+  ASSERT(false); // BKTODO:
+#if 0
   const AtomicString& new_type_name =
       InputType::NormalizeTypeName(FastGetAttribute(typeAttr));
   input_type_ = InputType::Create(*this, new_type_name);
@@ -390,12 +511,15 @@ void HTMLInputElement::InitializeTypeInParsing() {
     input_type_->WarnIfValueIsInvalid(default_value);
 
   input_type_view_->UpdateView();
+#endif
 }
 
 void HTMLInputElement::UpdateType() {
   DCHECK(input_type_);
   DCHECK(input_type_view_);
 
+  ASSERT(false); // BKTODO:
+#if 0
   const AtomicString& new_type_name =
       InputType::NormalizeTypeName(FastGetAttribute(typeAttr));
   if (input_type_->FormControlType() == new_type_name)
@@ -551,32 +675,47 @@ void HTMLInputElement::UpdateType() {
   if ((could_be_successful_submit_button || CanBeSuccessfulSubmitButton()) &&
       formOwner() && isConnected())
     formOwner()->InvalidateDefaultButtonStyle();
+#endif
   NotifyFormStateChanged();
 }
 
 void HTMLInputElement::SubtreeHasChanged() {
+  ASSERT(false); // BKTODO:
+#if 0
   input_type_view_->SubtreeHasChanged();
   // When typing in an input field, childrenChanged is not called, so we need to
   // force the directionality check.
   CalculateAndAdjustDirectionality();
+#endif
 }
 
 const AtomicString& HTMLInputElement::FormControlType() const {
+  ASSERT(false); // BKTODO:
+  return g_null_atom;
+#if 0
   return input_type_->FormControlType();
+#endif
 }
 
 bool HTMLInputElement::ShouldSaveAndRestoreFormControlState() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!input_type_->ShouldSaveAndRestoreFormControlState())
     return false;
+#endif
   return TextControlElement::ShouldSaveAndRestoreFormControlState();
 }
 
 FormControlState HTMLInputElement::SaveFormControlState() const {
+  ASSERT(false); // BKTODO:
+  return FormControlState();
+#if 0
   return input_type_view_->SaveFormControlState();
+#endif
 }
 
 void HTMLInputElement::RestoreFormControlState(const FormControlState& state) {
-  input_type_view_->RestoreFormControlState(state);
+  ASSERT(false); // BKTODO: input_type_view_->RestoreFormControlState(state);
   state_restored_ = true;
 }
 
@@ -589,28 +728,37 @@ bool HTMLInputElement::CanStartSelection() const {
 unsigned HTMLInputElement::selectionStartForBinding(
     bool& is_null,
     ExceptionState& exception_state) const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!input_type_->SupportsSelectionAPI()) {
     is_null = true;
     return 0;
   }
+#endif
   return TextControlElement::selectionStart();
 }
 
 unsigned HTMLInputElement::selectionEndForBinding(
     bool& is_null,
     ExceptionState& exception_state) const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!input_type_->SupportsSelectionAPI()) {
     is_null = true;
     return 0;
   }
+#endif
   return TextControlElement::selectionEnd();
 }
 
 String HTMLInputElement::selectionDirectionForBinding(
     ExceptionState& exception_state) const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!input_type_->SupportsSelectionAPI()) {
     return String();
   }
+#endif
   return TextControlElement::selectionDirection();
 }
 
@@ -618,6 +766,8 @@ void HTMLInputElement::setSelectionStartForBinding(
     unsigned start,
     bool is_null,
     ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!input_type_->SupportsSelectionAPI()) {
     exception_state.ThrowDOMException(DOMExceptionCode::kInvalidStateError,
                                       "The input element's type ('" +
@@ -625,6 +775,7 @@ void HTMLInputElement::setSelectionStartForBinding(
                                           "') does not support selection.");
     return;
   }
+#endif
   TextControlElement::setSelectionStart(start);
 }
 
@@ -632,6 +783,8 @@ void HTMLInputElement::setSelectionEndForBinding(
     unsigned end,
     bool is_null,
     ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!input_type_->SupportsSelectionAPI()) {
     exception_state.ThrowDOMException(DOMExceptionCode::kInvalidStateError,
                                       "The input element's type ('" +
@@ -639,12 +792,15 @@ void HTMLInputElement::setSelectionEndForBinding(
                                           "') does not support selection.");
     return;
   }
+#endif
   TextControlElement::setSelectionEnd(end);
 }
 
 void HTMLInputElement::setSelectionDirectionForBinding(
     const String& direction,
     ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!input_type_->SupportsSelectionAPI()) {
     exception_state.ThrowDOMException(DOMExceptionCode::kInvalidStateError,
                                       "The input element's type ('" +
@@ -652,6 +808,7 @@ void HTMLInputElement::setSelectionDirectionForBinding(
                                           "') does not support selection.");
     return;
   }
+#endif
   TextControlElement::setSelectionDirection(direction);
 }
 
@@ -659,6 +816,8 @@ void HTMLInputElement::setSelectionRangeForBinding(
     unsigned start,
     unsigned end,
     ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!input_type_->SupportsSelectionAPI()) {
     exception_state.ThrowDOMException(DOMExceptionCode::kInvalidStateError,
                                       "The input element's type ('" +
@@ -666,6 +825,7 @@ void HTMLInputElement::setSelectionRangeForBinding(
                                           "') does not support selection.");
     return;
   }
+#endif
   TextControlElement::setSelectionRangeForBinding(start, end);
 }
 
@@ -674,6 +834,8 @@ void HTMLInputElement::setSelectionRangeForBinding(
     unsigned end,
     const String& direction,
     ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!input_type_->SupportsSelectionAPI()) {
     exception_state.ThrowDOMException(DOMExceptionCode::kInvalidStateError,
                                       "The input element's type ('" +
@@ -681,20 +843,24 @@ void HTMLInputElement::setSelectionRangeForBinding(
                                           "') does not support selection.");
     return;
   }
+#endif
   TextControlElement::setSelectionRangeForBinding(start, end, direction);
 }
 
 void HTMLInputElement::AccessKeyAction(bool send_mouse_events) {
-  input_type_view_->AccessKeyAction(send_mouse_events);
+  ASSERT(false); // BKTODO: input_type_view_->AccessKeyAction(send_mouse_events);
 }
 
 bool HTMLInputElement::IsPresentationAttribute(
     const QualifiedName& name) const {
+  ASSERT(false); // BKTODO:
+#if 0
   // FIXME: Remove type check.
   if (name == vspaceAttr || name == hspaceAttr || name == alignAttr ||
       name == widthAttr || name == heightAttr ||
       (name == borderAttr && type() == InputTypeNames::image))
     return true;
+#endif
   return TextControlElement::IsPresentationAttribute(name);
 }
 
@@ -702,6 +868,8 @@ void HTMLInputElement::CollectStyleForPresentationAttribute(
     const QualifiedName& name,
     const AtomicString& value,
     MutableCSSPropertyValueSet* style) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (name == vspaceAttr) {
     AddHTMLLengthToStyle(style, CSSPropertyMarginTop, value);
     AddHTMLLengthToStyle(style, CSSPropertyMarginBottom, value);
@@ -724,6 +892,7 @@ void HTMLInputElement::CollectStyleForPresentationAttribute(
     TextControlElement::CollectStyleForPresentationAttribute(name, value,
                                                              style);
   }
+#endif
 }
 
 void HTMLInputElement::ParseAttribute(
@@ -733,6 +902,8 @@ void HTMLInputElement::ParseAttribute(
   const QualifiedName& name = params.name;
   const AtomicString& value = params.new_value;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (name == nameAttr) {
     RemoveFromRadioButtonGroup();
     name_ = value;
@@ -847,6 +1018,7 @@ void HTMLInputElement::ParseAttribute(
     TextControlElement::ParseAttribute(params);
   }
   input_type_view_->AttributeChanged();
+#endif
 }
 
 void HTMLInputElement::ParserDidSetAttributes() {
@@ -868,34 +1040,51 @@ void HTMLInputElement::FinishParsingChildren() {
 }
 
 bool HTMLInputElement::LayoutObjectIsNeeded(const ComputedStyle& style) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->LayoutObjectIsNeeded() &&
          TextControlElement::LayoutObjectIsNeeded(style);
+#endif
 }
 
 LayoutObject* HTMLInputElement::CreateLayoutObject(const ComputedStyle& style) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return input_type_view_->CreateLayoutObject(style);
+#endif
 }
 
 void HTMLInputElement::AttachLayoutTree(AttachContext& context) {
   TextControlElement::AttachLayoutTree(context);
+  ASSERT(false); // BKTODO:
+#if 0
   if (GetLayoutObject()) {
     input_type_->OnAttachWithLayoutObject();
   }
 
   input_type_view_->StartResourceLoading();
   input_type_->CountUsage();
+#endif
 }
 
 void HTMLInputElement::DetachLayoutTree(const AttachContext& context) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (GetLayoutObject()) {
     input_type_->OnDetachWithLayoutObject();
   }
   TextControlElement::DetachLayoutTree(context);
   needs_to_update_view_value_ = true;
   input_type_view_->ClosePopupView();
+#endif
 }
 
 String HTMLInputElement::AltText() const {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   // http://www.w3.org/TR/1998/REC-html40-19980424/appendix/notes.html#altgen
   // also heavily discussed by Hixie on bugzilla
   // note this is intentionally different to HTMLImageElement::altText()
@@ -908,10 +1097,15 @@ String HTMLInputElement::AltText() const {
   if (alt.IsNull())
     alt = GetLocale().QueryString(WebLocalizedString::kInputElementAltText);
   return alt;
+#endif
 }
 
 bool HTMLInputElement::CanBeSuccessfulSubmitButton() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->CanBeSuccessfulSubmitButton();
+#endif
 }
 
 bool HTMLInputElement::IsActivatedSubmit() const {
@@ -923,15 +1117,24 @@ void HTMLInputElement::SetActivatedSubmit(bool flag) {
 }
 
 void HTMLInputElement::AppendToFormData(FormData& form_data) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (input_type_->IsFormDataAppendable())
     input_type_->AppendToFormData(form_data);
+#endif
 }
 
 String HTMLInputElement::ResultForDialogSubmit() {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   return input_type_->ResultForDialogSubmit();
+#endif
 }
 
 void HTMLInputElement::ResetImpl() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (input_type_->GetValueMode() == ValueMode::kValue) {
     SetNonDirtyValue(DefaultValue());
     SetNeedsValidityCheck();
@@ -939,13 +1142,18 @@ void HTMLInputElement::ResetImpl() {
     SetNonDirtyValue(String());
     SetNeedsValidityCheck();
   }
+#endif
 
   setChecked(hasAttribute(checkedAttr));
   dirty_checkedness_ = false;
 }
 
 bool HTMLInputElement::IsTextField() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->IsTextField();
+#endif
 }
 
 bool HTMLInputElement::HasBeenPasswordField() const {
@@ -953,20 +1161,26 @@ bool HTMLInputElement::HasBeenPasswordField() const {
 }
 
 void HTMLInputElement::DispatchChangeEventIfNeeded() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (isConnected() && input_type_->ShouldSendChangeEventAfterCheckedChanged())
     DispatchChangeEvent();
+#endif
 }
 
 void HTMLInputElement::DispatchInputAndChangeEventIfNeeded() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (isConnected() &&
       input_type_->ShouldSendChangeEventAfterCheckedChanged()) {
     DispatchInputEvent();
     DispatchChangeEvent();
   }
+#endif
 }
 
 bool HTMLInputElement::checked() const {
-  input_type_->ReadingChecked();
+  ASSERT(false); // BKTODO: input_type_->ReadingChecked();
   return is_checked_;
 }
 
@@ -979,11 +1193,12 @@ void HTMLInputElement::setChecked(bool now_checked,
   is_checked_ = now_checked;
 
   if (RadioButtonGroupScope* scope = GetRadioButtonGroupScope())
-    scope->UpdateCheckedState(this);
+    ASSERT(false); // BKTODO: scope->UpdateCheckedState(this);
   if (LayoutObject* o = GetLayoutObject())
     o->InvalidateIfControlStateChanged(kCheckedControlState);
   SetNeedsValidityCheck();
 
+#if 0 // BKTODO: Check if necessary.
   // Ideally we'd do this from the layout tree (matching
   // LayoutTextView), but it's not possible to do it at the moment
   // because of the way the code is structured.
@@ -992,7 +1207,10 @@ void HTMLInputElement::setChecked(bool now_checked,
             GetLayoutObject()->GetDocument().ExistingAXObjectCache())
       cache->CheckedStateChanged(this);
   }
+#endif
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Only send a change event for items in the document (avoid firing during
   // parsing) and don't send a change event for a radio button that's getting
   // unchecked to match other browsers. DOM is not a useful standard for this
@@ -1002,6 +1220,7 @@ void HTMLInputElement::setChecked(bool now_checked,
       input_type_->ShouldSendChangeEventAfterCheckedChanged()) {
     DispatchInputEvent();
   }
+#endif
 
   PseudoStateChanged(CSSSelector::kPseudoChecked);
 }
@@ -1023,12 +1242,18 @@ unsigned HTMLInputElement::size() const {
 }
 
 bool HTMLInputElement::SizeShouldIncludeDecoration(int& preferred_size) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_view_->SizeShouldIncludeDecoration(kDefaultSize,
                                                        preferred_size);
+#endif
 }
 
 void HTMLInputElement::CloneNonAttributePropertiesFrom(const Element& source,
                                                        CloneChildrenFlag flag) {
+  ASSERT(false); // BKTODO:
+#if 0
   const HTMLInputElement& source_element = ToHTMLInputElement(source);
 
   non_attribute_value_ = source_element.non_attribute_value_;
@@ -1042,9 +1267,12 @@ void HTMLInputElement::CloneNonAttributePropertiesFrom(const Element& source,
 
   needs_to_update_view_value_ = true;
   input_type_view_->UpdateView();
+#endif
 }
 
 String HTMLInputElement::value() const {
+  ASSERT(false); // BKTODO:
+#if 0
   switch (input_type_->GetValueMode()) {
     case ValueMode::kFilename:
       return input_type_->ValueInFilenameValueMode();
@@ -1057,6 +1285,7 @@ String HTMLInputElement::value() const {
     case ValueMode::kValue:
       return non_attribute_value_;
   }
+#endif
   NOTREACHED();
   return g_empty_string;
 }
@@ -1065,7 +1294,11 @@ String HTMLInputElement::ValueOrDefaultLabel() const {
   String value = this->value();
   if (!value.IsNull())
     return value;
+  ASSERT(false); // BKTODO:
+  return value;
+#if 0
   return input_type_->DefaultLabel();
+#endif
 }
 
 void HTMLInputElement::SetValueForUser(const String& value) {
@@ -1074,6 +1307,8 @@ void HTMLInputElement::SetValueForUser(const String& value) {
 }
 
 void HTMLInputElement::SetSuggestedValue(const String& value) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!input_type_->CanSetSuggestedValue())
     return;
   needs_to_update_view_value_ = true;
@@ -1082,6 +1317,7 @@ void HTMLInputElement::SetSuggestedValue(const String& value) {
       kSubtreeStyleChange,
       StyleChangeReasonForTracing::Create(StyleChangeReason::kControlValue));
   input_type_view_->UpdateView();
+#endif
 }
 
 void HTMLInputElement::SetEditingValue(const String& value) {
@@ -1092,7 +1328,7 @@ void HTMLInputElement::SetEditingValue(const String& value) {
 
   unsigned max = value.length();
   SetSelectionRange(max, max);
-  DispatchInputEvent();
+  ASSERT(false); // BKTODO: DispatchInputEvent();
 }
 
 void HTMLInputElement::SetInnerEditorValue(const String& value) {
@@ -1103,6 +1339,8 @@ void HTMLInputElement::SetInnerEditorValue(const String& value) {
 void HTMLInputElement::setValue(const String& value,
                                 ExceptionState& exception_state,
                                 TextFieldEventBehavior event_behavior) {
+  ASSERT(false); // BKTODO:
+#if 0
   // FIXME: Remove type check.
   if (type() == InputTypeNames::file && !value.IsEmpty()) {
     exception_state.ThrowDOMException(DOMExceptionCode::kInvalidStateError,
@@ -1111,12 +1349,15 @@ void HTMLInputElement::setValue(const String& value,
                                       "to the empty string.");
     return;
   }
+#endif
   setValue(value, event_behavior);
 }
 
 void HTMLInputElement::setValue(const String& value,
                                 TextFieldEventBehavior event_behavior,
                                 TextControlSetValueSelection selection) {
+  ASSERT(false); // BKTODO:
+#if 0
   input_type_->WarnIfValueIsInvalidAndElementIsVisible(value);
   if (!input_type_->CanSetValue(value))
     return;
@@ -1142,15 +1383,19 @@ void HTMLInputElement::setValue(const String& value,
 
   if (value_changed)
     NotifyFormStateChanged();
+#endif
 }
 
 void HTMLInputElement::SetNonAttributeValue(const String& sanitized_value) {
+  ASSERT(false); // BKTODO:
+#if 0
   // This is a common code for ValueMode::kValue.
   DCHECK_EQ(input_type_->GetValueMode(), ValueMode::kValue);
   non_attribute_value_ = sanitized_value;
   has_dirty_value_ = true;
   SetNeedsValidityCheck();
   input_type_->InRangeChanged();
+#endif
 }
 
 void HTMLInputElement::SetNonAttributeValueByUserEdit(
@@ -1170,23 +1415,31 @@ bool HTMLInputElement::HasDirtyValue() const {
 }
 
 void HTMLInputElement::UpdateView() {
-  input_type_view_->UpdateView();
+  ASSERT(false); // BKTODO: input_type_view_->UpdateView();
 }
 
 double HTMLInputElement::valueAsDate(bool& is_null) const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   double date = input_type_->ValueAsDate();
   is_null = !std::isfinite(date);
   return date;
+#endif
 }
 
 void HTMLInputElement::setValueAsDate(double value,
                                       bool is_null,
                                       ExceptionState& exception_state) {
-  input_type_->SetValueAsDate(value, exception_state);
+  ASSERT(false); // BKTODO: input_type_->SetValueAsDate(value, exception_state);
 }
 
 double HTMLInputElement::valueAsNumber() const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return input_type_->ValueAsDouble();
+#endif
 }
 
 void HTMLInputElement::setValueAsNumber(double new_value,
@@ -1199,10 +1452,12 @@ void HTMLInputElement::setValueAsNumber(double new_value,
         ExceptionMessages::NotAFiniteNumber(new_value));
     return;
   }
-  input_type_->SetValueAsDouble(new_value, event_behavior, exception_state);
+  ASSERT(false); // BKTODO: input_type_->SetValueAsDouble(new_value, event_behavior, exception_state);
 }
 
 void HTMLInputElement::SetValueFromRenderer(const String& value) {
+  ASSERT(false); // BKTODO:
+#if 0
   // File upload controls will never use this.
   DCHECK_NE(type(), InputTypeNames::file);
 
@@ -1231,10 +1486,14 @@ void HTMLInputElement::SetValueFromRenderer(const String& value) {
 
   // Clear autofill flag (and yellow background) on user edit.
   SetAutofillState(WebAutofillState::kNotFilled);
+#endif
 }
 
 EventDispatchHandlingState* HTMLInputElement::PreDispatchEventHandler(
     Event& event) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (event.type() == EventTypeNames::textInput &&
       input_type_view_->ShouldSubmitImplicitly(event)) {
     event.stopPropagation();
@@ -1247,6 +1506,7 @@ EventDispatchHandlingState* HTMLInputElement::PreDispatchEventHandler(
           static_cast<short>(WebPointerProperties::Button::kLeft))
     return nullptr;
   return input_type_view_->WillDispatchClick();
+#endif
 }
 
 void HTMLInputElement::PostDispatchEventHandler(
@@ -1254,11 +1514,16 @@ void HTMLInputElement::PostDispatchEventHandler(
     EventDispatchHandlingState* state) {
   if (!state)
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   input_type_view_->DidDispatchClick(event,
                                      *static_cast<ClickHandlingState*>(state));
+#endif
 }
 
 void HTMLInputElement::DefaultEventHandler(Event& evt) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (evt.IsMouseEvent() && evt.type() == EventTypeNames::click &&
       ToMouseEvent(evt).button() ==
           static_cast<short>(WebPointerProperties::Button::kLeft)) {
@@ -1350,10 +1615,11 @@ void HTMLInputElement::DefaultEventHandler(Event& evt) {
 
   if (!call_base_class_early && !evt.DefaultHandled())
     TextControlElement::DefaultEventHandler(evt);
+#endif
 }
 
 void HTMLInputElement::CreateShadowSubtree() {
-  input_type_view_->CreateShadowSubtree();
+  ASSERT(false); // BKTODO: input_type_view_->CreateShadowSubtree();
 }
 
 bool HTMLInputElement::HasActivationBehavior() const {
@@ -1370,18 +1636,30 @@ bool HTMLInputElement::WillRespondToMouseClickEvents() {
 }
 
 bool HTMLInputElement::IsURLAttribute(const Attribute& attribute) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return attribute.GetName() == srcAttr ||
          attribute.GetName() == formactionAttr ||
          TextControlElement::IsURLAttribute(attribute);
+#endif
 }
 
 bool HTMLInputElement::HasLegalLinkAttribute(const QualifiedName& name) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->HasLegalLinkAttribute(name) ||
          TextControlElement::HasLegalLinkAttribute(name);
+#endif
 }
 
 const QualifiedName& HTMLInputElement::SubResourceAttributeName() const {
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   return input_type_->SubResourceAttributeName();
+#endif
 }
 
 const AtomicString& HTMLInputElement::DefaultValue() const {
@@ -1442,7 +1720,11 @@ Vector<String> HTMLInputElement::AcceptFileExtensions() const {
 }
 
 const AtomicString& HTMLInputElement::Alt() const {
+  ASSERT(false); // BKTODO:
+  return g_null_atom;
+#if 0
   return FastGetAttribute(altAttr);
+#endif
 }
 
 bool HTMLInputElement::Multiple() const {
@@ -1455,29 +1737,44 @@ void HTMLInputElement::setSize(unsigned size, ExceptionState& exception_state) {
         DOMExceptionCode::kIndexSizeError,
         "The value provided is 0, which is an invalid size.");
   } else {
+    ASSERT(false); // BKTODO:
+#if 0
     SetUnsignedIntegralAttribute(sizeAttr, size ? size : kDefaultSize,
                                  kDefaultSize);
+#endif
   }
 }
 
-KURL HTMLInputElement::Src() const {
+GURL HTMLInputElement::Src() const {
   return GetDocument().CompleteURL(FastGetAttribute(srcAttr));
 }
 
 FileList* HTMLInputElement::files() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return input_type_->Files();
+#endif
 }
 
 void HTMLInputElement::setFiles(FileList* files) {
-  input_type_->SetFiles(files);
+  ASSERT(false); // BKTODO: input_type_->SetFiles(files);
 }
 
 bool HTMLInputElement::ReceiveDroppedFiles(const DragData* drag_data) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->ReceiveDroppedFiles(drag_data);
+#endif
 }
 
 String HTMLInputElement::DroppedFileSystemId() {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   return input_type_->DroppedFileSystemId();
+#endif
 }
 
 bool HTMLInputElement::CanReceiveDroppedFiles() const {
@@ -1494,41 +1791,69 @@ void HTMLInputElement::SetCanReceiveDroppedFiles(
 }
 
 String HTMLInputElement::SanitizeValue(const String& proposed_value) const {
+  ASSERT(false); // BKTODO:
+  return proposed_value;
+#if 0
   return input_type_->SanitizeValue(proposed_value);
+#endif
 }
 
 String HTMLInputElement::LocalizeValue(const String& proposed_value) const {
   if (proposed_value.IsNull())
     return proposed_value;
+  ASSERT(false); // BKTODO:
+  return proposed_value;
+#if 0
   return input_type_->LocalizeValue(proposed_value);
+#endif
 }
 
 bool HTMLInputElement::IsInRange() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return willValidate() && input_type_->IsInRange(value());
+#endif
 }
 
 bool HTMLInputElement::IsOutOfRange() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return willValidate() && input_type_->IsOutOfRange(value());
+#endif
 }
 
 bool HTMLInputElement::IsRequiredFormControl() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->SupportsRequired() && IsRequired();
+#endif
 }
 
 bool HTMLInputElement::MatchesReadOnlyPseudoClass() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->SupportsReadOnly() && IsReadOnly();
+#endif
 }
 
 bool HTMLInputElement::MatchesReadWritePseudoClass() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->SupportsReadOnly() && !IsReadOnly();
+#endif
 }
 
 void HTMLInputElement::OnSearch() {
-  input_type_->DispatchSearchEvent();
+  ASSERT(false); // BKTODO: input_type_->DispatchSearchEvent();
 }
 
 void HTMLInputElement::UpdateClearButtonVisibility() {
-  input_type_view_->UpdateClearButtonVisibility();
+  ASSERT(false); // BKTODO: input_type_view_->UpdateClearButtonVisibility();
 }
 
 void HTMLInputElement::WillChangeForm() {
@@ -1549,12 +1874,11 @@ Node::InsertionNotificationRequest HTMLInputElement::InsertedInto(
   if (insertion_point.isConnected() && !Form())
     AddToRadioButtonGroup();
   ResetListAttributeTargetObserver();
-  LogAddElementIfIsolatedWorldAndInDocument("input", typeAttr, formactionAttr);
   return kInsertionShouldCallDidNotifySubtreeInsertions;
 }
 
 void HTMLInputElement::RemovedFrom(ContainerNode& insertion_point) {
-  input_type_view_->ClosePopupView();
+  ASSERT(false); // BKTODO: input_type_view_->ClosePopupView();
   if (insertion_point.isConnected() && !Form())
     RemoveFromRadioButtonGroup();
   TextControlElement::RemovedFrom(insertion_point);
@@ -1562,6 +1886,7 @@ void HTMLInputElement::RemovedFrom(ContainerNode& insertion_point) {
   ResetListAttributeTargetObserver();
 }
 
+#if 0 // BKTODO:
 void HTMLInputElement::DidMoveToNewDocument(Document& old_document) {
   if (ImageLoader())
     ImageLoader()->ElementDidMoveToNewDocument();
@@ -1572,32 +1897,46 @@ void HTMLInputElement::DidMoveToNewDocument(Document& old_document) {
 
   TextControlElement::DidMoveToNewDocument(old_document);
 }
+#endif
 
 bool HTMLInputElement::RecalcWillValidate() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->SupportsValidation() &&
          TextControlElement::RecalcWillValidate();
+#endif
 }
 
 void HTMLInputElement::RequiredAttributeChanged() {
   TextControlElement::RequiredAttributeChanged();
+  ASSERT(false); // BKTODO:
+#if 0
   if (RadioButtonGroupScope* scope = GetRadioButtonGroupScope())
     scope->RequiredAttributeChanged(this);
   input_type_view_->RequiredAttributeChanged();
+#endif
 }
 
 void HTMLInputElement::DisabledAttributeChanged() {
   TextControlElement::DisabledAttributeChanged();
-  input_type_view_->DisabledAttributeChanged();
+  ASSERT(false); // BKTODO: input_type_view_->DisabledAttributeChanged();
 }
 
 void HTMLInputElement::SelectColorInColorChooser(const Color& color) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (ColorChooserClient* client = input_type_->GetColorChooserClient())
     client->DidChooseColor(color);
+#endif
 }
 
 void HTMLInputElement::EndColorChooser() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (ColorChooserClient* client = input_type_->GetColorChooserClient())
     client->DidEndChooser();
+#endif
 }
 
 HTMLElement* HTMLInputElement::list() const {
@@ -1608,11 +1947,15 @@ HTMLDataListElement* HTMLInputElement::DataList() const {
   if (!has_non_empty_list_)
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (!input_type_->ShouldRespectListAttribute())
     return nullptr;
 
   return ToHTMLDataListElementOrNull(
       GetTreeScope().getElementById(FastGetAttribute(listAttr)));
+#endif
 }
 
 bool HTMLInputElement::HasValidDataListOptions() const {
@@ -1620,14 +1963,18 @@ bool HTMLInputElement::HasValidDataListOptions() const {
   if (!data_list)
     return false;
   HTMLDataListOptionsCollection* options = data_list->options();
+  ASSERT(false); // BKTODO:
+#if 0
   for (unsigned i = 0; HTMLOptionElement* option = options->Item(i); ++i) {
     if (!option->value().IsEmpty() && !option->IsDisabledFormControl() &&
         IsValidValue(option->value()))
       return true;
   }
+#endif
   return false;
 }
 
+#if 0 // BKTODO:
 HeapVector<Member<HTMLOptionElement>>
 HTMLInputElement::FilteredDataListOptions() const {
   HeapVector<Member<HTMLOptionElement>> filtered;
@@ -1664,15 +2011,21 @@ HTMLInputElement::FilteredDataListOptions() const {
   }
   return filtered;
 }
+#endif
 
 void HTMLInputElement::SetListAttributeTargetObserver(
     ListAttributeTargetObserver* new_observer) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (list_attribute_target_observer_)
     list_attribute_target_observer_->Unregister();
   list_attribute_target_observer_ = new_observer;
+#endif
 }
 
 void HTMLInputElement::ResetListAttributeTargetObserver() {
+  ASSERT(false); // BKTODO:
+#if 0
   const AtomicString& value = FastGetAttribute(listAttr);
   if (!value.IsNull() && isConnected()) {
     SetListAttributeTargetObserver(
@@ -1680,34 +2033,59 @@ void HTMLInputElement::ResetListAttributeTargetObserver() {
   } else {
     SetListAttributeTargetObserver(nullptr);
   }
+#endif
 }
 
 void HTMLInputElement::ListAttributeTargetChanged() {
-  input_type_view_->ListAttributeTargetChanged();
+  ASSERT(false); // BKTODO: input_type_view_->ListAttributeTargetChanged();
 }
 
 bool HTMLInputElement::IsSteppable() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->IsSteppable();
+#endif
 }
 
 bool HTMLInputElement::IsTextButton() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->IsTextButton();
+#endif
 }
 
 bool HTMLInputElement::IsEnumeratable() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->IsEnumeratable();
+#endif
 }
 
 bool HTMLInputElement::SupportLabels() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->IsInteractiveContent();
+#endif
 }
 
 bool HTMLInputElement::MatchesDefaultPseudoClass() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->MatchesDefaultPseudoClass();
+#endif
 }
 
 bool HTMLInputElement::ShouldAppearChecked() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return checked() && input_type_->IsCheckable();
+#endif
 }
 
 void HTMLInputElement::SetPlaceholderVisibility(bool visible) {
@@ -1715,11 +2093,15 @@ void HTMLInputElement::SetPlaceholderVisibility(bool visible) {
 }
 
 bool HTMLInputElement::SupportsPlaceholder() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->SupportsPlaceholder();
+#endif
 }
 
 void HTMLInputElement::UpdatePlaceholderText() {
-  return input_type_view_->UpdatePlaceholderText();
+  ASSERT(false); // BKTODO: return input_type_view_->UpdatePlaceholderText();
 }
 
 String HTMLInputElement::GetPlaceholderValue() const {
@@ -1727,18 +2109,29 @@ String HTMLInputElement::GetPlaceholderValue() const {
 }
 
 String HTMLInputElement::DefaultToolTip() const {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   return input_type_->DefaultToolTip(*input_type_view_);
+#endif
 }
 
 bool HTMLInputElement::ShouldAppearIndeterminate() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->ShouldAppearIndeterminate();
+#endif
 }
 
 bool HTMLInputElement::IsInRequiredRadioButtonGroup() {
+  ASSERT(false); // BKTODO:
+#if 0
   // TODO(tkent): Remove type check.
   DCHECK_EQ(type(), InputTypeNames::radio);
   if (RadioButtonGroupScope* scope = GetRadioButtonGroupScope())
     return scope->IsInRequiredGroup(this);
+#endif
   return false;
 }
 
@@ -1746,11 +2139,13 @@ HTMLInputElement* HTMLInputElement::CheckedRadioButtonForGroup() {
   if (checked())
     return this;
   if (RadioButtonGroupScope* scope = GetRadioButtonGroupScope())
-    return scope->CheckedButtonForGroup(GetName());
+    ASSERT(false); // BKTODO: return scope->CheckedButtonForGroup(GetName());
   return nullptr;
 }
 
 RadioButtonGroupScope* HTMLInputElement::GetRadioButtonGroupScope() const {
+  ASSERT(false); // BKTODO:
+#if 0
   // FIXME: Remove type check.
   if (type() != InputTypeNames::radio)
     return nullptr;
@@ -1758,6 +2153,7 @@ RadioButtonGroupScope* HTMLInputElement::GetRadioButtonGroupScope() const {
     return &form_element->GetRadioButtonGroupScope();
   if (isConnected())
     return &GetTreeScope().GetRadioButtonGroupScope();
+#endif
   return nullptr;
 }
 
@@ -1765,35 +2161,48 @@ unsigned HTMLInputElement::SizeOfRadioGroup() const {
   RadioButtonGroupScope* scope = GetRadioButtonGroupScope();
   if (!scope)
     return 0;
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return scope->GroupSizeFor(this);
+#endif
 }
 
 inline void HTMLInputElement::AddToRadioButtonGroup() {
   if (RadioButtonGroupScope* scope = GetRadioButtonGroupScope())
-    scope->AddButton(this);
+    ASSERT(false); // BKTODO: scope->AddButton(this);
 }
 
 inline void HTMLInputElement::RemoveFromRadioButtonGroup() {
   if (RadioButtonGroupScope* scope = GetRadioButtonGroupScope())
-    scope->RemoveButton(this);
+    ASSERT(false); // BKTODO: scope->RemoveButton(this);
 }
 
 unsigned HTMLInputElement::height() const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return input_type_->Height();
+#endif
 }
 
 unsigned HTMLInputElement::width() const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return input_type_->Width();
+#endif
 }
 
 void HTMLInputElement::setHeight(unsigned height) {
-  SetUnsignedIntegralAttribute(heightAttr, height);
+  ASSERT(false); // BKTODO: SetUnsignedIntegralAttribute(heightAttr, height);
 }
 
 void HTMLInputElement::setWidth(unsigned width) {
-  SetUnsignedIntegralAttribute(widthAttr, width);
+  ASSERT(false); // BKTODO: SetUnsignedIntegralAttribute(widthAttr, width);
 }
 
+#if 0 // BKTODO:
 ListAttributeTargetObserver* ListAttributeTargetObserver::Create(
     const AtomicString& id,
     HTMLInputElement* element) {
@@ -1815,9 +2224,12 @@ void ListAttributeTargetObserver::Trace(blink::Visitor* visitor) {
 void ListAttributeTargetObserver::IdTargetChanged() {
   element_->ListAttributeTargetChanged();
 }
+#endif
 
 void HTMLInputElement::setRangeText(const String& replacement,
                                     ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!input_type_->SupportsSelectionAPI()) {
     exception_state.ThrowDOMException(DOMExceptionCode::kInvalidStateError,
                                       "The input element's type ('" +
@@ -1825,6 +2237,7 @@ void HTMLInputElement::setRangeText(const String& replacement,
                                           "') does not support selection.");
     return;
   }
+#endif
 
   TextControlElement::setRangeText(replacement, exception_state);
 }
@@ -1834,6 +2247,8 @@ void HTMLInputElement::setRangeText(const String& replacement,
                                     unsigned end,
                                     const String& selection_mode,
                                     ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!input_type_->SupportsSelectionAPI()) {
     exception_state.ThrowDOMException(DOMExceptionCode::kInvalidStateError,
                                       "The input element's type ('" +
@@ -1841,6 +2256,7 @@ void HTMLInputElement::setRangeText(const String& replacement,
                                           "') does not support selection.");
     return;
   }
+#endif
 
   TextControlElement::setRangeText(replacement, start, end, selection_mode,
                                    exception_state);
@@ -1851,6 +2267,8 @@ bool HTMLInputElement::SetupDateTimeChooserParameters(
   if (!GetDocument().View())
     return false;
 
+  ASSERT(false); // BKTODO:
+#if 0
   parameters.type = type();
   parameters.minimum = Minimum();
   parameters.maximum = Maximum();
@@ -1895,11 +2313,16 @@ bool HTMLInputElement::SetupDateTimeChooserParameters(
       parameters.suggestions.push_back(suggestion);
     }
   }
+#endif
   return true;
 }
 
 bool HTMLInputElement::SupportsInputModeAttribute() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->SupportsInputModeAttribute();
+#endif
 }
 
 void HTMLInputElement::SetShouldRevealPassword(bool value) {
@@ -1910,16 +2333,28 @@ void HTMLInputElement::SetShouldRevealPassword(bool value) {
 }
 
 bool HTMLInputElement::IsInteractiveContent() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->IsInteractiveContent();
+#endif
 }
 
 bool HTMLInputElement::SupportsAutofocus() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_->IsInteractiveContent();
+#endif
 }
 
 scoped_refptr<ComputedStyle> HTMLInputElement::CustomStyleForLayoutObject() {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return input_type_view_->CustomStyleForLayoutObject(
       OriginalStyleForLayoutObject());
+#endif
 }
 
 void HTMLInputElement::DidRecalcStyle(StyleRecalcChange change) {
@@ -1928,38 +2363,44 @@ void HTMLInputElement::DidRecalcStyle(StyleRecalcChange change) {
     return;
   ComputedStyle* style = GetNonAttachedStyle();
   if (style && style->Display() != EDisplay::kNone)
-    input_type_view_->StartResourceLoading();
+    ASSERT(false); // BKTODO: input_type_view_->StartResourceLoading();
 }
 
 void HTMLInputElement::DidNotifySubtreeInsertionsToDocument() {
   ListAttributeTargetChanged();
 }
 
+#if 0 // BKTODO: Check if necessary.
 AXObject* HTMLInputElement::PopupRootAXObject() {
   return input_type_view_->PopupRootAXObject();
 }
+#endif
 
 void HTMLInputElement::EnsureFallbackContent() {
-  input_type_view_->EnsureFallbackContent();
+  ASSERT(false); // BKTODO: input_type_view_->EnsureFallbackContent();
 }
 
 void HTMLInputElement::EnsurePrimaryContent() {
-  input_type_view_->EnsurePrimaryContent();
+  ASSERT(false); // BKTODO: input_type_view_->EnsurePrimaryContent();
 }
 
 bool HTMLInputElement::HasFallbackContent() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_type_view_->HasFallbackContent();
+#endif
 }
 
 void HTMLInputElement::SetFilesFromPaths(const Vector<String>& paths) {
-  return input_type_->SetFilesFromPaths(paths);
+  ASSERT(false); // BKTODO: return input_type_->SetFilesFromPaths(paths);
 }
 
 void HTMLInputElement::ChildrenChanged(const ChildrenChange& change) {
   // Some input types only need shadow roots to hide any children that may
   // have been appended by script. For such types, shadow roots are lazily
   // created when children are added for the first time.
-  EnsureUserAgentShadowRoot();
+  ASSERT(false); // BKTODO: EnsureUserAgentShadowRoot();
   ContainerNode::ChildrenChanged(change);
 }
 

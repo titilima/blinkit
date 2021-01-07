@@ -57,6 +57,7 @@
 
 #include "base/numerics/checked_math.h"
 #include "base/single_thread_task_runner.h"
+#include "blinkit/gc/gc_static.h"
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/public/platform/task_type.h"
 #if 0 // BKTODO:
@@ -112,6 +113,8 @@
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_recorder.h"
 #include "third_party/blink/renderer/platform/scroll/scroll_alignment.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -2626,10 +2629,8 @@ void PaintLayerScrollableArea::PreventRelayoutScope::ResetRelayoutNeeded() {
 
 HeapVector<Member<PaintLayerScrollableArea>>&
 PaintLayerScrollableArea::PreventRelayoutScope::NeedsRelayoutList() {
-  DEFINE_STATIC_LOCAL(Persistent<HeapVector<Member<PaintLayerScrollableArea>>>,
-                      needs_relayout_list,
-                      (new HeapVector<Member<PaintLayerScrollableArea>>));
-  return *needs_relayout_list;
+  static GCStaticWrapper<HeapVector<Member<PaintLayerScrollableArea>>> needs_relayout_list;
+  return needs_relayout_list.GetAsReference();
 }
 
 int PaintLayerScrollableArea::FreezeScrollbarsScope::count_ = 0;
@@ -2665,10 +2666,8 @@ void PaintLayerScrollableArea::DelayScrollOffsetClampScope::
 
 HeapVector<Member<PaintLayerScrollableArea>>&
 PaintLayerScrollableArea::DelayScrollOffsetClampScope::NeedsClampList() {
-  DEFINE_STATIC_LOCAL(Persistent<HeapVector<Member<PaintLayerScrollableArea>>>,
-                      needs_clamp_list,
-                      (new HeapVector<Member<PaintLayerScrollableArea>>));
-  return *needs_clamp_list;
+  static GCStaticWrapper<HeapVector<Member<PaintLayerScrollableArea>>> needs_clamp_list;
+  return needs_clamp_list.GetAsReference();
 }
 
 ScrollbarTheme& PaintLayerScrollableArea::GetPageScrollbarTheme() const {

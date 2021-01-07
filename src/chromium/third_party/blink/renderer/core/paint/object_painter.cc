@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: object_painter.cc
+// Description: ObjectPainter Class
+//      Author: Ziming Li
+//     Created: 2021-01-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -77,6 +88,8 @@ void ObjectPainter::PaintInlineChildrenOutlines(const PaintInfo& paint_info) {
 
 void ObjectPainter::AddPDFURLRectIfNeeded(const PaintInfo& paint_info,
                                           const LayoutPoint& paint_offset) {
+  ASSERT(false); // BKTODO: Remove this method.
+#if 0
   DCHECK(paint_info.IsPrinting());
   if (layout_object_.IsElementContinuation() || !layout_object_.GetNode() ||
       !layout_object_.GetNode()->IsLink() ||
@@ -110,6 +123,7 @@ void ObjectPainter::AddPDFURLRectIfNeeded(const PaintInfo& paint_info,
     return;
   }
   paint_info.context.SetURLForRect(url, rect);
+#endif
 }
 
 void ObjectPainter::PaintAllPhasesAtomically(const PaintInfo& paint_info) {

@@ -46,6 +46,9 @@
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/style/computed_style_constants.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/public/platform/web_focus_type.h"
+#endif
 
 namespace blink {
 
@@ -61,6 +64,7 @@ class StaticNodeTypeList;
 using StaticNodeList = StaticNodeTypeList<Node>;
 #ifndef BLINKIT_CRAWLER_ONLY
 class ComputedStyle;
+class EventDispatchHandlingState;
 class HTMLSlotElement;
 class LayoutBox;
 class LayoutBoxModelObject;
@@ -375,8 +379,21 @@ public:
     // Element::isFocusedElementInDocument() or Document::focusedElement() to
     // check which element is exactly focused.
     bool IsFocused(void) const { return IsUserActionElement() && IsUserActionElementFocused(); }
+    bool IsHovered(void) const { return IsUserActionElement() && IsUserActionElementHovered(); }
+    // This is called only when the node is focused.
+    virtual bool ShouldHaveFocusAppearance(void) const;
     // A re-distribution across v0 and v1 shadow trees is not supported.
     bool IsSlotable(void) const { return IsTextNode() || (IsElementNode() && !IsV0InsertionPoint()); }
+
+    virtual void SetFocused(bool flag, WebFocusType focusType);
+
+    // Handlers to do/undo actions on the target node before an event is
+    // dispatched to it and after the event has been dispatched.  The data pointer
+    // is handed back by the preDispatch and passed to postDispatch.
+    virtual EventDispatchHandlingState* PreDispatchEventHandler(Event &event) { return nullptr; }
+    virtual void PostDispatchEventHandler(Event &event, EventDispatchHandlingState *state) {}
+
+    virtual bool WillRespondToMouseClickEvents(void);
 
     ShadowRoot* ParentElementShadowRoot(void) const;
     bool IsInV0ShadowTree(void) const;
@@ -583,6 +600,7 @@ private:
 #ifndef BLINKIT_CRAWLER_ONLY
     bool IsUserActionElementActive(void) const;
     bool IsUserActionElementFocused(void) const;
+    bool IsUserActionElementHovered(void) const;
 
     void SetStyleChange(StyleChangeType changeType)
     {
@@ -620,9 +638,13 @@ private:
 
 DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES(Node)
 
-#define DEFINE_NODE_TYPE_CASTS(thisType, predicate) \
-    DEFINE_TYPE_CASTS(thisType, Node, node, node->predicate, node.predicate)
-
 }  // namespace blink
+
+#define DEFINE_NODE_TYPE_CASTS(ThisType, predicate) \
+    DEFINE_TYPE_CASTS(ThisType, Node, node, node->predicate, node.predicate)
+
+// This requires IsClassName(const Node&).
+#define DEFINE_NODE_TYPE_CASTS_WITH_FUNCTION(ThisType)  \
+    DEFINE_TYPE_CASTS(ThisType, Node, node, Is##ThisType(*node), Is##ThisType(node))
 
 #endif  // BLINKIT_BLINK_NODE_H

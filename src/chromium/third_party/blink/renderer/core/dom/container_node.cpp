@@ -1227,6 +1227,9 @@ void ContainerNode::WillRemoveChildren(void)
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// UI Implementations
+
 #ifndef BLINKIT_CRAWLER_ONLY
 void ContainerNode::RebuildChildrenLayoutTrees(WhitespaceAttacher &whitespaceAttacher)
 {
@@ -1323,6 +1326,84 @@ void ContainerNode::RecalcDescendantStyles(StyleRecalcChange change)
         }
     }
 }
+
+void ContainerNode::SetFocused(bool received, WebFocusType focusType)
+{
+    // Recurse up author shadow trees to mark shadow hosts if it matches :focus.
+    // TODO(kochi): Handle UA shadows which marks multiple nodes as focused such
+    // as <input type="date"> the same way as author shadow.
+    if (ShadowRoot *root = ContainingShadowRoot())
+    {
+        if (!root->IsUserAgent())
+            OwnerShadowHost()->SetFocused(received, focusType);
+    }
+
+    // If this is an author shadow host and indirectly focused (has focused
+    // element within its shadow root), update focus.
+    if (IsElementNode())
+    {
+        if (Element *focusedElement = GetDocument().FocusedElement())
+        {
+            if (focusedElement != this)
+            {
+                ASSERT(false); // BKTODO:
+#if 0
+                if (ToElement(this)->AuthorShadowRoot())
+                    received =
+                    received && ToElement(this)->AuthorShadowRoot()->delegatesFocus();
+#endif
+            }
+        }
+    }
+
+    if (IsFocused() == received)
+        return;
+
+    Node::SetFocused(received, focusType);
+
+    ASSERT(false); // BKTODO:
+#if 0
+    FocusStateChanged();
+
+    if (GetLayoutObject() || received)
+        return;
+
+    // If :focus sets display: none, we lose focus but still need to recalc our
+    // style.
+    if (IsElementNode() && ToElement(this)->ChildrenOrSiblingsAffectedByFocus())
+        ToElement(this)->PseudoStateChanged(CSSSelector::kPseudoFocus);
+    else
+        SetNeedsStyleRecalc(
+            kLocalStyleChange,
+            StyleChangeReasonForTracing::CreateWithExtraData(
+                StyleChangeReason::kPseudoClass, StyleChangeExtraData::g_focus));
+
+    if (RuntimeEnabledFeatures::CSSFocusVisibleEnabled()) {
+        if (IsElementNode() &&
+            ToElement(this)->ChildrenOrSiblingsAffectedByFocusVisible()) {
+            ToElement(this)->PseudoStateChanged(CSSSelector::kPseudoFocusVisible);
+        }
+        else {
+            SetNeedsStyleRecalc(kLocalStyleChange,
+                StyleChangeReasonForTracing::CreateWithExtraData(
+                    StyleChangeReason::kPseudoClass,
+                    StyleChangeExtraData::g_focus_visible));
+        }
+    }
+
+    if (IsElementNode() &&
+        ToElement(this)->ChildrenOrSiblingsAffectedByFocusWithin()) {
+        ToElement(this)->PseudoStateChanged(CSSSelector::kPseudoFocusWithin);
+    }
+    else {
+        SetNeedsStyleRecalc(kLocalStyleChange,
+            StyleChangeReasonForTracing::CreateWithExtraData(
+                StyleChangeReason::kPseudoClass,
+                StyleChangeExtraData::g_focus_within));
+    }
+#endif
+}
+
 #endif // BLINKIT_CRAWLER_ONLY
 
 }  // namespace blink

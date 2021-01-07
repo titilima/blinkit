@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_form_control_element.h
+// Description: HTMLFormControlElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,8 +36,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_HTML_FORMS_HTML_FORM_CONTROL_ELEMENT_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_HTML_FORMS_HTML_FORM_CONTROL_ELEMENT_H_
 
-#include "third_party/blink/public/platform/web_string.h"
-#include "third_party/blink/public/web/web_autofill_state.h"
+// BKTODO: #include "third_party/blink/public/web/web_autofill_state.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/html/forms/form_associated.h"
 #include "third_party/blink/renderer/core/html/forms/labelable_element.h"
@@ -126,6 +136,7 @@ class CORE_EXPORT HTMLFormControlElement : public LabelableElement,
 
   bool MayTriggerVirtualKeyboard() const override;
 
+#if 0 // BKTODO:
   WebAutofillState GetAutofillState() const { return autofill_state_; }
   bool IsAutofilled() const {
     return autofill_state_ != WebAutofillState::kNotFilled;
@@ -136,6 +147,7 @@ class CORE_EXPORT HTMLFormControlElement : public LabelableElement,
   // shipping address, .. .)
   WebString AutofillSection() const { return autofill_section_; }
   void SetAutofillSection(const WebString&);
+#endif
 
   const AtomicString& autocapitalize() const final;
 
@@ -168,7 +180,9 @@ class CORE_EXPORT HTMLFormControlElement : public LabelableElement,
   void RemovedFrom(ContainerNode&) override;
   void WillChangeForm() override;
   void DidChangeForm() override;
+#if 0 // BKTODO:
   void DidMoveToNewDocument(Document& old_document) override;
+#endif
 
   bool SupportsFocus() const override;
   bool IsKeyboardFocusable() const override;
@@ -205,8 +219,10 @@ class CORE_EXPORT HTMLFormControlElement : public LabelableElement,
 
   unsigned unique_renderer_form_control_id_;
 
+#if 0 // BKTODO:
   WebString autofill_section_;
   enum WebAutofillState autofill_state_;
+#endif
 
   enum AncestorDisabledState {
     kAncestorDisabledStateUnknown,
