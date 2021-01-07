@@ -253,17 +253,13 @@ class PLATFORM_EXPORT GraphicsContext {
                       Image::TileRule v_rule = Image::kStretchTile,
                       SkBlendMode = SkBlendMode::kSrcOver);
 
-#if 0 // BKTODO:
   // These methods write to the canvas.
   // Also drawLine(const IntPoint& point1, const IntPoint& point2) and
   // fillRoundedRect().
   void DrawOval(const SkRect&, const PaintFlags&);
   void DrawPath(const SkPath&, const PaintFlags&);
-#endif
   void DrawRect(const SkRect&, const PaintFlags&);
-#if 0 // BKTODO:
   void DrawRRect(const SkRRect&, const PaintFlags&);
-#endif
 
   void Clip(const IntRect& rect) { ClipRect(rect); }
   void Clip(const FloatRect& rect) { ClipRect(rect); }
@@ -288,7 +284,6 @@ class PLATFORM_EXPORT GraphicsContext {
   void DrawText(const Font&, const TextRunPaintInfo&, const FloatPoint&);
   void DrawText(const Font&, const NGTextFragmentPaintInfo&, const FloatPoint&);
 
-#if 0 // BKTODO:
   void DrawText(const Font&,
                 const TextRunPaintInfo&,
                 const FloatPoint&,
@@ -297,7 +292,6 @@ class PLATFORM_EXPORT GraphicsContext {
                 const NGTextFragmentPaintInfo&,
                 const FloatPoint&,
                 const PaintFlags&);
-#endif
 
   void DrawEmphasisMarks(const Font&,
                          const TextRunPaintInfo&,
@@ -428,13 +422,11 @@ class PLATFORM_EXPORT GraphicsContext {
     return paint_state_;
   }
 
-#if 0 // BKTODO:
   template <typename TextPaintInfo>
   void DrawTextInternal(const Font&,
                         const TextPaintInfo&,
                         const FloatPoint&,
                         const PaintFlags&);
-#endif
 
   template <typename TextPaintInfo>
   void DrawTextInternal(const Font&, const TextPaintInfo&, const FloatPoint&);

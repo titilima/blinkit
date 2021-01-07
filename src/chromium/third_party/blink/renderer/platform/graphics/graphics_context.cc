@@ -754,7 +754,6 @@ void GraphicsContext::DrawRect(const IntRect& rect) {
   }
 }
 
-#if 0 // BKTODO:
 template <typename TextPaintInfo>
 void GraphicsContext::DrawTextInternal(const Font& font,
                                        const TextPaintInfo& text_info,
@@ -780,7 +779,6 @@ void GraphicsContext::DrawText(const Font& font,
                                const PaintFlags& flags) {
   DrawTextInternal(font, text_info, point, flags);
 }
-#endif
 
 template <typename DrawTextFunc>
 void GraphicsContext::DrawTextPasses(const DrawTextFunc& draw_text) {
@@ -1034,7 +1032,6 @@ void GraphicsContext::DrawTiledImage(Image* image,
   paint_controller_.SetImagePainted();
 }
 
-#if 0 // BKTODO:
 void GraphicsContext::DrawOval(const SkRect& oval, const PaintFlags& flags) {
   if (ContextDisabled())
     return;
@@ -1050,7 +1047,6 @@ void GraphicsContext::DrawPath(const SkPath& path, const PaintFlags& flags) {
 
   canvas_->drawPath(path, ApplyHighContrastFilter(&flags));
 }
-#endif
 
 void GraphicsContext::DrawRect(const SkRect& rect, const PaintFlags& flags) {
   if (ContextDisabled())
@@ -1060,7 +1056,6 @@ void GraphicsContext::DrawRect(const SkRect& rect, const PaintFlags& flags) {
   canvas_->drawRect(rect, ApplyHighContrastFilter(&flags));
 }
 
-#if 0 // BKTODO:
 void GraphicsContext::DrawRRect(const SkRRect& rrect, const PaintFlags& flags) {
   if (ContextDisabled())
     return;
@@ -1068,7 +1063,6 @@ void GraphicsContext::DrawRRect(const SkRRect& rrect, const PaintFlags& flags) {
 
   canvas_->drawRRect(rrect, ApplyHighContrastFilter(&flags));
 }
-#endif
 
 void GraphicsContext::FillPath(const Path& path_to_fill) {
   if (ContextDisabled() || path_to_fill.IsEmpty())
