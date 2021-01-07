@@ -162,6 +162,8 @@
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_flags.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_font.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_image.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_image_builder.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_image_generator.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_op_buffer.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_record.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_recorder.cc" />
@@ -171,6 +173,7 @@
     <ClCompile Include="..\..\..\src\chromium\cc\paint\record_paint_canvas.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\scoped_raster_flags.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\skia_paint_canvas.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\skia_paint_image_generator.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\trees\element_id.cc" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -190,6 +193,7 @@
     <ClInclude Include="..\..\..\src\chromium\cc\input\snap_fling_controller.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\input\touch_action.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\display_item_list.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\frame_metadata.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\image_animation_count.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\image_provider.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_canvas.h" />
@@ -198,6 +202,8 @@
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_flags.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_font.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_image.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_image_builder.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_image_generator.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_op_buffer.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_record.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_recorder.h" />
@@ -207,6 +213,7 @@
     <ClInclude Include="..\..\..\src\chromium\cc\paint\record_paint_canvas.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\scoped_raster_flags.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\skia_paint_canvas.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\skia_paint_image_generator.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\trees\element_id.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\trees\target_property.h" />
   </ItemGroup>

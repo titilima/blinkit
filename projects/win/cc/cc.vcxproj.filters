@@ -80,6 +80,15 @@
     <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_text_blob_builder.cc">
       <Filter>paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_image_builder.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\paint_image_generator.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\paint\skia_paint_image_generator.cc">
+      <Filter>paint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\cc\_pc.h">
@@ -173,6 +182,18 @@
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_text_blob_builder.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_image_builder.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_image_generator.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\frame_metadata.h">
+      <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\skia_paint_image_generator.h">
       <Filter>paint</Filter>
     </ClInclude>
   </ItemGroup>
