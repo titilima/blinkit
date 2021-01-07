@@ -25,6 +25,16 @@ inline bool IsHTMLAnchorElement(const Element &element)
     return element.HasTagName(html_names::kATag);
 }
 
+inline bool IsHTMLAnchorElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLAnchorElement(ToElement(node));
+}
+
+inline bool IsHTMLAnchorElement(const Node *node)
+{
+    return nullptr != node && IsHTMLAnchorElement(*node);
+}
+
 inline bool IsHTMLBodyElement(const Element &element)
 {
     return element.HasTagName(html_names::kBodyTag);
@@ -60,6 +70,29 @@ inline bool IsHTMLButtonElement(const Node &node)
     return node.IsHTMLElement() && IsHTMLButtonElement(ToElement(node));
 }
 
+inline bool IsHTMLButtonElement(const Node *node)
+{
+    return nullptr != node && IsHTMLButtonElement(*node);
+}
+
+class HTMLDataListElement;
+
+inline bool IsHTMLDataListElement(const Element &element)
+{
+    return element.HasTagName(html_names::kDatalistTag);
+}
+
+inline bool IsHTMLDataListElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLDataListElement(ToElement(node));
+}
+
+template<>
+inline bool IsElementOfType<const HTMLDataListElement>(const Node &node)
+{
+    return IsHTMLDataListElement(node);
+}
+
 inline bool IsHTMLDialogElement(const Element &element)
 {
     return element.HasTagName(html_names::kDialogTag);
@@ -80,6 +113,8 @@ inline bool IsHTMLDivElement(const Element &element)
     return element.HasTagName(html_names::kDivTag);
 }
 
+class HTMLFieldSetElement;
+
 inline bool IsHTMLFieldSetElement(const Element &element)
 {
     return element.HasTagName(html_names::kFieldsetTag);
@@ -93,6 +128,12 @@ inline bool IsHTMLFieldSetElement(const Node &node)
 inline bool IsHTMLFieldSetElement(const Node *node)
 {
     return nullptr != node && IsHTMLFieldSetElement(*node);
+}
+
+template<>
+inline bool IsElementOfType<const HTMLFieldSetElement>(const Node &node)
+{
+    return IsHTMLFieldSetElement(node);
 }
 
 inline bool IsHTMLFontElement(const Element &element)
@@ -140,6 +181,8 @@ inline bool IsHTMLImageElement(const Element *element)
     return nullptr != element && IsHTMLImageElement(*element);
 }
 
+class HTMLInputElement;
+
 inline bool IsHTMLInputElement(const Element &element)
 {
     return element.HasTagName(html_names::kInputTag);
@@ -149,6 +192,19 @@ inline bool IsHTMLInputElement(const Node &node)
 {
     return node.IsHTMLElement() && IsHTMLInputElement(ToElement(node));
 }
+
+inline bool IsHTMLInputElement(const Node *node)
+{
+    return nullptr != node && IsHTMLInputElement(*node);
+}
+
+template<>
+inline bool IsElementOfType<const HTMLInputElement>(const Node &node)
+{
+    return IsHTMLInputElement(node);
+}
+
+class HTMLLegendElement;
 
 inline bool IsHTMLLegendElement(const Element &element)
 {
@@ -221,6 +277,11 @@ inline bool IsHTMLSelectElement(const Element &element)
 inline bool IsHTMLSelectElement(const Node &node)
 {
     return node.IsHTMLElement() && IsHTMLSelectElement(ToElement(node));
+}
+
+inline bool IsHTMLSelectElement(const Node *node)
+{
+    return nullptr != node && IsHTMLSelectElement(*node);
 }
 
 inline bool IsHTMLSlotElement(const Element &element)
@@ -306,6 +367,11 @@ inline bool IsHTMLTextAreaElement(const Node &node)
     return node.IsHTMLElement() && IsHTMLTextAreaElement(ToElement(node));
 }
 
+inline bool IsHTMLTextAreaElement(const Node *node)
+{
+    return nullptr != node && IsHTMLTextAreaElement(*node);
+}
+
 inline bool IsHTMLTitleElement(const Element &element)
 {
     return element.HasTagName(html_names::kTitleTag);
@@ -313,7 +379,10 @@ inline bool IsHTMLTitleElement(const Element &element)
 
 } // namespace blink
 
-#define ToHTMLLinkElement(x)    blink::ToElement<blink::HTMLLinkElement>(x)
-#define ToHTMLStyleElement(x)   blink::ToElement<blink::HTMLStyleElement>(x)
+#define ToHTMLFieldSetElement(x)    blink::ToElement<blink::HTMLFieldSetElement>(x)
+#define ToHTMLInputElement(x)       blink::ToElement<blink::HTMLInputElement>(x)
+#define ToHTMLInputElementOrNull(x) blink::ToElementOrNull<blink::HTMLInputElement>(x)
+#define ToHTMLLinkElement(x)        blink::ToElement<blink::HTMLLinkElement>(x)
+#define ToHTMLStyleElement(x)       blink::ToElement<blink::HTMLStyleElement>(x)
 
 #endif // BLINKIT_BLINK_HTML_ELEMENT_TYPE_HELPERS_H

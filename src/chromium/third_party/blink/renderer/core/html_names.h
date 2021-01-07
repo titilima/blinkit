@@ -4,9 +4,9 @@
 //   File Name: html_names.h
 // Description: HTML Names
 //      Author: Ziming Li
-//     Created: 2020-12-08
+//     Created: 2021-01-06
 // -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
+// Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
 
 #ifndef BLINKIT_BLINK_HTML_NAMES_H
@@ -47,6 +47,7 @@ extern const blink::HTMLQualifiedName &kColTag;
 extern const blink::HTMLQualifiedName &kColgroupTag;
 extern const blink::HTMLQualifiedName &kCommandTag;
 extern const blink::HTMLQualifiedName &kContentTag;
+extern const blink::HTMLQualifiedName &kDatalistTag;
 extern const blink::HTMLQualifiedName &kDdTag;
 extern const blink::HTMLQualifiedName &kDetailsTag;
 extern const blink::HTMLQualifiedName &kDialogTag;
@@ -141,13 +142,14 @@ extern const blink::HTMLQualifiedName &kVideoTag;
 extern const blink::HTMLQualifiedName &kWbrTag;
 extern const blink::HTMLQualifiedName &kXmpTag;
 
-constexpr unsigned kTagsCount = 115;
+constexpr unsigned kTagsCount = 116;
 
 // Attributes
 extern const blink::QualifiedName &kAcceptAttr;
 extern const blink::QualifiedName &kAcceptCharsetAttr;
 extern const blink::QualifiedName &kAlignAttr;
 extern const blink::QualifiedName &kAlinkAttr;
+extern const blink::QualifiedName &kAutofocusAttr;
 extern const blink::QualifiedName &kAxisAttr;
 extern const blink::QualifiedName &kBgcolorAttr;
 extern const blink::QualifiedName &kCharsetAttr;
@@ -217,10 +219,11 @@ extern const blink::QualifiedName &kTextAttr;
 extern const blink::QualifiedName &kTitleAttr;
 extern const blink::QualifiedName &kTypeAttr;
 extern const blink::QualifiedName &kValignAttr;
+extern const blink::QualifiedName &kValueAttr;
 extern const blink::QualifiedName &kValuetypeAttr;
 extern const blink::QualifiedName &kVlinkAttr;
 
-constexpr unsigned kAttrsCount = 75;
+constexpr unsigned kAttrsCount = 77;
 
 void Init(void);
 
@@ -244,6 +247,7 @@ namespace HTMLNames = html_names;
 #define areaTag kAreaTag
 #define articleTag kArticleTag
 #define asideTag kAsideTag
+#define autofocusAttr kAutofocusAttr
 #define axisAttr kAxisAttr
 #define bTag kBTag
 #define baseTag kBaseTag
@@ -271,6 +275,7 @@ namespace HTMLNames = html_names;
 #define contentTag kContentTag
 #define contentAttr kContentAttr
 #define contenteditableAttr kContenteditableAttr
+#define datalistTag kDatalistTag
 #define ddTag kDdTag
 #define declareAttr kDeclareAttr
 #define deferAttr kDeferAttr
@@ -418,6 +423,7 @@ namespace HTMLNames = html_names;
 #define uTag kUTag
 #define ulTag kUlTag
 #define valignAttr kValignAttr
+#define valueAttr kValueAttr
 #define valuetypeAttr kValuetypeAttr
 #define varTag kVarTag
 #define videoTag kVideoTag

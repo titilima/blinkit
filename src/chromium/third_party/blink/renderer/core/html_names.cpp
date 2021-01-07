@@ -4,9 +4,9 @@
 //   File Name: html_names.cpp
 // Description: HTML Names
 //      Author: Ziming Li
-//     Created: 2020-12-08
+//     Created: 2021-01-06
 // -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
+// Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
 
 #include "html_names.h"
@@ -43,99 +43,100 @@ const HTMLQualifiedName &kColTag = reinterpret_cast<HTMLQualifiedName *>(&tag_st
 const HTMLQualifiedName &kColgroupTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[19];
 const HTMLQualifiedName &kCommandTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[20];
 const HTMLQualifiedName &kContentTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[21];
-const HTMLQualifiedName &kDdTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[22];
-const HTMLQualifiedName &kDetailsTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[23];
-const HTMLQualifiedName &kDialogTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[24];
-const HTMLQualifiedName &kDirTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[25];
-const HTMLQualifiedName &kDivTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[26];
-const HTMLQualifiedName &kDlTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[27];
-const HTMLQualifiedName &kDtTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[28];
-const HTMLQualifiedName &kEmTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[29];
-const HTMLQualifiedName &kEmbedTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[30];
-const HTMLQualifiedName &kFieldsetTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[31];
-const HTMLQualifiedName &kFigcaptionTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[32];
-const HTMLQualifiedName &kFigureTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[33];
-const HTMLQualifiedName &kFontTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[34];
-const HTMLQualifiedName &kFooterTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[35];
-const HTMLQualifiedName &kFormTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[36];
-const HTMLQualifiedName &kFrameTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[37];
-const HTMLQualifiedName &kFramesetTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[38];
-const HTMLQualifiedName &kH1Tag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[39];
-const HTMLQualifiedName &kH2Tag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[40];
-const HTMLQualifiedName &kH3Tag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[41];
-const HTMLQualifiedName &kH4Tag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[42];
-const HTMLQualifiedName &kH5Tag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[43];
-const HTMLQualifiedName &kH6Tag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[44];
-const HTMLQualifiedName &kHeadTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[45];
-const HTMLQualifiedName &kHeaderTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[46];
-const HTMLQualifiedName &kHgroupTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[47];
-const HTMLQualifiedName &kHrTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[48];
-const HTMLQualifiedName &kHTMLTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[49];
-const HTMLQualifiedName &kITag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[50];
-const HTMLQualifiedName &kIFrameTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[51];
-const HTMLQualifiedName &kImageTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[52];
-const HTMLQualifiedName &kImgTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[53];
-const HTMLQualifiedName &kInputTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[54];
-const HTMLQualifiedName &kKeygenTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[55];
-const HTMLQualifiedName &kLabelTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[56];
-const HTMLQualifiedName &kLegendTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[57];
-const HTMLQualifiedName &kLiTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[58];
-const HTMLQualifiedName &kLinkTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[59];
-const HTMLQualifiedName &kListingTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[60];
-const HTMLQualifiedName &kMainTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[61];
-const HTMLQualifiedName &kMarqueeTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[62];
-const HTMLQualifiedName &kMenuTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[63];
-const HTMLQualifiedName &kMetaTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[64];
-const HTMLQualifiedName &kNavTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[65];
-const HTMLQualifiedName &kNobrTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[66];
-const HTMLQualifiedName &kNoembedTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[67];
-const HTMLQualifiedName &kNoframesTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[68];
-const HTMLQualifiedName &kNoscriptTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[69];
-const HTMLQualifiedName &kObjectTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[70];
-const HTMLQualifiedName &kOlTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[71];
-const HTMLQualifiedName &kOptgroupTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[72];
-const HTMLQualifiedName &kOptionTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[73];
-const HTMLQualifiedName &kPTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[74];
-const HTMLQualifiedName &kParamTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[75];
-const HTMLQualifiedName &kPlaintextTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[76];
-const HTMLQualifiedName &kPreTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[77];
-const HTMLQualifiedName &kRbTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[78];
-const HTMLQualifiedName &kRpTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[79];
-const HTMLQualifiedName &kRtTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[80];
-const HTMLQualifiedName &kRTCTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[81];
-const HTMLQualifiedName &kRubyTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[82];
-const HTMLQualifiedName &kSTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[83];
-const HTMLQualifiedName &kScriptTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[84];
-const HTMLQualifiedName &kSectionTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[85];
-const HTMLQualifiedName &kSelectTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[86];
-const HTMLQualifiedName &kSlotTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[87];
-const HTMLQualifiedName &kSmallTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[88];
-const HTMLQualifiedName &kSourceTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[89];
-const HTMLQualifiedName &kSpanTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[90];
-const HTMLQualifiedName &kStrikeTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[91];
-const HTMLQualifiedName &kStrongTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[92];
-const HTMLQualifiedName &kStyleTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[93];
-const HTMLQualifiedName &kSubTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[94];
-const HTMLQualifiedName &kSummaryTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[95];
-const HTMLQualifiedName &kSupTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[96];
-const HTMLQualifiedName &kTableTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[97];
-const HTMLQualifiedName &kTbodyTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[98];
-const HTMLQualifiedName &kTdTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[99];
-const HTMLQualifiedName &kTemplateTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[100];
-const HTMLQualifiedName &kTextareaTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[101];
-const HTMLQualifiedName &kTfootTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[102];
-const HTMLQualifiedName &kThTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[103];
-const HTMLQualifiedName &kTheadTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[104];
-const HTMLQualifiedName &kTitleTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[105];
-const HTMLQualifiedName &kTrTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[106];
-const HTMLQualifiedName &kTrackTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[107];
-const HTMLQualifiedName &kTtTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[108];
-const HTMLQualifiedName &kUTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[109];
-const HTMLQualifiedName &kUlTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[110];
-const HTMLQualifiedName &kVarTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[111];
-const HTMLQualifiedName &kVideoTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[112];
-const HTMLQualifiedName &kWbrTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[113];
-const HTMLQualifiedName &kXmpTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[114];
+const HTMLQualifiedName &kDatalistTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[22];
+const HTMLQualifiedName &kDdTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[23];
+const HTMLQualifiedName &kDetailsTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[24];
+const HTMLQualifiedName &kDialogTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[25];
+const HTMLQualifiedName &kDirTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[26];
+const HTMLQualifiedName &kDivTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[27];
+const HTMLQualifiedName &kDlTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[28];
+const HTMLQualifiedName &kDtTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[29];
+const HTMLQualifiedName &kEmTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[30];
+const HTMLQualifiedName &kEmbedTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[31];
+const HTMLQualifiedName &kFieldsetTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[32];
+const HTMLQualifiedName &kFigcaptionTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[33];
+const HTMLQualifiedName &kFigureTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[34];
+const HTMLQualifiedName &kFontTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[35];
+const HTMLQualifiedName &kFooterTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[36];
+const HTMLQualifiedName &kFormTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[37];
+const HTMLQualifiedName &kFrameTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[38];
+const HTMLQualifiedName &kFramesetTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[39];
+const HTMLQualifiedName &kH1Tag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[40];
+const HTMLQualifiedName &kH2Tag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[41];
+const HTMLQualifiedName &kH3Tag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[42];
+const HTMLQualifiedName &kH4Tag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[43];
+const HTMLQualifiedName &kH5Tag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[44];
+const HTMLQualifiedName &kH6Tag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[45];
+const HTMLQualifiedName &kHeadTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[46];
+const HTMLQualifiedName &kHeaderTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[47];
+const HTMLQualifiedName &kHgroupTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[48];
+const HTMLQualifiedName &kHrTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[49];
+const HTMLQualifiedName &kHTMLTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[50];
+const HTMLQualifiedName &kITag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[51];
+const HTMLQualifiedName &kIFrameTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[52];
+const HTMLQualifiedName &kImageTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[53];
+const HTMLQualifiedName &kImgTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[54];
+const HTMLQualifiedName &kInputTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[55];
+const HTMLQualifiedName &kKeygenTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[56];
+const HTMLQualifiedName &kLabelTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[57];
+const HTMLQualifiedName &kLegendTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[58];
+const HTMLQualifiedName &kLiTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[59];
+const HTMLQualifiedName &kLinkTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[60];
+const HTMLQualifiedName &kListingTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[61];
+const HTMLQualifiedName &kMainTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[62];
+const HTMLQualifiedName &kMarqueeTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[63];
+const HTMLQualifiedName &kMenuTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[64];
+const HTMLQualifiedName &kMetaTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[65];
+const HTMLQualifiedName &kNavTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[66];
+const HTMLQualifiedName &kNobrTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[67];
+const HTMLQualifiedName &kNoembedTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[68];
+const HTMLQualifiedName &kNoframesTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[69];
+const HTMLQualifiedName &kNoscriptTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[70];
+const HTMLQualifiedName &kObjectTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[71];
+const HTMLQualifiedName &kOlTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[72];
+const HTMLQualifiedName &kOptgroupTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[73];
+const HTMLQualifiedName &kOptionTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[74];
+const HTMLQualifiedName &kPTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[75];
+const HTMLQualifiedName &kParamTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[76];
+const HTMLQualifiedName &kPlaintextTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[77];
+const HTMLQualifiedName &kPreTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[78];
+const HTMLQualifiedName &kRbTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[79];
+const HTMLQualifiedName &kRpTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[80];
+const HTMLQualifiedName &kRtTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[81];
+const HTMLQualifiedName &kRTCTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[82];
+const HTMLQualifiedName &kRubyTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[83];
+const HTMLQualifiedName &kSTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[84];
+const HTMLQualifiedName &kScriptTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[85];
+const HTMLQualifiedName &kSectionTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[86];
+const HTMLQualifiedName &kSelectTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[87];
+const HTMLQualifiedName &kSlotTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[88];
+const HTMLQualifiedName &kSmallTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[89];
+const HTMLQualifiedName &kSourceTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[90];
+const HTMLQualifiedName &kSpanTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[91];
+const HTMLQualifiedName &kStrikeTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[92];
+const HTMLQualifiedName &kStrongTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[93];
+const HTMLQualifiedName &kStyleTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[94];
+const HTMLQualifiedName &kSubTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[95];
+const HTMLQualifiedName &kSummaryTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[96];
+const HTMLQualifiedName &kSupTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[97];
+const HTMLQualifiedName &kTableTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[98];
+const HTMLQualifiedName &kTbodyTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[99];
+const HTMLQualifiedName &kTdTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[100];
+const HTMLQualifiedName &kTemplateTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[101];
+const HTMLQualifiedName &kTextareaTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[102];
+const HTMLQualifiedName &kTfootTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[103];
+const HTMLQualifiedName &kThTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[104];
+const HTMLQualifiedName &kTheadTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[105];
+const HTMLQualifiedName &kTitleTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[106];
+const HTMLQualifiedName &kTrTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[107];
+const HTMLQualifiedName &kTrackTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[108];
+const HTMLQualifiedName &kTtTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[109];
+const HTMLQualifiedName &kUTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[110];
+const HTMLQualifiedName &kUlTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[111];
+const HTMLQualifiedName &kVarTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[112];
+const HTMLQualifiedName &kVideoTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[113];
+const HTMLQualifiedName &kWbrTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[114];
+const HTMLQualifiedName &kXmpTag = reinterpret_cast<HTMLQualifiedName *>(&tag_storage)[115];
 
 // Attributes
 static void* attr_storage[kAttrsCount * ((sizeof(QualifiedName) + sizeof(void *) - 1) / sizeof(void *))];
@@ -143,77 +144,79 @@ const QualifiedName &kAcceptAttr = reinterpret_cast<QualifiedName *>(&attr_stora
 const QualifiedName &kAcceptCharsetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[1];
 const QualifiedName &kAlignAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[2];
 const QualifiedName &kAlinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[3];
-const QualifiedName &kAxisAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[4];
-const QualifiedName &kBgcolorAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[5];
-const QualifiedName &kCharsetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[6];
-const QualifiedName &kCheckedAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[7];
-const QualifiedName &kClassAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[8];
-const QualifiedName &kClearAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[9];
-const QualifiedName &kCodetypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[10];
-const QualifiedName &kColorAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[11];
-const QualifiedName &kCompactAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[12];
-const QualifiedName &kContentAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[13];
-const QualifiedName &kContenteditableAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[14];
-const QualifiedName &kDeclareAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[15];
-const QualifiedName &kDeferAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[16];
-const QualifiedName &kDirAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[17];
-const QualifiedName &kDirectionAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[18];
-const QualifiedName &kDisabledAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[19];
-const QualifiedName &kDraggableAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[20];
-const QualifiedName &kEnctypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[21];
-const QualifiedName &kEventAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[22];
-const QualifiedName &kFaceAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[23];
-const QualifiedName &kForAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[24];
-const QualifiedName &kFormAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[25];
-const QualifiedName &kFrameAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[26];
-const QualifiedName &kHiddenAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[27];
-const QualifiedName &kHrefAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[28];
-const QualifiedName &kHreflangAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[29];
-const QualifiedName &kHttpEquivAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[30];
-const QualifiedName &kIdAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[31];
-const QualifiedName &kInvisibleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[32];
-const QualifiedName &kIsAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[33];
-const QualifiedName &kLabelAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[34];
-const QualifiedName &kLangAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[35];
-const QualifiedName &kLanguageAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[36];
-const QualifiedName &kLinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[37];
-const QualifiedName &kMediaAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[38];
-const QualifiedName &kMethodAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[39];
-const QualifiedName &kMultipleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[40];
-const QualifiedName &kNameAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[41];
-const QualifiedName &kNohrefAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[42];
-const QualifiedName &kNomoduleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[43];
-const QualifiedName &kNoresizeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[44];
-const QualifiedName &kNoshadeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[45];
-const QualifiedName &kNowrapAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[46];
-const QualifiedName &kObjectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[47];
-const QualifiedName &kOnloadAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[48];
-const QualifiedName &kPartAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[49];
-const QualifiedName &kPseudoAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[50];
-const QualifiedName &kReadonlyAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[51];
-const QualifiedName &kReferrerpolicyAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[52];
-const QualifiedName &kRelAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[53];
-const QualifiedName &kRevAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[54];
-const QualifiedName &kRulesAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[55];
-const QualifiedName &kScopeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[56];
-const QualifiedName &kScrollingAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[57];
-const QualifiedName &kSelectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[58];
-const QualifiedName &kSelectedAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[59];
-const QualifiedName &kShapeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[60];
-const QualifiedName &kSizeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[61];
-const QualifiedName &kSlotAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[62];
-const QualifiedName &kSpanAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[63];
-const QualifiedName &kSrcAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[64];
-const QualifiedName &kStyleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[65];
-const QualifiedName &kSummaryAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[66];
-const QualifiedName &kTabindexAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[67];
-const QualifiedName &kTargetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[68];
-const QualifiedName &kTextAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[69];
-const QualifiedName &kTitleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[70];
-const QualifiedName &kTypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[71];
-const QualifiedName &kValignAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[72];
-const QualifiedName &kValuetypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[73];
-const QualifiedName &kVlinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[74];
+const QualifiedName &kAutofocusAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[4];
+const QualifiedName &kAxisAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[5];
+const QualifiedName &kBgcolorAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[6];
+const QualifiedName &kCharsetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[7];
+const QualifiedName &kCheckedAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[8];
+const QualifiedName &kClassAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[9];
+const QualifiedName &kClearAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[10];
+const QualifiedName &kCodetypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[11];
+const QualifiedName &kColorAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[12];
+const QualifiedName &kCompactAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[13];
+const QualifiedName &kContentAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[14];
+const QualifiedName &kContenteditableAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[15];
+const QualifiedName &kDeclareAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[16];
+const QualifiedName &kDeferAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[17];
+const QualifiedName &kDirAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[18];
+const QualifiedName &kDirectionAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[19];
+const QualifiedName &kDisabledAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[20];
+const QualifiedName &kDraggableAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[21];
+const QualifiedName &kEnctypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[22];
+const QualifiedName &kEventAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[23];
+const QualifiedName &kFaceAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[24];
+const QualifiedName &kForAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[25];
+const QualifiedName &kFormAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[26];
+const QualifiedName &kFrameAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[27];
+const QualifiedName &kHiddenAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[28];
+const QualifiedName &kHrefAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[29];
+const QualifiedName &kHreflangAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[30];
+const QualifiedName &kHttpEquivAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[31];
+const QualifiedName &kIdAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[32];
+const QualifiedName &kInvisibleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[33];
+const QualifiedName &kIsAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[34];
+const QualifiedName &kLabelAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[35];
+const QualifiedName &kLangAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[36];
+const QualifiedName &kLanguageAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[37];
+const QualifiedName &kLinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[38];
+const QualifiedName &kMediaAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[39];
+const QualifiedName &kMethodAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[40];
+const QualifiedName &kMultipleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[41];
+const QualifiedName &kNameAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[42];
+const QualifiedName &kNohrefAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[43];
+const QualifiedName &kNomoduleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[44];
+const QualifiedName &kNoresizeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[45];
+const QualifiedName &kNoshadeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[46];
+const QualifiedName &kNowrapAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[47];
+const QualifiedName &kObjectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[48];
+const QualifiedName &kOnloadAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[49];
+const QualifiedName &kPartAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[50];
+const QualifiedName &kPseudoAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[51];
+const QualifiedName &kReadonlyAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[52];
+const QualifiedName &kReferrerpolicyAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[53];
+const QualifiedName &kRelAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[54];
+const QualifiedName &kRevAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[55];
+const QualifiedName &kRulesAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[56];
+const QualifiedName &kScopeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[57];
+const QualifiedName &kScrollingAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[58];
+const QualifiedName &kSelectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[59];
+const QualifiedName &kSelectedAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[60];
+const QualifiedName &kShapeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[61];
+const QualifiedName &kSizeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[62];
+const QualifiedName &kSlotAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[63];
+const QualifiedName &kSpanAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[64];
+const QualifiedName &kSrcAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[65];
+const QualifiedName &kStyleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[66];
+const QualifiedName &kSummaryAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[67];
+const QualifiedName &kTabindexAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[68];
+const QualifiedName &kTargetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[69];
+const QualifiedName &kTextAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[70];
+const QualifiedName &kTitleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[71];
+const QualifiedName &kTypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[72];
+const QualifiedName &kValignAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[73];
+const QualifiedName &kValueAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[74];
+const QualifiedName &kValuetypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[75];
+const QualifiedName &kVlinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[76];
 
 void Init(void)
 {
@@ -242,6 +245,7 @@ void Init(void)
         { "area", 7355486, 4, 1, 0 },
         { "article", 2968800, 7, 1, 0 },
         { "aside", 10128566, 5, 1, 0 },
+        { "autofocus", 16282013, 9, 0, 1 },
         { "axis", 14347904, 4, 0, 1 },
         { "b", 7170995, 1, 1, 0 },
         { "base", 4376626, 4, 1, 0 },
@@ -268,6 +272,7 @@ void Init(void)
         { "compact", 369367, 7, 0, 1 },
         { "content", 6894765, 7, 1, 1 },
         { "contenteditable", 1577657, 15, 0, 1 },
+        { "datalist", 7058973, 8, 1, 0 },
         { "dd", 16480447, 2, 1, 0 },
         { "declare", 13440114, 7, 0, 1 },
         { "defer", 13832204, 5, 0, 1 },
@@ -403,6 +408,7 @@ void Init(void)
         { "u", 13317144, 1, 1, 0 },
         { "ul", 12324505, 2, 1, 0 },
         { "valign", 8345445, 6, 0, 1 },
+        { "value", 10871467, 5, 0, 1 },
         { "valuetype", 4808367, 9, 0, 1 },
         { "var", 9573901, 3, 1, 0 },
         { "video", 16765639, 5, 1, 0 },
