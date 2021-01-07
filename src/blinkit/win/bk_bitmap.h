@@ -1,35 +1,34 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: dib_section.h
-// Description: DIBSection Class
+//   File Name: bk_bitmap.h
+// Description: BkBitmap Class
 //      Author: Ziming Li
 //     Created: 2018-07-01
 // -------------------------------------------------
 // Copyright (C) 2018 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_DIB_SECTION_H
-#define BLINKIT_BLINKIT_DIB_SECTION_H
+#ifndef BLINKIT_BLINKIT_BK_BITMAP_H
+#define BLINKIT_BLINKIT_BK_BITMAP_H
 
 #pragma once
 
+#include <Windows.h>
 #include <SkBitmap.h>
 
 namespace BlinKit {
 
-class DIBSection final : public SkBitmap
+class BkBitmap final : public SkBitmap
 {
 public:
-    DIBSection(int width, int height, HDC hdc = nullptr);
+    BkBitmap(void) = default;
 
-    HBITMAP GetHBITMAP(void) { return m_hBitmap; }
+    HBITMAP InstallDIBSection(int width, int height, HDC hdc = nullptr);
 private:
     static void OnFinalize(void *, void *context);
-
-    HBITMAP m_hBitmap = nullptr;
 };
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BLINKIT_DIB_SECTION_H
+#endif // BLINKIT_BLINKIT_BK_BITMAP_H

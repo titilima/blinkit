@@ -1,19 +1,19 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: dib_section.cpp
-// Description: DIBSection Class
+//   File Name: bk_bitmap.cpp
+// Description: BkBitmap Class
 //      Author: Ziming Li
 //     Created: 2018-07-01
 // -------------------------------------------------
 // Copyright (C) 2018 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "dib_section.h"
+#include "bk_bitmap.h"
 
 namespace BlinKit {
 
-DIBSection::DIBSection(int width, int height, HDC hdc)
+HBITMAP BkBitmap::InstallDIBSection(int width, int height, HDC hdc)
 {
     BITMAPINFOHEADER bih = { 0 };
     bih.biSize = sizeof(bih);
@@ -25,17 +25,17 @@ DIBSection::DIBSection(int width, int height, HDC hdc)
     bih.biXPelsPerMeter = bih.biYPelsPerMeter = 1;
 
     PVOID bits = nullptr;
-    m_hBitmap = CreateDIBSection(hdc, reinterpret_cast<BITMAPINFO *>(&bih), 0, &bits, nullptr, 0);
-    ASSERT(nullptr != m_hBitmap);
-
-    if (nullptr != m_hBitmap)
+    HBITMAP ret = CreateDIBSection(hdc, reinterpret_cast<BITMAPINFO *>(&bih), 0, &bits, nullptr, 0);
+    ASSERT(nullptr != ret);
+    if (nullptr != ret)
     {
         const SkImageInfo info = SkImageInfo::MakeN32(width, height, kOpaque_SkAlphaType);
-        installPixels(info, bits, info.minRowBytes(), OnFinalize, m_hBitmap);
+        installPixels(info, bits, info.minRowBytes(), OnFinalize, ret);
     }
+    return ret;
 }
 
-void DIBSection::OnFinalize(void *, void *context)
+void BkBitmap::OnFinalize(void *, void *context)
 {
     HBITMAP hBitmap = reinterpret_cast<HBITMAP>(context);
     DeleteObject(hBitmap);
