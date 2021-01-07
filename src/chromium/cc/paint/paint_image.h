@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - cc Library
-// -------------------------------------------------
-//   File Name: paint_image.h
-// Description: PaintImage Classes
-//      Author: Ziming Li
-//     Created: 2020-12-22
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -20,7 +9,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/logging.h"
-// BKTODO: #include "cc/paint/frame_metadata.h"
+#include "cc/paint/frame_metadata.h"
 #include "cc/paint/image_animation_count.h"
 #include "cc/paint/paint_export.h"
 #include "third_party/skia/include/core/SkImage.h"
@@ -183,11 +172,9 @@ class CC_PAINT_EXPORT PaintImage {
   // Returns a unique id for the pixel data for the frame at |frame_index|.
   FrameKey GetKeyForFrame(size_t frame_index) const;
 
-#if 0 // BKTODO:
   // Returns the metadata for each frame of a multi-frame image. Should only be
   // used with animated images.
   const std::vector<FrameMetadata>& GetFrameMetadata() const;
-#endif
 
   // Returns the total number of frames known to exist in this image.
   size_t FrameCount() const;
@@ -226,7 +213,7 @@ class CC_PAINT_EXPORT PaintImage {
 
   ContentId content_id_ = kInvalidContentId;
 
-  // BKTODO: sk_sp<PaintImageGenerator> paint_image_generator_;
+  sk_sp<PaintImageGenerator> paint_image_generator_;
 
   Id id_ = 0;
   AnimationType animation_type_ = AnimationType::STATIC;
