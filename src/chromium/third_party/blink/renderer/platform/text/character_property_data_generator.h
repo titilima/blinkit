@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: character_property_data_generator.h
+// Description: Character Property Data Generator
+//      Author: Ziming Li
+//     Created: 2021-01-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,6 +16,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_TEXT_CHARACTER_PROPERTY_DATA_GENERATOR_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_TEXT_CHARACTER_PROPERTY_DATA_GENERATOR_H_
 
+#ifndef NDEBUG
 #include <unicode/uobject.h>
 
 namespace blink {
@@ -247,8 +259,11 @@ static const UChar32 kIsHangulRanges[] = {
     0xFFA0, 0xFFDC,
 };
 
-static const UChar32 kIsHangulArray[] = {};
+// static const UChar32 kIsHangulArray[] = {};
 
 }  // namespace blink
+
+void Generate(const char *fileName);
+#endif // #ifndef NDEBUG
 
 #endif

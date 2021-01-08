@@ -1,7 +1,19 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: character_property_data_generator.cc
+// Description: Character Property Data Generator
+//      Author: Ziming Li
+//     Created: 2021-01-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#ifndef NDEBUG
 #include "third_party/blink/renderer/platform/text/character_property_data_generator.h"
 
 #include <stdio.h>
@@ -82,7 +94,8 @@ static void Generate(FILE* fp) {
   SET(kIsUprightInMixedVertical);
   SET(kIsPotentialCustomElementNameChar);
   SET(kIsBidiControl);
-  SET(kIsHangul);
+  // SET(kIsHangul);
+  SetRanges(values.get(), kIsHangulRanges, ARRAY_LENGTH(kIsHangulRanges), CharacterProperty::kIsHangul);
 
   // Create a trie from the value array.
   UErrorCode error = U_ZERO_ERROR;
@@ -122,15 +135,9 @@ static void Generate(FILE* fp) {
 
 }  // namespace blink
 
-int main(int argc, char** argv) {
-  // Write the serialized array to the source file.
-  if (argc <= 1) {
-    blink::Generate(stdout);
-  } else {
-    FILE* fp = fopen(argv[1], "wb");
-    blink::Generate(fp);
-    fclose(fp);
-  }
-
-  return 0;
+void Generate(const char *fileName) {
+  FILE* fp = fopen(fileName, "wb");
+  blink::Generate(fp);
+  fclose(fp);
 }
+#endif // #ifndef NDEBUG
