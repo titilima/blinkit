@@ -45,15 +45,13 @@
 #include <memory>
 #include <utility>
 
-#if 0 // BKTODO:
 #include "base/debug/alias.h"
-#endif
 #include "third_party/blink/renderer/platform/fonts/bitmap_glyphs_blacklist.h"
 #include "third_party/blink/renderer/platform/fonts/font_description.h"
 #include "third_party/blink/renderer/platform/fonts/font_face_creation_params.h"
 #include "third_party/blink/renderer/platform/fonts/font_platform_data.h"
 #include "third_party/blink/renderer/platform/fonts/simple_font_data.h"
-// BKTODO: #include "third_party/blink/renderer/platform/fonts/win/font_fallback_win.h"
+#include "third_party/blink/renderer/platform/fonts/win/font_fallback_win.h"
 #include "third_party/blink/renderer/platform/language.h"
 #include "third_party/skia/include/core/SkFontMgr.h"
 #include "third_party/skia/include/ports/SkTypeface_win.h"
@@ -152,8 +150,6 @@ scoped_refptr<SimpleFontData> FontCache::PlatformFallbackFontForCharacter(
       return font_data;
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   UScriptCode script;
   const UChar* family = GetFallbackFamily(
       character, font_description.GenericFamily(), font_description.Locale(),
@@ -250,7 +246,6 @@ scoped_refptr<SimpleFontData> FontCache::PlatformFallbackFontForCharacter(
     if (data && data->FontContainsCharacter(character))
       return FontDataFromFontPlatformData(data, kDoNotRetain);
   }
-#endif
 
   return nullptr;
 }

@@ -51,7 +51,7 @@ AtomicString FontSelector::FamilyNameFromSettings(
   if (generic_family_name == FontFamilyNames::webkit_pictograph)
     ASSERT(false); // BKTODO: return settings.Pictograph(script);
   if (generic_family_name == FontFamilyNames::webkit_standard)
-    ASSERT(false); // BKTODO: return settings.Standard(script);
+    return Settings::StandardFontFamilyName();
 #endif
   return g_empty_atom;
 }

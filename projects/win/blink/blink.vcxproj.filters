@@ -5387,6 +5387,18 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_painter_base.cc">
       <Filter>renderer\core\paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character_property_data_generator.cc">
+      <Filter>renderer\platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\character_property_data.cpp">
+      <Filter>renderer\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\win\font_fallback_win.cc">
+      <Filter>renderer\platform\fonts\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\locale_to_script_mapping.cc">
+      <Filter>renderer\platform\text</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -12015,6 +12027,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_painter_base.h">
       <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character_property_data_generator.h">
+      <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\win\font_fallback_win.h">
+      <Filter>renderer\platform\fonts\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\locale_to_script_mapping.h">
+      <Filter>renderer\platform\text</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

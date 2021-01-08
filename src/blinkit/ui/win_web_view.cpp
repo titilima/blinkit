@@ -153,6 +153,9 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
         case WM_PAINT:
             HANDLE_WM_PAINT(hWnd, wParam, lParam, OnPaint);
             break;
+        case WM_ERASEBKGND:
+            *result = TRUE;
+            break;
         case WM_SIZE:
             HANDLE_WM_SIZE(hWnd, wParam, lParam, OnSize);
             break;
