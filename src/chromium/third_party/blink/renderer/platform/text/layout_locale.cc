@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: layout_locale.cc
-// Description: LayoutLocale Class
-//      Author: Ziming Li
-//     Created: 2020-10-10
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -18,19 +7,15 @@
 #include "base/compiler_specific.h"
 #include "third_party/blink/renderer/platform/language.h"
 #include "third_party/blink/renderer/platform/text/hyphenation.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/text/icu_error.h"
 #include "third_party/blink/renderer/platform/text/locale_to_script_mapping.h"
-#endif
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string_hash.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_hash.h"
 #include "third_party/blink/renderer/platform/wtf/thread_specific.h"
 
-#if 0 // BKTODO:
 #include <hb.h>
 #include <unicode/locid.h>
-#endif
 
 namespace blink {
 
@@ -53,13 +38,11 @@ PerThreadData& GetPerThreadData() {
 
 }  // namespace
 
-#if 0 // BKTODO:
 static hb_language_t ToHarfbuzLanguage(const AtomicString& locale) {
   CString locale_as_latin1 = locale.Latin1();
   return hb_language_from_string(locale_as_latin1.data(),
                                  locale_as_latin1.length());
 }
-#endif
 
 // SkFontMgr requires script-based locale names, like "zh-Hant" and "zh-Hans",
 // instead of "zh-CN" and "zh-TW".
@@ -88,8 +71,6 @@ const char* LayoutLocale::LocaleForSkFontMgr() const {
 }
 
 void LayoutLocale::ComputeScriptForHan() const {
-  ASSERT(false); // BKTODO:
-#if 0
   if (IsUnambiguousHanScript(script_)) {
     script_for_han_ = script_;
     has_script_for_han_ = true;
@@ -102,7 +83,6 @@ void LayoutLocale::ComputeScriptForHan() const {
   else
     has_script_for_han_ = true;
   DCHECK(IsUnambiguousHanScript(script_for_han_));
-#endif
 }
 
 UScriptCode LayoutLocale::GetScriptForHan() const {
@@ -159,10 +139,8 @@ const char* LayoutLocale::LocaleForHanForSkFontMgr() const {
 
 LayoutLocale::LayoutLocale(const AtomicString& locale)
     : string_(locale),
-#if 0 // BKTODO:
       harfbuzz_language_(ToHarfbuzLanguage(locale)),
       script_(LocaleToScriptCodeForFontSelection(locale)),
-#endif
       script_for_han_(USCRIPT_COMMON),
       has_script_for_han_(false),
       hyphenation_computed_(false) {}
@@ -193,14 +171,11 @@ const LayoutLocale& LayoutLocale::GetDefault() {
 const LayoutLocale& LayoutLocale::GetSystem() {
   PerThreadData& data = GetPerThreadData();
   if (UNLIKELY(!data.system_locale)) {
-    ASSERT(false); // BKTODO:
-#if 0
     // Platforms such as Windows can give more information than the default
     // locale, such as "en-JP" for English speakers in Japan.
     String name = icu::Locale::getDefault().getName();
     data.system_locale =
         LayoutLocale::Get(AtomicString(name.Replace('_', '-')));
-#endif
   }
   return *data.system_locale;
 }
@@ -260,8 +235,6 @@ AtomicString LayoutLocale::LocaleWithBreakKeyword(
       break;
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   ICUError status;
   int32_t length_needed = uloc_setKeywordValue(
       "lb", keyword_value, buffer.data(), buffer.size(), &status);
@@ -279,7 +252,6 @@ AtomicString LayoutLocale::LocaleWithBreakKeyword(
     if (U_SUCCESS(status) && length_needed == length_needed2)
       return AtomicString::FromUTF8(buffer.data(), length_needed);
   }
-#endif
 
   NOTREACHED();
   return string_;
