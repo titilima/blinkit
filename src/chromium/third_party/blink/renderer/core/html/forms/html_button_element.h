@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: html_button_element.h
-// Description: HTMLButtonElement Class
-//      Author: Ziming Li
-//     Created: 2021-01-04
-// -------------------------------------------------
-// Copyright (C) 2021 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -43,7 +32,7 @@ class HTMLButtonElement final : public HTMLFormControlElement {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
-  static Element* Create(Document&, const CreateElementFlags);
+  static HTMLButtonElement* Create(Document&);
 
   void setType(const AtomicString&);
 
