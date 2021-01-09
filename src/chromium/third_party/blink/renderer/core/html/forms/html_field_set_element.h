@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: html_field_set_element.h
-// Description: HTMLFieldSetElement Class
-//      Author: Ziming Li
-//     Created: 2021-01-05
-// -------------------------------------------------
-// Copyright (C) 2021 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -46,7 +35,7 @@ class CORE_EXPORT HTMLFieldSetElement final : public HTMLFormControlElement {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
-  static Element* Create(Document&, const CreateElementFlags);
+  static HTMLFieldSetElement* Create(Document&);
   HTMLLegendElement* Legend() const;
   HTMLCollection* elements();
 
