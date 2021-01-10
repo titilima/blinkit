@@ -42,12 +42,8 @@ using namespace cssvalue;
 bool CSSParser::ParseDeclarationList(const CSSParserContext* context,
                                      MutableCSSPropertyValueSet* property_set,
                                      const String& declaration) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return CSSParserImpl::ParseDeclarationList(property_set, declaration,
                                              context);
-#endif
 }
 
 void CSSParser::ParseDeclarationListForInspector(
@@ -83,12 +79,8 @@ CSSSelectorList CSSParser::ParsePageSelector(
 StyleRuleBase* CSSParser::ParseRule(const CSSParserContext* context,
                                     StyleSheetContents* style_sheet,
                                     const String& rule) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return CSSParserImpl::ParseRule(rule, context, style_sheet,
                                   CSSParserImpl::kAllowImportRules);
-#endif
 }
 
 ParseSheetResult CSSParser::ParseSheet(
@@ -144,17 +136,12 @@ MutableCSSPropertyValueSet::SetResult CSSParser::ParseValue(
     return MutableCSSPropertyValueSet::SetResult{did_parse, did_change};
   }
   CSSParserContext* context;
-  ASSERT(false); // BKTODO:
-#if 0
   if (style_sheet) {
     context = CSSParserContext::Create(style_sheet->ParserContext(), nullptr);
     context->SetMode(parser_mode);
   } else {
     context = CSSParserContext::Create(parser_mode, secure_context_mode);
   }
-#else
-  context = nullptr;
-#endif
   return ParseValue(declaration, unresolved_property, string, important,
                     context);
 }
@@ -176,17 +163,12 @@ MutableCSSPropertyValueSet::SetResult CSSParser::ParseValueForCustomProperty(
   }
   CSSParserMode parser_mode = declaration->CssParserMode();
   CSSParserContext* context;
-  ASSERT(false); // BKTODO:
-#if 0
   if (style_sheet) {
     context = CSSParserContext::Create(style_sheet->ParserContext(), nullptr);
     context->SetMode(parser_mode);
   } else {
     context = CSSParserContext::Create(parser_mode, secure_context_mode);
   }
-#else
-  context = nullptr;
-#endif
   return CSSParserImpl::ParseVariableValue(declaration, property_name, registry,
                                            value, important, context,
                                            is_animation_tainted);
@@ -238,14 +220,10 @@ bool CSSParser::ParseSupportsCondition(const String& condition,
                                        SecureContextMode secure_context_mode) {
   CSSTokenizer tokenizer(condition);
   const auto tokens = tokenizer.TokenizeToEOF();
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   CSSParserImpl parser(StrictCSSParserContext(secure_context_mode));
   return CSSSupportsParser::SupportsCondition(
              CSSParserTokenRange(tokens), parser,
              CSSSupportsParser::kForWindowCSS) == CSSSupportsParser::kSupported;
-#endif
 }
 
 bool CSSParser::ParseColor(Color& color, const String& string, bool strict) {
