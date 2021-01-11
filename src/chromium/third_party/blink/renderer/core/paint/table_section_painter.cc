@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: table_section_painter.cc
-// Description: TableSectionPainter Class
-//      Author: Ziming Li
-//     Created: 2020-10-07
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,7 +11,7 @@
 #include "third_party/blink/renderer/core/paint/box_painter.h"
 #include "third_party/blink/renderer/core/paint/box_painter_base.h"
 #include "third_party/blink/renderer/core/paint/collapsed_border_painter.h"
-// BKTODO: #include "third_party/blink/renderer/core/paint/object_painter.h"
+#include "third_party/blink/renderer/core/paint/object_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
 #include "third_party/blink/renderer/core/paint/scoped_paint_state.h"
@@ -92,11 +81,8 @@ void TableSectionPainter::PaintSection(const PaintInfo& paint_info) {
   }
 
   if (ShouldPaintSelfOutline(local_paint_info.phase)) {
-    ASSERT(false); // BKTODO:
-#if 0
     ObjectPainter(layout_table_section_)
         .PaintOutline(local_paint_info, paint_offset);
-#endif
   }
 }
 

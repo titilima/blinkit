@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: ng_fieldset_painter.cc
-// Description: NGFieldsetPainter Class
-//      Author: Ziming Li
-//     Created: 2020-10-07
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,7 +11,7 @@
 #include "third_party/blink/renderer/core/paint/fieldset_paint_info.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_box_fragment_painter.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
-// BKTODO: #include "third_party/blink/renderer/core/paint/object_painter.h"
+#include "third_party/blink/renderer/core/paint/object_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/platform/geometry/layout_rect_outsets.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context_state_saver.h"
@@ -117,7 +106,7 @@ void NGFieldsetPainter::PaintLegend(const NGPaintFragment& legend,
     return;
   PaintInfo legend_paint_info = paint_info;
   legend_paint_info.phase = PaintPhase::kForeground;
-  ASSERT(false); // BKTODO: ObjectPainter(*legend_object).PaintAllPhasesAtomically(legend_paint_info);
+  ObjectPainter(*legend_object).PaintAllPhasesAtomically(legend_paint_info);
 }
 
 }  // namespace blink
