@@ -171,6 +171,8 @@ inline bool IsHTMLHtmlElement(const Element *element)
     return nullptr != element && IsHTMLHtmlElement(*element);
 }
 
+class HTMLImageElement;
+
 inline bool IsHTMLImageElement(const Element &element)
 {
     return element.HasTagName(html_names::kImgTag);
@@ -179,6 +181,22 @@ inline bool IsHTMLImageElement(const Element &element)
 inline bool IsHTMLImageElement(const Element *element)
 {
     return nullptr != element && IsHTMLImageElement(*element);
+}
+
+inline bool IsHTMLImageElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLImageElement(ToElement(node));
+}
+
+inline bool IsHTMLImageElement(const Node *node)
+{
+    return nullptr != node && IsHTMLImageElement(*node);
+}
+
+template<>
+inline bool IsElementOfType<const HTMLImageElement>(const Node &node)
+{
+    return IsHTMLImageElement(node);
 }
 
 class HTMLInputElement;
@@ -259,6 +277,16 @@ inline bool IsHTMLMarqueeElement(const Node *node)
     return nullptr != node && IsHTMLMarqueeElement(*node);
 }
 
+inline bool IsHTMLPictureElement(const Element &element)
+{
+    return element.HasTagName(html_names::kPictureTag);
+}
+
+inline bool IsHTMLPictureElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLPictureElement(ToElement(node));
+}
+
 inline bool IsHTMLScriptElement(const Element &element)
 {
     return element.HasTagName(html_names::kScriptTag);
@@ -284,6 +312,8 @@ inline bool IsHTMLSelectElement(const Node *node)
     return nullptr != node && IsHTMLSelectElement(*node);
 }
 
+class HTMLSlotElement;
+
 inline bool IsHTMLSlotElement(const Element &element)
 {
     return element.HasTagName(html_names::kSlotTag);
@@ -297,6 +327,12 @@ inline bool IsHTMLSlotElement(const Element *element)
 inline bool IsHTMLSlotElement(const Node &node)
 {
     return node.IsHTMLElement() && IsHTMLSlotElement(ToElement(node));
+}
+
+template<>
+inline bool IsElementOfType<const HTMLSlotElement>(const Node &node)
+{
+    return IsHTMLSlotElement(node);
 }
 
 inline bool IsHTMLSpanElement(const Element &element)
@@ -380,9 +416,12 @@ inline bool IsHTMLTitleElement(const Element &element)
 } // namespace blink
 
 #define ToHTMLFieldSetElement(x)    blink::ToElement<blink::HTMLFieldSetElement>(x)
+#define ToHTMLImageElement(x)       blink::ToElement<blink::HTMLImageElement>(x)
+#define ToHTMLImageElementOrNull(x) blink::ToElementOrNull<blink::HTMLImageElement>(x)
 #define ToHTMLInputElement(x)       blink::ToElement<blink::HTMLInputElement>(x)
 #define ToHTMLInputElementOrNull(x) blink::ToElementOrNull<blink::HTMLInputElement>(x)
 #define ToHTMLLinkElement(x)        blink::ToElement<blink::HTMLLinkElement>(x)
+#define ToHTMLSlotElementOrNull(x)  blink::ToElementOrNull<blink::HTMLSlotElement>(x)
 #define ToHTMLStyleElement(x)       blink::ToElement<blink::HTMLStyleElement>(x)
 
 #endif // BLINKIT_BLINK_HTML_ELEMENT_TYPE_HELPERS_H
