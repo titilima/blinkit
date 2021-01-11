@@ -20,6 +20,12 @@
 namespace BlinKit {
 
 template <typename T>
+struct GCEmptyTracer
+{
+    static void Impl(T &, blink::Visitor *) {}
+};
+
+template <typename T, typename TracePolicy = GCEmptyTracer<T>>
 class GCStaticWrapper
 {
 public:
@@ -47,7 +53,10 @@ private:
         return &s_gcTable;
     }
     static void Deleter(void *ptr) { reinterpret_cast<T *>(ptr)->~T(); }
-    static void Tracer(void *, blink::Visitor *) {}
+    static void Tracer(void *ptr, blink::Visitor *visitor)
+    {
+        TracePolicy::Impl(*(reinterpret_cast<T *>(ptr)), visitor);
+    }
 
     T *m_ptr;
 };
