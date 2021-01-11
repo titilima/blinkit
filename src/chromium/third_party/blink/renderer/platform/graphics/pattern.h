@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: pattern.h
-// Description: Pattern Class
-//      Author: Ziming Li
-//     Created: 2020-09-01
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2006, 2007, 2008 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2008 Eric Seidel <eric@webkit.org>
@@ -66,17 +55,13 @@ class PLATFORM_EXPORT Pattern : public RefCounted<Pattern> {
 
   static scoped_refptr<Pattern> CreateImagePattern(scoped_refptr<Image>,
                                                    RepeatMode = kRepeatModeXY);
-#if 0 // BKTODO:
   static scoped_refptr<Pattern> CreatePaintRecordPattern(
       sk_sp<PaintRecord>,
       const FloatRect& record_bounds,
       RepeatMode = kRepeatModeXY);
-#endif
   virtual ~Pattern();
 
-#if 0 // BKTODO:
   void ApplyToFlags(cc::PaintFlags&, const SkMatrix&);
-#endif
 
   bool IsRepeatX() const { return repeat_mode_ & kRepeatModeX; }
   bool IsRepeatY() const { return repeat_mode_ & kRepeatModeY; }
@@ -85,17 +70,13 @@ class PLATFORM_EXPORT Pattern : public RefCounted<Pattern> {
   virtual bool IsTextureBacked() const { return false; }
 
  protected:
-#if 0 // BKTODO:
   virtual sk_sp<PaintShader> CreateShader(const SkMatrix&) = 0;
-#endif
   virtual bool IsLocalMatrixChanged(const SkMatrix&) const;
 
   RepeatMode repeat_mode_;
 
   Pattern(RepeatMode);
-#if 0 // BKTODO:
   mutable sk_sp<PaintShader> cached_shader_;
-#endif
 
  private:
   DISALLOW_COPY_AND_ASSIGN(Pattern);

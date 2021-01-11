@@ -53,7 +53,6 @@ class PLATFORM_EXPORT CrossfadeGeneratedImage final : public GeneratedImage {
   IntSize Size() const override { return FlooredIntSize(crossfade_size_); }
 
  protected:
-#if 0 // BKTODO:
   void Draw(cc::PaintCanvas*,
             const cc::PaintFlags&,
             const FloatRect&,
@@ -61,7 +60,6 @@ class PLATFORM_EXPORT CrossfadeGeneratedImage final : public GeneratedImage {
             RespectImageOrientationEnum,
             ImageClampingMode,
             ImageDecodingMode) override;
-#endif
   void DrawTile(GraphicsContext&, const FloatRect&) final;
 
   CrossfadeGeneratedImage(scoped_refptr<Image> from_image,
