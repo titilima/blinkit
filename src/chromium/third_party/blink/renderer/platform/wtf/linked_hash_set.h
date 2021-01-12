@@ -19,12 +19,13 @@
 
 namespace WTF {
 
-template <typename T, typename U = int, typename V = int, typename W = int>
-class LinkedHashSet : private std::list<T>
+template <typename T>
+class LinkedHashSetBase : protected std::list<T>
 {
 public:
-    using const_iterator = typename std::list<T>::const_iterator;
-    using iterator       = typename std::list<T>::iterator;
+    using const_iterator         = typename std::list<T>::const_iterator;
+    using const_reverse_iterator = typename std::list<T>::const_reverse_iterator;
+    using iterator               = typename std::list<T>::iterator;
 
     using std::list<T>::begin;
     using std::list<T>::end;
@@ -47,6 +48,7 @@ public:
         }
     }
     void erase(const T &o) { erase(find(o)); }
+
     const_iterator find(const T &o) const
     {
         size_t h = std::hash<T>{}(o);
@@ -63,23 +65,43 @@ public:
             return end();
         return it->second;
     }
-    iterator insert(const T &o)
-    {
-        iterator ret = std::list<T>::insert(end(), o);
-        size_t h = std::hash<T>{}(o);
-        m_indices.insert({ h, ret });
-        return ret;
-    }
 
     bool Contains(const T &o) const { return end() != find(o); }
     bool IsEmpty(void) const { return std::list<T>::empty(); }
-    void Swap(LinkedHashSet<T, U, V, W> &other)
+
+    void Swap(LinkedHashSetBase<T> &other)
     {
         std::list<T>::swap(other);
         std::swap(m_indices, other.m_indices);
     }
-private:
+protected:
     std::unordered_map<size_t, iterator> m_indices;
+};
+
+template <typename T, typename U = int, typename V = int, typename W = int>
+class LinkedHashSet : public LinkedHashSetBase<T>
+{
+public:
+    auto insert(const T &o)
+    {
+        size_t h = std::hash<T>{}(o);
+        auto ret = std::list<T>::insert(this->end(), o);
+        this->m_indices.insert({ h, ret });
+        return ret;
+    }
+};
+
+template <typename T>
+class LinkedHashSet<std::unique_ptr<T>> : public LinkedHashSetBase<std::unique_ptr<T>>
+{
+public:
+    auto insert(std::unique_ptr<T> o)
+    {
+        size_t h = reinterpret_cast<size_t>(o.get());
+        auto ret = std::list<std::unique_ptr<T>>::insert(this->end(), std::move(o));
+        this->m_indices.insert({ h, ret });
+        return ret;
+    }
 };
 
 } // namespace WTF

@@ -22,11 +22,16 @@ template <typename T>
 class HashCountedSet
 {
 public:
+    using iterator = typename std::unordered_map<T, unsigned>::iterator;
+
     bool IsEmpty(void) const { return m_impl.empty(); }
 
-    auto begin(void) { return m_impl.begin(); }
-    auto end(void) { return m_impl.end(); }
-    auto find(const T &o) { return m_impl.find(o); }
+    iterator begin(void) { return m_impl.begin(); }
+    iterator end(void) { return m_impl.end(); }
+    void erase(iterator it) { m_impl.erase(it); }
+    iterator find(const T &o) { return m_impl.find(o); }
+
+    bool Contains(const T &o) const { return m_impl.end() != m_impl.find(o); }
 
     struct AddResult {
         bool is_new_entry;

@@ -53,10 +53,20 @@ public:
     }
 };
 
-template <typename K, typename V, typename H = std::hash<K>>
-class HeapHashMap : public std::unordered_map<K, V, H>
+template <typename K, typename V, typename H>
+class HeapHashMapBase : protected std::unordered_map<K, V, H>
 {
 public:
+    using std::unordered_map<K, V, H>::begin;
+    using std::unordered_map<K, V, H>::clear;
+    using std::unordered_map<K, V, H>::empty;
+    using std::unordered_map<K, V, H>::end;
+    using std::unordered_map<K, V, H>::erase;
+    using std::unordered_map<K, V, H>::find;
+    using std::unordered_map<K, V, H>::insert;
+    using std::unordered_map<K, V, H>::size;
+    using std::unordered_map<K, V, H>::operator[];
+
     bool IsEmpty(void) const { return this->empty(); }
 
     bool Contains(const K &k) const
@@ -64,15 +74,25 @@ public:
         auto it = this->find(k);
         return this->end() != it;
     }
+    void swap(HeapHashMapBase<K, V, H> &o)
+    {
+        std::unordered_map<K, V, H>::swap(o);
+    }
+
     void ReserveCapacityForSize(size_t size) {}
 };
 
-template <typename K, typename T, typename H>
-class HeapHashMap<K, Member<T>, H> : public std::unordered_map<K, Member<T>, H>
+template <typename K, typename V, typename H = std::hash<K>>
+class HeapHashMap : public HeapHashMapBase<K, V, H>
 {
 public:
-    bool IsEmpty(void) const { return this->empty(); }
+    using std::unordered_map<K, V, H>::at;
+};
 
+template <typename K, typename T, typename H>
+class HeapHashMap<K, Member<T>, H> : public HeapHashMapBase<K, Member<T>, H>
+{
+public:
     T* at(const K &k) const
     {
         auto it = this->find(k);
@@ -80,13 +100,6 @@ public:
             return nullptr;
         return it->second.Get();
     }
-
-    bool Contains(const K &k) const
-    {
-        auto it = this->find(k);
-        return this->end() != it;
-    }
-    void ReserveCapacityForSize(size_t size) {}
 };
 
 template <typename T>
