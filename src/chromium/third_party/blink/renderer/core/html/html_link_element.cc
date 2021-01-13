@@ -77,8 +77,8 @@ inline HTMLLinkElement::HTMLLinkElement(Document& document,
       rel_list_(RelList::Create(this)),
       created_by_parser_(flags.IsCreatedByParser()) {}
 
-Element* HTMLLinkElement::Create(Document& document,
-                                 const CreateElementFlags flags) {
+HTMLLinkElement* HTMLLinkElement::Create(Document& document,
+                                         const CreateElementFlags flags) {
   return new HTMLLinkElement(document, flags);
 }
 

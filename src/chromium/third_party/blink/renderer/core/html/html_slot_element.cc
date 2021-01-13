@@ -66,7 +66,7 @@ namespace {
 constexpr size_t kLCSTableSizeLimit = 16;
 }
 
-Element* HTMLSlotElement::Create(Document& document, const CreateElementFlags) {
+HTMLSlotElement* HTMLSlotElement::Create(Document& document) {
   return new HTMLSlotElement(document);
 }
 

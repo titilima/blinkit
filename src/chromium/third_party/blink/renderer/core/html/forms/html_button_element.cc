@@ -53,7 +53,7 @@ inline HTMLButtonElement::HTMLButtonElement(Document& document)
       type_(SUBMIT),
       is_activated_submit_(false) {}
 
-Element* HTMLButtonElement::Create(Document& document, const CreateElementFlags) {
+HTMLButtonElement* HTMLButtonElement::Create(Document& document) {
   return new HTMLButtonElement(document);
 }
 

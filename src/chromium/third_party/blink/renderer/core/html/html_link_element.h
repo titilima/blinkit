@@ -62,7 +62,7 @@ class CORE_EXPORT HTMLLinkElement final : public HTMLElement,
   USING_GARBAGE_COLLECTED_MIXIN(HTMLLinkElement);
 
  public:
-  static Element* Create(Document&, const CreateElementFlags);
+  static HTMLLinkElement* Create(Document&, const CreateElementFlags);
   ~HTMLLinkElement() override;
 
   // Returns attributes that should be checked against Trusted Types

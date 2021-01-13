@@ -148,8 +148,8 @@ HTMLInputElement::HTMLInputElement(Document& document,
   SetHasCustomStyleCallbacks();
 }
 
-Element* HTMLInputElement::Create(Document& document,
-                                  const CreateElementFlags flags) {
+HTMLInputElement* HTMLInputElement::Create(Document& document,
+                                           const CreateElementFlags flags) {
   auto* input_element = new HTMLInputElement(document, flags);
   if (!flags.IsCreatedByParser()) {
     ASSERT(false); // BKTODO:
@@ -2400,7 +2400,7 @@ void HTMLInputElement::ChildrenChanged(const ChildrenChange& change) {
   // Some input types only need shadow roots to hide any children that may
   // have been appended by script. For such types, shadow roots are lazily
   // created when children are added for the first time.
-  ASSERT(false); // BKTODO: EnsureUserAgentShadowRoot();
+  EnsureUserAgentShadowRoot();
   ContainerNode::ChildrenChanged(change);
 }
 

@@ -20,36 +20,70 @@
 #include "third_party/blink/renderer/core/html/html_div_element.h"
 #include "third_party/blink/renderer/core/html/html_head_element.h"
 #include "third_party/blink/renderer/core/html/html_html_element.h"
+#include "third_party/blink/renderer/core/html/html_image_element.h"
 #include "third_party/blink/renderer/core/html/html_link_element.h"
 #include "third_party/blink/renderer/core/html/html_meta_element.h"
 #include "third_party/blink/renderer/core/html/html_slot_element.h"
+#include "third_party/blink/renderer/core/html/html_span_element.h"
 #include "third_party/blink/renderer/core/html/html_style_element.h"
 #include "third_party/blink/renderer/core/html/html_title_element.h"
+
+#define DEFINE_CONSTRUCTOR(ClassName)  \
+    static HTMLElement* ClassName ## Constructor(Document &document, const CreateElementFlags) {    \
+        return ClassName::Create(document);                                                         \
+    }
+#define DEFINE_CONSTRUCTOR_WITH_FLAGS(ClassName)  \
+    static HTMLElement* ClassName ## Constructor(Document &document, const CreateElementFlags flags) {  \
+        return ClassName::Create(document, flags);                                                      \
+    }
+
+#define CONSTRUCTOR_ENTRY(Tag, ClassName)   \
+    { Tag, ClassName ## Constructor }
 
 namespace blink {
 
 using HTMLElementCreators = std::unordered_map<AtomicString, HTMLElement::Creator>;
 
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLBodyElement)
+DEFINE_CONSTRUCTOR(HTMLButtonElement)
+DEFINE_CONSTRUCTOR(HTMLDataListElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLDivElement)
+DEFINE_CONSTRUCTOR(HTMLFieldSetElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLHeadElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLHtmlElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLImageElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLInputElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLLinkElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLMetaElement)
+DEFINE_CONSTRUCTOR(HTMLSlotElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLSpanElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLStyleElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLTitleElement)
+
 static void FillElementCreators(HTMLElementCreators &dst)
 {
+    using namespace html_names;
+
     ASSERT(dst.empty());
     struct {
         const QualifiedName &tag;
         HTMLElement::Creator creator;
     } data[] = {
-        { html_names::kBodyTag,     HTMLBodyElement::Create     },
-        { html_names::kButtonTag,   HTMLButtonElement::Create   },
-        { html_names::kDatalistTag, HTMLDataListElement::Create },
-        { html_names::kDivTag,      HTMLDivElement::Create      },
-        { html_names::kFieldsetTag, HTMLFieldSetElement::Create },
-        { html_names::kHeadTag,     HTMLHeadElement::Create     },
-        { html_names::kHTMLTag,     HTMLHtmlElement::Create     },
-        { html_names::kInputTag,    HTMLInputElement::Create    },
-        { html_names::kLinkTag,     HTMLLinkElement::Create     },
-        { html_names::kMetaTag,     HTMLMetaElement::Create     },
-        { html_names::kSlotTag,     HTMLSlotElement::Create     },
-        { html_names::kStyleTag,    HTMLStyleElement::Create    },
-        { html_names::kTitleTag,    HTMLTitleElement::Create    }
+        CONSTRUCTOR_ENTRY(kBodyTag,     HTMLBodyElement),
+        CONSTRUCTOR_ENTRY(kButtonTag,   HTMLButtonElement),
+        CONSTRUCTOR_ENTRY(kDatalistTag, HTMLDataListElement),
+        CONSTRUCTOR_ENTRY(kDivTag,      HTMLDivElement),
+        CONSTRUCTOR_ENTRY(kFieldsetTag, HTMLFieldSetElement),
+        CONSTRUCTOR_ENTRY(kHeadTag,     HTMLHeadElement),
+        CONSTRUCTOR_ENTRY(kHTMLTag,     HTMLHtmlElement),
+        CONSTRUCTOR_ENTRY(kImgTag,      HTMLImageElement),
+        CONSTRUCTOR_ENTRY(kInputTag,    HTMLInputElement),
+        CONSTRUCTOR_ENTRY(kLinkTag,     HTMLLinkElement),
+        CONSTRUCTOR_ENTRY(kMetaTag,     HTMLMetaElement),
+        CONSTRUCTOR_ENTRY(kSlotTag,     HTMLSlotElement),
+        CONSTRUCTOR_ENTRY(kSpanTag,     HTMLSpanElement),
+        CONSTRUCTOR_ENTRY(kStyleTag,    HTMLStyleElement),
+        CONSTRUCTOR_ENTRY(kTitleTag,    HTMLTitleElement)
     };
     for (const auto &e : data)
     {

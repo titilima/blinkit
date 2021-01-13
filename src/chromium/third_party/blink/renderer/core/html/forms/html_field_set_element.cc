@@ -53,7 +53,7 @@ using namespace HTMLNames;
 inline HTMLFieldSetElement::HTMLFieldSetElement(Document& document)
     : HTMLFormControlElement(fieldsetTag, document) {}
 
-Element* HTMLFieldSetElement::Create(Document& document, const CreateElementFlags) {
+HTMLFieldSetElement* HTMLFieldSetElement::Create(Document& document) {
   return new HTMLFieldSetElement(document);
 }
 
@@ -103,7 +103,7 @@ void HTMLFieldSetElement::DisabledAttributeChanged() {
   HTMLFormControlElement::DisabledAttributeChanged();
   if (Element* focused_element =
           InvalidateDescendantDisabledStateAndFindFocusedOne(*this))
-    ASSERT(false); // BKTODO: focused_element->blur();
+    focused_element->blur();
 }
 
 void HTMLFieldSetElement::ChildrenChanged(const ChildrenChange& change) {
@@ -122,7 +122,7 @@ void HTMLFieldSetElement::ChildrenChanged(const ChildrenChange& change) {
 #endif
   }
   if (focused_element)
-    ASSERT(false); // BKTODO: focused_element->blur();
+    focused_element->blur();
 }
 
 bool HTMLFieldSetElement::SupportsFocus() const {

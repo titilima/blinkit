@@ -11,12 +11,35 @@
 
 #include "html_element.h"
 
+#include "third_party/blink/renderer/core/dom/flat_tree_traversal.h"
+#include "third_party/blink/renderer/core/html/forms/html_input_element.h"
+#include "third_party/blink/renderer/core/html/html_dimension.h"
+
 namespace blink {
 
 HTMLElement::HTMLElement(const QualifiedName &tagName, Document &document, ConstructionType type)
     : Element(tagName, &document, type)
 {
     ASSERT(!tagName.LocalName().IsNull());
+}
+
+void HTMLElement::AddHTMLLengthToStyle(
+    MutableCSSPropertyValueSet *style,
+    CSSPropertyID propertyId, const String &value,
+    AllowPercentage allowPercentage)
+{
+    HTMLDimension dimension;
+    if (!ParseDimensionValue(value, dimension))
+        return;
+    if (dimension.IsRelative())
+        return;
+    if (dimension.IsPercentage() && allowPercentage != kAllowPercentageValues)
+        return;
+
+    CSSPrimitiveValue::UnitType unit = dimension.IsPercentage()
+        ? CSSPrimitiveValue::UnitType::kPercentage
+        : CSSPrimitiveValue::UnitType::kPixels;
+    AddPropertyToPresentationAttributeStyle(style, propertyId, dimension.Value(), unit);
 }
 
 void HTMLElement::AdjustDirectionalityIfNeededAfterChildrenChanged(const ChildrenChange &change)
@@ -37,6 +60,59 @@ void HTMLElement::AdjustDirectionalityIfNeededAfterChildrenChanged(const Childre
         }
     }
 #endif
+}
+
+void HTMLElement::ApplyAlignmentAttributeToStyle(const AtomicString &alignment, MutableCSSPropertyValueSet *style)
+{
+    // Vertical alignment with respect to the current baseline of the text
+    // right or left means floating images.
+    CSSValueID floatValue = CSSValueInvalid;
+    CSSValueID verticalAlignValue = CSSValueInvalid;
+
+    if (DeprecatedEqualIgnoringCase(alignment, "absmiddle"))
+    {
+        verticalAlignValue = CSSValueMiddle;
+    }
+    else if (DeprecatedEqualIgnoringCase(alignment, "absbottom"))
+    {
+        verticalAlignValue = CSSValueBottom;
+    }
+    else if (DeprecatedEqualIgnoringCase(alignment, "left"))
+    {
+        floatValue = CSSValueLeft;
+        verticalAlignValue = CSSValueTop;
+    }
+    else if (DeprecatedEqualIgnoringCase(alignment, "right"))
+    {
+        floatValue = CSSValueRight;
+        verticalAlignValue = CSSValueTop;
+    }
+    else if (DeprecatedEqualIgnoringCase(alignment, "top"))
+    {
+        verticalAlignValue = CSSValueTop;
+    }
+    else if (DeprecatedEqualIgnoringCase(alignment, "middle"))
+    {
+        verticalAlignValue = CSSValueWebkitBaselineMiddle;
+    }
+    else if (DeprecatedEqualIgnoringCase(alignment, "center"))
+    {
+        verticalAlignValue = CSSValueMiddle;
+    }
+    else if (DeprecatedEqualIgnoringCase(alignment, "bottom"))
+    {
+        verticalAlignValue = CSSValueBaseline;
+    }
+    else if (DeprecatedEqualIgnoringCase(alignment, "texttop"))
+    {
+        verticalAlignValue = CSSValueTextTop;
+    }
+
+    if (floatValue != CSSValueInvalid)
+        AddPropertyToPresentationAttributeStyle(style, CSSPropertyFloat, floatValue);
+
+    if (verticalAlignValue != CSSValueInvalid)
+        AddPropertyToPresentationAttributeStyle(style, CSSPropertyVerticalAlign, verticalAlignValue);
 }
 
 const AtomicString& HTMLElement::autocapitalize(void) const
@@ -76,64 +152,139 @@ void HTMLElement::CollectStyleForPresentationAttribute(
     const QualifiedName &name, const AtomicString &value,
     MutableCSSPropertyValueSet *style)
 {
-    ASSERT(false); // BKTODO:
+    using namespace html_names;
+    if (name == kAlignAttr)
+    {
+        if (DeprecatedEqualIgnoringCase(value, "middle"))
+            AddPropertyToPresentationAttributeStyle(style, CSSPropertyTextAlign, CSSValueCenter);
+        else
+            AddPropertyToPresentationAttributeStyle(style, CSSPropertyTextAlign, value);
+    }
+    else if (name == kContenteditableAttr)
+    {
+        if (value.IsEmpty() || DeprecatedEqualIgnoringCase(value, "true"))
+        {
+            AddPropertyToPresentationAttributeStyle(style, CSSPropertyWebkitUserModify, CSSValueReadWrite);
+            AddPropertyToPresentationAttributeStyle(style, CSSPropertyOverflowWrap, CSSValueBreakWord);
+            AddPropertyToPresentationAttributeStyle(style, CSSPropertyWebkitLineBreak, CSSValueAfterWhiteSpace);
+        }
+        else if (DeprecatedEqualIgnoringCase(value, "plaintext-only"))
+        {
+            AddPropertyToPresentationAttributeStyle(style, CSSPropertyWebkitUserModify, CSSValueReadWritePlaintextOnly);
+            AddPropertyToPresentationAttributeStyle(style, CSSPropertyOverflowWrap, CSSValueBreakWord);
+            AddPropertyToPresentationAttributeStyle(style, CSSPropertyWebkitLineBreak, CSSValueAfterWhiteSpace);
+        }
+        else if (DeprecatedEqualIgnoringCase(value, "false"))
+        {
+            AddPropertyToPresentationAttributeStyle(style, CSSPropertyWebkitUserModify, CSSValueReadOnly);
+        }
+    }
+    else if (name == kHiddenAttr)
+    {
+        AddPropertyToPresentationAttributeStyle(style, CSSPropertyDisplay, CSSValueNone);
+    }
+    else if (name == kDraggableAttr)
+    {
+        if (DeprecatedEqualIgnoringCase(value, "true"))
+        {
+            AddPropertyToPresentationAttributeStyle(style, CSSPropertyWebkitUserDrag, CSSValueElement);
+            AddPropertyToPresentationAttributeStyle(style, CSSPropertyUserSelect, CSSValueNone);
+        }
+        else if (DeprecatedEqualIgnoringCase(value, "false"))
+        {
+            AddPropertyToPresentationAttributeStyle(style, CSSPropertyWebkitUserDrag, CSSValueNone);
+        }
+    }
+    else if (name == kDirAttr)
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        if (DeprecatedEqualIgnoringCase(value, "auto"))
+        {
+            AddPropertyToPresentationAttributeStyle(style, CSSPropertyUnicodeBidi, UnicodeBidiAttributeForDirAuto(this));
+        }
+        else
+        {
+            if (IsValidDirAttribute(value))
+                AddPropertyToPresentationAttributeStyle(style, CSSPropertyDirection, value);
+            else if (IsHTMLBodyElement(*this))
+                AddPropertyToPresentationAttributeStyle(style, CSSPropertyDirection, "ltr");
+            if (!HasTagName(bdiTag) && !HasTagName(bdoTag) && !HasTagName(outputTag))
+                AddPropertyToPresentationAttributeStyle(style, CSSPropertyUnicodeBidi, CSSValueIsolate);
+        }
+#endif
+    }
+    else
+    {
+        Element::CollectStyleForPresentationAttribute(name, value, style);
+    }
 }
 
 TextDirection HTMLElement::Directionality(Node **strongDirectionalityTextNode) const
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    if (auto* input_element = ToHTMLInputElementOrNull(*this))
+    if (const HTMLInputElement *inputElement = ToHTMLInputElementOrNull(*this))
     {
-        bool has_strong_directionality;
-        TextDirection text_direction = DetermineDirectionality(
-            input_element->value(), &has_strong_directionality);
-        if (strong_directionality_text_node) {
-            *strong_directionality_text_node =
-                has_strong_directionality
-                ? const_cast<HTMLInputElement*>(input_element)
+        ASSERT(false); // BKTODO:
+#if 0
+        bool hasStrongDirectionality;
+        TextDirection textDirection = DetermineDirectionality(inputElement->value(), &hasStrongDirectionality);
+        if (nullptr != strongDirectionalityTextNode)
+        {
+            *strongDirectionalityTextNode = hasStrongDirectionality
+                ? const_cast<HTMLInputElement *>(inputElement)
                 : nullptr;
         }
-        return text_direction;
+        return textDirection;
+#endif
     }
 
-    Node* node = FlatTreeTraversal::FirstChild(*this);
-    while (node) {
+    Node *node = FlatTreeTraversal::FirstChild(*this);
+    while (nullptr != node)
+    {
         // Skip bdi, script, style and text form controls.
-        if (DeprecatedEqualIgnoringCase(node->nodeName(), "bdi") ||
-            IsHTMLScriptElement(*node) || IsHTMLStyleElement(*node) ||
-            (node->IsElementNode() && ToElement(node)->IsTextControl()) ||
-            (node->IsElementNode() &&
-                ToElement(node)->ShadowPseudoId() == "-webkit-input-placeholder")) {
+        if (DeprecatedEqualIgnoringCase(node->nodeName(), "bdi")
+            || IsHTMLScriptElement(*node)
+            || IsHTMLStyleElement(*node)
+            || (node->IsElementNode() && ToElement(node)->IsTextControl())
+            || (node->IsElementNode() && ToElement(node)->ShadowPseudoId() == "-webkit-input-placeholder"))
+        {
             node = FlatTreeTraversal::NextSkippingChildren(*node, this);
             continue;
         }
 
         // Skip elements with valid dir attribute
-        if (node->IsElementNode()) {
-            AtomicString dir_attribute_value =
-                ToElement(node)->FastGetAttribute(dirAttr);
-            if (IsValidDirAttribute(dir_attribute_value)) {
+        if (node->IsElementNode())
+        {
+            AtomicString dirAttributeValue = ToElement(node)->FastGetAttribute(html_names::kDirAttr);
+            ASSERT(false); // BKTODO:
+#if 0
+            if (IsValidDirAttribute(dirAttributeValue))
+            {
                 node = FlatTreeTraversal::NextSkippingChildren(*node, this);
                 continue;
             }
+#endif
         }
 
-        if (node->IsTextNode()) {
-            bool has_strong_directionality;
-            TextDirection text_direction = DetermineDirectionality(
-                node->textContent(true), &has_strong_directionality);
-            if (has_strong_directionality) {
-                if (strong_directionality_text_node)
-                    *strong_directionality_text_node = node;
-                return text_direction;
+        if (node->IsTextNode())
+        {
+            ASSERT(false); // BKTODO:
+#if 0
+            bool hasStrongDirectionality;
+            TextDirection textDirection = DetermineDirectionality(node->textContent(true), &hasStrongDirectionality);
+            if (hasStrongDirectionality)
+            {
+                if (nullptr != strongDirectionalityTextNode)
+                    *strongDirectionalityTextNode = node;
+                return textDirection;
             }
+#endif
         }
         node = FlatTreeTraversal::Next(*node, this);
     }
-    if (strong_directionality_text_node)
-        *strong_directionality_text_node = nullptr;
-#endif
+
+    if (strongDirectionalityTextNode)
+        *strongDirectionalityTextNode = nullptr;
     return TextDirection::kLtr;
 }
 
@@ -143,6 +294,15 @@ TextDirection HTMLElement::DirectionalityIfhasDirAutoAttribute(bool &isAuto) con
     if (!isAuto)
         return TextDirection::kLtr;
     return Directionality();
+}
+
+bool HTMLElement::draggable(void) const
+{
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
+    return DeprecatedEqualIgnoringCase(getAttribute(html_names::kDraggableAttr), "true");
+#endif
 }
 
 bool HTMLElement::HasDirectionAuto(void) const

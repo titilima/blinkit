@@ -67,7 +67,7 @@ class CORE_EXPORT HTMLInputElement
   USING_GARBAGE_COLLECTED_MIXIN(HTMLInputElement);
 
  public:
-  static Element* Create(Document&, const CreateElementFlags);
+  static HTMLInputElement* Create(Document&, const CreateElementFlags);
   ~HTMLInputElement() override;
   void Trace(blink::Visitor*) override;
 

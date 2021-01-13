@@ -24,7 +24,7 @@ class HTMLFormElement;
 class HTMLElement : public Element
 {
 public:
-    typedef Element* (*Creator)(Document &, const CreateElementFlags);
+    typedef HTMLElement* (*Creator)(Document &, const CreateElementFlags);
 
     virtual bool IsHTMLUnknownElement(void) const { return false; }
     virtual bool IsLabelable(void) const { return false; }
@@ -43,9 +43,16 @@ public:
     String title(void) const final;
     int tabIndex(void) const override;
 
+    virtual bool draggable(void) const;
+
     virtual bool HasCustomFocusLogic(void) const { return false; }
 protected:
     HTMLElement(const QualifiedName &tagName, Document &document, ConstructionType type = kCreateHTMLElement);
+
+    enum AllowPercentage { kDontAllowPercentageValues, kAllowPercentageValues };
+    void AddHTMLLengthToStyle(MutableCSSPropertyValueSet *style, CSSPropertyID propertyId, const String &value,
+        AllowPercentage allowPercentage = kAllowPercentageValues);
+    void ApplyAlignmentAttributeToStyle(const AtomicString &alignment, MutableCSSPropertyValueSet *style);
 
     static bool ParseColorWithLegacyRules(const String &attributevalue, Color &parsedColor);
 
@@ -75,12 +82,12 @@ inline bool IsElementOfType<const HTMLElement>(const HTMLElement &)
 
 } // namespace blink
 
-#define DECLARE_NODE_FACTORY(T) static Element* Create(Document &, const CreateElementFlags)
+#define DECLARE_NODE_FACTORY(T) \
+    static T* Create(Document &, const CreateElementFlags = CreateElementFlags::ByParser())
 
-#define DEFINE_NODE_FACTORY(T)                                          \
-    Element* T::Create(Document &document, const CreateElementFlags)    \
-    {                                                                   \
-        return new T(document);                                         \
+#define DEFINE_NODE_FACTORY(T)                                      \
+    T* T::Create(Document &document, const CreateElementFlags) {    \
+        return new T(document);                                     \
     }
 
 // This requires IsHTML*Element(const Element&) and IsHTML*Element(constHTMLElement&).

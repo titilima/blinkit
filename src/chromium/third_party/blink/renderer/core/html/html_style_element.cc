@@ -55,8 +55,8 @@ inline HTMLStyleElement::HTMLStyleElement(Document& document,
 
 HTMLStyleElement::~HTMLStyleElement() = default;
 
-Element* HTMLStyleElement::Create(Document& document,
-                                  const CreateElementFlags flags) {
+HTMLStyleElement* HTMLStyleElement::Create(Document& document,
+                                           const CreateElementFlags flags) {
   return new HTMLStyleElement(document, flags);
 }
 
