@@ -19,7 +19,7 @@
 
 namespace WTF {
 
-template <typename T>
+template <typename T, typename Hash = std::hash<T>>
 class LinkedHashSetBase : protected std::list<T>
 {
 public:
@@ -27,6 +27,7 @@ public:
     using const_reverse_iterator = typename std::list<T>::const_reverse_iterator;
     using iterator               = typename std::list<T>::iterator;
 
+    using std::list<T>::back;
     using std::list<T>::begin;
     using std::list<T>::end;
     using std::list<T>::rbegin;
@@ -40,51 +41,64 @@ public:
     }
     void erase(iterator it)
     {
-        if (end() != it)
+        if (this->end() != it)
         {
-            size_t h = std::hash<T>{}(*it);
+            size_t h = Hash{}(*it);
             m_indices.erase(h);
             std::list<T>::erase(it);
         }
     }
-    void erase(const T &o) { erase(find(o)); }
 
-    const_iterator find(const T &o) const
-    {
-        size_t h = std::hash<T>{}(o);
-        auto it = m_indices.find(h);
-        if (std::end(m_indices) == it)
-            return end();
-        return it->second;
-    }
-    iterator find(const T &o)
-    {
-        size_t h = std::hash<T>{}(o);
-        auto it = m_indices.find(h);
-        if (std::end(m_indices) == it)
-            return end();
-        return it->second;
-    }
-
-    bool Contains(const T &o) const { return end() != find(o); }
     bool IsEmpty(void) const { return std::list<T>::empty(); }
 
-    void Swap(LinkedHashSetBase<T> &other)
+    void Swap(LinkedHashSetBase<T, Hash> &other)
     {
         std::list<T>::swap(other);
         std::swap(m_indices, other.m_indices);
     }
 protected:
+    const_iterator FindByHash(size_t h) const
+    {
+        auto it = m_indices.find(h);
+        if (m_indices.end() == it)
+            return this->end();
+        return it->second;
+    }
+    iterator FindByHash(size_t h)
+    {
+        auto it = m_indices.find(h);
+        if (m_indices.end() == it)
+            return this->end();
+        return it->second;
+    }
+
     std::unordered_map<size_t, iterator> m_indices;
 };
 
-template <typename T, typename U = int, typename V = int, typename W = int>
-class LinkedHashSet : public LinkedHashSetBase<T>
+template <typename T, typename Hash = std::hash<T>, typename V = int, typename W = int>
+class LinkedHashSet : public LinkedHashSetBase<T, Hash>
 {
 public:
+    bool Contains(const T &o) const { return this->end() != this->find(o); }
+
+    using LinkedHashSetBase<T, Hash>::erase;
+    void erase(const T &o)
+    {
+        LinkedHashSetBase<T, Hash>::erase(this->find(o));
+    }
+
+    auto find(const T &o) const
+    {
+        return this->FindByHash(Hash{}(o));
+    }
+    auto find(const T &o)
+    {
+        return this->FindByHash(Hash{}(o));
+    }
+
     auto insert(const T &o)
     {
-        size_t h = std::hash<T>{}(o);
+        size_t h = Hash{}(o);
         auto ret = std::list<T>::insert(this->end(), o);
         this->m_indices.insert({ h, ret });
         return ret;
@@ -95,6 +109,21 @@ template <typename T>
 class LinkedHashSet<std::unique_ptr<T>> : public LinkedHashSetBase<std::unique_ptr<T>>
 {
 public:
+    bool Contains(const T *o) const
+    {
+        size_t h = reinterpret_cast<size_t>(o);
+        return this->m_indices.end() != this->m_indices.find(h);
+    }
+
+    auto find(const T *o) const
+    {
+        return this->FindByHash(reinterpret_cast<size_t>(o));
+    }
+    auto find(const T *o)
+    {
+        return this->FindByHash(reinterpret_cast<size_t>(o));
+    }
+
     auto insert(std::unique_ptr<T> o)
     {
         size_t h = reinterpret_cast<size_t>(o.get());

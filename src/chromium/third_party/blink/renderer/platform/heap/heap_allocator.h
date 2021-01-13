@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include <list>
-#include <unordered_map>
 #include <unordered_set>
 #include "third_party/blink/renderer/platform/heap/heap.h"
 #include "third_party/blink/renderer/platform/wtf/list_hash_set.h"
