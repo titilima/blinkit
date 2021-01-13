@@ -36,11 +36,11 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_LAYOUT_FLOATING_OBJECTS_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_LAYOUT_FLOATING_OBJECTS_H_
 
+#include <list>
 #include <memory>
 #include "base/macros.h"
 #include "third_party/blink/renderer/platform/geometry/layout_rect.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
-#include "third_party/blink/renderer/platform/wtf/list_hash_set.h"
 #include "third_party/blink/renderer/platform/wtf/pod_free_list_arena.h"
 #include "third_party/blink/renderer/platform/wtf/pod_interval_tree.h"
 
@@ -163,43 +163,59 @@ class FloatingObject {
   DISALLOW_COPY_AND_ASSIGN(FloatingObject);
 };
 
-struct FloatingObjectHashFunctions {
-  STATIC_ONLY(FloatingObjectHashFunctions);
-  static unsigned GetHash(FloatingObject* key) {
-    return DefaultHash<LayoutBox*>::Hash::GetHash(key->GetLayoutObject());
+class FloatingObjectSet final : std::list<std::unique_ptr<FloatingObject>> {
+public:
+  using const_iterator = std::list<std::unique_ptr<FloatingObject>>::const_iterator;
+  using iterator       = std::list<std::unique_ptr<FloatingObject>>::iterator;
+
+  using std::list<std::unique_ptr<FloatingObject>>::back;
+  using std::list<std::unique_ptr<FloatingObject>>::begin;
+  using std::list<std::unique_ptr<FloatingObject>>::end;
+
+  void clear(void) {
+    indices_.clear();
+    std::list<std::unique_ptr<FloatingObject>>::clear();
   }
-  static unsigned GetHash(const std::unique_ptr<FloatingObject>& key) {
-    return GetHash(key.get());
-  }
-  static bool Equal(std::unique_ptr<FloatingObject>& a, FloatingObject* b) {
-    return a->GetLayoutObject() == b->GetLayoutObject();
-  }
-  static bool Equal(std::unique_ptr<FloatingObject>& a,
-                    const std::unique_ptr<FloatingObject>& b) {
-    return Equal(a, b.get());
+  iterator insert(std::unique_ptr<FloatingObject> floating_object) {
+    const LayoutBox *layout_box = floating_object->GetLayoutObject();
+    auto it = std::list<std::unique_ptr<FloatingObject>>::insert(this->end(),
+        std::move(floating_object));
+    indices_[layout_box] = it;
+    return it;
   }
 
-  static const bool safe_to_compare_to_empty_or_deleted = true;
+  bool Contains(const FloatingObject *floating_object) const {
+    return Find(floating_object->GetLayoutObject()) != this->end();
+  }
+  const_iterator Find(const LayoutBox *layout_box) const {
+    auto it = indices_.find(layout_box);
+    if (indices_.end() == it)
+      return this->end();
+    return it->second;
+  }
+  bool IsEmpty(void) const {
+    return this->empty();
+  }
+  std::unique_ptr<FloatingObject> Take(FloatingObject *to_be_removed) {
+    std::unique_ptr<FloatingObject> ret;
+    const LayoutBox *layout_box = to_be_removed->GetLayoutObject();
+    auto it = indices_.find(layout_box);
+    if (indices_.end() != it) {
+      ret = std::move(*it->second);
+      std::list<std::unique_ptr<FloatingObject>>::erase(it->second);
+    }
+    return ret;
+  }
+  std::unique_ptr<FloatingObject> TakeFirst(void) {
+    std::unique_ptr<FloatingObject> ret = std::move(this->front());
+    this->pop_front();
+    return ret;
+  }
+private:
+  std::unordered_map<const LayoutBox *, iterator> indices_;
 };
-struct FloatingObjectHashTranslator {
-  STATIC_ONLY(FloatingObjectHashTranslator);
-  static unsigned GetHash(LayoutBox* key) {
-    return DefaultHash<LayoutBox*>::Hash::GetHash(key);
-  }
-  static bool Equal(FloatingObject* a, LayoutBox* b) {
-    return a->GetLayoutObject() == b;
-  }
-  static bool Equal(const std::unique_ptr<FloatingObject>& a, LayoutBox* b) {
-    return a->GetLayoutObject() == b;
-  }
-};
-#if 0 // BKTODO:
-typedef ListHashSet<std::unique_ptr<FloatingObject>,
-                    4,
-                    FloatingObjectHashFunctions>
-    FloatingObjectSet;
+
 typedef FloatingObjectSet::const_iterator FloatingObjectSetIterator;
-#endif
 typedef WTF::PODInterval<LayoutUnit, FloatingObject*> FloatingObjectInterval;
 typedef WTF::PODIntervalTree<LayoutUnit, FloatingObject*> FloatingObjectTree;
 typedef WTF::PODFreeListArena<
@@ -225,10 +241,8 @@ class FloatingObjects {
 
   bool HasLeftObjects() const { return left_objects_count_ > 0; }
   bool HasRightObjects() const { return right_objects_count_ > 0; }
-#if 0 // BKTODO:
   const FloatingObjectSet& Set() const { return set_; }
   FloatingObjectSet& MutableSet() { return set_; }
-#endif
   void ClearLineBoxTreePointers();
 
   LayoutUnit LogicalLeftOffset(LayoutUnit fixed_offset,
@@ -279,7 +293,7 @@ class FloatingObjects {
   void DecreaseObjectsCount(FloatingObject::Type);
   FloatingObjectInterval IntervalForFloatingObject(FloatingObject&);
 
-  // BKTODO: FloatingObjectSet set_;
+  FloatingObjectSet set_;
   FloatingObjectTree placed_floats_tree_;
   unsigned left_objects_count_;
   unsigned right_objects_count_;
