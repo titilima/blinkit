@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: html_style_element.h
-// Description: HTMLStyleElement Class
-//      Author: Ziming Li
-//     Created: 2020-12-24
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -47,7 +36,7 @@ class CORE_EXPORT HTMLStyleElement final : public HTMLElement,
   USING_GARBAGE_COLLECTED_MIXIN(HTMLStyleElement);
 
  public:
-  static Element* Create(Document&, const CreateElementFlags);
+  static HTMLStyleElement* Create(Document&, const CreateElementFlags);
   ~HTMLStyleElement() override;
 
   using StyleElement::sheet;
