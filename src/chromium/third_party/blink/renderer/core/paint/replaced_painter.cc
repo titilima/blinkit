@@ -20,11 +20,11 @@
 // BKTODO: #include "third_party/blink/renderer/core/layout/svg/layout_svg_root.h"
 #include "third_party/blink/renderer/core/paint/box_painter.h"
 #include "third_party/blink/renderer/core/paint/compositing/composited_layer_mapping.h"
-// BKTODO: #include "third_party/blink/renderer/core/paint/object_painter.h"
+#include "third_party/blink/renderer/core/paint/object_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
 #include "third_party/blink/renderer/core/paint/scoped_paint_state.h"
-// BKTODO: #include "third_party/blink/renderer/core/paint/scrollable_area_painter.h"
+#include "third_party/blink/renderer/core/paint/scrollable_area_painter.h"
 #include "third_party/blink/renderer/core/paint/selection_painting_utils.h"
 #include "third_party/blink/renderer/platform/graphics/paint/display_item_cache_skipper.h"
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_recorder.h"
@@ -138,11 +138,8 @@ void ReplacedPainter::Paint(const PaintInfo& paint_info) {
   }
 
   if (ShouldPaintSelfOutline(local_paint_info.phase)) {
-    ASSERT(false); // BKTODO:
-#if 0
     ObjectPainter(layout_replaced_)
         .PaintOutline(local_paint_info, paint_offset);
-#endif
     return;
   }
 
@@ -169,13 +166,13 @@ void ReplacedPainter::Paint(const PaintInfo& paint_info) {
     layout_replaced_.PaintReplaced(content_paint_state.GetPaintInfo(),
                                    content_paint_state.PaintOffset());
   }
+#endif
 
   if (layout_replaced_.CanResize()) {
     ScrollableAreaPainter(*layout_replaced_.Layer()->GetScrollableArea())
         .PaintResizer(local_paint_info.context, RoundedIntPoint(paint_offset),
                       local_paint_info.GetCullRect());
   }
-#endif
 
   // The selection tint never gets clipped by border-radius rounding, since we
   // want it to run right up to the edges of surrounding content.

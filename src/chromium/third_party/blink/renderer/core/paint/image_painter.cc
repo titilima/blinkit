@@ -19,10 +19,8 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/editing/frame_selection.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
-#if 0 // BKTODO:
-#include "third_party/blink/renderer/core/html/html_area_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_area_element.h"
 #include "third_party/blink/renderer/core/html/html_image_element.h"
-#endif
 #include "third_party/blink/renderer/core/layout/layout_image.h"
 #include "third_party/blink/renderer/core/layout/layout_replaced.h"
 #include "third_party/blink/renderer/core/layout/text_run_constructor.h"
@@ -195,8 +193,6 @@ void ImagePainter::PaintIntoRect(GraphicsContext& context,
       context, layout_image_.StyleRef().GetInterpolationQuality());
 
   Node* node = layout_image_.GetNode();
-  ASSERT(false); // BKTODO:
-#if 0
   Image::ImageDecodingMode decode_mode =
       IsHTMLImageElement(node)
           ? ToHTMLImageElement(node)->GetDecodingModeForPainting(
@@ -210,10 +206,12 @@ void ImagePainter::PaintIntoRect(GraphicsContext& context,
       IsHTMLImageElement(node) && !context.ContextDisabled()) {
     LocalDOMWindow* window = layout_image_.GetDocument().domWindow();
     DCHECK(window);
+    ASSERT(false); // BKTODO:
+#if 0
     ImageElementTiming::From(*window).NotifyImagePainted(
         ToHTMLImageElement(node), &layout_image_, painting_layer);
-  }
 #endif
+  }
 }
 
 }  // namespace blink

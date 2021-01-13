@@ -41,7 +41,7 @@
 #include "third_party/blink/renderer/core/paint/ng/ng_inline_box_fragment_painter.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_text_fragment_painter.h"
-// BKTODO: #include "third_party/blink/renderer/core/paint/object_painter.h"
+#include "third_party/blink/renderer/core/paint/object_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
 #include "third_party/blink/renderer/core/paint/paint_phase.h"
@@ -401,8 +401,6 @@ void NGBoxFragmentPainter::PaintFloatingChildren(
     if (child->HasSelfPaintingLayer())
       continue;
     if (fragment.IsFloating()) {
-      ASSERT(false); // BKTODO:
-#if 0
       // TODO(kojii): The float is outside of the inline formatting context and
       // that it maybe another NG inline formatting context, NG block layout, or
       // legacy. NGBoxFragmentPainter can handle only the first case. In order
@@ -412,7 +410,6 @@ void NGBoxFragmentPainter::PaintFloatingChildren(
       // we're more stable.
       ObjectPainter(*child->GetLayoutObject())
           .PaintAllPhasesAtomically(paint_info);
-#endif
     } else {
       PaintFloatingChildren(child->Children(), paint_info);
     }
@@ -667,12 +664,9 @@ void NGBoxFragmentPainter::PaintInlineChildBoxUsingLegacyFallback(
   }
 
   if (child_layout_object->IsAtomicInlineLevel()) {
-    ASSERT(false); // BKTODO:
-#if 0
     // Pre-NG painters also expect callers to use |PaintAllPhasesAtomically()|
     // for atomic inlines.
     ObjectPainter(*child_layout_object).PaintAllPhasesAtomically(paint_info);
-#endif
     return;
   }
 

@@ -19,7 +19,7 @@
 #include "third_party/blink/renderer/core/layout/layout_inline.h"
 #include "third_party/blink/renderer/core/paint/line_box_list_painter.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
-// BKTODO: #include "third_party/blink/renderer/core/paint/object_painter.h"
+#include "third_party/blink/renderer/core/paint/object_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/paint/scoped_paint_state.h"
 #include "third_party/blink/renderer/platform/geometry/layout_point.h"
@@ -42,26 +42,22 @@ void InlinePainter::Paint(const PaintInfo& paint_info) {
     }
   }
 
+#if 0 // BKTODO: Check if necessary.
   if (local_paint_info.phase == PaintPhase::kForeground &&
       local_paint_info.IsPrinting()) {
-    ASSERT(false); // BKTODO:
-#if 0
     ObjectPainter(layout_inline_)
         .AddPDFURLRectIfNeeded(local_paint_info, paint_offset);
-#endif
   }
+#endif
 
   if (ShouldPaintSelfOutline(local_paint_info.phase) ||
       ShouldPaintDescendantOutlines(local_paint_info.phase)) {
-    ASSERT(false); // BKTODO:
-#if 0
     ObjectPainter painter(layout_inline_);
     if (ShouldPaintDescendantOutlines(local_paint_info.phase))
       painter.PaintInlineChildrenOutlines(local_paint_info);
     if (ShouldPaintSelfOutline(local_paint_info.phase) &&
         !layout_inline_.IsElementContinuation())
       painter.PaintOutline(local_paint_info, paint_offset);
-#endif
     return;
   }
 
