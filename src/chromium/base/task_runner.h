@@ -30,12 +30,12 @@ public:
     // will not be run.
     //
     // Equivalent to PostDelayedTask(from_here, task, 0).
-    bool PostTask(const Location &fromHere, const std::function<void()> &task);
+    bool PostTask(const Location &fromHere, std::function<void()> &&task);
 
     // Like PostTask, but tries to run the posted task only after |delay_ms|
     // has passed. Implementations should use a tick clock, rather than wall-
     // clock time, to implement |delay|.
-    virtual bool PostDelayedTask(const Location &fromHere, const std::function<void()> &task, TimeDelta delay) = 0;
+    virtual bool PostDelayedTask(const Location &fromHere, std::function<void()> &&task, TimeDelta delay) = 0;
 protected:
     TaskRunner(void) = default;
 };

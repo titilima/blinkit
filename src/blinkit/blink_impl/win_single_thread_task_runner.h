@@ -31,7 +31,7 @@ private:
     static void CALLBACK OnTimer(HWND h, UINT msg, UINT_PTR idEvent, DWORD dwTime);
 
     // TaskRunner overrides
-    bool PostDelayedTask(const base::Location &fromHere, const std::function<void()> &task, base::TimeDelta delay) override;
+    bool PostDelayedTask(const base::Location &fromHere, std::function<void()> &&task, base::TimeDelta delay) override;
 
     const DWORD m_threadId;
     std::unordered_map<UINT_PTR, std::function<void()>> m_tasks;

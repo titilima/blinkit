@@ -39,7 +39,7 @@ void LoaderTask::Run(void)
     int r = PerformRequest();
     if (BK_ERR_SUCCESS == r)
     {
-        const auto callback = [this]
+        auto callback = [this]
         {
             ASSERT(IsMainThread());
 
@@ -67,7 +67,7 @@ void LoaderTask::Run(void)
     }
     else
     {
-        const auto errorCallback = [error = ResourceError(r, URI()), client = m_client]
+        auto errorCallback = [error = ResourceError(r, URI()), client = m_client]
         {
             ASSERT(IsMainThread());
             client->DidFail(error);
@@ -86,8 +86,9 @@ static void ErrorWorker(WebURLLoaderClient *client, const ResourceError error)
 void LoaderTask::ReportError(WebURLLoaderClient *client, base::SingleThreadTaskRunner *taskRunner, int errorCode, const GURL &URL)
 {
     ResourceError error(errorCode, URL);
-    std::function<void()> callback = std::bind(&ErrorWorker, client, error);
-    taskRunner->PostTask(FROM_HERE, callback);
+    taskRunner->PostTask(FROM_HERE,
+        std::bind(&ErrorWorker, client, error)
+    );
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY

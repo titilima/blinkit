@@ -124,9 +124,9 @@ private:
     void OnRequestComplete(BkResponse response) override
     {
         Session::OnRequestComplete(response);
-
-        const auto task = std::bind(&AsyncSession::ProcessResponse, this);
-        m_taskRunner->PostTask(FROM_HERE, task);
+        m_taskRunner->PostTask(FROM_HERE,
+            std::bind(&AsyncSession::ProcessResponse, this)
+        );
     }
 
     duk_context *m_ctx;

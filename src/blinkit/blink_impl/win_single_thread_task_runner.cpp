@@ -18,8 +18,10 @@ using namespace blink;
 namespace BlinKit {
 
 struct TaskData {
-    DWORD startTick;
+    TaskData(std::function<void()> &&t) : task(t) {}
+
     std::function<void()> task;
+    DWORD startTick;
     DWORD delayInMs;
 };
 
@@ -35,7 +37,7 @@ void WinSingleThreadTaskRunner::OnTimer(HWND, UINT, UINT_PTR idEvent, DWORD)
     static_cast<WinSingleThreadTaskRunner *>(currentRunner.get())->ProcessTimer(idEvent);
 }
 
-bool WinSingleThreadTaskRunner::PostDelayedTask(const base::Location &fromHere, const std::function<void()> &task, base::TimeDelta delay)
+bool WinSingleThreadTaskRunner::PostDelayedTask(const base::Location &fromHere, std::function<void()> &&task, base::TimeDelta delay)
 {
     DWORD delayInMs = delay.InMilliseconds();
     if (GetCurrentThreadId() == m_threadId)
@@ -44,9 +46,8 @@ bool WinSingleThreadTaskRunner::PostDelayedTask(const base::Location &fromHere, 
             return SetTimer(task, delayInMs);
     }
 
-    std::unique_ptr<TaskData> taskData = std::make_unique<TaskData>();
+    std::unique_ptr<TaskData> taskData = std::make_unique<TaskData>(std::move(task));
     taskData->startTick = GetTickCount();
-    taskData->task = task;
     taskData->delayInMs = delayInMs;
     if (PostThreadMessage(m_threadId, TaskMessage, 0, reinterpret_cast<LPARAM>(taskData.get())))
     {

@@ -89,7 +89,7 @@ BKEXPORT bool_t BKAPI BkAppExecute(BkBackgroundWorker worker, void *userData)
     {
         case BK_APP_BACKGROUND_MODE:
         {
-            const auto task = [worker, userData]
+            auto task = [worker, userData]
             {
                 worker(userData);
             };

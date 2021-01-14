@@ -197,8 +197,9 @@ int HTTPLoaderTask::PreProcess(void)
     const std::string &URL = m_resourceRequest.Url().spec();
     if (ProcessHijackRequest(URL))
     {
-        std::function<void()> callback = std::bind(&HTTPLoaderTask::CommitHijackedResponse, this);
-        m_taskRunner->PostTask(FROM_HERE, callback);
+        m_taskRunner->PostTask(FROM_HERE,
+            std::bind(&HTTPLoaderTask::CommitHijackedResponse, this)
+        );
         return BK_ERR_CANCELLED;
     }
 

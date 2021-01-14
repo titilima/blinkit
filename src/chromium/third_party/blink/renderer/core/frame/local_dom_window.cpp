@@ -211,8 +211,10 @@ void LocalDOMWindow::LaunchTimer(unsigned id, unsigned delayInMs)
 {
     if (auto taskRunner = GetFrame()->GetTaskRunner(TaskType::kJavascriptTimer))
     {
-        auto callback = std::bind(&LocalDOMWindow::ProcessTimer, this, id);
-        taskRunner->PostDelayedTask(FROM_HERE, callback, TimeDelta::FromMilliseconds(delayInMs));
+        taskRunner->PostDelayedTask(FROM_HERE,
+            std::bind(&LocalDOMWindow::ProcessTimer, this, id),
+            TimeDelta::FromMilliseconds(delayInMs)
+        );
     }
 }
 
