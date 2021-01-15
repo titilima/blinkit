@@ -58,5 +58,11 @@
     <ClCompile Include="..\..\..\third_party\libpng\pngtrans.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\third_party\libpng\pngwutil.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\libpng\pngwio.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
