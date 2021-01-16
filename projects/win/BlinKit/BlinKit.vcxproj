@@ -276,6 +276,9 @@
     <ProjectReference Include="..\icu\icu.vcxproj">
       <Project>{289190e9-30a8-4f11-befb-1d2026419b77}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\libpng\libpng.vcxproj">
+      <Project>{6bf8aa31-e6e9-4dc1-b721-20727f7d96cb}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\net\net.vcxproj">
       <Project>{103e87cb-36eb-49c3-adfc-6c036aa14b21}</Project>
     </ProjectReference>
@@ -287,6 +290,9 @@
     </ProjectReference>
     <ProjectReference Include="..\url\url.vcxproj">
       <Project>{849ce42e-6457-4c6d-8ba0-854932a2aedb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\zlib\zlib.vcxproj">
+      <Project>{96726f77-e8d9-4c40-bdb2-c00e4989200f}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

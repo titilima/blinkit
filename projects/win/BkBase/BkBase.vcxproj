@@ -201,7 +201,7 @@
       <Project>{849ce42e-6457-4c6d-8ba0-854932a2aedb}</Project>
     </ProjectReference>
     <ProjectReference Include="..\zlib\zlib.vcxproj">
-      <Project>{1ee00a35-2f4a-45d0-8c75-80b936818a76}</Project>
+      <Project>{96726f77-e8d9-4c40-bdb2-c00e4989200f}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
