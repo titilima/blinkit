@@ -141,6 +141,12 @@
     <Filter Include="renderer\platform\scroll">
       <UniqueIdentifier>{129b30fb-4d4d-4fd6-bcc9-7163d69374fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="public\common">
+      <UniqueIdentifier>{99ca81af-3283-4813-820c-6b9472b2bd46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="public\common\feature_policy">
+      <UniqueIdentifier>{73025282-1510-4db3-833c-dac5ff6fa68a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\platform.h">
@@ -1276,6 +1282,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_loader_types.h">
       <Filter>renderer\core\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\heap\thread_state.h">
+      <Filter>renderer\platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\common\feature_policy\feature_policy.h">
+      <Filter>public\common\feature_policy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

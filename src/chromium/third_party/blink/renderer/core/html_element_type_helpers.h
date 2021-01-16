@@ -161,6 +161,21 @@ inline bool IsHTMLHeadElement(const Node &node)
     return node.IsHTMLElement() && IsHTMLHeadElement(ToElement(node));
 }
 
+inline bool IsHTMLHRElement(const Element &element)
+{
+    return element.HasTagName(html_names::kHrTag);
+}
+
+inline bool IsHTMLHRElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLHRElement(ToElement(node));
+}
+
+inline bool IsHTMLHRElement(const Node *node)
+{
+    return nullptr != node && IsHTMLHRElement(*node);
+}
+
 inline bool IsHTMLHtmlElement(const Element &element)
 {
     return element.HasTagName(html_names::kHTMLTag);
@@ -277,6 +292,31 @@ inline bool IsHTMLMarqueeElement(const Node *node)
     return nullptr != node && IsHTMLMarqueeElement(*node);
 }
 
+inline bool IsHTMLOptGroupElement(const Element &element)
+{
+    return element.HasTagName(html_names::kOptgroupTag);
+}
+
+inline bool IsHTMLOptGroupElement(const Element *element)
+{
+    return nullptr != element && IsHTMLOptGroupElement(*element);
+}
+
+inline bool IsHTMLOptGroupElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLOptGroupElement(ToElement(node));
+}
+
+inline bool IsHTMLOptionElement(const Element &element)
+{
+    return element.HasTagName(html_names::kOptionTag);
+}
+
+inline bool IsHTMLOptionElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLOptionElement(ToElement(node));
+}
+
 inline bool IsHTMLPictureElement(const Element &element)
 {
     return element.HasTagName(html_names::kPictureTag);
@@ -285,6 +325,11 @@ inline bool IsHTMLPictureElement(const Element &element)
 inline bool IsHTMLPictureElement(const Node &node)
 {
     return node.IsHTMLElement() && IsHTMLPictureElement(ToElement(node));
+}
+
+inline bool IsHTMLPictureElement(const Node *node)
+{
+    return nullptr != node && IsHTMLPictureElement(*node);
 }
 
 inline bool IsHTMLScriptElement(const Element &element)
@@ -368,9 +413,19 @@ inline bool IsHTMLTableCellElement(const Element &element)
     return element.HasTagName(html_names::kTdTag) || element.HasTagName(html_names::kThTag);
 }
 
+inline bool IsHTMLTableCellElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLTableCellElement(ToElement(node));
+}
+
 inline bool IsHTMLTableElement(const Element &element)
 {
     return element.HasTagName(html_names::kTableTag);
+}
+
+inline bool IsHTMLTableElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLTableElement(ToElement(node));
 }
 
 inline bool IsHTMLTemplateElement(const Element &element)

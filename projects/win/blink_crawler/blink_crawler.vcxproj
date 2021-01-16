@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\common\feature_policy\feature_policy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\platform.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\resource_request_blocked_reason.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\task_type.h" />
@@ -398,6 +399,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\heap\handle.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\heap\heap.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\heap\member.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\heap\thread_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\heap\trace_traits.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\language.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\lifecycle_notifier.h" />

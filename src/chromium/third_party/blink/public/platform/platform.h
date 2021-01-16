@@ -68,6 +68,8 @@ public:
     static void Initialize(Platform *platform, scheduler::WebThreadScheduler *mainThreadScheduler);
     static Platform* Current(void);
 
+    static const size_t kNoDecodedImageByteLimit = static_cast<size_t>(-1);
+
     Thread* CurrentThread(void);
     constexpr bool IsLowEndDevice(void) const { return false; }
 

@@ -306,6 +306,27 @@
     <Filter Include="renderer\core\html\forms">
       <UniqueIdentifier>{46d1c75e-8017-4914-8e01-b93a384d546d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\html\canvas">
+      <UniqueIdentifier>{07f679d1-4f7d-4198-bb27-e0fe2843e926}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\imagebitmap">
+      <UniqueIdentifier>{8f60dc13-e64a-4677-919a-4bbbf39e3446}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\html\media">
+      <UniqueIdentifier>{08f38c2b-54fe-4d53-88f5-f67aeea3973c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform\image-decoders">
+      <UniqueIdentifier>{57376c66-38ec-47dd-b299-ff5ac12af6a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="public\common">
+      <UniqueIdentifier>{90db19aa-38fb-4b16-945f-e750259e8119}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="public\common\feature_policy">
+      <UniqueIdentifier>{6b196625-c29b-48ea-bdbe-7158fbf10ea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform\image-decoders\png">
+      <UniqueIdentifier>{938c4219-c981-4a70-ab67-df1d84ba33cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -5398,6 +5419,78 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\locale_to_script_mapping.cc">
       <Filter>renderer\platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_image_element.cc">
+      <Filter>renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\canvas\image_element_base.cc">
+      <Filter>renderer\core\html\canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_image_loader.cc">
+      <Filter>renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\lazy_load_image_observer.cc">
+      <Filter>renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\imagebitmap\image_bitmap_source.cc">
+      <Filter>renderer\core\imagebitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\image_loader.cc">
+      <Filter>renderer\core\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\media\media_element_parser_helpers.cpp">
+      <Filter>renderer\core\html\media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\html_srcset_parser.cc">
+      <Filter>renderer\core\html\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_image_fallback_helper.cc">
+      <Filter>renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_span_element.cc">
+      <Filter>renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\presentation_attribute_style.cc">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_dimension.cc">
+      <Filter>renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\bitmap_image.cc">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\deferred_image_decoder.cc">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\image_decoder.cc">
+      <Filter>renderer\platform\image-decoders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\color_behavior.cc">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\image_frame.cc">
+      <Filter>renderer\platform\image-decoders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\segment_reader.cc">
+      <Filter>renderer\platform\image-decoders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\image_frame_generator.cc">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\fast_shared_buffer_reader.cc">
+      <Filter>renderer\platform\image-decoders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\png\png_image_decoder.cc">
+      <Filter>renderer\platform\image-decoders\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\png\png_image_reader.cc">
+      <Filter>renderer\platform\image-decoders\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\decoding_image_generator.cc">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\image_decoder_wrapper.cc">
+      <Filter>renderer\platform\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -12036,6 +12129,96 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\locale_to_script_mapping.h">
       <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_image_element.h">
+      <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\canvas\image_element_base.h">
+      <Filter>renderer\core\html\canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_image_loader.h">
+      <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\lazy_load_image_observer.h">
+      <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\canvas\canvas_image_source.h">
+      <Filter>renderer\core\html\canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\imagebitmap\image_bitmap_source.h">
+      <Filter>renderer\core\imagebitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\image_loader.h">
+      <Filter>renderer\core\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\media\media_element_parser_helpers.h">
+      <Filter>renderer\core\html\media</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\html_srcset_parser.h">
+      <Filter>renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\heap\thread_state.h">
+      <Filter>renderer\platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_image_fallback_helper.h">
+      <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_span_element.h">
+      <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\presentation_attribute_style.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_dimension.h">
+      <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\bitmap_image.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\deferred_image_decoder.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\image_decoder.h">
+      <Filter>renderer\platform\image-decoders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\color_behavior.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\image_animation.h">
+      <Filter>renderer\platform\image-decoders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\image_frame.h">
+      <Filter>renderer\platform\image-decoders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\segment_reader.h">
+      <Filter>renderer\platform\image-decoders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\bitmap_image_metrics.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\instrumentation\platform_instrumentation.h">
+      <Filter>renderer\platform\instrumentation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\image_frame_generator.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\common\feature_policy\feature_policy.h">
+      <Filter>public\common\feature_policy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\fast_shared_buffer_reader.h">
+      <Filter>renderer\platform\image-decoders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\png\png_image_decoder.h">
+      <Filter>renderer\platform\image-decoders\png</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\png\png_image_reader.h">
+      <Filter>renderer\platform\image-decoders\png</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\decoding_image_generator.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\image_decoder_wrapper.h">
+      <Filter>renderer\platform\graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
