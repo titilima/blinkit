@@ -330,7 +330,6 @@ SkColor ScaleAlpha(SkColor color, float alpha) {
   return SkColorSetA(color, rounded_alpha);
 }
 
-#if 0 // BKTODO:
 gfx::ColorSpace SkColorSpaceToGfxColorSpace(
     const sk_sp<SkColorSpace> color_space) {
   if (!color_space)
@@ -346,14 +345,16 @@ gfx::ColorSpace SkColorSpaceToGfxColorSpace(
   // If this fails, we fall back to sRGB.
   sk_sp<SkData> sk_profile = color_space->serialize();
   if (sk_profile) {
+    ASSERT(false); // BKTODO:
+#if 0
     gfx::ICCProfile icc_profile =
         gfx::ICCProfile::FromData(sk_profile->data(), sk_profile->size());
     if (icc_profile.IsValid())
       return icc_profile.GetColorSpace();
+#endif
   }
   return gfx::ColorSpace::CreateSRGB();
 }
-#endif
 
 bool ApproximatelyEqualSkColorSpaces(sk_sp<SkColorSpace> src_color_space,
                                      sk_sp<SkColorSpace> dst_color_space) {
@@ -365,14 +366,9 @@ bool ApproximatelyEqualSkColorSpaces(sk_sp<SkColorSpace> src_color_space,
   skcms_ICCProfile src_profile, dst_profile;
   src_color_space->toProfile(&src_profile);
   dst_color_space->toProfile(&dst_profile);
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return skcms_ApproximatelyEqualProfiles(&src_profile, &dst_profile);
-#endif
 }
 
-#if 0 // BKTODO:
 template <typename PrimitiveType>
 void DrawFocusRingPrimitive(const PrimitiveType&,
                             cc::PaintCanvas*,
@@ -402,15 +398,12 @@ void DrawFocusRingPrimitive<SkPath>(const SkPath& path,
       SkCornerPathEffect::Make(SkFloatToScalar(corner_radius)));
   canvas->drawPath(path, path_flags);
 }
-#endif
 
 template <typename PrimitiveType>
 void DrawPlatformFocusRing(const PrimitiveType& primitive,
                            cc::PaintCanvas* canvas,
                            SkColor color,
                            float width) {
-  ASSERT(false); // BKTODO:
-#if 0
   PaintFlags flags;
   flags.setAntiAlias(true);
   flags.setStyle(PaintFlags::kStroke_Style);
@@ -431,7 +424,6 @@ void DrawPlatformFocusRing(const PrimitiveType& primitive,
   flags.setAlpha(128);
   flags.setStrokeWidth(flags.getStrokeWidth() * 0.5f);
   DrawFocusRingPrimitive(primitive, canvas, flags, corner_radius);
-#endif
 #endif
 }
 
