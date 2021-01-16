@@ -42,6 +42,7 @@
 
 #pragma once
 
+#include "third_party/blink/public/common/feature_policy/feature_policy.h"
 #include "third_party/blink/renderer/core/frame/frame_lifecycle.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -77,6 +78,8 @@ public:
 #endif
 
     void Detach(FrameDetachType type);
+
+    bool DeprecatedIsFeatureEnabled(mojom::FeaturePolicyFeature feature) const;
 
     bool IsAttached(void) const { return m_lifecycle.GetState() == FrameLifecycle::kAttached; }
 

@@ -64,6 +64,12 @@ Frame::Frame(FrameClient *client, Page *page)
 
 Frame::~Frame(void) = default;
 
+bool Frame::DeprecatedIsFeatureEnabled(mojom::FeaturePolicyFeature feature) const
+{
+    ASSERT(false); // BKTODO:
+    return false;
+}
+
 void Frame::Detach(FrameDetachType type)
 {
     // Detach() can be re-entered, so this can't simply DCHECK(IsAttached()).
