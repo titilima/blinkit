@@ -47,12 +47,16 @@ scoped_refptr<StaticBitmapImage> StaticBitmapImage::Create(
   }
   return UnacceleratedStaticBitmapImage::Create(image);
 }
+#endif
 
 scoped_refptr<StaticBitmapImage> StaticBitmapImage::Create(PaintImage image) {
   DCHECK(!image.GetSkImage()->isTextureBacked());
+#if 0 // BKTODO:
   return UnacceleratedStaticBitmapImage::Create(std::move(image));
-}
+#else
+  return nullptr;
 #endif
+}
 
 scoped_refptr<StaticBitmapImage> StaticBitmapImage::Create(
     scoped_refptr<Uint8Array>&& image_pixels,
@@ -86,7 +90,6 @@ scoped_refptr<StaticBitmapImage> StaticBitmapImage::Create(
 #endif
 }
 
-#if 0 // BKTODO:
 void StaticBitmapImage::DrawHelper(cc::PaintCanvas* canvas,
                                    const PaintFlags& flags,
                                    const FloatRect& dst_rect,
@@ -102,22 +105,22 @@ void StaticBitmapImage::DrawHelper(cc::PaintCanvas* canvas,
   canvas->drawImageRect(image, adjusted_src_rect, dst_rect, &flags,
                         WebCoreClampingModeToSkiaRectConstraint(clamp_mode));
 }
-#endif
 
 scoped_refptr<StaticBitmapImage> StaticBitmapImage::ConvertToColorSpace(
     sk_sp<SkColorSpace> color_space,
     SkColorType color_type) {
   DCHECK(color_space);
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   sk_sp<SkImage> skia_image = PaintImageForCurrentFrame().GetSkImage();
   // If we don't need to change the color type, use SkImage::makeColorSpace()
   if (skia_image->colorType() == color_type) {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     skia_image = skia_image->makeColorSpace(color_space);
     return StaticBitmapImage::Create(skia_image, skia_image->isTextureBacked()
                                                      ? ContextProviderWrapper()
                                                      : nullptr);
+#endif
   }
 
   // Otherwise, create a surface and draw on that to avoid GPU readback.
@@ -133,8 +136,11 @@ scoped_refptr<StaticBitmapImage> StaticBitmapImage::ConvertToColorSpace(
                         skia_image->alphaType(), dst_color_space);
   sk_sp<SkSurface> surface = nullptr;
   if (skia_image->isTextureBacked()) {
+    ASSERT(false); // BKTODO:
+#if 0
     GrContext* gr = ContextProviderWrapper()->ContextProvider()->GetGrContext();
     surface = SkSurface::MakeRenderTarget(gr, SkBudgeted::kNo, info);
+#endif
   } else {
       surface = SkSurface::MakeRaster(info);
   }
@@ -145,6 +151,9 @@ scoped_refptr<StaticBitmapImage> StaticBitmapImage::ConvertToColorSpace(
   DCHECK(converted_skia_image.get());
   DCHECK(skia_image.get() != converted_skia_image.get());
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return StaticBitmapImage::Create(converted_skia_image,
                                    converted_skia_image->isTextureBacked()
                                        ? ContextProviderWrapper()

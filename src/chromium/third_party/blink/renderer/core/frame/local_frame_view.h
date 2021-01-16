@@ -160,6 +160,9 @@ public:
     // May include the size of browser controls. See implementation for further
     // documentation.
     FloatSize ViewportSizeForViewportUnits(void) const;
+    // Initial containing block size for evaluating viewport-dependent media
+    // queries.
+    FloatSize ViewportSizeForMediaQueries(void) const;
 
     Color BaseBackgroundColor(void) const { return m_baseBackgroundColor; }
     void SetBaseBackgroundColor(const Color &backgroundColor);
@@ -254,6 +257,7 @@ public:
 
     void IncrementLayoutObjectCount(void) {} // Just a placeholder
     void IncrementVisuallyNonEmptyCharacterCount(unsigned count);
+    void IncrementVisuallyNonEmptyPixelCount(const IntSize &size);
     bool IsVisuallyNonEmpty(void) const { return m_isVisuallyNonEmpty; }
     void SetIsVisuallyNonEmpty(void) { m_isVisuallyNonEmpty = true; }
 protected:
@@ -364,6 +368,7 @@ private:
     float m_lastZoomFactor = 1.0;
 
     unsigned m_visuallyNonEmptyCharacterCount = 0;
+    uint64_t m_visuallyNonEmptyPixelCount = 0;
     bool m_isVisuallyNonEmpty = false;
 
     Member<FrameViewAutoSizeInfo> m_autoSizeInfo;

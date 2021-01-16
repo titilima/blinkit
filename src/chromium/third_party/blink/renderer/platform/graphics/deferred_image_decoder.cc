@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: deferred_image_decoder.cc
+// Description: DeferredImageDecoder Class
+//      Author: Ziming Li
+//     Created: 2021-01-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -31,7 +42,7 @@
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/platform/graphics/decoding_image_generator.h"
-#include "third_party/blink/renderer/platform/graphics/image_decoding_store.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/image_decoding_store.h"
 #include "third_party/blink/renderer/platform/graphics/image_frame_generator.h"
 #include "third_party/blink/renderer/platform/graphics/skia/skia_utils.h"
 #include "third_party/blink/renderer/platform/image-decoders/segment_reader.h"
@@ -58,7 +69,7 @@ struct DeferredFrameData {
 };
 
 std::unique_ptr<DeferredImageDecoder> DeferredImageDecoder::Create(
-    scoped_refptr<SharedBuffer> data,
+    const std::shared_ptr<SharedBuffer> &data,
     bool data_complete,
     ImageDecoder::AlphaOption alpha_option,
     const ColorBehavior& color_behavior) {
@@ -73,7 +84,7 @@ std::unique_ptr<DeferredImageDecoder> DeferredImageDecoder::Create(
 
   // Since we've just instantiated a fresh decoder, there's no need to reset its
   // data.
-  decoder->SetDataInternal(std::move(data), data_complete, false);
+  decoder->SetDataInternal(data, data_complete, false);
 
   return decoder;
 }
@@ -146,11 +157,11 @@ sk_sp<PaintImageGenerator> DeferredImageDecoder::CreateGenerator(size_t index) {
   return generator;
 }
 
-scoped_refptr<SharedBuffer> DeferredImageDecoder::Data() {
+std::shared_ptr<SharedBuffer> DeferredImageDecoder::Data() {
   if (!rw_buffer_)
     return nullptr;
   sk_sp<SkROBuffer> ro_buffer(rw_buffer_->makeROBufferSnapshot());
-  scoped_refptr<SharedBuffer> shared_buffer = SharedBuffer::Create();
+  std::shared_ptr<SharedBuffer> shared_buffer = SharedBuffer::Create();
   SkROBuffer::Iter it(ro_buffer.get());
   do {
     shared_buffer->Append(static_cast<const char*>(it.data()), it.size());
@@ -158,12 +169,12 @@ scoped_refptr<SharedBuffer> DeferredImageDecoder::Data() {
   return shared_buffer;
 }
 
-void DeferredImageDecoder::SetData(scoped_refptr<SharedBuffer> data,
+void DeferredImageDecoder::SetData(const std::shared_ptr<SharedBuffer> &data,
                                    bool all_data_received) {
-  SetDataInternal(std::move(data), all_data_received, true);
+  SetDataInternal(data, all_data_received, true);
 }
 
-void DeferredImageDecoder::SetDataInternal(scoped_refptr<SharedBuffer> data,
+void DeferredImageDecoder::SetDataInternal(const std::shared_ptr<SharedBuffer> &data,
                                            bool all_data_received,
                                            bool push_data_to_decoder) {
   if (metadata_decoder_) {
@@ -177,12 +188,8 @@ void DeferredImageDecoder::SetDataInternal(scoped_refptr<SharedBuffer> data,
     if (!rw_buffer_)
       rw_buffer_ = std::make_unique<SkRWBuffer>(data->size());
 
-    for (auto it = data->GetIteratorAt(rw_buffer_->size()); it != data->cend();
-         ++it) {
-      DCHECK_GE(data->size(), rw_buffer_->size() + it->size());
-      const size_t remaining = data->size() - rw_buffer_->size() - it->size();
-      rw_buffer_->append(it->data(), it->size(), remaining);
-    }
+    SharedBuffer::Iterator it = data->begin();
+    rw_buffer_->append(it.data(), it.size());
   }
 }
 

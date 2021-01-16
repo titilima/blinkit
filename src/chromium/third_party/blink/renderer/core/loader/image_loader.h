@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_loader.h
+// Description: ImageLoader Class
+//      Author: Ziming Li
+//     Created: 2021-01-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -26,8 +37,10 @@
 #include <memory>
 #include "base/memory/weak_ptr.h"
 #include "third_party/blink/public/platform/task_type.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/bindings/core/v8/script_promise.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h"
+#endif
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/loader/resource/image_resource.h"
 #include "third_party/blink/renderer/core/loader/resource/image_resource_content.h"
@@ -46,7 +59,7 @@ class ScriptState;
 
 class CORE_EXPORT ImageLoader : public GarbageCollectedFinalized<ImageLoader>,
                                 public ImageResourceObserver {
-  USING_PRE_FINALIZER(ImageLoader, Dispose);
+  // BKTODO: USING_PRE_FINALIZER(ImageLoader, Dispose);
 
  public:
   explicit ImageLoader(Element*);
@@ -72,13 +85,7 @@ class CORE_EXPORT ImageLoader : public GarbageCollectedFinalized<ImageLoader>,
     kUpdateForcedReload
   };
 
-  enum BypassMainWorldBehavior {
-    kBypassMainWorldCSP,
-    kDoNotBypassMainWorldCSP
-  };
-
-  void UpdateFromElement(UpdateFromElementBehavior = kUpdateNormal,
-                         ReferrerPolicy = kReferrerPolicyDefault);
+  void UpdateFromElement(UpdateFromElementBehavior = kUpdateNormal);
 
   void ElementDidMoveToNewDocument();
 
@@ -117,15 +124,21 @@ class CORE_EXPORT ImageLoader : public GarbageCollectedFinalized<ImageLoader>,
 
   bool HasPendingActivity() const { return HasPendingEvent() || pending_task_; }
 
+#if 0 // BKTODO:
   bool HasPendingError() const { return pending_error_event_.IsActive(); }
+#else
+  bool HasPendingError() const { return false; }
+#endif
 
   bool HadError() const { return !failed_load_url_.IsEmpty(); }
 
   bool GetImageAnimationPolicy(ImageAnimationPolicy&) final;
 
+#if 0 // BKTODO:
   ScriptPromise Decode(ScriptState*, ExceptionState&);
 
   void LoadDeferredImage(ReferrerPolicy);
+#endif
 
  protected:
   void ImageChanged(ImageResourceContent*, CanDeferInvalidation) override;
@@ -152,10 +165,8 @@ class CORE_EXPORT ImageLoader : public GarbageCollectedFinalized<ImageLoader>,
   };
 
   // Called from the task or from updateFromElement to initiate the load.
-  void DoUpdateFromElement(BypassMainWorldBehavior,
-                           UpdateFromElementBehavior,
-                           const KURL&,
-                           ReferrerPolicy = kReferrerPolicyDefault,
+  void DoUpdateFromElement(UpdateFromElementBehavior,
+                           const GURL&,
                            UpdateType = UpdateType::kAsync);
 
   virtual void DispatchLoadEvent() = 0;
@@ -179,15 +190,14 @@ class CORE_EXPORT ImageLoader : public GarbageCollectedFinalized<ImageLoader>,
   void ClearFailedLoadURL();
   void DispatchErrorEvent();
   void CrossSiteOrCSPViolationOccurred(AtomicString);
-  void EnqueueImageLoadingMicroTask(const KURL&,
-                                    UpdateFromElementBehavior,
-                                    ReferrerPolicy);
+  void EnqueueImageLoadingMicroTask(const GURL&,
+                                    UpdateFromElementBehavior);
 
-  KURL ImageSourceToKURL(AtomicString) const;
+  GURL ImageSourceToGURL(AtomicString) const;
 
   // Used to determine whether to immediately initiate the load or to schedule a
   // microtask.
-  bool ShouldLoadImmediately(const KURL&) const;
+  bool ShouldLoadImmediately(const GURL&) const;
 
   // For Oilpan, we must run dispose() as a prefinalizer and call
   // m_image->removeClient(this) (and more.) Otherwise, the ImageResource can
@@ -204,7 +214,7 @@ class CORE_EXPORT ImageLoader : public GarbageCollectedFinalized<ImageLoader>,
   Member<ImageResourceContent> image_content_;
   Member<ImageResource> image_resource_for_image_document_;
 
-  String last_base_element_url_;
+  std::string last_base_element_url_;
   AtomicString failed_load_url_;
   base::WeakPtr<Task> pending_task_;  // owned by Microtask
   std::unique_ptr<IncrementLoadEventDelayCount>
@@ -227,8 +237,10 @@ class CORE_EXPORT ImageLoader : public GarbageCollectedFinalized<ImageLoader>,
   std::unique_ptr<IncrementLoadEventDelayCount>
       delay_until_image_notify_finished_;
 
+#if 0 // BKTODO:
   TaskHandle pending_load_event_;
   TaskHandle pending_error_event_;
+#endif
 
   bool image_complete_ : 1;
   bool loading_image_document_ : 1;
@@ -236,6 +248,7 @@ class CORE_EXPORT ImageLoader : public GarbageCollectedFinalized<ImageLoader>,
 
   LazyImageLoadState lazy_image_load_state_;
 
+#if 0 // BKTODO:
   // DecodeRequest represents a single request to the Decode() function. The
   // decode requests have one of the following states:
   //
@@ -284,6 +297,7 @@ class CORE_EXPORT ImageLoader : public GarbageCollectedFinalized<ImageLoader>,
   };
 
   HeapVector<Member<DecodeRequest>> decode_requests_;
+#endif
 };
 
 }  // namespace blink

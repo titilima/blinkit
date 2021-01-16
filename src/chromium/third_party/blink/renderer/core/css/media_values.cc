@@ -23,6 +23,7 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
+#include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
@@ -40,24 +41,16 @@ MediaValues* MediaValues::CreateDynamicIfFrameExists(LocalFrame* frame) {
 
 double MediaValues::CalculateViewportWidth(LocalFrame* frame) {
   DCHECK(frame);
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   DCHECK(frame->View());
   DCHECK(frame->GetDocument());
   return frame->View()->ViewportSizeForMediaQueries().Width();
-#endif
 }
 
 double MediaValues::CalculateViewportHeight(LocalFrame* frame) {
   DCHECK(frame);
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   DCHECK(frame->View());
   DCHECK(frame->GetDocument());
   return frame->View()->ViewportSizeForMediaQueries().Height();
-#endif
 }
 
 int MediaValues::CalculateDeviceWidth(LocalFrame* frame) {
@@ -99,11 +92,7 @@ bool MediaValues::CalculateStrictMode(LocalFrame* frame) {
 }
 
 float MediaValues::CalculateDevicePixelRatio(LocalFrame* frame) {
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   return frame->DevicePixelRatio();
-#endif
 }
 
 int MediaValues::CalculateColorBitsPerComponent(LocalFrame* frame) {
@@ -137,20 +126,16 @@ int MediaValues::CalculateMonochromeBitsPerComponent(LocalFrame* frame) {
 }
 
 int MediaValues::CalculateDefaultFontSize(LocalFrame* frame) {
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
-  return frame->GetPage()->GetSettings().GetDefaultFontSize();
-#endif
+  return Settings::DefaultFontSize;
 }
 
 const String MediaValues::CalculateMediaType(LocalFrame* frame) {
   DCHECK(frame);
+  if (!frame->View())
+    return g_empty_atom;
   ASSERT(false); // BKTODO:
   return g_empty_atom;
 #if 0
-  if (!frame->View())
-    return g_empty_atom;
   return frame->View()->MediaType();
 #endif
 }

@@ -56,13 +56,11 @@
 #   include "third_party/blink/renderer/core/css/media_values_cached.h"
 #   include "third_party/blink/renderer/core/css/parser/sizes_attribute_parser.h"
 #   include "third_party/blink/renderer/core/frame/viewport_data.h"
-#if 0 // BKTODO:
 #   include "third_party/blink/renderer/core/html/html_dimension.h"
 #   include "third_party/blink/renderer/core/html/html_image_element.h"
 #   include "third_party/blink/renderer/core/html/html_meta_element.h"
 #   include "third_party/blink/renderer/core/html/link_rel_attribute.h"
 #   include "third_party/blink/renderer/core/html/parser/html_srcset_parser.h"
-#endif
 #   include "third_party/blink/renderer/core/input_type_names.h"
 // BKTODO: #include "third_party/blink/renderer/core/loader/link_loader.h"
 #endif
@@ -128,13 +126,9 @@ static bool IsDimensionSmallAndAbsoluteForLazyLoad(
     const String& attribute_value) {
   // Minimum height or width of the image to start lazyloading.
   const unsigned kMinDimensionToLazyLoad = 10;
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   HTMLDimension dimension;
   return ParseDimensionValue(attribute_value, dimension) &&
          dimension.IsAbsolute() && dimension.Value() <= kMinDimensionToLazyLoad;
-#endif
 }
 #endif // BLINKIT_CRAWLER_ONLY
 
@@ -225,8 +219,6 @@ class TokenPreloadScanner::StartTagScanner {
   void HandlePictureSourceURL(PictureData& picture_data) {
     if (Match(tag_impl_, kSourceTag) && matched_ &&
         picture_data.source_url.IsEmpty()) {
-      ASSERT(false); // BKTODO:
-#if 0
       // Must create an IsolatedCopy() since the srcset attribute value will get
       // sent back to the main thread between when we set this, and when we
       // process the closing tag which would clear picture_data_. Having any ref
@@ -237,7 +229,6 @@ class TokenPreloadScanner::StartTagScanner {
       picture_data.source_size_set = source_size_set_;
       picture_data.source_size = source_size_;
       picture_data.picked = true;
-#endif
     } else if (Match(tag_impl_, kImgTag) && !picture_data.source_url.IsEmpty()) {
       SetUrlToLoad(picture_data.source_url, kAllowURLReplacement);
     }
@@ -363,17 +354,18 @@ class TokenPreloadScanner::StartTagScanner {
   template <typename NameType>
   void ProcessImgAttribute(const NameType& attribute_name,
                            const String& attribute_value) {
-    ASSERT(false); // BKTODO:
-#if 0
-    if (Match(attribute_name, kSrcAttr) && img_src_url_.IsNull()) {
+    if (Match(attribute_name, srcAttr) && img_src_url_.IsNull()) {
       img_src_url_ = attribute_value;
+#if 0 // BKTODO:
     } else if (Match(attribute_name, crossoriginAttr)) {
       SetCrossOrigin(attribute_value);
+#endif
     } else if (Match(attribute_name, srcsetAttr) &&
                srcset_attribute_value_.IsNull()) {
       srcset_attribute_value_ = attribute_value;
     } else if (Match(attribute_name, sizesAttr) && !source_size_set_) {
       ParseSourceSize(attribute_value);
+#if 0 // BKTODO:
     } else if (!referrer_policy_set_ &&
                Match(attribute_name, referrerpolicyAttr) &&
                !attribute_value.IsNull()) {
@@ -386,6 +378,7 @@ class TokenPreloadScanner::StartTagScanner {
                RuntimeEnabledFeatures::LazyImageLoadingEnabled() &&
                EqualIgnoringASCIICase(attribute_value, "off")) {
       lazyload_attr_set_to_off_ = true;
+#endif
     } else if (!width_attr_small_absolute_ &&
                Match(attribute_name, widthAttr) &&
                RuntimeEnabledFeatures::LazyImageLoadingEnabled()) {
@@ -397,7 +390,6 @@ class TokenPreloadScanner::StartTagScanner {
       height_attr_small_absolute_ =
           IsDimensionSmallAndAbsoluteForLazyLoad(attribute_value);
     }
-#endif
   }
 
   void SetUrlFromImageAttributes() {
@@ -665,7 +657,7 @@ class TokenPreloadScanner::StartTagScanner {
   const StringImpl* tag_impl_;
   String url_to_load_;
 #ifndef BLINKIT_CRAWLER_ONLY
-  // BKTODO: ImageCandidate srcset_image_candidate_;
+  ImageCandidate srcset_image_candidate_;
 #endif
   String charset_;
 #ifndef BLINKIT_CRAWLER_ONLY

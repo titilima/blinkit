@@ -57,6 +57,11 @@ public:
     bool NeedsScopeChange(void) const { return m_oldScope != m_newScope; }
     void Execute(void) const;
 private:
+    void UpdateTreeScope(Node &node) const;
+    void MoveTreeToNewScope(Node &root) const;
+    TreeScope& OldScope(void) const { return *m_oldScope; }
+    TreeScope& NewScope(void) const { return *m_newScope; }
+
     Member<Node> m_toAdopt;
     Member<TreeScope> m_newScope;
     Member<TreeScope> m_oldScope;

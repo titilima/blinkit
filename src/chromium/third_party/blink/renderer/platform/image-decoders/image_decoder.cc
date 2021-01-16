@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_decoder.cc
+// Description: ImageDecoder Class
+//      Author: Ziming Li
+//     Created: 2021-01-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) Research In Motion Limited 2009-2010. All rights reserved.
  *
@@ -22,13 +33,15 @@
 
 #include <memory>
 #include "third_party/blink/renderer/platform/graphics/bitmap_image_metrics.h"
-#include "third_party/blink/renderer/platform/image-decoders/bmp/bmp_image_decoder.h"
+// BKTODO: #include "third_party/blink/renderer/platform/image-decoders/bmp/bmp_image_decoder.h"
 #include "third_party/blink/renderer/platform/image-decoders/fast_shared_buffer_reader.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/image-decoders/gif/gif_image_decoder.h"
 #include "third_party/blink/renderer/platform/image-decoders/ico/ico_image_decoder.h"
 #include "third_party/blink/renderer/platform/image-decoders/jpeg/jpeg_image_decoder.h"
+#endif
 #include "third_party/blink/renderer/platform/image-decoders/png/png_image_decoder.h"
-#include "third_party/blink/renderer/platform/image-decoders/webp/webp_image_decoder.h"
+// BKTODO: #include "third_party/blink/renderer/platform/image-decoders/webp/webp_image_decoder.h"
 #include "third_party/blink/renderer/platform/instrumentation/platform_instrumentation.h"
 
 namespace blink {
@@ -83,9 +96,7 @@ std::unique_ptr<ImageDecoder> ImageDecoder::Create(
     high_bit_depth_decoding_option = kDefaultBitDepth;
   }
 
-  size_t max_decoded_bytes = Platform::Current()
-                                 ? Platform::Current()->MaxDecodedImageBytes()
-                                 : kNoDecodedImageByteLimit;
+  size_t max_decoded_bytes = kNoDecodedImageByteLimit;
   if (!desired_size.isEmpty()) {
     size_t num_pixels = desired_size.width() * desired_size.height();
     if (high_bit_depth_decoding_option == kDefaultBitDepth) {
@@ -106,24 +117,39 @@ std::unique_ptr<ImageDecoder> ImageDecoder::Create(
 
   std::unique_ptr<ImageDecoder> decoder;
   if (MatchesJPEGSignature(contents)) {
+    ASSERT(false); // BKTODO:
+#if 0
     decoder.reset(
         new JPEGImageDecoder(alpha_option, color_behavior, max_decoded_bytes));
+#endif
   } else if (MatchesPNGSignature(contents)) {
     decoder.reset(new PNGImageDecoder(alpha_option,
                                       high_bit_depth_decoding_option,
                                       color_behavior, max_decoded_bytes));
   } else if (MatchesGIFSignature(contents)) {
+    ASSERT(false); // BKTODO:
+#if 0
     decoder.reset(
         new GIFImageDecoder(alpha_option, color_behavior, max_decoded_bytes));
+#endif
   } else if (MatchesWebPSignature(contents)) {
+    ASSERT(false); // BKTODO:
+#if 0
     decoder.reset(
         new WEBPImageDecoder(alpha_option, color_behavior, max_decoded_bytes));
+#endif
   } else if (MatchesICOSignature(contents) || MatchesCURSignature(contents)) {
+    ASSERT(false); // BKTODO:
+#if 0
     decoder.reset(
         new ICOImageDecoder(alpha_option, color_behavior, max_decoded_bytes));
+#endif
   } else if (MatchesBMPSignature(contents)) {
+    ASSERT(false); // BKTODO:
+#if 0
     decoder.reset(
         new BMPImageDecoder(alpha_option, color_behavior, max_decoded_bytes));
+#endif
   }
 
   if (decoder)

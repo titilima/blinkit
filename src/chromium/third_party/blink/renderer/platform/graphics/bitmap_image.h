@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: bitmap_image.h
+// Description: BitmapImage Class
+//      Author: Ziming Li
+//     Created: 2021-01-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Samuel Weinig (sam.weinig@gmail.com)
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.  All rights reserved.
@@ -69,7 +80,7 @@ class PLATFORM_EXPORT BitmapImage final : public Image {
   bool GetHotSpot(IntPoint&) const override;
   String FilenameExtension() const override;
 
-  SizeAvailability SetData(scoped_refptr<SharedBuffer> data,
+  SizeAvailability SetData(const std::shared_ptr<SharedBuffer> &data,
                            bool all_data_received) override;
   SizeAvailability DataChanged(bool all_data_received) override;
 
@@ -95,7 +106,7 @@ class PLATFORM_EXPORT BitmapImage final : public Image {
 
   PaintImage PaintImageForTesting();
   void AdvanceAnimationForTesting() override {
-    NOTREACHED() << "Supported only with svgs";
+    NOTREACHED(); // Supported only with svgs
   }
   void SetDecoderForTesting(std::unique_ptr<DeferredImageDecoder> decoder) {
     decoder_ = std::move(decoder);
@@ -137,7 +148,7 @@ class PLATFORM_EXPORT BitmapImage final : public Image {
   // some room in the image cache.
   void DestroyDecodedData() override;
 
-  scoped_refptr<SharedBuffer> Data() override;
+  std::shared_ptr<SharedBuffer> Data() override;
 
   // Notifies observers that the memory footprint has changed.
   void NotifyMemoryChanged();

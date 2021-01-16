@@ -354,7 +354,6 @@ void Resource::RemoveClient(ResourceClient *client)
 
 void Resource::ResponseReceived(const ResourceResponse &response)
 {
-    ASSERT(ResourceType::kImage != m_type); // BKTODO:
     // BKTODO: m_responseTimestamp = CurrentTime();
     if (m_isRevalidating)
     {

@@ -60,9 +60,9 @@
 #   include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
 #   include "third_party/blink/renderer/core/editing/frame_selection.h"
 #   include "third_party/blink/renderer/core/frame/local_frame.h"
-#if 0 // BKTODO:
 #   include "third_party/blink/renderer/core/html/forms/html_form_control_element.h"
 #   include "third_party/blink/renderer/core/html/forms/html_input_element.h"
+#if 0 // BKTODO:
 #   include "third_party/blink/renderer/core/html/forms/html_option_element.h"
 #   include "third_party/blink/renderer/core/html/forms/html_select_element.h"
 #   include "third_party/blink/renderer/core/html/html_frame_element_base.h"
@@ -75,7 +75,7 @@
 #   include "third_party/blink/renderer/core/page/page.h"
 #   include "third_party/blink/renderer/core/probe/core_probes.h"
 #   include "third_party/blink/renderer/core/scroll/scrollable_area.h"
-// BKTODO: #include "third_party/blink/renderer/core/scroll/scrollbar_theme.h"
+#   include "third_party/blink/renderer/core/scroll/scrollbar_theme.h"
 #   include "third_party/blink/renderer/core/style/computed_style.h"
 #endif
 
@@ -1258,11 +1258,8 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
 #ifndef BLINKIT_CRAWLER_ONLY
       DCHECK(is_ua_rule_);
       if (ShadowRoot* root = element.ContainingShadowRoot()) {
-        ASSERT(false); // BKTODO:
-#if 0
         if (!root->IsUserAgent())
           return false;
-#endif
         const ComputedStyle* style = root->host().GetComputedStyle();
         return style && style->HasAppearance();
       }
@@ -1334,34 +1331,25 @@ bool SelectorChecker::CheckPseudoElement(const SelectorCheckingContext& context,
     case CSSSelector::kPseudoPlaceholder:
 #ifndef BLINKIT_CRAWLER_ONLY
       if (ShadowRoot* root = element.ContainingShadowRoot()) {
-        ASSERT(false); // BKTODO:
-#if 0
         return root->IsUserAgent() &&
                element.ShadowPseudoId() == "-webkit-input-placeholder";
-#endif
       }
 #endif
       return false;
     case CSSSelector::kPseudoWebKitCustomElement: {
 #ifndef BLINKIT_CRAWLER_ONLY
-      ASSERT(false); // BKTODO:
-#if 0
       if (ShadowRoot* root = element.ContainingShadowRoot())
         return root->IsUserAgent() &&
                element.ShadowPseudoId() == selector.Value();
-#endif
 #endif
       return false;
     }
     case CSSSelector::kPseudoBlinkInternalElement:
 #ifndef BLINKIT_CRAWLER_ONLY
       DCHECK(is_ua_rule_);
-      ASSERT(false); // BKTODO:
-#if 0
       if (ShadowRoot* root = element.ContainingShadowRoot())
         return root->IsUserAgent() &&
                element.ShadowPseudoId() == selector.Value();
-#endif
 #endif
       return false;
     case CSSSelector::kPseudoSlotted: {
@@ -1414,8 +1402,6 @@ bool SelectorChecker::CheckPseudoHost(const SelectorCheckingContext& context,
     return false;
   DCHECK(IsShadowHost(element));
   DCHECK(element.GetShadowRoot());
-  ASSERT(false); // BKTODO:
-#if 0
   bool is_v1_shadow = element.GetShadowRoot()->IsV1();
 
   // For the case with no parameters, i.e. just :host.
@@ -1469,7 +1455,6 @@ bool SelectorChecker::CheckPseudoHost(const SelectorCheckingContext& context,
       result.specificity += CSSSelector::kClassLikeSpecificity;
     return true;
   }
-#endif
 #endif
 
   // FIXME: this was a fallthrough condition.
@@ -1546,8 +1531,6 @@ bool SelectorChecker::CheckScrollbarPseudoClass(
              scrollbar_part_ == kForwardButtonEndPart ||
              scrollbar_part_ == kForwardTrackPart;
     case CSSSelector::kPseudoDoubleButton: {
-      ASSERT(false); // BKTODO:
-#if 0
       WebScrollbarButtonsPlacement buttons_placement =
           scrollbar_->GetTheme().ButtonsPlacement();
       if (scrollbar_part_ == kBackButtonStartPart ||
@@ -1560,12 +1543,9 @@ bool SelectorChecker::CheckScrollbarPseudoClass(
           scrollbar_part_ == kForwardTrackPart)
         return buttons_placement == kWebScrollbarButtonsPlacementDoubleEnd ||
                buttons_placement == kWebScrollbarButtonsPlacementDoubleBoth;
-#endif
       return false;
     }
     case CSSSelector::kPseudoSingleButton: {
-      ASSERT(false); // BKTODO:
-#if 0
       WebScrollbarButtonsPlacement buttons_placement =
           scrollbar_->GetTheme().ButtonsPlacement();
       if (scrollbar_part_ == kBackButtonStartPart ||
@@ -1573,12 +1553,9 @@ bool SelectorChecker::CheckScrollbarPseudoClass(
           scrollbar_part_ == kBackTrackPart ||
           scrollbar_part_ == kForwardTrackPart)
         return buttons_placement == kWebScrollbarButtonsPlacementSingle;
-#endif
       return false;
     }
     case CSSSelector::kPseudoNoButton: {
-      ASSERT(false); // BKTODO:
-#if 0
       WebScrollbarButtonsPlacement buttons_placement =
           scrollbar_->GetTheme().ButtonsPlacement();
       if (scrollbar_part_ == kBackTrackPart)
@@ -1587,7 +1564,6 @@ bool SelectorChecker::CheckScrollbarPseudoClass(
       if (scrollbar_part_ == kForwardTrackPart)
         return buttons_placement == kWebScrollbarButtonsPlacementNone ||
                buttons_placement == kWebScrollbarButtonsPlacementDoubleStart;
-#endif
       return false;
     }
     case CSSSelector::kPseudoCornerPresent:

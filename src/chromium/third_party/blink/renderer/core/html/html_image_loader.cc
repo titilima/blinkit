@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_image_loader.cc
+// Description: HTMLImageLoader Class
+//      Author: Ziming Li
+//     Created: 2021-01-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,11 +36,11 @@
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #include "third_party/blink/renderer/core/html/html_image_element.h"
-#include "third_party/blink/renderer/core/html/html_object_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_object_element.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/loader/resource/image_resource_content.h"
-#include "third_party/blink/renderer/platform/loader/fetch/resource_loading_log.h"
+// BKTODO: #include "third_party/blink/renderer/platform/loader/fetch/resource_loading_log.h"
 
 namespace blink {
 
@@ -40,20 +51,24 @@ HTMLImageLoader::HTMLImageLoader(Element* element) : ImageLoader(element) {}
 HTMLImageLoader::~HTMLImageLoader() = default;
 
 void HTMLImageLoader::DispatchLoadEvent() {
+#if 0 // BKTODO: Check if necessary.
   RESOURCE_LOADING_DVLOG(1) << "HTMLImageLoader::dispatchLoadEvent " << this;
 
   // HTMLVideoElement uses this class to load the poster image, but it should
   // not fire events for loading or failure.
   if (IsHTMLVideoElement(*GetElement()))
     return;
+#endif
 
   bool error_occurred = GetContent()->ErrorOccurred();
+#if 0 // BKTODO: Check if necessary.
   if (IsHTMLObjectElement(*GetElement()) && !error_occurred) {
     // An <object> considers a 404 to be an error and should fire onerror.
     error_occurred = (GetContent()->GetResponse().HttpStatusCode() >= 400);
   }
+#endif
   GetElement()->DispatchEvent(*Event::Create(
-      error_occurred ? EventTypeNames::error : EventTypeNames::load));
+      error_occurred ? event_type_names::kError : event_type_names::kLoad));
 }
 
 void HTMLImageLoader::NoImageResourceToLoad() {
@@ -88,9 +103,11 @@ void HTMLImageLoader::ImageNotifyFinished(ImageResourceContent*) {
       input->EnsurePrimaryContent();
   }
 
+#if 0 // BKTODO: Check if necessary.
   if ((load_error || cached_image->GetResponse().HttpStatusCode() >= 400) &&
       IsHTMLObjectElement(*element))
     ToHTMLObjectElement(element)->RenderFallbackContent();
+#endif
 }
 
 }  // namespace blink

@@ -163,13 +163,11 @@ class CORE_EXPORT ImageResourceContent final
     // Only occurs when UpdateImage or ClearAndUpdateImage is specified.
     kShouldDecodeError,
   };
-#if 0 // BKTODO:
-  WARN_UNUSED_RESULT UpdateImageResult UpdateImage(scoped_refptr<SharedBuffer>,
+  WARN_UNUSED_RESULT UpdateImageResult UpdateImage(const std::shared_ptr<SharedBuffer>&,
                                                    ResourceStatus,
                                                    UpdateImageOption,
                                                    bool all_data_received,
                                                    bool is_multipart);
-#endif
 
   void NotifyStartLoad();
   void DestroyDecodedData();

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_frame_generator.h
+// Description: ImageFrameGenerator Class
+//      Author: Ziming Li
+//     Created: 2021-01-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -37,7 +48,7 @@
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/ref_counted.h"
 #include "third_party/blink/renderer/platform/wtf/thread_safe_ref_counted.h"
-#include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
+// BKTODO: #include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkSize.h"
@@ -124,7 +135,7 @@ class PLATFORM_EXPORT ImageFrameGenerator final
    private:
     ImageFrameGenerator* generator_;
     cc::PaintImage::GeneratorClientId client_id_;
-    Mutex* mutex_;
+    // BKTODO: Mutex* mutex_;
   };
 
   ImageFrameGenerator(const SkISize& full_size,
@@ -149,7 +160,7 @@ class PLATFORM_EXPORT ImageFrameGenerator final
   const std::vector<SkISize> supported_sizes_;
 
   // Prevents concurrent access to all variables below.
-  Mutex generator_mutex_;
+  // BKTODO: Mutex generator_mutex_;
 
   bool decode_failed_ = false;
   bool yuv_decoding_failed_ = false;
@@ -158,7 +169,7 @@ class PLATFORM_EXPORT ImageFrameGenerator final
 
   struct ClientMutex {
     int ref_count = 0;
-    Mutex mutex;
+    // BKTODO: Mutex mutex;
   };
   // Note that it is necessary to use unordered_map here to ensure that
   // references to entries in the map, stored in ClientMutexLocker, remain valid

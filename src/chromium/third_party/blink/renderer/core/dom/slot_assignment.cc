@@ -35,11 +35,11 @@ bool ShouldAssignToCustomSlot(const Node& node) {
 #if 0
   if (IsHTMLDetailsElement(node.parentElement()))
     return HTMLDetailsElement::IsFirstSummary(node);
-  if (IsHTMLSelectElement(node.parentElement()))
-    return HTMLSelectElement::CanAssignToSelectSlot(node);
-  if (IsHTMLOptGroupElement(node.parentElement()))
-    return HTMLOptGroupElement::CanAssignToOptGroupSlot(node);
 #endif
+  if (IsHTMLSelectElement(node.parentElement()))
+    ASSERT(false); // BKTODO: return HTMLSelectElement::CanAssignToSelectSlot(node);
+  if (IsHTMLOptGroupElement(node.parentElement()))
+    ASSERT(false); // BKTODO: return HTMLOptGroupElement::CanAssignToOptGroupSlot(node);
   return false;
 }
 }  // anonymous namespace
@@ -363,13 +363,10 @@ void SlotAssignment::CollectSlots() {
   slots_.clear();
 
   slots_.ReserveCapacity(slot_count_);
-  ASSERT(false); // BKTODO:
-#if 0
   for (HTMLSlotElement& slot :
        Traversal<HTMLSlotElement>::DescendantsOf(*owner_)) {
     slots_.push_back(&slot);
   }
-#endif
   needs_collect_slots_ = false;
   DCHECK_EQ(slots_.size(), slot_count_);
 }

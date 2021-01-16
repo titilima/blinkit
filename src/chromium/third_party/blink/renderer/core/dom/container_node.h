@@ -227,21 +227,21 @@ public:
     static ChildrenChange ForInsertion(Node &node, Node *unchangedPrevious, Node *unchangedNext, ChildrenChangeSource byParser)
     {
         ChildrenChange change;
-        change.type                = node.IsElementNode() ? kElementInserted : kNonElementInserted;
-        change.siblingChanged      = &node;
-        change.siblingBeforeChange = unchangedPrevious;
-        change.siblingAfterChange  = unchangedNext;
-        change.by_parser           = byParser;
+        change.type                  = node.IsElementNode() ? kElementInserted : kNonElementInserted;
+        change.sibling_changed       = &node;
+        change.sibling_before_change = unchangedPrevious;
+        change.sibling_after_change  = unchangedNext;
+        change.by_parser             = byParser;
         return change;
     }
     static ChildrenChange ForRemoval(Node &node, Node *previousSibling, Node *nextSibling, ChildrenChangeSource byParser)
     {
         ChildrenChange change;
-        change.type                = node.IsElementNode() ? kElementRemoved : kNonElementRemoved;
-        change.siblingChanged      = &node;
-        change.siblingBeforeChange = previousSibling;
-        change.siblingAfterChange  = nextSibling;
-        change.by_parser           = byParser;
+        change.type                  = node.IsElementNode() ? kElementRemoved : kNonElementRemoved;
+        change.sibling_changed       = &node;
+        change.sibling_before_change = previousSibling;
+        change.sibling_after_change  = nextSibling;
+        change.by_parser             = byParser;
         return change;
     }
 
@@ -250,18 +250,18 @@ public:
     bool IsChildRemoval(void) const { return kElementRemoved == type || kNonElementRemoved == type; }
 
     ChildrenChangeType type;
-    Member<Node> siblingChanged;
+    Member<Node> sibling_changed;
     // |siblingBeforeChange| is
     //  - siblingChanged.previousSibling before node removal
     //  - siblingChanged.previousSibling after single node insertion
     //  - previousSibling of the first inserted node after multiple node
     //    insertion
-    Member<Node> siblingBeforeChange;
+    Member<Node> sibling_before_change;
     // |siblingAfterChange| is
     //  - siblingChanged.nextSibling before node removal
     //  - siblingChanged.nextSibling after single node insertion
     //  - nextSibling of the last inserted node after multiple node insertion.
-    Member<Node> siblingAfterChange;
+    Member<Node> sibling_after_change;
     ChildrenChangeSource by_parser;
 };
 

@@ -171,6 +171,10 @@ public:
     ScriptRunner* GetScriptRunner(void) { return m_scriptRunner.get(); }
     DocumentLifecycle& Lifecycle(void) { return m_lifecycle; }
 #ifndef BLINKIT_CRAWLER_ONLY
+    // Returns frame_ for current document, or if this is an HTML import, master
+    // document's frame_, if any.  Can be null.
+    // TODO(kochi): Audit usage of this interface (crbug.com/746150).
+    LocalFrame* GetFrameOfMasterDocument(void) const;
     LayoutView* GetLayoutView(void) const { return m_layoutView; }
     const PropertyRegistry* GetPropertyRegistry(void) const;
     PropertyRegistry* GetPropertyRegistry(void);
@@ -524,6 +528,7 @@ public:
      */
     constexpr bool FinishingOrIsPrinting(void) { return false; }
     constexpr bool IsHTMLDocument(void) const { return true; }
+    constexpr bool IsImageDocument(void) const { return false; }
     constexpr bool IsInMainFrame(void) const { return true; }
     constexpr bool Printing(void) const { return false; }
 protected:

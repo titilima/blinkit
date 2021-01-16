@@ -492,7 +492,7 @@ void LayoutBlockFlow::UpdateBlockLayout(bool relayout_children) {
       // addition of overflow:auto scrollbars in a descendant. To avoid a
       // potential infinite loop, run layout again with auto scrollbars frozen
       // in their current state.
-      ASSERT(false); // BKTODO: PaintLayerScrollableArea::FreezeScrollbarsScope freeze_scrollbars;
+      PaintLayerScrollableArea::FreezeScrollbarsScope freeze_scrollbars;
       relayout_children |= UpdateLogicalWidthAndColumnWidth();
       LayoutChildren(relayout_children, layout_scope);
     }
@@ -1343,8 +1343,6 @@ void LayoutBlockFlow::RebuildFloatsFromIntruding() {
 
   HashSet<LayoutBox*> old_intruding_float_set;
   if (!ChildrenInline() && floating_objects_) {
-    ASSERT(false); // BKTODO:
-#if 0
     const FloatingObjectSet& floating_object_set = floating_objects_->Set();
     FloatingObjectSetIterator end = floating_object_set.end();
     for (FloatingObjectSetIterator it = floating_object_set.begin(); it != end;
@@ -1353,7 +1351,6 @@ void LayoutBlockFlow::RebuildFloatsFromIntruding() {
       if (!floating_object.IsDescendant())
         old_intruding_float_set.insert(floating_object.GetLayoutObject());
     }
-#endif
   }
 
   // Inline blocks are covered by the isAtomicInlineLevel() check in the
@@ -1429,8 +1426,6 @@ void LayoutBlockFlow::RebuildFloatsFromIntruding() {
     LayoutUnit change_logical_top = LayoutUnit::Max();
     LayoutUnit change_logical_bottom = LayoutUnit::Min();
     if (floating_objects_) {
-      ASSERT(false); // BKTODO:
-#if 0
       const FloatingObjectSet& floating_object_set = floating_objects_->Set();
       FloatingObjectSetIterator end = floating_object_set.end();
       for (FloatingObjectSetIterator it = floating_object_set.begin();
@@ -1485,7 +1480,6 @@ void LayoutBlockFlow::RebuildFloatsFromIntruding() {
               std::max(change_logical_bottom, logical_bottom);
         }
       }
-#endif
     }
 
     LayoutBoxToFloatInfoMap::iterator end = float_map.end();
@@ -1501,8 +1495,6 @@ void LayoutBlockFlow::RebuildFloatsFromIntruding() {
 
     MarkLinesDirtyInBlockRange(change_logical_top, change_logical_bottom);
   } else if (!old_intruding_float_set.IsEmpty()) {
-    ASSERT(false); // BKTODO:
-#if 0
     // If there are previously intruding floats that no longer intrude, then
     // children with floats should also get layout because they might need their
     // floating object lists cleared.
@@ -1517,7 +1509,6 @@ void LayoutBlockFlow::RebuildFloatsFromIntruding() {
       if (!old_intruding_float_set.IsEmpty())
         MarkAllDescendantsWithFloatsForLayout();
     }
-#endif
   }
 }
 
@@ -2533,8 +2524,6 @@ void LayoutBlockFlow::AddVisualOverflowFromFloats() {
   if (!floating_objects_)
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   for (auto& floating_object : floating_objects_->Set()) {
     if (floating_object->IsDescendant()) {
       AddVisualOverflowFromChild(
@@ -2543,15 +2532,12 @@ void LayoutBlockFlow::AddVisualOverflowFromFloats() {
                      YPositionForFloatIncludingMargin(*floating_object)));
     }
   }
-#endif
 }
 
 void LayoutBlockFlow::AddLayoutOverflowFromFloats() {
   if (!floating_objects_)
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   for (auto& floating_object : floating_objects_->Set()) {
     if (floating_object->IsDescendant()) {
       AddLayoutOverflowFromChild(
@@ -2560,7 +2546,6 @@ void LayoutBlockFlow::AddLayoutOverflowFromFloats() {
                      YPositionForFloatIncludingMargin(*floating_object)));
     }
   }
-#endif
 }
 
 scoped_refptr<NGLayoutResult> LayoutBlockFlow::CachedLayoutResult(
@@ -2884,8 +2869,6 @@ void LayoutBlockFlow::MarkSiblingsWithFloatsForLayout(
   if (!floating_objects_)
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   const FloatingObjectSet& floating_object_set = floating_objects_->Set();
   FloatingObjectSetIterator end = floating_object_set.end();
 
@@ -2905,7 +2888,6 @@ void LayoutBlockFlow::MarkSiblingsWithFloatsForLayout(
         next_block->MarkAllDescendantsWithFloatsForLayout(floating_box);
     }
   }
-#endif
 }
 
 LayoutUnit LayoutBlockFlow::GetClearDelta(LayoutBox* child,
@@ -3060,8 +3042,6 @@ void LayoutBlockFlow::StyleDidChange(StyleDifference diff,
   if (sibling_float_propagation_changed ||
       needs_update_ancestor_float_object_should_paint_flags) {
     LayoutBlockFlow* parent_block_flow = this;
-    ASSERT(false); // BKTODO:
-#if 0
     const FloatingObjectSet& floating_object_set = floating_objects_->Set();
     FloatingObjectSetIterator end = floating_object_set.end();
 
@@ -3086,7 +3066,6 @@ void LayoutBlockFlow::StyleDidChange(StyleDifference diff,
     parent_block_flow->MarkAllDescendantsWithFloatsForLayout();
     if (sibling_float_propagation_changed)
       parent_block_flow->MarkSiblingsWithFloatsForLayout();
-#endif
   }
 
   if (diff.NeedsFullLayout() || !old_style)
@@ -3384,8 +3363,6 @@ void LayoutBlockFlow::MoveAllChildrenIncludingFloatsTo(
     if (!to_block_flow->floating_objects_)
       to_block_flow->CreateFloatingObjects();
 
-    ASSERT(false); // BKTODO:
-#if 0
     const FloatingObjectSet& from_floating_object_set =
         floating_objects_->Set();
     FloatingObjectSetIterator end = from_floating_object_set.end();
@@ -3400,7 +3377,6 @@ void LayoutBlockFlow::MoveAllChildrenIncludingFloatsTo(
 
       to_block_flow->floating_objects_->Add(floating_object.UnsafeClone());
     }
-#endif
   }
   MoveAllChildrenTo(to_block_flow, full_remove_insert);
 }
@@ -3669,13 +3645,8 @@ void LayoutBlockFlow::ClearFloats(EClear clear) {
 }
 
 bool LayoutBlockFlow::ContainsFloat(LayoutBox* layout_box) const {
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
   return floating_objects_ &&
-         floating_objects_->Set().Contains<FloatingObjectHashTranslator>(
-             layout_box);
-#endif
+         floating_objects_->Set().Contains(layout_box);
 }
 
 void LayoutBlockFlow::RemoveFloatingObjects() {
@@ -3810,15 +3781,11 @@ FloatingObject* LayoutBlockFlow::InsertFloatingObject(LayoutBox& float_box) {
   if (!floating_objects_) {
     CreateFloatingObjects();
   } else {
-    ASSERT(false); // BKTODO:
-#if 0
     // Don't insert the object again if it's already in the list
     const FloatingObjectSet& floating_object_set = floating_objects_->Set();
-    FloatingObjectSetIterator it =
-        floating_object_set.Find<FloatingObjectHashTranslator>(&float_box);
+    FloatingObjectSetIterator it = floating_object_set.Find(&float_box);
     if (it != floating_object_set.end())
       return it->get();
-#endif
   }
 
   // Create the special object entry & append it to the list
@@ -3829,11 +3796,8 @@ FloatingObject* LayoutBlockFlow::InsertFloatingObject(LayoutBox& float_box) {
 
 void LayoutBlockFlow::RemoveFloatingObject(LayoutBox* float_box) {
   if (floating_objects_) {
-    ASSERT(false); // BKTODO:
-#if 0
     const FloatingObjectSet& floating_object_set = floating_objects_->Set();
-    FloatingObjectSetIterator it =
-        floating_object_set.Find<FloatingObjectHashTranslator>(float_box);
+    FloatingObjectSetIterator it = floating_object_set.Find(float_box);
     if (it != floating_object_set.end()) {
       FloatingObject& floating_object = *it->get();
       if (ChildrenInline()) {
@@ -3865,7 +3829,6 @@ void LayoutBlockFlow::RemoveFloatingObject(LayoutBox* float_box) {
       }
       floating_objects_->Remove(&floating_object);
     }
-#endif
   }
 }
 
@@ -3874,8 +3837,6 @@ void LayoutBlockFlow::RemoveFloatingObjectsBelow(FloatingObject* last_float,
   if (!ContainsFloats())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   const FloatingObjectSet& floating_object_set = floating_objects_->Set();
   FloatingObject* curr = floating_object_set.back().get();
   while (curr != last_float &&
@@ -3885,7 +3846,6 @@ void LayoutBlockFlow::RemoveFloatingObjectsBelow(FloatingObject* last_float,
       break;
     curr = floating_object_set.back().get();
   }
-#endif
 }
 
 bool LayoutBlockFlow::PlaceNewFloats(LayoutUnit logical_top_margin_edge,
@@ -3893,8 +3853,6 @@ bool LayoutBlockFlow::PlaceNewFloats(LayoutUnit logical_top_margin_edge,
   if (!floating_objects_)
     return false;
 
-  ASSERT(false); // BKTODO:
-#if 0
   const FloatingObjectSet& floating_object_set = floating_objects_->Set();
   if (floating_object_set.IsEmpty())
     return false;
@@ -3942,7 +3900,6 @@ bool LayoutBlockFlow::PlaceNewFloats(LayoutUnit logical_top_margin_edge,
     if (width)
       width->ShrinkAvailableWidthForNewFloatIfNeeded(floating_object);
   }
-#endif
   return true;
 }
 
@@ -4080,17 +4037,12 @@ bool LayoutBlockFlow::HasOverhangingFloat(LayoutBox* layout_box) {
   if (!floating_objects_ || !Parent())
     return false;
 
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   const FloatingObjectSet& floating_object_set = floating_objects_->Set();
-  FloatingObjectSetIterator it =
-      floating_object_set.Find<FloatingObjectHashTranslator>(layout_box);
+  FloatingObjectSetIterator it = floating_object_set.Find(layout_box);
   if (it == floating_object_set.end())
     return false;
 
   return IsOverhangingFloat(**it);
-#endif
 }
 
 void LayoutBlockFlow::AddIntrudingFloats(LayoutBlockFlow* prev,
@@ -4110,8 +4062,6 @@ void LayoutBlockFlow::AddIntrudingFloats(LayoutBlockFlow* prev,
 
   logical_left_offset += MarginLineLeft();
 
-  ASSERT(false); // BKTODO:
-#if 0
   const FloatingObjectSet& prev_set = prev->floating_objects_->Set();
   FloatingObjectSetIterator prev_end = prev_set.end();
   for (FloatingObjectSetIterator prev_it = prev_set.begin();
@@ -4145,7 +4095,6 @@ void LayoutBlockFlow::AddIntrudingFloats(LayoutBlockFlow* prev,
       }
     }
   }
-#endif
 }
 
 void LayoutBlockFlow::AddOverhangingFloats(LayoutBlockFlow* child,
@@ -4158,8 +4107,6 @@ void LayoutBlockFlow::AddOverhangingFloats(LayoutBlockFlow* child,
   LayoutUnit child_logical_top = child->LogicalTop();
   LayoutUnit child_logical_left = child->LogicalLeft();
 
-  ASSERT(false); // BKTODO:
-#if 0
   // Floats that will remain the child's responsibility to paint should factor
   // into its overflow.
   FloatingObjectSetIterator child_end = child->floating_objects_->Set().end();
@@ -4231,7 +4178,6 @@ void LayoutBlockFlow::AddOverhangingFloats(LayoutBlockFlow* child,
       }
     }
   }
-#endif
 }
 
 LayoutUnit LayoutBlockFlow::LowestFloatLogicalBottom(EClear clear) const {
@@ -4317,8 +4263,6 @@ bool LayoutBlockFlow::HitTestFloats(
   if (!floating_objects_)
     return false;
 
-  ASSERT(false); // BKTODO:
-#if 0
   const FloatingObjectSet& floating_object_set = floating_objects_->Set();
   FloatingObjectSetIterator begin = floating_object_set.begin();
   for (FloatingObjectSetIterator it = floating_object_set.end(); it != begin;) {
@@ -4341,7 +4285,6 @@ bool LayoutBlockFlow::HitTestFloats(
       }
     }
   }
-#endif
 
   return false;
 }
@@ -4428,12 +4371,9 @@ void LayoutBlockFlow::UpdateAncestorShouldPaintFloatingObject(
         ancestor_block->floating_objects_.get();
     if (!ancestor_floating_objects)
       break;
-    ASSERT(false); // BKTODO:
-#if 0
     FloatingObjectSet::iterator it =
         ancestor_floating_objects->MutableSet()
-            .Find<FloatingObjectHashTranslator>(
-                const_cast<LayoutBox*>(&float_box));
+            .Find(const_cast<LayoutBox*>(&float_box));
     if (it == ancestor_floating_objects->MutableSet().end())
       break;
 
@@ -4457,7 +4397,6 @@ void LayoutBlockFlow::UpdateAncestorShouldPaintFloatingObject(
     } else {
       floating_object.SetShouldPaint(false);
     }
-#endif
   }
 }
 
@@ -4687,7 +4626,7 @@ void LayoutBlockFlow::SimplifiedNormalFlowInlineLayout() {
       o->LayoutIfNeeded();
       if (ToLayoutBox(o)->InlineBoxWrapper()) {
         RootInlineBox& box = ToLayoutBox(o)->InlineBoxWrapper()->Root();
-        ASSERT(false); // BKTODO: line_boxes.insert(&box);
+        line_boxes.insert(&box);
       }
     } else if (o->IsText() ||
                (o->IsLayoutInline() && !walker.AtEndOfInline())) {
@@ -4698,14 +4637,11 @@ void LayoutBlockFlow::SimplifiedNormalFlowInlineLayout() {
   // FIXME: Glyph overflow will get lost in this case, but not really a big
   // deal.
   GlyphOverflowAndFallbackFontsMap text_box_data_map;
-  ASSERT(false); // BKTODO:
-#if 0
   for (ListHashSet<RootInlineBox*>::const_iterator it = line_boxes.begin();
        it != line_boxes.end(); ++it) {
     RootInlineBox* box = *it;
     box->ComputeOverflow(box->LineTop(), box->LineBottom(), text_box_data_map);
   }
-#endif
 }
 
 bool LayoutBlockFlow::RecalcInlineChildrenOverflow() {
@@ -4720,7 +4656,7 @@ bool LayoutBlockFlow::RecalcInlineChildrenOverflow() {
       if (layout_object->IsLayoutBlock()) {
         if (InlineBox* inline_box_wrapper =
                 ToLayoutBlock(layout_object)->InlineBoxWrapper())
-          ASSERT(false); // BKTODO: line_boxes.insert(&inline_box_wrapper->Root());
+          line_boxes.insert(&inline_box_wrapper->Root());
       }
     }
   }
@@ -4728,15 +4664,12 @@ bool LayoutBlockFlow::RecalcInlineChildrenOverflow() {
   // FIXME: Glyph overflow will get lost in this case, but not really a big
   // deal.
   GlyphOverflowAndFallbackFontsMap text_box_data_map;
-  ASSERT(false); // BKTODO:
-#if 0
   for (ListHashSet<RootInlineBox*>::const_iterator it = line_boxes.begin();
        it != line_boxes.end(); ++it) {
     RootInlineBox* box = *it;
     box->ClearKnownToHaveNoOverflow();
     box->ComputeOverflow(box->LineTop(), box->LineBottom(), text_box_data_map);
   }
-#endif
   return children_overflow_changed;
 }
 

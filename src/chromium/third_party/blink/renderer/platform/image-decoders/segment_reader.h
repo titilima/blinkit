@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: segment_reader.h
+// Description: SegmentReader Class
+//      Author: Ziming Li
+//     Created: 2021-01-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -35,7 +46,7 @@ class PLATFORM_EXPORT SegmentReader
   // underlying SharedBuffer. This class does not modify it, so that would
   // mean modifying it in another way.
   static scoped_refptr<SegmentReader> CreateFromSharedBuffer(
-      scoped_refptr<SharedBuffer>);
+      const std::shared_ptr<SharedBuffer>&);
 
   // These versions use thread-safe input, so they are always thread-safe.
   static scoped_refptr<SegmentReader> CreateFromSkData(sk_sp<SkData>);

@@ -56,4 +56,10 @@ bool ResourceError::IsCancellation(void) const
     return BK_ERR_CANCELLED == m_errorCode;
 }
 
+bool ResourceError::ShouldCollapseInitiator(void) const
+{
+    ASSERT(false); // BKTODO:
+    return false;
+}
+
 } // namespace blink

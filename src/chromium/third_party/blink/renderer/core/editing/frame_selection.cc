@@ -937,7 +937,7 @@ void FrameSelection::SetFrameIsFocused(bool flag) {
 }
 
 bool FrameSelection::FrameIsFocusedAndActive() const {
-  ASSERT(false); // BKTODO:
+  ASSERT(!focused_ || nullptr == frame_->GetPage()); // BKTODO:
   return false;
 #if 0
   return focused_ && frame_->GetPage() &&

@@ -53,7 +53,7 @@ namespace blink {
 inline HTMLDataListElement::HTMLDataListElement(Document& document)
     : HTMLElement(HTMLNames::datalistTag, document) {}
 
-Element* HTMLDataListElement::Create(Document& document, const CreateElementFlags) {
+HTMLDataListElement* HTMLDataListElement::Create(Document& document) {
   UseCounter::Count(document, WebFeature::kDataListElement);
   return new HTMLDataListElement(document);
 }

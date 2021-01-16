@@ -354,6 +354,18 @@ void LocalFrameView::IncrementVisuallyNonEmptyCharacterCount(unsigned count)
         SetIsVisuallyNonEmpty();
 }
 
+void LocalFrameView::IncrementVisuallyNonEmptyPixelCount(const IntSize &size)
+{
+    if (m_isVisuallyNonEmpty)
+        return;
+    m_visuallyNonEmptyPixelCount += size.Area();
+    // Use a threshold value to prevent very small amounts of visible content from
+    // triggering didMeaningfulLayout.
+    static const unsigned kVisualPixelThreshold = 32 * 32;
+    if (m_visuallyNonEmptyPixelCount > kVisualPixelThreshold)
+        SetIsVisuallyNonEmpty();
+}
+
 bool LocalFrameView::IsInPerformLayout(void) const
 {
     return Lifecycle().GetState() == DocumentLifecycle::kInPerformLayout;
@@ -1911,6 +1923,13 @@ void LocalFrameView::ViewportSizeChanged(bool widthChanged, bool heightChanged)
 
     if (nullptr != document && !IsInPerformLayout())
         MarkViewportConstrainedObjectsForLayout(widthChanged, heightChanged);
+}
+
+FloatSize LocalFrameView::ViewportSizeForMediaQueries(void) const
+{
+    FloatSize viewportSize(GetLayoutSize());
+    viewportSize.Scale(1 / GetFrame().PageZoomFactor());
+    return viewportSize;
 }
 
 FloatSize LocalFrameView::ViewportSizeForViewportUnits(void) const

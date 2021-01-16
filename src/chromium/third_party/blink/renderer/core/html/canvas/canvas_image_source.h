@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: canvas_image_source.h
+// Description: CanvasImageSource Class
+//      Author: Ziming Li
+//     Created: 2021-01-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2007 Alp Toker <alp@atoker.com>
@@ -31,7 +42,7 @@
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/geometry/float_size.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_types.h"
-#include "third_party/blink/renderer/platform/weborigin/kurl.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -79,7 +90,7 @@ class CORE_EXPORT CanvasImageSource {
       const FloatSize& default_object_size) const {
     return ElementSize(default_object_size);
   }
-  virtual const KURL& SourceURL() const { return BlankURL(); }
+  virtual const GURL& SourceURL() const { return BlankURL(); }
   virtual bool IsOpaque() const { return false; }
   virtual bool IsAccelerated() const = 0;
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_element_base.cc
+// Description: ImageElementBase Class
+//      Author: Ziming Li
+//     Created: 2021-01-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,10 +18,10 @@
 #include "third_party/blink/renderer/core/dom/dom_exception.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
-#include "third_party/blink/renderer/core/imagebitmap/image_bitmap.h"
+// BKTODO: #include "third_party/blink/renderer/core/imagebitmap/image_bitmap.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/loader/image_loader.h"
-#include "third_party/blink/renderer/core/svg/graphics/svg_image_for_container.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/graphics/svg_image_for_container.h"
 
 namespace blink {
 
@@ -56,6 +67,7 @@ scoped_refptr<Image> ImageElementBase::GetSourceImageForCanvas(
   }
 
   scoped_refptr<Image> source_image = image_content->GetImage();
+#if 0 // BKTODO:
   if (source_image->IsSVGImage()) {
     UseCounter::Count(GetElement().GetDocument(), WebFeature::kSVGInCanvas2D);
     SVGImage* svg_image = ToSVGImage(source_image.get());
@@ -64,6 +76,7 @@ scoped_refptr<Image> ImageElementBase::GetSourceImageForCanvas(
         svg_image, image_size, 1,
         GetElement().GetDocument().CompleteURL(GetElement().ImageSourceURL()));
   }
+#endif
 
   *status = kNormalSourceImageStatus;
   return source_image->ImageForDefaultFrame();
@@ -82,8 +95,10 @@ FloatSize ImageElementBase::ElementSize(
     return FloatSize();
 
   Image* image = image_content->GetImage();
+#if 0 // BKTODO: Check if necessary.
   if (image->IsSVGImage())
     return ToSVGImage(image)->ConcreteObjectSize(default_object_size);
+#endif
 
   return FloatSize(
       image_content->IntrinsicSize(LayoutObject::ShouldRespectImageOrientation(
@@ -97,8 +112,10 @@ FloatSize ImageElementBase::DefaultDestinationSize(
     return FloatSize();
 
   Image* image = image_content->GetImage();
+#if 0 // BKTODO: Check if necessary.
   if (image->IsSVGImage())
     return ToSVGImage(image)->ConcreteObjectSize(default_object_size);
+#endif
 
   return FloatSize(
       image_content->IntrinsicSize(LayoutObject::ShouldRespectImageOrientation(
@@ -109,7 +126,7 @@ bool ImageElementBase::IsAccelerated() const {
   return false;
 }
 
-const KURL& ImageElementBase::SourceURL() const {
+const GURL& ImageElementBase::SourceURL() const {
   return CachedImage()->GetResponse().Url();
 }
 
@@ -129,6 +146,7 @@ IntSize ImageElementBase::BitmapSourceSize() const {
       GetElement().GetLayoutObject()));
 }
 
+#if 0 // BKTODO:
 ScriptPromise ImageElementBase::CreateImageBitmap(
     ScriptState* script_state,
     EventTarget& event_target,
@@ -169,6 +187,7 @@ ScriptPromise ImageElementBase::CreateImageBitmap(
                         this, crop_rect,
                         event_target.ToLocalDOMWindow()->document(), options));
 }
+#endif
 
 Image::ImageDecodingMode ImageElementBase::GetDecodingModeForPainting(
     PaintImage::Id new_id) {

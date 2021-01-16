@@ -38,7 +38,12 @@
 
 #include "tree_scope_adopter.h"
 
-#include "third_party/blink/renderer/core/dom/node.h"
+#include "third_party/blink/renderer/core/dom/node_traversal.h"
+#ifdef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/dom/element.h"
+#else
+#   include "third_party/blink/renderer/core/dom/shadow_root.h"
+#endif
 
 namespace blink {
 
@@ -49,7 +54,71 @@ TreeScopeAdopter::TreeScopeAdopter(Node &toAdopt, TreeScope &newScope)
 
 void TreeScopeAdopter::Execute(void) const
 {
-    ASSERT(false); // BKTODO:
+    MoveTreeToNewScope(*m_toAdopt);
+    Document &oldDocument = OldScope().GetDocument();
+    if (oldDocument == NewScope().GetDocument())
+        return;
+    ASSERT(false); // BKTODO: oldDocument.DidMoveTreeToNewDocument(*m_toAdopt);
+}
+
+void TreeScopeAdopter::MoveTreeToNewScope(Node &root) const
+{
+    ASSERT(NeedsScopeChange());
+
+    // If an element is moved from a document and then eventually back again the
+    // collection cache for that element may contain stale data as changes made to
+    // it will have updated the DOMTreeVersion of the document it was moved to. By
+    // increasing the DOMTreeVersion of the donating document here we ensure that
+    // the collection cache will be invalidated as needed when the element is
+    // moved back.
+    Document &oldDocument = OldScope().GetDocument();
+    Document &newDocument = NewScope().GetDocument();
+
+    bool willMoveToNewDocument = oldDocument != newDocument;
+    for (Node &node : NodeTraversal::InclusiveDescendantsOf(root))
+    {
+        UpdateTreeScope(node);
+
+        if (willMoveToNewDocument)
+        {
+            ASSERT(false); // BKTODO: MoveNodeToNewDocument(node, old_document, new_document);
+        }
+        else if (node.HasRareData())
+        {
+            NodeRareData *rareData = node.RareData();
+            if (rareData->NodeLists())
+                ASSERT(false); // BKTODO: rareData->NodeLists()->AdoptTreeScope();
+        }
+
+        if (!node.IsElementNode())
+            continue;
+
+        Element &element = ToElement(node);
+        if (auto *attrs = element.GetAttrNodeList())
+        {
+            ASSERT(false); // BKTODO:
+#if 0
+            for (const auto& attr : *attrs)
+                MoveTreeToNewScope(*attr);
+#endif
+        }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+        if (ShadowRoot *shadow = element.GetShadowRoot())
+        {
+            shadow->SetParentTreeScope(NewScope());
+            if (willMoveToNewDocument)
+                ASSERT(false); // BKTODO: MoveShadowTreeToNewDocument(*shadow, old_document, new_document);
+        }
+#endif
+    }
+}
+
+void TreeScopeAdopter::UpdateTreeScope(Node &node) const
+{
+    ASSERT(!node.IsTreeScope());
+    ASSERT(node.GetTreeScope() == OldScope());
+    node.SetTreeScope(m_newScope);
 }
 
 } // namespace blink

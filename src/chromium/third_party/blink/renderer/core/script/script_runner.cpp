@@ -184,8 +184,9 @@ void ScriptRunner::NotifyScriptStreamerFinished(void)
 
 void ScriptRunner::PostTask(const base::Location &webTraceLocation)
 {
-    const auto task = std::bind(&ScriptRunner::ExecuteTask, this);
-    m_taskRunner->PostTask(webTraceLocation, task);
+    m_taskRunner->PostTask(webTraceLocation,
+        std::bind(&ScriptRunner::ExecuteTask, this)
+    );
 }
 
 void ScriptRunner::QueueScriptForExecution(PendingScript *pendingScript)

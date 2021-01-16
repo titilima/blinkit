@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: deferred_image_decoder.h
+// Description: DeferredImageDecoder Class
+//      Author: Ziming Li
+//     Created: 2021-01-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -51,7 +62,7 @@ class PLATFORM_EXPORT DeferredImageDecoder final {
 
  public:
   static std::unique_ptr<DeferredImageDecoder> Create(
-      scoped_refptr<SharedBuffer> data,
+      const std::shared_ptr<SharedBuffer> &data,
       bool data_complete,
       ImageDecoder::AlphaOption,
       const ColorBehavior&);
@@ -65,8 +76,8 @@ class PLATFORM_EXPORT DeferredImageDecoder final {
 
   sk_sp<PaintImageGenerator> CreateGenerator(size_t index);
 
-  scoped_refptr<SharedBuffer> Data();
-  void SetData(scoped_refptr<SharedBuffer> data, bool all_data_received);
+  std::shared_ptr<SharedBuffer> Data();
+  void SetData(const std::shared_ptr<SharedBuffer> &data, bool all_data_received);
 
   bool IsSizeAvailable();
   bool HasEmbeddedColorProfile() const;
@@ -90,7 +101,7 @@ class PLATFORM_EXPORT DeferredImageDecoder final {
   void ActivateLazyDecoding();
   void PrepareLazyDecodedFrames();
 
-  void SetDataInternal(scoped_refptr<SharedBuffer> data,
+  void SetDataInternal(const std::shared_ptr<SharedBuffer> &data,
                        bool all_data_received,
                        bool push_data_to_decoder);
 

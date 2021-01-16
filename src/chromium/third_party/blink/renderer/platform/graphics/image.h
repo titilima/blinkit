@@ -122,7 +122,6 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
     kSizeAvailable,
   };
 
-#if 0 // BKTODO:
   // If SetData() returns |kSizeAvailableAndLoadingAsynchronously|:
   //   Image loading is continuing asynchronously
   //   (only when |this| is SVGImage and |all_data_received| is true), and
@@ -130,9 +129,8 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
   // Otherwise:
   //   Image loading is completed synchronously.
   //   ImageResourceObserver::AsyncLoadCompleted() is not called.
-  virtual SizeAvailability SetData(scoped_refptr<SharedBuffer> data,
+  virtual SizeAvailability SetData(const std::shared_ptr<SharedBuffer> &data,
                                    bool all_data_received);
-#endif
   virtual SizeAvailability DataChanged(bool /*all_data_received*/) {
     return kSizeUnavailable;
   }
@@ -142,9 +140,7 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
 
   virtual void DestroyDecodedData() = 0;
 
-#if 0 // BKTODO:
-  virtual scoped_refptr<SharedBuffer> Data() { return encoded_image_data_; }
-#endif
+  virtual std::shared_ptr<SharedBuffer> Data() { return encoded_image_data_; }
 
   // Animation begins whenever someone draws the image, so startAnimation() is
   // not normally called. It will automatically pause once all observers no
@@ -192,7 +188,6 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
     kAsyncDecode
   };
 
-#if 0 // BKTODO:
   static PaintImage::DecodingMode ToPaintImageDecodingMode(
       ImageDecodingMode mode) {
     switch (mode) {
@@ -209,14 +204,12 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
   }
 
   virtual PaintImage PaintImageForCurrentFrame() = 0;
-#endif
 
   enum ImageClampingMode {
     kClampImageToSourceRect,
     kDoNotClampImageToSourceRect
   };
 
-#if 0 // BKTODO:
   virtual void Draw(cc::PaintCanvas*,
                     const cc::PaintFlags&,
                     const FloatRect& dst_rect,
@@ -226,7 +219,6 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
                     ImageDecodingMode) = 0;
 
   virtual bool ApplyShader(cc::PaintFlags&, const SkMatrix& local_matrix);
-#endif
 
   // Use ContextProvider() for immediate use only, use
   // ContextProviderWrapper() to obtain a retainable reference. Note:
@@ -290,9 +282,7 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
     high_contrast_classification_ = high_contrast_classification;
   }
 
-#if 0 // BKTODO:
   PaintImage::Id paint_image_id() const { return stable_image_id_; }
-#endif
 
   // Returns an SkBitmap that is a copy of the image's current frame.
   SkBitmap AsSkBitmapForCurrentFrame(RespectImageOrientationEnum);
@@ -332,20 +322,16 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
                            const FloatRect&,
                            const FloatSize& repeat_spacing);
 
-#if 0 // BKTODO:
   // Creates and initializes a PaintImageBuilder with the metadata flags for the
   // PaintImage.
   PaintImageBuilder CreatePaintImageBuilder();
-#endif
 
   // Whether or not size is available yet.
   virtual bool IsSizeAvailable() { return true; }
 
  private:
   bool image_observer_disabled_;
-#if 0 // BKTODO:
-  scoped_refptr<SharedBuffer> encoded_image_data_;
-#endif
+  std::shared_ptr<SharedBuffer> encoded_image_data_;
   // TODO(Oilpan): consider having Image on the Oilpan heap and
   // turn this into a Member<>.
   //
@@ -354,9 +340,7 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
   // When the ImageResourceContent is garbage collected while Image is still
   // alive, |image_observer_| is cleared by WeakPersistent mechanism.
   ImageObserver *image_observer_;
-#if 0 // BKTODO:
   PaintImage::Id stable_image_id_;
-#endif
   const bool is_multipart_;
   HighContrastClassification high_contrast_classification_;
 

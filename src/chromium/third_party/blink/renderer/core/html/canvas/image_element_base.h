@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_element_base.h
+// Description: ImageElementBase Class
+//      Author: Ziming Li
+//     Created: 2021-01-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -27,10 +38,12 @@ class CORE_EXPORT ImageElementBase : public CanvasImageSource,
   static Image::ImageDecodingMode ParseImageDecodingMode(const AtomicString&);
 
   IntSize BitmapSourceSize() const override;
+#if 0 // BKTODO:
   ScriptPromise CreateImageBitmap(ScriptState*,
                                   EventTarget&,
                                   base::Optional<IntRect>,
                                   const ImageBitmapOptions&) override;
+#endif
 
   scoped_refptr<Image> GetSourceImageForCanvas(SourceImageStatus*,
                                                AccelerationHint,
@@ -49,7 +62,7 @@ class CORE_EXPORT ImageElementBase : public CanvasImageSource,
 
   bool IsOpaque() const override;
 
-  const KURL& SourceURL() const override;
+  const GURL& SourceURL() const override;
 
   ImageResourceContent* CachedImage() const;
 

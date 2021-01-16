@@ -57,6 +57,7 @@ public:
     std::string FailingURL(void) const { return m_failingURL.spec(); }
 
     bool IsCancellation(void) const;
+    bool ShouldCollapseInitiator(void) const;
 
     static bool Compare(const ResourceError &a, const ResourceError &b);
 private:

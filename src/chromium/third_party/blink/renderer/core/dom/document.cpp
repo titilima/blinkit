@@ -2707,6 +2707,15 @@ AnimationClock& Document::GetAnimationClock(void)
     return GetPage()->Animator().Clock();
 }
 
+LocalFrame* Document::GetFrameOfMasterDocument(void) const
+{
+    if (m_frame)
+        return m_frame;
+    if (m_importsController)
+        ASSERT(false); // BKTODO: return m_importsController->Master()->GetFrame();
+    return nullptr;
+}
+
 SlotAssignmentEngine& Document::GetSlotAssignmentEngine(void)
 {
     if (!m_slotAssignmentEngine)

@@ -51,9 +51,11 @@
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/css/style_engine.h"
+#   include "third_party/blink/renderer/core/dom/node_computed_style.h"
 #   include "third_party/blink/renderer/core/dom/shadow_root.h"
 #   include "third_party/blink/renderer/core/dom/slot_assignment_recalc_forbidden_scope.h"
 #   include "third_party/blink/renderer/core/dom/text.h"
+#   include "third_party/blink/renderer/core/html/html_slot_element.h"
 #endif
 
 using namespace BlinKit;
@@ -423,15 +425,12 @@ void ContainerNode::ChildrenChanged(const ChildrenChange &change)
 #ifndef BLINKIT_CRAWLER_ONLY
     if (change.IsChildInsertion())
     {
-        if (change.siblingChanged->NeedsStyleRecalc())
-            MarkAncestorsWithChildNeedsStyleRecalc(change.siblingChanged);
+        if (change.sibling_changed->NeedsStyleRecalc())
+            MarkAncestorsWithChildNeedsStyleRecalc(change.sibling_changed);
     }
     else if (change.IsChildRemoval() || change.type == kAllChildrenRemoved)
     {
-        ASSERT(false); // BKTODO:
-#if 0
         GetDocument().GetStyleEngine().ChildrenRemoved(*this);
-#endif
     }
 #endif
 }
@@ -1237,16 +1236,10 @@ void ContainerNode::RebuildChildrenLayoutTrees(WhitespaceAttacher &whitespaceAtt
 
     if (IsActiveSlotOrActiveV0InsertionPoint())
     {
-        ASSERT(false); // BKTODO:
-#if 0
-        if (auto* slot = ToHTMLSlotElementOrNull(this)) {
-            slot->RebuildDistributedChildrenLayoutTrees(whitespace_attacher);
-        }
-        else {
-            ToV0InsertionPoint(this)->RebuildDistributedChildrenLayoutTrees(
-                whitespace_attacher);
-        }
-#endif
+        if (HTMLSlotElement *slot = ToHTMLSlotElementOrNull(this))
+            slot->RebuildDistributedChildrenLayoutTrees(whitespaceAttacher);
+        else
+            ToV0InsertionPoint(this)->RebuildDistributedChildrenLayoutTrees(whitespaceAttacher);
         RebuildNonDistributedChildren();
         return;
     }

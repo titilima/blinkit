@@ -54,8 +54,8 @@ class PLATFORM_EXPORT StaticBitmapImage : public Image {
   static scoped_refptr<StaticBitmapImage> Create(
       sk_sp<SkImage>,
       base::WeakPtr<WebGraphicsContext3DProviderWrapper> = nullptr);
-  static scoped_refptr<StaticBitmapImage> Create(PaintImage);
 #endif
+  static scoped_refptr<StaticBitmapImage> Create(PaintImage);
   static scoped_refptr<StaticBitmapImage> Create(scoped_refptr<Uint8Array>&&,
                                                  const SkImageInfo&);
   static scoped_refptr<StaticBitmapImage> Create(WTF::ArrayBufferContents&,
@@ -146,7 +146,6 @@ class PLATFORM_EXPORT StaticBitmapImage : public Image {
 #endif
 
  protected:
-#if 0 // BKTODO:
   // Helper for sub-classes
   void DrawHelper(cc::PaintCanvas*,
                   const cc::PaintFlags&,
@@ -154,7 +153,6 @@ class PLATFORM_EXPORT StaticBitmapImage : public Image {
                   const FloatRect&,
                   ImageClampingMode,
                   const PaintImage&);
-#endif
 
   // The following property is here because the SkImage API doesn't expose the
   // info. It is applied to both UnacceleratedStaticBitmapImage and

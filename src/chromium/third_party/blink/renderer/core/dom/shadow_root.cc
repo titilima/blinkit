@@ -49,7 +49,7 @@
 #include "third_party/blink/renderer/core/dom/slot_assignment_engine.h"
 #include "third_party/blink/renderer/core/dom/text.h"
 #include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
-// BKTODO: #include "third_party/blink/renderer/core/dom/whitespace_attacher.h"
+#include "third_party/blink/renderer/core/dom/whitespace_attacher.h"
 #include "third_party/blink/renderer/core/editing/serializers/serialization.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_content_element.h"
@@ -158,8 +158,6 @@ void ShadowRoot::setInnerHTML(const StringOrTrustedHTML& stringOrHtml,
 }
 
 void ShadowRoot::RecalcStyle(StyleRecalcChange change) {
-  ASSERT(false); // BKTODO:
-#if 0
   // ShadowRoot doesn't support custom callbacks.
   DCHECK(!HasCustomStyleCallbacks());
 
@@ -175,13 +173,12 @@ void ShadowRoot::RecalcStyle(StyleRecalcChange change) {
 
   if (change >= kUpdatePseudoElements || ChildNeedsStyleRecalc())
     RecalcDescendantStyles(change);
-#endif
   ClearChildNeedsStyleRecalc();
 }
 
 void ShadowRoot::RebuildLayoutTree(WhitespaceAttacher& whitespace_attacher) {
   ClearNeedsReattachLayoutTree();
-  ASSERT(false); // BKTODO: RebuildChildrenLayoutTrees(whitespace_attacher);
+  RebuildChildrenLayoutTrees(whitespace_attacher);
   ClearChildNeedsReattachLayoutTree();
 }
 
@@ -207,7 +204,7 @@ Node::InsertionNotificationRequest ShadowRoot::InsertedInto(
   if (!insertion_point.isConnected())
     return kInsertionDone;
 
-  ASSERT(false); // BKTODO: GetDocument().GetSlotAssignmentEngine().Connected(*this);
+  GetDocument().GetSlotAssignmentEngine().Connected(*this);
 
   // FIXME: When parsing <video controls>, InsertedInto() is called many times
   // without invoking RemovedFrom().  For now, we check
@@ -227,8 +224,6 @@ Node::InsertionNotificationRequest ShadowRoot::InsertedInto(
 
 void ShadowRoot::RemovedFrom(ContainerNode& insertion_point) {
   if (insertion_point.isConnected()) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (NeedsSlotAssignmentRecalc())
       GetDocument().GetSlotAssignmentEngine().Disconnected(*this);
     GetDocument().GetStyleEngine().ShadowRootRemovedFromDocument(this);
@@ -246,7 +241,6 @@ void ShadowRoot::RemovedFrom(ContainerNode& insertion_point) {
           .GetPendingNodeInvalidations()
           .ClearInvalidation(*this);
     }
-#endif
   }
 
   DocumentFragment::RemovedFrom(insertion_point);
@@ -254,27 +248,18 @@ void ShadowRoot::RemovedFrom(ContainerNode& insertion_point) {
 
 void ShadowRoot::SetNeedsAssignmentRecalc() {
   DCHECK(IsV1());
-  ASSERT(false); // BKTODO:
-#if 0
   if (!slot_assignment_)
     return;
   return slot_assignment_->SetNeedsAssignmentRecalc();
-#endif
 }
 
 bool ShadowRoot::NeedsSlotAssignmentRecalc() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return slot_assignment_ && slot_assignment_->NeedsAssignmentRecalc();
-#endif
 }
 
 void ShadowRoot::ChildrenChanged(const ChildrenChange& change) {
   ContainerNode::ChildrenChanged(change);
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (change.IsChildElementChange()) {
     CheckForSiblingStyleChanges(
         change.type == kElementRemoved ? kSiblingElementRemoved
@@ -282,7 +267,6 @@ void ShadowRoot::ChildrenChanged(const ChildrenChange& change) {
         ToElement(change.sibling_changed), change.sibling_before_change,
         change.sibling_after_change);
   }
-#endif
 }
 
 StyleSheetList& ShadowRoot::StyleSheets() {

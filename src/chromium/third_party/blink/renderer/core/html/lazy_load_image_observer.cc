@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: lazy_load_image_observer.cc
+// Description: LazyLoadImageObserver Class
+//      Author: Ziming Li
+//     Created: 2021-01-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,7 +19,7 @@
 
 #include "base/metrics/histogram_macros.h"
 #include "build/build_config.h"
-#include "third_party/blink/public/platform/web_effective_connection_type.h"
+// BKTODO: #include "third_party/blink/public/platform/web_effective_connection_type.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/node_computed_style.h"
@@ -17,9 +28,11 @@
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/html/html_image_element.h"
 #include "third_party/blink/renderer/core/html_element_type_helpers.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/inspector/console_message.h"
 #include "third_party/blink/renderer/core/intersection_observer/intersection_observer.h"
 #include "third_party/blink/renderer/core/intersection_observer/intersection_observer_entry.h"
+#endif
 #include "third_party/blink/renderer/core/style/computed_style.h"
 
 namespace blink {
@@ -27,6 +40,7 @@ namespace blink {
 namespace {
 
 int GetLazyImageLoadingViewportDistanceThresholdPx(const Document& document) {
+#if 0 // BKTODO:
   const Settings* settings = document.GetSettings();
   if (!settings)
     return 0;
@@ -46,13 +60,14 @@ int GetLazyImageLoadingViewportDistanceThresholdPx(const Document& document) {
     case WebEffectiveConnectionType::kType4G:
       return settings->GetLazyImageLoadingDistanceThresholdPx4G();
   }
+#endif
   NOTREACHED();
   return 0;
 }
 
 Document* GetRootDocumentOrNull(Element* element) {
   if (LocalFrame* frame = element->GetDocument().GetFrame())
-    return frame->LocalFrameRoot().GetDocument();
+    ASSERT(false); // BKTODO: return frame->LocalFrameRoot().GetDocument();
   return nullptr;
 }
 
@@ -60,35 +75,47 @@ Document* GetRootDocumentOrNull(Element* element) {
 
 void LazyLoadImageObserver::StartMonitoring(Element* element) {
   if (Document* document = GetRootDocumentOrNull(element)) {
+    ASSERT(false); // BKTODO:
+#if 0
     document->EnsureLazyLoadImageObserver().StartMonitoringNearViewport(
         document, element);
+#endif
   }
 }
 
 void LazyLoadImageObserver::StopMonitoring(Element* element) {
   if (Document* document = GetRootDocumentOrNull(element)) {
+    ASSERT(false); // BKTODO:
+#if 0
     document->EnsureLazyLoadImageObserver()
         .lazy_load_intersection_observer_->unobserve(element);
+#endif
   }
 }
 
 void LazyLoadImageObserver::StartTrackingVisibilityMetrics(
     HTMLImageElement* image_element) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!RuntimeEnabledFeatures::LazyImageVisibleLoadTimeMetricsEnabled())
     return;
   if (Document* document = GetRootDocumentOrNull(image_element)) {
     document->EnsureLazyLoadImageObserver().StartMonitoringVisibility(
         document, image_element);
   }
+#endif
 }
 
 void LazyLoadImageObserver::RecordMetricsOnLoadFinished(
     HTMLImageElement* image_element) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!RuntimeEnabledFeatures::LazyImageVisibleLoadTimeMetricsEnabled())
     return;
   if (Document* document = GetRootDocumentOrNull(image_element)) {
     document->EnsureLazyLoadImageObserver().OnLoadFinished(image_element);
   }
+#endif
 }
 
 LazyLoadImageObserver::LazyLoadImageObserver() = default;
@@ -97,6 +124,8 @@ void LazyLoadImageObserver::StartMonitoringNearViewport(Document* root_document,
                                                         Element* element) {
   DCHECK(RuntimeEnabledFeatures::LazyImageLoadingEnabled());
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!lazy_load_intersection_observer_) {
     root_document->AddConsoleMessage(ConsoleMessage::Create(
         kInterventionMessageSource, kInfoMessageLevel,
@@ -110,6 +139,7 @@ void LazyLoadImageObserver::StartMonitoringNearViewport(Document* root_document,
                            WrapWeakPersistent(this)));
   }
   lazy_load_intersection_observer_->observe(element);
+#endif
 }
 
 void LazyLoadImageObserver::LoadIfNearViewport(
@@ -117,6 +147,8 @@ void LazyLoadImageObserver::LoadIfNearViewport(
   DCHECK(!entries.IsEmpty());
 
   for (auto entry : entries) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!entry->isIntersecting())
       continue;
     Element* element = entry->target();
@@ -128,12 +160,15 @@ void LazyLoadImageObserver::LoadIfNearViewport(
       style->LoadDeferredImages(element->GetDocument());
 
     lazy_load_intersection_observer_->unobserve(element);
+#endif
   }
 }
 
 void LazyLoadImageObserver::StartMonitoringVisibility(
     Document* root_document,
     HTMLImageElement* image_element) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(RuntimeEnabledFeatures::LazyImageVisibleLoadTimeMetricsEnabled());
 
   VisibleLoadTimeMetrics& visible_load_time_metrics =
@@ -149,9 +184,12 @@ void LazyLoadImageObserver::StartMonitoringVisibility(
                            WrapWeakPersistent(this)));
   }
   visibility_metrics_observer_->observe(image_element);
+#endif
 }
 
 void LazyLoadImageObserver::OnLoadFinished(HTMLImageElement* image_element) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(RuntimeEnabledFeatures::LazyImageVisibleLoadTimeMetricsEnabled());
 
   VisibleLoadTimeMetrics& visible_load_time_metrics =
@@ -226,6 +264,7 @@ void LazyLoadImageObserver::OnLoadFinished(HTMLImageElement* image_element) {
       // connection types.
       break;
   }
+#endif
 }
 
 void LazyLoadImageObserver::OnVisibilityChanged(
@@ -233,6 +272,8 @@ void LazyLoadImageObserver::OnVisibilityChanged(
   DCHECK(!entries.IsEmpty());
 
   for (auto entry : entries) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (auto* image_element = ToHTMLImageElementOrNull(entry->target())) {
       VisibleLoadTimeMetrics& visible_load_time_metrics =
           image_element->EnsureVisibleLoadTimeMetrics();
@@ -247,6 +288,7 @@ void LazyLoadImageObserver::OnVisibilityChanged(
         visibility_metrics_observer_->unobserve(image_element);
       }
     }
+#endif
   }
 }
 

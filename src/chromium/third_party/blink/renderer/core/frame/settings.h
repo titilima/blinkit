@@ -15,6 +15,7 @@
 #pragma once
 
 #include "third_party/blink/public/platform/web_viewport_style.h"
+#include "third_party/blink/renderer/platform/graphics/image_animation_policy.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace blink {
@@ -37,6 +38,7 @@ public:
     static constexpr bool PreferCompositingToLCDTextEnabled = false;
     static constexpr bool ScrollAnimatorEnabled = true;
     static constexpr bool ShouldClearDocumentBackground = true;
+    static constexpr bool ShouldRespectImageOrientation = false;
     static constexpr bool ShrinksViewportContentToFit = true;
     static constexpr bool TextAutosizingEnabled = false;
     static constexpr bool UseLegacyBackgroundSizeShorthandBehavior = false;
@@ -44,6 +46,7 @@ public:
     static constexpr bool ViewportMetaEnabled = false;
     static constexpr bool ViewportMetaMergeContentQuirk = false;
 
+    static constexpr ImageAnimationPolicy GetImageAnimationPolicy(void) { return kImageAnimationPolicyAllowed; }
     static constexpr WebViewportStyle ViewportStyle = WebViewportStyle::kDefault;
 };
 

@@ -152,10 +152,13 @@ void ReplacedPainter::Paint(const PaintInfo& paint_info) {
       !layout_replaced_.IsSelected())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
   bool skip_clip = layout_replaced_.IsSVGRoot() &&
                    !ToLayoutSVGRoot(layout_replaced_).ShouldApplyViewportClip();
+#else
+  ASSERT(!layout_replaced_.IsSVGRoot());
+  constexpr bool skip_clip = false;
+#endif
   if (skip_clip || !layout_replaced_.PhysicalContentBoxRect().IsEmpty()) {
     ScopedReplacedContentPaintState content_paint_state(paint_state,
                                                         layout_replaced_);
@@ -166,7 +169,6 @@ void ReplacedPainter::Paint(const PaintInfo& paint_info) {
     layout_replaced_.PaintReplaced(content_paint_state.GetPaintInfo(),
                                    content_paint_state.PaintOffset());
   }
-#endif
 
   if (layout_replaced_.CanResize()) {
     ScrollableAreaPainter(*layout_replaced_.Layer()->GetScrollableArea())

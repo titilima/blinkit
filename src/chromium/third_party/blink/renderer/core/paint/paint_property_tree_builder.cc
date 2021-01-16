@@ -1223,8 +1223,7 @@ static bool IsPrintingRootLayoutView(const LayoutObject& object) {
 
 static bool NeedsOverflowClipForReplacedContents(
     const LayoutReplaced& replaced) {
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   // <svg> may optionally allow overflow. If an overflow clip is required,
   // always create it without checking whether the actual content overflows.
   if (replaced.IsSVGRoot())

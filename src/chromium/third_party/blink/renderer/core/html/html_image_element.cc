@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_image_element.cc
+// Description: HTMLImageElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -22,8 +33,12 @@
  */
 
 #include "third_party/blink/renderer/core/html/html_image_element.h"
+
+#include "base/strings/string_util.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/bindings/core/v8/script_event_listener.h"
 #include "third_party/blink/renderer/core/css/media_query_matcher.h"
+#endif
 #include "third_party/blink/renderer/core/css/media_values_dynamic.h"
 #include "third_party/blink/renderer/core/css/parser/sizes_attribute_parser.h"
 #include "third_party/blink/renderer/core/css/style_change_reason.h"
@@ -35,20 +50,24 @@
 #include "third_party/blink/renderer/core/dom/shadow_root.h"
 #include "third_party/blink/renderer/core/frame/deprecation.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
-#include "third_party/blink/renderer/core/html/canvas/html_canvas_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/canvas/html_canvas_element.h"
 #include "third_party/blink/renderer/core/html/forms/form_associated.h"
-#include "third_party/blink/renderer/core/html/forms/html_form_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/html_form_element.h"
 #include "third_party/blink/renderer/core/html/html_image_fallback_helper.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_picture_element.h"
 #include "third_party/blink/renderer/core/html/html_source_element.h"
+#endif
 #include "third_party/blink/renderer/core/html/media/media_element_parser_helpers.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/html/parser/html_srcset_parser.h"
 #include "third_party/blink/renderer/core/html_names.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/imagebitmap/image_bitmap.h"
 #include "third_party/blink/renderer/core/imagebitmap/image_bitmap_options.h"
 #include "third_party/blink/renderer/core/inspector/console_message.h"
 #include "third_party/blink/renderer/core/layout/adjust_for_absolute_zoom.h"
+#endif
 #include "third_party/blink/renderer/core/layout/layout_block_flow.h"
 #include "third_party/blink/renderer/core/layout/layout_image.h"
 #include "third_party/blink/renderer/core/layout/layout_object_factory.h"
@@ -58,8 +77,10 @@
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/style/content_data.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/svg/graphics/svg_image_for_container.h"
 #include "third_party/blink/renderer/core/trustedtypes/trusted_url.h"
+#endif
 #include "third_party/blink/renderer/platform/network/mime/content_type.h"
 #include "third_party/blink/renderer/platform/network/mime/mime_type_registry.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
@@ -69,6 +90,7 @@ namespace blink {
 
 using namespace HTMLNames;
 
+#if 0 // BKTODO:
 class HTMLImageElement::ViewportChangeListener final
     : public MediaQueryListListener {
  public:
@@ -91,6 +113,7 @@ class HTMLImageElement::ViewportChangeListener final
       : element_(element) {}
   Member<HTMLImageElement> element_;
 };
+#endif
 
 HTMLImageElement::HTMLImageElement(Document& document, bool created_by_parser)
     : HTMLElement(imgTag, document),
@@ -102,8 +125,8 @@ HTMLImageElement::HTMLImageElement(Document& document, bool created_by_parser)
       element_created_by_parser_(created_by_parser),
       is_fallback_image_(false),
       should_invert_color_(false),
-      sizes_set_width_(false),
-      referrer_policy_(kReferrerPolicyDefault) {
+      sizes_set_width_(false)/* // BKTODO:,
+      referrer_policy_(kReferrerPolicyDefault) */ {
   SetHasCustomStyleCallbacks();
   if (MediaElementParserHelpers::IsMediaElement(this) &&
       !MediaElementParserHelpers::IsUnsizedMediaEnabled(document)) {
@@ -187,7 +210,7 @@ void HTMLImageElement::CollectStyleForPresentationAttribute(
   } else if (name == heightAttr) {
     AddHTMLLengthToStyle(style, CSSPropertyHeight, value);
   } else if (name == borderAttr) {
-    ApplyBorderAttributeToStyle(value, style);
+    ASSERT(false); // BKTODO: ApplyBorderAttributeToStyle(value, style);
   } else if (name == vspaceAttr) {
     AddHTMLLengthToStyle(style, CSSPropertyMarginTop, value);
     AddHTMLLengthToStyle(style, CSSPropertyMarginBottom, value);
@@ -205,8 +228,8 @@ void HTMLImageElement::CollectStyleForPresentationAttribute(
 }
 
 const AtomicString HTMLImageElement::ImageSourceURL() const {
-  return best_fit_image_url_.IsNull() ? FastGetAttribute(srcAttr)
-                                      : best_fit_image_url_;
+  return best_fit_image_url_.empty() ? FastGetAttribute(srcAttr)
+                                     : AtomicString::FromStdUTF8(best_fit_image_url_);
 }
 
 HTMLFormElement* HTMLImageElement::formOwner() const {
@@ -221,6 +244,8 @@ void HTMLImageElement::FormRemovedFromTree(const Node& form_root) {
 
 void HTMLImageElement::ResetFormOwner() {
   form_was_set_by_parser_ = false;
+  ASSERT(false); // BKTODO:
+#if 0
   HTMLFormElement* nearest_form = FindFormAncestor();
   if (form_) {
     if (nearest_form == form_.Get())
@@ -233,12 +258,13 @@ void HTMLImageElement::ResetFormOwner() {
   } else {
     form_ = nullptr;
   }
+#endif
 }
 
 void HTMLImageElement::SetBestFitURLAndDPRFromImageCandidate(
     const ImageCandidate& candidate) {
   sizes_set_width_ = false;
-  best_fit_image_url_ = candidate.Url();
+  best_fit_image_url_ = candidate.Url().StdUtf8();
   float candidate_density = candidate.Density();
   float old_image_device_pixel_ratio = image_device_pixel_ratio_;
   if (candidate_density >= 0)
@@ -261,12 +287,15 @@ void HTMLImageElement::SetBestFitURLAndDPRFromImageCandidate(
   }
 
   if (intrinsic_sizing_viewport_dependant) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!listener_)
       listener_ = ViewportChangeListener::Create(this);
 
     GetDocument().GetMediaQueryMatcher().AddViewportListener(listener_);
+#endif
   } else if (listener_) {
-    GetDocument().GetMediaQueryMatcher().RemoveViewportListener(listener_);
+    ASSERT(false); // BKTODO: GetDocument().GetMediaQueryMatcher().RemoveViewportListener(listener_);
   }
 }
 
@@ -285,7 +314,8 @@ void HTMLImageElement::ParseAttribute(
   } else if (name == usemapAttr) {
     SetIsLink(!params.new_value.IsNull());
   } else if (name == referrerpolicyAttr) {
-    referrer_policy_ = kReferrerPolicyDefault;
+    ASSERT(false); // BKTODO: referrer_policy_ = kReferrerPolicyDefault;
+#if 0
     if (!params.new_value.IsNull()) {
       SecurityPolicy::ReferrerPolicyFromString(
           params.new_value, kSupportReferrerPolicyLegacyKeywords,
@@ -293,6 +323,8 @@ void HTMLImageElement::ParseAttribute(
       UseCounter::Count(GetDocument(),
                         WebFeature::kHTMLImageElementReferrerPolicyAttribute);
     }
+#endif
+#if 0 // BKTODO:
   } else if (name == decodingAttr) {
     UseCounter::Count(GetDocument(), WebFeature::kImageDecodingAttribute);
     decoding_mode_ = ParseImageDecodingMode(params.new_value);
@@ -315,6 +347,7 @@ void HTMLImageElement::ParseAttribute(
   } else if (name == lazyloadAttr &&
              EqualIgnoringASCIICase(params.new_value, "off")) {
     GetImageLoader().LoadDeferredImage(referrer_policy_);
+#endif
   } else {
     HTMLElement::ParseAttribute(params);
   }
@@ -351,6 +384,8 @@ ImageCandidate HTMLImageElement::FindBestFitImageFromPictureParent() {
     if (child == this)
       return ImageCandidate();
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!IsHTMLSourceElement(*child))
       continue;
 
@@ -376,6 +411,7 @@ ImageCandidate HTMLImageElement::FindBestFitImageFromPictureParent() {
       continue;
     source_ = source;
     return candidate;
+#endif
   }
   return ImageCandidate();
 }
@@ -426,15 +462,18 @@ void HTMLImageElement::AttachLayoutTree(AttachContext& context) {
 
 Node::InsertionNotificationRequest HTMLImageElement::InsertedInto(
     ContainerNode& insertion_point) {
+  ASSERT(!form_was_set_by_parser_); // BKTODO:
+#if 0
   if (!form_was_set_by_parser_ ||
       NodeTraversal::HighestAncestorOrSelf(insertion_point) !=
           NodeTraversal::HighestAncestorOrSelf(*form_.Get()))
     ResetFormOwner();
+#endif
   if (listener_)
-    GetDocument().GetMediaQueryMatcher().AddViewportListener(listener_);
+    ASSERT(false); // BKTODO: GetDocument().GetMediaQueryMatcher().AddViewportListener(listener_);
   Node* parent = parentNode();
   if (parent && IsHTMLPictureElement(*parent))
-    ToHTMLPictureElement(parent)->AddListenerToSourceChildren();
+    ASSERT(false); // BKTODO: ToHTMLPictureElement(parent)->AddListenerToSourceChildren();
 
   bool image_was_modified = false;
   if (GetDocument().IsActive()) {
@@ -447,21 +486,26 @@ Node::InsertionNotificationRequest HTMLImageElement::InsertedInto(
 
   if (image_was_modified ||
       GetImageLoader().ShouldUpdateOnInsertedInto(insertion_point)) {
-    GetImageLoader().UpdateFromElement(ImageLoader::kUpdateNormal,
-                                       referrer_policy_);
+    GetImageLoader().UpdateFromElement(ImageLoader::kUpdateNormal);
   }
   return HTMLElement::InsertedInto(insertion_point);
 }
 
 void HTMLImageElement::RemovedFrom(ContainerNode& insertion_point) {
+  ASSERT(!form_); // BKTODO:
+#if 0
   if (!form_ || NodeTraversal::HighestAncestorOrSelf(*form_.Get()) !=
                     NodeTraversal::HighestAncestorOrSelf(*this))
     ResetFormOwner();
+#endif
   if (listener_) {
+    ASSERT(false); // BKTODO:
+#if 0
     GetDocument().GetMediaQueryMatcher().RemoveViewportListener(listener_);
     Node* parent = parentNode();
     if (parent && IsHTMLPictureElement(*parent))
       ToHTMLPictureElement(parent)->RemoveListenerFromSourceChildren();
+#endif
   }
   HTMLElement::RemovedFrom(insertion_point);
 }
@@ -540,19 +584,27 @@ unsigned HTMLImageElement::naturalHeight() const {
 
 unsigned HTMLImageElement::LayoutBoxWidth() const {
   LayoutBox* box = GetLayoutBox();
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return box ? AdjustForAbsoluteZoom::AdjustInt(
                    box->PhysicalContentBoxRect().PixelSnappedWidth(), box)
              : 0;
+#endif
 }
 
 unsigned HTMLImageElement::LayoutBoxHeight() const {
   LayoutBox* box = GetLayoutBox();
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return box ? AdjustForAbsoluteZoom::AdjustInt(
                    box->PhysicalContentBoxRect().PixelSnappedHeight(), box)
              : 0;
+#endif
 }
 
-const String& HTMLImageElement::currentSrc() const {
+const std::string& HTMLImageElement::currentSrc() const {
   // http://www.whatwg.org/specs/web-apps/current-work/multipage/edits.html#dom-img-currentsrc
   // The currentSrc IDL attribute must return the img element's current
   // request's current URL.
@@ -566,16 +618,20 @@ const String& HTMLImageElement::currentSrc() const {
   ImageResourceContent* image_content = GetImageLoader().GetContent();
   if (!image_content ||
       (!image_content->ErrorOccurred() && !image_content->HasImage()))
-    return g_empty_atom;
+    return base::EmptyString();
 
-  return image_content->Url().GetString();
+  return image_content->Url().spec();
 }
 
 bool HTMLImageElement::IsURLAttribute(const Attribute& attribute) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return attribute.GetName() == srcAttr || attribute.GetName() == lowsrcAttr ||
          attribute.GetName() == longdescAttr ||
          (attribute.GetName() == usemapAttr && attribute.Value()[0] != '#') ||
          HTMLElement::IsURLAttribute(attribute);
+#endif
 }
 
 bool HTMLImageElement::HasLegalLinkAttribute(const QualifiedName& name) const {
@@ -592,7 +648,7 @@ bool HTMLImageElement::draggable() const {
 }
 
 void HTMLImageElement::setHeight(unsigned value) {
-  SetUnsignedIntegralAttribute(heightAttr, value);
+  ASSERT(false); // BKTODO: SetUnsignedIntegralAttribute(heightAttr, value);
 }
 
 IntSize HTMLImageElement::GetOverriddenIntrinsicSize() const {
@@ -607,7 +663,7 @@ IntSize HTMLImageElement::GetOverriddenIntrinsicSize() const {
   return overridden_intrinsic_size_;
 }
 
-KURL HTMLImageElement::Src() const {
+GURL HTMLImageElement::Src() const {
   return GetDocument().CompleteURL(getAttribute(srcAttr));
 }
 
@@ -617,11 +673,11 @@ void HTMLImageElement::SetSrc(const String& value) {
 
 void HTMLImageElement::SetSrc(const USVStringOrTrustedURL& value,
                               ExceptionState& exception_state) {
-  setAttribute(srcAttr, value, exception_state);
+  ASSERT(false); // BKTODO: setAttribute(srcAttr, value, exception_state);
 }
 
 void HTMLImageElement::setWidth(unsigned value) {
-  SetUnsignedIntegralAttribute(widthAttr, value);
+  ASSERT(false); // BKTODO: SetUnsignedIntegralAttribute(widthAttr, value);
 }
 
 int HTMLImageElement::x() const {
@@ -646,22 +702,29 @@ int HTMLImageElement::y() const {
   return abs_pos.Y();
 }
 
+#if 0 // BKTODO:
 ScriptPromise HTMLImageElement::decode(ScriptState* script_state,
                                        ExceptionState& exception_state) {
   return GetImageLoader().Decode(script_state, exception_state);
 }
+#endif
 
 bool HTMLImageElement::complete() const {
   return GetImageLoader().ImageComplete();
 }
 
+#if 0 // BKTODO:
 void HTMLImageElement::DidMoveToNewDocument(Document& old_document) {
   SelectSourceURL(ImageLoader::kUpdateIgnorePreviousError);
   GetImageLoader().ElementDidMoveToNewDocument();
   HTMLElement::DidMoveToNewDocument(old_document);
 }
+#endif
 
 bool HTMLImageElement::IsServerMap() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (!FastHasAttribute(ismapAttr))
     return false;
 
@@ -675,6 +738,7 @@ bool HTMLImageElement::IsServerMap() const {
   return GetDocument()
       .CompleteURL(StripLeadingAndTrailingHTMLSpaces(usemap))
       .IsEmpty();
+#endif
 }
 
 Image* HTMLImageElement::ImageContents() {
@@ -695,8 +759,10 @@ FloatSize HTMLImageElement::DefaultDestinationSize(
     return FloatSize();
 
   Image* image = image_content->GetImage();
+#if 0 // BKTODO: Check if necessary.
   if (image->IsSVGImage())
     return ToSVGImage(image)->ConcreteObjectSize(default_object_size);
+#endif
 
   LayoutSize size(image_content->IntrinsicSize(
       LayoutObject::ShouldRespectImageOrientation(GetLayoutObject())));
@@ -721,9 +787,12 @@ static bool SourceSizeValue(const Element* element,
 
 FetchParameters::ResourceWidth HTMLImageElement::GetResourceWidth() const {
   FetchParameters::ResourceWidth resource_width;
+  ASSERT(false); // BKTODO:
+#if 0
   Element* element = source_.Get();
   resource_width.is_set = SourceSizeValue(element ? element : this,
                                           GetDocument(), resource_width.width);
+#endif
   return resource_width;
 }
 
@@ -736,8 +805,7 @@ float HTMLImageElement::SourceSize(Element& element) {
 }
 
 void HTMLImageElement::ForceReload() const {
-  GetImageLoader().UpdateFromElement(ImageLoader::kUpdateForcedReload,
-                                     referrer_policy_);
+  GetImageLoader().UpdateFromElement(ImageLoader::kUpdateForcedReload);
 }
 
 void HTMLImageElement::SelectSourceURL(
@@ -754,7 +822,7 @@ void HTMLImageElement::SelectSourceURL(
   }
   SetBestFitURLAndDPRFromImageCandidate(candidate);
 
-  GetImageLoader().UpdateFromElement(behavior, referrer_policy_);
+  GetImageLoader().UpdateFromElement(behavior);
 
   ImageResourceContent* image_content = GetImageLoader().GetContent();
   // Images such as data: uri's can return immediately and may already have
@@ -852,12 +920,15 @@ scoped_refptr<ComputedStyle> HTMLImageElement::CustomStyleForLayoutObject() {
 }
 
 void HTMLImageElement::AssociateWith(HTMLFormElement* form) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (form && form->isConnected()) {
     form_ = form;
     form_was_set_by_parser_ = true;
     form_->Associate(*this);
     form_->DidAssociateByParser();
   }
+#endif
 }
 
 }  // namespace blink

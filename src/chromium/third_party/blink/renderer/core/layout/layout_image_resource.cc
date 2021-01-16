@@ -131,11 +131,7 @@ FloatSize LayoutImageResource::ImageSizeWithDefaultSize(
 }
 
 float LayoutImageResource::DeviceScaleFactor() const {
-  ASSERT(false); // BKTODO:
-  return 1;
-#if 0
   return DeviceScaleFactorDeprecated(layout_object_->GetFrame());
-#endif
 }
 
 Image* LayoutImageResource::BrokenImage(float device_scale_factor) {

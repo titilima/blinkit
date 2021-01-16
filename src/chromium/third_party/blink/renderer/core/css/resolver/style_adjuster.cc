@@ -52,11 +52,13 @@
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_text_area_element.h"
 #include "third_party/blink/renderer/core/html/html_iframe_element.h"
+#endif
 #include "third_party/blink/renderer/core/html/html_image_element.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_plugin_element.h"
 #include "third_party/blink/renderer/core/html/html_table_cell_element.h"
 #include "third_party/blink/renderer/core/html/media/html_media_element.h"
@@ -98,8 +100,6 @@ TouchAction AdjustTouchActionForElement(TouchAction touch_action,
 bool ShouldForceLegacyLayout(const ComputedStyle& style,
                              const ComputedStyle& layout_parent_style,
                              const Element& element) {
-  ASSERT(false); // BKTODO:
-#if 0
   // Form controls are not supported yet.
   if (element.ShouldForceLegacyLayout())
     return true;
@@ -114,12 +114,15 @@ bool ShouldForceLegacyLayout(const ComputedStyle& style,
 
   const Document& document = element.GetDocument();
 
+  ASSERT(false); // BKTODO:
+#if 0
   // TODO(layout-dev): Once LayoutNG handles inline content editable, we
   // should get rid of following code fragment.
   if (!RuntimeEnabledFeatures::EditingNGEnabled()) {
     if (style.UserModify() != EUserModify::kReadOnly || document.InDesignMode())
       return true;
   }
+#endif
 
   if (style.Display() == EDisplay::kWebkitBox ||
       style.Display() == EDisplay::kWebkitInlineBox)
@@ -147,7 +150,6 @@ bool ShouldForceLegacyLayout(const ComputedStyle& style,
   // 'text-combine-upright' property is not supported yet.
   if (style.HasTextCombine() && !style.IsHorizontalWritingMode())
     return true;
-#endif
 
   return false;
 }
@@ -299,14 +301,11 @@ static void AdjustStyleForHTMLElement(ComputedStyle& style,
     return;
   }
 
-  ASSERT(!element.HasTagName(html_names::kImgTag)); // BKTODO:
-#if 0
   if (auto* image = ToHTMLImageElementOrNull(element)) {
     if (image->IsCollapsed() || style.Display() == EDisplay::kContents)
       style.SetDisplay(EDisplay::kNone);
     return;
   }
-#endif
 
   if (IsHTMLTableElement(element)) {
     // Tables never support the -webkit-* values for text-align and will reset
@@ -764,8 +763,6 @@ void StyleAdjuster::AdjustComputedStyle(StyleResolverState& state,
     const AtomicString& pseudo_id = element->ShadowPseudoId();
     if (pseudo_id == "-webkit-input-placeholder" ||
         pseudo_id == "-internal-input-suggested") {
-      ASSERT(false); // BKTODO:
-#if 0
       TextControlElement* text_control =
           ToTextControl(element->OwnerShadowHost());
       DCHECK(text_control);
@@ -777,7 +774,6 @@ void StyleAdjuster::AdjustComputedStyle(StyleResolverState& state,
       // instead return false when text is being edited inside that block.
       // https://crbug.com/814954
       style.SetTextOverflow(text_control->ValueForTextOverflow());
-#endif
     }
   }
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: bitmap_image.cc
+// Description: BitmapImage Class
+//      Author: Ziming Li
+//     Created: 2021-01-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Samuel Weinig (sam.weinig@gmail.com)
  * Copyright (C) 2004, 2005, 2006, 2008 Apple Inc. All rights reserved.
@@ -44,7 +55,7 @@
 #include "third_party/blink/renderer/platform/instrumentation/platform_instrumentation.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
-#include "third_party/blink/renderer/platform/scheduler/public/thread_scheduler.h"
+// BKTODO: #include "third_party/blink/renderer/platform/scheduler/public/thread_scheduler.h"
 #include "third_party/blink/renderer/platform/timer.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
@@ -89,8 +100,8 @@ void BitmapImage::DestroyDecodedData() {
   NotifyMemoryChanged();
 }
 
-scoped_refptr<SharedBuffer> BitmapImage::Data() {
-  return decoder_ ? decoder_->Data() : nullptr;
+std::shared_ptr<SharedBuffer> BitmapImage::Data() {
+  return decoder_ ? decoder_->Data() : std::shared_ptr<SharedBuffer>();
 }
 
 void BitmapImage::NotifyMemoryChanged() {
@@ -156,7 +167,7 @@ bool BitmapImage::GetHotSpot(IntPoint& hot_spot) const {
   return decoder_ && decoder_->HotSpot(hot_spot);
 }
 
-Image::SizeAvailability BitmapImage::SetData(scoped_refptr<SharedBuffer> data,
+Image::SizeAvailability BitmapImage::SetData(const std::shared_ptr<SharedBuffer> &data,
                                              bool all_data_received) {
   if (!data)
     return kSizeAvailable;
@@ -166,12 +177,12 @@ Image::SizeAvailability BitmapImage::SetData(scoped_refptr<SharedBuffer> data,
     return kSizeAvailable;
 
   if (decoder_) {
-    decoder_->SetData(std::move(data), all_data_received);
+    decoder_->SetData(data, all_data_received);
     return DataChanged(all_data_received);
   }
 
   bool has_enough_data = ImageDecoder::HasSufficientDataToSniffImageType(*data);
-  decoder_ = DeferredImageDecoder::Create(std::move(data), all_data_received,
+  decoder_ = DeferredImageDecoder::Create(data, all_data_received,
                                           ImageDecoder::kAlphaPremultiplied,
                                           ColorBehavior::Tag());
   // If we had enough data but couldn't create a decoder, it implies a decode

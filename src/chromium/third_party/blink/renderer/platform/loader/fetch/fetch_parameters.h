@@ -70,6 +70,13 @@ class PLATFORM_EXPORT FetchParameters {
                       // still load if the request is already-loaded or in
                       // memory cache.
   };
+  struct ResourceWidth {
+    DISALLOW_NEW();
+    float width;
+    bool is_set;
+
+    ResourceWidth() : width(0), is_set(false) {}
+  };
 #endif
 
   explicit FetchParameters(const ResourceRequest&);

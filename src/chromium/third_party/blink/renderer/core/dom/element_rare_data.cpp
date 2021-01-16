@@ -83,8 +83,7 @@ AttrNodeList& ElementRareData::EnsureAttrNodeList(void)
 void ElementRareData::TraceAfterDispatch(Visitor *visitor)
 {
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (m_shadowRoot)
-        m_shadowRoot->Trace(visitor);
+    visitor->Trace(m_shadowRoot);
     ASSERT(!m_resizeObserverData); // BKTODO:
     visitor->Trace(m_pseudoElementData);
 #endif

@@ -96,6 +96,9 @@ protected:
     virtual ~TreeScope(void);
     void Trace(Visitor *visitor) override;
 
+    void SetDocument(Document &document) { m_document = &document; }
+    void SetParentTreeScope(TreeScope &newParentScope);
+
 #ifndef BLINKIT_CRAWLER_ONLY
     void SetNeedsStyleRecalcForViewportUnits(void);
 #endif

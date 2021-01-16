@@ -60,6 +60,8 @@
 #   include "third_party/blink/renderer/core/css/style_change_reason.h"
 #   include "third_party/blink/renderer/core/dom/first_letter_pseudo_element.h"
 #   include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
+#   include "third_party/blink/renderer/core/dom/presentation_attribute_style.h"
+#   include "third_party/blink/renderer/core/html/parser/nesting_level_incrementer.h"
 #   include "third_party/blink/renderer/core/layout/layout_text_fragment.h"
 #   include "third_party/blink/renderer/core/layout/layout_view.h"
 #   include "third_party/blink/renderer/core/page/scrolling/scroll_customization_callbacks.h"
@@ -318,15 +320,15 @@ void Element::ChildrenChanged(const ChildrenChange &change)
 {
     ContainerNode::ChildrenChanged(change);
 
-    CheckForEmptyStyleChange(change.siblingBeforeChange, change.siblingAfterChange);
+    CheckForEmptyStyleChange(change.sibling_before_change, change.sibling_after_change);
 
     if (kChildrenChangeSourceAPI == change.by_parser && change.IsChildElementChange())
     {
         auto changeType = kElementRemoved == change.type
             ? kSiblingElementRemoved
             : kSiblingElementInserted;
-        CheckForSiblingStyleChanges(changeType, ToElement(change.siblingChanged),
-            change.siblingBeforeChange, change.siblingAfterChange);
+        CheckForSiblingStyleChanges(changeType, ToElement(change.sibling_changed),
+            change.sibling_before_change, change.sibling_after_change);
     }
 
     if (ShadowRoot *shadowRoot = GetShadowRoot())
@@ -590,13 +592,6 @@ void Element::DidModifyAttribute(const QualifiedName &name, const AtomicString &
     ASSERT(false); // BKTODO:
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
-void Element::DidRecalcStyle(StyleRecalcChange change)
-{
-    ASSERT(false); // BKTODO: Check child classes.
-}
-#endif
-
 Attr* Element::EnsureAttr(const QualifiedName &name)
 {
     Attr *attrNode = AttrIfExists(name);
@@ -769,8 +764,7 @@ bool Element::hasAttribute(const AtomicString &name) const
 
 bool Element::hasAttribute(const QualifiedName &name) const
 {
-    ASSERT(false); // BKTODO:
-    return false;
+    return hasAttribute(name.LocalName());
 }
 
 bool Element::HasClass(void) const
@@ -1218,11 +1212,6 @@ void Element::RecalcStyle(StyleRecalcChange change)
         DidRecalcStyle(change);
 }
 
-void Element::RecalcStyleForTraversalRootAncestor(void)
-{
-    ASSERT(false); // BKTODO:
-}
-
 void Element::RemoveCallbackSelectors(void)
 {
     UpdateCallbackSelectors(GetComputedStyle(), nullptr);
@@ -1470,32 +1459,6 @@ bool Element::ShouldSerializeEndTag(void) const
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-bool Element::ShouldStoreNonLayoutObjectComputedStyle(const ComputedStyle &style) const
-{
-#if DCHECK_IS_ON()
-    if (style.Display() == EDisplay::kContents && !NeedsReattachLayoutTree())
-        DCHECK(!GetLayoutObject() || IsPseudoElement());
-#endif
-    if (style.Display() == EDisplay::kNone)
-        return false;
-#if 0 // BKTODO: Remove this later.
-    if (IsSVGElement()) {
-        Element* parent_element = LayoutTreeBuilderTraversal::ParentElement(*this);
-        if (parent_element && !parent_element->IsSVGElement())
-            return false;
-        if (IsSVGStopElement(*this))
-            return true;
-    }
-#endif
-    if (style.Display() == EDisplay::kContents)
-        return true;
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
-    return IsHTMLOptGroupElement(*this) || IsHTMLOptionElement(*this);
-#endif
-}
-
 void Element::StoreNonLayoutObjectComputedStyle(scoped_refptr<ComputedStyle> style)
 {
     ASSERT(style);
@@ -1600,7 +1563,7 @@ void Element::SynchronizeAllAttributes(void) const
     if (elementData->style_attribute_is_dirty_)
     {
         ASSERT(IsStyledElement());
-        ASSERT(false); // BKTODO: SynchronizeStyleAttributeInternal();
+        SynchronizeStyleAttributeInternal();
     }
 #endif
 }
@@ -1621,7 +1584,7 @@ void Element::SynchronizeAttribute(const AtomicString &localName) const
         && LowercaseIfNecessary(localName) == html_names::kStyleAttr.LocalName())
     {
         ASSERT(IsStyledElement());
-        ASSERT(false); // BKTODO: SynchronizeStyleAttributeInternal();
+        SynchronizeStyleAttributeInternal();
         return;
     }
 #endif
@@ -1640,7 +1603,7 @@ void Element::SynchronizeAttribute(const QualifiedName &name) const
     if (name == html_names::kStyleAttr && elementData->style_attribute_is_dirty_)
     {
         ASSERT(IsStyledElement());
-        ASSERT(false); // BKTODO: SynchronizeStyleAttributeInternal();
+        SynchronizeStyleAttributeInternal();
         return;
     }
 #endif
@@ -1760,7 +1723,19 @@ void Element::UpdateId(TreeScope &scope, const AtomicString &oldId, const Atomic
 
 void Element::UpdateIdNamedItemRegistration(NamedItemType type, const AtomicString &oldName, const AtomicString &newName)
 {
-    ASSERT(false); // BKTODO:
+    Document &document = GetDocument();
+    ASSERT(document.IsHTMLDocument());
+
+    if (NamedItemType::kNameOrIdWithName == type && GetNameAttribute().IsEmpty())
+        return;
+
+#if 0 // BKTODO: Check the logic later.
+    if (!oldName.IsEmpty())
+        ToHTMLDocument(GetDocument()).RemoveNamedItem(oldName);
+
+    if (!newName.IsEmpty())
+        ToHTMLDocument(GetDocument()).AddNamedItem(newName);
+#endif
 }
 
 void Element::UpdateName(const AtomicString &oldName, const AtomicString &newName)
@@ -1787,21 +1762,18 @@ void Element::WillModifyAttribute(const QualifiedName &name, const AtomicString 
         UpdateName(oldValue, newValue);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#if 0
-    if (GetCustomElementState() == CustomElementState::kCustom) {
-        CustomElement::EnqueueAttributeChangedCallback(this, name, old_value,
-            new_value);
-    }
+    if (!ForCrawler())
+    {
+        if (GetCustomElementState() == CustomElementState::kCustom)
+            ASSERT(false); // BKTODO: CustomElement::EnqueueAttributeChangedCallback(this, name, oldValue, newValue);
 
-    if (old_value != new_value) {
-        GetDocument().GetStyleEngine().AttributeChangedForElement(name, *this);
-        if (IsUpgradedV0CustomElement()) {
-            V0CustomElement::AttributeDidChange(this, name.LocalName(), old_value,
-                new_value);
+        if (oldValue != newValue)
+        {
+            GetDocument().GetStyleEngine().AttributeChangedForElement(name, *this);
+            if (IsUpgradedV0CustomElement())
+                ASSERT(false); // BKTODO: V0CustomElement::AttributeDidChange(this, name.LocalName(), oldValue, newValue);
         }
     }
-#endif
 #endif
 
     if (MutationObserverInterestGroup *recipients = MutationObserverInterestGroup::CreateForAttributesMutation(*this, name))
@@ -1942,6 +1914,16 @@ void Element::AttachPseudoElement(PseudoId pseudoId, AttachContext &context)
         pseudoElement->AttachLayoutTree(context);
 }
 
+ShadowRoot* Element::AuthorShadowRoot(void) const
+{
+    if (ShadowRoot *root = GetShadowRoot())
+    {
+        if (!root->IsUserAgent())
+            return root;
+    }
+    return nullptr;
+}
+
 void Element::blur(void)
 {
     ASSERT(false); // BKTODO:
@@ -1958,6 +1940,43 @@ bool Element::CanGeneratePseudoElement(PseudoId pseudoId) const
     if (const ComputedStyle *style = GetComputedStyle())
         return style->CanGeneratePseudoElement(pseudoId);
     return false;
+}
+
+ShadowRoot& Element::CreateAndAttachShadowRoot(ShadowRootType type)
+{
+#if DCHECK_IS_ON()
+    NestingLevelIncrementer slotAssignmentRecalcForbiddenScope(GetDocument().SlotAssignmentRecalcForbiddenRecursionDepth());
+#endif
+    EventDispatchForbiddenScope assertNoEventDispatch;
+    ScriptForbiddenScope forbidScript;
+
+    ASSERT(nullptr == GetShadowRoot());
+
+    ShadowRoot *shadowRoot = ShadowRoot::Create(GetDocument(), type);
+
+    if (ShadowRootType::V0 != type)
+    {
+        // Detach the host's children here for v1 (including UA shadow root),
+        // because we skip SetNeedsDistributionRecalc() in attaching v1 shadow root.
+        // See https://crrev.com/2822113002 for details.
+        // We need to call child.LazyReattachIfAttached() before setting a shadow
+        // root to the element because detach must use the original flat tree
+        // structure before attachShadow happens.
+        for (Node &child : NodeTraversal::ChildrenOf(*this))
+            child.LazyReattachIfAttached();
+    }
+    EnsureElementRareData().SetShadowRoot(*shadowRoot);
+    shadowRoot->SetParentOrShadowHostNode(this);
+    shadowRoot->SetParentTreeScope(GetTreeScope());
+
+    if (ShadowRootType::V0 == type)
+        shadowRoot->SetNeedsDistributionRecalc();
+
+    shadowRoot->InsertedInto(*this);
+    SetChildNeedsStyleRecalc();
+    SetNeedsStyleRecalc(kSubtreeStyleChange, StyleChangeReasonForTracing::Create(StyleChangeReason::kShadow));
+
+    return *shadowRoot;
 }
 
 LayoutObject* Element::CreateLayoutObject(const ComputedStyle &style)
@@ -2065,6 +2084,11 @@ void Element::DetachLayoutTree(const AttachContext &context)
     ASSERT(NeedsAttach());
 }
 
+void Element::DidRecalcStyle(StyleRecalcChange change)
+{
+    ASSERT(HasCustomStyleCallbacks());
+}
+
 void Element::DispatchBlurEvent(Element *newFocusedElement, WebFocusType type, InputDeviceCapabilities *sourceCapabilities)
 {
     ASSERT(false); // BKTODO:
@@ -2149,6 +2173,37 @@ const ComputedStyle* Element::EnsureComputedStyle(PseudoId pseudoElementSpecifie
     return elementStyle->AddCachedPseudoStyle(std::move(result));
 }
 
+MutableCSSPropertyValueSet& Element::EnsureMutableInlineStyle(void)
+{
+    ASSERT(IsStyledElement());
+    Member<CSSPropertyValueSet> &inlineStyle = EnsureUniqueElementData().inline_style_;
+    if (!inlineStyle)
+    {
+        CSSParserMode mode = (!IsHTMLElement() || GetDocument().InQuirksMode())
+            ? kHTMLQuirksMode
+            : kHTMLStandardMode;
+        inlineStyle = MutableCSSPropertyValueSet::Create(mode);
+    }
+    else if (!inlineStyle->IsMutable())
+    {
+        inlineStyle = inlineStyle->MutableCopy();
+    }
+    return *ToMutableCSSPropertyValueSet(inlineStyle);
+}
+
+ShadowRoot& Element::EnsureUserAgentShadowRoot(void)
+{
+    if (ShadowRoot *shadowRoot = UserAgentShadowRoot())
+    {
+        ASSERT(shadowRoot->GetType() == ShadowRootType::kUserAgent);
+        return *shadowRoot;
+    }
+
+    ShadowRoot &shadowRoot = CreateAndAttachShadowRoot(ShadowRootType::kUserAgent);
+    DidAddUserAgentShadowRoot(shadowRoot);
+    return shadowRoot;
+}
+
 const HashSet<AtomicString>& Element::GetCheckedAttributeNames(void) const
 {
     static HashSet<AtomicString> attributeSet;
@@ -2177,6 +2232,36 @@ bool Element::HasDisplayContentsStyle(void) const
     return false;
 }
 
+const AtomicString Element::ImageSourceURL(void) const
+{
+    return getAttribute(html_names::kSrcAttr);
+}
+
+void Element::InlineStyleChanged(void)
+{
+    ASSERT(IsStyledElement());
+    SetNeedsStyleRecalc(kLocalStyleChange, StyleChangeReasonForTracing::Create(StyleChangeReason::kInline));
+
+    const ElementData *elementData = GetElementData();
+    ASSERT(nullptr != elementData);
+    elementData->style_attribute_is_dirty_ = true;
+
+    if (MutationObserverInterestGroup *recipients = MutationObserverInterestGroup::CreateForAttributesMutation(*this, html_names::kStyleAttr))
+    {
+        // We don't use getAttribute() here to get a style attribute value
+        // before the change.
+        AtomicString oldValue;
+        if (const Attribute *attribute = elementData->Attributes().Find(html_names::kStyleAttr))
+            oldValue = attribute->Value();
+        ASSERT(false); // BKTODO:
+#if 0
+        recipients->EnqueueMutationRecord(MutationRecord::CreateAttributes(this, html_names::kStyleAttr, oldValue));
+        // Need to synchronize every time so that following MutationRecords will
+        // have correct oldValues.
+        SynchronizeAttribute(html_names::kStyleAttr);
+#endif
+    }
+}
 bool Element::LayoutObjectIsNeeded(const ComputedStyle &style) const
 {
     return style.Display() != EDisplay::kNone && style.Display() != EDisplay::kContents;
@@ -2297,6 +2382,14 @@ void Element::RebuildShadowRootLayoutTree(WhitespaceAttacher &whitespaceAttacher
     RebuildNonDistributedChildren();
 }
 
+void Element::RecalcStyleForTraversalRootAncestor(void)
+{
+    if (!ChildNeedsReattachLayoutTree())
+        UpdateFirstLetterPseudoElement(StyleUpdatePhase::kRecalc);
+    if (HasCustomStyleCallbacks())
+        DidRecalcStyle(kNoChange);
+}
+
 ResizeObserverDataMap* Element::ResizeObserverData(void) const
 {
     if (HasRareData())
@@ -2317,6 +2410,36 @@ void Element::SetAnimationStyleChange(bool animationStyleChange)
 void Element::SetApplyScroll(ScrollStateCallback *scrollStateCallback)
 {
     GetScrollCustomizationCallbacks().SetApplyScroll(this, scrollStateCallback);
+}
+
+void Element::SetInlineStyleProperty(CSSPropertyID propertyId, CSSValueID identifier, bool important)
+{
+    SetInlineStyleProperty(propertyId, *CSSIdentifierValue::Create(identifier), important);
+}
+
+void Element::SetInlineStyleProperty(CSSPropertyID propertyId,
+    double value, CSSPrimitiveValue::UnitType unit,
+    bool important)
+{
+    SetInlineStyleProperty(propertyId, *CSSPrimitiveValue::Create(value, unit), important);
+}
+
+void Element::SetInlineStyleProperty(CSSPropertyID propertyId, const CSSValue &value, bool important)
+{
+    ASSERT(IsStyledElement());
+    EnsureMutableInlineStyle().SetProperty(propertyId, value, important);
+    InlineStyleChanged();
+}
+
+bool Element::SetInlineStyleProperty(CSSPropertyID propertyId, const String &value, bool important)
+{
+    ASSERT(IsStyledElement());
+    Document &document = GetDocument();
+    bool didChange = EnsureMutableInlineStyle().SetProperty(propertyId, value, important,
+        document.GetSecureContextMode(), document.ElementSheet().Contents()).did_change;
+    if (didChange)
+        InlineStyleChanged();
+    return didChange;
 }
 
 void Element::SetNeedsCompositingUpdate(void)
@@ -2345,6 +2468,14 @@ void Element::SetNeedsResizeObserverUpdate(void)
             observation->ElementSizeChanged();
 #endif
     }
+}
+
+void Element::SetSynchronizedLazyAttribute(const QualifiedName &name, const AtomicString &value)
+{
+    wtf_size_t index = kNotFound;
+    if (const ElementData *elementData = GetElementData())
+        index = elementData->Attributes().FindIndex(name);
+    SetAttributeInternal(index, name, value, kInSynchronizationOfLazyAttribute);
 }
 
 const AtomicString& Element::ShadowPseudoId(void) const
@@ -2412,6 +2543,43 @@ bool Element::ShouldInvalidateDistributionWhenAttributeChanged(
 
     return feature_set.HasSelectorForAttribute(name.LocalName());
 #endif
+}
+
+bool Element::ShouldStoreNonLayoutObjectComputedStyle(const ComputedStyle &style) const
+{
+#if DCHECK_IS_ON()
+    if (style.Display() == EDisplay::kContents && !NeedsReattachLayoutTree())
+        DCHECK(!GetLayoutObject() || IsPseudoElement());
+#endif
+    if (style.Display() == EDisplay::kNone)
+        return false;
+#if 0 // BKTODO: Remove this later.
+    if (IsSVGElement()) {
+        Element* parent_element = LayoutTreeBuilderTraversal::ParentElement(*this);
+        if (parent_element && !parent_element->IsSVGElement())
+            return false;
+        if (IsSVGStopElement(*this))
+            return true;
+    }
+#endif
+    if (style.Display() == EDisplay::kContents)
+        return true;
+    return IsHTMLOptGroupElement(*this) || IsHTMLOptionElement(*this);
+}
+
+void Element::SynchronizeStyleAttributeInternal(void) const
+{
+    ASSERT(IsStyledElement());
+
+    const ElementData *elementData = GetElementData();
+    ASSERT(nullptr != elementData);
+    ASSERT(elementData->style_attribute_is_dirty_);
+    elementData->style_attribute_is_dirty_ = false;
+
+    const CSSPropertyValueSet *inlineStyle = InlineStyle();
+    const_cast<Element *>(this)->SetSynchronizedLazyAttribute(html_names::kStyleAttr,
+        nullptr != inlineStyle ? AtomicString(inlineStyle->AsText()) : g_empty_atom
+    );
 }
 
 int Element::tabIndex(void) const
@@ -2552,7 +2720,7 @@ void Element::UpdatePresentationAttributeStyle(void)
     // sure we have a UniqueElementData.
     UniqueElementData &elementData = EnsureUniqueElementData();
     elementData.presentation_attribute_style_is_dirty_ = false;
-    ASSERT(false); // BKTODO: elementData.presentation_attribute_style_ = ComputePresentationAttributeStyle(*this);
+    elementData.presentation_attribute_style_ = ComputePresentationAttributeStyle(*this);
 }
 
 void Element::UpdatePseudoElement(PseudoId pseudoId, StyleRecalcChange change)
@@ -2579,6 +2747,13 @@ void Element::UpdatePseudoElement(PseudoId pseudoId, StyleRecalcChange change)
         }
         GetElementRareData()->SetPseudoElement(pseudoId, nullptr);
     }
+}
+
+ShadowRoot* Element::UserAgentShadowRoot(void) const
+{
+    ShadowRoot *root = GetShadowRoot();
+    ASSERT(!root || root->IsUserAgent());
+    return root;
 }
 
 void Element::WillRecalcStyle(StyleRecalcChange change)

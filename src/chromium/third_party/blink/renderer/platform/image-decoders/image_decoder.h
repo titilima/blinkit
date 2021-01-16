@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_decoder.h
+// Description: ImageDecoder Class
+//      Author: Ziming Li
+//     Created: 2021-01-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) Research In Motion Limited 2009-2010. All rights reserved.
@@ -139,13 +150,13 @@ class PLATFORM_EXPORT ImageDecoder {
       const ColorBehavior&,
       const SkISize& desired_size = SkISize::MakeEmpty());
   static std::unique_ptr<ImageDecoder> Create(
-      scoped_refptr<SharedBuffer> data,
+      const std::shared_ptr<SharedBuffer> &data,
       bool data_complete,
       AlphaOption alpha_option,
       HighBitDepthDecodingOption high_bit_depth_decoding_option,
       const ColorBehavior& color_behavior,
       const SkISize& desired_size = SkISize::MakeEmpty()) {
-    return Create(SegmentReader::CreateFromSharedBuffer(std::move(data)),
+    return Create(SegmentReader::CreateFromSharedBuffer(data),
                   data_complete, alpha_option, high_bit_depth_decoding_option,
                   color_behavior, desired_size);
   }
@@ -173,8 +184,8 @@ class PLATFORM_EXPORT ImageDecoder {
     OnSetData(data_.get());
   }
 
-  void SetData(scoped_refptr<SharedBuffer> data, bool all_data_received) {
-    SetData(SegmentReader::CreateFromSharedBuffer(std::move(data)),
+  void SetData(const std::shared_ptr<SharedBuffer> &data, bool all_data_received) {
+    SetData(SegmentReader::CreateFromSharedBuffer(data),
             all_data_received);
   }
 

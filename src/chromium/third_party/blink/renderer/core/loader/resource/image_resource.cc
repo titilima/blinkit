@@ -136,11 +136,7 @@ class ImageResource::ImageResourceInfoImpl final
     return base::nullopt;
   }
 
-#if 0 // BKTODO:
   void SetDecodedSize(size_t size) override { resource_->SetDecodedSize(size); }
-#else
-  void SetDecodedSize(size_t size) override { ASSERT(false); }
-#endif
   void WillAddClientOrObserver() override {
     resource_->WillAddClientOrObserver();
   }
@@ -182,14 +178,10 @@ class ImageResource::ImageResourceFactory : public NonTextResourceFactory {
 
   Resource* Create(const ResourceRequest& request,
                    const ResourceLoaderOptions& options) const override {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     return new ImageResource(request, options,
                              ImageResourceContent::CreateNotStarted(),
                              fetch_params_->GetImageRequestOptimization() ==
                                  FetchParameters::kAllowPlaceholder);
-#endif
   }
 
  private:
@@ -199,23 +191,23 @@ class ImageResource::ImageResourceFactory : public NonTextResourceFactory {
 
 ImageResource* ImageResource::Fetch(FetchParameters& params,
                                     ResourceFetcher* fetcher) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
+#if 0 // BKTODO: Check the logic.
   if (params.GetResourceRequest().GetRequestContext() ==
       mojom::RequestContextType::UNSPECIFIED) {
     params.SetRequestContext(mojom::RequestContextType::IMAGE);
   }
+#endif
 
   ImageResource* resource = ToImageResource(
       fetcher->RequestResource(params, ImageResourceFactory(params), nullptr));
 
+#if 0 // BKTODO: Check the logic.
   // If the fetch originated from user agent CSS we should mark it as a user
   // agent resource.
   if (params.Options().initiator_info.name == FetchInitiatorTypeNames::uacss)
     resource->FlagAsUserAgentResource();
-  return resource;
 #endif
+  return resource;
 }
 
 #if 0 // BKTODO:
@@ -265,16 +257,14 @@ ImageResource::ImageResource(const ResourceRequest& resource_request,
           is_placeholder ? PlaceholderOption::kShowAndReloadPlaceholderAlways
                          : PlaceholderOption::kDoNotReloadPlaceholder) {
   DCHECK(GetContent());
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   RESOURCE_LOADING_DVLOG(1) << "new ImageResource(ResourceRequest) " << this;
 #endif
   GetContent()->SetImageResourceInfo(new ImageResourceInfoImpl(this));
 }
 
 ImageResource::~ImageResource() {
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   RESOURCE_LOADING_DVLOG(1) << "~ImageResource " << this;
 #endif
 
@@ -355,8 +345,7 @@ void ImageResource::AllClientsAndObserversRemoved() {
   // TODO(hiroshige): Make the CHECK condition cleaner.
   CHECK(is_during_finish_as_error_ || !GetContent()->HasImage() ||
         !ErrorOccurred());
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check the logic
   // If possible, delay the resetting until back at the event loop. Doing so
   // after a conservative GC prevents resetAnimation() from upsetting ongoing
   // animation updates (crbug.com/613709)
@@ -367,6 +356,10 @@ void ImageResource::AllClientsAndObserversRemoved() {
   } else {
     GetContent()->DoResetAnimation();
   }
+#else
+  GetContent()->DoResetAnimation();
+#endif
+#if 0 // BKTODO:
   if (multipart_parser_)
     multipart_parser_->Cancel();
 #endif
@@ -382,50 +375,45 @@ scoped_refptr<const SharedBuffer> ImageResource::ResourceBuffer() const {
 #endif
 
 void ImageResource::AppendData(const char* data, size_t length) {
-  ASSERT(false); // BKTODO:
-#if 0
-  v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(length);
-  if (multipart_parser_) {
-    multipart_parser_->AppendData(data, length);
-  } else {
-    Resource::AppendData(data, length);
+  Resource::AppendData(data, length);
 
-    // Update the image immediately if needed.
-    //
-    // ImageLoader is not available when this image is loaded via ImageDocument.
-    // In this case, as the task runner is not available, update the image
-    // immediately.
-    //
-    // TODO(hajimehoshi): updating/flushing image should be throttled when
-    // necessary, so such tasks should be done on a throttleable task runner.
-    if (GetContent()->ShouldUpdateImageImmediately() || !Loader()) {
-      UpdateImage(Data(), ImageResourceContent::kUpdateImage, false);
-      return;
-    }
-
-    // For other cases, only update at |kFlushDelay| intervals. This
-    // throttles how frequently we update |m_image| and how frequently we
-    // inform the clients which causes an invalidation of this image. In other
-    // words, we only invalidate this image every |kFlushDelay| seconds
-    // while loading.
-    if (!is_pending_flushing_) {
-      scoped_refptr<base::SingleThreadTaskRunner> task_runner =
-          Loader()->GetLoadingTaskRunner();
-      TimeTicks now = CurrentTimeTicks();
-      if (last_flush_time_.is_null())
-        last_flush_time_ = now;
-
-      DCHECK_LE(last_flush_time_, now);
-      TimeDelta flush_delay =
-          std::max(TimeDelta(), last_flush_time_ - now + kFlushDelay);
-      task_runner->PostDelayedTask(FROM_HERE,
-                                   WTF::Bind(&ImageResource::FlushImageIfNeeded,
-                                             WrapWeakPersistent(this)),
-                                   flush_delay);
-      is_pending_flushing_ = true;
-    }
+  // Update the image immediately if needed.
+  //
+  // ImageLoader is not available when this image is loaded via ImageDocument.
+  // In this case, as the task runner is not available, update the image
+  // immediately.
+  //
+  // TODO(hajimehoshi): updating/flushing image should be throttled when
+  // necessary, so such tasks should be done on a throttleable task runner.
+  if (GetContent()->ShouldUpdateImageImmediately() || !Loader()) {
+    UpdateImage(Data(), ImageResourceContent::kUpdateImage, false);
+    return;
   }
+
+  // For other cases, only update at |kFlushDelay| intervals. This
+  // throttles how frequently we update |m_image| and how frequently we
+  // inform the clients which causes an invalidation of this image. In other
+  // words, we only invalidate this image every |kFlushDelay| seconds
+  // while loading.
+  if (!is_pending_flushing_) {
+    ASSERT(false); // BKTODO:
+#if 0
+    scoped_refptr<base::SingleThreadTaskRunner> task_runner =
+        Loader()->GetLoadingTaskRunner();
+    TimeTicks now = CurrentTimeTicks();
+    if (last_flush_time_.is_null())
+      last_flush_time_ = now;
+
+    DCHECK_LE(last_flush_time_, now);
+    TimeDelta flush_delay =
+        std::max(TimeDelta(), last_flush_time_ - now + kFlushDelay);
+    task_runner->PostDelayedTask(FROM_HERE,
+                                 WTF::Bind(&ImageResource::FlushImageIfNeeded,
+                                           WrapWeakPersistent(this)),
+                                 flush_delay);
 #endif
+    is_pending_flushing_ = true;
+  }
 }
 
 void ImageResource::FlushImageIfNeeded() {
@@ -433,7 +421,7 @@ void ImageResource::FlushImageIfNeeded() {
   // to call |updateImage()|.
   if (IsLoading()) {
     last_flush_time_ = CurrentTimeTicks();
-    ASSERT(false); // BKTODO: UpdateImage(Data(), ImageResourceContent::kUpdateImage, false);
+    UpdateImage(Data(), ImageResourceContent::kUpdateImage, false);
   }
   is_pending_flushing_ = false;
 }
@@ -478,28 +466,18 @@ void ImageResource::UpdateImageAndClearBuffer() {
 
 void ImageResource::NotifyStartLoad() {
   Resource::NotifyStartLoad();
-  ASSERT(false); // BKTODO: CHECK_EQ(GetStatus(), ResourceStatus::kPending);
+  CHECK_EQ(GetStatus(), ResourceStatus::kPending);
   GetContent()->NotifyStartLoad();
 }
 
 void ImageResource::Finish(base::SingleThreadTaskRunner* task_runner) {
-  ASSERT(false); // BKTODO:
-#if 0
-  if (multipart_parser_) {
-    if (!ErrorOccurred())
-      multipart_parser_->Finish();
-    if (Data())
-      UpdateImageAndClearBuffer();
-  } else {
-    UpdateImage(Data(), ImageResourceContent::kUpdateImage, true);
-    // As encoded image data can be created from m_image  (see
-    // ImageResource::resourceBuffer(), we don't have to keep m_data. Let's
-    // clear this. As for the lifetimes of m_image and m_data, see this
-    // document:
-    // https://docs.google.com/document/d/1v0yTAZ6wkqX2U_M6BNIGUJpM1s0TIw1VsqpxoL7aciY/edit?usp=sharing
-    ClearData();
-  }
-#endif
+  UpdateImage(Data(), ImageResourceContent::kUpdateImage, true);
+  // As encoded image data can be created from m_image  (see
+  // ImageResource::resourceBuffer(), we don't have to keep m_data. Let's
+  // clear this. As for the lifetimes of m_image and m_data, see this
+  // document:
+  // https://docs.google.com/document/d/1v0yTAZ6wkqX2U_M6BNIGUJpM1s0TIw1VsqpxoL7aciY/edit?usp=sharing
+  ClearData();
   Resource::Finish(task_runner);
 }
 
@@ -539,24 +517,23 @@ static bool IsEntireResource(const ResourceResponse& response) {
          first_byte_position == 0 && last_byte_position + 1 == instance_length;
 }
 
-#if 0 // BKTODO:
 void ImageResource::ResponseReceived(
-    const ResourceResponse& response,
-    std::unique_ptr<WebDataConsumerHandle> handle) {
-  DCHECK(!handle);
+    const ResourceResponse& response) {
+#if 0 // BKTODO: Check the logic later.
   DCHECK(!multipart_parser_);
   // If there's no boundary, just handle the request normally.
   if (response.IsMultipart() && !response.MultipartBoundary().IsEmpty()) {
     multipart_parser_ = new MultipartImageResourceParser(
         response, response.MultipartBoundary(), this);
   }
+#endif
 
   // Notify the base class that a response has been received. Note that after
   // this call, |GetResponse()| will represent the full effective
   // ResourceResponse, while |response| might just be a revalidation response
   // (e.g. a 304) with a partial set of updated headers that were folded into
   // the cached response.
-  Resource::ResponseReceived(response, std::move(handle));
+  Resource::ResponseReceived(response);
 
   if (placeholder_option_ ==
           PlaceholderOption::kShowAndReloadPlaceholderAlways &&
@@ -574,6 +551,7 @@ void ImageResource::ResponseReceived(
     }
   }
 
+#if 0 // BKTODO:
   if (HasServerLoFiResponseHeaders(GetResponse())) {
     // Ensure that the PreviewsState bit for Server Lo-Fi is set iff Chrome
     // received the appropriate Server Lo-Fi response headers for this image.
@@ -599,12 +577,11 @@ void ImageResource::ResponseReceived(
 
     SetPreviewsState(new_previews_state);
   }
-}
 #endif
+}
 
 bool ImageResource::ShouldShowPlaceholder() const {
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check the logic later.
   if (RuntimeEnabledFeatures::ClientPlaceholdersForServerLoFiEnabled() &&
       (GetResourceRequest().GetPreviewsState() &
        WebURLRequest::kServerLoFiOn)) {
@@ -812,13 +789,14 @@ const ImageResourceContent* ImageResource::GetContent() const {
 ResourcePriority ImageResource::PriorityFromObservers() {
   return GetContent()->PriorityFromObservers();
 }
+#endif
 
 void ImageResource::UpdateImage(
-    scoped_refptr<SharedBuffer> shared_buffer,
+    const std::shared_ptr<SharedBuffer>& shared_buffer,
     ImageResourceContent::UpdateImageOption update_image_option,
     bool all_data_received) {
-  bool is_multipart = !!multipart_parser_;
-  auto result = GetContent()->UpdateImage(std::move(shared_buffer), GetStatus(),
+  bool is_multipart = false; // BKTODO: !!multipart_parser_;
+  auto result = GetContent()->UpdateImage(shared_buffer, GetStatus(),
                                           update_image_option,
                                           all_data_received, is_multipart);
   if (result == ImageResourceContent::UpdateImageResult::kShouldDecodeError) {
@@ -839,7 +817,6 @@ void ImageResource::UpdateImage(
     DecodeError(all_data_received);
   }
 }
-#endif
 
 void ImageResource::FlagAsUserAgentResource() {
   if (is_referenced_from_ua_stylesheet_)

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: presentation_attribute_style.cc
+// Description: ComputePresentationAttributeStyle
+//      Author: Ziming Li
+//     Created: 2021-01-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -33,16 +44,19 @@
 #include <algorithm>
 
 #include "base/macros.h"
+#include "blinkit/gc/gc_static.h"
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/core/css/css_property_value_set.h"
 #include "third_party/blink/renderer/core/dom/attribute.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #include "third_party/blink/renderer/platform/scheduler/public/thread.h"
-#include "third_party/blink/renderer/platform/scheduler/public/thread_scheduler.h"
+// BKTODO: #include "third_party/blink/renderer/platform/scheduler/public/thread_scheduler.h"
 #include "third_party/blink/renderer/platform/wtf/hash_functions.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
 #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -72,12 +86,10 @@ struct PresentationAttributeCacheEntry final
 
 using PresentationAttributeCache =
     HeapHashMap<unsigned,
-                Member<PresentationAttributeCacheEntry>,
-                AlreadyHashed>;
+                Member<PresentationAttributeCacheEntry>>;
 static PresentationAttributeCache& GetPresentationAttributeCache() {
-  DEFINE_STATIC_LOCAL(Persistent<PresentationAttributeCache>, cache,
-                      (new PresentationAttributeCache));
-  return *cache;
+  static GCStaticWrapper<PresentationAttributeCache, TracePolicy<PresentationAttributeCache>> cache;
+  return cache.GetAsReference();
 }
 
 static bool AttributeNameSort(const std::pair<StringImpl*, AtomicString>& p1,
@@ -138,39 +150,33 @@ CSSPropertyValueSet* ComputePresentationAttributeStyle(Element& element) {
 
   unsigned cache_hash = ComputePresentationAttributeCacheHash(cache_key);
 
-  PresentationAttributeCache::ValueType* cache_value;
+  PresentationAttributeCacheEntry* cache_entry = nullptr;
 
+  PresentationAttributeCache &cache = GetPresentationAttributeCache();
   if (cache_hash) {
-    cache_value = GetPresentationAttributeCache()
-                      .insert(cache_hash, nullptr)
-                      .stored_value;
-    if (cache_value->value && cache_value->value->key != cache_key)
-      cache_hash = 0;
-  } else {
-    cache_value = nullptr;
+    auto it = cache.find(cache_hash);
+    if (std::end(cache) != it) {
+      cache_entry = it->second.Get();
+      if (cache_entry->key != cache_key)
+        cache_hash = 0;
+    }
   }
 
   // Keep the entry value of |cache_value| here in order to assure that the
   // value lives when it is used. Without this keeping, calling
   // |GetPresentationAttributeCache().clear()| destroys |cache_value->value| and
   // causes use-after-poison (crbug.com/810368).
-  PresentationAttributeCacheEntry* entry = nullptr;
-  if (cache_value)
-    entry = cache_value->value;
 
   CSSPropertyValueSet* style = nullptr;
-  if (cache_hash && cache_value->value) {
-    style = cache_value->value->value;
+  if (cache_hash && cache_entry) {
+    style = cache_entry->value;
 
     static const unsigned kMinimumPresentationAttributeCacheSizeForCleaning =
         100;
-    if (GetPresentationAttributeCache().size() >=
-        kMinimumPresentationAttributeCacheSizeForCleaning) {
-      GetPresentationAttributeCache().clear();
-    }
+    if (cache.size() >= kMinimumPresentationAttributeCacheSizeForCleaning)
+      cache.clear();
   } else {
-    style = MutableCSSPropertyValueSet::Create(
-        element.IsSVGElement() ? kSVGAttributeMode : kHTMLStandardMode);
+    style = MutableCSSPropertyValueSet::Create(kHTMLStandardMode);
     AttributeCollection attributes = element.AttributesWithoutUpdate();
     for (const Attribute& attr : attributes) {
       element.CollectStyleForPresentationAttribute(
@@ -178,7 +184,7 @@ CSSPropertyValueSet* ComputePresentationAttributeStyle(Element& element) {
     }
   }
 
-  if (!cache_hash || entry)
+  if (!cache_hash || cache_entry)
     return style;
 
   PresentationAttributeCacheEntry* new_entry =
@@ -187,15 +193,12 @@ CSSPropertyValueSet* ComputePresentationAttributeStyle(Element& element) {
   new_entry->value = style;
 
   static const unsigned kPresentationAttributeCacheMaximumSize = 4096;
-  if (GetPresentationAttributeCache().size() >
-      kPresentationAttributeCacheMaximumSize) {
+  if (cache.size() > kPresentationAttributeCacheMaximumSize) {
     // FIXME: Discarding the entire cache when it gets too big is probably bad
     // since it creates a perf "cliff". Perhaps we should use an LRU?
-    GetPresentationAttributeCache().clear();
-    GetPresentationAttributeCache().Set(cache_hash, new_entry);
-  } else {
-    cache_value->value = new_entry;
+    cache.clear();
   }
+  cache[cache_hash] = new_entry;
 
   return style;
 }

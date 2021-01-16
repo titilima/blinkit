@@ -49,11 +49,7 @@ public:
     bool IsContextDestroyed(void) const { return m_isContextDestroyed; }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    SecureContextMode GetSecureContextMode(void) const
-    {
-        ASSERT(false); // BKTODO:
-        return SecureContextMode::kSecureContext;
-    }
+    constexpr SecureContextMode GetSecureContextMode(void) const { return SecureContextMode::kSecureContext; }
 #endif
 
     virtual bool IsDocument(void) const { return false; }

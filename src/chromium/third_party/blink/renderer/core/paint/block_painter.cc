@@ -150,7 +150,7 @@ void BlockPainter::PaintChild(const LayoutBox& child,
   if (paint_info.phase == PaintPhase::kFloat)
     float_paint_info.phase = PaintPhase::kForeground;
 
-  ASSERT(false); // BKTODO: ObjectPainter(child).PaintAllPhasesAtomically(float_paint_info);
+  ObjectPainter(child).PaintAllPhasesAtomically(float_paint_info);
 }
 
 void BlockPainter::PaintChildrenAtomically(const OrderIterator& order_iterator,
@@ -349,8 +349,6 @@ void BlockPainter::PaintBlockFlowContents(const PaintInfo& paint_info,
   if (paint_info.phase == PaintPhase::kFloat)
     float_paint_info.phase = PaintPhase::kForeground;
 
-  ASSERT(false); // BKTODO:
-#if 0
   // Paint all floats.
   for (const auto& floating_object : floating_objects->Set()) {
     if (!floating_object->ShouldPaint())
@@ -363,7 +361,6 @@ void BlockPainter::PaintBlockFlowContents(const PaintInfo& paint_info,
     ObjectPainter(*floating_layout_object)
         .PaintAllPhasesAtomically(float_paint_info);
   }
-#endif
 }
 
 void BlockPainter::PaintCarets(const PaintInfo& paint_info,

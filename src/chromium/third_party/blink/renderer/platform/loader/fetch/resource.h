@@ -150,7 +150,6 @@ public:
     // NotifyStartLoad().
     virtual void NotifyStartLoad(void)
     {
-        ASSERT(ResourceType::kImage != m_type); // BKTODO:
         ASSERT(ResourceStatus::kNotStarted == m_status);
         m_status = ResourceStatus::kPending;
     }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_frame.h
+// Description: ImageFrame Class
+//      Author: Ziming Li
+//     Created: 2021-01-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) Research In Motion Limited 2009-2010. All rights reserved.
@@ -27,7 +38,8 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_IMAGE_DECODERS_IMAGE_FRAME_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_IMAGE_DECODERS_IMAGE_FRAME_H_
 
-#include "third_party/blink/public/platform/web_vector.h"
+#include <vector>
+// BKTODO: #include "third_party/blink/public/platform/web_vector.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
@@ -77,7 +89,7 @@ class PLATFORM_EXPORT ImageFrame final {
   typedef uint32_t PixelData;
   typedef uint64_t PixelDataF16;
 
-  typedef WebVector<char> ICCProfile;
+  typedef std::vector<char> ICCProfile;
 
   ImageFrame();
 

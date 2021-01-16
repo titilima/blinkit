@@ -25,11 +25,7 @@
 namespace blink {
 
 MediaValues* MediaValuesDynamic::Create(Document& document) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return MediaValuesDynamic::Create(document.GetFrameOfMasterDocument());
-#endif
 }
 
 MediaValues* MediaValuesDynamic::Create(LocalFrame* frame) {

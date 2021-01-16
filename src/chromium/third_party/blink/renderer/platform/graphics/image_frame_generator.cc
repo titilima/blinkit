@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_frame_generator.cc
+// Description: ImageFrameGenerator Class
+//      Author: Ziming Li
+//     Created: 2021-01-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -31,7 +42,7 @@
 #include "SkData.h"
 #include "base/macros.h"
 #include "third_party/blink/renderer/platform/graphics/image_decoder_wrapper.h"
-#include "third_party/blink/renderer/platform/graphics/image_decoding_store.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/image_decoding_store.h"
 #include "third_party/blink/renderer/platform/image-decoders/image_decoder.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/skia/include/core/SkYUVSizeInfo.h"
@@ -73,7 +84,7 @@ ImageFrameGenerator::ImageFrameGenerator(const SkISize& full_size,
 }
 
 ImageFrameGenerator::~ImageFrameGenerator() {
-  ImageDecodingStore::Instance().RemoveCacheIndexedByGenerator(this);
+  // BKTODO: ImageDecodingStore::Instance().RemoveCacheIndexedByGenerator(this);
 }
 
 bool ImageFrameGenerator::DecodeAndScale(
@@ -86,7 +97,7 @@ bool ImageFrameGenerator::DecodeAndScale(
     ImageDecoder::AlphaOption alpha_option,
     cc::PaintImage::GeneratorClientId client_id) {
   {
-    MutexLocker lock(generator_mutex_);
+    ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(generator_mutex_);
     if (decode_failed_)
       return false;
   }
@@ -116,7 +127,7 @@ bool ImageFrameGenerator::DecodeAndScale(
   bool current_decode_succeeded = false;
   {
     // Lock the mutex, so only one thread can use the decoder at once.
-    ClientMutexLocker lock(this, client_id);
+    ASSERT(IsMainThread()); // BKTODO: ClientMutexLocker lock(this, client_id);
     ImageDecoderWrapper decoder_wrapper(
         this, data, scaled_size, alpha_option, decoder_color_behavior_,
         high_bit_depth_decoding_option, index, info, pixels, row_bytes,
@@ -126,7 +137,7 @@ bool ImageFrameGenerator::DecodeAndScale(
     decode_failed = decoder_wrapper.decode_failed();
   }
 
-  MutexLocker lock(generator_mutex_);
+  ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(generator_mutex_);
   decode_failed_ = decode_failed;
   if (decode_failed_) {
     DCHECK(!current_decode_succeeded);
@@ -148,7 +159,7 @@ bool ImageFrameGenerator::DecodeToYUV(SegmentReader* data,
                                       const SkISize component_sizes[3],
                                       void* planes[3],
                                       const size_t row_bytes[3]) {
-  MutexLocker lock(generator_mutex_);
+  ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(generator_mutex_);
 
   // TODO (scroggo): The only interesting thing this uses from the
   // ImageFrameGenerator is m_decodeFailed. Move this into
@@ -189,7 +200,7 @@ bool ImageFrameGenerator::DecodeToYUV(SegmentReader* data,
 }
 
 void ImageFrameGenerator::SetHasAlpha(size_t index, bool has_alpha) {
-  generator_mutex_.AssertAcquired();
+  ASSERT(IsMainThread()); // BKTODO: generator_mutex_.AssertAcquired();
 
   if (index >= has_alpha_.size()) {
     const size_t old_size = has_alpha_.size();
@@ -201,7 +212,7 @@ void ImageFrameGenerator::SetHasAlpha(size_t index, bool has_alpha) {
 }
 
 bool ImageFrameGenerator::HasAlpha(size_t index) {
-  MutexLocker lock(generator_mutex_);
+  ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(generator_mutex_);
 
   if (index < has_alpha_.size())
     return has_alpha_[index];
@@ -213,7 +224,7 @@ bool ImageFrameGenerator::GetYUVComponentSizes(SegmentReader* data,
   TRACE_EVENT2("blink", "ImageFrameGenerator::getYUVComponentSizes", "width",
                full_size_.width(), "height", full_size_.height());
 
-  MutexLocker lock(generator_mutex_);
+  ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(generator_mutex_);
 
   if (yuv_decoding_failed_)
     return false;
@@ -250,6 +261,8 @@ ImageFrameGenerator::ClientMutexLocker::ClientMutexLocker(
     ImageFrameGenerator* generator,
     cc::PaintImage::GeneratorClientId client_id)
     : generator_(generator), client_id_(client_id) {
+  ASSERT(false); // BKTODO: 
+#if 0
   {
     MutexLocker lock(generator_->generator_mutex_);
     ClientMutex* client_mutex = nullptr;
@@ -263,9 +276,12 @@ ImageFrameGenerator::ClientMutexLocker::ClientMutexLocker(
   }
 
   mutex_->lock();
+#endif
 }
 
 ImageFrameGenerator::ClientMutexLocker::~ClientMutexLocker() {
+  ASSERT(false); // BKTODO: 
+#if 0
   mutex_->unlock();
 
   MutexLocker lock(generator_->generator_mutex_);
@@ -275,6 +291,7 @@ ImageFrameGenerator::ClientMutexLocker::~ClientMutexLocker() {
 
   if (it->second.ref_count == 0)
     generator_->mutex_map_.erase(it);
+#endif
 }
 
 }  // namespace blink

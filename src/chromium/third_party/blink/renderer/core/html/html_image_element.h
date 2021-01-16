@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_image_element.h
+// Description: HTMLImageElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -26,7 +37,7 @@
 
 #include <memory>
 
-#include "third_party/blink/renderer/bindings/core/v8/active_script_wrappable.h"
+// BKTODO: #include "third_party/blink/renderer/bindings/core/v8/active_script_wrappable.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/create_element_flags.h"
 #include "third_party/blink/renderer/core/html/canvas/image_element_base.h"
@@ -43,6 +54,7 @@
 namespace blink {
 
 class HTMLFormElement;
+class HTMLSourceElement;
 class ImageCandidate;
 class ExceptionState;
 class ShadowRoot;
@@ -51,7 +63,9 @@ class USVStringOrTrustedURL;
 class CORE_EXPORT HTMLImageElement final
     : public HTMLElement,
       public ImageElementBase,
+#if 0 // BKTODO:
       public ActiveScriptWrappable<HTMLImageElement>,
+#endif
       public FormAssociated {
   DEFINE_WRAPPERTYPEINFO();
   USING_GARBAGE_COLLECTED_MIXIN(HTMLImageElement);
@@ -82,7 +96,7 @@ class CORE_EXPORT HTMLImageElement final
   unsigned LayoutBoxWidth() const;
   unsigned LayoutBoxHeight() const;
 
-  const String& currentSrc() const;
+  const std::string& currentSrc() const;
 
   bool IsServerMap() const;
 
@@ -95,7 +109,7 @@ class CORE_EXPORT HTMLImageElement final
     return GetImageLoader().ImageResourceForImageDocument();
   }
   void LoadDeferredImage() {
-    GetImageLoader().LoadDeferredImage(referrer_policy_);
+    ASSERT(false); // BKTODO: GetImageLoader().LoadDeferredImage(referrer_policy_);
   }
   void SetImageForTest(ImageResourceContent* content) {
     GetImageLoader().SetImageForTest(content);
@@ -105,7 +119,7 @@ class CORE_EXPORT HTMLImageElement final
 
   void setHeight(unsigned);
 
-  KURL Src() const;
+  GURL Src() const;
   void SetSrc(const String&);
   void SetSrc(const USVStringOrTrustedURL&, ExceptionState&);
 
@@ -119,13 +133,17 @@ class CORE_EXPORT HTMLImageElement final
   int x() const;
   int y() const;
 
+#if 0 // BKTODO:
   ScriptPromise decode(ScriptState*, ExceptionState&);
+#endif
 
   bool complete() const;
 
+#if 0 // BKTODO:
   bool HasPendingActivity() const final {
     return GetImageLoader().HasPendingActivity();
   }
+#endif
 
   bool CanContainRangeEndPoint() const override { return false; }
 
@@ -184,7 +202,9 @@ class CORE_EXPORT HTMLImageElement final
 
   explicit HTMLImageElement(Document&, bool created_by_parser = false);
 
+#if 0 // BKTODO:
   void DidMoveToNewDocument(Document& old_document) override;
+#endif
 
   void DidAddUserAgentShadowRoot(ShadowRoot&) override;
   scoped_refptr<ComputedStyle> CustomStyleForLayoutObject() override;
@@ -230,7 +250,7 @@ class CORE_EXPORT HTMLImageElement final
   Member<HTMLImageLoader> image_loader_;
   Member<ViewportChangeListener> listener_;
   Member<HTMLFormElement> form_;
-  AtomicString best_fit_image_url_;
+  std::string best_fit_image_url_;
   float image_device_pixel_ratio_;
   Member<HTMLSourceElement> source_;
   LayoutDisposition layout_disposition_;
@@ -241,7 +261,9 @@ class CORE_EXPORT HTMLImageElement final
   bool sizes_set_width_;
   bool is_default_overridden_intrinsic_size_;
 
+#if 0 // BKTODO:
   ReferrerPolicy referrer_policy_;
+#endif
 
   IntSize overridden_intrinsic_size_;
 

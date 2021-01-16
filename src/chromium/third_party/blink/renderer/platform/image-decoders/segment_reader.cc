@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: segment_reader.cc
+// Description: SegmentReader Class
+//      Author: Ziming Li
+//     Created: 2021-01-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,7 +19,7 @@
 #include "third_party/blink/renderer/platform/shared_buffer.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
-#include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
+// BKTODO: #include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
 #include "third_party/skia/include/core/SkData.h"
 #include "third_party/skia/include/core/SkRWBuffer.h"
 
@@ -21,18 +32,18 @@ class SharedBufferSegmentReader final : public SegmentReader {
   WTF_MAKE_NONCOPYABLE(SharedBufferSegmentReader);
 
  public:
-  SharedBufferSegmentReader(scoped_refptr<SharedBuffer>);
+  SharedBufferSegmentReader(const std::shared_ptr<SharedBuffer> &);
   size_t size() const override;
   size_t GetSomeData(const char*& data, size_t position) const override;
   sk_sp<SkData> GetAsSkData() const override;
 
  private:
-  scoped_refptr<SharedBuffer> shared_buffer_;
+  std::shared_ptr<SharedBuffer> shared_buffer_;
 };
 
 SharedBufferSegmentReader::SharedBufferSegmentReader(
-    scoped_refptr<SharedBuffer> buffer)
-    : shared_buffer_(std::move(buffer)) {}
+    const std::shared_ptr<SharedBuffer> &buffer)
+    : shared_buffer_(buffer) {}
 
 size_t SharedBufferSegmentReader::size() const {
   return shared_buffer_->size();
@@ -40,16 +51,22 @@ size_t SharedBufferSegmentReader::size() const {
 
 size_t SharedBufferSegmentReader::GetSomeData(const char*& data,
                                               size_t position) const {
+  size_t size = shared_buffer_->size();
+  if (position < size) {
+    SharedBuffer::Iterator it = shared_buffer_->begin();
+    data = it.data() + position;
+    return size - position;
+  }
   data = nullptr;
-  auto it = shared_buffer_->GetIteratorAt(position);
-  if (it == shared_buffer_->cend())
-    return 0;
-  data = it->data();
-  return it->size();
+  return 0;
 }
 
 sk_sp<SkData> SharedBufferSegmentReader::GetAsSkData() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return shared_buffer_->GetAsSkData();
+#endif
 }
 
 // DataSegmentReader -----------------------------------------------------------
@@ -103,7 +120,7 @@ class ROBufferSegmentReader final : public SegmentReader {
  private:
   sk_sp<SkROBuffer> ro_buffer_;
   // Protects access to mutable fields.
-  mutable Mutex read_mutex_;
+  // BKTODO: mutable Mutex read_mutex_;
   // Position of the first char in the current block of iter_.
   mutable size_t position_of_block_;
   mutable SkROBuffer::Iter iter_;
@@ -123,7 +140,7 @@ size_t ROBufferSegmentReader::GetSomeData(const char*& data,
   if (!ro_buffer_)
     return 0;
 
-  MutexLocker lock(read_mutex_);
+  ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(read_mutex_);
 
   if (position < position_of_block_) {
     // SkROBuffer::Iter only iterates forwards. Start from the beginning.
@@ -187,8 +204,8 @@ sk_sp<SkData> ROBufferSegmentReader::GetAsSkData() const {
 // SegmentReader ---------------------------------------------------------------
 
 scoped_refptr<SegmentReader> SegmentReader::CreateFromSharedBuffer(
-    scoped_refptr<SharedBuffer> buffer) {
-  return base::AdoptRef(new SharedBufferSegmentReader(std::move(buffer)));
+    const std::shared_ptr<SharedBuffer> &buffer) {
+  return base::AdoptRef(new SharedBufferSegmentReader(buffer));
 }
 
 scoped_refptr<SegmentReader> SegmentReader::CreateFromSkData(

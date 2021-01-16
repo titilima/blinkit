@@ -105,10 +105,7 @@ class CORE_EXPORT ImageResource final
   scoped_refptr<const SharedBuffer> ResourceBuffer() const override;
 #endif
   void NotifyStartLoad() override;
-#if 0 // BKTODO:
-  void ResponseReceived(const ResourceResponse&,
-                        std::unique_ptr<WebDataConsumerHandle>) override;
-#endif
+  void ResponseReceived(const ResourceResponse&) override;
   void AppendData(const char*, size_t) override;
   void Finish(base::SingleThreadTaskRunner*) override;
   void FinishAsError(const ResourceError&,
@@ -161,11 +158,9 @@ class CORE_EXPORT ImageResource final
   bool HasClientsOrObservers() const override;
 
   void UpdateImageAndClearBuffer();
-#if 0 // BKTODO:
-  void UpdateImage(scoped_refptr<SharedBuffer>,
+  void UpdateImage(const std::shared_ptr<SharedBuffer>&,
                    ImageResourceContent::UpdateImageOption,
                    bool all_data_received);
-#endif
 
   void NotifyFinished() override;
 

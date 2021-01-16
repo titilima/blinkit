@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_srcset_parser.cc
+// Description: HTML Srcset Parser Helpers
+//      Author: Ziming Li
+//     Created: 2021-01-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -33,13 +44,13 @@
 
 #include <algorithm>
 #include "third_party/blink/renderer/core/dom/document.h"
-#include "third_party/blink/renderer/core/frame/frame_console.h"
+// BKTODO: #include "third_party/blink/renderer/core/frame/frame_console.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
-#include "third_party/blink/renderer/core/inspector/console_message.h"
+// BKTODO: #include "third_party/blink/renderer/core/inspector/console_message.h"
 #include "third_party/blink/renderer/platform/json/json_values.h"
-#include "third_party/blink/renderer/platform/loader/fetch/memory_cache.h"
+// BKTODO: #include "third_party/blink/renderer/platform/loader/fetch/memory_cache.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 #include "third_party/blink/renderer/platform/wtf/text/parsing_utilities.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
@@ -196,8 +207,11 @@ static void SrcsetError(Document* document, String message) {
     StringBuilder error_message;
     error_message.Append("Failed parsing 'srcset' attribute value since ");
     error_message.Append(message);
+    ASSERT(false); // BKTODO:
+#if 0
     document->GetFrame()->Console().AddMessage(ConsoleMessage::Create(
         kOtherMessageSource, kErrorMessageLevel, error_message.ToString()));
+#endif
   }
 }
 
@@ -324,6 +338,8 @@ static void ParseImageCandidatesFromSrcsetAttribute(
       // lists for each candidate.
       if (!ParseDescriptors(attribute, descriptor_tokens, result, document)) {
         if (document) {
+          ASSERT(false); // BKTODO:
+#if 0
           UseCounter::Count(document, WebFeature::kSrcsetDroppedCandidate);
           if (document->GetFrame()) {
             document->GetFrame()->Console().AddMessage(ConsoleMessage::Create(
@@ -334,6 +350,7 @@ static void ParseImageCandidatesFromSrcsetAttribute(
                                static_cast<wtf_size_t>(image_url_end -
                                                        image_url_start)))));
           }
+#endif
         }
         continue;
       }
@@ -401,12 +418,15 @@ static unsigned AvoidDownloadIfHigherDensityResourceIsInCache(
   if (!document)
     return winner;
   for (unsigned i = image_candidates.size() - 1; i > winner; --i) {
-    KURL url = document->CompleteURL(
+    GURL url = document->CompleteURL(
         StripLeadingAndTrailingHTMLSpaces(image_candidates[i]->Url()));
+    ASSERT(false); // BKTODO:
+#if 0
     if (GetMemoryCache()->ResourceForURL(
             url, document->Fetcher()->GetCacheIdentifier()) ||
         url.ProtocolIsData())
       return i;
+#endif
   }
   return winner;
 }

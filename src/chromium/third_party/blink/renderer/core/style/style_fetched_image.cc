@@ -196,13 +196,7 @@ void StyleFetchedImage::LoadDeferredImage(const Document& document) {
 }
 
 bool StyleFetchedImage::GetImageAnimationPolicy(ImageAnimationPolicy& policy) {
-  ASSERT(false); // BKTODO:
-#if 0
-  if (!document_ || !document_->GetSettings()) {
-    return false;
-  }
-  policy = document_->GetSettings()->GetImageAnimationPolicy();
-#endif
+  policy = Settings::GetImageAnimationPolicy();
   return true;
 }
 

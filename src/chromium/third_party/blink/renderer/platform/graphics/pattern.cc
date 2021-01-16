@@ -58,35 +58,31 @@ scoped_refptr<Pattern> Pattern::CreateImagePattern(
 #endif
 }
 
-#if 0 // BKTODO:
 scoped_refptr<Pattern> Pattern::CreatePaintRecordPattern(
     sk_sp<PaintRecord> record,
     const FloatRect& record_bounds,
     RepeatMode repeat_mode) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return PaintRecordPattern::Create(std::move(record), record_bounds,
                                     repeat_mode);
-}
 #endif
+}
 
 Pattern::Pattern(RepeatMode repeat_mode) : repeat_mode_(repeat_mode) {}
 
 Pattern::~Pattern() = default;
 
-#if 0 // BKTODO:
 void Pattern::ApplyToFlags(PaintFlags& flags, const SkMatrix& local_matrix) {
   if (!cached_shader_ || IsLocalMatrixChanged(local_matrix))
     cached_shader_ = CreateShader(local_matrix);
 
   flags.setShader(cached_shader_);
 }
-#endif
 
 bool Pattern::IsLocalMatrixChanged(const SkMatrix& local_matrix) const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return local_matrix != cached_shader_->GetLocalMatrix();
-#endif
 }
 
 }  // namespace blink

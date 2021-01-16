@@ -624,20 +624,19 @@ bool ResourceFetcher::ResourceNeedsLoad(Resource *resource, const FetchParameter
         return false;
 
 #ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO: Check the logic later.
     // Defer loading images either when:
     // - images are disabled
     // - instructed to defer loading images from network
     if (resource->GetType() == ResourceType::kImage)
     {
-        ASSERT(false); // BKTODO:
-#if 0
         if (ShouldDeferImageLoad(resource->Url())
             || params.GetImageRequestOptimization() == FetchParameters::kDeferImageLoad))
         {
             return false;
         }
-#endif
     }
+#endif
 #endif
     return policy != kUse || resource->StillNeedsLoad();
 }

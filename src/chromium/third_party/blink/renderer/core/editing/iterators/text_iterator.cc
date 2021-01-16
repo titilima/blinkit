@@ -621,13 +621,10 @@ static bool ShouldEmitNewlinesBeforeAndAfterNode(const Node& node) {
             node.HasTagName(kUlTag));
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   // Need to make an exception for option and optgroup, because we want to
   // keep the legacy behavior before we added layoutObjects to them.
   if (IsHTMLOptionElement(node) || IsHTMLOptGroupElement(node))
     return false;
-#endif
 
   // Need to make an exception for table cells, because they are blocks, but we
   // want them tab-delimited rather than having newlines before and after.

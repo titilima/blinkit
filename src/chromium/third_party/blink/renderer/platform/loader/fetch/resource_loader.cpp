@@ -195,7 +195,10 @@ void ResourceLoader::HandleError(const ResourceError &error)
 
 void ResourceLoader::ScheduleCancel(void)
 {
-    ASSERT(false); // BKTODO:
+#if 0 // BKTODO: Check the logic later.
+    if (!m_cancelTimer.IsActive())
+        m_cancelTimer.StartOneShot(TimeDelta(), FROM_HERE);
+#endif
 }
 
 void ResourceLoader::SetDefersLoading(bool defers)

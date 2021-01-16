@@ -31,6 +31,7 @@
 namespace blink {
 
 namespace MIMETypes {
+static const char ImagePNG[] = "image/png";
 static const char TextCSS[] = "text/css";
 static const char TextHTML[] = "text/html";
 }
@@ -88,6 +89,8 @@ String MIMETypeRegistry::GetWellKnownMIMETypeForExtension(const String& ext) {
     return String::FromUTF8(MIMETypes::TextCSS);
   if (0 == CodePointCompareIgnoringASCIICase(ext, "html"))
     return String::FromUTF8(MIMETypes::TextHTML);
+  if (0 == CodePointCompareIgnoringASCIICase(ext, "png"))
+      return String::FromUTF8(MIMETypes::ImagePNG);
 #ifndef NDEBUG
   const std::string s = ext.StdUtf8();
   ASSERT(false); // BKTODO:

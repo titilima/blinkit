@@ -197,26 +197,20 @@ static inline ScopedStyleResolver* ScopedResolverFor(const Element& element) {
 
   TreeScope* tree_scope = &element.GetTreeScope();
   if (ScopedStyleResolver* resolver = tree_scope->GetScopedStyleResolver()) {
-#if 0 // BKTODO: Check if necessary.
 #if DCHECK_IS_ON()
     if (!element.HasMediaControlAncestor())
       DCHECK(element.ShadowPseudoId().IsEmpty());
 #endif
     DCHECK(!element.IsVTTElement());
-#endif
     return resolver;
   }
 
   tree_scope = tree_scope->ParentTreeScope();
   if (!tree_scope)
     return nullptr;
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   if (element.ShadowPseudoId().IsEmpty() && !element.IsVTTElement())
     return nullptr;
   return tree_scope->GetScopedStyleResolver();
-#endif
 }
 
 // Matches :host and :host-context rules if the element is a shadow host.

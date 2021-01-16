@@ -79,8 +79,8 @@ class CORE_EXPORT ShadowRoot final : public DocumentFragment, public TreeScope {
 #if 0 // BKTODO:
   // Make protected methods from base class public here.
   using TreeScope::SetDocument;
-  using TreeScope::SetParentTreeScope;
 #endif
+  using TreeScope::SetParentTreeScope;
 
   Element& host() const {
     DCHECK(ParentOrShadowHostNode());
@@ -215,11 +215,7 @@ class CORE_EXPORT ShadowRoot final : public DocumentFragment, public TreeScope {
 };
 
 inline Element* ShadowRoot::ActiveElement() const {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return AdjustedFocusedElement();
-#endif
 }
 
 inline bool Node::IsInUserAgentShadowRoot() const {

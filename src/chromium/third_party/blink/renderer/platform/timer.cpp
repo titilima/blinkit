@@ -68,7 +68,7 @@ void TimerBase::SetNextFireTime(TimeTicks now, TimeDelta delay)
         m_nextFireTime = newTime;
 
         std::shared_ptr<bool> isAlive(m_isAlive);
-        const auto callback = [this, isAlive]
+        auto callback = [this, isAlive]
         {
             if (*isAlive)
                 RunInternal();

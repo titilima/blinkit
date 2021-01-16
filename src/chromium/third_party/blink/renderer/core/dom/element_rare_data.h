@@ -93,7 +93,12 @@ public:
     void SetPseudoElement(PseudoId pseudoId, PseudoElement *element);
     void ClearPseudoElements(void);
 
-    ShadowRoot* GetShadowRoot(void) const { return m_shadowRoot.get(); }
+    ShadowRoot* GetShadowRoot(void) const { return m_shadowRoot.Get(); }
+    void SetShadowRoot(ShadowRoot &shadowRoot)
+    {
+        ASSERT(!m_shadowRoot);
+        m_shadowRoot = &shadowRoot;
+    }
 
     ComputedStyle* GetComputedStyle(void) const { return m_computedStyle.get(); }
     void SetComputedStyle(scoped_refptr<ComputedStyle> computedStyle);
@@ -111,7 +116,7 @@ private:
 #endif
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    std::unique_ptr<ShadowRoot> m_shadowRoot;
+    Member<ShadowRoot> m_shadowRoot;
     scoped_refptr<ComputedStyle> m_computedStyle;
     Member<ElementAnimations> m_elementAnimations;
     std::unique_ptr<ResizeObserverDataMap> m_resizeObserverData;

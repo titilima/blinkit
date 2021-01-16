@@ -61,6 +61,7 @@ class NamedNodeMap;
 #ifndef BLINKIT_CRAWLER_ONLY
 class ElementAnimations;
 class FocusOptions;
+class Image;
 class InputDeviceCapabilities;
 class MutableCSSPropertyValueSet;
 class PseudoElement;
@@ -87,6 +88,8 @@ enum class NamedItemType {
 };
 
 #ifndef BLINKIT_CRAWLER_ONLY
+enum class ShadowRootType;
+
 enum class SelectionBehaviorOnFocus {
     kReset,
     kRestore,
@@ -230,6 +233,8 @@ public:
     // This returns true for <textarea> and some types of <input>.
     virtual bool IsTextControl(void) const { return false; }
 
+    bool IsUpgradedV0CustomElement(void) { return GetV0CustomElementState() == kV0Upgraded; }
+
     Element* AdjustedFocusedElementInTreeScope(void) const;
 
     bool HasAnimations(void) const;
@@ -243,6 +248,7 @@ public:
     const CSSPropertyValueSet* PresentationAttributeStyle(void);
     virtual const CSSPropertyValueSet* AdditionalPresentationAttributeStyle(void) { return nullptr; }
 
+    MutableCSSPropertyValueSet& EnsureMutableInlineStyle(void);
     const CSSPropertyValueSet* InlineStyle(void) const
     {
         ASSERT(!ForCrawler());
@@ -250,6 +256,10 @@ public:
             return elementData->inline_style_.Get();
         return nullptr;
     }
+    void SetInlineStyleProperty(CSSPropertyID propertyId, CSSValueID identifier, bool important = false);
+    void SetInlineStyleProperty(CSSPropertyID propertyId, double value, CSSPrimitiveValue::UnitType unit, bool important = false);
+    void SetInlineStyleProperty(CSSPropertyID propertyId, const CSSValue &value, bool important = false);
+    bool SetInlineStyleProperty(CSSPropertyID propertyId, const String &value, bool important = false);
     ComputedStyle* MutableNonLayoutObjectComputedStyle(void) const
     {
         return const_cast<ComputedStyle *>(NonLayoutObjectComputedStyle());
@@ -287,6 +297,9 @@ public:
     virtual String DefaultToolTip(void) const { return String(); }
     int tabIndex(void) const override;
 
+    virtual const AtomicString ImageSourceURL(void) const;
+    virtual Image* ImageContents(void) { return nullptr; }
+
     virtual void blur(void);
 
     virtual void DispatchFocusEvent(Element *oldFocusedElement, WebFocusType type,
@@ -301,7 +314,10 @@ public:
 
     // Returns the shadow root attached to this element if it is a shadow host.
     ShadowRoot* GetShadowRoot(void) const;
+    ShadowRoot* AuthorShadowRoot(void) const;
+    ShadowRoot* UserAgentShadowRoot(void) const;
     ShadowRoot* ShadowRootIfV1(void) const;
+    ShadowRoot& EnsureUserAgentShadowRoot(void);
 
     virtual const AtomicString& ShadowPseudoId(void) const;
     PseudoElement* GetPseudoElement(PseudoId pseudoid) const;
@@ -427,6 +443,10 @@ private:
     bool ChildTypeAllowed(NodeType type) const final;
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    void SetSynchronizedLazyAttribute(const QualifiedName &name, const AtomicString &value);
+
+    void SynchronizeStyleAttributeInternal(void) const;
+
     StyleRecalcChange RecalcOwnStyle(StyleRecalcChange change);
     // If the only inherited changes in the parent element are independent,
     // these changes can be directly propagated to this element (the child).
@@ -453,6 +473,8 @@ private:
     void UpdatePseudoElement(PseudoId pseudoId, StyleRecalcChange change);
     void DetachPseudoElement(PseudoId pseudoId, const AttachContext &context);
 
+    ShadowRoot& CreateAndAttachShadowRoot(ShadowRootType type);
+
     enum class StyleUpdatePhase {
         kRecalc,
         kRebuildLayoutTree,
@@ -470,8 +492,11 @@ private:
 
     void CheckForEmptyStyleChange(const Node *nodeBeforeChange, const Node *nodeAfterChange);
 
+    void InlineStyleChanged(void);
+
     // FIXME: Everyone should allow author shadows.
     virtual bool AreAuthorShadowsAllowed(void) const { return true; }
+    virtual void DidAddUserAgentShadowRoot(ShadowRoot &shadowRoot) {}
     virtual bool AlwaysCreateUserAgentShadowRoot(void) const { return false; }
 #endif
 

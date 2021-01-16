@@ -22,10 +22,8 @@
 #include "third_party/blink/renderer/core/loader/resource/image_resource_observer.h"
 // BKTODO: #include "third_party/blink/renderer/core/svg/graphics/svg_image.h"
 #include "third_party/blink/renderer/platform/geometry/int_size.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/graphics/bitmap_image.h"
-#include "third_party/blink/renderer/platform/graphics/placeholder_image.h"
-#endif
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/placeholder_image.h"
 #include "third_party/blink/renderer/platform/histogram.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/blink/renderer/platform/network/http_parsers.h"
@@ -120,12 +118,8 @@ ImageResourceContent::ImageResourceContent(scoped_refptr<blink::Image> image)
       device_pixel_ratio_header_value_(1.0),
       has_device_pixel_ratio_header_value_(false),
       image_(std::move(image)) {
-  ASSERT(false); // BKTODO:
-#if 0
-  DEFINE_STATIC_LOCAL(Persistent<NullImageResourceInfo>, null_info,
-                      (new NullImageResourceInfo()));
+  static NullImageResourceInfo *null_info = new (ObjectType::Global) NullImageResourceInfo;
   info_ = null_info;
-#endif
 }
 
 ImageResourceContent* ImageResourceContent::CreateLoaded(
@@ -159,14 +153,11 @@ void ImageResourceContent::MarkObserverFinished(
     ImageResourceObserver* observer) {
   ProhibitAddRemoveObserverInScope prohibit_add_remove_observer_in_scope(this);
 
-  ASSERT(false); // BKTODO:
-#if 0
   auto it = observers_.find(observer);
   if (it == observers_.end())
     return;
   observers_.erase(it);
   finished_observers_.insert(observer);
-#endif
 }
 
 void ImageResourceContent::AddObserver(ImageResourceObserver* observer) {
@@ -187,14 +178,11 @@ void ImageResourceContent::AddObserver(ImageResourceObserver* observer) {
     observer->ImageChanged(this, CanDeferInvalidation::kNo);
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (IsLoaded() && observers_.Contains(observer) &&
       !info_->SchedulingReloadOrShouldReloadBrokenPlaceholder()) {
     MarkObserverFinished(observer);
     observer->ImageNotifyFinished(this);
   }
-#endif
 }
 
 void ImageResourceContent::RemoveObserver(ImageResourceObserver* observer) {
@@ -202,8 +190,6 @@ void ImageResourceContent::RemoveObserver(ImageResourceObserver* observer) {
   CHECK(!is_add_remove_observer_prohibited_);
   ProhibitAddRemoveObserverInScope prohibit_add_remove_observer_in_scope(this);
 
-  ASSERT(false); // BKTODO:
-#if 0
   auto it = observers_.find(observer);
   if (it != observers_.end()) {
     observers_.erase(it);
@@ -213,7 +199,6 @@ void ImageResourceContent::RemoveObserver(ImageResourceObserver* observer) {
     finished_observers_.erase(it);
   }
   info_->DidRemoveClientOrObserver();
-#endif
 }
 
 static void PriorityFromObserver(const ImageResourceObserver* observer,
@@ -280,12 +265,9 @@ IntSize ImageResourceContent::IntrinsicSize(
     RespectImageOrientationEnum should_respect_image_orientation) {
   if (!image_)
     return IntSize();
-  ASSERT(false); // BKTODO:
-#if 0
   if (should_respect_image_orientation == kRespectImageOrientation &&
       image_->IsBitmapImage())
     return ToBitmapImage(image_.get())->SizeRespectingOrientation();
-#endif
   return image_->Size();
 }
 
@@ -293,35 +275,27 @@ void ImageResourceContent::NotifyObservers(
     NotifyFinishOption notifying_finish_option,
     CanDeferInvalidation defer) {
   {
-    Vector<ImageResourceObserver*> finished_observers_as_vector;
+    std::vector<ImageResourceObserver*> finished_observers_as_vector;
     {
       ProhibitAddRemoveObserverInScope prohibit_add_remove_observer_in_scope(
           this);
-      ASSERT(false); // BKTODO:
-#if 0
       finished_observers_as_vector = finished_observers_.AsVector();
-#endif
     }
 
     for (auto* observer : finished_observers_as_vector) {
-      ASSERT(false); // BKTODO:
-#if 0
       if (finished_observers_.Contains(observer))
         observer->ImageChanged(this, defer);
-#endif
     }
   }
   {
-    Vector<ImageResourceObserver*> observers_as_vector;
+    std::vector<ImageResourceObserver*> observers_as_vector;
     {
       ProhibitAddRemoveObserverInScope prohibit_add_remove_observer_in_scope(
           this);
-      ASSERT(false); // BKTODO: observers_as_vector = observers_.AsVector();
+      observers_as_vector = observers_.AsVector();
     }
 
     for (auto* observer : observers_as_vector) {
-      ASSERT(false); // BKTODO:
-#if 0
       if (observers_.Contains(observer)) {
         observer->ImageChanged(this, defer);
         if (notifying_finish_option == kShouldNotifyFinish &&
@@ -331,15 +305,12 @@ void ImageResourceContent::NotifyObservers(
           observer->ImageNotifyFinished(this);
         }
       }
-#endif
     }
   }
 }
 
 scoped_refptr<Image> ImageResourceContent::CreateImage(bool is_multipart) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
+#if 0 // BKTODO: Check the logic below.
   device_pixel_ratio_header_value_ =
       info_->GetResponse()
           .HttpHeaderField(HTTPNames::Content_DPR)
@@ -351,8 +322,8 @@ scoped_refptr<Image> ImageResourceContent::CreateImage(bool is_multipart) {
   }
   if (info_->GetResponse().MimeType() == "image/svg+xml")
     return SVGImage::Create(this, is_multipart);
-  return BitmapImage::Create(this, is_multipart);
 #endif
+  return BitmapImage::Create(this, is_multipart);
 }
 
 void ImageResourceContent::ClearImage() {
@@ -433,9 +404,8 @@ void ImageResourceContent::AsyncLoadCompleted(const blink::Image* image) {
   NotifyObservers(kShouldNotifyFinish, CanDeferInvalidation::kNo);
 }
 
-#if 0 // BKTODO:
 ImageResourceContent::UpdateImageResult ImageResourceContent::UpdateImage(
-    scoped_refptr<SharedBuffer> data,
+    const std::shared_ptr<SharedBuffer>& data,
     ResourceStatus status,
     UpdateImageOption update_image_option,
     bool all_data_received,
@@ -539,7 +509,6 @@ ImageResourceContent::UpdateImageResult ImageResourceContent::UpdateImage(
 
   return UpdateImageResult::kNoDecodeError;
 }
-#endif
 
 // Return true if the image type is one of the hard-coded 'modern' image
 // formats.

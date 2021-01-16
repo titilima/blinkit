@@ -108,6 +108,7 @@ enum class CloneChildrenFlag { kClone, kSkip };
 class Node : public EventTarget
 {
     friend class TreeScope;
+    friend class TreeScopeAdopter;
 public:
     enum NodeType {
         kElementNode = 1,
@@ -236,6 +237,9 @@ public:
     bool IsV0InsertionPoint(void) const { return GetFlag(kIsV0InsertionPointFlag); }
 #endif
     bool IsLink(void) const { return GetFlag(kIsLinkFlag); }
+#ifndef BLINKIT_CRAWLER_ONLY
+    void SetIsLink(bool isLink) { SetFlag(isLink, kIsLinkFlag); }
+#endif
     bool IsUserActionElement(void) const { return GetFlag(kIsUserActionElementFlag); }
 #ifndef BLINKIT_CRAWLER_ONLY
     void SetUserActionElement(bool flag) { SetFlag(flag, kIsUserActionElementFlag); }
@@ -306,12 +310,13 @@ public:
 #ifndef BLINKIT_CRAWLER_ONLY
     bool IsEditingText(void) const
     {
-        DCHECK(IsTextNode());
+        ASSERT(IsTextNode());
         return GetFlag(kHasNameOrIsEditingTextFlag);
     }
 #endif
     bool HasEventTargetData(void) const { return GetFlag(kHasEventTargetDataFlag); }
     void SetHasEventTargetData(bool flag) { SetFlag(flag, kHasEventTargetDataFlag); }
+    bool IsV0CustomElement(void) const { return GetFlag(kV0CustomElementFlag); }
     bool NeedsReattachLayoutTree(void) const { return GetFlag(kNeedsReattachLayoutTree); }
 #ifndef BLINKIT_CRAWLER_ONLY
     void SetNeedsReattachLayoutTree(void);
@@ -384,6 +389,18 @@ public:
     virtual bool ShouldHaveFocusAppearance(void) const;
     // A re-distribution across v0 and v1 shadow trees is not supported.
     bool IsSlotable(void) const { return IsTextNode() || (IsElementNode() && !IsV0InsertionPoint()); }
+
+    enum V0CustomElementState {
+        kV0NotCustomElement = 0,
+        kV0WaitingForUpgrade = 1 << 0,
+        kV0Upgraded = 1 << 1
+    };
+    V0CustomElementState GetV0CustomElementState(void) const
+    {
+        if (IsV0CustomElement())
+            return GetFlag(kV0CustomElementUpgradedFlag) ? kV0Upgraded : kV0WaitingForUpgrade;
+        return kV0NotCustomElement;
+    }
 
     virtual void SetFocused(bool flag, WebFocusType focusType);
 
@@ -481,6 +498,12 @@ public:
     void CheckSlotChangeAfterInserted(void) { CheckSlotChange(SlotChangeType::kSignalSlotChangeEvent); }
     void CheckSlotChangeBeforeRemoved(void) { CheckSlotChange(SlotChangeType::kSignalSlotChangeEvent); }
 #endif // BLINKIT_CRAWLER_ONLY
+
+    /**
+     * Placeholders
+     */
+    constexpr bool HasMediaControlAncestor(void) const { return false; }
+    constexpr bool IsVTTElement(void) const { return false; }
 private:
     enum NodeFlags {
         kHasRareDataFlag = 1,

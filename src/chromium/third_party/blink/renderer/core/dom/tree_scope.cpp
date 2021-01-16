@@ -55,6 +55,7 @@ TreeScope::TreeScope(ContainerNode &rootNode, Document &document)
     : m_rootNode(&rootNode)
     , m_document(&document)
     , m_parentTreeScope(&document)
+    , m_idTargetObserverRegistry(IdTargetObserverRegistry::Create())
 {
     ASSERT(rootNode != document);
     m_rootNode->SetTreeScope(this);
@@ -133,6 +134,15 @@ bool TreeScope::IsInclusiveOlderSiblingShadowRootOrAncestorTreeScopeOf(const Tre
 void TreeScope::RemoveElementById(const AtomicString &elementId, Element &element)
 {
     ASSERT(false); // BKTODO:
+}
+
+void TreeScope::SetParentTreeScope(TreeScope &newParentScope)
+{
+    // A document node cannot be re-parented.
+    ASSERT(!RootNode().IsDocumentNode());
+
+    m_parentTreeScope = &newParentScope;
+    SetDocument(newParentScope.GetDocument());
 }
 
 void TreeScope::Trace(Visitor *visitor)

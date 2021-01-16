@@ -330,11 +330,7 @@ bool LayoutObject::IsDescendantOf(const LayoutObject* obj) const {
 }
 
 bool LayoutObject::IsHR() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return IsHTMLHRElement(GetNode());
-#endif
 }
 
 void LayoutObject::SetIsInsideFlowThreadIncludingDescendants(
@@ -1392,10 +1388,7 @@ FloatRect LayoutObject::AbsoluteBoundingBoxRectForRange(
   if (range.IsNull() || !range.StartPosition().ComputeContainerNode())
     return FloatRect();
 
-  ASSERT(false); // BKTODO:
-#if 0
   range.GetDocument().UpdateStyleAndLayout();
-#endif
 
   return ComputeTextFloatRect(range);
 }
@@ -3027,8 +3020,6 @@ RespectImageOrientationEnum LayoutObject::ShouldRespectImageOrientation(
   if (!layout_object)
     return kDoNotRespectImageOrientation;
 
-  ASSERT(false); // BKTODO:
-#if 0
   // Respect the image's orientation if it's being used as a full-page image or
   // it's an <img> and the setting to respect it everywhere is set or the <img>
   // has image-orientation: from-image style. FIXME: crbug.com/498233
@@ -3038,12 +3029,8 @@ RespectImageOrientationEnum LayoutObject::ShouldRespectImageOrientation(
   if (!IsHTMLImageElement(layout_object->GetNode()))
     return kDoNotRespectImageOrientation;
 
-  if (layout_object->GetDocument().GetSettings() &&
-      layout_object->GetDocument()
-          .GetSettings()
-          ->GetShouldRespectImageOrientation())
+  if (Settings::ShouldRespectImageOrientation)
     return kRespectImageOrientation;
-#endif
 
   if (layout_object->Style() &&
       layout_object->StyleRef().RespectImageOrientation() ==
@@ -3701,12 +3688,7 @@ bool LayoutObject::WillRenderImage() {
 }
 
 bool LayoutObject::GetImageAnimationPolicy(ImageAnimationPolicy& policy) {
-  ASSERT(false); // BKTODO:
-#if 0
-  if (!GetDocument().GetSettings())
-    return false;
-  policy = GetDocument().GetSettings()->GetImageAnimationPolicy();
-#endif
+  policy = Settings::GetImageAnimationPolicy();
   return true;
 }
 
@@ -3786,12 +3768,9 @@ Element* LayoutObject::OffsetParent(const Element* base) const {
     if (IsHTMLBodyElement(*node))
       break;
 
-    ASSERT(false); // BKTODO:
-#if 0
     if (!IsPositioned() &&
         (IsHTMLTableElement(*node) || IsHTMLTableCellElement(*node)))
       break;
-#endif
 
     // Webkit specific extension where offsetParent stops at zoom level changes.
     if (effective_zoom != ancestor->StyleRef().EffectiveZoom())
