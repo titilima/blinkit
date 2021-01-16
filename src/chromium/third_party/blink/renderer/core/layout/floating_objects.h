@@ -171,6 +171,7 @@ public:
   using std::list<std::unique_ptr<FloatingObject>>::back;
   using std::list<std::unique_ptr<FloatingObject>>::begin;
   using std::list<std::unique_ptr<FloatingObject>>::end;
+  using std::list<std::unique_ptr<FloatingObject>>::size;
 
   void clear(void) {
     indices_.clear();
@@ -184,8 +185,17 @@ public:
     return it;
   }
 
+  bool Contains(const LayoutBox *layout_box) const {
+    return Find(layout_box) != this->end();
+  }
   bool Contains(const FloatingObject *floating_object) const {
-    return Find(floating_object->GetLayoutObject()) != this->end();
+    return Contains(floating_object->GetLayoutObject());
+  }
+  iterator Find(LayoutBox *layout_box) {
+    auto it = indices_.find(layout_box);
+    if (indices_.end() == it)
+      return this->end();
+    return it->second;
   }
   const_iterator Find(const LayoutBox *layout_box) const {
     auto it = indices_.find(layout_box);
