@@ -25,6 +25,8 @@ bool IsMediaElement(const Element *element);
 
 inline constexpr bool IsUnsizedMediaEnabled(const Document &) { return true; }
 
+inline void ReportUnsizedMediaViolation(const LayoutObject *) {}
+
 } // namespace MediaElementParserHelpers
 } // namespace blink
 

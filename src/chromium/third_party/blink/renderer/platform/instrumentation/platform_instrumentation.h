@@ -20,7 +20,8 @@ inline void NothingToDo(void) {}
 } // namespace PlatformInstrumentation
 } // namespace blink
 
-#define WillDecodeImage(...)    NothingToDo()
-#define DidDecodeImage(...)     NothingToDo()
+#define DidDecodeImage(...)         NothingToDo()
+#define DidDrawLazyPixelRef(...)    NothingToDo()
+#define WillDecodeImage(...)        NothingToDo()
 
 #endif // BLINKIT_BLINK_PLATFORM_INSTRUMENTATION_H
