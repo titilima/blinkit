@@ -215,13 +215,11 @@ class PLATFORM_EXPORT GraphicsContext {
 
   void StrokeRect(const FloatRect&, float line_width);
 
-#if 0 // BKTODO:
   void DrawRecord(sk_sp<const PaintRecord>);
   void CompositeRecord(sk_sp<PaintRecord>,
                        const FloatRect& dest,
                        const FloatRect& src,
                        SkBlendMode);
-#endif
 
   void DrawImage(Image*,
                  Image::ImageDecodingMode,

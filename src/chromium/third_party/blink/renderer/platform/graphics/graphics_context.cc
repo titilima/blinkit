@@ -46,10 +46,8 @@
 #include "third_party/blink/renderer/platform/geometry/float_rounded_rect.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context_state_saver.h"
-#if 0 // BKTODO:
-#include "third_party/blink/renderer/platform/graphics/interpolation_space.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/interpolation_space.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
-#endif
 #include "third_party/blink/renderer/platform/graphics/paint/paint_controller.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_record.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_recorder.h"
@@ -132,10 +130,7 @@ void GraphicsContext::Restore() {
     return;
 
   if (!paint_state_index_ && !paint_state_->SaveCount()) {
-    ASSERT(false); // BKTODO:
-#if 0
-    DLOG(ERROR) << "ERROR void GraphicsContext::restore() stack is empty";
-#endif
+    BKLOG("ERROR: void GraphicsContext::restore() stack is empty");
     return;
   }
 
@@ -349,7 +344,6 @@ sk_sp<PaintRecord> GraphicsContext::EndRecording() {
   return record;
 }
 
-#if 0 // BKTODO
 void GraphicsContext::DrawRecord(sk_sp<const PaintRecord> record) {
   if (ContextDisabled() || !record || !record->size())
     return;
@@ -381,7 +375,6 @@ void GraphicsContext::CompositeRecord(sk_sp<PaintRecord> record,
                      0, 0, &flags);
   canvas_->restore();
 }
-#endif
 
 namespace {
 
@@ -905,11 +898,8 @@ void GraphicsContext::DrawImage(
   image_flags.setAntiAlias(ShouldAntialias());
   if (ShouldApplyHighContrastFilterToImage(*image))
     image_flags.setColorFilter(high_contrast_filter_);
-  ASSERT(false); // BKTODO:
-#if 0
   image->Draw(canvas_, image_flags, dest, src, should_respect_image_orientation,
               Image::kClampImageToSourceRect, decode_mode);
-#endif
   paint_controller_.SetImagePainted();
 }
 
@@ -948,7 +938,7 @@ void GraphicsContext::DrawImageRRect(
   if (use_shader) {
     const SkMatrix local_matrix = SkMatrix::MakeRectToRect(
         visible_src, dest.Rect(), SkMatrix::kFill_ScaleToFit);
-    ASSERT(false); // BKTODO: use_shader = image->ApplyShader(image_flags, local_matrix);
+    use_shader = image->ApplyShader(image_flags, local_matrix);
   }
 
   if (use_shader) {
@@ -1068,7 +1058,7 @@ void GraphicsContext::FillPath(const Path& path_to_fill) {
   if (ContextDisabled() || path_to_fill.IsEmpty())
     return;
 
-  ASSERT(false); // BKTODO: DrawPath(path_to_fill.GetSkPath(), ImmutableState()->FillFlags());
+  DrawPath(path_to_fill.GetSkPath(), ImmutableState()->FillFlags());
 }
 
 void GraphicsContext::FillRect(const IntRect& rect) {
@@ -1111,8 +1101,6 @@ void GraphicsContext::FillRoundedRect(const FloatRoundedRect& rrect,
     return;
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (color == FillColor()) {
     DrawRRect(rrect, ImmutableState()->FillFlags());
     return;
@@ -1122,7 +1110,6 @@ void GraphicsContext::FillRoundedRect(const FloatRoundedRect& rrect,
   flags.setColor(color.Rgb());
 
   DrawRRect(rrect, flags);
-#endif
 }
 
 namespace {
@@ -1176,8 +1163,6 @@ void GraphicsContext::FillDRRect(const FloatRoundedRect& outer,
   DCHECK(canvas_);
 
   if (!IsSimpleDRRect(outer, inner)) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (color == FillColor()) {
       canvas_->drawDRRect(outer, inner, ImmutableState()->FillFlags());
     } else {
@@ -1185,7 +1170,6 @@ void GraphicsContext::FillDRRect(const FloatRoundedRect& outer,
       flags.setColor(ApplyHighContrastFilter(color).Rgb());
       canvas_->drawDRRect(outer, inner, flags);
     }
-#endif
 
     return;
   }
@@ -1195,22 +1179,19 @@ void GraphicsContext::FillDRRect(const FloatRoundedRect& outer,
   SkRRect stroke_r_rect = outer;
   stroke_r_rect.inset(stroke_width / 2, stroke_width / 2);
 
-  ASSERT(false); // BKTODO:
-#if 0
   PaintFlags stroke_flags(ImmutableState()->FillFlags());
   stroke_flags.setColor(ApplyHighContrastFilter(color).Rgb());
   stroke_flags.setStyle(PaintFlags::kStroke_Style);
   stroke_flags.setStrokeWidth(stroke_width);
 
   canvas_->drawRRect(stroke_r_rect, stroke_flags);
-#endif
 }
 
 void GraphicsContext::FillEllipse(const FloatRect& ellipse) {
   if (ContextDisabled())
     return;
 
-  ASSERT(false); // BKTODO: DrawOval(ellipse, ImmutableState()->FillFlags());
+  DrawOval(ellipse, ImmutableState()->FillFlags());
 }
 
 void GraphicsContext::StrokePath(const Path& path_to_stroke,
@@ -1219,19 +1200,14 @@ void GraphicsContext::StrokePath(const Path& path_to_stroke,
   if (ContextDisabled() || path_to_stroke.IsEmpty())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   DrawPath(path_to_stroke.GetSkPath(),
            ImmutableState()->StrokeFlags(length, dash_thickness));
-#endif
 }
 
 void GraphicsContext::StrokeRect(const FloatRect& rect, float line_width) {
   if (ContextDisabled())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   PaintFlags flags(ImmutableState()->StrokeFlags());
   flags.setStrokeWidth(WebCoreFloatToSkScalar(line_width));
   // Reset the dash effect to account for the width
@@ -1253,14 +1229,13 @@ void GraphicsContext::StrokeRect(const FloatRect& rect, float line_width) {
     path.close();
     DrawPath(path, flags);
   }
-#endif
 }
 
 void GraphicsContext::StrokeEllipse(const FloatRect& ellipse) {
   if (ContextDisabled())
     return;
 
-  ASSERT(false); // BKTODO: DrawOval(ellipse, ImmutableState()->StrokeFlags());
+  DrawOval(ellipse, ImmutableState()->StrokeFlags());
 }
 
 void GraphicsContext::ClipRoundedRect(const FloatRoundedRect& rrect,
@@ -1399,12 +1374,9 @@ void GraphicsContext::FillRectWithRoundedHole(
   if (ContextDisabled())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   PaintFlags flags(ImmutableState()->FillFlags());
   flags.setColor(ApplyHighContrastFilter(color).Rgb());
   canvas_->drawDRRect(SkRRect::MakeRect(rect), rounded_hole_rect, flags);
-#endif
 }
 
 void GraphicsContext::AdjustLineToPixelBoundaries(FloatPoint& p1,
