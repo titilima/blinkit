@@ -25,6 +25,12 @@ struct GCEmptyTracer
     static void Impl(T &, blink::Visitor *) {}
 };
 
+template <typename T>
+struct GCSimpleTracer
+{
+    static void Impl(T &o, blink::Visitor *visitor) { visitor->Trace(&o); }
+};
+
 template <typename T, typename TracePolicy = GCEmptyTracer<T>>
 class GCStaticWrapper
 {
