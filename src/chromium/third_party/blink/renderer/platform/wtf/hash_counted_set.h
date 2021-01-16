@@ -15,6 +15,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <vector>
 
 namespace blink {
 
@@ -30,6 +31,14 @@ public:
     iterator end(void) { return m_impl.end(); }
     void erase(iterator it) { m_impl.erase(it); }
     iterator find(const T &o) { return m_impl.find(o); }
+
+    std::vector<T> AsVector(void) const
+    {
+        std::vector<T> ret;
+        for (const auto &it : m_impl)
+            ret.push_back(it.first);
+        return ret;
+    }
 
     bool Contains(const T &o) const { return m_impl.end() != m_impl.find(o); }
 
