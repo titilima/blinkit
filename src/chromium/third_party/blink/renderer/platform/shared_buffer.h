@@ -47,6 +47,7 @@ namespace blink {
 class SharedBuffer : public std::enable_shared_from_this<SharedBuffer>
 {
 public:
+    static std::shared_ptr<SharedBuffer> Create(void);
     static std::shared_ptr<SharedBuffer> Create(const char *data, size_t length);
 
     // Iterator for ShreadBuffer contents. An Iterator will get invalid once the
@@ -79,6 +80,7 @@ public:
 
     bool GetBytes(void *dest, size_t destSize) const;
 private:
+    SharedBuffer(void) = default;
     SharedBuffer(const char *data, size_t length);
 
     std::vector<char> m_data;

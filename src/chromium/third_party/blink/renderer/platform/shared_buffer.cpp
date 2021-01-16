@@ -68,6 +68,11 @@ SharedBuffer::Iterator SharedBuffer::begin(void) const
     return Iterator(&m_data);
 }
 
+std::shared_ptr<SharedBuffer> SharedBuffer::Create(void)
+{
+    return base::WrapShared(new SharedBuffer);
+}
+
 std::shared_ptr<SharedBuffer> SharedBuffer::Create(const char *data, size_t length)
 {
     return base::WrapShared(new SharedBuffer(data, length));
