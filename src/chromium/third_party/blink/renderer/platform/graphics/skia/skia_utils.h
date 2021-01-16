@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: skia_utils.h
-// Description: Skia Utils
-//      Author: Ziming Li
-//     Created: 2020-09-01
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (c) 2006,2007,2008, Google Inc. All rights reserved.
  *
@@ -45,7 +34,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_SKIA_SKIA_UTILS_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_SKIA_SKIA_UTILS_H_
 
-// BKTODO: #include "cc/paint/paint_canvas.h"
+#include "cc/paint/paint_canvas.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_types.h"
 #include "third_party/blink/renderer/platform/graphics/image.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
@@ -84,11 +73,9 @@ BlendMode PLATFORM_EXPORT BlendModeFromSkBlendMode(SkBlendMode);
 // alpha is in the range [0, 1].
 SkColor PLATFORM_EXPORT ScaleAlpha(SkColor, float);
 
-#if 0 // BKTODO:
 // Convert a SkColorSpace to a gfx::ColorSpace
 gfx::ColorSpace PLATFORM_EXPORT
 SkColorSpaceToGfxColorSpace(const sk_sp<SkColorSpace>);
-#endif
 
 bool PLATFORM_EXPORT
 ApproximatelyEqualSkColorSpaces(sk_sp<SkColorSpace> src_color_space,
@@ -154,7 +141,6 @@ void DrawPlatformFocusRing(const PrimitiveType&,
                            SkColor,
                            float width);
 
-#if 0 // BKTODO:
 // TODO(fmalita): remove in favor of direct SrcRectConstraint use.
 inline cc::PaintCanvas::SrcRectConstraint
 WebCoreClampingModeToSkiaRectConstraint(Image::ImageClampingMode clamp_mode) {
@@ -162,7 +148,6 @@ WebCoreClampingModeToSkiaRectConstraint(Image::ImageClampingMode clamp_mode) {
              ? cc::PaintCanvas::kStrict_SrcRectConstraint
              : cc::PaintCanvas::kFast_SrcRectConstraint;
 }
-#endif
 
 // Skia's smart pointer APIs are preferable over their legacy raw pointer
 // counterparts.
