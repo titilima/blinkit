@@ -58,7 +58,7 @@
 #include <limits>
 
 #include "third_party/blink/public/platform/task_type.h"
-// BKTODO: #include "third_party/blink/renderer/core/animation/scroll_timeline.h"
+#include "third_party/blink/renderer/core/animation/scroll_timeline.h"
 #include "third_party/blink/renderer/core/css/pseudo_style_request.h"
 #include "third_party/blink/renderer/core/css_property_names.h"
 #include "third_party/blink/renderer/core/dom/document.h"
@@ -81,10 +81,8 @@
 #include "third_party/blink/renderer/core/layout/svg/layout_svg_root.h"
 #endif
 #include "third_party/blink/renderer/core/page/page.h"
-#if 0 // BKTODO:
-#include "third_party/blink/renderer/core/page/scrolling/scrolling_coordinator.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/scrolling/scrolling_coordinator.h"
 #include "third_party/blink/renderer/core/page/scrolling/sticky_position_scrolling_constraints.h"
-#endif
 #include "third_party/blink/renderer/core/paint/box_reflection_utils.h"
 #include "third_party/blink/renderer/core/paint/clip_path_clipper.h"
 #include "third_party/blink/renderer/core/paint/compositing/composited_layer_mapping.h"
@@ -1458,15 +1456,12 @@ void PaintLayer::RemoveOnlyThisLayerAfterStyleChange(
 
   bool did_set_paint_invalidation = false;
   if (!RuntimeEnabledFeatures::SlimmingPaintV2Enabled()) {
-    ASSERT(false); // BKTODO:
-#if 0
     // Destructing PaintLayer would cause CompositedLayerMapping and composited
     // layers to be destructed and detach from layer tree immediately. Layers
     // could have dangling scroll/clip parent if compositing update were
     // omitted.
     if (LocalFrameView* frame_view = layout_object_.GetDocument().View())
-      frame_view->SetNeedsForcedCompositingUpdate();
-#endif
+      ASSERT(false); // BKTODO: frame_view->SetNeedsForcedCompositingUpdate();
 
     // We need the current compositing status.
     DisableCompositingQueryAsserts disabler;
@@ -2977,22 +2972,12 @@ bool PaintLayer::ChildBackgroundIsKnownToBeOpaqueInRect(
 }
 
 bool PaintLayer::ShouldBeSelfPaintingLayer() const {
-#if 0 // BKTODO:
   // TODO(crbug.com/839341): Remove ScrollTimeline check once we support
   // main-thread AnimationWorklet and don't need to promote the scroll-source.
   return GetLayoutObject().LayerTypeRequired() == kNormalPaintLayer ||
          (scrollable_area_ && scrollable_area_->HasOverlayScrollbars()) ||
          ScrollsOverflow() ||
          ScrollTimeline::HasActiveScrollTimeline(GetLayoutObject().GetNode());
-#else
-  if (GetLayoutObject().LayerTypeRequired() == kNormalPaintLayer)
-    return true;
-  ASSERT(!scrollable_area_); // BKTODO:
-  if (ScrollsOverflow())
-    return true;
-  ASSERT(false); // BKTODO:
-  return false;
-#endif
 }
 
 void PaintLayer::UpdateSelfPaintingLayer() {
@@ -3075,13 +3060,10 @@ void PaintLayer::UpdateFilters(const ComputedStyle* old_style,
     return;
 
   const bool had_resource_info = ResourceInfo();
-  ASSERT(false); // BKTODO:
-#if 0
   if (new_style.HasFilterInducingProperty())
-    new_style.Filter().AddClient(EnsureResourceInfo());
+    ASSERT(false); // BKTODO: new_style.Filter().AddClient(EnsureResourceInfo());
   if (had_resource_info && old_style)
-    old_style->Filter().RemoveClient(*ResourceInfo());
-#endif
+    ASSERT(false); // BKTODO: old_style->Filter().RemoveClient(*ResourceInfo());
   if (PaintLayerResourceInfo* resource_info = ResourceInfo())
     resource_info->InvalidateFilterChain();
 }
@@ -3093,15 +3075,12 @@ void PaintLayer::UpdateClipPath(const ComputedStyle* old_style,
   if (!new_clip && !old_clip)
     return;
   const bool had_resource_info = ResourceInfo();
-  ASSERT(false); // BKTODO:
-#if 0
   if (auto* reference_clip = ToReferenceClipPathOperationOrNull(new_clip))
-    reference_clip->AddClient(EnsureResourceInfo());
+    ASSERT(false); // BKTODO: reference_clip->AddClient(EnsureResourceInfo());
   if (had_resource_info) {
     if (auto* old_reference_clip = ToReferenceClipPathOperationOrNull(old_clip))
-      old_reference_clip->RemoveClient(*ResourceInfo());
+      ASSERT(false); // BKTODO: old_reference_clip->RemoveClient(*ResourceInfo());
   }
-#endif
 }
 
 bool PaintLayer::AttemptDirectCompositingUpdate(

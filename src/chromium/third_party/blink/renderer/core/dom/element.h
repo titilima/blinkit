@@ -132,6 +132,7 @@ public:
     const AtomicString& getAttribute(const QualifiedName &name) const;
     const AtomicString& FastGetAttribute(const QualifiedName &name) const;
     int GetIntegralAttribute(const QualifiedName &name) const;
+    void SetIntegralAttribute(const QualifiedName &attributeName, int value);
     GURL GetURLAttribute(const QualifiedName &name) const;
     bool hasAttribute(const QualifiedName &name) const;
     bool FastHasAttribute(const QualifiedName &name) const;

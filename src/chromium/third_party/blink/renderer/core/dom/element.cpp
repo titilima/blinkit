@@ -1404,6 +1404,11 @@ void Element::setInnerHTML(const String &html, ExceptionState &exceptionState)
     }
 }
 
+void Element::SetIntegralAttribute(const QualifiedName &attributeName, int value)
+{
+    setAttribute(attributeName, AtomicString::Number(value));
+}
+
 void Element::setOuterHTML(const String &html, ExceptionState &exceptionState)
 {
     Node *p = parentNode();

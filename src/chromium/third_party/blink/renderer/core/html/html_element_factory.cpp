@@ -17,16 +17,22 @@
 #include "third_party/blink/renderer/core/html/forms/html_field_set_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #include "third_party/blink/renderer/core/html/html_body_element.h"
+#include "third_party/blink/renderer/core/html/html_br_element.h"
 #include "third_party/blink/renderer/core/html/html_div_element.h"
 #include "third_party/blink/renderer/core/html/html_head_element.h"
+#include "third_party/blink/renderer/core/html/html_hr_element.h"
 #include "third_party/blink/renderer/core/html/html_html_element.h"
 #include "third_party/blink/renderer/core/html/html_image_element.h"
+#include "third_party/blink/renderer/core/html/html_li_element.h"
 #include "third_party/blink/renderer/core/html/html_link_element.h"
 #include "third_party/blink/renderer/core/html/html_meta_element.h"
+#include "third_party/blink/renderer/core/html/html_olist_element.h"
+#include "third_party/blink/renderer/core/html/html_paragraph_element.h"
 #include "third_party/blink/renderer/core/html/html_slot_element.h"
 #include "third_party/blink/renderer/core/html/html_span_element.h"
 #include "third_party/blink/renderer/core/html/html_style_element.h"
 #include "third_party/blink/renderer/core/html/html_title_element.h"
+#include "third_party/blink/renderer/core/html/html_ulist_element.h"
 
 #define DEFINE_CONSTRUCTOR(ClassName)  \
     static HTMLElement* ClassName ## Constructor(Document &document, const CreateElementFlags) {    \
@@ -45,20 +51,26 @@ namespace blink {
 using HTMLElementCreators = std::unordered_map<AtomicString, HTMLElement::Creator>;
 
 DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLBodyElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLBRElement)
 DEFINE_CONSTRUCTOR(HTMLButtonElement)
 DEFINE_CONSTRUCTOR(HTMLDataListElement)
 DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLDivElement)
 DEFINE_CONSTRUCTOR(HTMLFieldSetElement)
 DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLHeadElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLHRElement)
 DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLHtmlElement)
 DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLImageElement)
 DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLInputElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLLIElement)
 DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLLinkElement)
 DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLMetaElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLOListElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLParagraphElement)
 DEFINE_CONSTRUCTOR(HTMLSlotElement)
 DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLSpanElement)
 DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLStyleElement)
 DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLTitleElement)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLUListElement)
 
 static void FillElementCreators(HTMLElementCreators &dst)
 {
@@ -70,20 +82,26 @@ static void FillElementCreators(HTMLElementCreators &dst)
         HTMLElement::Creator creator;
     } data[] = {
         CONSTRUCTOR_ENTRY(kBodyTag,     HTMLBodyElement),
+        CONSTRUCTOR_ENTRY(kBrTag,       HTMLBRElement),
         CONSTRUCTOR_ENTRY(kButtonTag,   HTMLButtonElement),
         CONSTRUCTOR_ENTRY(kDatalistTag, HTMLDataListElement),
         CONSTRUCTOR_ENTRY(kDivTag,      HTMLDivElement),
         CONSTRUCTOR_ENTRY(kFieldsetTag, HTMLFieldSetElement),
         CONSTRUCTOR_ENTRY(kHeadTag,     HTMLHeadElement),
+        CONSTRUCTOR_ENTRY(kHrTag,       HTMLHRElement),
         CONSTRUCTOR_ENTRY(kHTMLTag,     HTMLHtmlElement),
         CONSTRUCTOR_ENTRY(kImgTag,      HTMLImageElement),
         CONSTRUCTOR_ENTRY(kInputTag,    HTMLInputElement),
+        CONSTRUCTOR_ENTRY(kLiTag,       HTMLLIElement),
         CONSTRUCTOR_ENTRY(kLinkTag,     HTMLLinkElement),
         CONSTRUCTOR_ENTRY(kMetaTag,     HTMLMetaElement),
+        CONSTRUCTOR_ENTRY(kOlTag,       HTMLOListElement),
+        CONSTRUCTOR_ENTRY(kPTag,        HTMLParagraphElement),
         CONSTRUCTOR_ENTRY(kSlotTag,     HTMLSlotElement),
         CONSTRUCTOR_ENTRY(kSpanTag,     HTMLSpanElement),
         CONSTRUCTOR_ENTRY(kStyleTag,    HTMLStyleElement),
-        CONSTRUCTOR_ENTRY(kTitleTag,    HTMLTitleElement)
+        CONSTRUCTOR_ENTRY(kTitleTag,    HTMLTitleElement),
+        CONSTRUCTOR_ENTRY(kUlTag,       HTMLUListElement)
     };
     for (const auto &e : data)
     {

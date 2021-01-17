@@ -52,6 +52,7 @@ protected:
     enum AllowPercentage { kDontAllowPercentageValues, kAllowPercentageValues };
     void AddHTMLLengthToStyle(MutableCSSPropertyValueSet *style, CSSPropertyID propertyId, const String &value,
         AllowPercentage allowPercentage = kAllowPercentageValues);
+    void AddHTMLColorToStyle(MutableCSSPropertyValueSet *style, CSSPropertyID propertyId, const String &color);
     void ApplyAlignmentAttributeToStyle(const AtomicString &alignment, MutableCSSPropertyValueSet *style);
 
     static bool ParseColorWithLegacyRules(const String &attributevalue, Color &parsedColor);

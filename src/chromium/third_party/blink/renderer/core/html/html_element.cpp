@@ -11,16 +11,31 @@
 
 #include "html_element.h"
 
+#include "third_party/blink/renderer/core/css/css_color_value.h"
+#include "third_party/blink/renderer/core/css/css_property_value_set.h"
 #include "third_party/blink/renderer/core/dom/flat_tree_traversal.h"
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #include "third_party/blink/renderer/core/html/html_dimension.h"
 
 namespace blink {
 
+using namespace cssvalue;
+
 HTMLElement::HTMLElement(const QualifiedName &tagName, Document &document, ConstructionType type)
     : Element(tagName, &document, type)
 {
     ASSERT(!tagName.LocalName().IsNull());
+}
+
+void HTMLElement::AddHTMLColorToStyle(
+    MutableCSSPropertyValueSet *style,
+    CSSPropertyID propertyId, const String &color)
+{
+    Color parsedColor;
+    if (!ParseColorWithLegacyRules(color, parsedColor))
+        return;
+
+    style->SetProperty(propertyId, *CSSColorValue::Create(parsedColor.Rgb()));
 }
 
 void HTMLElement::AddHTMLLengthToStyle(

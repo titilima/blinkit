@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_hr_element.cc
+// Description: HTMLHRElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-16
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -26,8 +37,10 @@
 #include "third_party/blink/renderer/core/css/css_property_value_set.h"
 #include "third_party/blink/renderer/core/css_property_names.h"
 #include "third_party/blink/renderer/core/css_value_keywords.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_opt_group_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_select_element.h"
+#endif
 #include "third_party/blink/renderer/core/html_names.h"
 
 namespace blink {
@@ -111,25 +124,38 @@ void HTMLHRElement::CollectStyleForPresentationAttribute(
 HTMLSelectElement* HTMLHRElement::OwnerSelectElement() const {
   if (!parentNode())
     return nullptr;
+  ASSERT(!IsHTMLSelectElement(*parentNode())); // BKTODO:
+#if 0
   if (auto* select = ToHTMLSelectElementOrNull(*parentNode()))
     return select;
+#endif
   if (!IsHTMLOptGroupElement(*parentNode()))
     return nullptr;
+  ASSERT(false); // BKTODO:
+#if 0
   return ToHTMLSelectElementOrNull(parentNode()->parentNode());
+#else
+  return nullptr;
+#endif
 }
 
 Node::InsertionNotificationRequest HTMLHRElement::InsertedInto(
     ContainerNode& insertion_point) {
   HTMLElement::InsertedInto(insertion_point);
   if (HTMLSelectElement* select = OwnerSelectElement()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (&insertion_point == select || (IsHTMLOptGroupElement(insertion_point) &&
                                        insertion_point.parentNode() == select))
       select->HrInsertedOrRemoved(*this);
+#endif
   }
   return kInsertionDone;
 }
 
 void HTMLHRElement::RemovedFrom(ContainerNode& insertion_point) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* select = ToHTMLSelectElementOrNull(insertion_point)) {
     if (!parentNode() || IsHTMLOptGroupElement(*parentNode()))
       select->HrInsertedOrRemoved(*this);
@@ -138,6 +164,7 @@ void HTMLHRElement::RemovedFrom(ContainerNode& insertion_point) {
     if (auto* select = ToHTMLSelectElementOrNull(parent))
       select->HrInsertedOrRemoved(*this);
   }
+#endif
   HTMLElement::RemovedFrom(insertion_point);
 }
 

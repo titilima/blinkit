@@ -357,6 +357,12 @@ public:
     virtual void RemovedFrom(ContainerNode &insertionPoint);
 
     bool MayContainLegacyNodeTreeWhereDistributionShouldBeSupported(void) const;
+    // This needs to be called before using FlatTreeTraversal.
+    // Once Shadow DOM v0 is removed, this function can be removed.
+    void UpdateDistributionForFlatTreeTraversal(void)
+    {
+        UpdateDistributionInternal();
+    }
     // This is not what you might want to call in most cases.
     // You should call UpdateDistributionForFlatTreeTraversal, instead.
     // Only the implementation of v0 shadow trees uses this.
