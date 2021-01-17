@@ -46,6 +46,19 @@
 namespace blink {
 
 #ifndef BLINKIT_CRAWLER_ONLY
+static DocumentLifecycle::DeprecatedTransition *g_deprecatedTransitionStack = nullptr;
+
+DocumentLifecycle::DeprecatedTransition::DeprecatedTransition(LifecycleState from, LifecycleState to)
+    : m_previous(g_deprecatedTransitionStack), m_from(from), m_to(to)
+{
+    g_deprecatedTransitionStack = this;
+}
+
+DocumentLifecycle::DeprecatedTransition::~DeprecatedTransition(void)
+{
+    g_deprecatedTransitionStack = m_previous;
+}
+
 // TODO(skyostil): Come up with a better way to store cross-frame lifecycle
 // related data to avoid this being a global setting.
 static unsigned g_allowThrottlingCount = 0;

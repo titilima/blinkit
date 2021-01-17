@@ -143,6 +143,21 @@ public:
 
         DISALLOW_COPY_AND_ASSIGN(Scope);
     };
+    class DeprecatedTransition
+    {
+        DISALLOW_NEW();
+    public:
+        DeprecatedTransition(LifecycleState from, LifecycleState to);
+        ~DeprecatedTransition(void);
+
+        LifecycleState From(void) const { return m_from; }
+        LifecycleState To(void) const { return m_to; }
+    private:
+        DeprecatedTransition *m_previous;
+        LifecycleState m_from;
+        LifecycleState m_to;
+        DISALLOW_COPY_AND_ASSIGN(DeprecatedTransition);
+    };
     // Within this scope, state transitions are not allowed.
     // Any attempts to advance or rewind will result in a DCHECK.
     class DisallowTransitionScope
