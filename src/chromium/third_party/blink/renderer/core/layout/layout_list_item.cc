@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: layout_list_item.cc
-// Description: LayoutListItem Class
-//      Author: Ziming Li
-//     Created: 2020-10-01
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /**
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -35,10 +24,8 @@
 #include "third_party/blink/renderer/core/layout/layout_list_item.h"
 
 #include "third_party/blink/renderer/core/dom/flat_tree_traversal.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_li_element.h"
 #include "third_party/blink/renderer/core/html/html_olist_element.h"
-#endif
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/layout/layout_list_marker.h"
 #include "third_party/blink/renderer/core/paint/list_item_painter.h"
@@ -48,7 +35,7 @@
 
 namespace blink {
 
-using namespace html_names;
+using namespace HTMLNames;
 
 LayoutListItem::LayoutListItem(Element* element)
     : LayoutBlockFlow(element),
@@ -100,13 +87,13 @@ void LayoutListItem::WillBeDestroyed() {
 void LayoutListItem::InsertedIntoTree() {
   LayoutBlockFlow::InsertedIntoTree();
 
-  ASSERT(false); // BKTODO: ListItemOrdinal::ItemInsertedOrRemoved(this);
+  ListItemOrdinal::ItemInsertedOrRemoved(this);
 }
 
 void LayoutListItem::WillBeRemovedFromTree() {
   LayoutBlockFlow::WillBeRemovedFromTree();
 
-  ASSERT(false); // BKTODO: ListItemOrdinal::ItemInsertedOrRemoved(this);
+  ListItemOrdinal::ItemInsertedOrRemoved(this);
 }
 
 void LayoutListItem::SubtreeDidChange() {
@@ -124,11 +111,7 @@ void LayoutListItem::SubtreeDidChange() {
 
 int LayoutListItem::Value() const {
   DCHECK(GetNode());
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   return ordinal_.Value(*GetNode());
-#endif
 }
 
 bool LayoutListItem::IsEmpty() const {
@@ -164,13 +147,10 @@ LayoutObject* GetParentOfFirstLineBox(LayoutBlockFlow* curr,
         (curr_child->IsBox() && ToLayoutBox(curr_child)->IsWritingModeRoot()))
       return curr_child;
 
-    ASSERT(false); // BKTODO:
-#if 0
     if (curr->IsListItem() && in_quirks_mode && curr_child->GetNode() &&
         (IsHTMLUListElement(*curr_child->GetNode()) ||
          IsHTMLOListElement(*curr_child->GetNode())))
       break;
-#endif
 
     LayoutObject* line_box =
         GetParentOfFirstLineBox(ToLayoutBlockFlow(curr_child), marker);

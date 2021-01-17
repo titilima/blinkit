@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: layout_ng_list_item.cc
-// Description: LayoutNGListItem Class
-//      Author: Ziming Li
-//     Created: 2020-10-03
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -48,13 +37,13 @@ void LayoutNGListItem::WillBeDestroyed() {
 void LayoutNGListItem::InsertedIntoTree() {
   LayoutNGBlockFlow::InsertedIntoTree();
 
-  ASSERT(false); // BKTODO: ListItemOrdinal::ItemInsertedOrRemoved(this);
+  ListItemOrdinal::ItemInsertedOrRemoved(this);
 }
 
 void LayoutNGListItem::WillBeRemovedFromTree() {
   LayoutNGBlockFlow::WillBeRemovedFromTree();
 
-  ASSERT(false); // BKTODO: ListItemOrdinal::ItemInsertedOrRemoved(this);
+  ListItemOrdinal::ItemInsertedOrRemoved(this);
 }
 
 void LayoutNGListItem::StyleDidChange(StyleDifference diff,
@@ -77,14 +66,11 @@ void LayoutNGListItem::SubtreeDidChange() {
   if (!marker_)
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (ordinal_.NotInListChanged()) {
     UpdateMarker();
     ordinal_.SetNotInListChanged(false);
     return;
   }
-#endif
 
   // Make sure outside marker is the direct child of ListItem.
   if (!IsInside() && marker_->Parent() != this) {
@@ -102,12 +88,8 @@ void LayoutNGListItem::WillCollectInlines() {
 // Returns true if this is 'list-style-position: inside', or should be laid out
 // as 'inside'.
 bool LayoutNGListItem::IsInside() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return ordinal_.NotInList() ||
          StyleRef().ListStylePosition() == EListStylePosition::kInside;
-#endif
 }
 
 // Destroy the list marker objects if exists.
@@ -182,11 +164,7 @@ void LayoutNGListItem::UpdateMarker() {
 
 int LayoutNGListItem::Value() const {
   DCHECK(GetNode());
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   return ordinal_.Value(*GetNode());
-#endif
 }
 
 LayoutNGListItem::MarkerType LayoutNGListItem::MarkerText(
