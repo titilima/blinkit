@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: layout_list_marker.cc
-// Description: LayoutListMarker Class
-//      Author: Ziming Li
-//     Created: 2020-10-01
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -468,12 +457,8 @@ LayoutListMarker::ListStyleCategory LayoutListMarker::GetListStyleCategory(
 }
 
 bool LayoutListMarker::IsInside() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return list_item_->Ordinal().NotInList() ||
          StyleRef().ListStylePosition() == EListStylePosition::kInside;
-#endif
 }
 
 LayoutRect LayoutListMarker::GetRelativeMarkerRect() const {
