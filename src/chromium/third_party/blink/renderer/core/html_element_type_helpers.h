@@ -292,6 +292,24 @@ inline bool IsHTMLMarqueeElement(const Node *node)
     return nullptr != node && IsHTMLMarqueeElement(*node);
 }
 
+class HTMLOListElement;
+
+inline bool IsHTMLOListElement(const Element &element)
+{
+    return element.HasTagName(html_names::kOlTag);
+}
+
+inline bool IsHTMLOListElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLOListElement(ToElement(node));
+}
+
+template<>
+inline bool IsElementOfType<const HTMLOListElement>(const Node &node)
+{
+    return IsHTMLOListElement(node);
+}
+
 inline bool IsHTMLOptGroupElement(const Element &element)
 {
     return element.HasTagName(html_names::kOptgroupTag);
@@ -468,6 +486,16 @@ inline bool IsHTMLTitleElement(const Element &element)
     return element.HasTagName(html_names::kTitleTag);
 }
 
+inline bool IsHTMLUListElement(const Element &element)
+{
+    return element.HasTagName(html_names::kUlTag);
+}
+
+inline bool IsHTMLUListElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLUListElement(ToElement(node));
+}
+
 } // namespace blink
 
 #define ToHTMLFieldSetElement(x)    blink::ToElement<blink::HTMLFieldSetElement>(x)
@@ -476,6 +504,7 @@ inline bool IsHTMLTitleElement(const Element &element)
 #define ToHTMLInputElement(x)       blink::ToElement<blink::HTMLInputElement>(x)
 #define ToHTMLInputElementOrNull(x) blink::ToElementOrNull<blink::HTMLInputElement>(x)
 #define ToHTMLLinkElement(x)        blink::ToElement<blink::HTMLLinkElement>(x)
+#define ToHTMLOListElementOrNull(x) blink::ToElementOrNull<blink::HTMLOListElement>(x)
 #define ToHTMLSlotElementOrNull(x)  blink::ToElementOrNull<blink::HTMLSlotElement>(x)
 #define ToHTMLStyleElement(x)       blink::ToElement<blink::HTMLStyleElement>(x)
 

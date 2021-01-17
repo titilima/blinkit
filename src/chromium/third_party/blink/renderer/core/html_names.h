@@ -4,7 +4,7 @@
 //   File Name: html_names.h
 // Description: HTML Names
 //      Author: Ziming Li
-//     Created: 2021-01-11
+//     Created: 2021-01-17
 // -------------------------------------------------
 // Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
@@ -207,6 +207,7 @@ extern const blink::QualifiedName &kReadonlyAttr;
 extern const blink::QualifiedName &kReferrerpolicyAttr;
 extern const blink::QualifiedName &kRelAttr;
 extern const blink::QualifiedName &kRevAttr;
+extern const blink::QualifiedName &kReversedAttr;
 extern const blink::QualifiedName &kRulesAttr;
 extern const blink::QualifiedName &kScopeAttr;
 extern const blink::QualifiedName &kScrollingAttr;
@@ -219,6 +220,7 @@ extern const blink::QualifiedName &kSlotAttr;
 extern const blink::QualifiedName &kSpanAttr;
 extern const blink::QualifiedName &kSrcAttr;
 extern const blink::QualifiedName &kSrcsetAttr;
+extern const blink::QualifiedName &kStartAttr;
 extern const blink::QualifiedName &kStyleAttr;
 extern const blink::QualifiedName &kSummaryAttr;
 extern const blink::QualifiedName &kTabindexAttr;
@@ -234,7 +236,7 @@ extern const blink::QualifiedName &kVlinkAttr;
 extern const blink::QualifiedName &kVspaceAttr;
 extern const blink::QualifiedName &kWidthAttr;
 
-constexpr unsigned kAttrsCount = 87;
+constexpr unsigned kAttrsCount = 89;
 
 void Init(void);
 
@@ -390,6 +392,7 @@ namespace HTMLNames = html_names;
 #define referrerpolicyAttr kReferrerpolicyAttr
 #define relAttr kRelAttr
 #define revAttr kRevAttr
+#define reversedAttr kReversedAttr
 #define rpTag kRpTag
 #define rtTag kRtTag
 #define rtcTag kRTCTag
@@ -414,6 +417,7 @@ namespace HTMLNames = html_names;
 #define spanAttr kSpanAttr
 #define srcAttr kSrcAttr
 #define srcsetAttr kSrcsetAttr
+#define startAttr kStartAttr
 #define strikeTag kStrikeTag
 #define strongTag kStrongTag
 #define styleTag kStyleTag

@@ -4,7 +4,7 @@
 //   File Name: html_names.cpp
 // Description: HTML Names
 //      Author: Ziming Li
-//     Created: 2021-01-11
+//     Created: 2021-01-17
 // -------------------------------------------------
 // Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
@@ -202,32 +202,34 @@ const QualifiedName &kReadonlyAttr = reinterpret_cast<QualifiedName *>(&attr_sto
 const QualifiedName &kReferrerpolicyAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[58];
 const QualifiedName &kRelAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[59];
 const QualifiedName &kRevAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[60];
-const QualifiedName &kRulesAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[61];
-const QualifiedName &kScopeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[62];
-const QualifiedName &kScrollingAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[63];
-const QualifiedName &kSelectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[64];
-const QualifiedName &kSelectedAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[65];
-const QualifiedName &kShapeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[66];
-const QualifiedName &kSizeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[67];
-const QualifiedName &kSizesAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[68];
-const QualifiedName &kSlotAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[69];
-const QualifiedName &kSpanAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[70];
-const QualifiedName &kSrcAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[71];
-const QualifiedName &kSrcsetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[72];
-const QualifiedName &kStyleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[73];
-const QualifiedName &kSummaryAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[74];
-const QualifiedName &kTabindexAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[75];
-const QualifiedName &kTargetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[76];
-const QualifiedName &kTextAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[77];
-const QualifiedName &kTitleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[78];
-const QualifiedName &kTypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[79];
-const QualifiedName &kUsemapAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[80];
-const QualifiedName &kValignAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[81];
-const QualifiedName &kValueAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[82];
-const QualifiedName &kValuetypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[83];
-const QualifiedName &kVlinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[84];
-const QualifiedName &kVspaceAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[85];
-const QualifiedName &kWidthAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[86];
+const QualifiedName &kReversedAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[61];
+const QualifiedName &kRulesAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[62];
+const QualifiedName &kScopeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[63];
+const QualifiedName &kScrollingAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[64];
+const QualifiedName &kSelectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[65];
+const QualifiedName &kSelectedAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[66];
+const QualifiedName &kShapeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[67];
+const QualifiedName &kSizeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[68];
+const QualifiedName &kSizesAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[69];
+const QualifiedName &kSlotAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[70];
+const QualifiedName &kSpanAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[71];
+const QualifiedName &kSrcAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[72];
+const QualifiedName &kSrcsetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[73];
+const QualifiedName &kStartAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[74];
+const QualifiedName &kStyleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[75];
+const QualifiedName &kSummaryAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[76];
+const QualifiedName &kTabindexAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[77];
+const QualifiedName &kTargetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[78];
+const QualifiedName &kTextAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[79];
+const QualifiedName &kTitleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[80];
+const QualifiedName &kTypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[81];
+const QualifiedName &kUsemapAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[82];
+const QualifiedName &kValignAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[83];
+const QualifiedName &kValueAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[84];
+const QualifiedName &kValuetypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[85];
+const QualifiedName &kVlinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[86];
+const QualifiedName &kVspaceAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[87];
+const QualifiedName &kWidthAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[88];
 
 void Init(void)
 {
@@ -381,6 +383,7 @@ void Init(void)
         { "referrerpolicy", 13927145, 14, 0, 1 },
         { "rel", 8963158, 3, 0, 1 },
         { "rev", 12217053, 3, 0, 1 },
+        { "reversed", 15723650, 8, 0, 1 },
         { "rp", 4502666, 2, 1, 0 },
         { "rt", 8494892, 2, 1, 0 },
         { "rtc", 4350543, 3, 1, 0 },
@@ -402,6 +405,7 @@ void Init(void)
         { "span", 11168892, 4, 1, 1 },
         { "src", 11517827, 3, 0, 1 },
         { "srcset", 6236095, 6, 0, 1 },
+        { "start", 1021290, 5, 0, 1 },
         { "strike", 15072495, 6, 1, 0 },
         { "strong", 13282129, 6, 1, 0 },
         { "style", 10993676, 5, 1, 1 },
