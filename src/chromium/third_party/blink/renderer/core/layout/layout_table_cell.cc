@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: layout_table_cell.cc
-// Description: LayoutTableCell Class
-//      Author: Ziming Li
-//     Created: 2020-10-01
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 1997 Martin Jones (mjones@kde.org)
  *           (C) 1997 Torben Weis (weis@kde.org)
@@ -38,7 +27,7 @@
 
 #include "third_party/blink/renderer/core/css/css_property_value_set.h"
 #include "third_party/blink/renderer/core/editing/editing_utilities.h"
-// BKTODO: #include "third_party/blink/renderer/core/html/html_table_cell_element.h"
+#include "third_party/blink/renderer/core/html/html_table_cell_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/layout/collapsed_border_value.h"
 #include "third_party/blink/renderer/core/layout/layout_analyzer.h"
@@ -54,7 +43,7 @@
 
 namespace blink {
 
-using namespace html_names;
+using namespace HTMLNames;
 
 struct SameSizeAsLayoutTableCell : public LayoutBlockFlow {
   unsigned bitfields;
@@ -110,25 +99,19 @@ void LayoutTableCell::WillBeRemovedFromTree() {
 
 unsigned LayoutTableCell::ParseColSpanFromDOM() const {
   DCHECK(GetNode());
-  ASSERT(false); // BKTODO:
-#if 0
   // TODO(dgrogan): HTMLTableCellElement::colSpan() already clamps to something
   // smaller than maxColumnIndex; can we just DCHECK here?
   if (IsHTMLTableCellElement(*GetNode()))
     return std::min<unsigned>(ToHTMLTableCellElement(*GetNode()).colSpan(),
                               kMaxColumnIndex);
-#endif
   return 1;
 }
 
 unsigned LayoutTableCell::ParseRowSpanFromDOM() const {
   DCHECK(GetNode());
-  ASSERT(false); // BKTODO:
-#if 0
   if (IsHTMLTableCellElement(*GetNode()))
     return std::min<unsigned>(ToHTMLTableCellElement(*GetNode()).rowSpan(),
                               kMaxRowIndex);
-#endif
   return 1;
 }
 
@@ -141,7 +124,7 @@ void LayoutTableCell::UpdateColAndRowSpanFlags() {
 
 void LayoutTableCell::ColSpanOrRowSpanChanged() {
   DCHECK(GetNode());
-  ASSERT(false); // BKTODO: DCHECK(IsHTMLTableCellElement(*GetNode()));
+  DCHECK(IsHTMLTableCellElement(*GetNode()));
 
   UpdateColAndRowSpanFlags();
 
@@ -218,8 +201,6 @@ void LayoutTableCell::ComputePreferredLogicalWidths() {
   if (GetNode() && StyleRef().AutoWrap()) {
     // See if nowrap was set.
     Length w = StyleOrColLogicalWidth();
-    ASSERT(false); // BKTODO:
-#if 0
     const AtomicString& nowrap = ToElement(GetNode())->getAttribute(nowrapAttr);
     if (!nowrap.IsNull() && w.IsFixed()) {
       // Nowrap is set, but we didn't actually use it because of the fixed width
@@ -229,7 +210,6 @@ void LayoutTableCell::ComputePreferredLogicalWidths() {
       min_preferred_logical_width_ =
           std::max(LayoutUnit(w.Value()), min_preferred_logical_width_);
     }
-#endif
   }
 }
 
