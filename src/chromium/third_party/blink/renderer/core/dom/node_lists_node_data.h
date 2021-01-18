@@ -100,13 +100,19 @@ public:
     T* AddCache(ContainerNode &node, CollectionType collectionType, const AtomicString &name)
     {
         NamedNodeListKey key = std::make_pair(collectionType, name);
-        auto it = m_atomicNameCaches.find(key);
-        if (std::end(m_atomicNameCaches) != it)
-            return static_cast<T *>(it->second);
-
-        T *list = T::Create(node, collectionType, name);
-        m_atomicNameCaches[key] = list;
-        return list;
+        LiveNodeListBase *&list = m_atomicNameCaches[key];
+        if (nullptr == list)
+            list = T::Create(node, collectionType, name);
+        return static_cast<T *>(list);
+    }
+    template <typename T>
+    T* AddCache(ContainerNode &node, CollectionType collectionType)
+    {
+        NamedNodeListKey key = std::make_pair(collectionType, CSSSelector::UniversalSelectorAtom());
+        LiveNodeListBase *&list = m_atomicNameCaches[key];
+        if (nullptr == list)
+            list = T::Create(node, collectionType);
+        return static_cast<T *>(list);
     }
 private:
     NodeListsNodeData(void) = default;

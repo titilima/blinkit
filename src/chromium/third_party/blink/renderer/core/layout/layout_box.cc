@@ -3510,20 +3510,19 @@ bool LayoutBox::SkipContainingBlockForPercentHeightCalculation(
     return display == EDisplay::kBlock || display == EDisplay::kInlineBlock;
   }
 
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
+  ASSERT(!containing_block->IsLayoutCustom()); // BKTODO:
   // For quirks mode, we skip most auto-height containing blocks when computing
   // percentages.
   return GetDocument().InQuirksMode() && !containing_block->IsTableCell() &&
          !containing_block->IsOutOfFlowPositioned() &&
+#if 0 // BKTODO:
          !(containing_block->IsLayoutCustom() &&
            ToLayoutCustom(containing_block)->IsLoaded()) &&
+#endif
          !containing_block
               ->HasOverrideContainingBlockPercentageResolutionLogicalHeight() &&
          !containing_block->IsLayoutGrid() &&
          containing_block->StyleRef().LogicalHeight().IsAuto();
-#endif
 }
 
 LayoutUnit LayoutBox::ContainingBlockLogicalHeightForPercentageResolution(

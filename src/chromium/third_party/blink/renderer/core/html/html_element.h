@@ -56,6 +56,7 @@ protected:
     void ApplyAlignmentAttributeToStyle(const AtomicString &alignment, MutableCSSPropertyValueSet *style);
 
     static bool ParseColorWithLegacyRules(const String &attributevalue, Color &parsedColor);
+    unsigned ParseBorderWidthAttribute(const AtomicString &value) const;
 
     void ChildrenChanged(const ChildrenChange &change) override;
     InsertionNotificationRequest InsertedInto(ContainerNode &insertionPoint) override;
@@ -68,6 +69,21 @@ private:
 
     bool SelfOrAncestorHasDirAutoAttribute(void) const;
     void AdjustDirectionalityIfNeededAfterChildrenChanged(const ChildrenChange &change);
+};
+
+// Functor used to match HTMLElements with a specific HTML tag when using the
+// ElementTraversal API.
+class HasHTMLTagName
+{
+    STACK_ALLOCATED();
+public:
+    explicit HasHTMLTagName(const HTMLQualifiedName &tagName) : m_tagName(tagName) {}
+    bool operator()(const HTMLElement &element) const
+    {
+        return element.HasTagName(m_tagName);
+    }
+private:
+    const HTMLQualifiedName &m_tagName;
 };
 
 DEFINE_ELEMENT_TYPE_CASTS(HTMLElement, IsHTMLElement());

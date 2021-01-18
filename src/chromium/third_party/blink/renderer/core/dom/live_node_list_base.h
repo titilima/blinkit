@@ -68,6 +68,7 @@ public:
     virtual ~LiveNodeListBase(void) = default;
 
     ContainerNode& RootNode(void) const;
+    ContainerNode& ownerNode(void) const { return *m_ownerNode; }
 
     bool IsRootedAtTreeScope(void) const { return m_searchRoot == static_cast<unsigned>(NodeListSearchRoot::kTreeScope); }
     NodeListInvalidationType InvalidationType(void) const { return static_cast<NodeListInvalidationType>(m_invalidationType); }

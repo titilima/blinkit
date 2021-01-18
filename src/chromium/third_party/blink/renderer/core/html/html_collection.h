@@ -48,6 +48,8 @@ namespace blink {
 class HTMLCollection : public ScriptWrappable, public LiveNodeListBase
 {
 public:
+    static HTMLCollection* Create(ContainerNode &base, CollectionType type);
+
     enum ItemAfterOverrideType {
         kOverridesItemAfter,
         kDoesNotOverrideItemAfter,

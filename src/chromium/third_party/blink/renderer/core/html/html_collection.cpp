@@ -187,6 +187,11 @@ HTMLCollection::HTMLCollection(ContainerNode &ownerNode, CollectionType type, It
     GetDocument().RegisterNodeList(this);
 }
 
+HTMLCollection* HTMLCollection::Create(ContainerNode &base, CollectionType type)
+{
+    return new HTMLCollection(base, type, kDoesNotOverrideItemAfter);
+}
+
 bool HTMLCollection::ElementMatches(const Element &element) const
 {
     // These collections apply to any kind of Elements, not just HTMLElements.

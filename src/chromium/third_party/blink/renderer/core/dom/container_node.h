@@ -108,6 +108,7 @@ public:
     Node* AppendChild(Node *newChild);
     bool EnsurePreInsertionValidity(const Node &newChild, const Node *next, const Node *oldChild, ExceptionState &exceptionState) const;
     Node* InsertBefore(Node *newChild, Node *refChild, ExceptionState &exceptionState);
+    Node* InsertBefore(Node *newChild, Node *refChild);
 
     void RemoveChildren(SubtreeModificationAction action = kDispatchSubtreeModifiedEvent);
     void CloneChildNodesFrom(const ContainerNode &node);

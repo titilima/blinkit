@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_table_element.cc
+// Description: HTMLTableElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1997 Martin Jones (mjones@kde.org)
  *           (C) 1997 Torben Weis (weis@kde.org)
@@ -44,8 +55,10 @@
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
-#include "third_party/blink/renderer/platform/weborigin/referrer.h"
+// BKTODO: #include "third_party/blink/renderer/platform/weborigin/referrer.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -325,6 +338,8 @@ void HTMLTableElement::CollectStyleForPresentationAttribute(
   } else if (name == backgroundAttr) {
     String url = StripLeadingAndTrailingHTMLSpaces(value);
     if (!url.IsEmpty()) {
+      ASSERT(false); // BKTODO:
+#if 0
       UseCounter::Count(
           GetDocument(),
           WebFeature::kHTMLTableElementPresentationAttributeBackground);
@@ -334,6 +349,7 @@ void HTMLTableElement::CollectStyleForPresentationAttribute(
                                          GetDocument().GetReferrerPolicy()));
       style->SetProperty(
           CSSPropertyValue(GetCSSPropertyBackgroundImage(), *image_value));
+#endif
     }
   } else if (name == valignAttr) {
     if (!value.IsEmpty())
@@ -449,7 +465,7 @@ void HTMLTableElement::ParseAttribute(
 
 static CSSPropertyValueSet* CreateBorderStyle(CSSValueID value) {
   MutableCSSPropertyValueSet* style =
-      MutableCSSPropertyValueSet::Create(kHTMLQuirksMode);
+      MutableCSSPropertyValueSet::Create(kHTMLQuirksMode, GCObjectType::Global);
   style->SetProperty(CSSPropertyBorderTopStyle, value);
   style->SetProperty(CSSPropertyBorderBottomStyle, value);
   style->SetProperty(CSSPropertyBorderLeftStyle, value);
@@ -466,20 +482,17 @@ HTMLTableElement::AdditionalPresentationAttributeStyle() {
     // Setting the border to 'hidden' allows it to win over any border
     // set on the table's cells during border-conflict resolution.
     if (rules_attr_ != kUnsetRules) {
-      DEFINE_STATIC_LOCAL(Persistent<CSSPropertyValueSet>, solid_border_style,
-                          (CreateBorderStyle(CSSValueHidden)));
-      return solid_border_style;
+      static CSSPropertyValueSet *hidden_border_style = CreateBorderStyle(CSSValueHidden);
+      return hidden_border_style;
     }
     return nullptr;
   }
 
   if (border_color_attr_) {
-    DEFINE_STATIC_LOCAL(Persistent<CSSPropertyValueSet>, solid_border_style,
-                        (CreateBorderStyle(CSSValueSolid)));
+    static CSSPropertyValueSet *solid_border_style = CreateBorderStyle(CSSValueSolid);
     return solid_border_style;
   }
-  DEFINE_STATIC_LOCAL(Persistent<CSSPropertyValueSet>, outset_border_style,
-                      (CreateBorderStyle(CSSValueOutset)));
+  static CSSPropertyValueSet *outset_border_style = CreateBorderStyle(CSSValueOutset);
   return outset_border_style;
 }
 

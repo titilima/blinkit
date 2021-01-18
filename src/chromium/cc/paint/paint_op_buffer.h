@@ -45,7 +45,7 @@
 #include "third_party/skia/include/core/SkRect.h"
 #include "third_party/skia/include/core/SkScalar.h"
 #include "third_party/skia/include/core/SkTextBlob.h"
-// BKTODO: #include "ui/gfx/color_space.h"
+#include "ui/gfx/color_space.h"
 
 class SkColorSpace;
 class SkStrikeClient;
@@ -283,11 +283,7 @@ class CC_PAINT_EXPORT PaintOp {
   }
 
   static bool IsValidPath(const SkPath& path) {
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
     return path.isValid() && path.pathRefIsValid();
-#endif
   }
 
   static bool IsUnsetRect(const SkRect& rect) {
@@ -1006,11 +1002,7 @@ class CC_PAINT_EXPORT PaintOpBuffer : public SkRefCnt {
   void ShrinkToFit();
 
   const PaintOp* GetFirstOp() const {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     return reinterpret_cast<const PaintOp*>(data_.get());
-#endif
   }
 
   template <typename T, typename... Args>
@@ -1032,8 +1024,6 @@ class CC_PAINT_EXPORT PaintOpBuffer : public SkRefCnt {
     CHECK_LT(offset, used_);
     CHECK_LE(offset + sizeof(PaintOp), used_);
 
-    ASSERT(false); // BKTODO:
-#if 0
     auto* op = reinterpret_cast<PaintOp*>(data_.get() + offset);
     switch (op->GetType()) {
       case SaveLayerOp::kType:
@@ -1047,7 +1037,6 @@ class CC_PAINT_EXPORT PaintOpBuffer : public SkRefCnt {
       default:
         NOTREACHED();
     }
-#endif
   }
 
   template <typename T>
@@ -1070,13 +1059,10 @@ class CC_PAINT_EXPORT PaintOpBuffer : public SkRefCnt {
   template <typename T>
   const T* GetOpAtForTesting(size_t index) const {
     size_t i = 0;
-    ASSERT(false); // BKTODO:
-#if 0
     for (PaintOpBuffer::Iterator it(this); it && i <= index; ++it, ++i) {
       if (i == index && (*it)->GetType() == T::kType)
         return static_cast<const T*>(*it);
     }
-#endif
     return nullptr;
   }
 

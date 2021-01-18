@@ -1447,6 +1447,16 @@ void Element::SetIsValue(const AtomicString &isValue)
     ASSERT(false); // BKTODO:
 }
 
+void Element::SetUnsignedIntegralAttribute(const QualifiedName &attributeName, unsigned value, unsigned defaultValue)
+{
+    // Range restrictions are enforced for unsigned IDL attributes that
+    // reflect content attributes,
+    //   http://www.whatwg.org/specs/web-apps/current-work/multipage/common-dom-interfaces.html#reflecting-content-attributes-in-idl-attributes
+    if (value > 0x7fffffffu)
+        value = defaultValue;
+    setAttribute(attributeName, AtomicString::Number(value));
+}
+
 bool Element::ShouldSerializeEndTag(void) const
 {
     using namespace html_names;

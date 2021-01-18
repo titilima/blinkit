@@ -16,6 +16,7 @@
 #include "third_party/blink/renderer/core/dom/flat_tree_traversal.h"
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #include "third_party/blink/renderer/core/html/html_dimension.h"
+#include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 
 namespace blink {
 
@@ -357,6 +358,17 @@ bool HTMLElement::IsPresentationAttribute(const QualifiedName &name) const
         return true;
     }
     return Element::IsPresentationAttribute(name);
+}
+
+unsigned HTMLElement::ParseBorderWidthAttribute(const AtomicString &value) const
+{
+    unsigned borderWidth = 0;
+    if (value.IsEmpty() || !ParseHTMLNonNegativeInteger(value, borderWidth))
+    {
+        if (HasTagName(html_names::kTableTag) && !value.IsNull())
+            return 1;
+    }
+    return borderWidth;
 }
 
 bool HTMLElement::ParseColorWithLegacyRules(const String &attributevalue, Color &parsedColor)

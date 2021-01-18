@@ -133,6 +133,7 @@ public:
     const AtomicString& FastGetAttribute(const QualifiedName &name) const;
     int GetIntegralAttribute(const QualifiedName &name) const;
     void SetIntegralAttribute(const QualifiedName &attributeName, int value);
+    void SetUnsignedIntegralAttribute(const QualifiedName &attributeName, unsigned value, unsigned defaultValue = 0);
     GURL GetURLAttribute(const QualifiedName &name) const;
     bool hasAttribute(const QualifiedName &name) const;
     bool FastHasAttribute(const QualifiedName &name) const;
@@ -625,5 +626,12 @@ inline bool IsAtShadowBoundary(const Element *element)
         return Is##ThisType(node);                                  \
     }                                                               \
     DEFINE_NODE_TYPE_CASTS_WITH_FUNCTION(ThisType)
+
+#define DECLARE_ELEMENT_FACTORY_WITH_TAGNAME(T) \
+    static T* Create(const QualifiedName &, Document &)
+#define DEFINE_ELEMENT_FACTORY_WITH_TAGNAME(T)                          \
+    T* T::Create(const QualifiedName &tagName, Document &document) {    \
+        return new T(tagName, document);                                \
+    }
 
 #endif // BLINKIT_BLINK_ELEMENT_H

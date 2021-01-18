@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_table_part_element.cc
+// Description: HTMLTablePartElement Class
+//      Author: Ziming Li
+//     Created: 2021-01-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * Copyright (C) 1997 Martin Jones (mjones@kde.org)
  *           (C) 1997 Torben Weis (weis@kde.org)
@@ -34,7 +45,7 @@
 #include "third_party/blink/renderer/core/html/html_table_element.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/html_names.h"
-#include "third_party/blink/renderer/platform/weborigin/referrer.h"
+// BKTODO: #include "third_party/blink/renderer/platform/weborigin/referrer.h"
 
 namespace blink {
 
@@ -57,6 +68,8 @@ void HTMLTablePartElement::CollectStyleForPresentationAttribute(
   } else if (name == backgroundAttr) {
     String url = StripLeadingAndTrailingHTMLSpaces(value);
     if (!url.IsEmpty()) {
+      ASSERT(false); // BKTODO:
+#if 0
       UseCounter::Count(
           GetDocument(),
           WebFeature::kHTMLTableElementPresentationAttributeBackground);
@@ -66,6 +79,7 @@ void HTMLTablePartElement::CollectStyleForPresentationAttribute(
                                          GetDocument().GetReferrerPolicy()));
       style->SetProperty(
           CSSPropertyValue(GetCSSPropertyBackgroundImage(), *image_value));
+#endif
     }
   } else if (name == valignAttr) {
     if (DeprecatedEqualIgnoringCase(value, "top"))

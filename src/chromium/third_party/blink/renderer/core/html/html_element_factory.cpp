@@ -31,46 +31,58 @@
 #include "third_party/blink/renderer/core/html/html_slot_element.h"
 #include "third_party/blink/renderer/core/html/html_span_element.h"
 #include "third_party/blink/renderer/core/html/html_style_element.h"
+#include "third_party/blink/renderer/core/html/html_table_cell_element.h"
+#include "third_party/blink/renderer/core/html/html_table_element.h"
+#include "third_party/blink/renderer/core/html/html_table_row_element.h"
+#include "third_party/blink/renderer/core/html/html_table_section_element.h"
 #include "third_party/blink/renderer/core/html/html_title_element.h"
 #include "third_party/blink/renderer/core/html/html_ulist_element.h"
 
-#define DEFINE_CONSTRUCTOR(ClassName)  \
-    static HTMLElement* ClassName ## Constructor(Document &document, const CreateElementFlags) {    \
-        return ClassName::Create(document);                                                         \
+#define DEFINE_CONSTRUCTOR(Name)    \
+    static HTMLElement* Name ## Constructor(Document &document, const CreateElementFlags) { \
+        return HTML ## Name ## Element::Create(document);                                   \
     }
-#define DEFINE_CONSTRUCTOR_WITH_FLAGS(ClassName)  \
-    static HTMLElement* ClassName ## Constructor(Document &document, const CreateElementFlags flags) {  \
-        return ClassName::Create(document, flags);                                                      \
+#define DEFINE_CONSTRUCTOR_WITH_FLAGS(Name) \
+    static HTMLElement* Name ## Constructor(Document &document, const CreateElementFlags flags) {   \
+        return HTML ## Name ## Element::Create(document, flags);                                    \
+    }
+#define DEFINE_CONSTRUCTOR_WITH_TAG(Name, ClassName, Tag)   \
+    static HTMLElement* Name ## Constructor(Document &document, const CreateElementFlags)  {    \
+        return ClassName::Create(html_names:: ## Tag, document);                                \
     }
 
-#define CONSTRUCTOR_ENTRY(Tag, ClassName)   \
-    { Tag, ClassName ## Constructor }
+#define CONSTRUCTOR_ENTRY(Tag, Name)    \
+    { Tag, Name ## Constructor }
 
 namespace blink {
 
 using HTMLElementCreators = std::unordered_map<AtomicString, HTMLElement::Creator>;
 
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLBodyElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLBRElement)
-DEFINE_CONSTRUCTOR(HTMLButtonElement)
-DEFINE_CONSTRUCTOR(HTMLDataListElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLDivElement)
-DEFINE_CONSTRUCTOR(HTMLFieldSetElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLHeadElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLHRElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLHtmlElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLImageElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLInputElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLLIElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLLinkElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLMetaElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLOListElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLParagraphElement)
-DEFINE_CONSTRUCTOR(HTMLSlotElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLSpanElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLStyleElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLTitleElement)
-DEFINE_CONSTRUCTOR_WITH_FLAGS(HTMLUListElement)
+DEFINE_CONSTRUCTOR(Button)
+DEFINE_CONSTRUCTOR(DataList)
+DEFINE_CONSTRUCTOR(FieldSet)
+DEFINE_CONSTRUCTOR(Slot)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(Body)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(BR)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(Div)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(Head)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(HR)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(Html)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(Image)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(Input)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(LI)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(Link)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(Meta)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(OList)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(Paragraph)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(Span)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(Style)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(Table)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(TableRow)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(Title)
+DEFINE_CONSTRUCTOR_WITH_FLAGS(UList)
+DEFINE_CONSTRUCTOR_WITH_TAG(Tbody, HTMLTableSectionElement, kTbodyTag)
+DEFINE_CONSTRUCTOR_WITH_TAG(Td, HTMLTableCellElement, kTdTag)
 
 static void FillElementCreators(HTMLElementCreators &dst)
 {
@@ -81,27 +93,31 @@ static void FillElementCreators(HTMLElementCreators &dst)
         const QualifiedName &tag;
         HTMLElement::Creator creator;
     } data[] = {
-        CONSTRUCTOR_ENTRY(kBodyTag,     HTMLBodyElement),
-        CONSTRUCTOR_ENTRY(kBrTag,       HTMLBRElement),
-        CONSTRUCTOR_ENTRY(kButtonTag,   HTMLButtonElement),
-        CONSTRUCTOR_ENTRY(kDatalistTag, HTMLDataListElement),
-        CONSTRUCTOR_ENTRY(kDivTag,      HTMLDivElement),
-        CONSTRUCTOR_ENTRY(kFieldsetTag, HTMLFieldSetElement),
-        CONSTRUCTOR_ENTRY(kHeadTag,     HTMLHeadElement),
-        CONSTRUCTOR_ENTRY(kHrTag,       HTMLHRElement),
-        CONSTRUCTOR_ENTRY(kHTMLTag,     HTMLHtmlElement),
-        CONSTRUCTOR_ENTRY(kImgTag,      HTMLImageElement),
-        CONSTRUCTOR_ENTRY(kInputTag,    HTMLInputElement),
-        CONSTRUCTOR_ENTRY(kLiTag,       HTMLLIElement),
-        CONSTRUCTOR_ENTRY(kLinkTag,     HTMLLinkElement),
-        CONSTRUCTOR_ENTRY(kMetaTag,     HTMLMetaElement),
-        CONSTRUCTOR_ENTRY(kOlTag,       HTMLOListElement),
-        CONSTRUCTOR_ENTRY(kPTag,        HTMLParagraphElement),
-        CONSTRUCTOR_ENTRY(kSlotTag,     HTMLSlotElement),
-        CONSTRUCTOR_ENTRY(kSpanTag,     HTMLSpanElement),
-        CONSTRUCTOR_ENTRY(kStyleTag,    HTMLStyleElement),
-        CONSTRUCTOR_ENTRY(kTitleTag,    HTMLTitleElement),
-        CONSTRUCTOR_ENTRY(kUlTag,       HTMLUListElement)
+        CONSTRUCTOR_ENTRY(kBodyTag,     Body),
+        CONSTRUCTOR_ENTRY(kBrTag,       BR),
+        CONSTRUCTOR_ENTRY(kButtonTag,   Button),
+        CONSTRUCTOR_ENTRY(kDatalistTag, DataList),
+        CONSTRUCTOR_ENTRY(kDivTag,      Div),
+        CONSTRUCTOR_ENTRY(kFieldsetTag, FieldSet),
+        CONSTRUCTOR_ENTRY(kHeadTag,     Head),
+        CONSTRUCTOR_ENTRY(kHrTag,       HR),
+        CONSTRUCTOR_ENTRY(kHTMLTag,     Html),
+        CONSTRUCTOR_ENTRY(kImgTag,      Image),
+        CONSTRUCTOR_ENTRY(kInputTag,    Input),
+        CONSTRUCTOR_ENTRY(kLiTag,       LI),
+        CONSTRUCTOR_ENTRY(kLinkTag,     Link),
+        CONSTRUCTOR_ENTRY(kMetaTag,     Meta),
+        CONSTRUCTOR_ENTRY(kOlTag,       OList),
+        CONSTRUCTOR_ENTRY(kPTag,        Paragraph),
+        CONSTRUCTOR_ENTRY(kSlotTag,     Slot),
+        CONSTRUCTOR_ENTRY(kSpanTag,     Span),
+        CONSTRUCTOR_ENTRY(kStyleTag,    Style),
+        CONSTRUCTOR_ENTRY(kTableTag,    Table),
+        CONSTRUCTOR_ENTRY(kTbodyTag,    Tbody),
+        CONSTRUCTOR_ENTRY(kTdTag,       Td),
+        CONSTRUCTOR_ENTRY(kTrTag,       TableRow),
+        CONSTRUCTOR_ENTRY(kTitleTag,    Title),
+        CONSTRUCTOR_ENTRY(kUlTag,       UList)
     };
     for (const auto &e : data)
     {

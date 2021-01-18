@@ -39,10 +39,8 @@
 #include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/core/dom/node_computed_style.h"
 #include "third_party/blink/renderer/core/dom/pseudo_element.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_olist_element.h"
 #include "third_party/blink/renderer/core/html/list_item_ordinal.h"
-#endif
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/layout/counter_node.h"
 #include "third_party/blink/renderer/core/layout/layout_list_item.h"
@@ -91,9 +89,6 @@ static Element* PreviousInPreOrderRespectingContainment(
   Element* previous = ElementTraversal::PreviousIncludingPseudo(element);
   Element* style_contain_ancestor = AncestorStyleContainmentObject(element);
 
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   while (true) {
     while (previous && !previous->GetLayoutObject() &&
            !previous->HasDisplayContentsStyle())
@@ -108,7 +103,6 @@ static Element* PreviousInPreOrderRespectingContainment(
       return nullptr;
     previous = previous_style_contain_ancestor;
   }
-#endif
 }
 
 // This function processes the DOM including pseudo elements as defined in
@@ -116,8 +110,6 @@ static Element* PreviousInPreOrderRespectingContainment(
 static Element* PreviousSiblingOrParentRespectingContainment(
     const Element& element) {
   Element* previous = ElementTraversal::PseudoAwarePreviousSibling(element);
-  ASSERT(false); // BKTODO:
-#if 0
   // Skip display:none elements.
   while (previous && !previous->GetLayoutObject() &&
          !previous->HasDisplayContentsStyle())
@@ -131,7 +123,6 @@ static Element* PreviousSiblingOrParentRespectingContainment(
         return nullptr;
     }
   }
-#endif
   return previous;
 }
 
@@ -198,8 +189,6 @@ static bool PlanCounter(LayoutObject& object,
 
   if (identifier == "list-item") {
     if (Node* e = object.GetNode()) {
-        ASSERT(false); // BKTODO:
-#if 0
         if (ListItemOrdinal* ordinal = ListItemOrdinal::Get(*e)) {
         if (const auto& explicit_value = ordinal->ExplicitValue()) {
           value = explicit_value.value();
@@ -215,6 +204,8 @@ static bool PlanCounter(LayoutObject& object,
         is_reset = true;
         return true;
       }
+      ASSERT(false); // BKTODO:
+#if 0
       if (IsHTMLUListElement(*e) || IsHTMLMenuElement(*e) ||
           IsHTMLDirectoryElement(*e)) {
         value = 0;

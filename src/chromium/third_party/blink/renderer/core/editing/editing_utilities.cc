@@ -70,8 +70,7 @@
 #   include "third_party/blink/renderer/core/frame/local_frame.h"
 #   include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #   include "third_party/blink/renderer/core/frame/use_counter.h"
-#if 0 // BKTODO:
-#   include "third_party/blink/renderer/core/html/canvas/html_canvas_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/canvas/html_canvas_element.h"
 #   include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #   include "third_party/blink/renderer/core/html/html_br_element.h"
 #   include "third_party/blink/renderer/core/html/html_div_element.h"
@@ -81,7 +80,6 @@
 #   include "third_party/blink/renderer/core/html/html_span_element.h"
 #   include "third_party/blink/renderer/core/html/html_table_cell_element.h"
 #   include "third_party/blink/renderer/core/html/html_ulist_element.h"
-#endif
 #   include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 // BKTODO: #include "third_party/blink/renderer/core/html_element_factory.h"
 #   include "third_party/blink/renderer/core/html_names.h"
@@ -171,13 +169,9 @@ bool NeedsLayoutTreeUpdate(const Node& node) {
   const Document& document = node.GetDocument();
   if (document.NeedsLayoutTreeUpdate())
     return true;
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   // TODO(yosin): We should make |document::needsLayoutTreeUpdate()| to
   // check |LayoutView::needsLayout()|.
   return document.View() && document.View()->NeedsLayout();
-#endif
 }
 
 template <typename PositionType>
@@ -467,8 +461,6 @@ ContainerNode* HighestEditableRoot(
   if (!highest_root)
     return nullptr;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (IsHTMLBodyElement(*highest_root))
     return highest_root;
 
@@ -480,7 +472,6 @@ ContainerNode* HighestEditableRoot(
       break;
     node = node->parentNode();
   }
-#endif
 
   return highest_root;
 }
@@ -1036,22 +1027,16 @@ Element* EnclosingBlockFlowElement(const Node& node) {
   if (IsBlockFlowElement(node))
     return const_cast<Element*>(&ToElement(node));
 
-  ASSERT(false); // BKTODO:
-#if 0
   for (Node& runner : NodeTraversal::AncestorsOf(node)) {
     if (IsBlockFlowElement(runner) || IsHTMLBodyElement(runner))
       return ToElement(&runner);
   }
-#endif
   return nullptr;
 }
 
 EUserSelect UsedValueOfUserSelect(const Node& node) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (node.IsHTMLElement() && ToHTMLElement(node).IsTextControl())
     return EUserSelect::kText;
-#endif
   if (!node.GetLayoutObject())
     return EUserSelect::kNone;
 
@@ -1310,44 +1295,30 @@ Element* EnclosingAnchorElement(const Position& p) {
 }
 
 bool IsDisplayInsideTable(const Node* node) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return node && node->GetLayoutObject() && IsHTMLTableElement(node);
-#endif
 }
 
 bool IsTableCell(const Node* node) {
   DCHECK(node);
   LayoutObject* r = node->GetLayoutObject();
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return r ? r->IsTableCell() : IsHTMLTableCellElement(*node);
-#endif
 }
 
 HTMLElement* CreateDefaultParagraphElement(Document& document) {
-  ASSERT(false); // BKTODO:
-#if 0
   switch (document.GetFrame()->GetEditor().DefaultParagraphSeparator()) {
     case EditorParagraphSeparator::kIsDiv:
       return HTMLDivElement::Create(document);
     case EditorParagraphSeparator::kIsP:
       return HTMLParagraphElement::Create(document);
   }
-#endif
 
   NOTREACHED();
   return nullptr;
 }
 
 bool IsTabHTMLSpanElement(const Node* node) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (!IsHTMLSpanElement(node))
     return false;
-#endif
   const Node* const first_child = NodeTraversal::FirstChild(*node);
   if (!first_child || !first_child->IsTextNode())
     return false;
@@ -1366,41 +1337,29 @@ bool IsTabHTMLSpanElementTextNode(const Node* node) {
 }
 
 HTMLSpanElement* TabSpanElement(const Node* node) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return IsTabHTMLSpanElementTextNode(node)
              ? ToHTMLSpanElement(node->parentNode())
              : nullptr;
-#endif
 }
 
 static HTMLSpanElement* CreateTabSpanElement(Document& document,
                                              Text* tab_text_node) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   // Make the span to hold the tab.
   HTMLSpanElement* span_element = HTMLSpanElement::Create(document);
   span_element->setAttribute(styleAttr, "white-space:pre");
 
   // Add tab text to that span.
   if (!tab_text_node)
-    tab_text_node = document.CreateEditingTextNode("\t");
+    ASSERT(false); // BKTODO: tab_text_node = document.CreateEditingTextNode("\t");
 
   span_element->AppendChild(tab_text_node);
 
   return span_element;
-#endif
 }
 
 HTMLSpanElement* CreateTabSpanElement(Document& document,
                                       const String& tab_text) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return CreateTabSpanElement(document, document.createTextNode(tab_text));
-#endif
 }
 
 HTMLSpanElement* CreateTabSpanElement(Document& document) {
@@ -1512,9 +1471,6 @@ int IndexForVisiblePosition(const VisiblePosition& visible_position,
   if (visible_position.IsNull())
     return 0;
 
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   Position p(visible_position.DeepEquivalent());
   Document& document = *p.GetDocument();
   DCHECK(!document.NeedsLayoutTreeUpdate());
@@ -1536,7 +1492,6 @@ int IndexForVisiblePosition(const VisiblePosition& visible_position,
           .Build();
   return TextIterator::RangeLength(range.StartPosition(), range.EndPosition(),
                                    behavior);
-#endif
 }
 
 EphemeralRange MakeRange(const VisiblePosition& start,
@@ -1676,9 +1631,6 @@ FloatQuad LocalToAbsoluteQuadOf(const LocalCaretRect& caret_rect) {
 }
 
 const StaticRangeVector* TargetRangesForInputEvent(const Node& node) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   // TODO(editing-dev): The use of updateStyleAndLayoutIgnorePendingStylesheets
   // needs to be audited. see http://crbug.com/590369 for more details.
   node.GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheets();
@@ -1691,7 +1643,11 @@ const StaticRangeVector* TargetRangesForInputEvent(const Node& node) {
                                 .ComputeVisibleSelectionInDOMTree());
   if (range.IsNull())
     return nullptr;
+  ASSERT(false); // BKTODO:
+#if 0
   return new StaticRangeVector(1, StaticRange::Create(range));
+#else
+  return nullptr;
 #endif
 }
 
@@ -1802,12 +1758,12 @@ static scoped_refptr<Image> ImageFromNode(const Node& node) {
     return nullptr;
 
   ASSERT(false); // BKTODO:
-  return nullptr;
 #if 0
   if (layout_object->IsCanvas()) {
     return ToHTMLCanvasElement(const_cast<Node&>(node))
         .Snapshot(kFrontBuffer, kPreferNoAcceleration);
   }
+#endif
 
   if (!layout_object->IsImage())
     return nullptr;
@@ -1817,16 +1773,15 @@ static scoped_refptr<Image> ImageFromNode(const Node& node) {
   if (!cached_image || cached_image->ErrorOccurred())
     return nullptr;
   return cached_image->GetImage();
-#endif
 }
 
 AtomicString GetUrlStringFromNode(const Node& node) {
-  ASSERT(false); // BKTODO:
-#if 0
   // TODO(editing-dev): This should probably be reconciled with
   // HitTestResult::absoluteImageURL.
   if (IsHTMLImageElement(node) || IsHTMLInputElement(node))
     return ToHTMLElement(node).getAttribute(srcAttr);
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsSVGImageElement(node))
     return ToSVGElement(node).ImageSourceURL();
   if (IsHTMLEmbedElement(node) || IsHTMLObjectElement(node) ||
@@ -1853,11 +1808,8 @@ Element* FindEventTargetFrom(LocalFrame& frame,
   Element* const target = AssociatedElementOf(selection.Start());
   if (!target)
     return frame.GetDocument()->body();
-  ASSERT(false); // BKTODO:
-#if 0
   if (target->IsInUserAgentShadowRoot())
     return target->OwnerShadowHost();
-#endif
   return target;
 }
 

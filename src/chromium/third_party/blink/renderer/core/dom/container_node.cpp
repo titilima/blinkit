@@ -662,13 +662,18 @@ Node* ContainerNode::InsertBefore(Node *newChild, Node *refChild, ExceptionState
     NodeVector postInsertionNotificationTargets;
     {
 #ifndef BLINKIT_CRAWLER_ONLY
-        SlotAssignmentRecalcForbiddenScope forbid_slot_recalc(GetDocument());
+        SlotAssignmentRecalcForbiddenScope forbidSlotRecalc(GetDocument());
 #endif
         ChildListMutationScope mutation(*this);
         InsertNodeVector(targets, refChild, AdoptAndInsertBefore(), &postInsertionNotificationTargets);
     }
     DidInsertNodeVector(targets, refChild, postInsertionNotificationTargets);
     return newChild;
+}
+
+Node* ContainerNode::InsertBefore(Node *newChild, Node *refChild)
+{
+    return InsertBefore(newChild, refChild, ASSERT_NO_EXCEPTION);
 }
 
 void ContainerNode::InsertBeforeCommon(Node &nextChild, Node &newChild)
