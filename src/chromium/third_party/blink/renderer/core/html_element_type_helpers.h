@@ -398,9 +398,27 @@ inline bool IsElementOfType<const HTMLSlotElement>(const Node &node)
     return IsHTMLSlotElement(node);
 }
 
+class HTMLSpanElement;
+
 inline bool IsHTMLSpanElement(const Element &element)
 {
     return element.HasTagName(html_names::kSpanTag);
+}
+
+inline bool IsHTMLSpanElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLSpanElement(ToElement(node));
+}
+
+inline bool IsHTMLSpanElement(const Node *node)
+{
+    return nullptr != node && IsHTMLSpanElement(*node);
+}
+
+template<>
+inline bool IsElementOfType<const HTMLSpanElement>(const Node &node)
+{
+    return IsHTMLSpanElement(node);
 }
 
 class HTMLStyleElement;
@@ -426,15 +444,7 @@ inline bool IsElementOfType<const HTMLStyleElement>(const Node &node)
     return IsHTMLStyleElement(node);
 }
 
-inline bool IsHTMLTableCellElement(const Element &element)
-{
-    return element.HasTagName(html_names::kTdTag) || element.HasTagName(html_names::kThTag);
-}
-
-inline bool IsHTMLTableCellElement(const Node &node)
-{
-    return node.IsHTMLElement() && IsHTMLTableCellElement(ToElement(node));
-}
+class HTMLTableElement;
 
 inline bool IsHTMLTableElement(const Element &element)
 {
@@ -444,6 +454,58 @@ inline bool IsHTMLTableElement(const Element &element)
 inline bool IsHTMLTableElement(const Node &node)
 {
     return node.IsHTMLElement() && IsHTMLTableElement(ToElement(node));
+}
+
+inline bool IsHTMLTableElement(const Node *node)
+{
+    return nullptr != node && IsHTMLTableElement(*node);
+}
+
+template<>
+inline bool IsElementOfType<const HTMLTableElement>(const Node &node)
+{
+    return IsHTMLTableElement(node);
+}
+
+class HTMLTableCaptionElement;
+
+inline bool IsHTMLTableCaptionElement(const Element &element)
+{
+    return element.HasTagName(html_names::kCaptionTag);
+}
+
+inline bool IsHTMLTableCaptionElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLTableCaptionElement(ToElement(node));
+}
+
+template<>
+inline bool IsElementOfType<const HTMLTableCaptionElement>(const Node &node)
+{
+    return IsHTMLTableCaptionElement(node);
+}
+
+class HTMLTableRowElement;
+
+inline bool IsHTMLTableRowElement(const Element &element)
+{
+    return element.HasTagName(html_names::kTrTag);
+}
+
+inline bool IsHTMLTableRowElement(const Element *element)
+{
+    return nullptr != element && IsHTMLTableRowElement(*element);
+}
+
+inline bool IsHTMLTableRowElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLTableRowElement(ToElement(node));
+}
+
+template<>
+inline bool IsElementOfType<const HTMLTableRowElement>(const Node &node)
+{
+    return IsHTMLTableRowElement(node);
 }
 
 inline bool IsHTMLTemplateElement(const Element &element)
@@ -498,14 +560,19 @@ inline bool IsHTMLUListElement(const Node &node)
 
 } // namespace blink
 
-#define ToHTMLFieldSetElement(x)    blink::ToElement<blink::HTMLFieldSetElement>(x)
-#define ToHTMLImageElement(x)       blink::ToElement<blink::HTMLImageElement>(x)
-#define ToHTMLImageElementOrNull(x) blink::ToElementOrNull<blink::HTMLImageElement>(x)
-#define ToHTMLInputElement(x)       blink::ToElement<blink::HTMLInputElement>(x)
-#define ToHTMLInputElementOrNull(x) blink::ToElementOrNull<blink::HTMLInputElement>(x)
-#define ToHTMLLinkElement(x)        blink::ToElement<blink::HTMLLinkElement>(x)
-#define ToHTMLOListElementOrNull(x) blink::ToElementOrNull<blink::HTMLOListElement>(x)
-#define ToHTMLSlotElementOrNull(x)  blink::ToElementOrNull<blink::HTMLSlotElement>(x)
-#define ToHTMLStyleElement(x)       blink::ToElement<blink::HTMLStyleElement>(x)
+#define ToHTMLFieldSetElement(x)        blink::ToElement<blink::HTMLFieldSetElement>(x)
+#define ToHTMLImageElement(x)           blink::ToElement<blink::HTMLImageElement>(x)
+#define ToHTMLImageElementOrNull(x)     blink::ToElementOrNull<blink::HTMLImageElement>(x)
+#define ToHTMLInputElement(x)           blink::ToElement<blink::HTMLInputElement>(x)
+#define ToHTMLInputElementOrNull(x)     blink::ToElementOrNull<blink::HTMLInputElement>(x)
+#define ToHTMLLinkElement(x)            blink::ToElement<blink::HTMLLinkElement>(x)
+#define ToHTMLOListElementOrNull(x)     blink::ToElementOrNull<blink::HTMLOListElement>(x)
+#define ToHTMLSlotElementOrNull(x)      blink::ToElementOrNull<blink::HTMLSlotElement>(x)
+#define ToHTMLSpanElement(x)            blink::ToElement<blink::HTMLSpanElement>(x)
+#define ToHTMLStyleElement(x)           blink::ToElement<blink::HTMLStyleElement>(x)
+#define ToHTMLTableElement(x)           blink::ToElement<blink::HTMLTableElement>(x)
+#define ToHTMLTableElementOrNull(x)     blink::ToElementOrNull<blink::HTMLTableElement>(x)
+#define ToHTMLTableRowElement(x)        blink::ToElement<blink::HTMLTableRowElement>(x)
+#define ToHTMLTableRowElementOrNull(x)  blink::ToElementOrNull<blink::HTMLTableRowElement>(x)
 
 #endif // BLINKIT_BLINK_HTML_ELEMENT_TYPE_HELPERS_H

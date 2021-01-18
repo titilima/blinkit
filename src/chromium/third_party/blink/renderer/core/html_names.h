@@ -26,6 +26,7 @@ extern const WTF::AtomicString &xhtmlNamespaceURI;
 
 // Tags
 extern const blink::HTMLQualifiedName &kATag;
+extern const blink::HTMLQualifiedName &kAbbrTag;
 extern const blink::HTMLQualifiedName &kAddressTag;
 extern const blink::HTMLQualifiedName &kAppletTag;
 extern const blink::HTMLQualifiedName &kAreaTag;
@@ -143,9 +144,10 @@ extern const blink::HTMLQualifiedName &kVideoTag;
 extern const blink::HTMLQualifiedName &kWbrTag;
 extern const blink::HTMLQualifiedName &kXmpTag;
 
-constexpr unsigned kTagsCount = 117;
+constexpr unsigned kTagsCount = 118;
 
 // Attributes
+extern const blink::QualifiedName &kAbbrAttr;
 extern const blink::QualifiedName &kAcceptAttr;
 extern const blink::QualifiedName &kAcceptCharsetAttr;
 extern const blink::QualifiedName &kAlignAttr;
@@ -156,12 +158,17 @@ extern const blink::QualifiedName &kAxisAttr;
 extern const blink::QualifiedName &kBackgroundAttr;
 extern const blink::QualifiedName &kBgcolorAttr;
 extern const blink::QualifiedName &kBorderAttr;
+extern const blink::QualifiedName &kBordercolorAttr;
+extern const blink::QualifiedName &kCellpaddingAttr;
+extern const blink::QualifiedName &kCellspacingAttr;
 extern const blink::QualifiedName &kCharsetAttr;
 extern const blink::QualifiedName &kCheckedAttr;
 extern const blink::QualifiedName &kClassAttr;
 extern const blink::QualifiedName &kClearAttr;
 extern const blink::QualifiedName &kCodetypeAttr;
+extern const blink::QualifiedName &kColsAttr;
 extern const blink::QualifiedName &kColorAttr;
+extern const blink::QualifiedName &kColspanAttr;
 extern const blink::QualifiedName &kCompactAttr;
 extern const blink::QualifiedName &kContentAttr;
 extern const blink::QualifiedName &kContenteditableAttr;
@@ -177,6 +184,7 @@ extern const blink::QualifiedName &kFaceAttr;
 extern const blink::QualifiedName &kForAttr;
 extern const blink::QualifiedName &kFormAttr;
 extern const blink::QualifiedName &kFrameAttr;
+extern const blink::QualifiedName &kHeadersAttr;
 extern const blink::QualifiedName &kHeightAttr;
 extern const blink::QualifiedName &kHiddenAttr;
 extern const blink::QualifiedName &kHrefAttr;
@@ -208,6 +216,7 @@ extern const blink::QualifiedName &kReferrerpolicyAttr;
 extern const blink::QualifiedName &kRelAttr;
 extern const blink::QualifiedName &kRevAttr;
 extern const blink::QualifiedName &kReversedAttr;
+extern const blink::QualifiedName &kRowspanAttr;
 extern const blink::QualifiedName &kRulesAttr;
 extern const blink::QualifiedName &kScopeAttr;
 extern const blink::QualifiedName &kScrollingAttr;
@@ -236,7 +245,7 @@ extern const blink::QualifiedName &kVlinkAttr;
 extern const blink::QualifiedName &kVspaceAttr;
 extern const blink::QualifiedName &kWidthAttr;
 
-constexpr unsigned kAttrsCount = 89;
+constexpr unsigned kAttrsCount = 97;
 
 void Init(void);
 
@@ -251,6 +260,8 @@ namespace HTMLNames = html_names;
  */
 
 #define aTag kATag
+#define abbrTag kAbbrTag
+#define abbrAttr kAbbrAttr
 #define acceptAttr kAcceptAttr
 #define accept_charsetAttr kAcceptCharsetAttr
 #define addressTag kAddressTag
@@ -273,9 +284,12 @@ namespace HTMLNames = html_names;
 #define blockquoteTag kBlockquoteTag
 #define bodyTag kBodyTag
 #define borderAttr kBorderAttr
+#define bordercolorAttr kBordercolorAttr
 #define brTag kBrTag
 #define buttonTag kButtonTag
 #define captionTag kCaptionTag
+#define cellpaddingAttr kCellpaddingAttr
+#define cellspacingAttr kCellspacingAttr
 #define centerTag kCenterTag
 #define charsetAttr kCharsetAttr
 #define checkedAttr kCheckedAttr
@@ -284,8 +298,10 @@ namespace HTMLNames = html_names;
 #define codeTag kCodeTag
 #define codetypeAttr kCodetypeAttr
 #define colTag kColTag
+#define colsAttr kColsAttr
 #define colgroupTag kColgroupTag
 #define colorAttr kColorAttr
+#define colspanAttr kColspanAttr
 #define commandTag kCommandTag
 #define compactAttr kCompactAttr
 #define contentTag kContentTag
@@ -329,6 +345,7 @@ namespace HTMLNames = html_names;
 #define h6Tag kH6Tag
 #define headTag kHeadTag
 #define headerTag kHeaderTag
+#define headersAttr kHeadersAttr
 #define heightAttr kHeightAttr
 #define hgroupTag kHgroupTag
 #define hiddenAttr kHiddenAttr
@@ -393,6 +410,7 @@ namespace HTMLNames = html_names;
 #define relAttr kRelAttr
 #define revAttr kRevAttr
 #define reversedAttr kReversedAttr
+#define rowspanAttr kRowspanAttr
 #define rpTag kRpTag
 #define rtTag kRtTag
 #define rtcTag kRTCTag
