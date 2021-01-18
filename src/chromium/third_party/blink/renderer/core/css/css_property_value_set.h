@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_property_value_set.h
+// Description: CSSPropertyValueSet Class
+//      Author: Ziming Li
+//     Created: 2021-01-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2008, 2012 Apple Inc. All rights reserved.
@@ -221,7 +232,7 @@ DEFINE_TYPE_CASTS(ImmutableCSSPropertyValueSet,
 class CORE_EXPORT MutableCSSPropertyValueSet : public CSSPropertyValueSet {
  public:
   ~MutableCSSPropertyValueSet() = default;
-  static MutableCSSPropertyValueSet* Create(CSSParserMode);
+  static MutableCSSPropertyValueSet* Create(CSSParserMode, ObjectType = ObjectType::Member);
   static MutableCSSPropertyValueSet* Create(const CSSPropertyValue* properties,
                                             unsigned count);
 

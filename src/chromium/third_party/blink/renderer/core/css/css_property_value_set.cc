@@ -688,8 +688,9 @@ void CSSPropertyValueSet::ShowStyle() {
 #endif
 
 MutableCSSPropertyValueSet* MutableCSSPropertyValueSet::Create(
-    CSSParserMode css_parser_mode) {
-  return new MutableCSSPropertyValueSet(css_parser_mode);
+    CSSParserMode css_parser_mode,
+    ObjectType object_type) {
+  return new (object_type) MutableCSSPropertyValueSet(css_parser_mode);
 }
 
 MutableCSSPropertyValueSet* MutableCSSPropertyValueSet::Create(
