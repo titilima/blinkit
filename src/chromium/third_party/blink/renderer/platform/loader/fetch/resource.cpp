@@ -138,30 +138,23 @@ void Resource::DidAddClient(ResourceClient *c)
 {
     if (std::shared_ptr<SharedBuffer> data = Data())
     {
-        ASSERT(false); // BKTODO:
-#if 0
-        for (const auto& span : *data) {
-            c->DataReceived(this, span.data(), span.size());
-            // Stop pushing data if the client removed itself.
-            if (!HasClient(c))
-                break;
-        }
-#endif
+        SharedBuffer::Iterator it = data->begin();
+        c->DataReceived(this, it.data(), it.size());
     }
+
     if (!HasClient(c))
         return;
+
     if (IsLoaded())
     {
-        ASSERT(false); // BKTODO:
-#if 0
         c->NotifyFinished(this);
-        if (clients_.Contains(c)) {
-            finished_clients_.insert(c);
-            clients_.erase(c);
+        auto it = m_clients.find(c);
+        if (std::end(m_clients) != it)
+        {
+            m_finishedClients.insert(c);
+            m_clients.erase(it);
         }
-#endif
     }
-    BKLOG("// BKTODO: Check child classes.");
 }
 
 void Resource::DidChangePriority(ResourceLoadPriority loadPriority, int intraPriorityValue)
@@ -243,31 +236,26 @@ void Resource::FinishAsError(const ResourceError &error, base::SingleThreadTaskR
 #else
     NotifyFinished();
 #endif
-    // BKTODO: Check image overrides
 }
 
 bool Resource::HasClient(ResourceClient * client) const
 {
     if (m_clients.find(client) != std::end(m_clients))
         return true;
-    ASSERT(false); // BKTODO:
-#if 0
-    return clients_awaiting_callback_.Contains(client) ||
-        finished_clients_.Contains(client);
-#endif
-    return false;
+    if (m_clientsAwaitingCallback.find(client) != std::end(m_clientsAwaitingCallback))
+        return true;
+    return m_finishedClients.find(client) != std::end(m_finishedClients);
 }
 
 bool Resource::HasClientsOrObservers(void) const
 {
-    if (m_clients.empty())
-        return false;
-    ASSERT(false); // BKTODO:
-#if 0
-    return !clients_awaiting_callback_.IsEmpty() ||
-        !finished_clients_.IsEmpty() || !finish_observers_.IsEmpty();
-#endif
-    return true;
+    if (!m_clients.empty())
+        return true;
+    if (!m_clientsAwaitingCallback.empty())
+        return true;
+    if (!m_finishedClients.empty())
+        return true;
+    return !m_finishObservers.empty();
 }
 
 bool Resource::IsLoadEventBlockingResourceType(void) const
@@ -321,7 +309,6 @@ void Resource::NotifyFinished(void)
         MarkClientFinished(c);
         c->NotifyFinished(this);
     }
-    // BKTODO: Check resource overrides.
 }
 
 void Resource::RemoveClient(ResourceClient *client)
