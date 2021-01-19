@@ -27,10 +27,6 @@ namespace blink {
 
 ViewportData::ViewportData(Document& document) : document_(document) {}
 
-void ViewportData::Trace(Visitor* visitor) {
-  visitor->Trace(document_);
-}
-
 void ViewportData::Shutdown() {
   // TODO(https://crbug.com/800641): Use InterfaceInvalidator once it works with
   // associated interfaces.

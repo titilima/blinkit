@@ -25,10 +25,9 @@ namespace blink {
 
 class Document;
 
-class ViewportData : public GarbageCollectedFinalized<ViewportData> {
+class ViewportData {
  public:
   ViewportData(Document& document);
-  void Trace(Visitor* visitor);
   void Shutdown();
 
   bool ShouldMergeWithLegacyDescription(ViewportDescription::Type) const;
