@@ -46,6 +46,9 @@
 #include "third_party/blink/renderer/platform/loader/fetch/resource_load_priority.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 #include "url/gurl.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "bk_ui.h"
+#endif
 
 namespace blink {
 
@@ -69,6 +72,11 @@ public:
     BkCrawler Crawler(void) const { return m_crawler; }
     bool ForCrawler(void) const { return nullptr != m_crawler; }
     void SetCrawler(BkCrawler crawler) { m_crawler = crawler; }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    BkWebView View(void) const { return m_view; }
+    void SetView(BkWebView view) { m_view = view; }
+#endif
 
     const GURL& Url(void) const { return m_URL; }
     void SetURL(const GURL &URL) { m_URL = URL; }
@@ -105,6 +113,9 @@ public:
     RedirectStatus GetRedirectStatus(void) const { return m_redirectStatus; }
 private:
     BkCrawler m_crawler = nullptr;
+#ifndef BLINKIT_CRAWLER_ONLY
+    BkWebView m_view = nullptr;
+#endif
     GURL m_URL, m_siteForCookies;
     AtomicString m_httpMethod;
     BlinKit::BkHTTPHeaderMap m_headers;

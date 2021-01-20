@@ -11,6 +11,7 @@
 
 #include "web_view_impl.h"
 
+#include "blinkit/ui/rendering_scheduler.h"
 #include "third_party/blink/renderer/core/frame/browser_controls.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
@@ -136,6 +137,7 @@ PageScaleConstraintsSet& WebViewImpl::GetPageScaleConstraintsSet(void) const
 
 void WebViewImpl::Initialize(void)
 {
+    ScopedRenderingScheduler scheduler(this);
     m_frame = LocalFrame::Create(this, m_page.get());
     m_frame->Init();
 }
@@ -146,11 +148,8 @@ void WebViewImpl::InvalidateRect(const IntRect &rect)
     if (layer_tree_view_) {
         UpdateLayerTreeViewport();
     }
-    else if (client_) {
-        // This is only for WebViewPlugin.
-        client_->WidgetClient()->DidInvalidateRect(rect);
-    }
 #endif
+    RenderingScheduler::From(this)->InvalidateRect(rect);
 }
 
 bool WebViewImpl::IsAcceleratedCompositingActive(void) const
@@ -167,8 +166,9 @@ int WebViewImpl::LoadUI(const char *URI)
         return BK_ERR_URI;
     }
 
-    FrameLoadRequest request(nullptr, ResourceRequest(u));
-    m_frame->Loader().StartNavigation(request);
+    ResourceRequest request(u);
+    request.SetView(this);
+    m_frame->Loader().StartNavigation(FrameLoadRequest(nullptr, request));
     return BK_ERR_SUCCESS;
 }
 
@@ -251,6 +251,7 @@ void WebViewImpl::Resize(const WebSize &size)
     m_canvas = std::make_unique<cc::SkiaPaintCanvas>(PrepareBitmapForCanvas(size));
     m_canvas->drawColor(m_baseBackgroundColor);
 
+    ScopedRenderingScheduler scheduler(this);
     BrowserControls& browserControls = GetBrowserControls();
     ResizeWithBrowserControls(size, browserControls.TopHeight(), browserControls.BottomHeight(),
         browserControls.ShrinkViewport());
@@ -381,9 +382,8 @@ void WebViewImpl::ScheduleAnimation(void)
         layer_tree_view_->SetNeedsBeginFrame();
         return;
     }
-    if (client_)
-        client_->WidgetClient()->ScheduleAnimation();
 #endif
+    RenderingScheduler::From(this)->ScheduleAnimation();
 }
 
 void WebViewImpl::SendResizeEventAndRepaint(void)
@@ -536,8 +536,22 @@ void WebViewImpl::UpdateLayerTreeViewport(void)
     BKLOG("// BKTODO: LayerTreeViewport support.");
 }
 
+class LogGuard
+{
+public:
+    LogGuard(void)
+    {
+        BKLOG("WebViewImpl::UpdateLifecycle begin");
+    }
+    ~LogGuard(void)
+    {
+        BKLOG("WebViewImpl::UpdateLifecycle end");
+    }
+};
+
 void WebViewImpl::UpdateLifecycle(LifecycleUpdate requestedUpdate)
 {
+    LogGuard g;
     LocalFrame *mainFrame = m_page->MainFrame();
     if (nullptr == mainFrame)
         return;

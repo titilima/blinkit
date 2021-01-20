@@ -18,6 +18,7 @@
 #include "bk_def.h"
 #include "url/gurl.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "blinkit/ui/rendering_scheduler.h"
 #   include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 #endif
 
@@ -66,6 +67,7 @@ protected:
 
     const GURL m_URI;
     std::string m_data;
+    ScopedRenderingScheduler m_scheduler;
 };
 #endif
 

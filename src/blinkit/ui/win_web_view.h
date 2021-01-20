@@ -41,6 +41,7 @@ private:
     // LocalFrameClient
     void DispatchDidReceiveTitle(const String &title) override;
     // WebViewImpl
+    void InvalidateNativeView(const blink::IntRect &rect) override;
     SkBitmap PrepareBitmapForCanvas(const blink::WebSize &size) override;
 
     static std::unordered_map<HWND, WinWebView *> s_viewMap;

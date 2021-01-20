@@ -95,6 +95,7 @@ void LoaderTask::ReportError(WebURLLoaderClient *client, base::SingleThreadTaskR
 LoaderTaskForUI::LoaderTaskForUI(const ResourceRequest &request, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, WebURLLoaderClient *client)
     : LoaderTask(taskRunner, client)
     , m_URI(request.Url())
+    , m_scheduler(request.View())
 {
 }
 

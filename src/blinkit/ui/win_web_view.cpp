@@ -66,6 +66,12 @@ void WinWebView::DispatchDidReceiveTitle(const String &title)
     SetWindowTextW(m_hWnd, ws.c_str());
 }
 
+void WinWebView::InvalidateNativeView(const IntRect &rect)
+{
+    RECT rc = { rect.X(), rect.Y(), rect.MaxX(), rect.MaxY() };
+    ::InvalidateRect(m_hWnd, &rc, FALSE);
+}
+
 WinWebView* WinWebView::Lookup(HWND hWnd)
 {
     auto it = s_viewMap.find(hWnd);

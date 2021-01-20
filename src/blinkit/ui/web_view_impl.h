@@ -51,7 +51,9 @@ public:
     void SetPageScaleFactor(float scaleFactor);
     blink::IntSize MainFrameSize(void);
 
+    void UpdateAndPaint(void);
     void InvalidateRect(const blink::IntRect &rect);
+    virtual void InvalidateNativeView(const blink::IntRect &rect) = 0;
 
     // By default, all phases are updated by |UpdateLifecycle| (e.g., style,
     // layout, prepaint, paint, etc. See: document_lifecycle.h). |LifecycleUpdate|
@@ -80,7 +82,6 @@ protected:
     void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
     void Resize(const blink::WebSize &size);
     void SetScaleFactor(float scaleFactor);
-    void UpdateAndPaint(void);
 private:
     blink::BrowserControls& GetBrowserControls(void);
 
