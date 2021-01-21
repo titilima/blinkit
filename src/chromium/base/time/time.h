@@ -168,6 +168,14 @@ public:
         return TimeDelta::FromMicroseconds(m_us - other.m_us);
     }
 
+    // Modify by some time delta.
+    T& operator+=(TimeDelta delta) {
+        return static_cast<T &>(*this = (*this + delta));
+    }
+    T& operator-=(TimeDelta delta) {
+        return static_cast<T &>(*this = (*this - delta));
+    }
+
     // Comparison operators
     bool operator==(const T &other) const {
         return m_us == other.m_us;
