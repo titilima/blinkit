@@ -1,21 +1,10 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: image_decoder_wrapper.cc
-// Description: ImageDecoderWrapper Class
-//      Author: Ziming Li
-//     Created: 2021-01-16
-// -------------------------------------------------
-// Copyright (C) 2021 MingYang Software Technology.
-// -------------------------------------------------
-
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/platform/graphics/image_decoder_wrapper.h"
 
-// BKTODO: #include "third_party/blink/renderer/platform/graphics/image_decoding_store.h"
+#include "third_party/blink/renderer/platform/graphics/image_decoding_store.h"
 #include "third_party/blink/renderer/platform/graphics/image_frame_generator.h"
 
 namespace blink {
@@ -108,7 +97,6 @@ bool ImageDecoderWrapper::Decode(ImageDecoderFactory* factory,
   ImageDecoder* decoder = nullptr;
   std::unique_ptr<ImageDecoder> new_decoder;
 
-#if 0 // BKTODO: Check the logic later.
   const bool resume_decoding = ImageDecodingStore::Instance().LockDecoder(
       generator_, scaled_size_, alpha_option_, client_id_, &decoder);
   DCHECK(!resume_decoding || decoder);
@@ -121,13 +109,6 @@ bool ImageDecoderWrapper::Decode(ImageDecoderFactory* factory,
       return false;
     decoder = new_decoder.get();
   }
-#else
-  constexpr bool resume_decoding = false;
-  new_decoder = CreateDecoderWithData(factory);
-  if (!new_decoder)
-      return false;
-  decoder = new_decoder.get();
-#endif
 
   // For multi-frame image decoders, we need to know how many frames are
   // in that image in order to release the decoder when all frames are
@@ -165,11 +146,8 @@ bool ImageDecoderWrapper::Decode(ImageDecoderFactory* factory,
   if (!has_decoded_frame) {
     decode_failed_ = decoder->Failed();
     if (resume_decoding) {
-      ASSERT(false); // BKTODO:
-#if 0
       ImageDecodingStore::Instance().UnlockDecoder(generator_, client_id_,
                                                    decoder);
-#endif
     }
     return false;
   }
@@ -203,8 +181,6 @@ bool ImageDecoderWrapper::Decode(ImageDecoderFactory* factory,
   const bool should_remove_decoder = ShouldRemoveDecoder(
       frame_was_completely_decoded, decode_to_external_memory);
   if (resume_decoding) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (should_remove_decoder) {
       ImageDecodingStore::Instance().RemoveDecoder(generator_, client_id_,
                                                    decoder);
@@ -212,15 +188,11 @@ bool ImageDecoderWrapper::Decode(ImageDecoderFactory* factory,
       ImageDecodingStore::Instance().UnlockDecoder(generator_, client_id_,
                                                    decoder);
     }
-#endif
   } else if (!should_remove_decoder) {
-    ASSERT(false); // BKTODO:
-#if 0
     // If we have a newly created decoder which we don't want to remove, add
     // it to the cache.
     ImageDecodingStore::Instance().InsertDecoder(generator_, client_id_,
                                                  std::move(new_decoder));
-#endif
   }
 
   return true;
