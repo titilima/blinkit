@@ -536,22 +536,8 @@ void WebViewImpl::UpdateLayerTreeViewport(void)
     BKLOG("// BKTODO: LayerTreeViewport support.");
 }
 
-class LogGuard
-{
-public:
-    LogGuard(void)
-    {
-        BKLOG("WebViewImpl::UpdateLifecycle begin");
-    }
-    ~LogGuard(void)
-    {
-        BKLOG("WebViewImpl::UpdateLifecycle end");
-    }
-};
-
 void WebViewImpl::UpdateLifecycle(LifecycleUpdate requestedUpdate)
 {
-    LogGuard g;
     LocalFrame *mainFrame = m_page->MainFrame();
     if (nullptr == mainFrame)
         return;

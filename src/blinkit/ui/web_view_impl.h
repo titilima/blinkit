@@ -82,6 +82,7 @@ protected:
     void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
     void Resize(const blink::WebSize &size);
     void SetScaleFactor(float scaleFactor);
+    void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState);
 private:
     blink::BrowserControls& GetBrowserControls(void);
 
@@ -90,7 +91,6 @@ private:
     blink::Color BaseBackgroundColor(void) const;
     blink::PageScaleConstraintsSet& GetPageScaleConstraintsSet(void) const;
     float MinimumPageScaleFactor(void) const;
-    void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState);
     bool ShouldAutoResize(void) const { return m_shouldAutoResize; }
     void UpdateICBAndResizeViewport(void);
     void ResizeWithBrowserControls(const blink::WebSize &newSize, float topControlsHeight, float bottomControlsHeight,
@@ -126,5 +126,7 @@ private:
 
     std::unique_ptr<blink::ResizeViewportAnchor> m_resizeViewportAnchor;
 };
+
+DEFINE_TYPE_CASTS(WebViewImpl, ::blink::LocalFrameClient, client, client->IsWebView(), client.IsWebView());
 
 #endif // BLINKIT_BLINKIT_WEB_VIEW_IMPL_H
