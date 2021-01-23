@@ -42,7 +42,6 @@
 
 #include "event_target.h"
 
-#include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 #include "third_party/blink/renderer/core/dom/events/event_listener.h"

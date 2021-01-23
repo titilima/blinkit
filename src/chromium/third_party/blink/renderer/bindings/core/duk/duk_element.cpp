@@ -19,7 +19,6 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk_image_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_named_node_map.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_script_element.h"
-#include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/dom/non_document_type_child_node.h"
 #include "third_party/blink/renderer/core/dom/parent_node.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappers.h"
