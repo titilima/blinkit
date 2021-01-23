@@ -43,6 +43,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_macros.h"
+#include "blinkit/ui/bitmap_animation_controller.h"
 #include "third_party/blink/renderer/platform/geometry/float_rect.h"
 #include "third_party/blink/renderer/platform/graphics/bitmap_image_metrics.h"
 #include "third_party/blink/renderer/platform/graphics/deferred_image_decoder.h"
@@ -59,6 +60,8 @@
 #include "third_party/blink/renderer/platform/timer.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -419,6 +422,19 @@ int BitmapImage::RepetitionCount() {
             : kUncertain;
   }
   return repetition_count_;
+}
+
+void BitmapImage::StartAnimation() {
+  if (RepetitionCount() == kAnimationNone || FrameCount() <= 1)
+    return;
+
+  if (!animation_controller_)
+    animation_controller_ = std::make_unique<BitmapAnimationController>(*this);
+  animation_controller_->Start();
+}
+
+void BitmapImage::StopAnimation() {
+  ASSERT(false); // BKTODO:
 }
 
 void BitmapImage::ResetAnimation() {

@@ -54,6 +54,10 @@
 #include "third_party/blink/renderer/platform/wtf/time.h"
 #include "third_party/skia/include/core/SkRefCnt.h"
 
+namespace BlinKit {
+class BitmapAnimationController;
+}
+
 namespace blink {
 
 class PLATFORM_EXPORT BitmapImage final : public Image {
@@ -62,6 +66,7 @@ class PLATFORM_EXPORT BitmapImage final : public Image {
   friend class GeneratedImage;
   friend class GradientGeneratedImage;
   friend class GraphicsContext;
+  friend class BlinKit::BitmapAnimationController;
 
  public:
   static scoped_refptr<BitmapImage> Create(ImageObserver* observer = nullptr,
@@ -87,6 +92,7 @@ class PLATFORM_EXPORT BitmapImage final : public Image {
   bool IsAllDataReceived() const { return all_data_received_; }
   bool HasColorProfile() const;
 
+  void StopAnimation() override;
   void ResetAnimation() override;
   bool MaybeAnimated() override;
 
@@ -154,6 +160,7 @@ class PLATFORM_EXPORT BitmapImage final : public Image {
   void NotifyMemoryChanged();
 
   int RepetitionCount();
+  void StartAnimation() override;
 
   std::unique_ptr<DeferredImageDecoder> decoder_;
   mutable IntSize size_;  // The size to use for the overall image (will just
@@ -185,6 +192,8 @@ class PLATFORM_EXPORT BitmapImage final : public Image {
   size_t frame_count_;
 
   PaintImage::AnimationSequenceId reset_animation_sequence_id_ = 0;
+
+  std::unique_ptr<BlinKit::BitmapAnimationController> animation_controller_;
 };
 
 DEFINE_IMAGE_TYPE_CASTS(BitmapImage);
