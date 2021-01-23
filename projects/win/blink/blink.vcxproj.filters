@@ -327,6 +327,9 @@
     <Filter Include="renderer\platform\image-decoders\png">
       <UniqueIdentifier>{938c4219-c981-4a70-ab67-df1d84ba33cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\platform\image-decoders\gif">
+      <UniqueIdentifier>{a3b001a0-c400-4bd7-872d-c1c1c8acf8fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -5539,6 +5542,18 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_table_rows_collection.cc">
       <Filter>renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\gif\gif_image_decoder.cc">
+      <Filter>renderer\platform\image-decoders\gif</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\segment_stream.cc">
+      <Filter>renderer\platform\image-decoders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\image_decoding_store.cc">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_visibility_notifier.cc">
+      <Filter>renderer\core\page</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -12318,6 +12333,24 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_table_rows_collection.h">
       <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\gif\gif_image_decoder.h">
+      <Filter>renderer\platform\image-decoders\gif</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\image-decoders\segment_stream.h">
+      <Filter>renderer\platform\image-decoders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\image_decoding_store.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\skia\sk_size_hash.h">
+      <Filter>renderer\platform\graphics\skia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_visibility_notifier.h">
+      <Filter>renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_visibility_observer.h">
+      <Filter>renderer\core\page</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

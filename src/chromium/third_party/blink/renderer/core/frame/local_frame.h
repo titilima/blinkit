@@ -115,6 +115,8 @@ public:
 
     bool ShouldThrottleRendering(void) const;
     void ScheduleVisualUpdateUnlessThrottled(void);
+
+    void DidChangeVisibilityState(void) override;
 #endif
     Document* GetDocument(void) const;
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType type);

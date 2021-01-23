@@ -3663,9 +3663,6 @@ bool LayoutObject::WillRenderImage() {
   if (StyleRef().Visibility() != EVisibility::kVisible)
     return false;
 
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   // We will not render a new image when PausableObjects is paused
   if (GetDocument().IsContextPaused())
     return false;
@@ -3677,7 +3674,6 @@ bool LayoutObject::WillRenderImage() {
   // If we're not in a window (i.e., we're dormant from being in a background
   // tab) then we don't want to render either.
   return GetDocument().View()->IsVisible();
-#endif
 }
 
 bool LayoutObject::GetImageAnimationPolicy(ImageAnimationPolicy& policy) {

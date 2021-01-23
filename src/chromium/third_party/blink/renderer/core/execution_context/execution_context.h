@@ -71,6 +71,11 @@ public:
     virtual std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType) = 0;
 
     void NotifyContextDestroyed(void) override;
+
+    /**
+     * Placeholders
+     */
+    constexpr bool IsContextPaused(void) const { return false; }
 private:
     bool m_isContextDestroyed = false;
 };

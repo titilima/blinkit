@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_decoding_store.h
+// Description: ImageDecodingStore Class
+//      Author: Ziming Li
+//     Created: 2021-01-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -27,6 +38,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_IMAGE_DECODING_STORE_H_
 
 #include <memory>
+#include <mutex>
 #include <utility>
 
 #include "SkSize.h"
@@ -40,7 +52,7 @@
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/doubly_linked_list.h"
 #include "third_party/blink/renderer/platform/wtf/hash_set.h"
-#include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
+// BKTODO: #include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 
 namespace blink {
@@ -355,7 +367,7 @@ class PLATFORM_EXPORT ImageDecodingStore final {
   //   m_heapMemoryUsageInBytes
   // This mutex also protects calls to underlying skBitmap's
   // lockPixels()/unlockPixels() as they are not threadsafe.
-  Mutex mutex_;
+  // BKTODO: std::mutex mutex_;
 
   DISALLOW_COPY_AND_ASSIGN(ImageDecodingStore);
 };

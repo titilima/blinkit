@@ -92,10 +92,15 @@ public:
 
 #ifndef BLINKIT_CRAWLER_ONLY
     TouchAction InheritedEffectiveTouchAction(void) const { return m_inheritedEffectiveTouchAction; }
+
+    virtual void DidChangeVisibilityState(void) {}
 #endif
 
-    constexpr bool IsLocalFrame(void) const { return true; } // Just a placeholder.
-    constexpr bool IsMainFrame(void) const { return true; }  // Just a placeholder.
+    /**
+     * Placeholders
+     */
+    constexpr bool IsLocalFrame(void) const { return true; }
+    constexpr bool IsMainFrame(void) const { return true; }
 protected:
 #ifdef BLINKIT_CRAWLER_ONLY
     Frame(FrameClient *client);

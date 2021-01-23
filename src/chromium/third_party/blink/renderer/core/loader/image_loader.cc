@@ -36,6 +36,7 @@
 #include <memory>
 #include <utility>
 
+#include "blinkit/ui/web_view_impl.h"
 #if 0 // BKTODO:
 #include "third_party/blink/public/platform/modules/fetch/fetch_api_request.mojom-shared.h"
 #include "third_party/blink/public/platform/web_client_hints_type.h"
@@ -534,16 +535,20 @@ void ImageLoader::DoUpdateFromElement(UpdateFromElementBehavior update_behavior,
 #endif
 
     DCHECK(document.GetFrame());
+
+    WebViewImpl *view = ToWebViewImpl(document.GetFrame()->Client());
+    resource_request.SetView(view);
+
     FetchParameters params(resource_request, resource_loader_options);
 #if 0 // BKTODO: Check if necessary.
     ConfigureRequest(params, bypass_behavior, *element_,
                      document.GetFrame()->GetClientHintsPreferences());
 #endif
 
+#if 0 // BKTODO: Check the logic later.
     if (update_behavior != kUpdateForcedReload &&
         lazy_image_load_state_ == LazyImageLoadState::kNone) {
       const auto* frame = document.GetFrame();
-#if 0 // BKTODO: Check the logic later.
       if (frame->IsClientLoFiAllowed(params.GetResourceRequest())) {
         params.SetClientLoFiPlaceholder();
       } else if (auto* html_image = ToHTMLImageElementOrNull(GetElement())) {
@@ -553,8 +558,8 @@ void ImageLoader::DoUpdateFromElement(UpdateFromElementBehavior update_behavior,
         }
         LazyLoadImageObserver::StartTrackingVisibilityMetrics(html_image);
       }
-#endif
     }
+#endif
 
     new_image_content = ImageResourceContent::Fetch(params, document.Fetcher());
 

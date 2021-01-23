@@ -348,6 +348,7 @@ public:
     void RebuildLayoutTree(WhitespaceAttacher &whitespaceAttacher);
 
     void SetApplyScroll(ScrollStateCallback *scrollStateCallback);
+    void RemoveApplyScroll(void);
 
     void SetNeedsCompositingUpdate(void);
     void SetNeedsResizeObserverUpdate(void);

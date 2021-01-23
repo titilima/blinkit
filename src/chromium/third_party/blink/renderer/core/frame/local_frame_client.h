@@ -61,6 +61,9 @@ class LocalFrameClient : public FrameClient
 {
 public:
     virtual bool IsCrawler(void) const = 0;
+#ifndef BLINKIT_CRAWLER_ONLY
+    inline bool IsWebView(void) const { return !IsCrawler(); }
+#endif
     virtual bool HasWebView(void) const = 0;  // mainly for assertions
 
     virtual DocumentLoader* CreateDocumentLoader(LocalFrame *frame, const ResourceRequest &request,

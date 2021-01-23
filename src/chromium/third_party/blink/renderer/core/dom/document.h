@@ -428,6 +428,8 @@ public:
     Document& MasterDocument(void) const;
 
     PageVisibilityState GetPageVisibilityState(void) const;
+    bool hidden(void) const;
+    void DidChangeVisibilityState(void);
 
     Element* FocusedElement(void) const { return m_focusedElement.Get(); }
     Element* HoverElement(void) const { return m_hoverElement.Get(); }

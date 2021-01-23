@@ -354,6 +354,13 @@ void LocalFrame::DeviceScaleFactorChanged(void)
     ASSERT(false); // BKTODO:
 }
 
+void LocalFrame::DidChangeVisibilityState(void)
+{
+    if (Document *document = GetDocument())
+        document->DidChangeVisibilityState();
+    Frame::DidChangeVisibilityState();
+}
+
 void LocalFrame::ScheduleVisualUpdateUnlessThrottled(void)
 {
     if (ShouldThrottleRendering())

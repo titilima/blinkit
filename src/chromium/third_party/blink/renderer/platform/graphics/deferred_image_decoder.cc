@@ -42,7 +42,7 @@
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/platform/graphics/decoding_image_generator.h"
-// BKTODO: #include "third_party/blink/renderer/platform/graphics/image_decoding_store.h"
+#include "third_party/blink/renderer/platform/graphics/image_decoding_store.h"
 #include "third_party/blink/renderer/platform/graphics/image_frame_generator.h"
 #include "third_party/blink/renderer/platform/graphics/skia/skia_utils.h"
 #include "third_party/blink/renderer/platform/image-decoders/segment_reader.h"

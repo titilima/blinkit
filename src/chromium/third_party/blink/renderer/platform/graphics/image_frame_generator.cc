@@ -42,7 +42,7 @@
 #include "SkData.h"
 #include "base/macros.h"
 #include "third_party/blink/renderer/platform/graphics/image_decoder_wrapper.h"
-// BKTODO: #include "third_party/blink/renderer/platform/graphics/image_decoding_store.h"
+#include "third_party/blink/renderer/platform/graphics/image_decoding_store.h"
 #include "third_party/blink/renderer/platform/image-decoders/image_decoder.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/skia/include/core/SkYUVSizeInfo.h"
@@ -84,7 +84,7 @@ ImageFrameGenerator::ImageFrameGenerator(const SkISize& full_size,
 }
 
 ImageFrameGenerator::~ImageFrameGenerator() {
-  // BKTODO: ImageDecodingStore::Instance().RemoveCacheIndexedByGenerator(this);
+  ImageDecodingStore::Instance().RemoveCacheIndexedByGenerator(this);
 }
 
 bool ImageFrameGenerator::DecodeAndScale(

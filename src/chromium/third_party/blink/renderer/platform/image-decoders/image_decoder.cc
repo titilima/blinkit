@@ -35,8 +35,8 @@
 #include "third_party/blink/renderer/platform/graphics/bitmap_image_metrics.h"
 // BKTODO: #include "third_party/blink/renderer/platform/image-decoders/bmp/bmp_image_decoder.h"
 #include "third_party/blink/renderer/platform/image-decoders/fast_shared_buffer_reader.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/image-decoders/gif/gif_image_decoder.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/image-decoders/ico/ico_image_decoder.h"
 #include "third_party/blink/renderer/platform/image-decoders/jpeg/jpeg_image_decoder.h"
 #endif
@@ -127,11 +127,8 @@ std::unique_ptr<ImageDecoder> ImageDecoder::Create(
                                       high_bit_depth_decoding_option,
                                       color_behavior, max_decoded_bytes));
   } else if (MatchesGIFSignature(contents)) {
-    ASSERT(false); // BKTODO:
-#if 0
     decoder.reset(
         new GIFImageDecoder(alpha_option, color_behavior, max_decoded_bytes));
-#endif
   } else if (MatchesWebPSignature(contents)) {
     ASSERT(false); // BKTODO:
 #if 0

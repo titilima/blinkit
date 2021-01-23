@@ -1997,15 +1997,13 @@ void LayoutBox::SizeChanged() {
 bool LayoutBox::IntersectsVisibleViewport() const {
   LayoutRect rect = VisualOverflowRect();
   LayoutView* layout_view = View();
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
+#if 0 // BKTODO: Check if ncessary.
   while (layout_view->GetFrame()->OwnerLayoutObject())
     layout_view = layout_view->GetFrame()->OwnerLayoutObject()->View();
+#endif
   MapToVisualRectInAncestorSpace(layout_view, rect);
   return rect.Intersects(LayoutRect(
       layout_view->GetFrameView()->GetScrollableArea()->VisibleContentRect()));
-#endif
 }
 
 void LayoutBox::EnsureIsReadyForPaintInvalidation() {

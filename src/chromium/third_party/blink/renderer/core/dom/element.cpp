@@ -48,7 +48,6 @@
 #include "third_party/blink/renderer/core/dom/mutation_observer_interest_group.h"
 #include "third_party/blink/renderer/core/dom/text.h"
 #include "third_party/blink/renderer/core/editing/serializers/serialization.h"
-#include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
@@ -2403,6 +2402,11 @@ void Element::RecalcStyleForTraversalRootAncestor(void)
         UpdateFirstLetterPseudoElement(StyleUpdatePhase::kRecalc);
     if (HasCustomStyleCallbacks())
         DidRecalcStyle(kNoChange);
+}
+
+void Element::RemoveApplyScroll(void)
+{
+    GetScrollCustomizationCallbacks().RemoveApplyScroll(this);
 }
 
 ResizeObserverDataMap* Element::ResizeObserverData(void) const

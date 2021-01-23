@@ -146,6 +146,7 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
   // not normally called. It will automatically pause once all observers no
   // longer want to render the image anywhere.
   virtual void StartAnimation() {}
+  virtual void StopAnimation() {}
   virtual void ResetAnimation() {}
 
   // True if this image can potentially animate.

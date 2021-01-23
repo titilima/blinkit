@@ -31,6 +31,7 @@
 namespace blink {
 
 namespace MIMETypes {
+static const char ImageGIF[] = "image/gif";
 static const char ImagePNG[] = "image/png";
 static const char TextCSS[] = "text/css";
 static const char TextHTML[] = "text/html";
@@ -87,6 +88,8 @@ String MIMETypeRegistry::GetWellKnownMIMETypeForExtension(const String& ext) {
   using namespace WTF;
   if (0 == CodePointCompareIgnoringASCIICase(ext, "css"))
     return String::FromUTF8(MIMETypes::TextCSS);
+  if (0 == CodePointCompareIgnoringASCIICase(ext, "gif"))
+      return String::FromUTF8(MIMETypes::ImageGIF);
   if (0 == CodePointCompareIgnoringASCIICase(ext, "html"))
     return String::FromUTF8(MIMETypes::TextHTML);
   if (0 == CodePointCompareIgnoringASCIICase(ext, "png"))

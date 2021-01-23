@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_decoding_store.cc
+// Description: ImageDecodingStore Class
+//      Author: Ziming Li
+//     Created: 2021-01-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -30,7 +41,11 @@
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/blink/renderer/platform/wtf/threading.h"
 
+using namespace BlinKit;
+
 namespace blink {
+
+using MutexLocker = std::unique_lock<std::mutex>;
 
 namespace {
 
@@ -52,7 +67,7 @@ ImageDecodingStore::~ImageDecodingStore() {
 }
 
 ImageDecodingStore& ImageDecodingStore::Instance() {
-  DEFINE_THREAD_SAFE_STATIC_LOCAL(ImageDecodingStore, store, ());
+  static ImageDecodingStore store;
   return store;
 }
 
@@ -64,7 +79,7 @@ bool ImageDecodingStore::LockDecoder(
     ImageDecoder** decoder) {
   DCHECK(decoder);
 
-  MutexLocker lock(mutex_);
+  ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(mutex_);
   DecoderCacheMap::iterator iter =
       decoder_cache_map_.find(DecoderCacheEntry::MakeCacheKey(
           generator, scaled_size, alpha_option, client_id));
@@ -84,7 +99,7 @@ void ImageDecodingStore::UnlockDecoder(
     const ImageFrameGenerator* generator,
     cc::PaintImage::GeneratorClientId client_id,
     const ImageDecoder* decoder) {
-  MutexLocker lock(mutex_);
+  ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(mutex_);
   DecoderCacheMap::iterator iter = decoder_cache_map_.find(
       DecoderCacheEntry::MakeCacheKey(generator, decoder, client_id));
   SECURITY_DCHECK(iter != decoder_cache_map_.end());
@@ -107,7 +122,7 @@ void ImageDecodingStore::InsertDecoder(
   std::unique_ptr<DecoderCacheEntry> new_cache_entry =
       DecoderCacheEntry::Create(generator, std::move(decoder), client_id);
 
-  MutexLocker lock(mutex_);
+  ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(mutex_);
   DCHECK(!decoder_cache_map_.Contains(new_cache_entry->CacheKey()));
   InsertCacheInternal(std::move(new_cache_entry), &decoder_cache_map_,
                       &decoder_cache_key_map_);
@@ -119,7 +134,7 @@ void ImageDecodingStore::RemoveDecoder(
     const ImageDecoder* decoder) {
   Vector<std::unique_ptr<CacheEntry>> cache_entries_to_delete;
   {
-    MutexLocker lock(mutex_);
+    ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(mutex_);
     DecoderCacheMap::iterator iter = decoder_cache_map_.find(
         DecoderCacheEntry::MakeCacheKey(generator, decoder, client_id));
     SECURITY_DCHECK(iter != decoder_cache_map_.end());
@@ -142,7 +157,7 @@ void ImageDecodingStore::RemoveCacheIndexedByGenerator(
     const ImageFrameGenerator* generator) {
   Vector<std::unique_ptr<CacheEntry>> cache_entries_to_delete;
   {
-    MutexLocker lock(mutex_);
+    ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(mutex_);
 
     // Remove image cache objects and decoder cache objects associated
     // with a ImageFrameGenerator.
@@ -158,7 +173,7 @@ void ImageDecodingStore::RemoveCacheIndexedByGenerator(
 void ImageDecodingStore::Clear() {
   size_t cache_limit_in_bytes;
   {
-    MutexLocker lock(mutex_);
+    ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(mutex_);
     cache_limit_in_bytes = heap_limit_in_bytes_;
     heap_limit_in_bytes_ = 0;
   }
@@ -166,26 +181,26 @@ void ImageDecodingStore::Clear() {
   Prune();
 
   {
-    MutexLocker lock(mutex_);
+    ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(mutex_);
     heap_limit_in_bytes_ = cache_limit_in_bytes;
   }
 }
 
 void ImageDecodingStore::SetCacheLimitInBytes(size_t cache_limit) {
   {
-    MutexLocker lock(mutex_);
+    ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(mutex_);
     heap_limit_in_bytes_ = cache_limit;
   }
   Prune();
 }
 
 size_t ImageDecodingStore::MemoryUsageInBytes() {
-  MutexLocker lock(mutex_);
+  ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(mutex_);
   return heap_memory_usage_in_bytes_;
 }
 
 int ImageDecodingStore::CacheEntries() {
-  MutexLocker lock(mutex_);
+  ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(mutex_);
   return decoder_cache_map_.size();
 }
 
@@ -195,7 +210,7 @@ void ImageDecodingStore::Prune() {
 
   Vector<std::unique_ptr<CacheEntry>> cache_entries_to_delete;
   {
-    MutexLocker lock(mutex_);
+    ASSERT(IsMainThread()); // BKTODO: MutexLocker lock(mutex_);
 
     // Head of the list is the least recently used entry.
     const CacheEntry* cache_entry = ordered_cache_list_.Head();

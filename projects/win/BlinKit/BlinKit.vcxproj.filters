@@ -162,6 +162,9 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\rendering_scheduler.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\bitmap_animation_controller.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -297,6 +300,9 @@
       <Filter>win</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\rendering_scheduler.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\bitmap_animation_controller.h">
       <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>

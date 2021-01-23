@@ -57,7 +57,6 @@
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
 #include "third_party/blink/renderer/core/dom/live_node_list_base.h"
-#include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
@@ -94,6 +93,7 @@
 #   include "third_party/blink/renderer/core/dom/scripted_animation_controller.h"
 #   include "third_party/blink/renderer/core/dom/slot_assignment_engine.h"
 #   include "third_party/blink/renderer/core/dom/visited_link_state.h"
+#   include "third_party/blink/renderer/core/events/page_transition_event.h"
 #   include "third_party/blink/renderer/core/events/visual_viewport_resize_event.h"
 #   include "third_party/blink/renderer/core/frame/dom_visual_viewport.h"
 #   include "third_party/blink/renderer/core/frame/viewport_data.h"
@@ -874,46 +874,27 @@ void Document::DispatchUnloadEvents(void)
             {
                 if (LocalDOMWindow *window = domWindow())
                 {
-                    BKLOG("// BKTODO: Dispatch pagehide.");
-#if 0
-                    const TimeTicks pagehide_event_start = CurrentTimeTicks();
                     window->DispatchEvent(
-                        *PageTransitionEvent::Create(EventTypeNames::pagehide, false),
+                        *PageTransitionEvent::Create(event_type_names::kPagehide, false),
                         this);
-                    const TimeTicks pagehide_event_end = CurrentTimeTicks();
-                    DEFINE_STATIC_LOCAL(
-                        CustomCountHistogram, pagehide_histogram,
-                        ("DocumentEventTiming.PageHideDuration", 0, 10000000, 50));
-                    pagehide_histogram.CountMicroseconds(pagehide_event_end -
-                        pagehide_event_start);
-#endif
                 }
                 if (!m_frame)
+                {
                     return;
+                }
 
                 PageVisibilityState visibilityState = GetPageVisibilityState();
                 m_loadEventProgress = kUnloadVisibilityChangeInProgress;
                 if (visibilityState != PageVisibilityState::kHidden)
                 {
-                    ASSERT(false); // BKTODO:
-#if 0
                     // Dispatch visibilitychange event, but don't bother doing
                     // other notifications as we're about to be unloaded.
-                    const TimeTicks pagevisibility_hidden_event_start = CurrentTimeTicks();
-                    DispatchEvent(*Event::CreateBubble(EventTypeNames::visibilitychange));
-                    const TimeTicks pagevisibility_hidden_event_end = CurrentTimeTicks();
-                    DEFINE_STATIC_LOCAL(CustomCountHistogram, pagevisibility_histogram,
-                        ("DocumentEventTiming.PageVibilityHiddenDuration",
-                            0, 10000000, 50));
-                    pagevisibility_histogram.CountMicroseconds(
-                        pagevisibility_hidden_event_end -
-                        pagevisibility_hidden_event_start);
-                    DispatchEvent(
-                        *Event::CreateBubble(EventTypeNames::webkitvisibilitychange));
-#endif
+                    DispatchEvent(*Event::CreateBubble(event_type_names::kVisibilitychange));
                 }
                 if (!m_frame)
+                {
                     return;
+                }
             }
 #endif
 
@@ -2610,6 +2591,23 @@ void Document::DidAssociateFormControlsTimerFired(TimerBase *timer)
     }
 }
 
+void Document::DidChangeVisibilityState(void)
+{
+    DispatchEvent(*Event::CreateBubble(event_type_names::kVisibilitychange));
+
+    if (GetPageVisibilityState() == PageVisibilityState::kVisible)
+        Timeline().SetAllCompositorPending();
+
+#if 0 // BKTODO: Check the logic
+    if (hidden() && canvas_font_cache_)
+        canvas_font_cache_->PruneAll();
+
+    InteractiveDetector* interactive_detector = InteractiveDetector::From(*this);
+    if (interactive_detector)
+        interactive_detector->OnPageVisibilityChanged(GetPageVisibilityState());
+#endif
+}
+
 void Document::DidLoadAllScriptBlockingResources(void)
 {
     const auto task = std::bind(&Document::ExecuteScriptsWaitingForResources, this);
@@ -2731,6 +2729,11 @@ SnapCoordinator* Document::GetSnapCoordinator(void)
             m_snapCoordinator = SnapCoordinator::Create();
     }
     return m_snapCoordinator.Get();
+}
+
+bool Document::hidden(void) const
+{
+    return GetPageVisibilityState() != PageVisibilityState::kVisible;
 }
 
 HTMLImportLoader* Document::ImportLoader(void) const
