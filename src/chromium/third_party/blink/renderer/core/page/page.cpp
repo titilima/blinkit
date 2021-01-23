@@ -164,20 +164,14 @@ void Page::SetVisibilityState(PageVisibilityState visibilityState, bool isInitia
 {
     if (m_visibilityState == visibilityState)
         return;
-    m_visibilityState = visibilityState;
 
+    m_visibilityState = visibilityState;
     if (isInitialState)
         return;
-    ASSERT(false); // BKTODO:
-#if 0
-    NotifyPageVisibilityChanged();
 
-    if (main_frame_) {
-        if (IsPageVisible())
-            RestoreSVGImageAnimations();
-        main_frame_->DidChangeVisibilityState();
-    }
-#endif
+    NotifyPageVisibilityChanged();
+    if (nullptr != m_mainFrame)
+        m_mainFrame->DidChangeVisibilityState();
 }
 
 void Page::Trace(Visitor *visitor)

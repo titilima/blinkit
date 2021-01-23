@@ -16,6 +16,8 @@
 
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/core/page/page_animator.h"
+#include "third_party/blink/renderer/core/page/page_visibility_notifier.h"
+#include "third_party/blink/renderer/core/page/page_visibility_observer.h"
 #include "third_party/blink/renderer/core/page/page_visibility_state.h"
 
 namespace blink {
@@ -37,7 +39,7 @@ class VisualViewport;
 
 float DeviceScaleFactorDeprecated(LocalFrame *frame);
 
-class Page : public GarbageCollectedFinalized<Page>
+class Page : public GarbageCollectedFinalized<Page>, public PageVisibilityNotifier
 {
 public:
     BK_DECLARE_GC_NAME(Page)
