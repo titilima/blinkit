@@ -118,6 +118,11 @@ void WinWebView::OnPaint(HWND hwnd)
     EndPaint(hwnd, &ps);
 }
 
+void WinWebView::OnShowWindow(HWND, BOOL fShow, UINT)
+{
+    SetVisibilityState(fShow ? PageVisibilityState::kVisible : PageVisibilityState::kHidden, false);
+}
+
 void WinWebView::OnSize(HWND, UINT state, int cx, int cy)
 {
     if (SIZE_MINIMIZED == state)
@@ -164,6 +169,9 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
             break;
         case WM_SIZE:
             HANDLE_WM_SIZE(hWnd, wParam, lParam, OnSize);
+            break;
+        case WM_SHOWWINDOW:
+            HANDLE_WM_SHOWWINDOW(hWnd, wParam, lParam, OnShowWindow);
             break;
         case WM_DPICHANGED:
             ASSERT(HIWORD(wParam) == LOWORD(lParam));

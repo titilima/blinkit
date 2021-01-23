@@ -36,6 +36,7 @@ private:
     void OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc);
     static BOOL OnNCCreate(HWND hwnd, LPCREATESTRUCT cs);
     void OnPaint(HWND hwnd);
+    void OnShowWindow(HWND hwnd, BOOL fShow, UINT status);
     void OnSize(HWND hwnd, UINT state, int cx, int cy);
 
     // LocalFrameClient
