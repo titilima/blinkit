@@ -164,7 +164,7 @@ void TopDocumentRootScrollerController::RecomputeGlobalRootScroller() {
     return;
 
   if (global_root_scroller_)
-    ASSERT(false); // BKTODO: global_root_scroller_->RemoveApplyScroll();
+    global_root_scroller_->RemoveApplyScroll();
 
   // Use disable-native-scroll since the ViewportScrollCallback needs to
   // apply scroll actions both before (BrowserControls) and after (overscroll)
