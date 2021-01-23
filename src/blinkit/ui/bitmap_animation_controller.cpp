@@ -25,8 +25,6 @@ BitmapAnimationController::BitmapAnimationController(BitmapImage &image)
 {
 }
 
-static bool g_b = false;
-
 void BitmapAnimationController::Advance(TimerBase *timer)
 {
     ScopedRenderingScheduler scheduler;
