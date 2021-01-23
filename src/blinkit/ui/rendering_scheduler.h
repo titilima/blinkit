@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <unordered_map>
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
@@ -45,9 +46,9 @@ private:
 class ScopedRenderingScheduler
 {
 public:
-    ScopedRenderingScheduler(WebViewImpl *view) : m_renderingScheduler(GetRenderingScheduler(view)) {}
+    ScopedRenderingScheduler(WebViewImpl *view = nullptr) : m_renderingScheduler(GetRenderingScheduler(view)) {}
 private:
-    RenderingScheduler* GetRenderingScheduler(WebViewImpl *view);
+    static RenderingScheduler* GetRenderingScheduler(WebViewImpl *view);
 
     scoped_refptr<RenderingScheduler> m_renderingScheduler;
 };

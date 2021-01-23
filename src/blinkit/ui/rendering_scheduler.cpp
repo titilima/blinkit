@@ -20,6 +20,8 @@ namespace BlinKit {
 
 std::unordered_map<WebViewImpl *, RenderingScheduler *> RenderingScheduler::m_allSchedulers;
 
+static RenderingScheduler *g_reservedScheduler = nullptr;
+
 RenderingScheduler::~RenderingScheduler(void)
 {
     ASSERT(IsMainThread());
@@ -37,13 +39,25 @@ RenderingScheduler* RenderingScheduler::From(WebViewImpl *view)
     ASSERT(IsMainThread());
     ASSERT(nullptr != view);
 
-    auto it = m_allSchedulers.find(view);
-    if (std::end(m_allSchedulers) != it)
-        return it->second;
+    RenderingScheduler *ret = nullptr;
+    if (nullptr != g_reservedScheduler)
+    {
+        ASSERT(nullptr == g_reservedScheduler->m_view);
 
-    ASSERT(std::end(m_allSchedulers) != it);
-    static RenderingScheduler s_nullScheduler(nullptr);
-    return &s_nullScheduler;
+        ret = g_reservedScheduler;
+        ret->m_view = view;
+        m_allSchedulers[view] = ret;
+
+        g_reservedScheduler = nullptr;
+    }
+    else
+    {
+        auto it = m_allSchedulers.find(view);
+        ASSERT(std::end(m_allSchedulers) != it);
+        if (std::end(m_allSchedulers) != it)
+            ret = it->second;
+    }
+    return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,20 +65,27 @@ RenderingScheduler* RenderingScheduler::From(WebViewImpl *view)
 RenderingScheduler* ScopedRenderingScheduler::GetRenderingScheduler(WebViewImpl *view)
 {
     ASSERT(IsMainThread());
-    ASSERT(nullptr != view);
-
-    auto &allSchedulers = RenderingScheduler::m_allSchedulers;
 
     RenderingScheduler *ret;
-    auto it = allSchedulers.find(view);
-    if (std::end(allSchedulers) == it)
+    if (nullptr == view)
     {
-        ret = new RenderingScheduler(view);
-        allSchedulers[view] = ret;
+        ASSERT(nullptr == g_reservedScheduler);
+        ret = g_reservedScheduler = new RenderingScheduler(nullptr);
     }
     else
     {
-        ret = it->second;
+        auto &allSchedulers = RenderingScheduler::m_allSchedulers;
+
+        auto it = allSchedulers.find(view);
+        if (std::end(allSchedulers) == it)
+        {
+            ret = new RenderingScheduler(view);
+            allSchedulers[view] = ret;
+        }
+        else
+        {
+            ret = it->second;
+        }
     }
     return ret;
 }
