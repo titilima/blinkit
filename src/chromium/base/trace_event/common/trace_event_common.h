@@ -14,6 +14,8 @@
 
 #pragma once
 
+#define TRACE_COUNTER1(...)                         ((void)0)
+
 #define TRACE_EVENT_BEGIN0(...)                     ((void)0)
 #define TRACE_EVENT_END0(...)                       ((void)0)
 

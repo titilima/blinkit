@@ -4,9 +4,9 @@
 //   File Name: event_type_names.cpp
 // Description: Event Type Names
 //      Author: Ziming Li
-//     Created: 2020-12-17
+//     Created: 2021-01-22
 // -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
+// Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
 
 #include "event_type_names.h"
@@ -29,12 +29,14 @@ const AtomicString &kBeforeunload = reinterpret_cast<AtomicString *>(&names_stor
 const AtomicString &kError = reinterpret_cast<AtomicString *>(&names_storage)[8];
 const AtomicString &kLoad = reinterpret_cast<AtomicString *>(&names_storage)[9];
 const AtomicString &kMousewheel = reinterpret_cast<AtomicString *>(&names_storage)[10];
-const AtomicString &kPageshow = reinterpret_cast<AtomicString *>(&names_storage)[11];
-const AtomicString &kReadystatechange = reinterpret_cast<AtomicString *>(&names_storage)[12];
-const AtomicString &kResize = reinterpret_cast<AtomicString *>(&names_storage)[13];
-const AtomicString &kScroll = reinterpret_cast<AtomicString *>(&names_storage)[14];
-const AtomicString &kUnload = reinterpret_cast<AtomicString *>(&names_storage)[15];
-const AtomicString &kWheel = reinterpret_cast<AtomicString *>(&names_storage)[16];
+const AtomicString &kPagehide = reinterpret_cast<AtomicString *>(&names_storage)[11];
+const AtomicString &kPageshow = reinterpret_cast<AtomicString *>(&names_storage)[12];
+const AtomicString &kReadystatechange = reinterpret_cast<AtomicString *>(&names_storage)[13];
+const AtomicString &kResize = reinterpret_cast<AtomicString *>(&names_storage)[14];
+const AtomicString &kScroll = reinterpret_cast<AtomicString *>(&names_storage)[15];
+const AtomicString &kUnload = reinterpret_cast<AtomicString *>(&names_storage)[16];
+const AtomicString &kVisibilitychange = reinterpret_cast<AtomicString *>(&names_storage)[17];
+const AtomicString &kWheel = reinterpret_cast<AtomicString *>(&names_storage)[18];
 
 void Init(void)
 {
@@ -61,11 +63,13 @@ void Init(void)
         { "error", 6654137, 5 },
         { "load", 8207817, 4 },
         { "mousewheel", 15891108, 10 },
+        { "pagehide", 16640617, 8 },
         { "pageshow", 12320166, 8 },
         { "readystatechange", 11011948, 16 },
         { "resize", 11716975, 6 },
         { "scroll", 7626286, 6 },
         { "unload", 4411490, 6 },
+        { "visibilitychange", 11206348, 16 },
         { "wheel", 5389519, 5 },
     };
 
