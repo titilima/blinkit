@@ -14,9 +14,9 @@
 
 #pragma once
 
-#include <shared_mutex>
 #include <unordered_map>
 #include "bk_crawler.h"
+#include "bkcommon/bk_shared_mutex.hpp"
 #include "net/cookies/cookie_options.h"
 
 namespace net {
@@ -45,7 +45,7 @@ private:
 
     unsigned m_refCount = 1;
     net::CookieOptions m_options;
-    std::shared_mutex m_mutex;
+    BlinKit::BkSharedMutex m_mutex;
 
     typedef std::unordered_map<std::string, std::unique_ptr<net::CanonicalCookie>> CookiesMap;
     std::unordered_map<std::string, CookiesMap> m_cookies;
