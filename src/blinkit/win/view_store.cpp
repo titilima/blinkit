@@ -11,14 +11,11 @@
 
 #include "view_store.h"
 
-#include <mutex>
-#include <shared_mutex>
-
 namespace BlinKit {
 
 WinWebView* ViewStore::Lookup(HWND hWnd) const
 {
-    std::shared_lock<ViewStore> lock(const_cast<ViewStore &>(*this));
+    std::shared_lock<BkSharedMutex> lock(m_lock);
     auto it = m_views.find(hWnd);
     if (std::end(m_views) != it)
         return it->second;
@@ -27,14 +24,14 @@ WinWebView* ViewStore::Lookup(HWND hWnd) const
 
 void ViewStore::OnNewView(HWND hWnd, WinWebView *newView)
 {
-    std::unique_lock<ViewStore> lock(*this);
+    std::unique_lock<BkSharedMutex> lock(m_lock);
     ASSERT(std::end(m_views) == m_views.find(hWnd));
     m_views[hWnd] = newView;
 }
 
 void ViewStore::OnViewDestroyed(HWND hWnd)
 {
-    std::unique_lock<ViewStore> lock(*this);
+    std::unique_lock<BkSharedMutex> lock(m_lock);
     ASSERT(std::end(m_views) != m_views.find(hWnd));
     m_views.erase(hWnd);
 }

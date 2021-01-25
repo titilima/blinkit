@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "bkcommon/bk_shared_mutex.hpp"
+
 namespace BlinKit {
 
 class WinWebView;
@@ -21,19 +23,12 @@ class WinWebView;
 class ViewStore
 {
 public:
-    ViewStore(void) { ::InitializeSRWLock(&m_lock); }
-
     WinWebView* Lookup(HWND hWnd) const;
-
-    void lock_shared(void) { ::AcquireSRWLockShared(&m_lock); }
-    void unlock_shared(void) { ::ReleaseSRWLockShared(&m_lock); }
-    void lock(void) { ::AcquireSRWLockExclusive(&m_lock); }
-    void unlock(void) { ::ReleaseSRWLockExclusive(&m_lock); }
 
     void OnNewView(HWND hWnd, WinWebView *newView);
     void OnViewDestroyed(HWND hWnd);
 private:
-    SRWLOCK m_lock;
+    mutable BkSharedMutex m_lock;
     std::unordered_map<HWND, WinWebView *> m_views;
 };
 
