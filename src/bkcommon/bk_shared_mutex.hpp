@@ -23,7 +23,7 @@ namespace BlinKit {
 class BkSharedMutex
 {
 public:
-    BkSharedMutex(void);
+    BkSharedMutex(void) { ::InitializeSRWLock(&m_lock); }
 
     void lock_shared(void) { ::AcquireSRWLockShared(&m_lock); }
     void unlock_shared(void) { ::ReleaseSRWLockShared(&m_lock); }
