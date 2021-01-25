@@ -19,23 +19,25 @@ namespace BlinKit {
 void LoaderThread::AddTask(LoaderTask *task)
 {
     ASSERT(IsMainThread());
-    Access([task](std::queue<LoaderTask *> &q) {
-        q.push(task);
-    });
-    Notify();
+    {
+        std::unique_lock<BkMutex> lock(m_mutex);
+        m_tasks.push(task);
+    }
+    m_signal.Signal();
 }
 
 void LoaderThread::Run(void)
 {
     ASSERT(!IsMainThread());
-
     for (;;)
     {
         LoaderTask *task = nullptr;
-        Wait([&task](std::queue<LoaderTask *> &q) {
-            task = q.front();
-            q.pop();
-        });
+        m_signal.Wait();
+        {
+            std::unique_lock<BkMutex> lock(m_mutex);
+            task = m_tasks.front();
+            m_tasks.pop();
+        }
 
         if (nullptr == task)
             break;

@@ -15,7 +15,8 @@
 #pragma once
 
 #include <queue>
-#include "bkcommon/bk_threading.hpp"
+#include "bkcommon/bk_mutex.hpp"
+#include "bkcommon/bk_signal.hpp"
 
 namespace BlinKit {
 
@@ -25,7 +26,7 @@ struct LoaderSignalTraits {
     static bool Wait(const std::queue<LoaderTask *> &q) { return !q.empty(); }
 };
 
-class LoaderThread : BkConditionImpl<std::queue<LoaderTask *>, LoaderSignalTraits>
+class LoaderThread
 {
 public:
     static std::unique_ptr<LoaderThread> Create(void);
@@ -37,6 +38,10 @@ protected:
 
     void Exit(void) { AddTask(nullptr); }
     void Run(void);
+private:
+    BkMutex m_mutex;
+    BkSignal m_signal;
+    std::queue<LoaderTask *> m_tasks;
 };
 
 } // namespace BlinKit
