@@ -13,7 +13,7 @@
 
 #include "base/single_thread_task_runner.h"
 #include "bkcommon/bk_strings.h"
-#include "bkcommon/bk_threading.hpp"
+#include "bkcommon/bk_signal.hpp"
 #include "bkcommon/buffer_impl.hpp"
 #include "bkcommon/response_impl.h"
 #include "blinkit/js/browser_context.h"
