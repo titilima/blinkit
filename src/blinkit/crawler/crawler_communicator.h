@@ -22,7 +22,10 @@ namespace BlinKit {
 class CrawlerCommunicator
 {
 public:
-    virtual void CallCrawler(const base::Location &loc, std::function<void()> &&worker) = 0;
+    enum class CallMode {
+        kDefault, kSend
+    };
+    virtual void CallCrawler(const base::Location &loc, std::function<void()> &&worker, CallMode = CallMode::kDefault) = 0;
     virtual void PostToClient(const base::Location &loc, std::function<void()> &&worker) = 0;
 };
 

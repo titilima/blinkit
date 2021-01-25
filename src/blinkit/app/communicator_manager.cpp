@@ -22,7 +22,7 @@ class ExclusiveCommunicatorManager::CommunicatorImpl : public CrawlerCommunicato
 public:
     CommunicatorImpl(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner) : m_taskRunner(taskRunner) {}
 private:
-    void CallCrawler(const base::Location &, std::function<void()> &&worker) override
+    void CallCrawler(const base::Location &, std::function<void()> &&worker, CallMode) override
     {
         worker();
     }
