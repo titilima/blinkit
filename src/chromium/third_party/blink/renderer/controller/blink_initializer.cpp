@@ -61,9 +61,9 @@ static void InitializeCommon(Platform *platform)
     CSSParserTokenRange::InitStaticEOFToken();
 }
 
-void Initialize(Platform *platform, scheduler::WebThreadScheduler* mainThreadScheduler)
+void Initialize(Platform *platform)
 {
-    Platform::Initialize(platform, mainThreadScheduler);
+    Platform::Initialize(platform);
     InitializeCommon(platform);
 }
 

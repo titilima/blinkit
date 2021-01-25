@@ -18,7 +18,7 @@
 
 namespace blink {
 
-void Initialize(Platform *platform, scheduler::WebThreadScheduler *mainThreadScheduler);
+void Initialize(Platform *platform);
 
 } // namespace blink
 

@@ -65,7 +65,7 @@ class WebThreadScheduler;
 class Platform
 {
 public:
-    static void Initialize(Platform *platform, scheduler::WebThreadScheduler *mainThreadScheduler);
+    static void Initialize(Platform *platform);
     static Platform* Current(void);
 
     static const size_t kNoDecodedImageByteLimit = static_cast<size_t>(-1);

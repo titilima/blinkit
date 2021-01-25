@@ -79,7 +79,7 @@ Thread* Platform::CurrentThread(void)
     return nullptr;
 }
 
-void Platform::Initialize(Platform *platform, scheduler::WebThreadScheduler *mainThreadScheduler)
+void Platform::Initialize(Platform *platform)
 {
     DCHECK(!g_platform);
     DCHECK(platform);
