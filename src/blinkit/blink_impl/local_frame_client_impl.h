@@ -14,11 +14,15 @@
 
 #pragma once
 
+#include "blinkit/app/client_thread_asserter.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 
 namespace BlinKit {
 
 class LocalFrameClientImpl : public blink::LocalFrameClient
+#ifndef NDEBUG
+                           , public BlinKit::ClientThreadAsserter
+#endif
 {
 protected:
     String UserAgent(void) override;
