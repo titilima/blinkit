@@ -317,9 +317,6 @@
     <ClInclude Include="..\..\..\src\blinkit\win\message_task.h">
       <Filter>win</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\win\scoped_event_waiter.h">
-      <Filter>win</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\view_store.h">
       <Filter>win</Filter>
     </ClInclude>

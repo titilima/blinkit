@@ -41,6 +41,7 @@ public:
             m_signal.Wait();
     }
 
+    bool IsSignalValid(void) const { return m_signal.IsValid(); }
     void Signal(void) { m_signal.Signal(); }
 private:
     BkSignal m_signal;

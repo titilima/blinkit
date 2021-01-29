@@ -13,10 +13,10 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/strings/sys_string_conversions.h"
+#include "bkcommon/bk_signal.hpp"
 #include "blinkit/app/app_caller_impl.h"
 #include "blinkit/win/client_caller_store.h"
 #include "blinkit/win/message_loop.h"
-#include "blinkit/win/scoped_event_waiter.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "base/win/resource_util.h"
@@ -34,7 +34,7 @@ using namespace blink;
 
 namespace BlinKit {
 
-struct BackgoundModeParams final : public ScopedEventWaiter
+struct BackgoundModeParams final : public ScopedSignalWaiter
 {
     WinApp *app;
 };
@@ -115,7 +115,7 @@ void WinApp::Initialize(void)
 bool WinApp::InitializeForBackgroundMode(void)
 {
     BackgoundModeParams params;
-    if (!params)
+    if (!params.IsSignalValid())
         return false;
 
     params.app = this;

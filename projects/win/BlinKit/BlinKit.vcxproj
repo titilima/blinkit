@@ -259,7 +259,6 @@
     <ClInclude Include="..\..\..\src\blinkit\win\client_caller_store.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\message_loop.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\message_task.h" />
-    <ClInclude Include="..\..\..\src\blinkit\win\scoped_event_waiter.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\view_store.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
     <ClInclude Include="resource.h" />
