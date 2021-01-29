@@ -4,9 +4,6 @@ EXPORTS
 
 BkInitialize
 BkFinalize
-BkRunApp
-BkExitApp
-BkAppExecute
 
 BkWebViewSetClient
 BkLoadUI

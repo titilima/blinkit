@@ -11,12 +11,17 @@
 
 #include "win_app.h"
 
+#include "base/memory/ptr_util.h"
 #include "base/strings/sys_string_conversions.h"
-#include "blinkit/blink_impl/win_single_thread_task_runner.h"
+#include "blinkit/app/app_caller_impl.h"
+#include "blinkit/win/client_caller_store.h"
+#include "blinkit/win/message_loop.h"
+#include "blinkit/win/scoped_event_waiter.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "base/win/resource_util.h"
 #   include "blinkit/blink_impl/win_theme_engine.h"
+#   include "blinkit/ui/win_web_view.h"
 #   include "third_party/blink/renderer/platform/fonts/font_cache.h"
 #   include "third_party/skia/include/ports/SkTypeface_win.h"
 #endif
@@ -29,57 +34,40 @@ using namespace blink;
 
 namespace BlinKit {
 
-struct BackgoundThreadData
+struct BackgoundModeParams final : public ScopedEventWaiter
 {
-    BackgoundThreadData(void) : hEvent(CreateEvent(nullptr, FALSE, FALSE, nullptr))
-    {
-    }
-    ~BackgoundThreadData(void)
-    {
-        CloseHandle(hEvent);
-    }
-
-    HANDLE hEvent;
-    BkAppClient *client = nullptr;
-    HANDLE hThread = nullptr;
+    WinApp *app;
 };
 
-WinApp::WinApp(int mode, BkAppClient *client, HANDLE hBackgroundThread)
-    : AppImpl(mode, client)
-    , m_taskRunner(std::make_shared<WinSingleThreadTaskRunner>())
-    , m_backgroundThread(hBackgroundThread)
+WinApp::WinApp(BkAppClient *client) : AppImpl(client)
 {
 #ifndef BLINKIT_CRAWLER_ONLY
     auto fontMgr = SkFontMgr_New_GDI();
     FontCache::SetFontManager(std::move(fontMgr));
 #endif
-    m_msgHook = SetWindowsHookEx(WH_GETMESSAGE, HookProc, nullptr, GetCurrentThreadId());
 }
 
 WinApp::~WinApp(void)
 {
-    UnhookWindowsHookEx(m_msgHook);
-    if (nullptr != m_backgroundThread)
-        CloseHandle(m_backgroundThread);
+    if (nullptr != m_appThread)
+        CloseHandle(m_appThread);
+}
+
+ClientCaller& WinApp::AcquireCallerForClient(void)
+{
+    ASSERT(m_clientCallerStore);
+    return m_clientCallerStore->Acquire();
 }
 
 DWORD WINAPI WinApp::BackgroundThread(PVOID param)
 {
-    BackgoundThreadData *data = reinterpret_cast<BackgoundThreadData *>(param);
+    BackgoundModeParams *params = reinterpret_cast<BackgoundModeParams *>(param);
 
-    WinApp *app = new WinApp(BK_APP_BACKGROUND_MODE, data->client, data->hThread);
-    if (nullptr == app)
-    {
-        ASSERT(nullptr != app);
-        CloseHandle(data->hThread);
-        SetEvent(data->hEvent);
-        return EXIT_FAILURE;
-    }
+    WinApp *app = params->app;
+    app->Initialize();
+    params->Signal();
 
-    app->Initialize(nullptr);
-    SetEvent(data->hEvent);
-
-    return app->RunAndFinalize();
+    return app->RunMessageLoop();
 }
 
 WTF::String WinApp::DefaultLocale(void)
@@ -98,12 +86,12 @@ WTF::String WinApp::DefaultLocale(void)
 
 void WinApp::Exit(int code)
 {
-    DWORD threadId = ThreadId();
+    const DWORD threadId = ThreadId();
     PostThreadMessage(threadId, WM_QUIT, code, 0);
-    if (nullptr != m_backgroundThread)
+    if (nullptr != m_appThread)
     {
         ASSERT(GetCurrentThreadId() != threadId);
-        WaitForSingleObject(m_backgroundThread, INFINITE);
+        WaitForSingleObject(m_appThread, INFINITE);
     }
 }
 
@@ -114,38 +102,32 @@ WinApp& WinApp::Get(void)
 
 std::shared_ptr<base::SingleThreadTaskRunner> WinApp::GetTaskRunner(void) const
 {
-    return m_taskRunner;
+    return m_messageLoop->GetTaskRunner();
 }
 
-LRESULT CALLBACK WinApp::HookProc(int code, WPARAM w, LPARAM l)
+void WinApp::Initialize(void)
 {
-    WinApp &app = Get();
-    do {
-        if (code < 0 || PM_REMOVE != w)
-            break;
-
-        LPMSG msg = reinterpret_cast<LPMSG>(l);
-        app.m_taskRunner->ProcessMessage(*msg);
-    } while (false);
-    return CallNextHookEx(app.m_msgHook, code, w, l);
-}
-
-void WinApp::Initialize(BkAppClient *client)
-{
-    AppImpl::Initialize(client);
+    AppImpl::Initialize();
+    m_messageLoop = std::make_unique<MessageLoop>();
     IsGUIThread(TRUE);
 }
 
-int WinApp::RunAndFinalize(void)
+bool WinApp::InitializeForBackgroundMode(void)
 {
-    MSG msg;
-    while (GetMessage(&msg, nullptr, 0, 0))
-    {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-    delete this;
-    return msg.wParam;
+    BackgoundModeParams params;
+    if (!params)
+        return false;
+
+    params.app = this;
+    m_appThread = CreateThread(nullptr, 0, BackgroundThread, &params, 0, nullptr);
+    return true;
+}
+
+int WinApp::RunMessageLoop(void)
+{
+    int r = m_messageLoop->Run();
+    OnExit();
+    return r;
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -187,17 +169,30 @@ blink::WebClipboard* WinApp::clipboard(void)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-AppImpl* AppImpl::CreateInstance(int mode, BkAppClient *client)
+#ifdef BLINKIT_CRAWLER_ONLY
+std::unique_ptr<AppImpl> AppImpl::CreateInstanceForExclusiveMode(BkAppClient *client)
 {
-    return new WinApp(mode, client);
+    WinApp *app = new WinApp(client);
+    if (nullptr != app)
+    {
+        app->Initialize();
+        app->m_appCaller = std::make_unique<SyncAppCallerImpl>();
+        app->m_clientCallerStore = std::make_unique<SingletonClientCallerStore>();
+    }
+    return base::WrapUnique(app);
 }
+#endif
 
-void AppImpl::InitializeBackgroundInstance(BkAppClient *client)
+bool AppImpl::InitializeForBackgroundMode(BkAppClient *client)
 {
-    BackgoundThreadData data;
-    data.client = client;
-    data.hThread = CreateThread(nullptr, 0, WinApp::BackgroundThread, &data, 0, nullptr);
-    WaitForSingleObject(data.hEvent, INFINITE);
+    WinApp *app = new WinApp(client);
+    if (nullptr == app)
+    {
+        ASSERT(nullptr != app);
+        return false;
+    }
+
+    return app->InitializeForBackgroundMode();
 }
 
 void AppImpl::Log(const char *s)

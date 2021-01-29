@@ -19,18 +19,13 @@
 extern "C" {
 #endif
 
-enum BkAppMode {
-    BK_APP_MAINTHREAD_MODE = 0,
-    BK_APP_BACKGROUND_MODE
-};
-
 struct BkAppClient {
     size_t SizeOfStruct; // sizeof(BkAppClient)
     void *UserData;
     void (BKAPI * Exit)(void *);
 };
 
-BKEXPORT bool_t BKAPI BkInitialize(int mode, struct BkAppClient *client);
+BKEXPORT bool_t BKAPI BkInitialize(struct BkAppClient *client);
 
 /**
  * If you have your own message loops, call BkFinalize before application exiting.
@@ -40,22 +35,14 @@ BKEXPORT bool_t BKAPI BkInitialize(int mode, struct BkAppClient *client);
 BKEXPORT void BKAPI BkFinalize(void);
 
 /**
- * BkRunApp starts a message loop, and BlinKit will do the cleaning up stuff automatically.
- *   Cannot be used with BkFinalize.
- *   Mainthread mode only.
+ * Run crawler(s) in exclusive mode.
  */
-BKEXPORT int BKAPI BkRunApp(void);
+BKEXPORT int BKAPI BkCrawlerMain(struct BkAppClient *client, void (BKAPI * Init)(void *));
 
 /**
  * BkExitApp exits the message loop which created by BkRunApp or in backgound mode.
  */
-BKEXPORT void BKAPI BkExitApp(int code);
-
-/**
- * Execute code in the backgound thread.
- */
-typedef void (BKAPI * BkBackgroundWorker)(void *);
-BKEXPORT bool_t BKAPI BkAppExecute(BkBackgroundWorker worker, void *userData);
+BKEXPORT void BKAPI BkExit(int code);
 
 #ifdef __cplusplus
 } // extern "C"

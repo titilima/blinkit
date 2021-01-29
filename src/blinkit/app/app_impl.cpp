@@ -25,9 +25,7 @@
 
 namespace BlinKit {
 
-AppImpl::AppImpl(int mode, BkAppClient *client)
-    : m_mode(mode)
-    , m_gcHeap(std::make_unique<GCHeap>())
+AppImpl::AppImpl(BkAppClient *client) : m_gcHeap(std::make_unique<GCHeap>())
 {
     memset(&m_client, 0, sizeof(BkAppClient));
     if (nullptr != client)
@@ -37,16 +35,9 @@ AppImpl::AppImpl(int mode, BkAppClient *client)
             size = client->SizeOfStruct;
         memcpy(&m_client, client, size);
     }
-
-    m_threadId = ThreadImpl::CurrentThreadId();
-    AttachMainThread(this);
 }
 
-AppImpl::~AppImpl(void)
-{
-    if (nullptr != m_client.Exit)
-        m_client.Exit(m_client.UserData);
-}
+AppImpl::~AppImpl(void) = default;
 
 std::unique_ptr<blink::WebURLLoader> AppImpl::CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner)
 {
@@ -67,10 +58,18 @@ LoaderThread& AppImpl::GetLoaderThread(void)
     return *m_loaderThread;
 }
 
-void AppImpl::Initialize(BkAppClient *client)
+void AppImpl::Initialize(void)
 {
-    ASSERT(nullptr == client); // BKTODO:
-    blink::Initialize(this, m_mainThreadScheduler.get());
+    m_threadId = ThreadImpl::CurrentThreadId();
+    AttachMainThread(this);
+
+    blink::Initialize(this);
+}
+
+void AppImpl::OnExit(void)
+{
+    if (nullptr != m_client.Exit)
+        m_client.Exit(m_client.UserData);
 }
 
 } // namespace BlinKit
@@ -82,40 +81,26 @@ using namespace BlinKit;
 
 extern "C" {
 
-BKEXPORT bool_t BKAPI BkAppExecute(BkBackgroundWorker worker, void *userData)
+#ifdef BLINKIT_CRAWLER_ONLY
+BKEXPORT int BKAPI BkCrawlerMain(BkAppClient *client, void (BKAPI * Init)(void *))
 {
-    AppImpl &app = AppImpl::Get();
-    switch (app.Mode())
+    Platform *p = Platform::Current();
+    if (nullptr != p)
     {
-        case BK_APP_BACKGROUND_MODE:
-        {
-            auto task = [worker, userData]
-            {
-                worker(userData);
-            };
-            app.GetTaskRunner()->PostTask(FROM_HERE, task);
-            return true;
-        }
-
-        default:
-            NOTREACHED();
+        ASSERT(nullptr == p);
+        return EXIT_FAILURE;
     }
-    return false;
+
+    std::unique_ptr<AppImpl> app = AppImpl::CreateInstanceForExclusiveMode(client);
+    Init(client->UserData);
+    return app->RunMessageLoop();
 }
 
-BKEXPORT void BKAPI BkExitApp(int code)
+BKEXPORT void BKAPI BkExit(int code)
 {
-    AppImpl &app = AppImpl::Get();
-    switch (app.Mode())
-    {
-        case BK_APP_MAINTHREAD_MODE:
-        case BK_APP_BACKGROUND_MODE:
-            app.Exit(code);
-            break;
-        default:
-            NOTREACHED();
-    }
+    AppImpl::Get().Exit(code);
 }
+#endif
 
 BKEXPORT void BKAPI BkFinalize(void)
 {
@@ -123,60 +108,14 @@ BKEXPORT void BKAPI BkFinalize(void)
     if (nullptr == p)
         return;
 
-    AppImpl *app = static_cast<AppImpl *>(p);
-    switch (app->Mode())
-    {
-        case BK_APP_MAINTHREAD_MODE:
-            delete app;
-            break;
-        default:
-            NOTREACHED();
-    }
+    static_cast<AppImpl *>(p)->Exit(EXIT_SUCCESS);
 }
 
-BKEXPORT bool_t BKAPI BkInitialize(int mode, BkAppClient *client)
+BKEXPORT bool_t BKAPI BkInitialize(BkAppClient *client)
 {
     if (nullptr != Platform::Current())
         return false;
-
-    switch (mode)
-    {
-        case BK_APP_MAINTHREAD_MODE:
-        {
-            AppImpl *app = AppImpl::CreateInstance(mode, client);
-            if (nullptr == app)
-            {
-                ASSERT(nullptr != app);
-                return false;
-            }
-
-            app->Initialize(nullptr);
-            break;
-        }
-        case BK_APP_BACKGROUND_MODE:
-        {
-            AppImpl::InitializeBackgroundInstance(client);
-            break;
-        }
-
-        default:
-            NOTREACHED();
-            return false;
-    }
-    return true;
-}
-
-BKEXPORT int BKAPI BkRunApp(void)
-{
-    AppImpl &app = AppImpl::Get();
-    switch (app.Mode())
-    {
-        case BK_APP_MAINTHREAD_MODE:
-            return app.RunAndFinalize();
-        default:
-            NOTREACHED();
-    }
-    return EXIT_FAILURE;
+    return AppImpl::InitializeForBackgroundMode(client);
 }
 
 } // extern "C"

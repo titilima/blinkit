@@ -18,8 +18,9 @@
 
 namespace BlinKit {
 
+class ClientCallerStore;
+class MessageLoop;
 class WinClipboard;
-class WinSingleThreadTaskRunner;
 #ifndef BLINKIT_CRAWLER_ONLY
 class WinThemeEngine;
 #endif
@@ -27,14 +28,14 @@ class WinThemeEngine;
 class WinApp final : public AppImpl
 {
 public:
-    WinApp(int mode, BkAppClient *client, HANDLE hBackgroundThread = nullptr);
     ~WinApp(void) override;
 
     static WinApp& Get(void);
 private:
-    friend class AppImpl;
+    friend AppImpl;
+    WinApp(BkAppClient *client);
 
-    static LRESULT CALLBACK HookProc(int code, WPARAM w, LPARAM l);
+    bool InitializeForBackgroundMode(void);
     static DWORD WINAPI BackgroundThread(PVOID param);
 
     // blink::Platform
@@ -47,13 +48,14 @@ private:
     // blink::Thread
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const override;
     // AppImpl
-    void Initialize(BkAppClient *client) override;
-    int RunAndFinalize(void) override;
+    int RunMessageLoop(void) override;
     void Exit(int code) override;
+    ClientCaller& AcquireCallerForClient(void) override;
+    void Initialize(void) override;
 
-    HHOOK m_msgHook = nullptr;
-    HANDLE m_backgroundThread;
-    std::shared_ptr<WinSingleThreadTaskRunner> m_taskRunner;
+    HANDLE m_appThread = nullptr; // nullptr for exclusive mode
+    std::unique_ptr<MessageLoop> m_messageLoop;
+    std::unique_ptr<ClientCallerStore> m_clientCallerStore;
 #ifndef BLINKIT_CRAWLER_ONLY
     std::unique_ptr<WinThemeEngine> m_themeEngine;
 #endif

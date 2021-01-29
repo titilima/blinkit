@@ -15,41 +15,47 @@
 #pragma once
 
 #include "bk_app.h"
-#include "third_party/blink/public/platform/platform.h"
+#include "blinkit/app/caller.h"
 #include "blinkit/blink_impl/thread_impl.h"
+#include "third_party/blink/public/platform/platform.h"
+
+class CrawlerImpl;
 
 namespace BlinKit {
 
-class CookieJarImpl;
 class GCHeap;
 class LoaderThread;
 
 class AppImpl : public blink::Platform, public ThreadImpl
 {
 public:
-    static AppImpl* CreateInstance(int mode, BkAppClient *client);
+#ifdef BLINKIT_CRAWLER_ONLY
+    static std::unique_ptr<AppImpl> CreateInstanceForExclusiveMode(BkAppClient *client);
+#endif
+    static bool InitializeForBackgroundMode(BkAppClient *client);
     virtual ~AppImpl(void);
 
-    static void InitializeBackgroundInstance(BkAppClient *client);
-
     static AppImpl& Get(void);
-    int Mode(void) const { return m_mode; }
-    virtual void Initialize(BkAppClient *client);
-    virtual int RunAndFinalize(void) = 0;
+    virtual int RunMessageLoop(void) = 0;
     virtual void Exit(int code) = 0;
 
+    AppCaller& GetAppCaller(void) { return *m_appCaller; }
+    virtual ClientCaller& AcquireCallerForClient(void) = 0;
     LoaderThread& GetLoaderThread(void);
     void Log(const char *s);
 protected:
-    AppImpl(int mode, BkAppClient *client);
+    AppImpl(BkAppClient *client);
+
+    virtual void Initialize(void);
+    void OnExit(void);
+
+    std::unique_ptr<AppCaller> m_appCaller;
 private:
     // blink::Platform
     std::unique_ptr<blink::WebURLLoader> CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner) final;
 
-    const int m_mode;
     BkAppClient m_client;
     std::unique_ptr<GCHeap> m_gcHeap;
-    std::unique_ptr<blink::scheduler::WebThreadScheduler> m_mainThreadScheduler;
     std::unique_ptr<LoaderThread> m_loaderThread;
 };
 
