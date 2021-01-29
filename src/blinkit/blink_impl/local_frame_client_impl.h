@@ -14,18 +14,33 @@
 
 #pragma once
 
-#include "blinkit/app/client_thread_asserter.h"
+#include "bk_def.h"
+#include "blinkit/app/caller.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 
 namespace BlinKit {
 
+class ClientCaller;
+
 class LocalFrameClientImpl : public blink::LocalFrameClient
-#ifndef NDEBUG
-                           , public BlinKit::ClientThreadAsserter
-#endif
 {
 protected:
+    LocalFrameClientImpl(AppCaller &appCaller, ClientCaller &clientCaller)
+        : m_appCaller(appCaller), m_clientCaller(clientCaller)
+    {
+    }
+
+#ifndef NDEBUG
+    bool IsClientThread(void) const { return m_clientCaller.IsClientThread(); }
+#endif
+
+    int CallJS(blink::LocalFrame *frame, BkJSCallback callback, void *userData);
+
+    virtual void DidFinishLoad(void) = 0;
     String UserAgent(void) override;
+
+    AppCaller &m_appCaller;
+    ClientCaller &m_clientCaller;
 private:
     bool HasWebView(void) const override { return false; }
     void Detached(blink::FrameDetachType) override {}
@@ -37,6 +52,7 @@ private:
     void DispatchDidFailLoad(const blink::ResourceError &error) override {}
     void DispatchDidFinishDocumentLoad(void) override {}
     void DispatchDidHandleOnloadEvents(void) override {}
+    void DispatchDidFinishLoad(void) override final;
     void WillBeDetached(void) override {}
 };
 

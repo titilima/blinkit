@@ -75,7 +75,7 @@ BKEXPORT void BKAPI BkSetCookieJar(BkCrawler crawler, BkCookieJar cookieJar);
 
 BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL);
 
-BKEXPORT BkJSContext BKAPI BkGetScriptContextFromCrawler(BkCrawler crawler);
+BKEXPORT int BKAPI BkCrawlerCallJS(BkCrawler crawler, BkJSCallback callback, void *userData);
 
 /**
  * Miscellaneous

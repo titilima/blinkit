@@ -18,6 +18,7 @@
 #include <string>
 #include <unordered_map>
 #include "bk_crawler.h"
+#include "bkcommon/bk_shared_mutex.hpp"
 #include "blinkit/blink_impl/local_frame_client_impl.h"
 
 class CookieJarImpl;
@@ -25,7 +26,7 @@ class CookieJarImpl;
 class CrawlerImpl final : public BlinKit::LocalFrameClientImpl
 {
 public:
-    CrawlerImpl(const BkCrawlerClient &client);
+    CrawlerImpl(const BkCrawlerClient &client, BlinKit::ClientCaller &clientCaller);
     ~CrawlerImpl(void);
 
     // BkCrawlerClient Wrappers
@@ -41,10 +42,11 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
+    void Destroy(void);
     int Run(const char *URL);
     CookieJarImpl* GetCookieJar(bool createIfNotExists);
     void SetCookieJar(CookieJarImpl *cookieJar);
-    BkJSContext GetScriptContext(void);
+    int CallJS(BkJSCallback callback, void *userData);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     void CancelLoading(void);
@@ -52,10 +54,12 @@ private:
     // LocalFrameClient
     bool IsCrawler(void) const override { return true; }
     String UserAgent(void) override;
+    void DidFinishLoad(void) override;
     void TransitionToCommittedForNewPage(void) override;
     void DispatchDidReceiveTitle(const String &title) override {}
     void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) override;
-    void DispatchDidFinishLoad(void) override;
+
+    mutable BlinKit::BkSharedMutex m_mutex;
 
     BkCrawlerClient m_client;
     std::unique_ptr<blink::LocalFrame> m_frame;

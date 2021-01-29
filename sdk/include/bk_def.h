@@ -83,6 +83,8 @@ BK_DECLARE_HANDLE(BkWorkController, ControllerImpl);
 extern "C" {
 #endif
 
+typedef void (BKAPI * BkJSCallback)(BkJSContext, void *);
+
 struct BkBuffer {
     void* (BKAPI * Allocator)(size_t, void *);
     void *UserData;
