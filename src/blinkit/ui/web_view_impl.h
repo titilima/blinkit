@@ -15,8 +15,11 @@
 #pragma once
 
 #include "bk_ui.h"
-#include "cc/paint/skia_paint_canvas.h"
+#include "base/single_thread_task_runner.h"
+#include "bkcommon/bk_mutex.hpp"
+#include "bkcommon/bk_shared_mutex.hpp"
 #include "blinkit/blink_impl/local_frame_client_impl.h"
+#include "cc/paint/skia_paint_canvas.h"
 #include "third_party/blink/public/platform/web_rect.h"
 #include "third_party/blink/public/platform/web_size.h"
 #include "third_party/blink/renderer/core/frame/resize_viewport_anchor.h"
@@ -50,6 +53,7 @@ public:
     float PageScaleFactor(void) const;
     void SetPageScaleFactor(float scaleFactor);
     blink::IntSize MainFrameSize(void);
+    void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState);
 
     void UpdateAndPaint(void);
     void InvalidateRect(const blink::IntRect &rect);
@@ -82,7 +86,11 @@ protected:
     void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
     void Resize(const blink::WebSize &size);
     void SetScaleFactor(float scaleFactor);
-    void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState);
+
+    void PostTaskToView(const base::Location &fromHere, std::function<void()> &&task);
+    virtual void PostTaskToHost(const base::Location &fromHere, std::function<void()> &&task) = 0;
+
+    mutable BlinKit::BkMutex m_canvasLock;
 private:
     blink::BrowserControls& GetBrowserControls(void);
 
@@ -110,7 +118,9 @@ private:
     void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) final;
     void DispatchDidFinishLoad(void) final;
 
+    mutable BlinKit::BkSharedMutex m_lock;
     BkWebViewClient m_client;
+    std::shared_ptr<base::SingleThreadTaskRunner> m_taskRunner;
     std::unique_ptr<blink::ChromeClient> m_chromeClient;
     blink::WebSize m_size;
     // If true, automatically resize the layout view around its content.

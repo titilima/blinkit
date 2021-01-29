@@ -40,6 +40,7 @@ private:
     std::vector<std::function<void()>> m_tasks;
 
     class TaskRunnerImpl;
+    mutable std::shared_ptr<TaskRunnerImpl> m_taskRunner;
 };
 
 } // namespace BlinKit

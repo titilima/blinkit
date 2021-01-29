@@ -11,6 +11,7 @@
 
 #include "web_view_impl.h"
 
+#include "blinkit/app/app_impl.h"
 #include "blinkit/ui/rendering_scheduler.h"
 #include "third_party/blink/renderer/core/frame/browser_controls.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -33,8 +34,10 @@ static const float ViewportAnchorCoordX = 0.5f;
 static const float ViewportAnchorCoordY = 0;
 
 WebViewImpl::WebViewImpl(PageVisibilityState visibilityState, SkColor baseBackgroundColor)
-    : m_chromeClient(ChromeClientImpl::Create(this)), m_baseBackgroundColor(baseBackgroundColor)
+    : m_taskRunner(AppImpl::Get().GetTaskRunner())
+    , m_chromeClient(ChromeClientImpl::Create(this)), m_baseBackgroundColor(baseBackgroundColor)
 {
+    ASSERT(IsMainThread());
     memset(&m_client, 0, sizeof(m_client));
 
     Page::PageClients pageClients;
@@ -64,6 +67,7 @@ WebViewImpl::WebViewImpl(PageVisibilityState visibilityState, SkColor baseBackgr
 
 WebViewImpl::~WebViewImpl(void)
 {
+    ASSERT(IsMainThread());
     m_page->WillBeDestroyed();
 }
 
@@ -111,9 +115,10 @@ void WebViewImpl::DispatchDidFinishLoad(void)
     AutoGarbageCollector gc;
     const auto task = [this]
     {
+        std::shared_lock lock(m_lock);
         m_client.DocumentReady(m_client.UserData);
     };
-    m_frame->GetTaskRunner(TaskType::kInternalLoading)->PostTask(FROM_HERE, task);
+    m_taskRunner->PostTask(FROM_HERE, task);
 }
 
 IntSize WebViewImpl::FrameSize(void)
@@ -166,10 +171,13 @@ int WebViewImpl::LoadUI(const char *URI)
         return BK_ERR_URI;
     }
 
-    ResourceRequest request(u);
-    request.SetView(this);
-    m_frame->Loader().StartNavigation(FrameLoadRequest(nullptr, request));
-    return BK_ERR_SUCCESS;
+    auto task = [this, u]
+    {
+        ResourceRequest request(u);
+        request.SetView(this);
+        m_frame->Loader().StartNavigation(FrameLoadRequest(nullptr, request));
+    };
+    return m_taskRunner->PostTask(FROM_HERE, task) ? BK_ERR_SUCCESS : BK_ERR_UNKNOWN;
 }
 
 void WebViewImpl::MainFrameLayoutUpdated(void)
@@ -206,8 +214,15 @@ void WebViewImpl::PaintContent(cc::PaintCanvas *canvas, const WebRect &rect)
     PageWidgetDelegate::PaintContent(*m_page, canvas, rect, *m_page->MainFrame());
 }
 
+void WebViewImpl::PostTaskToView(const base::Location &fromHere, std::function<void()> &&task)
+{
+    m_taskRunner->PostTask(fromHere, std::move(task));
+}
+
 bool WebViewImpl::ProcessTitleChange(const std::string &title) const
 {
+    ASSERT(IsViewHostThread());
+    std::shared_lock<BkSharedMutex> lock(m_lock);
     if (nullptr == m_client.TitleChange)
         return false;
     return m_client.TitleChange(title.c_str(), m_client.UserData);
@@ -245,11 +260,15 @@ void WebViewImpl::RefreshPageScaleFactor(void)
 
 void WebViewImpl::Resize(const WebSize &size)
 {
+    ASSERT(IsMainThread());
     if (size.IsEmpty() || m_shouldAutoResize || m_size == size)
         return;
 
-    m_canvas = std::make_unique<cc::SkiaPaintCanvas>(PrepareBitmapForCanvas(size));
-    m_canvas->drawColor(m_baseBackgroundColor);
+    {
+        std::unique_lock<BkMutex> lock(m_canvasLock);
+        m_canvas = std::make_unique<cc::SkiaPaintCanvas>(PrepareBitmapForCanvas(size));
+        m_canvas->drawColor(m_baseBackgroundColor);
+    }
 
     ScopedRenderingScheduler scheduler(this);
     BrowserControls& browserControls = GetBrowserControls();
@@ -412,6 +431,9 @@ void WebViewImpl::SendResizeEventAndRepaint(void)
 
 void WebViewImpl::SetClient(const BkWebViewClient &client)
 {
+    ASSERT(IsViewHostThread());
+
+    std::unique_lock<BkSharedMutex> lock(m_lock);
     memset(&m_client, 0, sizeof(m_client));
 
     m_client.UserData = client.UserData;
@@ -492,6 +514,8 @@ void WebViewImpl::TransitionToCommittedForNewPage(void)
 void WebViewImpl::UpdateAndPaint(void)
 {
     UpdateLifecycle();
+
+    std::unique_lock<BkMutex> lock(m_canvasLock);
     PaintContent(m_canvas.get(), IntRect(IntPoint(), m_size));
 }
 

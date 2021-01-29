@@ -67,8 +67,9 @@ ImageDecodingStore::~ImageDecodingStore() {
 }
 
 ImageDecodingStore& ImageDecodingStore::Instance() {
-  static ImageDecodingStore store;
-  return store;
+  static GCStaticWrapper<ImageDecodingStore> store;
+  ASSERT(IsMainThread());
+  return store.GetAsReference();
 }
 
 bool ImageDecodingStore::LockDecoder(

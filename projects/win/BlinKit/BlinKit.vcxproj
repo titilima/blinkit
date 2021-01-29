@@ -163,12 +163,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\blinkit\app\app_caller_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\thread_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_theme_engine.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\cookie_jar_impl.cpp" />
@@ -201,7 +201,11 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\web_view_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\win_web_view.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\bk_bitmap.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\client_caller_store.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\message_loop.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\message_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\view_store.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -214,14 +218,14 @@
     <ClInclude Include="..\..\..\sdk\include\bk_def.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_js.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_ui.h" />
+    <ClInclude Include="..\..\..\src\blinkit\app\app_caller_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\app\caller.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\thread_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_theme_engine.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\cookie_jar_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_document.h" />
@@ -252,6 +256,11 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\web_view_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\win_web_view.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\bk_bitmap.h" />
+    <ClInclude Include="..\..\..\src\blinkit\win\client_caller_store.h" />
+    <ClInclude Include="..\..\..\src\blinkit\win\message_loop.h" />
+    <ClInclude Include="..\..\..\src\blinkit\win\message_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\win\scoped_event_waiter.h" />
+    <ClInclude Include="..\..\..\src\blinkit\win\view_store.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

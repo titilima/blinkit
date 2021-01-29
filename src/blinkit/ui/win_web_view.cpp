@@ -13,14 +13,17 @@
 
 #include <windowsx.h>
 #include "base/strings/sys_string_conversions.h"
+#include "blinkit/app/win_app.h"
 #include "blinkit/win/bk_bitmap.h"
+#include "blinkit/win/message_task.h"
+#include "blinkit/win/view_store.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 using namespace blink;
 
 namespace BlinKit {
 
-std::unordered_map<HWND, WinWebView *> WinWebView::s_viewMap;
+static ViewStore g_viewStore;
 
 static SkColor WindowColor(void)
 {
@@ -32,9 +35,7 @@ WinWebView::WinWebView(HWND hWnd, bool isWindowVisible)
     : WebViewImpl(isWindowVisible ? PageVisibilityState::kVisible : PageVisibilityState::kHidden, WindowColor())
     , m_hWnd(hWnd)
 {
-    ASSERT(IsMainThread());
-    ASSERT(Lookup(m_hWnd) == nullptr);
-    s_viewMap[m_hWnd] = this;
+    g_viewStore.OnNewView(m_hWnd, this);
 
     HDC dc = GetDC(m_hWnd);
     m_dpi = GetDeviceCaps(dc, LOGPIXELSY);
@@ -46,36 +47,30 @@ WinWebView::WinWebView(HWND hWnd, bool isWindowVisible)
 
 WinWebView::~WinWebView(void)
 {
-    ASSERT(IsMainThread());
-    ASSERT(Lookup(m_hWnd) == this);
-
     if (nullptr != m_oldBitmap)
         SelectBitmap(m_memoryDC, m_oldBitmap);
     DeleteDC(m_memoryDC);
 
-    s_viewMap.erase(m_hWnd);
+    g_viewStore.OnViewDestroyed(m_hWnd);
 }
 
 void WinWebView::DispatchDidReceiveTitle(const String &title)
 {
-    std::string newTitle = title.StdUtf8();
-    if (ProcessTitleChange(newTitle))
-        return;
+    auto task = [this, newTitle = title.StdUtf8()]
+    {
+        if (ProcessTitleChange(newTitle))
+            return;
 
-    std::wstring ws = base::SysUTF8ToWide(newTitle);
-    SetWindowTextW(m_hWnd, ws.c_str());
+        std::wstring ws = base::SysUTF8ToWide(newTitle);
+        SetWindowTextW(m_hWnd, ws.c_str());
+    };
+    MessageTask::Post(m_hWnd, std::move(task));
 }
 
 void WinWebView::InvalidateNativeView(const IntRect &rect)
 {
     RECT rc = { rect.X(), rect.Y(), rect.MaxX(), rect.MaxY() };
     ::InvalidateRect(m_hWnd, &rc, FALSE);
-}
-
-WinWebView* WinWebView::Lookup(HWND hWnd)
-{
-    auto it = s_viewMap.find(hWnd);
-    return std::end(s_viewMap) != it ? it->second : nullptr;
 }
 
 void WinWebView::OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc)
@@ -88,18 +83,25 @@ void WinWebView::OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc)
 
 BOOL WinWebView::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
 {
-    if (nullptr == Lookup(hwnd))
+    WinWebView *webView = nullptr;
+    auto task = [&webView, hwnd, style = cs->style]
     {
-        bool isWindowVisible = 0 != (cs->style & WS_VISIBLE);
-
-        auto v = new WinWebView(hwnd, isWindowVisible);
-        v->Initialize();
-    }
-    else
-    {
-        NOTREACHED();
-    }
+        webView = new WinWebView(hwnd, 0 != (style & WS_VISIBLE));
+        webView->Initialize();
+    };
+    WinApp::Get().SendTask(FROM_HERE, task);
+#ifndef NDEBUG
+    webView->AttachClientThread();
+#endif
     return TRUE;
+}
+
+void WinWebView::OnNCDestroy(HWND hwnd)
+{
+    PostTaskToView(
+        FROM_HERE,
+        std::bind(std::default_delete<WinWebView>(), this)
+    );
 }
 
 void WinWebView::OnPaint(HWND hwnd)
@@ -113,14 +115,21 @@ void WinWebView::OnPaint(HWND hwnd)
     int y = ps.rcPaint.top;
     int w = ps.rcPaint.right - ps.rcPaint.left;
     int h = ps.rcPaint.bottom - ps.rcPaint.top;
-    BitBlt(hdc, x, y, w, h, m_memoryDC, x, y, SRCCOPY);
+    {
+        std::unique_lock<BkMutex> lock(m_canvasLock);
+        BitBlt(hdc, x, y, w, h, m_memoryDC, x, y, SRCCOPY);
+    }
 
     EndPaint(hwnd, &ps);
 }
 
 void WinWebView::OnShowWindow(HWND, BOOL fShow, UINT)
 {
-    SetVisibilityState(fShow ? PageVisibilityState::kVisible : PageVisibilityState::kHidden, false);
+    PageVisibilityState state = fShow ? PageVisibilityState::kVisible : PageVisibilityState::kHidden;
+    PostTaskToView(
+        FROM_HERE,
+        std::bind(&WebViewImpl::SetVisibilityState, this, state, false)
+    );
 }
 
 void WinWebView::OnSize(HWND, UINT state, int cx, int cy)
@@ -128,8 +137,17 @@ void WinWebView::OnSize(HWND, UINT state, int cx, int cy)
     if (SIZE_MINIMIZED == state)
         return;
 
-    Resize(WebSize(cx, cy));
-    UpdateAndPaint();
+    auto task = [this, cx, cy]
+    {
+        Resize(WebSize(cx, cy));
+        UpdateAndPaint();
+    };
+    PostTaskToView(FROM_HERE, std::move(task));
+}
+
+void WinWebView::PostTaskToHost(const base::Location &, std::function<void()> &&task)
+{
+    MessageTask::Post(m_hWnd, std::move(task));
 }
 
 SkBitmap WinWebView::PrepareBitmapForCanvas(const WebSize &size)
@@ -150,7 +168,7 @@ bool WinWebView::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM
         return true;
     }
 
-    WinWebView *v = Lookup(hWnd);
+    WinWebView *v = g_viewStore.Lookup(hWnd);
     if (nullptr == v)
         return false;
 
@@ -178,10 +196,10 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
             OnDPIChanged(hWnd, HIWORD(wParam), reinterpret_cast<LPRECT>(lParam));
             break;
         case WM_NCDESTROY:
-            delete this;
+            HANDLE_WM_NCDESTROY(hWnd, wParam, lParam, OnNCDestroy);
             break;
         default:
-            return false;
+            return MessageTask::Process(Msg, wParam, lParam);
     }
     return true;
 }
@@ -237,7 +255,7 @@ BKEXPORT LRESULT CALLBACK BkDefWindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LP
 
 BKEXPORT BkWebView BKAPI BkGetWebView(HWND hWnd)
 {
-    return BlinKit::WinWebView::Lookup(hWnd);
+    return BlinKit::g_viewStore.Lookup(hWnd);
 }
 
 BKEXPORT bool_t BKAPI BkProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)

@@ -4,16 +4,15 @@ EXPORTS
 
 BkInitialize
 BkFinalize
-BkRunApp
-BkExitApp
-BkAppExecute
+BkCrawlerMain
+BkExit
 
 BkCreateCrawler
 BkDestroyCrawler
 BkCrawlerEnableCookies
 BkSetCookieJar
 BkRunCrawler
-BkGetScriptContextFromCrawler
+BkCrawlerCallJS
 
 BkHijackResponse
 

@@ -52,7 +52,13 @@
     <ClInclude Include="..\..\..\src\bkcommon\buffer_impl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\bkcommon\bk_threading.hpp">
+    <ClInclude Include="..\..\..\src\bkcommon\bk_shared_mutex.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\bkcommon\bk_mutex.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\bkcommon\bk_signal.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -167,9 +167,11 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\bkcommon\bk_file.h" />
     <ClInclude Include="..\..\..\src\bkcommon\bk_http_header_map.h" />
+    <ClInclude Include="..\..\..\src\bkcommon\bk_mutex.hpp" />
+    <ClInclude Include="..\..\..\src\bkcommon\bk_shared_mutex.hpp" />
+    <ClInclude Include="..\..\..\src\bkcommon\bk_signal.hpp" />
     <ClInclude Include="..\..\..\src\bkcommon\bk_socket.h" />
     <ClInclude Include="..\..\..\src\bkcommon\bk_strings.h" />
-    <ClInclude Include="..\..\..\src\bkcommon\bk_threading.hpp" />
     <ClInclude Include="..\..\..\src\bkcommon\buffer_impl.hpp" />
     <ClInclude Include="..\..\..\src\bkcommon\controller_impl.h" />
     <ClInclude Include="..\..\..\src\bkcommon\response_impl.h" />

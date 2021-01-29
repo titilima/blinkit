@@ -21,20 +21,20 @@ namespace BlinKit {
 class WinWebView final : public WebViewImpl
 {
 public:
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Exports
-    static WinWebView* Lookup(HWND hWnd);
-    static bool ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-private:
     WinWebView(HWND hWnd, bool isWindowVisible);
     ~WinWebView(void);
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Exports
+    static bool ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private:
     void UpdateScaleFactor(void);
 
     bool ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
     void OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc);
     static BOOL OnNCCreate(HWND hwnd, LPCREATESTRUCT cs);
+    void OnNCDestroy(HWND hwnd);
     void OnPaint(HWND hwnd);
     void OnShowWindow(HWND hwnd, BOOL fShow, UINT status);
     void OnSize(HWND hwnd, UINT state, int cx, int cy);
@@ -43,9 +43,9 @@ private:
     void DispatchDidReceiveTitle(const String &title) override;
     // WebViewImpl
     void InvalidateNativeView(const blink::IntRect &rect) override;
+    void PostTaskToHost(const base::Location &fromHere, std::function<void()> &&task) override;
     SkBitmap PrepareBitmapForCanvas(const blink::WebSize &size) override;
 
-    static std::unordered_map<HWND, WinWebView *> s_viewMap;
     HWND m_hWnd;
     HDC m_memoryDC = nullptr;
     HBITMAP m_oldBitmap = nullptr;

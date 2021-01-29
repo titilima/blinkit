@@ -68,7 +68,9 @@ MessageLoop::~MessageLoop(void)
 
 std::shared_ptr<base::SingleThreadTaskRunner> MessageLoop::GetTaskRunner(void) const
 {
-    return std::make_shared<TaskRunnerImpl>(const_cast<MessageLoop &>(*this));
+    if (!m_taskRunner)
+        m_taskRunner = std::make_shared<TaskRunnerImpl>(const_cast<MessageLoop &>(*this));
+    return m_taskRunner;
 }
 
 void MessageLoop::InstallTimer(TimerData *timerData)

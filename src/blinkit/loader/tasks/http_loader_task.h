@@ -60,9 +60,6 @@ private:
     int m_errorCode = BK_ERR_SUCCESS;
     BkRequest m_request = nullptr;
     ResponseImpl *m_response = nullptr;
-
-    mutable bool m_callingCrawler = false;
-    std::optional<bool> m_cancel;
 };
 
 } // namespace BlinKit

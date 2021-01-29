@@ -43,10 +43,7 @@ HTTPLoaderTask::~HTTPLoaderTask(void)
 
 int HTTPLoaderTask::CancelWork(void)
 {
-    if (m_callingCrawler)
-        m_cancel = true;
-    else
-        DoCancel();
+    DoCancel();
     return BK_ERR_SUCCESS;
 }
 
@@ -79,10 +76,7 @@ void HTTPLoaderTask::CommitHijackedResponse(void)
 
 int HTTPLoaderTask::ContinueWorking(void)
 {
-    if (m_callingCrawler)
-        m_cancel = false;
-    else
-        CommitHijackedResponse();
+    CommitHijackedResponse();
     return BK_ERR_SUCCESS;
 }
 
@@ -165,19 +159,8 @@ int HTTPLoaderTask::PopulateResponse(ResourceResponse &resourceResponse, std::st
     {
         case HijackType::kMainHTML:
         {
-            base::AutoReset<bool> callingCrawler(&m_callingCrawler, true);
-            if (!crawler->ProcessRequestComplete(m_response, const_cast<HTTPLoaderTask *>(this)))
-                break;
-
-            if (!m_cancel.has_value())
+            if (crawler->ProcessRequestComplete(m_response, const_cast<HTTPLoaderTask *>(this)))
                 return BK_ERR_CANCELLED;
-
-            if (m_cancel.value())
-            {
-                const_cast<HTTPLoaderTask *>(this)->DoCancel();
-                return BK_ERR_CANCELLED;
-            }
-
             break;
         }
 

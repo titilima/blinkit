@@ -45,6 +45,7 @@
 #include "SkTypes.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
+#include "blinkit/gc/gc_static.h"
 #include "cc/paint/paint_image_generator.h"
 #include "third_party/blink/renderer/platform/graphics/image_frame_generator.h"
 #include "third_party/blink/renderer/platform/graphics/skia/sk_size_hash.h"
@@ -298,6 +299,7 @@ class PLATFORM_EXPORT ImageDecodingStore final {
   int DecoderCacheEntries();
 
  private:
+  template<typename T, typename P> friend class BlinKit::GCStaticWrapper;
   ImageDecodingStore();
 
   void Prune();

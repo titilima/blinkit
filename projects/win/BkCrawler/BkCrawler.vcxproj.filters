@@ -43,6 +43,9 @@
     <Filter Include="stub\icu">
       <UniqueIdentifier>{124a9360-1f41-4014-a036-b26fbda740e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="win">
+      <UniqueIdentifier>{e2f2a0ca-0341-4cd0-a6a7-a040252c79d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\bk_app.h">
@@ -70,12 +73,6 @@
       <Filter>blink_impl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\thread_impl.h">
-      <Filter>blink_impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h">
-      <Filter>blink_impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.h">
       <Filter>blink_impl</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -159,6 +156,24 @@
     <ClInclude Include="..\..\..\src\blinkit\stub\icu\char_type.h">
       <Filter>stub\icu</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\win\message_loop.h">
+      <Filter>win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\win\scoped_event_waiter.h">
+      <Filter>win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\win\message_task.h">
+      <Filter>win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\app\caller.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\app\app_caller_impl.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\win\client_caller_store.h">
+      <Filter>win</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
@@ -185,9 +200,6 @@
       <Filter>blink_impl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp">
-      <Filter>blink_impl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.cpp">
       <Filter>blink_impl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.cpp">
@@ -255,6 +267,18 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\stub\icu\char_type.cpp">
       <Filter>stub\icu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\win\message_loop.cpp">
+      <Filter>win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\win\message_task.cpp">
+      <Filter>win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\app\app_caller_impl.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\win\client_caller_store.cpp">
+      <Filter>win</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
