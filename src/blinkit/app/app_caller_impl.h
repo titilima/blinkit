@@ -16,6 +16,10 @@
 
 #include "blinkit/app/caller.h"
 
+namespace base {
+class SingleThreadTaskRunner;
+}
+
 namespace BlinKit {
 
 #ifdef BLINKIT_CRAWLER_ONLY
@@ -32,6 +36,18 @@ public:
     }
 };
 #endif
+
+class AppCallerImpl final : public AppCaller
+{
+public:
+    AppCallerImpl(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner);
+    ~AppCallerImpl(void) override;
+private:
+    void Call(const base::Location &loc, std::function<void()> &&task) override;
+    void SyncCall(const base::Location &loc, std::function<void()> &&task) override;
+
+    std::shared_ptr<base::SingleThreadTaskRunner> m_taskRunner;
+};
 
 } // namespace BlinKit
 
