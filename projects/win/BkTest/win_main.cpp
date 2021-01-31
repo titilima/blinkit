@@ -33,27 +33,31 @@ static const char URL[] = "https://example.org";
 class Client final : public crawler_client_impl<Client>
 {
 public:
-    Client(void)
+    int Run(const char *URL)
     {
+        m_URL = URL;
+
         BkAppClient appClient = { 0 };
         appClient.SizeOfStruct = sizeof(BkAppClient);
         appClient.UserData = this;
         appClient.Exit = Exit;
-        BkInitialize(BK_APP_MAINTHREAD_MODE, &appClient);
-    }
-
-    int Run(const char *URL)
-    {
-        m_crawler = create_crawler();
-        BkRunCrawler(m_crawler, URL);
-        return BkRunApp();   
+        return BkCrawlerMain(&appClient, Init);
     }
 private:
+    static void BKAPI Init(void *pThis)
+    {
+        reinterpret_cast<Client *>(pThis)->init();
+    }
     static void BKAPI Exit(void *pThis)
     {
         BkDestroyCrawler(reinterpret_cast<Client *>(pThis)->m_crawler);
     }
 
+    void init(void)
+    {
+        m_crawler = create_crawler();
+        BkRunCrawler(m_crawler, URL);
+    }
     bool get_crawler_config(int cfg, std::string &dst) const override
     {
         switch (cfg)
@@ -68,13 +72,16 @@ private:
     }
     void document_ready(void) override
     {
-        BkJSContext ctx = BkGetScriptContextFromCrawler(m_crawler);
-        BkEvaluate(ctx, ReadyCode, nullptr);
-
-        BkExitApp(EXIT_SUCCESS);
+        auto callback = [](BkJSContext ctx)
+        {
+            BkEvaluate(ctx, ReadyCode, nullptr);
+            BkExit(EXIT_SUCCESS);
+        };
+        js_call::prepare(callback)->commit_to(m_crawler);
     }
 
     BkCrawler m_crawler = nullptr;
+    std::string m_URL;
 };
 
 #ifndef TEST_CRAWLER_ONLY
@@ -155,7 +162,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE, PTSTR, int nShowCmd)
 #else
     int r;
 
-    BkInitialize(BK_APP_MAINTHREAD_MODE, nullptr);
+    BkInitialize(nullptr);
     r = Run(hInstance, nShowCmd);
     BkFinalize();
     return r;
