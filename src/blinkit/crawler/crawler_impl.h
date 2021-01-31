@@ -38,7 +38,7 @@ public:
     void ModifyRequest(const char *URL, BkRequest req);
     void HijackResponse(BkResponse response);
     bool ApplyConsoleMessager(std::function<void(int, const char *)> &dst) const;
-    void ProcessDocumentReset(void);
+    void ProcessDocumentReset(ContextImpl *ctx);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports

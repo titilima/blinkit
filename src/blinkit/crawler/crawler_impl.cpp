@@ -151,10 +151,10 @@ void CrawlerImpl::ModifyRequest(const char *URL, BkRequest req)
         m_client.ModifyRequest(URL, req, m_client.UserData);
 }
 
-void CrawlerImpl::ProcessDocumentReset(void)
+void CrawlerImpl::ProcessDocumentReset(ContextImpl *ctx)
 {
     if (nullptr != m_client.DocumentReset)
-        m_client.DocumentReset(m_client.UserData);
+        m_client.DocumentReset(ctx, m_client.UserData);
 }
 
 bool CrawlerImpl::ProcessRequestComplete(BkResponse response, BkWorkController controller)
