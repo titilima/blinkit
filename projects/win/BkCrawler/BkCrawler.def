@@ -4,6 +4,7 @@ EXPORTS
 
 BkInitialize
 BkFinalize
+IsBlinKitThread
 BkCrawlerMain
 BkExit
 

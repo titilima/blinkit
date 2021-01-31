@@ -277,6 +277,9 @@
     <ClCompile Include="..\..\..\src\blinkit\win\client_caller_store.cpp">
       <Filter>win</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp">
+      <Filter>win</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BkCrawler.rc">

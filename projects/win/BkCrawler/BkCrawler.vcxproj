@@ -246,6 +246,7 @@
     <ClCompile Include="..\..\..\src\blinkit\loader\win_loader_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\stub\icu\char_type.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\client_caller_store.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\message_loop.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\message_task.cpp" />
   </ItemGroup>
