@@ -124,7 +124,7 @@ void CrawlerContext::UpdateDocument(void)
     CrawlerImpl *crawler = ToCrawlerImpl(GetFrame().Client());
     InitializeNewGlobalObject(*crawler);
 
-    crawler->ProcessDocumentReset();
+    crawler->ProcessDocumentReset(this);
 }
 
 } // namespace BlinKit
