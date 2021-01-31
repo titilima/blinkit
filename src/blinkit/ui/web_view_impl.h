@@ -80,15 +80,12 @@ public:
         // BKTODO: Check this later.
     }
 protected:
-    WebViewImpl(blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor = SK_ColorWHITE);
+    WebViewImpl(BlinKit::ClientCaller &clientCaller, blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor = SK_ColorWHITE);
 
     bool ProcessTitleChange(const std::string &newTitle) const;
     void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
     void Resize(const blink::WebSize &size);
     void SetScaleFactor(float scaleFactor);
-
-    void PostTaskToView(const base::Location &fromHere, std::function<void()> &&task);
-    virtual void PostTaskToHost(const base::Location &fromHere, std::function<void()> &&task) = 0;
 
     mutable BlinKit::BkMutex m_canvasLock;
 private:
@@ -116,11 +113,10 @@ private:
     bool HasWebView(void) const final { return true; }
     void TransitionToCommittedForNewPage(void) final;
     void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) final;
-    void DispatchDidFinishLoad(void) final;
+    void DidFinishLoad(void) final;
 
     mutable BlinKit::BkSharedMutex m_lock;
     BkWebViewClient m_client;
-    std::shared_ptr<base::SingleThreadTaskRunner> m_taskRunner;
     std::unique_ptr<blink::ChromeClient> m_chromeClient;
     blink::WebSize m_size;
     // If true, automatically resize the layout view around its content.

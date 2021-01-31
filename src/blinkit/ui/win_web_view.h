@@ -21,7 +21,7 @@ namespace BlinKit {
 class WinWebView final : public WebViewImpl
 {
 public:
-    WinWebView(HWND hWnd, bool isWindowVisible);
+    WinWebView(HWND hWnd, ClientCaller &clientCaller, bool isWindowVisible);
     ~WinWebView(void);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +43,6 @@ private:
     void DispatchDidReceiveTitle(const String &title) override;
     // WebViewImpl
     void InvalidateNativeView(const blink::IntRect &rect) override;
-    void PostTaskToHost(const base::Location &fromHere, std::function<void()> &&task) override;
     SkBitmap PrepareBitmapForCanvas(const blink::WebSize &size) override;
 
     HWND m_hWnd;

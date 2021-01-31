@@ -65,6 +65,8 @@ DWORD WINAPI WinApp::BackgroundThread(PVOID param)
 
     WinApp *app = params->app;
     app->Initialize();
+    app->m_appCaller = std::make_unique<AppCallerImpl>(app->GetTaskRunner());
+    app->m_clientCallerStore = std::make_unique<ClientCallerStoreImpl>();
     params->Signal();
 
     return app->RunMessageLoop();

@@ -23,13 +23,17 @@ namespace BlinKit {
 
 int LocalFrameClientImpl::CallJS(LocalFrame *frame, BkJSCallback callback, void *userData)
 {
-    auto task = [frame, callback, userData]
-    {
-        BrowserContext &ctx = frame->GetScriptController().EnsureContext();
-        callback(&ctx, userData);
-    };
-    m_appCaller.Call(FROM_HERE, std::move(task));
+    if (IsMainThread())
+        CallJSImpl(frame, callback, userData);
+    else
+        m_appCaller.Call(FROM_HERE, std::bind(CallJSImpl, frame, callback, userData));
     return BK_ERR_SUCCESS;
+}
+
+void LocalFrameClientImpl::CallJSImpl(LocalFrame *frame, BkJSCallback callback, void *userData)
+{
+    BrowserContext &ctx = frame->GetScriptController().EnsureContext();
+    callback(&ctx, userData);
 }
 
 DocumentLoader* LocalFrameClientImpl::CreateDocumentLoader(

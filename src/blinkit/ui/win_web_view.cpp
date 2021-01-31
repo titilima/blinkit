@@ -31,8 +31,8 @@ static SkColor WindowColor(void)
     return SkColorSetARGB(0xff, GetRValue(color), GetGValue(color), GetBValue(color));
 }
 
-WinWebView::WinWebView(HWND hWnd, bool isWindowVisible)
-    : WebViewImpl(isWindowVisible ? PageVisibilityState::kVisible : PageVisibilityState::kHidden, WindowColor())
+WinWebView::WinWebView(HWND hWnd, ClientCaller &clientCaller, bool isWindowVisible)
+    : WebViewImpl(clientCaller, isWindowVisible ? PageVisibilityState::kVisible : PageVisibilityState::kHidden, WindowColor())
     , m_hWnd(hWnd)
 {
     g_viewStore.OnNewView(m_hWnd, this);
@@ -83,22 +83,23 @@ void WinWebView::OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc)
 
 BOOL WinWebView::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
 {
+    AppImpl &app = AppImpl::Get();
+
+    ClientCaller &clientCaller = app.AcquireCallerForClient();
+
     WinWebView *webView = nullptr;
-    auto task = [&webView, hwnd, style = cs->style]
+    auto task = [&webView, &clientCaller, hwnd, style = cs->style]
     {
-        webView = new WinWebView(hwnd, 0 != (style & WS_VISIBLE));
+        webView = new WinWebView(hwnd, clientCaller, 0 != (style & WS_VISIBLE));
         webView->Initialize();
     };
-    WinApp::Get().SendTask(FROM_HERE, task);
-#ifndef NDEBUG
-    webView->AttachClientThread();
-#endif
+    app.GetAppCaller().SyncCall(FROM_HERE, task);
     return TRUE;
 }
 
 void WinWebView::OnNCDestroy(HWND hwnd)
 {
-    PostTaskToView(
+    m_appCaller.Call(
         FROM_HERE,
         std::bind(std::default_delete<WinWebView>(), this)
     );
@@ -126,7 +127,7 @@ void WinWebView::OnPaint(HWND hwnd)
 void WinWebView::OnShowWindow(HWND, BOOL fShow, UINT)
 {
     PageVisibilityState state = fShow ? PageVisibilityState::kVisible : PageVisibilityState::kHidden;
-    PostTaskToView(
+    m_appCaller.Call(
         FROM_HERE,
         std::bind(&WebViewImpl::SetVisibilityState, this, state, false)
     );
@@ -142,12 +143,7 @@ void WinWebView::OnSize(HWND, UINT state, int cx, int cy)
         Resize(WebSize(cx, cy));
         UpdateAndPaint();
     };
-    PostTaskToView(FROM_HERE, std::move(task));
-}
-
-void WinWebView::PostTaskToHost(const base::Location &, std::function<void()> &&task)
-{
-    MessageTask::Post(m_hWnd, std::move(task));
+    m_appCaller.Call(FROM_HERE, std::move(task));
 }
 
 SkBitmap WinWebView::PrepareBitmapForCanvas(const WebSize &size)

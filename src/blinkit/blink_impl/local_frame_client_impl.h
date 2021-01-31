@@ -42,6 +42,8 @@ protected:
     AppCaller &m_appCaller;
     ClientCaller &m_clientCaller;
 private:
+    static void CallJSImpl(blink::LocalFrame *frame, BkJSCallback callback, void *userData);
+
     bool HasWebView(void) const override { return false; }
     void Detached(blink::FrameDetachType) override {}
     blink::DocumentLoader* CreateDocumentLoader(blink::LocalFrame *frame, const blink::ResourceRequest &request,

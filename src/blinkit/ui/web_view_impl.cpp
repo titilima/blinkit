@@ -33,8 +33,8 @@ using namespace BlinKit;
 static const float ViewportAnchorCoordX = 0.5f;
 static const float ViewportAnchorCoordY = 0;
 
-WebViewImpl::WebViewImpl(PageVisibilityState visibilityState, SkColor baseBackgroundColor)
-    : m_taskRunner(AppImpl::Get().GetTaskRunner())
+WebViewImpl::WebViewImpl(ClientCaller &clientCaller, PageVisibilityState visibilityState, SkColor baseBackgroundColor)
+    : LocalFrameClientImpl(AppImpl::Get().GetAppCaller(), clientCaller)
     , m_chromeClient(ChromeClientImpl::Create(this)), m_baseBackgroundColor(baseBackgroundColor)
 {
     ASSERT(IsMainThread());
@@ -105,20 +105,15 @@ void WebViewImpl::DidChangeContentsSize(void)
     GetPageScaleConstraintsSet().DidChangeContentsSize(ContentsSize(), verticalScrollbarWidth, PageScaleFactor());
 }
 
+void WebViewImpl::DidFinishLoad(void)
+{
+    std::shared_lock<BkSharedMutex> lock(m_lock);
+    m_client.DocumentReady(m_client.UserData);
+}
+
 void WebViewImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 {
     ASSERT(false); // BKTODO:
-}
-
-void WebViewImpl::DispatchDidFinishLoad(void)
-{
-    AutoGarbageCollector gc;
-    const auto task = [this]
-    {
-        std::shared_lock lock(m_lock);
-        m_client.DocumentReady(m_client.UserData);
-    };
-    m_taskRunner->PostTask(FROM_HERE, task);
 }
 
 IntSize WebViewImpl::FrameSize(void)
@@ -177,7 +172,8 @@ int WebViewImpl::LoadUI(const char *URI)
         request.SetView(this);
         m_frame->Loader().StartNavigation(FrameLoadRequest(nullptr, request));
     };
-    return m_taskRunner->PostTask(FROM_HERE, task) ? BK_ERR_SUCCESS : BK_ERR_UNKNOWN;
+    m_appCaller.Call(FROM_HERE, task);
+    return BK_ERR_SUCCESS;
 }
 
 void WebViewImpl::MainFrameLayoutUpdated(void)
@@ -214,14 +210,9 @@ void WebViewImpl::PaintContent(cc::PaintCanvas *canvas, const WebRect &rect)
     PageWidgetDelegate::PaintContent(*m_page, canvas, rect, *m_page->MainFrame());
 }
 
-void WebViewImpl::PostTaskToView(const base::Location &fromHere, std::function<void()> &&task)
-{
-    m_taskRunner->PostTask(fromHere, std::move(task));
-}
-
 bool WebViewImpl::ProcessTitleChange(const std::string &title) const
 {
-    ASSERT(IsViewHostThread());
+    ASSERT(IsClientThread());
     std::shared_lock<BkSharedMutex> lock(m_lock);
     if (nullptr == m_client.TitleChange)
         return false;
@@ -431,8 +422,6 @@ void WebViewImpl::SendResizeEventAndRepaint(void)
 
 void WebViewImpl::SetClient(const BkWebViewClient &client)
 {
-    ASSERT(IsViewHostThread());
-
     std::unique_lock<BkSharedMutex> lock(m_lock);
     memset(&m_client, 0, sizeof(m_client));
 
