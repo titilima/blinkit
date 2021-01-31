@@ -118,4 +118,9 @@ BKEXPORT bool_t BKAPI BkInitialize(BkAppClient *client)
     return AppImpl::InitializeForBackgroundMode(client);
 }
 
+BKEXPORT bool_t BKAPI IsBlinKitThread(void)
+{
+    return IsMainThread();
+}
+
 } // extern "C"

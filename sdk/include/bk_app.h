@@ -34,6 +34,8 @@ BKEXPORT bool_t BKAPI BkInitialize(struct BkAppClient *client);
  */
 BKEXPORT void BKAPI BkFinalize(void);
 
+BKEXPORT bool_t BKAPI IsBlinKitThread(void);
+
 /**
  * Run crawler(s) in exclusive mode.
  */
