@@ -11,6 +11,7 @@
 
 #include "loader_thread.h"
 
+#include "blinkit/blink_impl/thread_impl.h"
 #include "blinkit/loader/loader_task.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
@@ -29,6 +30,9 @@ void LoaderThread::AddTask(LoaderTask *task)
 void LoaderThread::Run(void)
 {
     ASSERT(!IsMainThread());
+#ifndef NDEBUG
+    ThreadImpl::SetName("Loader Thread");
+#endif
     for (;;)
     {
         LoaderTask *task = nullptr;

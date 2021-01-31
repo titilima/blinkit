@@ -24,6 +24,9 @@ class ThreadImpl : public blink::Thread
 {
 public:
     static blink::PlatformThreadId CurrentThreadId(void);
+#ifndef NDEBUG
+    static void SetName(const char *name);
+#endif
 
     blink::PlatformThreadId ThreadId(void) const final
     {

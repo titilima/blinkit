@@ -61,6 +61,10 @@ ClientCaller& WinApp::AcquireCallerForClient(void)
 
 DWORD WINAPI WinApp::BackgroundThread(PVOID param)
 {
+#ifndef NDEBUG
+    ThreadImpl::SetName("BlinKit Thread");
+#endif
+
     BackgoundModeParams *params = reinterpret_cast<BackgoundModeParams *>(param);
 
     WinApp *app = params->app;

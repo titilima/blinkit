@@ -27,25 +27,6 @@ WinLoaderThread::~WinLoaderThread(void)
 
 DWORD WINAPI WinLoaderThread::ThreadProc(PVOID param)
 {
-#ifndef NDEBUG
-    struct THREADNAME_INFO {
-        DWORD dwType = 0x1000;
-        PCSTR szName;
-        DWORD dwThreadID;
-        DWORD dwFlags = 0;
-    } info;
-
-    info.szName = "Loader Thread";
-    info.dwThreadID = GetCurrentThreadId();
-    __try
-    {
-        RaiseException(0x406D1388, 0, sizeof(info) / sizeof(DWORD), reinterpret_cast<ULONG_PTR *>(&info));
-    }
-    __except (EXCEPTION_CONTINUE_EXECUTION)
-    {
-    }
-#endif
-
     reinterpret_cast<WinLoaderThread *>(param)->Run();
     return EXIT_SUCCESS;
 }
