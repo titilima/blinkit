@@ -2,7 +2,7 @@
 // BlinKit - BlinKit Library
 // -------------------------------------------------
 //   File Name: client_caller_store.h
-// Description: ClientCallerStore Class
+// Description: ClientCallerStore Classes
 //      Author: Ziming Li
 //     Created: 2021-01-29
 // -------------------------------------------------
@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <unordered_map>
+#include "bkcommon/bk_mutex.hpp"
 #include "blinkit/app/caller.h"
 
 namespace BlinKit {
@@ -25,7 +27,7 @@ public:
 };
 
 #ifdef BLINKIT_CRAWLER_ONLY
-class SingletonClientCallerStore : public ClientCallerStore, public ClientCaller
+class SingletonClientCallerStore final : public ClientCallerStore, public ClientCaller
 {
 public:
     SingletonClientCallerStore(void) : m_threadId(GetCurrentThreadId()) {}
@@ -39,6 +41,23 @@ private:
     const DWORD m_threadId;
 };
 #endif
+
+class ClientCallerStoreImpl final : public ClientCallerStore
+{
+public:
+    ClientCallerStoreImpl(void);
+    ~ClientCallerStoreImpl(void);
+
+    ClientCaller& Acquire(void) override;
+private:
+    static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+    ATOM m_atom;
+    BkMutex m_lock;
+
+    class ClientCallerImpl;
+    std::unordered_map<DWORD, ClientCallerImpl *> m_callerMap;
+};
 
 } // namespace BlinKit
 
