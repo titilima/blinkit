@@ -173,6 +173,30 @@ class request_client_impl : public client_impl<T, request_client_root>
 {
 };
 
+class js_call
+{
+public:
+    static js_call* prepare(std::function<void(BkJSContext)> &&callback)
+    {
+        return new js_call(std::move(callback));
+    }
+    int commit_to(BkCrawler crawler)
+    {
+        return BkCrawlerCallJS(crawler, callback_impl, this);
+    }
+private:
+    js_call(std::function<void(BkJSContext)> &&callback) : m_callback(std::move(callback)) {}
+
+    static void BKAPI callback_impl(BkJSContext ctx, void *userData)
+    {
+        js_call *This = reinterpret_cast<js_call *>(userData);
+        (This->m_callback)(ctx);
+        delete This;
+    }
+
+    std::function<void(BkJSContext)> m_callback;
+};
+
 class js_value
 {
 public:
@@ -249,11 +273,6 @@ class js_object
 public:
     js_object(BkJSObject obj) : m_obj(obj) {}
     operator BkJSObject() const { return m_obj; }
-    static js_object user_object_from(BkCrawler crawler)
-    {
-        BkJSContext ctx = BkGetScriptContextFromCrawler(crawler);
-        return js_object(BkGetUserObject(ctx));
-    }
 
     bool get_boolean(const char *name, bool def_val) const
     {
@@ -299,11 +318,6 @@ public:
             ret = new js_function(fn_ctx);
         return ret;
     }
-    static js_function* prepare(BkCrawler crawler, int ctx, const char *name)
-    {
-        BkJSContext js_ctx = BkGetScriptContextFromCrawler(crawler);
-        return prepare(js_ctx, ctx, name);
-    }
     static js_function* prepare(BkJSContext js_ctx, const char *code)
     {
         js_function *ret = nullptr;
@@ -311,11 +325,6 @@ public:
         if (nullptr != fn_ctx)
             ret = new js_function(fn_ctx);
         return ret;
-    }
-    static js_function* prepare(BkCrawler crawler, const char *code)
-    {
-        BkJSContext js_ctx = BkGetScriptContextFromCrawler(crawler);
-        return prepare(js_ctx, code);
     }
 
     int call(BkJSValue *ret = nullptr)
@@ -371,12 +380,12 @@ typedef std::function<void(function_context &)> user_function;
 class function_manager
 {
 public:
-    function_manager(BkJSContext ctx) : m_ctx(ctx) {}
+    function_manager(void) = default;
 
-    void register_function(int memberContext, const char *name, const user_function &fn)
+    void register_function(BkJSContext ctx, int memberContext, const char *name, const user_function &fn)
     {
         m_functions.push_back(fn);
-        BkRegisterFunction(m_ctx, memberContext, name, impl, &(m_functions.back()));
+        BkRegisterFunction(ctx, memberContext, name, impl, &(m_functions.back()));
     }
 private:
     static void BKAPI impl(BkJSCalleeContext ctx, void *p)
@@ -386,7 +395,6 @@ private:
         (*fn)(fnctx);
     }
 
-    BkJSContext m_ctx;
     std::list<user_function> m_functions;
 };
 
