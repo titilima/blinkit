@@ -58,6 +58,7 @@ int CrawlerImpl::CallJS(BkJSCallback callback, void *userData)
 
 void CrawlerImpl::CancelLoading(void)
 {
+    ASSERT(IsMainThread());
     m_frame->Loader().StopAllLoaders();
 }
 

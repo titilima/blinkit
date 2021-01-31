@@ -102,6 +102,7 @@ void ResourceLoader::DidFail(const ResourceError &error)
 
 void ResourceLoader::DidFinishLoading(void)
 {
+    ASSERT(IsMainThread());
 #if 0 // BKTODO:
     resource_->SetEncodedDataLength(encoded_data_length);
     resource_->SetEncodedBodyLength(encoded_body_length);
@@ -138,6 +139,7 @@ void ResourceLoader::DidFinishLoading(void)
 
 void ResourceLoader::DidReceiveData(const char *data, int length)
 {
+    ASSERT(IsMainThread());
     ASSERT(length >= 0);
 
     Context().DispatchDidReceiveData(m_resource->Identifier(), data, length);
@@ -146,6 +148,7 @@ void ResourceLoader::DidReceiveData(const char *data, int length)
 
 void ResourceLoader::DidReceiveResponse(const ResourceResponse &response)
 {
+    ASSERT(IsMainThread());
     if (Context().IsDetached())
     {
         ASSERT(false); // BKTODO:

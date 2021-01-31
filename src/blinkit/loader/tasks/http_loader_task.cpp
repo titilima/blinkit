@@ -43,7 +43,10 @@ HTTPLoaderTask::~HTTPLoaderTask(void)
 
 int HTTPLoaderTask::CancelWork(void)
 {
-    DoCancel();
+    if (IsMainThread())
+        DoCancel();
+    else
+        m_taskRunner->PostTask(FROM_HERE, std::bind(&HTTPLoaderTask::DoCancel, this));
     return BK_ERR_SUCCESS;
 }
 
@@ -76,7 +79,10 @@ void HTTPLoaderTask::CommitHijackedResponse(void)
 
 int HTTPLoaderTask::ContinueWorking(void)
 {
-    CommitHijackedResponse();
+    if (IsMainThread())
+        CommitHijackedResponse();
+    else
+        m_taskRunner->PostTask(FROM_HERE, std::bind(&HTTPLoaderTask::CommitHijackedResponse, this));
     return BK_ERR_SUCCESS;
 }
 
@@ -96,7 +102,6 @@ bool HTTPLoaderTask::CreateRequest(const std::string &URL)
 
 void HTTPLoaderTask::DoCancel(void)
 {
-    ASSERT(IsMainThread());
     m_resourceRequest.Crawler()->CancelLoading();
     delete this;
 }
