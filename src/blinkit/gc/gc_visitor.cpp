@@ -11,12 +11,32 @@
 
 #include "gc_visitor.h"
 
+#include "base/auto_reset.h"
 #include "blinkit/gc/gc_heap.h"
 
 namespace BlinKit {
 
 GCVisitor::GCVisitor(const std::unordered_set<void *> &memberObjects) : m_objectsToGC(memberObjects)
 {
+}
+
+void GCVisitor::ChildrenHandler(void *p)
+{
+    m_childrenStash.push_back(p);
+}
+
+void GCVisitor::MainHandler(void *p)
+{
+    base::AutoReset<TraceHandler> handlerGuard(&m_currentHandler, &GCVisitor::ChildrenHandler);
+
+    m_childrenStash.push_back(p);
+    while (!m_childrenStash.empty())
+    {
+        std::vector<void *> childrenStash;
+        childrenStash.swap(m_childrenStash);
+        for (void *child : childrenStash)
+            GCHeap::Trace(child, this);
+    }
 }
 
 void GCVisitor::RegisterWeakSlot(void **pp)
@@ -35,7 +55,7 @@ void GCVisitor::TraceImpl(void *p)
         return;
 
     m_objectsToGC.erase(p);
-    GCHeap::Trace(p, this);
+    (this->*m_currentHandler)(p);
 }
 
 } // namespace BlinKit

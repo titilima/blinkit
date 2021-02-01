@@ -27,11 +27,18 @@ public:
     const std::unordered_set<void *>& ObjectsToGC(void) const { return m_objectsToGC; }
     const std::vector<void **> WeakSlots(void) const { return m_weakSlots; }
 private:
+    void MainHandler(void *p);
+    void ChildrenHandler(void *p);
+
     void TraceImpl(void *p) override;
     void RegisterWeakSlot(void **pp) override;
 
     std::unordered_set<void *> m_objectsToGC;
     std::vector<void **> m_weakSlots;
+    std::vector<void *> m_childrenStash;
+
+    using TraceHandler = void(GCVisitor::*)(void *);
+    TraceHandler m_currentHandler = &GCVisitor::MainHandler;
 };
 
 } // namespace BlinKit
