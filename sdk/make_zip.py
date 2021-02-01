@@ -19,7 +19,9 @@ files = (
     'win32/BkHelper.lib',
 #    'win32/BlinKit.dll',
 #    'win32/BlinKit.lib',
-    'win32/BlinKit.props'
+    'win32/BlinKit.props',
+    'win32/zlib.lib',
+    'win32/zlib.dll'
 )
 
 import os
