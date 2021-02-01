@@ -1064,9 +1064,6 @@ void Node::Trace(Visitor *visitor)
 {
     if (HasRareData())
         visitor->Trace(RareData());
-    visitor->Trace(m_previous);
-    visitor->Trace(m_next);
-    visitor->Trace(m_parentOrShadowHostNode);
     EventTarget::Trace(visitor);
 }
 

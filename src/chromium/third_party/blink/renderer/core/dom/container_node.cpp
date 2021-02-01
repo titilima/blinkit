@@ -1190,8 +1190,8 @@ void ContainerNode::SetRestyleFlag(DynamicRestyleFlags mask)
 
 void ContainerNode::Trace(Visitor *visitor)
 {
-    visitor->Trace(m_firstChild);
-    visitor->Trace(m_lastChild);
+    for (Node *n = m_firstChild; nullptr != n; n = n->nextSibling())
+        visitor->Trace(n);
     Node::Trace(visitor);
 }
 
