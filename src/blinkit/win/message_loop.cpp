@@ -39,9 +39,17 @@ private:
             return m_loop.PostTask(fromHere, std::move(task));
 
         TimerData *timerData = new TimerData(std::move(task), delay);
-        auto timerTask = std::bind(&MessageLoop::InstallTimer, &m_loop, timerData);
-        if (m_loop.PostTask(fromHere, std::move(timerTask)))
+        if (GetCurrentThreadId() == m_loop.m_threadId)
+        {
+            m_loop.InstallTimer(timerData);
             return true;
+        }
+        else
+        {
+            auto timerTask = std::bind(&MessageLoop::InstallTimer, &m_loop, timerData);
+            if (m_loop.PostTask(fromHere, std::move(timerTask)))
+                return true;
+        }
 
         delete timerData;
         return false;
