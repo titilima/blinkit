@@ -16,6 +16,7 @@
 
 #include <unordered_map>
 #include <vector>
+#include "base/bit_cast.h"
 #include "third_party/blink/renderer/platform/heap/member.h"
 
 namespace BlinKit {
@@ -44,26 +45,26 @@ public:
     void Trace(blink::Member<T> &m)
     {
         if (T *p = m.Get())
-            TraceImpl(trace_cast<void *>(p));
+            TraceImpl(bit_cast<void *>(p));
     }
     template <typename T>
     void Trace(const blink::Member<T> &m)
     {
         if (T *p = m.Get())
-            TraceImpl(trace_cast<void *>(p));
+            TraceImpl(bit_cast<void *>(p));
     }
 
     template <typename T>
     void Trace(blink::WeakMember<T> &m)
     {
         if (m)
-            RegisterWeakSlot(trace_cast<void **>(&m.m_rawPtr));
+            RegisterWeakSlot(bit_cast<void **>(&m.m_rawPtr));
     }
     template <typename T>
     void Trace(const blink::WeakMember<T> &m)
     {
         if (m)
-            RegisterWeakSlot(trace_cast<void **>(&m.m_rawPtr));
+            RegisterWeakSlot(bit_cast<void **>(&m.m_rawPtr));
     }
 
     template <typename T>
@@ -73,17 +74,6 @@ public:
     }
 protected:
     Visitor(void) = default;
-
-    template <typename To, typename From>
-    static To trace_cast(From from)
-    {
-        union {
-            From f;
-            To t;
-        } u;
-        u.f = from;
-        return u.t;
-    }
 
     virtual void TraceImpl(void *p) = 0;
     virtual void RegisterWeakSlot(void **slot) = 0;
