@@ -52,6 +52,7 @@ public:
     double InSecondsF(void) const;
     int64_t InMilliseconds(void) const;
     double InMillisecondsF(void) const;
+    int64_t InMicroseconds(void) const;
 
     TimeDelta& operator=(TimeDelta other) {
         m_delta = other.m_delta;
@@ -227,6 +228,13 @@ public:
     // of leap year days between 1601 and 1970: (1970-1601)/4 excluding 1700,
     // 1800, and 1900.
     static constexpr int64_t kTimeTToMicrosecondsOffset = INT64_C(11644473600000000);
+
+#if defined(OS_WIN)
+    // To avoid overflow in QPC to Microseconds calculations, since we multiply
+    // by kMicrosecondsPerSecond, then the QPC value should not exceed
+    // (2^63 - 1) / 1E6. If it exceeds that threshold, we divide then multiply.
+    static constexpr int64_t kQPCOverflowThreshold = INT64_C(0x8637BD05AF7);
+#endif
 
     // Represents an exploded time that can be formatted nicely. This is kind of
     // like the Win32 SYSTEMTIME structure or the Unix "struct tm" with a few

@@ -15,10 +15,11 @@
 
 #include "time.h"
 
-#include <mutex>
 #include <Windows.h>
 #include "base/bit_cast.h"
 #include "base/numerics/checked_math.h"
+#include "base/time/time_override.h"
+#include "blinkit/win/time_ticker.h"
 
 namespace base {
 
@@ -135,18 +136,49 @@ Time Time::Now(void)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static std::mutex g_rolloverLock;
-static int64_t g_rolloverMs = 0;
-static DWORD g_lastSeenNow = 0;
+static BlinKit::TimeTicker *g_timeTicker = nullptr;
 
-TimeTicks TimeTicks::Now(void)
+static TimeTicks InitialNowFunction(void);
+
+static TimeTicksNowFunction g_timeTicksNowIgnoringOverrideFunction = &InitialNowFunction;
+
+static TimeTicks GetTicksImpl(void)
 {
-    std::lock_guard<std::mutex> locked(g_rolloverLock);
-    DWORD now = timeGetTime();
-    if (now < g_lastSeenNow)
-        g_rolloverMs += 0x100000000I64;  // ~49.7 days.
-    g_lastSeenNow = now;
-    return TimeTicks() + TimeDelta::FromMilliseconds(now + g_rolloverMs);
+    return g_timeTicker->GetTicks();
 }
 
-}  // namespace base
+static void InitializeTimeTicker(void)
+{
+    LARGE_INTEGER pcPerSec = { 0 };
+    if (::QueryPerformanceFrequency(&pcPerSec))
+    {
+        static BlinKit::PerformanceCounterTicker s_pcTicker(pcPerSec.QuadPart);
+        g_timeTicker = &s_pcTicker;
+    }
+    else
+    {
+        static BlinKit::MultimediaTicker s_mmTicker;
+        g_timeTicker = &s_mmTicker;
+    }
+
+    if (internal::g_timeTicksNowFunction == &subtle::TimeTicksNowIgnoringOverride)
+        internal::g_timeTicksNowFunction = GetTicksImpl;
+    g_timeTicksNowIgnoringOverrideFunction = GetTicksImpl;
+}
+
+static TimeTicks InitialNowFunction(void)
+{
+    InitializeTimeTicker();
+    return g_timeTicksNowIgnoringOverrideFunction();
+}
+
+namespace subtle {
+
+TimeTicks TimeTicksNowIgnoringOverride(void)
+{
+    return g_timeTicksNowIgnoringOverrideFunction();
+}
+
+} // namespace subtle
+
+} // namespace base

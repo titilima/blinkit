@@ -16,8 +16,14 @@
 #include "time.h"
 
 #include "base/numerics/checked_math.h"
+#include "base/time/time_override.h"
 
 namespace base {
+
+namespace internal {
+TimeTicksNowFunction g_timeTicksNowFunction = &subtle::TimeTicksNowIgnoringOverride;
+} // namespace internal
+
 namespace time_internal {
 
 int64_t SaturatedAdd(TimeDelta delta, int64_t value)
@@ -55,13 +61,13 @@ bool Time::ExplodedMostlyEquals(const Exploded &lhs, const Exploded &rhs)
 
 double Time::ToDoubleT(void) const
 {
-    assert(false); // BKTODO:
+    ASSERT(false); // BKTODO:
     return 0;
 }
 
 time_t Time::ToTimeT(void) const
 {
-    assert(false); // BKTODO:
+    ASSERT(false); // BKTODO:
     return 0;
 }
 
@@ -93,7 +99,7 @@ TimeDelta TimeDelta::FromMillisecondsD(double ms)
 
 TimeDelta TimeDelta::FromProduct(int64_t value, int64_t positiveValue)
 {
-    assert(positiveValue > 0);
+    ASSERT(positiveValue > 0);
     if (value > std::numeric_limits<int64_t>::max() / positiveValue)
         return Max();
     if (value < std::numeric_limits<int64_t>::min() / positiveValue)
@@ -111,6 +117,11 @@ TimeDelta TimeDelta::FromSecondsD(double secs)
     return FromDouble(secs * Time::kMicrosecondsPerSecond);
 }
 
+int64_t TimeDelta::InMicroseconds(void) const
+{
+    return DivideOrMax<int64_t>(1);
+}
+
 int64_t TimeDelta::InMilliseconds(void) const
 {
     return DivideOrMax<int64_t>(Time::kMicrosecondsPerMillisecond);
@@ -124,6 +135,13 @@ double TimeDelta::InMillisecondsF(void) const
 double TimeDelta::InSecondsF(void) const
 {
     return DivideOrMax<double>(Time::kMicrosecondsPerSecond);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+TimeTicks TimeTicks::Now(void)
+{
+    return internal::g_timeTicksNowFunction();
 }
 
 }  // namespace base

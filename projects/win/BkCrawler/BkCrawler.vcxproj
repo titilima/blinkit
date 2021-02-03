@@ -108,6 +108,7 @@
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>BkCrawler.def</ModuleDefinitionFile>
       <AdditionalDependencies>Wininet.lib;Winmm.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DelayLoadDLLs>Winmm.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -144,6 +145,7 @@
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>BkCrawler.def</ModuleDefinitionFile>
       <AdditionalDependencies>Wininet.lib;Winmm.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DelayLoadDLLs>Winmm.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -205,6 +207,7 @@
     <ClInclude Include="..\..\..\src\blinkit\win\client_caller_store.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\message_loop.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\message_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\win\time_ticker.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -249,6 +252,7 @@
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\message_loop.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\message_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\time_ticker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\base\base.vcxproj">

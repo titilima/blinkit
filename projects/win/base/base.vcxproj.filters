@@ -307,5 +307,8 @@
     <ClInclude Include="..\..\..\src\chromium\base\atomic_sequence_num.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\time\time_override.h">
+      <Filter>base\time</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

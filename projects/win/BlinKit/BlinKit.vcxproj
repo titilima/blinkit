@@ -108,7 +108,7 @@
       <EnableUAC>false</EnableUAC>
       <AdditionalDependencies>Usp10.lib;UxTheme.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>BlinKit.def</ModuleDefinitionFile>
-      <DelayLoadDLLs>UxTheme.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <DelayLoadDLLs>UxTheme.dll;Winmm.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -129,7 +129,7 @@
       <EnableUAC>false</EnableUAC>
       <AdditionalDependencies>Usp10.lib;UxTheme.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>BlinKit.def</ModuleDefinitionFile>
-      <DelayLoadDLLs>UxTheme.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <DelayLoadDLLs>UxTheme.dll;Winmm.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -205,6 +205,7 @@
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\message_loop.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\message_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\time_ticker.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\view_store.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -259,6 +260,7 @@
     <ClInclude Include="..\..\..\src\blinkit\win\client_caller_store.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\message_loop.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\message_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\win\time_ticker.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\view_store.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
     <ClInclude Include="resource.h" />

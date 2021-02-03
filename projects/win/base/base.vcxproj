@@ -333,6 +333,7 @@
     <ClInclude Include="..\..\..\src\chromium\base\third_party\nspr\prtime.h" />
     <ClInclude Include="..\..\..\src\chromium\base\threading\thread_local_storage.h" />
     <ClInclude Include="..\..\..\src\chromium\base\time\time.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\time\time_override.h" />
     <ClInclude Include="..\..\..\src\chromium\base\trace_event\common\trace_event_common.h" />
     <ClInclude Include="..\..\..\src\chromium\base\trace_event\trace_event.h" />
     <ClInclude Include="..\..\..\src\chromium\base\win\resource_util.h" />

@@ -171,6 +171,9 @@
     <ClInclude Include="..\..\..\src\blinkit\win\client_caller_store.h">
       <Filter>win</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\win\time_ticker.h">
+      <Filter>win</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
@@ -278,6 +281,9 @@
       <Filter>win</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp">
+      <Filter>win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\win\time_ticker.cpp">
       <Filter>win</Filter>
     </ClCompile>
   </ItemGroup>
