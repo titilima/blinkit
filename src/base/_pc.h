@@ -29,5 +29,6 @@
 #include <cassert>
 #include <cctype>
 #include <cstring>
+#include "base/logging.h"
 
 #endif // BLINKIT_BASE__PC_H
