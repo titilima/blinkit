@@ -13,18 +13,18 @@
 
 #include <optional>
 #include "blinkit/win/message_task.h"
+#include "third_party/blink/renderer/platform/wtf/time.h"
 
 namespace BlinKit {
 
 struct MessageLoop::TimerData {
-    TimerData(std::function<void()> &&t, const base::TimeDelta &delay)
-        : task(std::move(t)), startTick(GetTickCount()), delayInMs(delay.InMilliseconds())
+    TimerData(std::function<void()> &&t, const TimeTicks &desiredFireTick)
+        : task(std::move(t)), fireTick(desiredFireTick)
     {
     }
 
     std::function<void()> task;
-    DWORD startTick;
-    DWORD delayInMs;
+    TimeTicks fireTick;
 };
 
 class MessageLoop::TaskRunnerImpl : public base::SingleThreadTaskRunner
@@ -38,7 +38,8 @@ private:
         if (delay.is_zero())
             return m_loop.PostTask(fromHere, std::move(task));
 
-        TimerData *timerData = new TimerData(std::move(task), delay);
+        const TimeTicks now = CurrentTimeTicks();
+        TimerData *timerData = new TimerData(std::move(task), now + delay);
         if (GetCurrentThreadId() == m_loop.m_threadId)
         {
             m_loop.InstallTimer(timerData);
@@ -96,10 +97,11 @@ void MessageLoop::InstallTimer(TimerData *timerData)
         NewTimer();
     m_tasks[slot] = std::move(timerData->task);
 
-    DWORD delta = GetTickCount() - timerData->startTick;
+    TimeDelta delta = CurrentTimeTicks() - timerData->fireTick;
     LARGE_INTEGER delay = { 0 };
-    delay.QuadPart -= (timerData->delayInMs - delta) * 10000;
+    delay.QuadPart -= delta.InMicroseconds() * 10;
     SetWaitableTimer(m_timers.at(slot), &delay, 0, nullptr, nullptr, FALSE);
+    BKLOG("SetWaitableTimer: %d", delta.InMilliseconds());
 
     delete timerData;
 }
