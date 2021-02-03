@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: paint_image.h
+// Description: PaintImage Class
+//      Author: Ziming Li
+//     Created: 2021-02-02
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -204,7 +215,7 @@ class CC_PAINT_EXPORT PaintImage {
                          sk_sp<SkColorSpace> color_space,
                          size_t frame_index,
                          GeneratorClientId client_id) const;
-  void CreateSkImage();
+  void CreateSkImage(size_t frame_index = kDefaultFrameIndex);
   PaintImage MakeSubset(const gfx::Rect& subset) const;
 
   sk_sp<SkImage> sk_image_;

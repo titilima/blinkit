@@ -49,7 +49,7 @@ PaintImageBuilder::PaintImageBuilder(PaintImage image, bool clear_contents)
 PaintImageBuilder::PaintImageBuilder(PaintImageBuilder&& other) = default;
 PaintImageBuilder::~PaintImageBuilder() = default;
 
-PaintImage PaintImageBuilder::TakePaintImage() {
+PaintImage PaintImageBuilder::TakePaintImage(size_t frame_index) {
 #if DCHECK_IS_ON()
   DCHECK(id_set_);
   if (paint_image_.sk_image_) {
@@ -83,7 +83,7 @@ PaintImage PaintImageBuilder::TakePaintImage() {
   // We may already have a cached_sk_image_ if this builder was created with a
   // copy.
   if (!paint_image_.cached_sk_image_)
-    paint_image_.CreateSkImage();
+    paint_image_.CreateSkImage(frame_index);
   return std::move(paint_image_);
 }
 

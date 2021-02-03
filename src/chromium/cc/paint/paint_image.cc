@@ -2,7 +2,7 @@
 // BlinKit - cc Library
 // -------------------------------------------------
 //   File Name: paint_image.cc
-// Description: PaintImage Classes
+// Description: PaintImage Class
 //      Author: Ziming Li
 //     Created: 2020-12-22
 // -------------------------------------------------
@@ -142,7 +142,7 @@ PaintImage PaintImage::MakeSubset(const gfx::Rect& subset) const {
   return result;
 }
 
-void PaintImage::CreateSkImage() {
+void PaintImage::CreateSkImage(size_t frame_index) {
   DCHECK(!cached_sk_image_);
 
   if (sk_image_) {
@@ -158,7 +158,7 @@ void PaintImage::CreateSkImage() {
   } else if (paint_image_generator_) {
     cached_sk_image_ =
         SkImage::MakeFromGenerator(std::make_unique<SkiaPaintImageGenerator>(
-            paint_image_generator_, kDefaultFrameIndex,
+            paint_image_generator_, frame_index,
             kDefaultGeneratorClientId));
   }
 
