@@ -255,12 +255,6 @@ void WebViewImpl::Resize(const WebSize &size)
     if (size.IsEmpty() || m_shouldAutoResize || m_size == size)
         return;
 
-    {
-        std::unique_lock<BkMutex> lock(m_canvasLock);
-        m_canvas = std::make_unique<cc::SkiaPaintCanvas>(PrepareBitmapForCanvas(size));
-        m_canvas->drawColor(m_baseBackgroundColor);
-    }
-
     ScopedRenderingScheduler scheduler(this);
     BrowserControls& browserControls = GetBrowserControls();
     ResizeWithBrowserControls(size, browserControls.TopHeight(), browserControls.BottomHeight(),
@@ -504,7 +498,23 @@ void WebViewImpl::UpdateAndPaint(void)
 {
     UpdateLifecycle();
 
+    if (m_size.IsEmpty())
+        return;
+
+    bool resetCanvas = true;
+    if (m_canvas)
+    {
+        SkImageInfo imageInfo = m_canvas->imageInfo();
+        if (imageInfo.width() == m_size.width && imageInfo.height() == m_size.height)
+            resetCanvas = false;
+    }
+
     std::unique_lock<BkMutex> lock(m_canvasLock);
+    if (resetCanvas)
+    {
+        m_canvas = std::make_unique<cc::SkiaPaintCanvas>(PrepareBitmapForCanvas(m_size));
+        m_canvas->drawColor(m_baseBackgroundColor);
+    }
     PaintContent(m_canvas.get(), IntRect(IntPoint(), m_size));
 }
 
