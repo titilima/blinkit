@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/platform/graphics/paint/paint_image.h"
 #include "third_party/blink/renderer/platform/timer.h"
 
 namespace blink {
@@ -32,6 +33,8 @@ public:
     enum CatchUpAnimation { DoNotCatchUp, CatchUp };
     void Start(CatchUpAnimation = CatchUp);
     void Stop(void) { m_frameTimer.reset(); }
+
+    blink::PaintImage PaintImageForCurrentFrame(void);
 private:
     bool FrameIsCompleteAtIndex(size_t index) const;
     TimeDelta FrameDurationAtIndex(size_t index) const;
@@ -45,6 +48,7 @@ private:
     bool InternalAdvance(bool skippingFrames);
 
     blink::BitmapImage &m_image;
+    std::vector<blink::PaintImage> m_otherFrames;
     std::unique_ptr<blink::TaskRunnerTimer<BitmapAnimationController>> m_frameTimer;
 
     size_t m_currentFrame = 0;         // The index of the current frame of animation.

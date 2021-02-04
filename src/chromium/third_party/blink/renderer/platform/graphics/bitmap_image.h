@@ -146,7 +146,7 @@ class PLATFORM_EXPORT BitmapImage final : public Image {
             ImageClampingMode,
             ImageDecodingMode) override;
 
-  PaintImage CreatePaintImage();
+  PaintImage CreatePaintImage(size_t frame_index = PaintImage::kDefaultFrameIndex);
   void UpdateSize() const;
 
   // Called to wipe out the entire frame buffer cache and tell the image

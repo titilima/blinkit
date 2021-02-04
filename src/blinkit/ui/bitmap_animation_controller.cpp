@@ -23,6 +23,8 @@ BitmapAnimationController::BitmapAnimationController(BitmapImage &image)
     , m_animationFinished(false)
     , m_allDataReceived(true)
 {
+    ASSERT(m_image.FrameCount() > 1);
+    m_otherFrames.resize(m_image.FrameCount() - 1);
 }
 
 void BitmapAnimationController::Advance(TimerBase *timer)
@@ -83,6 +85,20 @@ bool BitmapAnimationController::InternalAdvance(bool skippingFrames)
     if (skippingFrames != advancedAnimation)
         m_image.GetImageObserver()->AnimationAdvanced(&m_image);
     return advancedAnimation;
+}
+
+PaintImage BitmapAnimationController::PaintImageForCurrentFrame(void)
+{
+    if (0 == m_currentFrame)
+        return m_image.cached_frame_;
+
+    size_t index = m_currentFrame - 1;
+    if (!m_otherFrames[index])
+    {
+        m_otherFrames[index] = m_image.CreatePaintImage(m_currentFrame);
+        m_otherFrames[index].GetSkImage();
+    }
+    return m_otherFrames[index];
 }
 
 void BitmapAnimationController::Start(CatchUpAnimation catchUpIfNecessary)

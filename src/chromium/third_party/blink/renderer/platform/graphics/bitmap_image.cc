@@ -122,9 +122,9 @@ PaintImage BitmapImage::PaintImageForTesting() {
   return CreatePaintImage();
 }
 
-PaintImage BitmapImage::CreatePaintImage() {
+PaintImage BitmapImage::CreatePaintImage(size_t frame_index) {
   sk_sp<PaintImageGenerator> generator =
-      decoder_ ? decoder_->CreateGenerator(PaintImage::kDefaultFrameIndex)
+      decoder_ ? decoder_->CreateGenerator(frame_index)
                : nullptr;
   if (!generator)
     return PaintImage();
@@ -141,7 +141,7 @@ PaintImage BitmapImage::CreatePaintImage() {
           .set_completion_state(completion_state)
           .set_reset_animation_sequence_id(reset_animation_sequence_id_);
 
-  return builder.TakePaintImage();
+  return builder.TakePaintImage(frame_index);
 }
 
 void BitmapImage::UpdateSize() const {
@@ -333,6 +333,8 @@ bool BitmapImage::IsSizeAvailable() {
 }
 
 PaintImage BitmapImage::PaintImageForCurrentFrame() {
+  if (animation_controller_)
+    return animation_controller_->PaintImageForCurrentFrame();
   if (cached_frame_)
     return cached_frame_;
 
