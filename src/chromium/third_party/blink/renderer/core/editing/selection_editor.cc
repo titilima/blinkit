@@ -370,12 +370,8 @@ bool SelectionEditor::ShouldAlwaysUseDirectionalSelection() const {
 }
 
 bool SelectionEditor::NeedsUpdateVisibleSelection() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return cached_visible_selection_in_dom_tree_is_dirty_ ||
          style_version_for_dom_tree_ != GetDocument().StyleVersion();
-#endif
 }
 
 void SelectionEditor::UpdateCachedVisibleSelectionIfNeeded() const {
@@ -387,8 +383,6 @@ void SelectionEditor::UpdateCachedVisibleSelectionIfNeeded() const {
   AssertSelectionValid();
   if (!NeedsUpdateVisibleSelection())
     return;
-  ASSERT(false); // BKTODO:
-#if 0
   style_version_for_dom_tree_ = GetDocument().StyleVersion();
   cached_visible_selection_in_dom_tree_is_dirty_ = false;
   cached_visible_selection_in_dom_tree_ = CreateVisibleSelection(selection_);
@@ -397,16 +391,11 @@ void SelectionEditor::UpdateCachedVisibleSelectionIfNeeded() const {
   style_version_for_flat_tree_ = GetDocument().StyleVersion();
   cached_visible_selection_in_flat_tree_is_dirty_ = false;
   cached_visible_selection_in_flat_tree_ = VisibleSelectionInFlatTree();
-#endif
 }
 
 bool SelectionEditor::NeedsUpdateVisibleSelectionInFlatTree() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return cached_visible_selection_in_flat_tree_is_dirty_ ||
          style_version_for_flat_tree_ != GetDocument().StyleVersion();
-#endif
 }
 
 void SelectionEditor::UpdateCachedVisibleSelectionInFlatTreeIfNeeded() const {
@@ -418,8 +407,6 @@ void SelectionEditor::UpdateCachedVisibleSelectionInFlatTreeIfNeeded() const {
   AssertSelectionValid();
   if (!NeedsUpdateVisibleSelectionInFlatTree())
     return;
-  ASSERT(false); // BKTODO:
-#if 0
   style_version_for_flat_tree_ = GetDocument().StyleVersion();
   cached_visible_selection_in_flat_tree_is_dirty_ = false;
   SelectionInFlatTree::Builder builder;
@@ -437,7 +424,6 @@ void SelectionEditor::UpdateCachedVisibleSelectionInFlatTreeIfNeeded() const {
   if (!cached_visible_selection_in_flat_tree_.IsNone())
     return;
   style_version_for_dom_tree_ = GetDocument().StyleVersion();
-#endif
   cached_visible_selection_in_dom_tree_is_dirty_ = false;
   cached_visible_selection_in_dom_tree_ = VisibleSelection();
 }
