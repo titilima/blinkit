@@ -41,6 +41,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include "third_party/blink/renderer/core/frame/dom_window.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
 
@@ -88,6 +89,7 @@ public:
 
     Document* InstallNewDocument(const DocumentInit &init);
 
+    using EventTarget::DispatchEvent;
     DispatchEventResult DispatchEvent(Event &event, EventTarget *target);
     void DispatchWindowLoadEvent(void);
 

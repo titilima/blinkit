@@ -182,6 +182,7 @@ public:
     LocalFrameView* View(void) const;                    // can be null
     TextAutosizer* GetTextAutosizer(void);
     StyleResolver* GetStyleResolver(void) const;
+    uint64_t StyleVersion(void) const { return m_styleVersion; }
     StyleResolver& EnsureStyleResolver(void) const;
     CSSStyleSheet& ElementSheet(void);
     AnimationClock& GetAnimationClock(void);

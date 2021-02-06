@@ -53,7 +53,6 @@ public:
     float PageScaleFactor(void) const;
     void SetPageScaleFactor(float scaleFactor);
     blink::IntSize MainFrameSize(void);
-    void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState);
 
     void UpdateAndPaint(void);
     void InvalidateRect(const blink::IntRect &rect);
@@ -86,9 +85,14 @@ protected:
     void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
     void Resize(const blink::WebSize &size);
     void SetScaleFactor(float scaleFactor);
+    void SetFocus(bool enable);
+    void SetVisibilityState(blink::PageVisibilityState visibilityState);
 
     mutable BlinKit::BkMutex m_canvasLock;
 private:
+    void SetFocusImpl(bool enable);
+    void SetVisibilityStateImpl(blink::PageVisibilityState visibilityState, bool isInitialState);
+
     blink::BrowserControls& GetBrowserControls(void);
 
     blink::IntSize FrameSize(void);
@@ -125,6 +129,11 @@ private:
     std::unique_ptr<blink::LocalFrame> m_frame;
     SkColor m_baseBackgroundColor;
     std::unique_ptr<cc::SkiaPaintCanvas> m_canvas;
+
+    // TODO(ekaramad): Can we remove this and make sure IME events are not called
+    // when there is no page focus?
+    // Represents whether or not this object should process incoming IME events.
+    bool m_imeAcceptEvents = true;
 
     bool m_shouldDispatchFirstVisuallyNonEmptyLayout = false;
     bool m_shouldDispatchFirstLayoutAfterFinishedParsing = false;

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: focus_controller.h
+// Description: FocusController Class
+//      Author: Ziming Li
+//     Created: 2021-02-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple Inc. All rights reserved.
  *
@@ -50,12 +61,11 @@ class Node;
 class Page;
 class RemoteFrame;
 
-class CORE_EXPORT FocusController final
-    : public GarbageCollected<FocusController> {
+class CORE_EXPORT FocusController final {
  public:
   using OwnerMap = HeapHashMap<Member<ContainerNode>, Member<Element>>;
 
-  static FocusController* Create(Page*);
+  static std::unique_ptr<FocusController> Create(Page*);
 
   void SetFocusedFrame(Frame*, bool notify_embedder = true);
   void FocusDocumentView(Frame*, bool notify_embedder = true);

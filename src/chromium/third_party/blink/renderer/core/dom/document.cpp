@@ -3116,12 +3116,67 @@ void Document::UpdateStyleAndLayoutIgnorePendingStylesheets(RunPostLayoutTasks r
 
 void Document::UpdateStyleAndLayout(void)
 {
-    ASSERT(false); // BKTODO:
+    ASSERT(IsMainThread());
+
+    LocalFrameView *frameView = View();
+    ASSERT(nullptr == frameView || !frameView->IsInPerformLayout()); // View layout should not be re-entrant
+
+    UpdateStyleAndLayoutTree();
+    if (!IsActive())
+        return;
+
+    if (nullptr != frameView && frameView->NeedsLayout())
+        frameView->UpdateLayout();
+
+    DocumentLifecycle &lifecycle = Lifecycle();
+    if (lifecycle.GetState() < DocumentLifecycle::kLayoutClean)
+        lifecycle.AdvanceTo(DocumentLifecycle::kLayoutClean);
+
+    if (nullptr != frameView)
+        frameView->PerformScrollAnchoringAdjustments();
 }
 
 void Document::UpdateStyleAndLayoutTreeIgnorePendingStylesheets(void)
 {
-    ASSERT(false); // BKTODO:
+    if (Lifecycle().LifecyclePostponed())
+        return;
+    // See comment for equivalent CHECK in Document::UpdateStyleAndLayoutTree.
+    // Updating style and layout can dirty state that must remain clean during
+    // lifecycle updates.
+    ASSERT(Lifecycle().StateAllowsTreeMutations());
+    StyleEngine::IgnoringPendingStylesheet ignoring(GetStyleEngine());
+
+    if (!HaveRenderBlockingResourcesLoaded())
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        // FIXME: We are willing to attempt to suppress painting with outdated style
+        // info only once.  Our assumption is that it would be dangerous to try to
+        // stop it a second time, after page content has already been loaded and
+        // displayed with accurate style information. (Our suppression involves
+        // blanking the whole page at the moment. If it were more refined, we might
+        // be able to do something better.) It's worth noting though that this
+        // entire method is a hack, since what we really want to do is suspend JS
+        // instead of doing a layout with inaccurate information.
+        HTMLElement* body_element = body();
+        if (body_element && !body_element->GetLayoutObject() && pending_sheet_layout_ == kNoLayoutWithPendingSheets)
+        {
+            pending_sheet_layout_ = kDidLayoutWithPendingSheets;
+            GetStyleEngine().MarkAllTreeScopesDirty();
+        }
+        if (has_nodes_with_placeholder_style_)
+        {
+            // If new nodes have been added or style recalc has been done with style
+            // sheets still pending, some nodes may not have had their real style
+            // calculated yet.  Normally this gets cleaned when style sheets arrive
+            // but here we need up-to-date style immediately.
+            SetNeedsStyleRecalc(kSubtreeStyleChange,
+                StyleChangeReasonForTracing::Create(
+                    StyleChangeReason::kCleanupPlaceholderStyles));
+        }
+#endif
+    }
+    UpdateStyleAndLayoutTree();
 }
 
 void Document::ViewportDefiningElementDidChange(void)

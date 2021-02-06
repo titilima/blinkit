@@ -5555,6 +5555,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_visibility_notifier.cc">
       <Filter>renderer\core\page</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\focus_controller.cc">
+      <Filter>renderer\core\page</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\keyboard_event_manager.cc">
+      <Filter>renderer\core\input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -12351,6 +12357,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_visibility_observer.h">
       <Filter>renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\focus_controller.h">
+      <Filter>renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\keyboard_event_manager.h">
+      <Filter>renderer\core\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\focus_options.h">
+      <Filter>renderer\core\html</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

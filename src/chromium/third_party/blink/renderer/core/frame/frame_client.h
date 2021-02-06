@@ -29,6 +29,8 @@ public:
     virtual ~FrameClient(void) = default;
 
     virtual void Detached(FrameDetachType) = 0;
+
+    virtual void FrameFocused(void) const = 0;
 };
 
 }  // namespace blink

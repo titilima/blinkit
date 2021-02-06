@@ -1280,6 +1280,11 @@ void Node::SetFocused(bool flag, WebFocusType focusType)
     document.UserActionElements().SetFocused(this, flag);
 }
 
+void Node::SetHasFocusWithin(bool flag)
+{
+    GetDocument().UserActionElements().SetHasFocusWithin(this, flag);
+}
+
 void Node::SetNeedsStyleRecalc(StyleChangeType changeType, const StyleChangeReasonForTracing &)
 {
     ASSERT(!GetDocument().GetStyleEngine().InRebuildLayoutTree());

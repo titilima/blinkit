@@ -19,6 +19,7 @@
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/drag_controller.h"
+#include "third_party/blink/renderer/core/page/focus_controller.h"
 #include "third_party/blink/renderer/core/page/scrolling/overscroll_controller.h"
 #include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
 #include "third_party/blink/renderer/core/scroll/scrollbar_theme.h"
@@ -30,6 +31,7 @@ Page::Page(PageClients &pageClients)
     , m_dragCaret(DragCaret::Create())
     , m_animator(PageAnimator::Create(*this))
     , m_dragController(DragController::Create(this))
+    , m_focusController(FocusController::Create(this))
     , m_pageScaleConstraintsSet(PageScaleConstraintsSet::Create(this))
     , m_browserControls(BrowserControls::Create(*this))
     , m_globalRootScrollerController(TopDocumentRootScrollerController::Create(*this))

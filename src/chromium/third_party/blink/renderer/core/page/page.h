@@ -26,6 +26,7 @@ class BrowserControls;
 class ChromeClient;
 class DragCaret;
 class DragController;
+class FocusController;
 class Frame;
 class LinkHighlights;
 class LocalFrame;
@@ -69,6 +70,7 @@ public:
     }
     DragCaret& GetDragCaret(void) const { return *m_dragCaret; }
     DragController& GetDragController(void) const { return *m_dragController; }
+    FocusController& GetFocusController(void) const { return *m_focusController; }
     LocalFrame* GetFrame(void) const { return m_mainFrame; }
     LocalFrame* MainFrame(void) const { return m_mainFrame; }
     void SetMainFrame(Frame *mainFrame);
@@ -116,6 +118,11 @@ public:
     bool IsPainting(void) const { return m_isPainting; }
     void SetIsPainting(bool painting) { m_isPainting = painting; }
 #endif
+
+    /**
+     * Placeholders
+     */
+    constexpr bool Paused(void) const { return false; }
 private:
     explicit Page(PageClients &pageClients);
 
@@ -124,6 +131,7 @@ private:
     const std::unique_ptr<DragCaret> m_dragCaret;
     std::unique_ptr<PageAnimator> m_animator;
     const std::unique_ptr<DragController> m_dragController;
+    const std::unique_ptr<FocusController> m_focusController;
     float m_deviceScaleFactor = 1.0;
     const std::unique_ptr<PageScaleConstraintsSet> m_pageScaleConstraintsSet;
     const std::unique_ptr<BrowserControls> m_browserControls;

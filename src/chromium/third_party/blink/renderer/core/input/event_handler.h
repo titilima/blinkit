@@ -48,8 +48,8 @@
 #include "third_party/blink/renderer/core/dom/user_gesture_indicator.h"
 #include "third_party/blink/renderer/core/events/text_event_input_type.h"
 #include "third_party/blink/renderer/core/input/gesture_manager.h"
-#include "third_party/blink/renderer/core/input/keyboard_event_manager.h"
 #endif
+#include "third_party/blink/renderer/core/input/keyboard_event_manager.h"
 #include "third_party/blink/renderer/core/input/mouse_event_manager.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/input/mouse_wheel_event_manager.h"
@@ -452,9 +452,9 @@ class CORE_EXPORT EventHandler final {
 #endif
   Member<ScrollManager> scroll_manager_;
   Member<MouseEventManager> mouse_event_manager_;
-#if 0 // BKTODO:
-  Member<MouseWheelEventManager> mouse_wheel_event_manager_;
+  // BKTODO: Member<MouseWheelEventManager> mouse_wheel_event_manager_;
   Member<KeyboardEventManager> keyboard_event_manager_;
+#if 0 // BKTODO:
   Member<PointerEventManager> pointer_event_manager_;
   Member<GestureManager> gesture_manager_;
 #endif

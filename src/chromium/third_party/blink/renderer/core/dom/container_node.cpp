@@ -50,7 +50,9 @@
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/style_change_reason.h"
 #   include "third_party/blink/renderer/core/css/style_engine.h"
+#   include "third_party/blink/renderer/core/dom/flat_tree_traversal.h"
 #   include "third_party/blink/renderer/core/dom/node_computed_style.h"
 #   include "third_party/blink/renderer/core/dom/shadow_root.h"
 #   include "third_party/blink/renderer/core/dom/slot_assignment_recalc_forbidden_scope.h"
@@ -927,7 +929,8 @@ void ContainerNode::ParserTakeAllChildrenFrom(ContainerNode &oldParent)
 
 Element* ContainerNode::querySelector(const AtomicString &selectors, ExceptionState &exceptionState)
 {
-    SelectorQuery *selectorQuery = GetDocument().GetSelectorQueryCache().Add(selectors, GetDocument(), exceptionState);
+    Document &document = GetDocument();
+    SelectorQuery *selectorQuery = document.GetSelectorQueryCache().Add(selectors, document, exceptionState);
     if (nullptr == selectorQuery)
         return nullptr;
 
@@ -935,14 +938,15 @@ Element* ContainerNode::querySelector(const AtomicString &selectors, ExceptionSt
     if (nullptr != element && element->GetDocument().InDOMNodeRemovedHandler())
     {
         if (NodeChildRemovalTracker::IsBeingRemoved(element))
-            GetDocument().CountDetachingNodeAccessInDOMNodeRemovedHandler();
+            document.CountDetachingNodeAccessInDOMNodeRemovedHandler();
     }
     return element;
 }
 
 StaticElementList* ContainerNode::querySelectorAll(const AtomicString &selectors, ExceptionState &exceptionState)
 {
-    SelectorQuery *selectorQuery = GetDocument().GetSelectorQueryCache().Add(selectors, GetDocument(), exceptionState);
+    Document &document = GetDocument();
+    SelectorQuery *selectorQuery = document.GetSelectorQueryCache().Add(selectors, document, exceptionState);
     if (nullptr == selectorQuery)
         return nullptr;
 
@@ -1030,7 +1034,7 @@ Node* ContainerNode::RemoveChild(Node *oldChild, ExceptionState &exceptionState)
         Node* next = child->nextSibling();
         {
 #ifndef BLINKIT_CRAWLER_ONLY
-            SlotAssignmentRecalcForbiddenScope forbid_slot_recalc(GetDocument());
+            SlotAssignmentRecalcForbiddenScope forbidSlotRecalc(GetDocument());
             StyleEngine::DOMRemovalScope styleScope(GetDocument().GetStyleEngine());
 #endif
             RemoveBetween(prev, next, *child);
@@ -1069,8 +1073,8 @@ void ContainerNode::RemoveChildren(SubtreeModificationAction action)
         TreeOrderedMap::RemoveScope treeRemoveScope;
         {
 #ifndef BLINKIT_CRAWLER_ONLY
-            SlotAssignmentRecalcForbiddenScope forbid_slot_recalc(GetDocument());
-            StyleEngine::DOMRemovalScope style_scope(GetDocument().GetStyleEngine());
+            SlotAssignmentRecalcForbiddenScope forbidSlotRecalc(GetDocument());
+            StyleEngine::DOMRemovalScope styleScope(GetDocument().GetStyleEngine());
 #endif
             EventDispatchForbiddenScope assertNoEventDispatch;
             ScriptForbiddenScope forbidScript;
@@ -1154,7 +1158,7 @@ Node* ContainerNode::ReplaceChild(Node *newChild, Node *oldChild, ExceptionState
         }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-        SlotAssignmentRecalcForbiddenScope forbid_slot_recalc(GetDocument());
+        SlotAssignmentRecalcForbiddenScope forbidSlotRecalc(GetDocument());
 #endif
 
         // 13. Let nodes be node¡¯s children if node is a DocumentFragment node, and
@@ -1235,6 +1239,78 @@ void ContainerNode::WillRemoveChildren(void)
 // UI Implementations
 
 #ifndef BLINKIT_CRAWLER_ONLY
+void ContainerNode::FocusStateChanged(void)
+{
+    // If we're just changing the window's active state and the focused node has
+    // no layoutObject we can just ignore the state change.
+    LayoutObject *layoutObject = GetLayoutObject();
+    if (nullptr == layoutObject)
+        return;
+
+    StyleChangeType changeType =
+        GetComputedStyle()->HasPseudoStyle(kPseudoIdFirstLetter)
+        ? kSubtreeStyleChange
+        : kLocalStyleChange;
+    StyleChangeReasonForTracing reason = StyleChangeReasonForTracing::CreateWithExtraData(
+        StyleChangeReason::kPseudoClass, StyleChangeExtraData::g_focus);
+    SetNeedsStyleRecalc(changeType, reason);
+
+    if (IsElementNode())
+    {
+        Element *element = ToElement(this);
+        if (element->ChildrenOrSiblingsAffectedByFocus())
+            element->PseudoStateChanged(CSSSelector::kPseudoFocus);
+    }
+
+    layoutObject->InvalidateIfControlStateChanged(kFocusControlState);
+    FocusVisibleStateChanged();
+    FocusWithinStateChanged();
+}
+
+void ContainerNode::FocusVisibleStateChanged(void)
+{
+    if (!RuntimeEnabledFeatures::CSSFocusVisibleEnabled())
+        return;
+
+    StyleChangeType changeType =
+        GetComputedStyle()->HasPseudoStyle(kPseudoIdFirstLetter)
+        ? kSubtreeStyleChange
+        : kLocalStyleChange;
+    StyleChangeReasonForTracing reason = StyleChangeReasonForTracing::CreateWithExtraData(
+        StyleChangeReason::kPseudoClass, StyleChangeExtraData::g_focus_visible);
+    SetNeedsStyleRecalc(changeType, reason);
+
+    if (IsElementNode())
+    {
+        Element *element = ToElement(this);
+        if (element->ChildrenOrSiblingsAffectedByFocusVisible())
+            element->PseudoStateChanged(CSSSelector::kPseudoFocusVisible);
+    }
+}
+
+void ContainerNode::FocusWithinStateChanged(void)
+{
+    if (const ComputedStyle *style = GetComputedStyle())
+    {
+        if (style->AffectedByFocusWithin())
+        {
+            StyleChangeType changeType =
+                style->HasPseudoStyle(kPseudoIdFirstLetter)
+                ? kSubtreeStyleChange
+                : kLocalStyleChange;
+            StyleChangeReasonForTracing reason = StyleChangeReasonForTracing::CreateWithExtraData(StyleChangeReason::kPseudoClass,
+                StyleChangeExtraData::g_focus_within);
+            SetNeedsStyleRecalc(changeType, reason);
+        }
+    }
+    if (IsElementNode())
+    {
+        Element *element = ToElement(this);
+        if (element->ChildrenOrSiblingsAffectedByFocusWithin())
+            element->PseudoStateChanged(CSSSelector::kPseudoFocusWithin);
+    }
+}
+
 void ContainerNode::RebuildChildrenLayoutTrees(WhitespaceAttacher &whitespaceAttacher)
 {
     ASSERT(!NeedsReattachLayoutTree());
@@ -1344,12 +1420,9 @@ void ContainerNode::SetFocused(bool received, WebFocusType focusType)
         {
             if (focusedElement != this)
             {
-                ASSERT(false); // BKTODO:
-#if 0
-                if (ToElement(this)->AuthorShadowRoot())
-                    received =
-                    received && ToElement(this)->AuthorShadowRoot()->delegatesFocus();
-#endif
+                Element *element = ToElement(this);
+                if (element->AuthorShadowRoot())
+                    received = received && element->AuthorShadowRoot()->delegatesFocus();
             }
         }
     }
@@ -1359,49 +1432,64 @@ void ContainerNode::SetFocused(bool received, WebFocusType focusType)
 
     Node::SetFocused(received, focusType);
 
-    ASSERT(false); // BKTODO:
-#if 0
     FocusStateChanged();
 
-    if (GetLayoutObject() || received)
+    if (nullptr != GetLayoutObject() || received)
         return;
 
     // If :focus sets display: none, we lose focus but still need to recalc our
     // style.
-    if (IsElementNode() && ToElement(this)->ChildrenOrSiblingsAffectedByFocus())
-        ToElement(this)->PseudoStateChanged(CSSSelector::kPseudoFocus);
+    if (IsElementNode())
+    {
+        Element *element = ToElement(this);
+        if (element->ChildrenOrSiblingsAffectedByFocus())
+            element->PseudoStateChanged(CSSSelector::kPseudoFocus);
+    }
     else
-        SetNeedsStyleRecalc(
-            kLocalStyleChange,
-            StyleChangeReasonForTracing::CreateWithExtraData(
-                StyleChangeReason::kPseudoClass, StyleChangeExtraData::g_focus));
-
-    if (RuntimeEnabledFeatures::CSSFocusVisibleEnabled()) {
-        if (IsElementNode() &&
-            ToElement(this)->ChildrenOrSiblingsAffectedByFocusVisible()) {
-            ToElement(this)->PseudoStateChanged(CSSSelector::kPseudoFocusVisible);
-        }
-        else {
-            SetNeedsStyleRecalc(kLocalStyleChange,
-                StyleChangeReasonForTracing::CreateWithExtraData(
-                    StyleChangeReason::kPseudoClass,
-                    StyleChangeExtraData::g_focus_visible));
-        }
+    {
+        StyleChangeReasonForTracing reason = StyleChangeReasonForTracing::CreateWithExtraData(
+            StyleChangeReason::kPseudoClass, StyleChangeExtraData::g_focus);
+        SetNeedsStyleRecalc(kLocalStyleChange, reason);
     }
 
-    if (IsElementNode() &&
-        ToElement(this)->ChildrenOrSiblingsAffectedByFocusWithin()) {
-        ToElement(this)->PseudoStateChanged(CSSSelector::kPseudoFocusWithin);
+    if (RuntimeEnabledFeatures::CSSFocusVisibleEnabled())
+    {
+        if (IsElementNode())
+        {
+            Element *element = ToElement(this);
+            if (element->ChildrenOrSiblingsAffectedByFocusVisible())
+                element->PseudoStateChanged(CSSSelector::kPseudoFocusVisible);
+        }
+        else
+        {
+            StyleChangeReasonForTracing reason = StyleChangeReasonForTracing::CreateWithExtraData(
+                StyleChangeReason::kPseudoClass, StyleChangeExtraData::g_focus_visible);
+            SetNeedsStyleRecalc(kLocalStyleChange, reason);
+        }
     }
-    else {
-        SetNeedsStyleRecalc(kLocalStyleChange,
-            StyleChangeReasonForTracing::CreateWithExtraData(
-                StyleChangeReason::kPseudoClass,
-                StyleChangeExtraData::g_focus_within));
+
+    if (IsElementNode())
+    {
+        Element *element = ToElement(this);
+        if (element->ChildrenOrSiblingsAffectedByFocusWithin())
+            element->PseudoStateChanged(CSSSelector::kPseudoFocusWithin);
     }
-#endif
+    else
+    {
+        StyleChangeReasonForTracing reason = StyleChangeReasonForTracing::CreateWithExtraData(
+            StyleChangeReason::kPseudoClass, StyleChangeExtraData::g_focus_within);
+        SetNeedsStyleRecalc(kLocalStyleChange, reason);
+    }
 }
 
+void ContainerNode::SetHasFocusWithinUpToAncestor(bool flag, Node *ancestor)
+{
+    for (ContainerNode *node = this; nullptr != node && node != ancestor; node = FlatTreeTraversal::Parent(*node))
+    {
+        node->SetHasFocusWithin(flag);
+        node->FocusWithinStateChanged();
+    }
+}
 #endif // BLINKIT_CRAWLER_ONLY
 
 }  // namespace blink

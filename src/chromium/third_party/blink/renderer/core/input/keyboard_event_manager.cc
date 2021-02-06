@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: keyboard_event_manager.cc
+// Description: KeyboardEventManager Class
+//      Author: Ziming Li
+//     Created: 2021-02-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,22 +21,24 @@
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/public/platform/web_input_event.h"
 #include "third_party/blink/renderer/core/dom/element.h"
-#include "third_party/blink/renderer/core/dom/user_gesture_indicator.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/user_gesture_indicator.h"
 #include "third_party/blink/renderer/core/editing/editor.h"
-#include "third_party/blink/renderer/core/events/keyboard_event.h"
+// BKTODO: #include "third_party/blink/renderer/core/events/keyboard_event.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
-#include "third_party/blink/renderer/core/html/html_dialog_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_dialog_element.h"
 #include "third_party/blink/renderer/core/input/event_handler.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/input/event_handling_util.h"
 #include "third_party/blink/renderer/core/input/input_device_capabilities.h"
 #include "third_party/blink/renderer/core/input/scroll_manager.h"
+#endif
 #include "third_party/blink/renderer/core/layout/layout_object.h"
-#include "third_party/blink/renderer/core/layout/layout_text_control_single_line.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_text_control_single_line.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/focus_controller.h"
 #include "third_party/blink/renderer/core/page/page.h"
-#include "third_party/blink/renderer/core/page/spatial_navigation.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/spatial_navigation.h"
 #include "third_party/blink/renderer/platform/keyboard_codes.h"
 #include "third_party/blink/renderer/platform/windows_keyboard_codes.h"
 
@@ -46,6 +59,9 @@ static const unsigned short kHIGHBITMASKSHORT = 0x8000;
 const int kVKeyProcessKey = 229;
 
 WebFocusType FocusDirectionForKey(KeyboardEvent* event) {
+  ASSERT(false); // BKTODO:
+  return kWebFocusTypeNone;
+#if 0
   if (event->ctrlKey() || event->metaKey() || event->shiftKey())
     return kWebFocusTypeNone;
 
@@ -59,6 +75,7 @@ WebFocusType FocusDirectionForKey(KeyboardEvent* event) {
   else if (event->key() == "ArrowRight")
     ret_val = kWebFocusTypeRight;
   return ret_val;
+#endif
 }
 
 bool MapKeyCodeForScroll(int key_code,
@@ -154,6 +171,8 @@ bool KeyboardEventManager::HandleAccessKey(const WebKeyboardEvent& evt) {
   // correct element is matched based on Shift key state.  Firefox only matches
   // an access key if Shift is not pressed, and does that case-insensitively.
   DCHECK(!(kAccessKeyModifiers & WebInputEvent::kShiftKey));
+  ASSERT(false); // BKTODO:
+#if 0
   if ((evt.GetModifiers() & (WebKeyboardEvent::kKeyModifiers &
                              ~WebInputEvent::kShiftKey)) != kAccessKeyModifiers)
     return false;
@@ -163,11 +182,15 @@ bool KeyboardEventManager::HandleAccessKey(const WebKeyboardEvent& evt) {
   if (!elem)
     return false;
   elem->AccessKeyAction(false);
+#endif
   return true;
 }
 
 WebInputEventResult KeyboardEventManager::KeyEvent(
     const WebKeyboardEvent& initial_key_event) {
+  ASSERT(false); // BKTODO:
+  return WebInputEventResult::kNotHandled;
+#if 0
   frame_->GetChromeClient().ClearToolTip(*frame_);
 
   if (initial_key_event.windows_key_code == VK_CAPITAL)
@@ -275,13 +298,14 @@ WebInputEventResult KeyboardEventManager::KeyEvent(
   keypress->SetTarget(node);
   return EventHandlingUtil::ToWebInputEventResult(
       node->DispatchEvent(*keypress));
+#endif
 }
 
 void KeyboardEventManager::CapsLockStateMayHaveChanged() {
   if (Element* element = frame_->GetDocument()->FocusedElement()) {
     if (LayoutObject* r = element->GetLayoutObject()) {
       if (r->IsTextField())
-        ToLayoutTextControlSingleLine(r)->CapsLockStateMayHaveChanged();
+        ASSERT(false); // BKTODO: ToLayoutTextControlSingleLine(r)->CapsLockStateMayHaveChanged();
     }
   }
 }
@@ -289,6 +313,8 @@ void KeyboardEventManager::CapsLockStateMayHaveChanged() {
 void KeyboardEventManager::DefaultKeyboardEventHandler(
     KeyboardEvent* event,
     Node* possible_focused_node) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (event->type() == EventTypeNames::keydown) {
     frame_->GetEditor().HandleKeyboardEvent(event);
     if (event->DefaultHandled())
@@ -313,11 +339,14 @@ void KeyboardEventManager::DefaultKeyboardEventHandler(
     if (event->charCode() == ' ')
       DefaultSpaceEventHandler(event, possible_focused_node);
   }
+#endif
 }
 
 void KeyboardEventManager::DefaultSpaceEventHandler(
     KeyboardEvent* event,
     Node* possible_focused_node) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK_EQ(event->type(), EventTypeNames::keypress);
 
   if (event->ctrlKey() || event->metaKey() || event->altKey())
@@ -334,11 +363,14 @@ void KeyboardEventManager::DefaultSpaceEventHandler(
     event->SetDefaultHandled();
     return;
   }
+#endif
 }
 
 void KeyboardEventManager::DefaultArrowEventHandler(
     KeyboardEvent* event,
     Node* possible_focused_node) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK_EQ(event->type(), EventTypeNames::keydown);
 
   Page* page = frame_->GetPage();
@@ -371,9 +403,12 @@ void KeyboardEventManager::DefaultArrowEventHandler(
     event->SetDefaultHandled();
     return;
   }
+#endif
 }
 
 void KeyboardEventManager::DefaultTabEventHandler(KeyboardEvent* event) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK_EQ(event->type(), EventTypeNames::keydown);
 
   // We should only advance focus on tabs if no special modifier keys are held
@@ -407,11 +442,15 @@ void KeyboardEventManager::DefaultTabEventHandler(KeyboardEvent* event) {
                                                   ->GetInputDeviceCapabilities()
                                                   ->FiresTouchEvents(false)))
     event->SetDefaultHandled();
+#endif
 }
 
 void KeyboardEventManager::DefaultEscapeEventHandler(KeyboardEvent* event) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (HTMLDialogElement* dialog = frame_->GetDocument()->ActiveModalDialog())
     dialog->DispatchEvent(*Event::CreateCancelable(EventTypeNames::cancel));
+#endif
 }
 
 static OverrideCapsLockState g_override_caps_lock_state;

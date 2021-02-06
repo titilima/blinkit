@@ -99,6 +99,7 @@ public:
 
     void AddScrollbar(Scrollbar *scrollbar);
     void RemoveScrollbar(Scrollbar *scrollbar);
+    void InvalidateAllCustomScrollbarsOnActiveChanged(void);
 
     bool IsAttached(void) const { return m_isAttached; }
     bool IsSelfVisible(void) const { return m_selfVisible; }

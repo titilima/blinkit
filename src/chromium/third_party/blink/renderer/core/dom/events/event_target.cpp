@@ -120,8 +120,15 @@ DispatchEventResult EventTarget::DispatchEvent(Event &event)
 
 DispatchEventResult EventTarget::DispatchEventInternal(Event &event)
 {
-    ASSERT(false); // BKTODO:
-    return DispatchEventResult::kCanceledBeforeDispatch;
+    DispatchEventResult dispatchResult;
+
+    event.SetTarget(this);
+    event.SetCurrentTarget(this);
+    event.SetEventPhase(Event::kAtTarget);
+    dispatchResult = FireEventListeners(event);
+    event.SetEventPhase(Event::kNone);
+
+    return dispatchResult;
 }
 
 inline LocalDOMWindow* EventTarget::ExecutingWindow(void)

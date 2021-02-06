@@ -60,6 +60,8 @@
 #   include "third_party/blink/renderer/core/dom/first_letter_pseudo_element.h"
 #   include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
 #   include "third_party/blink/renderer/core/dom/presentation_attribute_style.h"
+#   include "third_party/blink/renderer/core/editing/selection_template.h"
+#   include "third_party/blink/renderer/core/editing/visible_selection.h"
 #   include "third_party/blink/renderer/core/html/parser/nesting_level_incrementer.h"
 #   include "third_party/blink/renderer/core/layout/layout_text_fragment.h"
 #   include "third_party/blink/renderer/core/layout/layout_view.h"
@@ -2138,6 +2140,11 @@ void Element::DispatchFocusInEvent(const AtomicString &eventType, Element *oldFo
 #endif
 }
 
+void Element::DispatchFocusOutEvent(const AtomicString &eventType, Element *newFocusedElement, InputDeviceCapabilities* sourceCapabilities)
+{
+    ASSERT(false); // BKTODO:
+}
+
 const ComputedStyle* Element::EnsureComputedStyle(PseudoId pseudoElementSpecifier)
 {
     ASSERT(!ForCrawler());
@@ -2687,6 +2694,11 @@ void Element::UpdateFirstLetterPseudoElement(StyleUpdatePhase phase)
         GetElementRareData()->SetPseudoElement(kPseudoIdFirstLetter, nullptr);
 }
 
+void Element::UpdateFocusAppearance(SelectionBehaviorOnFocus selectionBehavior)
+{
+    UpdateFocusAppearanceWithOptions(selectionBehavior, FocusOptions());
+}
+
 void Element::UpdateFocusAppearanceWithOptions(SelectionBehaviorOnFocus selectionBehavior, const FocusOptions &options)
 {
     if (SelectionBehaviorOnFocus::kNone == selectionBehavior)
@@ -2698,8 +2710,6 @@ void Element::UpdateFocusAppearanceWithOptions(SelectionBehaviorOnFocus selectio
         if (nullptr == frame)
             return;
 
-        ASSERT(false); // BKTODO:
-#if 0
         // When focusing an editable element in an iframe, don't reset the selection
         // if it already contains a selection.
         if (this == frame->Selection().ComputeVisibleSelectionInDOMTreeDeprecated().RootEditableElement())
@@ -2720,7 +2730,6 @@ void Element::UpdateFocusAppearanceWithOptions(SelectionBehaviorOnFocus selectio
             .Build());
         if (!options.preventScroll())
             frame->Selection().RevealSelection();
-#endif
     }
     else if (LayoutObject *layoutObject = GetLayoutObject())
     {

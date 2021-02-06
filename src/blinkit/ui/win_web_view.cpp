@@ -127,10 +127,7 @@ void WinWebView::OnPaint(HWND hwnd)
 void WinWebView::OnShowWindow(HWND, BOOL fShow, UINT)
 {
     PageVisibilityState state = fShow ? PageVisibilityState::kVisible : PageVisibilityState::kHidden;
-    m_appCaller.Call(
-        FROM_HERE,
-        std::bind(&WebViewImpl::SetVisibilityState, this, state, false)
-    );
+    WebViewImpl::SetVisibilityState(state);
 }
 
 void WinWebView::OnSize(HWND, UINT state, int cx, int cy)
@@ -183,6 +180,12 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
             break;
         case WM_SIZE:
             HANDLE_WM_SIZE(hWnd, wParam, lParam, OnSize);
+            break;
+        case WM_SETFOCUS:
+            WebViewImpl::SetFocus(true);
+            break;
+        case WM_KILLFOCUS:
+            WebViewImpl::SetFocus(false);
             break;
         case WM_SHOWWINDOW:
             HANDLE_WM_SHOWWINDOW(hWnd, wParam, lParam, OnShowWindow);

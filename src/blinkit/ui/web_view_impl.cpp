@@ -13,16 +13,20 @@
 
 #include "blinkit/app/app_impl.h"
 #include "blinkit/ui/rendering_scheduler.h"
+#include "third_party/blink/renderer/core/editing/editor.h"
 #include "third_party/blink/renderer/core/frame/browser_controls.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/viewport_data.h"
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
+#include "third_party/blink/renderer/core/editing/editing_utilities.h"
+#include "third_party/blink/renderer/core/editing/selection_template.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"
 #include "third_party/blink/renderer/core/page/chrome_client_impl.h"
+#include "third_party/blink/renderer/core/page/focus_controller.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 
@@ -44,7 +48,7 @@ WebViewImpl::WebViewImpl(ClientCaller &clientCaller, PageVisibilityState visibil
     pageClients.chromeClient = m_chromeClient.get();
     pageClients.frameClient = this;
     m_page = Page::Create(pageClients);
-    SetVisibilityState(visibilityState, true);
+    SetVisibilityStateImpl(visibilityState, true);
 
 #if 0 // BKTODO:
     // TODO(dcheng): All WebViewImpls should have an associated LayerTreeView,
@@ -426,6 +430,89 @@ void WebViewImpl::SetClient(const BkWebViewClient &client)
     // Use `offsetof` macro for different client versions.
 }
 
+void WebViewImpl::SetFocus(bool enable)
+{
+    ASSERT(IsClientThread());
+    m_appCaller.Call(
+        FROM_HERE,
+        std::bind(&WebViewImpl::SetFocusImpl, this, enable)
+    );
+}
+
+void WebViewImpl::SetFocusImpl(bool enable)
+{
+    ASSERT(IsMainThread());
+
+    ScopedRenderingScheduler scheduler(this);
+    FocusController &focusController = m_page->GetFocusController();
+    if (enable)
+        focusController.SetActive(true);
+    focusController.SetFocused(enable);
+    if (enable)
+    {
+        LocalFrame *focusedFrame = m_page->GetFocusController().FocusedFrame();
+        if (nullptr != focusedFrame)
+        {
+            Element *element = focusedFrame->GetDocument()->FocusedElement();
+            if (nullptr != element && focusedFrame->Selection().ComputeVisibleSelectionInDOMTreeDeprecated().IsNone())
+            {
+                // If the selection was cleared while the WebView was not
+                // focused, then the focus element shows with a focus ring but
+                // no caret and does respond to keyboard inputs.
+                focusedFrame->GetDocument()->UpdateStyleAndLayoutTree();
+                if (element->IsTextControl())
+                {
+                    element->UpdateFocusAppearance(SelectionBehaviorOnFocus::kRestore);
+                }
+                else if (HasEditableStyle(*element))
+                {
+                    // updateFocusAppearance() selects all the text of
+                    // contentseditable DIVs. So we set the selection explicitly
+                    // instead. Note that this has the side effect of moving the
+                    // caret back to the beginning of the text.
+                    Position position(element, 0);
+                    focusedFrame->Selection().SetSelectionAndEndTyping(
+                        SelectionInDOMTree::Builder().Collapse(position).Build());
+                }
+            }
+        }
+        m_imeAcceptEvents = true;
+    }
+    else
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        HidePopups();
+
+        // Clear focus on the currently focused frame if any.
+        if (!page_)
+            return;
+
+        LocalFrame* frame = page_->MainFrame() && page_->MainFrame()->IsLocalFrame()
+            ? page_->DeprecatedLocalMainFrame()
+            : nullptr;
+        if (!frame)
+            return;
+
+        LocalFrame* focused_frame = FocusedLocalFrameInWidget();
+        if (focused_frame) {
+            // Finish an ongoing composition to delete the composition node.
+            if (focused_frame->GetInputMethodController().HasComposition()) {
+                // TODO(editing-dev): The use of
+                // updateStyleAndLayoutIgnorePendingStylesheets needs to be audited.
+                // See http://crbug.com/590369 for more details.
+                focused_frame->GetDocument()
+                    ->UpdateStyleAndLayoutIgnorePendingStylesheets();
+
+                focused_frame->GetInputMethodController().FinishComposingText(
+                    InputMethodController::kKeepSelection);
+            }
+            ime_accept_events_ = false;
+        }
+#endif
+    }
+}
+
 void WebViewImpl::SetPageScaleFactor(float scaleFactor)
 {
     Page *page = GetPage();
@@ -450,8 +537,18 @@ void WebViewImpl::SetScaleFactor(float scaleFactor)
     page->SetDeviceScaleFactorDeprecated(scaleFactor);
 }
 
-void WebViewImpl::SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState)
+void WebViewImpl::SetVisibilityState(PageVisibilityState visibilityState)
 {
+    ASSERT(IsClientThread());
+    m_appCaller.Call(
+        FROM_HERE,
+        std::bind(&WebViewImpl::SetVisibilityStateImpl, this, visibilityState, false)
+    );
+}
+
+void WebViewImpl::SetVisibilityStateImpl(PageVisibilityState visibilityState, bool isInitialState)
+{
+    ASSERT(IsMainThread());
     ASSERT(m_page);
     GetPage()->SetVisibilityState(visibilityState, isInitialState);
 

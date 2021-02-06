@@ -185,9 +185,11 @@ EventHandler::EventHandler(LocalFrame& frame)
       mouse_event_manager_(new MouseEventManager(frame, *scroll_manager_)),
 #if 0 // BKTODO:
       mouse_wheel_event_manager_(new MouseWheelEventManager(frame)),
+#endif
       keyboard_event_manager_(
           new KeyboardEventManager(frame, *scroll_manager_)),
-      pointer_event_manager_(
+#if 0 // BKTODO:
+    pointer_event_manager_(
           new PointerEventManager(frame, *mouse_event_manager_)),
       gesture_manager_(new GestureManager(frame,
                                           *scroll_manager_,
@@ -211,9 +213,9 @@ void EventHandler::Trace(blink::Visitor* visitor) {
   // BKTODO: visitor->Trace(event_handler_registry_);
   visitor->Trace(scroll_manager_);
   visitor->Trace(mouse_event_manager_);
-#if 0 // BKTODO:
-  visitor->Trace(mouse_wheel_event_manager_);
+  // BKTODO: visitor->Trace(mouse_wheel_event_manager_);
   visitor->Trace(keyboard_event_manager_);
+#if 0 // BKTODO:
   visitor->Trace(pointer_event_manager_);
   visitor->Trace(gesture_manager_);
 #endif
@@ -2346,7 +2348,7 @@ void EventHandler::DefaultTextInputEventHandler(TextEvent* event) {
 }
 
 void EventHandler::CapsLockStateMayHaveChanged() {
-  ASSERT(false); // BKTODO: keyboard_event_manager_->CapsLockStateMayHaveChanged();
+  keyboard_event_manager_->CapsLockStateMayHaveChanged();
 }
 
 bool EventHandler::PassMousePressEventToScrollbar(

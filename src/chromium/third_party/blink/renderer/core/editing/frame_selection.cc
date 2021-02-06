@@ -94,10 +94,8 @@
 // BKTODO: #include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/loader/document_loader.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/page/focus_controller.h"
-#include "third_party/blink/renderer/core/page/frame_tree.h"
-#endif
+// BKTODO: #include "third_party/blink/renderer/core/page/frame_tree.h"
 #include "third_party/blink/renderer/core/page/page.h"
 // BKTODO: #include "third_party/blink/renderer/core/page/spatial_navigation.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
@@ -176,12 +174,9 @@ size_t FrameSelection::CharacterIndexForPoint(const IntPoint& point) const {
 
 VisibleSelection FrameSelection::ComputeVisibleSelectionInDOMTreeDeprecated()
     const {
-  ASSERT(false); // BKTODO:
-#if 0
   // TODO(editing-dev): Hoist updateStyleAndLayoutIgnorePendingStylesheets
   // to caller. See http://crbug.com/590369 for more details.
   GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheets();
-#endif
   return ComputeVisibleSelectionInDOMTree();
 }
 
@@ -895,14 +890,11 @@ void FrameSelection::NotifyEventHandlerForSelectionChange() {
 void FrameSelection::FocusedOrActiveStateChanged() {
   bool active_and_focused = FrameIsFocusedAndActive();
 
-  ASSERT(false); // BKTODO:
-#if 0
   // Trigger style invalidation from the focused element. Even though
   // the focused element hasn't changed, the evaluation of focus pseudo
   // selectors are dependent on whether the frame is focused and active.
   if (Element* element = GetDocument().FocusedElement())
     element->FocusStateChanged();
-#endif
 
   GetDocument().UpdateStyleAndLayoutTree();
 
@@ -937,12 +929,8 @@ void FrameSelection::SetFrameIsFocused(bool flag) {
 }
 
 bool FrameSelection::FrameIsFocusedAndActive() const {
-  ASSERT(!focused_ || nullptr == frame_->GetPage()); // BKTODO:
-  return false;
-#if 0
   return focused_ && frame_->GetPage() &&
          frame_->GetPage()->GetFocusController().IsActive();
-#endif
 }
 
 void FrameSelection::CommitAppearanceIfNeeded() {

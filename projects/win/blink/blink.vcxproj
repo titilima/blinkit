@@ -1253,6 +1253,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html_tokenizer_names.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\imagebitmap\image_bitmap_source.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\event_handler.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\keyboard_event_manager.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\mouse_event_manager.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input_type_names.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\selection_state.cc" />
@@ -1462,6 +1463,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client_impl.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\drag_controller.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\focus_controller.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_animator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_visibility_notifier.cc" />
@@ -3152,6 +3154,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\custom\custom_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\custom\v0_custom_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\custom\v0_custom_element_registration_context.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\focus_options.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\form_associated.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\form_controller.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\forms\html_button_element.h" />
@@ -3242,6 +3245,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html_tokenizer_names.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\imagebitmap\image_bitmap_source.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\event_handler.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\keyboard_event_manager.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\mouse_event_manager.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\input_type_names.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\inspector\inspector_trace_events.h" />
@@ -3505,6 +3509,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\drag_controller.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\drag_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\event_with_hit_test_results.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\focus_controller.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_animator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_visibility_notifier.h" />

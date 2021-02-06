@@ -48,6 +48,7 @@
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/css/css_primitive_value.h"
 #   include "third_party/blink/renderer/core/dom/whitespace_attacher.h"
+#   include "third_party/blink/renderer/core/html/focus_options.h"
 #   include "third_party/blink/renderer/core/resize_observer/resize_observer_data_map.h"
 #endif
 
@@ -310,7 +311,10 @@ public:
         InputDeviceCapabilities *sourceCapabilities = nullptr);
     virtual void DispatchFocusInEvent(const AtomicString &eventType, Element *oldFocusedElement, WebFocusType type,
         InputDeviceCapabilities *sourceCapabilities = nullptr);
+    void DispatchFocusOutEvent(const AtomicString &eventType, Element *newFocusedElement,
+        InputDeviceCapabilities* sourceCapabilities = nullptr);
 
+    void UpdateFocusAppearance(SelectionBehaviorOnFocus selectionBehavior);
     virtual void UpdateFocusAppearanceWithOptions(SelectionBehaviorOnFocus selectionBehavior,
         const FocusOptions &options);
 

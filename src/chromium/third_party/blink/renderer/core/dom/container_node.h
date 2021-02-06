@@ -119,6 +119,7 @@ public:
     template <typename Collection>
     Collection* EnsureCachedCollection(CollectionType, const AtomicString& name);
 
+    bool ChildrenOrSiblingsAffectedByFocus(void) const { return HasRestyleFlag(DynamicRestyleFlags::kChildrenOrSiblingsAffectedByFocus); }
     void SetChildrenOrSiblingsAffectedByFocus(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenOrSiblingsAffectedByFocus); }
     bool ChildrenAffectedByFirstChildRules(void) const { return HasRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByFirstChildRules); }
     void SetChildrenAffectedByFirstChildRules(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByFirstChildRules); }
@@ -131,6 +132,8 @@ public:
     void SetChildrenAffectedByBackwardPositionalRules(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByBackwardPositionalRules); }
     void SetAffectedByFirstChildRules(void) { SetRestyleFlag(DynamicRestyleFlags::kAffectedByFirstChildRules); }
     void SetAffectedByLastChildRules(void) { SetRestyleFlag(DynamicRestyleFlags::kAffectedByLastChildRules); }
+    bool ChildrenOrSiblingsAffectedByFocusWithin(void) const { return HasRestyleFlag(DynamicRestyleFlags::kChildrenOrSiblingsAffectedByFocusWithin); }
+    bool ChildrenOrSiblingsAffectedByFocusVisible(void) const { return HasRestyleFlag(DynamicRestyleFlags::kChildrenOrSiblingsAffectedByFocusVisible); }
     void SetChildrenOrSiblingsAffectedByFocusVisible(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenOrSiblingsAffectedByFocusVisible); }
 
     void ParserAppendChild(Node *newChild);
@@ -171,6 +174,10 @@ public:
     void RebuildNonDistributedChildren(void);
 
     void SetFocused(bool received, WebFocusType focusType) override;
+    void SetHasFocusWithinUpToAncestor(bool flag, Node *ancestor);
+    void FocusStateChanged(void);
+    void FocusVisibleStateChanged(void);
+    void FocusWithinStateChanged(void);
 
     void AttachLayoutTree(AttachContext &context) override;
     void DetachLayoutTree(const AttachContext &context = AttachContext()) override;

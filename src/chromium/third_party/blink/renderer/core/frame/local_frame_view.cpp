@@ -203,7 +203,7 @@ void LocalFrameView::DidAttachDocument(void)
 
 void LocalFrameView::DidFinishForcedLayout(void)
 {
-    ASSERT(false); // BKTODO:
+    // BKTODO: Check the original logic later.
 }
 
 void LocalFrameView::Dispose(void)
@@ -364,6 +364,23 @@ void LocalFrameView::IncrementVisuallyNonEmptyPixelCount(const IntSize &size)
     static const unsigned kVisualPixelThreshold = 32 * 32;
     if (m_visuallyNonEmptyPixelCount > kVisualPixelThreshold)
         SetIsVisuallyNonEmpty();
+}
+
+void LocalFrameView::InvalidateAllCustomScrollbarsOnActiveChanged(void)
+{
+    bool usesWindowInactiveSelector = m_frame->GetDocument()->GetStyleEngine().UsesWindowInactiveSelector();
+
+#if 0 // BKTODO: Check if necessary.
+    ForAllChildLocalFrameViews([](LocalFrameView& frame_view) {
+        frame_view.InvalidateAllCustomScrollbarsOnActiveChanged();
+        });
+#endif
+
+    for (const auto &scrollbar : m_scrollbars)
+    {
+        if (usesWindowInactiveSelector && scrollbar->IsCustomScrollbar())
+            scrollbar->StyleChanged();
+    }
 }
 
 bool LocalFrameView::IsInPerformLayout(void) const
@@ -1989,7 +2006,14 @@ void LocalFrameView::WillBeRemovedFromFrame(void)
 
 void LocalFrameView::WillStartForcedLayout(void)
 {
-    ASSERT(false); // BKTODO:
+#if 0 // BKTODO: Check the logic
+    // UpdateLayoutIgnoringPendingStyleSheets is re-entrant for auto-sizing
+    // and plugins. So keep track of stack depth.
+    forced_layout_stack_depth_++;
+    if (forced_layout_stack_depth_ > 1)
+        return;
+    forced_layout_start_time_ = CurrentTimeTicks();
+#endif
 }
 
 } // namespace blink
