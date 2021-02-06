@@ -4,7 +4,7 @@
 //   File Name: event_type_names.cpp
 // Description: Event Type Names
 //      Author: Ziming Li
-//     Created: 2021-01-22
+//     Created: 2021-02-04
 // -------------------------------------------------
 // Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
@@ -26,17 +26,21 @@ const AtomicString &kDOMNodeRemoved = reinterpret_cast<AtomicString *>(&names_st
 const AtomicString &kDOMNodeRemovedFromDocument = reinterpret_cast<AtomicString *>(&names_storage)[5];
 const AtomicString &kDOMSubtreeModified = reinterpret_cast<AtomicString *>(&names_storage)[6];
 const AtomicString &kBeforeunload = reinterpret_cast<AtomicString *>(&names_storage)[7];
-const AtomicString &kError = reinterpret_cast<AtomicString *>(&names_storage)[8];
-const AtomicString &kLoad = reinterpret_cast<AtomicString *>(&names_storage)[9];
-const AtomicString &kMousewheel = reinterpret_cast<AtomicString *>(&names_storage)[10];
-const AtomicString &kPagehide = reinterpret_cast<AtomicString *>(&names_storage)[11];
-const AtomicString &kPageshow = reinterpret_cast<AtomicString *>(&names_storage)[12];
-const AtomicString &kReadystatechange = reinterpret_cast<AtomicString *>(&names_storage)[13];
-const AtomicString &kResize = reinterpret_cast<AtomicString *>(&names_storage)[14];
-const AtomicString &kScroll = reinterpret_cast<AtomicString *>(&names_storage)[15];
-const AtomicString &kUnload = reinterpret_cast<AtomicString *>(&names_storage)[16];
-const AtomicString &kVisibilitychange = reinterpret_cast<AtomicString *>(&names_storage)[17];
-const AtomicString &kWheel = reinterpret_cast<AtomicString *>(&names_storage)[18];
+const AtomicString &kBlur = reinterpret_cast<AtomicString *>(&names_storage)[8];
+const AtomicString &kError = reinterpret_cast<AtomicString *>(&names_storage)[9];
+const AtomicString &kFocus = reinterpret_cast<AtomicString *>(&names_storage)[10];
+const AtomicString &kFocusin = reinterpret_cast<AtomicString *>(&names_storage)[11];
+const AtomicString &kFocusout = reinterpret_cast<AtomicString *>(&names_storage)[12];
+const AtomicString &kLoad = reinterpret_cast<AtomicString *>(&names_storage)[13];
+const AtomicString &kMousewheel = reinterpret_cast<AtomicString *>(&names_storage)[14];
+const AtomicString &kPagehide = reinterpret_cast<AtomicString *>(&names_storage)[15];
+const AtomicString &kPageshow = reinterpret_cast<AtomicString *>(&names_storage)[16];
+const AtomicString &kReadystatechange = reinterpret_cast<AtomicString *>(&names_storage)[17];
+const AtomicString &kResize = reinterpret_cast<AtomicString *>(&names_storage)[18];
+const AtomicString &kScroll = reinterpret_cast<AtomicString *>(&names_storage)[19];
+const AtomicString &kUnload = reinterpret_cast<AtomicString *>(&names_storage)[20];
+const AtomicString &kVisibilitychange = reinterpret_cast<AtomicString *>(&names_storage)[21];
+const AtomicString &kWheel = reinterpret_cast<AtomicString *>(&names_storage)[22];
 
 void Init(void)
 {
@@ -60,7 +64,11 @@ void Init(void)
         { "DOMNodeRemovedFromDocument", 16284219, 26 },
         { "DOMSubtreeModified", 6084203, 18 },
         { "beforeunload", 16009443, 12 },
+        { "blur", 3880931, 4 },
         { "error", 6654137, 5 },
+        { "focus", 1849182, 5 },
+        { "focusin", 13489365, 7 },
+        { "focusout", 13124807, 8 },
         { "load", 8207817, 4 },
         { "mousewheel", 15891108, 10 },
         { "pagehide", 16640617, 8 },

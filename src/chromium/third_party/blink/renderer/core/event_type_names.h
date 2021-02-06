@@ -4,7 +4,7 @@
 //   File Name: event_type_names.h
 // Description: Event Type Names
 //      Author: Ziming Li
-//     Created: 2021-01-22
+//     Created: 2021-02-04
 // -------------------------------------------------
 // Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
@@ -27,7 +27,11 @@ extern const WTF::AtomicString &kDOMNodeRemoved;
 extern const WTF::AtomicString &kDOMNodeRemovedFromDocument;
 extern const WTF::AtomicString &kDOMSubtreeModified;
 extern const WTF::AtomicString &kBeforeunload;
+extern const WTF::AtomicString &kBlur;
 extern const WTF::AtomicString &kError;
+extern const WTF::AtomicString &kFocus;
+extern const WTF::AtomicString &kFocusin;
+extern const WTF::AtomicString &kFocusout;
 extern const WTF::AtomicString &kLoad;
 extern const WTF::AtomicString &kMousewheel;
 extern const WTF::AtomicString &kPagehide;
@@ -39,7 +43,7 @@ extern const WTF::AtomicString &kUnload;
 extern const WTF::AtomicString &kVisibilitychange;
 extern const WTF::AtomicString &kWheel;
 
-constexpr unsigned kNamesCount = 19;
+constexpr unsigned kNamesCount = 23;
 
 void Init(void);
 
