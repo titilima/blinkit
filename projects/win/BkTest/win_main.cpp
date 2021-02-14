@@ -58,17 +58,9 @@ private:
         m_crawler = create_crawler();
         BkRunCrawler(m_crawler, URL);
     }
-    bool get_crawler_config(int cfg, std::string &dst) const override
+    std::string get_object_script(const char *URL) const override
     {
-        switch (cfg)
-        {
-            case BK_CFG_OBJECT_SCRIPT:
-                dst.assign(UserScript);
-                break;
-            default:
-                return crawler_client_impl::get_crawler_config(cfg, dst);
-        }
-        return true;
+        return UserScript;
     }
     void document_ready(void) override
     {
