@@ -73,23 +73,9 @@ time_t Time::ToTimeT(void) const
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-TimeDelta TimeDelta::FromDouble(double value)
-{
-    if (value > std::numeric_limits<int64_t>::max())
-        return Max();
-    if (value < std::numeric_limits<int64_t>::min())
-        return Min();
-    return TimeDelta(static_cast<int64_t>(value));
-}
-
 TimeDelta TimeDelta::FromMicroseconds(int64_t us)
 {
     return TimeDelta(us);
-}
-
-TimeDelta TimeDelta::FromMilliseconds(int64_t ms)
-{
-    return FromProduct(ms, Time::kMicrosecondsPerMillisecond);
 }
 
 TimeDelta TimeDelta::FromMillisecondsD(double ms)
@@ -97,24 +83,9 @@ TimeDelta TimeDelta::FromMillisecondsD(double ms)
     return FromDouble(ms * Time::kMicrosecondsPerMillisecond);
 }
 
-TimeDelta TimeDelta::FromProduct(int64_t value, int64_t positiveValue)
-{
-    ASSERT(positiveValue > 0);
-    if (value > std::numeric_limits<int64_t>::max() / positiveValue)
-        return Max();
-    if (value < std::numeric_limits<int64_t>::min() / positiveValue)
-        return Min();
-    return TimeDelta(value * positiveValue);
-}
-
 TimeDelta TimeDelta::FromSeconds(int64_t secs)
 {
     return FromProduct(secs, Time::kMicrosecondsPerSecond);
-}
-
-TimeDelta TimeDelta::FromSecondsD(double secs)
-{
-    return FromDouble(secs * Time::kMicrosecondsPerSecond);
 }
 
 int64_t TimeDelta::InMicroseconds(void) const

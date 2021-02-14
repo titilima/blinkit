@@ -44,8 +44,8 @@ public:
     constexpr TimeDelta(void) = default;
 
     static TimeDelta FromSeconds(int64_t secs);
-    static TimeDelta FromSecondsD(double secs);
-    static TimeDelta FromMilliseconds(int64_t ms);
+    static constexpr TimeDelta FromSecondsD(double secs);
+    static constexpr TimeDelta FromMilliseconds(int64_t ms);
     static TimeDelta FromMicroseconds(int64_t us);
     static TimeDelta FromMillisecondsD(double ms);
 
@@ -126,8 +126,8 @@ private:
 
     constexpr explicit TimeDelta(int64_t deltaUs) : m_delta(deltaUs) {}
 
-    static TimeDelta FromDouble(double value);
-    static TimeDelta FromProduct(int64_t value, int64_t positiveValue);
+    static constexpr TimeDelta FromDouble(double value);
+    static constexpr TimeDelta FromProduct(int64_t value, int64_t positiveValue);
 
     template <typename T>
     constexpr T DivideOrMax(int64_t divisor) const {
@@ -310,6 +310,35 @@ private:
 
     explicit TimeTicks(int64_t us) : TimeBase(us) {}
 };
+
+constexpr TimeDelta TimeDelta::FromDouble(double value)
+{
+    if (value > std::numeric_limits<int64_t>::max())
+        return Max();
+    if (value < std::numeric_limits<int64_t>::min())
+        return Min();
+    return TimeDelta(static_cast<int64_t>(value));
+}
+
+constexpr TimeDelta TimeDelta::FromMilliseconds(int64_t ms)
+{
+    return FromProduct(ms, Time::kMicrosecondsPerMillisecond);
+}
+
+constexpr TimeDelta TimeDelta::FromProduct(int64_t value, int64_t positiveValue)
+{
+    ASSERT(positiveValue > 0);
+    if (value > std::numeric_limits<int64_t>::max() / positiveValue)
+        return Max();
+    if (value < std::numeric_limits<int64_t>::min() / positiveValue)
+        return Min();
+    return TimeDelta(value * positiveValue);
+}
+
+constexpr TimeDelta TimeDelta::FromSecondsD(double secs)
+{
+    return FromDouble(secs * Time::kMicrosecondsPerSecond);
+}
 
 }  // namespace base
 
