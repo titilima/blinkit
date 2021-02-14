@@ -103,10 +103,10 @@ protected:
     void adjust_raw_client(BkCrawlerClient &client) const override
     {
         client.DocumentReady = document_ready_callback;
-        client.GetConfig = get_config_callback;
+        client.GetObjectScript = get_object_script_callback;
         client.Error = error_callback;
     }
-    virtual bool get_crawler_config(int cfg, std::string &dst) const { return false; }
+    virtual std::string get_object_script(const char *URL) const { return std::string(); }
 private:
     virtual void document_ready(void) = 0;
     virtual void on_crawler_error(int code, const char *url)
@@ -118,13 +118,10 @@ private:
     {
         get_client_root(p)->document_ready();
     }
-    static bool_t BKAPI get_config_callback(int cfg, BkBuffer *dst, void *p)
+    static void BKAPI get_object_script_callback(const char *URL, BkBuffer *dst, void *p)
     {
-        std::string s;
-        if (!get_client_root(p)->get_crawler_config(cfg, s))
-            return false;
-        BkSetBufferData(dst, s.data(), s.length());
-        return true;
+        std::string script = get_client_root(p)->get_object_script(URL);
+        BkSetBufferData(dst, script.data(), script.length());
     }
     static void BKAPI error_callback(int code, const char *url, void *p)
     {
