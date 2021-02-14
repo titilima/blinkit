@@ -106,8 +106,8 @@ protected:
         client.GetObjectScript = get_object_script_callback;
         client.Error = error_callback;
     }
-    virtual std::string get_object_script(const char *URL) const { return std::string(); }
 private:
+    virtual std::string get_object_script(const char *URL) const { return std::string(); }
     virtual void document_ready(void) = 0;
     virtual void on_crawler_error(int code, const char *url)
     {
