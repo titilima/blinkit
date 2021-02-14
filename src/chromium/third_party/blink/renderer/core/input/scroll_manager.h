@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scroll_manager.h
+// Description: ScrollManager Class
+//      Author: Ziming Li
+//     Created: 2021-02-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -129,7 +140,9 @@ class CORE_EXPORT ScrollManager
   // scroller_size is set only when scrolling non root scroller.
   void ComputeScrollRelatedMetrics(
       uint32_t* non_composited_main_thread_scrolling_reasons);
+#if 0 // BKTODO:
   void RecordScrollRelatedMetrics(const WebGestureDevice);
+#endif
 
   WebGestureEvent SynthesizeGestureScrollBegin(
       const WebGestureEvent& update_event);

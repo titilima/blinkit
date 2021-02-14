@@ -1084,6 +1084,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\frame_caret.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\frame_selection.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\granularity_strategy.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\ime\input_method_controller.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\inline_box_position.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\inline_box_traversal.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_character_iterator.cc" />
@@ -1255,6 +1256,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\event_handler.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\keyboard_event_manager.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\mouse_event_manager.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\scroll_manager.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input_type_names.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\selection_state.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\bidi_run_for_line.cc" />
@@ -1460,6 +1462,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\scheduled_navigation.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\text_resource_decoder_builder.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\media_type_names.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\autoscroll_controller.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client_impl.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\drag_controller.cc" />
@@ -3049,6 +3052,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\frame_caret.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\frame_selection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\granularity_strategy.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\ime\input_method_controller.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\inline_box_position.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\inline_box_traversal.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_character_iterator.h" />
@@ -3247,6 +3251,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\event_handler.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\keyboard_event_manager.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\mouse_event_manager.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\scroll_manager.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\input_type_names.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\inspector\inspector_trace_events.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\intersection_observer\element_intersection_observer_data.h" />
@@ -3502,6 +3507,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\text_resource_decoder_builder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\mathml_names.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\media_type_names.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\autoscroll_controller.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client_impl.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\display_cutout.h" />

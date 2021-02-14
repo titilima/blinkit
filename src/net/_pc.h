@@ -28,5 +28,6 @@
 #endif
 
 #include <cassert>
+#include "base/logging.h"
 
 #endif // BLINKIT_NET__PC_H

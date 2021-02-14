@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scroll_manager.cc
+// Description: ScrollManager Class
+//      Author: Ziming Li
+//     Created: 2021-02-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,15 +18,15 @@
 #include <memory>
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "third_party/blink/renderer/core/dom/node_computed_style.h"
-#include "third_party/blink/renderer/core/events/gesture_event.h"
+// BKTODO: #include "third_party/blink/renderer/core/events/gesture_event.h"
 #include "third_party/blink/renderer/core/frame/browser_controls.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
-#include "third_party/blink/renderer/core/html/html_frame_owner_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_frame_owner_element.h"
 #include "third_party/blink/renderer/core/input/event_handler.h"
-#include "third_party/blink/renderer/core/input/event_handling_util.h"
+// BKTODO: #include "third_party/blink/renderer/core/input/event_handling_util.h"
 #include "third_party/blink/renderer/core/layout/layout_block.h"
-#include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/page/autoscroll_controller.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
@@ -51,11 +62,15 @@ SnapFlingController::GestureScrollType ToGestureScrollType(
 
 SnapFlingController::GestureScrollUpdateInfo GetGestureScrollUpdateInfo(
     const WebGestureEvent& event) {
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   return {.delta = gfx::Vector2dF(-event.data.scroll_update.delta_x,
                                   -event.data.scroll_update.delta_y),
           .is_in_inertial_phase = event.data.scroll_update.inertial_phase ==
                                   WebGestureEvent::kMomentumPhase,
           .event_time = event.TimeStamp()};
+#endif
 }
 
 ScrollableArea* ScrollableAreaForSnapping(LayoutBox* layout_box) {
@@ -138,12 +153,16 @@ static bool CanPropagate(const ScrollState& scroll_state,
       !scrollable_area->UserInputScrollable(kVerticalScrollbar))
     return true;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return (scroll_state.deltaXHint() == 0 ||
           element.GetComputedStyle()->OverscrollBehaviorX() ==
               EOverscrollBehavior::kAuto) &&
          (scroll_state.deltaYHint() == 0 ||
           element.GetComputedStyle()->OverscrollBehaviorY() ==
               EOverscrollBehavior::kAuto);
+#endif
 }
 
 void ScrollManager::RecomputeScrollChain(const Node& start_node,
@@ -219,6 +238,9 @@ bool ScrollManager::CanScroll(const ScrollState& scroll_state,
   if (!scrollable_area)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   double delta_x = scroll_state.isBeginning() ? scroll_state.deltaXHint()
                                               : scroll_state.deltaX();
   double delta_y = scroll_state.isBeginning() ? scroll_state.deltaYHint()
@@ -236,6 +258,7 @@ bool ScrollManager::CanScroll(const ScrollState& scroll_state,
   ScrollOffset clamped_offset =
       scrollable_area->ClampScrollOffset(target_offset);
   return clamped_offset != current_offset;
+#endif
 }
 
 bool ScrollManager::LogicalScroll(ScrollDirection direction,
@@ -262,6 +285,8 @@ bool ScrollManager::LogicalScroll(ScrollDirection direction,
   document.UpdateStyleAndLayoutIgnorePendingStylesheets();
 
   std::deque<DOMNodeId> scroll_chain;
+  ASSERT(false); // BKTODO:
+#if 0
   std::unique_ptr<ScrollStateData> scroll_state_data =
       std::make_unique<ScrollStateData>();
   ScrollState* scroll_state = ScrollState::Create(std::move(scroll_state_data));
@@ -302,6 +327,7 @@ bool ScrollManager::LogicalScroll(ScrollDirection direction,
     if (result.DidScroll())
       return true;
   }
+#endif
 
   return false;
 }
@@ -320,21 +346,28 @@ bool ScrollManager::BubblingScroll(ScrollDirection direction,
   if (LogicalScroll(direction, granularity, starting_node, mouse_press_node))
     return true;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   Frame* parent_frame = frame_->Tree().Parent();
   if (!parent_frame)
     return false;
 
   return parent_frame->BubbleLogicalScrollFromChildFrame(direction, granularity,
                                                          frame_);
+#endif
 }
 
 void ScrollManager::CustomizedScroll(ScrollState& scroll_state) {
   TRACE_EVENT0("input", "ScrollManager::CustomizedScroll");
+  ASSERT(false); // BKTODO:
+#if 0
   if (scroll_state.FullyConsumed())
     return;
 
   if (scroll_state.deltaX() || scroll_state.deltaY())
     frame_->GetDocument()->UpdateStyleAndLayoutIgnorePendingStylesheets();
+#endif
 
   DCHECK(!current_scroll_chain_.empty());
 
@@ -368,6 +401,7 @@ void ScrollManager::ComputeScrollRelatedMetrics(
   }
 }
 
+#if 0 // BKTODO:
 void ScrollManager::RecordScrollRelatedMetrics(const WebGestureDevice device) {
   if (device != kWebGestureDeviceTouchpad &&
       device != kWebGestureDeviceTouchscreen) {
@@ -401,6 +435,7 @@ void ScrollManager::RecordScrollRelatedMetrics(const WebGestureDevice device) {
     }
   }
 }
+#endif
 
 WebInputEventResult ScrollManager::HandleGestureScrollBegin(
     const WebGestureEvent& gesture_event) {
@@ -431,6 +466,8 @@ WebInputEventResult ScrollManager::HandleGestureScrollBegin(
   WebInputEventResult child_result = PassScrollGestureEvent(
       gesture_event, scroll_gesture_handling_node_->GetLayoutObject());
 
+  ASSERT(false); // BKTODO:
+#if 0
   RecordScrollRelatedMetrics(gesture_event.SourceDevice());
 
   current_scroll_chain_.clear();
@@ -469,6 +506,7 @@ WebInputEventResult ScrollManager::HandleGestureScrollBegin(
     UseCounter::Count(frame_->GetDocument(), WebFeature::kScrollByTouch);
   else
     UseCounter::Count(frame_->GetDocument(), WebFeature::kScrollByWheel);
+#endif
 
   return WebInputEventResult::kHandledSystem;
 }
@@ -476,6 +514,8 @@ WebInputEventResult ScrollManager::HandleGestureScrollBegin(
 WebInputEventResult ScrollManager::HandleGestureScrollUpdate(
     const WebGestureEvent& gesture_event) {
   TRACE_EVENT0("input", "ScrollManager::handleGestureScrollUpdate");
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK_EQ(gesture_event.GetType(), WebInputEvent::kGestureScrollUpdate);
 
   Node* node = scroll_gesture_handling_node_.Get();
@@ -586,6 +626,7 @@ WebInputEventResult ScrollManager::HandleGestureScrollUpdate(
 
   if (did_scroll_x || did_scroll_y)
     return WebInputEventResult::kHandledSystem;
+#endif
 
   return WebInputEventResult::kNotHandled;
 }
@@ -601,6 +642,8 @@ WebInputEventResult ScrollManager::HandleGestureScrollEnd(
       ClearGestureScrollState();
       return WebInputEventResult::kNotHandled;
     }
+    ASSERT(false); // BKTODO:
+#if 0
     std::unique_ptr<ScrollStateData> scroll_state_data =
         std::make_unique<ScrollStateData>();
     scroll_state_data->is_ending = true;
@@ -614,6 +657,7 @@ WebInputEventResult ScrollManager::HandleGestureScrollEnd(
     ScrollState* scroll_state =
         ScrollState::Create(std::move(scroll_state_data));
     CustomizedScroll(*scroll_state);
+#endif
     SnapAtGestureScrollEnd();
     NotifyScrollPhaseEndForCustomizedScroll();
   }
@@ -668,6 +712,8 @@ gfx::Vector2dF ScrollManager::ScrollByForSnapFling(
   if (!scrollable_area)
     return gfx::Vector2dF();
 
+  ASSERT(false); // BKTODO:
+#if 0
   std::unique_ptr<ScrollStateData> scroll_state_data =
       std::make_unique<ScrollStateData>();
 
@@ -685,6 +731,7 @@ gfx::Vector2dF ScrollManager::ScrollByForSnapFling(
       previous_gesture_scrolled_element_);
 
   CustomizedScroll(*scroll_state);
+#endif
   FloatPoint end_position = scrollable_area->ScrollPosition();
   return gfx::Vector2dF(end_position.X(), end_position.Y());
 }
@@ -695,6 +742,8 @@ void ScrollManager::ScrollEndForSnapFling() {
     ClearGestureScrollState();
     return;
   }
+  ASSERT(false); // BKTODO:
+#if 0
   std::unique_ptr<ScrollStateData> scroll_state_data =
       std::make_unique<ScrollStateData>();
   scroll_state_data->is_ending = true;
@@ -704,6 +753,7 @@ void ScrollManager::ScrollEndForSnapFling() {
       delta_consumed_for_scroll_sequence_;
   ScrollState* scroll_state = ScrollState::Create(std::move(scroll_state_data));
   CustomizedScroll(*scroll_state);
+#endif
   NotifyScrollPhaseEndForCustomizedScroll();
   ClearGestureScrollState();
 }
@@ -725,6 +775,9 @@ Page* ScrollManager::GetPage() const {
 WebInputEventResult ScrollManager::PassScrollGestureEvent(
     const WebGestureEvent& gesture_event,
     LayoutObject* layout_object) {
+  ASSERT(false); // BKTODO:
+  return WebInputEventResult::kNotHandled;
+#if 0
   DCHECK(gesture_event.IsScrollEvent());
 
   if (!last_gesture_scroll_over_embedded_content_view_ || !layout_object ||
@@ -741,6 +794,7 @@ WebInputEventResult ScrollManager::PassScrollGestureEvent(
       ->GetFrame()
       .GetEventHandler()
       .HandleGestureScrollEvent(gesture_event);
+#endif
 }
 
 bool ScrollManager::IsViewportScrollingElement(const Element& element) const {
@@ -762,6 +816,9 @@ WebInputEventResult ScrollManager::HandleGestureScrollEvent(
 
   Node* event_target = nullptr;
   Scrollbar* scrollbar = nullptr;
+  ASSERT(false); // BKTODO:
+  return WebInputEventResult::kNotHandled;
+#if 0
   if (gesture_event.GetType() != WebInputEvent::kGestureScrollBegin) {
     scrollbar = scrollbar_handling_scroll_gesture_.Get();
     event_target = scroll_gesture_handling_node_.Get();
@@ -847,6 +904,7 @@ WebInputEventResult ScrollManager::HandleGestureScrollEvent(
       NOTREACHED();
       return WebInputEventResult::kNotHandled;
   }
+#endif
 }
 
 bool ScrollManager::IsScrollbarHandlingGestures() const {
@@ -856,6 +914,8 @@ bool ScrollManager::IsScrollbarHandlingGestures() const {
 bool ScrollManager::HandleScrollGestureOnResizer(
     Node* event_target,
     const WebGestureEvent& gesture_event) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (gesture_event.SourceDevice() != kWebGestureDeviceTouchscreen)
     return false;
 
@@ -889,6 +949,7 @@ bool ScrollManager::HandleScrollGestureOnResizer(
       return false;
     }
   }
+#endif
 
   return false;
 }
@@ -940,6 +1001,9 @@ bool ScrollManager::CanHandleGestureEvent(
 
 WebGestureEvent ScrollManager::SynthesizeGestureScrollBegin(
     const WebGestureEvent& update_event) {
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   DCHECK_EQ(update_event.GetType(), WebInputEvent::kGestureScrollUpdate);
   WebGestureEvent scroll_begin(update_event);
   scroll_begin.SetType(WebInputEvent::kGestureScrollBegin);
@@ -950,10 +1014,13 @@ WebGestureEvent ScrollManager::SynthesizeGestureScrollBegin(
   scroll_begin.data.scroll_begin.delta_hint_units =
       update_event.data.scroll_update.delta_units;
   return scroll_begin;
+#endif
 }
 
 void ScrollManager::NotifyScrollPhaseBeginForCustomizedScroll(
     const ScrollState& scroll_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   ScrollCustomization::ScrollDirection direction =
       ScrollCustomization::GetScrollDirectionFromDeltas(
           scroll_state.deltaXHint(), scroll_state.deltaYHint());
@@ -962,13 +1029,14 @@ void ScrollManager::NotifyScrollPhaseBeginForCustomizedScroll(
     if (node && node->IsElementNode())
       ToElement(node)->WillBeginCustomizedScrollPhase(direction);
   }
+#endif
 }
 
 void ScrollManager::NotifyScrollPhaseEndForCustomizedScroll() {
   for (auto id : current_scroll_chain_) {
     Node* node = DOMNodeIds::NodeForId(id);
     if (node && node->IsElementNode())
-      ToElement(node)->DidEndCustomizedScrollPhase();
+      ASSERT(false); // BKTODO: ToElement(node)->DidEndCustomizedScrollPhase();
   }
 }
 

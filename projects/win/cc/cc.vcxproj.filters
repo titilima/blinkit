@@ -95,6 +95,12 @@
     <ClCompile Include="..\..\..\src\chromium\cc\paint\decoded_draw_image.cc">
       <Filter>paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\input\snap_fling_controller.cc">
+      <Filter>input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\cc\input\snap_fling_curve.cc">
+      <Filter>input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\cc\_pc.h">
@@ -207,6 +213,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\cc\paint\decoded_draw_image.h">
       <Filter>paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\cc\input\snap_fling_curve.h">
+      <Filter>input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

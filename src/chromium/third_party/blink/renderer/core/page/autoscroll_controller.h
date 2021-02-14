@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: autoscroll_controller.h
+// Description: AutoscrollController Class
+//      Author: Ziming Li
+//     Created: 2021-02-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2009, 2010, 2011 Apple Inc. All rights reserved.
  *
@@ -63,11 +74,9 @@ enum MiddleClickMode {
 
 // AutscrollController handels autoscroll and middle click autoscroll for
 // EventHandler.
-class CORE_EXPORT AutoscrollController final
-    : public GarbageCollected<AutoscrollController> {
+class CORE_EXPORT AutoscrollController final {
  public:
-  static AutoscrollController* Create(Page&);
-  void Trace(blink::Visitor*);
+  static std::unique_ptr<AutoscrollController> Create(Page&);
 
   // Selection and drag-and-drop autoscroll.
   void Animate();

@@ -77,7 +77,7 @@
 #include "third_party/blink/renderer/core/layout/ng/geometry/ng_box_strut.h"
 #include "third_party/blink/renderer/core/layout/ng/ng_fragmentation_utils.h"
 #include "third_party/blink/renderer/core/layout/shapes/shape_outside_info.h"
-// BKTODO: #include "third_party/blink/renderer/core/page/autoscroll_controller.h"
+#include "third_party/blink/renderer/core/page/autoscroll_controller.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/page/scrolling/scrolling_coordinator.h"
@@ -1175,12 +1175,9 @@ void LayoutBox::ScrollByRecursively(const ScrollOffset& delta) {
 
     LocalFrame* frame = GetFrame();
     if (frame && frame->GetPage()) {
-      ASSERT(false); // BKTODO:
-#if 0
       frame->GetPage()
           ->GetAutoscrollController()
           .UpdateAutoscrollLayoutObject();
-#endif
     }
   }
   // FIXME: If we didn't scroll the whole way, do we want to try looking at

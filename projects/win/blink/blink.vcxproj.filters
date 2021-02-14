@@ -330,6 +330,9 @@
     <Filter Include="renderer\platform\image-decoders\gif">
       <UniqueIdentifier>{a3b001a0-c400-4bd7-872d-c1c1c8acf8fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\editing\ime">
+      <UniqueIdentifier>{59631f1d-da7d-4d05-b986-47cec64c335c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -5560,6 +5563,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\keyboard_event_manager.cc">
       <Filter>renderer\core\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\scroll_manager.cc">
+      <Filter>renderer\core\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\autoscroll_controller.cc">
+      <Filter>renderer\core\page</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\ime\input_method_controller.cc">
+      <Filter>renderer\core\editing\ime</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -12366,6 +12378,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\focus_options.h">
       <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\input\scroll_manager.h">
+      <Filter>renderer\core\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\autoscroll_controller.h">
+      <Filter>renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\ime\input_method_controller.h">
+      <Filter>renderer\core\editing\ime</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

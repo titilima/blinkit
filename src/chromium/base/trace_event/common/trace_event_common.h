@@ -27,6 +27,8 @@
 
 #define TRACE_EVENT_CATEGORY_GROUP_ENABLED(...)     ((void)0)
 #define TRACE_EVENT_OBJECT_SNAPSHOT_WITH_ID(...)    ((void)0)
+
+#define TRACE_EVENT_INSTANT0(...)                   ((void)0)
 #define TRACE_EVENT_INSTANT1(...)                   ((void)0)
 
 #define TRACE_EVENT_NESTABLE_ASYNC_BEGIN1(...)      ((void)0)
@@ -36,5 +38,6 @@
 #define TRACE_EVENT0(...)                           ((void)0)
 #define TRACE_EVENT1(...)                           ((void)0)
 #define TRACE_EVENT2(...)                           ((void)0)
+
 
 #endif // BLINKIT_BASE_TRACE_EVENT_COMMON_H

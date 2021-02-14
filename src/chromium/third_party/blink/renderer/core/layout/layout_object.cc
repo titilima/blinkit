@@ -102,17 +102,15 @@
 #include "third_party/blink/renderer/core/layout/svg/layout_svg_resource_clipper.h"
 #include "third_party/blink/renderer/core/layout/svg/svg_resources.h"
 #include "third_party/blink/renderer/core/layout/svg/svg_resources_cache.h"
-#include "third_party/blink/renderer/core/page/autoscroll_controller.h"
 #endif
+#include "third_party/blink/renderer/core/page/autoscroll_controller.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
 #include "third_party/blink/renderer/core/paint/object_paint_invalidator.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
-#if 0 // BKTODO:
-#include "third_party/blink/renderer/core/paint/paint_tracker.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/paint_tracker.h"
 #include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
-#endif
 #include "third_party/blink/renderer/core/style/content_data.h"
 #include "third_party/blink/renderer/core/style/cursor_data.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
@@ -734,10 +732,10 @@ LayoutRect LayoutObject::ScrollRectToVisible(
   if (!enclosing_box)
     return rect;
 
+  GetDocument().GetFrame()->GetSmoothScrollSequencer().AbortAnimations();
   ASSERT(false); // BKTODO:
   return rect;
 #if 0
-  GetDocument().GetFrame()->GetSmoothScrollSequencer().AbortAnimations();
   WebScrollIntoViewParams new_params(params);
   new_params.is_for_scroll_sequence |=
       params.GetScrollType() == kProgrammaticScroll;
@@ -3088,11 +3086,9 @@ void LayoutObject::WillBeDestroyed() {
     children->DestroyLeftoverChildren();
 
   if (LocalFrame* frame = GetFrame()) {
-#if 0 // BKTODO: Check this later.
     // If this layoutObject is being autoscrolled, stop the autoscrolling.
     if (frame->GetPage())
       frame->GetPage()->GetAutoscrollController().StopAutoscrollIfNeeded(this);
-#endif
   }
 
 #if 0 // BKTODO: Check if necessary.

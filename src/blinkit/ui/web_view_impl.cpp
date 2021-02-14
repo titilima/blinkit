@@ -80,6 +80,11 @@ Color WebViewImpl::BaseBackgroundColor(void) const
     return m_baseBackgroundColor;
 }
 
+void WebViewImpl::CancelPagePopup(void)
+{
+    BKLOG("// BKTODO: CancelPagePopup");
+}
+
 float WebViewImpl::ClampPageScaleFactorToLimits(float scaleFactor) const
 {
     return GetPageScaleConstraintsSet().FinalConstraints().ClampToConstraints(scaleFactor);
@@ -480,36 +485,27 @@ void WebViewImpl::SetFocusImpl(bool enable)
     }
     else
     {
-        ASSERT(false); // BKTODO:
-#if 0
-        HidePopups();
+        CancelPagePopup();
 
         // Clear focus on the currently focused frame if any.
-        if (!page_)
+        if (!m_page)
             return;
 
-        LocalFrame* frame = page_->MainFrame() && page_->MainFrame()->IsLocalFrame()
-            ? page_->DeprecatedLocalMainFrame()
-            : nullptr;
-        if (!frame)
+        LocalFrame *frame = m_page->MainFrame();
+        if (nullptr == frame)
             return;
 
-        LocalFrame* focused_frame = FocusedLocalFrameInWidget();
-        if (focused_frame) {
-            // Finish an ongoing composition to delete the composition node.
-            if (focused_frame->GetInputMethodController().HasComposition()) {
-                // TODO(editing-dev): The use of
-                // updateStyleAndLayoutIgnorePendingStylesheets needs to be audited.
-                // See http://crbug.com/590369 for more details.
-                focused_frame->GetDocument()
-                    ->UpdateStyleAndLayoutIgnorePendingStylesheets();
+        if (frame->GetInputMethodController().HasComposition())
+        {
+            // TODO(editing-dev): The use of
+            // updateStyleAndLayoutIgnorePendingStylesheets needs to be audited.
+            // See http://crbug.com/590369 for more details.
+            frame->GetDocument()->UpdateStyleAndLayoutIgnorePendingStylesheets();
 
-                focused_frame->GetInputMethodController().FinishComposingText(
-                    InputMethodController::kKeepSelection);
-            }
-            ime_accept_events_ = false;
+            frame->GetInputMethodController().FinishComposingText(
+                InputMethodController::kKeepSelection);
         }
-#endif
+        m_imeAcceptEvents = false;
     }
 }
 

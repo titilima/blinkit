@@ -54,8 +54,8 @@
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/input/mouse_wheel_event_manager.h"
 #include "third_party/blink/renderer/core/input/pointer_event_manager.h"
-#include "third_party/blink/renderer/core/input/scroll_manager.h"
 #endif
+#include "third_party/blink/renderer/core/input/scroll_manager.h"
 #include "third_party/blink/renderer/core/layout/hit_test_request.h"
 // BKTODO: #include "third_party/blink/renderer/core/page/drag_actions.h"
 #include "third_party/blink/renderer/core/page/event_with_hit_test_results.h"

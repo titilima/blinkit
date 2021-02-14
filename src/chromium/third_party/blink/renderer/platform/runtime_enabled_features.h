@@ -101,6 +101,7 @@ public:
     BLINKIT_DISABLE_FEATURE(LayoutNGFlexBox)
     BLINKIT_DISABLE_FEATURE(LayoutNGFragmentCaching)
     BLINKIT_DISABLE_FEATURE(LazyImageLoading)
+    BLINKIT_DISABLE_FEATURE(MiddleClickAutoscroll)
     BLINKIT_DISABLE_FEATURE(NoHoverAfterLayoutChange)
     BLINKIT_DISABLE_FEATURE(NoHoverDuringScroll)
     BLINKIT_DISABLE_FEATURE(OffMainThreadCSSPaint)

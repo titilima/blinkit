@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: input_method_controller.h
+// Description: InputMethodController Class
+//      Author: Ziming Li
+//     Created: 2021-02-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -28,13 +39,15 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/macros.h"
+#if 0 // BKTODO:
 #include "third_party/blink/public/platform/web_text_input_info.h"
 #include "third_party/blink/public/platform/web_text_input_type.h"
+#endif
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/document_shutdown_observer.h"
 #include "third_party/blink/renderer/core/editing/forward.h"
-#include "third_party/blink/renderer/core/editing/ime/ime_text_span.h"
+ // BKTODO: #include "third_party/blink/renderer/core/editing/ime/ime_text_span.h"
 #include "third_party/blink/renderer/core/editing/plain_text_range.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
@@ -47,8 +60,7 @@ class Range;
 enum class TypingContinuation;
 
 class CORE_EXPORT InputMethodController final
-    : public GarbageCollectedFinalized<InputMethodController>,
-      public DocumentShutdownObserver {
+    : public DocumentShutdownObserver {
   USING_GARBAGE_COLLECTED_MIXIN(InputMethodController);
 
  public:
@@ -57,12 +69,13 @@ class CORE_EXPORT InputMethodController final
     kKeepSelection,
   };
 
-  static InputMethodController* Create(LocalFrame&);
+  static std::unique_ptr<InputMethodController> Create(LocalFrame&);
   virtual ~InputMethodController();
   void Trace(blink::Visitor*) override;
 
   // international text input composition
   bool HasComposition() const;
+#if 0 // BKTODO:
   void SetComposition(const String& text,
                       const Vector<ImeTextSpan>& ime_text_spans,
                       int selection_start,
@@ -77,6 +90,7 @@ class CORE_EXPORT InputMethodController final
   bool CommitText(const String& text,
                   const Vector<ImeTextSpan>& ime_text_spans,
                   int relative_caret_position);
+#endif
 
   // Inserts ongoing composing text; changes the selection to the end of
   // the inserting text if DoNotKeepSelection, or holds the selection if
@@ -100,12 +114,16 @@ class CORE_EXPORT InputMethodController final
                                          size_t text_length) const;
   void DeleteSurroundingText(int before, int after);
   void DeleteSurroundingTextInCodePoints(int before, int after);
+#if 0 // BKTODO:
   WebTextInputInfo TextInputInfo() const;
+#endif
   // For finding NEXT/PREVIOUS everytime during frame update is a costly
   // operation, so making it specific whenever needed by splitting from
   // TextInputFlags()
   int ComputeWebTextInputNextPreviousFlags() const;
+#if 0 // BKTODO:
   WebTextInputType TextInputType() const;
+#endif
 
   // Call this when we will change focus.
   void WillChangeFocus();
@@ -136,24 +154,30 @@ class CORE_EXPORT InputMethodController final
   // Returns true if selection offsets were successfully set.
   bool SetSelectionOffsets(const PlainTextRange&);
 
+#if 0 // BKTODO:
   void AddImeTextSpans(const Vector<ImeTextSpan>& ime_text_spans,
                        ContainerNode* base_element,
                        unsigned offset_in_plain_chars);
+#endif
 
   bool InsertText(const String&);
+#if 0 // BKTODO:
   bool InsertTextAndMoveCaret(const String&,
                               int relative_caret_position,
                               const Vector<ImeTextSpan>& ime_text_spans);
+#endif
 
   // Inserts the given text string in the place of the existing composition.
   // Returns true if did replace.
   bool ReplaceComposition(const String& text) WARN_UNUSED_RESULT;
+#if 0 // BKTODO:
   // Inserts the given text string in the place of the existing composition
   // and moves caret. Returns true if did replace and moved caret successfully.
   bool ReplaceCompositionAndMoveCaret(
       const String&,
       int relative_caret_position,
       const Vector<ImeTextSpan>& ime_text_spans);
+#endif
 
   // Returns false if the frame was destroyed, true otherwise.
   bool DeleteSelection() WARN_UNUSED_RESULT;
@@ -169,7 +193,9 @@ class CORE_EXPORT InputMethodController final
       int selection_end,
       size_t text_length) const;
   int TextInputFlags() const;
+#if 0 // BKTODO:
   WebTextInputMode InputModeOfFocusedElement() const;
+#endif
 
   // Implements |DocumentShutdownObserver|.
   void ContextDestroyed(Document*) final;

@@ -156,6 +156,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\cc\base\math_util.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\input\snap_fling_controller.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\input\snap_fling_curve.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\decoded_draw_image.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\display_item_list.cc" />
     <ClCompile Include="..\..\..\src\chromium\cc\paint\draw_image.cc" />
@@ -193,6 +195,7 @@
     <ClInclude Include="..\..\..\src\chromium\cc\input\browser_controls_state.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\input\scroll_snap_data.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\input\snap_fling_controller.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\input\snap_fling_curve.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\input\touch_action.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\decoded_draw_image.h" />
     <ClInclude Include="..\..\..\src\chromium\cc\paint\display_item_list.h" />

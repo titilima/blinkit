@@ -43,14 +43,14 @@
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/input/event_handling_util.h"
 #include "third_party/blink/renderer/core/input/input_device_capabilities.h"
-#include "third_party/blink/renderer/core/input/keyboard_event_manager.h"
 #endif
+#include "third_party/blink/renderer/core/input/keyboard_event_manager.h"
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
-// BKTODO: #include "third_party/blink/renderer/core/page/autoscroll_controller.h"
+#include "third_party/blink/renderer/core/page/autoscroll_controller.h"
 #include "third_party/blink/renderer/core/page/drag_controller.h"
 #include "third_party/blink/renderer/core/page/drag_state.h"
-// BKTODO: #include "third_party/blink/renderer/core/page/focus_controller.h"
+#include "third_party/blink/renderer/core/page/focus_controller.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
@@ -85,23 +85,23 @@ String CanvasRegionId(Node* node, const WebMouseEvent& mouse_event) {
 
 // The amount of time to wait before sending a fake mouse event triggered
 // during a scroll.
-const TimeDelta kFakeMouseMoveIntervalDuringScroll =
+constexpr TimeDelta kFakeMouseMoveIntervalDuringScroll =
     TimeDelta::FromMilliseconds(100);
 
 // The amount of time to wait before sending a fake mouse event on style and
 // layout changes sets to 50Hz, same as common screen refresh rate.
-const TimeDelta kFakeMouseMoveIntervalAfterLayoutChange =
+constexpr TimeDelta kFakeMouseMoveIntervalAfterLayoutChange =
     TimeDelta::FromMilliseconds(20);
 
 // TODO(crbug.com/653490): Read these values from the OS.
 #if defined(OS_MACOSX)
 const int kDragThresholdX = 3;
 const int kDragThresholdY = 3;
-const TimeDelta kTextDragDelay = TimeDelta::FromSecondsD(0.15);
+constexpr TimeDelta kTextDragDelay = TimeDelta::FromSecondsD(0.15);
 #else
 const int kDragThresholdX = 4;
 const int kDragThresholdY = 4;
-const TimeDelta kTextDragDelay = TimeDelta::FromSecondsD(0.0);
+constexpr TimeDelta kTextDragDelay = TimeDelta::FromSecondsD(0.0);
 #endif
 
 }  // namespace
@@ -390,11 +390,11 @@ void MouseEventManager::FakeMouseMoveEventTimerFired(TimerBase* timer) {
   if (!view)
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (!frame_->GetPage() || !frame_->GetPage()->GetFocusController().IsActive())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Don't dispatch a synthetic mouse move event if the mouse cursor is not
   // visible to the user.
   if (!frame_->GetPage()->IsCursorVisible())
@@ -504,8 +504,6 @@ WebInputEventResult MouseEventManager::HandleMouseFocus(
     }
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   // The layout needs to be up to date to determine if an element is focusable.
   frame_->GetDocument()->UpdateStyleAndLayoutIgnorePendingStylesheets();
 
@@ -515,6 +513,8 @@ WebInputEventResult MouseEventManager::HandleMouseFocus(
                   ? ToElement(node_under_mouse_)
                   : node_under_mouse_->ParentOrShadowHostElement();
   }
+  ASSERT(false); // BKTODO:
+#if 0
   for (; element; element = element->ParentOrShadowHostElement()) {
     if (element->IsFocusable() && element->IsFocusedElementInDocument())
       return WebInputEventResult::kNotHandled;
@@ -576,8 +576,6 @@ WebInputEventResult MouseEventManager::HandleMouseFocus(
 
 bool MouseEventManager::SlideFocusOnShadowHostIfNecessary(
     const Element& element) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (element.AuthorShadowRoot() &&
       element.AuthorShadowRoot()->delegatesFocus()) {
     Document* doc = frame_->GetDocument();
@@ -593,14 +591,16 @@ bool MouseEventManager::SlideFocusOnShadowHostIfNecessary(
     Element* found =
         page->GetFocusController().FindFocusableElementInShadowHost(element);
     if (found && element.IsShadowIncludingInclusiveAncestorOf(found)) {
+      ASSERT(false); // BKTODO:
+#if 0
       // Use WebFocusTypeForward instead of WebFocusTypeMouse here to mean the
       // focus has slided.
       found->focus(FocusParams(SelectionBehaviorOnFocus::kReset,
                                kWebFocusTypeForward, nullptr));
+#endif
       return true;
     }
   }
-#endif
   return false;
 }
 
@@ -716,13 +716,13 @@ WebInputEventResult MouseEventManager::HandleMousePressEvent(
   ResetDragState();
   CancelFakeMouseMoveEvent();
 
-  ASSERT(false); // BKTODO:
-  return WebInputEventResult::kNotHandled;
-#if 0
   frame_->GetDocument()->UpdateStyleAndLayoutIgnorePendingStylesheets();
 
   bool single_click = event.Event().click_count <= 1;
 
+  ASSERT(false); // BKTODO:
+  return WebInputEventResult::kNotHandled;
+#if 0
   mouse_down_may_start_drag_ =
       single_click && !IsLinkSelection(event) && !IsExtendingSelection(event);
 
@@ -771,13 +771,13 @@ WebInputEventResult MouseEventManager::HandleMousePressEvent(
 
 WebInputEventResult MouseEventManager::HandleMouseReleaseEvent(
     const MouseEventWithHitTestResults& event) {
-  ASSERT(false); // BKTODO:
-  return WebInputEventResult::kNotHandled;
-#if 0
   AutoscrollController* controller = scroll_manager_->GetAutoscrollController();
   if (controller && controller->SelectionAutoscrollInProgress())
     scroll_manager_->StopAutoscroll();
 
+  ASSERT(false); // BKTODO:
+  return WebInputEventResult::kNotHandled;
+#if 0
   return frame_->GetEventHandler()
                  .GetSelectionController()
                  .HandleMouseReleaseEvent(event, drag_start_pos_)
@@ -833,13 +833,10 @@ bool MouseEventManager::HandleDragDropIfPossible(
 }
 
 void MouseEventManager::FocusDocumentView() {
-  ASSERT(false); // BKTODO:
-#if 0
   Page* page = frame_->GetPage();
   if (!page)
     return;
   page->GetFocusController().FocusDocumentView(frame_);
-#endif
 }
 
 WebInputEventResult MouseEventManager::HandleMouseDraggedEvent(
@@ -947,8 +944,6 @@ bool MouseEventManager::HandleDrag(const MouseEventWithHitTestResults& event,
   if (!frame_->GetPage())
     return false;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (mouse_down_may_start_drag_) {
     HitTestRequest request(HitTestRequest::kReadOnly);
     HitTestLocation location(mouse_down_pos_);
@@ -999,16 +994,18 @@ bool MouseEventManager::HandleDrag(const MouseEventWithHitTestResults& event,
     // Since drag operation started we need to send a pointercancel for the
     // corresponding pointer.
     if (initiator == DragInitiator::kMouse) {
+      ASSERT(false); // BKTODO:
+#if 0
       frame_->GetEventHandler().HandlePointerEvent(
           WebPointerEvent::CreatePointerCausesUaActionEvent(
               WebPointerProperties::PointerType::kMouse,
               event.Event().TimeStamp()),
           Vector<WebPointerEvent>());
+#endif
     }
     // TODO(crbug.com/708278): If the drag starts with touch the touch cancel
     // should trigger the release of pointer capture.
   }
-#endif
 
   mouse_down_may_start_drag_ = false;
   // Whether or not the drag actually started, no more default handling (like
@@ -1032,8 +1029,6 @@ bool MouseEventManager::TryStartDrag(
   // Clear it anyway, just to make sure it gets numbified.
   ClearDragDataTransfer();
 
-  ASSERT(false); // BKTODO:
-#if 0
   GetDragState().drag_data_transfer_ = CreateDraggingDataTransfer();
 
   DragController& drag_controller = frame_->GetPage()->GetDragController();
@@ -1041,6 +1036,8 @@ bool MouseEventManager::TryStartDrag(
                                                 mouse_down_pos_))
     return false;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (DispatchDragSrcEvent(EventTypeNames::dragstart, mouse_down_) !=
       WebInputEventResult::kNotHandled)
     return false;
@@ -1089,12 +1086,8 @@ bool MouseEventManager::TryStartDrag(
 WebInputEventResult MouseEventManager::DispatchDragSrcEvent(
     const AtomicString& event_type,
     const WebMouseEvent& event) {
-  ASSERT(false); // BKTODO:
-  return WebInputEventResult::kNotHandled;
-#if 0
   return DispatchDragEvent(event_type, GetDragState().drag_src_.Get(), nullptr,
                            event, GetDragState().drag_data_transfer_.Get());
-#endif
 }
 
 WebInputEventResult MouseEventManager::DispatchDragEvent(

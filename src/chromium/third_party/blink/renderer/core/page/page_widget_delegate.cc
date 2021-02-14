@@ -52,10 +52,8 @@
 #include "third_party/blink/renderer/core/input/event_handler.h"
 // BKTODO: #include "third_party/blink/renderer/core/layout/jank_tracker.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
-#if 0 // BKTODO:
-#include "third_party/blink/renderer/core/loader/interactive_detector.h"
+// BKTODO: #include "third_party/blink/renderer/core/loader/interactive_detector.h"
 #include "third_party/blink/renderer/core/page/autoscroll_controller.h"
-#endif
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context.h"
@@ -69,7 +67,7 @@ namespace blink {
 
 void PageWidgetDelegate::Animate(Page& page,
                                  base::TimeTicks monotonic_frame_begin_time) {
-  ASSERT(false); // BKTODO: page.GetAutoscrollController().Animate();
+  page.GetAutoscrollController().Animate();
   page.Animator().ServiceScriptedAnimations(monotonic_frame_begin_time);
 }
 

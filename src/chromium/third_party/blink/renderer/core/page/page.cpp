@@ -17,6 +17,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
+#include "third_party/blink/renderer/core/page/autoscroll_controller.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/drag_controller.h"
 #include "third_party/blink/renderer/core/page/focus_controller.h"
@@ -30,6 +31,7 @@ Page::Page(PageClients &pageClients)
     : m_chromeClient(pageClients.chromeClient)
     , m_dragCaret(DragCaret::Create())
     , m_animator(PageAnimator::Create(*this))
+    , m_autoscrollController(AutoscrollController::Create(*this))
     , m_dragController(DragController::Create(this))
     , m_focusController(FocusController::Create(this))
     , m_pageScaleConstraintsSet(PageScaleConstraintsSet::Create(this))

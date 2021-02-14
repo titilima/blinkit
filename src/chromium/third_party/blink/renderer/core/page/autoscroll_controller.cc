@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: autoscroll_controller.cc
+// Description: AutoscrollController Class
+//      Author: Ziming Li
+//     Created: 2021-02-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights
@@ -31,11 +42,11 @@
 
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
-#include "third_party/blink/renderer/core/html/html_frame_owner_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_frame_owner_element.h"
 #include "third_party/blink/renderer/core/input/event_handler.h"
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
 #include "third_party/blink/renderer/core/layout/layout_box.h"
-#include "third_party/blink/renderer/core/layout/layout_list_box.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_list_box.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/platform/wtf/time.h"
@@ -77,15 +88,11 @@ static const Cursor& MiddleClickAutoscrollCursor(const FloatSize& velocity) {
   return MiddlePanningCursor();
 }
 
-AutoscrollController* AutoscrollController::Create(Page& page) {
-  return new AutoscrollController(page);
+std::unique_ptr<AutoscrollController> AutoscrollController::Create(Page& page) {
+  return base::WrapUnique(new AutoscrollController(page));
 }
 
 AutoscrollController::AutoscrollController(Page& page) : page_(&page) {}
-
-void AutoscrollController::Trace(blink::Visitor* visitor) {
-  visitor->Trace(page_);
-}
 
 bool AutoscrollController::SelectionAutoscrollInProgress() const {
   return autoscroll_type_ == kAutoscrollForSelection;
@@ -106,6 +113,8 @@ void AutoscrollController::StartAutoscrollForSelection(
   // it's already active.
   if (autoscroll_type_ != kNoAutoscroll)
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   LayoutBox* scrollable = LayoutBox::FindAutoscrollable(layout_object);
   if (!scrollable)
     scrollable =
@@ -118,6 +127,7 @@ void AutoscrollController::StartAutoscrollForSelection(
                                : nullptr;
   autoscroll_type_ = kAutoscrollForSelection;
   autoscroll_layout_object_ = scrollable;
+#endif
   ScheduleMainThreadAnimation();
 }
 
@@ -243,9 +253,9 @@ void AutoscrollController::HandleMouseMoveForMiddleClickAutoscroll(
     if (middle_click_mode_ == kMiddleClickInitial)
       middle_click_mode_ = kMiddleClickHolding;
     page_->GetChromeClient().SetCursorOverridden(false);
-    view->SetCursor(MiddleClickAutoscrollCursor(velocity));
+    ASSERT(false); // BKTODO: view->SetCursor(MiddleClickAutoscrollCursor(velocity));
     page_->GetChromeClient().SetCursorOverridden(true);
-    page_->GetChromeClient().AutoscrollFling(velocity, frame);
+    ASSERT(false); // BKTODO: page_->GetChromeClient().AutoscrollFling(velocity, frame);
   }
 }
 
@@ -272,7 +282,7 @@ void AutoscrollController::StopMiddleClickAutoscroll(LocalFrame* frame) {
   page_->GetChromeClient().AutoscrollEnd(frame);
   autoscroll_type_ = kNoAutoscroll;
   page_->GetChromeClient().SetCursorOverridden(false);
-  frame->LocalFrameRoot().GetEventHandler().ScheduleCursorUpdate();
+  ASSERT(false); // BKTODO: frame->LocalFrameRoot().GetEventHandler().ScheduleCursorUpdate();
 }
 
 bool AutoscrollController::MiddleClickAutoscrollInProgress() const {
@@ -297,11 +307,14 @@ void AutoscrollController::StartMiddleClickAutoscroll(
 
   last_velocity_ = FloatSize();
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (LocalFrameView* view = frame->View())
     view->SetCursor(MiddleClickAutoscrollCursor(last_velocity_));
   page_->GetChromeClient().SetCursorOverridden(true);
   page_->GetChromeClient().AutoscrollStart(
       position.ScaledBy(1 / frame->DevicePixelRatio()), frame);
+#endif
 }
 
 void AutoscrollController::Animate() {

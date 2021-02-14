@@ -67,6 +67,7 @@ class ScriptController;
 class Editor;
 class EventHandler;
 class FrameSelection;
+class InputMethodController;
 class LayoutView;
 class SmoothScrollSequencer;
 #endif
@@ -101,6 +102,7 @@ public:
 
     Editor& GetEditor(void) const { return *m_editor; }
     FrameSelection& Selection(void) const { return *m_selection; }
+    InputMethodController& GetInputMethodController(void) const { return *m_inputMethodController; }
     EventHandler& GetEventHandler(void) const { return *m_eventHandler; }
 
     double DevicePixelRatio(void) const;
@@ -155,6 +157,7 @@ private:
     std::unique_ptr<Editor> m_editor;
     Member<FrameSelection> m_selection;
     std::unique_ptr<EventHandler> m_eventHandler;
+    std::unique_ptr<InputMethodController> m_inputMethodController;
     // SmoothScrollSequencer is only populated for local roots; all local frames
     // use the instance owned by their local root.
     std::unique_ptr<SmoothScrollSequencer> m_smoothScrollSequencer;

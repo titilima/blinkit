@@ -76,8 +76,8 @@
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_dialog_element.h"
 #include "third_party/blink/renderer/core/html/html_frame_element_base.h"
 #include "third_party/blink/renderer/core/html/html_frame_set_element.h"
@@ -96,13 +96,11 @@
 #include "third_party/blink/renderer/core/loader/document_loader.h"
 #include "third_party/blink/renderer/core/loader/frame_loader.h"
 #include "third_party/blink/renderer/core/loader/resource/image_resource_content.h"
-// BKTODO: #include "third_party/blink/renderer/core/page/autoscroll_controller.h"
+#include "third_party/blink/renderer/core/page/autoscroll_controller.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/page/drag_state.h"
 #include "third_party/blink/renderer/core/page/focus_controller.h"
-#include "third_party/blink/renderer/core/page/frame_tree.h"
-#endif
+// BKTODO: #include "third_party/blink/renderer/core/page/frame_tree.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/page/scrolling/scroll_state.h"
 // BKTODO: #include "third_party/blink/renderer/core/page/touch_adjustment.h"
@@ -180,8 +178,8 @@ EventHandler::EventHandler(LocalFrame& frame)
           frame_->IsLocalRoot()
               ? new EventHandlerRegistry(*frame_)
               : &frame_->LocalFrameRoot().GetEventHandlerRegistry()),
-      scroll_manager_(new ScrollManager(frame)),
 #endif
+      scroll_manager_(new ScrollManager(frame)),
       mouse_event_manager_(new MouseEventManager(frame, *scroll_manager_)),
 #if 0 // BKTODO:
       mouse_wheel_event_manager_(new MouseWheelEventManager(frame)),
@@ -233,11 +231,9 @@ void EventHandler::Clear() {
   should_only_fire_drag_over_event_ = false;
   // BKTODO: last_mouse_down_user_gesture_token_ = nullptr;
   capturing_mouse_events_node_ = nullptr;
-#if 0 // BKTODO:
-  pointer_event_manager_->Clear();
+  // BKTODO: pointer_event_manager_->Clear();
   scroll_manager_->Clear();
-  gesture_manager_->Clear();
-#endif
+  // BKTODO: gesture_manager_->Clear();
   mouse_event_manager_->Clear();
   // BKTODO: mouse_wheel_event_manager_->Clear();
   last_show_press_timestamp_.reset();
@@ -252,8 +248,6 @@ void EventHandler::UpdateSelectionForMouseDrag() {
 }
 
 void EventHandler::StartMiddleClickAutoscroll(LayoutObject* layout_object) {
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(RuntimeEnabledFeatures::MiddleClickAutoscrollEnabled());
   if (!layout_object->IsBox())
     return;
@@ -266,7 +260,6 @@ void EventHandler::StartMiddleClickAutoscroll(LayoutObject* layout_object) {
           FloatPoint(mouse_event_manager_->LastKnownMousePosition())),
       mouse_event_manager_->LastKnownMousePositionGlobal());
   mouse_event_manager_->InvalidateClick();
-#endif
 }
 
 void EventHandler::PerformHitTest(const HitTestLocation& location,
@@ -348,11 +341,8 @@ HitTestResult EventHandler::HitTestResultAtLocation(
 }
 
 void EventHandler::StopAutoscroll() {
-  ASSERT(false); // BKTODO:
-#if 0
   scroll_manager_->StopMiddleClickAutoscroll();
   scroll_manager_->StopAutoscroll();
-#endif
 }
 
 // TODO(bokan): This should be merged with logicalScroll assuming
@@ -482,8 +472,6 @@ bool EventHandler::ShouldShowIBeamForNode(const Node* node,
 EventHandler::OptionalCursor EventHandler::SelectCursor(
     const HitTestLocation& location,
     const HitTestResult& result) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (scroll_manager_->InResizeMode())
     return kNoCursorChange;
 
@@ -629,7 +617,6 @@ EventHandler::OptionalCursor EventHandler::SelectCursor(
     case ECursor::kGrabbing:
       return GrabbingCursor();
   }
-#endif
   return PointerCursor();
 }
 

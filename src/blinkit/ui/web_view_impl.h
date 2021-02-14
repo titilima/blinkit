@@ -92,6 +92,7 @@ protected:
 private:
     void SetFocusImpl(bool enable);
     void SetVisibilityStateImpl(blink::PageVisibilityState visibilityState, bool isInitialState);
+    void CancelPagePopup(void);
 
     blink::BrowserControls& GetBrowserControls(void);
 

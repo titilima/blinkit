@@ -22,6 +22,7 @@
 
 namespace blink {
 
+class AutoscrollController;
 class BrowserControls;
 class ChromeClient;
 class DragCaret;
@@ -68,6 +69,7 @@ public:
         ASSERT(nullptr != m_chromeClient);
         return *m_chromeClient;
     }
+    AutoscrollController& GetAutoscrollController(void) const { return *m_autoscrollController; }
     DragCaret& GetDragCaret(void) const { return *m_dragCaret; }
     DragController& GetDragController(void) const { return *m_dragController; }
     FocusController& GetFocusController(void) const { return *m_focusController; }
@@ -127,6 +129,7 @@ private:
     explicit Page(PageClients &pageClients);
 
     LocalFrame *m_mainFrame = nullptr;
+    const std::unique_ptr<AutoscrollController> m_autoscrollController;
     ChromeClient *m_chromeClient;
     const std::unique_ptr<DragCaret> m_dragCaret;
     std::unique_ptr<PageAnimator> m_animator;
