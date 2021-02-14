@@ -21,7 +21,7 @@ namespace BlinKit {
 class CrawlerContext final : public BrowserContext
 {
 public:
-    CrawlerContext(const blink::LocalFrame &frame);
+    CrawlerContext(const blink::LocalFrame &frame, bool initGlobalObject);
     ~CrawlerContext(void) override;
 
     JSObjectImpl* UserObject(void) { return m_userObject.get(); }
@@ -33,7 +33,6 @@ private:
     JSObjectImpl* GetContextObject(int callContext) override;
     void UpdateDocument(void) override;
 
-    std::optional<std::string> m_objectScript;
     std::unique_ptr<JSObjectImpl> m_userObject;
 };
 

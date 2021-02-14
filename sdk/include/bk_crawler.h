@@ -40,8 +40,7 @@ BKEXPORT void BKAPI BkClearCookieJar(BkCookieJar cookieJar);
 BK_DECLARE_HANDLE(BkCrawler, CrawlerImpl);
 
 enum BkCrawlerConfig {
-    BK_CFG_OBJECT_SCRIPT = 0,
-    BK_CFG_USER_AGENT,
+    BK_CFG_USER_AGENT = 0,
 };
 
 enum BkScriptMode {
@@ -77,6 +76,12 @@ struct BkCrawlerClient {
      *   - See also: BkCrawlerConfig.
      */
     bool_t (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
+
+    /**
+     * Get script for user object for the crawler.
+     *   - Thread: BlinKit.
+     */
+    void (BKAPI * GetObjectScript)(const char *URL, struct BkBuffer *, void *);
 
     /**
      * Get cookies for the URL being requested.

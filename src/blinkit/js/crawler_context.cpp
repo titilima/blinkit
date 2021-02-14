@@ -31,29 +31,30 @@ using namespace blink;
 
 namespace BlinKit {
 
-CrawlerContext::CrawlerContext(const LocalFrame &frame) : BrowserContext(frame, DukElement::PrototypeMapForCrawler())
+CrawlerContext::CrawlerContext(const LocalFrame &frame, bool initGlobalObject)
+    : BrowserContext(frame, DukElement::PrototypeMapForCrawler())
 {
     BrowserContext::InitializeHeapStash(RegisterPrototypes);
 
     CrawlerImpl *crawler = ToCrawlerImpl(GetFrame().Client());
     crawler->ApplyConsoleMessager(m_consoleMessager);
 
-    InitializeNewGlobalObject(*crawler);
+    if (initGlobalObject)
+        InitializeNewGlobalObject(*crawler);
 }
 
 CrawlerContext::~CrawlerContext(void) = default;
 
 void CrawlerContext::CreateUserObject(const CrawlerImpl &crawler)
 {
-    if (!m_objectScript.has_value())
-    {
-        std::string objectScript;
-        if (crawler.GetConfig(BK_CFG_OBJECT_SCRIPT, objectScript))
-            base::TrimWhitespaceASCII(objectScript, base::TRIM_ALL, &objectScript);
-        m_objectScript = objectScript;
-    }
+    Document *document = GetFrame().GetDocument();
+    if (nullptr == document)
+        return;
 
-    if (m_objectScript->empty())
+    std::string objectScript;
+    crawler.GetObjectScript(document->Url().spec(), objectScript);
+    base::TrimWhitespaceASCII(objectScript, base::TRIM_ALL, &objectScript);
+    if (objectScript.empty())
         return;
 
     m_userObject.reset();
@@ -77,7 +78,7 @@ void CrawlerContext::CreateUserObject(const CrawlerImpl &crawler)
         const char *s = duk_safe_to_lstring(ctx, -1, &len);
         errorLog.assign(s, len);
     };
-    Eval(*m_objectScript, callback, "UserScript");
+    Eval(objectScript, callback, "UserScript");
 
     if (!errorLog.empty())
         m_consoleMessager(BK_CONSOLE_ERROR, errorLog.c_str());

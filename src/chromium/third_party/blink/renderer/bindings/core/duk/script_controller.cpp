@@ -94,11 +94,17 @@ BrowserContext& ScriptController::EnsureContext(void)
     if (!m_context)
     {
 #ifdef BLINKIT_CRAWLER_ONLY
-        m_context = std::make_unique<CrawlerContext>(*m_frame);
         if (Document *document = m_frame->GetDocument())
         {
             if (document->IsActive())
+            {
+                m_context = std::make_unique<CrawlerContext>(*m_frame, false);
                 m_context->UpdateDocument();
+            }
+        }
+        if (!m_context)
+        {
+            m_context = std::make_unique<CrawlerContext>(*m_frame, true);
         }
 #else
         if (m_frame->Client()->IsCrawler())
@@ -107,7 +113,14 @@ BrowserContext& ScriptController::EnsureContext(void)
             if (Document *document = m_frame->GetDocument())
             {
                 if (document->IsActive())
+                {
+                    m_context = std::make_unique<CrawlerContext>(*m_frame, false);
                     m_context->UpdateDocument();
+                }
+            }
+            if (!m_context)
+            {
+                m_context = std::make_unique<CrawlerContext>(*m_frame, true);
             }
         }
         else

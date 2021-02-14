@@ -133,6 +133,13 @@ std::string CrawlerImpl::GetCookies(const std::string &URL) const
     return ret;
 }
 
+void CrawlerImpl::GetObjectScript(const std::string &URL, std::string &dst) const
+{
+    ASSERT(IsMainThread());
+    if (nullptr != m_client.GetObjectScript)
+        m_client.GetObjectScript(URL.c_str(), BufferImpl::Wrap(dst), m_client.UserData);
+}
+
 bool CrawlerImpl::HijackRequest(const char *URL, std::string &dst) const
 {
     if (nullptr == m_client.HijackRequest)
