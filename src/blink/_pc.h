@@ -38,6 +38,7 @@
 #   pragma clang diagnostic ignored "-Wswitch"
 #   pragma clang diagnostic ignored "-Wunused-function"
 #   pragma clang diagnostic ignored "-Wunused-variable"
+#   define UCHAR_TYPE   unsigned short
 #endif
 
 #define BLINK_IMPLEMENTATION            1

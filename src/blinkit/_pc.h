@@ -32,6 +32,7 @@
 #   pragma clang diagnostic ignored "-Winconsistent-missing-override"
 #   pragma clang diagnostic ignored "-Wshorten-64-to-32"
 #   pragma clang diagnostic ignored "-Wswitch"
+#   define UCHAR_TYPE   unsigned short
 #endif
 
 #define BLINK_IMPLEMENTATION    1
