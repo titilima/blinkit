@@ -14,12 +14,15 @@
 
 #pragma once
 
-#include <mutex>
-#include <shared_mutex>
+#if defined(OS_WIN)
+#   include <Windows.h>
+#elif defined(OS_POSIX)
+#   include <pthread.h>
+#endif
 
 namespace BlinKit {
 
-#ifdef OS_WIN
+#if defined(OS_WIN)
 class BkSharedMutex
 {
 public:
@@ -31,6 +34,20 @@ public:
     void unlock(void) { ::ReleaseSRWLockExclusive(&m_lock); }
 private:
     SRWLOCK m_lock;
+};
+#elif defined(OS_POSIX)
+class BkSharedMutex
+{
+public:
+    BkSharedMutex(void) { ::pthread_rwlock_init(&m_lock, nullptr); }
+    ~BkSharedMutex(void) { ::pthread_rwlock_destroy(&m_lock); }
+
+    void lock_shared(void) { ::pthread_rwlock_rdlock(&m_lock); }
+    void unlock_shared(void) { ::pthread_rwlock_unlock(&m_lock); }
+    void lock(void) { ::pthread_rwlock_wrlock(&m_lock); }
+    void unlock(void) { ::pthread_rwlock_unlock(&m_lock); }
+private:
+    pthread_rwlock_t m_lock;
 };
 #endif
 
