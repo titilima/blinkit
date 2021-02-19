@@ -109,7 +109,6 @@ BrowserContext& ScriptController::EnsureContext(void)
 #else
         if (m_frame->Client()->IsCrawler())
         {
-            m_context = std::make_unique<CrawlerContext>(*m_frame);
             if (Document *document = m_frame->GetDocument())
             {
                 if (document->IsActive())
