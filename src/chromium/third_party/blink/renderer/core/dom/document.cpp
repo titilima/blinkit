@@ -40,6 +40,7 @@
 
 #include "document.h"
 
+#include <shared_mutex>
 #include "blinkit/crawler/cookie_jar_impl.h"
 #include "blinkit/crawler/crawler_impl.h"
 #include "net/cookies/cookie_options.h"

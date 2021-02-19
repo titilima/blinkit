@@ -28,7 +28,7 @@ public:
 template <typename T>
 class GarbageCollectedFinalized : public GarbageCollected<T>
 {
-    template <class T> friend class GarbageCollected;
+    friend class GarbageCollected<T>;
 protected:
     GarbageCollectedFinalized(void) = default;
 

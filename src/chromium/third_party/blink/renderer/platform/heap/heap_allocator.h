@@ -27,14 +27,15 @@ template <typename T>
 class HeapDeque : private std::list<T>
 {
 public:
+    using typename std::list<T>::const_reverse_iterator;
+    using typename std::list<T>::iterator;
+
     using std::list<T>::back;
     using std::list<T>::begin;
     using std::list<T>::clear;
-    using std::list<T>::const_reverse_iterator;
     using std::list<T>::end;
     using std::list<T>::erase;
     using std::list<T>::front;
-    using std::list<T>::iterator;
     using std::list<T>::pop_front;
     using std::list<T>::push_back;
     using std::list<T>::rbegin;
@@ -104,9 +105,10 @@ template <typename T>
 class HeapHashSet : private std::unordered_set<T>
 {
 public:
+    using typename std::unordered_set<T>::const_iterator;
+
     using std::unordered_set<T>::begin;
     using std::unordered_set<T>::clear;
-    using std::unordered_set<T>::const_iterator;
     using std::unordered_set<T>::end;
     using std::unordered_set<T>::erase;
     using std::unordered_set<T>::find;
