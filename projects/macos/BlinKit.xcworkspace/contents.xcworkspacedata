@@ -33,7 +33,4 @@
    <FileRef
       location = "group:BlinKit/BlinKit.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:stub/stub.xcodeproj">
-   </FileRef>
 </Workspace>
