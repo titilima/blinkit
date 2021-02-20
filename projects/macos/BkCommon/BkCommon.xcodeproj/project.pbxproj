@@ -1,0 +1,352 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F9F4FC7B25E0D0BC00227B2C /* buffer_impl.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC6C25E0D0BC00227B2C /* buffer_impl.hpp */; };
+		F9F4FC7C25E0D0BC00227B2C /* _pc.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC6D25E0D0BC00227B2C /* _pc.h */; };
+		F9F4FC7D25E0D0BC00227B2C /* bk_socket.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC6E25E0D0BC00227B2C /* bk_socket.h */; };
+		F9F4FC7E25E0D0BC00227B2C /* bk_http_header_map.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC6F25E0D0BC00227B2C /* bk_http_header_map.h */; };
+		F9F4FC7F25E0D0BC00227B2C /* bk_mutex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC7025E0D0BC00227B2C /* bk_mutex.hpp */; };
+		F9F4FC8025E0D0BC00227B2C /* controller_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC7125E0D0BC00227B2C /* controller_impl.h */; };
+		F9F4FC8125E0D0BC00227B2C /* response_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FC7225E0D0BC00227B2C /* response_impl.cpp */; };
+		F9F4FC8225E0D0BC00227B2C /* bk_file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FC7325E0D0BC00227B2C /* bk_file.cpp */; };
+		F9F4FC8325E0D0BC00227B2C /* bk_strings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FC7425E0D0BC00227B2C /* bk_strings.cpp */; };
+		F9F4FC8425E0D0BC00227B2C /* bk_strings.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC7525E0D0BC00227B2C /* bk_strings.h */; };
+		F9F4FC8525E0D0BC00227B2C /* bk_shared_mutex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC7625E0D0BC00227B2C /* bk_shared_mutex.hpp */; };
+		F9F4FC8625E0D0BC00227B2C /* bk_signal.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC7725E0D0BC00227B2C /* bk_signal.hpp */; };
+		F9F4FC8725E0D0BC00227B2C /* bk_http_header_map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FC7825E0D0BC00227B2C /* bk_http_header_map.cpp */; };
+		F9F4FC8825E0D0BC00227B2C /* bk_file.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC7925E0D0BC00227B2C /* bk_file.h */; };
+		F9F4FC8925E0D0BC00227B2C /* response_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC7A25E0D0BC00227B2C /* response_impl.h */; };
+		F9F4FC9125E0E34100227B2C /* PrefixHeader.pch in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC9025E0E34100227B2C /* PrefixHeader.pch */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F9F4FC6325E0D07E00227B2C /* libBkCommon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBkCommon.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9F4FC6C25E0D0BC00227B2C /* buffer_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = buffer_impl.hpp; sourceTree = "<group>"; };
+		F9F4FC6D25E0D0BC00227B2C /* _pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _pc.h; sourceTree = "<group>"; };
+		F9F4FC6E25E0D0BC00227B2C /* bk_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bk_socket.h; sourceTree = "<group>"; };
+		F9F4FC6F25E0D0BC00227B2C /* bk_http_header_map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bk_http_header_map.h; sourceTree = "<group>"; };
+		F9F4FC7025E0D0BC00227B2C /* bk_mutex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bk_mutex.hpp; sourceTree = "<group>"; };
+		F9F4FC7125E0D0BC00227B2C /* controller_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = controller_impl.h; sourceTree = "<group>"; };
+		F9F4FC7225E0D0BC00227B2C /* response_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = response_impl.cpp; sourceTree = "<group>"; };
+		F9F4FC7325E0D0BC00227B2C /* bk_file.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bk_file.cpp; sourceTree = "<group>"; };
+		F9F4FC7425E0D0BC00227B2C /* bk_strings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bk_strings.cpp; sourceTree = "<group>"; };
+		F9F4FC7525E0D0BC00227B2C /* bk_strings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bk_strings.h; sourceTree = "<group>"; };
+		F9F4FC7625E0D0BC00227B2C /* bk_shared_mutex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bk_shared_mutex.hpp; sourceTree = "<group>"; };
+		F9F4FC7725E0D0BC00227B2C /* bk_signal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bk_signal.hpp; sourceTree = "<group>"; };
+		F9F4FC7825E0D0BC00227B2C /* bk_http_header_map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bk_http_header_map.cpp; sourceTree = "<group>"; };
+		F9F4FC7925E0D0BC00227B2C /* bk_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bk_file.h; sourceTree = "<group>"; };
+		F9F4FC7A25E0D0BC00227B2C /* response_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = response_impl.h; sourceTree = "<group>"; };
+		F9F4FC8F25E0E32C00227B2C /* BlinKit.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = BlinKit.xcconfig; path = ../BlinKit.xcconfig; sourceTree = "<group>"; };
+		F9F4FC9025E0E34100227B2C /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F9F4FC6125E0D07E00227B2C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F9F4FC5A25E0D07E00227B2C = {
+			isa = PBXGroup;
+			children = (
+				F9F4FC6B25E0D0BC00227B2C /* bkcommon */,
+				F9F4FC8F25E0E32C00227B2C /* BlinKit.xcconfig */,
+				F9F4FC9025E0E34100227B2C /* PrefixHeader.pch */,
+				F9F4FC6425E0D07E00227B2C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F9F4FC6425E0D07E00227B2C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F9F4FC6325E0D07E00227B2C /* libBkCommon.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F9F4FC6B25E0D0BC00227B2C /* bkcommon */ = {
+			isa = PBXGroup;
+			children = (
+				F9F4FC6D25E0D0BC00227B2C /* _pc.h */,
+				F9F4FC7325E0D0BC00227B2C /* bk_file.cpp */,
+				F9F4FC7925E0D0BC00227B2C /* bk_file.h */,
+				F9F4FC7825E0D0BC00227B2C /* bk_http_header_map.cpp */,
+				F9F4FC6F25E0D0BC00227B2C /* bk_http_header_map.h */,
+				F9F4FC7025E0D0BC00227B2C /* bk_mutex.hpp */,
+				F9F4FC7625E0D0BC00227B2C /* bk_shared_mutex.hpp */,
+				F9F4FC7725E0D0BC00227B2C /* bk_signal.hpp */,
+				F9F4FC6E25E0D0BC00227B2C /* bk_socket.h */,
+				F9F4FC7425E0D0BC00227B2C /* bk_strings.cpp */,
+				F9F4FC7525E0D0BC00227B2C /* bk_strings.h */,
+				F9F4FC6C25E0D0BC00227B2C /* buffer_impl.hpp */,
+				F9F4FC7125E0D0BC00227B2C /* controller_impl.h */,
+				F9F4FC7225E0D0BC00227B2C /* response_impl.cpp */,
+				F9F4FC7A25E0D0BC00227B2C /* response_impl.h */,
+			);
+			name = bkcommon;
+			path = ../../../src/bkcommon;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		F9F4FC5F25E0D07E00227B2C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9F4FC8025E0D0BC00227B2C /* controller_impl.h in Headers */,
+				F9F4FC8625E0D0BC00227B2C /* bk_signal.hpp in Headers */,
+				F9F4FC8925E0D0BC00227B2C /* response_impl.h in Headers */,
+				F9F4FC8425E0D0BC00227B2C /* bk_strings.h in Headers */,
+				F9F4FC8825E0D0BC00227B2C /* bk_file.h in Headers */,
+				F9F4FC7D25E0D0BC00227B2C /* bk_socket.h in Headers */,
+				F9F4FC7F25E0D0BC00227B2C /* bk_mutex.hpp in Headers */,
+				F9F4FC7B25E0D0BC00227B2C /* buffer_impl.hpp in Headers */,
+				F9F4FC9125E0E34100227B2C /* PrefixHeader.pch in Headers */,
+				F9F4FC7C25E0D0BC00227B2C /* _pc.h in Headers */,
+				F9F4FC8525E0D0BC00227B2C /* bk_shared_mutex.hpp in Headers */,
+				F9F4FC7E25E0D0BC00227B2C /* bk_http_header_map.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		F9F4FC6225E0D07E00227B2C /* BkCommon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F9F4FC6725E0D07E00227B2C /* Build configuration list for PBXNativeTarget "BkCommon" */;
+			buildPhases = (
+				F9F4FC5F25E0D07E00227B2C /* Headers */,
+				F9F4FC6025E0D07E00227B2C /* Sources */,
+				F9F4FC6125E0D07E00227B2C /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BkCommon;
+			productName = BkCommon;
+			productReference = F9F4FC6325E0D07E00227B2C /* libBkCommon.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F9F4FC5B25E0D07E00227B2C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					F9F4FC6225E0D07E00227B2C = {
+						CreatedOnToolsVersion = 12.4;
+					};
+				};
+			};
+			buildConfigurationList = F9F4FC5E25E0D07E00227B2C /* Build configuration list for PBXProject "BkCommon" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F9F4FC5A25E0D07E00227B2C;
+			productRefGroup = F9F4FC6425E0D07E00227B2C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F9F4FC6225E0D07E00227B2C /* BkCommon */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F9F4FC6025E0D07E00227B2C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9F4FC8725E0D0BC00227B2C /* bk_http_header_map.cpp in Sources */,
+				F9F4FC8225E0D0BC00227B2C /* bk_file.cpp in Sources */,
+				F9F4FC8125E0D0BC00227B2C /* response_impl.cpp in Sources */,
+				F9F4FC8325E0D0BC00227B2C /* bk_strings.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F9F4FC6525E0D07E00227B2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F9F4FC8F25E0E32C00227B2C /* BlinKit.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(BK_ROOT)/sdk/include",
+					"$(BK_SRC)/bkcommon",
+					"$(inherited)",
+				);
+			};
+			name = Debug;
+		};
+		F9F4FC6625E0D07E00227B2C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F9F4FC8F25E0E32C00227B2C /* BlinKit.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(BK_ROOT)/sdk/include",
+					"$(BK_SRC)/bkcommon",
+					"$(inherited)",
+				);
+			};
+			name = Release;
+		};
+		F9F4FC6825E0D07E00227B2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		F9F4FC6925E0D07E00227B2C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F9F4FC5E25E0D07E00227B2C /* Build configuration list for PBXProject "BkCommon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F9F4FC6525E0D07E00227B2C /* Debug */,
+				F9F4FC6625E0D07E00227B2C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F9F4FC6725E0D07E00227B2C /* Build configuration list for PBXNativeTarget "BkCommon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F9F4FC6825E0D07E00227B2C /* Debug */,
+				F9F4FC6925E0D07E00227B2C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F9F4FC5B25E0D07E00227B2C /* Project object */;
+}
