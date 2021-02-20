@@ -11,6 +11,7 @@
 
 #include "loader_thread.h"
 
+#include <mutex>
 #include "blinkit/blink_impl/thread_impl.h"
 #include "blinkit/loader/loader_task.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"

@@ -11,6 +11,7 @@
 
 #include "cookie_jar_impl.h"
 
+#include <shared_mutex>
 #include "net/cookies/canonical_cookie.h"
 
 using namespace net;

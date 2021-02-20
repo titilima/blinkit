@@ -11,6 +11,7 @@
 
 #include "client_caller_store.h"
 
+#include <mutex>
 #include "blinkit/win/message_task.h"
 
 namespace BlinKit {

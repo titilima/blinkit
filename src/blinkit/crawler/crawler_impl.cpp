@@ -11,6 +11,7 @@
 
 #include "crawler_impl.h"
 
+#include <shared_mutex>
 #include "base/single_thread_task_runner.h"
 #include "bkcommon/buffer_impl.hpp"
 #include "bkcommon/controller_impl.h"
