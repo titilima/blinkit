@@ -14,11 +14,15 @@
 
 #pragma once
 
-#include <mutex>
+#if defined(OS_WIN)
+#   include <Windows.h>
+#elif defined(OS_POSIX)
+#   include <pthread.h>
+#endif
 
 namespace BlinKit {
 
-#ifdef OS_WIN
+#if defined(OS_WIN)
 class BkMutex
 {
 public:
@@ -29,6 +33,18 @@ public:
     void unlock(void) { ::ReleaseMutex(m_mutex); }
 private:
     HANDLE m_mutex;
+};
+#elif defined(OS_POSIX)
+class BkMutex
+{
+public:
+    BkMutex(void) { ::pthread_mutex_init(&m_mutex, nullptr); }
+    ~BkMutex(void) { ::pthread_mutex_destroy(&m_mutex); }
+
+    void lock(void) { ::pthread_mutex_lock(&m_mutex); }
+    void unlock(void) { ::pthread_mutex_unlock(&m_mutex); }
+private:
+    pthread_mutex_t m_mutex;
 };
 #endif
 
