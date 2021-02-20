@@ -25,6 +25,9 @@
       </FileRef>
    </Group>
    <FileRef
+      location = "group:BkBase/BkBase.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:BkCommon/BkCommon.xcodeproj">
    </FileRef>
    <FileRef
