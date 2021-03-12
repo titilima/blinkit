@@ -109,7 +109,6 @@ protected:
 
     virtual bool get_config(int cfg, std::string &dst) { return false; }
 private:
-    virtual std::string get_object_script(const char *URL) const { return std::string(); }
     virtual void document_ready(void) = 0;
     virtual void on_crawler_error(int code, const char *url)
     {
@@ -127,12 +126,6 @@ private:
             return false;
         BkSetBufferData(dst, s.data(), s.length());
         return true;
-    }
-
-    static void BKAPI get_object_script_callback(const char *URL, BkBuffer *dst, void *p)
-    {
-        std::string script = get_client_root(p)->get_object_script(URL);
-        BkSetBufferData(dst, script.data(), script.length());
     }
     static void BKAPI error_callback(int code, const char *url, void *p)
     {
