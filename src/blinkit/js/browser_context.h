@@ -35,6 +35,8 @@ public:
     const blink::LocalFrame& GetFrame(void) const { return m_frame; }
 
     void Clear(void);
+    void WillStartNavigation(void) { m_sessionFlags = 0; }
+    void ResetSessionIfNecessary(void);
     virtual void UpdateDocument(void);
     void ConsoleOutput(int type, const char *msg) { m_consoleMessager(type, msg); }
 
@@ -45,6 +47,7 @@ protected:
 
     void InitializeHeapStash(DukWorker worker);
     void NewGlobalObject(void);
+    virtual void InitializeSession(void);
 
     const PrototypeMap &m_prototypeMap;
     std::function<void(int, const char *)> m_consoleMessager;
@@ -54,6 +57,12 @@ private:
     bool QueryDestroy(void) const final { return false; }
 
     const blink::LocalFrame &m_frame;
+
+    enum SessionFlags {
+        GLOBAL_OBJECT_INITIALIZED = 0x1,
+        SESSION_INITIALIZED = 0x2
+    };
+    unsigned m_sessionFlags = 0;
 };
 
 } // namespace BlinKit

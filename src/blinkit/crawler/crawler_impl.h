@@ -31,7 +31,6 @@ public:
 
     // BkCrawlerClient Wrappers
     bool GetConfig(int cfg, std::string &dst) const;
-    void GetObjectScript(const std::string &URL, std::string &dst) const;
     std::string GetCookies(const std::string &URL) const;
     bool ScriptEnabled(const std::string &URL);
     bool ProcessRequestComplete(BkResponse response, BkWorkController controller);

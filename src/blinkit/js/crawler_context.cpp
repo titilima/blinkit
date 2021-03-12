@@ -31,16 +31,14 @@ using namespace blink;
 
 namespace BlinKit {
 
-CrawlerContext::CrawlerContext(const LocalFrame &frame, bool initGlobalObject)
-    : BrowserContext(frame, DukElement::PrototypeMapForCrawler())
+CrawlerContext::CrawlerContext(const LocalFrame &frame) : BrowserContext(frame, DukElement::PrototypeMapForCrawler())
 {
     BrowserContext::InitializeHeapStash(RegisterPrototypes);
 
     CrawlerImpl *crawler = ToCrawlerImpl(GetFrame().Client());
     crawler->ApplyConsoleMessager(m_consoleMessager);
 
-    if (initGlobalObject)
-        InitializeNewGlobalObject(*crawler);
+    InitializeSession();
 }
 
 CrawlerContext::~CrawlerContext(void) = default;
@@ -52,8 +50,8 @@ void CrawlerContext::CreateUserObject(const CrawlerImpl &crawler)
         return;
 
     std::string objectScript;
-    crawler.GetObjectScript(document->Url().spec(), objectScript);
-    base::TrimWhitespaceASCII(objectScript, base::TRIM_ALL, &objectScript);
+    if (crawler.GetConfig(BK_CFG_OBJECT_SCRIPT, objectScript))
+        base::TrimWhitespaceASCII(objectScript, base::TRIM_ALL, &objectScript);
     if (objectScript.empty())
         return;
 
@@ -91,10 +89,11 @@ JSObjectImpl* CrawlerContext::GetContextObject(int callContext)
     return BrowserContext::GetContextObject(callContext);
 }
 
-void CrawlerContext::InitializeNewGlobalObject(const CrawlerImpl &crawler)
+void CrawlerContext::InitializeSession(void)
 {
-    CreateUserObject(crawler);
-    RegisterFunctions();
+    CrawlerImpl *crawler = ToCrawlerImpl(GetFrame().Client());
+    CreateUserObject(*crawler);
+    BrowserContext::InitializeSession();
 }
 
 void CrawlerContext::RegisterPrototypes(duk_context *ctx)
@@ -123,8 +122,6 @@ void CrawlerContext::UpdateDocument(void)
     BrowserContext::UpdateDocument();
 
     CrawlerImpl *crawler = ToCrawlerImpl(GetFrame().Client());
-    InitializeNewGlobalObject(*crawler);
-
     crawler->ProcessDocumentReset(this);
 }
 

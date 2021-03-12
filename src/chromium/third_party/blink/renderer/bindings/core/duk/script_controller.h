@@ -79,6 +79,8 @@ public:
     void UpdateDocument(void);
 
     void ClearForClose(void);
+
+    void WillStartNavigation(void);
 private:
     ScriptController(LocalFrame &frame);
 

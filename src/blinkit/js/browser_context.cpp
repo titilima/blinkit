@@ -42,8 +42,11 @@ BrowserContext::~BrowserContext(void) = default;
 
 void BrowserContext::Clear(void)
 {
-    NewGlobalObject();
-    duk_gc(GetRawContext(), 0);
+    if (0 == (m_sessionFlags & GLOBAL_OBJECT_INITIALIZED))
+    {
+        NewGlobalObject();
+        duk_gc(GetRawContext(), 0);
+    }
 }
 
 void BrowserContext::ExposeGlobals(duk_context *ctx, duk_idx_t dst)
@@ -101,6 +104,15 @@ void BrowserContext::InitializeHeapStash(DukWorker worker)
     duk_put_prop_string(ctx, -2, Globals);
 
     worker(ctx);
+
+    NewGlobalObject();
+}
+
+void BrowserContext::InitializeSession(void)
+{
+    ASSERT(0 == (m_sessionFlags & SESSION_INITIALIZED));
+    RegisterFunctions();
+    m_sessionFlags |= SESSION_INITIALIZED;
 }
 
 const char* BrowserContext::LookupPrototypeName(const std::string &tagName) const
@@ -113,17 +125,32 @@ const char* BrowserContext::LookupPrototypeName(const std::string &tagName) cons
 
 void BrowserContext::NewGlobalObject(void)
 {
+    ASSERT(0 == (m_sessionFlags & GLOBAL_OBJECT_INITIALIZED));
+
     duk_context *ctx = GetRawContext();
 
     duk_idx_t idx = duk_push_object(ctx);
     ExposeGlobals(ctx, idx);
     duk_set_global_object(ctx);
+
+    m_sessionFlags |= GLOBAL_OBJECT_INITIALIZED;
+}
+
+void BrowserContext::ResetSessionIfNecessary(void)
+{
+    if (0 == m_sessionFlags)
+    {
+        Clear();
+        InitializeSession();
+    }
 }
 
 void BrowserContext::UpdateDocument(void)
 {
     duk_context *ctx = GetRawContext();
     DukWindow::Attach(ctx, *(m_frame.DomWindow()));
+    if (0 == (m_sessionFlags & SESSION_INITIALIZED))
+        InitializeSession();
 }
 
 } // namespace BlinKit

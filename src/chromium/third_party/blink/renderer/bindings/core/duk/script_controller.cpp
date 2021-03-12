@@ -94,40 +94,17 @@ BrowserContext& ScriptController::EnsureContext(void)
     if (!m_context)
     {
 #ifdef BLINKIT_CRAWLER_ONLY
-        if (Document *document = m_frame->GetDocument())
-        {
-            if (document->IsActive())
-            {
-                m_context = std::make_unique<CrawlerContext>(*m_frame, false);
-                m_context->UpdateDocument();
-            }
-        }
-        if (!m_context)
-        {
-            m_context = std::make_unique<CrawlerContext>(*m_frame, true);
-        }
+        m_context = std::make_unique<CrawlerContext>(*m_frame);
 #else
         if (m_frame->Client()->IsCrawler())
-        {
-            if (Document *document = m_frame->GetDocument())
-            {
-                if (document->IsActive())
-                {
-                    m_context = std::make_unique<CrawlerContext>(*m_frame, false);
-                    m_context->UpdateDocument();
-                }
-            }
-            if (!m_context)
-            {
-                m_context = std::make_unique<CrawlerContext>(*m_frame, true);
-            }
-        }
+            m_context = std::make_unique<CrawlerContext>(*m_frame);
         else
-        {
             ASSERT(false); // BKTODO:
-            m_context->UpdateDocument();
-        }
 #endif
+    }
+    else
+    {
+        m_context->ResetSessionIfNecessary();
     }
     return *m_context;
 }
@@ -152,6 +129,12 @@ void ScriptController::UpdateDocument(void)
 {
     if (m_context)
         m_context->UpdateDocument();
+}
+
+void ScriptController::WillStartNavigation(void)
+{
+    if (m_context)
+        m_context->WillStartNavigation();
 }
 
 } // namespace blink

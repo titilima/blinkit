@@ -134,13 +134,6 @@ std::string CrawlerImpl::GetCookies(const std::string &URL) const
     return ret;
 }
 
-void CrawlerImpl::GetObjectScript(const std::string &URL, std::string &dst) const
-{
-    ASSERT(IsMainThread());
-    if (nullptr != m_client.GetObjectScript)
-        m_client.GetObjectScript(URL.c_str(), BufferImpl::Wrap(dst), m_client.UserData);
-}
-
 bool CrawlerImpl::HijackRequest(const char *URL, std::string &dst) const
 {
     if (nullptr == m_client.HijackRequest)
@@ -190,8 +183,11 @@ int CrawlerImpl::Run(const char *URL)
     auto task = [this, u]
     {
         FrameLoadRequest request(nullptr, ResourceRequest(u));
-        request.GetResourceRequest().SetCrawler(this);
-        request.GetResourceRequest().SetHijackType(HijackType::kMainHTML);
+        auto &resourceRequest = request.GetResourceRequest();
+        resourceRequest.SetCrawler(this);
+        resourceRequest.SetHijackType(HijackType::kMainHTML);
+
+        m_frame->GetScriptController().WillStartNavigation();
         m_frame->Loader().StartNavigation(request);
     };
     m_appCaller.Call(FROM_HERE, std::move(task));
