@@ -100,7 +100,7 @@ bool HttpResponse::GZipInflate(void)
 
     z_stream stm = { 0 };
     stm.next_in = m_body.data();
-    stm.avail_in = m_body.size();
+    stm.avail_in = static_cast<uInt>(m_body.size());
 
     int err = inflateInit2(&stm, MAX_WBITS + 32);
     if (Z_OK != err)
