@@ -421,6 +421,7 @@ private:
         return HasRareData() && HasElementFlagInternal(mask);
     }
     void SetElementFlag(ElementFlags mask, bool value = true);
+    void ClearElementFlag(ElementFlags mask);
     bool HasElementFlagInternal(ElementFlags mask) const;
 
     virtual Element* CloneWithoutAttributesAndChildren(Document &factory) const;

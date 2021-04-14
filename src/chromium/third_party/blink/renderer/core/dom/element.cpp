@@ -60,11 +60,17 @@
 #   include "third_party/blink/renderer/core/dom/first_letter_pseudo_element.h"
 #   include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
 #   include "third_party/blink/renderer/core/dom/presentation_attribute_style.h"
+#   include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
 #   include "third_party/blink/renderer/core/editing/selection_template.h"
 #   include "third_party/blink/renderer/core/editing/visible_selection.h"
+#   include "third_party/blink/renderer/core/frame/local_frame.h"
+#   include "third_party/blink/renderer/core/html/custom/custom_element.h"
+#   include "third_party/blink/renderer/core/html/custom/v0_custom_element.h"
 #   include "third_party/blink/renderer/core/html/parser/nesting_level_incrementer.h"
+#   include "third_party/blink/renderer/core/input/event_handler.h"
 #   include "third_party/blink/renderer/core/layout/layout_text_fragment.h"
 #   include "third_party/blink/renderer/core/layout/layout_view.h"
+#   include "third_party/blink/renderer/core/page/scrolling/root_scroller_controller.h"
 #   include "third_party/blink/renderer/core/page/scrolling/scroll_customization_callbacks.h"
 #   include "third_party/blink/renderer/core/paint/paint_layer.h"
 #endif
@@ -429,6 +435,13 @@ const SpaceSplitString& Element::ClassNames(void) const
     ASSERT(HasClass());
     ASSERT(GetElementData());
     return GetElementData()->ClassNames();
+}
+
+void Element::ClearElementFlag(ElementFlags mask)
+{
+    if (!HasRareData())
+        return;
+    GetElementRareData()->ClearElementFlag(mask);
 }
 
 void Element::CloneAttributesFrom(const Element &other)
@@ -1217,14 +1230,18 @@ void Element::RemoveCallbackSelectors(void)
 {
     UpdateCallbackSelectors(GetComputedStyle(), nullptr);
 }
-#endif
+#endif // BLINKIT_CRAWLER_ONLY
 
 void Element::RemovedFrom(ContainerNode &insertionPoint)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    bool was_in_document = insertion_point.isConnected();
-    if (HasRareData()) {
+    Document &document = GetDocument();
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    const bool forUI = !ForCrawler();
+
+    bool wasInDocument = insertionPoint.isConnected();
+    if (HasRareData())
+    {
         // If we detached the layout tree with LazyReattachIfAttached, we might not
         // have cleared the pseudo elements if we remove the element before calling
         // AttachLayoutTree again. We don't clear pseudo elements on
@@ -1233,77 +1250,85 @@ void Element::RemovedFrom(ContainerNode &insertionPoint)
         GetElementRareData()->ClearPseudoElements();
     }
 
-    if (Fullscreen::IsFullscreenElement(*this)) {
-        SetContainsFullScreenElementOnAncestorsCrossingFrameBoundaries(false);
-        if (insertion_point.IsElementNode()) {
-            ToElement(insertion_point).SetContainsFullScreenElement(false);
-            ToElement(insertion_point)
-                .SetContainsFullScreenElementOnAncestorsCrossingFrameBoundaries(
-                    false);
+    if (forUI)
+    {
+        if (Page *page = document.GetPage())
+            ASSERT(false); // TODO: page->GetPointerLockController().ElementRemoved(this);
+
+        ASSERT(false); // TODO: SetSavedLayerScrollOffset(ScrollOffset());
+    }
+#endif
+
+    if (insertionPoint.IsInTreeScope() && GetTreeScope() == document)
+    {
+        const AtomicString &idValue = GetIdAttribute();
+        if (!idValue.IsNull())
+            UpdateId(insertionPoint.GetTreeScope(), idValue, g_null_atom);
+
+        const AtomicString &nameValue = GetNameAttribute();
+        if (!nameValue.IsNull())
+            UpdateName(nameValue, g_null_atom);
+    }
+
+    ContainerNode::RemovedFrom(insertionPoint);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (forUI)
+    {
+        if (wasInDocument)
+        {
+            ASSERT(false); // TODO:
+#if 0
+            if (this == document.CssTarget())
+                document.SetCSSTarget(nullptr);
+#endif
+
+            if (GetCustomElementState() == CustomElementState::kCustom)
+                CustomElement::EnqueueDisconnectedCallback(this);
+            else if (IsUpgradedV0CustomElement())
+                V0CustomElement::DidDetach(this, insertionPoint.GetDocument());
+
+            if (NeedsStyleInvalidation())
+                document.GetStyleEngine().GetPendingNodeInvalidations().ClearInvalidation(*this);
         }
+
+        document.GetRootScrollerController().ElementRemoved(*this);
+
+        if (IsInTopLayer())
+            ASSERT(false); // TODO: document.RemoveFromTopLayer(this);
     }
-
-    if (GetDocument().GetPage())
-        GetDocument().GetPage()->GetPointerLockController().ElementRemoved(this);
-
-    SetSavedLayerScrollOffset(ScrollOffset());
-
-    if (insertion_point.IsInTreeScope() && GetTreeScope() == GetDocument()) {
-        const AtomicString& id_value = GetIdAttribute();
-        if (!id_value.IsNull())
-            UpdateId(insertion_point.GetTreeScope(), id_value, g_null_atom);
-
-        const AtomicString& name_value = GetNameAttribute();
-        if (!name_value.IsNull())
-            UpdateName(name_value, g_null_atom);
-    }
-
-    ContainerNode::RemovedFrom(insertion_point);
-    if (was_in_document) {
-        if (this == GetDocument().CssTarget())
-            GetDocument().SetCSSTarget(nullptr);
-
-        if (GetCustomElementState() == CustomElementState::kCustom)
-            CustomElement::EnqueueDisconnectedCallback(this);
-        else if (IsUpgradedV0CustomElement())
-            V0CustomElement::DidDetach(this, insertion_point.GetDocument());
-
-        if (NeedsStyleInvalidation()) {
-            GetDocument()
-                .GetStyleEngine()
-                .GetPendingNodeInvalidations()
-                .ClearInvalidation(*this);
-        }
-    }
-
-    GetDocument().GetRootScrollerController().ElementRemoved(*this);
-
-    if (IsInTopLayer()) {
-        Fullscreen::ElementRemoved(*this);
-        GetDocument().RemoveFromTopLayer(this);
-    }
+#endif
 
     ClearElementFlag(ElementFlags::kIsInCanvasSubtree);
 
-    if (HasRareData()) {
+    if (HasRareData())
+    {
         ElementRareData* data = GetElementRareData();
 
         data->ClearRestyleFlags();
 
-        if (ElementAnimations* element_animations = data->GetElementAnimations())
-            element_animations->CssAnimations().Cancel();
+#ifndef BLINKIT_CRAWLER_ONLY
+        if (ElementAnimations *animations = data->GetElementAnimations())
+            animations->CssAnimations().Cancel();
+#endif
 
-        if (data->IntersectionObserverData()) {
-            data->IntersectionObserverData()->ComputeObservations(
+        if (ElementIntersectionObserverData *iod = data->IntersectionObserverData())
+        {
+            ASSERT(false); // BKTODO:
+#if 0
+            iod->ComputeObservations(
                 IntersectionObservation::kExplicitRootObserversNeedUpdate |
                 IntersectionObservation::kImplicitRootObserversNeedUpdate);
-            GetDocument().EnsureIntersectionObserverController().RemoveTrackedTarget(
-                *this);
+            document.EnsureIntersectionObserverController().RemoveTrackedTarget(*this);
+#endif
         }
     }
 
-    if (GetDocument().GetFrame())
-        GetDocument().GetFrame()->GetEventHandler().ElementRemoved(this);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!forUI)
+        return;
+
+    if (LocalFrame *frame = GetDocument().GetFrame())
+        frame->GetEventHandler().ElementRemoved(this);
 #endif
 }
 
