@@ -11,6 +11,7 @@
 
 #include "context_impl.h"
 
+#include "base/strings/string_piece.h"
 #include "blinkit/js/browser_context.h"
 #include "blinkit/js/function_manager.h"
 #include "blinkit/js/js_caller_context_impl.h"
@@ -41,7 +42,7 @@ ContextImpl::~ContextImpl(void)
     duk_destroy_heap(m_ctx);
 }
 
-void ContextImpl::Eval(const std::string_view code, const Callback &callback, const char *fileName)
+void ContextImpl::Eval(const std::string_view &code, const Callback &callback, const char *fileName)
 {
     Duk::StackGuard sg(m_ctx);
 
@@ -141,14 +142,14 @@ BKEXPORT int BKAPI BkDestroyJSContext(BkJSContext context)
     }
 }
 
-BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, BkJSValue *retVal)
+BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, size_t len, BkJSValue *retVal)
 {
     std::unique_ptr<JSValueImpl> ret;
     const auto callback = [&ret](duk_context *ctx)
     {
         ret.reset(JSValueImpl::Create(ctx, -1));
     };
-    context->Eval(code, callback);
+    context->Eval(base::WrapStringView(code, len), callback);
 
     int r = ret->GetType() == BK_VT_ERROR
         ? static_cast<JSErrorImpl *>(ret.get())->GetCode()

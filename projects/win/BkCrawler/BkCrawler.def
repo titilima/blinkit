@@ -46,7 +46,6 @@ BkPrepareFunctionCall
 BkPrepareScriptFunction
 BkPushInteger
 BkPushString
-BkPushStringPiece
 BkCallFunction
 BkRegisterFunction
 BkGetThis
@@ -60,4 +59,3 @@ BkGetArgAsObject
 BkReturnBoolean
 BkReturnNumber
 BkReturnString
-BkReturnStringPiece

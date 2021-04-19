@@ -11,6 +11,7 @@
 
 #include "js_callee_context_impl.h"
 
+#include "base/strings/string_piece.h"
 #include "blinkit/js/js_value_impl.h"
 
 using namespace BlinKit;
@@ -135,14 +136,9 @@ BKEXPORT int BKAPI BkReturnNumber(BkJSCalleeContext context, double retVal)
     return context->ReturnNumber(retVal);
 }
 
-BKEXPORT int BKAPI BkReturnString(BkJSCalleeContext context, const char *retVal)
+BKEXPORT int BKAPI BkReturnString(BkJSCalleeContext context, const char *retVal, size_t length)
 {
-    return context->ReturnString(retVal);
-}
-
-BKEXPORT int BKAPI BkReturnStringPiece(BkJSCalleeContext context, const char *retVal, size_t l)
-{
-    return context->ReturnString(std::string_view(retVal, l));
+    return context->ReturnString(base::WrapStringView(retVal, length));
 }
 
 } // extern "C"

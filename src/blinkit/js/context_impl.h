@@ -35,7 +35,7 @@ public:
     virtual bool QueryDestroy(void) const = 0;
 
     typedef std::function<void(duk_context *)> Callback;
-    void Eval(const std::string_view code, const Callback &callback, const char *fileName = "eval");
+    void Eval(const std::string_view &code, const Callback &callback, const char *fileName = "eval");
     virtual JSObjectImpl* GetContextObject(int callContext) { return nullptr; }
     BkJSCallerContext PrepareFunctionCall(int callContext, const char *functionName);
     BkJSCallerContext PrepareScriptFunction(const char *code);

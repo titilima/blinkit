@@ -94,20 +94,14 @@ BKEXPORT int BKAPI BkPushInteger(BkJSCallerContext callerContext, int n)
     return callerContext->DoPush(worker);
 }
 
-BKEXPORT int BKAPI BkPushString(BkJSCallerContext callerContext, const char *s)
-{
-    const auto worker = [s](duk_context *ctx)
-    {
-        duk_push_string(ctx, s);
-    };
-    return callerContext->DoPush(worker);
-}
-
-BKEXPORT int BKAPI BkPushStringPiece(BkJSCallerContext callerContext, const char *s, size_t l)
+BKEXPORT int BKAPI BkPushString(BkJSCallerContext callerContext, const char *s, size_t l)
 {
     const auto worker = [s, l](duk_context *ctx)
     {
-        duk_push_lstring(ctx, s, l);
+        if (l > 0)
+            duk_push_lstring(ctx, s, l);
+        else
+            duk_push_string(ctx, s);
     };
     return callerContext->DoPush(worker);
 }
