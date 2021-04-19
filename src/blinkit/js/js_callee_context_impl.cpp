@@ -16,6 +16,29 @@
 
 using namespace BlinKit;
 
+class Evaluator final : public JSValueImpl
+{
+public:
+    Evaluator(const std::string_view &code) : m_code(code) {}
+private:
+    int GetType(void) const override
+    {
+        NOTREACHED();
+        return BK_VT_ERROR;
+    }
+    std::string GetAsString(void) const override
+    {
+        NOTREACHED();
+        return std::string();
+    }
+    void PushTo(duk_context *ctx) const override
+    {
+        duk_eval_lstring(ctx, m_code.data(), m_code.length());
+    }
+
+    const std::string m_code;
+};
+
 JSCalleeContextImpl::JSCalleeContextImpl(duk_context *ctx, int argc) : m_ctx(ctx)
 {
     if (0 == argc)
@@ -30,6 +53,14 @@ JSCalleeContextImpl::JSCalleeContextImpl(duk_context *ctx, int argc) : m_ctx(ctx
 }
 
 JSCalleeContextImpl::~JSCalleeContextImpl(void) = default;
+
+int JSCalleeContextImpl::EvaluateAndReturn(const std::string_view &s)
+{
+    if (m_retVal)
+        return BK_ERR_FORBIDDEN;
+    m_retVal = std::make_unique<Evaluator>(s);
+    return BK_ERR_SUCCESS;
+}
 
 JSValueImpl* JSCalleeContextImpl::GetArgAt(unsigned argIndex) const
 {
@@ -74,6 +105,11 @@ int JSCalleeContextImpl::ReturnString(const std::string_view &s)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
+
+BKEXPORT int BKAPI BkEvaluateAndReturn(BkJSCalleeContext context, const char *code, size_t length)
+{
+    return context->EvaluateAndReturn(base::WrapStringView(code, length));
+}
 
 BKEXPORT unsigned BKAPI BkGetArgCount(BkJSCalleeContext context)
 {

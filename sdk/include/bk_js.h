@@ -117,6 +117,7 @@ BKEXPORT BkJSObject BKAPI BkGetArgAsObject(BkJSCalleeContext context, unsigned a
 BKEXPORT int BKAPI BkReturnBoolean(BkJSCalleeContext context, bool_t retVal);
 BKEXPORT int BKAPI BkReturnNumber(BkJSCalleeContext context, double retVal);
 BKEXPORT int BKAPI BkReturnString(BkJSCalleeContext context, const char *retVal, size_t length);
+BKEXPORT int BKAPI BkEvaluateAndReturn(BkJSCalleeContext context, const char *code, size_t length);
 
 enum BkConsoleMessageType {
     BK_CONSOLE_LOG = 0,
