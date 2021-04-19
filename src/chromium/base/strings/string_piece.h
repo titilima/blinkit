@@ -19,6 +19,14 @@
 
 namespace base {
 
+inline std::string_view WrapStringView(const char *ps, size_t len)
+{
+    if (len > 0)
+        return std::string_view(ps, len);
+    else
+        return std::string_view(ps);
+}
+
 template <typename StringType> class BasicStringPiece;
 
 typedef BasicStringPiece<std::string>   StringPiece;
