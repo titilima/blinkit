@@ -11,6 +11,7 @@
 
 #include "browser_context.h"
 
+#include "blinkit/js/module_manager.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_global.h"
@@ -150,7 +151,11 @@ void BrowserContext::UpdateDocument(void)
     duk_context *ctx = GetRawContext();
     DukWindow::Attach(ctx, *(m_frame.DomWindow()));
     if (0 == (m_sessionFlags & SESSION_INITIALIZED))
+    {
         InitializeSession();
+        if (m_moduleManager)
+            m_moduleManager->Attach(ctx);
+    }
 }
 
 } // namespace BlinKit

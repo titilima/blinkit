@@ -79,6 +79,9 @@ BKEXPORT BkJSObject BKAPI BkGetUserObject(BkJSContext context);
 
 BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, size_t len, BkJSValue *retVal);
 
+typedef bool_t (BKAPI * BkModuleLoader)(const char *name, struct BkBuffer *dst, void *);
+BKEXPORT int BKAPI BkEnableModules(BkJSContext context, int reserved, BkModuleLoader loader, void *userData);
+
 enum BkCallContext {
     BK_CTX_GLOBAL = 0,
     BK_CTX_USER_OBJECT
@@ -117,6 +120,7 @@ BKEXPORT BkJSObject BKAPI BkGetArgAsObject(BkJSCalleeContext context, unsigned a
 BKEXPORT int BKAPI BkReturnBoolean(BkJSCalleeContext context, bool_t retVal);
 BKEXPORT int BKAPI BkReturnNumber(BkJSCalleeContext context, double retVal);
 BKEXPORT int BKAPI BkReturnString(BkJSCalleeContext context, const char *retVal, size_t length);
+BKEXPORT int BKAPI BkReturnModule(BkJSCalleeContext context, const char *name);
 BKEXPORT int BKAPI BkEvaluateAndReturn(BkJSCalleeContext context, const char *code, size_t length);
 
 enum BkConsoleMessageType {

@@ -16,6 +16,7 @@
 #include "blinkit/js/function_manager.h"
 #include "blinkit/js/js_caller_context_impl.h"
 #include "blinkit/js/js_value_impl.h"
+#include "blinkit/js/module_manager.h"
 #include "blinkit/js/simple_context.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 
@@ -40,6 +41,18 @@ ContextImpl::ContextImpl(void)
 ContextImpl::~ContextImpl(void)
 {
     duk_destroy_heap(m_ctx);
+}
+
+int ContextImpl::EnableModules(BkModuleLoader loader, void *userData)
+{
+    if (m_moduleManager)
+        return BK_ERR_FORBIDDEN;
+    if (nullptr == loader)
+        return BK_ERR_TYPE;
+
+    m_moduleManager = std::make_unique<ModuleManager>(m_ctx, loader, userData);
+    m_moduleManager->Attach(m_ctx);
+    return BK_ERR_SUCCESS;
 }
 
 void ContextImpl::Eval(const std::string_view &code, const Callback &callback, const char *fileName)
@@ -140,6 +153,11 @@ BKEXPORT int BKAPI BkDestroyJSContext(BkJSContext context)
     {
         return BK_ERR_FORBIDDEN;
     }
+}
+
+BKEXPORT int BKAPI BkEnableModules(BkJSContext context, int, BkModuleLoader loader, void *userData)
+{
+    return context->EnableModules(loader, userData);
 }
 
 BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, size_t len, BkJSValue *retVal)

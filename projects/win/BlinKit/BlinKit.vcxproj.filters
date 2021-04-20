@@ -180,6 +180,9 @@
     <ClCompile Include="..\..\..\src\blinkit\win\time_ticker.cpp">
       <Filter>win</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\js\module_manager.cpp">
+      <Filter>js</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -334,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\time_ticker.h">
       <Filter>win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\js\module_manager.h">
+      <Filter>js</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

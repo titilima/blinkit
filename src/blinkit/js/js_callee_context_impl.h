@@ -35,6 +35,7 @@ public:
     int ReturnBoolean(bool b);
     int ReturnNumber(double d);
     int ReturnString(const std::string_view &s);
+    int ReturnModule(const char *name);
     int EvaluateAndReturn(const std::string_view &s);
 private:
     duk_context *m_ctx;

@@ -13,30 +13,54 @@
 
 #include "base/strings/string_piece.h"
 #include "blinkit/js/js_value_impl.h"
+#include "blinkit/js/module_manager.h"
 
 using namespace BlinKit;
 
-class Evaluator final : public JSValueImpl
+class InternalValueImpl : public JSValueImpl
 {
-public:
-    Evaluator(const std::string_view &code) : m_code(code) {}
 private:
-    int GetType(void) const override
+    int GetType(void) const final
     {
         NOTREACHED();
         return BK_VT_ERROR;
     }
-    std::string GetAsString(void) const override
+    std::string GetAsString(void) const final
     {
         NOTREACHED();
         return std::string();
     }
+};
+
+class Evaluator final : public InternalValueImpl
+{
+public:
+    Evaluator(const std::string_view &code) : m_code(code) {}
+private:
     void PushTo(duk_context *ctx) const override
     {
         duk_eval_lstring(ctx, m_code.data(), m_code.length());
     }
 
     const std::string m_code;
+};
+
+class ModuleLoader final : public InternalValueImpl
+{
+public:
+    ModuleLoader(const char *name) : m_name(name) {}
+private:
+    void PushTo(duk_context *ctx) const override
+    {
+        if (ModuleManager *moduleManager = ModuleManager::From(ctx))
+        {
+            if (moduleManager->Load(ctx, m_name.c_str()))
+                return;
+        }
+        duk_push_undefined(ctx);
+    }
+
+    const std::string m_name;
 };
 
 JSCalleeContextImpl::JSCalleeContextImpl(duk_context *ctx, int argc) : m_ctx(ctx)
@@ -83,6 +107,14 @@ int JSCalleeContextImpl::ReturnBoolean(bool b)
     if (m_retVal)
         return BK_ERR_FORBIDDEN;
     m_retVal = std::make_unique<JSSimpleValue>(b);
+    return BK_ERR_SUCCESS;
+}
+
+int JSCalleeContextImpl::ReturnModule(const char *name)
+{
+    if (m_retVal)
+        return BK_ERR_FORBIDDEN;
+    m_retVal = std::make_unique<ModuleLoader>(name);
     return BK_ERR_SUCCESS;
 }
 
@@ -165,6 +197,11 @@ BKEXPORT BkJSObject BKAPI BkGetArgAsObject(BkJSCalleeContext context, unsigned a
 BKEXPORT int BKAPI BkReturnBoolean(BkJSCalleeContext context, bool_t retVal)
 {
     return context->ReturnBoolean(retVal);
+}
+
+BKEXPORT int BKAPI BkReturnModule(BkJSCalleeContext context, const char *name)
+{
+    return context->ReturnModule(name);
 }
 
 BKEXPORT int BKAPI BkReturnNumber(BkJSCalleeContext context, double retVal)

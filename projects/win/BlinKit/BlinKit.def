@@ -46,6 +46,7 @@ BkCreateJSContext
 BkDestroyJSContext
 BkGetUserObject
 BkEvaluate
+BkEnableModules
 BkPrepareFunctionCall
 BkPrepareScriptFunction
 BkPushInteger
@@ -63,4 +64,5 @@ BkGetArgAsObject
 BkReturnBoolean
 BkReturnNumber
 BkReturnString
+BkReturnModule
 BkEvaluateAndReturn

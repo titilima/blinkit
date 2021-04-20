@@ -23,6 +23,7 @@
 
 namespace BlinKit {
 class FunctionManager;
+class ModuleManager;
 }
 
 class CrawlerImpl;
@@ -33,6 +34,8 @@ public:
     virtual ~ContextImpl(void);
 
     virtual bool QueryDestroy(void) const = 0;
+
+    int EnableModules(BkModuleLoader loader, void *userData);
 
     typedef std::function<void(duk_context *)> Callback;
     void Eval(const std::string_view &code, const Callback &callback, const char *fileName = "eval");
@@ -49,6 +52,7 @@ protected:
 
     typedef void (*DukWorker)(duk_context*);
     std::unique_ptr<BlinKit::FunctionManager> m_functionManager;
+    std::unique_ptr<BlinKit::ModuleManager> m_moduleManager;
 private:
     duk_context *m_ctx;
 };
