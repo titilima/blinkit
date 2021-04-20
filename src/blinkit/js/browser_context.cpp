@@ -134,6 +134,9 @@ void BrowserContext::NewGlobalObject(void)
     ExposeGlobals(ctx, idx);
     duk_set_global_object(ctx);
 
+    if (m_moduleManager)
+        m_moduleManager->Attach(ctx);
+
     m_sessionFlags |= GLOBAL_OBJECT_INITIALIZED;
 }
 
@@ -151,11 +154,7 @@ void BrowserContext::UpdateDocument(void)
     duk_context *ctx = GetRawContext();
     DukWindow::Attach(ctx, *(m_frame.DomWindow()));
     if (0 == (m_sessionFlags & SESSION_INITIALIZED))
-    {
         InitializeSession();
-        if (m_moduleManager)
-            m_moduleManager->Attach(ctx);
-    }
 }
 
 } // namespace BlinKit

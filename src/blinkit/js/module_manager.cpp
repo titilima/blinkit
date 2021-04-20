@@ -50,6 +50,7 @@ bool ModuleManager::Load(duk_context *ctx, const char *name)
 
     duk_push_global_stash(ctx);
     duk_get_prop_string(ctx, -1, Modules);
+    ASSERT(duk_is_object(ctx, -1));
     modulesIdx = duk_get_top_index(ctx);
 
     if (duk_get_prop_string(ctx, -1, name))

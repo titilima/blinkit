@@ -26,8 +26,8 @@ class FunctionManager
 public:
     FunctionManager(ContextImpl &ctx);
 
-    int Register(duk_context *ctx, int memberContext, const char *functionName, BkFunctionImpl impl, void *userData);
-    void RegisterTo(duk_context *ctx);
+    int Register(int memberContext, const char *functionName, BkFunctionImpl impl, void *userData);
+    void FlushAll(void);
 private:
     struct FunctionData {
         int memberContext;

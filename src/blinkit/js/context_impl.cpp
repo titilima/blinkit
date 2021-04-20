@@ -123,14 +123,14 @@ BkJSCallerContext ContextImpl::PrepareScriptFunction(const char *code)
 void ContextImpl::RegisterFunctions(void)
 {
     if (m_functionManager)
-        m_functionManager->RegisterTo(m_ctx);
+        m_functionManager->FlushAll();
 }
 
 int ContextImpl::RegisterFunction(int memberContext, const char *functionName, BkFunctionImpl impl, void *userData)
 {
     if (!m_functionManager)
         m_functionManager = std::make_unique<FunctionManager>(*this);
-    return m_functionManager->Register(m_ctx, memberContext, functionName, impl, userData);
+    return m_functionManager->Register(memberContext, functionName, impl, userData);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
