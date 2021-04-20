@@ -74,7 +74,7 @@ private:
     {
         auto callback = [](BkJSContext ctx)
         {
-            BkEvaluate(ctx, ReadyCode, nullptr);
+            BkEvaluate(ctx, ReadyCode, std::size(ReadyCode) - 1, nullptr);
             BkExit(EXIT_SUCCESS);
         };
         js_call::prepare(callback)->commit_to(m_crawler);

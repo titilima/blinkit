@@ -344,7 +344,7 @@ public:
         }
         void push(const std::string_view &s)
         {
-            BkPushStringPiece(m_ctx, s.data(), s.length());
+            BkPushString(m_ctx, s.data(), s.length());
         }
     private:
         friend class js_function;
