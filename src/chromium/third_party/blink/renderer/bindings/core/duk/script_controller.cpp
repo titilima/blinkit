@@ -47,6 +47,8 @@
 #include "blinkit/crawler/crawler_impl.h"
 #include "blinkit/js/crawler_context.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_element.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_window.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_source_code.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -55,86 +57,126 @@ using namespace BlinKit;
 
 namespace blink {
 
-static void CommonCallback(BrowserContext *ctxImpl, duk_context *ctx)
-{
-    if (!duk_is_error(ctx, -1))
-        return;
+static const char NativeContext[] = "nativeContext";
 
-#ifndef NDEBUG
-    duk_get_prop_string(ctx, -1, "stack");
-#endif
-    std::string str = Duk::To<std::string>(ctx, -1);
-    ctxImpl->ConsoleOutput(BK_CONSOLE_ERROR, str.c_str());
-}
-
-ScriptController::ScriptController(LocalFrame &frame) : m_frame(frame)
+ScriptController::ScriptController(LocalFrame &frame, const PrototypeMap &prototypeMap)
+    : m_frame(frame), m_prototypeMap(prototypeMap)
 {
 }
 
 ScriptController::~ScriptController(void) = default;
 
+void ScriptController::Attach(duk_context *ctx, duk_idx_t globalStashIndex)
+{
+    duk_push_pointer(ctx, this);
+    duk_put_prop_string(ctx, globalStashIndex, NativeContext);
+}
+
 void ScriptController::ClearForClose(void)
 {
-    m_context.reset();
+    DestroyDukSession();
 }
 
 void ScriptController::ClearWindowProxy(void)
 {
-    if (m_context)
-        m_context->Clear();
+    DestroyDukSession();
+    m_domInitialized = false;
+}
+
+void ScriptController::ConsoleOutput(int type, const char *msg)
+{
+    BkLog("%s", msg);
 }
 
 std::unique_ptr<ScriptController> ScriptController::Create(LocalFrame &frame)
 {
-    return base::WrapUnique(new ScriptController(frame));
-}
-
-BrowserContext& ScriptController::EnsureContext(void)
-{
-    if (!m_context)
-    {
+    bool isCrawler = frame.Client()->IsCrawler();
 #ifdef BLINKIT_CRAWLER_ONLY
-        m_context = std::make_unique<CrawlerContext>(*m_frame);
+    ASSERT(isCrawler);
+    return std::make_unique<CrawlerContext>(frame);
 #else
-        if (m_frame->Client()->IsCrawler())
-            m_context = std::make_unique<CrawlerContext>(*m_frame);
-        else
-            ASSERT(false); // BKTODO:
-#endif
+    if (isCrawler)
+    {
+        return std::make_unique<CrawlerContext>(frame);
     }
     else
     {
-        m_context->ResetSessionIfNecessary();
+        ASSERT(false); // BKTODO:
+        return nullptr;
     }
-    return *m_context;
+#endif
 }
 
 void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const GURL &baseURL)
 {
-    BrowserContext &ctx = EnsureContext();
-    const ContextImpl::Callback callback = std::bind(CommonCallback, &ctx, std::placeholders::_1);
-    ctx.Eval(sourceCode.Source(), callback, sourceCode.Url().ExtractFileName().c_str());
+    const auto callback = [this](duk_context *ctx) {
+        if (!duk_is_error(ctx, -1))
+            return;
+
+#ifndef NDEBUG
+        duk_get_prop_string(ctx, -1, "stack");
+#endif
+        std::string str = Duk::To<std::string>(ctx, -1);
+        ConsoleOutput(BK_CONSOLE_ERROR, str.c_str());
+    };
+    ContextImpl::Eval(sourceCode.Source(), callback, sourceCode.Url().ExtractFileName().c_str());
+}
+
+ScriptController* ScriptController::From(duk_context *ctx)
+{
+    Duk::StackGuard _(ctx);
+
+    duk_push_global_stash(ctx);
+    duk_get_prop_string(ctx, -1, NativeContext);
+    return reinterpret_cast<ScriptController *>(duk_get_pointer(ctx, -1));
+}
+
+ScriptController* ScriptController::From(ExecutionContext *executionContext)
+{
+    if (executionContext->IsDocument())
+    {
+        Document *document = static_cast<Document *>(executionContext);
+        ScriptController &ctx = document->GetFrame()->GetScriptController();
+        return &ctx;
+    }
+
+    NOTREACHED();
+    return nullptr;
+}
+
+const char* ScriptController::LookupPrototypeName(const std::string &tagName) const
+{
+    auto it = m_prototypeMap.find(tagName);
+    return m_prototypeMap.end() != it ? it->second : DukElement::ProtoName;
 }
 
 bool ScriptController::ScriptEnabled(const std::string &URL)
 {
     if (URL.empty())
         return true;
-    if (CrawlerImpl *crawler = ToCrawlerImpl(m_frame->Client()))
+    if (CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client()))
         return crawler->ScriptEnabled(URL);
     return true;
 }
 
 void ScriptController::UpdateDocument(void)
 {
-    if (m_context)
-        m_context->UpdateDocument();
-}
+    if (m_domInitialized)
+        return;
 
-void ScriptController::WillStartNavigation(void)
-{
-    if (m_context)
-        m_context->WillStartNavigation();
+    if (duk_context *ctx = EnsureDukSession())
+    {
+        Duk::StackGuard _(ctx);
+
+        duk_idx_t globalStashIndex;
+        duk_push_global_stash(ctx);
+        globalStashIndex = duk_normalize_index(ctx, -1);
+
+        RegisterPrototypes(ctx, globalStashIndex);
+        DukWindow::Attach(ctx, *(m_frame.DomWindow()));
+    }
+
+    m_domInitialized = true;
 }
 
 } // namespace blink

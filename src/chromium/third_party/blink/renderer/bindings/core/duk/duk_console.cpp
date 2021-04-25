@@ -12,7 +12,9 @@
 #include "duk_console.h"
 
 #include "bk_js.h"
-#include "blinkit/js/browser_context.h"
+#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
+
+using namespace blink;
 
 namespace BlinKit {
 
@@ -20,13 +22,13 @@ namespace Impl {
 
 static duk_ret_t Log(duk_context *ctx)
 {
-    BrowserContext::From(ctx)->ConsoleOutput(BK_CONSOLE_LOG, duk_to_string(ctx, 0));
+    ScriptController::From(ctx)->ConsoleOutput(BK_CONSOLE_LOG, duk_to_string(ctx, 0));
     return 0;
 }
 
 static duk_ret_t Warn(duk_context *ctx)
 {
-    BrowserContext::From(ctx)->ConsoleOutput(BK_CONSOLE_WARN, duk_to_string(ctx, 0));
+    ScriptController::From(ctx)->ConsoleOutput(BK_CONSOLE_WARN, duk_to_string(ctx, 0));
     return 0;
 }
 

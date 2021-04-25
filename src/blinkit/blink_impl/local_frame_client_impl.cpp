@@ -12,7 +12,6 @@
 #include "local_frame_client_impl.h"
 
 #include "bkcommon/bk_strings.h"
-#include "blinkit/js/browser_context.h"
 #include "third_party/blink/renderer/core/exported/web_document_loader_impl.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
@@ -32,7 +31,7 @@ int LocalFrameClientImpl::CallJS(LocalFrame *frame, BkJSCallback callback, void 
 
 void LocalFrameClientImpl::CallJSImpl(LocalFrame *frame, BkJSCallback callback, void *userData)
 {
-    BrowserContext &ctx = frame->GetScriptController().EnsureContext();
+    ScriptController &ctx = frame->GetScriptController();
     callback(&ctx, userData);
 }
 

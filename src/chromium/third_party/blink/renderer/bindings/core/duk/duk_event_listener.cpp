@@ -13,7 +13,6 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/strings/stringprintf.h"
-#include "blinkit/js/browser_context.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_event.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
@@ -52,8 +51,8 @@ DukEventListener::~DukEventListener(void)
 
 bool DukEventListener::BelongsToTheCurrentWorld(ExecutionContext *executionContext) const
 {
-    BrowserContext *ctxImpl = BrowserContext::From(executionContext);
-    return ctxImpl->GetRawContext() == m_ctx;
+    ScriptController *ctx = ScriptController::From(executionContext);
+    return ctx->IsSameSession(m_ctx);
 }
 
 std::shared_ptr<EventListener> DukEventListener::CreateAttributeEventListener(Node *node, const QualifiedName &name, const AtomicString &value)
@@ -111,9 +110,7 @@ std::shared_ptr<EventListener> DukEventListener::Get(duk_context *ctx, duk_idx_t
 
 void DukEventListener::handleEvent(ExecutionContext *executionContext, Event *event)
 {
-    BrowserContext *ctxImpl = BrowserContext::From(executionContext);
-
-    ASSERT(ctxImpl->GetRawContext() == m_ctx);
+    ASSERT(BelongsToTheCurrentWorld(executionContext));
 
     Duk::StackGuard sg(m_ctx);
 
@@ -144,7 +141,7 @@ void DukEventListener::handleEvent(ExecutionContext *executionContext, Event *ev
         duk_get_prop_string(m_ctx, -1, "stack");
 #endif
         std::string str = Duk::To<std::string>(m_ctx, -1);
-        ctxImpl->ConsoleOutput(BK_CONSOLE_ERROR, str.c_str());
+        ScriptController::From(m_ctx)->ConsoleOutput(BK_CONSOLE_ERROR, str.c_str());
     }
 }
 

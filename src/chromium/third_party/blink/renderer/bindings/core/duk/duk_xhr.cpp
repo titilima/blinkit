@@ -16,10 +16,10 @@
 #include "bkcommon/bk_signal.hpp"
 #include "bkcommon/buffer_impl.hpp"
 #include "bkcommon/response_impl.h"
-#include "blinkit/js/browser_context.h"
 #include "blinkit/js/heap_retained.h"
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
+#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -362,7 +362,7 @@ duk_ret_t DukXHR::Open(
         m_URL = URL.StdUtf8();
     }
 
-    String userAgent = BrowserContext::From(ctx)->GetFrame().Client()->UserAgent();
+    String userAgent = ScriptController::From(ctx)->GetFrame().Client()->UserAgent();
     m_requestHeaders[Strings::HttpHeader::UserAgent] = userAgent.StdUtf8();
 
     ASSERT(username.empty() && password.empty()); // BKTODO:

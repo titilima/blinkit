@@ -11,8 +11,10 @@
 
 #include "duk_timer.h"
 
-#include "blinkit/js/browser_context.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
+#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
+
+using namespace blink;
 
 namespace BlinKit {
 
@@ -51,7 +53,7 @@ static void OnError(duk_context *ctx)
     duk_get_prop_string(ctx, -1, "stack");
 #endif
     std::string str = Duk::To<std::string>(ctx, -1);
-    BrowserContext::From(ctx)->ConsoleOutput(BK_CONSOLE_ERROR, str.c_str());
+    ScriptController::From(ctx)->ConsoleOutput(BK_CONSOLE_ERROR, str.c_str());
 }
 
 void DukTimer::DoCall(duk_context *ctx, duk_idx_t idx)

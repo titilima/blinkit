@@ -75,8 +75,6 @@ BK_DECLARE_HANDLE(BkJSObjectWriter, JSObjectWriterImpl);
 BKEXPORT BkJSContext BKAPI BkCreateJSContext(void);
 BKEXPORT int BKAPI BkDestroyJSContext(BkJSContext context);
 
-BKEXPORT BkJSObject BKAPI BkGetUserObject(BkJSContext context);
-
 BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, size_t len, BkJSValue *retVal);
 
 typedef bool_t (BKAPI * BkModuleLoader)(const char *name, struct BkBuffer *dst, void *);

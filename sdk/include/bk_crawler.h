@@ -44,13 +44,6 @@ enum BkCrawlerConfig {
     BK_CFG_USER_AGENT,
 };
 
-enum BkScriptMode {
-    BK_ALWAYS_ENABLE_SCRIPT = 0,
-    BK_ALWAYS_DISABLE_SCRIPT,
-    BK_ENABLE_SCRIPT_ONCE,
-    BK_DISABLE_SCRIPT_ONCE
-};
-
 struct BkCrawlerClient {
     size_t SizeOfStruct; // sizeof(BkCrawlerClient)
     void *UserData;
@@ -60,7 +53,7 @@ struct BkCrawlerClient {
      *   - REQUIRED.
      *   - Thread: client.
      */
-    void (BKAPI * DocumentReady)(void *);
+    void (BKAPI * DocumentReady)(BkJSContext, void *);
 
     /**
      * Fires after a main(HTML) request completed.
@@ -85,11 +78,11 @@ struct BkCrawlerClient {
     bool_t (BKAPI * GetCookies)(const char *URL, const char *cookiesFromJar, struct BkBuffer *cookiesToSet, void *);
 
     /**
-     * Get script mode for the URL being requested.
+     * Get script enable status for the URL being requested.
      *   - Thread: BlinKit.
-     *   - See also: BkScriptMode.
+     *   - If `IsScriptEnabled` is NULL, script is disabled.
      */
-    int (BKAPI * GetScriptMode)(const char *URL, void *);
+    bool_t (BKAPI * IsScriptEnabled)(const char *URL, void *);
 
     /**
      * Hijack script requests before performing.
@@ -110,12 +103,6 @@ struct BkCrawlerClient {
      *   - Call BkHijackResponse to modify the script content.
      */
     void (BKAPI * HijackResponse)(BkResponse, void *);
-
-    /**
-     * Fires when a new `window.document` object is initialized.
-     *   - Thread: BlinKit.
-     */
-    void (BKAPI * DocumentReset)(BkJSContext, void *);
 
     /**
      * Fires when an error occurs.

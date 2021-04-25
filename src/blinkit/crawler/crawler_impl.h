@@ -37,8 +37,7 @@ public:
     bool HijackRequest(const char *URL, std::string &dst) const;
     void ModifyRequest(const char *URL, BkRequest req);
     void HijackResponse(BkResponse response);
-    bool ApplyConsoleMessager(std::function<void(int, const char *)> &dst) const;
-    void ProcessDocumentReset(ContextImpl *ctx);
+    bool ProcessConsoleMessage(int type, const char *msg);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
@@ -65,7 +64,6 @@ private:
     std::unique_ptr<blink::LocalFrame> m_frame;
 
     CookieJarImpl *m_cookieJar = nullptr;
-    std::unordered_map<std::string, bool> m_scriptModeMap;
 };
 
 DEFINE_TYPE_CASTS(CrawlerImpl, ::blink::LocalFrameClient, client, client->IsCrawler(), client.IsCrawler());

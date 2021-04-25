@@ -44,48 +44,55 @@
 
 #pragma once
 
-#include <string>
+#include "blinkit/js/context_impl.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
 
 class GURL;
 
-namespace BlinKit {
-class BrowserContext;
-}
-
 namespace blink {
 
+class ExecutionContext;
 class LocalFrame;
 class ScriptSourceCode;
 
 // This class exposes methods to run script in a frame (in the main world and
 // in isolated worlds). An instance can be obtained by using
 // LocalFrame::GetScriptController().
-class ScriptController final
+class ScriptController : public ContextImpl
 {
     WTF_MAKE_NONCOPYABLE(ScriptController);
 public:
     static std::unique_ptr<ScriptController> Create(LocalFrame &frame);
     ~ScriptController(void);
 
-    BlinKit::BrowserContext* GetContext(void) { return m_context.get(); }
-    BlinKit::BrowserContext& EnsureContext(void);
-    bool ScriptEnabled(const std::string &URL);
+    static ScriptController* From(duk_context *ctx);
+    static ScriptController* From(ExecutionContext *executionContext);
 
+    const blink::LocalFrame& GetFrame(void) const { return m_frame; }
+
+    bool ScriptEnabled(const std::string &URL);
     void ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const GURL &baseURL);
 
     void ClearWindowProxy(void);
+    void ClearForClose(void);
     void UpdateDocument(void);
 
-    void ClearForClose(void);
+    virtual void ConsoleOutput(int type, const char *msg);
+    const char* LookupPrototypeName(const std::string &tagName) const;
+protected:
+    typedef std::unordered_map<std::string, const char *> PrototypeMap;
+    ScriptController(LocalFrame &frame, const PrototypeMap &prototypeMap);
 
-    void WillStartNavigation(void);
+    void Attach(duk_context *ctx, duk_idx_t globalStashIndex) override;
 private:
-    ScriptController(LocalFrame &frame);
+    virtual void RegisterPrototypes(duk_context *ctx, duk_idx_t globalStashIndex) = 0;
 
-    const Member<LocalFrame> m_frame;
-    std::unique_ptr<BlinKit::BrowserContext> m_context;
+    bool QueryDestroy(void) const final { return false; }
+
+    LocalFrame &m_frame;
+    const PrototypeMap &m_prototypeMap;
+    bool m_domInitialized = false;
 };
 
 } // namespace blink

@@ -40,7 +40,6 @@ BkObjectToJSON
 BkObjectGetMember
 BkCreateJSContext
 BkDestroyJSContext
-BkGetUserObject
 BkEvaluate
 BkEnableModules
 BkPrepareFunctionCall

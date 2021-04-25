@@ -18,7 +18,6 @@
 #include "bkcommon/response_impl.h"
 #include "blinkit/app/app_impl.h"
 #include "blinkit/crawler/cookie_jar_impl.h"
-#include "blinkit/js/browser_context.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"
@@ -44,14 +43,6 @@ CrawlerImpl::~CrawlerImpl(void)
         m_cookieJar->Release();
 }
 
-bool CrawlerImpl::ApplyConsoleMessager(std::function<void(int, const char *)> &dst) const
-{
-    if (nullptr == m_client.ConsoleMessage)
-        return false;
-    dst = std::bind(m_client.ConsoleMessage, std::placeholders::_1, std::placeholders::_2, m_client.UserData);
-    return true;
-}
-
 int CrawlerImpl::CallJS(BkJSCallback callback, void *userData)
 {
     return LocalFrameClientImpl::CallJS(m_frame.get(), callback, userData);
@@ -72,7 +63,8 @@ void CrawlerImpl::Destroy(void)
 
 void CrawlerImpl::DidFinishLoad(void)
 {
-    m_client.DocumentReady(m_client.UserData);
+    ScriptController &ctx = m_frame->GetScriptController();
+    m_client.DocumentReady(&ctx, m_client.UserData);
 }
 
 void CrawlerImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
@@ -153,10 +145,12 @@ void CrawlerImpl::ModifyRequest(const char *URL, BkRequest req)
         m_client.ModifyRequest(URL, req, m_client.UserData);
 }
 
-void CrawlerImpl::ProcessDocumentReset(ContextImpl *ctx)
+bool CrawlerImpl::ProcessConsoleMessage(int type, const char *msg)
 {
-    if (nullptr != m_client.DocumentReset)
-        m_client.DocumentReset(ctx, m_client.UserData);
+    if (nullptr == m_client.ConsoleMessage)
+        return false;
+    m_client.ConsoleMessage(type, msg, m_client.UserData);
+    return true;
 }
 
 bool CrawlerImpl::ProcessRequestComplete(BkResponse response, BkWorkController controller)
@@ -183,11 +177,11 @@ int CrawlerImpl::Run(const char *URL)
     auto task = [this, u]
     {
         FrameLoadRequest request(nullptr, ResourceRequest(u));
+
         auto &resourceRequest = request.GetResourceRequest();
         resourceRequest.SetCrawler(this);
         resourceRequest.SetHijackType(HijackType::kMainHTML);
 
-        m_frame->GetScriptController().WillStartNavigation();
         m_frame->Loader().StartNavigation(request);
     };
     m_appCaller.Call(FROM_HERE, std::move(task));
@@ -196,35 +190,9 @@ int CrawlerImpl::Run(const char *URL)
 
 bool CrawlerImpl::ScriptEnabled(const std::string &URL)
 {
-    bool ret = false;
-    do {
-        if (nullptr == m_client.GetScriptMode)
-            break;
-
-        auto it = m_scriptModeMap.find(URL);
-        if (std::end(m_scriptModeMap) != it)
-        {
-            ret = it->second;
-            break;
-        }
-
-        int mode = m_client.GetScriptMode(URL.c_str(), m_client.UserData);
-        switch (mode)
-        {
-            case BK_ALWAYS_ENABLE_SCRIPT:
-                m_scriptModeMap[URL] = true;
-                [[fallthrough]];
-            case BK_ENABLE_SCRIPT_ONCE:
-                break;
-            case BK_ALWAYS_DISABLE_SCRIPT:
-                m_scriptModeMap[URL] = false;
-                [[fallthrough]];
-            case BK_DISABLE_SCRIPT_ONCE:
-                ret = false;
-                break;
-        }
-    } while (false);
-    return ret;
+    return nullptr != m_client.IsScriptEnabled
+        ? m_client.IsScriptEnabled(URL.c_str(), m_client.UserData)
+        : false;
 }
 
 void CrawlerImpl::SetCookieJar(CookieJarImpl *cookieJar)

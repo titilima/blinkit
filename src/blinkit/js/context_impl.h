@@ -39,22 +39,27 @@ public:
 
     typedef std::function<void(duk_context *)> Callback;
     void Eval(const std::string_view &code, const Callback &callback, const char *fileName = "eval");
-    virtual JSObjectImpl* GetContextObject(int callContext) { return nullptr; }
+
     BkJSCallerContext PrepareFunctionCall(int callContext, const char *functionName);
     BkJSCallerContext PrepareScriptFunction(const char *code);
+
     int RegisterFunction(int memberContext, const char *functionName, BkFunctionImpl impl, void *userData);
 
-    duk_context* GetRawContext(void) const { return m_ctx; }
+    bool IsSameSession(duk_context *ctx) const { return m_ctx == ctx; }
 protected:
     ContextImpl(void);
 
-    void RegisterFunctions(void);
+    duk_context* EnsureDukSession(void);
+    void DestroyDukSession(void);
+    virtual void Attach(duk_context *ctx, duk_idx_t globalStashIndex) {}
+    virtual void Detach(duk_context *ctx) {}
 
-    typedef void (*DukWorker)(duk_context*);
-    std::unique_ptr<BlinKit::FunctionManager> m_functionManager;
     std::unique_ptr<BlinKit::ModuleManager> m_moduleManager;
 private:
-    duk_context *m_ctx;
+    virtual void* GetUserObject(void) { return nullptr; }
+
+    duk_context *m_ctx = nullptr;
+    std::unique_ptr<BlinKit::FunctionManager> m_functionManager;
 };
 
 #endif // BLINKIT_BLINKIT_CONTEXT_IMPL_H

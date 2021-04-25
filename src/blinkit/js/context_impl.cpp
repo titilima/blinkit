@@ -12,14 +12,18 @@
 #include "context_impl.h"
 
 #include "base/strings/string_piece.h"
-#include "blinkit/js/browser_context.h"
 #include "blinkit/js/function_manager.h"
 #include "blinkit/js/js_caller_context_impl.h"
 #include "blinkit/js/js_value_impl.h"
 #include "blinkit/js/module_manager.h"
 #include "blinkit/js/simple_context.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_global.h"
+#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/core/frame/local_frame_client.h"
 
+using namespace blink;
 using namespace BlinKit;
 
 #ifndef NDEBUG
@@ -29,18 +33,21 @@ static void FatalCallback(void *, const char *msg)
 }
 #endif
 
-ContextImpl::ContextImpl(void)
-#ifdef NDEBUG
-    : m_ctx(duk_create_heap_default())
-#else
-    : m_ctx(duk_create_heap(nullptr, nullptr, nullptr, nullptr, FatalCallback))
-#endif
-{
-}
+ContextImpl::ContextImpl(void) = default;
 
 ContextImpl::~ContextImpl(void)
 {
-    duk_destroy_heap(m_ctx);
+    DestroyDukSession();
+}
+
+void ContextImpl::DestroyDukSession(void)
+{
+    if (nullptr != m_ctx)
+    {
+        Detach(m_ctx);
+        duk_destroy_heap(m_ctx);
+        m_ctx = nullptr;
+    }
 }
 
 int ContextImpl::EnableModules(BkModuleLoader loader, void *userData)
@@ -53,6 +60,47 @@ int ContextImpl::EnableModules(BkModuleLoader loader, void *userData)
     m_moduleManager = std::make_unique<ModuleManager>(m_ctx, loader, userData);
     m_moduleManager->Attach(m_ctx);
     return BK_ERR_SUCCESS;
+}
+
+duk_context* ContextImpl::EnsureDukSession(void)
+{
+    if (nullptr == m_ctx)
+    {
+#ifdef NDEBUG
+        m_ctx = duk_create_heap_default();
+#else
+        m_ctx = duk_create_heap(nullptr, nullptr, nullptr, nullptr, FatalCallback);
+#endif
+
+        Duk::StackGuard _(m_ctx);
+
+        duk_idx_t globalIndex;
+        duk_push_global_object(m_ctx);
+        globalIndex = duk_normalize_index(m_ctx, -1);
+        DukGlobal::Attach(m_ctx, globalIndex);
+
+        duk_idx_t globalStashIndex;
+        duk_push_global_stash(m_ctx);
+        globalStashIndex = duk_normalize_index(m_ctx, -1);
+
+        Attach(m_ctx, globalStashIndex);
+
+        if (m_functionManager)
+        {
+            FunctionManager::Indices indices = { 0 };
+            indices.globalObjectIndex = globalIndex;
+
+            void *userObject = GetUserObject();
+            if (nullptr != userObject)
+            {
+                duk_push_heapptr(m_ctx, userObject);
+                indices.userObjectIndex = duk_normalize_index(m_ctx, -1);
+            }
+
+            m_functionManager->FlushAll(m_ctx, indices, userObject);
+        }
+    }
+    return m_ctx;
 }
 
 void ContextImpl::Eval(const std::string_view &code, const Callback &callback, const char *fileName)
@@ -77,6 +125,8 @@ void ContextImpl::Eval(const std::string_view &code, const Callback &callback, c
 
 BkJSCallerContext ContextImpl::PrepareFunctionCall(int callContext, const char *functionName)
 {
+    EnsureDukSession();
+
     Duk::StackGuard sg(m_ctx);
 
     JSCallerContextImpl *ret = nullptr;
@@ -88,12 +138,15 @@ BkJSCallerContext ContextImpl::PrepareFunctionCall(int callContext, const char *
         }
         else
         {
+            ASSERT(false); // BKTODO:
+#if 0
             JSObjectImpl *contextObject = GetContextObject(callContext);
             if (nullptr == contextObject)
                 break;
 
             contextObject->PushTo(m_ctx);
             thisPtr = duk_get_heapptr(m_ctx, -1);
+#endif
         }
 
         ASSERT(!sg.IsNotChanged());
@@ -113,24 +166,31 @@ BkJSCallerContext ContextImpl::PrepareFunctionCall(int callContext, const char *
 
 BkJSCallerContext ContextImpl::PrepareScriptFunction(const char *code)
 {
-    Duk::StackGuard sg(m_ctx);
+    EnsureDukSession();
+
+    Duk::StackGuard _(m_ctx);
     int r = duk_peval_string(m_ctx, code);
     if (DUK_EXEC_SUCCESS != r || !duk_is_function(m_ctx, -1))
         return nullptr;
     return new JSCallerContextImpl(m_ctx, -1);
 }
 
-void ContextImpl::RegisterFunctions(void)
-{
-    if (m_functionManager)
-        m_functionManager->FlushAll();
-}
-
 int ContextImpl::RegisterFunction(int memberContext, const char *functionName, BkFunctionImpl impl, void *userData)
 {
+    if (BK_CTX_USER_OBJECT == memberContext)
+    {
+        ScriptController *ctx = ScriptController::From(m_ctx);
+        if (nullptr == ctx || !ctx->GetFrame().Client()->IsCrawler())
+            return BK_ERR_FORBIDDEN;
+    }
+
     if (!m_functionManager)
-        m_functionManager = std::make_unique<FunctionManager>(*this);
+        m_functionManager = std::make_unique<FunctionManager>();
+    ASSERT(false); // TODO:
+    return 0;
+#if 0
     return m_functionManager->Register(memberContext, functionName, impl, userData);
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,11 +235,6 @@ BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, size_t len,
     if (nullptr != retVal)
         *retVal = ret.release();
     return r;
-}
-
-BKEXPORT BkJSObject BKAPI BkGetUserObject(BkJSContext context)
-{
-    return context->GetContextObject(BK_CTX_USER_OBJECT);
 }
 
 BKEXPORT BkJSCallerContext BKAPI BkPrepareFunctionCall(BkJSContext context, int callContext, const char *functionName)

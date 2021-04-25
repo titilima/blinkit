@@ -21,21 +21,23 @@ namespace BlinKit {
 
 static const char Prototypes[] = "prototypes";
 
-PrototypeHelper::PrototypeHelper(duk_context *ctx)
-    : m_ctx(ctx)
+PrototypeHelper::PrototypeHelper(duk_context *ctx, duk_idx_t globalStashIndex)
+    : m_ctx(ctx), m_globalStashIndex(globalStashIndex)
 #ifndef NDEBUG
-    , m_heapPtr(duk_get_heapptr(ctx, -1))
+    , m_prototypesIndex(duk_push_bare_object(ctx))
 #endif
 {
+#ifdef NDEBUG
     duk_push_bare_object(m_ctx);
+#endif
 }
 
 PrototypeHelper::~PrototypeHelper(void)
 {
 #ifndef NDEBUG
-    ASSERT(duk_get_heapptr(m_ctx, -2) == m_heapPtr);
+    ASSERT(duk_normalize_index(m_ctx, -1) == m_prototypesIndex);
 #endif
-    duk_put_prop_string(m_ctx, -2, Prototypes);
+    duk_put_prop_string(m_ctx, m_globalStashIndex, Prototypes);
 }
 
 bool PrototypeHelper::AttachToScriptObject(duk_context *ctx, duk_idx_t idx, const char *protoName)
@@ -46,7 +48,7 @@ bool PrototypeHelper::AttachToScriptObject(duk_context *ctx, duk_idx_t idx, cons
     idx = duk_normalize_index(ctx, idx);
 
     // ... obj
-    duk_push_heap_stash(ctx);
+    duk_push_global_stash(ctx);
     // ... obj stash
     duk_get_prop_string(ctx, -1, Prototypes);
     // ... obj stash prototypes
@@ -68,7 +70,7 @@ duk_idx_t PrototypeHelper::CreateScriptObject(duk_context *ctx, const char *prot
 
     const duk_idx_t top = duk_get_top(ctx);
     // ... obj
-    duk_push_heap_stash(ctx);
+    duk_push_global_stash(ctx);
     // ... obj stash
     duk_get_prop_string(ctx, -1, Prototypes);
     // ... obj stash prototypes

@@ -109,15 +109,15 @@ protected:
 
     virtual bool get_config(int cfg, std::string &dst) { return false; }
 private:
-    virtual void document_ready(void) = 0;
+    virtual void document_ready(BkJSContext ctx) = 0;
     virtual void on_crawler_error(int code, const char *url)
     {
         assert(false); // TODO: Process error!
     }
 
-    static void BKAPI document_ready_callback(void *p)
+    static void BKAPI document_ready_callback(BkJSContext ctx, void *p)
     {
-        get_client_root(p)->document_ready();
+        get_client_root(p)->document_ready(ctx);
     }
     static bool_t BKAPI get_config_callback(int cfg, BkBuffer *dst, void *p)
     {

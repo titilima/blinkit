@@ -78,7 +78,7 @@ private:
 class PrototypeHelper final
 {
 public:
-    PrototypeHelper(duk_context *ctx);
+    PrototypeHelper(duk_context *ctx, duk_idx_t globalStashIndex);
     ~PrototypeHelper(void);
 
     typedef void (*Worker)(PrototypeEntry &);
@@ -88,8 +88,9 @@ public:
     static duk_idx_t CreateScriptObject(duk_context *ctx, const char *protoName, blink::ScriptWrappable *nativeObject);
 private:
     duk_context *m_ctx;
+    const duk_idx_t m_globalStashIndex;
 #ifndef NDEBUG
-    void *m_heapPtr;
+    const duk_idx_t m_prototypesIndex;
 #endif
 };
 

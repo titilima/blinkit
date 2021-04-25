@@ -14,7 +14,6 @@
 
 #pragma once
 
-#include <functional>
 #include <unordered_map>
 #include "bk_js.h"
 #include "duktape/duktape.h"
@@ -24,24 +23,24 @@ namespace BlinKit {
 class FunctionManager
 {
 public:
-    FunctionManager(ContextImpl &ctx);
+    FunctionManager(void) = default;
 
-    int Register(int memberContext, const char *functionName, BkFunctionImpl impl, void *userData);
-    void FlushAll(void);
-private:
     struct FunctionData {
         int memberContext;
-        JSObjectImpl *thisObject;
         BkFunctionImpl impl;
         void *userData;
     };
+    int Register(duk_context *ctx, duk_idx_t dst, const std::string &name, const FunctionData &data, void *thisObject);
 
-    static std::string GetKey(void *heapPtr);
-    static void Flush(duk_context *ctx, const std::string &name, FunctionData &data);
-    static void Register(duk_context *ctx, duk_idx_t stashIdx, duk_idx_t objIdx, const std::string &name, FunctionData &data);
+    struct Indices {
+        duk_idx_t globalObjectIndex = 0;
+        duk_idx_t userObjectIndex = 0;
+    };
+    void FlushAll(duk_context *ctx, const Indices &indices, void *userObject);
+private:
+    static void Flush(duk_context *ctx, duk_idx_t dst, const std::string &name, FunctionData &data, void *thisObject);
     static duk_ret_t CalleeImpl(duk_context *ctx);
 
-    ContextImpl &m_ctx;
     std::unordered_map<std::string, FunctionData> m_functions;
 };
 

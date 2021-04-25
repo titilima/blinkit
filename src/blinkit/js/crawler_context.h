@@ -14,26 +14,26 @@
 
 #pragma once
 
-#include "blinkit/js/browser_context.h"
+#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
+
+class CrawlerImpl;
 
 namespace BlinKit {
 
-class CrawlerContext final : public BrowserContext
+class CrawlerContext final : public blink::ScriptController
 {
 public:
-    CrawlerContext(const blink::LocalFrame &frame);
+    CrawlerContext(blink::LocalFrame &frame);
     ~CrawlerContext(void) override;
-
-    JSObjectImpl* UserObject(void) { return m_userObject.get(); }
 private:
-    static void RegisterPrototypes(duk_context *ctx);
-    void CreateUserObject(const CrawlerImpl &crawler);
+    void* GetUserObject(void) override { return m_userObject; }
+    void Attach(duk_context *ctx, duk_idx_t globalStashIndex) override;
+    void Detach(duk_context *ctx) override;
+    void ConsoleOutput(int type, const char *msg) override;
+    void RegisterPrototypes(duk_context *ctx, duk_idx_t globalStashIndex) override;
 
-    JSObjectImpl* GetContextObject(int callContext) override;
-    void UpdateDocument(void) override;
-    void InitializeSession(void) override;
-
-    std::unique_ptr<JSObjectImpl> m_userObject;
+    CrawlerImpl &m_crawler;
+    void *m_userObject = nullptr;
 };
 
 } // namespace BlinKit

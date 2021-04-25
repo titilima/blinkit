@@ -69,13 +69,16 @@ void DukGlobal::AddProperty(duk_context *ctx, duk_idx_t dst, const char *name, d
 
 void DukGlobal::Attach(duk_context *ctx, duk_idx_t dst)
 {
-    dst = duk_normalize_index(ctx, dst);
+    ASSERT(dst > 0);
 
     AddMethod(ctx, dst, "atob", Impl::AToB, 1);
     AddMethod(ctx, dst, "btoa", Impl::BToA, 1);
     AddMethod(ctx, dst, DukXHR::ProtoName, DukXHR::Construct, 0);
 
     AddProperty(ctx, dst, "console", Impl::ConsoleGetter);
+
+    duk_push_object(ctx);
+    duk_put_prop_string(ctx, dst, "external");
 }
 
 } // namespace BlinKit

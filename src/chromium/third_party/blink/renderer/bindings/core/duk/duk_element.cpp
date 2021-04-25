@@ -11,7 +11,6 @@
 
 #include "duk_element.h"
 
-#include "blinkit/js/browser_context.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_anchor_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_event_listener.h"
@@ -19,6 +18,7 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk_image_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_named_node_map.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_script_element.h"
+#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/dom/non_document_type_child_node.h"
 #include "third_party/blink/renderer/core/dom/parent_node.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappers.h"
@@ -181,7 +181,7 @@ static duk_ret_t ToString(duk_context *ctx)
 
 void DukElement::Create(duk_context *ctx, Element &element)
 {
-    const char *protoName = BrowserContext::From(ctx)->LookupPrototypeName(element.nodeName().StdUtf8());
+    const char *protoName = ScriptController::From(ctx)->LookupPrototypeName(element.nodeName().StdUtf8());
     PrototypeHelper::CreateScriptObject(ctx, protoName, &element);
 }
 
