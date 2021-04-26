@@ -18,17 +18,26 @@ using namespace blink;
 
 namespace BlinKit {
 
+static void DefaultOutput(int type, duk_context *ctx)
+{
+    const char *message = duk_to_string(ctx, 0);
+    if (ScriptController *scriptController = ScriptController::From(ctx))
+        scriptController->ConsoleOutput(type, duk_to_string(ctx, 0));
+    else
+        ContextImpl::DefaultConsoleOutput(type, message);
+}
+
 namespace Impl {
 
 static duk_ret_t Log(duk_context *ctx)
 {
-    ScriptController::From(ctx)->ConsoleOutput(BK_CONSOLE_LOG, duk_to_string(ctx, 0));
+    DefaultOutput(BK_CONSOLE_LOG, ctx);
     return 0;
 }
 
 static duk_ret_t Warn(duk_context *ctx)
 {
-    ScriptController::From(ctx)->ConsoleOutput(BK_CONSOLE_WARN, duk_to_string(ctx, 0));
+    DefaultOutput(BK_CONSOLE_WARN, ctx);
     return 0;
 }
 

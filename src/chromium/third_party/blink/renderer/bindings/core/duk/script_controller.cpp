@@ -85,7 +85,7 @@ void ScriptController::ClearWindowProxy(void)
 
 void ScriptController::ConsoleOutput(int type, const char *msg)
 {
-    BkLog("%s", msg);
+    ContextImpl::DefaultConsoleOutput(type, msg);
 }
 
 std::unique_ptr<ScriptController> ScriptController::Create(LocalFrame &frame)

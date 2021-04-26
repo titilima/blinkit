@@ -46,6 +46,8 @@ public:
     int RegisterFunction(int memberContext, const char *functionName, BkFunctionImpl impl, void *userData);
 
     bool IsSameSession(duk_context *ctx) const { return m_ctx == ctx; }
+
+    static void DefaultConsoleOutput(int type, const char *msg);
 protected:
     ContextImpl(void);
 

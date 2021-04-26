@@ -46,6 +46,11 @@ void ContextImpl::Attach(duk_context *ctx, duk_idx_t globalStashIndex)
         m_moduleManager->Attach(m_ctx, globalStashIndex);
 }
 
+void ContextImpl::DefaultConsoleOutput(int, const char *msg)
+{
+    BkLog("%s", msg);
+}
+
 void ContextImpl::DestroyDukSession(void)
 {
     if (nullptr != m_ctx)
