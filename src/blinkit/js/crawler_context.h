@@ -27,6 +27,7 @@ public:
     ~CrawlerContext(void) override;
 private:
     void CreateUserObject(duk_idx_t globalStashIndex);
+    static void RegisterPrototypes(duk_context *ctx, duk_idx_t globalStashIndex);
 
     bool IsDukSessionDirty(void) const override;
     void Attach(duk_context *ctx, duk_idx_t globalStashIndex) override;
@@ -34,7 +35,6 @@ private:
     void* GetUserObject(void) override { return m_userObject; }
     bool ScriptEnabled(const std::string &URL) const override;
     void ConsoleOutput(int type, const char *msg) override;
-    void RegisterPrototypes(duk_context *ctx, duk_idx_t globalStashIndex) override;
 
     CrawlerImpl &m_crawler;
     void *m_userObject = nullptr;

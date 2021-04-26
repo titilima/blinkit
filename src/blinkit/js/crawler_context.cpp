@@ -45,6 +45,7 @@ void CrawlerContext::Attach(duk_context *ctx, duk_idx_t globalStashIndex)
 {
     ScriptController::Attach(ctx, globalStashIndex);
     CreateUserObject(globalStashIndex);
+    RegisterPrototypes(ctx, globalStashIndex);
 
     m_crawler.CleanupDirtyFlag();
 }

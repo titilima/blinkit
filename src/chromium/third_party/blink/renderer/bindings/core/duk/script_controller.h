@@ -86,8 +86,6 @@ protected:
 
     void Attach(duk_context *ctx, duk_idx_t globalStashIndex) override;
 private:
-    virtual void RegisterPrototypes(duk_context *ctx, duk_idx_t globalStashIndex) = 0;
-
     bool IsScriptController(void) const final { return true; }
 
     LocalFrame &m_frame;

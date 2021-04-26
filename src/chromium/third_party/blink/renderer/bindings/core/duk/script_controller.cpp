@@ -68,6 +68,8 @@ ScriptController::~ScriptController(void) = default;
 
 void ScriptController::Attach(duk_context *ctx, duk_idx_t globalStashIndex)
 {
+    ContextImpl::Attach(ctx, globalStashIndex);
+
     duk_push_pointer(ctx, this);
     duk_put_prop_string(ctx, globalStashIndex, NativeContext);
 }
@@ -166,10 +168,6 @@ void ScriptController::UpdateDocument(void)
     duk_context *ctx = EnsureDukSession();
 
     Duk::StackGuard _(ctx);
-
-    duk_push_global_stash(ctx);
-    RegisterPrototypes(ctx, duk_normalize_index(ctx, -1));
-
     DukWindow::Attach(ctx, *(m_frame.DomWindow()));
 }
 
