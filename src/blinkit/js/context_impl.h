@@ -33,7 +33,7 @@ class ContextImpl
 public:
     virtual ~ContextImpl(void);
 
-    virtual bool QueryDestroy(void) const = 0;
+    virtual bool IsScriptController(void) const = 0;
 
     int EnableModules(BkModuleLoader loader, void *userData);
 
@@ -51,7 +51,9 @@ protected:
 
     duk_context* EnsureDukSession(void);
     void DestroyDukSession(void);
-    virtual void Attach(duk_context *ctx, duk_idx_t globalStashIndex) {}
+    virtual bool IsDukSessionDirty(void) const { return false; }
+
+    virtual void Attach(duk_context *ctx, duk_idx_t globalStashIndex);
     virtual void Detach(duk_context *ctx) {}
 
     std::unique_ptr<BlinKit::ModuleManager> m_moduleManager;

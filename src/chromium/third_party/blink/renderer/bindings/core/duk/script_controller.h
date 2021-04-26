@@ -71,7 +71,7 @@ public:
 
     const blink::LocalFrame& GetFrame(void) const { return m_frame; }
 
-    bool ScriptEnabled(const std::string &URL);
+    virtual bool ScriptEnabled(const std::string &URL) const { return true; }
     void ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const GURL &baseURL);
 
     void ClearWindowProxy(void);
@@ -88,11 +88,10 @@ protected:
 private:
     virtual void RegisterPrototypes(duk_context *ctx, duk_idx_t globalStashIndex) = 0;
 
-    bool QueryDestroy(void) const final { return false; }
+    bool IsScriptController(void) const final { return true; }
 
     LocalFrame &m_frame;
     const PrototypeMap &m_prototypeMap;
-    bool m_domInitialized = false;
 };
 
 } // namespace blink

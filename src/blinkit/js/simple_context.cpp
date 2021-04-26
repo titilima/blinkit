@@ -13,4 +13,9 @@
 
 namespace BlinKit {
 
+SimpleContext::SimpleContext(void)
+{
+    EnsureDukSession();
+}
+
 } // namespace BlinKit

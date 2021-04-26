@@ -19,27 +19,24 @@ namespace BlinKit {
 static const char Modules[] = "modules";
 static const char NativeModuleManager[] = "moduleManager";
 
-ModuleManager::ModuleManager(duk_context *ctx, BkModuleLoader loader, void *userData)
+ModuleManager::ModuleManager(BkModuleLoader loader, void *userData)
     : m_loader(loader), m_userData(userData)
 {
-    Duk::StackGuard sg(ctx);
-    duk_push_heap_stash(ctx);
-    duk_push_pointer(ctx, this);
-    duk_put_prop_string(ctx, -2, NativeModuleManager);
 }
 
-void ModuleManager::Attach(duk_context *ctx)
+void ModuleManager::Attach(duk_context *ctx, duk_idx_t globalStashIndex)
 {
-    Duk::StackGuard sg(ctx);
-    duk_push_global_stash(ctx);
+    duk_push_pointer(ctx, this);
+    duk_put_prop_string(ctx, globalStashIndex, NativeModuleManager);
+
     duk_push_bare_object(ctx);
-    duk_put_prop_string(ctx, -2, Modules);
+    duk_put_prop_string(ctx, globalStashIndex, Modules);
 }
 
 ModuleManager* ModuleManager::From(duk_context *ctx)
 {
     Duk::StackGuard sg(ctx);
-    duk_push_heap_stash(ctx);
+    duk_push_global_stash(ctx);
     duk_get_prop_string(ctx, -1, NativeModuleManager);
     return reinterpret_cast<ModuleManager *>(duk_get_pointer(ctx, -1));
 }

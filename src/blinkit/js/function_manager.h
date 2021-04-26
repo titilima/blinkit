@@ -30,11 +30,12 @@ public:
         BkFunctionImpl impl;
         void *userData;
     };
+    int Register(const std::string &name, const FunctionData &data);
     int Register(duk_context *ctx, duk_idx_t dst, const std::string &name, const FunctionData &data, void *thisObject);
 
     struct Indices {
-        duk_idx_t globalObjectIndex = 0;
-        duk_idx_t userObjectIndex = 0;
+        duk_idx_t globalObjectIndex = -1;
+        duk_idx_t userObjectIndex   = -1;
     };
     void FlushAll(duk_context *ctx, const Indices &indices, void *userObject);
 private:

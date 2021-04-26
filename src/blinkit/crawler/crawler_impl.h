@@ -32,7 +32,7 @@ public:
     // BkCrawlerClient Wrappers
     bool GetConfig(int cfg, std::string &dst) const;
     std::string GetCookies(const std::string &URL) const;
-    bool ScriptEnabled(const std::string &URL);
+    bool ScriptEnabled(const std::string &URL) const;
     bool ProcessRequestComplete(BkResponse response, BkWorkController controller);
     bool HijackRequest(const char *URL, std::string &dst) const;
     void ModifyRequest(const char *URL, BkRequest req);
@@ -48,6 +48,8 @@ public:
     int CallJS(BkJSCallback callback, void *userData);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    bool DirtyFlag(void) const { return m_dirty; }
+    void CleanupDirtyFlag(void) { m_dirty = false; }
     void CancelLoading(void);
 private:
     // LocalFrameClient
@@ -62,6 +64,7 @@ private:
 
     BkCrawlerClient m_client;
     std::unique_ptr<blink::LocalFrame> m_frame;
+    bool m_dirty = false;
 
     CookieJarImpl *m_cookieJar = nullptr;
 };

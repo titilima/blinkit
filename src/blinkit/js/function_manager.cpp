@@ -74,7 +74,7 @@ void FunctionManager::FlushAll(duk_context *ctx, const Indices &indices, void *u
                 Flush(ctx, indices.globalObjectIndex, it.first, it.second, nullptr);
                 break;
             case BK_CTX_USER_OBJECT:
-                if (0 != indices.userObjectIndex)
+                if (indices.userObjectIndex >= 0)
                 {
                     Flush(ctx, indices.userObjectIndex, it.first, it.second, userObject);
                     break;
@@ -86,6 +86,15 @@ void FunctionManager::FlushAll(duk_context *ctx, const Indices &indices, void *u
     }
 }
 
+int FunctionManager::Register(const std::string &name, const FunctionData &data)
+{
+    auto it = m_functions.find(name);
+    if (m_functions.end() != it)
+        return BK_ERR_FORBIDDEN;
+
+    m_functions.emplace(name, data);
+    return BK_ERR_SUCCESS;
+}
 
 int FunctionManager::Register(duk_context *ctx, duk_idx_t dst, const std::string &name, const FunctionData &data, void *thisObject)
 {
@@ -94,9 +103,7 @@ int FunctionManager::Register(duk_context *ctx, duk_idx_t dst, const std::string
         return BK_ERR_FORBIDDEN;
 
     auto r = m_functions.emplace(name, data);
-    if (nullptr != ctx)
-        Flush(ctx, dst, name, r.first->second, thisObject);
-
+    Flush(ctx, dst, name, r.first->second, thisObject);
     return BK_ERR_SUCCESS;
 }
 

@@ -174,7 +174,7 @@ int CrawlerImpl::Run(const char *URL)
         return BK_ERR_URI;
     }
 
-    auto task = [this, u]
+    auto task = [this, &u]
     {
         FrameLoadRequest request(nullptr, ResourceRequest(u));
 
@@ -182,13 +182,14 @@ int CrawlerImpl::Run(const char *URL)
         resourceRequest.SetCrawler(this);
         resourceRequest.SetHijackType(HijackType::kMainHTML);
 
+        m_dirty = true;
         m_frame->Loader().StartNavigation(request);
     };
     m_appCaller.Call(FROM_HERE, std::move(task));
     return BK_ERR_SUCCESS;
 }
 
-bool CrawlerImpl::ScriptEnabled(const std::string &URL)
+bool CrawlerImpl::ScriptEnabled(const std::string &URL) const
 {
     return nullptr != m_client.IsScriptEnabled
         ? m_client.IsScriptEnabled(URL.c_str(), m_client.UserData)

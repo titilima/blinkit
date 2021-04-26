@@ -69,7 +69,7 @@ void DukGlobal::AddProperty(duk_context *ctx, duk_idx_t dst, const char *name, d
 
 void DukGlobal::Attach(duk_context *ctx, duk_idx_t dst)
 {
-    ASSERT(dst > 0);
+    ASSERT(dst >= 0);
 
     AddMethod(ctx, dst, "atob", Impl::AToB, 1);
     AddMethod(ctx, dst, "btoa", Impl::BToA, 1);

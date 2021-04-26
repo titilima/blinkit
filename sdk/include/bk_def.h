@@ -61,6 +61,7 @@ enum BkBooleanValues {
 enum BkError {
     BK_ERR_SUCCESS = 0,
     BK_ERR_UNKNOWN,
+    BK_ERR_PARAM,
     BK_ERR_FORBIDDEN,
     BK_ERR_NOT_FOUND,
     BK_ERR_NETWORK,

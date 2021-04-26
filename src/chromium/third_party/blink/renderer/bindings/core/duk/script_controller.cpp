@@ -79,8 +79,8 @@ void ScriptController::ClearForClose(void)
 
 void ScriptController::ClearWindowProxy(void)
 {
-    DestroyDukSession();
-    m_domInitialized = false;
+    if (IsDukSessionDirty())
+        DestroyDukSession();
 }
 
 void ScriptController::ConsoleOutput(int type, const char *msg)
@@ -150,33 +150,27 @@ const char* ScriptController::LookupPrototypeName(const std::string &tagName) co
     return m_prototypeMap.end() != it ? it->second : DukElement::ProtoName;
 }
 
-bool ScriptController::ScriptEnabled(const std::string &URL)
-{
-    if (URL.empty())
-        return true;
-    if (CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client()))
-        return crawler->ScriptEnabled(URL);
-    return true;
-}
-
 void ScriptController::UpdateDocument(void)
 {
-    if (m_domInitialized)
+#ifdef BLINKIT_CRAWLER_ONLY
+    if (m_frame.Loader().StateMachine()->CreatingInitialEmptyDocument())
         return;
-
-    if (duk_context *ctx = EnsureDukSession())
+#else
+    if (m_frame.Client()->IsCrawler())
     {
-        Duk::StackGuard _(ctx);
-
-        duk_idx_t globalStashIndex;
-        duk_push_global_stash(ctx);
-        globalStashIndex = duk_normalize_index(ctx, -1);
-
-        RegisterPrototypes(ctx, globalStashIndex);
-        DukWindow::Attach(ctx, *(m_frame.DomWindow()));
+        if (m_frame.Loader().StateMachine()->CreatingInitialEmptyDocument())
+            return;
     }
+#endif
 
-    m_domInitialized = true;
+    duk_context *ctx = EnsureDukSession();
+
+    Duk::StackGuard _(ctx);
+
+    duk_push_global_stash(ctx);
+    RegisterPrototypes(ctx, duk_normalize_index(ctx, -1));
+
+    DukWindow::Attach(ctx, *(m_frame.DomWindow()));
 }
 
 } // namespace blink

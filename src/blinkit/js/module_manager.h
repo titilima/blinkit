@@ -21,10 +21,10 @@ namespace BlinKit {
 class ModuleManager
 {
 public:
-    ModuleManager(duk_context *ctx, BkModuleLoader loader, void *userData);
+    ModuleManager(BkModuleLoader loader, void *userData);
     static ModuleManager* From(duk_context *ctx);
 
-    void Attach(duk_context *ctx);
+    void Attach(duk_context *ctx, duk_idx_t globalStashIndex);
     bool Load(duk_context *ctx, const char *name);
 private:
     BkModuleLoader m_loader;

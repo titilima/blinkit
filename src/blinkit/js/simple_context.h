@@ -20,8 +20,10 @@ namespace BlinKit {
 
 class SimpleContext final : public ContextImpl
 {
+public:
+    SimpleContext(void);
 private:
-    bool QueryDestroy(void) const override { return true; }
+    bool IsScriptController(void) const override { return false; }
 };
 
 } // namespace BlinKit
