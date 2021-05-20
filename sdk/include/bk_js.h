@@ -95,6 +95,7 @@ BKEXPORT BkJSCallerContext BKAPI BkPrepareFunctionCall(BkJSContext context, int 
 BKEXPORT BkJSCallerContext BKAPI BkPrepareScriptFunction(BkJSContext context, const char *code);
 BKEXPORT int BKAPI BkPushInteger(BkJSCallerContext callerContext, int n);
 BKEXPORT int BKAPI BkPushString(BkJSCallerContext callerContext, const char *s, size_t l);
+BKEXPORT int BKAPI BkPushJSONString(BkJSCallerContext callerContext, const char *s, size_t l);
 BKEXPORT int BKAPI BkCallFunction(BkJSCallerContext callerContext, BkJSValue *retVal);
 
 /**

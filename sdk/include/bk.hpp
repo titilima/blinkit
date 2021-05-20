@@ -346,6 +346,10 @@ public:
         {
             BkPushString(m_ctx, s.data(), s.length());
         }
+        void push_json_string(const std::string_view &j)
+        {
+            BkPushJSONString(m_ctx, j.data(), j.length());
+        }
     private:
         friend class js_function;
         arg_list(BkJSCallerContext ctx) : m_ctx(ctx) {}

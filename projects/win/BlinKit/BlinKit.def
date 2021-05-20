@@ -50,6 +50,7 @@ BkPrepareFunctionCall
 BkPrepareScriptFunction
 BkPushInteger
 BkPushString
+BkPushJSONString
 BkCallFunction
 BkRegisterFunction
 BkGetThis

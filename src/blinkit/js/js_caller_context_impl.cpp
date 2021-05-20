@@ -94,6 +94,19 @@ BKEXPORT int BKAPI BkPushInteger(BkJSCallerContext callerContext, int n)
     return callerContext->DoPush(worker);
 }
 
+BKEXPORT int BKAPI BkPushJSONString(BkJSCallerContext callerContext, const char *s, size_t l)
+{
+    const auto worker = [s, l](duk_context *ctx)
+    {
+        if (l > 0)
+            duk_push_lstring(ctx, s, l);
+        else
+            duk_push_string(ctx, s);
+        duk_json_decode(ctx, -1);
+    };
+    return callerContext->DoPush(worker);
+}
+
 BKEXPORT int BKAPI BkPushString(BkJSCallerContext callerContext, const char *s, size_t l)
 {
     const auto worker = [s, l](duk_context *ctx)
