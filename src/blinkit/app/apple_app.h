@@ -14,24 +14,35 @@
 
 #pragma once
 
+#include <pthread.h>
 #include "blinkit/app/app_impl.h"
 
 namespace BlinKit {
 
+class RunLoop;
+
 class AppleApp final : public AppImpl
 {
 public:
-    AppleApp(int mode, BkAppClient *client);
     ~AppleApp(void) override;
 private:
+    friend AppImpl;
+    AppleApp(BkAppClient *client);
+
+    bool InitializeForBackgroundMode(void);
+    static void BackgroundThread(void *param);
+
     // Thread
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const override;
     // AppImpl
-    int RunAndFinalize(void) override;
+    int RunMessageLoop(void) override;
     void Exit(int code) override;
+    ClientCaller& AcquireCallerForClient(void) override;
+    void Initialize(void) override;
 
     int m_exitCode = EXIT_SUCCESS;
-    std::shared_ptr<base::SingleThreadTaskRunner> m_taskRunner;
+    pthread_t m_thread = nullptr; // nullptr for exclusive mode
+    std::unique_ptr<RunLoop> m_runLoop;
 };
 
 } // namespace BlinKit

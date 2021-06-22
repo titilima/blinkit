@@ -10,9 +10,7 @@
 // -------------------------------------------------
 
 #import <Cocoa/Cocoa.h>
-#import <BkCrawler/bk_app.h>
-#import <BkCrawler/bk_js.h>
-#import <BkCrawler/BlinKit.hpp>
+#import <BkCrawler/bk.hpp>
 
 using namespace BlinKit;
 

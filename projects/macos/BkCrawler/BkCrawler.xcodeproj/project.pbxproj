@@ -10,16 +10,6 @@
 		F90384172449B1DB0046FCA3 /* cf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F90384152449B1DB0046FCA3 /* cf.cpp */; };
 		F90384182449B1DB0046FCA3 /* cf.h in Headers */ = {isa = PBXBuildFile; fileRef = F90384162449B1DB0046FCA3 /* cf.h */; };
 		F903841B2449E15E0046FCA3 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9427DBE2445BF020019233D /* CoreFoundation.framework */; };
-		F9062790245BD3E6003E813A /* login_proxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9062788245BD3E5003E813A /* login_proxy.cpp */; };
-		F9062791245BD3E6003E813A /* client_request_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F906278A245BD3E5003E813A /* client_request_task.cpp */; };
-		F9062792245BD3E6003E813A /* client_request_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F906278B245BD3E5003E813A /* client_request_task.h */; };
-		F9062793245BD3E6003E813A /* login_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F906278C245BD3E5003E813A /* login_task.h */; };
-		F9062794245BD3E6003E813A /* client_response_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F906278D245BD3E5003E813A /* client_response_task.h */; };
-		F9062795245BD3E6003E813A /* client_response_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F906278E245BD3E5003E813A /* client_response_task.cpp */; };
-		F9062796245BD3E6003E813A /* login_proxy.h in Headers */ = {isa = PBXBuildFile; fileRef = F906278F245BD3E6003E813A /* login_proxy.h */; };
-		F9062798245BD63C003E813A /* bk_socket.h in Headers */ = {isa = PBXBuildFile; fileRef = F9062797245BD63C003E813A /* bk_socket.h */; };
-		F906279A245BD824003E813A /* posix_login_proxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9062799245BD824003E813A /* posix_login_proxy.cpp */; };
-		F906279C245BE51A003E813A /* posix_login_proxy.h in Headers */ = {isa = PBXBuildFile; fileRef = F906279B245BE51A003E813A /* posix_login_proxy.h */; };
 		F90627A4245C28D9003E813A /* crawler_script_element.h in Headers */ = {isa = PBXBuildFile; fileRef = F906279E245C28D9003E813A /* crawler_script_element.h */; };
 		F90627A5245C28D9003E813A /* crawler_element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F906279F245C28D9003E813A /* crawler_element.cpp */; };
 		F90627A6245C28D9003E813A /* crawler_script_element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F90627A0245C28D9003E813A /* crawler_script_element.cpp */; };
@@ -33,72 +23,75 @@
 		F9244A3823040DD2009EE7CF /* url_loader_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449DC23040DD1009EE7CF /* url_loader_impl.cpp */; };
 		F9244A4723040DD2009EE7CF /* _pc.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449EB23040DD1009EE7CF /* _pc.h */; };
 		F9244A4823040DD2009EE7CF /* apple_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449ED23040DD1009EE7CF /* apple_app.cpp */; };
-		F9244A4A23040DD2009EE7CF /* app_constants.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449EF23040DD1009EE7CF /* app_constants.h */; };
 		F9244A4C23040DD2009EE7CF /* app_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449F123040DD1009EE7CF /* app_impl.cpp */; };
 		F9244A4D23040DD2009EE7CF /* apple_app.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449F223040DD1009EE7CF /* apple_app.h */; };
 		F9244A4E23040DD2009EE7CF /* app_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449F323040DD1009EE7CF /* app_impl.h */; };
-		F9244A4F23040DD2009EE7CF /* app_constants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449F423040DD1009EE7CF /* app_constants.cpp */; };
 		F9244A5C23040DD2009EE7CF /* crawler_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A0323040DD1009EE7CF /* crawler_impl.h */; };
 		F9244A5E23040DD2009EE7CF /* crawler_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9244A0523040DD1009EE7CF /* crawler_impl.cpp */; };
-		F9244A6223040DD2009EE7CF /* loader_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A0A23040DD1009EE7CF /* loader_task.h */; };
-		F9244A6523040DD2009EE7CF /* loader_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9244A0D23040DD1009EE7CF /* loader_task.cpp */; };
-		F9244A6A23040DD2009EE7CF /* http_loader_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9244A1223040DD1009EE7CF /* http_loader_task.cpp */; };
-		F9244A6B23040DD2009EE7CF /* http_loader_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A1323040DD1009EE7CF /* http_loader_task.h */; };
-		F9244A6E23040DD2009EE7CF /* request_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A1723040DD1009EE7CF /* request_impl.h */; };
-		F9244A7023040DD2009EE7CF /* response_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9244A1923040DD1009EE7CF /* response_impl.cpp */; };
-		F9244A7223040DD2009EE7CF /* request_controller_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A1B23040DD1009EE7CF /* request_controller_impl.h */; };
-		F9244A7423040DD2009EE7CF /* request_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9244A1D23040DD1009EE7CF /* request_impl.cpp */; };
-		F9244A7523040DD2009EE7CF /* response_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A1E23040DD1009EE7CF /* response_impl.h */; };
 		F9244A8123040F09009EE7CF /* libbase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8023040F09009EE7CF /* libbase.a */; };
 		F9244A8323040F09009EE7CF /* libblink_crawler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8223040F09009EE7CF /* libblink_crawler.a */; };
 		F9244A8523040F09009EE7CF /* libduktape.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8423040F09009EE7CF /* libduktape.a */; };
 		F9244A8B23040F09009EE7CF /* libnet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8A23040F09009EE7CF /* libnet.a */; };
-		F9244A8D23040F09009EE7CF /* libstub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8C23040F09009EE7CF /* libstub.a */; };
 		F9244A8F23040F09009EE7CF /* liburl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8E23040F09009EE7CF /* liburl.a */; };
 		F9244A9323040F80009EE7CF /* libz.1.2.11.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A9223040F80009EE7CF /* libz.1.2.11.tbd */; };
-		F9427DB1244566390019233D /* bk_http_header_map.h in Headers */ = {isa = PBXBuildFile; fileRef = F9427DA6244566390019233D /* bk_http_header_map.h */; };
-		F9427DB2244566390019233D /* bk_http_header_map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9427DA7244566390019233D /* bk_http_header_map.cpp */; };
 		F9427DB3244566390019233D /* context_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9427DA9244566390019233D /* context_impl.h */; };
 		F9427DB4244566390019233D /* js_value_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9427DAA244566390019233D /* js_value_impl.cpp */; };
 		F9427DB5244566390019233D /* context_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9427DAB244566390019233D /* context_impl.cpp */; };
 		F9427DB6244566390019233D /* js_value_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9427DAC244566390019233D /* js_value_impl.h */; };
-		F9427DB7244566390019233D /* controller_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9427DAE244566390019233D /* controller_impl.h */; };
-		F9427DB8244566390019233D /* buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9427DAF244566390019233D /* buffer.cpp */; };
-		F9427DB9244566390019233D /* controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9427DB0244566390019233D /* controller.cpp */; };
 		F9427DBC244566580019233D /* local_frame_client_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9427DBA244566580019233D /* local_frame_client_impl.cpp */; };
 		F9427DBD244566580019233D /* local_frame_client_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9427DBB244566580019233D /* local_frame_client_impl.h */; };
-		F9427DC22445D0D50019233D /* bk_url.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9427DC02445D0D50019233D /* bk_url.cpp */; };
-		F9427DC32445D0D50019233D /* bk_url.h in Headers */ = {isa = PBXBuildFile; fileRef = F9427DC12445D0D50019233D /* bk_url.h */; };
+		F9871D0925DFF42B00564020 /* bk.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F9871D0825DFF42A00564020 /* bk.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		F989FA6B2446B16B00D6C241 /* bk_app.h in Headers */ = {isa = PBXBuildFile; fileRef = F989FA652446B16A00D6C241 /* bk_app.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F989FA6C2446B16B00D6C241 /* BlinKit.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F989FA662446B16A00D6C241 /* BlinKit.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		F989FA6D2446B16B00D6C241 /* bk_crawler.h in Headers */ = {isa = PBXBuildFile; fileRef = F989FA672446B16A00D6C241 /* bk_crawler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F989FA6E2446B16B00D6C241 /* bk_http.h in Headers */ = {isa = PBXBuildFile; fileRef = F989FA682446B16A00D6C241 /* bk_http.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F989FA6F2446B16B00D6C241 /* bk_js.h in Headers */ = {isa = PBXBuildFile; fileRef = F989FA692446B16A00D6C241 /* bk_js.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F989FA702446B16B00D6C241 /* bk_def.h in Headers */ = {isa = PBXBuildFile; fileRef = F989FA6A2446B16A00D6C241 /* bk_def.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F989FA732446D43400D6C241 /* apple_thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F989FA712446D43300D6C241 /* apple_thread.cpp */; };
-		F989FA742446D43400D6C241 /* apple_thread.h in Headers */ = {isa = PBXBuildFile; fileRef = F989FA722446D43400D6C241 /* apple_thread.h */; };
-		F989FA792446FC1D00D6C241 /* apple_request.h in Headers */ = {isa = PBXBuildFile; fileRef = F989FA772446FC1D00D6C241 /* apple_request.h */; };
-		F989FA7A2446FC1D00D6C241 /* apple_request.mm in Sources */ = {isa = PBXBuildFile; fileRef = F989FA782446FC1D00D6C241 /* apple_request.mm */; };
 		F9A3CF63244AA7D40058F2F2 /* ns.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9A3CF61244AA7D40058F2F2 /* ns.mm */; };
 		F9A3CF64244AA7D40058F2F2 /* ns.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A3CF62244AA7D40058F2F2 /* ns.h */; };
-		F9D2B05224482D3800F06512 /* apple_task_runner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9D2B05024482D3800F06512 /* apple_task_runner.cpp */; };
-		F9D2B05324482D3800F06512 /* apple_task_runner.h in Headers */ = {isa = PBXBuildFile; fileRef = F9D2B05124482D3800F06512 /* apple_task_runner.h */; };
+		F9F4FC4B25E0BDB100227B2C /* run_loop.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC4925E0BDB100227B2C /* run_loop.h */; };
+		F9F4FC4C25E0BDB100227B2C /* run_loop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FC4A25E0BDB100227B2C /* run_loop.cpp */; };
+		F9F4FC5225E0CCA300227B2C /* caller.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC4F25E0CCA300227B2C /* caller.h */; };
+		F9F4FC5325E0CCA300227B2C /* app_caller_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FC5025E0CCA300227B2C /* app_caller_impl.h */; };
+		F9F4FC5425E0CCA300227B2C /* app_caller_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FC5125E0CCA300227B2C /* app_caller_impl.cpp */; };
+		F9F4FC8C25E0D0DF00227B2C /* libBkCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9F4FC8B25E0D0DF00227B2C /* libBkCommon.a */; };
+		F9F4FCDF25E0EC5E00227B2C /* libBkBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9F4FCDE25E0EC5E00227B2C /* libBkBase.a */; };
+		F9F4FCE525E0ECD300227B2C /* cookie_jar_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FCE125E0ECD300227B2C /* cookie_jar_impl.cpp */; };
+		F9F4FCE625E0ECD300227B2C /* cookie_jar_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FCE225E0ECD300227B2C /* cookie_jar_impl.h */; };
+		F9F4FCE725E0ECD300227B2C /* hijack_response.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FCE325E0ECD300227B2C /* hijack_response.h */; };
+		F9F4FCE825E0ECD300227B2C /* hijack_response.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FCE425E0ECD300227B2C /* hijack_response.cpp */; };
+		F9F4FCF925E0ED1200227B2C /* crawler_context.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FCEB25E0ED1100227B2C /* crawler_context.h */; };
+		F9F4FCFA25E0ED1200227B2C /* crawler_context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FCEC25E0ED1100227B2C /* crawler_context.cpp */; };
+		F9F4FCFB25E0ED1200227B2C /* simple_context.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FCED25E0ED1100227B2C /* simple_context.h */; };
+		F9F4FCFC25E0ED1200227B2C /* heap_retained.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FCEE25E0ED1100227B2C /* heap_retained.h */; };
+		F9F4FCFD25E0ED1200227B2C /* js_callee_context_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FCEF25E0ED1100227B2C /* js_callee_context_impl.cpp */; };
+		F9F4FCFE25E0ED1200227B2C /* js_caller_context_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FCF025E0ED1100227B2C /* js_caller_context_impl.cpp */; };
+		F9F4FCFF25E0ED1200227B2C /* browser_context.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FCF125E0ED1100227B2C /* browser_context.h */; };
+		F9F4FD0025E0ED1200227B2C /* heap_retained.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FCF225E0ED1100227B2C /* heap_retained.cpp */; };
+		F9F4FD0125E0ED1200227B2C /* js_caller_context_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FCF325E0ED1100227B2C /* js_caller_context_impl.h */; };
+		F9F4FD0225E0ED1200227B2C /* browser_context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FCF425E0ED1100227B2C /* browser_context.cpp */; };
+		F9F4FD0325E0ED1200227B2C /* js_callee_context_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FCF525E0ED1100227B2C /* js_callee_context_impl.h */; };
+		F9F4FD0425E0ED1200227B2C /* simple_context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FCF625E0ED1100227B2C /* simple_context.cpp */; };
+		F9F4FD0525E0ED1200227B2C /* function_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FCF725E0ED1200227B2C /* function_manager.cpp */; };
+		F9F4FD0625E0ED1200227B2C /* function_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FCF825E0ED1200227B2C /* function_manager.h */; };
+		F9F4FD1025E0ED4700227B2C /* gc_static.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FD0A25E0ED4700227B2C /* gc_static.h */; };
+		F9F4FD1125E0ED4700227B2C /* gc_visitor.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FD0B25E0ED4700227B2C /* gc_visitor.h */; };
+		F9F4FD1225E0ED4700227B2C /* gc_def.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FD0C25E0ED4700227B2C /* gc_def.h */; };
+		F9F4FD1325E0ED4700227B2C /* gc_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FD0D25E0ED4700227B2C /* gc_visitor.cpp */; };
+		F9F4FD1425E0ED4700227B2C /* gc_heap.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FD0E25E0ED4700227B2C /* gc_heap.h */; };
+		F9F4FD1525E0ED4700227B2C /* gc_heap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FD0F25E0ED4700227B2C /* gc_heap.cpp */; };
+		F9F4FD2A25E0EE4200227B2C /* loader_thread.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FD1925E0EE4100227B2C /* loader_thread.h */; };
+		F9F4FD2B25E0EE4200227B2C /* loader_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FD1A25E0EE4100227B2C /* loader_task.h */; };
+		F9F4FD3125E0EE4200227B2C /* http_loader_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FD2125E0EE4100227B2C /* http_loader_task.cpp */; };
+		F9F4FD3225E0EE4200227B2C /* http_loader_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4FD2225E0EE4100227B2C /* http_loader_task.h */; };
+		F9F4FD3625E0EE4200227B2C /* loader_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FD2625E0EE4100227B2C /* loader_task.cpp */; };
+		F9F4FD3725E0EE4200227B2C /* loader_thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F4FD2725E0EE4100227B2C /* loader_thread.cpp */; };
+		F9F4FD4125E0EECC00227B2C /* libcurl.3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F9F4FD4025E0EEBA00227B2C /* libcurl.3.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		F90384152449B1DB0046FCA3 /* cf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cf.cpp; sourceTree = "<group>"; };
 		F90384162449B1DB0046FCA3 /* cf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cf.h; sourceTree = "<group>"; };
 		F90384192449E13A0046FCA3 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		F9062788245BD3E5003E813A /* login_proxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = login_proxy.cpp; sourceTree = "<group>"; };
-		F906278A245BD3E5003E813A /* client_request_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = client_request_task.cpp; sourceTree = "<group>"; };
-		F906278B245BD3E5003E813A /* client_request_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client_request_task.h; sourceTree = "<group>"; };
-		F906278C245BD3E5003E813A /* login_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = login_task.h; sourceTree = "<group>"; };
-		F906278D245BD3E5003E813A /* client_response_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client_response_task.h; sourceTree = "<group>"; };
-		F906278E245BD3E5003E813A /* client_response_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = client_response_task.cpp; sourceTree = "<group>"; };
-		F906278F245BD3E6003E813A /* login_proxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = login_proxy.h; sourceTree = "<group>"; };
-		F9062797245BD63C003E813A /* bk_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bk_socket.h; sourceTree = "<group>"; };
-		F9062799245BD824003E813A /* posix_login_proxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = posix_login_proxy.cpp; sourceTree = "<group>"; };
-		F906279B245BE51A003E813A /* posix_login_proxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = posix_login_proxy.h; sourceTree = "<group>"; };
 		F906279E245C28D9003E813A /* crawler_script_element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crawler_script_element.h; sourceTree = "<group>"; };
 		F906279F245C28D9003E813A /* crawler_element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crawler_element.cpp; sourceTree = "<group>"; };
 		F90627A0245C28D9003E813A /* crawler_script_element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crawler_script_element.cpp; sourceTree = "<group>"; };
@@ -115,22 +108,11 @@
 		F92449DC23040DD1009EE7CF /* url_loader_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_loader_impl.cpp; sourceTree = "<group>"; };
 		F92449EB23040DD1009EE7CF /* _pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _pc.h; sourceTree = "<group>"; };
 		F92449ED23040DD1009EE7CF /* apple_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = apple_app.cpp; sourceTree = "<group>"; };
-		F92449EF23040DD1009EE7CF /* app_constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_constants.h; sourceTree = "<group>"; };
 		F92449F123040DD1009EE7CF /* app_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = app_impl.cpp; sourceTree = "<group>"; };
 		F92449F223040DD1009EE7CF /* apple_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_app.h; sourceTree = "<group>"; };
 		F92449F323040DD1009EE7CF /* app_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_impl.h; sourceTree = "<group>"; };
-		F92449F423040DD1009EE7CF /* app_constants.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = app_constants.cpp; sourceTree = "<group>"; };
 		F9244A0323040DD1009EE7CF /* crawler_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crawler_impl.h; sourceTree = "<group>"; };
 		F9244A0523040DD1009EE7CF /* crawler_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crawler_impl.cpp; sourceTree = "<group>"; };
-		F9244A0A23040DD1009EE7CF /* loader_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = loader_task.h; sourceTree = "<group>"; };
-		F9244A0D23040DD1009EE7CF /* loader_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = loader_task.cpp; sourceTree = "<group>"; };
-		F9244A1223040DD1009EE7CF /* http_loader_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = http_loader_task.cpp; sourceTree = "<group>"; };
-		F9244A1323040DD1009EE7CF /* http_loader_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_loader_task.h; sourceTree = "<group>"; };
-		F9244A1723040DD1009EE7CF /* request_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = request_impl.h; sourceTree = "<group>"; };
-		F9244A1923040DD1009EE7CF /* response_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = response_impl.cpp; sourceTree = "<group>"; };
-		F9244A1B23040DD1009EE7CF /* request_controller_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = request_controller_impl.h; sourceTree = "<group>"; };
-		F9244A1D23040DD1009EE7CF /* request_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = request_impl.cpp; sourceTree = "<group>"; };
-		F9244A1E23040DD1009EE7CF /* response_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = response_impl.h; sourceTree = "<group>"; };
 		F9244A8023040F09009EE7CF /* libbase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libbase.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9244A8223040F09009EE7CF /* libblink_crawler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libblink_crawler.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9244A8423040F09009EE7CF /* libduktape.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libduktape.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,34 +120,59 @@
 		F9244A8C23040F09009EE7CF /* libstub.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libstub.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9244A8E23040F09009EE7CF /* liburl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liburl.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9244A9223040F80009EE7CF /* libz.1.2.11.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.11.tbd; path = usr/lib/libz.1.2.11.tbd; sourceTree = SDKROOT; };
-		F9427DA6244566390019233D /* bk_http_header_map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bk_http_header_map.h; sourceTree = "<group>"; };
-		F9427DA7244566390019233D /* bk_http_header_map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bk_http_header_map.cpp; sourceTree = "<group>"; };
 		F9427DA9244566390019233D /* context_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = context_impl.h; sourceTree = "<group>"; };
 		F9427DAA244566390019233D /* js_value_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = js_value_impl.cpp; sourceTree = "<group>"; };
 		F9427DAB244566390019233D /* context_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = context_impl.cpp; sourceTree = "<group>"; };
 		F9427DAC244566390019233D /* js_value_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = js_value_impl.h; sourceTree = "<group>"; };
-		F9427DAE244566390019233D /* controller_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = controller_impl.h; sourceTree = "<group>"; };
-		F9427DAF244566390019233D /* buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = buffer.cpp; sourceTree = "<group>"; };
-		F9427DB0244566390019233D /* controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = controller.cpp; sourceTree = "<group>"; };
 		F9427DBA244566580019233D /* local_frame_client_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = local_frame_client_impl.cpp; sourceTree = "<group>"; };
 		F9427DBB244566580019233D /* local_frame_client_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = local_frame_client_impl.h; sourceTree = "<group>"; };
 		F9427DBE2445BF020019233D /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		F9427DC02445D0D50019233D /* bk_url.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bk_url.cpp; sourceTree = "<group>"; };
-		F9427DC12445D0D50019233D /* bk_url.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bk_url.h; sourceTree = "<group>"; };
+		F9871D0825DFF42A00564020 /* bk.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = bk.hpp; path = ../../../../sdk/include/bk.hpp; sourceTree = "<group>"; };
 		F989FA652446B16A00D6C241 /* bk_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bk_app.h; path = ../../../../sdk/include/bk_app.h; sourceTree = "<group>"; };
-		F989FA662446B16A00D6C241 /* BlinKit.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BlinKit.hpp; path = ../../../../sdk/include/BlinKit.hpp; sourceTree = "<group>"; };
 		F989FA672446B16A00D6C241 /* bk_crawler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bk_crawler.h; path = ../../../../sdk/include/bk_crawler.h; sourceTree = "<group>"; };
 		F989FA682446B16A00D6C241 /* bk_http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bk_http.h; path = ../../../../sdk/include/bk_http.h; sourceTree = "<group>"; };
 		F989FA692446B16A00D6C241 /* bk_js.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bk_js.h; path = ../../../../sdk/include/bk_js.h; sourceTree = "<group>"; };
 		F989FA6A2446B16A00D6C241 /* bk_def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bk_def.h; path = ../../../../sdk/include/bk_def.h; sourceTree = "<group>"; };
-		F989FA712446D43300D6C241 /* apple_thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = apple_thread.cpp; sourceTree = "<group>"; };
-		F989FA722446D43400D6C241 /* apple_thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_thread.h; sourceTree = "<group>"; };
-		F989FA772446FC1D00D6C241 /* apple_request.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_request.h; sourceTree = "<group>"; };
-		F989FA782446FC1D00D6C241 /* apple_request.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = apple_request.mm; sourceTree = "<group>"; };
 		F9A3CF61244AA7D40058F2F2 /* ns.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ns.mm; sourceTree = "<group>"; };
 		F9A3CF62244AA7D40058F2F2 /* ns.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ns.h; sourceTree = "<group>"; };
-		F9D2B05024482D3800F06512 /* apple_task_runner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = apple_task_runner.cpp; sourceTree = "<group>"; };
-		F9D2B05124482D3800F06512 /* apple_task_runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_task_runner.h; sourceTree = "<group>"; };
+		F9F4FC4925E0BDB100227B2C /* run_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = run_loop.h; sourceTree = "<group>"; };
+		F9F4FC4A25E0BDB100227B2C /* run_loop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = run_loop.cpp; sourceTree = "<group>"; };
+		F9F4FC4F25E0CCA300227B2C /* caller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = caller.h; sourceTree = "<group>"; };
+		F9F4FC5025E0CCA300227B2C /* app_caller_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_caller_impl.h; sourceTree = "<group>"; };
+		F9F4FC5125E0CCA300227B2C /* app_caller_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = app_caller_impl.cpp; sourceTree = "<group>"; };
+		F9F4FC8B25E0D0DF00227B2C /* libBkCommon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libBkCommon.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9F4FCDE25E0EC5E00227B2C /* libBkBase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libBkBase.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9F4FCE125E0ECD300227B2C /* cookie_jar_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cookie_jar_impl.cpp; sourceTree = "<group>"; };
+		F9F4FCE225E0ECD300227B2C /* cookie_jar_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cookie_jar_impl.h; sourceTree = "<group>"; };
+		F9F4FCE325E0ECD300227B2C /* hijack_response.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hijack_response.h; sourceTree = "<group>"; };
+		F9F4FCE425E0ECD300227B2C /* hijack_response.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hijack_response.cpp; sourceTree = "<group>"; };
+		F9F4FCEB25E0ED1100227B2C /* crawler_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crawler_context.h; sourceTree = "<group>"; };
+		F9F4FCEC25E0ED1100227B2C /* crawler_context.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crawler_context.cpp; sourceTree = "<group>"; };
+		F9F4FCED25E0ED1100227B2C /* simple_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = simple_context.h; sourceTree = "<group>"; };
+		F9F4FCEE25E0ED1100227B2C /* heap_retained.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = heap_retained.h; sourceTree = "<group>"; };
+		F9F4FCEF25E0ED1100227B2C /* js_callee_context_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = js_callee_context_impl.cpp; sourceTree = "<group>"; };
+		F9F4FCF025E0ED1100227B2C /* js_caller_context_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = js_caller_context_impl.cpp; sourceTree = "<group>"; };
+		F9F4FCF125E0ED1100227B2C /* browser_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = browser_context.h; sourceTree = "<group>"; };
+		F9F4FCF225E0ED1100227B2C /* heap_retained.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = heap_retained.cpp; sourceTree = "<group>"; };
+		F9F4FCF325E0ED1100227B2C /* js_caller_context_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = js_caller_context_impl.h; sourceTree = "<group>"; };
+		F9F4FCF425E0ED1100227B2C /* browser_context.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = browser_context.cpp; sourceTree = "<group>"; };
+		F9F4FCF525E0ED1100227B2C /* js_callee_context_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = js_callee_context_impl.h; sourceTree = "<group>"; };
+		F9F4FCF625E0ED1100227B2C /* simple_context.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = simple_context.cpp; sourceTree = "<group>"; };
+		F9F4FCF725E0ED1200227B2C /* function_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = function_manager.cpp; sourceTree = "<group>"; };
+		F9F4FCF825E0ED1200227B2C /* function_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = function_manager.h; sourceTree = "<group>"; };
+		F9F4FD0A25E0ED4700227B2C /* gc_static.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gc_static.h; sourceTree = "<group>"; };
+		F9F4FD0B25E0ED4700227B2C /* gc_visitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gc_visitor.h; sourceTree = "<group>"; };
+		F9F4FD0C25E0ED4700227B2C /* gc_def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gc_def.h; sourceTree = "<group>"; };
+		F9F4FD0D25E0ED4700227B2C /* gc_visitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gc_visitor.cpp; sourceTree = "<group>"; };
+		F9F4FD0E25E0ED4700227B2C /* gc_heap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gc_heap.h; sourceTree = "<group>"; };
+		F9F4FD0F25E0ED4700227B2C /* gc_heap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gc_heap.cpp; sourceTree = "<group>"; };
+		F9F4FD1925E0EE4100227B2C /* loader_thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = loader_thread.h; sourceTree = "<group>"; };
+		F9F4FD1A25E0EE4100227B2C /* loader_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = loader_task.h; sourceTree = "<group>"; };
+		F9F4FD2125E0EE4100227B2C /* http_loader_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = http_loader_task.cpp; sourceTree = "<group>"; };
+		F9F4FD2225E0EE4100227B2C /* http_loader_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_loader_task.h; sourceTree = "<group>"; };
+		F9F4FD2625E0EE4100227B2C /* loader_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = loader_task.cpp; sourceTree = "<group>"; };
+		F9F4FD2725E0EE4100227B2C /* loader_thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = loader_thread.cpp; sourceTree = "<group>"; };
+		F9F4FD4025E0EEBA00227B2C /* libcurl.3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.3.tbd; path = usr/lib/libcurl.3.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,12 +181,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9244A9323040F80009EE7CF /* libz.1.2.11.tbd in Frameworks */,
+				F9F4FC8C25E0D0DF00227B2C /* libBkCommon.a in Frameworks */,
 				F903841B2449E15E0046FCA3 /* CoreFoundation.framework in Frameworks */,
 				F9244A8123040F09009EE7CF /* libbase.a in Frameworks */,
 				F9244A8323040F09009EE7CF /* libblink_crawler.a in Frameworks */,
+				F9F4FD4125E0EECC00227B2C /* libcurl.3.tbd in Frameworks */,
 				F9244A8523040F09009EE7CF /* libduktape.a in Frameworks */,
 				F9244A8B23040F09009EE7CF /* libnet.a in Frameworks */,
-				F9244A8D23040F09009EE7CF /* libstub.a in Frameworks */,
+				F9F4FCDF25E0EC5E00227B2C /* libBkBase.a in Frameworks */,
 				F9244A8F23040F09009EE7CF /* liburl.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -194,20 +203,10 @@
 				F90384162449B1DB0046FCA3 /* cf.h */,
 				F9A3CF62244AA7D40058F2F2 /* ns.h */,
 				F9A3CF61244AA7D40058F2F2 /* ns.mm */,
+				F9F4FC4A25E0BDB100227B2C /* run_loop.cpp */,
+				F9F4FC4925E0BDB100227B2C /* run_loop.h */,
 			);
 			path = apple;
-			sourceTree = "<group>";
-		};
-		F9062789245BD3E5003E813A /* login */ = {
-			isa = PBXGroup;
-			children = (
-				F906278A245BD3E5003E813A /* client_request_task.cpp */,
-				F906278B245BD3E5003E813A /* client_request_task.h */,
-				F906278E245BD3E5003E813A /* client_response_task.cpp */,
-				F906278D245BD3E5003E813A /* client_response_task.h */,
-				F906278C245BD3E5003E813A /* login_task.h */,
-			);
-			path = login;
 			sourceTree = "<group>";
 		};
 		F906279D245C28D9003E813A /* dom */ = {
@@ -251,7 +250,7 @@
 				F989FA6A2446B16A00D6C241 /* bk_def.h */,
 				F989FA682446B16A00D6C241 /* bk_http.h */,
 				F989FA692446B16A00D6C241 /* bk_js.h */,
-				F989FA662446B16A00D6C241 /* BlinKit.hpp */,
+				F9871D0825DFF42A00564020 /* bk.hpp */,
 				F92449BE23040CF6009EE7CF /* Info.plist */,
 			);
 			path = BkCrawler;
@@ -263,12 +262,10 @@
 				F92449EC23040DD1009EE7CF /* app */,
 				F90384142449B1DB0046FCA3 /* apple */,
 				F92449CC23040DD1009EE7CF /* blink_impl */,
-				F9427DA5244566390019233D /* common */,
 				F92449FB23040DD1009EE7CF /* crawler */,
-				F9244A1623040DD1009EE7CF /* http */,
+				F9F4FD0925E0ED4700227B2C /* gc */,
 				F9427DA8244566390019233D /* js */,
-				F9244A0623040DD1009EE7CF /* loader_tasks */,
-				F9427DAD244566390019233D /* misc */,
+				F9F4FD1825E0EE4100227B2C /* loader */,
 				F92449EB23040DD1009EE7CF /* _pc.h */,
 			);
 			name = blinkit;
@@ -278,10 +275,6 @@
 		F92449CC23040DD1009EE7CF /* blink_impl */ = {
 			isa = PBXGroup;
 			children = (
-				F9D2B05024482D3800F06512 /* apple_task_runner.cpp */,
-				F9D2B05124482D3800F06512 /* apple_task_runner.h */,
-				F989FA712446D43300D6C241 /* apple_thread.cpp */,
-				F989FA722446D43400D6C241 /* apple_thread.h */,
 				F9427DBA244566580019233D /* local_frame_client_impl.cpp */,
 				F9427DBB244566580019233D /* local_frame_client_impl.h */,
 				F92449CF23040DD1009EE7CF /* thread_impl.cpp */,
@@ -295,12 +288,13 @@
 		F92449EC23040DD1009EE7CF /* app */ = {
 			isa = PBXGroup;
 			children = (
-				F92449F423040DD1009EE7CF /* app_constants.cpp */,
-				F92449EF23040DD1009EE7CF /* app_constants.h */,
+				F9F4FC5125E0CCA300227B2C /* app_caller_impl.cpp */,
+				F9F4FC5025E0CCA300227B2C /* app_caller_impl.h */,
 				F92449F123040DD1009EE7CF /* app_impl.cpp */,
 				F92449F323040DD1009EE7CF /* app_impl.h */,
 				F92449ED23040DD1009EE7CF /* apple_app.cpp */,
 				F92449F223040DD1009EE7CF /* apple_app.h */,
+				F9F4FC4F25E0CCA300227B2C /* caller.h */,
 			);
 			path = app;
 			sourceTree = "<group>";
@@ -309,45 +303,22 @@
 			isa = PBXGroup;
 			children = (
 				F906279D245C28D9003E813A /* dom */,
-				F9062789245BD3E5003E813A /* login */,
+				F9F4FCE125E0ECD300227B2C /* cookie_jar_impl.cpp */,
+				F9F4FCE225E0ECD300227B2C /* cookie_jar_impl.h */,
 				F9244A0523040DD1009EE7CF /* crawler_impl.cpp */,
 				F9244A0323040DD1009EE7CF /* crawler_impl.h */,
-				F9062788245BD3E5003E813A /* login_proxy.cpp */,
-				F906278F245BD3E6003E813A /* login_proxy.h */,
-				F9062799245BD824003E813A /* posix_login_proxy.cpp */,
-				F906279B245BE51A003E813A /* posix_login_proxy.h */,
+				F9F4FCE425E0ECD300227B2C /* hijack_response.cpp */,
+				F9F4FCE325E0ECD300227B2C /* hijack_response.h */,
 			);
 			path = crawler;
-			sourceTree = "<group>";
-		};
-		F9244A0623040DD1009EE7CF /* loader_tasks */ = {
-			isa = PBXGroup;
-			children = (
-				F9244A1223040DD1009EE7CF /* http_loader_task.cpp */,
-				F9244A1323040DD1009EE7CF /* http_loader_task.h */,
-				F9244A0D23040DD1009EE7CF /* loader_task.cpp */,
-				F9244A0A23040DD1009EE7CF /* loader_task.h */,
-			);
-			path = loader_tasks;
-			sourceTree = "<group>";
-		};
-		F9244A1623040DD1009EE7CF /* http */ = {
-			isa = PBXGroup;
-			children = (
-				F989FA772446FC1D00D6C241 /* apple_request.h */,
-				F989FA782446FC1D00D6C241 /* apple_request.mm */,
-				F9244A1B23040DD1009EE7CF /* request_controller_impl.h */,
-				F9244A1D23040DD1009EE7CF /* request_impl.cpp */,
-				F9244A1723040DD1009EE7CF /* request_impl.h */,
-				F9244A1923040DD1009EE7CF /* response_impl.cpp */,
-				F9244A1E23040DD1009EE7CF /* response_impl.h */,
-			);
-			path = http;
 			sourceTree = "<group>";
 		};
 		F9244A7F23040F09009EE7CF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F9F4FD4025E0EEBA00227B2C /* libcurl.3.tbd */,
+				F9F4FCDE25E0EC5E00227B2C /* libBkBase.a */,
+				F9F4FC8B25E0D0DF00227B2C /* libBkCommon.a */,
 				F90384192449E13A0046FCA3 /* CFNetwork.framework */,
 				F9427DBE2445BF020019233D /* CoreFoundation.framework */,
 				F9244A9223040F80009EE7CF /* libz.1.2.11.tbd */,
@@ -361,37 +332,63 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F9427DA5244566390019233D /* common */ = {
-			isa = PBXGroup;
-			children = (
-				F9427DA7244566390019233D /* bk_http_header_map.cpp */,
-				F9427DA6244566390019233D /* bk_http_header_map.h */,
-				F9062797245BD63C003E813A /* bk_socket.h */,
-				F9427DC02445D0D50019233D /* bk_url.cpp */,
-				F9427DC12445D0D50019233D /* bk_url.h */,
-			);
-			path = common;
-			sourceTree = "<group>";
-		};
 		F9427DA8244566390019233D /* js */ = {
 			isa = PBXGroup;
 			children = (
+				F9F4FCF425E0ED1100227B2C /* browser_context.cpp */,
+				F9F4FCF125E0ED1100227B2C /* browser_context.h */,
 				F9427DAB244566390019233D /* context_impl.cpp */,
 				F9427DA9244566390019233D /* context_impl.h */,
+				F9F4FCEC25E0ED1100227B2C /* crawler_context.cpp */,
+				F9F4FCEB25E0ED1100227B2C /* crawler_context.h */,
+				F9F4FCF725E0ED1200227B2C /* function_manager.cpp */,
+				F9F4FCF825E0ED1200227B2C /* function_manager.h */,
+				F9F4FCF225E0ED1100227B2C /* heap_retained.cpp */,
+				F9F4FCEE25E0ED1100227B2C /* heap_retained.h */,
+				F9F4FCEF25E0ED1100227B2C /* js_callee_context_impl.cpp */,
+				F9F4FCF525E0ED1100227B2C /* js_callee_context_impl.h */,
+				F9F4FCF025E0ED1100227B2C /* js_caller_context_impl.cpp */,
+				F9F4FCF325E0ED1100227B2C /* js_caller_context_impl.h */,
 				F9427DAA244566390019233D /* js_value_impl.cpp */,
 				F9427DAC244566390019233D /* js_value_impl.h */,
+				F9F4FCF625E0ED1100227B2C /* simple_context.cpp */,
+				F9F4FCED25E0ED1100227B2C /* simple_context.h */,
 			);
 			path = js;
 			sourceTree = "<group>";
 		};
-		F9427DAD244566390019233D /* misc */ = {
+		F9F4FD0925E0ED4700227B2C /* gc */ = {
 			isa = PBXGroup;
 			children = (
-				F9427DAF244566390019233D /* buffer.cpp */,
-				F9427DAE244566390019233D /* controller_impl.h */,
-				F9427DB0244566390019233D /* controller.cpp */,
+				F9F4FD0C25E0ED4700227B2C /* gc_def.h */,
+				F9F4FD0F25E0ED4700227B2C /* gc_heap.cpp */,
+				F9F4FD0E25E0ED4700227B2C /* gc_heap.h */,
+				F9F4FD0A25E0ED4700227B2C /* gc_static.h */,
+				F9F4FD0D25E0ED4700227B2C /* gc_visitor.cpp */,
+				F9F4FD0B25E0ED4700227B2C /* gc_visitor.h */,
 			);
-			path = misc;
+			path = gc;
+			sourceTree = "<group>";
+		};
+		F9F4FD1825E0EE4100227B2C /* loader */ = {
+			isa = PBXGroup;
+			children = (
+				F9F4FD1B25E0EE4100227B2C /* tasks */,
+				F9F4FD2625E0EE4100227B2C /* loader_task.cpp */,
+				F9F4FD1A25E0EE4100227B2C /* loader_task.h */,
+				F9F4FD2725E0EE4100227B2C /* loader_thread.cpp */,
+				F9F4FD1925E0EE4100227B2C /* loader_thread.h */,
+			);
+			path = loader;
+			sourceTree = "<group>";
+		};
+		F9F4FD1B25E0EE4100227B2C /* tasks */ = {
+			isa = PBXGroup;
+			children = (
+				F9F4FD2125E0EE4100227B2C /* http_loader_task.cpp */,
+				F9F4FD2225E0EE4100227B2C /* http_loader_task.h */,
+			);
+			path = tasks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -401,45 +398,46 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9062792245BD3E6003E813A /* client_request_task.h in Headers */,
+				F9F4FCE625E0ECD300227B2C /* cookie_jar_impl.h in Headers */,
 				F989FA6D2446B16B00D6C241 /* bk_crawler.h in Headers */,
 				F989FA6B2446B16B00D6C241 /* bk_app.h in Headers */,
 				F90627A4245C28D9003E813A /* crawler_script_element.h in Headers */,
 				F989FA702446B16B00D6C241 /* bk_def.h in Headers */,
-				F989FA6E2446B16B00D6C241 /* bk_http.h in Headers */,
+				F9F4FD0325E0ED1200227B2C /* js_callee_context_impl.h in Headers */,
 				F989FA6F2446B16B00D6C241 /* bk_js.h in Headers */,
-				F989FA6C2446B16B00D6C241 /* BlinKit.hpp in Headers */,
+				F9F4FCF925E0ED1200227B2C /* crawler_context.h in Headers */,
+				F989FA6E2446B16B00D6C241 /* bk_http.h in Headers */,
+				F9F4FC4B25E0BDB100227B2C /* run_loop.h in Headers */,
+				F9871D0925DFF42B00564020 /* bk.hpp in Headers */,
+				F9F4FD2A25E0EE4200227B2C /* loader_thread.h in Headers */,
+				F9F4FCE725E0ECD300227B2C /* hijack_response.h in Headers */,
 				F90627A8245C28D9003E813A /* crawler_document.h in Headers */,
+				F9F4FD2B25E0EE4200227B2C /* loader_task.h in Headers */,
+				F9F4FCFC25E0ED1200227B2C /* heap_retained.h in Headers */,
+				F9F4FD1225E0ED4700227B2C /* gc_def.h in Headers */,
+				F9F4FCFB25E0ED1200227B2C /* simple_context.h in Headers */,
 				F9A3CF64244AA7D40058F2F2 /* ns.h in Headers */,
-				F989FA742446D43400D6C241 /* apple_thread.h in Headers */,
-				F989FA792446FC1D00D6C241 /* apple_request.h in Headers */,
-				F9427DC32445D0D50019233D /* bk_url.h in Headers */,
+				F9F4FCFF25E0ED1200227B2C /* browser_context.h in Headers */,
 				F9244A3323040DD2009EE7CF /* thread_impl.h in Headers */,
 				F9427DB3244566390019233D /* context_impl.h in Headers */,
 				F9244A4D23040DD2009EE7CF /* apple_app.h in Headers */,
+				F9F4FD0625E0ED1200227B2C /* function_manager.h in Headers */,
 				F9244A4723040DD2009EE7CF /* _pc.h in Headers */,
-				F9244A7523040DD2009EE7CF /* response_impl.h in Headers */,
+				F9F4FD1125E0ED4700227B2C /* gc_visitor.h in Headers */,
+				F9F4FD1025E0ED4700227B2C /* gc_static.h in Headers */,
+				F9F4FD1425E0ED4700227B2C /* gc_heap.h in Headers */,
 				F9244A3123040DD2009EE7CF /* url_loader_impl.h in Headers */,
 				F90627A9245C28D9003E813A /* crawler_element.h in Headers */,
+				F9F4FC5325E0CCA300227B2C /* app_caller_impl.h in Headers */,
 				F9244A4E23040DD2009EE7CF /* app_impl.h in Headers */,
-				F9427DB7244566390019233D /* controller_impl.h in Headers */,
-				F9244A6E23040DD2009EE7CF /* request_impl.h in Headers */,
+				F9F4FC5225E0CCA300227B2C /* caller.h in Headers */,
+				F9F4FD0125E0ED1200227B2C /* js_caller_context_impl.h in Headers */,
+				F9F4FD3225E0EE4200227B2C /* http_loader_task.h in Headers */,
 				F90384182449B1DB0046FCA3 /* cf.h in Headers */,
-				F9244A6B23040DD2009EE7CF /* http_loader_task.h in Headers */,
-				F9062794245BD3E6003E813A /* client_response_task.h in Headers */,
-				F9244A4A23040DD2009EE7CF /* app_constants.h in Headers */,
-				F9062798245BD63C003E813A /* bk_socket.h in Headers */,
 				F9427DB6244566390019233D /* js_value_impl.h in Headers */,
-				F9062793245BD3E6003E813A /* login_task.h in Headers */,
-				F9062796245BD3E6003E813A /* login_proxy.h in Headers */,
-				F9D2B05324482D3800F06512 /* apple_task_runner.h in Headers */,
-				F9244A6223040DD2009EE7CF /* loader_task.h in Headers */,
 				F9244A5C23040DD2009EE7CF /* crawler_impl.h in Headers */,
-				F9427DB1244566390019233D /* bk_http_header_map.h in Headers */,
 				F9427DBD244566580019233D /* local_frame_client_impl.h in Headers */,
 				F92449C723040D8C009EE7CF /* PrefixHeader.pch in Headers */,
-				F906279C245BE51A003E813A /* posix_login_proxy.h in Headers */,
-				F9244A7223040DD2009EE7CF /* request_controller_impl.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,32 +509,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9244A7023040DD2009EE7CF /* response_impl.cpp in Sources */,
-				F906279A245BD824003E813A /* posix_login_proxy.cpp in Sources */,
-				F9244A6A23040DD2009EE7CF /* http_loader_task.cpp in Sources */,
-				F9427DB2244566390019233D /* bk_http_header_map.cpp in Sources */,
 				F90627A6245C28D9003E813A /* crawler_script_element.cpp in Sources */,
-				F9244A6523040DD2009EE7CF /* loader_task.cpp in Sources */,
+				F9F4FD0025E0ED1200227B2C /* heap_retained.cpp in Sources */,
 				F9244A4823040DD2009EE7CF /* apple_app.cpp in Sources */,
-				F9427DB9244566390019233D /* controller.cpp in Sources */,
-				F989FA7A2446FC1D00D6C241 /* apple_request.mm in Sources */,
-				F9427DC22445D0D50019233D /* bk_url.cpp in Sources */,
+				F9F4FD1325E0ED4700227B2C /* gc_visitor.cpp in Sources */,
 				F90627A7245C28D9003E813A /* crawler_document.cpp in Sources */,
+				F9F4FD3125E0EE4200227B2C /* http_loader_task.cpp in Sources */,
 				F9244A5E23040DD2009EE7CF /* crawler_impl.cpp in Sources */,
 				F9427DB4244566390019233D /* js_value_impl.cpp in Sources */,
+				F9F4FD1525E0ED4700227B2C /* gc_heap.cpp in Sources */,
 				F9427DBC244566580019233D /* local_frame_client_impl.cpp in Sources */,
-				F9D2B05224482D3800F06512 /* apple_task_runner.cpp in Sources */,
-				F9062790245BD3E6003E813A /* login_proxy.cpp in Sources */,
-				F9244A4F23040DD2009EE7CF /* app_constants.cpp in Sources */,
+				F9F4FCFA25E0ED1200227B2C /* crawler_context.cpp in Sources */,
 				F90627A5245C28D9003E813A /* crawler_element.cpp in Sources */,
 				F90384172449B1DB0046FCA3 /* cf.cpp in Sources */,
 				F9244A3823040DD2009EE7CF /* url_loader_impl.cpp in Sources */,
+				F9F4FC5425E0CCA300227B2C /* app_caller_impl.cpp in Sources */,
+				F9F4FD3625E0EE4200227B2C /* loader_task.cpp in Sources */,
+				F9F4FD0225E0ED1200227B2C /* browser_context.cpp in Sources */,
+				F9F4FD0525E0ED1200227B2C /* function_manager.cpp in Sources */,
+				F9F4FCFE25E0ED1200227B2C /* js_caller_context_impl.cpp in Sources */,
 				F9244A4C23040DD2009EE7CF /* app_impl.cpp in Sources */,
-				F9062795245BD3E6003E813A /* client_response_task.cpp in Sources */,
-				F9062791245BD3E6003E813A /* client_request_task.cpp in Sources */,
-				F9244A7423040DD2009EE7CF /* request_impl.cpp in Sources */,
-				F9427DB8244566390019233D /* buffer.cpp in Sources */,
-				F989FA732446D43400D6C241 /* apple_thread.cpp in Sources */,
+				F9F4FCE525E0ECD300227B2C /* cookie_jar_impl.cpp in Sources */,
+				F9F4FD3725E0EE4200227B2C /* loader_thread.cpp in Sources */,
+				F9F4FCE825E0ECD300227B2C /* hijack_response.cpp in Sources */,
+				F9F4FCFD25E0ED1200227B2C /* js_callee_context_impl.cpp in Sources */,
+				F9F4FC4C25E0BDB100227B2C /* run_loop.cpp in Sources */,
+				F9F4FD0425E0ED1200227B2C /* simple_context.cpp in Sources */,
 				F9244A2B23040DD2009EE7CF /* thread_impl.cpp in Sources */,
 				F9A3CF63244AA7D40058F2F2 /* ns.mm in Sources */,
 				F9427DB5244566390019233D /* context_impl.cpp in Sources */,

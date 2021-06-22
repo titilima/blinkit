@@ -11,24 +11,14 @@
 
 #include "apple_app.h"
 
+#include "base/memory/ptr_util.h"
+#include "blinkit/app/app_caller_impl.h"
 #include "blinkit/apple/cf.h"
-#include "blinkit/blink_impl/apple_task_runner.h"
+#include "blinkit/apple/run_loop.h"
 
 namespace BlinKit {
 
-static std::shared_ptr<base::SingleThreadTaskRunner> CreateTaskRunner(int appMode)
-{
-    switch (appMode)
-    {
-        case BK_APP_MAINTHREAD_MODE:
-            return std::make_shared<MainThreadTaskRunner>();
-        default:
-            NOTREACHED();
-    }
-    return nullptr;
-}
-
-AppleApp::AppleApp(int mode, BkAppClient *client) : AppImpl(mode, client), m_taskRunner(CreateTaskRunner(mode))
+AppleApp::AppleApp(BkAppClient *client) : AppImpl(client)
 {
 }
 
@@ -42,28 +32,54 @@ void AppleApp::Exit(int code)
 
 std::shared_ptr<base::SingleThreadTaskRunner> AppleApp::GetTaskRunner(void) const
 {
-    return m_taskRunner;
+    return m_runLoop->GetTaskRunner();
 }
 
-int AppleApp::RunAndFinalize(void)
+void AppleApp::Initialize(void)
 {
-    CFRunLoopRun();
+    AppImpl::Initialize();
+    m_runLoop = std::make_unique<RunLoop>();
+}
 
-    int exitCode = m_exitCode;
-    delete this;
-    return exitCode;
+bool AppleApp::InitializeForBackgroundMode(void)
+{
+    ASSERT(false); // BKTODO:
+    return false;
+}
+
+int AppleApp::RunMessageLoop(void)
+{
+    int r = m_runLoop->Run();
+    OnExit();
+    return r;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-AppImpl* AppImpl::CreateInstance(int mode, BkAppClient *client)
+#ifdef BLINKIT_CRAWLER_ONLY
+std::unique_ptr<AppImpl> AppImpl::CreateInstanceForExclusiveMode(BkAppClient *client)
 {
-    return new AppleApp(mode, client);
+    AppleApp *app = new AppleApp(client);
+    if (nullptr != app)
+    {
+        app->Initialize();
+        app->m_appCaller = std::make_unique<SyncAppCallerImpl>();
+        ASSERT(false); // BKTODO: app->m_clientCallerStore = std::make_unique<SingletonClientCallerStore>();
+    }
+    return base::WrapUnique(app);
 }
+#endif
 
-void AppImpl::InitializeBackgroundInstance(BkAppClient *client)
+bool AppImpl::InitializeForBackgroundMode(BkAppClient *client)
 {
-    ASSERT(false); // BKTODO:
+    AppleApp *app = new AppleApp(client);
+    if (nullptr == app)
+    {
+        ASSERT(nullptr != app);
+        return false;
+    }
+
+    return app->InitializeForBackgroundMode();
 }
 
 void AppImpl::Log(const char *s)

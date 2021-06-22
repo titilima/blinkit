@@ -15,4 +15,4 @@
 #include "BlinKit.xcconfig"
 #include "skia.xcconfig"
 
-HEADER_SEARCH_PATHS = $(BK_SRC)/stub/icu $(BK_CR_SRC)/gpu $(BK_CR_SRC)/third_party/khronos $(inherited)
+HEADER_SEARCH_PATHS = $(BK_CR_SRC)/third_party/icu/source/common $(inherited)
