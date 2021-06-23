@@ -1,25 +1,23 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: thread_impl.cpp
-// Description: ThreadImpl Class
+//   File Name: thread.cpp
+// Description: Thread Class
 //      Author: Ziming Li
 //     Created: 2019-03-12
 // -------------------------------------------------
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "thread_impl.h"
-
-using namespace blink;
+#include "./thread.h"
 
 namespace BlinKit {
 
-ThreadImpl::~ThreadImpl(void) = default;
+Thread::~Thread(void) = default;
 
-bool ThreadImpl::IsCurrentThread(void) const
+bool Thread::isCurrentThread(void) const
 {
-    return CurrentThreadId() == ThreadId();
+    return CurrentThreadId() == threadId();
 }
 
 } // namespace BlinKit
