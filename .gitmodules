@@ -25,3 +25,6 @@
 [submodule "third_party/curl"]
 	path = third_party/curl
 	url = https://github.com/curl/curl.git
+[submodule "third_party/zed"]
+	path = third_party/zed
+	url = https://github.com/titilima/zed.git
