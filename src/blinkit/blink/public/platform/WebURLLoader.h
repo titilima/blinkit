@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebURLLoader.h
+// Description: WebURLLoader Class
+//      Author: Ziming Li
+//     Created: 2021-06-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2011 Google Inc. All rights reserved.
  *
@@ -32,34 +43,40 @@
 #define WebURLLoader_h
 
 #include "WebCommon.h"
-#include "WebURLRequest.h"
+// BKTODO: #include "WebURLRequest.h"
 
 namespace blink {
 
-class WebData;
+class ResourceRequest;
+// BKTODO: class WebData;
 class WebTaskRunner;
-class WebThreadedDataReceiver;
+// BKTODO: class WebThreadedDataReceiver;
 class WebURLLoaderClient;
+#if 0 // BKTODO:
 class WebURLResponse;
 struct WebURLError;
+#endif
 
 class WebURLLoader {
 public:
     // The WebURLLoader may be deleted in a call to its client.
     virtual ~WebURLLoader() {}
 
+#if 0 // BKTODO:
     // Load the request synchronously, returning results directly to the
     // caller upon completion.  There is no mechanism to interrupt a
     // synchronous load!!
     virtual void loadSynchronously(const WebURLRequest&,
         WebURLResponse&, WebURLError&, WebData& data) = 0;
+#endif
 
     // Load the request asynchronously, sending notifications to the given
     // client.  The client will receive no further notifications if the
     // loader is disposed before it completes its work.
-    virtual void loadAsynchronously(const WebURLRequest&,
+    virtual void loadAsynchronously(const ResourceRequest&,
         WebURLLoaderClient*) = 0;
 
+#if 0 // BKTODO:
     // Cancels an asynchronous load.  This will appear as a load error to
     // the client.
     virtual void cancel() = 0;
@@ -79,6 +96,7 @@ public:
     // of the data receiver is assumed by the WebURLLoader and the receiver should
     // be deleted on the main thread when no longer needed.
     virtual bool attachThreadedDataReceiver(WebThreadedDataReceiver*) { return false; }
+#endif
 
     // Sets the task runner for which any loading tasks should be posted on.
     // Takes ownership of the WebTaskRunner.

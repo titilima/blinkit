@@ -1,22 +1,22 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: url_loader_impl.cpp
-// Description: URLLoaderImpl Class
+//   File Name: url_loader.cpp
+// Description: URLLoader Class
 //      Author: Ziming Li
 //     Created: 2019-03-13
 // -------------------------------------------------
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "url_loader_impl.h"
+#include "./url_loader.h"
 
 #include "base/single_thread_task_runner.h"
 #include "blinkit/app/app_impl.h"
+#include "blinkit/blink/renderer/platform/network/resource_request.h"
 #include "blinkit/loader/loader_thread.h"
 #include "blinkit/loader/tasks/http_loader_task.h"
-#include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
-#ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO: def BLINKIT_UI_ENABLED
 #   include "blinkit/loader/tasks/file_loader_task.h"
 #   include "blinkit/loader/tasks/res_loader_task.h"
 #endif
@@ -25,40 +25,35 @@ using namespace blink;
 
 namespace BlinKit {
 
-URLLoaderImpl::URLLoaderImpl(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner) : m_taskRunner(taskRunner)
+void URLLoader::loadAsynchronously(const ResourceRequest &request, WebURLLoaderClient *client)
 {
-    // Nothing
-}
-
-URLLoaderImpl::~URLLoaderImpl(void) = default;
-
-void URLLoaderImpl::LoadAsynchronously(const ResourceRequest &request, WebURLLoaderClient *client)
-{
-    const GURL &url = request.Url();
+    const zed::url &url = request.url();
 
     LoaderTask *task = nullptr;
     do {
-        if (url.SchemeIsHTTPOrHTTPS())
+#ifdef BLINKIT_CRAWLER_ENABLED
+        if (url.scheme_is_in_http_family())
         {
             if (request.ForCrawler())
-                task = new HTTPLoaderTask(request, m_taskRunner, client);
+                ASSERT(false); // BKTODO: task = new HTTPLoaderTask(request, m_taskRunner, client);
             else
                 NOTREACHED();
             break;
         }
 
-#ifndef BLINKIT_CRAWLER_ONLY
         if (request.ForCrawler())
             break;
+#endif
 
-        if (url.SchemeIsFile())
+#ifdef BLINKIT_CRAWLER_ENABLED
+        if (url.scheme_is_file())
         {
-            task = new FileLoaderTask(request, m_taskRunner, client);
+            ASSERT(false); // BKTODO: task = new FileLoaderTask(request, m_taskRunner, client);
             break;
         }
-        if (url.SchemeIs("res"))
+        if (url.scheme_is("res"))
         {
-            task = new ResLoaderTask(request, m_taskRunner, client);
+            ASSERT(false); // BKTODO: task = new ResLoaderTask(request, m_taskRunner, client);
             break;
         }
 #endif
@@ -75,7 +70,7 @@ void URLLoaderImpl::LoadAsynchronously(const ResourceRequest &request, WebURLLoa
     if (BK_ERR_SUCCESS == error)
         AppImpl::Get().GetLoaderThread().AddTask(task);
     else
-        LoaderTask::ReportError(client, m_taskRunner.get(), error, url);
+        ASSERT(false); // BKTODO: LoaderTask::ReportError(client, m_taskRunner.get(), error, url);
 }
 
 } // namespace BlinKit
