@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WTFString.cpp
+// Description: String Class
+//      Author: Ziming Li
+//     Created: 2021-06-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2010, 2012 Apple Inc. All rights reserved.
@@ -906,6 +917,12 @@ String String::fromUTF8WithLatin1Fallback(const LChar* string, size_t size)
     if (!utf8)
         return String(string, size);
     return utf8;
+}
+
+std::string String::stdUtf8(UTF8ConversionMode mode) const
+{
+    CString cs = utf8(mode);
+    return std::string(cs.data(), cs.length());
 }
 
 // String Operations

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WTFString.h
+// Description: String Class
+//      Author: Ziming Li
+//     Created: 2021-06-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012, 2013 Apple Inc. All rights reserved.
@@ -185,6 +196,7 @@ public:
     CString ascii() const;
     CString latin1() const;
     CString utf8(UTF8ConversionMode = LenientUTF8Conversion) const;
+    std::string stdUtf8(UTF8ConversionMode = LenientUTF8Conversion) const;
 
     UChar operator[](unsigned index) const
     {
@@ -433,6 +445,7 @@ public:
     static String fromUTF8(const char* s, size_t length) { return fromUTF8(reinterpret_cast<const LChar*>(s), length); }
     static String fromUTF8(const char* s) { return fromUTF8(reinterpret_cast<const LChar*>(s)); }
     static String fromUTF8(const CString&);
+    static String fromStdUTF8(const std::string &s) { return fromUTF8(s.data(), s.length()); }
 
     // Tries to convert the passed in string to UTF-8, but will fall back to
     // Latin-1 if the string is not valid UTF-8.
@@ -708,4 +721,14 @@ using WTF::isSpaceOrNewline;
 using WTF::reverseFind;
 
 #include "wtf/text/AtomicString.h"
+
+namespace std {
+template<>
+struct hash<WTF::String> {
+    std::size_t operator()(const WTF::String &s) const noexcept {
+        return s.impl()->existingHash();
+    }
+};
+}
+
 #endif // WTFString_h
