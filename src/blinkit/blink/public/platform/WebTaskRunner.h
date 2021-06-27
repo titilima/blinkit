@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebTaskRunner.h
+// Description: WebTaskRunner Class
+//      Author: Ziming Li
+//     Created: 2021-06-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,11 +16,8 @@
 #ifndef WebTaskRunner_h
 #define WebTaskRunner_h
 
+#include <functional>
 #include "WebCommon.h"
-
-#ifdef INSIDE_BLINK
-#include "wtf/Functional.h"
-#endif
 
 namespace blink {
 
@@ -34,12 +42,12 @@ public:
     // Takes ownership of |Task|. Can be called from any thread.
     virtual void postDelayedTask(const WebTraceLocation&, Task*, double delayMs) = 0;
 
+#if 0 // BKTODO:
     // Returns a clone of the WebTaskRunner.
     virtual WebTaskRunner* clone() = 0;
 
-#ifdef INSIDE_BLINK
     // Helpers for posting bound functions as tasks.
-    typedef Function<void()> ClosureTask;
+    typedef std::function<void()> ClosureTask;
 
     void postTask(const WebTraceLocation&, PassOwnPtr<ClosureTask>);
     // TODO(alexclarke): Remove this when possible.
