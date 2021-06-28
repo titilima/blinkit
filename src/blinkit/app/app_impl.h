@@ -16,8 +16,8 @@
 
 #include "bk_app.h"
 #include "blinkit/app/caller.h"
-#include "blinkit/blink_impl/thread_impl.h"
-#include "third_party/blink/public/platform/platform.h"
+#include "blinkit/blink/impl/thread.h"
+#include "blinkit/blink/public/platform/Platform.h"
 
 class CrawlerImpl;
 
@@ -26,7 +26,7 @@ namespace BlinKit {
 class GCHeap;
 class LoaderThread;
 
-class AppImpl : public blink::Platform, public ThreadImpl
+class AppImpl : public blink::Platform, public Thread
 {
 public:
 #ifdef BLINKIT_CRAWLER_ONLY
@@ -52,10 +52,11 @@ protected:
     std::unique_ptr<AppCaller> m_appCaller;
 private:
     // blink::Platform
-    std::unique_ptr<blink::WebURLLoader> CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner) final;
+    blink::WebURLLoader* createURLLoader(void) final;
 
     BkAppClient m_client;
     std::unique_ptr<GCHeap> m_gcHeap;
+    std::unordered_map<blink::PlatformThreadId, Thread *> m_threads;
     std::unique_ptr<LoaderThread> m_loaderThread;
 };
 

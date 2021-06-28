@@ -21,7 +21,7 @@ namespace BlinKit {
 class ClientCallerStore;
 class MessageLoop;
 class WinClipboard;
-#ifndef BLINKIT_CRAWLER_ONLY
+#ifdef BLINKIT_UI_ENABLED
 class WinThemeEngine;
 #endif
 
@@ -39,14 +39,15 @@ private:
     static DWORD WINAPI BackgroundThread(PVOID param);
 
     // blink::Platform
-    WTF::String DefaultLocale(void) override;
-#ifndef BLINKIT_CRAWLER_ONLY
+    WTF::String defaultLocale(void) override;
+#ifdef BLINKIT_UI_ENABLED
     // Returns a blob of data corresponding to the named resource.
-    std::string GetDataResource(const char *name) override;
-    blink::WebThemeEngine* ThemeEngine(void) override;
+    // BKTODO: std::string GetDataResource(const char *name) override;
+    blink::WebThemeEngine* themeEngine(void) override;
+    blink::WebData loadResource(const char *name) override;
 #endif
     // blink::Thread
-    std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const override;
+    std::shared_ptr<blink::WebTaskRunner> taskRunner(void) override;
     // AppImpl
     int RunMessageLoop(void) override;
     void Exit(int code) override;
@@ -56,8 +57,8 @@ private:
     HANDLE m_appThread = nullptr; // nullptr for exclusive mode
     std::unique_ptr<MessageLoop> m_messageLoop;
     std::unique_ptr<ClientCallerStore> m_clientCallerStore;
-#ifndef BLINKIT_CRAWLER_ONLY
-    std::unique_ptr<WinThemeEngine> m_themeEngine;
+#ifdef BLINKIT_UI_ENABLED
+    // BKTODO: std::unique_ptr<WinThemeEngine> m_themeEngine;
 #endif
 
 #if 0 // BKTODO:

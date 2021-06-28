@@ -12,16 +12,20 @@
 #include "app_impl.h"
 
 #include "base/single_thread_task_runner.h"
-#include "blinkit/blink_impl/url_loader_impl.h"
+#include "blinkit/blink/impl/url_loader.h"
+#include "blinkit/blink/public/web/WebKit.h"
+#include "blinkit/blink/renderer/wtf/MainThread.h"
 #include "blinkit/gc/gc_heap.h"
 #include "blinkit/loader/loader_thread.h"
+#if 0 // BKTODO:
 #include "third_party/blink/public/platform/web_thread_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
-#if 0 // BKTODO:
 #include "blink_impl/mime_registry_impl.h"
 #endif
+
+using namespace blink;
 
 namespace BlinKit {
 
@@ -39,20 +43,20 @@ AppImpl::AppImpl(BkAppClient *client) : m_gcHeap(std::make_unique<GCHeap>())
 
 AppImpl::~AppImpl(void) = default;
 
-std::unique_ptr<blink::WebURLLoader> AppImpl::CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner)
+WebURLLoader* AppImpl::createURLLoader(void)
 {
-    return std::make_unique<URLLoaderImpl>(taskRunner);
+    return new URLLoader;
 }
 
 AppImpl& AppImpl::Get(void)
 {
-    AppImpl *app = static_cast<AppImpl *>(Platform::Current());
+    AppImpl *app = static_cast<AppImpl *>(Platform::current());
     return *app;
 }
 
 LoaderThread& AppImpl::GetLoaderThread(void)
 {
-    ASSERT(IsMainThread());
+    ASSERT(isMainThread());
     if (!m_loaderThread)
         m_loaderThread = LoaderThread::Create();
     return *m_loaderThread;
@@ -60,10 +64,10 @@ LoaderThread& AppImpl::GetLoaderThread(void)
 
 void AppImpl::Initialize(void)
 {
-    m_threadId = ThreadImpl::CurrentThreadId();
-    AttachMainThread(this);
+    m_threadId = Thread::CurrentThreadId();
+    m_threads[m_threadId] = this;
 
-    blink::Initialize(this);
+    blink::initialize(this);
 }
 
 void AppImpl::OnExit(void)
@@ -104,7 +108,7 @@ BKEXPORT void BKAPI BkExit(int code)
 
 BKEXPORT void BKAPI BkFinalize(void)
 {
-    Platform *p = Platform::Current();
+    Platform *p = Platform::current();
     if (nullptr == p)
         return;
 
@@ -113,14 +117,14 @@ BKEXPORT void BKAPI BkFinalize(void)
 
 BKEXPORT bool_t BKAPI BkInitialize(BkAppClient *client)
 {
-    if (nullptr != Platform::Current())
+    if (nullptr != Platform::current())
         return false;
     return AppImpl::InitializeForBackgroundMode(client);
 }
 
 BKEXPORT bool_t BKAPI IsBlinKitThread(void)
 {
-    return IsMainThread();
+    return isMainThread();
 }
 
 } // extern "C"

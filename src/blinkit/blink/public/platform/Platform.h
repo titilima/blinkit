@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Platform.h
+// Description: Platform Class
+//      Author: Ziming Li
+//     Created: 2019-08-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -35,10 +46,13 @@
 #include <windows.h>
 #endif
 
+#if 0 // BKTODO:
 #include "WebAudioDevice.h"
 #include "WebBatteryStatusListener.h"
+#endif
 #include "WebCommon.h"
 #include "WebData.h"
+#if 0 // BKTODO:
 #include "WebDeviceLightListener.h"
 #include "WebGamepadListener.h"
 #include "WebGamepads.h"
@@ -54,11 +68,14 @@
 #include "WebURLError.h"
 #include "WebVector.h"
 #include "WebWaitableEvent.h"
+#endif
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
-class GrContext;
+// BKTODO: class GrContext;
 
 namespace blink {
 
+#if 0 // BKTODO:
 class WebAudioBus;
 class WebBlobRegistry;
 class WebCanvasCaptureHandler;
@@ -110,16 +127,22 @@ class WebSpeechSynthesizerClient;
 class WebStorageNamespace;
 class WebSyncProvider;
 struct WebFloatPoint;
+#endif
 class WebThemeEngine;
 class WebThread;
+#if 0 // BKTODO:
 class WebURL;
+#endif
 class WebURLLoader;
+#if 0 // BKTODO:
 class WebUnitTestSupport;
 struct WebLocalizedString;
 struct WebSize;
+#endif
 
 class Platform {
 public:
+#if 0 // BKTODO:
     // HTML5 Database ------------------------------------------------------
 
 #ifdef WIN32
@@ -127,11 +150,13 @@ public:
 #else
     typedef int FileHandle;
 #endif
+#endif
 
     BLINK_PLATFORM_EXPORT static void initialize(Platform*);
     BLINK_PLATFORM_EXPORT static void shutdown();
     BLINK_PLATFORM_EXPORT static Platform* current();
 
+#if 0 // BKTODO:
     // May return null.
     virtual WebCookieJar* cookieJar() { return nullptr; }
 
@@ -146,10 +171,12 @@ public:
 
     // May return null if sandbox support is not necessary
     virtual WebSandboxSupport* sandboxSupport() { return nullptr; }
+#endif
 
     // May return null on some platforms.
     virtual WebThemeEngine* themeEngine() { return nullptr; }
 
+#if 0 // BKTODO:
     virtual WebFallbackThemeEngine* fallbackThemeEngine() { return nullptr; }
 
     // May return null.
@@ -301,6 +328,7 @@ public:
     // Creates a Message Port Channel pair. This can be called on any thread.
     // The returned objects should only be used on the thread they were created on.
     virtual void createMessageChannel(WebMessagePortChannel** channel1, WebMessagePortChannel** channel2) { *channel1 = 0; *channel2 = 0; }
+#endif
 
 
     // Network -------------------------------------------------------------
@@ -308,6 +336,7 @@ public:
     // Returns a new WebURLLoader instance.
     virtual WebURLLoader* createURLLoader() { return nullptr; }
 
+#if 0 // BKTODO:
     // May return null.
     virtual WebPrescientNetworking* prescientNetworking() { return nullptr; }
 
@@ -379,6 +408,7 @@ public:
 
     virtual void decrementStatsCounter(const char* name) { }
     virtual void incrementStatsCounter(const char* name) { }
+#endif
 
 
     // Resources -----------------------------------------------------------
@@ -386,6 +416,7 @@ public:
     // Returns a blob of data corresponding to the named resource.
     virtual WebData loadResource(const char* name) { return WebData(); }
 
+#if 0 // BKTODO:
     // Decodes the in-memory audio file data and returns the linear PCM audio data in the destinationBus.
     // A sample-rate conversion to sampleRate will occur if the file data is at a different sample-rate.
     // Returns true on success.
@@ -409,13 +440,15 @@ public:
     // is preferable to disable sudden termination on a per-frame level via
     // WebFrameClient::suddenTerminationDisablerChanged.
     virtual void suddenTerminationChanged(bool enabled) { }
+#endif
 
 
     // System --------------------------------------------------------------
 
     // Returns a value such as "en-US".
-    virtual WebString defaultLocale() { return WebString(); }
+    virtual WTF::String defaultLocale() { return WTF::String("en-US"); }
 
+#if 0 // BKTODO:
     // Wall clock time in seconds since the epoch.
     virtual double currentTimeSeconds() { return 0; }
 
@@ -734,6 +767,7 @@ public:
     // Background Sync API------------------------------------------------------------
 
     virtual WebSyncProvider* backgroundSyncProvider() { return nullptr; }
+#endif
 
 protected:
     BLINK_PLATFORM_EXPORT Platform();

@@ -12,21 +12,20 @@
 #include "win_app.h"
 
 #include "base/memory/ptr_util.h"
-#include "base/strings/sys_string_conversions.h"
-#include "bkcommon/bk_signal.hpp"
 #include "blinkit/app/app_caller_impl.h"
 #include "blinkit/win/client_caller_store.h"
 #include "blinkit/win/message_loop.h"
+#include "third_party/zed/include/zed/string/conv.hpp"
+#ifdef BLINKIT_UI_ENABLED
+#   include "blinkit/blink/renderer/wtf/MainThread.h"
+#   include "third_party/zed/include/zed/win/hmodule.hpp"
+#endif
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
-#ifndef BLINKIT_CRAWLER_ONLY
-#   include "base/win/resource_util.h"
 #   include "blinkit/blink_impl/win_theme_engine.h"
 #   include "blinkit/ui/win_web_view.h"
 #   include "third_party/blink/renderer/platform/fonts/font_cache.h"
 #   include "third_party/skia/include/ports/SkTypeface_win.h"
-#endif
-
-#if 0 // BKTODO:
 #   include "blink_impl/win_clipboard.h"
 #endif // 0
 
@@ -34,14 +33,14 @@ using namespace blink;
 
 namespace BlinKit {
 
-struct BackgoundModeParams final : public ScopedSignalWaiter
-{
+struct BackgoundModeParams {
     WinApp *app;
+    HANDLE hEvent;
 };
 
 WinApp::WinApp(BkAppClient *client) : AppImpl(client)
 {
-#ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // TODO: ndef BLINKIT_CRAWLER_ONLY
     auto fontMgr = SkFontMgr_New_GDI();
     FontCache::SetFontManager(std::move(fontMgr));
 #endif
@@ -62,21 +61,21 @@ ClientCaller& WinApp::AcquireCallerForClient(void)
 DWORD WINAPI WinApp::BackgroundThread(PVOID param)
 {
 #ifndef NDEBUG
-    ThreadImpl::SetName("BlinKit Thread");
+    Thread::SetName("BlinKit Thread");
 #endif
 
     BackgoundModeParams *params = reinterpret_cast<BackgoundModeParams *>(param);
 
     WinApp *app = params->app;
     app->Initialize();
-    app->m_appCaller = std::make_unique<AppCallerImpl>(app->GetTaskRunner());
+    app->m_appCaller = std::make_unique<AppCallerImpl>(app->taskRunner());
     app->m_clientCallerStore = std::make_unique<ClientCallerStoreImpl>();
-    params->Signal();
+    SetEvent(params->hEvent);
 
     return app->RunMessageLoop();
 }
 
-WTF::String WinApp::DefaultLocale(void)
+WTF::String WinApp::defaultLocale(void)
 {
     std::string localName("en-US");
 
@@ -87,16 +86,16 @@ WTF::String WinApp::DefaultLocale(void)
         GetLocaleInfoA(LOCALE_USER_DEFAULT, LOCALE_SNAME, const_cast<PSTR>(localName.c_str()), len);
     }
 
-    return WTF::String::FromStdUTF8(localName);
+    return WTF::String::fromStdUTF8(localName);
 }
 
 void WinApp::Exit(int code)
 {
-    const DWORD threadId = ThreadId();
-    PostThreadMessage(threadId, WM_QUIT, code, 0);
+    const DWORD tid = threadId();
+    PostThreadMessage(tid, WM_QUIT, code, 0);
     if (nullptr != m_appThread)
     {
-        ASSERT(GetCurrentThreadId() != threadId);
+        ASSERT(GetCurrentThreadId() != tid);
         WaitForSingleObject(m_appThread, INFINITE);
     }
 }
@@ -104,11 +103,6 @@ void WinApp::Exit(int code)
 WinApp& WinApp::Get(void)
 {
     return static_cast<WinApp &>(AppImpl::Get());
-}
-
-std::shared_ptr<base::SingleThreadTaskRunner> WinApp::GetTaskRunner(void) const
-{
-    return m_messageLoop->GetTaskRunner();
 }
 
 void WinApp::Initialize(void)
@@ -121,7 +115,8 @@ void WinApp::Initialize(void)
 bool WinApp::InitializeForBackgroundMode(void)
 {
     BackgoundModeParams params;
-    if (!params.IsSignalValid())
+    params.hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+    if (nullptr == params.hEvent)
         return false;
 
     params.app = this;
@@ -136,29 +131,37 @@ int WinApp::RunMessageLoop(void)
     return r;
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
-std::string WinApp::GetDataResource(const char *name)
+std::shared_ptr<blink::WebTaskRunner> WinApp::taskRunner(void)
 {
-    static const PCSTR RT_HTMLA = MAKEINTRESOURCEA(23);
-
-    void *data;
-    size_t size;
-    if (!base::GetResourceFromModule(theModule, name, RT_HTMLA, &data, &size))
-    {
-        ASSERT(false); // Resource not found!
-        return AppImpl::GetDataResource(name);
-    }
-    return std::string(reinterpret_cast<const char *>(data), size);
+    return m_messageLoop->GetTaskRunner();
 }
 
-WebThemeEngine* WinApp::ThemeEngine(void)
+#ifdef BLINKIT_UI_ENABLED
+WebData WinApp::loadResource(const char *name)
 {
-    ASSERT(IsMainThread());
+    static PCSTR RT_HTMLA = MAKEINTRESOURCEA(23);
+
+    zed::hmodule::resource_data data;
+    if (!zed::hmodule::get_resource_data(data, theModule, RT_HTMLA, name))
+    {
+        ASSERT(false); // Resource not found!
+        return AppImpl::loadResource(name);
+    }
+    return WebData();
+}
+
+WebThemeEngine* WinApp::themeEngine(void)
+{
+    ASSERT(isMainThread());
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!m_themeEngine)
         m_themeEngine = std::make_unique<WinThemeEngine>();
     return m_themeEngine.get();
+#endif
 }
-#endif // BLINKIT_CRAWLER_ONLY
+#endif // BLINKIT_UI_ENABLED
 
 #if 0 // BKTODO:
 blink::WebClipboard* WinApp::clipboard(void)
@@ -203,7 +206,7 @@ bool AppImpl::InitializeForBackgroundMode(BkAppClient *client)
 
 void AppImpl::Log(const char *s)
 {
-    std::wstring ws = base::SysUTF8ToWide(s);
+    std::wstring ws = zed::multi_byte_to_wide_string(s);
     ws.append(L"\r\n");
     ::OutputDebugStringW(ws.c_str());
 }
