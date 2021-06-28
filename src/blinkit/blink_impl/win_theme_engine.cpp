@@ -11,11 +11,12 @@
 
 #include "win_theme_engine.h"
 
-#include <windowsx.h>
-#include "cc/paint/paint_canvas.h"
 #include <vsstyle.h>
+#include <SkCanvas.h>
+#include <SkColorPriv.h>
+#include "blinkit/blink/public/platform/WebRect.h"
 
-#define TEST_USER32_PAINTER 0
+// BKTODO: #include "win/dib_section.h"
 
 using namespace blink;
 
@@ -32,8 +33,7 @@ static HTHEME WINAPI OpenThemeWrapper(HWND h, PCWSTR classList, UINT)
 }
 
 WinThemeEngine::WinThemeEngine(void)
-    : m_hdc(CreateCompatibleDC(nullptr))
-    , m_getMetrics(GetMetricsWrapper)
+    : m_getMetrics(GetMetricsWrapper)
     , m_paint(&WinThemeEngine::PaintByUser32)
 {
     HMODULE user32 = GetModuleHandle(TEXT("User32.dll"));
@@ -41,11 +41,7 @@ WinThemeEngine::WinThemeEngine(void)
     if (nullptr != getMetrics)
         m_getMetrics = reinterpret_cast<GetMetricsType>(getMetrics);
 
-#if TEST_USER32_PAINTER
-    return;
-#endif
-
-    m_uxtheme = LoadUxTheme();
+    m_uxtheme = LoadLibrary(TEXT("UxTheme.dll"));
     if (nullptr == m_uxtheme)
         return;
 
@@ -61,166 +57,138 @@ WinThemeEngine::WinThemeEngine(void)
 
 WinThemeEngine::~WinThemeEngine(void)
 {
-    if (nullptr != m_oldBitmap)
-        SelectBitmap(m_hdc, m_oldBitmap);
-    DeleteDC(m_hdc);
-
     if (nullptr != m_uxtheme)
         FreeLibrary(m_uxtheme);
 }
 
-void WinThemeEngine::Draw(HDC hdc, PCWSTR classList, int partId, int stateId, LPCRECT rc)
+void WinThemeEngine::Draw(HDC hdc, PCWSTR classList, int partId, int stateId, const WebSize &size)
 {
+    RECT rc;
+    rc.left = rc.top = 0;
+    rc.right = size.width;
+    rc.bottom = size.height;
+
     const UINT dpi = GetDeviceCaps(hdc, LOGPIXELSY);
-    ASSERT(dpi == GetDeviceCaps(hdc, LOGPIXELSX));
+    assert(dpi == GetDeviceCaps(hdc, LOGPIXELSX));
 
     HTHEME t = m_openTheme(nullptr, classList, dpi);
-    DrawThemeBackground(t, hdc, partId, stateId, rc, rc);
+    DrawThemeBackground(t, hdc, partId, stateId, &rc, &rc);
     CloseThemeData(t);
 }
 
-WebSize WinThemeEngine::GetSize(Part part)
+WebSize WinThemeEngine::getSize(Part part)
 {
     WebSize size;
     switch (part)
     {
-        case kPartScrollbarDownArrow:
-        case kPartScrollbarUpArrow:
-        case kPartScrollbarVerticalThumb:
-        case kPartScrollbarVerticalTrack:
+        case PartScrollbarDownArrow:
+        case PartScrollbarUpArrow:
+        case PartScrollbarVerticalThumb:
+        case PartScrollbarVerticalTrack:
             size.width = m_getMetrics(SM_CXVSCROLL, 96);
             if (0 == size.width)
                 size.width = 17;
             size.height = size.width;
             break;
-        case kPartScrollbarLeftArrow:
-        case kPartScrollbarRightArrow:
-        case kPartScrollbarHorizontalThumb:
-        case kPartScrollbarHorizontalTrack:
+        case PartScrollbarLeftArrow:
+        case PartScrollbarRightArrow:
+        case PartScrollbarHorizontalThumb:
+        case PartScrollbarHorizontalTrack:
             size.height = m_getMetrics(SM_CYHSCROLL, 96);
             if (0 == size.height)
                 size.height = 17;
             size.width = size.height;
             break;
-        case kPartCheckbox:
-        case kPartRadio:
+        case PartCheckbox:
+        case PartRadio:
             size.width = size.height = 13;
             break;
         default:
-            NOTREACHED();
+            assert(false); // Not reached!
     }
     return size;
 }
 
-HMODULE WinThemeEngine::LoadUxTheme(void)
+void WinThemeEngine::paint(WebCanvas *canvas, Part part, State state, const WebRect &rect, const ExtraParams *extra)
 {
-    std::wstring path(MAX_PATH, L'\0');
-    UINT cch = ::GetSystemDirectoryW(const_cast<PWSTR>(path.c_str()), path.length() + 1);
-    if (0 == cch)
-    {
-        NOTREACHED();
-        return nullptr;
-    }
-
-    if (path.length() < cch)
-    {
-        path.resize(cch - 1);
-        ::GetSystemDirectoryW(const_cast<PWSTR>(path.c_str()), cch);
-    }
-    else if (cch < path.length())
-    {
-        path.resize(cch);
-    }
-
-    if (path.back() != L'\\')
-        path.push_back(L'\\');
-    path.append(L"UxTheme.dll");
-    return ::LoadLibraryW(path.c_str());
-}
-
-void WinThemeEngine::Paint(cc::PaintCanvas *canvas, Part part, State state, const WebRect &rect, const ExtraParams *extra)
-{
-    if (rect.IsEmpty())
+    if (0 == rect.width || 0 == rect.height)
         return;
 
-    PrepareDC(rect.width, rect.height);
-    m_bitmap.erase(SK_ColorTRANSPARENT, SkIRect::MakeWH(rect.width, rect.height));
+    HDC hdc = CreateCompatibleDC(nullptr);
 
-    RECT rc = { 0, 0, rect.width, rect.height };
-    (this->*m_paint)(m_hdc, part, state, &rc, extra);
+    ASSERT(false); // BKTODO:
+#if 0
+    DIBSection bitmap(rect.width, rect.height, hdc);
+    HGDIOBJ oldBitmap = SelectObject(hdc, bitmap.GetHBITMAP());
 
-    cc::PaintImage image = cc::PaintImage::CreateFromBitmap(m_bitmap);
-    SkRect src = SkRect::MakeWH(rect.width, rect.height);
-    SkRect dst = SkRect::MakeXYWH(rect.x, rect.y, rect.width, rect.height);
-    canvas->drawImageRect(image, src, dst, nullptr, cc::PaintCanvas::kFast_SrcRectConstraint);
-}
+    SkCanvas dcCanvas(bitmap);
 
-void WinThemeEngine::PaintButtonByUser32(HDC hdc, State state, LPRECT rc, const ButtonExtraParams *extra)
-{
-    UINT uState = DFCS_BUTTONPUSH;
-    switch (state)
+    const SkColor placeholder = SkColorSetARGB(1, 0, 0, 0);
+    dcCanvas.clear(placeholder);
+
+    (this->*m_paint)(hdc, part, state, WebSize(rect.width, rect.height), extra);
+
+    // Post-process the pixels to fix up the alpha values (see big comment above).
+    const SkPMColor placeholder_value = SkPreMultiplyColor(placeholder);
+    const int pixel_count = rect.width * rect.height;
+    SkPMColor *pixels = bitmap.getAddr32(0, 0);
+    for (int i = 0; i < pixel_count; ++i)
     {
-        case kStateNormal:
-            // BKTODO: stateId = extra->is_default ? PBS_DEFAULTED : PBS_NORMAL;
-            break;
-        case kStateHover:
-            uState |= DFCS_HOT;
-            break;
-        case kStatePressed:
-            uState |= DFCS_PUSHED;
-            break;
-        case kStateDisabled:
-            uState |= DFCS_INACTIVE;
-            break;
-        default:
-            NOTREACHED();
-            return;
+        if (placeholder_value == pixels[i])
+        {
+            // Pixel wasn't touched - make it fully transparent.
+            pixels[i] = SkPackARGB32(0, 0, 0, 0);
+        }
+        else if (SkGetPackedA32(pixels[i]) == 0)
+        {
+            // Pixel was touched but has incorrect alpha of 0, make it fully opaque.
+            pixels[i] = SkPackARGB32(0xFF,
+                SkGetPackedR32(pixels[i]),
+                SkGetPackedG32(pixels[i]),
+                SkGetPackedB32(pixels[i]));
+        }
     }
-    DrawFrameControl(hdc, rc, DFC_BUTTON, uState);
+    canvas->drawBitmap(bitmap, static_cast<SkScalar>(rect.x), static_cast<SkScalar>(rect.y));
+
+    SelectObject(hdc, oldBitmap);
+#endif
+    DeleteDC(hdc);
 }
 
-void WinThemeEngine::PaintButtonByUxTheme(HDC hdc, State state, LPCRECT rc, const ButtonExtraParams *extra)
+void WinThemeEngine::PaintButtonByUxTheme(HDC hdc, State state, const WebSize &size, const ButtonExtraParams *extra)
 {
     int stateId = -1;
     switch (state)
     {
-        case kStateNormal:
-            stateId = extra->is_default ? PBS_DEFAULTED : PBS_NORMAL;
+        case StateNormal:
+            stateId = extra->isDefault ? PBS_DEFAULTED : PBS_NORMAL;
             break;
-        case kStateHover:
+        case StateHover:
             stateId = PBS_HOT;
             break;
-        case kStatePressed:
+        case StatePressed:
             stateId = PBS_PRESSED;
             break;
-        case kStateDisabled:
+        case StateDisabled:
             stateId = PBS_DISABLED;
             break;
         default:
-            NOTREACHED();
+            assert(false); // Not reached!
             return;
     }
 
-    Draw(hdc, VSCLASS_BUTTON, BP_PUSHBUTTON, stateId, rc);
+    Draw(hdc, VSCLASS_BUTTON, BP_PUSHBUTTON, stateId, size);
 }
 
-void WinThemeEngine::PaintByUser32(HDC hdc, Part part, State state, LPRECT rc, const ExtraParams *extra)
+void WinThemeEngine::PaintByUser32(HDC hdc, Part part, State state, const WebSize &size, const ExtraParams *extra)
+{
+    assert(false); // BKTODO:
+}
+
+void WinThemeEngine::PaintByUxTheme(HDC hdc, Part part, State state, const WebSize &size, const ExtraParams *extra)
 {
     switch (part)
     {
-        case kPartButton:
-            PaintButtonByUser32(hdc, state, rc, &extra->button);
-            break;
-        default:
-            NOTREACHED();
-    }
-}
-
-void WinThemeEngine::PaintByUxTheme(HDC hdc, Part part, State state, LPRECT rc, const ExtraParams *extra)
-{
-    switch (part)
-    {
-#if 0 // BKTODO:
         case PartScrollbarDownArrow:
         case PartScrollbarLeftArrow:
         case PartScrollbarRightArrow:
@@ -236,21 +204,17 @@ void WinThemeEngine::PaintByUxTheme(HDC hdc, Part part, State state, LPRECT rc, 
         case PartScrollbarCorner:
             PaintScrollbarCorner(hdc, size);
             break;
-#endif
-        case kPartButton:
-            PaintButtonByUxTheme(hdc, state, rc, &extra->button);
+        case PartButton:
+            PaintButtonByUxTheme(hdc, state, size, &extra->button);
             break;
-#if 0 // BKTODO:
         case PartTextField:
             PaintTextFieldByUxTheme(hdc, state, size, &extra->textField);
             break;
-#endif
         default:
-            NOTREACHED();
+            assert(false); // Not reached!
     }
 }
 
-#if 0 // BKTODO:
 void WinThemeEngine::PaintScrollArrowByUxTheme(HDC hdc, Part part, State state, const blink::WebSize &size, const ScrollbarTrackExtraParams *extra)
 {
     int stateId = -1;
@@ -396,27 +360,6 @@ void WinThemeEngine::PaintTextFieldByUxTheme(HDC hdc, State state, const WebSize
     }
 
     Draw(hdc, VSCLASS_EDIT, EP_BACKGROUNDWITHBORDER, stateId, size);
-}
-#endif
-
-void WinThemeEngine::PrepareDC(int width, int height)
-{
-    do {
-        if (m_bitmap.width() < width)
-            break;
-        if (m_bitmap.height() < height)
-            break;
-        if (nullptr != m_oldBitmap)
-            return;
-    } while (false);
-
-    width = std::max(m_bitmap.width(), width);
-    height = std::max(m_bitmap.height(), height);
-
-    HBITMAP hBitmap = m_bitmap.InstallDIBSection(width, height, m_hdc);
-    HBITMAP hOldBmp = SelectBitmap(m_hdc, hBitmap);
-    if (nullptr == m_oldBitmap)
-        m_oldBitmap = hOldBmp;
 }
 
 } // namespace BlinKit

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebSize.h
+// Description: WebSize Struct
+//      Author: Ziming Li
+//     Created: 2021-06-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -32,15 +43,7 @@
 #define WebSize_h
 
 #include "WebCommon.h"
-
-#if INSIDE_BLINK
 #include "platform/geometry/IntSize.h"
-#else
-#include <algorithm>
-#include <cmath>
-#include <ui/gfx/geometry/size.h>
-#include <ui/gfx/geometry/vector2d.h>
-#endif
 
 namespace blink {
 
@@ -62,7 +65,6 @@ struct WebSize {
     {
     }
 
-#if INSIDE_BLINK
     WebSize(const IntSize& s)
         : width(s.width())
         , height(s.height())
@@ -80,43 +82,6 @@ struct WebSize {
     {
         return IntSize(width, height);
     }
-#else
-    WebSize(const gfx::Size& s)
-        : width(s.width())
-        , height(s.height())
-    {
-    }
-
-    WebSize(const gfx::Vector2d& v)
-        : width(v.x())
-        , height(v.y())
-    {
-    }
-
-    WebSize& operator=(const gfx::Size& s)
-    {
-        width = s.width();
-        height = s.height();
-        return *this;
-    }
-
-    WebSize& operator=(const gfx::Vector2d& v)
-    {
-        width = v.x();
-        height = v.y();
-        return *this;
-    }
-
-    operator gfx::Size() const
-    {
-        return gfx::Size(std::max(0, width), std::max(0, height));
-    }
-
-    operator gfx::Vector2d() const
-    {
-        return gfx::Vector2d(width, height);
-    }
-#endif
 };
 
 inline bool operator==(const WebSize& a, const WebSize& b)
