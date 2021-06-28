@@ -15,6 +15,8 @@
 #include "blinkit/win/message_task.h"
 #include "third_party/blink/renderer/platform/wtf/time.h"
 
+using namespace blink;
+
 namespace BlinKit {
 
 struct MessageLoop::TimerData {
@@ -27,13 +29,13 @@ struct MessageLoop::TimerData {
     TimeTicks fireTick;
 };
 
-class MessageLoop::TaskRunnerImpl : public base::SingleThreadTaskRunner
+class MessageLoop::TaskRunnerImpl final : public WebTaskRunner
 {
 public:
     TaskRunnerImpl(MessageLoop &loop) : m_loop(loop) {}
 private:
     // TaskRunner overrides
-    bool PostDelayedTask(const base::Location &fromHere, std::function<void()> &&task, base::TimeDelta delay) override
+    bool PostDelayedTask(const WebTraceLocation &loc, std::function<void()> &&task, base::TimeDelta delay) override
     {
         if (delay.is_zero())
             return m_loop.PostTask(fromHere, std::move(task));

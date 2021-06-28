@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "base/single_thread_task_runner.h"
+#include "blinkit/blink/public/platform/WebTaskRunner.h"
 
 namespace BlinKit {
 
@@ -26,8 +26,8 @@ public:
 
     int Run(void);
 
-    std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const;
-    bool PostTask(const base::Location &fromHere, std::function<void()> &&task);
+    std::shared_ptr<blink::WebTaskRunner> GetTaskRunner(void) const;
+    bool PostTask(const blink::WebTraceLocation &loc, std::function<void()> &&task);
 private:
     void NewTimer(void);
     void ProcessTimer(size_t slot);
