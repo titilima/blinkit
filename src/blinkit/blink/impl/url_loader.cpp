@@ -11,9 +11,7 @@
 
 #include "./url_loader.h"
 
-#include "base/single_thread_task_runner.h"
 #include "blinkit/app/app_impl.h"
-#include "blinkit/blink/renderer/platform/network/resource_request.h"
 #include "blinkit/loader/loader_thread.h"
 #include "blinkit/loader/tasks/http_loader_task.h"
 #if 0 // BKTODO: def BLINKIT_UI_ENABLED
@@ -70,7 +68,7 @@ void URLLoader::loadAsynchronously(const ResourceRequest &request, WebURLLoaderC
     if (BK_ERR_SUCCESS == error)
         AppImpl::Get().GetLoaderThread().AddTask(task);
     else
-        ASSERT(false); // BKTODO: LoaderTask::ReportError(client, m_taskRunner.get(), error, url);
+        LoaderTask::ReportError(client, m_taskRunner.get(), error, url);
 }
 
 } // namespace BlinKit

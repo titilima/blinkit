@@ -100,7 +100,7 @@ public:
 
     // Sets the task runner for which any loading tasks should be posted on.
     // Takes ownership of the WebTaskRunner.
-    virtual void setLoadingTaskRunner(WebTaskRunner*) = 0;
+    virtual void setLoadingTaskRunner(const std::shared_ptr<WebTaskRunner>&) = 0;
 };
 
 } // namespace blink
