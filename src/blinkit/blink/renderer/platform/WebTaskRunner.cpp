@@ -19,12 +19,12 @@
 
 namespace blink {
 
-#if 0 // BKTODO:
-void WebTaskRunner::postTask(const WebTraceLocation& location, PassOwnPtr<ClosureTask> task)
+void WebTaskRunner::postTask(const WebTraceLocation &location, ClosureTask &&task)
 {
     postTask(std::move(location), new blink::Task(std::move(task)));
 }
 
+#if 0 // BKTODO:
 void WebTaskRunner::postDelayedTask(const WebTraceLocation& location, PassOwnPtr <ClosureTask> task, long long delayMs)
 {
     postDelayedTask(location, new blink::Task(std::move(task)), delayMs);

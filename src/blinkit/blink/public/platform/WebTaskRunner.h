@@ -42,14 +42,14 @@ public:
     // Takes ownership of |Task|. Can be called from any thread.
     virtual void postDelayedTask(const WebTraceLocation&, Task*, double delayMs) = 0;
 
-#if 0 // BKTODO:
     // Returns a clone of the WebTaskRunner.
-    virtual WebTaskRunner* clone() = 0;
+    // BKTODO: virtual WebTaskRunner* clone() = 0;
 
     // Helpers for posting bound functions as tasks.
     typedef std::function<void()> ClosureTask;
 
-    void postTask(const WebTraceLocation&, PassOwnPtr<ClosureTask>);
+    void postTask(const WebTraceLocation&, ClosureTask &&task);
+#if 0 // BKTODO:
     // TODO(alexclarke): Remove this when possible.
     void postDelayedTask(const WebTraceLocation&, PassOwnPtr<ClosureTask>, long long delayMs);
     void postDelayedTask(const WebTraceLocation&, PassOwnPtr<ClosureTask>, double delayMs);
