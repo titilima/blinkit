@@ -15,7 +15,10 @@
 #pragma once
 
 #include <functional>
-#include "base/location.h"
+
+namespace blink {
+class WebTraceLocation;
+}
 
 namespace BlinKit {
 
@@ -24,8 +27,8 @@ class AppCaller
 public:
     virtual ~AppCaller(void) = default;
 
-    virtual void Call(const base::Location &loc, std::function<void()> &&task) = 0;
-    virtual void SyncCall(const base::Location &loc, std::function<void()> &&task) = 0;
+    virtual void Call(const blink::WebTraceLocation &loc, std::function<void()> &&task) = 0;
+    virtual void SyncCall(const blink::WebTraceLocation &loc, std::function<void()> &&task) = 0;
 protected:
     AppCaller(void) = default;
 };
@@ -35,7 +38,7 @@ class ClientCaller
 public:
     virtual ~ClientCaller(void) = default;
 
-    virtual void Post(const base::Location &loc, std::function<void()> &&task) = 0;
+    virtual void Post(const blink::WebTraceLocation &loc, std::function<void()> &&task) = 0;
 #ifndef NDEBUG
     virtual bool IsClientThread(void) const = 0;
 #endif
