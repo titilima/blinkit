@@ -38,6 +38,17 @@
 #define BLINK_IMPLEMENTATION    1
 #define INSIDE_BLINK            1
 
+#ifdef BLINKIT_CRAWLER_ENABLED
+#   ifndef BLINKIT_UI_ENABLED
+#       define BLINKIT_CRAWLER_ONLY
+#   endif
+#endif
+#ifdef BLINKIT_UI_ENABLED
+#   ifndef BLINKIT_CRAWLER_ENABLED
+#       define BLINKIT_UI_ONLY
+#   endif
+#endif
+
 #include <memory>
 #include <string>
 #include <unordered_map>
