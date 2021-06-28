@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebData.h
+// Description: WebData Class
+//      Author: Ziming Li
+//     Created: 2021-06-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -32,7 +43,6 @@
 #define WebData_h
 
 #include "WebCommon.h"
-#include "WebPrivatePtr.h"
 
 namespace blink {
 
@@ -53,6 +63,7 @@ public:
         assign(data, size);
     }
 
+#if 0 // BKTODO:
     template <int N>
     WebData(const char (&data)[N])
     {
@@ -66,17 +77,19 @@ public:
         assign(d);
         return *this;
     }
+#endif
 
     void reset();
-    void assign(const WebData&);
+    // BKTODO: void assign(const WebData&);
     void assign(const char* data, size_t size);
 
     size_t size() const;
     const char* data() const;
 
     bool isEmpty() const { return !size(); }
-    bool isNull() const { return m_private.isNull(); }
+    bool isNull() const { return !m_data; }
 
+#if 0 // BKTODO:
 #if INSIDE_BLINK
     WebData(const PassRefPtr<SharedBuffer>&);
     WebData& operator=(const PassRefPtr<SharedBuffer>&);
@@ -95,9 +108,10 @@ public:
         return *this;
     }
 #endif
+#endif
 
 private:
-    WebPrivatePtr<SharedBuffer> m_private;
+    std::shared_ptr<SharedBuffer> m_data;
 };
 
 } // namespace blink

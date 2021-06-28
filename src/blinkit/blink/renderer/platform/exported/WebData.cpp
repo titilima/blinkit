@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebData.cpp
+// Description: WebData Class
+//      Author: Ziming Li
+//     Created: 2021-06-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -36,33 +47,32 @@ namespace blink {
 
 void WebData::reset()
 {
-    m_private.reset();
+    m_data.reset();
 }
 
+#if 0 // BKTODO:
 void WebData::assign(const WebData& other)
 {
     m_private = other.m_private;
 }
+#endif
 
 void WebData::assign(const char* data, size_t size)
 {
-    m_private = SharedBuffer::create(data, size);
+    m_data = SharedBuffer::create(data, size);
 }
 
 size_t WebData::size() const
 {
-    if (m_private.isNull())
-        return 0;
-    return m_private->size();
+    return m_data ? m_data->size() : 0;
 }
 
 const char* WebData::data() const
 {
-    if (m_private.isNull())
-        return 0;
-    return m_private->data();
+    return m_data ? m_data->data() : nullptr;
 }
 
+#if 0 // BKTODO:
 WebData::WebData(const PassRefPtr<SharedBuffer>& buffer)
     : m_private(buffer)
 {
@@ -78,5 +88,6 @@ WebData::operator PassRefPtr<SharedBuffer>() const
 {
     return PassRefPtr<SharedBuffer>(m_private.get());
 }
+#endif
 
 } // namespace blink
