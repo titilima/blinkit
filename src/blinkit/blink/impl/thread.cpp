@@ -11,9 +11,9 @@
 
 #include "./thread.h"
 
-namespace BlinKit {
+using namespace blink;
 
-Thread::~Thread(void) = default;
+namespace BlinKit {
 
 bool Thread::isCurrentThread(void) const
 {

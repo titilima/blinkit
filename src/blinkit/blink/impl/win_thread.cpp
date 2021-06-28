@@ -2,26 +2,26 @@
 // BlinKit - BlinKit Library
 // -------------------------------------------------
 //   File Name: win_thread.cpp
-// Description: WinThread Class
+// Description: Thread Class
 //      Author: Ziming Li
 //     Created: 2019-03-12
 // -------------------------------------------------
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "blinkit/blink_impl/thread_impl.h"
+#include "./thread.h"
 
 using namespace blink;
 
 namespace BlinKit {
 
-PlatformThreadId ThreadImpl::CurrentThreadId(void)
+PlatformThreadId Thread::CurrentThreadId(void)
 {
     return ::GetCurrentThreadId();
 }
 
 #ifndef NDEBUG
-void ThreadImpl::SetName(const char *name)
+void Thread::SetName(const char *name)
 {
     struct THREADNAME_INFO {
         DWORD dwType = 0x1000;

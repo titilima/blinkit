@@ -33,7 +33,6 @@ public:
     }
 protected:
     Thread(void) = default;
-    ~Thread(void) override;
 
     bool isCurrentThread(void) const final;
 
