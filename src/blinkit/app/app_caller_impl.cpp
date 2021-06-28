@@ -11,25 +11,26 @@
 
 #include "app_caller_impl.h"
 
-#include "third_party/zed/include/zed/threading/signal.hpp"
-#include "base/single_thread_task_runner.h"
+#include "blinkit/blink/public/platform/WebTaskRunner.h"
 #include "blinkit/blink/renderer/wtf/MainThread.h"
+#include "third_party/zed/include/zed/threading/signal.hpp"
+
+using namespace blink;
 
 namespace BlinKit {
 
-AppCallerImpl::AppCallerImpl(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner)
-    : m_taskRunner(taskRunner)
+AppCallerImpl::AppCallerImpl(const std::shared_ptr<WebTaskRunner> &taskRunner) : m_taskRunner(taskRunner)
 {
 }
 
 AppCallerImpl::~AppCallerImpl(void) = default;
 
-void AppCallerImpl::Call(const base::Location &loc, std::function<void()> &&task)
+void AppCallerImpl::Call(const WebTraceLocation &loc, std::function<void()> &&task)
 {
-    m_taskRunner->PostTask(loc, std::move(task));
+    m_taskRunner->postTask(loc, std::move(task));
 }
 
-void AppCallerImpl::SyncCall(const base::Location &loc, std::function<void()> &&task)
+void AppCallerImpl::SyncCall(const WebTraceLocation &loc, std::function<void()> &&task)
 {
     if (isMainThread())
     {
@@ -43,7 +44,7 @@ void AppCallerImpl::SyncCall(const base::Location &loc, std::function<void()> &&
             task();
             waiter.notify();
         };
-        m_taskRunner->PostTask(loc, std::move(waitableTask));
+        m_taskRunner->postTask(loc, std::move(waitableTask));
         waiter.wait();
     }
 }

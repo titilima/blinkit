@@ -16,8 +16,8 @@
 
 #include "blinkit/app/caller.h"
 
-namespace base {
-class SingleThreadTaskRunner;
+namespace blink {
+class WebTaskRunner;
 }
 
 namespace BlinKit {
@@ -26,11 +26,11 @@ namespace BlinKit {
 class SyncAppCallerImpl final : public AppCaller
 {
 public:
-    void Call(const base::Location &, std::function<void()> &&task) override
+    void Call(const blink::WebTraceLocation &, std::function<void()> &&task) override
     {
         task();
     }
-    void SyncCall(const base::Location &, std::function<void()> &&task) override
+    void SyncCall(const blink::WebTraceLocation &, std::function<void()> &&task) override
     {
         task();
     }
@@ -40,13 +40,13 @@ public:
 class AppCallerImpl final : public AppCaller
 {
 public:
-    AppCallerImpl(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner);
+    AppCallerImpl(const std::shared_ptr<blink::WebTaskRunner> &taskRunner);
     ~AppCallerImpl(void) override;
 private:
-    void Call(const base::Location &loc, std::function<void()> &&task) override;
-    void SyncCall(const base::Location &loc, std::function<void()> &&task) override;
+    void Call(const blink::WebTraceLocation &loc, std::function<void()> &&task) override;
+    void SyncCall(const blink::WebTraceLocation &loc, std::function<void()> &&task) override;
 
-    std::shared_ptr<base::SingleThreadTaskRunner> m_taskRunner;
+    std::shared_ptr<blink::WebTaskRunner> m_taskRunner;
 };
 
 } // namespace BlinKit
