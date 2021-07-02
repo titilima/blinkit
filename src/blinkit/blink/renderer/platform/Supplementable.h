@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Supplementable.h
+// Description: Supplementable Classes
+//      Author: Ziming Li
+//     Created: 2021-07-02
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google, Inc. All Rights Reserved.
  *
@@ -231,6 +243,7 @@ class Supplement : public SupplementBase<T, false> { };
 template<typename T>
 class Supplementable : public SupplementableBase<T, false> { };
 
+#if 0 // BKTODO:
 template<typename T>
 struct ThreadingTrait<SupplementBase<T, true>> {
     static const ThreadAffinity Affinity = ThreadingTrait<T>::Affinity;
@@ -240,6 +253,7 @@ template<typename T>
 struct ThreadingTrait<SupplementableBase<T, true>> {
     static const ThreadAffinity Affinity = ThreadingTrait<T>::Affinity;
 };
+#endif
 
 } // namespace blink
 
