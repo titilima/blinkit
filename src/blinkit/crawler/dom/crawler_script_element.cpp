@@ -11,6 +11,7 @@
 
 #include "crawler_script_element.h"
 
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html_names.h"
 
 using namespace blink;
@@ -54,3 +55,4 @@ void CrawlerScriptElement::ParseAttribute(const AttributeModificationParams &par
 }
 
 } // namespace BlinKit
+#endif

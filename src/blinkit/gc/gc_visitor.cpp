@@ -11,8 +11,8 @@
 
 #include "gc_visitor.h"
 
-#include "base/auto_reset.h"
 #include "blinkit/gc/gc_heap.h"
+#include "third_party/zed/include/zed/utility.hpp"
 
 namespace BlinKit {
 
@@ -27,7 +27,7 @@ void GCVisitor::ChildrenHandler(void *p)
 
 void GCVisitor::MainHandler(void *p)
 {
-    base::AutoReset<TraceHandler> handlerGuard(&m_currentHandler, &GCVisitor::ChildrenHandler);
+    zed::scoped_swap _(m_currentHandler, &GCVisitor::ChildrenHandler);
 
     m_childrenStash.push_back(p);
     while (!m_childrenStash.empty())

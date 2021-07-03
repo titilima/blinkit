@@ -15,15 +15,13 @@
 #pragma once
 
 #include <functional>
-#include <string>
-#include <unordered_map>
 #include "bk_crawler.h"
-#include "bkcommon/bk_shared_mutex.hpp"
-#include "blinkit/blink_impl/local_frame_client_impl.h"
+#include "blinkit/blink/renderer/core/loader/FrameLoaderClient.h"
+#include "third_party/zed/include/zed/shared_mutex.hpp"
 
 class CookieJarImpl;
 
-class CrawlerImpl final : public BlinKit::LocalFrameClientImpl
+class CrawlerImpl final : public blink::FrameLoaderClient
 {
 public:
     CrawlerImpl(const BkCrawlerClient &client, BlinKit::ClientCaller &clientCaller);
@@ -52,15 +50,19 @@ public:
     void CleanupDirtyFlag(void) { m_dirty = false; }
     void CancelLoading(void);
 private:
-    // LocalFrameClient
+    // blink::FrameLoaderClient
+#ifndef BLINKIT_CRAWLER_ONLY
     bool IsCrawler(void) const override { return true; }
+#endif
+#if 0 // BKTODO:
     String UserAgent(void) override;
     void DidFinishLoad(void) override;
     void TransitionToCommittedForNewPage(void) override;
     void DispatchDidReceiveTitle(const String &title) override {}
     void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) override;
+#endif
 
-    mutable BlinKit::BkSharedMutex m_mutex;
+    mutable zed::shared_mutex m_mutex;
 
     BkCrawlerClient m_client;
     std::unique_ptr<blink::LocalFrame> m_frame;
@@ -69,6 +71,6 @@ private:
     CookieJarImpl *m_cookieJar = nullptr;
 };
 
-DEFINE_TYPE_CASTS(CrawlerImpl, ::blink::LocalFrameClient, client, client->IsCrawler(), client.IsCrawler());
+DEFINE_TYPE_CASTS(CrawlerImpl, ::blink::FrameLoaderClient, client, client->IsCrawler(), client.IsCrawler());
 
 #endif // BLINKIT_BLINKIT_CRAWLER_IMPL_H

@@ -11,56 +11,59 @@
 
 #include "crawler_impl.h"
 
-#include <shared_mutex>
-#include "base/single_thread_task_runner.h"
 #include "bkcommon/buffer_impl.hpp"
 #include "bkcommon/controller_impl.h"
 #include "bkcommon/response_impl.h"
 #include "blinkit/app/app_impl.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/wtf/MainThread.h"
 #include "blinkit/crawler/cookie_jar_impl.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
-#include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_error.h"
+#endif
 
 using namespace blink;
 using namespace BlinKit;
 
 CrawlerImpl::CrawlerImpl(const BkCrawlerClient &client, ClientCaller &clientCaller)
-    : LocalFrameClientImpl(AppImpl::Get().GetAppCaller(), clientCaller)
+    : FrameLoaderClient(AppImpl::Get().GetAppCaller(), clientCaller)
     , m_client(client)
     , m_frame(LocalFrame::Create(this))
 {
-    ASSERT(IsMainThread());
-    m_frame->Init();
+    ASSERT(isMainThread());
+    m_frame->init();
 }
 
 CrawlerImpl::~CrawlerImpl(void)
 {
-    ASSERT(IsMainThread());
-    m_frame->Detach(FrameDetachType::kRemove);
+    ASSERT(isMainThread());
+    m_frame->detach();
     if (nullptr != m_cookieJar)
         m_cookieJar->Release();
 }
 
 int CrawlerImpl::CallJS(BkJSCallback callback, void *userData)
 {
-    return LocalFrameClientImpl::CallJS(m_frame.get(), callback, userData);
+    ASSERT(false); // BKTODO: return LocalFrameClientImpl::CallJS(m_frame.get(), callback, userData);
+    return BK_ERR_UNKNOWN;
 }
 
 void CrawlerImpl::CancelLoading(void)
 {
-    ASSERT(IsMainThread());
-    m_frame->Loader().StopAllLoaders();
+    ASSERT(isMainThread());
+    ASSERT(false); // BKTODO: m_frame->Loader().StopAllLoaders();
 }
 
 void CrawlerImpl::Destroy(void)
 {
     ASSERT(IsClientThread());
     auto task = std::bind(std::default_delete<CrawlerImpl>(), this);
-    m_appCaller.Call(FROM_HERE, std::move(task));
+    m_appCaller.Call(BLINK_FROM_HERE, std::move(task));
 }
 
+#if 0 // BKTODO:
 void CrawlerImpl::DidFinishLoad(void)
 {
     ScriptController &ctx = m_frame->GetScriptController();
@@ -77,12 +80,13 @@ void CrawlerImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
     {
         m_client.Error(errorCode, URL.c_str(), m_client.UserData);
     };
-    m_clientCaller.Post(FROM_HERE, task);
+    m_clientCaller.Post(BLINK_FROM_HERE, task);
 }
+#endif
 
 bool CrawlerImpl::GetConfig(int cfg, std::string &dst) const
 {
-    ASSERT(IsMainThread());
+    ASSERT(isMainThread());
     if (nullptr != m_client.GetConfig)
         return m_client.GetConfig(cfg, BufferImpl::Wrap(dst), m_client.UserData);
     return false;
@@ -92,14 +96,14 @@ CookieJarImpl* CrawlerImpl::GetCookieJar(bool createIfNotExists)
 {
     if (createIfNotExists)
     {
-        std::unique_lock<BkSharedMutex> lock(m_mutex);
+        auto _ = m_mutex.guard();
         if (nullptr == m_cookieJar)
             m_cookieJar = new CookieJarImpl;
         return m_cookieJar;
     }
     else
     {
-        std::shared_lock<BkSharedMutex> lock(m_mutex);
+        auto _ = m_mutex.guard_shared();
         return m_cookieJar;
     }
 }
@@ -108,7 +112,7 @@ std::string CrawlerImpl::GetCookies(const std::string &URL) const
 {
     std::string ret;
     {
-        std::shared_lock<BkSharedMutex> lock(m_mutex);
+        auto _ = m_mutex.guard_shared();
         if (nullptr != m_cookieJar)
         {
             std::shared_lock<CookieJarImpl> lock(*m_cookieJar);
@@ -159,7 +163,7 @@ bool CrawlerImpl::ProcessRequestComplete(BkResponse response, BkWorkController c
         return false;
 
     auto task = std::bind(m_client.RequestComplete, response, controller, m_client.UserData);
-    m_clientCaller.Post(FROM_HERE, task);
+    m_clientCaller.Post(BLINK_FROM_HERE, task);
     return true;
 }
 
@@ -167,6 +171,8 @@ int CrawlerImpl::Run(const char *URL)
 {
     ASSERT(IsClientThread());
 
+    ASSERT(false); // BKTODO:
+#if 0
     GURL u(URL);
     if (!u.SchemeIsHTTPOrHTTPS())
     {
@@ -186,6 +192,7 @@ int CrawlerImpl::Run(const char *URL)
         m_frame->Loader().StartNavigation(request);
     };
     m_appCaller.Call(FROM_HERE, std::move(task));
+#endif
     return BK_ERR_SUCCESS;
 }
 
@@ -200,12 +207,13 @@ void CrawlerImpl::SetCookieJar(CookieJarImpl *cookieJar)
 {
     cookieJar->Retain();
 
-    std::unique_lock<BkSharedMutex> lock(m_mutex);
+    auto _ = m_mutex.guard();
     if (nullptr != m_cookieJar)
         m_cookieJar->Release();
     m_cookieJar = cookieJar;
 }
 
+#if 0 // BKTODO:
 void CrawlerImpl::TransitionToCommittedForNewPage(void)
 {
     // Nothing to do for crawlers.
@@ -222,6 +230,7 @@ String CrawlerImpl::UserAgent(void)
     }
     return LocalFrameClientImpl::UserAgent();
 }
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -251,9 +260,9 @@ BKEXPORT BkCrawler BKAPI BkCreateCrawler(BkCrawlerClient *client)
     CrawlerImpl *ret = nullptr;
     auto task = [&ret, client, &clientCaller]
     {
-        ret = new CrawlerImpl(*client, clientCaller);
+        ASSERT(false); // BKTODO: ret = new CrawlerImpl(*client, clientCaller);
     };
-    app.GetAppCaller().SyncCall(FROM_HERE, task);
+    app.GetAppCaller().SyncCall(BLINK_FROM_HERE, task);
     return ret;
 }
 

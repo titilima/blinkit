@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "third_party/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
 
 namespace BlinKit {
 
@@ -23,7 +23,7 @@ class CrawlerDocument final : public blink::Document
 public:
     CrawlerDocument(const blink::DocumentInit &init);
 private:
-    blink::Element* CreateElement(const AtomicString &localName, CreateElementFlags flags) override;
+    // BKTODO: blink::Element* CreateElement(const AtomicString &localName, CreateElementFlags flags) override;
 };
 
 } // namespace BlinKit

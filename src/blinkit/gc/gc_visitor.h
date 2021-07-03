@@ -15,7 +15,7 @@
 #pragma once
 
 #include <unordered_set>
-#include "third_party/blink/renderer/platform/heap/visitor.h"
+#include "blinkit/blink/renderer/platform/heap/Visitor.h"
 
 namespace BlinKit {
 

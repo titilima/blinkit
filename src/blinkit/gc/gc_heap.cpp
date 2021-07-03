@@ -12,8 +12,8 @@
 #include "gc_heap.h"
 
 #include <cstdlib>
+#include "blinkit/blink/renderer/wtf/MainThread.h"
 #include "blinkit/gc/gc_visitor.h"
-#include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 namespace BlinKit {
 
@@ -76,7 +76,7 @@ GCObjectHeader* GCHeap::Alloc(GCObjectType type, size_t totalSize, GCTable *gcPt
 GCObjectHeader* GCHeap::Alloc(GCObjectType type, size_t totalSize, GCTable *gcPtr, const char *name)
 #endif
 {
-    ASSERT(IsMainThread());
+    ASSERT(isMainThread());
     ASSERT(sizeof(GCObjectHeader) < totalSize);
     if (GCObjectHeader *ret = reinterpret_cast<GCObjectHeader *>(malloc(totalSize)))
     {
@@ -189,7 +189,7 @@ void GCHeap::CleanupStashObjects(void)
 
 void GCHeap::CollectGarbage(void)
 {
-    ASSERT(IsMainThread());
+    ASSERT(isMainThread());
 
 #ifndef NDEBUG
     size_t rootCount = m_rootObjects.size();
@@ -289,7 +289,7 @@ void GCHeap::TracePersistentMembers(GCVisitor &visitor)
 
     for (auto &it : m_persistentMembers)
     {
-        visitor.Trace(it.first);
+        visitor.trace(it.first);
         if (objectsToGC.empty())
             return;
 

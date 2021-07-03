@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "third_party/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/dom/Element.h"
 
 namespace BlinKit {
 
@@ -23,7 +23,7 @@ class CrawlerElement : public blink::Element
 public:
     CrawlerElement(const AtomicString &localName, blink::Document *document);
 protected:
-    bool IsURLAttribute(const blink::Attribute &attribute) const override;
+    // BKTODO: bool IsURLAttribute(const blink::Attribute &attribute) const override;
 private:
 #if 0 // BKTODO:
     bool IsFormControlElement(void) const final;

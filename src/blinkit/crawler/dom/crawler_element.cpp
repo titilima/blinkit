@@ -11,17 +11,21 @@
 
 #include "crawler_element.h"
 
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/dom/attr.h"
 #include "third_party/blink/renderer/core/html_names.h"
+#endif
 
 using namespace blink;
 
 namespace BlinKit {
 
 CrawlerElement::CrawlerElement(const AtomicString &localName, Document *document)
+#if 0 // BKTODO:
     : Element(QualifiedName(g_null_atom, localName, html_names::xhtmlNamespaceURI), document, kCreateCrawlerElement)
 #ifndef NDEBUG
     , m_localNameForDebug(localName.StdUtf8())
+#endif
 #endif
 {
     // Nothing
@@ -48,7 +52,6 @@ bool CrawlerElement::isFormControlElement(void) const
     }
     return false;
 }
-#endif // 0
 
 bool CrawlerElement::IsURLAttribute(const Attribute &attribute) const
 {
@@ -59,5 +62,6 @@ bool CrawlerElement::IsURLAttribute(const Attribute &attribute) const
         return name == html_names::kSrcAttr;
     return false;
 }
+#endif // 0
 
 } // namespace BlinKit

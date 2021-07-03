@@ -14,12 +14,12 @@
 
 #pragma once
 
+#include "blinkit/blink/renderer/core/dom/ScriptLoaderClient.h"
 #include "blinkit/crawler/dom/crawler_element.h"
-#include "third_party/blink/renderer/core/dom/create_element_flags.h"
-#include "third_party/blink/renderer/core/script/script_element_base.h"
 
 namespace BlinKit {
 
+#if 0 // BKTODO:
 class CrawlerScriptElement final : public CrawlerElement, public blink::ScriptElementBase
 {
 public:
@@ -49,6 +49,7 @@ private:
     // ScriptElementBase
     blink::Element& GetElement(void) const override { return const_cast<CrawlerScriptElement &>(*this); }
 };
+#endif
 
 } // namespace BlinKit
 

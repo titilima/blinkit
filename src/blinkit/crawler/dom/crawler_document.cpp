@@ -12,18 +12,18 @@
 #include "crawler_document.h"
 
 #include "blinkit/crawler/dom/crawler_script_element.h"
-#include "third_party/blink/renderer/core/dom/document_init.h"
-#include "third_party/blink/renderer/core/html_names.h"
+// BKTODO: #include "third_party/blink/renderer/core/html_names.h"
 
 using namespace blink;
 
 namespace BlinKit {
 
-CrawlerDocument::CrawlerDocument(const DocumentInit &init) : Document(init)
+CrawlerDocument::CrawlerDocument(const DocumentInit &init) : Document(init, HTMLDocumentClass | CrawlerDocumentClass)
 {
     // Nothing
 }
 
+#if 0 // BKTODO:
 Element* CrawlerDocument::CreateElement(const AtomicString &localName, CreateElementFlags flags)
 {
     using namespace html_names;
@@ -31,5 +31,6 @@ Element* CrawlerDocument::CreateElement(const AtomicString &localName, CreateEle
         return CrawlerScriptElement::Create(*this, flags);
     return new CrawlerElement(localName, this);
 }
+#endif
 
 } // namespace BlinKit

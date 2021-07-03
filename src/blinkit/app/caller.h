@@ -15,10 +15,7 @@
 #pragma once
 
 #include <functional>
-
-namespace blink {
-class WebTraceLocation;
-}
+#include "blinkit/blink/public/platform/WebTraceLocation.h"
 
 namespace BlinKit {
 

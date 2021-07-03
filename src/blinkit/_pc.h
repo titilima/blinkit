@@ -37,6 +37,7 @@
 
 #define BLINK_IMPLEMENTATION    1
 #define INSIDE_BLINK            1
+#define ENABLE_OILPAN           1
 
 #ifdef BLINKIT_CRAWLER_ENABLED
 #   ifndef BLINKIT_UI_ENABLED
