@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: AtomicStringHash.h
+// Description: AtomicString Hashers
+//      Author: Ziming Li
+//     Created: 2020-12-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All rights reserved.
  *
@@ -64,5 +75,15 @@ template<> struct HashTraits<AtomicString> : SimpleClassHashTraits<AtomicString>
 }
 
 using WTF::AtomicStringHash;
+
+namespace std {
+template<> struct hash<WTF::AtomicString>
+{
+    std::size_t operator()(const WTF::AtomicString &s) const noexcept
+    {
+        return s.impl()->existingHash();
+    }
+};
+}
 
 #endif
