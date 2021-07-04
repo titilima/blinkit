@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentOrderedMap.h
+// Description: DocumentOrderedMap Class
+//      Author: Ziming Li
+//     Created: 2021-07-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -48,7 +59,7 @@ class DocumentOrderedMap : public NoBaseWillBeGarbageCollected<DocumentOrderedMa
     USING_FAST_MALLOC_WILL_BE_REMOVED(DocumentOrderedMap);
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(DocumentOrderedMap);
 public:
-    static PassOwnPtrWillBeRawPtr<DocumentOrderedMap> create();
+    static DocumentOrderedMap* create();
 
     void add(const AtomicString&, Element*);
     void remove(const AtomicString&, Element*);
@@ -57,7 +68,7 @@ public:
     bool containsMultiple(const AtomicString&) const;
     // concrete instantiations of the get<>() method template
     Element* getElementById(const AtomicString&, const TreeScope*) const;
-    const WillBeHeapVector<RawPtrWillBeMember<Element>>& getAllElementsById(const AtomicString&, const TreeScope*) const;
+    const std::vector<Member<Element>>& getAllElementsById(const AtomicString&, const TreeScope*) const;
     Element* getElementByMapName(const AtomicString&, const TreeScope*) const;
     Element* getElementByLowercasedMapName(const AtomicString&, const TreeScope*) const;
     Element* getElementByLabelForAttribute(const AtomicString&, const TreeScope*) const;
@@ -91,35 +102,31 @@ private:
     template<bool keyMatches(const AtomicString&, const Element&)>
     Element* get(const AtomicString&, const TreeScope*) const;
 
-    class MapEntry : public NoBaseWillBeGarbageCollected<MapEntry> {
+    struct MapEntry {
     public:
-        explicit MapEntry(Element* firstElement)
-            : element(firstElement)
-            , count(1)
-        {
-        }
-
+        explicit MapEntry(Element *firstElement) : element(firstElement) {}
         DECLARE_TRACE();
 
-        RawPtrWillBeMember<Element> element;
-        unsigned count;
-        WillBeHeapVector<RawPtrWillBeMember<Element>> orderedList;
+        Member<Element> element;
+        unsigned count = 1;
+        std::vector<Member<Element>> orderedList;
     };
 
-    using Map = WillBeHeapHashMap<AtomicString, OwnPtrWillBeMember<MapEntry>>;
+    using Map = std::unordered_map<AtomicString, MapEntry>;
 
     mutable Map m_map;
 };
 
 inline bool DocumentOrderedMap::contains(const AtomicString& id) const
 {
-    return m_map.contains(id);
+    return zed::key_exists(m_map, id);
 }
 
 inline bool DocumentOrderedMap::containsMultiple(const AtomicString& id) const
 {
-    Map::const_iterator it = m_map.find(id);
-    return it != m_map.end() && it->value->count > 1;
+    if (MapEntry *entry = zed::find_value(m_map, id))
+        return entry->count > 1;
+    return false;
 }
 
 } // namespace blink

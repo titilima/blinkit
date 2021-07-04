@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentOrderedMap.cpp
+// Description: DocumentOrderedMap Class
+//      Author: Ziming Li
+//     Created: 2021-07-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
  *
@@ -34,16 +45,16 @@
 #include "core/dom/Element.h"
 #include "core/dom/ElementTraversal.h"
 #include "core/dom/TreeScope.h"
-#include "core/html/HTMLMapElement.h"
+// BKTODO: #include "core/html/HTMLMapElement.h"
 
 namespace blink {
 
 using namespace HTMLNames;
 
 
-PassOwnPtrWillBeRawPtr<DocumentOrderedMap> DocumentOrderedMap::create()
+DocumentOrderedMap* DocumentOrderedMap::create()
 {
-    return adoptPtrWillBeNoop(new DocumentOrderedMap);
+    return new DocumentOrderedMap;
 }
 
 DocumentOrderedMap::DocumentOrderedMap()
@@ -74,17 +85,20 @@ inline bool keyMatchesId(const AtomicString& key, const Element& element)
 
 inline bool keyMatchesMapName(const AtomicString& key, const Element& element)
 {
-    return isHTMLMapElement(element) && toHTMLMapElement(element).getName() == key;
+    ASSERT(false); // BKTODO: return isHTMLMapElement(element) && toHTMLMapElement(element).getName() == key;
+    return false;
 }
 
 inline bool keyMatchesLowercasedMapName(const AtomicString& key, const Element& element)
 {
-    return isHTMLMapElement(element) && toHTMLMapElement(element).getName().lower() == key;
+    ASSERT(false); // BKTODO: return isHTMLMapElement(element) && toHTMLMapElement(element).getName().lower() == key;
+    return false;
 }
 
 inline bool keyMatchesLabelForAttribute(const AtomicString& key, const Element& element)
 {
-    return isHTMLLabelElement(element) && element.getAttribute(forAttr) == key;
+    ASSERT(false); // BKTODO: return isHTMLLabelElement(element) && element.getAttribute(forAttr) == key;
+    return false;
 }
 
 void DocumentOrderedMap::add(const AtomicString& key, Element* element)
@@ -92,15 +106,18 @@ void DocumentOrderedMap::add(const AtomicString& key, Element* element)
     ASSERT(key);
     ASSERT(element);
 
-    Map::AddResult addResult = m_map.add(key, adoptPtrWillBeNoop(new MapEntry(element)));
-    if (addResult.isNewEntry)
+    auto it = m_map.find(key);
+    if (m_map.end() == it)
+    {
+        m_map.emplace(key, element);
         return;
+    }
 
-    OwnPtrWillBeMember<MapEntry>& entry = addResult.storedValue->value;
-    ASSERT(entry->count);
-    entry->element = nullptr;
-    entry->count++;
-    entry->orderedList.clear();
+    MapEntry &entry = it->second;
+    ASSERT(entry.count > 0);
+    entry.element.Clear();
+    ++entry.count;
+    entry.orderedList.clear();
 }
 
 void DocumentOrderedMap::remove(const AtomicString& key, Element* element)
@@ -112,18 +129,22 @@ void DocumentOrderedMap::remove(const AtomicString& key, Element* element)
     if (it == m_map.end())
         return;
 
-    OwnPtrWillBeMember<MapEntry>& entry = it->value;
-    ASSERT(entry->count);
-    if (entry->count == 1) {
-        ASSERT(!entry->element || entry->element == element);
-        m_map.remove(it);
-    } else {
-        if (entry->element == element) {
-            ASSERT(entry->orderedList.isEmpty() || entry->orderedList.first() == element);
-            entry->element = entry->orderedList.size() > 1 ? entry->orderedList[1] : nullptr;
+    MapEntry &entry = it->second;
+    ASSERT(entry.count > 0);
+    if (entry.count == 1)
+    {
+        ASSERT(!entry.element || entry.element == element);
+        m_map.erase(it);
+    }
+    else
+    {
+        if (entry.element == element)
+        {
+            ASSERT(entry.orderedList.empty() || entry.orderedList.front() == element);
+            entry.element = entry.orderedList.size() > 1 ? entry.orderedList[1] : nullptr;
         }
-        entry->count--;
-        entry->orderedList.clear();
+        --entry.count;
+        entry.orderedList.clear();
     }
 }
 
@@ -133,7 +154,7 @@ inline Element* DocumentOrderedMap::get(const AtomicString& key, const TreeScope
     ASSERT(key);
     ASSERT(scope);
 
-    MapEntry* entry = m_map.get(key);
+    MapEntry* entry = zed::find_value(m_map, key);
     if (!entry)
         return 0;
 
@@ -162,32 +183,37 @@ Element* DocumentOrderedMap::getElementById(const AtomicString& key, const TreeS
     return get<keyMatchesId>(key, scope);
 }
 
-const WillBeHeapVector<RawPtrWillBeMember<Element>>& DocumentOrderedMap::getAllElementsById(const AtomicString& key, const TreeScope* scope) const
+const std::vector<Member<Element>>& DocumentOrderedMap::getAllElementsById(const AtomicString& key, const TreeScope* scope) const
 {
+    static std::vector<Member<Element>> emptyVector;
+
     ASSERT(key);
     ASSERT(scope);
-    DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<WillBeHeapVector<RawPtrWillBeMember<Element>>>, emptyVector, (adoptPtrWillBeNoop(new WillBeHeapVector<RawPtrWillBeMember<Element>>())));
 
     Map::iterator it = m_map.find(key);
     if (it == m_map.end())
-        return *emptyVector;
+        return emptyVector;
 
-    OwnPtrWillBeMember<MapEntry>& entry = it->value;
-    ASSERT(entry->count);
+    MapEntry &entry = it->second;
+    ASSERT(entry.count > 0);
 
-    if (entry->orderedList.isEmpty()) {
-        entry->orderedList.reserveCapacity(entry->count);
-        for (Element* element = entry->element ? entry->element.get() : ElementTraversal::firstWithin(scope->rootNode()); entry->orderedList.size() < entry->count; element = ElementTraversal::next(*element)) {
+    if (entry.orderedList.empty())
+    {
+        entry.orderedList.reserve(entry.count);
+        for (Element *element = entry.element ? entry.element.get() : ElementTraversal::firstWithin(scope->rootNode());
+            entry.orderedList.size() < entry.count;
+            element = ElementTraversal::next(*element))
+        {
             ASSERT(element);
             if (!keyMatchesId(key, *element))
                 continue;
-            entry->orderedList.uncheckedAppend(element);
+            entry.orderedList.emplace_back(element);
         }
-        if (!entry->element)
-            entry->element = entry->orderedList.first();
+        if (!entry.element)
+            entry.element = entry.orderedList.front();
     }
 
-    return entry->orderedList;
+    return entry.orderedList;
 }
 
 Element* DocumentOrderedMap::getElementByMapName(const AtomicString& key, const TreeScope* scope) const
