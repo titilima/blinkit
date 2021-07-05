@@ -1,0 +1,5 @@
+namespace="Event"
+export=CORE_EXPORT
+
+core/events/Event
+

@@ -1,0 +1,5 @@
+namespace="EventTarget"
+export="CORE_EXPORT"
+
+core/dom/Node
+
