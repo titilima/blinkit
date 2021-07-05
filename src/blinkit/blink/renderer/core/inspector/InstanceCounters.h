@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InstanceCounters.h
+// Description: InstanceCounters Class
+//      Author: Ziming Li
+//     Created: 2021-07-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
 * Copyright (C) 2012 Google Inc. All rights reserved.
 *
@@ -62,19 +73,12 @@ public:
     static inline void incrementCounter(CounterType type)
     {
         ASSERT(isMainThread());
-        ++s_counters[type];
     }
 
     static inline void decrementCounter(CounterType type)
     {
         ASSERT(isMainThread());
-        --s_counters[type];
     }
-
-    CORE_EXPORT static int counterValue(CounterType);
-
-private:
-    CORE_EXPORT static int s_counters[CounterTypeLength];
 };
 
 } // namespace blink
