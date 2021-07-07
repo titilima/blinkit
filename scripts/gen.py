@@ -20,7 +20,12 @@ def run_script(rel_path, args = ''):
 
 os.chdir(SCRIPT_PATH)
 run_script('blink/make_element_factory.py',                                     \
+    os.path.normpath('blink/in/HTMLTagNames.in') + ' ' +                        \
     os.path.normpath('blink/in/HTMLAttributeNames.in') + ' ' +                  \
+    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
+)
+
+run_script('blink/make_element_type_helpers.py',                                \
     os.path.normpath('blink/in/HTMLTagNames.in') + ' ' +                        \
     '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
 )
@@ -38,4 +43,24 @@ run_script('blink/make_names.py',                                               
 run_script('blink/make_names.py',                                               \
     os.path.normpath('blink/in/EventTypeNames.in') + ' ' +                      \
     '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
+)
+
+run_script('blink/make_css_property_names.py',                                  \
+    os.path.normpath('blink/in/CSSProperties.in') + ' ' +                       \
+    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
+)
+
+run_script('blink/make_css_value_keywords.py',                                  \
+    os.path.normpath('blink/in/CSSValueKeywords.in') + ' ' +                    \
+    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
+)
+
+run_script('blink/make_names.py',                                                   \
+    os.path.normpath('blink/in/FontFamilyNames.in') + ' ' +                         \
+    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/platform')    \
+)
+
+run_script('blink/make_names.py',                                                   \
+    os.path.normpath('blink/in/HTTPNames.in') + ' ' +                               \
+    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/platform')    \
 )

@@ -4,3 +4,6 @@ namespaceURI="http://www.w3.org/1999/xhtml"
 fallbackInterfaceName="HTMLUnknownElement"
 export="CORE_EXPORT"
 
+body
+html
+title

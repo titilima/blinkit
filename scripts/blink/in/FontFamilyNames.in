@@ -1,0 +1,4 @@
+namespace="FontFamily"
+export="PLATFORM_EXPORT"
+
+-webkit-monospace
