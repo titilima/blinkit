@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EventTarget.h
+// Description: EventTarget Class
+//      Author: Ziming Li
+//     Created: 2021-07-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -33,7 +44,6 @@
 #define EventTarget_h
 
 #include "bindings/core/v8/ScriptWrappable.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/CoreExport.h"
 #include "core/EventNames.h"
 #include "core/EventTargetNames.h"
@@ -228,7 +238,8 @@ public:
         // Redefinition of the operator is needed to accomplish that, as otherwise
         // it would be allocated using GarbageCollected<EventTarget>'s operator new.
         // EventTarget is not eagerly finalized.
-        return allocateObject(size, IsEagerlyFinalizedType<T>::value);
+        ASSERT(false); // BKTODO: return allocateObject(size, IsEagerlyFinalizedType<T>::value);
+        return nullptr;
     }
 
     DEFINE_INLINE_VIRTUAL_TRACE()

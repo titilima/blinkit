@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EventTarget.cpp
+// Description: EventTarget Class
+//      Author: Ziming Li
+//     Created: 2021-07-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -32,7 +43,6 @@
 #include "core/events/EventTarget.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/V8DOMActivityLogger.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/editing/Editor.h"
 #include "core/events/Event.h"
@@ -127,12 +137,15 @@ bool EventTarget::addEventListener(const AtomicString& eventType, PassRefPtrWill
 
 bool EventTarget::addEventListener(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener> listener, const EventListenerOptionsOrBoolean& optionsUnion)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (optionsUnion.isBoolean())
         return addEventListener(eventType, listener, optionsUnion.getAsBoolean());
     if (optionsUnion.isEventListenerOptions()) {
         EventListenerOptions options = optionsUnion.getAsEventListenerOptions();
         return addEventListener(eventType, listener, options);
     }
+#endif
     return addEventListener(eventType, listener);
 }
 
@@ -147,6 +160,8 @@ bool EventTarget::addEventListenerInternal(const AtomicString& eventType, PassRe
     if (!listener)
         return false;
 
+    ASSERT(false); // BKTODO:
+#if 0
     V8DOMActivityLogger* activityLogger = V8DOMActivityLogger::currentActivityLoggerIfIsolatedWorld();
     if (activityLogger) {
         Vector<String> argv;
@@ -154,6 +169,7 @@ bool EventTarget::addEventListenerInternal(const AtomicString& eventType, PassRe
         argv.append(eventType);
         activityLogger->logEvent("blinkAddEventListener", argv.size(), argv.data());
     }
+#endif
 
     return ensureEventTargetData().eventListenerMap.add(eventType, listener, options);
 }
@@ -167,12 +183,15 @@ bool EventTarget::removeEventListener(const AtomicString& eventType, PassRefPtrW
 
 bool EventTarget::removeEventListener(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener> listener, const EventListenerOptionsOrBoolean& optionsUnion)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (optionsUnion.isBoolean())
         return removeEventListener(eventType, listener, optionsUnion.getAsBoolean());
     if (optionsUnion.isEventListenerOptions()) {
         EventListenerOptions options = optionsUnion.getAsEventListenerOptions();
         return removeEventListener(eventType, listener, options);
     }
+#endif
     return removeEventListener(eventType, listener);
 }
 
@@ -289,6 +308,8 @@ void EventTarget::uncaughtExceptionInEventHandler()
 
 static const AtomicString& legacyType(const Event* event)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (event->type() == EventTypeNames::transitionend)
         return EventTypeNames::webkitTransitionEnd;
 
@@ -303,12 +324,15 @@ static const AtomicString& legacyType(const Event* event)
 
     if (event->type() == EventTypeNames::wheel)
         return EventTypeNames::mousewheel;
+#endif
 
     return emptyAtom;
 }
 
 void EventTarget::countLegacyEvents(const AtomicString& legacyTypeName, EventListenerVector* listenersVector, EventListenerVector* legacyListenersVector)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     UseCounter::Feature unprefixedFeature;
     UseCounter::Feature prefixedFeature;
     UseCounter::Feature prefixedAndUnprefixedFeature;
@@ -342,6 +366,7 @@ void EventTarget::countLegacyEvents(const AtomicString& legacyTypeName, EventLis
             UseCounter::count(executingWindow->document(), unprefixedFeature);
         }
     }
+#endif
 }
 
 bool EventTarget::fireEventListeners(Event* event)
@@ -376,8 +401,6 @@ bool EventTarget::fireEventListeners(Event* event)
 
 void EventTarget::fireEventListeners(Event* event, EventTargetData* d, EventListenerVector& entry)
 {
-    RefPtrWillBeRawPtr<EventTarget> protect(this);
-
     // Fire all listeners registered for this event. Don't fire listeners removed
     // during event dispatch. Also, don't fire event listeners added during event
     // dispatch. Conveniently, all new event listeners will be added after or at
@@ -386,8 +409,11 @@ void EventTarget::fireEventListeners(Event* event, EventTargetData* d, EventList
 
     if (event->type() == EventTypeNames::beforeunload) {
         if (LocalDOMWindow* executingWindow = this->executingWindow()) {
+            ASSERT(false); // BKTODO:
+#if 0
             if (executingWindow->top())
                 UseCounter::count(executingWindow->document(), UseCounter::SubFrameBeforeUnloadFired);
+#endif
             UseCounter::count(executingWindow->document(), UseCounter::DocumentBeforeUnloadFired);
         }
     } else if (event->type() == EventTypeNames::unload) {
