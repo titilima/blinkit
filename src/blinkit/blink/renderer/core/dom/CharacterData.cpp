@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CharacterData.cpp
+// Description: CharacterData Class
+//      Author: Ziming Li
+//     Created: 2021-07-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,12 +35,16 @@
 #include "bindings/core/v8/ExceptionState.h"
 #include "core/dom/Document.h"
 #include "core/dom/ExceptionCode.h"
+#if 0 // BKTODO: MutationEvent stuff is not recommended, remove it later. See also: https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent
 #include "core/dom/MutationObserverInterestGroup.h"
 #include "core/dom/MutationRecord.h"
-#include "core/dom/ProcessingInstruction.h"
+#endif
+// BKTODO: #include "core/dom/ProcessingInstruction.h"
 #include "core/dom/Text.h"
 #include "core/editing/FrameSelection.h"
+#if 0 // BKTODO: MutationEvent stuff is not recommended, remove it later. See also: https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent
 #include "core/events/MutationEvent.h"
+#endif
 #include "core/inspector/InspectorInstrumentation.h"
 #include "wtf/CheckedArithmetic.h"
 
@@ -46,12 +61,13 @@ void CharacterData::setData(const String& data)
     if (m_data == nonNullData)
         return;
 
-    RefPtrWillBeRawPtr<CharacterData> protect(this);
-
     unsigned oldLength = length();
 
     setDataAndUpdate(nonNullData, 0, oldLength, nonNullData.length(), UpdateFromNonParser);
-    document().didRemoveText(this, 0, oldLength);
+#ifdef BLINKIT_UI_ENABLED
+    if (isUINode())
+        document().didRemoveText(this, 0, oldLength);
+#endif
 }
 
 String CharacterData::substringData(unsigned offset, unsigned count, ExceptionState& exceptionState)
@@ -139,9 +155,12 @@ void CharacterData::replaceData(unsigned offset, unsigned count, const String& d
 
     setDataAndUpdate(newStr, offset, realCount, data.length(), UpdateFromNonParser);
 
-    // update the markers for spell checking and grammar checking
-    document().didRemoveText(this, offset, realCount);
-    document().didInsertText(this, offset, data.length());
+    if (isUINode())
+    {
+        // update the markers for spell checking and grammar checking
+        document().didRemoveText(this, offset, realCount);
+        document().didInsertText(this, offset, data.length());
+    }
 }
 
 String CharacterData::nodeValue() const
@@ -169,11 +188,14 @@ void CharacterData::setDataAndUpdate(const String& newData, unsigned offsetOfRep
         toText(this)->updateTextLayoutObject(offsetOfReplacedData, oldLength, recalcStyleBehavior);
 
     if (source != UpdateFromParser) {
+        ASSERT(false); // TODO:
+#if 0
         if (nodeType() == PROCESSING_INSTRUCTION_NODE)
             toProcessingInstruction(this)->didAttributeChanged();
 
         if (document().frame())
             document().frame()->selection().didUpdateCharacterData(this, offsetOfReplacedData, oldLength, newLength);
+#endif
     }
 
     document().incDOMTreeVersion();
@@ -182,6 +204,8 @@ void CharacterData::setDataAndUpdate(const String& newData, unsigned offsetOfRep
 
 void CharacterData::didModifyData(const String& oldData, UpdateSource source)
 {
+    ASSERT(false); // TODO:
+#if 0
     if (OwnPtrWillBeRawPtr<MutationObserverInterestGroup> mutationRecipients = MutationObserverInterestGroup::createForCharacterDataMutation(*this))
         mutationRecipients->enqueueMutationRecord(MutationRecord::createCharacterData(this, oldData));
 
@@ -189,13 +213,17 @@ void CharacterData::didModifyData(const String& oldData, UpdateSource source)
         ContainerNode::ChildrenChange change = {ContainerNode::TextChanged, previousSibling(), nextSibling(), ContainerNode::ChildrenChangeSourceAPI};
         parentNode()->childrenChanged(change);
     }
+#endif
 
     // Skip DOM mutation events if the modification is from parser.
     // Note that mutation observer events will still fire.
     // Spec: https://html.spec.whatwg.org/multipage/syntax.html#insert-a-character
     if (source != UpdateFromParser && !isInShadowTree()) {
+        ASSERT(false); // TODO:
+#if 0
         if (document().hasListenerType(Document::DOMCHARACTERDATAMODIFIED_LISTENER))
             dispatchScopedEvent(MutationEvent::create(EventTypeNames::DOMCharacterDataModified, true, nullptr, oldData, m_data));
+#endif
         dispatchSubtreeModifiedEvent();
     }
     InspectorInstrumentation::characterDataModified(this);

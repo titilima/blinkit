@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CharacterData.h
+// Description: CharacterData Class
+//      Author: Ziming Li
+//     Created: 2021-07-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -77,7 +88,9 @@ private:
     String nodeValue() const final;
     void setNodeValue(const String&) final;
     bool isCharacterDataNode() const final { return true; }
+#ifdef BLINKIT_UI_ENABLED
     int maxCharacterOffset() const final;
+#endif
     void setDataAndUpdate(const String&, unsigned offsetOfReplacedData, unsigned oldLength, unsigned newLength, UpdateSource = UpdateFromNonParser, RecalcStyleBehavior = DoNotRecalcStyle);
 
     bool isContainerNode() const = delete; // This will catch anyone doing an unnecessary check.
