@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScriptForbiddenScope.h
+// Description: ScriptForbiddenScope Class
+//      Author: Ziming Li
+//     Created: 2021-07-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,9 +16,9 @@
 #ifndef ScriptForbiddenScope_h
 #define ScriptForbiddenScope_h
 
+#include <optional>
 #include "platform/PlatformExport.h"
 #include "wtf/Allocator.h"
-#include "wtf/Optional.h"
 #include "wtf/TemporaryChange.h"
 
 namespace blink {
@@ -28,7 +39,7 @@ public:
         AllowUserAgentScript();
         ~AllowUserAgentScript();
     private:
-        Optional<TemporaryChange<unsigned>> m_change;
+        std::optional<TemporaryChange<unsigned>> m_change;
     };
 
     static void enter();
