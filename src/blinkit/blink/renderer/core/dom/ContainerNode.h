@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContainerNode.h
+// Description: ContainerNode Class
+//      Author: Ziming Li
+//     Created: 2021-07-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -275,8 +286,6 @@ private:
 bool childAttachedAllowedWhenAttachingChildren(ContainerNode*);
 #endif
 
-WILL_NOT_BE_EAGERLY_TRACED_CLASS(ContainerNode);
-
 DEFINE_NODE_TYPE_CASTS(ContainerNode, isContainerNode());
 
 inline bool ContainerNode::hasChildCount(unsigned count) const
@@ -345,7 +354,7 @@ inline void getChildNodes(ContainerNode& node, NodeVector& nodes)
 {
     ASSERT(!nodes.size());
     for (Node* child = node.firstChild(); child; child = child->nextSibling())
-        nodes.append(child);
+        nodes.emplace_back(child);
 }
 
 } // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContainerNode.cpp
+// Description: ContainerNode Class
+//      Author: Ziming Li
+//     Created: 2021-07-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -39,10 +50,12 @@
 #include "core/dom/StyleEngine.h"
 #include "core/dom/shadow/ElementShadow.h"
 #include "core/dom/shadow/ShadowRoot.h"
+#if 0 // BKTODO: MutationEvent is not recommended, remove it later. See also: https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent
 #include "core/events/MutationEvent.h"
+#endif
 #include "core/frame/FrameView.h"
 #include "core/html/HTMLCollection.h"
-#include "core/html/HTMLFrameOwnerElement.h"
+// BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLTagCollection.h"
 #include "core/html/RadioNodeList.h"
 #include "core/inspector/InspectorInstrumentation.h"
@@ -585,7 +598,7 @@ PassRefPtrWillBeRawPtr<Node> ContainerNode::removeChild(PassRefPtrWillBeRawPtr<N
     }
 
     {
-        HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
+        // BKTODO: HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
         DocumentOrderedMap::RemoveScope treeRemoveScope;
 
         Node* prev = child->previousSibling();
@@ -640,7 +653,7 @@ void ContainerNode::parserRemoveChild(Node& oldChild)
     ChildListMutationScope(*this).willRemoveChild(oldChild);
     oldChild.notifyMutationObserversNodeWillDetach();
 
-    HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
+    // BKTODO: HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
     DocumentOrderedMap::RemoveScope treeRemoveScope;
 
     Node* prev = oldChild.previousSibling();
@@ -668,7 +681,7 @@ void ContainerNode::removeChildren(SubtreeModificationAction action)
     {
         // Removing focus can cause frames to load, either via events (focusout, blur)
         // or widget updates (e.g., for <embed>).
-        SubframeLoadingDisabler disabler(*this);
+        // BKTODO: SubframeLoadingDisabler disabler(*this);
 
         // Exclude this node when looking for removed focusedElement since only
         // children will be removed.
@@ -689,7 +702,7 @@ void ContainerNode::removeChildren(SubtreeModificationAction action)
     NodeVector removedChildren;
 #endif
     {
-        HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
+        // BKTODO: HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
         DocumentOrderedMap::RemoveScope treeRemoveScope;
         {
             EventDispatchForbiddenScope assertNoEventDispatch;
@@ -1243,6 +1256,7 @@ static void dispatchChildInsertionEvents(Node& child)
     RefPtrWillBeRawPtr<Node> c(child);
     RefPtrWillBeRawPtr<Document> document(child.document());
 
+#if 0 // BKTODO: MutationEvent stuff is not recommended, remove it later. See also: https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent
     if (c->parentNode() && document->hasListenerType(Document::DOMNODEINSERTED_LISTENER))
         c->dispatchScopedEvent(MutationEvent::create(EventTypeNames::DOMNodeInserted, true, c->parentNode()));
 
@@ -1251,6 +1265,7 @@ static void dispatchChildInsertionEvents(Node& child)
         for (; c; c = NodeTraversal::next(*c, &child))
             c->dispatchScopedEvent(MutationEvent::create(EventTypeNames::DOMNodeInsertedIntoDocument, false));
     }
+#endif
 }
 
 static void dispatchChildRemovalEvents(Node& child)
@@ -1267,6 +1282,11 @@ static void dispatchChildRemovalEvents(Node& child)
     RefPtrWillBeRawPtr<Node> c(child);
     RefPtrWillBeRawPtr<Document> document(child.document());
 
+    // BKTODO:
+    //   MutationEvent is not recommended, remove it later.
+    //   See also: https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent
+    ASSERT(false); 
+#if 0
     // Dispatch pre-removal mutation events.
     if (c->parentNode() && document->hasListenerType(Document::DOMNODEREMOVED_LISTENER)) {
         NodeChildRemovalTracker scope(child);
@@ -1279,6 +1299,7 @@ static void dispatchChildRemovalEvents(Node& child)
         for (; c; c = NodeTraversal::next(*c, &child))
             c->dispatchScopedEvent(MutationEvent::create(EventTypeNames::DOMNodeRemovedFromDocument, false));
     }
+#endif
 }
 
 void ContainerNode::updateTreeAfterInsertion(Node& child)
