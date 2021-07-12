@@ -17,17 +17,6 @@
 
 namespace blink {
 
-class NonThrowableExceptionState final : public ExceptionState
-{
-public:
-    NonThrowableExceptionState(const char *fileName, int line);
-
-    ExceptionState& ReturnThis(void) { return *this; }
-private:
-    const char *m_fileName;
-    const int m_line;
-};
-
 class DummyExceptionStateForTesting final : public ExceptionState
 {
 public:
@@ -35,14 +24,6 @@ public:
 
     ExceptionState& ReturnThis(void) { return *this; }
 };
-
-#if 0 // BKTODO: Check if necessary.
-class TrackExceptionState final : public ExceptionState
-{
-public:
-    TrackExceptionState(void) = default;
-};
-#endif
 
 } // namespace blink
 
