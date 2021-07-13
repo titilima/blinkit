@@ -71,6 +71,17 @@ template<> struct HashTraits<blink::CSSPropertyID> : GenericHashTraits<blink::CS
 };
 }
 
+namespace std {
+template<>
+struct hash<blink::CSSPropertyID>
+{
+    size_t operator()(blink::CSSPropertyID id) const noexcept
+    {
+        return static_cast<size_t>(id);
+    }
+};
+}
+
 #endif // %(class_name)s_h
 """
 
