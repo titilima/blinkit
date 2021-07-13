@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: QualifiedName.h
+// Description: QualifiedName Class
+//      Author: Ziming Li
+//     Created: 2020-07-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2009 Apple Inc. All rights reserved.
  *
@@ -184,6 +195,19 @@ template<> struct HashTraits<blink::QualifiedName> : SimpleClassHashTraits<blink
     static const bool emptyValueIsZero = false;
     static blink::QualifiedName emptyValue() { return blink::QualifiedName::null(); }
 };
+}
+
+namespace std {
+
+template<>
+struct hash<blink::QualifiedName>
+{
+    std::size_t operator()(const blink::QualifiedName &n) const noexcept
+    {
+        return blink::QualifiedNameHash::hash(n);
+    }
+};
+
 }
 
 #endif
