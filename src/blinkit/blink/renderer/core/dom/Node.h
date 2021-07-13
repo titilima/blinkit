@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Node.h
+// Description: Node Class
+//      Author: Ziming Li
+//     Created: 2021-07-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -31,7 +42,6 @@
 #include "core/dom/SimulatedClickOptions.h"
 #include "core/dom/StyleChangeReason.h"
 #include "core/dom/TreeScope.h"
-#include "core/dom/TreeShared.h"
 #include "core/editing/EditingBoundary.h"
 #include "core/events/EventTarget.h"
 #include "core/inspector/InstanceCounters.h"
@@ -119,9 +129,6 @@ protected:
     LayoutObject* m_layoutObject;
 };
 
-class Node;
-WILL_NOT_BE_EAGERLY_TRACED_CLASS(Node);
-
 #if ENABLE(OILPAN)
 #define NODE_BASE_CLASSES public EventTarget
 #else
@@ -179,12 +186,17 @@ public:
     GC_PLUGIN_IGNORE("crbug.com/443854")
     void* operator new(size_t size)
     {
-        return allocateObject(size, false);
+        ASSERT(false); // BKTODO: return allocateObject(size, false);
+        return nullptr;
     }
     static void* allocateObject(size_t size, bool isEager)
     {
+        ASSERT(false); // BKTODO:
+        return nullptr;
+#if 0
         ThreadState* state = ThreadStateFor<ThreadingTrait<Node>::Affinity>::state();
         return Heap::allocateOnHeapIndex(state, size, isEager ? BlinkGC::EagerSweepHeapIndex : BlinkGC::NodeHeapIndex, GCInfoTrait<EventTarget>::index());
+#endif
     }
 #else // !ENABLE(OILPAN)
     // All Nodes are placed in their own heap partition for security.
@@ -251,6 +263,14 @@ public:
     bool isTextNode() const { return getFlag(IsTextFlag); }
     bool isHTMLElement() const { return getFlag(IsHTMLFlag); }
     bool isSVGElement() const { return getFlag(IsSVGFlag); }
+#if defined(BLINKIT_CRAWLER_ONLY)
+    constexpr bool isCrawlerNode(void) const { return true; }
+#elif defined(BLINKIT_UI_ONLY)
+    constexpr bool isCrawlerNode(void) const { return false; }
+#else
+    bool isCrawlerNode(void) const { return getFlag(CrawlerFlag); }
+#endif
+    bool isUINode(void) const { return !isCrawlerNode(); }
 
     bool isPseudoElement() const { return pseudoId() != NOPSEUDO; }
     bool isBeforePseudoElement() const { return pseudoId() == BEFORE; }
@@ -678,10 +698,6 @@ public:
     DECLARE_VIRTUAL_TRACE();
 
     unsigned lengthOfContents() const;
-
-    v8::Local<v8::Object> wrap(v8::Isolate*, v8::Local<v8::Object> creationContext) override;
-    v8::Local<v8::Object> associateWithWrapper(v8::Isolate*, const WrapperTypeInfo*, v8::Local<v8::Object> wrapper) override WARN_UNUSED_RETURN;
-
 private:
     enum NodeFlags {
         HasRareDataFlag = 1,
@@ -727,11 +743,12 @@ private:
         V8CollectableDuringMinorGCFlag = 1 << 25,
         HasEventTargetDataFlag = 1 << 26,
         AlreadySpellCheckedFlag = 1 << 27,
+        CrawlerFlag = 1 << 28,
 
         DefaultNodeFlags = IsFinishedParsingChildrenFlag | NeedsReattachStyleChange
     };
 
-    // 3 bits remaining.
+    // 2 bits remaining.
 
     bool getFlag(NodeFlags mask) const { return m_nodeFlags & mask; }
     void setFlag(bool f, NodeFlags mask) { m_nodeFlags = (m_nodeFlags & ~mask) | (-(int32_t)f & mask); }
@@ -751,6 +768,9 @@ protected:
         CreateDocument = CreateContainer | InDocumentFlag,
         CreateInsertionPoint = CreateHTMLElement | IsInsertionPointFlag,
         CreateEditingText = CreateText | HasNameOrIsEditingTextFlag,
+        CreateCrawlerDocument = CreateDocument | CrawlerFlag,
+        CreateCrawlerElement = CreateHTMLElement | CrawlerFlag,
+        CreateCrawlerText = CreateText | CrawlerFlag,
     };
 
     Node(TreeScope*, ConstructionType);
@@ -791,7 +811,6 @@ protected:
     void setIsFinishedParsingChildren(bool value) { setFlag(value, IsFinishedParsingChildrenFlag); }
 
 private:
-    friend class TreeShared<Node>;
 #if !ENABLE(OILPAN)
     // FIXME: consider exposing proper API for this instead.
     friend struct WeakIdentifierMapTraits<Node>;
@@ -888,13 +907,6 @@ inline bool isTreeScopeRoot(const Node* node)
 inline bool isTreeScopeRoot(const Node& node)
 {
     return node.isDocumentNode() || node.isShadowRoot();
-}
-
-// See the comment at the declaration of ScriptWrappable::fromNode in
-// bindings/core/v8/ScriptWrappable.h about why this method is defined here.
-inline ScriptWrappable* ScriptWrappable::fromNode(Node* node)
-{
-    return node;
 }
 
 // Allow equality comparisons of Nodes by reference or pointer, interchangeably.

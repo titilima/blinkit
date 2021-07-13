@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Node.cpp
+// Description: Node Class
+//      Author: Ziming Li
+//     Created: 2021-07-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,13 +35,12 @@
 
 #include "core/dom/Node.h"
 
-#include "bindings/core/v8/DOMDataStore.h"
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/V8DOMWrapper.h"
+#include "blinkit/blink/renderer/platform/ScriptForbiddenScope.h"
 #include "core/HTMLNames.h"
 #include "core/css/CSSSelector.h"
 #include "core/css/resolver/StyleResolver.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/Attr.h"
 #include "core/dom/Attribute.h"
 #include "core/dom/ChildListMutationScope.h"
@@ -64,26 +74,30 @@
 #include "core/events/EventDispatchMediator.h"
 #include "core/events/EventDispatcher.h"
 #include "core/events/EventListener.h"
-#include "core/events/GestureEvent.h"
+// BKTODO: #include "core/events/GestureEvent.h"
 #include "core/events/KeyboardEvent.h"
 #include "core/events/MouseEvent.h"
+#if 0 // BKTODO: MutationEvent is not recommended, remove it later. See also: https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent
 #include "core/events/MutationEvent.h"
-#include "core/events/PointerEvent.h"
+#endif
+// BKTODO: #include "core/events/PointerEvent.h"
 #include "core/events/TextEvent.h"
-#include "core/events/TouchEvent.h"
+// BKTODO: #include "core/events/TouchEvent.h"
 #include "core/events/UIEvent.h"
 #include "core/events/WheelEvent.h"
 #include "core/frame/EventHandlerRegistry.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/LocalFrame.h"
+#if 0 // BKTODO:
 #include "core/html/HTMLDialogElement.h"
 #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLSlotElement.h"
+#endif
 #include "core/input/EventHandler.h"
 #include "core/layout/LayoutBox.h"
 #include "core/page/ContextMenuController.h"
 #include "core/page/Page.h"
-#include "core/svg/graphics/SVGImage.h"
+// BKTODO: #include "core/svg/graphics/SVGImage.h"
 #include "platform/EventDispatchForbiddenScope.h"
 #include "platform/TraceEvent.h"
 #include "platform/TracedValue.h"
@@ -565,9 +579,11 @@ bool Node::isEditableToAccessibility(EditableLevel editableLevel) const
     if (editableLevel == RichlyEditable)
         return false;
 
+#if 0 // BKTODO:
     // FIXME(dmazzoni): support ScopedAXObjectCache (crbug/489851).
     if (AXObjectCache* cache = document().existingAXObjectCache())
         return cache->rootAXEditableElement(this);
+#endif
 
     return false;
 }
@@ -659,7 +675,7 @@ void Node::recalcDistribution()
 
 void Node::setIsLink(bool isLink)
 {
-    setFlag(isLink && !SVGImage::isInSVGImage(toElement(this)), IsLinkFlag);
+    ASSERT(false); // BKTODO: setFlag(isLink && !SVGImage::isInSVGImage(toElement(this)), IsLinkFlag);
 }
 
 void Node::setNeedsStyleInvalidation()
@@ -749,10 +765,14 @@ bool Node::shouldHaveFocusAppearance() const
 
 bool Node::isInert() const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     const HTMLDialogElement* dialog = document().activeModalDialog();
     if (dialog && this != document() && (!canParticipateInComposedTree() || !ComposedTreeTraversal::containsIncludingPseudoElement(*dialog, *this)))
         return true;
     return document().ownerElement() && document().ownerElement()->isInert();
+#endif
 }
 
 unsigned Node::nodeIndex() const
@@ -895,8 +915,10 @@ void Node::attach(const AttachContext&)
 
     clearNeedsStyleRecalc();
 
+#if 0 // BKTODO:
     if (AXObjectCache* cache = document().axObjectCache())
         cache->updateCacheAfterNodeIsAttached(this);
+#endif
 }
 
 void Node::detach(const AttachContext& context)
@@ -1061,10 +1083,12 @@ bool Node::isRootEditableElement() const
 
 Element* Node::rootEditableElement(EditableType editableType) const
 {
+#if 0 // BKTODO:
     if (editableType == HasEditableAXRole) {
         if (AXObjectCache* cache = document().existingAXObjectCache())
             return const_cast<Element*>(cache->rootAXEditableElement(this));
     }
+#endif
 
     return rootEditableElement();
 }
@@ -1697,7 +1721,7 @@ static ContainerNode* parentOrShadowHostOrFrameOwner(const Node* node)
 {
     ContainerNode* parent = node->parentOrShadowHostNode();
     if (!parent && node->document().frame())
-        parent = node->document().frame()->deprecatedLocalOwner();
+        ASSERT(false); // BKTODO: parent = node->document().frame()->deprecatedLocalOwner();
     return parent;
 }
 
@@ -1712,7 +1736,7 @@ static void showSubTreeAcrossFrame(const Node* node, const Node* markedNode, con
             showSubTreeAcrossFrame(youngerShadowRoot, markedNode, indent + "\t");
     } else {
         if (node->isFrameOwnerElement())
-            showSubTreeAcrossFrame(toHTMLFrameOwnerElement(node)->contentDocument(), markedNode, indent + "\t");
+            ASSERT(false); // BKTODO: showSubTreeAcrossFrame(toHTMLFrameOwnerElement(node)->contentDocument(), markedNode, indent + "\t");
         if (ShadowRoot* oldestShadowRoot = oldestShadowRootFor(node))
             showSubTreeAcrossFrame(oldestShadowRoot, markedNode, indent + "\t");
     }
@@ -1757,7 +1781,8 @@ const AtomicString& Node::interfaceName() const
 
 ExecutionContext* Node::executionContext() const
 {
-    return document().contextDocument().get();
+    ASSERT(false); // BKTODO: return document().contextDocument().get();
+    return nullptr;
 }
 
 void Node::didMoveToNewDocument(Document& oldDocument)
@@ -1784,13 +1809,13 @@ void Node::didMoveToNewDocument(Document& oldDocument)
 
     if (WillBeHeapVector<OwnPtrWillBeMember<MutationObserverRegistration>>* registry = mutationObserverRegistry()) {
         for (size_t i = 0; i < registry->size(); ++i) {
-            document().addMutationObserverTypes(registry->at(i)->mutationTypes());
+            ASSERT(false); // BKTODO: document().addMutationObserverTypes(registry->at(i)->mutationTypes());
         }
     }
 
     if (transientMutationObserverRegistry()) {
         for (MutationObserverRegistration* registration : *transientMutationObserverRegistry())
-            document().addMutationObserverTypes(registration->mutationTypes());
+            ASSERT(false); // BKTODO: document().addMutationObserverTypes(registration->mutationTypes());
     }
 }
 
@@ -1845,18 +1870,25 @@ static EventTargetDataMap& eventTargetDataMap()
 
 EventTargetData* Node::eventTargetData()
 {
-    return hasEventTargetData() ? eventTargetDataMap().get(this) : nullptr;
+    if (hasEventTargetData())
+    {
+        if (auto v = zed::find_value(eventTargetDataMap(), this))
+            return v->get();
+    }
+    return nullptr;
 }
 
 EventTargetData& Node::ensureEventTargetData()
 {
     if (hasEventTargetData())
-        return *eventTargetDataMap().get(this);
+    {
+        if (auto v = zed::find_value(eventTargetDataMap(), this))
+            return *v->get();
+    }
     ASSERT(!eventTargetDataMap().contains(this));
     setHasEventTargetData(true);
-    OwnPtrWillBeRawPtr<EventTargetData> data = adoptPtrWillBeNoop(new EventTargetData);
-    EventTargetData* dataPtr = data.get();
-    eventTargetDataMap().set(this, data.release());
+    EventTargetData *dataPtr = new EventTargetData;
+    eventTargetDataMap().emplace(this, dataPtr);
     return *dataPtr;
 }
 
@@ -1899,9 +1931,12 @@ static inline void collectMatchingObserversForMutation(WillBeHeapHashMap<RefPtrW
     for (const auto& registration : *registry) {
         if (registration->shouldReceiveMutationFrom(target, type, attributeName)) {
             MutationRecordDeliveryOptions deliveryOptions = registration->deliveryOptions();
+            ASSERT(false); // BKTODO:
+#if 0
             WillBeHeapHashMap<RefPtrWillBeMember<MutationObserver>, MutationRecordDeliveryOptions>::AddResult result = observers.add(&registration->observer(), deliveryOptions);
             if (!result.isNewEntry)
                 result.storedValue->value |= deliveryOptions;
+#endif
         }
     }
 }
@@ -1930,7 +1965,7 @@ void Node::registerMutationObserver(MutationObserver& observer, MutationObserver
     }
 
     if (!registration) {
-        registry.append(MutationObserverRegistration::create(observer, this, options, attributeFilter));
+        ASSERT(false); // BKTODO: registry.append(MutationObserverRegistration::create(observer, this, options, attributeFilter));
         registration = registry.last().get();
     }
 
@@ -1944,6 +1979,8 @@ void Node::unregisterMutationObserver(MutationObserverRegistration* registration
     if (!registry)
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     size_t index = registry->find(registration);
     ASSERT(index != kNotFound);
     if (index == kNotFound)
@@ -1959,6 +1996,7 @@ void Node::unregisterMutationObserver(MutationObserverRegistration* registration
     registration->dispose();
 #endif
     registry->remove(index);
+#endif
 }
 
 void Node::registerTransientMutationObserver(MutationObserverRegistration* registration)
@@ -2029,7 +2067,9 @@ void Node::dispatchSubtreeModifiedEvent()
     if (!document().hasListenerType(Document::DOMSUBTREEMODIFIED_LISTENER))
         return;
 
+#if 0 // BKTODO: MutationEvent is not recommended, remove it later. See also: https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent
     dispatchScopedEvent(MutationEvent::create(EventTypeNames::DOMSubtreeModified, true));
+#endif
 }
 
 bool Node::dispatchDOMActivateEvent(int detail, PassRefPtrWillBeRawPtr<Event> underlyingEvent)
@@ -2055,7 +2095,7 @@ void Node::dispatchSimulatedClick(Event* underlyingEvent, SimulatedClickMouseEve
 
 void Node::dispatchInputEvent()
 {
-    dispatchScopedEvent(Event::createBubble(EventTypeNames::input));
+    ASSERT(false); // BKTODO: dispatchScopedEvent(Event::createBubble(EventTypeNames::input));
 }
 
 void Node::defaultEventHandler(Event* event)
@@ -2143,7 +2183,11 @@ bool Node::willRespondToTouchEvents()
 {
     if (isDisabledFormControl(this))
         return false;
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return hasEventListeners(EventTypeNames::touchstart) || hasEventListeners(EventTypeNames::touchmove) || hasEventListeners(EventTypeNames::touchcancel) || hasEventListeners(EventTypeNames::touchend);
+#endif
 }
 
 #if !ENABLE(OILPAN)
@@ -2355,30 +2399,6 @@ unsigned Node::lengthOfContents() const
     }
     ASSERT_NOT_REACHED();
     return 0;
-}
-
-v8::Local<v8::Object> Node::wrap(v8::Isolate* isolate, v8::Local<v8::Object> creationContext)
-{
-    // It's possible that no one except for the new wrapper owns this object at
-    // this moment, so we have to prevent GC to collect this object until the
-    // object gets associated with the wrapper.
-    RefPtrWillBeRawPtr<Node> protect(this);
-
-    ASSERT(!DOMDataStore::containsWrapper(this, isolate));
-
-    const WrapperTypeInfo* wrapperType = wrapperTypeInfo();
-
-    v8::Local<v8::Object> wrapper = V8DOMWrapper::createWrapper(isolate, creationContext, wrapperType, this);
-    if (UNLIKELY(wrapper.IsEmpty()))
-        return wrapper;
-
-    wrapperType->installConditionallyEnabledProperties(wrapper, isolate);
-    return associateWithWrapper(isolate, wrapperType, wrapper);
-}
-
-v8::Local<v8::Object> Node::associateWithWrapper(v8::Isolate* isolate, const WrapperTypeInfo* wrapperType, v8::Local<v8::Object> wrapper)
-{
-    return V8DOMWrapper::associateObjectWithWrapper(isolate, this, wrapperType, wrapper);
 }
 
 } // namespace blink
