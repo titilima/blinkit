@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Element.h
+// Description: Element Class
+//      Author: Ziming Li
+//     Created: 2021-07-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -30,7 +41,7 @@
 #include "core/HTMLNames.h"
 #include "core/css/CSSPrimitiveValue.h"
 #include "core/css/CSSSelector.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/Attribute.h"
 #include "core/dom/ContainerNode.h"
 #include "core/dom/Document.h"
@@ -108,7 +119,7 @@ struct FocusParams {
     Member<InputDeviceCapabilities> sourceCapabilities = nullptr;
 };
 
-typedef WillBeHeapVector<RefPtrWillBeMember<Attr>> AttrNodeList;
+typedef std::vector<Member<Attr>> AttrNodeList;
 
 class CORE_EXPORT Element : public ContainerNode {
     DEFINE_WRAPPERTYPEINFO();
@@ -116,6 +127,7 @@ public:
     static PassRefPtrWillBeRawPtr<Element> create(const QualifiedName&, Document*);
     ~Element() override;
 
+#if 0 // BKTODO:
     DEFINE_ATTRIBUTE_EVENT_LISTENER(beforecopy);
     DEFINE_ATTRIBUTE_EVENT_LISTENER(beforecut);
     DEFINE_ATTRIBUTE_EVENT_LISTENER(beforepaste);
@@ -125,6 +137,7 @@ public:
     DEFINE_ATTRIBUTE_EVENT_LISTENER(search);
     DEFINE_ATTRIBUTE_EVENT_LISTENER(selectstart);
     DEFINE_ATTRIBUTE_EVENT_LISTENER(wheel);
+#endif
 
     bool hasAttribute(const QualifiedName&) const;
     const AtomicString& getAttribute(const QualifiedName&) const;
@@ -341,11 +354,13 @@ public:
 
     ElementShadow* shadow() const;
     ElementShadow& ensureShadow();
+#if 0 // BKTODO:
     // If type of ShadowRoot (either closed or open) is explicitly specified, creation of multiple
     // shadow roots is prohibited in any combination and throws an exception. Multiple shadow roots
     // are allowed only when createShadowRoot() is used without any parameters from JavaScript.
     PassRefPtrWillBeRawPtr<ShadowRoot> createShadowRoot(const ScriptState*, ExceptionState&);
     PassRefPtrWillBeRawPtr<ShadowRoot> attachShadow(const ScriptState*, const ShadowRootInit&, ExceptionState&);
+#endif
     PassRefPtrWillBeRawPtr<ShadowRoot> createShadowRootInternal(ShadowRootType, ExceptionState&);
 
     ShadowRoot* openShadowRoot() const;
@@ -701,8 +716,6 @@ private:
     void detachAttrNodeFromElementWithValue(Attr*, const AtomicString& value);
     void detachAttrNodeAtIndex(Attr*, size_t index);
 
-    v8::Local<v8::Object> wrapCustomElement(v8::Isolate*, v8::Local<v8::Object> creationContext);
-
     RefPtrWillBeMember<ElementData> m_elementData;
 };
 
@@ -861,8 +874,10 @@ inline void Node::removedFrom(ContainerNode* insertionPoint)
     }
     if (isInShadowTree() && !treeScope().rootNode().isShadowRoot())
         clearFlag(IsInShadowTreeFlag);
+#if 0 // BKTODO:
     if (AXObjectCache* cache = document().existingAXObjectCache())
         cache->remove(this);
+#endif
 }
 
 inline void Element::invalidateStyleAttribute()

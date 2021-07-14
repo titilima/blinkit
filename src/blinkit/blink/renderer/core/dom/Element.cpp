@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Element.cpp
+// Description: Element Class
+//      Author: Ziming Li
+//     Created: 2021-07-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,13 +36,7 @@
 
 #include "core/dom/Element.h"
 
-#include "bindings/core/v8/DOMDataStore.h"
-#include "bindings/core/v8/Dictionary.h"
-#include "bindings/core/v8/ExceptionMessages.h"
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/V8DOMActivityLogger.h"
-#include "bindings/core/v8/V8DOMWrapper.h"
-#include "bindings/core/v8/V8PerContextData.h"
 #include "core/CSSValueKeywords.h"
 #include "core/SVGNames.h"
 #include "core/XLinkNames.h"
@@ -47,7 +52,7 @@
 #include "core/css/resolver/StyleResolver.h"
 #include "core/css/resolver/StyleResolverParentScope.h"
 #include "core/css/resolver/StyleResolverStats.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/Attr.h"
 #include "core/dom/CSSSelectorWatch.h"
 #include "core/dom/ClientRect.h"
@@ -58,7 +63,7 @@
 #include "core/dom/ElementTraversal.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/FirstLetterPseudoElement.h"
-#include "core/dom/Fullscreen.h"
+// BKTODO: #include "core/dom/Fullscreen.h"
 #include "core/dom/LayoutTreeBuilder.h"
 #include "core/dom/MutationObserverInterestGroup.h"
 #include "core/dom/MutationRecord.h"
@@ -87,21 +92,23 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/OriginsUsingFeatures.h"
+// BKTODO: #include "core/frame/OriginsUsingFeatures.h"
 #include "core/frame/ScrollToOptions.h"
 #include "core/frame/Settings.h"
 #include "core/frame/UseCounter.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
+// BKTODO: #include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/ClassList.h"
-#include "core/html/HTMLCanvasElement.h"
+// BKTODO: #include "core/html/HTMLCanvasElement.h"
 #include "core/html/HTMLCollection.h"
 #include "core/html/HTMLDocument.h"
 #include "core/html/HTMLElement.h"
 #include "core/html/HTMLFormControlsCollection.h"
+#if 0 // BKTODO:
 #include "core/html/HTMLFrameElementBase.h"
 #include "core/html/HTMLFrameOwnerElement.h"
+#endif
 #include "core/html/HTMLOptionsCollection.h"
-#include "core/html/HTMLPlugInElement.h"
+// BKTODO: #include "core/html/HTMLPlugInElement.h"
 #include "core/html/HTMLTableRowsCollection.h"
 #include "core/html/HTMLTemplateElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
@@ -118,11 +125,13 @@
 #include "core/page/scrolling/ScrollState.h"
 #include "core/page/scrolling/ScrollStateCallback.h"
 #include "core/paint/PaintLayer.h"
+#if 0 // BKTODO:
 #include "core/svg/SVGDocumentExtensions.h"
 #include "core/svg/SVGElement.h"
+#endif
 #include "platform/EventDispatchForbiddenScope.h"
 #include "platform/RuntimeEnabledFeatures.h"
-#include "platform/UserGestureIndicator.h"
+// BKTODO: #include "platform/UserGestureIndicator.h"
 #include "platform/scroll/ScrollableArea.h"
 #include "wtf/BitVector.h"
 #include "wtf/HashFunctions.h"
@@ -152,7 +161,7 @@ ScrollCustomizationCallbacks& scrollCustomizationCallbacks()
 } // namespace
 
 using namespace HTMLNames;
-using namespace XMLNames;
+// BKTODO: using namespace XMLNames;
 
 enum class ClassStringContent { Empty, WhiteSpaceOnly, HasClasses };
 
@@ -251,9 +260,12 @@ bool Element::layoutObjectIsFocusable() const
     // Elements in canvas fallback content are not rendered, but they are allowed to be
     // focusable as long as their canvas is displayed and visible.
     if (isInCanvasSubtree()) {
+        ASSERT(false); // BKTODO:
+#if 0
         const HTMLCanvasElement* canvas = Traversal<HTMLCanvasElement>::firstAncestorOrSelf(*this);
         ASSERT(canvas);
         return canvas->layoutObject() && canvas->layoutObject()->style()->visibility() == VISIBLE;
+#endif
     }
 
     // FIXME: These asserts should be in Node::isFocusable, but there are some
@@ -406,7 +418,7 @@ void Element::synchronizeAllAttributes() const
     }
     if (elementData()->m_animatedSVGAttributesAreDirty) {
         ASSERT(isSVGElement());
-        toSVGElement(this)->synchronizeAnimatedSVGAttribute(anyQName());
+        ASSERT(false); // BKTODO: toSVGElement(this)->synchronizeAnimatedSVGAttribute(anyQName());
     }
 }
 
@@ -423,7 +435,7 @@ inline void Element::synchronizeAttribute(const QualifiedName& name) const
         ASSERT(isSVGElement());
         // See comment in the AtomicString version of synchronizeAttribute()
         // also.
-        toSVGElement(this)->synchronizeAnimatedSVGAttribute(name);
+        ASSERT(false); // BKTODO: toSVGElement(this)->synchronizeAnimatedSVGAttribute(name);
     }
 }
 
@@ -450,7 +462,7 @@ void Element::synchronizeAttribute(const AtomicString& localName) const
         // anyQName(). This means that even if Element::synchronizeAttribute()
         // is called on all attributes, m_animatedSVGAttributesAreDirty remains
         // true.
-        toSVGElement(this)->synchronizeAnimatedSVGAttribute(QualifiedName(nullAtom, localName, nullAtom));
+        ASSERT(false); // BKTODO: toSVGElement(this)->synchronizeAnimatedSVGAttribute(QualifiedName(nullAtom, localName, nullAtom));
     }
 }
 
@@ -476,7 +488,7 @@ void Element::scrollIntoView(bool alignToTop)
     if (!layoutObject())
         return;
 
-    bool makeVisibleInVisualViewport = !document().page()->settings().inertVisualViewport();
+    bool makeVisibleInVisualViewport = !Settings::inertVisualViewport;
 
     LayoutRect bounds = boundingBox();
     // Align to the top / bottom and to the closest edge.
@@ -493,7 +505,7 @@ void Element::scrollIntoViewIfNeeded(bool centerIfNeeded)
     if (!layoutObject())
         return;
 
-    bool makeVisibleInVisualViewport = !document().page()->settings().inertVisualViewport();
+    bool makeVisibleInVisualViewport = !Settings::inertVisualViewport;
 
     LayoutRect bounds = boundingBox();
     if (centerIfNeeded)
@@ -730,7 +742,7 @@ int Element::clientWidth()
     if ((!inQuirksMode && document().documentElement() == this)
         || (inQuirksMode && isHTMLElement() && document().body() == this)) {
         if (LayoutView* layoutView = document().layoutView()) {
-            if (document().page()->settings().forceZeroLayoutHeight())
+            if (Settings::forceZeroLayoutHeight)
                 return adjustLayoutUnitForAbsoluteZoom(layoutView->overflowClipRect(LayoutPoint()).width(), *layoutView);
             return adjustLayoutUnitForAbsoluteZoom(layoutView->layoutSize().width(), *layoutView);
         }
@@ -752,7 +764,7 @@ int Element::clientHeight()
     if ((!inQuirksMode && document().documentElement() == this)
         || (inQuirksMode && isHTMLElement() && document().body() == this)) {
         if (LayoutView* layoutView = document().layoutView()) {
-            if (document().page()->settings().forceZeroLayoutHeight())
+            if (Settings::forceZeroLayoutHeight)
                 return adjustLayoutUnitForAbsoluteZoom(layoutView->overflowClipRect(LayoutPoint()).height(), *layoutView);
             return adjustLayoutUnitForAbsoluteZoom(layoutView->layoutSize().height(), *layoutView);
         }
@@ -858,7 +870,7 @@ int Element::scrollHeight()
 }
 
 void Element::scrollBy(double x, double y)
-{
+{    
     ScrollToOptions scrollToOptions;
     scrollToOptions.setLeft(x);
     scrollToOptions.setTop(y);
@@ -1021,9 +1033,12 @@ IntRect Element::boundsInViewport() const
 
     Vector<FloatQuad> quads;
     if (isSVGElement() && layoutObject()) {
+        ASSERT(false); // BKTODO:
+#if 0
         // Get the bounding rectangle from the SVG model.
         if (toSVGElement(this)->isSVGGraphicsElement())
             quads.append(layoutObject()->localToAbsoluteQuad(layoutObject()->objectBoundingBox()));
+#endif
     } else {
         // Get the bounding rectangle from the box model.
         if (layoutBoxModelObject())
@@ -1065,9 +1080,12 @@ ClientRect* Element::getBoundingClientRect()
     LayoutObject* elementLayoutObject = layoutObject();
     if (elementLayoutObject) {
         if (isSVGElement() && !elementLayoutObject->isSVGRoot()) {
+            ASSERT(false); // BKTODO:
+#if 0
             // Get the bounding rectangle from the SVG model.
             if (toSVGElement(this)->isSVGGraphicsElement())
                 quads.append(elementLayoutObject->localToAbsoluteQuad(elementLayoutObject->objectBoundingBox()));
+#endif
         } else if (elementLayoutObject->isBoxModelObject() || elementLayoutObject->isBR()) {
             elementLayoutObject->absoluteQuads(quads);
         }
@@ -1096,15 +1114,23 @@ IntRect Element::screenRect() const
 const AtomicString& Element::computedRole()
 {
     document().updateLayoutIgnorePendingStylesheets();
+    ASSERT(false); // BKTODO:
+    return nullAtom;
+#if 0
     OwnPtr<ScopedAXObjectCache> cache = ScopedAXObjectCache::create(document());
     return cache->get()->computedRoleForNode(this);
+#endif
 }
 
 String Element::computedName()
 {
     document().updateLayoutIgnorePendingStylesheets();
+    ASSERT(false); // BKTODO:
+    return String();
+#if 0
     OwnPtr<ScopedAXObjectCache> cache = ScopedAXObjectCache::create(document());
     return cache->get()->computedNameForNode(this);
+#endif
 }
 
 const AtomicString& Element::getAttribute(const AtomicString& localName) const
@@ -1227,10 +1253,12 @@ void Element::attributeChanged(const QualifiedName& name, const AtomicString& ol
     if (!document().styleResolver())
         setNeedsStyleRecalc(SubtreeStyleChange, StyleChangeReasonForTracing::fromAttribute(name));
 
+#if 0 // BKTODO:
     if (inDocument()) {
         if (AXObjectCache* cache = document().existingAXObjectCache())
             cache->handleAttributeChanged(name, this);
     }
+#endif
 }
 
 bool Element::hasLegalLinkAttribute(const QualifiedName&) const
@@ -1350,7 +1378,8 @@ static inline bool isEventHandlerAttribute(const Attribute& attribute)
 
 bool Element::attributeValueIsJavaScriptURL(const Attribute& attribute)
 {
-    return protocolIsJavaScript(stripLeadingAndTrailingHTMLSpaces(attribute.value()));
+    ASSERT(false); // BKTODO: return protocolIsJavaScript(stripLeadingAndTrailingHTMLSpaces(attribute.value()));
+    return false;
 }
 
 bool Element::isJavaScriptURLAttribute(const Attribute& attribute) const
@@ -1494,6 +1523,7 @@ void Element::removedFrom(ContainerNode* insertionPoint)
 
     ASSERT(!hasRareData() || !elementRareData()->hasPseudoElements());
 
+#if 0 // BKTODO:
     if (Fullscreen::isActiveFullScreenElement(*this)) {
         setContainsFullScreenElementOnAncestorsCrossingFrameBoundaries(false);
         if (insertionPoint->isElementNode()) {
@@ -1504,6 +1534,7 @@ void Element::removedFrom(ContainerNode* insertionPoint)
 
     if (Fullscreen* fullscreen = Fullscreen::fromIfExists(document()))
         fullscreen->elementRemoved(*this);
+#endif
 
     if (document().page())
         document().page()->pointerLockController().elementRemoved(this);
@@ -1526,7 +1557,7 @@ void Element::removedFrom(ContainerNode* insertionPoint)
             document().setCSSTarget(nullptr);
 
         if (hasPendingResources())
-            document().accessSVGExtensions().removeElementFromPendingResources(this);
+            ASSERT(false); // BKTODO: document().accessSVGExtensions().removeElementFromPendingResources(this);
 
         if (isUpgradedCustomElement())
             CustomElement::didDetach(this, insertionPoint->document());
@@ -1596,7 +1627,7 @@ void Element::attach(const AttachContext& context)
 
 void Element::detach(const AttachContext& context)
 {
-    HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
+    // BKTODO: HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
     cancelFocusAppearanceUpdate();
     removeCallbackSelectors();
     if (hasRareData()) {
@@ -1938,6 +1969,7 @@ CustomElementDefinition* Element::customElementDefinition() const
     return nullptr;
 }
 
+#if 0 // BKTODO:
 PassRefPtrWillBeRawPtr<ShadowRoot> Element::createShadowRoot(const ScriptState* scriptState, ExceptionState& exceptionState)
 {
     OriginsUsingFeatures::countMainWorldOnly(scriptState, document(), OriginsUsingFeatures::Feature::ElementCreateShadowRoot);
@@ -1976,6 +2008,7 @@ PassRefPtrWillBeRawPtr<ShadowRoot> Element::attachShadow(const ScriptState* scri
 
     return shadowRoot.release();
 }
+#endif
 
 PassRefPtrWillBeRawPtr<ShadowRoot> Element::createShadowRootInternal(ShadowRootType type, ExceptionState& exceptionState)
 {
@@ -2189,7 +2222,7 @@ PassRefPtrWillBeRawPtr<Attr> Element::setAttributeNode(Attr* attrNode, Exception
 
     attrNode->attachToElement(this, localName);
     treeScope().adoptIfNeeded(*attrNode);
-    ensureAttrNodeList().append(attrNode);
+    ensureAttrNodeList().emplace_back(attrNode);
 
     return oldAttrNode.release();
 }
@@ -2236,9 +2269,12 @@ void Element::parseAttribute(const QualifiedName& name, const AtomicString&, con
             // Clamp tabindex to the range of 'short' to match Firefox's behavior.
             setTabIndexExplicitly(max(static_cast<int>(std::numeric_limits<short>::min()), std::min(tabindex, static_cast<int>(std::numeric_limits<short>::max()))));
         }
-    } else if (name == XMLNames::langAttr) {
+    }
+#if 0 // BKTODO:
+    else if (name == XMLNames::langAttr) {
         pseudoStateChanged(CSSSelector::PseudoLang);
     }
+#endif
 }
 
 bool Element::parseAttributeName(QualifiedName& out, const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState& exceptionState)
@@ -2390,6 +2426,7 @@ void Element::focus(const FocusParams& params)
     if (!document().page()->focusController().setFocusedElement(this, document().frame(), params))
         return;
 
+#if 0 // BKTODO:
     if (document().focusedElement() == this && UserGestureIndicator::processedUserGestureSinceLoad()) {
         // Bring up the keyboard in the context of anything triggered by a user
         // gesture. Since tracking that across arbitrary boundaries (eg.
@@ -2397,6 +2434,7 @@ void Element::focus(const FocusParams& params)
         // up the keyboard if there's been any gesture since load.
         document().page()->chromeClient().showImeIfNeeded();
     }
+#endif
 }
 
 void Element::updateFocusAppearance(SelectionBehaviorOnFocus selectionBehavior)
@@ -2796,9 +2834,14 @@ AtomicString Element::computeInheritedLanguage() const
         if (n->isElementNode()) {
             if (const ElementData* elementData = toElement(n)->elementData()) {
                 AttributeCollection attributes = elementData->attributes();
+#if 0 // BKTODO:
                 // Spec: xml:lang takes precedence -- http://www.w3.org/TR/xhtml1/#C_7
                 if (const Attribute* attribute = attributes.find(XMLNames::langAttr))
                     value = attribute->value();
+#else
+                if (false)
+                    ;
+#endif
                 else if (const Attribute* attribute = attributes.find(HTMLNames::langAttr))
                     value = attribute->value();
             }
@@ -2950,8 +2993,10 @@ KURL Element::hrefURL() const
     // <link> implement URLUtils?
     if (isHTMLAnchorElement(*this) || isHTMLAreaElement(*this) || isHTMLLinkElement(*this))
         return getURLAttribute(hrefAttr);
+#if 0 // BKTODO:
     if (isSVGAElement(*this))
         return getURLAttribute(XLinkNames::hrefAttr);
+#endif
     return KURL();
 }
 
@@ -3018,8 +3063,12 @@ void Element::setContainsFullScreenElement(bool flag)
 
 static Element* parentCrossingFrameBoundaries(Element* element)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     ASSERT(element);
     return element->parentElement() ? element->parentElement() : element->document().ownerElement();
+#endif
 }
 
 void Element::setContainsFullScreenElementOnAncestorsCrossingFrameBoundaries(bool flag)
@@ -3047,6 +3096,8 @@ void Element::requestPointerLock()
 
 SpellcheckAttributeState Element::spellcheckAttributeState() const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     const AtomicString& value = fastGetAttribute(spellcheckAttr);
     if (value == nullAtom)
         return SpellcheckAttributeDefault;
@@ -3054,6 +3105,7 @@ SpellcheckAttributeState Element::spellcheckAttributeState() const
         return SpellcheckAttributeTrue;
     if (equalIgnoringCase(value, "false"))
         return SpellcheckAttributeFalse;
+#endif
 
     return SpellcheckAttributeDefault;
 }
@@ -3080,8 +3132,10 @@ bool Element::fastAttributeLookupAllowed(const QualifiedName& name) const
     if (name == HTMLNames::styleAttr)
         return false;
 
+#if 0 // BKTODO:
     if (isSVGElement())
         return !toSVGElement(this)->isAnimatableAttribute(name);
+#endif
 
     return true;
 }
@@ -3280,7 +3334,7 @@ PassRefPtrWillBeRawPtr<Attr> Element::ensureAttr(const QualifiedName& name)
     if (!attrNode) {
         attrNode = Attr::create(*this, name);
         treeScope().adoptIfNeeded(*attrNode);
-        ensureAttrNodeList().append(attrNode);
+        ensureAttrNodeList().emplace_back(attrNode);
     }
     return attrNode.release();
 }
@@ -3291,10 +3345,10 @@ void Element::detachAttrNodeFromElementWithValue(Attr* attrNode, const AtomicStr
     attrNode->detachFromElementWithValue(value);
 
     AttrNodeList* list = attrNodeList();
-    size_t index = list->find(attrNode);
-    ASSERT(index != kNotFound);
-    list->remove(index);
-    if (list->isEmpty())
+    auto it = std::find(list->begin(), list->end(), attrNode);
+    ASSERT(list->end() != it);
+    list->erase(it);
+    if (list->empty())
         removeAttrNodeList();
 }
 
@@ -3461,7 +3515,7 @@ void Element::styleAttributeChanged(const AtomicString& newStyleString, Attribut
 
     if (newStyleString.isNull()) {
         ensureUniqueElementData().m_inlineStyle.clear();
-    } else if (modificationReason == ModifiedByCloning || ContentSecurityPolicy::shouldBypassMainWorld(&document()) || document().contentSecurityPolicy()->allowInlineStyle(document().url(), startLineNumber, newStyleString)) {
+    } else {
         setInlineStyleFromString(newStyleString);
     }
 
@@ -3565,8 +3619,10 @@ bool Element::supportsStyleSharing() const
     // If the element has inline style it is probably unique.
     if (inlineStyle())
         return false;
+#if 0 // BKTODO:
     if (isSVGElement() && toSVGElement(this)->animatedSMILStyleProperties())
         return false;
+#endif
     // Ids stop style sharing if they show up in the stylesheets.
     if (hasID() && document().ensureStyleResolver().hasRulesForId(idForStyleResolution()))
         return false;
@@ -3583,66 +3639,31 @@ bool Element::supportsStyleSharing() const
         return false;
     if (hasAnimations())
         return false;
+#if 0 // BKTODO:
     if (Fullscreen::isActiveFullScreenElement(*this))
         return false;
+#endif
     return true;
 }
 
 void Element::logAddElementIfIsolatedWorldAndInDocument(const char element[], const QualifiedName& attr1)
 {
-    if (!inDocument())
-        return;
-    V8DOMActivityLogger* activityLogger = V8DOMActivityLogger::currentActivityLoggerIfIsolatedWorld();
-    if (!activityLogger)
-        return;
-    Vector<String, 2> argv;
-    argv.append(element);
-    argv.append(fastGetAttribute(attr1));
-    activityLogger->logEvent("blinkAddElement", argv.size(), argv.data());
+    // Currently nothing to do.
 }
 
 void Element::logAddElementIfIsolatedWorldAndInDocument(const char element[], const QualifiedName& attr1, const QualifiedName& attr2)
 {
-    if (!inDocument())
-        return;
-    V8DOMActivityLogger* activityLogger = V8DOMActivityLogger::currentActivityLoggerIfIsolatedWorld();
-    if (!activityLogger)
-        return;
-    Vector<String, 3> argv;
-    argv.append(element);
-    argv.append(fastGetAttribute(attr1));
-    argv.append(fastGetAttribute(attr2));
-    activityLogger->logEvent("blinkAddElement", argv.size(), argv.data());
+    // Currently nothing to do.
 }
 
 void Element::logAddElementIfIsolatedWorldAndInDocument(const char element[], const QualifiedName& attr1, const QualifiedName& attr2, const QualifiedName& attr3)
 {
-    if (!inDocument())
-        return;
-    V8DOMActivityLogger* activityLogger = V8DOMActivityLogger::currentActivityLoggerIfIsolatedWorld();
-    if (!activityLogger)
-        return;
-    Vector<String, 4> argv;
-    argv.append(element);
-    argv.append(fastGetAttribute(attr1));
-    argv.append(fastGetAttribute(attr2));
-    argv.append(fastGetAttribute(attr3));
-    activityLogger->logEvent("blinkAddElement", argv.size(), argv.data());
+    // Currently nothing to do.
 }
 
 void Element::logUpdateAttributeIfIsolatedWorldAndInDocument(const char element[], const QualifiedName& attributeName, const AtomicString& oldValue, const AtomicString& newValue)
 {
-    if (!inDocument())
-        return;
-    V8DOMActivityLogger* activityLogger = V8DOMActivityLogger::currentActivityLoggerIfIsolatedWorld();
-    if (!activityLogger)
-        return;
-    Vector<String, 4> argv;
-    argv.append(element);
-    argv.append(attributeName.toString());
-    argv.append(oldValue);
-    argv.append(newValue);
-    activityLogger->logEvent("blinkSetAttribute", argv.size(), argv.data());
+    // Currently nothing to do.
 }
 
 DEFINE_TRACE(Element)
