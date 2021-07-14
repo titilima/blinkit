@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SubstituteData.h
+// Description: SubstituteData Class
+//      Author: Ziming Li
+//     Created: 2021-07-14
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Apple Inc.  All rights reserved.
  *
@@ -47,7 +58,7 @@ public:
     {
     }
 
-    SubstituteData(PassRefPtr<SharedBuffer> content, const AtomicString& mimeType, const AtomicString& textEncoding, const KURL& failingURL, SubstituteDataLoadPolicy substituteDataLoadPolicy = LoadNormally)
+    SubstituteData(const std::shared_ptr<SharedBuffer> &content, const AtomicString& mimeType, const AtomicString& textEncoding, const KURL& failingURL, SubstituteDataLoadPolicy substituteDataLoadPolicy = LoadNormally)
         : m_content(content)
         , m_mimeType(mimeType)
         , m_textEncoding(textEncoding)
@@ -56,7 +67,7 @@ public:
     {
     }
 
-    bool isValid() const { return m_content; }
+    bool isValid() const { return !!m_content; }
 
     SharedBuffer* content() const { return m_content.get(); }
     const AtomicString& mimeType() const { return m_mimeType; }
@@ -65,7 +76,7 @@ public:
     bool forceSynchronousLoad() const { return m_substituteDataLoadPolicy == ForceSynchronousLoad; }
 
 private:
-    RefPtr<SharedBuffer> m_content;
+    std::shared_ptr<SharedBuffer> m_content;
     AtomicString m_mimeType;
     AtomicString m_textEncoding;
     KURL m_failingURL;

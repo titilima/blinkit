@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CustomElementDescriptorHash.h
+// Description: Hashers for CustomElementDescriptor
+//      Author: Ziming Li
+//     Created: 2021-07-14
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -65,5 +76,16 @@ struct HashTraits<blink::CustomElementDescriptor> : SimpleClassHashTraits<blink:
 };
 
 } // namespace WTF
+
+namespace std {
+template<>
+struct hash<blink::CustomElementDescriptor>
+{
+    std::size_t operator()(const blink::CustomElementDescriptor &descriptor) const noexcept
+    {
+        return blink::CustomElementDescriptorHash::hash(descriptor);
+    }
+};
+}
 
 #endif // CustomElementDescriptorHash
