@@ -19,30 +19,30 @@ def run_script(rel_path, args = ''):
     return run(cmd_line)
 
 os.chdir(SCRIPT_PATH)
-run_script('blink/make_element_factory.py',                                     \
-    os.path.normpath('blink/in/HTMLTagNames.in') + ' ' +                        \
-    os.path.normpath('blink/in/HTMLAttributeNames.in') + ' ' +                  \
-    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
+run_script('blink/make_element_factory.py',                     \
+    os.path.normpath('blink/in/HTMLTagNames.in') + ' ' +        \
+    os.path.normpath('blink/in/HTMLAttributeNames.in') + ' ' +  \
+    '--output_dir ' + os.path.normpath('../src/blinkit/ui')     \
 )
 
-run_script('blink/make_element_type_helpers.py',                                \
-    os.path.normpath('blink/in/HTMLTagNames.in') + ' ' +                        \
-    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
+run_script('blink/make_element_type_helpers.py',            \
+    os.path.normpath('blink/in/HTMLTagNames.in') + ' ' +    \
+    '--output_dir ' + os.path.normpath('../src/blinkit/ui') \
 )
 
-run_script('blink/make_names.py',                                               \
-    os.path.normpath('blink/in/EventInterfaces.in') + ' ' +                     \
-    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
+run_script('blink/make_names.py',                           \
+    os.path.normpath('blink/in/EventInterfaces.in') + ' ' + \
+    '--output_dir ' + os.path.normpath('../src/blinkit/ui') \
 )
 
-run_script('blink/make_names.py',                                               \
-    os.path.normpath('blink/in/EventTargetFactory.in') + ' ' +                  \
-    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
+run_script('blink/make_names.py',                               \
+    os.path.normpath('blink/in/EventTargetFactory.in') + ' ' +  \
+    '--output_dir ' + os.path.normpath('../src/blinkit/ui')     \
 )
 
-run_script('blink/make_names.py',                                               \
-    os.path.normpath('blink/in/EventTypeNames.in') + ' ' +                      \
-    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
+run_script('blink/make_names.py',                           \
+    os.path.normpath('blink/in/EventTypeNames.in') + ' ' +  \
+    '--output_dir ' + os.path.normpath('../src/blinkit/ui') \
 )
 
 run_script('blink/make_css_property_names.py',                                  \
@@ -65,7 +65,7 @@ run_script('blink/make_names.py',                                               
     '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/platform')    \
 )
 
-run_script('blink/make_names.py',                                                   \
-    os.path.normpath('blink/in/HTTPNames.in') + ' ' +                               \
-    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/platform')    \
+run_script('blink/make_names.py',                           \
+    os.path.normpath('blink/in/HTTPNames.in') + ' ' +       \
+    '--output_dir ' + os.path.normpath('../src/blinkit/ui') \
 )
