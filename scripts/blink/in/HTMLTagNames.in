@@ -4,6 +4,18 @@ namespaceURI="http://www.w3.org/1999/xhtml"
 fallbackInterfaceName="HTMLUnknownElement"
 export="CORE_EXPORT"
 
+a interfaceName=HTMLAnchorElement
+area
 body
+br interfaceName=HTMLBRElement
+fieldset interfaceName=HTMLFieldSetElement, constructorNeedsFormElement
+form
 html
+img interfaceName=HTMLImageElement, constructorNeedsFormElement, constructorNeedsCreatedByParser
+link constructorNeedsCreatedByParser
+optgroup interfaceName=HTMLOptGroupElement
+option
+slot
+template
 title
+tr interfaceName=HTMLTableRowElement

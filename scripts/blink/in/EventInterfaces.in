@@ -1,5 +1,7 @@
 namespace="Event"
 export=CORE_EXPORT
 
+core/events/BeforeUnloadEvent
 core/events/Event
-
+core/events/TextEvent
+core/events/WheelEvent
