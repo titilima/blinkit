@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Document.h
+// Description: Document Class
+//      Author: Ziming Li
+//     Created: 2021-07-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -29,7 +40,6 @@
 #define Document_h
 
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "bindings/core/v8/ScriptValue.h"
 #include "core/CoreExport.h"
 #include "core/animation/AnimationClock.h"
 #include "core/animation/CompositorPendingAnimations.h"
@@ -39,7 +49,7 @@
 #include "core/dom/DocumentLifecycle.h"
 #include "core/dom/DocumentLifecycleNotifier.h"
 #include "core/dom/DocumentLifecycleObserver.h"
-#include "core/dom/DocumentTiming.h"
+// BKTODO: #include "core/dom/DocumentTiming.h"
 #include "core/dom/ExecutionContext.h"
 #include "core/dom/MutationObserver.h"
 #include "core/dom/TextLinkColors.h"
@@ -47,10 +57,10 @@
 #include "core/dom/UserActionElementSet.h"
 #include "core/dom/ViewportDescription.h"
 #include "core/dom/custom/CustomElement.h"
-#include "core/fetch/ClientHintsPreferences.h"
+// BKTODO: #include "core/fetch/ClientHintsPreferences.h"
 #include "core/frame/DOMTimerCoordinator.h"
 #include "core/frame/LocalDOMWindow.h"
-#include "core/frame/OriginsUsingFeatures.h"
+// BKTODO: #include "core/frame/OriginsUsingFeatures.h"
 #include "core/html/CollectionType.h"
 #include "core/html/parser/ParserSynchronizationPolicy.h"
 #include "core/page/PageVisibilityState.h"
@@ -58,7 +68,7 @@
 #include "platform/Timer.h"
 #include "platform/heap/Handle.h"
 #include "platform/weborigin/KURL.h"
-#include "platform/weborigin/ReferrerPolicy.h"
+// BKTODO: #include "platform/weborigin/ReferrerPolicy.h"
 #include "public/platform/WebFocusType.h"
 #include "wtf/HashSet.h"
 #include "wtf/OwnPtr.h"
@@ -166,7 +176,7 @@ class Text;
 class TextAutosizer;
 class Touch;
 class TouchList;
-class TransformSource;
+// BKTODO: class TransformSource;
 class TreeWalker;
 class VisitedLinkState;
 class WebGLRenderingContext;
@@ -210,7 +220,7 @@ enum DocumentClass {
 
 using DocumentClassFlags = unsigned char;
 
-class CORE_EXPORT Document : public ContainerNode, public TreeScope, public SecurityContext, public ExecutionContext
+class CORE_EXPORT Document : public ContainerNode, public TreeScope, public ExecutionContext
     , public WillBeHeapSupplementable<Document>, public DocumentLifecycleNotifier {
     DEFINE_WRAPPERTYPEINFO();
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(Document);
@@ -229,8 +239,10 @@ public:
     using ContainerNode::ref;
     using ContainerNode::deref;
 #endif
+#if 0 // BKTODO:
     using SecurityContext::securityOrigin;
     using SecurityContext::contentSecurityPolicy;
+#endif
     using TreeScope::getElementById;
 
     bool canContainRangeEndPoint() const override { return true; }
@@ -243,6 +255,7 @@ public:
 
     // DOM methods & attributes for Document
 
+#if 0 // BKTODO:
     DEFINE_ATTRIBUTE_EVENT_LISTENER(beforecopy);
     DEFINE_ATTRIBUTE_EVENT_LISTENER(beforecut);
     DEFINE_ATTRIBUTE_EVENT_LISTENER(beforepaste);
@@ -257,6 +270,7 @@ public:
     DEFINE_ATTRIBUTE_EVENT_LISTENER(selectionchange);
     DEFINE_ATTRIBUTE_EVENT_LISTENER(selectstart);
     DEFINE_ATTRIBUTE_EVENT_LISTENER(wheel);
+#endif
 
     bool shouldMergeWithLegacyDescription(ViewportDescription::Type);
     bool shouldOverrideLegacyDescription(ViewportDescription::Type);
@@ -272,7 +286,7 @@ public:
     void setDoctype(PassRefPtrWillBeRawPtr<DocumentType>);
     DocumentType* doctype() const { return m_docType.get(); }
 
-    DOMImplementation& implementation();
+    // BKTODO: DOMImplementation& implementation();
 
     Element* documentElement() const
     {
@@ -330,8 +344,10 @@ public:
     void setXMLStandalone(bool, ExceptionState&);
     void setHasXMLDeclaration(bool hasXMLDeclaration) { m_hasXMLDeclaration = hasXMLDeclaration ? 1 : 0; }
 
+#if 0 // BKTODO:
     String origin() const { return securityOrigin()->toString(); }
     String suborigin() const { return securityOrigin()->suboriginName(); }
+#endif
 
     String visibilityState() const;
     PageVisibilityState pageVisibilityState() const;
@@ -466,10 +482,12 @@ public:
 
     LayoutView* layoutView() const { return m_layoutView; }
 
+#if 0 // BKTODO:
     Document& axObjectCacheOwner() const;
     AXObjectCache* existingAXObjectCache() const;
     AXObjectCache* axObjectCache() const;
     void clearAXObjectCache();
+#endif
 
     // to get visually ordered hebrew and arabic pages right
     bool visuallyOrdered() const { return m_visuallyOrdered; }
@@ -587,7 +605,7 @@ public:
     int elapsedTime() const;
 
     TextLinkColors& textLinkColors() { return m_textLinkColors; }
-    VisitedLinkState& visitedLinkState() const { return *m_visitedLinkState; }
+    // BKTODO: VisitedLinkState& visitedLinkState() const { return *m_visitedLinkState; }
 
     MouseEventWithHitTestResults prepareMouseEvent(const HitTestRequest&, const LayoutPoint&, const PlatformMouseEvent&);
 
@@ -690,7 +708,7 @@ public:
     bool hasMutationObservers() const { return m_mutationObserverTypes; }
     void addMutationObserverTypes(MutationObserverOptions types) { m_mutationObserverTypes |= types; }
 
-    WeakPtrWillBeRawPtr<Document> createWeakPtr();
+    // BKTODO: WeakPtrWillBeRawPtr<Document> createWeakPtr();
 
     IntersectionObserverController* intersectionObserverController();
     IntersectionObserverController& ensureIntersectionObserverController();
@@ -793,16 +811,18 @@ public:
 
     Document* parentDocument() const;
     Document& topDocument() const;
-    WeakPtrWillBeRawPtr<Document> contextDocument();
+    // BKTODO: WeakPtrWillBeRawPtr<Document> contextDocument();
 
     ScriptRunner* scriptRunner() { return m_scriptRunner.get(); }
 
+#if 0 // BKTODO:
     HTMLScriptElement* currentScript() const { return !m_currentScriptStack.isEmpty() ? m_currentScriptStack.last().get() : nullptr; }
     void pushCurrentScript(PassRefPtrWillBeRawPtr<HTMLScriptElement>);
     void popCurrentScript();
 
     void setTransformSource(PassOwnPtr<TransformSource>);
     TransformSource* transformSource() const { return m_transformSource.get(); }
+#endif
 
     void incDOMTreeVersion() { ASSERT(m_lifecycle.stateAllowsTreeMutations()); m_domTreeVersion = ++s_globalTreeVersion; }
     uint64_t domTreeVersion() const { return m_domTreeVersion; }
@@ -861,12 +881,14 @@ public:
 
     void removeAllEventListeners() final;
 
+#if 0 // BKTODO:
     const SVGDocumentExtensions* svgExtensions();
     SVGDocumentExtensions& accessSVGExtensions();
 
     void initSecurityContext();
     void initSecurityContext(const DocumentInit&);
     void initContentSecurityPolicy(PassRefPtrWillBeRawPtr<ContentSecurityPolicy> = nullptr);
+#endif
 
     bool allowInlineEventHandlers(Node*, EventListener*, const String& contextURL, const WTF::OrdinalNumber& contextLine);
     bool allowExecutingScripts(Node*);
@@ -921,10 +943,12 @@ public:
     bool isDelayingLoadEvent();
     void loadPluginsSoon();
 
+#if 0 // BKTODO:
     PassRefPtrWillBeRawPtr<Touch> createTouch(DOMWindow*, EventTarget*, int identifier, double pageX, double pageY, double screenX, double screenY, double radiusX, double radiusY, float rotationAngle, float force) const;
     PassRefPtrWillBeRawPtr<TouchList> createTouchList(WillBeHeapVector<RefPtrWillBeMember<Touch>>&) const;
 
     const DocumentTiming& timing() const { return m_documentTiming; }
+#endif
 
     int requestAnimationFrame(FrameRequestCallback*);
     void cancelAnimationFrame(int id);
@@ -936,7 +960,7 @@ public:
     EventTarget* errorEventTarget() final;
     void logExceptionToConsole(const String& errorMessage, int scriptId, const String& sourceURL, int lineNumber, int columnNumber, PassRefPtrWillBeRawPtr<ScriptCallStack>) final;
 
-    void initDNSPrefetch();
+    // BKTODO: void initDNSPrefetch();
 
     bool isInDocumentWrite() { return m_writeRecursionDepth > 0; }
 
@@ -944,7 +968,7 @@ public:
 
     PassRefPtrWillBeRawPtr<Element> createElement(const AtomicString& localName, const AtomicString& typeExtension, ExceptionState&);
     PassRefPtrWillBeRawPtr<Element> createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, const AtomicString& typeExtension, ExceptionState&);
-    ScriptValue registerElement(ScriptState*, const AtomicString& name, const ElementRegistrationOptions&, ExceptionState&, CustomElement::NameSet validNames = CustomElement::StandardNames);
+    // BKTODO: ScriptValue registerElement(ScriptState*, const AtomicString& name, const ElementRegistrationOptions&, ExceptionState&, CustomElement::NameSet validNames = CustomElement::StandardNames);
     CustomElementRegistrationContext* registrationContext() { return m_registrationContext.get(); }
     CustomElementMicrotaskRunQueue* customElementMicrotaskRunQueue();
 
@@ -963,8 +987,10 @@ public:
     void incrementActiveParserCount() { ++m_activeParserCount; }
     void decrementActiveParserCount() { --m_activeParserCount; }
 
+#if 0 // BKTODO:
     void setContextFeatures(ContextFeatures&);
     ContextFeatures& contextFeatures() const { return *m_contextFeatures; }
+#endif
 
     ElementDataCache* elementDataCache() { return m_elementDataCache.get(); }
 
@@ -1012,7 +1038,7 @@ public:
     };
     void maybeHandleHttpRefresh(const String&, HttpRefreshType);
 
-    void updateSecurityOrigin(PassRefPtr<SecurityOrigin>);
+    // BKTODO: void updateSecurityOrigin(PassRefPtr<SecurityOrigin>);
 
     void setHasViewportUnits() { m_hasViewportUnits = true; }
     bool hasViewportUnits() const { return m_hasViewportUnits; }
@@ -1037,17 +1063,14 @@ public:
 
     DOMTimerCoordinator* timers() final;
 
-    v8::Local<v8::Object> wrap(v8::Isolate*, v8::Local<v8::Object> creationContext) override;
-    v8::Local<v8::Object> associateWithWrapper(v8::Isolate*, const WrapperTypeInfo*, v8::Local<v8::Object> wrapper) override WARN_UNUSED_RETURN;
-
-    OriginsUsingFeatures::Value& originsUsingFeaturesValue() { return m_originsUsingFeaturesValue; }
+    // BKTODO: OriginsUsingFeatures::Value& originsUsingFeaturesValue() { return m_originsUsingFeaturesValue; }
 
     NthIndexCache* nthIndexCache() const { return m_nthIndexCache; }
 
     bool isSecureContext(String& errorMessage, const SecureContextCheck = StandardSecureContextCheck) const override;
     bool isSecureContext(const SecureContextCheck = StandardSecureContextCheck) const override;
 
-    ClientHintsPreferences& clientHintsPreferences() { return m_clientHintsPreferences; }
+    // BKTODO: ClientHintsPreferences& clientHintsPreferences() { return m_clientHintsPreferences; }
 
     CanvasFontCache* canvasFontCache();
 
@@ -1075,7 +1098,7 @@ public:
 protected:
     Document(const DocumentInit&, DocumentClassFlags = DefaultDocumentClass);
 
-    void didUpdateSecurityOrigin() final;
+    // BKTODO: void didUpdateSecurityOrigin() final;
 
     void clearXMLVersion() { m_xmlVersion = String(); }
 
@@ -1099,7 +1122,7 @@ private:
 
     ScriptedAnimationController& ensureScriptedAnimationController();
     ScriptedIdleTaskController& ensureScriptedIdleTaskController();
-    SecurityContext& securityContext() final { return *this; }
+    // BKTODO: SecurityContext& securityContext() final { return *this; }
     EventQueue* eventQueue() const final;
 
     // FIXME: Rename the StyleRecalc state to LayoutTreeUpdate.
@@ -1142,7 +1165,7 @@ private:
     const KURL& virtualURL() const final; // Same as url(), but needed for ExecutionContext to implement it without a performance loss for direct calls.
     KURL virtualCompleteURL(const String&) const final; // Same as completeURL() for the same reason as above.
 
-    void reportBlockedScriptExecutionToInspector(const String& directiveText) final;
+    // BKTODO: void reportBlockedScriptExecutionToInspector(const String& directiveText) final;
 
     void updateTitle(const String&);
     void updateFocusAppearanceTimerFired(Timer<Document>*);
@@ -1170,7 +1193,7 @@ private:
 
     void setNthIndexCache(NthIndexCache* nthIndexCache) { ASSERT(!m_nthIndexCache || !nthIndexCache); m_nthIndexCache = nthIndexCache; }
 
-    const OriginAccessEntry& accessEntryFromURL();
+    // BKTODO: const OriginAccessEntry& accessEntryFromURL();
 
     DocumentLifecycle m_lifecycle;
 
@@ -1192,7 +1215,7 @@ private:
     PersistentWillBeMember<ResourceFetcher> m_fetcher;
     RefPtrWillBeMember<DocumentParser> m_parser;
     unsigned m_activeParserCount;
-    RefPtrWillBeMember<ContextFeatures> m_contextFeatures;
+    // BKTODO: RefPtrWillBeMember<ContextFeatures> m_contextFeatures;
 
     bool m_wellFormed;
 
@@ -1202,7 +1225,7 @@ private:
     KURL m_baseURLOverride; // An alternative base URL that takes precedence over m_baseURL (but not m_baseElementURL).
     KURL m_baseElementURL; // The URL set by the <base> element.
     KURL m_cookieURL; // The URL to use for cookie access.
-    OwnPtr<OriginAccessEntry> m_accessEntryFromURL;
+    // BKTODO: OwnPtr<OriginAccessEntry> m_accessEntryFromURL;
 
     AtomicString m_baseTarget;
 
@@ -1210,7 +1233,7 @@ private:
     AtomicString m_mimeType;
 
     RefPtrWillBeMember<DocumentType> m_docType;
-    OwnPtrWillBeMember<DOMImplementation> m_implementation;
+    // BKTODO: OwnPtrWillBeMember<DOMImplementation> m_implementation;
 
     RefPtrWillBeMember<CSSStyleSheet> m_elemSheet;
 
@@ -1221,7 +1244,7 @@ private:
     CompatibilityMode m_compatibilityMode;
     bool m_compatibilityModeLocked; // This is cheaper than making setCompatibilityMode virtual.
 
-    OwnPtr<CancellableTaskFactory> m_executeScriptsWaitingForResourcesTask;
+    // BKTODO: OwnPtr<CancellableTaskFactory> m_executeScriptsWaitingForResourcesTask;
 
     bool m_hasAutofocused;
     Timer<Document> m_clearFocusedElementTimer;
@@ -1251,7 +1274,7 @@ private:
     OwnPtrWillBeMember<FormController> m_formController;
 
     TextLinkColors m_textLinkColors;
-    const OwnPtrWillBeMember<VisitedLinkState> m_visitedLinkState;
+    // BKTODO: const OwnPtrWillBeMember<VisitedLinkState> m_visitedLinkState;
 
     bool m_visuallyOrdered;
     ReadyState m_readyState;
@@ -1286,7 +1309,7 @@ private:
 
     WillBeHeapVector<RefPtrWillBeMember<HTMLScriptElement>> m_currentScriptStack;
 
-    OwnPtr<TransformSource> m_transformSource;
+    // BKTODO: OwnPtr<TransformSource> m_transformSource;
 
     String m_xmlEncoding;
     String m_xmlVersion;
@@ -1341,7 +1364,7 @@ private:
 #if !ENABLE(OILPAN)
     WeakPtrFactory<Document> m_weakFactory;
 #endif
-    WeakPtrWillBeWeakMember<Document> m_contextDocument;
+    // BKTODO: WeakPtrWillBeWeakMember<Document> m_contextDocument;
 
     bool m_hasFullscreenSupplement; // For early return in Fullscreen::fromIfExists()
 
@@ -1355,9 +1378,11 @@ private:
     ViewportDescription m_legacyViewportDescription;
     Length m_viewportDefaultMinWidth;
 
+#if 0 // BKTODO:
     ReferrerPolicy m_referrerPolicy;
 
     DocumentTiming m_documentTiming;
+#endif
     RefPtrWillBeMember<MediaQueryMatcher> m_mediaQueryMatcher;
     bool m_writeRecursionIsTooDeep;
     unsigned m_writeRecursionDepth;
@@ -1393,7 +1418,7 @@ private:
     WillBeHeapHashSet<RawPtrWillBeMember<SVGUseElement>> m_useElementsNeedingUpdate;
     WillBeHeapHashSet<RawPtrWillBeMember<Element>> m_layerUpdateSVGFilterElements;
 
-    DOMTimerCoordinator m_timers;
+    // BKTODO: DOMTimerCoordinator m_timers;
 
     bool m_hasViewportUnits;
 
@@ -1404,11 +1429,13 @@ private:
 
     ParserSynchronizationPolicy m_parserSyncPolicy;
 
+#if 0 // BKTODO:
     OriginsUsingFeatures::Value m_originsUsingFeaturesValue;
 
     ClientHintsPreferences m_clientHintsPreferences;
 
     PersistentWillBeMember<CanvasFontCache> m_canvasFontCache;
+#endif
 
     PersistentWillBeMember<IntersectionObserverController> m_intersectionObserverController;
     PersistentWillBeMember<NodeIntersectionObserverData> m_intersectionObserverData;
@@ -1456,10 +1483,5 @@ Node* eventTargetNodeForDocument(Document*);
 DEFINE_TYPE_CASTS(TreeScope, Document, document, true, true);
 
 } // namespace blink
-
-#ifndef NDEBUG
-// Outside the WebCore namespace for ease of invocation from gdb.
-CORE_EXPORT void showLiveDocumentInstances();
-#endif
 
 #endif // Document_h

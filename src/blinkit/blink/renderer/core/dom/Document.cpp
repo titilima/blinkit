@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Document.cpp
+// Description: Document Class
+//      Author: Ziming Li
+//     Created: 2021-07-14
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -27,22 +38,17 @@
 
 #include "core/dom/Document.h"
 
-#include "bindings/core/v8/CustomElementConstructorBuilder.h"
-#include "bindings/core/v8/DOMDataStore.h"
-#include "bindings/core/v8/ExceptionMessages.h"
 #include "bindings/core/v8/ExceptionState.h"
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
 #include "bindings/core/v8/ScriptController.h"
-#include "bindings/core/v8/UnionTypesCore.h"
-#include "bindings/core/v8/V8DOMWrapper.h"
-#include "bindings/core/v8/V8PerIsolateData.h"
-#include "bindings/core/v8/WindowProxy.h"
 #include "core/HTMLElementFactory.h"
 #include "core/HTMLNames.h"
-#include "core/SVGElementFactory.h"
+// BKTODO: #include "core/SVGElementFactory.h"
 #include "core/SVGNames.h"
+#if 0 // BKTODO:
 #include "core/XMLNSNames.h"
 #include "core/XMLNames.h"
+#endif
 #include "core/animation/AnimationTimeline.h"
 #include "core/animation/DocumentAnimations.h"
 #include "core/css/CSSFontSelector.h"
@@ -57,17 +63,22 @@
 #include "core/css/resolver/FontBuilder.h"
 #include "core/css/resolver/StyleResolver.h"
 #include "core/css/resolver/StyleResolverStats.h"
+#if 0 // BKTODO:
 #include "core/dom/AXObjectCache.h"
 #include "core/dom/AddConsoleMessageTask.h"
+#endif
 #include "core/dom/Attr.h"
 #include "core/dom/CDATASection.h"
 #include "core/dom/ClientRect.h"
 #include "core/dom/Comment.h"
+#if 0 // BKTODO:
 #include "core/dom/ContextFeatures.h"
 #include "core/dom/DOMImplementation.h"
+#endif
 #include "core/dom/DocumentFragment.h"
 #include "core/dom/DocumentLifecycleObserver.h"
 #include "core/dom/DocumentType.h"
+#include "core/dom/DocumentVisibilityObserver.h" // BKTODO: Was in HTMLCanvasElement.h
 #include "core/dom/Element.h"
 #include "core/dom/ElementDataCache.h"
 #include "core/dom/ElementRegistrationOptions.h"
@@ -78,7 +89,7 @@
 #include "core/dom/IntersectionObserverController.h"
 #include "core/dom/LayoutTreeBuilderTraversal.h"
 #include "core/dom/MainThreadTaskRunner.h"
-#include "core/dom/Microtask.h"
+// BKTODO: #include "core/dom/Microtask.h"
 #include "core/dom/MutationObserver.h"
 #include "core/dom/NodeChildRemovalTracker.h"
 #include "core/dom/NodeComputedStyle.h"
@@ -96,11 +107,11 @@
 #include "core/dom/SelectorQuery.h"
 #include "core/dom/StaticNodeList.h"
 #include "core/dom/StyleEngine.h"
-#include "core/dom/TouchList.h"
-#include "core/dom/TransformSource.h"
+// BKTODO: #include "core/dom/TouchList.h"
+// BKTODO: #include "core/dom/TransformSource.h"
 #include "core/dom/TreeWalker.h"
-#include "core/dom/VisitedLinkState.h"
-#include "core/dom/XMLDocument.h"
+// BKTODO: #include "core/dom/VisitedLinkState.h"
+// BKTODO: #include "core/dom/XMLDocument.h"
 #include "core/dom/custom/CustomElementMicrotaskRunQueue.h"
 #include "core/dom/custom/CustomElementRegistrationContext.h"
 #include "core/dom/shadow/ComposedTreeTraversal.h"
@@ -112,12 +123,12 @@
 #include "core/editing/InputMethodController.h"
 #include "core/editing/markers/DocumentMarkerController.h"
 #include "core/editing/serializers/Serialization.h"
-#include "core/editing/spellcheck/SpellChecker.h"
+// BKTODO: #include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/BeforeUnloadEvent.h"
 #include "core/events/Event.h"
 #include "core/events/EventFactory.h"
 #include "core/events/EventListener.h"
-#include "core/events/HashChangeEvent.h"
+// BKTODO: #include "core/events/HashChangeEvent.h"
 #include "core/events/PageTransitionEvent.h"
 #include "core/events/ScopedEventQueue.h"
 #include "core/fetch/ResourceFetcher.h"
@@ -126,25 +137,25 @@
 #include "core/frame/FrameConsole.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
-#include "core/frame/History.h"
+// BKTODO: #include "core/frame/History.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/OriginsUsingFeatures.h"
+// BKTODO: #include "core/frame/OriginsUsingFeatures.h"
 #include "core/frame/Settings.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
+// BKTODO: #include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/DocumentNameCollection.h"
 #include "core/html/HTMLAllCollection.h"
 #include "core/html/HTMLAnchorElement.h"
 #include "core/html/HTMLBaseElement.h"
 #include "core/html/HTMLBodyElement.h"
-#include "core/html/HTMLCanvasElement.h"
+// BKTODO: #include "core/html/HTMLCanvasElement.h"
 #include "core/html/HTMLCollection.h"
-#include "core/html/HTMLDialogElement.h"
+// BKTODO: #include "core/html/HTMLDialogElement.h"
 #include "core/html/HTMLDocument.h"
-#include "core/html/HTMLFrameOwnerElement.h"
+// BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLHeadElement.h"
 #include "core/html/HTMLHtmlElement.h"
-#include "core/html/HTMLIFrameElement.h"
+// BKTODO: #include "core/html/HTMLIFrameElement.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/html/HTMLLinkElement.h"
 #include "core/html/HTMLMetaElement.h"
@@ -152,11 +163,13 @@
 #include "core/html/HTMLStyleElement.h"
 #include "core/html/HTMLTemplateElement.h"
 #include "core/html/HTMLTitleElement.h"
-#include "core/html/PluginDocument.h"
+// BKTODO: #include "core/html/PluginDocument.h"
 #include "core/html/WindowNameCollection.h"
+#if 0 // BKTODO:
 #include "core/html/canvas/CanvasContextCreationAttributes.h"
 #include "core/html/canvas/CanvasFontCache.h"
 #include "core/html/canvas/CanvasRenderingContext.h"
+#endif
 #include "core/html/forms/FormController.h"
 #include "core/html/imports/HTMLImportLoader.h"
 #include "core/html/imports/HTMLImportsController.h"
@@ -165,11 +178,11 @@
 #include "core/html/parser/NestingLevelIncrementer.h"
 #include "core/html/parser/TextResourceDecoder.h"
 #include "core/input/EventHandler.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/inspector/InspectorTraceEvents.h"
 #include "core/inspector/InstanceCounters.h"
-#include "core/inspector/ScriptCallStack.h"
+// BKTODO: #include "core/inspector/ScriptCallStack.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutPart.h"
 #include "core/layout/LayoutView.h"
@@ -181,15 +194,16 @@
 #include "core/loader/FrameLoader.h"
 #include "core/loader/FrameLoaderClient.h"
 #include "core/loader/ImageLoader.h"
-#include "core/loader/NavigationScheduler.h"
-#include "core/loader/appcache/ApplicationCacheHost.h"
+// BKTODO: #include "core/loader/NavigationScheduler.h"
+// BKTODO: #include "core/loader/appcache/ApplicationCacheHost.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/EventWithHitTestResults.h"
 #include "core/page/FocusController.h"
-#include "core/page/FrameTree.h"
+// BKTODO: #include "core/page/FrameTree.h"
 #include "core/page/Page.h"
 #include "core/page/PointerLockController.h"
 #include "core/page/scrolling/ScrollingCoordinator.h"
+#if 0 // BKTODO:
 #include "core/svg/SVGDocumentExtensions.h"
 #include "core/svg/SVGTitleElement.h"
 #include "core/svg/SVGUseElement.h"
@@ -197,26 +211,29 @@
 #include "core/timing/Performance.h"
 #include "core/workers/SharedWorkerRepositoryClient.h"
 #include "core/xml/parser/XMLDocumentParser.h"
+#endif
 #include "platform/DateComponents.h"
 #include "platform/EventDispatchForbiddenScope.h"
 #include "platform/Language.h"
 #include "platform/LengthFunctions.h"
-#include "platform/Logging.h"
-#include "platform/PluginScriptForbiddenScope.h"
+// BKTODO: #include "platform/Logging.h"
+// BKTODO: #include "platform/PluginScriptForbiddenScope.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/ScriptForbiddenScope.h"
 #include "platform/TraceEvent.h"
-#include "platform/network/ContentSecurityPolicyParsers.h"
+// BKTODO: #include "platform/network/ContentSecurityPolicyParsers.h"
 #include "platform/network/HTTPParsers.h"
-#include "platform/scheduler/CancellableTaskFactory.h"
+// BKTODO: #include "platform/scheduler/CancellableTaskFactory.h"
 #include "platform/scroll/ScrollbarTheme.h"
 #include "platform/text/PlatformLocale.h"
 #include "platform/text/SegmentedString.h"
+#if 0 // BKTODO:
 #include "platform/weborigin/OriginAccessEntry.h"
 #include "platform/weborigin/SchemeRegistry.h"
 #include "platform/weborigin/SecurityOrigin.h"
+#endif
 #include "public/platform/Platform.h"
-#include "public/platform/WebFrameScheduler.h"
+// BKTODO: #include "public/platform/WebFrameScheduler.h"
 #include "wtf/CurrentTime.h"
 #include "wtf/DateMath.h"
 #include "wtf/Functional.h"
@@ -344,9 +361,13 @@ static bool acceptsEditingFocus(const Element& element)
 
 static bool isOriginPotentiallyTrustworthy(SecurityOrigin* origin, String* errorMessage)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     if (errorMessage)
         return origin->isPotentiallyTrustworthy(*errorMessage);
     return origin->isPotentiallyTrustworthy();
+#endif
 }
 
 uint64_t Document::s_globalTreeVersion = 0;
@@ -390,21 +411,21 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_domWindow(m_frame ? m_frame->localDOMWindow() : 0)
     , m_importsController(initializer.importsController())
     , m_activeParserCount(0)
-    , m_contextFeatures(ContextFeatures::defaultSwitch())
+    // BKTODO: , m_contextFeatures(ContextFeatures::defaultSwitch())
     , m_wellFormed(false)
     , m_printing(false)
     , m_wasPrinting(false)
     , m_paginatedForScreen(false)
     , m_compatibilityMode(NoQuirksMode)
     , m_compatibilityModeLocked(false)
-    , m_executeScriptsWaitingForResourcesTask(CancellableTaskFactory::create(this, &Document::executeScriptsWaitingForResources))
+    // BKTODO: , m_executeScriptsWaitingForResourcesTask(CancellableTaskFactory::create(this, &Document::executeScriptsWaitingForResources))
     , m_hasAutofocused(false)
     , m_clearFocusedElementTimer(this, &Document::clearFocusedElementTimerFired)
     , m_domTreeVersion(++s_globalTreeVersion)
     , m_styleVersion(0)
     , m_listenerTypes(0)
     , m_mutationObserverTypes(0)
-    , m_visitedLinkState(VisitedLinkState::create(*this))
+    // BKTODO: , m_visitedLinkState(VisitedLinkState::create(*this))
     , m_visuallyOrdered(false)
     , m_readyState(Complete)
     , m_parsingState(FinishedParsing)
@@ -436,12 +457,12 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
 #if !ENABLE(OILPAN)
     , m_weakFactory(this)
 #endif
-    , m_contextDocument(initializer.contextDocument())
+    // BKTODO: , m_contextDocument(initializer.contextDocument())
     , m_hasFullscreenSupplement(false)
     , m_loadEventDelayCount(0)
     , m_loadEventDelayTimer(this, &Document::loadEventDelayTimerFired)
     , m_pluginLoadingTimer(this, &Document::pluginLoadingTimerFired)
-    , m_documentTiming(*this)
+    // BKTODO: , m_documentTiming(*this)
     , m_writeRecursionIsTooDeep(false)
     , m_writeRecursionDepth(0)
     , m_taskRunner(MainThreadTaskRunner::create(this))
@@ -450,7 +471,7 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_timeline(AnimationTimeline::create(this))
     , m_templateDocumentHost(nullptr)
     , m_didAssociateFormControlsTimer(this, &Document::didAssociateFormControlsTimerFired)
-    , m_timers(timerTaskRunner()->adoptClone())
+    // BKTODO: , m_timers(timerTaskRunner()->adoptClone())
     , m_hasViewportUnits(false)
     , m_styleRecalcElementCounter(0)
     , m_parserSyncPolicy(AllowAsynchronousParsing)
@@ -458,7 +479,7 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
 {
     if (m_frame) {
         ASSERT(m_frame->page());
-        provideContextFeaturesToDocumentFrom(*this, *m_frame->page());
+        // BKTODO: provideContextFeaturesToDocumentFrom(*this, *m_frame->page());
 
         m_fetcher = m_frame->loader().documentLoader()->fetcher();
         FrameFetchContext::provideDocumentToContext(m_fetcher->context(), this);
@@ -477,8 +498,10 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     if (initializer.shouldSetURL())
         setURL(initializer.url());
 
+#if 0 // BKTODO:
     initSecurityContext(initializer);
     initDNSPrefetch();
+#endif
 
 #if !ENABLE(OILPAN)
     for (unsigned i = 0; i < WTF_ARRAY_LENGTH(m_nodeListCounts); ++i)
@@ -669,16 +692,19 @@ void Document::setDoctype(PassRefPtrWillBeRawPtr<DocumentType> docType)
     styleEngine().clearResolver();
 }
 
+#if 0 // BKTODO:
 DOMImplementation& Document::implementation()
 {
     if (!m_implementation)
         m_implementation = DOMImplementation::create(*this);
     return *m_implementation;
 }
+#endif
 
 bool Document::hasAppCacheManifest() const
 {
-    return isHTMLHtmlElement(documentElement()) && documentElement()->hasAttribute(manifestAttr);
+    ASSERT(false); // BKTODO: return isHTMLHtmlElement(documentElement()) && documentElement()->hasAttribute(manifestAttr);
+    return false;
 }
 
 Location* Document::location() const
@@ -778,6 +804,7 @@ PassRefPtrWillBeRawPtr<Element> Document::createElementNS(const AtomicString& na
     return element.release();
 }
 
+#if 0 // BKTODO:
 ScriptValue Document::registerElement(ScriptState* scriptState, const AtomicString& name, const ElementRegistrationOptions& options, ExceptionState& exceptionState, CustomElement::NameSet validNames)
 {
     OriginsUsingFeatures::countMainWorldOnly(scriptState, *this, OriginsUsingFeatures::Feature::DocumentRegisterElement);
@@ -791,6 +818,7 @@ ScriptValue Document::registerElement(ScriptState* scriptState, const AtomicStri
     registrationContext()->registerElement(this, &constructorBuilder, name, validNames, exceptionState);
     return constructorBuilder.bindingsReturnValue();
 }
+#endif
 
 CustomElementMicrotaskRunQueue* Document::customElementMicrotaskRunQueue()
 {
@@ -984,11 +1012,14 @@ PassRefPtrWillBeRawPtr<Node> Document::adoptNode(PassRefPtrWillBeRawPtr<Node> so
         }
 
         if (source->isFrameOwnerElement()) {
+            ASSERT(false); // BKTODO:
+#if 0
             HTMLFrameOwnerElement* frameOwnerElement = toHTMLFrameOwnerElement(source.get());
             if (frame() && frame()->tree().isDescendantOf(frameOwnerElement->contentFrame())) {
                 exceptionState.throwDOMException(HierarchyRequestError, "The node provided is a frame which contains this document.");
                 return nullptr;
             }
+#endif
         }
         if (source->parentNode()) {
             source->parentNode()->removeChild(source.get(), exceptionState);
@@ -1005,6 +1036,9 @@ PassRefPtrWillBeRawPtr<Node> Document::adoptNode(PassRefPtrWillBeRawPtr<Node> so
 
 bool Document::hasValidNamespaceForElements(const QualifiedName& qName)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     // These checks are from DOM Core Level 2, createElementNS
     // http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-DocCrElNS
     if (!qName.prefix().isEmpty() && qName.namespaceURI().isNull()) // createElementNS(null, "html:div")
@@ -1018,6 +1052,7 @@ bool Document::hasValidNamespaceForElements(const QualifiedName& qName)
     if (qName.prefix() == xmlnsAtom || (qName.prefix().isEmpty() && qName.localName() == xmlnsAtom))
         return qName.namespaceURI() == XMLNSNames::xmlnsNamespaceURI;
     return qName.namespaceURI() != XMLNSNames::xmlnsNamespaceURI;
+#endif
 }
 
 bool Document::hasValidNamespaceForAttributes(const QualifiedName& qName)
@@ -1030,6 +1065,8 @@ PassRefPtrWillBeRawPtr<Element> Document::createElement(const QualifiedName& qNa
 {
     RefPtrWillBeRawPtr<Element> e = nullptr;
 
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: Use registered namespaces and look up in a hash to find the right factory.
     if (qName.namespaceURI() == xhtmlNamespaceURI)
         e = HTMLElementFactory::createHTMLElement(qName.localName(), *this, 0, createdByParser);
@@ -1043,6 +1080,7 @@ PassRefPtrWillBeRawPtr<Element> Document::createElement(const QualifiedName& qNa
 
     if (e->prefix() != qName.prefix())
         e->setTagNameForCreateElementNS(qName);
+#endif
 
     ASSERT(qName == e->tagQName());
 
@@ -1073,6 +1111,7 @@ void Document::setReadyState(ReadyState readyState)
     if (readyState == m_readyState)
         return;
 
+#if 0 // BKTODO:
     switch (readyState) {
     case Loading:
         if (!m_documentTiming.domLoading()) {
@@ -1088,6 +1127,7 @@ void Document::setReadyState(ReadyState readyState)
             m_documentTiming.markDomComplete();
         break;
     }
+#endif
 
     m_readyState = readyState;
     dispatchEvent(Event::create(EventTypeNames::readystatechange));
@@ -1108,9 +1148,7 @@ AtomicString Document::encodingName() const
 
 String Document::defaultCharset() const
 {
-    if (Settings* settings = this->settings())
-        return settings->defaultTextEncodingName();
-    return String();
+    return Settings::defaultTextEncodingName();
 }
 
 void Document::setContentLanguage(const AtomicString& language)
@@ -1125,17 +1163,20 @@ void Document::setContentLanguage(const AtomicString& language)
 
 void Document::setXMLVersion(const String& version, ExceptionState& exceptionState)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!XMLDocumentParser::supportsXMLVersion(version)) {
         exceptionState.throwDOMException(NotSupportedError, "This document does not support the XML version '" + version + "'.");
         return;
     }
 
     m_xmlVersion = version;
+#endif
 }
 
 void Document::setXMLStandalone(bool standalone, ExceptionState& exceptionState)
 {
-    m_xmlStandalone = standalone ? Standalone : NotStandalone;
+    ASSERT(false); // BKTODO: m_xmlStandalone = standalone ? Standalone : NotStandalone;
 }
 
 void Document::setContent(const String& content)
@@ -1147,6 +1188,8 @@ void Document::setContent(const String& content)
 
 String Document::suggestedMIMEType() const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (isXMLDocument()) {
         if (isXHTMLDocument())
             return "application/xhtml+xml";
@@ -1156,6 +1199,7 @@ String Document::suggestedMIMEType() const
     }
     if (xmlStandalone())
         return "text/xml";
+#endif
     if (isHTMLDocument())
         return "text/html";
 
@@ -1312,7 +1356,7 @@ void Document::setTitleElement(Element* titleElement)
         if (isHTMLDocument() || isXHTMLDocument()) {
             m_titleElement = Traversal<HTMLTitleElement>::firstWithin(*this);
         } else if (isSVGDocument()) {
-            m_titleElement = Traversal<SVGTitleElement>::firstWithin(*this);
+            ASSERT(false); // BKTODO: m_titleElement = Traversal<SVGTitleElement>::firstWithin(*this);
         }
     } else {
         m_titleElement = titleElement;
@@ -1320,8 +1364,10 @@ void Document::setTitleElement(Element* titleElement)
 
     if (isHTMLTitleElement(m_titleElement))
         updateTitle(toHTMLTitleElement(m_titleElement)->text());
+#if 0 // BKTODO:
     else if (isSVGTitleElement(m_titleElement))
         updateTitle(toSVGTitleElement(m_titleElement)->textContent());
+#endif
 }
 
 void Document::removeTitle(Element* titleElement)
@@ -1336,8 +1382,11 @@ void Document::removeTitle(Element* titleElement)
         if (HTMLTitleElement* title = Traversal<HTMLTitleElement>::firstWithin(*this))
             setTitleElement(title);
     } else if (isSVGDocument()) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (SVGTitleElement* title = Traversal<SVGTitleElement>::firstWithin(*this))
             setTitleElement(title);
+#endif
     }
 
     if (!m_titleElement)
@@ -1393,8 +1442,10 @@ void Document::didChangeVisibilityState()
     if (state == PageVisibilityStateVisible)
         timeline().setAllCompositorPending();
 
+#if 0 // BKTODO:
     if (hidden() && m_canvasFontCache)
         m_canvasFontCache->pruneAll();
+#endif
 }
 
 void Document::registerVisibilityObserver(DocumentVisibilityObserver* observer)
@@ -1423,8 +1474,11 @@ FormController& Document::formController()
 {
     if (!m_formController) {
         m_formController = FormController::create();
+        ASSERT(false); // BKTODO:
+#if 0
         if (m_frame && m_frame->loader().currentItem() && m_frame->loader().currentItem()->isCurrentDocument(this))
             m_frame->loader().currentItem()->setDocumentState(m_formController->formElementsState());
+#endif
     }
     return *m_formController;
 }
@@ -1732,10 +1786,12 @@ void Document::updateLayoutTree(StyleRecalcChange change)
     ASSERT(isMainThread());
 
     ScriptForbiddenScope forbidScript;
+#if 0 // BKTODO:
     // We should forbid script execution for plugins here because update while layout is changing,
     // HTMLPlugin element can be reattached and plugin can be destroyed. Plugin can execute scripts
     // on destroy. It produces crash without PluginScriptForbiddenScope: crbug.com/550427.
     PluginScriptForbiddenScope pluginForbidScript;
+#endif
 
     if (!view() || !isActive())
         return;
@@ -1822,7 +1878,7 @@ void Document::updateStyle(StyleRecalcChange change)
     TRACE_EVENT_BEGIN0("blink,blink_style", "Document::updateStyle");
     unsigned initialResolverAccessCount = styleEngine().resolverAccessCount();
 
-    HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
+    // BKTODO: HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
     m_lifecycle.advanceTo(DocumentLifecycle::InStyleRecalc);
 
     NthIndexCache nthIndexCache(*this);
@@ -1847,9 +1903,11 @@ void Document::updateStyle(StyleRecalcChange change)
 
     StyleResolver& resolver = ensureStyleResolver();
 
+#if 0 // BKTODO:
     bool shouldRecordStats;
     TRACE_EVENT_CATEGORY_GROUP_ENABLED("blink,blink_style", &shouldRecordStats);
     resolver.setStatsEnabled(shouldRecordStats);
+#endif
 
     if (Element* documentElement = this->documentElement()) {
         inheritHtmlAndBodyElementStyles(change);
@@ -1876,6 +1934,7 @@ void Document::updateStyle(StyleRecalcChange change)
     ASSERT(inStyleRecalc());
     ASSERT(styleResolver() == &resolver);
     m_lifecycle.advanceTo(DocumentLifecycle::StyleClean);
+#if 0 // BKTODO:
     if (shouldRecordStats) {
         TRACE_EVENT_END2("blink,blink_style", "Document::updateStyle",
             "resolverAccessCount", styleEngine().resolverAccessCount() - initialResolverAccessCount,
@@ -1884,6 +1943,7 @@ void Document::updateStyle(StyleRecalcChange change)
         TRACE_EVENT_END1("blink,blink_style", "Document::updateStyle",
             "resolverAccessCount", styleEngine().resolverAccessCount() - initialResolverAccessCount);
     }
+#endif
 }
 
 void Document::notifyLayoutTreeOfSubtreeChanges()
@@ -1934,7 +1994,7 @@ void Document::updateLayout()
     }
 
     if (HTMLFrameOwnerElement* owner = ownerElement())
-        owner->document().updateLayout();
+        ASSERT(false); // BKTODO: owner->document().updateLayout();
 
     updateLayoutTreeIfNeeded();
 
@@ -1958,6 +2018,7 @@ void Document::layoutUpdated()
 
     markers().updateRenderedRectsForMarkers();
 
+#if 0 // BKTODO:
     // The layout system may perform layouts with pending stylesheets. When
     // recording first layout time, we ignore these layouts, since painting is
     // suppressed for them. We're interested in tracking the time of the
@@ -1970,6 +2031,7 @@ void Document::layoutUpdated()
         if (!m_documentTiming.firstLayout())
             m_documentTiming.markFirstLayout();
     }
+#endif
 }
 
 void Document::setNeedsFocusedElementCheck()
@@ -2091,22 +2153,28 @@ void Document::pageSizeAndMarginsInPixels(int pageIndex, IntSize& pageSize, int&
 
 void Document::setIsViewSource(bool isViewSource)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     m_isViewSource = isViewSource;
     if (!m_isViewSource)
         return;
 
     setSecurityOrigin(SecurityOrigin::createUnique());
     didUpdateSecurityOrigin();
+#endif
 }
 
 bool Document::dirtyElementsForLayerUpdate()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_layerUpdateSVGFilterElements.isEmpty())
         return false;
 
     for (Element* element : m_layerUpdateSVGFilterElements)
         element->setNeedsStyleRecalc(LocalStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::SVGFilterLayerUpdate));
     m_layerUpdateSVGFilterElements.clear();
+#endif
     return true;
 }
 
@@ -2145,10 +2213,13 @@ void Document::updateUseShadowTreesIfNeeded()
 
     WillBeHeapVector<RawPtrWillBeMember<SVGUseElement>> elements;
     copyToVector(m_useElementsNeedingUpdate, elements);
+    ASSERT(false); // BKTODO:
+#if 0
     m_useElementsNeedingUpdate.clear();
 
     for (SVGUseElement* element : elements)
         element->buildPendingResource();
+#endif
 }
 
 StyleResolver* Document::styleResolver() const
@@ -2164,7 +2235,7 @@ StyleResolver& Document::ensureStyleResolver() const
 void Document::attach(const AttachContext& context)
 {
     ASSERT(m_lifecycle.state() == DocumentLifecycle::Inactive);
-    ASSERT(!m_axObjectCache || this != &axObjectCacheOwner());
+    ASSERT(false); // BKTODO: ASSERT(!m_axObjectCache || this != &axObjectCacheOwner());
 
     m_layoutView = new LayoutView(this);
     setLayoutObject(m_layoutView);
@@ -2185,7 +2256,7 @@ void Document::attach(const AttachContext& context)
 void Document::detach(const AttachContext& context)
 {
     TRACE_EVENT0("blink", "Document::detach");
-    ASSERT(!m_frame || m_frame->tree().childCount() == 0);
+    ASSERT(false); // BKTODO: ASSERT(!m_frame || m_frame->tree().childCount() == 0);
     if (!isActive())
         return;
 
@@ -2197,7 +2268,7 @@ void Document::detach(const AttachContext& context)
     FrameNavigationDisabler navigationDisabler(*m_frame);
     // Defer widget updates to avoid plugins trying to run script inside ScriptForbiddenScope,
     // which will crash the renderer after https://crrev.com/200984
-    HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
+    // BKTODO: HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
     // Don't allow script to run in the middle of detach() because a detaching Document is not in a
     // consistent state.
     ScriptForbiddenScope forbidScript;
@@ -2212,8 +2283,10 @@ void Document::detach(const AttachContext& context)
         page()->documentDetached(this);
     InspectorInstrumentation::documentDetached(this);
 
+#if 0 // BKTODO:
     if (m_frame->loader().client()->sharedWorkerRepositoryClient())
         m_frame->loader().client()->sharedWorkerRepositoryClient()->documentDetached(this);
+#endif
 
     stopActiveDOMObjects();
 
@@ -2224,8 +2297,10 @@ void Document::detach(const AttachContext& context)
 
     m_scriptedIdleTaskController.clear();
 
+#if 0 // BKTODO:
     if (svgExtensions())
         accessSVGExtensions().pauseAnimations();
+#endif
 
     // FIXME: This shouldn't be needed once LocalDOMWindow becomes ExecutionContext.
     if (m_domWindow)
@@ -2248,12 +2323,15 @@ void Document::detach(const AttachContext& context)
             frameHost()->chromeClient().focusedNodeChanged(oldFocusedElement.get(), nullptr);
     }
 
+#if 0 // BKTODO:
     if (this == &axObjectCacheOwner())
         clearAXObjectCache();
+#endif
 
     m_layoutView = nullptr;
     ContainerNode::detach(context);
 
+#if 0 // BKTODO:
     if (this != &axObjectCacheOwner()) {
         if (AXObjectCache* cache = existingAXObjectCache()) {
             // Documents that are not a root document use the AXObjectCache in
@@ -2265,6 +2343,7 @@ void Document::detach(const AttachContext& context)
             }
         }
     }
+#endif
 
     styleEngine().didDetach();
 
@@ -2285,8 +2364,10 @@ void Document::detach(const AttachContext& context)
     if (m_importsController)
         HTMLImportsController::removeFrom(*this);
 
+#if 0 // BKTODO:
     m_timers.setTimerTaskRunner(
         Platform::current()->currentThread()->scheduler()->timerTaskRunner()->adoptClone());
+#endif
 
     // This is required, as our LocalFrame might delete itself as soon as it detaches
     // us. However, this violates Node::detach() semantics, as it's never
@@ -2319,6 +2400,7 @@ void Document::removeAllEventListeners()
         domWindow->removeAllEventListeners();
 }
 
+#if 0 // BKTODO:
 Document& Document::axObjectCacheOwner() const
 {
     // FIXME(dmazzoni): Currently there's one AXObjectCache per page, owned
@@ -2389,13 +2471,18 @@ AXObjectCache* Document::axObjectCache() const
         cacheOwner.m_axObjectCache = AXObjectCache::create(cacheOwner);
     return cacheOwner.m_axObjectCache.get();
 }
+#endif
 
 CanvasFontCache* Document::canvasFontCache()
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!m_canvasFontCache)
         m_canvasFontCache = CanvasFontCache::create(*this);
 
     return m_canvasFontCache.get();
+#endif
 }
 
 PassRefPtrWillBeRawPtr<DocumentParser> Document::createParser()
@@ -2404,15 +2491,16 @@ PassRefPtrWillBeRawPtr<DocumentParser> Document::createParser()
         bool reportErrors = InspectorInstrumentation::collectingHTMLParseErrors(this);
         return HTMLDocumentParser::create(toHTMLDocument(*this), reportErrors, m_parserSyncPolicy);
     }
-    // FIXME: this should probably pass the frame instead
-    return XMLDocumentParser::create(*this, view());
+    ASSERT_NOT_REACHED();
+    return nullptr;
 }
 
 bool Document::isFrameSet() const
 {
     if (!isHTMLDocument())
         return false;
-    return isHTMLFrameSetElement(body());
+    ASSERT(false); // BKTODO: return isHTMLFrameSetElement(body());
+    return false;
 }
 
 ScriptableDocumentParser* Document::scriptableDocumentParser() const
@@ -2435,7 +2523,7 @@ void Document::open(Document* ownerDocument, ExceptionState& exceptionState)
     if (ownerDocument) {
         setURL(ownerDocument->url());
         m_cookieURL = ownerDocument->cookieURL();
-        setSecurityOrigin(ownerDocument->securityOrigin());
+        // BKTODO: setSecurityOrigin(ownerDocument->securityOrigin());
     }
 
     open();
@@ -2513,7 +2601,7 @@ HTMLElement* Document::body() const
         return 0;
 
     for (HTMLElement* child = Traversal<HTMLElement>::firstChild(*documentElement()); child; child = Traversal<HTMLElement>::nextSibling(*child)) {
-        if (isHTMLFrameSetElement(*child) || isHTMLBodyElement(*child))
+        if (isHTMLBodyElement(*child))
             return child;
     }
 
@@ -2538,7 +2626,7 @@ void Document::setBody(PassRefPtrWillBeRawPtr<HTMLElement> prpNewBody, Exception
     RefPtrWillBeRawPtr<HTMLElement> newBody = prpNewBody;
 
     if (!newBody) {
-        exceptionState.throwDOMException(HierarchyRequestError, ExceptionMessages::argumentNullOrIncorrectType(1, "HTMLElement"));
+        ASSERT(false); // BKTODO: exceptionState.throwDOMException(HierarchyRequestError, ExceptionMessages::argumentNullOrIncorrectType(1, "HTMLElement"));
         return;
     }
     if (!documentElement()) {
@@ -2546,7 +2634,7 @@ void Document::setBody(PassRefPtrWillBeRawPtr<HTMLElement> prpNewBody, Exception
         return;
     }
 
-    if (!isHTMLBodyElement(*newBody) && !isHTMLFrameSetElement(*newBody)) {
+    if (!isHTMLBodyElement(*newBody)) {
         exceptionState.throwDOMException(HierarchyRequestError, "The new body element is of type '" + newBody->tagName() + "'. It must be either a 'BODY' or 'FRAMESET' element.");
         return;
     }
@@ -2634,6 +2722,8 @@ void Document::implicitClose()
     ASSERT(!inStyleRecalc());
     if (processingLoadEvent() || !m_parser)
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     if (frame() && frame()->navigationScheduler().locationChangePending()) {
         suppressLoadEvent();
         return;
@@ -2717,6 +2807,7 @@ void Document::implicitClose()
 
     if (svgExtensions())
         accessSVGExtensions().startAnimations();
+#endif
 }
 
 bool Document::dispatchBeforeUnloadEvent(ChromeClient& chromeClient, bool isReload, bool& didAllowNavigation)
@@ -2742,7 +2833,7 @@ bool Document::dispatchBeforeUnloadEvent(ChromeClient& chromeClient, bool isRelo
         return true;
 
     if (didAllowNavigation) {
-        addConsoleMessage(ConsoleMessage::create(JSMessageSource, ErrorMessageLevel, "Blocked attempt to show multiple 'beforeunload' confirmation panels for a single navigation."));
+        ASSERT(false); // BKTODO: addConsoleMessage(ConsoleMessage::create(JSMessageSource, ErrorMessageLevel, "Blocked attempt to show multiple 'beforeunload' confirmation panels for a single navigation."));
         return true;
     }
 
@@ -2756,7 +2847,7 @@ bool Document::dispatchBeforeUnloadEvent(ChromeClient& chromeClient, bool isRelo
 
 void Document::dispatchUnloadEvents()
 {
-    PluginScriptForbiddenScope forbidPluginDestructorScripting;
+    // BKTODO: PluginScriptForbiddenScope forbidPluginDestructorScripting;
     RefPtrWillBeRawPtr<Document> protect(this);
     if (m_parser)
         m_parser->stopParsing();
@@ -2781,6 +2872,7 @@ void Document::dispatchUnloadEvents()
             RefPtrWillBeRawPtr<DocumentLoader> documentLoader = m_frame->loader().provisionalDocumentLoader();
             m_loadEventProgress = UnloadEventInProgress;
             RefPtrWillBeRawPtr<Event> unloadEvent(Event::create(EventTypeNames::unload));
+#if 0 // BKTODO:
             if (documentLoader && !documentLoader->timing().unloadEventStart() && !documentLoader->timing().unloadEventEnd()) {
                 DocumentLoadTiming& timing = documentLoader->timing();
                 ASSERT(timing.navigationStart());
@@ -2790,6 +2882,9 @@ void Document::dispatchUnloadEvents()
             } else {
                 m_frame->localDOMWindow()->dispatchEvent(unloadEvent, m_frame->document());
             }
+#else
+            m_frame->localDOMWindow()->dispatchEvent(unloadEvent, this);
+#endif
         }
         m_loadEventProgress = UnloadEventHandled;
     }
@@ -2797,11 +2892,14 @@ void Document::dispatchUnloadEvents()
     if (!m_frame)
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     // Don't remove event listeners from a transitional empty document (see https://bugs.webkit.org/show_bug.cgi?id=28716 for more information).
     bool keepEventListeners = m_frame->loader().stateMachine()->isDisplayingInitialEmptyDocument() && m_frame->loader().provisionalDocumentLoader()
         && isSecureTransitionTo(m_frame->loader().provisionalDocumentLoader()->url());
     if (!keepEventListeners)
         removeAllEventListenersRecursively();
+#endif
 }
 
 Document::PageDismissalType Document::pageDismissalEventBeingDispatched() const
@@ -2870,7 +2968,7 @@ void Document::write(const SegmentedString& text, Document* ownerDocument, Excep
     bool hasInsertionPoint = m_parser && m_parser->hasInsertionPoint();
 
     if (!hasInsertionPoint && m_ignoreDestructiveWriteCount) {
-        addConsoleMessage(ConsoleMessage::create(JSMessageSource, WarningMessageLevel, ExceptionMessages::failedToExecute("write", "Document", "It isn't possible to write into a document from an asynchronously-loaded external script unless it is explicitly opened.")));
+        ASSERT(false); // BKTODO: addConsoleMessage(ConsoleMessage::create(JSMessageSource, WarningMessageLevel, ExceptionMessages::failedToExecute("write", "Document", "It isn't possible to write into a document from an asynchronously-loaded external script unless it is explicitly opened.")));
         return;
     }
 
@@ -2924,7 +3022,8 @@ KURL Document::virtualCompleteURL(const String& url) const
 
 DOMTimerCoordinator* Document::timers()
 {
-    return &m_timers;
+    ASSERT(false); // BKTODO: return &m_timers;
+    return nullptr;
 }
 
 EventTarget* Document::errorEventTarget()
@@ -2934,14 +3033,19 @@ EventTarget* Document::errorEventTarget()
 
 void Document::logExceptionToConsole(const String& errorMessage, int scriptId, const String& sourceURL, int lineNumber, int columnNumber, PassRefPtrWillBeRawPtr<ScriptCallStack> callStack)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     RefPtrWillBeRawPtr<ConsoleMessage> consoleMessage = ConsoleMessage::create(JSMessageSource, ErrorMessageLevel, errorMessage, sourceURL, lineNumber, columnNumber);
     consoleMessage->setScriptId(scriptId);
     consoleMessage->setCallStack(callStack);
     addConsoleMessage(consoleMessage.release());
+#endif
 }
 
 void Document::setURL(const KURL& url)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     const KURL& newURL = url.isEmpty() ? blankURL() : url;
     if (newURL == m_url)
         return;
@@ -2950,6 +3054,7 @@ void Document::setURL(const KURL& url)
     m_accessEntryFromURL = nullptr;
     updateBaseURL();
     contextFeatures().urlDidChange(this);
+#endif
 }
 
 void Document::updateBaseURL()
@@ -2976,12 +3081,15 @@ void Document::updateBaseURL()
         m_elemSheet = CSSStyleSheet::createInline(this, m_baseURL);
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!equalIgnoringFragmentIdentifier(oldBaseURL, m_baseURL)) {
         // Base URL change changes any relative visited links.
         // FIXME: There are other URLs in the tree that would need to be re-evaluated on dynamic base URL change. Style should be invalidated too.
         for (HTMLAnchorElement& anchor : Traversal<HTMLAnchorElement>::startsAfter(*this))
             anchor.invalidateCachedVisitedLinkHash();
     }
+#endif
 }
 
 void Document::setBaseURLOverride(const KURL& url)
@@ -3006,8 +3114,11 @@ void Document::processBaseElement()
             if (!value.isNull())
                 target = &value;
         }
+        ASSERT(false); // BKTODO:
+#if 0
         if (contentSecurityPolicy()->isActive())
             UseCounter::count(*this, UseCounter::ContentSecurityPolicyWithBaseElement);
+#endif
     }
 
     // FIXME: Since this doesn't share code with completeURL it may not handle encodings correctly.
@@ -3015,12 +3126,15 @@ void Document::processBaseElement()
     if (href) {
         String strippedHref = stripLeadingAndTrailingHTMLSpaces(*href);
         if (!strippedHref.isEmpty())
-            baseElementURL = KURL(url(), strippedHref);
+            ASSERT(false); // BKTODO: baseElementURL = KURL(url(), strippedHref);
     }
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_baseElementURL != baseElementURL && contentSecurityPolicy()->allowBaseURI(baseElementURL)) {
         m_baseElementURL = baseElementURL;
         updateBaseURL();
     }
+#endif
 
     m_baseTarget = target ? *target : nullAtom;
 }
@@ -3035,7 +3149,7 @@ void Document::disableEval(const String& errorMessage)
     if (!frame())
         return;
 
-    frame()->script().disableEval(errorMessage);
+    ASSERT(false); // BKTODO: frame()->script().disableEval(errorMessage);
 }
 
 
@@ -3062,6 +3176,8 @@ void Document::didRemoveAllPendingStylesheet()
 
 void Document::didLoadAllScriptBlockingResources()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     loadingTaskRunner()->postTask(BLINK_FROM_HERE, m_executeScriptsWaitingForResourcesTask->cancelAndCreate());
 
     if (frame())
@@ -3069,6 +3185,7 @@ void Document::didLoadAllScriptBlockingResources()
 
     if (m_gotoAnchorNeededAfterStylesheetsLoad && view())
         view()->processUrlFragment(m_url);
+#endif
 }
 
 void Document::executeScriptsWaitingForResources()
@@ -3095,6 +3212,8 @@ void Document::maybeHandleHttpRefresh(const String& content, HttpRefreshType htt
     String refreshURL;
     if (!parseHTTPRefresh(content, httpRefreshType == HttpRefreshFromMetaTag, delay, refreshURL))
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     if (refreshURL.isEmpty())
         refreshURL = url().string();
     else
@@ -3112,11 +3231,12 @@ void Document::maybeHandleHttpRefresh(const String& content, HttpRefreshType htt
         return;
     }
     m_frame->navigationScheduler().scheduleRedirect(delay, refreshURL);
+#endif
 }
 
 bool Document::shouldMergeWithLegacyDescription(ViewportDescription::Type origin)
 {
-    return settings() && settings()->viewportMetaMergeContentQuirk() && m_legacyViewportDescription.isMetaViewportType() && m_legacyViewportDescription.type == origin;
+    return Settings::viewportMetaMergeContentQuirk && m_legacyViewportDescription.isMetaViewportType() && m_legacyViewportDescription.type == origin;
 }
 
 void Document::setViewportDescription(const ViewportDescription& viewportDescription)
@@ -3157,6 +3277,8 @@ void Document::updateViewportDescription()
 
 void Document::processReferrerPolicy(const String& policy)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ReferrerPolicy referrerPolicy;
     if (!SecurityPolicy::referrerPolicyFromString(policy, &referrerPolicy)) {
         addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, ErrorMessageLevel, "Failed to set referrer policy: The value '" + policy + "' is not one of 'always', 'default', 'never', 'no-referrer', 'no-referrer-when-downgrade', 'origin', 'origin-when-crossorigin', or 'unsafe-url'. This document's referrer policy has been left unchanged."));
@@ -3164,10 +3286,14 @@ void Document::processReferrerPolicy(const String& policy)
     }
 
     setReferrerPolicy(referrerPolicy);
+#endif
 }
 
 String Document::outgoingReferrer() const
 {
+    ASSERT(false); // BKTODO:
+    return String();
+#if 0
     if (securityOrigin()->isUnique()) {
         // Return |no-referrer|.
         return String();
@@ -3187,11 +3313,16 @@ String Document::outgoingReferrer() const
         referrerDocument = frame->document();
     }
     return referrerDocument->m_url.strippedForUseAsReferrer();
+#endif
 }
 
 String Document::outgoingOrigin() const
 {
+    ASSERT(false); // BKTODO:
+    return String();
+#if 0
     return securityOrigin()->toString();
+#endif
 }
 
 MouseEventWithHitTestResults Document::prepareMouseEvent(const HitTestRequest& request, const LayoutPoint& documentPoint, const PlatformMouseEvent& event)
@@ -3335,11 +3466,14 @@ PassRefPtrWillBeRawPtr<Node> Document::cloneNode(bool deep)
 PassRefPtrWillBeRawPtr<Document> Document::cloneDocumentWithoutChildren()
 {
     DocumentInit init(url());
+    ASSERT(false); // BKTODO:
+#if 0
     if (isXMLDocument()) {
         if (isXHTMLDocument())
             return XMLDocument::createXHTML(init.withRegistrationContext(registrationContext()));
         return XMLDocument::create(init);
     }
+#endif
     return create(init);
 }
 
@@ -3347,13 +3481,18 @@ void Document::cloneDataFromDocument(const Document& other)
 {
     setCompatibilityMode(other.compatibilityMode());
     setEncodingData(other.m_encodingData);
+    ASSERT(false); // BKTODO:
+#if 0
     setContextFeatures(other.contextFeatures());
     setSecurityOrigin(other.securityOrigin()->isolatedCopy());
+#endif
     setMimeType(other.contentType());
 }
 
 bool Document::isSecureContextImpl(String* errorMessage, const SecureContextCheck privilegeContextCheck) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // There may be exceptions for the secure context check defined for certain
     // schemes. The exceptions are applied only to the special scheme and to
     // sandboxed URLs from those origins, but *not* to any children.
@@ -3413,6 +3552,7 @@ bool Document::isSecureContextImpl(String* errorMessage, const SecureContextChec
             context = context->parentDocument();
         }
     }
+#endif
     return true;
 }
 
@@ -3668,7 +3808,7 @@ bool Document::setFocusedElement(PassRefPtrWillBeRawPtr<Element> prpNewFocusedEl
         }
 
         if (m_focusedElement->isRootEditableElement())
-            frame()->spellChecker().didBeginEditing(m_focusedElement.get());
+            ASSERT(false); // BKTODO: frame()->spellChecker().didBeginEditing(m_focusedElement.get());
 
         // eww, I suck. set the qt focus correctly
         // ### find a better place in the code for this
@@ -3689,11 +3829,14 @@ bool Document::setFocusedElement(PassRefPtrWillBeRawPtr<Element> prpNewFocusedEl
         }
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!focusChangeBlocked && m_focusedElement) {
         // Create the AXObject cache in a focus change because Chromium relies on it.
         if (AXObjectCache* cache = axObjectCache())
             cache->handleFocusedUIElementChanged(oldFocusedElement.get(), newFocusedElement.get());
     }
+#endif
 
     if (!focusChangeBlocked && frameHost())
         frameHost()->chromeClient().focusedNodeChanged(oldFocusedElement.get(), m_focusedElement.get());
@@ -3947,6 +4090,7 @@ Document::EventFactorySet& Document::eventFactories()
     return s_eventFactory;
 }
 
+#if 0 // BKTODO:
 const OriginAccessEntry& Document::accessEntryFromURL()
 {
     if (!m_accessEntryFromURL) {
@@ -3954,6 +4098,7 @@ const OriginAccessEntry& Document::accessEntryFromURL()
     }
     return *m_accessEntryFromURL;
 }
+#endif
 
 void Document::registerEventFactory(PassOwnPtr<EventFactoryBase> eventFactory)
 {
@@ -3975,12 +4120,17 @@ PassRefPtrWillBeRawPtr<Event> Document::createEvent(const String& eventType, Exc
 
 void Document::addMutationEventListenerTypeIfEnabled(ListenerType listenerType)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (ContextFeatures::mutationEventsEnabled(this))
         addListenerType(listenerType);
+#endif
 }
 
 void Document::addListenerTypeIfNeeded(const AtomicString& eventType)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (eventType == EventTypeNames::DOMSubtreeModified) {
         UseCounter::count(*this, UseCounter::DOMSubtreeModifiedEvent);
         addMutationEventListenerTypeIfEnabled(DOMSUBTREEMODIFIED_LISTENER);
@@ -4014,6 +4164,7 @@ void Document::addListenerTypeIfNeeded(const AtomicString& eventType)
     } else if (eventType == EventTypeNames::scroll) {
         addListenerType(SCROLL_LISTENER);
     }
+#endif
 }
 
 HTMLFrameOwnerElement* Document::ownerElement() const
@@ -4035,6 +4186,7 @@ bool Document::isInInvisibleSubframe() const
 
 String Document::cookie(ExceptionState& exceptionState) const
 {
+#if 0 // BKTODO:
     if (settings() && !settings()->cookieEnabled())
         return String();
 
@@ -4051,6 +4203,7 @@ String Document::cookie(ExceptionState& exceptionState) const
             exceptionState.throwSecurityError("Access is denied for this document.");
         return String();
     }
+#endif
 
     KURL cookieURL = this->cookieURL();
     if (cookieURL.isEmpty())
@@ -4061,6 +4214,7 @@ String Document::cookie(ExceptionState& exceptionState) const
 
 void Document::setCookie(const String& value, ExceptionState& exceptionState)
 {
+#if 0 // BKTODO:
     if (settings() && !settings()->cookieEnabled())
         return;
 
@@ -4077,6 +4231,7 @@ void Document::setCookie(const String& value, ExceptionState& exceptionState)
             exceptionState.throwSecurityError("Access is denied for this document.");
         return;
     }
+#endif
 
     KURL cookieURL = this->cookieURL();
     if (cookieURL.isEmpty())
@@ -4094,11 +4249,17 @@ const AtomicString& Document::referrer() const
 
 String Document::domain() const
 {
+    ASSERT(false); // BKTODO:
+    return String();
+#if 0
     return securityOrigin()->domain();
+#endif
 }
 
 void Document::setDomain(const String& newDomain, ExceptionState& exceptionState)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     UseCounter::count(*this, UseCounter::DocumentSetDomain);
 
     if (isSandboxed(SandboxDocumentDomain)) {
@@ -4131,12 +4292,15 @@ void Document::setDomain(const String& newDomain, ExceptionState& exceptionState
     securityOrigin()->setDomainFromDOM(newDomain);
     if (m_frame)
         m_frame->script().updateSecurityOrigin(securityOrigin());
+#endif
 }
 
 // http://www.whatwg.org/specs/web-apps/current-work/#dom-document-lastmodified
 String Document::lastModified() const
 {
     DateComponents date;
+    ASSERT(false); // BKTODO:
+#if 0
     bool foundDate = false;
     if (m_frame) {
         if (DocumentLoader* documentLoader = loader()) {
@@ -4152,11 +4316,14 @@ String Document::lastModified() const
     // system.
     if (!foundDate)
         date.setMillisecondsSinceEpochForDateTime(convertToLocalTime(currentTimeMS()));
+#endif
     return String::format("%02d/%02d/%04d %02d:%02d:%02d", date.month() + 1, date.monthDay(), date.fullYear(), date.hour(), date.minute(), date.second());
 }
 
 const KURL& Document::firstPartyForCookies() const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (SchemeRegistry::shouldTreatURLSchemeAsFirstPartyWhenTopLevel(topDocument().url().protocol()))
         return topDocument().url();
 
@@ -4178,6 +4345,7 @@ const KURL& Document::firstPartyForCookies() const
 
         currentDocument = currentDocument->parentDocument();
     }
+#endif
 
     return topDocument().url();
 }
@@ -4403,15 +4571,21 @@ KURL Document::completeURLWithOverride(const String& url, const KURL& baseURLOve
         return KURL();
     // This logic is deliberately spread over many statements in an attempt to track down http://crbug.com/312410.
     const KURL& baseURL = baseURLForOverride(baseURLOverride);
+    ASSERT(false); // BKTODO:
+    return KURL();
+#if 0
     if (!encoding().isValid())
         return KURL(baseURL, url);
     return KURL(baseURL, url, encoding());
+#endif
 }
 
 const KURL& Document::baseURLForOverride(const KURL& baseURLOverride) const
 {
     // This logic is deliberately spread over many statements in an attempt to track down http://crbug.com/312410.
     const KURL* baseURLFromParent = 0;
+    ASSERT(false); // BKTODO:
+#if 0
     bool shouldUseParentBaseURL = baseURLOverride.isEmpty();
     if (!shouldUseParentBaseURL) {
         const KURL& aboutBlankURL = blankURL();
@@ -4421,6 +4595,7 @@ const KURL& Document::baseURLForOverride(const KURL& baseURLOverride) const
         if (Document* parent = parentDocument())
             baseURLFromParent = &parent->baseURL();
     }
+#endif
     return baseURLFromParent ? *baseURLFromParent : baseURLOverride;
 }
 
@@ -4452,7 +4627,7 @@ bool Document::execCommand(const String& commandName, bool, const String& value,
     // although, it isn't common use case, rather it is used as attack code.
     if (m_isRunningExecCommand) {
         String message = "We don't execute document.execCommand() this time, because it is called recursively.";
-        addConsoleMessage(ConsoleMessage::create(JSMessageSource, WarningMessageLevel, message));
+        ASSERT(false); // BKTODO: addConsoleMessage(ConsoleMessage::create(JSMessageSource, WarningMessageLevel, message));
         return false;
     }
     TemporaryChange<bool> executeScope(m_isRunningExecCommand, true);
@@ -4461,7 +4636,7 @@ bool Document::execCommand(const String& commandName, bool, const String& value,
     // DOM tree against implementation assumption.
     EventQueueScope eventQueueScope;
     Editor::Command editorCommand = command(this, commandName);
-    Platform::current()->histogramSparse("WebCore.Document.execCommand", editorCommand.idForHistogram());
+    ASSERT(false); // BKTODO: Platform::current()->histogramSparse("WebCore.Document.execCommand", editorCommand.idForHistogram());
     return editorCommand.execute(value);
 }
 
@@ -4520,9 +4695,12 @@ KURL Document::openSearchDescriptionURL()
     static const char openSearchMIMEType[] = "application/opensearchdescription+xml";
     static const char openSearchRelation[] = "search";
 
+    ASSERT(false); // BKTODO: 
+#if 0
     // FIXME: Why do only top-level frames have openSearchDescriptionURLs?
     if (!frame() || frame()->tree().parent())
         return KURL();
+#endif
 
     // FIXME: Why do we need to wait for load completion?
     if (!loadEventFinished())
@@ -4542,6 +4720,7 @@ KURL Document::openSearchDescriptionURL()
     return KURL();
 }
 
+#if 0 // BKTODO:
 void Document::pushCurrentScript(PassRefPtrWillBeRawPtr<HTMLScriptElement> newCurrentScript)
 {
     ASSERT(newCurrentScript);
@@ -4558,6 +4737,7 @@ void Document::setTransformSource(PassOwnPtr<TransformSource> source)
 {
     m_transformSource = source;
 }
+#endif
 
 String Document::designMode() const
 {
@@ -4581,10 +4761,14 @@ Document* Document::parentDocument() const
 {
     if (!m_frame)
         return 0;
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     Frame* parent = m_frame->tree().parent();
     if (!parent || !parent->isLocalFrame())
         return 0;
     return toLocalFrame(parent)->document();
+#endif
 }
 
 Document& Document::topDocument() const
@@ -4592,13 +4776,17 @@ Document& Document::topDocument() const
     // FIXME: Not clear what topDocument() should do in the OOPI case--should it return the topmost
     // available Document, or something else?
     Document* doc = const_cast<Document*>(this);
+    ASSERT(false); // BKTODO:
+#if 0
     for (HTMLFrameOwnerElement* element = doc->ownerElement(); element; element = doc->ownerElement())
         doc = &element->document();
+#endif
 
     ASSERT(doc);
     return *doc;
 }
 
+#if 0 // BKTODO:
 WeakPtrWillBeRawPtr<Document> Document::contextDocument()
 {
     if (m_contextDocument)
@@ -4608,6 +4796,7 @@ WeakPtrWillBeRawPtr<Document> Document::contextDocument()
     }
     return nullptr;
 }
+#endif
 
 PassRefPtrWillBeRawPtr<Attr> Document::createAttribute(const AtomicString& name, ExceptionState& exceptionState)
 {
@@ -4632,6 +4821,7 @@ PassRefPtrWillBeRawPtr<Attr> Document::createAttributeNS(const AtomicString& nam
     return Attr::create(*this, qName, emptyAtom);
 }
 
+#if 0 // BKTODO:
 const SVGDocumentExtensions* Document::svgExtensions()
 {
     return m_svgExtensions.get();
@@ -4648,6 +4838,7 @@ bool Document::hasSVGRootNode() const
 {
     return isSVGSVGElement(documentElement());
 }
+#endif
 
 PassRefPtrWillBeRawPtr<HTMLCollection> Document::images()
 {
@@ -4713,6 +4904,8 @@ void Document::finishedParsing()
 
     // FIXME: DOMContentLoaded is dispatched synchronously, but this should be dispatched in a queued task,
     // See https://crbug.com/425790
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_documentTiming.domContentLoadedEventStart())
         m_documentTiming.markDomContentLoadedEventStart();
     dispatchEvent(Event::createBubble(EventTypeNames::DOMContentLoaded));
@@ -4751,6 +4944,7 @@ void Document::finishedParsing()
         TRACE_EVENT_INSTANT1("devtools.timeline", "MarkDOMContent", TRACE_EVENT_SCOPE_THREAD, "data", InspectorMarkLoadEvent::data(frame.get()));
         InspectorInstrumentation::domContentLoadedEventFired(frame.get());
     }
+#endif
 
     // Schedule dropping of the ElementDataCache. We keep it alive for a while after parsing finishes
     // so that dynamically inserted content can also benefit from sharing optimizations.
@@ -4854,6 +5048,7 @@ bool Document::useSecureKeyboardEntryWhenActive() const
     return m_useSecureKeyboardEntryWhenActive;
 }
 
+#if 0 // BKTODO:
 void Document::initSecurityContext()
 {
     initSecurityContext(DocumentInit(m_url, m_frame, contextDocument(), m_importsController));
@@ -4964,9 +5159,12 @@ void Document::initContentSecurityPolicy(PassRefPtrWillBeRawPtr<ContentSecurityP
     }
     contentSecurityPolicy()->bindToExecutionContext(this);
 }
+#endif
 
 bool Document::allowInlineEventHandlers(Node* node, EventListener* listener, const String& contextURL, const WTF::OrdinalNumber& contextLine)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!ContentSecurityPolicy::shouldBypassMainWorld(this) && !contentSecurityPolicy()->allowInlineEventHandlers(contextURL, contextLine))
         return false;
 
@@ -4981,12 +5179,15 @@ bool Document::allowInlineEventHandlers(Node* node, EventListener* listener, con
         return false;
     if (node && node->document() != this && !node->document().allowInlineEventHandlers(node, listener, contextURL, contextLine))
         return false;
+#endif
 
     return true;
 }
 
 bool Document::allowExecutingScripts(Node* node)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: Eventually we'd like to evaluate scripts which are inserted into a
     // viewless document but this'll do for now.
     // See http://bugs.webkit.org/show_bug.cgi?id=5727
@@ -4997,9 +5198,11 @@ bool Document::allowExecutingScripts(Node* node)
         return false;
     if (!frame->script().canExecuteScripts(AboutToExecuteScript))
         return false;
+#endif
     return true;
 }
 
+#if 0 // BKTODO:
 void Document::updateSecurityOrigin(PassRefPtr<SecurityOrigin> origin)
 {
     setSecurityOrigin(origin);
@@ -5012,6 +5215,7 @@ void Document::didUpdateSecurityOrigin()
         return;
     m_frame->updateSecurityOrigin(securityOrigin());
 }
+#endif
 
 bool Document::isContextThread() const
 {
@@ -5053,6 +5257,7 @@ void Document::detachRange(Range* range)
     m_ranges.remove(range);
 }
 
+#if 0 // BKTODO:
 void Document::initDNSPrefetch()
 {
     Settings* settings = this->settings();
@@ -5086,6 +5291,7 @@ WeakPtrWillBeRawPtr<Document> Document::createWeakPtr()
     return m_weakFactory.createWeakPtr();
 #endif
 }
+#endif
 
 IntersectionObserverController* Document::intersectionObserverController()
 {
@@ -5106,13 +5312,17 @@ NodeIntersectionObserverData& Document::ensureIntersectionObserverData()
     return *m_intersectionObserverData;
 }
 
+#if 0 // BKTODO:
 void Document::reportBlockedScriptExecutionToInspector(const String& directiveText)
 {
     InspectorInstrumentation::scriptExecutionBlockedByCSP(this, directiveText);
 }
+#endif
 
 void Document::addConsoleMessage(PassRefPtrWillBeRawPtr<ConsoleMessage> consoleMessage)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!isContextThread()) {
         m_taskRunner->postTask(BLINK_FROM_HERE, AddConsoleMessageTask::create(consoleMessage->source(), consoleMessage->level(), consoleMessage->message()));
         return;
@@ -5130,6 +5340,7 @@ void Document::addConsoleMessage(PassRefPtrWillBeRawPtr<ConsoleMessage> consoleM
         }
     }
     m_frame->console().addMessage(consoleMessage);
+#endif
 }
 
 // FIXME(crbug.com/305497): This should be removed after ExecutionContext-LocalDOMWindow migration.
@@ -5163,8 +5374,11 @@ void Document::tasksWereResumed()
         m_scriptedAnimationController->resume();
 
     MutationObserver::resumeSuspendedObservers();
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_domWindow)
         DOMWindowPerformance::performance(*m_domWindow)->resumeSuspendedObservers();
+#endif
 }
 
 // FIXME: suspendScheduledTasks(), resumeScheduledTasks(), tasksNeedSuspension()
@@ -5192,6 +5406,8 @@ void Document::addToTopLayer(Element* element, const Element* before)
     if (element->isInTopLayer())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(!m_topLayerElements.contains(element));
     ASSERT(!before || m_topLayerElements.contains(before));
     if (before) {
@@ -5200,6 +5416,7 @@ void Document::addToTopLayer(Element* element, const Element* before)
     } else {
         m_topLayerElements.append(element);
     }
+#endif
     element->setIsInTopLayer(true);
 }
 
@@ -5207,17 +5424,24 @@ void Document::removeFromTopLayer(Element* element)
 {
     if (!element->isInTopLayer())
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     size_t position = m_topLayerElements.find(element);
     ASSERT(position != kNotFound);
     m_topLayerElements.remove(position);
+#endif
     element->setIsInTopLayer(false);
 }
 
 HTMLDialogElement* Document::activeModalDialog() const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (m_topLayerElements.isEmpty())
         return 0;
     return toHTMLDialogElement(m_topLayerElements.last().get());
+#endif
 }
 
 void Document::exitPointerLock()
@@ -5266,6 +5490,8 @@ void Document::checkLoadEventSoon()
 bool Document::isDelayingLoadEvent()
 {
 #if ENABLE(OILPAN)
+    ASSERT(false); // BKTODO:
+#if 0
     // Always delay load events until after garbage collection.
     // This way we don't have to explicitly delay load events via
     // incrementLoadEventDelayCount and decrementLoadEventDelayCount in
@@ -5275,6 +5501,7 @@ bool Document::isDelayingLoadEvent()
             checkLoadEventSoon();
         return true;
     }
+#endif
 #endif
     return m_loadEventDelayCount;
 }
@@ -5347,6 +5574,7 @@ void Document::cancelIdleCallback(int id)
     m_scriptedIdleTaskController->cancelCallback(id);
 }
 
+#if 0 // BKTODO:
 PassRefPtrWillBeRawPtr<Touch> Document::createTouch(DOMWindow* window, EventTarget* target, int identifier, double pageX, double pageY, double screenX, double screenY, double radiusX, double radiusY, float rotationAngle, float force) const
 {
     // Match behavior from when these types were integers, and avoid surprises from someone explicitly
@@ -5380,6 +5608,7 @@ PassRefPtrWillBeRawPtr<TouchList> Document::createTouchList(WillBeHeapVector<Ref
 {
     return TouchList::adopt(touches);
 }
+#endif
 
 DocumentLoader* Document::loader() const
 {
@@ -5402,8 +5631,12 @@ Node* eventTargetNodeForDocument(Document* doc)
         return 0;
     Node* node = doc->focusedElement();
     if (!node && doc->isPluginDocument()) {
+        ASSERT(false); // BKTODO:
+#if 0
+
         PluginDocument* pluginDocument = toPluginDocument(doc);
         node = pluginDocument->pluginNode();
+#endif
     }
     if (!node && doc->isHTMLDocument())
         node = doc->body();
@@ -5449,10 +5682,12 @@ bool Document::hasActiveParser()
     return m_activeParserCount || (m_parser && m_parser->processingData());
 }
 
+#if 0 // BKTODO:
 void Document::setContextFeatures(ContextFeatures& features)
 {
     m_contextFeatures = PassRefPtrWillBeRawPtr<ContextFeatures>(features);
 }
+#endif
 
 static LayoutObject* nearestCommonHoverAncestor(LayoutObject* obj1, LayoutObject* obj2)
 {
@@ -5479,7 +5714,7 @@ void Document::updateHoverActiveState(const HitTestRequest& request, Element* in
     Element* innerElementInDocument = innerElement;
     while (innerElementInDocument && innerElementInDocument->document() != this) {
         innerElementInDocument->document().updateHoverActiveState(request, innerElementInDocument);
-        innerElementInDocument = innerElementInDocument->document().ownerElement();
+        ASSERT(false); // BKTODO: innerElementInDocument = innerElementInDocument->document().ownerElement();
     }
 
     updateDistribution();
@@ -5612,12 +5847,15 @@ Document& Document::ensureTemplateDocument()
     if (m_templateDocument)
         return *m_templateDocument;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (isHTMLDocument()) {
         DocumentInit init = DocumentInit::fromContext(contextDocument(), blankURL()).withNewRegistrationContext();
         m_templateDocument = HTMLDocument::create(init);
     } else {
         m_templateDocument = Document::create(DocumentInit(blankURL()));
     }
+#endif
 
     m_templateDocument->m_templateDocumentHost = this; // balanced in dtor.
 
@@ -5635,10 +5873,13 @@ void Document::didAssociateFormControl(Element* element)
 
 void Document::removeFormAssociation(Element* element)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     auto it = m_associatedFormControls.find(element);
     if (it == m_associatedFormControls.end())
         return;
     m_associatedFormControls.remove(it);
+#endif
     if (m_associatedFormControls.isEmpty())
         m_didAssociateFormControlsTimer.stop();
 }
@@ -5780,41 +6021,6 @@ void Document::platformColorsChanged()
     styleEngine().platformColorsChanged();
 }
 
-v8::Local<v8::Object> Document::wrap(v8::Isolate* isolate, v8::Local<v8::Object> creationContext)
-{
-    // It's possible that no one except for the new wrapper owns this object at
-    // this moment, so we have to prevent GC to collect this object until the
-    // object gets associated with the wrapper.
-    RefPtrWillBeRawPtr<Document> protect(this);
-
-    ASSERT(!DOMDataStore::containsWrapper(this, isolate));
-
-    const WrapperTypeInfo* wrapperType = wrapperTypeInfo();
-
-    if (frame() && frame()->script().initializeMainWorld()) {
-        // initializeMainWorld may have created a wrapper for the object, retry from the start.
-        v8::Local<v8::Object> wrapper = DOMDataStore::getWrapper(this, isolate);
-        if (!wrapper.IsEmpty())
-            return wrapper;
-    }
-
-    v8::Local<v8::Object> wrapper = V8DOMWrapper::createWrapper(isolate, creationContext, wrapperType, this);
-    if (UNLIKELY(wrapper.IsEmpty()))
-        return wrapper;
-
-    wrapperType->installConditionallyEnabledProperties(wrapper, isolate);
-    return associateWithWrapper(isolate, wrapperType, wrapper);
-}
-
-v8::Local<v8::Object> Document::associateWithWrapper(v8::Isolate* isolate, const WrapperTypeInfo* wrapperType, v8::Local<v8::Object> wrapper)
-{
-    wrapper = V8DOMWrapper::associateObjectWithWrapper(isolate, this, wrapperType, wrapper);
-    DOMWrapperWorld& world = DOMWrapperWorld::current(isolate);
-    if (world.isMainWorld() && frame())
-        frame()->script().windowProxy(world)->updateDocumentWrapper(wrapper);
-    return wrapper;
-}
-
 bool Document::isSecureContext(String& errorMessage, const SecureContextCheck privilegeContextCheck) const
 {
     return isSecureContextImpl(&errorMessage, privilegeContextCheck);
@@ -5827,6 +6033,9 @@ bool Document::isSecureContext(const SecureContextCheck privilegeContextCheck) c
 
 WebTaskRunner* Document::loadingTaskRunner() const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (frame())
         return frame()->frameScheduler()->loadingTaskRunner();
     if (m_importsController)
@@ -5834,10 +6043,14 @@ WebTaskRunner* Document::loadingTaskRunner() const
     if (m_contextDocument)
         return m_contextDocument->loadingTaskRunner();
     return Platform::current()->currentThread()->scheduler()->loadingTaskRunner();
+#endif
 }
 
 WebTaskRunner* Document::timerTaskRunner() const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (frame())
         return m_frame->frameScheduler()->timerTaskRunner();
     if (m_importsController)
@@ -5845,17 +6058,23 @@ WebTaskRunner* Document::timerTaskRunner() const
     if (m_contextDocument)
         return m_contextDocument->timerTaskRunner();
     return Platform::current()->currentThread()->scheduler()->timerTaskRunner();
+#endif
 }
 
 void Document::enforceStrictMixedContentChecking()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     securityContext().setShouldEnforceStrictMixedContentChecking(true);
     if (frame())
         frame()->loader().client()->didEnforceStrictMixedContentChecking();
+#endif
 }
 
 DEFINE_TRACE(Document)
 {
+    ASSERT(false); // BKTODO:
+#if 0
 #if ENABLE(OILPAN)
     visitor->trace(m_importsController);
     visitor->trace(m_docType);
@@ -5918,19 +6137,9 @@ DEFINE_TRACE(Document)
     ExecutionContext::trace(visitor);
     DocumentLifecycleNotifier::trace(visitor);
     SecurityContext::trace(visitor);
+#endif
 }
 
 template class CORE_TEMPLATE_EXPORT WillBeHeapSupplement<Document>;
 
 } // namespace blink
-
-#ifndef NDEBUG
-using namespace blink;
-void showLiveDocumentInstances()
-{
-    Document::WeakDocumentSet& set = Document::liveDocumentSet();
-    fprintf(stderr, "There are %u documents currently alive:\n", set.size());
-    for (Document* document : set)
-        fprintf(stderr, "- Document %p URL: %s\n", document, document->url().string().utf8().data());
-}
-#endif
