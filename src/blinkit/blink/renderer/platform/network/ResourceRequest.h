@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourceRequest.h
+// Description: ResourceRequest Class
+//      Author: Ziming Li
+//     Created: 2021-07-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2006 Samuel Weinig <sam.weinig@gmail.com>
@@ -32,11 +43,13 @@
 #include "platform/network/EncodedFormData.h"
 #include "platform/network/HTTPHeaderMap.h"
 #include "platform/network/HTTPParsers.h"
-#include "platform/network/ResourceLoadPriority.h"
+// BKTODO: #include "platform/network/ResourceLoadPriority.h"
 #include "platform/weborigin/KURL.h"
+#if 0 // BKTODO:
 #include "platform/weborigin/Referrer.h"
 #include "platform/weborigin/SecurityOrigin.h"
 #include "public/platform/WebURLRequest.h"
+#endif
 #include "wtf/OwnPtr.h"
 
 namespace blink {
@@ -81,7 +94,7 @@ public:
 
     ResourceRequest(const String& urlString)
     {
-        initialize(KURL(ParsedURLString, urlString));
+        ASSERT(false); // BKTODO: initialize(KURL(ParsedURLString, urlString));
     }
 
     ResourceRequest(const KURL& url)
@@ -89,10 +102,12 @@ public:
         initialize(url);
     }
 
+#if 0 // BKTODO:
     explicit ResourceRequest(CrossThreadResourceRequestData*);
 
     // Gets a copy of the data suitable for passing to another thread.
     PassOwnPtr<CrossThreadResourceRequestData> copyData() const;
+#endif
 
     bool isNull() const;
     bool isEmpty() const;
@@ -111,8 +126,10 @@ public:
     const KURL& firstPartyForCookies() const;
     void setFirstPartyForCookies(const KURL& firstPartyForCookies);
 
+#if 0 // BKTODO:
     PassRefPtr<SecurityOrigin> requestorOrigin() const;
     void setRequestorOrigin(PassRefPtr<SecurityOrigin>);
+#endif
 
     const AtomicString& httpMethod() const;
     void setHTTPMethod(const AtomicString&);
@@ -129,6 +146,7 @@ public:
 
     bool didSetHTTPReferrer() const { return m_didSetHTTPReferrer; }
     const AtomicString& httpReferrer() const { return httpHeaderField(HTTPNames::Referer); }
+#if 0 // BKTODO:
     ReferrerPolicy referrerPolicy() const { return m_referrerPolicy; }
     void setHTTPReferrer(const Referrer&);
     void clearHTTPReferrer();
@@ -140,6 +158,7 @@ public:
     void setHTTPOrigin(PassRefPtr<SecurityOrigin>);
     void clearHTTPOrigin();
     void addHTTPOriginIfNeeded(PassRefPtr<SecurityOrigin>);
+#endif
 
     const AtomicString& httpUserAgent() const { return httpHeaderField(HTTPNames::User_Agent); }
     void setHTTPUserAgent(const AtomicString& httpUserAgent) { setHTTPHeaderField(HTTPNames::User_Agent, httpUserAgent); }
@@ -154,8 +173,10 @@ public:
     bool allowStoredCredentials() const;
     void setAllowStoredCredentials(bool allowCredentials);
 
+#if 0 // BKTODO:
     ResourceLoadPriority priority() const;
     void setPriority(ResourceLoadPriority, int intraPriorityValue = 0);
+#endif
 
     bool isConditional() const;
 
@@ -183,9 +204,11 @@ public:
     int appCacheHostID() const { return m_appCacheHostID; }
     void setAppCacheHostID(int id) { m_appCacheHostID = id; }
 
+#if 0 // BKTODO:
     // True if request was user initiated.
     bool hasUserGesture() const { return m_hasUserGesture; }
     void setHasUserGesture(bool);
+#endif
 
     // True if request should be downloaded to file.
     bool downloadToFile() const { return m_downloadToFile; }
@@ -208,6 +231,7 @@ public:
     ExtraData* extraData() const { return m_extraData.get(); }
     void setExtraData(PassRefPtr<ExtraData> extraData) { m_extraData = extraData; }
 
+#if 0 // BKTODO:
     WebURLRequest::RequestContext requestContext() const { return m_requestContext; }
     void setRequestContext(WebURLRequest::RequestContext context) { m_requestContext = context; }
 
@@ -225,6 +249,7 @@ public:
 
     WebURLRequest::LoFiState loFiState() const { return m_loFiState; }
     void setLoFiState(WebURLRequest::LoFiState loFiState) { m_loFiState = loFiState; }
+#endif
 
     bool cacheControlContainsNoCache() const;
     bool cacheControlContainsNoStore() const;
@@ -256,24 +281,25 @@ private:
     ResourceRequestCachePolicy m_cachePolicy;
     double m_timeoutInterval; // 0 is a magic value for platform default on platforms that have one.
     KURL m_firstPartyForCookies;
-    RefPtr<SecurityOrigin> m_requestorOrigin;
+    // BKTODO: RefPtr<SecurityOrigin> m_requestorOrigin;
     AtomicString m_httpMethod;
     HTTPHeaderMap m_httpHeaderFields;
     RefPtr<EncodedFormData> m_httpBody;
     bool m_allowStoredCredentials : 1;
     bool m_reportUploadProgress : 1;
     bool m_reportRawHeaders : 1;
-    bool m_hasUserGesture : 1;
+    // BKTODO: bool m_hasUserGesture : 1;
     bool m_downloadToFile : 1;
     bool m_useStreamOnResponse : 1;
     bool m_skipServiceWorker : 1;
     bool m_shouldResetAppCache : 1;
-    ResourceLoadPriority m_priority;
+    // BKTODO: ResourceLoadPriority m_priority;
     int m_intraPriorityValue;
     int m_requestorID;
     int m_requestorProcessID;
     int m_appCacheHostID;
     RefPtr<ExtraData> m_extraData;
+#if 0 // BKTODO:
     WebURLRequest::RequestContext m_requestContext;
     WebURLRequest::FrameType m_frameType;
     WebURLRequest::FetchRequestMode m_fetchRequestMode;
@@ -281,6 +307,7 @@ private:
     WebURLRequest::FetchRedirectMode m_fetchRedirectMode;
     WebURLRequest::LoFiState m_loFiState;
     ReferrerPolicy m_referrerPolicy;
+#endif
     bool m_didSetHTTPReferrer;
     bool m_checkForBrowserSideNavigation;
     double m_uiStartTime;
@@ -299,6 +326,7 @@ bool equalIgnoringHeaderFields(const ResourceRequest&, const ResourceRequest&);
 inline bool operator==(const ResourceRequest& a, const ResourceRequest& b) { return ResourceRequest::compare(a, b); }
 inline bool operator!=(ResourceRequest& a, const ResourceRequest& b) { return !(a == b); }
 
+#if 0 // BKTODO:
 struct CrossThreadResourceRequestData {
     WTF_MAKE_NONCOPYABLE(CrossThreadResourceRequestData); USING_FAST_MALLOC(CrossThreadResourceRequestData);
 public:
@@ -339,6 +367,7 @@ public:
     InputToLoadPerfMetricReportPolicy m_inputPerfMetricReportPolicy;
     bool m_followedRedirect;
 };
+#endif
 
 } // namespace blink
 

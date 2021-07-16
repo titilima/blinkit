@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourceRequest.cpp
+// Description: ResourceRequest Class
+//      Author: Ziming Li
+//     Created: 2021-07-16
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2009, 2012 Google Inc. All rights reserved.
@@ -27,13 +38,14 @@
 #include "platform/network/ResourceRequest.h"
 
 #include "platform/HTTPNames.h"
-#include "platform/weborigin/SecurityOrigin.h"
+// BKTODO: #include "platform/weborigin/SecurityOrigin.h"
 #include "public/platform/WebURLRequest.h"
 
 namespace blink {
 
 double ResourceRequest::s_defaultTimeoutInterval = INT_MAX;
 
+#if 0 // BKTODO:
 ResourceRequest::ResourceRequest(CrossThreadResourceRequestData* data)
     : ResourceRequest()
 {
@@ -113,6 +125,7 @@ PassOwnPtr<CrossThreadResourceRequestData> ResourceRequest::copyData() const
     data->m_followedRedirect = m_followedRedirect;
     return data.release();
 }
+#endif
 
 bool ResourceRequest::isEmpty() const
 {
@@ -121,7 +134,7 @@ bool ResourceRequest::isEmpty() const
 
 bool ResourceRequest::isNull() const
 {
-    return m_url.isNull();
+    return m_url.isEmpty();
 }
 
 const KURL& ResourceRequest::url() const
@@ -139,8 +152,11 @@ void ResourceRequest::removeCredentials()
     if (m_url.user().isEmpty() && m_url.pass().isEmpty())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     m_url.setUser(String());
     m_url.setPass(String());
+#endif
 }
 
 ResourceRequestCachePolicy ResourceRequest::cachePolicy() const
@@ -173,6 +189,7 @@ void ResourceRequest::setFirstPartyForCookies(const KURL& firstPartyForCookies)
     m_firstPartyForCookies = firstPartyForCookies;
 }
 
+#if 0 // BKTODO:
 PassRefPtr<SecurityOrigin> ResourceRequest::requestorOrigin() const
 {
     return m_requestorOrigin;
@@ -182,6 +199,7 @@ void ResourceRequest::setRequestorOrigin(PassRefPtr<SecurityOrigin> requestorOri
 {
     m_requestorOrigin = requestorOrigin;
 }
+#endif
 
 const AtomicString& ResourceRequest::httpMethod() const
 {
@@ -208,6 +226,7 @@ void ResourceRequest::setHTTPHeaderField(const AtomicString& name, const AtomicS
     m_httpHeaderFields.set(name, value);
 }
 
+#if 0 // BKTODO:
 void ResourceRequest::setHTTPReferrer(const Referrer& referrer)
 {
     if (referrer.referrer.isEmpty())
@@ -264,6 +283,7 @@ void ResourceRequest::addHTTPOriginIfNeeded(PassRefPtr<SecurityOrigin> origin)
     }
     setHTTPOrigin(origin);
 }
+#endif
 
 void ResourceRequest::clearHTTPUserAgent()
 {
@@ -290,6 +310,7 @@ void ResourceRequest::setAllowStoredCredentials(bool allowCredentials)
     m_allowStoredCredentials = allowCredentials;
 }
 
+#if 0 // BKTODO:
 ResourceLoadPriority ResourceRequest::priority() const
 {
     return m_priority;
@@ -300,6 +321,7 @@ void ResourceRequest::setPriority(ResourceLoadPriority priority, int intraPriori
     m_priority = priority;
     m_intraPriorityValue = intraPriorityValue;
 }
+#endif
 
 void ResourceRequest::addHTTPHeaderField(const AtomicString& name, const AtomicString& value)
 {
@@ -340,11 +362,14 @@ bool equalIgnoringHeaderFields(const ResourceRequest& a, const ResourceRequest& 
     if (a.allowStoredCredentials() != b.allowStoredCredentials())
         return false;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (a.priority() != b.priority())
         return false;
 
     if (a.referrerPolicy() != b.referrerPolicy())
         return false;
+#endif
 
     EncodedFormData* formDataA = a.httpBody();
     EncodedFormData* formDataB = b.httpBody();
@@ -373,22 +398,31 @@ bool ResourceRequest::compare(const ResourceRequest& a, const ResourceRequest& b
 
 bool ResourceRequest::isConditional() const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return (m_httpHeaderFields.contains(HTTPNames::If_Match)
         || m_httpHeaderFields.contains(HTTPNames::If_Modified_Since)
         || m_httpHeaderFields.contains(HTTPNames::If_None_Match)
         || m_httpHeaderFields.contains(HTTPNames::If_Range)
         || m_httpHeaderFields.contains(HTTPNames::If_Unmodified_Since));
+#endif
 }
 
+#if 0 // BKTODO:
 void ResourceRequest::setHasUserGesture(bool hasUserGesture)
 {
     m_hasUserGesture |= hasUserGesture;
 }
+#endif
 
 const CacheControlHeader& ResourceRequest::cacheControlHeader() const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_cacheControlHeaderCache.parsed)
         m_cacheControlHeaderCache = parseCacheControlDirectives(m_httpHeaderFields.get(HTTPNames::Cache_Control), m_httpHeaderFields.get(HTTPNames::Pragma));
+#endif
     return m_cacheControlHeaderCache;
 }
 
@@ -404,7 +438,8 @@ bool ResourceRequest::cacheControlContainsNoStore() const
 
 bool ResourceRequest::hasCacheValidatorFields() const
 {
-    return !m_httpHeaderFields.get(HTTPNames::Last_Modified).isEmpty() || !m_httpHeaderFields.get(HTTPNames::ETag).isEmpty();
+    ASSERT(false); // BKTODO: return !m_httpHeaderFields.get(HTTPNames::Last_Modified).isEmpty() || !m_httpHeaderFields.get(HTTPNames::ETag).isEmpty();
+    return false;
 }
 
 void ResourceRequest::initialize(const KURL& url)
@@ -416,16 +451,17 @@ void ResourceRequest::initialize(const KURL& url)
     m_allowStoredCredentials = true;
     m_reportUploadProgress = false;
     m_reportRawHeaders = false;
-    m_hasUserGesture = false;
+    // BKTODO: m_hasUserGesture = false;
     m_downloadToFile = false;
     m_useStreamOnResponse = false;
     m_skipServiceWorker = false;
     m_shouldResetAppCache = false;
-    m_priority = ResourceLoadPriorityLowest;
+    // BKTODO: m_priority = ResourceLoadPriorityLowest;
     m_intraPriorityValue = 0;
     m_requestorID = 0;
     m_requestorProcessID = 0;
     m_appCacheHostID = 0;
+#if 0 // BKTODO:
     m_requestContext = WebURLRequest::RequestContextUnspecified;
     m_frameType = WebURLRequest::FrameTypeNone;
     m_fetchRequestMode = WebURLRequest::FetchRequestModeNoCORS;
@@ -436,13 +472,14 @@ void ResourceRequest::initialize(const KURL& url)
     m_fetchRedirectMode = WebURLRequest::FetchRedirectModeFollow;
     m_referrerPolicy = ReferrerPolicyDefault;
     m_loFiState = WebURLRequest::LoFiUnspecified;
+#endif
     m_didSetHTTPReferrer = false;
     m_checkForBrowserSideNavigation = true;
     m_uiStartTime = 0;
     m_originatesFromReservedIPRange = false;
     m_inputPerfMetricReportPolicy = InputToLoadPerfMetricReportPolicy::NoReport;
     m_followedRedirect = false;
-    m_requestorOrigin = SecurityOrigin::createUnique();
+    // BKTODO: m_requestorOrigin = SecurityOrigin::createUnique();
 }
 
 } // namespace blink
