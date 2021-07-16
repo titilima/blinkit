@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentInit.cpp
+// Description: DocumentInit Class
+//      Author: Ziming Li
+//     Created: 2021-07-16
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -30,7 +41,7 @@
 #include "core/dom/Document.h"
 #include "core/dom/custom/CustomElementRegistrationContext.h"
 #include "core/frame/LocalFrame.h"
-#include "core/html/HTMLFrameOwnerElement.h"
+// BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/imports/HTMLImportsController.h"
 #include "core/loader/DocumentLoader.h"
 #include "platform/RuntimeEnabledFeatures.h"
@@ -43,10 +54,14 @@ static Document* parentDocument(LocalFrame* frame)
 {
     if (!frame)
         return 0;
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     Element* ownerElement = frame->deprecatedLocalOwner();
     if (!ownerElement)
         return 0;
     return &ownerElement->document();
+#endif
 }
 
 
@@ -55,12 +70,16 @@ static Document* ownerDocument(LocalFrame* frame)
     if (!frame)
         return 0;
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     Frame* ownerFrame = frame->tree().parent();
     if (!ownerFrame)
         ownerFrame = frame->loader().opener();
     if (!ownerFrame || !ownerFrame->isLocalFrame())
         return 0;
     return toLocalFrame(ownerFrame)->document();
+#endif
 }
 
 DocumentInit::DocumentInit(const KURL& url, LocalFrame* frame, WeakPtrWillBeRawPtr<Document> contextDocument, HTMLImportsController* importsController)
@@ -101,11 +120,13 @@ LocalFrame* DocumentInit::frameForSecurityContext() const
     return 0;
 }
 
+#if 0 // BKTODO:
 SandboxFlags DocumentInit::sandboxFlags() const
 {
     ASSERT(frameForSecurityContext());
     return frameForSecurityContext()->loader().effectiveSandboxFlags();
 }
+#endif
 
 bool DocumentInit::shouldEnforceStrictMixedContentChecking() const
 {
@@ -113,6 +134,7 @@ bool DocumentInit::shouldEnforceStrictMixedContentChecking() const
     return frameForSecurityContext()->loader().shouldEnforceStrictMixedContentChecking();
 }
 
+#if 0 // BKTODO:
 SecurityContext::InsecureRequestsPolicy DocumentInit::insecureRequestsPolicy() const
 {
     ASSERT(frameForSecurityContext());
@@ -124,23 +146,29 @@ SecurityContext::InsecureNavigationsSet* DocumentInit::insecureNavigationsToUpgr
     ASSERT(frameForSecurityContext());
     return frameForSecurityContext()->loader().insecureNavigationsToUpgrade();
 }
+#endif
 
 bool DocumentInit::isHostedInReservedIPRange() const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (LocalFrame* frame = frameForSecurityContext()) {
         if (DocumentLoader* loader = frame->loader().provisionalDocumentLoader() ? frame->loader().provisionalDocumentLoader() : frame->loader().documentLoader()) {
             if (!loader->response().remoteIPAddress().isEmpty())
                 return Platform::current()->isReservedIPAddress(loader->response().remoteIPAddress());
         }
     }
+#endif
     return false;
 }
 
+#if 0 // BKTODO:
 Settings* DocumentInit::settings() const
 {
     ASSERT(frameForSecurityContext());
     return frameForSecurityContext()->settings();
 }
+#endif
 
 KURL DocumentInit::parentBaseURL() const
 {

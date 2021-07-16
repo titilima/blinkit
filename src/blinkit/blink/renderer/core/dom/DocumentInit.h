@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentInit.h
+// Description: DocumentInit Class
+//      Author: Ziming Li
+//     Created: 2021-07-16
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -29,8 +40,10 @@
 #define DocumentInit_h
 
 #include "core/CoreExport.h"
+#if 0 // BKTODO:
 #include "core/dom/SandboxFlags.h"
 #include "core/dom/SecurityContext.h"
+#endif
 #include "core/dom/custom/CustomElementRegistrationContext.h"
 #include "platform/heap/Handle.h"
 #include "platform/weborigin/KURL.h"
@@ -61,17 +74,19 @@ public:
     bool shouldSetURL() const;
     bool isSeamlessAllowedFor(Document* child) const;
     bool shouldReuseDefaultView() const { return m_shouldReuseDefaultView; }
-    SandboxFlags sandboxFlags() const;
+    // BKTODO: SandboxFlags sandboxFlags() const;
     bool shouldEnforceStrictMixedContentChecking() const;
     bool isHostedInReservedIPRange() const;
+#if 0 // BKTODO:
     SecurityContext::InsecureRequestsPolicy insecureRequestsPolicy() const;
     SecurityContext::InsecureNavigationsSet* insecureNavigationsToUpgrade() const;
+#endif
 
     Document* parent() const { return m_parent.get(); }
     Document* owner() const { return m_owner.get(); }
     KURL parentBaseURL() const;
     LocalFrame* ownerFrame() const;
-    Settings* settings() const;
+    // BKTODO: Settings* settings() const;
 
     DocumentInit& withRegistrationContext(CustomElementRegistrationContext*);
     DocumentInit& withNewRegistrationContext();
