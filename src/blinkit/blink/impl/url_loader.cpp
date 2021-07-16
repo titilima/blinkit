@@ -14,7 +14,7 @@
 #include "blinkit/app/app_impl.h"
 #include "blinkit/loader/loader_thread.h"
 #include "blinkit/loader/tasks/http_loader_task.h"
-#if 0 // BKTODO: def BLINKIT_UI_ENABLED
+#ifdef BLINKIT_UI_ENABLED
 #   include "blinkit/loader/tasks/file_loader_task.h"
 #   include "blinkit/loader/tasks/res_loader_task.h"
 #endif
@@ -30,28 +30,25 @@ void URLLoader::loadAsynchronously(const ResourceRequest &request, WebURLLoaderC
     LoaderTask *task = nullptr;
     do {
 #ifdef BLINKIT_CRAWLER_ENABLED
-        if (url.scheme_is_in_http_family())
+        if (request.IsForCrawler())
         {
-            if (request.ForCrawler())
-                ASSERT(false); // BKTODO: task = new HTTPLoaderTask(request, m_taskRunner, client);
+            if (url.scheme_is_in_http_family())
+                task = new HTTPLoaderTask(request, m_taskRunner, client);
             else
-                NOTREACHED();
+                ASSERT(url.scheme_is_in_http_family());
             break;
         }
-
-        if (request.ForCrawler())
-            break;
 #endif
 
-#ifdef BLINKIT_CRAWLER_ENABLED
+#ifdef BLINKIT_UI_ENABLED
         if (url.scheme_is_file())
         {
-            ASSERT(false); // BKTODO: task = new FileLoaderTask(request, m_taskRunner, client);
+            task = new FileLoaderTask(request, m_taskRunner, client);
             break;
         }
         if (url.scheme_is("res"))
         {
-            ASSERT(false); // BKTODO: task = new ResLoaderTask(request, m_taskRunner, client);
+            task = new ResLoaderTask(request, m_taskRunner, client);
             break;
         }
 #endif
