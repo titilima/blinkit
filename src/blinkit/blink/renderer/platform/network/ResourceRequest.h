@@ -51,6 +51,9 @@
 #include "public/platform/WebURLRequest.h"
 #endif
 #include "wtf/OwnPtr.h"
+#ifdef BLINKIT_CRAWLER_ENABLED
+#   include "bk_crawler.h"
+#endif
 
 namespace blink {
 
@@ -107,6 +110,12 @@ public:
 
     // Gets a copy of the data suitable for passing to another thread.
     PassOwnPtr<CrossThreadResourceRequestData> copyData() const;
+#endif
+
+#ifdef BLINKIT_CRAWLER_ENABLED
+    BkCrawler Crawler(void) const { return m_crawler; }
+    bool IsForCrawler(void) const { return nullptr != m_crawler; }
+    void SetCrawler(BkCrawler crawler) { m_crawler = crawler; }
 #endif
 
     bool isNull() const;
@@ -277,6 +286,9 @@ private:
 
     const CacheControlHeader& cacheControlHeader() const;
 
+#ifdef BLINKIT_CRAWLER_ENABLED
+    BkCrawler m_crawler = nullptr;
+#endif
     KURL m_url;
     ResourceRequestCachePolicy m_cachePolicy;
     double m_timeoutInterval; // 0 is a magic value for platform default on platforms that have one.
