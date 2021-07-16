@@ -523,8 +523,8 @@ public:
     void write(const SegmentedString& text, Document* ownerDocument = nullptr, ExceptionState& = ASSERT_NO_EXCEPTION);
     void write(const String& text, Document* ownerDocument = nullptr, ExceptionState& = ASSERT_NO_EXCEPTION);
     void writeln(const String& text, Document* ownerDocument = nullptr, ExceptionState& = ASSERT_NO_EXCEPTION);
-    void write(LocalDOMWindow*, const Vector<String>& text, ExceptionState&);
-    void writeln(LocalDOMWindow*, const Vector<String>& text, ExceptionState&);
+    void write(LocalDOMWindow*, const std::vector<std::string>& text, ExceptionState&);
+    void writeln(LocalDOMWindow*, const std::vector<std::string>& text, ExceptionState&);
 
     bool wellFormed() const { return m_wellFormed; }
 

@@ -2992,21 +2992,21 @@ void Document::writeln(const String& text, Document* ownerDocument, ExceptionSta
     write("\n", ownerDocument);
 }
 
-void Document::write(LocalDOMWindow* callingWindow, const Vector<String>& text, ExceptionState& exceptionState)
+void Document::write(LocalDOMWindow* callingWindow, const std::vector<std::string>& text, ExceptionState& exceptionState)
 {
     ASSERT(callingWindow);
     StringBuilder builder;
-    for (const String& string : text)
-        builder.append(string);
+    for (const std::string& string : text)
+        builder.append(String::fromStdUTF8(string));
     write(builder.toString(), callingWindow->document(), exceptionState);
 }
 
-void Document::writeln(LocalDOMWindow* callingWindow, const Vector<String>& text, ExceptionState& exceptionState)
+void Document::writeln(LocalDOMWindow* callingWindow, const std::vector<std::string>& text, ExceptionState& exceptionState)
 {
     ASSERT(callingWindow);
     StringBuilder builder;
-    for (const String& string : text)
-        builder.append(string);
+    for (const std::string& string : text)
+        builder.append(String::fromStdUTF8(string));
     writeln(builder.toString(), callingWindow->document(), exceptionState);
 }
 
