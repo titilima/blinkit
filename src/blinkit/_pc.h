@@ -65,5 +65,8 @@ extern HMODULE theModule;
 #endif
 
 #include "base/logging.h"
+#ifdef BLINKIT_UI_ENABLED
+#   include "skia/_skia.h"
+#endif
 
 #endif // BLINKIT_BLINKIT__PC_H
