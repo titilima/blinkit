@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PropertyHandle.h
+// Description: PropertyHandle Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -105,5 +116,18 @@ template<> struct HashTraits<blink::PropertyHandle> : SimpleClassHashTraits<blin
 };
 
 } // namespace WTF
+
+namespace std {
+
+template<>
+struct hash<blink::PropertyHandle>
+{
+    std::size_t operator()(const blink::PropertyHandle &handle) const noexcept
+    {
+        return handle.hash();
+    }
+};
+
+}
 
 #endif // PropertyHandle_h
