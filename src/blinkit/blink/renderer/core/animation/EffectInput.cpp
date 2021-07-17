@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EffectInput.cpp
+// Description: EffectInput Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -30,8 +41,6 @@
 
 #include "core/animation/EffectInput.h"
 
-#include "bindings/core/v8/Dictionary.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/animation/AnimationInputHelpers.h"
 #include "core/animation/KeyframeEffectModel.h"
 #include "core/animation/StringKeyframe.h"
@@ -59,6 +68,9 @@ EffectModel* EffectInput::convert(Element* element, const Vector<Dictionary>& ke
     StringKeyframeVector keyframes;
     double lastOffset = 0;
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     for (const auto& keyframeDictionary : keyframeDictionaryVector) {
         RefPtr<StringKeyframe> keyframe = StringKeyframe::create();
 
@@ -154,10 +166,13 @@ EffectModel* EffectInput::convert(Element* element, const Vector<Dictionary>& ke
     keyframeEffectModel->forceConversionsToAnimatableValues(*element, element->computedStyle());
 
     return keyframeEffectModel;
+#endif
 }
 
 EffectModel* EffectInput::convert(Element* element, const EffectModelOrDictionarySequenceOrDictionary& effectInput, ExceptionState& exceptionState)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (effectInput.isEffectModel())
         return effectInput.getAsEffectModel();
     if (effectInput.isDictionarySequence())
@@ -167,6 +182,7 @@ EffectModel* EffectInput::convert(Element* element, const EffectModelOrDictionar
         keyframes.append(effectInput.getAsDictionary());
         return convert(element, keyframes, exceptionState);
     }
+#endif
     return nullptr;
 }
 
