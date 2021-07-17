@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Animation.h
+// Description: Animation Class
+//      Author: Ziming Li
+//     Created: 2021-07-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,8 +42,6 @@
 #ifndef Animation_h
 #define Animation_h
 
-#include "bindings/core/v8/ScriptPromise.h"
-#include "bindings/core/v8/ScriptPromiseProperty.h"
 #include "core/CSSPropertyNames.h"
 #include "core/CoreExport.h"
 #include "core/animation/AnimationEffect.h"
@@ -101,14 +110,18 @@ public:
     void reverse();
     void finish(ExceptionState&);
 
+#if 0 // BKTODO:
     ScriptPromise finished(ScriptState*);
     ScriptPromise ready(ScriptState*);
+#endif
 
     bool playing() const { return !(playStateInternal() == Idle || limited() || m_paused || m_isPausedForTesting); }
     bool limited() const { return limited(currentTimeInternal()); }
     bool finishedInternal() const { return m_finished; }
 
+#if 0 // BKTODO:
     DEFINE_ATTRIBUTE_EVENT_LISTENER(finish);
+#endif
 
     const AtomicString& interfaceName() const override;
     ExecutionContext* executionContext() const override;
@@ -226,9 +239,11 @@ private:
 
     unsigned m_sequenceNumber;
 
+#if 0 // BKTODO:
     typedef ScriptPromiseProperty<Member<Animation>, Member<Animation>, Member<DOMException>> AnimationPromise;
     Member<AnimationPromise> m_finishedPromise;
     Member<AnimationPromise> m_readyPromise;
+#endif
 
     Member<AnimationEffect> m_content;
     Member<AnimationTimeline> m_timeline;

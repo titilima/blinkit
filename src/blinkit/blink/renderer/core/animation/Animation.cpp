@@ -64,6 +64,9 @@ Animation* Animation::create(AnimationEffect* effect, AnimationTimeline* timelin
         return nullptr;
     }
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     Animation* animation = new Animation(timeline->document()->contextDocument().get(), *timeline, effect);
     animation->suspendIfNeeded();
 
@@ -73,6 +76,7 @@ Animation* Animation::create(AnimationEffect* effect, AnimationTimeline* timelin
     }
 
     return animation;
+#endif
 }
 
 Animation::Animation(ExecutionContext* executionContext, AnimationTimeline& timeline, AnimationEffect* content)
@@ -597,6 +601,7 @@ void Animation::finish(ExceptionState& exceptionState)
     ASSERT(limited());
 }
 
+#if 0 // BKTODO:
 ScriptPromise Animation::finished(ScriptState* scriptState)
 {
     if (!m_finishedPromise) {
@@ -616,6 +621,7 @@ ScriptPromise Animation::ready(ScriptState* scriptState)
     }
     return m_readyPromise->promise(scriptState->world());
 }
+#endif
 
 const AtomicString& Animation::interfaceName() const
 {
@@ -919,6 +925,7 @@ void Animation::endUpdatingState()
 
 void Animation::createCompositorPlayer()
 {
+#if 0 // BKTODO:
     if (RuntimeEnabledFeatures::compositorAnimationTimelinesEnabled() && Platform::current()->isThreadedAnimationEnabled() && !m_compositorPlayer) {
         ASSERT(Platform::current()->compositorSupport());
         m_compositorPlayer = adoptPtr(Platform::current()->compositorSupport()->createAnimationPlayer());
@@ -926,6 +933,7 @@ void Animation::createCompositorPlayer()
         m_compositorPlayer->setAnimationDelegate(this);
         attachCompositorTimeline();
     }
+#endif
 
     attachCompositedLayers();
 }
@@ -1009,6 +1017,8 @@ Animation::PlayStateUpdateScope::~PlayStateUpdateScope()
             TRACE_EVENT_NESTABLE_ASYNC_INSTANT1("blink.animations,devtools.timeline,benchmark", "Animation", m_animation, "data", InspectorAnimationStateEvent::data(*m_animation));
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     // Ordering is important, the ready promise should resolve/reject before
     // the finished promise.
     if (m_animation->m_readyPromise && newPlayState != oldPlayState) {
@@ -1038,6 +1048,7 @@ Animation::PlayStateUpdateScope::~PlayStateUpdateScope()
             m_animation->m_finishedPromise->reset();
         }
     }
+#endif
 
     if (oldPlayState != newPlayState && (oldPlayState == Idle || newPlayState == Idle)) {
         m_animation->setOutdated();
@@ -1095,8 +1106,8 @@ DEFINE_TRACE(Animation)
     visitor->trace(m_content);
     visitor->trace(m_timeline);
     visitor->trace(m_pendingFinishedEvent);
-    visitor->trace(m_finishedPromise);
-    visitor->trace(m_readyPromise);
+    // BKTODO: visitor->trace(m_finishedPromise);
+    // BKTODO: visitor->trace(m_readyPromise);
     RefCountedGarbageCollectedEventTargetWithInlineData<Animation>::trace(visitor);
     ActiveDOMObject::trace(visitor);
 }
