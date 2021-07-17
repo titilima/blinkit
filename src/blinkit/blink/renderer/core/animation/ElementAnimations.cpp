@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ElementAnimations.cpp
+// Description: ElementAnimations Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -62,7 +73,7 @@ void ElementAnimations::dispose()
 void ElementAnimations::updateAnimationFlags(ComputedStyle& style)
 {
     for (const auto& entry : m_animations) {
-        const Animation& animation = *entry.key;
+        const Animation& animation = *entry.first;
         ASSERT(animation.effect());
         // FIXME: Needs to consider AnimationGroup once added.
         ASSERT(animation.effect()->isKeyframeEffect());
@@ -95,7 +106,7 @@ void ElementAnimations::updateAnimationFlags(ComputedStyle& style)
 void ElementAnimations::restartAnimationOnCompositor()
 {
     for (const auto& entry : m_animations)
-        entry.key->restartAnimationOnCompositor();
+        entry.first->restartAnimationOnCompositor();
 }
 
 DEFINE_TRACE(ElementAnimations)
