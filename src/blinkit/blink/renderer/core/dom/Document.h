@@ -563,9 +563,13 @@ public:
     DocumentParser* parser() const { return m_parser.get(); }
     ScriptableDocumentParser* scriptableDocumentParser() const;
 
+#if 0 // BKTODO:
     bool printing() const { return m_printing; }
     void setPrinting(bool isPrinting) { m_printing = isPrinting; }
     bool wasPrinting() const { return m_wasPrinting; }
+#else
+    constexpr bool printing(void) const { return false; }
+#endif
 
     bool paginatedForScreen() const { return m_paginatedForScreen; }
     void setPaginatedForScreen(bool p) { m_paginatedForScreen = p; }
@@ -1237,8 +1241,10 @@ private:
 
     RefPtrWillBeMember<CSSStyleSheet> m_elemSheet;
 
+#if 0 // BKTODO:
     bool m_printing;
     bool m_wasPrinting;
+#endif
     bool m_paginatedForScreen;
 
     CompatibilityMode m_compatibilityMode;

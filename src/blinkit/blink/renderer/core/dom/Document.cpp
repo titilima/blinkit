@@ -413,8 +413,10 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_activeParserCount(0)
     // BKTODO: , m_contextFeatures(ContextFeatures::defaultSwitch())
     , m_wellFormed(false)
+#if 0 // BKTODO:
     , m_printing(false)
     , m_wasPrinting(false)
+#endif
     , m_paginatedForScreen(false)
     , m_compatibilityMode(NoQuirksMode)
     , m_compatibilityModeLocked(false)
@@ -1927,7 +1929,7 @@ void Document::updateStyle(StyleRecalcChange change)
     styleEngine().resetCSSFeatureFlags(resolver.ensureUpdatedRuleFeatureSet());
     resolver.clearStyleSharingList();
 
-    m_wasPrinting = m_printing;
+    ASSERT(false); // BKTODO: m_wasPrinting = m_printing;
 
     ASSERT(!needsStyleRecalc());
     ASSERT(!childNeedsStyleRecalc());

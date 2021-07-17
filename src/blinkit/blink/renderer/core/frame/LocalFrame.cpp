@@ -36,7 +36,7 @@
 #include "core/editing/FrameSelection.h"
 #include "core/editing/InputMethodController.h"
 #include "core/editing/serializers/Serialization.h"
-#include "core/editing/spellcheck/SpellChecker.h"
+// BKTODO: #include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/Event.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/frame/EventHandlerRegistry.h"
@@ -45,26 +45,28 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/Settings.h"
+#if 0 // BKTODO:
 #include "core/html/HTMLFrameElementBase.h"
 #include "core/html/HTMLPlugInElement.h"
+#endif
 #include "core/input/EventHandler.h"
-#include "core/inspector/ConsoleMessageStorage.h"
+// BKTODO: #include "core/inspector/ConsoleMessageStorage.h"
 #include "core/inspector/InspectorInstrumentation.h"
-#include "core/inspector/InstrumentingAgents.h"
+// BKTODO: #include "core/inspector/InstrumentingAgents.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
 #include "core/loader/FrameLoadRequest.h"
 #include "core/loader/FrameLoaderClient.h"
-#include "core/loader/NavigationScheduler.h"
+// BKTODO: #include "core/loader/NavigationScheduler.h"
 #include "core/page/FocusController.h"
 #include "core/page/Page.h"
 #include "core/page/scrolling/ScrollingCoordinator.h"
 #include "core/paint/PaintLayer.h"
 #include "core/paint/TransformRecorder.h"
-#include "core/svg/SVGDocumentExtensions.h"
+// BKTODO: #include "core/svg/SVGDocumentExtensions.h"
 #include "platform/DragImage.h"
-#include "platform/PluginScriptForbiddenScope.h"
+// BKTODO: #include "platform/PluginScriptForbiddenScope.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/ScriptForbiddenScope.h"
 #include "platform/graphics/GraphicsContext.h"
@@ -73,7 +75,7 @@
 #include "platform/graphics/paint/SkPictureBuilder.h"
 #include "platform/text/TextStream.h"
 #include "public/platform/WebFrameScheduler.h"
-#include "public/platform/WebSecurityOrigin.h"
+// BKTODO: #include "public/platform/WebSecurityOrigin.h"
 #include "public/platform/WebViewScheduler.h"
 #include "third_party/skia/include/core/SkImage.h"
 #include "wtf/PassOwnPtr.h"
@@ -110,18 +112,26 @@ public:
 
 inline float parentPageZoomFactor(LocalFrame* frame)
 {
+    ASSERT(false); // BKTODO:
+    return 1.0;
+#if 0
     Frame* parent = frame->tree().parent();
     if (!parent || !parent->isLocalFrame())
         return 1;
     return toLocalFrame(parent)->pageZoomFactor();
+#endif
 }
 
 inline float parentTextZoomFactor(LocalFrame* frame)
 {
+    ASSERT(false); // BKTODO:
+    return 1.0;
+#if 0
     Frame* parent = frame->tree().parent();
     if (!parent || !parent->isLocalFrame())
         return 1;
     return toLocalFrame(parent)->textZoomFactor();
+#endif
 }
 
 } // namespace
@@ -176,6 +186,8 @@ void LocalFrame::createView(const IntSize& viewportSize, const Color& background
     if (isLocalRoot)
         frameView->setParentVisible(true);
 
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: Not clear what the right thing for OOPI is here.
     if (ownerLayoutObject()) {
         HTMLFrameOwnerElement* owner = deprecatedLocalOwner();
@@ -189,6 +201,7 @@ void LocalFrame::createView(const IntSize& viewportSize, const Color& background
 
     if (owner())
         view()->setCanHaveScrollbars(owner()->scrollingMode() != ScrollbarAlwaysOff);
+#endif
 }
 
 LocalFrame::~LocalFrame()
@@ -205,16 +218,15 @@ LocalFrame::~LocalFrame()
 
 DEFINE_TRACE(LocalFrame)
 {
-    visitor->trace(m_instrumentingAgents);
+    // BKTODO: visitor->trace(m_instrumentingAgents);
 #if ENABLE(OILPAN)
     visitor->trace(m_loader);
-    visitor->trace(m_navigationScheduler);
+    // BKTODO: visitor->trace(m_navigationScheduler);
     visitor->trace(m_view);
     visitor->trace(m_domWindow);
     visitor->trace(m_pagePopupOwner);
-    visitor->trace(m_script);
     visitor->trace(m_editor);
-    visitor->trace(m_spellChecker);
+    // BKTODO: visitor->trace(m_spellChecker);
     visitor->trace(m_selection);
     visitor->trace(m_eventHandler);
     visitor->trace(m_console);
@@ -232,11 +244,14 @@ DOMWindow* LocalFrame::domWindow() const
 
 WindowProxy* LocalFrame::windowProxy(DOMWrapperWorld& world)
 {
-    return m_script->windowProxy(world);
+    ASSERT(false); // BKTODO: return m_script->windowProxy(world);
+    return nullptr;
 }
 
 void LocalFrame::navigate(Document& originDocument, const KURL& url, bool replaceCurrentItem, UserGestureStatus userGestureStatus)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // TODO(dcheng): Special case for window.open("about:blank") to ensure it loads synchronously into
     // a new window. This is our historical behavior, and it's consistent with the creation of
     // a new iframe with src="about:blank". Perhaps we could get rid of this if we started reporting
@@ -251,6 +266,7 @@ void LocalFrame::navigate(Document& originDocument, const KURL& url, bool replac
     } else {
         m_navigationScheduler->scheduleLocationChange(&originDocument, url.string(), replaceCurrentItem);
     }
+#endif
 }
 
 void LocalFrame::navigate(const FrameLoadRequest& request)
@@ -260,6 +276,7 @@ void LocalFrame::navigate(const FrameLoadRequest& request)
     m_loader.load(request);
 }
 
+#if 0 // BKTODO:
 void LocalFrame::reload(FrameLoadType loadType, ClientRedirectPolicy clientRedirectPolicy)
 {
     ASSERT(loadType == FrameLoadTypeReload || loadType == FrameLoadTypeReloadFromOrigin);
@@ -275,18 +292,21 @@ void LocalFrame::reload(FrameLoadType loadType, ClientRedirectPolicy clientRedir
         m_navigationScheduler->scheduleReload();
     }
 }
+#endif
 
 void LocalFrame::detach(FrameDetachType type)
 {
-    PluginScriptForbiddenScope forbidPluginDestructorScripting;
+    // BKTODO: PluginScriptForbiddenScope forbidPluginDestructorScripting;
     // A lot of the following steps can result in the current frame being
     // detached, so protect a reference to it.
     RefPtrWillBeRawPtr<LocalFrame> protect(this);
     m_loader.stopAllLoaders();
+#if 0 // BKTODO:
     // Don't allow any new child frames to load in this frame: attaching a new
     // child frame during or after detaching children results in an attached
     // frame on a detached DOM tree, which is bad.
     SubframeLoadingDisabler disabler(*document());
+#endif
     m_loader.dispatchUnloadEvent();
     detachChildren();
     m_frameScheduler.clear();
@@ -308,7 +328,7 @@ void LocalFrame::detach(FrameDetachType type)
     client()->willBeDetached();
     // Notify ScriptController that the frame is closing, since its cleanup ends up calling
     // back to FrameLoaderClient via WindowProxy.
-    script().clearForClose();
+    ASSERT(false); // BKTODO: script().clearForClose();
     ScriptForbiddenScope forbidScript;
     setView(nullptr);
     willDetachFrameHost();
@@ -322,7 +342,7 @@ void LocalFrame::detach(FrameDetachType type)
     // If this is true, we somehow re-entered LocalFrame::detach. But this is
     // probably OK?
     if (m_supplementStatus == SupplementStatus::Cleared)
-        RELEASE_ASSERT(m_supplements.isEmpty());
+        RELEASE_ASSERT(m_supplements.empty());
     // If this is true, we somehow re-entered LocalFrame::detach in the middle
     // of cleaning up supplements.
     RELEASE_ASSERT(m_supplementStatus != SupplementStatus::Clearing);
@@ -333,14 +353,14 @@ void LocalFrame::detach(FrameDetachType type)
     // Check that m_supplements doesn't duplicate OwnPtrs.
     HashSet<void*> supplementPointers;
     for (auto& it : m_supplements) {
-        void* pointer = reinterpret_cast<void*>(it.value.get());
+        void* pointer = reinterpret_cast<void*>(it.second.get());
         RELEASE_ASSERT(!supplementPointers.contains(pointer));
         supplementPointers.add(pointer);
     }
 
     m_supplements.clear();
     m_supplementStatus = SupplementStatus::Cleared;
-    WeakIdentifierMap<LocalFrame>::notifyObjectDestroyed(this);
+    ASSERT(false); // BKTODO: WeakIdentifierMap<LocalFrame>::notifyObjectDestroyed(this);
 }
 
 bool LocalFrame::prepareForCommit()
@@ -348,26 +368,33 @@ bool LocalFrame::prepareForCommit()
     return loader().prepareForCommit();
 }
 
+#if 0 // BKTODO:
 SecurityContext* LocalFrame::securityContext() const
 {
     return document();
 }
+#endif
 
 void LocalFrame::printNavigationErrorMessage(const Frame& targetFrame, const char* reason)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // URLs aren't available for RemoteFrames, so the error message uses their
     // origin instead.
     String targetFrameDescription = targetFrame.isLocalFrame() ? "with URL '" + toLocalFrame(targetFrame).document()->url().string() + "'" : "with origin '" + targetFrame.securityContext()->securityOrigin()->toString() + "'";
     String message = "Unsafe JavaScript attempt to initiate navigation for frame " + targetFrameDescription + " from frame with URL '" + document()->url().string() + "'. " + reason + "\n";
 
     localDOMWindow()->printErrorMessage(message);
+#endif
 }
 
 WindowProxyManager* LocalFrame::windowProxyManager() const
 {
-    return m_script->windowProxyManager();
+    ASSERT(false); // BKTODO: return m_script->windowProxyManager();
+    return nullptr;
 }
 
+#if 0 // BKTODO:
 void LocalFrame::disconnectOwnerElement()
 {
     if (owner()) {
@@ -376,6 +403,7 @@ void LocalFrame::disconnectOwnerElement()
     }
     Frame::disconnectOwnerElement();
 }
+#endif
 
 bool LocalFrame::shouldClose()
 {
@@ -393,7 +421,7 @@ void LocalFrame::willDetachFrameHost()
     // so page() could be null.
     if (page() && page()->focusController().focusedFrame() == this)
         page()->focusController().setFocusedFrame(nullptr);
-    script().clearScriptObjects();
+    ASSERT(false); // BKTODO: script().clearScriptObjects();
 
     if (page() && page()->scrollingCoordinator() && m_view)
         page()->scrollingCoordinator()->willDestroyScrollableArea(m_view.get());
@@ -401,6 +429,8 @@ void LocalFrame::willDetachFrameHost()
 
 void LocalFrame::setDOMWindow(PassRefPtrWillBeRawPtr<LocalDOMWindow> domWindow)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // Oilpan: setDOMWindow() cannot be used when finalizing. Which
     // is acceptable as its actions are either not needed or handled
     // by other means --
@@ -419,6 +449,7 @@ void LocalFrame::setDOMWindow(PassRefPtrWillBeRawPtr<LocalDOMWindow> domWindow)
         host()->consoleMessageStorage().frameWindowDiscarded(m_domWindow.get());
     if (domWindow)
         script().clearWindowProxy();
+#endif
 
     if (m_domWindow)
         m_domWindow->reset();
@@ -445,6 +476,8 @@ void LocalFrame::didChangeVisibilityState()
     if (document())
         document()->didChangeVisibilityState();
 
+    ASSERT(false); // BKTODO:
+#if 0
     WillBeHeapVector<RefPtrWillBeMember<LocalFrame>> childFrames;
     for (Frame* child = tree().firstChild(); child; child = child->tree().nextSibling()) {
         if (child->isLocalFrame())
@@ -453,13 +486,17 @@ void LocalFrame::didChangeVisibilityState()
 
     for (size_t i = 0; i < childFrames.size(); ++i)
         childFrames[i]->didChangeVisibilityState();
+#endif
 }
 
 LocalFrame* LocalFrame::localFrameRoot()
 {
     LocalFrame* curFrame = this;
+    ASSERT(false); // BKTODO:
+#if 0
     while (curFrame && curFrame->tree().parent() && curFrame->tree().parent()->isLocalFrame())
         curFrame = toLocalFrame(curFrame->tree().parent());
+#endif
 
     return curFrame;
 }
@@ -469,6 +506,8 @@ String LocalFrame::layerTreeAsText(LayerTreeFlags flags) const
     TextStream textStream;
     textStream << localLayerTreeAsText(flags);
 
+    ASSERT(false); // BKTODO:
+#if 0
     for (Frame* child = tree().firstChild(); child; child = child->tree().traverseNext(this)) {
         if (!child->isLocalFrame())
             continue;
@@ -481,10 +520,12 @@ String LocalFrame::layerTreeAsText(LayerTreeFlags flags) const
         textStream << "'\n--------\n";
         textStream << childLayerTree;
     }
+#endif
 
     return textStream.release();
 }
 
+#if 0 // BKTODO:
 void LocalFrame::setPrinting(bool printing, const FloatSize& pageSize, const FloatSize& originalPageSize, float maximumShrinkRatio)
 {
     // In setting printing, we should not validate resources already cached for the document.
@@ -519,6 +560,7 @@ bool LocalFrame::shouldUsePrintingLayout() const
     // Subframes should be constrained by parents only.
     return document()->printing() && (!tree().parent() || !tree().parent()->isLocalFrame() || !toLocalFrame(tree().parent())->document()->printing());
 }
+#endif
 
 FloatSize LocalFrame::resizePageRectsKeepingRatio(const FloatSize& originalSize, const FloatSize& expectedSize)
 {
@@ -566,8 +608,11 @@ void LocalFrame::setPageAndTextZoomFactors(float pageZoomFactor, float textZoomF
     // Respect SVGs zoomAndPan="disabled" property in standalone SVG documents.
     // FIXME: How to handle compound documents + zoomAndPan="disabled"? Needs SVG WG clarification.
     if (document->isSVGDocument()) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (!document->accessSVGExtensions().zoomAndPanEnabled())
             return;
+#endif
     }
 
     if (m_pageZoomFactor != pageZoomFactor) {
@@ -584,10 +629,13 @@ void LocalFrame::setPageAndTextZoomFactors(float pageZoomFactor, float textZoomF
     m_pageZoomFactor = pageZoomFactor;
     m_textZoomFactor = textZoomFactor;
 
+    ASSERT(false); // BKTODO:
+#if 0
     for (RefPtrWillBeRawPtr<Frame> child = tree().firstChild(); child; child = child->tree().nextSibling()) {
         if (child->isLocalFrame())
             toLocalFrame(child.get())->setPageAndTextZoomFactors(m_pageZoomFactor, m_textZoomFactor);
     }
+#endif
 
     document->setNeedsStyleRecalc(SubtreeStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::Zoom));
     document->updateLayoutIgnorePendingStylesheets();
@@ -596,10 +644,13 @@ void LocalFrame::setPageAndTextZoomFactors(float pageZoomFactor, float textZoomF
 void LocalFrame::deviceScaleFactorChanged()
 {
     document()->mediaQueryAffectingValueChanged();
+    ASSERT(false); // BKTODO:
+#if 0
     for (RefPtrWillBeRawPtr<Frame> child = tree().firstChild(); child; child = child->tree().nextSibling()) {
         if (child->isLocalFrame())
             toLocalFrame(child.get())->deviceScaleFactorChanged();
     }
+#endif
 }
 
 double LocalFrame::devicePixelRatio() const
@@ -757,6 +808,8 @@ bool LocalFrame::isURLAllowed(const KURL& url) const
     // We allow one level of self-reference because some sites depend on that,
     // but we don't allow more than one.
     bool foundSelfReference = false;
+    ASSERT(false); // BKTODO:
+#if 0
     for (const Frame* frame = this; frame; frame = frame->tree().parent()) {
         if (!frame->isLocalFrame())
             continue;
@@ -766,17 +819,19 @@ bool LocalFrame::isURLAllowed(const KURL& url) const
             foundSelfReference = true;
         }
     }
+#endif
     return true;
 }
 
 bool LocalFrame::shouldReuseDefaultView(const KURL& url) const
 {
-    return loader().stateMachine()->isDisplayingInitialEmptyDocument() && document()->isSecureTransitionTo(url);
+    ASSERT(false); // BKTODO: return loader().stateMachine()->isDisplayingInitialEmptyDocument() && document()->isSecureTransitionTo(url);
+    return false;
 }
 
 void LocalFrame::removeSpellingMarkersUnderWords(const Vector<String>& words)
 {
-    spellChecker().removeSpellingMarkersUnderWords(words);
+    ASSERT(false); // BKTODO: spellChecker().removeSpellingMarkersUnderWords(words);
 }
 
 static ScrollResult scrollAreaOnBothAxes(const FloatSize& delta, ScrollableArea& view)
@@ -844,10 +899,10 @@ bool LocalFrame::shouldThrottleRendering() const
 inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host, FrameOwner* owner)
     : Frame(client, host, owner)
     , m_loader(this)
-    , m_navigationScheduler(NavigationScheduler::create(this))
-    , m_script(ScriptController::create(this))
+    // BKTODO: , m_navigationScheduler(NavigationScheduler::create(this))
+    , m_script(ScriptController::Create(*this))
     , m_editor(Editor::create(*this))
-    , m_spellChecker(SpellChecker::create(*this))
+    // BKTODO:, m_spellChecker(SpellChecker::create(*this))
     , m_selection(FrameSelection::create(this))
     , m_eventHandler(adoptPtrWillBeNoop(new EventHandler(this)))
     , m_console(FrameConsole::create(*this))
@@ -857,16 +912,20 @@ inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host, FrameO
     , m_textZoomFactor(parentTextZoomFactor(this))
     , m_inViewSourceMode(false)
 {
+#if 0 // BKTODO:
     if (isLocalRoot())
         m_instrumentingAgents = InstrumentingAgents::create();
     else
         m_instrumentingAgents = localFrameRoot()->m_instrumentingAgents;
+#endif
 }
 
 WebFrameScheduler* LocalFrame::frameScheduler()
 {
+#if 0 // BKTODO:
     if (!m_frameScheduler.get())
         m_frameScheduler = page()->chromeClient().createFrameScheduler();
+#endif
 
     ASSERT(m_frameScheduler.get());
     return m_frameScheduler.get();
@@ -879,6 +938,7 @@ void LocalFrame::scheduleVisualUpdateUnlessThrottled()
     page()->animator().scheduleVisualUpdate(this);
 }
 
+#if 0 // BKTODO:
 void LocalFrame::updateSecurityOrigin(SecurityOrigin* origin)
 {
     script().updateSecurityOrigin(origin);
@@ -886,6 +946,7 @@ void LocalFrame::updateSecurityOrigin(SecurityOrigin* origin)
 }
 
 DEFINE_WEAK_IDENTIFIER_MAP(LocalFrame);
+#endif
 
 FrameNavigationDisabler::FrameNavigationDisabler(LocalFrame& frame)
     : m_frame(&frame)

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LocalFrame.h
+// Description: LocalFrame Class
+//      Author: Ziming Li
+//     Created: 2021-07-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1998, 1999 Torben Weis <weis@kde.org>
  *                     1999-2001 Lars Knoll <knoll@kde.org>
@@ -29,12 +40,12 @@
 #define LocalFrame_h
 
 #include "core/CoreExport.h"
-#include "core/dom/WeakIdentifierMap.h"
+// BKTODO: #include "core/dom/WeakIdentifierMap.h"
 #include "core/frame/Frame.h"
 #include "core/frame/LocalFrameLifecycleNotifier.h"
 #include "core/frame/LocalFrameLifecycleObserver.h"
 #include "core/loader/FrameLoader.h"
-#include "core/page/FrameTree.h"
+// BKTODO: #include "core/page/FrameTree.h"
 #include "core/paint/PaintPhase.h"
 #include "platform/Supplementable.h"
 #include "platform/graphics/ImageOrientation.h"
@@ -70,7 +81,7 @@ class Range;
 class LayoutView;
 class TreeScope;
 class ScriptController;
-class SpellChecker;
+// BKTODO: class SpellChecker;
 class TreeScope;
 class WebFrameHostScheduler;
 class WebFrameScheduler;
@@ -95,11 +106,11 @@ public:
     WindowProxy* windowProxy(DOMWrapperWorld&) override;
     void navigate(Document& originDocument, const KURL&, bool replaceCurrentItem, UserGestureStatus) override;
     void navigate(const FrameLoadRequest&) override;
-    void reload(FrameLoadType, ClientRedirectPolicy) override;
+    // BKTODO: void reload(FrameLoadType, ClientRedirectPolicy) override;
     void detach(FrameDetachType) override;
-    void disconnectOwnerElement() override;
+    // BKTODO: void disconnectOwnerElement() override;
     bool shouldClose() override;
-    SecurityContext* securityContext() const override;
+    // BKTODO: SecurityContext* securityContext() const override;
     void printNavigationErrorMessage(const Frame&, const char* reason) override;
     bool prepareForCommit() override;
 
@@ -117,11 +128,11 @@ public:
     Editor& editor() const;
     EventHandler& eventHandler() const;
     FrameLoader& loader() const;
-    NavigationScheduler& navigationScheduler() const;
+    // BKTODO: NavigationScheduler& navigationScheduler() const;
     FrameSelection& selection() const;
     InputMethodController& inputMethodController() const;
     ScriptController& script() const;
-    SpellChecker& spellChecker() const;
+    // BKTODO: SpellChecker& spellChecker() const;
     FrameConsole& console() const;
 
     void didChangeVisibilityState();
@@ -132,15 +143,17 @@ public:
     // should be updated to avoid storing things on the main frame.
     LocalFrame* localFrameRoot();
 
-    InstrumentingAgents* instrumentingAgents() const { return m_instrumentingAgents.get(); }
+    // BKTODO: InstrumentingAgents* instrumentingAgents() const { return m_instrumentingAgents.get(); }
 
     // ======== All public functions below this point are candidates to move out of LocalFrame into another class. ========
 
     // See GraphicsLayerClient.h for accepted flags.
     String layerTreeAsText(unsigned flags = 0) const;
 
+#if 0 // BKTODO:
     void setPrinting(bool printing, const FloatSize& pageSize, const FloatSize& originalPageSize, float maximumShrinkRatio);
     bool shouldUsePrintingLayout() const;
+#endif
     FloatSize resizePageRectsKeepingRatio(const FloatSize& originalSize, const FloatSize& expectedSize);
 
     bool inViewSourceMode() const;
@@ -185,7 +198,7 @@ public:
     WebFrameScheduler* frameScheduler();
     void scheduleVisualUpdateUnlessThrottled();
 
-    void updateSecurityOrigin(SecurityOrigin*);
+    // BKTODO: void updateSecurityOrigin(SecurityOrigin*);
 
     bool isNavigationAllowed() const { return m_navigationDisableCount == 0; }
 
@@ -209,16 +222,16 @@ private:
     void disableNavigation() { ++m_navigationDisableCount; }
 
     mutable FrameLoader m_loader;
-    OwnPtrWillBeMember<NavigationScheduler> m_navigationScheduler;
+    // BKTODO: OwnPtrWillBeMember<NavigationScheduler> m_navigationScheduler;
 
     RefPtrWillBeMember<FrameView> m_view;
     RefPtrWillBeMember<LocalDOMWindow> m_domWindow;
     // Usually 0. Non-null if this is the top frame of PagePopup.
     RefPtrWillBeMember<Element> m_pagePopupOwner;
 
-    const OwnPtrWillBeMember<ScriptController> m_script;
+    const std::unique_ptr<ScriptController> m_script;
     const OwnPtrWillBeMember<Editor> m_editor;
-    const OwnPtrWillBeMember<SpellChecker> m_spellChecker;
+    // BKTODO: const OwnPtrWillBeMember<SpellChecker> m_spellChecker;
     const OwnPtrWillBeMember<FrameSelection> m_selection;
     const OwnPtrWillBeMember<EventHandler> m_eventHandler;
     const OwnPtrWillBeMember<FrameConsole> m_console;
@@ -232,7 +245,7 @@ private:
 
     bool m_inViewSourceMode;
 
-    RefPtrWillBeMember<InstrumentingAgents> m_instrumentingAgents;
+    // BKTODO: RefPtrWillBeMember<InstrumentingAgents> m_instrumentingAgents;
 
     // TODO(dcheng): Temporary to try to debug https://crbug.com/531291
     enum class SupplementStatus { Uncleared, Clearing, Cleared };
@@ -254,11 +267,13 @@ inline FrameLoader& LocalFrame::loader() const
     return m_loader;
 }
 
+#if 0 // BKTODO:
 inline NavigationScheduler& LocalFrame::navigationScheduler() const
 {
     ASSERT(m_navigationScheduler);
     return *m_navigationScheduler.get();
 }
+#endif
 
 inline FrameView* LocalFrame::view() const
 {
@@ -280,10 +295,12 @@ inline Editor& LocalFrame::editor() const
     return *m_editor;
 }
 
+#if 0 // BKTODO:
 inline SpellChecker& LocalFrame::spellChecker() const
 {
     return *m_spellChecker;
 }
+#endif
 
 inline FrameConsole& LocalFrame::console() const
 {
@@ -312,8 +329,6 @@ inline EventHandler& LocalFrame::eventHandler() const
 }
 
 DEFINE_TYPE_CASTS(LocalFrame, Frame, localFrame, localFrame->isLocalFrame(), localFrame.isLocalFrame());
-
-DECLARE_WEAK_IDENTIFIER_MAP(LocalFrame);
 
 class FrameNavigationDisabler {
     WTF_MAKE_NONCOPYABLE(FrameNavigationDisabler);
