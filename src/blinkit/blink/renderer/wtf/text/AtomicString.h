@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AtomicString.h
+// Description: AtomicString Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -150,6 +161,7 @@ public:
     // the input data contains invalid UTF-8 sequences.
     static AtomicString fromUTF8(const char*, size_t);
     static AtomicString fromUTF8(const char*);
+    static AtomicString fromStdUTF8(const std::string &s) { return fromUTF8(s.data(), s.length()); }
 
     CString ascii() const { return m_string.ascii(); }
     CString latin1() const { return m_string.latin1(); }
