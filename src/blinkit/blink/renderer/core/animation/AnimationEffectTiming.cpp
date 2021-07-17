@@ -1,10 +1,20 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimationEffectTiming.cpp
+// Description: AnimationEffectTiming Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "core/animation/AnimationEffectTiming.h"
 
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/animation/AnimationEffect.h"
 #include "core/animation/KeyframeEffect.h"
 #include "platform/animation/TimingFunction.h"
@@ -48,10 +58,13 @@ double AnimationEffectTiming::iterations()
 
 void AnimationEffectTiming::duration(UnrestrictedDoubleOrString& returnValue)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (std::isnan(m_parent->specifiedTiming().iterationDuration))
         returnValue.setString("auto");
     else
         returnValue.setUnrestrictedDouble(m_parent->specifiedTiming().iterationDuration * 1000);
+#endif
 }
 
 double AnimationEffectTiming::playbackRate()
@@ -106,11 +119,14 @@ void AnimationEffectTiming::setIterations(double iterations)
 
 void AnimationEffectTiming::setDuration(const UnrestrictedDoubleOrString& durationOrAuto)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // Any strings other than "auto" are coerced to "auto".
     double duration = durationOrAuto.isString() ? std::numeric_limits<double>::quiet_NaN() : durationOrAuto.getAsUnrestrictedDouble();
     Timing timing = m_parent->specifiedTiming();
     TimingInput::setIterationDuration(timing, duration);
     m_parent->updateSpecifiedTiming(timing);
+#endif
 }
 
 void AnimationEffectTiming::setPlaybackRate(double playbackRate)
