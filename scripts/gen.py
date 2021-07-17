@@ -56,6 +56,11 @@ run_script('blink/make_css_value_keywords.py',                                  
     '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
 )
 
+run_script('blink/make_style_shorthands.py',                                    \
+    os.path.normpath('blink/in/CSSProperties.in') + ' ' +                       \
+    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
+)
+
 run_script('blink/make_token_matcher.py',                                           \
     os.path.normpath('blink/in/HTMLMetaElement-in.cpp') + ' ' +                     \
     os.path.normpath('../src/blinkit/blink/renderer/core/html/HTMLMetaElement.cpp') \
