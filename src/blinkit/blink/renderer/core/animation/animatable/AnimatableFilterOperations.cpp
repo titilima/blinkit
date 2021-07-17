@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimatableFilterOperations.cpp
+// Description: AnimatableFilterOperations Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -60,7 +71,7 @@ PassRefPtr<AnimatableValue> AnimatableFilterOperations::interpolateTo(const Anim
 #endif
         RefPtrWillBeRawPtr<FilterOperation> blendedOp = FilterOperation::blend(from, to, fraction);
         if (blendedOp)
-            result.operations().append(blendedOp);
+            result.operations().emplace_back(blendedOp);
         else
             ASSERT_NOT_REACHED();
     }
