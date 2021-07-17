@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSAnimations.cpp
+// Description: CSSAnimations Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -116,10 +127,13 @@ static StringKeyframeEffectModel* createKeyframeEffectModel(StyleResolver* resol
         }
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     for (CSSPropertyID property : specifiedPropertiesForUseCounter) {
         ASSERT(property != CSSPropertyInvalid);
         Platform::current()->histogramSparse("WebCore.Animation.CSSProperties", UseCounter::mapCSSPropertyIdToCSSSampleIdForHistogram(property));
     }
+#endif
 
     // Merge duplicate keyframes.
     std::stable_sort(keyframes.begin(), keyframes.end(), Keyframe::compareOffsets);
@@ -167,8 +181,8 @@ static StringKeyframeEffectModel* createKeyframeEffectModel(StyleResolver* resol
     bool missingEndValues = endKeyframeProperties.size() < allProperties.size();
     if (missingStartValues || missingEndValues) {
         for (CSSPropertyID property : allProperties) {
-            bool startNeedsValue = missingStartValues && !startKeyframeProperties.contains(PropertyHandle(property));
-            bool endNeedsValue = missingEndValues && !endKeyframeProperties.contains(PropertyHandle(property));
+            bool startNeedsValue = missingStartValues && !zed::key_exists(startKeyframeProperties, PropertyHandle(property));
+            bool endNeedsValue = missingEndValues && !zed::key_exists(endKeyframeProperties, PropertyHandle(property));
             if (!startNeedsValue && !endNeedsValue)
                 continue;
             if (CompositorAnimations::isCompositableProperty(property))
@@ -201,7 +215,7 @@ bool CSSAnimations::isAnimationForInspector(const Animation& animation)
 bool CSSAnimations::isTransitionAnimationForInspector(const Animation& animation) const
 {
     for (const auto& it : m_transitions) {
-        if (it.value.animation->sequenceNumber() == animation.sequenceNumber())
+        if (it.second.animation->sequenceNumber() == animation.sequenceNumber())
             return true;
     }
     return false;
@@ -246,7 +260,7 @@ void CSSAnimations::calculateCompositorAnimationUpdate(CSSAnimationUpdate& updat
 
     if (oldStyle.hasCurrentTransformAnimation() && oldStyle.effectiveZoom() != style.effectiveZoom()) {
         for (auto& entry : elementAnimations->animations()) {
-            Animation& animation = *entry.key;
+            Animation& animation = *entry.first;
             if (animation.effect() && animation.effect()->isKeyframeEffect()) {
                 EffectModel* model = toKeyframeEffect(animation.effect())->model();
                 if (model && model->isKeyframeEffectModel()) {
@@ -393,7 +407,7 @@ void CSSAnimations::maybeApplyPendingUpdate(Element* element)
         Animation& animation = *m_runningAnimations[cancelledIndices[i]]->animation;
         animation.cancel();
         animation.update(TimingUpdateOnDemand);
-        m_runningAnimations.remove(cancelledIndices[i]);
+        m_runningAnimations.erase(m_runningAnimations.begin() + cancelledIndices[i]);
     }
 
     for (const auto& entry : m_pendingUpdate.newAnimations()) {
@@ -418,10 +432,10 @@ void CSSAnimations::maybeApplyPendingUpdate(Element* element)
     for (CSSPropertyID id : m_pendingUpdate.cancelledTransitions()) {
         ASSERT(m_transitions.contains(id));
 
-        Animation* animation = m_transitions.take(id).animation;
+        Animation* animation = m_transitions[id].animation;
         KeyframeEffect* effect = toKeyframeEffect(animation->effect());
         if (effect->hasActiveAnimationsOnCompositor(id) && m_pendingUpdate.newTransitions().find(id) != m_pendingUpdate.newTransitions().end() && !animation->limited())
-            retargetedCompositorTransitions.add(id, std::pair<KeyframeEffect*, double>(effect, animation->startTimeInternal()));
+            retargetedCompositorTransitions.emplace(id, std::pair<KeyframeEffect*, double>(effect, animation->startTimeInternal()));
         animation->cancel();
         // after cancelation, transitions must be downgraded or they'll fail
         // to be considered when retriggering themselves. This can happen if
@@ -434,7 +448,7 @@ void CSSAnimations::maybeApplyPendingUpdate(Element* element)
     for (CSSPropertyID id : m_pendingUpdate.finishedTransitions()) {
         // This transition can also be cancelled and finished at the same time
         if (m_transitions.contains(id)) {
-            Animation* animation = m_transitions.take(id).animation;
+            Animation* animation = m_transitions[id].animation;
             // Transition must be downgraded
             if (animation->effect() && animation->effect()->isKeyframeEffect())
                 toKeyframeEffect(animation->effect())->downgradeToNormal();
@@ -442,7 +456,7 @@ void CSSAnimations::maybeApplyPendingUpdate(Element* element)
     }
 
     for (const auto& entry : m_pendingUpdate.newTransitions()) {
-        const CSSAnimationUpdate::NewTransition& newTransition = entry.value;
+        const CSSAnimationUpdate::NewTransition& newTransition = entry.second;
 
         RunningTransition runningTransition;
         runningTransition.from = newTransition.from;
@@ -455,7 +469,7 @@ void CSSAnimations::maybeApplyPendingUpdate(Element* element)
         EffectModel* model = inertAnimation->model();
 
         if (retargetedCompositorTransitions.contains(id)) {
-            const std::pair<Member<KeyframeEffect>, double>& oldTransition = retargetedCompositorTransitions.get(id);
+            const std::pair<Member<KeyframeEffect>, double>& oldTransition = retargetedCompositorTransitions[id];
             KeyframeEffect* oldAnimation = oldTransition.first;
             double oldStartTime = oldTransition.second;
             double inheritedTime = isNull(oldStartTime) ? 0 : element->document().timeline().currentTimeInternal() - oldStartTime;
@@ -488,9 +502,9 @@ void CSSAnimations::maybeApplyPendingUpdate(Element* element)
             animation->setStartTime(element->document().timeline().currentTime());
         animation->update(TimingUpdateOnDemand);
         runningTransition.animation = animation;
-        m_transitions.set(id, runningTransition);
+        m_transitions.emplace(id, runningTransition);
         ASSERT(id != CSSPropertyInvalid);
-        Platform::current()->histogramSparse("WebCore.Animation.CSSProperties", UseCounter::mapCSSPropertyIdToCSSSampleIdForHistogram(id));
+        ASSERT(false); // BKTODO: Platform::current()->histogramSparse("WebCore.Animation.CSSProperties", UseCounter::mapCSSPropertyIdToCSSSampleIdForHistogram(id));
     }
     clearPendingUpdate();
 }
@@ -502,7 +516,7 @@ void CSSAnimations::calculateTransitionUpdateForProperty(CSSPropertyID id, const
         TransitionMap::const_iterator activeTransitionIter = activeTransitions->find(id);
         if (activeTransitionIter != activeTransitions->end()) {
             to = CSSAnimatableValueFactory::create(id, style);
-            const AnimatableValue* activeTo = activeTransitionIter->value.to;
+            const AnimatableValue* activeTo = activeTransitionIter->second.to;
             if (to->equals(activeTo))
                 return;
             update.cancelTransition(id);
@@ -617,12 +631,12 @@ void CSSAnimations::calculateTransitionUpdate(CSSAnimationUpdate& update, const 
 
     if (activeTransitions) {
         for (const auto& entry : *activeTransitions) {
-            CSSPropertyID id = entry.key;
+            CSSPropertyID id = entry.first;
             if (!anyTransitionHadTransitionAll && !animationStyleRecalc && !listedProperties.get(id - firstCSSProperty)) {
                 // TODO: Figure out why this fails on Chrome OS login page. crbug.com/365507
                 // ASSERT(animation.playStateInternal() == Animation::Finished || !(elementAnimations && elementAnimations->isAnimationStyleChange()));
                 update.cancelTransition(id);
-            } else if (entry.value.animation->finishedInternal()) {
+            } else if (entry.second.animation->finishedInternal()) {
                 update.finishTransition(id);
             }
         }
@@ -637,8 +651,8 @@ void CSSAnimations::cancel()
     }
 
     for (const auto& entry : m_transitions) {
-        entry.value.animation->cancel();
-        entry.value.animation->update(TimingUpdateOnDemand);
+        entry.second.animation->cancel();
+        entry.second.animation->update(TimingUpdateOnDemand);
     }
 
     m_runningAnimations.clear();
@@ -683,15 +697,16 @@ void CSSAnimations::calculateTransitionActiveInterpolations(CSSAnimationUpdate& 
     } else {
         HeapVector<Member<const InertEffect>> newTransitions;
         for (const auto& entry : update.newTransitions())
-            newTransitions.append(entry.value.effect.get());
+            newTransitions.append(entry.second.effect.get());
 
         HeapHashSet<Member<const Animation>> cancelledAnimations;
         if (!update.cancelledTransitions().isEmpty()) {
             ASSERT(elementAnimations);
             const TransitionMap& transitionMap = elementAnimations->cssAnimations().m_transitions;
             for (CSSPropertyID id : update.cancelledTransitions()) {
-                ASSERT(transitionMap.contains(id));
-                cancelledAnimations.add(transitionMap.get(id).animation.get());
+                auto it = transitionMap.find(id);
+                ASSERT(transitionMap.end() != it);
+                cancelledAnimations.add(it->second.animation.get());
             }
         }
 
