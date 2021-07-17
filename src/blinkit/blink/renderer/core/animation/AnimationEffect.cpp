@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimationEffect.cpp
+// Description: AnimationEffect Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -116,9 +127,12 @@ void AnimationEffect::computedTiming(ComputedTimingProperties& computedTiming)
     computedTiming.setIterationStart(specifiedTiming().iterationStart);
     computedTiming.setIterations(specifiedTiming().iterationCount);
 
+    ASSERT(false); // BKTODO:
+#if 0
     UnrestrictedDoubleOrString duration;
     duration.setUnrestrictedDouble(iterationDuration() * 1000);
     computedTiming.setDuration(duration);
+#endif
 
     computedTiming.setPlaybackRate(specifiedTiming().playbackRate);
     computedTiming.setDirection(Timing::playbackDirectionString(specifiedTiming().direction));
