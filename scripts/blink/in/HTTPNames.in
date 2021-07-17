@@ -3,5 +3,6 @@ export="PLATFORM_EXPORT"
 
 Accept
 Content-Type
+GET
 Referer
 User-Agent

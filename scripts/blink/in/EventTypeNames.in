@@ -2,12 +2,14 @@ namespace="EventType"
 export="CORE_EXPORT"
 
 DOMActivate
+DOMContentLoaded
 DOMFocusIn
 DOMFocusOut
 beforeunload
 blur
 click
 contextmenu
+finish
 focus
 focusin
 focusout
@@ -21,7 +23,13 @@ mouseout
 mouseover
 mouseup
 mousewheel
+pagehide
+readystatechange
+resize
+scroll
 textInput
 unload
+visibilitychange
 webkitEditableContentChanged
+webkitvisibilitychange
 wheel

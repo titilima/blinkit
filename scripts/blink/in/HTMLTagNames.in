@@ -12,6 +12,7 @@ fieldset interfaceName=HTMLFieldSetElement, constructorNeedsFormElement
 form
 html
 img interfaceName=HTMLImageElement, constructorNeedsFormElement, constructorNeedsCreatedByParser
+input constructorNeedsFormElement, constructorNeedsCreatedByParser
 link constructorNeedsCreatedByParser
 optgroup interfaceName=HTMLOptGroupElement
 option
