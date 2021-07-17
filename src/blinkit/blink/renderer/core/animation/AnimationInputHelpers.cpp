@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimationInputHelpers.cpp
+// Description: AnimationInputHelpers Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -9,8 +20,10 @@
 #include "core/css/CSSValueList.h"
 #include "core/css/parser/CSSParser.h"
 #include "core/css/resolver/CSSToStyleMap.h"
+#if 0 // BKTODO:
 #include "core/svg/SVGElement.h"
 #include "core/svg/animation/SVGSMILElement.h"
+#endif
 #include "wtf/text/StringBuilder.h"
 
 namespace blink {
@@ -47,16 +60,20 @@ CSSPropertyID AnimationInputHelpers::keyframeAttributeToCSSProperty(const String
 
 CSSPropertyID AnimationInputHelpers::keyframeAttributeToPresentationAttribute(const String& property, const Element& element)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!RuntimeEnabledFeatures::webAnimationsSVGEnabled() || !element.isSVGElement() || !isSVGPrefixed(property))
         return CSSPropertyInvalid;
 
     String unprefixedProperty = removeSVGPrefix(property);
     if (SVGElement::isAnimatableCSSProperty(QualifiedName(nullAtom, AtomicString(unprefixedProperty), nullAtom)))
         return cssPropertyID(unprefixedProperty);
+#endif
 
     return CSSPropertyInvalid;
 }
 
+#if 0 // BKTODO:
 using AttributeNameMap = HashMap<QualifiedName, const QualifiedName*>;
 
 const AttributeNameMap& getSupportedAttributes()
@@ -178,9 +195,13 @@ QualifiedName svgAttributeName(const String& property)
 
     return QualifiedName(nullAtom, AtomicString(property), nullAtom);
 }
+#endif
 
 const QualifiedName* AnimationInputHelpers::keyframeAttributeToSVGAttribute(const String& property, Element& element)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!RuntimeEnabledFeatures::webAnimationsSVGEnabled() || !element.isSVGElement() || !isSVGPrefixed(property))
         return nullptr;
 
@@ -196,6 +217,7 @@ const QualifiedName* AnimationInputHelpers::keyframeAttributeToSVGAttribute(cons
         return nullptr;
 
     return iter->value;
+#endif
 }
 
 PassRefPtr<TimingFunction> AnimationInputHelpers::parseTimingFunction(const String& string)
