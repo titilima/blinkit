@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Keyframe.h
+// Description: Keyframe Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,6 +16,7 @@
 #ifndef Keyframe_h
 #define Keyframe_h
 
+#include <unordered_set>
 #include "core/CoreExport.h"
 #include "core/animation/AnimationEffect.h"
 #include "core/animation/EffectModel.h"
@@ -14,7 +26,7 @@
 
 namespace blink {
 
-using PropertyHandleSet = HashSet<PropertyHandle>;
+using PropertyHandleSet = std::unordered_set<PropertyHandle>;
 
 class Element;
 class ComputedStyle;

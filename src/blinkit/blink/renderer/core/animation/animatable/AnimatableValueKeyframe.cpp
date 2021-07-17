@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimatableValueKeyframe.cpp
+// Description: AnimatableValueKeyframe Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -21,7 +32,7 @@ PropertyHandleSet AnimatableValueKeyframe::properties() const
     // worry about caching this result.
     PropertyHandleSet properties;
     for (PropertyValueMap::const_iterator iter = m_propertyValues.begin(); iter != m_propertyValues.end(); ++iter)
-        properties.add(PropertyHandle(*iter.keys()));
+        properties.insert(PropertyHandle(*iter.keys()));
     return properties;
 }
 
