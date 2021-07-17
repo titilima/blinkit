@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimationTimeline.cpp
+// Description: AnimationTimeline Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -72,6 +83,8 @@ AnimationTimeline::AnimationTimeline(Document* document, PlatformTiming* timing)
     , m_playbackRate(1)
     , m_lastCurrentTimeInternal(0)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ThreadState::current()->registerPreFinalizer(this);
     if (!timing)
         m_timing = new AnimationTimelineTiming(this);
@@ -82,6 +95,7 @@ AnimationTimeline::AnimationTimeline(Document* document, PlatformTiming* timing)
         ASSERT(Platform::current()->compositorSupport());
         m_compositorTimeline = adoptPtr(Platform::current()->compositorSupport()->createAnimationTimeline());
     }
+#endif
 
     ASSERT(document);
 }
@@ -132,7 +146,7 @@ HeapVector<Member<Animation>> AnimationTimeline::getAnimations()
     HeapVector<Member<Animation>> animations;
     for (const auto& animation : m_animations) {
         if (animation->effect() && (animation->effect()->isCurrent() || animation->effect()->isInEffect()))
-            animations.append(animation);
+            animations.emplace_back(animation);
     }
     std::sort(animations.begin(), animations.end(), compareAnimations);
     return animations;
@@ -150,7 +164,7 @@ void AnimationTimeline::serviceAnimations(TimingUpdateReason reason)
     m_lastCurrentTimeInternal = currentTimeInternal();
 
     HeapVector<Member<Animation>> animations;
-    animations.reserveInitialCapacity(m_animationsNeedingUpdate.size());
+    animations.reserve(m_animationsNeedingUpdate.size());
     for (Animation* animation : m_animationsNeedingUpdate)
         animations.append(animation);
 
@@ -208,7 +222,7 @@ DEFINE_TRACE(AnimationTimeline::AnimationTimelineTiming)
 double AnimationTimeline::zeroTime()
 {
     if (!m_zeroTimeInitialized && m_document && m_document->loader()) {
-        m_zeroTime = m_document->loader()->timing().referenceMonotonicTime();
+        ASSERT(false); // BKTODO: m_zeroTime = m_document->loader()->timing().referenceMonotonicTime();
         m_zeroTimeInitialized = true;
     }
     return m_zeroTime;
