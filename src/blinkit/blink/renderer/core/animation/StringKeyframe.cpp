@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StringKeyframe.cpp
+// Description: StringKeyframe Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -19,7 +30,7 @@
 #include "core/animation/CSSVisibilityInterpolationType.h"
 #include "core/animation/CompositorAnimations.h"
 #include "core/animation/ConstantStyleInterpolation.h"
-#include "core/animation/DefaultSVGInterpolation.h"
+// BKTODO: #include "core/animation/DefaultSVGInterpolation.h"
 #include "core/animation/DeferredLegacyStyleInterpolation.h"
 #include "core/animation/DoubleStyleInterpolation.h"
 #include "core/animation/FilterStyleInterpolation.h"
@@ -31,6 +42,7 @@
 #include "core/animation/LengthPairStyleInterpolation.h"
 #include "core/animation/LengthStyleInterpolation.h"
 #include "core/animation/ListStyleInterpolation.h"
+#if 0 // BKTODO:
 #include "core/animation/SVGAngleInterpolationType.h"
 #include "core/animation/SVGIntegerInterpolationType.h"
 #include "core/animation/SVGIntegerOptionalIntegerInterpolationType.h"
@@ -44,12 +56,13 @@
 #include "core/animation/SVGRectInterpolationType.h"
 #include "core/animation/SVGTransformListInterpolationType.h"
 #include "core/animation/SVGValueInterpolationType.h"
+#endif
 #include "core/animation/VisibilityStyleInterpolation.h"
 #include "core/animation/css/CSSAnimations.h"
 #include "core/css/CSSPropertyMetadata.h"
 #include "core/css/resolver/StyleResolver.h"
 #include "core/style/ComputedStyle.h"
-#include "core/svg/SVGElement.h"
+// BKTODO: #include "core/svg/SVGElement.h"
 #include "platform/RuntimeEnabledFeatures.h"
 
 namespace blink {
@@ -98,14 +111,14 @@ PropertyHandleSet StringKeyframe::properties() const
         ASSERT_WITH_MESSAGE(
             !isShorthandProperty(propertyReference.id()) || propertyReference.value()->isVariableReferenceValue(),
             "Web Animations: Encountered unexpanded shorthand CSS property (%d).", propertyReference.id());
-        properties.add(PropertyHandle(propertyReference.id(), false));
+        properties.insert(PropertyHandle(propertyReference.id(), false));
     }
 
     for (unsigned i = 0; i < m_presentationAttributeMap->propertyCount(); ++i)
-        properties.add(PropertyHandle(m_presentationAttributeMap->propertyAt(i).id(), true));
+        properties.insert(PropertyHandle(m_presentationAttributeMap->propertyAt(i).id(), true));
 
     for (const auto& key: m_svgAttributeMap.keys())
-        properties.add(PropertyHandle(*key));
+        properties.insert(PropertyHandle(*key));
 
     return properties;
 }
@@ -294,6 +307,8 @@ const InterpolationTypes* applicableTypesForProperty(PropertyHandle property)
             applicableTypes->append(adoptPtr(new CSSValueInterpolationType(cssProperty)));
 
     } else {
+        ASSERT(false); // BKTODO:
+#if 0
         const QualifiedName& attribute = property.svgAttribute();
         if (attribute == SVGNames::orientAttr) {
             applicableTypes->append(adoptPtr(new SVGAngleInterpolationType(attribute)));
@@ -412,6 +427,7 @@ const InterpolationTypes* applicableTypesForProperty(PropertyHandle property)
 
         if (!fallbackToLegacy)
             applicableTypes->append(adoptPtr(new SVGValueInterpolationType(attribute)));
+#endif
     }
 
     auto addResult = applicableTypesMap.add(property, fallbackToLegacy ? nullptr : applicableTypes.release());
@@ -623,6 +639,7 @@ PassOwnPtr<Keyframe::PropertySpecificKeyframe> SVGPropertySpecificKeyframe::neut
 
 namespace {
 
+#if 0 // BKTODO:
 PassRefPtr<Interpolation> createSVGInterpolation(SVGPropertyBase* fromValue, SVGPropertyBase* toValue, SVGAnimatedPropertyBase* attribute)
 {
     RefPtr<Interpolation> interpolation = nullptr;
@@ -653,9 +670,11 @@ PassRefPtr<Interpolation> createSVGInterpolation(SVGPropertyBase* fromValue, SVG
 
     return DefaultSVGInterpolation::create(fromValue, toValue, attribute);
 }
+#endif
 
 } // namespace
 
+#if 0 // BKTODO:
 PassRefPtr<Interpolation> SVGPropertySpecificKeyframe::maybeCreateInterpolation(PropertyHandle propertyHandle, Keyframe::PropertySpecificKeyframe& end, Element* element, const ComputedStyle* baseStyle) const
 {
     const InterpolationTypes* applicableTypes = applicableTypesForProperty(propertyHandle);
@@ -674,5 +693,6 @@ PassRefPtr<Interpolation> SVGPropertySpecificKeyframe::maybeCreateInterpolation(
 
     return createSVGInterpolation(fromValue.get(), toValue.get(), attribute);
 }
+#endif
 
 } // namespace blink
