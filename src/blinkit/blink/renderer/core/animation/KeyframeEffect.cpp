@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: KeyframeEffect.cpp
+// Description: KeyframeEffect Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -30,7 +41,6 @@
 
 #include "core/animation/KeyframeEffect.h"
 
-#include "bindings/core/v8/Dictionary.h"
 #include "bindings/core/v8/ExceptionState.h"
 #include "core/animation/Animation.h"
 #include "core/animation/AnimationTimeline.h"
@@ -44,7 +54,7 @@
 #include "core/dom/NodeComputedStyle.h"
 #include "core/frame/UseCounter.h"
 #include "core/paint/PaintLayer.h"
-#include "core/svg/SVGElement.h"
+// BKTODO: #include "core/svg/SVGElement.h"
 
 namespace blink {
 
@@ -95,10 +105,10 @@ KeyframeEffect::~KeyframeEffect()
 void KeyframeEffect::attach(Animation* animation)
 {
     if (m_target) {
-        m_target->ensureElementAnimations().animations().add(animation);
+        m_target->ensureElementAnimations().animations().insert(animation);
         m_target->setNeedsAnimationStyleRecalc();
         if (RuntimeEnabledFeatures::webAnimationsSVGEnabled() && m_target->isSVGElement())
-            toSVGElement(m_target)->setWebAnimationsPending();
+            ASSERT(false); // BKTODO: toSVGElement(m_target)->setWebAnimationsPending();
     }
     AnimationEffect::attach(animation);
 }
@@ -106,7 +116,7 @@ void KeyframeEffect::attach(Animation* animation)
 void KeyframeEffect::detach()
 {
     if (m_target)
-        m_target->elementAnimations()->animations().remove(animation());
+        m_target->elementAnimations()->animations().erase(animation());
     if (m_sampledEffect)
         clearEffects();
     AnimationEffect::detach();
@@ -197,7 +207,7 @@ void KeyframeEffect::applyEffects()
     if (changed) {
         m_target->setNeedsAnimationStyleRecalc();
         if (RuntimeEnabledFeatures::webAnimationsSVGEnabled() && m_target->isSVGElement())
-            toSVGElement(*m_target).setWebAnimationsPending();
+            ASSERT(false); // BKTODO: toSVGElement(*m_target).setWebAnimationsPending();
     }
 }
 
@@ -211,7 +221,7 @@ void KeyframeEffect::clearEffects()
     restartAnimationOnCompositor();
     m_target->setNeedsAnimationStyleRecalc();
     if (RuntimeEnabledFeatures::webAnimationsSVGEnabled() && m_target->isSVGElement())
-        toSVGElement(*m_target).clearWebAnimatedAttributes();
+        ASSERT(false); // BKTODO: toSVGElement(*m_target).clearWebAnimatedAttributes();
     invalidate();
 }
 
