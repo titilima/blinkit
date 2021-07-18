@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSFontSelector.cpp
+// Description: CSSFontSelector Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2011 Apple Inc. All rights reserved.
  *           (C) 2007, 2008 Nikolas Zimmermann <zimmermann@kde.org>
@@ -45,7 +56,7 @@ namespace blink {
 CSSFontSelector::CSSFontSelector(Document* document)
     : m_document(document)
     , m_fontLoader(FontLoader::create(this, document))
-    , m_genericFontFamilySettings(document->frame()->settings()->genericFontFamilySettings())
+    // BKTODO: , m_genericFontFamilySettings(document->frame()->settings()->genericFontFamilySettings())
 {
     // FIXME: An old comment used to say there was no need to hold a reference to m_document
     // because "we are guaranteed to be destroyed before the document". But there does not
@@ -82,7 +93,7 @@ void CSSFontSelector::dispatchInvalidationCallbacks()
     m_fontFaceCache.incrementVersion();
 
     WillBeHeapVector<RawPtrWillBeMember<CSSFontSelectorClient>> clients;
-    copyToVector(m_clients, clients);
+    ASSERT(false); // BKTODO: copyToVector(m_clients, clients);
     for (size_t i = 0; i < clients.size(); ++i)
         clients[i]->fontsNeedUpdate(this);
 }
@@ -109,6 +120,8 @@ static AtomicString familyNameFromSettings(const GenericFontFamilySettings& sett
     UScriptCode script = fontDescription.script();
     if (fontDescription.genericFamily() == FontDescription::StandardFamily)
         return settings.standard(script);
+    ASSERT(false); // BKTODO:
+#if 0
     if (genericFamilyName == FontFamilyNames::webkit_serif)
         return settings.serif(script);
     if (genericFamilyName == FontFamilyNames::webkit_sans_serif)
@@ -123,6 +136,7 @@ static AtomicString familyNameFromSettings(const GenericFontFamilySettings& sett
         return settings.pictograph(script);
     if (genericFamilyName == FontFamilyNames::webkit_standard)
         return settings.standard(script);
+#endif
 #endif
     return emptyAtom;
 }
@@ -173,11 +187,14 @@ void CSSFontSelector::clearDocument()
 
 void CSSFontSelector::updateGenericFontFamilySettings(Document& document)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!document.settings())
         return;
     m_genericFontFamilySettings = document.settings()->genericFontFamilySettings();
     // Need to increment FontFaceCache version to update ComputedStyles.
     m_fontFaceCache.incrementVersion();
+#endif
 }
 
 DEFINE_TRACE(CSSFontSelector)
