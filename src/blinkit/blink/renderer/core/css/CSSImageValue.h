@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSImageValue.h
+// Description: CSSImageValue Class
+//      Author: Ziming Li
+//     Created: 2021-07-14
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2008, 2012 Apple Inc. All rights reserved.
@@ -23,8 +34,12 @@
 
 #include "core/CoreExport.h"
 #include "core/css/CSSValue.h"
+#if 0 // BKTODO:
 #include "platform/CrossOriginAttributeValue.h"
 #include "platform/weborigin/Referrer.h"
+#else
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
+#endif
 #include "wtf/RefPtr.h"
 
 namespace blink {
@@ -39,7 +54,7 @@ class CORE_EXPORT CSSImageValue : public CSSValue {
 public:
     static PassRefPtrWillBeRawPtr<CSSImageValue> create(const KURL& url, StyleFetchedImage* image = 0)
     {
-        return create(url.string(), url, image);
+        return create(String::fromStdUTF8(url.spec()), url, image);
     }
     static PassRefPtrWillBeRawPtr<CSSImageValue> create(const String& rawValue, const KURL& url, StyleFetchedImage* image = 0)
     {
@@ -53,12 +68,14 @@ public:
 
     bool isCachePending() const { return m_isCachePending; }
     StyleFetchedImage* cachedImage() const { ASSERT(!isCachePending()); return m_cachedImage.get(); }
-    StyleFetchedImage* cacheImage(Document*, CrossOriginAttributeValue = CrossOriginAttributeNotSet);
+    StyleFetchedImage* cacheImage(Document*);
 
     const String& url() const { return m_absoluteURL; }
 
+#if 0 // BKTODO:
     void setReferrer(const Referrer& referrer) { m_referrer = referrer; }
     const Referrer& referrer() const { return m_referrer; }
+#endif
 
     void reResolveURL(const Document&);
 
@@ -72,7 +89,8 @@ public:
 
     PassRefPtrWillBeRawPtr<CSSImageValue> valueWithURLMadeAbsolute()
     {
-        return create(KURL(ParsedURLString, m_absoluteURL), m_cachedImage.get());
+        ASSERT(false); // BKTODO: return create(KURL(ParsedURLString, m_absoluteURL), m_cachedImage.get());
+        return nullptr;
     }
 
     void setInitiator(const AtomicString& name) { m_initiatorName = name; }
@@ -85,7 +103,7 @@ private:
 
     AtomicString m_relativeURL;
     AtomicString m_absoluteURL;
-    Referrer m_referrer;
+    // BKTODO: Referrer m_referrer;
     bool m_isCachePending;
     RefPtrWillBeMember<StyleFetchedImage> m_cachedImage;
     AtomicString m_initiatorName;

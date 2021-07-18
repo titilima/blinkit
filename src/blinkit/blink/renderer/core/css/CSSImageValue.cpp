@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSImageValue.cpp
+// Description: CSSImageValue Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2008 Apple Inc. All rights reserved.
@@ -22,15 +33,15 @@
 
 #include "core/css/CSSMarkup.h"
 #include "core/dom/Document.h"
-#include "core/fetch/FetchInitiatorTypeNames.h"
+// BKTODO: #include "core/fetch/FetchInitiatorTypeNames.h"
 #include "core/fetch/FetchRequest.h"
 #include "core/fetch/ImageResource.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/loader/MixedContentChecker.h"
 #include "core/style/StyleFetchedImage.h"
-#include "platform/CrossOriginAttributeValue.h"
+// BKTODO: #include "platform/CrossOriginAttributeValue.h"
 #include "platform/weborigin/KURL.h"
-#include "platform/weborigin/SecurityPolicy.h"
+// BKTODO: #include "platform/weborigin/SecurityPolicy.h"
 
 namespace blink {
 
@@ -47,13 +58,15 @@ CSSImageValue::~CSSImageValue()
 {
 }
 
-StyleFetchedImage* CSSImageValue::cacheImage(Document* document, CrossOriginAttributeValue crossOrigin)
+StyleFetchedImage* CSSImageValue::cacheImage(Document* document)
 {
     ASSERT(document);
 
     if (m_isCachePending) {
         m_isCachePending = false;
 
+        ASSERT(false); // BKTODO:
+#if 0
         FetchRequest request(ResourceRequest(m_absoluteURL), m_initiatorName.isEmpty() ? FetchInitiatorTypeNames::css : m_initiatorName);
         request.mutableResourceRequest().setHTTPReferrer(SecurityPolicy::generateReferrer(m_referrer.referrerPolicy, request.url(), m_referrer.referrer));
 
@@ -62,6 +75,7 @@ StyleFetchedImage* CSSImageValue::cacheImage(Document* document, CrossOriginAttr
 
         if (ResourcePtr<ImageResource> cachedImage = ImageResource::fetch(request, document->fetcher()))
             m_cachedImage = StyleFetchedImage::create(cachedImage.get(), document, request.url());
+#endif
     }
 
     return m_cachedImage.get();
@@ -71,6 +85,8 @@ void CSSImageValue::restoreCachedResourceIfNeeded(Document& document) const
 {
     if (m_isCachePending || !m_cachedImage || !document.fetcher())
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     if (document.fetcher()->cachedResource(KURL(ParsedURLString, m_absoluteURL)))
         return;
 
@@ -82,6 +98,7 @@ void CSSImageValue::restoreCachedResourceIfNeeded(Document& document) const
     MixedContentChecker::shouldBlockFetch(document.frame(), resource->lastResourceRequest(),
         resource->lastResourceRequest().url(), MixedContentChecker::SendReport);
     document.fetcher()->requestLoadStarted(resource, request, ResourceFetcher::ResourceLoadingFromCache);
+#endif
 }
 
 bool CSSImageValue::hasFailedOrCanceledSubresources() const
