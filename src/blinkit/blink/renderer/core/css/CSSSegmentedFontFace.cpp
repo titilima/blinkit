@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSSegmentedFontFace.cpp
+// Description: CSSSegmentedFontFace Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All rights reserved.
  *
@@ -82,18 +93,23 @@ void CSSSegmentedFontFace::addFontFace(PassRefPtrWillBeRawPtr<FontFace> prpFontF
     pruneTable();
     fontFace->cssFontFace()->setSegmentedFontFace(this);
     if (cssConnected) {
-        m_fontFaces.insertBefore(m_firstNonCssConnectedFace, fontFace);
+        ASSERT(false); // BKTODO: m_fontFaces.insertBefore(m_firstNonCssConnectedFace, fontFace);
     } else {
+        ASSERT(false); // BKTODO:
+#if 0
         // This is the only place in Blink that is using addReturnIterator.
         FontFaceList::iterator iterator = m_fontFaces.addReturnIterator(fontFace);
         if (m_firstNonCssConnectedFace == m_fontFaces.end())
             m_firstNonCssConnectedFace = iterator;
+#endif
     }
 }
 
 void CSSSegmentedFontFace::removeFontFace(PassRefPtrWillBeRawPtr<FontFace> prpFontFace)
 {
     RefPtrWillBeRawPtr<FontFace> fontFace = prpFontFace;
+    ASSERT(false); // BKTODO:
+#if 0
     FontFaceList::iterator it = m_fontFaces.find(fontFace);
     if (it == m_fontFaces.end())
         return;
@@ -101,6 +117,7 @@ void CSSSegmentedFontFace::removeFontFace(PassRefPtrWillBeRawPtr<FontFace> prpFo
     if (it == m_firstNonCssConnectedFace)
         ++m_firstNonCssConnectedFace;
     m_fontFaces.remove(it);
+#endif
 
     pruneTable();
     fontFace->cssFontFace()->clearSegmentedFontFace();
@@ -196,7 +213,7 @@ DEFINE_TRACE(CSSSegmentedFontFace)
 {
 #if ENABLE(OILPAN)
     visitor->trace(m_fontSelector);
-    visitor->trace(m_fontFaces);
+    ASSERT(false); // BKTODO: visitor->trace(m_fontFaces);
 #endif
 }
 
