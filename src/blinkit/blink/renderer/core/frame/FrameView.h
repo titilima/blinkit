@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FrameView.h
+// Description: FrameView Class
+//      Author: Ziming Li
+//     Created: 2021-07-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
    Copyright (C) 1997 Martin Jones (mjones@kde.org)
              (C) 1998 Waldo Bastian (bastian@kde.org)
@@ -30,7 +41,7 @@
 #include "core/frame/FrameViewAutoSizeInfo.h"
 #include "core/frame/LayoutSubtreeRootList.h"
 #include "core/frame/RootFrameViewport.h"
-#include "core/layout/LayoutAnalyzer.h"
+// BKTODO: #include "core/layout/LayoutAnalyzer.h"
 #include "core/paint/PaintInvalidationCapableScrollableArea.h"
 #include "core/paint/PaintPhase.h"
 #include "platform/RuntimeEnabledFeatures.h"
@@ -43,7 +54,6 @@
 #include "platform/scroll/ScrollTypes.h"
 #include "platform/scroll/Scrollbar.h"
 #include "public/platform/WebDisplayMode.h"
-#include "public/platform/WebRect.h"
 #include "wtf/Allocator.h"
 #include "wtf/Forward.h"
 #include "wtf/HashSet.h"
@@ -183,7 +193,7 @@ public:
 
     AtomicString mediaType() const;
     void setMediaType(const AtomicString&);
-    void adjustMediaTypeForPrinting(bool printing);
+    // BKTODO: void adjustMediaTypeForPrinting(bool printing);
 
     WebDisplayMode displayMode() { return m_displayMode; }
     void setDisplayMode(WebDisplayMode);
@@ -325,8 +335,10 @@ public:
 
     bool isActive() const override;
 
+#if 0 // BKTODO:
     // Override scrollbar notifications to update the AXObject cache.
     void didAddScrollbar(Scrollbar&, ScrollbarOrientation) override;
+#endif
 
     // FIXME: This should probably be renamed as the 'inSubtreeLayout' parameter
     // passed around the FrameView layout methods can be true while this returns
@@ -552,7 +564,7 @@ public:
 
     int viewportWidth() const;
 
-    LayoutAnalyzer* layoutAnalyzer() { return m_analyzer.get(); }
+    // BKTODO: LayoutAnalyzer* layoutAnalyzer() { return m_analyzer.get(); }
 
     // Returns true if the default scrolling direction is vertical. i.e. writing mode
     // is horiziontal. In a vertical document, a spacebar scrolls down.
@@ -716,8 +728,10 @@ private:
 
     void updateScrollCorner();
 
+#if 0 // BKTODO:
     AXObjectCache* axObjectCache() const;
     void removeFromAXObjectCache();
+#endif
 
     void setLayoutSizeInternal(const IntSize&);
 
@@ -732,15 +746,17 @@ private:
 
     ScrollingCoordinator* scrollingCoordinator() const;
 
+#if 0 // BKTODO:
     void prepareLayoutAnalyzer();
     PassRefPtr<TracedValue> analyzerCounters();
+#endif
 
     // LayoutObject for the viewport-defining element (see Document::viewportDefiningElement).
     LayoutObject* viewportLayoutObject();
 
     void collectAnnotatedRegions(LayoutObject&, Vector<AnnotatedRegionValue>&) const;
 
-    typedef WTF::HashMap <const GraphicsLayer*, Vector<std::pair<int64_t, WebRect>>> GraphicsLayerFrameTimingRequests;
+    using GraphicsLayerFrameTimingRequests = std::unordered_map<const GraphicsLayer *, std::vector<std::pair<int64_t, IntRect>>>;
     void updateFrameTimingRequestsIfNeeded();
     void collectFrameTimingRequests(GraphicsLayerFrameTimingRequests&);
     void collectFrameTimingRequestsRecursive(GraphicsLayerFrameTimingRequests&);
@@ -758,8 +774,10 @@ private:
 
     LayoutSize m_size;
 
+#if 0 // BKTODO:
     typedef HashSet<RefPtr<LayoutEmbeddedObject>> EmbeddedObjectSet;
     EmbeddedObjectSet m_partUpdateSet;
+#endif
 
     // FIXME: These are just "children" of the FrameView and should be RefPtrWillBeMember<Widget> instead.
     HashSet<RefPtr<LayoutPart>> m_parts;
@@ -788,7 +806,7 @@ private:
     unsigned m_nestedLayoutCount;
     Timer<FrameView> m_postLayoutTasksTimer;
     Timer<FrameView> m_updateWidgetsTimer;
-    OwnPtr<CancellableTaskFactory> m_renderThrottlingObserverNotificationFactory;
+    // BKTODO: OwnPtr<CancellableTaskFactory> m_renderThrottlingObserverNotificationFactory;
 
     bool m_firstLayout;
     bool m_isTransparent;
@@ -796,8 +814,10 @@ private:
     IntSize m_lastViewportSize;
     float m_lastZoomFactor;
 
+#if 0 // BKTODO:
     AtomicString m_mediaType;
     AtomicString m_mediaTypeWhenNotPrinting;
+#endif
 
     bool m_safeToPropagateScrollToParent;
 
@@ -864,7 +884,7 @@ private:
 
     bool m_inUpdateScrollbars;
 
-    OwnPtr<LayoutAnalyzer> m_analyzer;
+    // BKTODO: OwnPtr<LayoutAnalyzer> m_analyzer;
 
     // Mark if something has changed in the mapping from Frame to GraphicsLayer
     // and the Frame Timing regions should be recalculated.
