@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSKeyframesRule.cpp
+// Description: CSSKeyframesRule Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2012 Apple Inc. All rights reserved.
  *
@@ -57,18 +68,18 @@ void StyleRuleKeyframes::parserAppendKeyframe(PassRefPtrWillBeRawPtr<StyleRuleKe
 {
     if (!keyframe)
         return;
-    m_keyframes.append(keyframe);
+    m_keyframes.emplace_back(keyframe);
 }
 
 void StyleRuleKeyframes::wrapperAppendKeyframe(PassRefPtrWillBeRawPtr<StyleRuleKeyframe> keyframe)
 {
-    m_keyframes.append(keyframe);
+    m_keyframes.emplace_back(keyframe);
     styleChanged();
 }
 
 void StyleRuleKeyframes::wrapperRemoveKeyframe(unsigned index)
 {
-    m_keyframes.remove(index);
+    m_keyframes.erase(m_keyframes.begin() + index);
     styleChanged();
 }
 
@@ -121,7 +132,7 @@ void CSSKeyframesRule::appendRule(const String& ruleText)
     ASSERT(m_childRuleCSSOMWrappers.size() == m_keyframesRule->keyframes().size());
 
     CSSStyleSheet* styleSheet = parentStyleSheet();
-    CSSParserContext context(parserContext(), UseCounter::getFrom(styleSheet));
+    CSSParserContext context(parserContext());
     RefPtrWillBeRawPtr<StyleRuleKeyframe> keyframe = CSSParser::parseKeyframeRule(context, ruleText);
     if (!keyframe)
         return;
@@ -130,7 +141,7 @@ void CSSKeyframesRule::appendRule(const String& ruleText)
 
     m_keyframesRule->wrapperAppendKeyframe(keyframe);
 
-    m_childRuleCSSOMWrappers.grow(length());
+    m_childRuleCSSOMWrappers.resize(length());
 }
 
 void CSSKeyframesRule::deleteRule(const String& s)
@@ -147,7 +158,7 @@ void CSSKeyframesRule::deleteRule(const String& s)
 
     if (m_childRuleCSSOMWrappers[i])
         m_childRuleCSSOMWrappers[i]->setParentRule(0);
-    m_childRuleCSSOMWrappers.remove(i);
+    m_childRuleCSSOMWrappers.erase(m_childRuleCSSOMWrappers.begin() + i);
 }
 
 CSSKeyframeRule* CSSKeyframesRule::findRule(const String& s)
@@ -196,8 +207,6 @@ CSSKeyframeRule* CSSKeyframesRule::item(unsigned index) const
 
 CSSKeyframeRule* CSSKeyframesRule::anonymousIndexedGetter(unsigned index) const
 {
-    if (UseCounter* useCounter = UseCounter::getFrom(parentStyleSheet()))
-        useCounter->count(UseCounter::CSSKeyframesRuleAnonymousIndexedGetter);
     return item(index);
 }
 

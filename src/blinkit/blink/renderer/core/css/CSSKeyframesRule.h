@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSKeyframesRule.h
+// Description: CSSKeyframesRule Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2012 Apple Inc. All rights reserved.
  *
@@ -118,7 +129,7 @@ private:
     CSSRule::Type type() const override { return KEYFRAMES_RULE; }
 
     RefPtrWillBeMember<StyleRuleKeyframes> m_keyframesRule;
-    mutable WillBeHeapVector<RefPtrWillBeMember<CSSKeyframeRule>> m_childRuleCSSOMWrappers;
+    mutable std::vector<Member<CSSKeyframeRule>> m_childRuleCSSOMWrappers;
     mutable OwnPtrWillBeMember<CSSRuleList> m_ruleListCSSOMWrapper;
     bool m_isPrefixed;
 };
