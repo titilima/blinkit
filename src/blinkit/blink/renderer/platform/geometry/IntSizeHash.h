@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IntSizeHash.h
+// Description: Hashers for IntSize
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -47,5 +58,15 @@ template<> struct HashTraits<blink::IntSize> : GenericHashTraits<blink::IntSize>
 };
 
 } // namespace WTF
+
+namespace std {
+template<> struct hash<blink::IntSize>
+{
+    std::size_t operator()(const blink::IntSize &s) const noexcept
+    {
+        return WTF::IntHash<blink::IntSize>::hash(s);
+    }
+};
+}
 
 #endif
