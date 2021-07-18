@@ -124,7 +124,7 @@ bool hasIncompatibleAnimations(const Element& targetElement, const Animation& an
     ASSERT(elementAnimations);
 
     for (const auto& entry : elementAnimations->animations()) {
-        const Animation* attachedAnimation = entry.key;
+        const Animation* attachedAnimation = entry.first;
         if (!considerAnimationAsIncompatible(*attachedAnimation, animationToAdd))
             continue;
 
@@ -178,7 +178,7 @@ bool CompositorAnimations::getAnimatedBoundingBox(FloatBox& box, const EffectMod
 
     PropertyHandleSet properties = keyframeEffect.properties();
 
-    if (properties.isEmpty())
+    if (properties.empty())
         return true;
 
     minValue = std::min(minValue, 0.0);
@@ -244,7 +244,7 @@ bool CompositorAnimations::isCandidateForAnimationOnCompositor(const Timing& tim
     const KeyframeEffectModelBase& keyframeEffect = toKeyframeEffectModelBase(effect);
 
     PropertyHandleSet properties = keyframeEffect.properties();
-    if (properties.isEmpty())
+    if (properties.empty())
         return false;
 
     unsigned transformPropertyCount = 0;
@@ -319,7 +319,7 @@ void CompositorAnimations::cancelIncompatibleAnimationsOnCompositor(const Elemen
     ASSERT(elementAnimations);
 
     for (const auto& entry : elementAnimations->animations()) {
-        Animation* attachedAnimation = entry.key;
+        Animation* attachedAnimation = entry.first;
         if (!considerAnimationAsIncompatible(*attachedAnimation, animationToAdd))
             continue;
 
@@ -333,9 +333,13 @@ void CompositorAnimations::cancelIncompatibleAnimationsOnCompositor(const Elemen
 
 bool CompositorAnimations::canStartAnimationOnCompositor(const Element& element)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     if (!Platform::current()->isThreadedAnimationEnabled())
         return false;
     return element.layoutObject() && element.layoutObject()->compositingState() == PaintsIntoOwnBacking;
+#endif
 }
 
 bool CompositorAnimations::startAnimationOnCompositor(const Element& element, int group, double startTime, double timeOffset, const Timing& timing, const Animation& animation, const EffectModel& effect, Vector<int>& startedAnimationIds, double animationPlaybackRate)
@@ -633,6 +637,8 @@ void CompositorAnimationsImpl::addKeyframesToCurve(WebCompositorAnimationCurve& 
         // and convert using another set of toAnimatableXXXOperations functions.
         const AnimatableValue* value = keyframe->getAnimatableValue().get();
 
+        ASSERT(false); // BKTODO:
+#if 0
         switch (curve.type()) {
         case WebCompositorAnimationCurve::AnimationCurveTypeFilter: {
             OwnPtr<WebFilterOperations> ops = adoptPtr(Platform::current()->compositorSupport()->createFilterOperations());
@@ -661,6 +667,7 @@ void CompositorAnimationsImpl::addKeyframesToCurve(WebCompositorAnimationCurve& 
         default:
             ASSERT_NOT_REACHED();
         }
+#endif
     }
 }
 
@@ -672,7 +679,9 @@ void CompositorAnimationsImpl::getAnimationOnCompositor(const Timing& timing, in
     ASSERT_UNUSED(timingValid, timingValid);
 
     PropertyHandleSet properties = effect.properties();
-    ASSERT(!properties.isEmpty());
+    ASSERT(!properties.empty());
+    ASSERT(false); // BKTODO:
+#if 0
     for (const auto& property : properties) {
         PropertySpecificKeyframeVector values;
         getKeyframeValuesForProperty(&effect, property, compositorTiming.scaledDuration, values);
@@ -760,6 +769,7 @@ void CompositorAnimationsImpl::getAnimationOnCompositor(const Timing& timing, in
         }
         animations.append(animation.release());
     }
+#endif
     ASSERT(!animations.isEmpty());
 }
 
