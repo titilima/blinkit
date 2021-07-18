@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: KeyframeEffectModel.cpp
+// Description: KeyframeEffectModel Classes
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -48,7 +59,7 @@ PropertyHandleSet KeyframeEffectModelBase::properties() const
     PropertyHandleSet result;
     for (const auto& keyframe : m_keyframes) {
         for (const auto& property : keyframe->properties())
-            result.add(property);
+            result.insert(property);
     }
     return result;
 }
