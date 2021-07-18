@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSPrimitiveValue.cpp
+// Description: CSSPrimitiveValue Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2012 Apple Inc. All rights reserved.
@@ -156,7 +167,7 @@ bool CSSPrimitiveValue::colorIsDerivedFromElement() const
     }
 }
 
-using CSSTextCache = WillBePersistentHeapHashMap<RawPtrWillBeWeakMember<const CSSPrimitiveValue>, String>;
+// BKTODO: using CSSTextCache = WillBePersistentHeapHashMap<RawPtrWillBeWeakMember<const CSSPrimitiveValue>, String>;
 
 #if ENABLE(OILPAN) && defined(LEAK_SANITIZER)
 
@@ -178,14 +189,16 @@ private:
 
 }
 #else
-using CSSTextCacheWrapper = CSSTextCache;
+// BKTODO: using CSSTextCacheWrapper = CSSTextCache;
 #endif
 
+#if 0 // BKTODO:
 static CSSTextCache& cssTextCache()
 {
     DEFINE_THREAD_SAFE_STATIC_LOCAL(ThreadSpecific<CSSTextCacheWrapper>, cache, new ThreadSpecific<CSSTextCacheWrapper>);
     return *cache;
 }
+#endif
 
 CSSPrimitiveValue::UnitType CSSPrimitiveValue::typeWithCalcResolved() const
 {
@@ -740,8 +753,11 @@ const char* CSSPrimitiveValue::unitTypeToString(UnitType type)
 String CSSPrimitiveValue::customCSSText() const
 {
     if (m_hasCachedCSSText) {
+        ASSERT(false); // BKTODO:
+#if 0
         ASSERT(cssTextCache().contains(this));
         return cssTextCache().get(this);
+#endif
     }
 
     String text;
@@ -796,8 +812,11 @@ String CSSPrimitiveValue::customCSSText() const
         break;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(!cssTextCache().contains(this));
     cssTextCache().set(this, text);
+#endif
     m_hasCachedCSSText = true;
     return text;
 }
