@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSImageListInterpolationType.cpp
+// Description: CSSImageListInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -52,13 +63,20 @@ PassOwnPtr<InterpolationValue> CSSImageListInterpolationType::maybeConvertNeutra
 
 PassOwnPtr<InterpolationValue> CSSImageListInterpolationType::maybeConvertInitial() const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     StyleImageList initialImageList;
     ImageListPropertyFunctions::getInitialImageList(cssProperty(), initialImageList);
     return maybeConvertStyleImageList(initialImageList);
+#endif
 }
 
 PassOwnPtr<InterpolationValue> CSSImageListInterpolationType::maybeConvertStyleImageList(const StyleImageList& imageList) const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (imageList.size() == 0)
         return nullptr;
 
@@ -68,6 +86,7 @@ PassOwnPtr<InterpolationValue> CSSImageListInterpolationType::maybeConvertStyleI
     if (!listComponent)
         return nullptr;
     return InterpolationValue::create(*this, listComponent);
+#endif
 }
 
 class ParentImageListChecker : public InterpolationType::ConversionChecker {
@@ -83,18 +102,22 @@ private:
     ParentImageListChecker(const InterpolationType& type, CSSPropertyID property, const StyleImageList& inheritedImageList)
         : ConversionChecker(type)
         , m_property(property)
-        , m_inheritedImageList(inheritedImageList)
+        // BKTODO: , m_inheritedImageList(inheritedImageList)
     { }
 
     bool isValid(const InterpolationEnvironment& environment, const UnderlyingValue&) const final
     {
+        ASSERT(false); // BKTODO:
+        return false;
+#if 0
         StyleImageList inheritedImageList;
         ImageListPropertyFunctions::getImageList(m_property, *environment.state().parentStyle(), inheritedImageList);
         return m_inheritedImageList == inheritedImageList;
+#endif
     }
 
     CSSPropertyID m_property;
-    StyleImageList m_inheritedImageList;
+    // BKTODO: StyleImageList m_inheritedImageList;
 };
 
 PassOwnPtr<InterpolationValue> CSSImageListInterpolationType::maybeConvertInherit(const StyleResolverState& state, ConversionCheckers& conversionCheckers) const
@@ -102,10 +125,14 @@ PassOwnPtr<InterpolationValue> CSSImageListInterpolationType::maybeConvertInheri
     if (!state.parentStyle())
         return nullptr;
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     StyleImageList inheritedImageList;
     ImageListPropertyFunctions::getImageList(cssProperty(), *state.parentStyle(), inheritedImageList);
     conversionCheckers.append(ParentImageListChecker::create(*this, cssProperty(), inheritedImageList));
     return maybeConvertStyleImageList(inheritedImageList);
+#endif
 }
 
 PassOwnPtr<InterpolationValue> CSSImageListInterpolationType::maybeConvertValue(const CSSValue& value, const StyleResolverState&, ConversionCheckers&) const
@@ -145,9 +172,13 @@ PassOwnPtr<PairwisePrimitiveInterpolation> CSSImageListInterpolationType::mergeS
 
 PassOwnPtr<InterpolationValue> CSSImageListInterpolationType::maybeConvertUnderlyingValue(const InterpolationEnvironment& environment) const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     StyleImageList underlyingImageList;
     ImageListPropertyFunctions::getImageList(cssProperty(), *environment.state().style(), underlyingImageList);
     return maybeConvertStyleImageList(underlyingImageList);
+#endif
 }
 
 void CSSImageListInterpolationType::composite(UnderlyingValue& underlyingValue, double underlyingFraction, const InterpolationValue& value) const
@@ -162,10 +193,13 @@ void CSSImageListInterpolationType::apply(const InterpolableValue& interpolableV
     ASSERT(length > 0);
     const NonInterpolableList& nonInterpolableList = toNonInterpolableList(*nonInterpolableValue);
     ASSERT(nonInterpolableList.length() == length);
+    ASSERT(false); // BKTODO:
+#if 0
     StyleImageList imageList(length);
     for (size_t i = 0; i < length; i++)
         imageList[i] = CSSImageInterpolationType::resolveStyleImage(cssProperty(), *interpolableList.get(i), nonInterpolableList.get(i), environment.state());
     ImageListPropertyFunctions::setImageList(cssProperty(), *environment.state().style(), imageList);
+#endif
 }
 
 } // namespace blink
