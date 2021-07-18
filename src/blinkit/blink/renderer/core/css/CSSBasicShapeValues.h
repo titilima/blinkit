@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSBasicShapeValues.h
+// Description: CSS Basic Shape Value Classes
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Adobe Systems Incorporated. All rights reserved.
  *
@@ -105,8 +116,8 @@ public:
 
     void appendPoint(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> x, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> y)
     {
-        m_values.append(x);
-        m_values.append(y);
+        m_values.emplace_back(x);
+        m_values.emplace_back(y);
     }
 
     PassRefPtrWillBeRawPtr<CSSPrimitiveValue> getXAt(unsigned i) const { return m_values.at(i * 2); }
