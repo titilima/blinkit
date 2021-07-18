@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebLayer.h
+// Description: WebLayer Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -30,14 +41,11 @@
 #include "WebColor.h"
 #include "WebCommon.h"
 #include "WebCompositorAnimation.h"
-#include "WebDoublePoint.h"
-#include "WebFloatPoint3D.h"
-#include "WebPoint.h"
-#include "WebRect.h"
 #include "WebScrollBlocksOn.h"
-#include "WebSize.h"
-#include "WebString.h"
-#include "WebVector.h"
+#include "blinkit/blink/renderer/platform/geometry/DoublePoint.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint3D.h"
+#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/platform/geometry/IntSize.h"
 
 class SkMatrix44;
 class SkImageFilter;
@@ -74,8 +82,8 @@ public:
     virtual void removeFromParent() = 0;
     virtual void removeAllChildren() = 0;
 
-    virtual void setBounds(const WebSize&) = 0;
-    virtual WebSize bounds() const = 0;
+    virtual void setBounds(const IntSize&) = 0;
+    virtual IntSize bounds() const = 0;
 
     virtual void setMasksToBounds(bool) = 0;
     virtual bool masksToBounds() const = 0;
@@ -101,8 +109,8 @@ public:
     virtual void setTransform(const SkMatrix44&) = 0;
     virtual SkMatrix44 transform() const = 0;
 
-    virtual void setTransformOrigin(const WebFloatPoint3D&) { }
-    virtual WebFloatPoint3D transformOrigin() const { return WebFloatPoint3D(); }
+    virtual void setTransformOrigin(const FloatPoint3D&) { }
+    virtual FloatPoint3D transformOrigin() const { return FloatPoint3D(); }
 
     // Sets whether the layer draws its content when compositing.
     virtual void setDrawsContent(bool) = 0;
@@ -179,8 +187,8 @@ public:
     virtual void setClipParent(WebLayer*) = 0;
 
     // Scrolling
-    virtual void setScrollPositionDouble(WebDoublePoint) = 0;
-    virtual WebDoublePoint scrollPositionDouble() const = 0;
+    virtual void setScrollPositionDouble(DoublePoint) = 0;
+    virtual DoublePoint scrollPositionDouble() const = 0;
     // Blink tells cc the scroll offset through setScrollPositionDouble() using
     // floating precision but it currently can only position cc layers at integer
     // boundary. So Blink needs to also call setScrollCompensationAdjustment()
@@ -192,7 +200,7 @@ public:
     // from the scroll offset, to be clear that this is Blink's limitation. Once
     // Blink can fully handle fractional scroll offset, it can stop calling
     // this function and cc side would just work.
-    virtual void setScrollCompensationAdjustment(WebDoublePoint) = 0;
+    virtual void setScrollCompensationAdjustment(DoublePoint) = 0;
 
     // To set a WebLayer as scrollable we must specify the corresponding clip layer.
     virtual void setScrollClipLayer(WebLayer*) = 0;
@@ -210,16 +218,16 @@ public:
     virtual void setShouldScrollOnMainThread(bool) = 0;
     virtual bool shouldScrollOnMainThread() const = 0;
 
-    virtual void setNonFastScrollableRegion(const WebVector<WebRect>&) = 0;
-    virtual WebVector<WebRect> nonFastScrollableRegion() const = 0;
+    virtual void setNonFastScrollableRegion(const std::vector<IntRect>&) = 0;
+    virtual std::vector<IntRect> nonFastScrollableRegion() const = 0;
 
-    virtual void setTouchEventHandlerRegion(const WebVector<WebRect>&) = 0;
-    virtual WebVector<WebRect> touchEventHandlerRegion() const = 0;
+    virtual void setTouchEventHandlerRegion(const std::vector<IntRect>&) = 0;
+    virtual std::vector<IntRect> touchEventHandlerRegion() const = 0;
 
     // Setter and getter for Frame Timing rects.
     // See http://w3c.github.io/frame-timing/ for definition of terms.
-    virtual void setFrameTimingRequests(const WebVector<std::pair<int64_t, WebRect>>&) = 0;
-    virtual WebVector<std::pair<int64_t, WebRect>> frameTimingRequests() const = 0;
+    virtual void setFrameTimingRequests(const std::vector<std::pair<int64_t, IntRect>>&) = 0;
+    virtual std::vector<std::pair<int64_t, IntRect>> frameTimingRequests() const = 0;
 
     // FIXME: Make pure once cc is updated.  crbug.com/347272
     virtual void setScrollBlocksOn(WebScrollBlocksOn) { }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebScrollbar.h
+// Description: WebScrollbar Class
+//      Author: Ziming Li
+//     Created: 2021-07-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -25,13 +36,8 @@
 #ifndef WebScrollbar_h
 #define WebScrollbar_h
 
-#include "WebPoint.h"
-#include "WebRect.h"
-#include "WebSize.h"
-#include "WebVector.h"
-#if INSIDE_BLINK
-#include "wtf/PassOwnPtr.h"
-#endif
+#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/platform/geometry/IntSize.h"
 
 namespace blink {
 
@@ -88,13 +94,13 @@ public:
     // Gets the current value (i.e. position inside the region).
     virtual int value() const = 0;
 
-    virtual WebPoint location() const = 0;
-    virtual WebSize size() const = 0;
+    virtual IntPoint location() const = 0;
+    virtual IntSize size() const = 0;
     virtual bool enabled() const = 0;
     virtual int maximum() const = 0;
     virtual int totalSize() const = 0;
     virtual bool isScrollableAreaActive() const = 0;
-    virtual void getTickmarks(WebVector<WebRect>& tickmarks) const = 0;
+    virtual void getTickmarks(std::vector<IntRect>& tickmarks) const = 0;
     virtual ScrollbarControlSize controlSize() const = 0;
     virtual ScrollbarPart pressedPart() const = 0;
     virtual ScrollbarPart hoveredPart() const = 0;

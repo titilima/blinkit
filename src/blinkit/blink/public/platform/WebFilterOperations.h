@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebFilterOperations.h
+// Description: WebFilterOperations Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -29,7 +40,7 @@
 #include "SkImageFilter.h"
 #include "SkScalar.h"
 #include "WebColor.h"
-#include "WebPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
 
 namespace blink {
 
@@ -47,7 +58,7 @@ public:
     virtual void appendContrastFilter(float amount) = 0;
     virtual void appendOpacityFilter(float amount)= 0;
     virtual void appendBlurFilter(float amount) = 0;
-    virtual void appendDropShadowFilter(WebPoint offset, float stdDeviation, WebColor) = 0;
+    virtual void appendDropShadowFilter(IntPoint offset, float stdDeviation, WebColor) = 0;
     virtual void appendColorMatrixFilter(SkScalar matrix[20]) = 0;
     virtual void appendZoomFilter(float amount, int inset) = 0;
     virtual void appendSaturatingBrightnessFilter(float amount) = 0;

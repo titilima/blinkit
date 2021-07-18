@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebCompositorSupport.h
+// Description: WebCompositorSupport Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -29,11 +40,11 @@
 #include "WebCommon.h"
 #include "WebCompositorAnimation.h"
 #include "WebCompositorAnimationCurve.h"
-#include "WebFloatPoint.h"
 #include "WebLayerTreeView.h"
 #include "WebScrollOffsetAnimationCurve.h"
 #include "WebScrollbar.h"
 #include "WebScrollbarThemePainter.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
 
 namespace cc {
 class Layer;
@@ -87,7 +98,7 @@ public:
     virtual WebFloatAnimationCurve* createFloatAnimationCurve() { return nullptr; }
 
     virtual WebScrollOffsetAnimationCurve* createScrollOffsetAnimationCurve(
-        WebFloatPoint targetValue,
+        FloatPoint targetValue,
         WebCompositorAnimationCurve::TimingFunctionType,
         WebScrollOffsetAnimationCurve::ScrollDurationBehavior) { return nullptr; }
 
