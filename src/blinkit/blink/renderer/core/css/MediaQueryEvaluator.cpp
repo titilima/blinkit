@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaQueryEvaluator.cpp
+// Description: MediaQueryEvaluator Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * CSS Media Query Evaluator
  *
@@ -31,8 +42,10 @@
 
 #include "core/CSSValueKeywords.h"
 #include "core/MediaFeatureNames.h"
+#if 0 // BKTODO:
 #include "core/MediaFeatures.h"
 #include "core/MediaTypeNames.h"
+#endif
 #include "core/css/CSSHelper.h"
 #include "core/css/CSSPrimitiveValue.h"
 #include "core/css/CSSToLengthConversionData.h"
@@ -57,7 +70,7 @@
 
 namespace blink {
 
-using namespace MediaFeatureNames;
+// BKTODO: using namespace MediaFeatureNames;
 
 enum MediaFeaturePrefix { MinPrefix, MaxPrefix, NoPrefix };
 
@@ -110,9 +123,13 @@ const String MediaQueryEvaluator::mediaType() const
 
 bool MediaQueryEvaluator::mediaTypeMatch(const String& mediaTypeToMatch) const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return mediaTypeToMatch.isEmpty()
         || equalIgnoringCase(mediaTypeToMatch, MediaTypeNames::all)
         || equalIgnoringCase(mediaTypeToMatch, mediaType());
+#endif
 }
 
 static bool applyRestrictor(MediaQuery::Restrictor r, bool value)
@@ -147,8 +164,8 @@ bool MediaQueryEvaluator::eval(const MediaQuerySet* querySet, MediaQueryResultLi
     if (!querySet)
         return true;
 
-    const WillBeHeapVector<OwnPtrWillBeMember<MediaQuery>>& queries = querySet->queryVector();
-    if (!queries.size())
+    const std::vector<Member<MediaQuery>>& queries = querySet->queryVector();
+    if (queries.empty())
         return true; // Empty query list evaluates to true.
 
     // Iterate over queries, stop if any of them eval to true (OR semantics).
@@ -292,6 +309,8 @@ static bool evalResolution(const MediaQueryExpValue& value, MediaFeaturePrefix o
     // FIXME: What should speech match? https://www.w3.org/Style/CSS/Tracker/issues/348
     float actualResolution = 0;
 
+    ASSERT(false); // BKTODO:
+#if 0
     // This checks the actual media type applied to the document, and we know
     // this method only got called if this media type matches the one defined
     // in the query. Thus, if if the document's media type is "print", the
@@ -304,6 +323,7 @@ static bool evalResolution(const MediaQueryExpValue& value, MediaFeaturePrefix o
         // we use 300px which is considered minimum for current printers.
         actualResolution = 300 / cssPixelsPerInch;
     }
+#endif
 
     if (!value.isValid())
         return !!actualResolution;
@@ -628,6 +648,9 @@ static bool anyPointerMediaFeatureEval(const MediaQueryExpValue& value, MediaFea
 
 static bool scanMediaFeatureEval(const MediaQueryExpValue& value, MediaFeaturePrefix, const MediaValues& mediaValues)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     // Scan only applies to 'tv' media.
     if (!equalIgnoringCase(mediaValues.mediaType(), MediaTypeNames::tv))
         return false;
@@ -642,16 +665,20 @@ static bool scanMediaFeatureEval(const MediaQueryExpValue& value, MediaFeaturePr
     // future, it needs to be handled here. For now, assume a modern TV with
     // progressive display.
     return (value.id == CSSValueProgressive);
+#endif
 }
 
 static void createFunctionMap()
 {
     // Create the table.
     gFunctionMap = new FunctionMap;
+    ASSERT(false); // BKTODO:
+#if 0
 #define ADD_TO_FUNCTIONMAP(name)  \
     gFunctionMap->set(name##MediaFeature.impl(), name##MediaFeatureEval);
     CSS_MEDIAQUERY_NAMES_FOR_EACH_MEDIAFEATURE(ADD_TO_FUNCTIONMAP);
 #undef ADD_TO_FUNCTIONMAP
+#endif
 }
 
 bool MediaQueryEvaluator::eval(const MediaQueryExp* expr) const
