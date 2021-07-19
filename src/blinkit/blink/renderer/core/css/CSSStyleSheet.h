@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSStyleSheet.h
+// Description: CSSStyleSheet Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All rights reserved.
@@ -89,8 +100,10 @@ public:
     MediaQuerySet* mediaQueries() const { return m_mediaQueries.get(); }
     void setMediaQueries(PassRefPtrWillBeRawPtr<MediaQuerySet>);
     void setTitle(const String& title) { m_title = title; }
+#if 0 // BKTODO:
     // Set by LinkStyle iff CORS-enabled fetch of stylesheet succeeded from this origin.
     void setAllowRuleAccessFromOrigin(PassRefPtr<SecurityOrigin> allowedOrigin);
+#endif
 
     class RuleMutationScope {
         WTF_MAKE_NONCOPYABLE(RuleMutationScope);
@@ -140,7 +153,7 @@ private:
     String m_title;
     RefPtrWillBeMember<MediaQuerySet> m_mediaQueries;
 
-    RefPtr<SecurityOrigin> m_allowRuleAccessFromOrigin;
+    // BKTODO: RefPtr<SecurityOrigin> m_allowRuleAccessFromOrigin;
 
     RawPtrWillBeMember<Node> m_ownerNode;
     RawPtrWillBeMember<CSSRule> m_ownerRule;

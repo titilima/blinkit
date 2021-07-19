@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSStyleSheet.cpp
+// Description: CSSStyleSheet Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2007, 2012 Apple Inc. All rights reserved.
@@ -21,8 +32,6 @@
 #include "core/css/CSSStyleSheet.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/V8Binding.h"
-#include "bindings/core/v8/V8PerIsolateData.h"
 #include "core/HTMLNames.h"
 #include "core/SVGNames.h"
 #include "core/css/CSSImportRule.h"
@@ -37,8 +46,10 @@
 #include "core/frame/UseCounter.h"
 #include "core/html/HTMLStyleElement.h"
 #include "core/inspector/InspectorInstrumentation.h"
+#if 0 // BKTODO:
 #include "core/svg/SVGStyleElement.h"
 #include "platform/weborigin/SecurityOrigin.h"
+#endif
 #include "wtf/text/StringBuilder.h"
 
 namespace blink {
@@ -84,7 +95,9 @@ static bool isAcceptableCSSStyleSheetParent(Node* parentNode)
         || parentNode->isDocumentNode()
         || isHTMLLinkElement(*parentNode)
         || isHTMLStyleElement(*parentNode)
+#if 0 // BKTODO:
         || isSVGStyleElement(*parentNode)
+#endif
         || parentNode->nodeType() == Node::PROCESSING_INSTRUCTION_NODE;
 }
 #endif
@@ -107,7 +120,7 @@ PassRefPtrWillBeRawPtr<CSSStyleSheet> CSSStyleSheet::createInline(PassRefPtrWill
 
 PassRefPtrWillBeRawPtr<CSSStyleSheet> CSSStyleSheet::createInline(Node* ownerNode, const KURL& baseURL, const TextPosition& startPosition, const String& encoding)
 {
-    CSSParserContext parserContext(ownerNode->document(), 0, baseURL, encoding);
+    CSSParserContext parserContext(ownerNode->document(), baseURL, encoding);
     RefPtrWillBeRawPtr<StyleSheetContents> sheet = StyleSheetContents::create(baseURL.string(), parserContext);
     return adoptRefWillBeNoop(new CSSStyleSheet(sheet.release(), ownerNode, true, startPosition));
 }
@@ -241,7 +254,7 @@ CSSRule* CSSStyleSheet::item(unsigned index)
         return nullptr;
 
     if (m_childRuleCSSOMWrappers.isEmpty())
-        m_childRuleCSSOMWrappers.grow(ruleCount);
+        m_childRuleCSSOMWrappers.resize(ruleCount);
     ASSERT(m_childRuleCSSOMWrappers.size() == ruleCount);
 
     RefPtrWillBeMember<CSSRule>& cssRule = m_childRuleCSSOMWrappers[index];
@@ -268,10 +281,12 @@ bool CSSStyleSheet::canAccessRules() const
     Document* document = ownerDocument();
     if (!document)
         return true;
+#if 0 // BKTODO:
     if (document->securityOrigin()->canRequestNoSuborigin(baseURL))
         return true;
     if (m_allowRuleAccessFromOrigin && document->securityOrigin()->canAccessCheckSuborigins(m_allowRuleAccessFromOrigin.get()))
         return true;
+#endif
     return false;
 }
 
@@ -288,7 +303,7 @@ unsigned CSSStyleSheet::insertRule(const String& ruleString, unsigned index, Exc
         exceptionState.throwDOMException(IndexSizeError, "The index provided (" + String::number(index) + ") is larger than the maximum index (" + String::number(length()) + ").");
         return 0;
     }
-    CSSParserContext context(m_contents->parserContext(), UseCounter::getFrom(this));
+    CSSParserContext context(m_contents->parserContext());
     RefPtrWillBeRawPtr<StyleRuleBase> rule = CSSParser::parseRule(context, m_contents.get(), ruleString);
 
     if (!rule) {
@@ -306,14 +321,13 @@ unsigned CSSStyleSheet::insertRule(const String& ruleString, unsigned index, Exc
         return 0;
     }
     if (!m_childRuleCSSOMWrappers.isEmpty())
-        m_childRuleCSSOMWrappers.insert(index, RefPtrWillBeMember<CSSRule>(nullptr));
+        m_childRuleCSSOMWrappers.insert(m_childRuleCSSOMWrappers.begin() + index, RefPtrWillBeMember<CSSRule>(nullptr));
 
     return index;
 }
 
 unsigned CSSStyleSheet::insertRule(const String& rule, ExceptionState& exceptionState)
 {
-    UseCounter::countDeprecation(currentExecutionContext(V8PerIsolateData::mainThreadIsolate()), UseCounter::CSSStyleSheetInsertRuleOptionalArg);
     return insertRule(rule, 0, exceptionState);
 }
 
@@ -336,7 +350,7 @@ void CSSStyleSheet::deleteRule(unsigned index, ExceptionState& exceptionState)
     if (!m_childRuleCSSOMWrappers.isEmpty()) {
         if (m_childRuleCSSOMWrappers[index])
             m_childRuleCSSOMWrappers[index]->setParentStyleSheet(0);
-        m_childRuleCSSOMWrappers.remove(index);
+        m_childRuleCSSOMWrappers.erase(m_childRuleCSSOMWrappers.begin() + index);
     }
 }
 
@@ -408,10 +422,12 @@ Document* CSSStyleSheet::ownerDocument() const
     return root->ownerNode() ? &root->ownerNode()->document() : nullptr;
 }
 
+#if 0 // BKTODO:
 void CSSStyleSheet::setAllowRuleAccessFromOrigin(PassRefPtr<SecurityOrigin> allowedOrigin)
 {
     m_allowRuleAccessFromOrigin = allowedOrigin;
 }
+#endif
 
 void CSSStyleSheet::clearChildRuleCSSOMWrappers()
 {
