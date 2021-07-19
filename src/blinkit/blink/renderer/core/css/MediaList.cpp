@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaList.cpp
+// Description: MediaList Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2010, 2012 Apple Inc. All rights reserved.
@@ -106,7 +117,7 @@ bool MediaQuerySet::add(const String& queryString)
             return true;
     }
 
-    m_queries.append(newQuery.release());
+    m_queries.emplace_back(newQuery.release());
     return true;
 }
 
@@ -130,7 +141,7 @@ bool MediaQuerySet::remove(const String& queryStringToRemove)
     for (size_t i = 0; i < m_queries.size(); ++i) {
         MediaQuery* query = m_queries[i].get();
         if (*query == *newQuery) {
-            m_queries.remove(i);
+            m_queries.erase(m_queries.begin() + i);
             --i;
             found = true;
         }
@@ -141,7 +152,7 @@ bool MediaQuerySet::remove(const String& queryStringToRemove)
 
 void MediaQuerySet::addMediaQuery(PassOwnPtrWillBeRawPtr<MediaQuery> mediaQuery)
 {
-    m_queries.append(mediaQuery);
+    m_queries.emplace_back(mediaQuery);
 }
 
 String MediaQuerySet::mediaText() const
@@ -196,7 +207,7 @@ void MediaList::setMediaText(const String& value)
 
 String MediaList::item(unsigned index) const
 {
-    const WillBeHeapVector<OwnPtrWillBeMember<MediaQuery>>& queries = m_mediaQueries->queryVector();
+    const std::vector<Member<MediaQuery>>& queries = m_mediaQueries->queryVector();
     if (index < queries.size())
         return queries[index]->cssText();
     return String();

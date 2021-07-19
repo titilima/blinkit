@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaList.h
+// Description: MediaList Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2008, 2009, 2010, 2012 Apple Inc. All rights reserved.
@@ -55,7 +66,7 @@ public:
 
     void addMediaQuery(PassOwnPtrWillBeRawPtr<MediaQuery>);
 
-    const WillBeHeapVector<OwnPtrWillBeMember<MediaQuery>>& queryVector() const { return m_queries; }
+    const std::vector<Member<MediaQuery>>& queryVector() const { return m_queries; }
 
     String mediaText() const;
 
@@ -67,7 +78,7 @@ private:
     MediaQuerySet();
     MediaQuerySet(const MediaQuerySet&);
 
-    WillBeHeapVector<OwnPtrWillBeMember<MediaQuery>> m_queries;
+    std::vector<Member<MediaQuery>> m_queries;
 };
 
 class MediaList final : public RefCountedWillBeGarbageCollected<MediaList>, public ScriptWrappable {
