@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaQueryExp.cpp
+// Description: MediaQueryExp Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * CSS Media Query
  *
@@ -38,10 +49,12 @@
 
 namespace blink {
 
-using namespace MediaFeatureNames;
+// BKTODO: using namespace MediaFeatureNames;
 
 static inline bool featureWithValidIdent(const String& mediaFeature, CSSValueID ident)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (mediaFeature == displayModeMediaFeature)
         return ident == CSSValueFullscreen || ident == CSSValueStandalone || ident == CSSValueMinimalUi || ident == CSSValueBrowser;
 
@@ -56,6 +69,7 @@ static inline bool featureWithValidIdent(const String& mediaFeature, CSSValueID 
 
     if (mediaFeature == scanMediaFeature)
         return ident == CSSValueInterlace || ident == CSSValueProgressive;
+#endif
 
     return false;
 }
@@ -66,6 +80,9 @@ static inline bool featureWithValidPositiveLength(const String& mediaFeature, co
         return false;
 
 
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return mediaFeature == heightMediaFeature
         || mediaFeature == maxHeightMediaFeature
         || mediaFeature == minHeightMediaFeature
@@ -78,6 +95,7 @@ static inline bool featureWithValidPositiveLength(const String& mediaFeature, co
         || mediaFeature == deviceWidthMediaFeature
         || mediaFeature == minDeviceWidthMediaFeature
         || mediaFeature == maxDeviceWidthMediaFeature;
+#endif
 }
 
 static inline bool featureWithValidDensity(const String& mediaFeature, const CSSParserToken& token)
@@ -85,9 +103,13 @@ static inline bool featureWithValidDensity(const String& mediaFeature, const CSS
     if ((token.unitType() != CSSPrimitiveValue::UnitType::DotsPerPixel && token.unitType() != CSSPrimitiveValue::UnitType::DotsPerInch && token.unitType() != CSSPrimitiveValue::UnitType::DotsPerCentimeter) || token.numericValue() <= 0)
         return false;
 
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return mediaFeature == resolutionMediaFeature
         || mediaFeature == minResolutionMediaFeature
         || mediaFeature == maxResolutionMediaFeature;
+#endif
 }
 
 static inline bool featureWithPositiveInteger(const String& mediaFeature, const CSSParserToken& token)
@@ -95,6 +117,9 @@ static inline bool featureWithPositiveInteger(const String& mediaFeature, const 
     if (token.numericValueType() != IntegerValueType || token.numericValue() < 0)
         return false;
 
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return mediaFeature == colorMediaFeature
         || mediaFeature == maxColorMediaFeature
         || mediaFeature == minColorMediaFeature
@@ -104,6 +129,7 @@ static inline bool featureWithPositiveInteger(const String& mediaFeature, const 
         || mediaFeature == monochromeMediaFeature
         || mediaFeature == maxMonochromeMediaFeature
         || mediaFeature == minMonochromeMediaFeature;
+#endif
 }
 
 static inline bool featureWithPositiveNumber(const String& mediaFeature, const CSSParserToken& token)
@@ -111,10 +137,14 @@ static inline bool featureWithPositiveNumber(const String& mediaFeature, const C
     if (token.type() != NumberToken || token.numericValue() < 0)
         return false;
 
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return mediaFeature == transform3dMediaFeature
         || mediaFeature == devicePixelRatioMediaFeature
         || mediaFeature == maxDevicePixelRatioMediaFeature
         || mediaFeature == minDevicePixelRatioMediaFeature;
+#endif
 }
 
 static inline bool featureWithZeroOrOne(const String& mediaFeature, const CSSParserToken& token)
@@ -122,21 +152,29 @@ static inline bool featureWithZeroOrOne(const String& mediaFeature, const CSSPar
     if (token.numericValueType() != IntegerValueType || !(token.numericValue() == 1 || !token.numericValue()))
         return false;
 
-    return mediaFeature == gridMediaFeature;
+    ASSERT(false); // BKTODO: return mediaFeature == gridMediaFeature;
+    return false;
 }
 
 static inline bool featureWithAspectRatio(const String& mediaFeature)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return mediaFeature == aspectRatioMediaFeature
         || mediaFeature == deviceAspectRatioMediaFeature
         || mediaFeature == minAspectRatioMediaFeature
         || mediaFeature == maxAspectRatioMediaFeature
         || mediaFeature == minDeviceAspectRatioMediaFeature
         || mediaFeature == maxDeviceAspectRatioMediaFeature;
+#endif
 }
 
 static inline bool featureWithoutValue(const String& mediaFeature)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     // Media features that are prefixed by min/max cannot be used without a value.
     return mediaFeature == monochromeMediaFeature
         || mediaFeature == colorMediaFeature
@@ -158,10 +196,14 @@ static inline bool featureWithoutValue(const String& mediaFeature)
         || mediaFeature == resolutionMediaFeature
         || mediaFeature == displayModeMediaFeature
         || mediaFeature == scanMediaFeature;
+#endif
 }
 
 bool MediaQueryExp::isViewportDependent() const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return m_mediaFeature == widthMediaFeature
         || m_mediaFeature == heightMediaFeature
         || m_mediaFeature == minWidthMediaFeature
@@ -174,10 +216,14 @@ bool MediaQueryExp::isViewportDependent() const
         || m_mediaFeature == devicePixelRatioMediaFeature
         || m_mediaFeature == resolutionMediaFeature
         || m_mediaFeature == maxAspectRatioMediaFeature;
+#endif
 }
 
 bool MediaQueryExp::isDeviceDependent() const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return m_mediaFeature == deviceAspectRatioMediaFeature
         || m_mediaFeature == deviceWidthMediaFeature
         || m_mediaFeature == deviceHeightMediaFeature
@@ -187,6 +233,7 @@ bool MediaQueryExp::isDeviceDependent() const
         || m_mediaFeature == maxDeviceAspectRatioMediaFeature
         || m_mediaFeature == maxDeviceWidthMediaFeature
         || m_mediaFeature == maxDeviceHeightMediaFeature;
+#endif
 }
 
 MediaQueryExp::MediaQueryExp(const MediaQueryExp& other)
