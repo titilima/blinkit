@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontSize.cpp
+// Description: FontSize Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -53,12 +64,8 @@ float FontSize::getComputedSizeFromSpecifiedSize(const Document* document, float
     // However we always allow the page to set an explicit pixel size that is smaller,
     // since sites will mis-render otherwise (e.g., http://www.gamespot.com with a 9px minimum).
 
-    Settings* settings = document->settings();
-    if (!settings)
-        return 1.0f;
-
-    int minSize = settings->minimumFontSize();
-    int minLogicalSize = settings->minimumLogicalFontSize();
+    int minSize = Settings::minimumFontSize();
+    int minLogicalSize = Settings::minimumLogicalFontSize();
     float zoomedSize = specifiedSize * zoomFactor;
 
     // Apply the hard minimum first. We only apply the hard minimum if after zooming we're still too small.
@@ -119,9 +126,9 @@ static const int strictFontSizeTable[fontSizeTableMax - fontSizeTableMin + 1][to
 // factors for each keyword value.
 static const float fontSizeFactors[totalKeywords] = { 0.60f, 0.75f, 0.89f, 1.0f, 1.2f, 1.5f, 2.0f, 3.0f };
 
-static int inline rowFromMediumFontSizeInRange(const Settings* settings, bool quirksMode, bool isMonospace, int& mediumSize)
+static int inline rowFromMediumFontSizeInRange(bool quirksMode, bool isMonospace, int& mediumSize)
 {
-    mediumSize = isMonospace ? settings->defaultFixedFontSize() : settings->defaultFontSize();
+    mediumSize = isMonospace ? Settings::defaultFixedFontSize() : Settings::defaultFontSize();
     if (mediumSize >= fontSizeTableMin && mediumSize <= fontSizeTableMax)
         return mediumSize - fontSizeTableMin;
     return -1;
@@ -130,20 +137,17 @@ static int inline rowFromMediumFontSizeInRange(const Settings* settings, bool qu
 float FontSize::fontSizeForKeyword(const Document* document, unsigned keyword, bool isMonospace)
 {
     ASSERT(keyword >= 1 && keyword <= 8);
-    const Settings* settings = document->settings();
-    if (!settings)
-        return 1.0f;
 
     bool quirksMode = document->inQuirksMode();
     int mediumSize = 0;
-    int row = rowFromMediumFontSizeInRange(settings, quirksMode, isMonospace, mediumSize);
+    int row = rowFromMediumFontSizeInRange(quirksMode, isMonospace, mediumSize);
     if (row >= 0) {
         int col = (keyword - 1);
         return quirksMode ? quirksFontSizeTable[row][col] : strictFontSizeTable[row][col];
     }
 
     // Value is outside the range of the table. Apply the scale factor instead.
-    float minLogicalSize = std::max(settings->minimumLogicalFontSize(), 1);
+    float minLogicalSize = std::max(Settings::minimumLogicalFontSize(), 1);
     return std::max(fontSizeFactors[keyword - 1] * mediumSize, minLogicalSize);
 }
 
@@ -162,13 +166,9 @@ static int findNearestLegacyFontSize(int pixelFontSize, const T* table, int mult
 
 int FontSize::legacyFontSize(const Document* document, int pixelFontSize, bool isMonospace)
 {
-    const Settings* settings = document->settings();
-    if (!settings)
-        return 1;
-
     bool quirksMode = document->inQuirksMode();
     int mediumSize = 0;
-    int row = rowFromMediumFontSizeInRange(settings, quirksMode, isMonospace, mediumSize);
+    int row = rowFromMediumFontSizeInRange(quirksMode, isMonospace, mediumSize);
     if (row >= 0)
         return findNearestLegacyFontSize<int>(pixelFontSize, quirksMode ? quirksFontSizeTable[row] : strictFontSizeTable[row], 1);
 
