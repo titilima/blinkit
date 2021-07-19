@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSValueList.h
+// Description: CSSValueList Class
+//      Author: Ziming Li
+//     Created: 2021-07-14
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights reserved.
@@ -57,8 +68,8 @@ public:
     CSSValue* itemWithBoundsCheck(size_t index) { return index < m_values.size() ? m_values[index].get() : nullptr; }
     const CSSValue* itemWithBoundsCheck(size_t index) const { return index < m_values.size() ? m_values[index].get() : nullptr; }
 
-    void append(PassRefPtrWillBeRawPtr<CSSValue> value) { m_values.append(value); }
-    void prepend(PassRefPtrWillBeRawPtr<CSSValue> value) { m_values.prepend(value); }
+    void append(PassRefPtrWillBeRawPtr<CSSValue> value) { m_values.emplace_back(value); }
+    void prepend(PassRefPtrWillBeRawPtr<CSSValue> value) { m_values.emplace(m_values.begin(), value); }
     bool removeAll(CSSValue*);
     bool hasValue(CSSValue*) const;
     PassRefPtrWillBeRawPtr<CSSValueList> copy();
@@ -76,7 +87,7 @@ protected:
 private:
     explicit CSSValueList(ValueListSeparator);
 
-    WillBeHeapVector<RefPtrWillBeMember<CSSValue>, 4> m_values;
+    std::vector<Member<CSSValue>> m_values;
 };
 
 DEFINE_CSS_VALUE_TYPE_CASTS(CSSValueList, isValueList());

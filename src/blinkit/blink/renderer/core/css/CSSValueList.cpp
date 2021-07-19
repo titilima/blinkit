@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSValueList.cpp
+// Description: CSSValueList Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2010 Apple Inc. All rights reserved.
@@ -43,7 +54,7 @@ bool CSSValueList::removeAll(CSSValue* val)
     for (int index = m_values.size() - 1; index >= 0; --index) {
         RefPtrWillBeMember<CSSValue>& value = m_values.at(index);
         if (value && val && value->equals(*val)) {
-            m_values.remove(index);
+            m_values.erase(m_values.begin() + index);
             found = true;
         }
     }
