@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaValues.cpp
+// Description: MediaValues Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -47,18 +58,18 @@ double MediaValues::calculateViewportHeight(LocalFrame* frame) const
 
 int MediaValues::calculateDeviceWidth(LocalFrame* frame) const
 {
-    ASSERT(frame && frame->view() && frame->settings() && frame->host());
-    int deviceWidth = frame->host()->chromeClient().screenInfo().rect.width;
-    if (frame->settings()->reportScreenSizeInPhysicalPixelsQuirk())
+    ASSERT(frame && frame->view() && frame->host());
+    int deviceWidth = frame->host()->chromeClient().screenInfo().rect.width();
+    if (Settings::reportScreenSizeInPhysicalPixelsQuirk())
         deviceWidth = lroundf(deviceWidth * frame->host()->deviceScaleFactor());
     return deviceWidth;
 }
 
 int MediaValues::calculateDeviceHeight(LocalFrame* frame) const
 {
-    ASSERT(frame && frame->view() && frame->settings() && frame->host());
-    int deviceHeight = frame->host()->chromeClient().screenInfo().rect.height;
-    if (frame->settings()->reportScreenSizeInPhysicalPixelsQuirk())
+    ASSERT(frame && frame->view() && frame->host());
+    int deviceHeight = frame->host()->chromeClient().screenInfo().rect.height();
+    if (Settings::reportScreenSizeInPhysicalPixelsQuirk())
         deviceHeight = lroundf(deviceHeight * frame->host()->deviceScaleFactor());
     return deviceHeight;
 }
@@ -94,7 +105,7 @@ int MediaValues::calculateMonochromeBitsPerComponent(LocalFrame* frame) const
 
 int MediaValues::calculateDefaultFontSize(LocalFrame* frame) const
 {
-    return frame->host()->settings().defaultFontSize();
+    return Settings::defaultFontSize();
 }
 
 const String MediaValues::calculateMediaType(LocalFrame* frame) const
@@ -108,7 +119,7 @@ const String MediaValues::calculateMediaType(LocalFrame* frame) const
 WebDisplayMode MediaValues::calculateDisplayMode(LocalFrame* frame) const
 {
     ASSERT(frame);
-    WebDisplayMode mode = frame->host()->settings().displayModeOverride();
+    WebDisplayMode mode = Settings::displayModeOverride();
 
     if (mode != WebDisplayModeUndefined)
         return mode;
@@ -130,26 +141,26 @@ bool MediaValues::calculateThreeDEnabled(LocalFrame* frame) const
 
 PointerType MediaValues::calculatePrimaryPointerType(LocalFrame* frame) const
 {
-    ASSERT(frame && frame->settings());
-    return frame->settings()->primaryPointerType();
+    ASSERT(frame);
+    return Settings::primaryPointerType();
 }
 
 int MediaValues::calculateAvailablePointerTypes(LocalFrame* frame) const
 {
-    ASSERT(frame && frame->settings());
-    return frame->settings()->availablePointerTypes();
+    ASSERT(frame);
+    return Settings::availablePointerTypes();
 }
 
 HoverType MediaValues::calculatePrimaryHoverType(LocalFrame* frame) const
 {
-    ASSERT(frame && frame->settings());
-    return frame->settings()->primaryHoverType();
+    ASSERT(frame);
+    return Settings::primaryHoverType();
 }
 
 int MediaValues::calculateAvailableHoverTypes(LocalFrame* frame) const
 {
-    ASSERT(frame && frame->settings());
-    return frame->settings()->availableHoverTypes();
+    ASSERT(frame);
+    return Settings::availableHoverTypes();
 }
 
 bool MediaValues::computeLengthImpl(double value, CSSPrimitiveValue::UnitType type, unsigned defaultFontSize, double viewportWidth, double viewportHeight, double& result)
