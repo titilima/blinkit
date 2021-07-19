@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontFaceCache.cpp
+// Description: FontFaceCache Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -49,29 +60,28 @@ FontFaceCache::FontFaceCache()
 
 void FontFaceCache::add(CSSFontSelector* cssFontSelector, const StyleRuleFontFace* fontFaceRule, PassRefPtrWillBeRawPtr<FontFace> prpFontFace)
 {
-    RefPtrWillBeRawPtr<FontFace> fontFace = prpFontFace;
-    if (!m_styleRuleToFontFace.add(fontFaceRule, fontFace).isNewEntry)
-        return;
-    addFontFace(cssFontSelector, fontFace, true);
+    Member<FontFace> &fontFace = m_styleRuleToFontFace[fontFaceRule];
+    if (!fontFace)
+        addFontFace(cssFontSelector, fontFace, true);
 }
 
 void FontFaceCache::addFontFace(CSSFontSelector* cssFontSelector, PassRefPtrWillBeRawPtr<FontFace> prpFontFace, bool cssConnected)
 {
     RefPtrWillBeRawPtr<FontFace> fontFace = prpFontFace;
 
-    FamilyToTraitsMap::AddResult traitsResult = m_fontFaces.add(fontFace->family(), nullptr);
-    if (!traitsResult.storedValue->value)
-        traitsResult.storedValue->value = adoptPtrWillBeNoop(new TraitsMap);
+    Member<TraitsMap> &traits = m_fontFaces[fontFace->family()];
+    if (!traits)
+        traits = adoptPtrWillBeNoop(new TraitsMap);
 
-    TraitsMap::AddResult segmentedFontFaceResult = traitsResult.storedValue->value->add(fontFace->traits().bitfield(), nullptr);
-    if (!segmentedFontFaceResult.storedValue->value)
-        segmentedFontFaceResult.storedValue->value = CSSSegmentedFontFace::create(cssFontSelector, fontFace->traits());
+    Member<CSSSegmentedFontFace> &segmentedFontFace = (*traits)[fontFace->traits().bitfield()];
+    if (!segmentedFontFace)
+        segmentedFontFace = CSSSegmentedFontFace::create(cssFontSelector, fontFace->traits());
 
-    segmentedFontFaceResult.storedValue->value->addFontFace(fontFace, cssConnected);
+    segmentedFontFace->addFontFace(fontFace, cssConnected);
     if (cssConnected)
-        m_cssConnectedFontFaces.add(fontFace);
+        m_cssConnectedFontFaces.insert(fontFace.get());
 
-    m_fonts.remove(fontFace->family());
+    m_fonts.erase(fontFace->family());
     ++m_version;
 }
 
@@ -79,8 +89,8 @@ void FontFaceCache::remove(const StyleRuleFontFace* fontFaceRule)
 {
     StyleRuleToFontFace::iterator it = m_styleRuleToFontFace.find(fontFaceRule);
     if (it != m_styleRuleToFontFace.end()) {
-        removeFontFace(it->value.get(), true);
-        m_styleRuleToFontFace.remove(it);
+        removeFontFace(it->second.get(), true);
+        m_styleRuleToFontFace.erase(it);
     }
 }
 
@@ -89,22 +99,22 @@ void FontFaceCache::removeFontFace(FontFace* fontFace, bool cssConnected)
     FamilyToTraitsMap::iterator fontFacesIter = m_fontFaces.find(fontFace->family());
     if (fontFacesIter == m_fontFaces.end())
         return;
-    TraitsMap* familyFontFaces = fontFacesIter->value.get();
+    TraitsMap* familyFontFaces = fontFacesIter->second.get();
 
     TraitsMap::iterator familyFontFacesIter = familyFontFaces->find(fontFace->traits().bitfield());
     if (familyFontFacesIter == familyFontFaces->end())
         return;
-    RefPtrWillBeRawPtr<CSSSegmentedFontFace> segmentedFontFace = familyFontFacesIter->value;
+    RefPtrWillBeRawPtr<CSSSegmentedFontFace> segmentedFontFace = familyFontFacesIter->second;
 
     segmentedFontFace->removeFontFace(fontFace);
     if (segmentedFontFace->isEmpty()) {
-        familyFontFaces->remove(familyFontFacesIter);
-        if (familyFontFaces->isEmpty())
-            m_fontFaces.remove(fontFacesIter);
+        familyFontFaces->erase(familyFontFacesIter);
+        if (familyFontFaces->empty())
+            m_fontFaces.erase(fontFacesIter);
     }
-    m_fonts.remove(fontFace->family());
+    m_fonts.erase(fontFace->family());
     if (cssConnected)
-        m_cssConnectedFontFaces.remove(fontFace);
+        m_cssConnectedFontFaces.erase(fontFace);
 
     ++m_version;
 }
@@ -112,13 +122,13 @@ void FontFaceCache::removeFontFace(FontFace* fontFace, bool cssConnected)
 void FontFaceCache::clearCSSConnected()
 {
     for (const auto& item : m_styleRuleToFontFace)
-        removeFontFace(item.value.get(), true);
+        removeFontFace(item.second.get(), true);
     m_styleRuleToFontFace.clear();
 }
 
 void FontFaceCache::clearAll()
 {
-    if (m_fontFaces.isEmpty())
+    if (m_fontFaces.empty())
         return;
 
     m_fontFaces.clear();
@@ -130,25 +140,29 @@ void FontFaceCache::clearAll()
 
 CSSSegmentedFontFace* FontFaceCache::get(const FontDescription& fontDescription, const AtomicString& family)
 {
-    TraitsMap* familyFontFaces = m_fontFaces.get(family);
-    if (!familyFontFaces || familyFontFaces->isEmpty())
+    auto it = m_fontFaces.find(family);
+    if (m_fontFaces.end() == it)
         return nullptr;
 
-    FamilyToTraitsMap::AddResult traitsResult = m_fonts.add(family, nullptr);
-    if (!traitsResult.storedValue->value)
-        traitsResult.storedValue->value = adoptPtrWillBeNoop(new TraitsMap);
+    TraitsMap* familyFontFaces = it->second.get();
+    if (familyFontFaces->empty())
+        return nullptr;
+
+    Member<TraitsMap> &traitsMap = m_fonts[family];
+    if (!traitsMap)
+        traitsMap = adoptPtrWillBeNoop(new TraitsMap);
 
     FontTraits traits = fontDescription.traits();
-    TraitsMap::AddResult faceResult = traitsResult.storedValue->value->add(traits.bitfield(), nullptr);
-    if (!faceResult.storedValue->value) {
+    Member<CSSSegmentedFontFace> &face = (*traitsMap)[traits.bitfield()];
+    if (!face) {
         for (const auto& item : *familyFontFaces) {
-            CSSSegmentedFontFace* candidate = item.value.get();
+            CSSSegmentedFontFace* candidate = item.second.get();
             FontStyleMatcher styleMatcher(traits);
-            if (!faceResult.storedValue->value || styleMatcher.isCandidateBetter(candidate, faceResult.storedValue->value.get()))
-                faceResult.storedValue->value = candidate;
+            if (!face || styleMatcher.isCandidateBetter(candidate, face.get()))
+                face = candidate;
         }
     }
-    return faceResult.storedValue->value.get();
+    return face.get();
 }
 
 DEFINE_TRACE(FontFaceCache)

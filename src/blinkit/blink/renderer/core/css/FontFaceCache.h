@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontFaceCache.h
+// Description: FontFaceCache Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -67,9 +78,9 @@ public:
     DECLARE_TRACE();
 
 private:
-    using TraitsMap = WillBeHeapHashMap<unsigned, RefPtrWillBeMember<CSSSegmentedFontFace>>;
-    using FamilyToTraitsMap = WillBeHeapHashMap<String, OwnPtrWillBeMember<TraitsMap>, CaseFoldingHash>;
-    using StyleRuleToFontFace = WillBeHeapHashMap<RawPtrWillBeMember<const StyleRuleFontFace>, RefPtrWillBeMember<FontFace>>;
+    using TraitsMap = std::unordered_map<unsigned, Member<CSSSegmentedFontFace>>;
+    using FamilyToTraitsMap = std::unordered_map<String, Member<TraitsMap>, CaseFoldingHash>;
+    using StyleRuleToFontFace = std::unordered_map<Member<const StyleRuleFontFace>, Member<FontFace>>;
     FamilyToTraitsMap m_fontFaces;
     FamilyToTraitsMap m_fonts;
     StyleRuleToFontFace m_styleRuleToFontFace;
