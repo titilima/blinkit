@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontFaceSet.h
+// Description: FontFaceSet Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -26,8 +37,6 @@
 #ifndef FontFaceSet_h
 #define FontFaceSet_h
 
-#include "bindings/core/v8/Iterable.h"
-#include "bindings/core/v8/ScriptPromise.h"
 #include "core/css/FontFace.h"
 #include "core/dom/ActiveDOMObject.h"
 #include "core/events/EventListener.h"
@@ -57,10 +66,10 @@ class FontFaceCache;
 class FontResource;
 class ExecutionContext;
 
-using FontFaceSetIterable = PairIterable<RefPtrWillBeMember<FontFace>, RefPtrWillBeMember<FontFace>>;
+// BKTODO: using FontFaceSetIterable = PairIterable<RefPtrWillBeMember<FontFace>, RefPtrWillBeMember<FontFace>>;
 
 #if ENABLE(OILPAN)
-class FontFaceSet final : public EventTargetWithInlineData, public HeapSupplement<Document>, public ActiveDOMObject, public FontFaceSetIterable {
+class FontFaceSet final : public EventTargetWithInlineData, public HeapSupplement<Document>, public ActiveDOMObject {
     USING_GARBAGE_COLLECTED_MIXIN(FontFaceSet);
     using SupplementType = HeapSupplement<Document>;
 #else
@@ -72,11 +81,14 @@ class FontFaceSet final : public EventTargetWithInlineData, public RefCountedSup
 public:
     ~FontFaceSet() override;
 
+#if 0 // BKTODO:
     DEFINE_ATTRIBUTE_EVENT_LISTENER(loading);
     DEFINE_ATTRIBUTE_EVENT_LISTENER(loadingdone);
     DEFINE_ATTRIBUTE_EVENT_LISTENER(loadingerror);
+#endif
 
     bool check(const String& font, const String& text, ExceptionState&);
+#if 0 // BKTODO:
     ScriptPromise load(ScriptState*, const String& font, const String& text);
     ScriptPromise ready(ScriptState*);
 
@@ -84,6 +96,7 @@ public:
     void clearForBinding(ScriptState*, ExceptionState&);
     bool deleteForBinding(ScriptState*, FontFace*, ExceptionState&);
     bool hasForBinding(ScriptState*, FontFace*, ExceptionState&) const;
+#endif
 
     size_t size() const;
     AtomicString status() const;
@@ -116,6 +129,7 @@ private:
         return adoptRefWillBeNoop(new FontFaceSet(document));
     }
 
+#if 0 // BKTODO:
     FontFaceSetIterable::IterationSource* startIteration(ScriptState*, ExceptionState&) override;
 
     class IterationSource final : public FontFaceSetIterable::IterationSource {
@@ -135,6 +149,7 @@ private:
         size_t m_index;
         WillBeHeapVector<RefPtrWillBeMember<FontFace>> m_fontFaces;
     };
+#endif
 
     class FontLoadHistogram {
         DISALLOW_NEW();
@@ -165,17 +180,17 @@ private:
     bool isCSSConnectedFontFace(FontFace*) const;
     bool shouldSignalReady() const;
 
-    using ReadyProperty = ScriptPromiseProperty<RawPtrWillBeMember<FontFaceSet>, RawPtrWillBeMember<FontFaceSet>, Member<DOMException>>;
+    // BKTODO: using ReadyProperty = ScriptPromiseProperty<RawPtrWillBeMember<FontFaceSet>, RawPtrWillBeMember<FontFaceSet>, Member<DOMException>>;
 
     WillBeHeapHashSet<RefPtrWillBeMember<FontFace>> m_loadingFonts;
     bool m_shouldFireLoadingEvent;
     bool m_isLoading;
-    PersistentWillBeMember<ReadyProperty> m_ready;
+    // BKTODO: PersistentWillBeMember<ReadyProperty> m_ready;
     FontFaceArray m_loadedFonts;
     FontFaceArray m_failedFonts;
     WillBeHeapListHashSet<RefPtrWillBeMember<FontFace>> m_nonCSSConnectedFaces;
 
-    PersistentWillBeMember<AsyncMethodRunner<FontFaceSet>> m_asyncRunner;
+    // BKTODO: PersistentWillBeMember<AsyncMethodRunner<FontFaceSet>> m_asyncRunner;
 
     FontLoadHistogram m_histogram;
 };

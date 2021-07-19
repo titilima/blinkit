@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontFaceSet.cpp
+// Description: FontFaceSet Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -25,9 +36,6 @@
 
 #include "core/css/FontFaceSet.h"
 
-#include "bindings/core/v8/Dictionary.h"
-#include "bindings/core/v8/ScriptPromiseResolver.h"
-#include "bindings/core/v8/ScriptState.h"
 #include "core/css/CSSFontSelector.h"
 #include "core/css/CSSSegmentedFontFace.h"
 #include "core/css/FontFaceCache.h"
@@ -47,6 +55,7 @@ namespace blink {
 static const int defaultFontSize = 10;
 static const char defaultFontFamily[] = "sans-serif";
 
+#if 0 // BKTODO:
 class LoadFontPromiseResolver final : public FontFace::LoadFontCallback {
 public:
     static PassRefPtrWillBeRawPtr<LoadFontPromiseResolver> create(FontFaceArray faces, ScriptState* scriptState)
@@ -112,13 +121,16 @@ DEFINE_TRACE(LoadFontPromiseResolver)
     visitor->trace(m_resolver);
     LoadFontCallback::trace(visitor);
 }
+#endif
 
 FontFaceSet::FontFaceSet(Document& document)
     : ActiveDOMObject(&document)
     , m_shouldFireLoadingEvent(false)
     , m_isLoading(false)
+#if 0 // BKTODO:
     , m_ready(new ReadyProperty(executionContext(), this, ReadyProperty::Ready))
     , m_asyncRunner(AsyncMethodRunner<FontFaceSet>::create(this, &FontFaceSet::handlePendingEventsAndPromises))
+#endif
 {
     suspendIfNeeded();
 }
@@ -167,7 +179,7 @@ AtomicString FontFaceSet::status() const
 void FontFaceSet::handlePendingEventsAndPromisesSoon()
 {
     // m_asyncRunner will be automatically stopped on destruction.
-    m_asyncRunner->runAsync();
+    ASSERT(false); // BKTODO: m_asyncRunner->runAsync();
 }
 
 void FontFaceSet::didLayout()
@@ -183,7 +195,8 @@ bool FontFaceSet::shouldSignalReady() const
 {
     if (!m_loadingFonts.isEmpty())
         return false;
-    return m_isLoading || m_ready->state() == ReadyProperty::Pending;
+    ASSERT(false); // BKTODO: return m_isLoading || m_ready->state() == ReadyProperty::Pending;
+    return false;
 }
 
 void FontFaceSet::handlePendingEventsAndPromises()
@@ -202,17 +215,17 @@ void FontFaceSet::fireLoadingEvent()
 
 void FontFaceSet::suspend()
 {
-    m_asyncRunner->suspend();
+    ASSERT(false); // BKTODO: m_asyncRunner->suspend();
 }
 
 void FontFaceSet::resume()
 {
-    m_asyncRunner->resume();
+    ASSERT(false); // BKTODO: m_asyncRunner->resume();
 }
 
 void FontFaceSet::stop()
 {
-    m_asyncRunner->stop();
+    ASSERT(false); // BKTODO: m_asyncRunner->stop();
 }
 
 void FontFaceSet::beginFontLoading(FontFace* fontFace)
@@ -240,8 +253,11 @@ void FontFaceSet::addToLoadingFonts(PassRefPtrWillBeRawPtr<FontFace> fontFace)
     if (!m_isLoading) {
         m_isLoading = true;
         m_shouldFireLoadingEvent = true;
+        ASSERT(false); // BKTODO:
+#if 0
         if (m_ready->state() != ReadyProperty::Pending)
             m_ready->reset();
+#endif
         handlePendingEventsAndPromisesSoon();
     }
     m_loadingFonts.add(fontFace);
@@ -254,6 +270,7 @@ void FontFaceSet::removeFromLoadingFonts(PassRefPtrWillBeRawPtr<FontFace> fontFa
         handlePendingEventsAndPromisesSoon();
 }
 
+#if 0 // BKTODO:
 ScriptPromise FontFaceSet::ready(ScriptState* scriptState)
 {
     return m_ready->promise(scriptState->world());
@@ -317,6 +334,7 @@ bool FontFaceSet::hasForBinding(ScriptState*, FontFace* fontFace, ExceptionState
         return false;
     return m_nonCSSConnectedFaces.contains(fontFace) || isCSSConnectedFontFace(fontFace);
 }
+#endif
 
 const WillBeHeapListHashSet<RefPtrWillBeMember<FontFace>>& FontFaceSet::cssConnectedFontFaceList() const
 {
@@ -327,7 +345,8 @@ const WillBeHeapListHashSet<RefPtrWillBeMember<FontFace>>& FontFaceSet::cssConne
 
 bool FontFaceSet::isCSSConnectedFontFace(FontFace* fontFace) const
 {
-    return cssConnectedFontFaceList().contains(fontFace);
+    ASSERT(false); // BKTODO: return cssConnectedFontFaceList().contains(fontFace);
+    return false;
 }
 
 size_t FontFaceSet::size() const
@@ -366,10 +385,14 @@ void FontFaceSet::fireDoneEventIfPossible()
             dispatchEvent(errorEvent);
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_ready->state() == ReadyProperty::Pending)
         m_ready->resolve(this);
+#endif
 }
 
+#if 0 // BKTODO:
 ScriptPromise FontFaceSet::load(ScriptState* scriptState, const String& fontString, const String& text)
 {
     if (!inActiveDocumentContext())
@@ -396,6 +419,7 @@ ScriptPromise FontFaceSet::load(ScriptState* scriptState, const String& fontStri
     resolver->loadFonts(executionContext()); // After this, resolver->promise() may return null.
     return promise;
 }
+#endif
 
 bool FontFaceSet::check(const String& fontString, const String& text, ExceptionState& exceptionState)
 {
@@ -477,6 +501,8 @@ void FontFaceSet::FontLoadHistogram::updateStatus(FontFace* fontFace)
 
 void FontFaceSet::FontLoadHistogram::record()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_recorded) {
         m_recorded = true;
         Platform::current()->histogramCustomCounts("WebFont.WebFontsInPage", m_count, 1, 100, 50);
@@ -485,6 +511,7 @@ void FontFaceSet::FontLoadHistogram::record()
         Platform::current()->histogramEnumeration("WebFont.HadBlankText", m_status == HadBlankText ? 1 : 0, 2);
         m_status = Reported;
     }
+#endif
 }
 
 static const char* supplementName()
@@ -509,6 +536,7 @@ void FontFaceSet::didLayout(Document& document)
         fonts->didLayout();
 }
 
+#if 0 // BKTODO:
 FontFaceSetIterable::IterationSource* FontFaceSet::startIteration(ScriptState*, ExceptionState&)
 {
     // Setlike should iterate each item in insertion order, and items should
@@ -533,17 +561,18 @@ bool FontFaceSet::IterationSource::next(ScriptState*, RefPtrWillBeMember<FontFac
     key = value = m_fontFaces[m_index++];
     return true;
 }
+#endif
 
 DEFINE_TRACE(FontFaceSet)
 {
 #if ENABLE(OILPAN)
-    visitor->trace(m_ready);
+    // BKTODO: visitor->trace(m_ready);
     visitor->trace(m_loadingFonts);
     visitor->trace(m_loadedFonts);
     visitor->trace(m_failedFonts);
     visitor->trace(m_nonCSSConnectedFaces);
-    visitor->trace(m_asyncRunner);
-    HeapSupplement<Document>::trace(visitor);
+    // BKTODO: visitor->trace(m_asyncRunner);
+    // BKTODO: HeapSupplement<Document>::trace(visitor);
 #endif
     EventTargetWithInlineData::trace(visitor);
     ActiveDOMObject::trace(visitor);
