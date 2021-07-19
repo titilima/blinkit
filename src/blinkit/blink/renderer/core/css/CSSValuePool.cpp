@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSValuePool.cpp
+// Description: CSSValuePool Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011, 2012 Apple Inc. All rights reserved.
  *
@@ -83,11 +94,10 @@ PassRefPtrWillBeRawPtr<CSSColorValue> CSSValuePool::createColorValue(RGBA32 rgbV
     if (m_colorValueCache.size() > maximumColorCacheSize)
         m_colorValueCache.clear();
 
-    RefPtrWillBeRawPtr<CSSColorValue> dummyValue = nullptr;
-    ColorValueCache::AddResult entry = m_colorValueCache.add(rgbValue, dummyValue);
-    if (entry.isNewEntry)
-        entry.storedValue->value = CSSColorValue::create(rgbValue);
-    return entry.storedValue->value;
+    Member<CSSColorValue> &value = m_colorValueCache[rgbValue];
+    if (!value)
+        value = CSSColorValue::create(rgbValue);
+    return value;
 }
 
 PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSValuePool::createValue(double value, CSSPrimitiveValue::UnitType type)
@@ -128,7 +138,7 @@ PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSValuePool::createValue(const Length
 
 PassRefPtrWillBeRawPtr<CSSCustomIdentValue> CSSValuePool::createFontFamilyValue(const String& familyName)
 {
-    RefPtrWillBeMember<CSSCustomIdentValue>& value = m_fontFamilyValueCache.add(familyName, nullptr).storedValue->value;
+    Member<CSSCustomIdentValue> &value = m_fontFamilyValueCache[familyName];
     if (!value)
         value = CSSCustomIdentValue::create(familyName);
     return value;
@@ -141,7 +151,7 @@ PassRefPtrWillBeRawPtr<CSSValueList> CSSValuePool::createFontFaceValue(const Ato
     if (m_fontFaceValueCache.size() > maximumFontFaceCacheSize)
         m_fontFaceValueCache.clear();
 
-    RefPtrWillBeMember<CSSValueList>& value = m_fontFaceValueCache.add(string, nullptr).storedValue->value;
+    Member<CSSValueList> &value = m_fontFaceValueCache[string];
     if (!value) {
         RefPtrWillBeRawPtr<CSSValue> parsedValue = CSSParser::parseSingleValue(CSSPropertyFontFamily, string);
         if (parsedValue && parsedValue->isValueList())
