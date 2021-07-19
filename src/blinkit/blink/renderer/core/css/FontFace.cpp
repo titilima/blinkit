@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontFace.cpp
+// Description: FontFace Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,8 +42,6 @@
 #include "core/css/FontFace.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/ScriptState.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/CSSValueKeywords.h"
 #include "core/css/BinaryDataFontFaceSource.h"
 #include "core/css/CSSCustomIdentValue.h"
@@ -64,10 +73,11 @@ namespace blink {
 
 static PassRefPtrWillBeRawPtr<CSSValue> parseCSSValue(const Document* document, const String& value, CSSPropertyID propertyID)
 {
-    CSSParserContext context(*document, UseCounter::getFrom(document));
+    CSSParserContext context(*document);
     return CSSParser::parseFontFaceDescriptor(propertyID, value, context);
 }
 
+#if 0 // BKTODO:
 PassRefPtrWillBeRawPtr<FontFace> FontFace::create(ExecutionContext* context, const AtomicString& family, StringOrArrayBufferOrArrayBufferView& source, const FontFaceDescriptors& descriptors)
 {
     if (source.isString())
@@ -79,6 +89,7 @@ PassRefPtrWillBeRawPtr<FontFace> FontFace::create(ExecutionContext* context, con
     ASSERT_NOT_REACHED();
     return nullptr;
 }
+#endif
 
 PassRefPtrWillBeRawPtr<FontFace> FontFace::create(ExecutionContext* context, const AtomicString& family, const String& source, const FontFaceDescriptors& descriptors)
 {
@@ -280,6 +291,8 @@ bool FontFace::setFamilyValue(const CSSValue& familyValue)
     if (familyValue.isCustomIdentValue()) {
         family = AtomicString(toCSSCustomIdentValue(familyValue).value());
     } else if (toCSSPrimitiveValue(familyValue).isValueID()) {
+        ASSERT(false); // BKTODO:
+#if 0
         // We need to use the raw text for all the generic family types, since @font-face is a way of actually
         // defining what font to use for those types.
         switch (toCSSPrimitiveValue(familyValue).getValueID()) {
@@ -304,6 +317,7 @@ bool FontFace::setFamilyValue(const CSSValue& familyValue)
         default:
             return false;
         }
+#endif
     }
     m_family = family;
     return true;
@@ -331,6 +345,8 @@ void FontFace::setLoadStatus(LoadStatus status)
     m_status = status;
     ASSERT(m_status != Error || m_error);
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_status == Loaded || m_status == Error) {
         if (m_loadedProperty) {
             if (m_status == Loaded)
@@ -348,6 +364,7 @@ void FontFace::setLoadStatus(LoadStatus status)
                 callbacks[i]->notifyError(this);
         }
     }
+#endif
 }
 
 void FontFace::setError(DOMException* error)
@@ -357,6 +374,7 @@ void FontFace::setError(DOMException* error)
     setLoadStatus(Error);
 }
 
+#if 0 // BKTODO:
 ScriptPromise FontFace::fontStatusPromise(ScriptState* scriptState)
 {
     if (!m_loadedProperty) {
@@ -374,6 +392,7 @@ ScriptPromise FontFace::load(ScriptState* scriptState)
     loadInternal(scriptState->executionContext());
     return fontStatusPromise(scriptState);
 }
+#endif
 
 void FontFace::loadWithCallback(PassRefPtrWillBeRawPtr<LoadFontCallback> callback, ExecutionContext* context)
 {
@@ -383,7 +402,7 @@ void FontFace::loadWithCallback(PassRefPtrWillBeRawPtr<LoadFontCallback> callbac
     else if (m_status == Error)
         callback->notifyError(this);
     else
-        m_callbacks.append(callback);
+        m_callbacks.emplace_back(callback);
 }
 
 void FontFace::loadInternal(ExecutionContext* context)
@@ -584,8 +603,7 @@ void FontFace::initCSSFontFace(Document* document, PassRefPtrWillBeRawPtr<CSSVal
         OwnPtrWillBeRawPtr<CSSFontFaceSource> source = nullptr;
 
         if (!item->isLocal()) {
-            const Settings* settings = document ? document->settings() : nullptr;
-            bool allowDownloading = settings && settings->downloadableBinaryFontsEnabled();
+            bool allowDownloading = Settings::downloadableBinaryFontsEnabled();
             if (allowDownloading && item->isSupportedFormat() && document) {
                 FontResource* fetched = item->fetch(document);
                 if (fetched) {
@@ -608,7 +626,7 @@ void FontFace::initCSSFontFace(const unsigned char* data, size_t size)
     if (m_error)
         return;
 
-    RefPtr<SharedBuffer> buffer = SharedBuffer::create(data, size);
+    std::shared_ptr<SharedBuffer> buffer = SharedBuffer::create(data, size);
     OwnPtrWillBeRawPtr<BinaryDataFontFaceSource> source = adoptPtrWillBeNoop(new BinaryDataFontFaceSource(buffer.get(), m_otsParseMessage));
     if (source->isValid())
         setLoadStatus(Loaded);
@@ -627,7 +645,7 @@ DEFINE_TRACE(FontFace)
     visitor->trace(m_featureSettings);
     visitor->trace(m_display);
     visitor->trace(m_error);
-    visitor->trace(m_loadedProperty);
+    // BKTODO: visitor->trace(m_loadedProperty);
     visitor->trace(m_cssFontFace);
     visitor->trace(m_callbacks);
     ActiveDOMObject::trace(visitor);

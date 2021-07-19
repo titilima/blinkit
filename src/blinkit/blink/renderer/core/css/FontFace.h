@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontFace.h
+// Description: FontFace Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,8 +42,6 @@
 #ifndef FontFace_h
 #define FontFace_h
 
-#include "bindings/core/v8/ScriptPromise.h"
-#include "bindings/core/v8/ScriptPromiseProperty.h"
 #include "bindings/core/v8/ScriptWrappable.h"
 #include "core/CSSPropertyNames.h"
 #include "core/css/CSSValue.h"
@@ -62,7 +71,7 @@ class FontFace : public RefCountedWillBeGarbageCollectedFinalized<FontFace>, pub
 public:
     enum LoadStatus { Unloaded, Loading, Loaded, Error };
 
-    static PassRefPtrWillBeRawPtr<FontFace> create(ExecutionContext*, const AtomicString& family, StringOrArrayBufferOrArrayBufferView&, const FontFaceDescriptors&);
+    // BKTODO: static PassRefPtrWillBeRawPtr<FontFace> create(ExecutionContext*, const AtomicString& family, StringOrArrayBufferOrArrayBufferView&, const FontFaceDescriptors&);
     static PassRefPtrWillBeRawPtr<FontFace> create(Document*, const StyleRuleFontFace*);
 
     ~FontFace();
@@ -85,9 +94,11 @@ public:
     void setFeatureSettings(ExecutionContext*, const String&, ExceptionState&);
 
     String status() const;
+#if 0 // BKTODO:
     ScriptPromise loaded(ScriptState* scriptState) { return fontStatusPromise(scriptState); }
 
     ScriptPromise load(ScriptState*);
+#endif
 
     LoadStatus loadStatus() const { return m_status; }
     void setLoadStatus(LoadStatus);
@@ -127,9 +138,11 @@ private:
     bool setPropertyValue(PassRefPtrWillBeRawPtr<CSSValue>, CSSPropertyID);
     bool setFamilyValue(const CSSValue&);
     void loadInternal(ExecutionContext*);
+#if 0 // BKTODO:
     ScriptPromise fontStatusPromise(ScriptState*);
 
     using LoadedProperty = ScriptPromiseProperty<RawPtrWillBeMember<FontFace>, RawPtrWillBeMember<FontFace>, Member<DOMException>>;
+#endif
 
     AtomicString m_family;
     String m_otsParseMessage;
@@ -143,7 +156,7 @@ private:
     LoadStatus m_status;
     PersistentWillBeMember<DOMException> m_error;
 
-    PersistentWillBeMember<LoadedProperty> m_loadedProperty;
+    // BKTODO: PersistentWillBeMember<LoadedProperty> m_loadedProperty;
     OwnPtrWillBeMember<CSSFontFace> m_cssFontFace;
     WillBeHeapVector<RefPtrWillBeMember<LoadFontCallback>> m_callbacks;
 };
