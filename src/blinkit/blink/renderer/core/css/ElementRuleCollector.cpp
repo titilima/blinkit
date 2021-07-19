@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ElementRuleCollector.cpp
+// Description: ElementRuleCollector Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -255,7 +266,7 @@ void ElementRuleCollector::appendCSSOMWrapperForRule(CSSStyleSheet* parentStyleS
     else
         cssRule = rule->createCSSOMWrapper();
     ASSERT(!parentStyleSheet || cssRule);
-    ensureRuleList()->rules().append(cssRule);
+    ensureRuleList()->rules().emplace_back(cssRule);
 }
 
 void ElementRuleCollector::sortAndTransferMatchedRules()
