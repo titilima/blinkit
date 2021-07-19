@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InvalidationSet.h
+// Description: InvalidationSet Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All rights reserved.
  *
@@ -61,8 +72,6 @@ public:
     bool isDescendantInvalidationSet() const { return m_type == InvalidateDescendants; }
     bool isSiblingInvalidationSet() const { return m_type == InvalidateSiblings; }
 
-    static void cacheTracingFlag();
-
     bool invalidatesElement(Element&) const;
 
     void addClass(const AtomicString& className);
@@ -86,12 +95,6 @@ public:
     bool customPseudoInvalid() const { return m_customPseudoInvalid; }
 
     bool isEmpty() const { return !m_classes && !m_ids && !m_tagNames && !m_attributes && !m_customPseudoInvalid && !m_insertionPointCrossing; }
-
-    void toTracedValue(TracedValue*) const;
-
-#ifndef NDEBUG
-    void show() const;
-#endif
 
     const HashSet<AtomicString>& classSetForTesting() const { ASSERT(m_classes); return *m_classes; }
     const HashSet<AtomicString>& idSetForTesting() const { ASSERT(m_ids); return *m_ids; }
