@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSImageGeneratorValue.h
+// Description: CSSImageGeneratorValue Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All rights reserved.
  *
@@ -87,7 +98,7 @@ protected:
     // FIXME: Oilpan: when/if we can make the layoutObject point directly to the CSSImageGenerator value using
     // a member we don't need to have this hack where we keep a persistent to the instance as long as
     // there are clients in the LayoutObjectSizeCountMap.
-    SelfKeepAlive<CSSImageGeneratorValue> m_keepAlive;
+    // BKTODO: SelfKeepAlive<CSSImageGeneratorValue> m_keepAlive;
 #endif
 };
 

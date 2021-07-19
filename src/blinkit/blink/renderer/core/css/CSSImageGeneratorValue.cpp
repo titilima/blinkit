@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSImageGeneratorValue.cpp
+// Description: CSSImageGeneratorValue Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc.  All rights reserved.
  *
@@ -46,14 +57,17 @@ void CSSImageGeneratorValue::addClient(const LayoutObject* layoutObject, const I
 #if !ENABLE(OILPAN)
     ref();
 #else
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_clients.isEmpty()) {
         ASSERT(!m_keepAlive);
         m_keepAlive = this;
     }
 #endif
+#endif
 
     if (!size.isEmpty())
-        m_sizes.add(size);
+        m_sizes.insert(size);
 
     LayoutObjectSizeCountMap::iterator it = m_clients.find(layoutObject);
     if (it == m_clients.end()) {
@@ -81,7 +95,7 @@ void CSSImageGeneratorValue::removeClient(const LayoutObject* layoutObject)
     SizeAndCount& sizeCount = it->value;
     IntSize size = sizeCount.size;
     if (!size.isEmpty()) {
-        m_sizes.remove(size);
+        m_sizes.erase(size);
         if (!m_sizes.contains(size))
             m_images.remove(size);
     }
@@ -92,10 +106,13 @@ void CSSImageGeneratorValue::removeClient(const LayoutObject* layoutObject)
 #if !ENABLE(OILPAN)
     deref();
 #else
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_clients.isEmpty()) {
         ASSERT(m_keepAlive);
         m_keepAlive.clear();
     }
+#endif
 #endif
 }
 
