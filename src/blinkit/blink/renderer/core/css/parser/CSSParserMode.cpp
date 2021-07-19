@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSParserMode.cpp
+// Description: CSSParserMode Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -28,44 +39,43 @@
 
 #include "core/dom/Document.h"
 #include "core/frame/Settings.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
+// BKTODO: #include "core/frame/csp/ContentSecurityPolicy.h"
 
 namespace blink {
 
-CSSParserContext::CSSParserContext(CSSParserMode mode, UseCounter* useCounter)
+CSSParserContext::CSSParserContext(CSSParserMode mode)
     : m_mode(mode)
     , m_isHTMLDocument(false)
     , m_useLegacyBackgroundSizeShorthandBehavior(false)
-    , m_shouldCheckContentSecurityPolicy(DoNotCheckContentSecurityPolicy)
-    , m_useCounter(useCounter)
+    // BKTODO:, m_shouldCheckContentSecurityPolicy(DoNotCheckContentSecurityPolicy)
 {
 }
 
-CSSParserContext::CSSParserContext(const Document& document, UseCounter* useCounter, const KURL& baseURL, const String& charset)
-    : m_baseURL(baseURL.isNull() ? document.baseURL() : baseURL)
+CSSParserContext::CSSParserContext(const Document& document, const KURL& baseURL, const String& charset)
+    : m_baseURL(baseURL.isEmpty() ? document.baseURL() : baseURL)
     , m_charset(charset)
     , m_mode(document.inQuirksMode() ? HTMLQuirksMode : HTMLStandardMode)
-    , m_referrer(m_baseURL.strippedForUseAsReferrer(), document.referrerPolicy())
+    // BKTODO: , m_referrer(m_baseURL.strippedForUseAsReferrer(), document.referrerPolicy())
     , m_isHTMLDocument(document.isHTMLDocument())
-    , m_useLegacyBackgroundSizeShorthandBehavior(document.settings() ? document.settings()->useLegacyBackgroundSizeShorthandBehavior() : false)
-    , m_shouldCheckContentSecurityPolicy(DoNotCheckContentSecurityPolicy)
-    , m_useCounter(useCounter)
+    , m_useLegacyBackgroundSizeShorthandBehavior(Settings::useLegacyBackgroundSizeShorthandBehavior())
+    // BKTODO: , m_shouldCheckContentSecurityPolicy(DoNotCheckContentSecurityPolicy)
 {
+#if 0 // BKTODO:
     if (ContentSecurityPolicy::shouldBypassMainWorld(&document))
         m_shouldCheckContentSecurityPolicy = DoNotCheckContentSecurityPolicy;
     else
         m_shouldCheckContentSecurityPolicy = CheckContentSecurityPolicy;
+#endif
 }
 
-CSSParserContext::CSSParserContext(const CSSParserContext& other, UseCounter* useCounter)
+CSSParserContext::CSSParserContext(const CSSParserContext& other)
     : m_baseURL(other.m_baseURL)
     , m_charset(other.m_charset)
     , m_mode(other.m_mode)
-    , m_referrer(other.m_referrer)
+    // BKTODO: , m_referrer(other.m_referrer)
     , m_isHTMLDocument(other.m_isHTMLDocument)
     , m_useLegacyBackgroundSizeShorthandBehavior(other.m_useLegacyBackgroundSizeShorthandBehavior)
-    , m_shouldCheckContentSecurityPolicy(other.m_shouldCheckContentSecurityPolicy)
-    , m_useCounter(useCounter)
+    // BKTODO: , m_shouldCheckContentSecurityPolicy(other.m_shouldCheckContentSecurityPolicy)
 {
 }
 
@@ -80,17 +90,25 @@ bool CSSParserContext::operator==(const CSSParserContext& other) const
 
 const CSSParserContext& strictCSSParserContext()
 {
+    ASSERT(false); // BKTODO:
+    exit(0);
+#if 0
     DEFINE_STATIC_LOCAL(CSSParserContext, strictContext, (HTMLStandardMode, 0));
     return strictContext;
+#endif
 }
 
 KURL CSSParserContext::completeURL(const String& url) const
 {
     if (url.isNull())
         return KURL();
+    ASSERT(false); // BKTODO:
+    return KURL();
+#if 0
     if (charset().isEmpty())
         return KURL(baseURL(), url);
     return KURL(baseURL(), url, charset());
+#endif
 }
 
 } // namespace blink

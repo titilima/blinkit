@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSParserMode.h
+// Description: CSSParserMode Class
+//      Author: Ziming Li
+//     Created: 2021-07-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  * Copyright (C) 2012 Apple Inc. All rights reserved.
@@ -34,7 +45,7 @@
 #include "core/CoreExport.h"
 #include "core/fetch/ResourceLoaderOptions.h"
 #include "platform/weborigin/KURL.h"
-#include "platform/weborigin/Referrer.h"
+// BKTODO: #include "platform/weborigin/Referrer.h"
 
 namespace blink {
 
@@ -86,13 +97,13 @@ class UseCounter;
 class CORE_EXPORT CSSParserContext {
     USING_FAST_MALLOC(CSSParserContext);
 public:
-    CSSParserContext(CSSParserMode, UseCounter*);
+    CSSParserContext(CSSParserMode);
     // FIXME: We shouldn't need the UseCounter argument as we could infer it from the Document
     // but some callers want to disable use counting (e.g. the WebInspector).
-    CSSParserContext(const Document&, UseCounter*, const KURL& baseURL = KURL(), const String& charset = emptyString());
+    CSSParserContext(const Document&, const KURL& baseURL = KURL(), const String& charset = emptyString());
     // FIXME: This constructor shouldn't exist if we properly piped the UseCounter through the CSS
     // subsystem. Currently the UseCounter life time is too crazy and we need a way to override it.
-    CSSParserContext(const CSSParserContext&, UseCounter*);
+    CSSParserContext(const CSSParserContext&);
 
     bool operator==(const CSSParserContext&) const;
     bool operator!=(const CSSParserContext& other) const { return !(*this == other); }
@@ -100,7 +111,7 @@ public:
     CSSParserMode mode() const { return m_mode; }
     const KURL& baseURL() const { return m_baseURL; }
     const String& charset() const { return m_charset; }
-    const Referrer& referrer() const { return m_referrer; }
+    // BKTODO: const Referrer& referrer() const { return m_referrer; }
     bool isHTMLDocument() const { return m_isHTMLDocument; }
 
     // This quirk is to maintain compatibility with Android apps built on
@@ -113,26 +124,20 @@ public:
     void setMode(CSSParserMode mode) { m_mode = mode; }
     void setBaseURL(const KURL& baseURL) { m_baseURL = baseURL; }
     void setCharset(const String& charset) { m_charset = charset; }
-    void setReferrer(const Referrer& referrer) { m_referrer = referrer; }
+    // BKTODO: void setReferrer(const Referrer& referrer) { m_referrer = referrer; }
 
     KURL completeURL(const String& url) const;
 
-    // This may return nullptr if counting is disabled.
-    // See comments on constructors.
-    UseCounter* useCounter() const { return m_useCounter; }
-
-    ContentSecurityPolicyDisposition shouldCheckContentSecurityPolicy() const { return m_shouldCheckContentSecurityPolicy; }
+    // BKTODO: ContentSecurityPolicyDisposition shouldCheckContentSecurityPolicy() const { return m_shouldCheckContentSecurityPolicy; }
 
 private:
     KURL m_baseURL;
     String m_charset;
     CSSParserMode m_mode;
-    Referrer m_referrer;
+    // BKTODO: Referrer m_referrer;
     bool m_isHTMLDocument;
     bool m_useLegacyBackgroundSizeShorthandBehavior;
-    ContentSecurityPolicyDisposition m_shouldCheckContentSecurityPolicy;
-
-    UseCounter* m_useCounter;
+    // BKTODO: ContentSecurityPolicyDisposition m_shouldCheckContentSecurityPolicy;
 };
 
 CORE_EXPORT const CSSParserContext& strictCSSParserContext();
