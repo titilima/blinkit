@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSParser.cpp
+// Description: CSSParser Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -61,7 +72,7 @@ bool CSSParser::parseValue(MutableStylePropertySet* declaration, CSSPropertyID u
     RefPtrWillBeRawPtr<CSSValue> value = CSSParserFastPaths::maybeParseValue(resolvedProperty, string, parserMode);
     if (value)
         return declaration->setProperty(CSSProperty(resolvedProperty, value.release(), important));
-    CSSParserContext context(parserMode, 0);
+    CSSParserContext context(parserMode);
     if (styleSheet) {
         context = styleSheet->parserContext();
         context.setMode(parserMode);
@@ -75,7 +86,7 @@ bool CSSParser::parseValueForCustomProperty(MutableStylePropertySet* declaration
     if (value.isEmpty())
         return false;
     CSSParserMode parserMode = declaration->cssParserMode();
-    CSSParserContext context(parserMode, 0);
+    CSSParserContext context(parserMode);
     if (styleSheet) {
         context = styleSheet->parserContext();
         context.setMode(parserMode);
