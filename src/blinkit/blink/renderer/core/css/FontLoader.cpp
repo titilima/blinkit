@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontLoader.cpp
+// Description: FontLoader Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,7 +19,7 @@
 #include "core/dom/Document.h"
 #include "core/dom/IncrementLoadEventDelayCount.h"
 #include "core/fetch/FontResource.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 
 namespace blink {
 
@@ -96,9 +107,12 @@ void FontLoader::didFailToDecode(FontResource* fontResource)
     // FIXME: Provide more useful message such as OTS rejection reason.
     // See crbug.com/97467
     if (m_fontSelector && m_fontSelector->document()) {
+        ASSERT(false); // BKTODO:
+#if 0
         m_fontSelector->document()->addConsoleMessage(ConsoleMessage::create(OtherMessageSource, WarningMessageLevel, "Failed to decode downloaded font: " + fontResource->url().elidedString()));
         if (fontResource->otsParsingMessage().length() > 1)
             m_fontSelector->document()->addConsoleMessage(ConsoleMessage::create(OtherMessageSource, WarningMessageLevel, "OTS parsing error: " + fontResource->otsParsingMessage()));
+#endif
     }
 }
 
