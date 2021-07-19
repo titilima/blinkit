@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSValue.h
+// Description: CSSValue Class
+//      Author: Ziming Li
+//     Created: 2021-07-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008 Apple Inc. All rights reserved.
@@ -39,12 +50,17 @@ public:
     GC_PLUGIN_IGNORE("crbug.com/443854")
     void* operator new(size_t size)
     {
-        return allocateObject(size, false);
+        ASSERT(false); // BKTODO: return allocateObject(size, false);
+        return nullptr;
     }
     static void* allocateObject(size_t size, bool isEager)
     {
+        ASSERT(false); // BKTODO:
+        return nullptr;
+#if 0
         ThreadState* state = ThreadStateFor<ThreadingTrait<CSSValue>::Affinity>::state();
         return Heap::allocateOnHeapIndex(state, size, isEager ? BlinkGC::EagerSweepHeapIndex : BlinkGC::CSSValueHeapIndex, GCInfoTrait<CSSValue>::index());
+#endif
     }
 #else
     USING_FAST_MALLOC_WITH_TYPE_NAME(blink::CSSValue);
