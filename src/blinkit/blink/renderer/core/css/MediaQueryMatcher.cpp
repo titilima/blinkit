@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaQueryMatcher.cpp
+// Description: MediaQueryMatcher Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies)
  *
@@ -91,28 +102,28 @@ void MediaQueryMatcher::addMediaQueryList(MediaQueryList* query)
 {
     if (!m_document)
         return;
-    m_mediaLists.add(query);
+    m_mediaLists.insert(query);
 }
 
 void MediaQueryMatcher::removeMediaQueryList(MediaQueryList* query)
 {
     if (!m_document)
         return;
-    m_mediaLists.remove(query);
+    m_mediaLists.erase(query);
 }
 
 void MediaQueryMatcher::addViewportListener(PassRefPtrWillBeRawPtr<MediaQueryListListener> listener)
 {
     if (!m_document)
         return;
-    m_viewportListeners.add(listener);
+    m_viewportListeners.insert(listener);
 }
 
 void MediaQueryMatcher::removeViewportListener(PassRefPtrWillBeRawPtr<MediaQueryListListener> listener)
 {
     if (!m_document)
         return;
-    m_viewportListeners.remove(listener);
+    m_viewportListeners.erase(listener);
 }
 
 void MediaQueryMatcher::mediaFeaturesChanged()
@@ -123,9 +134,12 @@ void MediaQueryMatcher::mediaFeaturesChanged()
     WillBeHeapVector<RefPtrWillBeMember<MediaQueryListListener>> listenersToNotify;
     for (const auto& list : m_mediaLists) {
         if (list->mediaFeaturesChanged(&listenersToNotify)) {
+            ASSERT(false); // BKTODO:
+#if 0
             RefPtrWillBeRawPtr<Event> event(MediaQueryListEvent::create(list));
             event->setTarget(list);
             m_document->enqueueUniqueAnimationFrameEvent(event);
+#endif
         }
     }
     m_document->enqueueMediaQueryChangeListeners(listenersToNotify);
