@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourceLoaderOptions.h
+// Description: ResourceLoaderOptions Struct
+//      Author: Ziming Li
+//     Created: 2021-07-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -32,8 +43,12 @@
 #define ResourceLoaderOptions_h
 
 #include "core/fetch/FetchInitiatorInfo.h"
+#if 0 // BKTODO:
 #include "platform/CrossThreadCopier.h"
 #include "platform/weborigin/SecurityOrigin.h"
+#else
+#include "platform/heap/Handle.h" // Was included in CrossThreadCopier.h
+#endif
 #include "wtf/Allocator.h"
 
 namespace blink {
@@ -67,6 +82,7 @@ enum CredentialRequest {
     ClientDidNotRequestCredentials
 };
 
+#if 0 // BKTODO:
 enum SynchronousPolicy {
     RequestSynchronously,
     RequestAsynchronously
@@ -78,6 +94,7 @@ enum CORSEnabled {
     NotCORSEnabled,
     IsCORSEnabled
 };
+#endif
 
 struct ResourceLoaderOptions {
     USING_FAST_MALLOC(ResourceLoaderOptions);
@@ -88,8 +105,10 @@ public:
         , credentialsRequested(ClientDidNotRequestCredentials)
         , contentSecurityPolicyOption(CheckContentSecurityPolicy)
         , requestInitiatorContext(DocumentContext)
+#if 0 // BKTODO:
         , synchronousPolicy(RequestAsynchronously)
         , corsEnabled(NotCORSEnabled)
+#endif
     {
     }
 
@@ -104,8 +123,10 @@ public:
         , credentialsRequested(credentialsRequested)
         , contentSecurityPolicyOption(contentSecurityPolicyOption)
         , requestInitiatorContext(requestInitiatorContext)
+#if 0 // BKTODO:
         , synchronousPolicy(RequestAsynchronously)
         , corsEnabled(NotCORSEnabled)
+#endif
     {
     }
 
@@ -121,8 +142,9 @@ public:
         // initiatorInfo is purely informational and should be benign for re-use.
         // requestInitiatorContext is benign (indicates document vs. worker)
         // synchronousPolicy (safe to re-use an async XHR response for sync, etc.)
-        return corsEnabled == other.corsEnabled;
+        ASSERT(false); // BKTODO: return corsEnabled == other.corsEnabled;
         // securityOrigin has more complicated checks which callers are responsible for.
+        return true;
     }
 
     // When adding members, CrossThreadResourceLoaderOptionsData should be
@@ -133,11 +155,14 @@ public:
     ContentSecurityPolicyDisposition contentSecurityPolicyOption;
     FetchInitiatorInfo initiatorInfo;
     RequestInitiatorContext requestInitiatorContext;
+#if 0 // BKTODO:
     SynchronousPolicy synchronousPolicy;
     CORSEnabled corsEnabled; // If the resource is loaded out-of-origin, whether or not to use CORS.
     RefPtr<SecurityOrigin> securityOrigin;
+#endif
 };
 
+#if 0 // BKTODO:
 // Encode AtomicString (in FetchInitiatorInfo) as String to cross threads.
 struct CrossThreadResourceLoaderOptionsData {
     DISALLOW_NEW();
@@ -185,6 +210,7 @@ template<> struct CrossThreadCopierBase<false, false, false, ResourceLoaderOptio
         return CrossThreadResourceLoaderOptionsData(options);
     }
 };
+#endif
 
 } // namespace blink
 

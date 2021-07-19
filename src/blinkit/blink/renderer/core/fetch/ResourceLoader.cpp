@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourceLoader.cpp
+// Description: ResourceLoader Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2010, 2011 Apple Inc. All rights reserved.
  *           (C) 2007 Graham Dennis (graham.dennis@gmail.com)
@@ -33,18 +44,22 @@
 #include "core/fetch/Resource.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/fetch/ResourcePtr.h"
-#include "platform/Logging.h"
+// BKTODO: #include "platform/Logging.h"
 #include "platform/SharedBuffer.h"
+#if 0 // BKTODO:
 #include "platform/ThreadedDataReceiver.h"
 #include "platform/exported/WrappedResourceRequest.h"
 #include "platform/exported/WrappedResourceResponse.h"
+#endif
 #include "platform/network/ResourceError.h"
 #include "public/platform/Platform.h"
 #include "public/platform/WebData.h"
+#if 0 // BKTODO:
 #include "public/platform/WebThreadedDataReceiver.h"
 #include "public/platform/WebURLError.h"
 #include "public/platform/WebURLRequest.h"
 #include "public/platform/WebURLResponse.h"
+#endif
 #include "wtf/Assertions.h"
 #include "wtf/CurrentTime.h"
 
@@ -54,7 +69,8 @@ namespace {
 
 bool isManualRedirectFetchRequest(const ResourceRequest& request)
 {
-    return request.fetchRedirectMode() == WebURLRequest::FetchRedirectModeManual && request.requestContext() == WebURLRequest::RequestContextFetch;
+    ASSERT(false); // BKTODO: return request.fetchRedirectMode() == WebURLRequest::FetchRedirectModeManual && request.requestContext() == WebURLRequest::RequestContextFetch;
+    return false;
 }
 
 } // namespace
@@ -106,7 +122,7 @@ void ResourceLoader::releaseResources()
 
     m_state = Terminated;
     if (m_loader) {
-        m_loader->cancel();
+        ASSERT(false); // BKTODO: m_loader->cancel();
         m_loader.clear();
     }
     m_deferredRequest = ResourceRequest();
@@ -134,10 +150,12 @@ void ResourceLoader::start()
 
     m_fetcher->willStartLoadingResource(m_resource, m_request);
 
+#if 0 // BKTODO:
     if (m_options.synchronousPolicy == RequestSynchronously) {
         requestSynchronously();
         return;
     }
+#endif
 
     if (m_defersLoading) {
         m_deferredRequest = m_request;
@@ -152,11 +170,15 @@ void ResourceLoader::start()
 
     m_loader = adoptPtr(Platform::current()->createURLLoader());
     ASSERT(m_loader);
+    ASSERT(false); // BKTODO:
+#if 0
     m_loader->setLoadingTaskRunner(m_fetcher->loadingTaskRunner());
     WrappedResourceRequest wrappedRequest(m_request);
     m_loader->loadAsynchronously(wrappedRequest, this);
+#endif
 }
 
+#if 0 // BKTODO:
 void ResourceLoader::changeToSynchronous()
 {
     ASSERT(m_options.synchronousPolicy == RequestAsynchronously);
@@ -191,6 +213,7 @@ void ResourceLoader::attachThreadedDataReceiver(PassRefPtrWillBeRawPtr<ThreadedD
             delete webDataReceiver;
     }
 }
+#endif
 
 void ResourceLoader::didDownloadData(WebURLLoader*, int length, int encodedDataLength)
 {
@@ -215,12 +238,14 @@ void ResourceLoader::didFinishLoadingOnePart(double finishTime, int64_t encodedD
     m_fetcher->didFinishLoading(m_resource, finishTime, encodedDataLength);
 }
 
+#if 0 // BKTODO:
 void ResourceLoader::didChangePriority(ResourceLoadPriority loadPriority, int intraPriorityValue)
 {
     ASSERT(m_state != Terminated);
     if (m_loader)
         m_loader->didChangePriority(static_cast<WebURLRequest::Priority>(loadPriority), intraPriorityValue);
 }
+#endif
 
 void ResourceLoader::cancelIfNotFinishing()
 {
@@ -244,6 +269,8 @@ void ResourceLoader::cancel(const ResourceError& error)
         return;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     ResourceError nonNullError = error.isNull() ? ResourceError::cancelledError(m_request.url()) : error;
 
     WTF_LOG(ResourceLoading, "Cancelled load of '%s'.\n", m_resource->url().string().latin1().data());
@@ -266,12 +293,15 @@ void ResourceLoader::cancel(const ResourceError& error)
         m_resource->error(Resource::LoadError);
     if (m_state != Terminated)
         releaseResources();
+#endif
 }
 
 void ResourceLoader::willFollowRedirect(WebURLLoader*, WebURLRequest& passedNewRequest, const WebURLResponse& passedRedirectResponse)
 {
     ASSERT(m_state != Terminated);
 
+    ASSERT(false); // BKTODO:
+#if 0
     ResourceRequest& newRequest(applyOptions(passedNewRequest.toMutableResourceRequest()));
 
     ASSERT(!newRequest.isNull());
@@ -296,6 +326,7 @@ void ResourceLoader::willFollowRedirect(WebURLLoader*, WebURLRequest& passedNewR
     ASSERT(!newRequest.isNull());
     m_resource->updateRequest(newRequest);
     m_request = newRequest;
+#endif
 }
 
 void ResourceLoader::didReceiveCachedMetadata(WebURLLoader*, const char* data, int length)
@@ -314,9 +345,11 @@ void ResourceLoader::didSendData(WebURLLoader*, unsigned long long bytesSent, un
 bool ResourceLoader::responseNeedsAccessControlCheck() const
 {
     // If the fetch was (potentially) CORS enabled, an access control check of the response is required.
-    return m_options.corsEnabled == IsCORSEnabled;
+    ASSERT(false); // BKTODO: return m_options.corsEnabled == IsCORSEnabled;
+    return false;
 }
 
+#if 0 // BKTODO:
 void ResourceLoader::didReceiveResponse(WebURLLoader*, const WebURLResponse& response, WebDataConsumerHandle* rawHandle)
 {
     ASSERT(!response.isNull());
@@ -399,10 +432,11 @@ void ResourceLoader::didReceiveResponse(WebURLLoader*, const WebURLResponse& res
     m_resource->error(Resource::LoadError);
     cancel();
 }
+#endif
 
 void ResourceLoader::didReceiveResponse(WebURLLoader* loader, const WebURLResponse& response)
 {
-    didReceiveResponse(loader, response, nullptr);
+    ASSERT(false); // BKTODO: didReceiveResponse(loader, response, nullptr);
 }
 
 void ResourceLoader::didReceiveData(WebURLLoader*, const char* data, int length, int encodedDataLength)
@@ -434,12 +468,15 @@ void ResourceLoader::didFinishLoading(WebURLLoader*, double finishTime, int64_t 
     if (m_state != Initialized)
         return;
     ASSERT(m_state != Terminated);
+    ASSERT(false); // BKTODO:
+#if 0
     WTF_LOG(ResourceLoading, "Received '%s'.", m_resource->url().string().latin1().data());
 
     ResourcePtr<Resource> protectResource(m_resource);
     m_state = Finishing;
     m_resource->setLoadFinishTime(finishTime);
     didFinishLoadingOnePart(finishTime, encodedDataLength);
+#endif
     if (m_state == Terminated)
         return;
     m_resource->finish();
@@ -455,6 +492,8 @@ void ResourceLoader::didFail(WebURLLoader*, const WebURLError& error)
 {
     m_connectionState = ConnectionStateFailed;
     ASSERT(m_state != Terminated);
+    ASSERT(false); // BKTODO:
+#if 0
     WTF_LOG(ResourceLoading, "Failed to load '%s'.\n", m_resource->url().string().latin1().data());
 
     ResourcePtr<Resource> protectResource(m_resource);
@@ -465,6 +504,7 @@ void ResourceLoader::didFail(WebURLLoader*, const WebURLError& error)
         m_notifiedLoadComplete = true;
         m_fetcher->didFailLoading(m_resource, error);
     }
+#endif
     if (m_state == Terminated)
         return;
 
@@ -481,6 +521,7 @@ bool ResourceLoader::isLoadedBy(ResourceFetcher* loader) const
     return m_fetcher->isLoadedBy(loader);
 }
 
+#if 0 // BKTODO:
 void ResourceLoader::requestSynchronously()
 {
     OwnPtr<WebURLLoader> loader = adoptPtr(Platform::current()->createURLLoader());
@@ -526,6 +567,7 @@ void ResourceLoader::requestSynchronously()
     }
     didFinishLoading(0, monotonicallyIncreasingTime(), encodedDataLength);
 }
+#endif
 
 ResourceRequest& ResourceLoader::applyOptions(ResourceRequest& request) const
 {

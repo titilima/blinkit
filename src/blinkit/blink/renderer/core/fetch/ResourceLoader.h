@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourceLoader.h
+// Description: ResourceLoader Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2011 Apple Inc. All rights reserved.
  *
@@ -52,7 +63,7 @@ public:
     DECLARE_TRACE();
 
     void start();
-    void changeToSynchronous();
+    // BKTODO: void changeToSynchronous();
 
     void cancel();
     void cancel(const ResourceError&);
@@ -61,20 +72,20 @@ public:
     Resource* cachedResource() { return m_resource; }
     const ResourceRequest& originalRequest() const { return m_originalRequest; }
 
-    void setDefersLoading(bool);
+    // BKTODO: void setDefersLoading(bool);
     bool defersLoading() const { return m_defersLoading; }
 
-    void attachThreadedDataReceiver(PassRefPtrWillBeRawPtr<ThreadedDataReceiver>);
+    // BKTODO: void attachThreadedDataReceiver(PassRefPtrWillBeRawPtr<ThreadedDataReceiver>);
 
     void releaseResources();
 
-    void didChangePriority(ResourceLoadPriority, int intraPriorityValue);
+    // BKTODO: void didChangePriority(ResourceLoadPriority, int intraPriorityValue);
 
     // WebURLLoaderClient
     void willFollowRedirect(WebURLLoader*, WebURLRequest&, const WebURLResponse& redirectResponse) override;
     void didSendData(WebURLLoader*, unsigned long long bytesSent, unsigned long long totalBytesToBeSent) override;
     void didReceiveResponse(WebURLLoader*, const WebURLResponse&) override;
-    void didReceiveResponse(WebURLLoader*, const WebURLResponse&, WebDataConsumerHandle*) override;
+    // BKTODO: void didReceiveResponse(WebURLLoader*, const WebURLResponse&, WebDataConsumerHandle*) override;
     void didReceiveData(WebURLLoader*, const char*, int, int encodedDataLength) override;
     void didReceiveCachedMetadata(WebURLLoader*, const char* data, int length) override;
     void didFinishLoading(WebURLLoader*, double finishTime, int64_t encodedDataLength) override;
@@ -94,7 +105,7 @@ private:
     ResourceLoader(ResourceFetcher*, Resource*, const ResourceLoaderOptions&);
 
     void init(const ResourceRequest&);
-    void requestSynchronously();
+    // BKTODO: void requestSynchronously();
 
     void didFinishLoadingOnePart(double finishTime, int64_t encodedDataLength);
 
