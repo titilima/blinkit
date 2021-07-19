@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleInvalidator.cpp
+// Description: StyleInvalidator Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -15,17 +26,7 @@
 
 namespace blink {
 
-// StyleInvalidator methods are super sensitive to performance benchmarks.
-// We easily get 1% regression per additional if statement on recursive
-// invalidate methods.
-// To minimize performance impact, we wrap trace events with a lookup of
-// cached flag. The cached flag is made "static const" and is not shared
-// with InvalidationSet to avoid additional GOT lookup cost.
-static const unsigned char* s_tracingEnabled = nullptr;
-
-#define TRACE_STYLE_INVALIDATOR_INVALIDATION_IF_ENABLED(element, reason) \
-    if (UNLIKELY(*s_tracingEnabled)) \
-        TRACE_STYLE_INVALIDATOR_INVALIDATION(element, reason);
+#define TRACE_STYLE_INVALIDATOR_INVALIDATION_IF_ENABLED(...)    ((void)0)
 
 void StyleInvalidator::invalidate(Document& document)
 {
@@ -90,22 +91,20 @@ void StyleInvalidator::clearInvalidation(Element& element)
 {
     if (!element.needsStyleInvalidation())
         return;
-    m_pendingInvalidationMap.remove(&element);
+    m_pendingInvalidationMap.erase(&element);
     element.clearNeedsStyleInvalidation();
 }
 
 PendingInvalidations& StyleInvalidator::ensurePendingInvalidations(Element& element)
 {
-    PendingInvalidationMap::AddResult addResult = m_pendingInvalidationMap.add(&element, nullptr);
-    if (addResult.isNewEntry)
-        addResult.storedValue->value = adoptPtr(new PendingInvalidations());
-    return *addResult.storedValue->value;
+    std::unique_ptr<PendingInvalidations> &pendingInvalidations = m_pendingInvalidationMap[&element];
+    if (!pendingInvalidations)
+        pendingInvalidations = std::make_unique<PendingInvalidations>();
+    return *pendingInvalidations;
 }
 
 StyleInvalidator::StyleInvalidator()
 {
-    s_tracingEnabled = TRACE_EVENT_API_GET_CATEGORY_GROUP_ENABLED(TRACE_DISABLED_BY_DEFAULT("devtools.timeline.invalidationTracking"));
-    InvalidationSet::cacheTracingFlag();
 }
 
 StyleInvalidator::~StyleInvalidator()
@@ -195,8 +194,10 @@ bool StyleInvalidator::SiblingData::matchCurrentInvalidationSets(Element& elemen
 
 void StyleInvalidator::pushInvalidationSetsForElement(Element& element, RecursionData& recursionData, SiblingData& siblingData)
 {
-    PendingInvalidations* pendingInvalidations = m_pendingInvalidationMap.get(&element);
-    ASSERT(pendingInvalidations);
+    auto it = m_pendingInvalidationMap.find(&element);
+    ASSERT(m_pendingInvalidationMap.end() != it);
+
+    PendingInvalidations* pendingInvalidations = it->second.get();
 
     for (const auto& invalidationSet : pendingInvalidations->siblings())
         siblingData.pushInvalidationSet(toSiblingInvalidationSet(*invalidationSet));
@@ -204,12 +205,6 @@ void StyleInvalidator::pushInvalidationSetsForElement(Element& element, Recursio
     if (!pendingInvalidations->descendants().isEmpty()) {
         for (const auto& invalidationSet : pendingInvalidations->descendants())
             recursionData.pushInvalidationSet(toDescendantInvalidationSet(*invalidationSet));
-        if (UNLIKELY(*s_tracingEnabled)) {
-            TRACE_EVENT_INSTANT1(TRACE_DISABLED_BY_DEFAULT("devtools.timeline.invalidationTracking"),
-                "StyleInvalidatorInvalidationTracking",
-                TRACE_EVENT_SCOPE_THREAD,
-                "data", InspectorStyleInvalidatorInvalidateEvent::invalidationList(element, pendingInvalidations->descendants()));
-        }
     }
 }
 
@@ -297,7 +292,7 @@ bool StyleInvalidator::invalidate(Element& element, RecursionData& recursionData
 DEFINE_TRACE(StyleInvalidator)
 {
 #if ENABLE(OILPAN)
-    visitor->trace(m_pendingInvalidationMap);
+    ASSERT(false); // BKTODO: visitor->trace(m_pendingInvalidationMap);
 #endif
 }
 

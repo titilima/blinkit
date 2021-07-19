@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleInvalidator.h
+// Description: StyleInvalidator Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -118,7 +129,7 @@ private:
         RecursionData* m_data;
     };
 
-    using PendingInvalidationMap = WillBeHeapHashMap<RawPtrWillBeMember<Element>, OwnPtr<PendingInvalidations>>;
+    using PendingInvalidationMap = std::unordered_map<Member<Element>, std::unique_ptr<PendingInvalidations>>;
 
     PendingInvalidations& ensurePendingInvalidations(Element&);
 
