@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SelectorFilter.cpp
+// Description: SelectorFilter Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -52,10 +63,10 @@ static inline void collectElementIdentifierHashes(const Element& element, Vector
 void SelectorFilter::pushParentStackFrame(Element& parent)
 {
     ASSERT(m_ancestorIdentifierFilter);
-    ASSERT(m_parentStack.isEmpty() || m_parentStack.last().element == parent.parentOrShadowHostElement());
+    ASSERT(m_parentStack.isEmpty() || m_parentStack.back().element == parent.parentOrShadowHostElement());
     ASSERT(!m_parentStack.isEmpty() || !parent.parentOrShadowHostElement());
     m_parentStack.append(ParentStackFrame(parent));
-    ParentStackFrame& parentFrame = m_parentStack.last();
+    ParentStackFrame& parentFrame = m_parentStack.back();
     // Mix tags, class names and ids into some sort of weird bouillabaisse.
     // The filter is used for fast rejection of child and descendant selectors.
     collectElementIdentifierHashes(parent, parentFrame.identifierHashes);
@@ -72,7 +83,7 @@ void SelectorFilter::popParentStackFrame()
     size_t count = parentFrame.identifierHashes.size();
     for (size_t i = 0; i < count; ++i)
         m_ancestorIdentifierFilter->remove(parentFrame.identifierHashes[i]);
-    m_parentStack.removeLast();
+    m_parentStack.pop_back();
     if (m_parentStack.isEmpty()) {
         ASSERT(m_ancestorIdentifierFilter->likelyEmpty());
         m_ancestorIdentifierFilter.clear();
