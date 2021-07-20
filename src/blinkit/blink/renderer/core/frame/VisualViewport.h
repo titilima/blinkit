@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: VisualViewport.h
+// Description: VisualViewport Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -38,7 +49,6 @@
 #include "platform/graphics/GraphicsLayerClient.h"
 #include "platform/scroll/ScrollableArea.h"
 #include "public/platform/WebScrollbar.h"
-#include "public/platform/WebSize.h"
 #include "wtf/OwnPtr.h"
 #include "wtf/PassOwnPtr.h"
 
@@ -54,7 +64,6 @@ class GraphicsContext;
 class GraphicsLayer;
 class GraphicsLayerFactory;
 class IntRect;
-class IntSize;
 class LocalFrame;
 
 // Represents the visual viewport the user is currently seeing the page through. This

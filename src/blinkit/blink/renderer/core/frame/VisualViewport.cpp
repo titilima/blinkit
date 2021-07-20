@@ -107,8 +107,7 @@ void VisualViewport::setSize(const IntSize& size)
         return;
 
     bool autosizerNeedsUpdating = widthDidChange
-        && mainFrame()->settings()
-        && mainFrame()->settings()->textAutosizingEnabled();
+        && Settings::textAutosizingEnabled();
 
     if (autosizerNeedsUpdating) {
         // This needs to happen after setting the m_size member since it'll be read in the update call.
@@ -214,12 +213,12 @@ void VisualViewport::setScaleAndLocation(float scale, const FloatPoint& location
         if (ScrollingCoordinator* coordinator = frameHost().page().scrollingCoordinator())
             coordinator->scrollableAreaScrollLayerDidChange(this);
 
-        if (!frameHost().settings().inertVisualViewport()) {
+        if (!Settings::inertVisualViewport()) {
             if (Document* document = mainFrame()->document())
                 document->enqueueScrollEventForNode(document);
         }
 
-        mainFrame()->loader().client()->didChangeScrollOffset();
+        ASSERT(false); // BKTODO: mainFrame()->loader().client()->didChangeScrollOffset();
         valuesChanged = true;
     }
 
@@ -310,7 +309,7 @@ void VisualViewport::attachToLayerTree(GraphicsLayer* currentLayerTreeRoot, Grap
 
         // Set masks to bounds so the compositor doesn't clobber a manually
         // set inner viewport container layer size.
-        m_innerViewportContainerLayer->setMasksToBounds(frameHost().settings().mainFrameClipsContent());
+        m_innerViewportContainerLayer->setMasksToBounds(Settings::mainFrameClipsContent());
         m_innerViewportContainerLayer->setSize(FloatSize(m_size));
 
         m_innerViewportScrollLayer->platformLayer()->setScrollClipLayer(
@@ -416,7 +415,7 @@ void VisualViewport::registerLayersWithTreeView(WebLayerTreeView* layerTreeView)
 
 bool VisualViewport::visualViewportSuppliesScrollbars() const
 {
-    return frameHost().settings().viewportMetaEnabled();
+    return Settings::viewportMetaEnabled();
 }
 
 bool VisualViewport::scrollAnimatorEnabled() const
@@ -449,7 +448,7 @@ IntRect VisualViewport::visibleContentRect(IncludeScrollbarsInRect scrollbarIncl
 bool VisualViewport::shouldUseIntegerScrollOffset() const
 {
     LocalFrame* frame = mainFrame();
-    if (frame && frame->settings() && !frame->settings()->preferCompositingToLCDTextEnabled())
+    if (frame && !Settings::preferCompositingToLCDTextEnabled())
         return true;
 
     return ScrollableArea::shouldUseIntegerScrollOffset();
@@ -690,7 +689,7 @@ void VisualViewport::sendUMAMetrics()
     if (m_trackPinchZoomStatsForPage) {
         bool didScale = m_maxPageScale > 0;
 
-        Platform::current()->histogramEnumeration("Viewport.DidScalePage", didScale ? 1 : 0, 2);
+        ASSERT(false); // BKTODO: Platform::current()->histogramEnumeration("Viewport.DidScalePage", didScale ? 1 : 0, 2);
 
         if (didScale) {
             int zoomPercentage = floor(m_maxPageScale * 100);
@@ -698,7 +697,7 @@ void VisualViewport::sendUMAMetrics()
             // See the PageScaleFactor enumeration in histograms.xml for the bucket ranges.
             int bucket = floor(zoomPercentage / 25.f);
 
-            Platform::current()->histogramEnumeration("Viewport.MaxPageScale", bucket, 21);
+            ASSERT(false); // BKTODO: Platform::current()->histogramEnumeration("Viewport.MaxPageScale", bucket, 21);
         }
     }
 
@@ -711,7 +710,7 @@ bool VisualViewport::shouldDisableDesktopWorkarounds() const
     if (!mainFrame() || !mainFrame()->view())
         return false;
 
-    if (!mainFrame()->settings()->viewportEnabled())
+    if (!Settings::viewportEnabled())
         return false;
 
     // A document is considered adapted to small screen UAs if one of these holds:
