@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RuleSet.h
+// Description: RuleSet Class
+//      Author: Ziming Li
+//     Created: 2021-07-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -131,10 +142,10 @@ public:
 
     const RuleFeatureSet& features() const { return m_features; }
 
-    const WillBeHeapTerminatedArray<RuleData>* idRules(const AtomicString& key) const { ASSERT(!m_pendingRules); return m_idRules.get(key); }
-    const WillBeHeapTerminatedArray<RuleData>* classRules(const AtomicString& key) const { ASSERT(!m_pendingRules); return m_classRules.get(key); }
-    const WillBeHeapTerminatedArray<RuleData>* tagRules(const AtomicString& key) const { ASSERT(!m_pendingRules); return m_tagRules.get(key); }
-    const WillBeHeapTerminatedArray<RuleData>* shadowPseudoElementRules(const AtomicString& key) const { ASSERT(!m_pendingRules); return m_shadowPseudoElementRules.get(key); }
+    const WillBeHeapTerminatedArray<RuleData>* idRules(const AtomicString& key) const { return getRules(m_idRules, key); }
+    const WillBeHeapTerminatedArray<RuleData>* classRules(const AtomicString& key) const { return getRules(m_classRules, key); }
+    const WillBeHeapTerminatedArray<RuleData>* tagRules(const AtomicString& key) const { return getRules(m_tagRules, key); }
+    const WillBeHeapTerminatedArray<RuleData>* shadowPseudoElementRules(const AtomicString& key) const { return getRules(m_shadowPseudoElementRules, key); }
     const WillBeHeapVector<RuleData>* linkPseudoClassRules() const { ASSERT(!m_pendingRules); return &m_linkPseudoClassRules; }
     const WillBeHeapVector<RuleData>* cuePseudoRules() const { ASSERT(!m_pendingRules); return &m_cuePseudoRules; }
     const WillBeHeapVector<RuleData>* focusPseudoClassRules() const { ASSERT(!m_pendingRules); return &m_focusPseudoClassRules; }
@@ -181,6 +192,14 @@ private:
 
     void addChildRules(const WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>>&, const MediaQueryEvaluator& medium, AddRuleFlags);
     bool findBestRuleSetAndAdd(const CSSSelector&, RuleData&);
+
+    const WillBeHeapTerminatedArray<RuleData>* getRules(const CompactRuleMap &rules, const AtomicString &key) const
+    {
+        ASSERT(!m_pendingRules);
+        if (auto v = zed::find_value(rules, key))
+            return v->get();
+        return nullptr;
+    }
 
     void compactRules();
     static void compactPendingRules(PendingRuleMap&, CompactRuleMap&);

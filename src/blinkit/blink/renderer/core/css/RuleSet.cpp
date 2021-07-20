@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RuleSet.cpp
+// Description: RuleSet Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -35,11 +46,11 @@
 #include "core/css/SelectorFilter.h"
 #include "core/css/StyleRuleImport.h"
 #include "core/css/StyleSheetContents.h"
-#include "core/html/track/TextTrackCue.h"
+// BKTODO: #include "core/html/track/TextTrackCue.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/TraceEvent.h"
-#include "platform/heap/HeapTerminatedArrayBuilder.h"
-#include "platform/weborigin/SecurityOrigin.h"
+// BKTODO: #include "platform/heap/HeapTerminatedArrayBuilder.h"
+// BKTODO: #include "platform/weborigin/SecurityOrigin.h"
 
 #include "wtf/TerminatedArrayBuilder.h"
 
@@ -96,8 +107,11 @@ static bool containsUncommonAttributeSelector(const CSSSelector& selector)
 static inline PropertyWhitelistType determinePropertyWhitelistType(const AddRuleFlags addRuleFlags, const CSSSelector& selector)
 {
     for (const CSSSelector* component = &selector; component; component = component->tagHistory()) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (component->pseudoType() == CSSSelector::PseudoCue || (component->match() == CSSSelector::PseudoElement && component->value() == TextTrackCue::cueShadowPseudoId()))
             return PropertyWhitelistCue;
+#endif
         if (component->pseudoType() == CSSSelector::PseudoFirstLetter)
             return PropertyWhitelistFirstLetter;
     }
@@ -120,10 +134,13 @@ RuleData::RuleData(StyleRule* rule, unsigned selectorIndex, unsigned position, A
 
 void RuleSet::addToRuleSet(const AtomicString& key, PendingRuleMap& map, const RuleData& ruleData)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     OwnPtrWillBeMember<WillBeHeapLinkedStack<RuleData>>& rules = map.add(key, nullptr).storedValue->value;
     if (!rules)
         rules = adoptPtrWillBeNoop(new WillBeHeapLinkedStack<RuleData>);
     rules->push(ruleData);
+#endif
 }
 
 static void extractValuesforSelector(const CSSSelector* selector, AtomicString& id, AtomicString& className, AtomicString& customPseudoElementName, AtomicString& tagName)
@@ -309,7 +326,9 @@ void RuleSet::addStyleRule(StyleRule* rule, AddRuleFlags addRuleFlags)
 void RuleSet::compactPendingRules(PendingRuleMap& pendingMap, CompactRuleMap& compactMap)
 {
     for (auto& item : pendingMap) {
-        OwnPtrWillBeRawPtr<WillBeHeapLinkedStack<RuleData>> pendingRules = item.value.release();
+        OwnPtrWillBeRawPtr<WillBeHeapLinkedStack<RuleData>> pendingRules = item.second.release();
+        ASSERT(false); // BKTODO:
+#if 0
         CompactRuleMap::ValueType* compactRules = compactMap.add(item.key, nullptr).storedValue;
 
         WillBeHeapTerminatedArrayBuilder<RuleData> builder(compactRules->value.release());
@@ -320,6 +339,7 @@ void RuleSet::compactPendingRules(PendingRuleMap& pendingMap, CompactRuleMap& co
         }
 
         compactRules->value = builder.release();
+#endif
     }
 }
 
