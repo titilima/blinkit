@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleRule.h
+// Description: StyleRule Classes
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -185,7 +196,7 @@ private:
 
 class StyleRuleGroup : public StyleRuleBase {
 public:
-    const WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>>& childRules() const { return m_childRules; }
+    const std::vector<Member<StyleRuleBase>>& childRules() const { return m_childRules; }
 
     void wrapperInsertRule(unsigned, PassRefPtrWillBeRawPtr<StyleRuleBase>);
     void wrapperRemoveRule(unsigned);
@@ -197,7 +208,7 @@ protected:
     StyleRuleGroup(const StyleRuleGroup&);
 
 private:
-    WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>> m_childRules;
+    std::vector<Member<StyleRuleBase>> m_childRules;
 };
 
 class StyleRuleMedia : public StyleRuleGroup {

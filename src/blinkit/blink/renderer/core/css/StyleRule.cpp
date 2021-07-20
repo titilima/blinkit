@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleRule.cpp
+// Description: StyleRule Classes
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -357,12 +368,12 @@ StyleRuleGroup::StyleRuleGroup(const StyleRuleGroup& o)
 
 void StyleRuleGroup::wrapperInsertRule(unsigned index, PassRefPtrWillBeRawPtr<StyleRuleBase> rule)
 {
-    m_childRules.insert(index, rule);
+    m_childRules.emplace(m_childRules.begin() + index, rule);
 }
 
 void StyleRuleGroup::wrapperRemoveRule(unsigned index)
 {
-    m_childRules.remove(index);
+    m_childRules.erase(m_childRules.begin() + index);
 }
 
 DEFINE_TRACE_AFTER_DISPATCH(StyleRuleGroup)
