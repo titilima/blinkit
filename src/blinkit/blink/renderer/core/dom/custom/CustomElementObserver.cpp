@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CustomElementObserver.cpp
+// Description: CustomElementObserver Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -49,18 +60,17 @@ void CustomElementObserver::notifyElementWasDestroyed(Element* element)
     ElementObserverMap::iterator it = elementObservers().find(element);
     if (it == elementObservers().end())
         return;
-    it->value->elementWasDestroyed(element);
+    it->second->elementWasDestroyed(element);
 }
 
 void CustomElementObserver::observe(Element* element)
 {
-    ElementObserverMap::AddResult result = elementObservers().add(element, this);
-    ASSERT_UNUSED(result, result.isNewEntry);
+    elementObservers().emplace(element, this);
 }
 
 void CustomElementObserver::unobserve(Element* element)
 {
-    CustomElementObserver* observer = elementObservers().take(element);
+    CustomElementObserver* observer = elementObservers()[element];
     ASSERT_UNUSED(observer, observer == this);
 }
 
