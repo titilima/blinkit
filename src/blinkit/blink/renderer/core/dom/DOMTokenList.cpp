@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleSheetContents.cpp
+// Description: StyleSheetContents Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -33,6 +44,7 @@ namespace blink {
 
 namespace {
 
+#if 0 // BKTODO:
 class DOMTokenListIterationSource final : public ValueIterable<String>::IterationSource {
 public:
     explicit DOMTokenListIterationSource(DOMTokenList* domTokenList)
@@ -57,6 +69,7 @@ public:
 private:
     const RefPtrWillBeMember<DOMTokenList> m_domTokenList;
 };
+#endif
 
 } // namespace
 
@@ -287,9 +300,11 @@ AtomicString DOMTokenList::removeTokens(const AtomicString& input, const Vector<
     return output.toAtomicString();
 }
 
+#if 0 // BKTODO:
 ValueIterable<String>::IterationSource* DOMTokenList::startIteration(ScriptState*, ExceptionState&)
 {
     return new DOMTokenListIterationSource(this);
 }
+#endif
 
 } // namespace blink
