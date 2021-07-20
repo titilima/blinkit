@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CustomElement.cpp
+// Description: CustomElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -92,7 +103,7 @@ bool CustomElement::isValidName(const AtomicString& name, NameSet validNames)
         DEFINE_STATIC_LOCAL(Vector<AtomicString>, reservedNames, ());
         if (reservedNames.isEmpty()) {
             // FIXME(crbug.com/426605): We should be able to remove this.
-            reservedNames.append(MathMLNames::annotation_xmlTag.localName());
+            ASSERT(false); // BKTODO: reservedNames.append(MathMLNames::annotation_xmlTag.localName());
         }
 
         if (kNotFound == reservedNames.find(name))
