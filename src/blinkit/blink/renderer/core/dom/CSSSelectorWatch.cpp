@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSSelectorWatch.cpp
+// Description: CSSSelectorWatch Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -80,7 +91,7 @@ void CSSSelectorWatch::callbackSelectorChangeTimerFired(Timer<CSSSelectorWatch>*
         Vector<String> removedSelectors;
         copyToVector(m_addedSelectors, addedSelectors);
         copyToVector(m_removedSelectors, removedSelectors);
-        document().frame()->loader().client()->selectorMatchChanged(addedSelectors, removedSelectors);
+        ASSERT(false); // BKTODO: document().frame()->loader().client()->selectorMatchChanged(addedSelectors, removedSelectors);
     }
     m_addedSelectors.clear();
     m_removedSelectors.clear();
@@ -93,7 +104,7 @@ void CSSSelectorWatch::updateSelectorMatches(const Vector<String>& removedSelect
 
     for (unsigned i = 0; i < removedSelectors.size(); ++i) {
         const String& selector = removedSelectors[i];
-        if (!m_matchingCallbackSelectors.remove(selector))
+        if (!m_matchingCallbackSelectors.erase(selector))
             continue;
 
         // Count reached 0.
@@ -106,9 +117,12 @@ void CSSSelectorWatch::updateSelectorMatches(const Vector<String>& removedSelect
 
     for (unsigned i = 0; i < addedSelectors.size(); ++i) {
         const String& selector = addedSelectors[i];
+        ASSERT(false); // BKTODO:
+#if 0
         HashCountedSet<String>::AddResult result = m_matchingCallbackSelectors.add(selector);
         if (!result.isNewEntry)
             continue;
+#endif
 
         shouldUpdateTimer = true;
         if (m_removedSelectors.contains(selector))
@@ -148,7 +162,7 @@ void CSSSelectorWatch::watchCSSSelectors(const Vector<String>& selectors)
     const RefPtrWillBeRawPtr<StylePropertySet> callbackPropertySet = ImmutableStylePropertySet::create(nullptr, 0, UASheetMode);
 
     for (unsigned i = 0; i < selectors.size(); ++i) {
-        CSSSelectorList selectorList = CSSParser::parseSelector(CSSParserContext(UASheetMode, 0), selectors[i]);
+        CSSSelectorList selectorList = CSSParser::parseSelector(CSSParserContext(UASheetMode), selectors[i]);
         if (!selectorList.isValid())
             continue;
 
@@ -165,7 +179,7 @@ DEFINE_TRACE(CSSSelectorWatch)
 {
     visitor->trace(m_watchedCallbackSelectors);
     visitor->trace(m_document);
-    WillBeHeapSupplement<Document>::trace(visitor);
+    // ASSERT(false); // BKTODO: WillBeHeapSupplement<Document>::trace(visitor);
 }
 
 } // namespace blink
