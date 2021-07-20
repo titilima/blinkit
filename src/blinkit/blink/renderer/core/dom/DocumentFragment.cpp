@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentFragment.cpp
+// Description: DocumentFragment Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,7 +35,7 @@
 
 #include "core/dom/Document.h"
 #include "core/html/parser/HTMLDocumentParser.h"
-#include "core/xml/parser/XMLDocumentParser.h"
+// BKTODO: #include "core/xml/parser/XMLDocumentParser.h"
 
 namespace blink {
 
@@ -75,9 +86,11 @@ void DocumentFragment::parseHTML(const String& source, Element* contextElement, 
     HTMLDocumentParser::parseDocumentFragment(source, this, contextElement, parserContentPolicy);
 }
 
+#if 0 // BKTODO:
 bool DocumentFragment::parseXML(const String& source, Element* contextElement, ParserContentPolicy parserContentPolicy)
 {
     return XMLDocumentParser::parseDocumentFragment(source, this, contextElement, parserContentPolicy);
 }
+#endif
 
 } // namespace blink
