@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ClientRectList.cpp
+// Description: ClientRectList Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All Rights Reserved.
  *
@@ -34,9 +45,9 @@ ClientRectList::ClientRectList()
 
 ClientRectList::ClientRectList(const Vector<FloatQuad>& quads)
 {
-    m_list.reserveInitialCapacity(quads.size());
+    m_list.reserve(quads.size());
     for (size_t i = 0; i < quads.size(); ++i)
-        m_list.append(ClientRect::create(quads[i].boundingBox()));
+        m_list.emplace_back(ClientRect::create(quads[i].boundingBox()));
 }
 
 unsigned ClientRectList::length() const

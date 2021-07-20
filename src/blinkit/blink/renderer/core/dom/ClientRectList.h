@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ClientRectList.h
+// Description: ClientRectList Class
+//      Author: Ziming Li
+//     Created: 2021-07-14
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All Rights Reserved.
  *
@@ -67,14 +78,14 @@ private:
     template<typename Rects>
     explicit ClientRectList(const Rects& rects)
     {
-        m_list.reserveInitialCapacity(rects.size());
+        m_list.reserve(rects.size());
         for (const auto& r : rects)
-            m_list.append(ClientRect::create(FloatRect(r)));
+            m_list.emplace_back(ClientRect::create(FloatRect(r)));
     }
 
     explicit ClientRectList(const Vector<FloatQuad>&);
 
-    HeapVector<Member<ClientRect>> m_list;
+    std::vector<Member<ClientRect>> m_list;
 };
 
 } // namespace blink
