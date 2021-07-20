@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMURLUtils.cpp
+// Description: DOMURLUtils Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  * Copyright (C) 2012 Motorola Mobility Inc.
@@ -26,7 +37,7 @@
 
 #include "core/dom/DOMURLUtils.h"
 
-#include "platform/weborigin/KnownPorts.h"
+// BKTODO: #include "platform/weborigin/KnownPorts.h"
 
 namespace blink {
 
@@ -38,27 +49,36 @@ void DOMURLUtils::setHref(const String& value)
 void DOMURLUtils::setProtocol(const String& value)
 {
     KURL kurl = url();
+    ASSERT(false); // BKTODO:
+#if 0
     if (kurl.isNull())
         return;
     kurl.setProtocol(value);
+#endif
     setURL(kurl);
 }
 
 void DOMURLUtils::setUsername(const String& value)
 {
     KURL kurl = url();
+    ASSERT(false); // BKTODO:
+#if 0
     if (kurl.isNull())
         return;
     kurl.setUser(value);
+#endif
     setURL(kurl);
 }
 
 void DOMURLUtils::setPassword(const String& value)
 {
     KURL kurl = url();
+    ASSERT(false); // BKTODO:
+#if 0
     if (kurl.isNull())
         return;
     kurl.setPass(value);
+#endif
     setURL(kurl);
 }
 
@@ -68,16 +88,21 @@ void DOMURLUtils::setHost(const String& value)
         return;
 
     KURL kurl = url();
+    ASSERT(false); // BKTODO:
+#if 0
     if (!kurl.canSetHostOrPort())
         return;
 
     kurl.setHostAndPort(value);
+#endif
     setURL(kurl);
 }
 
 void DOMURLUtils::setHostname(const String& value)
 {
     KURL kurl = url();
+    ASSERT(false); // BKTODO:
+#if 0
     if (!kurl.canSetHostOrPort())
         return;
 
@@ -92,6 +117,7 @@ void DOMURLUtils::setHostname(const String& value)
         return;
 
     kurl.setHost(value.substring(i));
+#endif
 
     setURL(kurl);
 }
@@ -99,19 +125,25 @@ void DOMURLUtils::setHostname(const String& value)
 void DOMURLUtils::setPort(const String& value)
 {
     KURL kurl = url();
+    ASSERT(false); // BKTODO:
+#if 0
     if (!kurl.canSetHostOrPort())
         return;
 
     kurl.setPort(value);
+#endif
     setURL(kurl);
 }
 
 void DOMURLUtils::setPathname(const String& value)
 {
     KURL kurl = url();
+    ASSERT(false); // BKTODO:
+#if 0
     if (!kurl.canSetPathname())
         return;
     kurl.setPath(value);
+#endif
     setURL(kurl);
 }
 
@@ -121,6 +153,8 @@ void DOMURLUtils::setSearch(const String& value)
     if (!kurl.isValid())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: have KURL do this clearing of the query component
     // instead, if practical. Will require addressing
     // http://crbug.com/108690, for one.
@@ -128,6 +162,7 @@ void DOMURLUtils::setSearch(const String& value)
         kurl.setQuery(value.length() == 1 ? String() : value.substring(1));
     else
         kurl.setQuery(value.isEmpty() ? String() : value);
+#endif
 
     setURL(kurl);
 }
@@ -135,6 +170,8 @@ void DOMURLUtils::setSearch(const String& value)
 void DOMURLUtils::setHash(const String& value)
 {
     KURL kurl = url();
+    ASSERT(false); // BKTODO:
+#if 0
     if (kurl.isNull())
         return;
 
@@ -144,6 +181,7 @@ void DOMURLUtils::setHash(const String& value)
         kurl.setFragmentIdentifier(value.length() == 1 ? String() : value.substring(1));
     else
         kurl.setFragmentIdentifier(value.isEmpty() ? String() : value);
+#endif
 
     setURL(kurl);
 }
