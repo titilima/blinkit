@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StylePropertySet.cpp
+// Description: StylePropertySet Classes
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012, 2013 Apple Inc. All rights reserved.
@@ -49,7 +60,7 @@ PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> ImmutableStylePropertySet::cre
 {
     ASSERT(count <= MaxArraySize);
 #if ENABLE(OILPAN)
-    void* slot = Heap::allocate<StylePropertySet>(sizeForImmutableStylePropertySetWithPropertyCount(count));
+    void* slot = nullptr; ASSERT(false); // BKTODO: Heap::allocate<StylePropertySet>(sizeForImmutableStylePropertySetWithPropertyCount(count));
 #else
     void* slot = WTF::Partitions::fastMalloc(sizeForImmutableStylePropertySetWithPropertyCount(count), "blink::ImmutableStylePropertySet");
 #endif // ENABLE(OILPAN)
@@ -72,9 +83,9 @@ MutableStylePropertySet::MutableStylePropertySet(CSSParserMode cssParserMode)
 MutableStylePropertySet::MutableStylePropertySet(const CSSProperty* properties, unsigned length)
     : StylePropertySet(HTMLStandardMode)
 {
-    m_propertyVector.reserveInitialCapacity(length);
+    m_propertyVector.reserve(length);
     for (unsigned i = 0; i < length; ++i)
-        m_propertyVector.uncheckedAppend(properties[i]);
+        m_propertyVector.emplace_back(properties[i]);
 }
 
 ImmutableStylePropertySet::ImmutableStylePropertySet(const CSSProperty* properties, unsigned length, CSSParserMode cssParserMode)
@@ -159,9 +170,9 @@ MutableStylePropertySet::MutableStylePropertySet(const StylePropertySet& other)
     if (other.isMutable()) {
         m_propertyVector = toMutableStylePropertySet(other).m_propertyVector;
     } else {
-        m_propertyVector.reserveInitialCapacity(other.propertyCount());
+        m_propertyVector.reserve(other.propertyCount());
         for (unsigned i = 0; i < other.propertyCount(); ++i)
-            m_propertyVector.uncheckedAppend(other.propertyAt(i).toCSSProperty());
+            m_propertyVector.emplace_back(other.propertyAt(i).toCSSProperty());
     }
 }
 
@@ -238,7 +249,7 @@ bool MutableStylePropertySet::removePropertyAtIndex(int propertyIndex, String* r
 
     // A more efficient removal strategy would involve marking entries as empty
     // and sweeping them when the vector grows too big.
-    m_propertyVector.remove(propertyIndex);
+    m_propertyVector.erase(m_propertyVector.begin() + propertyIndex);
 
     return true;
 }
@@ -336,7 +347,7 @@ void MutableStylePropertySet::setProperty(CSSPropertyID propertyID, PassRefPtrWi
 
     RefPtrWillBeRawPtr<CSSValue> value = prpValue;
     for (unsigned i = 0; i < shorthand.length(); ++i)
-        m_propertyVector.append(CSSProperty(shorthand.properties()[i], value, important));
+        m_propertyVector.emplace_back(CSSProperty(shorthand.properties()[i], value, important));
 }
 
 bool MutableStylePropertySet::setProperty(const CSSProperty& property, CSSProperty* slot)
@@ -350,7 +361,7 @@ bool MutableStylePropertySet::setProperty(const CSSProperty& property, CSSProper
             return true;
         }
     }
-    m_propertyVector.append(property);
+    m_propertyVector.emplace_back(property);
     return true;
 }
 
@@ -364,7 +375,7 @@ void MutableStylePropertySet::parseDeclarationList(const String& styleDeclaratio
 {
     m_propertyVector.clear();
 
-    CSSParserContext context(cssParserMode(), UseCounter::getFrom(contextStyleSheet));
+    CSSParserContext context(cssParserMode());
     if (contextStyleSheet) {
         context = contextStyleSheet->parserContext();
         context.setMode(cssParserMode());
@@ -376,7 +387,7 @@ void MutableStylePropertySet::parseDeclarationList(const String& styleDeclaratio
 bool MutableStylePropertySet::addParsedProperties(const WillBeHeapVector<CSSProperty, 256>& properties)
 {
     bool changed = false;
-    m_propertyVector.reserveCapacity(m_propertyVector.size() + properties.size());
+    m_propertyVector.reserve(m_propertyVector.size() + properties.size());
     for (unsigned i = 0; i < properties.size(); ++i)
         changed |= setProperty(properties[i]);
     return changed;
@@ -405,7 +416,7 @@ void MutableStylePropertySet::mergeAndOverrideOnConflict(const StylePropertySet*
         if (old)
             setProperty(toMerge.toCSSProperty(), old);
         else
-            m_propertyVector.append(toMerge.toCSSProperty());
+            m_propertyVector.emplace_back(toMerge.toCSSProperty());
     }
 }
 
@@ -435,7 +446,7 @@ inline bool containsId(const CSSPropertyID* set, unsigned length, CSSPropertyID 
 
 bool MutableStylePropertySet::removePropertiesInSet(const CSSPropertyID* set, unsigned length)
 {
-    if (m_propertyVector.isEmpty())
+    if (m_propertyVector.empty())
         return false;
 
     CSSProperty* properties = m_propertyVector.data();
@@ -449,7 +460,7 @@ bool MutableStylePropertySet::removePropertiesInSet(const CSSPropertyID* set, un
         properties[newIndex++] = properties[oldIndex];
     }
     if (newIndex != oldSize) {
-        m_propertyVector.shrink(newIndex);
+        m_propertyVector.shrink_to_fit();
         return true;
     }
     return false;
@@ -513,7 +524,7 @@ PassRefPtrWillBeRawPtr<MutableStylePropertySet> StylePropertySet::mutableCopy() 
 PassRefPtrWillBeRawPtr<MutableStylePropertySet> StylePropertySet::copyPropertiesInSet(const Vector<CSSPropertyID>& properties) const
 {
     WillBeHeapVector<CSSProperty, 256> list;
-    list.reserveInitialCapacity(properties.size());
+    list.reserve(properties.size());
     for (unsigned i = 0; i < properties.size(); ++i) {
         RefPtrWillBeRawPtr<CSSValue> value = getPropertyCSSValue(properties[i]);
         if (value)
