@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CustomElementRegistry.cpp
+// Description: CustomElementRegistry Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -30,9 +41,8 @@
 
 #include "core/dom/custom/CustomElementRegistry.h"
 
-#include "bindings/core/v8/CustomElementConstructorBuilder.h"
 #include "core/HTMLNames.h"
-#include "core/SVGNames.h"
+// BKTODO: #include "core/SVGNames.h"
 #include "core/dom/DocumentLifecycleObserver.h"
 #include "core/dom/custom/CustomElementException.h"
 #include "core/dom/custom/CustomElementRegistrationContext.h"
@@ -43,6 +53,9 @@ CustomElementDefinition* CustomElementRegistry::registerElement(Document* docume
 {
     AtomicString type = userSuppliedName.lower();
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!constructorBuilder->isFeatureAllowed()) {
         CustomElementException::throwException(CustomElementException::CannotRegisterFromExtension, type, exceptionState);
         return 0;
@@ -90,11 +103,13 @@ CustomElementDefinition* CustomElementRegistry::registerElement(Document* docume
     }
 
     return definition.get();
+#endif
 }
 
 CustomElementDefinition* CustomElementRegistry::find(const CustomElementDescriptor& descriptor) const
 {
-    return m_definitions.get(descriptor);
+    ASSERT(false); // BKTODO: return m_definitions.get(descriptor);
+    return nullptr;
 }
 
 DEFINE_TRACE(CustomElementRegistry)
