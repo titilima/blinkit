@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentOrderedList.cpp
+// Description: DocumentOrderedList Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -34,7 +45,7 @@ namespace blink {
 void DocumentOrderedList::add(Node* node)
 {
     if (m_nodes.isEmpty()) {
-        m_nodes.add(node);
+        m_nodes.insert(node);
         return;
     }
 
@@ -48,18 +59,18 @@ void DocumentOrderedList::add(Node* node)
         Node* n = *it;
         unsigned short position = n->compareDocumentPosition(node, Node::TreatShadowTreesAsComposed);
         if (position & Node::DOCUMENT_POSITION_FOLLOWING) {
-            m_nodes.insertBefore(followingNode, node);
+            ASSERT(false); // BKTODO: m_nodes.insertBefore(followingNode, node);
             return;
         }
         followingNode = n;
     } while (it != begin);
 
-    m_nodes.insertBefore(followingNode, node);
+    ASSERT(false); // BKTODO:m_nodes.insertBefore(followingNode, node);
 }
 
 void DocumentOrderedList::remove(const Node* node)
 {
-    m_nodes.remove(const_cast<Node*>(node));
+    m_nodes.erase(const_cast<Node*>(node));
 }
 
 DEFINE_TRACE(DocumentOrderedList)
