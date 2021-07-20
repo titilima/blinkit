@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ElementDataCache.h
+// Description: ElementDataCache Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012, 2013 Apple Inc. All Rights Reserved.
  *
@@ -53,7 +64,7 @@ public:
 private:
     ElementDataCache();
 
-    typedef WillBeHeapHashMap<unsigned, RefPtrWillBeMember<ShareableElementData>, AlreadyHashed> ShareableElementDataCache;
+    using ShareableElementDataCache = std::unordered_map<unsigned, Member<ShareableElementData>>;
     ShareableElementDataCache m_shareableElementDataCache;
 };
 

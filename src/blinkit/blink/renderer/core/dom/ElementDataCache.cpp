@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ElementDataCache.cpp
+// Description: ElementDataCache Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012, 2013 Apple Inc. All Rights Reserved.
  *
@@ -48,16 +59,16 @@ PassRefPtrWillBeRawPtr<ShareableElementData> ElementDataCache::cachedShareableEl
 {
     ASSERT(!attributes.isEmpty());
 
-    ShareableElementDataCache::ValueType* it = m_shareableElementDataCache.add(attributeHash(attributes), nullptr).storedValue;
+    Member<ShareableElementData> &data = m_shareableElementDataCache[attributeHash(attributes)];
 
     // FIXME: This prevents sharing when there's a hash collision.
-    if (it->value && !hasSameAttributes(attributes, *it->value))
+    if (data && !hasSameAttributes(attributes, *data))
         return ShareableElementData::createWithAttributes(attributes);
 
-    if (!it->value)
-        it->value = ShareableElementData::createWithAttributes(attributes);
+    if (!data)
+        data = ShareableElementData::createWithAttributes(attributes);
 
-    return it->value.get();
+    return data;
 }
 
 ElementDataCache::ElementDataCache()
