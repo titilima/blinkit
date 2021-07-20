@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentParser.cpp
+// Description: DocumentParser Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -79,8 +90,7 @@ void DocumentParser::stopParsing()
     m_state = StoppedState;
 
     // Clients may be removed while in the loop. Make a snapshot for iteration.
-    WillBeHeapVector<RawPtrWillBeMember<DocumentParserClient>> clientsSnapshot;
-    copyToVector(m_clients, clientsSnapshot);
+    std::vector<Member<DocumentParserClient>> clientsSnapshot(m_clients.begin(), m_clients.end());
 
     for (DocumentParserClient* client : clientsSnapshot) {
         if (!m_clients.contains(client))
