@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ElementData.cpp
+// Description: ElementData Classes
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -164,7 +175,7 @@ ShareableElementData::ShareableElementData(const UniqueElementData& other)
 PassRefPtrWillBeRawPtr<ShareableElementData> ShareableElementData::createWithAttributes(const Vector<Attribute>& attributes)
 {
 #if ENABLE(OILPAN)
-    void* slot = Heap::allocate<ElementData>(sizeForShareableElementDataWithAttributeCount(attributes.size()));
+    void* slot = nullptr; // BKTODO: Heap::allocate<ElementData>(sizeForShareableElementDataWithAttributeCount(attributes.size()));
 #else
     void* slot = WTF::Partitions::fastMalloc(sizeForShareableElementDataWithAttributeCount(attributes.size()), WTF_HEAP_PROFILER_TYPE_NAME(ShareableElementData));
 #endif
@@ -204,7 +215,7 @@ PassRefPtrWillBeRawPtr<UniqueElementData> UniqueElementData::create()
 PassRefPtrWillBeRawPtr<ShareableElementData> UniqueElementData::makeShareableCopy() const
 {
 #if ENABLE(OILPAN)
-    void* slot = Heap::allocate<ElementData>(sizeForShareableElementDataWithAttributeCount(m_attributeVector.size()));
+    void* slot = nullptr; // BKTODO: Heap::allocate<ElementData>(sizeForShareableElementDataWithAttributeCount(m_attributeVector.size()));
 #else
     void* slot = WTF::Partitions::fastMalloc(sizeForShareableElementDataWithAttributeCount(m_attributeVector.size()), WTF_HEAP_PROFILER_TYPE_NAME(ShareableElementData));
 #endif
