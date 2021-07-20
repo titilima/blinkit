@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MatchedPropertiesCache.cpp
+// Description: MatchedPropertiesCache Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -36,7 +47,7 @@ namespace blink {
 
 void CachedMatchedProperties::set(const ComputedStyle& style, const ComputedStyle& parentStyle, const MatchedPropertiesVector& properties)
 {
-    matchedProperties.appendVector(properties);
+    matchedProperties.insert(matchedProperties.end(), properties.begin(), properties.end());
 
     // Note that we don't cache the original ComputedStyle instance. It may be further modified.
     // The ComputedStyle in the cache is really just a holder for the substructures and never used as-is.
@@ -66,7 +77,7 @@ const CachedMatchedProperties* MatchedPropertiesCache::find(unsigned hash, const
     Cache::iterator it = m_cache.find(hash);
     if (it == m_cache.end())
         return nullptr;
-    CachedMatchedProperties* cacheItem = it->value.get();
+    CachedMatchedProperties* cacheItem = it->second.get();
     ASSERT(cacheItem);
 
     size_t size = properties.size();
@@ -93,12 +104,10 @@ void MatchedPropertiesCache::add(const ComputedStyle& style, const ComputedStyle
 #endif
 
     ASSERT(hash);
-    Cache::AddResult addResult = m_cache.add(hash, nullptr);
-    if (addResult.isNewEntry)
-        addResult.storedValue->value = adoptPtrWillBeNoop(new CachedMatchedProperties);
-
-    CachedMatchedProperties* cacheItem = addResult.storedValue->value.get();
-    if (!addResult.isNewEntry)
+    Member<CachedMatchedProperties> &cacheItem = m_cache[hash];
+    if (!cacheItem)
+        cacheItem = adoptPtrWillBeNoop(new CachedMatchedProperties);
+    else
         cacheItem->clear();
 
     cacheItem->set(style, parentStyle, properties);
@@ -110,20 +119,19 @@ void MatchedPropertiesCache::clear()
     // destructors in the properties (e.g., ~FontFallbackList) expect that
     // the destructors are called promptly without relying on a GC timing.
     for (auto& cacheEntry : m_cache) {
-        cacheEntry.value->clear();
+        cacheEntry.second->clear();
     }
     m_cache.clear();
 }
 
 void MatchedPropertiesCache::clearViewportDependent()
 {
-    Vector<unsigned, 16> toRemove;
-    for (const auto& cacheEntry : m_cache) {
-        CachedMatchedProperties* cacheItem = cacheEntry.value.get();
+    for (auto it = m_cache.begin(); m_cache.end() != it; ++it)
+    {
+        CachedMatchedProperties *cacheItem = it->second.get();
         if (cacheItem->computedStyle->hasViewportUnits())
-            toRemove.append(cacheEntry.key);
+            it = m_cache.erase(it);
     }
-    m_cache.removeAll(toRemove);
 }
 
 #if !ENABLE(OILPAN)

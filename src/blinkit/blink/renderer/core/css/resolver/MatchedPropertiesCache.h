@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MatchedPropertiesCache.h
+// Description: MatchedPropertiesCache Class
+//      Author: Ziming Li
+//     Created: 2021-07-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -39,7 +50,7 @@ class StyleResolverState;
 class CachedMatchedProperties final : public NoBaseWillBeGarbageCollectedFinalized<CachedMatchedProperties> {
     USING_FAST_MALLOC_WILL_BE_REMOVED(CachedMatchedProperties);
 public:
-    WillBeHeapVector<MatchedProperties> matchedProperties;
+    std::vector<MatchedProperties> matchedProperties;
     RefPtr<ComputedStyle> computedStyle;
     RefPtr<ComputedStyle> parentComputedStyle;
 
@@ -70,20 +81,26 @@ struct CachedMatchedPropertiesHashTraits : HashTraits<Member<CachedMatchedProper
             // in the CachedMatchedProperties value contain a dead "properties" field.
             // If there is a dead field the entire cache entry is removed.
             for (const auto& matchedProperties : cachedProperties->matchedProperties) {
+                ASSERT(false); // BKTODO:
+#if 0
                 if (!Heap::isHeapObjectAlive(matchedProperties.properties)) {
                     // For now report the cache entry as dead. This might not
                     // be the final result if in a subsequent call for this entry,
                     // the "properties" field has been marked via another path.
                     return true;
                 }
+#endif
             }
         }
+        ASSERT(false); // BKTODO:
+#if 0
         // At this point none of the entries in the matchedProperties vector
         // had a dead "properties" field so trace CachedMatchedProperties strongly.
         // FIXME: traceInCollection is also called from WeakProcessing to check if the entry is dead.
         // Avoid calling trace in that case by only calling trace when cachedProperties is not yet marked.
         if (!Heap::isHeapObjectAlive(cachedProperties))
             visitor->trace(cachedProperties);
+#endif
         return false;
     }
 };
@@ -96,7 +113,7 @@ public:
     MatchedPropertiesCache();
     ~MatchedPropertiesCache()
     {
-        ASSERT(m_cache.isEmpty());
+        ASSERT(false); // BKTODO: ASSERT(m_cache.isEmpty());
     }
 
     const CachedMatchedProperties* find(unsigned hash, const StyleResolverState&, const MatchedPropertiesVector&);
@@ -111,7 +128,7 @@ public:
 
 private:
 #if ENABLE(OILPAN)
-    using Cache = HeapHashMap<unsigned, Member<CachedMatchedProperties>, DefaultHash<unsigned>::Hash, HashTraits<unsigned>, CachedMatchedPropertiesHashTraits>;
+    using Cache = std::unordered_map<unsigned, Member<CachedMatchedProperties>>;
 #else
     // Every N additions to the matched declaration cache trigger a sweep where entries holding
     // the last reference to a style declaration are garbage collected.
