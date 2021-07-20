@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CustomElementUpgradeCandidateMap.cpp
+// Description: CustomElementUpgradeCandidateMap Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -54,16 +65,20 @@ void CustomElementUpgradeCandidateMap::add(const CustomElementDescriptor& descri
 {
     observe(element);
 
-    UpgradeCandidateMap::AddResult result = m_upgradeCandidates.add(element, descriptor);
-    ASSERT_UNUSED(result, result.isNewEntry);
+    m_upgradeCandidates.emplace(element, descriptor);
 
     UnresolvedDefinitionMap::iterator it = m_unresolvedDefinitions.find(descriptor);
     ElementSet* elements;
     if (it == m_unresolvedDefinitions.end())
-        elements = m_unresolvedDefinitions.add(descriptor, adoptPtrWillBeNoop(new ElementSet())).storedValue->value.get();
+    {
+        elements = adoptPtrWillBeNoop(new ElementSet());
+        m_unresolvedDefinitions.emplace(descriptor, elements);
+    }
     else
-        elements = it->value.get();
-    elements->add(element);
+    {
+        elements = it->second.get();
+    }
+    elements->insert(element);
 }
 
 void CustomElementUpgradeCandidateMap::elementWasDestroyed(Element* element)
@@ -72,30 +87,29 @@ void CustomElementUpgradeCandidateMap::elementWasDestroyed(Element* element)
     UpgradeCandidateMap::iterator candidate = m_upgradeCandidates.find(element);
     ASSERT_WITH_SECURITY_IMPLICATION(candidate != m_upgradeCandidates.end());
 
-    UnresolvedDefinitionMap::iterator elements = m_unresolvedDefinitions.find(candidate->value);
+    UnresolvedDefinitionMap::iterator elements = m_unresolvedDefinitions.find(candidate->second);
     ASSERT_WITH_SECURITY_IMPLICATION(elements != m_unresolvedDefinitions.end());
-    elements->value->remove(element);
-    m_upgradeCandidates.remove(candidate);
+    elements->second->erase(element);
+    m_upgradeCandidates.erase(candidate);
 }
 
 PassOwnPtrWillBeRawPtr<CustomElementUpgradeCandidateMap::ElementSet> CustomElementUpgradeCandidateMap::takeUpgradeCandidatesFor(const CustomElementDescriptor& descriptor)
 {
-    OwnPtrWillBeRawPtr<ElementSet> candidates = m_unresolvedDefinitions.take(descriptor);
-
-    if (!candidates)
+    auto it = m_unresolvedDefinitions.find(descriptor);
+    if (m_unresolvedDefinitions.end() != it)
         return nullptr;
 
-    for (const auto& candidate : *candidates) {
+    for (const auto& candidate : *(it->second)) {
         unobserve(candidate);
-        m_upgradeCandidates.remove(candidate);
+        m_upgradeCandidates.erase(candidate);
     }
-    return candidates.release();
+    return it->second;
 }
 
 DEFINE_TRACE(CustomElementUpgradeCandidateMap)
 {
 #if ENABLE(OILPAN)
-    visitor->trace(m_upgradeCandidates);
+    ASSERT(false); // BKTODO: visitor->trace(m_upgradeCandidates);
     visitor->trace(m_unresolvedDefinitions);
 #endif
     CustomElementObserver::trace(visitor);

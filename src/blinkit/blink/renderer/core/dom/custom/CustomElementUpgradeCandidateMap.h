@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CustomElementUpgradeCandidateMap.h
+// Description: CustomElementUpgradeCandidateMap Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -61,10 +72,10 @@ private:
 
     void elementWasDestroyed(Element*) override;
 
-    typedef WillBeHeapHashMap<RawPtrWillBeWeakMember<Element>, CustomElementDescriptor> UpgradeCandidateMap;
+    using UpgradeCandidateMap = std::unordered_map<WeakMember<Element>, CustomElementDescriptor>;
     UpgradeCandidateMap m_upgradeCandidates;
 
-    typedef WillBeHeapHashMap<CustomElementDescriptor, OwnPtrWillBeMember<ElementSet>> UnresolvedDefinitionMap;
+    using UnresolvedDefinitionMap = std::unordered_map<CustomElementDescriptor, Member<ElementSet>>;
     UnresolvedDefinitionMap m_unresolvedDefinitions;
 };
 
