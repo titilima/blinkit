@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleResolver.cpp
+// Description: StyleResolver Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -30,7 +41,7 @@
 
 #include "core/CSSPropertyNames.h"
 #include "core/HTMLNames.h"
-#include "core/MediaTypeNames.h"
+// BKTODO: #include "core/MediaTypeNames.h"
 #include "core/StylePropertyShorthand.h"
 #include "core/animation/AnimationTimeline.h"
 #include "core/animation/ElementAnimations.h"
@@ -80,12 +91,14 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLIFrameElement.h"
+// BKTODO: #include "core/html/HTMLIFrameElement.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/layout/GeneratedChildren.h"
 #include "core/layout/LayoutView.h"
+#if 0 // BKTODO:
 #include "core/svg/SVGDocumentExtensions.h"
 #include "core/svg/SVGElement.h"
+#endif
 #include "platform/RuntimeEnabledFeatures.h"
 #include "wtf/StdLibExtras.h"
 
@@ -111,18 +124,26 @@ ComputedStyle* StyleResolver::s_styleNotYetAvailable;
 
 static StylePropertySet* leftToRightDeclaration()
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     DEFINE_STATIC_REF_WILL_BE_PERSISTENT(MutableStylePropertySet, leftToRightDecl, (MutableStylePropertySet::create(HTMLQuirksMode)));
     if (leftToRightDecl->isEmpty())
         leftToRightDecl->setProperty(CSSPropertyDirection, CSSValueLtr);
     return leftToRightDecl;
+#endif
 }
 
 static StylePropertySet* rightToLeftDeclaration()
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     DEFINE_STATIC_REF_WILL_BE_PERSISTENT(MutableStylePropertySet, rightToLeftDecl, (MutableStylePropertySet::create(HTMLQuirksMode)));
     if (rightToLeftDecl->isEmpty())
         rightToLeftDecl->setProperty(CSSPropertyDirection, CSSValueRtl);
     return rightToLeftDecl;
+#endif
 }
 
 static void collectScopedResolversForHostedShadowTrees(const Element& element, WillBeHeapVector<RawPtrWillBeMember<ScopedStyleResolver>, 8>& resolvers)
@@ -144,14 +165,14 @@ StyleResolver::StyleResolver(Document& document)
     : m_document(document)
     , m_viewportStyleResolver(ViewportStyleResolver::create(&document))
     , m_needCollectFeatures(false)
-    , m_printMediaType(false)
+    // BKTODO: , m_printMediaType(false)
     , m_styleSharingDepth(0)
     , m_accessCount(0)
 {
     FrameView* view = document.view();
     if (view) {
         m_medium = adoptPtrWillBeNoop(new MediaQueryEvaluator(&view->frame()));
-        m_printMediaType = equalIgnoringCase(view->mediaType(), MediaTypeNames::print);
+        // BKTODO: m_printMediaType = equalIgnoringCase(view->mediaType(), MediaTypeNames::print);
     } else {
         m_medium = adoptPtrWillBeNoop(new MediaQueryEvaluator("all"));
     }
@@ -185,13 +206,13 @@ void StyleResolver::lazyAppendAuthorStyleSheets(unsigned firstNew, const WillBeH
 {
     unsigned size = styleSheets.size();
     for (unsigned i = firstNew; i < size; ++i)
-        m_pendingStyleSheets.add(styleSheets[i].get());
+        m_pendingStyleSheets.insert(styleSheets[i].get());
 }
 
 void StyleResolver::removePendingAuthorStyleSheets(const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& styleSheets)
 {
     for (unsigned i = 0; i < styleSheets.size(); ++i)
-        m_pendingStyleSheets.remove(styleSheets[i].get());
+        m_pendingStyleSheets.erase(styleSheets[i].get());
 }
 
 void StyleResolver::appendCSSStyleSheet(CSSStyleSheet& cssSheet)
@@ -199,7 +220,7 @@ void StyleResolver::appendCSSStyleSheet(CSSStyleSheet& cssSheet)
     ASSERT(!cssSheet.disabled());
     ASSERT(cssSheet.ownerDocument());
     ASSERT(cssSheet.ownerNode());
-    ASSERT(isHTMLStyleElement(cssSheet.ownerNode()) || isSVGStyleElement(cssSheet.ownerNode()) || cssSheet.ownerNode()->treeScope() == cssSheet.ownerDocument());
+    ASSERT(false); // BKTODO: ASSERT(isHTMLStyleElement(cssSheet.ownerNode()) || isSVGStyleElement(cssSheet.ownerNode()) || cssSheet.ownerNode()->treeScope() == cssSheet.ownerDocument());
 
     if (cssSheet.mediaQueries() && !m_medium->eval(cssSheet.mediaQueries(), &m_viewportDependentMediaQueryResults, &m_deviceDependentMediaQueryResults))
         return;
@@ -332,8 +353,8 @@ void StyleResolver::addToStyleSharingList(Element& element)
     INCREMENT_STYLE_STATS_COUNTER(*this, sharedStyleCandidates, 1);
     StyleSharingList& list = styleSharingList();
     if (list.size() >= styleSharingListSize)
-        list.removeLast();
-    list.prepend(&element);
+        list.pop_back();
+    list.push_front(&element);
 }
 
 StyleSharingList& StyleResolver::styleSharingList()
@@ -408,7 +429,7 @@ void StyleResolver::matchUARules(ElementRuleCollector& collector)
     collector.setMatchingUARules(true);
 
     CSSDefaultStyleSheets& defaultStyleSheets = CSSDefaultStyleSheets::instance();
-    RuleSet* userAgentStyleSheet = m_printMediaType ? defaultStyleSheets.defaultPrintStyle() : defaultStyleSheets.defaultStyle();
+    RuleSet* userAgentStyleSheet = defaultStyleSheets.defaultStyle();
     matchRuleSet(collector, userAgentStyleSheet);
 
     // In quirks mode, we match rules from the quirks user agent sheet.
@@ -462,9 +483,11 @@ void StyleResolver::matchAllRules(StyleResolverState& state, ElementRuleCollecto
             collector.addElementStyleProperties(state.element()->inlineStyle(), isInlineStyleCacheable);
         }
 
+#if 0 // BKTODO:
         // Now check SMIL animation override style.
         if (includeSMILProperties && state.element()->isSVGElement())
             collector.addElementStyleProperties(toSVGElement(state.element())->animatedSMILStyleProperties(), false /* isCacheable */);
+#endif
     }
 
     collector.finishAddingAuthorRulesForTreeScope();
@@ -559,7 +582,6 @@ PassRefPtr<ComputedStyle> StyleResolver::styleForElement(Element* element, const
     RuleMatchingBehavior matchingBehavior)
 {
     ASSERT(document().frame());
-    ASSERT(document().settings());
     ASSERT(!hasPendingAuthorStyleSheets());
     ASSERT(!m_needCollectFeatures);
 
@@ -760,7 +782,6 @@ PassRefPtrWillBeRawPtr<PseudoElement> StyleResolver::createPseudoElementIfNeeded
 bool StyleResolver::pseudoStyleForElementInternal(Element& element, const PseudoStyleRequest& pseudoStyleRequest, const ComputedStyle* parentStyle, StyleResolverState& state)
 {
     ASSERT(document().frame());
-    ASSERT(document().settings());
     ASSERT(pseudoStyleRequest.pseudoId != FIRST_LINE_INHERITED);
     ASSERT(state.parentStyle());
 
@@ -1200,9 +1221,8 @@ static inline bool isValidFirstLetterStyleProperty(CSSPropertyID id)
 
 static bool shouldIgnoreTextTrackAuthorStyle(const Document& document)
 {
-    Settings* settings = document.settings();
-    if (!settings)
-        return false;
+    ASSERT(false); // BKTODO:
+#if 0
     // Ignore author specified settings for text tracks when any of the user settings are present.
     if (!settings->textTrackBackgroundColor().isEmpty()
         || !settings->textTrackFontFamily().isEmpty()
@@ -1212,6 +1232,7 @@ static bool shouldIgnoreTextTrackAuthorStyle(const Document& document)
         || !settings->textTrackTextShadow().isEmpty()
         || !settings->textTrackTextSize().isEmpty())
         return true;
+#endif
     return false;
 }
 
@@ -1396,6 +1417,7 @@ void StyleResolver::applyMatchedProperties(StyleResolverState& state, const Matc
         applyMatchedProperties<HighPropertyPriority>(state, range, true, applyInheritedOnly);
     applyMatchedProperties<HighPropertyPriority>(state, matchResult.uaRules(), true, applyInheritedOnly);
 
+#if 0 // BKTODO:
     if (UNLIKELY(isSVGForeignObjectElement(element))) {
         // LayoutSVGRoot handles zooming for the whole SVG subtree, so foreignObject content should not be scaled again.
         //
@@ -1406,6 +1428,7 @@ void StyleResolver::applyMatchedProperties(StyleResolverState& state, const Matc
         // need to find another way of handling the SVG zoom model.
         state.setEffectiveZoom(ComputedStyle::initialZoom());
     }
+#endif
 
     if (cachedMatchedProperties && cachedMatchedProperties->computedStyle->effectiveZoom() != state.style()->effectiveZoom()) {
         state.fontBuilder().didChangeEffectiveZoom();
@@ -1494,6 +1517,7 @@ void StyleResolver::applyCallbackSelectors(StyleResolverState& state)
         state.style()->addCallbackSelector(rules->at(i)->selectorList().selectorsText());
 }
 
+#if 0 // BKTODO:
 void StyleResolver::setStatsEnabled(bool enabled)
 {
     if (enabled) {
@@ -1506,6 +1530,7 @@ void StyleResolver::setStatsEnabled(bool enabled)
         m_styleResolverStats = nullptr;
     }
 }
+#endif
 
 void StyleResolver::computeFont(ComputedStyle* style, const StylePropertySet& propertySet)
 {

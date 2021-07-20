@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleResolver.h
+// Description: StyleResolver Class
+//      Author: Ziming Li
+//     Created: 2021-07-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -167,8 +178,10 @@ public:
     void addToStyleSharingList(Element&);
     void clearStyleSharingList();
 
+#if 0 // BKTODO:
     StyleResolverStats* stats() { return m_styleResolverStats.get(); }
     void setStatsEnabled(bool);
+#endif
 
     unsigned accessCount() const { return m_accessCount; }
     void didAccess() { ++m_accessCount; }
@@ -252,12 +265,12 @@ private:
     DocumentOrderedList m_treeBoundaryCrossingScopes;
 
     bool m_needCollectFeatures;
-    bool m_printMediaType;
+    // BKTODO: bool m_printMediaType;
 
     unsigned m_styleSharingDepth;
     WillBeHeapVector<OwnPtrWillBeMember<StyleSharingList>, styleSharingMaxDepth> m_styleSharingLists;
 
-    OwnPtr<StyleResolverStats> m_styleResolverStats;
+    // BKTODO: OwnPtr<StyleResolverStats> m_styleResolverStats;
 
     // Use only for Internals::updateStyleAndReturnAffectedElementCount.
     unsigned m_accessCount;
