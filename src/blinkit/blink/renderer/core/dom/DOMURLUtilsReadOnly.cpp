@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMURLUtilsReadOnly.cpp
+// Description: DOMURLUtilsReadOnly Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  * Copyright (C) 2012 Motorola Mobility Inc.
@@ -26,55 +37,79 @@
 
 #include "core/dom/DOMURLUtilsReadOnly.h"
 
+#if 0 // BKTODO:
 #include "platform/weborigin/KnownPorts.h"
 #include "platform/weborigin/SecurityOrigin.h"
+#endif
 
 namespace blink {
 
 String DOMURLUtilsReadOnly::href()
 {
     const KURL& kurl = url();
+    ASSERT(false); // BKTODO:
+#if 0
     if (kurl.isNull())
         return input();
+#endif
     return kurl.string();
 }
 
 String DOMURLUtilsReadOnly::origin(const KURL& kurl)
 {
+    ASSERT(false); // BKTODO:
+    return emptyString();
+#if 0
     if (kurl.isNull())
         return "";
     return SecurityOrigin::create(kurl)->toString();
+#endif
 }
 
 String DOMURLUtilsReadOnly::host(const KURL& kurl)
 {
+    ASSERT(false); // BKTODO:
+    return emptyString();
+#if 0
     if (kurl.hostEnd() == kurl.pathStart())
         return kurl.host();
     if (isDefaultPortForProtocol(kurl.port(), kurl.protocol()))
         return kurl.host();
     return kurl.host() + ":" + String::number(kurl.port());
+#endif
 }
 
 String DOMURLUtilsReadOnly::port(const KURL& kurl)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (kurl.hasPort())
         return String::number(kurl.port());
+#endif
 
     return emptyString();
 }
 
 String DOMURLUtilsReadOnly::search(const KURL& kurl)
 {
+    ASSERT(false); // BKTODO:
+    return emptyString();
+#if 0
     String query = kurl.query();
     return query.isEmpty() ? emptyString() : "?" + query;
+#endif
 }
 
 String DOMURLUtilsReadOnly::hash(const KURL& kurl)
 {
+    ASSERT(false); // BKTODO:
+    return emptyString();
+#if 0
     String fragmentIdentifier = kurl.fragmentIdentifier();
     if (fragmentIdentifier.isEmpty())
         return emptyString();
     return AtomicString(String("#" + fragmentIdentifier));
+#endif
 }
 
 } // namespace blink
