@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SelectorChecker.cpp
+// Description: SelectorChecker Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -32,7 +43,7 @@
 #include "core/dom/Document.h"
 #include "core/dom/Element.h"
 #include "core/dom/ElementTraversal.h"
-#include "core/dom/Fullscreen.h"
+// BKTODO: #include "core/dom/Fullscreen.h"
 #include "core/dom/NodeComputedStyle.h"
 #include "core/dom/NthIndexCache.h"
 #include "core/dom/StyleEngine.h"
@@ -43,12 +54,12 @@
 #include "core/editing/FrameSelection.h"
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLDocument.h"
-#include "core/html/HTMLFrameElementBase.h"
+// BKTODO: #include "core/html/HTMLFrameElementBase.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/html/HTMLOptionElement.h"
 #include "core/html/HTMLSelectElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
-#include "core/html/track/vtt/VTTElement.h"
+// BKTODO: #include "core/html/track/vtt/VTTElement.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/layout/LayoutObject.h"
 #include "core/layout/LayoutScrollbar.h"
@@ -936,7 +947,7 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
         {
             AtomicString value;
             if (element.isVTTElement())
-                value = toVTTElement(element).language();
+                ASSERT(false); // BKTODO: value = toVTTElement(element).language();
             else
                 value = element.computeInheritedLanguage();
             const AtomicString& argument = selector.argument();
@@ -947,6 +958,9 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
             return true;
         }
     case CSSSelector::PseudoFullScreen:
+        ASSERT(false); // BKTODO:
+        return false;
+#if 0
         // While a Document is in the fullscreen state, and the document's current fullscreen
         // element is an element in the document, the 'full-screen' pseudoclass applies to
         // that element. Also, an <iframe>, <object> or <embed> element whose child browsing
@@ -954,6 +968,7 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
         if (isHTMLFrameElementBase(element) && element.containsFullScreenElement())
             return true;
         return Fullscreen::isActiveFullScreenElement(element);
+#endif
     case CSSSelector::PseudoFullScreenAncestor:
         return element.containsFullScreenElement();
     case CSSSelector::PseudoInRange:
@@ -965,9 +980,11 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
             element.document().setContainsValidityStyleRules();
         return element.isOutOfRange();
     case CSSSelector::PseudoFutureCue:
-        return element.isVTTElement() && !toVTTElement(element).isPastNode();
+        ASSERT(false); // BKTODO: return element.isVTTElement() && !toVTTElement(element).isPastNode();
+        return false;
     case CSSSelector::PseudoPastCue:
-        return element.isVTTElement() && toVTTElement(element).isPastNode();
+        ASSERT(false); // BKTODO: return element.isVTTElement() && toVTTElement(element).isPastNode();
+        return false;
     case CSSSelector::PseudoScope:
         if (m_mode == SharingRules)
             return true;
