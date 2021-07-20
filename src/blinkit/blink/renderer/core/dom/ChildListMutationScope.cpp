@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ChildListMutationScope.cpp
+// Description: ChildListMutationScope Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -64,7 +75,7 @@ void ChildListMutationAccumulator::leaveMutationScope()
     if (!--m_mutationScopes) {
         if (!isEmpty())
             enqueueMutationRecord();
-        accumulatorMap().remove(m_target.get());
+        accumulatorMap().erase(m_target.get());
     }
 }
 
@@ -72,15 +83,10 @@ DEFINE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(ChildListMutationAccumulator);
 
 PassRefPtrWillBeRawPtr<ChildListMutationAccumulator> ChildListMutationAccumulator::getOrCreate(Node& target)
 {
-    AccumulatorMap::AddResult result = accumulatorMap().add(&target, nullptr);
-    RefPtrWillBeRawPtr<ChildListMutationAccumulator> accumulator;
-    if (!result.isNewEntry) {
-        accumulator = result.storedValue->value;
-    } else {
+    Member<ChildListMutationAccumulator> &accumulator = accumulatorMap()[&target];
+    if (!accumulator)
         accumulator = adoptRefWillBeNoop(new ChildListMutationAccumulator(PassRefPtrWillBeRawPtr<Node>(target), MutationObserverInterestGroup::createForChildListMutation(target)));
-        result.storedValue->value = accumulator.get();
-    }
-    return accumulator.release();
+    return accumulator;
 }
 
 inline bool ChildListMutationAccumulator::isAddedNodeInOrder(Node* child)
