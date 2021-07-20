@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MatchResult.cpp
+// Description: MatchResult Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -49,8 +60,8 @@ DEFINE_TRACE(MatchedProperties)
 
 void MatchResult::addMatchedProperties(const StylePropertySet* properties, unsigned linkMatchType, PropertyWhitelistType propertyWhitelistType)
 {
-    m_matchedProperties.grow(m_matchedProperties.size() + 1);
-    MatchedProperties& newProperties = m_matchedProperties.last();
+    m_matchedProperties.resize(m_matchedProperties.size() + 1);
+    MatchedProperties& newProperties = m_matchedProperties.back();
     newProperties.properties = const_cast<StylePropertySet*>(properties);
     newProperties.m_types.linkMatchType = linkMatchType;
     newProperties.m_types.whitelistType = propertyWhitelistType;
