@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleSheetContents.h
+// Description: StyleSheetContents Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All rights reserved.
@@ -102,9 +113,9 @@ public:
     void clearRules();
 
     // Rules other than @import.
-    const WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>>& childRules() const { return m_childRules; }
-    const WillBeHeapVector<RefPtrWillBeMember<StyleRuleImport>>& importRules() const { return m_importRules; }
-    const WillBeHeapVector<RefPtrWillBeMember<StyleRuleNamespace>>& namespaceRules() const { return m_namespaceRules; }
+    const std::vector<Member<StyleRuleBase>>& childRules() const { return m_childRules; }
+    const std::vector<Member<StyleRuleImport>>& importRules() const { return m_importRules; }
+    const std::vector<Member<StyleRuleNamespace>>& namespaceRules() const { return m_namespaceRules; }
 
     void notifyLoadedSheet(const CSSStyleSheetResource*);
 
@@ -173,9 +184,9 @@ private:
 
     String m_originalURL;
 
-    WillBeHeapVector<RefPtrWillBeMember<StyleRuleImport>> m_importRules;
-    WillBeHeapVector<RefPtrWillBeMember<StyleRuleNamespace>> m_namespaceRules;
-    WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>> m_childRules;
+    std::vector<Member<StyleRuleImport>> m_importRules;
+    std::vector<Member<StyleRuleNamespace>> m_namespaceRules;
+    std::vector<Member<StyleRuleBase>> m_childRules;
     using PrefixNamespaceURIMap = HashMap<AtomicString, AtomicString>;
     PrefixNamespaceURIMap m_namespaces;
     AtomicString m_defaultNamespace;
