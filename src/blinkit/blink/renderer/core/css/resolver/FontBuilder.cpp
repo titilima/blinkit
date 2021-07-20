@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontBuilder.cpp
+// Description: FontBuilder Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -43,10 +54,6 @@ FontBuilder::FontBuilder(const Document& document)
 
 void FontBuilder::setInitial(float effectiveZoom)
 {
-    ASSERT(m_document->settings());
-    if (!m_document->settings())
-        return;
-
     setFamilyDescription(m_fontDescription, FontBuilder::initialFamilyDescription());
     setSize(m_fontDescription, FontBuilder::initialSize());
 }
@@ -75,9 +82,12 @@ FontFamily FontBuilder::standardFontFamily() const
 
 AtomicString FontBuilder::standardFontFamilyName() const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     Settings* settings = m_document->settings();
     if (settings)
         return settings->genericFontFamilySettings().standard();
+#endif
     return AtomicString();
 }
 
@@ -274,9 +284,8 @@ void FontBuilder::checkForGenericFamilyChange(const FontDescription& oldDescript
     if (newDescription.keywordSize()) {
         size = FontSize::fontSizeForKeyword(m_document, newDescription.keywordSize(), newDescription.isMonospace());
     } else {
-        Settings* settings = m_document->settings();
-        float fixedScaleFactor = (settings && settings->defaultFixedFontSize() && settings->defaultFontSize())
-            ? static_cast<float>(settings->defaultFixedFontSize()) / settings->defaultFontSize()
+        float fixedScaleFactor = (Settings::defaultFixedFontSize() && Settings::defaultFontSize())
+            ? static_cast<float>(Settings::defaultFixedFontSize()) / Settings::defaultFontSize()
             : 1;
         size = oldDescription.isMonospace() ?
             newDescription.specifiedSize() / fixedScaleFactor :
