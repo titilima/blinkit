@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ElementStyleResources.cpp
+// Description: ElementStyleResources Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -29,7 +40,7 @@
 #include "core/css/CSSSVGDocumentValue.h"
 #include "core/dom/Document.h"
 #include "core/fetch/ResourceFetcher.h"
-#include "core/layout/svg/ReferenceFilterBuilder.h"
+// BKTODO: #include "core/layout/svg/ReferenceFilterBuilder.h"
 #include "core/style/ComputedStyle.h"
 #include "core/style/ContentData.h"
 #include "core/style/FillLayer.h"
@@ -68,7 +79,7 @@ PassRefPtrWillBeRawPtr<StyleImage> ElementStyleResources::styleImage(CSSProperty
 PassRefPtrWillBeRawPtr<StyleImage> ElementStyleResources::generatedOrPendingFromValue(CSSPropertyID property, const CSSImageGeneratorValue& value)
 {
     if (value.isPending()) {
-        m_pendingImageProperties.add(property);
+        m_pendingImageProperties.insert(property);
         return StylePendingImage::create(value);
     }
     return StyleGeneratedImage::create(value);
@@ -77,7 +88,7 @@ PassRefPtrWillBeRawPtr<StyleImage> ElementStyleResources::generatedOrPendingFrom
 PassRefPtrWillBeRawPtr<StyleImage> ElementStyleResources::setOrPendingFromValue(CSSPropertyID property, const CSSImageSetValue& value)
 {
     if (value.isCachePending(m_deviceScaleFactor)) {
-        m_pendingImageProperties.add(property);
+        m_pendingImageProperties.insert(property);
         return StylePendingImage::create(value);
     }
     return value.cachedImageSet(m_deviceScaleFactor);
@@ -86,7 +97,7 @@ PassRefPtrWillBeRawPtr<StyleImage> ElementStyleResources::setOrPendingFromValue(
 PassRefPtrWillBeRawPtr<StyleImage> ElementStyleResources::cachedOrPendingFromValue(CSSPropertyID property, const CSSImageValue& value)
 {
     if (value.isCachePending()) {
-        m_pendingImageProperties.add(property);
+        m_pendingImageProperties.insert(property);
         return StylePendingImage::create(value);
     }
     value.restoreCachedResourceIfNeeded(*m_document);
@@ -96,12 +107,13 @@ PassRefPtrWillBeRawPtr<StyleImage> ElementStyleResources::cachedOrPendingFromVal
 PassRefPtrWillBeRawPtr<StyleImage> ElementStyleResources::cursorOrPendingFromValue(CSSPropertyID property, const CSSCursorImageValue& value)
 {
     if (value.isCachePending(m_deviceScaleFactor)) {
-        m_pendingImageProperties.add(property);
+        m_pendingImageProperties.insert(property);
         return StylePendingImage::create(value);
     }
     return value.cachedImage(m_deviceScaleFactor);
 }
 
+#if 0 // BKTODO:
 void ElementStyleResources::addPendingSVGDocument(FilterOperation* filterOperation, CSSSVGDocumentValue* cssSVGDocumentValue)
 {
     m_pendingSVGDocuments.set(filterOperation, cssSVGDocumentValue);
@@ -149,6 +161,7 @@ PassRefPtrWillBeRawPtr<StyleImage> ElementStyleResources::loadPendingImage(Style
 
     return nullptr;
 }
+#endif
 
 void ElementStyleResources::loadPendingImages(ComputedStyle* style)
 {
@@ -175,7 +188,7 @@ void ElementStyleResources::loadPendingImages(ComputedStyle* style)
         case CSSPropertyBackgroundImage: {
             for (FillLayer* backgroundLayer = &style->accessBackgroundLayers(); backgroundLayer; backgroundLayer = backgroundLayer->next()) {
                 if (backgroundLayer->image() && backgroundLayer->image()->isPendingImage())
-                    backgroundLayer->setImage(loadPendingImage(toStylePendingImage(backgroundLayer->image())));
+                    ASSERT(false); // BKTODO: backgroundLayer->setImage(loadPendingImage(toStylePendingImage(backgroundLayer->image())));
             }
             break;
         }
@@ -184,9 +197,12 @@ void ElementStyleResources::loadPendingImages(ComputedStyle* style)
                 if (contentData->isImage()) {
                     StyleImage* image = toImageContentData(contentData)->image();
                     if (image->isPendingImage()) {
+                        ASSERT(false); // BKTODO:
+#if 0
                         RefPtrWillBeRawPtr<StyleImage> loadedImage = loadPendingImage(toStylePendingImage(image));
                         if (loadedImage)
                             toImageContentData(contentData)->setImage(loadedImage.release());
+#endif
                     }
                 }
             }
@@ -198,7 +214,7 @@ void ElementStyleResources::loadPendingImages(ComputedStyle* style)
                     CursorData& currentCursor = cursorList->at(i);
                     if (StyleImage* image = currentCursor.image()) {
                         if (image->isPendingImage())
-                            currentCursor.setImage(loadPendingImage(toStylePendingImage(image)));
+                            ASSERT(false); // BKTODO: currentCursor.setImage(loadPendingImage(toStylePendingImage(image)));
                     }
                 }
             }
@@ -206,39 +222,42 @@ void ElementStyleResources::loadPendingImages(ComputedStyle* style)
         }
         case CSSPropertyListStyleImage: {
             if (style->listStyleImage() && style->listStyleImage()->isPendingImage())
-                style->setListStyleImage(loadPendingImage(toStylePendingImage(style->listStyleImage())));
+                ASSERT(false); // BKTODO: style->setListStyleImage(loadPendingImage(toStylePendingImage(style->listStyleImage())));
             break;
         }
         case CSSPropertyBorderImageSource: {
             if (style->borderImageSource() && style->borderImageSource()->isPendingImage())
-                style->setBorderImageSource(loadPendingImage(toStylePendingImage(style->borderImageSource())));
+                ASSERT(false); // BKTODO: style->setBorderImageSource(loadPendingImage(toStylePendingImage(style->borderImageSource())));
             break;
         }
         case CSSPropertyWebkitBoxReflect: {
             if (StyleReflection* reflection = style->boxReflect()) {
                 const NinePieceImage& maskImage = reflection->mask();
                 if (maskImage.image() && maskImage.image()->isPendingImage()) {
+                    ASSERT(false); // BKTODO:
+#if 0
                     RefPtrWillBeRawPtr<StyleImage> loadedImage = loadPendingImage(toStylePendingImage(maskImage.image()));
                     reflection->setMask(NinePieceImage(loadedImage.release(), maskImage.imageSlices(), maskImage.fill(), maskImage.borderSlices(), maskImage.outset(), maskImage.horizontalRule(), maskImage.verticalRule()));
+#endif
                 }
             }
             break;
         }
         case CSSPropertyWebkitMaskBoxImageSource: {
             if (style->maskBoxImageSource() && style->maskBoxImageSource()->isPendingImage())
-                style->setMaskBoxImageSource(loadPendingImage(toStylePendingImage(style->maskBoxImageSource())));
+                ASSERT(false); // BKTODO: style->setMaskBoxImageSource(loadPendingImage(toStylePendingImage(style->maskBoxImageSource())));
             break;
         }
         case CSSPropertyWebkitMaskImage: {
             for (FillLayer* maskLayer = &style->accessMaskLayers(); maskLayer; maskLayer = maskLayer->next()) {
                 if (maskLayer->image() && maskLayer->image()->isPendingImage())
-                    maskLayer->setImage(loadPendingImage(toStylePendingImage(maskLayer->image())));
+                    ASSERT(false); // BKTODO: maskLayer->setImage(loadPendingImage(toStylePendingImage(maskLayer->image())));
             }
             break;
         }
         case CSSPropertyShapeOutside:
             if (style->shapeOutside() && style->shapeOutside()->image() && style->shapeOutside()->image()->isPendingImage())
-                style->shapeOutside()->setImage(loadPendingImage(toStylePendingImage(style->shapeOutside()->image()), CrossOriginAttributeAnonymous));
+                ASSERT(false); // BKTODO: style->shapeOutside()->setImage(loadPendingImage(toStylePendingImage(style->shapeOutside()->image()), CrossOriginAttributeAnonymous));
             break;
         default:
             ASSERT_NOT_REACHED();
@@ -249,7 +268,7 @@ void ElementStyleResources::loadPendingImages(ComputedStyle* style)
 void ElementStyleResources::loadPendingResources(ComputedStyle* computedStyle)
 {
     loadPendingImages(computedStyle);
-    loadPendingSVGDocuments(computedStyle);
+    // BKTODO: loadPendingSVGDocuments(computedStyle);
 }
 
 }

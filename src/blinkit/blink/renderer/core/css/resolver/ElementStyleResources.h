@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ElementStyleResources.h
+// Description: ElementStyleResources Class
+//      Author: Ziming Li
+//     Created: 2021-07-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -23,8 +34,9 @@
 #ifndef ElementStyleResources_h
 #define ElementStyleResources_h
 
+#include <unordered_set>
 #include "core/CSSPropertyNames.h"
-#include "platform/CrossOriginAttributeValue.h"
+// BKTODO: #include "platform/CrossOriginAttributeValue.h"
 #include "platform/graphics/Color.h"
 #include "platform/heap/Handle.h"
 #include "wtf/HashMap.h"
@@ -57,20 +69,20 @@ public:
 
     void loadPendingResources(ComputedStyle*);
 
-    void addPendingSVGDocument(FilterOperation*, CSSSVGDocumentValue*);
+    // BKTODO: void addPendingSVGDocument(FilterOperation*, CSSSVGDocumentValue*);
 
 private:
     PassRefPtrWillBeRawPtr<StyleImage> cursorOrPendingFromValue(CSSPropertyID, const CSSCursorImageValue&);
     PassRefPtrWillBeRawPtr<StyleImage> generatedOrPendingFromValue(CSSPropertyID, const CSSImageGeneratorValue&);
 
-    void loadPendingSVGDocuments(ComputedStyle*);
+    // BKTODO: void loadPendingSVGDocuments(ComputedStyle*);
     void loadPendingImages(ComputedStyle*);
 
-    PassRefPtrWillBeRawPtr<StyleImage> loadPendingImage(StylePendingImage*, CrossOriginAttributeValue = CrossOriginAttributeNotSet);
+    // BKTODO: PassRefPtrWillBeRawPtr<StyleImage> loadPendingImage(StylePendingImage*, CrossOriginAttributeValue = CrossOriginAttributeNotSet);
 
     RawPtrWillBeMember<Document> m_document;
-    HashSet<CSSPropertyID> m_pendingImageProperties;
-    WillBeHeapHashMap<RawPtrWillBeMember<FilterOperation>, RefPtrWillBeMember<CSSSVGDocumentValue>> m_pendingSVGDocuments;
+    std::unordered_set<CSSPropertyID> m_pendingImageProperties;
+    // BKTODO: WillBeHeapHashMap<RawPtrWillBeMember<FilterOperation>, RefPtrWillBeMember<CSSSVGDocumentValue>> m_pendingSVGDocuments;
     float m_deviceScaleFactor;
 };
 
