@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IntersectionObserverController.cpp
+// Description: IntersectionObserverController Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,7 +19,7 @@
 
 namespace blink {
 
-typedef HeapVector<Member<IntersectionObserver>> IntersectionObserverVector;
+typedef std::vector<Member<IntersectionObserver>> IntersectionObserverVector;
 
 IntersectionObserverController* IntersectionObserverController::create(Document* document)
 {
@@ -33,7 +44,7 @@ void IntersectionObserverController::scheduleIntersectionObserverForDelivery(Int
     // that javascript will get a chance to run before the timer fires.
     if (!m_timer.isActive())
         m_timer.startOneShot(0, BLINK_FROM_HERE);
-    m_pendingIntersectionObservers.add(&observer);
+    m_pendingIntersectionObservers.insert(&observer);
 }
 
 void IntersectionObserverController::resume()
@@ -52,8 +63,7 @@ void IntersectionObserverController::deliverIntersectionObservations(Timer<Inter
         m_timerFiredWhileSuspended = true;
         return;
     }
-    IntersectionObserverVector observers;
-    copyToVector(m_pendingIntersectionObservers, observers);
+    IntersectionObserverVector observers(m_pendingIntersectionObservers.begin(), m_pendingIntersectionObservers.end());
     m_pendingIntersectionObservers.clear();
     for (auto& observer : observers)
         observer->deliver();
@@ -72,17 +82,16 @@ void IntersectionObserverController::computeTrackedIntersectionObservations()
 
 void IntersectionObserverController::addTrackedObserver(IntersectionObserver& observer)
 {
-    m_trackedIntersectionObservers.add(&observer);
+    m_trackedIntersectionObservers.insert(&observer);
 }
 
 void IntersectionObserverController::removeTrackedObserversForRoot(const Node& root)
 {
-    HeapVector<Member<IntersectionObserver>> toRemove;
-    for (auto& observer : m_trackedIntersectionObservers) {
-        if (observer->root() == &root)
-            toRemove.append(observer);
+    for (auto it = m_trackedIntersectionObservers.begin(); m_trackedIntersectionObservers.end() != it; ++it)
+    {
+        if (it->get()->root() == &root)
+            it = m_trackedIntersectionObservers.erase(it);
     }
-    m_trackedIntersectionObservers.removeAll(toRemove);
 }
 
 DEFINE_TRACE(IntersectionObserverController)
