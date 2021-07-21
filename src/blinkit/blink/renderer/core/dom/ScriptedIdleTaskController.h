@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScriptedIdleTaskController.h
+// Description: ScriptedIdleTaskController Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -48,8 +59,10 @@ private:
 
     void runCallback(CallbackId, double deadlineSeconds, IdleDeadline::CallbackType);
 
+#if 0 // BKTODO:
     WebScheduler* m_scheduler; // Not owned.
     PersistentHeapHashMapWillBeHeapHashMap<CallbackId, Member<IdleRequestCallback>> m_callbacks;
+#endif
     Vector<CallbackId> m_pendingTimeouts;
     CallbackId m_nextCallbackId;
     bool m_suspended;
