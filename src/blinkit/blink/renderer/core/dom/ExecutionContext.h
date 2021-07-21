@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ExecutionContext.h
+// Description: ExecutionContext Class
+//      Author: Ziming Li
+//     Created: 2021-07-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2012 Google Inc. All Rights Reserved.
@@ -31,13 +42,15 @@
 #include "core/CoreExport.h"
 #include "core/dom/ContextLifecycleNotifier.h"
 #include "core/dom/ContextLifecycleObserver.h"
+#if 0 // BKTODO:
 #include "core/dom/SecurityContext.h"
 #include "core/dom/SuspendableTask.h"
 #include "core/fetch/AccessControlStatus.h"
+#endif
 #include "platform/Supplementable.h"
 #include "platform/heap/Handle.h"
 #include "platform/weborigin/KURL.h"
-#include "platform/weborigin/ReferrerPolicy.h"
+// BKTODO: #include "platform/weborigin/ReferrerPolicy.h"
 #include "wtf/Deque.h"
 #include "wtf/Noncopyable.h"
 #include "wtf/OwnPtr.h"
@@ -82,8 +95,10 @@ public:
 
     virtual bool isContextThread() const { return true; }
 
+#if 0 // BKTODO:
     SecurityOrigin* securityOrigin();
     ContentSecurityPolicy* contentSecurityPolicy();
+#endif
     const KURL& url() const;
     KURL completeURL(const String& url) const;
     virtual void disableEval(const String& errorMessage) = 0;
@@ -97,14 +112,18 @@ public:
     // not be used after the ExecutionContext is destroyed.
     virtual DOMTimerCoordinator* timers() = 0;
 
+#if 0 // BKTODO:
     virtual void reportBlockedScriptExecutionToInspector(const String& directiveText) = 0;
 
     virtual SecurityContext& securityContext() = 0;
+#endif
     KURL contextURL() const { return virtualURL(); }
     KURL contextCompleteURL(const String& url) const { return virtualCompleteURL(url); }
 
+#if 0 // BKTODO:
     bool shouldSanitizeScriptError(const String& sourceURL, AccessControlStatus);
     void reportException(PassRefPtrWillBeRawPtr<ErrorEvent>, int scriptId, PassRefPtrWillBeRawPtr<ScriptCallStack>, AccessControlStatus);
+#endif
 
     virtual void addConsoleMessage(PassRefPtrWillBeRawPtr<ConsoleMessage>) = 0;
     virtual void logExceptionToConsole(const String& errorMessage, int scriptId, const String& sourceURL, int lineNumber, int columnNumber, PassRefPtrWillBeRawPtr<ScriptCallStack>) = 0;
@@ -116,7 +135,9 @@ public:
     void suspendActiveDOMObjects();
     void resumeActiveDOMObjects();
     void stopActiveDOMObjects();
+#if 0 // BKTODO:
     void postSuspendableTask(PassOwnPtr<SuspendableTask>);
+#endif
     void notifyContextDestroyed() override;
 
     virtual void suspendScheduledTasks();
@@ -156,8 +177,10 @@ public:
     virtual bool isSecureContext(String& errorMessage, const SecureContextCheck = StandardSecureContextCheck) const = 0;
     virtual bool isSecureContext(const SecureContextCheck = StandardSecureContextCheck) const;
 
+#if 0 // BKTODO:
     virtual void setReferrerPolicy(ReferrerPolicy);
     ReferrerPolicy referrerPolicy() const { return m_referrerPolicy; }
+#endif
 
 protected:
     ExecutionContext();
@@ -167,7 +190,9 @@ protected:
     virtual KURL virtualCompleteURL(const String&) const = 0;
 
 private:
+#if 0 // BKTODO:
     bool dispatchErrorEvent(PassRefPtrWillBeRawPtr<ErrorEvent>, AccessControlStatus);
+#endif
     void runSuspendableTasks();
 
 #if !ENABLE(OILPAN)
@@ -193,10 +218,12 @@ private:
     // increment and decrement the counter.
     int m_windowInteractionTokens;
 
+#if 0 // BKTODO:
     Deque<OwnPtr<SuspendableTask>> m_suspendedTasks;
     bool m_isRunSuspendableTasksScheduled;
 
     ReferrerPolicy m_referrerPolicy;
+#endif
 };
 
 } // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ExecutionContext.cpp
+// Description: ExecutionContext Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2012 Google Inc. All Rights Reserved.
@@ -28,15 +39,17 @@
 #include "core/dom/ExecutionContext.h"
 
 #include "core/dom/ExecutionContextTask.h"
-#include "core/events/ErrorEvent.h"
+// BKTODO: #include "core/events/ErrorEvent.h"
 #include "core/events/EventTarget.h"
-#include "core/fetch/MemoryCache.h"
+// BKTODO: #include "core/fetch/MemoryCache.h"
 #include "core/frame/UseCounter.h"
-#include "core/html/PublicURLManager.h"
+// BKTODO: #include "core/html/PublicURLManager.h"
 #include "core/inspector/InspectorInstrumentation.h"
+#if 0 // BKTODO:
 #include "core/inspector/ScriptCallStack.h"
 #include "core/workers/WorkerGlobalScope.h"
 #include "core/workers/WorkerThread.h"
+#endif
 #include "platform/RuntimeEnabledFeatures.h"
 #include "wtf/MainThread.h"
 
@@ -72,8 +85,10 @@ ExecutionContext::ExecutionContext()
     , m_activeDOMObjectsAreSuspended(false)
     , m_activeDOMObjectsAreStopped(false)
     , m_windowInteractionTokens(0)
+#if 0 // BKTODO:
     , m_isRunSuspendableTasksScheduled(false)
     , m_referrerPolicy(ReferrerPolicyDefault)
+#endif
 {
 }
 
@@ -101,19 +116,24 @@ void ExecutionContext::stopActiveDOMObjects()
     notifyStoppingActiveDOMObjects();
 }
 
+#if 0 // BKTODO:
 void ExecutionContext::postSuspendableTask(PassOwnPtr<SuspendableTask> task)
 {
     m_suspendedTasks.append(task);
     if (!m_activeDOMObjectsAreSuspended)
         postTask(BLINK_FROM_HERE, createSameThreadTask(&ExecutionContext::runSuspendableTasks, this));
 }
+#endif
 
 void ExecutionContext::notifyContextDestroyed()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     Deque<OwnPtr<SuspendableTask>> suspendedTasks;
     suspendedTasks.swap(m_suspendedTasks);
     for (Deque<OwnPtr<SuspendableTask>>::iterator it = suspendedTasks.begin(); it != suspendedTasks.end(); ++it)
         (*it)->contextDestroyed();
+#endif
     ContextLifecycleNotifier::notifyContextDestroyed();
 }
 
@@ -127,11 +147,14 @@ void ExecutionContext::resumeScheduledTasks()
 {
     resumeActiveDOMObjects();
     tasksWereResumed();
+    ASSERT(false); // BKTODO:
+#if 0
     // We need finish stack unwiding before running next task because it can suspend this context.
     if (m_isRunSuspendableTasksScheduled)
         return;
     m_isRunSuspendableTasksScheduled = true;
     postTask(BLINK_FROM_HERE, createSameThreadTask(&ExecutionContext::runSuspendableTasks, this));
+#endif
 }
 
 void ExecutionContext::suspendActiveDOMObjectIfNeeded(ActiveDOMObject* object)
@@ -139,9 +162,10 @@ void ExecutionContext::suspendActiveDOMObjectIfNeeded(ActiveDOMObject* object)
     ASSERT(contains(object));
     // Ensure all ActiveDOMObjects are suspended also newly created ones.
     if (m_activeDOMObjectsAreSuspended)
-        object->suspend();
+        ASSERT(false); // BKTODO: object->suspend();
 }
 
+#if 0 // BKTODO:
 bool ExecutionContext::shouldSanitizeScriptError(const String& sourceURL, AccessControlStatus corsStatus)
 {
     if (corsStatus == OpaqueResource)
@@ -189,14 +213,18 @@ bool ExecutionContext::dispatchErrorEvent(PassRefPtrWillBeRawPtr<ErrorEvent> eve
     m_inDispatchErrorEvent = false;
     return errorEvent->defaultPrevented();
 }
+#endif
 
 void ExecutionContext::runSuspendableTasks()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     m_isRunSuspendableTasksScheduled = false;
     while (!m_activeDOMObjectsAreSuspended && m_suspendedTasks.size()) {
         OwnPtr<SuspendableTask> task = m_suspendedTasks.takeFirst();
         task->run();
     }
+#endif
 }
 
 int ExecutionContext::circularSequentialID()
@@ -211,10 +239,11 @@ int ExecutionContext::circularSequentialID()
 PublicURLManager& ExecutionContext::publicURLManager()
 {
     if (!m_publicURLManager)
-        m_publicURLManager = PublicURLManager::create(this);
+        ASSERT(false); // BKTODO: m_publicURLManager = PublicURLManager::create(this);
     return *m_publicURLManager;
 }
 
+#if 0 // BKTODO:
 SecurityOrigin* ExecutionContext::securityOrigin()
 {
     return securityContext().securityOrigin();
@@ -224,6 +253,7 @@ ContentSecurityPolicy* ExecutionContext::contentSecurityPolicy()
 {
     return securityContext().contentSecurityPolicy();
 }
+#endif
 
 const KURL& ExecutionContext::url() const
 {
@@ -237,12 +267,14 @@ KURL ExecutionContext::completeURL(const String& url) const
 
 bool ExecutionContext::hasSuborigin()
 {
-    return securityContext().securityOrigin()->hasSuborigin();
+    ASSERT(false); // BKTODO: return securityContext().securityOrigin()->hasSuborigin();
+    return false;
 }
 
 String ExecutionContext::suboriginName()
 {
-    return securityContext().securityOrigin()->suboriginName();
+    ASSERT(false); // BKTODO: return securityContext().securityOrigin()->suboriginName();
+    return emptyString();
 }
 
 void ExecutionContext::allowWindowInteraction()
@@ -268,6 +300,7 @@ bool ExecutionContext::isSecureContext(const SecureContextCheck privilegeContext
     return isSecureContext(unusedErrorMessage, privilegeContextCheck);
 }
 
+#if 0 // BKTODO:
 void ExecutionContext::setReferrerPolicy(ReferrerPolicy referrerPolicy)
 {
     // When a referrer policy has already been set, the latest value takes precedence.
@@ -277,10 +310,11 @@ void ExecutionContext::setReferrerPolicy(ReferrerPolicy referrerPolicy)
 
     m_referrerPolicy = referrerPolicy;
 }
+#endif
 
 void ExecutionContext::removeURLFromMemoryCache(const KURL& url)
 {
-    memoryCache()->removeURLFromCache(url);
+    ASSERT(false); // BKTODO: memoryCache()->removeURLFromCache(url);
 }
 
 // |name| should be non-empty, and this should be enforced by parsing.
@@ -288,6 +322,8 @@ void ExecutionContext::enforceSuborigin(const String& name)
 {
     if (name.isNull())
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(!name.isEmpty());
     ASSERT(RuntimeEnabledFeatures::suboriginsEnabled());
     SecurityOrigin* origin = securityContext().securityOrigin();
@@ -295,6 +331,7 @@ void ExecutionContext::enforceSuborigin(const String& name)
     ASSERT(!origin->hasSuborigin() || origin->suboriginName() == name);
     origin->addSuborigin(name);
     securityContext().didUpdateSecurityOrigin();
+#endif
 }
 
 DEFINE_TRACE(ExecutionContext)
