@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MainThreadTaskRunner.cpp
+// Description: MainThreadTaskRunner Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All Rights Reserved.
  *
@@ -34,6 +45,7 @@
 
 namespace blink {
 
+#if 0 // BKTODO:
 class MainThreadTask : public WebTaskRunner::Task {
     WTF_MAKE_NONCOPYABLE(MainThreadTask); USING_FAST_MALLOC(MainThreadTask);
 public:
@@ -60,6 +72,7 @@ void MainThreadTask::run()
         return;
     m_runner->perform(m_task.release(), m_isInspectorTask);
 }
+#endif
 
 MainThreadTaskRunner::MainThreadTaskRunner(ExecutionContext* context)
     : m_context(context)
@@ -84,12 +97,12 @@ void MainThreadTaskRunner::postTask(const WebTraceLocation& location, PassOwnPtr
 {
     if (!task->taskNameForInstrumentation().isEmpty())
         InspectorInstrumentation::didPostExecutionContextTask(m_context, task.get());
-    Platform::current()->mainThread()->taskRunner()->postTask(location, new MainThreadTask(createWeakPointerToSelf(), task, false));
+    ASSERT(false); // BKTODO: Platform::current()->mainThread()->taskRunner()->postTask(location, new MainThreadTask(createWeakPointerToSelf(), task, false));
 }
 
 void MainThreadTaskRunner::postInspectorTask(const WebTraceLocation& location, PassOwnPtr<ExecutionContextTask> task)
 {
-    Platform::current()->mainThread()->taskRunner()->postTask(location, new MainThreadTask(createWeakPointerToSelf(), task, true));
+    ASSERT(false); // BKTODO: Platform::current()->mainThread()->taskRunner()->postTask(location, new MainThreadTask(createWeakPointerToSelf(), task, true));
 }
 
 void MainThreadTaskRunner::perform(PassOwnPtr<ExecutionContextTask> task, bool isInspectorTask)
