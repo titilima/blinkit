@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IntersectionObserver.cpp
+// Description: IntersectionObserver Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -12,9 +23,9 @@
 #include "core/dom/IntersectionObserverCallback.h"
 #include "core/dom/IntersectionObserverController.h"
 #include "core/dom/IntersectionObserverEntry.h"
-#include "core/dom/IntersectionObserverInit.h"
+// BKTODO: #include "core/dom/IntersectionObserverInit.h"
 #include "core/dom/NodeIntersectionObserverData.h"
-#include "core/html/HTMLFrameOwnerElement.h"
+// BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/layout/LayoutView.h"
 #include "platform/Timer.h"
 #include "wtf/MainThread.h"
@@ -60,6 +71,7 @@ static void parseRootMargin(String rootMarginParameter, Vector<Length>& rootMarg
     }
 }
 
+#if 0 // BKTODO:
 static void parseThresholds(const DoubleOrDoubleArray& thresholdParameter, Vector<float>& thresholds, ExceptionState& exceptionState)
 {
     if (thresholdParameter.isDouble()) {
@@ -78,9 +90,13 @@ static void parseThresholds(const DoubleOrDoubleArray& thresholdParameter, Vecto
 
     std::sort(thresholds.begin(), thresholds.end());
 }
+#endif
 
 IntersectionObserver* IntersectionObserver::create(const IntersectionObserverInit& observerInit, IntersectionObserverCallback& callback, ExceptionState& exceptionState)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     RefPtrWillBeRawPtr<Node> root = observerInit.root();
     if (!root) {
         // TODO(szager): Use Document instead of document element for implicit root. (crbug.com/570538)
@@ -110,6 +126,7 @@ IntersectionObserver* IntersectionObserver::create(const IntersectionObserverIni
         return nullptr;
 
     return new IntersectionObserver(callback, *root, rootMargin, thresholds);
+#endif
 }
 
 IntersectionObserver::IntersectionObserver(IntersectionObserverCallback& callback, Node& root, const Vector<Length>& rootMargin, const Vector<float>& thresholds)
@@ -172,7 +189,7 @@ bool IntersectionObserver::isDescendantOfRoot(const Element* target) const
     Document* rootDocument = &rootNode->document();
     Document* targetDocument = &target->document();
     while (targetDocument != rootDocument) {
-        target = targetDocument->ownerElement();
+        ASSERT(false); // BKTODO: target = targetDocument->ownerElement();
         if (!target)
             return false;
         targetDocument = &target->document();
@@ -204,6 +221,8 @@ void IntersectionObserver::observe(Element* target, ExceptionState& exceptionSta
         return;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     // TODO(szager): Add a pointer to the spec that describes this policy.
     bool shouldReportRootBounds = target->document().frame()->securityContext()->securityOrigin()->canAccess(root()->document().frame()->securityContext()->securityOrigin());
     if (!shouldReportRootBounds && hasPercentMargin()) {
@@ -217,6 +236,7 @@ void IntersectionObserver::observe(Element* target, ExceptionState& exceptionSta
     IntersectionObservation* observation = new IntersectionObservation(*this, *target, shouldReportRootBounds);
     target->ensureIntersectionObserverData().addObservation(*observation);
     m_observations.add(observation);
+#endif
 }
 
 void IntersectionObserver::unobserve(Element* target, ExceptionState&)
@@ -240,8 +260,7 @@ void IntersectionObserver::computeIntersectionObservations(double timestamp)
 
 void IntersectionObserver::disconnect()
 {
-    HeapVector<Member<IntersectionObservation>> observationsToDisconnect;
-    copyToVector(m_observations, observationsToDisconnect);
+    std::vector<Member<IntersectionObservation>> observationsToDisconnect(m_observations.begin(), m_observations.end());
     for (auto& observation : observationsToDisconnect)
         observation->disconnect();
     ASSERT(m_observations.isEmpty());
