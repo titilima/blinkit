@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutTreeBuilder.cpp
+// Description: LayoutTreeBuilder Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -29,16 +40,16 @@
 #include "core/SVGNames.h"
 #include "core/css/resolver/StyleResolver.h"
 #include "core/dom/FirstLetterPseudoElement.h"
-#include "core/dom/Fullscreen.h"
+// BKTODO: #include "core/dom/Fullscreen.h"
 #include "core/dom/Node.h"
 #include "core/dom/PseudoElement.h"
 #include "core/dom/Text.h"
 #include "core/dom/shadow/InsertionPoint.h"
-#include "core/layout/LayoutFullScreen.h"
+// BKTODO: #include "core/layout/LayoutFullScreen.h"
 #include "core/layout/LayoutObject.h"
 #include "core/layout/LayoutText.h"
 #include "core/layout/LayoutView.h"
-#include "core/svg/SVGElement.h"
+// BKTODO: #include "core/svg/SVGElement.h"
 #include "platform/RuntimeEnabledFeatures.h"
 
 namespace blink {
@@ -87,6 +98,7 @@ bool LayoutTreeBuilderForElement::shouldCreateLayoutObject() const
     if (!m_layoutObjectParent)
         return false;
 
+#if 0 // BKTODO:
     // FIXME: Should the following be in SVGElement::layoutObjectIsNeeded()?
     if (m_node->isSVGElement()) {
         // SVG elements only render when inside <svg>, or if the element is an <svg> itself.
@@ -95,6 +107,7 @@ bool LayoutTreeBuilderForElement::shouldCreateLayoutObject() const
         if (!toSVGElement(m_node)->isValid())
             return false;
     }
+#endif
 
     LayoutObject* parentLayoutObject = this->parentLayoutObject();
     if (!parentLayoutObject)
@@ -135,11 +148,13 @@ void LayoutTreeBuilderForElement::createLayoutObject()
     m_node->setLayoutObject(newLayoutObject);
     newLayoutObject->setStyle(&style); // setStyle() can depend on layoutObject() already being set.
 
+#if 0 // BKTODO:
     if (Fullscreen::isActiveFullScreenElement(*m_node)) {
         newLayoutObject = LayoutFullScreen::wrapLayoutObject(newLayoutObject, parentLayoutObject, &m_node->document());
         if (!newLayoutObject)
             return;
     }
+#endif
 
     // Note: Adding newLayoutObject instead of layoutObject(). layoutObject() may be a child of newLayoutObject.
     parentLayoutObject->addChild(newLayoutObject, nextLayoutObject);
