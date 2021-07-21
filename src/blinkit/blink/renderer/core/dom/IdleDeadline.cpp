@@ -1,10 +1,21 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IdleDeadline.cpp
+// Description: IdleDeadline Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "core/dom/IdleDeadline.h"
 
-#include "core/timing/PerformanceBase.h"
+// BKTODO: #include "core/timing/PerformanceBase.h"
 #include "wtf/CurrentTime.h"
 
 namespace blink {
@@ -21,7 +32,8 @@ double IdleDeadline::timeRemaining() const
     if (timeRemaining < 0)
         timeRemaining = 0;
 
-    return 1000.0 * PerformanceBase::clampTimeResolution(timeRemaining);
+    // BKTODO: return 1000.0 * PerformanceBase::clampTimeResolution(timeRemaining);
+    return 0;
 }
 
 } // namespace blink
