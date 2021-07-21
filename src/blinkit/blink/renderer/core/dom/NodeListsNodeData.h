@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NodeListsNodeData.h
+// Description: NodeListsNodeData Class
+//      Author: Ziming Li
+//     Created: 2021-07-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2008 David Smith <catfish.man@gmail.com>
@@ -45,20 +56,28 @@ public:
 
     PassRefPtrWillBeRawPtr<ChildNodeList> ensureChildNodeList(ContainerNode& node)
     {
+        ASSERT(false); // TODO:
+        return nullptr;
+#if 0
         if (m_childNodeList)
             return toChildNodeList(m_childNodeList);
         RefPtrWillBeRawPtr<ChildNodeList> list = ChildNodeList::create(node);
         m_childNodeList = list.get();
         return list.release();
+#endif
     }
 
     PassRefPtrWillBeRawPtr<EmptyNodeList> ensureEmptyChildNodeList(Node& node)
     {
         if (m_childNodeList)
             return toEmptyNodeList(m_childNodeList);
+        ASSERT(false); // TODO:
+        return nullptr;
+#if 0
         RefPtrWillBeRawPtr<EmptyNodeList> list = EmptyNodeList::create(node);
         m_childNodeList = list.get();
         return list.release();
+#endif
     }
 
 #if !ENABLE(OILPAN)
@@ -79,26 +98,27 @@ public:
     }
 #endif
 
+    using NamedNodeListKey = std::pair<unsigned char, StringImpl *>;
     struct NodeListAtomicCacheMapEntryHash {
-        STATIC_ONLY(NodeListAtomicCacheMapEntryHash);
-        static unsigned hash(const std::pair<unsigned char, StringImpl*>& entry)
+        std::size_t operator()(const NamedNodeListKey &entry) const noexcept
         {
             return DefaultHash<StringImpl*>::Hash::hash(entry.second) + entry.first;
         }
-        static bool equal(const std::pair<unsigned char, StringImpl*>& a, const std::pair<unsigned char, StringImpl*>& b) { return a == b; }
-        static const bool safeToCompareToEmptyOrDeleted = DefaultHash<StringImpl*>::Hash::safeToCompareToEmptyOrDeleted;
     };
 
     // Oilpan: keep a weak reference to the collection objects.
     // Explicit object unregistration in a non-Oilpan setting
     // on object destruction is replaced by the garbage collector
     // clearing out their weak reference.
-    typedef WillBeHeapHashMap<std::pair<unsigned char, StringImpl*>, RawPtrWillBeWeakMember<LiveNodeListBase>, NodeListAtomicCacheMapEntryHash> NodeListAtomicNameCacheMap;
+    typedef WillBeHeapHashMap<NamedNodeListKey, RawPtrWillBeWeakMember<LiveNodeListBase>, NodeListAtomicCacheMapEntryHash> NodeListAtomicNameCacheMap;
     typedef WillBeHeapHashMap<QualifiedName, RawPtrWillBeWeakMember<TagCollection>> TagCollectionCacheNS;
 
     template<typename T>
     PassRefPtrWillBeRawPtr<T> addCache(ContainerNode& node, CollectionType collectionType, const AtomicString& name)
     {
+        ASSERT(false); // TODO:
+        return nullptr;
+#if 0
         NodeListAtomicNameCacheMap::AddResult result = m_atomicNameCaches.add(namedNodeListKey(collectionType, name), nullptr);
         if (!result.isNewEntry) {
 #if ENABLE(OILPAN)
@@ -111,11 +131,15 @@ public:
         RefPtrWillBeRawPtr<T> list = T::create(node, collectionType, name);
         result.storedValue->value = list.get();
         return list.release();
+#endif
     }
 
     template<typename T>
     PassRefPtrWillBeRawPtr<T> addCache(ContainerNode& node, CollectionType collectionType)
     {
+        ASSERT(false); // TODO:
+        return nullptr;
+#if 0
         NodeListAtomicNameCacheMap::AddResult result = m_atomicNameCaches.add(namedNodeListKey(collectionType, starAtom), nullptr);
         if (!result.isNewEntry) {
 #if ENABLE(OILPAN)
@@ -128,17 +152,22 @@ public:
         RefPtrWillBeRawPtr<T> list = T::create(node, collectionType);
         result.storedValue->value = list.get();
         return list.release();
+#endif
     }
 
     template<typename T>
     T* cached(CollectionType collectionType)
     {
-        return static_cast<T*>(m_atomicNameCaches.get(namedNodeListKey(collectionType, starAtom)));
+        ASSERT(false); // TODO: return static_cast<T*>(m_atomicNameCaches.get(namedNodeListKey(collectionType, starAtom)));
+        return nullptr;
     }
 
     PassRefPtrWillBeRawPtr<TagCollection> addCache(ContainerNode& node, const AtomicString& namespaceURI, const AtomicString& localName)
     {
         QualifiedName name(nullAtom, localName, namespaceURI);
+        ASSERT(false); // TODO:
+        return nullptr;
+#if 0
         TagCollectionCacheNS::AddResult result = m_tagCollectionCacheNS.add(name, nullptr);
         if (!result.isNewEntry)
             return result.storedValue->value;
@@ -146,6 +175,7 @@ public:
         RefPtrWillBeRawPtr<TagCollection> list = TagCollection::create(node, namespaceURI, localName);
         result.storedValue->value = list.get();
         return list.release();
+#endif
     }
 
 #if !ENABLE(OILPAN)
@@ -190,13 +220,13 @@ public:
 
         NodeListAtomicNameCacheMap::const_iterator atomicNameCacheEnd = m_atomicNameCaches.end();
         for (NodeListAtomicNameCacheMap::const_iterator it = m_atomicNameCaches.begin(); it != atomicNameCacheEnd; ++it) {
-            LiveNodeListBase* list = it->value;
+            LiveNodeListBase* list = it->second.get();
             list->didMoveToDocument(oldDocument, newDocument);
         }
 
         TagCollectionCacheNS::const_iterator tagEnd = m_tagCollectionCacheNS.end();
         for (TagCollectionCacheNS::const_iterator it = m_tagCollectionCacheNS.begin(); it != tagEnd; ++it) {
-            LiveNodeListBase* list = it->value;
+            LiveNodeListBase* list = it->second.get();
             ASSERT(!list->isRootedAtTreeScope());
             list->didMoveToDocument(oldDocument, newDocument);
         }

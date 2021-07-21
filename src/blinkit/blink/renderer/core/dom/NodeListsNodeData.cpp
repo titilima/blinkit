@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NodeListsNodeData.cpp
+// Description: NodeListsNodeData Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -35,13 +46,13 @@ namespace blink {
 void NodeListsNodeData::invalidateCaches(const QualifiedName* attrName)
 {
     for (const auto& cache : m_atomicNameCaches)
-        cache.value->invalidateCacheForAttribute(attrName);
+        cache.second->invalidateCacheForAttribute(attrName);
 
     if (attrName)
         return;
 
     for (auto& cache : m_tagCollectionCacheNS)
-        cache.value->invalidateCache();
+        cache.second->invalidateCache();
 }
 
 DEFINE_TRACE(NodeListsNodeData)
