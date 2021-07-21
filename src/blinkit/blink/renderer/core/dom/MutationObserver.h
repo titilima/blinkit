@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MutationObserver.h
+// Description: MutationObserver Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -55,7 +66,7 @@ typedef unsigned char MutationRecordDeliveryOptions;
 
 using MutationObserverSet = WillBeHeapHashSet<RefPtrWillBeMember<MutationObserver>>;
 using MutationObserverRegistrationSet = WillBeHeapHashSet<RawPtrWillBeWeakMember<MutationObserverRegistration>>;
-using MutationObserverVector = WillBeHeapVector<RefPtrWillBeMember<MutationObserver>>;
+using MutationObserverVector = std::vector<Member<MutationObserver>>;
 using MutationRecordVector = WillBeHeapVector<RefPtrWillBeMember<MutationRecord>>;
 
 class MutationObserver final : public RefCountedWillBeGarbageCollectedFinalized<MutationObserver>, public ScriptWrappable {

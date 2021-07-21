@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MutationObserver.cpp
+// Description: MutationObserver Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -31,10 +42,11 @@
 #include "core/dom/MutationObserver.h"
 
 #include "bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/core/dom/ExecutionContext.h"
 #include "core/dom/ExceptionCode.h"
-#include "core/dom/Microtask.h"
+// BKTODO: #include "core/dom/Microtask.h"
 #include "core/dom/MutationCallback.h"
-#include "core/dom/MutationObserverInit.h"
+// BKTODO: #include "core/dom/MutationObserverInit.h"
 #include "core/dom/MutationObserverRegistration.h"
 #include "core/dom/MutationRecord.h"
 #include "core/dom/Node.h"
@@ -80,6 +92,8 @@ void MutationObserver::observe(Node* node, const MutationObserverInit& observerI
 
     MutationObserverOptions options = 0;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (observerInit.hasAttributeOldValue() && observerInit.attributeOldValue())
         options |= AttributeOldValue;
 
@@ -129,6 +143,7 @@ void MutationObserver::observe(Node* node, const MutationObserverInit& observerI
     }
 
     node->registerMutationObserver(*this, options, attributeFilter);
+#endif
 }
 
 MutationRecordVector MutationObserver::takeRecords()
@@ -180,7 +195,7 @@ static MutationObserverSet& suspendedMutationObservers()
 static void activateObserver(PassRefPtrWillBeRawPtr<MutationObserver> observer)
 {
     if (activeMutationObservers().isEmpty())
-        Microtask::enqueueMicrotask(WTF::bind(&MutationObserver::deliverMutations));
+        ASSERT(false); // BKTODO: Microtask::enqueueMicrotask(WTF::bind(&MutationObserver::deliverMutations));
 
     activeMutationObservers().add(observer);
 }
@@ -218,10 +233,10 @@ void MutationObserver::deliver()
 
     // Calling clearTransientRegistrations() can modify m_registrations, so it's necessary
     // to make a copy of the transient registrations before operating on them.
-    WillBeHeapVector<RawPtrWillBeMember<MutationObserverRegistration>, 1> transientRegistrations;
+    std::vector<Member<MutationObserverRegistration>> transientRegistrations;
     for (auto& registration : m_registrations) {
         if (registration->hasTransientRegistrations())
-            transientRegistrations.append(registration);
+            transientRegistrations.emplace_back(registration);
     }
     for (size_t i = 0; i < transientRegistrations.size(); ++i)
         transientRegistrations[i]->clearTransientRegistrations();
@@ -243,8 +258,7 @@ void MutationObserver::resumeSuspendedObservers()
     if (suspendedMutationObservers().isEmpty())
         return;
 
-    MutationObserverVector suspended;
-    copyToVector(suspendedMutationObservers(), suspended);
+    MutationObserverVector suspended(suspendedMutationObservers().begin(), suspendedMutationObservers().end());
     for (size_t i = 0; i < suspended.size(); ++i) {
         if (!suspended[i]->shouldBeSuspended()) {
             suspendedMutationObservers().remove(suspended[i]);
@@ -256,8 +270,7 @@ void MutationObserver::resumeSuspendedObservers()
 void MutationObserver::deliverMutations()
 {
     ASSERT(isMainThread());
-    MutationObserverVector observers;
-    copyToVector(activeMutationObservers(), observers);
+    MutationObserverVector observers(activeMutationObservers().begin(), activeMutationObservers().end());
     activeMutationObservers().clear();
     std::sort(observers.begin(), observers.end(), ObserverLessThan());
     for (size_t i = 0; i < observers.size(); ++i) {
