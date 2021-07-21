@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScriptLoader.cpp
+// Description: ScriptLoader Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -34,22 +45,26 @@
 #include "core/dom/ScriptableDocumentParser.h"
 #include "core/dom/Text.h"
 #include "core/events/Event.h"
-#include "core/fetch/AccessControlStatus.h"
+// BKTODO: #include "core/fetch/AccessControlStatus.h"
 #include "core/fetch/FetchRequest.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/fetch/ScriptResource.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/SubresourceIntegrity.h"
+// BKTODO: #include "core/frame/SubresourceIntegrity.h"
 #include "core/frame/UseCounter.h"
+#if 0 // BKTODO:
 #include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/CrossOriginAttribute.h"
+#endif
 #include "core/html/HTMLScriptElement.h"
 #include "core/html/imports/HTMLImport.h"
 #include "core/html/parser/HTMLParserIdioms.h"
+#if 0 // BKTODO:
 #include "core/inspector/ConsoleMessage.h"
 #include "core/svg/SVGScriptElement.h"
+#endif
 #include "platform/MIMETypeRegistry.h"
-#include "platform/weborigin/SecurityOrigin.h"
+// BKTODO: #include "platform/weborigin/SecurityOrigin.h"
 #include "public/platform/WebFrameScheduler.h"
 #include "wtf/StdLibExtras.h"
 #include "wtf/text/StringBuilder.h"
@@ -219,6 +234,8 @@ bool ScriptLoader::prepareScript(const TextPosition& scriptStartPosition, Legacy
 
     // FIXME: If script is parser inserted, verify it's still in the original document.
     Document& elementDocument = m_element->document();
+    ASSERT(false); // BKTODO:
+#if 0
     Document* contextDocument = elementDocument.contextDocument().get();
 
     if (!contextDocument || !contextDocument->allowExecutingScripts(m_element))
@@ -274,6 +291,7 @@ bool ScriptLoader::prepareScript(const TextPosition& scriptStartPosition, Legacy
             return false;
         }
     }
+#endif
 
     return true;
 }
@@ -283,6 +301,8 @@ bool ScriptLoader::fetchScript(const String& sourceUrl, FetchRequest::DeferOptio
     ASSERT(m_element);
 
     RefPtrWillBeRawPtr<Document> elementDocument(m_element->document());
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_element->inDocument() || m_element->document() != elementDocument)
         return false;
 
@@ -311,6 +331,7 @@ bool ScriptLoader::fetchScript(const String& sourceUrl, FetchRequest::DeferOptio
 
         m_isExternalScript = true;
     }
+#endif
 
     if (m_resource)
         return true;
@@ -328,11 +349,14 @@ bool isHTMLScriptLoader(Element* element)
 bool isSVGScriptLoader(Element* element)
 {
     ASSERT(element);
-    return isSVGScriptElement(*element);
+    ASSERT(false); // BKTODO: return isSVGScriptElement(*element);
+    return false;
 }
 
 void ScriptLoader::logScriptMimetype(ScriptResource* resource, LocalFrame* frame, String mimetype)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     bool text = mimetype.lower().startsWith("text/");
     bool application = mimetype.lower().startsWith("application/");
     bool expectedJs = MIMETypeRegistry::isSupportedJavaScriptMIMEType(mimetype) || (text && isLegacySupportedJavaScriptLanguage(mimetype.substring(5)));
@@ -342,6 +366,7 @@ void ScriptLoader::logScriptMimetype(ScriptResource* resource, LocalFrame* frame
     }
     UseCounter::Feature feature = sameOrigin ? (text ? UseCounter::SameOriginTextScript : application ? UseCounter::SameOriginApplicationScript : UseCounter::SameOriginOtherScript) : (text ? UseCounter::CrossOriginTextScript : application ? UseCounter::CrossOriginApplicationScript : UseCounter::CrossOriginOtherScript);
     UseCounter::count(frame, feature);
+#endif
 }
 
 bool ScriptLoader::executeScript(const ScriptSourceCode& sourceCode, double* compilationFinishTime)
@@ -352,6 +377,8 @@ bool ScriptLoader::executeScript(const ScriptSourceCode& sourceCode, double* com
         return true;
 
     RefPtrWillBeRawPtr<Document> elementDocument(m_element->document());
+    ASSERT(false); // BKTODO:
+#if 0
     RefPtrWillBeRawPtr<Document> contextDocument = elementDocument->contextDocument().get();
     if (!contextDocument)
         return true;
@@ -422,6 +449,7 @@ bool ScriptLoader::executeScript(const ScriptSourceCode& sourceCode, double* com
         ASSERT(contextDocument->currentScript() == m_element);
         contextDocument->popCurrentScript();
     }
+#endif
 
     return true;
 }
@@ -450,6 +478,8 @@ void ScriptLoader::notifyFinished(Resource* resource)
     ASSERT(!m_willBeParserExecuted);
 
     RefPtrWillBeRawPtr<Document> elementDocument(m_element->document());
+    ASSERT(false); // BKTODO:
+#if 0
     RefPtrWillBeRawPtr<Document> contextDocument = elementDocument->contextDocument().get();
     if (!contextDocument)
         return;
@@ -464,6 +494,7 @@ void ScriptLoader::notifyFinished(Resource* resource)
         return;
     }
     contextDocument->scriptRunner()->notifyScriptReady(this, runOrder);
+#endif
     m_pendingScript.stopWatchingForLoad(this);
 }
 
@@ -497,7 +528,7 @@ ScriptLoaderClient* ScriptLoader::client() const
         return toHTMLScriptElement(m_element);
 
     if (isSVGScriptLoader(m_element))
-        return toSVGScriptElement(m_element);
+        ASSERT(false); // BKTODO: return toSVGScriptElement(m_element);
 
     ASSERT_NOT_REACHED();
     return 0;
@@ -509,7 +540,7 @@ ScriptLoader* toScriptLoaderIfPossible(Element* element)
         return toHTMLScriptElement(element)->loader();
 
     if (isSVGScriptLoader(element))
-        return toSVGScriptElement(element)->loader();
+        ASSERT(false); // BKTODO: return toSVGScriptElement(element)->loader();
 
     return 0;
 }
