@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PendingScript.cpp
+// Description: PendingScript Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -29,7 +40,7 @@
 #include "bindings/core/v8/ScriptStreamer.h"
 #include "core/dom/Element.h"
 #include "core/fetch/ScriptResource.h"
-#include "core/frame/SubresourceIntegrity.h"
+// BKTODO: #include "core/frame/SubresourceIntegrity.h"
 #include "platform/SharedBuffer.h"
 
 namespace blink {
@@ -156,6 +167,8 @@ void PendingScript::notifyFinished(Resource* resource)
     if (m_element) {
         ASSERT(resource->type() == Resource::Script);
         ScriptResource* scriptResource = toScriptResource(resource);
+        ASSERT(false); // BKTODO:
+#if 0
         String integrityAttr = m_element->fastGetAttribute(HTMLNames::integrityAttr);
 
         // It is possible to get back a script resource with integrity metadata
@@ -175,6 +188,7 @@ void PendingScript::notifyFinished(Resource* resource)
                 scriptResource->setIntegrityDisposition(m_integrityFailure ? ScriptIntegrityDisposition::Failed : ScriptIntegrityDisposition::Passed);
             }
         }
+#endif
     }
 
     if (m_streamer)
