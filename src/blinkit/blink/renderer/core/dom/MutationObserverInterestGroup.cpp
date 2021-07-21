@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MutationObserverInterestGroup.cpp
+// Description: MutationObserverInterestGroup Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -37,25 +48,25 @@ namespace blink {
 PassOwnPtrWillBeRawPtr<MutationObserverInterestGroup> MutationObserverInterestGroup::createIfNeeded(Node& target, MutationObserver::MutationType type, MutationRecordDeliveryOptions oldValueFlag, const QualifiedName* attributeName)
 {
     ASSERT((type == MutationObserver::Attributes && attributeName) || !attributeName);
-    WillBeHeapHashMap<RefPtrWillBeMember<MutationObserver>, MutationRecordDeliveryOptions> observers;
+    std::unordered_map<Member<MutationObserver>, MutationRecordDeliveryOptions> observers;
     target.getRegisteredMutationObserversOfType(observers, type, attributeName);
-    if (observers.isEmpty())
+    if (observers.empty())
         return nullptr;
 
     return adoptPtrWillBeNoop(new MutationObserverInterestGroup(observers, oldValueFlag));
 }
 
-MutationObserverInterestGroup::MutationObserverInterestGroup(WillBeHeapHashMap<RefPtrWillBeMember<MutationObserver>, MutationRecordDeliveryOptions>& observers, MutationRecordDeliveryOptions oldValueFlag)
+MutationObserverInterestGroup::MutationObserverInterestGroup(std::unordered_map<Member<MutationObserver>, MutationRecordDeliveryOptions>& observers, MutationRecordDeliveryOptions oldValueFlag)
     : m_oldValueFlag(oldValueFlag)
 {
-    ASSERT(!observers.isEmpty());
+    ASSERT(!observers.empty());
     m_observers.swap(observers);
 }
 
 bool MutationObserverInterestGroup::isOldValueRequested()
 {
     for (auto& observer : m_observers) {
-        if (hasOldValue(observer.value))
+        if (hasOldValue(observer.second))
             return true;
     }
     return false;
@@ -66,8 +77,8 @@ void MutationObserverInterestGroup::enqueueMutationRecord(PassRefPtrWillBeRawPtr
     RefPtrWillBeRawPtr<MutationRecord> mutation = prpMutation;
     RefPtrWillBeRawPtr<MutationRecord> mutationWithNullOldValue = nullptr;
     for (auto& iter : m_observers) {
-        MutationObserver* observer = iter.key.get();
-        if (hasOldValue(iter.value)) {
+        MutationObserver* observer = iter.first.get();
+        if (hasOldValue(iter.second)) {
             observer->enqueueMutationRecord(mutation);
             continue;
         }
@@ -84,7 +95,7 @@ void MutationObserverInterestGroup::enqueueMutationRecord(PassRefPtrWillBeRawPtr
 DEFINE_TRACE(MutationObserverInterestGroup)
 {
 #if ENABLE(OILPAN)
-    visitor->trace(m_observers);
+    ASSERT(false); // BKTODO: visitor->trace(m_observers);
 #endif
 }
 
