@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScriptedAnimationController.cpp
+// Description: ScriptedAnimationController Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All Rights Reserved.
  *
@@ -34,7 +45,7 @@
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/inspector/InspectorTraceEvents.h"
 #include "core/loader/DocumentLoader.h"
-#include "platform/Logging.h"
+// BKTODO: #include "platform/Logging.h"
 
 namespace blink {
 
@@ -59,7 +70,7 @@ DEFINE_TRACE(ScriptedAnimationController)
     visitor->trace(m_callbackCollection);
     visitor->trace(m_eventQueue);
     visitor->trace(m_mediaQueryListListeners);
-    visitor->trace(m_perFrameEvents);
+    ASSERT(false); // BKTODO: visitor->trace(m_perFrameEvents);
 #endif
 }
 
@@ -105,7 +116,7 @@ void ScriptedAnimationController::dispatchEvents(const AtomicString& eventInterf
         WillBeHeapVector<RefPtrWillBeMember<Event>> remaining;
         for (auto& event : m_eventQueue) {
             if (event && event->interfaceName() == eventInterfaceFilter) {
-                m_perFrameEvents.remove(eventTargetKey(event.get()));
+                ASSERT(false); // BKTODO: m_perFrameEvents.erase(eventTargetKey(event.get()));
                 events.append(event.release());
             } else {
                 remaining.append(event.release());
@@ -135,15 +146,18 @@ void ScriptedAnimationController::executeCallbacks(double monotonicTimeNow)
     if (!m_document)
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     double highResNowMs = 1000.0 * m_document->loader()->timing().monotonicTimeToZeroBasedDocumentTime(monotonicTimeNow);
     double legacyHighResNowMs = 1000.0 * m_document->loader()->timing().monotonicTimeToPseudoWallTime(monotonicTimeNow);
     m_callbackCollection.executeCallbacks(highResNowMs, legacyHighResNowMs);
+#endif
 }
 
 void ScriptedAnimationController::callMediaQueryListListeners()
 {
     MediaQueryListListeners listeners;
-    listeners.swap(m_mediaQueryListListeners);
+    ASSERT(false); // BKTODO: listeners.swap(m_mediaQueryListListeners);
 
     for (const auto& listener : listeners) {
         listener->notifyMediaQueryChanged();
@@ -181,15 +195,18 @@ void ScriptedAnimationController::enqueueEvent(PassRefPtrWillBeRawPtr<Event> eve
 
 void ScriptedAnimationController::enqueuePerFrameEvent(PassRefPtrWillBeRawPtr<Event> event)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_perFrameEvents.add(eventTargetKey(event.get())).isNewEntry)
         return;
+#endif
     enqueueEvent(event);
 }
 
 void ScriptedAnimationController::enqueueMediaQueryChangeListeners(WillBeHeapVector<RefPtrWillBeMember<MediaQueryListListener>>& listeners)
 {
     for (size_t i = 0; i < listeners.size(); ++i) {
-        m_mediaQueryListListeners.add(listeners[i]);
+        ASSERT(false); // BKTODO: m_mediaQueryListListeners.add(listeners[i]);
     }
     scheduleAnimationIfNeeded();
 }
