@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IconURL.cpp
+// Description: IconURL Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -36,12 +47,15 @@ IconURL IconURL::defaultFavicon(const KURL& documentURL)
 {
     ASSERT(documentURL.protocolIsInHTTPFamily());
     KURL url;
+    ASSERT(false); // BKTODO:
+#if 0
     bool couldSetProtocol = url.setProtocol(documentURL.protocol());
     ASSERT_UNUSED(couldSetProtocol, couldSetProtocol);
     url.setHost(documentURL.host());
     if (documentURL.hasPort())
         url.setPort(documentURL.port());
     url.setPath("/favicon.ico");
+#endif
 
     IconURL result(url, Vector<IntSize>(), emptyString(), Favicon);
     result.m_isDefaultIcon = true;
