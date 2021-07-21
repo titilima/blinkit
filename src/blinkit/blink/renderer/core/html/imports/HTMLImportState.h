@@ -1,16 +1,5 @@
-// -------------------------------------------------
-// BlinKit - BlinKit Library
-// -------------------------------------------------
-//   File Name: WebSize.h
-// Description: WebSize Struct
-//      Author: Ziming Li
-//     Created: 2021-06-28
-// -------------------------------------------------
-// Copyright (C) 2021 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
- * Copyright (C) 2009 Google Inc. All rights reserved.
+ * Copyright (C) 2014 Google Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -39,61 +28,52 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef WebSize_h
-#define WebSize_h
+#ifndef HTMLImportState_h
+#define HTMLImportState_h
 
-#include "WebCommon.h"
-#include "platform/geometry/IntSize.h"
+#include "wtf/Allocator.h"
+#include "wtf/Assertions.h"
 
 namespace blink {
 
-struct WebSize {
-    int width;
-    int height;
+class HTMLImportState {
+    DISALLOW_NEW();
+public:
+    enum Value {
+        BlockingScriptExecution = 0,
+        Active,
+        Ready,
+        Invalid
+    };
 
-    bool isEmpty() const { return width <= 0 || height <= 0; }
+    explicit HTMLImportState(Value value = BlockingScriptExecution)
+        : m_value(value)
+    { }
 
-    WebSize()
-        : width(0)
-        , height(0)
-    {
-    }
+    bool shouldBlockScriptExecution() const { return checkedValue() <= BlockingScriptExecution; }
+    bool isReady() const { return checkedValue() == Ready; }
+    bool isValid() const { return m_value != Invalid; }
+    bool operator==(const HTMLImportState& other) const { return m_value == other.m_value; }
+    bool operator!=(const HTMLImportState& other) const { return !(*this == other); }
+    bool operator<=(const HTMLImportState& other) const { return m_value <= other.m_value; }
 
-    WebSize(int width, int height)
-        : width(width)
-        , height(height)
-    {
-    }
+#if !defined(NDEBUG)
+    Value peekValueForDebug() const { return m_value; }
+#endif
 
-    WebSize(const IntSize& s)
-        : width(s.width())
-        , height(s.height())
-    {
-    }
-
-    WebSize& operator=(const IntSize& s)
-    {
-        width = s.width();
-        height = s.height();
-        return *this;
-    }
-
-    operator IntSize() const
-    {
-        return IntSize(width, height);
-    }
+    static HTMLImportState invalidState() { return HTMLImportState(Invalid); }
+    static HTMLImportState blockedState() { return HTMLImportState(BlockingScriptExecution); }
+private:
+    Value checkedValue() const;
+    Value m_value;
 };
 
-inline bool operator==(const WebSize& a, const WebSize& b)
+inline HTMLImportState::Value HTMLImportState::checkedValue() const
 {
-    return a.width == b.width && a.height == b.height;
+    ASSERT(isValid());
+    return m_value;
 }
 
-inline bool operator!=(const WebSize& a, const WebSize& b)
-{
-    return !(a == b);
 }
-
-} // namespace blink
 
 #endif
