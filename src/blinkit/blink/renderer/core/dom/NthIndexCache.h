@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NthIndexCache.h
+// Description: NthIndexCache Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -70,9 +81,9 @@ public:
     }
 
 private:
-    using IndexByType = WillBeHeapHashMap<String, OwnPtrWillBeMember<NthIndexData>>;
-    using ParentMap = WillBeHeapHashMap<RefPtrWillBeMember<Node>, OwnPtrWillBeMember<NthIndexData>>;
-    using ParentMapForType = WillBeHeapHashMap<RefPtrWillBeMember<Node>, OwnPtrWillBeMember<IndexByType>>;
+    using IndexByType = std::unordered_map<String, Member<NthIndexData>>;
+    using ParentMap = std::unordered_map<Member<Node>, Member<NthIndexData>>;
+    using ParentMapForType = std::unordered_map<Member<Node>, Member<IndexByType>>;
 
     NthIndexData& ensureNthIndexDataFor(Node&);
     IndexByType& ensureTypeIndexMap(Node&);

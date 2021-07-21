@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NthIndexCache.cpp
+// Description: NthIndexCache Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -29,12 +40,12 @@ NthIndexData& NthIndexCache::ensureNthIndexDataFor(Node& parent)
     if (!m_parentMap)
         m_parentMap = adoptPtrWillBeNoop(new ParentMap());
 
-    ParentMap::AddResult addResult = m_parentMap->add(&parent, nullptr);
-    if (addResult.isNewEntry)
-        addResult.storedValue->value = adoptPtrWillBeNoop(new NthIndexData());
+    Member<NthIndexData> &result = (*m_parentMap)[&parent];
+    if (!result)
+        result = adoptPtrWillBeNoop(new NthIndexData());
 
-    ASSERT(addResult.storedValue->value);
-    return *addResult.storedValue->value;
+    ASSERT(result);
+    return *result;
 }
 
 NthIndexCache::IndexByType& NthIndexCache::ensureTypeIndexMap(Node& parent)
@@ -42,20 +53,20 @@ NthIndexCache::IndexByType& NthIndexCache::ensureTypeIndexMap(Node& parent)
     if (!m_parentMapForType)
         m_parentMapForType = adoptPtrWillBeNoop(new ParentMapForType());
 
-    ParentMapForType::AddResult addResult = m_parentMapForType->add(&parent, nullptr);
-    if (addResult.isNewEntry)
-        addResult.storedValue->value = adoptPtrWillBeNoop(new IndexByType());
+    Member<IndexByType> &result = (*m_parentMapForType)[&parent];
+    if (!result)
+        result = adoptPtrWillBeNoop(new IndexByType());
 
-    ASSERT(addResult.storedValue->value);
-    return *addResult.storedValue->value;
+    ASSERT(result);
+    return *result;
 }
 
 NthIndexData& NthIndexCache::nthIndexDataWithTagName(Element& element)
 {
-    IndexByType::AddResult addResult = ensureTypeIndexMap(*element.parentNode()).add(element.tagName(), nullptr);
-    if (addResult.isNewEntry)
-        addResult.storedValue->value = adoptPtrWillBeNoop(new NthIndexData());
-    return *addResult.storedValue->value;
+    Member<NthIndexData> &result = ensureTypeIndexMap(*element.parentNode())[element.tagName()];
+    if (!result)
+        result = adoptPtrWillBeNoop(new NthIndexData());
+    return *result;
 }
 
 unsigned NthIndexData::nthIndex(Element& element)
@@ -69,7 +80,7 @@ unsigned NthIndexData::nthIndex(Element& element)
     for (Element* sibling = &element; sibling; sibling = ElementTraversal::previousSibling(*sibling), index++) {
         auto it = m_elementIndexMap.find(sibling);
         if (it != m_elementIndexMap.end())
-            return it->value + index;
+            return it->second + index;
     }
     return index;
 }
@@ -84,7 +95,7 @@ unsigned NthIndexData::nthIndexOfType(Element& element, const QualifiedName& typ
     for (Element* sibling = &element; sibling; sibling = ElementTraversal::previousSibling(*sibling, HasTagName(type)), index++) {
         auto it = m_elementIndexMap.find(sibling);
         if (it != m_elementIndexMap.end())
-            return it->value + index;
+            return it->second + index;
     }
     return index;
 }
@@ -119,7 +130,7 @@ unsigned NthIndexData::cacheNthIndices(Element& element)
     unsigned count = 0;
     for (Element* sibling = ElementTraversal::firstChild(*element.parentNode()); sibling; sibling = ElementTraversal::nextSibling(*sibling)) {
         if (!(++count % spread))
-            m_elementIndexMap.add(sibling, count);
+            m_elementIndexMap.emplace(sibling, count);
         if (sibling == &element)
             index = count;
     }
@@ -142,7 +153,7 @@ unsigned NthIndexData::cacheNthIndicesOfType(Element& element, const QualifiedNa
     unsigned count = 0;
     for (Element* sibling = ElementTraversal::firstChild(*element.parentNode(), HasTagName(type)); sibling; sibling = ElementTraversal::nextSibling(*sibling, HasTagName(type))) {
         if (!(++count % spread))
-            m_elementIndexMap.add(sibling, count);
+            m_elementIndexMap.emplace(sibling, count);
         if (sibling == &element)
             index = count;
     }
@@ -154,7 +165,7 @@ unsigned NthIndexData::cacheNthIndicesOfType(Element& element, const QualifiedNa
 DEFINE_TRACE(NthIndexData)
 {
 #if ENABLE(OILPAN)
-    visitor->trace(m_elementIndexMap);
+    ASSERT(false); // BKTODO: visitor->trace(m_elementIndexMap);
 #endif
 }
 
