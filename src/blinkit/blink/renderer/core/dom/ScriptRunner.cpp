@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScriptRunner.cpp
+// Description: ScriptRunner Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -29,16 +40,16 @@
 #include "core/dom/Element.h"
 #include "core/dom/ScriptLoader.h"
 #include "platform/heap/Handle.h"
-#include "platform/scheduler/CancellableTaskFactory.h"
+// BKTODO: #include "platform/scheduler/CancellableTaskFactory.h"
 #include "public/platform/Platform.h"
-#include "public/platform/WebScheduler.h"
+// BKTODO: #include "public/platform/WebScheduler.h"
 #include "public/platform/WebThread.h"
 
 namespace blink {
 
 ScriptRunner::ScriptRunner(Document* document)
     : m_document(document)
-    , m_taskRunner(Platform::current()->currentThread()->scheduler()->loadingTaskRunner())
+    // BKTODO: , m_taskRunner(Platform::current()->currentThread()->scheduler()->loadingTaskRunner())
     , m_numberOfInOrderScriptsWithPendingNotification(0)
     , m_isSuspended(false)
 #if !ENABLE(OILPAN)
@@ -58,6 +69,7 @@ ScriptRunner::~ScriptRunner()
 #endif
 }
 
+#if 0 // BKTODO:
 class ScriptRunner::Task : public WebTaskRunner::Task {
     WTF_MAKE_NONCOPYABLE(Task);
 
@@ -79,6 +91,7 @@ public:
 private:
     WeakPtrWillBeWeakPersistent<ScriptRunner> m_scriptRunner;
 };
+#endif
 
 #if !ENABLE(OILPAN)
 void ScriptRunner::dispose()
@@ -111,7 +124,7 @@ void ScriptRunner::queueScriptForExecution(ScriptLoader* scriptLoader, Execution
         break;
 
     case IN_ORDER_EXECUTION:
-        m_pendingInOrderScripts.append(scriptLoader);
+        ASSERT(false); // BKTODO: m_pendingInOrderScripts.append(scriptLoader);
         m_numberOfInOrderScriptsWithPendingNotification++;
         break;
     }
@@ -126,7 +139,7 @@ void ScriptRunner::postTask(const WebTraceLocation& webTraceLocation)
 #else
     scriptRunnerForTask = this;
 #endif
-    m_taskRunner->postTask(webTraceLocation, new Task(scriptRunnerForTask));
+    ASSERT(false); // BKTODO: m_taskRunner->postTask(webTraceLocation, new Task(scriptRunnerForTask));
 }
 
 void ScriptRunner::suspend()
@@ -164,7 +177,7 @@ void ScriptRunner::notifyScriptReady(ScriptLoader* scriptLoader, ExecutionType e
         RELEASE_ASSERT_WITH_SECURITY_IMPLICATION(m_pendingAsyncScripts.contains(scriptLoader));
 
         m_pendingAsyncScripts.remove(scriptLoader);
-        m_asyncScriptsToExecuteSoon.append(scriptLoader);
+        ASSERT(false); // BKTODO: m_asyncScriptsToExecuteSoon.append(scriptLoader);
 
         postTask(BLINK_FROM_HERE);
 
@@ -174,10 +187,13 @@ void ScriptRunner::notifyScriptReady(ScriptLoader* scriptLoader, ExecutionType e
         RELEASE_ASSERT_WITH_SECURITY_IMPLICATION(m_numberOfInOrderScriptsWithPendingNotification > 0);
         m_numberOfInOrderScriptsWithPendingNotification--;
 
+        ASSERT(false); // BKTODO:
+#if 0
         while (!m_pendingInOrderScripts.isEmpty() && m_pendingInOrderScripts.first()->isReady()) {
             m_inOrderScriptsToExecuteSoon.append(m_pendingInOrderScripts.takeFirst());
             postTask(BLINK_FROM_HERE);
         }
+#endif
 
         break;
     }
@@ -187,7 +203,7 @@ bool ScriptRunner::removePendingInOrderScript(ScriptLoader* scriptLoader)
 {
     for (auto it = m_pendingInOrderScripts.begin(); it != m_pendingInOrderScripts.end(); ++it) {
         if (*it == scriptLoader) {
-            m_pendingInOrderScripts.remove(it);
+            ASSERT(false); // BKTODO: m_pendingInOrderScripts.remove(it);
             RELEASE_ASSERT_WITH_SECURITY_IMPLICATION(m_numberOfInOrderScriptsWithPendingNotification > 0);
             m_numberOfInOrderScriptsWithPendingNotification--;
             return true;
@@ -217,6 +233,8 @@ void ScriptRunner::notifyScriptLoadError(ScriptLoader* scriptLoader, ExecutionTy
 
 void ScriptRunner::movePendingScript(Document& oldDocument, Document& newDocument, ScriptLoader* scriptLoader)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     RefPtrWillBeRawPtr<Document> newContextDocument = newDocument.contextDocument().get();
     if (!newContextDocument) {
         // Document's contextDocument() method will return no Document if the
@@ -239,6 +257,7 @@ void ScriptRunner::movePendingScript(Document& oldDocument, Document& newDocumen
     }
     if (oldContextDocument != newContextDocument)
         oldContextDocument->scriptRunner()->movePendingScript(newContextDocument->scriptRunner(), scriptLoader);
+#endif
 }
 
 void ScriptRunner::movePendingScript(ScriptRunner* newRunner, ScriptLoader* scriptLoader)
@@ -260,7 +279,7 @@ bool ScriptRunner::executeTaskFromQueue(WillBeHeapDeque<RawPtrWillBeMember<Scrip
 {
     if (taskQueue->isEmpty())
         return false;
-    taskQueue->takeFirst()->execute();
+    ASSERT(false); // BKTODO: taskQueue->takeFirst()->execute();
 
     m_document->decrementLoadEventDelayCount();
     return true;
@@ -287,10 +306,10 @@ DEFINE_TRACE(ScriptRunner)
 {
 #if ENABLE(OILPAN)
     visitor->trace(m_document);
-    visitor->trace(m_pendingInOrderScripts);
+    ASSERT(false); // BKTODO: visitor->trace(m_pendingInOrderScripts);
     visitor->trace(m_pendingAsyncScripts);
-    visitor->trace(m_asyncScriptsToExecuteSoon);
-    visitor->trace(m_inOrderScriptsToExecuteSoon);
+    ASSERT(false); // BKTODO: visitor->trace(m_asyncScriptsToExecuteSoon);
+    ASSERT(false); // BKTODO: visitor->trace(m_inOrderScriptsToExecuteSoon);
 #endif
 }
 
