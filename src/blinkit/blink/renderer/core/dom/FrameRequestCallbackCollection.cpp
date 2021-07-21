@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FrameRequestCallbackCollection.cpp
+// Description: FrameRequestCallbackCollection Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -20,7 +31,7 @@ FrameRequestCallbackCollection::CallbackId FrameRequestCallbackCollection::regis
     FrameRequestCallbackCollection::CallbackId id = ++m_nextCallbackId;
     callback->m_cancelled = false;
     callback->m_id = id;
-    m_callbacks.append(callback);
+    m_callbacks.emplace_back(callback);
 
     TRACE_EVENT_INSTANT1("devtools.timeline", "RequestAnimationFrame", TRACE_EVENT_SCOPE_THREAD, "data", InspectorAnimationFrameEvent::data(m_context, id));
     InspectorInstrumentation::didRequestAnimationFrame(m_context, id);
@@ -32,7 +43,7 @@ void FrameRequestCallbackCollection::cancelCallback(CallbackId id)
 {
     for (size_t i = 0; i < m_callbacks.size(); ++i) {
         if (m_callbacks[i]->m_id == id) {
-            m_callbacks.remove(i);
+            m_callbacks.erase(m_callbacks.begin() + i);
             TRACE_EVENT_INSTANT1("devtools.timeline", "CancelAnimationFrame", TRACE_EVENT_SCOPE_THREAD, "data", InspectorAnimationFrameEvent::data(m_context, id));
             InspectorInstrumentation::didCancelAnimationFrame(m_context, id);
             return;
@@ -53,7 +64,7 @@ void FrameRequestCallbackCollection::executeCallbacks(double highResNowMs, doubl
 {
     // First, generate a list of callbacks to consider.  Callbacks registered from this point
     // on are considered only for the "next" frame, not this one.
-    ASSERT(m_callbacksToInvoke.isEmpty());
+    ASSERT(m_callbacksToInvoke.empty());
     m_callbacksToInvoke.swap(m_callbacks);
 
     for (size_t i = 0; i < m_callbacksToInvoke.size(); ++i) {
