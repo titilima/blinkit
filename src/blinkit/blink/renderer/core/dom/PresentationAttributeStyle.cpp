@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PresentationAttributeStyle.cpp
+// Description: computePresentationAttributeStyle
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -66,12 +77,14 @@ public:
     RefPtrWillBeMember<StylePropertySet> value;
 };
 
-using PresentationAttributeCache = WillBeHeapHashMap<unsigned, OwnPtrWillBeMember<PresentationAttributeCacheEntry>, AlreadyHashed>;
+#if 0 // BKTTODO:
+using PresentationAttributeCache = std::unordered_map<unsigned, Member<PresentationAttributeCacheEntry>, AlreadyHashed>;
 static PresentationAttributeCache& presentationAttributeCache()
 {
     DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<PresentationAttributeCache>, cache, (adoptPtrWillBeNoop(new PresentationAttributeCache())));
     return *cache;
 }
+#endif
 
 class PresentationAttributeCacheCleaner {
     WTF_MAKE_NONCOPYABLE(PresentationAttributeCacheCleaner); USING_FAST_MALLOC(PresentationAttributeCacheCleaner);
@@ -84,8 +97,11 @@ public:
 
     void didHitPresentationAttributeCache()
     {
+        ASSERT(false); // BKTODO:
+#if 0
         if (presentationAttributeCache().size() < minimumPresentationAttributeCacheSizeForCleaning)
             return;
+#endif
 
         m_hitCount++;
 
@@ -105,7 +121,7 @@ private:
         m_hitCount = 0;
         if (hitCount > minimumPresentationAttributeCacheHitCountPerMinute)
             return;
-        presentationAttributeCache().clear();
+        ASSERT(false); // BKTODO: presentationAttributeCache().clear();
     }
 
     unsigned m_hitCount;
@@ -165,6 +181,9 @@ PassRefPtrWillBeRawPtr<StylePropertySet> computePresentationAttributeStyle(Eleme
 
     unsigned cacheHash = computePresentationAttributeCacheHash(cacheKey);
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     PresentationAttributeCache::ValueType* cacheValue;
     if (cacheHash) {
         cacheValue = presentationAttributeCache().add(cacheHash, nullptr).storedValue;
@@ -197,12 +216,13 @@ PassRefPtrWillBeRawPtr<StylePropertySet> computePresentationAttributeStyle(Eleme
         // FIXME: Discarding the entire cache when it gets too big is probably bad
         // since it creates a perf "cliff". Perhaps we should use an LRU?
         presentationAttributeCache().clear();
-        presentationAttributeCache().set(cacheHash, newEntry.release());
+        presentationAttributeCache().emplace(cacheHash, newEntry.release());
     } else {
         cacheValue->value = newEntry.release();
     }
 
     return style.release();
+#endif
 }
 
 } // namespace blink
