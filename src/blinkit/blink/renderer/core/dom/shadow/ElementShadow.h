@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ElementShadow.h
+// Description: ElementShadow Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -110,7 +121,7 @@ private:
 #if ENABLE(OILPAN)
     // The cost of |new| in Oilpan is lower than non-Oilpan.  We should reduce
     // the size of HashMap entry.
-    typedef HeapHashMap<Member<const Node>, Member<DestinationInsertionPoints>> NodeToDestinationInsertionPoints;
+    using NodeToDestinationInsertionPoints = std::unordered_map<Member<const Node>, Member<DestinationInsertionPoints>>;
 #else
     typedef HashMap<const Node*, DestinationInsertionPoints> NodeToDestinationInsertionPoints;
 #endif

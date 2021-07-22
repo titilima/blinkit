@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ElementShadow.cpp
+// Description: ElementShadow Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -260,7 +271,7 @@ const InsertionPoint* ElementShadow::finalDestinationInsertionPointFor(const Nod
     ASSERT(key && !key->needsDistributionRecalc());
     NodeToDestinationInsertionPoints::const_iterator it = m_nodeToInsertionPoints.find(key);
 #if ENABLE(OILPAN)
-    return it == m_nodeToInsertionPoints.end() ? nullptr : it->value->last().get();
+    return it == m_nodeToInsertionPoints.end() ? nullptr : it->second->last().get();
 #else
     return it == m_nodeToInsertionPoints.end() ? nullptr : it->value.last().get();
 #endif
@@ -271,7 +282,7 @@ const DestinationInsertionPoints* ElementShadow::destinationInsertionPointsFor(c
     ASSERT(key && !key->needsDistributionRecalc());
     NodeToDestinationInsertionPoints::const_iterator it = m_nodeToInsertionPoints.find(key);
 #if ENABLE(OILPAN)
-    return it == m_nodeToInsertionPoints.end() ? nullptr : it->value.get();
+    return it == m_nodeToInsertionPoints.end() ? nullptr : it->second.get();
 #else
     return it == m_nodeToInsertionPoints.end() ? nullptr : &it->value;
 #endif
@@ -339,10 +350,10 @@ void ElementShadow::distributeV1()
 void ElementShadow::didDistributeNode(const Node* node, InsertionPoint* insertionPoint)
 {
 #if ENABLE(OILPAN)
-    NodeToDestinationInsertionPoints::AddResult result = m_nodeToInsertionPoints.add(node, nullptr);
-    if (result.isNewEntry)
-        result.storedValue->value = adoptPtrWillBeNoop(new DestinationInsertionPoints());
-    result.storedValue->value->append(insertionPoint);
+    Member<DestinationInsertionPoints> &points = m_nodeToInsertionPoints[node];
+    if (!points)
+        points = adoptPtrWillBeNoop(new DestinationInsertionPoints());
+    points->append(insertionPoint);
 #else
     NodeToDestinationInsertionPoints::AddResult result = m_nodeToInsertionPoints.add(node, DestinationInsertionPoints());
     result.storedValue->value.append(insertionPoint);
