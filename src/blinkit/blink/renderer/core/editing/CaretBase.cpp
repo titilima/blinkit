@@ -157,8 +157,7 @@ bool CaretBase::shouldRepaintCaret(const LayoutView* view) const
 {
     ASSERT(view);
     if (FrameView* frameView = view->frameView()) {
-        LocalFrame& frame = frameView->frame(); // The frame where the selection started
-        return frame.settings() && frame.settings()->caretBrowsingEnabled();
+        return Settings::caretBrowsingEnabled();
     }
     return false;
 }
