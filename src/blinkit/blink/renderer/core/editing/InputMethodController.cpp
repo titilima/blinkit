@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InputMethodController.cpp
+// Description: InputMethodController Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Nokia Corporation and/or its subsidiary(-ies)
@@ -31,9 +42,9 @@
 #include "core/dom/Text.h"
 #include "core/editing/EditingUtilities.h"
 #include "core/editing/Editor.h"
-#include "core/editing/commands/TypingCommand.h"
+// BKTODO: #include "core/editing/commands/TypingCommand.h"
 #include "core/editing/markers/DocumentMarkerController.h"
-#include "core/events/CompositionEvent.h"
+// BKTODO: #include "core/events/CompositionEvent.h"
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLTextAreaElement.h"
 #include "core/input/EventHandler.h"
@@ -130,9 +141,12 @@ static void dispatchCompositionEndEvent(LocalFrame& frame, const String& text)
     if (!target)
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     RefPtrWillBeRawPtr<CompositionEvent> event =
         CompositionEvent::create(EventTypeNames::compositionend, frame.domWindow(), text);
     target->dispatchEvent(event);
+#endif
 }
 
 bool InputMethodController::confirmComposition(const String& text)
@@ -165,7 +179,7 @@ bool InputMethodController::confirmComposition(const String& text)
     // non-empty, InsertTextCommand::input will delete the old composition with
     // an optimized replace operation.
     if (text.isEmpty())
-        TypingCommand::deleteSelection(*frame().document(), 0);
+        ASSERT(false); // BKTODO: TypingCommand::deleteSelection(*frame().document(), 0);
 
     clear();
 
@@ -211,7 +225,7 @@ void InputMethodController::cancelComposition()
 
     // An open typing command that disagrees about current selection would cause
     // issues with typing later on.
-    TypingCommand::closeTyping(m_frame);
+    ASSERT(false); // BKTODO:TypingCommand::closeTyping(m_frame);
 }
 
 void InputMethodController::cancelCompositionIfSelectionIsInvalid()
@@ -246,6 +260,8 @@ void InputMethodController::setComposition(const String& text, const Vector<Comp
         return;
 
     if (Element* target = frame().document()->focusedElement()) {
+        ASSERT(false); // BKTODO:
+#if 0
         // Dispatch an appropriate composition event to the focused node.
         // We check the composition status and choose an appropriate composition event since this
         // function is used for three purposes:
@@ -277,13 +293,14 @@ void InputMethodController::setComposition(const String& text, const Vector<Comp
         }
         if (event.get())
             target->dispatchEvent(event);
+#endif
     }
 
     // If text is empty, then delete the old composition here. If text is non-empty, InsertTextCommand::input
     // will delete the old composition with an optimized replace operation.
     if (text.isEmpty()) {
         ASSERT(frame().document());
-        TypingCommand::deleteSelection(*frame().document(), TypingCommand::PreventSpellChecking);
+        ASSERT(false); // BKTODO: TypingCommand::deleteSelection(*frame().document(), TypingCommand::PreventSpellChecking);
     }
 
     clear();
@@ -291,7 +308,7 @@ void InputMethodController::setComposition(const String& text, const Vector<Comp
     if (text.isEmpty())
         return;
     ASSERT(frame().document());
-    TypingCommand::insertText(*frame().document(), text, TypingCommand::SelectInsertedText | TypingCommand::PreventSpellChecking, TypingCommand::TextCompositionUpdate);
+    ASSERT(false); // BKTODO: TypingCommand::insertText(*frame().document(), text, TypingCommand::SelectInsertedText | TypingCommand::PreventSpellChecking, TypingCommand::TextCompositionUpdate);
 
     // Find out what node has the composition now.
     Position base = mostForwardCaretPosition(frame().selection().base());
@@ -450,7 +467,7 @@ void InputMethodController::extendSelectionAndDelete(int before, int after)
             break;
         ++before;
     } while (frame().selection().start() == frame().selection().end() && before <= static_cast<int>(selectionOffsets.start()));
-    TypingCommand::deleteSelection(*frame().document());
+    ASSERT(false); // BKTODO: TypingCommand::deleteSelection(*frame().document());
 }
 
 DEFINE_TRACE(InputMethodController)
