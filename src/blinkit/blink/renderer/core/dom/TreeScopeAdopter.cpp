@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TreeScopeAdopter.cpp
+// Description: TreeScopeAdopter Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -65,7 +76,7 @@ void TreeScopeAdopter::moveTreeToNewScope(Node& root) const
             continue;
         Element& element = toElement(node);
 
-        if (WillBeHeapVector<RefPtrWillBeMember<Attr>>* attrs = element.attrNodeList()) {
+        if (AttrNodeList *attrs = element.attrNodeList()) {
             for (const auto& attr : *attrs)
                 moveTreeToNewScope(*attr);
         }
@@ -92,7 +103,7 @@ void TreeScopeAdopter::moveTreeToNewDocument(Node& root, Document& oldDocument, 
             continue;
         Element& element = toElement(node);
 
-        if (WillBeHeapVector<RefPtrWillBeMember<Attr>>* attrs = element.attrNodeList()) {
+        if (AttrNodeList *attrs = element.attrNodeList()) {
             for (const auto& attr : *attrs)
                 moveTreeToNewDocument(*attr, oldDocument, newDocument);
         }
