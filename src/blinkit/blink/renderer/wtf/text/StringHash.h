@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StringHash.h
+// Description: String Hashers
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2012, 2013 Apple Inc. All rights reserved
  * Copyright (C) Research In Motion Limited 2009. All rights reserved.
@@ -107,6 +118,11 @@ public:
     {
         return hash(key.impl());
     }
+    std::size_t operator()(const String &key) const noexcept
+    {
+        return hash(key);
+    }
+
     static unsigned hash(const AtomicString& key)
     {
         return hash(key.impl());
