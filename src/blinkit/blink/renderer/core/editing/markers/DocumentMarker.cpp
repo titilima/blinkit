@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentMarker.cpp
+// Description: DocumentMarker Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -83,9 +94,13 @@ private:
 
 PassRefPtrWillBeRawPtr<DocumentMarkerTextMatch> DocumentMarkerTextMatch::create(bool match)
 {
+    ASSERT(false); // BKTODO:
+    exit(0);
+#if 0
     DEFINE_STATIC_REF_WILL_BE_PERSISTENT(DocumentMarkerTextMatch, trueInstance, (adoptRefWillBeNoop(new DocumentMarkerTextMatch(true))));
     DEFINE_STATIC_REF_WILL_BE_PERSISTENT(DocumentMarkerTextMatch, falseInstance, (adoptRefWillBeNoop(new DocumentMarkerTextMatch(false))));
     return match ? trueInstance : falseInstance;
+#endif
 }
 
 inline DocumentMarkerTextMatch* toDocumentMarkerTextMatch(DocumentMarkerDetails* details)
