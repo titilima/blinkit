@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleEngine.cpp
+// Description: StyleEngine Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -40,12 +51,12 @@
 #include "core/dom/ShadowTreeStyleSheetCollection.h"
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLIFrameElement.h"
+// BKTODO: #include "core/html/HTMLIFrameElement.h"
 #include "core/html/HTMLLinkElement.h"
 #include "core/html/imports/HTMLImportsController.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/page/Page.h"
-#include "core/svg/SVGStyleElement.h"
+// BKTODO: #include "core/svg/SVGStyleElement.h"
 #include "platform/TraceEvent.h"
 #include "platform/fonts/FontCache.h"
 
@@ -80,7 +91,8 @@ StyleEngine::~StyleEngine()
 
 static bool isStyleElement(Node& node)
 {
-    return isHTMLStyleElement(node) || isSVGStyleElement(node);
+    ASSERT(false); // BKTODO: return isHTMLStyleElement(node) || isSVGStyleElement(node);
+    return isHTMLStyleElement(node);
 }
 
 #if !ENABLE(OILPAN)
@@ -120,10 +132,10 @@ TreeScopeStyleSheetCollection* StyleEngine::ensureStyleSheetCollectionFor(TreeSc
     if (treeScope == m_document)
         return documentStyleSheetCollection();
 
-    StyleSheetCollectionMap::AddResult result = m_styleSheetCollectionMap.add(&treeScope, nullptr);
-    if (result.isNewEntry)
-        result.storedValue->value = adoptPtrWillBeNoop(new ShadowTreeStyleSheetCollection(toShadowRoot(treeScope)));
-    return result.storedValue->value.get();
+    Member<ShadowTreeStyleSheetCollection> &result = m_styleSheetCollectionMap[&treeScope];
+    if (!result)
+        result = adoptPtrWillBeNoop(new ShadowTreeStyleSheetCollection(toShadowRoot(treeScope)));
+    return result;
 }
 
 TreeScopeStyleSheetCollection* StyleEngine::styleSheetCollectionFor(TreeScope& treeScope)
@@ -134,7 +146,7 @@ TreeScopeStyleSheetCollection* StyleEngine::styleSheetCollectionFor(TreeScope& t
     StyleSheetCollectionMap::iterator it = m_styleSheetCollectionMap.find(&treeScope);
     if (it == m_styleSheetCollectionMap.end())
         return 0;
-    return it->value.get();
+    return it->second;
 }
 
 const WillBeHeapVector<RefPtrWillBeMember<StyleSheet>>& StyleEngine::styleSheetsForStyleSheetList(TreeScope& treeScope)
@@ -337,6 +349,7 @@ void StyleEngine::updateActiveStyleSheets(StyleResolverUpdateMode updateMode)
     m_documentScopeDirty = false;
 }
 
+#if 0 // BKTODO:
 const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>> StyleEngine::activeStyleSheetsForInspector() const
 {
     if (m_activeTreeScopes.isEmpty())
@@ -355,10 +368,11 @@ const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>> StyleEngine::activeSty
     // Need to implement some smarter solution.
     return activeStyleSheets;
 }
+#endif
 
 void StyleEngine::didRemoveShadowRoot(ShadowRoot* shadowRoot)
 {
-    m_styleSheetCollectionMap.remove(shadowRoot);
+    m_styleSheetCollectionMap.erase(shadowRoot);
     m_activeTreeScopes.remove(shadowRoot);
     m_dirtyTreeScopes.remove(shadowRoot);
 }
@@ -371,7 +385,7 @@ void StyleEngine::shadowRootRemovedFromDocument(ShadowRoot* shadowRoot)
         if (TreeScopeStyleSheetCollection* collection = styleSheetCollectionFor(*shadowRoot))
             styleResolver->removePendingAuthorStyleSheets(collection->activeAuthorStyleSheets());
     }
-    m_styleSheetCollectionMap.remove(shadowRoot);
+    m_styleSheetCollectionMap.erase(shadowRoot);
     m_activeTreeScopes.remove(shadowRoot);
     m_dirtyTreeScopes.remove(shadowRoot);
 }
@@ -382,8 +396,9 @@ void StyleEngine::appendActiveAuthorStyleSheets()
 
     m_resolver->appendAuthorStyleSheets(documentStyleSheetCollection()->activeAuthorStyleSheets());
     for (TreeScope* treeScope : m_activeTreeScopes) {
-        if (TreeScopeStyleSheetCollection* collection = m_styleSheetCollectionMap.get(treeScope))
-            m_resolver->appendAuthorStyleSheets(collection->activeAuthorStyleSheets());
+        auto it = m_styleSheetCollectionMap.find(treeScope);
+        if (m_styleSheetCollectionMap.end() != it)
+            m_resolver->appendAuthorStyleSheets(it->second->activeAuthorStyleSheets());
     }
     m_resolver->finishAppendAuthorStyleSheets();
 }
@@ -510,7 +525,7 @@ void StyleEngine::markTreeScopeDirty(TreeScope& scope)
         return;
     }
 
-    ASSERT(m_styleSheetCollectionMap.contains(&scope));
+    ASSERT(zed::key_exists(m_styleSheetCollectionMap, &scope));
     m_dirtyTreeScopes.add(&scope);
 }
 
@@ -524,7 +539,7 @@ void StyleEngine::markDocumentDirty()
 static bool isCacheableForStyleElement(const StyleSheetContents& contents)
 {
     // FIXME: Support copying import rules.
-    if (!contents.importRules().isEmpty())
+    if (!contents.importRules().empty())
         return false;
     // Until import rules are supported in cached sheets it's not possible for loading to fail.
     ASSERT(!contents.didLoadErrorOccur());
@@ -544,15 +559,15 @@ PassRefPtrWillBeRawPtr<CSSStyleSheet> StyleEngine::createSheet(Element* e, const
 
     AtomicString textContent(text);
 
-    WillBeHeapHashMap<AtomicString, RawPtrWillBeMember<StyleSheetContents>>::AddResult result = m_textToSheetCache.add(textContent, nullptr);
-    if (result.isNewEntry || !result.storedValue->value) {
+    Member<StyleSheetContents> &entry = m_textToSheetCache[textContent];
+    if (!entry) {
         styleSheet = StyleEngine::parseSheet(e, text, startPosition);
-        if (result.isNewEntry && isCacheableForStyleElement(*styleSheet->contents())) {
-            result.storedValue->value = styleSheet->contents();
-            m_sheetToTextCache.add(styleSheet->contents(), textContent);
+        if (isCacheableForStyleElement(*styleSheet->contents())) {
+            entry = styleSheet->contents();
+            m_sheetToTextCache.emplace(styleSheet->contents(), textContent);
         }
     } else {
-        StyleSheetContents* contents = result.storedValue->value;
+        StyleSheetContents* contents = entry;
         ASSERT(contents);
         ASSERT(isCacheableForStyleElement(*contents));
         ASSERT(contents->singleOwnerDocument() == e->document());
@@ -574,12 +589,12 @@ PassRefPtrWillBeRawPtr<CSSStyleSheet> StyleEngine::parseSheet(Element* e, const 
 
 void StyleEngine::removeSheet(StyleSheetContents* contents)
 {
-    WillBeHeapHashMap<RawPtrWillBeMember<StyleSheetContents>, AtomicString>::iterator it = m_sheetToTextCache.find(contents);
+    auto it = m_sheetToTextCache.find(contents);
     if (it == m_sheetToTextCache.end())
         return;
 
-    m_textToSheetCache.remove(it->value);
-    m_sheetToTextCache.remove(contents);
+    m_textToSheetCache.erase(it->second);
+    m_sheetToTextCache.erase(it);
 }
 
 void StyleEngine::collectScopedStyleFeaturesTo(RuleFeatureSet& features) const
@@ -739,7 +754,7 @@ DEFINE_TRACE(StyleEngine)
     visitor->trace(m_activeTreeScopes);
     visitor->trace(m_fontSelector);
     visitor->trace(m_textToSheetCache);
-    visitor->trace(m_sheetToTextCache);
+    ASSERT(false); // BKTODO: visitor->trace(m_sheetToTextCache);
 #endif
     CSSFontSelectorClient::trace(visitor);
 }
