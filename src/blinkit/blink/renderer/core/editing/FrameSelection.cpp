@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FrameSelection.cpp
+// Description: FrameSelection Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -27,9 +38,9 @@
 
 #include "bindings/core/v8/ExceptionState.h"
 #include "core/HTMLNames.h"
-#include "core/InputTypeNames.h"
+// BKTODO: #include "core/InputTypeNames.h"
 #include "core/css/StylePropertySet.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/CharacterData.h"
 #include "core/dom/Document.h"
 #include "core/dom/Element.h"
@@ -46,10 +57,10 @@
 #include "core/editing/SelectionEditor.h"
 #include "core/editing/TextAffinity.h"
 #include "core/editing/VisibleUnits.h"
-#include "core/editing/commands/TypingCommand.h"
+// BKTODO: #include "core/editing/commands/TypingCommand.h"
 #include "core/editing/iterators/TextIterator.h"
 #include "core/editing/serializers/Serialization.h"
-#include "core/editing/spellcheck/SpellChecker.h"
+// BKTODO: #include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/Event.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalDOMWindow.h"
@@ -57,7 +68,7 @@
 #include "core/frame/Settings.h"
 #include "core/html/HTMLBodyElement.h"
 #include "core/html/HTMLFormElement.h"
-#include "core/html/HTMLFrameElementBase.h"
+// BKTODO: #include "core/html/HTMLFrameElementBase.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/html/HTMLSelectElement.h"
 #include "core/input/EventHandler.h"
@@ -69,7 +80,7 @@
 #include "core/loader/DocumentLoader.h"
 #include "core/page/EditorClient.h"
 #include "core/page/FocusController.h"
-#include "core/page/FrameTree.h"
+// BKTODO: #include "core/page/FrameTree.h"
 #include "core/page/Page.h"
 #include "core/paint/PaintLayer.h"
 #include "platform/SecureTextInput.h"
@@ -306,7 +317,7 @@ void FrameSelection::setSelectionAlgorithm(const VisibleSelectionTemplate<Strate
     m_granularity = granularity;
 
     if (closeTyping)
-        TypingCommand::closeTyping(m_frame);
+        ASSERT(false); // BKTODO: TypingCommand::closeTyping(m_frame);
 
     if (shouldClearTypingStyle)
         clearTypingStyle();
@@ -765,6 +776,8 @@ bool FrameSelection::contains(const LayoutPoint& point)
 // mouse or the keyboard after setting the selection.
 void FrameSelection::selectFrameElementInParentIfFullySelected()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // Find the parent frame; if there is none, then we have nothing to do.
     Frame* parent = m_frame->tree().parent();
     if (!parent)
@@ -810,6 +823,7 @@ void FrameSelection::selectFrameElementInParentIfFullySelected()
     // tree might be modified.
     if (newSelection.isNonOrphanedCaretOrRange())
         toLocalFrame(parent)->selection().setSelection(newSelection);
+#endif
 }
 
 void FrameSelection::selectAll()
@@ -874,14 +888,18 @@ PassRefPtrWillBeRawPtr<Range> FrameSelection::firstRange() const
 bool FrameSelection::isInPasswordField() const
 {
     HTMLTextFormControlElement* textControl = enclosingTextFormControl(start());
-    return isHTMLInputElement(textControl) && toHTMLInputElement(textControl)->type() == InputTypeNames::password;
+    ASSERT(false); // BKTODO: return isHTMLInputElement(textControl) && toHTMLInputElement(textControl)->type() == InputTypeNames::password;
+    return false;
 }
 
 void FrameSelection::notifyAccessibilityForSelectionChange()
 {
     if (selection().start().isNotNull() && selection().end().isNotNull()) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (AXObjectCache* cache = m_frame->document()->existingAXObjectCache())
             cache->selectionChanged(selection().start().computeContainerNode());
+#endif
     }
 }
 
@@ -921,7 +939,7 @@ void FrameSelection::focusedOrActiveStateChanged()
     if (activeAndFocused)
         setSelectionFromNone();
     else
-        m_frame->spellChecker().spellCheckAfterBlur();
+        ASSERT(false); // BKTODO: m_frame->spellChecker().spellCheckAfterBlur();
     setCaretVisibility(activeAndFocused ? Visible : Hidden);
 
     // Update for caps lock state
@@ -967,7 +985,8 @@ bool FrameSelection::isFocusedAndActive() const
 
 inline static bool shouldStopBlinkingDueToTypingCommand(LocalFrame* frame)
 {
-    return frame->editor().lastEditCommand() && frame->editor().lastEditCommand()->shouldStopCaretBlinking();
+    ASSERT(false); // BKTODO: return frame->editor().lastEditCommand() && frame->editor().lastEditCommand()->shouldStopCaretBlinking();
+    return false;
 }
 
 bool FrameSelection::isAppearanceDirty() const
@@ -1033,7 +1052,7 @@ bool FrameSelection::shouldBlinkCaret() const
     if (!caretIsVisible() || !isCaret())
         return false;
 
-    if (m_frame->settings() && m_frame->settings()->caretBrowsingEnabled())
+    if (Settings::caretBrowsingEnabled())
         return false;
 
     Element* root = rootEditableElement();
@@ -1081,7 +1100,7 @@ void FrameSelection::setFocusedNodeIfNeeded()
     if (isNone() || !isFocused())
         return;
 
-    bool caretBrowsing = m_frame->settings() && m_frame->settings()->caretBrowsingEnabled();
+    bool caretBrowsing = Settings::caretBrowsingEnabled();
     if (caretBrowsing) {
         if (Element* anchor = enclosingAnchorElement(base())) {
             m_frame->page()->focusController().setFocusedElement(anchor, m_frame);
@@ -1146,7 +1165,7 @@ String FrameSelection::selectedText(TextIteratorBehavior behavior) const
 
 String FrameSelection::selectedTextForClipboard() const
 {
-    if (m_frame->settings() && m_frame->settings()->selectionIncludesAltImageText())
+    if (Settings::selectionIncludesAltImageText())
         return extractSelectedText(*this, TextIteratorEmitsImageAltText);
     return selectedText();
 }
@@ -1185,6 +1204,8 @@ static HTMLFormElement* scanForForm(Node* start)
     if (!start)
         return 0;
 
+    ASSERT(false); // BKTODO:
+#if 0
     for (HTMLElement& element : Traversal<HTMLElement>::startsAt(start->isHTMLElement() ? toHTMLElement(start) : Traversal<HTMLElement>::next(*start))) {
         if (HTMLFormElement* form = associatedFormElement(element))
             return form;
@@ -1195,6 +1216,7 @@ static HTMLFormElement* scanForForm(Node* start)
                 return frameResult;
         }
     }
+#endif
     return 0;
 }
 
@@ -1251,7 +1273,7 @@ void FrameSelection::setSelectionFromNone()
     // entire WebView is editable or designMode is on for this document).
 
     Document* document = m_frame->document();
-    bool caretBrowsing = m_frame->settings() && m_frame->settings()->caretBrowsingEnabled();
+    bool caretBrowsing = Settings::caretBrowsingEnabled();
     if (!isNone() || !(document->hasEditableStyle() || caretBrowsing))
         return;
 
@@ -1356,8 +1378,7 @@ GranularityStrategy* FrameSelection::granularityStrategy()
     // initialize it right in the constructor - the correct settings may not be
     // set yet.
     SelectionStrategy strategyType = SelectionStrategy::Character;
-    Settings* settings = m_frame ? m_frame->settings() : 0;
-    if (settings && settings->selectionStrategy() == SelectionStrategy::Direction)
+    if (Settings::selectionStrategy() == SelectionStrategy::Direction)
         strategyType = SelectionStrategy::Direction;
 
     if (m_granularityStrategy && m_granularityStrategy->GetType() == strategyType)
