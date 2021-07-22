@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TreeScope.h
+// Description: TreeScope Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All Rights Reserved.
  * Copyright (C) 2012 Apple Inc. All Rights Reserved.
@@ -58,7 +69,7 @@ public:
 
     Element* adjustedFocusedElement() const;
     Element* getElementById(const AtomicString&) const;
-    const WillBeHeapVector<RawPtrWillBeMember<Element>>& getAllElementsById(const AtomicString&) const;
+    const std::vector<Member<Element>>& getAllElementsById(const AtomicString&) const;
     bool hasElementWithId(const AtomicString& id) const;
     bool containsMultipleElementsWithId(const AtomicString& id) const;
     void addElementById(const AtomicString& elementId, Element*);

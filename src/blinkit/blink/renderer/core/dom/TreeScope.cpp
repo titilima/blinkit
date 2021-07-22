@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TreeScope.cpp
+// Description: TreeScope Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All Rights Reserved.
  * Copyright (C) 2012 Apple Inc. All rights reserved.
@@ -42,9 +53,9 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLAnchorElement.h"
-#include "core/html/HTMLFrameOwnerElement.h"
+// BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLLabelElement.h"
-#include "core/html/HTMLMapElement.h"
+// BKTODO: #include "core/html/HTMLMapElement.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutView.h"
 #include "core/page/FocusController.h"
@@ -167,7 +178,7 @@ Element* TreeScope::getElementById(const AtomicString& elementId) const
     return m_elementsById->getElementById(elementId, this);
 }
 
-const WillBeHeapVector<RawPtrWillBeMember<Element>>& TreeScope::getAllElementsById(const AtomicString& elementId) const
+const std::vector<Member<Element>>& TreeScope::getAllElementsById(const AtomicString& elementId) const
 {
     DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<WillBeHeapVector<RawPtrWillBeMember<Element>>>, emptyVector, (adoptPtrWillBeNoop(new WillBeHeapVector<RawPtrWillBeMember<Element>>())));
     if (elementId.isEmpty())
@@ -210,22 +221,28 @@ Node* TreeScope::ancestorInThisScope(Node* node) const
 
 void TreeScope::addImageMap(HTMLMapElement* imageMap)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     const AtomicString& name = imageMap->getName();
     if (!name)
         return;
     if (!m_imageMapsByName)
         m_imageMapsByName = DocumentOrderedMap::create();
     m_imageMapsByName->add(name, imageMap);
+#endif
 }
 
 void TreeScope::removeImageMap(HTMLMapElement* imageMap)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_imageMapsByName)
         return;
     const AtomicString& name = imageMap->getName();
     if (!name)
         return;
     m_imageMapsByName->remove(name, imageMap);
+#endif
 }
 
 HTMLMapElement* TreeScope::getImageMap(const String& url) const
@@ -236,9 +253,13 @@ HTMLMapElement* TreeScope::getImageMap(const String& url) const
         return 0;
     size_t hashPos = url.find('#');
     String name = hashPos == kNotFound ? url : url.substring(hashPos + 1);
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (rootNode().document().isHTMLDocument())
         return toHTMLMapElement(m_imageMapsByName->getElementByLowercasedMapName(AtomicString(name.lower()), this));
     return toHTMLMapElement(m_imageMapsByName->getElementByMapName(AtomicString(name), this));
+#endif
 }
 
 static bool pointWithScrollAndZoomIfPossible(const Document& document, IntPoint& point)
@@ -424,7 +445,7 @@ Element* TreeScope::adjustedFocusedElement() const
     Document& document = rootNode().document();
     Element* element = document.focusedElement();
     if (!element && document.page())
-        element = document.page()->focusController().focusedFrameOwnerElement(*document.frame());
+        ASSERT(false); // BKTODO: element = document.page()->focusController().focusedFrameOwnerElement(*document.frame());
     if (!element)
         return 0;
 
@@ -487,21 +508,21 @@ unsigned short TreeScope::comparePosition(const TreeScope& otherScope) const
 
 const TreeScope* TreeScope::commonAncestorTreeScope(const TreeScope& other) const
 {
-    WillBeHeapVector<RawPtrWillBeMember<const TreeScope>, 16> thisChain;
+    std::vector<Member<const TreeScope>> thisChain;
     for (const TreeScope* tree = this; tree; tree = tree->parentTreeScope())
-        thisChain.append(tree);
+        thisChain.emplace_back(tree);
 
-    WillBeHeapVector<RawPtrWillBeMember<const TreeScope>, 16> otherChain;
+    std::vector<Member<const TreeScope>> otherChain;
     for (const TreeScope* tree = &other; tree; tree = tree->parentTreeScope())
-        otherChain.append(tree);
+        otherChain.emplace_back(tree);
 
     // Keep popping out the last elements of these chains until a mismatched pair is found. If |this| and |other|
     // belong to different documents, null will be returned.
     const TreeScope* lastAncestor = nullptr;
-    while (!thisChain.isEmpty() && !otherChain.isEmpty() && thisChain.last() == otherChain.last()) {
-        lastAncestor = thisChain.last();
-        thisChain.removeLast();
-        otherChain.removeLast();
+    while (!thisChain.empty() && !otherChain.empty() && thisChain.back() == otherChain.back()) {
+        lastAncestor = thisChain.back();
+        thisChain.pop_back();
+        otherChain.pop_back();
     }
     return lastAncestor;
 }
