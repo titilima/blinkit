@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Text.cpp
+// Description: Text Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -34,8 +45,10 @@
 #include "core/events/ScopedEventQueue.h"
 #include "core/layout/LayoutText.h"
 #include "core/layout/LayoutTextCombine.h"
+#if 0 // BKTODO:
 #include "core/layout/svg/LayoutSVGInlineText.h"
 #include "core/svg/SVGForeignObjectElement.h"
+#endif
 #include "wtf/text/CString.h"
 #include "wtf/text/StringBuilder.h"
 
@@ -324,13 +337,14 @@ static bool isSVGText(Text* text)
 {
     Node* parentOrShadowHostNode = text->parentOrShadowHostNode();
     ASSERT(parentOrShadowHostNode);
-    return parentOrShadowHostNode->isSVGElement() && !isSVGForeignObjectElement(*parentOrShadowHostNode);
+    ASSERT(false); // BKTODO: return parentOrShadowHostNode->isSVGElement() && !isSVGForeignObjectElement(*parentOrShadowHostNode);
+    return false;
 }
 
 LayoutText* Text::createTextLayoutObject(const ComputedStyle& style)
 {
     if (isSVGText(this))
-        return new LayoutSVGInlineText(this, dataImpl());
+        ASSERT(false); // BKTODO: return new LayoutSVGInlineText(this, dataImpl());
 
     if (style.hasTextCombine())
         return new LayoutTextCombine(this, dataImpl());
