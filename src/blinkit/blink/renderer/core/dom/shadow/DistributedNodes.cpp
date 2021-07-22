@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DistributedNodes.cpp
+// Description: DistributedNodes Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -41,17 +52,17 @@ void DistributedNodes::append(PassRefPtrWillBeRawPtr<Node> node)
     ASSERT(node);
     ASSERT(!node->isSlotOrActiveInsertionPoint());
     size_t size = m_nodes.size();
-    m_indices.set(node.get(), size);
-    m_nodes.append(node);
+    m_indices.emplace(node.get(), size);
+    m_nodes.emplace_back(node);
 }
 
 size_t DistributedNodes::find(const Node* node) const
 {
-    WillBeHeapHashMap<RawPtrWillBeMember<const Node>, size_t>::const_iterator it = m_indices.find(node);
+    auto it = m_indices.find(node);
     if (it == m_indices.end())
         return kNotFound;
 
-    return it.get()->value;
+    return it->second;
 }
 
 Node* DistributedNodes::nextTo(const Node* node) const
@@ -74,7 +85,7 @@ DEFINE_TRACE(DistributedNodes)
 {
 #if ENABLE(OILPAN)
     visitor->trace(m_nodes);
-    visitor->trace(m_indices);
+    ASSERT(false); // BKTODO: visitor->trace(m_indices);
 #endif
 }
 

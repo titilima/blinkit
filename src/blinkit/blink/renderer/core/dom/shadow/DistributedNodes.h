@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DistributedNodes.h
+// Description: DistributedNodes Class
+//      Author: Ziming Li
+//     Created: 2021-07-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -42,18 +53,18 @@ class DistributedNodes final {
 public:
     DistributedNodes() { }
 
-    PassRefPtrWillBeRawPtr<Node> first() const { return m_nodes.first(); }
-    PassRefPtrWillBeRawPtr<Node> last() const { return m_nodes.last(); }
+    PassRefPtrWillBeRawPtr<Node> first() const { return m_nodes.front(); }
+    PassRefPtrWillBeRawPtr<Node> last() const { return m_nodes.back(); }
     PassRefPtrWillBeRawPtr<Node> at(size_t index) const { return m_nodes.at(index); }
 
     size_t size() const { return m_nodes.size(); }
-    bool isEmpty() const { return m_nodes.isEmpty(); }
+    bool isEmpty() const { return m_nodes.empty(); }
 
     void append(PassRefPtrWillBeRawPtr<Node>);
     void clear() { m_nodes.clear(); m_indices.clear(); }
-    void shrinkToFit() { m_nodes.shrinkToFit(); }
+    void shrinkToFit() { m_nodes.shrink_to_fit(); }
 
-    bool contains(const Node* node) const { return m_indices.contains(node); }
+    bool contains(const Node* node) const { return zed::key_exists(m_indices, node); }
     size_t find(const Node*) const;
     Node* nextTo(const Node*) const;
     Node* previousTo(const Node*) const;
@@ -63,8 +74,8 @@ public:
     DECLARE_TRACE();
 
 private:
-    WillBeHeapVector<RefPtrWillBeMember<Node>> m_nodes;
-    WillBeHeapHashMap<RawPtrWillBeMember<const Node>, size_t> m_indices;
+    std::vector<Member<Node>> m_nodes;
+    std::unordered_map<Member<const Node>, size_t> m_indices;
 };
 
 }
