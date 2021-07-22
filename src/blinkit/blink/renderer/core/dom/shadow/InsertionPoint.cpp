@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InsertionPoint.cpp
+// Description: InsertionPoint Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -179,9 +190,9 @@ PassRefPtrWillBeRawPtr<StaticNodeList> InsertionPoint::getDistributedNodes()
     updateDistribution();
 
     WillBeHeapVector<RefPtrWillBeMember<Node>> nodes;
-    nodes.reserveInitialCapacity(m_distributedNodes.size());
+    nodes.reserve(m_distributedNodes.size());
     for (size_t i = 0; i < m_distributedNodes.size(); ++i)
-        nodes.uncheckedAppend(m_distributedNodes.at(i));
+        nodes.emplace_back(m_distributedNodes.at(i));
 
     return StaticNodeList::adopt(nodes);
 }
