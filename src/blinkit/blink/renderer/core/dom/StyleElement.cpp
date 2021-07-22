@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleElement.cpp
+// Description: StyleElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Rob Buis
  * Copyright (C) 2008 Apple, Inc. All rights reserved.
@@ -30,9 +41,9 @@
 #include "core/dom/StyleEngine.h"
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
+// BKTODO: #include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/HTMLStyleElement.h"
-#include "core/svg/SVGStyleElement.h"
+// BKTODO: #include "core/svg/SVGStyleElement.h"
 #include "platform/TraceEvent.h"
 #include "wtf/text/StringBuilder.h"
 
@@ -176,6 +187,9 @@ StyleElement::ProcessingResult StyleElement::createSheet(Element* e, const Strin
     ASSERT(e->inDocument());
     Document& document = e->document();
 
+    ASSERT(false); // BKTODO:
+    return ProcessingFatalError;
+#if 0
     const ContentSecurityPolicy* csp = document.contentSecurityPolicy();
     bool passesContentSecurityPolicyChecks = shouldBypassMainWorldCSP(e)
         || csp->allowStyleWithHash(text)
@@ -209,6 +223,7 @@ StyleElement::ProcessingResult StyleElement::createSheet(Element* e, const Strin
         m_sheet->contents()->checkLoaded();
 
     return passesContentSecurityPolicyChecks ? ProcessingSuccessful : ProcessingFatalError;
+#endif
 }
 
 bool StyleElement::isLoading() const
