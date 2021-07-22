@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ShadowRoot.cpp
+// Description: ShadowRoot Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -43,9 +54,6 @@
 namespace blink {
 
 struct SameSizeAsShadowRoot : public DocumentFragment, public TreeScope, public DoublyLinkedListNode<ShadowRoot> {
-#if ENABLE(OILPAN)
-    char emptyClassFieldsDueToGCMixinMarker[1];
-#endif
     RawPtrWillBeMember<void*> willbeMember[3];
     unsigned countersAndFlags[1];
 };
@@ -296,6 +304,9 @@ void ShadowRoot::invalidateDescendantInsertionPoints()
 
 const WillBeHeapVector<RefPtrWillBeMember<InsertionPoint>>& ShadowRoot::descendantInsertionPoints()
 {
+    ASSERT(false); // BKTODO:
+    exit(0);
+#if 0
     DEFINE_STATIC_LOCAL(WillBePersistentHeapVector<RefPtrWillBeMember<InsertionPoint>>, emptyList, ());
     if (m_shadowRootRareData && m_descendantInsertionPointsIsValid)
         return m_shadowRootRareData->descendantInsertionPoints();
@@ -312,6 +323,7 @@ const WillBeHeapVector<RefPtrWillBeMember<InsertionPoint>>& ShadowRoot::descenda
     ensureShadowRootRareData()->setDescendantInsertionPoints(insertionPoints);
 
     return m_shadowRootRareData->descendantInsertionPoints();
+#endif
 }
 
 StyleSheetList* ShadowRoot::styleSheets()
