@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SlotAssignment.cpp
+// Description: SlotAssignment Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -15,7 +26,8 @@ namespace blink {
 
 HTMLSlotElement* SlotAssignment::assignedSlotFor(const Node& node) const
 {
-    return m_assignment.get(const_cast<Node*>(&node));
+    auto it = m_assignment.find(const_cast<Node *>(&node));
+    return m_assignment.end() != it ? it->second : nullptr;
 }
 
 static void detachNotAssignedNode(Node& node)
@@ -28,7 +40,7 @@ void SlotAssignment::resolveAssignment(const ShadowRoot& shadowRoot)
 {
     m_assignment.clear();
 
-    using Name2Slot = WillBeHeapHashMap<AtomicString, RefPtrWillBeMember<HTMLSlotElement>>;
+    using Name2Slot = std::unordered_map<AtomicString, Member<HTMLSlotElement>>;
     Name2Slot name2slot;
     HTMLSlotElement* defaultSlot = nullptr;
     WillBeHeapVector<RefPtrWillBeMember<HTMLSlotElement>> slots;
@@ -44,7 +56,7 @@ void SlotAssignment::resolveAssignment(const ShadowRoot& shadowRoot)
             if (!defaultSlot)
                 defaultSlot = &slot;
         } else {
-            name2slot.add(name, &slot);
+            name2slot.emplace(name, &slot);
         }
     }
 
@@ -62,9 +74,9 @@ void SlotAssignment::resolveAssignment(const ShadowRoot& shadowRoot)
                 else
                     detachNotAssignedNode(child);
             } else {
-                HTMLSlotElement* slot = name2slot.get(slotName);
-                if (slot)
-                    assign(child, *slot);
+                auto it = name2slot.find(slotName);
+                if (name2slot.end() != it)
+                    assign(child, *(it->second));
                 else
                     detachNotAssignedNode(child);
             }
@@ -82,7 +94,7 @@ void SlotAssignment::resolveAssignment(const ShadowRoot& shadowRoot)
 
 void SlotAssignment::assign(Node& hostChild, HTMLSlotElement& slot)
 {
-    m_assignment.add(&hostChild, &slot);
+    m_assignment.emplace(&hostChild, &slot);
     slot.appendAssignedNode(hostChild);
     if (isHTMLSlotElement(hostChild))
         slot.appendDistributedNodesFrom(toHTMLSlotElement(hostChild));
