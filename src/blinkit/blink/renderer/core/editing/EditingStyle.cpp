@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EditingStyle.cpp
+// Description: EditingStyle Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2009 Apple Computer, Inc.
  * Copyright (C) 2010, 2011 Google Inc. All rights reserved.
@@ -49,7 +60,7 @@
 #include "core/editing/Editor.h"
 #include "core/editing/FrameSelection.h"
 #include "core/editing/Position.h"
-#include "core/editing/commands/ApplyStyleCommand.h"
+// BKTODO: #include "core/editing/commands/ApplyStyleCommand.h"
 #include "core/editing/serializers/HTMLInterchange.h"
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLFontElement.h"
@@ -826,6 +837,9 @@ bool EditingStyle::conflictsWithInlineStyleOfElement(HTMLElement* element, Editi
 
 static const WillBeHeapVector<OwnPtrWillBeMember<HTMLElementEquivalent>>& htmlElementEquivalents()
 {
+    ASSERT(false); // BKTODO:
+    exit(0);
+#if 0
     DEFINE_STATIC_LOCAL(WillBePersistentHeapVector<OwnPtrWillBeMember<HTMLElementEquivalent>>, HTMLElementEquivalents, ());
     if (!HTMLElementEquivalents.size()) {
         HTMLElementEquivalents.append(HTMLElementEquivalent::create(CSSPropertyFontWeight, CSSValueBold, HTMLNames::bTag));
@@ -841,6 +855,7 @@ static const WillBeHeapVector<OwnPtrWillBeMember<HTMLElementEquivalent>>& htmlEl
     }
 
     return HTMLElementEquivalents;
+#endif
 }
 
 
@@ -864,6 +879,9 @@ bool EditingStyle::conflictsWithImplicitStyleOfElement(HTMLElement* element, Edi
 
 static const WillBeHeapVector<OwnPtrWillBeMember<HTMLAttributeEquivalent>>& htmlAttributeEquivalents()
 {
+    ASSERT(false); // BKTODO:
+    exit(0);
+#if 0
     DEFINE_STATIC_LOCAL(WillBePersistentHeapVector<OwnPtrWillBeMember<HTMLAttributeEquivalent>>, HTMLAttributeEquivalents, ());
     if (!HTMLAttributeEquivalents.size()) {
         // elementIsStyledSpanOrHTMLEquivalent depends on the fact each HTMLAttriuteEquivalent matches exactly one attribute
@@ -877,6 +895,7 @@ static const WillBeHeapVector<OwnPtrWillBeMember<HTMLAttributeEquivalent>>& html
     }
 
     return HTMLAttributeEquivalents;
+#endif
 }
 
 bool EditingStyle::conflictsWithImplicitStyleOfAttributes(HTMLElement* element) const
@@ -1131,6 +1150,8 @@ PassRefPtrWillBeRawPtr<EditingStyle> EditingStyle::wrappingStyleForSerialization
 
 static void mergeTextDecorationValues(CSSValueList* mergedValue, const CSSValueList* valueToMerge)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     DEFINE_STATIC_REF_WILL_BE_PERSISTENT(CSSPrimitiveValue, underline, (CSSPrimitiveValue::createIdentifier(CSSValueUnderline)));
     DEFINE_STATIC_REF_WILL_BE_PERSISTENT(CSSPrimitiveValue, lineThrough, (CSSPrimitiveValue::createIdentifier(CSSValueLineThrough)));
     if (valueToMerge->hasValue(underline) && !mergedValue->hasValue(underline))
@@ -1138,6 +1159,7 @@ static void mergeTextDecorationValues(CSSValueList* mergedValue, const CSSValueL
 
     if (valueToMerge->hasValue(lineThrough) && !mergedValue->hasValue(lineThrough))
         mergedValue->append(lineThrough);
+#endif
 }
 
 void EditingStyle::mergeStyle(const StylePropertySet* style, CSSPropertyOverrideMode mode)
@@ -1249,6 +1271,8 @@ void EditingStyle::removeStyleFromRulesAndContext(Element* element, ContainerNod
         m_mutableStyle = getPropertiesNotIn(m_mutableStyle.get(), computedStyle->m_mutableStyle->ensureCSSStyleDeclaration());
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     // 3. If this element is a span and has display: inline or float: none, remove them unless they are overriden by rules.
     // These rules are added by serialization code to wrap text nodes.
     if (isStyleSpanOrSpanWithOnlyStyleAttribute(element)) {
@@ -1257,6 +1281,7 @@ void EditingStyle::removeStyleFromRulesAndContext(Element* element, ContainerNod
         if (!styleFromMatchedRules->getPropertyCSSValue(CSSPropertyFloat) && getIdentifierValue(m_mutableStyle.get(), CSSPropertyFloat) == CSSValueNone)
             m_mutableStyle->removeProperty(CSSPropertyFloat);
     }
+#endif
 }
 
 void EditingStyle::removePropertiesInElementDefaultStyle(Element* element)
@@ -1525,6 +1550,8 @@ void StyleChange::extractTextStyles(Document* document, MutableStylePropertySet*
     // Furthermore, text-decoration: none has been trimmed so that text-decoration property is always a CSSValueList.
     RefPtrWillBeRawPtr<CSSValue> textDecoration = style->getPropertyCSSValue(textDecorationPropertyForEditing());
     if (textDecoration && textDecoration->isValueList()) {
+        ASSERT(false); // BKTODO:
+#if 0
         DEFINE_STATIC_REF_WILL_BE_PERSISTENT(CSSPrimitiveValue, underline, (CSSPrimitiveValue::createIdentifier(CSSValueUnderline)));
         DEFINE_STATIC_REF_WILL_BE_PERSISTENT(CSSPrimitiveValue, lineThrough, (CSSPrimitiveValue::createIdentifier(CSSValueLineThrough)));
         RefPtrWillBeRawPtr<CSSValueList> newTextDecoration = toCSSValueList(textDecoration.get())->copy();
@@ -1535,6 +1562,7 @@ void StyleChange::extractTextStyles(Document* document, MutableStylePropertySet*
 
         // If trimTextDecorations, delete underline and line-through
         setTextDecorationProperty(style, newTextDecoration.get(), textDecorationPropertyForEditing());
+#endif
     }
 
     int verticalAlign = getIdentifierValue(style, CSSPropertyVerticalAlign);
