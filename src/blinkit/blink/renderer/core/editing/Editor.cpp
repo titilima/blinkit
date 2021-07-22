@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Editor.cpp
+// Description: Editor Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Nokia Corporation and/or its subsidiary(-ies)
@@ -36,7 +47,7 @@
 #include "core/clipboard/Pasteboard.h"
 #include "core/css/CSSComputedStyleDeclaration.h"
 #include "core/css/StylePropertySet.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/DocumentFragment.h"
 #include "core/dom/NodeTraversal.h"
 #include "core/dom/ParserContentPolicy.h"
@@ -45,6 +56,7 @@
 #include "core/editing/InputMethodController.h"
 #include "core/editing/RenderedPosition.h"
 #include "core/editing/VisibleUnits.h"
+#if 0 // BKTODO:
 #include "core/editing/commands/ApplyStyleCommand.h"
 #include "core/editing/commands/DeleteSelectionCommand.h"
 #include "core/editing/commands/IndentOutdentCommand.h"
@@ -55,10 +67,13 @@
 #include "core/editing/commands/TypingCommand.h"
 #include "core/editing/commands/UndoStack.h"
 #include "core/editing/iterators/SearchBuffer.h"
+#endif
 #include "core/editing/markers/DocumentMarkerController.h"
 #include "core/editing/serializers/Serialization.h"
+#if 0 // BKTODO:
 #include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/ClipboardEvent.h"
+#endif
 #include "core/events/KeyboardEvent.h"
 #include "core/events/ScopedEventQueue.h"
 #include "core/events/TextEvent.h"
@@ -68,7 +83,7 @@
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
 #include "core/frame/UseCounter.h"
-#include "core/html/HTMLCanvasElement.h"
+// BKTODO: #include "core/html/HTMLCanvasElement.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/html/HTMLTextAreaElement.h"
@@ -76,11 +91,11 @@
 #include "core/input/EventHandler.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutImage.h"
-#include "core/loader/EmptyClients.h"
+// BKTODO: #include "core/loader/EmptyClients.h"
 #include "core/page/EditorClient.h"
 #include "core/page/FocusController.h"
 #include "core/page/Page.h"
-#include "core/svg/SVGImageElement.h"
+// BKTODO: #include "core/svg/SVGImageElement.h"
 #include "platform/KillRing.h"
 #include "platform/weborigin/KURL.h"
 #include "wtf/text/CharacterNames.h"
@@ -126,16 +141,17 @@ VisibleSelection Editor::selectionForCommand(Event* event)
 // Function considers Mac editing behavior a fallback when Page or Settings is not available.
 EditingBehavior Editor::behavior() const
 {
-    if (!frame().settings())
-        return EditingBehavior(EditingMacBehavior);
-
-    return EditingBehavior(frame().settings()->editingBehaviorType());
+    return EditingBehavior(Settings::editingBehaviorType());
 }
 
 static EditorClient& emptyEditorClient()
 {
+    ASSERT(false); // BKTODO:
+    exit(0);
+#if 0
     DEFINE_STATIC_LOCAL(EmptyEditorClient, client, ());
     return client;
+#endif
 }
 
 EditorClient& Editor::client() const
@@ -265,9 +281,7 @@ bool Editor::canDeleteRange(const EphemeralRange& range) const
 
 bool Editor::smartInsertDeleteEnabled() const
 {
-    if (Settings* settings = frame().settings())
-        return settings->smartInsertDeleteEnabled();
-    return false;
+    return Settings::smartInsertDeleteEnabled();
 }
 
 bool Editor::canSmartCopyOrDelete() const
@@ -277,9 +291,7 @@ bool Editor::canSmartCopyOrDelete() const
 
 bool Editor::isSelectTrailingWhitespaceEnabled() const
 {
-    if (Settings* settings = frame().settings())
-        return settings->selectTrailingWhitespaceEnabled();
-    return false;
+    return Settings::selectTrailingWhitespaceEnabled();
 }
 
 bool Editor::deleteWithDirection(SelectionDirection direction, TextGranularity granularity, bool killRing, bool isTypingAction)
@@ -287,6 +299,8 @@ bool Editor::deleteWithDirection(SelectionDirection direction, TextGranularity g
     if (!canEdit())
         return false;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (frame().selection().isRange()) {
         if (isTypingAction) {
             ASSERT(frame().document());
@@ -324,6 +338,7 @@ bool Editor::deleteWithDirection(SelectionDirection direction, TextGranularity g
     // when the selection was updated by deleting the range
     if (killRing)
         setStartNewKillRingSequence(false);
+#endif
 
     return true;
 }
@@ -334,7 +349,7 @@ void Editor::deleteSelectionWithSmartDelete(bool smartDelete)
         return;
 
     ASSERT(frame().document());
-    DeleteSelectionCommand::create(*frame().document(), smartDelete)->apply();
+    ASSERT(false); // BKTODO: DeleteSelectionCommand::create(*frame().document(), smartDelete)->apply();
 }
 
 void Editor::pasteAsPlainText(const String& pastingText, bool smartReplace)
@@ -392,7 +407,7 @@ void Editor::pasteWithPasteboard(Pasteboard* pasteboard)
         String markup = pasteboard->readHTML(url, fragmentStart, fragmentEnd);
         if (!markup.isEmpty()) {
             ASSERT(frame().document());
-            fragment = createFragmentFromMarkupWithContext(*frame().document(), markup, fragmentStart, fragmentEnd, url, DisallowScriptingAndPluginContent);
+            ASSERT(false); // BKTODO: fragment = createFragmentFromMarkupWithContext(*frame().document(), markup, fragmentStart, fragmentEnd, url, DisallowScriptingAndPluginContent);
         }
     }
 
@@ -424,7 +439,7 @@ static PassRefPtr<Image> imageFromNode(const Node& node)
         return nullptr;
 
     if (layoutObject->isCanvas())
-        return toHTMLCanvasElement(node).copiedImage(FrontBuffer, PreferNoAcceleration);
+        ASSERT(false); // BKTODO: return toHTMLCanvasElement(node).copiedImage(FrontBuffer, PreferNoAcceleration);
 
     if (layoutObject->isImage()) {
         LayoutImage* layoutImage = toLayoutImage(layoutObject);
@@ -451,12 +466,15 @@ static void writeImageNodeToPasteboard(Pasteboard* pasteboard, Node* node, const
 
     // FIXME: This should probably be reconciled with HitTestResult::absoluteImageURL.
     AtomicString urlString;
+    ASSERT(false); // BKTODO:
+#if 0
     if (isHTMLImageElement(*node) || isHTMLInputElement(*node))
         urlString = toHTMLElement(node)->getAttribute(srcAttr);
     else if (isSVGImageElement(*node))
         urlString = toSVGElement(node)->getAttribute(XLinkNames::hrefAttr);
     else if (isHTMLEmbedElement(*node) || isHTMLObjectElement(*node) || isHTMLCanvasElement(*node))
         urlString = toHTMLElement(node)->imageSourceURL();
+#endif
     KURL url = urlString.isEmpty() ? KURL() : node->document().completeURL(stripLeadingAndTrailingHTMLSpaces(urlString));
 
     pasteboard->writeImage(image.get(), url, title);
@@ -477,6 +495,9 @@ bool Editor::dispatchCPPEvent(const AtomicString& eventType, DataTransferAccessP
             ? DataObject::create()
             : DataObject::createFromPasteboard(pasteMode));
 
+    ASSERT(false); // BKTODO:
+    return true;
+#if 0
     RefPtrWillBeRawPtr<Event> evt = ClipboardEvent::create(eventType, true, true, dataTransfer);
     target->dispatchEvent(evt);
     bool noDefaultProcessing = evt->defaultPrevented();
@@ -487,6 +508,7 @@ bool Editor::dispatchCPPEvent(const AtomicString& eventType, DataTransferAccessP
     dataTransfer->setAccessPolicy(DataTransferNumb);
 
     return !noDefaultProcessing;
+#endif
 }
 
 bool Editor::canSmartReplaceWithPasteboard(Pasteboard* pasteboard)
@@ -499,6 +521,8 @@ void Editor::replaceSelectionWithFragment(PassRefPtrWillBeRawPtr<DocumentFragmen
     if (frame().selection().isNone() || !frame().selection().isContentEditable() || !fragment)
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     ReplaceSelectionCommand::CommandOptions options = ReplaceSelectionCommand::PreventNesting | ReplaceSelectionCommand::SanitizeFragment;
     if (selectReplacement)
         options |= ReplaceSelectionCommand::SelectReplacement;
@@ -513,6 +537,7 @@ void Editor::replaceSelectionWithFragment(PassRefPtrWillBeRawPtr<DocumentFragmen
     if (frame().selection().isInPasswordField() || !spellChecker().isContinuousSpellCheckingEnabled())
         return;
     spellChecker().chunkAndMarkAllMisspellingsAndBadGrammar(frame().selection().rootEditableElement());
+#endif
 }
 
 void Editor::replaceSelectionWithText(const String& text, bool selectReplacement, bool smartReplace)
@@ -541,6 +566,7 @@ void Editor::notifyComponentsOnChangedSelection(const VisibleSelection& oldSelec
 
 void Editor::respondToChangedContents(const VisibleSelection& endingSelection)
 {
+#if 0 // BKTODO:
     if (frame().settings() && frame().settings()->accessibilityEnabled()) {
         Node* node = endingSelection.start().anchorNode();
         if (AXObjectCache* cache = frame().document()->existingAXObjectCache())
@@ -548,13 +574,14 @@ void Editor::respondToChangedContents(const VisibleSelection& endingSelection)
     }
 
     spellChecker().updateMarkersForWordsAffectedByEditing(true);
+#endif
     client().respondToChangedContents();
 }
 
 void Editor::removeFormattingAndStyle()
 {
     ASSERT(frame().document());
-    RemoveFormatCommand::create(*frame().document())->apply();
+    ASSERT(false); // BKTODO: RemoveFormatCommand::create(*frame().document())->apply();
 }
 
 void Editor::clearLastEditCommand()
@@ -588,7 +615,7 @@ void Editor::applyStyle(StylePropertySet* style, EditAction editingAction)
     case RangeSelection:
         if (style) {
             ASSERT(frame().document());
-            ApplyStyleCommand::create(*frame().document(), EditingStyle::create(style).get(), editingAction)->apply();
+            ASSERT(false); // BKTODO: ApplyStyleCommand::create(*frame().document(), EditingStyle::create(style).get(), editingAction)->apply();
         }
         break;
     }
@@ -599,7 +626,7 @@ void Editor::applyParagraphStyle(StylePropertySet* style, EditAction editingActi
     if (frame().selection().isNone() || !style)
         return;
     ASSERT(frame().document());
-    ApplyStyleCommand::create(*frame().document(), EditingStyle::create(style).get(), editingAction, ApplyStyleCommand::ForceBlockProperties)->apply();
+    ASSERT(false); // BKTODO: ApplyStyleCommand::create(*frame().document(), EditingStyle::create(style).get(), editingAction, ApplyStyleCommand::ForceBlockProperties)->apply();
 }
 
 void Editor::applyStyleToSelection(StylePropertySet* style, EditAction editingAction)
@@ -654,6 +681,8 @@ void Editor::appliedEditing(PassRefPtrWillBeRawPtr<CompositeEditCommand> cmd)
     EventQueueScope scope;
     frame().document()->updateLayout();
 
+    ASSERT(false); // BKTODO:
+#if 0
     EditCommandComposition* composition = cmd->composition();
     ASSERT(composition);
     dispatchEditableContentChangedEvents(composition->startingRootEditableElement(), composition->endingRootEditableElement());
@@ -677,6 +706,7 @@ void Editor::appliedEditing(PassRefPtrWillBeRawPtr<CompositeEditCommand> cmd)
     }
 
     respondToChangedContents(newSelection);
+#endif
 }
 
 void Editor::unappliedEditing(PassRefPtrWillBeRawPtr<EditCommandComposition> cmd)
@@ -684,6 +714,8 @@ void Editor::unappliedEditing(PassRefPtrWillBeRawPtr<EditCommandComposition> cmd
     EventQueueScope scope;
     frame().document()->updateLayout();
 
+    ASSERT(false); // BKTODO:
+#if 0
     dispatchEditableContentChangedEvents(cmd->startingRootEditableElement(), cmd->endingRootEditableElement());
 
     VisibleSelection newSelection(cmd->startingSelection());
@@ -695,6 +727,7 @@ void Editor::unappliedEditing(PassRefPtrWillBeRawPtr<EditCommandComposition> cmd
     if (UndoStack* undoStack = this->undoStack())
         undoStack->registerRedoStep(cmd);
     respondToChangedContents(newSelection);
+#endif
 }
 
 void Editor::reappliedEditing(PassRefPtrWillBeRawPtr<EditCommandComposition> cmd)
@@ -702,6 +735,8 @@ void Editor::reappliedEditing(PassRefPtrWillBeRawPtr<EditCommandComposition> cmd
     EventQueueScope scope;
     frame().document()->updateLayout();
 
+    ASSERT(false); // BKTODO:
+#if 0
     dispatchEditableContentChangedEvents(cmd->startingRootEditableElement(), cmd->endingRootEditableElement());
 
     VisibleSelection newSelection(cmd->endingSelection());
@@ -711,6 +746,7 @@ void Editor::reappliedEditing(PassRefPtrWillBeRawPtr<EditCommandComposition> cmd
     if (UndoStack* undoStack = this->undoStack())
         undoStack->registerUndoStep(cmd);
     respondToChangedContents(newSelection);
+#endif
 }
 
 PassOwnPtrWillBeRawPtr<Editor> Editor::create(LocalFrame& frame)
@@ -756,6 +792,8 @@ bool Editor::insertTextWithoutSendingTextEvent(const String& text, bool selectIn
     if (!selection.isContentEditable())
         return false;
 
+    ASSERT(false); // BKTODO:
+#if 0
     spellChecker().updateMarkersForWordsAffectedByEditing(isSpaceOrNewline(text[0]));
 
     // Get the selection to use for the event that triggered this insertText.
@@ -779,6 +817,7 @@ bool Editor::insertTextWithoutSendingTextEvent(const String& text, bool selectIn
             }
         }
     }
+#endif
 
     return true;
 }
@@ -791,7 +830,7 @@ bool Editor::insertLineBreak()
     VisiblePosition caret = frame().selection().selection().visibleStart();
     bool alignToEdge = isEndOfEditableOrNonEditableContent(caret);
     ASSERT(frame().document());
-    TypingCommand::insertLineBreak(*frame().document(), 0);
+    ASSERT(false); // BKTODO: TypingCommand::insertLineBreak(*frame().document(), 0);
     revealSelectionAfterEditingOperation(alignToEdge ? ScrollAlignment::alignToEdgeIfNeeded : ScrollAlignment::alignCenterIfNeeded);
 
     return true;
@@ -808,7 +847,7 @@ bool Editor::insertParagraphSeparator()
     VisiblePosition caret = frame().selection().selection().visibleStart();
     bool alignToEdge = isEndOfEditableOrNonEditableContent(caret);
     ASSERT(frame().document());
-    TypingCommand::insertParagraphSeparator(*frame().document(), 0);
+    ASSERT(false); // BKTODO: TypingCommand::insertParagraphSeparator(*frame().document(), 0);
     revealSelectionAfterEditingOperation(alignToEdge ? ScrollAlignment::alignToEdgeIfNeeded : ScrollAlignment::alignCenterIfNeeded);
 
     return true;
@@ -822,7 +861,7 @@ void Editor::cut()
         return;
     // TODO(yosin) We should use early return style here.
     if (shouldDeleteRange(selectedRange())) {
-        spellChecker().updateMarkersForWordsAffectedByEditing(true);
+        ASSERT(false); // BKTODO: spellChecker().updateMarkersForWordsAffectedByEditing(true);
         if (enclosingTextFormControl(frame().selection().start())) {
             String plainText = frame().selectedTextForClipboard();
             Pasteboard::generalPasteboard()->writePlainText(plainText,
@@ -859,7 +898,7 @@ void Editor::paste()
         return; // DHTML did the whole operation
     if (!canPaste())
         return;
-    spellChecker().updateMarkersForWordsAffectedByEditing(false);
+    ASSERT(false); // BKTODO: spellChecker().updateMarkersForWordsAffectedByEditing(false);
     ResourceFetcher* loader = frame().document()->fetcher();
     ResourceCacheValidationSuppressor validationSuppressor(loader);
     if (frame().selection().isContentRichlyEditable())
@@ -874,7 +913,7 @@ void Editor::pasteAsPlainText()
         return;
     if (!canPaste())
         return;
-    spellChecker().updateMarkersForWordsAffectedByEditing(false);
+    ASSERT(false); // BKTODO: spellChecker().updateMarkersForWordsAffectedByEditing(false);
     pasteAsPlainTextWithPasteboard(Pasteboard::generalPasteboard());
 }
 
@@ -890,6 +929,7 @@ void Editor::performDelete()
     setStartNewKillRingSequence(false);
 }
 
+#if 0 // BKTODO:
 static void countEditingEvent(ExecutionContext* executionContext, const Event* event, UseCounter::Feature featureOnInput, UseCounter::Feature featureOnTextArea, UseCounter::Feature featureOnContentEditable, UseCounter::Feature featureOnNonNode)
 {
     EventTarget* eventTarget = event->target();
@@ -922,9 +962,11 @@ static void countEditingEvent(ExecutionContext* executionContext, const Event* e
 
     UseCounter::count(executionContext, featureOnContentEditable);
 }
+#endif
 
 void Editor::countEvent(ExecutionContext* executionContext, const Event* event)
 {
+#if 0 // BKTODO:
     if (!executionContext)
         return;
 
@@ -953,6 +995,7 @@ void Editor::countEvent(ExecutionContext* executionContext, const Event* event)
             UseCounter::WebkitEditableContentChangedOnContentEditable,
             UseCounter::WebkitEditableContentChangedOnNotNode);
     }
+#endif
 }
 
 void Editor::copyImage(const HitTestResult& result)
@@ -963,27 +1006,27 @@ void Editor::copyImage(const HitTestResult& result)
 bool Editor::canUndo()
 {
     if (UndoStack* undoStack = this->undoStack())
-        return undoStack->canUndo();
+        ASSERT(false); // BKTODO: return undoStack->canUndo();
     return false;
 }
 
 void Editor::undo()
 {
     if (UndoStack* undoStack = this->undoStack())
-        undoStack->undo();
+        ASSERT(false); // BKTODO: undoStack->undo();
 }
 
 bool Editor::canRedo()
 {
     if (UndoStack* undoStack = this->undoStack())
-        return undoStack->canRedo();
+        ASSERT(false); // BKTODO: return undoStack->canRedo();
     return false;
 }
 
 void Editor::redo()
 {
     if (UndoStack* undoStack = this->undoStack())
-        undoStack->redo();
+        ASSERT(false); // BKTODO: undoStack->redo();
 }
 
 void Editor::setBaseWritingDirection(WritingDirection direction)
@@ -1135,7 +1178,7 @@ void Editor::computeAndSetTypingStyle(StylePropertySet* style, EditAction editin
     RefPtrWillBeRawPtr<EditingStyle> blockStyle = typingStyle->extractAndRemoveBlockProperties();
     if (!blockStyle->isEmpty()) {
         ASSERT(frame().document());
-        ApplyStyleCommand::create(*frame().document(), blockStyle.get(), editingAction)->apply();
+        ASSERT(false); // BKTODO: ApplyStyleCommand::create(*frame().document(), blockStyle.get(), editingAction)->apply();
     }
 
     // Set the remaining style as the typing style.
@@ -1264,12 +1307,14 @@ static PassRefPtrWillBeRawPtr<Range> findRangeOfStringAlgorithm(Document& docume
 
 PassRefPtrWillBeRawPtr<Range> Editor::findRangeOfString(const String& target, const EphemeralRange& reference, FindOptions options)
 {
-    return findRangeOfStringAlgorithm<EditingStrategy>(*frame().document(), target, reference, options);
+    ASSERT(false); // BKTODO: return findRangeOfStringAlgorithm<EditingStrategy>(*frame().document(), target, reference, options);
+    return nullptr;
 }
 
 PassRefPtrWillBeRawPtr<Range> Editor::findRangeOfString(const String& target, const EphemeralRangeInComposedTree& reference, FindOptions options)
 {
-    return findRangeOfStringAlgorithm<EditingInComposedTreeStrategy>(*frame().document(), target, reference, options);
+    ASSERT(false); // BKTODO: return findRangeOfStringAlgorithm<EditingInComposedTreeStrategy>(*frame().document(), target, reference, options);
+    return nullptr;
 }
 
 void Editor::setMarkedTextMatchesAreHighlighted(bool flag)
@@ -1283,15 +1328,17 @@ void Editor::setMarkedTextMatchesAreHighlighted(bool flag)
 
 void Editor::respondToChangedSelection(const VisibleSelection& oldSelection, FrameSelection::SetSelectionOptions options)
 {
-    spellChecker().respondToChangedSelection(oldSelection, options);
+    ASSERT(false); // BKTODO: spellChecker().respondToChangedSelection(oldSelection, options);
     frame().inputMethodController().cancelCompositionIfSelectionIsInvalid();
     notifyComponentsOnChangedSelection(oldSelection, options);
 }
 
+#if 0 // BKTODO:
 SpellChecker& Editor::spellChecker() const
 {
     return frame().spellChecker();
 }
+#endif
 
 void Editor::toggleOverwriteModeEnabled()
 {

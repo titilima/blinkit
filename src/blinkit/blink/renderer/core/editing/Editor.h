@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Editor.h
+// Description: Editor Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -279,7 +290,7 @@ private:
 
     Element* findEventTargetFromSelection() const;
 
-    SpellChecker& spellChecker() const;
+    // BKTODO: SpellChecker& spellChecker() const;
 
     bool handleEditingKeyboardEvent(KeyboardEvent*);
 };
