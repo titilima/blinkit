@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: UserActionElementSet.h
+// Description: UserActionElementSet Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -77,7 +88,7 @@ private:
     void clearFlags(Element*, unsigned);
     bool hasFlags(const Element*, unsigned flags) const;
 
-    typedef WillBeHeapHashMap<RefPtrWillBeMember<Element>, unsigned> ElementFlagMap;
+    typedef std::unordered_map<Member<Element>, unsigned> ElementFlagMap;
     ElementFlagMap m_elements;
 };
 

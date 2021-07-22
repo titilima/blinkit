@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: UserActionElementSet.cpp
+// Description: UserActionElementSet Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -78,7 +89,7 @@ inline bool UserActionElementSet::hasFlags(const Element* element, unsigned flag
     ElementFlagMap::const_iterator found = m_elements.find(const_cast<Element*>(element));
     if (found == m_elements.end())
         return false;
-    return found->value & flags;
+    return found->second & flags;
 }
 
 inline void UserActionElementSet::clearFlags(Element* element, unsigned flags)
@@ -94,14 +105,14 @@ inline void UserActionElementSet::clearFlags(Element* element, unsigned flags)
         return;
     }
 
-    unsigned updated = found->value & ~flags;
+    unsigned updated = found->second & ~flags;
     if (!updated) {
         element->setUserActionElement(false);
-        m_elements.remove(found);
+        m_elements.erase(found);
         return;
     }
 
-    found->value = updated;
+    found->second = updated;
 }
 
 inline void UserActionElementSet::setFlags(Element* element, unsigned flags)
@@ -109,18 +120,18 @@ inline void UserActionElementSet::setFlags(Element* element, unsigned flags)
     ElementFlagMap::iterator result = m_elements.find(element);
     if (result != m_elements.end()) {
         ASSERT(element->isUserActionElement());
-        result->value |= flags;
+        result->second |= flags;
         return;
     }
 
     element->setUserActionElement(true);
-    m_elements.add(element, flags);
+    m_elements.emplace(element, flags);
 }
 
 DEFINE_TRACE(UserActionElementSet)
 {
 #if ENABLE(OILPAN)
-    visitor->trace(m_elements);
+    ASSERT(false); // BKTODO: visitor->trace(m_elements);
 #endif
 }
 
