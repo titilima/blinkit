@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScopedEventQueue.h
+// Description: ScopedEventQueue Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -59,7 +70,7 @@ private:
     static void initialize();
     void dispatchEvent(PassRefPtrWillBeRawPtr<EventDispatchMediator>) const;
 
-    WillBePersistentHeapVector<RefPtrWillBeMember<EventDispatchMediator>> m_queuedEventDispatchMediators;
+    // BKTODO: WillBePersistentHeapVector<RefPtrWillBeMember<EventDispatchMediator>> m_queuedEventDispatchMediators;
     unsigned m_scopingLevel;
 
     static ScopedEventQueue* s_instance;

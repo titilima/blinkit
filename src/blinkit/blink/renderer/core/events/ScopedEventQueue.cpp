@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScopedEventQueue.cpp
+// Description: ScopedEventQueue Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -48,7 +59,7 @@ ScopedEventQueue::ScopedEventQueue()
 ScopedEventQueue::~ScopedEventQueue()
 {
     ASSERT(!m_scopingLevel);
-    ASSERT(!m_queuedEventDispatchMediators.size());
+    ASSERT(false); // BKTODO: ASSERT(!m_queuedEventDispatchMediators.size());
 }
 
 void ScopedEventQueue::initialize()
@@ -61,18 +72,21 @@ void ScopedEventQueue::initialize()
 void ScopedEventQueue::enqueueEventDispatchMediator(PassRefPtrWillBeRawPtr<EventDispatchMediator> mediator)
 {
     if (m_scopingLevel)
-        m_queuedEventDispatchMediators.append(mediator);
+        ASSERT(false); // BKTODO: m_queuedEventDispatchMediators.append(mediator);
     else
         dispatchEvent(mediator);
 }
 
 void ScopedEventQueue::dispatchAllEvents()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     WillBeHeapVector<RefPtrWillBeMember<EventDispatchMediator>> queuedEventDispatchMediators;
     queuedEventDispatchMediators.swap(m_queuedEventDispatchMediators);
 
     for (size_t i = 0; i < queuedEventDispatchMediators.size(); i++)
         dispatchEvent(queuedEventDispatchMediators[i].release());
+#endif
 }
 
 void ScopedEventQueue::dispatchEvent(PassRefPtrWillBeRawPtr<EventDispatchMediator> mediator) const
