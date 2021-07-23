@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScriptResourceClient.h
+// Description: ScriptResourceClient Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller <mueller@kde.org>
@@ -27,7 +38,7 @@
 #define ScriptResource_h
 
 #include "core/CoreExport.h"
-#include "core/fetch/IntegrityMetadata.h"
+// BKTODO: #include "core/fetch/IntegrityMetadata.h"
 #include "core/fetch/ResourceClient.h"
 #include "core/fetch/TextResource.h"
 
@@ -64,7 +75,7 @@ public:
     void didAddClient(ResourceClient*) override;
     void appendData(const char*, size_t) override;
 
-    void onMemoryDump(WebMemoryDumpLevelOfDetail, WebProcessMemoryDump*) const override;
+    // BKTODO: void onMemoryDump(WebMemoryDumpLevelOfDetail, WebProcessMemoryDump*) const override;
 
     void destroyDecodedDataForFailedRevalidation() override;
 
@@ -74,8 +85,10 @@ public:
 
     bool mimeTypeAllowedByNosniff() const;
 
+#if 0 // BKTODO:
     void setIntegrityMetadata(const IntegrityMetadataSet& metadata) { m_integrityMetadata = metadata; }
     const IntegrityMetadataSet& integrityMetadata() const { return m_integrityMetadata; }
+#endif
     // The argument must never be |NotChecked|.
     void setIntegrityDisposition(ScriptIntegrityDisposition);
     ScriptIntegrityDisposition integrityDisposition() { return m_integrityDisposition; }
@@ -94,7 +107,7 @@ private:
     };
 
     ScriptIntegrityDisposition m_integrityDisposition;
-    IntegrityMetadataSet m_integrityMetadata;
+    // BKTODO: IntegrityMetadataSet m_integrityMetadata;
 
     AtomicString m_script;
 };

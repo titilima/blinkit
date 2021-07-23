@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScriptResource.cpp
+// Description: ScriptResource Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller (mueller@kde.org)
@@ -27,24 +38,28 @@
 #include "core/fetch/ScriptResource.h"
 
 #include "core/fetch/FetchRequest.h"
-#include "core/fetch/IntegrityMetadata.h"
+// BKTODO: #include "core/fetch/IntegrityMetadata.h"
 #include "core/fetch/ResourceClientWalker.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "platform/MIMETypeRegistry.h"
 #include "platform/SharedBuffer.h"
 #include "platform/network/HTTPParsers.h"
-#include "public/platform/WebProcessMemoryDump.h"
+// BKTODO: #include "public/platform/WebProcessMemoryDump.h"
 
 namespace blink {
 
 ResourcePtr<ScriptResource> ScriptResource::fetch(FetchRequest& request, ResourceFetcher* fetcher)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     ASSERT(request.resourceRequest().frameType() == WebURLRequest::FrameTypeNone);
     request.mutableResourceRequest().setRequestContext(WebURLRequest::RequestContextScript);
     ResourcePtr<ScriptResource> resource = toScriptResource(fetcher->requestResource(request, ScriptResourceFactory()));
     if (resource && !request.integrityMetadata().isEmpty())
         resource->setIntegrityMetadata(request.integrityMetadata());
     return resource;
+#endif
 }
 
 ScriptResource::ScriptResource(const ResourceRequest& resourceRequest, const String& charset)
@@ -76,6 +91,7 @@ void ScriptResource::appendData(const char* data, size_t length)
         client->notifyAppendData(this);
 }
 
+#if 0 // BKTODO:
 void ScriptResource::onMemoryDump(WebMemoryDumpLevelOfDetail levelOfDetail, WebProcessMemoryDump* memoryDump) const
 {
     Resource::onMemoryDump(levelOfDetail, memoryDump);
@@ -84,6 +100,7 @@ void ScriptResource::onMemoryDump(WebMemoryDumpLevelOfDetail levelOfDetail, WebP
     dump->addScalar("size", "bytes", m_script.string().sizeInBytes());
     memoryDump->addSuballocation(dump->guid(), String(WTF::Partitions::kAllocatedObjectPoolName));
 }
+#endif
 
 AtomicString ScriptResource::mimeType() const
 {
@@ -97,7 +114,7 @@ const String& ScriptResource::script()
 
     if (!m_script && m_data) {
         String script = decodedText();
-        m_data.clear();
+        m_data.reset();
         // We lie a it here and claim that script counts as encoded data (even though it's really decoded data).
         // That's because the MemoryCache thinks that it can clear out decoded data by calling destroyDecodedData(),
         // but we can't destroy script in destroyDecodedData because that's our only copy of the data!
@@ -115,7 +132,8 @@ void ScriptResource::destroyDecodedDataForFailedRevalidation()
 
 bool ScriptResource::mimeTypeAllowedByNosniff() const
 {
-    return parseContentTypeOptionsHeader(m_response.httpHeaderField(HTTPNames::X_Content_Type_Options)) != ContentTypeOptionsNosniff || MIMETypeRegistry::isSupportedJavaScriptMIMEType(mimeType());
+    ASSERT(false); // BKTODO: return parseContentTypeOptionsHeader(m_response.httpHeaderField(HTTPNames::X_Content_Type_Options)) != ContentTypeOptionsNosniff || MIMETypeRegistry::isSupportedJavaScriptMIMEType(mimeType());
+    return false;
 }
 
 void ScriptResource::setIntegrityDisposition(ScriptIntegrityDisposition disposition)
@@ -125,10 +143,14 @@ void ScriptResource::setIntegrityDisposition(ScriptIntegrityDisposition disposit
 }
 bool ScriptResource::mustRefetchDueToIntegrityMetadata(const FetchRequest& request) const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     if (request.integrityMetadata().isEmpty())
         return false;
 
     return !IntegrityMetadata::setsEqual(m_integrityMetadata, request.integrityMetadata());
+#endif
 }
 
 } // namespace blink
