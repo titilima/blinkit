@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageResource.h
+// Description: ImageResource Class
+//      Author: Ziming Li
+//     Created: 2021-07-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller <mueller@kde.org>
@@ -40,7 +51,7 @@ class ResourceFetcher;
 class FloatSize;
 class Length;
 class MemoryCache;
-class SecurityOrigin;
+// BKTODO: class SecurityOrigin;
 
 class CORE_EXPORT ImageResource final : public Resource, public ImageObserver {
     friend class MemoryCache;
@@ -92,7 +103,7 @@ public:
 
     void appendData(const char*, size_t) override;
     void error(Resource::Status) override;
-    void responseReceived(const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) override;
+    // BKTODO: void responseReceived(const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) override;
     void finishOnePart() override;
 
     // For compatibility, images keep loading even if there are HTTP errors.

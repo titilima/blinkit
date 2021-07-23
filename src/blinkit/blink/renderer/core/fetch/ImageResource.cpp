@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageResource.cpp
+// Description: ImageResource Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller (mueller@kde.org)
@@ -24,13 +35,15 @@
 #include "core/fetch/ImageResource.h"
 
 #include "core/fetch/ImageResourceClient.h"
-#include "core/fetch/MemoryCache.h"
+// BKTODO: #include "core/fetch/MemoryCache.h"
 #include "core/fetch/ResourceClient.h"
 #include "core/fetch/ResourceClientWalker.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/fetch/ResourceLoader.h"
+#if 0 // BKTODO:
 #include "core/svg/graphics/SVGImage.h"
 #include "platform/Logging.h"
+#endif
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/SharedBuffer.h"
 #include "platform/TraceEvent.h"
@@ -43,8 +56,11 @@ namespace blink {
 
 ResourcePtr<ImageResource> ImageResource::fetch(FetchRequest& request, ResourceFetcher* fetcher)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (request.resourceRequest().requestContext() == WebURLRequest::RequestContextUnspecified)
         request.mutableResourceRequest().setRequestContext(WebURLRequest::RequestContextImage);
+#endif
     if (fetcher->context().pageDismissalEventBeingDispatched()) {
         KURL requestURL = request.resourceRequest().url();
         if (requestURL.isValid() && fetcher->context().canRequest(Resource::Image, request.resourceRequest(), requestURL, request.options(), request.forPreload(), request.originRestriction()))
@@ -64,7 +80,7 @@ ImageResource::ImageResource(const ResourceRequest& resourceRequest)
     , m_image(nullptr)
     , m_hasDevicePixelRatioHeaderValue(false)
 {
-    WTF_LOG(Timers, "new ImageResource(ResourceRequest) %p", this);
+    ASSERT(false); // BKTODO: WTF_LOG(Timers, "new ImageResource(ResourceRequest) %p", this);
     setStatus(Unknown);
     setCustomAcceptHeader();
 }
@@ -75,7 +91,7 @@ ImageResource::ImageResource(blink::Image* image)
     , m_image(image)
     , m_hasDevicePixelRatioHeaderValue(false)
 {
-    WTF_LOG(Timers, "new ImageResource(Image) %p", this);
+    ASSERT(false); // BKTODO: WTF_LOG(Timers, "new ImageResource(Image) %p", this);
     setStatus(Cached);
     setLoading(false);
     setCustomAcceptHeader();
@@ -85,7 +101,7 @@ ImageResource::ImageResource(const ResourceRequest& resourceRequest, blink::Imag
     : Resource(resourceRequest, Image)
     , m_image(image)
 {
-    WTF_LOG(Timers, "new ImageResource(ResourceRequest, Image) %p", this);
+    ASSERT(false); // BKTODO: WTF_LOG(Timers, "new ImageResource(ResourceRequest, Image) %p", this);
     setStatus(Cached);
     setLoading(false);
     setCustomAcceptHeader();
@@ -93,7 +109,7 @@ ImageResource::ImageResource(const ResourceRequest& resourceRequest, blink::Imag
 
 ImageResource::~ImageResource()
 {
-    WTF_LOG(Timers, "~ImageResource %p", this);
+    ASSERT(false); // BKTODO: WTF_LOG(Timers, "~ImageResource %p", this);
     clearImage();
 }
 
@@ -130,7 +146,7 @@ void ImageResource::didRemoveClient(ResourceClient* c)
 bool ImageResource::isSafeToUnlock() const
 {
     // Note that |m_image| holds a reference to |m_data| in addition to the one held by the Resource parent class.
-    return !m_image || (m_image->hasOneRef() && m_data->refCount() == 2);
+    return !m_image || (m_image->hasOneRef() && m_data.use_count() == 2);
 }
 
 void ImageResource::destroyDecodedDataForFailedRevalidation()
@@ -280,7 +296,7 @@ inline void ImageResource::createImage()
         return;
 
     if (m_response.mimeType() == "image/svg+xml") {
-        m_image = SVGImage::create(this);
+        ASSERT(false); // BKTODO: m_image = SVGImage::create(this);
     } else {
         m_image = BitmapImage::create(this);
     }
@@ -324,8 +340,11 @@ void ImageResource::updateImage(bool allDataReceived)
     if (sizeAvailable || allDataReceived) {
         if (!m_image || m_image->isNull()) {
             error(errorOccurred() ? status() : DecodeError);
+            ASSERT(false); // BKTODO:
+#if 0
             if (memoryCache()->contains(this))
                 memoryCache()->remove(this);
+#endif
             return;
         }
 
@@ -341,7 +360,7 @@ void ImageResource::finishOnePart()
         clear();
     updateImage(true);
     if (loadingMultipartContent())
-        m_data.clear();
+        m_data.reset();
     Resource::finishOnePart();
 }
 
@@ -352,6 +371,7 @@ void ImageResource::error(Resource::Status status)
     notifyObservers();
 }
 
+#if 0 // BKTODO:
 void ImageResource::responseReceived(const ResourceResponse& response, PassOwnPtr<WebDataConsumerHandle> handle)
 {
     if (loadingMultipartContent() && m_data)
@@ -366,6 +386,7 @@ void ImageResource::responseReceived(const ResourceResponse& response, PassOwnPt
 
     }
 }
+#endif
 
 void ImageResource::decodedSizeChanged(const blink::Image* image, int delta)
 {
@@ -446,6 +467,9 @@ void ImageResource::changedInRect(const blink::Image* image, const IntRect& rect
 
 bool ImageResource::isAccessAllowed(SecurityOrigin* securityOrigin)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     if (response().wasFetchedViaServiceWorker())
         return response().serviceWorkerResponseType() != WebServiceWorkerResponseTypeOpaque;
     if (!image()->currentFrameHasSingleSecurityOrigin())
@@ -453,6 +477,7 @@ bool ImageResource::isAccessAllowed(SecurityOrigin* securityOrigin)
     if (passesAccessControlCheck(securityOrigin))
         return true;
     return !securityOrigin->taintsCanvas(response().url());
+#endif
 }
 
 bool ImageResource::loadingMultipartContent() const
