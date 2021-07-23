@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TreeScopeEventContext.cpp
+// Description: TreeScopeEventContext Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All Rights Reserved.
  *
@@ -29,7 +40,7 @@
 #include "core/dom/StaticNodeList.h"
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/events/EventPath.h"
-#include "core/events/TouchEventContext.h"
+// BKTODO: #include "core/events/TouchEventContext.h"
 
 namespace blink {
 
@@ -63,7 +74,7 @@ WillBeHeapVector<RefPtrWillBeMember<EventTarget>>& TreeScopeEventContext::ensure
 
     m_eventPath = adoptPtrWillBeNoop(new WillBeHeapVector<RefPtrWillBeMember<EventTarget>>());
     LocalDOMWindow* window = path.windowEventContext().window();
-    m_eventPath->reserveCapacity(path.size() + (window ? 1 : 0));
+    m_eventPath->reserve(path.size() + (window ? 1 : 0));
 
     for (size_t i = 0; i < path.size(); ++i) {
         if (path[i].treeScopeEventContext().isUnclosedTreeOf(*this))
@@ -77,7 +88,7 @@ WillBeHeapVector<RefPtrWillBeMember<EventTarget>>& TreeScopeEventContext::ensure
 TouchEventContext* TreeScopeEventContext::ensureTouchEventContext()
 {
     if (!m_touchEventContext)
-        m_touchEventContext = TouchEventContext::create();
+        ASSERT(false); // BKTODO: m_touchEventContext = TouchEventContext::create();
     return m_touchEventContext.get();
 }
 
