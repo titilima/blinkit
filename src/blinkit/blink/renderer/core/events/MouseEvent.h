@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MouseEvent.h
+// Description: MouseEvent Class
+//      Author: Ziming Li
+//     Created: 2021-07-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -53,7 +64,7 @@ public:
 
     static PassRefPtrWillBeRawPtr<MouseEvent> create(const AtomicString& eventType, PassRefPtrWillBeRawPtr<AbstractView>, const PlatformMouseEvent&, int detail, PassRefPtrWillBeRawPtr<Node> relatedTarget);
 
-    static PassRefPtrWillBeRawPtr<MouseEvent> create(ScriptState*, const AtomicString& eventType, const MouseEventInit&);
+    // BKTODO: static PassRefPtrWillBeRawPtr<MouseEvent> create(ScriptState*, const AtomicString& eventType, const MouseEventInit&);
 
     static PassRefPtrWillBeRawPtr<MouseEvent> create(const AtomicString& eventType, PassRefPtrWillBeRawPtr<AbstractView>, PassRefPtrWillBeRawPtr<Event> underlyingEvent, SimulatedClickCreationScope);
 
@@ -62,10 +73,12 @@ public:
     static unsigned short platformModifiersToButtons(unsigned modifiers);
     static unsigned short buttonToButtons(short button);
 
+#if 0 // BKTODO:
     void initMouseEvent(ScriptState*, const AtomicString& type, bool canBubble, bool cancelable, PassRefPtrWillBeRawPtr<AbstractView>,
         int detail, int screenX, int screenY, int clientX, int clientY,
         bool ctrlKey, bool altKey, bool shiftKey, bool metaKey,
         short button, PassRefPtrWillBeRawPtr<EventTarget> relatedTarget, unsigned short buttons = 0);
+#endif
 
     // WinIE uses 1,4,2 for left/middle/right but not for click (just for mousedown/up, maybe others),
     // but we will match the standard DOM.

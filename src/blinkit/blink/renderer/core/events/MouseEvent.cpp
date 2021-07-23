@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MouseEvent.cpp
+// Description: MouseEvent Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -22,20 +33,20 @@
 
 #include "core/events/MouseEvent.h"
 
-#include "bindings/core/v8/DOMWrapperWorld.h"
-#include "bindings/core/v8/ScriptState.h"
 #include "core/dom/Element.h"
 #include "core/events/EventDispatcher.h"
 #include "platform/PlatformMouseEvent.h"
 
 namespace blink {
 
+#if 0 // BKTODO:
 PassRefPtrWillBeRawPtr<MouseEvent> MouseEvent::create(ScriptState* scriptState, const AtomicString& type, const MouseEventInit& initializer)
 {
     if (scriptState && scriptState->world().isIsolatedWorld())
         UIEventWithKeyState::didCreateEventInIsolatedWorld(initializer.ctrlKey(), initializer.altKey(), initializer.shiftKey(), initializer.metaKey());
     return adoptRefWillBeNoop(new MouseEvent(type, initializer));
 }
+#endif
 
 PassRefPtrWillBeRawPtr<MouseEvent> MouseEvent::create(const AtomicString& eventType, PassRefPtrWillBeRawPtr<AbstractView> view, const PlatformMouseEvent& event, int detail, PassRefPtrWillBeRawPtr<Node> relatedTarget)
 {
@@ -172,6 +183,7 @@ unsigned short MouseEvent::buttonToButtons(short button)
     return 0;
 }
 
+#if 0 // BKTODO:
 void MouseEvent::initMouseEvent(ScriptState* scriptState, const AtomicString& type, bool canBubble, bool cancelable, PassRefPtrWillBeRawPtr<AbstractView> view,
                                 int detail, int screenX, int screenY, int clientX, int clientY,
                                 bool ctrlKey, bool altKey, bool shiftKey, bool metaKey,
@@ -186,6 +198,7 @@ void MouseEvent::initMouseEvent(ScriptState* scriptState, const AtomicString& ty
     initModifiers(ctrlKey, altKey, shiftKey, metaKey);
     initMouseEventInternal(type, canBubble, cancelable, view, detail, screenX, screenY, clientX, clientY, modifiers(), button, relatedTarget, nullptr, buttons);
 }
+#endif
 
 void MouseEvent::initMouseEventInternal(const AtomicString& type, bool canBubble, bool cancelable, PassRefPtrWillBeRawPtr<AbstractView> view,
     int detail, int screenX, int screenY, int clientX, int clientY, PlatformEvent::Modifiers modifiers,
