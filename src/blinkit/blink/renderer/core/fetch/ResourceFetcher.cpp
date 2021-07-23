@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourceFetcher.cpp
+// Description: ResourceFetcher Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller (mueller@kde.org)
@@ -26,26 +37,29 @@
 
 #include "core/fetch/ResourceFetcher.h"
 
-#include "bindings/core/v8/V8DOMActivityLogger.h"
-#include "core/fetch/CrossOriginAccessControl.h"
+// BKTODO: #include "core/fetch/CrossOriginAccessControl.h"
 #include "core/fetch/FetchContext.h"
+#if 0 // BKTODO:
 #include "core/fetch/FetchInitiatorTypeNames.h"
 #include "core/fetch/MemoryCache.h"
+#endif
 #include "core/fetch/ResourceLoader.h"
 #include "core/fetch/ResourceLoaderSet.h"
 #include "core/fetch/UniqueIdentifier.h"
-#include "platform/Logging.h"
+// BKTODO: #include "platform/Logging.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/TraceEvent.h"
 #include "platform/TracedValue.h"
+#if 0 // BKTODO:
 #include "platform/mhtml/ArchiveResource.h"
 #include "platform/mhtml/ArchiveResourceCollection.h"
 #include "platform/network/ResourceTimingInfo.h"
 #include "platform/weborigin/KnownPorts.h"
 #include "platform/weborigin/SecurityOrigin.h"
 #include "platform/weborigin/SecurityPolicy.h"
+#endif
 #include "public/platform/Platform.h"
-#include "public/platform/WebURL.h"
+// BKTODO: #include "public/platform/WebURL.h"
 #include "public/platform/WebURLRequest.h"
 #include "wtf/text/CString.h"
 #include "wtf/text/WTFString.h"
@@ -70,9 +84,10 @@ enum SriResourceIntegrityMismatchEvent {
 
 static void RecordSriResourceIntegrityMismatchEvent(SriResourceIntegrityMismatchEvent event)
 {
-    Platform::current()->histogramEnumeration("sri.resource_integrity_mismatch_event", event, SriResourceIntegrityMismatchEventCount);
+    ASSERT(false); // BKTODO: Platform::current()->histogramEnumeration("sri.resource_integrity_mismatch_event", event, SriResourceIntegrityMismatchEventCount);
 }
 
+#if 0 // BKTODO:
 static ResourceLoadPriority typeToPriority(Resource::Type type)
 {
     switch (type) {
@@ -126,6 +141,7 @@ static void populateResourceTiming(ResourceTimingInfo* info, Resource* resource,
         info->setLoadFinishTime(resource->loadFinishTime());
     }
 }
+#endif
 
 static WebURLRequest::RequestContext requestContextFromType(bool isMainFrame, Resource::Type type)
 {
@@ -136,7 +152,7 @@ static WebURLRequest::RequestContext requestContextFromType(bool isMainFrame, Re
         // FIXME: Change this to a context frame type (once we introduce them): http://fetch.spec.whatwg.org/#concept-request-context-frame-type
         return WebURLRequest::RequestContextHyperlink;
     case Resource::XSLStyleSheet:
-        ASSERT(RuntimeEnabledFeatures::xsltEnabled());
+        ASSERT(false); // BKTODO: ASSERT(RuntimeEnabledFeatures::xsltEnabled());
     case Resource::CSSStyleSheet:
         return WebURLRequest::RequestContextStyle;
     case Resource::Script:
@@ -174,7 +190,7 @@ ResourceFetcher::ResourceFetcher(FetchContext* context)
     , m_allowStaleResources(false)
 {
 #if ENABLE(OILPAN)
-    ThreadState::current()->registerPreFinalizer(this);
+    ASSERT(false); // BKTODO: ThreadState::current()->registerPreFinalizer(this);
 #endif
 }
 
@@ -195,11 +211,16 @@ WebTaskRunner* ResourceFetcher::loadingTaskRunner()
 
 Resource* ResourceFetcher::cachedResource(const KURL& resourceURL) const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     KURL url = MemoryCache::removeFragmentIdentifierIfNeeded(resourceURL);
     const WeakPtrWillBeWeakMember<Resource>& resource = m_documentResources.get(url);
     return resource.get();
+#endif
 }
 
+#if 0 // BKTODO:
 bool ResourceFetcher::canAccessResource(Resource* resource, SecurityOrigin* sourceOrigin, const KURL& url, AccessControlLoggingDecision logErrorsDecision) const
 {
     // Redirects can change the response URL different from one of request.
@@ -224,6 +245,7 @@ bool ResourceFetcher::canAccessResource(Resource* resource, SecurityOrigin* sour
     }
     return true;
 }
+#endif
 
 bool ResourceFetcher::isControlledByServiceWorker() const
 {
@@ -238,7 +260,8 @@ bool ResourceFetcher::resourceNeedsLoad(Resource* resource, const FetchRequest& 
         return true;
     if (resource->stillNeedsLoad())
         return true;
-    return request.options().synchronousPolicy == RequestSynchronously && resource->isLoading();
+    ASSERT(false); // BKTODO: return request.options().synchronousPolicy == RequestSynchronously && resource->isLoading();
+    return false;
 }
 
 // Limit the number of URLs in m_validatedURLs to avoid memory bloat.
@@ -247,6 +270,8 @@ static const int kMaxValidatedURLsSize = 10000;
 
 void ResourceFetcher::requestLoadStarted(Resource* resource, const FetchRequest& request, ResourceLoadStartType type, bool isStaticData)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (type == ResourceLoadingFromCache && resource->status() == Resource::Cached && !m_validatedURLs.contains(resource->url()))
         context().dispatchDidLoadResourceFromMemoryCache(resource);
 
@@ -266,18 +291,24 @@ void ResourceFetcher::requestLoadStarted(Resource* resource, const FetchRequest&
         m_validatedURLs.clear();
     }
     m_validatedURLs.add(request.resourceRequest().url());
+#endif
 }
 
+#if 0 // BKTODO:
 static PassRefPtr<TraceEvent::ConvertableToTraceFormat> urlForTraceEvent(const KURL& url)
 {
     RefPtr<TracedValue> value = TracedValue::create();
     value->setString("url", url.string());
     return value.release();
 }
+#endif
 
 ResourcePtr<Resource> ResourceFetcher::preCacheData(const FetchRequest& request, const ResourceFactory& factory, const SubstituteData& substituteData)
 {
     const KURL& url = request.resourceRequest().url();
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     ASSERT(url.protocolIsData() || substituteData.isValid());
 
     // TODO(japhet): We only send main resource data: urls through WebURLLoader for the benefit of
@@ -324,6 +355,7 @@ ResourcePtr<Resource> ResourceFetcher::preCacheData(const FetchRequest& request,
     resource->finish();
     memoryCache()->add(resource.get());
     return resource;
+#endif
 }
 
 void ResourceFetcher::moveCachedNonBlockingResourceToBlocking(Resource* resource, const FetchRequest& request)
@@ -340,6 +372,9 @@ void ResourceFetcher::moveCachedNonBlockingResourceToBlocking(Resource* resource
 
 ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, const ResourceFactory& factory, const SubstituteData& substituteData)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     ASSERT(request.options().synchronousPolicy == RequestAsynchronously || factory.type() == Resource::Raw || factory.type() == Resource::XSLStyleSheet);
 
     context().upgradeInsecureRequest(request);
@@ -464,21 +499,25 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
     ASSERT(resource->url() == url.string());
     m_documentResources.set(resource->url(), resource->asWeakPtr());
     return resource;
+#endif
 }
 
 void ResourceFetcher::resourceTimingReportTimerFired(Timer<ResourceFetcher>* timer)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT_UNUSED(timer, timer == &m_resourceTimingReportTimer);
     Vector<OwnPtr<ResourceTimingInfo>> timingReports;
     timingReports.swap(m_scheduledResourceTimingReports);
     for (const auto& timingInfo : timingReports)
         context().addResourceTiming(*timingInfo);
+#endif
 }
 
 void ResourceFetcher::determineRequestContext(ResourceRequest& request, Resource::Type type, bool isMainFrame)
 {
     WebURLRequest::RequestContext requestContext = requestContextFromType(isMainFrame, type);
-    request.setRequestContext(requestContext);
+    ASSERT(false); // BKTODO: request.setRequestContext(requestContext);
 }
 
 void ResourceFetcher::determineRequestContext(ResourceRequest& request, Resource::Type type)
@@ -490,17 +529,22 @@ void ResourceFetcher::initializeResourceRequest(ResourceRequest& request, Resour
 {
     if (request.cachePolicy() == UseProtocolCachePolicy)
         request.setCachePolicy(context().resourceRequestCachePolicy(request, type));
+    ASSERT(false); // BKTODO:
+#if 0
     if (request.requestContext() == WebURLRequest::RequestContextUnspecified)
         determineRequestContext(request, type);
     if (type == Resource::LinkPrefetch || type == Resource::LinkSubresource)
         request.setHTTPHeaderField(HTTPNames::Purpose, "prefetch");
 
     context().addAdditionalRequestHeaders(request, (type == Resource::MainResource) ? FetchMainResource : FetchSubresource);
+#endif
 }
 
 void ResourceFetcher::initializeRevalidation(const FetchRequest& request, Resource* resource)
 {
     ASSERT(resource);
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(memoryCache()->contains(resource));
     ASSERT(resource->isLoaded());
     ASSERT(resource->canUseCacheValidator());
@@ -529,11 +573,15 @@ void ResourceFetcher::initializeRevalidation(const FetchRequest& request, Resour
     }
 
     resource->setRevalidatingRequest(revalidatingRequest);
+#endif
 }
 
 ResourcePtr<Resource> ResourceFetcher::createResourceForLoading(FetchRequest& request, const String& charset, const ResourceFactory& factory)
 {
     const String cacheIdentifier = getCacheIdentifier();
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     ASSERT(!memoryCache()->resourceForURL(request.resourceRequest().url(), cacheIdentifier));
 
     WTF_LOG(ResourceLoading, "Loading Resource for '%s'.", request.resourceRequest().url().elidedString().latin1().data());
@@ -545,10 +593,13 @@ ResourcePtr<Resource> ResourceFetcher::createResourceForLoading(FetchRequest& re
 
     memoryCache()->add(resource.get());
     return resource;
+#endif
 }
 
 void ResourceFetcher::storeResourceTimingInitiatorInformation(Resource* resource)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (resource->options().initiatorInfo.name == FetchInitiatorTypeNames::internal)
         return;
 
@@ -562,6 +613,7 @@ void ResourceFetcher::storeResourceTimingInitiatorInformation(Resource* resource
 
     if (resource->type() != Resource::MainResource || context().updateTimingInfoForIFrameNavigation(info.get()))
         m_resourceTimingInfoMap.add(resource, info.release());
+#endif
 }
 
 ResourceFetcher::RevalidationPolicy ResourceFetcher::determineRevalidationPolicy(Resource::Type type, const FetchRequest& fetchRequest, Resource* existingResource, bool isStaticData) const
@@ -608,7 +660,7 @@ ResourceFetcher::RevalidationPolicy ResourceFetcher::determineRevalidationPolicy
         // We really should discard the new prefetch since the preload has more
         // specific type information! crbug.com/379893
         // fast/dom/HTMLLinkElement/link-and-subresource-test hits this case.
-        WTF_LOG(ResourceLoading, "ResourceFetcher::determineRevalidationPolicy reloading due to type mismatch.");
+        ASSERT(false); // BKTODO: WTF_LOG(ResourceLoading, "ResourceFetcher::determineRevalidationPolicy reloading due to type mismatch.");
         return Reload;
     }
 
@@ -649,6 +701,8 @@ ResourceFetcher::RevalidationPolicy ResourceFetcher::determineRevalidationPolicy
     if (existingResource->isPreloaded())
         return Use;
 
+    ASSERT(false); // BKTODO:
+#if 0
     // CachePolicyHistoryBuffer uses the cache no matter what.
     CachePolicy cachePolicy = context().cachePolicy();
     if (cachePolicy == CachePolicyHistoryBuffer)
@@ -732,6 +786,7 @@ ResourceFetcher::RevalidationPolicy ResourceFetcher::determineRevalidationPolicy
         WTF_LOG(ResourceLoading, "ResourceFetcher::determineRevalidationPolicy reloading due to missing cache validators.");
         return Reload;
     }
+#endif
 
     return Use;
 }
@@ -778,7 +833,7 @@ void ResourceFetcher::reloadImagesIfNotDeferred()
     // can be replaced with a Resource*. Also, null checking
     // the resource probably won't be necesssary.
     for (const auto& documentResource : m_documentResources) {
-        Resource* resource = documentResource.value.get();
+        Resource* resource = documentResource.second.get();
         if (resource && resource->type() == Resource::Image && resource->stillNeedsLoad() && !clientDefersImage(resource->url()))
             const_cast<Resource*>(resource)->load(this, defaultResourceOptions());
     }
@@ -786,9 +841,12 @@ void ResourceFetcher::reloadImagesIfNotDeferred()
 
 void ResourceFetcher::redirectReceived(Resource* resource, const ResourceResponse& redirectResponse)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ResourceTimingInfoMap::iterator it = m_resourceTimingInfoMap.find(resource);
     if (it != m_resourceTimingInfoMap.end())
-        it->value->addRedirect(redirectResponse);
+        it->second->addRedirect(redirectResponse);
+#endif
 }
 
 void ResourceFetcher::didLoadResource(Resource* resource)
@@ -803,6 +861,8 @@ int ResourceFetcher::requestCount() const
 
 void ResourceFetcher::preloadStarted(Resource* resource)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_preloads && m_preloads->contains(resource))
         return;
     TRACE_EVENT_ASYNC_STEP_INTO0("blink.net", "Resource", resource, "Preload");
@@ -814,6 +874,7 @@ void ResourceFetcher::preloadStarted(Resource* resource)
 
 #if PRELOAD_DEBUG
     printf("PRELOADING %s\n",  resource->url().string().latin1().data());
+#endif
 #endif
 }
 
@@ -837,15 +898,19 @@ void ResourceFetcher::clearPreloads()
     if (!m_preloads)
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     for (auto resource : *m_preloads) {
         resource->decreasePreloadCount();
         bool deleted = resource->deleteIfPossible();
         if (!deleted && resource->preloadResult() == Resource::PreloadNotReferenced)
             memoryCache()->remove(resource.get());
     }
+#endif
     m_preloads.clear();
 }
 
+#if 0 // BKTODO:
 void ResourceFetcher::addAllArchiveResources(MHTMLArchive* archive)
 {
     ASSERT(archive);
@@ -873,12 +938,15 @@ bool ResourceFetcher::scheduleArchiveLoad(Resource* resource, const ResourceRequ
     resource->finish();
     return true;
 }
+#endif
 
 void ResourceFetcher::didFinishLoading(Resource* resource, double finishTime, int64_t encodedDataLength)
 {
     TRACE_EVENT_ASYNC_END0("blink.net", "Resource", resource);
     willTerminateResourceLoader(resource->loader());
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (resource && resource->response().isHTTP() && resource->response().httpStatusCode() < 400) {
         ResourceTimingInfoMap::iterator it = m_resourceTimingInfoMap.find(resource);
         if (it != m_resourceTimingInfoMap.end()) {
@@ -890,6 +958,7 @@ void ResourceFetcher::didFinishLoading(Resource* resource, double finishTime, in
             resource->reportResourceTimingToClients(*info);
         }
     }
+#endif
     context().dispatchDidFinishLoading(resource->identifier(), finishTime, encodedDataLength);
 }
 
@@ -897,8 +966,11 @@ void ResourceFetcher::didFailLoading(const Resource* resource, const ResourceErr
 {
     TRACE_EVENT_ASYNC_END0("blink.net", "Resource", resource);
     willTerminateResourceLoader(resource->loader());
+    ASSERT(false); // BKTODO:
+#if 0
     bool isInternalRequest = resource->options().initiatorInfo.name == FetchInitiatorTypeNames::internal;
     context().dispatchDidFail(resource->identifier(), error, isInternalRequest);
+#endif
 }
 
 void ResourceFetcher::willSendRequest(unsigned long identifier, ResourceRequest& request, const ResourceResponse& redirectResponse, const FetchInitiatorInfo& initiatorInfo)
@@ -908,6 +980,8 @@ void ResourceFetcher::willSendRequest(unsigned long identifier, ResourceRequest&
 
 void ResourceFetcher::didReceiveResponse(const Resource* resource, const ResourceResponse& response)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // If the response is fetched via ServiceWorker, the original URL of the response could be different from the URL of the request.
     // We check the URL not to load the resources which are forbidden by the page CSP.
     // https://w3c.github.io/webappsec-csp/#should-block-response
@@ -920,6 +994,7 @@ void ResourceFetcher::didReceiveResponse(const Resource* resource, const Resourc
             return;
         }
     }
+#endif
     context().dispatchDidReceiveResponse(resource->identifier(), response, resource->loader());
 }
 
@@ -1012,6 +1087,8 @@ bool ResourceFetcher::canAccessRedirect(Resource* resource, ResourceRequest& new
 {
     if (!context().canRequest(resource->type(), newRequest, newRequest.url(), options, resource->isUnusedPreload(), FetchRequest::UseDefaultOriginRestrictionForType))
         return false;
+    ASSERT(false); // BKTODO:
+#if 0
     if (options.corsEnabled == IsCORSEnabled) {
         SecurityOrigin* sourceOrigin = options.securityOrigin.get();
         if (!sourceOrigin)
@@ -1025,6 +1102,7 @@ bool ResourceFetcher::canAccessRedirect(Resource* resource, ResourceRequest& new
             return false;
         }
     }
+#endif
     if (resource->type() == Resource::Image && shouldDeferImageLoad(newRequest.url()))
         return false;
     return true;
@@ -1043,6 +1121,8 @@ void ResourceFetcher::updateAllImageResourcePriorities()
         if (!resource->isImage())
             continue;
 
+        ASSERT(false); // BKTODO:
+#if 0
         ResourcePriority resourcePriority = resource->priorityFromClients();
         ResourceLoadPriority resourceLoadPriority = loadPriority(Resource::Image, FetchRequest(resource->resourceRequest(), FetchInitiatorInfo()), resourcePriority.visibility);
         if (resourceLoadPriority == resource->resourceRequest().priority())
@@ -1051,6 +1131,7 @@ void ResourceFetcher::updateAllImageResourcePriorities()
         resource->didChangePriority(resourceLoadPriority, resourcePriority.intraPriorityValue);
         TRACE_EVENT_ASYNC_STEP_INTO1("blink.net", "Resource", resource, "ChangePriority", "priority", resourceLoadPriority);
         context().dispatchDidChangeResourcePriority(resource->identifier(), resourceLoadPriority, resourcePriority.intraPriorityValue);
+#endif
     }
 }
 
@@ -1114,7 +1195,8 @@ String ResourceFetcher::getCacheIdentifier() const
 {
     if (context().isControlledByServiceWorker())
         return String::number(context().serviceWorkerID());
-    return MemoryCache::defaultCacheIdentifier();
+    ASSERT(false); // BKTODO: return MemoryCache::defaultCacheIdentifier();
+    return String();
 }
 
 ResourceFetcher::DeadResourceStatsRecorder::DeadResourceStatsRecorder()
@@ -1126,12 +1208,15 @@ ResourceFetcher::DeadResourceStatsRecorder::DeadResourceStatsRecorder()
 
 ResourceFetcher::DeadResourceStatsRecorder::~DeadResourceStatsRecorder()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     Platform::current()->histogramCustomCounts(
         "WebCore.ResourceFetcher.HitCount", m_useCount, 0, 1000, 50);
     Platform::current()->histogramCustomCounts(
         "WebCore.ResourceFetcher.RevalidateCount", m_revalidateCount, 0, 1000, 50);
     Platform::current()->histogramCustomCounts(
         "WebCore.ResourceFetcher.LoadCount", m_loadCount, 0, 1000, 50);
+#endif
 }
 
 void ResourceFetcher::DeadResourceStatsRecorder::update(RevalidationPolicy policy)
@@ -1153,13 +1238,13 @@ void ResourceFetcher::DeadResourceStatsRecorder::update(RevalidationPolicy polic
 DEFINE_TRACE(ResourceFetcher)
 {
     visitor->trace(m_context);
-    visitor->trace(m_archiveResourceCollection);
+    // BKTODO: visitor->trace(m_archiveResourceCollection);
     visitor->trace(m_loaders);
     visitor->trace(m_nonBlockingLoaders);
 #if ENABLE(OILPAN)
     visitor->trace(m_documentResources);
     visitor->trace(m_preloads);
-    visitor->trace(m_resourceTimingInfoMap);
+    // BKTODO: visitor->trace(m_resourceTimingInfoMap);
 #endif
 }
 

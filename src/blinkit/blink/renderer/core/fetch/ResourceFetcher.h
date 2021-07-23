@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourceFetcher.h
+// Description: ResourceFetcher Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller <mueller@kde.org>
@@ -27,7 +38,7 @@
 #define ResourceFetcher_h
 
 #include "core/CoreExport.h"
-#include "core/fetch/CachePolicy.h"
+// BKTODO: #include "core/fetch/CachePolicy.h"
 #include "core/fetch/FetchContext.h"
 #include "core/fetch/FetchInitiatorInfo.h"
 #include "core/fetch/FetchRequest.h"
@@ -37,7 +48,7 @@
 #include "core/fetch/SubstituteData.h"
 #include "platform/Timer.h"
 #include "platform/network/ResourceError.h"
-#include "platform/network/ResourceLoadPriority.h"
+// BKTODO: #include "platform/network/ResourceLoadPriority.h"
 #include "wtf/HashMap.h"
 #include "wtf/HashSet.h"
 #include "wtf/ListHashSet.h"
@@ -45,17 +56,17 @@
 
 namespace blink {
 
-class ArchiveResourceCollection;
+// BKTODO: class ArchiveResourceCollection;
 class CSSStyleSheetResource;
 class DocumentResource;
 class FontResource;
 class ImageResource;
-class MHTMLArchive;
+// BKTODO: class MHTMLArchive;
 class RawResource;
 class ScriptResource;
 class XSLStyleSheetResource;
 class KURL;
-class ResourceTimingInfo;
+// BKTODO: class ResourceTimingInfo;
 class ResourceLoaderSet;
 
 // The ResourceFetcher provides a per-context interface to the MemoryCache
@@ -98,8 +109,10 @@ public:
     void preloadStarted(Resource*);
     void printPreloadStats();
 
+#if 0 // BKTODO:
     void addAllArchiveResources(MHTMLArchive*);
     ArchiveResourceCollection* archiveResourceCollection() const { return m_archiveResourceCollection.get(); }
+#endif
 
     void setDefersLoading(bool);
     void stopFetching();
@@ -124,12 +137,12 @@ public:
         ShouldNotLogAccessControlErrors
     };
     bool canAccessRedirect(Resource*, ResourceRequest&, const ResourceResponse&, ResourceLoaderOptions&);
-    bool canAccessResource(Resource*, SecurityOrigin*, const KURL&, AccessControlLoggingDecision) const;
+    // BKTODO: bool canAccessResource(Resource*, SecurityOrigin*, const KURL&, AccessControlLoggingDecision) const;
     bool isControlledByServiceWorker() const;
 
     void acceptDataFromThreadedReceiver(unsigned long identifier, const char* data, int dataLength, int encodedDataLength);
 
-    ResourceLoadPriority loadPriority(Resource::Type, const FetchRequest&, ResourcePriority::VisibilityStatus = ResourcePriority::NotVisible);
+    // BKTODO: ResourceLoadPriority loadPriority(Resource::Type, const FetchRequest&, ResourcePriority::VisibilityStatus = ResourcePriority::NotVisible);
 
     enum ResourceLoadStartType {
         ResourceLoadingFromNetwork,
@@ -160,7 +173,7 @@ private:
     void initializeRevalidation(const FetchRequest&, Resource*);
     ResourcePtr<Resource> createResourceForLoading(FetchRequest&, const String& charset, const ResourceFactory&);
     void storeResourceTimingInitiatorInformation(Resource*);
-    bool scheduleArchiveLoad(Resource*, const ResourceRequest&);
+    // BKTODO: bool scheduleArchiveLoad(Resource*, const ResourceRequest&);
     ResourcePtr<Resource> preCacheData(const FetchRequest&, const ResourceFactory&, const SubstituteData&);
 
     enum RevalidationPolicy { Use, Revalidate, Reload, Load };
@@ -178,7 +191,7 @@ private:
 
     void willTerminateResourceLoader(ResourceLoader*);
 
-    ResourceLoadPriority modifyPriorityForExperiments(ResourceLoadPriority, Resource::Type, const FetchRequest&);
+    // BKTODO: ResourceLoadPriority modifyPriorityForExperiments(ResourceLoadPriority, Resource::Type, const FetchRequest&);
 
     Member<FetchContext> m_context;
 
@@ -191,16 +204,18 @@ private:
     // is revalidated. What we really want to hold here is not the ResourcePtr
     // but the underlying Resource.
     OwnPtrWillBeMember<WillBeHeapListHashSet<RawPtrWillBeMember<Resource>>> m_preloads;
-    OwnPtrWillBeMember<ArchiveResourceCollection> m_archiveResourceCollection;
+    // BKTODO: OwnPtrWillBeMember<ArchiveResourceCollection> m_archiveResourceCollection;
 
     Timer<ResourceFetcher> m_resourceTimingReportTimer;
 
+#if 0 // BKTODO:
     // We intentionally use a Member instead of a ResourcePtr.
     // See the comment on m_preloads.
     using ResourceTimingInfoMap = WillBeHeapHashMap<RawPtrWillBeMember<Resource>, OwnPtr<ResourceTimingInfo>>;
     ResourceTimingInfoMap m_resourceTimingInfoMap;
 
     Vector<OwnPtr<ResourceTimingInfo>> m_scheduledResourceTimingReports;
+#endif
 
     Member<ResourceLoaderSet> m_loaders;
     Member<ResourceLoaderSet> m_nonBlockingLoaders;
