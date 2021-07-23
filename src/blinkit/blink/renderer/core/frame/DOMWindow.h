@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMWindow.h
+// Description: DOMWindow Class
+//      Author: Ziming Li
+//     Created: 2021-07-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -41,7 +52,7 @@ class StyleMedia;
 
 typedef HeapVector<Member<MessagePort>, 1> MessagePortArray;
 
-class CORE_EXPORT DOMWindow : public EventTargetWithInlineData, public RefCountedWillBeNoBase<DOMWindow>, public DOMWindowBase64 {
+class CORE_EXPORT DOMWindow : public EventTargetWithInlineData, public DOMWindowBase64 {
     DEFINE_WRAPPERTYPEINFO();
     REFCOUNTED_EVENT_TARGET(DOMWindow);
 public:
@@ -54,10 +65,6 @@ public:
     virtual bool isRemoteDOMWindow() const { return false; }
 
     virtual Frame* frame() const = 0;
-
-    // ScriptWrappable overrides:
-    v8::Local<v8::Object> wrap(v8::Isolate*, v8::Local<v8::Object> creationContext) final;
-    v8::Local<v8::Object> associateWithWrapper(v8::Isolate*, const WrapperTypeInfo*, v8::Local<v8::Object> wrapper) final;
 
     // EventTarget overrides:
     const AtomicString& interfaceName() const override;
@@ -182,7 +189,7 @@ public:
     // window[index]...
     DOMWindow* anonymousIndexedGetter(uint32_t) const;
 
-    void postMessage(PassRefPtr<SerializedScriptValue> message, const MessagePortArray*, const String& targetOrigin, LocalDOMWindow* source, ExceptionState&);
+    // BKTODO: void postMessage(PassRefPtr<SerializedScriptValue> message, const MessagePortArray*, const String& targetOrigin, LocalDOMWindow* source, ExceptionState&);
 
     String sanitizedCrossDomainAccessErrorMessage(const LocalDOMWindow* callingWindow) const;
     String crossDomainAccessErrorMessage(const LocalDOMWindow* callingWindow) const;
@@ -199,6 +206,7 @@ public:
 
     bool isSecureContext() const;
 
+#if 0 // BKTODO:
     DEFINE_ATTRIBUTE_EVENT_LISTENER(animationend);
     DEFINE_ATTRIBUTE_EVENT_LISTENER(animationiteration);
     DEFINE_ATTRIBUTE_EVENT_LISTENER(animationstart);
@@ -212,6 +220,7 @@ public:
     DEFINE_MAPPED_ATTRIBUTE_EVENT_LISTENER(webkittransitionend, webkitTransitionEnd);
 
     DEFINE_ATTRIBUTE_EVENT_LISTENER(orientationchange);
+#endif
 
 protected:
     DOMWindow();

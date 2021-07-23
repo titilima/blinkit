@@ -1,34 +1,46 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMWindow.cpp
+// Description: DOMWindow Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "core/frame/DOMWindow.h"
 
-#include "bindings/core/v8/ScriptCallStackFactory.h"
 #include "core/dom/Document.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/ExecutionContext.h"
+#if 0 // BKTODO:
 #include "core/dom/SecurityContext.h"
 #include "core/events/MessageEvent.h"
+#endif
 #include "core/frame/Frame.h"
 #include "core/frame/FrameClient.h"
 #include "core/frame/FrameConsole.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/Location.h"
-#include "core/frame/RemoteFrame.h"
+// BKTODO: #include "core/frame/RemoteFrame.h"
 #include "core/frame/Settings.h"
 #include "core/frame/UseCounter.h"
 #include "core/input/EventHandler.h"
-#include "core/inspector/ConsoleMessageStorage.h"
+// BKTODO: #include "core/inspector/ConsoleMessageStorage.h"
 #include "core/inspector/InspectorInstrumentation.h"
-#include "core/inspector/ScriptCallStack.h"
+// BKTODO: #include "core/inspector/ScriptCallStack.h"
 #include "core/loader/FrameLoaderClient.h"
 #include "core/loader/MixedContentChecker.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/FocusController.h"
 #include "core/page/Page.h"
 #include "platform/weborigin/KURL.h"
-#include "platform/weborigin/SecurityOrigin.h"
+// BKTODO: #include "platform/weborigin/SecurityOrigin.h"
 
 namespace blink {
 
@@ -39,20 +51,6 @@ DOMWindow::DOMWindow()
 
 DOMWindow::~DOMWindow()
 {
-}
-
-v8::Local<v8::Object> DOMWindow::wrap(v8::Isolate*, v8::Local<v8::Object> creationContext)
-{
-    // DOMWindow must never be wrapped with wrap method.  The wrappers must be
-    // created at WindowProxy::installDOMWindow().
-    RELEASE_ASSERT_NOT_REACHED();
-    return v8::Local<v8::Object>();
-}
-
-v8::Local<v8::Object> DOMWindow::associateWithWrapper(v8::Isolate*, const WrapperTypeInfo*, v8::Local<v8::Object> wrapper)
-{
-    RELEASE_ASSERT_NOT_REACHED(); // same as wrap method
-    return v8::Local<v8::Object>();
 }
 
 const AtomicString& DOMWindow::interfaceName() const
@@ -74,7 +72,8 @@ bool DOMWindow::closed() const
 
 unsigned DOMWindow::length() const
 {
-    return frame() ? frame()->tree().scopedChildCount() : 0;
+    ASSERT(false); // BKTODO: return frame() ? frame()->tree().scopedChildCount() : 0;
+    return 0;
 }
 
 DOMWindow* DOMWindow::self() const
@@ -100,8 +99,12 @@ DOMWindow* DOMWindow::parent() const
     if (!frame())
         return nullptr;
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     Frame* parent = frame()->tree().parent();
     return parent ? parent->domWindow() : frame()->domWindow();
+#endif
 }
 
 DOMWindow* DOMWindow::top() const
@@ -109,7 +112,8 @@ DOMWindow* DOMWindow::top() const
     if (!frame())
         return nullptr;
 
-    return frame()->tree().top()->domWindow();
+    ASSERT(false); // BKTODO: return frame()->tree().top()->domWindow();
+    return nullptr;
 }
 
 DOMWindow* DOMWindow::anonymousIndexedGetter(uint32_t index) const
@@ -117,8 +121,12 @@ DOMWindow* DOMWindow::anonymousIndexedGetter(uint32_t index) const
     if (!frame())
         return nullptr;
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     Frame* child = frame()->tree().scopedChild(index);
     return child ? child->domWindow() : nullptr;
+#endif
 }
 
 bool DOMWindow::isCurrentlyDisplayedInFrame() const
@@ -130,6 +138,8 @@ bool DOMWindow::isCurrentlyDisplayedInFrame() const
 
 bool DOMWindow::isInsecureScriptAccess(LocalDOMWindow& callingWindow, const String& urlString)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!protocolIsJavaScript(urlString))
         return false;
 
@@ -147,6 +157,7 @@ bool DOMWindow::isInsecureScriptAccess(LocalDOMWindow& callingWindow, const Stri
     }
 
     callingWindow.printErrorMessage(crossDomainAccessErrorMessage(&callingWindow));
+#endif
     return true;
 }
 
@@ -168,6 +179,7 @@ bool DOMWindow::isSecureContext() const
     return document()->isSecureContext(ExecutionContext::StandardSecureContextCheck);
 }
 
+#if 0 // BKTODO:
 void DOMWindow::postMessage(PassRefPtr<SerializedScriptValue> message, const MessagePortArray* ports, const String& targetOrigin, LocalDOMWindow* source, ExceptionState& exceptionState)
 {
     if (!isCurrentlyDisplayedInFrame())
@@ -225,6 +237,7 @@ void DOMWindow::postMessage(PassRefPtr<SerializedScriptValue> message, const Mes
         toLocalDOMWindow(this)->schedulePostMessage(event, source, target.get(), stackTrace.release());
     }
 }
+#endif
 
 // FIXME: Once we're throwing exceptions for cross-origin access violations, we will always sanitize the target
 // frame details, so we can safely combine 'crossDomainAccessErrorMessage' with this method after considering
@@ -237,6 +250,9 @@ String DOMWindow::sanitizedCrossDomainAccessErrorMessage(const LocalDOMWindow* c
         return String();
 
     const KURL& callingWindowURL = callingWindow->document()->url();
+    ASSERT(false); // BKTODO:
+    return String();
+#if 0
     if (callingWindowURL.isNull())
         return String();
 
@@ -248,6 +264,7 @@ String DOMWindow::sanitizedCrossDomainAccessErrorMessage(const LocalDOMWindow* c
     // FIXME: Evaluate which details from 'crossDomainAccessErrorMessage' may safely be reported to JavaScript.
 
     return message;
+#endif
 }
 
 String DOMWindow::crossDomainAccessErrorMessage(const LocalDOMWindow* callingWindow) const
@@ -256,6 +273,9 @@ String DOMWindow::crossDomainAccessErrorMessage(const LocalDOMWindow* callingWin
         return String();
 
     const KURL& callingWindowURL = callingWindow->document()->url();
+    ASSERT(false); // BKTODO:
+    return String();
+#if 0
     if (callingWindowURL.isNull())
         return String();
 
@@ -296,6 +316,7 @@ String DOMWindow::crossDomainAccessErrorMessage(const LocalDOMWindow* callingWin
 
     // Default.
     return message + "Protocols, domains, and ports must match.";
+#endif
 }
 
 void DOMWindow::close(ExecutionContext* context)
@@ -318,6 +339,8 @@ void DOMWindow::close(ExecutionContext* context)
             return;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     Settings* settings = frame()->settings();
     bool allowScriptsToCloseWindows = settings && settings->allowScriptsToCloseWindows();
 
@@ -340,6 +363,7 @@ void DOMWindow::close(ExecutionContext* context)
     // state of this window. Scripts may access window.closed
     // before the deferred close operation has gone ahead.
     m_windowIsClosing = true;
+#endif
 }
 
 void DOMWindow::focus(ExecutionContext* context)
