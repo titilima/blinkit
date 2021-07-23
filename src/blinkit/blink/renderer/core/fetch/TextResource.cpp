@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TextResource.cpp
+// Description: TextResource Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -35,6 +46,8 @@ String TextResource::decodedText() const
     ASSERT(m_data);
 
     StringBuilder builder;
+    ASSERT(false); // BKTODO:
+#if 0
     const char* data;
     size_t position = 0;
     while (size_t length = m_data->getSomeData(data, position)) {
@@ -42,6 +55,7 @@ String TextResource::decodedText() const
         position += length;
     }
     builder.append(m_decoder->flush());
+#endif
     return builder.toString();
 }
 
