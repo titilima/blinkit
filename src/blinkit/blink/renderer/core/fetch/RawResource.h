@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RawResource.h
+// Description: RawResource Class
+//      Author: Ziming Li
+//     Created: 2021-07-14
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller <mueller@kde.org>
@@ -26,7 +37,7 @@
 #include "core/CoreExport.h"
 #include "core/fetch/ResourceClient.h"
 #include "core/fetch/ResourcePtr.h"
-#include "public/platform/WebDataConsumerHandle.h"
+// BKTODO: #include "public/platform/WebDataConsumerHandle.h"
 #include "wtf/PassOwnPtr.h"
 
 namespace blink {
@@ -76,7 +87,7 @@ private:
 
     void willFollowRedirect(ResourceRequest&, const ResourceResponse&) override;
     void updateRequest(const ResourceRequest&) override;
-    void responseReceived(const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) override;
+    // BKTODO: void responseReceived(const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) override;
     void setSerializedCachedMetadata(const char*, size_t) override;
     void didSendData(unsigned long long bytesSent, unsigned long long totalBytesToBeSent) override;
     void didDownloadData(int) override;
@@ -103,7 +114,7 @@ public:
     ResourceClientType resourceClientType() const final { return expectedType(); }
 
     virtual void dataSent(Resource*, unsigned long long /* bytesSent */, unsigned long long /* totalBytesToBeSent */) { }
-    virtual void responseReceived(Resource*, const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) { }
+    // BKTODO: virtual void responseReceived(Resource*, const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) { }
     virtual void setSerializedCachedMetadata(Resource*, const char*, size_t) { }
     virtual void dataReceived(Resource*, const char* /* data */, size_t /* length */) { }
     virtual void redirectReceived(Resource*, ResourceRequest&, const ResourceResponse&) { }

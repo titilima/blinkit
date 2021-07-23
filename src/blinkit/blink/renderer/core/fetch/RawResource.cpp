@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RawResource.cpp
+// Description: RawResource Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All Rights Reserved.
  *
@@ -26,7 +37,7 @@
 #include "core/fetch/RawResource.h"
 
 #include "core/fetch/FetchRequest.h"
-#include "core/fetch/MemoryCache.h"
+// BKTODO: #include "core/fetch/MemoryCache.h"
 #include "core/fetch/ResourceClientWalker.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/fetch/ResourceLoader.h"
@@ -37,52 +48,70 @@ ResourcePtr<Resource> RawResource::fetchSynchronously(FetchRequest& request, Res
 {
     request.mutableResourceRequest().setTimeoutInterval(10);
     ResourceLoaderOptions options(request.options());
-    options.synchronousPolicy = RequestSynchronously;
+    ASSERT(false); // BKTODO: options.synchronousPolicy = RequestSynchronously;
     request.setOptions(options);
     return fetcher->requestResource(request, RawResourceFactory(Resource::Raw));
 }
 
 ResourcePtr<RawResource> RawResource::fetchImport(FetchRequest& request, ResourceFetcher* fetcher)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(request.resourceRequest().frameType() == WebURLRequest::FrameTypeNone);
     request.mutableResourceRequest().setRequestContext(WebURLRequest::RequestContextImport);
+#endif
     RawResourceFactory factory(Resource::ImportResource);
     return toRawResource(fetcher->requestResource(request, RawResourceFactory(Resource::ImportResource)));
 }
 
 ResourcePtr<RawResource> RawResource::fetch(FetchRequest& request, ResourceFetcher* fetcher)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(request.resourceRequest().frameType() == WebURLRequest::FrameTypeNone);
     ASSERT(request.resourceRequest().requestContext() != WebURLRequest::RequestContextUnspecified);
+#endif
     return toRawResource(fetcher->requestResource(request, RawResourceFactory(Resource::Raw)));
 }
 
 ResourcePtr<RawResource> RawResource::fetchMainResource(FetchRequest& request, ResourceFetcher* fetcher, const SubstituteData& substituteData)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(request.resourceRequest().frameType() != WebURLRequest::FrameTypeNone);
     ASSERT(request.resourceRequest().requestContext() == WebURLRequest::RequestContextForm || request.resourceRequest().requestContext() == WebURLRequest::RequestContextFrame || request.resourceRequest().requestContext() == WebURLRequest::RequestContextHyperlink || request.resourceRequest().requestContext() == WebURLRequest::RequestContextIframe || request.resourceRequest().requestContext() == WebURLRequest::RequestContextInternal || request.resourceRequest().requestContext() == WebURLRequest::RequestContextLocation);
+#endif
 
     return toRawResource(fetcher->requestResource(request, RawResourceFactory(Resource::MainResource), substituteData));
 }
 
 ResourcePtr<RawResource> RawResource::fetchMedia(FetchRequest& request, ResourceFetcher* fetcher)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(request.resourceRequest().frameType() == WebURLRequest::FrameTypeNone);
     ASSERT(request.resourceRequest().requestContext() == WebURLRequest::RequestContextAudio || request.resourceRequest().requestContext() == WebURLRequest::RequestContextVideo);
+#endif
     return toRawResource(fetcher->requestResource(request, RawResourceFactory(Resource::Media)));
 }
 
 ResourcePtr<RawResource> RawResource::fetchTextTrack(FetchRequest& request, ResourceFetcher* fetcher)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(request.resourceRequest().frameType() == WebURLRequest::FrameTypeNone);
     request.mutableResourceRequest().setRequestContext(WebURLRequest::RequestContextTrack);
+#endif
     return toRawResource(fetcher->requestResource(request, RawResourceFactory(Resource::TextTrack)));
 }
 
 ResourcePtr<RawResource> RawResource::fetchManifest(FetchRequest& request, ResourceFetcher* fetcher)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(request.resourceRequest().frameType() == WebURLRequest::FrameTypeNone);
     ASSERT(request.resourceRequest().requestContext() == WebURLRequest::RequestContextManifest);
+#endif
     return toRawResource(fetcher->requestResource(request, RawResourceFactory(Resource::Manifest)));
 }
 
@@ -119,7 +148,7 @@ void RawResource::didAddClient(ResourceClient* c)
     }
 
     if (!m_response.isNull())
-        client->responseReceived(this, m_response, nullptr);
+        ASSERT(false); // BKTODO: client->responseReceived(this, m_response, nullptr);
     if (!hasClient(c))
         return;
     if (m_data)
@@ -148,6 +177,7 @@ void RawResource::updateRequest(const ResourceRequest& request)
         c->updateRequest(this, request);
 }
 
+#if 0 // BKTODO:
 void RawResource::responseReceived(const ResourceResponse& response, PassOwnPtr<WebDataConsumerHandle> handle)
 {
     InternalResourcePtr protect(this);
@@ -173,6 +203,7 @@ void RawResource::responseReceived(const ResourceResponse& response, PassOwnPtr<
             c->dataReceived(this, m_data->data(), m_data->size());
     }
 }
+#endif
 
 void RawResource::setSerializedCachedMetadata(const char* data, size_t size)
 {
@@ -208,8 +239,11 @@ void RawResource::reportResourceTimingToClients(const ResourceTimingInfo& info)
 
 void RawResource::setDefersLoading(bool defers)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_loader)
         m_loader->setDefersLoading(defers);
+#endif
 }
 
 static bool shouldIgnoreHeaderForCacheReuse(AtomicString headerName)
