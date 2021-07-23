@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NodeEventContext.h
+// Description: NodeEventContext Class
+//      Author: Ziming Li
+//     Created: 2021-07-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All Rights Reserved.
  *
@@ -42,6 +53,10 @@ class CORE_EXPORT NodeEventContext {
     DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(NodeEventContext);
 public:
+    NodeEventContext(void)
+    {
+        ASSERT(false); // BKTODO:
+    }
     // FIXME: Use ContainerNode instead of Node.
     NodeEventContext(PassRefPtrWillBeRawPtr<Node>, PassRefPtrWillBeRawPtr<EventTarget> currentTarget);
     DECLARE_TRACE();

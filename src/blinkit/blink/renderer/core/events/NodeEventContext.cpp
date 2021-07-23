@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NodeEventContext.cpp
+// Description: NodeEventContext Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All Rights Reserved.
  *
@@ -26,11 +37,11 @@
 
 #include "core/events/NodeEventContext.h"
 
-#include "core/dom/TouchList.h"
+// BKTODO: #include "core/dom/TouchList.h"
 #include "core/events/Event.h"
 #include "core/events/FocusEvent.h"
 #include "core/events/MouseEvent.h"
-#include "core/events/TouchEventContext.h"
+// BKTODO: #include "core/events/TouchEventContext.h"
 
 namespace blink {
 
@@ -52,6 +63,8 @@ DEFINE_TRACE(NodeEventContext)
 
 void NodeEventContext::handleLocalEvents(Event& event) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (touchEventContext()) {
         touchEventContext()->handleLocalEvents(event);
     } else if (relatedTarget()) {
@@ -61,6 +74,7 @@ void NodeEventContext::handleLocalEvents(Event& event) const
             toFocusEvent(event).setRelatedTarget(relatedTarget());
         }
     }
+#endif
     event.setTarget(target());
     event.setCurrentTarget(m_currentTarget.get());
     m_node->handleLocalEvents(event);
