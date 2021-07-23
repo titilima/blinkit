@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FetchContext.h
+// Description: FetchContext Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -32,12 +43,12 @@
 #define FetchContext_h
 
 #include "core/CoreExport.h"
-#include "core/fetch/CachePolicy.h"
+// BKTODO: #include "core/fetch/CachePolicy.h"
 #include "core/fetch/FetchInitiatorInfo.h"
 #include "core/fetch/FetchRequest.h"
 #include "core/fetch/Resource.h"
 #include "platform/heap/Handle.h"
-#include "platform/network/ResourceLoadPriority.h"
+// BKTODO: #include "platform/network/ResourceLoadPriority.h"
 #include "wtf/Noncopyable.h"
 
 namespace blink {
@@ -70,10 +81,10 @@ public:
 
     virtual void addAdditionalRequestHeaders(ResourceRequest&, FetchResourceType);
     virtual void setFirstPartyForCookies(ResourceRequest&);
-    virtual CachePolicy cachePolicy() const;
+    // BKTODO: virtual CachePolicy cachePolicy() const;
     virtual ResourceRequestCachePolicy resourceRequestCachePolicy(const ResourceRequest&, Resource::Type) const;
 
-    virtual void dispatchDidChangeResourcePriority(unsigned long identifier, ResourceLoadPriority, int intraPriorityValue);
+    // BKTODO: virtual void dispatchDidChangeResourcePriority(unsigned long identifier, ResourceLoadPriority, int intraPriorityValue);
     virtual void dispatchWillSendRequest(unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse, const FetchInitiatorInfo& = FetchInitiatorInfo());
     virtual void dispatchDidLoadResourceFromMemoryCache(const Resource*);
     virtual void dispatchDidReceiveResponse(unsigned long identifier, const ResourceResponse&, ResourceLoader* = 0);
@@ -106,7 +117,7 @@ public:
     virtual void addClientHintsIfNecessary(FetchRequest&);
     virtual void addCSPHeaderIfNecessary(Resource::Type, FetchRequest&);
 
-    virtual ResourceLoadPriority modifyPriorityForExperiments(ResourceLoadPriority priority, Resource::Type, const FetchRequest&, ResourcePriority::VisibilityStatus) { return priority; }
+    // BKTODO: virtual ResourceLoadPriority modifyPriorityForExperiments(ResourceLoadPriority priority, Resource::Type, const FetchRequest&, ResourcePriority::VisibilityStatus) { return priority; }
 
     virtual WebTaskRunner* loadingTaskRunner() const { return nullptr; }
 

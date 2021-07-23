@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FetchContext.cpp
+// Description: FetchContext Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -39,9 +50,11 @@ FetchContext& FetchContext::nullInstance()
     return *instance;
 }
 
+#if 0 // BKTODO:
 void FetchContext::dispatchDidChangeResourcePriority(unsigned long, ResourceLoadPriority, int)
 {
 }
+#endif
 
 void FetchContext::addAdditionalRequestHeaders(ResourceRequest&, FetchResourceType)
 {
@@ -51,10 +64,12 @@ void FetchContext::setFirstPartyForCookies(ResourceRequest&)
 {
 }
 
+#if 0 // BKTODO:
 CachePolicy FetchContext::cachePolicy() const
 {
     return CachePolicyVerify;
 }
+#endif
 
 ResourceRequestCachePolicy FetchContext::resourceRequestCachePolicy(const ResourceRequest&, Resource::Type) const
 {
