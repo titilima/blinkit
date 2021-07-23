@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EventPath.h
+// Description: EventPath Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -60,7 +71,7 @@ public:
     WindowEventContext& windowEventContext() { ASSERT(m_windowEventContext); return *m_windowEventContext; }
     void ensureWindowEventContext();
 
-    bool isEmpty() const { return m_nodeEventContexts.isEmpty(); }
+    bool isEmpty() const { return m_nodeEventContexts.empty(); }
     size_t size() const { return m_nodeEventContexts.size(); }
 
     void adjustForRelatedTarget(Node&, EventTarget* relatedTarget);
@@ -83,15 +94,21 @@ private:
     void calculateAdjustedTargets();
     void calculateTreeOrderAndSetNearestAncestorClosedTree();
 
-    void shrink(size_t newSize) { ASSERT(!m_windowEventContext); m_nodeEventContexts.shrink(newSize); }
+    void shrink(size_t newSize)
+    {
+        ASSERT(!m_windowEventContext);
+        ASSERT(newSize <= m_nodeEventContexts.size());
+        m_nodeEventContexts.resize(newSize);
+        m_nodeEventContexts.shrink_to_fit();
+    }
     void shrinkIfNeeded(const Node& target, const EventTarget& relatedTarget);
 
     void adjustTouchList(const TouchList*, WillBeHeapVector<RawPtrWillBeMember<TouchList>> adjustedTouchList, const WillBeHeapVector<RawPtrWillBeMember<TreeScope>>& treeScopes);
 
-    using TreeScopeEventContextMap = WillBeHeapHashMap<RawPtrWillBeMember<TreeScope>, RefPtrWillBeMember<TreeScopeEventContext>>;
+    using TreeScopeEventContextMap = std::unordered_map<Member<TreeScope>, Member<TreeScopeEventContext>>;
     TreeScopeEventContext* ensureTreeScopeEventContext(Node* currentTarget, TreeScope*, TreeScopeEventContextMap&);
 
-    using RelatedTargetMap = WillBeHeapHashMap<RawPtrWillBeMember<TreeScope>, RawPtrWillBeMember<EventTarget>>;
+    using RelatedTargetMap = std::unordered_map<Member<TreeScope>, Member<EventTarget>>;
 
     static void buildRelatedNodeMap(const Node&, RelatedTargetMap&);
     static EventTarget* findRelatedNode(TreeScope&, RelatedTargetMap&);
@@ -102,10 +119,10 @@ private:
 
     const NodeEventContext& topNodeEventContext();
 
-    WillBeHeapVector<NodeEventContext> m_nodeEventContexts;
+    std::vector<NodeEventContext> m_nodeEventContexts;
     RawPtrWillBeMember<Node> m_node;
     RawPtrWillBeMember<Event> m_event;
-    WillBeHeapVector<RefPtrWillBeMember<TreeScopeEventContext>> m_treeScopeEventContexts;
+    std::vector<Member<TreeScopeEventContext>> m_treeScopeEventContexts;
     OwnPtrWillBeMember<WindowEventContext> m_windowEventContext;
 };
 

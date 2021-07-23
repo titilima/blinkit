@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EventPath.cpp
+// Description: EventPath Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -28,12 +39,18 @@
 
 #include "core/EventNames.h"
 #include "core/dom/Document.h"
+#if 0 // BKTODO:
 #include "core/dom/Touch.h"
 #include "core/dom/TouchList.h"
+#endif
 #include "core/dom/shadow/InsertionPoint.h"
 #include "core/dom/shadow/ShadowRoot.h"
+#if 0 // BKTODO:
 #include "core/events/TouchEvent.h"
 #include "core/events/TouchEventContext.h"
+#else
+#include "core/events/Event.h"
+#endif
 
 namespace blink {
 
@@ -99,16 +116,16 @@ void EventPath::initialize()
 void EventPath::calculatePath()
 {
     ASSERT(m_node);
-    ASSERT(m_nodeEventContexts.isEmpty());
+    ASSERT(m_nodeEventContexts.empty());
     m_node->updateDistribution();
 
     // For performance and memory usage reasons we want to store the
     // path using as few bytes as possible and with as few allocations
     // as possible which is why we gather the data on the stack before
     // storing it in a perfectly sized m_nodeEventContexts Vector.
-    WillBeHeapVector<RawPtrWillBeMember<Node>, 64> nodesInPath;
+    std::vector<Member<Node>> nodesInPath;
     Node* current = m_node;
-    nodesInPath.append(current);
+    nodesInPath.emplace_back(current);
     while (current) {
         if (m_event && current->keepEventInNode(m_event))
             break;
@@ -120,9 +137,9 @@ void EventPath::calculatePath()
                     ShadowRoot* containingShadowRoot = insertionPoint->containingShadowRoot();
                     ASSERT(containingShadowRoot);
                     if (!containingShadowRoot->isOldest())
-                        nodesInPath.append(containingShadowRoot->olderShadowRoot());
+                        nodesInPath.emplace_back(containingShadowRoot->olderShadowRoot());
                 }
-                nodesInPath.append(insertionPoint);
+                nodesInPath.emplace_back(insertionPoint);
             }
             current = insertionPoints.last();
             continue;
@@ -139,18 +156,18 @@ void EventPath::calculatePath()
             if (current)
                 nodesInPath.append(current);
 #else
-            nodesInPath.append(current);
+            nodesInPath.emplace_back(current);
 #endif
         } else {
             current = current->parentNode();
             if (current)
-                nodesInPath.append(current);
+                nodesInPath.emplace_back(current);
         }
     }
 
-    m_nodeEventContexts.reserveCapacity(nodesInPath.size());
+    m_nodeEventContexts.reserve(nodesInPath.size());
     for (Node* nodeInPath : nodesInPath) {
-        m_nodeEventContexts.append(NodeEventContext(nodeInPath, eventTargetRespectingTargetRules(*nodeInPath)));
+        m_nodeEventContexts.emplace_back(NodeEventContext(nodeInPath, eventTargetRespectingTargetRules(*nodeInPath)));
     }
 }
 
@@ -159,9 +176,9 @@ void EventPath::calculateTreeOrderAndSetNearestAncestorClosedTree()
     // Precondition:
     //   - TreeScopes in m_treeScopeEventContexts must be *connected* in the same tree of trees.
     //   - The root tree must be included.
-    WillBeHeapHashMap<RawPtrWillBeMember<const TreeScope>, RawPtrWillBeMember<TreeScopeEventContext>> treeScopeEventContextMap;
+    std::unordered_map<Member<const TreeScope>, Member<TreeScopeEventContext>> treeScopeEventContextMap;
     for (const auto& treeScopeEventContext : m_treeScopeEventContexts)
-        treeScopeEventContextMap.add(&treeScopeEventContext->treeScope(), treeScopeEventContext.get());
+        treeScopeEventContextMap.emplace(&treeScopeEventContext->treeScope(), treeScopeEventContext.get());
     TreeScopeEventContext* rootTree = nullptr;
     for (const auto& treeScopeEventContext : m_treeScopeEventContexts) {
         // Use olderShadowRootOrParentTreeScope here for parent-child relationships.
@@ -174,7 +191,7 @@ void EventPath::calculateTreeOrderAndSetNearestAncestorClosedTree()
             continue;
         }
         ASSERT(treeScopeEventContextMap.find(parent) != treeScopeEventContextMap.end());
-        treeScopeEventContextMap.find(parent)->value->addChild(*treeScopeEventContext.get());
+        treeScopeEventContextMap[parent]->addChild(*treeScopeEventContext.get());
     }
     ASSERT(rootTree);
     rootTree->calculateTreeOrderAndSetNearestAncestorClosedTree(0, nullptr);
@@ -187,11 +204,17 @@ TreeScopeEventContext* EventPath::ensureTreeScopeEventContext(Node* currentTarge
     TreeScopeEventContext* treeScopeEventContext;
     bool isNewEntry;
     {
-        TreeScopeEventContextMap::AddResult addResult = treeScopeEventContextMap.add(treeScope, nullptr);
-        isNewEntry = addResult.isNewEntry;
-        if (isNewEntry)
-            addResult.storedValue->value = TreeScopeEventContext::create(*treeScope);
-        treeScopeEventContext = addResult.storedValue->value.get();
+        Member<TreeScopeEventContext> &entry = treeScopeEventContextMap[treeScope];
+        if (!entry)
+        {
+            isNewEntry = true;
+            entry = TreeScopeEventContext::create(*treeScope);
+        }
+        else
+        {
+            isNewEntry = false;
+        }
+        treeScopeEventContext = entry;
     }
     if (isNewEntry) {
         TreeScopeEventContext* parentTreeScopeEventContext = ensureTreeScopeEventContext(0, treeScope->olderShadowRootOrParentTreeScope(), treeScopeEventContextMap);
@@ -223,7 +246,9 @@ void EventPath::calculateAdjustedTargets()
         at(i).setTreeScopeEventContext(lastTreeScopeEventContext);
         lastTreeScope = &currentTreeScope;
     }
-    m_treeScopeEventContexts.appendRange(treeScopeEventContextMap.values().begin(), treeScopeEventContextMap.values().end());
+
+    for (const auto &it : treeScopeEventContextMap)
+        m_treeScopeEventContexts.emplace_back(it.second);
 }
 
 void EventPath::buildRelatedNodeMap(const Node& relatedNode, RelatedTargetMap& relatedTargetMap)
@@ -231,7 +256,7 @@ void EventPath::buildRelatedNodeMap(const Node& relatedNode, RelatedTargetMap& r
     OwnPtrWillBeRawPtr<EventPath> relatedTargetEventPath = adoptPtrWillBeNoop(new EventPath(const_cast<Node&>(relatedNode)));
     for (size_t i = 0; i < relatedTargetEventPath->m_treeScopeEventContexts.size(); ++i) {
         TreeScopeEventContext* treeScopeEventContext = relatedTargetEventPath->m_treeScopeEventContexts[i].get();
-        relatedTargetMap.add(&treeScopeEventContext->treeScope(), treeScopeEventContext->target());
+        relatedTargetMap.emplace(&treeScopeEventContext->treeScope(), treeScopeEventContext->target());
     }
 #if ENABLE(OILPAN)
     // Oilpan: It is important to explicitly clear the vectors to reuse
@@ -247,14 +272,14 @@ EventTarget* EventPath::findRelatedNode(TreeScope& scope, RelatedTargetMap& rela
     for (TreeScope* current = &scope; current; current = current->olderShadowRootOrParentTreeScope()) {
         parentTreeScopes.append(current);
         RelatedTargetMap::const_iterator iter = relatedTargetMap.find(current);
-        if (iter != relatedTargetMap.end() && iter->value) {
-            relatedNode = iter->value;
+        if (iter != relatedTargetMap.end() && iter->second) {
+            relatedNode = iter->second;
             break;
         }
     }
     ASSERT(relatedNode);
     for (const auto& entry : parentTreeScopes)
-        relatedTargetMap.add(entry, relatedNode);
+        relatedTargetMap.emplace(entry, relatedNode);
 
     return relatedNode;
 }
@@ -304,6 +329,8 @@ void EventPath::shrinkIfNeeded(const Node& target, const EventTarget& relatedTar
 
 void EventPath::adjustForTouchEvent(TouchEvent& touchEvent)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     WillBeHeapVector<RawPtrWillBeMember<TouchList>> adjustedTouches;
     WillBeHeapVector<RawPtrWillBeMember<TouchList>> adjustedTargetTouches;
     WillBeHeapVector<RawPtrWillBeMember<TouchList>> adjustedChangedTouches;
@@ -330,12 +357,15 @@ void EventPath::adjustForTouchEvent(TouchEvent& touchEvent)
         checkReachability(treeScope, touchEventContext->changedTouches());
     }
 #endif
+#endif
 }
 
 void EventPath::adjustTouchList(const TouchList* touchList, WillBeHeapVector<RawPtrWillBeMember<TouchList>> adjustedTouchList, const WillBeHeapVector<RawPtrWillBeMember<TreeScope>>& treeScopes)
 {
     if (!touchList)
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     for (size_t i = 0; i < touchList->length(); ++i) {
         const Touch& touch = *touchList->item(i);
         if (!touch.target())
@@ -351,6 +381,7 @@ void EventPath::adjustTouchList(const TouchList* touchList, WillBeHeapVector<Raw
             adjustedTouchList[j]->append(touch.cloneWithNewTarget(findRelatedNode(*treeScopes[j], relatedNodeMap)));
         }
     }
+#endif
 }
 
 const NodeEventContext& EventPath::topNodeEventContext()
@@ -369,8 +400,11 @@ void EventPath::ensureWindowEventContext()
 #if ENABLE(ASSERT)
 void EventPath::checkReachability(TreeScope& treeScope, TouchList& touchList)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     for (size_t i = 0; i < touchList.length(); ++i)
         ASSERT(touchList.item(i)->target()->toNode()->treeScope().isInclusiveOlderSiblingShadowRootOrAncestorTreeScopeOf(treeScope));
+#endif
 }
 #endif
 
