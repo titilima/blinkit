@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EventListenerMap.h
+// Description: EventListenerMap Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -44,7 +55,7 @@ namespace blink {
 
 class EventTarget;
 
-using EventListenerVector = WillBeHeapVector<RegisteredEventListener, 1>;
+using EventListenerVector = std::vector<RegisteredEventListener>;
 
 class CORE_EXPORT EventListenerMap {
     WTF_MAKE_NONCOPYABLE(EventListenerMap);
@@ -52,7 +63,7 @@ class CORE_EXPORT EventListenerMap {
 public:
     EventListenerMap();
 
-    bool isEmpty() const { return m_entries.isEmpty(); }
+    bool isEmpty() const { return m_entries.empty(); }
     bool contains(const AtomicString& eventType) const;
     bool containsCapturing(const AtomicString& eventType) const;
 
@@ -71,7 +82,7 @@ private:
 
     void assertNoActiveIterators();
 
-    WillBeHeapVector<std::pair<AtomicString, OwnPtrWillBeMember<EventListenerVector>>, 2> m_entries;
+    std::vector<std::pair<AtomicString, Member<EventListenerVector>>> m_entries;
 
 #if ENABLE(ASSERT)
     int m_activeIteratorCount;

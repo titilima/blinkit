@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EventListenerMap.cpp
+// Description: EventListenerMap Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -110,10 +121,10 @@ static bool addListenerToVector(EventListenerVector* vector, PassRefPtrWillBeRaw
 {
     RegisteredEventListener registeredListener(listener, options);
 
-    if (vector->find(registeredListener) != kNotFound)
+    if (std::find(vector->begin(), vector->end(), registeredListener) != vector->end())
         return false; // Duplicate listener.
 
-    vector->append(registeredListener);
+    vector->emplace_back(registeredListener);
     return true;
 }
 
@@ -126,17 +137,21 @@ bool EventListenerMap::add(const AtomicString& eventType, PassRefPtrWillBeRawPtr
             return addListenerToVector(entry.second.get(), listener, options);
     }
 
-    m_entries.append(std::make_pair(eventType, adoptPtrWillBeNoop(new EventListenerVector)));
-    return addListenerToVector(m_entries.last().second.get(), listener, options);
+    m_entries.emplace_back(std::make_pair(eventType, adoptPtrWillBeNoop(new EventListenerVector)));
+    return addListenerToVector(m_entries.back().second.get(), listener, options);
 }
 
 static bool removeListenerFromVector(EventListenerVector* listenerVector, EventListener* listener, const EventListenerOptions& options, size_t& indexOfRemovedListener)
 {
     RegisteredEventListener registeredListener(listener, options);
-    indexOfRemovedListener = listenerVector->find(registeredListener);
-    if (indexOfRemovedListener == kNotFound)
+    auto it = std::find(listenerVector->begin(), listenerVector->end(), registeredListener);
+    if (listenerVector->end() == it)
+    {
+        indexOfRemovedListener = kNotFound;
         return false;
-    listenerVector->remove(indexOfRemovedListener);
+    }
+    indexOfRemovedListener = it - listenerVector->begin();
+    listenerVector->erase(it);
     return true;
 }
 
@@ -147,8 +162,8 @@ bool EventListenerMap::remove(const AtomicString& eventType, EventListener* list
     for (unsigned i = 0; i < m_entries.size(); ++i) {
         if (m_entries[i].first == eventType) {
             bool wasRemoved = removeListenerFromVector(m_entries[i].second.get(), listener, options, indexOfRemovedListener);
-            if (m_entries[i].second->isEmpty())
-                m_entries.remove(i);
+            if (m_entries[i].second->empty())
+                m_entries.erase(m_entries.begin() + i);
             return wasRemoved;
         }
     }
@@ -189,7 +204,7 @@ void EventListenerMap::copyEventListenersNotCreatedFromMarkupToTarget(EventTarge
 
 DEFINE_TRACE(EventListenerMap)
 {
-    visitor->trace(m_entries);
+    ASSERT(false); // BKTODO: visitor->trace(m_entries);
 }
 
 EventListenerIterator::EventListenerIterator(EventTarget* target)
