@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Resource.cpp
+// Description: Resource Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller (mueller@kde.org)
@@ -23,22 +34,24 @@
 
 #include "core/fetch/Resource.h"
 
+#if 0 // BKTODO:
 #include "core/fetch/CachedMetadata.h"
 #include "core/fetch/CrossOriginAccessControl.h"
 #include "core/fetch/FetchInitiatorTypeNames.h"
 #include "core/fetch/MemoryCache.h"
+#endif
 #include "core/fetch/ResourceClient.h"
 #include "core/fetch/ResourceClientWalker.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/fetch/ResourceLoader.h"
 #include "core/fetch/ResourcePtr.h"
 #include "core/inspector/InspectorInstrumentation.h"
-#include "platform/Logging.h"
+// BKTODO: #include "platform/Logging.h"
 #include "platform/SharedBuffer.h"
 #include "platform/TraceEvent.h"
 #include "platform/weborigin/KURL.h"
 #include "public/platform/Platform.h"
-#include "public/platform/WebProcessMemoryDump.h"
+// BKTODO: #include "public/platform/WebProcessMemoryDump.h"
 #include "wtf/CurrentTime.h"
 #include "wtf/MathExtras.h"
 #include "wtf/StdLibExtras.h"
@@ -158,7 +171,7 @@ Resource::Resource(const ResourceRequest& request, Type type)
     , m_handleCount(0)
     , m_preloadCount(0)
     , m_protectorCount(0)
-    , m_cacheIdentifier(MemoryCache::defaultCacheIdentifier())
+    // BKTODO: , m_cacheIdentifier(MemoryCache::defaultCacheIdentifier())
     , m_preloadResult(PreloadNotReferenced)
     , m_requestedFromNetworkingLayer(false)
     , m_loading(false)
@@ -173,13 +186,17 @@ Resource::Resource(const ResourceRequest& request, Type type)
 #endif
 {
     ASSERT(m_type == unsigned(type)); // m_type is a bitfield, so this tests careless updates of the enum.
+#if 0 // BKTODO:
     InstanceCounters::incrementCounter(InstanceCounters::ResourceCounter);
     memoryCache()->registerLiveResource(*this);
+#endif
 
     // Currently we support the metadata caching only for HTTP family.
     if (m_resourceRequest.url().protocolIsInHTTPFamily())
         m_cacheHandler = CacheHandler::create(this);
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_resourceRequest.url().hasFragmentIdentifier())
         return;
     KURL urlForCache = MemoryCache::removeFragmentIdentifierIfNeeded(m_resourceRequest.url());
@@ -187,11 +204,14 @@ Resource::Resource(const ResourceRequest& request, Type type)
         return;
     m_fragmentIdentifierForRequest = m_resourceRequest.url().fragmentIdentifier();
     m_resourceRequest.setURL(urlForCache);
+#endif
 }
 
 Resource::~Resource()
 {
     ASSERT(canDelete());
+    ASSERT(false); // BKTODO:
+#if 0
     RELEASE_ASSERT(!memoryCache()->contains(this));
     RELEASE_ASSERT(!ResourceCallback::callbackHandler()->isScheduled(this));
     assertAlive();
@@ -200,6 +220,7 @@ Resource::~Resource()
     m_deleted = true;
 #endif
     InstanceCounters::decrementCounter(InstanceCounters::ResourceCounter);
+#endif
 }
 
 void Resource::dispose()
@@ -227,15 +248,18 @@ void Resource::load(ResourceFetcher* fetcher, const ResourceLoaderOptions& optio
     // We should look into removing the expectation of that knowledge from the platform network stacks.
     if (!m_fragmentIdentifierForRequest.isNull()) {
         KURL url = request.url();
-        url.setFragmentIdentifier(m_fragmentIdentifierForRequest);
+        ASSERT(false); // BKTODO: url.setFragmentIdentifier(m_fragmentIdentifierForRequest);
         request.setURL(url);
         m_fragmentIdentifierForRequest = String();
     }
     m_status = Pending;
     if (m_loader) {
         ASSERT(m_revalidatingRequest.isNull());
+        ASSERT(false); // BKTODO:
+#if 0
         RELEASE_ASSERT(m_options.synchronousPolicy == RequestSynchronously);
         m_loader->changeToSynchronous();
+#endif
         return;
     }
     m_loader = ResourceLoader::create(fetcher, this, request, options);
@@ -262,11 +286,11 @@ void Resource::appendData(const char* data, size_t length)
     if (m_data)
         m_data->append(data, length);
     else
-        m_data = SharedBuffer::createPurgeable(data, length);
+        ASSERT(false); // BKTODO: m_data = SharedBuffer::createPurgeable(data, length);
     setEncodedSize(m_data->size());
 }
 
-void Resource::setResourceBuffer(PassRefPtr<SharedBuffer> resourceBuffer)
+void Resource::setResourceBuffer(const std::shared_ptr<SharedBuffer> &resourceBuffer)
 {
     ASSERT(m_revalidatingRequest.isNull());
     ASSERT(!errorOccurred());
@@ -278,7 +302,7 @@ void Resource::setResourceBuffer(PassRefPtr<SharedBuffer> resourceBuffer)
 void Resource::setDataBufferingPolicy(DataBufferingPolicy dataBufferingPolicy)
 {
     m_options.dataBufferingPolicy = dataBufferingPolicy;
-    m_data.clear();
+    m_data.reset();
     setEncodedSize(0);
 }
 
@@ -286,10 +310,13 @@ void Resource::markClientsFinished()
 {
     while (!m_clients.isEmpty()) {
         HashCountedSet<ResourceClient*>::iterator it = m_clients.begin();
+        ASSERT(false); // BKTODO:
+#if 0
         for (int i = it->value; i; i--) {
             m_finishedClients.add(it->key);
             m_clients.remove(it);
         }
+#endif
     }
 }
 
@@ -298,12 +325,15 @@ void Resource::error(Resource::Status status)
     if (!m_revalidatingRequest.isNull())
         m_revalidatingRequest = ResourceRequest();
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_error.isNull() && (m_error.isCancellation() || !isPreloaded()))
         memoryCache()->remove(this);
+#endif
 
     setStatus(status);
     ASSERT(errorOccurred());
-    m_data.clear();
+    m_data.reset();
 
     setLoading(false);
     checkNotify();
@@ -334,13 +364,15 @@ bool Resource::passesAccessControlCheck(SecurityOrigin* securityOrigin) const
 
 bool Resource::passesAccessControlCheck(SecurityOrigin* securityOrigin, String& errorDescription) const
 {
-    return blink::passesAccessControlCheck(m_response, lastResourceRequest().allowStoredCredentials() ? AllowStoredCredentials : DoNotAllowStoredCredentials, securityOrigin, errorDescription, lastResourceRequest().requestContext());
+    ASSERT(false); // BKTODO: return blink::passesAccessControlCheck(m_response, lastResourceRequest().allowStoredCredentials() ? AllowStoredCredentials : DoNotAllowStoredCredentials, securityOrigin, errorDescription, lastResourceRequest().requestContext());
+    return false;
 }
 
 bool Resource::isEligibleForIntegrityCheck(SecurityOrigin* securityOrigin) const
 {
     String ignoredErrorDescription;
-    return securityOrigin->canRequest(resourceRequest().url()) || passesAccessControlCheck(securityOrigin, ignoredErrorDescription);
+    ASSERT(false); // BKTODO: return securityOrigin->canRequest(resourceRequest().url()) || passesAccessControlCheck(securityOrigin, ignoredErrorDescription);
+    return false;
 }
 
 static double currentAge(const ResourceResponse& response, double responseTimestamp)
@@ -443,6 +475,8 @@ bool Resource::unlock()
     if (!m_data)
         return false;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_data->isLocked())
         return true;
 
@@ -450,14 +484,17 @@ bool Resource::unlock()
         return false;
 
     m_data->unlock();
+#endif
     return true;
 }
 
 bool Resource::hasRightHandleCountApartFromCache(unsigned targetCount) const
 {
-    return m_handleCount == targetCount + (memoryCache()->contains(this) ? 1 : 0);
+    ASSERT(false); // BKTODO: return m_handleCount == targetCount + (memoryCache()->contains(this) ? 1 : 0);
+    return false;
 }
 
+#if 0 // BKTODO:
 void Resource::responseReceived(const ResourceResponse& response, PassOwnPtr<WebDataConsumerHandle>)
 {
     m_responseTimestamp = currentTime();
@@ -475,9 +512,12 @@ void Resource::responseReceived(const ResourceResponse& response, PassOwnPtr<Web
     if (!encoding.isNull())
         setEncoding(encoding);
 }
+#endif
 
 void Resource::setSerializedCachedMetadata(const char* data, size_t size)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // We only expect to receive cached metadata from the platform once.
     // If this triggers, it indicates an efficiency problem which is most
     // likely unexpected in code designed to improve performance.
@@ -485,6 +525,7 @@ void Resource::setSerializedCachedMetadata(const char* data, size_t size)
     ASSERT(m_revalidatingRequest.isNull());
 
     m_cachedMetadata = CachedMetadata::deserialize(data, size);
+#endif
 }
 
 CachedMetadataHandler* Resource::cacheHandler()
@@ -494,6 +535,8 @@ CachedMetadataHandler* Resource::cacheHandler()
 
 void Resource::setCachedMetadata(unsigned dataTypeID, const char* data, size_t size, CachedMetadataHandler::CacheType cacheType)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // Currently, only one type of cached metadata per resource is supported.
     // If the need arises for multiple types of metadata per resource this could
     // be enhanced to store types of metadata in a map.
@@ -510,14 +553,18 @@ void Resource::setCachedMetadata(unsigned dataTypeID, const char* data, size_t s
         const Vector<char>& serializedData = m_cachedMetadata->serialize();
         Platform::current()->cacheMetadata(m_response.url(), m_response.responseTime(), serializedData.data(), serializedData.size());
     }
+#endif
 }
 
 void Resource::clearCachedMetadata(CachedMetadataHandler::CacheType cacheType)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     m_cachedMetadata.clear();
 
     if (cacheType == CachedMetadataHandler::SendToPlatform)
         Platform::current()->cacheMetadata(m_response.url(), m_response.responseTime(), 0, 0);
+#endif
 }
 
 WeakPtrWillBeRawPtr<Resource> Resource::asWeakPtr()
@@ -537,6 +584,9 @@ bool Resource::canDelete() const
 
 String Resource::reasonNotDeletable() const
 {
+    ASSERT(false); // BKTODO:
+    return String();
+#if 0
     StringBuilder builder;
     if (hasClients()) {
         builder.append("hasClients(");
@@ -583,6 +633,7 @@ String Resource::reasonNotDeletable() const
         builder.append("in_memory_cache");
     }
     return builder.toString();
+#endif
 }
 
 bool Resource::hasOneHandle() const
@@ -592,9 +643,13 @@ bool Resource::hasOneHandle() const
 
 CachedMetadata* Resource::cachedMetadata(unsigned dataTypeID) const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!m_cachedMetadata || m_cachedMetadata->dataTypeID() != dataTypeID)
         return nullptr;
     return m_cachedMetadata.get();
+#endif
 }
 
 void Resource::clearLoader()
@@ -607,8 +662,11 @@ void Resource::didAddClient(ResourceClient* c)
     if (!isLoading() && !stillNeedsLoad()) {
         c->notifyFinished(this);
         if (m_clients.contains(c)) {
+            ASSERT(false); // BKTODO:
+#if 0
             m_finishedClients.add(c);
             m_clients.remove(c);
+#endif
         }
     }
 }
@@ -645,21 +703,21 @@ void Resource::addClient(ResourceClient* client)
             m_preloadResult = PreloadReferenced;
     }
     if (!hasClients())
-        memoryCache()->makeLive(this);
+        ASSERT(false); // BKTODO: memoryCache()->makeLive(this);
 
     if (!m_revalidatingRequest.isNull()) {
-        m_clients.add(client);
+        ASSERT(false); // BKTODO: m_clients.add(client);
         return;
     }
 
     // If we have existing data to send to the new client and the resource type supprts it, send it asynchronously.
     if (!m_response.isNull() && !shouldSendCachedDataSynchronouslyForType(type()) && !m_needsSynchronousCacheHit) {
-        m_clientsAwaitingCallback.add(client);
+        ASSERT(false); // BKTODO: m_clientsAwaitingCallback.add(client);
         ResourceCallback::callbackHandler()->schedule(this);
         return;
     }
 
-    m_clients.add(client);
+    ASSERT(false); // BKTODO: m_clients.add(client);
     didAddClient(client);
     return;
 }
@@ -668,11 +726,11 @@ void Resource::removeClient(ResourceClient* client)
 {
     ASSERT(hasClient(client));
     if (m_finishedClients.contains(client))
-        m_finishedClients.remove(client);
+        ASSERT(false); // BKTODO: m_finishedClients.remove(client);
     else if (m_clientsAwaitingCallback.contains(client))
-        m_clientsAwaitingCallback.remove(client);
+        ASSERT(false); // BKTODO: m_clientsAwaitingCallback.remove(client);
     else
-        m_clients.remove(client);
+        ASSERT(false); // BKTODO: m_clients.remove(client);
 
     didRemoveClient(client);
 
@@ -681,10 +739,12 @@ void Resource::removeClient(ResourceClient* client)
 
     bool deleted = deleteIfPossible();
     if (!deleted && !hasClients()) {
-        memoryCache()->makeDead(this);
+        ASSERT(false); // BKTODO: memoryCache()->makeDead(this);
         if (!m_switchingClientsToRevalidatedResource)
             allClientsRemoved();
 
+        ASSERT(false); // BKTODO:
+#if 0
         // RFC2616 14.9.2:
         // "no-store: ... MUST make a best-effort attempt to remove the information from volatile storage as promptly as possible"
         // "... History buffers MAY store such responses as part of their normal operation."
@@ -695,6 +755,7 @@ void Resource::removeClient(ResourceClient* client)
         } else {
             memoryCache()->prune(this);
         }
+#endif
     }
     // This object may be dead here.
 }
@@ -719,11 +780,13 @@ void Resource::cancelTimerFired(Timer<Resource>* timer)
     ResourcePtr<Resource> protect(this);
     m_loader->cancelIfNotFinishing();
     if (m_status != Cached)
-        memoryCache()->remove(this);
+        ASSERT(false); // BKTODO: memoryCache()->remove(this);
 }
 
 bool Resource::deleteIfPossible()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (canDelete() && !memoryCache()->contains(this)) {
         InspectorInstrumentation::willDestroyResource(this);
         dispose();
@@ -733,6 +796,7 @@ bool Resource::deleteIfPossible()
 #endif
         return true;
     }
+#endif
     return false;
 }
 
@@ -742,8 +806,11 @@ void Resource::setDecodedSize(size_t decodedSize)
         return;
     size_t oldSize = size();
     m_decodedSize = decodedSize;
+    ASSERT(false); // BKTODO:
+#if 0
     memoryCache()->update(this, oldSize, size());
     memoryCache()->updateDecodedResource(this, UpdateForPropertyChange);
+#endif
 }
 
 void Resource::setEncodedSize(size_t encodedSize)
@@ -752,17 +819,22 @@ void Resource::setEncodedSize(size_t encodedSize)
         return;
     size_t oldSize = size();
     m_encodedSize = encodedSize;
-    memoryCache()->update(this, oldSize, size());
+    ASSERT(false); // BKTODO: memoryCache()->update(this, oldSize, size());
 }
 
 void Resource::didAccessDecodedData()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     memoryCache()->updateDecodedResource(this, UpdateForAccess);
     memoryCache()->prune();
+#endif
 }
 
 void Resource::finishPendingClients()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // We're going to notify clients one by one. It is simple if the client does nothing.
     // However there are a couple other things that can happen.
     //
@@ -791,6 +863,7 @@ void Resource::finishPendingClients()
 
     // Prevent the case when there are clients waiting but no callback scheduled.
     ASSERT(m_clientsAwaitingCallback.isEmpty() || scheduled);
+#endif
 }
 
 void Resource::prune()
@@ -799,6 +872,7 @@ void Resource::prune()
     unlock();
 }
 
+#if 0 // BKTODO:
 void Resource::onMemoryDump(WebMemoryDumpLevelOfDetail levelOfDetail, WebProcessMemoryDump* memoryDump) const
 {
     static const size_t kMaxURLReportLength = 128;
@@ -864,9 +938,12 @@ String Resource::getMemoryDumpName() const
 {
     return String::format("web_cache/%s_resources/%ld", resourceTypeToString(type(), options().initiatorInfo), m_identifier);
 }
+#endif
 
 void Resource::revalidationSucceeded(const ResourceResponse& validatingResponse)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     m_response.setResourceLoadTiming(validatingResponse.resourceLoadTiming());
 
     // RFC2616 10.3.5
@@ -885,6 +962,7 @@ void Resource::revalidationSucceeded(const ResourceResponse& validatingResponse)
 
     assertAlive();
     m_resourceRequest = m_revalidatingRequest;
+#endif
     m_revalidatingRequest = ResourceRequest();
 }
 
@@ -892,7 +970,7 @@ void Resource::revalidationFailed()
 {
     m_resourceRequest = m_revalidatingRequest;
     m_revalidatingRequest = ResourceRequest();
-    m_data.clear();
+    m_data.reset();
     destroyDecodedDataForFailedRevalidation();
 }
 
@@ -908,6 +986,8 @@ void Resource::unregisterHandle(ResourcePtrBase* h)
     ASSERT(m_handleCount > 0);
     --m_handleCount;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_handleCount) {
         if (deleteIfPossible())
             return;
@@ -917,6 +997,7 @@ void Resource::unregisterHandle(ResourcePtrBase* h)
         if (!hasClients())
             memoryCache()->prune(this);
     }
+#endif
 }
 
 bool Resource::canReuseRedirectChain()
@@ -937,7 +1018,8 @@ bool Resource::hasCacheControlNoStoreHeader()
 
 bool Resource::hasVaryHeader() const
 {
-    return !m_response.httpHeaderField(HTTPNames::Vary).isNull();
+    ASSERT(false); // BKTODO: return !m_response.httpHeaderField(HTTPNames::Vary).isNull();
+    return false;
 }
 
 bool Resource::mustRevalidateDueToCacheHeaders()
@@ -957,7 +1039,8 @@ bool Resource::canUseCacheValidator()
 
 bool Resource::isPurgeable() const
 {
-    return m_data && !m_data->isLocked();
+    ASSERT(false); // BKTODO: return m_data && !m_data->isLocked();
+    return false;
 }
 
 bool Resource::wasPurged() const
@@ -969,6 +1052,8 @@ bool Resource::lock()
 {
     if (!m_data)
         return true;
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_data->isLocked())
         return true;
 
@@ -978,6 +1063,7 @@ bool Resource::lock()
         m_wasPurged = true;
         return false;
     }
+#endif
     return true;
 }
 
@@ -987,6 +1073,7 @@ size_t Resource::overheadSize() const
     return sizeof(Resource) + m_response.memoryUsage() + kAverageClientsHashMapSize + m_resourceRequest.url().string().length() * 2;
 }
 
+#if 0 // BKTODO:
 void Resource::didChangePriority(ResourceLoadPriority loadPriority, int intraPriorityValue)
 {
     m_resourceRequest.setPriority(loadPriority, intraPriorityValue);
@@ -1007,6 +1094,7 @@ ResourcePriority Resource::priorityFromClients()
     }
     return priority;
 }
+#endif
 
 Resource::ResourceCallback* Resource::ResourceCallback::callbackHandler()
 {
@@ -1028,24 +1116,30 @@ DEFINE_TRACE(Resource::ResourceCallback)
 }
 
 Resource::ResourceCallback::ResourceCallback()
-    : m_callbackTaskFactory(CancellableTaskFactory::create(this, &ResourceCallback::runTask))
+    // BKTODO: : m_callbackTaskFactory(CancellableTaskFactory::create(this, &ResourceCallback::runTask))
 {
 }
 
 void Resource::ResourceCallback::schedule(Resource* resource)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_callbackTaskFactory->isPending())
         Platform::current()->currentThread()->scheduler()->loadingTaskRunner()->postTask(BLINK_FROM_HERE, m_callbackTaskFactory->cancelAndCreate());
     resource->assertAlive();
     m_resourcesWithPendingClients.add(resource);
+#endif
 }
 
 void Resource::ResourceCallback::cancel(Resource* resource)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     resource->assertAlive();
     m_resourcesWithPendingClients.remove(resource);
     if (m_callbackTaskFactory->isPending() && m_resourcesWithPendingClients.isEmpty())
         m_callbackTaskFactory->cancel();
+#endif
 }
 
 bool Resource::ResourceCallback::isScheduled(Resource* resource) const
@@ -1072,6 +1166,8 @@ void Resource::ResourceCallback::runTask()
 
 static const char* initatorTypeNameToString(const AtomicString& initiatorTypeName)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (initiatorTypeName == FetchInitiatorTypeNames::css)
         return "CSS resource";
     if (initiatorTypeName == FetchInitiatorTypeNames::document)
@@ -1090,6 +1186,7 @@ static const char* initatorTypeNameToString(const AtomicString& initiatorTypeNam
         return "XML resource";
     if (initiatorTypeName == FetchInitiatorTypeNames::xmlhttprequest)
         return "XMLHttpRequest";
+#endif
 
     return "Resource";
 }

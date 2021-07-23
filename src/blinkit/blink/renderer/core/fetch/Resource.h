@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Resource.h
+// Description: Resource Class
+//      Author: Ziming Li
+//     Created: 2021-07-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller <mueller@kde.org>
@@ -28,12 +39,14 @@
 #include "core/fetch/ResourceLoaderOptions.h"
 #include "platform/Timer.h"
 #include "platform/network/ResourceError.h"
-#include "platform/network/ResourceLoadPriority.h"
+// BKTODO: #include "platform/network/ResourceLoadPriority.h"
 #include "platform/network/ResourceRequest.h"
 #include "platform/network/ResourceResponse.h"
+#if 0 // BKTODO:
 #include "platform/scheduler/CancellableTaskFactory.h"
 #include "public/platform/WebDataConsumerHandle.h"
 #include "public/platform/WebMemoryDumpProvider.h"
+#endif
 #include "wtf/Allocator.h"
 #include "wtf/HashCountedSet.h"
 #include "wtf/HashSet.h"
@@ -136,8 +149,10 @@ public:
     const ResourceLoaderOptions& options() const { return m_options; }
     void setOptions(const ResourceLoaderOptions& options) { m_options = options; }
 
+#if 0 // BKTODO:
     void didChangePriority(ResourceLoadPriority, int intraPriorityValue);
     ResourcePriority priorityFromClients();
+#endif
 
     void addClient(ResourceClient*);
     void removeClient(ResourceClient*);
@@ -192,12 +207,12 @@ public:
     void clearLoader();
 
     SharedBuffer* resourceBuffer() const { return m_data.get(); }
-    void setResourceBuffer(PassRefPtr<SharedBuffer>);
+    void setResourceBuffer(const std::shared_ptr<SharedBuffer> &);
 
     virtual void willFollowRedirect(ResourceRequest&, const ResourceResponse&);
 
     virtual void updateRequest(const ResourceRequest&) { }
-    virtual void responseReceived(const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>);
+    // BKTODO: virtual void responseReceived(const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>);
     void setResponse(const ResourceResponse& response) { m_response = response; }
     const ResourceResponse& response() const { return m_response; }
 
@@ -262,7 +277,7 @@ public:
     // Used by the MemoryCache to reduce the memory consumption of the entry.
     void prune();
 
-    virtual void onMemoryDump(WebMemoryDumpLevelOfDetail, WebProcessMemoryDump*) const;
+    // BKTODO: virtual void onMemoryDump(WebMemoryDumpLevelOfDetail, WebProcessMemoryDump*) const;
 
     static const char* resourceTypeToString(Type, const FetchInitiatorInfo&);
 
@@ -328,7 +343,7 @@ protected:
     private:
         ResourceCallback();
         void runTask();
-        OwnPtr<CancellableTaskFactory> m_callbackTaskFactory;
+        // BKTODO: OwnPtr<CancellableTaskFactory> m_callbackTaskFactory;
         WillBeHeapHashSet<RawPtrWillBeMember<Resource>> m_resourcesWithPendingClients;
     };
 
@@ -365,7 +380,7 @@ protected:
     ResourceResponse m_response;
     double m_responseTimestamp;
 
-    RefPtr<SharedBuffer> m_data;
+    std::shared_ptr<SharedBuffer> m_data;
     Timer<Resource> m_cancelTimer;
 
 private:
@@ -390,7 +405,7 @@ private:
     WeakPtrFactory<Resource> m_weakPtrFactory;
 #endif
 
-    RefPtr<CachedMetadata> m_cachedMetadata;
+    // BKTODO: RefPtr<CachedMetadata> m_cachedMetadata;
     OwnPtrWillBeMember<CacheHandler> m_cacheHandler;
 
     ResourceError m_error;
