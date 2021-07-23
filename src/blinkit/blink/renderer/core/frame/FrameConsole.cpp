@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FrameConsole.cpp
+// Description: FrameConsole Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Apple Inc. All rights reserved.
  *
@@ -28,16 +39,17 @@
 
 #include "core/frame/FrameConsole.h"
 
-#include "bindings/core/v8/ScriptCallStackFactory.h"
 #include "core/frame/FrameHost.h"
+#if 0 // BKTODO:
 #include "core/inspector/ConsoleAPITypes.h"
 #include "core/inspector/ConsoleMessage.h"
 #include "core/inspector/ConsoleMessageStorage.h"
 #include "core/inspector/InspectorConsoleInstrumentation.h"
 #include "core/inspector/ScriptCallStack.h"
+#endif
 #include "core/page/ChromeClient.h"
 #include "core/page/Page.h"
-#include "core/workers/WorkerGlobalScopeProxy.h"
+// BKTODO: #include "core/workers/WorkerGlobalScopeProxy.h"
 #include "platform/network/ResourceError.h"
 #include "platform/network/ResourceResponse.h"
 #include "wtf/text/StringBuilder.h"
@@ -48,6 +60,8 @@ static const HashSet<int>& allClientReportingMessageTypes()
 {
     DEFINE_STATIC_LOCAL(HashSet<int>, types, ());
     if (types.isEmpty()) {
+        ASSERT(false); // BKTODO:
+#if 0
         types.add(LogMessageType);
         types.add(DirMessageType);
         types.add(DirXMLMessageType);
@@ -55,6 +69,7 @@ static const HashSet<int>& allClientReportingMessageTypes()
         types.add(TraceMessageType);
         types.add(ClearMessageType);
         types.add(AssertMessageType);
+#endif
     }
     return types;
 }
@@ -74,6 +89,8 @@ DEFINE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(FrameConsole);
 
 void FrameConsole::addMessage(PassRefPtrWillBeRawPtr<ConsoleMessage> prpConsoleMessage)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     RefPtrWillBeRawPtr<ConsoleMessage> consoleMessage = prpConsoleMessage;
     if (muteCount && consoleMessage->source() != ConsoleAPIMessageSource)
         return;
@@ -120,6 +137,7 @@ void FrameConsole::addMessage(PassRefPtrWillBeRawPtr<ConsoleMessage> prpConsoleM
     if (reportedCallStack)
         stackTrace = FrameConsole::formatStackTraceString(consoleMessage->message(), reportedCallStack);
     frame().chromeClient().addMessageToConsole(m_frame, consoleMessage->source(), consoleMessage->level(), consoleMessage->message(), lineNumber, messageURL, stackTrace);
+#endif
 }
 
 void FrameConsole::reportResourceResponseReceived(DocumentLoader* loader, unsigned long requestIdentifier, const ResourceResponse& response)
@@ -131,14 +149,19 @@ void FrameConsole::reportResourceResponseReceived(DocumentLoader* loader, unsign
     if (response.wasFallbackRequiredByServiceWorker())
         return;
     String message = "Failed to load resource: the server responded with a status of " + String::number(response.httpStatusCode()) + " (" + response.httpStatusText() + ')';
+    ASSERT(false); // BKTODO:
+#if 0
     RefPtrWillBeRawPtr<ConsoleMessage> consoleMessage = ConsoleMessage::create(NetworkMessageSource, ErrorMessageLevel, message, response.url().string());
     consoleMessage->setRequestIdentifier(requestIdentifier);
     addMessage(consoleMessage.release());
+#endif
 }
 
 String FrameConsole::formatStackTraceString(const String& originalMessage, PassRefPtrWillBeRawPtr<ScriptCallStack> callStack)
 {
     StringBuilder stackTrace;
+    ASSERT(false); // BKTODO:
+#if 0
     for (size_t i = 0; i < callStack->size(); ++i) {
         const ScriptCallFrame& frame = callStack->at(i);
         stackTrace.append("\n    at " + (frame.functionName().length() ? frame.functionName() : "(anonymous function)"));
@@ -150,6 +173,7 @@ String FrameConsole::formatStackTraceString(const String& originalMessage, PassR
         stackTrace.appendNumber(frame.columnNumber());
         stackTrace.append(')');
     }
+#endif
 
     return stackTrace.toString();
 }
@@ -174,16 +198,22 @@ ConsoleMessageStorage* FrameConsole::messageStorage()
 
 void FrameConsole::clearMessages()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ConsoleMessageStorage* storage = messageStorage();
     if (storage)
         storage->clear(m_frame->document());
+#endif
 }
 
 void FrameConsole::adoptWorkerMessagesAfterTermination(WorkerGlobalScopeProxy* proxy)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ConsoleMessageStorage* storage = messageStorage();
     if (storage)
         storage->adoptWorkerMessagesAfterTermination(proxy);
+#endif
 }
 
 void FrameConsole::didFailLoading(unsigned long requestIdentifier, const ResourceError& error)
@@ -199,9 +229,12 @@ void FrameConsole::didFailLoading(unsigned long requestIdentifier, const Resourc
         message.appendLiteral(": ");
         message.append(error.localizedDescription());
     }
+    ASSERT(false); // BKTODO:
+#if 0
     RefPtrWillBeRawPtr<ConsoleMessage> consoleMessage = ConsoleMessage::create(NetworkMessageSource, ErrorMessageLevel, message.toString(), error.failingURL());
     consoleMessage->setRequestIdentifier(requestIdentifier);
     storage->reportMessage(m_frame->document(), consoleMessage.release());
+#endif
 }
 
 DEFINE_TRACE(FrameConsole)

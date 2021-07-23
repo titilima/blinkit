@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FrameConsole.h
+// Description: FrameConsole Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Apple Inc. All rights reserved.
  *
@@ -29,7 +40,7 @@
 #ifndef FrameConsole_h
 #define FrameConsole_h
 
-#include "bindings/core/v8/ScriptState.h"
+// BKTODO: #include "bindings/core/v8/ScriptState.h"
 #include "core/CoreExport.h"
 #include "core/frame/ConsoleTypes.h"
 #include "platform/heap/Handle.h"
@@ -41,6 +52,7 @@ namespace blink {
 class ConsoleMessage;
 class ConsoleMessageStorage;
 class DocumentLoader;
+class LocalFrame;
 class ResourceError;
 class ResourceResponse;
 class ScriptCallStack;
