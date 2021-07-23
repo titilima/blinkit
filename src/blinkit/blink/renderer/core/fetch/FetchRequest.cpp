@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FetchRequest.cpp
+// Description: FetchRequest Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google, Inc. All rights reserved.
  *
@@ -25,16 +36,16 @@
 
 #include "core/fetch/FetchRequest.h"
 
-#include "core/fetch/CrossOriginAccessControl.h"
+// BKTODO: #include "core/fetch/CrossOriginAccessControl.h"
 #include "core/fetch/ResourceFetcher.h"
 
 namespace blink {
 
-FetchRequest::FetchRequest(const ResourceRequest& resourceRequest, const AtomicString& initiator, const String& charset, ResourceLoadPriority priority)
+FetchRequest::FetchRequest(const ResourceRequest& resourceRequest, const AtomicString& initiator, const String& charset) // BKTODO: , ResourceLoadPriority priority)
     : m_resourceRequest(resourceRequest)
     , m_charset(charset)
     , m_options(ResourceFetcher::defaultResourceOptions())
-    , m_priority(priority)
+    // BKTODO: , m_priority(priority)
     , m_forPreload(false)
     , m_avoidBlockingOnLoad(false)
     , m_defer(NoDefer)
@@ -46,7 +57,7 @@ FetchRequest::FetchRequest(const ResourceRequest& resourceRequest, const AtomicS
 FetchRequest::FetchRequest(const ResourceRequest& resourceRequest, const AtomicString& initiator, const ResourceLoaderOptions& options)
     : m_resourceRequest(resourceRequest)
     , m_options(options)
-    , m_priority(ResourceLoadPriorityUnresolved)
+    // BKTODO: , m_priority(ResourceLoadPriorityUnresolved)
     , m_forPreload(false)
     , m_avoidBlockingOnLoad(false)
     , m_defer(NoDefer)
@@ -58,7 +69,7 @@ FetchRequest::FetchRequest(const ResourceRequest& resourceRequest, const AtomicS
 FetchRequest::FetchRequest(const ResourceRequest& resourceRequest, const FetchInitiatorInfo& initiator)
     : m_resourceRequest(resourceRequest)
     , m_options(ResourceFetcher::defaultResourceOptions())
-    , m_priority(ResourceLoadPriorityUnresolved)
+    // BKTODO: , m_priority(ResourceLoadPriorityUnresolved)
     , m_forPreload(false)
     , m_avoidBlockingOnLoad(false)
     , m_defer(NoDefer)
@@ -71,6 +82,7 @@ FetchRequest::~FetchRequest()
 {
 }
 
+#if 0 // BKTODO:
 void FetchRequest::setCrossOriginAccessControl(SecurityOrigin* origin, CrossOriginAttributeValue crossOrigin)
 {
     ASSERT(crossOrigin != CrossOriginAttributeNotSet);
@@ -88,7 +100,7 @@ void FetchRequest::setCrossOriginAccessControl(SecurityOrigin* origin, CrossOrig
 
     updateRequestForAccessControl(m_resourceRequest, origin, m_options.allowCredentials);
 }
-
+#endif
 
 void FetchRequest::setResourceWidth(ResourceWidth resourceWidth)
 {

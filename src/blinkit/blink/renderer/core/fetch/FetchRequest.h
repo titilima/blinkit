@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FetchRequest.h
+// Description: FetchRequest Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google, Inc. All rights reserved.
  *
@@ -27,12 +38,12 @@
 #define FetchRequest_h
 
 #include "core/CoreExport.h"
-#include "core/fetch/ClientHintsPreferences.h"
+// BKTODO: #include "core/fetch/ClientHintsPreferences.h"
 #include "core/fetch/FetchInitiatorInfo.h"
-#include "core/fetch/IntegrityMetadata.h"
+// BKTODO: #include "core/fetch/IntegrityMetadata.h"
 #include "core/fetch/ResourceLoaderOptions.h"
-#include "platform/CrossOriginAttributeValue.h"
-#include "platform/network/ResourceLoadPriority.h"
+// BKTODO: #include "platform/CrossOriginAttributeValue.h"
+// BKTODO: #include "platform/network/ResourceLoadPriority.h"
 #include "platform/network/ResourceRequest.h"
 #include "wtf/Allocator.h"
 #include "wtf/text/AtomicString.h"
@@ -58,7 +69,7 @@ public:
         }
     };
 
-    explicit FetchRequest(const ResourceRequest&, const AtomicString& initiator, const String& charset = String(), ResourceLoadPriority = ResourceLoadPriorityUnresolved);
+    explicit FetchRequest(const ResourceRequest&, const AtomicString& initiator, const String& charset = String()); // BKTODO: , ResourceLoadPriority = ResourceLoadPriorityUnresolved);
     FetchRequest(const ResourceRequest&, const AtomicString& initiator, const ResourceLoaderOptions&);
     FetchRequest(const ResourceRequest&, const FetchInitiatorInfo&);
     ~FetchRequest();
@@ -73,8 +84,10 @@ public:
     const ResourceLoaderOptions& options() const { return m_options; }
     void setOptions(const ResourceLoaderOptions& options) { m_options = options; }
 
+#if 0 // BKTODO:
     ResourceLoadPriority priority() const { return m_priority; }
     void setPriority(ResourceLoadPriority priority) { m_priority = priority; }
+#endif
 
     DeferOption defer() const { return m_defer; }
     void setDefer(DeferOption defer) { m_defer = defer; }
@@ -82,7 +95,7 @@ public:
     ResourceWidth resourceWidth() const { return m_resourceWidth; }
     void setResourceWidth(ResourceWidth);
 
-    ClientHintsPreferences& clientHintsPreferences() { return m_clientHintPreferences; }
+    // BKTODO: ClientHintsPreferences& clientHintsPreferences() { return m_clientHintPreferences; }
 
     bool forPreload() const { return m_forPreload; }
     void setForPreload(bool forPreload) { m_forPreload = forPreload; }
@@ -90,25 +103,31 @@ public:
     bool avoidBlockingOnLoad() { return m_avoidBlockingOnLoad; }
     void setAvoidBlockingOnLoad(bool doNotBlock) { m_avoidBlockingOnLoad = doNotBlock; }
 
+#if 0 // BKTODO:
     void setContentSecurityCheck(ContentSecurityPolicyDisposition contentSecurityPolicyOption) { m_options.contentSecurityPolicyOption = contentSecurityPolicyOption; }
     void setCrossOriginAccessControl(SecurityOrigin*, CrossOriginAttributeValue);
+#endif
     OriginRestriction originRestriction() const { return m_originRestriction; }
     void setOriginRestriction(OriginRestriction restriction) { m_originRestriction = restriction; }
+#if 0 // BKTODO:
     const IntegrityMetadataSet& integrityMetadata() const { return m_integrityMetadata; }
     void setIntegrityMetadata(const IntegrityMetadataSet& metadata) { m_integrityMetadata = metadata; }
+#endif
 
 private:
     ResourceRequest m_resourceRequest;
     String m_charset;
     ResourceLoaderOptions m_options;
-    ResourceLoadPriority m_priority;
+    // BKTODO: ResourceLoadPriority m_priority;
     bool m_forPreload;
     bool m_avoidBlockingOnLoad;
     DeferOption m_defer;
     OriginRestriction m_originRestriction;
     ResourceWidth m_resourceWidth;
+#if 0 // BKTODO:
     ClientHintsPreferences m_clientHintPreferences;
     IntegrityMetadataSet m_integrityMetadata;
+#endif
 };
 
 } // namespace blink
