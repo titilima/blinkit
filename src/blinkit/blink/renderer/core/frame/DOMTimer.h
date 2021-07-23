@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMTimer.h
+// Description: DOMTimer Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -27,10 +38,10 @@
 #ifndef DOMTimer_h
 #define DOMTimer_h
 
-#include "bindings/core/v8/ScheduledAction.h"
+// BKTODO: #include "bindings/core/v8/ScheduledAction.h"
 #include "core/CoreExport.h"
 #include "core/frame/SuspendableTimer.h"
-#include "platform/UserGestureIndicator.h"
+// BKTODO: #include "platform/UserGestureIndicator.h"
 #include "platform/heap/Handle.h"
 #include "wtf/OwnPtr.h"
 #include "wtf/PassOwnPtr.h"
@@ -44,7 +55,7 @@ class CORE_EXPORT DOMTimer final : public RefCountedWillBeGarbageCollectedFinali
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(DOMTimer);
 public:
     // Creates a new timer owned by the ExecutionContext, starts it and returns its ID.
-    static int install(ExecutionContext*, PassOwnPtrWillBeRawPtr<ScheduledAction>, int timeout, bool singleShot);
+    // BKTODO: static int install(ExecutionContext*, PassOwnPtrWillBeRawPtr<ScheduledAction>, int timeout, bool singleShot);
     static void removeByID(ExecutionContext*, int timeoutID);
 
     ~DOMTimer() override;
@@ -64,20 +75,24 @@ public:
 private:
     friend class DOMTimerCoordinator; // For create().
 
+#if 0 // BKTODO:
     static PassRefPtrWillBeRawPtr<DOMTimer> create(ExecutionContext* context, PassOwnPtrWillBeRawPtr<ScheduledAction> action, int timeout, bool singleShot, int timeoutID)
     {
         return adoptRefWillBeNoop(new DOMTimer(context, action, timeout, singleShot, timeoutID));
     }
+#endif
 
-    DOMTimer(ExecutionContext*, PassOwnPtrWillBeRawPtr<ScheduledAction>, int interval, bool singleShot, int timeoutID);
+    // BKTODO: DOMTimer(ExecutionContext*, PassOwnPtrWillBeRawPtr<ScheduledAction>, int interval, bool singleShot, int timeoutID);
     void fired() override;
 
     WebTaskRunner* timerTaskRunner() override;
 
     int m_timeoutID;
     int m_nestingLevel;
+#if 0 // BKTODO:
     OwnPtrWillBeMember<ScheduledAction> m_action;
     RefPtr<UserGestureToken> m_userGestureToken;
+#endif
 };
 
 } // namespace blink

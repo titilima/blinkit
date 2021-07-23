@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMTimer.cpp
+// Description: DOMTimer Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -46,11 +57,16 @@ static const double minimumInterval = 0.004;
 
 static inline bool shouldForwardUserGesture(int interval, int nestingLevel)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return UserGestureIndicator::processingUserGesture()
         && interval <= maxIntervalForUserGestureForwarding
         && nestingLevel == 1; // Gestures should not be forwarded to nested timers.
+#endif
 }
 
+#if 0 // BKTODO:
 int DOMTimer::install(ExecutionContext* context, PassOwnPtrWillBeRawPtr<ScheduledAction> action, int timeout, bool singleShot)
 {
     int timeoutID = context->timers()->installNewTimeout(context, action, timeout, singleShot);
@@ -58,14 +74,19 @@ int DOMTimer::install(ExecutionContext* context, PassOwnPtrWillBeRawPtr<Schedule
     InspectorInstrumentation::didInstallTimer(context, timeoutID, timeout, singleShot);
     return timeoutID;
 }
+#endif
 
 void DOMTimer::removeByID(ExecutionContext* context, int timeoutID)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     context->timers()->removeTimeoutByID(timeoutID);
     TRACE_EVENT_INSTANT1("devtools.timeline", "TimerRemove", TRACE_EVENT_SCOPE_THREAD, "data", InspectorTimerRemoveEvent::data(context, timeoutID));
     InspectorInstrumentation::didRemoveTimer(context, timeoutID);
+#endif
 }
 
+#if 0 // BKTODO:
 DOMTimer::DOMTimer(ExecutionContext* context, PassOwnPtrWillBeRawPtr<ScheduledAction> action, int interval, bool singleShot, int timeoutID)
     : SuspendableTimer(context)
     , m_timeoutID(timeoutID)
@@ -84,6 +105,7 @@ DOMTimer::DOMTimer(ExecutionContext* context, PassOwnPtrWillBeRawPtr<ScheduledAc
     else
         startRepeating(intervalMilliseconds, BLINK_FROM_HERE);
 }
+#endif
 
 DOMTimer::~DOMTimer()
 {
@@ -91,8 +113,11 @@ DOMTimer::~DOMTimer()
 
 void DOMTimer::disposeTimer()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     m_action = nullptr;
     m_userGestureToken = nullptr;
+#endif
     stop();
 }
 
@@ -100,6 +125,8 @@ void DOMTimer::fired()
 {
     ExecutionContext* context = executionContext();
     ASSERT(context);
+    ASSERT(false); // BKTODO:
+#if 0
     context->timers()->setTimerNestingLevel(m_nestingLevel);
     ASSERT(!context->activeDOMObjectsAreSuspended());
     // Only the first execution of a multi-shot timer should get an affirmative user gesture indicator.
@@ -139,6 +166,7 @@ void DOMTimer::fired()
     // ExecutionContext might be already gone when we executed action->execute().
     if (executionContext())
         executionContext()->timers()->setTimerNestingLevel(0);
+#endif
 }
 
 void DOMTimer::stop()
@@ -147,17 +175,18 @@ void DOMTimer::stop()
     // Need to release JS objects potentially protected by ScheduledAction
     // because they can form circular references back to the ExecutionContext
     // which will cause a memory leak.
-    m_action.clear();
+    ASSERT(false); // BKTODO: m_action.clear();
 }
 
 WebTaskRunner* DOMTimer::timerTaskRunner()
 {
-    return executionContext()->timers()->timerTaskRunner();
+    ASSERT(false); // BKTODO: return executionContext()->timers()->timerTaskRunner();
+    return nullptr;
 }
 
 DEFINE_TRACE(DOMTimer)
 {
-    visitor->trace(m_action);
+    ASSERT(false); // BKTODO: visitor->trace(m_action);
     SuspendableTimer::trace(visitor);
 }
 
