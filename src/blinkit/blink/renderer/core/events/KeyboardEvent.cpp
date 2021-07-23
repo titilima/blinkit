@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: KeyboardEvent.cpp
+// Description: KeyboardEvent Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -22,8 +33,6 @@
 
 #include "core/events/KeyboardEvent.h"
 
-#include "bindings/core/v8/DOMWrapperWorld.h"
-#include "bindings/core/v8/ScriptState.h"
 #include "platform/PlatformKeyboardEvent.h"
 #include "platform/WindowsKeyboardCodes.h"
 
@@ -59,12 +68,14 @@ static inline KeyboardEvent::KeyLocationCode keyLocationCode(const PlatformKeybo
     return KeyboardEvent::DOM_KEY_LOCATION_STANDARD;
 }
 
+#if 0 // BKTODO:
 PassRefPtrWillBeRawPtr<KeyboardEvent> KeyboardEvent::create(ScriptState* scriptState, const AtomicString& type, const KeyboardEventInit& initializer)
 {
     if (scriptState->world().isIsolatedWorld())
         UIEventWithKeyState::didCreateEventInIsolatedWorld(initializer.ctrlKey(), initializer.altKey(), initializer.shiftKey(), initializer.metaKey());
     return adoptRefWillBeNoop(new KeyboardEvent(type, initializer));
 }
+#endif
 
 KeyboardEvent::KeyboardEvent()
     : m_location(DOM_KEY_LOCATION_STANDARD)
@@ -110,6 +121,7 @@ KeyboardEvent::~KeyboardEvent()
 {
 }
 
+#if 0 // BKTODO:
 void KeyboardEvent::initKeyboardEvent(ScriptState* scriptState, const AtomicString& type, bool canBubble, bool cancelable, AbstractView* view,
     const String& keyIdentifier, unsigned location, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey)
 {
@@ -126,6 +138,7 @@ void KeyboardEvent::initKeyboardEvent(ScriptState* scriptState, const AtomicStri
     initModifiers(ctrlKey, altKey, shiftKey, metaKey);
     initLocationModifiers(location);
 }
+#endif
 
 int KeyboardEvent::keyCode() const
 {
