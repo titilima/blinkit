@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: VisibleUnits.cpp
+// Description: Visible Unit Helpers
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
  *
@@ -58,7 +69,7 @@
 #include "core/layout/line/InlineTextBox.h"
 #include "core/paint/LineLayoutPaintShim.h"
 #include "core/paint/PaintLayer.h"
-#include "platform/Logging.h"
+// BKTODO: #include "platform/Logging.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/heap/Handle.h"
 #include "platform/text/TextBoundaries.h"
@@ -2349,6 +2360,8 @@ bool rendersInDifferentPosition(const Position& position1, const Position& posit
     InlineBoxPosition boxPosition1 = computeInlineBoxPosition(position1, TextAffinity::Downstream);
     InlineBoxPosition boxPosition2 = computeInlineBoxPosition(position2, TextAffinity::Downstream);
 
+    ASSERT(false); // BKTODO:
+#if 0
     WTF_LOG(Editing, "layoutObject1:   %p [%p]\n", layoutObject, boxPosition1.inlineBox);
     WTF_LOG(Editing, "renderedOffset1: %d\n", renderedOffset1);
     WTF_LOG(Editing, "layoutObject2:   %p [%p]\n", posLayoutObject, boxPosition2.inlineBox);
@@ -2356,6 +2369,7 @@ bool rendersInDifferentPosition(const Position& position1, const Position& posit
     WTF_LOG(Editing, "node1 min/max:   %d:%d\n", caretMinOffset(position1.anchorNode()), caretMaxOffset(position1.anchorNode()));
     WTF_LOG(Editing, "node2 min/max:   %d:%d\n", caretMinOffset(position2.anchorNode()), caretMaxOffset(position2.anchorNode()));
     WTF_LOG(Editing, "----------------------------------------------------------------------\n");
+#endif
 
     if (!boxPosition1.inlineBox || !boxPosition2.inlineBox) {
         return false;
@@ -2394,10 +2408,13 @@ static bool endsOfNodeAreVisuallyDistinctPositions(Node* node)
     if (isHTMLTableElement(*node))
         return false;
 
+    ASSERT(false); // BKTODO:
+#if 0
     // A Marquee elements are moving so we should assume their ends are always
     // visibily distinct.
     if (isHTMLMarqueeElement(*node))
         return true;
+#endif
 
     // There is a VisiblePosition inside an empty inline-block container.
     return node->layoutObject()->isAtomicInlineLevel() && canHaveChildrenForEditing(node) && toLayoutBox(node->layoutObject())->size().height() != 0 && !node->hasChildren();
@@ -2780,7 +2797,7 @@ static bool isVisuallyEquivalentCandidateAlgorithm(const PositionTemplate<Strate
         }
     } else {
         LocalFrame* frame = anchorNode->document().frame();
-        bool caretBrowsing = frame->settings() && frame->settings()->caretBrowsingEnabled();
+        bool caretBrowsing = Settings::caretBrowsingEnabled();
         return (caretBrowsing || anchorNode->hasEditableStyle()) && atEditingBoundary(position);
     }
 
