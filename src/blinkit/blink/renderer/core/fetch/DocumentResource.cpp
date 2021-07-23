@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentResource.cpp
+// Description: DocumentResource Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 2010 Rob Buis <rwlbuis@gmail.com>
     Copyright (C) 2011 Cosmin Truta <ctruta@gmail.com>
@@ -22,7 +33,7 @@
 
 #include "core/fetch/DocumentResource.h"
 
-#include "core/dom/XMLDocument.h"
+// BKTODO: #include "core/dom/XMLDocument.h"
 #include "core/fetch/FetchRequest.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "platform/SharedBuffer.h"
@@ -30,12 +41,14 @@
 
 namespace blink {
 
+#if 0 // BKTODO:
 ResourcePtr<DocumentResource> DocumentResource::fetchSVGDocument(FetchRequest& request, ResourceFetcher* fetcher)
 {
     ASSERT(request.resourceRequest().frameType() == WebURLRequest::FrameTypeNone);
     request.mutableResourceRequest().setRequestContext(WebURLRequest::RequestContextImage);
     return toDocumentResource(fetcher->requestResource(request, SVGDocumentResourceFactory()));
 }
+#endif
 
 DocumentResource::DocumentResource(const ResourceRequest& request, Type type)
     : Resource(request, type)
@@ -73,7 +86,7 @@ void DocumentResource::checkNotify()
         decodedText.append(m_decoder->flush());
         // We don't need to create a new frame because the new document belongs to the parent UseElement.
         m_document = createDocument(response().url());
-        m_document->setContent(decodedText.toString());
+        ASSERT(false); // BKTODO: m_document->setContent(decodedText.toString());
     }
     Resource::checkNotify();
 }
@@ -82,7 +95,8 @@ PassRefPtrWillBeRawPtr<Document> DocumentResource::createDocument(const KURL& ur
 {
     switch (type()) {
     case SVGDocument:
-        return XMLDocument::createSVG(DocumentInit(url));
+        ASSERT(false); // BKTODO: return XMLDocument::createSVG(DocumentInit(url));
+        return nullptr;
     default:
         // FIXME: We'll add more types to support HTMLImports.
         ASSERT_NOT_REACHED();

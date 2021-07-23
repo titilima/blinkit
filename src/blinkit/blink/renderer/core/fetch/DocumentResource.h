@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentResource.h
+// Description: DocumentResource Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 2010 Rob Buis <rwlbuis@gmail.com>
     Copyright (C) 2011 Cosmin Truta <ctruta@gmail.com>
@@ -38,7 +49,7 @@ class DocumentResource final : public Resource {
 public:
     using ClientType = ResourceClient;
 
-    static ResourcePtr<DocumentResource> fetchSVGDocument(FetchRequest&, ResourceFetcher*);
+    // BKTODO: static ResourcePtr<DocumentResource> fetchSVGDocument(FetchRequest&, ResourceFetcher*);
     ~DocumentResource() override;
     DECLARE_VIRTUAL_TRACE();
 
