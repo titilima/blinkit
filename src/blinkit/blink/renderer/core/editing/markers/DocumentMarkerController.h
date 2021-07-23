@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentMarkerController.h
+// Description: DocumentMarkerController Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -82,7 +93,7 @@ public:
     void shiftMarkers(Node*, unsigned startOffset, int delta);
     void setMarkersActive(Range*, bool);
     void setMarkersActive(Node*, unsigned startOffset, unsigned endOffset, bool);
-    bool hasMarkers(Node* node) const { return m_markers.contains(node); }
+    bool hasMarkers(Node* node) const { return zed::key_exists(m_markers, node); }
 
     DocumentMarker* markerContainingPoint(const LayoutPoint&, DocumentMarker::MarkerType);
     DocumentMarkerVector markersFor(Node*, DocumentMarker::MarkerTypes = DocumentMarker::AllMarkers());
@@ -93,16 +104,12 @@ public:
 
     DECLARE_TRACE();
 
-#ifndef NDEBUG
-    void showMarkers() const;
-#endif
-
 private:
     void addMarker(Node*, const DocumentMarker&);
 
-    using MarkerList = WillBeHeapVector<OwnPtrWillBeMember<RenderedDocumentMarker>>;
+    using MarkerList = std::vector<Member<RenderedDocumentMarker>>;
     using MarkerLists = WillBeHeapVector<OwnPtrWillBeMember<MarkerList>, DocumentMarker::MarkerTypeIndexesCount>;
-    using MarkerMap = WillBeHeapHashMap<RawPtrWillBeWeakMember<const Node>, OwnPtrWillBeMember<MarkerLists>>;
+    using MarkerMap = std::unordered_map<WeakMember<const Node>, Member<MarkerLists>>;
     void mergeOverlapping(MarkerList*, PassOwnPtrWillBeRawPtr<RenderedDocumentMarker>);
     bool possiblyHasMarkers(DocumentMarker::MarkerTypes);
     void removeMarkersFromList(MarkerMap::iterator, DocumentMarker::MarkerTypes);
@@ -114,9 +121,5 @@ private:
 };
 
 } // namespace blink
-
-#ifndef NDEBUG
-void showDocumentMarkers(const blink::DocumentMarkerController*);
-#endif
 
 #endif // DocumentMarkerController_h
