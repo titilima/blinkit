@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Serialization.cpp
+// Description: Serialization Helpers
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2008, 2009, 2010, 2011 Google Inc. All rights reserved.
@@ -37,7 +48,7 @@
 #include "core/dom/CDATASection.h"
 #include "core/dom/ChildListMutationScope.h"
 #include "core/dom/Comment.h"
-#include "core/dom/ContextFeatures.h"
+// BKTODO: #include "core/dom/ContextFeatures.h"
 #include "core/dom/DocumentFragment.h"
 #include "core/dom/ElementTraversal.h"
 #include "core/dom/ExceptionCode.h"
@@ -110,6 +121,8 @@ static void completeURLs(DocumentFragment& fragment, const String& baseURL)
 {
     WillBeHeapVector<AttributeChange> changes;
 
+    ASSERT(false); // BKTODO:
+#if 0
     KURL parsedBaseURL(ParsedURLString, baseURL);
 
     for (Element& element : ElementTraversal::descendantsOf(fragment)) {
@@ -120,6 +133,7 @@ static void completeURLs(DocumentFragment& fragment, const String& baseURL)
                 changes.append(AttributeChange(&element, attribute.name(), KURL(parsedBaseURL, attribute.value()).string()));
         }
     }
+#endif
 
     for (auto& change : changes)
         change.apply();
@@ -280,8 +294,11 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromMarkup(Document& docu
 
     fragment->parseHTML(markup, fakeBody.get(), parserContentPolicy);
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!baseURL.isEmpty() && baseURL != blankURL() && baseURL != document.baseURL())
         completeURLs(*fragment, baseURL);
+#endif
 
     return fragment.release();
 }
@@ -345,7 +362,7 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromMarkupWithContext(Doc
         return nullptr;
 
     RefPtrWillBeRawPtr<Document> taggedDocument = Document::create();
-    taggedDocument->setContextFeatures(document.contextFeatures());
+    ASSERT(false); // BKTODO: taggedDocument->setContextFeatures(document.contextFeatures());
 
     RefPtrWillBeRawPtr<Element> root = Element::create(QualifiedName::null(), taggedDocument.get());
     root->appendChild(taggedFragment.get());
@@ -539,11 +556,14 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentForInnerOuterHTML(const S
         return fragment;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     bool wasValid = fragment->parseXML(markup, contextElement, parserContentPolicy);
     if (!wasValid) {
         exceptionState.throwDOMException(SyntaxError, "The provided markup is invalid XML, and therefore cannot be inserted into an XML document.");
         return nullptr;
     }
+#endif
     return fragment.release();
 }
 
@@ -561,9 +581,12 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentForTransformToFragment(co
     } else if (sourceMIMEType == "text/plain") {
         fragment->parserAppendChild(Text::create(outputDoc, sourceString));
     } else {
+        ASSERT(false); // BKTODO:
+#if 0
         bool successfulParse = fragment->parseXML(sourceString, 0);
         if (!successfulParse)
             return nullptr;
+#endif
     }
 
     // FIXME: Do we need to mess with URLs here?
@@ -589,10 +612,13 @@ static inline bool isSupportedContainer(Element* element)
         return true;
 
     HTMLElement& htmlElement = toHTMLElement(*element);
+    ASSERT(false); // BKTODO:
+#if 0
     if (htmlElement.hasTagName(colTag) || htmlElement.hasTagName(colgroupTag) || htmlElement.hasTagName(framesetTag)
         || htmlElement.hasTagName(headTag) || htmlElement.hasTagName(styleTag) || htmlElement.hasTagName(titleTag)) {
         return false;
     }
+#endif
     return !htmlElement.ieForbidsInsertHTML();
 }
 
