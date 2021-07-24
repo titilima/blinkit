@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLLinkElement.cpp
+// Description: HTMLLinkElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,7 +35,6 @@
 
 #include "core/html/HTMLLinkElement.h"
 
-#include "bindings/core/v8/ScriptEventListener.h"
 #include "core/HTMLNames.h"
 #include "core/css/MediaList.h"
 #include "core/css/MediaQueryEvaluator.h"
@@ -40,16 +50,18 @@
 #include "core/fetch/ResourceFetcher.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/SubresourceIntegrity.h"
+// BKTODO: #include "core/frame/SubresourceIntegrity.h"
 #include "core/frame/UseCounter.h"
+#if 0 // BKTODO:
 #include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/CrossOriginAttribute.h"
 #include "core/html/LinkManifest.h"
+#endif
 #include "core/html/imports/LinkImport.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "core/loader/FrameLoader.h"
 #include "core/loader/FrameLoaderClient.h"
-#include "core/loader/NetworkHintsInterface.h"
+// BKTODO: #include "core/loader/NetworkHintsInterface.h"
 #include "core/style/StyleInheritedData.h"
 #include "platform/ContentType.h"
 #include "platform/MIMETypeRegistry.h"
@@ -173,6 +185,8 @@ HTMLLinkElement::~HTMLLinkElement()
 
 void HTMLLinkElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (name == relAttr) {
         m_relAttribute = LinkRelAttribute(value);
         m_relList->setRelValues(value);
@@ -204,6 +218,7 @@ void HTMLLinkElement::parseAttribute(const QualifiedName& name, const AtomicStri
 
         HTMLElement::parseAttribute(name, oldValue, value);
     }
+#endif
 }
 
 bool HTMLLinkElement::shouldLoadLink()
@@ -213,11 +228,14 @@ bool HTMLLinkElement::shouldLoadLink()
 
 bool HTMLLinkElement::loadLink(const String& type, const String& as, const KURL& url)
 {
-    return m_linkLoader.loadLink(m_relAttribute, crossOriginAttributeValue(fastGetAttribute(HTMLNames::crossoriginAttr)), type, as, url, document(), NetworkHintsInterfaceImpl());
+    ASSERT(false); // BKTODO: return m_linkLoader.loadLink(m_relAttribute, crossOriginAttributeValue(fastGetAttribute(HTMLNames::crossoriginAttr)), type, as, url, document(), NetworkHintsInterfaceImpl());
+    return false;
 }
 
 LinkResource* HTMLLinkElement::linkResourceToProcess()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     bool visible = inDocument() && !m_isInShadowTree;
     if (!visible) {
         ASSERT(!linkStyle() || !linkStyle()->hasSheet());
@@ -238,6 +256,7 @@ LinkResource* HTMLLinkElement::linkResourceToProcess()
             m_link = link.release();
         }
     }
+#endif
 
     return m_link.get();
 }
@@ -279,7 +298,7 @@ Node::InsertionNotificationRequest HTMLLinkElement::insertedInto(ContainerNode* 
     m_isInShadowTree = isInShadowTree();
     if (m_isInShadowTree) {
         String message = "HTML element <link> is ignored in shadow tree.";
-        document().addConsoleMessage(ConsoleMessage::create(JSMessageSource, WarningMessageLevel, message));
+        ASSERT(false); // BKTODO: document().addConsoleMessage(ConsoleMessage::create(JSMessageSource, WarningMessageLevel, message));
         return InsertionDone;
     }
 
@@ -338,30 +357,33 @@ void HTMLLinkElement::linkLoadingErrored()
 
 void HTMLLinkElement::didStartLinkPrerender()
 {
-    dispatchEvent(Event::create(EventTypeNames::webkitprerenderstart));
+    ASSERT(false); // BKTODO: dispatchEvent(Event::create(EventTypeNames::webkitprerenderstart));
 }
 
 void HTMLLinkElement::didStopLinkPrerender()
 {
-    dispatchEvent(Event::create(EventTypeNames::webkitprerenderstop));
+    ASSERT(false); // BKTODO: dispatchEvent(Event::create(EventTypeNames::webkitprerenderstop));
 }
 
 void HTMLLinkElement::didSendLoadForLinkPrerender()
 {
-    dispatchEvent(Event::create(EventTypeNames::webkitprerenderload));
+    ASSERT(false); // BKTODO: dispatchEvent(Event::create(EventTypeNames::webkitprerenderload));
 }
 
 void HTMLLinkElement::didSendDOMContentLoadedForLinkPrerender()
 {
-    dispatchEvent(Event::create(EventTypeNames::webkitprerenderdomcontentloaded));
+    ASSERT(false); // BKTODO: dispatchEvent(Event::create(EventTypeNames::webkitprerenderdomcontentloaded));
 }
 
 void HTMLLinkElement::valueWasSet()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     setSynchronizedLazyAttribute(HTMLNames::sizesAttr, m_sizes->value());
     m_iconSizes.clear();
     parseSizesAttribute(m_sizes->value(), m_iconSizes);
     process();
+#endif
 }
 
 bool HTMLLinkElement::sheetLoaded()
@@ -440,7 +462,8 @@ const AtomicString& HTMLLinkElement::type() const
 
 bool HTMLLinkElement::async() const
 {
-    return fastHasAttribute(HTMLNames::asyncAttr);
+    ASSERT(false); // BKTODO: return fastHasAttribute(HTMLNames::asyncAttr);
+    return false;
 }
 
 IconType HTMLLinkElement::iconType() const
@@ -504,6 +527,8 @@ void LinkStyle::setCSSStyleSheet(const String& href, const KURL& baseURL, const 
         return;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     // See the comment in PendingScript.cpp about why this check is necessary
     // here, instead of in the resource fetcher. https://crbug.com/500701.
     if (!cachedStyleSheet->errorOccurred() && m_owner->fastHasAttribute(HTMLNames::integrityAttr) && cachedStyleSheet->resourceBuffer() && !SubresourceIntegrity::CheckSubresourceIntegrity(*m_owner, cachedStyleSheet->resourceBuffer()->data(), cachedStyleSheet->resourceBuffer()->size(), KURL(baseURL, href), *cachedStyleSheet)) {
@@ -524,7 +549,7 @@ void LinkStyle::setCSSStyleSheet(const String& href, const KURL& baseURL, const 
     // Completing the sheet load may cause scripts to execute.
     RefPtrWillBeRawPtr<Node> protector(m_owner.get());
 
-    CSSParserContext parserContext(m_owner->document(), 0, baseURL, charset);
+    CSSParserContext parserContext(m_owner->document(), baseURL, charset);
 
     if (RefPtrWillBeRawPtr<StyleSheetContents> restoredSheet = const_cast<CSSStyleSheetResource*>(cachedStyleSheet)->restoreParsedStyleSheet(parserContext)) {
         ASSERT(restoredSheet->isCacheable());
@@ -562,6 +587,7 @@ void LinkStyle::setCSSStyleSheet(const String& href, const KURL& baseURL, const 
 
     if (styleSheet->isCacheable())
         const_cast<CSSStyleSheetResource*>(cachedStyleSheet)->saveParsedStyleSheet(styleSheet);
+#endif
 }
 
 bool LinkStyle::sheetLoaded()
@@ -683,7 +709,7 @@ void LinkStyle::setCrossOriginStylesheetStatus(CSSStyleSheet* sheet)
     if (m_fetchFollowingCORS && resource() && !resource()->errorOccurred()) {
         // Record the security origin the CORS access check succeeded at, if cross origin.
         // Only origins that are script accessible to it may access the stylesheet's rules.
-        sheet->setAllowRuleAccessFromOrigin(m_owner->document().securityOrigin());
+        ASSERT(false); // BKTODO: sheet->setAllowRuleAccessFromOrigin(m_owner->document().securityOrigin());
     }
     m_fetchFollowingCORS = false;
 }
@@ -698,12 +724,15 @@ void LinkStyle::process()
     if (m_owner->relAttribute().iconType() != InvalidIcon && builder.url().isValid() && !builder.url().isEmpty()) {
         if (!m_owner->shouldLoadLink())
             return;
+        ASSERT(false); // BKTODO:
+#if 0
         if (!document().securityOrigin()->canDisplay(builder.url()))
             return;
         if (!document().contentSecurityPolicy()->allowImageFromSource(builder.url()))
             return;
         if (document().frame() && document().frame()->loader().client())
             document().frame()->loader().client()->dispatchDidChangeIcons(m_owner->relAttribute().iconType());
+#endif
     }
 
     if (!m_owner->loadLink(type, as, builder.url()))
@@ -740,6 +769,8 @@ void LinkStyle::process()
 
         // Load stylesheets that are not needed for the layout immediately with low priority.
         FetchRequest request = builder.build(blocking);
+        ASSERT(false); // BKTODO:
+#if 0
         CrossOriginAttributeValue crossOrigin = crossOriginAttributeValue(m_owner->fastGetAttribute(HTMLNames::crossoriginAttr));
         if (crossOrigin != CrossOriginAttributeNotSet) {
             request.setCrossOriginAccessControl(document().securityOrigin(), crossOrigin);
@@ -753,6 +784,7 @@ void LinkStyle::process()
             removePendingSheet();
             notifyLoadedSheetAndAllCriticalSubresources(Node::ErrorOccurredLoadingSubresource);
         }
+#endif
     } else if (m_sheet) {
         // we no longer contain a stylesheet, e.g. perhaps rel or type was changed
         RefPtrWillBeRawPtr<StyleSheet> removedSheet = m_sheet.get();
