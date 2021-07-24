@@ -6,17 +6,69 @@ export="CORE_EXPORT"
 
 a interfaceName=HTMLAnchorElement
 area
+b interfaceName=HTMLElement
+base
+blockquote interfaceName=HTMLQuoteElement
 body
 br interfaceName=HTMLBRElement
+col interfaceName=HTMLTableColElement
+colgroup interfaceName=HTMLTableColElement
+content interfaceName=HTMLContentElement
+datalist interfaceName=HTMLDataListElement
+dd interfaceName=HTMLElement
+div
+dl interfaceName=HTMLDListElement
+dt interfaceName=HTMLElement
+em interfaceName=HTMLElement
 fieldset interfaceName=HTMLFieldSetElement, constructorNeedsFormElement
+font
 form
+h1 interfaceName=HTMLHeadingElement
+h2 interfaceName=HTMLHeadingElement
+h3 interfaceName=HTMLHeadingElement
+h4 interfaceName=HTMLHeadingElement
+h5 interfaceName=HTMLHeadingElement
+h6 interfaceName=HTMLHeadingElement
+head
+hr interfaceName=HTMLHRElement
 html
+i interfaceName=HTMLElement
 img interfaceName=HTMLImageElement, constructorNeedsFormElement, constructorNeedsCreatedByParser
 input constructorNeedsFormElement, constructorNeedsCreatedByParser
+label constructorNeedsFormElement
+legend
+li interfaceName=HTMLLIElement
 link constructorNeedsCreatedByParser
+listing interfaceName=HTMLPreElement
+menu
+meta
+meter interfaceName=HTMLMeterElement
+ol interfaceName=HTMLOListElement
 optgroup interfaceName=HTMLOptGroupElement
 option
+p interfaceName=HTMLParagraphElement
+pre
+progress interfaceName=HTMLProgressElement
+q interfaceName=HTMLQuoteElement
+s interfaceName=HTMLElement
+script constructorNeedsCreatedByParser
+select constructorNeedsFormElement
+shadow interfaceName=HTMLShadowElement
 slot
+span
+strike interfaceName=HTMLElement
+strong interfaceName=HTMLElement
+style constructorNeedsCreatedByParser
+table
+tbody interfaceName=HTMLTableSectionElement
+td interfaceName=HTMLTableCellElement
 template
+textarea interfaceName=HTMLTextAreaElement, constructorNeedsFormElement
+tfoot interfaceName=HTMLTableSectionElement
+th interfaceName=HTMLTableCellElement
+thead interfaceName=HTMLTableSectionElement
 title
 tr interfaceName=HTMLTableRowElement
+u interfaceName=HTMLElement
+ul interfaceName=HTMLUListElement
+xmp interfaceName=HTMLPreElement

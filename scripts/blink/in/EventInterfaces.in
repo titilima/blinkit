@@ -1,7 +1,15 @@
 namespace="Event"
 export=CORE_EXPORT
 
+core/css/MediaQueryListEvent
+core/events/AnimationEvent
+core/events/AnimationPlayerEvent
 core/events/BeforeUnloadEvent
 core/events/Event
+core/events/KeyboardEvent
+core/events/MouseEvent
+core/events/PageTransitionEvent
 core/events/TextEvent
+core/events/TransitionEvent
+core/events/UIEvent
 core/events/WheelEvent

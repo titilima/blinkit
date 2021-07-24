@@ -45,6 +45,11 @@ run_script('blink/make_names.py',                           \
     '--output_dir ' + os.path.normpath('../src/blinkit/ui') \
 )
 
+run_script('blink/make_names.py',                                               \
+    os.path.normpath('blink/in/InputTypeNames.in') + ' ' +                      \
+    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
+)
+
 run_script('blink/make_css_property_names.py',                                  \
     os.path.normpath('blink/in/CSSProperties.in') + ' ' +                       \
     '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \

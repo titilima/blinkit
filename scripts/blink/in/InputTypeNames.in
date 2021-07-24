@@ -1,0 +1,6 @@
+namespace="InputType"
+export="CORE_EXPORT"
+
+button
+file
+radio

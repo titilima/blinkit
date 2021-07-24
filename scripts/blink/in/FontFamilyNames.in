@@ -1,4 +1,9 @@
 namespace="FontFamily"
 export="PLATFORM_EXPORT"
 
+-webkit-cursive
+-webkit-fantasy
 -webkit-monospace
+-webkit-pictograph
+-webkit-sans-serif
+-webkit-serif

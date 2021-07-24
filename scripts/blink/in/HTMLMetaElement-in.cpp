@@ -29,9 +29,9 @@
 #include "core/frame/Settings.h"
 #include "core/html/HTMLHeadElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "core/loader/FrameLoaderClient.h"
-#include "core/loader/HttpEquiv.h"
+// BKTODO: #include "core/loader/HttpEquiv.h"
 #include "platform/RuntimeEnabledFeatures.h"
 
 namespace blink {
@@ -131,7 +131,7 @@ void HTMLMetaElement::parseContentAttribute(const String& content, void* data, D
     }
     if (error && document) {
         String message = "Error parsing a meta element's content: ';' is not a valid key-value pair separator. Please use ',' instead.";
-        document->addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, WarningMessageLevel, message));
+        ASSERT(false); // BKTODO: document->addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, WarningMessageLevel, message));
     }
 }
 
@@ -372,6 +372,7 @@ static const char* viewportErrorMessageTemplate(ViewportErrorCode errorCode)
     return errors[errorCode];
 }
 
+#if 0 // BKTODO:
 static MessageLevel viewportErrorMessageLevel(ViewportErrorCode errorCode)
 {
     switch (errorCode) {
@@ -386,6 +387,7 @@ static MessageLevel viewportErrorMessageLevel(ViewportErrorCode errorCode)
     ASSERT_NOT_REACHED();
     return ErrorMessageLevel;
 }
+#endif
 
 void HTMLMetaElement::reportViewportWarning(Document* document, ViewportErrorCode errorCode, const String& replacement1, const String& replacement2)
 {
@@ -399,7 +401,7 @@ void HTMLMetaElement::reportViewportWarning(Document* document, ViewportErrorCod
         message.replace("%replacement2", replacement2);
 
     // FIXME: This message should be moved off the console once a solution to https://bugs.webkit.org/show_bug.cgi?id=103274 exists.
-    document->addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, viewportErrorMessageLevel(errorCode), message));
+    ASSERT(false); // BKTODO: document->addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, viewportErrorMessageLevel(errorCode), message));
 }
 
 void HTMLMetaElement::getViewportDescriptionFromContentAttribute(const String& content, ViewportDescription& description, Document* document, bool viewportMetaZeroValuesQuirk)
@@ -425,7 +427,7 @@ void HTMLMetaElement::processViewportContentAttribute(const String& content, Vie
     if (document().shouldMergeWithLegacyDescription(origin))
         descriptionFromLegacyTag = document().viewportDescription();
 
-    getViewportDescriptionFromContentAttribute(content, descriptionFromLegacyTag, &document(), document().settings() && document().settings()->viewportMetaZeroValuesQuirk());
+    getViewportDescriptionFromContentAttribute(content, descriptionFromLegacyTag, &document(), Settings::viewportMetaZeroValuesQuirk());
 
     document().setViewportDescription(descriptionFromLegacyTag);
 }
@@ -433,10 +435,13 @@ void HTMLMetaElement::processViewportContentAttribute(const String& content, Vie
 
 void HTMLMetaElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (name == http_equivAttr || name == contentAttr) {
         process();
         return;
     }
+#endif
 
     if (name != nameAttr)
         HTMLElement::parseAttribute(name, oldValue, value);
@@ -485,6 +490,8 @@ void HTMLMetaElement::process()
             document().frame()->loader().client()->dispatchDidChangeThemeColor();
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     // Get the document to process the tag, but only if we're actually part of DOM
     // tree (changing a meta tag while it's not in the tree shouldn't have any effect
     // on the document).
@@ -494,6 +501,7 @@ void HTMLMetaElement::process()
         return;
 
     HttpEquiv::process(document(), httpEquivValue, contentValue, inDocumentHead(this));
+#endif
 }
 
 WTF::TextEncoding HTMLMetaElement::computeEncoding() const
@@ -511,7 +519,8 @@ const AtomicString& HTMLMetaElement::content() const
 
 const AtomicString& HTMLMetaElement::httpEquiv() const
 {
-    return getAttribute(http_equivAttr);
+    ASSERT(false); // BKTODO: return getAttribute(http_equivAttr);
+    return nullAtom;
 }
 
 const AtomicString& HTMLMetaElement::name() const
