@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLOptGroupElement.cpp
+// Description: HTMLOptGroupElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -157,15 +168,15 @@ void HTMLOptGroupElement::didAddUserAgentShadowRoot(ShadowRoot& root)
     DEFINE_STATIC_LOCAL(AtomicString, labelPadding, ("0 2px 1px 2px", AtomicString::ConstructFromLiteral));
     DEFINE_STATIC_LOCAL(AtomicString, labelMinHeight, ("1.2em", AtomicString::ConstructFromLiteral));
     RefPtrWillBeRawPtr<HTMLDivElement> label = HTMLDivElement::create(document());
-    label->setAttribute(roleAttr, AtomicString("group", AtomicString::ConstructFromLiteral));
-    label->setAttribute(aria_labelAttr, AtomicString());
+    ASSERT(false); // BKTODO: label->setAttribute(roleAttr, AtomicString("group", AtomicString::ConstructFromLiteral));
+    ASSERT(false); // BKTODO: label->setAttribute(aria_labelAttr, AtomicString());
     label->setInlineStyleProperty(CSSPropertyPadding, labelPadding);
     label->setInlineStyleProperty(CSSPropertyMinHeight, labelMinHeight);
     label->setIdAttribute(ShadowElementNames::optGroupLabel());
     root.appendChild(label);
 
     RefPtrWillBeRawPtr<HTMLContentElement> content = HTMLContentElement::create(document());
-    content->setAttribute(selectAttr, "option,hr");
+    ASSERT(false); // BKTODO: content->setAttribute(selectAttr, "option,hr");
     root.appendChild(content);
 }
 
@@ -174,7 +185,7 @@ void HTMLOptGroupElement::updateGroupLabel()
     const String& labelText = groupLabelText();
     HTMLDivElement& label = optGroupLabelElement();
     label.setTextContent(labelText);
-    label.setAttribute(aria_labelAttr, AtomicString(labelText));
+    ASSERT(false); // BKTODO: label.setAttribute(aria_labelAttr, AtomicString(labelText));
 }
 
 HTMLDivElement& HTMLOptGroupElement::optGroupLabelElement() const
