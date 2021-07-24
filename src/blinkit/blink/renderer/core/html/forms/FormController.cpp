@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FormController.cpp
+// Description: FormController Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008, 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2010, 2011, 2012 Google Inc. All rights reserved.
@@ -296,7 +307,7 @@ public:
     DEFINE_INLINE_TRACE()
     {
 #if ENABLE(OILPAN)
-        visitor->trace(m_formToKeyMap);
+        ASSERT(false); // BKTODO: visitor->trace(m_formToKeyMap);
 #endif
     }
     const AtomicString& formKey(const HTMLFormControlElementWithState&);
@@ -335,6 +346,9 @@ static inline void recordFormStructure(const HTMLFormElement& form, StringBuilde
 
 static inline String formSignature(const HTMLFormElement& form)
 {
+    ASSERT(false); // BKTODO:
+    return String();
+#if 0
     KURL actionURL = form.getURLAttribute(actionAttr);
     // Remove the query part because it might contain volatile parameters such
     // as a session key.
@@ -347,6 +361,7 @@ static inline String formSignature(const HTMLFormElement& form)
 
     recordFormStructure(form, builder);
     return builder.toString();
+#endif
 }
 
 const AtomicString& FormKeyGenerator::formKey(const HTMLFormControlElementWithState& control)
@@ -358,8 +373,11 @@ const AtomicString& FormKeyGenerator::formKey(const HTMLFormControlElementWithSt
     }
     FormToKeyMap::const_iterator it = m_formToKeyMap.find(form);
     if (it != m_formToKeyMap.end())
-        return it->value;
+        return it->second;
 
+    ASSERT(false); // BKTODO:
+    return nullAtom;
+#if 0
     String signature = formSignature(*form);
     ASSERT(!signature.isNull());
     FormSignatureToNextIndexMap::AddResult result = m_formSignatureToNextIndexMap.add(signature, 0);
@@ -371,12 +389,13 @@ const AtomicString& FormKeyGenerator::formKey(const HTMLFormControlElementWithSt
     formKeyBuilder.appendNumber(nextIndex);
     FormToKeyMap::AddResult addFormKeyresult = m_formToKeyMap.add(form, formKeyBuilder.toAtomicString());
     return addFormKeyresult.storedValue->value;
+#endif
 }
 
 void FormKeyGenerator::willDeleteForm(HTMLFormElement* form)
 {
     ASSERT(form);
-    m_formToKeyMap.remove(form);
+    m_formToKeyMap.erase(form);
 }
 
 // ----------------------------------------------------------------------------
@@ -397,14 +416,20 @@ DEFINE_TRACE(DocumentState)
 
 void DocumentState::addControl(HTMLFormControlElementWithState* control)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(!m_formControls.contains(control));
     m_formControls.add(control);
+#endif
 }
 
 void DocumentState::removeControl(HTMLFormControlElementWithState* control)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     RELEASE_ASSERT(m_formControls.contains(control));
     m_formControls.remove(control);
+#endif
 }
 
 static String formStateSignature()
