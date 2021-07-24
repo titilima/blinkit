@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLScriptElement.cpp
+// Description: HTMLScriptElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -23,7 +34,6 @@
 #include "core/html/HTMLScriptElement.h"
 
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "bindings/core/v8/ScriptEventListener.h"
 #include "core/HTMLNames.h"
 #include "core/dom/Attribute.h"
 #include "core/dom/Document.h"
@@ -78,6 +88,8 @@ void HTMLScriptElement::didMoveToNewDocument(Document& oldDocument)
 
 void HTMLScriptElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (name == srcAttr) {
         m_loader->handleSourceAttribute(value);
         logUpdateAttributeIfIsolatedWorldAndInDocument("script", srcAttr, oldValue, value);
@@ -86,6 +98,7 @@ void HTMLScriptElement::parseAttribute(const QualifiedName& name, const AtomicSt
     } else {
         HTMLElement::parseAttribute(name, oldValue, value);
     }
+#endif
 }
 
 Node::InsertionNotificationRequest HTMLScriptElement::insertedInto(ContainerNode* insertionPoint)
@@ -109,13 +122,14 @@ void HTMLScriptElement::setText(const String &value)
 
 void HTMLScriptElement::setAsync(bool async)
 {
-    setBooleanAttribute(asyncAttr, async);
+    ASSERT(false); // BKTODO: setBooleanAttribute(asyncAttr, async);
     m_loader->handleAsyncAttribute();
 }
 
 bool HTMLScriptElement::async() const
 {
-    return fastHasAttribute(asyncAttr) || (m_loader->forceAsync());
+    ASSERT(false); // BKTODO: return fastHasAttribute(asyncAttr) || (m_loader->forceAsync());
+    return false;
 }
 
 KURL HTMLScriptElement::src() const
@@ -150,17 +164,20 @@ String HTMLScriptElement::forAttributeValue() const
 
 String HTMLScriptElement::eventAttributeValue() const
 {
-    return getAttribute(eventAttr).string();
+    ASSERT(false); // BKTODO: return getAttribute(eventAttr).string();
+    return String();
 }
 
 bool HTMLScriptElement::asyncAttributeValue() const
 {
-    return fastHasAttribute(asyncAttr);
+    ASSERT(false); // BKTODO: return fastHasAttribute(asyncAttr);
+    return false;
 }
 
 bool HTMLScriptElement::deferAttributeValue() const
 {
-    return fastHasAttribute(deferAttr);
+    ASSERT(false); // BKTODO: return fastHasAttribute(deferAttr);
+    return false;
 }
 
 bool HTMLScriptElement::hasSourceAttribute() const
