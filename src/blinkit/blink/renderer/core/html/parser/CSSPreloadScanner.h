@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSPreloadScanner.h
+// Description: CSSPreloadScanner Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2010 Google Inc. All Rights Reserved.
@@ -47,7 +58,7 @@ public:
     void scan(const HTMLToken::DataVector&, const SegmentedString&, PreloadRequestStream&, const KURL&);
     void scan(const String&, const SegmentedString&, PreloadRequestStream&, const KURL&);
 
-    void setReferrerPolicy(const ReferrerPolicy);
+    // BKTODO: void setReferrerPolicy(const ReferrerPolicy);
 
 private:
     enum State {
@@ -73,7 +84,7 @@ private:
     StringBuilder m_rule;
     StringBuilder m_ruleValue;
 
-    ReferrerPolicy m_referrerPolicy = ReferrerPolicyDefault;
+    // BKTODO: ReferrerPolicy m_referrerPolicy = ReferrerPolicyDefault;
 
     // Below members only non-null during scan()
     PreloadRequestStream* m_requests = nullptr;

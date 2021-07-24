@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSPreloadScanner.cpp
+// Description: CSSPreloadScanner Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2010 Apple Inc. All Rights Reserved.
  * Copyright (C) 2009 Torch Mobile, Inc. http://www.torchmobile.com/
@@ -27,7 +38,7 @@
 
 #include "core/html/parser/CSSPreloadScanner.h"
 
-#include "core/fetch/FetchInitiatorTypeNames.h"
+// BKTODO: #include "core/fetch/FetchInitiatorTypeNames.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "platform/text/SegmentedString.h"
 
@@ -77,10 +88,12 @@ void CSSPreloadScanner::scan(const String& tagName, const SegmentedString& sourc
     scanCommon(begin, begin + tagName.length(), source, requests, predictedBaseElementURL);
 }
 
+#if 0// BKTODO:
 void CSSPreloadScanner::setReferrerPolicy(const ReferrerPolicy policy)
 {
     m_referrerPolicy = policy;
 }
+#endif
 
 inline void CSSPreloadScanner::tokenize(UChar c, const SegmentedString& source)
 {
@@ -220,9 +233,12 @@ void CSSPreloadScanner::emitRule(const SegmentedString& source)
         String url = parseCSSStringOrURL(m_ruleValue.toString());
         if (!url.isEmpty()) {
             TextPosition position = TextPosition(source.currentLine(), source.currentColumn());
+            ASSERT(false); // BKTODO:
+#if 0
             OwnPtr<PreloadRequest> request = PreloadRequest::create(FetchInitiatorTypeNames::css, position, url, *m_predictedBaseElementURL, Resource::CSSStyleSheet, m_referrerPolicy);
             // FIXME: Should this be including the charset in the preload request?
             m_requests->append(request.release());
+#endif
         }
         m_state = Initial;
     } else if (equalIgnoringCase(m_rule, "charset"))
