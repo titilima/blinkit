@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTablePartElement.cpp
+// Description: HTMLTablePartElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * Copyright (C) 1997 Martin Jones (mjones@kde.org)
  *           (C) 1997 Torben Weis (weis@kde.org)
@@ -33,7 +44,7 @@
 #include "core/dom/shadow/ComposedTreeTraversal.h"
 #include "core/html/HTMLTableElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
-#include "platform/weborigin/Referrer.h"
+// BKTODO: #include "platform/weborigin/Referrer.h"
 
 namespace blink {
 
@@ -54,7 +65,7 @@ void HTMLTablePartElement::collectStyleForPresentationAttribute(const QualifiedN
         String url = stripLeadingAndTrailingHTMLSpaces(value);
         if (!url.isEmpty()) {
             RefPtrWillBeRawPtr<CSSImageValue> imageValue = CSSImageValue::create(url, document().completeURL(url));
-            imageValue->setReferrer(Referrer(document().outgoingReferrer(), document().referrerPolicy()));
+            ASSERT(false); // BKTODO: imageValue->setReferrer(Referrer(document().outgoingReferrer(), document().referrerPolicy()));
             style->setProperty(CSSProperty(CSSPropertyBackgroundImage, imageValue.release()));
         }
     } else if (name == valignAttr) {
