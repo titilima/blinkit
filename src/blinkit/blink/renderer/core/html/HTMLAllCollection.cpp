@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLAllCollection.cpp
+// Description: HTMLAllCollection Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2011, 2012 Apple Inc. All rights reserved.
  *
@@ -25,7 +36,6 @@
 
 #include "core/html/HTMLAllCollection.h"
 
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/dom/Element.h"
 #include "core/dom/StaticNodeList.h"
 
@@ -73,6 +83,8 @@ void HTMLAllCollection::namedGetter(const AtomicString& name, NodeListOrElement&
     if (!namedItems.size())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (namedItems.size() == 1) {
         returnValue.setElement(namedItems.at(0));
         return;
@@ -81,6 +93,7 @@ void HTMLAllCollection::namedGetter(const AtomicString& name, NodeListOrElement&
     // FIXME: HTML5 specification says this should be a HTMLCollection.
     // http://www.whatwg.org/specs/web-apps/current-work/multipage/common-dom-interfaces.html#htmlallcollection
     returnValue.setNodeList(StaticElementList::adopt(namedItems));
+#endif
 }
 
 } // namespace blink
