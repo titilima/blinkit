@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLCollection.h
+// Description: HTMLCollection Class
+//      Author: Ziming Li
+//     Created: 2021-07-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -78,8 +89,18 @@ protected:
             return adoptPtrWillBeNoop(new NamedItemCache);
         }
 
-        WillBeHeapVector<RawPtrWillBeMember<Element>>* getElementsById(const AtomicString& id) const { return m_idCache.get(id.impl()); }
-        WillBeHeapVector<RawPtrWillBeMember<Element>>* getElementsByName(const AtomicString& name) const { return m_nameCache.get(name.impl()); }
+        WillBeHeapVector<RawPtrWillBeMember<Element>>* getElementsById(const AtomicString& id) const
+        {
+            if (auto v = zed::find_value(m_idCache, id.impl()))
+                return v->get();
+            return nullptr;
+        }
+        WillBeHeapVector<RawPtrWillBeMember<Element>>* getElementsByName(const AtomicString& name) const
+        {
+            if (auto v = zed::find_value(m_nameCache, name.impl()))
+                return v->get();
+            return nullptr;
+        }
         void addElementWithId(const AtomicString& id, Element* element) { addElementToMap(m_idCache, id, element); }
         void addElementWithName(const AtomicString& name, Element* element) { addElementToMap(m_nameCache, name, element); }
 
@@ -96,7 +117,7 @@ protected:
         typedef WillBeHeapHashMap<StringImpl*, OwnPtrWillBeMember<WillBeHeapVector<RawPtrWillBeMember<Element>>>> StringToElementsMap;
         static void addElementToMap(StringToElementsMap& map, const AtomicString& key, Element* element)
         {
-            OwnPtrWillBeMember<WillBeHeapVector<RawPtrWillBeMember<Element>>>& vector = map.add(key.impl(), nullptr).storedValue->value;
+            OwnPtrWillBeMember<WillBeHeapVector<RawPtrWillBeMember<Element>>>& vector = map[key.impl()];
             if (!vector)
                 vector = adoptPtrWillBeNoop(new WillBeHeapVector<RawPtrWillBeMember<Element>>);
             vector->append(element);
