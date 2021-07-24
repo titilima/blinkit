@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Location.cpp
+// Description: Location Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2010 Apple Inc. All rights reserved.
  *
@@ -29,7 +40,6 @@
 #include "core/frame/Location.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/V8DOMActivityLogger.h"
 #include "core/dom/DOMURLUtilsReadOnly.h"
 #include "core/dom/Document.h"
 #include "core/dom/ExceptionCode.h"
@@ -37,7 +47,7 @@
 #include "core/frame/LocalFrame.h"
 #include "core/loader/FrameLoader.h"
 #include "platform/weborigin/KURL.h"
-#include "platform/weborigin/SecurityOrigin.h"
+// BKTODO: #include "platform/weborigin/SecurityOrigin.h"
 
 namespace blink {
 
@@ -55,7 +65,7 @@ inline const KURL& Location::url() const
 {
     const KURL& url = toLocalFrame(m_frame)->document()->url();
     if (!url.isValid())
-        return blankURL(); // Use "about:blank" while the page is still loading (before we have a frame).
+        ASSERT(false); // BKTODO: return blankURL(); // Use "about:blank" while the page is still loading (before we have a frame).
 
     return url;
 }
@@ -65,7 +75,8 @@ String Location::href() const
     if (!m_frame)
         return String();
 
-    return url().strippedForUseAsHref();
+    ASSERT(false); // BKTODO: return url().strippedForUseAsHref();
+    return String();
 }
 
 String Location::protocol() const
@@ -122,8 +133,11 @@ PassRefPtrWillBeRawPtr<DOMStringList> Location::ancestorOrigins() const
     RefPtrWillBeRawPtr<DOMStringList> origins = DOMStringList::create(DOMStringList::Location);
     if (!m_frame)
         return origins.release();
+    ASSERT(false); // BKTODO:
+#if 0
     for (Frame* frame = m_frame->tree().parent(); frame; frame = frame->tree().parent())
         origins->append(frame->securityContext()->securityOrigin()->toString());
+#endif
     return origins.release();
 }
 
@@ -147,10 +161,13 @@ void Location::setProtocol(LocalDOMWindow* callingWindow, LocalDOMWindow* entere
     if (!m_frame)
         return;
     KURL url = toLocalFrame(m_frame)->document()->url();
+    ASSERT(false); // BKTODO:
+#if 0
     if (!url.setProtocol(protocol)) {
         exceptionState.throwDOMException(SyntaxError, "'" + protocol + "' is an invalid protocol.");
         return;
     }
+#endif
     setLocation(url.string(), callingWindow, enteredWindow);
 }
 
@@ -159,7 +176,7 @@ void Location::setHost(LocalDOMWindow* callingWindow, LocalDOMWindow* enteredWin
     if (!m_frame)
         return;
     KURL url = toLocalFrame(m_frame)->document()->url();
-    url.setHostAndPort(host);
+    ASSERT(false); // BKTODO: url.setHostAndPort(host);
     setLocation(url.string(), callingWindow, enteredWindow);
 }
 
@@ -168,7 +185,7 @@ void Location::setHostname(LocalDOMWindow* callingWindow, LocalDOMWindow* entere
     if (!m_frame)
         return;
     KURL url = toLocalFrame(m_frame)->document()->url();
-    url.setHost(hostname);
+    ASSERT(false); // BKTODO: url.setHost(hostname);
     setLocation(url.string(), callingWindow, enteredWindow);
 }
 
@@ -177,7 +194,7 @@ void Location::setPort(LocalDOMWindow* callingWindow, LocalDOMWindow* enteredWin
     if (!m_frame)
         return;
     KURL url = toLocalFrame(m_frame)->document()->url();
-    url.setPort(portString);
+    ASSERT(false); // BKTODO: url.setPort(portString);
     setLocation(url.string(), callingWindow, enteredWindow);
 }
 
@@ -186,7 +203,7 @@ void Location::setPathname(LocalDOMWindow* callingWindow, LocalDOMWindow* entere
     if (!m_frame)
         return;
     KURL url = toLocalFrame(m_frame)->document()->url();
-    url.setPath(pathname);
+    ASSERT(false); // BKTODO: url.setPath(pathname);
     setLocation(url.string(), callingWindow, enteredWindow);
 }
 
@@ -195,7 +212,7 @@ void Location::setSearch(LocalDOMWindow* callingWindow, LocalDOMWindow* enteredW
     if (!m_frame)
         return;
     KURL url = toLocalFrame(m_frame)->document()->url();
-    url.setQuery(search);
+    ASSERT(false); // BKTODO: url.setQuery(search);
     setLocation(url.string(), callingWindow, enteredWindow);
 }
 
@@ -204,6 +221,8 @@ void Location::setHash(LocalDOMWindow* callingWindow, LocalDOMWindow* enteredWin
     if (!m_frame)
         return;
     KURL url = toLocalFrame(m_frame)->document()->url();
+    ASSERT(false); // BKTODO:
+#if 0
     String oldFragmentIdentifier = url.fragmentIdentifier();
     String newFragmentIdentifier = hash;
     if (hash[0] == '#')
@@ -214,6 +233,7 @@ void Location::setHash(LocalDOMWindow* callingWindow, LocalDOMWindow* enteredWin
     // cases where fragment identifiers are ignored or invalid.
     if (equalIgnoringNullity(oldFragmentIdentifier, url.fragmentIdentifier()))
         return;
+#endif
     setLocation(url.string(), callingWindow, enteredWindow);
 }
 
@@ -235,9 +255,12 @@ void Location::reload(LocalDOMWindow* callingWindow)
 {
     if (!m_frame)
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     if (protocolIsJavaScript(toLocalFrame(m_frame)->document()->url()))
         return;
     m_frame->reload(FrameLoadTypeReload, ClientRedirect);
+#endif
 }
 
 void Location::setLocation(const String& url, LocalDOMWindow* callingWindow, LocalDOMWindow* enteredWindow, SetLocation locationPolicy)
@@ -254,12 +277,15 @@ void Location::setLocation(const String& url, LocalDOMWindow* callingWindow, Loc
         return;
 
     KURL completedURL = enteredDocument->completeURL(url);
+    ASSERT(false); // BKTODO:
+#if 0
     if (completedURL.isNull())
         return;
 
     if (m_frame->domWindow()->isInsecureScriptAccess(*callingWindow, completedURL))
         return;
 
+#if 0 // BKTODO:
     V8DOMActivityLogger* activityLogger = V8DOMActivityLogger::currentActivityLoggerIfIsolatedWorld();
     if (activityLogger) {
         Vector<String> argv;
@@ -269,7 +295,9 @@ void Location::setLocation(const String& url, LocalDOMWindow* callingWindow, Loc
         argv.append(completedURL);
         activityLogger->logEvent("blinkSetAttribute", argv.size(), argv.data());
     }
+#endif
     m_frame->navigate(*callingWindow->document(), completedURL, locationPolicy == SetLocation::ReplaceThisFrame, UserGestureStatus::None);
+#endif
 }
 
 } // namespace blink
