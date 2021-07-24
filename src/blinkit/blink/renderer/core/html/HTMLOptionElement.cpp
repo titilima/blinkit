@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLOptionElement.cpp
+// Description: HTMLOptionElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -28,7 +39,7 @@
 
 #include "bindings/core/v8/ExceptionState.h"
 #include "core/HTMLNames.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/Document.h"
 #include "core/dom/NodeComputedStyle.h"
 #include "core/dom/NodeTraversal.h"
@@ -291,6 +302,7 @@ void HTMLOptionElement::setSelectedState(bool selected)
     if (HTMLSelectElement* select = ownerSelectElement()) {
         select->invalidateSelectedItems();
 
+#if 0 // BKTODO:
         if (AXObjectCache* cache = document().existingAXObjectCache()) {
             // If there is a layoutObject (most common), fire accessibility notifications
             // only when it's a listbox (and not a menu list). If there's no layoutObject,
@@ -300,6 +312,7 @@ void HTMLOptionElement::setSelectedState(bool selected)
                 cache->listboxSelectedChildrenChanged(select);
             }
         }
+#endif
     }
 }
 
