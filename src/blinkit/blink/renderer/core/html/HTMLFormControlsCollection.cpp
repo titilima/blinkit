@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLFormControlsCollection.cpp
+// Description: HTMLFormControlsCollection Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -23,7 +34,6 @@
 
 #include "core/html/HTMLFormControlsCollection.h"
 
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/HTMLNames.h"
 #include "core/frame/UseCounter.h"
 #include "core/html/HTMLFieldSetElement.h"
@@ -194,6 +204,8 @@ void HTMLFormControlsCollection::updateIdNameCache() const
 
 void HTMLFormControlsCollection::namedGetter(const AtomicString& name, RadioNodeListOrElement& returnValue)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     WillBeHeapVector<RefPtrWillBeMember<Element>> namedItems;
     this->namedItems(name, namedItems);
 
@@ -210,6 +222,7 @@ void HTMLFormControlsCollection::namedGetter(const AtomicString& name, RadioNode
     // This path never returns a RadioNodeList for <img> because
     // onlyMatchingImgElements flag is false by default.
     returnValue.setRadioNodeList(ownerNode().radioNodeList(name));
+#endif
 }
 
 void HTMLFormControlsCollection::supportedPropertyNames(Vector<String>& names)
