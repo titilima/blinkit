@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLHtmlElement.cpp
+// Description: HTMLHtmlElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -29,7 +40,7 @@
 #include "core/frame/LocalFrame.h"
 #include "core/loader/DocumentLoader.h"
 #include "core/loader/FrameLoader.h"
-#include "core/loader/appcache/ApplicationCacheHost.h"
+// BKTODO: #include "core/loader/appcache/ApplicationCacheHost.h"
 
 namespace blink {
 
@@ -44,7 +55,8 @@ DEFINE_NODE_FACTORY(HTMLHtmlElement)
 
 bool HTMLHtmlElement::isURLAttribute(const Attribute& attribute) const
 {
-    return attribute.name() == manifestAttr || HTMLElement::isURLAttribute(attribute);
+    ASSERT(false); // BKTODO: return attribute.name() == manifestAttr || HTMLElement::isURLAttribute(attribute);
+    return HTMLElement::isURLAttribute(attribute);
 }
 
 void HTMLHtmlElement::insertedByParser()
@@ -60,11 +72,14 @@ void HTMLHtmlElement::insertedByParser()
     if (!documentLoader)
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     const AtomicString& manifest = fastGetAttribute(manifestAttr);
     if (manifest.isEmpty())
         documentLoader->applicationCacheHost()->selectCacheWithoutManifest();
     else
         documentLoader->applicationCacheHost()->selectCacheWithManifest(document().completeURL(manifest));
+#endif
 }
 
 }
