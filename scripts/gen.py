@@ -25,6 +25,11 @@ run_script('blink/make_element_factory.py',                     \
     '--output_dir ' + os.path.normpath('../src/blinkit/ui')     \
 )
 
+run_script('blink/make_element_lookup_trie.py',             \
+    os.path.normpath('blink/in/HTMLTagNames.in') + ' ' +    \
+    '--output_dir ' + os.path.normpath('../src/blinkit/ui') \
+)
+
 run_script('blink/make_element_type_helpers.py',            \
     os.path.normpath('blink/in/HTMLTagNames.in') + ' ' +    \
     '--output_dir ' + os.path.normpath('../src/blinkit/ui') \
