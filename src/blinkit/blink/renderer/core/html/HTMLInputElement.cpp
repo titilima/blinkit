@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLInputElement.cpp
+// Description: HTMLInputElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -28,25 +39,23 @@
 
 #include "core/html/HTMLInputElement.h"
 
-#include "bindings/core/v8/ExceptionMessages.h"
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/ScriptEventListener.h"
 #include "core/CSSPropertyNames.h"
 #include "core/HTMLNames.h"
 #include "core/InputTypeNames.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/Document.h"
 #include "core/dom/ExecutionContextTask.h"
 #include "core/dom/IdTargetObserver.h"
 #include "core/dom/shadow/InsertionPoint.h"
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/editing/FrameSelection.h"
-#include "core/editing/spellcheck/SpellChecker.h"
-#include "core/events/BeforeTextInsertedEvent.h"
+// BKTODO: #include "core/editing/spellcheck/SpellChecker.h"
+// BKTODO: #include "core/events/BeforeTextInsertedEvent.h"
 #include "core/events/KeyboardEvent.h"
 #include "core/events/MouseEvent.h"
 #include "core/events/ScopedEventQueue.h"
-#include "core/events/TouchEvent.h"
+// BKTODO: #include "core/events/TouchEvent.h"
 #include "core/frame/EventHandlerRegistry.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
@@ -368,7 +377,7 @@ void HTMLInputElement::beginEditing()
     if (!isTextField())
         return;
 
-    document().frame()->spellChecker().didBeginEditing(this);
+    // BKTODO: document().frame()->spellChecker().didBeginEditing(this);
 }
 
 void HTMLInputElement::endEditing()
@@ -381,7 +390,7 @@ void HTMLInputElement::endEditing()
         return;
 
     LocalFrame* frame = document().frame();
-    frame->spellChecker().didEndEditingOnTextField(this);
+    // BKTODO: frame->spellChecker().didEndEditingOnTextField(this);
     frame->host()->chromeClient().didEndEditingOnTextField(*this);
 }
 
@@ -636,14 +645,19 @@ void HTMLInputElement::accessKeyAction(bool sendMouseEvents)
 
 bool HTMLInputElement::isPresentationAttribute(const QualifiedName& name) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: Remove type check.
     if (name == vspaceAttr || name == hspaceAttr || name == alignAttr || name == widthAttr || name == heightAttr || (name == borderAttr && type() == InputTypeNames::image))
         return true;
+#endif
     return HTMLTextFormControlElement::isPresentationAttribute(name);
 }
 
 void HTMLInputElement::collectStyleForPresentationAttribute(const QualifiedName& name, const AtomicString& value, MutableStylePropertySet* style)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (name == vspaceAttr) {
         addHTMLLengthToStyle(style, CSSPropertyMarginTop, value);
         addHTMLLengthToStyle(style, CSSPropertyMarginBottom, value);
@@ -664,6 +678,7 @@ void HTMLInputElement::collectStyleForPresentationAttribute(const QualifiedName&
     } else {
         HTMLTextFormControlElement::collectStyleForPresentationAttribute(name, value, style);
     }
+#endif
 }
 
 void HTMLInputElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
@@ -671,6 +686,8 @@ void HTMLInputElement::parseAttribute(const QualifiedName& name, const AtomicStr
     ASSERT(m_inputType);
     ASSERT(m_inputTypeView);
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (name == nameAttr) {
         removeFromRadioButtonGroup();
         m_name = value;
@@ -780,6 +797,7 @@ void HTMLInputElement::parseAttribute(const QualifiedName& name, const AtomicStr
         HTMLTextFormControlElement::parseAttribute(name, oldValue, value);
     }
     m_inputTypeView->attributeChanged();
+#endif
 }
 
 void HTMLInputElement::parserDidSetAttributes()
@@ -916,6 +934,7 @@ void HTMLInputElement::setChecked(bool nowChecked, TextFieldEventBehavior eventB
 
     setNeedsValidityCheck();
 
+#if 0 // BKTODO:
     // Ideally we'd do this from the layout tree (matching
     // LayoutTextView), but it's not possible to do it at the moment
     // because of the way the code is structured.
@@ -923,6 +942,7 @@ void HTMLInputElement::setChecked(bool nowChecked, TextFieldEventBehavior eventB
         if (AXObjectCache* cache = layoutObject()->document().existingAXObjectCache())
             cache->checkedStateChanged(this);
     }
+#endif
 
     // Only send a change event for items in the document (avoid firing during
     // parsing) and don't send a change event for a radio button that's getting
@@ -1121,7 +1141,7 @@ void HTMLInputElement::setValueAsNumber(double newValue, ExceptionState& excepti
     // http://www.whatwg.org/specs/web-apps/current-work/multipage/common-input-element-attributes.html#dom-input-valueasnumber
     // On setting, if the new value is infinite, then throw a TypeError exception.
     if (std::isinf(newValue)) {
-        exceptionState.throwTypeError(ExceptionMessages::notAFiniteNumber(newValue));
+        ASSERT(false); // BKTODO: exceptionState.throwTypeError(ExceptionMessages::notAFiniteNumber(newValue));
         return;
     }
     m_inputType->setValueAsDouble(newValue, eventBehavior, exceptionState);
@@ -1188,7 +1208,7 @@ void HTMLInputElement::defaultEventHandler(Event* evt)
     }
 
     if (evt->isTouchEvent() && m_inputTypeView->hasTouchEventHandler()) {
-        m_inputTypeView->handleTouchEvent(toTouchEvent(evt));
+        ASSERT(false); // BKTODO: m_inputTypeView->handleTouchEvent(toTouchEvent(evt));
         if (evt->defaultHandled())
             return;
     }
@@ -1234,8 +1254,11 @@ void HTMLInputElement::defaultEventHandler(Event* evt)
 
     if (m_inputTypeView->shouldSubmitImplicitly(evt)) {
         // FIXME: Remove type check.
+        ASSERT(false); // BKTODO:
+#if 0
         if (type() == InputTypeNames::search)
             document().postTask(BLINK_FROM_HERE, createSameThreadTask(&HTMLInputElement::onSearch, PassRefPtrWillBeRawPtr<HTMLInputElement>(this)));
+#endif
         // Form submission finishes editing, just as loss of focus does.
         // If there was a change, send the event now.
         if (wasChangedSinceLastFormControlChangeEvent())
@@ -1251,7 +1274,7 @@ void HTMLInputElement::defaultEventHandler(Event* evt)
     }
 
     if (evt->isBeforeTextInsertedEvent())
-        m_inputTypeView->handleBeforeTextInsertedEvent(static_cast<BeforeTextInsertedEvent*>(evt));
+        ASSERT(false); // BKTODO: m_inputTypeView->handleBeforeTextInsertedEvent(static_cast<BeforeTextInsertedEvent*>(evt));
 
     if (evt->isMouseEvent() && evt->type() == EventTypeNames::mousedown) {
         m_inputTypeView->handleMouseDownEvent(toMouseEvent(evt));
@@ -1368,7 +1391,7 @@ void HTMLInputElement::setMaxLength(int maxLength, ExceptionState& exceptionStat
     if (maxLength < 0)
         exceptionState.throwDOMException(IndexSizeError, "The value provided (" + String::number(maxLength) + ") is negative.");
     else if (maxLength < m_minLength)
-        exceptionState.throwDOMException(IndexSizeError, ExceptionMessages::indexExceedsMinimumBound("maxLength", maxLength, m_minLength));
+        ASSERT(false); // BKTODO: exceptionState.throwDOMException(IndexSizeError, ExceptionMessages::indexExceedsMinimumBound("maxLength", maxLength, m_minLength));
     else
         setIntegralAttribute(maxlengthAttr, maxLength);
 }
@@ -1378,7 +1401,7 @@ void HTMLInputElement::setMinLength(int minLength, ExceptionState& exceptionStat
     if (minLength < 0)
         exceptionState.throwDOMException(IndexSizeError, "The value provided (" + String::number(minLength) + ") is negative.");
     else if (minLength > m_maxLength)
-        exceptionState.throwDOMException(IndexSizeError, ExceptionMessages::indexExceedsMaximumBound("minLength", minLength, m_maxLength));
+        ASSERT(false); // BKTODO: exceptionState.throwDOMException(IndexSizeError, ExceptionMessages::indexExceedsMaximumBound("minLength", minLength, m_maxLength));
     else
         setIntegralAttribute(minlengthAttr, minLength);
 }
