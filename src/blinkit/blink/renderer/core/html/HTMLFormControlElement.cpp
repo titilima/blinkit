@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLFormControlElement.cpp
+// Description: HTMLFormControlElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -34,7 +45,7 @@
 #include "core/html/HTMLLegendElement.h"
 #include "core/html/ValidityState.h"
 #include "core/html/parser/HTMLParserIdioms.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "core/layout/LayoutBox.h"
 #include "core/layout/LayoutTheme.h"
 #include "core/page/Page.h"
@@ -86,8 +97,8 @@ String HTMLFormControlElement::formAction() const
 {
     const AtomicString& action = fastGetAttribute(formactionAttr);
     if (action.isEmpty())
-        return document().url();
-    return document().completeURL(stripLeadingAndTrailingHTMLSpaces(action));
+        return document().url().string();
+    return document().completeURL(stripLeadingAndTrailingHTMLSpaces(action)).string();
 }
 
 void HTMLFormControlElement::setFormAction(const AtomicString& value)
@@ -235,11 +246,14 @@ static bool shouldAutofocusOnAttach(const HTMLFormControlElement* element)
 {
     if (!element->isAutofocusable())
         return false;
+    ASSERT(false); // BKTODO:
+#if 0
     if (element->document().isSandboxed(SandboxAutomaticFeatures)) {
         // FIXME: This message should be moved off the console once a solution to https://bugs.webkit.org/show_bug.cgi?id=103274 exists.
         element->document().addConsoleMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, "Blocked autofocusing on a form control because the form's frame is sandboxed and the 'allow-scripts' permission is not set."));
         return false;
     }
+#endif
 
     return true;
 }
@@ -572,7 +586,7 @@ bool HTMLFormControlElement::reportValidity()
     if (document().frame()) {
         String message("An invalid form control with name='%name' is not focusable.");
         message.replace("%name", name());
-        document().addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, ErrorMessageLevel, message));
+        ASSERT(false); // BKTODO: document().addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, ErrorMessageLevel, message));
     }
     return false;
 }
