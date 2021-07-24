@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLImportLoader.h
+// Description: HTMLImportLoader Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -93,7 +104,7 @@ public:
     // Called by Document::didRemoveAllPendingStylesheet.
     void didRemoveAllPendingStylesheet();
 
-    PassRefPtrWillBeRawPtr<CustomElementSyncMicrotaskQueue> microtaskQueue() const;
+    // BKTODO: PassRefPtrWillBeRawPtr<CustomElementSyncMicrotaskQueue> microtaskQueue() const;
 
     DECLARE_VIRTUAL_TRACE();
 
@@ -101,7 +112,7 @@ private:
     HTMLImportLoader(HTMLImportsController*);
 
     // RawResourceClient
-    void responseReceived(Resource*, const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) override;
+    // BKTODO: void responseReceived(Resource*, const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) override;
     void dataReceived(Resource*, const char* data, size_t length) override;
     void notifyFinished(Resource*) override;
     String debugName() const override { return "HTMLImportLoader"; }
@@ -128,7 +139,7 @@ private:
     State m_state;
     RefPtrWillBeMember<Document> m_document;
     RefPtrWillBeMember<DocumentWriter> m_writer;
-    RefPtrWillBeMember<CustomElementSyncMicrotaskQueue> m_microtaskQueue;
+    // BKTODO: RefPtrWillBeMember<CustomElementSyncMicrotaskQueue> m_microtaskQueue;
 };
 
 } // namespace blink

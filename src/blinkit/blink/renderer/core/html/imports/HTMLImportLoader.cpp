@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLImportLoader.cpp
+// Description: HTMLImportLoader Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -33,12 +44,12 @@
 #include "core/dom/Document.h"
 #include "core/dom/DocumentParser.h"
 #include "core/dom/StyleEngine.h"
-#include "core/dom/custom/CustomElementSyncMicrotaskQueue.h"
+// BKTODO: #include "core/dom/custom/CustomElementSyncMicrotaskQueue.h"
 #include "core/html/HTMLDocument.h"
 #include "core/html/imports/HTMLImportChild.h"
 #include "core/html/imports/HTMLImportsController.h"
 #include "core/loader/DocumentWriter.h"
-#include "platform/network/ContentSecurityPolicyResponseHeaders.h"
+// BKTODO: #include "platform/network/ContentSecurityPolicyResponseHeaders.h"
 
 
 namespace blink {
@@ -46,7 +57,7 @@ namespace blink {
 HTMLImportLoader::HTMLImportLoader(HTMLImportsController* controller)
     : m_controller(controller)
     , m_state(StateLoading)
-    , m_microtaskQueue(CustomElementSyncMicrotaskQueue::create())
+    // BKTODO: , m_microtaskQueue(CustomElementSyncMicrotaskQueue::create())
 {
 }
 
@@ -73,6 +84,7 @@ void HTMLImportLoader::startLoading(const ResourcePtr<RawResource>& resource)
     setResource(resource);
 }
 
+#if 0 // BKTODO:
 void HTMLImportLoader::responseReceived(Resource* resource, const ResourceResponse& response, PassOwnPtr<WebDataConsumerHandle> handle)
 {
     ASSERT_UNUSED(handle, !handle);
@@ -84,6 +96,7 @@ void HTMLImportLoader::responseReceived(Resource* resource, const ResourceRespon
     }
     setState(startWritingAndParsing(response));
 }
+#endif
 
 void HTMLImportLoader::dataReceived(Resource*, const char* data, size_t length)
 {
@@ -106,10 +119,13 @@ void HTMLImportLoader::notifyFinished(Resource* resource)
 HTMLImportLoader::State HTMLImportLoader::startWritingAndParsing(const ResourceResponse& response)
 {
     ASSERT(!m_imports.isEmpty());
+    ASSERT(false); // BKTODO:
+#if 0
     DocumentInit init = DocumentInit(response.url(), 0, m_controller->master()->contextDocument(), m_controller)
         .withRegistrationContext(m_controller->master()->registrationContext());
     m_document = HTMLDocument::create(init);
     m_writer = DocumentWriter::create(m_document.get(), AllowAsynchronousParsing, response.mimeType(), "UTF-8");
+#endif
 
     DocumentParser* parser = m_document->parser();
     ASSERT(parser);
@@ -186,26 +202,35 @@ void HTMLImportLoader::didFinishLoading()
 
 void HTMLImportLoader::moveToFirst(HTMLImportChild* import)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     size_t position = m_imports.find(import);
     ASSERT(kNotFound != position);
     m_imports.remove(position);
     m_imports.insert(0, import);
+#endif
 }
 
 void HTMLImportLoader::addImport(HTMLImportChild* import)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(kNotFound == m_imports.find(import));
 
     m_imports.append(import);
     import->normalize();
     if (isDone())
         import->didFinishLoading();
+#endif
 }
 
 void HTMLImportLoader::removeImport(HTMLImportChild* client)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(kNotFound != m_imports.find(client));
     m_imports.remove(m_imports.find(client));
+#endif
 }
 
 bool HTMLImportLoader::shouldBlockScriptExecution() const
@@ -213,10 +238,12 @@ bool HTMLImportLoader::shouldBlockScriptExecution() const
     return firstImport()->state().shouldBlockScriptExecution();
 }
 
+#if 0 // BKTODO:
 PassRefPtrWillBeRawPtr<CustomElementSyncMicrotaskQueue> HTMLImportLoader::microtaskQueue() const
 {
     return m_microtaskQueue;
 }
+#endif
 
 DEFINE_TRACE(HTMLImportLoader)
 {
@@ -226,7 +253,7 @@ DEFINE_TRACE(HTMLImportLoader)
 #endif
     visitor->trace(m_document);
     visitor->trace(m_writer);
-    visitor->trace(m_microtaskQueue);
+    ASSERT(false); // BKTODO: visitor->trace(m_microtaskQueue);
     DocumentParserClient::trace(visitor);
 }
 
