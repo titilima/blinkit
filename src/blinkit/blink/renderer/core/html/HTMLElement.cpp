@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLElement.cpp
+// Description: HTMLElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,7 +36,6 @@
 #include "core/html/HTMLElement.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/ScriptEventListener.h"
 #include "core/CSSPropertyNames.h"
 #include "core/CSSValueKeywords.h"
 #include "core/HTMLNames.h"
@@ -99,6 +109,8 @@ String HTMLElement::nodeName() const
 
 bool HTMLElement::ieForbidsInsertHTML() const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: Supposedly IE disallows settting innerHTML, outerHTML
     // and createContextualFragment on these tags.  We have no tests to
     // verify this however, so this list could be totally wrong.
@@ -124,6 +136,7 @@ bool HTMLElement::ieForbidsInsertHTML() const
         || hasTagName(sourceTag)
         || hasTagName(wbrTag))
         return true;
+#endif
     return false;
 }
 
@@ -186,8 +199,11 @@ void HTMLElement::mapLanguageAttributeToLocale(const AtomicString& value, Mutabl
 
 bool HTMLElement::isPresentationAttribute(const QualifiedName& name) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (name == alignAttr || name == contenteditableAttr || name == hiddenAttr || name == langAttr || name.matches(XMLNames::langAttr) || name == draggableAttr || name == dirAttr)
         return true;
+#endif
     return Element::isPresentationAttribute(name);
 }
 
@@ -198,6 +214,8 @@ static inline bool isValidDirAttribute(const AtomicString& value)
 
 void HTMLElement::collectStyleForPresentationAttribute(const QualifiedName& name, const AtomicString& value, MutableStylePropertySet* style)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (name == alignAttr) {
         if (equalIgnoringCase(value, "middle"))
             addPropertyToPresentationAttributeStyle(style, CSSPropertyTextAlign, CSSValueCenter);
@@ -244,6 +262,7 @@ void HTMLElement::collectStyleForPresentationAttribute(const QualifiedName& name
     } else {
         Element::collectStyleForPresentationAttribute(name, value, style);
     }
+#endif
 }
 
 const AtomicString& HTMLElement::eventNameForAttributeName(const QualifiedName& attrName)
@@ -254,6 +273,9 @@ const AtomicString& HTMLElement::eventNameForAttributeName(const QualifiedName& 
     if (!attrName.localName().startsWith("on", TextCaseInsensitive))
         return nullAtom;
 
+    ASSERT(false); // BKTODO:
+    return nullAtom;
+#if 0
     typedef HashMap<AtomicString, AtomicString> StringToStringMap;
     DEFINE_STATIC_LOCAL(StringToStringMap, attributeNameToEventNameMap, ());
     if (!attributeNameToEventNameMap.size()) {
@@ -354,10 +376,13 @@ const AtomicString& HTMLElement::eventNameForAttributeName(const QualifiedName& 
     }
 
     return attributeNameToEventNameMap.get(attrName.localName());
+#endif
 }
 
 void HTMLElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (name == tabindexAttr || name == XMLNames::langAttr)
         return Element::parseAttribute(name, oldValue, value);
 
@@ -370,6 +395,7 @@ void HTMLElement::parseAttribute(const QualifiedName& name, const AtomicString& 
         if (!eventName.isNull())
             setAttributeEventListener(eventName, createAttributeEventListener(this, name, value, eventParameterName()));
     }
+#endif
 }
 
 PassRefPtrWillBeRawPtr<DocumentFragment> HTMLElement::textToFragment(const String& text, ExceptionState& exceptionState)
@@ -409,7 +435,7 @@ static inline bool shouldProhibitSetInnerOuterText(const HTMLElement& element)
 {
     return element.hasTagName(colTag)
         || element.hasTagName(colgroupTag)
-        || element.hasTagName(framesetTag)
+        // BKTODO: || element.hasTagName(framesetTag)
         || element.hasTagName(headTag)
         || element.hasTagName(htmlTag)
         || element.hasTagName(tableTag)
@@ -595,7 +621,7 @@ bool HTMLElement::spellcheck() const
 
 void HTMLElement::setSpellcheck(bool enable)
 {
-    setAttribute(spellcheckAttr, enable ? "true" : "false");
+    ASSERT(false); // BKTODO: setAttribute(spellcheckAttr, enable ? "true" : "false");
 }
 
 void HTMLElement::clickForBindings()
@@ -622,6 +648,9 @@ short HTMLElement::tabIndex() const
 
 TranslateAttributeMode HTMLElement::translateAttributeMode() const
 {
+    ASSERT(false); // BKTODO:
+    return TranslateAttributeNo;
+#if 0
     const AtomicString& value = getAttribute(translateAttr);
 
     if (value == nullAtom)
@@ -632,6 +661,7 @@ TranslateAttributeMode HTMLElement::translateAttributeMode() const
         return TranslateAttributeNo;
 
     return TranslateAttributeInherit;
+#endif
 }
 
 bool HTMLElement::translate() const
@@ -650,7 +680,7 @@ bool HTMLElement::translate() const
 
 void HTMLElement::setTranslate(bool enable)
 {
-    setAttribute(translateAttr, enable ? "yes" : "no");
+    ASSERT(false); // BKTODO: setAttribute(translateAttr, enable ? "yes" : "no");
 }
 
 // Returns the conforming 'dir' value associated with the state the attribute is in (in its canonical case), if any,
@@ -689,7 +719,8 @@ HTMLFormElement* HTMLElement::findFormAncestor() const
 
 static inline bool elementAffectsDirectionality(const Node* node)
 {
-    return node->isHTMLElement() && (isHTMLBDIElement(toHTMLElement(*node)) || toHTMLElement(*node).hasAttribute(dirAttr));
+    ASSERT(false); // BKTODO: return node->isHTMLElement() && (isHTMLBDIElement(toHTMLElement(*node)) || toHTMLElement(*node).hasAttribute(dirAttr));
+    return false;
 }
 
 void HTMLElement::childrenChanged(const ChildrenChange& change)
@@ -703,7 +734,8 @@ bool HTMLElement::hasDirectionAuto() const
     // <bdi> defaults to dir="auto"
     // https://html.spec.whatwg.org/multipage/semantics.html#the-bdi-element
     const AtomicString& direction = fastGetAttribute(dirAttr);
-    return (isHTMLBDIElement(*this) && direction == nullAtom) || equalIgnoringCase(direction, "auto");
+    ASSERT(false); // BKTODO: return (isHTMLBDIElement(*this) && direction == nullAtom) || equalIgnoringCase(direction, "auto");
+    return false;
 }
 
 TextDirection HTMLElement::directionalityIfhasDirAutoAttribute(bool& isAuto) const
