@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LocalDOMWindow.h
+// Description: LocalDOMWindow Class
+//      Author: Ziming Li
+//     Created: 2021-07-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies)
@@ -28,7 +39,7 @@
 #define LocalDOMWindow_h
 
 #include "core/CoreExport.h"
-#include "core/dom/MessagePort.h"
+// BKTODO: #include "core/dom/MessagePort.h"
 #include "core/events/EventTarget.h"
 #include "core/frame/DOMWindow.h"
 #include "core/frame/DOMWindowLifecycleNotifier.h"
@@ -89,7 +100,7 @@ public:
     bool isLocalDOMWindow() const override { return true; }
     LocalFrame* frame() const override;
     Screen* screen() const override;
-    History* history() const override;
+    // BKTODO: History* history() const override;
     BarProp* locationbar() const override;
     BarProp* menubar() const override;
     BarProp* personalbar() const override;
@@ -115,12 +126,12 @@ public:
     Document* document() const override;
     StyleMedia* styleMedia() const override;
     double devicePixelRatio() const override;
-    ApplicationCache* applicationCache() const override;
+    // BKTODO: ApplicationCache* applicationCache() const override;
     int orientation() const override;
     Console* console() const override;
     DOMSelection* getSelection() override;
     void blur() override;
-    void print() override;
+    // BKTODO: void print() override;
     void stop() override;
     void alert(const String& message = String()) override;
     bool confirm(const String& message) override;
@@ -193,10 +204,10 @@ public:
     void enqueueDocumentEvent(PassRefPtrWillBeRawPtr<Event>);
     void enqueuePageshowEvent(PageshowEventPersistence);
     void enqueueHashchangeEvent(const String& oldURL, const String& newURL);
-    void enqueuePopstateEvent(PassRefPtr<SerializedScriptValue>);
+    // BKTODO: void enqueuePopstateEvent(PassRefPtr<SerializedScriptValue>);
     void dispatchWindowLoadEvent();
     void documentWasClosed();
-    void statePopped(PassRefPtr<SerializedScriptValue>);
+    // BKTODO: void statePopped(PassRefPtr<SerializedScriptValue>);
 
     // FIXME: This shouldn't be public once LocalDOMWindow becomes ExecutionContext.
     void clearEventQueue();
@@ -247,7 +258,7 @@ private:
     OwnPtrWillBeMember<WindowFrameObserver> m_frameObserver;
     RefPtrWillBeMember<Document> m_document;
 
-    bool m_shouldPrintWhenFinishedLoading;
+    // BKTODO: bool m_shouldPrintWhenFinishedLoading;
 #if ENABLE(ASSERT)
     bool m_hasBeenReset;
 #endif
@@ -263,7 +274,7 @@ private:
     mutable RefPtrWillBeMember<BarProp> m_statusbar;
     mutable RefPtrWillBeMember<BarProp> m_toolbar;
     mutable PersistentWillBeMember<Console> m_console;
-    mutable PersistentWillBeMember<Navigator> m_navigator;
+    mutable std::unique_ptr<Navigator> m_navigator;
     mutable RefPtrWillBeMember<StyleMedia> m_media;
 
     String m_status;
@@ -272,7 +283,7 @@ private:
     mutable PersistentWillBeMember<ApplicationCache> m_applicationCache;
 
     RefPtrWillBeMember<DOMWindowEventQueue> m_eventQueue;
-    RefPtr<SerializedScriptValue> m_pendingStateObject;
+    // BKTODO: RefPtr<SerializedScriptValue> m_pendingStateObject;
 
     WillBeHeapHashSet<OwnPtrWillBeMember<PostMessageTimer>> m_postMessageTimers;
 };
