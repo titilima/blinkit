@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollAnimatorCompositorCoordinator.cpp
+// Description: ScrollAnimatorCompositorCoordinator Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -21,10 +32,13 @@ ScrollAnimatorCompositorCoordinator::ScrollAnimatorCompositorCoordinator()
     , m_compositorAnimationGroupId(0)
 {
     if (RuntimeEnabledFeatures::compositorAnimationTimelinesEnabled()) {
+        ASSERT(false); // BKTODO:
+#if 0
         ASSERT(Platform::current()->compositorSupport());
         m_compositorPlayer = adoptPtr(Platform::current()->compositorSupport()->createAnimationPlayer());
         ASSERT(m_compositorPlayer);
         m_compositorPlayer->setAnimationDelegate(this);
+#endif
     }
 }
 
@@ -59,6 +73,7 @@ bool ScrollAnimatorCompositorCoordinator::hasAnimationThatRequiresService() cons
     return false;
 }
 
+#if 0 // BKTODO:
 bool ScrollAnimatorCompositorCoordinator::addAnimation(
     PassOwnPtr<WebCompositorAnimation> animation)
 {
@@ -72,6 +87,7 @@ bool ScrollAnimatorCompositorCoordinator::addAnimation(
     }
     return false;
 }
+#endif
 
 void ScrollAnimatorCompositorCoordinator::removeAnimation()
 {

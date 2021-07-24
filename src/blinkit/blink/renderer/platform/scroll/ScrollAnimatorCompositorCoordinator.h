@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollAnimatorCompositorCoordinator.h
+// Description: ScrollAnimatorCompositorCoordinator Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -43,7 +54,7 @@ public:
 protected:
     explicit ScrollAnimatorCompositorCoordinator();
 
-    bool addAnimation(PassOwnPtr<WebCompositorAnimation>);
+    // BKTODO: bool addAnimation(PassOwnPtr<WebCompositorAnimation>);
     void removeAnimation();
     void abortAnimation();
 
