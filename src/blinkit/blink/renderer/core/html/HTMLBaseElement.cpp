@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLBaseElement.cpp
+// Description: HTMLBaseElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -77,6 +88,9 @@ KURL HTMLBaseElement::href() const
     if (attributeValue.isNull())
         return document().url();
 
+    ASSERT(false); // BKTODO:
+    return KURL();
+#if 0
     KURL url = document().encoding().isValid() ?
         KURL(document().url(), stripLeadingAndTrailingHTMLSpaces(attributeValue)) :
         KURL(document().url(), stripLeadingAndTrailingHTMLSpaces(attributeValue), document().encoding());
@@ -85,6 +99,7 @@ KURL HTMLBaseElement::href() const
         return KURL();
 
     return url;
+#endif
 }
 
 void HTMLBaseElement::setHref(const AtomicString& value)
