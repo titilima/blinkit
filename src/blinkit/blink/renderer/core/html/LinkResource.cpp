@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LinkResource.cpp
+// Description: LinkResource Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -75,10 +86,12 @@ LinkRequestBuilder::LinkRequestBuilder(HTMLLinkElement* owner)
         m_charset = m_owner->document().characterSet();
 }
 
+#if 0 // BKTODO:
 FetchRequest LinkRequestBuilder::build(bool blocking) const
 {
     ResourceLoadPriority priority = blocking ? ResourceLoadPriorityUnresolved : ResourceLoadPriorityVeryLow;
     return FetchRequest(ResourceRequest(m_owner->document().completeURL(m_url)), m_owner->localName(), m_charset, priority);
 }
+#endif
 
 } // namespace blink

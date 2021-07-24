@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LinkResource.h
+// Description: LinkResource Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -76,7 +87,7 @@ public:
     bool isValid() const { return !m_url.isEmpty() && m_url.isValid(); }
     const KURL& url() const { return m_url; }
     const AtomicString& charset() const { return m_charset; }
-    FetchRequest build(bool blocking) const;
+    // BKTODO: FetchRequest build(bool blocking) const;
 
 private:
     RawPtrWillBeMember<HTMLLinkElement> m_owner;
