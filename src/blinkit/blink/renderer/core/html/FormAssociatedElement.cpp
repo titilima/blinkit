@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FormAssociatedElement.cpp
+// Description: FormAssociatedElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -30,7 +41,7 @@
 #include "core/html/HTMLFormControlElement.h"
 #include "core/html/HTMLFormElement.h"
 #include "core/html/HTMLLabelElement.h"
-#include "core/html/HTMLObjectElement.h"
+// BKTODO: #include "core/html/HTMLObjectElement.h"
 #include "core/html/ValidityState.h"
 
 namespace blink {
@@ -313,7 +324,8 @@ const HTMLElement& toHTMLElement(const FormAssociatedElement& associatedElement)
         return toHTMLFormControlElement(associatedElement);
     if (associatedElement.isLabelElement())
         return toHTMLLabelElement(associatedElement);
-    return toHTMLObjectElement(associatedElement);
+    ASSERT(false); // BKTODO: return toHTMLObjectElement(associatedElement);
+    exit(0);
 }
 
 const HTMLElement* toHTMLElement(const FormAssociatedElement* associatedElement)
