@@ -90,10 +90,13 @@ void HTMLImportsController::dispose()
 
 static bool makesCycle(HTMLImport* parent, const KURL& url)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     for (HTMLImport* ancestor = parent; ancestor; ancestor = ancestor->parent()) {
         if (!ancestor->isRoot() && equalIgnoringFragmentIdentifier(toHTMLImportChild(parent)->url(), url))
             return true;
     }
+#endif
 
     return false;
 }
@@ -124,6 +127,9 @@ HTMLImportChild* HTMLImportsController::load(HTMLImport* parent, HTMLImportChild
         return child;
     }
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     request.setCrossOriginAccessControl(master()->securityOrigin(), CrossOriginAttributeAnonymous);
     ResourcePtr<RawResource> resource = RawResource::fetchImport(request, parent->document()->fetcher());
     if (!resource)
@@ -136,6 +142,7 @@ HTMLImportChild* HTMLImportsController::load(HTMLImport* parent, HTMLImportChild
     loader->startLoading(resource);
     child->didStartLoading();
     return child;
+#endif
 }
 
 Document* HTMLImportsController::master() const
@@ -176,7 +183,7 @@ DEFINE_TRACE(HTMLImportsController)
 {
     visitor->trace(m_root);
     visitor->trace(m_loaders);
-    WillBeHeapSupplement<Document>::trace(visitor);
+    ASSERT(false); // BKTODO: WillBeHeapSupplement<Document>::trace(visitor);
 }
 
 } // namespace blink
