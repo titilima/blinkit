@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLFormElement.cpp
+// Description: HTMLFormElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,37 +36,35 @@
 #include "core/html/HTMLFormElement.h"
 
 #include "bindings/core/v8/ScriptController.h"
-#include "bindings/core/v8/ScriptEventListener.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/HTMLNames.h"
 #include "core/dom/Attribute.h"
 #include "core/dom/Document.h"
 #include "core/dom/ElementTraversal.h"
 #include "core/dom/IdTargetObserverRegistry.h"
 #include "core/dom/NodeListsNodeData.h"
-#include "core/events/AutocompleteErrorEvent.h"
+// BKTODO: #include "core/events/AutocompleteErrorEvent.h"
 #include "core/events/Event.h"
 #include "core/events/GenericEventQueue.h"
 #include "core/events/ScopedEventQueue.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/UseCounter.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
+// BKTODO: #include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/HTMLCollection.h"
-#include "core/html/HTMLDialogElement.h"
+// BKTODO: #include "core/html/HTMLDialogElement.h"
 #include "core/html/HTMLFormControlsCollection.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLInputElement.h"
-#include "core/html/HTMLObjectElement.h"
+// BKTODO: #include "core/html/HTMLObjectElement.h"
 #include "core/html/RadioNodeList.h"
 #include "core/html/forms/FormController.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "core/layout/LayoutTextControl.h"
 #include "core/loader/FrameLoader.h"
 #include "core/loader/FrameLoaderClient.h"
 #include "core/loader/MixedContentChecker.h"
-#include "core/loader/NavigationScheduler.h"
-#include "platform/UserGestureIndicator.h"
+// BKTODO: #include "core/loader/NavigationScheduler.h"
+// BKTODO: #include "platform/UserGestureIndicator.h"
 #include "wtf/text/AtomicString.h"
 #include <limits>
 
@@ -298,7 +307,7 @@ bool HTMLFormElement::validateInteractively()
                 continue;
             String message("An invalid form control with name='%name' is not focusable.");
             message.replace("%name", unhandled->name());
-            document().addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, ErrorMessageLevel, message));
+            ASSERT(false); // BKTODO: document().addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, ErrorMessageLevel, message));
         }
     }
     return false;
@@ -324,7 +333,7 @@ void HTMLFormElement::prepareForSubmission(Event* event)
     m_isSubmittingOrInUserJSSubmitEvent = true;
     m_shouldSubmit = false;
 
-    frame->loader().client()->dispatchWillSendSubmitEvent(this);
+    ASSERT(false); // BKTODO: frame->loader().client()->dispatchWillSendSubmitEvent(this);
 
     if (dispatchEvent(Event::createCancelableBubble(EventTypeNames::submit)))
         m_shouldSubmit = true;
@@ -337,16 +346,19 @@ void HTMLFormElement::prepareForSubmission(Event* event)
 
 void HTMLFormElement::submitFromJavaScript()
 {
-    submit(0, false, UserGestureIndicator::processingUserGesture());
+    ASSERT(false); // BKTODO: submit(0, false, UserGestureIndicator::processingUserGesture());
 }
 
 void HTMLFormElement::submitDialog(PassRefPtrWillBeRawPtr<FormSubmission> formSubmission)
 {
     for (Node* node = this; node; node = node->parentOrShadowHostNode()) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (isHTMLDialogElement(*node)) {
             toHTMLDialogElement(*node).closeDialog(formSubmission->result());
             return;
         }
+#endif
     }
 }
 
@@ -406,6 +418,8 @@ void HTMLFormElement::scheduleFormSubmission(PassRefPtrWillBeRawPtr<FormSubmissi
     ASSERT(submission->form());
     if (submission->action().isEmpty())
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     if (document().isSandboxed(SandboxForms)) {
         // FIXME: This message should be moved off the console once a solution to https://bugs.webkit.org/show_bug.cgi?id=103274 exists.
         document().addConsoleMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, "Blocked form submission to '" + submission->action().elidedString() + "' because the form's frame is sandboxed and the 'allow-forms' permission is not set."));
@@ -437,6 +451,7 @@ void HTMLFormElement::scheduleFormSubmission(PassRefPtrWillBeRawPtr<FormSubmissi
     // FIXME: Plumb form submission for remote frames.
     if (targetFrame->isLocalFrame())
         toLocalFrame(targetFrame)->navigationScheduler().scheduleFormSubmission(&document(), submission);
+#endif
 }
 
 void HTMLFormElement::reset()
@@ -465,6 +480,8 @@ void HTMLFormElement::requestAutocomplete()
 {
     String errorMessage;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!document().frame())
         errorMessage = "requestAutocomplete: form is not owned by a displayed document.";
     else if (!shouldAutocomplete())
@@ -478,11 +495,14 @@ void HTMLFormElement::requestAutocomplete()
     } else {
         document().frame()->loader().client()->didRequestAutocomplete(this);
     }
+#endif
 }
 
 void HTMLFormElement::finishRequestAutocomplete(AutocompleteResult result)
 {
     RefPtrWillBeRawPtr<Event> event = nullptr;
+    ASSERT(false); // BKTODO:
+#if 0
     if (result == AutocompleteResultSuccess)
         event = Event::createBubble(EventTypeNames::autocomplete);
     else if (result == AutocompleteResultErrorDisabled)
@@ -493,6 +513,7 @@ void HTMLFormElement::finishRequestAutocomplete(AutocompleteResult result)
         event = AutocompleteErrorEvent::create("invalid");
     else
         ASSERT_NOT_REACHED();
+#endif
 
     event->setTarget(this);
     m_pendingAutocompleteEventsQueue->enqueueEvent(event.release());
@@ -500,6 +521,8 @@ void HTMLFormElement::finishRequestAutocomplete(AutocompleteResult result)
 
 void HTMLFormElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (name == actionAttr) {
         m_attributes.parseAction(value);
         // If the new action attribute is pointing to insecure "action" location from a secure page
@@ -523,6 +546,7 @@ void HTMLFormElement::parseAttribute(const QualifiedName& name, const AtomicStri
     } else {
         HTMLElement::parseAttribute(name, oldValue, value);
     }
+#endif
 }
 
 void HTMLFormElement::associate(FormAssociatedElement& e)
@@ -586,12 +610,15 @@ void HTMLFormElement::collectAssociatedElements(Node& root, FormAssociatedElemen
     elements.clear();
     for (HTMLElement& element : Traversal<HTMLElement>::startsAfter(root)) {
         FormAssociatedElement* associatedElement = 0;
+        ASSERT(false); // BKTODO:
+#if 0
         if (element.isFormControlElement())
             associatedElement = toHTMLFormControlElement(&element);
         else if (isHTMLObjectElement(element))
             associatedElement = toHTMLObjectElement(&element);
         else
             continue;
+#endif
         if (associatedElement->form()== this)
             elements.append(associatedElement);
     }
@@ -640,7 +667,8 @@ String HTMLFormElement::name() const
 
 bool HTMLFormElement::noValidate() const
 {
-    return fastHasAttribute(novalidateAttr);
+    ASSERT(false); // BKTODO: return fastHasAttribute(novalidateAttr);
+    return false;
 }
 
 // FIXME: This function should be removed because it does not do the same thing as the
@@ -653,7 +681,7 @@ const AtomicString& HTMLFormElement::action() const
 
 void HTMLFormElement::setEnctype(const AtomicString& value)
 {
-    setAttribute(enctypeAttr, value);
+    ASSERT(false); // BKTODO: setAttribute(enctypeAttr, value);
 }
 
 String HTMLFormElement::method() const
@@ -696,14 +724,14 @@ bool HTMLFormElement::checkInvalidControlsAndCollectUnhandled(WillBeHeapVector<R
     // Copy associatedElements because event handlers called from
     // HTMLFormControlElement::checkValidity() might change associatedElements.
     const FormAssociatedElement::List& associatedElements = this->associatedElements();
-    WillBeHeapVector<RefPtrWillBeMember<FormAssociatedElement>> elements;
-    elements.reserveCapacity(associatedElements.size());
+    std::vector<FormAssociatedElement *> elements;
+    elements.reserve(associatedElements.size());
     for (unsigned i = 0; i < associatedElements.size(); ++i)
-        elements.append(associatedElements[i]);
+        elements.emplace_back(associatedElements[i]);
     int invalidControlsCount = 0;
     for (unsigned i = 0; i < elements.size(); ++i) {
         if (elements[i]->form() == this && elements[i]->isFormControlElement()) {
-            HTMLFormControlElement* control = toHTMLFormControlElement(elements[i].get());
+            HTMLFormControlElement* control = toHTMLFormControlElement(elements[i]);
             if (control->isSubmittableElement() && !control->checkValidity(unhandledInvalidControls, eventBehavior) && control->formOwner() == this) {
                 ++invalidControlsCount;
                 if (!unhandledInvalidControls && eventBehavior == CheckValidityDispatchNoEvent)
@@ -723,6 +751,9 @@ Element* HTMLFormElement::elementFromPastNamesMap(const AtomicString& pastName)
 {
     if (pastName.isEmpty() || !m_pastNamesMap)
         return 0;
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     Element* element = m_pastNamesMap->get(pastName);
 #if ENABLE(ASSERT)
     if (!element)
@@ -737,6 +768,7 @@ Element* HTMLFormElement::elementFromPastNamesMap(const AtomicString& pastName)
     }
 #endif
     return element;
+#endif
 }
 
 void HTMLFormElement::addToPastNamesMap(Element* element, const AtomicString& pastName)
@@ -745,7 +777,7 @@ void HTMLFormElement::addToPastNamesMap(Element* element, const AtomicString& pa
         return;
     if (!m_pastNamesMap)
         m_pastNamesMap = adoptPtrWillBeNoop(new PastNamesMap);
-    m_pastNamesMap->set(pastName, element);
+    ASSERT(false); // BKTODO: m_pastNamesMap->set(pastName, element);
 }
 
 void HTMLFormElement::removeFromPastNamesMap(HTMLElement& element)
@@ -753,8 +785,8 @@ void HTMLFormElement::removeFromPastNamesMap(HTMLElement& element)
     if (!m_pastNamesMap)
         return;
     for (auto& it : *m_pastNamesMap) {
-        if (it.value == &element) {
-            it.value = nullptr;
+        if (it.second == &element) {
+            it.second = nullptr;
             // Keep looping. Single element can have multiple names.
         }
     }
@@ -776,7 +808,8 @@ void HTMLFormElement::getNamedElements(const AtomicString& name, WillBeHeapVecto
 
 bool HTMLFormElement::shouldAutocomplete() const
 {
-    return !equalIgnoringCase(fastGetAttribute(autocompleteAttr), "off");
+    ASSERT(false); // BKTODO: return !equalIgnoringCase(fastGetAttribute(autocompleteAttr), "off");
+    return false;
 }
 
 void HTMLFormElement::finishParsingChildren()
@@ -794,6 +827,8 @@ void HTMLFormElement::copyNonAttributePropertiesFromElement(const Element& sourc
 
 void HTMLFormElement::anonymousNamedGetter(const AtomicString& name, RadioNodeListOrElement& returnValue)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // Call getNamedElements twice, first time check if it has a value
     // and let HTMLFormElement update its cache.
     // See issue: 867404
@@ -828,6 +863,7 @@ void HTMLFormElement::anonymousNamedGetter(const AtomicString& name, RadioNodeLi
     }
 
     returnValue.setRadioNodeList(radioNodeList(name, onlyMatchImg));
+#endif
 }
 
 void HTMLFormElement::setDemoted(bool demoted)
