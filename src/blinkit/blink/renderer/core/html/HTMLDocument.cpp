@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLDocument.cpp
+// Description: HTMLDocument Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -59,7 +70,7 @@
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLBodyElement.h"
 #include "core/page/FocusController.h"
-#include "core/page/FrameTree.h"
+// BKTODO: #include "core/page/FrameTree.h"
 #include "core/page/Page.h"
 #include "wtf/text/StringBuilder.h"
 
@@ -169,18 +180,24 @@ void HTMLDocument::addItemToMap(HashCountedSet<AtomicString>& map, const AtomicS
 {
     if (name.isEmpty())
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     map.add(name);
     if (LocalFrame* f = frame())
         f->script().namedItemAdded(this, name);
+#endif
 }
 
 void HTMLDocument::removeItemFromMap(HashCountedSet<AtomicString>& map, const AtomicString& name)
 {
     if (name.isEmpty())
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     map.remove(name);
     if (LocalFrame* f = frame())
         f->script().namedItemRemoved(this, name);
+#endif
 }
 
 void HTMLDocument::addNamedItem(const AtomicString& name)
@@ -209,6 +226,8 @@ static HashSet<StringImpl*>* createHtmlCaseInsensitiveAttributesSet()
     // Mozilla treats all other values as case-sensitive, thus so do we.
     HashSet<StringImpl*>* attrSet = new HashSet<StringImpl*>;
 
+    ASSERT(false); // BKTODO:
+#if 0
     const QualifiedName* caseInsesitiveAttributes[] = {
         &accept_charsetAttr, &acceptAttr, &alignAttr, &alinkAttr, &axisAttr,
         &bgcolorAttr,
@@ -228,6 +247,7 @@ static HashSet<StringImpl*>* createHtmlCaseInsensitiveAttributesSet()
     attrSet->reserveCapacityForSize(WTF_ARRAY_LENGTH(caseInsesitiveAttributes));
     for (const QualifiedName* attr : caseInsesitiveAttributes)
         attrSet->add(attr->localName().impl());
+#endif
 
     return attrSet;
 }
