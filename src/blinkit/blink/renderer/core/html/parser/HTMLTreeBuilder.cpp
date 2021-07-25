@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTreeBuilder.cpp
+// Description: HTMLTreeBuilder Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011, 2014 Apple Inc. All rights reserved.
@@ -520,6 +531,7 @@ static void mapLoweredLocalNameToName(PrefixedNameToQualifiedNameMap* map, const
     }
 }
 
+#if 0 // BKTODO:
 static void adjustSVGTagNameCase(AtomicHTMLToken* token)
 {
     static PrefixedNameToQualifiedNameMap* caseMap = 0;
@@ -534,6 +546,7 @@ static void adjustSVGTagNameCase(AtomicHTMLToken* token)
         return;
     token->setName(casedName.localName());
 }
+#endif
 
 template<PassOwnPtr<const QualifiedName*[]> getAttrs(), unsigned length>
 static void adjustAttributes(AtomicHTMLToken* token)
@@ -553,6 +566,7 @@ static void adjustAttributes(AtomicHTMLToken* token)
     }
 }
 
+#if 0 // BKTODO:
 static void adjustSVGAttributes(AtomicHTMLToken* token)
 {
     adjustAttributes<SVGNames::getSVGAttrs, SVGNames::SVGAttrsCount>(token);
@@ -562,6 +576,7 @@ static void adjustMathMLAttributes(AtomicHTMLToken* token)
 {
     adjustAttributes<MathMLNames::getMathMLAttrs, MathMLNames::MathMLAttrsCount>(token);
 }
+#endif
 
 static void addNamesWithPrefix(PrefixedNameToQualifiedNameMap* map, const AtomicString& prefix, const QualifiedName* const* names, size_t length)
 {
@@ -574,6 +589,7 @@ static void addNamesWithPrefix(PrefixedNameToQualifiedNameMap* map, const Atomic
     }
 }
 
+#if 0 // BKTODO:
 static void adjustForeignAttributes(AtomicHTMLToken* token)
 {
     static PrefixedNameToQualifiedNameMap* map = 0;
@@ -597,6 +613,7 @@ static void adjustForeignAttributes(AtomicHTMLToken* token)
             tokenAttribute.parserSetName(name);
     }
 }
+#endif
 
 void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
 {
@@ -607,11 +624,11 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
     }
     if (token->name() == baseTag
         || token->name() == basefontTag
-        || token->name() == bgsoundTag
+        // BKTODO: || token->name() == bgsoundTag
         || token->name() == commandTag
         || token->name() == linkTag
         || token->name() == metaTag
-        || token->name() == noframesTag
+        // BKTODO: || token->name() == noframesTag
         || token->name() == scriptTag
         || token->name() == styleTag
         || token->name() == titleTag) {
@@ -629,6 +646,7 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         m_tree.insertHTMLBodyStartTagInBody(token);
         return;
     }
+#if 0 // BKTODO:
     if (token->name() == framesetTag) {
         parseError(token);
         if (!m_tree.openElements()->secondElementIsHTMLBodyElement() || m_tree.openElements()->hasOnlyOneElement()) {
@@ -645,6 +663,7 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         setInsertionMode(InFramesetMode);
         return;
     }
+#endif
     if (token->name() == addressTag
         || token->name() == articleTag
         || token->name() == asideTag
@@ -752,15 +771,21 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         m_tree.insertFormattingElement(token);
         return;
     }
+#if 0 // BKTODO:
     if (token->name() == appletTag
         || token->name() == embedTag
         || token->name() == objectTag) {
         if (!pluginContentIsAllowed(m_tree.parserContentPolicy()))
             return;
     }
+#endif
+#if 0 // BKTODO:
     if (token->name() == appletTag
         || token->name() == marqueeTag
         || token->name() == objectTag) {
+#else
+    if (token->name() == marqueeTag) {
+#endif
         m_tree.reconstructTheActiveFormattingElements();
         m_tree.insertHTMLElement(token);
         m_tree.activeFormattingElements()->appendMarker();
@@ -783,9 +808,9 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
     }
     if (token->name() == areaTag
         || token->name() == brTag
-        || token->name() == embedTag
+        // BKTODO: || token->name() == embedTag
         || token->name() == imgTag
-        || token->name() == keygenTag
+        // BKTODO: || token->name() == keygenTag
         || token->name() == wbrTag) {
         m_tree.reconstructTheActiveFormattingElements();
         m_tree.insertSelfClosingHTMLElementDestroyingToken(token);
@@ -806,6 +831,7 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
             m_framesetOk = false;
         return;
     }
+#if 0 // BKTODO:
     if ((RuntimeEnabledFeatures::contextMenuEnabled() && token->name() == menuitemTag)
         || token->name() == paramTag
         || token->name() == sourceTag
@@ -813,6 +839,7 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         m_tree.insertSelfClosingHTMLElementDestroyingToken(token);
         return;
     }
+#endif
     if (token->name() == hrTag) {
         processFakePEndTagIfPInButtonScope();
         m_tree.insertSelfClosingHTMLElementDestroyingToken(token);
@@ -836,6 +863,7 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         processGenericRawTextStartTag(token);
         return;
     }
+#if 0 // BKTODO:
     if (token->name() == iframeTag) {
         m_framesetOk = false;
         processGenericRawTextStartTag(token);
@@ -849,6 +877,7 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         processGenericRawTextStartTag(token);
         return;
     }
+#endif
     if (token->name() == selectTag) {
         m_tree.reconstructTheActiveFormattingElements();
         m_tree.insertHTMLElement(token);
@@ -873,6 +902,7 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         m_tree.insertHTMLElement(token);
         return;
     }
+#if 0 // BKTODO:
     if (token->name() == rbTag || token->name() == rtcTag) {
         if (m_tree.openElements()->inScope(rubyTag.localName())) {
             m_tree.generateImpliedEndTags();
@@ -905,8 +935,9 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         m_tree.insertForeignElement(token, SVGNames::svgNamespaceURI);
         return;
     }
+#endif
     if (isCaptionColOrColgroupTag(token->name())
-        || token->name() == frameTag
+        // BKTODO: || token->name() == frameTag
         || token->name() == headTag
         || isTableBodyContextTag(token->name())
         || isTableCellContextTag(token->name())
@@ -1116,17 +1147,19 @@ void HTMLTreeBuilder::processStartTag(AtomicHTMLToken* token)
             setInsertionMode(InBodyMode);
             return;
         }
+#if 0 // BKTODO:
         if (token->name() == framesetTag) {
             m_tree.insertHTMLElement(token);
             setInsertionMode(InFramesetMode);
             return;
         }
+#endif
         if (token->name() == baseTag
             || token->name() == basefontTag
-            || token->name() == bgsoundTag
+            // BKTODO: || token->name() == bgsoundTag
             || token->name() == linkTag
             || token->name() == metaTag
-            || token->name() == noframesTag
+            // BKTODO: || token->name() == noframesTag
             || token->name() == scriptTag
             || token->name() == styleTag
             || token->name() == templateTag
@@ -1275,16 +1308,16 @@ void HTMLTreeBuilder::processStartTag(AtomicHTMLToken* token)
             return;
         }
         if (token->name() == basefontTag
-            || token->name() == bgsoundTag
+            // BKTODO: || token->name() == bgsoundTag
             || token->name() == linkTag
             || token->name() == metaTag
-            || token->name() == noframesTag
+            // BKTODO: || token->name() == noframesTag
             || token->name() == styleTag) {
             bool didProcess = processStartTagForInHead(token);
             ASSERT_UNUSED(didProcess, didProcess);
             return;
         }
-        if (token->name() == htmlTag || token->name() == noscriptTag) {
+        if (token->name() == htmlTag) { // BKTODO:  || token->name() == noscriptTag) {
             parseError(token);
             return;
         }
@@ -1297,6 +1330,7 @@ void HTMLTreeBuilder::processStartTag(AtomicHTMLToken* token)
             processHtmlStartTagForInBody(token);
             return;
         }
+#if 0 // BKTODO:
         if (token->name() == framesetTag) {
             m_tree.insertHTMLElement(token);
             return;
@@ -1309,6 +1343,7 @@ void HTMLTreeBuilder::processStartTag(AtomicHTMLToken* token)
             processStartTagForInHead(token);
             return;
         }
+#endif
         if (token->name() == templateTag) {
             processTemplateStartTag(token);
             return;
@@ -1322,10 +1357,12 @@ void HTMLTreeBuilder::processStartTag(AtomicHTMLToken* token)
             processHtmlStartTagForInBody(token);
             return;
         }
+#if 0 // BKTODO:
         if (token->name() == noframesTag) {
             processStartTagForInHead(token);
             return;
         }
+#endif
         parseError(token);
         break;
     case InSelectInTableMode:
@@ -1375,7 +1412,7 @@ void HTMLTreeBuilder::processStartTag(AtomicHTMLToken* token)
             return;
         }
         if (token->name() == inputTag
-            || token->name() == keygenTag
+            // BKTODO: || token->name() == keygenTag
             || token->name() == textareaTag) {
             parseError(token);
             if (!m_tree.openElements()->inSelectScope(selectTag)) {
@@ -1419,9 +1456,13 @@ void HTMLTreeBuilder::processStartTag(AtomicHTMLToken* token)
         }
 
         InsertionMode insertionMode = TemplateContentsMode;
+#if 0 // BKTODO:
         if (token->name() == frameTag)
             insertionMode = InFramesetMode;
         else if (token->name() == colTag)
+#else
+        if (token->name() == colTag)
+#endif
             insertionMode = InColumnGroupMode;
         else if (isCaptionColOrColgroupTag(token->name()) || isTableBodyContextTag(token->name()))
             insertionMode = InTableMode;
@@ -1629,9 +1670,11 @@ void HTMLTreeBuilder::resetInsertionModeAppropriately()
         }
         if (item->hasTagName(bodyTag))
             return setInsertionMode(InBodyMode);
+#if 0 // BKTODO:
         if (item->hasTagName(framesetTag)) {
             return setInsertionMode(InFramesetMode);
         }
+#endif
         if (item->hasTagName(htmlTag)) {
             if (m_tree.headStackItem())
                 return setInsertionMode(AfterHeadMode);
@@ -1868,9 +1911,13 @@ void HTMLTreeBuilder::processEndTagForInBody(AtomicHTMLToken* token)
         callTheAdoptionAgency(token);
         return;
     }
+#if 0 // BKTODO:
     if (token->name() == appletTag
         || token->name() == marqueeTag
         || token->name() == objectTag) {
+#else
+    if (token->name() == marqueeTag) {
+#endif
         if (!m_tree.openElements()->inScope(token->name())) {
             parseError(token);
             return;
@@ -2095,6 +2142,7 @@ void HTMLTreeBuilder::processEndTag(AtomicHTMLToken* token)
         break;
     case InHeadNoscriptMode:
         ASSERT(insertionMode() == InHeadNoscriptMode);
+#if 0 // BKTODO:
         if (token->name() == noscriptTag) {
             ASSERT(m_tree.currentStackItem()->hasTagName(noscriptTag));
             m_tree.openElements()->pop();
@@ -2102,6 +2150,7 @@ void HTMLTreeBuilder::processEndTag(AtomicHTMLToken* token)
             setInsertionMode(InHeadMode);
             return;
         }
+#endif
         if (token->name() != brTag) {
             parseError(token);
             return;
@@ -2130,6 +2179,7 @@ void HTMLTreeBuilder::processEndTag(AtomicHTMLToken* token)
         break;
     case InFramesetMode:
         ASSERT(insertionMode() == InFramesetMode);
+#if 0 // BKTODO:
         if (token->name() == framesetTag) {
             bool ignoreFramesetForFragmentParsing  = m_tree.currentIsRootNode();
             ignoreFramesetForFragmentParsing = ignoreFramesetForFragmentParsing || m_tree.openElements()->hasTemplateInHTMLScope();
@@ -2143,6 +2193,7 @@ void HTMLTreeBuilder::processEndTag(AtomicHTMLToken* token)
                 setInsertionMode(AfterFramesetMode);
             return;
         }
+#endif
         if (token->name() == templateTag) {
             processTemplateEndTag(token);
             return;
@@ -2542,8 +2593,11 @@ void HTMLTreeBuilder::defaultForInHead()
 
 void HTMLTreeBuilder::defaultForInHeadNoscript()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     AtomicHTMLToken endNoscript(HTMLToken::EndTag, noscriptTag.localName());
     processEndTag(&endNoscript);
+#endif
 }
 
 void HTMLTreeBuilder::defaultForAfterHead()
@@ -2579,7 +2633,7 @@ bool HTMLTreeBuilder::processStartTagForInHead(AtomicHTMLToken* token)
     }
     if (token->name() == baseTag
         || token->name() == basefontTag
-        || token->name() == bgsoundTag
+        // BKTODO: || token->name() == bgsoundTag
         || token->name() == commandTag
         || token->name() == linkTag
         || token->name() == metaTag) {
@@ -2591,6 +2645,7 @@ bool HTMLTreeBuilder::processStartTagForInHead(AtomicHTMLToken* token)
         processGenericRCDATAStartTag(token);
         return true;
     }
+#if 0 // BKTODO:
     if (token->name() == noscriptTag) {
         if (m_options.scriptEnabled) {
             processGenericRawTextStartTag(token);
@@ -2600,7 +2655,12 @@ bool HTMLTreeBuilder::processStartTagForInHead(AtomicHTMLToken* token)
         setInsertionMode(InHeadNoscriptMode);
         return true;
     }
+#endif
+#if 0 // BKTODO:
     if (token->name() == noframesTag || token->name() == styleTag) {
+#else
+    if (token->name() == styleTag) {
+#endif
         processGenericRawTextStartTag(token);
         return true;
     }
@@ -2663,6 +2723,7 @@ bool HTMLTreeBuilder::shouldProcessTokenInForeignContent(AtomicHTMLToken* token)
 
     if (adjustedCurrentNode->isInHTMLNamespace())
         return false;
+#if 0 // BKTODO:
     if (HTMLElementStack::isMathMLTextIntegrationPoint(adjustedCurrentNode)) {
         if (token->type() == HTMLToken::StartTag
             && token->name() != MathMLNames::mglyphTag
@@ -2675,6 +2736,7 @@ bool HTMLTreeBuilder::shouldProcessTokenInForeignContent(AtomicHTMLToken* token)
         && token->type() == HTMLToken::StartTag
         && token->name() == SVGNames::svgTag)
         return false;
+#endif
     if (HTMLElementStack::isHTMLIntegrationPoint(adjustedCurrentNode)) {
         if (token->type() == HTMLToken::StartTag)
             return false;
@@ -2708,7 +2770,7 @@ void HTMLTreeBuilder::processTokenInForeignContent(AtomicHTMLToken* token)
         break;
     case HTMLToken::StartTag: {
         if (token->name() == bTag
-            || token->name() == bigTag
+            // BKTODO: || token->name() == bigTag
             || token->name() == blockquoteTag
             || token->name() == bodyTag
             || token->name() == brTag
@@ -2719,7 +2781,7 @@ void HTMLTreeBuilder::processTokenInForeignContent(AtomicHTMLToken* token)
             || token->name() == dlTag
             || token->name() == dtTag
             || token->name() == emTag
-            || token->name() == embedTag
+            // BKTODO: || token->name() == embedTag
             || isNumberedHeaderTag(token->name())
             || token->name() == headTag
             || token->name() == hrTag
@@ -2733,7 +2795,7 @@ void HTMLTreeBuilder::processTokenInForeignContent(AtomicHTMLToken* token)
             || token->name() == olTag
             || token->name() == pTag
             || token->name() == preTag
-            || token->name() == rubyTag
+            // BKTODO: || token->name() == rubyTag
             || token->name() == sTag
             || token->name() == smallTag
             || token->name() == spanTag
@@ -2753,6 +2815,7 @@ void HTMLTreeBuilder::processTokenInForeignContent(AtomicHTMLToken* token)
             return;
         }
         const AtomicString& currentNamespace = adjustedCurrentNode->namespaceURI();
+#if 0 // BKTODO:
         if (currentNamespace == MathMLNames::mathmlNamespaceURI)
             adjustMathMLAttributes(token);
         if (currentNamespace == SVGNames::svgNamespaceURI) {
@@ -2760,10 +2823,12 @@ void HTMLTreeBuilder::processTokenInForeignContent(AtomicHTMLToken* token)
             adjustSVGAttributes(token);
         }
         adjustForeignAttributes(token);
+#endif
         m_tree.insertForeignElement(token, currentNamespace);
         break;
     }
     case HTMLToken::EndTag: {
+#if 0 // BKTODO:
         if (adjustedCurrentNode->namespaceURI() == SVGNames::svgNamespaceURI)
             adjustSVGTagNameCase(token);
 
@@ -2773,6 +2838,7 @@ void HTMLTreeBuilder::processTokenInForeignContent(AtomicHTMLToken* token)
             m_tree.openElements()->pop();
             return;
         }
+#endif
         if (!m_tree.currentStackItem()->isInHTMLNamespace()) {
             // FIXME: This code just wants an Element* iterator, instead of an ElementRecord*
             HTMLElementStack::ElementRecord* nodeRecord = m_tree.openElements()->topRecord();
