@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutBlock.cpp
+// Description: LayoutBlock Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,7 +35,7 @@
 #include "core/layout/LayoutBlock.h"
 
 #include "core/HTMLNames.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/Document.h"
 #include "core/dom/Element.h"
 #include "core/dom/StyleEngine.h"
@@ -39,7 +50,7 @@
 #include "core/html/HTMLMarqueeElement.h"
 #include "core/layout/HitTestLocation.h"
 #include "core/layout/HitTestResult.h"
-#include "core/layout/LayoutAnalyzer.h"
+// BKTODO: #include "core/layout/LayoutAnalyzer.h"
 #include "core/layout/LayoutDeprecatedFlexibleBox.h"
 #include "core/layout/LayoutFlexibleBox.h"
 #include "core/layout/LayoutFlowThread.h"
@@ -874,7 +885,7 @@ void LayoutBlock::updateScrollInfoAfterLayout()
 
 void LayoutBlock::layout()
 {
-    LayoutAnalyzer::Scope analyzer(*this);
+    ASSERT(false); // BKTODO: LayoutAnalyzer::Scope analyzer(*this);
 
     // Table cells call layoutBlock directly, so don't add any logic here.  Put code into
     // layoutBlock().
@@ -1023,7 +1034,7 @@ void LayoutBlock::simplifiedNormalFlowLayout()
                 o->layoutIfNeeded();
                 if (toLayoutBox(o)->inlineBoxWrapper()) {
                     RootInlineBox& box = toLayoutBox(o)->inlineBoxWrapper()->root();
-                    lineBoxes.add(&box);
+                    ASSERT(false); // BKTODO: lineBoxes.add(&box);
                 }
             } else if (o->isText() || (o->isLayoutInline() && !walker.atEndOfInline())) {
                 o->clearNeedsLayout();
@@ -1097,8 +1108,11 @@ bool LayoutBlock::simplifiedLayout()
 
     clearNeedsLayout();
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (LayoutAnalyzer* analyzer = frameView()->layoutAnalyzer())
         analyzer->increment(LayoutAnalyzer::LayoutObjectsThatNeedSimplifiedLayout);
+#endif
 
     return true;
 }
@@ -1387,6 +1401,8 @@ void LayoutBlock::insertIntoTrackedLayoutBoxMaps(LayoutBox* descendant, TrackedD
         descendantSet = new TrackedLayoutBoxListHashSet;
         descendantsMap->set(this, adoptPtr(descendantSet));
     }
+    ASSERT(false); // BKTODO:
+#if 0
     bool added = descendantSet->add(descendant).isNewEntry;
     if (!added) {
         ASSERT(containerMap->get(descendant));
@@ -1401,6 +1417,7 @@ void LayoutBlock::insertIntoTrackedLayoutBoxMaps(LayoutBox* descendant, TrackedD
     }
     ASSERT(!containerSet->contains(this));
     containerSet->add(this);
+#endif
 }
 
 void LayoutBlock::removeFromTrackedLayoutBoxMaps(LayoutBox* descendant, TrackedDescendantsMap*& descendantsMap, TrackedContainerMap*& containerMap)
@@ -1423,10 +1440,13 @@ void LayoutBlock::removeFromTrackedLayoutBoxMaps(LayoutBox* descendant, TrackedD
         if (descendantsMapIterator == descendantsMap->end())
             continue;
         TrackedLayoutBoxListHashSet* descendantSet = descendantsMapIterator->value.get();
+        ASSERT(false); // BKTODO:
+#if 0
         ASSERT(descendantSet->contains(descendant));
         descendantSet->remove(descendant);
         if (descendantSet->isEmpty())
             descendantsMap->remove(descendantsMapIterator);
+#endif
     }
 }
 
@@ -2480,8 +2500,7 @@ inline bool LayoutBlock::isInlineBoxWrapperActuallyChild() const
 
 static inline bool caretBrowsingEnabled(const LocalFrame* frame)
 {
-    Settings* settings = frame->settings();
-    return settings && settings->caretBrowsingEnabled();
+    return Settings::caretBrowsingEnabled();
 }
 
 bool LayoutBlock::hasCursorCaret() const
@@ -2759,7 +2778,7 @@ bool LayoutBlock::recalcChildOverflowAfterStyleChange()
             if (recalcNormalFlowChildOverflowIfNeeded(layoutObject)) {
                 childrenOverflowChanged = true;
                 if (InlineBox* inlineBoxWrapper = toLayoutBlock(layoutObject)->inlineBoxWrapper())
-                    lineBoxes.add(&inlineBoxWrapper->root());
+                    ASSERT(false); // BKTODO: lineBoxes.add(&inlineBoxWrapper->root());
             }
         }
 
