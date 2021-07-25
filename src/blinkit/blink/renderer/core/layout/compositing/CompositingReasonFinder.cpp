@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CompositingReasonFinder.cpp
+// Description: CompositingReasonFinder Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -25,8 +36,7 @@ void CompositingReasonFinder::updateTriggers()
 {
     m_compositingTriggers = 0;
 
-    Settings& settings = m_layoutView.document().page()->settings();
-    if (settings.preferCompositingToLCDTextEnabled()) {
+    if (Settings::preferCompositingToLCDTextEnabled()) {
         m_compositingTriggers |= ScrollableInnerFrameTrigger;
         m_compositingTriggers |= OverflowScrollTrigger;
         m_compositingTriggers |= ViewportConstrainedPositionedTrigger;
