@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TextResourceDecoder.cpp
+// Description: TextResourceDecoder Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1999 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2012 Apple Inc. All rights reserved.
@@ -22,9 +33,9 @@
 #include "core/html/parser/TextResourceDecoder.h"
 
 #include "core/HTMLNames.h"
-#include "core/dom/DOMImplementation.h"
+// BKTODO: #include "core/dom/DOMImplementation.h"
 #include "core/html/parser/HTMLMetaCharsetParser.h"
-#include "platform/text/TextEncodingDetector.h"
+// BKTODO: #include "platform/text/TextEncodingDetector.h"
 #include "wtf/StringExtras.h"
 #include "wtf/text/TextCodec.h"
 #include "wtf/text/TextEncodingRegistry.h"
@@ -94,8 +105,11 @@ TextResourceDecoder::ContentType TextResourceDecoder::determineContentType(const
         return CSSContent;
     if (equalIgnoringCase(mimeType, "text/html"))
         return HTMLContent;
+    ASSERT(false); // BKTODO:
+#if 0
     if (DOMImplementation::isXMLMIMEType(mimeType))
         return XMLContent;
+#endif
     return PlainTextContent;
 }
 
@@ -419,12 +433,15 @@ String TextResourceDecoder::decode(const char* data, size_t len)
 
 void TextResourceDecoder::detectTextEncoding(const char* data, size_t len)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     WTF::TextEncoding detectedEncoding;
     bool detected = blink::detectTextEncoding(data, len, m_hintEncoding, &detectedEncoding);
     if (detected && detectedEncoding != encoding())
         setEncoding(detectedEncoding, EncodingFromContentSniffing);
     else
         setEncoding(detectedEncoding, DefaultEncodingAttemptedSniffing);
+#endif
 }
 
 String TextResourceDecoder::flush()
