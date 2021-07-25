@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HitTestCache.cpp
+// Description: HitTestCache Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -28,7 +39,7 @@ bool HitTestCache::lookupCachedResult(HitTestResult& hitResult, uint64_t domTree
             }
         }
     }
-    Platform::current()->histogramEnumeration("Event.HitTest", static_cast<int>(metric), static_cast<int>(HitHistogramMetric::MAX_HIT_METRIC));
+    ASSERT(false); // BKTODO: Platform::current()->histogramEnumeration("Event.HitTest", static_cast<int>(metric), static_cast<int>(HitHistogramMetric::MAX_HIT_METRIC));
     return result;
 }
 
