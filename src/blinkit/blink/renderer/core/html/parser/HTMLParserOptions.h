@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLParserOptions.h
+// Description: HTMLParserOptions Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google, Inc. All Rights Reserved.
  *
@@ -37,7 +48,7 @@ class CORE_EXPORT HTMLParserOptions {
     DISALLOW_NEW();
 public:
     bool scriptEnabled;
-    bool pluginsEnabled;
+    // BKTODO: bool pluginsEnabled;
 
     explicit HTMLParserOptions(Document* = 0);
 };
