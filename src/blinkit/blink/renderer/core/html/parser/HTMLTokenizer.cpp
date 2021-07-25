@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTokenizer.cpp
+// Description: HTMLTokenizer Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2009 Torch Mobile, Inc. http://www.torchmobile.com/
@@ -1554,11 +1565,15 @@ void HTMLTokenizer::updateStateFor(const String& tagName)
     else if (threadSafeMatch(tagName, scriptTag))
         setState(HTMLTokenizer::ScriptDataState);
     else if (threadSafeMatch(tagName, styleTag)
-        || threadSafeMatch(tagName, iframeTag)
+        // BKTODO: || threadSafeMatch(tagName, iframeTag)
         || threadSafeMatch(tagName, xmpTag)
+#if 0 // BKTODO:
         || (threadSafeMatch(tagName, noembedTag) && m_options.pluginsEnabled)
         || threadSafeMatch(tagName, noframesTag)
         || (threadSafeMatch(tagName, noscriptTag) && m_options.scriptEnabled))
+#else
+        )
+#endif
         setState(HTMLTokenizer::RAWTEXTState);
 }
 
