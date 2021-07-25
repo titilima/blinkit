@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutObjectDrawingRecorder.h
+// Description: LayoutObjectDrawingRecorder Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,6 +16,7 @@
 #ifndef LayoutObjectDrawingRecorder_h
 #define LayoutObjectDrawingRecorder_h
 
+#include <optional>
 #include "core/layout/LayoutObject.h"
 #include "core/paint/PaintPhase.h"
 #include "platform/geometry/LayoutPoint.h"
@@ -12,7 +24,6 @@
 #include "platform/graphics/paint/DisplayItemCacheSkipper.h"
 #include "platform/graphics/paint/DrawingRecorder.h"
 #include "wtf/Allocator.h"
-#include "wtf/Optional.h"
 
 namespace blink {
 
@@ -75,8 +86,8 @@ private:
         layoutObject.mutableForPainting().setPreviousPaintOffset(paintOffset);
     }
 
-    Optional<DisplayItemCacheSkipper> m_cacheSkipper;
-    Optional<DrawingRecorder> m_drawingRecorder;
+    std::optional<DisplayItemCacheSkipper> m_cacheSkipper;
+    std::optional<DrawingRecorder> m_drawingRecorder;
 };
 
 } // namespace blink
