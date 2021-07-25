@@ -5,23 +5,36 @@ fallbackInterfaceName="HTMLUnknownElement"
 export="CORE_EXPORT"
 
 a interfaceName=HTMLAnchorElement
+address interfaceName=HTMLElement
 area
+article interfaceName=HTMLElement
+aside interfaceName=HTMLElement
 b interfaceName=HTMLElement
 base
+basefont interfaceName=HTMLElement
 blockquote interfaceName=HTMLQuoteElement
 body
 br interfaceName=HTMLBRElement
+button constructorNeedsFormElement
+caption interfaceName=HTMLTableCaptionElement
+center interfaceName=HTMLElement
 col interfaceName=HTMLTableColElement
 colgroup interfaceName=HTMLTableColElement
+command interfaceName=HTMLElement
 content interfaceName=HTMLContentElement
 datalist interfaceName=HTMLDataListElement
 dd interfaceName=HTMLElement
+details
+dir interfaceName=HTMLDirectoryElement
 div
 dl interfaceName=HTMLDListElement
 dt interfaceName=HTMLElement
 em interfaceName=HTMLElement
 fieldset interfaceName=HTMLFieldSetElement, constructorNeedsFormElement
+figcaption interfaceName=HTMLElement
+figure interfaceName=HTMLElement
 font
+footer interfaceName=HTMLElement
 form
 h1 interfaceName=HTMLHeadingElement
 h2 interfaceName=HTMLHeadingElement
@@ -30,6 +43,8 @@ h4 interfaceName=HTMLHeadingElement
 h5 interfaceName=HTMLHeadingElement
 h6 interfaceName=HTMLHeadingElement
 head
+header interfaceName=HTMLElement
+hgroup interfaceName=HTMLElement
 hr interfaceName=HTMLHRElement
 html
 i interfaceName=HTMLElement
@@ -40,18 +55,25 @@ legend
 li interfaceName=HTMLLIElement
 link constructorNeedsCreatedByParser
 listing interfaceName=HTMLPreElement
+main interfaceName=HTMLElement
+marquee
 menu
+menuitem interfaceName=HTMLMenuItemElement, runtimeEnabled=contextMenu
 meta
 meter interfaceName=HTMLMeterElement
+nav interfaceName=HTMLElement
 ol interfaceName=HTMLOListElement
 optgroup interfaceName=HTMLOptGroupElement
 option
 p interfaceName=HTMLParagraphElement
+picture interfaceName=HTMLPictureElement
+plaintext interfaceName=HTMLElement
 pre
 progress interfaceName=HTMLProgressElement
 q interfaceName=HTMLQuoteElement
 s interfaceName=HTMLElement
 script constructorNeedsCreatedByParser
+section interfaceName=HTMLElement
 select constructorNeedsFormElement
 shadow interfaceName=HTMLShadowElement
 slot
@@ -59,6 +81,7 @@ span
 strike interfaceName=HTMLElement
 strong interfaceName=HTMLElement
 style constructorNeedsCreatedByParser
+summary interfaceName=HTMLSummaryElement, JSInterfaceName=HTMLElement
 table
 tbody interfaceName=HTMLTableSectionElement
 td interfaceName=HTMLTableCellElement
@@ -71,4 +94,5 @@ title
 tr interfaceName=HTMLTableRowElement
 u interfaceName=HTMLElement
 ul interfaceName=HTMLUListElement
+wbr interfaceName=HTMLWBRElement, JSInterfaceName=HTMLElement
 xmp interfaceName=HTMLPreElement

@@ -51,6 +51,11 @@ run_script('blink/make_names.py',                           \
 )
 
 run_script('blink/make_names.py',                                               \
+    os.path.normpath('blink/in/HTMLTokenizerNames.in') + ' ' +                  \
+    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
+)
+
+run_script('blink/make_names.py',                                               \
     os.path.normpath('blink/in/InputTypeNames.in') + ' ' +                      \
     '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
 )
