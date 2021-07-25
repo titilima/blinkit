@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLPreloadScanner.cpp
+// Description: HTMLPreloadScanner Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2009 Torch Mobile, Inc. http://www.torchmobile.com/
@@ -34,10 +45,12 @@
 #include "core/css/MediaValuesCached.h"
 #include "core/css/parser/SizesAttributeParser.h"
 #include "core/dom/Document.h"
-#include "core/fetch/IntegrityMetadata.h"
+// BKTODO: #include "core/fetch/IntegrityMetadata.h"
 #include "core/frame/Settings.h"
+#if 0 // BKTODO:
 #include "core/frame/SubresourceIntegrity.h"
 #include "core/html/CrossOriginAttribute.h"
+#endif
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLMetaElement.h"
 #include "core/html/LinkRelAttribute.h"
@@ -97,8 +110,10 @@ static String initiatorFor(const StringImpl* tagImpl)
         return linkTag.localName();
     if (match(tagImpl, scriptTag))
         return scriptTag.localName();
+#if 0 // BKTODO:
     if (match(tagImpl, videoTag))
         return videoTag.localName();
+#endif
     ASSERT_NOT_REACHED();
     return emptyString();
 }
@@ -110,6 +125,7 @@ static bool mediaAttributeMatches(const MediaValues& mediaValues, const String& 
     return mediaQueryEvaluator.eval(mediaQueries.get());
 }
 
+#if 0 // BKTODO:
 class TokenPreloadScanner::StartTagScanner {
     STACK_ALLOCATED();
 public:
@@ -433,6 +449,7 @@ private:
     ReferrerPolicy m_referrerPolicy;
     IntegrityMetadataSet m_integrityMetadata;
 };
+#endif
 
 TokenPreloadScanner::TokenPreloadScanner(const KURL& documentURL, PassOwnPtr<CachedDocumentParameters> documentParameters)
     : m_documentURL(documentURL)
@@ -443,9 +460,12 @@ TokenPreloadScanner::TokenPreloadScanner(const KURL& documentURL, PassOwnPtr<Cac
     , m_templateCount(0)
     , m_documentParameters(documentParameters)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(m_documentParameters.get());
     ASSERT(m_documentParameters->mediaValues.get());
     ASSERT(m_documentParameters->mediaValues->isCached());
+#endif
 }
 
 TokenPreloadScanner::~TokenPreloadScanner()
@@ -486,6 +506,8 @@ static void handleMetaViewport(const String& attributeValue, CachedDocumentParam
 {
     if (!documentParameters->viewportMetaEnabled)
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     ViewportDescription description(ViewportDescription::ViewportMeta);
     HTMLMetaElement::getViewportDescriptionFromContentAttribute(attributeValue, description, nullptr, documentParameters->viewportMetaZeroValuesQuirk);
     FloatSize initialViewport(documentParameters->mediaValues->deviceWidth(), documentParameters->mediaValues->deviceHeight());
@@ -493,14 +515,18 @@ static void handleMetaViewport(const String& attributeValue, CachedDocumentParam
     MediaValuesCached* cachedMediaValues = static_cast<MediaValuesCached*>(documentParameters->mediaValues.get());
     cachedMediaValues->setViewportHeight(constraints.layoutSize.height());
     cachedMediaValues->setViewportWidth(constraints.layoutSize.width());
+#endif
 }
 
 static void handleMetaReferrer(const String& attributeValue, CachedDocumentParameters* documentParameters, CSSPreloadScanner* cssScanner)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (attributeValue.isEmpty() || attributeValue.isNull() || !SecurityPolicy::referrerPolicyFromString(attributeValue, &documentParameters->referrerPolicy)) {
         documentParameters->referrerPolicy = ReferrerPolicyDefault;
     }
     cssScanner->setReferrerPolicy(documentParameters->referrerPolicy);
+#endif
 }
 
 template <typename Token>
@@ -583,6 +609,7 @@ void TokenPreloadScanner::scanCommon(const Token& token, const SegmentedString& 
             updatePredictedBaseURL(token);
             return;
         }
+#if 0 // BKTODO:
         if (match(tagImpl, htmlTag) && token.getAttributeItem(manifestAttr)) {
             m_isAppCacheEnabled = true;
             return;
@@ -603,6 +630,7 @@ void TokenPreloadScanner::scanCommon(const Token& token, const SegmentedString& 
 
             handleMetaNameAttribute(token, m_documentParameters.get(), &m_cssScanner);
         }
+#endif
 
         if (match(tagImpl, pictureTag)) {
             m_inPicture = true;
@@ -610,6 +638,8 @@ void TokenPreloadScanner::scanCommon(const Token& token, const SegmentedString& 
             return;
         }
 
+        ASSERT(false); // BKTODO:
+#if 0
         StartTagScanner scanner(tagImpl, m_documentParameters->mediaValues);
         scanner.processAttributes(token.attributes());
         if (m_inPicture)
@@ -617,6 +647,7 @@ void TokenPreloadScanner::scanCommon(const Token& token, const SegmentedString& 
         OwnPtr<PreloadRequest> request = scanner.createPreloadRequest(m_predictedBaseElementURL, source, m_clientHintsPreferences, m_pictureData, m_documentParameters->referrerPolicy);
         if (request)
             requests.append(request.release());
+#endif
         return;
     }
     default: {
@@ -630,8 +661,11 @@ void TokenPreloadScanner::updatePredictedBaseURL(const Token& token)
 {
     ASSERT(m_predictedBaseElementURL.isEmpty());
     if (const typename Token::Attribute* hrefAttribute = token.getAttributeItem(hrefAttr)) {
+        ASSERT(false); // BKTODO:
+#if 0
         KURL url(m_documentURL, stripLeadingAndTrailingHTMLSpaces(hrefAttribute->value));
         m_predictedBaseElementURL = url.isValid() ? url.copy() : KURL();
+#endif
     }
 }
 
@@ -676,6 +710,8 @@ CachedDocumentParameters::CachedDocumentParameters(Document* document, PassRefPt
 {
     ASSERT(isMainThread());
     ASSERT(document);
+    ASSERT(false); // BKTODO:
+#if 0
     doHtmlPreloadScanning = !document->settings() || document->settings()->doHtmlPreloadScanning();
     if (givenMediaValues)
         mediaValues = givenMediaValues;
@@ -686,6 +722,7 @@ CachedDocumentParameters::CachedDocumentParameters(Document* document, PassRefPt
     viewportMetaZeroValuesQuirk = document->settings() && document->settings()->viewportMetaZeroValuesQuirk();
     viewportMetaEnabled = document->settings() && document->settings()->viewportMetaEnabled();
     referrerPolicy = ReferrerPolicyDefault;
+#endif
 }
 
 }

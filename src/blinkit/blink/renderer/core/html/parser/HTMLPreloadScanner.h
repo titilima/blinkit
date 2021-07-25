@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLPreloadScanner.h
+// Description: HTMLPreloadScanner Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2010 Google Inc. All Rights Reserved.
@@ -54,11 +65,11 @@ public:
     }
 
     bool doHtmlPreloadScanning;
-    RefPtrWillBeCrossThreadPersistent<MediaValues> mediaValues;
+    // BKTODO: RefPtrWillBeCrossThreadPersistent<MediaValues> mediaValues;
     Length defaultViewportMinWidth;
     bool viewportMetaZeroValuesQuirk;
     bool viewportMetaEnabled;
-    ReferrerPolicy referrerPolicy;
+    // BKTODO: ReferrerPolicy referrerPolicy;
 
 private:
     CachedDocumentParameters(Document*, PassRefPtrWillBeRawPtr<MediaValues>);
@@ -82,8 +93,12 @@ public:
 
     bool isSafeToSendToAnotherThread()
     {
+        ASSERT(false); // BKTODO:
+        return false;
+#if 0
         return m_documentURL.isSafeToSendToAnotherThread()
             && m_predictedBaseElementURL.isSafeToSendToAnotherThread();
+#endif
     }
 
 private:
@@ -135,7 +150,7 @@ private:
     PictureData m_pictureData;
     size_t m_templateCount;
     OwnPtr<CachedDocumentParameters> m_documentParameters;
-    ClientHintsPreferences m_clientHintsPreferences;
+    // BKTODO: ClientHintsPreferences m_clientHintsPreferences;
 
     Vector<Checkpoint> m_checkpoints;
 };
