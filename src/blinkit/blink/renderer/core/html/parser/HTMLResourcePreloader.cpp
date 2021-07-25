@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLResourcePreloader.cpp
+// Description: HTMLResourcePreloader Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All Rights Reserved.
  *
@@ -48,6 +59,7 @@ DEFINE_TRACE(HTMLResourcePreloader)
     visitor->trace(m_document);
 }
 
+#if 0 // BKTODO:
 static void preconnectHost(PreloadRequest* request, const NetworkHintsInterface& networkHintsInterface)
 {
     ASSERT(request);
@@ -57,11 +69,12 @@ static void preconnectHost(PreloadRequest* request, const NetworkHintsInterface&
         return;
     networkHintsInterface.preconnectHost(host, request->crossOrigin());
 }
+#endif
 
 void HTMLResourcePreloader::preload(PassOwnPtr<PreloadRequest> preload, const NetworkHintsInterface& networkHintsInterface)
 {
     if (preload->isPreconnect()) {
-        preconnectHost(preload.get(), networkHintsInterface);
+        ASSERT(false); // BKTODO: preconnectHost(preload.get(), networkHintsInterface);
         return;
     }
     // TODO(yoichio): Should preload if document is imported.
@@ -75,7 +88,7 @@ void HTMLResourcePreloader::preload(PassOwnPtr<PreloadRequest> preload, const Ne
     if (preload->resourceType() == Resource::Script || preload->resourceType() == Resource::CSSStyleSheet || preload->resourceType() == Resource::ImportResource)
         request.setCharset(preload->charset().isEmpty() ? m_document->characterSet().string() : preload->charset());
     request.setForPreload(true);
-    Platform::current()->histogramCustomCounts("WebCore.PreloadDelayMs", static_cast<int>(1000 * (monotonicallyIncreasingTime() - preload->discoveryTime())), 0, 2000, 20);
+    ASSERT(false); // BKTODO: Platform::current()->histogramCustomCounts("WebCore.PreloadDelayMs", static_cast<int>(1000 * (monotonicallyIncreasingTime() - preload->discoveryTime())), 0, 2000, 20);
     m_document->loader()->startPreload(preload->resourceType(), request);
 }
 

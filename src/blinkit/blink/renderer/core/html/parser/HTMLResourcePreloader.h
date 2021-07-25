@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLResourcePreloader.h
+// Description: HTMLResourcePreloader Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All Rights Reserved.
  *
@@ -30,7 +41,7 @@
 #include "core/fetch/Resource.h"
 #include "core/html/parser/PreloadRequest.h"
 #include "core/html/parser/ResourcePreloader.h"
-#include "core/loader/NetworkHintsInterface.h"
+// BKTODO: #include "core/loader/NetworkHintsInterface.h"
 #include "wtf/CurrentTime.h"
 #include "wtf/text/TextPosition.h"
 
