@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: GraphicsLayerUpdater.cpp
+// Description: GraphicsLayerUpdater Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2014 Google Inc. All rights reserved.
@@ -26,7 +37,7 @@
 
 #include "core/layout/compositing/GraphicsLayerUpdater.h"
 
-#include "core/html/HTMLMediaElement.h"
+// BKTODO: #include "core/html/HTMLMediaElement.h"
 #include "core/inspector/InspectorTraceEvents.h"
 #include "core/layout/compositing/CompositedLayerMapping.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
