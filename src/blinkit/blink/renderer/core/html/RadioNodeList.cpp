@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RadioNodeList.cpp
+// Description: RadioNodeList Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2012 Motorola Mobility, Inc. All rights reserved.
  *
@@ -32,7 +43,7 @@
 #include "core/html/HTMLFormElement.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLInputElement.h"
-#include "core/html/HTMLObjectElement.h"
+// BKTODO: #include "core/html/HTMLObjectElement.h"
 
 namespace blink {
 
@@ -97,7 +108,7 @@ bool RadioNodeList::matchesByIdOrName(const Element& testElement) const
 bool RadioNodeList::checkElementMatchesRadioNodeListFilter(const Element& testElement) const
 {
     ASSERT(!shouldOnlyMatchImgElements());
-    ASSERT(isHTMLObjectElement(testElement) || testElement.isFormControlElement());
+    ASSERT(false); // BKTODO: ASSERT(isHTMLObjectElement(testElement) || testElement.isFormControlElement());
     if (isHTMLFormElement(ownerNode())) {
         HTMLFormElement* formElement = toHTMLElement(testElement).formOwner();
         if (!formElement || formElement != ownerNode())
@@ -119,11 +130,14 @@ bool RadioNodeList::elementMatches(const Element& element) const
         return matchesByIdOrName(element);
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!isHTMLObjectElement(element) && !element.isFormControlElement())
         return false;
 
     if (isHTMLInputElement(element) && toHTMLInputElement(element).type() == InputTypeNames::image)
         return false;
+#endif
 
     return checkElementMatchesRadioNodeListFilter(element);
 }
