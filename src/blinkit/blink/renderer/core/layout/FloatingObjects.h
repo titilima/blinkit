@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FloatingObjects.h
+// Description: FloatingObjects Class
+//      Author: Ziming Li
+//     Created: 2021-07-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -130,7 +141,17 @@ struct FloatingObjectHashTranslator {
     static bool equal(FloatingObject* a, LayoutBox* b) { return a->layoutObject() == b; }
     static bool equal(const OwnPtr<FloatingObject>& a, LayoutBox* b) { return a->layoutObject() == b; }
 };
-typedef ListHashSet<OwnPtr<FloatingObject>, 4, FloatingObjectHashFunctions> FloatingObjectSet;
+
+class FloatingObjectSet final : std::list<std::unique_ptr<FloatingObject>>
+{
+public:
+    using const_iterator = std::list<std::unique_ptr<FloatingObject>>::const_iterator;
+
+    bool isEmpty(void) const { return this->empty(); }
+    std::unique_ptr<FloatingObject>& last(void) { return this->back(); }
+    const std::unique_ptr<FloatingObject>& last(void) const { return this->back(); }
+};
+
 typedef FloatingObjectSet::const_iterator FloatingObjectSetIterator;
 typedef PODInterval<LayoutUnit, FloatingObject*> FloatingObjectInterval;
 typedef PODIntervalTree<LayoutUnit, FloatingObject*> FloatingObjectTree;

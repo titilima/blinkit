@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FloatingObjects.cpp
+// Description: FloatingObjects Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -167,12 +178,15 @@ FloatingObjects::~FloatingObjects()
 }
 void FloatingObjects::clearLineBoxTreePointers()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // Clear references to originating lines, since the lines are being deleted
     FloatingObjectSetIterator end = m_set.end();
     for (FloatingObjectSetIterator it = m_set.begin(); it != end; ++it) {
         ASSERT(!((*it)->originatingLine()) || (*it)->originatingLine()->lineLayoutItem().isEqual(m_layoutObject));
         (*it)->setOriginatingLine(nullptr);
     }
+#endif
 }
 
 FloatingObjects::FloatingObjects(const LayoutBlockFlow* layoutObject, bool horizontalWritingMode)
@@ -187,7 +201,7 @@ FloatingObjects::FloatingObjects(const LayoutBlockFlow* layoutObject, bool horiz
 
 void FloatingObjects::clear()
 {
-    m_set.clear();
+    ASSERT(false); // BKTODO: m_set.clear();
     m_placedFloatsTree.clear();
     m_leftObjectsCount = 0;
     m_rightObjectsCount = 0;
@@ -208,6 +222,8 @@ LayoutUnit FloatingObjects::lowestFloatLogicalBottom(FloatingObject::Type floatT
     }
 
     LayoutUnit lowestFloatBottom = 0;
+    ASSERT(false); // BKTODO:
+#if 0
     const FloatingObjectSet& floatingObjectSet = set();
     FloatingObjectSetIterator end = floatingObjectSet.end();
     if (floatType == FloatingObject::FloatLeftRight) {
@@ -246,6 +262,7 @@ LayoutUnit FloatingObjects::lowestFloatLogicalBottom(FloatingObject::Type floatT
         }
         setCachedLowestFloatLogicalBottom(isInHorizontalWritingMode, floatType, lowestFloatingObject);
     }
+#endif
 
     return lowestFloatBottom;
 }
@@ -302,9 +319,12 @@ void FloatingObjects::markLowestFloatLogicalBottomCacheAsDirty()
 void FloatingObjects::moveAllToFloatInfoMap(LayoutBoxToFloatInfoMap& map)
 {
     while (!m_set.isEmpty()) {
+        ASSERT(false); // BKTODO:
+#if 0
         OwnPtr<FloatingObject> floatingObject = m_set.takeFirst();
         LayoutBox* layoutObject = floatingObject->layoutObject();
         map.add(layoutObject, floatingObject.release());
+#endif
     }
     clear();
 }
@@ -366,7 +386,7 @@ FloatingObject* FloatingObjects::add(PassOwnPtr<FloatingObject> floatingObject)
 {
     FloatingObject* newObject = floatingObject.leakPtr();
     increaseObjectsCount(newObject->type());
-    m_set.add(adoptPtr(newObject));
+    ASSERT(false); // BKTODO: m_set.add(adoptPtr(newObject));
     if (newObject->isPlaced())
         addPlacedObject(*newObject);
     markLowestFloatLogicalBottomCacheAsDirty();
@@ -376,12 +396,15 @@ FloatingObject* FloatingObjects::add(PassOwnPtr<FloatingObject> floatingObject)
 void FloatingObjects::remove(FloatingObject* toBeRemoved)
 {
     decreaseObjectsCount(toBeRemoved->type());
+    ASSERT(false); // BKTODO:
+#if 0
     OwnPtr<FloatingObject> floatingObject = m_set.take(toBeRemoved);
     ASSERT(floatingObject->isPlaced() || !floatingObject->isInPlacedTree());
     if (floatingObject->isPlaced())
         removePlacedObject(*floatingObject);
     markLowestFloatLogicalBottomCacheAsDirty();
     ASSERT(!floatingObject->originatingLine());
+#endif
 }
 
 void FloatingObjects::computePlacedFloatsTree()
@@ -390,6 +413,8 @@ void FloatingObjects::computePlacedFloatsTree()
     if (m_set.isEmpty())
         return;
     m_placedFloatsTree.initIfNeeded(m_layoutObject->view()->intervalArena());
+    ASSERT(false); // BKTODO:
+#if 0
     FloatingObjectSetIterator it = m_set.begin();
     FloatingObjectSetIterator end = m_set.end();
     for (; it != end; ++it) {
@@ -397,6 +422,7 @@ void FloatingObjects::computePlacedFloatsTree()
         if (floatingObject.isPlaced())
             m_placedFloatsTree.add(intervalForFloatingObject(floatingObject));
     }
+#endif
 }
 
 LayoutUnit FloatingObjects::logicalLeftOffsetForPositioningFloat(LayoutUnit fixedOffset, LayoutUnit logicalTop, LayoutUnit *heightRemaining)
