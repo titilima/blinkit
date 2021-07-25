@@ -34,14 +34,18 @@
 #include "core/html/HTMLAreaElement.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLInputElement.h"
+#if 0 // BKTODO:
 #include "core/html/HTMLMapElement.h"
 #include "core/html/HTMLMediaElement.h"
+#endif
 #include "core/html/HTMLTextAreaElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/layout/LayoutImage.h"
 #include "core/layout/LayoutTextFragment.h"
+#if 0 // BKTODO:
 #include "core/page/FrameTree.h"
 #include "core/svg/SVGElement.h"
+#endif
 #include "platform/scroll/Scrollbar.h"
 
 namespace blink {
@@ -198,6 +202,9 @@ HTMLAreaElement* HitTestResult::imageAreaForImage() const
     if (!imageElement || !imageElement->layoutObject() || !imageElement->layoutObject()->isBox())
         return nullptr;
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     HTMLMapElement* map = imageElement->treeScope().getImageMap(imageElement->fastGetAttribute(usemapAttr));
     if (!map)
         return nullptr;
@@ -209,6 +216,7 @@ HTMLAreaElement* HitTestResult::imageAreaForImage() const
     location.scale(scaleFactor, scaleFactor);
 
     return map->areaForPoint(location, contentBox.size());
+#endif
 }
 
 void HitTestResult::setInnerNode(Node* n)
@@ -336,6 +344,8 @@ KURL HitTestResult::absoluteImageURL() const
         return KURL();
 
     AtomicString urlString;
+    ASSERT(false); // BKTODO:
+#if 0
     // Always return a url for image elements and input elements with type=image, even if they
     // don't have a LayoutImage (e.g. because the image didn't load and we are using an alt container).
     // For other elements we don't create alt containers so ensure they contain a loaded image.
@@ -349,14 +359,18 @@ KURL HitTestResult::absoluteImageURL() const
         urlString = toElement(*innerNodeOrImageMapImage).imageSourceURL();
     if (urlString.isEmpty())
         return KURL();
+#endif
 
     return innerNodeOrImageMapImage->document().completeURL(stripLeadingAndTrailingHTMLSpaces(urlString));
 }
 
 KURL HitTestResult::absoluteMediaURL() const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (HTMLMediaElement* mediaElt = mediaElement())
         return mediaElt->currentSrc();
+#endif
     return KURL();
 }
 
@@ -368,8 +382,11 @@ HTMLMediaElement* HitTestResult::mediaElement() const
     if (!(m_innerNode->layoutObject() && m_innerNode->layoutObject()->isMedia()))
         return nullptr;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (isHTMLMediaElement(*m_innerNode))
         return toHTMLMediaElement(m_innerNode);
+#endif
     return nullptr;
 }
 
@@ -440,7 +457,7 @@ bool HitTestResult::addNodeToListBasedTestResult(Node* node, const HitTestLocati
     if (!node)
         return true;
 
-    mutableListBasedTestResult().add(node);
+    ASSERT(false); // BKTODO: mutableListBasedTestResult().add(node);
 
     if (hitTestRequest().penetratingList())
         return true;
@@ -469,7 +486,7 @@ void HitTestResult::append(const HitTestResult& other)
     if (other.m_listBasedTestResult) {
         NodeSet& set = mutableListBasedTestResult();
         for (NodeSet::const_iterator it = other.m_listBasedTestResult->begin(), last = other.m_listBasedTestResult->end(); it != last; ++it)
-            set.add(it->get());
+            ASSERT(false); // BKTODO: set.add(it->get());
     }
 }
 
@@ -520,10 +537,13 @@ Node* HitTestResult::innerNodeOrImageMapImage() const
         return nullptr;
 
     HTMLImageElement* imageMapImageElement = nullptr;
+    ASSERT(false); // BKTODO:
+#if 0
     if (isHTMLAreaElement(m_innerNode))
         imageMapImageElement = toHTMLAreaElement(m_innerNode)->imageElement();
     else if (isHTMLMapElement(m_innerNode))
         imageMapImageElement = toHTMLMapElement(m_innerNode)->imageElement();
+#endif
 
     if (!imageMapImageElement)
         return m_innerNode.get();
