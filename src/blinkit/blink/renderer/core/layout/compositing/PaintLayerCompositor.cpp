@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PaintLayerCompositor.cpp
+// Description: PaintLayerCompositor Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -28,17 +39,17 @@
 #include "core/animation/AnimationTimeline.h"
 #include "core/animation/DocumentAnimations.h"
 #include "core/dom/DOMNodeIds.h"
-#include "core/dom/Fullscreen.h"
+// BKTODO: #include "core/dom/Fullscreen.h"
 #include "core/editing/FrameSelection.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLIFrameElement.h"
-#include "core/html/HTMLVideoElement.h"
+// BKTODO: #include "core/html/HTMLIFrameElement.h"
+// BKTODO: #include "core/html/HTMLVideoElement.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/layout/LayoutPart.h"
-#include "core/layout/LayoutVideo.h"
+// BKTODO: #include "core/layout/LayoutVideo.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/CompositedLayerMapping.h"
 #include "core/layout/compositing/CompositingInputsUpdater.h"
@@ -111,10 +122,12 @@ void PaintLayerCompositor::setCompositingModeEnabled(bool enable)
     else
         destroyRootLayer();
 
+#if 0 // BKTODO:
     // Schedule an update in the parent frame so the <iframe>'s layer in the owner
     // document matches the compositing state here.
     if (HTMLFrameOwnerElement* ownerElement = m_layoutView.document().ownerElement())
         ownerElement->setNeedsCompositingUpdate();
+#endif
 }
 
 void PaintLayerCompositor::enableCompositingModeIfNeeded()
@@ -144,7 +157,7 @@ bool PaintLayerCompositor::rootShouldAlwaysComposite() const
 void PaintLayerCompositor::updateAcceleratedCompositingSettings()
 {
     m_compositingReasonFinder.updateTriggers();
-    m_hasAcceleratedCompositing = m_layoutView.document().settings()->acceleratedCompositingEnabled();
+    m_hasAcceleratedCompositing = Settings::acceleratedCompositingEnabled();
     m_rootShouldAlwaysCompositeDirty = true;
     if (m_rootLayerAttachment != RootLayerUnattached)
         rootLayer()->setNeedsCompositingInputsUpdate();
@@ -155,6 +168,7 @@ bool PaintLayerCompositor::preferCompositingToLCDTextEnabled() const
     return m_compositingReasonFinder.hasOverflowScrollTrigger();
 }
 
+#if 0 // BKTODO:
 static LayoutVideo* findFullscreenVideoLayoutObject(Document& document)
 {
     // Recursively find the document that is in fullscreen.
@@ -175,6 +189,7 @@ static LayoutVideo* findFullscreenVideoLayoutObject(Document& document)
         return nullptr;
     return toLayoutVideo(layoutObject);
 }
+#endif
 
 // The descendant-dependent flags system is badly broken because we clean dirty
 // bits in upward tree walks, which means we need to call updateDescendantDependentFlags
@@ -198,6 +213,8 @@ void PaintLayerCompositor::updateIfNeededRecursive()
     if (view->shouldThrottleRendering())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     for (Frame* child = m_layoutView.frameView()->frame().tree().firstChild(); child; child = child->tree().nextSibling()) {
         if (!child->isLocalFrame())
             continue;
@@ -208,6 +225,7 @@ void PaintLayerCompositor::updateIfNeededRecursive()
         if (localFrame->document()->isActive())
             localFrame->contentLayoutObject()->compositor()->updateIfNeededRecursive();
     }
+#endif
 
     TRACE_EVENT0("blink", "PaintLayerCompositor::updateIfNeededRecursive");
 
@@ -241,6 +259,8 @@ void PaintLayerCompositor::updateIfNeededRecursive()
 #if ENABLE(ASSERT)
     ASSERT(lifecycle().state() == DocumentLifecycle::CompositingClean);
     assertNoUnresolvedDirtyBits();
+    ASSERT(false); // BKTODO:
+#if 0
     for (Frame* child = m_layoutView.frameView()->frame().tree().firstChild(); child; child = child->tree().nextSibling()) {
         if (!child->isLocalFrame())
             continue;
@@ -249,6 +269,7 @@ void PaintLayerCompositor::updateIfNeededRecursive()
             continue;
         localFrame->contentLayoutObject()->compositor()->assertNoUnresolvedDirtyBits();
     }
+#endif
 #endif
 }
 
@@ -290,6 +311,8 @@ void PaintLayerCompositor::applyOverlayFullscreenVideoAdjustmentIfNeeded()
         return;
 
     bool isLocalRoot = m_layoutView.frame()->isLocalRoot();
+    ASSERT(false); // BKTODO:
+#if 0
     LayoutVideo* video = findFullscreenVideoLayoutObject(m_layoutView.document());
     if (!video || !video->layer()->hasCompositedLayerMapping() || !video->videoElement()->usesOverlayFullscreenVideo()) {
         if (isLocalRoot) {
@@ -314,6 +337,7 @@ void PaintLayerCompositor::applyOverlayFullscreenVideoAdjustmentIfNeeded()
     m_overflowControlsHostLayer->addChild(videoLayer);
     if (GraphicsLayer* backgroundLayer = fixedRootBackgroundLayer())
         backgroundLayer->removeFromParent();
+#endif
     m_inOverlayFullscreenVideo = true;
 }
 
@@ -590,9 +614,11 @@ void PaintLayerCompositor::frameViewDidScroll()
         m_scrollLayer->setPosition(-scrollPosition);
 
 
+#if 0 // BKTODO:
     Platform::current()->histogramEnumeration("Renderer.AcceleratedFixedRootBackground",
         ScrolledMainFrameBucket,
         AcceleratedFixedRootBackgroundHistogramMax);
+#endif
 }
 
 void PaintLayerCompositor::frameViewScrollbarsExistenceDidChange()
@@ -652,11 +678,14 @@ PaintLayerCompositor* PaintLayerCompositor::frameContentsCompositor(LayoutPart* 
     if (!layoutObject->node()->isFrameOwnerElement())
         return nullptr;
 
+    ASSERT(false); // BKTODO:
+#if 0
     HTMLFrameOwnerElement* element = toHTMLFrameOwnerElement(layoutObject->node());
     if (Document* contentDocument = element->contentDocument()) {
         if (LayoutView* view = contentDocument->layoutView())
             return view->compositor();
     }
+#endif
     return nullptr;
 }
 
@@ -823,9 +852,7 @@ void PaintLayerCompositor::paintContents(const GraphicsLayer* graphicsLayer, Gra
 
 bool PaintLayerCompositor::supportsFixedRootBackgroundCompositing() const
 {
-    if (Settings* settings = m_layoutView.document().settings())
-        return settings->preferCompositingToLCDTextEnabled();
-    return false;
+    return Settings::preferCompositingToLCDTextEnabled();
 }
 
 bool PaintLayerCompositor::needsFixedRootBackgroundLayer(const PaintLayer* layer) const
@@ -974,7 +1001,6 @@ void PaintLayerCompositor::ensureRootLayer()
     if (expectedAttachment == m_rootLayerAttachment)
         return;
 
-    Settings* settings = m_layoutView.document().settings();
     if (!m_rootContentLayer) {
         m_rootContentLayer = GraphicsLayer::create(graphicsLayerFactory(), this);
         IntRect overflowRect = m_layoutView.pixelSnappedLayoutOverflowRect();
@@ -983,7 +1009,7 @@ void PaintLayerCompositor::ensureRootLayer()
         m_rootContentLayer->setOwnerNodeId(DOMNodeIds::idForNode(m_layoutView.generatingNode()));
 
         // FIXME: with rootLayerScrolls, we probably don't even need m_rootContentLayer?
-        if (!(settings && settings->rootLayerScrolls())) {
+        if (!Settings::rootLayerScrolls()) {
             // Need to clip to prevent transformed content showing outside this frame
             m_rootContentLayer->setMasksToBounds(true);
         }
@@ -1086,11 +1112,14 @@ void PaintLayerCompositor::attachRootLayer(RootLayerAttachment attachment)
         break;
     }
     case RootLayerAttachedViaEnclosingFrame: {
+        ASSERT(false); // BKTODO:
+#if 0
         HTMLFrameOwnerElement* ownerElement = m_layoutView.document().ownerElement();
         ASSERT(ownerElement);
         // The layer will get hooked up via CompositedLayerMapping::updateGraphicsLayerConfiguration()
         // for the frame's layoutObject in the parent document.
         ownerElement->setNeedsCompositingUpdate();
+#endif
         break;
     }
     }
@@ -1112,8 +1141,11 @@ void PaintLayerCompositor::detachRootLayer()
         else
             m_rootContentLayer->removeFromParent();
 
+        ASSERT(false); // BKTODO:
+#if 0
         if (HTMLFrameOwnerElement* ownerElement = m_layoutView.document().ownerElement())
             ownerElement->setNeedsCompositingUpdate();
+#endif
         break;
     }
     case RootLayerAttachedViaChromeClient: {
