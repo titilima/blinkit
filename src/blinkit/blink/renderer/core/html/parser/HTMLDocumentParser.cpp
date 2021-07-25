@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLDocumentParser.cpp
+// Description: HTMLDocumentParser Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -43,15 +54,15 @@
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/inspector/InspectorTraceEvents.h"
 #include "core/loader/DocumentLoader.h"
-#include "core/loader/NavigationScheduler.h"
+// BKTODO: #include "core/loader/NavigationScheduler.h"
 #include "platform/SharedBuffer.h"
-#include "platform/ThreadSafeFunctional.h"
-#include "platform/ThreadedDataReceiver.h"
+// BKTODO: #include "platform/ThreadSafeFunctional.h"
+// BKTODO: #include "platform/ThreadedDataReceiver.h"
 #include "platform/TraceEvent.h"
 #include "platform/heap/Handle.h"
 #include "public/platform/Platform.h"
 #include "public/platform/WebFrameScheduler.h"
-#include "public/platform/WebScheduler.h"
+// BKTODO: #include "public/platform/WebScheduler.h"
 #include "public/platform/WebThread.h"
 #include "wtf/RefCounted.h"
 #include "wtf/TemporaryChange.h"
@@ -73,10 +84,14 @@ static HTMLTokenizer::State tokenizerStateForContextElement(Element* contextElem
         return HTMLTokenizer::RCDATAState;
     if (contextTag.matches(styleTag)
         || contextTag.matches(xmpTag)
+#if 0 // BKTODO:
         || contextTag.matches(iframeTag)
         || (contextTag.matches(noembedTag) && options.pluginsEnabled)
         || (contextTag.matches(noscriptTag) && options.scriptEnabled)
         || contextTag.matches(noframesTag))
+#else
+        )
+#endif
         return reportErrors ? HTMLTokenizer::RAWTEXTState : HTMLTokenizer::PLAINTEXTState;
     if (contextTag.matches(scriptTag))
         return reportErrors ? HTMLTokenizer::ScriptDataState : HTMLTokenizer::PLAINTEXTState;
@@ -85,6 +100,7 @@ static HTMLTokenizer::State tokenizerStateForContextElement(Element* contextElem
     return HTMLTokenizer::DataState;
 }
 
+#if 0 // BKTODO:
 class ParserDataReceiver final : public RefCountedWillBeGarbageCollectedFinalized<ParserDataReceiver>, public ThreadedDataReceiver, public DocumentLifecycleObserver {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(ParserDataReceiver);
 public:
@@ -136,6 +152,7 @@ private:
 
     WeakPtr<BackgroundHTMLParser> m_backgroundParser;
 };
+#endif
 
 HTMLDocumentParser::HTMLDocumentParser(HTMLDocument& document, bool reportErrors, ParserSynchronizationPolicy syncPolicy)
     : ScriptableDocumentParser(document)
@@ -144,9 +161,9 @@ HTMLDocumentParser::HTMLDocumentParser(HTMLDocument& document, bool reportErrors
     , m_tokenizer(syncPolicy == ForceSynchronousParsing ? HTMLTokenizer::create(m_options) : nullptr)
     , m_scriptRunner(HTMLScriptRunner::create(&document, this))
     , m_treeBuilder(HTMLTreeBuilder::create(this, &document, parserContentPolicy(), reportErrors, m_options))
-    , m_loadingTaskRunner(adoptPtr(document.loadingTaskRunner()->clone()))
+    // BKTODO: , m_loadingTaskRunner(adoptPtr(document.loadingTaskRunner()->clone()))
     , m_parserScheduler(HTMLParserScheduler::create(this, m_loadingTaskRunner.get()))
-    , m_xssAuditorDelegate(&document)
+    // BKTODO: , m_xssAuditorDelegate(&document)
     , m_weakFactory(this)
     , m_preloader(HTMLResourcePreloader::create(document))
     , m_parsedChunkQueue(ParsedChunkQueue::create())
@@ -169,8 +186,8 @@ HTMLDocumentParser::HTMLDocumentParser(DocumentFragment* fragment, Element* cont
     , m_token(adoptPtr(new HTMLToken))
     , m_tokenizer(HTMLTokenizer::create(m_options))
     , m_treeBuilder(HTMLTreeBuilder::create(this, fragment, contextElement, this->parserContentPolicy(), m_options))
-    , m_loadingTaskRunner(adoptPtr(fragment->document().loadingTaskRunner()->clone()))
-    , m_xssAuditorDelegate(&fragment->document())
+    // BKTODO: , m_loadingTaskRunner(adoptPtr(fragment->document().loadingTaskRunner()->clone()))
+    // BKTODO: , m_xssAuditorDelegate(&fragment->document())
     , m_weakFactory(this)
     , m_shouldUseThreading(false)
     , m_endWasDelayed(false)
@@ -181,7 +198,7 @@ HTMLDocumentParser::HTMLDocumentParser(DocumentFragment* fragment, Element* cont
 {
     bool reportErrors = false; // For now document fragment parsing never reports errors.
     m_tokenizer->setState(tokenizerStateForContextElement(contextElement, reportErrors, m_options));
-    m_xssAuditor.initForFragment();
+    // BKTODO: m_xssAuditor.initForFragment();
 }
 
 HTMLDocumentParser::~HTMLDocumentParser()
@@ -207,7 +224,7 @@ DEFINE_TRACE(HTMLDocumentParser)
 {
     visitor->trace(m_treeBuilder);
     visitor->trace(m_parserScheduler);
-    visitor->trace(m_xssAuditorDelegate);
+    // BKTODO: visitor->trace(m_xssAuditorDelegate);
     visitor->trace(m_scriptRunner);
     visitor->trace(m_preloader);
     ScriptableDocumentParser::trace(visitor);
@@ -304,7 +321,8 @@ void HTMLDocumentParser::pumpTokenizerIfPossible()
 
 bool HTMLDocumentParser::isScheduledForResume() const
 {
-    return m_parserScheduler && m_parserScheduler->isScheduledForResume();
+    ASSERT(false); // BKTODO: return m_parserScheduler && m_parserScheduler->isScheduledForResume();
+    return false;
 }
 
 // Used by HTMLParserScheduler
@@ -344,6 +362,8 @@ bool HTMLDocumentParser::canTakeNextToken()
             return false;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: It's wrong for the HTMLDocumentParser to reach back to the
     //        LocalFrame, but this approach is how the old parser handled
     //        stopping when the page assigns window.location.  What really
@@ -353,6 +373,7 @@ bool HTMLDocumentParser::canTakeNextToken()
     if (!isParsingFragment()
         && document()->frame() && document()->frame()->navigationScheduler().locationChangePending())
         return false;
+#endif
 
     return true;
 }
@@ -456,7 +477,7 @@ void HTMLDocumentParser::discardSpeculationsAndResumeFrom(PassOwnPtr<ParsedChunk
     m_input.current().clear(); // FIXME: This should be passed in instead of cleared.
 
     ASSERT(checkpoint->unparsedInput.isSafeToSendToAnotherThread());
-    HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::resumeFrom, AllowCrossThreadAccess(m_backgroundParser), checkpoint.release()));
+    ASSERT(false); // BKTODO: HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::resumeFrom, AllowCrossThreadAccess(m_backgroundParser), checkpoint.release()));
 }
 
 size_t HTMLDocumentParser::processParsedChunkFromBackgroundParser(PassOwnPtr<ParsedChunk> popChunk)
@@ -481,8 +502,9 @@ size_t HTMLDocumentParser::processParsedChunkFromBackgroundParser(PassOwnPtr<Par
     OwnPtr<CompactHTMLTokenStream> tokens = chunk->tokens.release();
     size_t elementTokenCount = 0;
 
-    HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::startedChunkWithCheckpoint, AllowCrossThreadAccess(m_backgroundParser), chunk->inputCheckpoint));
+    ASSERT(false); // BKTODO: HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::startedChunkWithCheckpoint, AllowCrossThreadAccess(m_backgroundParser), chunk->inputCheckpoint));
 
+#if 0 // BKTODO:
     for (const auto& xssInfo : chunk->xssInfos) {
         m_textPosition = xssInfo->m_textPosition;
         m_xssAuditorDelegate.didBlockScript(*xssInfo);
@@ -492,6 +514,7 @@ size_t HTMLDocumentParser::processParsedChunkFromBackgroundParser(PassOwnPtr<Par
     // XSSAuditorDelegate can detach the parser if it decides to block the entire current document.
     if (isDetached())
         return elementTokenCount;
+#endif
 
     for (Vector<CompactHTMLToken>::const_iterator it = tokens->begin(); it != tokens->end(); ++it) {
         ASSERT(!isWaitingForScripts());
@@ -499,6 +522,8 @@ size_t HTMLDocumentParser::processParsedChunkFromBackgroundParser(PassOwnPtr<Par
         if (!chunk->startingScript && (it->type() == HTMLToken::StartTag || it->type() == HTMLToken::EndTag))
             elementTokenCount++;
 
+        ASSERT(false); // BKTODO:
+#if 0
         if (document()->frame() && document()->frame()->navigationScheduler().locationChangePending()) {
 
             // To match main-thread parser behavior (which never checks locationChangePending on the EOF path)
@@ -509,6 +534,7 @@ size_t HTMLDocumentParser::processParsedChunkFromBackgroundParser(PassOwnPtr<Par
             }
             break;
         }
+#endif
 
         m_textPosition = it->textPosition();
 
@@ -609,7 +635,7 @@ void HTMLDocumentParser::forcePlaintextForTextDocument()
         if (!m_haveBackgroundParser)
             startBackgroundParser();
 
-        HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::forcePlaintextForTextDocument, AllowCrossThreadAccess(m_backgroundParser)));
+        ASSERT(false); // BKTODO: HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::forcePlaintextForTextDocument, AllowCrossThreadAccess(m_backgroundParser)));
     } else
         m_tokenizer->setState(HTMLTokenizer::PLAINTEXTState);
 }
@@ -643,9 +669,11 @@ void HTMLDocumentParser::pumpTokenizer()
     TRACE_EVENT_BEGIN1("devtools.timeline", "ParseHTML", "beginData", InspectorParseHtmlEvent::beginData(document(), m_input.current().currentLine().zeroBasedInt()));
 
     if (!isParsingFragment())
-        m_xssAuditor.init(document(), &m_xssAuditorDelegate);
+        ASSERT(false); // BKTODO: m_xssAuditor.init(document(), &m_xssAuditorDelegate);
 
     while (canTakeNextToken()) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (m_xssAuditor.isEnabled())
             m_sourceTracker.start(m_input.current(), m_tokenizer.get(), token());
 
@@ -660,6 +688,7 @@ void HTMLDocumentParser::pumpTokenizer()
             if (OwnPtr<XSSInfo> xssInfo = m_xssAuditor.filterToken(FilterTokenRequest(token(), m_sourceTracker, m_tokenizer->shouldAllowCDATA())))
                 m_xssAuditorDelegate.didBlockScript(*xssInfo);
         }
+#endif
 
         constructTreeFromHTMLToken();
         ASSERT(isStopped() || token().isUninitialized());
@@ -798,6 +827,8 @@ void HTMLDocumentParser::startBackgroundParser()
     RefPtr<WeakReference<BackgroundHTMLParser>> reference = WeakReference<BackgroundHTMLParser>::createUnbound();
     m_backgroundParser = WeakPtr<BackgroundHTMLParser>(reference);
 
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME(oysteine): Disabled due to crbug.com/398076 until a full fix can be implemented.
     if (RuntimeEnabledFeatures::threadedParserDataReceiverEnabled()) {
         if (DocumentLoader* loader = document()->loader())
@@ -824,6 +855,7 @@ void HTMLDocumentParser::startBackgroundParser()
     ASSERT(config->preloadScanner->isSafeToSendToAnotherThread());
     HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::start, reference.release(), config.release(),
         adoptPtr(m_loadingTaskRunner->clone())));
+#endif
 }
 
 void HTMLDocumentParser::stopBackgroundParser()
@@ -832,7 +864,7 @@ void HTMLDocumentParser::stopBackgroundParser()
     ASSERT(m_haveBackgroundParser);
     m_haveBackgroundParser = false;
 
-    HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::stop, AllowCrossThreadAccess(m_backgroundParser)));
+    ASSERT(false); // BKTODO: HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::stop, AllowCrossThreadAccess(m_backgroundParser)));
     m_weakFactory.revokeAll();
 }
 
@@ -945,7 +977,7 @@ void HTMLDocumentParser::finish()
     if (m_haveBackgroundParser) {
         if (!m_input.haveSeenEndOfFile())
             m_input.closeWithoutMarkingEndOfFile();
-        HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::finish, AllowCrossThreadAccess(m_backgroundParser)));
+        ASSERT(false); // BKTODO: HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::finish, AllowCrossThreadAccess(m_backgroundParser)));
         return;
     }
 
@@ -1122,7 +1154,7 @@ void HTMLDocumentParser::appendBytes(const char* data, size_t length)
         memcpy(buffer->data(), data, length);
         TRACE_EVENT1(TRACE_DISABLED_BY_DEFAULT("blink.debug"), "HTMLDocumentParser::appendBytes", "size", (unsigned)length);
 
-        HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::appendRawBytesFromMainThread, AllowCrossThreadAccess(m_backgroundParser), buffer.release()));
+        ASSERT(false); // BKTODO: HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::appendRawBytesFromMainThread, AllowCrossThreadAccess(m_backgroundParser), buffer.release()));
         return;
     }
 
@@ -1146,7 +1178,7 @@ void HTMLDocumentParser::flush()
             return;
         }
 
-        HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::flush, AllowCrossThreadAccess(m_backgroundParser)));
+        ASSERT(false); // BKTODO: HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::flush, AllowCrossThreadAccess(m_backgroundParser)));
     } else {
         DecodedDataDocumentParser::flush();
     }
@@ -1158,7 +1190,7 @@ void HTMLDocumentParser::setDecoder(PassOwnPtr<TextResourceDecoder> decoder)
     DecodedDataDocumentParser::setDecoder(decoder);
 
     if (m_haveBackgroundParser)
-        HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::setDecoder, AllowCrossThreadAccess(m_backgroundParser), takeDecoder()));
+        ASSERT(false); // BKTODO: HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::setDecoder, AllowCrossThreadAccess(m_backgroundParser), takeDecoder()));
 }
 
 }

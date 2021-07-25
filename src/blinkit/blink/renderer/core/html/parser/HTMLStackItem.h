@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLStackItem.h
+// Description: HTMLStackItem Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Company 100, Inc. All rights reserved.
  *
@@ -118,6 +129,7 @@ public:
     // http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#special
     bool isSpecialNode() const
     {
+#if 0 // BKTODO:
         if (hasTagName(MathMLNames::miTag)
             || hasTagName(MathMLNames::moTag)
             || hasTagName(MathMLNames::mnTag)
@@ -128,6 +140,7 @@ public:
             || hasTagName(SVGNames::descTag)
             || hasTagName(SVGNames::titleTag))
             return true;
+#endif
         if (isDocumentFragmentNode())
             return true;
         if (!isInHTMLNamespace())
@@ -135,12 +148,12 @@ public:
         const AtomicString& tagName = localName();
         return tagName == HTMLNames::addressTag
             || tagName == HTMLNames::areaTag
-            || tagName == HTMLNames::appletTag
+            // BKTODO: || tagName == HTMLNames::appletTag
             || tagName == HTMLNames::articleTag
             || tagName == HTMLNames::asideTag
             || tagName == HTMLNames::baseTag
             || tagName == HTMLNames::basefontTag
-            || tagName == HTMLNames::bgsoundTag
+            // BKTODO: || tagName == HTMLNames::bgsoundTag
             || tagName == HTMLNames::blockquoteTag
             || tagName == HTMLNames::bodyTag
             || tagName == HTMLNames::brTag
@@ -156,21 +169,21 @@ public:
             || tagName == HTMLNames::divTag
             || tagName == HTMLNames::dlTag
             || tagName == HTMLNames::dtTag
-            || tagName == HTMLNames::embedTag
+            // BKTODO: || tagName == HTMLNames::embedTag
             || tagName == HTMLNames::fieldsetTag
             || tagName == HTMLNames::figcaptionTag
             || tagName == HTMLNames::figureTag
             || tagName == HTMLNames::footerTag
             || tagName == HTMLNames::formTag
-            || tagName == HTMLNames::frameTag
-            || tagName == HTMLNames::framesetTag
+            // BKTODO: || tagName == HTMLNames::frameTag
+            // BKTODO: || tagName == HTMLNames::framesetTag
             || isNumberedHeaderElement()
             || tagName == HTMLNames::headTag
             || tagName == HTMLNames::headerTag
             || tagName == HTMLNames::hgroupTag
             || tagName == HTMLNames::hrTag
             || tagName == HTMLNames::htmlTag
-            || tagName == HTMLNames::iframeTag
+            // BKTODO: || tagName == HTMLNames::iframeTag
             || tagName == HTMLNames::imgTag
             || tagName == HTMLNames::inputTag
             || tagName == HTMLNames::liTag
@@ -182,13 +195,13 @@ public:
             || (RuntimeEnabledFeatures::contextMenuEnabled() && tagName == HTMLNames::menuitemTag)
             || tagName == HTMLNames::metaTag
             || tagName == HTMLNames::navTag
-            || tagName == HTMLNames::noembedTag
-            || tagName == HTMLNames::noframesTag
-            || tagName == HTMLNames::noscriptTag
-            || tagName == HTMLNames::objectTag
+            // BKTODO: || tagName == HTMLNames::noembedTag
+            // BKTODO: || tagName == HTMLNames::noframesTag
+            // BKTODO: || tagName == HTMLNames::noscriptTag
+            // BKTODO: || tagName == HTMLNames::objectTag
             || tagName == HTMLNames::olTag
             || tagName == HTMLNames::pTag
-            || tagName == HTMLNames::paramTag
+            // BKTODO: || tagName == HTMLNames::paramTag
             || tagName == HTMLNames::plaintextTag
             || tagName == HTMLNames::preTag
             || tagName == HTMLNames::scriptTag
