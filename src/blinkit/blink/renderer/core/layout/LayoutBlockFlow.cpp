@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutBlockFlow.cpp
+// Description: LayoutBlockFlow Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -30,13 +41,13 @@
 
 #include "core/layout/LayoutBlockFlow.h"
 
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLDialogElement.h"
+// BKTODO: #include "core/html/HTMLDialogElement.h"
 #include "core/layout/HitTestLocation.h"
-#include "core/layout/LayoutAnalyzer.h"
+// BKTODO: #include "core/layout/LayoutAnalyzer.h"
 #include "core/layout/LayoutFlowThread.h"
 #include "core/layout/LayoutMultiColumnFlowThread.h"
 #include "core/layout/LayoutMultiColumnSpannerPlaceholder.h"
@@ -285,7 +296,7 @@ void LayoutBlockFlow::layoutBlock(bool relayoutChildren)
     if (!relayoutChildren && simplifiedLayout())
         return;
 
-    LayoutAnalyzer::BlockScope analyzer(*this);
+    ASSERT(false); // BKTODO: LayoutAnalyzer::BlockScope analyzer(*this);
     SubtreeLayoutScope layoutScope(*this);
 
     // Multiple passes might be required for column based layout.
@@ -316,8 +327,11 @@ void LayoutBlockFlow::layoutBlock(bool relayoutChildren)
             setShouldInvalidateOverflowForPaint();
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (isHTMLDialogElement(node()) && isOutOfFlowPositioned())
         positionDialog();
+#endif
 
     clearNeedsLayout();
 }
@@ -2150,7 +2164,8 @@ void LayoutBlockFlow::clearFloats(EClear clear)
 
 bool LayoutBlockFlow::containsFloat(LayoutBox* layoutBox) const
 {
-    return m_floatingObjects && m_floatingObjects->set().contains<FloatingObjectHashTranslator>(layoutBox);
+    ASSERT(false); // BKTODO: return m_floatingObjects && m_floatingObjects->set().contains<FloatingObjectHashTranslator>(layoutBox);
+    return false;
 }
 
 void LayoutBlockFlow::removeFloatingObjects()
@@ -2273,9 +2288,12 @@ FloatingObject* LayoutBlockFlow::insertFloatingObject(LayoutBox& floatBox)
     } else {
         // Don't insert the object again if it's already in the list
         const FloatingObjectSet& floatingObjectSet = m_floatingObjects->set();
+        ASSERT(false); // BKTODO:
+#if 0
         FloatingObjectSetIterator it = floatingObjectSet.find<FloatingObjectHashTranslator>(&floatBox);
         if (it != floatingObjectSet.end())
             return it->get();
+#endif
     }
 
     // Create the special object entry & append it to the list
@@ -2299,6 +2317,8 @@ void LayoutBlockFlow::removeFloatingObject(LayoutBox* floatBox)
 {
     if (m_floatingObjects) {
         const FloatingObjectSet& floatingObjectSet = m_floatingObjects->set();
+        ASSERT(false); // BKTODO:
+#if 0
         FloatingObjectSetIterator it = floatingObjectSet.find<FloatingObjectHashTranslator>(floatBox);
         if (it != floatingObjectSet.end()) {
             FloatingObject& floatingObject = *it->get();
@@ -2328,6 +2348,7 @@ void LayoutBlockFlow::removeFloatingObject(LayoutBox* floatBox)
             }
             m_floatingObjects->remove(&floatingObject);
         }
+#endif
     }
 }
 
@@ -2462,11 +2483,15 @@ bool LayoutBlockFlow::hasOverhangingFloat(LayoutBox* layoutBox)
         return false;
 
     const FloatingObjectSet& floatingObjectSet = m_floatingObjects->set();
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     FloatingObjectSetIterator it = floatingObjectSet.find<FloatingObjectHashTranslator>(layoutBox);
     if (it == floatingObjectSet.end())
         return false;
 
     return logicalBottomForFloat(*it->get()) > logicalHeight();
+#endif
 }
 
 void LayoutBlockFlow::addIntrudingFloats(LayoutBlockFlow* prev, LayoutUnit logicalLeftOffset, LayoutUnit logicalTopOffset)
@@ -2488,6 +2513,8 @@ void LayoutBlockFlow::addIntrudingFloats(LayoutBlockFlow* prev, LayoutUnit logic
     for (FloatingObjectSetIterator prevIt = prevSet.begin(); prevIt != prevEnd; ++prevIt) {
         FloatingObject& floatingObject = *prevIt->get();
         if (logicalBottomForFloat(floatingObject) > logicalTopOffset) {
+            ASSERT(false); // BKTODO:
+#if 0
             if (!m_floatingObjects || !m_floatingObjects->set().contains(&floatingObject)) {
                 // We create the floating object list lazily.
                 if (!m_floatingObjects)
@@ -2504,6 +2531,7 @@ void LayoutBlockFlow::addIntrudingFloats(LayoutBlockFlow* prev, LayoutUnit logic
 
                 m_floatingObjects->add(floatingObject.copyToNewContainer(offset));
             }
+#endif
         }
     }
 }
@@ -3102,6 +3130,8 @@ LayoutBlockFlow::LayoutBlockFlowRareData& LayoutBlockFlow::ensureRareData()
 
 void LayoutBlockFlow::positionDialog()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     HTMLDialogElement* dialog = toHTMLDialogElement(node());
     if (dialog->centeringMode() == HTMLDialogElement::NotCentered)
         return;
@@ -3128,6 +3158,7 @@ void LayoutBlockFlow::positionDialog()
         top += (visibleHeight - size().height()) / 2;
     setY(top);
     dialog->setCentered(top);
+#endif
 }
 
 } // namespace blink
