@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLParserIdioms.cpp
+// Description: HTMLParser Idioms
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Apple Inc. All rights reserved.
  *
@@ -330,6 +341,8 @@ WTF::TextEncoding encodingFromMetaAttributes(const HTMLAttributeList& attributes
         const String& attributeName = htmlAttribute.first;
         const String& attributeValue = AtomicString(htmlAttribute.second);
 
+        ASSERT(false); // BKTODO:
+#if 0
         if (threadSafeMatch(attributeName, http_equivAttr)) {
             if (equalIgnoringCase(attributeValue, "content-type"))
                 gotPragma = true;
@@ -343,6 +356,7 @@ WTF::TextEncoding encodingFromMetaAttributes(const HTMLAttributeList& attributes
                     mode = Pragma;
             }
         }
+#endif
     }
 
     if (mode == Charset || (mode == Pragma && gotPragma))
