@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLScriptRunner.h
+// Description: HTMLScriptRunner Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -26,10 +37,10 @@
 #ifndef HTMLScriptRunner_h
 #define HTMLScriptRunner_h
 
+#include <deque>
 #include "core/dom/PendingScript.h"
 #include "core/fetch/ResourceClient.h"
 #include "platform/heap/Handle.h"
-#include "wtf/Deque.h"
 #include "wtf/PassRefPtr.h"
 #include "wtf/text/TextPosition.h"
 
@@ -89,7 +100,7 @@ private:
     RawPtrWillBeMember<HTMLScriptRunnerHost> m_host;
     PendingScript m_parserBlockingScript;
     // http://www.whatwg.org/specs/web-apps/current-work/#list-of-scripts-that-will-execute-when-the-document-has-finished-parsing
-    WillBeHeapDeque<PendingScript> m_scriptsToExecuteAfterParsing;
+    std::deque<PendingScript> m_scriptsToExecuteAfterParsing;
     unsigned m_scriptNestingLevel;
 
     // We only want stylesheet loads to trigger script execution if script

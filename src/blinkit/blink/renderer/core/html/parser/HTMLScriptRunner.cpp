@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLScriptRunner.cpp
+// Description: HTMLScriptRunner Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -26,11 +37,10 @@
 #include "core/html/parser/HTMLScriptRunner.h"
 
 #include "bindings/core/v8/ScriptSourceCode.h"
-#include "bindings/core/v8/V8PerIsolateData.h"
 #include "core/dom/Element.h"
 #include "core/events/Event.h"
 #include "core/dom/IgnoreDestructiveWriteCountIncrementer.h"
-#include "core/dom/Microtask.h"
+// BKTODO: #include "core/dom/Microtask.h"
 #include "core/dom/ScriptLoader.h"
 #include "core/fetch/ScriptResource.h"
 #include "core/frame/LocalFrame.h"
@@ -77,8 +87,8 @@ void HTMLScriptRunner::detach()
     m_parserBlockingScript.stopWatchingForLoad(this);
     m_parserBlockingScript.releaseElementAndClear();
 
-    while (!m_scriptsToExecuteAfterParsing.isEmpty()) {
-        PendingScript pendingScript = m_scriptsToExecuteAfterParsing.takeFirst();
+    while (!m_scriptsToExecuteAfterParsing.empty()) {
+        PendingScript pendingScript = zed::pop_front(m_scriptsToExecuteAfterParsing);
         pendingScript.stopWatchingForLoad(this);
         pendingScript.releaseElementAndClear();
     }
@@ -134,7 +144,7 @@ void HTMLScriptRunner::executePendingScriptAndDispatchEvent(PendingScript& pendi
     pendingScript.stopWatchingForLoad(this);
 
     if (!isExecutingScript()) {
-        Microtask::performCheckpoint(V8PerIsolateData::mainThreadIsolate());
+        // BKTODO: Microtask::performCheckpoint(V8PerIsolateData::mainThreadIsolate());
         if (pendingScriptType == PendingScript::ParsingBlocking) {
             m_hasScriptsWaitingForResources = !m_document->isScriptExecutionReady();
             // The parser cannot be unblocked as a microtask requested another resource
@@ -160,11 +170,13 @@ void HTMLScriptRunner::executePendingScriptAndDispatchEvent(PendingScript& pendi
             }
         }
     }
+#if 0 // BKTODO:
     // The exact value doesn't matter; valid time stamps are much bigger than this value.
     const double epsilon = 1;
     if (pendingScriptType == PendingScript::ParsingBlocking && !m_parserBlockingScriptAlreadyLoaded && compilationFinishTime > epsilon && loadFinishTime > epsilon) {
         Platform::current()->histogramCustomCounts("WebCore.Scripts.ParsingBlocking.TimeBetweenLoadedAndCompiled", (compilationFinishTime - loadFinishTime) * 1000, 0, 10000, 50);
     }
+#endif
 
     ASSERT(!isExecutingScript());
 }
@@ -256,15 +268,15 @@ void HTMLScriptRunner::executeScriptsWaitingForResources()
 
 bool HTMLScriptRunner::executeScriptsWaitingForParsing()
 {
-    while (!m_scriptsToExecuteAfterParsing.isEmpty()) {
+    while (!m_scriptsToExecuteAfterParsing.empty()) {
         ASSERT(!isExecutingScript());
         ASSERT(!hasParserBlockingScript());
-        ASSERT(m_scriptsToExecuteAfterParsing.first().resource());
-        if (!m_scriptsToExecuteAfterParsing.first().isReady()) {
-            m_scriptsToExecuteAfterParsing.first().watchForLoad(this);
+        ASSERT(m_scriptsToExecuteAfterParsing.front().resource());
+        if (!m_scriptsToExecuteAfterParsing.front().isReady()) {
+            m_scriptsToExecuteAfterParsing.front().watchForLoad(this);
             return false;
         }
-        PendingScript first = m_scriptsToExecuteAfterParsing.takeFirst();
+        PendingScript first = zed::pop_front(m_scriptsToExecuteAfterParsing);
         executePendingScriptAndDispatchEvent(first, PendingScript::Deferred);
         // FIXME: What is this m_document check for?
         if (!m_document)
@@ -285,9 +297,12 @@ void HTMLScriptRunner::requestParsingBlockingScript(Element* element)
     // if possible before returning control to the parser.
     if (!m_parserBlockingScript.isReady()) {
         if (m_document->frame()) {
+            ASSERT(false); // BKTODO:
+#if 0
             ScriptState* scriptState = ScriptState::forMainWorld(m_document->frame());
             if (scriptState)
                 ScriptStreamer::startStreaming(m_parserBlockingScript, PendingScript::ParsingBlocking, m_document->frame()->settings(), scriptState, m_document->loadingTaskRunner());
+#endif
         }
 
         m_parserBlockingScript.watchForLoad(this);
@@ -301,13 +316,16 @@ void HTMLScriptRunner::requestDeferredScript(Element* element)
         return;
 
     if (m_document->frame() && !pendingScript.isReady()) {
+        ASSERT(false); // BKTODO:
+#if 0
         ScriptState* scriptState = ScriptState::forMainWorld(m_document->frame());
         if (scriptState)
             ScriptStreamer::startStreaming(pendingScript, PendingScript::Deferred, m_document->frame()->settings(), scriptState, m_document->loadingTaskRunner());
+#endif
     }
 
     ASSERT(pendingScript.resource());
-    m_scriptsToExecuteAfterParsing.append(pendingScript);
+    m_scriptsToExecuteAfterParsing.emplace_back(pendingScript);
 }
 
 bool HTMLScriptRunner::requestPendingScript(PendingScript& pendingScript, Element* script) const
@@ -343,8 +361,10 @@ void HTMLScriptRunner::runScript(Element* script, const TextPosition& scriptStar
 
         ASSERT(scriptLoader->isParserInserted());
 
+#if 0 // BKTODO:
         if (!isExecutingScript())
             Microtask::performCheckpoint(V8PerIsolateData::mainThreadIsolate());
+#endif
 
         InsertionPointRecord insertionPointRecord(m_host->inputStream());
         NestingLevelIncrementer nestingLevelIncrementer(m_scriptNestingLevel);
@@ -375,7 +395,7 @@ DEFINE_TRACE(HTMLScriptRunner)
     visitor->trace(m_document);
     visitor->trace(m_host);
     visitor->trace(m_parserBlockingScript);
-    visitor->trace(m_scriptsToExecuteAfterParsing);
+    ASSERT(false); // BKTODO: visitor->trace(m_scriptsToExecuteAfterParsing);
 }
 
 } // namespace blink
