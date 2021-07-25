@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PreloadRequest.h
+// Description: PreloadRequest Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,12 +16,12 @@
 #ifndef PreloadRequest_h
 #define PreloadRequest_h
 
-#include "core/fetch/ClientHintsPreferences.h"
+// BKTODO: #include "core/fetch/ClientHintsPreferences.h"
 #include "core/fetch/FetchRequest.h"
-#include "core/fetch/IntegrityMetadata.h"
+// BKTODO: #include "core/fetch/IntegrityMetadata.h"
 #include "core/fetch/Resource.h"
-#include "platform/CrossOriginAttributeValue.h"
-#include "platform/weborigin/SecurityPolicy.h"
+// BKTODO: #include "platform/CrossOriginAttributeValue.h"
+// BKTODO: #include "platform/weborigin/SecurityPolicy.h"
 #include "wtf/Allocator.h"
 #include "wtf/text/TextPosition.h"
 
@@ -23,10 +34,12 @@ class PreloadRequest {
 public:
     enum RequestType { RequestTypePreload, RequestTypePreconnect, RequestTypeLinkRelPreload };
 
+#if 0 // BKTODO:
     static PassOwnPtr<PreloadRequest> create(const String& initiatorName, const TextPosition& initiatorPosition, const String& resourceURL, const KURL& baseURL, Resource::Type resourceType, const ReferrerPolicy referrerPolicy, const FetchRequest::ResourceWidth& resourceWidth = FetchRequest::ResourceWidth(), const ClientHintsPreferences& clientHintsPreferences = ClientHintsPreferences(), RequestType requestType = RequestTypePreload)
     {
         return adoptPtr(new PreloadRequest(initiatorName, initiatorPosition, resourceURL, baseURL, resourceType, resourceWidth, clientHintsPreferences, requestType, referrerPolicy));
     }
+#endif
 
     bool isSafeToSendToAnotherThread() const;
 
@@ -36,6 +49,7 @@ public:
     double discoveryTime() const { return m_discoveryTime; }
     void setDefer(FetchRequest::DeferOption defer) { m_defer = defer; }
     void setCharset(const String& charset) { m_charset = charset.isolatedCopy(); }
+#if 0 // BKTODO:
     void setCrossOrigin(CrossOriginAttributeValue crossOrigin)
     {
         m_crossOrigin = crossOrigin;
@@ -44,12 +58,14 @@ public:
     {
         return m_crossOrigin;
     }
+#endif
     Resource::Type resourceType() const { return m_resourceType; }
 
     const String& resourceURL() const { return m_resourceURL; }
     float resourceWidth() const { return m_resourceWidth.isSet ? m_resourceWidth.width : 0; }
     const KURL& baseURL() const { return m_baseURL; }
     bool isPreconnect() const { return m_requestType == RequestTypePreconnect; }
+#if 0 // BKTODO:
     const ClientHintsPreferences& preferences() const { return m_clientHintsPreferences; }
     ReferrerPolicy referrerPolicy() const { return m_referrerPolicy; }
     void setIntegrityMetadata(const IntegrityMetadataSet& metadataSet)
@@ -60,8 +76,10 @@ public:
     {
         return m_integrityMetadata;
     }
+#endif
 
 private:
+#if 0 // BKTODO:
     PreloadRequest(const String& initiatorName,
         const TextPosition& initiatorPosition,
         const String& resourceURL,
@@ -85,6 +103,7 @@ private:
         , m_referrerPolicy(referrerPolicy)
     {
     }
+#endif
 
     KURL completeURL(Document*);
 
@@ -94,14 +113,16 @@ private:
     KURL m_baseURL;
     String m_charset;
     Resource::Type m_resourceType;
-    CrossOriginAttributeValue m_crossOrigin;
+    // BKTODO: CrossOriginAttributeValue m_crossOrigin;
     double m_discoveryTime;
     FetchRequest::DeferOption m_defer;
     FetchRequest::ResourceWidth m_resourceWidth;
-    ClientHintsPreferences m_clientHintsPreferences;
+    // BKTODO: ClientHintsPreferences m_clientHintsPreferences;
     RequestType m_requestType;
+#if 0 // BKTODO:
     ReferrerPolicy m_referrerPolicy;
     IntegrityMetadataSet m_integrityMetadata;
+#endif
 };
 
 typedef Vector<OwnPtr<PreloadRequest>> PreloadRequestStream;
