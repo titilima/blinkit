@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EventHandler.h
+// Description: EventHandler Class
+//      Author: Ziming Li
+//     Created: 2021-07-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2009, 2010, 2011 Apple Inc. All rights reserved.
  *
@@ -27,7 +38,7 @@
 #define EventHandler_h
 
 #include "core/CoreExport.h"
-#include "core/events/PointerEventFactory.h"
+// BKTODO: #include "core/events/PointerEventFactory.h"
 #include "core/events/TextEventInputType.h"
 #include "core/layout/HitTestRequest.h"
 #include "core/page/DragActions.h"
@@ -35,9 +46,9 @@
 #include "core/style/ComputedStyleConstants.h"
 #include "platform/Cursor.h"
 #include "platform/PlatformMouseEvent.h"
-#include "platform/PlatformTouchPoint.h"
+// BKTODO: #include "platform/PlatformTouchPoint.h"
 #include "platform/Timer.h"
-#include "platform/UserGestureIndicator.h"
+// BKTODO: #include "platform/UserGestureIndicator.h"
 #include "platform/geometry/LayoutPoint.h"
 #include "platform/heap/Handle.h"
 #include "platform/scroll/ScrollTypes.h"
@@ -152,6 +163,7 @@ public:
     // Clear the old hover/active state within frames before moving the hover state to the another frame
     void updateGestureHoverActiveState(const HitTestRequest&, Element*);
 
+#if 0 // BKTODO:
     // Hit-test the provided (non-scroll) gesture event, applying touch-adjustment and updating
     // hover/active state across all frames if necessary. This should be called at most once
     // per gesture event, and called on the local root frame.
@@ -159,6 +171,7 @@ public:
     // FIXME: Remove readOnly param when there is only ever a single call to this.
     GestureEventWithHitTestResults targetGestureEvent(const PlatformGestureEvent&, bool readOnly = false);
     GestureEventWithHitTestResults hitTestResultForGestureEvent(const PlatformGestureEvent&, HitTestRequest::HitTestRequestType);
+#endif
     // Handle the provided non-scroll gesture event. Should be called only on the inner frame.
     WebInputEventResult handleGestureEventInFrame(const GestureEventWithHitTestResults&);
 
@@ -198,12 +211,13 @@ public:
 
     void notifyElementActivated();
 
-    PassRefPtr<UserGestureToken> takeLastMouseDownGestureToken() { return m_lastMouseDownUserGestureToken.release(); }
+    // BKTODO: PassRefPtr<UserGestureToken> takeLastMouseDownGestureToken() { return m_lastMouseDownUserGestureToken.release(); }
 
     int clickCount() { return m_clickCount; }
 
     SelectionController& selectionController() const { return *m_selectionController; }
 
+#if 0 // BKTODO:
     class TouchInfo {
         DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
     public:
@@ -221,6 +235,7 @@ public:
         bool knownTarget;
         bool consumed;
     };
+#endif
 
 private:
     static DragState& dragState();
@@ -352,10 +367,12 @@ private:
     // the given element.
     bool slideFocusOnShadowHostIfNecessary(const Element&);
 
+#if 0 // BKTODO:
     void dispatchPointerEvents(const PlatformTouchEvent&, WillBeHeapVector<TouchInfo>&);
     void sendPointerCancels(WillBeHeapVector<TouchInfo>&);
 
     WebInputEventResult dispatchTouchEvents(const PlatformTouchEvent&, WillBeHeapVector<TouchInfo>&, bool, bool);
+#endif
 
     // NOTE: If adding a new field to this class please ensure that it is
     // cleared in |EventHandler::clear()|.
@@ -384,7 +401,7 @@ private:
 
     Timer<EventHandler> m_fakeMouseMoveEventTimer;
 
-    bool m_svgPan;
+    // BKTODO: bool m_svgPan;
 
     RawPtrWillBeMember<PaintLayerScrollableArea> m_resizeScrollableArea;
 
@@ -414,10 +431,11 @@ private:
     IntPoint m_mouseDownPos; // In our view's coords.
     double m_mouseDownTimestamp;
     PlatformMouseEvent m_mouseDown;
-    RefPtr<UserGestureToken> m_lastMouseDownUserGestureToken;
+    // BKTODO: RefPtr<UserGestureToken> m_lastMouseDownUserGestureToken;
 
     RefPtrWillBeMember<Node> m_previousWheelScrolledNode;
 
+#if 0 // BKTODO:
     // The target of each active touch point indexed by the touch ID.
     using TouchTargetMap = WillBeHeapHashMap<unsigned, RefPtrWillBeMember<EventTarget>, DefaultHash<unsigned>::Hash, WTF::UnsignedWithZeroKeyHashTraits<unsigned>>;
     TouchTargetMap m_targetForTouchID;
@@ -425,10 +443,11 @@ private:
     // If set, the document of the active touch sequence. Unset if no touch sequence active.
     RefPtrWillBeMember<Document> m_touchSequenceDocument;
     RefPtr<UserGestureToken> m_touchSequenceUserGestureToken;
+#endif
 
     bool m_touchPressed;
 
-    PointerEventFactory m_pointerEventFactory;
+    // BKTODO: PointerEventFactory m_pointerEventFactory;
 
     // Prevents firing mousedown, mousemove & mouseup in-between a canceled pointerdown and next pointerup/pointercancel.
     // See "PREVENT MOUSE EVENT flag" in the spec:
@@ -469,6 +488,6 @@ private:
 
 } // namespace blink
 
-WTF_ALLOW_INIT_WITH_MEM_FUNCTIONS(blink::EventHandler::TouchInfo);
+// BKTODO: WTF_ALLOW_INIT_WITH_MEM_FUNCTIONS(blink::EventHandler::TouchInfo);
 
 #endif // EventHandler_h
