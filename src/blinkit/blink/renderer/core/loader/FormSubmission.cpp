@@ -66,7 +66,7 @@ static void appendMailtoPostFormDataToURL(KURL& url, const EncodedFormData& data
 
     if (equalIgnoringCase(encodingType, "text/plain")) {
         // Convention seems to be to decode, and s/&/\r\n/. Also, spaces are encoded as %20.
-        body = decodeURLEscapeSequences(body.replaceWithLiteral('&', "\r\n").replace('+', ' ') + "\r\n");
+        ASSERT(false); // BKTODO: body = decodeURLEscapeSequences(body.replaceWithLiteral('&', "\r\n").replace('+', ' ') + "\r\n");
     }
 
     Vector<char> bodyData;
@@ -75,11 +75,11 @@ static void appendMailtoPostFormDataToURL(KURL& url, const EncodedFormData& data
     body = String(bodyData.data(), bodyData.size()).replaceWithLiteral('+', "%20");
 
     StringBuilder query;
-    query.append(url.query());
+    ASSERT(false); // BKTODO: query.append(url.query());
     if (!query.isEmpty())
         query.append('&');
     query.append(body);
-    url.setQuery(query.toString());
+    ASSERT(false); // BKTODO: url.setQuery(query.toString());
 }
 
 void FormSubmission::Attributes::parseAction(const String& action)
@@ -257,7 +257,7 @@ KURL FormSubmission::requestURL() const
         return m_action;
 
     KURL requestURL(m_action);
-    requestURL.setQuery(m_formData->flattenToString());
+    ASSERT(false); // BKTODO: requestURL.setQuery(m_formData->flattenToString());
     return requestURL;
 }
 
