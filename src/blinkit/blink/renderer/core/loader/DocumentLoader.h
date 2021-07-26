@@ -111,7 +111,7 @@ public:
     const AtomicString& responseMIMEType() const;
 
     void didChangePerformanceTiming();
-    void updateForSameDocumentNavigation(const KURL&, SameDocumentNavigationSource);
+    // BKTODO: void updateForSameDocumentNavigation(const KURL&, SameDocumentNavigationSource);
     void stopLoading();
     bool isLoading() const;
     const ResourceResponse& response() const { return m_response; }
@@ -125,8 +125,10 @@ public:
     void setSentDidFinishLoad() { m_state = SentDidFinishLoad; }
     bool sentDidFinishLoad() const { return m_state == SentDidFinishLoad; }
 
+#if 0 // BKTODO:
     NavigationType navigationType() const { return m_navigationType; }
     void setNavigationType(NavigationType navigationType) { m_navigationType = navigationType; }
+#endif
 
     void setDefersLoading(bool);
 
@@ -135,18 +137,22 @@ public:
 
     void attachThreadedDataReceiver(PassRefPtrWillBeRawPtr<ThreadedDataReceiver>);
     void acceptDataFromThreadedReceiver(const char* data, int dataLength, int encodedDataLength);
+#if 0 // BKTODO:
     DocumentLoadTiming& timing() { return m_documentLoadTiming; }
     const DocumentLoadTiming& timing() const { return m_documentLoadTiming; }
 
     ApplicationCacheHost* applicationCacheHost() const { return m_applicationCacheHost.get(); }
+#endif
 
     bool isRedirect() const { return m_redirectChain.size() > 1; }
     void clearRedirectChain();
     void appendRedirect(const KURL&);
 
+#if 0 // BKTODO:
     PassRefPtrWillBeRawPtr<ContentSecurityPolicy> releaseContentSecurityPolicy() { return m_contentSecurityPolicy.release(); }
 
     ClientHintsPreferences& clientHintsPreferences() { return m_clientHintsPreferences; }
+#endif
 
     struct InitialScrollState {
         DISALLOW_NEW();
@@ -196,7 +202,7 @@ private:
     void cancelLoadAfterXFrameOptionsOrCSPDenied(const ResourceResponse&);
     void redirectReceived(Resource*, ResourceRequest&, const ResourceResponse&) final;
     void updateRequest(Resource*, const ResourceRequest&) final;
-    void responseReceived(Resource*, const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) final;
+    // BKTODO: void responseReceived(Resource*, const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) final;
     void dataReceived(Resource*, const char* data, size_t length) final;
     void processData(const char* data, size_t length);
     void notifyFinished(Resource*) final;
@@ -232,18 +238,22 @@ private:
     bool m_isClientRedirect;
     bool m_replacesCurrentHistoryItem;
 
+#if 0 // BKTODO:
     NavigationType m_navigationType;
 
     RefPtrWillBeMember<MHTMLArchive> m_archive;
 
     DocumentLoadTiming m_documentLoadTiming;
+#endif
 
     double m_timeOfLastDataReceived;
 
+#if 0 // BKTODO:
     PersistentWillBeMember<ApplicationCacheHost> m_applicationCacheHost;
 
     RefPtrWillBeMember<ContentSecurityPolicy> m_contentSecurityPolicy;
     ClientHintsPreferences m_clientHintsPreferences;
+#endif
     InitialScrollState m_initialScrollState;
 
     enum State {
@@ -258,10 +268,10 @@ private:
 
     // Used to protect against reentrancy into dataReceived().
     bool m_inDataReceived;
-    RefPtr<SharedBuffer> m_dataBuffer;
+    std::shared_ptr<SharedBuffer> m_dataBuffer;
 };
 
-DECLARE_WEAK_IDENTIFIER_MAP(DocumentLoader);
+// BKTODO: DECLARE_WEAK_IDENTIFIER_MAP(DocumentLoader);
 
 } // namespace blink
 
