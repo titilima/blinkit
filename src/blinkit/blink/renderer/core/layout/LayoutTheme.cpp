@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutTheme.cpp
+// Description: LayoutTheme Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * This file is part of the theme implementation for form controls in WebCore.
  *
@@ -38,7 +49,7 @@
 #include "core/html/HTMLMeterElement.h"
 #include "core/html/HTMLOptionElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
-#include "core/html/shadow/MediaControlElements.h"
+// BKTODO: #include "core/html/shadow/MediaControlElements.h"
 #include "core/html/shadow/ShadowElementNames.h"
 #include "core/html/shadow/SpinButtonElement.h"
 #include "core/html/shadow/TextControlInnerElements.h"
@@ -53,8 +64,8 @@
 #include "platform/text/StringTruncator.h"
 #include "public/platform/Platform.h"
 #include "public/platform/WebFallbackThemeEngine.h"
-#include "public/platform/WebRect.h"
 #include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/core/layout/LayoutBox.h"
 
 #if USE(NEW_THEME)
 #include "platform/Theme.h"
@@ -224,6 +235,7 @@ String LayoutTheme::extraDefaultStyleSheet()
     return runtimeCSS.toString();
 }
 
+#if 0 // BKTODO:
 static String formatChromiumMediaControlsTime(float time, float duration, bool includeSeparator)
 {
     if (!std::isfinite(time))
@@ -275,6 +287,7 @@ String LayoutTheme::formatMediaControlsCurrentTime(float currentTime, float dura
 {
     return formatChromiumMediaControlsTime(currentTime, duration, false);
 }
+#endif
 
 Color LayoutTheme::activeSelectionBackgroundColor() const
 {
@@ -909,11 +922,14 @@ void LayoutTheme::adjustCheckboxStyleUsingFallbackTheme(ComputedStyle& style) co
     if (!style.width().isIntrinsicOrAuto() && !style.height().isAuto())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     IntSize size = Platform::current()->fallbackThemeEngine()->getSize(WebFallbackThemeEngine::PartCheckbox);
     float zoomLevel = style.effectiveZoom();
     size.setWidth(size.width() * zoomLevel);
     size.setHeight(size.height() * zoomLevel);
     setSizeIfAuto(style, size);
+#endif
 
     // padding - not honored by WinIE, needs to be removed.
     style.resetPadding();
@@ -929,11 +945,14 @@ void LayoutTheme::adjustRadioStyleUsingFallbackTheme(ComputedStyle& style) const
     if (!style.width().isIntrinsicOrAuto() && !style.height().isAuto())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     IntSize size = Platform::current()->fallbackThemeEngine()->getSize(WebFallbackThemeEngine::PartRadio);
     float zoomLevel = style.effectiveZoom();
     size.setWidth(size.width() * zoomLevel);
     size.setHeight(size.height() * zoomLevel);
     setSizeIfAuto(style, size);
+#endif
 
     // padding - not honored by WinIE, needs to be removed.
     style.resetPadding();

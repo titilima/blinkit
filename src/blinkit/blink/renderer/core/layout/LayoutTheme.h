@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutTheme.h
+// Description: LayoutTheme Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * This file is part of the theme implementation for form controls in WebCore.
  *
@@ -156,9 +167,11 @@ public:
     // Returns the duration of the animation for the progress bar.
     virtual double animationDurationForProgressBar() const;
 
+#if 0 // BKTODO:
     // Media controls
     String formatMediaControlsTime(float time) const;
     String formatMediaControlsCurrentTime(float currentTime, float duration) const;
+#endif
 
     virtual IntSize meterSizeForBounds(const LayoutMeter&, const IntRect&) const;
     virtual bool supportsMeter(ControlPart) const;
