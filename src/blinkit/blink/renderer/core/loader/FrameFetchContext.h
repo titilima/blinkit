@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FrameFetchContext.h
+// Description: FrameFetchContext Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -34,7 +45,7 @@
 #include "core/CoreExport.h"
 #include "core/fetch/FetchContext.h"
 #include "core/fetch/ResourceFetcher.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
+// BKTODO: #include "core/frame/csp/ContentSecurityPolicy.h"
 #include "platform/heap/Handle.h"
 #include "platform/network/ResourceRequest.h"
 #include "wtf/PassOwnPtr.h"
@@ -69,9 +80,9 @@ public:
 
     void addAdditionalRequestHeaders(ResourceRequest&, FetchResourceType) override;
     void setFirstPartyForCookies(ResourceRequest&) override;
-    CachePolicy cachePolicy() const override;
+    // BKTODO: CachePolicy cachePolicy() const override;
     ResourceRequestCachePolicy resourceRequestCachePolicy(const ResourceRequest&, Resource::Type) const override;
-    void dispatchDidChangeResourcePriority(unsigned long identifier, ResourceLoadPriority, int intraPriorityValue) override;
+    // BKTODO: void dispatchDidChangeResourcePriority(unsigned long identifier, ResourceLoadPriority, int intraPriorityValue) override;
     void dispatchWillSendRequest(unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse, const FetchInitiatorInfo& = FetchInitiatorInfo()) override;
     void dispatchDidLoadResourceFromMemoryCache(const Resource*) override;
     void dispatchDidReceiveResponse(unsigned long identifier, const ResourceResponse&, ResourceLoader* = 0) override;
@@ -99,16 +110,18 @@ public:
     bool updateTimingInfoForIFrameNavigation(ResourceTimingInfo*) override;
     void sendImagePing(const KURL&) override;
     void addConsoleMessage(const String&) const override;
-    SecurityOrigin* securityOrigin() const override;
+    // BKTODO: SecurityOrigin* securityOrigin() const override;
     void upgradeInsecureRequest(FetchRequest&) override;
     void addClientHintsIfNecessary(FetchRequest&) override;
     void addCSPHeaderIfNecessary(Resource::Type, FetchRequest&) override;
 
+#if 0 // BKTODO:
     ResourceLoadPriority modifyPriorityForExperiments(ResourceLoadPriority, Resource::Type, const FetchRequest&, ResourcePriority::VisibilityStatus) override;
 
     void countClientHintsDPR() override;
     void countClientHintsResourceWidth() override;
     void countClientHintsViewportWidth() override;
+#endif
 
     WebTaskRunner* loadingTaskRunner() const override;
 
@@ -120,7 +133,7 @@ private:
 
     LocalFrame* frame() const; // Can be null
     void printAccessDeniedMessage(const KURL&) const;
-    ResourceRequestBlockedReason canRequestInternal(Resource::Type, const ResourceRequest&, const KURL&, const ResourceLoaderOptions&, bool forPreload, FetchRequest::OriginRestriction, ContentSecurityPolicy::RedirectStatus) const;
+    // BKTODO: ResourceRequestBlockedReason canRequestInternal(Resource::Type, const ResourceRequest&, const KURL&, const ResourceLoaderOptions&, bool forPreload, FetchRequest::OriginRestriction, ContentSecurityPolicy::RedirectStatus) const;
 
     // FIXME: Oilpan: Ideally this should just be a traced Member but that will
     // currently leak because ComputedStyle and its data are not on the heap.

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FrameFetchContext.cpp
+// Description: FrameFetchContext Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -32,7 +43,7 @@
 
 #include "bindings/core/v8/ScriptController.h"
 #include "core/dom/Document.h"
-#include "core/fetch/ClientHintsPreferences.h"
+// BKTODO: #include "core/fetch/ClientHintsPreferences.h"
 #include "core/fetch/ResourceLoader.h"
 #include "core/fetch/UniqueIdentifier.h"
 #include "core/frame/FrameConsole.h"
@@ -40,23 +51,26 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLFrameOwnerElement.h"
+// BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/imports/HTMLImportsController.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "core/inspector/InspectorInstrumentation.h"
-#include "core/inspector/InspectorResourceAgent.h"
+// BKTODO: #include "core/inspector/InspectorResourceAgent.h"
 #include "core/inspector/InspectorTraceEvents.h"
-#include "core/inspector/InstrumentingAgents.h"
+// BKTODO: #include "core/inspector/InstrumentingAgents.h"
 #include "core/loader/DocumentLoader.h"
 #include "core/loader/FrameLoader.h"
 #include "core/loader/FrameLoaderClient.h"
 #include "core/loader/LinkLoader.h"
 #include "core/loader/MixedContentChecker.h"
+#if 0 // BKTODO:
 #include "core/loader/NetworkHintsInterface.h"
 #include "core/loader/PingLoader.h"
 #include "core/loader/ProgressTracker.h"
 #include "core/loader/appcache/ApplicationCacheHost.h"
+#endif
 #include "core/page/Page.h"
+#if 0 // BKTODO:
 #include "core/svg/graphics/SVGImageChromeClient.h"
 #include "core/timing/DOMWindowPerformance.h"
 #include "core/timing/Performance.h"
@@ -65,6 +79,7 @@
 #include "platform/weborigin/SchemeRegistry.h"
 #include "platform/weborigin/SecurityPolicy.h"
 #include "public/platform/WebFrameScheduler.h"
+#endif
 
 #include <algorithm>
 
@@ -98,6 +113,8 @@ void FrameFetchContext::addAdditionalRequestHeaders(ResourceRequest& request, Fe
 {
     bool isMainResource = type == FetchMainResource;
     if (!isMainResource) {
+        ASSERT(false); // BKTODO:
+#if 0
         RefPtr<SecurityOrigin> outgoingOrigin;
         if (!request.didSetHTTPReferrer()) {
             ASSERT(m_document);
@@ -109,27 +126,35 @@ void FrameFetchContext::addAdditionalRequestHeaders(ResourceRequest& request, Fe
         }
 
         request.addHTTPOriginIfNeeded(outgoingOrigin);
+#endif
     }
 
     if (m_document)
-        request.setOriginatesFromReservedIPRange(m_document->isHostedInReservedIPRange());
+        ASSERT(false); // BKTODO: request.setOriginatesFromReservedIPRange(m_document->isHostedInReservedIPRange());
 
     // The remaining modifications are only necessary for HTTP and HTTPS.
     if (!request.url().isEmpty() && !request.url().protocolIsInHTTPFamily())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (frame()->settings() && frame()->settings()->dataSaverEnabled())
         request.addHTTPHeaderField("Save-Data", "on");
+#endif
 
     frame()->loader().applyUserAgent(request);
 }
 
 void FrameFetchContext::setFirstPartyForCookies(ResourceRequest& request)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (frame()->tree().top()->isLocalFrame())
         request.setFirstPartyForCookies(toLocalFrame(frame()->tree().top())->document()->firstPartyForCookies());
+#endif
 }
 
+#if 0 // BKTODO:
 CachePolicy FrameFetchContext::cachePolicy() const
 {
     if (m_document && m_document->loadEventFinished())
@@ -167,10 +192,13 @@ static ResourceRequestCachePolicy memoryCachePolicyToResourceRequestCachePolicy(
         return ReturnCacheDataElseLoad;
     return UseProtocolCachePolicy;
 }
+#endif
 
 ResourceRequestCachePolicy FrameFetchContext::resourceRequestCachePolicy(const ResourceRequest& request, Resource::Type type) const
 {
     ASSERT(frame());
+    ASSERT(false); // BKTODO:
+#if 0
     if (type == Resource::MainResource) {
         FrameLoadType frameLoadType = frame()->loader().loadType();
         if (request.httpMethod() == "POST" && frameLoadType == FrameLoadTypeBackForward)
@@ -223,6 +251,7 @@ ResourceRequestCachePolicy FrameFetchContext::resourceRequestCachePolicy(const R
         }
         return memoryCachePolicyToResourceRequestCachePolicy(cachePolicy());
     }
+#endif
     return UseProtocolCachePolicy;
 }
 
@@ -235,22 +264,29 @@ inline DocumentLoader* FrameFetchContext::ensureLoaderForNotifications() const
     return m_documentLoader ? m_documentLoader.get() : frame()->loader().documentLoader();
 }
 
+#if 0 // BKTODO:
 void FrameFetchContext::dispatchDidChangeResourcePriority(unsigned long identifier, ResourceLoadPriority loadPriority, int intraPriorityValue)
 {
     frame()->loader().client()->dispatchDidChangeResourcePriority(identifier, loadPriority, intraPriorityValue);
 }
+#endif
 
 void FrameFetchContext::dispatchWillSendRequest(unsigned long identifier, ResourceRequest& request, const ResourceResponse& redirectResponse, const FetchInitiatorInfo& initiatorInfo)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     frame()->loader().applyUserAgent(request);
     frame()->loader().client()->dispatchWillSendRequest(m_documentLoader, identifier, request, redirectResponse);
     TRACE_EVENT_INSTANT1("devtools.timeline", "ResourceSendRequest", TRACE_EVENT_SCOPE_THREAD, "data", InspectorSendRequestEvent::data(identifier, frame(), request));
     InspectorInstrumentation::willSendRequest(frame(), identifier, ensureLoaderForNotifications(), request, redirectResponse, initiatorInfo);
+#endif
 }
 
 void FrameFetchContext::dispatchDidReceiveResponse(unsigned long identifier, const ResourceResponse& response, ResourceLoader* resourceLoader)
 {
     MixedContentChecker::checkMixedPrivatePublic(frame(), response.remoteIPAddress());
+    ASSERT(false); // BKTODO:
+#if 0
     LinkLoader::loadLinkFromHeader(response.httpHeaderField(HTTPNames::Link), frame()->document(), NetworkHintsInterfaceImpl(), LinkLoader::DoNotLoadResources);
     if (m_documentLoader == frame()->loader().provisionalDocumentLoader()) {
         ResourceFetcher* fetcher = nullptr;
@@ -269,33 +305,45 @@ void FrameFetchContext::dispatchDidReceiveResponse(unsigned long identifier, con
     InspectorInstrumentation::didReceiveResourceResponse(frame(), identifier, documentLoader, response, resourceLoader);
     // It is essential that inspector gets resource response BEFORE console.
     frame()->console().reportResourceResponseReceived(documentLoader, identifier, response);
+#endif
 }
 
 void FrameFetchContext::dispatchDidReceiveData(unsigned long identifier, const char* data, int dataLength, int encodedDataLength)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     frame()->loader().progress().incrementProgress(identifier, dataLength);
     TRACE_EVENT_INSTANT1("devtools.timeline", "ResourceReceivedData", TRACE_EVENT_SCOPE_THREAD, "data", InspectorReceiveDataEvent::data(identifier, frame(), encodedDataLength));
     InspectorInstrumentation::didReceiveData(frame(), identifier, data, dataLength, encodedDataLength);
+#endif
 }
 
 void FrameFetchContext::dispatchDidDownloadData(unsigned long identifier, int dataLength, int encodedDataLength)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     frame()->loader().progress().incrementProgress(identifier, dataLength);
     TRACE_EVENT_INSTANT1("devtools.timeline", "ResourceReceivedData", TRACE_EVENT_SCOPE_THREAD, "data", InspectorReceiveDataEvent::data(identifier, frame(), encodedDataLength));
     InspectorInstrumentation::didReceiveData(frame(), identifier, 0, dataLength, encodedDataLength);
+#endif
 }
 
 void FrameFetchContext::dispatchDidFinishLoading(unsigned long identifier, double finishTime, int64_t encodedDataLength)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     frame()->loader().progress().completeProgress(identifier);
     frame()->loader().client()->dispatchDidFinishLoading(m_documentLoader, identifier);
 
     TRACE_EVENT_INSTANT1("devtools.timeline", "ResourceFinish", TRACE_EVENT_SCOPE_THREAD, "data", InspectorResourceFinishEvent::data(identifier, finishTime, false));
     InspectorInstrumentation::didFinishLoading(frame(), identifier, finishTime, encodedDataLength);
+#endif
 }
 
 void FrameFetchContext::dispatchDidFail(unsigned long identifier, const ResourceError& error, bool isInternalRequest)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     frame()->loader().progress().completeProgress(identifier);
     frame()->loader().client()->dispatchDidFinishLoading(m_documentLoader, identifier);
     TRACE_EVENT_INSTANT1("devtools.timeline", "ResourceFinish", TRACE_EVENT_SCOPE_THREAD, "data", InspectorResourceFinishEvent::data(identifier, 0, true));
@@ -303,11 +351,14 @@ void FrameFetchContext::dispatchDidFail(unsigned long identifier, const Resource
     // Notification to FrameConsole should come AFTER InspectorInstrumentation call, DevTools front-end relies on this.
     if (!isInternalRequest)
         frame()->console().didFailLoading(identifier, error);
+#endif
 }
 
 
 void FrameFetchContext::dispatchDidLoadResourceFromMemoryCache(const Resource* resource)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ResourceRequest request(resource->url());
     unsigned long identifier = createUniqueIdentifier();
     frame()->loader().client()->dispatchDidLoadResourceFromMemoryCache(request, resource->response());
@@ -321,6 +372,7 @@ void FrameFetchContext::dispatchDidLoadResourceFromMemoryCache(const Resource* r
         dispatchDidReceiveData(identifier, 0, resource->encodedSize(), 0);
 
     dispatchDidFinishLoading(identifier, 0, 0);
+#endif
 }
 
 bool FrameFetchContext::shouldLoadNewResource(Resource::Type type) const
@@ -334,8 +386,11 @@ bool FrameFetchContext::shouldLoadNewResource(Resource::Type type) const
 
 void FrameFetchContext::willStartLoadingResource(ResourceRequest& request)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_documentLoader)
         m_documentLoader->applicationCacheHost()->willStartLoadingResource(request);
+#endif
 }
 
 void FrameFetchContext::didLoadResource(Resource* resource)
@@ -346,19 +401,25 @@ void FrameFetchContext::didLoadResource(Resource* resource)
 
 void FrameFetchContext::addResourceTiming(const ResourceTimingInfo& info)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     Document* initiatorDocument = m_document && info.isMainResource() ? m_document->parentDocument() : m_document.get();
     if (!initiatorDocument || !initiatorDocument->domWindow())
         return;
     DOMWindowPerformance::performance(*initiatorDocument->domWindow())->addResourceTiming(info);
+#endif
 }
 
 bool FrameFetchContext::allowImage(bool imagesEnabled, const KURL& url) const
 {
-    return frame()->loader().client()->allowImage(imagesEnabled, url);
+    ASSERT(false); // BKTODO: return frame()->loader().client()->allowImage(imagesEnabled, url);
+    return false;
 }
 
 void FrameFetchContext::printAccessDeniedMessage(const KURL& url) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (url.isNull())
         return;
 
@@ -371,10 +432,13 @@ void FrameFetchContext::printAccessDeniedMessage(const KURL& url) const
         message = "Unsafe attempt to load URL " + url.elidedString() + " from frame with URL " + m_document->url().elidedString() + ". Domains, protocols and ports must match.\n";
 
     frame()->document()->addConsoleMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, message));
+#endif
 }
 
 bool FrameFetchContext::canRequest(Resource::Type type, const ResourceRequest& resourceRequest, const KURL& url, const ResourceLoaderOptions& options, bool forPreload, FetchRequest::OriginRestriction originRestriction) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // As of CSP2, for requests that are the results of redirects, the match
     // algorithm should ignore the path component of the URL.
     ContentSecurityPolicy::RedirectStatus redirectStatus = resourceRequest.followedRedirect() ? ContentSecurityPolicy::DidRedirect : ContentSecurityPolicy::DidNotRedirect;
@@ -385,19 +449,24 @@ bool FrameFetchContext::canRequest(Resource::Type type, const ResourceRequest& r
             InspectorInstrumentation::didBlockRequest(frame(), resourceRequest, ensureLoaderForNotifications(), options.initiatorInfo, reason);
         return false;
     }
+#endif
     return true;
 }
 
 bool FrameFetchContext::allowResponse(Resource::Type type, const ResourceRequest& resourceRequest, const KURL& url, const ResourceLoaderOptions& options) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ResourceRequestBlockedReason reason = canRequestInternal(type, resourceRequest, url, options, false, FetchRequest::UseDefaultOriginRestrictionForType, ContentSecurityPolicy::DidRedirect);
     if (reason != ResourceRequestBlockedReasonNone) {
         InspectorInstrumentation::didBlockRequest(frame(), resourceRequest, ensureLoaderForNotifications(), options.initiatorInfo, reason);
         return false;
     }
+#endif
     return true;
 }
 
+#if 0 // BKTODO:
 ResourceRequestBlockedReason FrameFetchContext::canRequestInternal(Resource::Type type, const ResourceRequest& resourceRequest, const KURL& url, const ResourceLoaderOptions& options, bool forPreload, FetchRequest::OriginRestriction originRestriction, ContentSecurityPolicy::RedirectStatus redirectStatus) const
 {
     InstrumentingAgents* agents = InspectorInstrumentation::instrumentingAgentsFor(frame());
@@ -564,27 +633,36 @@ ResourceRequestBlockedReason FrameFetchContext::canRequestInternal(Resource::Typ
 
     return ResourceRequestBlockedReasonNone;
 }
+#endif
 
 bool FrameFetchContext::isControlledByServiceWorker() const
 {
     ASSERT(m_documentLoader || frame()->loader().documentLoader());
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     if (m_documentLoader)
         return frame()->loader().client()->isControlledByServiceWorker(*m_documentLoader);
     // m_documentLoader is null while loading resources from an HTML import.
     // In such cases whether the request is controlled by ServiceWorker or not
     // is determined by the document loader of the frame.
     return frame()->loader().client()->isControlledByServiceWorker(*frame()->loader().documentLoader());
+#endif
 }
 
 int64_t FrameFetchContext::serviceWorkerID() const
 {
     ASSERT(m_documentLoader || frame()->loader().documentLoader());
+    ASSERT(false); // BKTODO:
+    return 0;
+#if 0
     if (m_documentLoader)
         return frame()->loader().client()->serviceWorkerID(*m_documentLoader);
     // m_documentLoader is null while loading resources from an HTML import.
     // In such cases a service worker ID could be retrieved from the document
     // loader of the frame.
     return frame()->loader().client()->serviceWorkerID(*frame()->loader().documentLoader());
+#endif
 }
 
 bool FrameFetchContext::isMainFrame() const
@@ -609,6 +687,8 @@ bool FrameFetchContext::pageDismissalEventBeingDispatched() const
 
 bool FrameFetchContext::updateTimingInfoForIFrameNavigation(ResourceTimingInfo* info)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // <iframe>s should report the initial navigation requested by the parent document, but not subsequent navigations.
     // FIXME: Resource timing is broken when the parent is a remote frame.
     if (!frame()->deprecatedLocalOwner() || frame()->deprecatedLocalOwner()->loadedNonEmptyDocument())
@@ -619,29 +699,34 @@ bool FrameFetchContext::updateTimingInfoForIFrameNavigation(ResourceTimingInfo* 
     if (frame()->loader().loadType() == FrameLoadTypeInitialHistoryLoad)
         return false;
     info->setInitiatorType(frame()->deprecatedLocalOwner()->localName());
+#endif
     return true;
 }
 
 void FrameFetchContext::sendImagePing(const KURL& url)
 {
-    PingLoader::loadImage(frame(), url);
+    ASSERT(false); // BKTODO: PingLoader::loadImage(frame(), url);
 }
 
 void FrameFetchContext::addConsoleMessage(const String& message) const
 {
     if (frame()->document())
-        frame()->document()->addConsoleMessage(ConsoleMessage::create(JSMessageSource, ErrorMessageLevel, message));
+        ASSERT(false); // BKTODO: frame()->document()->addConsoleMessage(ConsoleMessage::create(JSMessageSource, ErrorMessageLevel, message));
 }
 
+#if 0 // BKTODO:
 SecurityOrigin* FrameFetchContext::securityOrigin() const
 {
     return m_document ? m_document->securityOrigin() : nullptr;
 }
+#endif
 
 void FrameFetchContext::upgradeInsecureRequest(FetchRequest& fetchRequest)
 {
     KURL url = fetchRequest.resourceRequest().url();
 
+    ASSERT(false); // BKTODO:
+#if 0
     // Tack an 'Upgrade-Insecure-Requests' header to outgoing navigational requests, as described in
     // https://w3c.github.io/webappsec/specs/upgrade/#feature-detect
     if (fetchRequest.resourceRequest().frameType() != WebURLRequest::FrameTypeNone)
@@ -668,10 +753,13 @@ void FrameFetchContext::upgradeInsecureRequest(FetchRequest& fetchRequest)
             fetchRequest.mutableResourceRequest().setURL(url);
         }
     }
+#endif
 }
 
 void FrameFetchContext::addClientHintsIfNecessary(FetchRequest& fetchRequest)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!RuntimeEnabledFeatures::clientHintsEnabled() || !m_document)
         return;
 
@@ -692,18 +780,23 @@ void FrameFetchContext::addClientHintsIfNecessary(FetchRequest& fetchRequest)
 
     if (shouldSendViewportWidth && frame()->view())
         fetchRequest.mutableResourceRequest().addHTTPHeaderField("Viewport-Width", AtomicString(String::number(frame()->view()->viewportWidth())));
+#endif
 }
 
 void FrameFetchContext::addCSPHeaderIfNecessary(Resource::Type type, FetchRequest& fetchRequest)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_document)
         return;
 
     const ContentSecurityPolicy* csp = m_document->contentSecurityPolicy();
     if (csp->shouldSendCSPHeader(type))
         fetchRequest.mutableResourceRequest().addHTTPHeaderField("CSP", "active");
+#endif
 }
 
+#if 0 // BKTODO:
 void FrameFetchContext::countClientHintsDPR()
 {
     UseCounter::count(frame(), UseCounter::ClientHintsDPR);
@@ -776,10 +869,12 @@ ResourceLoadPriority FrameFetchContext::modifyPriorityForExperiments(ResourceLoa
     modifiedPriority = std::min(static_cast<int>(ResourceLoadPriorityHighest), std::max(static_cast<int>(ResourceLoadPriorityLowest), modifiedPriority));
     return static_cast<ResourceLoadPriority>(modifiedPriority);
 }
+#endif
 
 WebTaskRunner* FrameFetchContext::loadingTaskRunner() const
 {
-    return frame()->frameScheduler()->loadingTaskRunner();
+    ASSERT(false); // BKTODO: return frame()->frameScheduler()->loadingTaskRunner();
+    return nullptr;
 }
 
 DEFINE_TRACE(FrameFetchContext)
