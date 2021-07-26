@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InlineFlowBox.cpp
+// Description: InlineFlowBox Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
  *
@@ -26,14 +37,16 @@
 #include "core/layout/LayoutInline.h"
 #include "core/layout/LayoutListMarker.h"
 #include "core/layout/LayoutObjectInlines.h"
+#if 0 // BKTODO:
 #include "core/layout/LayoutRubyBase.h"
 #include "core/layout/LayoutRubyRun.h"
 #include "core/layout/LayoutRubyText.h"
+#endif
 #include "core/layout/LayoutView.h"
 #include "core/layout/api/LineLayoutBox.h"
 #include "core/layout/api/LineLayoutInline.h"
 #include "core/layout/api/LineLayoutListMarker.h"
-#include "core/layout/api/LineLayoutRubyRun.h"
+// BKTODO: #include "core/layout/api/LineLayoutRubyRun.h"
 #include "core/layout/line/GlyphOverflow.h"
 #include "core/layout/line/InlineTextBox.h"
 #include "core/layout/line/RootInlineBox.h"
@@ -655,6 +668,8 @@ void InlineFlowBox::placeBoxesInBlockDirection(LayoutUnit top, LayoutUnit maxHei
                 else
                     hasAnnotationsAfter = true;
 
+                ASSERT(false); // BKTODO:
+#if 0
                 LineLayoutRubyRun rubyRun = LineLayoutRubyRun(curr->lineLayoutItem());
                 if (LayoutRubyBase* rubyBase = rubyRun.rubyBase()) {
                     LayoutUnit bottomRubyBaseLeading = (curr->logicalHeight() - rubyBase->logicalBottom()) + rubyBase->logicalHeight() - (rubyBase->lastRootBox() ? rubyBase->lastRootBox()->lineBottom() : LayoutUnit());
@@ -662,6 +677,7 @@ void InlineFlowBox::placeBoxesInBlockDirection(LayoutUnit top, LayoutUnit maxHei
                     newLogicalTop += !lineLayoutItem().style()->isFlippedLinesWritingMode() ? topRubyBaseLeading : bottomRubyBaseLeading;
                     boxHeight -= (topRubyBaseLeading + bottomRubyBaseLeading);
                 }
+#endif
             }
             if (curr->isInlineTextBox()) {
                 TextEmphasisPosition emphasisMarkPosition;
@@ -1149,6 +1165,8 @@ LayoutUnit InlineFlowBox::computeOverAnnotationAdjustment(LayoutUnit allowedPosi
             result = std::max(result, toInlineFlowBox(curr)->computeOverAnnotationAdjustment(allowedPosition));
 
         if (curr->lineLayoutItem().isAtomicInlineLevel() && curr->lineLayoutItem().isRubyRun() && curr->lineLayoutItem().style()->rubyPosition() == RubyPositionBefore) {
+            ASSERT(false); // BKTODO:
+#if 0
             LineLayoutRubyRun rubyRun = LineLayoutRubyRun(curr->lineLayoutItem());
             LayoutRubyText* rubyText = rubyRun.rubyText();
             if (!rubyText)
@@ -1167,6 +1185,7 @@ LayoutUnit InlineFlowBox::computeOverAnnotationAdjustment(LayoutUnit allowedPosi
                 bottomOfLastRubyTextLine += curr->logicalTop();
                 result = std::max(result, bottomOfLastRubyTextLine - allowedPosition);
             }
+#endif
         }
 
         if (curr->isInlineTextBox()) {
@@ -1197,6 +1216,8 @@ LayoutUnit InlineFlowBox::computeUnderAnnotationAdjustment(LayoutUnit allowedPos
             result = std::max(result, toInlineFlowBox(curr)->computeUnderAnnotationAdjustment(allowedPosition));
 
         if (curr->lineLayoutItem().isAtomicInlineLevel() && curr->lineLayoutItem().isRubyRun() && curr->lineLayoutItem().style()->rubyPosition() == RubyPositionAfter) {
+            ASSERT(false); // BKTODO:
+#if 0
             LineLayoutRubyRun rubyRun = LineLayoutRubyRun(curr->lineLayoutItem());
             LayoutRubyText* rubyText = rubyRun.rubyText();
             if (!rubyText)
@@ -1215,6 +1236,7 @@ LayoutUnit InlineFlowBox::computeUnderAnnotationAdjustment(LayoutUnit allowedPos
                 bottomOfLastRubyTextLine += curr->logicalTop();
                 result = std::max(result, bottomOfLastRubyTextLine - allowedPosition);
             }
+#endif
         }
 
         if (curr->isInlineTextBox()) {
