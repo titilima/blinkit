@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InlineTextBox.cpp
+// Description: InlineTextBox Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Dirk Mueller (mueller@kde.org)
@@ -24,9 +35,9 @@
 
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutBR.h"
-#include "core/layout/LayoutRubyText.h"
+// BKTODO: #include "core/layout/LayoutRubyText.h"
 #include "core/layout/api/LineLayoutBox.h"
-#include "core/layout/api/LineLayoutRubyRun.h"
+// BKTODO: #include "core/layout/api/LineLayoutRubyRun.h"
 #include "core/layout/line/AbstractInlineTextBox.h"
 #include "core/layout/line/EllipsisBox.h"
 #include "core/paint/InlineTextBoxPainter.h"
@@ -416,10 +427,14 @@ bool InlineTextBox::getEmphasisMarkPosition(const ComputedStyle& style, TextEmph
     if (!containingBlock.parent().isRubyRun())
         return true; // Cannot get the ruby text.
 
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     LayoutRubyText* rubyText = LineLayoutRubyRun(containingBlock.parent()).rubyText();
 
     // The emphasis marks over are suppressed only if there is a ruby text box and it not empty.
     return !rubyText || !rubyText->firstLineBox();
+#endif
 }
 
 void InlineTextBox::paint(const PaintInfo& paintInfo, const LayoutPoint& paintOffset, LayoutUnit /*lineTop*/, LayoutUnit /*lineBottom*/) const
