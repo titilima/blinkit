@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutTableRow.cpp
+// Description: LayoutTableRow Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1997 Martin Jones (mjones@kde.org)
  *           (C) 1997 Torben Weis (weis@kde.org)
@@ -27,7 +38,7 @@
 #include "core/HTMLNames.h"
 #include "core/fetch/ImageResource.h"
 #include "core/layout/HitTestResult.h"
-#include "core/layout/LayoutAnalyzer.h"
+// BKTODO: #include "core/layout/LayoutAnalyzer.h"
 #include "core/layout/LayoutTableCell.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/SubtreeLayoutScope.h"
@@ -157,7 +168,7 @@ void LayoutTableRow::addChild(LayoutObject* child, LayoutObject* beforeChild)
 void LayoutTableRow::layout()
 {
     ASSERT(needsLayout());
-    LayoutAnalyzer::Scope analyzer(*this);
+    // BKTODO: LayoutAnalyzer::Scope analyzer(*this);
 
     // Table rows do not add translation.
     LayoutState state(*this, LayoutSize());
