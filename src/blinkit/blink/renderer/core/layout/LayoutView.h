@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutView.h
+// Description: LayoutView Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2006 Apple Computer, Inc.
@@ -200,6 +211,7 @@ public:
     // TODO(skobes): This is not quite the ideal behavior, see http://crbug.com/250514 and http://crbug.com/249860.
     bool shouldPlaceBlockDirectionScrollbarOnLogicalLeft() const override { return false; }
 
+#if 0 // BKTODO:
     // Some LayoutMedias want to know about their viewport visibility for
     // crbug.com/487345,402044 .  This facility will be removed once those
     // experiments complete.
@@ -209,6 +221,7 @@ public:
     // Notify all registered LayoutMedias that their position on-screen might
     // have changed.  visibleRect is the clipping boundary.
     void sendMediaPositionChangeNotifications(const IntRect& visibleRect);
+#endif
 
 private:
     void mapLocalToAncestor(const LayoutBoxModelObject* ancestor, TransformState&, MapCoordinatesFlags = ApplyContainerFlip, bool* wasFixed = nullptr, const PaintInvalidationState* = nullptr) const override;
@@ -274,7 +287,7 @@ private:
     unsigned m_hitTestCacheHits;
     OwnPtrWillBePersistent<HitTestCache> m_hitTestCache;
 
-    Vector<LayoutMedia*> m_mediaForPositionNotification;
+    // BKTODO: Vector<LayoutMedia*> m_mediaForPositionNotification;
 };
 
 DEFINE_LAYOUT_OBJECT_TYPE_CASTS(LayoutView, isLayoutView());

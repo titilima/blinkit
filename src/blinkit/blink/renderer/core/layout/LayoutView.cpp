@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutView.cpp
+// Description: LayoutView Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
@@ -26,14 +37,16 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
+#if 0 // BKTODO:
 #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLIFrameElement.h"
 #include "core/html/HTMLVideoElement.h"
+#endif
 #include "core/inspector/InspectorTraceEvents.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutFlowThread.h"
 #include "core/layout/LayoutGeometryMap.h"
-#include "core/layout/LayoutMedia.h"
+// BKTODO: #include "core/layout/LayoutMedia.h"
 #include "core/layout/LayoutPart.h"
 #include "core/layout/LayoutQuote.h"
 #include "core/layout/LayoutScrollbarPart.h"
@@ -42,7 +55,7 @@
 #include "core/page/Page.h"
 #include "core/paint/PaintLayer.h"
 #include "core/paint/ViewPainter.h"
-#include "core/svg/SVGDocumentExtensions.h"
+// BKTODO: #include "core/svg/SVGDocumentExtensions.h"
 #include "platform/TraceEvent.h"
 #include "platform/TracedValue.h"
 #include "platform/geometry/FloatQuad.h"
@@ -66,7 +79,7 @@ public:
     ~HitTestLatencyRecorder()
     {
         int duration = static_cast<int>((WTF::monotonicallyIncreasingTime() - m_start) * 1000000);
-        Platform::current()->histogramCustomCounts(m_allowsChildFrameContent ? "Event.Latency.HitTestRecursive" : "Event.Latency.HitTest", duration, 0, 10000000, 100);
+        ASSERT(false); // BKTODO: Platform::current()->histogramCustomCounts(m_allowsChildFrameContent ? "Event.Latency.HitTestRecursive" : "Event.Latency.HitTest", duration, 0, 10000000, 100);
     }
 
 private:
@@ -267,8 +280,10 @@ void LayoutView::layout()
                 layoutScope.setChildNeedsLayout(child);
         }
 
+#if 0 // BKTODO:
         if (document().svgExtensions())
             document().accessSVGExtensions().invalidateSVGRootsWithRelativeLengthDescendents(&layoutScope);
+#endif
     }
 
     ASSERT(!m_layoutState);
@@ -301,7 +316,7 @@ LayoutRect LayoutView::visualOverflowRect() const
 {
     // In root layer scrolling mode, the LayoutView performs overflow clipping
     // like a regular scrollable div.
-    if (document().settings() && document().settings()->rootLayerScrolls())
+    if (Settings::rootLayerScrolls())
         return LayoutBlockFlow::visualOverflowRect();
 
     // Ditto when not in compositing mode.
@@ -487,6 +502,8 @@ void LayoutView::mapToVisibleRectInAncestorSpace(const LayoutBoxModelObject* anc
     if (ancestor == this)
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     Element* owner = document().ownerElement();
     if (!owner)
         return;
@@ -505,6 +522,7 @@ void LayoutView::mapToVisibleRectInAncestorSpace(const LayoutBoxModelObject* anc
         rect.move(obj->contentBoxOffset());
         obj->mapToVisibleRectInAncestorSpace(ancestor, rect, 0);
     }
+#endif
 }
 
 void LayoutView::adjustViewportConstrainedOffset(LayoutRect& rect, ViewportConstrainedPosition viewportConstraint) const
@@ -824,9 +842,13 @@ void LayoutView::selectionStartEnd(int& startPos, int& endPos)
 
 bool LayoutView::shouldUsePrintingLayout() const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     if (!document().printing() || !m_frameView)
         return false;
     return m_frameView->frame().shouldUsePrintingLayout();
+#endif
 }
 
 LayoutRect LayoutView::viewRect() const
@@ -894,12 +916,12 @@ int LayoutView::viewLogicalHeight(IncludeScrollbarsInRect scrollbarInclusion) co
 
 int LayoutView::viewLogicalWidthForBoxSizing() const
 {
-    return viewLogicalWidth(document().settings() && document().settings()->rootLayerScrolls() ? IncludeScrollbars : ExcludeScrollbars);
+    return viewLogicalWidth(Settings::rootLayerScrolls() ? IncludeScrollbars : ExcludeScrollbars);
 }
 
 int LayoutView::viewLogicalHeightForBoxSizing() const
 {
-    return viewLogicalHeight(document().settings() && document().settings()->rootLayerScrolls() ? IncludeScrollbars : ExcludeScrollbars);
+    return viewLogicalHeight(Settings::rootLayerScrolls() ? IncludeScrollbars : ExcludeScrollbars);
 }
 
 LayoutUnit LayoutView::viewLogicalHeightForPercentages() const
@@ -984,6 +1006,7 @@ void LayoutView::willBeDestroyed()
     m_compositor.clear();
 }
 
+#if 0 // BKTODO:
 void LayoutView::registerMediaForPositionChangeNotification(LayoutMedia& media)
 {
     if (!m_mediaForPositionNotification.contains(&media))
@@ -1003,5 +1026,6 @@ void LayoutView::sendMediaPositionChangeNotifications(const IntRect& visibleRect
         media->notifyPositionMayHaveChanged(visibleRect);
     }
 }
+#endif
 
 } // namespace blink
