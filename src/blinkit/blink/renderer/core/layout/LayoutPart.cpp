@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutPart.cpp
+// Description: LayoutPart Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Simon Hausmann <hausmann@kde.org>
@@ -24,18 +35,18 @@
 
 #include "core/layout/LayoutPart.h"
 
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
-#include "core/html/HTMLFrameElementBase.h"
+// BKTODO: #include "core/html/HTMLFrameElementBase.h"
 #include "core/layout/HitTestResult.h"
-#include "core/layout/LayoutAnalyzer.h"
+// BKTODO: #include "core/layout/LayoutAnalyzer.h"
 #include "core/layout/LayoutView.h"
-#include "core/layout/svg/LayoutSVGRoot.h"
+// BKTODO: #include "core/layout/svg/LayoutSVGRoot.h"
 #include "core/paint/BoxPainter.h"
 #include "core/paint/PaintLayer.h"
 #include "core/paint/PartPainter.h"
-#include "core/plugins/PluginView.h"
+// BKTODO: #include "core/plugins/PluginView.h"
 
 namespace blink {
 
@@ -60,6 +71,7 @@ void LayoutPart::willBeDestroyed()
 {
     frameView()->removePart(this);
 
+#if 0 // BKTODO:
     if (AXObjectCache* cache = document().existingAXObjectCache()) {
         cache->childrenChanged(this->parent());
         cache->remove(this);
@@ -68,6 +80,7 @@ void LayoutPart::willBeDestroyed()
     Element* element = toElement(node());
     if (element && element->isFrameOwnerElement())
         toHTMLFrameOwnerElement(element)->setWidget(nullptr);
+#endif
 
     LayoutReplaced::willBeDestroyed();
 }
@@ -95,11 +108,14 @@ LayoutPart::~LayoutPart()
 
 Widget* LayoutPart::widget() const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // Plugin widgets are stored in their DOM node.
     Element* element = toElement(node());
 
     if (element && element->isFrameOwnerElement())
         return toHTMLFrameOwnerElement(element)->ownedWidget();
+#endif
 
     return nullptr;
 }
@@ -114,6 +130,8 @@ PaintLayerType LayoutPart::layerTypeRequired() const
 
 bool LayoutPart::requiresAcceleratedCompositing() const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // There are two general cases in which we can return true. First, if this is a plugin
     // LayoutObject and the plugin has a layer, then we need a layer. Second, if this is
     // a LayoutObject with a contentDocument and that document needs a layer, then we need
@@ -132,6 +150,7 @@ bool LayoutPart::requiresAcceleratedCompositing() const
         if (LayoutView* view = contentDocument->layoutView())
             return view->usesCompositing();
     }
+#endif
 
     return false;
 }
@@ -233,7 +252,7 @@ void LayoutPart::styleDidChange(StyleDifference diff, const ComputedStyle* oldSt
 void LayoutPart::layout()
 {
     ASSERT(needsLayout());
-    LayoutAnalyzer::Scope analyzer(*this);
+    // BKTODO: LayoutAnalyzer::Scope analyzer(*this);
     clearNeedsLayout();
 }
 
