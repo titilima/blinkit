@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CookieJar.cpp
+// Description: CookieJar Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -34,8 +45,10 @@
 #include "core/frame/LocalFrame.h"
 #include "core/loader/FrameLoaderClient.h"
 #include "public/platform/Platform.h"
+#if 0 // BKTODO:
 #include "public/platform/WebCookieJar.h"
 #include "public/platform/WebURL.h"
+#endif
 
 namespace blink {
 
@@ -43,7 +56,8 @@ static WebCookieJar* toCookieJar(const Document* document)
 {
     if (!document || !document->frame())
         return 0;
-    return document->frame()->loader().client()->cookieJar();
+    ASSERT(false); // BKTODO: return document->frame()->loader().client()->cookieJar();
+    return nullptr;
 }
 
 String cookies(const Document* document, const KURL& url)
@@ -51,7 +65,8 @@ String cookies(const Document* document, const KURL& url)
     WebCookieJar* cookieJar = toCookieJar(document);
     if (!cookieJar)
         return String();
-    return cookieJar->cookies(url, document->firstPartyForCookies());
+    ASSERT(false); // BKTODO: return cookieJar->cookies(url, document->firstPartyForCookies());
+    return String();
 }
 
 void setCookies(Document* document, const KURL& url, const String& cookieString)
@@ -59,7 +74,7 @@ void setCookies(Document* document, const KURL& url, const String& cookieString)
     WebCookieJar* cookieJar = toCookieJar(document);
     if (!cookieJar)
         return;
-    cookieJar->setCookie(url, document->firstPartyForCookies(), cookieString);
+    ASSERT(false); // BKTODO: cookieJar->setCookie(url, document->firstPartyForCookies(), cookieString);
 }
 
 bool cookiesEnabled(const Document* document)
@@ -67,7 +82,8 @@ bool cookiesEnabled(const Document* document)
     WebCookieJar* cookieJar = toCookieJar(document);
     if (!cookieJar)
         return false;
-    return cookieJar->cookiesEnabled(document->cookieURL(), document->firstPartyForCookies());
+    ASSERT(false); // BKTODO: return cookieJar->cookiesEnabled(document->cookieURL(), document->firstPartyForCookies());
+    return false;
 }
 
 String cookieRequestHeaderFieldValue(const Document* document, const KURL& url)
@@ -75,7 +91,8 @@ String cookieRequestHeaderFieldValue(const Document* document, const KURL& url)
     WebCookieJar* cookieJar = toCookieJar(document);
     if (!cookieJar)
         return String();
-    return cookieJar->cookieRequestHeaderFieldValue(url, document->firstPartyForCookies());
+    ASSERT(false); // BKTODO: return cookieJar->cookieRequestHeaderFieldValue(url, document->firstPartyForCookies());
+    return String();
 }
 
 } // namespace blink
