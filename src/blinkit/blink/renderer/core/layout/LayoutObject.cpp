@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutObject.cpp
+// Description: LayoutObject Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -28,7 +39,7 @@
 
 #include "core/HTMLNames.h"
 #include "core/css/resolver/StyleResolver.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/ElementTraversal.h"
 #include "core/dom/StyleEngine.h"
 #include "core/dom/shadow/ShadowRoot.h"
@@ -50,7 +61,7 @@
 #include "core/html/HTMLTableElement.h"
 #include "core/input/EventHandler.h"
 #include "core/layout/HitTestResult.h"
-#include "core/layout/LayoutCounter.h"
+// BKTODO: #include "core/layout/LayoutCounter.h"
 #include "core/layout/LayoutDeprecatedFlexibleBox.h"
 #include "core/layout/LayoutFlexibleBox.h"
 #include "core/layout/LayoutFlowThread.h"
@@ -71,16 +82,16 @@
 #include "core/layout/LayoutTheme.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
-#include "core/page/AutoscrollController.h"
+// BKTODO: #include "core/page/AutoscrollController.h"
 #include "core/page/Page.h"
 #include "core/paint/ObjectPaintProperties.h"
-#include "core/paint/ObjectPainter.h"
+// BKTODO: #include "core/paint/ObjectPainter.h"
 #include "core/paint/PaintInfo.h"
 #include "core/paint/PaintLayer.h"
 #include "core/style/ContentData.h"
 #include "core/style/ShadowList.h"
 #include "platform/HostWindow.h"
-#include "platform/JSONValues.h"
+// BKTODO: #include "platform/JSONValues.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/TraceEvent.h"
 #include "platform/TracedValue.h"
@@ -88,7 +99,7 @@
 #include "platform/graphics/GraphicsContext.h"
 #include "platform/graphics/paint/PaintController.h"
 #include "wtf/Partitions.h"
-#include "wtf/RefCountedLeakCounter.h"
+// BKTODO: #include "wtf/RefCountedLeakCounter.h"
 #include "wtf/text/StringBuilder.h"
 #include "wtf/text/WTFString.h"
 #include <algorithm>
@@ -234,12 +245,14 @@ LayoutObject* LayoutObject::createObject(Element* element, const ComputedStyle& 
     return nullptr;
 }
 
+#if 0 // BKTODO:
 #ifndef NDEBUG
 static WTF::RefCountedLeakCounter& layoutObjectCounter()
 {
     DEFINE_STATIC_LOCAL(WTF::RefCountedLeakCounter, staticLayoutObjectCounter, ("LayoutObject"));
     return staticLayoutObjectCounter;
 }
+#endif
 #endif
 
 LayoutObject::LayoutObject(Node* node)
@@ -260,7 +273,7 @@ LayoutObject::LayoutObject(Node* node)
         m_previousPositionFromPaintInvalidationBacking = uninitializedPaintOffset();
 
 #ifndef NDEBUG
-    layoutObjectCounter().increment();
+    // BKTODO: layoutObjectCounter().increment();
 #endif
     InstanceCounters::incrementCounter(InstanceCounters::LayoutObjectCounter);
 }
@@ -269,7 +282,7 @@ LayoutObject::~LayoutObject()
 {
     ASSERT(!m_hasAXObject);
 #ifndef NDEBUG
-    layoutObjectCounter().decrement();
+    // BKTODO: layoutObjectCounter().decrement();
 #endif
     InstanceCounters::decrementCounter(InstanceCounters::LayoutObjectCounter);
 }
@@ -1162,6 +1175,7 @@ bool LayoutObject::isPaintInvalidationContainer() const
     return hasLayer() && toLayoutBoxModelObject(this)->layer()->isPaintInvalidationContainer();
 }
 
+#if 0 // BKTODO:
 template <typename T>
 void addJsonObjectForRect(TracedValue* value, const char* name, const T& rect)
 {
@@ -1189,6 +1203,7 @@ static PassRefPtr<TraceEvent::ConvertableToTraceFormat> jsonObjectForPaintInvali
     value->setString("invalidation_reason", invalidationReason);
     return value;
 }
+#endif
 
 LayoutRect LayoutObject::computePaintInvalidationRect(const LayoutBoxModelObject& paintInvalidationContainer, const PaintInvalidationState* paintInvalidationState) const
 {
@@ -1328,6 +1343,7 @@ void LayoutObject::invalidatePaintOfSubtreesIfNeeded(PaintInvalidationState& chi
     }
 }
 
+#if 0 // BKTODO:
 static PassRefPtr<TraceEvent::ConvertableToTraceFormat> jsonObjectForOldAndNewRects(const LayoutRect& oldRect, const LayoutPoint& oldLocation, const LayoutRect& newRect, const LayoutPoint& newLocation)
 {
     RefPtr<TracedValue> value = TracedValue::create();
@@ -1337,6 +1353,7 @@ static PassRefPtr<TraceEvent::ConvertableToTraceFormat> jsonObjectForOldAndNewRe
     addJsonObjectForPoint(value.get(), "newLocation", newLocation);
     return value;
 }
+#endif
 
 LayoutRect LayoutObject::selectionRectInViewCoordinates() const
 {
@@ -1984,8 +2001,10 @@ void LayoutObject::styleWillChange(StyleDifference diff, const ComputedStyle& ne
             || m_style->hasAutoZIndex() != newStyle.hasAutoZIndex();
         if (visibilityChanged) {
             document().setAnnotatedRegionsDirty(true);
+#if 0 // BKTODO:
             if (AXObjectCache* cache = document().existingAXObjectCache())
                 cache->childrenChanged(parent());
+#endif
         }
 
         // Keep layer hierarchy visibility bits up to date if visibility changes.
@@ -2055,7 +2074,7 @@ void LayoutObject::styleDidChange(StyleDifference diff, const ComputedStyle* old
         return;
 
     if (diff.needsFullLayout()) {
-        LayoutCounter::layoutObjectStyleChanged(*this, oldStyle, *m_style);
+        // BKTODO: LayoutCounter::layoutObjectStyleChanged(*this, oldStyle, *m_style);
 
         // If the object already needs layout, then setNeedsLayout won't do
         // any work. But if the containing block has changed, then we may need
@@ -2451,7 +2470,7 @@ RespectImageOrientationEnum LayoutObject::shouldRespectImageOrientation(const La
     if (!isHTMLImageElement(layoutObject->node()))
         return DoNotRespectImageOrientation;
 
-    if (layoutObject->document().settings() && layoutObject->document().settings()->shouldRespectImageOrientation())
+    if (Settings::shouldRespectImageOrientation())
         return RespectImageOrientation;
 
     if (layoutObject->style() && layoutObject->style()->respectImageOrientation() == RespectImageOrientation)
@@ -2524,16 +2543,19 @@ void LayoutObject::willBeDestroyed()
     if (LocalFrame* frame = this->frame()) {
         // If this layoutObject is being autoscrolled, stop the autoscrolling.
         if (frame->page())
-            frame->page()->autoscrollController().stopAutoscrollIfNeeded(this);
+            ASSERT(false); // BKTODO: frame->page()->autoscrollController().stopAutoscrollIfNeeded(this);
     }
 
+#if 0 // BKTODO:
     // For accessibility management, notify the parent of the imminent change to its child set.
     // We do it now, before remove(), while the parent pointer is still available.
     if (AXObjectCache* cache = document().existingAXObjectCache())
         cache->childrenChanged(this->parent());
+#endif
 
     remove();
 
+#if 0 // BKTODO:
     // The remove() call above may invoke axObjectCache()->childrenChanged() on the parent, which may require the AX layout
     // object for this layoutObject. So we remove the AX layout object now, after the layoutObject is removed.
     if (AXObjectCache* cache = document().existingAXObjectCache())
@@ -2556,6 +2578,7 @@ void LayoutObject::willBeDestroyed()
         if (registry.eventHandlerTargets(EventHandlerRegistry::TouchEvent)->contains(node()))
             registry.didRemoveEventHandler(*node(), EventHandlerRegistry::TouchEvent);
     }
+#endif
 
     setAncestorLineBoxDirty(false);
 
@@ -3035,9 +3058,7 @@ bool LayoutObject::willRenderImage(ImageResource*)
 
 bool LayoutObject::getImageAnimationPolicy(ImageResource*, ImageAnimationPolicy& policy)
 {
-    if (!document().settings())
-        return false;
-    policy = document().settings()->imageAnimationPolicy();
+    policy = Settings::imageAnimationPolicy();
     return true;
 }
 
