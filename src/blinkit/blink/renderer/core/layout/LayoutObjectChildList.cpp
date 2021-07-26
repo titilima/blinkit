@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutObjectChildList.cpp
+// Description: LayoutObjectChildList Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) Research In Motion Limited 2010. All rights reserved.
@@ -26,8 +37,10 @@
 
 #include "core/layout/LayoutObjectChildList.h"
 
+#if 0 // BKTODO:
 #include "core/dom/AXObjectCache.h"
 #include "core/layout/LayoutCounter.h"
+#endif
 #include "core/layout/LayoutObject.h"
 #include "core/layout/LayoutView.h"
 #include "core/paint/PaintLayer.h"
@@ -84,7 +97,7 @@ LayoutObject* LayoutObjectChildList::removeChildNode(LayoutObject* owner, Layout
         owner->notifyOfSubtreeChange();
 
     if (!owner->documentBeingDestroyed() && notifyLayoutObject) {
-        LayoutCounter::layoutObjectSubtreeWillBeDetached(oldChild);
+        // BKTODO: LayoutCounter::layoutObjectSubtreeWillBeDetached(oldChild);
         oldChild->willBeRemovedFromTree();
     }
 
@@ -108,8 +121,10 @@ LayoutObject* LayoutObjectChildList::removeChildNode(LayoutObject* owner, Layout
 
     oldChild->registerSubtreeChangeListenerOnDescendants(oldChild->consumesSubtreeChangeNotification());
 
+#if 0 // BKTODO:
     if (AXObjectCache* cache = owner->document().existingAXObjectCache())
         cache->childrenChanged(owner);
+#endif
 
     return oldChild;
 }
@@ -152,7 +167,7 @@ void LayoutObjectChildList::insertChildNode(LayoutObject* owner, LayoutObject* n
 
     if (!owner->documentBeingDestroyed() && notifyLayoutObject) {
         newChild->insertedIntoTree();
-        LayoutCounter::layoutObjectSubtreeAttached(newChild);
+        // BKTODO: LayoutCounter::layoutObjectSubtreeAttached(newChild);
     }
 
     // Propagate the need to notify ancestors down into any
@@ -173,8 +188,10 @@ void LayoutObjectChildList::insertChildNode(LayoutObject* owner, LayoutObject* n
     if (!owner->documentBeingDestroyed())
         owner->notifyOfSubtreeChange();
 
+#if 0 // BKTODO:
     if (AXObjectCache* cache = owner->document().axObjectCache())
         cache->childrenChanged(owner);
+#endif
 }
 
 void LayoutObjectChildList::invalidatePaintOnRemoval(LayoutObject& oldChild)
