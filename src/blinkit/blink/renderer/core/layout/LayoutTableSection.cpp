@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutTableSection.cpp
+// Description: LayoutTableSection Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1997 Martin Jones (mjones@kde.org)
  *           (C) 1997 Torben Weis (weis@kde.org)
@@ -26,7 +37,7 @@
 #include "core/layout/LayoutTableSection.h"
 
 #include "core/layout/HitTestResult.h"
-#include "core/layout/LayoutAnalyzer.h"
+// BKTODO: #include "core/layout/LayoutAnalyzer.h"
 #include "core/layout/LayoutTableCell.h"
 #include "core/layout/LayoutTableCol.h"
 #include "core/layout/LayoutTableRow.h"
@@ -823,7 +834,7 @@ int LayoutTableSection::calcRowLogicalHeight()
 void LayoutTableSection::layout()
 {
     ASSERT(needsLayout());
-    LayoutAnalyzer::Scope analyzer(*this);
+    // BKTODO: LayoutAnalyzer::Scope analyzer(*this);
     ASSERT(!needsCellRecalc());
     ASSERT(!table()->needsSectionRecalc());
 
@@ -976,7 +987,7 @@ void LayoutTableSection::layoutRows()
 
     ASSERT(!needsLayout());
 
-    LayoutAnalyzer::Scope analyzer(*this);
+    // BKTODO: LayoutAnalyzer::Scope analyzer(*this);
 
     // FIXME: Changing the height without a layout can change the overflow so it seems wrong.
 
