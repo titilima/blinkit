@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutInline.cpp
+// Description: LayoutInline Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -22,12 +33,12 @@
 
 #include "core/layout/LayoutInline.h"
 
-#include "core/dom/Fullscreen.h"
+// BKTODO: #include "core/dom/Fullscreen.h"
 #include "core/dom/StyleEngine.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutBlock.h"
 #include "core/layout/LayoutFlowThread.h"
-#include "core/layout/LayoutFullScreen.h"
+// BKTODO: #include "core/layout/LayoutFullScreen.h"
 #include "core/layout/LayoutGeometryMap.h"
 #include "core/layout/LayoutTheme.h"
 #include "core/layout/LayoutView.h"
@@ -35,7 +46,7 @@
 #include "core/layout/line/InlineTextBox.h"
 #include "core/paint/BoxPainter.h"
 #include "core/paint/InlinePainter.h"
-#include "core/paint/ObjectPainter.h"
+// BKTODO: #include "core/paint/ObjectPainter.h"
 #include "core/paint/PaintLayer.h"
 #include "core/style/StyleInheritedData.h"
 #include "platform/geometry/FloatQuad.h"
@@ -355,6 +366,7 @@ void LayoutInline::splitInlines(LayoutBlock* fromBlock, LayoutBlock* toBlock,
 {
     ASSERT(isDescendantOf(fromBlock));
 
+#if 0 // BKTODO:
     // If we're splitting the inline containing the fullscreened element,
     // |beforeChild| may be the layoutObject for the fullscreened element. However,
     // that layoutObject is wrapped in a LayoutFullScreen, so |this| is not its
@@ -365,6 +377,7 @@ void LayoutInline::splitInlines(LayoutBlock* fromBlock, LayoutBlock* toBlock,
         if (fullScreenElement && beforeChild && beforeChild->node() == fullScreenElement)
             beforeChild = fullscreen->fullScreenLayoutObject();
     }
+#endif
 
     // FIXME: Because splitting is O(n^2) as tags nest pathologically, we cap the depth at which we're willing to clone.
     // There will eventually be a better approach to this problem that will let us nest to a much
