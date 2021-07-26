@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutText.cpp
+// Description: LayoutText Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Dirk Mueller (mueller@kde.org)
@@ -24,7 +35,7 @@
 
 #include "core/layout/LayoutText.h"
 
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/Text.h"
 #include "core/editing/VisiblePosition.h"
 #include "core/editing/iterators/TextIterator.h"
@@ -80,8 +91,7 @@ public:
     void restartWithNewText(unsigned lastTypedCharacterOffset)
     {
         m_lastTypedCharacterOffset = lastTypedCharacterOffset;
-        if (Settings* settings = m_layoutText->document().settings())
-            startOneShot(settings->passwordEchoDurationInSeconds(), BLINK_FROM_HERE);
+        startOneShot(Settings::passwordEchoDurationInSeconds(), BLINK_FROM_HERE);
     }
     void invalidate() { m_lastTypedCharacterOffset = -1; }
     unsigned lastTypedCharacterOffset() { return m_lastTypedCharacterOffset; }
@@ -1414,8 +1424,10 @@ void LayoutText::setText(PassRefPtr<StringImpl> text, bool force)
         setNeedsLayoutAndPrefWidthsRecalcAndFullPaintInvalidation(LayoutInvalidationReason::TextChanged);
     m_knownToHaveNoOverflowAndNoFallbackFonts = false;
 
+#if 0 // BKTODO:
     if (AXObjectCache* cache = document().existingAXObjectCache())
         cache->textChanged(this);
+#endif
 }
 
 void LayoutText::dirtyOrDeleteLineBoxesIfNeeded(bool fullLayout)
