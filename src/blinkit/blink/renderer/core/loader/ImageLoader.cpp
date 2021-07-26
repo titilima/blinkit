@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageLoader.cpp
+// Description: ImageLoader Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -22,32 +33,33 @@
 #include "core/loader/ImageLoader.h"
 
 #include "bindings/core/v8/ScriptController.h"
-#include "bindings/core/v8/ScriptState.h"
-#include "bindings/core/v8/V8Binding.h"
-#include "bindings/core/v8/V8PerIsolateData.h"
 #include "core/dom/Document.h"
 #include "core/dom/Element.h"
 #include "core/dom/IncrementLoadEventDelayCount.h"
-#include "core/dom/Microtask.h"
+// BKTODO: #include "core/dom/Microtask.h"
 #include "core/events/Event.h"
 #include "core/events/EventSender.h"
 #include "core/fetch/FetchRequest.h"
-#include "core/fetch/MemoryCache.h"
+// BKTODO: #include "core/fetch/MemoryCache.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
 #include "core/frame/UseCounter.h"
-#include "core/html/CrossOriginAttribute.h"
+// BKTODO: #include "core/html/CrossOriginAttribute.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/layout/LayoutImage.h"
+#if 0 // BKTODO:
 #include "core/layout/LayoutVideo.h"
 #include "core/layout/svg/LayoutSVGImage.h"
 #include "core/svg/graphics/SVGImage.h"
 #include "platform/Logging.h"
+#endif
 #include "platform/RuntimeEnabledFeatures.h"
+#if 0 // BKTODO:
 #include "platform/weborigin/SecurityOrigin.h"
 #include "platform/weborigin/SecurityPolicy.h"
+#endif
 #include "public/platform/WebURLRequest.h"
 
 namespace blink {
@@ -78,6 +90,7 @@ static ImageLoader::BypassMainWorldBehavior shouldBypassMainWorldCSP(ImageLoader
     return ImageLoader::DoNotBypassMainWorldCSP;
 }
 
+#if 0 // BKTODO:
 class ImageLoader::Task : public WebTaskRunner::Task {
 public:
     static PassOwnPtr<Task> create(ImageLoader* loader, UpdateFromElementBehavior updateBehavior, ReferrerPolicy referrerPolicy)
@@ -139,6 +152,7 @@ private:
     WeakPtrFactory<Task> m_weakFactory;
     ReferrerPolicy m_referrerPolicy;
 };
+#endif
 
 ImageLoader::ImageLoader(Element* element)
     : m_element(element)
@@ -152,9 +166,11 @@ ImageLoader::ImageLoader(Element* element)
     , m_suppressErrorEvents(false)
     , m_highPriorityClientCount(0)
 {
+#if 0 // BKTODO:
     WTF_LOG(Timers, "new ImageLoader %p", this);
 #if ENABLE(OILPAN)
     ThreadState::current()->registerPreFinalizer(this);
+#endif
 #endif
 }
 
@@ -167,8 +183,10 @@ ImageLoader::~ImageLoader()
 
 void ImageLoader::dispose()
 {
+#if 0 // BKTODO:
     WTF_LOG(Timers, "~ImageLoader %p; m_hasPendingLoadEvent=%d, m_hasPendingErrorEvent=%d",
         this, m_hasPendingLoadEvent, m_hasPendingErrorEvent);
+#endif
 
 #if !ENABLE(OILPAN)
     if (m_pendingTask)
@@ -197,6 +215,8 @@ void ImageLoader::dispose()
 #if ENABLE(OILPAN)
 void ImageLoader::clearWeakMembers(Visitor* visitor)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     Vector<UntracedMember<ImageLoaderClient>> deadClients;
     for (const auto& client : m_clients) {
         if (!Heap::isHeapObjectAlive(client)) {
@@ -206,6 +226,7 @@ void ImageLoader::clearWeakMembers(Visitor* visitor)
     }
     for (unsigned i = 0; i < deadClients.size(); ++i)
         m_clients.remove(deadClients[i]);
+#endif
 }
 #endif
 
@@ -213,7 +234,7 @@ DEFINE_TRACE(ImageLoader)
 {
     visitor->trace(m_element);
 #if ENABLE(OILPAN)
-    visitor->template registerWeakMembers<ImageLoader, &ImageLoader::clearWeakMembers>(this);
+    ASSERT(false); // BKTODO: visitor->template registerWeakMembers<ImageLoader, &ImageLoader::clearWeakMembers>(this);
 #endif
 }
 
@@ -252,6 +273,7 @@ void ImageLoader::setImageWithoutConsideringPendingLoadEvent(ImageResource* newI
         imageResource->resetAnimation();
 }
 
+#if 0 // BKTODO:
 static void configureRequest(FetchRequest& request, ImageLoader::BypassMainWorldBehavior bypassBehavior, Element& element, const ClientHintsPreferences& clientHintsPreferences)
 {
     if (bypassBehavior == ImageLoader::BypassMainWorldCSP)
@@ -264,6 +286,7 @@ static void configureRequest(FetchRequest& request, ImageLoader::BypassMainWorld
     if (clientHintsPreferences.shouldSendResourceWidth() && isHTMLImageElement(element))
         request.setResourceWidth(toHTMLImageElement(element).resourceWidth());
 }
+#endif
 
 inline void ImageLoader::dispatchErrorEvent()
 {
@@ -281,6 +304,7 @@ inline void ImageLoader::clearFailedLoadURL()
     m_failedLoadURL = AtomicString();
 }
 
+#if 0 // BKTODO:
 inline void ImageLoader::enqueueImageLoadingMicroTask(UpdateFromElementBehavior updateBehavior, ReferrerPolicy referrerPolicy)
 {
     OwnPtr<Task> task = Task::create(this, updateBehavior, referrerPolicy);
@@ -441,6 +465,7 @@ void ImageLoader::updateFromElement(UpdateFromElementBehavior updateBehavior, Re
     if (document.isActive())
         enqueueImageLoadingMicroTask(updateBehavior, referrerPolicy);
 }
+#endif
 
 KURL ImageLoader::imageSourceToKURL(AtomicString imageSourceURL) const
 {
@@ -464,6 +489,9 @@ KURL ImageLoader::imageSourceToKURL(AtomicString imageSourceURL) const
 
 bool ImageLoader::shouldLoadImmediately(const KURL& url) const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     // We force any image loads which might require alt content through the asynchronous path so that we can add the shadow DOM
     // for the alt-text content when style recalc is over and DOM mutation is allowed again.
     if (!url.isNull()) {
@@ -472,10 +500,13 @@ bool ImageLoader::shouldLoadImmediately(const KURL& url) const
             return true;
     }
     return (m_loadingImageDocument || isHTMLObjectElement(m_element) || isHTMLEmbedElement(m_element) || url.protocolIsData());
+#endif
 }
 
 void ImageLoader::notifyFinished(Resource* resource)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     WTF_LOG(Timers, "ImageLoader::notifyFinished %p; m_hasPendingLoadEvent=%d",
         this, m_hasPendingLoadEvent);
 
@@ -521,6 +552,7 @@ void ImageLoader::notifyFinished(Resource* resource)
         return;
     }
     loadEventSender().dispatchEventSoon(this);
+#endif
 }
 
 LayoutImageResource* ImageLoader::layoutImageResource()
@@ -535,11 +567,14 @@ LayoutImageResource* ImageLoader::layoutImageResource()
     if (layoutObject->isImage() && !static_cast<LayoutImage*>(layoutObject)->isGeneratedContent())
         return toLayoutImage(layoutObject)->imageResource();
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (layoutObject->isSVGImage())
         return toLayoutSVGImage(layoutObject)->imageResource();
 
     if (layoutObject->isVideo())
         return toLayoutVideo(layoutObject)->imageResource();
+#endif
 
     return 0;
 }
@@ -570,6 +605,8 @@ void ImageLoader::updatedHasPendingEvent()
     if (wasProtected == m_elementIsProtected)
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_elementIsProtected) {
         if (m_derefElementTimer.isActive())
             m_derefElementTimer.stop();
@@ -579,6 +616,7 @@ void ImageLoader::updatedHasPendingEvent()
         ASSERT(!m_derefElementTimer.isActive());
         m_derefElementTimer.startOneShot(0, BLINK_FROM_HERE);
     }
+#endif
 }
 
 void ImageLoader::timerFired(Timer<ImageLoader>*)
@@ -588,6 +626,8 @@ void ImageLoader::timerFired(Timer<ImageLoader>*)
 
 void ImageLoader::dispatchPendingEvent(ImageEventSender* eventSender)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     WTF_LOG(Timers, "ImageLoader::dispatchPendingEvent %p", this);
     ASSERT(eventSender == &loadEventSender() || eventSender == &errorEventSender());
     const AtomicString& eventType = eventSender->eventType();
@@ -595,6 +635,7 @@ void ImageLoader::dispatchPendingEvent(ImageEventSender* eventSender)
         dispatchPendingLoadEvent();
     if (eventType == EventTypeNames::error)
         dispatchPendingErrorEvent();
+#endif
 }
 
 void ImageLoader::dispatchPendingLoadEvent()
@@ -628,35 +669,38 @@ void ImageLoader::dispatchPendingErrorEvent()
 
 void ImageLoader::addClient(ImageLoaderClient* client)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (client->requestsHighLiveResourceCachePriority()) {
         if (m_image && !m_highPriorityClientCount++)
             memoryCache()->updateDecodedResource(m_image.get(), UpdateForPropertyChange, MemoryCacheLiveResourcePriorityHigh);
     }
-    m_clients.add(client);
+#endif
+    m_clients.insert(client);
 }
 
 void ImageLoader::willRemoveClient(ImageLoaderClient& client)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (client.requestsHighLiveResourceCachePriority()) {
         ASSERT(m_highPriorityClientCount);
         m_highPriorityClientCount--;
         if (m_image && !m_highPriorityClientCount)
             memoryCache()->updateDecodedResource(m_image.get(), UpdateForPropertyChange, MemoryCacheLiveResourcePriorityLow);
     }
+#endif
 }
 
 void ImageLoader::removeClient(ImageLoaderClient* client)
 {
     willRemoveClient(*client);
-    m_clients.remove(client);
+    m_clients.erase(client);
 }
 
 bool ImageLoader::getImageAnimationPolicy(ImageResource*, ImageAnimationPolicy& policy)
 {
-    if (!element()->document().settings())
-        return false;
-
-    policy = element()->document().settings()->imageAnimationPolicy();
+    policy = Settings::imageAnimationPolicy();
     return true;
 }
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageLoader.h
+// Description: ImageLoader Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -23,12 +34,12 @@
 #ifndef ImageLoader_h
 #define ImageLoader_h
 
+#include <unordered_set>
 #include "core/CoreExport.h"
 #include "core/fetch/ImageResource.h"
 #include "core/fetch/ImageResourceClient.h"
 #include "core/fetch/ResourcePtr.h"
 #include "platform/heap/Handle.h"
-#include "wtf/HashSet.h"
 #include "wtf/WeakPtr.h"
 #include "wtf/text/AtomicString.h"
 
@@ -86,7 +97,7 @@ public:
         DoNotBypassMainWorldCSP
     };
 
-    void updateFromElement(UpdateFromElementBehavior = UpdateNormal, ReferrerPolicy = ReferrerPolicyDefault);
+    // BKTODO: void updateFromElement(UpdateFromElementBehavior = UpdateNormal, ReferrerPolicy = ReferrerPolicyDefault);
 
     void elementDidMoveToNewDocument();
 
@@ -126,8 +137,10 @@ protected:
 private:
     class Task;
 
+#if 0 // BKTODO:
     // Called from the task or from updateFromElement to initiate the load.
     void doUpdateFromElement(BypassMainWorldBehavior, UpdateFromElementBehavior, ReferrerPolicy = ReferrerPolicyDefault);
+#endif
 
     virtual void dispatchLoadEvent() = 0;
     virtual void noImageResourceToLoad() { }
@@ -145,7 +158,7 @@ private:
     void clearFailedLoadURL();
     void dispatchErrorEvent();
     void crossSiteOrCSPViolationOccurred(AtomicString);
-    void enqueueImageLoadingMicroTask(UpdateFromElementBehavior, ReferrerPolicy);
+    // BKTODO: void enqueueImageLoadingMicroTask(UpdateFromElementBehavior, ReferrerPolicy);
 
     void timerFired(Timer<ImageLoader>*);
 
@@ -176,7 +189,7 @@ private:
     RefPtrWillBePersistent<Element> m_keepAlive;
 
     // Oilpan: the client references are weak, and managed as such via clearWeakMembers();
-    HashSet<RawPtrWillBeUntracedMember<ImageLoaderClient>> m_clients;
+    std::unordered_set<ImageLoaderClient *> m_clients;
     Timer<ImageLoader> m_derefElementTimer;
     AtomicString m_failedLoadURL;
     WeakPtr<Task> m_pendingTask; // owned by Microtask
