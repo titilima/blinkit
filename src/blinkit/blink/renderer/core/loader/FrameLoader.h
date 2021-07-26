@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FrameLoader.h
+// Description: FrameLoader Class
+//      Author: Ziming Li
+//     Created: 2021-07-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2008, 2009 Torch Mobile Inc. All rights reserved. (http://www.torchmobile.com/)
@@ -34,14 +45,18 @@
 
 #include "core/CoreExport.h"
 #include "core/dom/IconURL.h"
+#if 0 // BKTODO:
 #include "core/dom/SandboxFlags.h"
 #include "core/dom/SecurityContext.h"
+#endif
 #include "core/fetch/ResourceLoaderOptions.h"
-#include "core/frame/FrameTypes.h"
+// BKTODO: #include "core/frame/FrameTypes.h"
 #include "core/loader/FrameLoaderStateMachine.h"
+#if 0 // BKTODO:
 #include "core/loader/FrameLoaderTypes.h"
 #include "core/loader/HistoryItem.h"
 #include "core/loader/NavigationPolicy.h"
+#endif
 #include "platform/Timer.h"
 #include "platform/heap/Handle.h"
 #include "platform/network/ResourceRequest.h"
@@ -50,41 +65,44 @@
 
 namespace blink {
 
+class Document;
 class DocumentLoader;
 class Frame;
 class FrameLoaderClient;
-class ProgressTracker;
+class LocalFrame;
+// BKTODO: class ProgressTracker;
 class ResourceError;
 class SerializedScriptValue;
 class SubstituteData;
 
 struct FrameLoadRequest;
 
-CORE_EXPORT bool isBackForwardLoadType(FrameLoadType);
+// BKTODO: CORE_EXPORT bool isBackForwardLoadType(FrameLoadType);
 
 class CORE_EXPORT FrameLoader final {
     WTF_MAKE_NONCOPYABLE(FrameLoader);
     DISALLOW_NEW();
 public:
-    static ResourceRequest resourceRequestFromHistoryItem(HistoryItem*, ResourceRequestCachePolicy);
+    // BKTODO: static ResourceRequest resourceRequestFromHistoryItem(HistoryItem*, ResourceRequestCachePolicy);
 
     FrameLoader(LocalFrame*);
     ~FrameLoader();
 
     void init();
 
+#if 0 // BKTODO:
     ResourceRequest resourceRequestForReload(FrameLoadType, const KURL& overrideURL = KURL(),
         ClientRedirectPolicy = NotClientRedirect);
 
     ProgressTracker& progress() const { return *m_progressTracker; }
+#endif
 
     // Starts a load. It will eventually call startLoad() or
     // loadInSameDocument(). For history navigations or reloads, an appropriate
     // FrameLoadType should be given. Otherwise, FrameLoadTypeStandard should be
     // used (and the final FrameLoadType will be computed). For history
     // navigations, a history item and a HistoryLoadType should also be provided.
-    void load(const FrameLoadRequest&, FrameLoadType = FrameLoadTypeStandard,
-        HistoryItem* = nullptr, HistoryLoadType = HistoryDifferentDocumentLoad);
+    void load(const FrameLoadRequest&);
 
     static void reportLocalLoadFailed(LocalFrame*, const String& url);
 
@@ -117,8 +135,10 @@ public:
     bool shouldTreatURLAsSameAsCurrent(const KURL&) const;
     bool shouldTreatURLAsSrcdocDocument(const KURL&) const;
 
+#if 0 // BKTODO:
     FrameLoadType loadType() const;
     void setLoadType(FrameLoadType loadType) { m_loadType = loadType; }
+#endif
 
     FrameLoaderClient* client() const;
 
@@ -137,15 +157,19 @@ public:
     void dispatchDidClearDocumentOfWindowObject();
     void dispatchDocumentElementAvailable();
 
+#if 0 // BKTODO:
     // The following sandbox flags will be forced, regardless of changes to
     // the sandbox attribute of any parent frames.
     void forceSandboxFlags(SandboxFlags flags) { m_forcedSandboxFlags |= flags; }
     SandboxFlags effectiveSandboxFlags() const;
+#endif
 
     bool shouldEnforceStrictMixedContentChecking() const;
 
+#if 0 // BKTODO:
     SecurityContext::InsecureRequestsPolicy insecureRequestsPolicy() const;
     SecurityContext::InsecureNavigationsSet* insecureNavigationsToUpgrade() const;
+#endif
 
     Frame* opener();
     void setOpener(LocalFrame*);
@@ -175,17 +199,21 @@ public:
     bool shouldClose(bool isReload = false);
     void dispatchUnloadEvent();
 
+#if 0 // BKTODO:
     bool allowPlugins(ReasonForCallingAllowPlugins);
 
     void updateForSameDocumentNavigation(const KURL&, SameDocumentNavigationSource, PassRefPtr<SerializedScriptValue>, HistoryScrollRestorationType, FrameLoadType);
 
     HistoryItem* currentItem() const { return m_currentItem.get(); }
+#endif
     void saveScrollState();
 
     void restoreScrollPositionAndViewState();
 
+#if 0 // BKTODO:
     bool shouldContinueForNavigationPolicy(const ResourceRequest&, const SubstituteData&, DocumentLoader*, ContentSecurityPolicyDisposition,
         NavigationType, NavigationPolicy, bool shouldReplaceCurrentEntry);
+#endif
 
     DECLARE_TRACE();
 
@@ -194,11 +222,14 @@ private:
     void didAccessInitialDocumentTimerFired(Timer<FrameLoader>*);
 
     bool prepareRequestForThisFrame(FrameLoadRequest&);
+#if 0 // BKTODO:
     static void setReferrerForFrameRequest(ResourceRequest&, ShouldSendReferrer, Document*);
     FrameLoadType determineFrameLoadType(const FrameLoadRequest&);
+#endif
 
     SubstituteData defaultSubstituteDataForURL(const KURL&);
 
+#if 0 // BKTODO:
     bool shouldPerformFragmentNavigation(bool isFormSubmission, const String& httpMethod, FrameLoadType, const KURL&);
     void processFragment(const KURL&, LoadStartType);
 
@@ -212,6 +243,7 @@ private:
     void setHistoryItemStateForCommit(HistoryCommitType, HistoryNavigationType);
 
     void loadInSameDocument(const KURL&, PassRefPtr<SerializedScriptValue> stateObject, FrameLoadType, HistoryLoadType, ClientRedirectPolicy);
+#endif
 
     void scheduleCheckCompleted();
 
@@ -224,9 +256,9 @@ private:
     // Some of these could be lazily created for memory savings on devices.
     mutable FrameLoaderStateMachine m_stateMachine;
 
-    OwnPtrWillBeMember<ProgressTracker> m_progressTracker;
+    // BKTODO: OwnPtrWillBeMember<ProgressTracker> m_progressTracker;
 
-    FrameLoadType m_loadType;
+    // BKTODO: FrameLoadType m_loadType;
 
     // Document loaders for the three phases of frame loading. Note that while
     // a new request is being loaded, the old document loader may still be referenced.
@@ -235,6 +267,7 @@ private:
     RefPtrWillBeMember<DocumentLoader> m_documentLoader;
     RefPtrWillBeMember<DocumentLoader> m_provisionalDocumentLoader;
 
+#if 0 // BKTODO:
     RefPtrWillBeMember<HistoryItem> m_currentItem;
     RefPtrWillBeMember<HistoryItem> m_provisionalItem;
 
@@ -267,6 +300,7 @@ private:
     };
 
     OwnPtrWillBeMember<DeferredHistoryLoad> m_deferredHistoryLoad;
+#endif
 
     bool m_inStopAllLoaders;
 
@@ -275,7 +309,7 @@ private:
     bool m_didAccessInitialDocument;
     Timer<FrameLoader> m_didAccessInitialDocumentTimer;
 
-    SandboxFlags m_forcedSandboxFlags;
+    // BKTODO: SandboxFlags m_forcedSandboxFlags;
 
     bool m_dispatchingDidClearWindowObjectInMainWorld;
 };
