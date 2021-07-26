@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ChromeClient.h
+// Description: ChromeClient Class
+//      Author: Ziming Li
+//     Created: 2021-07-14
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple, Inc. All rights reserved.
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
@@ -24,11 +35,12 @@
 
 #include "base/gtest_prod_util.h"
 #include "core/CoreExport.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
+#include "core/dom/Document.h" // Was included in AXObjectCache.h
 #include "core/frame/ConsoleTypes.h"
-#include "core/inspector/ConsoleAPITypes.h"
+// BKTODO: #include "core/inspector/ConsoleAPITypes.h"
 #include "core/loader/FrameLoader.h"
-#include "core/loader/NavigationPolicy.h"
+// BKTODO: #include "core/loader/NavigationPolicy.h"
 #include "core/style/ComputedStyleConstants.h"
 #include "platform/Cursor.h"
 #include "platform/HostWindow.h"
@@ -94,6 +106,7 @@ public:
 
     virtual bool hadFormInteraction() const = 0;
 
+#if 0 // BKTODO:
     // The LocalFrame pointer provides the ChromeClient with context about which
     // LocalFrame wants to create the new Page. Also, the newly created window
     // should not be shown to the user until the ChromeClient of the newly
@@ -104,6 +117,7 @@ public:
     virtual void show(NavigationPolicy = NavigationPolicyIgnore) = 0;
 
     void setWindowFeatures(const WindowFeatures&);
+#endif
 
     virtual void didOverscroll(const FloatSize&, const FloatSize&, const FloatPoint&, const FloatSize&) = 0;
 
@@ -122,7 +136,7 @@ public:
     virtual void setResizable(bool) = 0;
 
     virtual bool shouldReportDetailedMessageForSource(LocalFrame&, const String& source) = 0;
-    virtual void addMessageToConsole(LocalFrame*, MessageSource, MessageLevel, const String& message, unsigned lineNumber, const String& sourceID, const String& stackTrace) = 0;
+    // BKTODO: virtual void addMessageToConsole(LocalFrame*, MessageSource, MessageLevel, const String& message, unsigned lineNumber, const String& sourceID, const String& stackTrace) = 0;
 
     virtual bool canOpenBeforeUnloadConfirmPanel() = 0;
     bool openBeforeUnloadConfirmPanel(const String& message, LocalFrame*, bool isReload);
@@ -156,7 +170,7 @@ public:
     virtual void setToolTip(const String&, TextDirection) = 0;
     void clearToolTip();
 
-    void print(LocalFrame*);
+    // BKTODO: void print(LocalFrame*);
 
     virtual void annotatedRegionsChanged() = 0;
 
@@ -207,7 +221,7 @@ public:
     virtual PassRefPtrWillBeRawPtr<PopupMenu> openPopupMenu(LocalFrame&, HTMLSelectElement&) = 0;
     virtual DOMWindow* pagePopupWindowForTesting() const = 0;
 
-    virtual void postAccessibilityNotification(AXObject*, AXObjectCache::AXNotification) { }
+    // BKTODO: virtual void postAccessibilityNotification(AXObject*, AXObjectCache::AXNotification) { }
     virtual String acceptLanguages() = 0;
 
     enum DialogType {
