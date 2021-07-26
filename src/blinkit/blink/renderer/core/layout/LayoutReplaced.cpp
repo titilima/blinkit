@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutReplaced.cpp
+// Description: LayoutReplaced Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2000 Dirk Mueller (mueller@kde.org)
@@ -24,7 +35,7 @@
 #include "core/layout/LayoutReplaced.h"
 
 #include "core/editing/PositionWithAffinity.h"
-#include "core/layout/LayoutAnalyzer.h"
+// BKTODO: #include "core/layout/LayoutAnalyzer.h"
 #include "core/layout/LayoutBlock.h"
 #include "core/layout/LayoutImage.h"
 #include "core/layout/LayoutView.h"
@@ -81,7 +92,7 @@ void LayoutReplaced::styleDidChange(StyleDifference diff, const ComputedStyle* o
 void LayoutReplaced::layout()
 {
     ASSERT(needsLayout());
-    LayoutAnalyzer::Scope analyzer(*this);
+    // BKTODO: LayoutAnalyzer::Scope analyzer(*this);
 
     LayoutRect oldContentRect = replacedContentRect();
 
