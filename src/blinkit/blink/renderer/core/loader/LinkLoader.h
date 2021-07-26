@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LinkLoader.h
+// Description: LinkLoader Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -36,8 +47,10 @@
 #include "core/fetch/ResourceClient.h"
 #include "core/fetch/ResourceOwner.h"
 #include "core/loader/LinkLoaderClient.h"
+#if 0 // BKTODO:
 #include "platform/CrossOriginAttributeValue.h"
 #include "platform/PrerenderClient.h"
+#endif
 #include "platform/Timer.h"
 #include "platform/heap/Handle.h"
 #include "wtf/OwnPtr.h"
@@ -50,7 +63,7 @@ class NetworkHintsInterface;
 class PrerenderHandle;
 
 // The LinkLoader can load link rel types icon, dns-prefetch, subresource, prefetch and prerender.
-class CORE_EXPORT LinkLoader final : public ResourceOwner<Resource, ResourceClient>, public PrerenderClient {
+class CORE_EXPORT LinkLoader final : public ResourceOwner<Resource, ResourceClient> { // BKTODO:, public PrerenderClient {
     DISALLOW_NEW();
 public:
     explicit LinkLoader(LinkLoaderClient*);
@@ -60,14 +73,16 @@ public:
     void notifyFinished(Resource*) override;
     String debugName() const override { return "LinkLoader"; }
 
+#if 0 // BKTODO:
     // from PrerenderClient
     void didStartPrerender() override;
     void didStopPrerender() override;
     void didSendLoadForPrerender() override;
     void didSendDOMContentLoadedForPrerender() override;
+#endif
 
     void released();
-    bool loadLink(const LinkRelAttribute&, CrossOriginAttributeValue, const String& type, const String& as, const KURL&, Document&, const NetworkHintsInterface&);
+    // BKTODO: bool loadLink(const LinkRelAttribute&, CrossOriginAttributeValue, const String& type, const String& as, const KURL&, Document&, const NetworkHintsInterface&);
     enum CanLoadResources { LoadResources, DoNotLoadResources };
     static bool loadLinkFromHeader(const String& headerValue, Document*, const NetworkHintsInterface&, CanLoadResources);
     static Resource::Type getTypeFromAsAttribute(const String& as, Document*);

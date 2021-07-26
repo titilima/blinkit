@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LinkLoader.cpp
+// Description: LinkLoader Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -32,26 +43,27 @@
 #include "core/loader/LinkLoader.h"
 
 #include "core/dom/Document.h"
-#include "core/fetch/FetchInitiatorTypeNames.h"
+// BKTODO: #include "core/fetch/FetchInitiatorTypeNames.h"
 #include "core/fetch/FetchRequest.h"
 #include "core/fetch/LinkFetchResource.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/frame/Settings.h"
 #include "core/frame/UseCounter.h"
-#include "core/html/CrossOriginAttribute.h"
+// BKTODO: #include "core/html/CrossOriginAttribute.h"
 #include "core/html/LinkRelAttribute.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "core/loader/DocumentLoader.h"
 #include "core/loader/LinkHeader.h"
-#include "core/loader/NetworkHintsInterface.h"
+// BKTODO: #include "core/loader/NetworkHintsInterface.h"
 #include "core/loader/PrerenderHandle.h"
 #include "platform/Prerender.h"
 #include "platform/RuntimeEnabledFeatures.h"
-#include "platform/network/NetworkHints.h"
-#include "public/platform/WebPrerender.h"
+// BKTODO: #include "platform/network/NetworkHints.h"
+// BKTODO: #include "public/platform/WebPrerender.h"
 
 namespace blink {
 
+#if 0 // BKTODO:
 static unsigned prerenderRelTypesFromRelAttribute(const LinkRelAttribute& relAttribute, Document& document)
 {
     unsigned result = 0;
@@ -66,6 +78,7 @@ static unsigned prerenderRelTypesFromRelAttribute(const LinkRelAttribute& relAtt
 
     return result;
 }
+#endif
 
 LinkLoader::LinkLoader(LinkLoaderClient* client)
     : m_client(client)
@@ -102,6 +115,7 @@ void LinkLoader::notifyFinished(Resource* resource)
     clearResource();
 }
 
+#if 0 // BKTODO:
 void LinkLoader::didStartPrerender()
 {
     m_client->didStartLinkPrerender();
@@ -121,6 +135,7 @@ void LinkLoader::didSendDOMContentLoadedForPrerender()
 {
     m_client->didSendDOMContentLoadedForLinkPrerender();
 }
+#endif
 
 enum LinkCaller {
     LinkCalledFromHeader,
@@ -128,6 +143,7 @@ enum LinkCaller {
 };
 
 
+#if 0 // BKTODO:
 static void dnsPrefetchIfNeeded(const LinkRelAttribute& relAttribute, const KURL& href, Document& document, const NetworkHintsInterface& networkHintsInterface, LinkCaller caller)
 {
     if (relAttribute.isDNSPrefetch()) {
@@ -163,6 +179,7 @@ static void preconnectIfNeeded(const LinkRelAttribute& relAttribute, const KURL&
         networkHintsInterface.preconnectHost(href, crossOrigin);
     }
 }
+#endif
 
 Resource::Type LinkLoader::getTypeFromAsAttribute(const String& as, Document* document)
 {
@@ -179,11 +196,12 @@ Resource::Type LinkLoader::getTypeFromAsAttribute(const String& as, Document* do
     if (equalIgnoringCase(as, "track"))
         return Resource::TextTrack;
     if (document && !as.isEmpty())
-        document->addConsoleMessage(ConsoleMessage::create(OtherMessageSource, WarningMessageLevel, String("<link rel=preload> must have a valid `as` value")));
+        ASSERT(false); // BKTODO: document->addConsoleMessage(ConsoleMessage::create(OtherMessageSource, WarningMessageLevel, String("<link rel=preload> must have a valid `as` value")));
     // TODO(yoav): Is this correct? If as is missing or invalid, it should be subject to "connect-src" CSP directives.
     return Resource::LinkSubresource;
 }
 
+#if 0 // BKTODO:
 static void preloadIfNeeded(const LinkRelAttribute& relAttribute, const KURL& href, Document& document, const String& as)
 {
     if (!document.loader())
@@ -210,6 +228,7 @@ static void preloadIfNeeded(const LinkRelAttribute& relAttribute, const KURL& hr
         document.loader()->startPreload(type, linkRequest);
     }
 }
+#endif
 
 bool LinkLoader::loadLinkFromHeader(const String& headerValue, Document* document, const NetworkHintsInterface& networkHintsInterface, CanLoadResources canLoadResources)
 {
@@ -223,20 +242,24 @@ bool LinkLoader::loadLinkFromHeader(const String& headerValue, Document* documen
         LinkRelAttribute relAttribute(header.rel());
         KURL url = document->completeURL(header.url());
         if (canLoadResources == DoNotLoadResources) {
+            ASSERT(false); // BKTODO:
+#if 0
             if (RuntimeEnabledFeatures::linkHeaderEnabled())
                 dnsPrefetchIfNeeded(relAttribute, url, *document, networkHintsInterface, LinkCalledFromHeader);
 
             if (RuntimeEnabledFeatures::linkPreconnectEnabled())
                 preconnectIfNeeded(relAttribute, url, *document, header.crossOrigin(), networkHintsInterface, LinkCalledFromHeader);
+#endif
         } else {
             if (RuntimeEnabledFeatures::linkPreloadEnabled())
-                preloadIfNeeded(relAttribute, url, *document, header.as());
+                ASSERT(false); // BKTODO: preloadIfNeeded(relAttribute, url, *document, header.as());
         }
         // TODO(yoav): Add more supported headers as needed.
     }
     return true;
 }
 
+#if 0 // BKTODO:
 bool LinkLoader::loadLink(const LinkRelAttribute& relAttribute, CrossOriginAttributeValue crossOrigin, const String& type, const String& as, const KURL& href, Document& document, const NetworkHintsInterface& networkHintsInterface)
 {
     // TODO(yoav): Do all links need to load only after they're in document???
@@ -282,6 +305,7 @@ bool LinkLoader::loadLink(const LinkRelAttribute& relAttribute, CrossOriginAttri
     }
     return true;
 }
+#endif
 
 void LinkLoader::released()
 {
