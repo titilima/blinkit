@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TextResourceDecoderBuilder.cpp
+// Description: TextResourceDecoderBuilder Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -33,13 +44,14 @@
 #include "core/dom/Document.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "platform/weborigin/SecurityOrigin.h"
+// BKTODO: #include "platform/weborigin/SecurityOrigin.h"
 
 namespace blink {
 
 static inline bool canReferToParentFrameEncoding(const LocalFrame* frame, const LocalFrame* parentFrame)
 {
-    return parentFrame && parentFrame->document()->securityOrigin()->canAccess(frame->document()->securityOrigin());
+    ASSERT(false); // BKTODO: return parentFrame && parentFrame->document()->securityOrigin()->canAccess(frame->document()->securityOrigin());
+    return false;
 }
 
 
@@ -57,8 +69,7 @@ TextResourceDecoderBuilder::~TextResourceDecoderBuilder()
 inline PassOwnPtr<TextResourceDecoder> TextResourceDecoderBuilder::createDecoderInstance(Document* document)
 {
     if (LocalFrame* frame = document->frame()) {
-        if (Settings* settings = frame->settings())
-            return TextResourceDecoder::create(m_mimeType, settings->defaultTextEncodingName(), settings->usesEncodingDetector());
+        return TextResourceDecoder::create(m_mimeType, Settings::defaultTextEncodingName(), Settings::usesEncodingDetector());
     }
 
     return TextResourceDecoder::create(m_mimeType, String());
@@ -67,6 +78,8 @@ inline PassOwnPtr<TextResourceDecoder> TextResourceDecoderBuilder::createDecoder
 inline void TextResourceDecoderBuilder::setupEncoding(TextResourceDecoder* decoder, Document* document)
 {
     LocalFrame* frame = document->frame();
+    ASSERT(false); // BKTODO:
+#if 0
     LocalFrame* parentFrame = 0;
     if (frame && frame->tree().parent() && frame->tree().parent()->isLocalFrame())
         parentFrame = toLocalFrame(frame->tree().parent());
@@ -90,6 +103,7 @@ inline void TextResourceDecoderBuilder::setupEncoding(TextResourceDecoder* decod
         if (m_encoding.isEmpty())
             decoder->setEncoding(parentFrame->document()->encoding(), TextResourceDecoder::EncodingFromParentFrame);
     }
+#endif
 }
 
 PassOwnPtr<TextResourceDecoder> TextResourceDecoderBuilder::buildFor(Document* document)
