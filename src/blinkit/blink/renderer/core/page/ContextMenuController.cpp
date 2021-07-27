@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContextMenuController.cpp
+// Description: ContextMenuController Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple Inc. All rights reserved.
  * Copyright (C) 2010 Igalia S.L
@@ -30,7 +41,7 @@
 #include "core/dom/Node.h"
 #include "core/events/Event.h"
 #include "core/events/MouseEvent.h"
-#include "core/events/RelatedEvent.h"
+// BKTODO: #include "core/events/RelatedEvent.h"
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLMenuElement.h"
 #include "core/input/EventHandler.h"
@@ -97,6 +108,8 @@ void ContextMenuController::populateCustomContextMenu(const Event& event)
     RefPtrWillBeRawPtr<HTMLMenuElement> menuElement = element.assignedContextMenu();
     if (!menuElement || !equalIgnoringCase(menuElement->fastGetAttribute(typeAttr), "context"))
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     RefPtrWillBeRawPtr<RelatedEvent> relatedEvent = RelatedEvent::create(EventTypeNames::show, true, true, node);
     if (!menuElement->dispatchEvent(relatedEvent.release()))
         return;
@@ -104,6 +117,7 @@ void ContextMenuController::populateCustomContextMenu(const Event& event)
         return;
     m_menuProvider = CustomContextMenuProvider::create(*menuElement, element);
     m_menuProvider->populateContextMenu(m_contextMenu.get());
+#endif
 }
 
 void ContextMenuController::handleContextMenuEvent(Event* event)
