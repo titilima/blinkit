@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StylePath.cpp
+// Description: StylePath Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Antti Koivisto (koivisto@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008 Apple Inc. All rights reserved.
@@ -27,7 +38,7 @@
 #include "core/style/ShadowList.h"
 #include "core/style/StyleFilterData.h"
 #include "core/style/StyleTransformData.h"
-#include "core/layout/svg/ReferenceFilterBuilder.h"
+// BKTODO: #include "core/layout/svg/ReferenceFilterBuilder.h"
 
 namespace blink {
 
