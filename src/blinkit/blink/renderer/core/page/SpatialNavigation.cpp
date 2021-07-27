@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SpatialNavigation.cpp
+// Description: Spatial Navigation Helpers
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies)
  * Copyright (C) 2009 Antonio Gomes <tonikitoo@webkit.org>
@@ -33,10 +44,10 @@
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
 #include "core/html/HTMLAreaElement.h"
-#include "core/html/HTMLFrameOwnerElement.h"
+// BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/layout/LayoutBox.h"
-#include "core/page/FrameTree.h"
+// BKTODO: #include "core/page/FrameTree.h"
 #include "core/page/Page.h"
 #include "platform/geometry/IntRect.h"
 
@@ -82,12 +93,14 @@ FocusCandidate::FocusCandidate(Node* node, WebFocusType type)
 
 bool isSpatialNavigationEnabled(const LocalFrame* frame)
 {
-    return (frame && frame->settings() && frame->settings()->spatialNavigationEnabled());
+    ASSERT(false); // BKTODO: return (frame && frame->settings() && frame->settings()->spatialNavigationEnabled());
+    return false;
 }
 
 bool spatialNavigationIgnoresEventHandlers(const LocalFrame* frame)
 {
-    return (frame && frame->settings() && frame->settings()->deviceSupportsTouch());
+    ASSERT(false); // BKTODO: return (frame && frame->settings() && frame->settings()->deviceSupportsTouch());
+    return false;
 }
 
 static bool rectsIntersectOnOrthogonalAxis(WebFocusType type, const LayoutRect& a, const LayoutRect& b)
@@ -291,6 +304,8 @@ Node* scrollableEnclosingBoxOrParentFrameForNodeInDirection(WebFocusType type, N
 {
     ASSERT(node);
     Node* parent = node;
+    ASSERT(false); // BKTODO:
+#if 0
     do {
         // FIXME: Spatial navigation is broken for OOPI.
         if (parent->isDocumentNode())
@@ -298,6 +313,7 @@ Node* scrollableEnclosingBoxOrParentFrameForNodeInDirection(WebFocusType type, N
         else
             parent = parent->parentOrShadowHostNode();
     } while (parent && !canScrollInDirection(parent, type) && !parent->isDocumentNode());
+#endif
 
     return parent;
 }
@@ -359,6 +375,8 @@ bool canScrollInDirection(const LocalFrame* frame, WebFocusType type)
 static LayoutRect rectToAbsoluteCoordinates(LocalFrame* initialFrame, const LayoutRect& initialRect)
 {
     LayoutRect rect = initialRect;
+    ASSERT(false); // BKTODO:
+#if 0
     for (Frame* frame = initialFrame; frame; frame = frame->tree().parent()) {
         if (!frame->isLocalFrame())
             continue;
@@ -373,6 +391,7 @@ static LayoutRect rectToAbsoluteCoordinates(LocalFrame* initialFrame, const Layo
             rect.move((-toLocalFrame(frame)->view()->scrollOffset()));
         }
     }
+#endif
     return rect;
 }
 
@@ -627,7 +646,8 @@ LayoutRect virtualRectForAreaElementAndDirection(HTMLAreaElement& area, WebFocus
 
 HTMLFrameOwnerElement* frameOwnerElement(FocusCandidate& candidate)
 {
-    return candidate.isFrameOwnerElement() ? toHTMLFrameOwnerElement(candidate.visibleNode) : nullptr;
+    ASSERT(false); // BKTODO: return candidate.isFrameOwnerElement() ? toHTMLFrameOwnerElement(candidate.visibleNode) : nullptr;
+    return nullptr;
 };
 
 } // namespace blink
