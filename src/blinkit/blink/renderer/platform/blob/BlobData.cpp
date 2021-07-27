@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BlobData.cpp
+// Description: BlobData Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -31,7 +42,7 @@
 #include "platform/blob/BlobData.h"
 
 #include "platform/UUID.h"
-#include "platform/blob/BlobRegistry.h"
+// BKTODO: #include "platform/blob/BlobRegistry.h"
 #include "platform/text/LineEnding.h"
 #include "wtf/OwnPtr.h"
 #include "wtf/PassRefPtr.h"
@@ -75,7 +86,7 @@ void BlobDataItem::detachFromCurrentThread()
 {
     data->detachFromCurrentThread();
     path = path.isolatedCopy();
-    fileSystemURL = fileSystemURL.copy();
+    ASSERT(false); // BKTODO: fileSystemURL = fileSystemURL.copy();
 }
 
 PassOwnPtr<BlobData> BlobData::create()
@@ -200,7 +211,7 @@ BlobDataHandle::BlobDataHandle()
     : m_uuid(createCanonicalUUIDString())
     , m_size(0)
 {
-    BlobRegistry::registerBlobData(m_uuid, BlobData::create());
+    ASSERT(false); // BKTODO: BlobRegistry::registerBlobData(m_uuid, BlobData::create());
 }
 
 BlobDataHandle::BlobDataHandle(PassOwnPtr<BlobData> data, long long size)
@@ -208,7 +219,7 @@ BlobDataHandle::BlobDataHandle(PassOwnPtr<BlobData> data, long long size)
     , m_type(data->contentType().isolatedCopy())
     , m_size(size)
 {
-    BlobRegistry::registerBlobData(m_uuid, std::move(data));
+    ASSERT(false); // BKTODO: BlobRegistry::registerBlobData(m_uuid, std::move(data));
 }
 
 BlobDataHandle::BlobDataHandle(const String& uuid, const String& type, long long size)
@@ -216,12 +227,12 @@ BlobDataHandle::BlobDataHandle(const String& uuid, const String& type, long long
     , m_type(isValidBlobType(type) ? type.isolatedCopy() : "")
     , m_size(size)
 {
-    BlobRegistry::addBlobDataRef(m_uuid);
+    ASSERT(false); // BKTODO: BlobRegistry::addBlobDataRef(m_uuid);
 }
 
 BlobDataHandle::~BlobDataHandle()
 {
-    BlobRegistry::removeBlobDataRef(m_uuid);
+    ASSERT(false); // BKTODO: BlobRegistry::removeBlobDataRef(m_uuid);
 }
 
 } // namespace blink
