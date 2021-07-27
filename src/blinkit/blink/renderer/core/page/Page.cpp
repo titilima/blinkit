@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Page.cpp
+// Description: Page Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 Apple Inc. All Rights Reserved.
  * Copyright (C) 2008 Torch Mobile Inc. All rights reserved. (http://www.torchmobile.com/)
@@ -21,25 +32,25 @@
 
 #include "core/css/resolver/ViewportStyleResolver.h"
 #include "core/dom/ClientRectList.h"
-#include "core/dom/VisitedLinkState.h"
+// BKTODO: #include "core/dom/VisitedLinkState.h"
 #include "core/editing/DragCaretController.h"
-#include "core/editing/commands/UndoStack.h"
+// BKTODO: #include "core/editing/commands/UndoStack.h"
 #include "core/editing/markers/DocumentMarkerController.h"
 #include "core/events/Event.h"
-#include "core/fetch/MemoryCache.h"
+// BKTODO: #include "core/fetch/MemoryCache.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/frame/DOMTimer.h"
 #include "core/frame/FrameConsole.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
-#include "core/frame/RemoteFrame.h"
-#include "core/frame/RemoteFrameView.h"
+// BKTODO: #include "core/frame/RemoteFrame.h"
+// BKTODO: #include "core/frame/RemoteFrameView.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLMediaElement.h"
+// BKTODO: #include "core/html/HTMLMediaElement.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/TextAutosizer.h"
-#include "core/page/AutoscrollController.h"
+// BKTODO: #include "core/page/AutoscrollController.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/ContextMenuController.h"
 #include "core/page/DragController.h"
@@ -49,11 +60,12 @@
 #include "core/page/scrolling/ScrollingCoordinator.h"
 #include "core/paint/PaintLayer.h"
 #include "platform/graphics/GraphicsLayer.h"
-#include "platform/plugins/PluginData.h"
+// BKTODO: #include "platform/plugins/PluginData.h"
 #include "public/platform/Platform.h"
 
 namespace blink {
 
+#if 0 // BKTODO:
 // Set of all live pages; includes internal Page objects that are
 // not observable from scripts.
 static Page::PageSet& allPages()
@@ -67,9 +79,12 @@ Page::PageSet& Page::ordinaryPages()
     DEFINE_STATIC_LOCAL(Page::PageSet, ordinaryPages, ());
     return ordinaryPages;
 }
+#endif
 
 void Page::networkStateChanged(bool online)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     WillBeHeapVector<RefPtrWillBeMember<LocalFrame>> frames;
 
     // Get all the frames of all the pages in all the page groups
@@ -86,12 +101,16 @@ void Page::networkStateChanged(bool online)
         frame->domWindow()->dispatchEvent(Event::create(eventName));
         InspectorInstrumentation::networkStateChanged(frame.get(), online);
     }
+#endif
 }
 
 void Page::onMemoryPressure()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     for (Page* page : ordinaryPages())
         page->memoryPurgeController().purgeMemory();
+#endif
 }
 
 float deviceScaleFactor(LocalFrame* frame)
@@ -107,25 +126,27 @@ float deviceScaleFactor(LocalFrame* frame)
 PassOwnPtrWillBeRawPtr<Page> Page::createOrdinary(PageClients& pageClients)
 {
     OwnPtrWillBeRawPtr<Page> page = create(pageClients);
+    ASSERT(false); // BKTODO:
+#if 0
     ordinaryPages().add(page.get());
     page->memoryPurgeController().registerClient(page.get());
+#endif
     return page.release();
 }
 
 Page::Page(PageClients& pageClients)
-    : SettingsDelegate(Settings::create())
-    , m_animator(PageAnimator::create(*this))
-    , m_autoscrollController(AutoscrollController::create(*this))
+    : m_animator(PageAnimator::create(*this))
+    // BKTODO: , m_autoscrollController(AutoscrollController::create(*this))
     , m_chromeClient(pageClients.chromeClient)
     , m_dragCaretController(DragCaretController::create())
     , m_dragController(DragController::create(this, pageClients.dragClient))
     , m_focusController(FocusController::create(this))
     , m_contextMenuController(ContextMenuController::create(this, pageClients.contextMenuClient))
     , m_pointerLockController(PointerLockController::create(this))
-    , m_undoStack(UndoStack::create())
+    // BKTODO: , m_undoStack(UndoStack::create())
     , m_mainFrame(nullptr)
     , m_editorClient(pageClients.editorClient)
-    , m_spellCheckerClient(pageClients.spellCheckerClient)
+    // BKTODO: , m_spellCheckerClient(pageClients.spellCheckerClient)
     , m_openedByDOM(false)
     , m_tabKeyCyclesThroughElements(true)
     , m_defersLoading(false)
@@ -139,8 +160,11 @@ Page::Page(PageClients& pageClients)
 {
     ASSERT(m_editorClient);
 
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(!allPages().contains(this));
     allPages().add(this);
+#endif
 }
 
 Page::~Page()
@@ -159,12 +183,13 @@ ViewportDescription Page::viewportDescription() const
 
 ScrollingCoordinator* Page::scrollingCoordinator()
 {
-    if (!m_scrollingCoordinator && m_settings->acceleratedCompositingEnabled())
+    if (!m_scrollingCoordinator && Settings::acceleratedCompositingEnabled())
         m_scrollingCoordinator = ScrollingCoordinator::create(this);
 
     return m_scrollingCoordinator.get();
 }
 
+#if 0
 MemoryPurgeController& Page::memoryPurgeController()
 {
     if (!m_memoryPurgeController)
@@ -172,6 +197,7 @@ MemoryPurgeController& Page::memoryPurgeController()
 
     return *m_memoryPurgeController;
 }
+#endif
 
 String Page::mainThreadScrollingReasonsAsText()
 {
@@ -213,7 +239,7 @@ void Page::documentDetached(Document* document)
     m_contextMenuController->documentDetached(document);
     if (m_validationMessageClient)
         m_validationMessageClient->documentDetached(*document);
-    m_originsUsingFeatures.documentDetached(*document);
+    // BKTODO: m_originsUsingFeatures.documentDetached(*document);
 }
 
 bool Page::openedByDOM() const
@@ -228,23 +254,31 @@ void Page::setOpenedByDOM()
 
 void Page::platformColorsChanged()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     for (const Page* page : allPages())
         for (Frame* frame = page->mainFrame(); frame; frame = frame->tree().traverseNext()) {
             if (frame->isLocalFrame())
                 toLocalFrame(frame)->document()->platformColorsChanged();
         }
+#endif
 }
 
 void Page::setNeedsRecalcStyleInAllFrames()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
         if (frame->isLocalFrame())
             toLocalFrame(frame)->document()->styleResolverChanged();
     }
+#endif
 }
 
 void Page::setNeedsLayoutInAllFrames()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
         if (!frame->isLocalFrame())
             continue;
@@ -253,8 +287,10 @@ void Page::setNeedsLayoutInAllFrames()
             view->scheduleRelayout();
         }
     }
+#endif
 }
 
+#if 0 // BKTODO:
 void Page::refreshPlugins()
 {
     if (allPages().isEmpty())
@@ -278,18 +314,22 @@ PluginData* Page::pluginData() const
         m_pluginData = PluginData::create(this);
     return m_pluginData.get();
 }
+#endif
 
 void Page::unmarkAllTextMatches()
 {
     if (!mainFrame())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     Frame* frame = mainFrame();
     do {
         if (frame->isLocalFrame())
             toLocalFrame(frame)->document()->markers().removeMarkers(DocumentMarker::TextMatch);
         frame = frame->tree().traverseNextWithWrap(false);
     } while (frame);
+#endif
 }
 
 void Page::setValidationMessageClient(PassOwnPtrWillBeRawPtr<ValidationMessageClient> client)
@@ -303,10 +343,13 @@ void Page::setDefersLoading(bool defers)
         return;
 
     m_defersLoading = defers;
+    ASSERT(false); // BKTODO:
+#if 0
     for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
         if (frame->isLocalFrame())
             toLocalFrame(frame)->loader().setDefersLoading(defers);
     }
+#endif
 }
 
 void Page::setPageScaleFactor(float scale)
@@ -336,6 +379,7 @@ void Page::setDeviceColorProfile(const Vector<char>& profile)
     // FIXME: implement.
 }
 
+#if 0 // BKTODO:
 void Page::resetDeviceColorProfileForTesting()
 {
     RuntimeEnabledFeatures::setImageColorProfilesEnabled(false);
@@ -360,6 +404,7 @@ void Page::visitedStateChanged(LinkHash linkHash)
         }
     }
 }
+#endif
 
 void Page::setVisibilityState(PageVisibilityState visibilityState, bool isInitialState)
 {
@@ -381,7 +426,7 @@ PageVisibilityState Page::visibilityState() const
 
 bool Page::isCursorVisible() const
 {
-    return m_isCursorVisible && settings().deviceSupportsMouse();
+    return m_isCursorVisible && Settings::deviceSupportsMouse();
 }
 
 void Page::addMultisamplingChangedObserver(MultisamplingChangedObserver* observer)
@@ -397,6 +442,7 @@ void Page::removeMultisamplingChangedObserver(MultisamplingChangedObserver* obse
 }
 #endif
 
+#if 0 // BKTODO:
 void Page::settingsChanged(SettingsDelegate::ChangeType changeType)
 {
     switch (changeType) {
@@ -474,20 +520,26 @@ void Page::settingsChanged(SettingsDelegate::ChangeType changeType)
         break;
     }
 }
+#endif
 
 void Page::updateAcceleratedCompositingSettings()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
         if (!frame->isLocalFrame())
             continue;
         if (FrameView* view = toLocalFrame(frame)->view())
             view->updateAcceleratedCompositingSettings();
     }
+#endif
 }
 
 void Page::didCommitLoad(LocalFrame* frame)
 {
     notifyDidCommitLoad(frame);
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_mainFrame == frame) {
         frame->console().clearMessages();
         useCounter().didCommitLoad();
@@ -495,34 +547,40 @@ void Page::didCommitLoad(LocalFrame* frame)
         m_originsUsingFeatures.updateMeasurementsAndClear();
         UserGestureIndicator::clearProcessedUserGestureSinceLoad();
     }
+#endif
 }
 
 void Page::acceptLanguagesChanged()
 {
     WillBeHeapVector<RefPtrWillBeMember<LocalFrame>> frames;
 
+    ASSERT(false); // BKTODO:
+#if 0
     // Even though we don't fire an event from here, the LocalDOMWindow's will fire
     // an event so we keep the frames alive until we are done.
     for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
         if (frame->isLocalFrame())
             frames.append(toLocalFrame(frame));
     }
+#endif
 
     for (unsigned i = 0; i < frames.size(); ++i)
         frames[i]->localDOMWindow()->acceptLanguagesChanged();
 }
 
+#if 0 // BKTODO:
 void Page::purgeMemory(DeviceKind deviceKind)
 {
     if (deviceKind == DeviceKind::LowEnd)
         memoryCache()->pruneAll();
 }
+#endif
 
 DEFINE_TRACE(Page)
 {
 #if ENABLE(OILPAN)
     visitor->trace(m_animator);
-    visitor->trace(m_autoscrollController);
+    // BKTODO: visitor->trace(m_autoscrollController);
     visitor->trace(m_chromeClient);
     visitor->trace(m_dragCaretController);
     visitor->trace(m_dragController);
@@ -535,11 +593,11 @@ DEFINE_TRACE(Page)
     visitor->trace(m_validationMessageClient);
     visitor->trace(m_multisamplingChangedObservers);
     visitor->trace(m_frameHost);
-    visitor->trace(m_memoryPurgeController);
+    // BKTODO: visitor->trace(m_memoryPurgeController);
     HeapSupplementable<Page>::trace(visitor);
 #endif
     PageLifecycleNotifier::trace(visitor);
-    MemoryPurgeClient::trace(visitor);
+    // BKTODO: MemoryPurgeClient::trace(visitor);
 }
 
 void Page::layerTreeViewInitialized(WebLayerTreeView& layerTreeView)
@@ -556,7 +614,7 @@ void Page::willCloseLayerTreeView(WebLayerTreeView& layerTreeView)
 
 void Page::willBeClosed()
 {
-    ordinaryPages().remove(this);
+    ASSERT(false); // BKTODO: ordinaryPages().remove(this);
 }
 
 void Page::willBeDestroyed()
@@ -565,9 +623,12 @@ void Page::willBeDestroyed()
 
     mainFrame->detach(FrameDetachType::Remove);
 
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(allPages().contains(this));
     allPages().remove(this);
     ordinaryPages().remove(this);
+#endif
 #if !ENABLE(OILPAN)
     if (m_memoryPurgeController)
         m_memoryPurgeController->unregisterClient(this);

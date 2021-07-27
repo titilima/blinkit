@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Page.h
+// Description: Page Class
+//      Author: Ziming Li
+//     Created: 2021-07-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2013 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Torch Mobile Inc. All rights reserved. (http://www.torchmobile.com/)
@@ -24,15 +35,17 @@
 #include "core/CoreExport.h"
 #include "core/dom/ViewportDescription.h"
 #include "core/frame/LocalFrame.h"
+#if 0 // BKTODO:
 #include "core/frame/OriginsUsingFeatures.h"
 #include "core/frame/SettingsDelegate.h"
+#endif
 #include "core/frame/UseCounter.h"
 #include "core/page/Page.h"
 #include "core/page/PageAnimator.h"
 #include "core/page/PageLifecycleNotifier.h"
 #include "core/page/PageLifecycleObserver.h"
 #include "core/page/PageVisibilityState.h"
-#include "platform/MemoryPurgeController.h"
+// BKTODO: #include "platform/MemoryPurgeController.h"
 #include "platform/Supplementable.h"
 #include "platform/geometry/LayoutRect.h"
 #include "platform/geometry/Region.h"
@@ -57,7 +70,7 @@ class EditorClient;
 class FocusController;
 class Frame;
 class FrameHost;
-class PluginData;
+// BKTODO: class PluginData;
 class PointerLockController;
 class ScrollingCoordinator;
 class Settings;
@@ -70,7 +83,7 @@ typedef uint64_t LinkHash;
 
 float deviceScaleFactor(LocalFrame*);
 
-class CORE_EXPORT Page final : public NoBaseWillBeGarbageCollectedFinalized<Page>, public WillBeHeapSupplementable<Page>, public PageLifecycleNotifier, public SettingsDelegate, public MemoryPurgeClient {
+class CORE_EXPORT Page final : public NoBaseWillBeGarbageCollectedFinalized<Page>, public WillBeHeapSupplementable<Page>, public PageLifecycleNotifier {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(Page);
     USING_FAST_MALLOC_WILL_BE_REMOVED(Page);
     WTF_MAKE_NONCOPYABLE(Page);
@@ -103,6 +116,7 @@ public:
 
     void willBeClosed();
 
+#if 0 // BKTODO:
     using PageSet = WillBePersistentHeapHashSet<RawPtrWillBeWeakMember<Page>>;
 
     // Return the current set of full-fledged, ordinary pages.
@@ -111,6 +125,7 @@ public:
     // This set does not include Pages created for other, internal purposes
     // (SVGImages, inspector overlays, page popups etc.)
     static PageSet& ordinaryPages();
+#endif
 
     static void platformColorsChanged();
     static void onMemoryPressure();
@@ -122,11 +137,13 @@ public:
 
     ViewportDescription viewportDescription() const;
 
+#if 0 // BKTODO:
     static void refreshPlugins();
     PluginData* pluginData() const;
+#endif
 
     EditorClient& editorClient() const { return *m_editorClient; }
-    SpellCheckerClient& spellCheckerClient() const { return *m_spellCheckerClient; }
+    // BKTODO: SpellCheckerClient& spellCheckerClient() const { return *m_spellCheckerClient; }
     UndoStack& undoStack() const { return *m_undoStack; }
 
     void setMainFrame(Frame*);
@@ -145,7 +162,7 @@ public:
 
     PageAnimator& animator() { return *m_animator; }
     ChromeClient& chromeClient() const { return *m_chromeClient; }
-    AutoscrollController& autoscrollController() const { return *m_autoscrollController; }
+    // BKTODO: AutoscrollController& autoscrollController() const { return *m_autoscrollController; }
     DragCaretController& dragCaretController() const { return *m_dragCaretController; }
     DragController& dragController() const { return *m_dragController; }
     FocusController& focusController() const { return *m_focusController; }
@@ -159,10 +176,10 @@ public:
     String mainThreadScrollingReasonsAsText();
     ClientRectList* nonFastScrollableRects(const LocalFrame*);
 
-    Settings& settings() const { return *m_settings; }
+    // BKTODO: Settings& settings() const { return *m_settings; }
 
     UseCounter& useCounter() { return m_useCounter; }
-    OriginsUsingFeatures& originsUsingFeatures() { return m_originsUsingFeatures; }
+    // BKTODO: OriginsUsingFeatures& originsUsingFeatures() { return m_originsUsingFeatures; }
 
     void setTabKeyCyclesThroughElements(bool b) { m_tabKeyCyclesThroughElements = b; }
     bool tabKeyCyclesThroughElements() const { return m_tabKeyCyclesThroughElements; }
@@ -181,10 +198,12 @@ public:
     float deviceScaleFactor() const { return m_deviceScaleFactor; }
     void setDeviceScaleFactor(float);
     void setDeviceColorProfile(const Vector<char>&);
+#if 0 // BKTODO:
     void resetDeviceColorProfileForTesting();
 
     static void allVisitedStateChanged(bool invalidateVisitedLinkHashes);
     static void visitedStateChanged(LinkHash visitedHash);
+#endif
 
     PageVisibilityState visibilityState() const;
     void setVisibilityState(PageVisibilityState, bool);
@@ -213,9 +232,11 @@ public:
 
     static void networkStateChanged(bool online);
 
+#if 0 // BKTODO:
     MemoryPurgeController& memoryPurgeController();
 
     void purgeMemory(DeviceKind) override;
+#endif
 
     DECLARE_TRACE();
 
@@ -231,11 +252,13 @@ private:
 
     void setNeedsLayoutInAllFrames();
 
+#if 0 // BKTODO:
     // SettingsDelegate overrides.
     void settingsChanged(SettingsDelegate::ChangeType) override;
+#endif
 
     RefPtrWillBeMember<PageAnimator> m_animator;
-    const OwnPtrWillBeMember<AutoscrollController> m_autoscrollController;
+    // BKTODO: const OwnPtrWillBeMember<AutoscrollController> m_autoscrollController;
     RawPtrWillBeMember<ChromeClient> m_chromeClient;
     const OwnPtrWillBeMember<DragCaretController> m_dragCaretController;
     const OwnPtrWillBeMember<DragController> m_dragController;
@@ -259,14 +282,14 @@ private:
     // longer needed.
     RawPtrWillBeMember<Frame> m_mainFrame;
 
-    mutable RefPtr<PluginData> m_pluginData;
+    // BKTODO: mutable RefPtr<PluginData> m_pluginData;
 
     EditorClient* const m_editorClient;
-    SpellCheckerClient* const m_spellCheckerClient;
+    // BKTODO: SpellCheckerClient* const m_spellCheckerClient;
     OwnPtrWillBeMember<ValidationMessageClient> m_validationMessageClient;
 
     UseCounter m_useCounter;
-    OriginsUsingFeatures m_originsUsingFeatures;
+    // BKTODO: OriginsUsingFeatures m_originsUsingFeatures;
 
     bool m_openedByDOM;
 
@@ -289,7 +312,7 @@ private:
     // FIXME: Most of the members of Page should move onto FrameHost.
     OwnPtrWillBeMember<FrameHost> m_frameHost;
 
-    OwnPtrWillBeMember<MemoryPurgeController> m_memoryPurgeController;
+    // BKTODO: OwnPtrWillBeMember<MemoryPurgeController> m_memoryPurgeController;
 };
 
 extern template class CORE_EXTERN_TEMPLATE_EXPORT WillBeHeapSupplement<Page>;
