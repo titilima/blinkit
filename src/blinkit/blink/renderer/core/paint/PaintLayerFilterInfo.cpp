@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PaintLayerFilterInfo.cpp
+// Description: PaintLayerFilterInfo Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  *
@@ -30,11 +41,11 @@
 #include "core/paint/PaintLayerFilterInfo.h"
 
 #include "core/fetch/DocumentResourceReference.h"
-#include "core/layout/svg/LayoutSVGResourceContainer.h"
-#include "core/layout/svg/ReferenceFilterBuilder.h"
+// BKTODO: #include "core/layout/svg/LayoutSVGResourceContainer.h"
+// BKTODO: #include "core/layout/svg/ReferenceFilterBuilder.h"
 #include "core/paint/FilterEffectBuilder.h"
 #include "core/paint/PaintLayer.h"
-#include "core/svg/SVGFilterElement.h"
+// BKTODO: #include "core/svg/SVGFilterElement.h"
 
 namespace blink {
 
@@ -110,6 +121,8 @@ void PaintLayerFilterInfo::updateReferenceFilterClients(const FilterOperations& 
         if (filterOperation->type() != FilterOperation::REFERENCE)
             continue;
         ReferenceFilterOperation* referenceFilterOperation = toReferenceFilterOperation(filterOperation.get());
+        ASSERT(false); // BKTODO:
+#if 0
         DocumentResourceReference* documentReference = ReferenceFilterBuilder::documentResourceReference(referenceFilterOperation);
         DocumentResource* cachedSVGDocument = documentReference ? documentReference->document() : 0;
 
@@ -129,11 +142,14 @@ void PaintLayerFilterInfo::updateReferenceFilterClients(const FilterOperations& 
                 toSVGFilterElement(filter)->addClient(m_layer->layoutObject()->node());
             m_internalSVGReferences.append(filter);
         }
+#endif
     }
 }
 
 void PaintLayerFilterInfo::removeReferenceFilterClients()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     for (size_t i = 0; i < m_externalSVGReferences.size(); ++i)
         m_externalSVGReferences.at(i)->removeClient(this);
     m_externalSVGReferences.clear();
@@ -145,6 +161,7 @@ void PaintLayerFilterInfo::removeReferenceFilterClients()
             toSVGFilterElement(filter)->removeClient(m_layer->layoutObject()->node());
     }
     m_internalSVGReferences.clear();
+#endif
 }
 
 } // namespace blink

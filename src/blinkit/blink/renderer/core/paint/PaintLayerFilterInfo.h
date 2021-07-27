@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PaintLayerFilterInfo.h
+// Description: PaintLayerFilterInfo Class
+//      Author: Ziming Li
+//     Created: 2021-07-14
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  *
@@ -97,6 +108,7 @@ private:
 
     static PaintLayerFilterInfoMap* s_filterMap;
 
+#if 0 // BKTODO:
     // This field stores SVG reference filters (filter: url(#someElement)).
     // It is used when SVG filters are applied to an HTML element via CSS.
     WillBePersistentHeapVector<RefPtrWillBeMember<Element>> m_internalSVGReferences;
@@ -104,6 +116,7 @@ private:
     // Same as m_internalSVGReferences, except that the reference belongs to a
     // different document.
     Vector<ResourcePtr<DocumentResource>> m_externalSVGReferences;
+#endif
 };
 
 } // namespace blink
