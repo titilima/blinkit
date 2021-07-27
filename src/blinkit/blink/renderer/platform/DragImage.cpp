@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DragImage.cpp
+// Description: DragImage Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Apple Inc.  All rights reserved.
  *
@@ -45,7 +56,7 @@
 #include "platform/text/TextRun.h"
 #include "platform/transforms/AffineTransform.h"
 #include "platform/weborigin/KURL.h"
-#include "skia/ext/image_operations.h"
+// BKTODO: #include "skia/ext/image_operations.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkImage.h"
 #include "third_party/skia/include/core/SkMatrix.h"
@@ -268,10 +279,13 @@ DragImage::~DragImage()
 
 void DragImage::scale(float scaleX, float scaleY)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     skia::ImageOperations::ResizeMethod resizeMethod = m_interpolationQuality == InterpolationNone ? skia::ImageOperations::RESIZE_BOX : skia::ImageOperations::RESIZE_LANCZOS3;
     int imageWidth = scaleX * m_bitmap.width();
     int imageHeight = scaleY * m_bitmap.height();
     m_bitmap = skia::ImageOperations::Resize(m_bitmap, resizeMethod, imageWidth, imageHeight);
+#endif
 }
 
 } // namespace blink
