@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FileMetadata.cpp
+// Description: FileMetadata Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, 2009, Google Inc. All rights reserved.
  *
@@ -31,8 +42,10 @@
 #include "platform/FileMetadata.h"
 
 #include "public/platform/Platform.h"
+#if 0 // BKTODO:
 #include "public/platform/WebFileInfo.h"
 #include "public/platform/WebFileUtilities.h"
+#endif
 
 namespace blink {
 
@@ -56,23 +69,28 @@ bool getFileModificationTime(const String& path, double& result)
 
 bool getFileMetadata(const String& path, FileMetadata& metadata)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     WebFileInfo webFileInfo;
     if (!Platform::current()->fileUtilities()->getFileInfo(path, webFileInfo))
         return false;
     metadata.modificationTime = webFileInfo.modificationTime;
     metadata.length = webFileInfo.length;
     metadata.type = static_cast<FileMetadata::Type>(webFileInfo.type);
+#endif
     return true;
 }
 
 String directoryName(const String& path)
 {
-    return Platform::current()->fileUtilities()->directoryName(path);
+    ASSERT(false); // BKTODO: return Platform::current()->fileUtilities()->directoryName(path);
+    return String();
 }
 
 KURL filePathToURL(const String& path)
 {
-    return Platform::current()->fileUtilities()->filePathToURL(path);
+    ASSERT(false); // BKTODO: return Platform::current()->fileUtilities()->filePathToURL(path);
+    return KURL();
 }
 
 } // namespace blink
