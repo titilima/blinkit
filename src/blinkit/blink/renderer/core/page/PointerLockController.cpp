@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PointerLockController.cpp
+// Description: PointerLockController Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -27,7 +38,7 @@
 #include "core/dom/Element.h"
 #include "core/events/Event.h"
 #include "core/frame/LocalDOMWindow.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/Page.h"
 #include "platform/PlatformMouseEvent.h"
@@ -47,6 +58,8 @@ PassOwnPtrWillBeRawPtr<PointerLockController> PointerLockController::create(Page
 
 void PointerLockController::requestPointerLock(Element* target)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!target || !target->inDocument() || m_documentOfRemovedElementWhileWaitingForUnlock) {
         enqueueEvent(EventTypeNames::pointerlockerror, target);
         return;
@@ -74,6 +87,7 @@ void PointerLockController::requestPointerLock(Element* target)
     } else {
         enqueueEvent(EventTypeNames::pointerlockerror, target);
     }
+#endif
 }
 
 void PointerLockController::requestPointerUnlock()
@@ -112,19 +126,19 @@ Element* PointerLockController::element() const
 
 void PointerLockController::didAcquirePointerLock()
 {
-    enqueueEvent(EventTypeNames::pointerlockchange, m_element.get());
+    ASSERT(false); // BKTODO: enqueueEvent(EventTypeNames::pointerlockchange, m_element.get());
     m_lockPending = false;
 }
 
 void PointerLockController::didNotAcquirePointerLock()
 {
-    enqueueEvent(EventTypeNames::pointerlockerror, m_element.get());
+    ASSERT(false); // BKTODO: enqueueEvent(EventTypeNames::pointerlockerror, m_element.get());
     clearElement();
 }
 
 void PointerLockController::didLosePointerLock()
 {
-    enqueueEvent(EventTypeNames::pointerlockchange, m_element ? &m_element->document() : m_documentOfRemovedElementWhileWaitingForUnlock.get());
+    ASSERT(false); // BKTODO: enqueueEvent(EventTypeNames::pointerlockchange, m_element ? &m_element->document() : m_documentOfRemovedElementWhileWaitingForUnlock.get());
     clearElement();
     m_documentOfRemovedElementWhileWaitingForUnlock = nullptr;
 }
