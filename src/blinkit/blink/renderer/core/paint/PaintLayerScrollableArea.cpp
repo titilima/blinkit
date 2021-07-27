@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PaintLayerScrollableArea.cpp
+// Description: PaintLayerScrollableArea Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights reserved.
  *
@@ -44,7 +55,7 @@
 #include "core/paint/PaintLayerScrollableArea.h"
 
 #include "core/css/PseudoStyleRequest.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/Node.h"
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/editing/FrameSelection.h"
@@ -52,7 +63,7 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLFrameOwnerElement.h"
+// BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/input/EventHandler.h"
 #include "core/layout/LayoutFlexibleBox.h"
 #include "core/layout/LayoutGeometryMap.h"
@@ -69,7 +80,7 @@
 #include "core/page/Page.h"
 #include "core/page/scrolling/ScrollingCoordinator.h"
 #include "core/paint/PaintLayerFragment.h"
-#include "platform/PlatformGestureEvent.h"
+// BKTODO: #include "platform/PlatformGestureEvent.h"
 #include "platform/PlatformMouseEvent.h"
 #include "platform/graphics/GraphicsLayer.h"
 #include "platform/graphics/paint/DrawingRecorder.h"
@@ -209,7 +220,7 @@ void PaintLayerScrollableArea::scrollControlWasSetNeedsPaintInvalidation()
 bool PaintLayerScrollableArea::shouldUseIntegerScrollOffset() const
 {
     Frame* frame = box().frame();
-    if (frame->settings() && !frame->settings()->preferCompositingToLCDTextEnabled())
+    if (!Settings::preferCompositingToLCDTextEnabled())
         return true;
 
     return ScrollableArea::shouldUseIntegerScrollOffset();
@@ -398,14 +409,16 @@ void PaintLayerScrollableArea::setScrollOffset(const DoublePoint& newScrollOffse
     if (box().node())
         box().node()->document().enqueueScrollEventForNode(box().node());
 
+#if 0 // BKTODO:
     if (AXObjectCache* cache = box().document().existingAXObjectCache())
         cache->handleScrollPositionChanged(&box());
+#endif
     box().view()->clearHitTestCache();
 
     // Inform the FrameLoader of the new scroll position, so it can be restored when navigating back.
     if (layer()->isRootLayer()) {
         frameView->frame().loader().saveScrollState();
-        frame->loader().client()->didChangeScrollOffset();
+        ASSERT(false); // BKTODO: frame->loader().client()->didChangeScrollOffset();
     }
 
     // All scrolls clear the scroll anchor.
@@ -478,9 +491,7 @@ IntPoint PaintLayerScrollableArea::lastKnownMousePosition() const
 
 bool PaintLayerScrollableArea::scrollAnimatorEnabled() const
 {
-    if (Settings* settings = box().frame()->settings())
-        return settings->scrollAnimatorEnabled();
-    return false;
+    return Settings::scrollAnimatorEnabled();
 }
 
 bool PaintLayerScrollableArea::shouldSuspendScrollAnimations() const
@@ -759,7 +770,7 @@ static bool overflowDefinesAutomaticScrollbar(EOverflow overflow)
 // handled externally in the RLC.
 static bool canHaveOverflowScrollbars(const LayoutBox& box)
 {
-    bool rootLayerScrolls = box.document().settings() && box.document().settings()->rootLayerScrolls();
+    bool rootLayerScrolls = Settings::rootLayerScrolls();
     return (rootLayerScrolls || !box.isLayoutView()) && box.document().viewportDefiningElement() != box.node();
 }
 
@@ -916,10 +927,8 @@ static inline const LayoutObject& layoutObjectForScrollbar(const LayoutObject& l
     if (Node* node = layoutObject.node()) {
         if (layoutObject.isLayoutView()) {
             Document& doc = node->document();
-            if (Settings* settings = doc.settings()) {
-                if (!settings->allowCustomScrollbarInMainFrame() && layoutObject.frame() && layoutObject.frame()->isMainFrame())
-                    return layoutObject;
-            }
+            if (!Settings::allowCustomScrollbarInMainFrame() && layoutObject.frame() && layoutObject.frame()->isMainFrame())
+                return layoutObject;
 
             // Try the <body> element first as a scrollbar source.
             Element* body = doc.body();
@@ -1236,10 +1245,13 @@ void PaintLayerScrollableArea::resize(const PlatformEvent& evt, const LayoutSize
         pos = static_cast<const PlatformMouseEvent*>(&evt)->position();
         break;
     case PlatformEvent::GestureScrollUpdate:
+        ASSERT(false); // BKTODO:
+#if 0
         pos = static_cast<const PlatformGestureEvent*>(&evt)->position();
         gevt = static_cast<const PlatformGestureEvent*>(&evt);
         pos = gevt->position();
         pos.move(gevt->deltaX(), gevt->deltaY());
+#endif
         break;
     default:
         ASSERT_NOT_REACHED();
@@ -1324,8 +1336,11 @@ void PaintLayerScrollableArea::updateScrollableAreaSet(bool hasOverflow)
 
     // FIXME: Does this need to be fixed later for OOPI?
     bool isVisibleToHitTest = box().visibleToHitTesting();
+    ASSERT(false); // BKTODO:
+#if 0
     if (HTMLFrameOwnerElement* owner = frame->deprecatedLocalOwner())
         isVisibleToHitTest &= owner->layoutObject() && owner->layoutObject()->visibleToHitTesting();
+#endif
 
     bool didScrollOverflow = m_scrollsOverflow;
 
@@ -1418,10 +1433,10 @@ bool PaintLayerScrollableArea::visualViewportSuppliesScrollbars() const
         return false;
 
     LocalFrame* frame = box().frame();
-    if (!frame || !frame->isMainFrame() || !frame->settings())
+    if (!frame || !frame->isMainFrame())
         return false;
 
-    return frame->settings()->viewportMetaEnabled();
+    return Settings::viewportMetaEnabled();
 }
 
 Widget* PaintLayerScrollableArea::widget()
