@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PaintLayerClipper.cpp
+// Description: PaintLayerClipper Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights reserved.
  *
@@ -245,7 +256,7 @@ void PaintLayerClipper::calculateRects(const ClipRectsContext& context, const La
 
 void PaintLayerClipper::calculateClipRects(const ClipRectsContext& context, ClipRects& clipRects) const
 {
-    bool rootLayerScrolls = m_layoutObject.document().settings() && m_layoutObject.document().settings()->rootLayerScrolls();
+    bool rootLayerScrolls = Settings::rootLayerScrolls();
     if (!m_layoutObject.layer()->parent() && !rootLayerScrolls) {
         // The root layer's clip rect is always infinite.
         clipRects.reset(LayoutRect(LayoutRect::infiniteIntRect()));
