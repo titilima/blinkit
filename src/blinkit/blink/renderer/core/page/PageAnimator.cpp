@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PageAnimator.cpp
+// Description: PageAnimator Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -9,8 +20,10 @@
 #include "core/frame/LocalFrame.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/Page.h"
+#if 0 // BKTODO:
 #include "core/svg/SVGDocumentExtensions.h"
 #include "platform/Logging.h"
+#endif
 
 namespace blink {
 
@@ -38,10 +51,13 @@ void PageAnimator::serviceScriptedAnimations(double monotonicAnimationStartTime)
     clock().updateTime(monotonicAnimationStartTime);
 
     WillBeHeapVector<RefPtrWillBeMember<Document>> documents;
+    ASSERT(false); // BKTODO:
+#if 0
     for (Frame* frame = m_page->mainFrame(); frame; frame = frame->tree().traverseNext()) {
         if (frame->isLocalFrame())
             documents.append(toLocalFrame(frame)->document());
     }
+#endif
 
     for (auto& document : documents) {
         DocumentAnimations::updateAnimationTimingForAnimationFrame(*document);
@@ -53,14 +69,13 @@ void PageAnimator::serviceScriptedAnimations(double monotonicAnimationStartTime)
             if (const FrameView::ScrollableAreaSet* animatingScrollableAreas = document->view()->animatingScrollableAreas()) {
                 // Iterate over a copy, since ScrollableAreas may deregister
                 // themselves during the iteration.
-                WillBeHeapVector<RawPtrWillBeMember<ScrollableArea>> animatingScrollableAreasCopy;
-                copyToVector(*animatingScrollableAreas, animatingScrollableAreasCopy);
+                std::vector<Member<ScrollableArea>> animatingScrollableAreasCopy(animatingScrollableAreas->begin(), animatingScrollableAreas->end());
                 for (ScrollableArea* scrollableArea : animatingScrollableAreasCopy)
                     scrollableArea->serviceScrollAnimations(monotonicAnimationStartTime);
             }
         }
         // TODO(skyostil): These functions should not run for documents without views.
-        SVGDocumentExtensions::serviceOnAnimationFrame(*document, monotonicAnimationStartTime);
+        ASSERT(false); // BKTODO: SVGDocumentExtensions::serviceOnAnimationFrame(*document, monotonicAnimationStartTime);
         document->serviceScriptedAnimations(monotonicAnimationStartTime);
     }
 
