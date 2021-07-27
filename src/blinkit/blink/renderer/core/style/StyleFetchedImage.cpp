@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleFetchedImage.cpp
+// Description: StyleFetchedImage Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -26,8 +37,10 @@
 #include "core/css/CSSImageValue.h"
 #include "core/fetch/ImageResource.h"
 #include "core/layout/LayoutObject.h"
+#if 0 // BKTODO:
 #include "core/svg/graphics/SVGImage.h"
 #include "core/svg/graphics/SVGImageForContainer.h"
+#endif
 
 namespace blink {
 
@@ -39,7 +52,7 @@ StyleFetchedImage::StyleFetchedImage(ImageResource* image, Document* document, c
     m_isImageResource = true;
     m_image->addClient(this);
 #if ENABLE(OILPAN)
-    ThreadState::current()->registerPreFinalizer(this);
+    ASSERT(false); // BKTODO: ThreadState::current()->registerPreFinalizer(this);
 #endif
 }
 
@@ -127,18 +140,25 @@ void StyleFetchedImage::removeClient(LayoutObject* layoutObject)
 
 void StyleFetchedImage::notifyFinished(Resource* resource)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_document && m_image && m_image->image() && m_image->image()->isSVGImage())
         toSVGImage(m_image->image())->updateUseCounters(*m_document);
+#endif
     // Oilpan: do not prolong the Document's lifetime.
     m_document.clear();
 }
 
 PassRefPtr<Image> StyleFetchedImage::image(const LayoutObject*, const IntSize& containerSize, float zoom) const
 {
+    ASSERT(false); // BKTODO:
+    return m_image->image();
+#if 0
     if (!m_image->image()->isSVGImage())
         return m_image->image();
 
     return SVGImageForContainer::create(toSVGImage(m_image->image()), containerSize, zoom, m_url);
+#endif
 }
 
 bool StyleFetchedImage::knownToBeOpaque(const LayoutObject* layoutObject) const
