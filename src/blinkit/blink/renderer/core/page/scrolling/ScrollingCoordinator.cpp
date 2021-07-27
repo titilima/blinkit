@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollingCoordinator.cpp
+// Description: ScrollingCoordinator Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -26,7 +37,7 @@
 #include "core/page/scrolling/ScrollingCoordinator.h"
 
 #include "core/dom/Document.h"
-#include "core/dom/Fullscreen.h"
+// BKTODO: #include "core/dom/Fullscreen.h"
 #include "core/dom/Node.h"
 #include "core/frame/EventHandlerRegistry.h"
 #include "core/frame/FrameView.h"
@@ -40,7 +51,7 @@
 #include "core/layout/compositing/PaintLayerCompositor.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/Page.h"
-#include "core/plugins/PluginView.h"
+// BKTODO: #include "core/plugins/PluginView.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/TraceEvent.h"
 #include "platform/exported/WebScrollbarImpl.h"
@@ -65,9 +76,7 @@
 
 using blink::WebLayer;
 using blink::WebLayerPositionConstraint;
-using blink::WebRect;
 using blink::WebScrollbarLayer;
-using blink::WebVector;
 
 namespace {
 
@@ -104,8 +113,8 @@ DEFINE_TRACE(ScrollingCoordinator)
 {
     visitor->trace(m_page);
 #if ENABLE(OILPAN)
-    visitor->trace(m_horizontalScrollbars);
-    visitor->trace(m_verticalScrollbars);
+    ASSERT(false); // BKTODO: visitor->trace(m_horizontalScrollbars);
+    ASSERT(false); // BKTODO: visitor->trace(m_verticalScrollbars);
 #endif
 }
 
@@ -115,7 +124,7 @@ void ScrollingCoordinator::setShouldHandleScrollGestureOnMainThreadRegion(const 
         return;
     if (WebLayer* scrollLayer = toWebLayer(m_page->deprecatedLocalMainFrame()->view()->layerForScrolling())) {
         Vector<IntRect> rects = region.rects();
-        WebVector<WebRect> webRects(rects.size());
+        std::vector<IntRect> webRects(rects.size());
         for (size_t i = 0; i < rects.size(); ++i)
             webRects[i] = rects[i];
         scrollLayer->setNonFastScrollableRegion(webRects);
@@ -193,6 +202,8 @@ void ScrollingCoordinator::updateAfterCompositingChangeIfNeeded()
         // If there is a non-root fullscreen element, prevent the viewport from
         // scrolling.
         Document* mainFrameDocument = m_page->deprecatedLocalMainFrame()->document();
+        ASSERT(false); // BKTODO:
+#if 0
         Element* fullscreenElement = Fullscreen::fullscreenElementFrom(*mainFrameDocument);
         WebLayer* visualViewportScrollLayer = toWebLayer(m_page->frameHost().visualViewport().scrollLayer());
 
@@ -204,8 +215,11 @@ void ScrollingCoordinator::updateAfterCompositingChangeIfNeeded()
         }
 
         layoutViewportScrollLayer->setUserScrollable(frameView->userInputScrollable(HorizontalScrollbar), frameView->userInputScrollable(VerticalScrollbar));
+#endif
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     const FrameTree& tree = m_page->mainFrame()->tree();
     for (const Frame* child = tree.firstChild(); child; child = child->tree().nextSibling()) {
         if (!child->isLocalFrame())
@@ -213,6 +227,7 @@ void ScrollingCoordinator::updateAfterCompositingChangeIfNeeded()
         if (WebLayer* scrollLayer = toWebLayer(toLocalFrame(child)->view()->layerForScrolling()))
             scrollLayer->setBounds(toLocalFrame(child)->view()->contentsSize());
     }
+#endif
 }
 
 void ScrollingCoordinator::setLayerIsContainerForFixedPositionLayers(GraphicsLayer* layer, bool enable)
@@ -269,9 +284,12 @@ void ScrollingCoordinator::willDestroyScrollableArea(ScrollableArea* scrollableA
 
 void ScrollingCoordinator::removeWebScrollbarLayer(ScrollableArea* scrollableArea, ScrollbarOrientation orientation)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ScrollbarMap& scrollbars = orientation == HorizontalScrollbar ? m_horizontalScrollbars : m_verticalScrollbars;
     if (OwnPtr<WebScrollbarLayer> scrollbarLayer = scrollbars.take(scrollableArea))
         GraphicsLayer::unregisterContentsLayer(scrollbarLayer->layer());
+#endif
 }
 
 static PassOwnPtr<WebScrollbarLayer> createScrollbarLayer(Scrollbar& scrollbar, float deviceScaleFactor)
@@ -280,17 +298,25 @@ static PassOwnPtr<WebScrollbarLayer> createScrollbarLayer(Scrollbar& scrollbar, 
     WebScrollbarThemePainter painter(theme, scrollbar, deviceScaleFactor);
     OwnPtr<WebScrollbarThemeGeometry> geometry(WebScrollbarThemeGeometryNative::create(theme));
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     OwnPtr<WebScrollbarLayer> scrollbarLayer = adoptPtr(Platform::current()->compositorSupport()->createScrollbarLayer(WebScrollbarImpl::create(&scrollbar), painter, geometry.leakPtr()));
     GraphicsLayer::registerContentsLayer(scrollbarLayer->layer());
     return scrollbarLayer.release();
+#endif
 }
 
 PassOwnPtr<WebScrollbarLayer> ScrollingCoordinator::createSolidColorScrollbarLayer(ScrollbarOrientation orientation, int thumbThickness, int trackStart, bool isLeftSideVerticalScrollbar)
 {
     WebScrollbar::Orientation webOrientation = (orientation == HorizontalScrollbar) ? WebScrollbar::Horizontal : WebScrollbar::Vertical;
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     OwnPtr<WebScrollbarLayer> scrollbarLayer = adoptPtr(Platform::current()->compositorSupport()->createSolidColorScrollbarLayer(webOrientation, thumbThickness, trackStart, isLeftSideVerticalScrollbar));
     GraphicsLayer::registerContentsLayer(scrollbarLayer->layer());
     return scrollbarLayer.release();
+#endif
 }
 
 static void detachScrollbarLayer(GraphicsLayer* scrollbarGraphicsLayer)
@@ -317,14 +343,22 @@ static void setupScrollbarLayer(GraphicsLayer* scrollbarGraphicsLayer, WebScroll
 
 WebScrollbarLayer* ScrollingCoordinator::addWebScrollbarLayer(ScrollableArea* scrollableArea, ScrollbarOrientation orientation, PassOwnPtr<WebScrollbarLayer> scrollbarLayer)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     ScrollbarMap& scrollbars = orientation == HorizontalScrollbar ? m_horizontalScrollbars : m_verticalScrollbars;
     return scrollbars.add(scrollableArea, scrollbarLayer).storedValue->value.get();
+#endif
 }
 
 WebScrollbarLayer* ScrollingCoordinator::getWebScrollbarLayer(ScrollableArea* scrollableArea, ScrollbarOrientation orientation)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     ScrollbarMap& scrollbars = orientation == HorizontalScrollbar ? m_horizontalScrollbars : m_verticalScrollbars;
     return scrollbars.get(scrollableArea);
+#endif
 }
 
 void ScrollingCoordinator::scrollableAreaScrollbarLayerDidChange(ScrollableArea* scrollableArea, ScrollbarOrientation orientation)
@@ -358,10 +392,8 @@ void ScrollingCoordinator::scrollableAreaScrollbarLayerDidChange(ScrollableArea*
 
         WebScrollbarLayer* scrollbarLayer = getWebScrollbarLayer(scrollableArea, orientation);
         if (!scrollbarLayer) {
-            Settings* settings = m_page->mainFrame()->settings();
-
             OwnPtr<WebScrollbarLayer> webScrollbarLayer;
-            if (settings->useSolidColorScrollbars()) {
+            if (Settings::useSolidColorScrollbars()) {
                 ASSERT(RuntimeEnabledFeatures::overlayScrollbarsEnabled());
                 webScrollbarLayer = createSolidColorScrollbarLayer(orientation, scrollbar.theme().thumbThickness(scrollbar), scrollbar.theme().trackPosition(scrollbar), scrollableArea->shouldPlaceVerticalScrollbarOnLeft());
             } else {
@@ -387,7 +419,7 @@ bool ScrollingCoordinator::scrollableAreaScrollLayerDidChange(ScrollableArea* sc
 
     if (scrollLayer) {
         ASSERT(m_page);
-        scrollLayer->setScrollableArea(scrollableArea, isForViewport(scrollableArea));
+        ASSERT(false); // BKTODO: scrollLayer->setScrollableArea(scrollableArea, isForViewport(scrollableArea));
     }
 
     WebLayer* webLayer = toWebLayer(scrollableArea->layerForScrolling());
@@ -430,7 +462,7 @@ bool ScrollingCoordinator::scrollableAreaScrollLayerDidChange(ScrollableArea* sc
     }
 
     // Update the viewport layer registration if the outer viewport may have changed.
-    if (m_page->settings().rootLayerScrolls() && isForRootLayer(scrollableArea))
+    if (Settings::rootLayerScrolls() && isForRootLayer(scrollableArea))
         m_page->chromeClient().registerViewportLayers();
 
     scrollableArea->layerForScrollingDidChange(m_programmaticScrollAnimatorTimeline.get());
@@ -448,6 +480,8 @@ using LayerFrameMap = WillBeHeapHashMap<const PaintLayer*, WillBeHeapVector<RawP
 static void makeLayerChildFrameMap(const LocalFrame* currentFrame, LayerFrameMap* map)
 {
     map->clear();
+    ASSERT(false); // BKTODO:
+#if 0
     const FrameTree& tree = currentFrame->tree();
     for (const Frame* child = tree.firstChild(); child; child = child->tree().nextSibling()) {
         if (!child->isLocalFrame())
@@ -462,6 +496,7 @@ static void makeLayerChildFrameMap(const LocalFrame* currentFrame, LayerFrameMap
         else
             iter->value.append(toLocalFrame(child));
     }
+#endif
 }
 
 static void projectRectsToGraphicsLayerSpaceRecursive(
@@ -518,6 +553,8 @@ static void projectRectsToGraphicsLayerSpaceRecursive(
     // If this layer has any frames of interest as a child of it, walk those (with an updated frame map).
     LayerFrameMap::iterator mapIter = layerChildFrameMap.find(curLayer);
     if (mapIter != layerChildFrameMap.end()) {
+        ASSERT(false); // BKTODO:
+#if 0
         for (size_t i = 0; i < mapIter->value.size(); i++) {
             const LocalFrame* childFrame = mapIter->value[i];
             const PaintLayer* childLayer = childFrame->view()->layoutView()->layer();
@@ -529,6 +566,7 @@ static void projectRectsToGraphicsLayerSpaceRecursive(
                 geometryMap.popMappingsToAncestor(curLayer);
             }
         }
+#endif
     }
 }
 
@@ -583,10 +621,13 @@ void ScrollingCoordinator::updateTouchEventTargetRectsIfNeeded()
 
 void ScrollingCoordinator::reset()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     for (const auto& scrollbar : m_horizontalScrollbars)
         GraphicsLayer::unregisterContentsLayer(scrollbar.value->layer());
     for (const auto& scrollbar : m_verticalScrollbars)
         GraphicsLayer::unregisterContentsLayer(scrollbar.value->layer());
+#endif
 
     m_horizontalScrollbars.clear();
     m_verticalScrollbars.clear();
@@ -627,7 +668,7 @@ void ScrollingCoordinator::setTouchEventTargetRects(LayerHitTestRects& layerRect
 
     for (const auto& layerRect : graphicsLayerRects) {
         const GraphicsLayer* graphicsLayer = layerRect.key;
-        WebVector<WebRect> webRects(layerRect.value.size());
+        std::vector<IntRect> webRects(layerRect.value.size());
         for (size_t i = 0; i < layerRect.value.size(); ++i)
             webRects[i] = enclosingIntRect(layerRect.value[i]);
         graphicsLayer->platformLayer()->setTouchEventHandlerRegion(webRects);
@@ -720,11 +761,14 @@ void ScrollingCoordinator::setShouldUpdateScrollLayerPositionOnMainThread(MainTh
 
 void ScrollingCoordinator::layerTreeViewInitialized(WebLayerTreeView& layerTreeView)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (RuntimeEnabledFeatures::compositorAnimationTimelinesEnabled() && Platform::current()->isThreadedAnimationEnabled()) {
         ASSERT(Platform::current()->compositorSupport());
         m_programmaticScrollAnimatorTimeline = adoptPtr(Platform::current()->compositorSupport()->createAnimationTimeline());
         layerTreeView.attachCompositorAnimationTimeline(m_programmaticScrollAnimatorTimeline.get());
     }
+#endif
 }
 
 void ScrollingCoordinator::willCloseLayerTreeView(WebLayerTreeView& layerTreeView)
@@ -741,9 +785,9 @@ void ScrollingCoordinator::willBeDestroyed()
 
     m_page = nullptr;
     for (const auto& scrollbar : m_horizontalScrollbars)
-        GraphicsLayer::unregisterContentsLayer(scrollbar.value->layer());
+        GraphicsLayer::unregisterContentsLayer(scrollbar.second->layer());
     for (const auto& scrollbar : m_verticalScrollbars)
-        GraphicsLayer::unregisterContentsLayer(scrollbar.value->layer());
+        GraphicsLayer::unregisterContentsLayer(scrollbar.second->layer());
 }
 
 bool ScrollingCoordinator::coordinatesScrollingForFrameView(FrameView* frameView) const
@@ -799,6 +843,8 @@ Region ScrollingCoordinator::computeShouldHandleScrollGestureOnMainThreadRegion(
         }
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (const FrameView::ChildrenWidgetSet* children = frameView->children()) {
         for (const RefPtrWillBeMember<Widget>& child : *children) {
             if (!(*child).isPluginView())
@@ -818,6 +864,7 @@ Region ScrollingCoordinator::computeShouldHandleScrollGestureOnMainThreadRegion(
         if (subFrame->isLocalFrame())
             shouldHandleScrollGestureOnMainThreadRegion.unite(computeShouldHandleScrollGestureOnMainThreadRegion(toLocalFrame(subFrame), offset));
     }
+#endif
 
     return shouldHandleScrollGestureOnMainThreadRegion;
 }
@@ -829,6 +876,8 @@ static void accumulateDocumentTouchEventTargetRects(LayerHitTestRects& rects, co
     if (!targets)
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     // If there's a handler on the window, document, html or body element (fairly common in practice),
     // then we can quickly mark the entire document and skip looking at any other handlers.
     // Note that technically a handler on the body doesn't cover the whole document, but it's
@@ -891,6 +940,7 @@ static void accumulateDocumentTouchEventTargetRects(LayerHitTestRects& rects, co
             }
         }
     }
+#endif
 }
 
 void ScrollingCoordinator::computeTouchEventTargetRects(LayerHitTestRects& rects)
@@ -948,7 +998,7 @@ bool ScrollingCoordinator::isForMainFrame(ScrollableArea* scrollableArea) const
 
 bool ScrollingCoordinator::isForViewport(ScrollableArea* scrollableArea) const
 {
-    bool isForOuterViewport = m_page->settings().rootLayerScrolls() ?
+    bool isForOuterViewport = Settings::rootLayerScrolls() ?
         isForRootLayer(scrollableArea) :
         isForMainFrame(scrollableArea);
 
@@ -1022,6 +1072,8 @@ MainThreadScrollingReasons ScrollingCoordinator::mainThreadScrollingReasons() co
 {
     MainThreadScrollingReasons reasons = static_cast<MainThreadScrollingReasons>(0);
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_page->settings().threadedScrollingEnabled())
         reasons |= ThreadedScrollingDisabled;
 
@@ -1045,6 +1097,7 @@ MainThreadScrollingReasons ScrollingCoordinator::mainThreadScrollingReasons() co
     if (mayBeScrolledByScript && hasVisibleSlowRepaintViewportConstrainedObjects(frameView)) {
         reasons |= HasNonLayerViewportConstrainedObjects;
     }
+#endif
 
     return reasons;
 }
@@ -1079,7 +1132,7 @@ bool ScrollingCoordinator::frameViewIsDirty() const
         return true;
 
     if (WebLayer* scrollLayer = frameView ? toWebLayer(frameView->layerForScrolling()) : nullptr)
-        return WebSize(frameView->contentsSize()) != scrollLayer->bounds();
+        return IntSize(frameView->contentsSize()) != scrollLayer->bounds();
     return false;
 }
 
