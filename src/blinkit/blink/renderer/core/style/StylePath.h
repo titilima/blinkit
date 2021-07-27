@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StylePath.H
+// Description: StylePath Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -18,22 +29,24 @@ class SVGPathByteStream;
 
 class StylePath : public RefCounted<StylePath> {
 public:
-    static PassRefPtr<StylePath> create(PassRefPtr<SVGPathByteStream>);
+    // BKTODO: static PassRefPtr<StylePath> create(PassRefPtr<SVGPathByteStream>);
     ~StylePath();
 
     static StylePath* emptyPath();
 
     const Path& path() const { return m_path; }
-    const SVGPathByteStream& byteStream() const;
+    // BKTODO: const SVGPathByteStream& byteStream() const;
 
     PassRefPtrWillBeRawPtr<CSSValue> computedCSSValue() const;
 
     bool equals(const StylePath&) const;
 
 private:
+#if 0 // BKTODO:
     explicit StylePath(PassRefPtr<SVGPathByteStream>);
 
     RefPtr<SVGPathByteStream> m_byteStream;
+#endif
     Path m_path;
 };
 
