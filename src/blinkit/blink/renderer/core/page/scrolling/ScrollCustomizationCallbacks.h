@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollCustomizationCallbacks.h
+// Description: ScrollCustomizationCallbacks Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,7 +19,6 @@
 #include "core/CoreExport.h"
 #include "core/dom/Element.h"
 #include "platform/heap/Handle.h"
-#include "wtf/HashMap.h"
 
 namespace blink {
 
@@ -35,7 +45,7 @@ public:
 #endif
 
 private:
-    using ScrollStateCallbackList = HeapHashMap<RawPtrWillBeWeakMember<Element>, Member<ScrollStateCallback>>;
+    using ScrollStateCallbackList = std::unordered_map<WeakMember<Element>, Member<ScrollStateCallback>>;
     ScrollStateCallbackList m_applyScrollCallbacks;
     ScrollStateCallbackList m_distributeScrollCallbacks;
 };
