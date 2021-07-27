@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FocusController.cpp
+// Description: FocusController Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Nuanti Ltd.
@@ -27,7 +38,7 @@
 #include "core/page/FocusController.h"
 
 #include "core/HTMLNames.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/Document.h"
 #include "core/dom/Element.h"
 #include "core/dom/ElementTraversal.h"
@@ -43,16 +54,16 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/RemoteFrame.h"
+// BKTODO: #include "core/frame/RemoteFrame.h"
 #include "core/frame/Settings.h"
 #include "core/html/HTMLAreaElement.h"
 #include "core/html/HTMLImageElement.h"
-#include "core/html/HTMLPlugInElement.h"
+// BKTODO: #include "core/html/HTMLPlugInElement.h"
 #include "core/html/HTMLShadowElement.h"
 #include "core/html/HTMLTextFormControlElement.h"
 #include "core/input/EventHandler.h"
 #include "core/page/ChromeClient.h"
-#include "core/page/FrameTree.h"
+// BKTODO: #include "core/page/FrameTree.h"
 #include "core/page/Page.h"
 #include "core/layout/HitTestResult.h"
 #include "core/page/SpatialNavigation.h"
@@ -78,7 +89,7 @@ public:
     static FocusNavigationScope ownedByNonFocusableFocusScopeOwner(Element&);
     static FocusNavigationScope ownedByShadowHost(const Element&);
     static FocusNavigationScope ownedByShadowInsertionPoint(HTMLShadowElement&);
-    static FocusNavigationScope ownedByIFrame(const HTMLFrameOwnerElement&);
+    // BKTODO: static FocusNavigationScope ownedByIFrame(const HTMLFrameOwnerElement&);
 
 private:
     explicit FocusNavigationScope(TreeScope*);
@@ -103,9 +114,12 @@ Element* FocusNavigationScope::owner() const
         ShadowRoot* shadowRoot = toShadowRoot(root);
         return shadowRoot->isYoungest() ? shadowRoot->host() : shadowRoot->shadowInsertionPointOfYoungerShadowRoot();
     }
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: Figure out the right thing for OOPI here.
     if (Frame* frame = root->document().frame())
         return frame->deprecatedLocalOwner();
+#endif
     return nullptr;
 }
 
@@ -133,12 +147,14 @@ FocusNavigationScope FocusNavigationScope::ownedByShadowHost(const Element& elem
     return FocusNavigationScope(&element.shadow()->youngestShadowRoot());
 }
 
+#if 0 // BKTODO:
 FocusNavigationScope FocusNavigationScope::ownedByIFrame(const HTMLFrameOwnerElement& frame)
 {
     ASSERT(frame.contentFrame());
     ASSERT(frame.contentFrame()->isLocalFrame());
     return FocusNavigationScope(toLocalFrame(frame.contentFrame())->document());
 }
+#endif
 
 FocusNavigationScope FocusNavigationScope::ownedByShadowInsertionPoint(HTMLShadowElement& shadowInsertionPoint)
 {
@@ -173,8 +189,11 @@ inline void dispatchEventsOnWindowAndFocusedElement(Document* document, bool foc
     // If we have a focused element we should dispatch focus on it after we focus the window.
     // https://bugs.webkit.org/show_bug.cgi?id=27105
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (document->focusedElement() && isHTMLPlugInElement(document->focusedElement()))
         toHTMLPlugInElement(document->focusedElement())->setPluginFocus(focused);
+#endif
 
     // Do not fire events while modal dialogs are up.  See https://bugs.webkit.org/show_bug.cgi?id=33962
     if (Page* page = document->page()) {
@@ -465,6 +484,8 @@ Element* findFocusableElementRecursively(WebFocusType type, const FocusNavigatio
 
 Element* findFocusableElementDescendingDownIntoFrameDocument(WebFocusType type, Element* element)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // The element we found might be a HTMLFrameOwnerElement, so descend down the tree until we find either:
     // 1) a focusable element, or
     // 2) the deepest-nested HTMLFrameOwnerElement.
@@ -479,6 +500,7 @@ Element* findFocusableElementDescendingDownIntoFrameDocument(WebFocusType type, 
         ASSERT(element != foundElement);
         element = foundElement;
     }
+#endif
     return element;
 }
 
@@ -623,12 +645,15 @@ Frame* FocusController::focusedOrMainFrame() const
     if (LocalFrame* frame = focusedFrame())
         return frame;
 
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: This is a temporary hack to ensure that we return a LocalFrame, even when the mainFrame is remote.
     // FocusController needs to be refactored to deal with RemoteFrames cross-process focus transfers.
     for (Frame* frame = m_page->mainFrame()->tree().top(); frame; frame = frame->tree().traverseNext()) {
         if (frame->isLocalRoot())
             return frame;
     }
+#endif
 
     return m_page->mainFrame();
 }
@@ -636,12 +661,15 @@ Frame* FocusController::focusedOrMainFrame() const
 HTMLFrameOwnerElement* FocusController::focusedFrameOwnerElement(LocalFrame& currentFrame) const
 {
     Frame* focusedFrame = m_focusedFrame.get();
+    ASSERT(false); // BKTODO:
+#if 0
     for (; focusedFrame; focusedFrame = focusedFrame->tree().parent()) {
         if (focusedFrame->tree().parent() == &currentFrame) {
             ASSERT(focusedFrame->owner()->isLocal());
             return focusedFrame->deprecatedLocalOwner();
         }
     }
+#endif
     return nullptr;
 }
 
@@ -650,7 +678,8 @@ bool FocusController::isDocumentFocused(const Document& document) const
     if (!isActive() || !isFocused())
         return false;
 
-    return m_focusedFrame && m_focusedFrame->tree().isDescendantOf(document.frame());
+    ASSERT(false); // BKTODO: return m_focusedFrame && m_focusedFrame->tree().isDescendantOf(document.frame());
+    return false;
 }
 
 void FocusController::setFocused(bool focused)
@@ -678,6 +707,7 @@ bool FocusController::setInitialFocus(WebFocusType type)
 {
     bool didAdvanceFocus = advanceFocus(type, true);
 
+#if 0 // BKTODO:
     // If focus is being set initially, accessibility needs to be informed that system focus has moved
     // into the web area again, even if focus did not change within WebCore. PostNotification is called instead
     // of handleFocusedUIElementChanged, because this will send the notification even if the element is the same.
@@ -686,6 +716,7 @@ bool FocusController::setInitialFocus(WebFocusType type)
         if (AXObjectCache* cache = document->existingAXObjectCache())
             cache->handleInitialFocus();
     }
+#endif
 
     return didAdvanceFocus;
 }
@@ -715,6 +746,9 @@ bool FocusController::advanceFocus(WebFocusType type, bool initialFocus, InputDe
 
 bool FocusController::advanceFocusAcrossFrames(WebFocusType type, RemoteFrame* from, LocalFrame* to, InputDeviceCapabilities* sourceCapabilities)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     // If we are shifting focus from a child frame to its parent, the
     // child frame has no more focusable elements, and we should continue
     // looking for focusable elements in the parent, starting from the <iframe>
@@ -726,6 +760,7 @@ bool FocusController::advanceFocusAcrossFrames(WebFocusType type, RemoteFrame* f
     }
 
     return advanceFocusInDocumentOrder(to, startingNode, type, false, sourceCapabilities);
+#endif
 }
 
 bool FocusController::advanceFocusInDocumentOrder(LocalFrame* frame, Node* startingNode, WebFocusType type, bool initialFocus, InputDeviceCapabilities* sourceCapabilities)
@@ -738,7 +773,7 @@ bool FocusController::advanceFocusInDocumentOrder(LocalFrame* frame, Node* start
         currentNode = document->focusedElement();
 
     // FIXME: Not quite correct when it comes to focus transitions leaving/entering the WebView itself
-    bool caretBrowsing = frame->settings() && frame->settings()->caretBrowsingEnabled();
+    bool caretBrowsing = Settings::caretBrowsingEnabled();
 
     if (caretBrowsing && !currentNode)
         currentNode = frame->selection().start().anchorNode();
@@ -748,6 +783,8 @@ bool FocusController::advanceFocusInDocumentOrder(LocalFrame* frame, Node* start
     RefPtrWillBeRawPtr<Element> element = findFocusableElementAcrossFocusScopes(type, FocusNavigationScope::focusNavigationScopeOf(currentNode ? *currentNode : *document), currentNode);
 
     if (!element) {
+        ASSERT(false); // BKTODO:
+#if 0
         // If there's a RemoteFrame on the ancestor chain, we need to continue
         // searching for focusable elements there.
         if (frame->localFrameRoot() != frame->tree().top()) {
@@ -755,6 +792,7 @@ bool FocusController::advanceFocusInDocumentOrder(LocalFrame* frame, Node* start
             toRemoteFrame(frame->localFrameRoot()->tree().parent())->advanceFocus(type, frame->localFrameRoot());
             return true;
         }
+#endif
 
         // We didn't find an element to focus, so we should try to pass focus to Chrome.
         if (!initialFocus && m_page->chromeClient().canTakeFocus(type)) {
@@ -779,6 +817,8 @@ bool FocusController::advanceFocusInDocumentOrder(LocalFrame* frame, Node* start
         return true;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (element->isFrameOwnerElement() && (!isHTMLPlugInElement(*element) || !element->isKeyboardFocusable())) {
         // We focus frames rather than frame owners.
         // FIXME: We should not focus frames that have no scrollbars, as focusing them isn't useful to the user.
@@ -798,6 +838,7 @@ bool FocusController::advanceFocusInDocumentOrder(LocalFrame* frame, Node* start
 
         return true;
     }
+#endif
 
     // FIXME: It would be nice to just be able to call setFocusedElement(node)
     // here, but we can't do that because some elements (e.g. HTMLInputElement
@@ -847,7 +888,7 @@ static void clearSelectionIfNeeded(LocalFrame* oldFocusedFrame, LocalFrame* newF
     if (selection.isNone())
         return;
 
-    bool caretBrowsing = oldFocusedFrame->settings()->caretBrowsingEnabled();
+    bool caretBrowsing = Settings::caretBrowsingEnabled();
     if (caretBrowsing)
         return;
 
@@ -940,9 +981,12 @@ static void updateFocusCandidateIfNeeded(WebFocusType type, const FocusCandidate
     ASSERT(candidate.visibleNode->isElementNode());
     ASSERT(candidate.visibleNode->layoutObject());
 
+    ASSERT(false); // BKTODO:
+#if 0
     // Ignore iframes that don't have a src attribute
     if (frameOwnerElement(candidate) && (!frameOwnerElement(candidate)->contentFrame() || candidate.rect.isEmpty()))
         return;
+#endif
 
     // Ignore off screen child nodes of containers that do not scroll (overflow:hidden)
     if (candidate.isOffscreen && !canBeScrolledIntoView(type, candidate))
@@ -1030,6 +1074,8 @@ bool FocusController::advanceFocusDirectionallyInContainer(Node* container, cons
         return scrollInDirection(container, type);
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     HTMLFrameOwnerElement* frameElement = frameOwnerElement(focusCandidate);
     // If we have an iframe without the src attribute, it will not have a contentFrame().
     // We ASSERT here to make sure that
@@ -1052,6 +1098,7 @@ bool FocusController::advanceFocusDirectionallyInContainer(Node* container, cons
         }
         return true;
     }
+#endif
 
     if (canScrollInDirection(focusCandidate.visibleNode, type)) {
         if (focusCandidate.isOffscreenAfterScrolling) {
