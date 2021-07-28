@@ -35,7 +35,7 @@
 #include "platform/graphics/Path.h"
 #include "platform/graphics/paint/PaintController.h"
 #include "platform/weborigin/KURL.h"
-#include "skia/ext/platform_canvas.h"
+// BKTODO: #include "skia/ext/platform_canvas.h"
 #include "third_party/skia/include/core/SkAnnotation.h"
 #include "third_party/skia/include/core/SkColorFilter.h"
 #include "third_party/skia/include/core/SkData.h"
@@ -300,7 +300,7 @@ void GraphicsContext::beginRecording(const FloatRect& bounds)
 
     m_canvas = m_pictureRecorder.beginRecording(bounds, 0);
     if (m_hasMetaData)
-        skia::GetMetaData(*m_canvas) = m_metaData;
+        ASSERT(false); // BKTODO: skia::GetMetaData(*m_canvas) = m_metaData;
 }
 
 PassRefPtr<const SkPicture> GraphicsContext::endRecording()
