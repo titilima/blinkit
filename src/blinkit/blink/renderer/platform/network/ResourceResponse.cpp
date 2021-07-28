@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourceResponse.cpp
+// Description: ResourceResponse Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008 Apple Inc. All rights reserved.
  * Copyright (C) 2009 Google Inc. All rights reserved.
@@ -58,7 +69,7 @@ ResourceResponse::ResourceResponse()
     , m_wasFetchedViaProxy(false)
     , m_wasFetchedViaServiceWorker(false)
     , m_wasFallbackRequiredByServiceWorker(false)
-    , m_serviceWorkerResponseType(WebServiceWorkerResponseTypeDefault)
+    // BKTODO: , m_serviceWorkerResponseType(WebServiceWorkerResponseTypeDefault)
     , m_responseTime(0)
     , m_remotePort(0)
 {
@@ -95,12 +106,13 @@ ResourceResponse::ResourceResponse(const KURL& url, const AtomicString& mimeType
     , m_wasFetchedViaProxy(false)
     , m_wasFetchedViaServiceWorker(false)
     , m_wasFallbackRequiredByServiceWorker(false)
-    , m_serviceWorkerResponseType(WebServiceWorkerResponseTypeDefault)
+    // BKTODO: , m_serviceWorkerResponseType(WebServiceWorkerResponseTypeDefault)
     , m_responseTime(0)
     , m_remotePort(0)
 {
 }
 
+#if 0 // BKTODO:
 ResourceResponse::ResourceResponse(CrossThreadResourceResponseData* data)
     : ResourceResponse()
 {
@@ -191,6 +203,7 @@ PassOwnPtr<CrossThreadResourceResponseData> ResourceResponse::copyData() const
 
     return data.release();
 }
+#endif
 
 bool ResourceResponse::isHTTP() const
 {
@@ -506,6 +519,7 @@ void ResourceResponse::setConnectionID(unsigned connectionID)
     m_connectionID = connectionID;
 }
 
+#if 0 // BKTODO:
 ResourceLoadTiming* ResourceResponse::resourceLoadTiming() const
 {
     return m_resourceLoadTiming.get();
@@ -515,6 +529,7 @@ void ResourceResponse::setResourceLoadTiming(PassRefPtr<ResourceLoadTiming> reso
 {
     m_resourceLoadTiming = resourceLoadTiming;
 }
+#endif
 
 PassRefPtr<ResourceLoadInfo> ResourceResponse::resourceLoadInfo() const
 {
@@ -559,10 +574,13 @@ bool ResourceResponse::compare(const ResourceResponse& a, const ResourceResponse
         return false;
     if (a.httpHeaderFields() != b.httpHeaderFields())
         return false;
+    ASSERT(false); // BKTODO:
+#if 0
     if (a.resourceLoadTiming() && b.resourceLoadTiming() && *a.resourceLoadTiming() == *b.resourceLoadTiming())
         return true;
     if (a.resourceLoadTiming() != b.resourceLoadTiming())
         return false;
+#endif
     return true;
 }
 

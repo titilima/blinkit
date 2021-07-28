@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourceResponse.h
+// Description: ResourceResponse Class
+//      Author: Ziming Li
+//     Created: 2021-07-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008 Apple Inc. All rights reserved.
  * Copyright (C) 2009 Google Inc. All rights reserved.
@@ -32,9 +43,9 @@
 #include "platform/network/HTTPHeaderMap.h"
 #include "platform/network/HTTPParsers.h"
 #include "platform/network/ResourceLoadInfo.h"
-#include "platform/network/ResourceLoadTiming.h"
+// BKTODO: #include "platform/network/ResourceLoadTiming.h"
 #include "platform/weborigin/KURL.h"
-#include "public/platform/modules/serviceworker/WebServiceWorkerResponseType.h"
+// BKTODO: #include "public/platform/modules/serviceworker/WebServiceWorkerResponseType.h"
 #include "wtf/PassOwnPtr.h"
 #include "wtf/RefPtr.h"
 #include "wtf/text/CString.h"
@@ -77,7 +88,7 @@ public:
         virtual ~ExtraData() { }
     };
 
-    explicit ResourceResponse(CrossThreadResourceResponseData*);
+    // BKTODO: explicit ResourceResponse(CrossThreadResourceResponseData*);
 
     // Gets a copy of the data suitable for passing to another thread.
     PassOwnPtr<CrossThreadResourceResponseData> copyData() const;
@@ -148,8 +159,10 @@ public:
     bool wasCached() const;
     void setWasCached(bool);
 
+#if 0 // BKTODO:
     ResourceLoadTiming* resourceLoadTiming() const;
     void setResourceLoadTiming(PassRefPtr<ResourceLoadTiming>);
+#endif
 
     PassRefPtr<ResourceLoadInfo> resourceLoadInfo() const;
     void setResourceLoadInfo(PassRefPtr<ResourceLoadInfo>);
@@ -199,11 +212,13 @@ public:
     bool wasFallbackRequiredByServiceWorker() const { return m_wasFallbackRequiredByServiceWorker; }
     void setWasFallbackRequiredByServiceWorker(bool value) { m_wasFallbackRequiredByServiceWorker = value; }
 
+#if 0 // BKTODO:
     WebServiceWorkerResponseType serviceWorkerResponseType() const { return m_serviceWorkerResponseType; }
     void setServiceWorkerResponseType(WebServiceWorkerResponseType value) { m_serviceWorkerResponseType = value; }
 
     const KURL& originalURLViaServiceWorker() const { return m_originalURLViaServiceWorker; }
     void setOriginalURLViaServiceWorker(const KURL& url) { m_originalURLViaServiceWorker = url; }
+#endif
 
     bool isMultipartPayload() const { return m_isMultipartPayload; }
     void setIsMultipartPayload(bool value) { m_isMultipartPayload = value; }
@@ -249,7 +264,7 @@ private:
     bool m_wasCached : 1;
     unsigned m_connectionID;
     bool m_connectionReused : 1;
-    RefPtr<ResourceLoadTiming> m_resourceLoadTiming;
+    // BKTODO: RefPtr<ResourceLoadTiming> m_resourceLoadTiming;
     RefPtr<ResourceLoadInfo> m_resourceLoadInfo;
 
     bool m_isNull : 1;
@@ -318,12 +333,14 @@ private:
     // Was the fallback request with skip service worker flag required.
     bool m_wasFallbackRequiredByServiceWorker;
 
+#if 0 // BKTODO:
     // The type of the response which was fetched by the ServiceWorker.
     WebServiceWorkerResponseType m_serviceWorkerResponseType;
 
     // The original URL of the response which was fetched by the ServiceWorker.
     // This may be empty if the response was created inside the ServiceWorker.
     KURL m_originalURLViaServiceWorker;
+#endif
 
     // The time at which the response headers were received.  For cached
     // responses, this time could be "far" in the past.
@@ -349,6 +366,7 @@ private:
 inline bool operator==(const ResourceResponse& a, const ResourceResponse& b) { return ResourceResponse::compare(a, b); }
 inline bool operator!=(const ResourceResponse& a, const ResourceResponse& b) { return !(a == b); }
 
+#if 0 // BKTODO:
 struct CrossThreadResourceResponseData {
     WTF_MAKE_NONCOPYABLE(CrossThreadResourceResponseData); USING_FAST_MALLOC(CrossThreadResourceResponseData);
 public:
@@ -385,6 +403,7 @@ public:
     String m_downloadedFilePath;
     RefPtr<BlobDataHandle> m_downloadedFileHandle;
 };
+#endif
 
 } // namespace blink
 
