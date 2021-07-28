@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSComputedStyleDeclaration.cpp
+// Description: CSSComputedStyleDeclaration Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004 Zack Rusin <zack@kde.org>
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights reserved.
@@ -633,12 +644,12 @@ PassRefPtrWillBeRawPtr<MutableStylePropertySet> CSSComputedStyleDeclaration::cop
 
 PassRefPtrWillBeRawPtr<MutableStylePropertySet> CSSComputedStyleDeclaration::copyPropertiesInSet(const Vector<CSSPropertyID>& properties) const
 {
-    WillBeHeapVector<CSSProperty, 256> list;
-    list.reserveInitialCapacity(properties.size());
+    std::vector<CSSProperty> list;
+    list.reserve(properties.size());
     for (unsigned i = 0; i < properties.size(); ++i) {
         RefPtrWillBeRawPtr<CSSValue> value = getPropertyCSSValue(properties[i]);
         if (value)
-            list.append(CSSProperty(properties[i], value.release(), false));
+            list.emplace_back(CSSProperty(properties[i], value.release(), false));
     }
     return MutableStylePropertySet::create(list.data(), list.size());
 }
