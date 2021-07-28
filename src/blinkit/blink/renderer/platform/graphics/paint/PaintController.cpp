@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PaintController.cpp
+// Description: PaintController Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,7 +21,7 @@
 #include "platform/graphics/paint/DrawingDisplayItem.h"
 
 #ifndef NDEBUG
-#include "platform/graphics/LoggingCanvas.h"
+// BKTODO: #include "platform/graphics/LoggingCanvas.h"
 #include "wtf/text/StringBuilder.h"
 #include <stdio.h>
 #endif
@@ -509,6 +520,8 @@ void PaintController::checkCachedDisplayItemIsUnchanged(const char* messagePrefi
     showUnderInvalidationError(messagePrefix, "ERROR: under-invalidation: display item changed", &newItem, &oldItem);
 
 #ifndef NDEBUG
+    ASSERT(false); // BKTODO:
+#if 0
     if (newItem.isDrawing()) {
         RefPtr<const SkPicture> newPicture = static_cast<const DrawingDisplayItem&>(newItem).picture();
         RefPtr<const SkPicture> oldPicture = static_cast<const DrawingDisplayItem&>(oldItem).picture();
@@ -517,6 +530,7 @@ void PaintController::checkCachedDisplayItemIsUnchanged(const char* messagePrefi
         WTFLogAlways("old picture:\n%s\n", oldPictureDebugString.utf8().data());
         WTFLogAlways("new picture:\n%s\n", newPictureDebugString.utf8().data());
     }
+#endif
 #endif // NDEBUG
 
     ASSERT_NOT_REACHED();
