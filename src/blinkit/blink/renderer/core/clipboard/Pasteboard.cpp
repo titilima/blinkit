@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Pasteboard.cpp
+// Description: Pasteboard Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, 2009, Google Inc. All rights reserved.
  *
@@ -35,9 +46,11 @@
 #include "platform/graphics/Image.h"
 #include "platform/weborigin/KURL.h"
 #include "public/platform/Platform.h"
+#if 0 // BKTODO:
 #include "public/platform/WebDragData.h"
 #include "public/platform/WebString.h"
 #include "public/platform/WebURL.h"
+#endif
 #include "wtf/PassRefPtr.h"
 #include "wtf/RefPtr.h"
 
@@ -70,7 +83,7 @@ void Pasteboard::writePlainText(const String& text, SmartReplaceOption)
 #if OS(WIN)
     String plainText(text);
     replaceNewlinesWithWindowsStyleNewlines(plainText);
-    Platform::current()->clipboard()->writePlainText(plainText);
+    ASSERT(false); // BKTODO: Platform::current()->clipboard()->writePlainText(plainText);
 #else
     Platform::current()->clipboard()->writePlainText(text);
 #endif
@@ -80,35 +93,44 @@ void Pasteboard::writeImage(Image* image, const KURL& url, const String& title)
 {
     ASSERT(image);
 
+    ASSERT(false); // BKTODO:
+#if 0
     const WebImage webImage(image);
     if (webImage.isNull())
         return;
 
     Platform::current()->clipboard()->writeImage(webImage, WebURL(url), WebString(title));
+#endif
 }
 
 void Pasteboard::writeDataObject(DataObject* dataObject)
 {
-    Platform::current()->clipboard()->writeDataObject(dataObject->toWebDragData());
+    ASSERT(false); // BKTODO: Platform::current()->clipboard()->writeDataObject(dataObject->toWebDragData());
 }
 
 bool Pasteboard::canSmartReplace()
 {
-    return Platform::current()->clipboard()->isFormatAvailable(WebClipboard::FormatSmartPaste, m_buffer);
+    ASSERT(false); // BKTODO: return Platform::current()->clipboard()->isFormatAvailable(WebClipboard::FormatSmartPaste, m_buffer);
+    return false;
 }
 
 bool Pasteboard::isHTMLAvailable()
 {
-    return Platform::current()->clipboard()->isFormatAvailable(WebClipboard::FormatHTML, m_buffer);
+    ASSERT(false); // BKTODO: return Platform::current()->clipboard()->isFormatAvailable(WebClipboard::FormatHTML, m_buffer);
+    return false;
 }
 
 String Pasteboard::plainText()
 {
-    return Platform::current()->clipboard()->readPlainText(m_buffer);
+    ASSERT(false); // BKTODO: return Platform::current()->clipboard()->readPlainText(m_buffer);
+    return String();
 }
 
 String Pasteboard::readHTML(KURL& url, unsigned& fragmentStart, unsigned& fragmentEnd)
 {
+    ASSERT(false); // BKTODO:
+    return String();
+#if 0
     WebURL webURL;
     WebString markup = Platform::current()->clipboard()->readHTML(m_buffer, &webURL, &fragmentStart, &fragmentEnd);
     if (!markup.isEmpty()) {
@@ -120,6 +142,7 @@ String Pasteboard::readHTML(KURL& url, unsigned& fragmentStart, unsigned& fragme
         fragmentEnd = 0;
     }
     return markup;
+#endif
 }
 
 void Pasteboard::writeHTML(const String& markup, const KURL& documentURL, const String& plainText, bool canSmartCopyOrDelete)
@@ -130,7 +153,7 @@ void Pasteboard::writeHTML(const String& markup, const KURL& documentURL, const 
 #endif
     replaceNBSPWithSpace(text);
 
-    Platform::current()->clipboard()->writeHTML(markup, documentURL, text, canSmartCopyOrDelete);
+    ASSERT(false); // BKTODO: Platform::current()->clipboard()->writeHTML(markup, documentURL, text, canSmartCopyOrDelete);
 }
 
 } // namespace blink
