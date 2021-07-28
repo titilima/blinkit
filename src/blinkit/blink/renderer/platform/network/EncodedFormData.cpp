@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EncodedFormData.cpp
+// Description: EncodedFormData Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006, 2008, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2009 Google Inc. All rights reserved.
@@ -30,9 +41,13 @@ namespace blink {
 
 bool FormDataElement::isSafeToSendToAnotherThread() const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return m_filename.isSafeToSendToAnotherThread()
         && m_blobUUID.isSafeToSendToAnotherThread()
         && m_fileSystemURL.isSafeToSendToAnotherThread();
+#endif
 }
 
 inline EncodedFormData::EncodedFormData()
@@ -107,7 +122,7 @@ PassRefPtr<EncodedFormData> EncodedFormData::deepCopy() const
             formData->m_elements.uncheckedAppend(FormDataElement(e.m_blobUUID.isolatedCopy(), e.m_optionalBlobDataHandle));
             break;
         case FormDataElement::encodedFileSystemURL:
-            formData->m_elements.uncheckedAppend(FormDataElement(e.m_fileSystemURL.copy(), e.m_fileStart, e.m_fileLength, e.m_expectedFileModificationTime));
+            ASSERT(false); // BKTODO: formData->m_elements.uncheckedAppend(FormDataElement(e.m_fileSystemURL.copy(), e.m_fileStart, e.m_fileLength, e.m_expectedFileModificationTime));
             break;
         }
     }
