@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: OpenTypeTypes.h
+// Description: OpenType Types
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Koji Ishii <kojiishi@gmail.com>
  *
@@ -69,7 +80,7 @@ typedef UInt16 GlyphID;
 typedef uint32_t Tag;
 #define OT_MAKE_TAG(ch1, ch2, ch3, ch4) ((((uint32_t)(ch4)) << 24) | (((uint32_t)(ch3)) << 16) | (((uint32_t)(ch2)) << 8) | ((uint32_t)(ch1)))
 
-template <typename T> static const T* validateTable(const RefPtr<SharedBuffer>& buffer, size_t count = 1)
+template <typename T> static const T* validateTable(const std::shared_ptr<SharedBuffer>& buffer, size_t count = 1)
 {
     if (!buffer || buffer->size() < sizeof(T) * count)
         return 0;

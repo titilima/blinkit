@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: OpenTypeVerticalData.cpp
+// Description: OpenTypeVerticalData Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Koji Ishii <kojiishi@gmail.com>
  *
@@ -125,7 +136,7 @@ void OpenTypeVerticalData::loadMetrics(const FontPlatformData& platformData)
 {
     // Load hhea and hmtx to get x-component of vertical origins.
     // If these tables are missing, it's not an OpenType font.
-    RefPtr<SharedBuffer> buffer = platformData.openTypeTable(OpenType::HheaTag);
+    std::shared_ptr<SharedBuffer> buffer = platformData.openTypeTable(OpenType::HheaTag);
     const OpenType::HheaTable* hhea = OpenType::validateTable<OpenType::HheaTable>(buffer);
     if (!hhea)
         return;
