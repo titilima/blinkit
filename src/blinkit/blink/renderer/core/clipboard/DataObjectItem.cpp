@@ -68,7 +68,7 @@ DataObjectItem* DataObjectItem::createFromHTML(const String& html, const KURL& b
     return item;
 }
 
-DataObjectItem* DataObjectItem::createFromSharedBuffer(const String& name, PassRefPtr<SharedBuffer> buffer)
+DataObjectItem* DataObjectItem::createFromSharedBuffer(const String& name, const std::shared_ptr<SharedBuffer> &buffer)
 {
     DataObjectItem* item = new DataObjectItem(FileKind, String());
     item->m_sharedBuffer = buffer;
@@ -116,6 +116,8 @@ Blob* DataObjectItem::getAsFile() const
 
     ASSERT(m_source == PasteboardSource);
     if (type() == mimeTypeImagePng) {
+        ASSERT(false); // BKTODO:
+#if 0
         // FIXME: This is pretty inefficient. We copy the data from the browser
         // to the renderer. We then place it in a blob in WebKit, which
         // registers it and copies it *back* to the browser. When a consumer
@@ -130,6 +132,7 @@ Blob* DataObjectItem::getAsFile() const
         blobData->appendBytes(data->data(), data->size());
         blobData->setContentType(mimeTypeImagePng);
         return Blob::create(BlobDataHandle::create(blobData.release(), data->size()));
+#endif
     }
 
     return nullptr;
@@ -146,6 +149,9 @@ String DataObjectItem::getAsString() const
 
     WebClipboard::Buffer buffer = Pasteboard::generalPasteboard()->buffer();
     String data;
+    ASSERT(false); // BKTODO:
+    return String();
+#if 0
     // This is ugly but there's no real alternative.
     if (m_type == mimeTypeTextPlain) {
         data = Platform::current()->clipboard()->readPlainText(buffer);
@@ -158,6 +164,7 @@ String DataObjectItem::getAsString() const
     }
 
     return Platform::current()->clipboard()->sequenceNumber(buffer) == m_sequenceNumber ? data : String();
+#endif
 }
 
 bool DataObjectItem::isFilename() const

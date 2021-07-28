@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DataObjectItem.h
+// Description: DataObjectItem Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -53,7 +64,7 @@ public:
     static DataObjectItem* createFromFile(File*);
     static DataObjectItem* createFromURL(const String& url, const String& title);
     static DataObjectItem* createFromHTML(const String& html, const KURL& baseURL);
-    static DataObjectItem* createFromSharedBuffer(const String& filename, PassRefPtr<SharedBuffer>);
+    static DataObjectItem* createFromSharedBuffer(const String& filename, const std::shared_ptr<SharedBuffer> &);
     static DataObjectItem* createFromPasteboard(const String& type, uint64_t sequenceNumber);
 
     Kind kind() const { return m_kind; }
@@ -62,7 +73,7 @@ public:
     Blob* getAsFile() const;
 
     // Used to support legacy DataTransfer APIs and renderer->browser serialization.
-    PassRefPtr<SharedBuffer> sharedBuffer() const { return m_sharedBuffer; }
+    std::shared_ptr<SharedBuffer> sharedBuffer() const { return m_sharedBuffer; }
     String title() const { return m_title; }
     KURL baseURL() const { return m_baseURL; }
     bool isFilename() const;
@@ -84,7 +95,7 @@ private:
 
     String m_data;
     Member<File> m_file;
-    RefPtr<SharedBuffer> m_sharedBuffer;
+    std::shared_ptr<SharedBuffer> m_sharedBuffer;
     // Optional metadata. Currently used for URL, HTML, and dragging files in.
     String m_title;
     KURL m_baseURL;
