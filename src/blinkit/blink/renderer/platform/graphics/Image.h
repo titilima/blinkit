@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Image.h
+// Description: Image Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Samuel Weinig (sam.weinig@gmail.com)
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.  All rights reserved.
@@ -107,7 +118,7 @@ public:
     int height() const { return size().height(); }
     virtual bool getHotSpot(IntPoint&) const { return false; }
 
-    bool setData(PassRefPtr<SharedBuffer> data, bool allDataReceived);
+    bool setData(const std::shared_ptr<SharedBuffer> &data, bool allDataReceived);
     virtual bool dataChanged(bool /*allDataReceived*/) { return false; }
 
     virtual String filenameExtension() const { return String(); } // null string if unknown
@@ -164,7 +175,7 @@ protected:
     void drawTiled(GraphicsContext&, const FloatRect& dstRect, const FloatRect& srcRect, const FloatSize& tileScaleFactor, TileRule hRule, TileRule vRule, SkXfermode::Mode);
 
 private:
-    RefPtr<SharedBuffer> m_encodedImageData;
+    std::shared_ptr<SharedBuffer> m_encodedImageData;
     ImageObserver* m_imageObserver;
 };
 

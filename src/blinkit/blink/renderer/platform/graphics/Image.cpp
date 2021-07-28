@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Image.cpp
+// Description: Image Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Samuel Weinig (sam.weinig@gmail.com)
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.  All rights reserved.
@@ -73,7 +84,7 @@ PassRefPtr<Image> Image::loadPlatformResource(const char *name)
         return Image::nullImage();
 
     RefPtr<Image> image = BitmapImage::create();
-    image->setData(resource, true);
+    ASSERT(false); // BKTODO: image->setData(resource, true);
     return image.release();
 }
 
@@ -82,7 +93,7 @@ bool Image::supportsType(const String& type)
     return MIMETypeRegistry::isSupportedImageResourceMIMEType(type);
 }
 
-bool Image::setData(PassRefPtr<SharedBuffer> data, bool allDataReceived)
+bool Image::setData(const std::shared_ptr<SharedBuffer> &data, bool allDataReceived)
 {
     m_encodedImageData = data;
     if (!m_encodedImageData.get())
