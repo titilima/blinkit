@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollableArea.cpp
+// Description: ScrollableArea Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2010, Google Inc. All rights reserved.
  * Copyright (C) 2008, 2011 Apple Inc. All Rights Reserved.
@@ -32,7 +43,7 @@
 #include "platform/scroll/ScrollableArea.h"
 
 #include "platform/HostWindow.h"
-#include "platform/Logging.h"
+// BKTODO: #include "platform/Logging.h"
 #include "platform/geometry/DoubleRect.h"
 #include "platform/geometry/FloatPoint.h"
 #include "platform/geometry/LayoutRect.h"
@@ -50,8 +61,10 @@ namespace blink {
 
 struct SameSizeAsScrollableArea {
     virtual ~SameSizeAsScrollableArea();
+#if 0 // BKTODO:
 #if ENABLE(ASSERT) && ENABLE(OILPAN)
     VerifyEagerFinalization verifyEager;
+#endif
 #endif
     OwnPtrWillBeMember<void*> pointer[2];
     unsigned bitfields : 16;
