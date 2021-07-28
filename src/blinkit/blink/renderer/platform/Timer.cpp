@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Timer.cpp
+// Description: Timer Classes
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008 Apple Inc. All rights reserved.
  * Copyright (C) 2009 Google Inc. All rights reserved.
@@ -28,7 +39,7 @@
 
 #include "platform/TraceEvent.h"
 #include "public/platform/Platform.h"
-#include "public/platform/WebScheduler.h"
+// BKTODO: #include "public/platform/WebScheduler.h"
 #include "wtf/AddressSanitizer.h"
 #include "wtf/Atomics.h"
 #include "wtf/CurrentTime.h"
@@ -40,7 +51,10 @@
 
 namespace blink {
 
-TimerBase::TimerBase() : TimerBase(Platform::current()->currentThread()->scheduler()->timerTaskRunner()) { }
+TimerBase::TimerBase() : TimerBase(nullptr) // BKTODO: Platform::current()->currentThread()->scheduler()->timerTaskRunner()) { }
+{
+    ASSERT(false); // BKTODO:
+}
 
 TimerBase::TimerBase(WebTaskRunner* webTaskRunner)
     : m_nextFireTime(0)
@@ -143,7 +157,8 @@ bool TimerBase::Comparator::operator()(const TimerBase* a, const TimerBase* b) c
 // static
 WebTaskRunner* TimerBase::UnthrottledWebTaskRunner()
 {
-    return Platform::current()->currentThread()->taskRunner();
+    ASSERT(false); // BKTODO: return Platform::current()->currentThread()->taskRunner();
+    return nullptr;
 }
 
 } // namespace blink
