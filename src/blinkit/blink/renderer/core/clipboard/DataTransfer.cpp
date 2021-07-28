@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DataTransfer.cpp
+// Description: DataTransfer Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -281,7 +292,7 @@ static void writeImageToDataObject(DataObject* dataObject, Element* element, con
     if (!cachedImage || !cachedImage->image() || !cachedImage->isLoaded())
         return;
 
-    SharedBuffer* imageBuffer = cachedImage->image()->data();
+    std::shared_ptr<SharedBuffer> imageBuffer = cachedImage->image()->data();
     if (!imageBuffer || !imageBuffer->size())
         return;
 
@@ -291,7 +302,7 @@ static void writeImageToDataObject(DataObject* dataObject, Element* element, con
     // Determine the filename for the file contents of the image.
     String filename = cachedImage->response().suggestedFilename();
     if (filename.isEmpty())
-        filename = url.lastPathComponent();
+        ASSERT(false); // BKTODO: filename = url.lastPathComponent();
 
     String fileExtension;
     if (filename.isEmpty()) {
@@ -324,6 +335,8 @@ void DataTransfer::declareAndWriteDragImage(Element* element, const KURL& url, c
     if (!m_dataObject)
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     m_dataObject->setURLAndTitle(url, title);
 
     // Write the bytes in the image to the file format.
@@ -331,6 +344,7 @@ void DataTransfer::declareAndWriteDragImage(Element* element, const KURL& url, c
 
     // Put img tag on the clipboard referencing the image
     m_dataObject->setData(mimeTypeTextHTML, createMarkup(element, IncludeNode, ResolveAllURLs));
+#endif
 }
 
 void DataTransfer::writeURL(const KURL& url, const String& title)
@@ -339,6 +353,8 @@ void DataTransfer::writeURL(const KURL& url, const String& title)
         return;
     ASSERT(!url.isEmpty());
 
+    ASSERT(false); // BKTODO:
+#if 0
     m_dataObject->setURLAndTitle(url, title);
 
     // The URL can also be used as plain text.
@@ -346,6 +362,7 @@ void DataTransfer::writeURL(const KURL& url, const String& title)
 
     // The URL can also be used as an HTML fragment.
     m_dataObject->setHTMLAndBaseURL(urlToMarkup(url, title), url);
+#endif
 }
 
 void DataTransfer::writeSelection(const FrameSelection& selection)
