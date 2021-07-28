@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourceError.cpp
+// Description: ResourceError Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2009 Google Inc. All rights reserved.
@@ -28,8 +39,10 @@
 
 #include "platform/weborigin/KURL.h"
 #include "public/platform/Platform.h"
+#if 0 // BKTODO:
 #include "public/platform/WebURL.h"
 #include "public/platform/WebURLError.h"
+#endif
 
 namespace blink {
 
@@ -37,7 +50,8 @@ const char errorDomainBlinkInternal[] = "BlinkInternal";
 
 ResourceError ResourceError::cancelledError(const String& failingURL)
 {
-    return Platform::current()->cancelledError(KURL(ParsedURLString, failingURL));
+    ASSERT(false); // BKTODO: return Platform::current()->cancelledError(KURL(ParsedURLString, failingURL));
+    exit(0);
 }
 
 ResourceError ResourceError::cancelledDueToAccessCheckError(const String& failingURL)
