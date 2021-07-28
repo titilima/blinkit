@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PlatformLocale.cpp
+// Description: Locale Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011,2012 Google Inc. All rights reserved.
  *
@@ -189,19 +200,22 @@ Locale::~Locale()
 String Locale::queryString(WebLocalizedString::Name name)
 {
     // FIXME: Returns a string locazlied for this locale.
-    return Platform::current()->queryLocalizedString(name);
+    ASSERT(false); // BKTODO: return Platform::current()->queryLocalizedString(name);
+    return String();
 }
 
 String Locale::queryString(WebLocalizedString::Name name, const String& parameter)
 {
     // FIXME: Returns a string locazlied for this locale.
-    return Platform::current()->queryLocalizedString(name, parameter);
+    ASSERT(false); // BKTODO: return Platform::current()->queryLocalizedString(name, parameter);
+    return String();
 }
 
 String Locale::queryString(WebLocalizedString::Name name, const String& parameter1, const String& parameter2)
 {
     // FIXME: Returns a string locazlied for this locale.
-    return Platform::current()->queryLocalizedString(name, parameter1, parameter2);
+    ASSERT(false); // BKTODO: return Platform::current()->queryLocalizedString(name, parameter1, parameter2);
+    return String();
 }
 
 String Locale::validationMessageTooLongText(unsigned valueLength, int maxLength)
