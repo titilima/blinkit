@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollbarTheme.cpp
+// Description: ScrollbarTheme Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All Rights Reserved.
  *
@@ -25,6 +36,7 @@
 
 #include "platform/scroll/ScrollbarTheme.h"
 
+#include <optional>
 #include "platform/PlatformMouseEvent.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/graphics/Color.h"
@@ -35,13 +47,12 @@
 #include "platform/graphics/paint/DrawingRecorder.h"
 #include "platform/graphics/paint/PaintController.h"
 #include "platform/scroll/ScrollbarThemeClient.h"
+#if 0 // BKTODO:
 #include "platform/scroll/ScrollbarThemeMock.h"
 #include "platform/scroll/ScrollbarThemeOverlayMock.h"
+#endif
 #include "public/platform/Platform.h"
-#include "public/platform/WebPoint.h"
-#include "public/platform/WebRect.h"
 #include "public/platform/WebScrollbarBehavior.h"
-#include "wtf/Optional.h"
 
 #if !OS(MACOSX)
 #include "public/platform/WebThemeEngine.h"
@@ -125,7 +136,7 @@ bool ScrollbarTheme::paint(const ScrollbarThemeClient& scrollbar, GraphicsContex
 
     // Paint the thumb.
     if (scrollMask & ThumbPart) {
-        Optional<CompositingRecorder> compositingRecorder;
+        std::optional<CompositingRecorder> compositingRecorder;
         float opacity = thumbOpacity(scrollbar);
         if (opacity != 1.0f) {
             FloatRect floatThumbRect(thumbRect);
@@ -191,20 +202,22 @@ void ScrollbarTheme::paintScrollCorner(GraphicsContext& context, const DisplayIt
 #if OS(MACOSX)
     context.fillRect(cornerRect, Color::white);
 #else
-    Platform::current()->themeEngine()->paint(context.canvas(), WebThemeEngine::PartScrollbarCorner, WebThemeEngine::StateNormal, WebRect(cornerRect), 0);
+    Platform::current()->themeEngine()->paint(context.canvas(), WebThemeEngine::PartScrollbarCorner, WebThemeEngine::StateNormal, IntRect(cornerRect), 0);
 #endif
 }
 
 bool ScrollbarTheme::shouldCenterOnThumb(const ScrollbarThemeClient& scrollbar, const PlatformMouseEvent& evt)
 {
-    return Platform::current()->scrollbarBehavior()->shouldCenterOnThumb(static_cast<WebScrollbarBehavior::Button>(evt.button()), evt.shiftKey(), evt.altKey());
+    ASSERT(false); // BKTODO: return Platform::current()->scrollbarBehavior()->shouldCenterOnThumb(static_cast<WebScrollbarBehavior::Button>(evt.button()), evt.shiftKey(), evt.altKey());
+    return false;
 }
 
 bool ScrollbarTheme::shouldSnapBackToDragOrigin(const ScrollbarThemeClient& scrollbar, const PlatformMouseEvent& evt)
 {
     IntPoint mousePosition = scrollbar.convertFromRootFrame(evt.position());
     mousePosition.move(scrollbar.x(), scrollbar.y());
-    return Platform::current()->scrollbarBehavior()->shouldSnapBackToDragOrigin(mousePosition, trackRect(scrollbar), scrollbar.orientation() == HorizontalScrollbar);
+    ASSERT(false); // BKTODO: return Platform::current()->scrollbarBehavior()->shouldSnapBackToDragOrigin(mousePosition, trackRect(scrollbar), scrollbar.orientation() == HorizontalScrollbar);
+    return false;
 }
 
 int ScrollbarTheme::thumbPosition(const ScrollbarThemeClient& scrollbar, float scrollPosition)
@@ -296,6 +309,8 @@ void ScrollbarTheme::splitTrack(const ScrollbarThemeClient& scrollbar, const Int
 ScrollbarTheme& ScrollbarTheme::theme()
 {
     if (ScrollbarTheme::mockScrollbarsEnabled()) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (RuntimeEnabledFeatures::overlayScrollbarsEnabled()) {
             DEFINE_STATIC_LOCAL(ScrollbarThemeOverlayMock, overlayMockTheme, ());
             return overlayMockTheme;
@@ -303,6 +318,7 @@ ScrollbarTheme& ScrollbarTheme::theme()
 
         DEFINE_STATIC_LOCAL(ScrollbarThemeMock, mockTheme, ());
         return mockTheme;
+#endif
     }
     return nativeTheme();
 }
