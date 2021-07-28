@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DataObject.h
+// Description: DataObject Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, 2009, Google Inc. All rights reserved.
  *
@@ -56,7 +67,7 @@ class CORE_EXPORT DataObject : public GarbageCollectedFinalized<DataObject>, pub
 public:
     static DataObject* createFromPasteboard(PasteMode);
     static DataObject* create();
-    static DataObject* create(WebDragData);
+    // BKTODO: static DataObject* create(WebDragData);
 
     virtual ~DataObject();
 
@@ -92,14 +103,14 @@ public:
     const String& filesystemId() const { ASSERT(!m_filesystemId.isEmpty()); return m_filesystemId; }
 
     // Used to handle files (images) being dragged out.
-    void addSharedBuffer(const String& name, PassRefPtr<SharedBuffer>);
+    void addSharedBuffer(const String& name, const std::shared_ptr<SharedBuffer> &);
 
     int modifiers() const { return m_modifiers; }
     void setModifiers(int modifiers) { m_modifiers = modifiers; }
 
     DECLARE_TRACE();
 
-    WebDragData toWebDragData();
+    // BKTODO: WebDragData toWebDragData();
 
 private:
     DataObject();

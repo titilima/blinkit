@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DataObject.cpp
+// Description: DataObject Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, 2009, 2012 Google Inc. All rights reserved.
  *
@@ -36,13 +47,15 @@
 #include "platform/clipboard/ClipboardUtilities.h"
 #include "public/platform/Platform.h"
 #include "public/platform/WebClipboard.h"
-#include "public/platform/WebDragData.h"
+// BKTODO: #include "public/platform/WebDragData.h"
 
 namespace blink {
 
 DataObject* DataObject::createFromPasteboard(PasteMode pasteMode)
 {
     DataObject* dataObject = create();
+    ASSERT(false); // BKTODO:
+#if 0
     WebClipboard::Buffer buffer = Pasteboard::generalPasteboard()->buffer();
     uint64_t sequenceNumber = Platform::current()->clipboard()->sequenceNumber(buffer);
     bool ignored;
@@ -55,6 +68,7 @@ DataObject* DataObject::createFromPasteboard(PasteMode pasteMode)
             continue;
         dataObject->m_itemList.append(DataObjectItem::createFromPasteboard(type, sequenceNumber));
     }
+#endif
     return dataObject;
 }
 
@@ -76,14 +90,15 @@ DataObjectItem* DataObject::item(unsigned long index)
 {
     if (index >= length())
         return nullptr;
-    return m_itemList[index];
+    ASSERT(false); // BKTODO: return m_itemList[index];
+    return nullptr;
 }
 
 void DataObject::deleteItem(unsigned long index)
 {
     if (index >= length())
         return;
-    m_itemList.remove(index);
+    ASSERT(false); // BKTODO: m_itemList.remove(index);
 }
 
 void DataObject::clearAll()
@@ -114,7 +129,7 @@ void DataObject::clearData(const String& type)
     for (size_t i = 0; i < m_itemList.size(); ++i) {
         if (m_itemList[i]->kind() == DataObjectItem::StringKind && m_itemList[i]->type() == type) {
             // Per the spec, type must be unique among all items of kind 'string'.
-            m_itemList.remove(i);
+            ASSERT(false); // BKTODO:  m_itemList.remove(i);
             return;
         }
     }
@@ -127,7 +142,7 @@ ListHashSet<String> DataObject::types() const
     for (size_t i = 0; i < m_itemList.size(); ++i) {
         switch (m_itemList[i]->kind()) {
         case DataObjectItem::StringKind:
-            results.add(m_itemList[i]->type());
+            ASSERT(false); // BKTODO: results.add(m_itemList[i]->type());
             break;
         case DataObjectItem::FileKind:
             containsFiles = true;
@@ -135,7 +150,7 @@ ListHashSet<String> DataObject::types() const
         }
     }
     if (containsFiles)
-        results.add(mimeTypeFiles);
+        ASSERT(false); // BKTODO: results.add(mimeTypeFiles);
     return results;
 }
 
@@ -210,7 +225,7 @@ void DataObject::addFilename(const String& filename, const String& displayName)
     internalAddFileItem(DataObjectItem::createFromFile(File::createForUserProvidedFile(filename, displayName)));
 }
 
-void DataObject::addSharedBuffer(const String& name, PassRefPtr<SharedBuffer> buffer)
+void DataObject::addSharedBuffer(const String& name, const std::shared_ptr<SharedBuffer> &buffer)
 {
     internalAddFileItem(DataObjectItem::createFromSharedBuffer(name, buffer));
 }
@@ -253,6 +268,7 @@ DEFINE_TRACE(DataObject)
     HeapSupplementable<DataObject>::trace(visitor);
 }
 
+#if 0 // BKTODO:
 DataObject* DataObject::create(WebDragData data)
 {
     DataObject* dataObject = create();
@@ -343,5 +359,6 @@ WebDragData DataObject::toWebDragData()
     data.swapItems(itemList);
     return data;
 }
+#endif
 
 } // namespace blink
