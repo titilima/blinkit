@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Pattern.cpp
+// Description: Pattern Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2008 Eric Seidel <eric@webkit.org>
@@ -32,7 +43,6 @@
 #include "third_party/skia/include/core/SkImage.h"
 #include "third_party/skia/include/core/SkPicture.h"
 #include "third_party/skia/include/core/SkShader.h"
-#include <v8.h>
 
 namespace blink {
 
@@ -81,7 +91,7 @@ void Pattern::adjustExternalMemoryAllocated(int64_t delta)
 {
     delta = std::max(-m_externalMemoryAllocated, delta);
 
-    v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(delta);
+    ASSERT(false); // BKTODO: v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(delta);
 
     m_externalMemoryAllocated += delta;
 }
