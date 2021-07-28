@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontCache.cpp
+// Description: FontCache Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008 Apple Inc. All rights reserved.
  * Copyright (C) 2007 Nicholas Shanks <webkit@nickshanks.com>
@@ -44,8 +55,10 @@
 #include "platform/fonts/opentype/OpenTypeVerticalData.h"
 #include "platform/fonts/shaping/ShapeCache.h"
 #include "public/platform/Platform.h"
+#if 0 // BKTODO:
 #include "public/platform/WebMemoryAllocatorDump.h"
 #include "public/platform/WebProcessMemoryDump.h"
+#endif
 #include "wtf/HashMap.h"
 #include "wtf/ListHashSet.h"
 #include "wtf/StdLibExtras.h"
@@ -250,7 +263,7 @@ static inline void purgeFallbackListShaperCache()
         }
         gFallbackListShaperCache->clear();
     }
-    Platform::current()->histogramCustomCounts("Blink.Fonts.ShapeCache", items, 1, 1000000, 50);
+    ASSERT(false); // BKTODO: Platform::current()->histogramCustomCounts("Blink.Fonts.ShapeCache", items, 1, 1000000, 50);
 }
 
 void FontCache::invalidateShapeCache()
@@ -317,12 +330,12 @@ void FontCache::invalidate()
 
     gGeneration++;
 
-    WillBeHeapVector<RefPtrWillBeMember<FontCacheClient>> clients;
+    std::vector<Member<FontCacheClient>> clients;
     size_t numClients = fontCacheClients().size();
-    clients.reserveInitialCapacity(numClients);
+    clients.reserve(numClients);
     WillBeHeapHashSet<RawPtrWillBeWeakMember<FontCacheClient>>::iterator end = fontCacheClients().end();
     for (WillBeHeapHashSet<RawPtrWillBeWeakMember<FontCacheClient>>::iterator it = fontCacheClients().begin(); it != end; ++it)
-        clients.append(*it);
+        clients.emplace_back(*it);
 
     ASSERT(numClients == clients.size());
     for (size_t i = 0; i < numClients; ++i)
@@ -333,6 +346,8 @@ void FontCache::invalidate()
 
 void FontCache::dumpFontPlatformDataCache(WebProcessMemoryDump* memoryDump)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(isMainThread());
     if (!gFontPlatformDataCache)
         return;
@@ -341,10 +356,13 @@ void FontCache::dumpFontPlatformDataCache(WebProcessMemoryDump* memoryDump)
     size_t fontPlatformDataObjectsSize = gFontPlatformDataCache->size() * sizeof(FontPlatformData);
     dump->addScalar("size", "bytes", fontPlatformDataObjectsSize);
     memoryDump->addSuballocation(dump->guid(), String(WTF::Partitions::kAllocatedObjectPoolName));
+#endif
 }
 
 void FontCache::dumpShapeResultCache(WebProcessMemoryDump* memoryDump)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(isMainThread());
     if (!gFallbackListShaperCache) {
         return;
@@ -360,6 +378,7 @@ void FontCache::dumpShapeResultCache(WebProcessMemoryDump* memoryDump)
     }
     dump->addScalar("size", "bytes", shapeResultCacheSize);
     memoryDump->addSuballocation(dump->guid(), String(WTF::Partitions::kAllocatedObjectPoolName));
+#endif
 }
 
 
