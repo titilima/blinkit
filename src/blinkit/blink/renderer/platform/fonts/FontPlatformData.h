@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontPlatformData.h
+// Description: FontPlatformData Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2006, 2007, 2008, Google Inc. All rights reserved.
  *
@@ -124,7 +135,7 @@ public:
     bool fontContainsCharacter(UChar32 character);
 
     PassRefPtr<OpenTypeVerticalData> verticalData() const;
-    PassRefPtr<SharedBuffer> openTypeTable(uint32_t table) const;
+    std::shared_ptr<SharedBuffer> openTypeTable(uint32_t table) const;
 
 #if !OS(MACOSX)
     // The returned styles are all actual styles without FontRenderStyle::NoPreference.

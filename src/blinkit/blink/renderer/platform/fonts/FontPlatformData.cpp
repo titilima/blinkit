@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontPlatformData.cpp
+// Description: FontPlatformData Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Brent Fulgham
  *
@@ -353,18 +364,18 @@ PassRefPtr<OpenTypeVerticalData> FontPlatformData::verticalData() const
     return FontCache::fontCache()->getVerticalData(typeface()->uniqueID(), *this);
 }
 
-PassRefPtr<SharedBuffer> FontPlatformData::openTypeTable(uint32_t table) const
+std::shared_ptr<SharedBuffer> FontPlatformData::openTypeTable(uint32_t table) const
 {
-    RefPtr<SharedBuffer> buffer;
+    std::shared_ptr<SharedBuffer> buffer;
 
     SkFontTableTag tag = WTF::bswap32(table);
     const size_t tableSize = m_typeface->getTableSize(tag);
     if (tableSize) {
-        Vector<char> tableBuffer(tableSize);
-        m_typeface->getTableData(tag, 0, tableSize, &tableBuffer[0]);
+        std::vector<char> tableBuffer(tableSize);
+        m_typeface->getTableData(tag, 0, tableSize, tableBuffer.data());
         buffer = SharedBuffer::adoptVector(tableBuffer);
     }
-    return buffer.release();
+    return buffer;
 }
 
 } // namespace blink
