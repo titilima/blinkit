@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: GraphicsLayer.h
+// Description: GraphicsLayer Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Intel Corporation. All rights reserved.
@@ -211,13 +222,15 @@ public:
     WebLayer* platformLayer() const;
 
     typedef HashMap<int, int> RenderingContextMap;
-    PassRefPtr<JSONObject> layerTreeAsJSON(LayerTreeFlags, RenderingContextMap&) const;
+    // BKTODO: PassRefPtr<JSONObject> layerTreeAsJSON(LayerTreeFlags, RenderingContextMap&) const;
 
     int paintCount() const { return m_paintCount; }
 
+#if 0 // BKTODO:
     // Return a string with a human readable form of the layer tree, If debug is true
     // pointers for the layers and timing data will be included in the returned string.
     String layerTreeAsText(LayerTreeFlags = LayerTreeNormal) const;
+#endif
 
     bool isTrackingPaintInvalidations() const { return m_client->isTrackingPaintInvalidations(); }
     void resetTrackedPaintInvalidations();
@@ -231,8 +244,10 @@ public:
     unsigned numLinkHighlights() { return m_linkHighlights.size(); }
     LinkHighlight* linkHighlight(int i) { return m_linkHighlights[i]; }
 
+#if 0 // BKTODO:
     void setScrollableArea(ScrollableArea*, bool isViewport);
     ScrollableArea* scrollableArea() const { return m_scrollableArea; }
+#endif
 
     WebContentLayer* contentLayer() const { return m_layer.get(); }
 
@@ -250,8 +265,10 @@ public:
     // WebLayerScrollClient implementation.
     void didScroll() override;
 
+#if 0 // BKTODO:
     // cc::LayerClient implementation.
     scoped_refptr<base::trace_event::ConvertableToTraceFormat> TakeDebugInfo(cc::Layer*) override;
+#endif
 
     PaintController& paintController();
 
@@ -374,7 +391,7 @@ private:
 
     OwnPtr<ContentLayerDelegate> m_contentLayerDelegate;
 
-    RawPtrWillBeWeakPersistent<ScrollableArea> m_scrollableArea;
+    // BKTODO: RawPtrWillBeWeakPersistent<ScrollableArea> m_scrollableArea;
     GraphicsLayerDebugInfo m_debugInfo;
     int m_3dRenderingContext;
 
@@ -384,10 +401,5 @@ private:
 };
 
 } // namespace blink
-
-#ifndef NDEBUG
-// Outside the blink namespace for ease of invocation from gdb.
-void PLATFORM_EXPORT showGraphicsLayerTree(const blink::GraphicsLayer*);
-#endif
 
 #endif // GraphicsLayer_h

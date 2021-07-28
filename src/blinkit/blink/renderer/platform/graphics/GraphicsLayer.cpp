@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: GraphicsLayer.cpp
+// Description: GraphicsLayer Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All rights reserved.
  *
@@ -28,9 +39,9 @@
 #include "SkImageFilter.h"
 #include "SkMatrix44.h"
 #include "base/trace_event/trace_event_argument.h"
-#include "cc/layers/layer.h"
+// BKTODO: #include "cc/layers/layer.h"
 #include "platform/DragImage.h"
-#include "platform/JSONValues.h"
+// BKTODO: #include "platform/JSONValues.h"
 #include "platform/TraceEvent.h"
 #include "platform/geometry/FloatRect.h"
 #include "platform/geometry/LayoutRect.h"
@@ -49,11 +60,7 @@
 #include "public/platform/WebCompositorAnimation.h"
 #include "public/platform/WebCompositorSupport.h"
 #include "public/platform/WebFilterOperations.h"
-#include "public/platform/WebFloatPoint.h"
-#include "public/platform/WebFloatRect.h"
 #include "public/platform/WebLayer.h"
-#include "public/platform/WebPoint.h"
-#include "public/platform/WebSize.h"
 #include "wtf/CurrentTime.h"
 #include "wtf/HashMap.h"
 #include "wtf/HashSet.h"
@@ -119,7 +126,7 @@ GraphicsLayer::GraphicsLayer(GraphicsLayerClient* client)
     , m_paintCount(0)
     , m_contentsLayer(0)
     , m_contentsLayerId(0)
-    , m_scrollableArea(nullptr)
+    // BKTODO: , m_scrollableArea(nullptr)
     , m_3dRenderingContext(0)
 {
 #if ENABLE(ASSERT)
@@ -128,9 +135,12 @@ GraphicsLayer::GraphicsLayer(GraphicsLayerClient* client)
 #endif
 
     m_contentLayerDelegate = adoptPtr(new ContentLayerDelegate(this));
+    ASSERT(false); // BKTODO:
+#if 0
     m_layer = adoptPtr(Platform::current()->compositorSupport()->createContentLayer(m_contentLayerDelegate.get()));
     m_layer->layer()->setDrawsContent(m_drawsContent && m_contentsVisible);
     m_layer->layer()->setLayerClient(this);
+#endif
 
     // TODO(rbyers): Expose control over this to the web - crbug.com/489802:
     setScrollBlocksOn(WebScrollBlocksOnStartTouch | WebScrollBlocksOnWheelEvent);
@@ -566,6 +576,7 @@ static bool compareFloatRects(const FloatRect& a, const FloatRect& b)
     return a.height() > b.height();
 }
 
+#if 0 // BKTODO:
 template <typename T>
 static PassRefPtr<JSONArray> pointAsJSONArray(const T& point)
 {
@@ -790,6 +801,7 @@ String GraphicsLayer::layerTreeAsText(LayerTreeFlags flags) const
     RefPtr<JSONObject> json = layerTreeAsJSON(flags, renderingContextMap);
     return json->toPrettyJSONString();
 }
+#endif
 
 static const cc::Layer* ccLayerForWebLayer(const WebLayer* webLayer)
 {
@@ -799,6 +811,8 @@ static const cc::Layer* ccLayerForWebLayer(const WebLayer* webLayer)
 String GraphicsLayer::debugName(cc::Layer* layer) const
 {
     String name;
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_client)
         return name;
 
@@ -819,6 +833,7 @@ String GraphicsLayer::debugName(cc::Layer* layer) const
     } else {
         ASSERT_NOT_REACHED();
     }
+#endif
     return name;
 }
 
@@ -1091,7 +1106,7 @@ void GraphicsLayer::setContentsToImage(Image* image, RespectImageOrientationEnum
 
     if (image && skImage) {
         if (!m_imageLayer) {
-            m_imageLayer = adoptPtr(Platform::current()->compositorSupport()->createImageLayer());
+            ASSERT(false); // BKTODO: m_imageLayer = adoptPtr(Platform::current()->compositorSupport()->createImageLayer());
             registerContentsLayer(m_imageLayer->layer());
         }
         m_imageLayer->setImage(skImage.get());
@@ -1141,21 +1156,27 @@ WebLayer* GraphicsLayer::platformLayer() const
 void GraphicsLayer::setFilters(const FilterOperations& filters)
 {
     SkiaImageFilterBuilder builder;
+    ASSERT(false); // BKTODO:
+#if 0
     OwnPtr<WebFilterOperations> webFilters = adoptPtr(Platform::current()->compositorSupport()->createFilterOperations());
     FilterOutsets outsets = filters.outsets();
     builder.setCropOffset(FloatSize(outsets.left(), outsets.top()));
     builder.buildFilterOperations(filters, webFilters.get());
     m_layer->layer()->setFilters(*webFilters);
+#endif
 }
 
 void GraphicsLayer::setBackdropFilters(const FilterOperations& filters)
 {
     SkiaImageFilterBuilder builder;
+    ASSERT(false); // BKTODO:
+#if 0
     OwnPtr<WebFilterOperations> webFilters = adoptPtr(Platform::current()->compositorSupport()->createFilterOperations());
     FilterOutsets outsets = filters.outsets();
     builder.setCropOffset(FloatSize(outsets.left(), outsets.top()));
     builder.buildFilterOperations(filters, webFilters.get());
     m_layer->layer()->setBackgroundFilters(*webFilters);
+#endif
 }
 
 void GraphicsLayer::setFilterQuality(SkFilterQuality filterQuality)
@@ -1186,6 +1207,7 @@ void GraphicsLayer::removeLinkHighlight(LinkHighlight* linkHighlight)
     updateChildList();
 }
 
+#if 0 // BKTODO:
 void GraphicsLayer::setScrollableArea(ScrollableArea* scrollableArea, bool isViewport)
 {
     if (m_scrollableArea == scrollableArea)
@@ -1200,6 +1222,7 @@ void GraphicsLayer::setScrollableArea(ScrollableArea* scrollableArea, bool isVie
     else
         m_layer->layer()->setScrollClient(this);
 }
+#endif
 
 void GraphicsLayer::notifyAnimationStarted(double monotonicTime, int group)
 {
@@ -1209,18 +1232,26 @@ void GraphicsLayer::notifyAnimationStarted(double monotonicTime, int group)
 
 void GraphicsLayer::notifyAnimationFinished(double, int group)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_scrollableArea)
         m_scrollableArea->notifyCompositorAnimationFinished(group);
+#endif
 }
 
 void GraphicsLayer::notifyAnimationAborted(double, int group)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_scrollableArea)
         m_scrollableArea->notifyCompositorAnimationAborted(group);
+#endif
 }
 
 void GraphicsLayer::didScroll()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_scrollableArea) {
         DoublePoint newPosition = m_scrollableArea->minimumScrollPosition() + toDoubleSize(m_layer->layer()->scrollPositionDouble());
 
@@ -1228,14 +1259,17 @@ void GraphicsLayer::didScroll()
         // so we need to use the ScrollableArea version. The FrameView method should go away soon anyway.
         m_scrollableArea->ScrollableArea::setScrollPosition(newPosition, CompositorScroll);
     }
+#endif
 }
 
+#if 0 // BKTODO:
 scoped_refptr<base::trace_event::ConvertableToTraceFormat> GraphicsLayer::TakeDebugInfo(cc::Layer* layer)
 {
     scoped_refptr<base::trace_event::TracedValue> tracedValue = m_debugInfo.asTracedValue();
     tracedValue->SetString("layer_name", WTF::StringUTF8Adaptor(debugName(layer)).asStringPiece());
     return tracedValue;
 }
+#endif
 
 PaintController& GraphicsLayer::paintController()
 {
@@ -1258,16 +1292,3 @@ void GraphicsLayer::setCompositorMutableProperties(uint32_t properties)
 }
 
 } // namespace blink
-
-#ifndef NDEBUG
-void showGraphicsLayerTree(const blink::GraphicsLayer* layer)
-{
-    if (!layer) {
-        fprintf(stderr, "Cannot showGraphicsLayerTree for (nil).\n");
-        return;
-    }
-
-    String output = layer->layerTreeAsText(blink::LayerTreeIncludesDebugInfo);
-    fprintf(stderr, "%s\n", output.utf8().data());
-}
-#endif
