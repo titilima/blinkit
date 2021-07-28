@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebContentLayerClient.h
+// Description: WebContentLayerClient Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -28,13 +39,9 @@
 
 #include "WebCommon.h"
 
-namespace gfx {
-class Rect;
-}
-
 namespace blink {
 
-struct WebRect;
+class IntRect;
 class WebDisplayItemList;
 
 class BLINK_PLATFORM_EXPORT WebContentLayerClient {
@@ -55,7 +62,7 @@ public:
     // Calling paintContents will return a WebDisplayitemList that is guaranteed valid
     // only within this region.
     // In particular, this is used to represent the interest rect in Blink.
-    virtual gfx::Rect paintableRegion() = 0;
+    virtual IntRect paintableRegion() = 0;
 
     // Paints the content area for the layer, typically dirty rects submitted
     // through WebContentLayer::setNeedsDisplayInRect, submitting drawing commands

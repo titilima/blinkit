@@ -34,13 +34,8 @@
 
 class SkCanvas;
 
-namespace gfx {
-class Rect;
-}
-
 namespace blink {
 
-class IntRect;
 class GraphicsLayer;
 
 class PLATFORM_EXPORT ContentLayerDelegate : public WebContentLayerClient {
@@ -50,7 +45,7 @@ public:
     explicit ContentLayerDelegate(GraphicsLayer*);
     ~ContentLayerDelegate() override;
 
-    gfx::Rect paintableRegion() override;
+    IntRect paintableRegion() override;
 
     // WebContentLayerClient implementation.
     void paintContents(WebDisplayItemList*, WebContentLayerClient::PaintingControlSetting = PaintDefaultBehavior) override;

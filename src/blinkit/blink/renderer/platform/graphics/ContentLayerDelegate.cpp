@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContentLayerDelegate.cpp
+// Description: ContentLayerDelegate Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -24,7 +35,7 @@
 
 #include "platform/graphics/ContentLayerDelegate.h"
 
-#include "platform/EventTracer.h"
+// BKTODO: #include "platform/EventTracer.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/TraceEvent.h"
 #include "platform/TracedValue.h"
@@ -34,9 +45,9 @@
 #include "platform/graphics/paint/PaintArtifactToSkCanvas.h"
 #include "platform/graphics/paint/PaintController.h"
 #include "public/platform/WebDisplayItemList.h"
-#include "public/platform/WebRect.h"
+// BKTODO: #include "public/platform/WebRect.h"
 #include "third_party/skia/include/core/SkPicture.h"
-#include "ui/gfx/geometry/rect.h"
+// BKTODO: #include "ui/gfx/geometry/rect.h"
 
 namespace blink {
 
@@ -49,7 +60,7 @@ ContentLayerDelegate::~ContentLayerDelegate()
 {
 }
 
-static void paintArtifactToWebDisplayItemList(WebDisplayItemList* list, const PaintArtifact& artifact, const gfx::Rect& bounds)
+static void paintArtifactToWebDisplayItemList(WebDisplayItemList* list, const PaintArtifact& artifact, const IntRect& bounds)
 {
     if (RuntimeEnabledFeatures::slimmingPaintV2Enabled()) {
         // This is a temporary path to paint the artifact using the paint chunk
@@ -58,16 +69,15 @@ static void paintArtifactToWebDisplayItemList(WebDisplayItemList* list, const Pa
         // one big flat SkPicture.
         SkRect skBounds = SkRect::MakeXYWH(bounds.x(), bounds.y(), bounds.width(), bounds.height());
         RefPtr<SkPicture> picture = paintArtifactToSkPicture(artifact, skBounds);
-        list->appendDrawingItem(WebRect(bounds.x(), bounds.y(), bounds.width(), bounds.height()), picture.get());
+        list->appendDrawingItem(bounds, picture.get());
         return;
     }
     artifact.appendToWebDisplayItemList(list);
 }
 
-gfx::Rect ContentLayerDelegate::paintableRegion()
+IntRect ContentLayerDelegate::paintableRegion()
 {
-    IntRect interestRect = m_graphicsLayer->interestRect();
-    return gfx::Rect(interestRect.x(), interestRect.y(), interestRect.width(), interestRect.height());
+    return m_graphicsLayer->interestRect();
 }
 
 void ContentLayerDelegate::paintContents(
