@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Scrollbar.h
+// Description: Scrollbar Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -118,7 +129,7 @@ public:
     void windowActiveChangedForSnowLeopardOnly();
     bool isWindowActive() const;
 
-    bool gestureEvent(const PlatformGestureEvent&);
+    // BKTODO: bool gestureEvent(const PlatformGestureEvent&);
 
     // These methods are used for platform scrollbars to give :hover feedback.  They will not get called
     // when the mouse went down in a scrollbar, since it is assumed the scrollbar will start

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Scrollbar.cpp
+// Description: Scrollbar Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -27,7 +38,7 @@
 
 #include <algorithm>
 #include "platform/HostWindow.h"
-#include "platform/PlatformGestureEvent.h"
+// BKTODO: #include "platform/PlatformGestureEvent.h"
 #include "platform/PlatformMouseEvent.h"
 #include "platform/graphics/paint/CullRect.h"
 // See windowActiveChangedForSnowLeopardOnly() below.
@@ -322,6 +333,7 @@ void Scrollbar::setPressedPart(ScrollbarPart part)
     m_pressedPart = part;
 }
 
+#if 0 // BKTODO:
 bool Scrollbar::gestureEvent(const PlatformGestureEvent& evt)
 {
     switch (evt.type()) {
@@ -363,6 +375,7 @@ bool Scrollbar::gestureEvent(const PlatformGestureEvent& evt)
         return true;
     }
 }
+#endif
 
 void Scrollbar::mouseMoved(const PlatformMouseEvent& evt)
 {
