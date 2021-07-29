@@ -115,7 +115,7 @@ void DocumentOrderedMap::add(const AtomicString& key, Element* element)
 
     MapEntry &entry = it->second;
     ASSERT(entry.count > 0);
-    entry.element.Clear();
+    entry.element.clear();
     ++entry.count;
     entry.orderedList.clear();
 }
