@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSPageRule.cpp
+// Description: CSSPageRule Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -69,7 +80,7 @@ String CSSPageRule::selectorText() const
 
 void CSSPageRule::setSelectorText(const String& selectorText)
 {
-    CSSParserContext context(parserContext(), 0);
+    CSSParserContext context(parserContext());
     CSSSelectorList selectorList = CSSParser::parseSelector(context, selectorText);
     if (!selectorList.isValid())
         return;
