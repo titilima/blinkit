@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSDefaultStyleSheets.cpp
+// Description: CSSDefaultStyleSheets Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -28,11 +39,11 @@
 
 #include "core/css/CSSDefaultStyleSheets.h"
 
-#include "core/MathMLNames.h"
+// BKTODO: #include "core/MathMLNames.h"
 #include "core/css/MediaQueryEvaluator.h"
 #include "core/css/RuleSet.h"
 #include "core/css/StyleSheetContents.h"
-#include "core/dom/Fullscreen.h"
+// BKTODO: #include "core/dom/Fullscreen.h"
 #include "core/html/HTMLAnchorElement.h"
 #include "core/html/HTMLHtmlElement.h"
 #include "core/layout/LayoutTheme.h"
@@ -63,7 +74,7 @@ static const MediaQueryEvaluator& printEval()
 
 static PassRefPtrWillBeRawPtr<StyleSheetContents> parseUASheet(const String& str)
 {
-    RefPtrWillBeRawPtr<StyleSheetContents> sheet = StyleSheetContents::create(CSSParserContext(UASheetMode, 0));
+    RefPtrWillBeRawPtr<StyleSheetContents> sheet = StyleSheetContents::create(CSSParserContext(UASheetMode));
     sheet->parseString(str);
     // User Agent stylesheets are parsed once for the lifetime of the renderer
     // process and are intentionally leaked.
@@ -144,6 +155,8 @@ void CSSDefaultStyleSheets::ensureDefaultStyleSheetsForElement(const Element& el
         changedDefaultStyle = true;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: We should assert that the sheet only styles MathML elements.
     if (element.namespaceURI() == MathMLNames::mathmlNamespaceURI
         && !m_mathmlStyleSheet) {
@@ -174,6 +187,7 @@ void CSSDefaultStyleSheets::ensureDefaultStyleSheetsForElement(const Element& el
         m_defaultQuirksStyle->addRulesFromSheet(fullscreenStyleSheet(), screenEval());
         changedDefaultStyle = true;
     }
+#endif
 
     ASSERT(!m_defaultStyle->features().hasIdsInSelectors());
     ASSERT(m_defaultStyle->features().siblingRules.isEmpty());
