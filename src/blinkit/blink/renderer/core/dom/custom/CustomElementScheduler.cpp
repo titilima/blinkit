@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CustomElementScheduler.cpp
+// Description: CustomElementScheduler Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -34,13 +45,15 @@
 #include "core/dom/Element.h"
 #include "core/dom/custom/CustomElementCallbackInvocation.h"
 #include "core/dom/custom/CustomElementLifecycleCallbacks.h"
+#if 0 // BKTODO:
 #include "core/dom/custom/CustomElementMicrotaskDispatcher.h"
 #include "core/dom/custom/CustomElementMicrotaskImportStep.h"
 #include "core/dom/custom/CustomElementMicrotaskResolutionStep.h"
+#endif
 #include "core/dom/custom/CustomElementMicrotaskRunQueue.h"
 #include "core/dom/custom/CustomElementProcessingStack.h"
 #include "core/dom/custom/CustomElementRegistrationContext.h"
-#include "core/dom/custom/CustomElementSyncMicrotaskQueue.h"
+// BKTODO: #include "core/dom/custom/CustomElementSyncMicrotaskQueue.h"
 #include "core/html/imports/HTMLImportChild.h"
 #include "core/html/imports/HTMLImportsController.h"
 
@@ -59,10 +72,14 @@ static ElementCallbackQueueMap& callbackQueues()
 
 static CustomElementCallbackQueue& ensureCallbackQueue(PassRefPtrWillBeRawPtr<Element> element)
 {
+    ASSERT(false); // BKTODO:
+    exit(0);
+#if 0
     ElementCallbackQueueMap::ValueType* it = callbackQueues().add(element.get(), nullptr).storedValue;
     if (!it->value)
         it->value = CustomElementCallbackQueue::create(element);
     return *it->value.get();
+#endif
 }
 
 // Finds or creates the callback queue for element.
@@ -85,7 +102,7 @@ static CustomElementCallbackQueue& scheduleCallbackQueue(PassRefPtrWillBeRawPtr<
         return callbackQueue;
     }
 
-    CustomElementMicrotaskDispatcher::instance().enqueue(&callbackQueue);
+    ASSERT(false); // BKTODO: CustomElementMicrotaskDispatcher::instance().enqueue(&callbackQueue);
     return callbackQueue;
 }
 
@@ -117,8 +134,11 @@ void CustomElementScheduler::resolveOrScheduleResolution(PassRefPtrWillBeRawPtr<
     }
 
     Document& document = element->document();
+    ASSERT(false); // BKTODO:
+#if 0
     OwnPtrWillBeRawPtr<CustomElementMicrotaskResolutionStep> step = CustomElementMicrotaskResolutionStep::create(context, element, descriptor);
     enqueueMicrotaskStep(document, step.release());
+#endif
 }
 
 CustomElementMicrotaskImportStep* CustomElementScheduler::scheduleImport(HTMLImportChild* import)
@@ -126,12 +146,16 @@ CustomElementMicrotaskImportStep* CustomElementScheduler::scheduleImport(HTMLImp
     ASSERT(!import->hasFinishedLoading());
     ASSERT(import->parent());
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     // Ownership of the new step is transferred to the parent
     // processing step, or the base queue.
     OwnPtrWillBeRawPtr<CustomElementMicrotaskImportStep> step = CustomElementMicrotaskImportStep::create(import);
     CustomElementMicrotaskImportStep* rawStep = step.get();
     enqueueMicrotaskStep(*(import->parent()->document()), step.release(), import->isSync());
     return rawStep;
+#endif
 }
 
 void CustomElementScheduler::enqueueMicrotaskStep(Document& document, PassOwnPtrWillBeRawPtr<CustomElementMicrotaskStep> step, bool importIsSync)
@@ -143,8 +167,11 @@ void CustomElementScheduler::enqueueMicrotaskStep(Document& document, PassOwnPtr
 
 void CustomElementScheduler::callbackDispatcherDidFinish()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (CustomElementMicrotaskDispatcher::instance().elementQueueIsEmpty())
         callbackQueues().clear();
+#endif
 }
 
 void CustomElementScheduler::microtaskDispatcherDidFinish()
