@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StylePropertySerializer.cpp
+// Description: StylePropertySerializer Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All rights reserved.
@@ -631,7 +642,7 @@ String StylePropertySerializer::getLayeredShorthandValue(const StylePropertyShor
     const unsigned size = shorthand.length();
 
     // Begin by collecting the properties into a vector.
-    WillBeHeapVector<RawPtrWillBeMember<const CSSValue>> values(size);
+    std::vector<Member<const CSSValue>> values(size);
     // If the below loop succeeds, there should always be at minimum 1 layer.
     size_t numLayers = 1U;
 
@@ -836,6 +847,8 @@ String StylePropertySerializer::borderPropertyValue(CommonValueMode valueMode) c
 
 static void appendBackgroundRepeatValue(StringBuilder& builder, const CSSValue& repeatXCSSValue, const CSSValue& repeatYCSSValue)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: Ensure initial values do not appear in CSS_VALUE_LISTS.
     DEFINE_STATIC_REF_WILL_BE_PERSISTENT(CSSPrimitiveValue, initialRepeatValue, (CSSPrimitiveValue::createIdentifier(CSSValueRepeat)));
     const CSSPrimitiveValue& repeatX = repeatXCSSValue.isInitialValue() ? *initialRepeatValue : toCSSPrimitiveValue(repeatXCSSValue);
@@ -853,6 +866,7 @@ static void appendBackgroundRepeatValue(StringBuilder& builder, const CSSValue& 
         builder.appendLiteral(" ");
         builder.append(repeatY.cssText());
     }
+#endif
 }
 
 String StylePropertySerializer::backgroundRepeatPropertyValue() const
