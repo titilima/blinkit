@@ -1,10 +1,21 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaQueryParser.cpp
+// Description: MediaQueryParser Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "core/css/parser/MediaQueryParser.h"
 
-#include "core/MediaTypeNames.h"
+// BKTODO: #include "core/MediaTypeNames.h"
 #include "core/css/parser/CSSPropertyParser.h"
 #include "core/css/parser/CSSTokenizer.h"
 #include "wtf/Vector.h"
@@ -233,7 +244,7 @@ PassRefPtrWillBeRawPtr<MediaQuerySet> MediaQueryParser::parseImpl(CSSParserToken
 
 MediaQueryData::MediaQueryData()
     : m_restrictor(MediaQuery::None)
-    , m_mediaType(MediaTypeNames::all)
+    // BKTODO: , m_mediaType(MediaTypeNames::all)
     , m_mediaTypeSet(false)
 {
 }
@@ -241,7 +252,7 @@ MediaQueryData::MediaQueryData()
 void MediaQueryData::clear()
 {
     m_restrictor = MediaQuery::None;
-    m_mediaType = MediaTypeNames::all;
+    // BKTODO: m_mediaType = MediaTypeNames::all;
     m_mediaTypeSet = false;
     m_mediaFeature = String();
     m_valueList.clear();
@@ -250,7 +261,7 @@ void MediaQueryData::clear()
 
 PassOwnPtrWillBeRawPtr<MediaQuery> MediaQueryData::takeMediaQuery()
 {
-    OwnPtrWillBeRawPtr<MediaQuery> mediaQuery = MediaQuery::create(m_restrictor, std::move(m_mediaType), std::move(m_expressions));
+    OwnPtrWillBeRawPtr<MediaQuery> mediaQuery = MediaQuery::create(m_restrictor, std::move(m_mediaType), m_expressions);
     clear();
     return mediaQuery.release();
 }
@@ -259,7 +270,7 @@ bool MediaQueryData::addExpression()
 {
     OwnPtrWillBeRawPtr<MediaQueryExp> expression = MediaQueryExp::createIfValid(m_mediaFeature, m_valueList);
     bool isValid = !!expression;
-    m_expressions.append(expression.release());
+    m_expressions.emplace_back(expression.release());
     m_valueList.clear();
     return isValid;
 }
