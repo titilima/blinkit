@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSVariableResolver.cpp
+// Description: CSSVariableResolver Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -120,7 +131,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSVariableResolver::resolveVariableReferences(
     if (!resolutionContext.success)
         return cssValuePool().createUnsetValue();
 
-    CSSParserContext context(HTMLStandardMode, nullptr);
+    CSSParserContext context(HTMLStandardMode);
     WillBeHeapVector<CSSProperty, 256> parsedProperties;
     // TODO(timloh): This should be CSSParser::parseSingleValue and not need a vector.
     if (!CSSPropertyParser::parseValue(id, false, CSSParserTokenRange(tokens), context, parsedProperties, StyleRule::Type::Style))
@@ -140,7 +151,7 @@ void CSSVariableResolver::resolveAndApplyVariableReferences(StyleResolverState& 
     resolver.resolveVariableReferencesFromTokens(value.variableDataValue()->tokens(), tokens, resolutionContext);
 
     if (resolutionContext.success) {
-        CSSParserContext context(HTMLStandardMode, 0);
+        CSSParserContext context(HTMLStandardMode);
 
         WillBeHeapVector<CSSProperty, 256> parsedProperties;
 
