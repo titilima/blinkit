@@ -488,7 +488,7 @@ void Element::scrollIntoView(bool alignToTop)
     if (!layoutObject())
         return;
 
-    bool makeVisibleInVisualViewport = !Settings::inertVisualViewport;
+    bool makeVisibleInVisualViewport = !Settings::inertVisualViewport();
 
     LayoutRect bounds = boundingBox();
     // Align to the top / bottom and to the closest edge.
@@ -505,7 +505,7 @@ void Element::scrollIntoViewIfNeeded(bool centerIfNeeded)
     if (!layoutObject())
         return;
 
-    bool makeVisibleInVisualViewport = !Settings::inertVisualViewport;
+    bool makeVisibleInVisualViewport = !Settings::inertVisualViewport();
 
     LayoutRect bounds = boundingBox();
     if (centerIfNeeded)
