@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SharedStyleFinder.cpp
+// Description: SharedStyleFinder Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -29,7 +40,7 @@
 #include "core/css/resolver/SharedStyleFinder.h"
 
 #include "core/HTMLNames.h"
-#include "core/XMLNames.h"
+// BKTODO: #include "core/XMLNames.h"
 #include "core/css/resolver/StyleResolver.h"
 #include "core/css/resolver/StyleResolverStats.h"
 #include "core/dom/ContainerNode.h"
@@ -46,7 +57,7 @@
 #include "core/html/HTMLOptGroupElement.h"
 #include "core/html/HTMLOptionElement.h"
 #include "core/style/ComputedStyle.h"
-#include "core/svg/SVGElement.h"
+// BKTODO: #include "core/svg/SVGElement.h"
 #include "platform/TraceEvent.h"
 #include "wtf/HashSet.h"
 #include "wtf/text/AtomicString.h"
@@ -120,8 +131,11 @@ bool SharedStyleFinder::sharingCandidateHasIdenticalStyleAffectingAttributes(Ele
 {
     if (element().sharesSameElementData(candidate))
         return true;
+    ASSERT(false); // BKTODO:
+#if 0
     if (element().fastGetAttribute(XMLNames::langAttr) != candidate.fastGetAttribute(XMLNames::langAttr))
         return false;
+#endif
     if (element().fastGetAttribute(langAttr) != candidate.fastGetAttribute(langAttr))
         return false;
 
@@ -216,8 +230,11 @@ bool SharedStyleFinder::canShareStyleWithElement(Element& candidate) const
         return false;
     if (candidate.needsStyleRecalc())
         return false;
+    ASSERT(false); // BKTODO:
+#if 0
     if (candidate.isSVGElement() && toSVGElement(candidate).animatedSMILStyleProperties())
         return false;
+#endif
     if (candidate.isLink() != element().isLink())
         return false;
     if (candidate.shadowPseudoId() != element().shadowPseudoId())
@@ -260,8 +277,11 @@ bool SharedStyleFinder::canShareStyleWithElement(Element& candidate) const
             return false;
         if (parent->inlineStyle())
             return false;
+        ASSERT(false); // BKTODO:
+#if 0
         if (parent->isSVGElement() && toSVGElement(parent)->animatedSMILStyleProperties())
             return false;
+#endif
         if (parent->hasID() && m_features.hasSelectorForId(parent->idForStyleResolution()))
             return false;
         if (!parent->childrenSupportStyleSharing())
@@ -299,8 +319,8 @@ inline Element* SharedStyleFinder::findElementForStyleSharing() const
             continue;
         if (it != styleSharingList.begin()) {
             // Move the element to the front of the LRU
-            styleSharingList.remove(it);
-            styleSharingList.prepend(&candidate);
+            styleSharingList.erase(it);
+            ASSERT(false); // BKTODO: styleSharingList.prepend(&candidate);
         }
         return &candidate;
     }
@@ -329,8 +349,11 @@ ComputedStyle* SharedStyleFinder::findSharedStyle()
     Element* shareElement = findElementForStyleSharing();
 
     if (!shareElement) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (m_styleResolver->stats() && m_styleResolver->stats()->allCountersEnabled() && documentContainsValidCandidate())
             INCREMENT_STYLE_STATS_COUNTER(*m_styleResolver, sharedStyleMissed, 1);
+#endif
         return nullptr;
     }
 
