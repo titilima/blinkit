@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaQueryList.cpp
+// Description: MediaQueryList Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies)
  *
@@ -78,7 +89,7 @@ void MediaQueryList::addListener(PassRefPtrWillBeRawPtr<MediaQueryListListener> 
     if (!listener)
         return;
 
-    m_listeners.add(listener);
+    ASSERT(false); // BKTODO: m_listeners.add(listener);
 }
 
 void MediaQueryList::removeListener(PassRefPtrWillBeRawPtr<MediaQueryListListener> listener)
@@ -87,7 +98,7 @@ void MediaQueryList::removeListener(PassRefPtrWillBeRawPtr<MediaQueryListListene
         return;
 
     RefPtrWillBeRawPtr<MediaQueryList> protect(this);
-    m_listeners.remove(listener);
+    ASSERT(false); // BKTODO: m_listeners.remove(listener);
 }
 
 bool MediaQueryList::hasPendingActivity() const
