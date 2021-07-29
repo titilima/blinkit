@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSPropertyParser.cpp
+// Description: CSSPropertyParser Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -17,7 +28,7 @@
 #include "core/css/CSSPathValue.h"
 #include "core/css/CSSPrimitiveValueMappings.h"
 #include "core/css/CSSQuadValue.h"
-#include "core/css/CSSSVGDocumentValue.h"
+// BKTODO: #include "core/css/CSSSVGDocumentValue.h"
 #include "core/css/CSSShadowValue.h"
 #include "core/css/CSSStringValue.h"
 #include "core/css/CSSTimingFunctionValue.h"
@@ -33,7 +44,7 @@
 #include "core/css/parser/CSSVariableParser.h"
 #include "core/frame/UseCounter.h"
 #include "core/layout/LayoutTheme.h"
-#include "core/svg/SVGPathUtilities.h"
+// BKTODO: #include "core/svg/SVGPathUtilities.h"
 #include "wtf/text/StringBuilder.h"
 
 namespace blink {
@@ -82,9 +93,11 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
         parseSuccess = parser.parseValueStart(unresolvedProperty, important);
     }
 
+#if 0 // BKTODO:
     // This doesn't count UA style sheets
     if (parseSuccess && context.useCounter())
         context.useCounter()->count(context.mode(), unresolvedProperty);
+#endif
 
     if (!parseSuccess)
         parsedProperties.shrink(parsedPropertiesSize);
@@ -1319,6 +1332,7 @@ static bool validWidthOrHeightKeyword(CSSValueID id, const CSSParserContext& con
 {
     if (id == CSSValueWebkitMinContent || id == CSSValueWebkitMaxContent || id == CSSValueWebkitFillAvailable || id == CSSValueWebkitFitContent
         || id == CSSValueMinContent || id == CSSValueMaxContent || id == CSSValueFitContent) {
+#if 0 // BKTODO:
         if (context.useCounter()) {
             switch (id) {
             case CSSValueWebkitMinContent:
@@ -1337,6 +1351,7 @@ static bool validWidthOrHeightKeyword(CSSValueID id, const CSSParserContext& con
                 break;
             }
         }
+#endif
         return true;
     }
     return false;
@@ -1506,11 +1521,13 @@ static PassRefPtrWillBeRawPtr<CSSValue> consumeZoom(CSSParserTokenRange& range, 
         if (!zoom)
             zoom = consumeNumber(range, ValueRangeNonNegative);
     }
+#if 0 // BKTODO:
     if (zoom && context.useCounter()
         && !(token.id() == CSSValueNormal
             || (token.type() == NumberToken && zoom->getDoubleValue() == 1)
             || (token.type() == PercentageToken && zoom->getDoubleValue() == 100)))
         context.useCounter()->count(UseCounter::CSSZoomNotEqualToOne);
+#endif
     return zoom.release();
 }
 
@@ -1527,9 +1544,11 @@ static PassRefPtrWillBeRawPtr<CSSValue> consumeAnimationName(CSSParserTokenRange
         return consumeIdent(range);
 
     if (allowQuotedName && range.peek().type() == StringToken) {
+#if 0 // BKTODO:
         // Legacy support for strings in prefixed animations.
         if (context.useCounter())
             context.useCounter()->count(UseCounter::QuotedAnimationName);
+#endif
 
         const CSSParserToken& token = range.consumeIncludingWhitespace();
         if (token.valueEqualsIgnoringCase("none"))
@@ -1866,7 +1885,7 @@ static PassRefPtrWillBeRawPtr<CSSValue> consumeFilter(CSSParserTokenRange& range
         RefPtrWillBeRawPtr<CSSFunctionValue> filterValue = nullptr;
         if (!url.isNull()) {
             filterValue = CSSFunctionValue::create(CSSValueUrl);
-            filterValue->append(CSSSVGDocumentValue::create(url));
+            ASSERT(false); // BKTODO: filterValue->append(CSSSVGDocumentValue::create(url));
         } else {
             filterValue = consumeFilterFunction(range, cssParserMode);
             if (!filterValue)
@@ -1934,12 +1953,16 @@ static PassRefPtrWillBeRawPtr<CSSValue> consumePath(CSSParserTokenRange& range)
         return nullptr;
     String pathString = functionArgs.consumeIncludingWhitespace().value();
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     RefPtr<SVGPathByteStream> byteStream = SVGPathByteStream::create();
     if (!buildByteStreamFromString(pathString, *byteStream) || !functionArgs.atEnd())
         return nullptr;
 
     range = functionRange;
     return CSSPathValue::create(byteStream.release());
+#endif
 }
 
 static PassRefPtrWillBeRawPtr<CSSValue> consumePathOrNone(CSSParserTokenRange& range)
@@ -2385,12 +2408,14 @@ static PassRefPtrWillBeRawPtr<CSSValue> consumeCursor(CSSParserTokenRange& range
     }
 
     CSSValueID id = range.peek().id();
+#if 0 // BKTODO:
     if (!range.atEnd() && context.useCounter()) {
         if (id == CSSValueWebkitZoomIn)
             context.useCounter()->count(UseCounter::PrefixedCursorZoomIn);
         else if (id == CSSValueWebkitZoomOut)
             context.useCounter()->count(UseCounter::PrefixedCursorZoomOut);
     }
+#endif
     RefPtrWillBeRawPtr<CSSValue> cursorType = nullptr;
     if (id == CSSValueHand) {
         if (!inQuirksMode) // Non-standard behavior
@@ -2740,30 +2765,40 @@ static PassRefPtrWillBeRawPtr<CSSValue> consumeGeneratedImage(CSSParserTokenRang
     if (id == CSSValueRadialGradient) {
         result = consumeRadialGradient(args, context.mode(), NonRepeating);
     } else if (id == CSSValueWebkitLinearGradient) {
+#if 0 // BKTODO:
         // FIXME: This should send a deprecation message.
         if (context.useCounter())
             context.useCounter()->count(UseCounter::DeprecatedWebKitLinearGradient);
+#endif
         result = consumeLinearGradient(args, context.mode(), NonRepeating, CSSPrefixedLinearGradient);
     } else if (id == CSSValueWebkitRepeatingLinearGradient) {
+#if 0 // BKTODO:
         // FIXME: This should send a deprecation message.
         if (context.useCounter())
             context.useCounter()->count(UseCounter::DeprecatedWebKitRepeatingLinearGradient);
+#endif
         result = consumeLinearGradient(args, context.mode(), Repeating, CSSPrefixedLinearGradient);
     } else if (id == CSSValueLinearGradient) {
         result = consumeLinearGradient(args, context.mode(), NonRepeating, CSSLinearGradient);
     } else if (id == CSSValueWebkitGradient) {
+#if 0 // BKTODO:
         // FIXME: This should send a deprecation message.
         if (context.useCounter())
             context.useCounter()->count(UseCounter::DeprecatedWebKitGradient);
+#endif
         result = consumeDeprecatedGradient(args, context.mode());
     } else if (id == CSSValueWebkitRadialGradient) {
+#if 0 // BKTODO:
         // FIXME: This should send a deprecation message.
         if (context.useCounter())
             context.useCounter()->count(UseCounter::DeprecatedWebKitRadialGradient);
+#endif
         result = consumeDeprecatedRadialGradient(args, context.mode(), NonRepeating);
     } else if (id == CSSValueWebkitRepeatingRadialGradient) {
+#if 0 // BKTODO:
         if (context.useCounter())
             context.useCounter()->count(UseCounter::DeprecatedWebKitRepeatingRadialGradient);
+#endif
         result = consumeDeprecatedRadialGradient(args, context.mode(), Repeating);
     } else if (id == CSSValueWebkitCrossFade) {
         result = consumeCrossFade(args, context);
@@ -3220,6 +3255,9 @@ static PassRefPtrWillBeRawPtr<CSSValue> consumeFontFaceSrcURI(CSSParserTokenRang
     String url = consumeUrl(range);
     if (url.isNull())
         return nullptr;
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     RefPtrWillBeRawPtr<CSSFontFaceSrcValue> uriValue(CSSFontFaceSrcValue::create(context.completeURL(url), context.shouldCheckContentSecurityPolicy()));
     uriValue->setReferrer(context.referrer());
 
@@ -3235,11 +3273,14 @@ static PassRefPtrWillBeRawPtr<CSSValue> consumeFontFaceSrcURI(CSSParserTokenRang
         return nullptr;
     uriValue->setFormat(arg.value());
     return uriValue.release();
+#endif
 }
 
 static PassRefPtrWillBeRawPtr<CSSValue> consumeFontFaceSrcLocal(CSSParserTokenRange& range, const CSSParserContext& context)
 {
     CSSParserTokenRange args = consumeFunction(range);
+    ASSERT(false); // BKTODO:
+#if 0
     ContentSecurityPolicyDisposition shouldCheckContentSecurityPolicy = context.shouldCheckContentSecurityPolicy();
     if (args.peek().type() == StringToken) {
         const CSSParserToken& arg = args.consumeIncludingWhitespace();
@@ -3253,6 +3294,7 @@ static PassRefPtrWillBeRawPtr<CSSValue> consumeFontFaceSrcLocal(CSSParserTokenRa
             return nullptr;
         return CSSFontFaceSrcValue::createLocal(familyName, shouldCheckContentSecurityPolicy);
     }
+#endif
     return nullptr;
 }
 

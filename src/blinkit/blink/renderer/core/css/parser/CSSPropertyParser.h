@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSPropertyParser.h
+// Description: CSSPropertyParser Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2008, 2009, 2010 Apple Inc. All rights reserved.
@@ -96,7 +107,7 @@ public:
     static PassRefPtrWillBeRawPtr<CSSValue> createCSSImageValueWithReferrer(const AtomicString& rawValue, const CSSParserContext& context)
     {
         RefPtrWillBeRawPtr<CSSValue> imageValue = CSSImageValue::create(rawValue, context.completeURL(rawValue));
-        toCSSImageValue(imageValue.get())->setReferrer(context.referrer());
+        ASSERT(false); // BKTODO: toCSSImageValue(imageValue.get())->setReferrer(context.referrer());
         return imageValue;
     }
 
