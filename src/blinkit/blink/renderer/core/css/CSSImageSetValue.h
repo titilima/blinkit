@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSImageSetValue.h
+// Description: CSSImageSetValue Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -27,8 +38,10 @@
 #define CSSImageSetValue_h
 
 #include "core/css/CSSValueList.h"
+#if 0 // BKTODO:
 #include "platform/CrossOriginAttributeValue.h"
 #include "platform/weborigin/Referrer.h"
+#endif
 #include "wtf/Allocator.h"
 
 namespace blink {
@@ -47,14 +60,14 @@ public:
 
     bool isCachePending(float deviceScaleFactor) const;
     StyleFetchedImageSet* cachedImageSet(float deviceScaleFactor) const;
-    StyleFetchedImageSet* cacheImageSet(Document*, float deviceScaleFactor, CrossOriginAttributeValue = CrossOriginAttributeNotSet);
+    StyleFetchedImageSet* cacheImageSet(Document*, float deviceScaleFactor);
 
     String customCSSText() const;
 
     struct ImageWithScale {
         DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
         String imageURL;
-        Referrer referrer;
+        // BKTODO: Referrer referrer;
         float scaleFactor;
     };
 

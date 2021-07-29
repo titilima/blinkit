@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSImageSetValue.cpp
+// Description: CSSImageSetValue Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -28,14 +39,14 @@
 #include "core/css/CSSImageValue.h"
 #include "core/css/CSSPrimitiveValue.h"
 #include "core/dom/Document.h"
-#include "core/fetch/FetchInitiatorTypeNames.h"
+// BKTODO: #include "core/fetch/FetchInitiatorTypeNames.h"
 #include "core/fetch/FetchRequest.h"
 #include "core/fetch/ImageResource.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/fetch/ResourceLoaderOptions.h"
 #include "core/style/StyleFetchedImageSet.h"
 #include "platform/weborigin/KURL.h"
-#include "platform/weborigin/SecurityPolicy.h"
+// BKTODO: #include "platform/weborigin/SecurityPolicy.h"
 #include "wtf/text/StringBuilder.h"
 #include <algorithm>
 
@@ -71,7 +82,7 @@ void CSSImageSetValue::fillImageSet()
 
         ImageWithScale image;
         image.imageURL = imageURL;
-        image.referrer = SecurityPolicy::generateReferrer(imageValue->referrer().referrerPolicy, KURL(ParsedURLString, imageURL), imageValue->referrer().referrer);
+        ASSERT(false); // BKTODO: image.referrer = SecurityPolicy::generateReferrer(imageValue->referrer().referrerPolicy, KURL(ParsedURLString, imageURL), imageValue->referrer().referrer);
         image.scaleFactor = scaleFactor;
         m_imagesInSet.append(image);
         ++i;
@@ -104,13 +115,15 @@ StyleFetchedImageSet* CSSImageSetValue::cachedImageSet(float deviceScaleFactor) 
     return m_cachedImageSet.get();
 }
 
-StyleFetchedImageSet* CSSImageSetValue::cacheImageSet(Document* document, float deviceScaleFactor, CrossOriginAttributeValue crossOrigin)
+StyleFetchedImageSet* CSSImageSetValue::cacheImageSet(Document* document, float deviceScaleFactor)
 {
     ASSERT(document);
 
     if (!m_imagesInSet.size())
         fillImageSet();
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_isCachePending || deviceScaleFactor != m_cachedScaleFactor) {
         // FIXME: In the future, we want to take much more than deviceScaleFactor into acount here.
         // All forms of scale should be included: Page::pageScaleFactor(), LocalFrame::pageZoomFactor(),
@@ -128,6 +141,7 @@ StyleFetchedImageSet* CSSImageSetValue::cacheImageSet(Document* document, float 
             m_isCachePending = false;
         }
     }
+#endif
 
     return m_cachedImageSet.get();
 }
