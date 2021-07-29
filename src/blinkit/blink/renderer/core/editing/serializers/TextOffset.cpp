@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TextOffset.cpp
+// Description: TextOffset Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -13,7 +24,7 @@ TextOffset::TextOffset()
 {
 }
 
-TextOffset::TextOffset(PassRefPtrWillBeRawPtr<Text> text, int offset)
+TextOffset::TextOffset(Text *text, int offset)
     : m_text(text)
     , m_offset(offset)
 {

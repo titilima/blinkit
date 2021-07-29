@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TextOffset.h
+// Description: TextOffset Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -16,17 +27,17 @@ class TextOffset {
     STACK_ALLOCATED();
 public:
     TextOffset();
-    TextOffset(PassRefPtrWillBeRawPtr<Text>, int);
+    TextOffset(Text *, int);
     TextOffset(const TextOffset&);
 
-    Text* text() const { return m_text.get(); }
+    Text* text() const { return m_text; }
     int offset() const { return m_offset; }
 
     bool isNull() const;
     bool isNotNull() const;
 
 private:
-    RefPtrWillBeMember<Text> m_text;
+    Text *m_text = nullptr;
     int m_offset;
 };
 
