@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScopedStyleResolver.cpp
+// Description: ScopedStyleResolver Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -41,7 +52,7 @@
 #include "core/dom/shadow/ElementShadow.h"
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/html/HTMLStyleElement.h"
-#include "core/svg/SVGStyleElement.h"
+// BKTODO: #include "core/svg/SVGStyleElement.h"
 
 namespace blink {
 
@@ -80,6 +91,8 @@ void ScopedStyleResolver::addFontFaceRules(const RuleSet& ruleSet)
 
 void ScopedStyleResolver::appendCSSStyleSheet(CSSStyleSheet& cssSheet, const MediaQueryEvaluator& medium)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     unsigned index = m_authorStyleSheets.size();
     m_authorStyleSheets.append(&cssSheet);
     StyleSheetContents* sheet = cssSheet.contents();
@@ -91,10 +104,13 @@ void ScopedStyleResolver::appendCSSStyleSheet(CSSStyleSheet& cssSheet, const Med
     addTreeBoundaryCrossingRules(ruleSet, &cssSheet, index);
     treeScope().document().styleResolver()->addViewportDependentMediaQueries(ruleSet.viewportDependentMediaQueryResults());
     treeScope().document().styleResolver()->addDeviceDependentMediaQueries(ruleSet.deviceDependentMediaQueryResults());
+#endif
 }
 
 void ScopedStyleResolver::collectFeaturesTo(RuleFeatureSet& features, WillBeHeapHashSet<RawPtrWillBeMember<const StyleSheetContents>>& visitedSharedStyleSheetContents) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     for (size_t i = 0; i < m_authorStyleSheets.size(); ++i) {
         ASSERT(m_authorStyleSheets[i]->ownerNode());
         StyleSheetContents* contents = m_authorStyleSheets[i]->contents();
@@ -107,6 +123,7 @@ void ScopedStyleResolver::collectFeaturesTo(RuleFeatureSet& features, WillBeHeap
 
     for (const auto& rules : *m_treeBoundaryCrossingRuleSet)
         features.add(rules->m_ruleSet->features());
+#endif
 }
 
 void ScopedStyleResolver::resetAuthorStyle()
@@ -126,7 +143,7 @@ StyleRuleKeyframes* ScopedStyleResolver::keyframeStylesForAnimation(const String
     if (it == m_keyframesRuleMap.end())
         return nullptr;
 
-    return it->value.get();
+    return it->second.get();
 }
 
 void ScopedStyleResolver::addKeyframeStyle(PassRefPtrWillBeRawPtr<StyleRuleKeyframes> rule)
@@ -136,11 +153,11 @@ void ScopedStyleResolver::addKeyframeStyle(PassRefPtrWillBeRawPtr<StyleRuleKeyfr
     if (rule->isVendorPrefixed()) {
         KeyframesRuleMap::iterator it = m_keyframesRuleMap.find(s.impl());
         if (it == m_keyframesRuleMap.end())
-            m_keyframesRuleMap.set(s.impl(), rule);
-        else if (it->value->isVendorPrefixed())
-            m_keyframesRuleMap.set(s.impl(), rule);
+            m_keyframesRuleMap.emplace(s.impl(), rule);
+        else if (it->second->isVendorPrefixed())
+            m_keyframesRuleMap.emplace(s.impl(), rule);
     } else {
-        m_keyframesRuleMap.set(s.impl(), rule);
+        m_keyframesRuleMap.emplace(s.impl(), rule);
     }
 }
 
