@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleRuleImport.cpp
+// Description: StyleRuleImport Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -24,7 +35,7 @@
 #include "core/css/StyleSheetContents.h"
 #include "core/dom/Document.h"
 #include "core/fetch/CSSStyleSheetResource.h"
-#include "core/fetch/FetchInitiatorTypeNames.h"
+// BKTODO: #include "core/fetch/FetchInitiatorTypeNames.h"
 #include "core/fetch/FetchRequest.h"
 #include "core/fetch/ResourceFetcher.h"
 
@@ -75,6 +86,8 @@ void StyleRuleImport::setCSSStyleSheet(const String& href, const KURL& baseURL, 
     CSSParserContext context = m_parentStyleSheet ? m_parentStyleSheet->parserContext() : strictCSSParserContext();
     context.setCharset(charset);
     Document* document = m_parentStyleSheet ? m_parentStyleSheet->singleOwnerDocument() : nullptr;
+    ASSERT(false); // BKTODO:
+#if 0
     if (!baseURL.isNull()) {
         context.setBaseURL(baseURL);
         if (document)
@@ -91,6 +104,7 @@ void StyleRuleImport::setCSSStyleSheet(const String& href, const KURL& baseURL, 
         m_parentStyleSheet->notifyLoadedSheet(cachedStyleSheet);
         m_parentStyleSheet->checkLoaded();
     }
+#endif
 }
 
 bool StyleRuleImport::isLoading() const
@@ -111,6 +125,8 @@ void StyleRuleImport::requestStyleSheet()
         return;
 
     KURL absURL;
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_parentStyleSheet->baseURL().isNull()) {
         // use parent styleheet's URL as the base URL
         absURL = KURL(m_parentStyleSheet->baseURL(), m_strHref);
@@ -139,6 +155,7 @@ void StyleRuleImport::requestStyleSheet()
         m_loading = true;
         m_resource->addClient(&m_styleSheetClient);
     }
+#endif
 }
 
 } // namespace blink
