@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSParserImpl.cpp
+// Description: CSSParserImpl Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -60,7 +71,7 @@ bool CSSParserImpl::parseVariableValue(MutableStylePropertySet* declaration, con
     return declaration->addParsedProperties(parser.m_parsedProperties);
 }
 
-static inline void filterProperties(bool important, const WillBeHeapVector<CSSProperty, 256>& input, WillBeHeapVector<CSSProperty, 256>& output, size_t& unusedEntries, BitArray<numCSSProperties>& seenProperties)
+static inline void filterProperties(bool important, const std::vector<CSSProperty>& input, std::vector<CSSProperty>& output, size_t& unusedEntries, BitArray<numCSSProperties>& seenProperties)
 {
     // Add properties in reverse order so that highest priority definitions are reached first. Duplicate definitions can then be ignored when found.
     for (size_t i = input.size(); i--; ) {
@@ -78,11 +89,11 @@ static inline void filterProperties(bool important, const WillBeHeapVector<CSSPr
     }
 }
 
-static PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> createStylePropertySet(WillBeHeapVector<CSSProperty, 256>& parsedProperties, CSSParserMode mode)
+static PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> createStylePropertySet(std::vector<CSSProperty>& parsedProperties, CSSParserMode mode)
 {
     BitArray<numCSSProperties> seenProperties;
     size_t unusedEntries = parsedProperties.size();
-    WillBeHeapVector<CSSProperty, 256> results(unusedEntries);
+    std::vector<CSSProperty> results(unusedEntries);
 
     filterProperties(true, parsedProperties, results, unusedEntries, seenProperties);
     filterProperties(false, parsedProperties, results, unusedEntries, seenProperties);
@@ -95,7 +106,7 @@ static PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> createStylePropertySet(
 PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> CSSParserImpl::parseInlineStyleDeclaration(const String& string, Element* element)
 {
     Document& document = element->document();
-    CSSParserContext context = CSSParserContext(document.elementSheet().contents()->parserContext(), UseCounter::getFrom(&document));
+    CSSParserContext context = CSSParserContext(document.elementSheet().contents()->parserContext());
     CSSParserMode mode = element->isHTMLElement() && !document.inQuirksMode() ? HTMLStandardMode : HTMLQuirksMode;
     context.setMode(mode);
     CSSParserImpl parser(context, document.elementSheet().contents());
@@ -117,11 +128,11 @@ bool CSSParserImpl::parseDeclarationList(MutableStylePropertySet* declaration, c
 
     BitArray<numCSSProperties> seenProperties;
     size_t unusedEntries = parser.m_parsedProperties.size();
-    WillBeHeapVector<CSSProperty, 256> results(unusedEntries);
+    std::vector<CSSProperty> results(unusedEntries);
     filterProperties(true, parser.m_parsedProperties, results, unusedEntries, seenProperties);
     filterProperties(false, parser.m_parsedProperties, results, unusedEntries, seenProperties);
     if (unusedEntries)
-        results.remove(0, unusedEntries);
+        results.erase(results.begin(), results.begin() + unusedEntries);
     return declaration->addParsedProperties(results);
 }
 
@@ -287,8 +298,10 @@ PassRefPtrWillBeRawPtr<StyleRuleBase> CSSParserImpl::consumeAtRule(CSSParserToke
 
     CSSParserTokenRange prelude = range.makeSubRange(preludeStart, &range.peek());
     CSSAtRuleID id = cssAtRuleID(name);
+#if 0 // BKTODO:
     if (id != CSSAtRuleInvalid && m_context.useCounter())
         countAtRule(m_context.useCounter(), id);
+#endif
 
     if (range.atEnd() || range.peek().type() == SemicolonToken) {
         range.consume();
@@ -511,8 +524,10 @@ PassRefPtrWillBeRawPtr<StyleRuleKeyframes> CSSParserImpl::consumeKeyframesRule(b
     if (nameToken.type() == IdentToken) {
         name = nameToken.value();
     } else if (nameToken.type() == StringToken && webkitPrefixed) {
+#if 0 // BKTODO:
         if (m_context.useCounter())
             m_context.useCounter()->count(UseCounter::QuotedKeyframesRule);
+#endif
         name = nameToken.value();
     } else {
         return nullptr; // Parse error; expected ident token in @keyframes header
