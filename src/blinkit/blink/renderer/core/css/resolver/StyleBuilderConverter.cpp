@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleBuilderConverter.cpp
+// Description: StyleBuilderConverter Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -41,7 +52,7 @@
 #include "core/css/CSSURIValue.h"
 #include "core/css/CSSValuePair.h"
 #include "core/css/resolver/FilterOperationResolver.h"
-#include "core/svg/SVGURIReference.h"
+// BKTODO: #include "core/svg/SVGURIReference.h"
 #include "platform/transforms/RotateTransformOperation.h"
 #include "platform/transforms/ScaleTransformOperation.h"
 #include "platform/transforms/TranslateTransformOperation.h"
@@ -98,7 +109,7 @@ Color StyleBuilderConverter::convertColor(StyleResolverState& state, const CSSVa
 AtomicString StyleBuilderConverter::convertFragmentIdentifier(StyleResolverState& state, const CSSValue& value)
 {
     if (value.isURIValue())
-        return SVGURIReference::fragmentIdentifierFromIRIString(toCSSURIValue(value).value(), state.element()->treeScope());
+        ASSERT(false); // BKTODO: return SVGURIReference::fragmentIdentifierFromIRIString(toCSSURIValue(value).value(), state.element()->treeScope());
     return nullAtom;
 }
 
@@ -145,7 +156,7 @@ static bool convertFontFamilyName(StyleResolverState& state, CSSValue& value,
     if (value.isCustomIdentValue()) {
         genericFamily = FontDescription::NoFamily;
         familyName = AtomicString(toCSSCustomIdentValue(value).value());
-    } else if (state.document().settings()) {
+    } else {
         genericFamily = convertGenericFamily(toCSSPrimitiveValue(value).getValueID());
         familyName = state.fontBuilder().genericFontFamilyName(genericFamily);
     }
