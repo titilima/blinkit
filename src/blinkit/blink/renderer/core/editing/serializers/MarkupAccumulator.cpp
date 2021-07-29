@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MarkupAccumulator.cpp
+// Description: MarkupAccumulator Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2012 Apple Inc. All rights reserved.
  * Copyright (C) 2009, 2010 Google Inc. All rights reserved.
@@ -27,9 +38,11 @@
 #include "core/editing/serializers/MarkupAccumulator.h"
 
 #include "core/HTMLNames.h"
+#if 0 // BKTODO:
 #include "core/XLinkNames.h"
 #include "core/XMLNSNames.h"
 #include "core/XMLNames.h"
+#endif
 #include "core/dom/Attr.h"
 #include "core/dom/CDATASection.h"
 #include "core/dom/Comment.h"
@@ -189,9 +202,12 @@ String serializeNodes(MarkupAccumulator& accumulator, Node& targetNode, EChildre
     Namespaces* namespaces = nullptr;
     Namespaces namespaceHash;
     if (!accumulator.serializeAsHTMLDocument(targetNode)) {
+        ASSERT(false); // BKTODO:
+#if 0
         // Add pre-bound namespaces for XML fragments.
         namespaceHash.set(xmlAtom, XMLNames::xmlNamespaceURI);
         namespaces = &namespaceHash;
+#endif
     }
 
     serializeNodesWithNamespaces<Strategy>(accumulator, targetNode, childrenOnly, namespaces);
