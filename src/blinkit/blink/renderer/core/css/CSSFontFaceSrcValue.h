@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSFontFaceSrcValue.h
+// Description: CSSFontFaceSrcValue Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -28,7 +39,7 @@
 
 #include "core/css/CSSValue.h"
 #include "core/fetch/ResourcePtr.h"
-#include "platform/weborigin/Referrer.h"
+// BKTODO: #include "platform/weborigin/Referrer.h"
 #include "wtf/PassRefPtr.h"
 #include "wtf/text/WTFString.h"
 
@@ -53,7 +64,7 @@ public:
     bool isLocal() const { return m_isLocal; }
 
     void setFormat(const String& format) { m_format = format; }
-    void setReferrer(const Referrer& referrer) { m_referrer = referrer; }
+    // BKTODO: void setReferrer(const Referrer& referrer) { m_referrer = referrer; }
 
     bool isSupportedFormat() const;
 
@@ -80,7 +91,7 @@ private:
 
     String m_resource;
     String m_format;
-    Referrer m_referrer;
+    // BKTODO: Referrer m_referrer;
     bool m_isLocal;
     ContentSecurityPolicyDisposition m_shouldCheckContentSecurityPolicy;
 

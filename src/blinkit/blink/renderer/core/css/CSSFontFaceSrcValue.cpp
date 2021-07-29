@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSFontFaceSrcValue.cpp
+// Description: CSSFontFaceSrcValue Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2010 Apple Inc. All rights reserved.
  *
@@ -29,15 +40,15 @@
 #include "core/css/StyleSheetContents.h"
 #include "core/dom/Document.h"
 #include "core/dom/Node.h"
-#include "core/fetch/FetchInitiatorTypeNames.h"
+// BKTODO: #include "core/fetch/FetchInitiatorTypeNames.h"
 #include "core/fetch/FetchRequest.h"
 #include "core/fetch/FontResource.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/loader/MixedContentChecker.h"
-#include "platform/CrossOriginAttributeValue.h"
+// BKTODO: #include "platform/CrossOriginAttributeValue.h"
 #include "platform/fonts/FontCache.h"
 #include "platform/fonts/FontCustomPlatformData.h"
-#include "platform/weborigin/SecurityPolicy.h"
+// BKTODO: #include "platform/weborigin/SecurityPolicy.h"
 #include "wtf/text/StringBuilder.h"
 
 namespace blink {
@@ -75,6 +86,7 @@ bool CSSFontFaceSrcValue::hasFailedOrCanceledSubresources() const
     return m_fetched && m_fetched->loadFailedOrCanceled();
 }
 
+#if 0 // BKTODO:
 static void setCrossOriginAccessControl(FetchRequest& request, SecurityOrigin* securityOrigin)
 {
     // Local fonts are accessible from file: URLs even when
@@ -84,16 +96,20 @@ static void setCrossOriginAccessControl(FetchRequest& request, SecurityOrigin* s
 
     request.setCrossOriginAccessControl(securityOrigin, CrossOriginAttributeAnonymous);
 }
+#endif
 
 FontResource* CSSFontFaceSrcValue::fetch(Document* document)
 {
     if (!m_fetched) {
+        ASSERT(false); // BKTODO:
+#if 0
         FetchRequest request(ResourceRequest(document->completeURL(m_resource)), FetchInitiatorTypeNames::css);
         request.setContentSecurityCheck(m_shouldCheckContentSecurityPolicy);
         SecurityOrigin* securityOrigin = document->securityOrigin();
         setCrossOriginAccessControl(request, securityOrigin);
         request.mutableResourceRequest().setHTTPReferrer(SecurityPolicy::generateReferrer(m_referrer.referrerPolicy, request.url(), m_referrer.referrer));
         m_fetched = FontResource::fetch(request, document->fetcher());
+#endif
     } else {
         // FIXME: CSSFontFaceSrcValue::fetch is invoked when @font-face rule
         // is processed by StyleResolver / StyleEngine.
@@ -107,6 +123,8 @@ void CSSFontFaceSrcValue::restoreCachedResourceIfNeeded(Document* document)
     ASSERT(m_fetched);
     ASSERT(document && document->fetcher());
 
+    ASSERT(false); // BKTODO:
+#if 0
     const String resourceURL = document->completeURL(m_resource);
     if (document->fetcher()->cachedResource(KURL(ParsedURLString, resourceURL)))
         return;
@@ -116,6 +134,7 @@ void CSSFontFaceSrcValue::restoreCachedResourceIfNeeded(Document* document)
     MixedContentChecker::shouldBlockFetch(document->frame(), m_fetched->lastResourceRequest(),
         m_fetched->lastResourceRequest().url(), MixedContentChecker::SendReport);
     document->fetcher()->requestLoadStarted(m_fetched.get(), request, ResourceFetcher::ResourceLoadingFromCache);
+#endif
 }
 
 bool CSSFontFaceSrcValue::equals(const CSSFontFaceSrcValue& other) const
