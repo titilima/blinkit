@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ViewportStyleResolver.cpp
+// Description: ViewportStyleResolver Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012-2013 Intel Corporation. All rights reserved.
  *
@@ -58,11 +69,14 @@ void ViewportStyleResolver::collectViewportRules()
     CSSDefaultStyleSheets& defaultStyleSheets = CSSDefaultStyleSheets::instance();
     collectViewportRules(defaultStyleSheets.defaultStyle(), UserAgentOrigin);
 
-    if (m_document->settings() && m_document->settings()->useMobileViewportStyle())
+    if (Settings::useMobileViewportStyle())
         collectViewportRules(defaultStyleSheets.defaultMobileViewportStyle(), UserAgentOrigin);
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_document->isMobileDocument())
         collectViewportRules(defaultStyleSheets.defaultXHTMLMobileProfileStyle(), UserAgentOrigin);
+#endif
 
     if (ScopedStyleResolver* scopedResolver = m_document->scopedStyleResolver())
         scopedResolver->collectViewportRulesTo(this);
