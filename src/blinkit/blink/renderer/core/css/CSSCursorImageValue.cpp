@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSCursorImageValue.cpp
+// Description: CSSCursorImageValue Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Rob Buis <buis@kde.org>
  *           (C) 2008 Nikolas Zimmermann <zimmermann@kde.org>
@@ -21,26 +32,30 @@
 
 #include "core/css/CSSCursorImageValue.h"
 
-#include "core/SVGNames.h"
+// BKTODO: #include "core/SVGNames.h"
 #include "core/css/CSSImageSetValue.h"
 #include "core/fetch/ImageResource.h"
 #include "core/style/StyleFetchedImage.h"
 #include "core/style/StyleFetchedImageSet.h"
 #include "core/style/StyleImage.h"
+#if 0 // BKTODO:
 #include "core/svg/SVGCursorElement.h"
 #include "core/svg/SVGLengthContext.h"
 #include "core/svg/SVGURIReference.h"
+#endif
 #include "wtf/MathExtras.h"
 #include "wtf/text/StringBuilder.h"
 #include "wtf/text/WTFString.h"
 
 namespace blink {
 
+#if 0 // BKTODO:
 static inline SVGCursorElement* resourceReferencedByCursorElement(const String& url, TreeScope& treeScope)
 {
     Element* element = SVGURIReference::targetElementFromIRIString(url, treeScope);
     return isSVGCursorElement(element) ? toSVGCursorElement(element) : nullptr;
 }
+#endif
 
 CSSCursorImageValue::CSSCursorImageValue(PassRefPtrWillBeRawPtr<CSSValue> imageValue, bool hotSpotSpecified, const IntPoint& hotSpot)
     : CSSValue(CursorImageClass)
@@ -83,6 +98,8 @@ String CSSCursorImageValue::customCSSText() const
 
 bool CSSCursorImageValue::updateIfSVGCursorIsUsed(Element* element)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!element || !element->isSVGElement())
         return false;
 
@@ -111,6 +128,7 @@ bool CSSCursorImageValue::updateIfSVGCursorIsUsed(Element* element)
         cursorElement->addClient(svgElement);
         return true;
     }
+#endif
 
     return false;
 }
@@ -144,6 +162,8 @@ StyleImage* CSSCursorImageValue::cacheImage(Document* document, float deviceScal
         // to change the URL of the CSSImageValue (which would then change behavior like cssText),
         // we create an alternate CSSImageValue to use.
         if (isSVGCursor() && document) {
+            ASSERT(false); // BKTODO:
+#if 0
             RefPtrWillBeRawPtr<CSSImageValue> imageValue = toCSSImageValue(m_imageValue.get());
             // FIXME: This will fail if the <cursor> element is in a shadow DOM (bug 59827)
             if (SVGCursorElement* cursorElement = resourceReferencedByCursorElement(imageValue->url(), *document)) {
@@ -152,6 +172,7 @@ StyleImage* CSSCursorImageValue::cacheImage(Document* document, float deviceScal
                 m_cachedImage = svgImageValue->cacheImage(document);
                 return m_cachedImage.get();
             }
+#endif
         }
 
         if (m_imageValue->isImageValue())
@@ -166,9 +187,12 @@ StyleImage* CSSCursorImageValue::cacheImage(Document* document, float deviceScal
 bool CSSCursorImageValue::isSVGCursor() const
 {
     if (m_imageValue->isImageValue()) {
+        ASSERT(false); // BKTODO:
+#if 0
         RefPtrWillBeRawPtr<CSSImageValue> imageValue = toCSSImageValue(m_imageValue.get());
         KURL kurl(ParsedURLString, imageValue->url());
         return kurl.hasFragmentIdentifier();
+#endif
     }
     return false;
 }
