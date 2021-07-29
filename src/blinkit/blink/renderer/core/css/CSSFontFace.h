@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSFontFace.h
+// Description: CSSFontFace Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -26,12 +37,12 @@
 #ifndef CSSFontFace_h
 #define CSSFontFace_h
 
+#include <deque>
 #include "core/CoreExport.h"
 #include "core/css/CSSFontFaceSource.h"
 #include "core/css/CSSSegmentedFontFace.h"
 #include "core/css/FontFace.h"
 #include "platform/fonts/SegmentedFontData.h"
-#include "wtf/Deque.h"
 #include "wtf/Forward.h"
 #include "wtf/PassRefPtr.h"
 #include "wtf/Vector.h"
@@ -64,7 +75,7 @@ public:
     void setSegmentedFontFace(CSSSegmentedFontFace*);
     void clearSegmentedFontFace() { m_segmentedFontFace = nullptr; }
 
-    bool isValid() const { return !m_sources.isEmpty(); }
+    bool isValid() const { return !m_sources.empty(); }
 
     void addSource(PassOwnPtrWillBeRawPtr<CSSFontFaceSource>);
 
@@ -114,7 +125,7 @@ public:
     void load();
     void load(const FontDescription&);
 
-    bool hadBlankText() { return isValid() && m_sources.first()->hadBlankText(); }
+    bool hadBlankText() { return isValid() && m_sources.front()->hadBlankText(); }
 
     DECLARE_TRACE();
 
@@ -123,7 +134,7 @@ private:
 
     UnicodeRangeSet m_ranges;
     RawPtrWillBeMember<CSSSegmentedFontFace> m_segmentedFontFace;
-    WillBeHeapDeque<OwnPtrWillBeMember<CSSFontFaceSource>> m_sources;
+    std::deque<Member<CSSFontFaceSource>> m_sources;
     RawPtrWillBeMember<FontFace> m_fontFace;
 };
 

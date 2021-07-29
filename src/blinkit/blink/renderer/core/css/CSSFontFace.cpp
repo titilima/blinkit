@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSFontFace.cpp
+// Description: CSSFontFace Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2011 Apple Inc. All rights reserved.
  *
@@ -40,7 +51,7 @@ namespace blink {
 void CSSFontFace::addSource(PassOwnPtrWillBeRawPtr<CSSFontFaceSource> source)
 {
     source->setFontFace(this);
-    m_sources.append(source);
+    m_sources.emplace_back(source);
 }
 
 void CSSFontFace::setSegmentedFontFace(CSSSegmentedFontFace* segmentedFontFace)
@@ -57,7 +68,7 @@ void CSSFontFace::didBeginLoad()
 
 void CSSFontFace::fontLoaded(RemoteFontFaceSource* source)
 {
-    if (!isValid() || source != m_sources.first())
+    if (!isValid() || source != m_sources.front())
         return;
 
     if (loadStatus() == FontFace::Loading) {
@@ -67,7 +78,7 @@ void CSSFontFace::fontLoaded(RemoteFontFaceSource* source)
             m_sources.clear();
             setLoadStatus(FontFace::Error);
         } else {
-            m_sources.removeFirst();
+            m_sources.pop_front();
             load();
         }
     }
@@ -78,7 +89,7 @@ void CSSFontFace::fontLoaded(RemoteFontFaceSource* source)
 
 void CSSFontFace::didBecomeVisibleFallback(RemoteFontFaceSource* source)
 {
-    if (!isValid() || source != m_sources.first())
+    if (!isValid() || source != m_sources.front())
         return;
     if (m_segmentedFontFace)
         m_segmentedFontFace->fontFaceInvalidated();
@@ -89,8 +100,8 @@ PassRefPtr<SimpleFontData> CSSFontFace::getFontData(const FontDescription& fontD
     if (!isValid())
         return nullptr;
 
-    while (!m_sources.isEmpty()) {
-        OwnPtrWillBeMember<CSSFontFaceSource>& source = m_sources.first();
+    while (!m_sources.empty()) {
+        OwnPtrWillBeMember<CSSFontFaceSource>& source = m_sources.front();
         if (RefPtr<SimpleFontData> result = source->getFontData(fontDescription)) {
             if (loadStatus() == FontFace::Unloaded && (source->isLoading() || source->isLoaded()))
                 setLoadStatus(FontFace::Loading);
@@ -98,7 +109,7 @@ PassRefPtr<SimpleFontData> CSSFontFace::getFontData(const FontDescription& fontD
                 setLoadStatus(FontFace::Loaded);
             return result.release();
         }
-        m_sources.removeFirst();
+        m_sources.pop_front();
     }
 
     if (loadStatus() == FontFace::Unloaded)
@@ -145,8 +156,8 @@ void CSSFontFace::load(const FontDescription& fontDescription)
         setLoadStatus(FontFace::Loading);
     ASSERT(loadStatus() == FontFace::Loading);
 
-    while (!m_sources.isEmpty()) {
-        OwnPtrWillBeMember<CSSFontFaceSource>& source = m_sources.first();
+    while (!m_sources.empty()) {
+        OwnPtrWillBeMember<CSSFontFaceSource>& source = m_sources.front();
         if (source->isValid()) {
             if (source->isLocal()) {
                 if (source->isLocalFontAvailable(fontDescription)) {
@@ -161,7 +172,7 @@ void CSSFontFace::load(const FontDescription& fontDescription)
                 return;
             }
         }
-        m_sources.removeFirst();
+        m_sources.pop_front();
     }
     setLoadStatus(FontFace::Error);
 }
@@ -259,7 +270,7 @@ bool CSSFontFace::UnicodeRangeSet::intersectsWith(const String& text) const
 DEFINE_TRACE(CSSFontFace)
 {
     visitor->trace(m_segmentedFontFace);
-    visitor->trace(m_sources);
+    ASSERT(false); // BKTODO: visitor->trace(m_sources);
     visitor->trace(m_fontFace);
 }
 
