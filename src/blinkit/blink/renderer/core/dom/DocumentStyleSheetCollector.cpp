@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentStyleSheetCollector.cpp
+// Description: DocumentStyleSheetCollector Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -45,7 +56,7 @@ DocumentStyleSheetCollector::~DocumentStyleSheetCollector()
 
 void DocumentStyleSheetCollector::appendActiveStyleSheets(const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& sheets)
 {
-    m_activeAuthorStyleSheets.appendVector(sheets);
+    ASSERT(false); // BKTODO: m_activeAuthorStyleSheets.appendVector(sheets);
 }
 
 void DocumentStyleSheetCollector::appendActiveStyleSheet(CSSStyleSheet* sheet)
