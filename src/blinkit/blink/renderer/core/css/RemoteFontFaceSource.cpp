@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RemoteFontFaceSource.cpp
+// Description: RemoteFontFaceSource Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,7 +18,7 @@
 #include "core/css/CSSCustomFontData.h"
 #include "core/css/CSSFontFace.h"
 #include "core/css/FontLoader.h"
-#include "core/page/NetworkStateNotifier.h"
+// BKTODO: #include "core/page/NetworkStateNotifier.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/fonts/FontCache.h"
 #include "platform/fonts/FontDescription.h"
@@ -25,17 +36,20 @@ RemoteFontFaceSource::RemoteFontFaceSource(FontResource* font, PassRefPtrWillBeR
     , m_isInterventionTriggered(false)
 {
 #if ENABLE(OILPAN)
-    ThreadState::current()->registerPreFinalizer(this);
+    ASSERT(false); // BKTODO: ThreadState::current()->registerPreFinalizer(this);
 #endif
     m_font->addClient(this);
 
     if (RuntimeEnabledFeatures::webFontsInterventionEnabled()) {
+        ASSERT(false); // BKTODO:
+#if 0
         // TODO(crbug.com/515343): Consider to use better signals.
         if (networkStateNotifier().connectionType() == WebConnectionTypeCellular2G && display == FontDisplayAuto) {
 
             m_isInterventionTriggered = true;
             m_period = SwapPeriod;
         }
+#endif
     }
 }
 
@@ -85,13 +99,15 @@ void RemoteFontFaceSource::didStartFontLoad(FontResource*)
     // We may send duplicated reports when multiple CSSFontFaceSource are
     // registered at this FontResource. Associating the same URL to different
     // font-family causes the case, but we treat them as indivisual resources.
-    m_histograms.loadStarted();
+    // BKTODO: m_histograms.loadStarted();
 }
 
 void RemoteFontFaceSource::fontLoaded(FontResource*)
 {
+#if 0 // BKTODO:
     m_histograms.recordRemoteFont(m_font.get());
     m_histograms.fontLoaded(m_isInterventionTriggered);
+#endif
 
     m_font->ensureCustomFontData();
     if (m_font->status() == Resource::DecodeError)
@@ -121,7 +137,7 @@ void RemoteFontFaceSource::fontLoadLongLimitExceeded(FontResource*)
     else if (m_display == FontDisplayFallback)
         switchToFailurePeriod();
 
-    m_histograms.longLimitExceeded(m_isInterventionTriggered);
+    // BKTODO: m_histograms.longLimitExceeded(m_isInterventionTriggered);
 }
 
 void RemoteFontFaceSource::switchToSwapPeriod()
@@ -135,7 +151,7 @@ void RemoteFontFaceSource::switchToSwapPeriod()
         m_face->didBecomeVisibleFallback(this);
     }
 
-    m_histograms.recordFallbackTime(m_font.get());
+    // BKTODO: m_histograms.recordFallbackTime(m_font.get());
 }
 
 void RemoteFontFaceSource::switchToFailurePeriod()
@@ -154,7 +170,7 @@ PassRefPtr<SimpleFontData> RemoteFontFaceSource::createFontData(const FontDescri
     if (!m_font->ensureCustomFontData() || m_period == FailurePeriod)
         return nullptr;
 
-    m_histograms.recordFallbackTime(m_font.get());
+    // BKTODO: m_histograms.recordFallbackTime(m_font.get());
 
     return SimpleFontData::create(
         m_font->platformDataFromCustomData(fontDescription.effectiveFontSize(),
@@ -171,8 +187,12 @@ PassRefPtr<SimpleFontData> RemoteFontFaceSource::createLoadingFallbackFontData(c
         ASSERT_NOT_REACHED();
         return nullptr;
     }
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     RefPtr<CSSCustomFontData> cssFontData = CSSCustomFontData::create(this, m_period == BlockPeriod ? CSSCustomFontData::InvisibleFallback : CSSCustomFontData::VisibleFallback);
     return SimpleFontData::create(temporaryFont->platformData(), cssFontData);
+#endif
 }
 
 void RemoteFontFaceSource::beginLoadIfNeeded()
@@ -190,6 +210,7 @@ DEFINE_TRACE(RemoteFontFaceSource)
     CSSFontFaceSource::trace(visitor);
 }
 
+#if 0 // BKTODO:
 void RemoteFontFaceSource::FontLoadHistograms::loadStarted()
 {
     if (!m_loadStartTime)
@@ -219,7 +240,7 @@ void RemoteFontFaceSource::FontLoadHistograms::recordFallbackTime(const FontReso
     if (m_fallbackPaintTime <= 0)
         return;
     int duration = static_cast<int>(currentTimeMS() - m_fallbackPaintTime);
-    Platform::current()->histogramCustomCounts("WebFont.BlankTextShownTime", duration, 0, 10000, 50);
+    ASSERT(false); // BKTODO: Platform::current()->histogramCustomCounts("WebFont.BlankTextShownTime", duration, 0, 10000, 50);
     m_fallbackPaintTime = -1;
 }
 
@@ -272,5 +293,6 @@ void RemoteFontFaceSource::FontLoadHistograms::recordInterventionResult(bool tri
     const int boundary = 1 << 2;
     Platform::current()->histogramEnumeration("WebFont.InterventionResult", interventionResult, boundary);
 }
+#endif
 
 } // namespace blink

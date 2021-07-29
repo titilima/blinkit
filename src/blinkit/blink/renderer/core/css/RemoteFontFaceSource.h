@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RemoteFontFaceSource.h
+// Description: RemoteFontFaceSource Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -45,9 +56,11 @@ public:
     void fontLoadLongLimitExceeded(FontResource*) override;
     String debugName() const override { return "RemoteFontFaceSource"; }
 
+#if 0 // BKTODO:
     // For UMA reporting
     bool hadBlankText() override { return m_histograms.hadBlankText(); }
     void paintRequested() { m_histograms.fallbackFontPainted(); }
+#endif
 
     DECLARE_VIRTUAL_TRACE();
 
@@ -57,6 +70,7 @@ protected:
     void pruneTable();
 
 private:
+#if 0 // BKTODO:
     class FontLoadHistograms {
         DISALLOW_NEW();
     public:
@@ -75,6 +89,7 @@ private:
         double m_fallbackPaintTime;
         bool m_isLongLimitExceeded;
     };
+#endif
 
     void switchToSwapPeriod();
     void switchToFailurePeriod();
@@ -83,7 +98,7 @@ private:
     RefPtrWillBeMember<FontLoader> m_fontLoader;
     const FontDisplay m_display;
     DisplayPeriod m_period;
-    FontLoadHistograms m_histograms;
+    // BKTODO: FontLoadHistograms m_histograms;
     bool m_isInterventionTriggered;
 };
 
