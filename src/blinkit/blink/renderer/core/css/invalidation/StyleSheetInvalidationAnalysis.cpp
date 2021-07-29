@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleSheetInvalidationAnalysis.cpp
+// Description: StyleSheetInvalidationAnalysis Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -111,7 +122,7 @@ void StyleSheetInvalidationAnalysis::analyzeStyleSheet(StyleSheetContents* style
 
     // See if all rules on the sheet are scoped to some specific ids or classes.
     // Then test if we actually have any of those in the tree at the moment.
-    const WillBeHeapVector<RefPtrWillBeMember<StyleRuleImport>>& importRules = styleSheetContents->importRules();
+    const std::vector<Member<StyleRuleImport>> &importRules = styleSheetContents->importRules();
     for (unsigned i = 0; i < importRules.size(); ++i) {
         if (!importRules[i]->styleSheet())
             continue;
@@ -123,7 +134,7 @@ void StyleSheetInvalidationAnalysis::analyzeStyleSheet(StyleSheetContents* style
     if (m_treeScope->rootNode().isShadowRoot())
         return;
 
-    const WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>>& rules = styleSheetContents->childRules();
+    const std::vector<Member<StyleRuleBase>> &rules = styleSheetContents->childRules();
     for (unsigned i = 0; i < rules.size(); i++) {
         StyleRuleBase* rule = rules[i].get();
         if (!rule->isStyleRule()) {
