@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSSelectorParser.cpp
+// Description: CSSSelectorParser Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -11,6 +22,7 @@
 
 namespace blink {
 
+#if 0 // BKTODO:
 static void recordSelectorStats(const CSSParserContext& context, const CSSSelectorList& selectorList)
 {
     if (!context.useCounter())
@@ -64,6 +76,7 @@ static void recordSelectorStats(const CSSParserContext& context, const CSSSelect
         }
     }
 }
+#endif
 
 CSSSelectorList CSSSelectorParser::parseSelector(CSSParserTokenRange range, const CSSParserContext& context, StyleSheetContents* styleSheet)
 {
@@ -73,7 +86,7 @@ CSSSelectorList CSSSelectorParser::parseSelector(CSSParserTokenRange range, cons
     if (!range.atEnd())
         return CSSSelectorList();
 
-    recordSelectorStats(context, result);
+    // BKTODO: recordSelectorStats(context, result);
     return result;
 }
 
