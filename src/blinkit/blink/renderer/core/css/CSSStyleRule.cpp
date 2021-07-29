@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSStyleRule.cpp
+// Description: CSSStyleRule Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -31,6 +42,7 @@
 
 namespace blink {
 
+#if 0 // BKTODO:
 using SelectorTextCache = WillBePersistentHeapHashMap<RawPtrWillBeWeakMember<const CSSStyleRule>, String>;
 
 static SelectorTextCache& selectorTextCache()
@@ -38,6 +50,7 @@ static SelectorTextCache& selectorTextCache()
     DEFINE_STATIC_LOCAL(SelectorTextCache, cache, ());
     return cache;
 }
+#endif
 
 CSSStyleRule::CSSStyleRule(StyleRule* styleRule, CSSStyleSheet* parent)
     : CSSRule(parent)
@@ -80,6 +93,9 @@ String CSSStyleRule::generateSelectorText() const
 
 String CSSStyleRule::selectorText() const
 {
+    ASSERT(false); // BKTODO:
+    return String();
+#if 0
     if (hasCachedSelectorText()) {
         ASSERT(selectorTextCache().contains(this));
         return selectorTextCache().get(this);
@@ -90,11 +106,12 @@ String CSSStyleRule::selectorText() const
     selectorTextCache().set(this, text);
     setHasCachedSelectorText(true);
     return text;
+#endif
 }
 
 void CSSStyleRule::setSelectorText(const String& selectorText)
 {
-    CSSParserContext context(parserContext(), 0);
+    CSSParserContext context(parserContext());
     CSSSelectorList selectorList = CSSParser::parseSelector(context, selectorText);
     if (!selectorList.isValid())
         return;
@@ -104,7 +121,7 @@ void CSSStyleRule::setSelectorText(const String& selectorText)
     m_styleRule->wrapperAdoptSelectorList(std::move(selectorList));
 
     if (hasCachedSelectorText()) {
-        selectorTextCache().remove(this);
+        ASSERT(false); // BKTODO: selectorTextCache().remove(this);
         setHasCachedSelectorText(false);
     }
 }
