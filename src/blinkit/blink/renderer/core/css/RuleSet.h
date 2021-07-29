@@ -190,7 +190,7 @@ private:
     void addFontFaceRule(StyleRuleFontFace*);
     void addKeyframesRule(StyleRuleKeyframes*);
 
-    void addChildRules(const WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>>&, const MediaQueryEvaluator& medium, AddRuleFlags);
+    void addChildRules(const std::vector<Member<StyleRuleBase>>&, const MediaQueryEvaluator& medium, AddRuleFlags);
     bool findBestRuleSetAndAdd(const CSSSelector&, RuleData&);
 
     const WillBeHeapTerminatedArray<RuleData>* getRules(const CompactRuleMap &rules, const AtomicString &key) const
