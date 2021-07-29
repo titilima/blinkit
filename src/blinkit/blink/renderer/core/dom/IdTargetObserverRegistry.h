@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IdTargetObserverRegistry.h
+// Description: IdTargetObserverRegistry Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All Rights Reserved.
  *
@@ -26,10 +37,9 @@
 #ifndef IdTargetObserverRegistry_h
 #define IdTargetObserverRegistry_h
 
+#include <unordered_set>
 #include "platform/heap/Handle.h"
 #include "wtf/Forward.h"
-#include "wtf/HashMap.h"
-#include "wtf/HashSet.h"
 #include "wtf/text/StringHash.h"
 
 namespace blink {
@@ -52,16 +62,16 @@ private:
     void removeObserver(const AtomicString& id, IdTargetObserver*);
     void notifyObserversInternal(const AtomicString& id);
 
-    typedef WillBeHeapHashSet<RawPtrWillBeMember<IdTargetObserver>> ObserverSet;
-    typedef WillBeHeapHashMap<StringImpl*, OwnPtrWillBeMember<ObserverSet>> IdToObserverSetMap;
+    typedef std::unordered_set<Member<IdTargetObserver>> ObserverSet;
+    typedef std::unordered_map<StringImpl *, Member<ObserverSet>> IdToObserverSetMap;
     IdToObserverSetMap m_registry;
-    RawPtrWillBeMember<ObserverSet> m_notifyingObserversInSet;
+    Member<ObserverSet> m_notifyingObserversInSet;
 };
 
 inline void IdTargetObserverRegistry::notifyObservers(const AtomicString& id)
 {
     ASSERT(!m_notifyingObserversInSet);
-    if (id.isEmpty() || m_registry.isEmpty())
+    if (id.isEmpty() || m_registry.empty())
         return;
     IdTargetObserverRegistry::notifyObserversInternal(id);
 }

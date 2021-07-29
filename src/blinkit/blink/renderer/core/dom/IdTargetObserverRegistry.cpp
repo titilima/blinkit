@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IdTargetObserverRegistry.cpp
+// Description: IdTargetObserverRegistry Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All Rights Reserved.
  *
@@ -47,54 +58,54 @@ void IdTargetObserverRegistry::addObserver(const AtomicString& id, IdTargetObser
     if (id.isEmpty())
         return;
 
-    IdToObserverSetMap::AddResult result = m_registry.add(id.impl(), nullptr);
-    if (result.isNewEntry)
-        result.storedValue->value = adoptPtrWillBeNoop(new ObserverSet());
+    Member<ObserverSet> &result = m_registry[id.impl()];
+    if (!result)
+        result = adoptPtrWillBeNoop(new ObserverSet());
 
-    result.storedValue->value->add(observer);
+    result->emplace(observer);
 }
 
 void IdTargetObserverRegistry::removeObserver(const AtomicString& id, IdTargetObserver* observer)
 {
-    if (id.isEmpty() || m_registry.isEmpty())
+    if (id.isEmpty() || m_registry.empty())
         return;
 
     IdToObserverSetMap::iterator iter = m_registry.find(id.impl());
 
-    ObserverSet* set = iter->value.get();
-    set->remove(observer);
-    if (set->isEmpty() && set != m_notifyingObserversInSet)
-        m_registry.remove(iter);
+    ObserverSet* set = iter->second.get();
+    set->erase(observer);
+    if (set->empty() && set != m_notifyingObserversInSet)
+        m_registry.erase(iter);
 }
 
 void IdTargetObserverRegistry::notifyObserversInternal(const AtomicString& id)
 {
     ASSERT(!id.isEmpty());
-    ASSERT(!m_registry.isEmpty());
+    ASSERT(!m_registry.empty());
 
-    m_notifyingObserversInSet = m_registry.get(id.impl());
-    if (!m_notifyingObserversInSet)
+    auto it = m_registry.find(id.impl());
+    if (m_registry.end() == it)
         return;
+    m_notifyingObserversInSet = it->second;
 
-    WillBeHeapVector<RawPtrWillBeMember<IdTargetObserver>> copy;
-    copyToVector(*m_notifyingObserversInSet, copy);
+    std::vector<Member<IdTargetObserver>> copy(m_notifyingObserversInSet->begin(), m_notifyingObserversInSet->end());
     for (const auto& observer : copy) {
-        if (m_notifyingObserversInSet->contains(observer))
+        if (zed::key_exists(*m_notifyingObserversInSet, observer))
             observer->idTargetChanged();
     }
 
-    if (m_notifyingObserversInSet->isEmpty())
-        m_registry.remove(id.impl());
+    if (m_notifyingObserversInSet->empty())
+        m_registry.erase(id.impl());
 
     m_notifyingObserversInSet = nullptr;
 }
 
 bool IdTargetObserverRegistry::hasObservers(const AtomicString& id) const
 {
-    if (id.isEmpty() || m_registry.isEmpty())
+    if (id.isEmpty() || m_registry.empty())
         return false;
-    ObserverSet* set = m_registry.get(id.impl());
-    return set && !set->isEmpty();
+    auto it = m_registry.find(id.impl());
+    return m_registry.end() != it && !it->second->empty();
 }
 
 } // namespace blink
