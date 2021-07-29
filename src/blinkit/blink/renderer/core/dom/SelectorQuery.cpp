@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SelectorQuery.cpp
+// Description: SelectorQuery Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011, 2013 Apple Inc. All rights reserved.
  * Copyright (C) 2014 Samsung Electronics. All rights reserved.
@@ -471,7 +482,7 @@ void SelectorDataList::execute(ContainerNode& rootNode, typename SelectorQueryTr
     if (const CSSSelector* idSelector = selectorForIdLookup(firstSelector)) {
         const AtomicString& idToMatch = idSelector->value();
         if (rootNode.treeScope().containsMultipleElementsWithId(idToMatch)) {
-            const WillBeHeapVector<RawPtrWillBeMember<Element>>& elements = rootNode.treeScope().getAllElementsById(idToMatch);
+            const std::vector<Member<Element>>& elements = rootNode.treeScope().getAllElementsById(idToMatch);
             size_t count = elements.size();
             for (size_t i = 0; i < count; ++i) {
                 Element& element = *elements[i];
@@ -547,7 +558,7 @@ SelectorQuery* SelectorQueryCache::add(const AtomicString& selectors, const Docu
     if (it != m_entries.end())
         return it->value.get();
 
-    CSSSelectorList selectorList = CSSParser::parseSelector(CSSParserContext(document, nullptr), selectors);
+    CSSSelectorList selectorList = CSSParser::parseSelector(CSSParserContext(document), selectors);
 
     if (!selectorList.first()) {
         exceptionState.throwDOMException(SyntaxError, "'" + selectors + "' is not a valid selector.");
