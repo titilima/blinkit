@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaQuery.cpp
+// Description: MediaQuery Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * CSS Media Query
  *
@@ -28,7 +39,7 @@
 
 #include "core/css/MediaQuery.h"
 
-#include "core/MediaTypeNames.h"
+// BKTODO: #include "core/MediaTypeNames.h"
 #include "core/css/MediaQueryExp.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "wtf/NonCopyingSort.h"
@@ -51,15 +62,18 @@ String MediaQuery::serialize() const
         break;
     }
 
-    if (m_expressions.isEmpty()) {
+    if (m_expressions.empty()) {
         result.append(m_mediaType);
         return result.toString();
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_mediaType != MediaTypeNames::all || m_restrictor != None) {
         result.append(m_mediaType);
         result.appendLiteral(" and ");
     }
+#endif
 
     result.append(m_expressions.at(0)->serialize());
     for (size_t i = 1; i < m_expressions.size(); ++i) {
@@ -76,15 +90,16 @@ static bool expressionCompare(const OwnPtrWillBeMember<MediaQueryExp>& a, const 
 
 PassOwnPtrWillBeRawPtr<MediaQuery> MediaQuery::createNotAll()
 {
-    return adoptPtrWillBeNoop(new MediaQuery(MediaQuery::Not, MediaTypeNames::all, ExpressionHeapVector()));
+    ASSERT(false); // BKTODO: return adoptPtrWillBeNoop(new MediaQuery(MediaQuery::Not, MediaTypeNames::all, ExpressionHeapVector()));
+    return nullptr;
 }
 
-PassOwnPtrWillBeRawPtr<MediaQuery> MediaQuery::create(Restrictor restrictor, String mediaType, ExpressionHeapVector expressions)
+PassOwnPtrWillBeRawPtr<MediaQuery> MediaQuery::create(Restrictor restrictor, String mediaType, ExpressionHeapVector &expressions)
 {
-    return adoptPtrWillBeNoop(new MediaQuery(restrictor, std::move(mediaType), std::move(expressions)));
+    return adoptPtrWillBeNoop(new MediaQuery(restrictor, std::move(mediaType), expressions));
 }
 
-MediaQuery::MediaQuery(Restrictor r, String mediaType, ExpressionHeapVector expressions)
+MediaQuery::MediaQuery(Restrictor r, String mediaType, ExpressionHeapVector &expressions)
     : m_restrictor(r)
     , m_mediaType(attemptStaticStringCreation(mediaType.lower()))
     , m_expressions(std::move(expressions))
@@ -97,7 +112,7 @@ MediaQuery::MediaQuery(Restrictor r, String mediaType, ExpressionHeapVector expr
         MediaQueryExp* exp = m_expressions.at(i).get();
 
         if (key && *exp == *key)
-            m_expressions.remove(i);
+            m_expressions.erase(m_expressions.begin() + i);
         else
             key = exp;
     }
@@ -108,9 +123,9 @@ MediaQuery::MediaQuery(const MediaQuery& o)
     , m_mediaType(o.m_mediaType)
     , m_serializationCache(o.m_serializationCache)
 {
-    m_expressions.reserveInitialCapacity(o.m_expressions.size());
+    m_expressions.reserve(o.m_expressions.size());
     for (unsigned i = 0; i < o.m_expressions.size(); ++i)
-        m_expressions.append(o.m_expressions[i]->copy());
+        m_expressions.emplace_back(o.m_expressions[i]->copy());
 }
 
 MediaQuery::~MediaQuery()

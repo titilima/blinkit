@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaQuery.h
+// Description: MediaQuery Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * CSS Media Query
  *
@@ -40,7 +51,7 @@
 namespace blink {
 class MediaQueryExp;
 
-using ExpressionHeapVector = WillBeHeapVector<OwnPtrWillBeMember<MediaQueryExp>>;
+using ExpressionHeapVector = std::vector<Member<MediaQueryExp>>;
 
 class CORE_EXPORT MediaQuery : public NoBaseWillBeGarbageCollectedFinalized<MediaQuery> {
     USING_FAST_MALLOC_WILL_BE_REMOVED(MediaQuery);
@@ -49,7 +60,7 @@ public:
         Only, Not, None
     };
 
-    static PassOwnPtrWillBeRawPtr<MediaQuery> create(Restrictor, String mediaType, ExpressionHeapVector);
+    static PassOwnPtrWillBeRawPtr<MediaQuery> create(Restrictor, String mediaType, ExpressionHeapVector &);
     static PassOwnPtrWillBeRawPtr<MediaQuery> createNotAll();
 
     ~MediaQuery();
@@ -65,7 +76,7 @@ public:
     DECLARE_TRACE();
 
 private:
-    MediaQuery(Restrictor, String mediaType, ExpressionHeapVector);
+    MediaQuery(Restrictor, String mediaType, ExpressionHeapVector &);
     MediaQuery(const MediaQuery&);
 
     MediaQuery& operator=(const MediaQuery&) = delete;
