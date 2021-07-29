@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSPathValue.h
+// Description: CSSPathValue Class
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 #define CSSPathValue_h
 
 #include "core/css/CSSValue.h"
-#include "core/svg/SVGPathByteStream.h"
+// BKTODO: #include "core/svg/SVGPathByteStream.h"
 #include "wtf/PassRefPtr.h"
 #include "wtf/RefPtr.h"
 
@@ -16,7 +27,7 @@ class StylePath;
 
 class CSSPathValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSPathValue> create(PassRefPtr<SVGPathByteStream>, StylePath* = nullptr);
+    // BKTODO: static PassRefPtrWillBeRawPtr<CSSPathValue> create(PassRefPtr<SVGPathByteStream>, StylePath* = nullptr);
     static PassRefPtrWillBeRawPtr<CSSPathValue> create(const String&);
     ~CSSPathValue();
 
@@ -29,13 +40,15 @@ public:
 
     DECLARE_TRACE_AFTER_DISPATCH();
 
-    const SVGPathByteStream& byteStream() const { return *m_pathByteStream; }
+    // BKTODO: const SVGPathByteStream& byteStream() const { return *m_pathByteStream; }
     String pathString() const;
 
 private:
+#if 0 // BKTODO:
     CSSPathValue(PassRefPtr<SVGPathByteStream>, StylePath*);
 
     RefPtr<SVGPathByteStream> m_pathByteStream;
+#endif
     RefPtr<StylePath> m_cachedPath;
 };
 
