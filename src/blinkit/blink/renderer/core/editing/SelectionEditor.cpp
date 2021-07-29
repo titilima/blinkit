@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SelectionEditor.cpp
+// Description: SelectionEditor Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -245,8 +256,7 @@ void SelectionEditor::willBeModified(EAlteration alter, SelectionDirection direc
 
 VisiblePosition SelectionEditor::positionForPlatform(bool isGetStart) const
 {
-    Settings* settings = frame() ? frame()->settings() : nullptr;
-    if (settings && settings->editingBehaviorType() == EditingMacBehavior)
+    if (nullptr != frame() && Settings::editingBehaviorType() == EditingMacBehavior)
         return isGetStart ? m_selection.visibleStart() : m_selection.visibleEnd();
     // Linux and Windows always extend selections from the extent endpoint.
     // FIXME: VisibleSelection should be fixed to ensure as an invariant that
