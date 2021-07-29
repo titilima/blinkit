@@ -65,6 +65,10 @@ run_script('blink/make_css_property_names.py',                                  
     '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
 )
 
+run_script('blink/make_css_tokenizer_codepoints.py',                            \
+    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
+)
+
 run_script('blink/make_css_value_keywords.py',                                  \
     os.path.normpath('blink/in/CSSValueKeywords.in') + ' ' +                    \
     os.path.normpath('blink/in/SVGCSSValueKeywords.in') + ' ' +                 \

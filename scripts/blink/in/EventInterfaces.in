@@ -1,6 +1,7 @@
 namespace="Event"
 export=CORE_EXPORT
 
+core/css/FontFaceSetLoadEvent
 core/css/MediaQueryListEvent
 core/events/AnimationEvent
 core/events/AnimationPlayerEvent

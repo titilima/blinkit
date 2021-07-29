@@ -19,6 +19,13 @@ DOMActivate
 DOMContentLoaded
 DOMFocusIn
 DOMFocusOut
+drag
+dragend
+dragenter
+dragleave
+dragover
+dragstart
+drop
 error
 finish
 focus

@@ -3,4 +3,6 @@ export="CORE_EXPORT"
 
 button
 file
+password
 radio
+range
