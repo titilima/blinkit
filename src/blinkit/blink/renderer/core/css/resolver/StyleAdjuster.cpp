@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleAdjuster.cpp
+// Description: StyleAdjuster Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -36,16 +47,16 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/Settings.h"
 #include "core/frame/UseCounter.h"
-#include "core/html/HTMLIFrameElement.h"
+// BKTODO: #include "core/html/HTMLIFrameElement.h"
 #include "core/html/HTMLInputElement.h"
-#include "core/html/HTMLPlugInElement.h"
+// BKTODO: #include "core/html/HTMLPlugInElement.h"
 #include "core/html/HTMLTableCellElement.h"
 #include "core/html/HTMLTextAreaElement.h"
 #include "core/layout/LayoutReplaced.h"
 #include "core/layout/LayoutTheme.h"
 #include "core/style/ComputedStyle.h"
 #include "core/style/ComputedStyleConstants.h"
-#include "core/svg/SVGSVGElement.h"
+// BKTODO: #include "core/svg/SVGSVGElement.h"
 #include "platform/Length.h"
 #include "platform/transforms/TransformOperations.h"
 #include "public/platform/WebCompositorMutableProperties.h"
@@ -100,7 +111,8 @@ static EDisplay equivalentBlockDisplay(EDisplay display, bool isFloating, bool s
 
 static bool isOutermostSVGElement(const Element* element)
 {
-    return element && element->isSVGElement() && toSVGElement(*element).isOutermostSVGSVGElement();
+    ASSERT(false); // BKTODO: return element && element->isSVGElement() && toSVGElement(*element).isOutermostSVGSVGElement();
+    return false;
 }
 
 // CSS requires text-decoration to be reset at each DOM element for
@@ -237,6 +249,8 @@ void StyleAdjuster::adjustComputedStyle(ComputedStyle& style, const ComputedStyl
         || style.hasFilter()))
         style.setTransformStyle3D(TransformStyle3DFlat);
 
+    ASSERT(false); // BKTODO:
+#if 0
     bool isSVGElement = element && element->isSVGElement();
     if (isSVGElement) {
         // Only the root <svg> element in an SVG document fragment tree honors css position
@@ -251,6 +265,7 @@ void StyleAdjuster::adjustComputedStyle(ComputedStyle& style, const ComputedStyl
         if (isSVGTextElement(*element))
             style.clearMultiCol();
     }
+#endif
     adjustStyleForAlignment(style, parentStyle);
 }
 
@@ -368,6 +383,8 @@ void StyleAdjuster::adjustStyleForHTMLElement(ComputedStyle& style, const Comput
         return;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (isHTMLFrameElement(element) || isHTMLFrameSetElement(element)) {
         // Frames and framesets never honor position:relative or position:absolute. This is necessary to
         // fix a crash where a site tries to position these objects. They also never honor display.
@@ -382,6 +399,7 @@ void StyleAdjuster::adjustStyleForHTMLElement(ComputedStyle& style, const Comput
         style.setFloating(NoFloat);
         return;
     }
+#endif
 
     if (isHTMLLegendElement(element)) {
         style.setDisplay(BLOCK);
@@ -402,10 +420,13 @@ void StyleAdjuster::adjustStyleForHTMLElement(ComputedStyle& style, const Comput
         return;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (isHTMLPlugInElement(element)) {
         style.setRequiresAcceleratedCompositingForExternalReasons(toHTMLPlugInElement(element).shouldAccelerate());
         return;
     }
+#endif
 }
 
 void StyleAdjuster::adjustOverflow(ComputedStyle& style)
