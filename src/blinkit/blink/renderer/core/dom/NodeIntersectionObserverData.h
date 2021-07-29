@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NodeIntersectionObserverData.h
+// Description: NodeIntersectionObserverData Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,6 +16,7 @@
 #ifndef NodeIntersectionObserverData_h
 #define NodeIntersectionObserverData_h
 
+#include <unordered_set>
 #include "platform/heap/Handle.h"
 
 namespace blink {
@@ -35,9 +47,9 @@ public:
 
 private:
     // IntersectionObservers for which the Node owning this data is root.
-    HeapHashSet<WeakMember<IntersectionObserver>> m_intersectionObservers;
+    std::unordered_set<WeakMember<IntersectionObserver>> m_intersectionObservers;
     // IntersectionObservations for which the Node owning this data is target.
-    HeapHashMap<Member<IntersectionObserver>, Member<IntersectionObservation>> m_intersectionObservations;
+    std::unordered_map<Member<IntersectionObserver>, Member<IntersectionObservation>> m_intersectionObservations;
 
 #if !ENABLE(OILPAN)
     OwnPtr<WeakPtrFactory<Node>> m_weakPointerFactory;

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NodeIntersectionObserverData.cpp
+// Description: NodeIntersectionObserverData Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -17,12 +28,12 @@ NodeIntersectionObserverData::~NodeIntersectionObserverData() { }
 
 bool NodeIntersectionObserverData::hasIntersectionObserver() const
 {
-    return !m_intersectionObservers.isEmpty();
+    return !m_intersectionObservers.empty();
 }
 
 bool NodeIntersectionObserverData::hasIntersectionObservation() const
 {
-    return !m_intersectionObservations.isEmpty();
+    return !m_intersectionObservations.empty();
 }
 
 IntersectionObservation* NodeIntersectionObserverData::getObservationFor(IntersectionObserver& observer)
@@ -30,17 +41,17 @@ IntersectionObservation* NodeIntersectionObserverData::getObservationFor(Interse
     auto i = m_intersectionObservations.find(&observer);
     if (i == m_intersectionObservations.end())
         return nullptr;
-    return i->value;
+    return i->second;
 }
 
 void NodeIntersectionObserverData::addObservation(IntersectionObservation& observation)
 {
-    m_intersectionObservations.add(&observation.observer(), &observation);
+    m_intersectionObservations.emplace(&observation.observer(), &observation);
 }
 
 void NodeIntersectionObserverData::removeObservation(IntersectionObserver& observer)
 {
-    m_intersectionObservations.remove(&observer);
+    m_intersectionObservations.erase(&observer);
 }
 
 void NodeIntersectionObserverData::activateValidIntersectionObservers(Node& node)
@@ -56,7 +67,7 @@ void NodeIntersectionObserverData::activateValidIntersectionObservers(Node& node
         return;
     // Active observers for which node is target.
     for (auto& observation : m_intersectionObservations)
-        observation.value->setActive(observation.key->isDescendantOfRoot(&toElement(node)));
+        observation.second->setActive(observation.first->isDescendantOfRoot(&toElement(node)));
 }
 
 void NodeIntersectionObserverData::deactivateAllIntersectionObservers(Node& node)
@@ -65,7 +76,7 @@ void NodeIntersectionObserverData::deactivateAllIntersectionObservers(Node& node
     for (auto& observer : m_intersectionObservers)
         observer->setActive(false);
     for (auto& observation : m_intersectionObservations)
-        observation.value->setActive(false);
+        observation.second->setActive(false);
 }
 
 #if !ENABLE(OILPAN)
