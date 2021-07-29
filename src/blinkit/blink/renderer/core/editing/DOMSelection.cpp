@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMSelection.cpp
+// Description: DOMSelection Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2012 Google Inc. All rights reserved.
@@ -30,7 +41,6 @@
 
 #include "core/editing/DOMSelection.h"
 
-#include "bindings/core/v8/ExceptionMessages.h"
 #include "bindings/core/v8/ExceptionState.h"
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
 #include "core/dom/Document.h"
@@ -43,7 +53,7 @@
 #include "core/editing/iterators/TextIterator.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/UseCounter.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "wtf/text/WTFString.h"
 
 namespace blink {
@@ -563,7 +573,7 @@ bool DOMSelection::isValidForPosition(Node* node) const
 void DOMSelection::addConsoleError(const String& message)
 {
     if (m_treeScope)
-        m_treeScope->document().addConsoleMessage(ConsoleMessage::create(JSMessageSource, ErrorMessageLevel, message));
+        ASSERT(false); // BKTODO: m_treeScope->document().addConsoleMessage(ConsoleMessage::create(JSMessageSource, ErrorMessageLevel, message));
 }
 
 DEFINE_TRACE(DOMSelection)
