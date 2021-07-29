@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MarkupFormatter.cpp
+// Description: MarkupFormatter Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2012 Apple Inc. All rights reserved.
  * Copyright (C) 2009, 2010 Google Inc. All rights reserved.
@@ -27,9 +38,11 @@
 #include "core/editing/serializers/MarkupFormatter.h"
 
 #include "core/HTMLNames.h"
+#if 0 // BKTODO:
 #include "core/XLinkNames.h"
 #include "core/XMLNSNames.h"
 #include "core/XMLNames.h"
+#endif
 #include "core/dom/CDATASection.h"
 #include "core/dom/Comment.h"
 #include "core/dom/Document.h"
@@ -195,6 +208,8 @@ void MarkupFormatter::appendQuotedURLAttributeValue(StringBuilder& result, const
     const String resolvedURLString = resolveURLIfNeeded(element, attribute.value());
     UChar quoteChar = '"';
     String strippedURLString = resolvedURLString.stripWhiteSpace();
+    ASSERT(false); // BKTODO:
+#if 0
     if (protocolIsJavaScript(strippedURLString)) {
         // minimal escaping for javascript urls
         if (strippedURLString.contains('&'))
@@ -211,6 +226,7 @@ void MarkupFormatter::appendQuotedURLAttributeValue(StringBuilder& result, const
         result.append(quoteChar);
         return;
     }
+#endif
 
     // FIXME: This does not fully match other browsers. Firefox percent-escapes non-ASCII characters for innerHTML.
     result.append(quoteChar);
@@ -331,9 +347,13 @@ void MarkupFormatter::appendCloseTag(StringBuilder& result, const Element& eleme
 
 static inline bool attributeIsInSerializedNamespace(const Attribute& attribute)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return attribute.namespaceURI() == XMLNames::xmlNamespaceURI
         || attribute.namespaceURI() == XLinkNames::xlinkNamespaceURI
         || attribute.namespaceURI() == XMLNSNames::xmlnsNamespaceURI;
+#endif
 }
 
 void MarkupFormatter::appendAttribute(StringBuilder& result, const Element& element, const Attribute& attribute, Namespaces* namespaces)
@@ -345,6 +365,8 @@ void MarkupFormatter::appendAttribute(StringBuilder& result, const Element& elem
         result.append(' ');
         result.append(attribute.name().localName());
     } else {
+        ASSERT(false); // BKTODO:
+#if 0
         if (attribute.namespaceURI() == XMLNSNames::xmlnsNamespaceURI) {
             if (!attribute.prefix() && attribute.localName() != xmlnsAtom)
                 prefixedName.setPrefix(xmlnsAtom);
@@ -381,6 +403,7 @@ void MarkupFormatter::appendAttribute(StringBuilder& result, const Element& elem
         }
         result.append(' ');
         result.append(prefixedName.toString());
+#endif
     }
 
     result.append('=');
@@ -419,6 +442,9 @@ bool MarkupFormatter::shouldAddNamespaceElement(const Element& element, Namespac
 
 bool MarkupFormatter::shouldAddNamespaceAttribute(const Attribute& attribute, const Element& element) const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     // xmlns and xmlns:prefix attributes should be handled by another branch in appendAttribute.
     ASSERT(attribute.namespaceURI() != XMLNSNames::xmlnsNamespaceURI);
 
@@ -431,6 +457,7 @@ bool MarkupFormatter::shouldAddNamespaceAttribute(const Attribute& attribute, co
         return true;
 
     return !element.hasAttribute(WTF::xmlnsWithColon + attribute.prefix());
+#endif
 }
 
 EntityMask MarkupFormatter::entityMaskForText(const Text& text) const
