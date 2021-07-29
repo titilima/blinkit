@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SelectionController.cpp
+// Description: SelectionController Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2006 Alexey Proskuryakov (ap@webkit.org)
@@ -512,7 +523,7 @@ bool SelectionController::handleMouseReleaseEventAlgorithm(const MouseEventWithH
         && event.event().button() != RightButton) {
         VisibleSelectionTemplate<Strategy> newSelection;
         Node* node = event.innerNode();
-        bool caretBrowsing = m_frame->settings() && m_frame->settings()->caretBrowsingEnabled();
+        bool caretBrowsing = Settings::caretBrowsingEnabled();
         if (node && node->layoutObject() && (caretBrowsing || node->hasEditableStyle())) {
             const VisiblePositionTemplate<Strategy> pos = createVisiblePosition(fromPositionInDOMTree<Strategy>(node->layoutObject()->positionForPoint(event.localPoint())));
             newSelection = VisibleSelectionTemplate<Strategy>(pos);
