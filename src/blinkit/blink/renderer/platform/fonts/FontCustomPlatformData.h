@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2014 Google Inc. All rights reserved.
+ * Copyright (C) 2007 Apple Computer, Inc.
+ * Copyright (c) 2007, 2008, 2009, Google Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -28,58 +29,40 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef GraphicsLayerDebugInfo_h
-#define GraphicsLayerDebugInfo_h
+#ifndef FontCustomPlatformData_h
+#define FontCustomPlatformData_h
 
-#include "base/memory/ref_counted.h"
-#include "platform/geometry/FloatRect.h"
-#include "platform/graphics/CompositingReasons.h"
-#include "platform/graphics/PaintInvalidationReason.h"
+#include "platform/PlatformExport.h"
+#include "platform/fonts/FontOrientation.h"
 #include "wtf/Allocator.h"
+#include "wtf/Forward.h"
 #include "wtf/Noncopyable.h"
-#include "wtf/Vector.h"
+#include "wtf/RefPtr.h"
+#include "wtf/text/WTFString.h"
 
-namespace base {
-namespace trace_event {
-class TracedValue;
-}
-}
+class SkTypeface;
 
 namespace blink {
 
-class GraphicsLayerDebugInfo final {
-    DISALLOW_NEW();
-    WTF_MAKE_NONCOPYABLE(GraphicsLayerDebugInfo);
+class FontPlatformData;
+class SharedBuffer;
+
+class PLATFORM_EXPORT FontCustomPlatformData {
+    USING_FAST_MALLOC(FontCustomPlatformData);
+    WTF_MAKE_NONCOPYABLE(FontCustomPlatformData);
 public:
-    GraphicsLayerDebugInfo();
-    ~GraphicsLayerDebugInfo();
+    static PassOwnPtr<FontCustomPlatformData> create(SharedBuffer*, String& otsParseMessage);
+    ~FontCustomPlatformData();
 
-    scoped_refptr<base::trace_event::TracedValue> asTracedValue() const;
+    FontPlatformData fontPlatformData(float size, bool bold, bool italic, FontOrientation = FontOrientation::Horizontal);
 
-    CompositingReasons compositingReasons() const { return m_compositingReasons; }
-    void setCompositingReasons(CompositingReasons reasons) { m_compositingReasons = reasons; }
-    void setOwnerNodeId(int id) { m_ownerNodeId = id; }
-
-    void appendAnnotatedInvalidateRect(const FloatRect&, PaintInvalidationReason);
-    void clearAnnotatedInvalidateRects();
+    static bool supportsFormat(const String&);
 
 private:
-    void appendAnnotatedInvalidateRects(base::trace_event::TracedValue*) const;
-    void appendCompositingReasons(base::trace_event::TracedValue*) const;
-    void appendOwnerNodeId(base::trace_event::TracedValue*) const;
-
-    struct AnnotatedInvalidationRect {
-        DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
-        FloatRect rect;
-        PaintInvalidationReason reason;
-    };
-
-    CompositingReasons m_compositingReasons;
-    int m_ownerNodeId;
-    Vector<AnnotatedInvalidationRect> m_invalidations;
-    Vector<AnnotatedInvalidationRect> m_previousInvalidations;
+    explicit FontCustomPlatformData(PassRefPtr<SkTypeface>);
+    RefPtr<SkTypeface> m_typeface;
 };
 
 } // namespace blink
 
-#endif
+#endif // FontCustomPlatformData_h

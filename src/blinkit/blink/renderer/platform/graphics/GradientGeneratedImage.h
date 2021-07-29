@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Google Inc. All rights reserved.
+ * Copyright (C) 2008, 2012 Apple Computer, Inc.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -16,51 +16,47 @@
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE COMPUTER, INC. OR
  * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CSSSVGDocumentValue_h
-#define CSSSVGDocumentValue_h
+#ifndef GradientGeneratedImage_h
+#define GradientGeneratedImage_h
 
-#include "core/css/CSSValue.h"
-#include "core/fetch/DocumentResource.h"
-#include "core/fetch/ResourcePtr.h"
+#include "platform/geometry/IntSize.h"
+#include "platform/graphics/GeneratedImage.h"
+#include "platform/graphics/Gradient.h"
+#include "platform/graphics/Image.h"
+#include "platform/graphics/ImageBuffer.h"
+#include "wtf/RefPtr.h"
 
 namespace blink {
 
-class Document;
-
-class CSSSVGDocumentValue : public CSSValue {
+class PLATFORM_EXPORT GradientGeneratedImage : public GeneratedImage {
 public:
-    static PassRefPtrWillBeRawPtr<CSSSVGDocumentValue> create(const String& url)
+    static PassRefPtr<GradientGeneratedImage> create(PassRefPtr<Gradient> generator, const IntSize& size)
     {
-        return adoptRefWillBeNoop(new CSSSVGDocumentValue(url));
+        return adoptRef(new GradientGeneratedImage(generator, size));
     }
-    ~CSSSVGDocumentValue();
 
-    DocumentResource* cachedSVGDocument() const { return m_document.get(); }
-    DocumentResource* load(Document*);
+    ~GradientGeneratedImage() override {}
 
-    String customCSSText() const;
-    const String& url() const { return m_url; }
-    bool loadRequested() const { return m_loadRequested; }
-    bool equals(const CSSSVGDocumentValue&) const;
+protected:
+    void draw(SkCanvas*, const SkPaint&, const FloatRect&, const FloatRect&, RespectImageOrientationEnum, ImageClampingMode) override;
+    void drawTile(GraphicsContext&, const FloatRect&) final;
 
-    DEFINE_INLINE_TRACE_AFTER_DISPATCH() { CSSValue::traceAfterDispatch(visitor); }
+    GradientGeneratedImage(PassRefPtr<Gradient> generator, const IntSize& size)
+        : GeneratedImage(size)
+        , m_gradient(generator)
+    {
+    }
 
-private:
-    CSSSVGDocumentValue(const String& url);
-
-    String m_url;
-    ResourcePtr<DocumentResource> m_document;
-    bool m_loadRequested;
+    RefPtr<Gradient> m_gradient;
 };
-
-DEFINE_CSS_VALUE_TYPE_CASTS(CSSSVGDocumentValue, isSVGDocumentValue());
 
 } // namespace blink
 
-#endif // CSSSVGDocumentValue_h
+#endif
