@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSGroupingRule.cpp
+// Description: CSSGroupingRule Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Adobe Systems Incorporated. All rights reserved.
  * Copyright (C) 2012 Apple Inc. All rights reserved.
@@ -68,7 +79,7 @@ unsigned CSSGroupingRule::insertRule(const String& ruleString, unsigned index, E
     }
 
     CSSStyleSheet* styleSheet = parentStyleSheet();
-    CSSParserContext context(parserContext(), UseCounter::getFrom(styleSheet));
+    CSSParserContext context(parserContext());
     RefPtrWillBeRawPtr<StyleRuleBase> newRule = CSSParser::parseRule(context, styleSheet ? styleSheet->contents() : nullptr, ruleString);
     if (!newRule) {
         exceptionState.throwDOMException(SyntaxError, "the rule '" + ruleString + "' is invalid and cannot be parsed.");
@@ -90,7 +101,7 @@ unsigned CSSGroupingRule::insertRule(const String& ruleString, unsigned index, E
 
     m_groupRule->wrapperInsertRule(index, newRule);
 
-    m_childRuleCSSOMWrappers.insert(index, RefPtrWillBeMember<CSSRule>(nullptr));
+    m_childRuleCSSOMWrappers.emplace(m_childRuleCSSOMWrappers.begin() + index, nullptr);
     return index;
 }
 
@@ -109,7 +120,7 @@ void CSSGroupingRule::deleteRule(unsigned index, ExceptionState& exceptionState)
 
     if (m_childRuleCSSOMWrappers[index])
         m_childRuleCSSOMWrappers[index]->setParentRule(0);
-    m_childRuleCSSOMWrappers.remove(index);
+    m_childRuleCSSOMWrappers.erase(m_childRuleCSSOMWrappers.begin() + index);
 }
 
 void CSSGroupingRule::appendCSSTextForItems(StringBuilder& result) const

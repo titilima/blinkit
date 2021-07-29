@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSGroupingRule.h
+// Description: CSSGroupingRule Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -56,7 +67,7 @@ protected:
     void appendCSSTextForItems(StringBuilder&) const;
 
     RefPtrWillBeMember<StyleRuleGroup> m_groupRule;
-    mutable WillBeHeapVector<RefPtrWillBeMember<CSSRule>> m_childRuleCSSOMWrappers;
+    mutable std::vector<Member<CSSRule>> m_childRuleCSSOMWrappers;
     mutable OwnPtrWillBeMember<CSSRuleList> m_ruleListCSSOMWrapper;
 };
 
