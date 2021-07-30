@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLFormControlElementWithState.cpp
+// Description: HTMLFormControlElementWithState Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -69,7 +80,7 @@ void HTMLFormControlElementWithState::notifyFormStateChanged()
     // selection before the document is active (or even in a frame).
     if (!document().isActive())
         return;
-    document().frame()->loader().client()->didUpdateCurrentHistoryItem();
+    ASSERT(false); // BKTODO: document().frame()->loader().client()->didUpdateCurrentHistoryItem();
 }
 
 bool HTMLFormControlElementWithState::shouldSaveAndRestoreFormControlState() const
