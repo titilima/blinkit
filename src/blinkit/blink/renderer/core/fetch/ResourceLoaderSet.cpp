@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourceLoaderSet.cpp
+// Description: ResourceLoaderSet Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -30,8 +41,6 @@
 
 #include "core/fetch/ResourceLoaderSet.h"
 
-#include "wtf/Vector.h"
-
 namespace blink {
 
 ResourceLoaderSet* ResourceLoaderSet::create()
@@ -46,12 +55,12 @@ DEFINE_TRACE(ResourceLoaderSet)
 
 void ResourceLoaderSet::cancelAll()
 {
-    HeapVector<Member<ResourceLoader>> loadersCopy;
-    copyToVector(m_set, loadersCopy);
+    std::vector<Member<ResourceLoader>> loadersCopy(m_set.begin(), m_set.end());
     for (const auto& loader : loadersCopy)
         loader->cancel();
 }
 
+#if 0 // BKTODO:
 void ResourceLoaderSet::setAllDefersLoading(bool defers)
 {
     HeapVector<Member<ResourceLoader>> loadersCopy;
@@ -59,5 +68,6 @@ void ResourceLoaderSet::setAllDefersLoading(bool defers)
     for (const auto& loader : loadersCopy)
         loader->setDefersLoading(defers);
 }
+#endif
 
 }

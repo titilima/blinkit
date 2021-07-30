@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourceLoaderSet.h
+// Description: ResourceLoaderSet Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -48,7 +59,7 @@ public:
     bool isEmpty() const { return m_set.isEmpty(); }
     bool contains(ResourceLoader* loader) const { return m_set.contains(loader); }
     void cancelAll();
-    void setAllDefersLoading(bool);
+    // BKTODO: void setAllDefersLoading(bool);
     int size() const { return m_set.size(); }
     const SetType& hashSet() const { return m_set; }
 
