@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTreeBuilderSimulator.cpp
+// Description: HTMLTreeBuilderSimulator Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google, Inc. All Rights Reserved.
  *
@@ -26,8 +37,10 @@
 #include "core/html/parser/HTMLTreeBuilderSimulator.h"
 
 #include "core/HTMLNames.h"
+#if 0 // BKTODO:
 #include "core/MathMLNames.h"
 #include "core/SVGNames.h"
+#endif
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/html/parser/HTMLTokenizer.h"
 #include "core/html/parser/HTMLTreeBuilder.h"
@@ -52,7 +65,7 @@ static bool tokenExitsForeignContent(const CompactHTMLToken& token)
         || threadSafeMatch(tagName, dlTag)
         || threadSafeMatch(tagName, dtTag)
         || threadSafeMatch(tagName, emTag)
-        || threadSafeMatch(tagName, embedTag)
+        // BKTODO: || threadSafeMatch(tagName, embedTag)
         || threadSafeMatch(tagName, h1Tag)
         || threadSafeMatch(tagName, h2Tag)
         || threadSafeMatch(tagName, h3Tag)
@@ -71,7 +84,7 @@ static bool tokenExitsForeignContent(const CompactHTMLToken& token)
         || threadSafeMatch(tagName, olTag)
         || threadSafeMatch(tagName, pTag)
         || threadSafeMatch(tagName, preTag)
-        || threadSafeMatch(tagName, rubyTag)
+        // BKTODO: || threadSafeMatch(tagName, rubyTag)
         || threadSafeMatch(tagName, sTag)
         || threadSafeMatch(tagName, smallTag)
         || threadSafeMatch(tagName, spanTag)
@@ -90,11 +103,15 @@ static bool tokenExitsForeignContent(const CompactHTMLToken& token)
 static bool tokenExitsSVG(const CompactHTMLToken& token)
 {
     // FIXME: It's very fragile that we special case foreignObject here to be case-insensitive.
-    return equalIgnoringCaseNonNull(token.data().impl(), SVGNames::foreignObjectTag.localName().impl());
+    ASSERT(false); // BKTODO: return equalIgnoringCaseNonNull(token.data().impl(), SVGNames::foreignObjectTag.localName().impl());
+    return false;
 }
 
 static bool tokenExitsMath(const CompactHTMLToken& token)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     // FIXME: This is copied from HTMLElementStack::isMathMLTextIntegrationPoint and changed to use threadSafeMatch.
     const String& tagName = token.data();
     return threadSafeMatch(tagName, MathMLNames::miTag)
@@ -102,6 +119,7 @@ static bool tokenExitsMath(const CompactHTMLToken& token)
         || threadSafeMatch(tagName, MathMLNames::mnTag)
         || threadSafeMatch(tagName, MathMLNames::msTag)
         || threadSafeMatch(tagName, MathMLNames::mtextTag);
+#endif
 }
 
 HTMLTreeBuilderSimulator::HTMLTreeBuilderSimulator(const HTMLParserOptions& options)
@@ -116,10 +134,13 @@ HTMLTreeBuilderSimulator::State HTMLTreeBuilderSimulator::stateFor(HTMLTreeBuild
     State namespaceStack;
     for (HTMLElementStack::ElementRecord* record = treeBuilder->openElements()->topRecord(); record; record = record->next()) {
         Namespace currentNamespace = HTML;
+        ASSERT(false); // BKTODO:
+#if 0
         if (record->namespaceURI() == SVGNames::svgNamespaceURI)
             currentNamespace = SVG;
         else if (record->namespaceURI() == MathMLNames::mathmlNamespaceURI)
             currentNamespace = MathML;
+#endif
 
         if (namespaceStack.isEmpty() || namespaceStack.last() != currentNamespace)
             namespaceStack.append(currentNamespace);
@@ -134,10 +155,13 @@ HTMLTreeBuilderSimulator::SimulatedToken HTMLTreeBuilderSimulator::simulate(cons
 
     if (token.type() == HTMLToken::StartTag) {
         const String& tagName = token.data();
+        ASSERT(false); // BKTODO:
+#if 0
         if (threadSafeMatch(tagName, SVGNames::svgTag))
             m_namespaceStack.append(SVG);
         if (threadSafeMatch(tagName, MathMLNames::mathTag))
             m_namespaceStack.append(MathML);
+#endif
         if (inForeignContent() && tokenExitsForeignContent(token))
             m_namespaceStack.removeLast();
         if ((m_namespaceStack.last() == SVG && tokenExitsSVG(token))
@@ -153,11 +177,16 @@ HTMLTreeBuilderSimulator::SimulatedToken HTMLTreeBuilderSimulator::simulate(cons
                 tokenizer->setState(HTMLTokenizer::ScriptDataState);
                 simulatedToken = ScriptStart;
             } else if (threadSafeMatch(tagName, styleTag)
-                || threadSafeMatch(tagName, iframeTag)
+                // BKTODO: || threadSafeMatch(tagName, iframeTag)
                 || threadSafeMatch(tagName, xmpTag)
-                || (threadSafeMatch(tagName, noembedTag) && m_options.pluginsEnabled)
-                || threadSafeMatch(tagName, noframesTag)
+                // BKTODO: || (threadSafeMatch(tagName, noembedTag) && m_options.pluginsEnabled)
+                // BKTODO: || threadSafeMatch(tagName, noframesTag)
+#if 0 // BKTODO:
                 || (threadSafeMatch(tagName, noscriptTag) && m_options.scriptEnabled)) {
+#else
+                )
+            {
+#endif
                 tokenizer->setState(HTMLTokenizer::RAWTEXTState);
             }
         }
@@ -165,6 +194,8 @@ HTMLTreeBuilderSimulator::SimulatedToken HTMLTreeBuilderSimulator::simulate(cons
 
     if (token.type() == HTMLToken::EndTag) {
         const String& tagName = token.data();
+        ASSERT(false); // BKTODO:
+#if 0
         if ((m_namespaceStack.last() == SVG && threadSafeMatch(tagName, SVGNames::svgTag))
             || (m_namespaceStack.last() == MathML && threadSafeMatch(tagName, MathMLNames::mathTag))
             || (m_namespaceStack.contains(SVG) && m_namespaceStack.last() == HTML && tokenExitsSVG(token))
@@ -175,6 +206,7 @@ HTMLTreeBuilderSimulator::SimulatedToken HTMLTreeBuilderSimulator::simulate(cons
                 tokenizer->setState(HTMLTokenizer::DataState);
             return ScriptEnd;
         }
+#endif
     }
 
     // FIXME: Also setForceNullCharacterReplacement when in text mode.
