@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLElementStack.cpp
+// Description: HTMLElementStack Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -27,8 +38,8 @@
 #include "core/html/parser/HTMLElementStack.h"
 
 #include "core/HTMLNames.h"
-#include "core/MathMLNames.h"
-#include "core/SVGNames.h"
+// BKTODO: #include "core/MathMLNames.h"
+// BKTODO: #include "core/SVGNames.h"
 #include "core/dom/Element.h"
 #include "core/html/HTMLElement.h"
 
@@ -47,13 +58,14 @@ inline bool isRootNode(HTMLStackItem* item)
 
 inline bool isScopeMarker(HTMLStackItem* item)
 {
-    return item->hasTagName(appletTag)
+    return false // BKTODO: item->hasTagName(appletTag)
         || item->hasTagName(captionTag)
         || item->hasTagName(marqueeTag)
-        || item->hasTagName(objectTag)
+        // BKTODO: || item->hasTagName(objectTag)
         || item->hasTagName(tableTag)
         || item->hasTagName(tdTag)
         || item->hasTagName(thTag)
+#if 0 // BKTODO:
         || item->hasTagName(MathMLNames::miTag)
         || item->hasTagName(MathMLNames::moTag)
         || item->hasTagName(MathMLNames::mnTag)
@@ -63,6 +75,7 @@ inline bool isScopeMarker(HTMLStackItem* item)
         || item->hasTagName(SVGNames::foreignObjectTag)
         || item->hasTagName(SVGNames::descTag)
         || item->hasTagName(SVGNames::titleTag)
+#endif
         || item->hasTagName(templateTag)
         || isRootNode(item);
 }
@@ -276,6 +289,9 @@ void HTMLElementStack::popUntilTableRowScopeMarker()
 // http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#mathml-text-integration-point
 bool HTMLElementStack::isMathMLTextIntegrationPoint(HTMLStackItem* item)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     if (!item->isElementNode())
         return false;
     return item->hasTagName(MathMLNames::miTag)
@@ -283,6 +299,7 @@ bool HTMLElementStack::isMathMLTextIntegrationPoint(HTMLStackItem* item)
         || item->hasTagName(MathMLNames::mnTag)
         || item->hasTagName(MathMLNames::msTag)
         || item->hasTagName(MathMLNames::mtextTag);
+#endif
 }
 
 // http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#html-integration-point
@@ -290,6 +307,9 @@ bool HTMLElementStack::isHTMLIntegrationPoint(HTMLStackItem* item)
 {
     if (!item->isElementNode())
         return false;
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     if (item->hasTagName(MathMLNames::annotation_xmlTag)) {
         Attribute* encodingAttr = item->getAttributeItem(MathMLNames::encodingAttr);
         if (encodingAttr) {
@@ -302,6 +322,7 @@ bool HTMLElementStack::isHTMLIntegrationPoint(HTMLStackItem* item)
     return item->hasTagName(SVGNames::foreignObjectTag)
         || item->hasTagName(SVGNames::descTag)
         || item->hasTagName(SVGNames::titleTag);
+#endif
 }
 
 void HTMLElementStack::popUntilForeignContentScopeMarker()
