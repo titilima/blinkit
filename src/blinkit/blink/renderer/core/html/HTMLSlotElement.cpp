@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLSlotElement.cpp
+// Description: HTMLSlotElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2015 Google Inc. All rights reserved.
  *
@@ -58,7 +69,9 @@ void HTMLSlotElement::appendDistributedNode(Node& node)
 
 void HTMLSlotElement::appendDistributedNodesFrom(const HTMLSlotElement& other)
 {
-    m_distributedNodes.appendVector(other.m_distributedNodes);
+    m_distributedNodes.insert(m_distributedNodes.end(),
+        other.m_distributedNodes.begin(),
+        other.m_distributedNodes.end());
 }
 
 void HTMLSlotElement::clearDistribution()
@@ -69,18 +82,22 @@ void HTMLSlotElement::clearDistribution()
 
 Node* HTMLSlotElement::distributedNodeNextTo(const Node& node) const
 {
-    size_t index = m_distributedNodes.find(&node);
-    if (index == kNotFound || index + 1 == m_distributedNodes.size())
+    auto it = std::find(m_distributedNodes.begin(), m_distributedNodes.end(), &node);
+    if (m_distributedNodes.end() == it)
         return nullptr;
-    return m_distributedNodes[index + 1].get();
+    ++it;
+    if (m_distributedNodes.end() == it)
+        return nullptr;
+    return it->get();
 }
 
 Node* HTMLSlotElement::distributedNodePreviousTo(const Node& node) const
 {
-    size_t index = m_distributedNodes.find(&node);
-    if (index == kNotFound || index == 0)
+    auto it = std::find(m_distributedNodes.begin(), m_distributedNodes.end(), &node);
+    if (m_distributedNodes.end() == it || m_distributedNodes.begin() == it)
         return nullptr;
-    return m_distributedNodes[index - 1].get();
+    --it;
+    return it->get();
 }
 
 void HTMLSlotElement::attach(const AttachContext& context)
