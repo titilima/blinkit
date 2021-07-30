@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLImport.cpp
+// Description: HTMLImport Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -87,11 +98,11 @@ void HTMLImport::stateDidChange()
 
 void HTMLImport::recalcTreeState(HTMLImport* root)
 {
-    WillBeHeapHashMap<RawPtrWillBeMember<HTMLImport>, HTMLImportState> snapshot;
-    WillBeHeapVector<RawPtrWillBeMember<HTMLImport>> updated;
+    std::unordered_map<HTMLImport *, HTMLImportState> snapshot;
+    std::vector<HTMLImport *> updated;
 
     for (HTMLImport* i = root; i; i = traverseNext(i)) {
-        snapshot.add(i, i->state());
+        snapshot.emplace(i, i->state());
         i->m_state = HTMLImportState::invalidState();
     }
 
@@ -105,11 +116,11 @@ void HTMLImport::recalcTreeState(HTMLImport* root)
         i->m_state = HTMLImportStateResolver(i).resolve();
 
         HTMLImportState newState = i->state();
-        HTMLImportState oldState = snapshot.get(i);
+        HTMLImportState oldState = snapshot[i];
         // Once the state reaches Ready, it shouldn't go back.
         ASSERT(!oldState.isReady() || oldState <= newState);
         if (newState != oldState)
-            updated.append(i);
+            updated.emplace_back(i);
     }
 
     for (size_t i = 0; i < updated.size(); ++i)
