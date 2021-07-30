@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: VisualViewport.cpp
+// Description: VisualViewport Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -420,7 +431,7 @@ bool VisualViewport::visualViewportSuppliesScrollbars() const
 
 bool VisualViewport::scrollAnimatorEnabled() const
 {
-    return frameHost().settings().scrollAnimatorEnabled();
+    return Settings::scrollAnimatorEnabled();
 }
 
 void VisualViewport::clearLayersForTreeView(WebLayerTreeView* layerTreeView) const
