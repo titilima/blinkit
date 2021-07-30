@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Navigator.h
+// Description: Navigator Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 2008 Nokia Corporation and/or its subsidiary(-ies)
 
@@ -22,10 +33,6 @@
 
 #include "bindings/core/v8/ScriptWrappable.h"
 #include "core/frame/DOMWindowProperty.h"
-#include "core/frame/NavigatorCPU.h"
-#include "core/frame/NavigatorID.h"
-#include "core/frame/NavigatorLanguage.h"
-#include "core/frame/NavigatorOnLine.h"
 #include "platform/Supplementable.h"
 #include "platform/heap/Handle.h"
 #include "wtf/Forward.h"
@@ -37,20 +44,13 @@ class LocalFrame;
 typedef int ExceptionCode;
 
 class Navigator final
-    : public GarbageCollectedFinalized<Navigator>
-    , public NavigatorCPU
-    , public NavigatorID
-    , public NavigatorLanguage
-    , public NavigatorOnLine
-    , public ScriptWrappable
+    : public ScriptWrappable
     , public DOMWindowProperty
     , public HeapSupplementable<Navigator> {
-    DEFINE_WRAPPERTYPEINFO();
-    USING_GARBAGE_COLLECTED_MIXIN(Navigator);
 public:
-    static Navigator* create(LocalFrame* frame)
+    static std::unique_ptr<Navigator> create(LocalFrame* frame)
     {
-        return new Navigator(frame);
+        return zed::wrap_unique(new Navigator(frame));
     }
 
     virtual ~Navigator();
@@ -61,10 +61,10 @@ public:
     String vendor() const;
     String vendorSub() const;
 
-    String userAgent() const override;
+    String userAgent() const;
 
     // NavigatorLanguage
-    Vector<String> languages() override;
+    Vector<String> languages();
 
     DECLARE_VIRTUAL_TRACE();
 

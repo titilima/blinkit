@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Navigator.cpp
+// Description: Navigator Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  *  Copyright (C) 2000 Harri Porten (porten@kde.org)
  *  Copyright (c) 2000 Daniel Molkentin (molkentin@kde.org)
@@ -26,7 +37,7 @@
 #include "core/dom/Document.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/NavigatorID.h"
+// BKTODO: #include "core/frame/NavigatorID.h"
 #include "core/frame/Settings.h"
 #include "core/loader/CookieJar.h"
 #include "core/loader/FrameLoader.h"
@@ -77,9 +88,12 @@ bool Navigator::cookieEnabled() const
     if (!m_frame)
         return false;
 
+    ASSERT(false); // BKTODO:
+#if 0
     Settings* settings = m_frame->settings();
     if (!settings || !settings->cookieEnabled())
         return false;
+#endif
 
     return cookiesEnabled(m_frame->document());
 }
