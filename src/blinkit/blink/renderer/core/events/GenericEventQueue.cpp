@@ -74,6 +74,9 @@ bool GenericEventQueue::enqueueEvent(PassRefPtrWillBeRawPtr<Event> event)
 
 bool GenericEventQueue::cancelEvent(Event* event)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     bool found = m_pendingEvents.contains(event);
 
     if (found) {
@@ -86,6 +89,7 @@ bool GenericEventQueue::cancelEvent(Event* event)
         m_timer.stop();
 
     return found;
+#endif
 }
 
 void GenericEventQueue::timerFired(Timer<GenericEventQueue>*)
