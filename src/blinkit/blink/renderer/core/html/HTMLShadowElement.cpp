@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLShadowElement.cpp
+// Description: HTMLShadowElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -33,7 +44,7 @@
 #include "core/HTMLNames.h"
 #include "core/dom/Document.h"
 #include "core/dom/shadow/ShadowRoot.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 
 namespace blink {
 
@@ -73,7 +84,7 @@ Node::InsertionNotificationRequest HTMLShadowElement::insertedInto(ContainerNode
         ShadowRoot* root = containingShadowRoot();
         if (root && root->olderShadowRoot() && root->type() != root->olderShadowRoot()->type()) {
             String message = String::format("<shadow> doesn't work for %s element host.", root->host()->tagName().utf8().data());
-            document().addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, WarningMessageLevel, message));
+            ASSERT(false); // BKTODO: document().addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, WarningMessageLevel, message));
         }
     }
     return InsertionPoint::insertedInto(insertionPoint);
