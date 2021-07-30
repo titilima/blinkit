@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutFlowThread.cpp
+// Description: LayoutFlowThread Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Adobe Systems Incorporated. All rights reserved.
  *
@@ -68,7 +79,7 @@ LayoutFlowThread* LayoutFlowThread::locateFlowThreadContainingBlockOf(const Layo
 void LayoutFlowThread::removeColumnSetFromThread(LayoutMultiColumnSet* columnSet)
 {
     ASSERT(columnSet);
-    m_multiColumnSetList.remove(columnSet);
+    m_multiColumnSetList.erase(columnSet);
     invalidateColumnSets();
     // Clear the interval tree right away, instead of leaving it around with dead objects. Not that
     // anyone _should_ try to access the interval tree when the column sets are marked as invalid,
