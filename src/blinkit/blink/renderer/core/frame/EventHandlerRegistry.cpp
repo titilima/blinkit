@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EventHandlerRegistry.cpp
+// Description: EventHandlerRegistry Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/LocalFrame.h"
-#include "core/html/HTMLFrameOwnerElement.h"
+// BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/Page.h"
 #include "core/page/scrolling/ScrollingCoordinator.h"
@@ -17,14 +28,21 @@ namespace {
 
 inline bool isTouchEventType(const AtomicString& eventType)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return eventType == EventTypeNames::touchstart
         || eventType == EventTypeNames::touchmove
         || eventType == EventTypeNames::touchend
         || eventType == EventTypeNames::touchcancel;
+#endif
 }
 
 inline bool isPointerEventType(const AtomicString& eventType)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return eventType == EventTypeNames::gotpointercapture
         || eventType == EventTypeNames::lostpointercapture
         || eventType == EventTypeNames::pointercancel
@@ -35,6 +53,7 @@ inline bool isPointerEventType(const AtomicString& eventType)
         || eventType == EventTypeNames::pointerout
         || eventType == EventTypeNames::pointerover
         || eventType == EventTypeNames::pointerup;
+#endif
 }
 
 } // namespace
@@ -62,7 +81,7 @@ bool EventHandlerRegistry::eventTypeToClass(const AtomicString& eventType, Event
         // EventHandler::handleTouchEvent for now. See crbug.com/476565.
         *result = TouchEvent;
 #if ENABLE(ASSERT)
-    } else if (eventType == EventTypeNames::load || eventType == EventTypeNames::mousemove || eventType == EventTypeNames::touchstart) {
+    } else if (eventType == EventTypeNames::load || eventType == EventTypeNames::mousemove) { // BKTODO: || eventType == EventTypeNames::touchstart) {
         *result = EventsForTesting;
 #endif
     } else {
@@ -74,17 +93,21 @@ bool EventHandlerRegistry::eventTypeToClass(const AtomicString& eventType, Event
 const EventTargetSet* EventHandlerRegistry::eventHandlerTargets(EventHandlerClass handlerClass) const
 {
     checkConsistency();
-    return &m_targets[handlerClass];
+    ASSERT(false); // BKTODO: return &m_targets[handlerClass];
+    return nullptr;
 }
 
 bool EventHandlerRegistry::hasEventHandlers(EventHandlerClass handlerClass) const
 {
     checkConsistency();
-    return m_targets[handlerClass].size();
+    ASSERT(false); // BKTODO: return m_targets[handlerClass].size();
+    return false;
 }
 
 bool EventHandlerRegistry::updateEventHandlerTargets(ChangeOperation op, EventHandlerClass handlerClass, EventTarget* target)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     EventTargetSet* targets = &m_targets[handlerClass];
     if (op == Add) {
         if (!targets->add(target).isNewEntry) {
@@ -106,11 +129,14 @@ bool EventHandlerRegistry::updateEventHandlerTargets(ChangeOperation op, EventHa
             }
         }
     }
+#endif
     return true;
 }
 
 void EventHandlerRegistry::updateEventHandlerInternal(ChangeOperation op, EventHandlerClass handlerClass, EventTarget* target)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     bool hadHandlers = m_targets[handlerClass].size();
     bool targetSetChanged = updateEventHandlerTargets(op, handlerClass, target);
     bool hasHandlers = m_targets[handlerClass].size();
@@ -120,6 +146,7 @@ void EventHandlerRegistry::updateEventHandlerInternal(ChangeOperation op, EventH
 
     if (targetSetChanged)
         notifyDidAddOrRemoveEventHandlerTarget(handlerClass);
+#endif
 }
 
 void EventHandlerRegistry::updateEventHandlerOfType(ChangeOperation op, const AtomicString& eventType, EventTarget* target)
@@ -178,9 +205,12 @@ void EventHandlerRegistry::didMoveBetweenFrameHosts(EventTarget& target, FrameHo
     ASSERT(newFrameHost != oldFrameHost);
     for (size_t i = 0; i < EventHandlerClassCount; ++i) {
         EventHandlerClass handlerClass = static_cast<EventHandlerClass>(i);
+        ASSERT(false); // BKTODO:
+#if 0
         const EventTargetSet* targets = &oldFrameHost->eventHandlerRegistry().m_targets[handlerClass];
         for (unsigned count = targets->count(&target); count > 0; --count)
             newFrameHost->eventHandlerRegistry().didAddEventHandler(target, handlerClass);
+#endif
         oldFrameHost->eventHandlerRegistry().didRemoveAllEventHandlers(target);
     }
 }
@@ -229,7 +259,7 @@ void EventHandlerRegistry::notifyDidAddOrRemoveEventHandlerTarget(EventHandlerCl
 DEFINE_TRACE(EventHandlerRegistry)
 {
     visitor->trace(m_frameHost);
-    visitor->template registerWeakMembers<EventHandlerRegistry, &EventHandlerRegistry::clearWeakMembers>(this);
+    ASSERT(false); // BKTODO: visitor->template registerWeakMembers<EventHandlerRegistry, &EventHandlerRegistry::clearWeakMembers>(this);
 }
 
 void EventHandlerRegistry::clearWeakMembers(Visitor* visitor)
@@ -237,6 +267,8 @@ void EventHandlerRegistry::clearWeakMembers(Visitor* visitor)
     Vector<RawPtrWillBeUntracedMember<EventTarget>> deadTargets;
     for (size_t i = 0; i < EventHandlerClassCount; ++i) {
         EventHandlerClass handlerClass = static_cast<EventHandlerClass>(i);
+        ASSERT(false); // BKTODO:
+#if 0
         const EventTargetSet* targets = &m_targets[handlerClass];
         for (const auto& eventTarget : *targets) {
             Node* node = eventTarget.key->toNode();
@@ -247,6 +279,7 @@ void EventHandlerRegistry::clearWeakMembers(Visitor* visitor)
                 deadTargets.append(window);
             }
         }
+#endif
     }
     for (size_t i = 0; i < deadTargets.size(); ++i)
         didRemoveAllEventHandlers(*deadTargets[i]);
@@ -258,6 +291,8 @@ void EventHandlerRegistry::documentDetached(Document& document)
     for (size_t handlerClassIndex = 0; handlerClassIndex < EventHandlerClassCount; ++handlerClassIndex) {
         EventHandlerClass handlerClass = static_cast<EventHandlerClass>(handlerClassIndex);
         Vector<RawPtrWillBeUntracedMember<EventTarget>> targetsToRemove;
+        ASSERT(false); // BKTODO:
+#if 0
         const EventTargetSet* targets = &m_targets[handlerClass];
         for (const auto& eventTarget : *targets) {
             if (Node* node = eventTarget.key->toNode()) {
@@ -274,6 +309,7 @@ void EventHandlerRegistry::documentDetached(Document& document)
                 ASSERT_NOT_REACHED();
             }
         }
+#endif
         for (size_t i = 0; i < targetsToRemove.size(); ++i)
             updateEventHandlerInternal(RemoveAll, handlerClass, targetsToRemove[i]);
     }
@@ -284,6 +320,8 @@ void EventHandlerRegistry::checkConsistency() const
 #if ENABLE(ASSERT)
     for (size_t i = 0; i < EventHandlerClassCount; ++i) {
         EventHandlerClass handlerClass = static_cast<EventHandlerClass>(i);
+        ASSERT(false); // BKTODO:
+#if 0
         const EventTargetSet* targets = &m_targets[handlerClass];
         for (const auto& eventTarget : *targets) {
             if (Node* node = eventTarget.key->toNode()) {
@@ -298,6 +336,7 @@ void EventHandlerRegistry::checkConsistency() const
                 ASSERT(window->frame()->host() == m_frameHost);
             }
         }
+#endif
     }
 #endif // ENABLE(ASSERT)
 }

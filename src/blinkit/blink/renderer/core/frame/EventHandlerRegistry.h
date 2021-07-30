@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EventHandlerRegistry.h
+// Description: EventHandlerRegistry Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -100,7 +111,7 @@ private:
     void checkConsistency() const;
 
     RawPtrWillBeMember<FrameHost> m_frameHost;
-    EventTargetSet m_targets[EventHandlerClassCount];
+    // BKTODO: EventTargetSet m_targets[EventHandlerClassCount];
 };
 
 } // namespace blink
