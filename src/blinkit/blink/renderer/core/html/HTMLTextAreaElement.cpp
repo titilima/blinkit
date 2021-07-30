@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTextAreaElement.cpp
+// Description: HTMLTextAreaElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -35,7 +46,7 @@
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/editing/FrameSelection.h"
 #include "core/editing/iterators/TextIterator.h"
-#include "core/editing/spellcheck/SpellChecker.h"
+// BKTODO: #include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/BeforeTextInsertedEvent.h"
 #include "core/events/Event.h"
 #include "core/frame/FrameHost.h"
@@ -268,8 +279,10 @@ void HTMLTextAreaElement::defaultEventHandler(Event* event)
 
 void HTMLTextAreaElement::handleFocusEvent(Element*, WebFocusType)
 {
+#if 0 // BKTODO:
     if (LocalFrame* frame = document().frame())
         frame->spellChecker().didBeginEditing(this);
+#endif
 }
 
 void HTMLTextAreaElement::subtreeHasChanged()
@@ -473,7 +486,7 @@ void HTMLTextAreaElement::setMaxLength(int newValue, ExceptionState& exceptionSt
     if (newValue < 0)
         exceptionState.throwDOMException(IndexSizeError, "The value provided (" + String::number(newValue) + ") is not positive or 0.");
     else if (min >= 0 && newValue < min)
-        exceptionState.throwDOMException(IndexSizeError, ExceptionMessages::indexExceedsMinimumBound("maxLength", newValue, min));
+        ASSERT(false); // BKTODO: exceptionState.throwDOMException(IndexSizeError, ExceptionMessages::indexExceedsMinimumBound("maxLength", newValue, min));
     else
         setIntegralAttribute(maxlengthAttr, newValue);
 }
@@ -484,7 +497,7 @@ void HTMLTextAreaElement::setMinLength(int newValue, ExceptionState& exceptionSt
     if (newValue < 0)
         exceptionState.throwDOMException(IndexSizeError, "The value provided (" + String::number(newValue) + ") is not positive or 0.");
     else if (max >= 0 && newValue > max)
-        exceptionState.throwDOMException(IndexSizeError, ExceptionMessages::indexExceedsMaximumBound("minLength", newValue, max));
+        ASSERT(false); // BKTODO: exceptionState.throwDOMException(IndexSizeError, ExceptionMessages::indexExceedsMaximumBound("minLength", newValue, max));
     else
         setIntegralAttribute(minlengthAttr, newValue);
 }
