@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLFormattingElementList.cpp
+// Description: HTMLFormattingElementList Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -63,19 +74,17 @@ bool HTMLFormattingElementList::contains(Element* element)
 
 HTMLFormattingElementList::Entry* HTMLFormattingElementList::find(Element* element)
 {
-    size_t index = m_entries.reverseFind(element);
-    if (index != kNotFound) {
-        // This is somewhat of a hack, and is why this method can't be const.
-        return &m_entries[index];
-    }
+    auto it = std::find(m_entries.rbegin(), m_entries.rend(), element);
+    if (m_entries.rend() != it)
+        return &(*it);
     return nullptr;
 }
 
 HTMLFormattingElementList::Bookmark HTMLFormattingElementList::bookmarkFor(Element* element)
 {
-    size_t index = m_entries.reverseFind(element);
-    ASSERT(index != kNotFound);
-    return Bookmark(&at(index));
+    auto it = std::find(m_entries.rbegin(), m_entries.rend(), element);
+    ASSERT(m_entries.rend() != it);
+    return Bookmark(&(*it));
 }
 
 void HTMLFormattingElementList::swapTo(Element* oldElement, PassRefPtrWillBeRawPtr<HTMLStackItem> newItem, const Bookmark& bookmark)
@@ -89,26 +98,26 @@ void HTMLFormattingElementList::swapTo(Element* oldElement, PassRefPtrWillBeRawP
     }
     size_t index = bookmark.mark() - first();
     ASSERT_WITH_SECURITY_IMPLICATION(index < size());
-    m_entries.insert(index + 1, newItem);
+    m_entries.emplace(m_entries.begin() + index + 1, newItem);
     remove(oldElement);
 }
 
 void HTMLFormattingElementList::append(PassRefPtrWillBeRawPtr<HTMLStackItem> item)
 {
     ensureNoahsArkCondition(item.get());
-    m_entries.append(item);
+    m_entries.emplace_back(item);
 }
 
 void HTMLFormattingElementList::remove(Element* element)
 {
-    size_t index = m_entries.reverseFind(element);
-    if (index != kNotFound)
-        m_entries.remove(index);
+    auto it = std::find(m_entries.rbegin(), m_entries.rend(), element);
+    if (m_entries.rend() != it)
+        m_entries.erase(it.base());
 }
 
 void HTMLFormattingElementList::appendMarker()
 {
-    m_entries.append(Entry::MarkerEntry);
+    m_entries.emplace_back(Entry::MarkerEntry);
 }
 
 void HTMLFormattingElementList::clearToLastMarker()
@@ -116,7 +125,7 @@ void HTMLFormattingElementList::clearToLastMarker()
     // http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#clear-the-list-of-active-formatting-elements-up-to-the-last-marker
     while (m_entries.size()) {
         bool shouldStop = m_entries.last().isMarker();
-        m_entries.removeLast();
+        m_entries.pop_back();
         if (shouldStop)
             break;
     }
@@ -154,7 +163,7 @@ void HTMLFormattingElementList::tryToEnsureNoahsArkConditionQuickly(HTMLStackIte
     if (candidates.size() < kNoahsArkCapacity)
         return; // There's room for the new element in the ark. There's no need to copy out the remainingCandidates.
 
-    remainingCandidates.appendVector(candidates);
+    remainingCandidates.insert(remainingCandidates.end(), candidates.begin(), candidates.end());
 }
 
 void HTMLFormattingElementList::ensureNoahsArkCondition(HTMLStackItem* newItem)
@@ -167,7 +176,7 @@ void HTMLFormattingElementList::ensureNoahsArkCondition(HTMLStackItem* newItem)
     // We pre-allocate and re-use this second vector to save one malloc per
     // attribute that we verify.
     WillBeHeapVector<RawPtrWillBeMember<HTMLStackItem>> remainingCandidates;
-    remainingCandidates.reserveInitialCapacity(candidates.size());
+    remainingCandidates.reserve(candidates.size());
 
     const Vector<Attribute>& attributes = newItem->attributes();
     for (size_t i = 0; i < attributes.size(); ++i) {
