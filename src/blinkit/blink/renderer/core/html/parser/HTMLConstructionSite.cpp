@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLConstructionSite.cpp
+// Description: HTMLConstructionSite Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -38,7 +49,7 @@
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLFormElement.h"
 #include "core/html/HTMLHtmlElement.h"
-#include "core/html/HTMLPlugInElement.h"
+// BKTODO: #include "core/html/HTMLPlugInElement.h"
 #include "core/html/HTMLScriptElement.h"
 #include "core/html/HTMLTemplateElement.h"
 #include "core/html/parser/AtomicHTMLToken.h"
@@ -47,7 +58,7 @@
 #include "core/html/parser/HTMLToken.h"
 #include "core/loader/FrameLoader.h"
 #include "core/loader/FrameLoaderClient.h"
-#include "core/svg/SVGScriptElement.h"
+// BKTODO: #include "core/svg/SVGScriptElement.h"
 #include "platform/NotImplemented.h"
 #include "platform/text/TextBreakIterator.h"
 #include <limits>
@@ -73,17 +84,21 @@ static bool hasImpliedEndTag(const HTMLStackItem* item)
         || item->hasTagName(optionTag)
         || item->hasTagName(optgroupTag)
         || item->hasTagName(pTag)
+#if 0 // BKTODO:
         || item->hasTagName(rbTag)
         || item->hasTagName(rpTag)
         || item->hasTagName(rtTag)
         || item->hasTagName(rtcTag);
+#else
+        ;
+#endif
 }
 
 static bool shouldUseLengthLimit(const ContainerNode& node)
 {
     return !isHTMLScriptElement(node)
         && !isHTMLStyleElement(node)
-        && !isSVGScriptElement(node);
+        ; // BKTODO: && !isSVGScriptElement(node);
 }
 
 static unsigned textLengthLimitForContainer(const ContainerNode& node)
@@ -275,7 +290,7 @@ void HTMLConstructionSite::queueTask(const HTMLConstructionSiteTask& task)
 void HTMLConstructionSite::attachLater(ContainerNode* parent, PassRefPtrWillBeRawPtr<Node> prpChild, bool selfClosing)
 {
     ASSERT(scriptingContentIsAllowed(m_parserContentPolicy) || !prpChild.get()->isElementNode() || !toScriptLoaderIfPossible(toElement(prpChild.get())));
-    ASSERT(pluginContentIsAllowed(m_parserContentPolicy) || !isHTMLPlugInElement(prpChild));
+    // BKTODO: ASSERT(pluginContentIsAllowed(m_parserContentPolicy) || !isHTMLPlugInElement(prpChild));
 
     HTMLConstructionSiteTask task(HTMLConstructionSiteTask::Insert);
     task.parent = parent;
@@ -603,7 +618,7 @@ void HTMLConstructionSite::insertHTMLBodyElement(AtomicHTMLToken* token)
     attachLater(currentNode(), body);
     m_openElements.pushHTMLBodyElement(HTMLStackItem::create(body.release(), token));
     if (m_document && m_document->frame())
-        m_document->frame()->loader().client()->dispatchWillInsertBody();
+        ASSERT(false); // BKTODO: m_document->frame()->loader().client()->dispatchWillInsertBody();
 }
 
 void HTMLConstructionSite::insertHTMLFormElement(AtomicHTMLToken* token, bool isDemoted)
