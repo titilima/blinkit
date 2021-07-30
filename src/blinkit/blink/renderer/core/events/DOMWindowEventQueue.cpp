@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMWindowEventQueue.cpp
+// Description: DOMWindowEventQueue Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All Rights Reserved.
  *
@@ -91,11 +102,14 @@ bool DOMWindowEventQueue::enqueueEvent(PassRefPtrWillBeRawPtr<Event> event)
     ASSERT(event->target());
     InspectorInstrumentation::didEnqueueEvent(event->target(), event.get());
 
+    ASSERT(false); // BKTODO:
+#if 0
     bool wasAdded = m_queuedEvents.add(event).isNewEntry;
     ASSERT_UNUSED(wasAdded, wasAdded); // It should not have already been in the list.
 
     if (!m_pendingEventTimer->isActive())
         m_pendingEventTimer->startOneShot(0, BLINK_FROM_HERE);
+#endif
 
     return true;
 }
@@ -106,7 +120,7 @@ bool DOMWindowEventQueue::cancelEvent(Event* event)
     bool found = it != m_queuedEvents.end();
     if (found) {
         InspectorInstrumentation::didRemoveEvent(event->target(), event);
-        m_queuedEvents.remove(it);
+        ASSERT(false); // BKTODO: m_queuedEvents.remove(it);
     }
     if (m_queuedEvents.isEmpty())
         m_pendingEventTimer->stop();
@@ -132,6 +146,8 @@ void DOMWindowEventQueue::pendingEventTimerFired()
     ASSERT(!m_pendingEventTimer->isActive());
     ASSERT(!m_queuedEvents.isEmpty());
 
+    ASSERT(false); // BKTODO:
+#if 0
     // Insert a marker for where we should stop.
     ASSERT(!m_queuedEvents.contains(nullptr));
     bool wasAdded = m_queuedEvents.add(nullptr).isNewEntry;
@@ -148,6 +164,7 @@ void DOMWindowEventQueue::pendingEventTimerFired()
         dispatchEvent(event.get());
         InspectorInstrumentation::didRemoveEvent(event->target(), event.get());
     }
+#endif
 }
 
 void DOMWindowEventQueue::dispatchEvent(PassRefPtrWillBeRawPtr<Event> event)
