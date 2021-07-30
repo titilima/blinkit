@@ -670,7 +670,8 @@ String PaintLayerCompositor::layerTreeAsText(LayerTreeFlags flags)
     if (flags & LayerTreeIncludesRootLayer)
         rootLayer = rootGraphicsLayer();
 
-    return rootLayer->layerTreeAsText(flags);
+    ASSERT(false); // BKTODO: return rootLayer->layerTreeAsText(flags);
+    return String();
 }
 
 PaintLayerCompositor* PaintLayerCompositor::frameContentsCompositor(LayoutPart* layoutObject)
