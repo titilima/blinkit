@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutImage.cpp
+// Description: LayoutImage Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -36,13 +47,13 @@
 #include "core/html/HTMLAreaElement.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLInputElement.h"
-#include "core/html/HTMLMapElement.h"
+// BKTODO: #include "core/html/HTMLMapElement.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/TextRunConstructor.h"
 #include "core/page/Page.h"
 #include "core/paint/ImagePainter.h"
-#include "core/svg/graphics/SVGImage.h"
+// BKTODO: #include "core/svg/graphics/SVGImage.h"
 #include "platform/fonts/Font.h"
 #include "platform/fonts/FontCache.h"
 
@@ -268,8 +279,12 @@ LayoutUnit LayoutImage::minimumReplacedHeight() const
 
 HTMLMapElement* LayoutImage::imageMap() const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     HTMLImageElement* i = isHTMLImageElement(node()) ? toHTMLImageElement(node()) : 0;
     return i ? i->treeScope().getImageMap(i->fastGetAttribute(usemapAttr)) : 0;
+#endif
 }
 
 bool LayoutImage::nodeAtPoint(HitTestResult& result, const HitTestLocation& locationInContainer, const LayoutPoint& accumulatedOffset, HitTestAction hitTestAction)
@@ -318,8 +333,11 @@ LayoutBox* LayoutImage::embeddedContentBox() const
         return nullptr;
 
     ImageResource* cachedImage = m_imageResource->cachedImage();
+    ASSERT(false); // BKTODO:
+#if 0
     if (cachedImage && cachedImage->image() && cachedImage->image()->isSVGImage())
         return toSVGImage(cachedImage->image())->embeddedContentBox();
+#endif
 
     return nullptr;
 }
