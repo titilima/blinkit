@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FormData.cpp
+// Description: FormData Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -42,6 +53,7 @@ namespace blink {
 
 namespace {
 
+#if 0 // BKTODO:
 class FormDataIterationSource final : public PairIterable<String, FormDataEntryValue>::IterationSource {
 public:
     FormDataIterationSource(FormData* formData) : m_formData(formData), m_current(0) { }
@@ -72,6 +84,7 @@ private:
     const Member<FormData> m_formData;
     size_t m_current;
 };
+#endif
 
 } // namespace
 
@@ -105,6 +118,8 @@ void FormData::append(const String& name, const String& value)
 
 void FormData::append(ExecutionContext* context, const String& name, Blob* blob, const String& filename)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (blob) {
         if (blob->isFile()) {
             if (filename.isNull())
@@ -120,6 +135,7 @@ void FormData::append(ExecutionContext* context, const String& name, Blob* blob,
     } else {
         UseCounter::count(context, UseCounter::FormDataAppendNull);
     }
+#endif
     append(name, blob, filename);
 }
 
@@ -129,13 +145,14 @@ void FormData::deleteEntry(const String& name)
     size_t i = 0;
     while (i < m_entries.size()) {
         if (m_entries[i]->name() == encodedName) {
-            m_entries.remove(i);
+            ASSERT(false); // BKTODO: m_entries.remove(i);
         } else {
             ++i;
         }
     }
 }
 
+#if 0 // BKTODO:
 void FormData::get(const String& name, FormDataEntryValue& result)
 {
     const CString encodedName = encodeAndNormalize(name);
@@ -171,6 +188,7 @@ HeapVector<FormDataEntryValue> FormData::getAll(const String& name)
     }
     return results;
 }
+#endif
 
 bool FormData::has(const String& name)
 {
@@ -202,7 +220,7 @@ void FormData::setEntry(const Entry* entry)
         if (m_entries[i]->name() != encodedName) {
             ++i;
         } else if (found) {
-            m_entries.remove(i);
+            ASSERT(false); // BKTODO: m_entries.remove(i);
         } else {
             found = true;
             m_entries[i] = entry;
@@ -239,7 +257,7 @@ PassRefPtr<EncodedFormData> FormData::encodeFormData(EncodedFormData::EncodingTy
     RefPtr<EncodedFormData> formData = EncodedFormData::create();
     Vector<char> encodedData;
     for (const auto& entry : entries())
-        FormDataEncoder::addKeyValuePairAsFormData(encodedData, entry->name(), entry->isFile() ? encodeAndNormalize(entry->file()->name()) : entry->value(), encodingType);
+        ASSERT(false); // BKTODO: FormDataEncoder::addKeyValuePairAsFormData(encodedData, entry->name(), entry->isFile() ? encodeAndNormalize(entry->file()->name()) : entry->value(), encodingType);
     formData->appendData(encodedData.data(), encodedData.size());
     return formData.release();
 }
@@ -315,10 +333,12 @@ PassRefPtr<EncodedFormData> FormData::encodeMultiPartFormData()
     return formData.release();
 }
 
+#if 0 // BKTODO:
 PairIterable<String, FormDataEntryValue>::IterationSource* FormData::startIteration(ScriptState*, ExceptionState&)
 {
     return new FormDataIterationSource(this);
 }
+#endif
 
 // ----------------------------------------------------------------
 
@@ -327,6 +347,7 @@ DEFINE_TRACE(FormData::Entry)
     visitor->trace(m_blob);
 }
 
+#if 0 // BKTODO:
 File* FormData::Entry::file() const
 {
     ASSERT(blob());
@@ -347,5 +368,6 @@ File* FormData::Entry::file() const
         filename = "blob";
     return File::create(filename, currentTimeMS(), blob()->blobDataHandle());
 }
+#endif
 
 } // namespace blink

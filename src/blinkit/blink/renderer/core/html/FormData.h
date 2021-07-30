@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FormData.h
+// Description: FormData Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -31,24 +42,20 @@
 #ifndef FormData_h
 #define FormData_h
 
-#include "bindings/core/v8/Iterable.h"
-#include "bindings/core/v8/ScriptState.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/CoreExport.h"
 #include "platform/heap/Handle.h"
 #include "platform/network/EncodedFormData.h"
 #include "wtf/Forward.h"
 #include "wtf/text/TextEncoding.h"
+#include "blinkit/blink/renderer/bindings/core/duk/script_wrappable.h"
 
 namespace blink {
 
 class Blob;
+class ExecutionContext;
 class HTMLFormElement;
 
-// Typedef from FormData.idl:
-typedef FileOrUSVString FormDataEntryValue;
-
-class CORE_EXPORT FormData final : public GarbageCollected<FormData>, public ScriptWrappable, public PairIterable<String, FormDataEntryValue> {
+class CORE_EXPORT FormData final : public ScriptWrappable { // BKTODO: , public PairIterable<String, FormDataEntryValue> {
     DEFINE_WRAPPERTYPEINFO();
 
 public:
@@ -67,8 +74,10 @@ public:
     void append(const String& name, const String& value);
     void append(ExecutionContext*, const String& name, Blob*, const String& filename = String());
     void deleteEntry(const String& name);
+#if 0 // BKTODO:
     void get(const String& name, FormDataEntryValue& result);
     HeapVector<FormDataEntryValue> getAll(const String& name);
+#endif
     bool has(const String& name);
     void set(const String& name, const String& value);
     void set(const String& name, Blob*, const String& filename = String());
@@ -91,7 +100,7 @@ private:
     explicit FormData(HTMLFormElement*);
     void setEntry(const Entry*);
     CString encodeAndNormalize(const String& key) const;
-    IterationSource* startIteration(ScriptState*, ExceptionState&) override;
+    // BKTODO: IterationSource* startIteration(ScriptState*, ExceptionState&) override;
 
     WTF::TextEncoding m_encoding;
     // Entry pointers in m_entries never be nullptr.
@@ -112,7 +121,7 @@ public:
     const CString& name() const { return m_name; }
     const CString& value() const { return m_value; }
     Blob* blob() const { return m_blob.get(); }
-    File* file() const;
+    // BKTODO: File* file() const;
     const String& filename() const { return m_filename; }
 
 private:
