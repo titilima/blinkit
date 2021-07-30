@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLMetaCharsetParser.cpp
+// Description: HTMLMetaCharsetParser Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All Rights Reserved.
  *
@@ -105,9 +116,9 @@ bool HTMLMetaCharsetParser::checkForMetaCharset(const char* data, size_t length)
                 }
             }
 
-            if (!threadSafeMatch(tagName, scriptTag) && !threadSafeMatch(tagName, noscriptTag)
+            if (!threadSafeMatch(tagName, scriptTag) // && BKTODO: !threadSafeMatch(tagName, noscriptTag)
                 && !threadSafeMatch(tagName, styleTag) && !threadSafeMatch(tagName, linkTag)
-                && !threadSafeMatch(tagName, metaTag) && !threadSafeMatch(tagName, objectTag)
+                && !threadSafeMatch(tagName, metaTag) // && BKTODO: && !threadSafeMatch(tagName, objectTag)
                 && !threadSafeMatch(tagName, titleTag) && !threadSafeMatch(tagName, baseTag)
                 && (end || !threadSafeMatch(tagName, htmlTag)) && (end || !threadSafeMatch(tagName, headTag))) {
                 m_inHeadSection = false;
