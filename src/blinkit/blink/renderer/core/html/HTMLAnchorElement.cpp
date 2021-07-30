@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLAnchorElement.cpp
+// Description: HTMLAnchorElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -33,11 +44,11 @@
 #include "core/layout/LayoutImage.h"
 #include "core/loader/FrameLoadRequest.h"
 #include "core/loader/FrameLoaderClient.h"
-#include "core/loader/PingLoader.h"
+// BKTODO: #include "core/loader/PingLoader.h"
 #include "core/page/ChromeClient.h"
 #include "platform/RuntimeEnabledFeatures.h"
-#include "platform/network/NetworkHints.h"
-#include "platform/weborigin/SecurityPolicy.h"
+// BKTODO: #include "platform/network/NetworkHints.h"
+// BKTODO: #include "platform/weborigin/SecurityPolicy.h"
 
 namespace blink {
 
@@ -46,7 +57,7 @@ using namespace HTMLNames;
 HTMLAnchorElement::HTMLAnchorElement(const QualifiedName& tagName, Document& document)
     : HTMLElement(tagName, document)
     , m_linkRelations(0)
-    , m_cachedVisitedLinkHash(0)
+    // BKTODO: , m_cachedVisitedLinkHash(0)
     , m_wasFocusedByMouse(false)
 {
 }
@@ -192,12 +203,15 @@ void HTMLAnchorElement::parseAttribute(const QualifiedName& name, const AtomicSt
         }
         if (isLink()) {
             String parsedURL = stripLeadingAndTrailingHTMLSpaces(value);
+            ASSERT(false); // BKTODO:
+#if 0
             if (document().isDNSPrefetchEnabled()) {
                 if (protocolIs(parsedURL, "http") || protocolIs(parsedURL, "https") || parsedURL.startsWith("//"))
                     prefetchDNS(document().completeURL(parsedURL).host());
             }
+#endif
         }
-        invalidateCachedVisitedLinkHash();
+        // BKTODO: invalidateCachedVisitedLinkHash();
         logUpdateAttributeIfIsolatedWorldAndInDocument("a", hrefAttr, oldValue, value);
     } else if (name == nameAttr || name == titleAttr) {
         // Do nothing.
@@ -305,6 +319,8 @@ bool HTMLAnchorElement::isLiveLink() const
 
 void HTMLAnchorElement::sendPings(const KURL& destinationURL) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     const AtomicString& pingValue = getAttribute(pingAttr);
     if (pingValue.isNull() || !document().settings() || !document().settings()->hyperlinkAuditingEnabled())
         return;
@@ -314,6 +330,7 @@ void HTMLAnchorElement::sendPings(const KURL& destinationURL) const
     SpaceSplitString pingURLs(pingValue, SpaceSplitString::ShouldNotFoldCase);
     for (unsigned i = 0; i < pingURLs.size(); i++)
         PingLoader::sendLinkAuditPing(document().frame(), document().completeURL(pingURLs[i]), destinationURL);
+#endif
 }
 
 void HTMLAnchorElement::handleClick(Event* event)
@@ -337,6 +354,8 @@ void HTMLAnchorElement::handleClick(Event* event)
     request.setUIStartTime(event->platformTimeStamp());
     request.setInputPerfMetricReportPolicy(InputToLoadPerfMetricReportPolicy::ReportLink);
 
+    ASSERT(false); // BKTODO:
+#if 0
     ReferrerPolicy policy;
     if (RuntimeEnabledFeatures::referrerPolicyAttributeEnabled() && hasAttribute(referrerpolicyAttr) && SecurityPolicy::referrerPolicyFromString(fastGetAttribute(referrerpolicyAttr), &policy) && !hasRel(RelationNoReferrer)) {
         request.setHTTPReferrer(SecurityPolicy::generateReferrer(policy, completedURL, document().outgoingReferrer()));
@@ -360,6 +379,7 @@ void HTMLAnchorElement::handleClick(Event* event)
             frameRequest.setShouldSetOpener(NeverSetOpener);
         frame->loader().load(frameRequest);
     }
+#endif
 }
 
 bool isEnterKeyKeydownEvent(Event* event)

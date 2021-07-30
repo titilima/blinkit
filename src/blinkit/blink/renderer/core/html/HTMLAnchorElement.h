@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLAnchorElement.h
+// Description: HTMLAnchorElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -29,7 +40,7 @@
 #include "core/dom/DOMURLUtils.h"
 #include "core/dom/Document.h"
 #include "core/html/HTMLElement.h"
-#include "platform/LinkHash.h"
+// BKTODO: #include "platform/LinkHash.h"
 
 namespace blink {
 
@@ -82,8 +93,10 @@ public:
     bool hasRel(uint32_t relation) const;
     void setRel(const AtomicString&);
 
+#if 0 // BKTODO:
     LinkHash visitedLinkHash() const;
     void invalidateCachedVisitedLinkHash() { m_cachedVisitedLinkHash = 0; }
+#endif
 
     void sendPings(const KURL& destinationURL) const;
 
@@ -112,16 +125,18 @@ private:
     void handleClick(Event*);
 
     uint32_t m_linkRelations;
-    mutable LinkHash m_cachedVisitedLinkHash;
+    // BKTODO: mutable LinkHash m_cachedVisitedLinkHash;
     bool m_wasFocusedByMouse;
 };
 
+#if 0 // BKTODO:
 inline LinkHash HTMLAnchorElement::visitedLinkHash() const
 {
     if (!m_cachedVisitedLinkHash)
         m_cachedVisitedLinkHash = blink::visitedLinkHash(document().baseURL(), fastGetAttribute(HTMLNames::hrefAttr));
     return m_cachedVisitedLinkHash;
 }
+#endif
 
 // Functions shared with the other anchor elements (i.e., SVG).
 
