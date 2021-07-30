@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLImportChild.cpp
+// Description: HTMLImportChild Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -33,8 +44,10 @@
 #include "core/css/StyleSheetList.h"
 #include "core/dom/Document.h"
 #include "core/dom/custom/CustomElement.h"
+#if 0 // BKTODO:
 #include "core/dom/custom/CustomElementMicrotaskImportStep.h"
 #include "core/dom/custom/CustomElementSyncMicrotaskQueue.h"
+#endif
 #include "core/frame/UseCounter.h"
 #include "core/html/imports/HTMLImportChildClient.h"
 #include "core/html/imports/HTMLImportLoader.h"
@@ -139,7 +152,7 @@ void HTMLImportChild::invalidateCustomElementMicrotaskStep()
 {
     if (!m_customElementMicrotaskStep)
         return;
-    m_customElementMicrotaskStep->invalidate();
+    ASSERT(false); // BKTODO: m_customElementMicrotaskStep->invalidate();
     m_customElementMicrotaskStep.clear();
 }
 
@@ -160,7 +173,8 @@ bool HTMLImportChild::hasFinishedLoading() const
 {
     ASSERT(m_loader);
 
-    return m_loader->isDone() && m_loader->microtaskQueue()->isEmpty() && !m_customElementMicrotaskStep;
+    ASSERT(false); // BKTODO: return m_loader->isDone() && m_loader->microtaskQueue()->isEmpty() && !m_customElementMicrotaskStep;
+    return false;
 }
 
 HTMLImportLoader* HTMLImportChild::loader() const
