@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BackgroundHTMLParser.h
+// Description: BackgroundHTMLParser Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google, Inc. All Rights Reserved.
  *
@@ -35,7 +46,7 @@
 #include "core/html/parser/HTMLTreeBuilderSimulator.h"
 #include "core/html/parser/ParsedChunkQueue.h"
 #include "core/html/parser/TextResourceDecoder.h"
-#include "core/html/parser/XSSAuditorDelegate.h"
+// BKTODO: #include "core/html/parser/XSSAuditorDelegate.h"
 #include "wtf/PassOwnPtr.h"
 #include "wtf/WeakPtr.h"
 
@@ -55,7 +66,7 @@ public:
         Configuration();
         HTMLParserOptions options;
         WeakPtr<HTMLDocumentParser> parser;
-        OwnPtr<XSSAuditor> xssAuditor;
+        // BKTODO: OwnPtr<XSSAuditor> xssAuditor;
         OwnPtr<TokenPreloadScanner> preloadScanner;
         OwnPtr<TextResourceDecoder> decoder;
         RefPtr<ParsedChunkQueue> parsedChunkQueue;
@@ -114,9 +125,9 @@ private:
     OwnPtr<CompactHTMLTokenStream> m_pendingTokens;
     const size_t m_pendingTokenLimit;
     PreloadRequestStream m_pendingPreloads;
-    XSSInfoStream m_pendingXSSInfos;
+    // BKTODO: XSSInfoStream m_pendingXSSInfos;
 
-    OwnPtr<XSSAuditor> m_xssAuditor;
+    // BKTODO: OwnPtr<XSSAuditor> m_xssAuditor;
     OwnPtr<TokenPreloadScanner> m_preloadScanner;
     OwnPtr<TextResourceDecoder> m_decoder;
     DocumentEncodingData m_lastSeenEncodingData;

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BackgroundHTMLParser.cpp
+// Description: BackgroundHTMLParser Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google, Inc. All Rights Reserved.
  *
@@ -28,9 +39,9 @@
 #include "core/HTMLNames.h"
 #include "core/html/parser/HTMLDocumentParser.h"
 #include "core/html/parser/TextResourceDecoder.h"
-#include "core/html/parser/XSSAuditor.h"
+// BKTODO: #include "core/html/parser/XSSAuditor.h"
 #include "platform/Task.h"
-#include "platform/ThreadSafeFunctional.h"
+// BKTODO: #include "platform/ThreadSafeFunctional.h"
 #include "public/platform/Platform.h"
 #include "public/platform/WebTaskRunner.h"
 #include "wtf/text/TextPosition.h"
@@ -72,11 +83,13 @@ static void checkThatPreloadsAreSafeToSendToAnotherThread(const PreloadRequestSt
         ASSERT(preloads[i]->isSafeToSendToAnotherThread());
 }
 
+#if 0 // BKTODO:
 static void checkThatXSSInfosAreSafeToSendToAnotherThread(const XSSInfoStream& infos)
 {
     for (size_t i = 0; i < infos.size(); ++i)
         ASSERT(infos[i]->isSafeToSendToAnotherThread());
 }
+#endif
 
 #endif
 
@@ -102,7 +115,7 @@ BackgroundHTMLParser::BackgroundHTMLParser(PassRefPtr<WeakReference<BackgroundHT
     , m_parser(config->parser)
     , m_pendingTokens(adoptPtr(new CompactHTMLTokenStream))
     , m_pendingTokenLimit(config->pendingTokenLimit)
-    , m_xssAuditor(config->xssAuditor.release())
+    // BKTODO: , m_xssAuditor(config->xssAuditor.release())
     , m_preloadScanner(config->preloadScanner.release())
     , m_decoder(config->decoder.release())
     , m_loadingTaskRunner(loadingTaskRunner)
@@ -156,10 +169,13 @@ void BackgroundHTMLParser::updateDocument(const String& decodedData)
     if (encodingData != m_lastSeenEncodingData) {
         m_lastSeenEncodingData = encodingData;
 
+        ASSERT(false); // BKTODO:
+#if 0
         m_xssAuditor->setEncoding(encodingData.encoding());
         m_loadingTaskRunner->postTask(
             BLINK_FROM_HERE,
             threadSafeBind(&HTMLDocumentParser::didReceiveEncodingDataFromBackgroundParser, AllowCrossThreadAccess(m_parser), encodingData));
+#endif
     }
 
     if (decodedData.isEmpty())
@@ -224,6 +240,8 @@ void BackgroundHTMLParser::pumpTokenizer()
         return;
 
     while (true) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (m_xssAuditor->isEnabled())
             m_sourceTracker.start(m_input.current(), m_tokenizer.get(), *m_token);
 
@@ -267,6 +285,7 @@ void BackgroundHTMLParser::pumpTokenizer()
             if (m_input.totalCheckpointTokenCount() > m_outstandingTokenLimit)
                 break;
         }
+#endif
     }
 }
 
@@ -278,12 +297,12 @@ void BackgroundHTMLParser::sendTokensToMainThread()
 #if ENABLE(ASSERT)
     checkThatTokensAreSafeToSendToAnotherThread(m_pendingTokens.get());
     checkThatPreloadsAreSafeToSendToAnotherThread(m_pendingPreloads);
-    checkThatXSSInfosAreSafeToSendToAnotherThread(m_pendingXSSInfos);
+    ASSERT(false); // BKTODO: checkThatXSSInfosAreSafeToSendToAnotherThread(m_pendingXSSInfos);
 #endif
 
     OwnPtr<HTMLDocumentParser::ParsedChunk> chunk = adoptPtr(new HTMLDocumentParser::ParsedChunk);
     chunk->preloads.swap(m_pendingPreloads);
-    chunk->xssInfos.swap(m_pendingXSSInfos);
+    ASSERT(false); // BKTODO: chunk->xssInfos.swap(m_pendingXSSInfos);
     chunk->tokenizerState = m_tokenizer->state();
     chunk->treeBuilderState = m_treeBuilderSimulator.state();
     chunk->inputCheckpoint = m_input.createCheckpoint(m_pendingTokens->size());
@@ -294,9 +313,12 @@ void BackgroundHTMLParser::sendTokensToMainThread()
 
     bool isEmpty = m_parsedChunkQueue->enqueue(chunk.release());
     if (isEmpty) {
+        ASSERT(false); // BKTODO:
+#if 0
         m_loadingTaskRunner->postTask(
             BLINK_FROM_HERE,
             new Task(threadSafeBind(&HTMLDocumentParser::notifyPendingParsedChunks, AllowCrossThreadAccess(m_parser))));
+#endif
     }
 
     m_pendingTokens = adoptPtr(new CompactHTMLTokenStream);
