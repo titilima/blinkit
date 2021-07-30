@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BaseTextInputType.cpp
+// Description: BaseTextInputType Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * This file is part of the WebKit project.
  *
@@ -23,7 +34,7 @@
 
 #include "core/html/forms/BaseTextInputType.h"
 
-#include "bindings/core/v8/ScriptRegexp.h"
+// BKTODO: #include "bindings/core/v8/ScriptRegexp.h"
 #include "core/HTMLNames.h"
 #include "core/html/HTMLInputElement.h"
 
@@ -73,6 +84,9 @@ bool BaseTextInputType::tooShort(const String& value, HTMLTextFormControlElement
 
 bool BaseTextInputType::patternMismatch(const String& value) const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     const AtomicString& rawPattern = element().fastGetAttribute(patternAttr);
     // Empty values can't be mismatched
     if (rawPattern.isNull() || value.isEmpty() || !ScriptRegexp(rawPattern, TextCaseSensitive).isValid())
@@ -82,6 +96,7 @@ bool BaseTextInputType::patternMismatch(const String& value) const
     int valueLength = value.length();
     int matchOffset = ScriptRegexp(pattern, TextCaseSensitive).match(value, 0, &matchLength);
     return matchOffset || matchLength != valueLength;
+#endif
 }
 
 bool BaseTextInputType::supportsPlaceholder() const
