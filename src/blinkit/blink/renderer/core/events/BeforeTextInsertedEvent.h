@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Google Inc. All rights reserved.
+ * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -16,56 +16,43 @@
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE COMPUTER, INC. OR
  * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef BeforeTextInsertedEvent_h
+#define BeforeTextInsertedEvent_h
 
-#include "core/css/CSSSVGDocumentValue.h"
-
-#include "core/css/CSSMarkup.h"
-#include "core/dom/Document.h"
-#include "core/fetch/FetchInitiatorTypeNames.h"
-#include "core/fetch/FetchRequest.h"
-#include "core/fetch/ResourceFetcher.h"
+#include "core/events/Event.h"
 
 namespace blink {
 
-CSSSVGDocumentValue::CSSSVGDocumentValue(const String& url)
-    : CSSValue(CSSSVGDocumentClass)
-    , m_url(url)
-    , m_loadRequested(false)
-{
-}
+class BeforeTextInsertedEvent final : public Event {
+public:
+    ~BeforeTextInsertedEvent() override;
 
-CSSSVGDocumentValue::~CSSSVGDocumentValue()
-{
-}
-
-DocumentResource* CSSSVGDocumentValue::load(Document* document)
-{
-    ASSERT(document);
-
-    if (!m_loadRequested) {
-        m_loadRequested = true;
-
-        FetchRequest request(ResourceRequest(document->completeURL(m_url)), FetchInitiatorTypeNames::css);
-        m_document = DocumentResource::fetchSVGDocument(request, document->fetcher());
+    static PassRefPtrWillBeRawPtr<BeforeTextInsertedEvent> create(const String& text)
+    {
+        return adoptRefWillBeNoop(new BeforeTextInsertedEvent(text));
     }
 
-    return m_document.get();
-}
+    const AtomicString& interfaceName() const override;
+    bool isBeforeTextInsertedEvent() const override { return true; }
 
-String CSSSVGDocumentValue::customCSSText() const
-{
-    return serializeString(m_url);
-}
+    const String& text() const { return m_text; }
+    void setText(const String& s) { m_text = s; }
 
-bool CSSSVGDocumentValue::equals(const CSSSVGDocumentValue& other) const
-{
-    return m_url == other.m_url;
-}
+    DECLARE_VIRTUAL_TRACE();
 
-} // namespace blink
+private:
+    explicit BeforeTextInsertedEvent(const String&);
+
+    String m_text;
+};
+
+} // namespace
+
+#endif
