@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FrameHost.cpp
+// Description: FrameHost Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -33,10 +44,10 @@
 #include "core/frame/EventHandlerRegistry.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/TopControls.h"
-#include "core/inspector/ConsoleMessageStorage.h"
+// BKTODO: #include "core/inspector/ConsoleMessageStorage.h"
 #include "core/page/Page.h"
 #include "public/platform/Platform.h"
-#include "public/platform/WebScheduler.h"
+// BKTODO: #include "public/platform/WebScheduler.h"
 
 namespace blink {
 
@@ -51,7 +62,7 @@ FrameHost::FrameHost(Page& page)
     , m_pageScaleConstraintsSet(PageScaleConstraintsSet::create())
     , m_visualViewport(VisualViewport::create(*this))
     , m_eventHandlerRegistry(adoptPtrWillBeNoop(new EventHandlerRegistry(*this)))
-    , m_consoleMessageStorage(ConsoleMessageStorage::create())
+    // BKTODO: , m_consoleMessageStorage(ConsoleMessageStorage::create())
     , m_subframeCount(0)
 {
 }
@@ -61,20 +72,24 @@ FrameHost::~FrameHost()
 {
 }
 
+#if 0 // BKTODO:
 Settings& FrameHost::settings() const
 {
     return m_page->settings();
 }
+#endif
 
 ChromeClient& FrameHost::chromeClient() const
 {
     return m_page->chromeClient();
 }
 
+#if 0 // BKTODO:
 UseCounter& FrameHost::useCounter() const
 {
     return m_page->useCounter();
 }
+#endif
 
 float FrameHost::deviceScaleFactor() const
 {
@@ -120,14 +135,18 @@ void checkFrameCountConsistency(int expectedFrameCount, Frame* frame)
 {
     ASSERT(expectedFrameCount >= 0);
 
+    ASSERT(false); // BKTODO:
+#if 0
     int actualFrameCount = 0;
     for (; frame; frame = frame->tree().traverseNext())
         ++actualFrameCount;
 
     ASSERT(expectedFrameCount == actualFrameCount);
+#endif
 }
 #endif
 
+#if 0 // BKTODO:
 int FrameHost::subframeCount() const
 {
 #if ENABLE(ASSERT)
@@ -177,5 +196,6 @@ void FrameHost::setUserAgentPageScaleConstraints(PageScaleConstraints newConstra
 
     rootView->setNeedsLayout();
 }
+#endif
 
 }

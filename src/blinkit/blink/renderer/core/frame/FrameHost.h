@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FrameHost.h
+// Description: FrameHost Class
+//      Author: Ziming Li
+//     Created: 2021-07-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -69,9 +80,9 @@ public:
 
     // Careful: This function will eventually be removed.
     Page& page() const { return *m_page; }
-    Settings& settings() const;
+    // BKTODO: Settings& settings() const;
     ChromeClient& chromeClient() const;
-    UseCounter& useCounter() const;
+    // BKTODO: UseCounter& useCounter() const;
 
     // Corresponds to pixel density of the device where this Page is
     // being displayed. In multi-monitor setups this can vary between pages.
