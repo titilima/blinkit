@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLSelectElement.cpp
+// Description: HTMLSelectElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
@@ -27,19 +38,19 @@
 
 #include "core/html/HTMLSelectElement.h"
 
-#include "bindings/core/v8/ExceptionMessages.h"
+// BKTODO: #include "bindings/core/v8/ExceptionMessages.h"
 #include "bindings/core/v8/ExceptionState.h"
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "bindings/core/v8/UnionTypesCore.h"
+// BKTODO: #include "bindings/core/v8/UnionTypesCore.h"
 #include "core/HTMLNames.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/Attribute.h"
 #include "core/dom/ElementTraversal.h"
 #include "core/dom/ExecutionContextTask.h"
 #include "core/dom/NodeComputedStyle.h"
 #include "core/dom/NodeListsNodeData.h"
 #include "core/dom/NodeTraversal.h"
-#include "core/events/GestureEvent.h"
+// BKTODO: #include "core/events/GestureEvent.h"
 #include "core/events/KeyboardEvent.h"
 #include "core/events/MouseEvent.h"
 #include "core/events/ScopedEventQueue.h"
@@ -52,7 +63,7 @@
 #include "core/html/HTMLOptionElement.h"
 #include "core/html/forms/FormController.h"
 #include "core/input/EventHandler.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "core/layout/HitTestRequest.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutListBox.h"
@@ -60,7 +71,7 @@
 #include "core/layout/LayoutText.h"
 #include "core/layout/LayoutTheme.h"
 #include "core/layout/LayoutView.h"
-#include "core/page/AutoscrollController.h"
+// BKTODO: #include "core/page/AutoscrollController.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/Page.h"
 #include "core/page/SpatialNavigation.h"
@@ -230,6 +241,8 @@ int HTMLSelectElement::activeSelectionEndListIndex() const
 
 void HTMLSelectElement::add(const HTMLOptionElementOrHTMLOptGroupElement& element, const HTMLElementOrLong& before, ExceptionState& exceptionState)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     RefPtrWillBeRawPtr<HTMLElement> elementToInsert;
     ASSERT(!element.isNull());
     if (element.isHTMLOptionElement())
@@ -247,6 +260,7 @@ void HTMLSelectElement::add(const HTMLOptionElementOrHTMLOptGroupElement& elemen
 
     insertBefore(elementToInsert, beforeElement.get(), exceptionState);
     setNeedsValidityCheck();
+#endif
 }
 
 void HTMLSelectElement::remove(int optionIndex)
@@ -433,10 +447,12 @@ void HTMLSelectElement::optionElementChildrenChanged()
 {
     setNeedsValidityCheck();
 
+#if 0 // BKTODO:
     if (layoutObject()) {
         if (AXObjectCache* cache = layoutObject()->document().existingAXObjectCache())
             cache->childrenChanged(this);
     }
+#endif
 }
 
 void HTMLSelectElement::accessKeyAction(bool sendMouseEvents)
@@ -477,10 +493,15 @@ void HTMLSelectElement::setOption(unsigned index, HTMLOptionElement* option, Exc
     int diff = index - length();
     // We should check |index >= maxListItems| first to avoid integer overflow.
     if (index >= maxListItems || listItems().size() + diff + 1 > maxListItems) {
+        ASSERT(false); // BKTODO:
+#if 0
         document().addConsoleMessage(ConsoleMessage::create(JSMessageSource, WarningMessageLevel,
             String::format("Blocked to expand the option list and set an option at index=%u.  The maximum list length is %u.", index, maxListItems)));
+#endif
         return;
     }
+    ASSERT(false); // BKTODO:
+#if 0
     HTMLOptionElementOrHTMLOptGroupElement element;
     element.setHTMLOptionElement(option);
     HTMLElementOrLong before;
@@ -498,14 +519,18 @@ void HTMLSelectElement::setOption(unsigned index, HTMLOptionElement* option, Exc
         if (diff >= 0 && option->selected())
             optionSelectionStateChanged(option, true);
     }
+#endif
 }
 
 void HTMLSelectElement::setLength(unsigned newLen, ExceptionState& exceptionState)
 {
     // We should check |newLen > maxListItems| first to avoid integer overflow.
     if (newLen > maxListItems || listItems().size() + newLen - length() > maxListItems) {
+        ASSERT(false); // BKTODO:
+#if 0
         document().addConsoleMessage(ConsoleMessage::create(JSMessageSource, WarningMessageLevel,
             String::format("Blocked to expand the option list to %u items.  The maximum list length is %u.", newLen, maxListItems)));
+#endif
         return;
     }
     int diff = length() - newLen;
@@ -756,8 +781,10 @@ void HTMLSelectElement::scrollToSelection()
     if (usesMenuList())
         return;
     scrollToIndex(activeSelectionEndListIndex());
+#if 0 // BKTODO:
     if (AXObjectCache* cache = document().existingAXObjectCache())
         cache->listboxActiveIndexChanged(this);
+#endif
 }
 
 void HTMLSelectElement::setOptionsChangedOnLayoutObject()
@@ -806,10 +833,12 @@ void HTMLSelectElement::setRecalcListItems()
         invalidateSelectedItems();
     }
 
+#if 0 // BKTODO:
     if (layoutObject()) {
         if (AXObjectCache* cache = layoutObject()->document().existingAXObjectCache())
             cache->childrenChanged(this);
     }
+#endif
 }
 
 void HTMLSelectElement::recalcListItems(bool updateSelectedStates) const
@@ -1488,8 +1517,11 @@ int HTMLSelectElement::listIndexForOption(const HTMLOptionElement& option)
 
 AutoscrollController* HTMLSelectElement::autoscrollController() const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (Page* page = document().page())
         return &page->autoscrollController();
+#endif
     return nullptr;
 }
 
@@ -1504,6 +1536,8 @@ void HTMLSelectElement::handleMouseRelease()
 void HTMLSelectElement::listBoxDefaultEventHandler(Event* event)
 {
     const ListItems& listItems = this->listItems();
+    ASSERT(false); // BKTODO:
+#if 0
     if (event->type() == EventTypeNames::gesturetap && event->isGestureEvent()) {
         focus();
         // Calling focus() may cause us to lose our layoutObject or change the
@@ -1684,6 +1718,7 @@ void HTMLSelectElement::listBoxDefaultEventHandler(Event* event)
             event->setDefaultHandled();
         }
     }
+#endif
 }
 
 void HTMLSelectElement::defaultEventHandler(Event* event)
@@ -1802,8 +1837,10 @@ void HTMLSelectElement::finishParsingChildren()
     if (usesMenuList())
         return;
     scrollToIndex(optionToListIndex(selectedIndex()));
+#if 0 // BKTODO:
     if (AXObjectCache* cache = document().existingAXObjectCache())
         cache->listboxActiveIndexChanged(this);
+#endif
 }
 
 bool HTMLSelectElement::anonymousIndexedSetter(unsigned index, PassRefPtrWillBeRawPtr<HTMLOptionElement> value, ExceptionState& exceptionState)
@@ -1925,10 +1962,12 @@ LayoutUnit HTMLSelectElement::clientPaddingRight() const
 void HTMLSelectElement::popupDidHide()
 {
     m_popupIsVisible = false;
+#if 0 // BKTODO:
     if (AXObjectCache* cache = document().existingAXObjectCache()) {
         if (layoutObject() && layoutObject()->isMenuList())
             cache->didHideMenuListPopup(toLayoutMenuList(layoutObject()));
     }
+#endif
 }
 
 void HTMLSelectElement::setIndexToSelectOnCancel(int listIndex)
@@ -1987,8 +2026,10 @@ void HTMLSelectElement::showPopup()
     FloatQuad quad(menuList->localToAbsoluteQuad(FloatQuad(menuList->borderBoundingBox())));
     IntSize size = pixelSnappedIntRect(menuList->frameRect()).size();
     m_popup->show(quad, size, optionToListIndex(selectedIndex()));
+#if 0 // BKTODO:
     if (AXObjectCache* cache = document().existingAXObjectCache())
         cache->didShowMenuListPopup(menuList);
+#endif
 }
 
 void HTMLSelectElement::hidePopup()
