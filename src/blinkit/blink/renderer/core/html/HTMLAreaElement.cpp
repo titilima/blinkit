@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLAreaElement.cpp
+// Description: HTMLAreaElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,7 +35,7 @@
 #include "core/HTMLNames.h"
 #include "core/dom/ElementTraversal.h"
 #include "core/html/HTMLImageElement.h"
-#include "core/html/HTMLMapElement.h"
+// BKTODO: #include "core/html/HTMLMapElement.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutImage.h"
 #include "core/layout/LayoutView.h"
@@ -56,6 +67,8 @@ DEFINE_NODE_FACTORY(HTMLAreaElement)
 
 void HTMLAreaElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (name == shapeAttr) {
         if (equalIgnoringCase(value, "default"))
             m_shape = Default;
@@ -74,6 +87,7 @@ void HTMLAreaElement::parseAttribute(const QualifiedName& name, const AtomicStri
     } else {
         HTMLAnchorElement::parseAttribute(name, oldValue, value);
     }
+#endif
 }
 
 void HTMLAreaElement::invalidateCachedRegion()
@@ -179,8 +193,11 @@ Path HTMLAreaElement::getRegion(const LayoutSize& size) const
 
 HTMLImageElement* HTMLAreaElement::imageElement() const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (HTMLMapElement* mapElement = Traversal<HTMLMapElement>::firstAncestor(*this))
         return mapElement->imageElement();
+#endif
     return nullptr;
 }
 
