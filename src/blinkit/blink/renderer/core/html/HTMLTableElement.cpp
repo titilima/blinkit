@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTableElement.cpp
+// Description: HTMLTableElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1997 Martin Jones (mjones@kde.org)
  *           (C) 1997 Torben Weis (weis@kde.org)
@@ -41,7 +52,7 @@
 #include "core/html/HTMLTableSectionElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/layout/LayoutTable.h"
-#include "platform/weborigin/Referrer.h"
+// BKTODO: #include "platform/weborigin/Referrer.h"
 #include "wtf/StdLibExtras.h"
 
 namespace blink {
@@ -298,7 +309,7 @@ void HTMLTableElement::collectStyleForPresentationAttribute(const QualifiedName&
         String url = stripLeadingAndTrailingHTMLSpaces(value);
         if (!url.isEmpty()) {
             RefPtrWillBeRawPtr<CSSImageValue> imageValue = CSSImageValue::create(url, document().completeURL(url));
-            imageValue->setReferrer(Referrer(document().outgoingReferrer(), document().referrerPolicy()));
+            ASSERT(false); // BKTODO: imageValue->setReferrer(Referrer(document().outgoingReferrer(), document().referrerPolicy()));
             style->setProperty(CSSProperty(CSSPropertyBackgroundImage, imageValue.release()));
         }
     } else if (name == valignAttr) {
@@ -405,6 +416,9 @@ const StylePropertySet* HTMLTableElement::additionalPresentationAttributeStyle()
     if (m_frameAttr)
         return nullptr;
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!m_borderAttr && !m_borderColorAttr) {
         // Setting the border to 'hidden' allows it to win over any border
         // set on the table's cells during border-conflict resolution.
@@ -421,6 +435,7 @@ const StylePropertySet* HTMLTableElement::additionalPresentationAttributeStyle()
     }
     DEFINE_STATIC_REF_WILL_BE_PERSISTENT(StylePropertySet, outsetBorderStyle, (createBorderStyle(CSSValueOutset)));
     return outsetBorderStyle;
+#endif
 }
 
 HTMLTableElement::CellBorders HTMLTableElement::cellBorders() const
@@ -515,12 +530,16 @@ const StylePropertySet* HTMLTableElement::additionalGroupStyle(bool rows)
     if (m_rulesAttr != GroupsRules)
         return nullptr;
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (rows) {
         DEFINE_STATIC_REF_WILL_BE_PERSISTENT(StylePropertySet, rowBorderStyle, (createGroupBorderStyle(true)));
         return rowBorderStyle;
     }
     DEFINE_STATIC_REF_WILL_BE_PERSISTENT(StylePropertySet, columnBorderStyle, (createGroupBorderStyle(false)));
     return columnBorderStyle;
+#endif
 }
 
 bool HTMLTableElement::isURLAttribute(const Attribute& attribute) const
