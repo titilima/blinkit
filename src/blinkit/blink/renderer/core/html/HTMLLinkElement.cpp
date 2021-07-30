@@ -767,10 +767,10 @@ void LinkStyle::process()
         bool blocking = mediaQueryMatches && !m_owner->isAlternate();
         addPendingSheet(blocking ? Blocking : NonBlocking);
 
-        // Load stylesheets that are not needed for the layout immediately with low priority.
-        FetchRequest request = builder.build(blocking);
         ASSERT(false); // BKTODO:
 #if 0
+        // Load stylesheets that are not needed for the layout immediately with low priority.
+        FetchRequest request = builder.build(blocking);
         CrossOriginAttributeValue crossOrigin = crossOriginAttributeValue(m_owner->fastGetAttribute(HTMLNames::crossoriginAttr));
         if (crossOrigin != CrossOriginAttributeNotSet) {
             request.setCrossOriginAccessControl(document().securityOrigin(), crossOrigin);
