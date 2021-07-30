@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Frame.h
+// Description: Frame Class
+//      Author: Ziming Li
+//     Created: 2021-07-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1998, 1999 Torben Weis <weis@kde.org>
  *                     1999-2001 Lars Knoll <knoll@kde.org>
@@ -29,9 +40,11 @@
 #define Frame_h
 
 #include "core/CoreExport.h"
+#if 0 // BKTODO:
 #include "core/frame/FrameTypes.h"
 #include "core/loader/FrameLoaderTypes.h"
 #include "core/page/FrameTree.h"
+#endif
 #include "platform/heap/Handle.h"
 #include "wtf/Forward.h"
 #include "wtf/RefCounted.h"
@@ -50,7 +63,7 @@ class LayoutPart;
 class KURL;
 class Page;
 class SecurityContext;
-class Settings;
+// BKTODO: class Settings;
 class WindowProxy;
 class WindowProxyManager;
 struct FrameLoadRequest;
@@ -79,7 +92,7 @@ public:
     // This version of Frame::navigate assumes the resulting navigation is not
     // to be started on a timer. Use the method above in such cases.
     virtual void navigate(const FrameLoadRequest&) = 0;
-    virtual void reload(FrameLoadType, ClientRedirectPolicy) = 0;
+    // BKTODO: virtual void reload(FrameLoadType, ClientRedirectPolicy) = 0;
 
     virtual void detach(FrameDetachType);
     void detachChildren();
@@ -97,14 +110,16 @@ public:
     bool isMainFrame() const;
     bool isLocalRoot() const;
 
+#if 0 // BKTODO:
     FrameOwner* owner() const;
     void setOwner(FrameOwner* owner) { m_owner = owner; }
     HTMLFrameOwnerElement* deprecatedLocalOwner() const;
+#endif
 
-    FrameTree& tree() const;
+    // BKTODO: FrameTree& tree() const;
     ChromeClient& chromeClient() const;
 
-    virtual SecurityContext* securityContext() const = 0;
+    // BKTODO: virtual SecurityContext* securityContext() const = 0;
 
     Frame* findFrameForNavigation(const AtomicString& name, Frame& activeFrame);
     Frame* findUnsafeParentScrollPropagationBoundary();
@@ -122,7 +137,7 @@ public:
 
     int64_t frameID() const { return m_frameID; }
 
-    Settings* settings() const; // can be null
+    // BKTODO: Settings* settings() const; // can be null
 
     // isLoading() is true when the embedder should think a load is in progress.
     // In the case of LocalFrames, it means that the frame has sent a didStartLoading()
@@ -136,7 +151,7 @@ public:
 protected:
     Frame(FrameClient*, FrameHost*, FrameOwner*);
 
-    mutable FrameTree m_treeNode;
+    // BKTODO: mutable FrameTree m_treeNode;
 
     RawPtrWillBeMember<FrameHost> m_host;
     RawPtrWillBeMember<FrameOwner> m_owner;
@@ -153,6 +168,7 @@ inline FrameClient* Frame::client() const
     return m_client;
 }
 
+#if 0 // BKTODO:
 inline FrameOwner* Frame::owner() const
 {
     return m_owner;
@@ -162,6 +178,7 @@ inline FrameTree& Frame::tree() const
 {
     return m_treeNode;
 }
+#endif
 
 // Allow equality comparisons of Frames by reference or pointer, interchangeably.
 DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES_REFCOUNTED(Frame)

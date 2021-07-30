@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Frame.cpp
+// Description: Frame Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1998, 1999 Torben Weis <weis@kde.org>
  *                     1999 Lars Knoll <knoll@kde.org>
@@ -34,17 +45,17 @@
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLFrameElementBase.h"
+// BKTODO: #include "core/html/HTMLFrameElementBase.h"
 #include "core/input/EventHandler.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/inspector/InstanceCounters.h"
 #include "core/layout/LayoutPart.h"
-#include "core/loader/EmptyClients.h"
+// BKTODO: #include "core/loader/EmptyClients.h"
 #include "core/loader/FrameLoaderClient.h"
 #include "core/page/FocusController.h"
 #include "core/page/Page.h"
 #include "wtf/PassOwnPtr.h"
-#include "wtf/RefCountedLeakCounter.h"
+// BKTODO: #include "wtf/RefCountedLeakCounter.h"
 
 namespace blink {
 
@@ -60,12 +71,14 @@ int64_t generateFrameID()
     return ++next;
 }
 
+#if 0 // BKTODO:
 #ifndef NDEBUG
 WTF::RefCountedLeakCounter& frameCounter()
 {
     DEFINE_STATIC_LOCAL(WTF::RefCountedLeakCounter, staticFrameCounter, ("Frame"));
     return staticFrameCounter;
 }
+#endif
 #endif
 
 } // namespace
@@ -75,13 +88,13 @@ Frame::~Frame()
     InstanceCounters::decrementCounter(InstanceCounters::FrameCounter);
     ASSERT(!m_owner);
 #ifndef NDEBUG
-    frameCounter().decrement();
+    // BKTODO: frameCounter().decrement();
 #endif
 }
 
 DEFINE_TRACE(Frame)
 {
-    visitor->trace(m_treeNode);
+    // BKTODO: visitor->trace(m_treeNode);
     visitor->trace(m_host);
     visitor->trace(m_owner);
     visitor->trace(m_client);
@@ -102,6 +115,8 @@ void Frame::detach(FrameDetachType type)
 
 void Frame::detachChildren()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     typedef WillBeHeapVector<RefPtrWillBeMember<Frame>> FrameVector;
     FrameVector childrenToDetach;
     childrenToDetach.reserveCapacity(tree().childCount());
@@ -109,15 +124,19 @@ void Frame::detachChildren()
         childrenToDetach.append(child);
     for (const auto& child : childrenToDetach)
         child->detach(FrameDetachType::Remove);
+#endif
 }
 
 void Frame::disconnectOwnerElement()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_owner) {
         if (m_owner->isLocal())
             toHTMLFrameOwnerElement(m_owner)->clearContentFrame();
     }
     m_owner = nullptr;
+#endif
 }
 
 Page* Frame::page() const
@@ -134,11 +153,15 @@ FrameHost* Frame::host() const
 
 bool Frame::isMainFrame() const
 {
-    return !tree().parent();
+    ASSERT(false); // BKTODO: return !tree().parent();
+    return true;
 }
 
 bool Frame::isLocalRoot() const
 {
+    ASSERT(false); // BKTODO:
+    return true;
+#if 0
     if (isRemoteFrame())
         return false;
 
@@ -146,8 +169,10 @@ bool Frame::isLocalRoot() const
         return true;
 
     return tree().parent()->isRemoteFrame();
+#endif
 }
 
+#if 0 // BKTODO:
 HTMLFrameOwnerElement* Frame::deprecatedLocalOwner() const
 {
     return m_owner && m_owner->isLocal() ? toHTMLFrameOwnerElement(m_owner) : nullptr;
@@ -158,20 +183,26 @@ static ChromeClient& emptyChromeClient()
     DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<EmptyChromeClient>, client, (EmptyChromeClient::create()));
     return *client;
 }
+#endif
 
 ChromeClient& Frame::chromeClient() const
 {
     if (Page* page = this->page())
         return page->chromeClient();
-    return emptyChromeClient();
+    ASSERT(false); // BKTODO: return emptyChromeClient();
+    exit(0);
 }
 
 Frame* Frame::findFrameForNavigation(const AtomicString& name, Frame& activeFrame)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     Frame* frame = tree().find(name);
     if (!frame || !activeFrame.canNavigate(*frame))
         return nullptr;
     return frame;
+#endif
 }
 
 static bool canAccessAncestor(const SecurityOrigin& activeSecurityOrigin, const Frame* targetFrame)
@@ -181,6 +212,8 @@ static bool canAccessAncestor(const SecurityOrigin& activeSecurityOrigin, const 
     if (!targetFrame)
         return false;
 
+    ASSERT(false); // BKTODO:
+#if 0
     const bool isLocalActiveOrigin = activeSecurityOrigin.isLocal();
     for (const Frame* ancestorFrame = targetFrame; ancestorFrame; ancestorFrame = ancestorFrame->tree().parent()) {
         const SecurityOrigin* ancestorSecurityOrigin = ancestorFrame->securityContext()->securityOrigin();
@@ -193,12 +226,15 @@ static bool canAccessAncestor(const SecurityOrigin& activeSecurityOrigin, const 
         if (isLocalActiveOrigin && ancestorSecurityOrigin->isLocal())
             return true;
     }
+#endif
 
     return false;
 }
 
 bool Frame::canNavigate(const Frame& targetFrame)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // Frame-busting is generally allowed, but blocked for sandboxed frames lacking the 'allow-top-navigation' flag.
     if (!securityContext()->isSandboxed(SandboxTopNavigation) && targetFrame == tree().top())
         return true;
@@ -253,11 +289,14 @@ bool Frame::canNavigate(const Frame& targetFrame)
     }
 
     printNavigationErrorMessage(targetFrame, "The frame attempting navigation is neither same-origin with the target, nor is it the target's parent or opener.");
+#endif
     return false;
 }
 
 Frame* Frame::findUnsafeParentScrollPropagationBoundary()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     Frame* currentFrame = this;
     Frame* ancestorFrame = tree().parent();
 
@@ -267,11 +306,15 @@ Frame* Frame::findUnsafeParentScrollPropagationBoundary()
         currentFrame = ancestorFrame;
         ancestorFrame = ancestorFrame->tree().parent();
     }
+#endif
     return nullptr;
 }
 
 LayoutPart* Frame::ownerLayoutObject() const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!deprecatedLocalOwner())
         return nullptr;
     LayoutObject* object = deprecatedLocalOwner()->layoutObject();
@@ -284,18 +327,25 @@ LayoutPart* Frame::ownerLayoutObject() const
     if (!object->isLayoutPart())
         return nullptr;
     return toLayoutPart(object);
+#endif
 }
 
+#if 0 // BKTODO:
 Settings* Frame::settings() const
 {
     if (m_host)
         return &m_host->settings();
     return nullptr;
 }
+#endif
 
 Frame::Frame(FrameClient* client, FrameHost* host, FrameOwner* owner)
+#if 0 // BKTODO:
     : m_treeNode(this)
     , m_host(host)
+#else
+    : m_host(host)
+#endif
     , m_owner(owner)
     , m_client(client)
     , m_frameID(generateFrameID())
@@ -306,15 +356,18 @@ Frame::Frame(FrameClient* client, FrameHost* host, FrameOwner* owner)
     ASSERT(page());
 
 #ifndef NDEBUG
-    frameCounter().increment();
+    // BKTODO: frameCounter().increment();
 #endif
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_owner) {
         if (m_owner->isLocal())
             toHTMLFrameOwnerElement(m_owner)->setContentFrame(*this);
     } else {
         page()->setMainFrame(this);
     }
+#endif
 }
 
 } // namespace blink
