@@ -53,6 +53,7 @@ readystatechange
 reset
 resize
 scroll
+search
 select
 selectionchange
 selectstart

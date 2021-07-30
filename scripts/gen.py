@@ -19,6 +19,11 @@ def run_script(rel_path, args = ''):
     return run(cmd_line)
 
 os.chdir(SCRIPT_PATH)
+run_script('blink/create-html-entity-table.py',                                                             \
+    '-o ' + os.path.normpath('../src/blinkit/blink/renderer/core/html/parser/HTMLEntityTable.cpp') + ' ' +  \
+    os.path.normpath('blink/in/HTMLEntityNames.in')                                                         \
+)
+
 run_script('blink/make_element_factory.py',                     \
     os.path.normpath('blink/in/HTMLTagNames.in') + ' ' +        \
     os.path.normpath('blink/in/HTMLAttributeNames.in') + ' ' +  \
