@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CompositedLayerMapping.cpp
+// Description: CompositedLayerMapping Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2010, 2011 Apple Inc. All rights reserved.
  *
@@ -30,19 +41,23 @@
 #include "core/fetch/ImageResource.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
-#include "core/frame/RemoteFrame.h"
+// BKTODO: #include "core/frame/RemoteFrame.h"
 #include "core/frame/Settings.h"
+#if 0 // BKTODO:
 #include "core/html/HTMLCanvasElement.h"
 #include "core/html/HTMLIFrameElement.h"
 #include "core/html/HTMLMediaElement.h"
 #include "core/html/HTMLVideoElement.h"
 #include "core/html/canvas/CanvasRenderingContext.h"
+#endif
 #include "core/inspector/InspectorInstrumentation.h"
+#if 0 // BKTODO:
 #include "core/layout/LayoutEmbeddedObject.h"
 #include "core/layout/LayoutHTMLCanvas.h"
+#endif
 #include "core/layout/LayoutImage.h"
 #include "core/layout/LayoutPart.h"
-#include "core/layout/LayoutVideo.h"
+// BKTODO: #include "core/layout/LayoutVideo.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
 #include "core/page/ChromeClient.h"
@@ -51,10 +66,10 @@
 #include "core/paint/PaintInfo.h"
 #include "core/paint/PaintLayerPainter.h"
 #include "core/paint/PaintLayerStackingNodeIterator.h"
-#include "core/paint/PaintTiming.h"
+// BKTODO: #include "core/paint/PaintTiming.h"
 #include "core/paint/ScrollableAreaPainter.h"
 #include "core/paint/TransformRecorder.h"
-#include "core/plugins/PluginView.h"
+// BKTODO: #include "core/plugins/PluginView.h"
 #include "platform/LengthFunctions.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/fonts/FontCache.h"
@@ -80,9 +95,9 @@ static IntRect contentsRect(const LayoutObject* layoutObject)
     if (!layoutObject->isBox())
         return IntRect();
     if (layoutObject->isCanvas())
-        return pixelSnappedIntRect(toLayoutHTMLCanvas(layoutObject)->replacedContentRect());
+        ASSERT(false); // BKTODO: return pixelSnappedIntRect(toLayoutHTMLCanvas(layoutObject)->replacedContentRect());
     if (layoutObject->isVideo())
-        return toLayoutVideo(layoutObject)->videoBox();
+        ASSERT(false); // BKTODO: return toLayoutVideo(layoutObject)->videoBox();
 
     return pixelSnappedIntRect(toLayoutBox(layoutObject)->contentBoxRect());
 }
@@ -114,11 +129,14 @@ static IntRect backgroundRect(const LayoutObject* layoutObject)
 
 static inline bool isAcceleratedCanvas(const LayoutObject* layoutObject)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (layoutObject->isCanvas()) {
         HTMLCanvasElement* canvas = toHTMLCanvasElement(layoutObject->node());
         if (CanvasRenderingContext* context = canvas->renderingContext())
             return context->isAccelerated();
     }
+#endif
     return false;
 }
 
@@ -144,20 +162,27 @@ static bool contentLayerSupportsDirectBackgroundComposition(const LayoutObject* 
 
 static WebLayer* platformLayerForPlugin(LayoutObject* layoutObject)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!layoutObject->isEmbeddedObject())
         return nullptr;
     Widget* widget = toLayoutEmbeddedObject(layoutObject)->widget();
     if (!widget || !widget->isPluginView())
         return nullptr;
     return toPluginView(widget)->platformLayer();
-
+#endif
 }
 
 static inline bool isAcceleratedContents(LayoutObject* layoutObject)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return isAcceleratedCanvas(layoutObject)
         || (layoutObject->isEmbeddedObject() && toLayoutEmbeddedObject(layoutObject)->requiresAcceleratedCompositing())
         || layoutObject->isVideo();
+#endif
 }
 
 // Get the scrolling coordinator in a way that works inside CompositedLayerMapping's destructor.
@@ -217,7 +242,7 @@ PassOwnPtr<GraphicsLayer> CompositedLayerMapping::createGraphicsLayer(Compositin
 
     OwnPtr<GraphicsLayer> graphicsLayer = GraphicsLayer::create(graphicsLayerFactory, this);
 
-    graphicsLayer->setCompositingReasons(reasons);
+    ASSERT(false); // BKTODO: graphicsLayer->setCompositingReasons(reasons);
     if (Node* owningNode = m_owningLayer.layoutObject()->generatingNode())
         graphicsLayer->setOwnerNodeId(DOMNodeIds::idForNode(owningNode));
 
@@ -305,6 +330,8 @@ void CompositedLayerMapping::updateContentsOpaque()
 {
     ASSERT(m_isMainFrameLayoutViewLayer || !m_backgroundLayer);
     if (isAcceleratedCanvas(layoutObject())) {
+        ASSERT(false); // BKTODO:
+#if 0
         // Determine whether the rendering context's external texture layer is opaque.
         CanvasRenderingContext* context = toHTMLCanvasElement(layoutObject()->node())->renderingContext();
         if (!context->hasAlpha())
@@ -313,6 +340,7 @@ void CompositedLayerMapping::updateContentsOpaque()
             m_graphicsLayer->setContentsOpaque(!Color(layer->backgroundColor()).hasAlpha());
         else
             m_graphicsLayer->setContentsOpaque(false);
+#endif
     } else if (m_backgroundLayer) {
         m_graphicsLayer->setContentsOpaque(false);
         m_backgroundLayer->setContentsOpaque(m_owningLayer.backgroundIsKnownToBeOpaqueInRect(compositedBounds()));
@@ -346,7 +374,7 @@ void CompositedLayerMapping::updateCompositingReasons()
 {
     // All other layers owned by this mapping will have the same compositing reason
     // for their lifetime, so they are initialized only when created.
-    m_graphicsLayer->setCompositingReasons(m_owningLayer.compositingReasons());
+    ASSERT(false); // BKTODO: m_graphicsLayer->setCompositingReasons(m_owningLayer.compositingReasons());
 }
 
 bool CompositedLayerMapping::owningLayerClippedByLayerNotAboveCompositedAncestor(PaintLayer* scrollParent)
@@ -531,6 +559,8 @@ bool CompositedLayerMapping::updateGraphicsLayerConfiguration()
         }
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (WebLayer* layer = platformLayerForPlugin(layoutObject)) {
         m_graphicsLayer->setContentsToPlatformLayer(layer);
     } else if (layoutObject->node() && layoutObject->node()->isFrameOwnerElement() && toHTMLFrameOwnerElement(layoutObject->node())->contentFrame()) {
@@ -548,6 +578,7 @@ bool CompositedLayerMapping::updateGraphicsLayerConfiguration()
             m_graphicsLayer->setContentsToPlatformLayer(context->platformLayer());
         layerConfigChanged = true;
     }
+#endif
     if (layoutObject->isLayoutPart()) {
         if (PaintLayerCompositor::attachFrameContentLayersToIframeLayer(toLayoutPart(layoutObject)))
             layerConfigChanged = true;
@@ -774,9 +805,12 @@ void CompositedLayerMapping::updateMainGraphicsLayerGeometry(const IntRect& rela
     // non-compositing visible layers.
     bool contentsVisible = m_owningLayer.hasVisibleContent() || hasVisibleNonCompositingDescendant(&m_owningLayer);
     if (layoutObject()->isVideo()) {
+        ASSERT(false); // BKTODO:
+#if 0
         HTMLVideoElement* videoElement = toHTMLVideoElement(layoutObject()->node());
         if (videoElement->isFullscreen() && videoElement->usesOverlayFullscreenVideo())
             contentsVisible = false;
+#endif
     }
     m_graphicsLayer->setContentsVisible(contentsVisible);
 
@@ -1241,6 +1275,8 @@ void CompositedLayerMapping::updateDrawsContent()
     }
 
     if (hasPaintedContent && isAcceleratedCanvas(layoutObject())) {
+        ASSERT(false); // BKTODO:
+#if 0
         CanvasRenderingContext* context = toHTMLCanvasElement(layoutObject()->node())->renderingContext();
         // Content layer may be null if context is lost.
         if (WebLayer* contentLayer = context->platformLayer()) {
@@ -1251,6 +1287,7 @@ void CompositedLayerMapping::updateDrawsContent()
             }
             contentLayer->setBackgroundColor(bgColor.rgb());
         }
+#endif
     }
 
     // FIXME: we could refine this to only allocate backings for one of these layers if possible.
@@ -1829,7 +1866,8 @@ bool CompositedLayerMapping::paintsChildren() const
 
 static bool isCompositedPlugin(LayoutObject* layoutObject)
 {
-    return layoutObject->isEmbeddedObject() && toLayoutEmbeddedObject(layoutObject)->requiresAcceleratedCompositing();
+    ASSERT(false); // BKTODO: return layoutObject->isEmbeddedObject() && toLayoutEmbeddedObject(layoutObject)->requiresAcceleratedCompositing();
+    return false;
 }
 
 bool CompositedLayerMapping::hasVisibleNonCompositingDescendant(PaintLayer* parent)
@@ -1865,10 +1903,13 @@ bool CompositedLayerMapping::containsPaintedContent() const
         return false;
 
     LayoutObject* layoutObject = this->layoutObject();
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: we could optimize cases where the image, video or canvas is known to fill the border box entirely,
     // and set background color on the layer in that case, instead of allocating backing store and painting.
     if (layoutObject->isVideo() && toLayoutVideo(layoutObject)->shouldDisplayVideo())
         return m_owningLayer.hasBoxDecorationsOrBackground();
+#endif
 
     if (m_owningLayer.hasVisibleBoxDecorations())
         return true;
@@ -2332,7 +2373,7 @@ IntRect CompositedLayerMapping::computeInterestRect(const GraphicsLayer* graphic
         return previousInterestRect;
 
     // Paint the whole layer if "mainFrameClipsContent" is false, meaning that WebPreferences::record_whole_document is true.
-    bool shouldPaintWholePage = !m_owningLayer.layoutObject()->document().settings()->mainFrameClipsContent();
+    bool shouldPaintWholePage = !Settings::mainFrameClipsContent();
     if (shouldPaintWholePage
         || (graphicsLayer != m_graphicsLayer && graphicsLayer != m_squashingLayer && graphicsLayer != m_squashingLayer && graphicsLayer != m_scrollingContentsLayer))
         return wholeLayerRect;
@@ -2434,26 +2475,32 @@ void CompositedLayerMapping::notifyAnimationStarted(const GraphicsLayer*, double
 
 void CompositedLayerMapping::notifyFirstPaint()
 {
+#if 0 // BKTODO:
     if (PaintTiming* timing = m_owningLayer.paintTiming()) {
         if (timing->firstPaint() == 0)
             timing->markFirstPaint();
     }
+#endif
 }
 
 void CompositedLayerMapping::notifyFirstTextPaint()
 {
+#if 0 // BKTODO:
     if (PaintTiming* timing = m_owningLayer.paintTiming()) {
         if (timing->firstTextPaint() == 0)
             timing->markFirstTextPaint();
     }
+#endif
 }
 
 void CompositedLayerMapping::notifyFirstImagePaint()
 {
+#if 0 // BKTODO:
     if (PaintTiming* timing = m_owningLayer.paintTiming()) {
         if (timing->firstImagePaint() == 0)
             timing->markFirstImagePaint();
     }
+#endif
 }
 
 IntRect CompositedLayerMapping::pixelSnappedCompositedBounds() const
