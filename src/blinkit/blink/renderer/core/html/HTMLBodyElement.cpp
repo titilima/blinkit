@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLBodyElement.cpp
+// Description: HTMLBodyElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -23,7 +34,6 @@
 
 #include "core/html/HTMLBodyElement.h"
 
-#include "bindings/core/v8/ScriptEventListener.h"
 #include "core/CSSValueKeywords.h"
 #include "core/HTMLNames.h"
 #include "core/css/CSSImageValue.h"
@@ -31,7 +41,7 @@
 #include "core/css/parser/CSSParser.h"
 #include "core/dom/Attribute.h"
 #include "core/frame/UseCounter.h"
-#include "core/html/HTMLFrameElementBase.h"
+// BKTODO: #include "core/html/HTMLFrameElementBase.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 
 namespace blink {
@@ -63,7 +73,7 @@ void HTMLBodyElement::collectStyleForPresentationAttribute(const QualifiedName& 
         if (!url.isEmpty()) {
             RefPtrWillBeRawPtr<CSSImageValue> imageValue = CSSImageValue::create(url, document().completeURL(url));
             imageValue->setInitiator(localName());
-            imageValue->setReferrer(Referrer(document().outgoingReferrer(), document().referrerPolicy()));
+            ASSERT(false); // BKTODO: imageValue->setReferrer(Referrer(document().outgoingReferrer(), document().referrerPolicy()));
             style->setProperty(CSSProperty(CSSPropertyBackgroundImage, imageValue.release()));
         }
     } else if (name == marginwidthAttr || name == leftmarginAttr) {
@@ -83,6 +93,8 @@ void HTMLBodyElement::collectStyleForPresentationAttribute(const QualifiedName& 
 
 void HTMLBodyElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (name == vlinkAttr || name == alinkAttr || name == linkAttr) {
         if (value.isNull()) {
             if (name == linkAttr)
@@ -145,6 +157,7 @@ void HTMLBodyElement::parseAttribute(const QualifiedName& name, const AtomicStri
     } else {
         HTMLElement::parseAttribute(name, oldValue, value);
     }
+#endif
 }
 
 Node::InsertionNotificationRequest HTMLBodyElement::insertedInto(ContainerNode* insertionPoint)
@@ -155,6 +168,8 @@ Node::InsertionNotificationRequest HTMLBodyElement::insertedInto(ContainerNode* 
 
 void HTMLBodyElement::didNotifySubtreeInsertionsToDocument()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: It's surprising this is web compatible since it means a
     // marginwidth and marginheight attribute can magically appear on the <body>
     // of all documents embedded through <iframe> or <frame>.
@@ -166,6 +181,7 @@ void HTMLBodyElement::didNotifySubtreeInsertionsToDocument()
         if (marginHeight != -1)
             setIntegralAttribute(marginheightAttr, marginHeight);
     }
+#endif
 }
 
 bool HTMLBodyElement::isURLAttribute(const Attribute& attribute) const

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLBodyElement.h
+// Description: HTMLBodyElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -38,6 +49,7 @@ public:
     DECLARE_NODE_FACTORY(HTMLBodyElement);
     ~HTMLBodyElement() override;
 
+#if 0 // BKTODO:
     DEFINE_WINDOW_ATTRIBUTE_EVENT_LISTENER(blur);
     DEFINE_WINDOW_ATTRIBUTE_EVENT_LISTENER(error);
     DEFINE_WINDOW_ATTRIBUTE_EVENT_LISTENER(focus);
@@ -45,6 +57,7 @@ public:
     DEFINE_WINDOW_ATTRIBUTE_EVENT_LISTENER(resize);
     DEFINE_WINDOW_ATTRIBUTE_EVENT_LISTENER(scroll);
     DEFINE_WINDOW_ATTRIBUTE_EVENT_LISTENER(orientationchange);
+#endif
 
 private:
     explicit HTMLBodyElement(Document&);
