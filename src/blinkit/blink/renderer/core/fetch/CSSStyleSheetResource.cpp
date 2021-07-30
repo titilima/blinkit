@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSStyleSheetResource.cpp
+// Description: CSSStyleSheetResource Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller (mueller@kde.org)
@@ -39,9 +50,13 @@ namespace blink {
 
 ResourcePtr<CSSStyleSheetResource> CSSStyleSheetResource::fetch(FetchRequest& request, ResourceFetcher* fetcher)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     ASSERT(request.resourceRequest().frameType() == WebURLRequest::FrameTypeNone);
     request.mutableResourceRequest().setRequestContext(WebURLRequest::RequestContextStyle);
     return toCSSStyleSheetResource(fetcher->requestResource(request, CSSStyleSheetResourceFactory()));
+#endif
 }
 
 ResourcePtr<CSSStyleSheetResource> CSSStyleSheetResource::createForTest(const ResourceRequest& request, const String& charset)
@@ -87,7 +102,7 @@ void CSSStyleSheetResource::didAddClient(ResourceClient* c)
     Resource::didAddClient(c);
 
     if (!isLoading())
-        static_cast<StyleSheetResourceClient*>(c)->setCSSStyleSheet(m_resourceRequest.url(), m_response.url(), encoding(), this);
+        ASSERT(false); // BKTODO: static_cast<StyleSheetResourceClient*>(c)->setCSSStyleSheet(m_resourceRequest.url(), m_response.url(), encoding(), this);
 }
 
 const String CSSStyleSheetResource::sheetText(MIMETypeCheck mimeTypeCheck) const
@@ -117,14 +132,15 @@ void CSSStyleSheetResource::checkNotify()
 
     ResourceClientWalker<StyleSheetResourceClient> w(m_clients);
     while (StyleSheetResourceClient* c = w.next())
-        c->setCSSStyleSheet(m_resourceRequest.url(), m_response.url(), encoding(), this);
+        ASSERT(false); // BKTODO: c->setCSSStyleSheet(m_resourceRequest.url(), m_response.url(), encoding(), this);
     // Clear the decoded text as it is unlikely to be needed immediately again and is cheap to regenerate.
     m_decodedSheetText = String();
 }
 
 bool CSSStyleSheetResource::isSafeToUnlock() const
 {
-    return m_data->hasOneRef();
+    ASSERT(false); // BKTODO: return m_data->hasOneRef();
+    return false;
 }
 
 void CSSStyleSheetResource::destroyDecodedDataIfPossible()
