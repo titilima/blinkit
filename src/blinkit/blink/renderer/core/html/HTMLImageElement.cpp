@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLImageElement.cpp
+// Description: HTMLImageElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -22,10 +33,9 @@
 
 #include "core/html/HTMLImageElement.h"
 
-#include "bindings/core/v8/ScriptEventListener.h"
 #include "core/CSSPropertyNames.h"
 #include "core/HTMLNames.h"
-#include "core/MediaTypeNames.h"
+// BKTODO: #include "core/MediaTypeNames.h"
 #include "core/css/MediaQueryMatcher.h"
 #include "core/css/MediaValuesDynamic.h"
 #include "core/css/parser/SizesAttributeParser.h"
@@ -36,28 +46,29 @@
 #include "core/frame/ImageBitmap.h"
 #include "core/frame/UseCounter.h"
 #include "core/html/HTMLAnchorElement.h"
-#include "core/html/HTMLCanvasElement.h"
+// BKTODO: #include "core/html/HTMLCanvasElement.h"
 #include "core/html/HTMLFormElement.h"
 #include "core/html/HTMLImageFallbackHelper.h"
-#include "core/html/HTMLSourceElement.h"
+// BKTODO: #include "core/html/HTMLSourceElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/html/parser/HTMLSrcsetParser.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "core/layout/LayoutBlockFlow.h"
 #include "core/layout/LayoutImage.h"
 #include "core/page/Page.h"
 #include "core/style/ContentData.h"
-#include "core/svg/graphics/SVGImageForContainer.h"
+// BKTODO: #include "core/svg/graphics/SVGImageForContainer.h"
 #include "platform/ContentType.h"
 #include "platform/EventDispatchForbiddenScope.h"
 #include "platform/MIMETypeRegistry.h"
 #include "platform/RuntimeEnabledFeatures.h"
-#include "platform/weborigin/SecurityPolicy.h"
+// BKTODO: #include "platform/weborigin/SecurityPolicy.h"
 
 namespace blink {
 
 using namespace HTMLNames;
 
+#if 0 // BKTODO:
 class HTMLImageElement::ViewportChangeListener final : public MediaQueryListListener {
 public:
     static RefPtrWillBeRawPtr<ViewportChangeListener> create(HTMLImageElement* element)
@@ -83,18 +94,19 @@ private:
     explicit ViewportChangeListener(HTMLImageElement* element) : m_element(element) { }
     RawPtrWillBeMember<HTMLImageElement> m_element;
 };
+#endif
 
 HTMLImageElement::HTMLImageElement(Document& document, HTMLFormElement* form, bool createdByParser)
     : HTMLElement(imgTag, document)
     , m_imageLoader(HTMLImageLoader::create(this))
     , m_imageDevicePixelRatio(1.0f)
-    , m_source(nullptr)
+    // BKTODO: , m_source(nullptr)
     , m_formWasSetByParser(false)
     , m_elementCreatedByParser(createdByParser)
     , m_intrinsicSizingViewportDependant(false)
     , m_useFallbackContent(false)
     , m_isFallbackImage(false)
-    , m_referrerPolicy(ReferrerPolicyDefault)
+    // BKTODO: , m_referrerPolicy(ReferrerPolicyDefault)
 {
     setHasCustomStyleCallbacks();
     if (form && form->inDocument()) {
@@ -136,7 +148,7 @@ DEFINE_TRACE(HTMLImageElement)
     visitor->trace(m_imageLoader);
     visitor->trace(m_listener);
     visitor->trace(m_form);
-    visitor->trace(m_source);
+    // BKTODO: visitor->trace(m_source);
     HTMLElement::trace(visitor);
 }
 
@@ -262,6 +274,8 @@ void HTMLImageElement::setBestFitURLAndDPRFromImageCandidate(const ImageCandidat
 
 void HTMLImageElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (name == altAttr || name == titleAttr) {
         if (userAgentShadowRoot()) {
             Element* text = userAgentShadowRoot()->getElementById("alttext");
@@ -280,6 +294,7 @@ void HTMLImageElement::parseAttribute(const QualifiedName& name, const AtomicStr
     } else {
         HTMLElement::parseAttribute(name, oldValue, value);
     }
+#endif
 }
 
 String HTMLImageElement::altText() const
@@ -308,13 +323,15 @@ ImageCandidate HTMLImageElement::findBestFitImageFromPictureParent()
 {
     ASSERT(isMainThread());
     Node* parent = parentNode();
-    m_source = nullptr;
+    ASSERT(false); // BKTODO: m_source = nullptr;
     if (!parent || !isHTMLPictureElement(*parent))
         return ImageCandidate();
     for (Node* child = parent->firstChild(); child; child = child->nextSibling()) {
         if (child == this)
             return ImageCandidate();
 
+        ASSERT(false); // BKTODO:
+#if 0
         if (!isHTMLSourceElement(*child))
             continue;
 
@@ -336,6 +353,7 @@ ImageCandidate HTMLImageElement::findBestFitImageFromPictureParent()
             continue;
         m_source = source;
         return candidate;
+#endif
     }
     return ImageCandidate();
 }
@@ -386,7 +404,7 @@ Node::InsertionNotificationRequest HTMLImageElement::insertedInto(ContainerNode*
     if (!m_formWasSetByParser || NodeTraversal::highestAncestorOrSelf(*insertionPoint) != NodeTraversal::highestAncestorOrSelf(*m_form.get()))
         resetFormOwner();
     if (m_listener)
-        document().mediaQueryMatcher().addViewportListener(m_listener);
+        ASSERT(false); // BKTODO: document().mediaQueryMatcher().addViewportListener(m_listener);
 
     bool imageWasModified = false;
     if (document().isActive()) {
@@ -400,7 +418,7 @@ Node::InsertionNotificationRequest HTMLImageElement::insertedInto(ContainerNode*
     // If we have been inserted from a layoutObject-less document,
     // our loader may have not fetched the image, so do it now.
     if ((insertionPoint->inDocument() && !imageLoader().image()) || imageWasModified)
-        imageLoader().updateFromElement(ImageLoader::UpdateNormal, m_referrerPolicy);
+        ASSERT(false); // BKTODO: imageLoader().updateFromElement(ImageLoader::UpdateNormal, m_referrerPolicy);
 
     return HTMLElement::insertedInto(insertionPoint);
 }
@@ -410,7 +428,7 @@ void HTMLImageElement::removedFrom(ContainerNode* insertionPoint)
     if (!m_form || NodeTraversal::highestAncestorOrSelf(*m_form.get()) != NodeTraversal::highestAncestorOrSelf(*this))
         resetFormOwner();
     if (m_listener)
-        document().mediaQueryMatcher().removeViewportListener(m_listener);
+        ASSERT(false); // BKTODO: document().mediaQueryMatcher().removeViewportListener(m_listener);
     HTMLElement::removedFrom(insertionPoint);
 }
 
@@ -481,16 +499,21 @@ const String& HTMLImageElement::currentSrc() const
     if (!imageLoader().image() || !imageLoader().image()->image() || !imageLoader().image()->image()->width())
         return emptyAtom;
 
-    return imageLoader().image()->url().string();
+    ASSERT(false); // BKTODO: return imageLoader().image()->url().string();
+    return emptyString();
 }
 
 bool HTMLImageElement::isURLAttribute(const Attribute& attribute) const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return attribute.name() == srcAttr
         || attribute.name() == lowsrcAttr
         || attribute.name() == longdescAttr
         || (attribute.name() == usemapAttr && attribute.value()[0] != '#')
         || HTMLElement::isURLAttribute(attribute);
+#endif
 }
 
 bool HTMLImageElement::hasLegalLinkAttribute(const QualifiedName& name) const
@@ -567,6 +590,9 @@ void HTMLImageElement::didMoveToNewDocument(Document& oldDocument)
 
 bool HTMLImageElement::isServerMap() const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     if (!fastHasAttribute(ismapAttr))
         return false;
 
@@ -577,6 +603,7 @@ bool HTMLImageElement::isServerMap() const
         return false;
 
     return document().completeURL(stripLeadingAndTrailingHTMLSpaces(usemap)).isEmpty();
+#endif
 }
 
 Image* HTMLImageElement::imageContents()
@@ -589,9 +616,11 @@ Image* HTMLImageElement::imageContents()
 
 bool HTMLImageElement::isInteractiveContent() const
 {
-    return fastHasAttribute(usemapAttr);
+    ASSERT(false); // BKTODO: return fastHasAttribute(usemapAttr);
+    return false;
 }
 
+#if 0 // BKTODO:
 PassRefPtr<Image> HTMLImageElement::getSourceImageForCanvas(SourceImageStatus* status, AccelerationHint) const
 {
     if (!complete() || !cachedImage()) {
@@ -649,24 +678,32 @@ FloatSize HTMLImageElement::defaultDestinationSize() const
         size.scale(toLayoutImage(layoutObject())->imageDevicePixelRatio());
     return FloatSize(size);
 }
+#endif
 
 static bool sourceSizeValue(Element& element, Document& currentDocument, float& sourceSize)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     String sizes = element.fastGetAttribute(sizesAttr);
     bool exists = !sizes.isNull();
     if (exists)
         UseCounter::count(currentDocument, UseCounter::Sizes);
     sourceSize = SizesAttributeParser(MediaValuesDynamic::create(currentDocument), sizes).length();
     return exists;
+#endif
 }
 
 FetchRequest::ResourceWidth HTMLImageElement::resourceWidth()
 {
     FetchRequest::ResourceWidth resourceWidth;
+    ASSERT(false); // BKTODO:
+#if 0
     Element* element = m_source.get();
     if (!element)
         element = this;
     resourceWidth.isSet = sourceSizeValue(*element, document(), resourceWidth.width);
+#endif
     return resourceWidth;
 }
 
@@ -681,9 +718,10 @@ float HTMLImageElement::sourceSize(Element& element)
 
 void HTMLImageElement::forceReload() const
 {
-    imageLoader().updateFromElement(ImageLoader::UpdateForcedReload, m_referrerPolicy);
+    ASSERT(false); // BKTODO: imageLoader().updateFromElement(ImageLoader::UpdateForcedReload, m_referrerPolicy);
 }
 
+#if 0 // BKTODO:
 ScriptPromise HTMLImageElement::createImageBitmap(ScriptState* scriptState, EventTarget& eventTarget, int sx, int sy, int sw, int sh, ExceptionState& exceptionState)
 {
     ASSERT(eventTarget.toDOMWindow());
@@ -701,6 +739,7 @@ ScriptPromise HTMLImageElement::createImageBitmap(ScriptState* scriptState, Even
     }
     return ImageBitmapSource::fulfillImageBitmap(scriptState, ImageBitmap::create(this, IntRect(sx, sy, sw, sh), eventTarget.toDOMWindow()->document()));
 }
+#endif
 
 void HTMLImageElement::selectSourceURL(ImageLoader::UpdateFromElementBehavior behavior)
 {
@@ -714,6 +753,8 @@ void HTMLImageElement::selectSourceURL(ImageLoader::UpdateFromElementBehavior be
         foundURL = true;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!foundURL) {
         candidate = bestFitSourceForImageAttributes(document().devicePixelRatio(), sourceSize(*this), fastGetAttribute(srcAttr), fastGetAttribute(srcsetAttr), &document());
         setBestFitURLAndDPRFromImageCandidate(candidate);
@@ -731,12 +772,15 @@ void HTMLImageElement::selectSourceURL(ImageLoader::UpdateFromElementBehavior be
         ensurePrimaryContent();
     else
         ensureFallbackContent();
+#endif
 }
 
+#if 0 // BKTODO:
 const KURL& HTMLImageElement::sourceURL() const
 {
     return cachedImage()->response().url();
 }
+#endif
 
 void HTMLImageElement::didAddUserAgentShadowRoot(ShadowRoot&)
 {
@@ -795,6 +839,7 @@ void HTMLImageElement::setUseFallbackContent()
     ensureUserAgentShadowRoot();
 }
 
+#if 0 // BKTODO:
 bool HTMLImageElement::isOpaque() const
 {
     Image* image = const_cast<HTMLImageElement*>(this)->imageContents();
@@ -810,5 +855,6 @@ IntSize HTMLImageElement::bitmapSourceSize() const
     ASSERT(lSize.fraction().isZero());
     return IntSize(lSize.width(), lSize.height());
 }
+#endif
 
 }

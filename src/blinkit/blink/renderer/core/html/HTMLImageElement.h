@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLImageElement.h
+// Description: HTMLImageElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -28,8 +39,10 @@
 #include "core/fetch/FetchRequest.h"
 #include "core/html/HTMLElement.h"
 #include "core/html/HTMLImageLoader.h"
+#if 0 // BKTODO:
 #include "core/html/canvas/CanvasImageSource.h"
 #include "core/imagebitmap/ImageBitmapSource.h"
+#endif
 #include "platform/graphics/GraphicsTypes.h"
 #include "platform/network/ResourceResponse.h"
 #include "wtf/WeakPtr.h"
@@ -40,7 +53,7 @@ class HTMLFormElement;
 class ImageCandidate;
 class ShadowRoot;
 
-class CORE_EXPORT HTMLImageElement final : public HTMLElement, public CanvasImageSource, public ImageBitmapSource {
+class CORE_EXPORT HTMLImageElement final : public HTMLElement { // BKTODO:, public CanvasImageSource, public ImageBitmapSource {
     DEFINE_WRAPPERTYPEINFO();
 public:
     class ViewportChangeListener;
@@ -97,6 +110,7 @@ public:
     virtual void ensureFallbackForGeneratedContent();
     virtual void ensurePrimaryContent();
 
+#if 0 // BKTODO:
     // CanvasImageSource implementation
     PassRefPtr<Image> getSourceImageForCanvas(SourceImageStatus*, AccelerationHint) const override;
     bool isSVGSource() const override;
@@ -105,6 +119,7 @@ public:
     FloatSize defaultDestinationSize() const override;
     const KURL& sourceURL() const override;
     bool isOpaque() const override;
+#endif
 
     // public so that HTMLPictureElement can call this as well.
     void selectSourceURL(ImageLoader::UpdateFromElementBehavior);
@@ -117,9 +132,11 @@ public:
 
     void forceReload() const;
 
+#if 0 // BKTODO:
     // ImageBitmapSource implementation
     IntSize bitmapSourceSize() const override;
     ScriptPromise createImageBitmap(ScriptState*, EventTarget&, int sx, int sy, int sw, int sh, ExceptionState&) override;
+#endif
 
 protected:
     explicit HTMLImageElement(Document&, HTMLFormElement* = 0, bool createdByParser = false);
@@ -166,7 +183,7 @@ private:
     WeakPtrWillBeMember<HTMLFormElement> m_form;
     AtomicString m_bestFitImageURL;
     float m_imageDevicePixelRatio;
-    RefPtrWillBeMember<HTMLSourceElement> m_source;
+    // BKTODO: RefPtrWillBeMember<HTMLSourceElement> m_source;
     unsigned m_formWasSetByParser : 1;
     unsigned m_elementCreatedByParser : 1;
     // Intrinsic sizing is viewport dependant if the 'w' descriptor was used for the picked resource.
@@ -174,7 +191,7 @@ private:
     unsigned m_useFallbackContent : 1;
     unsigned m_isFallbackImage : 1;
 
-    ReferrerPolicy m_referrerPolicy;
+    // BKTODO: ReferrerPolicy m_referrerPolicy;
 };
 
 } // namespace blink
