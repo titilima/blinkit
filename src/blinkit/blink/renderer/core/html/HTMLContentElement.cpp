@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLContentElement.cpp
+// Description: HTMLContentElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -65,7 +76,7 @@ void HTMLContentElement::parseSelect()
 {
     ASSERT(m_shouldParseSelect);
 
-    m_selectorList = CSSParser::parseSelector(CSSParserContext(document(), 0), m_select);
+    m_selectorList = CSSParser::parseSelector(CSSParserContext(document()), m_select);
     m_shouldParseSelect = false;
     m_isValidSelector = validateSelect();
     if (!m_isValidSelector)
