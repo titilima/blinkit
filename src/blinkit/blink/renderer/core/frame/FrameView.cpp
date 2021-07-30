@@ -111,7 +111,7 @@
 #include "platform/geometry/LayoutRect.h"
 #include "platform/graphics/GraphicsContext.h"
 #include "platform/graphics/GraphicsLayer.h"
-#include "platform/graphics/GraphicsLayerDebugInfo.h"
+// BKTODO: #include "platform/graphics/GraphicsLayerDebugInfo.h"
 #include "platform/graphics/paint/CullRect.h"
 #include "platform/graphics/paint/PaintController.h"
 // BKTODO: #include "platform/scheduler/CancellableTaskFactory.h"
@@ -1150,11 +1150,14 @@ void FrameView::invalidateTreeIfNeeded(PaintInvalidationState& paintInvalidation
     m_doFullPaintInvalidation = false;
     lifecycle().advanceTo(DocumentLifecycle::PaintInvalidationClean);
 
+    ASSERT(false); // BKTODO:
+#if 0
     // Temporary callback for crbug.com/487345,402044
     // TODO(ojan): Make this more general to be used by PositionObserver
     // and rAF throttling.
     IntRect visibleRect = rootFrameToContents(computeVisibleArea());
     rootForPaintInvalidation.sendMediaPositionChangeNotifications(visibleRect);
+#endif
 }
 
 IntRect FrameView::computeVisibleArea()
@@ -1365,7 +1368,7 @@ IntPoint FrameView::lastKnownMousePosition() const
 bool FrameView::shouldSetCursor() const
 {
     Page* page = frame().page();
-    return page && page->visibilityState() != PageVisibilityStateHidden && page->focusController().isActive() && Settings::deviceSupportsMouse;
+    return page && page->visibilityState() != PageVisibilityStateHidden && page->focusController().isActive() && Settings::deviceSupportsMouse();
 }
 
 void FrameView::scrollContentsIfNeededRecursive()
@@ -3072,7 +3075,7 @@ bool FrameView::isFlippedDocument() const
 
 bool FrameView::visualViewportSuppliesScrollbars() const
 {
-    return m_frame->isMainFrame() && Settings::viewportMetaEnabled;
+    return m_frame->isMainFrame() && Settings::viewportMetaEnabled();
 }
 
 #if 0 // BKTODO:
@@ -3087,7 +3090,7 @@ AXObjectCache* FrameView::axObjectCache() const
 void FrameView::setCursor(const Cursor& cursor)
 {
     Page* page = frame().page();
-    if (!page || !Settings::deviceSupportsMouse)
+    if (!page || !Settings::deviceSupportsMouse())
         return;
     page->chromeClient().setCursor(cursor, m_frame->localFrameRoot());
 }
