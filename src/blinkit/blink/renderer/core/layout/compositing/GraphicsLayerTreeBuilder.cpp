@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: GraphicsLayerTreeBuilder.cpp
+// Description: GraphicsLayerTreeBuilder Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2014 Google Inc. All rights reserved.
@@ -26,8 +37,10 @@
 
 #include "core/layout/compositing/GraphicsLayerTreeBuilder.h"
 
+#if 0 // BKTODO:
 #include "core/html/HTMLMediaElement.h"
 #include "core/html/HTMLVideoElement.h"
+#endif
 #include "core/layout/LayoutPart.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/CompositedLayerMapping.h"
@@ -46,12 +59,15 @@ GraphicsLayerTreeBuilder::~GraphicsLayerTreeBuilder()
 
 static bool shouldAppendLayer(const PaintLayer& layer)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     Node* node = layer.layoutObject()->node();
     if (node && isHTMLVideoElement(*node)) {
         HTMLVideoElement* element = toHTMLVideoElement(node);
         if (element->isFullscreen() && element->usesOverlayFullscreenVideo())
             return false;
     }
+#endif
     return true;
 }
 
