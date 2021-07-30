@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLParserScheduler.h
+// Description: HTMLParserScheduler Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -27,7 +38,7 @@
 #define HTMLParserScheduler_h
 
 #include "core/html/parser/NestingLevelIncrementer.h"
-#include "platform/scheduler/CancellableTaskFactory.h"
+// BKTODO: #include "platform/scheduler/CancellableTaskFactory.h"
 #include "wtf/Allocator.h"
 #include "wtf/PassOwnPtr.h"
 #include "wtf/RefPtr.h"
@@ -80,7 +91,7 @@ public:
     }
     ~HTMLParserScheduler();
 
-    bool isScheduledForResume() const { return m_isSuspendedWithActiveTimer || m_cancellableContinueParse->isPending(); }
+    // BKTODO: bool isScheduledForResume() const { return m_isSuspendedWithActiveTimer || m_cancellableContinueParse->isPending(); }
 
     void scheduleForResume();
     bool yieldIfNeeded(const SpeculationsPumpSession&, bool startingScript);
@@ -110,7 +121,7 @@ private:
     RawPtrWillBeMember<HTMLDocumentParser> m_parser;
     OwnPtr<WebTaskRunner> m_loadingTaskRunner;
 
-    OwnPtr<CancellableTaskFactory> m_cancellableContinueParse;
+    // BKTODO: OwnPtr<CancellableTaskFactory> m_cancellableContinueParse;
     bool m_isSuspendedWithActiveTimer;
 };
 

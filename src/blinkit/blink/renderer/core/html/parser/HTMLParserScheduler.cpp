@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLParserScheduler.cpp
+// Description: HTMLParserScheduler Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -29,7 +40,7 @@
 #include "core/html/parser/HTMLDocumentParser.h"
 #include "core/frame/FrameView.h"
 #include "public/platform/Platform.h"
-#include "public/platform/WebScheduler.h"
+// BKTODO: #include "public/platform/WebScheduler.h"
 #include "public/platform/WebThread.h"
 #include "wtf/CurrentTime.h"
 
@@ -83,8 +94,10 @@ void SpeculationsPumpSession::addedElementTokens(size_t count)
 
 HTMLParserScheduler::HTMLParserScheduler(HTMLDocumentParser* parser, WebTaskRunner* loadingTaskRunner)
     : m_parser(parser)
+#if 0 // BKTODO:
     , m_loadingTaskRunner(adoptPtr(loadingTaskRunner->clone()))
     , m_cancellableContinueParse(CancellableTaskFactory::create(this, &HTMLParserScheduler::continueParsing))
+#endif
     , m_isSuspendedWithActiveTimer(false)
 {
 }
@@ -101,36 +114,41 @@ DEFINE_TRACE(HTMLParserScheduler)
 void HTMLParserScheduler::scheduleForResume()
 {
     ASSERT(!m_isSuspendedWithActiveTimer);
-    m_loadingTaskRunner->postTask(BLINK_FROM_HERE, m_cancellableContinueParse->cancelAndCreate());
+    ASSERT(false); // BKTODO: m_loadingTaskRunner->postTask(BLINK_FROM_HERE, m_cancellableContinueParse->cancelAndCreate());
 }
 
 void HTMLParserScheduler::suspend()
 {
     ASSERT(!m_isSuspendedWithActiveTimer);
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_cancellableContinueParse->isPending())
         return;
     m_isSuspendedWithActiveTimer = true;
     m_cancellableContinueParse->cancel();
+#endif
 }
 
 void HTMLParserScheduler::resume()
 {
-    ASSERT(!m_cancellableContinueParse->isPending());
+    ASSERT(false); // BKTODO: ASSERT(!m_cancellableContinueParse->isPending());
     if (!m_isSuspendedWithActiveTimer)
         return;
     m_isSuspendedWithActiveTimer = false;
 
-    m_loadingTaskRunner->postTask(BLINK_FROM_HERE, m_cancellableContinueParse->cancelAndCreate());
+    ASSERT(false); // BKTODO: m_loadingTaskRunner->postTask(BLINK_FROM_HERE, m_cancellableContinueParse->cancelAndCreate());
 }
 
 void HTMLParserScheduler::detach()
 {
-    m_cancellableContinueParse->cancel();
+    ASSERT(false); // BKTODO: m_cancellableContinueParse->cancel();
     m_isSuspendedWithActiveTimer = false;
 }
 
 inline bool HTMLParserScheduler::shouldYield(const SpeculationsPumpSession& session, bool startingScript) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (Platform::current()->currentThread()->scheduler()->shouldYieldForHighPriorityWork())
         return true;
 
@@ -149,6 +167,7 @@ inline bool HTMLParserScheduler::shouldYield(const SpeculationsPumpSession& sess
     const size_t sufficientWork = 50;
     if (startingScript && session.processedElementTokens() > sufficientWork)
         return true;
+#endif
 
     return false;
 }
@@ -165,7 +184,7 @@ bool HTMLParserScheduler::yieldIfNeeded(const SpeculationsPumpSession& session, 
 
 void HTMLParserScheduler::forceResumeAfterYield()
 {
-    ASSERT(!m_cancellableContinueParse->isPending());
+    ASSERT(false); // BKTODO: ASSERT(!m_cancellableContinueParse->isPending());
     m_isSuspendedWithActiveTimer = true;
 }
 
