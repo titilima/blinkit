@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutBox.h
+// Description: LayoutBox Class
+//      Author: Ziming Li
+//     Created: 2021-07-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -729,7 +740,7 @@ public:
     virtual void paintBoxDecorationBackground(const PaintInfo&, const LayoutPoint&) const;
     virtual void paintMask(const PaintInfo&, const LayoutPoint&) const;
     void imageChanged(WrappedImagePtr, const IntRect* = nullptr) override;
-    ResourcePriority computeResourcePriority() const final;
+    // BKTODO: ResourcePriority computeResourcePriority() const final;
 
     void logicalExtentAfterUpdatingLogicalWidth(const LayoutUnit& logicalTop, LogicalExtentComputedValues&);
 

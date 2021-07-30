@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutBox.cpp
+// Description: LayoutBox Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -33,11 +44,13 @@
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
 #include "core/html/HTMLElement.h"
+#if 0 // BKTODO:
 #include "core/html/HTMLFrameElementBase.h"
 #include "core/html/HTMLFrameOwnerElement.h"
+#endif
 #include "core/input/EventHandler.h"
 #include "core/layout/HitTestResult.h"
-#include "core/layout/LayoutAnalyzer.h"
+// BKTODO: #include "core/layout/LayoutAnalyzer.h"
 #include "core/layout/LayoutDeprecatedFlexibleBox.h"
 #include "core/layout/LayoutFlexibleBox.h"
 #include "core/layout/LayoutGeometryMap.h"
@@ -53,7 +66,7 @@
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
 #include "core/layout/shapes/ShapeOutsideInfo.h"
-#include "core/page/AutoscrollController.h"
+// BKTODO: #include "core/page/AutoscrollController.h"
 #include "core/page/Page.h"
 #include "core/paint/BackgroundImageGeometry.h"
 #include "core/paint/BoxPainter.h"
@@ -347,7 +360,7 @@ void LayoutBox::updateFromStyle()
 
     const ComputedStyle& styleToUse = styleRef();
     bool isViewObject = isLayoutView();
-    bool rootLayerScrolls = document().settings() && document().settings()->rootLayerScrolls();
+    bool rootLayerScrolls = Settings::rootLayerScrolls();
 
     // LayoutView of the main frame is resposible from painting base background.
     if (isViewObject && !document().ownerElement())
@@ -378,7 +391,7 @@ void LayoutBox::updateFromStyle()
 void LayoutBox::layout()
 {
     ASSERT(needsLayout());
-    LayoutAnalyzer::Scope analyzer(*this);
+    // BKTODO: LayoutAnalyzer::Scope analyzer(*this);
 
     LayoutObject* child = slowFirstChild();
     if (!child) {
@@ -504,6 +517,8 @@ void LayoutBox::scrollToOffset(const DoubleSize& offset, ScrollBehavior scrollBe
 // Returns true iff we are attempting an autoscroll inside an iframe with scrolling="no".
 static bool isDisallowedAutoscroll(HTMLFrameOwnerElement* ownerElement, FrameView* frameView)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (ownerElement && isHTMLFrameElementBase(*ownerElement)) {
         HTMLFrameElementBase* frameElementBase = toHTMLFrameElementBase(ownerElement);
         if (Page* page = frameView->frame().page()) {
@@ -511,6 +526,7 @@ static bool isDisallowedAutoscroll(HTMLFrameOwnerElement* ownerElement, FrameVie
                 && frameElementBase->scrollingMode() == ScrollbarAlwaysOff;
         }
     }
+#endif
     return false;
 }
 
@@ -535,6 +551,8 @@ void LayoutBox::scrollRectToVisible(const LayoutRect& rect, const ScrollAlignmen
         newRect = layer()->scrollableArea()->scrollIntoView(rect, alignX, alignY, scrollType);
     } else if (!parentBox && canBeProgramaticallyScrolled()) {
         if (FrameView* frameView = this->frameView()) {
+            ASSERT(false); // BKTODO:
+#if 0
             HTMLFrameOwnerElement* ownerElement = document().ownerElement();
             if (!isDisallowedAutoscroll(ownerElement, frameView)) {
                 if (makeVisibleInVisualViewport) {
@@ -554,6 +572,7 @@ void LayoutBox::scrollRectToVisible(const LayoutRect& rect, const ScrollAlignmen
                     }
                 }
             }
+#endif
         }
     }
 
@@ -561,8 +580,11 @@ void LayoutBox::scrollRectToVisible(const LayoutRect& rect, const ScrollAlignmen
     if (hasLayer() && layer()->scrollsWithViewport())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (frame()->page()->autoscrollController().autoscrollInProgress())
         parentBox = enclosingScrollableBox();
+#endif
 
     if (parentBox)
         parentBox->scrollRectToVisible(newRect, alignX, alignY, scrollType, makeVisibleInVisualViewport);
@@ -848,6 +870,9 @@ IntSize LayoutBox::calculateAutoscrollDirection(const IntPoint& pointInRootFrame
 
 LayoutBox* LayoutBox::findAutoscrollable(LayoutObject* layoutObject)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     while (layoutObject && !(layoutObject->isBox() && toLayoutBox(layoutObject)->canAutoscroll())) {
         if (!layoutObject->parent() && layoutObject->node() == layoutObject->document() && layoutObject->document().ownerElement())
             layoutObject = layoutObject->document().ownerElement()->layoutObject();
@@ -856,6 +881,7 @@ LayoutBox* LayoutBox::findAutoscrollable(LayoutObject* layoutObject)
     }
 
     return layoutObject && layoutObject->isBox() ? toLayoutBox(layoutObject) : 0;
+#endif
 }
 
 static inline int adjustedScrollDelta(int beginningDelta)
@@ -895,10 +921,13 @@ void LayoutBox::panScroll(const IntPoint& sourcePoint)
 
     IntSize delta = lastKnownMousePosition - sourcePoint;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (abs(delta.width()) <= AutoscrollController::noPanScrollRadius) // at the center we let the space for the icon
         delta.setWidth(0);
     if (abs(delta.height()) <= AutoscrollController::noPanScrollRadius)
         delta.setHeight(0);
+#endif
     scrollByRecursively(adjustedScrollDelta(delta), ScrollOffsetClamped);
 }
 
@@ -921,9 +950,12 @@ void LayoutBox::scrollByRecursively(const DoubleSize& delta, ScrollOffsetClampin
             if (LayoutBox* scrollableBox = enclosingScrollableBox())
                 scrollableBox->scrollByRecursively(remainingScrollOffset, clamp);
 
+            ASSERT(false); // BKTODO:
+#if 0
             LocalFrame* frame = this->frame();
             if (frame && frame->page())
                 frame->page()->autoscrollController().updateAutoscrollLayoutObject();
+#endif
         }
     } else if (view()->frameView()) {
         // If we are here, we were called on a layoutObject that can be programmatically scrolled, but doesn't
@@ -1410,6 +1442,7 @@ void LayoutBox::imageChanged(WrappedImagePtr image, const IntRect*)
         invalidatePaintOfLayerRectsForImage(image, style()->maskLayers(), false);
 }
 
+#if 0 // BKTODO:
 ResourcePriority LayoutBox::computeResourcePriority() const
 {
     LayoutRect viewBounds = viewRect();
@@ -1434,6 +1467,7 @@ ResourcePriority LayoutBox::computeResourcePriority() const
         screenArea = static_cast<uint32_t>(screenRect.width() * screenRect.height());
     return ResourcePriority(isVisible ? ResourcePriority::Visible : ResourcePriority::NotVisible, screenArea);
 }
+#endif
 
 bool LayoutBox::invalidatePaintOfLayerRectsForImage(WrappedImagePtr image, const FillLayer& layers, bool drawingBackground)
 {
@@ -4079,7 +4113,7 @@ PaintInvalidationReason LayoutBox::paintInvalidationReason(const LayoutBoxModelO
         // and clipping is done by compositor()->m_containerLayer. Also the scrollbars
         // are always composited. There are no other box decoration on the LayoutView thus
         // we can safely exit here.
-        if (layoutView->usesCompositing() && (!document().settings() || !document().settings()->rootLayerScrolls()))
+        if (layoutView->usesCompositing() && !Settings::rootLayerScrolls())
             return invalidationReason;
     }
 
