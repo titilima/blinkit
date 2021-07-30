@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FileInputType.cpp
+// Description: FileInputType Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2010 Google Inc. All rights reserved.
@@ -37,7 +48,7 @@
 #include "core/page/DragData.h"
 #include "platform/FileMetadata.h"
 #include "platform/RuntimeEnabledFeatures.h"
-#include "platform/UserGestureIndicator.h"
+// BKTODO: #include "platform/UserGestureIndicator.h"
 #include "platform/text/PlatformLocale.h"
 #include "wtf/PassOwnPtr.h"
 #include "wtf/text/StringBuilder.h"
@@ -133,6 +144,8 @@ void FileInputType::handleDOMActivateEvent(Event* event)
     if (element().isDisabledFormControl())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!UserGestureIndicator::processingUserGesture())
         return;
 
@@ -148,6 +161,7 @@ void FileInputType::handleDOMActivateEvent(Event* event)
         chromeClient->openFileChooser(input.document().frame(), newFileChooser(settings));
     }
     event->setDefaultHandled();
+#endif
 }
 
 LayoutObject* FileInputType::createLayoutObject(const ComputedStyle&) const
@@ -241,11 +255,14 @@ FileList* FileInputType::createFileList(const Vector<FileChooserFileInfo>& files
 
 void FileInputType::countUsage()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     Document* document = &element().document();
     if (document->isSecureContext())
         UseCounter::count(*document, UseCounter::InputTypeFileInsecureOrigin);
     else
         UseCounter::count(*document, UseCounter::InputTypeFileSecureOrigin);
+#endif
 }
 
 void FileInputType::createShadowSubtree()
@@ -309,7 +326,7 @@ void FileInputType::setFiles(FileList* files)
 
 void FileInputType::filesChosen(const Vector<FileChooserFileInfo>& files)
 {
-    setFiles(createFileList(files, element().fastHasAttribute(webkitdirectoryAttr)));
+    ASSERT(false); // BKTODO: setFiles(createFileList(files, element().fastHasAttribute(webkitdirectoryAttr)));
 }
 
 void FileInputType::receiveDropForDirectoryUpload(const Vector<String>& paths)
@@ -334,10 +351,13 @@ bool FileInputType::receiveDroppedFiles(const DragData* dragData)
         return false;
 
     HTMLInputElement& input = element();
+    ASSERT(false); // BKTODO:
+#if 0
     if (input.fastHasAttribute(webkitdirectoryAttr)) {
         receiveDropForDirectoryUpload(paths);
         return true;
     }
+#endif
 
     m_droppedFileSystemId = dragData->droppedFileSystemId();
 
