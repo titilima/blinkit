@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: File.cpp
+// Description: File Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -27,12 +38,12 @@
 
 #include "bindings/core/v8/ExceptionState.h"
 #include "core/dom/ExceptionCode.h"
-#include "core/fileapi/FilePropertyBag.h"
+// BKTODO: #include "core/fileapi/FilePropertyBag.h"
 #include "platform/FileMetadata.h"
 #include "platform/MIMETypeRegistry.h"
 #include "platform/blob/BlobData.h"
 #include "public/platform/Platform.h"
-#include "public/platform/WebFileUtilities.h"
+// BKTODO: #include "public/platform/WebFileUtilities.h"
 #include "wtf/CurrentTime.h"
 #include "wtf/DateMath.h"
 
@@ -87,6 +98,7 @@ static PassOwnPtr<BlobData> createBlobDataForFileSystemURL(const KURL& fileSyste
     return blobData.release();
 }
 
+#if 0 // BKTODO:
 // static
 File* File::create(const HeapVector<BlobOrStringOrArrayBufferViewOrArrayBuffer>& fileBits, const String& fileName, const FilePropertyBag& options, ExceptionState& exceptionState)
 {
@@ -111,6 +123,7 @@ File* File::create(const HeapVector<BlobOrStringOrArrayBufferViewOrArrayBuffer>&
     long long fileSize = blobData->length();
     return File::create(fileName, lastModified, BlobDataHandle::create(blobData.release(), fileSize));
 }
+#endif
 
 File* File::create(const unsigned char* data, size_t bytes, const String& mimeType)
 {
@@ -137,7 +150,7 @@ File::File(const String& path, ContentTypeLookupPolicy policy, UserVisibility us
     , m_hasBackingFile(true)
     , m_userVisibility(userVisibility)
     , m_path(path)
-    , m_name(Platform::current()->fileUtilities()->baseName(path))
+    // BKTODO: , m_name(Platform::current()->fileUtilities()->baseName(path))
     , m_snapshotSize(-1)
     , m_snapshotModificationTimeMS(invalidFileTime())
 {
@@ -191,7 +204,7 @@ File::File(const KURL& fileSystemURL, const FileMetadata& metadata, UserVisibili
     : Blob(BlobDataHandle::create(createBlobDataForFileSystemURL(fileSystemURL, metadata), metadata.length))
     , m_hasBackingFile(false)
     , m_userVisibility(userVisibility)
-    , m_name(decodeURLEscapeSequences(fileSystemURL.lastPathComponent()))
+    // BKTODO: , m_name(decodeURLEscapeSequences(fileSystemURL.lastPathComponent()))
     , m_fileSystemURL(fileSystemURL)
     , m_snapshotSize(metadata.length)
     , m_snapshotModificationTimeMS(metadata.modificationTime)
