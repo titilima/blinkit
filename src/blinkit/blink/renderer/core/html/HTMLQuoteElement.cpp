@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLQuoteElement.cpp
+// Description: HTMLQuoteElement Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -39,17 +50,20 @@ DEFINE_ELEMENT_FACTORY_WITH_TAGNAME(HTMLQuoteElement)
 
 bool HTMLQuoteElement::isURLAttribute(const Attribute& attribute) const
 {
-    return attribute.name() == citeAttr || HTMLElement::isURLAttribute(attribute);
+    ASSERT(false); // BKTODO: return attribute.name() == citeAttr || HTMLElement::isURLAttribute(attribute);
+    return false;
 }
 
 bool HTMLQuoteElement::hasLegalLinkAttribute(const QualifiedName& name) const
 {
-    return name == citeAttr || HTMLElement::hasLegalLinkAttribute(name);
+    ASSERT(false); // BKTODO: return name == citeAttr || HTMLElement::hasLegalLinkAttribute(name);
+    return false;
 }
 
 const QualifiedName& HTMLQuoteElement::subResourceAttributeName() const
 {
-    return citeAttr;
+    ASSERT(false); // BKTODO: return citeAttr;
+    exit(0);
 }
 
 }
