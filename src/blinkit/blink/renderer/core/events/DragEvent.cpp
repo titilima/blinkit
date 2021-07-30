@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DragEvent.cpp
+// Description: DragEvent Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -52,11 +63,13 @@ DragEvent::DragEvent(const AtomicString& eventType, bool canBubble, bool cancela
 {
 }
 
+#if 0 // BKTODO:
 DragEvent::DragEvent(const AtomicString& type, const DragEventInit& initializer)
     : MouseEvent(type, initializer)
     , m_dataTransfer(initializer.dataTransfer())
 {
 }
+#endif
 
 bool DragEvent::isDragEvent() const
 {

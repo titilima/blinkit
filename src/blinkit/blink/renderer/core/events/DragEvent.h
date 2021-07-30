@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DragEvent.h
+// Description: DragEvent Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 #define DragEvent_h
 
 #include "core/CoreExport.h"
-#include "core/events/DragEventInit.h"
+// BKTODO: #include "core/events/DragEventInit.h"
 #include "core/events/MouseEvent.h"
 
 namespace blink {
@@ -35,10 +46,12 @@ public:
         double platformTimeStamp, DataTransfer*,
         PlatformMouseEvent::SyntheticEventType = PlatformMouseEvent::RealOrIndistinguishable);
 
+#if 0 // BKTODO:
     static PassRefPtrWillBeRawPtr<DragEvent> create(const AtomicString& type, const DragEventInit& initializer)
     {
         return adoptRefWillBeNoop(new DragEvent(type, initializer));
     }
+#endif
 
     DataTransfer* dataTransfer() const override { return isDragEvent() ? m_dataTransfer.get() : nullptr; }
 
@@ -60,7 +73,7 @@ private:
         double platformTimeStamp, DataTransfer*,
         PlatformMouseEvent::SyntheticEventType);
 
-    DragEvent(const AtomicString& type, const DragEventInit&);
+    // BKTODO: DragEvent(const AtomicString& type, const DragEventInit&);
 
     PersistentWillBeMember<DataTransfer> m_dataTransfer;
 };
