@@ -607,8 +607,11 @@ void EventHandler::startPanScrolling(LayoutObject* layoutObject)
 
 AutoscrollController* EventHandler::autoscrollController() const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (Page* page = m_frame->page())
         return &page->autoscrollController();
+#endif
     return nullptr;
 }
 
