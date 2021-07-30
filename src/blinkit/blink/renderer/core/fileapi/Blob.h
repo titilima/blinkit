@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Blob.h
+// Description: Blob Class
+//      Author: Ziming Li
+//     Created: 2021-07-22
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -32,12 +43,13 @@
 #define Blob_h
 
 #include "bindings/core/v8/ScriptWrappable.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/CoreExport.h"
 #include "core/dom/DOMArrayBuffer.h"
 #include "core/dom/DOMArrayBufferView.h"
+#if 0 // BKTODO:
 #include "core/html/URLRegistry.h"
 #include "core/imagebitmap/ImageBitmapSource.h"
+#endif
 #include "platform/blob/BlobData.h"
 #include "platform/heap/Handle.h"
 #include "wtf/PassRefPtr.h"
@@ -50,7 +62,7 @@ class BlobPropertyBag;
 class ExceptionState;
 class ExecutionContext;
 
-class CORE_EXPORT Blob : public GarbageCollectedFinalized<Blob>, public ScriptWrappable, public URLRegistrable, public ImageBitmapSource {
+class CORE_EXPORT Blob : public GarbageCollectedFinalized<Blob>, public ScriptWrappable { // BKTODO: , public URLRegistrable, public ImageBitmapSource {
     DEFINE_WRAPPERTYPEINFO();
 public:
     static Blob* create(ExceptionState&)
@@ -58,7 +70,7 @@ public:
         return new Blob(BlobDataHandle::create());
     }
 
-    static Blob* create(const HeapVector<ArrayBufferOrArrayBufferViewOrBlobOrString>&, const BlobPropertyBag&, ExceptionState&);
+    // BKTODO: static Blob* create(const HeapVector<ArrayBufferOrArrayBufferViewOrBlobOrString>&, const BlobPropertyBag&, ExceptionState&);
 
     static Blob* create(PassRefPtr<BlobDataHandle> blobDataHandle)
     {
@@ -98,11 +110,13 @@ public:
     // Used by the JavaScript Blob and File constructors.
     virtual void appendTo(BlobData&) const;
 
+#if 0 // BKTODO:
     // URLRegistrable to support PublicURLs.
     URLRegistry& registry() const final;
 
     // ImageBitmapSource implementation
     bool isBlob() const override { return true; }
+#endif
 
     DEFINE_INLINE_TRACE() { }
 

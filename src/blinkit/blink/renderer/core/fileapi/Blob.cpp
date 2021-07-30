@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Blob.cpp
+// Description: Blob Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -31,15 +42,18 @@
 #include "core/fileapi/Blob.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/DOMURL.h"
+// BKTODO: #include "core/dom/DOMURL.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/ExecutionContext.h"
+#if 0 // BKTODO:
 #include "core/fileapi/BlobPropertyBag.h"
 #include "platform/blob/BlobRegistry.h"
 #include "platform/blob/BlobURL.h"
+#endif
 
 namespace blink {
 
+#if 0 // BKTODO:
 namespace {
 
 class BlobURLRegistry final : public URLRegistry {
@@ -73,6 +87,7 @@ URLRegistry& BlobURLRegistry::registry()
 }
 
 } // namespace
+#endif
 
 Blob::Blob(PassRefPtr<BlobDataHandle> dataHandle)
     : m_blobDataHandle(dataHandle)
@@ -84,6 +99,7 @@ Blob::~Blob()
 {
 }
 
+#if 0 // BKTODO:
 // static
 Blob* Blob::create(const HeapVector<ArrayBufferOrArrayBufferViewOrBlobOrString>& blobParts, const BlobPropertyBag& options, ExceptionState& exceptionState)
 {
@@ -104,6 +120,7 @@ Blob* Blob::create(const HeapVector<ArrayBufferOrArrayBufferViewOrBlobOrString>&
     long long blobSize = blobData->length();
     return new Blob(BlobDataHandle::create(blobData.release(), blobSize));
 }
+#endif
 
 void Blob::clampSliceOffsets(long long size, long long& start, long long& end)
 {
@@ -157,7 +174,7 @@ void Blob::close(ExecutionContext* executionContext, ExceptionState& exceptionSt
     // Dereferencing a Blob that has been closed should result in
     // a network error. Revoke URLs registered against it through
     // its UUID.
-    DOMURL::revokeObjectUUID(executionContext, uuid());
+    ASSERT(false); // BKTODO: DOMURL::revokeObjectUUID(executionContext, uuid());
 
     // A Blob enters a 'readability state' of closed, where it will report its
     // size as zero. Blob and FileReader operations now throws on
@@ -174,9 +191,11 @@ void Blob::appendTo(BlobData& blobData) const
     blobData.appendBlob(m_blobDataHandle, 0, m_blobDataHandle->size());
 }
 
+#if 0 // BKTODO:
 URLRegistry& Blob::registry() const
 {
     return BlobURLRegistry::registry();
 }
+#endif
 
 } // namespace blink
