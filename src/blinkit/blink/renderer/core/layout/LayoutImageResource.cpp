@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutImageResource.cpp
+// Description: LayoutImageResource Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll <knoll@kde.org>
  * Copyright (C) 1999 Antti Koivisto <koivisto@kde.org>
@@ -29,7 +40,7 @@
 
 #include "core/dom/Element.h"
 #include "core/layout/LayoutImage.h"
-#include "core/svg/graphics/SVGImageForContainer.h"
+// BKTODO: #include "core/svg/graphics/SVGImageForContainer.h"
 
 namespace blink {
 
@@ -107,6 +118,9 @@ PassRefPtr<Image> LayoutImageResource::image(const IntSize& containerSize, float
     if (!m_cachedImage->image()->isSVGImage())
         return m_cachedImage->image();
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     KURL url;
     SVGImage* svgImage = toSVGImage(m_cachedImage->image());
     Node* node = m_layoutObject->node();
@@ -115,6 +129,7 @@ PassRefPtr<Image> LayoutImageResource::image(const IntSize& containerSize, float
         url = node->document().completeURL(urlString);
     }
     return SVGImageForContainer::create(svgImage, containerSize, zoom, url);
+#endif
 }
 
 bool LayoutImageResource::maybeAnimated() const
