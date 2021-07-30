@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontResource.cpp
+// Description: FontResource Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
  * Copyright (C) 2009 Torch Mobile, Inc.
@@ -64,16 +75,22 @@ static FontPackageFormat packageFormatOf(SharedBuffer* buffer)
     return PackageFormatSFNT;
 }
 
+#if 0 // BKTODO:
 static void recordPackageFormatHistogram(FontPackageFormat format)
 {
     Platform::current()->histogramEnumeration("WebFont.PackageFormat", format, PackageFormatEnumMax);
 }
+#endif
 
 ResourcePtr<FontResource> FontResource::fetch(FetchRequest& request, ResourceFetcher* fetcher)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     ASSERT(request.resourceRequest().frameType() == WebURLRequest::FrameTypeNone);
     request.mutableResourceRequest().setRequestContext(WebURLRequest::RequestContextFont);
     return toFontResource(fetcher->requestResource(request, FontResourceFactory()));
+#endif
 }
 
 FontResource::FontResource(const ResourceRequest& resourceRequest)
@@ -143,10 +160,10 @@ bool FontResource::ensureCustomFontData()
             m_fontData = FontCustomPlatformData::create(m_data.get(), m_otsParsingMessage);
 
         if (m_fontData) {
-            recordPackageFormatHistogram(packageFormatOf(m_data.get()));
+            // BKTODO: recordPackageFormatHistogram(packageFormatOf(m_data.get()));
         } else {
             setStatus(DecodeError);
-            recordPackageFormatHistogram(PackageFormatUnknown);
+            // BKTODO: recordPackageFormatHistogram(PackageFormatUnknown);
         }
     }
     return m_fontData;
@@ -160,7 +177,8 @@ FontPlatformData FontResource::platformDataFromCustomData(float size, bool bold,
 
 bool FontResource::isSafeToUnlock() const
 {
-    return m_data->hasOneRef();
+    ASSERT(false); // BKTODO: return m_data->hasOneRef();
+    return false;
 }
 
 void FontResource::fontLoadShortLimitCallback(Timer<FontResource>*)
