@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageDecoder.h
+// Description: ImageDecoder Class
+//      Author: Ziming Li
+//     Created: 2021-07-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) Research In Motion Limited 2009-2010. All rights reserved.
@@ -99,13 +110,13 @@ public:
     // we can't sniff a supported type from the provided data (possibly
     // because there isn't enough data yet).
     // Sets m_maxDecodedBytes to Platform::maxImageDecodedBytes().
-    static PassOwnPtr<ImageDecoder> create(const SharedBuffer& data, AlphaOption, GammaAndColorProfileOption);
+    static PassOwnPtr<ImageDecoder> create(const std::shared_ptr<SharedBuffer> &data, AlphaOption, GammaAndColorProfileOption);
 
     virtual String filenameExtension() const = 0;
 
     bool isAllDataReceived() const { return m_isAllDataReceived; }
 
-    void setData(SharedBuffer* data, bool allDataReceived)
+    void setData(const std::shared_ptr<SharedBuffer> &data, bool allDataReceived)
     {
         if (m_failed)
             return;
@@ -114,7 +125,7 @@ public:
         onSetData(data);
     }
 
-    virtual void onSetData(SharedBuffer* data) { }
+    virtual void onSetData(const std::shared_ptr<SharedBuffer> &data) { }
 
     bool isSizeAvailable()
     {
@@ -334,7 +345,7 @@ protected:
     // Decodes the requested frame.
     virtual void decode(size_t) = 0;
 
-    RefPtr<SharedBuffer> m_data; // The encoded data.
+    std::shared_ptr<SharedBuffer> m_data; // The encoded data.
     Vector<ImageFrame, 1> m_frameBufferCache;
     bool m_premultiplyAlpha;
     bool m_ignoreGammaAndColorProfile;

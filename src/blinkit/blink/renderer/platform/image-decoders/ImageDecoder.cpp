@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageDecoder.cpp
+// Description: ImageDecoder Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) Research In Motion Limited 2009-2010. All rights reserved.
  *
@@ -25,9 +36,9 @@
 #include "platform/image-decoders/bmp/BMPImageDecoder.h"
 #include "platform/image-decoders/gif/GIFImageDecoder.h"
 #include "platform/image-decoders/ico/ICOImageDecoder.h"
-#include "platform/image-decoders/jpeg/JPEGImageDecoder.h"
+// BKTODO: #include "platform/image-decoders/jpeg/JPEGImageDecoder.h"
 #include "platform/image-decoders/png/PNGImageDecoder.h"
-#include "platform/image-decoders/webp/WEBPImageDecoder.h"
+// BKTODO: #include "platform/image-decoders/webp/WEBPImageDecoder.h"
 #include "wtf/PassOwnPtr.h"
 
 namespace blink {
@@ -47,10 +58,12 @@ static size_t copyFromSharedBuffer(char* buffer, size_t bufferLength, const Shar
     return bytesExtracted;
 }
 
+#if 0 // BKTODO:
 inline bool matchesJPEGSignature(char* contents)
 {
     return !memcmp(contents, "\xFF\xD8\xFF", 3);
 }
+#endif
 
 inline bool matchesPNGSignature(char* contents)
 {
@@ -62,10 +75,12 @@ inline bool matchesGIFSignature(char* contents)
     return !memcmp(contents, "GIF87a", 6) || !memcmp(contents, "GIF89a", 6);
 }
 
+#if 0 // BKTODO:
 inline bool matchesWebPSignature(char* contents)
 {
     return !memcmp(contents, "RIFF", 4) && !memcmp(contents + 8, "WEBPVP", 6);
 }
+#endif
 
 inline bool matchesICOSignature(char* contents)
 {
@@ -82,7 +97,7 @@ inline bool matchesBMPSignature(char* contents)
     return !memcmp(contents, "BM", 2);
 }
 
-PassOwnPtr<ImageDecoder> ImageDecoder::create(const SharedBuffer& data, AlphaOption alphaOption, GammaAndColorProfileOption colorOptions)
+PassOwnPtr<ImageDecoder> ImageDecoder::create(const std::shared_ptr<SharedBuffer> &data, AlphaOption alphaOption, GammaAndColorProfileOption colorOptions)
 {
     const size_t longestSignatureLength = sizeof("RIFF????WEBPVP") - 1;
     ASSERT(longestSignatureLength == 14);
@@ -90,11 +105,13 @@ PassOwnPtr<ImageDecoder> ImageDecoder::create(const SharedBuffer& data, AlphaOpt
     size_t maxDecodedBytes = Platform::current() ? Platform::current()->maxDecodedImageBytes() : noDecodedImageByteLimit;
 
     char contents[longestSignatureLength];
-    if (copyFromSharedBuffer(contents, longestSignatureLength, data, 0) < longestSignatureLength)
+    if (copyFromSharedBuffer(contents, longestSignatureLength, *data, 0) < longestSignatureLength)
         return nullptr;
 
+#if 0 // BKTODO:
     if (matchesJPEGSignature(contents))
         return adoptPtr(new JPEGImageDecoder(alphaOption, colorOptions, maxDecodedBytes));
+#endif
 
     if (matchesPNGSignature(contents))
         return adoptPtr(new PNGImageDecoder(alphaOption, colorOptions, maxDecodedBytes));
@@ -102,8 +119,10 @@ PassOwnPtr<ImageDecoder> ImageDecoder::create(const SharedBuffer& data, AlphaOpt
     if (matchesGIFSignature(contents))
         return adoptPtr(new GIFImageDecoder(alphaOption, colorOptions, maxDecodedBytes));
 
+#if 0 // BKTODO:
     if (matchesWebPSignature(contents))
         return adoptPtr(new WEBPImageDecoder(alphaOption, colorOptions, maxDecodedBytes));
+#endif
 
     if (matchesICOSignature(contents) || matchesCURSignature(contents))
         return adoptPtr(new ICOImageDecoder(alphaOption, colorOptions, maxDecodedBytes));
