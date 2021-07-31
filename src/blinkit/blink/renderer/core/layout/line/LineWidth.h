@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LineWidth.h
+// Description: LineWidth Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Adobe Systems Incorporated. All rights reserved.
  *
@@ -68,7 +79,7 @@ public:
     void shrinkAvailableWidthForNewFloatIfNeeded(const FloatingObject&);
     void addUncommittedWidth(float delta) { m_uncommittedWidth += delta; }
     void commit();
-    void applyOverhang(LineLayoutRubyRun, LineLayoutItem startLayoutItem, LineLayoutItem endLayoutItem);
+    // BKTODO: void applyOverhang(LineLayoutRubyRun, LineLayoutItem startLayoutItem, LineLayoutItem endLayoutItem);
     void fitBelowFloats(bool isFirstLine = false);
     void setTrailingWhitespaceWidth(float width) { m_trailingWhitespaceWidth = width; }
     void snapUncommittedWidth() { m_uncommittedWidth = LayoutUnit(m_uncommittedWidth).toFloat(); }

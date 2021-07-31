@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LineWidth.cpp
+// Description: LineWidth Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Adobe Systems Incorporated. All rights reserved.
  *
@@ -29,7 +40,7 @@
 
 #include "core/layout/line/LineWidth.h"
 
-#include "core/layout/api/LineLayoutRubyRun.h"
+// BKTODO: #include "core/layout/api/LineLayoutRubyRun.h"
 #include "core/layout/shapes/ShapeOutsideInfo.h"
 
 namespace blink {
@@ -104,6 +115,7 @@ void LineWidth::commit()
     m_uncommittedWidth = 0;
 }
 
+#if 0 // BKTODO:
 void LineWidth::applyOverhang(LineLayoutRubyRun rubyRun, LineLayoutItem startLayoutItem, LineLayoutItem endLayoutItem)
 {
     int startOverhang;
@@ -117,6 +129,7 @@ void LineWidth::applyOverhang(LineLayoutRubyRun rubyRun, LineLayoutItem startLay
     m_availableWidth += endOverhang;
     m_overhangWidth += startOverhang + endOverhang;
 }
+#endif
 
 inline static float availableWidthAtOffset(LineLayoutBlockFlow block, const LayoutUnit& offset, IndentTextOrNot indentText, float& newLineLeft,
     float& newLineRight, const LayoutUnit& lineHeight = 0)
