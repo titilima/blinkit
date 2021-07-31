@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TableCellPainter.cpp
+// Description: TableCellPainter Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -114,20 +125,32 @@ void TableCellPainter::paintCollapsedBorders(const PaintInfo& paintInfo, const L
     // We never paint diagonals at the joins.  We simply let the border with the highest
     // precedence paint on top of borders with lower precedence.
     if (displayItemType & DisplayItem::TableCollapsedBorderTop) {
+        ASSERT(false); // BKTODO:
+#if 0
         ObjectPainter::drawLineForBoxSide(graphicsContext, borderRect.x(), borderRect.y(), borderRect.maxX(), borderRect.y() + topWidth, BSTop,
             topBorderValue.color().resolve(cellColor), collapsedBorderStyle(topBorderValue.style()), 0, 0, true);
+#endif
     }
     if (displayItemType & DisplayItem::TableCollapsedBorderBottom) {
+        ASSERT(false); // BKTODO:
+#if 0
         ObjectPainter::drawLineForBoxSide(graphicsContext, borderRect.x(), borderRect.maxY() - bottomWidth, borderRect.maxX(), borderRect.maxY(), BSBottom,
             bottomBorderValue.color().resolve(cellColor), collapsedBorderStyle(bottomBorderValue.style()), 0, 0, true);
+#endif
     }
     if (displayItemType & DisplayItem::TableCollapsedBorderLeft) {
+        ASSERT(false); // BKTODO:
+#if 0
         ObjectPainter::drawLineForBoxSide(graphicsContext, borderRect.x(), borderRect.y(), borderRect.x() + leftWidth, borderRect.maxY(), BSLeft,
             leftBorderValue.color().resolve(cellColor), collapsedBorderStyle(leftBorderValue.style()), 0, 0, true);
+#endif
     }
     if (displayItemType & DisplayItem::TableCollapsedBorderRight) {
+        ASSERT(false); // BKTODO:
+#if 0
         ObjectPainter::drawLineForBoxSide(graphicsContext, borderRect.maxX() - rightWidth, borderRect.y(), borderRect.maxX(), borderRect.maxY(), BSRight,
             rightBorderValue.color().resolve(cellColor), collapsedBorderStyle(rightBorderValue.style()), 0, 0, true);
+#endif
     }
 }
 
@@ -149,7 +172,7 @@ void TableCellPainter::paintBackgroundsBehindCell(const PaintInfo& paintInfo, co
     LayoutRect paintRect = paintBounds(paintOffset, backgroundObject != &m_layoutTableCell ? AddOffsetFromParent : DoNotAddOffsetFromParent);
 
     // Record drawing only if the cell is painting background from containers.
-    Optional<LayoutObjectDrawingRecorder> recorder;
+    std::optional<LayoutObjectDrawingRecorder> recorder;
     if (backgroundObject != &m_layoutTableCell) {
         LayoutPoint adjustedPaintOffset = paintRect.location();
         if (LayoutObjectDrawingRecorder::useCachedDrawingIfPossible(paintInfo.context, m_layoutTableCell, type, adjustedPaintOffset))
