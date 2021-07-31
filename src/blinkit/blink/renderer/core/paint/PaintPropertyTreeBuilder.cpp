@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PaintPropertyTreeBuilder.cpp
+// Description: PaintPropertyTreeBuilder Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -98,12 +109,15 @@ void PaintPropertyTreeBuilder::walk(FrameView& frameView, const PaintPropertyTre
     if (LayoutView* layoutView = frameView.layoutView())
         walk(*layoutView, localContext);
 
+    ASSERT(false); // BKTODO:
+#if 0
     for (Frame* child = frameView.frame().tree().firstChild(); child; child = child->tree().nextSibling()) {
         if (!child->isLocalFrame())
             continue;
         if (FrameView* childView = toLocalFrame(child)->view())
             walk(*childView, localContext);
     }
+#endif
 }
 
 static void deriveBorderBoxFromContainerContext(const LayoutObject& object, PaintPropertyTreeBuilderContext& context)
