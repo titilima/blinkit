@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ReplacedPainter.cpp
+// Description: ReplacedPainter Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,20 +17,20 @@
 
 #include "core/layout/LayoutReplaced.h"
 #include "core/layout/api/SelectionState.h"
-#include "core/layout/svg/LayoutSVGRoot.h"
+// BKTODO: #include "core/layout/svg/LayoutSVGRoot.h"
 #include "core/paint/BoxPainter.h"
 #include "core/paint/LayoutObjectDrawingRecorder.h"
-#include "core/paint/ObjectPainter.h"
+// BKTODO: #include "core/paint/ObjectPainter.h"
 #include "core/paint/PaintInfo.h"
 #include "core/paint/PaintLayer.h"
 #include "core/paint/RoundedInnerRectClipper.h"
-#include "wtf/Optional.h"
 
 namespace blink {
 
 static bool shouldApplyViewportClip(const LayoutReplaced& layoutReplaced)
 {
-    return !layoutReplaced.isSVGRoot() || toLayoutSVGRoot(&layoutReplaced)->shouldApplyViewportClip();
+    ASSERT(false); // BKTODO: return !layoutReplaced.isSVGRoot() || toLayoutSVGRoot(&layoutReplaced)->shouldApplyViewportClip();
+    return true;
 }
 
 void ReplacedPainter::paint(const PaintInfo& paintInfo, const LayoutPoint& paintOffset)
@@ -42,7 +53,7 @@ void ReplacedPainter::paint(const PaintInfo& paintInfo, const LayoutPoint& paint
         return;
 
     if (shouldPaintSelfOutline(paintInfo.phase)) {
-        ObjectPainter(m_layoutReplaced).paintOutline(paintInfo, adjustedPaintOffset);
+        ASSERT(false); // BKTODO: ObjectPainter(m_layoutReplaced).paintOutline(paintInfo, adjustedPaintOffset);
         return;
     }
 
@@ -57,7 +68,7 @@ void ReplacedPainter::paint(const PaintInfo& paintInfo, const LayoutPoint& paint
             return;
 
     {
-        Optional<RoundedInnerRectClipper> clipper;
+        std::optional<RoundedInnerRectClipper> clipper;
         bool completelyClippedOut = false;
         if (m_layoutReplaced.style()->hasBorderRadius()) {
             if (borderRect.isEmpty()) {
