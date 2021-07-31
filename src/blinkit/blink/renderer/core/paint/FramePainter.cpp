@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FramePainter.cpp
+// Description: FramePainter Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #include "core/paint/FramePainter.h"
 
 #include "core/editing/markers/DocumentMarkerController.h"
-#include "core/fetch/MemoryCache.h"
+// BKTODO: #include "core/fetch/MemoryCache.h"
 #include "core/frame/FrameView.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/inspector/InspectorTraceEvents.h"
@@ -64,7 +75,7 @@ void FramePainter::paintContents(GraphicsContext& context, const GlobalPaintFlag
 {
     Document* document = frameView().frame().document();
 
-#ifndef NDEBUG
+#if 0 // BKTODO: ndef NDEBUG
     bool fillWithRed;
     if (document->printing())
         fillWithRed = false; // Printing, don't fill with red (can't remember why).
@@ -138,7 +149,7 @@ void FramePainter::paintContents(GraphicsContext& context, const GlobalPaintFlag
     if (isTopLevelPainter) {
         // Everything that happens after paintContents completions is considered
         // to be part of the next frame.
-        memoryCache()->updateFramePaintTimestamp();
+        ASSERT(false); // BKTODO: memoryCache()->updateFramePaintTimestamp();
         s_inPaintContents = false;
     }
 
