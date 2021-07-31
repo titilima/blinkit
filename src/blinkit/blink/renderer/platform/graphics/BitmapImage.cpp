@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BitmapImage.cpp
+// Description: BitmapImage Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Samuel Weinig (sam.weinig@gmail.com)
  * Copyright (C) 2004, 2005, 2006, 2008 Apple Inc. All rights reserved.
@@ -30,7 +41,7 @@
 #include "platform/Timer.h"
 #include "platform/TraceEvent.h"
 #include "platform/geometry/FloatRect.h"
-#include "platform/graphics/BitmapImageMetrics.h"
+// BKTODO: #include "platform/graphics/BitmapImageMetrics.h"
 #include "platform/graphics/DeferredImageDecoder.h"
 #include "platform/graphics/ImageObserver.h"
 #include "platform/graphics/StaticBitmapImage.h"
@@ -339,10 +350,12 @@ bool BitmapImage::isSizeAvailable()
 
     m_sizeAvailable = m_source.isSizeAvailable();
 
+#if 0 // BKTODO:
     if (m_sizeAvailable && hasVisibleImageSize(size())) {
         BitmapImageMetrics::countDecodedImageType(m_source.filenameExtension());
         BitmapImageMetrics::countImageOrientation(m_source.orientationAtIndex(0).orientation());
     }
+#endif
 
     return m_sizeAvailable;
 }
