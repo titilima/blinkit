@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PaintLayer.cpp
+// Description: PaintLayer Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights reserved.
  *
@@ -52,7 +63,7 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLFrameElement.h"
+// BKTODO: #include "core/html/HTMLFrameElement.h"
 #include "core/layout/HitTestRequest.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/HitTestingTransformState.h"
@@ -63,17 +74,19 @@
 #include "core/layout/LayoutReplica.h"
 #include "core/layout/LayoutScrollbar.h"
 #include "core/layout/LayoutScrollbarPart.h"
-#include "core/layout/LayoutTreeAsText.h"
+// BKTODO: #include "core/layout/LayoutTreeAsText.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/CompositedLayerMapping.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
+#if 0 // BKTODO:
 #include "core/layout/svg/LayoutSVGResourceClipper.h"
 #include "core/layout/svg/LayoutSVGRoot.h"
 #include "core/layout/svg/ReferenceFilterBuilder.h"
+#endif
 #include "core/page/Page.h"
 #include "core/page/scrolling/ScrollingCoordinator.h"
 #include "core/paint/FilterEffectBuilder.h"
-#include "core/paint/PaintTiming.h"
+// BKTODO: #include "core/paint/PaintTiming.h"
 #include "platform/LengthFunctions.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/TraceEvent.h"
@@ -979,7 +992,7 @@ bool PaintLayer::hasNonIsolatedDescendantWithBlendMode() const
     if (descendantDependentCompositingInputs().hasNonIsolatedDescendantWithBlendMode)
         return true;
     if (layoutObject()->isSVGRoot())
-        return toLayoutSVGRoot(layoutObject())->hasNonIsolatedBlendingDescendants();
+        ASSERT(false); // BKTODO: return toLayoutSVGRoot(layoutObject())->hasNonIsolatedBlendingDescendants();
     return false;
 }
 
@@ -2000,11 +2013,14 @@ bool PaintLayer::hitTestClippedOutByClipPath(PaintLayer* rootLayer, const HitTes
         ASSERT(clipPathOperation->type() == ClipPathOperation::REFERENCE);
         ReferenceClipPathOperation* referenceClipPathOperation = toReferenceClipPathOperation(clipPathOperation);
         Element* element = layoutObject()->document().getElementById(referenceClipPathOperation->fragment());
+        ASSERT(false); // BKTODO:
+#if 0
         if (isSVGClipPathElement(element) && element->layoutObject()) {
             LayoutSVGResourceClipper* clipper = toLayoutSVGResourceClipper(toLayoutSVGResourceContainer(element->layoutObject()));
             if (!clipper->hitTestClipContent(FloatRect(rootRelativeBounds), FloatPoint(hitTestLocation.point())))
                 return true;
         }
+#endif
     }
 
     return false;
@@ -2611,9 +2627,12 @@ FilterOperations computeFilterOperationsHandleReferenceFilters(const FilterOpera
             if (filterOperation->type() != FilterOperation::REFERENCE)
                 continue;
             ReferenceFilterOperation& referenceOperation = toReferenceFilterOperation(*filterOperation);
+            ASSERT(false); // BKTODO:
+#if 0
             // FIXME: Cache the Filter if it didn't change.
             RefPtrWillBeRawPtr<Filter> referenceFilter = ReferenceFilterBuilder::build(effectiveZoom, toElement(enclosingNode), nullptr, referenceOperation);
             referenceOperation.setFilter(referenceFilter.release());
+#endif
         }
     }
 
@@ -2799,39 +2818,16 @@ void PaintLayer::clearNeedsRepaintRecursively()
     m_needsRepaint = false;
 }
 
+#if 0 // BKTODO:
 PaintTiming* PaintLayer::paintTiming()
 {
     if (Node* node = layoutObject()->node())
         return &PaintTiming::from(node->document());
     return nullptr;
 }
+#endif
 
 DisableCompositingQueryAsserts::DisableCompositingQueryAsserts()
     : m_disabler(gCompositingQueryMode, CompositingQueriesAreAllowed) { }
 
 } // namespace blink
-
-#ifndef NDEBUG
-// FIXME: Rename?
-void showLayerTree(const blink::PaintLayer* layer)
-{
-    if (!layer) {
-        fprintf(stderr, "Cannot showLayerTree. Root is (nil)\n");
-        return;
-    }
-
-    if (blink::LocalFrame* frame = layer->layoutObject()->frame()) {
-        WTF::String output = externalRepresentation(frame, blink::LayoutAsTextShowAllLayers | blink::LayoutAsTextShowLayerNesting | blink::LayoutAsTextShowCompositedLayers | blink::LayoutAsTextShowAddresses | blink::LayoutAsTextShowIDAndClass | blink::LayoutAsTextDontUpdateLayout | blink::LayoutAsTextShowLayoutState);
-        fprintf(stderr, "%s\n", output.utf8().data());
-    }
-}
-
-void showLayerTree(const blink::LayoutObject* layoutObject)
-{
-    if (!layoutObject) {
-        fprintf(stderr, "Cannot showLayerTree. Root is (nil)\n");
-        return;
-    }
-    showLayerTree(layoutObject->enclosingLayer());
-}
-#endif

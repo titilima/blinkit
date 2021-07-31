@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PaintLayer.h
+// Description: PaintLayer Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2009, 2012 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Intel Corporation. All rights reserved.
@@ -70,7 +81,7 @@ class HitTestRequest;
 class HitTestResult;
 class HitTestingTransformState;
 class PaintLayerCompositor;
-class PaintTiming;
+// BKTODO: class PaintTiming;
 class TransformationMatrix;
 
 enum IncludeSelfOrNot { IncludeSelf, ExcludeSelf };
@@ -626,7 +637,7 @@ public:
     PaintLayerPainter::PaintResult previousPaintResult() const { return static_cast<PaintLayerPainter::PaintResult>(m_previousPaintResult); }
     void setPreviousPaintResult(PaintLayerPainter::PaintResult result) { m_previousPaintResult = static_cast<unsigned>(result); ASSERT(m_previousPaintResult == static_cast<unsigned>(result)); }
 
-    PaintTiming* paintTiming();
+    // BKTODO: PaintTiming* paintTiming();
 
 private:
     // Bounding box in the coordinates of this layer.
@@ -823,11 +834,5 @@ private:
 };
 
 } // namespace blink
-
-#ifndef NDEBUG
-// Outside the WebCore namespace for ease of invocation from gdb.
-void showLayerTree(const blink::PaintLayer*);
-void showLayerTree(const blink::LayoutObject*);
-#endif
 
 #endif // Layer_h
