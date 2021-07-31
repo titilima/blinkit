@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DragController.cpp
+// Description: DragController Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Google Inc.
@@ -42,8 +53,10 @@
 #include "core/editing/EditingUtilities.h"
 #include "core/editing/Editor.h"
 #include "core/editing/FrameSelection.h"
+#if 0 // BKTODO:
 #include "core/editing/commands/MoveSelectionCommand.h"
 #include "core/editing/commands/ReplaceSelectionCommand.h"
+#endif
 #include "core/editing/serializers/Serialization.h"
 #include "core/events/TextEvent.h"
 #include "core/fetch/ImageResource.h"
@@ -54,7 +67,7 @@
 #include "core/html/HTMLAnchorElement.h"
 #include "core/html/HTMLFormElement.h"
 #include "core/html/HTMLInputElement.h"
-#include "core/html/HTMLPlugInElement.h"
+// BKTODO: #include "core/html/HTMLPlugInElement.h"
 #include "core/input/EventHandler.h"
 #include "core/layout/LayoutTheme.h"
 #include "core/layout/LayoutView.h"
@@ -74,7 +87,7 @@
 #include "platform/graphics/Image.h"
 #include "platform/graphics/ImageOrientation.h"
 #include "platform/network/ResourceRequest.h"
-#include "platform/weborigin/SecurityOrigin.h"
+// BKTODO: #include "platform/weborigin/SecurityOrigin.h"
 #include "wtf/CurrentTime.h"
 #include "wtf/OwnPtr.h"
 #include "wtf/PassOwnPtr.h"
@@ -214,11 +227,14 @@ void DragController::dragExited(DragData* dragData)
 
     RefPtrWillBeRawPtr<FrameView> frameView(mainFrame->view());
     if (frameView) {
+        ASSERT(false); // BKTODO:
+#if 0
         DataTransferAccessPolicy policy = (!m_documentUnderMouse || m_documentUnderMouse->securityOrigin()->isLocal()) ? DataTransferReadable : DataTransferTypesReadable;
         DataTransfer* dataTransfer = createDraggingDataTransfer(policy, dragData);
         dataTransfer->setSourceOperation(dragData->draggingSourceOperationMask());
         mainFrame->eventHandler().cancelDragAndDrop(createMouseEvent(dragData), dataTransfer);
         dataTransfer->setAccessPolicy(DataTransferNumb); // invalidate clipboard here for security
+#endif
     }
     mouseMovedIntoDocument(nullptr);
     if (m_fileInputElementUnderMouse)
@@ -262,8 +278,11 @@ bool DragController::performDrag(DragData* dragData)
     if (operationForLoad(dragData) == DragOperationNone)
         return false;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_page->settings().navigateOnDragDrop())
         m_page->deprecatedLocalMainFrame()->loader().load(FrameLoadRequest(nullptr, ResourceRequest(dragData->asURL())));
+#endif
     return true;
 }
 
@@ -334,6 +353,8 @@ bool DragController::tryDocumentDrag(DragData* dragData, DragDestinationAction a
     if (!m_documentUnderMouse)
         return false;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_dragInitiator && !m_documentUnderMouse->securityOrigin()->canAccess(m_dragInitiator->securityOrigin()))
         return false;
 
@@ -410,6 +431,7 @@ bool DragController::tryDocumentDrag(DragData* dragData, DragDestinationAction a
     m_page->dragCaretController().clear();
     if (m_fileInputElementUnderMouse)
         m_fileInputElementUnderMouse->setCanReceiveDroppedFiles(false);
+#endif
     m_fileInputElementUnderMouse = nullptr;
     return false;
 }
@@ -498,6 +520,8 @@ bool DragController::concludeEditDrag(DragData* dragData)
         if (!fragment)
             return false;
 
+        ASSERT(false); // BKTODO:
+#if 0
         if (dragIsMove(innerFrame->selection(), dragData)) {
             // NSTextView behavior is to always smart delete on moving a selection,
             // but only to smart insert if the selection granularity is word granularity.
@@ -515,6 +539,7 @@ bool DragController::concludeEditDrag(DragData* dragData)
                 ReplaceSelectionCommand::create(*m_documentUnderMouse.get(), fragment, options)->apply();
             }
         }
+#endif
     } else {
         String text = dragData->asPlainText();
         if (text.isEmpty())
@@ -522,7 +547,7 @@ bool DragController::concludeEditDrag(DragData* dragData)
 
         if (setSelectionToDragCaret(innerFrame.get(), dragCaret, range, point)) {
             ASSERT(m_documentUnderMouse);
-            ReplaceSelectionCommand::create(*m_documentUnderMouse.get(), createFragmentFromText(EphemeralRange(range.get()), text),  ReplaceSelectionCommand::SelectReplacement | ReplaceSelectionCommand::MatchStyle | ReplaceSelectionCommand::PreventNesting)->apply();
+            ASSERT(false); // BKTODO: ReplaceSelectionCommand::create(*m_documentUnderMouse.get(), createFragmentFromText(EphemeralRange(range.get()), text), ReplaceSelectionCommand::SelectReplacement | ReplaceSelectionCommand::MatchStyle | ReplaceSelectionCommand::PreventNesting)->apply();
         }
     }
 
@@ -553,6 +578,8 @@ bool DragController::canProcessDrag(DragData* dragData)
     if (dragData->containsFiles() && asFileInput(result.innerNode()))
         return true;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (isHTMLPlugInElement(*result.innerNode())) {
         HTMLPlugInElement* plugin = toHTMLPlugInElement(result.innerNode());
         if (!plugin->canProcessDrag() && !result.innerNode()->hasEditableStyle())
@@ -560,6 +587,7 @@ bool DragController::canProcessDrag(DragData* dragData)
     } else if (!result.innerNode()->hasEditableStyle()) {
         return false;
     }
+#endif
 
     if (m_didInitiateDrag && m_documentUnderMouse == m_dragInitiator && result.isSelected())
         return false;
@@ -595,6 +623,8 @@ bool DragController::tryDHTMLDrag(DragData* dragData, DragOperation& operation)
         return false;
 
     RefPtrWillBeRawPtr<FrameView> viewProtector(mainFrame->view());
+    ASSERT(false); // BKTODO:
+#if 0
     DataTransferAccessPolicy policy = m_documentUnderMouse->securityOrigin()->isLocal() ? DataTransferReadable : DataTransferTypesReadable;
     DataTransfer* dataTransfer = createDraggingDataTransfer(policy, dragData);
     DragOperation srcOpMask = dragData->draggingSourceOperationMask();
@@ -615,6 +645,7 @@ bool DragController::tryDHTMLDrag(DragData* dragData, DragOperation& operation)
     }
 
     dataTransfer->setAccessPolicy(DataTransferNumb); // invalidate clipboard here for security
+#endif
     return true;
 }
 
@@ -647,6 +678,8 @@ Node* DragController::draggableNode(const LocalFrame* src, Node* startNode, cons
             EUserDrag dragMode = layoutObject->style()->userDrag();
             if (dragMode == DRAG_NONE)
                 continue;
+            ASSERT(false); // BKTODO:
+#if 0
             // Even if the image is part of a selection, we always only drag the image in this case.
             if (layoutObject->isImage()
                 && src->settings()
@@ -654,6 +687,7 @@ Node* DragController::draggableNode(const LocalFrame* src, Node* startNode, cons
                 dragType = DragSourceActionImage;
                 return node;
             }
+#endif
             // Other draggable elements are considered unselectable.
             if (isHTMLAnchorElement(*node) && toHTMLAnchorElement(node)->isLiveLink()) {
                 candidateDragType = DragSourceActionLink;
@@ -924,8 +958,11 @@ void DragController::doSystemDrag(DragImage* image, const IntPoint& dragLocation
     RefPtrWillBeRawPtr<LocalFrame> mainFrame = m_page->deprecatedLocalMainFrame();
     RefPtrWillBeRawPtr<FrameView> mainFrameView = mainFrame->view();
 
+    ASSERT(false); // BKTODO:
+#if 0
     m_client->startDrag(image, mainFrameView->rootFrameToContents(frame->view()->contentsToRootFrame(dragLocation)),
         mainFrameView->rootFrameToContents(frame->view()->contentsToRootFrame(eventPos)), dataTransfer, frame, forLink);
+#endif
     // DragClient::startDrag can cause our Page to dispear, deallocating |this|.
     if (!frame->page())
         return;
