@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FilterPainter.cpp
+// Description: FilterPainter Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -61,6 +72,8 @@ FilterPainter::FilterPainter(PaintLayer& layer, GraphicsContext& context, const 
     ASSERT(m_layoutObject);
     if (!context.paintController().displayItemConstructionIsDisabled()) {
         FilterOperations filterOperations(layer.computeFilterOperations(m_layoutObject->styleRef()));
+        ASSERT(false); // BKTODO:
+#if 0
         OwnPtr<WebFilterOperations> webFilterOperations = adoptPtr(Platform::current()->compositorSupport()->createFilterOperations());
         builder.buildFilterOperations(filterOperations, webFilterOperations.get());
         // FIXME: It's possible to have empty WebFilterOperations here even
@@ -76,6 +89,7 @@ FilterPainter::FilterPainter(PaintLayer& layer, GraphicsContext& context, const 
             layer.convertFromFlowThreadToVisualBoundingBoxInAncestor(paintingInfo.rootLayer, visualBounds);
         }
         context.paintController().createAndAppend<BeginFilterDisplayItem>(*m_layoutObject, imageFilter, FloatRect(visualBounds), webFilterOperations.release());
+#endif
     }
 
     m_filterInProgress = true;
