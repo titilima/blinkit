@@ -1,9 +1,21 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InlineTextBoxPainter.cpp
+// Description: InlineTextBoxPainter Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "core/paint/InlineTextBoxPainter.h"
 
+#include <optional>
 #include "core/editing/CompositionUnderline.h"
 #include "core/editing/Editor.h"
 #include "core/editing/markers/DocumentMarkerController.h"
@@ -21,7 +33,6 @@
 #include "core/paint/TextPainter.h"
 #include "platform/graphics/GraphicsContextStateSaver.h"
 #include "platform/graphics/paint/DrawingRecorder.h"
-#include "wtf/Optional.h"
 
 namespace blink {
 
@@ -86,7 +97,7 @@ void InlineTextBoxPainter::paint(const PaintInfo& paintInfo, const LayoutPoint& 
 
     // The text clip phase already has a LayoutObjectDrawingRecorder. Text clips are initiated only in BoxPainter::paintFillLayer,
     // which is already within a LayoutObjectDrawingRecorder.
-    Optional<DrawingRecorder> drawingRecorder;
+    std::optional<DrawingRecorder> drawingRecorder;
     if (paintInfo.phase != PaintPhaseTextClip) {
         if (DrawingRecorder::useCachedDrawingIfPossible(paintInfo.context, m_inlineTextBox, DisplayItem::paintPhaseToDrawingType(paintInfo.phase)))
             return;
