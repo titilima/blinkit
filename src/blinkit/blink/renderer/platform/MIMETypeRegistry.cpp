@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MIMETypeRegistry.cpp
+// Description: MIMETypeRegistry Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, 2009, Google Inc. All rights reserved.
  *
@@ -30,22 +41,24 @@
 
 #include "platform/MIMETypeRegistry.h"
 
-#include "platform/plugins/PluginData.h"
+// BKTODO: #include "platform/plugins/PluginData.h"
 #include "public/platform/Platform.h"
-#include "public/platform/WebMimeRegistry.h"
+// BKTODO: #include "public/platform/WebMimeRegistry.h"
 #include "wtf/text/CString.h"
 
 namespace blink {
 
 String MIMETypeRegistry::getMIMETypeForExtension(const String &ext)
 {
-    return Platform::current()->mimeRegistry()->mimeTypeForExtension(ext);
+    ASSERT(false); // BKTODO: return Platform::current()->mimeRegistry()->mimeTypeForExtension(ext);
+    return String();
 }
 
 String MIMETypeRegistry::getWellKnownMIMETypeForExtension(const String &ext)
 {
     // This method must be thread safe and should not consult the OS/registry.
-    return Platform::current()->mimeRegistry()->wellKnownMimeTypeForExtension(ext);
+    ASSERT(false); // BKTODO: return Platform::current()->mimeRegistry()->wellKnownMimeTypeForExtension(ext);
+    return String();
 }
 
 String MIMETypeRegistry::getMIMETypeForPath(const String& path)
@@ -58,7 +71,7 @@ String MIMETypeRegistry::getMIMETypeForPath(const String& path)
     if (mimeType.isEmpty()) {
         // If there's no mimetype registered for the extension, check to see
         // if a plugin can handle the extension.
-        mimeType = getPluginMimeTypeFromExtension(extension);
+        ASSERT(false); // BKTODO: mimeType = getPluginMimeTypeFromExtension(extension);
     }
     if (mimeType.isEmpty())
         return "application/octet-stream";
@@ -67,8 +80,12 @@ String MIMETypeRegistry::getMIMETypeForPath(const String& path)
 
 bool MIMETypeRegistry::isSupportedImageMIMEType(const String& mimeType)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return Platform::current()->mimeRegistry()->supportsImageMIMEType(mimeType.lower())
         != WebMimeRegistry::IsNotSupported;
+#endif
 }
 
 bool MIMETypeRegistry::isSupportedImageResourceMIMEType(const String& mimeType)
@@ -78,8 +95,12 @@ bool MIMETypeRegistry::isSupportedImageResourceMIMEType(const String& mimeType)
 
 bool MIMETypeRegistry::isSupportedImagePrefixedMIMEType(const String& mimeType)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return Platform::current()->mimeRegistry()->supportsImagePrefixedMIMEType(mimeType.lower())
         != WebMimeRegistry::IsNotSupported;
+#endif
 }
 
 bool MIMETypeRegistry::isSupportedImageMIMETypeForEncoding(const String& mimeType)
@@ -93,20 +114,32 @@ bool MIMETypeRegistry::isSupportedImageMIMETypeForEncoding(const String& mimeTyp
 
 bool MIMETypeRegistry::isSupportedJavaScriptMIMEType(const String& mimeType)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return Platform::current()->mimeRegistry()->supportsJavaScriptMIMEType(mimeType.lower())
         != WebMimeRegistry::IsNotSupported;
+#endif
 }
 
 bool MIMETypeRegistry::isSupportedNonImageMIMEType(const String& mimeType)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return Platform::current()->mimeRegistry()->supportsNonImageMIMEType(mimeType.lower())
         != WebMimeRegistry::IsNotSupported;
+#endif
 }
 
 bool MIMETypeRegistry::isSupportedMediaSourceMIMEType(const String& mimeType, const String& codecs)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return !mimeType.isEmpty()
         && Platform::current()->mimeRegistry()->supportsMediaSourceMIMEType(mimeType.lower(), codecs);
+#endif
 }
 
 bool MIMETypeRegistry::isJavaAppletMIMEType(const String& mimeType)
