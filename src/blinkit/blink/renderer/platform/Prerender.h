@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Prerender.h
+// Description: Prerender Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -34,7 +45,7 @@
 
 #include "platform/PlatformExport.h"
 #include "platform/weborigin/KURL.h"
-#include "platform/weborigin/Referrer.h"
+// BKTODO: #include "platform/weborigin/Referrer.h"
 #include "wtf/OwnPtr.h"
 #include "wtf/PassOwnPtr.h"
 #include "wtf/PassRefPtr.h"
@@ -54,7 +65,7 @@ public:
         virtual ~ExtraData() { }
     };
 
-    static PassRefPtr<Prerender> create(PrerenderClient*, const KURL&, unsigned relTypes, const Referrer&);
+    // BKTODO: static PassRefPtr<Prerender> create(PrerenderClient*, const KURL&, unsigned relTypes, const Referrer&);
     ~Prerender();
 
     void removeClient();
@@ -65,8 +76,10 @@ public:
 
     const KURL& url() const { return m_url; }
     unsigned relTypes() const { return m_relTypes; }
+#if 0 // BKTODO:
     const String& referrer() const { return m_referrer.referrer; }
     ReferrerPolicy referrerPolicy() const { return m_referrer.referrerPolicy; }
+#endif
 
     void setExtraData(PassRefPtr<ExtraData> extraData) { m_extraData = extraData; }
     ExtraData* extraData() { return m_extraData.get(); }
@@ -77,13 +90,13 @@ public:
     void didSendDOMContentLoadedForPrerender();
 
 private:
-    Prerender(PrerenderClient*, const KURL&, unsigned relTypes, const Referrer&);
+    // BKTODO: Prerender(PrerenderClient*, const KURL&, unsigned relTypes, const Referrer&);
 
     PrerenderClient* m_client;
 
     const KURL m_url;
     const unsigned m_relTypes;
-    const Referrer m_referrer;
+    // BKTODO: const Referrer m_referrer;
 
     RefPtr<ExtraData> m_extraData;
 };

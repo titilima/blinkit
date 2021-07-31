@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Prerender.cpp
+// Description: Prerender Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -32,11 +43,12 @@
 #include "platform/Prerender.h"
 
 #include "platform/PrerenderClient.h"
-#include "public/platform/WebPrerender.h"
-#include "public/platform/WebPrerenderingSupport.h"
+// BKTODO: #include "public/platform/WebPrerender.h"
+// BKTODO: #include "public/platform/WebPrerenderingSupport.h"
 
 namespace blink {
 
+#if 0 // BKTODO:
 PassRefPtr<Prerender> Prerender::create(PrerenderClient* client, const KURL& url, unsigned relTypes, const Referrer& referrer)
 {
     return adoptRef(new Prerender(client, url, relTypes, referrer));
@@ -49,6 +61,7 @@ Prerender::Prerender(PrerenderClient* client, const KURL& url, const unsigned re
     , m_referrer(referrer)
 {
 }
+#endif
 
 Prerender::~Prerender()
 {
@@ -61,20 +74,29 @@ void Prerender::removeClient()
 
 void Prerender::add()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (WebPrerenderingSupport* platform = WebPrerenderingSupport::current())
         platform->add(WebPrerender(this));
+#endif
 }
 
 void Prerender::cancel()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (WebPrerenderingSupport* platform = WebPrerenderingSupport::current())
         platform->cancel(WebPrerender(this));
+#endif
 }
 
 void Prerender::abandon()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (WebPrerenderingSupport* platform = WebPrerenderingSupport::current())
         platform->abandon(WebPrerender(this));
+#endif
 }
 
 void Prerender::didStartPrerender()
