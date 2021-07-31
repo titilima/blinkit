@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContentData.cpp
+// Description: ContentData Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Antti Koivisto (koivisto@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights reserved.
@@ -21,7 +32,7 @@
 
 #include "core/style/ContentData.h"
 
-#include "core/layout/LayoutCounter.h"
+// BKTODO: #include "core/layout/LayoutCounter.h"
 #include "core/layout/LayoutImage.h"
 #include "core/layout/LayoutImageResource.h"
 #include "core/layout/LayoutImageResourceStyleImage.h"
@@ -96,9 +107,13 @@ LayoutObject* TextContentData::createLayoutObject(Document& doc, ComputedStyle& 
 
 LayoutObject* CounterContentData::createLayoutObject(Document& doc, ComputedStyle& pseudoStyle) const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     LayoutObject* layoutObject = new LayoutCounter(&doc, *m_counter);
     layoutObject->setPseudoStyle(&pseudoStyle);
     return layoutObject;
+#endif
 }
 
 LayoutObject* QuoteContentData::createLayoutObject(Document& doc, ComputedStyle& pseudoStyle) const
