@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MixedContentChecker.h
+// Description: MixedContentChecker Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -61,12 +72,13 @@ public:
     static bool shouldBlockFetch(LocalFrame*, WebURLRequest::RequestContext, WebURLRequest::FrameType, const KURL&, ReportingStatus = SendReport);
     static bool shouldBlockFetch(LocalFrame* frame, const ResourceRequest& request, const KURL& url, ReportingStatus status = SendReport)
     {
-        return shouldBlockFetch(frame, request.requestContext(), request.frameType(), url, status);
+        ASSERT(false); // BKTODO: return shouldBlockFetch(frame, request.requestContext(), request.frameType(), url, status);
+        return false;
     }
 
     static bool shouldBlockWebSocket(LocalFrame*, const KURL&, ReportingStatus = SendReport);
 
-    static bool isMixedContent(SecurityOrigin*, const KURL&);
+    // BKTODO: static bool isMixedContent(SecurityOrigin*, const KURL&);
     static bool isMixedFormAction(LocalFrame*, const KURL&, ReportingStatus = SendReport);
 
     static void checkMixedPrivatePublic(LocalFrame*, const AtomicString& resourceIPAddress);
