@@ -1,9 +1,21 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PartPainter.cpp
+// Description: PartPainter Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "core/paint/PartPainter.h"
 
+#include <optional>
 #include "core/layout/LayoutPart.h"
 #include "core/paint/BoxPainter.h"
 #include "core/paint/LayoutObjectDrawingRecorder.h"
@@ -12,7 +24,6 @@
 #include "core/paint/RoundedInnerRectClipper.h"
 #include "core/paint/ScrollableAreaPainter.h"
 #include "core/paint/TransformRecorder.h"
-#include "wtf/Optional.h"
 
 namespace blink {
 
@@ -56,13 +67,13 @@ void PartPainter::paint(const PaintInfo& paintInfo, const LayoutPoint& paintOffs
     }
 
     if (shouldPaintSelfOutline(paintInfo.phase))
-        ObjectPainter(m_layoutPart).paintOutline(paintInfo, adjustedPaintOffset);
+        ASSERT(false); // BKTODO: ObjectPainter(m_layoutPart).paintOutline(paintInfo, adjustedPaintOffset);
 
     if (paintInfo.phase != PaintPhaseForeground)
         return;
 
     {
-        Optional<RoundedInnerRectClipper> clipper;
+        std::optional<RoundedInnerRectClipper> clipper;
         if (m_layoutPart.style()->hasBorderRadius()) {
             if (borderRect.isEmpty())
                 return;
