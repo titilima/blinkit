@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PrerenderHandle.cpp
+// Description: PrerenderHandle Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -33,10 +44,10 @@
 #include "core/dom/Document.h"
 #include "core/frame/LocalFrame.h"
 #include "core/loader/FrameLoader.h"
-#include "core/loader/PrerendererClient.h"
+// BKTODO: #include "core/loader/PrerendererClient.h"
 #include "platform/Prerender.h"
-#include "platform/weborigin/ReferrerPolicy.h"
-#include "platform/weborigin/SecurityPolicy.h"
+// BKTODO: #include "platform/weborigin/ReferrerPolicy.h"
+// BKTODO: #include "platform/weborigin/SecurityPolicy.h"
 
 namespace blink {
 
@@ -48,6 +59,9 @@ PassOwnPtrWillBeRawPtr<PrerenderHandle> PrerenderHandle::create(Document& docume
     if (!document.frame())
         return nullptr;
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     RefPtr<Prerender> prerender = Prerender::create(client, url, prerenderRelTypes, SecurityPolicy::generateReferrer(document.referrerPolicy(), url, document.outgoingReferrer()));
 
     PrerendererClient* prerendererClient = PrerendererClient::from(document.page());
@@ -56,6 +70,7 @@ PassOwnPtrWillBeRawPtr<PrerenderHandle> PrerenderHandle::create(Document& docume
     prerender->add();
 
     return adoptPtrWillBeNoop(new PrerenderHandle(document, prerender.release()));
+#endif
 }
 
 PrerenderHandle::PrerenderHandle(Document& document, PassRefPtr<Prerender> prerender)
