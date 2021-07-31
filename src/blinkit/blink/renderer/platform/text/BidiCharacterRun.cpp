@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BidiCharacterRun.cpp
+// Description: BidiCharacterRun Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,13 +35,13 @@
 #include "platform/text/BidiCharacterRun.h"
 
 #include "wtf/Partitions.h"
-#include "wtf/RefCountedLeakCounter.h"
+// BKTODO: #include "wtf/RefCountedLeakCounter.h"
 
 using namespace WTF;
 
 namespace blink {
 namespace {
-#ifndef NDEBUG
+#if 0 // BKTODO: ndef NDEBUG
 static RefCountedLeakCounter& bidiRunCounter()
 {
     DEFINE_STATIC_LOCAL(RefCountedLeakCounter, staticBidiRunCounter, ("BidiCharacterRun"));
@@ -41,7 +52,7 @@ static RefCountedLeakCounter& bidiRunCounter()
 
 void* BidiCharacterRun::operator new(size_t sz)
 {
-#ifndef NDEBUG
+#if 0 // BKTODO: ndef NDEBUG
     bidiRunCounter().increment();
 #endif
     return partitionAlloc(Partitions::layoutPartition(), sz, WTF_HEAP_PROFILER_TYPE_NAME(BidiCharacterRun));
@@ -49,7 +60,7 @@ void* BidiCharacterRun::operator new(size_t sz)
 
 void BidiCharacterRun::operator delete(void* ptr)
 {
-#ifndef NDEBUG
+#if 0 // BKTODO: ndef NDEBUG
     bidiRunCounter().decrement();
 #endif
     partitionFree(ptr);
