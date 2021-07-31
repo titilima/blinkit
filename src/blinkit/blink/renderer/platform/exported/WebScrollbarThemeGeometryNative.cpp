@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebScrollbarThemeGeometryNative.cpp
+// Description: WebScrollbarThemeGeometryNative Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -51,32 +62,32 @@ bool WebScrollbarThemeGeometryNative::hasThumb(WebScrollbar* scrollbar)
     return m_theme.hasThumb(WebScrollbarThemeClientImpl(*scrollbar));
 }
 
-WebRect WebScrollbarThemeGeometryNative::trackRect(WebScrollbar* scrollbar)
+IntRect WebScrollbarThemeGeometryNative::trackRect(WebScrollbar* scrollbar)
 {
     return m_theme.trackRect(WebScrollbarThemeClientImpl(*scrollbar));
 }
 
-WebRect WebScrollbarThemeGeometryNative::thumbRect(WebScrollbar* scrollbar)
+IntRect WebScrollbarThemeGeometryNative::thumbRect(WebScrollbar* scrollbar)
 {
     return m_theme.thumbRect(WebScrollbarThemeClientImpl(*scrollbar));
 }
 
-WebRect WebScrollbarThemeGeometryNative::backButtonStartRect(WebScrollbar* scrollbar)
+IntRect WebScrollbarThemeGeometryNative::backButtonStartRect(WebScrollbar* scrollbar)
 {
     return m_theme.backButtonRect(WebScrollbarThemeClientImpl(*scrollbar), BackButtonStartPart, false);
 }
 
-WebRect WebScrollbarThemeGeometryNative::backButtonEndRect(WebScrollbar* scrollbar)
+IntRect WebScrollbarThemeGeometryNative::backButtonEndRect(WebScrollbar* scrollbar)
 {
     return m_theme.backButtonRect(WebScrollbarThemeClientImpl(*scrollbar), BackButtonEndPart, false);
 }
 
-WebRect WebScrollbarThemeGeometryNative::forwardButtonStartRect(WebScrollbar* scrollbar)
+IntRect WebScrollbarThemeGeometryNative::forwardButtonStartRect(WebScrollbar* scrollbar)
 {
     return m_theme.forwardButtonRect(WebScrollbarThemeClientImpl(*scrollbar), ForwardButtonStartPart, false);
 }
 
-WebRect WebScrollbarThemeGeometryNative::forwardButtonEndRect(WebScrollbar* scrollbar)
+IntRect WebScrollbarThemeGeometryNative::forwardButtonEndRect(WebScrollbar* scrollbar)
 {
     return m_theme.forwardButtonRect(WebScrollbarThemeClientImpl(*scrollbar), ForwardButtonEndPart, false);
 }
