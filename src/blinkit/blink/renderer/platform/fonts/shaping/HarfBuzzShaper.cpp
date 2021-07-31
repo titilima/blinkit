@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HarfBuzzShaper.cpp
+// Description: HarfBuzzShaper Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2012 Google Inc. All rights reserved.
  * Copyright (C) 2013 BlackBerry Limited. All rights reserved.
@@ -31,7 +42,7 @@
 
 #include "platform/fonts/shaping/HarfBuzzShaper.h"
 
-#include "platform/Logging.h"
+// BKTODO: #include "platform/Logging.h"
 #include "platform/fonts/Character.h"
 #include "platform/fonts/Font.h"
 #include "platform/fonts/FontFallbackIterator.h"
