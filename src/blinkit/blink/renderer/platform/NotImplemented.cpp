@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NotImplemented.cpp
+// Description: NotImplemented Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -25,7 +36,7 @@
 
 #include "platform/NotImplemented.h"
 
-#include "platform/Logging.h"
+// BKTODO: #include "platform/Logging.h"
 
 namespace blink {
 
@@ -33,7 +44,8 @@ namespace blink {
 
 WTFLogChannel* notImplementedLoggingChannel()
 {
-    return &LogNotYetImplemented;
+    ASSERT(false); // BKTODO: return &LogNotYetImplemented;
+    return nullptr;
 }
 
 #endif
