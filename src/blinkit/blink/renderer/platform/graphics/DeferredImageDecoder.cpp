@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DeferredImageDecoder.cpp
+// Description: DeferredImageDecoder Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -39,12 +50,16 @@ bool DeferredImageDecoder::s_enabled = true;
 
 PassOwnPtr<DeferredImageDecoder> DeferredImageDecoder::create(const SharedBuffer& data, ImageDecoder::AlphaOption alphaOption, ImageDecoder::GammaAndColorProfileOption colorOptions)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     OwnPtr<ImageDecoder> actualDecoder = ImageDecoder::create(data, alphaOption, colorOptions);
 
     if (!actualDecoder)
         return nullptr;
 
     return adoptPtr(new DeferredImageDecoder(actualDecoder.release()));
+#endif
 }
 
 PassOwnPtr<DeferredImageDecoder> DeferredImageDecoder::createForTesting(PassOwnPtr<ImageDecoder> actualDecoder)
@@ -108,18 +123,18 @@ PassRefPtr<SkImage> DeferredImageDecoder::createFrameAtIndex(size_t index)
     return adoptRef(SkImage::NewFromBitmap(frame->bitmap()));
 }
 
-void DeferredImageDecoder::setData(SharedBuffer& data, bool allDataReceived)
+void DeferredImageDecoder::setData(const std::shared_ptr<SharedBuffer> &data, bool allDataReceived)
 {
     if (m_actualDecoder) {
-        m_data = RefPtr<SharedBuffer>(data);
-        m_lastDataSize = data.size();
+        m_data = data;
+        m_lastDataSize = data->size();
         m_allDataReceived = allDataReceived;
-        m_actualDecoder->setData(&data, allDataReceived);
+        m_actualDecoder->setData(data, allDataReceived);
         prepareLazyDecodedFrames();
     }
 
     if (m_frameGenerator)
-        m_frameGenerator->setData(&data, allDataReceived);
+        m_frameGenerator->setData(data, allDataReceived);
 }
 
 bool DeferredImageDecoder::isSizeAvailable()
@@ -227,7 +242,7 @@ void DeferredImageDecoder::activateLazyDecoding()
     m_hasColorProfile = m_actualDecoder->hasColorProfile();
 
     const bool isSingleFrame = m_actualDecoder->repetitionCount() == cAnimationNone || (m_allDataReceived && m_actualDecoder->frameCount() == 1u);
-    m_frameGenerator = ImageFrameGenerator::create(SkISize::Make(m_actualDecoder->decodedSize().width(), m_actualDecoder->decodedSize().height()), m_data, m_allDataReceived, !isSingleFrame);
+    ASSERT(false); // BKTODO: m_frameGenerator = ImageFrameGenerator::create(SkISize::Make(m_actualDecoder->decodedSize().width(), m_actualDecoder->decodedSize().height()), m_data, m_allDataReceived, !isSingleFrame);
 }
 
 void DeferredImageDecoder::prepareLazyDecodedFrames()

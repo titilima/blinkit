@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DeferredImageDecoder.h
+// Description: DeferredImageDecoder Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -61,7 +72,7 @@ public:
 
     PassRefPtr<SkImage> createFrameAtIndex(size_t);
 
-    void setData(SharedBuffer& data, bool allDataReceived);
+    void setData(const std::shared_ptr<SharedBuffer> &data, bool allDataReceived);
 
     bool isSizeAvailable();
     bool hasColorProfile() const;
@@ -88,7 +99,7 @@ private:
 
     PassRefPtr<SkImage> createFrameImageAtIndex(size_t index, bool knownToBeOpaque) const;
 
-    RefPtr<SharedBuffer> m_data;
+    std::shared_ptr<SharedBuffer> m_data;
     bool m_allDataReceived;
     unsigned m_lastDataSize;
     OwnPtr<ImageDecoder> m_actualDecoder;
