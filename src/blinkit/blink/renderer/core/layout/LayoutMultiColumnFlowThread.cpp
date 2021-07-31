@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutMultiColumnFlowThread.cpp
+// Description: LayoutMultiColumnFlowThread Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc.  All rights reserved.
  *
@@ -335,14 +346,14 @@ LayoutMultiColumnSet* LayoutMultiColumnFlowThread::columnSetAtBlockOffset(Layout
     if (m_multiColumnSetList.isEmpty())
         return nullptr;
     if (offset <= 0)
-        return m_multiColumnSetList.first();
+        ASSERT(false); // BKTODO: return m_multiColumnSetList.first();
 
     MultiColumnSetSearchAdapter adapter(offset);
     m_multiColumnSetIntervalTree.allOverlapsWithAdapter<MultiColumnSetSearchAdapter>(adapter);
 
     // If no set was found, the offset is in the flow thread overflow.
     if (!adapter.result() && !m_multiColumnSetList.isEmpty())
-        return m_multiColumnSetList.last();
+        ASSERT(false); // BKTODO: return m_multiColumnSetList.last();
     return adapter.result();
 }
 
@@ -607,9 +618,9 @@ void LayoutMultiColumnFlowThread::addColumnSetToThread(LayoutMultiColumnSet* col
     if (LayoutMultiColumnSet* nextSet = columnSet->nextSiblingMultiColumnSet()) {
         LayoutMultiColumnSetList::iterator it = m_multiColumnSetList.find(nextSet);
         ASSERT(it != m_multiColumnSetList.end());
-        m_multiColumnSetList.insertBefore(it, columnSet);
+        ASSERT(false); // BKTODO: m_multiColumnSetList.insertBefore(it, columnSet);
     } else {
-        m_multiColumnSetList.add(columnSet);
+        ASSERT(false); // BKTODO: m_multiColumnSetList.add(columnSet);
     }
 }
 
