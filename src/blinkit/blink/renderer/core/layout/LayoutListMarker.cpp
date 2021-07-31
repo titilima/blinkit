@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutListMarker.cpp
+// Description: LayoutListMarker Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,7 +36,7 @@
 #include "core/layout/LayoutListMarker.h"
 
 #include "core/fetch/ImageResource.h"
-#include "core/layout/LayoutAnalyzer.h"
+// BKTODO: #include "core/layout/LayoutAnalyzer.h"
 #include "core/layout/LayoutListItem.h"
 #include "core/layout/ListMarkerText.h"
 #include "core/paint/ListMarkerPainter.h"
@@ -131,7 +142,7 @@ void LayoutListMarker::paint(const PaintInfo& paintInfo, const LayoutPoint& pain
 void LayoutListMarker::layout()
 {
     ASSERT(needsLayout());
-    LayoutAnalyzer::Scope analyzer(*this);
+    // BKTODO: LayoutAnalyzer::Scope analyzer(*this);
 
     if (isImage()) {
         updateMarginsAndContent();
