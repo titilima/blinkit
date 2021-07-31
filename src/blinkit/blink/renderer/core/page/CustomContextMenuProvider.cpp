@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CustomContextMenuProvider.cpp
+// Description: CustomContextMenuProvider Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -80,6 +91,8 @@ void CustomContextMenuProvider::appendMenuItem(HTMLMenuItemElement* menuItem, Co
 
     m_menuItems.append(menuItem);
 
+    ASSERT(false); // BKTODO:
+#if 0
     bool enabled = !menuItem->fastHasAttribute(disabledAttr);
     String icon = menuItem->fastGetAttribute(iconAttr);
     if (!icon.isEmpty()) {
@@ -93,6 +106,7 @@ void CustomContextMenuProvider::appendMenuItem(HTMLMenuItemElement* menuItem, Co
         contextMenu.appendItem(ContextMenuItem(CheckableActionType, action, labelString, icon, enabled, menuItem->fastHasAttribute(checkedAttr)));
     else
         contextMenu.appendItem(ContextMenuItem(ActionType, action, labelString, icon, enabled, false));
+#endif
 }
 
 void CustomContextMenuProvider::populateContextMenuItems(const HTMLMenuElement& menu, ContextMenu& contextMenu)
