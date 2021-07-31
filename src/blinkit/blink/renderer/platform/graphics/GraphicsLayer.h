@@ -48,7 +48,7 @@
 #include "platform/graphics/ContentLayerDelegate.h"
 #include "platform/graphics/GraphicsContext.h"
 #include "platform/graphics/GraphicsLayerClient.h"
-#include "platform/graphics/GraphicsLayerDebugInfo.h"
+// BKTODO: #include "platform/graphics/GraphicsLayerDebugInfo.h"
 #include "platform/graphics/ImageOrientation.h"
 #include "platform/graphics/PaintInvalidationReason.h"
 #include "platform/graphics/filters/FilterOperations.h"
@@ -94,10 +94,12 @@ public:
 
     GraphicsLayerClient* client() const { return m_client; }
 
+#if 0 // BKTODO:
     GraphicsLayerDebugInfo& debugInfo();
 
     void setCompositingReasons(CompositingReasons);
     CompositingReasons compositingReasons() const { return m_debugInfo.compositingReasons(); }
+#endif
     void setOwnerNodeId(int);
 
     GraphicsLayer* parent() const { return m_parent; }
@@ -392,7 +394,7 @@ private:
     OwnPtr<ContentLayerDelegate> m_contentLayerDelegate;
 
     // BKTODO: RawPtrWillBeWeakPersistent<ScrollableArea> m_scrollableArea;
-    GraphicsLayerDebugInfo m_debugInfo;
+    // BKTODO: GraphicsLayerDebugInfo m_debugInfo;
     int m_3dRenderingContext;
 
     OwnPtr<PaintController> m_paintController;

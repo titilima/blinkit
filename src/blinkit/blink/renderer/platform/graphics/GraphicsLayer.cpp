@@ -46,7 +46,7 @@
 #include "platform/geometry/FloatRect.h"
 #include "platform/geometry/LayoutRect.h"
 #include "platform/graphics/BitmapImage.h"
-#include "platform/graphics/FirstPaintInvalidationTracking.h"
+// BKTODO: #include "platform/graphics/FirstPaintInvalidationTracking.h"
 #include "platform/graphics/GraphicsContext.h"
 #include "platform/graphics/GraphicsLayerFactory.h"
 #include "platform/graphics/Image.h"
@@ -330,8 +330,10 @@ bool GraphicsLayer::paintWithoutCommit(const IntRect* interestRect, GraphicsCont
 
     if (!m_client)
         return false;
+#if 0 // BKTODO:
     if (firstPaintInvalidationTrackingEnabled())
         m_debugInfo.clearAnnotatedInvalidateRects();
+#endif
     incrementPaintCount();
 
     IntRect newInterestRect;
@@ -517,10 +519,12 @@ void GraphicsLayer::clearContentsLayerIfUnregistered()
     m_contentsLayerId = 0;
 }
 
+#if 0 // BKTODO:
 GraphicsLayerDebugInfo& GraphicsLayer::debugInfo()
 {
     return m_debugInfo;
 }
+#endif
 
 WebLayer* GraphicsLayer::contentsLayerIfRegistered()
 {
@@ -837,6 +841,7 @@ String GraphicsLayer::debugName(cc::Layer* layer) const
     return name;
 }
 
+#if 0 // BKTODO:
 void GraphicsLayer::setCompositingReasons(CompositingReasons reasons)
 {
     m_debugInfo.setCompositingReasons(reasons);
@@ -846,6 +851,7 @@ void GraphicsLayer::setOwnerNodeId(int nodeId)
 {
     m_debugInfo.setOwnerNodeId(nodeId);
 }
+#endif
 
 void GraphicsLayer::setPosition(const FloatPoint& point)
 {
@@ -1066,8 +1072,10 @@ void GraphicsLayer::setNeedsDisplayInRect(const IntRect& rect, PaintInvalidation
         return;
 
     m_layer->layer()->invalidateRect(rect);
+#if 0 // BKTODO:
     if (firstPaintInvalidationTrackingEnabled())
         m_debugInfo.appendAnnotatedInvalidateRect(rect, invalidationReason);
+#endif
     if (isTrackingPaintInvalidations())
         trackPaintInvalidationRect(rect);
     for (size_t i = 0; i < m_linkHighlights.size(); ++i)
