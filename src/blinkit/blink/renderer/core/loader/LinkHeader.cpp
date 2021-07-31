@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LinkHeader.cpp
+// Description: LinkHeader Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -253,7 +264,7 @@ void LinkHeader::setValue(LinkParameterName name, String value)
     else if (name == LinkParameterAnchor)
         m_isValid = false;
     else if (name == LinkParameterCrossOrigin)
-        m_crossOrigin = crossOriginAttributeValue(value);
+        ASSERT(false); // BKTODO: m_crossOrigin = crossOriginAttributeValue(value);
     else if (name == LinkParameterAs)
         m_as = value.lower();
 }
@@ -267,8 +278,12 @@ static void findNextHeader(CharType*& position, CharType* end)
 
 template <typename CharType>
 LinkHeader::LinkHeader(CharType*& position, CharType* end)
+#if 0 // BKTODO:
     : m_crossOrigin(CrossOriginAttributeNotSet)
     , m_isValid(true)
+#else
+    : m_isValid(true)
+#endif
 {
     if (!parseURL(position, end, m_url)) {
         m_isValid = false;

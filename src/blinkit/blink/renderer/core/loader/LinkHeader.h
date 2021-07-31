@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LinkHeader.h
+// Description: LinkHeader Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 #define LinkHeader_h
 
 #include "core/CoreExport.h"
-#include "core/html/CrossOriginAttribute.h"
+// BKTODO: #include "core/html/CrossOriginAttribute.h"
 #include "wtf/Allocator.h"
 #include "wtf/text/WTFString.h"
 
@@ -21,7 +32,7 @@ public:
     const String& url() const { return m_url; }
     const String& rel() const { return m_rel; }
     const String& as() const { return m_as; }
-    CrossOriginAttributeValue crossOrigin() const { return m_crossOrigin; }
+    // BKTODO: CrossOriginAttributeValue crossOrigin() const { return m_crossOrigin; }
     bool valid() const { return m_isValid; }
 
     enum LinkParameterName {
@@ -44,7 +55,7 @@ private:
     String m_url;
     String m_rel;
     String m_as;
-    CrossOriginAttributeValue m_crossOrigin;
+    // BKTODO: CrossOriginAttributeValue m_crossOrigin;
     bool m_isValid;
 };
 
