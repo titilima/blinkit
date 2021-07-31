@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ProgrammaticScrollAnimator.cpp
+// Description: ProgrammaticScrollAnimator Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -51,10 +62,13 @@ void ProgrammaticScrollAnimator::animateToOffset(FloatPoint offset)
 {
     m_startTime = 0.0;
     m_targetOffset = offset;
+    ASSERT(false); // BKTODO:
+#if 0
     m_animationCurve = adoptPtr(Platform::current()->compositorSupport()->createScrollOffsetAnimationCurve(
         compositorOffsetFromBlinkOffset(m_targetOffset),
         WebCompositorAnimationCurve::TimingFunctionTypeEaseInOut,
         WebScrollOffsetAnimationCurve::ScrollDurationDeltaBased));
+#endif
 
     m_scrollableArea->registerForAnimation();
     if (!m_scrollableArea->scheduleAnimation()) {
@@ -113,6 +127,8 @@ void ProgrammaticScrollAnimator::updateCompositorAnimations()
         bool sentToCompositor = false;
 
         if (!m_scrollableArea->shouldScrollOnMainThread()) {
+            ASSERT(false); // BKTODO:
+#if 0
             OwnPtr<WebCompositorAnimation> animation = adoptPtr(Platform::current()->compositorSupport()->createAnimation(*m_animationCurve, WebCompositorAnimation::TargetPropertyScrollOffset));
 
             int animationId = animation->id();
@@ -124,6 +140,7 @@ void ProgrammaticScrollAnimator::updateCompositorAnimations()
                 m_compositorAnimationId = animationId;
                 m_compositorAnimationGroupId = animationGroupId;
             }
+#endif
         }
 
         if (!sentToCompositor) {
