@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BoxPainter.h
+// Description: BoxPainter Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 #define BoxPainter_h
 
 #include "core/layout/LayoutBoxModelObject.h"
-#include "core/paint/ObjectPainter.h"
+// BKTODO: #include "core/paint/ObjectPainter.h"
 #include "wtf/Allocator.h"
 
 namespace blink {

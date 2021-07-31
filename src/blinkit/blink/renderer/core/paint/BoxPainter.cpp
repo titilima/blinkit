@@ -1,12 +1,24 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BoxPainter.cpp
+// Description: BoxPainter Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "core/paint/BoxPainter.h"
 
+#include <optional>
 #include "core/HTMLNames.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLFrameOwnerElement.h"
+// BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/layout/ImageQualityController.h"
 #include "core/layout/LayoutBox.h"
 #include "core/layout/LayoutBoxModelObject.h"
@@ -31,7 +43,6 @@
 #include "platform/geometry/LayoutRectOutsets.h"
 #include "platform/graphics/GraphicsContextStateSaver.h"
 #include "platform/graphics/paint/CompositingDisplayItem.h"
-#include "wtf/Optional.h"
 
 namespace blink {
 
@@ -78,7 +89,7 @@ void BoxPainter::paintBoxDecorationBackgroundWithRect(const PaintInfo& paintInfo
 
     // FIXME: For now we don't have notification on media buffered range change from media player
     // and miss paint invalidation on buffered range change. crbug.com/484288.
-    Optional<DisplayItemCacheSkipper> cacheSkipper;
+    std::optional<DisplayItemCacheSkipper> cacheSkipper;
     if (style.appearance() == MediaSliderPart)
         cacheSkipper.emplace(paintInfo.context);
 
@@ -342,7 +353,7 @@ void BoxPainter::paintFillLayer(const LayoutBoxModelObject& obj, const PaintInfo
 
     // BorderFillBox radius clipping is taken care of by BackgroundBleedClip{Only,Layer}
     bool clipToBorderRadius = hasRoundedBorder && !(isBorderFill && bleedAvoidanceIsClipping(bleedAvoidance));
-    Optional<RoundedInnerRectClipper> clipToBorder;
+    std::optional<RoundedInnerRectClipper> clipToBorder;
     if (clipToBorderRadius) {
         FloatRoundedRect border = isBorderFill
             ? backgroundRoundedRectAdjustedForBleedAvoidance(obj, rect, bleedAvoidance, box, boxSize, includeLeftEdge, includeRightEdge)
@@ -697,8 +708,11 @@ void BoxPainter::paintBoxShadow(const PaintInfo& info, const LayoutRect& paintRe
 
 bool BoxPainter::shouldForceWhiteBackgroundForPrintEconomy(const ComputedStyle& style, const Document& document)
 {
+    return false;
+#if 0 // BKTODO:
     return document.printing() && style.printColorAdjust() == PrintColorAdjustEconomy
         && (!document.settings() || !document.settings()->shouldPrintBackgrounds());
+#endif
 }
 
 } // namespace blink
