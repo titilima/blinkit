@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageBuffer.cpp
+// Description: ImageBuffer Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, Google Inc. All rights reserved.
  * Copyright (C) 2009 Dirk Schulze <krit@webkit.org>
@@ -40,16 +51,22 @@
 #include "platform/graphics/ImageBufferClient.h"
 #include "platform/graphics/StaticBitmapImage.h"
 #include "platform/graphics/UnacceleratedImageBufferSurface.h"
+#if 0 // BKTODO:
 #include "platform/graphics/gpu/DrawingBuffer.h"
 #include "platform/graphics/gpu/Extensions3DUtil.h"
+#endif
 #include "platform/graphics/skia/SkiaUtils.h"
+#if 0 // BKTODO:
 #include "platform/image-encoders/skia/JPEGImageEncoder.h"
 #include "platform/image-encoders/skia/PNGImageEncoder.h"
 #include "platform/image-encoders/skia/WEBPImageEncoder.h"
+#endif
 #include "public/platform/Platform.h"
 #include "public/platform/WebExternalTextureMailbox.h"
+#if 0 // BKTODO:
 #include "public/platform/WebGraphicsContext3D.h"
 #include "public/platform/WebGraphicsContext3DProvider.h"
+#endif
 #include "third_party/skia/include/core/SkPicture.h"
 #include "wtf/ArrayBufferContents.h"
 #include "wtf/MathExtras.h"
@@ -177,6 +194,9 @@ WebLayer* ImageBuffer::platformLayer() const
 
 bool ImageBuffer::copyToPlatformTexture(WebGraphicsContext3D* context, Platform3DObject texture, GLenum internalFormat, GLenum destType, GLint level, bool premultiplyAlpha, bool flipY)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     if (!Extensions3DUtil::canUseCopyTextureCHROMIUM(GL_TEXTURE_2D, internalFormat, destType, level))
         return false;
 
@@ -236,12 +256,16 @@ bool ImageBuffer::copyToPlatformTexture(WebGraphicsContext3D* context, Platform3
     provider->grContext()->resetContext(kTextureBinding_GrGLBackendState);
 
     return true;
+#endif
 }
 
 bool ImageBuffer::copyRenderingResultsFromDrawingBuffer(DrawingBuffer* drawingBuffer, SourceDrawingBuffer sourceBuffer)
 {
     if (!drawingBuffer || !m_surface->isAccelerated())
         return false;
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     OwnPtr<WebGraphicsContext3DProvider> provider = adoptPtr(Platform::current()->createSharedOffscreenGraphicsContext3DProvider());
     if (!provider)
         return false;
@@ -256,6 +280,7 @@ bool ImageBuffer::copyRenderingResultsFromDrawingBuffer(DrawingBuffer* drawingBu
 
     return drawingBuffer->copyToPlatformTexture(context3D, textureId, GL_RGBA,
         GL_UNSIGNED_BYTE, 0, true, false, sourceBuffer);
+#endif
 }
 
 void ImageBuffer::draw(GraphicsContext& context, const FloatRect& destRect, const FloatRect* srcPtr, SkXfermode::Mode op)
@@ -374,6 +399,9 @@ void ImageBuffer::updateGPUMemoryUsage() const
 
 bool ImageDataBuffer::encodeImage(const String& mimeType, const double& quality, Vector<unsigned char>* encodedImage) const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     if (mimeType == "image/jpeg") {
         int compressionQuality = JPEGImageEncoder::DefaultCompressionQuality;
         if (quality >= 0.0 && quality <= 1.0)
@@ -393,6 +421,7 @@ bool ImageDataBuffer::encodeImage(const String& mimeType, const double& quality,
     }
 
     return true;
+#endif
 }
 
 String ImageDataBuffer::toDataURL(const String& mimeType, const double& quality) const
