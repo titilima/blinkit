@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebScrollbarImpl.h
+// Description: WebScrollbarImpl Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -46,13 +57,13 @@ public:
     // Implement WebScrollbar methods
     bool isOverlay() const override;
     int value() const override;
-    WebPoint location() const override;
-    WebSize size() const override;
+    IntPoint location() const override;
+    IntSize size() const override;
     bool enabled() const override;
     int maximum() const override;
     int totalSize() const override;
     bool isScrollableAreaActive() const override;
-    void getTickmarks(WebVector<WebRect>& tickmarks) const override;
+    void getTickmarks(std::vector<IntRect>& tickmarks) const override;
     ScrollbarControlSize controlSize() const override;
     ScrollbarPart pressedPart() const override;
     ScrollbarPart hoveredPart() const override;

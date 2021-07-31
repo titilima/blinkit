@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebScrollbarImpl.cpp
+// Description: WebScrollbarImpl Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -44,12 +55,12 @@ int WebScrollbarImpl::value() const
     return m_scrollbar->value();
 }
 
-WebPoint WebScrollbarImpl::location() const
+IntPoint WebScrollbarImpl::location() const
 {
     return m_scrollbar->location();
 }
 
-WebSize WebScrollbarImpl::size() const
+IntSize WebScrollbarImpl::size() const
 {
     return m_scrollbar->size();
 }
@@ -74,16 +85,9 @@ bool WebScrollbarImpl::isScrollableAreaActive() const
     return m_scrollbar->isScrollableAreaActive();
 }
 
-void WebScrollbarImpl::getTickmarks(WebVector<WebRect>& webTickmarks) const
+void WebScrollbarImpl::getTickmarks(std::vector<IntRect>& webTickmarks) const
 {
-    Vector<IntRect> tickmarks;
-    m_scrollbar->getTickmarks(tickmarks);
-
-    WebVector<WebRect> result(tickmarks.size());
-    for (size_t i = 0; i < tickmarks.size(); ++i)
-        result[i] = tickmarks[i];
-
-    webTickmarks.swap(result);
+    m_scrollbar->getTickmarks(webTickmarks);
 }
 
 WebScrollbar::ScrollbarControlSize WebScrollbarImpl::controlSize() const

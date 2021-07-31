@@ -124,7 +124,7 @@ ScrollbarOverlayStyle Scrollbar::scrollbarOverlayStyle() const
     return m_scrollableArea ? m_scrollableArea->scrollbarOverlayStyle() : ScrollbarOverlayStyleDefault;
 }
 
-void Scrollbar::getTickmarks(Vector<IntRect>& tickmarks) const
+void Scrollbar::getTickmarks(std::vector<IntRect>& tickmarks) const
 {
     if (m_scrollableArea)
         m_scrollableArea->getTickmarks(tickmarks);

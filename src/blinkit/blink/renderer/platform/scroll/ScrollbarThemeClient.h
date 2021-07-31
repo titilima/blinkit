@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollbarThemeClient.h
+// Description: ScrollbarThemeClient Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -58,7 +69,7 @@ public:
     virtual void invalidateRect(const IntRect&) = 0;
 
     virtual ScrollbarOverlayStyle scrollbarOverlayStyle() const = 0;
-    virtual void getTickmarks(Vector<IntRect>&) const = 0;
+    virtual void getTickmarks(std::vector<IntRect>&) const = 0;
     virtual bool isScrollableAreaActive() const = 0;
 
     virtual IntPoint convertFromRootFrame(const IntPoint& pointInRootFrame) const = 0;

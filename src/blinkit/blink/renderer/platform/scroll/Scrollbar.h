@@ -81,7 +81,7 @@ public:
     IntRect frameRect() const override { return Widget::frameRect(); }
 
     ScrollbarOverlayStyle scrollbarOverlayStyle() const override;
-    void getTickmarks(Vector<IntRect>&) const override;
+    void getTickmarks(std::vector<IntRect>&) const override;
     bool isScrollableAreaActive() const override;
 
     IntPoint convertFromRootFrame(const IntPoint& pointInRootFrame) const override { return Widget::convertFromRootFrame(pointInRootFrame); }

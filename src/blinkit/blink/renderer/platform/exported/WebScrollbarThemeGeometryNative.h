@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebScrollbarThemeGeometryNative.h
+// Description: WebScrollbarThemeGeometryNative Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -27,7 +38,6 @@
 #define WebScrollbarThemeGeometryNative_h
 
 #include "platform/PlatformExport.h"
-#include "public/platform/WebRect.h"
 #include "public/platform/WebScrollbarThemeGeometry.h"
 #include "wtf/Allocator.h"
 #include "wtf/Noncopyable.h"
@@ -46,12 +56,12 @@ public:
 
     bool hasButtons(WebScrollbar*) override;
     bool hasThumb(WebScrollbar*) override;
-    WebRect trackRect(WebScrollbar*) override;
-    WebRect thumbRect(WebScrollbar*) override;
-    WebRect backButtonStartRect(WebScrollbar*) override;
-    WebRect backButtonEndRect(WebScrollbar*) override;
-    WebRect forwardButtonStartRect(WebScrollbar*) override;
-    WebRect forwardButtonEndRect(WebScrollbar*) override;
+    IntRect trackRect(WebScrollbar*) override;
+    IntRect thumbRect(WebScrollbar*) override;
+    IntRect backButtonStartRect(WebScrollbar*) override;
+    IntRect backButtonEndRect(WebScrollbar*) override;
+    IntRect forwardButtonStartRect(WebScrollbar*) override;
+    IntRect forwardButtonEndRect(WebScrollbar*) override;
 
 private:
     explicit WebScrollbarThemeGeometryNative(ScrollbarTheme&);

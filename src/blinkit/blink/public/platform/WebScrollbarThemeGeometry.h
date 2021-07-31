@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebScrollbarThemeGeometry.h
+// Description: WebScrollbarThemeGeometry Class
+//      Author: Ziming Li
+//     Created: 2021-07-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -26,7 +37,7 @@
 #ifndef WebScrollbarThemeGeometry_h
 #define WebScrollbarThemeGeometry_h
 
-#include "WebRect.h"
+#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
 
 namespace blink {
 
@@ -38,12 +49,12 @@ public:
 
     virtual bool hasButtons(WebScrollbar*) = 0;
     virtual bool hasThumb(WebScrollbar*) = 0;
-    virtual WebRect trackRect(WebScrollbar*) = 0;
-    virtual WebRect thumbRect(WebScrollbar*) = 0;
-    virtual WebRect backButtonStartRect(WebScrollbar*) = 0;
-    virtual WebRect backButtonEndRect(WebScrollbar*) = 0;
-    virtual WebRect forwardButtonStartRect(WebScrollbar*) = 0;
-    virtual WebRect forwardButtonEndRect(WebScrollbar*) = 0;
+    virtual IntRect trackRect(WebScrollbar*) = 0;
+    virtual IntRect thumbRect(WebScrollbar*) = 0;
+    virtual IntRect backButtonStartRect(WebScrollbar*) = 0;
+    virtual IntRect backButtonEndRect(WebScrollbar*) = 0;
+    virtual IntRect forwardButtonStartRect(WebScrollbar*) = 0;
+    virtual IntRect forwardButtonEndRect(WebScrollbar*) = 0;
 };
 
 } // namespace blink
