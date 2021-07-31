@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ShapeOutsideInfo.cpp
+// Description: ShapeOutsideInfo Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  *
@@ -29,7 +40,7 @@
 
 #include "core/layout/shapes/ShapeOutsideInfo.h"
 
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "core/layout/FloatingObjects.h"
 #include "core/layout/LayoutBlockFlow.h"
 #include "core/layout/LayoutBox.h"
@@ -90,12 +101,15 @@ static bool checkShapeImageOrigin(Document& document, const StyleImage& styleIma
 
     ASSERT(styleImage.cachedImage());
     ImageResource& imageResource = *(styleImage.cachedImage());
+    ASSERT(false); // BKTODO:
+#if 0
     if (imageResource.isAccessAllowed(document.securityOrigin()))
         return true;
 
     const KURL& url = imageResource.url();
     String urlString = url.isNull() ? "''" : url.elidedString();
     document.addConsoleMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, "Unsafe attempt to load URL " + urlString + "."));
+#endif
 
     return false;
 }
@@ -129,7 +143,7 @@ PassOwnPtr<Shape> ShapeOutsideInfo::createShapeForImage(StyleImage* styleImage, 
         : LayoutRect(LayoutPoint(), imageSize);
 
     if (!isValidRasterShapeRect(marginRect) || !isValidRasterShapeRect(imageRect)) {
-        m_layoutBox.document().addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, ErrorMessageLevel, "The shape-outside image is too large."));
+        ASSERT(false); // BKTODO: m_layoutBox.document().addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, ErrorMessageLevel, "The shape-outside image is too large."));
         return Shape::createEmptyRasterShape(writingMode, margin);
     }
 
