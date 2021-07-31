@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TextAutosizer.cpp
+// Description: TextAutosizer Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -497,6 +508,8 @@ void TextAutosizer::updatePageInfoInAllFrames()
 {
     ASSERT(!m_document->frame() || m_document->frame()->isMainFrame());
 
+    ASSERT(false); // BKTODO:
+#if 0
     for (Frame* frame = m_document->frame(); frame; frame = frame->tree().traverseNext()) {
         if (!frame->isLocalFrame())
             continue;
@@ -508,19 +521,22 @@ void TextAutosizer::updatePageInfoInAllFrames()
         if (TextAutosizer* textAutosizer = document->textAutosizer())
             textAutosizer->updatePageInfo();
     }
+#endif
 }
 
 void TextAutosizer::updatePageInfo()
 {
-    if (m_updatePageInfoDeferred || !m_document->page() || !m_document->settings())
+    if (m_updatePageInfoDeferred || !m_document->page())
         return;
 
     PageInfo previousPageInfo(m_pageInfo);
-    m_pageInfo.m_settingEnabled = m_document->settings()->textAutosizingEnabled();
+    m_pageInfo.m_settingEnabled = Settings::textAutosizingEnabled();
 
     if (!m_pageInfo.m_settingEnabled || m_document->printing()) {
         m_pageInfo.m_pageNeedsAutosizing = false;
     } else {
+        ASSERT(false); // BKTODO:
+#if 0
         LayoutView* layoutView = m_document->layoutView();
         bool horizontalWritingMode = isHorizontalWritingMode(layoutView->style()->writingMode());
 
@@ -551,6 +567,7 @@ void TextAutosizer::updatePageInfo()
 
         m_pageInfo.m_pageNeedsAutosizing = !!m_pageInfo.m_frameWidth
             && (m_pageInfo.m_baseMultiplier * (static_cast<float>(m_pageInfo.m_layoutWidth) / m_pageInfo.m_frameWidth) > 1.0f);
+#endif
     }
 
     if (m_pageInfo.m_pageNeedsAutosizing) {
