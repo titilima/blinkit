@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ClipDisplayItem.cpp
+// Description: ClipDisplayItem Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -24,7 +35,7 @@ void ClipDisplayItem::replay(GraphicsContext& context) const
 
 void ClipDisplayItem::appendToWebDisplayItemList(const IntRect& visualRect, WebDisplayItemList* list) const
 {
-    WebVector<SkRRect> webRoundedRects(m_roundedRectClips.size());
+    std::vector<SkRRect> webRoundedRects(m_roundedRectClips.size());
     for (size_t i = 0; i < m_roundedRectClips.size(); ++i) {
         FloatRoundedRect::Radii rectRadii = m_roundedRectClips[i].radii();
         SkVector skRadii[4];
