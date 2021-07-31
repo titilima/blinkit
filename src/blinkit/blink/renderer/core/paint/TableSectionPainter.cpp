@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TableSectionPainter.cpp
+// Description: TableSectionPainter Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -11,7 +22,7 @@
 #include "core/paint/BlockPainter.h"
 #include "core/paint/BoxClipper.h"
 #include "core/paint/LayoutObjectDrawingRecorder.h"
-#include "core/paint/ObjectPainter.h"
+// BKTODO: #include "core/paint/ObjectPainter.h"
 #include "core/paint/PaintInfo.h"
 #include "core/paint/TableCellPainter.h"
 #include "core/paint/TableRowPainter.h"
@@ -45,7 +56,7 @@ void TableSectionPainter::paint(const PaintInfo& paintInfo, const LayoutPoint& p
     }
 
     if (shouldPaintSelfOutline(paintInfo.phase))
-        ObjectPainter(m_layoutTableSection).paintOutline(paintInfo, adjustedPaintOffset);
+        ASSERT(false); // BKTODO: ObjectPainter(m_layoutTableSection).paintOutline(paintInfo, adjustedPaintOffset);
 }
 
 static inline bool compareCellPositions(LayoutTableCell* elem1, LayoutTableCell* elem2)
