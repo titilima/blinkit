@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ViewPainter.cpp
+// Description: ViewPainter Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -61,7 +72,7 @@ void ViewPainter::paintBoxDecorationBackground(const PaintInfo& paintInfo)
     const FrameView& frameView = *m_layoutView.frameView();
     bool isMainFrame = !document.ownerElement();
     bool paintsBaseBackground = isMainFrame && !frameView.isTransparent();
-    bool shouldClearCanvas = paintsBaseBackground && (document.settings() && document.settings()->shouldClearDocumentBackground());
+    bool shouldClearCanvas = paintsBaseBackground && Settings::shouldClearDocumentBackground();
     Color baseBackgroundColor = paintsBaseBackground ? frameView.baseBackgroundColor() : Color();
     Color rootBackgroundColor = m_layoutView.style()->visitedDependentColor(CSSPropertyBackgroundColor);
     const LayoutObject* rootObject = document.documentElement() ? document.documentElement()->layoutObject() : nullptr;
