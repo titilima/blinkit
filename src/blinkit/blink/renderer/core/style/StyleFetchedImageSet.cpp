@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleFetchedImageSet.cpp
+// Description: StyleFetchedImageSet Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -28,7 +39,7 @@
 #include "core/css/CSSImageSetValue.h"
 #include "core/fetch/ImageResource.h"
 #include "core/layout/LayoutObject.h"
-#include "core/svg/graphics/SVGImageForContainer.h"
+// BKTODO: #include "core/svg/graphics/SVGImageForContainer.h"
 
 namespace blink {
 
@@ -41,7 +52,7 @@ StyleFetchedImageSet::StyleFetchedImageSet(ImageResource* image, float imageScal
     m_isImageResourceSet = true;
     m_bestFitImage->addClient(this);
 #if ENABLE(OILPAN)
-    ThreadState::current()->registerPreFinalizer(this);
+    ASSERT(false); // BKTODO: ThreadState::current()->registerPreFinalizer(this);
 #endif
 }
 
@@ -134,7 +145,8 @@ PassRefPtr<Image> StyleFetchedImageSet::image(const LayoutObject*, const IntSize
     if (!m_bestFitImage->image()->isSVGImage())
         return m_bestFitImage->image();
 
-    return SVGImageForContainer::create(toSVGImage(m_bestFitImage->image()), containerSize, zoom, m_url);
+    ASSERT(false); // BKTODO: return SVGImageForContainer::create(toSVGImage(m_bestFitImage->image()), containerSize, zoom, m_url);
+    return nullptr;
 }
 
 bool StyleFetchedImageSet::knownToBeOpaque(const LayoutObject* layoutObject) const
