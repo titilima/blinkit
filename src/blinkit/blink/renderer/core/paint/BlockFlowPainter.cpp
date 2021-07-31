@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BlockFlowPainter.cpp
+// Description: BlockFlowPainter Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,7 +19,7 @@
 #include "core/layout/LayoutBlockFlow.h"
 #include "core/paint/ClipScope.h"
 #include "core/paint/LayoutObjectDrawingRecorder.h"
-#include "core/paint/ObjectPainter.h"
+// BKTODO: #include "core/paint/ObjectPainter.h"
 #include "core/paint/PaintInfo.h"
 #include "core/paint/PaintLayer.h"
 
@@ -37,7 +48,7 @@ void BlockFlowPainter::paintFloats(const PaintInfo& paintInfo, const LayoutPoint
             *floatingObject, LayoutPoint(paintOffset.x()
             + m_layoutBlockFlow.xPositionForFloatIncludingMargin(*floatingObject) - floatingLayoutObject->location().x(), paintOffset.y()
             + m_layoutBlockFlow.yPositionForFloatIncludingMargin(*floatingObject) - floatingLayoutObject->location().y()));
-        ObjectPainter(*floatingLayoutObject).paintAsPseudoStackingContext(floatPaintInfo, childPoint);
+        ASSERT(false); // BKTODO: ObjectPainter(*floatingLayoutObject).paintAsPseudoStackingContext(floatPaintInfo, childPoint);
     }
 }
 
@@ -57,8 +68,8 @@ void BlockFlowPainter::paintSelection(const PaintInfo& paintInfo, const LayoutPo
     // Only create a DrawingRecorder and ClipScope if skipRecording is false. This logic is needed
     // because selectionGaps(...) needs to be called even when we do not record.
     bool skipRecording = LayoutObjectDrawingRecorder::useCachedDrawingIfPossible(paintInfo.context, m_layoutBlockFlow, DisplayItem::SelectionGap, paintOffset);
-    Optional<LayoutObjectDrawingRecorder> drawingRecorder;
-    Optional<ClipScope> clipScope;
+    std::optional<LayoutObjectDrawingRecorder> drawingRecorder;
+    std::optional<ClipScope> clipScope;
     if (!skipRecording) {
         drawingRecorder.emplace(paintInfo.context, m_layoutBlockFlow, DisplayItem::SelectionGap, FloatRect(bounds), paintOffset);
         clipScope.emplace(paintInfo.context);
