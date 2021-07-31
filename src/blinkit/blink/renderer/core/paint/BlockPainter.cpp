@@ -1,9 +1,21 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BlockPainter.cpp
+// Description: BlockPainter Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "core/paint/BlockPainter.h"
 
+#include <optional>
 #include "core/editing/DragCaretController.h"
 #include "core/editing/FrameSelection.h"
 #include "core/frame/Settings.h"
@@ -24,7 +36,6 @@
 #include "core/paint/ScrollRecorder.h"
 #include "core/paint/ScrollableAreaPainter.h"
 #include "platform/graphics/paint/ClipRecorder.h"
-#include "wtf/Optional.h"
 
 namespace blink {
 
@@ -76,7 +87,7 @@ void BlockPainter::paintOverflowControlsIfNeeded(const PaintInfo& paintInfo, con
         && shouldPaintSelfBlockBackground(paintInfo.phase)
         && paintInfo.shouldPaintWithinRoot(&m_layoutBlock)
         && !paintInfo.paintRootBackgroundOnly()) {
-        Optional<ClipRecorder> clipRecorder;
+        std::optional<ClipRecorder> clipRecorder;
         if (!m_layoutBlock.layer()->isSelfPaintingLayer()) {
             LayoutRect clipRect = m_layoutBlock.borderBoxRect();
             clipRect.moveBy(paintOffset);
@@ -109,7 +120,7 @@ void BlockPainter::paintChildAsPseudoStackingContext(const LayoutBox& child, con
 {
     LayoutPoint childPoint = m_layoutBlock.flipForWritingModeForChild(&child, paintOffset);
     if (!child.hasSelfPaintingLayer() && !child.isFloating())
-        ObjectPainter(child).paintAsPseudoStackingContext(paintInfo, childPoint);
+        ASSERT(false); // BKTODO: ObjectPainter(child).paintAsPseudoStackingContext(paintInfo, childPoint);
 }
 
 void BlockPainter::paintInlineBox(const InlineBox& inlineBox, const PaintInfo& paintInfo, const LayoutPoint& paintOffset)
@@ -121,7 +132,7 @@ void BlockPainter::paintInlineBox(const InlineBox& inlineBox, const PaintInfo& p
     if (inlineBox.parent()->lineLayoutItem().style()->isFlippedBlocksWritingMode()) // Faster than calling containingBlock().
         childPoint = LineLayoutPaintShim::layoutObjectFrom(inlineBox.lineLayoutItem())->containingBlock()->flipForWritingModeForChild(&toLayoutBox(inlineBox.layoutObject()), childPoint);
 
-    ObjectPainter(inlineBox.layoutObject()).paintAsPseudoStackingContext(paintInfo, childPoint);
+    ASSERT(false); // BKTODO: ObjectPainter(inlineBox.layoutObject()).paintAsPseudoStackingContext(paintInfo, childPoint);
 }
 
 void BlockPainter::paintObject(const PaintInfo& paintInfo, const LayoutPoint& paintOffset)
@@ -163,11 +174,11 @@ void BlockPainter::paintObject(const PaintInfo& paintInfo, const LayoutPoint& pa
     // FIXME: When Skia supports annotation rect covering (https://code.google.com/p/skia/issues/detail?id=3872),
     // this rect may be covered by foreground and descendant drawings. Then we may need a dedicated paint phase.
     if (paintPhase == PaintPhaseForeground && paintInfo.isPrinting())
-        ObjectPainter(m_layoutBlock).addPDFURLRectIfNeeded(paintInfo, paintOffset);
+        ASSERT(false); // BKTODO: ObjectPainter(m_layoutBlock).addPDFURLRectIfNeeded(paintInfo, paintOffset);
 
     if (paintPhase != PaintPhaseSelfOutlineOnly) {
-        Optional<ScrollRecorder> scrollRecorder;
-        Optional<PaintInfo> scrolledPaintInfo;
+        std::optional<ScrollRecorder> scrollRecorder;
+        std::optional<PaintInfo> scrolledPaintInfo;
         if (m_layoutBlock.hasOverflowClip()) {
             IntSize scrollOffset = m_layoutBlock.scrolledContentOffset();
             if (m_layoutBlock.layer()->scrollsOverflow() || !scrollOffset.isZero()) {
@@ -191,7 +202,7 @@ void BlockPainter::paintObject(const PaintInfo& paintInfo, const LayoutPoint& pa
     }
 
     if (shouldPaintSelfOutline(paintPhase))
-        ObjectPainter(m_layoutBlock).paintOutline(paintInfo, paintOffset);
+        ASSERT(false); // BKTODO: ObjectPainter(m_layoutBlock).paintOutline(paintInfo, paintOffset);
 
     // If the caret's node's layout object's containing block is this block, and the paint action is PaintPhaseForeground,
     // then paint the caret.
@@ -236,7 +247,7 @@ void BlockPainter::paintContents(const PaintInfo& paintInfo, const LayoutPoint& 
 
     if (m_layoutBlock.childrenInline()) {
         if (shouldPaintDescendantOutlines(paintInfo.phase))
-            ObjectPainter(m_layoutBlock).paintInlineChildrenOutlines(paintInfo, paintOffset);
+            ASSERT(false); // BKTODO: ObjectPainter(m_layoutBlock).paintInlineChildrenOutlines(paintInfo, paintOffset);
         else
             LineBoxListPainter(m_layoutBlock.lineBoxes()).paint(m_layoutBlock, paintInfo, paintOffset);
     } else {
