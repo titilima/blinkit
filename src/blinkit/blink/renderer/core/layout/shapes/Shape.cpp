@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Shape.cpp
+// Description: Shape Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  *
@@ -31,14 +42,14 @@
 
 #include "core/css/BasicShapeFunctions.h"
 #include "core/dom/DOMArrayBuffer.h"
-#include "core/dom/DOMTypedArray.h"
+// BKTODO: #include "core/dom/DOMTypedArray.h"
 #include "core/fetch/ImageResource.h"
 #include "core/layout/shapes/BoxShape.h"
 #include "core/layout/shapes/PolygonShape.h"
 #include "core/layout/shapes/RasterShape.h"
 #include "core/layout/shapes/RectangleShape.h"
 #include "core/style/ComputedStyle.h"
-#include "core/svg/graphics/SVGImage.h"
+// BKTODO: #include "core/svg/graphics/SVGImage.h"
 #include "platform/LengthFunctions.h"
 #include "platform/geometry/FloatRoundedRect.h"
 #include "platform/geometry/FloatSize.h"
@@ -197,6 +208,8 @@ PassOwnPtr<Shape> Shape::createRasterShape(Image* image, float threshold, const 
     OwnPtr<ImageBuffer> imageBuffer = ImageBuffer::create(imageRect.size());
 
     if (image && imageBuffer) {
+        ASSERT(false); // BKTODO:
+#if 0
         // FIXME: This is not totally correct but it is needed to prevent shapes
         // that loads SVG Images during paint invalidations to mark layoutObjects for
         // layout, which is not allowed. See https://crbug.com/429346
@@ -232,6 +245,7 @@ PassOwnPtr<Shape> Shape::createRasterShape(Image* image, float threshold, const 
                 }
             }
         }
+#endif
     }
 
     OwnPtr<RasterShape> rasterShape = adoptPtr(new RasterShape(intervals.release(), marginRect.size()));
