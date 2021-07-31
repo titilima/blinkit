@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TableRowPainter.cpp
+// Description: TableRowPainter Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,7 +18,7 @@
 #include "core/layout/LayoutTableCell.h"
 #include "core/layout/LayoutTableRow.h"
 #include "core/paint/LayoutObjectDrawingRecorder.h"
-#include "core/paint/ObjectPainter.h"
+// BKTODO: #include "core/paint/ObjectPainter.h"
 #include "core/paint/PaintInfo.h"
 #include "core/paint/TableCellPainter.h"
 
@@ -45,7 +56,7 @@ void TableRowPainter::paintOutlineForRowIfNeeded(const PaintInfo& paintInfo, con
     PaintPhase paintPhase = paintInfo.phase;
     if (shouldPaintSelfOutline(paintPhase)) {
         LayoutPoint adjustedPaintOffset = paintOffset + m_layoutTableRow.location();
-        ObjectPainter(m_layoutTableRow).paintOutline(paintInfo, adjustedPaintOffset);
+        ASSERT(false); // BKTODO: ObjectPainter(m_layoutTableRow).paintOutline(paintInfo, adjustedPaintOffset);
     }
 }
 
