@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollbarThemeOverlay.cpp
+// Description: ScrollbarThemeOverlay Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -31,7 +42,6 @@
 #include "platform/scroll/ScrollbarThemeClient.h"
 #include "platform/transforms/TransformationMatrix.h"
 #include "public/platform/Platform.h"
-#include "public/platform/WebRect.h"
 #include "public/platform/WebThemeEngine.h"
 #include "wtf/MathExtras.h"
 
@@ -160,7 +170,7 @@ void ScrollbarThemeOverlay::paintThumb(GraphicsContext& context, const Scrollbar
     if (scrollbar.orientation() == VerticalScrollbar)
         part = WebThemeEngine::PartScrollbarVerticalThumb;
 
-    Platform::current()->themeEngine()->paint(canvas, part, state, WebRect(rect), 0);
+    Platform::current()->themeEngine()->paint(canvas, part, state, rect, 0);
 }
 
 ScrollbarPart ScrollbarThemeOverlay::hitTest(const ScrollbarThemeClient& scrollbar, const IntPoint& position)
