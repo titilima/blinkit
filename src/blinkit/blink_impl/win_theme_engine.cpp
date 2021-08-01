@@ -9,13 +9,12 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "win_theme_engine.h"
+#include "./win_theme_engine.h"
 
 #include <vsstyle.h>
 #include <SkCanvas.h>
 #include <SkColorPriv.h>
-#include "blinkit/blink/public/platform/WebRect.h"
-
+#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
 // BKTODO: #include "win/dib_section.h"
 
 using namespace blink;
@@ -61,12 +60,12 @@ WinThemeEngine::~WinThemeEngine(void)
         FreeLibrary(m_uxtheme);
 }
 
-void WinThemeEngine::Draw(HDC hdc, PCWSTR classList, int partId, int stateId, const WebSize &size)
+void WinThemeEngine::Draw(HDC hdc, PCWSTR classList, int partId, int stateId, const IntSize &size)
 {
     RECT rc;
     rc.left = rc.top = 0;
-    rc.right = size.width;
-    rc.bottom = size.height;
+    rc.right = size.width();
+    rc.bottom = size.height();
 
     const UINT dpi = GetDeviceCaps(hdc, LOGPIXELSY);
     assert(dpi == GetDeviceCaps(hdc, LOGPIXELSX));
@@ -76,42 +75,43 @@ void WinThemeEngine::Draw(HDC hdc, PCWSTR classList, int partId, int stateId, co
     CloseThemeData(t);
 }
 
-WebSize WinThemeEngine::getSize(Part part)
+IntSize WinThemeEngine::getSize(Part part)
 {
-    WebSize size;
+    IntSize size;
     switch (part)
     {
         case PartScrollbarDownArrow:
         case PartScrollbarUpArrow:
         case PartScrollbarVerticalThumb:
         case PartScrollbarVerticalTrack:
-            size.width = m_getMetrics(SM_CXVSCROLL, 96);
-            if (0 == size.width)
-                size.width = 17;
-            size.height = size.width;
+            size.setWidth(m_getMetrics(SM_CXVSCROLL, 96));
+            if (0 == size.width())
+                size.setWidth(17);
+            size.setHeight(size.width());
             break;
         case PartScrollbarLeftArrow:
         case PartScrollbarRightArrow:
         case PartScrollbarHorizontalThumb:
         case PartScrollbarHorizontalTrack:
-            size.height = m_getMetrics(SM_CYHSCROLL, 96);
-            if (0 == size.height)
-                size.height = 17;
-            size.width = size.height;
+            size.setHeight(m_getMetrics(SM_CYHSCROLL, 96));
+            if (0 == size.height())
+                size.setHeight(17);
+            size.setWidth(size.height());
             break;
         case PartCheckbox:
         case PartRadio:
-            size.width = size.height = 13;
+            size.setWidth(13);
+            size.setHeight(13);
             break;
         default:
-            assert(false); // Not reached!
+            ASSERT_NOT_REACHED();
     }
     return size;
 }
 
-void WinThemeEngine::paint(WebCanvas *canvas, Part part, State state, const WebRect &rect, const ExtraParams *extra)
+void WinThemeEngine::paint(WebCanvas *canvas, Part part, State state, const IntRect &rect, const ExtraParams *extra)
 {
-    if (0 == rect.width || 0 == rect.height)
+    if (rect.isEmpty())
         return;
 
     HDC hdc = CreateCompatibleDC(nullptr);
@@ -155,7 +155,7 @@ void WinThemeEngine::paint(WebCanvas *canvas, Part part, State state, const WebR
     DeleteDC(hdc);
 }
 
-void WinThemeEngine::PaintButtonByUxTheme(HDC hdc, State state, const WebSize &size, const ButtonExtraParams *extra)
+void WinThemeEngine::PaintButtonByUxTheme(HDC hdc, State state, const IntSize &size, const ButtonExtraParams *extra)
 {
     int stateId = -1;
     switch (state)
@@ -180,12 +180,12 @@ void WinThemeEngine::PaintButtonByUxTheme(HDC hdc, State state, const WebSize &s
     Draw(hdc, VSCLASS_BUTTON, BP_PUSHBUTTON, stateId, size);
 }
 
-void WinThemeEngine::PaintByUser32(HDC hdc, Part part, State state, const WebSize &size, const ExtraParams *extra)
+void WinThemeEngine::PaintByUser32(HDC hdc, Part part, State state, const IntSize &size, const ExtraParams *extra)
 {
     assert(false); // BKTODO:
 }
 
-void WinThemeEngine::PaintByUxTheme(HDC hdc, Part part, State state, const WebSize &size, const ExtraParams *extra)
+void WinThemeEngine::PaintByUxTheme(HDC hdc, Part part, State state, const IntSize &size, const ExtraParams *extra)
 {
     switch (part)
     {
@@ -215,7 +215,7 @@ void WinThemeEngine::PaintByUxTheme(HDC hdc, Part part, State state, const WebSi
     }
 }
 
-void WinThemeEngine::PaintScrollArrowByUxTheme(HDC hdc, Part part, State state, const blink::WebSize &size, const ScrollbarTrackExtraParams *extra)
+void WinThemeEngine::PaintScrollArrowByUxTheme(HDC hdc, Part part, State state, const IntSize &size, const ScrollbarTrackExtraParams *extra)
 {
     int stateId = -1;
 
@@ -277,17 +277,17 @@ void WinThemeEngine::PaintScrollArrowByUxTheme(HDC hdc, Part part, State state, 
     Draw(hdc, VSCLASS_SCROLLBAR, SBP_ARROWBTN, stateId, size);
 }
 
-void WinThemeEngine::PaintScrollbarCorner(HDC hdc, const WebSize &size)
+void WinThemeEngine::PaintScrollbarCorner(HDC hdc, const IntSize &size)
 {
     COLORREF oldColor = SetBkColor(hdc, GetSysColor(COLOR_WINDOW));
 
-    RECT rc = { 0, 0, size.width, size.height };
+    RECT rc = { 0, 0, size.width(), size.height() };
     ExtTextOut(hdc, 0, 0, ETO_OPAQUE, &rc, nullptr, 0, nullptr);
 
     SetBkColor(hdc, oldColor);
 }
 
-void WinThemeEngine::PaintScrollPartByUxTheme(HDC hdc, Part part, State state, const WebSize &size, const ScrollbarTrackExtraParams *extra)
+void WinThemeEngine::PaintScrollPartByUxTheme(HDC hdc, Part part, State state, const IntSize &size, const ScrollbarTrackExtraParams *extra)
 {
     int partId = -1, stateId = -1;
     switch (part)
@@ -331,7 +331,7 @@ void WinThemeEngine::PaintScrollPartByUxTheme(HDC hdc, Part part, State state, c
     Draw(hdc, VSCLASS_SCROLLBAR, partId, stateId, size);
 }
 
-void WinThemeEngine::PaintTextFieldByUxTheme(HDC hdc, State state, const WebSize &size, const TextFieldExtraParams *extra)
+void WinThemeEngine::PaintTextFieldByUxTheme(HDC hdc, State state, const IntSize &size, const TextFieldExtraParams *extra)
 {
     int stateId = -1;
     switch (state)
