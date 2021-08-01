@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FastSharedBufferReader.cpp
+// Description: FastSharedBufferReader Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2015 Google Inc. All rights reserved.
  *
@@ -32,7 +43,7 @@
 
 namespace blink {
 
-FastSharedBufferReader::FastSharedBufferReader(PassRefPtr<SharedBuffer> data)
+FastSharedBufferReader::FastSharedBufferReader(const std::shared_ptr<SharedBuffer> &data)
     : m_data(data)
     , m_segment(0)
     , m_segmentLength(0)
@@ -40,7 +51,7 @@ FastSharedBufferReader::FastSharedBufferReader(PassRefPtr<SharedBuffer> data)
 {
 }
 
-void FastSharedBufferReader::setData(PassRefPtr<SharedBuffer> data)
+void FastSharedBufferReader::setData(const std::shared_ptr<SharedBuffer> &data)
 {
     if (data == m_data)
         return;

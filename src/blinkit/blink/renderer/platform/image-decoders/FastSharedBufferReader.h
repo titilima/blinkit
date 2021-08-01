@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FastSharedBufferReader.h
+// Description: FastSharedBufferReader Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2015 Google Inc. All rights reserved.
  *
@@ -48,9 +59,9 @@ class PLATFORM_EXPORT FastSharedBufferReader final {
     DISALLOW_NEW();
     WTF_MAKE_NONCOPYABLE(FastSharedBufferReader);
 public:
-    FastSharedBufferReader(PassRefPtr<SharedBuffer> data);
+    FastSharedBufferReader(const std::shared_ptr<SharedBuffer> &data);
 
-    void setData(PassRefPtr<SharedBuffer>);
+    void setData(const std::shared_ptr<SharedBuffer> &);
 
     // Returns a consecutive buffer that carries the data starting
     // at |dataPosition| with |length| bytes.
@@ -83,7 +94,7 @@ public:
 private:
     void getSomeDataInternal(size_t dataPosition) const;
 
-    RefPtr<SharedBuffer> m_data;
+    std::shared_ptr<SharedBuffer> m_data;
 
     // Caches the last segment of |m_data| accessed, since subsequent reads are
     // likely to re-access it.
