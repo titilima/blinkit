@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ICOImageDecoder.cpp
+// Description: ICOImageDecoder Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, 2009, Google Inc. All rights reserved.
  *
@@ -54,7 +65,7 @@ ICOImageDecoder::~ICOImageDecoder()
 {
 }
 
-void ICOImageDecoder::onSetData(SharedBuffer* data)
+void ICOImageDecoder::onSetData(const std::shared_ptr<SharedBuffer> &data)
 {
     m_fastReader.setData(data);
 
@@ -128,7 +139,7 @@ void ICOImageDecoder::setDataForPNGDecoderAtIndex(size_t index)
     if (!m_pngDecoders[index])
         return;
 
-    m_pngDecoders[index]->setData(m_data.get(), isAllDataReceived());
+    m_pngDecoders[index]->setData(m_data, isAllDataReceived());
 }
 
 void ICOImageDecoder::decode(size_t index, bool onlySize)
@@ -177,7 +188,7 @@ bool ICOImageDecoder::decodeAtIndex(size_t index)
             // we must not resize it again later (see caution in frameCount()).
             ASSERT(m_frameBufferCache.size() == m_dirEntries.size());
             m_bmpReaders[index] = adoptPtr(new BMPImageReader(this, dirEntry.m_imageOffset, 0, true));
-            m_bmpReaders[index]->setData(m_data.get());
+            m_bmpReaders[index]->setData(m_data);
             m_bmpReaders[index]->setBuffer(&m_frameBufferCache[index]);
         }
         m_frameSize = dirEntry.m_size;

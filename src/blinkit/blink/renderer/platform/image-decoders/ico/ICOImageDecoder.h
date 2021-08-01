@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ICOImageDecoder.h
+// Description: ICOImageDecoder Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, 2009, Google Inc. All rights reserved.
  *
@@ -46,7 +57,7 @@ public:
 
     // ImageDecoder:
     String filenameExtension() const override { return "ico"; }
-    void onSetData(SharedBuffer*) override;
+    void onSetData(const std::shared_ptr<SharedBuffer> &) override;
     IntSize size() const override;
     IntSize frameSizeAtIndex(size_t) const override;
     bool setSize(unsigned width, unsigned height) override;
