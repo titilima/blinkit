@@ -9,9 +9,9 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "heap_retained.h"
+#include "./heap_retained.h"
 
-#include "third_party/blink/renderer/bindings/core/duk/duk.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk.h"
 
 namespace BlinKit {
 
