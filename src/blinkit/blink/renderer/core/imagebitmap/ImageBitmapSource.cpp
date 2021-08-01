@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageBitmapSource.cpp
+// Description: ImageBitmapSource Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,6 +19,7 @@
 
 namespace blink {
 
+#if 0 // BKTODO:
 ScriptPromise ImageBitmapSource::fulfillImageBitmap(ScriptState* scriptState, PassRefPtrWillBeRawPtr<ImageBitmap> imageBitmap)
 {
     ScriptPromiseResolver* resolver = ScriptPromiseResolver::create(scriptState);
@@ -24,5 +36,6 @@ ScriptPromise ImageBitmapSource::createImageBitmap(ScriptState* scriptState, Eve
 {
     return ScriptPromise();
 }
+#endif
 
 } // namespace blink
