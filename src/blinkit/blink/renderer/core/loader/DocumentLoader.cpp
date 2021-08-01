@@ -776,9 +776,9 @@ void DocumentLoader::setDefersLoading(bool defers)
     // the "owning" DocumentLoader does so, as setDefersLoading() is not resilient to setting the same value repeatedly.
     if (mainResourceLoader() && mainResourceLoader()->isLoadedBy(m_fetcher.get()))
         mainResourceLoader()->setDefersLoading(defers);
-#endif
 
     m_fetcher->setDefersLoading(defers);
+#endif
 }
 
 bool DocumentLoader::maybeLoadEmpty()
