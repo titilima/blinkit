@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FilterOperationResolver.cpp
+// Description: FilterOperationResolver Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -33,9 +44,11 @@
 #include "core/css/CSSShadowValue.h"
 #include "core/css/resolver/StyleResolverState.h"
 #include "core/frame/UseCounter.h"
+#if 0 // BKTODO:
 #include "core/layout/svg/ReferenceFilterBuilder.h"
 #include "core/svg/SVGElement.h"
 #include "core/svg/SVGURIReference.h"
+#endif
 
 namespace blink {
 
@@ -71,6 +84,7 @@ static FilterOperation::OperationType filterOperationForType(CSSValueID type)
     }
 }
 
+#if 0 // BKTODO:
 static void countFilterUse(FilterOperation::OperationType operationType, const Document& document)
 {
     // This variable is always reassigned, but MSVC thinks it might be left
@@ -116,6 +130,7 @@ static void countFilterUse(FilterOperation::OperationType operationType, const D
     };
     UseCounter::count(document, feature);
 }
+#endif
 
 FilterOperations FilterOperationResolver::createFilterOperations(StyleResolverState& state, const CSSValue& inValue)
 {
@@ -130,10 +145,12 @@ FilterOperations FilterOperationResolver::createFilterOperations(StyleResolverSt
     for (auto& currValue : toCSSValueList(inValue)) {
         CSSFunctionValue* filterValue = toCSSFunctionValue(currValue.get());
         FilterOperation::OperationType operationType = filterOperationForType(filterValue->functionType());
-        countFilterUse(operationType, state.document());
+        // BKTODO: countFilterUse(operationType, state.document());
         ASSERT(filterValue->length() <= 1);
 
         if (operationType == FilterOperation::REFERENCE) {
+            ASSERT(false); // BKTODO:
+#if 0
             CSSSVGDocumentValue* svgDocumentValue = toCSSSVGDocumentValue(filterValue->item(0));
             KURL url = state.document().completeURL(svgDocumentValue->url());
 
@@ -145,6 +162,7 @@ FilterOperations FilterOperationResolver::createFilterOperations(StyleResolverSt
                     ReferenceFilterBuilder::setDocumentResourceReference(operation.get(), adoptPtr(new DocumentResourceReference(svgDocumentValue->cachedSVGDocument())));
             }
             operations.operations().append(operation);
+#endif
             continue;
         }
 
