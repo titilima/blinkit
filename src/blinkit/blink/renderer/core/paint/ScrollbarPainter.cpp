@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollbarPainter.cpp
+// Description: ScrollbarPainter Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 
 #include "core/layout/LayoutScrollbar.h"
 #include "core/layout/LayoutScrollbarPart.h"
-#include "core/paint/ObjectPainter.h"
+// BKTODO: #include "core/paint/ObjectPainter.h"
 #include "core/paint/PaintInfo.h"
 #include "platform/graphics/GraphicsContext.h"
 
@@ -29,7 +40,7 @@ void ScrollbarPainter::paintIntoRect(const LayoutScrollbarPart& layoutScrollbarP
     const_cast<LayoutScrollbarPart&>(layoutScrollbarPart).setHeight(rect.height());
 
     PaintInfo paintInfo(graphicsContext, pixelSnappedIntRect(rect), PaintPhaseForeground, GlobalPaintNormalPhase, PaintLayerNoFlag);
-    ObjectPainter(layoutScrollbarPart).paintAsPseudoStackingContext(paintInfo, paintOffset);
+    ASSERT(false); // BKTODO: ObjectPainter(layoutScrollbarPart).paintAsPseudoStackingContext(paintInfo, paintOffset);
 }
 
 } // namespace blink
