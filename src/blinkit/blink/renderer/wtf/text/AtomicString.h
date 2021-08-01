@@ -166,6 +166,11 @@ public:
     CString ascii() const { return m_string.ascii(); }
     CString latin1() const { return m_string.latin1(); }
     CString utf8(UTF8ConversionMode mode = LenientUTF8Conversion) const { return m_string.utf8(mode); }
+    std::string stdUTF8(UTF8ConversionMode mode = LenientUTF8Conversion) const
+    {
+        CString cs = utf8(mode);
+        return std::string(cs.data(), cs.length());
+    }
 
 #ifndef NDEBUG
     void show() const;
