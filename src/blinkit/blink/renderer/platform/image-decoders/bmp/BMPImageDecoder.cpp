@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BMPImageDecoder.cpp
+// Description: BMPImageDecoder Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, 2009, Google Inc. All rights reserved.
  *
@@ -46,7 +57,7 @@ BMPImageDecoder::BMPImageDecoder(AlphaOption alphaOption, GammaAndColorProfileOp
 {
 }
 
-void BMPImageDecoder::onSetData(SharedBuffer* data)
+void BMPImageDecoder::onSetData(const std::shared_ptr<SharedBuffer> &data)
 {
     if (m_reader)
         m_reader->setData(data);
@@ -81,7 +92,7 @@ bool BMPImageDecoder::decodeHelper(bool onlySize)
 
     if (!m_reader) {
         m_reader = adoptPtr(new BMPImageReader(this, m_decodedOffset, imgDataOffset, false));
-        m_reader->setData(m_data.get());
+        m_reader->setData(m_data);
     }
 
     if (!m_frameBufferCache.isEmpty())

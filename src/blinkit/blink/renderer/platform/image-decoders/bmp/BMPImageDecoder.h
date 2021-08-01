@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BMPImageDecoder.h
+// Description: BMPImageDecoder Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, 2009, Google Inc. All rights reserved.
  *
@@ -43,7 +54,7 @@ public:
 
     // ImageDecoder:
     String filenameExtension() const override { return "bmp"; }
-    void onSetData(SharedBuffer*) override;
+    void onSetData(const std::shared_ptr<SharedBuffer> &) override;
     // CAUTION: setFailed() deletes |m_reader|.  Be careful to avoid
     // accessing deleted memory, especially when calling this from inside
     // BMPImageReader!
