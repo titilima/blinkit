@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebHTTPBody.h
+// Description: WebHTTPBody Class
+//      Author: Ziming Li
+//     Created: 2021-06-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -33,12 +44,14 @@
 
 #include "WebBlobData.h"
 #include "WebData.h"
+#if 0 // BKTODO:
 #include "WebNonCopyable.h"
 #include "WebString.h"
 #include "WebURL.h"
 
 #if INSIDE_BLINK
 namespace WTF { template <typename T> class PassRefPtr; }
+#endif
 #endif
 
 namespace blink {
@@ -51,12 +64,14 @@ public:
     struct Element {
         enum Type { TypeData, TypeFile, TypeBlob, TypeFileSystemURL } type;
         WebData data;
+#if 0 // BKTODO:
         WebString filePath;
         long long fileStart;
         long long fileLength; // -1 means to the end of the file.
         double modificationTime;
         WebURL fileSystemURL;
         WebString blobUUID;
+#endif
     };
 
     ~WebHTTPBody() { reset(); }
@@ -84,6 +99,7 @@ public:
 
     // Append to the list of elements.
     BLINK_PLATFORM_EXPORT void appendData(const WebData&);
+#if 0 // BKTODO:
     BLINK_PLATFORM_EXPORT void appendFile(const WebString&);
     // Passing -1 to fileLength means to the end of the file.
     BLINK_PLATFORM_EXPORT void appendFileRange(const WebString&, long long fileStart, long long fileLength, double modificationTime);
@@ -104,6 +120,7 @@ public:
     BLINK_PLATFORM_EXPORT WebHTTPBody(const WTF::PassRefPtr<EncodedFormData>&);
     BLINK_PLATFORM_EXPORT WebHTTPBody& operator=(const WTF::PassRefPtr<EncodedFormData>&);
     BLINK_PLATFORM_EXPORT operator WTF::PassRefPtr<EncodedFormData>() const;
+#endif
 #endif
 
 private:

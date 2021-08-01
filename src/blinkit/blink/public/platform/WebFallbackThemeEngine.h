@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebFallbackThemeEngine.h
+// Description: WebFallbackThemeEngine Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -33,11 +44,11 @@
 
 #include "WebCanvas.h"
 #include "WebColor.h"
-#include "WebSize.h"
+#include "blinkit/blink/renderer/platform/geometry/IntSize.h"
 
 namespace blink {
 
-struct WebRect;
+class IntRect;
 
 class WebFallbackThemeEngine {
 public:
@@ -145,9 +156,9 @@ public:
     // Gets the size of the given theme part. For variable sized items
     // like vertical scrollbar thumbs, the width will be the required width of
     // the track while the height will be the minimum height.
-    virtual WebSize getSize(Part) { return WebSize(); }
+    virtual IntSize getSize(Part) { return IntSize(); }
     // Paint the given the given theme part.
-    virtual void paint(WebCanvas*, Part, State, const WebRect&, const ExtraParams*) { }
+    virtual void paint(WebCanvas*, Part, State, const IntRect&, const ExtraParams*) { }
 };
 
 } // namespace blink

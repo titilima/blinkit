@@ -11,3 +11,4 @@
 // -------------------------------------------------
 
 #include "blinkit/blink/renderer/bindings/core/duk/script_wrappable.h"
+#include "blinkit/blink/renderer/core/CoreExport.h"

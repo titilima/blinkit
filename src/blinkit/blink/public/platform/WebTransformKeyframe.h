@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebTransformKeyframe.h
+// Description: WebTransformKeyframe Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -25,16 +36,17 @@
 #ifndef WebTransformKeyframe_h
 #define WebTransformKeyframe_h
 
-#include "WebNonCopyable.h"
-#include "WebPrivateOwnPtr.h"
+// BKTODO: #include "WebPrivateOwnPtr.h"
 #include "WebTransformOperations.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
 #if INSIDE_BLINK
 namespace WTF { template <typename T> class PassOwnPtr; }
 #endif
 
 namespace blink {
 
-class WebTransformKeyframe : public WebNonCopyable {
+class WebTransformKeyframe {
+    WTF_MAKE_NONCOPYABLE(WebTransformKeyframe);
 public:
 #if INSIDE_BLINK
     BLINK_PLATFORM_EXPORT WebTransformKeyframe(double time, WTF::PassOwnPtr<WebTransformOperations> value);
@@ -48,7 +60,7 @@ public:
 
 private:
     double m_time;
-    WebPrivateOwnPtr<WebTransformOperations> m_value;
+    // BKTODO: WebPrivateOwnPtr<WebTransformOperations> m_value;
 };
 
 } // namespace blink

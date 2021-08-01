@@ -20,7 +20,7 @@ namespace blink {
 class DummyExceptionStateForTesting final : public ExceptionState
 {
 public:
-    DummyExceptionStateForTesting(void);
+    DummyExceptionStateForTesting(void) = default;
 
     ExceptionState& ReturnThis(void) { return *this; }
 };

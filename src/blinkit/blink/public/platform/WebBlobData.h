@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebBlobData.h
+// Description: WebBlobData Class
+//      Author: Ziming Li
+//     Created: 2021-06-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -31,6 +42,7 @@
 #ifndef WebBlobData_h
 #define WebBlobData_h
 
+#if 0 // BKTODO:
 #include "WebNonCopyable.h"
 #include "WebPrivateOwnPtr.h"
 #include "WebString.h"
@@ -40,15 +52,23 @@
 #if INSIDE_BLINK
 namespace WTF { template <typename T> class PassOwnPtr; }
 #endif
+#endif
 
 namespace blink {
 
+#if 0 // BKTODO:
 class BlobData;
+#endif
 
+#if 0 // BKTODO:
 class WebBlobData : public WebNonCopyable {
+#else
+class WebBlobData {
+#endif
 public:
     struct Item {
         enum { TypeData, TypeFile, TypeBlob, TypeFileSystemURL } type;
+#if 0 // BKTODO:
         WebThreadSafeData data;
         WebString blobUUID;
         WebString filePath;
@@ -56,12 +76,15 @@ public:
         long long offset;
         long long length; // -1 means go to the end of the file/blob.
         double expectedModificationTime; // 0.0 means that the time is not set.
+#endif
     };
 
     BLINK_PLATFORM_EXPORT WebBlobData();
     BLINK_PLATFORM_EXPORT ~WebBlobData();
 
+#if 0 // BKTODO:
     bool isNull() const { return !m_private.get(); }
+#endif
 
     // Returns the number of items.
     BLINK_PLATFORM_EXPORT size_t itemCount() const;
@@ -74,6 +97,7 @@ public:
     // TODO(dmurph): change the name to 'takeItemAt'
     BLINK_PLATFORM_EXPORT bool itemAt(size_t index, Item& result) const;
 
+#if 0 // BKTODO:
     BLINK_PLATFORM_EXPORT WebString contentType() const;
 
 #if INSIDE_BLINK
@@ -81,9 +105,10 @@ public:
     BLINK_PLATFORM_EXPORT WebBlobData& operator=(const WTF::PassOwnPtr<BlobData>&);
     BLINK_PLATFORM_EXPORT operator WTF::PassOwnPtr<BlobData>();
 #endif
+#endif
 
 private:
-    WebPrivateOwnPtr<BlobData> m_private;
+    // BKTODO: WebPrivateOwnPtr<BlobData> m_private;
 };
 
 } // namespace blink

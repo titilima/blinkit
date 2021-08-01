@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebScreenInfo.h
+// Description: WebScreenInfo Struct
+//      Author: Ziming Li
+//     Created: 2021-07-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -31,8 +42,8 @@
 #ifndef WebScreenInfo_h
 #define WebScreenInfo_h
 
-#include "WebRect.h"
-#include "public/platform/modules/screen_orientation/WebScreenOrientationType.h"
+// BKTODO: #include "public/platform/modules/screen_orientation/WebScreenOrientationType.h"
+#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
 
 namespace blink {
 
@@ -56,7 +67,7 @@ struct WebScreenInfo {
     //   expressed in virtual-screen coordinates. Note that if the monitor
     //   is not the primary display monitor, some of the rectangle's
     //   coordinates may be negative values."
-    WebRect rect;
+    IntRect rect;
 
     // This is set from the rcWork member of MONITORINFOEX, to whit:
     //   "A RECT structure that specifies the work area rectangle of the
@@ -66,12 +77,14 @@ struct WebScreenInfo {
     //   rcMonitor contains system windows such as the task bar and side
     //   bars. Note that if the monitor is not the primary display monitor,
     //   some of the rectangle's coordinates may be negative values".
-    WebRect availableRect;
+    IntRect availableRect;
 
+#if 0 // BKTODO:
     // This is the orientation 'type' or 'name', as in landscape-primary or
     // portrait-secondary for examples.
     // See WebScreenOrientationType.h for the full list.
     WebScreenOrientationType orientationType;
+#endif
 
     // This is the orientation angle of the displayed content in degrees.
     // It is the opposite of the physical rotation.
@@ -82,7 +95,7 @@ struct WebScreenInfo {
         , depth(0)
         , depthPerComponent(0)
         , isMonochrome(false)
-        , orientationType(WebScreenOrientationUndefined)
+        // BKTODO: , orientationType(WebScreenOrientationUndefined)
         , orientationAngle(0) { }
 
     bool operator==(const WebScreenInfo& other) const
@@ -93,7 +106,7 @@ struct WebScreenInfo {
             && this->isMonochrome == other.isMonochrome
             && this->rect == other.rect
             && this->availableRect == other.availableRect
-            && this->orientationType == other.orientationType
+            // BKTODO: && this->orientationType == other.orientationType
             && this->orientationAngle == other.orientationAngle;
     }
 

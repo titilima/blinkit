@@ -70,7 +70,7 @@ public:
     virtual int id() const = 0;
 
     // Sets a region of the layer as invalid, i.e. needs to update its content.
-    virtual void invalidateRect(const WebRect&) = 0;
+    virtual void invalidateRect(const IntRect&) = 0;
 
     // Sets the entire layer as invalid, i.e. needs to update its content.
     virtual void invalidate() = 0;
@@ -103,8 +103,8 @@ public:
     virtual void setOpaque(bool) = 0;
     virtual bool opaque() const = 0;
 
-    virtual void setPosition(const WebFloatPoint&) = 0;
-    virtual WebFloatPoint position() const = 0;
+    virtual void setPosition(const FloatPoint&) = 0;
+    virtual FloatPoint position() const = 0;
 
     virtual void setTransform(const SkMatrix44&) = 0;
     virtual SkMatrix44 transform() const = 0;

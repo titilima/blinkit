@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebThread.h
+// Description: WebThread Class
+//      Author: Ziming Li
+//     Created: 2021-06-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -59,7 +70,7 @@ public:
 
 
     // Returns a WebTaskRunner bound to the underlying scheduler's default task queue.
-    virtual WebTaskRunner* taskRunner() { return nullptr; }
+    virtual std::shared_ptr<WebTaskRunner> taskRunner() { return nullptr; }
 
     virtual bool isCurrentThread() const = 0;
     virtual PlatformThreadId threadId() const { return 0; }
@@ -68,7 +79,7 @@ public:
     virtual void removeTaskObserver(TaskObserver*) { }
 
     // Returns the scheduler associated with the thread.
-    virtual WebScheduler* scheduler() const = 0;
+    // BKTODO: virtual WebScheduler* scheduler() const = 0;
 
     virtual ~WebThread() { }
 };

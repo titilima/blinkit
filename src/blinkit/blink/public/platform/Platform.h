@@ -309,6 +309,7 @@ public:
     // directly, taking care to unlock it when you are ready to let it become
     // discardable.
     virtual WebDiscardableMemory* allocateAndLockDiscardableMemory(size_t bytes) { return nullptr; }
+#endif
 
     static const size_t noDecodedImageByteLimit = static_cast<size_t>(-1);
 
@@ -316,6 +317,7 @@ public:
     // See comments on ImageDecoder::m_maxDecodedBytes.
     virtual size_t maxDecodedImageBytes() { return noDecodedImageByteLimit; }
 
+#if 0 // BKTODO:
     // Process -------------------------------------------------------------
 
     // Returns a unique identifier for a process. This may not necessarily be
@@ -383,11 +385,13 @@ public:
 
     // Creates an embedder-defined thread.
     virtual WebThread* createThread(const char* name) { return nullptr; }
+#endif
 
     // Returns an interface to the current thread. This is owned by the
     // embedder.
     virtual WebThread* currentThread() { return nullptr; }
 
+#if 0 // BKTODO:
     // Yield the current thread so another thread can be scheduled.
     virtual void yieldCurrentThread() { }
 
@@ -579,14 +583,6 @@ public:
 
     // Set the duration field of a COMPLETE trace event.
     virtual void updateTraceEventDuration(const unsigned char* categoryEnabledFlag, const char* name, TraceEventHandle) { }
-
-    // Callbacks for reporting histogram data.
-    // CustomCounts histogram has exponential bucket sizes, so that min=1, max=1000000, bucketCount=50 would do.
-    virtual void histogramCustomCounts(const char* name, int sample, int min, int max, int bucketCount) { }
-    // Enumeration histogram buckets are linear, boundaryValue should be larger than any possible sample value.
-    virtual void histogramEnumeration(const char* name, int sample, int boundaryValue) { }
-    // Unlike enumeration histograms, sparse histograms only allocate memory for non-empty buckets.
-    virtual void histogramSparse(const char* name, int sample) { }
 
     // Record to a RAPPOR privacy-preserving metric, see: https://www.chromium.org/developers/design-documents/rappor.
     // recordRappor records a sample string, while recordRapporURL records the domain and registry of a url.

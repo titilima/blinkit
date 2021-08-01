@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebURLLoaderClient.h
+// Description: WebURLLoaderClient Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -32,7 +43,7 @@
 #define WebURLLoaderClient_h
 
 #include "public/platform/WebCommon.h"
-#include "public/platform/WebDataConsumerHandle.h"
+// BKTODO: #include "public/platform/WebDataConsumerHandle.h"
 
 namespace blink {
 
@@ -56,6 +67,7 @@ public:
     // Called when response headers are received.
     virtual void didReceiveResponse(WebURLLoader*, const WebURLResponse&) { }
 
+#if 0 // BKTODO:
     // Called when response headers are received.
     // The ownership of |handle| is transferred to the callee.
     virtual void didReceiveResponse(WebURLLoader* loader, const WebURLResponse& response, WebDataConsumerHandle* handle)
@@ -63,6 +75,7 @@ public:
         delete handle;
         didReceiveResponse(loader, response);
     }
+#endif
 
     // Called when a chunk of response data is downloaded. This is only called
     // if WebURLRequest's downloadToFile flag was set to true.

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebFilterKeyframe.h
+// Description: WebFilterKeyframe Class
+//      Author: Ziming Li
+//     Created: 2021-07-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  * Copyright (C) 2013 Intel Corporation. All rights reserved.
@@ -33,7 +44,7 @@
 #define WebFilterKeyframe_h
 
 #include "WebFilterOperations.h"
-#include "WebPrivateOwnPtr.h"
+// BKTODO: #include "WebPrivateOwnPtr.h"
 
 #if INSIDE_BLINK
 namespace WTF { template <typename T> class PassOwnPtr; }
@@ -51,11 +62,11 @@ public:
 
     double time() const { return m_time; }
 
-    const WebFilterOperations& value() const { return *m_value.get(); }
+    // BKTODO: const WebFilterOperations& value() const { return *m_value.get(); }
 
 private:
     double m_time;
-    WebPrivateOwnPtr<WebFilterOperations> m_value;
+    // BKTODO: WebPrivateOwnPtr<WebFilterOperations> m_value;
 };
 
 } // namespace blink

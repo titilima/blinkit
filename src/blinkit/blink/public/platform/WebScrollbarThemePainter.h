@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebScrollbarThemePainter.h
+// Description: WebScrollbarThemePainter Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -27,7 +38,6 @@
 #define WebScrollbarThemePainter_h
 
 #include "public/platform/WebCanvas.h"
-#include "public/platform/WebPrivatePtr.h"
 
 namespace blink {
 
@@ -81,11 +91,13 @@ private:
     // from the same thread that it is created on.
     ScrollbarTheme* m_theme;
 
+#if 0 // BKTODO:
     // It is assumed that the constructor of this paint object is responsible
     // for the lifetime of this scrollbar. The painter has to use the real
     // scrollbar (and not a WebScrollbar wrapper) due to static_casts for
     // LayoutScrollbar and pointer-based HashMap lookups for Lion scrollbars.
     WebPrivatePtr<Scrollbar> m_scrollbar;
+#endif
 
     float m_deviceScaleFactor;
 };

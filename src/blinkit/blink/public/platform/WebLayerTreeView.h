@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebLayerTreeView.h
+// Description: WebLayerTreeView Class
+//      Author: Ziming Li
+//     Created: 2021-07-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -28,11 +39,9 @@
 
 #include "WebColor.h"
 #include "WebCommon.h"
-#include "WebFloatPoint.h"
-#include "WebNonCopyable.h"
-#include "WebPrivateOwnPtr.h"
-#include "WebSize.h"
 #include "WebTopControlsState.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/IntSize.h"
 
 class SkBitmap;
 
@@ -62,7 +71,7 @@ public:
 
     // View properties ---------------------------------------------------
 
-    virtual void setViewportSize(const WebSize& deviceViewportSize) { }
+    virtual void setViewportSize(const IntSize& deviceViewportSize) { }
 
     virtual void setDeviceScaleFactor(float) { }
 

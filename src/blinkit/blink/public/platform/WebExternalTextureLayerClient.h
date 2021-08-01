@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebExternalTextureLayerClient.h
+// Description: WebExternalTextureLayerClient Class
+//      Author: Ziming Li
+//     Created: 2021-07-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -27,7 +38,6 @@
 #define WebExternalTextureLayerClient_h
 
 #include "WebCommon.h"
-#include "WebSize.h"
 
 namespace blink {
 
