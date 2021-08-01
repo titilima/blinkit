@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLSrcsetParser.cpp
+// Description: HTMLSrcsetParser Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -32,13 +43,13 @@
 #include "core/html/parser/HTMLSrcsetParser.h"
 
 #include "core/dom/Document.h"
-#include "core/fetch/MemoryCache.h"
+// BKTODO: #include "core/fetch/MemoryCache.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/frame/FrameConsole.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/UseCounter.h"
 #include "core/html/parser/HTMLParserIdioms.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "platform/ParsingUtilities.h"
 #include <algorithm>
 
@@ -192,7 +203,7 @@ static void srcsetError(Document* document, String message)
         StringBuilder errorMessage;
         errorMessage.append("Failed parsing 'srcset' attribute value since ");
         errorMessage.append(message);
-        document->frame()->console().addMessage(ConsoleMessage::create(OtherMessageSource, ErrorMessageLevel, errorMessage.toString()));
+        ASSERT(false); // BKTODO: document->frame()->console().addMessage(ConsoleMessage::create(OtherMessageSource, ErrorMessageLevel, errorMessage.toString()));
     }
 }
 
@@ -298,9 +309,12 @@ static void parseImageCandidatesFromSrcsetAttribute(const String& attribute, con
             // This is a black-box equivalent, to avoid storing descriptor lists for each candidate.
             if (!parseDescriptors(attribute, descriptorTokens, result, document)) {
                 if (document) {
+                    ASSERT(false); // BKTODO:
+#if 0
                     UseCounter::count(document, UseCounter::SrcsetDroppedCandidate);
                     if (document->frame())
                         document->frame()->console().addMessage(ConsoleMessage::create(OtherMessageSource, ErrorMessageLevel, String("Dropped srcset candidate ") + String(imageURLStart, imageURLEnd - imageURLStart)));
+#endif
                 }
                 continue;
             }
@@ -351,6 +365,9 @@ static unsigned selectionLogic(Vector<ImageCandidate*>& imageCandidates, float d
 
 static unsigned avoidDownloadIfHigherDensityResourceIsInCache(Vector<ImageCandidate*>& imageCandidates, unsigned winner, Document* document)
 {
+    ASSERT(false); // BKTODO:
+    return winner;
+#if 0
     if (!document)
         return winner;
     for (unsigned i = imageCandidates.size() - 1; i > winner; --i) {
@@ -359,6 +376,7 @@ static unsigned avoidDownloadIfHigherDensityResourceIsInCache(Vector<ImageCandid
             return i;
     }
     return winner;
+#endif
 }
 
 static ImageCandidate pickBestImageCandidate(float deviceScaleFactor, float sourceSize, Vector<ImageCandidate>& imageCandidates, Document* document = nullptr)
