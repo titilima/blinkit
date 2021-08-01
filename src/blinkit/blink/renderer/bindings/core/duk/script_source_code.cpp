@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - js Library
+// BlinKit - BlinKit Library
 // -------------------------------------------------
 //   File Name: script_source_code.cpp
 // Description: ScriptSourceCode Class
@@ -9,7 +9,7 @@
 // Copyright (C) 2018 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "script_source_code.h"
+#include "./script_source_code.h"
 
 namespace blink {
 
@@ -35,10 +35,14 @@ ScriptSourceCode::ScriptSourceCode(PassRefPtrWillBeRawPtr<ScriptStreamer> stream
 
 std::string ScriptSourceCode::FileName(void) const
 {
+    ASSERT(false); // BKTODO:
+    return std::string();
+#if 0
     if (m_resource)
         return m_resource->url().lastPathComponent().to_string();
     else
         return std::string("inline");
+#endif
 }
 
 void ScriptSourceCode::TreatNullSourceAsEmpty(void)
