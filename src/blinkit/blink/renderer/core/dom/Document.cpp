@@ -1514,10 +1514,12 @@ FrameHost* Document::frameHost() const
     return m_frame ? m_frame->host() : 0;
 }
 
+#if 0 // BKTODO:
 Settings* Document::settings() const
 {
     return m_frame ? m_frame->settings() : 0;
 }
+#endif
 
 PassRefPtrWillBeRawPtr<Range> Document::createRange()
 {
@@ -4174,7 +4176,8 @@ HTMLFrameOwnerElement* Document::ownerElement() const
     if (!frame())
         return 0;
     // FIXME: This probably breaks the attempts to layout after a load is finished in implicitClose(), and probably tons of other things...
-    return frame()->deprecatedLocalOwner();
+    ASSERT(false); // BKTODO: return frame()->deprecatedLocalOwner();
+    return nullptr;
 }
 
 bool Document::isInInvisibleSubframe() const

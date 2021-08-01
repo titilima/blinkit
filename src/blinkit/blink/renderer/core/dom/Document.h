@@ -432,7 +432,7 @@ public:
     LocalFrame* frame() const { return m_frame; } // can be null
     FrameHost* frameHost() const; // can be null
     Page* page() const; // can be null
-    Settings* settings() const; // can be null
+    // BKTODO: Settings* settings() const; // can be null
 
     float devicePixelRatio() const;
 
@@ -569,6 +569,7 @@ public:
     bool wasPrinting() const { return m_wasPrinting; }
 #else
     constexpr bool printing(void) const { return false; }
+    constexpr bool wasPrinting(void) const { return false; }
 #endif
 
     bool paginatedForScreen() const { return m_paginatedForScreen; }
