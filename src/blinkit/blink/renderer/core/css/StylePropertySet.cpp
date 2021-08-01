@@ -384,7 +384,7 @@ void MutableStylePropertySet::parseDeclarationList(const String& styleDeclaratio
     CSSParser::parseDeclarationList(context, this, styleDeclaration);
 }
 
-bool MutableStylePropertySet::addParsedProperties(const WillBeHeapVector<CSSProperty, 256>& properties)
+bool MutableStylePropertySet::addParsedProperties(const std::vector<CSSProperty>& properties)
 {
     bool changed = false;
     m_propertyVector.reserve(m_propertyVector.size() + properties.size());

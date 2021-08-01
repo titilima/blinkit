@@ -217,7 +217,7 @@ public:
     unsigned propertyCount() const { return m_propertyVector.size(); }
 
     // Returns whether this style set was changed.
-    bool addParsedProperties(const WillBeHeapVector<CSSProperty, 256>&);
+    bool addParsedProperties(const std::vector<CSSProperty>&);
     bool addRespectingCascade(const CSSProperty&);
 
     // These expand shorthand properties into multiple properties.
