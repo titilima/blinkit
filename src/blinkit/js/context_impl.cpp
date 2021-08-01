@@ -9,19 +9,20 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "context_impl.h"
+#include "./context_impl.h"
 
-#include "base/strings/string_piece.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_global.h"
+#include "blinkit/blink/renderer/bindings/core/duk/script_controller.h"
 #include "blinkit/js/function_manager.h"
 #include "blinkit/js/js_caller_context_impl.h"
 #include "blinkit/js/js_value_impl.h"
 #include "blinkit/js/module_manager.h"
 #include "blinkit/js/simple_context.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_global.h"
-#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
+#endif
 
 using namespace blink;
 using namespace BlinKit;
@@ -258,7 +259,7 @@ BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, size_t len,
     {
         ret.reset(JSValueImpl::Create(ctx, -1));
     };
-    context->Eval(base::WrapStringView(code, len), callback);
+    context->Eval(std::string_view(code, len), callback);
 
     int r = ret->GetType() == BK_VT_ERROR
         ? static_cast<JSErrorImpl *>(ret.get())->GetCode()
