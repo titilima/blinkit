@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LineBoxListPainter.cpp
+// Description: LineBoxListPainter Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -11,12 +22,13 @@
 #include "core/layout/line/LineBoxList.h"
 #include "core/layout/line/RootInlineBox.h"
 #include "core/paint/InlinePainter.h"
-#include "core/paint/ObjectPainter.h"
+// BKTODO: #include "core/paint/ObjectPainter.h"
 #include "core/paint/PaintInfo.h"
 #include "platform/graphics/paint/PaintController.h"
 
 namespace blink {
 
+#if 0 // BKTODO:
 static void addPDFURLRectsForInlineChildrenRecursively(const LayoutObject& layoutObject, const PaintInfo& paintInfo, const LayoutPoint& paintOffset)
 {
     for (LayoutObject* child = layoutObject.slowFirstChild(); child; child = child->nextSibling()) {
@@ -26,6 +38,7 @@ static void addPDFURLRectsForInlineChildrenRecursively(const LayoutObject& layou
         addPDFURLRectsForInlineChildrenRecursively(*child, paintInfo, paintOffset);
     }
 }
+#endif
 
 void LineBoxListPainter::paint(const LayoutBoxModelObject& layoutObject, const PaintInfo& paintInfo, const LayoutPoint& paintOffset) const
 {
@@ -40,7 +53,7 @@ void LineBoxListPainter::paint(const LayoutBoxModelObject& layoutObject, const P
     // FIXME: When Skia supports annotation rect covering (https://code.google.com/p/skia/issues/detail?id=3872),
     // these rects may be covered line box drawings. Then we may need a dedicated paint phase.
     if (paintInfo.phase == PaintPhaseForeground && paintInfo.isPrinting())
-        addPDFURLRectsForInlineChildrenRecursively(layoutObject, paintInfo, paintOffset);
+        ASSERT(false); // BKTODO: addPDFURLRectsForInlineChildrenRecursively(layoutObject, paintInfo, paintOffset);
 
     // If we have no lines then we have no work to do.
     if (!m_lineBoxList.firstLineBox())
