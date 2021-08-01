@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
+#include "blinkit/blink/renderer/bindings/core/duk/script_controller.h"
 
 class CrawlerImpl;
 
@@ -36,7 +36,7 @@ private:
     bool ScriptEnabled(const std::string &URL) const override;
     void ConsoleOutput(int type, const char *msg) override;
 
-    CrawlerImpl &m_crawler;
+    // BKTODO: CrawlerImpl &m_crawler;
     void *m_userObject = nullptr;
 };
 

@@ -9,23 +9,23 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "crawler_context.h"
+#include "./crawler_context.h"
 
 #include "base/strings/string_util.h"
 #include "blinkit/crawler/crawler_impl.h"
 #include "blinkit/js/js_value_impl.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_anchor_element.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_attr.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_console.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_event.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_image_element.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_location.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_navigator.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_script_element.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_window.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_xhr.h"
-#include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_anchor_element.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_attr.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_console.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_document.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_event.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_image_element.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_location.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_navigator.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_script_element.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_window.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_xhr.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
 
 using namespace blink;
 
@@ -35,8 +35,9 @@ static const char UserObject[] = "userObject";
 
 CrawlerContext::CrawlerContext(LocalFrame &frame)
     : ScriptController(frame, DukElement::PrototypeMapForCrawler())
-    , m_crawler(*ToCrawlerImpl(frame.Client()))
+    // BKTODO: , m_crawler(*ToCrawlerImpl(frame.Client()))
 {
+    ASSERT(false); // BKTODO:
 }
 
 CrawlerContext::~CrawlerContext(void) = default;
@@ -47,19 +48,24 @@ void CrawlerContext::Attach(duk_context *ctx, duk_idx_t globalStashIndex)
     CreateUserObject(globalStashIndex);
     RegisterPrototypes(ctx, globalStashIndex);
 
-    m_crawler.CleanupDirtyFlag();
+    ASSERT(false); // BKTODO: m_crawler.CleanupDirtyFlag();
 }
 
 void CrawlerContext::ConsoleOutput(int type, const char *msg)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_crawler.ProcessConsoleMessage(type, msg))
         ScriptController::ConsoleOutput(type, msg);
+#endif
 }
 
 void CrawlerContext::CreateUserObject(duk_idx_t globalStashIndex)
 {
     ASSERT(nullptr == m_userObject);
 
+    ASSERT(false); // BKTODO:
+#if 0
     Document *document = GetFrame().GetDocument();
     if (nullptr == document)
         return;
@@ -92,6 +98,7 @@ void CrawlerContext::CreateUserObject(duk_idx_t globalStashIndex)
 
     if (!errorLog.empty())
         ConsoleOutput(BK_CONSOLE_ERROR, errorLog.c_str());
+#endif
 }
 
 void CrawlerContext::Detach(duk_context *ctx)
@@ -102,7 +109,8 @@ void CrawlerContext::Detach(duk_context *ctx)
 
 bool CrawlerContext::IsDukSessionDirty(void) const
 {
-    return m_crawler.DirtyFlag();
+    ASSERT(false); // BKTODO: return m_crawler.DirtyFlag();
+    return false;
 }
 
 void CrawlerContext::RegisterPrototypes(duk_context *ctx, duk_idx_t globalStashIndex)
@@ -128,7 +136,8 @@ void CrawlerContext::RegisterPrototypes(duk_context *ctx, duk_idx_t globalStashI
 
 bool CrawlerContext::ScriptEnabled(const std::string &URL) const
 {
-    return m_crawler.ScriptEnabled(URL);
+    ASSERT(false); // BKTODO: return m_crawler.ScriptEnabled(URL);
+    return false;
 }
 
 } // namespace BlinKit
