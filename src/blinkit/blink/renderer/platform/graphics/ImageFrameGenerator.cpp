@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageFrameGenerator.cpp
+// Description: ImageFrameGenerator Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -98,15 +109,15 @@ static bool updateYUVComponentSizes(ImageDecoder* decoder, SkISize componentSize
     return true;
 }
 
-ImageFrameGenerator::ImageFrameGenerator(const SkISize& fullSize, PassRefPtr<SharedBuffer> data, bool allDataReceived, bool isMultiFrame)
+ImageFrameGenerator::ImageFrameGenerator(const SkISize& fullSize, const std::shared_ptr<SharedBuffer> &data, bool allDataReceived, bool isMultiFrame)
     : m_fullSize(fullSize)
-    , m_data(adoptRef(new ThreadSafeDataTransport()))
+    // BKTODO: , m_data(adoptRef(new ThreadSafeDataTransport()))
     , m_isMultiFrame(isMultiFrame)
     , m_decodeFailed(false)
     , m_frameCount(0)
     , m_encodedData(nullptr)
 {
-    setData(data.get(), allDataReceived);
+    setData(data, allDataReceived);
 }
 
 ImageFrameGenerator::~ImageFrameGenerator()
@@ -116,13 +127,15 @@ ImageFrameGenerator::~ImageFrameGenerator()
     ImageDecodingStore::instance().removeCacheIndexedByGenerator(this);
 }
 
-void ImageFrameGenerator::setData(PassRefPtr<SharedBuffer> data, bool allDataReceived)
+void ImageFrameGenerator::setData(const std::shared_ptr<SharedBuffer> &data, bool allDataReceived)
 {
-    m_data->setData(data.get(), allDataReceived);
+    ASSERT(false); // BKTODO: m_data->setData(data.get(), allDataReceived);
 }
 
 static void sharedSkDataReleaseCallback(const void* address, void* context)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // This gets called when m_encodedData reference count becomes 0 - and it could happen in
     // ImageFrameGenerator destructor or later when m_encodedData gets dereferenced.
     // In this method, we deref ThreadSafeDataTransport, as ThreadSafeDataTransport is the owner
@@ -138,10 +151,13 @@ static void sharedSkDataReleaseCallback(const void* address, void* context)
 #endif
     // Dereference m_data now.
     dataTransport->deref();
+#endif
 }
 
 SkData* ImageFrameGenerator::refEncodedData()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // SkData is returned only when full image (encoded) data is received. This is important
     // since DeferredImageDecoder::setData is called only once with allDataReceived set to true,
     // and after that m_data->m_readBuffer.data() is not changed. See also RELEASE_ASSERT used in
@@ -166,6 +182,7 @@ SkData* ImageFrameGenerator::refEncodedData()
         // it is dereferenced in sharedSkDataReleaseCallback, called when m_encodedData gets dereferenced.
         m_data->ref();
     }
+#endif
     // Increase the reference, caller must decrease it. One reference is always kept by ImageFrameGenerator and released
     // in destructor.
     m_encodedData->ref();
@@ -221,6 +238,8 @@ bool ImageFrameGenerator::decodeToYUV(size_t index, SkISize componentSizes[3], v
         return false;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     SharedBuffer* data = 0;
     bool allDataReceived = false;
     m_data->data(&data, &allDataReceived);
@@ -246,6 +265,7 @@ bool ImageFrameGenerator::decodeToYUV(size_t index, SkISize componentSizes[3], v
     }
 
     ASSERT(decoder->failed());
+#endif
     m_decodeFailed = true;
     return false;
 }
@@ -328,6 +348,9 @@ bool ImageFrameGenerator::decode(size_t index, ImageDecoder** decoder, SkBitmap*
 {
     TRACE_EVENT2("blink", "ImageFrameGenerator::decode", "width", m_fullSize.width(), "height", m_fullSize.height());
 
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     SharedBuffer* data = 0;
     bool allDataReceived = false;
     m_data->data(&data, &allDataReceived);
@@ -384,6 +407,7 @@ bool ImageFrameGenerator::decode(size_t index, ImageDecoder** decoder, SkBitmap*
 
     *bitmap = fullSizeBitmap;
     return isDecodeComplete;
+#endif
 }
 
 bool ImageFrameGenerator::hasAlpha(size_t index)
@@ -398,6 +422,9 @@ bool ImageFrameGenerator::getYUVComponentSizes(SkISize componentSizes[3])
 {
     TRACE_EVENT2("blink", "ImageFrameGenerator::getYUVComponentSizes", "width", m_fullSize.width(), "height", m_fullSize.height());
 
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     SharedBuffer* data = 0;
     bool allDataReceived = false;
     m_data->data(&data, &allDataReceived);
@@ -417,6 +444,7 @@ bool ImageFrameGenerator::getYUVComponentSizes(SkISize componentSizes[3])
 
     ASSERT(componentSizes);
     return updateYUVComponentSizes(decoder.get(), componentSizes, ImageDecoder::SizeForMemoryAllocation);
+#endif
 }
 
 } // namespace blink

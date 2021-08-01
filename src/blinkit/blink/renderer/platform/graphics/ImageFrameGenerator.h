@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageFrameGenerator.h
+// Description: ImageFrameGenerator Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -27,7 +38,7 @@
 #define ImageFrameGenerator_h
 
 #include "platform/PlatformExport.h"
-#include "platform/graphics/ThreadSafeDataTransport.h"
+// BKTODO: #include "platform/graphics/ThreadSafeDataTransport.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkSize.h"
 #include "third_party/skia/include/core/SkTypes.h"
@@ -60,14 +71,14 @@ public:
 class PLATFORM_EXPORT ImageFrameGenerator final : public ThreadSafeRefCounted<ImageFrameGenerator> {
     WTF_MAKE_NONCOPYABLE(ImageFrameGenerator);
 public:
-    static PassRefPtr<ImageFrameGenerator> create(const SkISize& fullSize, PassRefPtr<SharedBuffer> data, bool allDataReceived, bool isMultiFrame = false)
+    static PassRefPtr<ImageFrameGenerator> create(const SkISize& fullSize, const std::shared_ptr<SharedBuffer> &data, bool allDataReceived, bool isMultiFrame = false)
     {
         return adoptRef(new ImageFrameGenerator(fullSize, data, allDataReceived, isMultiFrame));
     }
 
     ~ImageFrameGenerator();
 
-    void setData(PassRefPtr<SharedBuffer>, bool allDataReceived);
+    void setData(const std::shared_ptr<SharedBuffer> &, bool allDataReceived);
 
     // Return our encoded image data. Caller takes ownership and must unref the data
     // according to the contract SkImageGenerator::refEncodedData. Returns null if
@@ -92,7 +103,7 @@ public:
     bool getYUVComponentSizes(SkISize componentSizes[3]);
 
 private:
-    ImageFrameGenerator(const SkISize& fullSize, PassRefPtr<SharedBuffer>, bool allDataReceived, bool isMultiFrame);
+    ImageFrameGenerator(const SkISize& fullSize, const std::shared_ptr<SharedBuffer> &, bool allDataReceived, bool isMultiFrame);
 
     friend class ImageFrameGeneratorTest;
     friend class DeferredImageDecoderTest;
@@ -107,10 +118,12 @@ private:
 
     SkISize m_fullSize;
 
+#if 0 // BKTODO:
     // ThreadSafeDataTransport is referenced by this class and m_encodedData.
     // In case that ImageFrameGenerator get's deleted before m_encodedData,
     // m_encodedData would hold the reference to it (and underlying data).
     RefPtr<ThreadSafeDataTransport> m_data;
+#endif
 
     bool m_isMultiFrame;
     bool m_decodeFailed;
