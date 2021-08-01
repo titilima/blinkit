@@ -9,10 +9,10 @@
 // Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "module_manager.h"
+#include "./module_manager.h"
 
 #include "bkcommon/buffer_impl.hpp"
-#include "third_party/blink/renderer/bindings/core/duk/duk.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk.h"
 
 namespace BlinKit {
 
