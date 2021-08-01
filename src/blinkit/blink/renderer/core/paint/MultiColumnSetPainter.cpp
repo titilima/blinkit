@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MultiColumnSetPainter.cpp
+// Description: MultiColumnSetPainter Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -83,7 +94,7 @@ void MultiColumnSetPainter::paintColumnRules(const PaintInfo& paintInfo, const L
             LayoutUnit ruleTop = m_layoutMultiColumnSet.isHorizontalWritingMode() ? paintOffset.y() + m_layoutMultiColumnSet.borderTop() + m_layoutMultiColumnSet.paddingTop() : paintOffset.y() + ruleLogicalLeft - ruleThickness / 2 + ruleAdd;
             LayoutUnit ruleBottom = m_layoutMultiColumnSet.isHorizontalWritingMode() ? ruleTop + m_layoutMultiColumnSet.contentHeight() : ruleTop + ruleThickness;
             IntRect pixelSnappedRuleRect = pixelSnappedIntRectFromEdges(ruleLeft, ruleTop, ruleRight, ruleBottom);
-            ObjectPainter::drawLineForBoxSide(paintInfo.context, pixelSnappedRuleRect.x(), pixelSnappedRuleRect.y(), pixelSnappedRuleRect.maxX(), pixelSnappedRuleRect.maxY(), boxSide, ruleColor, ruleStyle, 0, 0, true);
+            ASSERT(false); // BKTODO: ObjectPainter::drawLineForBoxSide(paintInfo.context, pixelSnappedRuleRect.x(), pixelSnappedRuleRect.y(), pixelSnappedRuleRect.maxX(), pixelSnappedRuleRect.maxY(), boxSide, ruleColor, ruleStyle, 0, 0, true);
         }
 
         ruleLogicalLeft = currLogicalLeftOffset;
