@@ -1,11 +1,24 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageBitmap.cpp
+// Description: ImageBitmap Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2013 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "core/frame/ImageBitmap.h"
 
+#if 0 // BKTODO:
 #include "core/html/HTMLCanvasElement.h"
 #include "core/html/HTMLVideoElement.h"
+#endif
 #include "core/html/ImageData.h"
 #include "third_party/skia/include/core/SkSurface.h"
 #include "wtf/RefPtr.h"
@@ -48,9 +61,10 @@ static PassRefPtr<StaticBitmapImage> cropImage(Image* image, const IntRect& crop
 ImageBitmap::ImageBitmap(HTMLImageElement* image, const IntRect& cropRect, Document* document)
 {
     m_image = cropImage(image->cachedImage()->image(), cropRect);
-    m_image->setOriginClean(!image->wouldTaintOrigin(document->securityOrigin()));
+    ASSERT(false); // BKTODO: m_image->setOriginClean(!image->wouldTaintOrigin(document->securityOrigin()));
 }
 
+#if 0 // BKTODO:
 ImageBitmap::ImageBitmap(HTMLVideoElement* video, const IntRect& cropRect, Document* document)
 {
     IntSize playerSize;
@@ -75,6 +89,7 @@ ImageBitmap::ImageBitmap(HTMLCanvasElement* canvas, const IntRect& cropRect)
     m_image = cropImage(canvas->copiedImage(BackBuffer, PreferAcceleration).get(), cropRect);
     m_image->setOriginClean(canvas->originClean());
 }
+#endif
 
 ImageBitmap::ImageBitmap(ImageData* data, const IntRect& cropRect)
 {
@@ -94,7 +109,7 @@ ImageBitmap::ImageBitmap(ImageData* data, const IntRect& cropRect)
         dstPoint.setX(-cropRect.x());
     if (cropRect.y() < 0)
         dstPoint.setY(-cropRect.y());
-    buffer->putByteArray(Unmultiplied, data->data()->data(), data->size(), srcRect, dstPoint);
+    ASSERT(false); // BKTODO: buffer->putByteArray(Unmultiplied, data->data()->data(), data->size(), srcRect, dstPoint);
     m_image = StaticBitmapImage::create(buffer->newSkImageSnapshot(PreferNoAcceleration));
 }
 
@@ -132,6 +147,7 @@ PassRefPtrWillBeRawPtr<ImageBitmap> ImageBitmap::create(HTMLImageElement* image,
     return adoptRefWillBeNoop(new ImageBitmap(image, normalizedCropRect, document));
 }
 
+#if 0 // BKTODO:
 PassRefPtrWillBeRawPtr<ImageBitmap> ImageBitmap::create(HTMLVideoElement* video, const IntRect& cropRect, Document* document)
 {
     IntRect normalizedCropRect = normalizeRect(cropRect);
@@ -143,6 +159,7 @@ PassRefPtrWillBeRawPtr<ImageBitmap> ImageBitmap::create(HTMLCanvasElement* canva
     IntRect normalizedCropRect = normalizeRect(cropRect);
     return adoptRefWillBeNoop(new ImageBitmap(canvas, normalizedCropRect));
 }
+#endif
 
 PassRefPtrWillBeRawPtr<ImageBitmap> ImageBitmap::create(ImageData* data, const IntRect& cropRect)
 {
@@ -191,6 +208,7 @@ IntSize ImageBitmap::size() const
     return IntSize(m_image->width(), m_image->height());
 }
 
+#if 0 // BKTODO:
 ScriptPromise ImageBitmap::createImageBitmap(ScriptState* scriptState, EventTarget& eventTarget, int sx, int sy, int sw, int sh, ExceptionState& exceptionState)
 {
     if (!sw || !sh) {
@@ -199,11 +217,13 @@ ScriptPromise ImageBitmap::createImageBitmap(ScriptState* scriptState, EventTarg
     }
     return ImageBitmapSource::fulfillImageBitmap(scriptState, create(this, IntRect(sx, sy, sw, sh)));
 }
+#endif
 
 void ImageBitmap::notifyImageSourceChanged()
 {
 }
 
+#if 0 // BKTODO:
 PassRefPtr<Image> ImageBitmap::getSourceImageForCanvas(SourceImageStatus* status, AccelerationHint) const
 {
     *status = NormalSourceImageStatus;
@@ -218,6 +238,7 @@ FloatSize ImageBitmap::elementSize() const
 {
     return FloatSize(width(), height());
 }
+#endif
 
 DEFINE_TRACE(ImageBitmap)
 {
