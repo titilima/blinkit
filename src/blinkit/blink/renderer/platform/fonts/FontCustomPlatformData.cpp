@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontCustomPlatformData.cpp
+// Description: FontCustomPlatformData Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Apple Computer, Inc.
  * Copyright (c) 2007, 2008, 2009, Google Inc. All rights reserved.
@@ -36,7 +47,7 @@
 #include "platform/SharedBuffer.h"
 #include "platform/fonts/FontCache.h"
 #include "platform/fonts/FontPlatformData.h"
-#include "platform/fonts/opentype/OpenTypeSanitizer.h"
+// BKTODO: #include "platform/fonts/opentype/OpenTypeSanitizer.h"
 #include "third_party/skia/include/core/SkStream.h"
 #include "third_party/skia/include/core/SkTypeface.h"
 #include "wtf/PassOwnPtr.h"
@@ -88,6 +99,9 @@ PassOwnPtr<FontCustomPlatformData> FontCustomPlatformData::create(SharedBuffer* 
 {
     ASSERT_ARG(buffer, buffer);
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     OpenTypeSanitizer sanitizer(buffer);
     RefPtr<SharedBuffer> transcodeBuffer = sanitizer.sanitize();
 
@@ -107,11 +121,13 @@ PassOwnPtr<FontCustomPlatformData> FontCustomPlatformData::create(SharedBuffer* 
         return nullptr;
 
     return adoptPtr(new FontCustomPlatformData(typeface.release()));
+#endif
 }
 
 bool FontCustomPlatformData::supportsFormat(const String& format)
 {
-    return equalIgnoringCase(format, "truetype") || equalIgnoringCase(format, "opentype") || OpenTypeSanitizer::supportsFormat(format);
+    ASSERT(false); // BKTODO: return equalIgnoringCase(format, "truetype") || equalIgnoringCase(format, "opentype") || OpenTypeSanitizer::supportsFormat(format);
+    return false;
 }
 
 } // namespace blink
