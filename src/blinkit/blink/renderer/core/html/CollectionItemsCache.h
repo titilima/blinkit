@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CollectionItemsCache.h
+// Description: CollectionItemsCache Class
+//      Author: Ziming Li
+//     Created: 2021-07-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012,2013 Google Inc. All rights reserved.
  * Copyright (C) 2014 Apple Inc. All rights reserved.
@@ -34,7 +45,6 @@
 
 #include "core/html/CollectionIndexCache.h"
 #include "wtf/Vector.h"
-#include <v8.h>
 
 namespace blink {
 
@@ -62,7 +72,7 @@ private:
     ptrdiff_t allocationSize() const { return m_cachedList.capacity() * sizeof(NodeType*); }
     static void reportExtraMemoryCostForCollectionItemsCache(ptrdiff_t diff)
     {
-        v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(diff);
+        ASSERT(false); // BKTODO: v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(diff);
     }
 
     bool m_listValid;

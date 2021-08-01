@@ -18,16 +18,16 @@
 #include "bk_crawler.h"
 #include "bk_http.h"
 #include "bkcommon/controller_impl.h"
+#include "blinkit/blink/renderer/platform/network/ResourceRequest.h"
+#include "blinkit/blink/renderer/wtf/text/AtomicString.h"
 #include "blinkit/loader/loader_task.h"
-#include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
-#include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace BlinKit {
 
 class HTTPLoaderTask final : public LoaderTask, public ControllerImpl
 {
 public:
-    HTTPLoaderTask(const blink::ResourceRequest &request, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
+    HTTPLoaderTask(const blink::ResourceRequest &request, const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
     ~HTTPLoaderTask(void) override;
 private:
     bool CreateRequest(const std::string &URL);
@@ -47,7 +47,7 @@ private:
     static bool_t BKAPI RequestRedirectImpl(BkResponse response, BkRequest request, void *userData);
 
     // LoaderTask
-    const GURL& URI(void) const override { return m_resourceRequest.Url(); }
+    const zed::url& URI(void) const override { return m_resourceRequest.url(); }
     int PreProcess(void) override;
     int PerformRequest(void) override;
     int PopulateResponse(blink::ResourceResponse &resourceResponse, std::string_view &body) const override;

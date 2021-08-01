@@ -29,7 +29,7 @@ using namespace blink;
 
 namespace BlinKit {
 
-HTTPLoaderTask::HTTPLoaderTask(const ResourceRequest &request, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, WebURLLoaderClient *client)
+HTTPLoaderTask::HTTPLoaderTask(const ResourceRequest &request, const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client)
     : LoaderTask(taskRunner, client)
     , m_resourceRequest(request)
 {

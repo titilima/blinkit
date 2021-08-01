@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FrameLoaderClient.h
+// Description: FrameLoaderClient Class
+//      Author: Ziming Li
+//     Created: 2021-07-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights reserved.
  * Copyright (C) 2012 Google Inc. All rights reserved.
@@ -35,14 +46,21 @@
 #include "core/dom/IconURL.h"
 #include "core/fetch/ResourceLoaderOptions.h"
 #include "core/frame/FrameClient.h"
+#if 0 // BKTODO:
 #include "core/loader/FrameLoaderTypes.h"
 #include "core/loader/NavigationPolicy.h"
+#endif
 #include "platform/heap/Handle.h"
+#if 0 // BKTODO:
 #include "platform/network/ResourceLoadPriority.h"
 #include "platform/weborigin/Referrer.h"
+#endif
 #include "wtf/Forward.h"
 #include "wtf/Vector.h"
-#include <v8.h>
+
+namespace BlinKit {
+class ClientCaller;
+}
 
 namespace blink {
 
@@ -78,6 +96,7 @@ class CORE_EXPORT FrameLoaderClient : public FrameClient {
 public:
     ~FrameLoaderClient() override {}
 
+#if 0 // BKTODO:
     virtual bool hasWebView() const = 0; // mainly for assertions
 
     virtual void dispatchWillSendRequest(DocumentLoader*, unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse) = 0;
@@ -90,15 +109,19 @@ public:
     virtual void dispatchDidNavigateWithinPage(HistoryItem*, HistoryCommitType) { }
     virtual void dispatchWillClose() = 0;
     virtual void dispatchDidStartProvisionalLoad(double triggeringEventTime) = 0;
+#endif
     virtual void dispatchDidReceiveTitle(const String&) = 0;
+#if 0 // BKTODO:
     virtual void dispatchDidChangeIcons(IconType) = 0;
     virtual void dispatchDidCommitLoad(HistoryItem*, HistoryCommitType) = 0;
     virtual void dispatchDidFailProvisionalLoad(const ResourceError&, HistoryCommitType) = 0;
     virtual void dispatchDidFailLoad(const ResourceError&, HistoryCommitType) = 0;
     virtual void dispatchDidFinishDocumentLoad(bool documentIsEmpty) = 0;
     virtual void dispatchDidFinishLoad() = 0;
+#endif
     virtual void dispatchDidChangeThemeColor() = 0;
 
+#if 0 // BKTODO:
     virtual NavigationPolicy decidePolicyForNavigation(const ResourceRequest&, DocumentLoader*, NavigationType, NavigationPolicy, bool shouldReplaceCurrentEntry) = 0;
     virtual bool hasPendingNavigation() = 0;
 
@@ -144,9 +167,11 @@ public:
     virtual void selectorMatchChanged(const Vector<String>& addedSelectors, const Vector<String>& removedSelectors) = 0;
 
     virtual PassRefPtrWillBeRawPtr<DocumentLoader> createDocumentLoader(LocalFrame*, const ResourceRequest&, const SubstituteData&) = 0;
+#endif
 
     virtual String userAgent() = 0;
 
+#if 0 // BKTODO:
     virtual String doNotTrackValue() = 0;
 
     virtual void transitionToCommittedForNewPage() = 0;
@@ -250,6 +275,7 @@ public:
         UnloadHandler,
     };
     virtual void suddenTerminationDisablerChanged(bool present, SuddenTerminationDisablerType) { }
+#endif
 
 };
 

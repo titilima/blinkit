@@ -18,13 +18,20 @@ namespace blink {
 class SharedBuffer : public std::enable_shared_from_this<SharedBuffer>
 {
 public:
+    static std::shared_ptr<SharedBuffer> create(void);
     static std::shared_ptr<SharedBuffer> create(const char *data, size_t length);
+    static std::shared_ptr<SharedBuffer> create(const unsigned char* data, size_t length);
+    static std::shared_ptr<SharedBuffer> adoptVector(std::vector<char> &v);
 
     const char* data(void) const { return m_data.empty() ? nullptr : m_data.data(); }
     size_t size(void) const { return m_data.size(); }
+    bool isEmpty(void) const { return m_data.empty(); }
+
+    size_t getSomeData(const char *&data, size_t position) const;
 
     void append(const char *data, size_t length);
 private:
+    SharedBuffer(void) = default;
     SharedBuffer(const char *data, size_t length);
 
     std::vector<char> m_data;

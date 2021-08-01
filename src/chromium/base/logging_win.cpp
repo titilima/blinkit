@@ -13,7 +13,6 @@
 
 #include <Windows.h>
 #include "base/strings/stringprintf.h"
-#include "base/strings/sys_string_conversions.h"
 
 namespace BlinKit {
 
@@ -24,9 +23,12 @@ void BkLog(const char *format, ...)
     std::string s = base::StringPrintV(format, args);
     va_end(args);
 
+    ASSERT(false); // BKTODO:
+#if 0
     std::wstring log = base::SysUTF8ToWide(s);
     log.append(L"\r\n");
     OutputDebugStringW(log.c_str());
+#endif
 }
 
 } // namespace BlinKit

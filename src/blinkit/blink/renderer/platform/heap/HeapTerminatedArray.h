@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HeapTerminatedArray.h
+// Description: HeapTerminatedArray Class
+//      Author: Ziming Li
+//     Created: 2021-07-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -33,12 +44,14 @@ private:
 
         static PassPtr create(size_t capacity)
         {
-            return reinterpret_cast<HeapTerminatedArray*>(Heap::allocate<HeapTerminatedArray>(capacity * sizeof(T), IsEagerlyFinalizedType<T>::value));
+            ASSERT(false); // BKTODO: return reinterpret_cast<HeapTerminatedArray*>(Heap::allocate<HeapTerminatedArray>(capacity * sizeof(T), IsEagerlyFinalizedType<T>::value));
+            return nullptr;
         }
 
         static PassPtr resize(PassPtr ptr, size_t capacity)
         {
-            return reinterpret_cast<HeapTerminatedArray*>(Heap::reallocate<HeapTerminatedArray>(ptr, capacity * sizeof(T)));
+            ASSERT(false); // BKTODO: return reinterpret_cast<HeapTerminatedArray*>(Heap::reallocate<HeapTerminatedArray>(ptr, capacity * sizeof(T)));
+            return nullptr;
         }
     };
 
@@ -49,11 +62,13 @@ private:
     template<typename U, template <typename> class> friend class WTF::TerminatedArrayBuilder;
 };
 
+#if 0 // BKTODO:
 template<typename T>
 class TraceEagerlyTrait<HeapTerminatedArray<T>> {
 public:
     static const bool value = TraceEagerlyTrait<T>::value;
 };
+#endif
 
 } // namespace blink
 

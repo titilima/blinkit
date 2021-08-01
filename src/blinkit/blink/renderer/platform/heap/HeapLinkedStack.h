@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HeapLinkedStack.h
+// Description: HeapLinkedStack Class
+//      Author: Ziming Li
+//     Created: 2021-07-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All rights reserved.
  *
@@ -110,11 +121,13 @@ inline size_t HeapLinkedStack<T>::size()
     return m_size;
 }
 
+#if 0 // BKTODO:
 template<typename T>
 class TraceEagerlyTrait<HeapLinkedStack<T>> {
 public:
     static const bool value = TraceEagerlyTrait<T>::value;
 };
+#endif
 
 } // namespace blink
 

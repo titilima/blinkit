@@ -125,7 +125,7 @@ public:
 
     virtual void destroyDecodedData(bool destroyAll) = 0;
 
-    SharedBuffer* data() { return m_encodedImageData.get(); }
+    std::shared_ptr<SharedBuffer> data() { return m_encodedImageData; }
 
     // Animation begins whenever someone draws the image, so startAnimation() is not normally called.
     // It will automatically pause once all observers no longer want to render the image anywhere.

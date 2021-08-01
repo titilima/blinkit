@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: GIFImageReader.h
+// Description: GIFImageReader Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -299,7 +310,7 @@ public:
     {
     }
 
-    void setData(PassRefPtr<blink::SharedBuffer> data) { m_data = data; }
+    void setData(const std::shared_ptr<blink::SharedBuffer> &data) { m_data = data; }
     bool parse(blink::GIFImageDecoder::GIFParseQuery);
     bool decode(size_t frameIndex);
 
@@ -356,7 +367,7 @@ private:
 
     Vector<OwnPtr<GIFFrameContext>> m_frames;
 
-    RefPtr<blink::SharedBuffer> m_data;
+    std::shared_ptr<blink::SharedBuffer> m_data;
     bool m_parseCompleted;
 };
 

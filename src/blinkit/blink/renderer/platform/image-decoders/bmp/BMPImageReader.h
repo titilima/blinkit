@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BMPImageReader.h
+// Description: BMPImageReader Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, 2009, Google Inc. All rights reserved.
  *
@@ -65,7 +76,7 @@ public:
     BMPImageReader(ImageDecoder* parent, size_t decodedAndHeaderOffset, size_t imgDataOffset, bool isInICO);
 
     void setBuffer(ImageFrame* buffer) { m_buffer = buffer; }
-    void setData(SharedBuffer* data)
+    void setData(const std::shared_ptr<SharedBuffer> &data)
     {
         m_data = data;
         m_fastReader.setData(data);
@@ -290,7 +301,7 @@ private:
     ImageFrame* m_buffer;
 
     // The file to decode.
-    RefPtr<SharedBuffer> m_data;
+    std::shared_ptr<SharedBuffer> m_data;
     FastSharedBufferReader m_fastReader;
 
     // An index into |m_data| representing how much we've already decoded.

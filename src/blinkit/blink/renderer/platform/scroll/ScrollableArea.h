@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollableArea.h
+// Description: ScrollableArea Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2011 Apple Inc. All Rights Reserved.
  *
@@ -150,7 +161,7 @@ public:
     virtual bool isScrollCornerVisible() const = 0;
     virtual IntRect scrollCornerRect() const = 0;
     void setScrollCornerNeedsPaintInvalidation();
-    virtual void getTickmarks(Vector<IntRect>&) const { }
+    virtual void getTickmarks(std::vector<IntRect>&) const { }
 
     // Convert points and rects between the scrollbar and its containing Widget.
     // The client needs to implement these in order to be aware of layout effects

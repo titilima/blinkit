@@ -15,8 +15,8 @@
 #pragma once
 
 #include <queue>
-#include "bkcommon/bk_mutex.hpp"
-#include "bkcommon/bk_signal.hpp"
+#include "third_party/zed/include/zed/mutex.hpp"
+#include "third_party/zed/include/zed/threading/signal.hpp"
 
 namespace BlinKit {
 
@@ -39,8 +39,8 @@ protected:
     void Exit(void) { AddTask(nullptr); }
     void Run(void);
 private:
-    BkMutex m_mutex;
-    BkSignal m_signal;
+    zed::mutex m_mutex;
+    zed::signal m_signal;
     std::queue<LoaderTask *> m_tasks;
 };
 

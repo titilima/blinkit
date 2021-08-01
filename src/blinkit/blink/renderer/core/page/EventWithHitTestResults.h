@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EventWithHitTestResults.h
+// Description: EventWithHitTestResults Class
+//      Author: Ziming Li
+//     Created: 2021-07-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
    Copyright (C) 2000 Simon Hausmann <hausmann@kde.org>
    Copyright (C) 2006 Apple Computer, Inc.
@@ -23,7 +34,7 @@
 
 #include "core/layout/HitTestResult.h"
 #include "platform/PlatformEvent.h"
-#include "platform/PlatformGestureEvent.h"
+// BKTODO: #include "platform/PlatformGestureEvent.h"
 #include "platform/PlatformMouseEvent.h"
 
 namespace blink {

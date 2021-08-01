@@ -27,6 +27,7 @@
 #define KURLHash_h
 
 #include "platform/weborigin/KURL.h"
+#if 0 // BKTODO:
 #include "wtf/Allocator.h"
 #include "wtf/text/StringHash.h"
 #include "wtf/text/WTFString.h"
@@ -59,5 +60,6 @@ namespace WTF {
 template<> struct HashTraits<blink::KURL> : SimpleClassHashTraits<blink::KURL> { };
 
 } // namespace WTF
+#endif
 
 #endif // KURLHash_h

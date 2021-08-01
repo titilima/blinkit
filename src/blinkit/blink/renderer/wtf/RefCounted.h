@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RefCounted.h
+// Description: RefCounted Class
+//      Author: Ziming Li
+//     Created: 2021-06-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -23,7 +34,7 @@
 
 #include "wtf/Allocator.h"
 #include "wtf/Assertions.h"
-#include "wtf/InstanceCounter.h"
+// BKTODO: #include "wtf/InstanceCounter.h"
 #include "wtf/Noncopyable.h"
 #include "wtf/WTFExport.h"
 

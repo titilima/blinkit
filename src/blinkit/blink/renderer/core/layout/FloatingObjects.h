@@ -147,6 +147,10 @@ class FloatingObjectSet final : std::list<std::unique_ptr<FloatingObject>>
 public:
     using const_iterator = std::list<std::unique_ptr<FloatingObject>>::const_iterator;
 
+    using std::list<std::unique_ptr<FloatingObject>>::begin;
+    using std::list<std::unique_ptr<FloatingObject>>::end;
+    using std::list<std::unique_ptr<FloatingObject>>::size;
+
     bool isEmpty(void) const { return this->empty(); }
     std::unique_ptr<FloatingObject>& last(void) { return this->back(); }
     const std::unique_ptr<FloatingObject>& last(void) const { return this->back(); }

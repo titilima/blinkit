@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLParserThread.h
+// Description: HTMLParserThread Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc.  All rights reserved.
  *
@@ -32,11 +43,12 @@
 #define HTMLParserThread_h
 
 #include "core/CoreExport.h"
-#include "platform/WebThreadSupportingGC.h"
+// BKTODO: #include "platform/WebThreadSupportingGC.h"
 #include "wtf/Allocator.h"
 #include "wtf/Functional.h"
 #include "wtf/OwnPtr.h"
 #include "wtf/PassOwnPtr.h"
+#include "blinkit/blink/public/platform/WebThread.h"
 
 namespace blink {
 
@@ -59,7 +71,7 @@ private:
     void setupHTMLParserThread();
     void cleanupHTMLParserThread();
 
-    OwnPtr<WebThreadSupportingGC> m_thread;
+    // BKTODO: OwnPtr<WebThreadSupportingGC> m_thread;
 };
 
 } // namespace blink

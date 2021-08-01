@@ -179,7 +179,7 @@ public:
 
 protected:
     SupplementableTracing() { }
-    typedef HeapHashMap<const char*, Member<SupplementBase<T, true>>, PtrHash<const char*>> SupplementMap;
+    using SupplementMap = std::unordered_map<const char *, Member<SupplementBase<T, true>>>;
     SupplementMap m_supplements;
 };
 
@@ -199,20 +199,21 @@ public:
     void provideSupplement(const char* key, typename SupplementableTraits<T, isGarbageCollected>::SupplementArgumentType supplement)
     {
         ASSERT(m_threadId == currentThread());
-        ASSERT(!this->m_supplements.get(key));
-        this->m_supplements.set(key, supplement);
+        ASSERT(!zed::key_exists(this->m_supplements, key));
+        this->m_supplements.emplace(key, supplement);
     }
 
     void removeSupplement(const char* key)
     {
         ASSERT(m_threadId == currentThread());
-        this->m_supplements.remove(key);
+        this->m_supplements.erase(key);
     }
 
     SupplementBase<T, isGarbageCollected>* requireSupplement(const char* key)
     {
         ASSERT(m_threadId == currentThread());
-        return this->m_supplements.get(key);
+        auto it = this->m_supplements.find(key);
+        return this->m_supplements.end() != it ? it->second : nullptr;
     }
 
     void reattachThread()

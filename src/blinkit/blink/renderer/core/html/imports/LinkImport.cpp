@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LinkImport.cpp
+// Description: LinkImport Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -92,7 +103,7 @@ void LinkImport::process()
     HTMLImportsController* controller = m_owner->document().importsController();
     HTMLImportLoader* loader = m_owner->document().importLoader();
     HTMLImport* parent = loader ? static_cast<HTMLImport*>(loader->firstImport()) : static_cast<HTMLImport*>(controller->root());
-    m_child = controller->load(parent, this, builder.build(true));
+    ASSERT(false); // BKTODO: m_child = controller->load(parent, this, builder.build(true));
     if (!m_child) {
         didFinish();
         return;

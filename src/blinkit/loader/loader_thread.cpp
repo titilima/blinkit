@@ -11,35 +11,35 @@
 
 #include "loader_thread.h"
 
-#include <mutex>
-#include "blinkit/blink_impl/thread_impl.h"
+#include "blinkit/blink/impl/thread.h"
+#include "blinkit/blink/renderer/wtf/MainThread.h"
 #include "blinkit/loader/loader_task.h"
-#include "third_party/blink/renderer/platform/wtf/wtf.h"
+
+using namespace blink;
 
 namespace BlinKit {
 
 void LoaderThread::AddTask(LoaderTask *task)
 {
-    ASSERT(IsMainThread());
-    {
-        std::unique_lock<BkMutex> lock(m_mutex);
+    ASSERT(isMainThread());
+    if (auto _ = m_mutex.guard())
         m_tasks.push(task);
-    }
-    m_signal.Signal();
+    m_signal.notify();
 }
 
 void LoaderThread::Run(void)
 {
-    ASSERT(!IsMainThread());
+    ASSERT(!isMainThread());
 #ifndef NDEBUG
-    ThreadImpl::SetName("Loader Thread");
+    Thread::SetName("Loader Thread");
 #endif
     for (;;)
     {
         LoaderTask *task = nullptr;
-        m_signal.Wait();
+        m_signal.wait();
+
+        if (auto _ = m_mutex.guard())
         {
-            std::unique_lock<BkMutex> lock(m_mutex);
             task = m_tasks.front();
             m_tasks.pop();
         }

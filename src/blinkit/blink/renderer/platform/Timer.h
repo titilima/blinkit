@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Timer.h
+// Description: Timer Classes
+//      Author: Ziming Li
+//     Created: 2021-07-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -137,6 +148,7 @@ private:
     friend class TimerHeapReference;
 };
 
+#if 0 // BKTODO:
 template<typename T, bool = IsGarbageCollectedType<T>::value>
 class TimerIsObjectAliveTrait {
 public:
@@ -151,6 +163,7 @@ public:
         return !Heap::willObjectBeLazilySwept(objectPointer);
     }
 };
+#endif
 
 template <typename TimerFiredClass>
 class Timer : public TimerBase {
@@ -176,7 +189,8 @@ protected:
         // Oilpan: if a timer fires while Oilpan heaps are being lazily
         // swept, it is not safe to proceed if the object is about to
         // be swept (and this timer will be stopped while doing so.)
-        return TimerIsObjectAliveTrait<TimerFiredClass>::isHeapObjectAlive(m_object);
+        ASSERT(false); // BKTODO: return TimerIsObjectAliveTrait<TimerFiredClass>::isHeapObjectAlive(m_object);
+        return false;
     }
 
     Timer(TimerFiredClass* o, TimerFiredFunction f, WebTaskRunner* webTaskRunner)

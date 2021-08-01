@@ -55,7 +55,7 @@
 // Use like:
 //   int x = ...;
 //   ALLOW_UNUSED_LOCAL(x);
-#define ALLOW_UNUSED_LOCAL(x) (void)x
+// BKTODO: #define ALLOW_UNUSED_LOCAL(x) (void)x
 
 // Annotate a typedef or function indicating it's ok if it's not used.
 // Use like:

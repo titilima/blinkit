@@ -15,8 +15,8 @@
 #pragma once
 
 #include <unordered_map>
-#include "bkcommon/bk_mutex.hpp"
 #include "blinkit/app/caller.h"
+#include "third_party/zed/include/zed/mutex.hpp"
 
 namespace BlinKit {
 
@@ -53,7 +53,7 @@ private:
     static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
     ATOM m_atom;
-    BkMutex m_lock;
+    zed::mutex m_lock;
 
     class ClientCallerImpl;
     std::unordered_map<DWORD, ClientCallerImpl *> m_callerMap;

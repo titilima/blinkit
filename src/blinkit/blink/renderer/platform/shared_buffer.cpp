@@ -21,6 +21,14 @@ SharedBuffer::SharedBuffer(const char *data, size_t length)
         append(data, length);
 }
 
+std::shared_ptr<SharedBuffer> SharedBuffer::adoptVector(std::vector<char> &v)
+{
+    auto ret = create();
+    if (ret)
+        ret->m_data.swap(v);
+    return ret;
+}
+
 void SharedBuffer::append(const char *data, size_t length)
 {
     ASSERT(length > 0);
@@ -30,9 +38,19 @@ void SharedBuffer::append(const char *data, size_t length)
     memcpy(m_data.data() + oldLength, data, length);
 }
 
+std::shared_ptr<SharedBuffer> SharedBuffer::create(void)
+{
+    return zed::wrap_shared(new SharedBuffer);
+}
+
 std::shared_ptr<SharedBuffer> SharedBuffer::create(const char *data, size_t length)
 {
     return zed::wrap_shared(new SharedBuffer(data, length));
+}
+
+std::shared_ptr<SharedBuffer> SharedBuffer::create(const unsigned char* data, size_t length)
+{
+    return zed::wrap_shared(new SharedBuffer(reinterpret_cast<const char *>(data), length));
 }
 
 } // namespace blink

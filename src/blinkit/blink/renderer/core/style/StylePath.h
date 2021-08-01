@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: StylePath.H
+//   File Name: StylePath.h
 // Description: StylePath Class
 //      Author: Ziming Li
 //     Created: 2021-07-27

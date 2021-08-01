@@ -16,18 +16,15 @@
 
 #include <string_view>
 #include "bk_def.h"
-#include "url/gurl.h"
-#ifndef BLINKIT_CRAWLER_ONLY
-#   include "blinkit/ui/rendering_scheduler.h"
+#include "third_party/zed/include/zed/net/url.hpp"
+#if 0 // BKTODO: ndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 #endif
 
-namespace base {
-class SingleThreadTaskRunner;
-}
 namespace blink {
 class ResourceRequest;
 class ResourceResponse;
+class WebTaskRunner;
 class WebURLLoaderClient;
 }
 
@@ -40,34 +37,33 @@ public:
 
     void Run(void);
 
-    virtual const GURL& URI(void) const = 0;
+    virtual const zed::url& URI(void) const = 0;
     virtual int PreProcess(void) { return BK_ERR_SUCCESS; }
 
-    static void ReportError(blink::WebURLLoaderClient *client, base::SingleThreadTaskRunner *taskRunner, int errorCode, const GURL &URL);
-
+    static void ReportError(blink::WebURLLoaderClient *client, blink::WebTaskRunner *taskRunner, int errorCode, const zed::url &URL);
 protected:
-    LoaderTask(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
+    LoaderTask(const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
 
-    std::shared_ptr<base::SingleThreadTaskRunner> m_taskRunner;
+    const std::shared_ptr<blink::WebTaskRunner> m_taskRunner;
     blink::WebURLLoaderClient *m_client;
 private:
     virtual int PerformRequest(void) = 0;
     virtual int PopulateResponse(blink::ResourceResponse &resourceResponse, std::string_view &body) const = 0;
 };
 
-#ifndef BLINKIT_CRAWLER_ONLY
+#ifdef BLINKIT_UI_ENABLED
 class LoaderTaskForUI : public LoaderTask
 {
 public:
-    const GURL& URI(void) const final { return m_URI; }
+    const zed::url& URI(void) const final { return m_URI; }
 protected:
-    LoaderTaskForUI(const blink::ResourceRequest &request, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
+    LoaderTaskForUI(const blink::ResourceRequest &request, const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
 
     AtomicString MIMEType(void) const;
 
-    const GURL m_URI;
+    const zed::url m_URI;
     std::string m_data;
-    ScopedRenderingScheduler m_scheduler;
+    // BKTODO: ScopedRenderingScheduler m_scheduler;
 };
 #endif
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BreakingContextInlineHeaders.h
+// Description: BreakingContext Class
+//      Author: Ziming Li
+//     Created: 2021-07-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All right reserved.
@@ -27,8 +38,10 @@
 #include "core/layout/TextRunConstructor.h"
 #include "core/layout/api/LineLayoutBox.h"
 #include "core/layout/api/LineLayoutListMarker.h"
+#if 0 // BKTODO:
 #include "core/layout/api/LineLayoutRubyRun.h"
 #include "core/layout/api/LineLayoutSVGInlineText.h"
+#endif
 #include "core/layout/api/LineLayoutText.h"
 #include "core/layout/api/LineLayoutTextCombine.h"
 #include "core/layout/line/InlineIterator.h"
@@ -39,7 +52,7 @@
 #include "core/layout/line/LineWidth.h"
 #include "core/layout/line/TrailingObjects.h"
 #include "core/layout/line/WordMeasurement.h"
-#include "core/layout/svg/LayoutSVGInlineText.h"
+// BKTODO: #include "core/layout/svg/LayoutSVGInlineText.h"
 #include "core/paint/PaintLayer.h"
 #include "platform/text/TextBreakIterator.h"
 #include "wtf/Allocator.h"
@@ -471,6 +484,8 @@ inline void BreakingContext::handleReplaced()
     if (m_atStart)
         m_width.updateAvailableWidth(replacedBox.logicalHeight());
 
+    ASSERT(false); // BKTODO:
+#if 0
     // Break on replaced elements if either has normal white-space,
     // or if the replaced element is ruby that can break before.
     if ((m_autoWrap || ComputedStyle::autoWrap(m_lastWS)) && (!m_current.object().isImage() || m_allowImagesToBreak)
@@ -478,6 +493,7 @@ inline void BreakingContext::handleReplaced()
         m_width.commit();
         m_lineBreak.moveToStartOf(m_current.object());
     }
+#endif
 
     if (m_ignoringSpaces)
         m_lineMidpointState.stopIgnoringSpaces(InlineIterator(0, m_current.object(), 0));
@@ -502,8 +518,11 @@ inline void BreakingContext::handleReplaced()
     } else {
         m_width.addUncommittedWidth(replacedLogicalWidth.toFloat());
     }
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_current.object().isRubyRun())
         m_width.applyOverhang(LineLayoutRubyRun(m_current.object()), m_lastObject, m_nextObject);
+#endif
     // Update prior line break context characters, using U+FFFD (OBJECT REPLACEMENT CHARACTER) for replaced element.
     m_layoutTextInfo.m_lineBreakIterator.updatePriorContext(replacementCharacter);
 }
@@ -792,11 +811,14 @@ inline bool BreakingContext::handleText(WordMeasurements& wordMeasurements, bool
 
 inline void BreakingContext::prepareForNextCharacter(const LineLayoutText& layoutText, bool& prohibitBreakInside, bool previousCharacterIsSpace)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (layoutText.isSVGInlineText() && m_current.offset()) {
         // Force creation of new InlineBoxes for each absolute positioned character (those that start new text chunks).
         if (LineLayoutSVGInlineText(layoutText).characterStartsNewTextChunk(m_current.offset()))
             m_lineMidpointState.ensureCharacterGetsLineBox(m_current);
     }
+#endif
     if (prohibitBreakInside) {
         m_current.setNextBreakablePosition(layoutText.textLength());
         prohibitBreakInside = false;

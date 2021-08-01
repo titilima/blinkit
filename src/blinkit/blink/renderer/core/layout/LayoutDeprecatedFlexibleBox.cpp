@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutDeprecatedFlexibleBox.cpp
+// Description: LayoutDeprecatedFlexibleBox Class
+//      Author: Ziming Li
+//     Created: 2021-07-30
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * This file is part of the layout object implementation for KHTML.
  *
@@ -125,6 +136,7 @@ LayoutDeprecatedFlexibleBox::LayoutDeprecatedFlexibleBox(Element& element)
 {
     ASSERT(!childrenInline());
     m_stretchingChildren = false;
+#if 0 // BKTODO:
     if (!isAnonymous()) {
         const KURL& url = document().url();
         if (url.protocolIs("chrome"))
@@ -134,6 +146,7 @@ LayoutDeprecatedFlexibleBox::LayoutDeprecatedFlexibleBox(Element& element)
         else
             UseCounter::count(document(), UseCounter::DeprecatedFlexboxWebContent);
     }
+#endif
 }
 
 LayoutDeprecatedFlexibleBox::~LayoutDeprecatedFlexibleBox()
