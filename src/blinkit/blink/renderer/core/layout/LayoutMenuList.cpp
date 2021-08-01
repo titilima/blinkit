@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutMenuList.cpp
+// Description: LayoutMenuList Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * This file is part of the select element layoutObject in WebCore.
  *
@@ -27,7 +38,7 @@
 #include "core/HTMLNames.h"
 #include "core/css/CSSFontSelector.h"
 #include "core/css/resolver/StyleResolver.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/NodeComputedStyle.h"
 #include "core/html/HTMLOptGroupElement.h"
 #include "core/html/HTMLOptionElement.h"
@@ -133,8 +144,10 @@ void LayoutMenuList::addChild(LayoutObject* newChild, LayoutObject* beforeChild)
     m_innerBlock->addChild(newChild, beforeChild);
     ASSERT(m_innerBlock == firstChild());
 
+#if 0 // BKTODO:
     if (AXObjectCache* cache = document().existingAXObjectCache())
         cache->childrenChanged(this);
+#endif
 }
 
 void LayoutMenuList::removeChild(LayoutObject* oldChild)
@@ -320,6 +333,7 @@ void LayoutMenuList::didSetSelectedIndex(int listIndex)
 
 void LayoutMenuList::didUpdateActiveOption(int optionIndex)
 {
+#if 0 // BKTODO:
     if (!document().existingAXObjectCache())
         return;
 
@@ -340,6 +354,7 @@ void LayoutMenuList::didUpdateActiveOption(int optionIndex)
     }
 
     document().existingAXObjectCache()->handleUpdateActiveMenuOption(this, optionIndex);
+#endif
 }
 
 LayoutUnit LayoutMenuList::clientPaddingLeft() const
