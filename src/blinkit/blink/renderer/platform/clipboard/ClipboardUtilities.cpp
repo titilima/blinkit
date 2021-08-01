@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ClipboardUtilities.cpp
+// Description: Clipboard Utilities
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, 2009, Google Inc. All rights reserved.
  *
@@ -57,9 +68,12 @@ String convertURIListToURL(const String& uriList)
             continue;
         if (line[0] == '#')
             continue;
+        ASSERT(false); // BKTODO:
+#if 0
         KURL url = KURL(ParsedURLString, line);
         if (url.isValid())
             return url;
+#endif
     }
     return String();
 }
