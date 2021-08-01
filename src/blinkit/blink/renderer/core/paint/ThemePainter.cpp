@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ThemePainter.cpp
+// Description: ThemePainter Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * This file is part of the theme implementation for form controls in WebCore.
  *
@@ -32,13 +43,12 @@
 #include "core/layout/LayoutMeter.h"
 #include "core/layout/LayoutTheme.h"
 #include "core/layout/LayoutView.h"
-#include "core/paint/MediaControlsPainter.h"
+// BKTODO: #include "core/paint/MediaControlsPainter.h"
 #include "core/paint/PaintInfo.h"
 #include "core/style/ComputedStyle.h"
 #include "platform/graphics/GraphicsContextStateSaver.h"
 #include "public/platform/Platform.h"
 #include "public/platform/WebFallbackThemeEngine.h"
-#include "public/platform/WebRect.h"
 
 #if USE(NEW_THEME)
 #include "platform/Theme.h"
@@ -114,25 +124,34 @@ bool ThemePainter::paint(const LayoutObject& o, const PaintInfo& paintInfo, cons
         return paintSliderThumb(o, paintInfo, r);
     case MediaEnterFullscreenButtonPart:
     case MediaExitFullscreenButtonPart:
-        return MediaControlsPainter::paintMediaFullscreenButton(o, paintInfo, r);
+        ASSERT(false); // BKTODO: return MediaControlsPainter::paintMediaFullscreenButton(o, paintInfo, r);
+        return false;
     case MediaPlayButtonPart:
-        return MediaControlsPainter::paintMediaPlayButton(o, paintInfo, r);
+        ASSERT(false); // BKTODO: return MediaControlsPainter::paintMediaPlayButton(o, paintInfo, r);
+        return false;
     case MediaOverlayPlayButtonPart:
-        return MediaControlsPainter::paintMediaOverlayPlayButton(o, paintInfo, r);
+        ASSERT(false); // BKTODO: return MediaControlsPainter::paintMediaOverlayPlayButton(o, paintInfo, r);
+        return false;
     case MediaMuteButtonPart:
-        return MediaControlsPainter::paintMediaMuteButton(o, paintInfo, r);
+        ASSERT(false); // BKTODO: return MediaControlsPainter::paintMediaMuteButton(o, paintInfo, r);
+        return false;
     case MediaToggleClosedCaptionsButtonPart:
-        return MediaControlsPainter::paintMediaToggleClosedCaptionsButton(o, paintInfo, r);
+        ASSERT(false); // BKTODO: return MediaControlsPainter::paintMediaToggleClosedCaptionsButton(o, paintInfo, r);
+        return false;
     case MediaSliderPart:
-        return MediaControlsPainter::paintMediaSlider(o, paintInfo, r);
+        ASSERT(false); // BKTODO: return MediaControlsPainter::paintMediaSlider(o, paintInfo, r);
+        return false;
     case MediaSliderThumbPart:
-        return MediaControlsPainter::paintMediaSliderThumb(o, paintInfo, r);
+        ASSERT(false); // BKTODO: return MediaControlsPainter::paintMediaSliderThumb(o, paintInfo, r);
+        return false;
     case MediaVolumeSliderContainerPart:
         return true;
     case MediaVolumeSliderPart:
-        return MediaControlsPainter::paintMediaVolumeSlider(o, paintInfo, r);
+        ASSERT(false); // BKTODO: return MediaControlsPainter::paintMediaVolumeSlider(o, paintInfo, r);
+        return false;
     case MediaVolumeSliderThumbPart:
-        return MediaControlsPainter::paintMediaVolumeSliderThumb(o, paintInfo, r);
+        ASSERT(false); // BKTODO: return MediaControlsPainter::paintMediaVolumeSliderThumb(o, paintInfo, r);
+        return false;
     case MediaFullScreenVolumeSliderPart:
     case MediaFullScreenVolumeSliderThumbPart:
     case MediaTimeRemainingPart:
@@ -141,7 +160,7 @@ bool ThemePainter::paint(const LayoutObject& o, const PaintInfo& paintInfo, cons
         return true;
     case MediaCastOffButtonPart:
     case MediaOverlayCastOffButtonPart:
-        return MediaControlsPainter::paintMediaCastButton(o, paintInfo, r);
+        ASSERT(false); // BKTODO: return MediaControlsPainter::paintMediaCastButton(o, paintInfo, r);
     case MenulistButtonPart:
     case TextFieldPart:
     case TextAreaPart:
@@ -349,7 +368,7 @@ bool ThemePainter::paintCheckboxUsingFallbackTheme(const LayoutObject& o, const 
         i.context.translate(-unzoomedRect.x(), -unzoomedRect.y());
     }
 
-    Platform::current()->fallbackThemeEngine()->paint(canvas, WebFallbackThemeEngine::PartCheckbox, getWebFallbackThemeState(o), WebRect(unzoomedRect), &extraParams);
+    ASSERT(false); // BKTODO: Platform::current()->fallbackThemeEngine()->paint(canvas, WebFallbackThemeEngine::PartCheckbox, getWebFallbackThemeState(o), WebRect(unzoomedRect), &extraParams);
     return false;
 }
 
@@ -371,7 +390,7 @@ bool ThemePainter::paintRadioUsingFallbackTheme(const LayoutObject& o, const Pai
         i.context.translate(-unzoomedRect.x(), -unzoomedRect.y());
     }
 
-    Platform::current()->fallbackThemeEngine()->paint(canvas, WebFallbackThemeEngine::PartRadio, getWebFallbackThemeState(o), WebRect(unzoomedRect), &extraParams);
+    ASSERT(false); // BKTODO: Platform::current()->fallbackThemeEngine()->paint(canvas, WebFallbackThemeEngine::PartRadio, getWebFallbackThemeState(o), WebRect(unzoomedRect), &extraParams);
     return false;
 }
 
