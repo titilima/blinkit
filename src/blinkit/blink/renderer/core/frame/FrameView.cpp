@@ -2178,9 +2178,9 @@ void FrameView::invalidatePaintForTickmarks()
         scrollbar->setNeedsPaintInvalidation(static_cast<ScrollbarPart>(~ThumbPart));
 }
 
-void FrameView::getTickmarks(Vector<IntRect>& tickmarks) const
+void FrameView::getTickmarks(std::vector<IntRect>& tickmarks) const
 {
-    if (!m_tickmarks.isEmpty())
+    if (!m_tickmarks.empty())
         tickmarks = m_tickmarks;
     else
         tickmarks = frame().document()->markers().renderedRectsForMarkers(DocumentMarker::TextMatch);

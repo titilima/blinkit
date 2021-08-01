@@ -100,7 +100,7 @@ DEFINE_TRACE(Frame)
     visitor->trace(m_client);
 }
 
-void Frame::detach(FrameDetachType type)
+void Frame::detach()
 {
     ASSERT(m_client);
     m_client->setOpener(0);
@@ -108,7 +108,7 @@ void Frame::detach(FrameDetachType type)
     disconnectOwnerElement();
     // After this, we must no longer talk to the client since this clears
     // its owning reference back to our owning LocalFrame.
-    m_client->detached(type);
+    m_client->detached();
     m_client = nullptr;
     m_host = nullptr;
 }

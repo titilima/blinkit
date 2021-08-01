@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourceClientWalker.h
+// Description: ResourceClientWalker Class
+//      Author: Ziming Li
+//     Created: 2021-07-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller <mueller@kde.org>
@@ -41,8 +52,11 @@ public:
         : m_clientSet(set), m_clientVector(set.size()), m_index(0)
     {
         size_t clientIndex = 0;
+        ASSERT(false); // BKTODO:
+#if 0
         for (const auto& resourceClient : set)
             m_clientVector[clientIndex++] = resourceClient.key;
+#endif
     }
 
     T* next()

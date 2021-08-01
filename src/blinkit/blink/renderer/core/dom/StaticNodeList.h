@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StaticNodeTypeList.h
+// Description: StaticNodeTypeList Classes
+//      Author: Ziming Li
+//     Created: 2021-07-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -33,7 +44,6 @@
 #include "wtf/PassRefPtr.h"
 #include "wtf/RefPtr.h"
 #include "wtf/Vector.h"
-#include <v8.h>
 
 namespace blink {
 
@@ -74,14 +84,14 @@ PassRefPtrWillBeRawPtr<StaticNodeTypeList<NodeType>> StaticNodeTypeList<NodeType
 {
     RefPtrWillBeRawPtr<StaticNodeTypeList<NodeType>> nodeList = adoptRefWillBeNoop(new StaticNodeTypeList<NodeType>);
     nodeList->m_nodes.swap(nodes);
-    v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(nodeList->AllocationSize());
+    ASSERT(false); // BKTODO: v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(nodeList->AllocationSize());
     return nodeList.release();
 }
 
 template <typename NodeType>
 StaticNodeTypeList<NodeType>::~StaticNodeTypeList()
 {
-    v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(-AllocationSize());
+    ASSERT(false); // BKTODO: v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(-AllocationSize());
 }
 
 template <typename NodeType>
@@ -99,7 +109,13 @@ NodeType* StaticNodeTypeList<NodeType>::item(unsigned index) const
 }
 
 template <typename NodeType>
-void StaticNodeTypeList<NodeType>::trace(Visitor* visitor) { traceImpl(visitor); }
+void StaticNodeTypeList<NodeType>::trace(Visitor* visitor)
+{
+    visitor->trace(m_nodes);
+    NodeList::trace(visitor);
+}
+
+#if 0 // BKTODO:
 template <typename NodeType>
 void StaticNodeTypeList<NodeType>::trace(InlinedGlobalMarkingVisitor visitor) { traceImpl(visitor); }
 
@@ -110,6 +126,7 @@ ALWAYS_INLINE void StaticNodeTypeList<NodeType>::traceImpl(VisitorDispatcher vis
     visitor->trace(m_nodes);
     NodeList::trace(visitor);
 }
+#endif
 
 } // namespace blink
 

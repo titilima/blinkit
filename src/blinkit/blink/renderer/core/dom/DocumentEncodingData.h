@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentEncodingData.h
+// Description: DocumentEncodingData Class
+//      Author: Ziming Li
+//     Created: 2021-07-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,7 +42,7 @@
 #ifndef DocumentEncodingData_h
 #define DocumentEncodingData_h
 
-#include "platform/CrossThreadCopier.h"
+// BKTODO: #include "platform/CrossThreadCopier.h"
 #include "wtf/Allocator.h"
 #include "wtf/text/TextEncoding.h"
 
@@ -59,8 +70,10 @@ private:
     bool m_sawDecodingError;
 };
 
+#if 0 // BKTODO:
 template<> struct CrossThreadCopierBase<false, false, false, DocumentEncodingData> : public CrossThreadCopierPassThrough<DocumentEncodingData> {
 };
+#endif
 
 inline bool operator!=(const DocumentEncodingData& a, const DocumentEncodingData& b)
 {

@@ -75,9 +75,11 @@ public:
     DEFINE_INLINE_VIRTUAL_TRACE() { }
 
     virtual bool isLiveContext() { return false; }
+#if 0 // BKTODO:
     virtual void countClientHintsDPR() { }
     virtual void countClientHintsResourceWidth() { }
     virtual void countClientHintsViewportWidth() { }
+#endif
 
     virtual void addAdditionalRequestHeaders(ResourceRequest&, FetchResourceType);
     virtual void setFirstPartyForCookies(ResourceRequest&);

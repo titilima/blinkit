@@ -68,8 +68,6 @@ class WindowProxy;
 class WindowProxyManager;
 struct FrameLoadRequest;
 
-enum class FrameDetachType { Remove, Swap };
-
 // Status of user gesture.
 enum class UserGestureStatus { Active, None };
 
@@ -94,7 +92,7 @@ public:
     virtual void navigate(const FrameLoadRequest&) = 0;
     // BKTODO: virtual void reload(FrameLoadType, ClientRedirectPolicy) = 0;
 
-    virtual void detach(FrameDetachType);
+    virtual void detach(void);
     void detachChildren();
     virtual void disconnectOwnerElement();
     virtual bool shouldClose() = 0;

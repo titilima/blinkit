@@ -107,7 +107,7 @@ public:
     void navigate(Document& originDocument, const KURL&, bool replaceCurrentItem, UserGestureStatus) override;
     void navigate(const FrameLoadRequest&) override;
     // BKTODO: void reload(FrameLoadType, ClientRedirectPolicy) override;
-    void detach(FrameDetachType) override;
+    void detach(void) override;
     // BKTODO: void disconnectOwnerElement() override;
     bool shouldClose() override;
     // BKTODO: SecurityContext* securityContext() const override;

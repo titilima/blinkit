@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMStringMap.h
+// Description: DOMStringMap Class
+//      Author: Ziming Li
+//     Created: 2021-07-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Apple Inc. All rights reserved.
  *
@@ -28,7 +39,6 @@
 
 #include "bindings/core/v8/ExceptionState.h"
 #include "bindings/core/v8/ScriptWrappable.h"
-#include "bindings/core/v8/V8Binding.h"
 #include "platform/heap/Handle.h"
 #include "wtf/Noncopyable.h"
 #include "wtf/Vector.h"
@@ -59,11 +69,13 @@ public:
         setItem(name, value, exceptionState);
         return true;
     }
+#if 0 // BKTODO:
     DeleteResult anonymousNamedDeleter(const AtomicString& name)
     {
         bool knownProperty = deleteItem(name);
         return knownProperty ? DeleteSuccess : DeleteUnknownProperty;
     }
+#endif
     void namedPropertyEnumerator(Vector<String>& names, ExceptionState&)
     {
         getNames(names);
@@ -78,10 +90,12 @@ public:
     {
         return anonymousNamedSetter(String::number(index), value, exceptionState);
     }
+#if 0 // BKTODO:
     DeleteResult anonymousIndexedDeleter(uint32_t index)
     {
         return anonymousNamedDeleter(AtomicString::number(index));
     }
+#endif
 
     virtual Element* element() = 0;
 

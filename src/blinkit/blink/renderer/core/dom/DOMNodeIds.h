@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMNodeIds.h
+// Description: DOMNodeIds Class
+//      Author: Ziming Li
+//     Created: 2021-07-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,19 +18,9 @@
 
 #include "core/CoreExport.h"
 #include "core/dom/Node.h"
-#include "core/dom/WeakIdentifierMap.h"
 #include "wtf/Allocator.h"
 
 namespace blink {
-
-#if !ENABLE(OILPAN)
-template<> struct WeakIdentifierMapTraits<Node> {
-    static void removedFromIdentifierMap(Node*);
-    static void addedToIdentifierMap(Node*);
-};
-#endif
-
-DECLARE_WEAK_IDENTIFIER_MAP(Node);
 
 class CORE_EXPORT DOMNodeIds {
     STATIC_ONLY(DOMNodeIds);

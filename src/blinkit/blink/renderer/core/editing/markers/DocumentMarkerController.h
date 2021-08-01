@@ -99,7 +99,7 @@ public:
     DocumentMarkerVector markersFor(Node*, DocumentMarker::MarkerTypes = DocumentMarker::AllMarkers());
     DocumentMarkerVector markersInRange(const EphemeralRange&, DocumentMarker::MarkerTypes);
     DocumentMarkerVector markers();
-    Vector<IntRect> renderedRectsForMarkers(DocumentMarker::MarkerType);
+    std::vector<IntRect> renderedRectsForMarkers(DocumentMarker::MarkerType);
     void updateRenderedRectsForMarkers();
 
     DECLARE_TRACE();

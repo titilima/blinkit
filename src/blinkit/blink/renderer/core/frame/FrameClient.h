@@ -14,7 +14,6 @@ class Frame;
 class LocalFrame;
 class MessageEvent;
 class SecurityOrigin;
-enum class FrameDetachType;
 
 class CORE_EXPORT FrameClient : public NoBaseWillBeGarbageCollectedFinalized<FrameClient> {
     USING_FAST_MALLOC_WILL_BE_REMOVED(FrameClient);
@@ -24,7 +23,7 @@ public:
     // TODO(dcheng): Move this into FrameLoaderClient, since remote frames don't
     // need this.
     virtual void willBeDetached() = 0;
-    virtual void detached(FrameDetachType) = 0;
+    virtual void detached() = 0;
 
     virtual Frame* opener() const = 0;
     virtual void setOpener(Frame*) = 0;

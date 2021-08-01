@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Event.h
+// Description: Event Class
+//      Author: Ziming Li
+//     Created: 2021-07-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -124,12 +135,14 @@ public:
     bool bubbles() const { return m_canBubble; }
     bool cancelable() const { return m_cancelable; }
 
+#if 0 // BKTODO:
     // Event creation timestamp in milliseconds. If |HiResEventTimeStamp|
     // runtime feature is enabled it returns a DOMHighResTimeStamp using the
     // platform timestamp (see |m_platformTimeStamp|) otherwise it returns a
     // DOMTimeStamp that represents the current object's construction time (see
     // |m_createTime|). For more info see http://crbug.com/160524
     double timeStamp(ScriptState*) const;
+#endif
     double platformTimeStamp() const { return m_platformTimeStamp; }
     DOMTimeStamp createTime() const { return m_createTime; }
 
@@ -184,7 +197,9 @@ public:
     EventPath& eventPath() { ASSERT(m_eventPath); return *m_eventPath; }
     void initEventPath(Node&);
 
+#if 0 // BKTODO:
     WillBeHeapVector<RefPtrWillBeMember<EventTarget>> path(ScriptState*) const;
+#endif
 
     bool isBeingDispatched() const { return eventPhase(); }
 

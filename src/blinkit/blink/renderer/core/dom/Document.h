@@ -216,6 +216,7 @@ enum DocumentClass {
     MediaDocumentClass = 1 << 4,
     SVGDocumentClass = 1 << 5,
     XMLDocumentClass = 1 << 6,
+    CrawlerDocumentClass = 1 << 7,
 };
 
 using DocumentClassFlags = unsigned char;

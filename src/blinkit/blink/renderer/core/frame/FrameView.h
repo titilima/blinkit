@@ -348,7 +348,7 @@ public:
     // Sets the tickmarks for the FrameView, overriding the default behavior
     // which is to display the tickmarks corresponding to find results.
     // If |m_tickmarks| is empty, the default behavior is restored.
-    void setTickmarks(const Vector<IntRect>& tickmarks)
+    void setTickmarks(const std::vector<IntRect>& tickmarks)
     {
         m_tickmarks = tickmarks;
         invalidatePaintForTickmarks();
@@ -366,7 +366,7 @@ public:
 
     // ScrollableArea interface
     void scrollControlWasSetNeedsPaintInvalidation() override { }
-    void getTickmarks(Vector<IntRect>&) const override;
+    void getTickmarks(std::vector<IntRect>&) const override;
     void scrollTo(const DoublePoint&);
     IntRect scrollableAreaBoundingBox() const override;
     bool scrollAnimatorEnabled() const override;
@@ -852,7 +852,7 @@ private:
 
     Timer<FrameView> m_didScrollTimer;
 
-    Vector<IntRect> m_tickmarks;
+    std::vector<IntRect> m_tickmarks;
 
     float m_topControlsViewportAdjustment;
 

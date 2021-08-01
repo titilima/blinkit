@@ -480,9 +480,9 @@ DocumentMarkerVector DocumentMarkerController::markersInRange(const EphemeralRan
     return foundMarkers;
 }
 
-Vector<IntRect> DocumentMarkerController::renderedRectsForMarkers(DocumentMarker::MarkerType markerType)
+std::vector<IntRect> DocumentMarkerController::renderedRectsForMarkers(DocumentMarker::MarkerType markerType)
 {
-    Vector<IntRect> result;
+    std::vector<IntRect> result;
 
     if (!possiblyHasMarkers(markerType))
         return result;
@@ -501,7 +501,7 @@ Vector<IntRect> DocumentMarkerController::renderedRectsForMarkers(DocumentMarker
                 RenderedDocumentMarker* marker = list->at(markerIndex).get();
                 if (!marker->isRendered())
                     continue;
-                result.append(marker->renderedRect());
+                result.emplace_back(marker->renderedRect());
             }
         }
     }

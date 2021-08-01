@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourceClient.h
+// Description: ResourceClient Class
+//      Author: Ziming Li
+//     Created: 2021-07-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller <mueller@kde.org>
@@ -26,7 +37,7 @@
 #define ResourceClient_h
 
 #include "core/CoreExport.h"
-#include "platform/network/ResourceLoadPriority.h"
+// BKTODO: #include "platform/network/ResourceLoadPriority.h"
 #include "wtf/Forward.h"
 #include "wtf/text/WTFString.h"
 
@@ -51,7 +62,7 @@ public:
     static ResourceClientType expectedType() { return BaseResourceType; }
     virtual ResourceClientType resourceClientType() const { return expectedType(); }
 
-    virtual ResourcePriority computeResourcePriority() const { return ResourcePriority(); }
+    // BKTODO: virtual ResourcePriority computeResourcePriority() const { return ResourcePriority(); }
 
     // Name for debugging, e.g. shown in memory-infra.
     virtual String debugName() const = 0;
