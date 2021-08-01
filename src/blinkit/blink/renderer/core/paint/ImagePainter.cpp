@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImagePainter.cpp
+// Description: ImagePainter Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -104,7 +115,7 @@ void ImagePainter::paintReplaced(const PaintInfo& paintInfo, const LayoutPoint& 
         LayoutRect paintRect = m_layoutImage.replacedContentRect();
         paintRect.moveBy(paintOffset);
 
-        Optional<ClipRecorder> clipRecorder;
+        std::optional<ClipRecorder> clipRecorder;
         if (!contentRect.contains(paintRect)) {
             // TODO(fmalita): can we get rid of this clip and adjust the image src/dst rect instead?
             clipRecorder.emplace(context, m_layoutImage, paintInfo.displayItemTypeForClipping(), contentRect);
