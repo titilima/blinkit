@@ -9,11 +9,11 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "function_manager.h"
+#include "./function_manager.h"
 
+#include "blinkit/blink/renderer/bindings/core/duk/duk.h"
 #include "blinkit/js/js_callee_context_impl.h"
 #include "blinkit/js/js_value_impl.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk.h"
 
 namespace BlinKit {
 
