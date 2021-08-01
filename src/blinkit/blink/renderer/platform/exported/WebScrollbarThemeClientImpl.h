@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebScrollbarThemeClientImpl.h
+// Description: WebScrollbarThemeClientImpl Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -58,7 +69,7 @@ public:
     void invalidate() override;
     void invalidateRect(const IntRect&) override;
     ScrollbarOverlayStyle scrollbarOverlayStyle() const override;
-    void getTickmarks(Vector<IntRect>&) const override;
+    void getTickmarks(std::vector<IntRect>&) const override;
     bool isScrollableAreaActive() const override;
     IntPoint convertFromRootFrame(const IntPoint&) const override;
     bool isCustomScrollbar() const override;
