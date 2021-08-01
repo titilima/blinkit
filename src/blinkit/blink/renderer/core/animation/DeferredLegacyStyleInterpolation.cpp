@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DeferredLegacyStyleInterpolation.cpp
+// Description: DeferredLegacyStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,7 +21,7 @@
 #include "core/css/CSSImageValue.h"
 #include "core/css/CSSPrimitiveValue.h"
 #include "core/css/CSSQuadValue.h"
-#include "core/css/CSSSVGDocumentValue.h"
+// BKTODO: #include "core/css/CSSSVGDocumentValue.h"
 #include "core/css/CSSShadowValue.h"
 #include "core/css/CSSValueList.h"
 #include "core/css/CSSValuePair.h"
@@ -71,8 +82,10 @@ bool DeferredLegacyStyleInterpolation::interpolationRequiresStyleResolve(const C
         return interpolationRequiresStyleResolve(toCSSImageValue(value));
     if (value.isShadowValue())
         return interpolationRequiresStyleResolve(toCSSShadowValue(value));
+#if 0 // BKTODO:
     if (value.isSVGDocumentValue())
         return interpolationRequiresStyleResolve(toCSSSVGDocumentValue(value));
+#endif
     // FIXME: consider other custom types.
     return true;
 }
