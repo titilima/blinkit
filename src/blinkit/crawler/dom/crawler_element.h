@@ -23,12 +23,10 @@ class CrawlerElement : public blink::Element
 public:
     CrawlerElement(const AtomicString &localName, blink::Document *document);
 protected:
-    // BKTODO: bool IsURLAttribute(const blink::Attribute &attribute) const override;
+    bool isURLAttribute(const blink::Attribute &attribute) const override;
 private:
-#if 0 // BKTODO:
-    bool IsFormControlElement(void) const final;
-    bool IsDisabledFormControl(void) const final;
-#endif
+    bool isFormControlElement(void) const final;
+    bool isDisabledFormControl(void) const final;
 
 #ifndef NDEBUG
     const std::string m_localNameForDebug;

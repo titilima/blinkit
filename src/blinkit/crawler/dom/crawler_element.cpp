@@ -9,41 +9,36 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "crawler_element.h"
+#include "./crawler_element.h"
 
-#if 0 // BKTODO:
-#include "third_party/blink/renderer/core/dom/attr.h"
-#include "third_party/blink/renderer/core/html_names.h"
-#endif
+#include "blinkit/blink/renderer/core/dom/Attr.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
 
 using namespace blink;
+using namespace HTMLNames;
 
 namespace BlinKit {
 
 CrawlerElement::CrawlerElement(const AtomicString &localName, Document *document)
-#if 0 // BKTODO:
-    : Element(QualifiedName(g_null_atom, localName, html_names::xhtmlNamespaceURI), document, kCreateCrawlerElement)
+    : Element(QualifiedName(nullAtom, localName, xhtmlNamespaceURI), document, CreateCrawlerElement)
 #ifndef NDEBUG
-    , m_localNameForDebug(localName.StdUtf8())
-#endif
+    , m_localNameForDebug(localName.stdUTF8())
 #endif
 {
     // Nothing
 }
 
-#if 0 // BKTODO:
 bool CrawlerElement::isDisabledFormControl(void) const
 {
-    if (fastHasAttribute(HTMLNames::disabledAttr))
+    if (fastHasAttribute(disabledAttr))
         return isFormControlElement();
     return false;
 }
 
 bool CrawlerElement::isFormControlElement(void) const
 {
-    using namespace HTMLNames;
     static const HTMLQualifiedName *formTags[] = {
-        &buttonTag, &fieldsetTag, &inputTag, &outputTag, &selectTag, &textareaTag
+        &buttonTag, &fieldsetTag, &inputTag, &selectTag, &textareaTag
     };
     for (const auto *tag : formTags)
     {
@@ -53,15 +48,14 @@ bool CrawlerElement::isFormControlElement(void) const
     return false;
 }
 
-bool CrawlerElement::IsURLAttribute(const Attribute &attribute) const
+bool CrawlerElement::isURLAttribute(const Attribute &attribute) const
 {
-    const QualifiedName &name = attribute.GetName();
-    if (HasTagName(html_names::kATag))
-        return name == html_names::kHrefAttr;
-    if (HasTagName(html_names::kImgTag))
-        return name == html_names::kSrcAttr;
+    const QualifiedName &name = attribute.name();
+    if (hasTagName(aTag))
+        return name == hrefAttr;
+    if (hasTagName(imgTag))
+        return name == srcAttr;
     return false;
 }
-#endif // 0
 
 } // namespace BlinKit
