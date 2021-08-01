@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "bkcommon/bk_shared_mutex.hpp"
+#include "third_party/zed/include/zed/shared_mutex.hpp"
 
 namespace BlinKit {
 
@@ -28,7 +28,7 @@ public:
     void OnNewView(HWND hWnd, WinWebView *newView);
     void OnViewDestroyed(HWND hWnd);
 private:
-    mutable BkSharedMutex m_lock;
+    mutable zed::shared_mutex m_lock;
     std::unordered_map<HWND, WinWebView *> m_views;
 };
 
