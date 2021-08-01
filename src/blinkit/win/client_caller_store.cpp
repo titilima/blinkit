@@ -9,7 +9,7 @@
 // Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "client_caller_store.h"
+#include "./client_caller_store.h"
 
 #include <mutex>
 #include "blinkit/win/message_task.h"
@@ -32,6 +32,7 @@ void SingletonClientCallerStore::Post(const base::Location &, std::function<void
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#if 0 // BKTODO:
 class ClientCallerStoreImpl::ClientCallerImpl final : public ClientCaller
 {
 public:
@@ -46,7 +47,7 @@ public:
         ::PostMessage(m_hMsgWnd, WM_CLOSE, 0, 0);
     }
 private:
-    void Post(const base::Location &, std::function<void()> &&task) override
+    void Post(const WebTraceLocation &, std::function<void()> &&task) override
     {
         MessageTask::Post(m_hMsgWnd, std::move(task));
     }
@@ -56,6 +57,7 @@ private:
 
     HWND m_hMsgWnd;
 };
+#endif
 
 ClientCallerStoreImpl::ClientCallerStoreImpl(void)
 {
@@ -70,7 +72,7 @@ ClientCallerStoreImpl::~ClientCallerStoreImpl(void)
 {
     std::unique_lock lock(m_lock);
     for (auto &it : m_callerMap)
-        delete it.second;
+        ASSERT(false); // BKTODO: delete it.second;
     m_callerMap.clear();
 }
 
@@ -78,6 +80,9 @@ ClientCaller& ClientCallerStoreImpl::Acquire(void)
 {
     DWORD tid = ::GetCurrentThreadId();
 
+    ASSERT(false); // BKTODO:
+    exit(0);
+#if 0
     std::unique_lock lock(m_lock);
     auto it = m_callerMap.find(tid);
     if (std::end(m_callerMap) != it)
@@ -86,6 +91,7 @@ ClientCaller& ClientCallerStoreImpl::Acquire(void)
     ClientCallerImpl *ret = new ClientCallerImpl(m_atom);
     m_callerMap[tid] = ret;
     return *ret;
+#endif
 }
 
 LRESULT CALLBACK ClientCallerStoreImpl::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
