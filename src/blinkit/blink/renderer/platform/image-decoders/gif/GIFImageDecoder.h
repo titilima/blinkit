@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: GIFImageDecoder.h
+// Description: GIFImageDecoder Class
+//      Author: Ziming Li
+//     Created: 2021-07-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -47,7 +58,7 @@ public:
 
     // ImageDecoder:
     String filenameExtension() const override { return "gif"; }
-    void onSetData(SharedBuffer* data) override;
+    void onSetData(const std::shared_ptr<SharedBuffer> &data) override;
     int repetitionCount() const override;
     bool frameIsCompleteAtIndex(size_t) const override;
     float frameDurationAtIndex(size_t) const override;
