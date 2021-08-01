@@ -65,11 +65,14 @@ minlength
 multiple
 name
 nowrap
+open
 placeholder
 pseudo
+radiogroup
 readonly
 rel
 required
+reversed
 rows
 rowspan
 rules
@@ -80,6 +83,8 @@ size
 slot
 span
 src
+srcset
+start
 style
 summary
 tabindex
