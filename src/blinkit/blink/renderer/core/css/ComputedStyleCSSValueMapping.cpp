@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ComputedStyleCSSValueMapping.cpp
+// Description: Computed Style CSS Value Mappings
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004 Zack Rusin <zack@kde.org>
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights reserved.
@@ -56,7 +67,7 @@
 #include "core/style/PathStyleMotionPath.h"
 #include "core/style/QuotesData.h"
 #include "core/style/ShadowList.h"
-#include "core/svg/SVGPathUtilities.h"
+// BKTODO: #include "core/svg/SVGPathUtilities.h"
 #include "platform/LengthFunctions.h"
 
 namespace blink {
