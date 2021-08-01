@@ -99,15 +99,15 @@ bool DecodingImageGenerator::onGetYUV8Planes(SkISize sizes[3], void* planes[3], 
 
 SkImageGenerator* DecodingImageGenerator::create(SkData* data)
 {
-    RefPtr<SharedBuffer> buffer = SharedBuffer::create(data->bytes(), data->size());
+    std::shared_ptr<SharedBuffer> buffer = SharedBuffer::create(data->bytes(), data->size());
 
     // We just need the size of the image, so we have to temporarily create an ImageDecoder. Since
     // we only need the size, it doesn't really matter about premul or not, or gamma settings.
-    OwnPtr<ImageDecoder> decoder = ImageDecoder::create(*buffer.get(), ImageDecoder::AlphaPremultiplied, ImageDecoder::GammaAndColorProfileApplied);
+    OwnPtr<ImageDecoder> decoder = ImageDecoder::create(buffer, ImageDecoder::AlphaPremultiplied, ImageDecoder::GammaAndColorProfileApplied);
     if (!decoder)
         return 0;
 
-    decoder->setData(buffer.get(), true);
+    decoder->setData(buffer, true);
     if (!decoder->isSizeAvailable())
         return 0;
 
