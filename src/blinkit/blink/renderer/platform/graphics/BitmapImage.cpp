@@ -259,7 +259,7 @@ bool BitmapImage::dataChanged(bool allDataReceived)
     // Feed all the data we've seen so far to the image decoder.
     m_allDataReceived = allDataReceived;
     ASSERT(data());
-    m_source.setData(*data(), allDataReceived);
+    m_source.setData(data(), allDataReceived);
 
     m_haveFrameCount = false;
     m_hasUniformFrameSize = true;
