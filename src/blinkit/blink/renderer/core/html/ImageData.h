@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageData.h
+// Description: ImageData Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2009 Apple Inc. All rights reserved.
  *
@@ -31,7 +42,7 @@
 
 #include "bindings/core/v8/ScriptWrappable.h"
 #include "core/CoreExport.h"
-#include "core/dom/DOMTypedArray.h"
+// BKTODO: #include "core/dom/DOMTypedArray.h"
 #include "core/imagebitmap/ImageBitmapSource.h"
 #include "platform/geometry/IntRect.h"
 #include "platform/geometry/IntSize.h"
@@ -46,34 +57,38 @@ class CORE_EXPORT ImageData final : public GarbageCollectedFinalized<ImageData>,
     DEFINE_WRAPPERTYPEINFO();
 public:
     static ImageData* create(const IntSize&);
-    static ImageData* create(const IntSize&, PassRefPtr<DOMUint8ClampedArray>);
+    // BKTODO: static ImageData* create(const IntSize&, PassRefPtr<DOMUint8ClampedArray>);
     static ImageData* create(unsigned width, unsigned height, ExceptionState&);
+#if 0 // BKTODO:
     static ImageData* create(DOMUint8ClampedArray*, unsigned width, ExceptionState&);
     static ImageData* create(DOMUint8ClampedArray*, unsigned width, unsigned height, ExceptionState&);
+#endif
 
     IntSize size() const { return m_size; }
     int width() const { return m_size.width(); }
     int height() const { return m_size.height(); }
+#if 0 // BKTODO:
     const DOMUint8ClampedArray* data() const { return m_data.get(); }
     DOMUint8ClampedArray* data() { return m_data.get(); }
+#endif
 
     // ImageBitmapSource implementation
     IntSize bitmapSourceSize() const override { return m_size; }
-    ScriptPromise createImageBitmap(ScriptState*, EventTarget&, int sx, int sy, int sw, int sh, ExceptionState&) override;
+    // BKTODO: ScriptPromise createImageBitmap(ScriptState*, EventTarget&, int sx, int sy, int sw, int sh, ExceptionState&) override;
 
     DEFINE_INLINE_TRACE() { }
 
     void dispose();
 
-    v8::Local<v8::Object> associateWithWrapper(v8::Isolate*, const WrapperTypeInfo*, v8::Local<v8::Object> wrapper) override WARN_UNUSED_RETURN;
-
 private:
+#if 0 // BKTODO:
     ImageData(const IntSize&, PassRefPtr<DOMUint8ClampedArray>);
 
     static bool validateConstructorArguments(DOMUint8ClampedArray*, unsigned width, unsigned&, ExceptionState&);
+#endif
 
     IntSize m_size;
-    RefPtr<DOMUint8ClampedArray> m_data;
+    // BKTODO: RefPtr<DOMUint8ClampedArray> m_data;
 };
 
 } // namespace blink

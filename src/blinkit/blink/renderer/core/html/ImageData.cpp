@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageData.cpp
+// Description: ImageData Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All rights reserved.
  *
@@ -29,7 +40,6 @@
 #include "core/html/ImageData.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/V8Uint8ClampedArray.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/frame/ImageBitmap.h"
 #include "platform/RuntimeEnabledFeatures.h"
@@ -44,14 +54,19 @@ ImageData* ImageData::create(const IntSize& size)
     if (dataSize.hasOverflowed() || dataSize.unsafeGet() < 0)
         return nullptr;
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     RefPtr<DOMUint8ClampedArray> byteArray =
         DOMUint8ClampedArray::createOrNull(dataSize.unsafeGet());
     if (!byteArray)
         return nullptr;
 
     return new ImageData(size, byteArray.release());
+#endif
 }
 
+#if 0 // BKTODO:
 ImageData* ImageData::create(const IntSize& size, PassRefPtr<DOMUint8ClampedArray> byteArray)
 {
     Checked<int, RecordOverflow> dataSize = 4;
@@ -66,6 +81,7 @@ ImageData* ImageData::create(const IntSize& size, PassRefPtr<DOMUint8ClampedArra
 
     return new ImageData(size, byteArray);
 }
+#endif
 
 ImageData* ImageData::create(unsigned width, unsigned height, ExceptionState& exceptionState)
 {
@@ -84,6 +100,9 @@ ImageData* ImageData::create(unsigned width, unsigned height, ExceptionState& ex
         return nullptr;
     }
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     RefPtr<DOMUint8ClampedArray> byteArray =
         DOMUint8ClampedArray::createOrNull(dataSize.unsafeGet());
     if (!byteArray) {
@@ -92,8 +111,10 @@ ImageData* ImageData::create(unsigned width, unsigned height, ExceptionState& ex
     }
 
     return new ImageData(IntSize(width, height), byteArray.release());
+#endif
 }
 
+#if 0 // BKTODO:
 bool ImageData::validateConstructorArguments(DOMUint8ClampedArray* data, unsigned width, unsigned& lengthInPixels, ExceptionState& exceptionState)
 {
     if (!width) {
@@ -159,21 +180,6 @@ ScriptPromise ImageData::createImageBitmap(ScriptState* scriptState, EventTarget
     return ImageBitmapSource::fulfillImageBitmap(scriptState, ImageBitmap::create(this, IntRect(sx, sy, sw, sh)));
 }
 
-v8::Local<v8::Object> ImageData::associateWithWrapper(v8::Isolate* isolate, const WrapperTypeInfo* wrapperType, v8::Local<v8::Object> wrapper)
-{
-    wrapper = ScriptWrappable::associateWithWrapper(isolate, wrapperType, wrapper);
-
-    if (!wrapper.IsEmpty() && m_data.get()) {
-        // Create a V8 Uint8ClampedArray object and set the "data" property
-        // of the ImageData object to the created v8 object, eliminating the
-        // C++ callback when accessing the "data" property.
-        v8::Local<v8::Value> pixelArray = toV8(m_data.get(), wrapper, isolate);
-        if (pixelArray.IsEmpty() || !v8CallBoolean(wrapper->DefineOwnProperty(isolate->GetCurrentContext(), v8AtomicString(isolate, "data"), pixelArray, v8::ReadOnly)))
-            return v8::Local<v8::Object>();
-    }
-    return wrapper;
-}
-
 ImageData::ImageData(const IntSize& size, PassRefPtr<DOMUint8ClampedArray> byteArray)
     : m_size(size)
     , m_data(byteArray)
@@ -181,10 +187,11 @@ ImageData::ImageData(const IntSize& size, PassRefPtr<DOMUint8ClampedArray> byteA
     ASSERT(size.width() >= 0 && size.height() >= 0);
     ASSERT_WITH_SECURITY_IMPLICATION(static_cast<unsigned>(size.width() * size.height() * 4) <= m_data->length());
 }
+#endif
 
 void ImageData::dispose()
 {
-    m_data.clear();
+    ASSERT(false); // BKTODO: m_data.clear();
 }
 
 } // namespace blink
