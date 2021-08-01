@@ -9,16 +9,17 @@
 // Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "message_loop.h"
+#include "./message_loop.h"
 
 #include <optional>
 #include "blinkit/win/message_task.h"
-#include "third_party/blink/renderer/platform/wtf/time.h"
+// BKTODO: #include "blinkit/blink/renderer/wtf/Time.h"
 
 using namespace blink;
 
 namespace BlinKit {
 
+#if 0 // BKTODO:
 struct MessageLoop::TimerData {
     TimerData(std::function<void()> &&t, const TimeTicks &desiredFireTick)
         : task(std::move(t)), fireTick(desiredFireTick)
@@ -60,6 +61,7 @@ private:
 
     MessageLoop &m_loop;
 };
+#endif
 
 MessageLoop::MessageLoop(void) : m_threadId(::GetCurrentThreadId())
 {
@@ -77,11 +79,15 @@ MessageLoop::~MessageLoop(void)
     }
 }
 
-std::shared_ptr<base::SingleThreadTaskRunner> MessageLoop::GetTaskRunner(void) const
+std::shared_ptr<WebTaskRunner> MessageLoop::GetTaskRunner(void) const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!m_taskRunner)
         m_taskRunner = std::make_shared<TaskRunnerImpl>(const_cast<MessageLoop &>(*this));
     return m_taskRunner;
+#endif
 }
 
 void MessageLoop::InstallTimer(TimerData *timerData)
@@ -97,6 +103,8 @@ void MessageLoop::InstallTimer(TimerData *timerData)
 
     if (m_timers.size() == slot)
         NewTimer();
+    ASSERT(false); // BKTODO:
+#if 0
     m_tasks[slot] = std::move(timerData->task);
 
     TimeDelta delta = CurrentTimeTicks() - timerData->fireTick;
@@ -106,6 +114,7 @@ void MessageLoop::InstallTimer(TimerData *timerData)
     BKLOG("SetWaitableTimer: %d", delta.InMilliseconds());
 
     delete timerData;
+#endif
 }
 
 void MessageLoop::NewTimer(void)
@@ -115,7 +124,7 @@ void MessageLoop::NewTimer(void)
     m_tasks.push_back(std::function<void()>());
 }
 
-bool MessageLoop::PostTask(const base::Location &, std::function<void()> &&task)
+bool MessageLoop::PostTask(const WebTraceLocation &, std::function<void()> &&task)
 {
     return MessageTask::Post(m_threadId, std::move(task));
 }
