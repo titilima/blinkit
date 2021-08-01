@@ -37,7 +37,7 @@
 #include "core/css/CSSCursorImageValue.h"
 #include "core/css/CSSGradientValue.h"
 #include "core/css/CSSImageValue.h"
-#include "core/css/CSSSVGDocumentValue.h"
+// BKTODO: #include "core/css/CSSSVGDocumentValue.h"
 #include "core/dom/Document.h"
 #include "core/fetch/ResourceFetcher.h"
 // BKTODO: #include "core/layout/svg/ReferenceFilterBuilder.h"
