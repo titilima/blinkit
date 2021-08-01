@@ -255,6 +255,23 @@ inline bool compareCSSValueVector(const WillBeHeapVector<RefPtrWillBeMember<CSSV
 }
 
 template<typename CSSValueType>
+inline bool compareCSSValueVector(const std::vector<Member<CSSValueType>>& firstVector, const std::vector<Member<CSSValueType>>& secondVector)
+{
+    size_t size = firstVector.size();
+    if (size != secondVector.size())
+        return false;
+
+    for (size_t i = 0; i < size; i++) {
+        const Member<CSSValueType>& firstPtr = firstVector[i];
+        const Member<CSSValueType>& secondPtr = secondVector[i];
+        if (firstPtr == secondPtr || (firstPtr && secondPtr && firstPtr->equals(*secondPtr)))
+            continue;
+        return false;
+    }
+    return true;
+}
+
+template<typename CSSValueType>
 inline bool compareCSSValuePtr(const RefPtr<CSSValueType>& first, const RefPtr<CSSValueType>& second)
 {
     if (first == second)

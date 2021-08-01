@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSValue.cpp
+// Description: CSSValue Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Andreas Kling (kling@webkit.org)
  *
@@ -49,7 +60,7 @@
 #include "core/css/CSSPrimitiveValue.h"
 #include "core/css/CSSQuadValue.h"
 #include "core/css/CSSReflectValue.h"
-#include "core/css/CSSSVGDocumentValue.h"
+// BKTODO: #include "core/css/CSSSVGDocumentValue.h"
 #include "core/css/CSSShadowValue.h"
 #include "core/css/CSSStringValue.h"
 #include "core/css/CSSTimingFunctionValue.h"
@@ -167,8 +178,10 @@ bool CSSValue::equals(const CSSValue& other) const
             return compareCSSValues<CSSValuePair>(*this, other);
         case ImageSetClass:
             return compareCSSValues<CSSImageSetValue>(*this, other);
+#if 0 // BKTODO:
         case CSSSVGDocumentClass:
             return compareCSSValues<CSSSVGDocumentValue>(*this, other);
+#endif
         case CSSContentDistributionClass:
             return compareCSSValues<CSSContentDistributionValue>(*this, other);
         case CustomPropertyDeclarationClass:
@@ -253,8 +266,10 @@ String CSSValue::cssText() const
         return toCSSValueList(this)->customCSSText();
     case ImageSetClass:
         return toCSSImageSetValue(this)->customCSSText();
+#if 0 // BKTODO:
     case CSSSVGDocumentClass:
         return toCSSSVGDocumentValue(this)->customCSSText();
+#endif
     case CSSContentDistributionClass:
         return toCSSContentDistributionValue(this)->customCSSText();
     case VariableReferenceClass:
@@ -371,9 +386,11 @@ void CSSValue::destroy()
     case ImageSetClass:
         delete toCSSImageSetValue(this);
         return;
+#if 0 // BKTODO:
     case CSSSVGDocumentClass:
         delete toCSSSVGDocumentValue(this);
         return;
+#endif
     case CSSContentDistributionClass:
         delete toCSSContentDistributionValue(this);
         return;
@@ -492,9 +509,11 @@ void CSSValue::finalizeGarbageCollectedObject()
     case ImageSetClass:
         toCSSImageSetValue(this)->~CSSImageSetValue();
         return;
+#if 0 // BKTODO:
     case CSSSVGDocumentClass:
         toCSSSVGDocumentValue(this)->~CSSSVGDocumentValue();
         return;
+#endif
     case CSSContentDistributionClass:
         toCSSContentDistributionValue(this)->~CSSContentDistributionValue();
         return;
@@ -613,9 +632,11 @@ DEFINE_TRACE(CSSValue)
     case ImageSetClass:
         toCSSImageSetValue(this)->traceAfterDispatch(visitor);
         return;
+#if 0 // BKTODO:
     case CSSSVGDocumentClass:
         toCSSSVGDocumentValue(this)->traceAfterDispatch(visitor);
         return;
+#endif
     case CSSContentDistributionClass:
         toCSSContentDistributionValue(this)->traceAfterDispatch(visitor);
         return;
