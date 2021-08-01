@@ -24,9 +24,6 @@
     <Filter Include="base\third_party\nspr">
       <UniqueIdentifier>{1e9367ea-655e-407e-bd86-b5b27bb3c1cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="base\win">
-      <UniqueIdentifier>{182f58a9-7de3-489e-8f96-821c053e999b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="base\metrics">
       <UniqueIdentifier>{4dd07644-0392-49a7-8e7f-d7ce62a9b408}</UniqueIdentifier>
     </Filter>
@@ -75,12 +72,6 @@
       <Filter>base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\base\strings\utf_string_conversion_utils.cpp">
-      <Filter>base\strings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\base\win\resource_util.cpp">
-      <Filter>base\win</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\base\strings\sys_string_conversions_win.cc">
       <Filter>base\strings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\base\logging_win.cpp">
@@ -199,12 +190,6 @@
     <ClInclude Include="..\..\..\src\chromium\base\cpu.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\base\win\resource_util.h">
-      <Filter>base\win</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\base\strings\sys_string_conversions.h">
-      <Filter>base\strings</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\base\strings\string_split.h">
       <Filter>base\strings</Filter>
     </ClInclude>
@@ -266,9 +251,6 @@
       <Filter>base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\base\single_thread_task_runner.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\base\auto_reset.h">
       <Filter>base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\base\location.h">
