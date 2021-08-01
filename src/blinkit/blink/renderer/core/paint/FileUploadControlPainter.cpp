@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSValue.cpp
+// Description: CSSValue Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,7 +21,6 @@
 #include "core/paint/LayoutObjectDrawingRecorder.h"
 #include "core/paint/PaintInfo.h"
 #include "platform/graphics/paint/ClipRecorder.h"
-#include "wtf/Optional.h"
 
 namespace blink {
 
@@ -22,7 +32,7 @@ void FileUploadControlPainter::paintObject(const PaintInfo& paintInfo, const Lay
         return;
 
     // Push a clip.
-    Optional<ClipRecorder> clipRecorder;
+    std::optional<ClipRecorder> clipRecorder;
     if (paintInfo.phase == PaintPhaseForeground || paintInfo.phase == PaintPhaseDescendantBlockBackgroundsOnly) {
         IntRect clipRect = enclosingIntRect(LayoutRect(
             LayoutPoint(paintOffset.x() + m_layoutFileUploadControl.borderLeft(), paintOffset.y() + m_layoutFileUploadControl.borderTop()),
