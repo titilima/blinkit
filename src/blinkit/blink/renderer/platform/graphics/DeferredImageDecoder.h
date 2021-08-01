@@ -59,7 +59,7 @@ class PLATFORM_EXPORT DeferredImageDecoder final {
     WTF_MAKE_NONCOPYABLE(DeferredImageDecoder);
     USING_FAST_MALLOC(DeferredImageDecoder);
 public:
-    static PassOwnPtr<DeferredImageDecoder> create(const SharedBuffer& data, ImageDecoder::AlphaOption, ImageDecoder::GammaAndColorProfileOption);
+    static PassOwnPtr<DeferredImageDecoder> create(const std::shared_ptr<SharedBuffer> &data, ImageDecoder::AlphaOption, ImageDecoder::GammaAndColorProfileOption);
 
     static PassOwnPtr<DeferredImageDecoder> createForTesting(PassOwnPtr<ImageDecoder>);
 

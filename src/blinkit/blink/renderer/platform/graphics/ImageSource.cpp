@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageSource.cpp
+// Description: ImageSource Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2007 Alp Toker <alp.toker@collabora.co.uk>
@@ -46,7 +57,7 @@ size_t ImageSource::clearCacheExceptFrame(size_t clearExceptFrame)
     return m_decoder ? m_decoder->clearCacheExceptFrame(clearExceptFrame) : 0;
 }
 
-void ImageSource::setData(SharedBuffer& data, bool allDataReceived)
+void ImageSource::setData(const std::shared_ptr<SharedBuffer> &data, bool allDataReceived)
 {
     // Create a decoder by sniffing the encoded data. If insufficient data bytes are available to
     // determine the encoded image type, no decoder is created.

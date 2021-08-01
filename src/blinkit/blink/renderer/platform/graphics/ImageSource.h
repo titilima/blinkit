@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageSource.h
+// Description: ImageSource Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -69,7 +80,7 @@ public:
     // Returns the number of bytes of frame data actually cleared.
     size_t clearCacheExceptFrame(size_t);
 
-    void setData(SharedBuffer& data, bool allDataReceived);
+    void setData(const std::shared_ptr<SharedBuffer> &data, bool allDataReceived);
     String filenameExtension() const;
 
     bool isSizeAvailable();

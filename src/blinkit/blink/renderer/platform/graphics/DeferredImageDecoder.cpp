@@ -48,18 +48,14 @@ namespace blink {
 
 bool DeferredImageDecoder::s_enabled = true;
 
-PassOwnPtr<DeferredImageDecoder> DeferredImageDecoder::create(const SharedBuffer& data, ImageDecoder::AlphaOption alphaOption, ImageDecoder::GammaAndColorProfileOption colorOptions)
+PassOwnPtr<DeferredImageDecoder> DeferredImageDecoder::create(const std::shared_ptr<SharedBuffer> &data, ImageDecoder::AlphaOption alphaOption, ImageDecoder::GammaAndColorProfileOption colorOptions)
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     OwnPtr<ImageDecoder> actualDecoder = ImageDecoder::create(data, alphaOption, colorOptions);
 
     if (!actualDecoder)
         return nullptr;
 
     return adoptPtr(new DeferredImageDecoder(actualDecoder.release()));
-#endif
 }
 
 PassOwnPtr<DeferredImageDecoder> DeferredImageDecoder::createForTesting(PassOwnPtr<ImageDecoder> actualDecoder)
