@@ -28,9 +28,9 @@ using namespace blink;
 using namespace BlinKit;
 
 CrawlerImpl::CrawlerImpl(const BkCrawlerClient &client, ClientCaller &clientCaller)
-    : FrameLoaderClient(AppImpl::Get().GetAppCaller(), clientCaller)
-    , m_client(client)
-    , m_frame(LocalFrame::Create(this))
+    : /* FrameLoaderClient(AppImpl::Get().GetAppCaller(), clientCaller)
+    ,*/ m_client(client)
+    // BKTODO: , m_frame(LocalFrame::create(this))
 {
     ASSERT(isMainThread());
     m_frame->init();
@@ -58,9 +58,12 @@ void CrawlerImpl::CancelLoading(void)
 
 void CrawlerImpl::Destroy(void)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(IsClientThread());
     auto task = std::bind(std::default_delete<CrawlerImpl>(), this);
     m_appCaller.Call(BLINK_FROM_HERE, std::move(task));
+#endif
 }
 
 #if 0 // BKTODO:
@@ -163,16 +166,16 @@ bool CrawlerImpl::ProcessRequestComplete(BkResponse response, BkWorkController c
         return false;
 
     auto task = std::bind(m_client.RequestComplete, response, controller, m_client.UserData);
-    m_clientCaller.Post(BLINK_FROM_HERE, task);
+    ASSERT(false); // BKTODO: m_clientCaller.Post(BLINK_FROM_HERE, task);
     return true;
 }
 
 int CrawlerImpl::Run(const char *URL)
 {
-    ASSERT(IsClientThread());
-
     ASSERT(false); // BKTODO:
 #if 0
+    ASSERT(IsClientThread());
+
     GURL u(URL);
     if (!u.SchemeIsHTTPOrHTTPS())
     {

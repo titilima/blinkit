@@ -52,7 +52,7 @@ public:
 private:
     // blink::FrameLoaderClient
 #ifndef BLINKIT_CRAWLER_ONLY
-    bool IsCrawler(void) const override { return true; }
+    // BKTODO: bool IsCrawler(void) const override { return true; }
 #endif
 #if 0 // BKTODO:
     String UserAgent(void) override;
@@ -71,6 +71,6 @@ private:
     CookieJarImpl *m_cookieJar = nullptr;
 };
 
-DEFINE_TYPE_CASTS(CrawlerImpl, ::blink::FrameLoaderClient, client, client->IsCrawler(), client.IsCrawler());
+// BKTODO: DEFINE_TYPE_CASTS(CrawlerImpl, ::blink::FrameLoaderClient, client, client->IsCrawler(), client.IsCrawler());
 
 #endif // BLINKIT_BLINKIT_CRAWLER_IMPL_H
