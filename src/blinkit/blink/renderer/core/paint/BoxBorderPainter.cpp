@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BoxBorderPainter.cpp
+// Description: BoxBorderPainter Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -855,10 +866,13 @@ void BoxBorderPainter::paintOneBorderSide(GraphicsContext& graphicsContext,
             miter1 = miter2 = NoMiter;
         }
 
+        ASSERT(false); // BKTODO:
+#if 0
         ObjectPainter::drawLineForBoxSide(graphicsContext, sideRect.x(), sideRect.y(),
             sideRect.maxX(), sideRect.maxY(), side, color, edgeToRender.borderStyle(),
             miter1 != NoMiter ? adjacentEdge1.width : 0, miter2 != NoMiter ? adjacentEdge2.width : 0,
             antialias);
+#endif
     }
 }
 
