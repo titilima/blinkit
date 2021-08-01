@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSCustomFontData.h
+// Description: CSSCustomFontData Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google, Inc.
  *
@@ -31,33 +42,42 @@ class CSSCustomFontData final : public CustomFontData {
 public:
     enum FallbackVisibility { InvisibleFallback, VisibleFallback };
 
+#if 0 // BKTODO:
     static PassRefPtr<CSSCustomFontData> create(RemoteFontFaceSource* source, FallbackVisibility visibility)
     {
         return adoptRef(new CSSCustomFontData(source, visibility));
     }
+#endif
 
     ~CSSCustomFontData() override { }
 
     bool shouldSkipDrawing() const override
     {
+        ASSERT(false); // BKTODO:
+#if 0
         if (m_fontFaceSource)
             m_fontFaceSource->paintRequested();
+#endif
         return m_fallbackVisibility == InvisibleFallback && m_isLoading;
     }
 
     void beginLoadIfNeeded() const override
     {
+        ASSERT(false); // BKTODO:
+#if 0
         if (!m_isLoading && m_fontFaceSource) {
             m_isLoading = true;
             m_fontFaceSource->beginLoadIfNeeded();
         }
+#endif
     }
 
     bool isLoading() const override { return m_isLoading; }
     bool isLoadingFallback() const override { return true; }
-    void clearFontFaceSource() override { m_fontFaceSource = 0; }
+    // BKTODO: void clearFontFaceSource() override { m_fontFaceSource = 0; }
 
 private:
+#if 0 // BKTODO:
     CSSCustomFontData(RemoteFontFaceSource* source, FallbackVisibility visibility)
         : m_fontFaceSource(source)
         , m_fallbackVisibility(visibility)
@@ -66,10 +86,11 @@ private:
         if (source)
             m_isLoading = source->isLoading();
     }
+#endif
 
     // TODO(Oilpan): consider moving (Custom)FontFace hierarchy to the heap,
     // thereby making this reference a Member<>.
-    RawPtrWillBeWeakPersistent<RemoteFontFaceSource> m_fontFaceSource;
+    // BKTODO: RawPtrWillBeWeakPersistent<RemoteFontFaceSource> m_fontFaceSource;
     FallbackVisibility m_fallbackVisibility;
     mutable bool m_isLoading;
 };

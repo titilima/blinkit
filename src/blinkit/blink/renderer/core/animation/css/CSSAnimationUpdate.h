@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSAnimationUpdate.h
+// Description: CSSAnimationUpdate Class
+//      Author: Ziming Li
+//     Created: 2021-07-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -156,7 +167,7 @@ public:
         newTransition.from = from;
         newTransition.to = to;
         newTransition.effect = &effect;
-        m_newTransitions.set(id, newTransition);
+        m_newTransitions.emplace(id, newTransition);
     }
     bool isCancelledTransition(CSSPropertyID id) const { return m_cancelledTransitions.contains(id); }
     void cancelTransition(CSSPropertyID id) { m_cancelledTransitions.add(id); }

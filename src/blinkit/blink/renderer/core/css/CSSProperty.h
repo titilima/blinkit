@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSProperty.h
+// Description: CSSProperty Class
+//      Author: Ziming Li
+//     Created: 2021-07-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.
@@ -35,6 +46,10 @@ namespace blink {
 
 struct StylePropertyMetadata {
     DISALLOW_NEW();
+    StylePropertyMetadata(void)
+    {
+        ASSERT(false); // BKTODO:
+    }
     StylePropertyMetadata(CSSPropertyID propertyID, bool isSetFromShorthand, int indexInShorthandsVector, bool important, bool implicit, bool inherited)
         : m_propertyID(propertyID)
         , m_isSetFromShorthand(isSetFromShorthand)
@@ -58,6 +73,10 @@ struct StylePropertyMetadata {
 class CSSProperty {
     DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
 public:
+    CSSProperty(void)
+    {
+        ASSERT(false); // BKTODO:
+    }
     CSSProperty(CSSPropertyID propertyID, PassRefPtrWillBeRawPtr<CSSValue> value, bool important = false, bool isSetFromShorthand = false, int indexInShorthandsVector = 0, bool implicit = false)
         : m_metadata(propertyID, isSetFromShorthand, indexInShorthandsVector, important, implicit, CSSPropertyMetadata::isInheritedProperty(propertyID))
         , m_value(value)
