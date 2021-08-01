@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DragData.cpp
+// Description: DragData Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Apple Inc.  All rights reserved.
  * Copyright (C) 2013 Google Inc.
@@ -50,22 +61,30 @@ DragData::DragData(DataObject* data, const IntPoint& clientPosition, const IntPo
 
 static bool containsHTML(const DataObject* dropData)
 {
-    return dropData->types().contains(mimeTypeTextHTML);
+    ASSERT(false); // BKTODO: return dropData->types().contains(mimeTypeTextHTML);
+    return false;
 }
 
 bool DragData::containsURL(FilenameConversionPolicy filenamePolicy) const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return m_platformDragData->types().contains(mimeTypeTextURIList)
         || (filenamePolicy == ConvertFilenames && m_platformDragData->containsFilenames());
+#endif
 }
 
 String DragData::asURL(FilenameConversionPolicy filenamePolicy, String* title) const
 {
     String url;
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_platformDragData->types().contains(mimeTypeTextURIList))
         m_platformDragData->urlAndTitle(url, title);
     else if (filenamePolicy == ConvertFilenames && containsFiles())
         url = filePathToURL(m_platformDragData->filenames()[0]);
+#endif
     return url;
 }
 
@@ -90,7 +109,8 @@ void DragData::asFilePaths(Vector<String>& result) const
 
 bool DragData::containsPlainText() const
 {
-    return m_platformDragData->types().contains(mimeTypeTextPlain);
+    ASSERT(false); // BKTODO: return m_platformDragData->types().contains(mimeTypeTextPlain);
+    return false;
 }
 
 String DragData::asPlainText() const
@@ -100,12 +120,16 @@ String DragData::asPlainText() const
 
 bool DragData::canSmartReplace() const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     // Mimic the situations in which mac allows drag&drop to do a smart replace.
     // This is allowed whenever the drag data contains a 'range' (ie.,
     // ClipboardWin::writeRange is called). For example, dragging a link
     // should not result in a space being added.
     return m_platformDragData->types().contains(mimeTypeTextPlain)
         && !m_platformDragData->types().contains(mimeTypeTextURIList);
+#endif
 }
 
 bool DragData::containsCompatibleContent() const
@@ -133,6 +157,8 @@ PassRefPtrWillBeRawPtr<DocumentFragment> DragData::asFragment(LocalFrame* frame)
         // and call createFragmentFromMarkup.
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_platformDragData->types().contains(mimeTypeTextHTML)) {
         String html;
         KURL baseURL;
@@ -141,6 +167,7 @@ PassRefPtrWillBeRawPtr<DocumentFragment> DragData::asFragment(LocalFrame* frame)
         if (RefPtrWillBeRawPtr<DocumentFragment> fragment = createFragmentFromMarkup(*frame->document(), html, baseURL, DisallowScriptingAndPluginContent))
             return fragment.release();
     }
+#endif
 
     return nullptr;
 }
