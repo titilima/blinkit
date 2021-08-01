@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DataTransferItem.cpp
+// Description: DataTransferItem Class
+//      Author: Ziming Li
+//     Created: 2021-08-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -30,7 +41,6 @@
 
 #include "core/clipboard/DataTransferItem.h"
 
-#include "bindings/core/v8/V8Binding.h"
 #include "core/clipboard/DataObjectItem.h"
 #include "core/clipboard/DataTransfer.h"
 #include "core/dom/StringCallback.h"
