@@ -102,8 +102,12 @@ DocumentInit::~DocumentInit()
 
 bool DocumentInit::shouldSetURL() const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     LocalFrame* frame = frameForSecurityContext();
     return (frame && frame->owner()) || !m_url.isEmpty();
+#endif
 }
 
 bool DocumentInit::shouldTreatURLAsSrcdocDocument() const
