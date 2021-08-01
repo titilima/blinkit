@@ -1065,6 +1065,7 @@ bool ResourceFetcher::isFetching() const
     return m_loaders && !m_loaders->isEmpty();
 }
 
+#if 0 // BKTODO:
 void ResourceFetcher::setDefersLoading(bool defers)
 {
     if (m_loaders)
@@ -1072,6 +1073,7 @@ void ResourceFetcher::setDefersLoading(bool defers)
     if (m_nonBlockingLoaders)
         m_nonBlockingLoaders->setAllDefersLoading(defers);
 }
+#endif
 
 bool ResourceFetcher::defersLoading() const
 {

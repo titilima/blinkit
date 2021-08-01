@@ -112,9 +112,9 @@ public:
 #if 0 // BKTODO:
     void addAllArchiveResources(MHTMLArchive*);
     ArchiveResourceCollection* archiveResourceCollection() const { return m_archiveResourceCollection.get(); }
-#endif
 
     void setDefersLoading(bool);
+#endif
     void stopFetching();
     bool isFetching() const;
 
