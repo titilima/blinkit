@@ -17,7 +17,7 @@
 #include "build/build_config.h"
 
 #if OS_WIN
-#   pragma warning(disable: 4244 4267 4291 4819)
+#   pragma warning(disable: 4244 4267 4291 4334 4819)
 #   define _CRT_SECURE_NO_WARNINGS
 #endif
 
