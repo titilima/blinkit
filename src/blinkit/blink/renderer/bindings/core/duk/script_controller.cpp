@@ -41,17 +41,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "script_controller.h"
+#include "./script_controller.h"
 
-#include "base/memory/ptr_util.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_element.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_window.h"
+#include "blinkit/blink/renderer/bindings/core/duk/script_source_code.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
 #include "blinkit/crawler/crawler_impl.h"
 #include "blinkit/js/crawler_context.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_element.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_window.h"
-#include "third_party/blink/renderer/bindings/core/duk/script_source_code.h"
-#include "third_party/blink/renderer/core/dom/document.h"
-#include "third_party/blink/renderer/core/frame/local_frame.h"
 
 using namespace BlinKit;
 
@@ -92,6 +91,9 @@ void ScriptController::ConsoleOutput(int type, const char *msg)
 
 std::unique_ptr<ScriptController> ScriptController::Create(LocalFrame &frame)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     bool isCrawler = frame.Client()->IsCrawler();
 #ifdef BLINKIT_CRAWLER_ONLY
     ASSERT(isCrawler);
@@ -107,9 +109,10 @@ std::unique_ptr<ScriptController> ScriptController::Create(LocalFrame &frame)
         return nullptr;
     }
 #endif
+#endif
 }
 
-void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const GURL &baseURL)
+void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const zed::url &baseURL)
 {
     const auto callback = [this](duk_context *ctx) {
         if (!duk_is_error(ctx, -1))
@@ -121,7 +124,7 @@ void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCo
         std::string str = Duk::To<std::string>(ctx, -1);
         ConsoleOutput(BK_CONSOLE_ERROR, str.c_str());
     };
-    ContextImpl::Eval(sourceCode.Source(), callback, sourceCode.Url().ExtractFileName().c_str());
+    ASSERT(false); // BKTODO: ContextImpl::Eval(sourceCode.source(), callback, sourceCode.FileName().c_str());
 }
 
 ScriptController* ScriptController::From(duk_context *ctx)
@@ -135,10 +138,10 @@ ScriptController* ScriptController::From(duk_context *ctx)
 
 ScriptController* ScriptController::From(ExecutionContext *executionContext)
 {
-    if (executionContext->IsDocument())
+    if (executionContext->isDocument())
     {
         Document *document = static_cast<Document *>(executionContext);
-        ScriptController &ctx = document->GetFrame()->GetScriptController();
+        ScriptController &ctx = document->frame()->script();
         return &ctx;
     }
 
@@ -154,6 +157,8 @@ const char* ScriptController::LookupPrototypeName(const std::string &tagName) co
 
 void ScriptController::UpdateDocument(void)
 {
+    ASSERT(false); // BKTODO:
+#if 0
 #ifdef BLINKIT_CRAWLER_ONLY
     if (m_frame.Loader().StateMachine()->CreatingInitialEmptyDocument())
         return;
@@ -168,7 +173,8 @@ void ScriptController::UpdateDocument(void)
     duk_context *ctx = EnsureDukSession();
 
     Duk::StackGuard _(ctx);
-    DukWindow::Attach(ctx, *(m_frame.DomWindow()));
+    DukWindow::Attach(ctx, *(m_frame.domWindow()));
+#endif
 }
 
 } // namespace blink
