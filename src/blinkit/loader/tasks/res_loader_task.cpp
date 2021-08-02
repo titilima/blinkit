@@ -9,16 +9,16 @@
 // Copyright (C) 2018 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "res_loader_task.h"
+#include "./res_loader_task.h"
 
-#include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
-#include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
+#include "blinkit/blink/renderer/platform/network/ResourceRequest.h"
+#include "blinkit/blink/renderer/platform/network/ResourceResponse.h"
 
 using namespace blink;
 
 namespace BlinKit {
 
-ResLoaderTask::ResLoaderTask(const ResourceRequest &request, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, WebURLLoaderClient *client)
+ResLoaderTask::ResLoaderTask(const ResourceRequest &request, const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client)
     : LoaderTaskForUI(request, taskRunner, client)
 {
     // Nothing
@@ -37,8 +37,8 @@ int ResLoaderTask::PerformRequest(void)
 
 int ResLoaderTask::PopulateResponse(ResourceResponse &resourceResponse, std::string_view &body) const
 {
-    resourceResponse.SetHTTPStatusCode(m_statusCode);
-    resourceResponse.SetMimeType(MIMEType());
+    resourceResponse.setHTTPStatusCode(m_statusCode);
+    resourceResponse.setMimeType(MIMEType());
 
     body = m_data;
     return BK_ERR_SUCCESS;

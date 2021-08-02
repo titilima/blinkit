@@ -9,27 +9,26 @@
 // Copyright (C) 2018 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "res_loader_task.h"
+#include "./res_loader_task.h"
 
 #include "bk_def.h"
-#include "base/win/resource_util.h"
+#include "third_party/zed/include/zed/win/hmodule.hpp"
 
 #define RT_HTMLA    MAKEINTRESOURCEA(23)
 
 namespace BlinKit {
 
-int ResLoaderTask::LoadResData(const GURL &URI, std::string &dst)
+int ResLoaderTask::LoadResData(const zed::url &URI, std::string &dst)
 {
-    void *data;
-    size_t size;
-    if (!base::GetResourceFromModule(nullptr, URI.path().c_str(), RT_HTMLA, &data, &size))
+    zed::hmodule::resource_data data;
+    if (!zed::hmodule::get_resource_data<PCSTR>(data, nullptr, RT_HTMLA, URI.get_path().c_str()))
     {
         ASSERT(false); // Resource not found!
         return BK_ERR_NOT_FOUND;
     }
 
-    dst.resize(size);
-    memcpy(dst.data(), data, size);
+    dst.resize(std::get<1>(data));
+    memcpy(dst.data(), std::get<0>(data), std::get<1>(data));
     return BK_ERR_SUCCESS;
 }
 
