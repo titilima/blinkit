@@ -9,29 +9,30 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "file_loader_task.h"
+#include "./file_loader_task.h"
 
-#include "base/strings/sys_string_conversions.h"
+#include "third_party/zed/include/zed/net/http_codecs.hpp"
+#include "third_party/zed/include/zed/string/conv.hpp"
 
 using namespace blink;
 
 namespace BlinKit {
 
-int FileLoaderTask::LoadFileData(const GURL &URI, std::string &dst)
+int FileLoaderTask::LoadFileData(const zed::url &URI, std::string &dst)
 {
-    std::string host = URI.host();
-    std::string path = URI.path();
+    std::string host = URI.get_host();
+    std::string path = zed::decode_uri_component(URI.get_path());
 
     std::wstring filePath;
     if (!host.empty())
     {
         filePath.assign(L"//");
-        filePath.append(base::SysUTF8ToWide(host));
-        filePath.append(base::SysUTF8ToWide(path));
+        filePath.append(zed::multi_byte_to_wide_string(host, CP_UTF8));
+        filePath.append(zed::multi_byte_to_wide_string(path, CP_UTF8));
     }
     else
     {
-        filePath = base::SysUTF8ToWide(std::string_view(path.data() + 1, path.length() - 1));
+        filePath = zed::multi_byte_to_wide_string(std::string_view(path.data() + 1, path.length() - 1), CP_UTF8);
     }
     std::replace(filePath.begin(), filePath.end(), L'/', L'\\');
 
