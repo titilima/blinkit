@@ -11,21 +11,23 @@
 
 #include "loader_task.h"
 
-#include "base/single_thread_task_runner.h"
-#include "third_party/blink/public/platform/web_url_loader_client.h"
-#include "third_party/blink/renderer/platform/loader/fetch/resource_error.h"
+#include "blinkit/blink/public/platform/WebTaskRunner.h"
+#include "blinkit/blink/public/platform/WebTraceLocation.h"
+#include "blinkit/blink/public/platform/WebURLLoaderClient.h"
+#include "blinkit/blink/renderer/platform/network/ResourceError.h"
+#include "blinkit/blink/renderer/wtf/MainThread.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
-#include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/platform/network/mime/mime_type_registry.h"
 #endif
-
+#endif
 using namespace blink;
 
 namespace BlinKit {
 
-LoaderTask::LoaderTask(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, WebURLLoaderClient *client)
+LoaderTask::LoaderTask(const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client)
     : m_taskRunner(taskRunner), m_client(client)
 {
 }
@@ -34,15 +36,17 @@ LoaderTask::~LoaderTask(void) = default;
 
 void LoaderTask::Run(void)
 {
-    ASSERT(!IsMainThread());
+    ASSERT(!isMainThread());
 
     int r = PerformRequest();
     if (BK_ERR_SUCCESS == r)
     {
         auto callback = [this]
         {
-            ASSERT(IsMainThread());
+            ASSERT(isMainThread());
 
+            ASSERT(false); // BKTODO:
+#if 0
             const GURL &u = URI();
 
             ResourceResponse resourceResponse(u);
@@ -61,37 +65,44 @@ void LoaderTask::Run(void)
             {
                 m_client->DidFail(ResourceError(r, u));
             }
+#endif
             delete this;
         };
-        m_taskRunner->PostTask(FROM_HERE, callback);
+        m_taskRunner->postTask(BLINK_FROM_HERE, callback);
     }
     else
     {
+        ASSERT(false); // BKTODO:
+#if 0
         auto errorCallback = [error = ResourceError(r, URI()), client = m_client]
         {
             ASSERT(IsMainThread());
             client->DidFail(error);
         };
-        m_taskRunner->PostTask(FROM_HERE, errorCallback);
+        m_taskRunner->postTask(BLINK_FROM_HERE, errorCallback);
+#endif
         delete this;
     }
 }
 
-static void ErrorWorker(WebURLLoaderClient *client, const ResourceError error)
+static void ErrorWorker(WebURLLoaderClient *client, const ResourceError &error)
 {
-    ASSERT(IsMainThread());
-    client->DidFail(error);
+    ASSERT(isMainThread());
+    ASSERT(false); // BKTODO: client->didFail(error);
 }
 
-void LoaderTask::ReportError(WebURLLoaderClient *client, base::SingleThreadTaskRunner *taskRunner, int errorCode, const GURL &URL)
+void LoaderTask::ReportError(WebURLLoaderClient *client, WebTaskRunner *taskRunner, int errorCode, const zed::url &URL)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ResourceError error(errorCode, URL);
-    taskRunner->PostTask(FROM_HERE,
+    taskRunner->PostTask(BLINK_FROM_HERE,
         std::bind(&ErrorWorker, client, error)
     );
+#endif
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO: ndef BLINKIT_CRAWLER_ONLY
 LoaderTaskForUI::LoaderTaskForUI(const ResourceRequest &request, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, WebURLLoaderClient *client)
     : LoaderTask(taskRunner, client)
     , m_URI(request.Url())

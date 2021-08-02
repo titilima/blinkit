@@ -17,8 +17,8 @@
 #include <string_view>
 #include "bk_def.h"
 #include "third_party/zed/include/zed/net/url.hpp"
-#if 0 // BKTODO: ndef BLINKIT_CRAWLER_ONLY
-#   include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
+#ifdef BLINKIT_UI_ENABLED
+#   include "blinkit/blink/renderer/wtf/text/AtomicString.h"
 #endif
 
 namespace blink {
