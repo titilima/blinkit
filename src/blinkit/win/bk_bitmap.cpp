@@ -30,7 +30,7 @@ HBITMAP BkBitmap::InstallDIBSection(int width, int height, HDC hdc)
     if (nullptr != ret)
     {
         const SkImageInfo info = SkImageInfo::MakeN32(width, height, kOpaque_SkAlphaType);
-        installPixels(info, bits, info.minRowBytes(), OnFinalize, ret);
+        ASSERT(false); // BKTODO: installPixels(info, bits, info.minRowBytes(), OnFinalize, ret);
     }
     return ret;
 }

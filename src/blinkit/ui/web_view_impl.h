@@ -15,19 +15,19 @@
 #pragma once
 
 #include "bk_ui.h"
-#include "base/single_thread_task_runner.h"
-#include "bkcommon/bk_mutex.hpp"
-#include "bkcommon/bk_shared_mutex.hpp"
-#include "blinkit/blink_impl/local_frame_client_impl.h"
+#include "blinkit/blink/renderer/core/loader/FrameLoaderClient.h"
+#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#if 0 // BKTODO:
 #include "cc/paint/skia_paint_canvas.h"
-#include "third_party/blink/public/platform/web_rect.h"
-#include "third_party/blink/public/platform/web_size.h"
 #include "third_party/blink/renderer/core/frame/resize_viewport_anchor.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page_visibility_state.h"
 #include "third_party/blink/renderer/core/page/page_widget_delegate.h"
-#include "third_party/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
+#endif
+#include "third_party/skia/include/core/SkColor.h"
+#include "third_party/zed/include/zed/mutex.hpp"
+#include "third_party/zed/include/zed/shared_mutex.hpp"
 
 namespace blink {
 class BrowserControls;
@@ -35,7 +35,7 @@ class PageScaleConstraintsSet;
 struct ViewportDescription;
 }
 
-class WebViewImpl : public blink::WebWidget, public BlinKit::LocalFrameClientImpl
+class WebViewImpl : public blink::FrameLoaderClient
 {
 public:
     virtual ~WebViewImpl(void);
@@ -47,6 +47,7 @@ public:
     int LoadUI(const char *URI);
     void SetClient(const BkWebViewClient &client);
 
+#if 0
     // Returns the page object associated with this view. This may be null when
     // the page is shutting down, but will be valid at all other times.
     blink::Page* GetPage(void) const { return m_page.get(); }
@@ -78,9 +79,11 @@ public:
     void StopDeferringCommits(void) {
         // BKTODO: Check this later.
     }
+#endif
 protected:
     WebViewImpl(BlinKit::ClientCaller &clientCaller, blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor = SK_ColorWHITE);
 
+#if 0 // BKTODO:
     bool ProcessTitleChange(const std::string &newTitle) const;
     void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
     void Resize(const blink::WebSize &size);
@@ -89,7 +92,9 @@ protected:
     void SetVisibilityState(blink::PageVisibilityState visibilityState);
 
     mutable BlinKit::BkMutex m_canvasLock;
+#endif
 private:
+#if 0 // BKTODO:
     void SetFocusImpl(bool enable);
     void SetVisibilityStateImpl(blink::PageVisibilityState visibilityState, bool isInitialState);
     void CancelPagePopup(void);
@@ -121,9 +126,11 @@ private:
     void DidFinishLoad(void) final;
 
     mutable BlinKit::BkSharedMutex m_lock;
+#endif
     BkWebViewClient m_client;
-    std::unique_ptr<blink::ChromeClient> m_chromeClient;
-    blink::WebSize m_size;
+    // BKTODO:std::unique_ptr<blink::ChromeClient> m_chromeClient;
+    blink::IntSize m_size;
+#if 0 // BKTODO:
     // If true, automatically resize the layout view around its content.
     bool m_shouldAutoResize = false;
     std::unique_ptr<blink::Page> m_page;
@@ -141,8 +148,9 @@ private:
     bool m_shouldDispatchFirstLayoutAfterFinishedLoading = false;
 
     std::unique_ptr<blink::ResizeViewportAnchor> m_resizeViewportAnchor;
+#endif
 };
 
-DEFINE_TYPE_CASTS(WebViewImpl, ::blink::LocalFrameClient, client, client->IsWebView(), client.IsWebView());
+// BKTODO: DEFINE_TYPE_CASTS(WebViewImpl, ::blink::LocalFrameClient, client, client->IsWebView(), client.IsWebView());
 
 #endif // BLINKIT_BLINKIT_WEB_VIEW_IMPL_H

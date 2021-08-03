@@ -47,12 +47,12 @@ void ExceptionState::ThrowSecurityError(const String &sanitizedMessage, const St
 {
     ASSERT(false); // BKTODO:
 }
+#endif
 
-void ExceptionState::ThrowTypeError(const String &message)
+void ExceptionState::throwTypeError(const String &message)
 {
     ASSERT(false); // BKTODO:
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -12,18 +12,24 @@
 #include "win_web_view.h"
 
 #include <windowsx.h>
-#include "base/strings/sys_string_conversions.h"
 #include "blinkit/app/win_app.h"
 #include "blinkit/win/bk_bitmap.h"
 #include "blinkit/win/message_task.h"
 #include "blinkit/win/view_store.h"
-#include "third_party/blink/renderer/platform/wtf/wtf.h"
+// BKTODO: #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 using namespace blink;
 
 namespace BlinKit {
 
 static ViewStore g_viewStore;
+
+static PageVisibilityState GetPageVisibilityState(bool isWindowVisible)
+{
+    return isWindowVisible
+        ? PageVisibilityState::PageVisibilityStateVisible
+        : PageVisibilityState::PageVisibilityStateHidden;
+}
 
 static SkColor WindowColor(void)
 {
@@ -32,7 +38,7 @@ static SkColor WindowColor(void)
 }
 
 WinWebView::WinWebView(HWND hWnd, ClientCaller &clientCaller, bool isWindowVisible)
-    : WebViewImpl(clientCaller, isWindowVisible ? PageVisibilityState::kVisible : PageVisibilityState::kHidden, WindowColor())
+    : WebViewImpl(clientCaller, GetPageVisibilityState(isWindowVisible), WindowColor())
     , m_hWnd(hWnd)
 {
     g_viewStore.OnNewView(m_hWnd, this);
@@ -54,6 +60,7 @@ WinWebView::~WinWebView(void)
     g_viewStore.OnViewDestroyed(m_hWnd);
 }
 
+#if 0 // BKTODO:
 void WinWebView::DispatchDidReceiveTitle(const String &title)
 {
     auto task = [this, newTitle = title.StdUtf8()]
@@ -72,6 +79,7 @@ void WinWebView::InvalidateNativeView(const IntRect &rect)
     RECT rc = { rect.X(), rect.Y(), rect.MaxX(), rect.MaxY() };
     ::InvalidateRect(m_hWnd, &rc, FALSE);
 }
+#endif
 
 void WinWebView::OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc)
 {
@@ -90,19 +98,22 @@ BOOL WinWebView::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
     WinWebView *webView = nullptr;
     auto task = [&webView, &clientCaller, hwnd, style = cs->style]
     {
-        webView = new WinWebView(hwnd, clientCaller, 0 != (style & WS_VISIBLE));
+        ASSERT(false); // BKTODO: webView = new WinWebView(hwnd, clientCaller, 0 != (style & WS_VISIBLE));
         webView->Initialize();
     };
-    app.GetAppCaller().SyncCall(FROM_HERE, task);
+    app.GetAppCaller().SyncCall(BLINK_FROM_HERE, task);
     return TRUE;
 }
 
 void WinWebView::OnNCDestroy(HWND hwnd)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     m_appCaller.Call(
-        FROM_HERE,
+        BLINK_FROM_HERE,
         std::bind(std::default_delete<WinWebView>(), this)
     );
+#endif
 }
 
 void WinWebView::OnPaint(HWND hwnd)
@@ -117,7 +128,7 @@ void WinWebView::OnPaint(HWND hwnd)
     int w = ps.rcPaint.right - ps.rcPaint.left;
     int h = ps.rcPaint.bottom - ps.rcPaint.top;
     {
-        std::unique_lock<BkMutex> lock(m_canvasLock);
+        ASSERT(false); // BKTODO: std::unique_lock<BkMutex> lock(m_canvasLock);
         BitBlt(hdc, x, y, w, h, m_memoryDC, x, y, SRCCOPY);
     }
 
@@ -126,8 +137,8 @@ void WinWebView::OnPaint(HWND hwnd)
 
 void WinWebView::OnShowWindow(HWND, BOOL fShow, UINT)
 {
-    PageVisibilityState state = fShow ? PageVisibilityState::kVisible : PageVisibilityState::kHidden;
-    WebViewImpl::SetVisibilityState(state);
+    PageVisibilityState state = GetPageVisibilityState(fShow);
+    ASSERT(false); // BKTODO: WebViewImpl::SetVisibilityState(state);
 }
 
 void WinWebView::OnSize(HWND, UINT state, int cx, int cy)
@@ -135,14 +146,18 @@ void WinWebView::OnSize(HWND, UINT state, int cx, int cy)
     if (SIZE_MINIMIZED == state)
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     auto task = [this, cx, cy]
     {
         Resize(WebSize(cx, cy));
         UpdateAndPaint();
     };
     m_appCaller.Call(FROM_HERE, std::move(task));
+#endif
 }
 
+#if 0 // BKTODO:
 SkBitmap WinWebView::PrepareBitmapForCanvas(const WebSize &size)
 {
     BkBitmap ret;
@@ -152,6 +167,7 @@ SkBitmap WinWebView::PrepareBitmapForCanvas(const WebSize &size)
         m_oldBitmap = oldBitmap;
     return ret;
 }
+#endif
 
 bool WinWebView::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
 {
@@ -182,10 +198,10 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
             HANDLE_WM_SIZE(hWnd, wParam, lParam, OnSize);
             break;
         case WM_SETFOCUS:
-            WebViewImpl::SetFocus(true);
+            ASSERT(false); // BKTODO: WebViewImpl::SetFocus(true);
             break;
         case WM_KILLFOCUS:
-            WebViewImpl::SetFocus(false);
+            ASSERT(false); // BKTODO: WebViewImpl::SetFocus(false);
             break;
         case WM_SHOWWINDOW:
             HANDLE_WM_SHOWWINDOW(hWnd, wParam, lParam, OnShowWindow);
@@ -223,7 +239,7 @@ void WinWebView::UpdateScaleFactor(void)
             NOTREACHED();
             return;
     }
-    SetScaleFactor(scaleFactor);
+    ASSERT(false); // BKTODO: SetScaleFactor(scaleFactor);
 }
 
 } // namespace BlinKit

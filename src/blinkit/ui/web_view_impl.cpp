@@ -9,26 +9,28 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "web_view_impl.h"
+#include "./web_view_impl.h"
 
 #include "blinkit/app/app_impl.h"
+#if 0 // BKTODO:
 #include "blinkit/ui/rendering_scheduler.h"
-#include "third_party/blink/renderer/core/editing/editor.h"
-#include "third_party/blink/renderer/core/frame/browser_controls.h"
-#include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
-#include "third_party/blink/renderer/core/frame/settings.h"
-#include "third_party/blink/renderer/core/frame/viewport_data.h"
-#include "third_party/blink/renderer/core/frame/visual_viewport.h"
-#include "third_party/blink/renderer/core/editing/editing_utilities.h"
-#include "third_party/blink/renderer/core/editing/selection_template.h"
-#include "third_party/blink/renderer/core/layout/layout_view.h"
-#include "third_party/blink/renderer/core/layout/text_autosizer.h"
-#include "third_party/blink/renderer/core/loader/frame_load_request.h"
-#include "third_party/blink/renderer/core/page/chrome_client_impl.h"
-#include "third_party/blink/renderer/core/page/focus_controller.h"
-#include "third_party/blink/renderer/core/page/page.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+#include "blinkit/blink/renderer/core/editing/editor.h"
+#include "blinkit/blink/renderer/core/frame/browser_controls.h"
+#include "blinkit/blink/renderer/core/frame/local_frame.h"
+#include "blinkit/blink/renderer/core/frame/page_scale_constraints_set.h"
+#include "blinkit/blink/renderer/core/frame/settings.h"
+#include "blinkit/blink/renderer/core/frame/viewport_data.h"
+#include "blinkit/blink/renderer/core/frame/visual_viewport.h"
+#include "blinkit/blink/renderer/core/editing/editing_utilities.h"
+#include "blinkit/blink/renderer/core/editing/selection_template.h"
+#include "blinkit/blink/renderer/core/layout/layout_view.h"
+#include "blinkit/blink/renderer/core/layout/text_autosizer.h"
+#include "blinkit/blink/renderer/core/loader/frame_load_request.h"
+#include "blinkit/blink/renderer/core/page/chrome_client_impl.h"
+#include "blinkit/blink/renderer/core/page/focus_controller.h"
+#include "blinkit/blink/renderer/core/page/page.h"
+#include "blinkit/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+#endif
 
 using namespace blink;
 using namespace BlinKit;
@@ -38,12 +40,14 @@ static const float ViewportAnchorCoordX = 0.5f;
 static const float ViewportAnchorCoordY = 0;
 
 WebViewImpl::WebViewImpl(ClientCaller &clientCaller, PageVisibilityState visibilityState, SkColor baseBackgroundColor)
-    : LocalFrameClientImpl(AppImpl::Get().GetAppCaller(), clientCaller)
-    , m_chromeClient(ChromeClientImpl::Create(this)), m_baseBackgroundColor(baseBackgroundColor)
+/*:  LocalFrameClientImpl(AppImpl::Get().GetAppCaller(), clientCaller)
+    , m_chromeClient(ChromeClientImpl::Create(this)), m_baseBackgroundColor(baseBackgroundColor) */
 {
-    ASSERT(IsMainThread());
+    ASSERT(isMainThread());
     memset(&m_client, 0, sizeof(m_client));
 
+    ASSERT(false); // BKTODO:
+#if 0
     Page::PageClients pageClients;
     pageClients.chromeClient = m_chromeClient.get();
     pageClients.frameClient = this;
@@ -67,14 +71,16 @@ WebViewImpl::WebViewImpl(ClientCaller &clientCaller, PageVisibilityState visibil
     page_importance_signals_.SetObserver(client);
 #endif
     m_resizeViewportAnchor = std::make_unique<ResizeViewportAnchor>(*m_page);
+#endif
 }
 
 WebViewImpl::~WebViewImpl(void)
 {
-    ASSERT(IsMainThread());
-    m_page->WillBeDestroyed();
+    ASSERT(isMainThread());
+    ASSERT(false); // BKTODO: m_page->WillBeDestroyed();
 }
 
+#if 0 // BKTODO:
 Color WebViewImpl::BaseBackgroundColor(void) const
 {
     return m_baseBackgroundColor;
@@ -818,6 +824,7 @@ void WebViewImpl::UpdatePageDefinedViewportConstraints(const ViewportDescription
     UpdateMainFrameLayoutSize();
 #endif
 }
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
