@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ThemePainterDefault.cpp
+// Description: ThemePainterDefault Class
+//      Author: Ziming Li
+//     Created: 2021-08-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Apple Inc.
  * Copyright (C) 2007 Alp Toker <alp@atoker.com>
@@ -27,14 +38,12 @@
 #include "core/layout/LayoutObject.h"
 #include "core/layout/LayoutProgress.h"
 #include "core/layout/LayoutTheme.h"
-#include "core/paint/MediaControlsPainter.h"
 #include "core/paint/PaintInfo.h"
 #include "platform/LayoutTestSupport.h"
 #include "platform/graphics/Color.h"
 #include "platform/graphics/GraphicsContext.h"
 #include "platform/graphics/GraphicsContextStateSaver.h"
 #include "public/platform/Platform.h"
-#include "public/platform/WebRect.h"
 #include "public/platform/WebThemeEngine.h"
 
 namespace blink {
@@ -152,7 +161,7 @@ bool ThemePainterDefault::paintCheckbox(const LayoutObject& o, const PaintInfo& 
         i.context.translate(-unzoomedRect.x(), -unzoomedRect.y());
     }
 
-    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartCheckbox, getWebThemeState(o), WebRect(unzoomedRect), &extraParams);
+    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartCheckbox, getWebThemeState(o), unzoomedRect, &extraParams);
     return false;
 }
 
@@ -162,7 +171,7 @@ bool ThemePainterDefault::paintRadio(const LayoutObject& o, const PaintInfo& i, 
     WebCanvas* canvas = i.context.canvas();
     extraParams.button.checked = LayoutTheme::isChecked(o);
 
-    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartRadio, getWebThemeState(o), WebRect(rect), &extraParams);
+    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartRadio, getWebThemeState(o), rect, &extraParams);
     return false;
 }
 
@@ -175,7 +184,7 @@ bool ThemePainterDefault::paintButton(const LayoutObject& o, const PaintInfo& i,
     if (o.hasBackground())
         extraParams.button.backgroundColor = o.resolveColor(CSSPropertyBackgroundColor).rgb();
 
-    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartButton, getWebThemeState(o), WebRect(rect), &extraParams);
+    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartButton, getWebThemeState(o), rect, &extraParams);
     return false;
 }
 
@@ -197,7 +206,7 @@ bool ThemePainterDefault::paintTextField(const LayoutObject& o, const PaintInfo&
     Color backgroundColor = o.resolveColor(CSSPropertyBackgroundColor);
     extraParams.textField.backgroundColor = backgroundColor.rgb();
 
-    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartTextField, getWebThemeState(o), WebRect(rect), &extraParams);
+    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartTextField, getWebThemeState(o), rect, &extraParams);
     return false;
 }
 
@@ -227,7 +236,7 @@ bool ThemePainterDefault::paintMenuList(const LayoutObject& o, const PaintInfo& 
     setupMenuListArrow(box, rect, extraParams);
 
     WebCanvas* canvas = i.context.canvas();
-    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartMenuList, getWebThemeState(o), WebRect(rect), &extraParams);
+    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartMenuList, getWebThemeState(o), rect, &extraParams);
     return false;
 }
 
@@ -244,7 +253,7 @@ bool ThemePainterDefault::paintMenuListButton(const LayoutObject& o, const Paint
     setupMenuListArrow(toLayoutBox(o), rect, extraParams);
 
     WebCanvas* canvas = i.context.canvas();
-    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartMenuList, getWebThemeState(o), WebRect(rect), &extraParams);
+    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartMenuList, getWebThemeState(o), rect, &extraParams);
     return false;
 }
 
@@ -294,7 +303,7 @@ bool ThemePainterDefault::paintSliderTrack(const LayoutObject& o, const PaintInf
         i.context.translate(-unzoomedRect.x(), -unzoomedRect.y());
     }
 
-    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartSliderTrack, getWebThemeState(o), WebRect(unzoomedRect), &extraParams);
+    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartSliderTrack, getWebThemeState(o), unzoomedRect, &extraParams);
 
     return false;
 }
@@ -319,7 +328,7 @@ bool ThemePainterDefault::paintSliderThumb(const LayoutObject& o, const PaintInf
         i.context.translate(-unzoomedRect.x(), -unzoomedRect.y());
     }
 
-    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartSliderThumb, getWebThemeState(o), WebRect(unzoomedRect), &extraParams);
+    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartSliderThumb, getWebThemeState(o), unzoomedRect, &extraParams);
     return false;
 }
 
@@ -330,7 +339,7 @@ bool ThemePainterDefault::paintInnerSpinButton(const LayoutObject& o, const Pain
     extraParams.innerSpin.spinUp = (LayoutTheme::controlStatesForLayoutObject(o) & SpinUpControlState);
     extraParams.innerSpin.readOnly = LayoutTheme::isReadOnlyControl(o);
 
-    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartInnerSpinButton, getWebThemeState(o), WebRect(rect), &extraParams);
+    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartInnerSpinButton, getWebThemeState(o), rect, &extraParams);
     return false;
 }
 
@@ -351,7 +360,7 @@ bool ThemePainterDefault::paintProgressBar(const LayoutObject& o, const PaintInf
 
     DirectionFlippingScope scope(o, i, rect);
     WebCanvas* canvas = i.context.canvas();
-    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartProgressBar, getWebThemeState(o), WebRect(rect), &extraParams);
+    Platform::current()->themeEngine()->paint(canvas, WebThemeEngine::PartProgressBar, getWebThemeState(o), rect, &extraParams);
     return false;
 }
 
