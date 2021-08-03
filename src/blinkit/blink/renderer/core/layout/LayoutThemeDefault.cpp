@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutThemeDefault.cpp
+// Description: LayoutThemeDefault Class
+//      Author: Ziming Li
+//     Created: 2021-08-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Apple Inc.
  * Copyright (C) 2007 Alp Toker <alp@atoker.com>
@@ -28,7 +39,7 @@
 #include "core/layout/LayoutObject.h"
 #include "core/layout/LayoutProgress.h"
 #include "core/layout/LayoutThemeFontProvider.h"
-#include "core/paint/MediaControlsPainter.h"
+// BKTODO: #include "core/paint/MediaControlsPainter.h"
 #include "platform/LayoutTestSupport.h"
 #include "platform/PlatformResourceLoader.h"
 #include "platform/graphics/Color.h"
@@ -197,7 +208,7 @@ void LayoutThemeDefault::adjustSliderThumbSize(ComputedStyle& style) const
         style.setWidth(Length(size.height() * zoomLevel, Fixed));
         style.setHeight(Length(size.width() * zoomLevel, Fixed));
     } else {
-        MediaControlsPainter::adjustMediaSliderThumbSize(style);
+        ASSERT(false); // BKTODO: MediaControlsPainter::adjustMediaSliderThumbSize(style);
     }
 }
 
