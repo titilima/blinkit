@@ -59,6 +59,7 @@ selectionchange
 selectstart
 submit
 textInput
+toggle
 transitionend
 unload
 visibilitychange
