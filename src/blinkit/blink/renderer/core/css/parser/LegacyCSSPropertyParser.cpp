@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LegacyCSSPropertyParser.cpp
+// Description: CSSPropertyParser Class
+//      Author: Ziming Li
+//     Created: 2021-08-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -1166,8 +1177,10 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseColor(const CSSParserVa
     if (isColorKeyword(id)) {
         if (!isValueAllowedInMode(id, m_context.mode()))
             return nullptr;
+#if 0 // BKTODO:
         if (id == CSSValueWebkitText && m_context.useCounter())
             m_context.useCounter()->count(UseCounter::WebkitTextInColorProperty);
+#endif
         return cssValuePool().createIdentifierValue(id);
     }
     RGBA32 c = Color::transparent;
@@ -1692,16 +1705,20 @@ bool CSSPropertyParser::parseFillProperty(CSSPropertyID propId, CSSPropertyID& p
                 || val->id == CSSValueBorderBox || val->id == CSSValuePaddingBox || val->id == CSSValueContentBox
                 || ((propId == CSSPropertyWebkitBackgroundClip || propId == CSSPropertyWebkitMaskClip)
                     && (val->id == CSSValueText || val->id == CSSValueWebkitText))) {
+#if 0 // BKTODO:
                 if (val->id == CSSValueWebkitText && m_context.useCounter())
                     m_context.useCounter()->count(UseCounter::WebkitTextInClipProperty);
+#endif
                 currValue = cssValuePool().createIdentifierValue(val->id);
                 m_valueList->next();
             }
             break;
         case CSSPropertyBackgroundClip:
             if (parseBackgroundClip(val, currValue)) {
+#if 0 // BKTODO:
                 if (val->id == CSSValueWebkitText && m_context.useCounter())
                     m_context.useCounter()->count(UseCounter::WebkitTextInClipProperty);
+#endif
                 m_valueList->next();
             }
             break;
@@ -4437,16 +4454,20 @@ bool CSSPropertyParser::parseGeneratedImage(CSSParserValueList* valueList, RefPt
         return false;
 
     if (val->function->id == CSSValueWebkitGradient) {
+#if 0 // BKTODO:
         // FIXME: This should send a deprecation message.
         if (m_context.useCounter())
             m_context.useCounter()->count(UseCounter::DeprecatedWebKitGradient);
+#endif
         return parseDeprecatedGradient(valueList, value);
     }
 
     if (val->function->id == CSSValueWebkitLinearGradient) {
+#if 0 // BKTODO:
         // FIXME: This should send a deprecation message.
         if (m_context.useCounter())
             m_context.useCounter()->count(UseCounter::DeprecatedWebKitLinearGradient);
+#endif
         return parseDeprecatedLinearGradient(valueList, value, NonRepeating);
     }
 
@@ -4454,9 +4475,11 @@ bool CSSPropertyParser::parseGeneratedImage(CSSParserValueList* valueList, RefPt
         return parseLinearGradient(valueList, value, NonRepeating);
 
     if (val->function->id == CSSValueWebkitRepeatingLinearGradient) {
+#if 0 // BKTODO:
         // FIXME: This should send a deprecation message.
         if (m_context.useCounter())
             m_context.useCounter()->count(UseCounter::DeprecatedWebKitRepeatingLinearGradient);
+#endif
         return parseDeprecatedLinearGradient(valueList, value, Repeating);
     }
 
@@ -4464,9 +4487,11 @@ bool CSSPropertyParser::parseGeneratedImage(CSSParserValueList* valueList, RefPt
         return parseLinearGradient(valueList, value, Repeating);
 
     if (val->function->id == CSSValueWebkitRadialGradient) {
+#if 0 // BKTODO:
         // FIXME: This should send a deprecation message.
         if (m_context.useCounter())
             m_context.useCounter()->count(UseCounter::DeprecatedWebKitRadialGradient);
+#endif
         return parseDeprecatedRadialGradient(valueList, value, NonRepeating);
     }
 
@@ -4474,8 +4499,10 @@ bool CSSPropertyParser::parseGeneratedImage(CSSParserValueList* valueList, RefPt
         return parseRadialGradient(valueList, value, NonRepeating);
 
     if (val->function->id == CSSValueWebkitRepeatingRadialGradient) {
+#if 0 // BKTODO:
         if (m_context.useCounter())
             m_context.useCounter()->count(UseCounter::DeprecatedWebKitRepeatingRadialGradient);
+#endif
         return parseDeprecatedRadialGradient(valueList, value, Repeating);
     }
 
