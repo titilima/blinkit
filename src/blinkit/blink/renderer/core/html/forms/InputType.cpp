@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InputType.cpp
+// Description: InputType Class
+//      Author: Ziming Li
+//     Created: 2021-08-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -27,10 +38,9 @@
 
 #include "core/html/forms/InputType.h"
 
-#include "bindings/core/v8/ExceptionMessages.h"
 #include "bindings/core/v8/ExceptionState.h"
 #include "core/InputTypeNames.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/NodeComputedStyle.h"
 #include "core/events/KeyboardEvent.h"
@@ -836,8 +846,10 @@ void InputType::applyStep(const Decimal& current, int count, AnyStepHandling any
     // 10. Set the value of the element to value as string.
     setValueAsDecimal(newValue, eventBehavior, exceptionState);
 
+#if 0 // BKTODO:
     if (AXObjectCache* cache = element().document().existingAXObjectCache())
         cache->handleValueChanged(&element());
+#endif
 }
 
 bool InputType::getAllowedValueStep(Decimal* step) const

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: URLInputType.cpp
+// Description: URLInputType Class
+//      Author: Ziming Li
+//     Created: 2021-08-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -55,7 +66,8 @@ const AtomicString& URLInputType::formControlType() const
 
 bool URLInputType::typeMismatchFor(const String& value) const
 {
-    return !value.isEmpty() && !KURL(KURL(), value).isValid();
+    ASSERT(false); // BKTODO: return !value.isEmpty() && !KURL(KURL(), value).isValid();
+    return false;
 }
 
 bool URLInputType::typeMismatch() const

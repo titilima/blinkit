@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RangeInputType.cpp
+// Description: RangeInputType Class
+//      Author: Ziming Li
+//     Created: 2021-08-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -34,15 +45,15 @@
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
 #include "core/HTMLNames.h"
 #include "core/InputTypeNames.h"
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/NodeComputedStyle.h"
-#include "core/dom/Touch.h"
-#include "core/dom/TouchList.h"
+// BKTODO: #include "core/dom/Touch.h"
+// BKTODO: #include "core/dom/TouchList.h"
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/events/KeyboardEvent.h"
 #include "core/events/MouseEvent.h"
 #include "core/events/ScopedEventQueue.h"
-#include "core/events/TouchEvent.h"
+// BKTODO: #include "core/events/TouchEvent.h"
 #include "core/html/HTMLDataListElement.h"
 #include "core/html/HTMLDataListOptionsCollection.h"
 #include "core/html/HTMLDivElement.h"
@@ -52,7 +63,7 @@
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/html/shadow/ShadowElementNames.h"
 #include "core/html/shadow/SliderThumbElement.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "core/layout/LayoutSlider.h"
 #include "platform/PlatformMouseEvent.h"
 #include "wtf/MathExtras.h"
@@ -159,6 +170,8 @@ void RangeInputType::handleTouchEvent(TouchEvent* event)
     if (element().isDisabledOrReadOnly())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (event->type() == EventTypeNames::touchend) {
         element().dispatchFormControlChangeEvent();
         event->setDefaultHandled();
@@ -170,6 +183,7 @@ void RangeInputType::handleTouchEvent(TouchEvent* event)
         sliderThumbElement()->setPositionFromPoint(touches->item(0)->absoluteLocation());
         event->setDefaultHandled();
     }
+#endif
 }
 
 bool RangeInputType::hasTouchEventHandler() const
@@ -230,8 +244,10 @@ void RangeInputType::handleKeydownEvent(KeyboardEvent* event)
         TextFieldEventBehavior eventBehavior = DispatchInputAndChangeEvent;
         setValueAsDecimal(newValue, eventBehavior, IGNORE_EXCEPTION);
 
+#if 0 // BKTODO:
         if (AXObjectCache* cache = element().document().existingAXObjectCache())
             cache->handleValueChanged(&element());
+#endif
     }
 
     event->setDefaultHandled();
@@ -312,8 +328,11 @@ void RangeInputType::warnIfValueIsInvalid(const String& value) const
 {
     if (value.isEmpty() || !element().sanitizeValue(value).isEmpty())
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     element().document().addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, WarningMessageLevel,
         String::format("The specified value %s is not a valid number. The value must match to the following regular expression: -?(\\d+|\\d+\\.\\d+|\\.\\d+)([eE][-+]?\\d+)?", JSONValue::quoteString(value).utf8().data())));
+#endif
 }
 
 void RangeInputType::disabledAttributeChanged()

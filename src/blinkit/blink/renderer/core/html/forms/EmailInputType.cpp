@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EmailInputType.cpp
+// Description: EmailInputType Class
+//      Author: Ziming Li
+//     Created: 2021-08-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * This file is part of the WebKit project.
  *
@@ -23,13 +34,12 @@
 
 #include "core/html/forms/EmailInputType.h"
 
-#include "bindings/core/v8/ScriptRegexp.h"
 #include "core/InputTypeNames.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "core/page/ChromeClient.h"
-#include "platform/JSONValues.h"
+// BKTODO: #include "platform/JSONValues.h"
 #include "platform/text/PlatformLocale.h"
 #include "public/platform/Platform.h"
 #include "wtf/LeakAnnotations.h"
@@ -103,11 +113,15 @@ String EmailInputType::convertEmailAddressToUnicode(const String& address) const
         return address;
 
     String languages = chromeClient()->acceptLanguages();
+    ASSERT(false); // BKTODO:
+    return address;
+#if 0
     String unicodeHost = Platform::current()->convertIDNToUnicode(address.substring(atPosition + 1), languages);
     StringBuilder builder;
     builder.append(address, 0, atPosition + 1);
     builder.append(unicodeHost);
     return builder.toString();
+#endif
 }
 
 static bool isInvalidLocalPartCharacter(UChar ch)
@@ -140,6 +154,9 @@ bool EmailInputType::isValidEmailAddress(const String& address)
     if (!addressLength)
         return false;
 
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     LEAK_SANITIZER_DISABLED_SCOPE;
     DEFINE_STATIC_LOCAL(const ScriptRegexp, regExp, (emailPattern, TextCaseInsensitive));
 
@@ -147,6 +164,7 @@ bool EmailInputType::isValidEmailAddress(const String& address)
     int matchOffset = regExp.match(address, 0, &matchLength);
 
     return !matchOffset && matchLength == addressLength;
+#endif
 }
 
 PassRefPtrWillBeRawPtr<InputType> EmailInputType::create(HTMLInputElement& element)
@@ -246,8 +264,11 @@ void EmailInputType::warnIfValueIsInvalid(const String& value) const
     String invalidAddress = findInvalidAddress(value);
     if (invalidAddress.isNull())
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     element().document().addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, WarningMessageLevel,
         String::format("The specified value %s is not a valid email address.", JSONValue::quoteString(invalidAddress).utf8().data())));
+#endif
 }
 
 bool EmailInputType::supportsSelectionAPI() const

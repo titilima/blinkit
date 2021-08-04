@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BaseChooserOnlyDateAndTimeInputType.cpp
+// Description: BaseChooserOnlyDateAndTimeInputType Class
+//      Author: Ziming Li
+//     Created: 2021-08-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -33,7 +44,7 @@
 #include "core/html/HTMLDivElement.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/page/ChromeClient.h"
-#include "platform/UserGestureIndicator.h"
+// BKTODO: #include "platform/UserGestureIndicator.h"
 
 namespace blink {
 
@@ -41,7 +52,7 @@ BaseChooserOnlyDateAndTimeInputType::BaseChooserOnlyDateAndTimeInputType(HTMLInp
     : BaseDateAndTimeInputType(element)
 {
 #if ENABLE(OILPAN)
-    ThreadState::current()->registerPreFinalizer(this);
+    ASSERT(false); // BKTODO: ThreadState::current()->registerPreFinalizer(this);
 #endif
 }
 
@@ -62,8 +73,11 @@ DEFINE_TRACE(BaseChooserOnlyDateAndTimeInputType)
 
 void BaseChooserOnlyDateAndTimeInputType::handleDOMActivateEvent(Event*)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (element().isDisabledOrReadOnly() || !element().layoutObject() || !UserGestureIndicator::processingUserGesture() || element().openShadowRoot())
         return;
+#endif
 
     if (m_dateTimeChooser)
         return;

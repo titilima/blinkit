@@ -35,9 +35,9 @@
 #include "core/dom/Document.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/html/forms/DateTimeFieldsState.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "platform/DateComponents.h"
-#include "platform/JSONValues.h"
+// BKTODO: #include "platform/JSONValues.h"
 #include "platform/text/PlatformLocale.h"
 #include "wtf/PassOwnPtr.h"
 
@@ -93,8 +93,11 @@ bool DateInputType::setMillisecondToDateComponents(double value, DateComponents*
 void DateInputType::warnIfValueIsInvalid(const String& value) const
 {
     if (value != element().sanitizeValue(value)) {
+        ASSERT(false); // BKTODO:
+#if 0
         element().document().addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, WarningMessageLevel,
             String::format("The specified value %s does not conform to the required format, \"yyyy-MM-dd\".", JSONValue::quoteString(value).utf8().data())));
+#endif
     }
 }
 

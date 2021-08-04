@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TimeInputType.cpp
+// Description: TimeInputType Class
+//      Author: Ziming Li
+//     Created: 2021-08-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -35,7 +46,7 @@
 #include "core/dom/Document.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/html/forms/DateTimeFieldsState.h"
-#include "core/inspector/ConsoleMessage.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
 #include "platform/DateComponents.h"
 #include "platform/text/PlatformLocale.h"
 #include "wtf/CurrentTime.h"
@@ -104,8 +115,11 @@ bool TimeInputType::setMillisecondToDateComponents(double value, DateComponents*
 void TimeInputType::warnIfValueIsInvalid(const String& value) const
 {
     if (value != element().sanitizeValue(value)) {
+        ASSERT(false); // BKTODO:
+#if 0
         element().document().addConsoleMessage(ConsoleMessage::create(RenderingMessageSource, WarningMessageLevel,
             String::format("The specified value %s does not conform to the required format.  The format is \"HH:mm\", \"HH:mm:ss\" or \"HH:mm:ss.SSS\" where HH is 00-23, mm is 00-59, ss is 00-59, and SSS is 000-999.", JSONValue::quoteString(value).utf8().data())));
+#endif
     }
 }
 

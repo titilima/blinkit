@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageInputType.cpp
+// Description: ImageInputType Class
+//      Author: Ziming Li
+//     Created: 2021-08-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2010 Google Inc. All rights reserved.
@@ -142,7 +153,7 @@ void ImageInputType::srcAttributeChanged()
 {
     if (!element().layoutObject())
         return;
-    element().ensureImageLoader().updateFromElement(ImageLoader::UpdateIgnorePreviousError);
+    ASSERT(false); // BKTODO: element().ensureImageLoader().updateFromElement(ImageLoader::UpdateIgnorePreviousError);
 }
 
 void ImageInputType::valueAttributeChanged()
@@ -157,7 +168,7 @@ void ImageInputType::startResourceLoading()
     BaseButtonInputType::startResourceLoading();
 
     HTMLImageLoader& imageLoader = element().ensureImageLoader();
-    imageLoader.updateFromElement();
+    ASSERT(false); // BKTODO: imageLoader.updateFromElement();
 
     LayoutObject* layoutObject = element().layoutObject();
     if (!layoutObject || !layoutObject->isLayoutImage())
