@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutBlockFlowLine.cpp
+// Description: LayoutBlockFlow Class
+//      Author: Ziming Li
+//     Created: 2021-08-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All right reserved.
@@ -20,13 +31,13 @@
  *
  */
 
-#include "core/dom/AXObjectCache.h"
+// BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/layout/BidiRunForLine.h"
-#include "core/layout/LayoutCounter.h"
+// BKTODO: #include "core/layout/LayoutCounter.h"
 #include "core/layout/LayoutFlowThread.h"
 #include "core/layout/LayoutListMarker.h"
 #include "core/layout/LayoutObject.h"
-#include "core/layout/LayoutRubyRun.h"
+// BKTODO: #include "core/layout/LayoutRubyRun.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/TextRunConstructor.h"
 #include "core/layout/VerticalPositionCache.h"
@@ -38,10 +49,10 @@
 #include "core/layout/line/LineLayoutState.h"
 #include "core/layout/line/LineWidth.h"
 #include "core/layout/line/WordMeasurement.h"
-#include "core/layout/svg/line/SVGRootInlineBox.h"
+// BKTODO: #include "core/layout/svg/line/SVGRootInlineBox.h"
 #include "platform/fonts/Character.h"
 #include "platform/text/BidiResolver.h"
-#include "wtf/RefCountedLeakCounter.h"
+// BKTODO: #include "wtf/RefCountedLeakCounter.h"
 #include "wtf/StdLibExtras.h"
 #include "wtf/Vector.h"
 #include "wtf/text/CharacterNames.h"
@@ -298,10 +309,12 @@ RootInlineBox* LayoutBlockFlow::constructLine(BidiRunList<BidiRun>& bidiRuns, co
 
         box->setBidiLevel(r->level());
 
+#if 0 // BKTODO:
         if (box->isInlineTextBox()) {
             if (AXObjectCache* cache = document().existingAXObjectCache())
                 cache->inlineTextBoxesUpdated(r->m_object);
         }
+#endif
     }
 
     // We should have a root inline box.  It should be unconstructed and
@@ -411,6 +424,8 @@ static void updateLogicalWidthForCenterAlignedBlock(bool isLeftToRightDirection,
 
 void LayoutBlockFlow::setMarginsForRubyRun(BidiRun* run, LayoutRubyRun* layoutRubyRun, LayoutObject* previousObject, const LineInfo& lineInfo)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     int startOverhang;
     int endOverhang;
     LayoutObject* nextObject = nullptr;
@@ -423,6 +438,7 @@ void LayoutBlockFlow::setMarginsForRubyRun(BidiRun* run, LayoutRubyRun* layoutRu
     layoutRubyRun->getOverhang(lineInfo.isFirstLine(), layoutRubyRun->style()->isLeftToRightDirection() ? previousObject : nextObject, layoutRubyRun->style()->isLeftToRightDirection() ? nextObject : previousObject, startOverhang, endOverhang);
     setMarginStartForChild(*layoutRubyRun, -startOverhang);
     setMarginEndForChild(*layoutRubyRun, -endOverhang);
+#endif
 }
 
 static inline void setLogicalWidthForTextRun(RootInlineBox* lineBox, BidiRun* run, LayoutText* layoutText, LayoutUnit xPos, const LineInfo& lineInfo,
@@ -643,8 +659,11 @@ BidiRun* LayoutBlockFlow::computeInlineDirectionPositionsForSegment(RootInlineBo
             isAfterExpansion = false;
             if (!r->m_object->isLayoutInline()) {
                 LayoutBox* layoutBox = toLayoutBox(r->m_object);
+                ASSERT(false); // BKTODO:
+#if 0
                 if (layoutBox->isRubyRun())
                     setMarginsForRubyRun(r, toLayoutRubyRun(layoutBox), previousObject, lineInfo);
+#endif
                 r->m_box->setLogicalWidth(logicalWidthForChild(*layoutBox));
                 totalLogicalWidth += marginStartForChild(*layoutBox) + marginEndForChild(*layoutBox);
                 needsWordSpacing = true;
@@ -724,6 +743,8 @@ RootInlineBox* LayoutBlockFlow::createLineBoxesFromBidiRuns(unsigned bidiLevel, 
     // Now position our text runs vertically.
     computeBlockDirectionPositionsForLine(lineBox, bidiRuns.firstRun(), textBoxDataMap, verticalPositionCache);
 
+    ASSERT(false); // BKTODO:
+#if 0
     // SVG text layout code computes vertical & horizontal positions on its own.
     // Note that we still need to execute computeVerticalPositionsForLine() as
     // it calls InlineTextBox::positionLineBox(), which tracks whether the box
@@ -733,6 +754,7 @@ RootInlineBox* LayoutBlockFlow::createLineBoxesFromBidiRuns(unsigned bidiLevel, 
         ASSERT(isSVGText());
         toSVGRootInlineBox(lineBox)->computePerCharacterLayoutInformation();
     }
+#endif
 
     // Compute our overflow now.
     lineBox->computeOverflow(lineBox->lineTop(), lineBox->lineBottom(), textBoxDataMap);
@@ -791,6 +813,8 @@ inline const InlineIterator& LayoutBlockFlow::restartLayoutRunsAndFloatsInRange(
 
 void LayoutBlockFlow::appendFloatsToLastLine(LineLayoutState& layoutState, const InlineIterator& cleanLineStart, const InlineBidiResolver& resolver, const BidiStatus& cleanLineBidiStatus)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     const FloatingObjectSet& floatingObjectSet = m_floatingObjects->set();
     FloatingObjectSetIterator it = floatingObjectSet.begin();
     FloatingObjectSetIterator end = floatingObjectSet.end();
@@ -821,6 +845,7 @@ void LayoutBlockFlow::appendFloatsToLastLine(LineLayoutState& layoutState, const
         layoutState.setFloatIndex(layoutState.floatIndex() + 1);
     }
     layoutState.setLastFloat(!floatingObjectSet.isEmpty() ? floatingObjectSet.last().get() : 0);
+#endif
 }
 
 void LayoutBlockFlow::layoutRunsAndFloatsInRange(LineLayoutState& layoutState,
@@ -2010,7 +2035,7 @@ bool LayoutBlockFlow::positionNewFloatOnLine(FloatingObject& newFloat, FloatingO
         return true;
 
     const FloatingObjectSet& floatingObjectSet = m_floatingObjects->set();
-    ASSERT(floatingObjectSet.last() == &newFloat);
+    ASSERT(floatingObjectSet.last().get() == &newFloat);
 
     LayoutUnit floatLogicalTop = logicalTopForFloat(newFloat);
     int paginationStrut = newFloat.paginationStrut();
