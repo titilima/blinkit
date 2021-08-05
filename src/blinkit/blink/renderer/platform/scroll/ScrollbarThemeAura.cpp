@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollbarThemeAura.cpp
+// Description: ScrollbarThemeAura Class
+//      Author: Ziming Li
+//     Created: 2021-08-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, 2009, Google Inc. All rights reserved.
  *
@@ -38,7 +49,6 @@
 #include "platform/scroll/ScrollbarThemeClient.h"
 #include "platform/scroll/ScrollbarThemeOverlay.h"
 #include "public/platform/Platform.h"
-#include "public/platform/WebRect.h"
 #include "public/platform/WebThemeEngine.h"
 
 namespace blink {
@@ -89,7 +99,7 @@ void ScrollbarThemeAura::paintTrackPiece(GraphicsContext& gc, const ScrollbarThe
     extraParams.scrollbarTrack.trackY = alignRect.y();
     extraParams.scrollbarTrack.trackWidth = alignRect.width();
     extraParams.scrollbarTrack.trackHeight = alignRect.height();
-    Platform::current()->themeEngine()->paint(gc.canvas(), scrollbar.orientation() == HorizontalScrollbar ? WebThemeEngine::PartScrollbarHorizontalTrack : WebThemeEngine::PartScrollbarVerticalTrack, state, WebRect(rect), &extraParams);
+    Platform::current()->themeEngine()->paint(gc.canvas(), scrollbar.orientation() == HorizontalScrollbar ? WebThemeEngine::PartScrollbarHorizontalTrack : WebThemeEngine::PartScrollbarVerticalTrack, state, rect, &extraParams);
 }
 
 void ScrollbarThemeAura::paintButton(GraphicsContext& gc, const ScrollbarThemeClient& scrollbar, const IntRect& rect, ScrollbarPart part)
@@ -138,7 +148,7 @@ void ScrollbarThemeAura::paintButton(GraphicsContext& gc, const ScrollbarThemeCl
         else if (part == scrollbar.hoveredPart())
             state = WebThemeEngine::StateHover;
     }
-    Platform::current()->themeEngine()->paint(gc.canvas(), paintPart, state, WebRect(rect), 0);
+    Platform::current()->themeEngine()->paint(gc.canvas(), paintPart, state, rect, 0);
 }
 
 void ScrollbarThemeAura::paintThumb(GraphicsContext& gc, const ScrollbarThemeClient& scrollbar, const IntRect& rect)
@@ -156,7 +166,7 @@ void ScrollbarThemeAura::paintThumb(GraphicsContext& gc, const ScrollbarThemeCli
         state = WebThemeEngine::StateHover;
     else
         state = WebThemeEngine::StateNormal;
-    Platform::current()->themeEngine()->paint(canvas, scrollbar.orientation() == HorizontalScrollbar ? WebThemeEngine::PartScrollbarHorizontalThumb : WebThemeEngine::PartScrollbarVerticalThumb, state, WebRect(rect), 0);
+    Platform::current()->themeEngine()->paint(canvas, scrollbar.orientation() == HorizontalScrollbar ? WebThemeEngine::PartScrollbarHorizontalThumb : WebThemeEngine::PartScrollbarVerticalThumb, state, rect, 0);
 }
 
 IntSize ScrollbarThemeAura::buttonSize(const ScrollbarThemeClient& scrollbar)
