@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollbarThemeNonMacCommon.cpp
+// Description: ScrollbarThemeNonMacCommon Class
+//      Author: Ziming Li
+//     Created: 2021-08-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2008, 2009 Google Inc.
@@ -98,9 +109,9 @@ void ScrollbarThemeNonMacCommon::paintTickmarks(GraphicsContext& context, const 
         return;
 
     // Get the tickmarks for the frameview.
-    Vector<IntRect> tickmarks;
+    std::vector<IntRect> tickmarks;
     scrollbar.getTickmarks(tickmarks);
-    if (!tickmarks.size())
+    if (tickmarks.empty())
         return;
 
     if (DrawingRecorder::useCachedDrawingIfPossible(context, scrollbar, DisplayItem::ScrollbarTickmarks))
@@ -110,7 +121,7 @@ void ScrollbarThemeNonMacCommon::paintTickmarks(GraphicsContext& context, const 
     GraphicsContextStateSaver stateSaver(context);
     context.setShouldAntialias(false);
 
-    for (Vector<IntRect>::const_iterator i = tickmarks.begin(); i != tickmarks.end(); ++i) {
+    for (auto i = tickmarks.begin(); i != tickmarks.end(); ++i) {
         // Calculate how far down (in %) the tick-mark should appear.
         const float percent = static_cast<float>(i->y()) / scrollbar.totalSize();
 
