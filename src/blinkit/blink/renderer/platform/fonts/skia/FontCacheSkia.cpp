@@ -1,3 +1,15 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontCacheSkia.cpp
+// Description: FontCache Class
+//      Author: Ziming Li
+//     Created: 2021-08-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
+
 /*
  * Copyright (c) 2006, 2007, 2008, 2009 Google Inc. All rights reserved.
  *
@@ -37,7 +49,7 @@
 #include "platform/fonts/FontFaceCreationParams.h"
 #include "platform/fonts/SimpleFontData.h"
 #include "public/platform/Platform.h"
-#include "public/platform/linux/WebSandboxSupport.h"
+// BKTODO: #include "public/platform/linux/WebSandboxSupport.h"
 #include "wtf/Assertions.h"
 #include "wtf/text/AtomicString.h"
 #include "wtf/text/CString.h"

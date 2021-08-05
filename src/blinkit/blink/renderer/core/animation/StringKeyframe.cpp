@@ -136,8 +136,12 @@ PassOwnPtr<Keyframe::PropertySpecificKeyframe> StringKeyframe::createPropertySpe
     if (property.isPresentationAttribute())
         return adoptPtr(new CSSPropertySpecificKeyframe(offset(), &easing(), presentationAttributeValue(property.presentationAttribute()), composite()));
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     ASSERT(property.isSVGAttribute());
     return adoptPtr(new SVGPropertySpecificKeyframe(offset(), &easing(), svgPropertyValue(property.svgAttribute()), composite()));
+#endif
 }
 
 StringKeyframe::CSSPropertySpecificKeyframe::CSSPropertySpecificKeyframe(double offset, PassRefPtr<TimingFunction> easing, CSSValue* value, EffectModel::CompositeOperation op)
@@ -614,6 +618,7 @@ PassOwnPtr<Keyframe::PropertySpecificKeyframe> StringKeyframe::CSSPropertySpecif
     return adoptPtr(theClone);
 }
 
+#if 0 // BKTODO:
 SVGPropertySpecificKeyframe::SVGPropertySpecificKeyframe(double offset, PassRefPtr<TimingFunction> easing, const String& value, EffectModel::CompositeOperation op)
     : Keyframe::PropertySpecificKeyframe(offset, easing, op)
     , m_value(value)
@@ -636,6 +641,7 @@ PassOwnPtr<Keyframe::PropertySpecificKeyframe> SVGPropertySpecificKeyframe::neut
 {
     return adoptPtr(new SVGPropertySpecificKeyframe(offset, easing, String(), EffectModel::CompositeAdd));
 }
+#endif
 
 namespace {
 

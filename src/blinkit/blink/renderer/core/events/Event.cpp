@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Event.cpp
+// Description: Event Class
+//      Author: Ziming Li
+//     Created: 2021-08-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -25,11 +36,11 @@
 #include "core/dom/StaticNodeList.h"
 #include "core/events/EventDispatchMediator.h"
 #include "core/events/EventTarget.h"
-#include "core/frame/OriginsUsingFeatures.h"
+// BKTODO: #include "core/frame/OriginsUsingFeatures.h"
 #include "core/frame/UseCounter.h"
-#include "core/svg/SVGElement.h"
-#include "core/timing/DOMWindowPerformance.h"
-#include "core/timing/Performance.h"
+// BKTODO: #include "core/svg/SVGElement.h"
+// BKTODO: #include "core/timing/DOMWindowPerformance.h"
+// BKTODO: #include "core/timing/Performance.h"
 #include "wtf/CurrentTime.h"
 
 namespace blink {
@@ -89,19 +100,23 @@ void Event::initEvent(const AtomicString& eventTypeArg, bool canBubbleArg, bool 
 bool Event::legacyReturnValue(ExecutionContext* executionContext) const
 {
     bool returnValue = !defaultPrevented();
+#if 0 // BKTODO:
     if (returnValue)
         UseCounter::count(executionContext, UseCounter::EventGetReturnValueTrue);
     else
         UseCounter::count(executionContext, UseCounter::EventGetReturnValueFalse);
+#endif
     return returnValue;
 }
 
 void Event::setLegacyReturnValue(ExecutionContext* executionContext, bool returnValue)
 {
+#if 0 // BKTODO:
     if (returnValue)
         UseCounter::count(executionContext, UseCounter::EventSetReturnValueTrue);
     else
         UseCounter::count(executionContext, UseCounter::EventSetReturnValueFalse);
+#endif
     setDefaultPrevented(!returnValue);
 }
 
@@ -225,6 +240,7 @@ void Event::initEventPath(Node& node)
     }
 }
 
+#if 0 // BKTODO:
 WillBeHeapVector<RefPtrWillBeMember<EventTarget>> Event::path(ScriptState* scriptState) const
 {
     if (m_target)
@@ -259,6 +275,7 @@ WillBeHeapVector<RefPtrWillBeMember<EventTarget>> Event::path(ScriptState* scrip
 
     return WillBeHeapVector<RefPtrWillBeMember<EventTarget>>();
 }
+#endif
 
 PassRefPtrWillBeRawPtr<EventDispatchMediator> Event::createMediator()
 {
@@ -269,14 +286,17 @@ EventTarget* Event::currentTarget() const
 {
     if (!m_currentTarget)
         return nullptr;
+#if 0 // BKTODO:
     Node* node = m_currentTarget->toNode();
     if (node && node->isSVGElement()) {
         if (SVGElement* svgElement = toSVGElement(node)->correspondingElement())
             return svgElement;
     }
+#endif
     return m_currentTarget.get();
 }
 
+#if 0 // BKTODO:
 double Event::timeStamp(ScriptState* scriptState) const
 {
     double timeStamp = 0;
@@ -294,6 +314,7 @@ double Event::timeStamp(ScriptState* scriptState) const
 
     return timeStamp;
 }
+#endif
 
 DEFINE_TRACE(Event)
 {

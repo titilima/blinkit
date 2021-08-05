@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleBuilderCustom.cpp
+// Description: StyleBuilder Class
+//      Author: Ziming Li
+//     Created: 2021-08-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
@@ -282,12 +293,10 @@ void StyleBuilderFunctions::applyValueCSSPropertyResize(StyleResolverState& stat
     CSSPrimitiveValue* primitiveValue = toCSSPrimitiveValue(value);
 
     EResize r = RESIZE_NONE;
-    if (primitiveValue->getValueID() == CSSValueAuto) {
-        if (Settings* settings = state.document().settings())
-            r = settings->textAreasAreResizable() ? RESIZE_BOTH : RESIZE_NONE;
-    } else {
+    if (primitiveValue->getValueID() == CSSValueAuto)
+        r = Settings::textAreasAreResizable() ? RESIZE_BOTH : RESIZE_NONE;
+    else
         r = primitiveValue->convertTo<EResize>();
-    }
     state.style()->setResize(r);
 }
 
@@ -576,7 +585,7 @@ void StyleBuilderFunctions::applyValueCSSPropertyWebkitClipPath(StyleResolverSta
         String cssURLValue = toCSSURIValue(value)->value();
         KURL url = state.document().completeURL(cssURLValue);
         // FIXME: It doesn't work with forward or external SVG references (see https://bugs.webkit.org/show_bug.cgi?id=90405)
-        state.style()->setClipPath(ReferenceClipPathOperation::create(cssURLValue, AtomicString(url.fragmentIdentifier())));
+        ASSERT(false); // BKTODO: state.style()->setClipPath(ReferenceClipPathOperation::create(cssURLValue, AtomicString(url.fragmentIdentifier())));
     }
 }
 

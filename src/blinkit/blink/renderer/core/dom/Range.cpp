@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Range.cpp
+// Description: Range Class
+//      Author: Ziming Li
+//     Created: 2021-08-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Gunnstein Lye (gunnstein@netcom.no)
@@ -44,9 +55,9 @@
 #include "core/html/HTMLElement.h"
 #include "core/layout/LayoutBoxModelObject.h"
 #include "core/layout/LayoutText.h"
-#include "core/svg/SVGSVGElement.h"
+// BKTODO: #include "core/svg/SVGSVGElement.h"
 #include "platform/geometry/FloatQuad.h"
-#include "wtf/RefCountedLeakCounter.h"
+// BKTODO: #include "wtf/RefCountedLeakCounter.h"
 #include "wtf/text/CString.h"
 #include "wtf/text/StringBuilder.h"
 #ifndef NDEBUG
@@ -55,7 +66,7 @@
 
 namespace blink {
 namespace {
-#ifndef NDEBUG
+#if 0 // BKTODO: ndef NDEBUG
 WTF::RefCountedLeakCounter& rangeCounter()
 {
     DEFINE_STATIC_LOCAL(WTF::RefCountedLeakCounter, staticRangeCounter, ("Range"));
@@ -70,7 +81,7 @@ inline Range::Range(Document& ownerDocument)
     , m_end(m_ownerDocument)
 {
 #ifndef NDEBUG
-    rangeCounter().increment();
+    ASSERT(false); // BKTODO: rangeCounter().increment();
 #endif
 
     m_ownerDocument->attachRange(this);
@@ -87,7 +98,7 @@ inline Range::Range(Document& ownerDocument, Node* startContainer, int startOffs
     , m_end(m_ownerDocument)
 {
 #ifndef NDEBUG
-    rangeCounter().increment();
+    ASSERT(false); // BKTODO: rangeCounter().increment();
 #endif
 
     m_ownerDocument->attachRange(this);
@@ -136,7 +147,7 @@ Range::~Range()
 #endif
 
 #ifndef NDEBUG
-    rangeCounter().decrement();
+    ASSERT(false); // BKTODO: rangeCounter().decrement();
 #endif
 }
 #endif
@@ -920,9 +931,12 @@ PassRefPtrWillBeRawPtr<DocumentFragment> Range::createContextualFragment(const S
             if (!element)
                 element = HTMLBodyElement::create(document);
         } else if (document.isSVGDocument()) {
+            ASSERT(false); // BKTODO:
+#if 0
             element = document.documentElement();
             if (!element)
                 element = SVGSVGElement::create(document);
+#endif
         }
     }
 

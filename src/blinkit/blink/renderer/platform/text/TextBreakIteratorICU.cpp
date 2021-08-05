@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TextBreakIteratorICU.cpp
+// Description: TextBreakIterator Classes
+//      Author: Ziming Li
+//     Created: 2021-08-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Lars Knoll <lars@trolltech.com>
  * Copyright (C) 2007, 2011, 2012 Apple Inc. All rights reserved.
@@ -111,7 +122,7 @@ enum TextContext { NoContext, PriorContext, PrimaryContext };
 
 const int textBufferCapacity = 16;
 
-typedef struct {
+typedef struct _ {
     DISALLOW_NEW();
     UText text;
     UChar buffer[textBufferCapacity];

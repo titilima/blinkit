@@ -244,7 +244,7 @@ PassOwnPtr<GraphicsLayer> CompositedLayerMapping::createGraphicsLayer(Compositin
 
     ASSERT(false); // BKTODO: graphicsLayer->setCompositingReasons(reasons);
     if (Node* owningNode = m_owningLayer.layoutObject()->generatingNode())
-        graphicsLayer->setOwnerNodeId(DOMNodeIds::idForNode(owningNode));
+        ASSERT(false); // BKTODO: graphicsLayer->setOwnerNodeId(DOMNodeIds::idForNode(owningNode));
 
     return graphicsLayer.release();
 }

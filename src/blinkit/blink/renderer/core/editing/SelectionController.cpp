@@ -577,9 +577,12 @@ bool SelectionController::handlePasteGlobalSelection(const PlatformMouseEvent& m
     if (!m_frame->page())
         return false;
     Frame* focusFrame = m_frame->page()->focusController().focusedOrMainFrame();
+    ASSERT(false); // BKTODO:
+#if 0
     // Do not paste here if the focus was moved somewhere else.
     if (m_frame == focusFrame && m_frame->editor().behavior().supportsGlobalSelection())
         return m_frame->editor().command("PasteGlobalSelection").execute();
+#endif
 
     return false;
 }

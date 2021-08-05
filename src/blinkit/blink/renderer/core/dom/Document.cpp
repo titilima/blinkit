@@ -4604,6 +4604,7 @@ const KURL& Document::baseURLForOverride(const KURL& baseURLOverride) const
     return baseURLFromParent ? *baseURLFromParent : baseURLOverride;
 }
 
+#if 0 // BKTODO:
 // Support for Javascript execCommand, and related methods
 
 static Editor::Command command(Document* document, const String& commandName)
@@ -4615,6 +4616,7 @@ static Editor::Command command(Document* document, const String& commandName)
     document->updateLayoutTreeIfNeeded();
     return frame->editor().command(commandName, CommandFromDOM);
 }
+#endif
 
 bool Document::execCommand(const String& commandName, bool, const String& value, ExceptionState& exceptionState)
 {
@@ -4637,12 +4639,16 @@ bool Document::execCommand(const String& commandName, bool, const String& value,
     }
     TemporaryChange<bool> executeScope(m_isRunningExecCommand, true);
 
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     // Postpone DOM mutation events, which can execute scripts and change
     // DOM tree against implementation assumption.
     EventQueueScope eventQueueScope;
     Editor::Command editorCommand = command(this, commandName);
     ASSERT(false); // BKTODO: Platform::current()->histogramSparse("WebCore.Document.execCommand", editorCommand.idForHistogram());
     return editorCommand.execute(value);
+#endif
 }
 
 bool Document::queryCommandEnabled(const String& commandName, ExceptionState& exceptionState)
@@ -4652,7 +4658,8 @@ bool Document::queryCommandEnabled(const String& commandName, ExceptionState& ex
         return false;
     }
 
-    return command(this, commandName).isEnabled();
+    ASSERT(false); // BKTODO: return command(this, commandName).isEnabled();
+    return false;
 }
 
 bool Document::queryCommandIndeterm(const String& commandName, ExceptionState& exceptionState)
@@ -4662,7 +4669,8 @@ bool Document::queryCommandIndeterm(const String& commandName, ExceptionState& e
         return false;
     }
 
-    return command(this, commandName).state() == MixedTriState;
+    ASSERT(false); // BKTODO: return command(this, commandName).state() == MixedTriState;
+    return false;
 }
 
 bool Document::queryCommandState(const String& commandName, ExceptionState& exceptionState)
@@ -4672,7 +4680,8 @@ bool Document::queryCommandState(const String& commandName, ExceptionState& exce
         return false;
     }
 
-    return command(this, commandName).state() == TrueTriState;
+    ASSERT(false); // BKTODO: return command(this, commandName).state() == TrueTriState;
+    return false;
 }
 
 bool Document::queryCommandSupported(const String& commandName, ExceptionState& exceptionState)
@@ -4682,7 +4691,8 @@ bool Document::queryCommandSupported(const String& commandName, ExceptionState& 
         return false;
     }
 
-    return command(this, commandName).isSupported();
+    ASSERT(false); // BKTODO: return command(this, commandName).isSupported();
+    return false;
 }
 
 String Document::queryCommandValue(const String& commandName, ExceptionState& exceptionState)
@@ -4692,7 +4702,8 @@ String Document::queryCommandValue(const String& commandName, ExceptionState& ex
         return "";
     }
 
-    return command(this, commandName).value();
+    ASSERT(false); // BKTODO: return command(this, commandName).value();
+    return String();
 }
 
 KURL Document::openSearchDescriptionURL()

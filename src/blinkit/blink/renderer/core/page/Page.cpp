@@ -621,7 +621,7 @@ void Page::willBeDestroyed()
 {
     RefPtrWillBeRawPtr<Frame> mainFrame = m_mainFrame;
 
-    mainFrame->detach(FrameDetachType::Remove);
+    mainFrame->detach();
 
     ASSERT(false); // BKTODO:
 #if 0

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EditorKeyBindings.cpp
+// Description: Editor Class
+//      Author: Ziming Li
+//     Created: 2021-08-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple, Inc.  All rights reserved.
  * Copyright (C) 2012 Google, Inc.  All rights reserved.
@@ -41,6 +52,9 @@ bool Editor::handleEditingKeyboardEvent(KeyboardEvent* evt)
         return false;
 
     String commandName = behavior().interpretKeyEvent(*evt);
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     Command command = this->command(commandName);
 
     if (keyEvent->type() == PlatformEvent::RawKeyDown) {
@@ -56,6 +70,7 @@ bool Editor::handleEditingKeyboardEvent(KeyboardEvent* evt)
 
     if (command.execute(evt))
         return true;
+#endif
 
     if (!behavior().shouldInsertCharacter(*evt) || !canEdit())
         return false;

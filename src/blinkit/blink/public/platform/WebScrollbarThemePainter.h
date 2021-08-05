@@ -41,10 +41,10 @@
 
 namespace blink {
 
+class IntRect;
 class ScrollbarTheme;
 class Scrollbar;
 class WebScrollbar;
-struct WebRect;
 
 class WebScrollbarThemePainter {
 public:
@@ -63,16 +63,16 @@ public:
     BLINK_PLATFORM_EXPORT void assign(const WebScrollbarThemePainter&);
     BLINK_PLATFORM_EXPORT void reset();
 
-    BLINK_PLATFORM_EXPORT void paintScrollbarBackground(WebCanvas*, const WebRect&);
-    BLINK_PLATFORM_EXPORT void paintTrackBackground(WebCanvas*, const WebRect&);
-    BLINK_PLATFORM_EXPORT void paintBackTrackPart(WebCanvas*, const WebRect&);
-    BLINK_PLATFORM_EXPORT void paintForwardTrackPart(WebCanvas*, const WebRect&);
-    BLINK_PLATFORM_EXPORT void paintBackButtonStart(WebCanvas*, const WebRect&);
-    BLINK_PLATFORM_EXPORT void paintBackButtonEnd(WebCanvas*, const WebRect&);
-    BLINK_PLATFORM_EXPORT void paintForwardButtonStart(WebCanvas*, const WebRect&);
-    BLINK_PLATFORM_EXPORT void paintForwardButtonEnd(WebCanvas*, const WebRect&);
-    BLINK_PLATFORM_EXPORT void paintTickmarks(WebCanvas*, const WebRect&);
-    BLINK_PLATFORM_EXPORT void paintThumb(WebCanvas*, const WebRect&);
+    BLINK_PLATFORM_EXPORT void paintScrollbarBackground(WebCanvas*, const IntRect&);
+    BLINK_PLATFORM_EXPORT void paintTrackBackground(WebCanvas*, const IntRect&);
+    BLINK_PLATFORM_EXPORT void paintBackTrackPart(WebCanvas*, const IntRect&);
+    BLINK_PLATFORM_EXPORT void paintForwardTrackPart(WebCanvas*, const IntRect&);
+    BLINK_PLATFORM_EXPORT void paintBackButtonStart(WebCanvas*, const IntRect&);
+    BLINK_PLATFORM_EXPORT void paintBackButtonEnd(WebCanvas*, const IntRect&);
+    BLINK_PLATFORM_EXPORT void paintForwardButtonStart(WebCanvas*, const IntRect&);
+    BLINK_PLATFORM_EXPORT void paintForwardButtonEnd(WebCanvas*, const IntRect&);
+    BLINK_PLATFORM_EXPORT void paintTickmarks(WebCanvas*, const IntRect&);
+    BLINK_PLATFORM_EXPORT void paintThumb(WebCanvas*, const IntRect&);
 
     // This opacity is applied on top of the content that is painted for the thumb.
     BLINK_PLATFORM_EXPORT float thumbOpacity() const;

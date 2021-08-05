@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StringKeyframe.h
+// Description: StringKeyframe Class
+//      Author: Ziming Li
+//     Created: 2021-08-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -76,6 +87,7 @@ public:
         mutable RefPtr<AnimatableValue> m_animatableValueCache;
     };
 
+#if 0 // BKTODO:
     class SVGPropertySpecificKeyframe : public Keyframe::PropertySpecificKeyframe {
     public:
         SVGPropertySpecificKeyframe(double offset, PassRefPtr<TimingFunction> easing, const String&, EffectModel::CompositeOperation);
@@ -97,6 +109,7 @@ public:
 
         String m_value;
     };
+#endif
 
 private:
     StringKeyframe()
@@ -117,11 +130,11 @@ private:
 };
 
 using CSSPropertySpecificKeyframe = StringKeyframe::CSSPropertySpecificKeyframe;
-using SVGPropertySpecificKeyframe = StringKeyframe::SVGPropertySpecificKeyframe;
+// BKTODO: using SVGPropertySpecificKeyframe = StringKeyframe::SVGPropertySpecificKeyframe;
 
 DEFINE_TYPE_CASTS(StringKeyframe, Keyframe, value, value->isStringKeyframe(), value.isStringKeyframe());
 DEFINE_TYPE_CASTS(CSSPropertySpecificKeyframe, Keyframe::PropertySpecificKeyframe, value, value->isCSSPropertySpecificKeyframe(), value.isCSSPropertySpecificKeyframe());
-DEFINE_TYPE_CASTS(SVGPropertySpecificKeyframe, Keyframe::PropertySpecificKeyframe, value, value->isSVGPropertySpecificKeyframe(), value.isSVGPropertySpecificKeyframe());
+// BKTODO: DEFINE_TYPE_CASTS(SVGPropertySpecificKeyframe, Keyframe::PropertySpecificKeyframe, value, value->isSVGPropertySpecificKeyframe(), value.isSVGPropertySpecificKeyframe());
 
 }
 
