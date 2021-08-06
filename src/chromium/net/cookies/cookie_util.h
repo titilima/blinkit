@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - net Library
+// -------------------------------------------------
+//   File Name: cookie_util.h
+// Description: Cookie Utilities
+//      Author: Ziming Li
+//     Created: 2021-08-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -13,7 +24,9 @@
 #include "base/time/time.h"
 #include "net/base/net_export.h"
 
-class GURL;
+namespace zed{
+class url;
+}
 
 namespace net {
 namespace cookie_util {
@@ -29,7 +42,7 @@ NET_EXPORT std::string GetEffectiveDomain(const std::string& scheme,
 // On success returns true, and sets cookie_domain to either a
 //   -host cookie domain (ex: "google.com")
 //   -domain cookie domain (ex: ".google.com")
-NET_EXPORT bool GetCookieDomainWithString(const GURL& url,
+NET_EXPORT bool GetCookieDomainWithString(const zed::url& url,
                                           const std::string& domain_string,
                                           std::string* result);
 
@@ -41,7 +54,7 @@ NET_EXPORT bool DomainIsHostOnly(const std::string& domain_string);
 NET_EXPORT base::Time ParseCookieTime(const std::string& time_string);
 
 // Convenience for converting a cookie origin (domain and https pair) to a URL.
-NET_EXPORT GURL CookieOriginToURL(const std::string& domain, bool is_https);
+NET_EXPORT zed::url CookieOriginToURL(const std::string& domain, bool is_https);
 
 // A ParsedRequestCookie consists of the key and value of the cookie.
 typedef std::pair<base::StringPiece, base::StringPiece> ParsedRequestCookie;

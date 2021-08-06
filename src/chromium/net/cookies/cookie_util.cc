@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - net Library
+// -------------------------------------------------
+//   File Name: cookie_util.cc
+// Description: Cookie Utilities
+//      Author: Ziming Li
+//     Created: 2021-08-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -13,7 +24,7 @@
 #include "build/build_config.h"
 #include "net/base/net_util.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "url/gurl.h"
+#include "third_party/zed/include/zed/net/url.hpp"
 
 namespace net {
 namespace cookie_util {
@@ -36,11 +47,13 @@ std::string GetEffectiveDomain(const std::string& scheme,
   return host;
 }
 
-bool GetCookieDomainWithString(const GURL& url,
+bool GetCookieDomainWithString(const zed::url& url,
                                const std::string& domain_string,
                                std::string* result) {
-  const std::string url_host(url.host());
+  const std::string url_host(url.get_host());
 
+  ASSERT(false); // BKTODO:
+#if 0
   // If no domain was specified in the domain string, default to a host cookie.
   // We match IE/Firefox in allowing a domain=IPADDR if it matches the url
   // ip address hostname exactly.  It should be treated as a host cookie.
@@ -92,6 +105,7 @@ bool GetCookieDomainWithString(const GURL& url,
     return false;
 
   *result = cookie_domain;
+#endif
   return true;
 }
 
@@ -215,13 +229,14 @@ base::Time ParseCookieTime(const std::string& time_string) {
   return base::Time();
 }
 
-GURL CookieOriginToURL(const std::string& domain, bool is_https) {
+zed::url CookieOriginToURL(const std::string& domain, bool is_https) {
   if (domain.empty())
-    return GURL();
+    return zed::url();
 
   const std::string scheme = is_https ? "https" : "http";
   const std::string host = domain[0] == '.' ? domain.substr(1) : domain;
-  return GURL(scheme + "://" + host);
+  ASSERT(false); // BKTODO: return GURL(scheme + "://" + host);
+  return zed::url();
 }
 
 void ParseRequestCookieLine(const std::string& header_value,
