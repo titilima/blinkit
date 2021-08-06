@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - net Library
+// -------------------------------------------------
+//   File Name: canonical_cookie.h
+// Description: CanonicalCookie Class
+//      Author: Ziming Li
+//     Created: 2021-08-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -27,7 +38,7 @@ class NET_EXPORT CanonicalCookie {
   // unless the caller has done appropriate validation and canonicalization
   // themselves.
   CanonicalCookie();
-  CanonicalCookie(const GURL& url,
+  CanonicalCookie(const zed::url& url,
                   const std::string& name,
                   const std::string& value,
                   const std::string& domain,
@@ -43,7 +54,7 @@ class NET_EXPORT CanonicalCookie {
   // This constructor does canonicalization but not validation.
   // The result of this constructor should not be relied on in contexts
   // in which pre-validation of the ParsedCookie has not been done.
-  CanonicalCookie(const GURL& url, const ParsedCookie& pc);
+  CanonicalCookie(const zed::url& url, const ParsedCookie& pc);
 
   ~CanonicalCookie();
 
@@ -52,7 +63,7 @@ class NET_EXPORT CanonicalCookie {
   // Creates a new |CanonicalCookie| from the |cookie_line| and the
   // |creation_time|. Canonicalizes and validates inputs. May return NULL if
   // an attribute value is invalid.
-  static CanonicalCookie* Create(const GURL& url,
+  static CanonicalCookie* Create(const zed::url& url,
                                  const std::string& cookie_line,
                                  const base::Time& creation_time,
                                  const CookieOptions& options);
@@ -60,7 +71,7 @@ class NET_EXPORT CanonicalCookie {
   // Creates a canonical cookie from unparsed attribute values.
   // Canonicalizes and validates inputs.  May return NULL if an attribute
   // value is invalid.
-  static CanonicalCookie* Create(const GURL& url,
+  static CanonicalCookie* Create(const zed::url& url,
                                  const std::string& name,
                                  const std::string& value,
                                  const std::string& domain,
@@ -73,7 +84,7 @@ class NET_EXPORT CanonicalCookie {
                                  bool enforce_strict_secure,
                                  CookiePriority priority);
 
-  const GURL& Source() const { return source_; }
+  const zed::url& Source() const { return source_; }
   const std::string& Name() const { return name_; }
   const std::string& Value() const { return value_; }
   const std::string& Domain() const { return domain_; }
@@ -116,8 +127,8 @@ class NET_EXPORT CanonicalCookie {
   // This is needed for the updates to RFC6265 as per
   // https://tools.ietf.org/html/draft-west-leave-secure-cookies-alone.
   bool IsEquivalentForSecureCookieMatching(const CanonicalCookie& ecc) const {
-    return (name_ == ecc.Name() && (ecc.IsDomainMatch(Source().host()) ||
-                                    IsDomainMatch(ecc.Source().host())));
+    return (name_ == ecc.Name() && (ecc.IsDomainMatch(Source().get_host()) ||
+                                    IsDomainMatch(ecc.Source().get_host())));
   }
 
   void SetLastAccessDate(const base::Time& date) {
@@ -136,12 +147,12 @@ class NET_EXPORT CanonicalCookie {
   // HTTP only cookies can be filter by using appropriate cookie |options|.
   // PLEASE NOTE that this method does not check whether a cookie is expired or
   // not!
-  bool IncludeForRequestURL(const GURL& url,
+  bool IncludeForRequestURL(const zed::url& url,
                             const CookieOptions& options) const;
 
   std::string DebugString() const;
 
-  static std::string CanonPath(const GURL& url, const ParsedCookie& pc);
+  static std::string CanonPath(const zed::url& url, const ParsedCookie& pc);
   static base::Time CanonExpiration(const ParsedCookie& pc,
                                     const base::Time& current,
                                     const base::Time& server_time);
@@ -182,7 +193,7 @@ class NET_EXPORT CanonicalCookie {
   // Returns true if a prefixed cookie does not violate any of the rules
   // for that cookie.
   static bool IsCookiePrefixValid(CookiePrefix prefix,
-                                  const GURL& url,
+                                  const zed::url& url,
                                   const ParsedCookie& parsed_cookie);
 
   // The source member of a canonical cookie is the origin of the URL that tried
@@ -193,7 +204,7 @@ class NET_EXPORT CanonicalCookie {
   // this field will be null.  CanonicalCookie consumers should not rely on
   // this field unless they guarantee that the creator of those
   // CanonicalCookies properly initialized the field.
-  GURL source_;
+  zed::url source_;
   std::string name_;
   std::string value_;
   std::string domain_;

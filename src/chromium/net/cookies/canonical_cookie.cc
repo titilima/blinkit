@@ -1,12 +1,12 @@
 // -------------------------------------------------
-// BlinKit - base Library
+// BlinKit - net Library
 // -------------------------------------------------
 //   File Name: canonical_cookie.cc
 // Description: CanonicalCookie Class
 //      Author: Ziming Li
-//     Created: 2018-10-21
+//     Created: 2021-08-06
 // -------------------------------------------------
-// Copyright (C) 2018 MingYang Software Technology.
+// Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
 
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
@@ -74,16 +74,16 @@ namespace {
 const int kVlogSetCookies = 7;
 
 // Determine the cookie domain to use for setting the specified cookie.
-bool GetCookieDomain(const GURL &url, const ParsedCookie &pc, std::string *result)
+bool GetCookieDomain(const zed::url &url, const ParsedCookie &pc, std::string *result)
 {
     if (pc.HasDomain())
         *result = pc.Domain();
     else
-        *result = url.host();
+        *result = url.get_host();
     return true;
 }
 
-std::string CanonPathWithString(const GURL& url,
+std::string CanonPathWithString(const zed::url& url,
                                 const std::string& path_string) {
   // The RFC says the path should be a prefix of the current URL path.
   // However, Mozilla allows you to set any path for compatibility with
@@ -101,7 +101,7 @@ std::string CanonPathWithString(const GURL& url,
   //    Set-Cookie response, up to, but not including, the
   //    right-most /."""
   // How would this work for a cookie on /?  We will include it then.
-  const std::string& url_path = url.path();
+  const std::string url_path = url.get_path();
 
   size_t idx = url_path.find_last_of('/');
 
@@ -127,6 +127,17 @@ int PartialCookieOrdering(const CanonicalCookie& a, const CanonicalCookie& b) {
   return a.Path().compare(b.Path());
 }
 
+zed::url GetOrigin(const zed::url &url)
+{
+    ASSERT(false); // BKTODO:
+    return url;
+}
+
+bool SchemeIsCryptographic(const zed::url &url)
+{
+    return url.scheme_is("https"); // BKTODO: wss?
+}
+
 }  // namespace
 
 CanonicalCookie::CanonicalCookie()
@@ -134,7 +145,7 @@ CanonicalCookie::CanonicalCookie()
       httponly_(false) {
 }
 
-CanonicalCookie::CanonicalCookie(const GURL& url,
+CanonicalCookie::CanonicalCookie(const zed::url& url,
                                  const std::string& name,
                                  const std::string& value,
                                  const std::string& domain,
@@ -146,7 +157,7 @@ CanonicalCookie::CanonicalCookie(const GURL& url,
                                  bool httponly,
                                  bool firstpartyonly,
                                  CookiePriority priority)
-    : source_(url.SchemeIsFile() ? url : url.GetOrigin()),
+    : source_(url.scheme_is_file() ? url : GetOrigin(url)),
       name_(name),
       value_(value),
       domain_(domain),
@@ -159,8 +170,8 @@ CanonicalCookie::CanonicalCookie(const GURL& url,
       first_party_only_(firstpartyonly),
       priority_(priority) {}
 
-CanonicalCookie::CanonicalCookie(const GURL& url, const ParsedCookie& pc)
-    : source_(url.SchemeIsFile() ? url : url.GetOrigin()),
+CanonicalCookie::CanonicalCookie(const zed::url& url, const ParsedCookie& pc)
+    : source_(url.scheme_is_file() ? url : GetOrigin(url)),
       name_(pc.Name()),
       value_(pc.Value()),
       path_(CanonPath(url, pc)),
@@ -191,7 +202,7 @@ CanonicalCookie::~CanonicalCookie() {
 }
 
 // static
-std::string CanonicalCookie::CanonPath(const GURL& url,
+std::string CanonicalCookie::CanonPath(const zed::url& url,
                                        const ParsedCookie& pc) {
   std::string path_string;
   if (pc.HasPath())
@@ -228,7 +239,7 @@ Time CanonicalCookie::CanonExpiration(const ParsedCookie& pc,
 }
 
 // static
-CanonicalCookie* CanonicalCookie::Create(const GURL& url,
+CanonicalCookie* CanonicalCookie::Create(const zed::url& url,
                                          const std::string& cookie_line,
                                          const base::Time& creation_time,
                                          const CookieOptions& options) {
@@ -255,7 +266,7 @@ CanonicalCookie* CanonicalCookie::Create(const GURL& url,
   // URL does not have a secure scheme, the cookie should be thrown away.
   // https://tools.ietf.org/html/draft-west-leave-secure-cookies-alone
   if (options.enforce_strict_secure() && parsed_cookie.IsSecure() &&
-      !url.SchemeIsCryptographic()) {
+      !SchemeIsCryptographic(url)) {
     VLOG(kVlogSetCookies)
         << "Create() is trying to create a secure cookie from an insecure URL";
     return NULL;
@@ -287,7 +298,7 @@ CanonicalCookie* CanonicalCookie::Create(const GURL& url,
       parsed_cookie.IsFirstPartyOnly(), parsed_cookie.Priority());
 }
 
-CanonicalCookie* CanonicalCookie::Create(const GURL& url,
+CanonicalCookie* CanonicalCookie::Create(const zed::url& url,
                                          const std::string& name,
                                          const std::string& value,
                                          const std::string& domain,
@@ -317,7 +328,7 @@ CanonicalCookie* CanonicalCookie::Create(const GURL& url,
     return NULL;
   }
 
-  if (enforce_strict_secure && secure && !url.SchemeIsCryptographic())
+  if (enforce_strict_secure && secure && !SchemeIsCryptographic(url))
     return NULL;
 
   std::string parsed_path = ParsedCookie::ParseValueString(path);
@@ -411,21 +422,21 @@ bool CanonicalCookie::IsDomainMatch(const std::string& host) const {
                        domain_.length(), domain_) == 0);
 }
 
-bool CanonicalCookie::IncludeForRequestURL(const GURL& url,
+bool CanonicalCookie::IncludeForRequestURL(const zed::url& url,
                                            const CookieOptions& options) const {
   // Filter out HttpOnly cookies, per options.
   if (options.exclude_httponly() && IsHttpOnly())
     return false;
   // Secure cookies should not be included in requests for URLs with an
   // insecure scheme.
-  if (IsSecure() && !url.SchemeIsCryptographic())
+  if (IsSecure() && !SchemeIsCryptographic(url))
     return false;
   // Don't include cookies for requests that don't apply to the cookie domain.
-  if (!IsDomainMatch(url.host()))
+  if (!IsDomainMatch(url.get_host()))
     return false;
   // Don't include cookies for requests with a url path that does not path
   // match the cookie-path.
-  if (!IsOnPath(url.path()))
+  if (!IsOnPath(url.get_path()))
     return false;
   // Don't include first-party-only cookies for non-first-party requests.
   if (IsFirstPartyOnly() && !options.include_first_party_only_cookies())
@@ -508,12 +519,12 @@ void CanonicalCookie::RecordCookiePrefixMetrics(
 //
 // static
 bool CanonicalCookie::IsCookiePrefixValid(CanonicalCookie::CookiePrefix prefix,
-                                          const GURL& url,
+                                          const zed::url& url,
                                           const ParsedCookie& parsed_cookie) {
   if (prefix == CanonicalCookie::COOKIE_PREFIX_SECURE)
-    return parsed_cookie.IsSecure() && url.SchemeIsCryptographic();
+    return parsed_cookie.IsSecure() && SchemeIsCryptographic(url);
   if (prefix == CanonicalCookie::COOKIE_PREFIX_HOST) {
-    return parsed_cookie.IsSecure() && url.SchemeIsCryptographic() &&
+    return parsed_cookie.IsSecure() && SchemeIsCryptographic(url) &&
            !parsed_cookie.HasDomain() && parsed_cookie.Path() == "/";
   }
   return true;
