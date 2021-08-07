@@ -50,6 +50,7 @@ public:
     BLINKIT_BOOLEAN_SETTING_ITEM(shouldRespectImageOrientation, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(showContextMenuOnMouseUp, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(smartInsertDeleteEnabled, false);
+    BLINKIT_BOOLEAN_SETTING_ITEM(textAreasAreResizable, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(textAutosizingEnabled, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(useLegacyBackgroundSizeShorthandBehavior, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(useMobileViewportStyle, false);
