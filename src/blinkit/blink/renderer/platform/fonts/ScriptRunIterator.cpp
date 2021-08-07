@@ -38,6 +38,8 @@ void ICUScriptData::getScripts(UChar32 ch, Vector<UScriptCode>& dst) const
     // it ensures that the result won't ever be greater than kMaxScriptCount,
     // which some client someday might expect.
     dst.resize(kMaxScriptCount - 1);
+    ASSERT(false); // BKTODO:
+#if 0
     // Note, ICU convention is to return the number of available items
     // regardless of the capacity passed to the call. So count can be greater
     // than dst->size(), if a later version of the unicode data has more
@@ -108,17 +110,23 @@ void ICUScriptData::getScripts(UChar32 ch, Vector<UScriptCode>& dst) const
             std::swap(dst.at(1), dst.at(i));
         }
     }
+#endif
 }
 
 UChar32 ICUScriptData::getPairedBracket(UChar32 ch) const
 {
-    return u_getBidiPairedBracket(ch);
+    ASSERT(false); // BKTODO: return u_getBidiPairedBracket(ch);
+    return 0;
 }
 
 PairedBracketType ICUScriptData::getPairedBracketType(UChar32 ch) const
 {
+    ASSERT(false); // BKTODO:
+    return BracketTypeNone;
+#if 0
     return static_cast<PairedBracketType>(
         u_getIntPropertyValue(ch, UCHAR_BIDI_PAIRED_BRACKET_TYPE));
+#endif
 }
 
 const ICUScriptData* ICUScriptData::instance()

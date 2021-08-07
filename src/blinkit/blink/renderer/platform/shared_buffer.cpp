@@ -53,4 +53,10 @@ std::shared_ptr<SharedBuffer> SharedBuffer::create(const unsigned char* data, si
     return zed::wrap_shared(new SharedBuffer(reinterpret_cast<const char *>(data), length));
 }
 
+size_t SharedBuffer::getSomeData(const char *&data, size_t position) const
+{
+    ASSERT(false); // BKTODO:
+    return 0;
+}
+
 } // namespace blink

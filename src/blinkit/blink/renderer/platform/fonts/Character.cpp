@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Character.cpp
+// Description: Character Class
+//      Author: Ziming Li
+//     Created: 2021-08-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All rights reserved.
  *
@@ -526,8 +537,12 @@ String Character::normalizeSpaces(const UChar* characters, unsigned length)
 bool Character::isCommonOrInheritedScript(UChar32 character)
 {
     UErrorCode status = U_ZERO_ERROR;
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     UScriptCode script = uscript_getScript(character, &status);
     return U_SUCCESS(status) && (script == USCRIPT_COMMON || script == USCRIPT_INHERITED);
+#endif
 }
 
 } // namespace blink

@@ -124,9 +124,9 @@ private:
     void TransitionToCommittedForNewPage(void) final;
     void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) final;
     void DidFinishLoad(void) final;
-
-    mutable BlinKit::BkSharedMutex m_lock;
 #endif
+
+    mutable zed::shared_mutex m_lock;
     BkWebViewClient m_client;
     // BKTODO:std::unique_ptr<blink::ChromeClient> m_chromeClient;
     blink::IntSize m_size;

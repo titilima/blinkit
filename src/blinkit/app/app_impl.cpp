@@ -9,11 +9,10 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "app_impl.h"
+#include "./app_impl.h"
 
-#include "base/single_thread_task_runner.h"
 #include "blinkit/blink/impl/url_loader.h"
-#include "blinkit/blink/public/web/WebKit.h"
+#include "blinkit/blink/public/web/blink.h"
 #include "blinkit/blink/renderer/wtf/MainThread.h"
 #include "blinkit/gc/gc_heap.h"
 #include "blinkit/loader/loader_thread.h"
@@ -67,7 +66,8 @@ void AppImpl::Initialize(void)
     m_threadId = Thread::CurrentThreadId();
     m_threads[m_threadId] = this;
 
-    blink::initialize(this);
+    blink::Initialize(this);
+    m_mainThread = this;
 }
 
 void AppImpl::OnExit(void)

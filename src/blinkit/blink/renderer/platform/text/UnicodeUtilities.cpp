@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: UnicodeUtilities.cpp
+// Description: Unicode Utilities
+//      Author: Ziming Li
+//     Created: 2021-08-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All rights reserved.
  * Copyright (C) 2005 Alexey Proskuryakov.
@@ -84,7 +95,8 @@ static bool isNonLatin1Separator(UChar32 character)
 {
     ASSERT_ARG(character, character >= 256);
 
-    return U_GET_GC_MASK(character) & (U_GC_S_MASK | U_GC_P_MASK | U_GC_Z_MASK | U_GC_CF_MASK);
+    ASSERT(false); // BKTODO: return U_GET_GC_MASK(character) & (U_GC_S_MASK | U_GC_P_MASK | U_GC_Z_MASK | U_GC_CF_MASK);
+    return false;
 }
 
 bool isSeparator(UChar32 character)
@@ -299,6 +311,8 @@ void normalizeCharactersIntoNFCForm(const UChar* characters, unsigned length, Ve
     buffer.resize(length);
 
     UErrorCode status = U_ZERO_ERROR;
+    ASSERT(false); // BKTODO:
+#if 0
     size_t bufferSize = unorm_normalize(characters, length, UNORM_NFC, 0, buffer.data(), length, &status);
     ASSERT(status == U_ZERO_ERROR || status == U_STRING_NOT_TERMINATED_WARNING || status == U_BUFFER_OVERFLOW_ERROR);
     ASSERT(bufferSize);
@@ -311,6 +325,7 @@ void normalizeCharactersIntoNFCForm(const UChar* characters, unsigned length, Ve
     status = U_ZERO_ERROR;
     unorm_normalize(characters, length, UNORM_NFC, 0, buffer.data(), bufferSize, &status);
     ASSERT(status == U_STRING_NOT_TERMINATED_WARNING);
+#endif
 }
 
 // This function returns kNotFound if |first| and |second| contain different Kana letters.

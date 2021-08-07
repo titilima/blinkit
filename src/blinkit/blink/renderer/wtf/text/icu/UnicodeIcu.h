@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: UnicodeIcu.h
+// Description: ICU Wrappers for Unicode
+//      Author: Ziming Li
+//     Created: 2021-08-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  *  Copyright (C) 2006 George Staikos <staikos@kde.org>
  *  Copyright (C) 2006 Alexey Proskuryakov <ap@nypop.com>
@@ -116,111 +127,137 @@ enum CharCategory {
 
 inline UChar32 foldCase(UChar32 c)
 {
-    return u_foldCase(c, U_FOLD_CASE_DEFAULT);
+    ASSERT(false); // BKTODO: return u_foldCase(c, U_FOLD_CASE_DEFAULT);
+    return 0;
 }
 
 inline int foldCase(UChar* result, int resultLength, const UChar* src, int srcLength, bool* error)
 {
     UErrorCode status = U_ZERO_ERROR;
-    int realLength = u_strFoldCase(result, resultLength, src, srcLength, U_FOLD_CASE_DEFAULT, &status);
+    ASSERT(false); // BKTODO: int realLength = u_strFoldCase(result, resultLength, src, srcLength, U_FOLD_CASE_DEFAULT, &status);
+    return 0;
+#if 0
     *error = !U_SUCCESS(status);
     return realLength;
+#endif
 }
 
 inline int toLower(UChar* result, int resultLength, const UChar* src, int srcLength, bool* error)
 {
     UErrorCode status = U_ZERO_ERROR;
-    int realLength = u_strToLower(result, resultLength, src, srcLength, "", &status);
+    ASSERT(false); // BKTODO: int realLength = u_strToLower(result, resultLength, src, srcLength, "", &status);
+    return 0;
+#if 0
     *error = !!U_FAILURE(status);
     return realLength;
+#endif
 }
 
 inline UChar32 toLower(UChar32 c)
 {
-    return u_tolower(c);
+    ASSERT(false); // BKTODO: return u_tolower(c);
+    return 0;
 }
 
 inline UChar32 toUpper(UChar32 c)
 {
-    return u_toupper(c);
+    ASSERT(false); // BKTODO: return u_toupper(c);
+    return 0;
 }
 
 inline int toUpper(UChar* result, int resultLength, const UChar* src, int srcLength, bool* error)
 {
     UErrorCode status = U_ZERO_ERROR;
-    int realLength = u_strToUpper(result, resultLength, src, srcLength, "", &status);
+    ASSERT(false); // BKTODO: int realLength = u_strToUpper(result, resultLength, src, srcLength, "", &status);
+    return 0;
+#if 0
     *error = !!U_FAILURE(status);
     return realLength;
+#endif
 }
 
 inline UChar32 toTitleCase(UChar32 c)
 {
-    return u_totitle(c);
+    ASSERT(false); // BKTODO: return u_totitle(c);
+    return 0;
 }
 
 inline bool isArabicChar(UChar32 c)
 {
-    return ublock_getCode(c) == UBLOCK_ARABIC;
+    ASSERT(false); // BKTODO: return ublock_getCode(c) == UBLOCK_ARABIC;
+    return false;
 }
 
 inline bool isAlphanumeric(UChar32 c)
 {
-    return u_isalnum(c);
+    ASSERT(false); // BKTODO: return u_isalnum(c);
+    return false;
 }
 
 inline bool isSeparatorSpace(UChar32 c)
 {
-    return u_charType(c) == U_SPACE_SEPARATOR;
+    ASSERT(false); // BKTODO: return u_charType(c) == U_SPACE_SEPARATOR;
+    return false;
 }
 
 inline bool isPrintableChar(UChar32 c)
 {
-    return !!u_isprint(c);
+    ASSERT(false); // BKTODO: return !!u_isprint(c);
+    return false;
 }
 
 inline bool isPunct(UChar32 c)
 {
-    return !!u_ispunct(c);
+    ASSERT(false); // BKTODO: return !!u_ispunct(c);
+    return false;
 }
 
 inline bool hasLineBreakingPropertyComplexContext(UChar32 c)
 {
-    return u_getIntPropertyValue(c, UCHAR_LINE_BREAK) == U_LB_COMPLEX_CONTEXT;
+    ASSERT(false); // BKTODO: return u_getIntPropertyValue(c, UCHAR_LINE_BREAK) == U_LB_COMPLEX_CONTEXT;
+    return false;
 }
 
 inline UChar32 mirroredChar(UChar32 c)
 {
-    return u_charMirror(c);
+    ASSERT(false); // BKTODO: return u_charMirror(c);
+    return 0;
 }
 
 inline CharCategory category(UChar32 c)
 {
-    return static_cast<CharCategory>(U_GET_GC_MASK(c));
+    ASSERT(false); // BKTODO: return static_cast<CharCategory>(U_GET_GC_MASK(c));
+    return NoCategory;
 }
 
 inline Direction direction(UChar32 c)
 {
-    return static_cast<Direction>(u_charDirection(c));
+    ASSERT(false); // BKTODO: return static_cast<Direction>(u_charDirection(c));
+    return LeftToRight;
 }
 
 inline bool isLower(UChar32 c)
 {
-    return !!u_islower(c);
+    ASSERT(false); // BKTODO: return !!u_islower(c);
+    return false;
 }
 
 inline uint8_t combiningClass(UChar32 c)
 {
-    return u_getCombiningClass(c);
+    ASSERT(false); // BKTODO: return u_getCombiningClass(c);
+    return 0;
 }
 
 inline DecompositionType decompositionType(UChar32 c)
 {
-    return static_cast<DecompositionType>(u_getIntPropertyValue(c, UCHAR_DECOMPOSITION_TYPE));
+    ASSERT(false); // BKTODO: return static_cast<DecompositionType>(u_getIntPropertyValue(c, UCHAR_DECOMPOSITION_TYPE));
+    return DecompositionNone;
 }
 
 inline int umemcasecmp(const UChar* a, const UChar* b, int len)
 {
-    return u_memcasecmp(a, b, len, U_FOLD_CASE_DEFAULT);
+    ASSERT(false); // BKTODO: return u_memcasecmp(a, b, len, U_FOLD_CASE_DEFAULT);
+    return 0;
 }
 
 } // namespace Unicode

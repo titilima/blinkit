@@ -284,10 +284,14 @@ void HarfBuzzShaper::setFontFeatures()
 // without hb-icu. See http://crbug.com/356929
 static inline hb_script_t ICUScriptToHBScript(UScriptCode script)
 {
+    ASSERT(false); // BKTODO:
+    return HB_SCRIPT_INVALID;
+#if 0
     if (UNLIKELY(script == USCRIPT_INVALID_CODE))
         return HB_SCRIPT_INVALID;
 
     return hb_script_from_string(uscript_getShortName(script), -1);
+#endif
 }
 
 static inline hb_direction_t TextDirectionToHBDirection(TextDirection dir, FontOrientation orientation, const SimpleFontData* fontData)

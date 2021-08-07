@@ -339,6 +339,9 @@ CanonicalCookie* CanonicalCookie::Create(const zed::url& url,
   // Expect that the path was either not specified (empty), or is valid.
   if (!parsed_path.empty() && cookie_path != parsed_path)
     return NULL;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // Canonicalize path again to make sure it escapes characters as needed.
   url::Component path_component(0, cookie_path.length());
   url::RawCanonOutputT<char> canon_path;
@@ -351,6 +354,7 @@ CanonicalCookie* CanonicalCookie::Create(const zed::url& url,
   return new CanonicalCookie(url, parsed_name, parsed_value, cookie_domain,
                              cookie_path, creation, expiration, creation,
                              secure, http_only, first_party_only, priority);
+#endif
 }
 
 bool CanonicalCookie::IsOnPath(const std::string& url_path) const {

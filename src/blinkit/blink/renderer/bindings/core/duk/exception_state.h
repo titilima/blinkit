@@ -1,5 +1,6 @@
+#pragma once
 // -------------------------------------------------
-// BlinKit - blink Library
+// BlinKit - BlinKit Library
 // -------------------------------------------------
 //   File Name: exception_state.h
 // Description: ExceptionState & Related Classes
@@ -9,10 +10,8 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINK_EXCEPTION_STATE_H
-#define BLINKIT_BLINK_EXCEPTION_STATE_H
-
-#pragma once
+#ifndef BLINKIT_BLINKIT_EXCEPTION_STATE_H
+#define BLINKIT_BLINKIT_EXCEPTION_STATE_H
 
 #include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
 #include "blinkit/blink/renderer/wtf/Allocator.h"
@@ -31,11 +30,9 @@ public:
     virtual void throwDOMException(ExceptionCode code, const String &message);
     // BKTODO: virtual void ThrowRangeError(const String &message);
     virtual void throwTypeError(const String &message);
-#if 0 // BKTODO:
-    virtual void ThrowSecurityError(const String &sanitizedMessage, const String &unsanitizedMessage = String());
+    // BKTODO: virtual void ThrowSecurityError(const String &sanitizedMessage, const String &unsanitizedMessage = String());
 
-    void ClearException(void);
-#endif
+    void clearException(void);
 
     bool ThrowIfNeeded(void)
     {
@@ -72,4 +69,4 @@ public:
 
 } // namespace blink
 
-#endif // BLINKIT_BLINK_EXCEPTION_STATE_H
+#endif // BLINKIT_BLINKIT_EXCEPTION_STATE_H

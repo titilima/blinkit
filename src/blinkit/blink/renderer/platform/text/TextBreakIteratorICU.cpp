@@ -74,12 +74,12 @@ public:
         if (!iterator) {
             UErrorCode openStatus = U_ZERO_ERROR;
             bool localeIsEmpty = locale.isEmpty();
-            iterator = icu::BreakIterator::createLineInstance(localeIsEmpty ? icu::Locale(currentTextBreakLocaleID()) : icu::Locale(locale.utf8().data()), openStatus);
+            ASSERT(false); // BKTODO: iterator = icu::BreakIterator::createLineInstance(localeIsEmpty ? icu::Locale(currentTextBreakLocaleID()) : icu::Locale(locale.utf8().data()), openStatus);
             // locale comes from a web page and it can be invalid, leading ICU
             // to fail, in which case we fall back to the default locale.
             if (!localeIsEmpty && U_FAILURE(openStatus)) {
                 openStatus = U_ZERO_ERROR;
-                iterator = icu::BreakIterator::createLineInstance(icu::Locale(currentTextBreakLocaleID()), openStatus);
+                ASSERT(false); // BKTODO: iterator = icu::BreakIterator::createLineInstance(icu::Locale(currentTextBreakLocaleID()), openStatus);
             }
 
             if (U_FAILURE(openStatus)) {
@@ -160,7 +160,7 @@ static UText* textClone(UText* destination, const UText* source, UBool deep, UEr
     if (U_FAILURE(*status))
         return 0;
     int32_t extraSize = source->extraSize;
-    destination = utext_setup(destination, extraSize, status);
+    ASSERT(false); // BKTODO: destination = utext_setup(destination, extraSize, status);
     if (U_FAILURE(*status))
         return destination;
     void* extraNew = destination->pExtra;
@@ -358,6 +358,9 @@ static UText* textOpenLatin1(UTextWithBuffer* utWithBuffer, const LChar* string,
         *status = U_ILLEGAL_ARGUMENT_ERROR;
         return 0;
     }
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     UText* text = utext_setup(&utWithBuffer->text, sizeof(utWithBuffer->buffer), status);
     if (U_FAILURE(*status)) {
         ASSERT(!text);
@@ -365,6 +368,7 @@ static UText* textOpenLatin1(UTextWithBuffer* utWithBuffer, const LChar* string,
     }
     textInit(text, &textLatin1Funcs, string, length, priorContext, priorContextLength);
     return text;
+#endif
 }
 
 static inline TextContext textUTF16GetCurrentContext(const UText* text)
@@ -471,11 +475,14 @@ static UText* textOpenUTF16(UText* text, const UChar* string, unsigned length, c
         return 0;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     text = utext_setup(text, 0, status);
     if (U_FAILURE(*status)) {
         ASSERT(!text);
         return 0;
     }
+#endif
     textInit(text, &textUTF16Funcs, string, length, priorContext, priorContextLength);
     return text;
 }
@@ -487,8 +494,11 @@ static TextBreakIterator* wordBreakIterator(const LChar* string, int length)
     UErrorCode errorCode = U_ZERO_ERROR;
     static TextBreakIterator* breakIter = 0;
     if (!breakIter) {
+        ASSERT(false); // BKTODO:
+#if 0
         breakIter = icu::BreakIterator::createWordInstance(icu::Locale(currentTextBreakLocaleID()), errorCode);
         ASSERT_WITH_MESSAGE(U_SUCCESS(errorCode), "ICU could not open a break iterator: %s (%d)", u_errorName(errorCode), errorCode);
+#endif
         if (!breakIter)
             return 0;
     }
@@ -499,6 +509,8 @@ static TextBreakIterator* wordBreakIterator(const LChar* string, int length)
     textLocal.text.pExtra = textLocal.buffer;
 
     UErrorCode openStatus = U_ZERO_ERROR;
+    ASSERT(false); // BKTODO:
+#if 0
     UText* text = textOpenLatin1(&textLocal, string, length, 0, 0, &openStatus);
     if (U_FAILURE(openStatus)) {
         WTF_LOG_ERROR("textOpenLatin1 failed with status %d", openStatus);
@@ -511,6 +523,7 @@ static TextBreakIterator* wordBreakIterator(const LChar* string, int length)
         WTF_LOG_ERROR("BreakIterator::seText failed with status %d", setTextStatus);
 
     utext_close(text);
+#endif
 
     return breakIter;
 }
@@ -519,7 +532,7 @@ static void setText16(TextBreakIterator* iter, const UChar* string, int length)
 {
     UErrorCode errorCode = U_ZERO_ERROR;
     UText uText = UTEXT_INITIALIZER;
-    utext_openUChars(&uText, string, length, &errorCode);
+    ASSERT(false); // BKTODO: utext_openUChars(&uText, string, length, &errorCode);
     if (U_FAILURE(errorCode))
         return;
     iter->setText(&uText, errorCode);
@@ -530,8 +543,11 @@ TextBreakIterator* wordBreakIterator(const UChar* string, int length)
     UErrorCode errorCode = U_ZERO_ERROR;
     static TextBreakIterator* breakIter = 0;
     if (!breakIter) {
+        ASSERT(false); // BKTODO:
+#if 0
         breakIter = icu::BreakIterator::createWordInstance(icu::Locale(currentTextBreakLocaleID()), errorCode);
         ASSERT_WITH_MESSAGE(U_SUCCESS(errorCode), "ICU could not open a break iterator: %s (%d)", u_errorName(errorCode), errorCode);
+#endif
         if (!breakIter)
             return 0;
     }
@@ -560,6 +576,8 @@ TextBreakIterator* acquireLineBreakIterator(const LChar* string, int length, con
     textLocal.text.pExtra = textLocal.buffer;
 
     UErrorCode openStatus = U_ZERO_ERROR;
+    ASSERT(false); // BKTODO:
+#if 0
     UText* text = textOpenLatin1(&textLocal, string, length, priorContext, priorContextLength, &openStatus);
     if (U_FAILURE(openStatus)) {
         WTF_LOG_ERROR("textOpenLatin1 failed with status %d", openStatus);
@@ -574,6 +592,7 @@ TextBreakIterator* acquireLineBreakIterator(const LChar* string, int length, con
     }
 
     utext_close(text);
+#endif
 
     return iterator;
 }
@@ -587,6 +606,8 @@ TextBreakIterator* acquireLineBreakIterator(const UChar* string, int length, con
     UText textLocal = UTEXT_INITIALIZER;
 
     UErrorCode openStatus = U_ZERO_ERROR;
+    ASSERT(false); // BKTODO:
+#if 0
     UText* text = textOpenUTF16(&textLocal, string, length, priorContext, priorContextLength, &openStatus);
     if (U_FAILURE(openStatus)) {
         WTF_LOG_ERROR("textOpenUTF16 failed with status %d", openStatus);
@@ -601,6 +622,7 @@ TextBreakIterator* acquireLineBreakIterator(const UChar* string, int length, con
     }
 
     utext_close(text);
+#endif
 
     return iterator;
 }
@@ -662,8 +684,11 @@ void NonSharedCharacterBreakIterator::createIteratorForBuffer(const UChar* buffe
     bool createdIterator = m_iterator && compareAndSwapNonSharedCharacterBreakIterator(m_iterator, 0);
     if (!createdIterator) {
         UErrorCode errorCode = U_ZERO_ERROR;
+        ASSERT(false); // BKTODO:
+#if 0
         m_iterator = icu::BreakIterator::createCharacterInstance(icu::Locale(currentTextBreakLocaleID()), errorCode);
         ASSERT_WITH_MESSAGE(U_SUCCESS(errorCode), "ICU could not open a break iterator: %s (%d)", u_errorName(errorCode), errorCode);
+#endif
     }
 
     setText16(m_iterator, buffer, length);
@@ -728,8 +753,11 @@ TextBreakIterator* sentenceBreakIterator(const UChar* string, int length)
     UErrorCode openStatus = U_ZERO_ERROR;
     static TextBreakIterator* iterator = 0;
     if (!iterator) {
+        ASSERT(false); // BKTODO:
+#if 0
         iterator =  icu::BreakIterator::createSentenceInstance(icu::Locale(currentTextBreakLocaleID()), openStatus);
         ASSERT_WITH_MESSAGE(U_SUCCESS(openStatus), "ICU could not open a break iterator: %s (%d)", u_errorName(openStatus), openStatus);
+#endif
         if (!iterator)
             return 0;
     }
@@ -752,13 +780,16 @@ static TextBreakIterator* setUpIteratorWithRules(const char* breakRules, const U
 
     static TextBreakIterator* iterator = 0;
     if (!iterator) {
-        UParseError parseStatus;
+        // BKTODO: UParseError parseStatus;
         UErrorCode openStatus = U_ZERO_ERROR;
         Vector<UChar> rules;
         String(breakRules).appendTo(rules);
 
+        ASSERT(false); // BKTODO:
+#if 0
         iterator = new icu::RuleBasedBreakIterator(icu::UnicodeString(rules.data(), rules.size()), parseStatus, openStatus);
         ASSERT_WITH_MESSAGE(U_SUCCESS(openStatus), "ICU could not open a break iterator: %s (%d)", u_errorName(openStatus), openStatus);
+#endif
         if (!iterator)
             return 0;
     }

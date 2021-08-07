@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SmallCapsIterator.cpp
+// Description: SmallCapsIterator Class
+//      Author: Ziming Li
+//     Created: 2021-08-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,6 +33,8 @@ bool SmallCapsIterator::consume(unsigned *capsLimit, SmallCapsBehavior* smallCap
     if (m_atEnd)
         return false;
 
+    ASSERT(false); // BKTODO:
+#if 0
     while (m_utf16Iterator->consume(m_nextUChar32)) {
         m_previousSmallCapsBehavior = m_currentSmallCapsBehavior;
         // Skipping over combining marks, as these combine with the small-caps
@@ -44,6 +57,7 @@ bool SmallCapsIterator::consume(unsigned *capsLimit, SmallCapsBehavior* smallCap
     *capsLimit = m_bufferSize;
     *smallCapsBehavior = m_currentSmallCapsBehavior;
     m_atEnd = true;
+#endif
     return true;
 }
 

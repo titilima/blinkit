@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollAnimator.cpp
+// Description: ScrollAnimator Class
+//      Author: Ziming Li
+//     Created: 2021-08-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2011, Google Inc. All rights reserved.
  *
@@ -226,6 +237,8 @@ void ScrollAnimator::updateCompositorAnimations()
         }
 
         if (!m_animationCurve) {
+            ASSERT(false); // BKTODO:
+#if 0
             m_animationCurve = adoptPtr(Platform::current()->compositorSupport()
                 ->createScrollOffsetAnimationCurve(
                     compositorOffsetFromBlinkOffset(m_targetOffset),
@@ -234,10 +247,13 @@ void ScrollAnimator::updateCompositorAnimations()
                         WebScrollOffsetAnimationCurve::ScrollDurationInverseDelta :
                         WebScrollOffsetAnimationCurve::ScrollDurationConstant));
             m_animationCurve->setInitialValue(compositorOffsetFromBlinkOffset(currentPosition()));
+#endif
         }
 
         bool sentToCompositor = false;
         if (!m_scrollableArea->shouldScrollOnMainThread()) {
+            ASSERT(false); // BKTODO:
+#if 0
             OwnPtr<WebCompositorAnimation> animation = adoptPtr(
                 Platform::current()->compositorSupport()->createAnimation(
                     *m_animationCurve,
@@ -259,6 +275,7 @@ void ScrollAnimator::updateCompositorAnimations()
                 m_compositorAnimationId = animationId;
                 m_compositorAnimationGroupId = animationGroupId;
             }
+#endif
         }
 
         if (!sentToCompositor) {

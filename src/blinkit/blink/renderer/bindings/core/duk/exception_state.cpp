@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - blink Library
+// BlinKit - BlinKit Library
 // -------------------------------------------------
 //   File Name: exception_state.cpp
 // Description: ExceptionState & Related Classes
@@ -15,12 +15,10 @@
 
 namespace blink {
 
-#if 0 // BKTODO:
-void ExceptionState::ClearException(void)
+void ExceptionState::clearException(void)
 {
     ASSERT(false); // BKTODO:
 }
-#endif
 
 void ExceptionState::throwDOMException(ExceptionCode code, const String &message)
 {

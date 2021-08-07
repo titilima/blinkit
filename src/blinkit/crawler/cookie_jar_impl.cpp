@@ -47,6 +47,8 @@ std::string CookieJarImpl::Get(const char *URL, const CookieOptions *options) co
 {
     std::string ret;
 
+    ASSERT(false); // BKTODO:
+#if 0
     GURL u(URL);
     const CookieOptions &o = nullptr != options ? *options : m_options;
     for (const auto &it : m_cookies)
@@ -72,6 +74,7 @@ std::string CookieJarImpl::Get(const char *URL, const CookieOptions *options) co
         size_t s = ret.length();
         ret.resize(s - 2); // Remove the last "; "
     }
+#endif
     return ret;
 }
 
@@ -85,6 +88,8 @@ bool CookieJarImpl::Set(const char *setCookieHeader, const char *URL)
 {
     base::Time now = base::Time::Now();
 
+    ASSERT(false); // BKTODO:
+#if 0
     std::unique_ptr<CanonicalCookie> c(CanonicalCookie::Create(GURL(URL), setCookieHeader, now, m_options));
     if (nullptr == c)
     {
@@ -126,6 +131,7 @@ bool CookieJarImpl::Set(const char *setCookieHeader, const char *URL)
         it->second.erase(it2);
     else
         it2->second = std::move(c);
+#endif
     return true;
 }
 

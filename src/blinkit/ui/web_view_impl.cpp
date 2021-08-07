@@ -149,14 +149,19 @@ PageScaleConstraintsSet& WebViewImpl::GetPageScaleConstraintsSet(void) const
 {
     return m_page->GetPageScaleConstraintsSet();
 }
+#endif
 
 void WebViewImpl::Initialize(void)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ScopedRenderingScheduler scheduler(this);
     m_frame = LocalFrame::Create(this, m_page.get());
     m_frame->Init();
+#endif
 }
 
+#if 0 // BKTODO:
 void WebViewImpl::InvalidateRect(const IntRect &rect)
 {
 #if 0 // BKTODO: Check this logic later.
@@ -171,9 +176,12 @@ bool WebViewImpl::IsAcceleratedCompositingActive(void) const
 {
     return false; // BKTODO: Support GPU.
 }
+#endif
 
 int WebViewImpl::LoadUI(const char *URI)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     GURL u(URI);
     if (u.SchemeIsHTTPOrHTTPS())
     {
@@ -188,9 +196,11 @@ int WebViewImpl::LoadUI(const char *URI)
         m_frame->Loader().StartNavigation(FrameLoadRequest(nullptr, request));
     };
     m_appCaller.Call(FROM_HERE, task);
+#endif
     return BK_ERR_SUCCESS;
 }
 
+#if 0 // BKTODO:
 void WebViewImpl::MainFrameLayoutUpdated(void)
 {
     // May be useful, leave it here.
@@ -428,10 +438,11 @@ void WebViewImpl::SendResizeEventAndRepaint(void)
     }
 #endif
 }
+#endif
 
 void WebViewImpl::SetClient(const BkWebViewClient &client)
 {
-    std::unique_lock<BkSharedMutex> lock(m_lock);
+    auto _ = m_lock.guard();
     memset(&m_client, 0, sizeof(m_client));
 
     m_client.UserData = client.UserData;
@@ -441,6 +452,7 @@ void WebViewImpl::SetClient(const BkWebViewClient &client)
     // Use `offsetof` macro for different client versions.
 }
 
+#if 0 // BKTODO:
 void WebViewImpl::SetFocus(bool enable)
 {
     ASSERT(IsClientThread());

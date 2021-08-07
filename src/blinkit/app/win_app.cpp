@@ -11,7 +11,6 @@
 
 #include "win_app.h"
 
-#include "base/memory/ptr_util.h"
 #include "blinkit/app/app_caller_impl.h"
 #include "blinkit/win/client_caller_store.h"
 #include "blinkit/win/message_loop.h"
@@ -28,6 +27,13 @@
 #   include "third_party/skia/include/ports/SkTypeface_win.h"
 #   include "blink_impl/win_clipboard.h"
 #endif // 0
+
+#pragma comment(lib, "Shlwapi.lib")
+#ifdef BLINKIT_UI_ENABLED
+#   pragma comment(lib, "Usp10.lib")
+#   pragma comment(lib, "UxTheme.lib")
+#   pragma comment(lib, "Winmm.lib")
+#endif
 
 using namespace blink;
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - net Library
+// -------------------------------------------------
+//   File Name: cookie_options.h
+// Description: CookieOptions Class
+//      Author: Ziming Li
+//     Created: 2021-08-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -9,7 +20,7 @@
 
 #include "base/time/time.h"
 #include "net/base/net_export.h"
-#include "url/gurl.h"
+#include "third_party/zed/include/zed/net/url.hpp"
 
 namespace net {
 

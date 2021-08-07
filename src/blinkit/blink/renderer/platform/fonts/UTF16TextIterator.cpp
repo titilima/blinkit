@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: UTF16TextIterator.cpp
+// Description: UTF16TextIterator Class
+//      Author: Ziming Li
+//     Created: 2021-08-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Holger Hans Peter Freyther
@@ -83,6 +94,8 @@ bool UTF16TextIterator::consumeSurrogatePair(UChar32& character)
 
 void UTF16TextIterator::consumeMultipleUChar()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     const UChar* markCharactersEnd = m_characters + m_currentGlyphLength;
     int markLength = m_currentGlyphLength;
     while (markCharactersEnd < m_charactersEnd) {
@@ -96,6 +109,7 @@ void UTF16TextIterator::consumeMultipleUChar()
         markCharactersEnd += nextCharacterLength;
     }
     m_currentGlyphLength = markLength;
+#endif
 }
 
 }

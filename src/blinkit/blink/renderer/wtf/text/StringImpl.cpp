@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StringImpl.cpp
+// Description: StringImpl Class
+//      Author: Ziming Li
+//     Created: 2021-08-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -742,6 +753,9 @@ static PassRefPtr<StringImpl> caseConvert(const UChar* source16, size_t length, 
 
 PassRefPtr<StringImpl> StringImpl::lower(const AtomicString& localeIdentifier)
 {
+    ASSERT(false); // BKTODO:
+    return lower();
+#if 0
     // Use the more-optimized code path most of the time.
     // Only Turkic (tr and az) languages and Lithuanian requires
     // locale-specific lowercasing rules. Even though CLDR has el-Lower,
@@ -763,10 +777,14 @@ PassRefPtr<StringImpl> StringImpl::lower(const AtomicString& localeIdentifier)
     RefPtr<StringImpl> upconverted = upconvertedString();
     const UChar* source16 = upconverted->characters16();
     return caseConvert(source16, length, u_strToLower, localeForConversion, this);
+#endif
 }
 
 PassRefPtr<StringImpl> StringImpl::upper(const AtomicString& localeIdentifier)
 {
+    ASSERT(false); // BKTODO:
+    return upper();
+#if 0
     // Use the more-optimized code path most of the time.
     // Only Turkic (tr and az) languages and Greek require locale-specific
     // lowercasing rules.
@@ -803,6 +821,7 @@ PassRefPtr<StringImpl> StringImpl::upper(const AtomicString& localeIdentifier)
     translit->transliterate(target);
 
     return create(target.getBuffer(), target.length());
+#endif
 }
 
 PassRefPtr<StringImpl> StringImpl::fill(UChar character)

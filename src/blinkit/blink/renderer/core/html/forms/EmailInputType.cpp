@@ -45,8 +45,8 @@
 #include "wtf/LeakAnnotations.h"
 #include "wtf/PassOwnPtr.h"
 #include "wtf/text/StringBuilder.h"
-#include <unicode/idna.h>
-#include <unicode/unistr.h>
+// BKTODO: #include <unicode/idna.h>
+// BKTODO: #include <unicode/unistr.h>
 
 namespace blink {
 
@@ -63,7 +63,7 @@ static const char emailPattern[] =
 // RFC5321 says the maximum total length of a domain name is 255 octets.
 static const int32_t maximumDomainNameLength = 255;
 // Use the same option as in url/url_canon_icu.cc
-static const int32_t idnaConversionOption = UIDNA_CHECK_BIDI;
+// BKTODO: static const int32_t idnaConversionOption = UIDNA_CHECK_BIDI;
 
 String EmailInputType::convertEmailAddressToASCII(const String& address)
 {
@@ -75,6 +75,9 @@ String EmailInputType::convertEmailAddressToASCII(const String& address)
         return address;
     String host = address.substring(atPosition + 1);
 
+    ASSERT(false); // BKTODO:
+    return address;
+#if 0
     // UnicodeString ctor for copy-on-write does not work reliably (in debug
     // build.) TODO(jshin): In an unlikely case this is a perf-issue, treat
     // 8bit and non-8bit strings separately.
@@ -95,6 +98,7 @@ String EmailInputType::convertEmailAddressToASCII(const String& address)
     builder.append(domainName.getBuffer(), domainName.length());
     String asciiEmail = builder.toString();
     return isValidEmailAddress(asciiEmail) ? asciiEmail : address;
+#endif
 }
 
 String EmailInputType::convertEmailAddressToUnicode(const String& address) const

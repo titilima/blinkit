@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontFallbackWin.cpp
+// Description: Font Fallback Utilities
+//      Author: Ziming Li
+//     Created: 2021-08-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2006, 2007, 2008, 2009, 2010, 2012 Google Inc. All rights reserved.
  *
@@ -42,8 +53,11 @@
 
 namespace blink {
 
-UScriptCode scriptCodeForUnifiedHanFromLocale(const icu::Locale& locale)
+UScriptCode scriptCodeForUnifiedHanFromLocale(void) // BKTODO: const icu::Locale& locale)
 {
+    ASSERT(false); // BKTODO:
+    return USCRIPT_COMMON;
+#if 0
     // ICU default locale may have country as an empty string or differently.
     // Avoid fullName comparisons for Japanese and Korean where language()
     // can safely disambiguate.
@@ -62,6 +76,7 @@ UScriptCode scriptCodeForUnifiedHanFromLocale(const icu::Locale& locale)
 
     // For other locales, use the simplified Chinese font for Han.
     return USCRIPT_SIMPLIFIED_HAN;
+#endif
 }
 
 namespace {
@@ -243,8 +258,7 @@ void initializeScriptFontMap(ScriptToFontMap& scriptFontMap, SkFontMgr* fontMana
     // Initialize the locale-dependent mapping.
     // Since Chrome synchronizes the ICU default locale with its UI locale,
     // this ICU locale tells the current UI locale of Chrome.
-    const UChar* localeFamily = scriptFontMap[scriptCodeForUnifiedHanFromLocale(
-        icu::Locale::getDefault())];
+    const UChar* localeFamily = scriptFontMap[scriptCodeForUnifiedHanFromLocale()];// BKTODO: icu::Locale::getDefault();
     if (localeFamily)
         scriptFontMap[USCRIPT_HAN] = localeFamily;
 }
@@ -255,6 +269,9 @@ void initializeScriptFontMap(ScriptToFontMap& scriptFontMap, SkFontMgr* fontMana
 // FIXME: make this more efficient with a wider coverage
 UScriptCode getScriptBasedOnUnicodeBlock(int ucs4)
 {
+    ASSERT(false); // BKTODO:
+    return USCRIPT_COMMON;
+#if 0
     UBlockCode block = ublock_getCode(ucs4);
     switch (block) {
     case UBLOCK_CJK_SYMBOLS_AND_PUNCTUATION:
@@ -284,10 +301,14 @@ UScriptCode getScriptBasedOnUnicodeBlock(int ucs4)
     default:
         return USCRIPT_COMMON;
     }
+#endif
 }
 
 UScriptCode getScript(int ucs4)
 {
+    ASSERT(false); // BKTODO:
+    return USCRIPT_COMMON;
+#if 0
     UErrorCode err = U_ZERO_ERROR;
     UScriptCode script = uscript_getScript(ucs4, &err);
     // If script is invalid, common or inherited or there's an error,
@@ -295,6 +316,7 @@ UScriptCode getScript(int ucs4)
     if (script <= USCRIPT_INHERITED || U_FAILURE(err))
         script = getScriptBasedOnUnicodeBlock(ucs4);
     return script;
+#endif
 }
 
 const UChar* getFontBasedOnUnicodeBlock(int ucs4, SkFontMgr* fontManager)
@@ -321,6 +343,7 @@ const UChar* getFontBasedOnUnicodeBlock(int ucs4, SkFontMgr* fontManager)
         initialized = true;
     }
 
+#if 0 // BKTODO:
     UBlockCode block = ublock_getCode(ucs4);
     switch (block) {
     case UBLOCK_EMOTICONS:
@@ -352,6 +375,9 @@ const UChar* getFontBasedOnUnicodeBlock(int ucs4, SkFontMgr* fontManager)
     default:
         return 0;
     };
+#else
+    return symbolFont;
+#endif
 }
 
 } // namespace
@@ -437,6 +463,8 @@ const UChar* getFallbackFamily(UChar32 character,
             family = L"code2001";
             break;
         case 2:
+            ASSERT(false); // BKTODO:
+#if 0
             // Use a Traditional Chinese ExtB font if in Traditional Chinese locale.
             // Otherwise, use a Simplified Chinese ExtB font. Windows Japanese
             // fonts do support a small subset of ExtB (that are included in JIS X 0213),
@@ -446,6 +474,7 @@ const UChar* getFallbackFamily(UChar32 character,
                 family = L"pmingliu-extb";
             else
                 family = L"simsun-extb";
+#endif
             break;
         default:
             family = L"lucida sans unicode";

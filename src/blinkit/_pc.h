@@ -17,7 +17,7 @@
 #include "build/build_config.h"
 
 #if OS_WIN
-#   pragma warning(disable: 4244 4291 4305 4819 5033)
+#   pragma warning(disable: 4068 4244 4291 4305 4819 5033)
 #   define _CRT_SECURE_NO_WARNINGS
 #   define _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING
 #   define NOMINMAX

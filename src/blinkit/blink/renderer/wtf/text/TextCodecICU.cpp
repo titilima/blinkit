@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TextCodecICU.cpp
+// Description: TextCodecICU Class
+//      Author: Ziming Li
+//     Created: 2021-08-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006, 2007, 2008, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2006 Alexey Proskuryakov <ap@nypop.com>
@@ -42,8 +53,11 @@ const size_t ConversionBufferSize = 16384;
 
 ICUConverterWrapper::~ICUConverterWrapper()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (converter)
         ucnv_close(converter);
+#endif
 }
 
 static UConverter*& cachedConverterICU()
@@ -64,6 +78,8 @@ void TextCodecICU::registerEncodingNames(EncodingNameRegistrar registrar)
     // apart; ICU treats these names as synonyms.
     registrar("ISO-8859-8-I", "ISO-8859-8-I");
 
+    ASSERT(false); // BKTODO:
+#if 0
     int32_t numEncodings = ucnv_countAvailable();
     for (int32_t i = 0; i < numEncodings; ++i) {
         const char* name = ucnv_getAvailableName(i);
@@ -118,6 +134,7 @@ void TextCodecICU::registerEncodingNames(EncodingNameRegistrar registrar)
                     registrar(alias, standardName);
             }
     }
+#endif
 
     // These two entries have to be added here because ICU's converter table
     // cannot have both ISO-8859-8-I and ISO-8859-8.
@@ -225,6 +242,8 @@ void TextCodecICU::registerCodecs(TextCodecRegistrar registrar)
     // See comment above in registerEncodingNames.
     registrar("ISO-8859-8-I", create, 0);
 
+    ASSERT(false); // BKTODO:
+#if 0
     int32_t numEncodings = ucnv_countAvailable();
     for (int32_t i = 0; i < numEncodings; ++i) {
         const char* name = ucnv_getAvailableName(i);
@@ -238,6 +257,7 @@ void TextCodecICU::registerCodecs(TextCodecRegistrar registrar)
         }
         registrar(standardName, create, 0);
     }
+#endif
 }
 
 TextCodecICU::TextCodecICU(const TextEncoding& encoding)
@@ -257,10 +277,13 @@ TextCodecICU::~TextCodecICU()
 void TextCodecICU::releaseICUConverter() const
 {
     if (m_converterICU) {
+        ASSERT(false); // BKTODO:
+#if 0
         UConverter*& cachedConverter = cachedConverterICU();
         if (cachedConverter)
             ucnv_close(cachedConverter);
         cachedConverter = m_converterICU;
+#endif
         m_converterICU = 0;
     }
 }
@@ -268,6 +291,8 @@ void TextCodecICU::releaseICUConverter() const
 void TextCodecICU::createICUConverter() const
 {
     ASSERT(!m_converterICU);
+    ASSERT(false); // BKTODO:
+#if 0
 
 #if defined(USING_SYSTEM_ICU)
     const char* name = m_encoding.name();
@@ -295,14 +320,19 @@ void TextCodecICU::createICUConverter() const
 #endif
     if (m_converterICU)
         ucnv_setFallback(m_converterICU, TRUE);
+#endif
 }
 
 int TextCodecICU::decodeToBuffer(UChar* target, UChar* targetLimit, const char*& source, const char* sourceLimit, int32_t* offsets, bool flush, UErrorCode& err)
 {
     UChar* targetStart = target;
     err = U_ZERO_ERROR;
+    ASSERT(false); // BKTODO:
+    return 0;
+#if 0
     ucnv_toUnicode(m_converterICU, &target, targetLimit, &source, sourceLimit, offsets, flush, &err);
     return target - targetStart;
+#endif
 }
 
 class ErrorCallbackSetter {
@@ -313,9 +343,12 @@ public:
     {
         if (m_shouldStopOnEncodingErrors) {
             UErrorCode err = U_ZERO_ERROR;
+            ASSERT(false); // BKTODO:
+#if 0
             ucnv_setToUCallBack(m_converter, UCNV_TO_U_CALLBACK_SUBSTITUTE,
                 UCNV_SUB_STOP_ON_ILLEGAL, &m_savedAction,
                 &m_savedContext, &err);
+#endif
             ASSERT(err == U_ZERO_ERROR);
         }
     }
@@ -323,11 +356,14 @@ public:
     {
         if (m_shouldStopOnEncodingErrors) {
             UErrorCode err = U_ZERO_ERROR;
+            ASSERT(false); // BKTODO:
+#if 0
             const void* oldContext;
             UConverterToUCallback oldAction;
             ucnv_setToUCallBack(m_converter, m_savedAction, m_savedContext, &oldAction, &oldContext, &err);
             ASSERT(oldAction == UCNV_TO_U_CALLBACK_SUBSTITUTE);
             ASSERT(!strcmp(static_cast<const char*>(oldContext), UCNV_SUB_STOP_ON_ILLEGAL));
+#endif
             ASSERT(err == U_ZERO_ERROR);
         }
     }
@@ -500,6 +536,9 @@ private:
 
 CString TextCodecICU::encodeInternal(const TextCodecInput& input, UnencodableHandling handling)
 {
+    ASSERT(false); // BKTODO:
+    return CString();
+#if 0
     const UChar* source = input.begin();
     const UChar* end = input.end();
 
@@ -549,6 +588,7 @@ CString TextCodecICU::encodeInternal(const TextCodecInput& input, UnencodableHan
     } while (err == U_BUFFER_OVERFLOW_ERROR);
 
     return CString(result.data(), size);
+#endif
 }
 
 template<typename CharType>

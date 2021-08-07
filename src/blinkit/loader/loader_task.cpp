@@ -15,9 +15,9 @@
 #include "blinkit/blink/public/platform/WebTraceLocation.h"
 #include "blinkit/blink/public/platform/WebURLLoaderClient.h"
 #include "blinkit/blink/renderer/platform/network/ResourceError.h"
+#include "blinkit/blink/renderer/platform/network/ResourceRequest.h"
 #include "blinkit/blink/renderer/wtf/MainThread.h"
 #if 0 // BKTODO:
-#include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/platform/network/mime/mime_type_registry.h"
@@ -102,24 +102,28 @@ void LoaderTask::ReportError(WebURLLoaderClient *client, WebTaskRunner *taskRunn
 #endif
 }
 
-#if 0 // BKTODO: ndef BLINKIT_CRAWLER_ONLY
-LoaderTaskForUI::LoaderTaskForUI(const ResourceRequest &request, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, WebURLLoaderClient *client)
+#ifdef BLINKIT_UI_ENABLED
+LoaderTaskForUI::LoaderTaskForUI(const ResourceRequest &request, const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client)
     : LoaderTask(taskRunner, client)
-    , m_URI(request.Url())
-    , m_scheduler(request.View())
+    , m_URI(request.url())
+    // BKTODO: , m_scheduler(request.View())
 {
 }
 
 AtomicString LoaderTaskForUI::MIMEType(void) const
 {
+    ASSERT(false); // BKTODO:
+    return nullAtom;
+#if 0
     const std::string fileName = m_URI.ExtractFileName();
 
     size_t p = fileName.rfind('.');
     if (std::string::npos == p)
-        return AtomicString::FromUTF8("application/x-unknown-content-type");
+        return AtomicString::fromUTF8("application/x-unknown-content-type");
 
     String ret = MIMETypeRegistry::GetWellKnownMIMETypeForExtension(String::FromUTF8(fileName.data() + p + 1));
     return AtomicString(ret);
+#endif
 }
 #endif
 

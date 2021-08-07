@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CachingWordShapeIterator.h
+// Description: CachingWordShapeIterator Class
+//      Author: Ziming Li
+//     Created: 2021-08-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2015 Google Inc. All rights reserved.
  *
@@ -117,6 +128,9 @@ private:
         if (m_startIndex + 1u == length || isWordDelimiter(m_textRun[m_startIndex]))
             return m_startIndex + 1;
 
+        ASSERT(false); // BKTODO:
+        return 0;
+#if 0
         // Delimit every CJK character because these scripts do not delimit
         // words by spaces, and not delimiting hits the performance.
         if (!m_textRun.is8Bit()) {
@@ -158,6 +172,7 @@ private:
                     return i;
             }
         }
+#endif
     }
 
     bool shapeToEndIndex(RefPtr<ShapeResult>* result, unsigned endIndex)
