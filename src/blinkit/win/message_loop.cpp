@@ -13,21 +13,20 @@
 
 #include <optional>
 #include "blinkit/win/message_task.h"
-// BKTODO: #include "blinkit/blink/renderer/wtf/Time.h"
+#include "chromium/base/time/time.h"
 
 using namespace blink;
 
 namespace BlinKit {
 
-#if 0 // BKTODO:
 struct MessageLoop::TimerData {
-    TimerData(std::function<void()> &&t, const TimeTicks &desiredFireTick)
+    TimerData(std::function<void()> &&t, const base::TimeTicks &desiredFireTick)
         : task(std::move(t)), fireTick(desiredFireTick)
     {
     }
 
     std::function<void()> task;
-    TimeTicks fireTick;
+    base::TimeTicks fireTick;
 };
 
 class MessageLoop::TaskRunnerImpl final : public WebTaskRunner
@@ -35,33 +34,39 @@ class MessageLoop::TaskRunnerImpl final : public WebTaskRunner
 public:
     TaskRunnerImpl(MessageLoop &loop) : m_loop(loop) {}
 private:
-    // TaskRunner overrides
-    bool PostDelayedTask(const WebTraceLocation &loc, std::function<void()> &&task, base::TimeDelta delay) override
+    static void RunTask(Task *task)
     {
-        if (delay.is_zero())
-            return m_loop.PostTask(fromHere, std::move(task));
+        task->run();
+        delete task;
+    }
+    // TaskRunner overrides
+    void postTask(const WebTraceLocation &loc, Task *task) override
+    {
+        m_loop.PostTask(loc, std::bind(&TaskRunnerImpl::RunTask, task));
+    }
+    void postDelayedTask(const WebTraceLocation &loc, Task *task, double delayMs) override
+    {
+        base::TimeTicks desiredTick = base::TimeTicks::Now();
+        desiredTick += base::TimeDelta::FromMillisecondsD(delayMs);
 
-        const TimeTicks now = CurrentTimeTicks();
-        TimerData *timerData = new TimerData(std::move(task), now + delay);
+        TimerData *timerData = new TimerData(std::bind(&TaskRunnerImpl::RunTask, task), desiredTick);
         if (GetCurrentThreadId() == m_loop.m_threadId)
         {
             m_loop.InstallTimer(timerData);
-            return true;
+            return;
         }
         else
         {
             auto timerTask = std::bind(&MessageLoop::InstallTimer, &m_loop, timerData);
-            if (m_loop.PostTask(fromHere, std::move(timerTask)))
-                return true;
+            if (m_loop.PostTask(loc, std::move(timerTask)))
+                return;
         }
 
         delete timerData;
-        return false;
     }
 
     MessageLoop &m_loop;
 };
-#endif
 
 MessageLoop::MessageLoop(void) : m_threadId(::GetCurrentThreadId())
 {
@@ -81,13 +86,9 @@ MessageLoop::~MessageLoop(void)
 
 std::shared_ptr<WebTaskRunner> MessageLoop::GetTaskRunner(void) const
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     if (!m_taskRunner)
         m_taskRunner = std::make_shared<TaskRunnerImpl>(const_cast<MessageLoop &>(*this));
     return m_taskRunner;
-#endif
 }
 
 void MessageLoop::InstallTimer(TimerData *timerData)
@@ -103,18 +104,14 @@ void MessageLoop::InstallTimer(TimerData *timerData)
 
     if (m_timers.size() == slot)
         NewTimer();
-    ASSERT(false); // BKTODO:
-#if 0
     m_tasks[slot] = std::move(timerData->task);
 
-    TimeDelta delta = CurrentTimeTicks() - timerData->fireTick;
+    base::TimeDelta delta = base::TimeTicks::Now() - timerData->fireTick;
     LARGE_INTEGER delay = { 0 };
     delay.QuadPart -= delta.InMicroseconds() * 10;
     SetWaitableTimer(m_timers.at(slot), &delay, 0, nullptr, nullptr, FALSE);
-    BKLOG("SetWaitableTimer: %d", delta.InMilliseconds());
 
     delete timerData;
-#endif
 }
 
 void MessageLoop::NewTimer(void)
