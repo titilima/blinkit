@@ -33,7 +33,7 @@ public:
     SingletonClientCallerStore(void) : m_threadId(GetCurrentThreadId()) {}
 private:
     ClientCaller& Acquire(void) override { return *this; }
-    void Post(const base::Location &loc, std::function<void()> &&task) override;
+    void Post(const blink::WebTraceLocation &loc, std::function<void()> &&task) override;
 #ifndef NDEBUG
     bool IsClientThread(void) const override;
 #endif

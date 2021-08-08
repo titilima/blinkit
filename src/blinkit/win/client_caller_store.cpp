@@ -11,8 +11,9 @@
 
 #include "./client_caller_store.h"
 
-#include <mutex>
 #include "blinkit/win/message_task.h"
+
+using namespace blink;
 
 namespace BlinKit {
 
@@ -24,7 +25,7 @@ bool SingletonClientCallerStore::IsClientThread(void) const
 }
 #endif
 
-void SingletonClientCallerStore::Post(const base::Location &, std::function<void()> &&task)
+void SingletonClientCallerStore::Post(const WebTraceLocation &, std::function<void()> &&task)
 {
     MessageTask::Post(m_threadId, std::move(task));
 }
@@ -32,7 +33,6 @@ void SingletonClientCallerStore::Post(const base::Location &, std::function<void
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if 0 // BKTODO:
 class ClientCallerStoreImpl::ClientCallerImpl final : public ClientCaller
 {
 public:
@@ -57,7 +57,6 @@ private:
 
     HWND m_hMsgWnd;
 };
-#endif
 
 ClientCallerStoreImpl::ClientCallerStoreImpl(void)
 {
@@ -70,9 +69,9 @@ ClientCallerStoreImpl::ClientCallerStoreImpl(void)
 
 ClientCallerStoreImpl::~ClientCallerStoreImpl(void)
 {
-    std::unique_lock lock(m_lock);
+    auto _ = m_lock.guard();
     for (auto &it : m_callerMap)
-        ASSERT(false); // BKTODO: delete it.second;
+        delete it.second;
     m_callerMap.clear();
 }
 
@@ -80,10 +79,7 @@ ClientCaller& ClientCallerStoreImpl::Acquire(void)
 {
     DWORD tid = ::GetCurrentThreadId();
 
-    ASSERT(false); // BKTODO:
-    exit(0);
-#if 0
-    std::unique_lock lock(m_lock);
+    auto _ = m_lock.guard();
     auto it = m_callerMap.find(tid);
     if (std::end(m_callerMap) != it)
         return *(it->second);
@@ -91,7 +87,6 @@ ClientCaller& ClientCallerStoreImpl::Acquire(void)
     ClientCallerImpl *ret = new ClientCallerImpl(m_atom);
     m_callerMap[tid] = ret;
     return *ret;
-#endif
 }
 
 LRESULT CALLBACK ClientCallerStoreImpl::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
