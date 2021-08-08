@@ -47,7 +47,7 @@ public:
     static constexpr TimeDelta FromSecondsD(double secs);
     static constexpr TimeDelta FromMilliseconds(int64_t ms);
     static TimeDelta FromMicroseconds(int64_t us);
-    static TimeDelta FromMillisecondsD(double ms);
+    static constexpr TimeDelta FromMillisecondsD(double ms);
 
     double InSecondsF(void) const;
     int64_t InMilliseconds(void) const;
@@ -149,6 +149,7 @@ public:
     static constexpr int64_t kMicrosecondsPerSecond = kMicrosecondsPerMillisecond * kMillisecondsPerSecond;
 
     constexpr bool is_null(void) const { return 0 == m_us; }
+    constexpr bool is_max(void) const { return std::numeric_limits<int64_t>::max() == m_us; }
 
     T& operator=(T other) {
         m_us = other.m_us;
@@ -323,6 +324,11 @@ constexpr TimeDelta TimeDelta::FromDouble(double value)
 constexpr TimeDelta TimeDelta::FromMilliseconds(int64_t ms)
 {
     return FromProduct(ms, Time::kMicrosecondsPerMillisecond);
+}
+
+constexpr TimeDelta TimeDelta::FromMillisecondsD(double ms)
+{
+    return FromDouble(ms * Time::kMicrosecondsPerMillisecond);
 }
 
 constexpr TimeDelta TimeDelta::FromProduct(int64_t value, int64_t positiveValue)

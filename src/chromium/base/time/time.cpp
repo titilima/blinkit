@@ -61,8 +61,11 @@ bool Time::ExplodedMostlyEquals(const Exploded &lhs, const Exploded &rhs)
 
 double Time::ToDoubleT(void) const
 {
-    ASSERT(false); // BKTODO:
-    return 0;
+    if (is_null())
+        return 0.0;  // Preserve 0 so we can tell it doesn't exist.
+    if (is_max())
+        return std::numeric_limits<double>::infinity(); // Preserve max without offset to prevent overflow.
+    return (static_cast<double>(m_us - kTimeTToMicrosecondsOffset) / static_cast<double>(kMicrosecondsPerSecond));
 }
 
 time_t Time::ToTimeT(void) const
@@ -76,11 +79,6 @@ time_t Time::ToTimeT(void) const
 TimeDelta TimeDelta::FromMicroseconds(int64_t us)
 {
     return TimeDelta(us);
-}
-
-TimeDelta TimeDelta::FromMillisecondsD(double ms)
-{
-    return FromDouble(ms * Time::kMicrosecondsPerMillisecond);
 }
 
 TimeDelta TimeDelta::FromSeconds(int64_t secs)
