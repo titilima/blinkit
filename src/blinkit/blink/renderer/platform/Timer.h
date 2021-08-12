@@ -55,7 +55,7 @@ class PLATFORM_EXPORT TimerBase {
     WTF_MAKE_NONCOPYABLE(TimerBase);
 public:
     TimerBase();
-    explicit TimerBase(WebTaskRunner*);
+    explicit TimerBase(const std::shared_ptr<WebTaskRunner> &);
     virtual ~TimerBase();
 
     void start(double nextFireInterval, double repeatInterval, const WebTraceLocation&);
@@ -92,7 +92,7 @@ protected:
 private:
     virtual void fired() = 0;
 
-    virtual WebTaskRunner* timerTaskRunner();
+    // BKTODO: virtual WebTaskRunner* timerTaskRunner();
 
     NO_LAZY_SWEEP_SANITIZE_ADDRESS
     virtual bool canFire() const { return true; }
@@ -137,7 +137,7 @@ private:
     double m_repeatInterval; // 0 if not repeating
     WebTraceLocation m_location;
     CancellableTimerTask* m_cancellableTimerTask; // NOT OWNED
-    WebTaskRunner* m_webTaskRunner; // Not owned.
+    std::weak_ptr<WebTaskRunner> m_webTaskRunner;
 
 #if ENABLE(ASSERT)
     ThreadIdentifier m_thread;

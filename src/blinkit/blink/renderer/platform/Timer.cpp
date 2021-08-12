@@ -37,6 +37,7 @@
 
 #include "platform/Timer.h"
 
+#include "blinkit/blink/public/platform/WebThread.h"
 #include "platform/TraceEvent.h"
 #include "public/platform/Platform.h"
 // BKTODO: #include "public/platform/WebScheduler.h"
@@ -51,12 +52,9 @@
 
 namespace blink {
 
-TimerBase::TimerBase() : TimerBase(nullptr) // BKTODO: Platform::current()->currentThread()->scheduler()->timerTaskRunner()) { }
-{
-    ASSERT(false); // BKTODO:
-}
+TimerBase::TimerBase() : TimerBase(Platform::current()->currentThread()->taskRunner()) { }
 
-TimerBase::TimerBase(WebTaskRunner* webTaskRunner)
+TimerBase::TimerBase(const std::shared_ptr<WebTaskRunner> &webTaskRunner)
     : m_nextFireTime(0)
     , m_repeatInterval(0)
     , m_cancellableTimerTask(nullptr)
@@ -65,7 +63,7 @@ TimerBase::TimerBase(WebTaskRunner* webTaskRunner)
     , m_thread(currentThread())
 #endif
 {
-    ASSERT(m_webTaskRunner);
+    ASSERT(webTaskRunner);
 }
 
 TimerBase::~TimerBase()
@@ -102,10 +100,12 @@ double TimerBase::nextFireInterval() const
     return m_nextFireTime - current;
 }
 
+#if 0 // BKTODO:
 WebTaskRunner* TimerBase::timerTaskRunner()
 {
     return m_webTaskRunner;
 }
+#endif
 
 void TimerBase::setNextFireTime(double now, double delay)
 {
@@ -120,7 +120,8 @@ void TimerBase::setNextFireTime(double now, double delay)
         m_cancellableTimerTask = new CancellableTimerTask(this);
 
         double delayMs = 1000.0 * (newTime - now);
-        timerTaskRunner()->postDelayedTask(m_location, m_cancellableTimerTask, delayMs);
+        if (auto taskRunner = m_webTaskRunner.lock())
+            taskRunner->postDelayedTask(m_location, m_cancellableTimerTask, delayMs);
     }
 }
 
