@@ -285,7 +285,7 @@ private:
 
     unsigned m_hitTestCount;
     unsigned m_hitTestCacheHits;
-    OwnPtrWillBePersistent<HitTestCache> m_hitTestCache;
+    BlinKit::GCPersistentMember<HitTestCache> m_hitTestCache;
 
     // BKTODO: Vector<LayoutMedia*> m_mediaForPositionNotification;
 };

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HitTestCache.h
+// Description: HitTestCache Class
+//      Author: Ziming Li
+//     Created: 2021-08-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -34,13 +45,13 @@ namespace blink {
 // size of 1.
 #define HIT_TEST_CACHE_SIZE (2)
 
-class CORE_EXPORT HitTestCache final : public NoBaseWillBeGarbageCollectedFinalized<HitTestCache> {
+class CORE_EXPORT HitTestCache final : public BlinKit::GCObject {
     USING_FAST_MALLOC_WILL_BE_REMOVED(HitTestCache);
     WTF_MAKE_NONCOPYABLE(HitTestCache);
 public:
-    static PassOwnPtrWillBeRawPtr<HitTestCache> create()
+    static LeakedPtr<HitTestCache> create()
     {
-        return adoptPtrWillBeNoop(new HitTestCache);
+        return BlinKit::WrapLeaked(new HitTestCache);
     }
 
     // Check the cache for a possible hit and update |result| if
