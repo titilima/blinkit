@@ -72,8 +72,8 @@ CSSFontSelector::~CSSFontSelector()
 {
 #if !ENABLE(OILPAN)
     clearDocument();
-    FontCache::fontCache()->removeClient(this);
 #endif
+    FontCache::fontCache()->removeClient(this);
 }
 
 void CSSFontSelector::registerForInvalidationCallbacks(CSSFontSelectorClient* client)

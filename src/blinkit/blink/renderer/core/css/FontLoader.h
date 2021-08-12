@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontLoader.h
+// Description: FontLoader Class
+//      Author: Ziming Li
+//     Created: 2021-08-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -46,7 +57,7 @@ private:
     struct FontToLoad;
     using FontsToLoadVector = Vector<OwnPtr<FontToLoad>>;
     FontsToLoadVector m_fontsToBeginLoading;
-    RawPtrWillBeMember<CSSFontSelector> m_fontSelector;
+    BlinKit::GCMember<CSSFontSelector> m_fontSelector;
     RawPtrWillBeWeakMember<Document> m_document;
 };
 

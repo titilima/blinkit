@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSSegmentedFontFace.h
+// Description: CSSSegmentedFontFace Class
+//      Author: Ziming Li
+//     Created: 2021-08-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All rights reserved.
  *
@@ -53,7 +64,7 @@ public:
     }
     ~CSSSegmentedFontFace();
 
-    CSSFontSelector* fontSelector() const { return m_fontSelector; }
+    CSSFontSelector* fontSelector() const { return m_fontSelector.get(); }
     FontTraits traits() const { return m_traits; }
 
     // Called when status of a FontFace has changed (e.g. loaded or timed out)
@@ -81,7 +92,7 @@ private:
 
     using FontFaceList = WillBeHeapListHashSet<RefPtrWillBeMember<FontFace>>;
 
-    RawPtrWillBeMember<CSSFontSelector> m_fontSelector;
+    BlinKit::GCMember<CSSFontSelector> m_fontSelector;
     FontTraits m_traits;
     HashMap<unsigned, RefPtr<SegmentedFontData>> m_fontDataTable;
     // All non-CSS-connected FontFaces are stored after the CSS-connected ones.
