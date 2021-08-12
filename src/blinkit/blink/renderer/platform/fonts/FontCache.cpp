@@ -288,26 +288,24 @@ void FontCache::purge(PurgeSeverity PurgeSeverity)
 
 static bool invalidateFontCache = false;
 
-WillBeHeapHashSet<RawPtrWillBeWeakMember<FontCacheClient>>& fontCacheClients()
+static std::unordered_set<FontCacheClient *>& fontCacheClients(void)
 {
-    DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<WillBeHeapHashSet<RawPtrWillBeWeakMember<FontCacheClient>>>, clients, (adoptPtrWillBeNoop(new WillBeHeapHashSet<RawPtrWillBeWeakMember<FontCacheClient>>())));
+    static std::unordered_set<FontCacheClient *> clients;
     invalidateFontCache = true;
-    return *clients;
+    return clients;
 }
 
-void FontCache::addClient(FontCacheClient* client)
+void FontCache::addClient(FontCacheClient *client)
 {
-    ASSERT(!fontCacheClients().contains(client));
-    fontCacheClients().add(client);
+    ASSERT(!zed::key_exists(fontCacheClients(), client));
+    fontCacheClients().emplace(client);
 }
 
-#if !ENABLE(OILPAN)
-void FontCache::removeClient(FontCacheClient* client)
+void FontCache::removeClient(FontCacheClient *client)
 {
-    ASSERT(fontCacheClients().contains(client));
-    fontCacheClients().remove(client);
+    ASSERT(zed::key_exists(fontCacheClients(), client));
+    fontCacheClients().erase(client);
 }
-#endif
 
 static unsigned short gGeneration = 0;
 
@@ -330,11 +328,11 @@ void FontCache::invalidate()
 
     gGeneration++;
 
-    std::vector<Member<FontCacheClient>> clients;
+    std::vector<FontCacheClient *> clients;
     size_t numClients = fontCacheClients().size();
     clients.reserve(numClients);
-    WillBeHeapHashSet<RawPtrWillBeWeakMember<FontCacheClient>>::iterator end = fontCacheClients().end();
-    for (WillBeHeapHashSet<RawPtrWillBeWeakMember<FontCacheClient>>::iterator it = fontCacheClients().begin(); it != end; ++it)
+    auto end = fontCacheClients().end();
+    for (auto it = fontCacheClients().begin(); it != end; ++it)
         clients.emplace_back(*it);
 
     ASSERT(numClients == clients.size());

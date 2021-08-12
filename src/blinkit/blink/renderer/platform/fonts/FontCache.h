@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontCache.h
+// Description: FontCache Class
+//      Author: Ziming Li
+//     Created: 2021-08-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2007-2008 Torch Mobile, Inc.
@@ -94,9 +105,7 @@ public:
     ShapeCache* getShapeCache(const FallbackListCompositeKey&);
 
     void addClient(FontCacheClient*);
-#if !ENABLE(OILPAN)
     void removeClient(FontCacheClient*);
-#endif
 
     unsigned short generation();
     void invalidate();
