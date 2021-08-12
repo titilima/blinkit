@@ -35,6 +35,9 @@ public:
     GCObjectHeader* Alloc(GCObjectType type, size_t totalSize, GCTable *gcPtr, const char *name);
 #endif
 
+    void RetainPersistentObject(GCObject &o);
+    void ReleasePersistentObject(GCObject &o);
+
     void CollectGarbage(void);
     void Persist(void *p);
     void Unpersist(void *p);
@@ -54,6 +57,7 @@ private:
 
     void TracePersistentMembers(GCVisitor &visitor);
 
+    std::unordered_set<GCObject *> m_persistentObjects;
     std::unordered_map<void *, unsigned> m_persistentMembers;
     GCObjectSet m_rootObjects, m_memberObjects, m_stashObjects, m_globalObjects;
 };

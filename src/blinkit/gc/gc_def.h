@@ -17,12 +17,17 @@
 #include <type_traits>
 #include "blinkit/blink/renderer/wtf/build_config.h"
 #include "blinkit/blink/renderer/wtf/RawPtr.h"
+#include "third_party/zed/include/zed/memory.hpp"
 
 namespace blink {
 class Visitor;
 }
 
 namespace BlinKit {
+
+/**
+ * GCObject
+ */
 
 class GCObject
 {
@@ -31,7 +36,9 @@ public:
 protected:
     GCObject(void) = default;
 private:
+    friend class GCHeap;
     template <class> friend class GCMember;
+
     void IncRef(void);
     unsigned DecRef(void);
     void Release(void);
@@ -39,86 +46,126 @@ private:
     unsigned m_refCnt = 0;
 };
 
+/**
+ * GCLeaked
+ */
+
 template <class T>
-class ReleasedGCMember
+class GCLeaked
 {
 public:
-    ReleasedGCMember(T *&rawPtr) : m_rawPtr(rawPtr)
+    GCLeaked(T *&rawPtr) : m_rawPtr(rawPtr)
     {
         if (nullptr != m_rawPtr)
             rawPtr = nullptr;
     }
-    ~ReleasedGCMember(void)
+    ~GCLeaked(void)
     {
         ASSERT(nullptr == m_rawPtr);
     }
 private:
+    template <class> friend class GCMemberBase;
     template <class> friend class GCMember;
 
     T *m_rawPtr;
 };
 
 template <class T>
-class GCMember
+GCLeaked<T> WrapLeaked(T *rawPtr)
 {
-public:
-    GCMember(T *ptr = nullptr) : m_rawPtr(ptr)
+    return GCLeaked<T>(rawPtr);
+}
+
+/**
+ * Member Stuff
+ */
+
+template <class T>
+class GCMemberBase : public zed::ptr_base<T>
+{
+protected:
+    GCMemberBase(T *ptr) : zed::ptr_base<T>(ptr) {}
+    GCMemberBase(GCLeaked<T> &&o) : zed::ptr_base<T>(o.m_rawPtr)
     {
-        if (nullptr != m_rawPtr)
-            m_rawPtr->IncRef();
-    }
-    GCMember(T &rawObj) : m_rawPtr(&rawObj)
-    {
-        m_rawPtr->IncRef();
+        o.m_rawPtr = nullptr;
     }
 
-    T& operator*() const { return *m_rawPtr; }
-    T* operator->() const { return m_rawPtr; }
-    operator bool() const { return nullptr != m_rawPtr; }
-    bool operator!() const { return nullptr == m_rawPtr; }
+    template <typename U>
+    GCMemberBase& operator=(U *other)
+    {
+        this->m_ptr = other;
+        return *this;
+    }
+};
+
+template <class T>
+class GCMember final : public GCMemberBase<T>
+{
+public:
+    GCMember(T *ptr = nullptr) : GCMemberBase<T>(ptr)
+    {
+        if (nullptr != this->m_ptr)
+            this->m_ptr->IncRef();
+    }
+    GCMember(T &rawObj) : GCMember(&rawObj) {}
 
     template <typename U>
     GCMember& operator=(const WTF::RawPtr<U> &other)
     {
         if (other)
             static_cast<GCObject *>(other)->IncRef();
-        if (nullptr != m_rawPtr)
-            m_rawPtr->Release();
-        m_rawPtr = other;
+        if (nullptr != this->m_ptr)
+            this->m_ptr->Release();
+        GCMemberBase<T>::operator=(other.get());
         return *this;
     }
     template <typename U>
-    GCMember& operator=(ReleasedGCMember<U> &&other)
+    GCMember& operator=(GCLeaked<U> &&other)
     {
-        if (m_rawPtr != other.m_rawPtr)
+        if (this->m_ptr != other.m_rawPtr)
         {
-            if (nullptr != m_rawPtr)
-                m_rawPtr->Release();
-            m_rawPtr = other.m_rawPtr;
+            if (nullptr != this->m_ptr)
+                this->m_ptr->Release();
+            GCMemberBase<T>::operator=(other.m_rawPtr);
         }
-        else if (nullptr != other.m_rawPtr)
+        else
         {
-            other.m_rawPtr->DecRef();
+            if (nullptr != other.m_rawPtr)
+                other.m_rawPtr->DecRef();
         }
         other.m_rawPtr = nullptr;
         return *this;
     }
 
-    T* get(void) const { return m_rawPtr; }
-    ReleasedGCMember<T> release(void)
+    GCLeaked<T> release(void)
     {
-        return ReleasedGCMember(m_rawPtr);
+        return GCLeaked<T>(this->m_ptr);
     }
     void clear(void)
     {
-        if (nullptr != m_rawPtr)
+        if (nullptr != this->m_ptr)
         {
-            m_rawPtr->Release();
-            m_rawPtr = nullptr;
+            this->m_ptr->Release();
+            this->m_ptr = nullptr;
         }
     }
-private:
-    T *m_rawPtr;
+};
+
+void GCRetainPersistentObject(GCObject *o);
+void GCReleasePersistentObject(GCObject *o);
+
+template <class T>
+class GCPersistentMember final : public GCMemberBase<T>
+{
+public:
+    GCPersistentMember(GCLeaked<T> &&o) : GCMemberBase<T>(std::move(o))
+    {
+        GCRetainPersistentObject(static_cast<GCObject *>(this->m_ptr));
+    }
+    ~GCPersistentMember(void)
+    {
+        GCReleasePersistentObject(static_cast<GCObject *>(this->m_ptr));
+    }
 };
 
 struct GCTable {
@@ -156,6 +203,9 @@ public:
 };
 
 } // namespace BlinKit
+
+template <class T>
+using LeakedPtr = BlinKit::GCLeaked<T>;
 
 #ifdef NDEBUG
 #   define BK_DECLARE_GC_NAME(Class)    \

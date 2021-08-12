@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include "blinkit/blink/renderer/wtf/MainThread.h"
 #include "blinkit/gc/gc_visitor.h"
+#include "third_party/zed/include/zed/container_utilites.hpp"
 
 namespace BlinKit {
 
@@ -246,6 +247,31 @@ void GCHeap::Persist(void *p)
     ++m_persistentMembers[p];
 }
 
+void GCHeap::ReleasePersistentObject(GCObject &o)
+{
+    ASSERT(zed::key_exists(m_persistentObjects, &o));
+    if (0 == o.DecRef())
+    {
+        m_persistentObjects.erase(&o);
+        ASSERT(false); // BKTODO: Perform GC.
+        delete &o;
+    }
+}
+
+void GCHeap::RetainPersistentObject(GCObject &o)
+{
+    if (!zed::key_exists(m_persistentObjects, &o))
+    {
+        ASSERT(0 == o.m_refCnt);
+        m_persistentObjects.insert(&o);
+    }
+    else
+    {
+        ASSERT(o.m_refCnt > 0);
+    }
+    o.IncRef();
+}
+
 void GCHeap::SetObjectFlag(const void *p, GCObjectFlag flag, bool b)
 {
     GCObjectHeader *hdr = GCObjectHeader::From(const_cast<void *>(p));
@@ -330,6 +356,18 @@ void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr, const char *na
 void GCPersist(const void *p)
 {
     theHeap->Persist(const_cast<void *>(p));
+}
+
+void GCReleasePersistentObject(GCObject *o)
+{
+    if (nullptr != o)
+        theHeap->ReleasePersistentObject(*o);
+}
+
+void GCRetainPersistentObject(GCObject *o)
+{
+    if (nullptr != o)
+        theHeap->RetainPersistentObject(*o);
 }
 
 void GCSetFlag(const void *p, GCObjectFlag flag)
