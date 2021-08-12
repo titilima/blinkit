@@ -49,6 +49,9 @@
 #       define BLINKIT_UI_ONLY
 #   endif
 #endif
+#if defined(BLINKIT_CRAWLER_ENABLED) && defined(BLINKIT_UI_ENABLED)
+#   define BLINKIT_FULL_BUILD
+#endif
 
 #include <memory>
 #include <string>
