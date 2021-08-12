@@ -21,29 +21,30 @@ namespace blink {
 class KURL final : public zed::url
 {
 public:
+    KURL(void) = default;
+    KURL(const std::string &s) : zed::url(s) {}
+
     bool isEmpty(void) const { return spec().empty(); }
     bool isValid(void) const { return is_valid(); }
 
     String string(void) const { return String::fromStdUTF8(spec()); }
 
-    String protocol(void) const { return is_valid() ? partToString(raw_parts().scheme) : String(); }
+    String protocol(void) const { return is_valid() ? PartToString(raw_parts().scheme) : String(); }
     bool protocolIs(const char *protocol) const { return scheme_is(protocol); }
     bool isLocalFile(void) const { return scheme_is_file(); }
     bool protocolIsAbout(void) const { return scheme_is("about"); }
     bool protocolIsData(void) const { return scheme_is("data"); }
     bool protocolIsInHTTPFamily(void) const { return scheme_is_in_http_family(); }
 
-    String user(void) const { return is_valid() ? partToString(raw_parts().username) : String(); }
-    String pass(void) const { return is_valid() ? partToString(raw_parts().password) : String(); }
-    String host(void) const { return is_valid() ? partToString(raw_parts().host) : String(); }
-    String path(void) const { return is_valid() ? partToString(raw_parts().path) : String(); }
+    String user(void) const { return is_valid() ? PartToString(raw_parts().username) : String(); }
+    String pass(void) const { return is_valid() ? PartToString(raw_parts().password) : String(); }
+    String host(void) const { return is_valid() ? PartToString(raw_parts().host) : String(); }
+    String path(void) const { return is_valid() ? PartToString(raw_parts().path) : String(); }
 private:
-    String partToString(const zed::url_parts::part& part) const
-    {
-        ASSERT(is_valid());
-        return String::fromUTF8(part.data(), part.length());
-    }
+    String PartToString(const zed::url_parts::part& part) const;
 };
+
+const KURL& blankURL(void);
 
 } // namespace blink
 
