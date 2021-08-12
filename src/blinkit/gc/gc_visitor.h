@@ -30,6 +30,7 @@ private:
     void MainHandler(void *p);
     void ChildrenHandler(void *p);
 
+    void TraceImpl(GCObject &o) override;
     void TraceImpl(void *p) override;
     void RegisterWeakSlot(void **pp) override;
 

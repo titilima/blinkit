@@ -45,6 +45,11 @@ void GCVisitor::RegisterWeakSlot(void **pp)
         m_weakSlots.push_back(pp);
 }
 
+void GCVisitor::TraceImpl(GCObject &o)
+{
+    ASSERT(false); // BKTODO:
+}
+
 void GCVisitor::TraceImpl(void *p)
 {
     if (nullptr == p)
