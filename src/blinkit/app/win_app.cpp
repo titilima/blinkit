@@ -127,6 +127,8 @@ bool WinApp::InitializeForBackgroundMode(void)
 
     params.app = this;
     m_appThread = CreateThread(nullptr, 0, BackgroundThread, &params, 0, nullptr);
+    WaitForSingleObject(params.hEvent, INFINITE);
+    CloseHandle(params.hEvent);
     return true;
 }
 

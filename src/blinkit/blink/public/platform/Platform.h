@@ -452,7 +452,6 @@ public:
     // Returns a value such as "en-US".
     virtual WTF::String defaultLocale() { return WTF::String("en-US"); }
 
-#if 0 // BKTODO:
     // Wall clock time in seconds since the epoch.
     virtual double currentTimeSeconds() { return 0; }
 
@@ -461,6 +460,7 @@ public:
     // it is recommended that the fixed point be no further in the past than the epoch.
     virtual double monotonicallyIncreasingTimeSeconds() { return 0; }
 
+#if 0 // BKTODO:
     // Returns an interface to the main thread. Can be null if blink was initialized on a thread without a message loop.
     BLINK_PLATFORM_EXPORT WebThread* mainThread() const;
 
