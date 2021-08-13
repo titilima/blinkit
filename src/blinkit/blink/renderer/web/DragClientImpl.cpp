@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DragClientImpl.cpp
+// Description: DragClientImpl Class
+//      Author: Ziming Li
+//     Created: 2021-08-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -36,12 +47,14 @@
 #include "platform/DragImage.h"
 #include "platform/geometry/IntSize.h"
 #include "public/platform/WebCommon.h"
+#if 0 // BKTODO:
 #include "public/platform/WebDragData.h"
 #include "public/platform/WebImage.h"
 #include "public/platform/WebPoint.h"
 #include "public/web/WebDragOperation.h"
 #include "public/web/WebViewClient.h"
 #include "web/WebViewImpl.h"
+#endif
 #include "wtf/Assertions.h"
 #include "wtf/RefPtr.h"
 
@@ -49,8 +62,11 @@ namespace blink {
 
 DragDestinationAction DragClientImpl::actionMaskForDrag(DragData*)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_webView->client() && m_webView->client()->acceptsLoadDrops())
         return DragDestinationActionAny;
+#endif
 
     return static_cast<DragDestinationAction>(
         DragDestinationActionDHTML | DragDestinationActionEdit);
@@ -61,6 +77,8 @@ void DragClientImpl::startDrag(DragImage* dragImage, const IntPoint& dragImageOr
     // Add a ref to the frame just in case a load occurs mid-drag.
     RefPtrWillBeRawPtr<LocalFrame> frameProtector(frame);
 
+    ASSERT(false); // BKTODO:
+#if 0
     WebDragData dragData = dataTransfer->dataObject()->toWebDragData();
     WebDragOperationsMask dragOperationMask = static_cast<WebDragOperationsMask>(dataTransfer->sourceOperation());
     WebImage image;
@@ -80,6 +98,7 @@ void DragClientImpl::startDrag(DragImage* dragImage, const IntPoint& dragImageOr
     }
 
     m_webView->startDragging(frame, dragData, dragOperationMask, image, offsetPoint);
+#endif
 }
 
 } // namespace blink

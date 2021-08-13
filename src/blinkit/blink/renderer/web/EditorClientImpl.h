@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EditorClientImpl.h
+// Description: EditorClientImpl Class
+//      Author: Ziming Li
+//     Created: 2021-08-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -34,10 +45,11 @@
 #include "core/page/EditorClient.h"
 #include "wtf/Forward.h"
 
+class WebViewImpl;
+
 namespace blink {
 
 class LocalFrame;
-class WebViewImpl;
 
 class EditorClientImpl final : public EditorClient {
 public:

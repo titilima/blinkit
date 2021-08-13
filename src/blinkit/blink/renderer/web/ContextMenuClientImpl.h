@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContextMenuClientImpl.h
+// Description: ContextMenuClientImpl Class
+//      Author: Ziming Li
+//     Created: 2021-08-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -33,9 +44,10 @@
 
 #include "core/page/ContextMenuClient.h"
 
+class WebViewImpl;
+
 namespace blink {
 
-class WebViewImpl;
 struct WebContextMenuData;
 
 class ContextMenuClientImpl final : public ContextMenuClient {

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebDataSourceImpl.h
+// Description: WebDataSourceImpl Class
+//      Author: Ziming Li
+//     Created: 2021-08-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -32,18 +43,22 @@
 #define WebDataSourceImpl_h
 
 #include "core/loader/DocumentLoader.h"
+#if 0 // BKTODO:
 #include "platform/exported/WrappedResourceRequest.h"
 #include "platform/exported/WrappedResourceResponse.h"
+#endif
 #include "platform/heap/Handle.h"
 #include "platform/weborigin/KURL.h"
+#if 0 // BKTODO:
 #include "public/web/WebDataSource.h"
 #include "wtf/OwnPtr.h"
 #include "wtf/PassOwnPtr.h"
 #include "wtf/Vector.h"
+#endif
 
 namespace blink {
 
-class WebDataSourceImpl final : public DocumentLoader, public WebDataSource {
+class WebDataSourceImpl final : public DocumentLoader { // BKTODO: , public WebDataSource {
 public:
     static PassRefPtrWillBeRawPtr<WebDataSourceImpl> create(LocalFrame*, const ResourceRequest&, const SubstituteData&);
 
@@ -52,6 +67,7 @@ public:
         return static_cast<WebDataSourceImpl*>(loader);
     }
 
+#if 0 // BKTODO:
     // WebDataSource methods:
     const WebURLRequest& originalRequest() const override;
     const WebURLRequest& request() const override;
@@ -68,6 +84,7 @@ public:
     void setNavigationStartTime(double) override;
 
     static WebNavigationType toWebNavigationType(NavigationType);
+#endif
 
     DECLARE_VIRTUAL_TRACE();
 
@@ -77,6 +94,7 @@ private:
     void detachFromFrame() override;
     String debugName() const override { return "WebDataSourceImpl"; }
 
+#if 0 // BKTODO:
     // Mutable because the const getters will magically sync these to the
     // latest version from WebKit.
     mutable WrappedResourceRequest m_originalRequestWrapper;
@@ -84,6 +102,7 @@ private:
     mutable WrappedResourceResponse m_responseWrapper;
 
     OwnPtr<ExtraData> m_extraData;
+#endif
 };
 
 } // namespace blink

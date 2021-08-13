@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebDataSourceImpl.cpp
+// Description: WebDataSourceImpl Class
+//      Author: Ziming Li
+//     Created: 2021-08-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -31,9 +42,11 @@
 #include "web/WebDataSourceImpl.h"
 
 #include "core/dom/Document.h"
+#if 0 // BKTODO:
 #include "public/platform/WebURL.h"
 #include "public/platform/WebURLError.h"
 #include "public/platform/WebVector.h"
+#endif
 
 namespace blink {
 
@@ -42,6 +55,7 @@ PassRefPtrWillBeRawPtr<WebDataSourceImpl> WebDataSourceImpl::create(LocalFrame* 
     return adoptRefWillBeNoop(new WebDataSourceImpl(frame, request, data));
 }
 
+#if 0 // BKTODO:
 const WebURLRequest& WebDataSourceImpl::originalRequest() const
 {
     m_originalRequestWrapper.bind(DocumentLoader::originalRequest());
@@ -129,6 +143,7 @@ WebNavigationType WebDataSourceImpl::toWebNavigationType(NavigationType type)
         return WebNavigationTypeOther;
     }
 }
+#endif
 
 WebDataSourceImpl::WebDataSourceImpl(LocalFrame* frame, const ResourceRequest& request, const SubstituteData& data)
     : DocumentLoader(frame, request, data)
@@ -138,7 +153,7 @@ WebDataSourceImpl::WebDataSourceImpl(LocalFrame* frame, const ResourceRequest& r
 WebDataSourceImpl::~WebDataSourceImpl()
 {
     // Verify that detachFromFrame() has been called.
-    ASSERT(!m_extraData);
+    // BKTODO: ASSERT(!m_extraData);
 }
 
 void WebDataSourceImpl::detachFromFrame()
@@ -146,7 +161,7 @@ void WebDataSourceImpl::detachFromFrame()
     RefPtrWillBeRawPtr<DocumentLoader> protect(this);
 
     DocumentLoader::detachFromFrame();
-    m_extraData.clear();
+    // BKTODO: m_extraData.clear();
 }
 
 DEFINE_TRACE(WebDataSourceImpl)

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ChromeClientImpl.h
+// Description: ChromeClientImpl Class
+//      Author: Ziming Li
+//     Created: 2021-08-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
@@ -33,21 +44,24 @@
 #define ChromeClientImpl_h
 
 #include "core/page/ChromeClient.h"
+#if 0 // BKTODO:
 #include "core/page/WindowFeatures.h"
 #include "public/web/WebNavigationPolicy.h"
 #include "wtf/PassOwnPtr.h"
+#endif
+
+class WebViewImpl;
 
 namespace blink {
 
 class PagePopup;
 class PagePopupClient;
-class WebViewImpl;
 struct WebCursorInfo;
 
 // Handles window-level notifications from core on behalf of a WebView.
 class ChromeClientImpl final : public ChromeClient {
 public:
-    static PassOwnPtrWillBeRawPtr<ChromeClientImpl> create(WebViewImpl*);
+    static std::unique_ptr<ChromeClientImpl> create(WebViewImpl*);
     ~ChromeClientImpl() override;
 
     void* webView() const override;
@@ -62,9 +76,11 @@ public:
     void takeFocus(WebFocusType) override;
     void focusedNodeChanged(Node* fromNode, Node* toNode) override;
     bool hadFormInteraction() const override;
+#if 0 // BKTODO:
     Page* createWindow(
         LocalFrame*, const FrameLoadRequest&, const WindowFeatures&, NavigationPolicy, ShouldSetOpener) override;
     void show(NavigationPolicy) override;
+#endif
     void didOverscroll(const FloatSize&, const FloatSize&, const FloatPoint&, const FloatSize&) override;
     void setToolbarsVisible(bool) override;
     bool toolbarsVisible() override;
@@ -76,10 +92,12 @@ public:
     bool menubarVisible() override;
     void setResizable(bool) override;
     bool shouldReportDetailedMessageForSource(LocalFrame&, const String&) override;
+#if 0 // BKTODO:
     void addMessageToConsole(
         LocalFrame*, MessageSource, MessageLevel,
         const String& message, unsigned lineNumber,
         const String& sourceID, const String& stackTrace) override;
+#endif
     bool canOpenBeforeUnloadConfirmPanel() override;
     bool openBeforeUnloadConfirmPanelDelegate(LocalFrame*, const String&, bool isReload) override;
     void closeWindowSoon() override;
@@ -94,7 +112,7 @@ public:
     void invalidateRect(const IntRect&) override;
     void scheduleAnimation(Widget*) override;
     IntRect viewportToScreen(const IntRect&) const override;
-    WebScreenInfo screenInfo() const override;
+    // BKTODO: WebScreenInfo screenInfo() const override;
     void contentsSizeChanged(LocalFrame*, const IntSize&) const override;
     void pageScaleFactorChanged() const override;
     float clampPageScaleFactorToLimits(float scale) const override;
@@ -109,7 +127,7 @@ public:
     void openFileChooser(LocalFrame*, PassRefPtr<FileChooser>) override;
     void enumerateChosenDirectory(FileChooser*) override;
     void setCursor(const Cursor&, LocalFrame* localRoot) override;
-    Cursor lastSetCursorForTesting() const override;
+    // BKTODO: Cursor lastSetCursorForTesting() const override;
     void needTouchEvents(bool needTouchEvents) override;
     void setTouchAction(TouchAction) override;
 
@@ -130,12 +148,12 @@ public:
     void updateCompositedSelection(const CompositedSelection&) override;
 
     // ChromeClient methods:
-    void postAccessibilityNotification(AXObject*, AXObjectCache::AXNotification) override;
+    // BKTODO: void postAccessibilityNotification(AXObject*, AXObjectCache::AXNotification) override;
     String acceptLanguages() override;
 
     // ChromeClientImpl:
     void setCursorForPlugin(const WebCursorInfo&, LocalFrame* localRoot);
-    void setNewWindowNavigationPolicy(WebNavigationPolicy);
+    // BKTODO: void setNewWindowNavigationPolicy(WebNavigationPolicy);
     void setCursorOverridden(bool);
 
     bool hasOpenedPopup() const override;
@@ -186,9 +204,9 @@ private:
     void setCursor(const WebCursorInfo&, LocalFrame* localRoot);
 
     WebViewImpl* m_webView; // Weak pointer.
-    WindowFeatures m_windowFeatures;
+    // BKTODO: WindowFeatures m_windowFeatures;
     Vector<PopupOpeningObserver*> m_popupOpeningObservers;
-    Cursor m_lastSetMouseCursorForTesting;
+    // BKTODO: Cursor m_lastSetMouseCursorForTesting;
     bool m_cursorOverridden;
     bool m_didRequestNonEmptyToolTip;
 };

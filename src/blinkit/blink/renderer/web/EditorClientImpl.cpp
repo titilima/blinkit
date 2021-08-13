@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EditorClientImpl.cpp
+// Description: EditorClientImpl Class
+//      Author: Ziming Li
+//     Created: 2021-08-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple, Inc.  All rights reserved.
  * Copyright (C) 2012 Google, Inc.  All rights reserved.
@@ -27,11 +38,13 @@
 #include "web/EditorClientImpl.h"
 
 #include "core/editing/SelectionType.h"
+#if 0 // BKTODO:
 #include "public/web/WebContentSettingsClient.h"
 #include "public/web/WebFrameClient.h"
 #include "public/web/WebViewClient.h"
 #include "web/WebLocalFrameImpl.h"
 #include "web/WebViewImpl.h"
+#endif
 
 namespace blink {
 
@@ -46,36 +59,51 @@ EditorClientImpl::~EditorClientImpl()
 
 void EditorClientImpl::respondToChangedSelection(LocalFrame* frame, SelectionType selectionType)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     WebLocalFrameImpl* webFrame = WebLocalFrameImpl::fromFrame(frame);
     if (webFrame->client())
         webFrame->client()->didChangeSelection(selectionType != RangeSelection);
+#endif
 }
 
 void EditorClientImpl::respondToChangedContents()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (m_webView->client())
         m_webView->client()->didChangeContents();
+#endif
 }
 
 bool EditorClientImpl::canCopyCut(LocalFrame* frame, bool defaultValue) const
 {
+    ASSERT(false); // BKTODO:
+    return true;
+#if 0
     WebLocalFrameImpl* webFrame = WebLocalFrameImpl::fromFrame(frame);
     if (!webFrame->contentSettingsClient())
         return defaultValue;
     return webFrame->contentSettingsClient()->allowWriteToClipboard(defaultValue);
+#endif
 }
 
 bool EditorClientImpl::canPaste(LocalFrame* frame, bool defaultValue) const
 {
+    ASSERT(false); // BKTODO:
+    return true;
+#if 0
     WebLocalFrameImpl* webFrame = WebLocalFrameImpl::fromFrame(frame);
     if (!webFrame->contentSettingsClient())
         return defaultValue;
     return webFrame->contentSettingsClient()->allowReadFromClipboard(defaultValue);
+#endif
 }
 
 bool EditorClientImpl::handleKeyboardEvent()
 {
-    return m_webView->client() && m_webView->client()->handleCurrentKeyboardEvent();
+    ASSERT(false); // BKTODO: return m_webView->client() && m_webView->client()->handleCurrentKeyboardEvent();
+    return false;
 }
 
 } // namespace blink

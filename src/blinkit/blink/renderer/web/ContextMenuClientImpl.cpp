@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContextMenuClientImpl.cpp
+// Description: ContextMenuClientImpl Class
+//      Author: Ziming Li
+//     Created: 2021-08-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2012 Google Inc. All rights reserved.
  *
@@ -38,7 +49,7 @@
 #include "core/dom/Document.h"
 #include "core/editing/Editor.h"
 #include "core/editing/markers/DocumentMarkerController.h"
-#include "core/editing/spellcheck/SpellChecker.h"
+// BKTODO: #include "core/editing/spellcheck/SpellChecker.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/Settings.h"
@@ -47,22 +58,25 @@
 #include "core/html/HTMLFormElement.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLInputElement.h"
+#if 0 // BKTODO:
 #include "core/html/HTMLMediaElement.h"
 #include "core/html/HTMLPlugInElement.h"
 #include "core/html/MediaError.h"
+#endif
 #include "core/input/EventHandler.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutPart.h"
 #include "core/loader/DocumentLoader.h"
 #include "core/loader/FrameLoader.h"
-#include "core/loader/HistoryItem.h"
+// BKTODO: #include "core/loader/HistoryItem.h"
 #include "core/page/ContextMenuController.h"
 #include "core/page/Page.h"
 #include "platform/ContextMenu.h"
 #include "platform/Widget.h"
-#include "platform/exported/WrappedResourceResponse.h"
+// BKTODO: #include "platform/exported/WrappedResourceResponse.h"
 #include "platform/text/TextBreakIterator.h"
 #include "platform/weborigin/KURL.h"
+#if 0 // BKTODO:
 #include "public/platform/WebPoint.h"
 #include "public/platform/WebString.h"
 #include "public/platform/WebURL.h"
@@ -81,10 +95,12 @@
 #include "web/WebLocalFrameImpl.h"
 #include "web/WebPluginContainerImpl.h"
 #include "web/WebViewImpl.h"
+#endif
 #include "wtf/text/WTFString.h"
 
 namespace blink {
 
+#if 0 // BKTODO:
 // Figure out the URL of a page or subframe. Returns |page_type| as the type,
 // which indicates page or subframe, or ContextNodeType::NONE if the URL could not
 // be determined for some reason.
@@ -100,6 +116,7 @@ static WebURL urlFromFrame(LocalFrame* frame)
     }
     return WebURL();
 }
+#endif
 
 static bool IsWhiteSpaceOrPunctuation(UChar c)
 {
@@ -133,6 +150,8 @@ static String selectMisspellingAsync(LocalFrame* selectedFrame, String& descript
 
 void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // Displaying the context menu in this function is a big hack as we don't
     // have context, i.e. whether this is being invoked via a script or in
     // response to user input (Mouse event WM_RBUTTONDOWN,
@@ -363,10 +382,13 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
     WebLocalFrameImpl* selectedWebFrame = WebLocalFrameImpl::fromFrame(selectedFrame);
     if (selectedWebFrame->client())
         selectedWebFrame->client()->showContextMenu(data);
+#endif
 }
 
 void ContextMenuClientImpl::clearContextMenu()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     HitTestResult r = m_webView->page()->contextMenuController().hitTestResult();
     LocalFrame* selectedFrame = r.innerNodeFrame();
     if (!selectedFrame)
@@ -375,8 +397,10 @@ void ContextMenuClientImpl::clearContextMenu()
     WebLocalFrameImpl* selectedWebFrame = WebLocalFrameImpl::fromFrame(selectedFrame);
     if (selectedWebFrame->client())
         selectedWebFrame->client()->clearContextMenu();
+#endif
 }
 
+#if 0 // BKTODO:
 static void populateSubMenuItems(const Vector<ContextMenuItem>& inputMenu, WebVector<WebMenuItemInfo>& subMenuItems)
 {
     Vector<WebMenuItemInfo> subItems;
@@ -414,10 +438,11 @@ static void populateSubMenuItems(const Vector<ContextMenuItem>& inputMenu, WebVe
         outputItems[i] = subItems[i];
     subMenuItems.swap(outputItems);
 }
+#endif
 
 void ContextMenuClientImpl::populateCustomMenuItems(const ContextMenu* defaultMenu, WebContextMenuData* data)
 {
-    populateSubMenuItems(defaultMenu->items(), data->customItems);
+    ASSERT(false); // BKTODO: populateSubMenuItems(defaultMenu->items(), data->customItems);
 }
 
 } // namespace blink
