@@ -136,18 +136,6 @@ void GCHeap::CleanupMembers(GCVisitor &visitor)
     }
 }
 
-void GCHeap::CleanupPersistentMembers(void)
-{
-    auto it = m_persistentMembers.begin();
-    while (m_persistentMembers.end() != it)
-    {
-        if (0 == it->second)
-            it = m_persistentMembers.erase(it);
-        else
-            ++it;
-    }
-}
-
 void GCHeap::CleanupRoots(void)
 {
     auto it = m_rootObjects.begin();
@@ -195,18 +183,16 @@ void GCHeap::CollectGarbage(void)
 #ifndef NDEBUG
     size_t rootCount = m_rootObjects.size();
     size_t memberCount = m_memberObjects.size();
-    size_t persistentCount = m_persistentMembers.size();
     size_t stashCount = m_stashObjects.size();
 #endif
 
     CleanupRoots();
     CleanupStashObjects();
-    CleanupPersistentMembers();
 
     GCVisitor visitor(m_memberObjects);
     TraceObjects(m_globalObjects, visitor);
     TraceObjects(m_rootObjects, visitor);
-    TracePersistentMembers(visitor);
+    ASSERT(false); // BKTODO: Trace persistent objects.
     TraceObjects(m_stashObjects, visitor);
 
     CleanupMembers(visitor);
@@ -217,12 +203,10 @@ void GCHeap::CollectGarbage(void)
         "    Globals: %u\n"
         "    Roots: %u -> %u\n"
         "    Members: %u -> %u\n"
-        "    Persistent Members: %u -> %u\n"
         "    Stash Objects: %u -> %u",
         m_globalObjects.size(),
         rootCount, m_rootObjects.size(),
         memberCount, m_memberObjects.size(),
-        persistentCount, m_persistentMembers.size(),
         stashCount, m_stashObjects.size()
     );
 #endif
@@ -243,8 +227,7 @@ void GCHeap::FlushWeakSlot(void **slot, const GCObjectSet &objectsToGC)
 
 void GCHeap::Persist(void *p)
 {
-    ASSERT(std::end(m_memberObjects) != m_memberObjects.find(p));
-    ++m_persistentMembers[p];
+    ASSERT(false); // BKTODO: Remove it later!
 }
 
 void GCHeap::ReleasePersistentObject(GCObject &o)
@@ -307,29 +290,9 @@ void GCHeap::TraceObjects(const GCObjectSet &owners, GCVisitor &visitor)
     }
 }
 
-void GCHeap::TracePersistentMembers(GCVisitor &visitor)
-{
-    const GCObjectSet &objectsToGC = visitor.ObjectsToGC();
-    if (objectsToGC.empty())
-        return;
-
-    for (auto &it : m_persistentMembers)
-    {
-        visitor.trace(it.first);
-        if (objectsToGC.empty())
-            return;
-
-        Trace(it.first, &visitor);
-        if (objectsToGC.empty())
-            return;
-    }
-}
-
 void GCHeap::Unpersist(void *p)
 {
-    ASSERT(std::end(m_persistentMembers) != m_persistentMembers.find(p));
-    ASSERT(m_persistentMembers[p] > 0);
-    --m_persistentMembers[p];
+    ASSERT(false); // BKTODO: Remove it later!
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

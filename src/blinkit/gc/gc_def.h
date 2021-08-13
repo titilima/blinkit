@@ -35,6 +35,12 @@ public:
     virtual ~GCObject(void) = default;
 protected:
     GCObject(void) = default;
+
+    bool IsUnique(void) const
+    {
+        ASSERT(0 != m_refCnt);
+        return 1 == m_refCnt;
+    }
 private:
     friend class GCHeap;
     template <class> friend class GCMember;
@@ -44,6 +50,21 @@ private:
     void Release(void);
 
     unsigned m_refCnt = 0;
+};
+
+void GCRetainPersistentObject(GCObject *o);
+void GCReleasePersistentObject(GCObject *o);
+
+/**
+ * GCRefCounted
+ */
+
+class GCRefCounted : public GCObject
+{
+public:
+    bool hasOneRef(void) const { return IsUnique(); }
+    void ref(void) { GCRetainPersistentObject(this); }
+    void deref(void) { GCReleasePersistentObject(this); }
 };
 
 /**
@@ -150,9 +171,6 @@ public:
         }
     }
 };
-
-void GCRetainPersistentObject(GCObject *o);
-void GCReleasePersistentObject(GCObject *o);
 
 template <class T>
 class GCPersistentMember final : public GCMemberBase<T>

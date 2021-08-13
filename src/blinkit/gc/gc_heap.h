@@ -52,13 +52,10 @@ private:
     void CleanupGlobals(void);
     void CleanupRoots(void);
     void CleanupStashObjects(void);
-    void CleanupPersistentMembers(void);
     void CleanupMembers(GCVisitor &visitor);
 
-    void TracePersistentMembers(GCVisitor &visitor);
 
     std::unordered_set<GCObject *> m_persistentObjects;
-    std::unordered_map<void *, unsigned> m_persistentMembers;
     GCObjectSet m_rootObjects, m_memberObjects, m_stashObjects, m_globalObjects;
 };
 
