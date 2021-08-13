@@ -7,6 +7,7 @@ core/events/AnimationEvent
 core/events/AnimationPlayerEvent
 core/events/BeforeUnloadEvent
 core/events/Event
+core/events/FocusEvent
 core/events/KeyboardEvent
 core/events/MouseEvent
 core/events/PageTransitionEvent
