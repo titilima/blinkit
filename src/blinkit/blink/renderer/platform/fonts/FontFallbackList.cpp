@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontFallbackList.cpp
+// Description: FontFallbackList Class
+//      Author: Ziming Li
+//     Created: 2021-08-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -42,7 +53,6 @@ namespace blink {
 FontFallbackList::FontFallbackList()
     : m_pageZero(0)
     , m_cachedPrimarySimpleFontData(0)
-    , m_fontSelector(nullptr)
     , m_fontSelectorVersion(0)
     , m_familyIndex(0)
     , m_generation(FontCache::fontCache()->generation())
@@ -59,7 +69,7 @@ void FontFallbackList::invalidate(PassRefPtrWillBeRawPtr<FontSelector> fontSelec
     m_cachedPrimarySimpleFontData = 0;
     m_familyIndex = 0;
     m_hasLoadingFallback = false;
-    if (m_fontSelector != fontSelector)
+    if (m_fontSelector.get() != fontSelector)
         m_fontSelector = fontSelector;
     m_fontSelectorVersion = m_fontSelector ? m_fontSelector->version() : 0;
     m_generation = FontCache::fontCache()->generation();

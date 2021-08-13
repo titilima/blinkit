@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontFallbackList.h
+// Description: FontFallbackList Class
+//      Author: Ziming Li
+//     Created: 2021-08-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2010 Apple Inc. All rights reserved.
  *
@@ -130,7 +141,7 @@ private:
     GlyphPages m_pages;
     GlyphPageTreeNodeBase* m_pageZero;
     mutable const SimpleFontData* m_cachedPrimarySimpleFontData;
-    RefPtrWillBePersistent<FontSelector> m_fontSelector;
+    BlinKit::GCPersistentMember<FontSelector> m_fontSelector;
     unsigned m_fontSelectorVersion;
     mutable int m_familyIndex;
     unsigned short m_generation;

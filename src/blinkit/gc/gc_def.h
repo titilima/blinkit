@@ -176,13 +176,27 @@ template <class T>
 class GCPersistentMember final : public GCMemberBase<T>
 {
 public:
+    GCPersistentMember(void) : GCMemberBase<T>(nullptr) {}
     GCPersistentMember(GCLeaked<T> &&o) : GCMemberBase<T>(std::move(o))
     {
+        ASSERT(nullptr != this->m_ptr);
         GCRetainPersistentObject(static_cast<GCObject *>(this->m_ptr));
     }
     ~GCPersistentMember(void)
     {
-        GCReleasePersistentObject(static_cast<GCObject *>(this->m_ptr));
+        if (nullptr != this->m_ptr)
+            GCReleasePersistentObject(static_cast<GCObject *>(this->m_ptr));
+    }
+
+    template <typename U>
+    GCPersistentMember& operator=(const WTF::RawPtr<U> &other)
+    {
+        if (nullptr != this->m_ptr)
+            GCReleasePersistentObject(static_cast<GCObject *>(this->m_ptr));
+        GCMemberBase<T>::operator=(other.get());
+        if (nullptr != this->m_ptr)
+            GCRetainPersistentObject(static_cast<GCObject *>(this->m_ptr));
+        return *this;
     }
 };
 
