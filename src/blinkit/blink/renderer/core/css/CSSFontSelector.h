@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - BlinKit Library
-// -------------------------------------------------
-//   File Name: CSSFontSelector.h
-// Description: CSSFontSelector Class
-//      Author: Ziming Li
-//     Created: 2021-08-12
-// -------------------------------------------------
-// Copyright (C) 2021 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2007, 2008, 2011 Apple Inc. All rights reserved.
  *
@@ -53,7 +42,7 @@ class CSSFontSelectorClient;
 class Document;
 class FontDescription;
 
-class CORE_EXPORT CSSFontSelector : public FontSelector, public BlinKit::GCObject {
+class CORE_EXPORT CSSFontSelector : public FontSelector {
 public:
     static PassRefPtrWillBeRawPtr<CSSFontSelector> create(Document* document)
     {
