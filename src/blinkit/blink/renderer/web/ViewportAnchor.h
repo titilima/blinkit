@@ -28,43 +28,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef AnimatableStrokeDasharrayList_h
-#define AnimatableStrokeDasharrayList_h
+#ifndef ViewportAnchor_h
+#define ViewportAnchor_h
 
-#include "core/CoreExport.h"
-#include "core/animation/animatable/AnimatableRepeatable.h"
-#include "core/style/SVGComputedStyleDefs.h"
+#include "platform/heap/Handle.h"
 
 namespace blink {
 
-class CORE_EXPORT AnimatableStrokeDasharrayList final : public AnimatableRepeatable {
-public:
-    ~AnimatableStrokeDasharrayList() override { }
+class FrameView;
+class VisualViewport;
 
-    static PassRefPtr<AnimatableStrokeDasharrayList> create(PassRefPtr<SVGDashArray> lengths, float zoom)
-    {
-        return adoptRef(new AnimatableStrokeDasharrayList(lengths, zoom));
-    }
-
-    PassRefPtr<SVGDashArray> toSVGDashArray(float zoom) const;
-
+// Use derived ViewportAnchor classes to "anchor" the viewport to a location,
+// perform some operation that may move the viewport around, then restore
+// the viewport to the original location.
+// We support two kinds of anchors, a rotation anchor and a resize anchor.
+class ViewportAnchor {
+    STACK_ALLOCATED();
 protected:
-    PassRefPtr<AnimatableValue> interpolateTo(const AnimatableValue*, double fraction) const override;
-    bool usesDefaultInterpolationWith(const AnimatableValue*) const override;
-
-private:
-    AnimatableStrokeDasharrayList(PassRefPtr<SVGDashArray>, float zoom);
-    // This will consume the vector passed into it.
-    AnimatableStrokeDasharrayList(Vector<RefPtr<AnimatableValue>>& values)
-        : AnimatableRepeatable(values)
+    ViewportAnchor(FrameView& rootFrameView, VisualViewport& visualViewport)
+        : m_rootFrameView(&rootFrameView)
+        , m_visualViewport(&visualViewport)
     {
     }
 
-    AnimatableType type() const override { return TypeStrokeDasharrayList; }
+    RawPtrWillBeMember<FrameView> m_rootFrameView;
+    RawPtrWillBeMember<VisualViewport> m_visualViewport;
 };
-
-DEFINE_ANIMATABLE_VALUE_TYPE_CASTS(AnimatableStrokeDasharrayList, isStrokeDasharrayList());
 
 } // namespace blink
 
-#endif // AnimatableStrokeDasharrayList_h
+#endif // ViewportAnchor_h
