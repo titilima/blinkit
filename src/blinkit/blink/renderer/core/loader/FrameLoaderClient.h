@@ -59,6 +59,7 @@
 #include "wtf/Vector.h"
 
 namespace BlinKit {
+class AppCaller;
 class ClientCaller;
 }
 
@@ -94,11 +95,7 @@ class Widget;
 
 class CORE_EXPORT FrameLoaderClient : public FrameClient {
 public:
-    ~FrameLoaderClient() override {}
-
 #if 0 // BKTODO:
-    virtual bool hasWebView() const = 0; // mainly for assertions
-
     virtual void dispatchWillSendRequest(DocumentLoader*, unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse) = 0;
     virtual void dispatchDidReceiveResponse(DocumentLoader*, unsigned long identifier, const ResourceResponse&) = 0;
     virtual void dispatchDidFinishLoading(DocumentLoader*, unsigned long identifier) = 0;
@@ -107,10 +104,10 @@ public:
     virtual void dispatchDidHandleOnloadEvents() = 0;
     virtual void dispatchDidReceiveServerRedirectForProvisionalLoad() = 0;
     virtual void dispatchDidNavigateWithinPage(HistoryItem*, HistoryCommitType) { }
-    virtual void dispatchWillClose() = 0;
-    virtual void dispatchDidStartProvisionalLoad(double triggeringEventTime) = 0;
 #endif
-    virtual void dispatchDidReceiveTitle(const String&) = 0;
+    virtual void dispatchWillClose(void) {}
+    // BKTODO: virtual void dispatchDidStartProvisionalLoad(double triggeringEventTime) = 0;
+    virtual void dispatchDidReceiveTitle(const String&) {}
 #if 0 // BKTODO:
     virtual void dispatchDidChangeIcons(IconType) = 0;
     virtual void dispatchDidCommitLoad(HistoryItem*, HistoryCommitType) = 0;
@@ -119,7 +116,7 @@ public:
     virtual void dispatchDidFinishDocumentLoad(bool documentIsEmpty) = 0;
     virtual void dispatchDidFinishLoad() = 0;
 #endif
-    virtual void dispatchDidChangeThemeColor() = 0;
+    virtual void dispatchDidChangeThemeColor(void) {}
 
 #if 0 // BKTODO:
     virtual NavigationPolicy decidePolicyForNavigation(const ResourceRequest&, DocumentLoader*, NavigationType, NavigationPolicy, bool shouldReplaceCurrentEntry) = 0;
@@ -165,17 +162,17 @@ public:
     // Transmits the change in the set of watched CSS selectors property
     // that match any element on the frame.
     virtual void selectorMatchChanged(const Vector<String>& addedSelectors, const Vector<String>& removedSelectors) = 0;
-
-    virtual PassRefPtrWillBeRawPtr<DocumentLoader> createDocumentLoader(LocalFrame*, const ResourceRequest&, const SubstituteData&) = 0;
 #endif
 
-    virtual String userAgent() = 0;
+    virtual PassRefPtrWillBeRawPtr<DocumentLoader> createDocumentLoader(LocalFrame*, const ResourceRequest&, const SubstituteData&);
+
+    virtual String userAgent(void);
+
+    // BKTODO: virtual String doNotTrackValue() = 0;
+
+    virtual void transitionToCommittedForNewPage(void) {}
 
 #if 0 // BKTODO:
-    virtual String doNotTrackValue() = 0;
-
-    virtual void transitionToCommittedForNewPage() = 0;
-
     virtual PassRefPtrWillBeRawPtr<LocalFrame> createFrame(const FrameLoadRequest&, const AtomicString& name, HTMLFrameOwnerElement*) = 0;
     // Whether or not plugin creation should fail if the HTMLPlugInElement isn't in the DOM after plugin initialization.
     enum DetachedPluginPolicy {
@@ -190,13 +187,13 @@ public:
     virtual PassOwnPtr<WebMediaSession> createWebMediaSession() = 0;
 
     virtual ObjectContentType objectContentType(const KURL&, const String& mimeType, bool shouldPreferPlugInsForImages) = 0;
+#endif
 
-    virtual void didCreateNewDocument() = 0;
-    virtual void dispatchDidClearWindowObjectInMainWorld() = 0;
-    virtual void documentElementAvailable() = 0;
+    virtual void didCreateNewDocument(void) {}
+    // BKTODO: virtual void dispatchDidClearWindowObjectInMainWorld() = 0;
+    virtual void documentElementAvailable(void) {}
 
-    virtual v8::Local<v8::Value> createTestInterface(const AtomicString& name) = 0;
-
+#if 0 // BKTODO:
     virtual void didCreateScriptContext(v8::Local<v8::Context>, int extensionGroup, int worldId) = 0;
     virtual void willReleaseScriptContext(v8::Local<v8::Context>, int worldId) = 0;
     virtual bool allowScriptExtension(const String& extensionName, int extensionGroup, int worldId) = 0;
@@ -245,10 +242,12 @@ public:
     // Informs the embedder that a WebGL canvas inside this frame received a lost context
     // notification with the given GL_ARB_robustness guilt/innocence code (see Extensions3D.h).
     virtual void didLoseWebGLContext(int) { }
+#endif
 
     // If an HTML document is being loaded, informs the embedder that the document will have its <body> attached soon.
-    virtual void dispatchWillInsertBody() { }
+    virtual void dispatchWillInsertBody(void) {}
 
+#if 0 // BKTODO:
     virtual void dispatchDidChangeResourcePriority(unsigned long identifier, ResourceLoadPriority, int intraPriorityValue) { }
 
     virtual PassOwnPtr<WebServiceWorkerProvider> createServiceWorkerProvider() = 0;
@@ -276,7 +275,15 @@ public:
     };
     virtual void suddenTerminationDisablerChanged(bool present, SuddenTerminationDisablerType) { }
 #endif
+protected:
+    FrameLoaderClient(BlinKit::AppCaller &appCaller, BlinKit::ClientCaller &clientCaller);
 
+#ifndef NDEBUG
+    bool IsClientThread(void) const;
+#endif
+
+    BlinKit::AppCaller &m_appCaller;
+    BlinKit::ClientCaller &m_clientCaller;
 };
 
 } // namespace blink
