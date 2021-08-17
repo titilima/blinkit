@@ -177,6 +177,8 @@ public:
 
     ~Timer() override { }
 
+    using HostAliveFlag = std::shared_ptr<bool>;
+    void SetHostAliveFlag(const HostAliveFlag &hostAliveFlag) { m_hostAliveFlag = hostAliveFlag; }
 protected:
     void fired() override
     {
@@ -186,14 +188,10 @@ protected:
     NO_LAZY_SWEEP_SANITIZE_ADDRESS
     bool canFire() const override
     {
-        // Oilpan: if a timer fires while Oilpan heaps are being lazily
-        // swept, it is not safe to proceed if the object is about to
-        // be swept (and this timer will be stopped while doing so.)
-        ASSERT(false); // BKTODO: return TimerIsObjectAliveTrait<TimerFiredClass>::isHeapObjectAlive(m_object);
-        return false;
+        return m_hostAliveFlag ? *m_hostAliveFlag : true;
     }
 
-    Timer(TimerFiredClass* o, TimerFiredFunction f, WebTaskRunner* webTaskRunner)
+    Timer(TimerFiredClass* o, TimerFiredFunction f, const std::shared_ptr<WebTaskRunner> &webTaskRunner)
         : TimerBase(webTaskRunner), m_object(o), m_function(f)
     {
     }
@@ -203,6 +201,7 @@ private:
     // This raw pointer is safe as long as Timer<X> is held by the X itself (That's the case
     // in the current code base).
     GC_PLUGIN_IGNORE("363031")
+    HostAliveFlag m_hostAliveFlag;
     TimerFiredClass* m_object;
     TimerFiredFunction m_function;
 };
