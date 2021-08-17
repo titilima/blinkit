@@ -70,14 +70,10 @@ private:
         }
         return true;
     }
-    void document_ready(void) override
+    void document_ready(BkJSContext ctx) override
     {
-        auto callback = [](BkJSContext ctx)
-        {
-            BkEvaluate(ctx, ReadyCode, std::size(ReadyCode) - 1, nullptr);
-            BkExit(EXIT_SUCCESS);
-        };
-        js_call::prepare(callback)->commit_to(m_crawler);
+        BkEvaluate(ctx, ReadyCode, std::size(ReadyCode) - 1, nullptr);
+        BkExit(EXIT_SUCCESS);
     }
 
     BkCrawler m_crawler = nullptr;
