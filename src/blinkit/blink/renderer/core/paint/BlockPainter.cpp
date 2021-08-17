@@ -15,7 +15,6 @@
 
 #include "core/paint/BlockPainter.h"
 
-#include <optional>
 #include "core/editing/DragCaretController.h"
 #include "core/editing/FrameSelection.h"
 #include "core/frame/Settings.h"
@@ -120,7 +119,7 @@ void BlockPainter::paintChildAsPseudoStackingContext(const LayoutBox& child, con
 {
     LayoutPoint childPoint = m_layoutBlock.flipForWritingModeForChild(&child, paintOffset);
     if (!child.hasSelfPaintingLayer() && !child.isFloating())
-        ASSERT(false); // BKTODO: ObjectPainter(child).paintAsPseudoStackingContext(paintInfo, childPoint);
+        ObjectPainter(child).paintAsPseudoStackingContext(paintInfo, childPoint);
 }
 
 void BlockPainter::paintInlineBox(const InlineBox& inlineBox, const PaintInfo& paintInfo, const LayoutPoint& paintOffset)
@@ -132,7 +131,7 @@ void BlockPainter::paintInlineBox(const InlineBox& inlineBox, const PaintInfo& p
     if (inlineBox.parent()->lineLayoutItem().style()->isFlippedBlocksWritingMode()) // Faster than calling containingBlock().
         childPoint = LineLayoutPaintShim::layoutObjectFrom(inlineBox.lineLayoutItem())->containingBlock()->flipForWritingModeForChild(&toLayoutBox(inlineBox.layoutObject()), childPoint);
 
-    ASSERT(false); // BKTODO: ObjectPainter(inlineBox.layoutObject()).paintAsPseudoStackingContext(paintInfo, childPoint);
+    ObjectPainter(inlineBox.layoutObject()).paintAsPseudoStackingContext(paintInfo, childPoint);
 }
 
 void BlockPainter::paintObject(const PaintInfo& paintInfo, const LayoutPoint& paintOffset)
@@ -174,7 +173,7 @@ void BlockPainter::paintObject(const PaintInfo& paintInfo, const LayoutPoint& pa
     // FIXME: When Skia supports annotation rect covering (https://code.google.com/p/skia/issues/detail?id=3872),
     // this rect may be covered by foreground and descendant drawings. Then we may need a dedicated paint phase.
     if (paintPhase == PaintPhaseForeground && paintInfo.isPrinting())
-        ASSERT(false); // BKTODO: ObjectPainter(m_layoutBlock).addPDFURLRectIfNeeded(paintInfo, paintOffset);
+        ObjectPainter(m_layoutBlock).addPDFURLRectIfNeeded(paintInfo, paintOffset);
 
     if (paintPhase != PaintPhaseSelfOutlineOnly) {
         std::optional<ScrollRecorder> scrollRecorder;
@@ -202,7 +201,7 @@ void BlockPainter::paintObject(const PaintInfo& paintInfo, const LayoutPoint& pa
     }
 
     if (shouldPaintSelfOutline(paintPhase))
-        ASSERT(false); // BKTODO: ObjectPainter(m_layoutBlock).paintOutline(paintInfo, paintOffset);
+        ObjectPainter(m_layoutBlock).paintOutline(paintInfo, paintOffset);
 
     // If the caret's node's layout object's containing block is this block, and the paint action is PaintPhaseForeground,
     // then paint the caret.
@@ -247,7 +246,7 @@ void BlockPainter::paintContents(const PaintInfo& paintInfo, const LayoutPoint& 
 
     if (m_layoutBlock.childrenInline()) {
         if (shouldPaintDescendantOutlines(paintInfo.phase))
-            ASSERT(false); // BKTODO: ObjectPainter(m_layoutBlock).paintInlineChildrenOutlines(paintInfo, paintOffset);
+            ObjectPainter(m_layoutBlock).paintInlineChildrenOutlines(paintInfo, paintOffset);
         else
             LineBoxListPainter(m_layoutBlock.lineBoxes()).paint(m_layoutBlock, paintInfo, paintOffset);
     } else {
