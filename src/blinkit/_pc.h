@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "build/build_config.h"
+#include "chromium/build/build_config.h"
 
 #if OS_WIN
 #   pragma warning(disable: 4068 4244 4291 4305 4819 5033)
@@ -22,7 +22,6 @@
 #   define _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING
 #   define NOMINMAX
 #   define WIN32_LEAN_AND_MEAN
-#   define U_STATIC_IMPLEMENTATION
 #   define UCHAR_TYPE   wchar_t
 #endif
 
@@ -36,8 +35,9 @@
 #endif
 
 #define BLINK_IMPLEMENTATION    1
-#define INSIDE_BLINK            1
 #define ENABLE_OILPAN           1
+#define INSIDE_BLINK            1
+#define LOG_DISABLED            1
 
 #ifdef BLINKIT_CRAWLER_ENABLED
 #   ifndef BLINKIT_UI_ENABLED
@@ -70,6 +70,14 @@ extern HMODULE theModule;
 #include "base/logging.h"
 #ifdef BLINKIT_UI_ENABLED
 #   include "skia/_skia.h"
+#endif
+
+#ifdef NDEBUG
+// Used for speeding up compilation
+#   include "blinkit/blink/renderer/core/dom/Document.h" 
+#   ifdef BLINKIT_UI_ENABLED
+#       include "blinkit/blink/renderer/core/layout/LayoutObject.h"
+#   endif
 #endif
 
 #endif // BLINKIT_BLINKIT__PC_H
