@@ -39,13 +39,11 @@ private:
     void OnShowWindow(HWND hwnd, BOOL fShow, UINT status);
     void OnSize(HWND hwnd, UINT state, int cx, int cy);
 
-#if 0 // BKTODO:
-    // LocalFrameClient
-    void DispatchDidReceiveTitle(const String &title) override;
+    // FrameLoaderClient
+    void dispatchDidReceiveTitle(const String &title) override;
     // WebViewImpl
     void InvalidateNativeView(const blink::IntRect &rect) override;
-    SkBitmap PrepareBitmapForCanvas(const blink::WebSize &size) override;
-#endif
+    SkBitmap PrepareBitmapForCanvas(const blink::IntSize &size) override;
 
     HWND m_hWnd;
     HDC m_memoryDC = nullptr;

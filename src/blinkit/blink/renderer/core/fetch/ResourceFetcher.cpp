@@ -190,7 +190,7 @@ ResourceFetcher::ResourceFetcher(FetchContext* context)
     , m_allowStaleResources(false)
 {
 #if ENABLE(OILPAN)
-    ASSERT(false); // BKTODO: ThreadState::current()->registerPreFinalizer(this);
+    // BKTODO: ThreadState::current()->registerPreFinalizer(this);
 #endif
 }
 

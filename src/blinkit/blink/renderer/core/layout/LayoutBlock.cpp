@@ -885,7 +885,7 @@ void LayoutBlock::updateScrollInfoAfterLayout()
 
 void LayoutBlock::layout()
 {
-    ASSERT(false); // BKTODO: LayoutAnalyzer::Scope analyzer(*this);
+    // BKTODO: LayoutAnalyzer::Scope analyzer(*this);
 
     // Table cells call layoutBlock directly, so don't add any logic here.  Put code into
     // layoutBlock().

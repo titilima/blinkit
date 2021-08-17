@@ -321,7 +321,7 @@ void DocumentLoader::finishedLoading(double finishTime)
         responseEndTime = m_timeOfLastDataReceived;
     if (!responseEndTime)
         responseEndTime = monotonicallyIncreasingTime();
-    ASSERT(false); // BKTODO: timing().setResponseEnd(responseEndTime);
+    // BKTODO: timing().setResponseEnd(responseEndTime);
 
     commitIfReady();
     if (!frameLoader())
@@ -334,7 +334,7 @@ void DocumentLoader::finishedLoading(double finishTime)
             commitData(0, 0);
     }
 
-    ASSERT(false); // BKTODO: m_applicationCacheHost->finishedLoadingMainResource();
+    // BKTODO: m_applicationCacheHost->finishedLoadingMainResource();
     endWriting(m_writer.get());
     if (m_state < MainResourceDone)
         m_state = MainResourceDone;
@@ -564,7 +564,12 @@ void DocumentLoader::ensureWriter(const AtomicString& mimeType, const KURL& over
 
     // Call receivedFirstData() exactly once per load.
     frameLoader()->receivedFirstData();
-    ASSERT(false); // BKTODO: m_frame->document()->maybeHandleHttpRefresh(m_response.httpHeaderField(HTTPNames::Refresh), Document::HttpRefreshFromHeader);
+#ifdef BLINKIT_CRAWLER_ENABLED
+    if (FrameClient::Type::Crawler == m_frame->client()->GetType())
+    {
+        ASSERT(false); // BKTODO: m_frame->document()->maybeHandleHttpRefresh(m_response.httpHeaderField(HTTPNames::Refresh), Document::HttpRefreshFromHeader);
+    }
+#endif
 }
 
 void DocumentLoader::commitData(const char* bytes, size_t length)
@@ -702,8 +707,7 @@ void DocumentLoader::clearMainResourceHandle()
 
 bool DocumentLoader::maybeCreateArchive()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // Only the top-frame can load MHTML.
     if (m_frame->tree().parent())
         return false;
@@ -731,8 +735,10 @@ bool DocumentLoader::maybeCreateArchive()
     document()->enforceSandboxFlags(SandboxAll);
 
     commitData(mainResource->data()->data(), mainResource->data()->size());
-#endif
     return true;
+#else
+    return false;
+#endif
 }
 
 void DocumentLoader::prepareSubframeArchiveLoadIfNeeded()
@@ -783,9 +789,7 @@ void DocumentLoader::setDefersLoading(bool defers)
 
 bool DocumentLoader::maybeLoadEmpty()
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    bool shouldLoadEmpty = !m_substituteData.isValid() && (m_request.url().isEmpty() || SchemeRegistry::shouldLoadURLSchemeAsEmptyDocument(m_request.url().protocol()));
+    bool shouldLoadEmpty = !m_substituteData.isValid() && (m_request.url().isEmpty()); // BKTODO: || SchemeRegistry::shouldLoadURLSchemeAsEmptyDocument(m_request.url().protocol()));
     if (!shouldLoadEmpty)
         return false;
 
@@ -793,16 +797,18 @@ bool DocumentLoader::maybeLoadEmpty()
         m_request.setURL(blankURL());
     m_response = ResourceResponse(m_request.url(), "text/html", 0, nullAtom, String());
     finishedLoading(monotonicallyIncreasingTime());
-#endif
     return true;
 }
 
 void DocumentLoader::startLoadingMainResource()
 {
-    ASSERT(false); // BKTODO:
-#if 0
     RefPtrWillBeRawPtr<DocumentLoader> protect(this);
+#if 0 // BKTODO:
     timing().markNavigationStart();
+#else
+    if (abs(m_referenceMonotonicTime) < DBL_EPSILON)
+        m_referenceMonotonicTime = monotonicallyIncreasingTime();
+#endif
     ASSERT(!m_mainResource);
     ASSERT(m_state == NotStarted);
     m_state = Provisional;
@@ -810,6 +816,8 @@ void DocumentLoader::startLoadingMainResource()
     if (maybeLoadEmpty())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(timing().navigationStart());
     ASSERT(!timing().fetchStart());
     timing().markFetchStart();
@@ -890,11 +898,8 @@ PassRefPtrWillBeRawPtr<DocumentWriter> DocumentLoader::createWriterFor(const Doc
 {
     LocalFrame* frame = init.frame();
 
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     ASSERT(!frame->document() || !frame->document()->isActive());
-    ASSERT(frame->tree().childCount() == 0);
+    // BKTODO: ASSERT(frame->tree().childCount() == 0);
 
     if (!init.shouldReuseDefaultView())
         frame->setDOMWindow(LocalDOMWindow::create(*frame));
@@ -902,13 +907,12 @@ PassRefPtrWillBeRawPtr<DocumentWriter> DocumentLoader::createWriterFor(const Doc
     RefPtrWillBeRawPtr<Document> document = frame->localDOMWindow()->installNewDocument(mimeType, init);
     if (ownerDocument) {
         document->setCookieURL(ownerDocument->cookieURL());
-        document->updateSecurityOrigin(ownerDocument->securityOrigin());
+        // BKTODO: document->updateSecurityOrigin(ownerDocument->securityOrigin());
     }
 
     frame->loader().didBeginDocument(dispatch);
 
     return DocumentWriter::create(document.get(), parsingPolicy, mimeType, encoding);
-#endif
 }
 
 const AtomicString& DocumentLoader::mimeType() const

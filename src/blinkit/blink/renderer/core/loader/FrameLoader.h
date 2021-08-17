@@ -247,7 +247,7 @@ private:
 
     void scheduleCheckCompleted();
 
-    void detachDocumentLoader(RefPtrWillBeMember<DocumentLoader>&);
+    void detachDocumentLoader(BlinKit::GCMember<DocumentLoader>&);
 
     RawPtrWillBeMember<LocalFrame> m_frame;
 
@@ -264,8 +264,8 @@ private:
     // a new request is being loaded, the old document loader may still be referenced.
     // E.g. while a new request is in the "policy" state, the old document loader may
     // be consulted in particular as it makes sense to imply certain settings on the new loader.
-    RefPtrWillBeMember<DocumentLoader> m_documentLoader;
-    RefPtrWillBeMember<DocumentLoader> m_provisionalDocumentLoader;
+    BlinKit::GCMember<DocumentLoader> m_documentLoader;
+    BlinKit::GCMember<DocumentLoader> m_provisionalDocumentLoader;
 
 #if 0 // BKTODO:
     RefPtrWillBeMember<HistoryItem> m_currentItem;

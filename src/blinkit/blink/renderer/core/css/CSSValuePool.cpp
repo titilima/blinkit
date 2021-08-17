@@ -40,11 +40,13 @@
 #include "core/css/parser/CSSParser.h"
 #include "core/style/ComputedStyle.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 CSSValuePool& cssValuePool()
 {
-    DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<CSSValuePool>, pool, (adoptPtrWillBeNoop(new CSSValuePool())));
+    static GCPersistentMember<CSSValuePool> pool(WrapLeaked(new CSSValuePool));
     return *pool;
 }
 

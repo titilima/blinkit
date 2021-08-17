@@ -154,10 +154,10 @@ public:
     virtual IntRect windowResizerRect() const = 0;
 
     // Methods used by HostWindow.
-    virtual WebScreenInfo screenInfo() const = 0;
+    // BKTODO: virtual WebScreenInfo screenInfo() const = 0;
     virtual void setCursor(const Cursor&, LocalFrame* localRoot) = 0;
     // End methods used by HostWindow.
-    virtual Cursor lastSetCursorForTesting() const = 0;
+    // BKTODO: virtual Cursor lastSetCursorForTesting() const = 0;
 
     virtual void dispatchViewportPropertiesDidChange(const ViewportDescription&) const { }
 
@@ -277,7 +277,7 @@ public:
     float screenToViewport(float) const override;
 
 protected:
-    ~ChromeClient() override { }
+    ChromeClient(void) = default;
 
     virtual void showMouseOverURL(const HitTestResult&) = 0;
     virtual void setWindowRect(const IntRect&) = 0;

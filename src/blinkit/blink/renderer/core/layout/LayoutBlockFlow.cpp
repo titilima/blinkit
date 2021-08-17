@@ -296,7 +296,7 @@ void LayoutBlockFlow::layoutBlock(bool relayoutChildren)
     if (!relayoutChildren && simplifiedLayout())
         return;
 
-    ASSERT(false); // BKTODO: LayoutAnalyzer::BlockScope analyzer(*this);
+    // BKTODO: LayoutAnalyzer::BlockScope analyzer(*this);
     SubtreeLayoutScope layoutScope(*this);
 
     // Multiple passes might be required for column based layout.
@@ -327,8 +327,7 @@ void LayoutBlockFlow::layoutBlock(bool relayoutChildren)
             setShouldInvalidateOverflowForPaint();
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (isHTMLDialogElement(node()) && isOutOfFlowPositioned())
         positionDialog();
 #endif

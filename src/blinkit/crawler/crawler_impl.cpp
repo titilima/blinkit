@@ -28,8 +28,8 @@ using namespace blink;
 using namespace BlinKit;
 
 CrawlerImpl::CrawlerImpl(const BkCrawlerClient &client, ClientCaller &clientCaller)
-    : /* FrameLoaderClient(AppImpl::Get().GetAppCaller(), clientCaller)
-    ,*/ m_client(client)
+    : FrameLoaderClient(AppImpl::Get().GetAppCaller(), clientCaller)
+    , m_client(client)
     // BKTODO: , m_frame(LocalFrame::create(this))
 {
     ASSERT(isMainThread());
@@ -221,19 +221,19 @@ void CrawlerImpl::TransitionToCommittedForNewPage(void)
 {
     // Nothing to do for crawlers.
 }
+#endif
 
-String CrawlerImpl::UserAgent(void)
+String CrawlerImpl::userAgent(void)
 {
     if (nullptr != m_client.GetConfig)
     {
         std::string userAgent;
         m_client.GetConfig(BK_CFG_USER_AGENT, BufferImpl::Wrap(userAgent), m_client.UserData);
         if (!userAgent.empty())
-            return String::FromStdUTF8(userAgent);
+            return String::fromStdUTF8(userAgent);
     }
-    return LocalFrameClientImpl::UserAgent();
+    return FrameLoaderClient::userAgent();
 }
-#endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -23,7 +23,6 @@ class DukElement : DukContainerNode
 {
 public:
     static const char ProtoName[];
-    static void RegisterPrototypeForCrawler(PrototypeHelper &helper);
 
     static duk_idx_t Push(duk_context *ctx, blink::Element *element);
 
@@ -31,12 +30,22 @@ public:
     static duk_ret_t SetAttributeImpl(duk_context *ctx, const blink::QualifiedName &name);
     static duk_ret_t SetAttributeEventListenerImpl(duk_context *ctx, const WTF::AtomicString &attrName);
 
+#ifdef BLINKIT_CRAWLER_ENABLED
     static const std::unordered_map<std::string, const char *>& PrototypeMapForCrawler(void);
-#ifndef BLINKIT_CRAWLER_ONLY
+    static void RegisterPrototypeForCrawler(PrototypeHelper &helper);
+#endif
+
+#ifdef BLINKIT_UI_ENABLED
     static const std::unordered_map<std::string, const char *>& PrototypeMapForUI(void);
+    static void RegisterPrototypeForUI(PrototypeHelper &helper);
 #endif
 protected:
+#ifdef BLINKIT_CRAWLER_ENABLED
     static void FillPrototypeEntryForCrawler(PrototypeEntry &entry);
+#endif
+#ifdef BLINKIT_UI_ENABLED
+    static void FillPrototypeEntryForUI(PrototypeEntry &entry);
+#endif
 private:
     friend class DukNode;
     static void Create(duk_context *ctx, blink::Element &element);

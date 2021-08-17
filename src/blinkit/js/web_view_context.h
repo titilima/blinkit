@@ -21,6 +21,10 @@ class WebViewContext final : public blink::ScriptController
 {
 public:
     WebViewContext(blink::LocalFrame &frame);
+private:
+    static void RegisterPrototypes(duk_context *ctx, duk_idx_t globalStashIndex);
+
+    void Attach(duk_context *ctx, duk_idx_t globalStashIndex) override;
 };
 
 } // namespace BlinKit

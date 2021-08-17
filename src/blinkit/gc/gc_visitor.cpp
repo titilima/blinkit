@@ -52,15 +52,7 @@ void GCVisitor::TraceImpl(GCObject &o)
 
 void GCVisitor::TraceImpl(void *p)
 {
-    if (nullptr == p)
-        return;
-
-    auto it = m_objectsToGC.find(p);
-    if (std::end(m_objectsToGC) == it)
-        return;
-
-    m_objectsToGC.erase(p);
-    (this->*m_currentHandler)(p);
+    ASSERT(false); // BKTODO: Remove it later!
 }
 
 } // namespace BlinKit

@@ -63,14 +63,22 @@ DEFINE_TRACE(NodeEventContext)
 
 void NodeEventContext::handleLocalEvents(Event& event) const
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (touchEventContext()) {
         touchEventContext()->handleLocalEvents(event);
     } else if (relatedTarget()) {
         if (event.isMouseEvent()) {
             toMouseEvent(event).setRelatedTarget(relatedTarget());
         } else if (event.isFocusEvent()) {
+            toFocusEvent(event).setRelatedTarget(relatedTarget());
+        }
+    }
+#else
+    if (relatedTarget()) {
+        if (event.isMouseEvent()) {
+            toMouseEvent(event).setRelatedTarget(relatedTarget());
+        }
+        else if (event.isFocusEvent()) {
             toFocusEvent(event).setRelatedTarget(relatedTarget());
         }
     }

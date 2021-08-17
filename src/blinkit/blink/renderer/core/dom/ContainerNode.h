@@ -83,8 +83,8 @@ class CORE_EXPORT ContainerNode : public Node {
 public:
     ~ContainerNode() override;
 
-    Node* firstChild() const { return m_firstChild; }
-    Node* lastChild() const { return m_lastChild; }
+    Node* firstChild() const { return m_firstChild.get(); }
+    Node* lastChild() const { return m_lastChild.get(); }
     bool hasChildren() const { return m_firstChild; }
 
     bool hasOneChild() const { return m_firstChild && !m_firstChild->nextSibling(); }
@@ -278,8 +278,8 @@ private:
     bool getUpperLeftCorner(FloatPoint&) const;
     bool getLowerRightCorner(FloatPoint&) const;
 
-    RawPtrWillBeMember<Node> m_firstChild;
-    RawPtrWillBeMember<Node> m_lastChild;
+    BlinKit::GCMember<Node> m_firstChild;
+    BlinKit::GCMember<Node> m_lastChild;
 };
 
 #if ENABLE(ASSERT)
@@ -290,7 +290,7 @@ DEFINE_NODE_TYPE_CASTS(ContainerNode, isContainerNode());
 
 inline bool ContainerNode::hasChildCount(unsigned count) const
 {
-    Node* child = m_firstChild;
+    Node* child = m_firstChild.get();
     while (count && child) {
         child = child->nextSibling();
         --count;

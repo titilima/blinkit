@@ -85,7 +85,7 @@ private:
     // BKTODO: DOMTimer(ExecutionContext*, PassOwnPtrWillBeRawPtr<ScheduledAction>, int interval, bool singleShot, int timeoutID);
     void fired() override;
 
-    WebTaskRunner* timerTaskRunner() override;
+    // BKTODO: WebTaskRunner* timerTaskRunner() override;
 
     int m_timeoutID;
     int m_nestingLevel;

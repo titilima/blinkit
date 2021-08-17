@@ -149,7 +149,7 @@ void FramePainter::paintContents(GraphicsContext& context, const GlobalPaintFlag
     if (isTopLevelPainter) {
         // Everything that happens after paintContents completions is considered
         // to be part of the next frame.
-        ASSERT(false); // BKTODO: memoryCache()->updateFramePaintTimestamp();
+        // BKTODO: memoryCache()->updateFramePaintTimestamp();
         s_inPaintContents = false;
     }
 

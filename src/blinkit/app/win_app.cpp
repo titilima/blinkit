@@ -16,12 +16,11 @@
 #include "blinkit/win/message_loop.h"
 #include "third_party/zed/include/zed/string/conv.hpp"
 #ifdef BLINKIT_UI_ENABLED
+#   include "blinkit/blink/impl/win_theme_engine.h"
 #   include "blinkit/blink/renderer/wtf/MainThread.h"
 #   include "third_party/zed/include/zed/win/hmodule.hpp"
 #endif
 #if 0 // BKTODO:
-#include "third_party/blink/renderer/platform/wtf/wtf.h"
-#   include "blinkit/blink_impl/win_theme_engine.h"
 #   include "blinkit/ui/win_web_view.h"
 #   include "third_party/blink/renderer/platform/fonts/font_cache.h"
 #   include "third_party/skia/include/ports/SkTypeface_win.h"
@@ -155,19 +154,15 @@ WebData WinApp::loadResource(const char *name)
         ASSERT(false); // Resource not found!
         return AppImpl::loadResource(name);
     }
-    return WebData();
+    return WebData(reinterpret_cast<const char *>(std::get<0>(data)), std::get<1>(data));
 }
 
 WebThemeEngine* WinApp::themeEngine(void)
 {
     ASSERT(isMainThread());
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     if (!m_themeEngine)
         m_themeEngine = std::make_unique<WinThemeEngine>();
     return m_themeEngine.get();
-#endif
 }
 #endif // BLINKIT_UI_ENABLED
 

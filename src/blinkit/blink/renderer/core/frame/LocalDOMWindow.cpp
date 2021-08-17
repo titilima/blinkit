@@ -38,6 +38,8 @@
 #include "core/frame/LocalDOMWindow.h"
 
 #include "bindings/core/v8/ScriptController.h"
+#include "blinkit/crawler/dom/crawler_document.h"
+#include "blinkit/blink/renderer/core/html/HTMLDocument.h"
 #include "core/css/CSSComputedStyleDeclaration.h"
 #include "core/css/CSSRuleList.h"
 #include "core/css/DOMWindowCSS.h"
@@ -333,7 +335,7 @@ LocalDOMWindow::LocalDOMWindow(LocalFrame& frame)
 #endif
 {
 #if ENABLE(OILPAN)
-    ASSERT(false); // BKTODO: ThreadState::current()->registerPreFinalizer(this);
+    // BKTODO: ThreadState::current()->registerPreFinalizer(this);
 #endif
 }
 
@@ -372,19 +374,24 @@ void LocalDOMWindow::acceptLanguagesChanged()
 
 PassRefPtrWillBeRawPtr<Document> LocalDOMWindow::createDocument(const String& mimeType, const DocumentInit& init, bool forceXHTML)
 {
-    RefPtrWillBeRawPtr<Document> document = nullptr;
-    ASSERT(false); // BKTODO:
-#if 0
-    if (forceXHTML) {
-        // This is a hack for XSLTProcessor. See XSLTProcessor::createDocumentFromSource().
-        document = Document::create(init);
-    } else {
-        document = DOMImplementation::createDocument(mimeType, init, init.frame() ? init.frame()->inViewSourceMode() : false);
-        if (document->isPluginDocument() && document->isSandboxed(SandboxPlugins))
-            document = SinkDocument::create(init);
-    }
-#endif
+    FrameClient::Type type = init.frame()->client()->GetType();
 
+    RefPtrWillBeRawPtr<Document> document = nullptr;
+    switch (type)
+    {
+#ifdef BLINKIT_CRAWLER_ENABLED
+        case FrameClient::Type::Crawler:
+            ASSERT(false); // BKTODO:
+            break;
+#endif
+#ifdef BLINKIT_UI_ENABLED
+        case FrameClient::Type::WebView:
+            document = HTMLDocument::create(init);
+            break;
+#endif
+        default:
+            NOTREACHED();
+    }
     return document.release();
 }
 
@@ -401,7 +408,7 @@ PassRefPtrWillBeRawPtr<Document> LocalDOMWindow::installNewDocument(const String
     if (!frame())
         return m_document;
 
-    ASSERT(false); // BKTODO: frame()->script().updateDocument();
+    frame()->script().updateDocument();
     m_document->updateViewportDescription();
 
     if (frame()->page() && frame()->view()) {

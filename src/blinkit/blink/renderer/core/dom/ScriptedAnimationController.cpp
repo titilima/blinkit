@@ -47,11 +47,13 @@
 #include "core/loader/DocumentLoader.h"
 // BKTODO: #include "platform/Logging.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-std::pair<EventTarget*, StringImpl*> eventTargetKey(const Event* event)
+static unsigned eventTargetKey(const Event *event)
 {
-    return std::make_pair(event->target(), event->type().impl());
+    return WTF::pairIntHash(reinterpret_cast<unsigned>(event->target()), reinterpret_cast<unsigned>(event->type().impl()));
 }
 
 ScriptedAnimationController::ScriptedAnimationController(Document* document)
@@ -111,12 +113,12 @@ void ScriptedAnimationController::dispatchEvents(const AtomicString& eventInterf
     WillBeHeapVector<RefPtrWillBeMember<Event>> events;
     if (eventInterfaceFilter.isEmpty()) {
         events.swap(m_eventQueue);
-        m_perFrameEvents.clear();
+        m_perFrameEventHashes.clear();
     } else {
         WillBeHeapVector<RefPtrWillBeMember<Event>> remaining;
         for (auto& event : m_eventQueue) {
             if (event && event->interfaceName() == eventInterfaceFilter) {
-                ASSERT(false); // BKTODO: m_perFrameEvents.erase(eventTargetKey(event.get()));
+                m_perFrameEventHashes.erase(eventTargetKey(event.get()));
                 events.append(event.release());
             } else {
                 remaining.append(event.release());
@@ -195,11 +197,10 @@ void ScriptedAnimationController::enqueueEvent(PassRefPtrWillBeRawPtr<Event> eve
 
 void ScriptedAnimationController::enqueuePerFrameEvent(PassRefPtrWillBeRawPtr<Event> event)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    if (!m_perFrameEvents.add(eventTargetKey(event.get())).isNewEntry)
+    unsigned key = eventTargetKey(event.get());
+    if (zed::key_exists(m_perFrameEventHashes, key))
         return;
-#endif
+    m_perFrameEventHashes.emplace(key);
     enqueueEvent(event);
 }
 

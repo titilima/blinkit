@@ -141,7 +141,7 @@ void HTMLParserScheduler::resume()
 
 void HTMLParserScheduler::detach()
 {
-    ASSERT(false); // BKTODO: m_cancellableContinueParse->cancel();
+    // BKTODO: m_cancellableContinueParse->cancel();
     m_isSuspendedWithActiveTimer = false;
 }
 

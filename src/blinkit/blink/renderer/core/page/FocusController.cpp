@@ -189,8 +189,7 @@ inline void dispatchEventsOnWindowAndFocusedElement(Document* document, bool foc
     // If we have a focused element we should dispatch focus on it after we focus the window.
     // https://bugs.webkit.org/show_bug.cgi?id=27105
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (document->focusedElement() && isHTMLPlugInElement(document->focusedElement()))
         toHTMLPlugInElement(document->focusedElement())->setPluginFocus(focused);
 #endif

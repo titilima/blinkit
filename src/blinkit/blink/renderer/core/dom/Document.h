@@ -388,8 +388,10 @@ public:
     StyleResolver* styleResolver() const;
     StyleResolver& ensureStyleResolver() const;
 
+#if 0 // BKTODO:
     bool isViewSource() const { return m_isViewSource; }
     void setIsViewSource(bool);
+#endif
 
     bool sawElementsInKnownNamespaces() const { return m_sawElementsInKnownNamespaces; }
 
@@ -418,10 +420,12 @@ public:
     void scheduleUseShadowTreeUpdate(SVGUseElement&);
     void unscheduleUseShadowTreeUpdate(SVGUseElement&);
 
+#if 0 // BKTODO:
     // FIXME: SVG filters should change to store the filter on the ComputedStyle
     // instead of the LayoutObject so we can get rid of this hack.
     void scheduleSVGFilterLayerUpdateHack(Element&);
     void unscheduleSVGFilterLayerUpdateHack(Element&);
+#endif
 
     void evaluateMediaQueryList();
 
@@ -1060,7 +1064,7 @@ public:
 
     DECLARE_VIRTUAL_TRACE();
 
-    bool hasSVGFilterElementsRequiringLayerUpdate() const { return m_layerUpdateSVGFilterElements.size(); }
+    // BKTODO: bool hasSVGFilterElementsRequiringLayerUpdate() const { return m_layerUpdateSVGFilterElements.size(); }
     void didRecalculateStyleForElement() { ++m_styleRecalcElementCounter; }
 
     AtomicString convertLocalName(const AtomicString&);
@@ -1093,8 +1097,10 @@ public:
     }
     int nodeCount() const { return m_nodeCount; }
 
+#if 0 // BKTODO:
     using WeakDocumentSet = WillBeHeapHashSet<RawPtrWillBeWeakMember<Document>>;
     static WeakDocumentSet& liveDocumentSet();
+#endif
 
     WebTaskRunner* loadingTaskRunner() const;
     WebTaskRunner* timerTaskRunner() const;
@@ -1202,6 +1208,7 @@ private:
     // BKTODO: const OriginAccessEntry& accessEntryFromURL();
 
     DocumentLifecycle m_lifecycle;
+    std::shared_ptr<bool> m_aliveFlag;
 
     bool m_hasNodesWithPlaceholderStyle;
     bool m_evaluateMediaQueriesOnStyleRecalc;
@@ -1362,7 +1369,7 @@ private:
 
     DocumentClassFlags m_documentClasses;
 
-    bool m_isViewSource;
+    // BKTODO: bool m_isViewSource;
     bool m_sawElementsInKnownNamespaces;
     bool m_isSrcdocDocument;
     bool m_isMobileDocument;
@@ -1423,10 +1430,12 @@ private:
     Timer<Document> m_didAssociateFormControlsTimer;
     WillBeHeapHashSet<RefPtrWillBeMember<Element>> m_associatedFormControls;
 
+#if 0 // BKTODO:
     WillBeHeapHashSet<RawPtrWillBeMember<SVGUseElement>> m_useElementsNeedingUpdate;
     WillBeHeapHashSet<RawPtrWillBeMember<Element>> m_layerUpdateSVGFilterElements;
 
-    // BKTODO: DOMTimerCoordinator m_timers;
+    DOMTimerCoordinator m_timers;
+#endif
 
     bool m_hasViewportUnits;
 

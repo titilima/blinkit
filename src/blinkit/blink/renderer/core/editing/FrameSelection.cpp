@@ -938,8 +938,10 @@ void FrameSelection::focusedOrActiveStateChanged()
     // Caret appears in the active frame.
     if (activeAndFocused)
         setSelectionFromNone();
+#if 0 // BKTODO:
     else
-        ASSERT(false); // BKTODO: m_frame->spellChecker().spellCheckAfterBlur();
+        m_frame->spellChecker().spellCheckAfterBlur();
+#endif
     setCaretVisibility(activeAndFocused ? Visible : Hidden);
 
     // Update for caps lock state

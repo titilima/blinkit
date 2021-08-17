@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ComputedStyle.cpp
+// Description: ComputedStyle Class
+//      Author: Ziming Li
+//     Created: 2021-08-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Antti Koivisto (koivisto@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights reserved.
@@ -60,7 +71,7 @@ static_assert(sizeof(BorderValue) == sizeof(SameSizeAsBorderValue), "BorderValue
 struct SameSizeAsComputedStyle : public RefCounted<SameSizeAsComputedStyle> {
     void* dataRefs[7];
     void* ownPtrs[1];
-    void* dataRefSvgStyle;
+    // BKTODO: void* dataRefSvgStyle;
 
     struct InheritedFlags {
         unsigned m_bitfields[2];
@@ -105,7 +116,7 @@ ALWAYS_INLINE ComputedStyle::ComputedStyle()
     , rareNonInheritedData(initialStyle()->rareNonInheritedData)
     , rareInheritedData(initialStyle()->rareInheritedData)
     , inherited(initialStyle()->inherited)
-    , m_svgStyle(initialStyle()->m_svgStyle)
+    // BKTODO: , m_svgStyle(initialStyle()->m_svgStyle)
 {
     setBitDefaults(); // Would it be faster to copy this from the default style?
     static_assert((sizeof(InheritedFlags) <= 8), "InheritedFlags should not grow");
@@ -133,7 +144,7 @@ ALWAYS_INLINE ComputedStyle::ComputedStyle(InitialStyleTag)
     rareNonInheritedData.access()->m_scrollSnap.init();
     rareInheritedData.init();
     inherited.init();
-    m_svgStyle.init();
+    // BKTODO: m_svgStyle.init();
 }
 
 ALWAYS_INLINE ComputedStyle::ComputedStyle(const ComputedStyle& o)
@@ -145,7 +156,7 @@ ALWAYS_INLINE ComputedStyle::ComputedStyle(const ComputedStyle& o)
     , rareNonInheritedData(o.rareNonInheritedData)
     , rareInheritedData(o.rareInheritedData)
     , inherited(o.inherited)
-    , m_svgStyle(o.m_svgStyle)
+    // BKTODO: , m_svgStyle(o.m_svgStyle)
     , inherited_flags(o.inherited_flags)
     , noninherited_flags(o.noninherited_flags)
 {
@@ -235,8 +246,10 @@ void ComputedStyle::inheritFrom(const ComputedStyle& inheritParent, IsAtShadowBo
     }
     inherited = inheritParent.inherited;
     inherited_flags = inheritParent.inherited_flags;
+#if 0 // BKTODO:
     if (m_svgStyle != inheritParent.m_svgStyle)
         m_svgStyle.access()->inheritFrom(inheritParent.m_svgStyle.get());
+#endif
 }
 
 void ComputedStyle::copyNonInheritedFromCached(const ComputedStyle& other)
@@ -298,8 +311,10 @@ void ComputedStyle::copyNonInheritedFromCached(const ComputedStyle& other)
     // noninherited_flags.affectedByDrag
     // noninherited_flags.isLink
 
+#if 0 // BKTODO:
     if (m_svgStyle != other.m_svgStyle)
         m_svgStyle.access()->copyNonInheritedFromCached(other.m_svgStyle.get());
+#endif
     ASSERT(zoom() == initialZoom());
 }
 
@@ -315,7 +330,7 @@ bool ComputedStyle::operator==(const ComputedStyle& o) const
         && rareNonInheritedData == o.rareNonInheritedData
         && rareInheritedData == o.rareInheritedData
         && inherited == o.inherited
-        && m_svgStyle == o.m_svgStyle;
+        /* // BKTODO: && m_svgStyle == o.m_svgStyle */;
 }
 
 bool ComputedStyle::isStyleAvailable() const
@@ -389,7 +404,7 @@ bool ComputedStyle::inheritedNotEqual(const ComputedStyle& other) const
     return inherited_flags != other.inherited_flags
         || inherited != other.inherited
         || font().loadingCustomFonts() != other.font().loadingCustomFonts()
-        || m_svgStyle->inheritedNotEqual(other.m_svgStyle.get())
+        // BKTODO: || m_svgStyle->inheritedNotEqual(other.m_svgStyle.get())
         || rareInheritedData != other.rareInheritedData;
 }
 
@@ -398,7 +413,7 @@ bool ComputedStyle::inheritedDataShared(const ComputedStyle& other) const
     // This is a fast check that only looks if the data structures are shared.
     return inherited_flags == other.inherited_flags
         && inherited.get() == other.inherited.get()
-        && m_svgStyle.get() == other.m_svgStyle.get()
+        // BKTODO: && m_svgStyle.get() == other.m_svgStyle.get()
         && rareInheritedData.get() == other.rareInheritedData.get();
 }
 
@@ -417,8 +432,10 @@ StyleDifference ComputedStyle::visualInvalidationDiff(const ComputedStyle& other
     // this function anyway.
 
     StyleDifference diff;
+#if 0 // BKTODO:
     if (m_svgStyle.get() != other.m_svgStyle.get())
         diff = m_svgStyle->diff(other.m_svgStyle.get());
+#endif
 
     if ((!diff.needsFullLayout() || !diff.needsPaintInvalidation()) && diffNeedsFullLayoutAndPaintInvalidation(other)) {
         diff.setNeedsFullLayout();
@@ -1516,6 +1533,7 @@ Color ComputedStyle::colorIncludingFallback(int colorProperty, bool visitedLink)
     case CSSPropertyWebkitTextStrokeColor:
         result = visitedLink ? visitedLinkTextStrokeColor() : textStrokeColor();
         break;
+#if 0 // BKTODO:
     case CSSPropertyFloodColor:
         result = floodColor();
         break;
@@ -1525,6 +1543,7 @@ Color ComputedStyle::colorIncludingFallback(int colorProperty, bool visitedLink)
     case CSSPropertyStopColor:
         result = stopColor();
         break;
+#endif
     case CSSPropertyWebkitTapHighlightColor:
         result = tapHighlightColor();
         break;

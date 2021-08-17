@@ -213,8 +213,7 @@ void PaintLayerCompositor::updateIfNeededRecursive()
     if (view->shouldThrottleRendering())
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     for (Frame* child = m_layoutView.frameView()->frame().tree().firstChild(); child; child = child->tree().nextSibling()) {
         if (!child->isLocalFrame())
             continue;
@@ -259,8 +258,7 @@ void PaintLayerCompositor::updateIfNeededRecursive()
 #if ENABLE(ASSERT)
     ASSERT(lifecycle().state() == DocumentLifecycle::CompositingClean);
     assertNoUnresolvedDirtyBits();
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     for (Frame* child = m_layoutView.frameView()->frame().tree().firstChild(); child; child = child->tree().nextSibling()) {
         if (!child->isLocalFrame())
             continue;

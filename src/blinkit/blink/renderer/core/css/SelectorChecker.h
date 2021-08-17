@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SelectorChecker.h
+// Description: SelectorChecker Class
+//      Author: Ziming Li
+//     Created: 2021-08-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -73,9 +84,9 @@ public:
         }
 
         const CSSSelector* selector;
-        RawPtrWillBeMember<Element> element;
-        RawPtrWillBeMember<Element> previousElement;
-        RawPtrWillBeMember<const ContainerNode> scope;
+        Element *element;
+        Element *previousElement;
+        const ContainerNode *scope;
         VisitedMatchType visitedMatchType;
         PseudoId pseudoId;
         ComputedStyle* elementStyle;

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ObjectPainter.cpp
+// Description: ObjectPainter Class
+//      Author: Ziming Li
+//     Created: 2021-08-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -252,6 +263,8 @@ void ObjectPainter::paintInlineChildrenOutlines(const PaintInfo& paintInfo, cons
 
 void ObjectPainter::addPDFURLRectIfNeeded(const PaintInfo& paintInfo, const LayoutPoint& paintOffset)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(paintInfo.isPrinting());
     if (m_layoutObject.isElementContinuation() || !m_layoutObject.node() || !m_layoutObject.node()->isLink() || m_layoutObject.styleRef().visibility() != VISIBLE)
         return;
@@ -277,6 +290,7 @@ void ObjectPainter::addPDFURLRectIfNeeded(const PaintInfo& paintInfo, const Layo
         return;
     }
     paintInfo.context.setURLForRect(url, rect);
+#endif
 }
 
 void ObjectPainter::drawLineForBoxSide(GraphicsContext& graphicsContext, int x1, int y1, int x2, int y2,

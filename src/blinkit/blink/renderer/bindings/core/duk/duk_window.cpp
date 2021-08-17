@@ -101,6 +101,25 @@ void DukWindow::Attach(duk_context *ctx, LocalDOMWindow &window)
     duk_pop(ctx);
 }
 
+duk_ret_t DukWindow::SetTimerImpl(duk_context *ctx, bool repeatable)
+{
+    int argc = duk_get_top(ctx);
+    if (0 == argc)
+        return duk_type_error(ctx, "Not enough arguments");
+
+    std::unique_ptr<DukTimer> timer = std::make_unique<DukTimer>(ctx, 0, argc > 2 ? argc - 2 : 0);
+    if (repeatable)
+        timer->SetIsRepeatable();
+    if (argc > 1)
+        timer->SetInterval(duk_to_uint(ctx, 1));
+
+    duk_push_global_object(ctx);
+    LocalDOMWindow *w = DukScriptObject::To<LocalDOMWindow>(ctx, -1);
+    ASSERT(false); // BKTODO: duk_push_uint(ctx, w->AddTimer(timer));
+    return 1;
+}
+
+#ifdef BLINKIT_CRAWLER_ENABLED
 void DukWindow::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
 {
     static const PrototypeEntry::Method Methods[] = {
@@ -126,23 +145,33 @@ void DukWindow::RegisterPrototypeForCrawler(PrototypeHelper &helper)
 {
     helper.Register(ProtoName, FillPrototypeEntryForCrawler);
 }
+#endif
 
-duk_ret_t DukWindow::SetTimerImpl(duk_context *ctx, bool repeatable)
+#ifdef BLINKIT_UI_ENABLED
+void DukWindow::FillPrototypeEntryForUI(PrototypeEntry &entry)
 {
-    int argc = duk_get_top(ctx);
-    if (0 == argc)
-        return duk_type_error(ctx, "Not enough arguments");
+    static const PrototypeEntry::Method Methods[] = {
+        { "setInterval",      Impl::SetInterval, DUK_VARARGS },
+        { "setTimeout",       Impl::SetTimeout,  DUK_VARARGS },
+    };
+    static const PrototypeEntry::Property Properties[] = {
+        { "document",  Impl::DocumentGetter,  nullptr              },
+        { "location",  Impl::LocationGetter,  Impl::LocationSetter },
+        { "navigator", Impl::NavigatorGetter, nullptr              },
+        { "self",      Impl::WindowGetter,    nullptr              },
+        { "top",       Impl::WindowGetter,    nullptr              },
+        { "window",    Impl::WindowGetter,    nullptr              },
+    };
 
-    std::unique_ptr<DukTimer> timer = std::make_unique<DukTimer>(ctx, 0, argc > 2 ? argc - 2 : 0);
-    if (repeatable)
-        timer->SetIsRepeatable();
-    if (argc > 1)
-        timer->SetInterval(duk_to_uint(ctx, 1));
-
-    duk_push_global_object(ctx);
-    LocalDOMWindow *w = DukScriptObject::To<LocalDOMWindow>(ctx, -1);
-    ASSERT(false); // BKTODO: duk_push_uint(ctx, w->AddTimer(timer));
-    return 1;
+    DukEventTarget::FillPrototypeEntry(entry);
+    entry.Add(Methods, std::size(Methods));
+    entry.Add(Properties, std::size(Properties));
 }
+
+void DukWindow::RegisterPrototypeForUI(PrototypeHelper &helper)
+{
+    helper.Register(ProtoName, FillPrototypeEntryForUI);
+}
+#endif
 
 } // namespace BlinKit

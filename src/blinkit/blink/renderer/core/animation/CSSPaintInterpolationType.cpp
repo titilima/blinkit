@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ComputedStyle.cpp
+// Description: ComputedStyle Class
+//      Author: Ziming Li
+//     Created: 2021-08-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #include "core/animation/CSSPaintInterpolationType.h"
 
 #include "core/animation/CSSColorInterpolationType.h"
-#include "core/animation/PaintPropertyFunctions.h"
+// BKTODO: #include "core/animation/PaintPropertyFunctions.h"
 #include "core/css/resolver/StyleResolverState.h"
 
 namespace blink {
@@ -17,10 +28,14 @@ PassOwnPtr<InterpolationValue> CSSPaintInterpolationType::maybeConvertNeutral(co
 
 PassOwnPtr<InterpolationValue> CSSPaintInterpolationType::maybeConvertInitial() const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     StyleColor initialColor;
     if (!PaintPropertyFunctions::getInitialColor(cssProperty(), initialColor))
         return nullptr;
     return InterpolationValue::create(*this, CSSColorInterpolationType::createInterpolableColor(initialColor));
+#endif
 }
 
 class ParentPaintChecker : public InterpolationType::ConversionChecker {
@@ -49,10 +64,14 @@ private:
 
     bool isValid(const InterpolationEnvironment& environment, const UnderlyingValue&) const final
     {
+        ASSERT(false); // BKTODO:
+        return false;
+#if 0
         StyleColor parentColor;
         if (!PaintPropertyFunctions::getColor(m_property, *environment.state().parentStyle(), parentColor))
             return !m_validColor;
         return m_validColor && parentColor == m_color;
+#endif
     }
 
     DEFINE_INLINE_VIRTUAL_TRACE()
@@ -69,6 +88,9 @@ PassOwnPtr<InterpolationValue> CSSPaintInterpolationType::maybeConvertInherit(co
 {
     if (!state.parentStyle())
         return nullptr;
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     StyleColor parentColor;
     if (!PaintPropertyFunctions::getColor(cssProperty(), *state.parentStyle(), parentColor)) {
         conversionCheckers.append(ParentPaintChecker::create(*this, cssProperty()));
@@ -76,6 +98,7 @@ PassOwnPtr<InterpolationValue> CSSPaintInterpolationType::maybeConvertInherit(co
     }
     conversionCheckers.append(ParentPaintChecker::create(*this, cssProperty(), parentColor));
     return InterpolationValue::create(*this, CSSColorInterpolationType::createInterpolableColor(parentColor));
+#endif
 }
 
 PassOwnPtr<InterpolationValue> CSSPaintInterpolationType::maybeConvertValue(const CSSValue& value, const StyleResolverState&, ConversionCheckers&) const
@@ -88,16 +111,20 @@ PassOwnPtr<InterpolationValue> CSSPaintInterpolationType::maybeConvertValue(cons
 
 PassOwnPtr<InterpolationValue> CSSPaintInterpolationType::maybeConvertUnderlyingValue(const InterpolationEnvironment& environment) const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     // TODO(alancutter): Support capturing and animating with the visited paint color.
     StyleColor underlyingColor;
     if (!PaintPropertyFunctions::getColor(cssProperty(), *environment.state().style(), underlyingColor))
         return nullptr;
     return InterpolationValue::create(*this, CSSColorInterpolationType::createInterpolableColor(underlyingColor));
+#endif
 }
 
 void CSSPaintInterpolationType::apply(const InterpolableValue& interpolableColor, const NonInterpolableValue*, InterpolationEnvironment& environment) const
 {
-    PaintPropertyFunctions::setColor(cssProperty(), *environment.state().style(), CSSColorInterpolationType::resolveInterpolableColor(interpolableColor, environment.state()));
+    ASSERT(false); // BKTODO: PaintPropertyFunctions::setColor(cssProperty(), *environment.state().style(), CSSColorInterpolationType::resolveInterpolableColor(interpolableColor, environment.state()));
 }
 
 } // namespace blink

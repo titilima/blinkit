@@ -69,11 +69,10 @@ void ViewportStyleResolver::collectViewportRules()
     CSSDefaultStyleSheets& defaultStyleSheets = CSSDefaultStyleSheets::instance();
     collectViewportRules(defaultStyleSheets.defaultStyle(), UserAgentOrigin);
 
+#if 0 // BKTODO:
     if (Settings::useMobileViewportStyle())
         collectViewportRules(defaultStyleSheets.defaultMobileViewportStyle(), UserAgentOrigin);
 
-    ASSERT(false); // BKTODO:
-#if 0
     if (m_document->isMobileDocument())
         collectViewportRules(defaultStyleSheets.defaultXHTMLMobileProfileStyle(), UserAgentOrigin);
 #endif

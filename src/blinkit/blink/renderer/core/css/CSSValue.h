@@ -42,26 +42,23 @@
 
 namespace blink {
 
-class CORE_EXPORT CSSValue : public RefCountedWillBeGarbageCollectedFinalized<CSSValue> {
+class CORE_EXPORT CSSValue : public BlinKit::GCObject {
 #if ENABLE(OILPAN)
 public:
     // Override operator new to allocate CSSValue subtype objects onto
     // a dedicated heap.
     GC_PLUGIN_IGNORE("crbug.com/443854")
+#if 0 // BKTODO:
     void* operator new(size_t size)
     {
-        ASSERT(false); // BKTODO: return allocateObject(size, false);
-        return nullptr;
+        return allocateObject(size, false);
     }
     static void* allocateObject(size_t size, bool isEager)
     {
-        ASSERT(false); // BKTODO:
-        return nullptr;
-#if 0
         ThreadState* state = ThreadStateFor<ThreadingTrait<CSSValue>::Affinity>::state();
         return Heap::allocateOnHeapIndex(state, size, isEager ? BlinkGC::EagerSweepHeapIndex : BlinkGC::CSSValueHeapIndex, GCInfoTrait<CSSValue>::index());
-#endif
     }
+#endif
 #else
     USING_FAST_MALLOC_WITH_TYPE_NAME(blink::CSSValue);
 public:

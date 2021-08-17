@@ -47,10 +47,9 @@ class Document;
 class CORE_EXPORT HTMLParserOptions {
     DISALLOW_NEW();
 public:
-    bool scriptEnabled;
-    // BKTODO: bool pluginsEnabled;
+    const bool scriptEnabled = true;
 
-    explicit HTMLParserOptions(Document* = 0);
+    explicit HTMLParserOptions(Document* = 0) {}
 };
 
 }

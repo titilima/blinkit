@@ -321,8 +321,7 @@ void HTMLDocumentParser::pumpTokenizerIfPossible()
 
 bool HTMLDocumentParser::isScheduledForResume() const
 {
-    ASSERT(false); // BKTODO: return m_parserScheduler && m_parserScheduler->isScheduledForResume();
-    return false;
+    return m_parserScheduler && m_parserScheduler->isScheduledForResume();
 }
 
 // Used by HTMLParserScheduler
@@ -362,8 +361,7 @@ bool HTMLDocumentParser::canTakeNextToken()
             return false;
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // FIXME: It's wrong for the HTMLDocumentParser to reach back to the
     //        LocalFrame, but this approach is how the old parser handled
     //        stopping when the page assigns window.location.  What really
@@ -668,18 +666,21 @@ void HTMLDocumentParser::pumpTokenizer()
     // much we parsed as part of didWriteHTML instead of willWriteHTML.
     TRACE_EVENT_BEGIN1("devtools.timeline", "ParseHTML", "beginData", InspectorParseHtmlEvent::beginData(document(), m_input.current().currentLine().zeroBasedInt()));
 
+#if 0 // BKTODO:
     if (!isParsingFragment())
-        ASSERT(false); // BKTODO: m_xssAuditor.init(document(), &m_xssAuditorDelegate);
+        m_xssAuditor.init(document(), &m_xssAuditorDelegate);
+#endif
 
     while (canTakeNextToken()) {
-        ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
         if (m_xssAuditor.isEnabled())
             m_sourceTracker.start(m_input.current(), m_tokenizer.get(), token());
+#endif
 
         if (!m_tokenizer->nextToken(m_input.current(), token()))
             break;
 
+#if 0 // BKTODO:
         if (m_xssAuditor.isEnabled()) {
             m_sourceTracker.end(m_input.current(), m_tokenizer.get(), token());
 

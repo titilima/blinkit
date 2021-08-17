@@ -25,13 +25,24 @@ class DukWindow final : public DukEventTarget
 {
 public:
     static void Attach(duk_context *ctx, blink::LocalDOMWindow &window);
+
+#ifdef BLINKIT_CRAWLER_ENABLED
     static void RegisterPrototypeForCrawler(PrototypeHelper &helper);
+#endif
+#ifdef BLINKIT_UI_ENABLED
+    static void RegisterPrototypeForUI(PrototypeHelper &helper);
+#endif
 
     static duk_ret_t SetTimerImpl(duk_context *ctx, bool repeatable);
 private:
     static const char ProtoName[]; // Make this private to forbid the call of DukScriptObject::Create<DukWindow>
 
+#ifdef BLINKIT_CRAWLER_ENABLED
     static void FillPrototypeEntryForCrawler(PrototypeEntry &entry);
+#endif
+#ifdef BLINKIT_UI_ENABLED
+    static void FillPrototypeEntryForUI(PrototypeEntry &entry);
+#endif
 };
 
 } // namespace BlinKit

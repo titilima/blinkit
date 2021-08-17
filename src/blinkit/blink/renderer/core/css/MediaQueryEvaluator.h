@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaQueryEvaluator.h
+// Description: MediaQueryEvaluator Class
+//      Author: Ziming Li
+//     Created: 2021-08-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * CSS Media Query Evaluator
  *
@@ -53,7 +64,7 @@ using MediaQueryResultList = WillBeHeapVector<RefPtrWillBeMember<MediaQueryResul
 // the device characteristics are not known. This can be used to prune the loading
 // of stylesheets to only those which are probable to match.
 
-class CORE_EXPORT MediaQueryEvaluator final : public NoBaseWillBeGarbageCollectedFinalized<MediaQueryEvaluator> {
+class CORE_EXPORT MediaQueryEvaluator final : public BlinKit::GCObject {
     WTF_MAKE_NONCOPYABLE(MediaQueryEvaluator);
     USING_FAST_MALLOC_WILL_BE_REMOVED(MediaQueryEvaluator);
 public:

@@ -734,8 +734,7 @@ bool HTMLElement::hasDirectionAuto() const
     // <bdi> defaults to dir="auto"
     // https://html.spec.whatwg.org/multipage/semantics.html#the-bdi-element
     const AtomicString& direction = fastGetAttribute(dirAttr);
-    ASSERT(false); // BKTODO: return (isHTMLBDIElement(*this) && direction == nullAtom) || equalIgnoringCase(direction, "auto");
-    return false;
+    return (isHTMLBDIElement(*this) && direction == nullAtom) || equalIgnoringCase(direction, "auto");
 }
 
 TextDirection HTMLElement::directionalityIfhasDirAutoAttribute(bool& isAuto) const

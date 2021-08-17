@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScriptedAnimationController.h
+// Description: ScriptedAnimationController Class
+//      Author: Ziming Li
+//     Created: 2021-08-16
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All Rights Reserved.
  *
@@ -26,6 +37,7 @@
 #ifndef ScriptedAnimationController_h
 #define ScriptedAnimationController_h
 
+#include <unordered_set>
 #include "core/dom/FrameRequestCallbackCollection.h"
 #include "platform/heap/Handle.h"
 #include "wtf/ListHashSet.h"
@@ -83,7 +95,7 @@ private:
     FrameRequestCallbackCollection m_callbackCollection;
     int m_suspendCount;
     WillBeHeapVector<RefPtrWillBeMember<Event>> m_eventQueue;
-    WillBeHeapListHashSet<std::pair<RawPtrWillBeMember<const EventTarget>, const StringImpl*>> m_perFrameEvents;
+    std::unordered_set<unsigned> m_perFrameEventHashes;
     using MediaQueryListListeners = WillBeHeapListHashSet<RefPtrWillBeMember<MediaQueryListListener>>;
     MediaQueryListListeners m_mediaQueryListListeners;
 };

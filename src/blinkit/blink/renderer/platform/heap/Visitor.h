@@ -15,6 +15,7 @@
 
 #include <unordered_set>
 #include "blinkit/blink/renderer/platform/heap/member.h"
+#include "blinkit/gc/gc_def.h"
 #include "third_party/zed/include/zed/memory.hpp"
 
 namespace BlinKit {
@@ -36,6 +37,12 @@ public:
     {
         if (nullptr != po)
             TraceImpl(po);
+    }
+    template <typename T>
+    void trace(BlinKit::GCMember<T> &m)
+    {
+        if (m)
+            TraceImpl(*m);
     }
 
     template <typename T>
@@ -72,6 +79,7 @@ public:
 protected:
     Visitor(void) = default;
 
+    virtual void TraceImpl(BlinKit::GCObject &o) = 0;
     virtual void TraceImpl(void *p) = 0;
     virtual void RegisterWeakSlot(void **slot) = 0;
 };

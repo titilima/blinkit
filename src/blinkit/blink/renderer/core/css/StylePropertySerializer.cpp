@@ -488,11 +488,13 @@ String StylePropertySerializer::getPropertyValue(CSSPropertyID propertyID) const
         return getShorthandValue(webkitTextEmphasisShorthand());
     case CSSPropertyWebkitTextStroke:
         return getShorthandValue(webkitTextStrokeShorthand());
+#if 0 // BKTODO:
     case CSSPropertyMarker: {
         if (const CSSValue* value = m_propertySet.getPropertyCSSValue(CSSPropertyMarkerStart))
             return value->cssText();
         return String();
     }
+#endif
     case CSSPropertyBorderRadius:
         return get4Values(borderRadiusShorthand());
     default:

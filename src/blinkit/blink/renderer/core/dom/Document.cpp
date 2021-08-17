@@ -374,11 +374,13 @@ uint64_t Document::s_globalTreeVersion = 0;
 
 static bool s_threadedParsingEnabledForTesting = true;
 
+#if 0 // BKTODO:
 Document::WeakDocumentSet& Document::liveDocumentSet()
 {
     DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<WeakDocumentSet>, set, (adoptPtrWillBeNoop(new WeakDocumentSet())));
     return *set;
 }
+#endif
 
 // This class doesn't work with non-Document ExecutionContext.
 class AutofocusTask final : public ExecutionContextTask {
@@ -404,6 +406,7 @@ private:
 Document::Document(const DocumentInit& initializer, DocumentClassFlags documentClasses)
     : ContainerNode(0, CreateDocument)
     , TreeScope(*this)
+    , m_aliveFlag(std::make_shared<bool>(true))
     , m_hasNodesWithPlaceholderStyle(false)
     , m_evaluateMediaQueriesOnStyleRecalc(false)
     , m_pendingSheetLayout(NoLayoutWithPendingSheets)
@@ -451,7 +454,7 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_annotatedRegionsDirty(false)
     , m_useSecureKeyboardEntryWhenActive(false)
     , m_documentClasses(documentClasses)
-    , m_isViewSource(false)
+    // BKTODO: , m_isViewSource(false)
     , m_sawElementsInKnownNamespaces(false)
     , m_isSrcdocDocument(false)
     , m_isMobileDocument(false)
@@ -479,6 +482,7 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_parserSyncPolicy(AllowAsynchronousParsing)
     , m_nodeCount(0)
 {
+    m_elementDataCacheClearTimer.SetHostAliveFlag(m_aliveFlag);
     if (m_frame) {
         ASSERT(m_frame->page());
         // BKTODO: provideContextFeaturesToDocumentFrom(*this, *m_frame->page());
@@ -519,6 +523,7 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     // m_fetcher.
     m_styleEngine = StyleEngine::create(*this);
 
+#if 0 // BKTODO:
     // The parent's parser should be suspended together with all the other objects,
     // else this new Document would have a new ExecutionContext which suspended state
     // would not match the one from the parent, and could start loading resources
@@ -526,6 +531,7 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     ASSERT(!parentDocument() || !parentDocument()->activeDOMObjectsAreSuspended());
 
     liveDocumentSet().add(this);
+#endif
 }
 
 Document::~Document()
@@ -590,6 +596,7 @@ Document::~Document()
 #endif
 
     InstanceCounters::decrementCounter(InstanceCounters::DocumentCounter);
+    *m_aliveFlag = false;
 }
 
 #if !ENABLE(OILPAN)
@@ -1557,10 +1564,12 @@ bool Document::needsFullLayoutTreeUpdate() const
 {
     if (!isActive() || !view())
         return false;
+#if 0 // BKTODO:
     if (!m_useElementsNeedingUpdate.isEmpty())
         return true;
     if (!m_layerUpdateSVGFilterElements.isEmpty())
         return true;
+#endif
     if (needsStyleRecalc())
         return true;
     if (needsStyleInvalidation())
@@ -1931,7 +1940,7 @@ void Document::updateStyle(StyleRecalcChange change)
     styleEngine().resetCSSFeatureFlags(resolver.ensureUpdatedRuleFeatureSet());
     resolver.clearStyleSharingList();
 
-    ASSERT(false); // BKTODO: m_wasPrinting = m_printing;
+    // BKTODO: m_wasPrinting = m_printing;
 
     ASSERT(!needsStyleRecalc());
     ASSERT(!childNeedsStyleRecalc());
@@ -2155,33 +2164,34 @@ void Document::pageSizeAndMarginsInPixels(int pageIndex, IntSize& pageSize, int&
     marginLeft = style->marginLeft().isAuto() ? marginLeft : intValueForLength(style->marginLeft(), width);
 }
 
+#if 0 // BKTODO:
 void Document::setIsViewSource(bool isViewSource)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     m_isViewSource = isViewSource;
     if (!m_isViewSource)
         return;
 
     setSecurityOrigin(SecurityOrigin::createUnique());
     didUpdateSecurityOrigin();
-#endif
 }
+#endif
 
 bool Document::dirtyElementsForLayerUpdate()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (m_layerUpdateSVGFilterElements.isEmpty())
         return false;
 
     for (Element* element : m_layerUpdateSVGFilterElements)
         element->setNeedsStyleRecalc(LocalStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::SVGFilterLayerUpdate));
     m_layerUpdateSVGFilterElements.clear();
-#endif
     return true;
+#else
+    return false;
+#endif
 }
 
+#if 0 // BKTODO:
 void Document::scheduleSVGFilterLayerUpdateHack(Element& element)
 {
     if (element.styleChangeType() == NeedsReattachStyleChange)
@@ -2196,20 +2206,22 @@ void Document::unscheduleSVGFilterLayerUpdateHack(Element& element)
     element.clearSVGFilterNeedsLayerUpdate();
     m_layerUpdateSVGFilterElements.remove(&element);
 }
+#endif
 
 void Document::scheduleUseShadowTreeUpdate(SVGUseElement& element)
 {
-    m_useElementsNeedingUpdate.add(&element);
+    // BKTODO: m_useElementsNeedingUpdate.add(&element);
     scheduleLayoutTreeUpdateIfNeeded();
 }
 
 void Document::unscheduleUseShadowTreeUpdate(SVGUseElement& element)
 {
-    m_useElementsNeedingUpdate.remove(&element);
+    // BKTODO: m_useElementsNeedingUpdate.remove(&element);
 }
 
 void Document::updateUseShadowTreesIfNeeded()
 {
+#if 0 // BKTODO:
     ScriptForbiddenScope forbidScript;
 
     if (m_useElementsNeedingUpdate.isEmpty())
@@ -2217,8 +2229,6 @@ void Document::updateUseShadowTreesIfNeeded()
 
     WillBeHeapVector<RawPtrWillBeMember<SVGUseElement>> elements;
     copyToVector(m_useElementsNeedingUpdate, elements);
-    ASSERT(false); // BKTODO:
-#if 0
     m_useElementsNeedingUpdate.clear();
 
     for (SVGUseElement* element : elements)
@@ -2239,7 +2249,7 @@ StyleResolver& Document::ensureStyleResolver() const
 void Document::attach(const AttachContext& context)
 {
     ASSERT(m_lifecycle.state() == DocumentLifecycle::Inactive);
-    ASSERT(false); // BKTODO: ASSERT(!m_axObjectCache || this != &axObjectCacheOwner());
+    // BKTODO: ASSERT(!m_axObjectCache || this != &axObjectCacheOwner());
 
     m_layoutView = new LayoutView(this);
     setLayoutObject(m_layoutView);
@@ -3209,8 +3219,13 @@ CSSStyleSheet& Document::elementSheet()
 
 void Document::maybeHandleHttpRefresh(const String& content, HttpRefreshType httpRefreshType)
 {
+#if 0 // BKTODO:
     if (m_isViewSource || !m_frame)
         return;
+#else
+    if (!m_frame)
+        return;
+#endif
 
     double delay;
     String refreshURL;
@@ -3240,7 +3255,7 @@ void Document::maybeHandleHttpRefresh(const String& content, HttpRefreshType htt
 
 bool Document::shouldMergeWithLegacyDescription(ViewportDescription::Type origin)
 {
-    return Settings::viewportMetaMergeContentQuirk && m_legacyViewportDescription.isMetaViewportType() && m_legacyViewportDescription.type == origin;
+    return Settings::viewportMetaMergeContentQuirk() && m_legacyViewportDescription.isMetaViewportType() && m_legacyViewportDescription.type == origin;
 }
 
 void Document::setViewportDescription(const ViewportDescription& viewportDescription)
@@ -4173,11 +4188,14 @@ void Document::addListenerTypeIfNeeded(const AtomicString& eventType)
 
 HTMLFrameOwnerElement* Document::ownerElement() const
 {
+#if 0 // BKTODO:
     if (!frame())
         return 0;
     // FIXME: This probably breaks the attempts to layout after a load is finished in implicitClose(), and probably tons of other things...
-    ASSERT(false); // BKTODO: return frame()->deprecatedLocalOwner();
+    return frame()->deprecatedLocalOwner();
+#else
     return nullptr;
+#endif
 }
 
 bool Document::isInInvisibleSubframe() const
@@ -4920,13 +4938,15 @@ void Document::finishedParsing()
 
     // FIXME: DOMContentLoaded is dispatched synchronously, but this should be dispatched in a queued task,
     // See https://crbug.com/425790
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (!m_documentTiming.domContentLoadedEventStart())
         m_documentTiming.markDomContentLoadedEventStart();
+#endif
     dispatchEvent(Event::createBubble(EventTypeNames::DOMContentLoaded));
+#if 0 // BKTODO:
     if (!m_documentTiming.domContentLoadedEventEnd())
         m_documentTiming.markDomContentLoadedEventEnd();
+#endif
     setParsingState(FinishedParsing);
 
     // The microtask checkpoint or the loader's finishedParsing() method may invoke script that causes this object to
@@ -4934,10 +4954,12 @@ void Document::finishedParsing()
     // Keep it alive until we are done.
     RefPtrWillBeRawPtr<Document> protect(this);
 
+#if 0 // BKTODO:
     // Ensure Custom Element callbacks are drained before DOMContentLoaded.
     // FIXME: Remove this ad-hoc checkpoint when DOMContentLoaded is dispatched in a
     // queued task, which will do a checkpoint anyway. https://crbug.com/425790
     Microtask::performCheckpoint(V8PerIsolateData::mainThreadIsolate());
+#endif
 
     if (RefPtrWillBeRawPtr<LocalFrame> frame = this->frame()) {
         // Don't update the layout tree if we haven't requested the main resource yet to avoid
@@ -4960,7 +4982,6 @@ void Document::finishedParsing()
         TRACE_EVENT_INSTANT1("devtools.timeline", "MarkDOMContent", TRACE_EVENT_SCOPE_THREAD, "data", InspectorMarkLoadEvent::data(frame.get()));
         InspectorInstrumentation::domContentLoadedEventFired(frame.get());
     }
-#endif
 
     // Schedule dropping of the ElementDataCache. We keep it alive for a while after parsing finishes
     // so that dynamically inserted content can also benefit from sharing optimizations.

@@ -57,7 +57,6 @@ class DOMWrapperWorld;
 class Document;
 class FrameClient;
 class FrameHost;
-class FrameOwner;
 class HTMLFrameOwnerElement;
 class LayoutPart;
 class KURL;
@@ -93,7 +92,7 @@ public:
     // BKTODO: virtual void reload(FrameLoadType, ClientRedirectPolicy) = 0;
 
     virtual void detach(void);
-    void detachChildren();
+    // BKTODO: void detachChildren();
     virtual void disconnectOwnerElement();
     virtual bool shouldClose() = 0;
 
@@ -147,12 +146,12 @@ public:
     virtual WindowProxyManager* windowProxyManager() const = 0;
 
 protected:
-    Frame(FrameClient*, FrameHost*, FrameOwner*);
+    Frame(FrameClient*, FrameHost*);
 
     // BKTODO: mutable FrameTree m_treeNode;
 
     RawPtrWillBeMember<FrameHost> m_host;
-    RawPtrWillBeMember<FrameOwner> m_owner;
+    // BKTODO: RawPtrWillBeMember<FrameOwner> m_owner;
 
 private:
     RawPtrWillBeMember<FrameClient> m_client;

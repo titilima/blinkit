@@ -63,7 +63,6 @@
     <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
     <Import Project="..\skia.props" />
-    <Import Project="..\chromium.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -71,7 +70,6 @@
     <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
     <Import Project="..\skia.props" />
-    <Import Project="..\chromium.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -82,12 +80,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(CrRoot)gpu;$(CrRoot)third_party\khronos;$(CrRoot)third_party\icu\source\common;$(CrRoot)third_party\icu\source\i18n;$(RepoRoot)third_party\harfbuzz\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SrcRoot)chromium\gpu;$(SrcRoot)chromium\third_party\khronos;$(SrcRoot)chromium\third_party\icu\source\common;$(SrcRoot)chromium\third_party\icu\source\i18n;$(RepoRoot)third_party\harfbuzz\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(RepoRoot)sdk\win32\</OutDir>
-    <IncludePath>$(CrRoot)gpu;$(CrRoot)third_party\khronos;$(CrRoot)third_party\icu\source\common;$(CrRoot)third_party\icu\source\i18n;$(RepoRoot)third_party\harfbuzz\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SrcRoot)chromium\gpu;$(SrcRoot)chromium\third_party\khronos;$(SrcRoot)chromium\third_party\icu\source\common;$(SrcRoot)chromium\third_party\icu\source\i18n;$(RepoRoot)third_party\harfbuzz\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -101,13 +99,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;BLINKIT_EXPORTS;BLINKIT_CRAWLER_ENABLED;BLINKIT_UI_ENABLED;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;$(SrcRoot)blinkit\blink;$(SrcRoot)blinkit\blink\renderer;$(SrcRoot)libpng;$(RepoRoot)third_party\libpng;$(RepoRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;$(SrcRoot)blinkit\blink;$(SrcRoot)blinkit\blink\renderer;$(SrcRoot)chromium;$(SrcRoot)libpng;$(RepoRoot)third_party\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>Usp10.lib;UxTheme.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>BlinKit.def</ModuleDefinitionFile>
       <DelayLoadDLLs>UxTheme.dll;Winmm.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
@@ -120,7 +117,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;BLINKIT_EXPORTS;BLINKIT_CRAWLER_ENABLED;BLINKIT_UI_ENABLED;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;$(SrcRoot)blinkit\blink;$(SrcRoot)blinkit\blink\renderer;$(SrcRoot)libpng;$(RepoRoot)third_party\libpng;$(RepoRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;$(SrcRoot)blinkit\blink;$(SrcRoot)blinkit\blink\renderer;$(SrcRoot)chromium;$(SrcRoot)libpng;$(RepoRoot)third_party\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -128,7 +125,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>Usp10.lib;UxTheme.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>BlinKit.def</ModuleDefinitionFile>
       <DelayLoadDLLs>UxTheme.dll;Winmm.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
@@ -169,6 +165,7 @@
     <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\url_loader.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_theme_engine.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_anchor_element.cpp" />
@@ -200,6 +197,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_source_code.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_streamer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_wrappers.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\controller\blink_initializer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\animatable\AnimatableClipPathOperation.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\animatable\AnimatableColor.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\animatable\AnimatableDouble.cpp" />
@@ -216,8 +214,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\animatable\AnimatableRepeatable.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\animatable\AnimatableShadow.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\animatable\AnimatableShapeValue.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\animatable\AnimatableStrokeDasharrayList.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\animatable\AnimatableSVGPaint.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\animatable\AnimatableTransform.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\animatable\AnimatableValue.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\animatable\AnimatableValueKeyframe.cpp" />
@@ -271,7 +267,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\LengthStyleInterpolation.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\ListInterpolationFunctions.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\NumberPropertyFunctions.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\PaintPropertyFunctions.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\PropertyHandle.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\SampledEffect.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\ShadowInterpolationFunctions.cpp" />
@@ -329,6 +324,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSPathValue.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSPrimitiveValue.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSProperty.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSPropertyMetadata.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSPropertySourceData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSQuadValue.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSReflectValue.cpp" />
@@ -396,6 +392,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSTokenizer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSTokenizerInputStream.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSVariableParser.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\LegacyCSSPropertyParser.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\MediaQueryBlockWatcher.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\MediaQueryParser.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\SizesAttributeParser.cpp" />
@@ -415,9 +412,11 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\SharedStyleFinder.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleAdjuster.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleBuilderConverter.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleBuilderCustom.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleResolver.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleResolverParentScope.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleResolverState.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\TransformBuilder.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\ViewportStyleResolver.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\RuleFeature.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\RuleSet.cpp" />
@@ -427,6 +426,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\StyleMedia.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\StylePropertySerializer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\StylePropertySet.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\StylePropertyShorthandCustom.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\StyleRule.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\StyleRuleImport.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\StyleRuleKeyframe.cpp" />
@@ -484,6 +484,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMTokenList.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMURLUtils.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMURLUtilsReadOnly.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\dom_node_ids.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\Element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementDataCache.cpp" />
@@ -528,6 +529,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ProcessingInstruction.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\PseudoElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\QualifiedName.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\Range.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptableDocumentParser.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptedAnimationController.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptedIdleTaskController.cpp" />
@@ -566,6 +568,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\EditingStyle.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\EditingUtilities.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\Editor.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\EditorKeyBindings.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\EphemeralRange.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\FrameSelection.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\GranularityStrategy.cpp" />
@@ -604,11 +607,13 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\BeforeUnloadEvent.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\DOMWindowEventQueue.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\DragEvent.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\Event.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\EventDispatcher.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\EventDispatchMediator.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\EventListenerMap.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\EventPath.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\EventTarget.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\FocusEvent.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\GenericEventQueue.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\KeyboardEvent.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\MouseEvent.cpp" />
@@ -673,29 +678,61 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\DocumentNameCollection.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\FormAssociatedElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\FormData.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\BaseButtonInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\BaseCheckableInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\BaseChooserOnlyDateAndTimeInputType.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\BaseClickableWithKeyInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\BaseDateAndTimeInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\BaseMultipleFieldsDateAndTimeInputType.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\BaseTextInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\ButtonInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\CheckboxInputType.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\ColorChooser.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\ColorChooserClient.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\ColorInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\DateInputType.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\DateTimeChooser.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\DateTimeChooserClient.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\DateTimeFieldsState.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\DateTimeLocalInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\EmailInputType.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\FileInputType.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\FormController.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\HiddenInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\ImageInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\InputType.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\InputTypeView.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\MonthInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\NumberInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\PasswordInputType.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\RadioButtonGroupScope.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\RadioInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\RangeInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\ResetInputType.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\SearchInputType.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\StepRange.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\SubmitInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\TelephoneInputType.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\TextFieldInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\TextInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\TimeInputType.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\TypeAhead.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\URLInputType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\WeekInputType.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLAllCollection.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLAnchorElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLAreaElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLBaseElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLBodyElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLBRElement.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLButtonElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLCollection.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLContentElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDataListElement.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDetailsElement.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDirectoryElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDivElement.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDListElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDocument.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLFieldSetElement.cpp" />
@@ -705,6 +742,8 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLFormControlsCollection.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLFormElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLHeadElement.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLHeadingElement.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLHRElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLHtmlElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLImageElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLImageFallbackHelper.cpp" />
@@ -718,12 +757,16 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLMenuElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLMenuItemElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLMetaElement.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLMeterElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLNameCollection.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLOListElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLOptGroupElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLOptionElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLOptionsCollection.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLParagraphElement.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLPictureElement.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLPreElement.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLProgressElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLQuoteElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLScriptElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLSelectElement.cpp" />
@@ -731,6 +774,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLSlotElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLSpanElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLStyleElement.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLSummaryElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLTableCaptionElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLTableCellElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLTableColElement.cpp" />
@@ -746,6 +790,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLTitleElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLUListElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLUnknownElement.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLWBRElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\ImageData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\imports\HTMLImport.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\imports\HTMLImportChild.cpp" />
@@ -772,7 +817,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLFormattingElementList.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLMetaCharsetParser.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLParserIdioms.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLParserOptions.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLParserScheduler.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLPreloadScanner.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLResourcePreloader.cpp" />
@@ -788,7 +832,11 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\TextResourceDecoder.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\RadioNodeList.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\RelList.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\DetailsMarkerControl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\MeterShadowElement.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\ProgressShadowElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\ShadowElementNames.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\SliderThumbElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\SpinButtonElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\TextControlInnerElements.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\ValidityState.cpp" />
@@ -797,6 +845,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\InputTypeNames.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\input\EventHandler.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\input\InputDeviceCapabilities.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\BidiRunForLine.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\ClipRect.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\ColumnBalancer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\compositing\CompositedLayerMapping.cpp" />
@@ -815,6 +864,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\ImageQualityController.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutBlock.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutBlockFlow.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutBlockFlowLine.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutBox.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutBoxModelObject.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutBR.cpp" />
@@ -843,6 +893,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutObjectChildList.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutPagedFlowThread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutPart.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutProgress.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutQuote.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutReplaced.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutReplica.cpp" />
@@ -850,6 +901,9 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutScrollbarPart.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutScrollbarTheme.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutSearchField.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutSlider.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutSliderContainer.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutSliderThumb.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutState.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTable.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTableCaption.cpp" />
@@ -864,8 +918,14 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTextControlSingleLine.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTextFragment.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTheme.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutThemeDefault.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutThemeFontProvider.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutThemeFontProviderWin.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutThemeWin.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutView.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutWordBreak.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\AbstractInlineTextBox.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\BreakingContext.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\EllipsisBox.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\InlineBox.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\InlineFlowBox.cpp" />
@@ -899,6 +959,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\loader\FrameFetchContext.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\loader\FrameLoader.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\loader\FrameLoaderStateMachine.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\loader\frame_loader_client.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\loader\ImageLoader.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\loader\LinkHeader.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\loader\LinkLoader.cpp" />
@@ -950,6 +1011,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\MultiColumnSetPainter.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\NinePieceImageGrid.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\NinePieceImagePainter.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\ObjectPainter.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\ObjectPaintProperties.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintInfo.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintInvalidationCapableScrollableArea.cpp" />
@@ -978,6 +1040,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\TableSectionPainter.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\TextPainter.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\ThemePainter.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\ThemePainterDefault.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\Transform3DRecorder.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\TransformRecorder.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\ViewPainter.cpp" />
@@ -1026,6 +1089,8 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\blob\BlobData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\clipboard\ClipboardMimeTypes.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\clipboard\ClipboardUtilities.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\clipboard\ClipboardUtilitiesWin.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\ColorData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\ContentType.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\ContextMenu.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\ContextMenuItem.cpp" />
@@ -1034,10 +1099,12 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\Decimal.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\DragImage.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\EventDispatchForbiddenScope.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\platform.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarImpl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarThemeClientImpl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarThemeGeometryNative.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarThemePainter.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebTraceLocation.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\FileChooser.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\FileMetadata.cpp" />
@@ -1069,9 +1136,13 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\shaping\ShapeResultBuffer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\shaping\SimpleShaper.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\SimpleFontData.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\skia\FontCacheSkia.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\SmallCapsIterator.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\UTF16TextIterator.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\VDMXParser.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\win\FontCacheSkiaWin.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\win\FontFallbackWin.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\win\FontPlatformDataWin.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\DoublePoint.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\DoubleRect.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\DoubleSize.cpp" />
@@ -1104,6 +1175,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\filters\Filter.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\filters\FilterEffect.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\filters\FilterOperation.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\filters\FilterOperations.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\filters\SkiaImageFilterBuilder.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\filters\SourceGraphic.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\FrameData.cpp" />
@@ -1162,6 +1234,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\image-decoders\ImageDecoder.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\image-decoders\ImageFrame.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\image-decoders\png\PNGImageDecoder.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\KillRingNone.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\Language.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\Length.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\LengthBox.cpp" />
@@ -1174,17 +1247,19 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\network\ResourceError.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\network\ResourceRequest.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\network\ResourceResponse.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\NotImplemented.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\PlatformKeyboardEvent.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\PlatformResourceLoader.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\Prerender.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\ScriptForbiddenScope.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ProgrammaticScrollAnimator.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollableArea.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollAnimator.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollAnimatorBase.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollAnimatorCompositorCoordinator.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\Scrollbar.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollbarTheme.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollbarThemeAura.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollbarThemeNonMacCommon.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollbarThemeOverlay.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\SecureTextInput.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\shared_buffer.cpp" />
@@ -1195,11 +1270,14 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\DateTimeFormat.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\LineEnding.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\LocaleToScriptMapping.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\LocaleWin.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\PlatformLocale.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\SegmentedString.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\StringTruncator.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextBoundaries.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextBreakIterator.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextBreakIteratorICU.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextBreakIteratorInternalICU.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextRun.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextStream.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\UnicodeUtilities.cpp" />
@@ -1216,19 +1294,31 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\transforms\TransformOperations.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\transforms\TranslateTransformOperation.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\UUID.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\weborigin\kurl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\WebTaskRunner.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\Widget.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\win\SystemInfo.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\ChromeClientImpl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\ContextMenuClientImpl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\DragClientImpl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\EditorClientImpl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\PageWidgetDelegate.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\ResizeViewportAnchor.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\WebDataSourceImpl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\AddressSpaceRandomization.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\ArrayBuffer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\ArrayBufferContents.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\ArrayBufferView.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\ASCIICType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\Assertions.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\BitVector.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\CryptographicallyRandomNumber.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\CurrentTime.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\DataLog.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\DateMath.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\dtoa.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\dtoa\bignum-dtoa.cc" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\dtoa\bignum.cc" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\dtoa\cached-powers.cc" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\dtoa\diy-fp.cc" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\dtoa\double-conversion.cc" />
@@ -1236,12 +1326,14 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\dtoa\fixed-dtoa.cc" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\dtoa\strtod.cc" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\DynamicAnnotations.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\FilePrintStream.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\HashTable.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\MainThread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\PageAllocator.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\PartitionAlloc.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\PartitionAllocator.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\Partitions.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\PrintStream.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\SpinLock.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\text\AtomicString.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\text\Base64.cpp" />
@@ -1262,10 +1354,11 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\text\TextPosition.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\text\UTF8.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\text\WTFString.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\ThreadingWin.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\ThreadSpecificWin.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\TypeTraits.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\WTF.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\WTFThreadData.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_theme_engine.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\cookie_jar_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_document.cpp" />
@@ -1273,6 +1366,7 @@
     <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\hijack_response.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_heap.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\gc\gc_object.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_visitor.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\context_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\crawler_context.cpp" />
@@ -1283,6 +1377,7 @@
     <ClCompile Include="..\..\..\src\blinkit\js\js_value_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\module_manager.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\simple_context.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\js\web_view_context.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\loader_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\tasks\file_loader_task.cpp" />
@@ -1298,11 +1393,13 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\HTMLElementLookupTrie.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\HTMLNames.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\HTTPNames.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\ui\rendering_scheduler.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\web_view_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\win_web_view.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\bk_bitmap.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\client_caller_store.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\icu_stub.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\message_loop.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\message_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\time_ticker.cpp" />
@@ -1325,6 +1422,7 @@
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\impl\thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\impl\url_loader.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\impl\win_theme_engine.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\Platform.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebBlobData.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebData.h" />
@@ -1332,7 +1430,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTaskRunner.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebThread.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebURLLoader.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebKit.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\web\blink.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_anchor_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_array_like_object_impl.hpp" />
@@ -1379,6 +1477,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\MediaQueryListEventInit.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSParserMode.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleResolverStats.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\SelectorChecker.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ChildFrameDisconnector.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ClientRectList.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ContainerNode.h" />
@@ -1420,16 +1519,24 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\HTMLElementTypeHelpers.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\HTMLNames.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\CollectionItemsCache.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLParserOptions.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\input\InputDeviceCapabilitiesInit.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\inspector\InspectorInstrumentation.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\inspector\InspectorTraceEvents.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\inspector\InstanceCounters.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\FloatingObjects.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\HitTestCache.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutView.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\DocumentLoader.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\FrameLoader.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\FrameLoaderClient.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\LinkLoaderClient.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\Page.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintLayer.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleFilterData.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontCache.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontSelector.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\IntRect.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\IntSizeHash.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\heap\GarbageCollected.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\heap\Handle.h" />
@@ -1459,8 +1566,8 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\TemporaryChange.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\testing\WTFUnitTestHelpersExport.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\AtomicStringHash.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\icu\UnicodeIcu.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\WTFString.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_theme_engine.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\cookie_jar_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_document.h" />
@@ -1480,12 +1587,14 @@
     <ClInclude Include="..\..\..\src\blinkit\js\js_value_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\module_manager.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\simple_context.h" />
+    <ClInclude Include="..\..\..\src\blinkit\js\web_view_context.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\loader_thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\file_loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\http_loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\res_loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\win_loader_thread.h" />
+    <ClInclude Include="..\..\..\src\blinkit\ui\rendering_scheduler.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\web_view_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\win_web_view.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\bk_bitmap.h" />
@@ -1510,8 +1619,8 @@
     <ProjectReference Include="..\duktape\duktape.vcxproj">
       <Project>{c8a7568b-b29b-430c-99a1-e43120933154}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\icu\icu.vcxproj">
-      <Project>{289190e9-30a8-4f11-befb-1d2026419b77}</Project>
+    <ProjectReference Include="..\harfbuzz\harfbuzz.vcxproj">
+      <Project>{43f87c52-7fd3-43ec-b9b3-fc3ef9ccfdf1}</Project>
     </ProjectReference>
     <ProjectReference Include="..\libpng\libpng.vcxproj">
       <Project>{6bf8aa31-e6e9-4dc1-b721-20727f7d96cb}</Project>

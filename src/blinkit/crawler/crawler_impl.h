@@ -50,12 +50,13 @@ public:
     void CleanupDirtyFlag(void) { m_dirty = false; }
     void CancelLoading(void);
 private:
-    // blink::FrameLoaderClient
-#ifndef BLINKIT_CRAWLER_ONLY
-    // BKTODO: bool IsCrawler(void) const override { return true; }
+    // FrameClient
+#ifdef BLINKIT_FULL_BUILD
+    Type GetType(void) const override { return Type::Crawler; }
 #endif
+    // FrameLoaderClient
+    String userAgent(void) override;
 #if 0 // BKTODO:
-    String UserAgent(void) override;
     void DidFinishLoad(void) override;
     void TransitionToCommittedForNewPage(void) override;
     void DispatchDidReceiveTitle(const String &title) override {}

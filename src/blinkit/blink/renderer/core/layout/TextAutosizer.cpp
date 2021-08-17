@@ -508,8 +508,7 @@ void TextAutosizer::updatePageInfoInAllFrames()
 {
     ASSERT(!m_document->frame() || m_document->frame()->isMainFrame());
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     for (Frame* frame = m_document->frame(); frame; frame = frame->tree().traverseNext()) {
         if (!frame->isLocalFrame())
             continue;
@@ -521,6 +520,11 @@ void TextAutosizer::updatePageInfoInAllFrames()
         if (TextAutosizer* textAutosizer = document->textAutosizer())
             textAutosizer->updatePageInfo();
     }
+#else
+    if (!m_document->isActive())
+        return;
+    if (TextAutosizer *textAutosizer = const_cast<Document *>(m_document.get())->textAutosizer())
+        textAutosizer->updatePageInfo();
 #endif
 }
 

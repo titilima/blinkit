@@ -12,23 +12,30 @@
 #include "./web_view_impl.h"
 
 #include "blinkit/app/app_impl.h"
-#if 0 // BKTODO:
+#include "blinkit/blink/renderer/core/editing/FrameSelection.h"
+#include "blinkit/blink/renderer/core/editing/InputMethodController.h"
+#include "blinkit/blink/renderer/core/frame/FrameHost.h"
+#include "blinkit/blink/renderer/core/frame/FrameView.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/frame/Settings.h"
+#include "blinkit/blink/renderer/core/layout/LayoutView.h"
+#include "blinkit/blink/renderer/core/layout/TextAutosizer.h"
+#include "blinkit/blink/renderer/core/page/FocusController.h"
+#include "blinkit/blink/renderer/core/page/Page.h"
+#include "blinkit/blink/renderer/web/ChromeClientImpl.h"
+#include "blinkit/blink/renderer/web/PageWidgetDelegate.h"
+#include "blinkit/blink/renderer/web/ResizeViewportAnchor.h"
 #include "blinkit/ui/rendering_scheduler.h"
+#if 0 // BKTODO:
 #include "blinkit/blink/renderer/core/editing/editor.h"
 #include "blinkit/blink/renderer/core/frame/browser_controls.h"
-#include "blinkit/blink/renderer/core/frame/local_frame.h"
 #include "blinkit/blink/renderer/core/frame/page_scale_constraints_set.h"
-#include "blinkit/blink/renderer/core/frame/settings.h"
 #include "blinkit/blink/renderer/core/frame/viewport_data.h"
 #include "blinkit/blink/renderer/core/frame/visual_viewport.h"
 #include "blinkit/blink/renderer/core/editing/editing_utilities.h"
 #include "blinkit/blink/renderer/core/editing/selection_template.h"
-#include "blinkit/blink/renderer/core/layout/layout_view.h"
 #include "blinkit/blink/renderer/core/layout/text_autosizer.h"
 #include "blinkit/blink/renderer/core/loader/frame_load_request.h"
-#include "blinkit/blink/renderer/core/page/chrome_client_impl.h"
-#include "blinkit/blink/renderer/core/page/focus_controller.h"
-#include "blinkit/blink/renderer/core/page/page.h"
 #include "blinkit/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #endif
 
@@ -40,37 +47,30 @@ static const float ViewportAnchorCoordX = 0.5f;
 static const float ViewportAnchorCoordY = 0;
 
 WebViewImpl::WebViewImpl(ClientCaller &clientCaller, PageVisibilityState visibilityState, SkColor baseBackgroundColor)
-/*:  LocalFrameClientImpl(AppImpl::Get().GetAppCaller(), clientCaller)
-    , m_chromeClient(ChromeClientImpl::Create(this)), m_baseBackgroundColor(baseBackgroundColor) */
+    : FrameLoaderClient(AppImpl::Get().GetAppCaller(), clientCaller)
+    , m_chromeClient(ChromeClientImpl::create(this))
+    , m_contextMenuClientImpl(this)
+    , m_dragClientImpl(this)
+    , m_editorClientImpl(this)
+    , m_baseBackgroundColor(baseBackgroundColor)
 {
     ASSERT(isMainThread());
     memset(&m_client, 0, sizeof(m_client));
 
-    ASSERT(false); // BKTODO:
-#if 0
     Page::PageClients pageClients;
     pageClients.chromeClient = m_chromeClient.get();
-    pageClients.frameClient = this;
-    m_page = Page::Create(pageClients);
+    pageClients.contextMenuClient = &m_contextMenuClientImpl;
+    pageClients.dragClient = &m_dragClientImpl;
+    pageClients.editorClient = &m_editorClientImpl;
+    m_page = Page::create(pageClients);
     SetVisibilityStateImpl(visibilityState, true);
 
 #if 0 // BKTODO:
-    // TODO(dcheng): All WebViewImpls should have an associated LayerTreeView,
-    // but for various reasons, that's not the case... WebView plugin, printing,
-    // workers, and tests don't use a compositor in their WebViews. Sometimes
-    // they avoid the compositor by using a null client, and sometimes by having
-    // the client return a null compositor. We should make things more consistent
-    // and clear.
-    // For some reason this was not set when WidgetClient() is not provided,
-    // even though there will be no LayerTreeView in that case either.
-    if (WidgetClient() && WidgetClient()->AllowsBrokenNullLayerTreeView())
-        page_->GetSettings().SetAcceleratedCompositingEnabled(false);
+    initializeLayerTreeView();
 
-    AllInstances().insert(this);
+    allInstances().add(this);
 
-    page_importance_signals_.SetObserver(client);
-#endif
-    m_resizeViewportAnchor = std::make_unique<ResizeViewportAnchor>(*m_page);
+    m_pageImportanceSignals.setObserver(client);
 #endif
 }
 
@@ -90,42 +90,61 @@ void WebViewImpl::CancelPagePopup(void)
 {
     BKLOG("// BKTODO: CancelPagePopup");
 }
+#endif
 
 float WebViewImpl::ClampPageScaleFactorToLimits(float scaleFactor) const
 {
-    return GetPageScaleConstraintsSet().FinalConstraints().ClampToConstraints(scaleFactor);
+    return GetPageScaleConstraintsSet().finalConstraints().clampToConstraints(scaleFactor);
 }
 
-IntSize WebViewImpl::ContentsSize(void) const {
-    if (LayoutView *layoutView = GetPage()->GetFrame()->ContentLayoutObject())
-        return layoutView->DocumentRect().Size();
+IntSize WebViewImpl::ContentsSize(void) const
+{
+    if (LayoutView *layoutView = m_frame->contentLayoutObject())
+        return layoutView->documentRect().size();
     return IntSize();
 }
 
-void WebViewImpl::DidChangeContentsSize(void)
+void WebViewImpl::didChangeContentsSize(void)
 {
-    LocalFrameView *view = GetPage()->GetFrame()->View();
-
-    int verticalScrollbarWidth = 0;
-    if (nullptr != view)
-    {
-        if (PaintLayerScrollableArea *layoutViewport = view->LayoutViewport())
-        {
-            Scrollbar *verticalScrollbar = layoutViewport->VerticalScrollbar();
-            if (nullptr != verticalScrollbar && !verticalScrollbar->IsOverlayScrollbar())
-                verticalScrollbarWidth = verticalScrollbar->Width();
-        }
-    }
-
-    GetPageScaleConstraintsSet().DidChangeContentsSize(ContentsSize(), verticalScrollbarWidth, PageScaleFactor());
+    GetPageScaleConstraintsSet().didChangeContentsSize(ContentsSize(), PageScaleFactor());
 }
 
+#if 0 // BKTODO:
 void WebViewImpl::DidFinishLoad(void)
 {
     std::shared_lock<BkSharedMutex> lock(m_lock);
     m_client.DocumentReady(m_client.UserData);
 }
+#endif
 
+void WebViewImpl::DidUpdateTopControls(void)
+{
+#if 0 // BKTODO:
+    if (m_layerTreeView)
+    {
+        m_layerTreeView->setTopControlsShownRatio(topControls().shownRatio());
+        m_layerTreeView->setTopControlsHeight(topControls().height(), topControls().shrinkViewport());
+    }
+#endif
+
+    if (!m_frame)
+        return;
+
+    FrameView *view = m_frame->view();
+    if (nullptr == view)
+        return;
+
+    VisualViewport &visualViewport = m_page->frameHost().visualViewport();
+    TopControls &topControls = m_page->frameHost().topControls();
+
+    float topControlsViewportAdjustment = topControls.layoutHeight() - topControls.contentOffset();
+    visualViewport.setTopControlsAdjustment(topControlsViewportAdjustment);
+
+    // Shrink the FrameView by the amount that will maintain the aspect-ratio with the VisualViewport.
+    view->setTopControlsViewportAdjustment(topControlsViewportAdjustment / MinimumPageScaleFactor());
+}
+
+#if 0 // BKTODO:
 void WebViewImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 {
     ASSERT(false); // BKTODO:
@@ -144,39 +163,83 @@ BrowserControls& WebViewImpl::GetBrowserControls(void)
 {
     return m_page->GetBrowserControls();
 }
+#endif
 
 PageScaleConstraintsSet& WebViewImpl::GetPageScaleConstraintsSet(void) const
 {
-    return m_page->GetPageScaleConstraintsSet();
+    return m_page->frameHost().pageScaleConstraintsSet();
 }
+
+void WebViewImpl::HidePopups(void)
+{
+#if 0 // BKTODO:
+    if (m_pagePopup)
+        m_pagePopup->cancel();
 #endif
+}
 
 void WebViewImpl::Initialize(void)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     ScopedRenderingScheduler scheduler(this);
-    m_frame = LocalFrame::Create(this, m_page.get());
-    m_frame->Init();
+    m_frame = LocalFrame::create(this, &(m_page->frameHost()));
+    m_frame->init();
+}
+
+void WebViewImpl::invalidateRect(const IntRect &rect)
+{
+#if 0 // BKTODO:
+    if (m_layerTreeView)
+        updateLayerTreeViewport();
+    else if (m_client)
+        m_client->didInvalidateRect(rect);
+#else
+    RenderingScheduler::From(this)->InvalidateRect(rect);
 #endif
 }
 
 #if 0 // BKTODO:
-void WebViewImpl::InvalidateRect(const IntRect &rect)
-{
-#if 0 // BKTODO: Check this logic later.
-    if (layer_tree_view_) {
-        UpdateLayerTreeViewport();
-    }
-#endif
-    RenderingScheduler::From(this)->InvalidateRect(rect);
-}
-
 bool WebViewImpl::IsAcceleratedCompositingActive(void) const
 {
     return false; // BKTODO: Support GPU.
 }
 #endif
+
+void WebViewImpl::layoutUpdated(LocalFrame *frame)
+{
+    if (m_shouldAutoResize)
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        WebSize frameSize = frame->view()->frameRect().size();
+        if (frameSize != m_size) {
+            m_size = frameSize;
+
+            page()->frameHost().visualViewport().setSize(m_size);
+            pageScaleConstraintsSet().didChangeViewSize(m_size);
+
+            m_client->didAutoResize(m_size);
+            sendResizeEventAndRepaint();
+        }
+#endif
+    }
+
+    if (GetPageScaleConstraintsSet().constraintsDirty())
+        RefreshPageScaleFactorAfterLayout();
+
+    FrameView *view = frame->view();
+
+    view->resize(m_size);
+    // Relayout immediately to avoid violating the rule that needsLayout()
+    // isn't set at the end of a layout.
+    if (view->needsLayout())
+        view->layout();
+
+    // In case we didn't have a size when the top controls were updated.
+    DidUpdateTopControls();
+
+    // BKTODO: didUpdateLayout may be useful in the future, leave it here.
+    // m_client->didUpdateLayout();
+}
 
 int WebViewImpl::LoadUI(const char *URI)
 {
@@ -205,28 +268,26 @@ void WebViewImpl::MainFrameLayoutUpdated(void)
 {
     // May be useful, leave it here.
 }
+#endif
 
 IntSize WebViewImpl::MainFrameSize(void)
 {
-    // The frame size should match the viewport size at minimum scale, since the
-    // viewport must always be contained by the frame.
-    FloatSize frameSize(m_size);
-    frameSize.Scale(1 / MinimumPageScaleFactor());
-    return ExpandedIntSize(frameSize);
+    return GetPageScaleConstraintsSet().mainFrameSize();
 }
 
 float WebViewImpl::MinimumPageScaleFactor(void) const
 {
-    return GetPageScaleConstraintsSet().FinalConstraints().minimum_scale;
+    return GetPageScaleConstraintsSet().finalConstraints().minimumScale;
 }
 
 float WebViewImpl::PageScaleFactor(void) const
 {
-    if (Page *page = GetPage())
-        return page->GetVisualViewport().Scale();
+    if (m_page)
+        return m_page->frameHost().visualViewport().scale();
     return 1.0;
 }
 
+#if 0 // BKTODO:
 void WebViewImpl::PaintContent(cc::PaintCanvas *canvas, const WebRect &rect)
 {
     // This should only be used when compositing is not being used for this
@@ -234,58 +295,96 @@ void WebViewImpl::PaintContent(cc::PaintCanvas *canvas, const WebRect &rect)
     ASSERT(!IsAcceleratedCompositingActive());
     PageWidgetDelegate::PaintContent(*m_page, canvas, rect, *m_page->MainFrame());
 }
+#endif
+
+void WebViewImpl::PerformResize(void)
+{
+    GetPageScaleConstraintsSet().didChangeViewSize(m_size);
+
+    updatePageDefinedViewportConstraints(m_frame->document()->viewportDescription());
+    UpdateMainFrameLayoutSize();
+
+    m_page->frameHost().visualViewport().setSize(m_size);
+
+    if (FrameView *view = m_frame->view())
+    {
+        if (!view->needsLayout())
+            PostLayoutResize(m_frame.get());
+    }
+}
+
+void WebViewImpl::PostLayoutResize(LocalFrame *frame)
+{
+    frame->view()->resize(MainFrameSize());
+}
 
 bool WebViewImpl::ProcessTitleChange(const std::string &title) const
 {
     ASSERT(IsClientThread());
-    std::shared_lock<BkSharedMutex> lock(m_lock);
+
+    auto _ = m_lock.guard_shared();
     if (nullptr == m_client.TitleChange)
         return false;
     return m_client.TitleChange(title.c_str(), m_client.UserData);
 }
 
-void WebViewImpl::RefreshPageScaleFactor(void)
+void WebViewImpl::RefreshPageScaleFactorAfterLayout(void)
 {
-    Page *page = GetPage();
-    if (nullptr == page)
+    if (!m_frame || !m_page || nullptr == m_page->mainFrame())
         return;
 
-    LocalFrame *mainFrame = page->MainFrame();
-    if (nullptr == mainFrame)
-        return;
-
-    LocalFrameView *view = mainFrame->View();
+    FrameView *view = m_page->deprecatedLocalMainFrame()->view();
     if (nullptr == view)
         return;
 
-    UpdatePageDefinedViewportConstraints(mainFrame->GetDocument()->GetViewportData().GetViewportDescription());
+    updatePageDefinedViewportConstraints(m_frame->document()->viewportDescription());
 
-    PageScaleConstraintsSet &pageScaleConstraints = GetPageScaleConstraintsSet();
-    pageScaleConstraints.ComputeFinalConstraints();
+    PageScaleConstraintsSet &pageScaleConstraintsSet = GetPageScaleConstraintsSet();
+    pageScaleConstraintsSet.computeFinalConstraints();
+
+    int verticalScrollbarWidth = 0;
+    if (Scrollbar *vb = view->verticalScrollbar())
+    {
+        if (!vb->isOverlayScrollbar())
+            verticalScrollbarWidth = vb->width();
+    }
+    pageScaleConstraintsSet.adjustFinalConstraintsToContentsSize(ContentsSize(), verticalScrollbarWidth, Settings::shrinksViewportContentToFit());
 
     float newPageScaleFactor = PageScaleFactor();
-    if (pageScaleConstraints.NeedsReset() && pageScaleConstraints.FinalConstraints().initial_scale != -1)
+    if (pageScaleConstraintsSet.needsReset() && pageScaleConstraintsSet.finalConstraints().initialScale != -1)
     {
-        newPageScaleFactor = GetPageScaleConstraintsSet().FinalConstraints().initial_scale;
-        pageScaleConstraints.SetNeedsReset(false);
+        newPageScaleFactor = pageScaleConstraintsSet.finalConstraints().initialScale;
+        pageScaleConstraintsSet.setNeedsReset(false);
     }
     SetPageScaleFactor(newPageScaleFactor);
 
     UpdateLayerTreeViewport();
 }
 
-void WebViewImpl::Resize(const WebSize &size)
+void WebViewImpl::Resize(const IntSize &size)
 {
-    ASSERT(IsMainThread());
-    if (size.IsEmpty() || m_shouldAutoResize || m_size == size)
+    ASSERT(isMainThread());
+
+    if (m_shouldAutoResize || m_size == size)
         return;
 
+    if (!m_frame)
+        return;
+
+    FrameView *view = m_frame->view();
+    if (nullptr == view)
+        return;
+    m_size = size;
+
     ScopedRenderingScheduler scheduler(this);
-    BrowserControls& browserControls = GetBrowserControls();
-    ResizeWithBrowserControls(size, browserControls.TopHeight(), browserControls.BottomHeight(),
-        browserControls.ShrinkViewport());
+    {
+        ResizeViewportAnchor anchor(*view, m_page->frameHost().visualViewport());
+        ResizeViewWhileAnchored(view);
+        SendResizeEventAndRepaint();
+    }
 }
 
+#if 0 // BKTODO:
 void WebViewImpl::ResizeAfterLayout(void)
 {
     Page *page = GetPage();
@@ -316,38 +415,24 @@ void WebViewImpl::ResizeAfterLayout(void)
 
     m_resizeViewportAnchor->ResizeFrameView(MainFrameSize());
 }
+#endif
 
-void WebViewImpl::ResizeViewWhileAnchored(
-    float topControlsHeight, float bottomControlsHeight,
-    bool browserControlsShrinkLayout)
+void WebViewImpl::ResizeViewWhileAnchored(FrameView *view)
 {
-    LocalFrame *mainFrame = m_page->MainFrame();
-    ASSERT(nullptr != mainFrame);
-
-    GetBrowserControls().SetHeight(topControlsHeight, bottomControlsHeight, browserControlsShrinkLayout);
+    ASSERT(m_frame);
 
     {
-        // Avoids unnecessary invalidations while various bits of state in
-        // TextAutosizer are updated.
-        TextAutosizer::DeferUpdatePageInfo deferUpdatePageInfo(GetPage());
-        LocalFrameView *frameView = mainFrame->View();
-        IntSize oldSize = frameView->Size();
-        UpdateICBAndResizeViewport();
-        IntSize newSize = frameView->Size();
-        frameView->MarkViewportConstrainedObjectsForLayout(
-            oldSize.Width() != newSize.Width(),
-            oldSize.Height() != newSize.Height()
-        );
+        // Avoids unnecessary invalidations while various bits of state in TextAutosizer are updated.
+        TextAutosizer::DeferUpdatePageInfo deferUpdatePageInfo(m_page.get());
+        PerformResize();
     }
 
-    // BKTODO: fullscreen_controller_->UpdateSize();
-
-    // Update lifecyle phases immediately to recalculate the minimum scale limit
-    // for rotation anchoring, and to make sure that no lifecycle states are
-    // stale if this WebView is embedded in another one.
+    // Update lifecyle phases immediately to recalculate the minimum scale limit for rotation anchoring,
+    // and to make sure that no lifecycle states are stale if this WebView is embedded in another one.
     UpdateLifecycle();
 }
 
+#if 0 // BKTODO:
 void WebViewImpl::ResizeWithBrowserControls(
     const WebSize &newSize,
     float topControlsHeight, float bottomControlsHeight,
@@ -402,13 +487,14 @@ void WebViewImpl::ResizeWithBrowserControls(
     }
     SendResizeEventAndRepaint();
 }
+#endif
 
-void WebViewImpl::ScheduleAnimation(void)
+void WebViewImpl::scheduleAnimation(void)
 {
 #if 0 // BKTODO:
-    if (layer_tree_view_)
+    if (m_layerTreeView)
     {
-        layer_tree_view_->SetNeedsBeginFrame();
+        m_layerTreeView->setNeedsBeginFrame();
         return;
     }
 #endif
@@ -417,28 +503,24 @@ void WebViewImpl::ScheduleAnimation(void)
 
 void WebViewImpl::SendResizeEventAndRepaint(void)
 {
-    // FIXME: This is wrong. The LocalFrameView is responsible sending a
-    // resizeEvent as part of layout. Layout is also responsible for sending
-    // invalidations to the embedder. This method and all callers may be wrong. --
-    // eseidel.
-    LocalFrame *mainFrame = m_page->MainFrame();
-    if (nullptr != mainFrame->View())
-        mainFrame->GetDocument()->EnqueueResizeEvent(); // Enqueues the resize event.
-
-#if 0 // BKTODO: Check the logic below.
-    if (client_)
+    // FIXME: This is wrong. The FrameView is responsible sending a resizeEvent
+    // as part of layout. Layout is also responsible for sending invalidations
+    // to the embedder. This method and all callers may be wrong. -- eseidel.
+    if (nullptr != m_frame->view())
     {
-        if (layer_tree_view_) {
-            UpdateLayerTreeViewport();
-        }
-        else {
-            WebRect damaged_rect(0, 0, size_.width, size_.height);
-            client_->WidgetClient()->DidInvalidateRect(damaged_rect);
-        }
+        // Enqueues the resize event.
+        m_frame->document()->enqueueResizeEvent();
     }
+
+#if 0 // BKTODO:
+    if (m_layerTreeView)
+        UpdateLayerTreeViewport();
+#else
+    IntRect damagedRect(IntPoint(0, 0), m_size);
+    RenderingScheduler::From(this)->InvalidateRect(damagedRect);
 #endif
+    UpdatePageOverlays();
 }
-#endif
 
 void WebViewImpl::SetClient(const BkWebViewClient &client)
 {
@@ -452,50 +534,45 @@ void WebViewImpl::SetClient(const BkWebViewClient &client)
     // Use `offsetof` macro for different client versions.
 }
 
-#if 0 // BKTODO:
-void WebViewImpl::SetFocus(bool enable)
+void WebViewImpl::SetFocus(bool focus)
 {
     ASSERT(IsClientThread());
     m_appCaller.Call(
-        FROM_HERE,
-        std::bind(&WebViewImpl::SetFocusImpl, this, enable)
+        BLINK_FROM_HERE,
+        std::bind(&WebViewImpl::SetFocusImpl, this, focus)
     );
 }
 
-void WebViewImpl::SetFocusImpl(bool enable)
+void WebViewImpl::SetFocusImpl(bool focus)
 {
-    ASSERT(IsMainThread());
+    ASSERT(isMainThread());
 
     ScopedRenderingScheduler scheduler(this);
-    FocusController &focusController = m_page->GetFocusController();
-    if (enable)
-        focusController.SetActive(true);
-    focusController.SetFocused(enable);
-    if (enable)
+    m_page->focusController().setFocused(focus);
+    if (focus)
     {
-        LocalFrame *focusedFrame = m_page->GetFocusController().FocusedFrame();
-        if (nullptr != focusedFrame)
+        m_page->focusController().setActive(true);
+        RefPtrWillBeRawPtr<LocalFrame> focusedFrame = m_page->focusController().focusedFrame();
+        if (focusedFrame)
         {
-            Element *element = focusedFrame->GetDocument()->FocusedElement();
-            if (nullptr != element && focusedFrame->Selection().ComputeVisibleSelectionInDOMTreeDeprecated().IsNone())
+            Element *element = focusedFrame->document()->focusedElement();
+            if (nullptr != element && focusedFrame->selection().selection().isNone())
             {
                 // If the selection was cleared while the WebView was not
                 // focused, then the focus element shows with a focus ring but
                 // no caret and does respond to keyboard inputs.
-                focusedFrame->GetDocument()->UpdateStyleAndLayoutTree();
-                if (element->IsTextControl())
+                if (element->isTextFormControl())
                 {
-                    element->UpdateFocusAppearance(SelectionBehaviorOnFocus::kRestore);
+                    element->updateFocusAppearance(SelectionBehaviorOnFocus::Restore);
                 }
-                else if (HasEditableStyle(*element))
+                else if (element->isContentEditable())
                 {
                     // updateFocusAppearance() selects all the text of
                     // contentseditable DIVs. So we set the selection explicitly
                     // instead. Note that this has the side effect of moving the
                     // caret back to the beginning of the text.
                     Position position(element, 0);
-                    focusedFrame->Selection().SetSelectionAndEndTyping(
-                        SelectionInDOMTree::Builder().Collapse(position).Build());
+                    focusedFrame->selection().setSelection(VisibleSelection(position, SEL_DEFAULT_AFFINITY));
                 }
             }
         }
@@ -503,105 +580,105 @@ void WebViewImpl::SetFocusImpl(bool enable)
     }
     else
     {
-        CancelPagePopup();
+        HidePopups();
 
         // Clear focus on the currently focused frame if any.
         if (!m_page)
             return;
 
-        LocalFrame *frame = m_page->MainFrame();
+        Frame *frame = m_page->mainFrame();
         if (nullptr == frame)
             return;
 
-        if (frame->GetInputMethodController().HasComposition())
+        RefPtrWillBeRawPtr<LocalFrame> focusedFrame = m_page->focusController().focusedFrame();
+        if (focusedFrame)
         {
-            // TODO(editing-dev): The use of
-            // updateStyleAndLayoutIgnorePendingStylesheets needs to be audited.
-            // See http://crbug.com/590369 for more details.
-            frame->GetDocument()->UpdateStyleAndLayoutIgnorePendingStylesheets();
+            // Finish an ongoing composition to delete the composition node.
+            if (focusedFrame->inputMethodController().hasComposition())            
+            {
+#if 0 // BKTODO:
+                WebAutofillClient* autofillClient = WebLocalFrameImpl::fromFrame(focusedFrame.get())->autofillClient();
 
-            frame->GetInputMethodController().FinishComposingText(
-                InputMethodController::kKeepSelection);
+                if (autofillClient)
+                    autofillClient->setIgnoreTextChanges(true);
+#endif
+
+                focusedFrame->inputMethodController().confirmComposition();
+#if 0 // BKTODO:
+                if (autofillClient)
+                    autofillClient->setIgnoreTextChanges(false);
+#endif
+            }
+            m_imeAcceptEvents = false;
         }
-        m_imeAcceptEvents = false;
     }
 }
 
 void WebViewImpl::SetPageScaleFactor(float scaleFactor)
 {
-    Page *page = GetPage();
-    ASSERT(nullptr != page);
+    ASSERT(m_page);
 
     scaleFactor = ClampPageScaleFactorToLimits(scaleFactor);
-    if (scaleFactor == PageScaleFactor())
+    if (abs(scaleFactor - PageScaleFactor()) < FLT_EPSILON)
         return;
 
-    page->GetVisualViewport().SetScale(scaleFactor);
+    m_page->frameHost().visualViewport().setScale(scaleFactor);
 }
 
 void WebViewImpl::SetScaleFactor(float scaleFactor)
 {
-    Page *page = GetPage();
-    if (nullptr == page)
+    if (!m_page)
         return;
 
-    if (page->DeviceScaleFactorDeprecated() == scaleFactor)
-        return;
+    m_page->setDeviceScaleFactor(scaleFactor);
 
-    page->SetDeviceScaleFactorDeprecated(scaleFactor);
+#if 0 // BKTODO:
+    if (m_layerTreeView)
+        updateLayerTreeDeviceScaleFactor();
+#endif
 }
 
 void WebViewImpl::SetVisibilityState(PageVisibilityState visibilityState)
 {
     ASSERT(IsClientThread());
     m_appCaller.Call(
-        FROM_HERE,
+        BLINK_FROM_HERE,
         std::bind(&WebViewImpl::SetVisibilityStateImpl, this, visibilityState, false)
     );
 }
 
 void WebViewImpl::SetVisibilityStateImpl(PageVisibilityState visibilityState, bool isInitialState)
 {
-    ASSERT(IsMainThread());
+    ASSERT(isMainThread());
     ASSERT(m_page);
-    GetPage()->SetVisibilityState(visibilityState, isInitialState);
+    m_page->setVisibilityState(visibilityState, isInitialState);
 
 #if 0 // BKTODO:
-    bool visible = visibilityState == PageVisibilityState::kVisible;
-    if (layer_tree_view_ && !override_compositor_visibility_)
-        layer_tree_view_->SetVisible(visible);
-    GetPage()->GetPageScheduler()->SetPageVisible(visible);
+    if (m_layerTreeView) {
+        bool visible = visibilityState == WebPageVisibilityStateVisible;
+        m_layerTreeView->setVisible(visible);
+    }
+
+    if (visibilityState == WebPageVisibilityStateVisible) {
+        m_scheduler->setPageInBackground(false);
+    }
+    else {
+        m_scheduler->setPageInBackground(true);
+    }
 #endif
 }
 
-void WebViewImpl::TransitionToCommittedForNewPage(void)
+void WebViewImpl::transitionToCommittedForNewPage(void)
 {
-    // Check if we're shutting down.
-    if (!m_page)
-        return;
+    ASSERT(m_frame);
 
-    IntSize initialSize = FrameSize();
-    Color baseBackgroundColor = BaseBackgroundColor();
+    m_frame->createView(m_size, m_baseBackgroundColor, false); // BKTODO: Is transparent needed?
+    if (m_shouldAutoResize)
+        ASSERT(false); // BKTODO: frame()->view()->enableAutoSizeMode(webView->minAutoSize(), webView->maxAutoSize());
 
-    LocalFrame *frame = m_page->GetFrame();
-    frame->CreateView(initialSize, baseBackgroundColor);
-
-    LocalFrameView *view = frame->View();
-    view->SetInitialViewportSize(GetPageScaleConstraintsSet().InitialViewportSize());
-    if (ShouldAutoResize())
-    {
-        ASSERT(false); // BKTODO:
-#if 0
-        view->EnableAutoSizeMode(MinAutoSize(), MaxAutoSize());
-#endif
-    }
-
-#if 0 // BKTODO: Check if necessary
-    view->SetInputEventsScaleForEmulation(input_events_scale_factor_for_emulation_);
-    view->SetDisplayMode(DisplayMode());
-
-    if (frame_widget_)
-        frame_widget_->DidCreateLocalRootView();
+#if 0 // BKTODO: Check if necessary.
+    m_frame->view()->setInputEventsTransformForEmulation(m_inputEventsOffsetForEmulation, m_inputEventsScaleFactorForEmulation);
+    m_frame->view()->setDisplayMode(webView->displayMode());
 #endif
 }
 
@@ -609,26 +686,27 @@ void WebViewImpl::UpdateAndPaint(void)
 {
     UpdateLifecycle();
 
-    if (m_size.IsEmpty())
+    if (m_size.isEmpty())
         return;
 
     bool resetCanvas = true;
     if (m_canvas)
     {
         SkImageInfo imageInfo = m_canvas->imageInfo();
-        if (imageInfo.width() == m_size.width && imageInfo.height() == m_size.height)
+        if (imageInfo.width() == m_size.width() && imageInfo.height() == m_size.height())
             resetCanvas = false;
     }
 
-    std::unique_lock<BkMutex> lock(m_canvasLock);
+    auto _ = m_canvasLock.guard();
     if (resetCanvas)
     {
-        m_canvas = std::make_unique<cc::SkiaPaintCanvas>(PrepareBitmapForCanvas(m_size));
+        m_canvas = std::make_unique<SkCanvas>(PrepareBitmapForCanvas(m_size));
         m_canvas->drawColor(m_baseBackgroundColor);
     }
-    PaintContent(m_canvas.get(), IntRect(IntPoint(), m_size));
+    PageWidgetDelegate::paint(*m_page, m_canvas.get(), IntRect(IntPoint(), m_size), *m_page->deprecatedLocalMainFrame());
 }
 
+#if 0 // BKTODO:
 void WebViewImpl::UpdateICBAndResizeViewport(void)
 {
     // We'll keep the initial containing block size from changing when the top
@@ -655,188 +733,170 @@ void WebViewImpl::UpdateICBAndResizeViewport(void)
             m_resizeViewportAnchor->ResizeFrameView(MainFrameSize());
     }
 }
+#endif
 
 void WebViewImpl::UpdateLayerTreeBackgroundColor(void)
 {
 #if 0 // BKTODO:
-    if (!layer_tree_view_)
+    if (!m_layerTreeView)
         return;
-    layer_tree_view_->SetBackgroundColor(BackgroundColor());
+
+    m_layerTreeView->setBackgroundColor(alphaChannel(m_backgroundColorOverride) ? m_backgroundColorOverride : backgroundColor());
 #endif
 }
 
 void WebViewImpl::UpdateLayerTreeViewport(void)
 {
-    BKLOG("// BKTODO: LayerTreeViewport support.");
+    // BKTODO:
 }
 
-void WebViewImpl::UpdateLifecycle(LifecycleUpdate requestedUpdate)
+void WebViewImpl::UpdateLifecycle(void)
 {
-    LocalFrame *mainFrame = m_page->MainFrame();
-    if (nullptr == mainFrame)
-        return;
-
-    DocumentLifecycle::AllowThrottlingScope throttlingScope(mainFrame->GetDocument()->Lifecycle());
-
-    PageWidgetDelegate::UpdateLifecycle(*m_page, *mainFrame, requestedUpdate);
-    if (LifecycleUpdate::kLayout == requestedUpdate)
+    if (!m_frame)
         return;
 
     UpdateLayerTreeBackgroundColor();
 
-    if (LifecycleUpdate::kPrePaint == requestedUpdate)
-        return;
+    PageWidgetDelegate::updateAllLifecyclePhases(*m_page, *m_frame);
 
-    if (LocalFrameView *view = mainFrame->View())
-    {
 #if 0 // BKTODO:
-        LocalFrame* frame = MainFrameImpl()->GetFrame();
-        WebWidgetClient* client =
-            WebLocalFrameImpl::FromFrame(frame)->FrameWidgetImpl()->Client();
-#endif
+    if (m_pageColorOverlay)
+        m_pageColorOverlay->graphicsLayer()->paint(nullptr);
 
-        if (m_shouldDispatchFirstVisuallyNonEmptyLayout && view->IsVisuallyNonEmpty())
-        {
+    // TODO(chrishtr): link highlights don't currently paint themselves, it's still driven by cc.
+    // Fix this.
+    for (size_t i = 0; i < m_linkHighlights.size(); ++i)
+        m_linkHighlights[i]->updateGeometry();
+
+    if (FrameView* view = mainFrameImpl()->frameView()) {
+        LocalFrame* frame = mainFrameImpl()->frame();
+
+        if (m_shouldDispatchFirstVisuallyNonEmptyLayout && view->isVisuallyNonEmpty()) {
             m_shouldDispatchFirstVisuallyNonEmptyLayout = false;
             // TODO(esprehn): Move users of this callback to something
             // better, the heuristic for "visually non-empty" is bad.
-            ASSERT(false); // BKTODO: client->DidMeaningfulLayout(WebMeaningfulLayout::kVisuallyNonEmpty);
+            client()->didMeaningfulLayout(WebMeaningfulLayout::VisuallyNonEmpty);
         }
 
-        Document *document = mainFrame->GetDocument();
-        if (m_shouldDispatchFirstLayoutAfterFinishedParsing && document->HasFinishedParsing())
-        {
+        if (m_shouldDispatchFirstLayoutAfterFinishedParsing && frame->document()->hasFinishedParsing()) {
             m_shouldDispatchFirstLayoutAfterFinishedParsing = false;
-            ASSERT(false); // BKTODO: client->DidMeaningfulLayout(WebMeaningfulLayout::kFinishedParsing);
+            client()->didMeaningfulLayout(WebMeaningfulLayout::FinishedParsing);
         }
-        if (m_shouldDispatchFirstLayoutAfterFinishedLoading && document->IsLoadCompleted())
-        {
+
+        if (m_shouldDispatchFirstLayoutAfterFinishedLoading && frame->document()->isLoadCompleted()) {
             m_shouldDispatchFirstLayoutAfterFinishedLoading = false;
-            ASSERT(false); // BKTODO: client->DidMeaningfulLayout(WebMeaningfulLayout::kFinishedLoading);
+            client()->didMeaningfulLayout(WebMeaningfulLayout::FinishedLoading);
         }
     }
+#endif
 }
 
 void WebViewImpl::UpdateMainFrameLayoutSize(void)
 {
-    if (m_shouldAutoResize)
+    if (m_shouldAutoResize || !m_frame)
         return;
 
-    LocalFrame *frame = m_page->GetFrame();
-    if (nullptr == frame)
-        return;
-
-    LocalFrameView *view = frame->View();
+    FrameView *view = m_frame->view();
     if (nullptr == view)
         return;
 
-    WebSize layoutSize = m_size;
-    if (Settings::ViewportEnabled)
-        layoutSize = GetPageScaleConstraintsSet().GetLayoutSize();
-    if (Settings::ForceZeroLayoutHeight)
-        layoutSize.height = 0;
-    view->SetLayoutSize(layoutSize);
+    IntSize layoutSize = m_size;
+    if (Settings::viewportEnabled())
+        layoutSize = GetPageScaleConstraintsSet().layoutSize();
+    if (Settings::forceZeroLayoutHeight())
+        layoutSize.setHeight(0);
+    view->setLayoutSize(layoutSize);
+#if 0 // BKTODO:
+    // Resizing marks the frame as needsLayout. Inform clients so that they
+    // will perform the layout. Widgets held by WebPluginContainerImpl do not otherwise
+    // see this resize layout invalidation.
+    if (client())
+        client()->didUpdateLayoutSize(layoutSize);
+#endif
 }
 
-void WebViewImpl::UpdatePageDefinedViewportConstraints(const ViewportDescription &description)
+void WebViewImpl::updatePageDefinedViewportConstraints(const ViewportDescription &description)
 {
-    if (nullptr == GetPage() || (0 == m_size.width && 0 == m_size.height))
-        return;
-
-    // When viewport is disabled (non-mobile), we always use gpu rasterization.
-    // Otherwise, on platforms that do support viewport tags, we only enable it
-    // when they are present. But Why? Historically this was used to gate usage of
-    // gpu rasterization to a smaller set of less complex cases to avoid driver
-    // bugs dealing with websites designed for desktop. The concern is that on
-    // older android devices (<L according to https://crbug.com/419521#c9),
-    // drivers are more likely to encounter bugs with gpu raster when encountering
-    // the full possibility of desktop web content. Further, Adreno devices <=L
-    // have encountered problems that look like driver bugs when enabling
-    // OOP-Raster which is gpu-based. Thus likely a blacklist would be required
-    // for non-viewport-specified pages in order to avoid crashes or other
-    // problems on mobile devices with gpu rasterization.
-    bool viewportEnabled = Settings::ViewportEnabled;
-#if 0 // BKTODO:
-    matches_heuristics_for_gpu_rasterization_ =
-        viewport_enabled ? description.MatchesHeuristicsForGpuRasterization()
-        : true;
-    if (layer_tree_view_) {
-        layer_tree_view_->HeuristicsForGpuRasterizationUpdated(
-            matches_heuristics_for_gpu_rasterization_);
-    }
-#endif
-
-    if (!viewportEnabled)
+    // If we're not reading the viewport meta tag, allow GPU rasterization.
+    if (!Settings::viewportMetaEnabled())
     {
-        GetPageScaleConstraintsSet().ClearPageDefinedConstraints();
-        UpdateMainFrameLayoutSize();
-        return;
+#if 0 // BKTODO:
+        m_matchesHeuristicsForGpuRasterization = true;
+        if (m_layerTreeView)
+            m_layerTreeView->heuristicsForGpuRasterizationUpdated(m_matchesHeuristicsForGpuRasterization);
+#endif
     }
+
+    if (!Settings::viewportEnabled() || !m_page || m_size.isZero())
+        return;
 
     ASSERT(false); // BKTODO:
 #if 0
-    Document* document = GetPage()->DeprecatedLocalMainFrame()->GetDocument();
+    Document* document = page()->deprecatedLocalMainFrame()->document();
 
-    Length default_min_width =
-        document->GetViewportData().ViewportDefaultMinWidth();
-    if (default_min_width.IsAuto())
-        default_min_width = Length(kExtendToZoom);
+    m_matchesHeuristicsForGpuRasterization = description.matchesHeuristicsForGpuRasterization();
+    if (m_layerTreeView)
+        m_layerTreeView->heuristicsForGpuRasterizationUpdated(m_matchesHeuristicsForGpuRasterization);
 
-    ViewportDescription adjusted_description = description;
-    if (SettingsImpl()->ViewportMetaLayoutSizeQuirk() &&
-        adjusted_description.type == ViewportDescription::kViewportMeta) {
-        const int kLegacyWidthSnappingMagicNumber = 320;
-        if (adjusted_description.max_width.IsFixed() &&
-            adjusted_description.max_width.Value() <=
-            kLegacyWidthSnappingMagicNumber)
-            adjusted_description.max_width = Length(kDeviceWidth);
-        if (adjusted_description.max_height.IsFixed() &&
-            adjusted_description.max_height.Value() <= size_.height)
-            adjusted_description.max_height = Length(kDeviceHeight);
-        adjusted_description.min_width = adjusted_description.max_width;
-        adjusted_description.min_height = adjusted_description.max_height;
+    Length defaultMinWidth = document->viewportDefaultMinWidth();
+    if (defaultMinWidth.isAuto())
+        defaultMinWidth = Length(ExtendToZoom);
+
+    ViewportDescription adjustedDescription = description;
+    if (settingsImpl()->viewportMetaLayoutSizeQuirk() && adjustedDescription.type == ViewportDescription::ViewportMeta) {
+        const int legacyWidthSnappingMagicNumber = 320;
+        if (adjustedDescription.maxWidth.isFixed() && adjustedDescription.maxWidth.value() <= legacyWidthSnappingMagicNumber)
+            adjustedDescription.maxWidth = Length(DeviceWidth);
+        if (adjustedDescription.maxHeight.isFixed() && adjustedDescription.maxHeight.value() <= m_size.height)
+            adjustedDescription.maxHeight = Length(DeviceHeight);
+        adjustedDescription.minWidth = adjustedDescription.maxWidth;
+        adjustedDescription.minHeight = adjustedDescription.maxHeight;
+}
+
+    float oldInitialScale = pageScaleConstraintsSet().pageDefinedConstraints().initialScale;
+    pageScaleConstraintsSet().updatePageDefinedConstraints(adjustedDescription, defaultMinWidth);
+
+    if (settingsImpl()->clobberUserAgentInitialScaleQuirk()
+        && pageScaleConstraintsSet().userAgentConstraints().initialScale != -1
+        && pageScaleConstraintsSet().userAgentConstraints().initialScale * deviceScaleFactor() <= 1) {
+        if (description.maxWidth == Length(DeviceWidth)
+            || (description.maxWidth.type() == Auto && pageScaleConstraintsSet().pageDefinedConstraints().initialScale == 1.0f))
+            setInitialPageScaleOverride(-1);
     }
 
-    float old_initial_scale =
-        GetPageScaleConstraintsSet().PageDefinedConstraints().initial_scale;
-    GetPageScaleConstraintsSet().UpdatePageDefinedConstraints(
-        adjusted_description, default_min_width);
-
-    if (SettingsImpl()->ClobberUserAgentInitialScaleQuirk() &&
-        GetPageScaleConstraintsSet().UserAgentConstraints().initial_scale != -1 &&
-        GetPageScaleConstraintsSet().UserAgentConstraints().initial_scale *
-        DeviceScaleFactor() <=
-        1) {
-        if (description.max_width == Length(kDeviceWidth) ||
-            (description.max_width.GetType() == kAuto &&
-                GetPageScaleConstraintsSet().PageDefinedConstraints().initial_scale ==
-                1.0f))
-            SetInitialPageScaleOverride(-1);
+    Settings& pageSettings = page()->settings();
+    pageScaleConstraintsSet().adjustForAndroidWebViewQuirks(
+        adjustedDescription,
+        defaultMinWidth.intValue(),
+        deviceScaleFactor(),
+        settingsImpl()->supportDeprecatedTargetDensityDPI(),
+        pageSettings.wideViewportQuirkEnabled(),
+        pageSettings.useWideViewport(),
+        pageSettings.loadWithOverviewMode(),
+        settingsImpl()->viewportMetaNonUserScalableQuirk());
+    float newInitialScale = pageScaleConstraintsSet().pageDefinedConstraints().initialScale;
+    if (oldInitialScale != newInitialScale && newInitialScale != -1) {
+        pageScaleConstraintsSet().setNeedsReset(true);
+        if (mainFrameImpl() && mainFrameImpl()->frameView())
+            mainFrameImpl()->frameView()->setNeedsLayout();
     }
 
-    Settings& page_settings = GetPage()->GetSettings();
-    GetPageScaleConstraintsSet().AdjustForAndroidWebViewQuirks(
-        adjusted_description, default_min_width.IntValue(), DeviceScaleFactor(),
-        SettingsImpl()->SupportDeprecatedTargetDensityDPI(),
-        page_settings.GetWideViewportQuirkEnabled(),
-        page_settings.GetUseWideViewport(),
-        page_settings.GetLoadWithOverviewMode(),
-        SettingsImpl()->ViewportMetaNonUserScalableQuirk());
-    float new_initial_scale =
-        GetPageScaleConstraintsSet().PageDefinedConstraints().initial_scale;
-    if (old_initial_scale != new_initial_scale && new_initial_scale != -1) {
-        GetPageScaleConstraintsSet().SetNeedsReset(true);
-        if (MainFrameImpl() && MainFrameImpl()->GetFrameView())
-            MainFrameImpl()->GetFrameView()->SetNeedsLayout();
+    updateMainFrameLayoutSize();
+
+    if (LocalFrame* frame = page()->deprecatedLocalMainFrame()) {
+        if (TextAutosizer* textAutosizer = frame->document()->textAutosizer())
+            textAutosizer->updatePageInfoInAllFrames();
     }
-
-    if (TextAutosizer* text_autosizer = document->GetTextAutosizer())
-        text_autosizer->UpdatePageInfoInAllFrames();
-
-    UpdateMainFrameLayoutSize();
 #endif
 }
+
+void WebViewImpl::UpdatePageOverlays(void)
+{
+#if 0 // BKTODO:
+    if (m_pageColorOverlay)
+        m_pageColorOverlay->update();
 #endif
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PageWidgetDelegate.cpp
+// Description: PageWidgetDelegate Class
+//      Author: Ziming Li
+//     Created: 2021-08-14
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -35,25 +46,27 @@
 #include "core/input/EventHandler.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
-#include "core/page/AutoscrollController.h"
+// BKTODO: #include "core/page/AutoscrollController.h"
 #include "core/page/Page.h"
 #include "core/paint/TransformRecorder.h"
-#include "platform/Logging.h"
+// BKTODO: #include "platform/Logging.h"
 #include "platform/graphics/GraphicsContext.h"
 #include "platform/graphics/paint/ClipRecorder.h"
 #include "platform/graphics/paint/CullRect.h"
 #include "platform/graphics/paint/DrawingRecorder.h"
 #include "platform/graphics/paint/SkPictureBuilder.h"
 #include "platform/transforms/AffineTransform.h"
+#if 0 // BKTODO:
 #include "public/web/WebInputEvent.h"
 #include "web/WebInputEventConversion.h"
+#endif
 #include "wtf/CurrentTime.h"
 
 namespace blink {
 
 void PageWidgetDelegate::animate(Page& page, double monotonicFrameBeginTime)
 {
-    page.autoscrollController().animate(monotonicFrameBeginTime);
+    ASSERT(false); // BKTODO: page.autoscrollController().animate(monotonicFrameBeginTime);
     page.animator().serviceScriptedAnimations(monotonicFrameBeginTime);
 }
 
@@ -63,7 +76,7 @@ void PageWidgetDelegate::updateAllLifecyclePhases(Page& page, LocalFrame& root)
 }
 
 static void paintInternal(Page& page, WebCanvas* canvas,
-    const WebRect& rect, LocalFrame& root, const GlobalPaintFlags globalPaintFlags)
+    const IntRect& rect, LocalFrame& root, const GlobalPaintFlags globalPaintFlags)
 {
     if (rect.isEmpty())
         return;
@@ -97,17 +110,18 @@ static void paintInternal(Page& page, WebCanvas* canvas,
 }
 
 void PageWidgetDelegate::paint(Page& page, WebCanvas* canvas,
-    const WebRect& rect, LocalFrame& root)
+    const IntRect& rect, LocalFrame& root)
 {
     paintInternal(page, canvas, rect, root, GlobalPaintNormalPhase);
 }
 
 void PageWidgetDelegate::paintIgnoringCompositing(Page& page, WebCanvas* canvas,
-    const WebRect& rect, LocalFrame& root)
+    const IntRect& rect, LocalFrame& root)
 {
     paintInternal(page, canvas, rect, root, GlobalPaintFlattenCompositingLayers);
 }
 
+#if 0 // BKTODO:
 WebInputEventResult PageWidgetDelegate::handleInputEvent(PageWidgetEventHandler& handler, const WebInputEvent& event, LocalFrame* root)
 {
     switch (event.type) {
@@ -182,10 +196,12 @@ WebInputEventResult PageWidgetDelegate::handleInputEvent(PageWidgetEventHandler&
         return WebInputEventResult::NotHandled;
     }
 }
+#endif
 
 // ----------------------------------------------------------------
 // Default handlers for PageWidgetEventHandler
 
+#if 0 // BKTODO:
 void PageWidgetEventHandler::handleMouseMove(LocalFrame& mainFrame, const WebMouseEvent& event)
 {
     mainFrame.eventHandler().handleMouseMoveEvent(PlatformMouseEventBuilder(mainFrame.view(), event));
@@ -258,5 +274,6 @@ const char* PageWidgetEventHandler::inputTypeToName(WebInputEvent::Type type)
         return "";
     }
 }
+#endif
 
 } // namespace blink

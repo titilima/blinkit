@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSAnimatableValueFactory.cpp
+// Description: CSSAnimatableValueFactory Class
+//      Author: Ziming Li
+//     Created: 2021-08-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -45,10 +56,10 @@
 #include "core/animation/animatable/AnimatableLengthSize.h"
 #include "core/animation/animatable/AnimatablePath.h"
 #include "core/animation/animatable/AnimatableRepeatable.h"
-#include "core/animation/animatable/AnimatableSVGPaint.h"
+// BKTODO: #include "core/animation/animatable/AnimatableSVGPaint.h"
 #include "core/animation/animatable/AnimatableShadow.h"
 #include "core/animation/animatable/AnimatableShapeValue.h"
-#include "core/animation/animatable/AnimatableStrokeDasharrayList.h"
+// BKTODO: #include "core/animation/animatable/AnimatableStrokeDasharrayList.h"
 #include "core/animation/animatable/AnimatableTransform.h"
 #include "core/animation/animatable/AnimatableUnknown.h"
 #include "core/animation/animatable/AnimatableVisibility.h"
@@ -323,6 +334,7 @@ PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID prop
         return createFromFillLayers<CSSPropertyBackgroundPositionY>(style.backgroundLayers(), style);
     case CSSPropertyBackgroundSize:
         return createFromFillLayers<CSSPropertyBackgroundSize>(style.backgroundLayers(), style);
+#if 0 // BKTODO:
     case CSSPropertyBaselineShift:
         switch (style.svgStyle().baselineShift()) {
         case BS_SUPER:
@@ -332,6 +344,7 @@ PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID prop
         default:
             return createFromLength(style.baselineShiftValue(), style);
         }
+#endif
     case CSSPropertyBorderBottomColor:
         return createFromColor(property, style);
     case CSSPropertyBorderBottomLeftRadius:
@@ -374,6 +387,7 @@ PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID prop
         return createFromLengthBox(style.clip(), style);
     case CSSPropertyColor:
         return createFromColor(property, style);
+#if 0 // BKTODO:
     case CSSPropertyFillOpacity:
         return createFromDouble(style.fillOpacity());
     case CSSPropertyFill:
@@ -381,16 +395,19 @@ PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID prop
             normalizeSVGPaintType(style.svgStyle().fillPaintType()), normalizeSVGPaintType(style.svgStyle().visitedLinkFillPaintType()),
             style.svgStyle().fillPaintColor(), style.svgStyle().visitedLinkFillPaintColor(),
             style.svgStyle().fillPaintUri(), style.svgStyle().visitedLinkFillPaintUri());
+#endif
     case CSSPropertyFlexGrow:
         return createFromDouble(style.flexGrow());
     case CSSPropertyFlexShrink:
         return createFromDouble(style.flexShrink());
     case CSSPropertyFlexBasis:
         return createFromLength(style.flexBasis(), style);
+#if 0 // BKTODO:
     case CSSPropertyFloodColor:
         return createFromColor(property, style);
     case CSSPropertyFloodOpacity:
         return createFromDouble(style.floodOpacity());
+#endif
     case CSSPropertyFontSize:
         // Must pass a specified size to setFontSize if Text Autosizing is enabled, but a computed size
         // if text zoom is enabled (if neither is enabled it's irrelevant as they're probably the same).
@@ -405,8 +422,10 @@ PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID prop
         return createFromFontWeight(style.fontWeight());
     case CSSPropertyHeight:
         return createFromLength(style.height(), style);
+#if 0 // BKTODO:
     case CSSPropertyLightingColor:
         return createFromColor(property, style);
+#endif
     case CSSPropertyListStyleImage:
         return createFromStyleImage(style.listStyleImage());
     case CSSPropertyLeft:
@@ -453,6 +472,7 @@ PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID prop
         return createFromLength(style.paddingTop(), style);
     case CSSPropertyRight:
         return createFromLength(style.right(), style);
+#if 0 // BKTODO:
     case CSSPropertyStrokeWidth:
         return createFromUnzoomedLength(style.strokeWidth());
     case CSSPropertyStopColor:
@@ -472,6 +492,7 @@ PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID prop
             normalizeSVGPaintType(style.svgStyle().strokePaintType()), normalizeSVGPaintType(style.svgStyle().visitedLinkStrokePaintType()),
             style.svgStyle().strokePaintColor(), style.svgStyle().visitedLinkStrokePaintColor(),
             style.svgStyle().strokePaintUri(), style.svgStyle().visitedLinkStrokePaintUri());
+#endif
     case CSSPropertyTextDecorationColor:
         return createFromColor(property, style);
     case CSSPropertyTextIndent:
@@ -578,6 +599,7 @@ PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID prop
         return AnimatableUnknown::create(CSSPrimitiveValue::create(style.verticalAlign()));
     case CSSPropertyVisibility:
         return AnimatableVisibility::create(style.visibility());
+#if 0 // BKTODO:
     case CSSPropertyD:
         return createFromPath(style.svgStyle().d());
     case CSSPropertyCx:
@@ -594,6 +616,7 @@ PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID prop
         return createFromLength(style.svgStyle().rx(), style);
     case CSSPropertyRy:
         return createFromLength(style.svgStyle().ry(), style);
+#endif
     case CSSPropertyZIndex:
         if (style.hasAutoZIndex())
             return AnimatableUnknown::create(CSSValueAuto);

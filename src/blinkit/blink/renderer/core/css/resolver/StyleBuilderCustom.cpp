@@ -102,9 +102,9 @@ static inline bool isValidVisitedLinkProperty(CSSPropertyID id)
     case CSSPropertyBorderTopColor:
     case CSSPropertyBorderBottomColor:
     case CSSPropertyColor:
-    case CSSPropertyFill:
+    // BKTODO: case CSSPropertyFill:
     case CSSPropertyOutlineColor:
-    case CSSPropertyStroke:
+    // BKTODO: case CSSPropertyStroke:
     case CSSPropertyTextDecorationColor:
     case CSSPropertyWebkitColumnRuleColor:
     case CSSPropertyWebkitTextEmphasisColor:
@@ -845,6 +845,7 @@ void StyleBuilderFunctions::applyValueCSSPropertyVariable(StyleResolverState& st
     }
 }
 
+#if 0 // BKTODO:
 void StyleBuilderFunctions::applyInheritCSSPropertyBaselineShift(StyleResolverState& state)
 {
     const SVGComputedStyle& parentSvgStyle = state.parentStyle()->svgStyle();
@@ -879,5 +880,6 @@ void StyleBuilderFunctions::applyValueCSSPropertyBaselineShift(StyleResolverStat
         ASSERT_NOT_REACHED();
     }
 }
+#endif
 
 } // namespace blink

@@ -91,7 +91,11 @@ public:
     }
     ~HTMLParserScheduler();
 
-    // BKTODO: bool isScheduledForResume() const { return m_isSuspendedWithActiveTimer || m_cancellableContinueParse->isPending(); }
+    bool isScheduledForResume() const
+    {
+        // BKTODO: return m_isSuspendedWithActiveTimer || m_cancellableContinueParse->isPending();
+        return false;
+    }
 
     void scheduleForResume();
     bool yieldIfNeeded(const SpeculationsPumpSession&, bool startingScript);

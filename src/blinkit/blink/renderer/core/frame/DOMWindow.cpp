@@ -90,8 +90,12 @@ DOMWindow* DOMWindow::opener() const
     if (!frame() || !frame()->client())
         return nullptr;
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     Frame* opener = frame()->client()->opener();
     return opener ? opener->domWindow() : nullptr;
+#endif
 }
 
 DOMWindow* DOMWindow::parent() const

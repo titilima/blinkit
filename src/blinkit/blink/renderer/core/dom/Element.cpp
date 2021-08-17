@@ -742,7 +742,7 @@ int Element::clientWidth()
     if ((!inQuirksMode && document().documentElement() == this)
         || (inQuirksMode && isHTMLElement() && document().body() == this)) {
         if (LayoutView* layoutView = document().layoutView()) {
-            if (Settings::forceZeroLayoutHeight)
+            if (Settings::forceZeroLayoutHeight())
                 return adjustLayoutUnitForAbsoluteZoom(layoutView->overflowClipRect(LayoutPoint()).width(), *layoutView);
             return adjustLayoutUnitForAbsoluteZoom(layoutView->layoutSize().width(), *layoutView);
         }
@@ -764,7 +764,7 @@ int Element::clientHeight()
     if ((!inQuirksMode && document().documentElement() == this)
         || (inQuirksMode && isHTMLElement() && document().body() == this)) {
         if (LayoutView* layoutView = document().layoutView()) {
-            if (Settings::forceZeroLayoutHeight)
+            if (Settings::forceZeroLayoutHeight())
                 return adjustLayoutUnitForAbsoluteZoom(layoutView->overflowClipRect(LayoutPoint()).height(), *layoutView);
             return adjustLayoutUnitForAbsoluteZoom(layoutView->layoutSize().height(), *layoutView);
         }
@@ -1669,8 +1669,10 @@ void Element::detach(const AttachContext& context)
 
     document().styleEngine().styleInvalidator().clearInvalidation(*this);
 
+#if 0 // BKTODO:
     if (svgFilterNeedsLayerUpdate())
         document().unscheduleSVGFilterLayerUpdateHack(*this);
+#endif
 
     ASSERT(needsAttach());
 }
@@ -3299,10 +3301,12 @@ void Element::updateExtraNamedItemRegistration(const AtomicString& oldId, const 
         toHTMLDocument(document()).addExtraNamedItem(newId);
 }
 
+#if 0 // BKTODO:
 void Element::scheduleSVGFilterLayerUpdateHack()
 {
     document().scheduleSVGFilterLayerUpdateHack(*this);
 }
+#endif
 
 IntSize Element::savedLayerScrollOffset() const
 {

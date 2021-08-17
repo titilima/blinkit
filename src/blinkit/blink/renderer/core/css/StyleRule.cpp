@@ -45,9 +45,11 @@
 #include "core/css/StyleRuleKeyframe.h"
 #include "core/css/StyleRuleNamespace.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-struct SameSizeAsStyleRuleBase : public RefCountedWillBeGarbageCollectedFinalized<SameSizeAsStyleRuleBase> {
+struct SameSizeAsStyleRuleBase : public GCObject {
     unsigned bitfields;
 };
 

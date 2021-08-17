@@ -58,20 +58,28 @@ double MediaValues::calculateViewportHeight(LocalFrame* frame) const
 
 int MediaValues::calculateDeviceWidth(LocalFrame* frame) const
 {
+    ASSERT(false); // BKTODO:
+    return 0;
+#if 0
     ASSERT(frame && frame->view() && frame->host());
     int deviceWidth = frame->host()->chromeClient().screenInfo().rect.width();
     if (Settings::reportScreenSizeInPhysicalPixelsQuirk())
         deviceWidth = lroundf(deviceWidth * frame->host()->deviceScaleFactor());
     return deviceWidth;
+#endif
 }
 
 int MediaValues::calculateDeviceHeight(LocalFrame* frame) const
 {
+    ASSERT(false); // BKTODO:
+    return 0;
+#if 0
     ASSERT(frame && frame->view() && frame->host());
     int deviceHeight = frame->host()->chromeClient().screenInfo().rect.height();
     if (Settings::reportScreenSizeInPhysicalPixelsQuirk())
         deviceHeight = lroundf(deviceHeight * frame->host()->deviceScaleFactor());
     return deviceHeight;
+#endif
 }
 
 bool MediaValues::calculateStrictMode(LocalFrame* frame) const
@@ -87,20 +95,28 @@ float MediaValues::calculateDevicePixelRatio(LocalFrame* frame) const
 
 int MediaValues::calculateColorBitsPerComponent(LocalFrame* frame) const
 {
+    ASSERT(false); // BKTODO:
+    return 0;
+#if 0
     ASSERT(frame && frame->page() && frame->page()->mainFrame());
     if (!frame->page()->mainFrame()->isLocalFrame()
         || frame->host()->chromeClient().screenInfo().isMonochrome)
         return 0;
     return frame->host()->chromeClient().screenInfo().depthPerComponent;
+#endif
 }
 
 int MediaValues::calculateMonochromeBitsPerComponent(LocalFrame* frame) const
 {
+    ASSERT(false); // BKTODO:
+    return 0;
+#if 0
     ASSERT(frame && frame->page() && frame->page()->mainFrame());
     if (!frame->page()->mainFrame()->isLocalFrame()
         || !frame->host()->chromeClient().screenInfo().isMonochrome)
         return 0;
     return frame->host()->chromeClient().screenInfo().depthPerComponent;
+#endif
 }
 
 int MediaValues::calculateDefaultFontSize(LocalFrame* frame) const

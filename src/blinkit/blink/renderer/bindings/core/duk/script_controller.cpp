@@ -50,7 +50,12 @@
 #include "blinkit/blink/renderer/core/dom/Document.h"
 #include "blinkit/blink/renderer/core/frame/LocalFrame.h"
 #include "blinkit/crawler/crawler_impl.h"
-#include "blinkit/js/crawler_context.h"
+#ifdef BLINKIT_CRAWLER_ENABLED
+#   include "blinkit/js/crawler_context.h"
+#endif
+#ifdef BLINKIT_UI_ENABLED
+#   include "blinkit/js/web_view_context.h"
+#endif
 
 using namespace BlinKit;
 
@@ -78,7 +83,7 @@ void ScriptController::ClearForClose(void)
     DestroyDukSession();
 }
 
-void ScriptController::ClearWindowProxy(void)
+void ScriptController::clearWindowProxy(void)
 {
     if (IsDukSessionDirty())
         DestroyDukSession();
@@ -91,25 +96,20 @@ void ScriptController::ConsoleOutput(int type, const char *msg)
 
 std::unique_ptr<ScriptController> ScriptController::Create(LocalFrame &frame)
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
-    bool isCrawler = frame.Client()->IsCrawler();
-#ifdef BLINKIT_CRAWLER_ONLY
-    ASSERT(isCrawler);
-    return std::make_unique<CrawlerContext>(frame);
-#else
-    if (isCrawler)
-    {
+    FrameClient::Type type = frame.client()->GetType();
+
+#ifdef BLINKIT_CRAWLER_ENABLED
+    if (FrameClient::Type::Crawler == type)
         return std::make_unique<CrawlerContext>(frame);
-    }
-    else
-    {
-        ASSERT(false); // BKTODO:
-        return nullptr;
-    }
 #endif
+
+#ifdef BLINKIT_UI_ENABLED
+    if (FrameClient::Type::WebView == type)
+        return std::make_unique<WebViewContext>(frame);
 #endif
+
+    NOTREACHED();
+    return nullptr;
 }
 
 void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const zed::url &baseURL)
@@ -155,26 +155,21 @@ const char* ScriptController::LookupPrototypeName(const std::string &tagName) co
     return m_prototypeMap.end() != it ? it->second : DukElement::ProtoName;
 }
 
-void ScriptController::UpdateDocument(void)
+void ScriptController::updateDocument(void)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-#ifdef BLINKIT_CRAWLER_ONLY
-    if (m_frame.Loader().StateMachine()->CreatingInitialEmptyDocument())
-        return;
-#else
-    if (m_frame.Client()->IsCrawler())
+#ifdef BLINKIT_CRAWLER_ENABLED
+    if (FrameClient::Type::Crawler == m_frame.client()->GetType())
     {
-        if (m_frame.Loader().StateMachine()->CreatingInitialEmptyDocument())
+        if (m_frame.loader().stateMachine()->creatingInitialEmptyDocument())
             return;
     }
 #endif
 
-    duk_context *ctx = EnsureDukSession();
-
-    Duk::StackGuard _(ctx);
-    DukWindow::Attach(ctx, *(m_frame.domWindow()));
-#endif
+    if (duk_context *ctx = EnsureDukSession())
+    {
+        Duk::StackGuard _(ctx);
+        DukWindow::Attach(ctx, *m_frame.localDOMWindow());
+    }
 }
 
 } // namespace blink

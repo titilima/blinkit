@@ -78,7 +78,7 @@ enum IncludeScrollbarsInRect {
 // also from 'platform' as a result. Bringing about duplicate DummyBases
 // as core also exports same; with component build linking fails as a
 // result. Hence the workaround of not using a transition type.
-class PLATFORM_EXPORT ScrollableArea : public GarbageCollectedMixin {
+class PLATFORM_EXPORT ScrollableArea : public BlinKit::GCObject {
 #else
 class PLATFORM_EXPORT ScrollableArea {
 #endif

@@ -186,14 +186,16 @@ const InterpolationTypes* applicableTypesForProperty(PropertyHandle property)
     if (property.isCSSProperty() || property.isPresentationAttribute()) {
         CSSPropertyID cssProperty = property.isCSSProperty() ? property.cssProperty() : property.presentationAttribute();
         switch (cssProperty) {
-        case CSSPropertyBaselineShift:
+        // BKTODO: case CSSPropertyBaselineShift:
         case CSSPropertyBorderBottomWidth:
         case CSSPropertyBorderLeftWidth:
         case CSSPropertyBorderRightWidth:
         case CSSPropertyBorderTopWidth:
         case CSSPropertyBottom:
+#if 0 // BKTODO:
         case CSSPropertyCx:
         case CSSPropertyCy:
+#endif
         case CSSPropertyFlexBasis:
         case CSSPropertyHeight:
         case CSSPropertyLeft:
@@ -214,13 +216,17 @@ const InterpolationTypes* applicableTypesForProperty(PropertyHandle property)
         case CSSPropertyPaddingRight:
         case CSSPropertyPaddingTop:
         case CSSPropertyPerspective:
-        case CSSPropertyR:
+        // BKTODO: case CSSPropertyR:
         case CSSPropertyRight:
+#if 0 // BKTODO:
         case CSSPropertyRx:
         case CSSPropertyRy:
+#endif
         case CSSPropertyShapeMargin:
+#if 0 // BKTODO:
         case CSSPropertyStrokeDashoffset:
         case CSSPropertyStrokeWidth:
+#endif
         case CSSPropertyTop:
         case CSSPropertyVerticalAlign:
         case CSSPropertyWebkitBorderHorizontalSpacing:
@@ -235,21 +241,27 @@ const InterpolationTypes* applicableTypesForProperty(PropertyHandle property)
         case CSSPropertyWebkitTransformOriginZ:
         case CSSPropertyWidth:
         case CSSPropertyWordSpacing:
+#if 0 // BKTODO:
         case CSSPropertyX:
         case CSSPropertyY:
+#endif
             applicableTypes->append(adoptPtr(new CSSLengthInterpolationType(cssProperty)));
             break;
         case CSSPropertyFlexGrow:
         case CSSPropertyFlexShrink:
+#if 0 // BKTODO:
         case CSSPropertyFillOpacity:
         case CSSPropertyFloodOpacity:
+#endif
         case CSSPropertyFontSizeAdjust:
         case CSSPropertyOpacity:
         case CSSPropertyOrphans:
         case CSSPropertyShapeImageThreshold:
+#if 0 // BKTODO:
         case CSSPropertyStopOpacity:
         case CSSPropertyStrokeMiterlimit:
         case CSSPropertyStrokeOpacity:
+#endif
         case CSSPropertyWebkitColumnCount:
         case CSSPropertyWidows:
         case CSSPropertyZIndex:
@@ -265,19 +277,23 @@ const InterpolationTypes* applicableTypesForProperty(PropertyHandle property)
         case CSSPropertyBorderRightColor:
         case CSSPropertyBorderTopColor:
         case CSSPropertyColor:
+#if 0 // BKTODO:
         case CSSPropertyFloodColor:
         case CSSPropertyLightingColor:
+#endif
         case CSSPropertyOutlineColor:
-        case CSSPropertyStopColor:
+        // BKTODO: case CSSPropertyStopColor:
         case CSSPropertyTextDecorationColor:
         case CSSPropertyWebkitColumnRuleColor:
         case CSSPropertyWebkitTextStrokeColor:
             applicableTypes->append(adoptPtr(new CSSColorInterpolationType(cssProperty)));
             break;
+#if 0 // BKTODO:
         case CSSPropertyFill:
         case CSSPropertyStroke:
             applicableTypes->append(adoptPtr(new CSSPaintInterpolationType(cssProperty)));
             break;
+#endif
         case CSSPropertyBoxShadow:
         case CSSPropertyTextShadow:
             applicableTypes->append(adoptPtr(new CSSShadowListInterpolationType(cssProperty)));
@@ -291,9 +307,11 @@ const InterpolationTypes* applicableTypesForProperty(PropertyHandle property)
         case CSSPropertyWebkitMaskImage:
             applicableTypes->append(adoptPtr(new CSSImageListInterpolationType(cssProperty)));
             break;
+#if 0 // BKTODO:
         case CSSPropertyStrokeDasharray:
             applicableTypes->append(adoptPtr(new CSSLengthListInterpolationType(cssProperty)));
             break;
+#endif
         case CSSPropertyFontWeight:
             applicableTypes->append(adoptPtr(new CSSFontWeightInterpolationType(cssProperty)));
             break;
@@ -498,9 +516,11 @@ PassRefPtr<Interpolation> StringKeyframe::CSSPropertySpecificKeyframe::maybeCrea
         if (property == CSSPropertyFontSize)
             return createLegacyStyleInterpolation(property, end, element, baseStyle);
 
+#if 0 // BKTODO:
         // FIXME: Handle keywords e.g. 'baseline', 'sub'.
         if (property == CSSPropertyBaselineShift)
             return createLegacyStyleInterpolation(property, end, element, baseStyle);
+#endif
 
         break;
 

@@ -129,13 +129,7 @@ protected:
     LayoutObject* m_layoutObject;
 };
 
-#if ENABLE(OILPAN)
-#define NODE_BASE_CLASSES public EventTarget
-#else
-// TreeShared should be the last to pack TreeShared::m_refCount and
-// Node::m_nodeFlags on 64bit platforms.
-#define NODE_BASE_CLASSES public EventTarget, public TreeShared<Node>
-#endif
+#define NODE_BASE_CLASSES   public EventTarget, public BlinKit::GCObject
 
 // This class represents a DOM node in the DOM tree.
 // https://dom.spec.whatwg.org/#interface-node
@@ -180,31 +174,6 @@ public:
         DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC = 0x20,
     };
 
-#if ENABLE(OILPAN)
-    // Override operator new to allocate Node subtype objects onto
-    // a dedicated heap.
-    GC_PLUGIN_IGNORE("crbug.com/443854")
-    void* operator new(size_t size)
-    {
-        ASSERT(false); // BKTODO: return allocateObject(size, false);
-        return nullptr;
-    }
-    static void* allocateObject(size_t size, bool isEager)
-    {
-        ASSERT(false); // BKTODO:
-        return nullptr;
-#if 0
-        ThreadState* state = ThreadStateFor<ThreadingTrait<Node>::Affinity>::state();
-        return Heap::allocateOnHeapIndex(state, size, isEager ? BlinkGC::EagerSweepHeapIndex : BlinkGC::NodeHeapIndex, GCInfoTrait<EventTarget>::index());
-#endif
-    }
-#else // !ENABLE(OILPAN)
-    // All Nodes are placed in their own heap partition for security.
-    // See http://crbug.com/246860 for detail.
-    void* operator new(size_t);
-    void operator delete(void*);
-#endif
-
     static void dumpStatistics();
 
     ~Node() override;
@@ -221,8 +190,8 @@ public:
     Element* parentElement() const;
     ContainerNode* parentElementOrShadowRoot() const;
     ContainerNode* parentElementOrDocumentFragment() const;
-    Node* previousSibling() const { return m_previous; }
-    Node* nextSibling() const { return m_next; }
+    Node* previousSibling() const { return m_previous.get(); }
+    Node* nextSibling() const { return m_next.get(); }
     PassRefPtrWillBeRawPtr<NodeList> childNodes();
     Node* firstChild() const;
     Node* lastChild() const;
@@ -851,8 +820,8 @@ private:
     uint32_t m_nodeFlags;
     RawPtrWillBeMember<ContainerNode> m_parentOrShadowHostNode;
     RawPtrWillBeMember<TreeScope> m_treeScope;
-    RawPtrWillBeMember<Node> m_previous;
-    RawPtrWillBeMember<Node> m_next;
+    BlinKit::GCMember<Node> m_previous;
+    BlinKit::GCMember<Node> m_next;
     // When a node has rare data we move the layoutObject into the rare data.
     union DataUnion {
         DataUnion() : m_layoutObject(nullptr) { }

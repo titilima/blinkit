@@ -98,8 +98,7 @@ PaintInvalidationState::PaintInvalidationState(PaintInvalidationState& next, Lay
             m_clipRect = next.m_clipRect;
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (m_cachedOffsetsEnabled && layoutObject.isSVGRoot()) {
         const LayoutSVGRoot& svgRoot = toLayoutSVGRoot(layoutObject);
         m_svgTransform = AffineTransform(svgRoot.localToBorderBoxTransform());

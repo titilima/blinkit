@@ -111,8 +111,7 @@ static EDisplay equivalentBlockDisplay(EDisplay display, bool isFloating, bool s
 
 static bool isOutermostSVGElement(const Element* element)
 {
-    ASSERT(false); // BKTODO: return element && element->isSVGElement() && toSVGElement(*element).isOutermostSVGSVGElement();
-    return false;
+    return false; // BKTODO: return element && element->isSVGElement() && toSVGElement(*element).isOutermostSVGSVGElement();
 }
 
 // CSS requires text-decoration to be reset at each DOM element for
@@ -249,8 +248,7 @@ void StyleAdjuster::adjustComputedStyle(ComputedStyle& style, const ComputedStyl
         || style.hasFilter()))
         style.setTransformStyle3D(TransformStyle3DFlat);
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     bool isSVGElement = element && element->isSVGElement();
     if (isSVGElement) {
         // Only the root <svg> element in an SVG document fragment tree honors css position
@@ -383,8 +381,7 @@ void StyleAdjuster::adjustStyleForHTMLElement(ComputedStyle& style, const Comput
         return;
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (isHTMLFrameElement(element) || isHTMLFrameSetElement(element)) {
         // Frames and framesets never honor position:relative or position:absolute. This is necessary to
         // fix a crash where a site tries to position these objects. They also never honor display.
@@ -420,8 +417,7 @@ void StyleAdjuster::adjustStyleForHTMLElement(ComputedStyle& style, const Comput
         return;
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (isHTMLPlugInElement(element)) {
         style.setRequiresAcceleratedCompositingForExternalReasons(toHTMLPlugInElement(element).shouldAccelerate());
         return;

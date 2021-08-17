@@ -42,6 +42,7 @@
 
 #include "web/ChromeClientImpl.h"
 
+#include "blinkit/ui/web_view_impl.h"
 #include "bindings/core/v8/ScriptController.h"
 #include "core/HTMLNames.h"
 // BKTODO: #include "core/dom/AXObjectCache.h"
@@ -111,7 +112,6 @@
 #include "web/WebLocalFrameImpl.h"
 #include "web/WebPluginContainerImpl.h"
 #include "web/WebSettingsImpl.h"
-#include "web/WebViewImpl.h"
 #endif
 #include "wtf/text/CString.h"
 #include "wtf/text/CharacterNames.h"
@@ -562,41 +562,19 @@ IntRect ChromeClientImpl::windowResizerRect() const
 
 void ChromeClientImpl::invalidateRect(const IntRect& updateRect)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (!updateRect.isEmpty())
         m_webView->invalidateRect(updateRect);
-#endif
 }
 
 void ChromeClientImpl::scheduleAnimation(Widget* widget)
 {
     ASSERT(widget->isFrameView());
-    FrameView* view = toFrameView(widget);
-    LocalFrame* frame = view->frame().localFrameRoot();
-
-    ASSERT(false); // BKTODO:
-#if 0
-    // If the frame is still being created, it might not yet have a WebWidget.
-    // FIXME: Is this the right thing to do? Is there a way to avoid having
-    // a local frame root that doesn't have a WebWidget? During initialization
-    // there is no content to draw so this call serves no purpose.
-    if (WebLocalFrameImpl::fromFrame(frame) && WebLocalFrameImpl::fromFrame(frame)->frameWidget()) {
-        WebLocalFrameImpl::fromFrame(frame)->frameWidget()->scheduleAnimation();
-    } else {
-        // TODO(lfg): We need to keep this for now because we still have some
-        // WebViews who don't have a WebViewFrameWidget. This should be
-        // removed once the WebViewFrameWidget refactor is complete.
-        m_webView->scheduleAnimation();
-    }
-#endif
+    m_webView->scheduleAnimation();
 }
 
 IntRect ChromeClientImpl::viewportToScreen(const IntRect& rectInViewport) const
 {
-    ASSERT(false); // BKTODO:
-    return IntRect();
-#if 0
+#if 0 // BKTODO:
     WebRect screenRect(rectInViewport);
 
     if (m_webView->client()) {
@@ -606,6 +584,8 @@ IntRect ChromeClientImpl::viewportToScreen(const IntRect& rectInViewport) const
         screenRect.y += windowRect.y;
     }
     return screenRect;
+#else
+    return rectInViewport;
 #endif
 }
 
@@ -618,13 +598,8 @@ WebScreenInfo ChromeClientImpl::screenInfo() const
 
 void ChromeClientImpl::contentsSizeChanged(LocalFrame* frame, const IntSize& size) const
 {
-    ASSERT(false); // BKTODO:
-#if 0
     m_webView->didChangeContentsSize();
-
-    WebLocalFrameImpl* webframe = WebLocalFrameImpl::fromFrame(frame);
-    webframe->didChangeContentsSize(size);
-#endif
+    // BKTODO: frame->didChangeContentsSize(size);
 }
 
 void ChromeClientImpl::pageScaleFactorChanged() const
@@ -640,7 +615,7 @@ float ChromeClientImpl::clampPageScaleFactorToLimits(float scale) const
 
 void ChromeClientImpl::layoutUpdated(LocalFrame* frame) const
 {
-    ASSERT(false); // BKTODO: m_webView->layoutUpdated(WebLocalFrameImpl::fromFrame(frame));
+    m_webView->layoutUpdated(frame);
 }
 
 void ChromeClientImpl::showMouseOverURL(const HitTestResult& result)
@@ -691,7 +666,7 @@ void ChromeClientImpl::setToolTip(const String& tooltipText, TextDirection dir)
 
 void ChromeClientImpl::dispatchViewportPropertiesDidChange(const ViewportDescription& description) const
 {
-    ASSERT(false); // BKTODO: m_webView->updatePageDefinedViewportConstraints(description);
+    m_webView->updatePageDefinedViewportConstraints(description);
 }
 
 void ChromeClientImpl::printDelegate(LocalFrame* frame)

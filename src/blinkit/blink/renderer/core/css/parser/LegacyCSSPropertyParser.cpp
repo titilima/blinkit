@@ -787,12 +787,14 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
     case CSSPropertyWebkitTextStrokeColor:
     case CSSPropertyWebkitTextStrokeWidth:
     case CSSPropertyTransform:
+#if 0 // BKTODO:
     case CSSPropertyFill:
     case CSSPropertyStroke:
     case CSSPropertyStopColor:
     case CSSPropertyFloodColor:
     case CSSPropertyLightingColor:
     case CSSPropertyPaintOrder:
+#endif
     case CSSPropertyMarginTop:
     case CSSPropertyMarginRight:
     case CSSPropertyMarginBottom:
@@ -811,20 +813,25 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
     case CSSPropertyWebkitPaddingEnd:
     case CSSPropertyWebkitPaddingBefore:
     case CSSPropertyWebkitPaddingAfter:
+#if 0 // BKTODO:
     case CSSPropertyMarker:
     case CSSPropertyMarkerStart:
     case CSSPropertyMarkerMid:
     case CSSPropertyMarkerEnd:
+#endif
     case CSSPropertyFlex:
     case CSSPropertyFlexBasis:
     case CSSPropertyFlexGrow:
     case CSSPropertyFlexShrink:
     case CSSPropertyFlexFlow:
+#if 0 // BKTODO:
     case CSSPropertyStrokeDasharray:
     case CSSPropertyD:
+#endif
     case CSSPropertyWebkitColumnRule:
     case CSSPropertyWebkitColumnRuleColor:
     case CSSPropertyWebkitColumnRuleWidth:
+#if 0 // BKTODO:
     case CSSPropertyClipPath:
     case CSSPropertyFilter:
     case CSSPropertyMask:
@@ -843,6 +850,7 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
     case CSSPropertyR:
     case CSSPropertyRx:
     case CSSPropertyRy:
+#endif
     case CSSPropertyScale:
     case CSSPropertyTranslate:
     case CSSPropertyCursor:

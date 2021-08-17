@@ -255,8 +255,7 @@ void FrameView::forAllNonThrottledFrameViews(Function function)
 
     function(*this);
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     for (Frame* child = m_frame->tree().firstChild(); child; child = child->tree().nextSibling()) {
         if (!child->isLocalFrame())
             continue;
@@ -282,8 +281,7 @@ void FrameView::init()
 
     m_size = LayoutSize();
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // Propagate the marginwidth/height and scrolling modes to the view.
     if (m_frame->owner() && m_frame->owner()->scrollingMode() == ScrollbarAlwaysOff)
         setCanHaveScrollbars(false);
@@ -505,12 +503,8 @@ bool FrameView::shouldUseCustomScrollbars(Element*& customScrollbarElement, Loca
     customScrollbarElement = nullptr;
     customScrollbarFrame = nullptr;
 
-    ASSERT(false); // BKTODO:
-#if 0
-    if (Settings* settings = m_frame->settings()) {
-        if (!settings->allowCustomScrollbarInMainFrame() && m_frame->isMainFrame())
-            return false;
-    }
+    if (!Settings::allowCustomScrollbarInMainFrame())
+        return false;
 
     // FIXME: We need to update the scrollbar dynamically as documents change (or as doc elements and bodies get discovered that have custom styles).
     Document* doc = m_frame->document();
@@ -535,7 +529,6 @@ bool FrameView::shouldUseCustomScrollbars(Element*& customScrollbarElement, Loca
         customScrollbarFrame = m_frame.get();
         return true;
     }
-#endif
 
     return false;
 }
@@ -607,14 +600,13 @@ void FrameView::calculateScrollbarModesFromOverflowStyle(const ComputedStyle* st
 
 void FrameView::calculateScrollbarModes(ScrollbarMode& hMode, ScrollbarMode& vMode, ScrollbarModesCalculationStrategy strategy)
 {
-    ASSERT(false); // BKTODO:
-#if 0
 #define RETURN_SCROLLBAR_MODE(mode) \
     { \
         hMode = vMode = mode; \
         return; \
     }
 
+#if 0 // BKTODO:
     // Setting scrolling="no" on an iframe element disables scrolling.
     if (m_frame->owner() && m_frame->owner()->scrollingMode() == ScrollbarAlwaysOff)
         RETURN_SCROLLBAR_MODE(ScrollbarAlwaysOff);
@@ -623,6 +615,7 @@ void FrameView::calculateScrollbarModes(ScrollbarMode& hMode, ScrollbarMode& vMo
     Node* body = m_frame->document()->body();
     if (isHTMLFrameSetElement(body) && body->layoutObject())
         RETURN_SCROLLBAR_MODE(ScrollbarAlwaysOff);
+#endif
 
     // Scrollbars can be disabled by FrameView::setCanHaveScrollbars.
     if (!m_canHaveScrollbars && strategy != RulesFromWebContentOnly)
@@ -634,6 +627,7 @@ void FrameView::calculateScrollbarModes(ScrollbarMode& hMode, ScrollbarMode& vMo
     if (!viewport || !viewport->style())
         RETURN_SCROLLBAR_MODE(ScrollbarAuto);
 
+#if 0 // BKTODO:
     if (viewport->isSVGRoot()) {
         // Don't allow overflow to affect <img> and css backgrounds
         if (toLayoutSVGRoot(viewport)->isEmbeddedThroughSVGImage())
@@ -644,11 +638,11 @@ void FrameView::calculateScrollbarModes(ScrollbarMode& hMode, ScrollbarMode& vMo
         if (toLayoutSVGRoot(viewport)->isEmbeddedThroughFrameContainingSVGDocument())
             RETURN_SCROLLBAR_MODE(ScrollbarAlwaysOff);
     }
+#endif
 
     calculateScrollbarModesFromOverflowStyle(viewport->style(), hMode, vMode);
 
 #undef RETURN_SCROLLBAR_MODE
-#endif
 }
 
 void FrameView::updateAcceleratedCompositingSettings()
@@ -822,7 +816,7 @@ void FrameView::performPreLayoutTasks()
     // Viewport-dependent or device-dependent media queries may cause us to need completely different style information.
     if (!document->styleResolver()
         || (wasResized && document->styleResolver()->mediaQueryAffectedByViewportChange())
-        || (wasResized && Settings::resizeIsDeviceSizeChange && document->styleResolver()->mediaQueryAffectedByDeviceChange())) {
+        || (wasResized && Settings::resizeIsDeviceSizeChange() && document->styleResolver()->mediaQueryAffectedByDeviceChange())) {
         document->mediaQueryAffectingValueChanged();
     } else if (wasResized) {
         document->evaluateMediaQueryList();
@@ -876,7 +870,7 @@ void FrameView::performLayout(bool inSubtreeLayout)
     ASSERT(inSubtreeLayout || m_layoutSubtreeRootList.isEmpty());
 
     TRACE_EVENT_BEGIN0(PERFORM_LAYOUT_TRACE_CATEGORIES, "FrameView::performLayout");
-    ASSERT(false); // BKTODO: prepareLayoutAnalyzer();
+    // BKTODO: prepareLayoutAnalyzer();
 
     ScriptForbiddenScope forbidScript;
 
@@ -890,8 +884,7 @@ void FrameView::performLayout(bool inSubtreeLayout)
     forceLayoutParentViewIfNeeded();
 
     if (inSubtreeLayout) {
-        ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
         if (m_analyzer)
             m_analyzer->increment(LayoutAnalyzer::PerformLayoutRootLayoutObjects, m_layoutSubtreeRootList.size());
 #endif
@@ -1001,17 +994,27 @@ void FrameView::layout()
         TemporaryChange<bool> changeSchedulingEnabled(m_layoutSchedulingEnabled, false);
 
         m_nestedLayoutCount++;
-        if (!inSubtreeLayout) {
+        if (!inSubtreeLayout)
+        {
             clearLayoutSubtreeRootsAndMarkContainingBlocks();
             Node* body = document->body();
-            if (body && body->layoutObject()) {
-                ASSERT(false); // BKTODO:
-#if 0
+            if (body && body->layoutObject())
+            {
+#if 0 // BKTODO:
                 if (isHTMLFrameSetElement(*body)) {
                     body->layoutObject()->setChildNeedsLayout();
                 } else if (isHTMLBodyElement(*body)) {
                     if (!m_firstLayout && m_size.height() != layoutSize().height() && body->layoutObject()->enclosingBox()->stretchesToViewport())
                         body->layoutObject()->setChildNeedsLayout();
+                }
+#else
+                if (isHTMLBodyElement(*body))
+                {
+                    if (!m_firstLayout && m_size.height() != layoutSize().height()
+                        && body->layoutObject()->enclosingBox()->stretchesToViewport())
+                    {
+                        body->layoutObject()->setChildNeedsLayout();
+                    }
                 }
 #endif
             }
@@ -1150,8 +1153,7 @@ void FrameView::invalidateTreeIfNeeded(PaintInvalidationState& paintInvalidation
     m_doFullPaintInvalidation = false;
     lifecycle().advanceTo(DocumentLifecycle::PaintInvalidationClean);
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // Temporary callback for crbug.com/487345,402044
     // TODO(ojan): Make this more general to be used by PositionObserver
     // and rAF throttling.
@@ -2025,9 +2027,8 @@ void FrameView::flushAnyPendingPostLayoutTasks()
 
 void FrameView::scheduleUpdateWidgetsIfNecessary()
 {
-    ASSERT(false); // BKTODO:
-#if 0
     ASSERT(!isInPerformLayout());
+#if 0 // BKTODO:
     if (m_updateWidgetsTimer.isActive() || m_partUpdateSet.isEmpty())
         return;
     m_updateWidgetsTimer.startOneShot(0, BLINK_FROM_HERE);
@@ -2111,8 +2112,7 @@ void FrameView::postLayoutTimerFired(Timer<FrameView>*)
 
 void FrameView::updateCounters()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     LayoutView* view = layoutView();
     if (!view->hasLayoutCounters())
         return;
@@ -2398,8 +2398,7 @@ Color FrameView::documentBackgroundColor() const
 
 FrameView* FrameView::parentFrameView() const
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (!parent())
         return nullptr;
 
@@ -2542,10 +2541,7 @@ void FrameView::synchronizedPaint()
 {
     TRACE_EVENT0("blink", "FrameView::synchronizedPaint");
 
-    ASSERT(false); // BKTODO:
-#if 0
-    ASSERT(frame() == page()->mainFrame() || (!frame().tree().parent()->isLocalFrame()));
-#endif
+    // BKTODO: ASSERT(frame() == page()->mainFrame() || (!frame().tree().parent()->isLocalFrame()));
 
     LayoutView* view = layoutView();
     ASSERT(view);
@@ -2648,8 +2644,7 @@ void FrameView::updateStyleAndLayoutIfNeededRecursive()
     if (needsLayout())
         layout();
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // WebView plugins need to update regardless of whether the LayoutEmbeddedObject
     // that owns them needed layout.
     // TODO(leviw): This currently runs the entire lifecycle on plugin WebViews. We
@@ -2673,7 +2668,6 @@ void FrameView::updateStyleAndLayoutIfNeededRecursive()
 
     for (const auto& frameView : frameViews)
         frameView->updateStyleAndLayoutIfNeededRecursive();
-#endif
 
     // When an <iframe> gets composited, it triggers an extra style recalc in its containing FrameView.
     // To avoid pushing an invalid tree for display, we have to check for this case and do another
@@ -2685,10 +2679,11 @@ void FrameView::updateStyleAndLayoutIfNeededRecursive()
         if (needsLayout())
             layout();
     }
+#endif
 
     // These asserts ensure that parent frames are clean, when child frames finished updating layout and style.
     ASSERT(!needsLayout());
-    ASSERT(!m_frame->document()->hasSVGFilterElementsRequiringLayerUpdate());
+    // BKTODO: ASSERT(!m_frame->document()->hasSVGFilterElementsRequiringLayerUpdate());
 #if ENABLE(ASSERT)
     m_frame->document()->layoutView()->assertLaidOut();
 #endif
@@ -2720,8 +2715,7 @@ void FrameView::invalidateTreeIfNeededRecursive()
     if (lifecycle().state() < DocumentLifecycle::PaintInvalidationClean)
         invalidateTreeIfNeeded(rootPaintInvalidationState);
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // Some frames may be not reached during the above invalidateTreeIfNeeded because
     // - the frame is a detached frame; or
     // - it didn't need paint invalidation.
@@ -4109,17 +4103,18 @@ void FrameView::updateViewportIntersectionsForSubtree(LifeCycleUpdateOption phas
     if (phases == AllPhases && frame().document()->intersectionObserverController())
         frame().document()->intersectionObserverController()->computeTrackedIntersectionObservations();
 
-    ASSERT(false); // BKTODO:
-#if 0
     // Adjust render throttling for iframes based on visibility
     bool shouldNotify = !hadValidIntersection || hadEmptyIntersection != m_viewportIntersection.isEmpty();
+#if 0 // BKTODO:
     if (shouldNotify && !m_renderThrottlingObserverNotificationFactory->isPending())
         m_frame->frameScheduler()->timerTaskRunner()->postTask(BLINK_FROM_HERE, m_renderThrottlingObserverNotificationFactory->cancelAndCreate());
+#endif
 
     if (!m_needsUpdateViewportIntersectionInSubtree)
         return;
     m_needsUpdateViewportIntersectionInSubtree = false;
 
+#if 0 // BKTODO:
     for (Frame* child = m_frame->tree().firstChild(); child; child = child->tree().nextSibling()) {
         if (!child->isLocalFrame())
             continue;

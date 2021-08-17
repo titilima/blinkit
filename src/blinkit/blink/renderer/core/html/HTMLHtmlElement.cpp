@@ -61,6 +61,7 @@ bool HTMLHtmlElement::isURLAttribute(const Attribute& attribute) const
 
 void HTMLHtmlElement::insertedByParser()
 {
+#if 0 // BKTODO:
     // When parsing a fragment, its dummy document has a null parser.
     if (!document().parser() || !document().parser()->documentWasLoadedAsPartOfNavigation())
         return;
@@ -72,8 +73,6 @@ void HTMLHtmlElement::insertedByParser()
     if (!documentLoader)
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
     const AtomicString& manifest = fastGetAttribute(manifestAttr);
     if (manifest.isEmpty())
         documentLoader->applicationCacheHost()->selectCacheWithoutManifest();

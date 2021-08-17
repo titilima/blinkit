@@ -50,7 +50,7 @@ namespace blink {
 
 static inline bool canReferToParentFrameEncoding(const LocalFrame* frame, const LocalFrame* parentFrame)
 {
-    ASSERT(false); // BKTODO: return parentFrame && parentFrame->document()->securityOrigin()->canAccess(frame->document()->securityOrigin());
+    // BKTODO: return parentFrame && parentFrame->document()->securityOrigin()->canAccess(frame->document()->securityOrigin());
     return false;
 }
 
@@ -78,11 +78,11 @@ inline PassOwnPtr<TextResourceDecoder> TextResourceDecoderBuilder::createDecoder
 inline void TextResourceDecoderBuilder::setupEncoding(TextResourceDecoder* decoder, Document* document)
 {
     LocalFrame* frame = document->frame();
-    ASSERT(false); // BKTODO:
-#if 0
     LocalFrame* parentFrame = 0;
+#if 0 // BKTODO:
     if (frame && frame->tree().parent() && frame->tree().parent()->isLocalFrame())
         parentFrame = toLocalFrame(frame->tree().parent());
+#endif
 
     if (!m_encoding.isEmpty())
         decoder->setEncoding(m_encoding.string(), TextResourceDecoder::EncodingFromHTTPHeader);
@@ -103,7 +103,6 @@ inline void TextResourceDecoderBuilder::setupEncoding(TextResourceDecoder* decod
         if (m_encoding.isEmpty())
             decoder->setEncoding(parentFrame->document()->encoding(), TextResourceDecoder::EncodingFromParentFrame);
     }
-#endif
 }
 
 PassOwnPtr<TextResourceDecoder> TextResourceDecoderBuilder::buildFor(Document* document)

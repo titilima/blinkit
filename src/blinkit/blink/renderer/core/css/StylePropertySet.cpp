@@ -49,6 +49,8 @@
 #include <stdio.h>
 #endif
 
+using namespace BlinKit;
+
 namespace blink {
 
 static size_t sizeForImmutableStylePropertySetWithPropertyCount(unsigned count)
@@ -60,7 +62,7 @@ PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> ImmutableStylePropertySet::cre
 {
     ASSERT(count <= MaxArraySize);
 #if ENABLE(OILPAN)
-    void* slot = nullptr; ASSERT(false); // BKTODO: Heap::allocate<StylePropertySet>(sizeForImmutableStylePropertySetWithPropertyCount(count));
+    void* slot = ::operator new(sizeForImmutableStylePropertySetWithPropertyCount(count));
 #else
     void* slot = WTF::Partitions::fastMalloc(sizeForImmutableStylePropertySetWithPropertyCount(count), "blink::ImmutableStylePropertySet");
 #endif // ENABLE(OILPAN)
@@ -579,7 +581,7 @@ unsigned StylePropertySet::averageSizeInBytes()
 }
 
 // See the function above if you need to update this.
-struct SameSizeAsStylePropertySet : public RefCountedWillBeGarbageCollectedFinalized<SameSizeAsStylePropertySet> {
+struct SameSizeAsStylePropertySet : public GCObject {
     unsigned bitfield;
 };
 static_assert(sizeof(StylePropertySet) == sizeof(SameSizeAsStylePropertySet), "StylePropertySet should stay small");

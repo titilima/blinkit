@@ -268,7 +268,7 @@ void ContainerNode::insertBeforeCommon(Node& nextChild, Node& newChild)
     ASSERT(!newChild.isShadowRoot());
 
     Node* prev = nextChild.previousSibling();
-    ASSERT(m_lastChild != prev);
+    ASSERT(m_lastChild.get() != prev);
     nextChild.setPreviousSibling(&newChild);
     if (prev) {
         ASSERT(firstChild() != nextChild);
@@ -288,7 +288,7 @@ void ContainerNode::appendChildCommon(Node& child)
     child.setParentOrShadowHostNode(this);
 
     if (m_lastChild) {
-        child.setPreviousSibling(m_lastChild);
+        child.setPreviousSibling(m_lastChild.get());
         m_lastChild->setNextSibling(&child);
     } else {
         setFirstChild(&child);
@@ -626,9 +626,9 @@ void ContainerNode::removeBetween(Node* previousChild, Node* nextChild, Node& ol
         nextChild->setPreviousSibling(previousChild);
     if (previousChild)
         previousChild->setNextSibling(nextChild);
-    if (m_firstChild == &oldChild)
+    if (m_firstChild.get() == &oldChild)
         m_firstChild = nextChild;
-    if (m_lastChild == &oldChild)
+    if (m_lastChild.get() == &oldChild)
         m_lastChild = previousChild;
 
     oldChild.setPreviousSibling(nullptr);
@@ -711,7 +711,7 @@ void ContainerNode::removeChildren(SubtreeModificationAction action)
 #if !ENABLE(OILPAN)
             removedChildren.reserveInitialCapacity(countChildren());
 #endif
-            while (RefPtrWillBeRawPtr<Node> child = m_firstChild) {
+            while (RefPtrWillBeRawPtr<Node> child = m_firstChild.get()) {
                 removeBetween(0, child->nextSibling(), *child);
 #if !ENABLE(OILPAN)
                 removedChildren.append(child.get());
@@ -746,7 +746,7 @@ PassRefPtrWillBeRawPtr<Node> ContainerNode::appendChild(PassRefPtrWillBeRawPtr<N
     }
     ASSERT(newChild);
 
-    if (newChild == m_lastChild) // nothing to do
+    if (newChild == m_lastChild.get()) // nothing to do
         return newChild;
 
     NodeVector targets;

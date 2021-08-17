@@ -51,7 +51,7 @@ class ImmutableStylePropertySet;
 class MutableStylePropertySet;
 class StyleSheetContents;
 
-class CORE_EXPORT StylePropertySet : public RefCountedWillBeGarbageCollectedFinalized<StylePropertySet> {
+class CORE_EXPORT StylePropertySet : public BlinKit::GCObject {
     WTF_MAKE_NONCOPYABLE(StylePropertySet);
     friend class PropertyReference;
 public:

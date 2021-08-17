@@ -325,8 +325,10 @@ void StyleResolver::collectFeatures()
     if (defaultStyleSheets.defaultStyle())
         m_features.add(defaultStyleSheets.defaultStyle()->features());
 
+#if 0 // BKTODO:
     if (document().isViewSource())
         m_features.add(defaultStyleSheets.defaultViewSourceStyle()->features());
+#endif
 
     if (m_watchedSelectorsRules)
         m_features.add(m_watchedSelectorsRules->features());
@@ -436,9 +438,11 @@ void StyleResolver::matchUARules(ElementRuleCollector& collector)
     if (document().inQuirksMode())
         matchRuleSet(collector, defaultStyleSheets.defaultQuirksStyle());
 
+#if 0 // BKTODO:
     // If document uses view source styles (in view source mode or in xml viewer mode), then we match rules from the view source style sheet.
     if (document().isViewSource())
         matchRuleSet(collector, defaultStyleSheets.defaultViewSourceStyle());
+#endif
 
     collector.finishAddingUARules();
     collector.setMatchingUARules(false);
@@ -882,7 +886,7 @@ PassRefPtr<ComputedStyle> StyleResolver::styleForPage(int pageIndex)
 
     PageRuleCollector collector(rootElementStyle, pageIndex);
 
-    collector.matchPageRules(CSSDefaultStyleSheets::instance().defaultPrintStyle());
+    ASSERT(false); // BKTODO: collector.matchPageRules(CSSDefaultStyleSheets::instance().defaultPrintStyle());
 
     if (ScopedStyleResolver* scopedResolver = document().scopedStyleResolver())
         scopedResolver->matchPageRules(collector);

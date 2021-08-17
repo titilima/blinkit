@@ -618,7 +618,7 @@ void HTMLConstructionSite::insertHTMLBodyElement(AtomicHTMLToken* token)
     attachLater(currentNode(), body);
     m_openElements.pushHTMLBodyElement(HTMLStackItem::create(body.release(), token));
     if (m_document && m_document->frame())
-        ASSERT(false); // BKTODO: m_document->frame()->loader().client()->dispatchWillInsertBody();
+        m_document->frame()->loader().client()->dispatchWillInsertBody();
 }
 
 void HTMLConstructionSite::insertHTMLFormElement(AtomicHTMLToken* token, bool isDemoted)

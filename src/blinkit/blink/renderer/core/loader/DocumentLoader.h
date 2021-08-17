@@ -77,7 +77,7 @@ class MHTMLArchive;
 class ResourceLoader;
 class ThreadedDataReceiver;
 
-class CORE_EXPORT DocumentLoader : public RefCountedWillBeGarbageCollectedFinalized<DocumentLoader>, private RawResourceClient {
+class CORE_EXPORT DocumentLoader : public BlinKit::GCObject, private RawResourceClient {
     USING_FAST_MALLOC_WILL_BE_REMOVED(DocumentLoader);
 public:
     static PassRefPtrWillBeRawPtr<DocumentLoader> create(LocalFrame* frame, const ResourceRequest& request, const SubstituteData& data)
@@ -142,6 +142,8 @@ public:
     const DocumentLoadTiming& timing() const { return m_documentLoadTiming; }
 
     ApplicationCacheHost* applicationCacheHost() const { return m_applicationCacheHost.get(); }
+#else
+    double referenceMonotonicTime(void) const { return m_referenceMonotonicTime; }
 #endif
 
     bool isRedirect() const { return m_redirectChain.size() > 1; }
@@ -269,6 +271,8 @@ private:
     // Used to protect against reentrancy into dataReceived().
     bool m_inDataReceived;
     std::shared_ptr<SharedBuffer> m_dataBuffer;
+
+    double m_referenceMonotonicTime = 0.0;
 };
 
 // BKTODO: DECLARE_WEAK_IDENTIFIER_MAP(DocumentLoader);

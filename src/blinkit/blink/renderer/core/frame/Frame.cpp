@@ -86,7 +86,7 @@ WTF::RefCountedLeakCounter& frameCounter()
 Frame::~Frame()
 {
     InstanceCounters::decrementCounter(InstanceCounters::FrameCounter);
-    ASSERT(!m_owner);
+    // BKTODO: ASSERT(!m_owner);
 #ifndef NDEBUG
     // BKTODO: frameCounter().decrement();
 #endif
@@ -96,14 +96,14 @@ DEFINE_TRACE(Frame)
 {
     // BKTODO: visitor->trace(m_treeNode);
     visitor->trace(m_host);
-    visitor->trace(m_owner);
+    // BKTODO: visitor->trace(m_owner);
     visitor->trace(m_client);
 }
 
 void Frame::detach()
 {
     ASSERT(m_client);
-    m_client->setOpener(0);
+    ASSERT(false); // BKTODO: m_client->setOpener(0);
     domWindow()->resetLocation();
     disconnectOwnerElement();
     // After this, we must no longer talk to the client since this clears
@@ -113,10 +113,9 @@ void Frame::detach()
     m_host = nullptr;
 }
 
+#if 0 // BKTODO:
 void Frame::detachChildren()
 {
-    ASSERT(false); // BKTODO:
-#if 0
     typedef WillBeHeapVector<RefPtrWillBeMember<Frame>> FrameVector;
     FrameVector childrenToDetach;
     childrenToDetach.reserveCapacity(tree().childCount());
@@ -124,8 +123,8 @@ void Frame::detachChildren()
         childrenToDetach.append(child);
     for (const auto& child : childrenToDetach)
         child->detach(FrameDetachType::Remove);
-#endif
 }
+#endif
 
 void Frame::disconnectOwnerElement()
 {
@@ -153,15 +152,12 @@ FrameHost* Frame::host() const
 
 bool Frame::isMainFrame() const
 {
-    ASSERT(false); // BKTODO: return !tree().parent();
-    return true;
+    return true; // BKTODO: return !tree().parent();
 }
 
 bool Frame::isLocalRoot() const
 {
-    ASSERT(false); // BKTODO:
-    return true;
-#if 0
+#if 0 // BKTODO:
     if (isRemoteFrame())
         return false;
 
@@ -170,6 +166,7 @@ bool Frame::isLocalRoot() const
 
     return tree().parent()->isRemoteFrame();
 #endif
+    return true;
 }
 
 #if 0 // BKTODO:
@@ -312,9 +309,7 @@ Frame* Frame::findUnsafeParentScrollPropagationBoundary()
 
 LayoutPart* Frame::ownerLayoutObject() const
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
+#if 0 // BKTODO:
     if (!deprecatedLocalOwner())
         return nullptr;
     LayoutObject* object = deprecatedLocalOwner()->layoutObject();
@@ -327,6 +322,8 @@ LayoutPart* Frame::ownerLayoutObject() const
     if (!object->isLayoutPart())
         return nullptr;
     return toLayoutPart(object);
+#else
+    return nullptr;
 #endif
 }
 
@@ -339,14 +336,13 @@ Settings* Frame::settings() const
 }
 #endif
 
-Frame::Frame(FrameClient* client, FrameHost* host, FrameOwner* owner)
+Frame::Frame(FrameClient* client, FrameHost* host)
 #if 0 // BKTODO:
     : m_treeNode(this)
     , m_host(host)
 #else
     : m_host(host)
 #endif
-    , m_owner(owner)
     , m_client(client)
     , m_frameID(generateFrameID())
     , m_isLoading(false)
@@ -359,14 +355,15 @@ Frame::Frame(FrameClient* client, FrameHost* host, FrameOwner* owner)
     // BKTODO: frameCounter().increment();
 #endif
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (m_owner) {
         if (m_owner->isLocal())
             toHTMLFrameOwnerElement(m_owner)->setContentFrame(*this);
     } else {
         page()->setMainFrame(this);
     }
+#else
+    page()->setMainFrame(this);
 #endif
 }
 

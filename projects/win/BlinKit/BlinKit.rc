@@ -24,11 +24,11 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // HTML
 //
 
-HTML.CSS                        HTML                    "..\\..\\..\\src\\chromium\\third_party\\blink\\renderer\\core\\css\\html.css"
-QUIRKS.CSS                      HTML                    "..\\..\\..\\src\\chromium\\third_party\\blink\\renderer\\core\\css\\quirks.css"
-THEMEINPUTMULTIPLEFIELDS.CSS    HTML                    "..\\..\\..\\src\\chromium\\third_party\\blink\\renderer\\core\\css\\themeInputMultipleFields.css"
-THEMEWIN.CSS                    HTML                    "..\\..\\..\\src\\chromium\\third_party\\blink\\renderer\\core\\css\\themeWin.css"
-THEMEWINQUIRKS.CSS              HTML                    "..\\..\\..\\src\\chromium\\third_party\\blink\\renderer\\core\\css\\themeWinQuirks.css"
+HTML.CSS                        HTML                    "..\\..\\..\\src\\blinkit\\blink\\renderer\\core\\css\\html.css"
+QUIRKS.CSS                      HTML                    "..\\..\\..\\src\\blinkit\\blink\\renderer\\core\\css\\quirks.css"
+THEMEINPUTMULTIPLEFIELDS.CSS    HTML                    "..\\..\\..\\src\\blinkit\\blink\\renderer\\core\\css\\themeInputMultipleFields.css"
+THEMEWIN.CSS                    HTML                    "..\\..\\..\\src\\blinkit\\blink\\renderer\\core\\css\\themeWin.css"
+THEMEWINQUIRKS.CSS              HTML                    "..\\..\\..\\src\\blinkit\\blink\\renderer\\core\\css\\themeWinQuirks.css"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -36,8 +36,8 @@ THEMEWINQUIRKS.CSS              HTML                    "..\\..\\..\\src\\chromi
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,3,0,6
- PRODUCTVERSION 1,3,0,6
+ FILEVERSION 1,4,0,1
+ PRODUCTVERSION 1,4,0,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -54,12 +54,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "MingYang Software Technology"
             VALUE "FileDescription", "BlinKit - Crawler & WebUI Framework Based on Blink"
-            VALUE "FileVersion", "1.3.0.6"
+            VALUE "FileVersion", "1.4.0.1"
             VALUE "InternalName", "BlinKit.dll"
             VALUE "LegalCopyright", "Copyright (C) 2001-2021"
             VALUE "OriginalFilename", "BlinKit.dll"
             VALUE "ProductName", "BlinKit"
-            VALUE "ProductVersion", "1.3.0.6"
+            VALUE "ProductVersion", "1.4.0.1"
         END
     END
     BLOCK "VarFileInfo"

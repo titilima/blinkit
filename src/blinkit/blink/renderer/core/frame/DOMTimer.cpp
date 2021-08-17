@@ -178,11 +178,13 @@ void DOMTimer::stop()
     ASSERT(false); // BKTODO: m_action.clear();
 }
 
+#if 0 // BKTODO:
 WebTaskRunner* DOMTimer::timerTaskRunner()
 {
     ASSERT(false); // BKTODO: return executionContext()->timers()->timerTaskRunner();
     return nullptr;
 }
+#endif
 
 DEFINE_TRACE(DOMTimer)
 {

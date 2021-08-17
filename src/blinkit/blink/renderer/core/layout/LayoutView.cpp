@@ -214,8 +214,10 @@ bool LayoutView::shouldDoFullPaintInvalidationForNextLayout() const
     // and discrete paint invalidation rects, so marking full paint invalidation here is more likely to cost less.
     // Otherwise, per-descendant paint invalidation is more likely to avoid unnecessary full paint invalidation.
 
+#if 0 // BKTODO:
     if (shouldUsePrintingLayout())
         return true;
+#endif
 
     if (!style()->isHorizontalWritingMode())
         return true;
@@ -842,12 +844,12 @@ void LayoutView::selectionStartEnd(int& startPos, int& endPos)
 
 bool LayoutView::shouldUsePrintingLayout() const
 {
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
+#if 0 // BKTODO:
     if (!document().printing() || !m_frameView)
         return false;
     return m_frameView->frame().shouldUsePrintingLayout();
+#else
+    return false;
 #endif
 }
 
@@ -892,8 +894,10 @@ LayoutRect LayoutView::backgroundRect(LayoutBox* backgroundLayoutObject) const
 
 IntSize LayoutView::layoutSize(IncludeScrollbarsInRect scrollbarInclusion) const
 {
+#if 0 // BKTODO:
     if (shouldUsePrintingLayout())
         return IntSize(size().width(), pageLogicalHeight());
+#endif
 
     if (!m_frameView)
         return IntSize();
@@ -926,8 +930,10 @@ int LayoutView::viewLogicalHeightForBoxSizing() const
 
 LayoutUnit LayoutView::viewLogicalHeightForPercentages() const
 {
+#if 0 // BKTODO:
     if (shouldUsePrintingLayout())
         return pageLogicalHeight();
+#endif
     return viewLogicalHeight();
 }
 

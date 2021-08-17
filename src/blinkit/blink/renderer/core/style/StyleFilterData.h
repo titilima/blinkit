@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleFilterData.h
+// Description: StyleFilterData Class
+//      Author: Ziming Li
+//     Created: 2021-08-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -29,14 +40,14 @@
 #include "platform/graphics/filters/FilterOperations.h"
 #include "platform/heap/Handle.h"
 #include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
+// BKTODO: #include "wtf/RefCounted.h"
 
 namespace blink {
 
 // FIXME: Oilpan: resorting to RefCountedGarbageCollected<> here so as to support
 // DataRef<StyleFilterData> uses. Once/if DataRef<> is able to move away from
 // relying on RefPtr<>, switch to GarbageCollected<>.
-class StyleFilterData final : public RefCountedWillBeRefCountedGarbageCollected<StyleFilterData> {
+class StyleFilterData final : public BlinKit::GCRefCounted {
 public:
     static PassRefPtrWillBeRawPtr<StyleFilterData> create()
     {

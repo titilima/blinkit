@@ -349,8 +349,7 @@ ComputedStyle* SharedStyleFinder::findSharedStyle()
     Element* shareElement = findElementForStyleSharing();
 
     if (!shareElement) {
-        ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
         if (m_styleResolver->stats() && m_styleResolver->stats()->allCountersEnabled() && documentContainsValidCandidate())
             INCREMENT_STYLE_STATS_COUNTER(*m_styleResolver, sharedStyleMissed, 1);
 #endif

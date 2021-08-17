@@ -80,9 +80,9 @@ class CORE_EXPORT LocalDOMWindow final : public DOMWindow, public WillBeHeapSupp
     WILL_BE_USING_PRE_FINALIZER(LocalDOMWindow, dispose);
 public:
     static PassRefPtrWillBeRawPtr<Document> createDocument(const String& mimeType, const DocumentInit&, bool forceXHTML);
-    static PassRefPtrWillBeRawPtr<LocalDOMWindow> create(LocalFrame& frame)
+    static std::unique_ptr<LocalDOMWindow> create(LocalFrame& frame)
     {
-        return adoptRefWillBeNoop(new LocalDOMWindow(frame));
+        return zed::wrap_unique(new LocalDOMWindow(frame));
     }
 
     ~LocalDOMWindow() override;

@@ -142,10 +142,11 @@ public:
 
     const RuleFeatureSet& features() const { return m_features; }
 
-    const WillBeHeapTerminatedArray<RuleData>* idRules(const AtomicString& key) const { return getRules(m_idRules, key); }
-    const WillBeHeapTerminatedArray<RuleData>* classRules(const AtomicString& key) const { return getRules(m_classRules, key); }
-    const WillBeHeapTerminatedArray<RuleData>* tagRules(const AtomicString& key) const { return getRules(m_tagRules, key); }
-    const WillBeHeapTerminatedArray<RuleData>* shadowPseudoElementRules(const AtomicString& key) const { return getRules(m_shadowPseudoElementRules, key); }
+    using RulesArray = std::vector<RuleData>;
+    const RulesArray* idRules(const AtomicString& key) const { return getRules(m_idRules, key); }
+    const RulesArray* classRules(const AtomicString& key) const { return getRules(m_classRules, key); }
+    const RulesArray* tagRules(const AtomicString& key) const { return getRules(m_tagRules, key); }
+    const RulesArray* shadowPseudoElementRules(const AtomicString& key) const { return getRules(m_shadowPseudoElementRules, key); }
     const WillBeHeapVector<RuleData>* linkPseudoClassRules() const { ASSERT(!m_pendingRules); return &m_linkPseudoClassRules; }
     const WillBeHeapVector<RuleData>* cuePseudoRules() const { ASSERT(!m_pendingRules); return &m_cuePseudoRules; }
     const WillBeHeapVector<RuleData>* focusPseudoClassRules() const { ASSERT(!m_pendingRules); return &m_focusPseudoClassRules; }
@@ -177,7 +178,7 @@ public:
 
 private:
     using PendingRuleMap = WillBeHeapHashMap<AtomicString, OwnPtrWillBeMember<WillBeHeapLinkedStack<RuleData>>>;
-    using CompactRuleMap = WillBeHeapHashMap<AtomicString, OwnPtrWillBeMember<WillBeHeapTerminatedArray<RuleData>>>;
+    using CompactRuleMap = std::unordered_map<AtomicString, RulesArray>;
 
     RuleSet()
         : m_ruleCount(0)
@@ -193,12 +194,10 @@ private:
     void addChildRules(const std::vector<Member<StyleRuleBase>>&, const MediaQueryEvaluator& medium, AddRuleFlags);
     bool findBestRuleSetAndAdd(const CSSSelector&, RuleData&);
 
-    const WillBeHeapTerminatedArray<RuleData>* getRules(const CompactRuleMap &rules, const AtomicString &key) const
+    const RulesArray* getRules(const CompactRuleMap &rules, const AtomicString &key) const
     {
         ASSERT(!m_pendingRules);
-        if (auto v = zed::find_value(rules, key))
-            return v->get();
-        return nullptr;
+        return zed::find_value(rules, key);
     }
 
     void compactRules();

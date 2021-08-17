@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSDefaultStyleSheets.h
+// Description: CSSDefaultStyleSheets Class
+//      Author: Ziming Li
+//     Created: 2021-08-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -32,7 +43,7 @@ class Element;
 class RuleSet;
 class StyleSheetContents;
 
-class CSSDefaultStyleSheets : public NoBaseWillBeGarbageCollected<CSSDefaultStyleSheets> {
+class CSSDefaultStyleSheets : public BlinKit::GCObject {
     USING_FAST_MALLOC_WILL_BE_REMOVED(CSSDefaultStyleSheets);
     WTF_MAKE_NONCOPYABLE(CSSDefaultStyleSheets);
 public:
@@ -42,19 +53,23 @@ public:
 
     RuleSet* defaultStyle() { return m_defaultStyle.get(); }
     RuleSet* defaultQuirksStyle() { return m_defaultQuirksStyle.get(); }
+#if 0 // BKTODO:
     RuleSet* defaultPrintStyle() { return m_defaultPrintStyle.get(); }
     RuleSet* defaultViewSourceStyle();
     RuleSet* defaultMobileViewportStyle();
 
     // FIXME: Remove WAP support.
     RuleSet* defaultXHTMLMobileProfileStyle();
+#endif
 
     StyleSheetContents* defaultStyleSheet() { return m_defaultStyleSheet.get(); }
     StyleSheetContents* quirksStyleSheet() { return m_quirksStyleSheet.get(); }
+#if 0 // BKTODO:
     StyleSheetContents* svgStyleSheet() { return m_svgStyleSheet.get(); }
     StyleSheetContents* mathmlStyleSheet() { return m_mathmlStyleSheet.get(); }
     StyleSheetContents* mediaControlsStyleSheet() { return m_mediaControlsStyleSheet.get(); }
     StyleSheetContents* fullscreenStyleSheet() { return m_fullscreenStyleSheet.get(); }
+#endif
 
     DECLARE_TRACE();
 
@@ -62,19 +77,23 @@ private:
     CSSDefaultStyleSheets();
 
     OwnPtrWillBeMember<RuleSet> m_defaultStyle;
-    OwnPtrWillBeMember<RuleSet> m_defaultMobileViewportStyle;
+    // BKTODO: OwnPtrWillBeMember<RuleSet> m_defaultMobileViewportStyle;
     OwnPtrWillBeMember<RuleSet> m_defaultQuirksStyle;
+#if 0 // BKTODO:
     OwnPtrWillBeMember<RuleSet> m_defaultPrintStyle;
     OwnPtrWillBeMember<RuleSet> m_defaultViewSourceStyle;
     OwnPtrWillBeMember<RuleSet> m_defaultXHTMLMobileProfileStyle;
+#endif
 
     RefPtrWillBeMember<StyleSheetContents> m_defaultStyleSheet;
-    RefPtrWillBeMember<StyleSheetContents> m_mobileViewportStyleSheet;
+    // BKTODO: RefPtrWillBeMember<StyleSheetContents> m_mobileViewportStyleSheet;
     RefPtrWillBeMember<StyleSheetContents> m_quirksStyleSheet;
+#if 0 // BKTODO:
     RefPtrWillBeMember<StyleSheetContents> m_svgStyleSheet;
     RefPtrWillBeMember<StyleSheetContents> m_mathmlStyleSheet;
     RefPtrWillBeMember<StyleSheetContents> m_mediaControlsStyleSheet;
     RefPtrWillBeMember<StyleSheetContents> m_fullscreenStyleSheet;
+#endif
 };
 
 } // namespace blink

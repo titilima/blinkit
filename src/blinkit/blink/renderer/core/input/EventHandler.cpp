@@ -663,8 +663,10 @@ HitTestResult EventHandler::hitTestResultAtPoint(const LayoutPoint& point, HitTe
 
 void EventHandler::stopAutoscroll()
 {
+#if 0 // BKTODO:
     if (AutoscrollController* controller = autoscrollController())
-        ASSERT(false); // BKTODO: controller->stopAutoscroll();
+        controller->stopAutoscroll();
+#endif
 }
 
 ScrollResultOneDimensional EventHandler::scroll(ScrollDirection direction, ScrollGranularity granularity, Node* startNode, Node** stopNode, float delta, IntPoint absolutePoint)

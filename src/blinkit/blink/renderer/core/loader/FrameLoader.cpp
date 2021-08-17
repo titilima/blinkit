@@ -113,7 +113,8 @@
 #include "wtf/text/CString.h"
 #include "wtf/text/WTFString.h"
 
-using blink::WebURLRequest;
+// BKTODO: using blink::WebURLRequest;
+using namespace BlinKit;
 
 namespace blink {
 
@@ -217,13 +218,14 @@ void FrameLoader::init()
 {
     // init() may dispatch JS events, so protect a reference to m_frame.
     RefPtrWillBeRawPtr<LocalFrame> protect(m_frame.get());
-    ASSERT(false); // BKTODO:
+
+    KURL emptyURL;
+    ResourceRequest initialRequest(emptyURL);
 #if 0
-    ResourceRequest initialRequest(KURL(ParsedURLString, emptyString()));
     initialRequest.setRequestContext(WebURLRequest::RequestContextInternal);
     initialRequest.setFrameType(m_frame->isMainFrame() ? WebURLRequest::FrameTypeTopLevel : WebURLRequest::FrameTypeNested);
-    m_provisionalDocumentLoader = client()->createDocumentLoader(m_frame, initialRequest, SubstituteData());
 #endif
+    m_provisionalDocumentLoader = client()->createDocumentLoader(m_frame, initialRequest, SubstituteData());
     m_provisionalDocumentLoader->startLoadingMainResource();
     m_frame->document()->cancelParsing();
     m_stateMachine.advanceTo(FrameLoaderStateMachine::DisplayingInitialEmptyDocument);
@@ -496,40 +498,53 @@ void FrameLoader::didBeginDocument(bool dispatch)
     if (dispatch)
         dispatchDidClearDocumentOfWindowObject();
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     m_frame->document()->initContentSecurityPolicy(m_documentLoader ? m_documentLoader->releaseContentSecurityPolicy() : ContentSecurityPolicy::create());
     if (m_documentLoader) {
         m_frame->document()->clientHintsPreferences().updateFrom(m_documentLoader->clientHintsPreferences());
         LinkLoader::loadLinkFromHeader(m_documentLoader->response().httpHeaderField(HTTPNames::Link), m_frame->document(), NetworkHintsInterfaceImpl(), LinkLoader::LoadResources);
     }
+#endif
 
-    Settings* settings = m_frame->document()->settings();
-    if (settings) {
-        m_frame->document()->fetcher()->setImagesEnabled(settings->imagesEnabled());
-        m_frame->document()->fetcher()->setAutoLoadImages(settings->loadsImagesAutomatically());
+    const FrameClient::Type clientType = client()->GetType();
+#ifdef BLINKIT_UI_ENABLED
+    if (FrameClient::Type::WebView == clientType)
+    {
+        m_frame->document()->fetcher()->setImagesEnabled(Settings::imagesEnabled());
+        m_frame->document()->fetcher()->setAutoLoadImages(Settings::loadsImagesAutomatically());
     }
+#endif
 
-    if (m_documentLoader) {
+    if (m_documentLoader)
+    {
+#if 0 // BKTODO:
         const AtomicString& dnsPrefetchControl = m_documentLoader->response().httpHeaderField(HTTPNames::X_DNS_Prefetch_Control);
         if (!dnsPrefetchControl.isEmpty())
             m_frame->document()->parseDNSPrefetchControlHeader(dnsPrefetchControl);
+#endif
 
-        String headerContentLanguage = m_documentLoader->response().httpHeaderField(HTTPNames::Content_Language);
-        if (!headerContentLanguage.isEmpty()) {
-            size_t commaIndex = headerContentLanguage.find(',');
-            headerContentLanguage.truncate(commaIndex); // kNotFound == -1 == don't truncate
-            headerContentLanguage = headerContentLanguage.stripWhiteSpace(isHTMLSpace<UChar>);
+#ifdef BLINKIT_CRAWLER_ENABLED
+        if (FrameClient::Type::Crawler == clientType)
+        {
+            String headerContentLanguage = m_documentLoader->response().httpHeaderField(HTTPNames::Content_Language);
             if (!headerContentLanguage.isEmpty())
-                m_frame->document()->setContentLanguage(AtomicString(headerContentLanguage));
+            {
+                size_t commaIndex = headerContentLanguage.find(',');
+                headerContentLanguage.truncate(commaIndex); // kNotFound == -1 == don't truncate
+                headerContentLanguage = headerContentLanguage.stripWhiteSpace(isHTMLSpace<UChar>);
+                if (!headerContentLanguage.isEmpty())
+                    m_frame->document()->setContentLanguage(AtomicString(headerContentLanguage));
+            }
         }
+#endif
     }
 
+#if 0 // BKTODO:
     if (m_provisionalItem && isBackForwardLoadType(m_loadType))
         m_frame->document()->setStateForNewFormElements(m_provisionalItem->documentState());
+#endif
 
     client()->didCreateNewDocument();
-#endif
 }
 
 void FrameLoader::finishedParsing()
@@ -700,14 +715,15 @@ void FrameLoader::scheduleCheckCompleted()
 
 Frame* FrameLoader::opener()
 {
-    return client() ? client()->opener() : 0;
+    ASSERT(false); // BKTODO: return client() ? client()->opener() : 0;
+    return nullptr;
 }
 
 void FrameLoader::setOpener(LocalFrame* opener)
 {
     // If the frame is already detached, the opener has already been cleared.
     if (client())
-        client()->setOpener(opener);
+        ASSERT(false); // BKTODO: client()->setOpener(opener);
 }
 
 #if 0 // BKTODO:
@@ -754,13 +770,13 @@ void FrameLoader::updateForSameDocumentNavigation(const KURL& newURL, SameDocume
 }
 #endif
 
-void FrameLoader::detachDocumentLoader(RefPtrWillBeMember<DocumentLoader>& loader)
+void FrameLoader::detachDocumentLoader(GCMember<DocumentLoader>& loader)
 {
     if (!loader)
         return;
 
     loader->detachFromFrame();
-    loader = nullptr;
+    loader.clear();
 }
 
 #if 0 // BKTODO:
@@ -1121,11 +1137,10 @@ void FrameLoader::notifyIfInitialDocumentAccessed()
 
 bool FrameLoader::prepareForCommit()
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    PluginScriptForbiddenScope forbidPluginDestructorScripting;
-    RefPtrWillBeRawPtr<DocumentLoader> pdl = m_provisionalDocumentLoader;
+    // BKTODO: PluginScriptForbiddenScope forbidPluginDestructorScripting;
+    RefPtrWillBeRawPtr<DocumentLoader> pdl = m_provisionalDocumentLoader.get();
 
+#if 0 // BKTODO:
     if (m_frame->document()) {
         unsigned totalNodeCount = InstanceCounters::counterValue(InstanceCounters::NodeCounter);
         int nodeCount = static_cast<int>(totalNodeCount);
@@ -1137,21 +1152,22 @@ bool FrameLoader::prepareForCommit()
         float ratio = static_cast<float>(nodeCount) / totalNodeCount;
         ThreadState::current()->schedulePageNavigationGCIfNeeded(ratio);
     }
+#endif
 
     // Don't allow any new child frames to load in this frame: attaching a new
     // child frame during or after detaching children results in an attached
     // frame on a detached DOM tree, which is bad.
-    SubframeLoadingDisabler disabler(m_frame->document());
+    // BKTODO: SubframeLoadingDisabler disabler(m_frame->document());
     if (m_documentLoader) {
         client()->dispatchWillClose();
         dispatchUnloadEvent();
     }
-    m_frame->detachChildren();
+    // BKTODO: m_frame->detachChildren();
     // The previous calls to dispatchUnloadEvent() and detachChildren() can
     // execute arbitrary script via things like unload events. If the executed
     // script intiates a new load or causes the current frame to be detached,
     // we need to abandon the current load.
-    if (pdl != m_provisionalDocumentLoader)
+    if (pdl != m_provisionalDocumentLoader.get())
         return false;
     if (m_documentLoader) {
         FrameNavigationDisabler navigationDisabler(*m_frame);
@@ -1169,23 +1185,21 @@ bool FrameLoader::prepareForCommit()
     if (m_frame->document())
         m_frame->document()->detach();
     m_documentLoader = m_provisionalDocumentLoader.release();
-#endif
 
     return true;
 }
 
 void FrameLoader::commitProvisionalLoad()
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    ASSERT(client()->hasWebView());
     RefPtrWillBeRawPtr<LocalFrame> protect(m_frame.get());
 
+#if 0 // BKTODO:
     // Check if the destination page is allowed to access the previous page's timing information.
     if (m_frame->document()) {
         RefPtr<SecurityOrigin> securityOrigin = SecurityOrigin::create(m_provisionalDocumentLoader->request().url());
         m_provisionalDocumentLoader->timing().setHasSameOriginAsPreviousDocument(securityOrigin->canRequest(m_frame->document()->url()));
     }
+#endif
 
     if (!prepareForCommit())
         return;
@@ -1194,7 +1208,7 @@ void FrameLoader::commitProvisionalLoad()
         m_frame->page()->chromeClient().needTouchEvents(false);
 
     client()->transitionToCommittedForNewPage();
-    m_frame->navigationScheduler().cancel();
+    // BKTODO: m_frame->navigationScheduler().cancel();
     m_frame->editor().clearLastEditCommand();
 
     // If we are still in the process of initializing an empty document then
@@ -1205,7 +1219,6 @@ void FrameLoader::commitProvisionalLoad()
         window->setStatus(String());
         window->setDefaultStatus(String());
     }
-#endif
 }
 
 bool FrameLoader::isLoadingMainFrame() const
@@ -1222,9 +1235,8 @@ FrameLoadType FrameLoader::loadType() const
 
 void FrameLoader::restoreScrollPositionAndViewState()
 {
+#if 0 // BKTODO:
     FrameView* view = m_frame->view();
-    ASSERT(false); // BKTODO:
-#if 0
     if (!m_frame->page()
         || !view
         || !view->layoutViewportScrollableArea()
@@ -1278,9 +1290,9 @@ void FrameLoader::restoreScrollPositionAndViewState()
         if (ScrollingCoordinator* scrollingCoordinator = m_frame->page()->scrollingCoordinator())
             scrollingCoordinator->frameViewRootLayerDidChange(view);
     }
-#endif
 
     documentLoader()->initialScrollState().didRestoreFromHistory = true;
+#endif
 }
 
 String FrameLoader::userAgent() const
@@ -1602,7 +1614,7 @@ bool FrameLoader::shouldTreatURLAsSrcdocDocument(const KURL& url) const
 
 void FrameLoader::dispatchDocumentElementAvailable()
 {
-    ASSERT(false); // BKTODO: client()->documentElementAvailable();
+    client()->documentElementAvailable();
 }
 
 void FrameLoader::dispatchDidClearDocumentOfWindowObject()

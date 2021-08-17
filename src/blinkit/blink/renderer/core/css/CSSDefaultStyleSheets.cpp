@@ -50,19 +50,21 @@
 #include "platform/PlatformResourceLoader.h"
 #include "wtf/LeakAnnotations.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
 
 CSSDefaultStyleSheets& CSSDefaultStyleSheets::instance()
 {
-    DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<CSSDefaultStyleSheets>, cssDefaultStyleSheets, (adoptPtrWillBeNoop(new CSSDefaultStyleSheets())));
+    static GCPersistentMember<CSSDefaultStyleSheets> cssDefaultStyleSheets(WrapLeaked(new CSSDefaultStyleSheets));
     return *cssDefaultStyleSheets;
 }
 
 static const MediaQueryEvaluator& screenEval()
 {
-    DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<MediaQueryEvaluator>, staticScreenEval, (adoptPtrWillBeNoop (new MediaQueryEvaluator("screen"))));
+    static GCPersistentMember<MediaQueryEvaluator> staticScreenEval(WrapLeaked(new MediaQueryEvaluator("screen")));
     return *staticScreenEval;
 }
 
@@ -84,28 +86,32 @@ static PassRefPtrWillBeRawPtr<StyleSheetContents> parseUASheet(const String& str
 
 CSSDefaultStyleSheets::CSSDefaultStyleSheets()
     : m_defaultStyle(nullptr)
-    , m_defaultMobileViewportStyle(nullptr)
+    // BKTODO: , m_defaultMobileViewportStyle(nullptr)
     , m_defaultQuirksStyle(nullptr)
+#if 0 // BKTODO:
     , m_defaultPrintStyle(nullptr)
     , m_defaultViewSourceStyle(nullptr)
     , m_defaultXHTMLMobileProfileStyle(nullptr)
+#endif
     , m_defaultStyleSheet(nullptr)
-    , m_mobileViewportStyleSheet(nullptr)
+    // BKTODO: , m_mobileViewportStyleSheet(nullptr)
     , m_quirksStyleSheet(nullptr)
+#if 0 // BKTODO:
     , m_svgStyleSheet(nullptr)
     , m_mathmlStyleSheet(nullptr)
     , m_mediaControlsStyleSheet(nullptr)
     , m_fullscreenStyleSheet(nullptr)
+#endif
 {
     m_defaultStyle = RuleSet::create();
-    m_defaultPrintStyle = RuleSet::create();
+    // BKTODO: m_defaultPrintStyle = RuleSet::create();
     m_defaultQuirksStyle = RuleSet::create();
 
     // Strict-mode rules.
     String defaultRules = loadResourceAsASCIIString("html.css") + LayoutTheme::theme().extraDefaultStyleSheet();
     m_defaultStyleSheet = parseUASheet(defaultRules);
     m_defaultStyle->addRulesFromSheet(defaultStyleSheet(), screenEval());
-    m_defaultPrintStyle->addRulesFromSheet(defaultStyleSheet(), printEval());
+    // BKTODO: m_defaultPrintStyle->addRulesFromSheet(defaultStyleSheet(), printEval());
 
     // Quirks-mode rules.
     String quirksRules = loadResourceAsASCIIString("quirks.css") + LayoutTheme::theme().extraQuirksStyleSheet();
@@ -113,6 +119,7 @@ CSSDefaultStyleSheets::CSSDefaultStyleSheets()
     m_defaultQuirksStyle->addRulesFromSheet(quirksStyleSheet(), screenEval());
 }
 
+#if 0 // BKTODO:
 RuleSet* CSSDefaultStyleSheets::defaultViewSourceStyle()
 {
     if (!m_defaultViewSourceStyle) {
@@ -144,9 +151,11 @@ RuleSet* CSSDefaultStyleSheets::defaultMobileViewportStyle()
     }
     return m_defaultMobileViewportStyle.get();
 }
+#endif
 
 void CSSDefaultStyleSheets::ensureDefaultStyleSheetsForElement(const Element& element, bool& changedDefaultStyle)
 {
+#if 0 // BKTODO:
     // FIXME: We should assert that the sheet only styles SVG elements.
     if (element.isSVGElement() && !m_svgStyleSheet) {
         m_svgStyleSheet = parseUASheet(loadResourceAsASCIIString("svg.css"));
@@ -155,8 +164,6 @@ void CSSDefaultStyleSheets::ensureDefaultStyleSheetsForElement(const Element& el
         changedDefaultStyle = true;
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
     // FIXME: We should assert that the sheet only styles MathML elements.
     if (element.namespaceURI() == MathMLNames::mathmlNamespaceURI
         && !m_mathmlStyleSheet) {
@@ -196,18 +203,22 @@ void CSSDefaultStyleSheets::ensureDefaultStyleSheetsForElement(const Element& el
 DEFINE_TRACE(CSSDefaultStyleSheets)
 {
     visitor->trace(m_defaultStyle);
-    visitor->trace(m_defaultMobileViewportStyle);
+    // BKTODO: visitor->trace(m_defaultMobileViewportStyle);
     visitor->trace(m_defaultQuirksStyle);
+#if 0 // BKTODO:
     visitor->trace(m_defaultPrintStyle);
     visitor->trace(m_defaultViewSourceStyle);
     visitor->trace(m_defaultXHTMLMobileProfileStyle);
+#endif
     visitor->trace(m_defaultStyleSheet);
-    visitor->trace(m_mobileViewportStyleSheet);
+    // BKTODO: visitor->trace(m_mobileViewportStyleSheet);
     visitor->trace(m_quirksStyleSheet);
+#if 0 // BKTODO:
     visitor->trace(m_svgStyleSheet);
     visitor->trace(m_mathmlStyleSheet);
     visitor->trace(m_mediaControlsStyleSheet);
     visitor->trace(m_fullscreenStyleSheet);
+#endif
 }
 
 } // namespace blink

@@ -49,19 +49,16 @@
 
 namespace blink {
 
+#if 0 // BKTODO:
 // FIXME: Broken with OOPI.
 static Document* parentDocument(LocalFrame* frame)
 {
     if (!frame)
         return 0;
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     Element* ownerElement = frame->deprecatedLocalOwner();
     if (!ownerElement)
         return 0;
     return &ownerElement->document();
-#endif
 }
 
 
@@ -70,23 +67,22 @@ static Document* ownerDocument(LocalFrame* frame)
     if (!frame)
         return 0;
 
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     Frame* ownerFrame = frame->tree().parent();
     if (!ownerFrame)
         ownerFrame = frame->loader().opener();
     if (!ownerFrame || !ownerFrame->isLocalFrame())
         return 0;
     return toLocalFrame(ownerFrame)->document();
-#endif
 }
+#endif
 
 DocumentInit::DocumentInit(const KURL& url, LocalFrame* frame, WeakPtrWillBeRawPtr<Document> contextDocument, HTMLImportsController* importsController)
     : m_url(url)
     , m_frame(frame)
+#if 0 // BKTODO:
     , m_parent(parentDocument(frame))
     , m_owner(ownerDocument(frame))
+#endif
     , m_contextDocument(contextDocument)
     , m_importsController(importsController)
     , m_createNewRegistrationContext(false)
@@ -102,17 +98,18 @@ DocumentInit::~DocumentInit()
 
 bool DocumentInit::shouldSetURL() const
 {
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
+#if 0 // BKTODO:
     LocalFrame* frame = frameForSecurityContext();
     return (frame && frame->owner()) || !m_url.isEmpty();
+#else
+    return !m_url.isEmpty();
 #endif
 }
 
 bool DocumentInit::shouldTreatURLAsSrcdocDocument() const
 {
-    return m_parent && m_frame->loader().shouldTreatURLAsSrcdocDocument(m_url);
+    // BKTODO: return m_parent && m_frame->loader().shouldTreatURLAsSrcdocDocument(m_url);
+    return false;
 }
 
 LocalFrame* DocumentInit::frameForSecurityContext() const
@@ -172,12 +169,12 @@ Settings* DocumentInit::settings() const
     ASSERT(frameForSecurityContext());
     return frameForSecurityContext()->settings();
 }
-#endif
 
 KURL DocumentInit::parentBaseURL() const
 {
     return m_parent->baseURL();
 }
+#endif
 
 DocumentInit& DocumentInit::withRegistrationContext(CustomElementRegistrationContext* registrationContext)
 {

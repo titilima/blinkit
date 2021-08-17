@@ -2725,6 +2725,7 @@ void PaintLayer::updateOrRemoveFilterEffectBuilder()
 
 void PaintLayer::filterNeedsPaintInvalidation()
 {
+#if 0 // BKTODO:
     {
         DeprecatedScheduleStyleRecalcDuringLayout marker(layoutObject()->document().lifecycle());
         // It's possible for scheduleSVGFilterLayerUpdateHack to schedule a style recalc, which
@@ -2733,6 +2734,7 @@ void PaintLayer::filterNeedsPaintInvalidation()
         // information into the style system.
         toElement(layoutObject()->node())->scheduleSVGFilterLayerUpdateHack();
     }
+#endif
 
     layoutObject()->setShouldDoFullPaintInvalidation();
 }

@@ -308,23 +308,20 @@ void EventTarget::uncaughtExceptionInEventHandler()
 
 static const AtomicString& legacyType(const Event* event)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (event->type() == EventTypeNames::transitionend)
-        return EventTypeNames::webkitTransitionEnd;
+        ASSERT(false); // BKTODO: return EventTypeNames::webkitTransitionEnd;
 
     if (event->type() == EventTypeNames::animationstart)
-        return EventTypeNames::webkitAnimationStart;
+        ASSERT(false); // BKTODO: return EventTypeNames::webkitAnimationStart;
 
     if (event->type() == EventTypeNames::animationend)
-        return EventTypeNames::webkitAnimationEnd;
+        ASSERT(false); // BKTODO: return EventTypeNames::webkitAnimationEnd;
 
     if (event->type() == EventTypeNames::animationiteration)
-        return EventTypeNames::webkitAnimationIteration;
+        ASSERT(false); // BKTODO: return EventTypeNames::webkitAnimationIteration;
 
     if (event->type() == EventTypeNames::wheel)
         return EventTypeNames::mousewheel;
-#endif
 
     return emptyAtom;
 }
@@ -394,8 +391,10 @@ bool EventTarget::fireEventListeners(Event* event)
         event->setType(unprefixedTypeName);
     }
 
+#if 0 // BKTODO:
     Editor::countEvent(executionContext(), event);
     countLegacyEvents(legacyTypeName, listenersVector, legacyListenersVector);
+#endif
     return !event->defaultPrevented();
 }
 
@@ -407,13 +406,11 @@ void EventTarget::fireEventListeners(Event* event, EventTargetData* d, EventList
     // index |size|, so iterating up to (but not including) |size| naturally excludes
     // new event listeners.
 
+#if 0 // BKTODO:
     if (event->type() == EventTypeNames::beforeunload) {
         if (LocalDOMWindow* executingWindow = this->executingWindow()) {
-            ASSERT(false); // BKTODO:
-#if 0
             if (executingWindow->top())
                 UseCounter::count(executingWindow->document(), UseCounter::SubFrameBeforeUnloadFired);
-#endif
             UseCounter::count(executingWindow->document(), UseCounter::DocumentBeforeUnloadFired);
         }
     } else if (event->type() == EventTypeNames::unload) {
@@ -429,6 +426,7 @@ void EventTarget::fireEventListeners(Event* event, EventTargetData* d, EventList
         if (LocalDOMWindow* executingWindow = this->executingWindow())
             UseCounter::count(executingWindow->document(), UseCounter::TextInputFired);
     }
+#endif
 
     size_t i = 0;
     size_t size = entry.size();

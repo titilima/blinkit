@@ -45,7 +45,7 @@ namespace blink {
 class CSSRule;
 class CSSStyleSheet;
 
-class CORE_EXPORT StyleRuleBase : public RefCountedWillBeGarbageCollectedFinalized<StyleRuleBase> {
+class CORE_EXPORT StyleRuleBase : public BlinKit::GCObject {
     USING_FAST_MALLOC_WITH_TYPE_NAME_WILL_BE_REMOVED(blink::StyleRuleBase);
 public:
     enum Type {

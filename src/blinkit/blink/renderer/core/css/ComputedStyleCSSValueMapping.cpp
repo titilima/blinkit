@@ -2,7 +2,7 @@
 // BlinKit - BlinKit Library
 // -------------------------------------------------
 //   File Name: ComputedStyleCSSValueMapping.cpp
-// Description: Computed Style CSS Value Mappings
+// Description: ComputedStyleCSSValueMapping Class
 //      Author: Ziming Li
 //     Created: 2021-08-01
 // -------------------------------------------------
@@ -1388,7 +1388,7 @@ const HashMap<AtomicString, RefPtr<CSSVariableData>>* ComputedStyleCSSValueMappi
 
 PassRefPtrWillBeRawPtr<CSSValue> ComputedStyleCSSValueMapping::get(CSSPropertyID propertyID, const ComputedStyle& style, const LayoutObject* layoutObject, Node* styledNode, bool allowVisitedStyle)
 {
-    const SVGComputedStyle& svgStyle = style.svgStyle();
+    // BKTODO: const SVGComputedStyle& svgStyle = style.svgStyle();
     propertyID = CSSProperty::resolveDirectionAwareProperty(propertyID, style.direction(), style.writingMode());
     switch (propertyID) {
     case CSSPropertyInvalid:
@@ -2555,6 +2555,7 @@ PassRefPtrWillBeRawPtr<CSSValue> ComputedStyleCSSValueMapping::get(CSSPropertyID
     case CSSPropertyUserZoom:
         return nullptr;
 
+#if 0 // BKTODO:
     // SVG properties.
     case CSSPropertyClipRule:
         return CSSPrimitiveValue::create(svgStyle.clipRule());
@@ -2667,6 +2668,7 @@ PassRefPtrWillBeRawPtr<CSSValue> ComputedStyleCSSValueMapping::get(CSSPropertyID
         return zoomAdjustedPixelValueForLength(svgStyle.rx(), style);
     case CSSPropertyRy:
         return zoomAdjustedPixelValueForLength(svgStyle.ry(), style);
+#endif
     case CSSPropertyScrollSnapType:
         return cssValuePool().createValue(style.scrollSnapType());
     case CSSPropertyScrollSnapPointsX:

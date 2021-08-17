@@ -3115,9 +3115,11 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseSingleValue(CSSProperty
     case CSSPropertyWebkitBorderBeforeColor:
     case CSSPropertyWebkitBorderAfterColor:
     case CSSPropertyWebkitTextStrokeColor:
+#if 0 // BKTODO:
     case CSSPropertyStopColor:
     case CSSPropertyFloodColor:
     case CSSPropertyLightingColor:
+#endif
     case CSSPropertyWebkitColumnRuleColor:
         return consumeColor(m_range, m_context.mode());
     case CSSPropertyColor:
@@ -3138,8 +3140,10 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseSingleValue(CSSProperty
     case CSSPropertyWebkitTextDecorationsInEffect:
     case CSSPropertyTextDecorationLine:
         return consumeTextDecorationLine(m_range);
+#if 0 // BKTODO:
     case CSSPropertyD:
         return consumePath(m_range);
+#endif
     case CSSPropertyMotionPath:
         return consumePathOrNone(m_range);
     case CSSPropertyMotionOffset:
@@ -3164,6 +3168,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseSingleValue(CSSProperty
         return consumePositionY(m_range, m_context.mode());
     case CSSPropertyWebkitTransformOriginZ:
         return consumeLength(m_range, m_context.mode(), ValueRangeAll);
+#if 0 // BKTODO:
     case CSSPropertyFill:
     case CSSPropertyStroke:
         return consumePaint(m_range, m_context.mode());
@@ -3176,15 +3181,19 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseSingleValue(CSSProperty
     case CSSPropertyFilter:
     case CSSPropertyMask:
         return consumeNoneOrURI(m_range);
+#endif
     case CSSPropertyFlexBasis:
         return consumeFlexBasis(m_range, m_context.mode());
     case CSSPropertyFlexGrow:
     case CSSPropertyFlexShrink:
         return consumeNumber(m_range, ValueRangeNonNegative);
+#if 0 // BKTODO:
     case CSSPropertyStrokeDasharray:
         return consumeStrokeDasharray(m_range);
+#endif
     case CSSPropertyWebkitColumnRuleWidth:
         return consumeColumnRuleWidth(m_range, m_context.mode());
+#if 0 // BKTODO:
     case CSSPropertyStrokeOpacity:
     case CSSPropertyFillOpacity:
     case CSSPropertyStopOpacity:
@@ -3204,6 +3213,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseSingleValue(CSSProperty
     case CSSPropertyRx:
     case CSSPropertyRy:
         return consumeLengthOrPercent(m_range, SVGAttributeMode, ValueRangeAll, UnitlessQuirk::Forbid);
+#endif
     case CSSPropertyCursor:
         return consumeCursor(m_range, m_context, inQuirksMode());
     case CSSPropertyContain:
@@ -3853,6 +3863,7 @@ bool CSSPropertyParser::parseShorthand(CSSPropertyID unresolvedProperty, bool im
         return consumeShorthandGreedily(webkitBorderAfterShorthand(), important);
     case CSSPropertyWebkitTextStroke:
         return consumeShorthandGreedily(webkitTextStrokeShorthand(), important);
+#if 0 // BKTODO:
     case CSSPropertyMarker: {
         ImplicitScope implicitScope(this);
         RefPtrWillBeRawPtr<CSSValue> marker = parseSingleValue(CSSPropertyMarkerStart);
@@ -3863,6 +3874,7 @@ bool CSSPropertyParser::parseShorthand(CSSPropertyID unresolvedProperty, bool im
         addProperty(CSSPropertyMarkerEnd, marker.release(), important);
         return true;
     }
+#endif
     case CSSPropertyFlex:
         return consumeFlex(important);
     case CSSPropertyFlexFlow:

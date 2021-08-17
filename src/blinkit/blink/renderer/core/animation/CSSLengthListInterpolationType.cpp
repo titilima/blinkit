@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSLengthListInterpolationType.cpp
+// Description: CSSLengthListInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2021-08-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #include "core/animation/CSSLengthListInterpolationType.h"
 
 #include "core/animation/CSSLengthInterpolationType.h"
-#include "core/animation/LengthListPropertyFunctions.h"
+// BKTODO: #include "core/animation/LengthListPropertyFunctions.h"
 #include "core/animation/ListInterpolationFunctions.h"
 #include "core/animation/UnderlyingLengthChecker.h"
 #include "core/css/CSSPrimitiveValue.h"
@@ -16,7 +27,7 @@ namespace blink {
 
 CSSLengthListInterpolationType::CSSLengthListInterpolationType(CSSPropertyID property)
     : CSSInterpolationType(property)
-    , m_valueRange(LengthListPropertyFunctions::valueRange(property))
+    // BKTODO: , m_valueRange(LengthListPropertyFunctions::valueRange(property))
 {
 }
 
@@ -36,7 +47,8 @@ PassOwnPtr<InterpolationValue> CSSLengthListInterpolationType::maybeConvertNeutr
 
 PassOwnPtr<InterpolationValue> CSSLengthListInterpolationType::maybeConvertInitial() const
 {
-    return maybeConvertLengthList(LengthListPropertyFunctions::getInitialLengthList(cssProperty()), 1);
+    ASSERT(false); // BKTODO: return maybeConvertLengthList(LengthListPropertyFunctions::getInitialLengthList(cssProperty()), 1);
+    return nullptr;
 }
 
 PassOwnPtr<InterpolationValue> CSSLengthListInterpolationType::maybeConvertLengthList(const RefVector<Length>* lengthList, float zoom) const
@@ -70,12 +82,16 @@ private:
 
     bool isValid(const InterpolationEnvironment& environment, const UnderlyingValue&) const final
     {
+        ASSERT(false); // BKTODO:
+        return false;
+#if 0
         const RefVector<Length>* lengthList = LengthListPropertyFunctions::getLengthList(m_property, *environment.state().parentStyle());
         if (!lengthList && !m_inheritedLengthList)
             return true;
         if (!lengthList || !m_inheritedLengthList)
             return false;
         return *m_inheritedLengthList == *lengthList;
+#endif
     }
 
     CSSPropertyID m_property;
@@ -87,10 +103,14 @@ PassOwnPtr<InterpolationValue> CSSLengthListInterpolationType::maybeConvertInher
     if (!state.parentStyle())
         return nullptr;
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     const RefVector<Length>* inheritedLengthList = LengthListPropertyFunctions::getLengthList(cssProperty(), *state.parentStyle());
     conversionCheckers.append(ParentLengthListChecker::create(*this, cssProperty(),
         const_cast<RefVector<Length>*>(inheritedLengthList))); // Take ref.
     return maybeConvertLengthList(inheritedLengthList, state.parentStyle()->effectiveZoom());
+#endif
 }
 
 PassOwnPtr<InterpolationValue> CSSLengthListInterpolationType::maybeConvertValue(const CSSValue& value, const StyleResolverState&, ConversionCheckers&) const
@@ -116,8 +136,12 @@ PassOwnPtr<PairwisePrimitiveInterpolation> CSSLengthListInterpolationType::merge
 
 PassOwnPtr<InterpolationValue> CSSLengthListInterpolationType::maybeConvertUnderlyingValue(const InterpolationEnvironment& environment) const
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     const RefVector<Length>* underlyingLengthList = LengthListPropertyFunctions::getLengthList(cssProperty(), *environment.state().style());
     return maybeConvertLengthList(underlyingLengthList, environment.state().style()->effectiveZoom());
+#endif
 }
 
 void CSSLengthListInterpolationType::composite(UnderlyingValue& underlyingValue, double underlyingFraction, const InterpolationValue& value) const
@@ -129,6 +153,8 @@ void CSSLengthListInterpolationType::composite(UnderlyingValue& underlyingValue,
 
 void CSSLengthListInterpolationType::apply(const InterpolableValue& interpolableValue, const NonInterpolableValue* nonInterpolableValue, InterpolationEnvironment& environment) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     const InterpolableList& interpolableList = toInterpolableList(interpolableValue);
     const size_t length = interpolableList.length();
     ASSERT(length > 0);
@@ -143,6 +169,7 @@ void CSSLengthListInterpolationType::apply(const InterpolableValue& interpolable
             m_valueRange));
     }
     LengthListPropertyFunctions::setLengthList(cssProperty(), *environment.state().style(), result.release());
+#endif
 }
 
 } // namespace blink

@@ -58,7 +58,7 @@ private:
     std::unique_ptr<MessageLoop> m_messageLoop;
     std::unique_ptr<ClientCallerStore> m_clientCallerStore;
 #ifdef BLINKIT_UI_ENABLED
-    // BKTODO: std::unique_ptr<WinThemeEngine> m_themeEngine;
+    std::unique_ptr<WinThemeEngine> m_themeEngine;
 #endif
 
 #if 0 // BKTODO:

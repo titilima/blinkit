@@ -80,13 +80,13 @@ public:
 #if 0 // BKTODO:
     SecurityContext::InsecureRequestsPolicy insecureRequestsPolicy() const;
     SecurityContext::InsecureNavigationsSet* insecureNavigationsToUpgrade() const;
-#endif
 
     Document* parent() const { return m_parent.get(); }
     Document* owner() const { return m_owner.get(); }
     KURL parentBaseURL() const;
     LocalFrame* ownerFrame() const;
-    // BKTODO: Settings* settings() const;
+    Settings* settings() const;
+#endif
 
     DocumentInit& withRegistrationContext(CustomElementRegistrationContext*);
     DocumentInit& withNewRegistrationContext();
@@ -100,8 +100,10 @@ private:
 
     KURL m_url;
     RawPtrWillBeMember<LocalFrame> m_frame;
+#if 0 // BKTODO:
     RefPtrWillBeMember<Document> m_parent;
     RefPtrWillBeMember<Document> m_owner;
+#endif
     WeakPtrWillBeMember<Document> m_contextDocument;
     RawPtrWillBeMember<HTMLImportsController> m_importsController;
     RefPtrWillBeMember<CustomElementRegistrationContext> m_registrationContext;

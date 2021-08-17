@@ -168,8 +168,7 @@ Node::InsertionNotificationRequest HTMLBodyElement::insertedInto(ContainerNode* 
 
 void HTMLBodyElement::didNotifySubtreeInsertionsToDocument()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // FIXME: It's surprising this is web compatible since it means a
     // marginwidth and marginheight attribute can magically appear on the <body>
     // of all documents embedded through <iframe> or <frame>.

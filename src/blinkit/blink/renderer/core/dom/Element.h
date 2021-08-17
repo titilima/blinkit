@@ -283,7 +283,7 @@ public:
     PassRefPtrWillBeRawPtr<Element> cloneElementWithChildren();
     PassRefPtrWillBeRawPtr<Element> cloneElementWithoutChildren();
 
-    void scheduleSVGFilterLayerUpdateHack();
+    // BKTODO: void scheduleSVGFilterLayerUpdateHack();
 
     void setBooleanAttribute(const QualifiedName&, bool);
 

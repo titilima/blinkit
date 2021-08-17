@@ -127,8 +127,7 @@ enum CharCategory {
 
 inline UChar32 foldCase(UChar32 c)
 {
-    ASSERT(false); // BKTODO: return u_foldCase(c, U_FOLD_CASE_DEFAULT);
-    return 0;
+    return u_foldCase(c, U_FOLD_CASE_DEFAULT);
 }
 
 inline int foldCase(UChar* result, int resultLength, const UChar* src, int srcLength, bool* error)

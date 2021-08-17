@@ -123,9 +123,8 @@ public:
 
 inline float parentPageZoomFactor(LocalFrame* frame)
 {
-    ASSERT(false); // BKTODO:
     return 1.0;
-#if 0
+#if 0 // BKTODO:
     Frame* parent = frame->tree().parent();
     if (!parent || !parent->isLocalFrame())
         return 1;
@@ -135,9 +134,8 @@ inline float parentPageZoomFactor(LocalFrame* frame)
 
 inline float parentTextZoomFactor(LocalFrame* frame)
 {
-    ASSERT(false); // BKTODO:
     return 1.0;
-#if 0
+#if 0 // BKTODO:
     Frame* parent = frame->tree().parent();
     if (!parent || !parent->isLocalFrame())
         return 1;
@@ -147,11 +145,9 @@ inline float parentTextZoomFactor(LocalFrame* frame)
 
 } // namespace
 
-PassRefPtrWillBeRawPtr<LocalFrame> LocalFrame::create(FrameLoaderClient* client, FrameHost* host, FrameOwner* owner)
+std::unique_ptr<LocalFrame> LocalFrame::create(FrameLoaderClient* client, FrameHost* host)
 {
-    RefPtrWillBeRawPtr<LocalFrame> frame = adoptRefWillBeNoop(new LocalFrame(client, host, owner));
-    InspectorInstrumentation::frameAttachedToParent(frame.get());
-    return frame.release();
+    return zed::wrap_unique(new LocalFrame(client, host));
 }
 
 void LocalFrame::setView(PassRefPtrWillBeRawPtr<FrameView> view)
@@ -197,8 +193,7 @@ void LocalFrame::createView(const IntSize& viewportSize, const Color& background
     if (isLocalRoot)
         frameView->setParentVisible(true);
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // FIXME: Not clear what the right thing for OOPI is here.
     if (ownerLayoutObject()) {
         HTMLFrameOwnerElement* owner = deprecatedLocalOwner();
@@ -234,7 +229,7 @@ DEFINE_TRACE(LocalFrame)
     visitor->trace(m_loader);
     // BKTODO: visitor->trace(m_navigationScheduler);
     visitor->trace(m_view);
-    visitor->trace(m_domWindow);
+    ASSERT(false); // BKTODO: visitor->trace(m_domWindow);
     visitor->trace(m_pagePopupOwner);
     visitor->trace(m_editor);
     // BKTODO: visitor->trace(m_spellChecker);
@@ -319,7 +314,7 @@ void LocalFrame::detach(void)
     SubframeLoadingDisabler disabler(*document());
 #endif
     m_loader.dispatchUnloadEvent();
-    detachChildren();
+    // BKTODO: detachChildren();
     m_frameScheduler.clear();
 
     // All done if detaching the subframes brought about a detach of this frame also.
@@ -438,10 +433,8 @@ void LocalFrame::willDetachFrameHost()
         page()->scrollingCoordinator()->willDestroyScrollableArea(m_view.get());
 }
 
-void LocalFrame::setDOMWindow(PassRefPtrWillBeRawPtr<LocalDOMWindow> domWindow)
+void LocalFrame::setDOMWindow(std::unique_ptr<LocalDOMWindow> &&domWindow)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     // Oilpan: setDOMWindow() cannot be used when finalizing. Which
     // is acceptable as its actions are either not needed or handled
     // by other means --
@@ -457,14 +450,13 @@ void LocalFrame::setDOMWindow(PassRefPtrWillBeRawPtr<LocalDOMWindow> domWindow)
     //    only keep a weak reference to this frame, so there's no need to be
     //    explicitly notified that this frame is going away.
     if (m_domWindow && host())
-        host()->consoleMessageStorage().frameWindowDiscarded(m_domWindow.get());
+        // BKTODO: host()->consoleMessageStorage().frameWindowDiscarded(m_domWindow.get());
     if (domWindow)
         script().clearWindowProxy();
-#endif
 
     if (m_domWindow)
         m_domWindow->reset();
-    m_domWindow = domWindow;
+    m_domWindow = std::move(domWindow);
 }
 
 Document* LocalFrame::document() const
@@ -487,8 +479,7 @@ void LocalFrame::didChangeVisibilityState()
     if (document())
         document()->didChangeVisibilityState();
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     WillBeHeapVector<RefPtrWillBeMember<LocalFrame>> childFrames;
     for (Frame* child = tree().firstChild(); child; child = child->tree().nextSibling()) {
         if (child->isLocalFrame())
@@ -503,8 +494,7 @@ void LocalFrame::didChangeVisibilityState()
 LocalFrame* LocalFrame::localFrameRoot()
 {
     LocalFrame* curFrame = this;
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     while (curFrame && curFrame->tree().parent() && curFrame->tree().parent()->isLocalFrame())
         curFrame = toLocalFrame(curFrame->tree().parent());
 #endif
@@ -836,8 +826,7 @@ bool LocalFrame::isURLAllowed(const KURL& url) const
 
 bool LocalFrame::shouldReuseDefaultView(const KURL& url) const
 {
-    ASSERT(false); // BKTODO: return loader().stateMachine()->isDisplayingInitialEmptyDocument() && document()->isSecureTransitionTo(url);
-    return false;
+    return loader().stateMachine()->isDisplayingInitialEmptyDocument(); // BKTODO: && document()->isSecureTransitionTo(url);
 }
 
 void LocalFrame::removeSpellingMarkersUnderWords(const Vector<String>& words)
@@ -907,8 +896,8 @@ bool LocalFrame::shouldThrottleRendering() const
     return view() && view()->shouldThrottleRendering();
 }
 
-inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host, FrameOwner* owner)
-    : Frame(client, host, owner)
+inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host)
+    : Frame(client, host)
     , m_loader(this)
     // BKTODO: , m_navigationScheduler(NavigationScheduler::create(this))
     , m_script(ScriptController::Create(*this))

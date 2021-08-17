@@ -59,7 +59,7 @@ static const float kMinFractionToStepWhenPaging = 0.875f;
 
 namespace blink {
 
-struct SameSizeAsScrollableArea {
+struct SameSizeAsScrollableArea : BlinKit::GCObject {
     virtual ~SameSizeAsScrollableArea();
 #if 0 // BKTODO:
 #if ENABLE(ASSERT) && ENABLE(OILPAN)

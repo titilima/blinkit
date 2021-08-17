@@ -123,6 +123,7 @@ float deviceScaleFactor(LocalFrame* frame)
     return page->deviceScaleFactor();
 }
 
+#if 0 // BKTODO:
 PassOwnPtrWillBeRawPtr<Page> Page::createOrdinary(PageClients& pageClients)
 {
     OwnPtrWillBeRawPtr<Page> page = create(pageClients);
@@ -133,6 +134,7 @@ PassOwnPtrWillBeRawPtr<Page> Page::createOrdinary(PageClients& pageClients)
 #endif
     return page.release();
 }
+#endif
 
 Page::Page(PageClients& pageClients)
     : m_animator(PageAnimator::create(*this))
@@ -160,8 +162,7 @@ Page::Page(PageClients& pageClients)
 {
     ASSERT(m_editorClient);
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     ASSERT(!allPages().contains(this));
     allPages().add(this);
 #endif
@@ -189,7 +190,7 @@ ScrollingCoordinator* Page::scrollingCoordinator()
     return m_scrollingCoordinator.get();
 }
 
-#if 0
+#if 0 // BKTODO:
 MemoryPurgeController& Page::memoryPurgeController()
 {
     if (!m_memoryPurgeController)
@@ -266,12 +267,14 @@ void Page::platformColorsChanged()
 
 void Page::setNeedsRecalcStyleInAllFrames()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
         if (frame->isLocalFrame())
             toLocalFrame(frame)->document()->styleResolverChanged();
     }
+#else
+    if (Frame *frame = mainFrame())
+        ASSERT(false); // BKTODO:
 #endif
 }
 

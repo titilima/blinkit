@@ -76,9 +76,9 @@ public:
     virtual bool ScriptEnabled(const std::string &URL) const { return true; }
     void ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const zed::url &baseURL);
 
-    void ClearWindowProxy(void);
+    void clearWindowProxy(void);
     void ClearForClose(void);
-    void UpdateDocument(void);
+    void updateDocument(void);
 
     virtual void ConsoleOutput(int type, const char *msg);
     const char* LookupPrototypeName(const std::string &tagName) const;

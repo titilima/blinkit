@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSValuePool.h
+// Description: CSSValuePool Class
+//      Author: Ziming Li
+//     Created: 2021-08-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011, 2012 Apple Inc. All rights reserved.
  *
@@ -42,7 +53,7 @@
 
 namespace blink {
 
-class CORE_EXPORT CSSValuePool :  public NoBaseWillBeGarbageCollectedFinalized<CSSValuePool> {
+class CORE_EXPORT CSSValuePool :  public BlinKit::GCObject {
     USING_FAST_MALLOC_WILL_BE_REMOVED(CSSValuePool);
 public:
     PassRefPtrWillBeRawPtr<CSSValueList> createFontFaceValue(const AtomicString&);

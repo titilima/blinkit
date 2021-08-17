@@ -90,7 +90,7 @@ template <typename Strategy> class PositionWithAffinityTemplate;
 class CORE_EXPORT LocalFrame : public Frame, public LocalFrameLifecycleNotifier, public WillBeHeapSupplementable<LocalFrame>, public DisplayItemClient {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(LocalFrame);
 public:
-    static PassRefPtrWillBeRawPtr<LocalFrame> create(FrameLoaderClient*, FrameHost*, FrameOwner*);
+    static std::unique_ptr<LocalFrame> create(FrameLoaderClient*, FrameHost*);
 
     void init();
     void setView(PassRefPtrWillBeRawPtr<FrameView>);
@@ -117,7 +117,7 @@ public:
     void willDetachFrameHost();
 
     LocalDOMWindow* localDOMWindow() const;
-    void setDOMWindow(PassRefPtrWillBeRawPtr<LocalDOMWindow>);
+    void setDOMWindow(std::unique_ptr<LocalDOMWindow> &&);
     FrameView* view() const;
     Document* document() const;
     void setPagePopupOwner(Element&);
@@ -205,7 +205,7 @@ public:
 private:
     friend class FrameNavigationDisabler;
 
-    LocalFrame(FrameLoaderClient*, FrameHost*, FrameOwner*);
+    LocalFrame(FrameLoaderClient*, FrameHost*);
 
     // Internal Frame helper overrides:
     WindowProxyManager* windowProxyManager() const override;
@@ -225,7 +225,7 @@ private:
     // BKTODO: OwnPtrWillBeMember<NavigationScheduler> m_navigationScheduler;
 
     RefPtrWillBeMember<FrameView> m_view;
-    RefPtrWillBeMember<LocalDOMWindow> m_domWindow;
+    std::unique_ptr<LocalDOMWindow> m_domWindow;
     // Usually 0. Non-null if this is the top frame of PagePopup.
     RefPtrWillBeMember<Element> m_pagePopupOwner;
 

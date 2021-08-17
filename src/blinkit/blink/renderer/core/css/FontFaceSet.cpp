@@ -195,8 +195,11 @@ bool FontFaceSet::shouldSignalReady() const
 {
     if (!m_loadingFonts.isEmpty())
         return false;
-    ASSERT(false); // BKTODO: return m_isLoading || m_ready->state() == ReadyProperty::Pending;
-    return false;
+#if 0 // BKTODO:
+    return m_isLoading || m_ready->state() == ReadyProperty::Pending;
+#else
+    return m_isLoading;
+#endif
 }
 
 void FontFaceSet::handlePendingEventsAndPromises()
@@ -501,8 +504,7 @@ void FontFaceSet::FontLoadHistogram::updateStatus(FontFace* fontFace)
 
 void FontFaceSet::FontLoadHistogram::record()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (!m_recorded) {
         m_recorded = true;
         Platform::current()->histogramCustomCounts("WebFont.WebFontsInPage", m_count, 1, 100, 50);

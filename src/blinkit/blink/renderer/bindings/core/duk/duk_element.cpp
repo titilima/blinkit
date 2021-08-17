@@ -185,31 +185,6 @@ void DukElement::Create(duk_context *ctx, Element &element)
     PrototypeHelper::CreateScriptObject(ctx, protoName, &element);
 }
 
-void DukElement::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
-{
-    static const PrototypeEntry::Method Methods[] = {
-        { "getAttribute",           Impl::GetAttribute,        1 },
-        { "setAttribute",           Impl::SetAttribute,        2 },
-        { "toString",               Impl::ToString,            0 },
-    };
-    static const PrototypeEntry::Property Properties[] = {
-        { "attributes",             Impl::AttributesGetter,             nullptr                    },
-        { "firstElementChild",      Impl::FirstElementChildGetter,      nullptr                    },
-        { "innerHTML",              Impl::InnerHTMLGetter,              Impl::InnerHTMLSetter      },
-        { "lastElementChild",       Impl::LastElementChildGetter,       nullptr                    },
-        { "nextElementSibling",     Impl::NextElementSiblingGetter,     nullptr                    },
-        { "onload",                 Impl::OnloadGetter,                 Impl::OnloadSetter         },
-        { "outerHTML",              Impl::OuterHTMLGetter,              Impl::OuterHTMLSetter      },
-        { "previousElementSibling", Impl::PreviousElementSiblingGetter, nullptr                    },
-        { "tagName",                Impl::TagNameGetter,                nullptr                    },
-    };
-
-    DukContainerNode::FillPrototypeEntry(entry);
-    entry.Add(Methods, std::size(Methods));
-    entry.Add(Properties, std::size(Properties));
-    entry.Add("style", DUK_TYPE_OBJECT);
-}
-
 duk_ret_t DukElement::GetURLAttributeImpl(duk_context *ctx, const QualifiedName &name)
 {
     duk_push_this(ctx);
@@ -218,23 +193,6 @@ duk_ret_t DukElement::GetURLAttributeImpl(duk_context *ctx, const QualifiedName 
     zed::url ret = element->getURLAttribute(name);
     Duk::PushString(ctx, ret.spec());
     return 1;
-}
-
-const std::unordered_map<std::string, const char *>& DukElement::PrototypeMapForCrawler(void)
-{
-    static std::unordered_map<std::string, const char *> s_prototypeMapForCrawler;
-
-    ASSERT(isMainThread());
-    if (s_prototypeMapForCrawler.empty())
-    {
-        s_prototypeMapForCrawler.insert({
-            { "a",      DukAnchorElement::ProtoName },
-            { "img",    DukImageElement::ProtoName  },
-            { "script", DukScriptElement::ProtoName }
-        });
-    }
-
-    return s_prototypeMapForCrawler;
 }
 
 duk_idx_t DukElement::Push(duk_context *ctx, Element *element)
@@ -246,11 +204,6 @@ duk_idx_t DukElement::Push(duk_context *ctx, Element *element)
         Create(ctx, *element);
     }
     return duk_get_top_index(ctx);
-}
-
-void DukElement::RegisterPrototypeForCrawler(PrototypeHelper &helper)
-{
-    helper.Register(ProtoName, FillPrototypeEntryForCrawler);
 }
 
 duk_ret_t DukElement::SetAttributeEventListenerImpl(duk_context *ctx, const AtomicString &attrName)
@@ -277,5 +230,103 @@ duk_ret_t DukElement::SetAttributeImpl(duk_context *ctx, const QualifiedName &na
         exceptionState.ThrowIfNeeded();
     return 0;
 }
+
+#ifdef BLINKIT_CRAWLER_ENABLED
+void DukElement::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
+{
+    static const PrototypeEntry::Method Methods[] = {
+        { "getAttribute",           Impl::GetAttribute,        1 },
+        { "setAttribute",           Impl::SetAttribute,        2 },
+        { "toString",               Impl::ToString,            0 },
+    };
+    static const PrototypeEntry::Property Properties[] = {
+        { "attributes",             Impl::AttributesGetter,             nullptr                    },
+        { "firstElementChild",      Impl::FirstElementChildGetter,      nullptr                    },
+        { "innerHTML",              Impl::InnerHTMLGetter,              Impl::InnerHTMLSetter      },
+        { "lastElementChild",       Impl::LastElementChildGetter,       nullptr                    },
+        { "nextElementSibling",     Impl::NextElementSiblingGetter,     nullptr                    },
+        { "onload",                 Impl::OnloadGetter,                 Impl::OnloadSetter         },
+        { "outerHTML",              Impl::OuterHTMLGetter,              Impl::OuterHTMLSetter      },
+        { "previousElementSibling", Impl::PreviousElementSiblingGetter, nullptr                    },
+        { "tagName",                Impl::TagNameGetter,                nullptr                    },
+    };
+
+    DukContainerNode::FillPrototypeEntry(entry);
+    entry.Add(Methods, std::size(Methods));
+    entry.Add(Properties, std::size(Properties));
+    entry.Add("style", DUK_TYPE_OBJECT);
+}
+
+const std::unordered_map<std::string, const char *>& DukElement::PrototypeMapForCrawler(void)
+{
+    static std::unordered_map<std::string, const char *> s_prototypeMapForCrawler;
+
+    ASSERT(isMainThread());
+    if (s_prototypeMapForCrawler.empty())
+    {
+        s_prototypeMapForCrawler.insert({
+            { "a",      DukAnchorElement::ProtoName },
+            { "img",    DukImageElement::ProtoName  },
+            { "script", DukScriptElement::ProtoName }
+        });
+    }
+
+    return s_prototypeMapForCrawler;
+}
+
+void DukElement::RegisterPrototypeForCrawler(PrototypeHelper &helper)
+{
+    helper.Register(ProtoName, FillPrototypeEntryForCrawler);
+}
+#endif // BLINKIT_CRAWLER_ENABLED
+
+#ifdef BLINKIT_UI_ENABLED
+void DukElement::FillPrototypeEntryForUI(PrototypeEntry &entry)
+{
+    static const PrototypeEntry::Method Methods[] = {
+        { "getAttribute",           Impl::GetAttribute,        1 },
+        { "setAttribute",           Impl::SetAttribute,        2 },
+        { "toString",               Impl::ToString,            0 },
+    };
+    static const PrototypeEntry::Property Properties[] = {
+        { "attributes",             Impl::AttributesGetter,             nullptr                    },
+        { "firstElementChild",      Impl::FirstElementChildGetter,      nullptr                    },
+        { "innerHTML",              Impl::InnerHTMLGetter,              Impl::InnerHTMLSetter      },
+        { "lastElementChild",       Impl::LastElementChildGetter,       nullptr                    },
+        { "nextElementSibling",     Impl::NextElementSiblingGetter,     nullptr                    },
+        { "onload",                 Impl::OnloadGetter,                 Impl::OnloadSetter         },
+        { "outerHTML",              Impl::OuterHTMLGetter,              Impl::OuterHTMLSetter      },
+        { "previousElementSibling", Impl::PreviousElementSiblingGetter, nullptr                    },
+        { "tagName",                Impl::TagNameGetter,                nullptr                    },
+    };
+
+    DukContainerNode::FillPrototypeEntry(entry);
+    entry.Add(Methods, std::size(Methods));
+    entry.Add(Properties, std::size(Properties));
+    entry.Add("style", DUK_TYPE_OBJECT);
+}
+
+const std::unordered_map<std::string, const char *>& DukElement::PrototypeMapForUI(void)
+{
+    static std::unordered_map<std::string, const char *> s_prototypeMapForUI;
+
+    ASSERT(isMainThread());
+    if (s_prototypeMapForUI.empty())
+    {
+        s_prototypeMapForUI.insert({
+            { "a",      DukAnchorElement::ProtoName },
+            { "img",    DukImageElement::ProtoName  },
+            { "script", DukScriptElement::ProtoName }
+        });
+    }
+
+    return s_prototypeMapForUI;
+}
+
+void DukElement::RegisterPrototypeForUI(PrototypeHelper &helper)
+{
+    helper.Register(ProtoName, FillPrototypeEntryForUI);
+}
+#endif // BLINKIT_UI_ENABLED
 
 } // namespace BlinKit

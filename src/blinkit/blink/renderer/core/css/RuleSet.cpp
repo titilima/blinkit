@@ -107,8 +107,7 @@ static bool containsUncommonAttributeSelector(const CSSSelector& selector)
 static inline PropertyWhitelistType determinePropertyWhitelistType(const AddRuleFlags addRuleFlags, const CSSSelector& selector)
 {
     for (const CSSSelector* component = &selector; component; component = component->tagHistory()) {
-        ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
         if (component->pseudoType() == CSSSelector::PseudoCue || (component->match() == CSSSelector::PseudoElement && component->value() == TextTrackCue::cueShadowPseudoId()))
             return PropertyWhitelistCue;
 #endif
@@ -134,13 +133,10 @@ RuleData::RuleData(StyleRule* rule, unsigned selectorIndex, unsigned position, A
 
 void RuleSet::addToRuleSet(const AtomicString& key, PendingRuleMap& map, const RuleData& ruleData)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    OwnPtrWillBeMember<WillBeHeapLinkedStack<RuleData>>& rules = map.add(key, nullptr).storedValue->value;
+    OwnPtrWillBeMember<WillBeHeapLinkedStack<RuleData>> &rules = map[key];
     if (!rules)
         rules = adoptPtrWillBeNoop(new WillBeHeapLinkedStack<RuleData>);
     rules->push(ruleData);
-#endif
 }
 
 static void extractValuesforSelector(const CSSSelector* selector, AtomicString& id, AtomicString& className, AtomicString& customPseudoElementName, AtomicString& tagName)
@@ -325,21 +321,17 @@ void RuleSet::addStyleRule(StyleRule* rule, AddRuleFlags addRuleFlags)
 
 void RuleSet::compactPendingRules(PendingRuleMap& pendingMap, CompactRuleMap& compactMap)
 {
-    for (auto& item : pendingMap) {
+    for (auto& item : pendingMap)
+    {
         OwnPtrWillBeRawPtr<WillBeHeapLinkedStack<RuleData>> pendingRules = item.second.release();
-        ASSERT(false); // BKTODO:
-#if 0
-        CompactRuleMap::ValueType* compactRules = compactMap.add(item.key, nullptr).storedValue;
 
-        WillBeHeapTerminatedArrayBuilder<RuleData> builder(compactRules->value.release());
-        builder.grow(pendingRules->size());
-        while (!pendingRules->isEmpty()) {
-            builder.append(pendingRules->peek());
+        RulesArray &compactRules = compactMap[item.first];
+        compactRules.reserve(pendingRules->size());
+        while (!pendingRules->isEmpty())
+        {
+            compactRules.emplace_back(pendingRules->peek());
             pendingRules->pop();
         }
-
-        compactRules->value = builder.release();
-#endif
     }
 }
 

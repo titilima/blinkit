@@ -83,14 +83,13 @@ AnimationTimeline::AnimationTimeline(Document* document, PlatformTiming* timing)
     , m_playbackRate(1)
     , m_lastCurrentTimeInternal(0)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    ThreadState::current()->registerPreFinalizer(this);
+    // BKTODO: ThreadState::current()->registerPreFinalizer(this);
     if (!timing)
         m_timing = new AnimationTimelineTiming(this);
     else
         m_timing = timing;
 
+#if 0 // BKTODO:
     if (RuntimeEnabledFeatures::compositorAnimationTimelinesEnabled() && Platform::current()->isThreadedAnimationEnabled()) {
         ASSERT(Platform::current()->compositorSupport());
         m_compositorTimeline = adoptPtr(Platform::current()->compositorSupport()->createAnimationTimeline());
@@ -222,7 +221,7 @@ DEFINE_TRACE(AnimationTimeline::AnimationTimelineTiming)
 double AnimationTimeline::zeroTime()
 {
     if (!m_zeroTimeInitialized && m_document && m_document->loader()) {
-        ASSERT(false); // BKTODO: m_zeroTime = m_document->loader()->timing().referenceMonotonicTime();
+        m_zeroTime = m_document->loader()->referenceMonotonicTime();
         m_zeroTimeInitialized = true;
     }
     return m_zeroTime;

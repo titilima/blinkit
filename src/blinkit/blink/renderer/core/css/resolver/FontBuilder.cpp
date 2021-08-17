@@ -82,13 +82,7 @@ FontFamily FontBuilder::standardFontFamily() const
 
 AtomicString FontBuilder::standardFontFamilyName() const
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    Settings* settings = m_document->settings();
-    if (settings)
-        return settings->genericFontFamilySettings().standard();
-#endif
-    return AtomicString();
+    return Settings::StandardFontFamilyName();
 }
 
 AtomicString FontBuilder::genericFontFamilyName(FontDescription::GenericFamilyType genericFamily) const

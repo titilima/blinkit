@@ -104,13 +104,15 @@ public:
         SpellCheckerClient* spellCheckerClient;
     };
 
-    static PassOwnPtrWillBeRawPtr<Page> create(PageClients& pageClients)
+    static std::unique_ptr<Page> create(PageClients& pageClients)
     {
-        return adoptPtrWillBeNoop(new Page(pageClients));
+        return zed::wrap_unique(new Page(pageClients));
     }
 
+#if 0
     // An "ordinary" page is a fully-featured page owned by a web view.
     static PassOwnPtrWillBeRawPtr<Page> createOrdinary(PageClients&);
+#endif
 
     ~Page() override;
 

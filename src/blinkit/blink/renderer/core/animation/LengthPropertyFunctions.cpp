@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LengthPropertyFunctions.cpp
+// Description: LengthPropertyFunctions Class
+//      Author: Ziming Li
+//     Created: 2021-08-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -30,11 +41,13 @@ ValueRange LengthPropertyFunctions::valueRange(CSSPropertyID property)
     case CSSPropertyPaddingRight:
     case CSSPropertyPaddingTop:
     case CSSPropertyPerspective:
+#if 0 // BKTODO:
     case CSSPropertyR:
     case CSSPropertyRx:
     case CSSPropertyRy:
+#endif
     case CSSPropertyShapeMargin:
-    case CSSPropertyStrokeWidth:
+    // BKTODO: case CSSPropertyStrokeWidth:
     case CSSPropertyWebkitBorderHorizontalSpacing:
     case CSSPropertyWebkitBorderVerticalSpacing:
     case CSSPropertyWebkitColumnGap:
@@ -48,18 +61,21 @@ ValueRange LengthPropertyFunctions::valueRange(CSSPropertyID property)
 
 bool LengthPropertyFunctions::isZoomedLength(CSSPropertyID property)
 {
-    return property != CSSPropertyStrokeWidth;
+    ASSERT(false); // BKTODO: return property != CSSPropertyStrokeWidth;
+    return true;
 }
 
 bool LengthPropertyFunctions::getPixelsForKeyword(CSSPropertyID property, CSSValueID valueID, double& result)
 {
     switch (property) {
+#if 0 // BKTODO:
     case CSSPropertyBaselineShift:
         if (valueID == CSSValueBaseline) {
             result = 0;
             return true;
         }
         return false;
+#endif
     case CSSPropertyBorderBottomWidth:
     case CSSPropertyBorderLeftWidth:
     case CSSPropertyBorderRightWidth:
@@ -130,12 +146,14 @@ bool LengthPropertyFunctions::getLength(CSSPropertyID property, const ComputedSt
     case CSSPropertyBottom:
         result = style.bottom();
         return true;
+#if 0 // BKTODO:
     case CSSPropertyCx:
         result = style.svgStyle().cx();
         return true;
     case CSSPropertyCy:
         result = style.svgStyle().cy();
         return true;
+#endif
     case CSSPropertyFlexBasis:
         result = style.flexBasis();
         return true;
@@ -184,24 +202,30 @@ bool LengthPropertyFunctions::getLength(CSSPropertyID property, const ComputedSt
     case CSSPropertyPaddingTop:
         result = style.paddingTop();
         return true;
+#if 0 // BKTODO:
     case CSSPropertyR:
         result = style.svgStyle().r();
         return true;
+#endif
     case CSSPropertyRight:
         result = style.right();
         return true;
+#if 0 // BKTODO:
     case CSSPropertyRx:
         result = style.svgStyle().rx();
         return true;
     case CSSPropertyRy:
         result = style.svgStyle().ry();
         return true;
+#endif
     case CSSPropertyShapeMargin:
         result = style.shapeMargin();
         return true;
+#if 0 // BKTODO:
     case CSSPropertyStrokeDashoffset:
         result = style.strokeDashOffset();
         return true;
+#endif
     case CSSPropertyTextIndent:
         result = style.textIndent();
         return true;
@@ -223,12 +247,14 @@ bool LengthPropertyFunctions::getLength(CSSPropertyID property, const ComputedSt
     case CSSPropertyWidth:
         result = style.width();
         return true;
+#if 0 // BKTODO:
     case CSSPropertyX:
         result = style.svgStyle().x();
         return true;
     case CSSPropertyY:
         result = style.svgStyle().y();
         return true;
+#endif
 
     case CSSPropertyBorderBottomWidth:
         result = Length(style.borderBottomWidth(), Fixed);
@@ -270,11 +296,13 @@ bool LengthPropertyFunctions::getLength(CSSPropertyID property, const ComputedSt
         result = Length(style.wordSpacing(), Fixed);
         return true;
 
+#if 0 // BKTODO:
     case CSSPropertyBaselineShift:
         if (style.baselineShift() != BS_LENGTH)
             return false;
         result = style.baselineShiftValue();
         return true;
+#endif
     case CSSPropertyLineHeight:
         // Percent Lengths are used to represent numbers on line-height.
         if (style.specifiedLineHeight().hasPercent())
@@ -286,10 +314,12 @@ bool LengthPropertyFunctions::getLength(CSSPropertyID property, const ComputedSt
             return false;
         result = Length(style.perspective(), Fixed);
         return true;
+#if 0 // BKTODO:
     case CSSPropertyStrokeWidth:
         ASSERT(!isZoomedLength(CSSPropertyStrokeWidth));
         result = style.strokeWidth().length();
         return true;
+#endif
     case CSSPropertyVerticalAlign:
         if (style.verticalAlign() != LENGTH)
             return false;
@@ -309,18 +339,22 @@ bool LengthPropertyFunctions::setLength(CSSPropertyID property, ComputedStyle& s
 {
     switch (property) {
     // Setters that take a Length value.
+#if 0 // BKTODO:
     case CSSPropertyBaselineShift:
         style.setBaselineShiftValue(value);
         return true;
+#endif
     case CSSPropertyBottom:
         style.setBottom(value);
         return true;
+#if 0 // BKTODO:
     case CSSPropertyCx:
         style.setCx(value);
         return true;
     case CSSPropertyCy:
         style.setCy(value);
         return true;
+#endif
     case CSSPropertyFlexBasis:
         style.setFlexBasis(value);
         return true;
@@ -369,6 +403,7 @@ bool LengthPropertyFunctions::setLength(CSSPropertyID property, ComputedStyle& s
     case CSSPropertyPaddingTop:
         style.setPaddingTop(value);
         return true;
+#if 0 // BKTODO:
     case CSSPropertyR:
         style.setR(value);
         return true;
@@ -378,15 +413,18 @@ bool LengthPropertyFunctions::setLength(CSSPropertyID property, ComputedStyle& s
     case CSSPropertyRy:
         style.setRy(value);
         return true;
+#endif
     case CSSPropertyRight:
         style.setRight(value);
         return true;
     case CSSPropertyShapeMargin:
         style.setShapeMargin(value);
         return true;
+#if 0 // BKTODO:
     case CSSPropertyStrokeDashoffset:
         style.setStrokeDashOffset(value);
         return true;
+#endif
     case CSSPropertyTop:
         style.setTop(value);
         return true;
@@ -405,12 +443,14 @@ bool LengthPropertyFunctions::setLength(CSSPropertyID property, ComputedStyle& s
     case CSSPropertyWebkitTransformOriginY:
         style.setTransformOriginY(value);
         return true;
+#if 0 // BKTODO:
     case CSSPropertyX:
         style.setX(value);
         return true;
     case CSSPropertyY:
         style.setY(value);
         return true;
+#endif
 
     case CSSPropertyLineHeight:
         // Percent Lengths are used to represent numbers on line-height.
@@ -428,7 +468,7 @@ bool LengthPropertyFunctions::setLength(CSSPropertyID property, ComputedStyle& s
     case CSSPropertyOutlineOffset:
     case CSSPropertyOutlineWidth:
     case CSSPropertyPerspective:
-    case CSSPropertyStrokeWidth:
+    // BKTODO: case CSSPropertyStrokeWidth:
     case CSSPropertyVerticalAlign:
     case CSSPropertyWebkitBorderHorizontalSpacing:
     case CSSPropertyWebkitBorderVerticalSpacing:

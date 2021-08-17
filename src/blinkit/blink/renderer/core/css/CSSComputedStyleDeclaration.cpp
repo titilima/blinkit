@@ -300,6 +300,7 @@ static const CSSPropertyID staticComputableProperties[] = {
     CSSPropertyWebkitUserSelect,
     CSSPropertyWebkitWritingMode,
     CSSPropertyWebkitAppRegion,
+#if 0 // BKTODO:
     CSSPropertyBufferedRendering,
     CSSPropertyClipPath,
     CSSPropertyClipRule,
@@ -320,7 +321,9 @@ static const CSSPropertyID staticComputableProperties[] = {
     CSSPropertyMarkerMid,
     CSSPropertyMarkerStart,
     CSSPropertyMaskType,
+#endif
     CSSPropertyMaskSourceType,
+#if 0 // BKTODO:
     CSSPropertyShapeRendering,
     CSSPropertyStroke,
     CSSPropertyStrokeDasharray,
@@ -334,7 +337,9 @@ static const CSSPropertyID staticComputableProperties[] = {
     CSSPropertyBaselineShift,
     CSSPropertyDominantBaseline,
     CSSPropertyTextAnchor,
+#endif
     CSSPropertyWritingMode,
+#if 0 // BKTODO:
     CSSPropertyVectorEffect,
     CSSPropertyPaintOrder,
     CSSPropertyD,
@@ -345,6 +350,7 @@ static const CSSPropertyID staticComputableProperties[] = {
     CSSPropertyR,
     CSSPropertyRx,
     CSSPropertyRy,
+#endif
     CSSPropertyScrollSnapType,
     CSSPropertyScrollSnapPointsX,
     CSSPropertyScrollSnapPointsY,

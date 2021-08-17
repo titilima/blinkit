@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PageWidgetDelegate.h
+// Description: PageWidgetDelegate Class
+//      Author: Ziming Li
+//     Created: 2021-08-14
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -32,8 +43,12 @@
 #define PageWidgetDelegate_h
 
 #include "public/platform/WebCanvas.h"
+#if 0 // BKTODO:
 #include "public/web/WebInputEvent.h"
 #include "public/web/WebWidget.h"
+#else
+#   include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#endif
 #include "wtf/OwnPtr.h"
 
 namespace blink {
@@ -53,14 +68,16 @@ public:
     virtual void handleMouseLeave(LocalFrame& mainFrame, const WebMouseEvent&);
     virtual void handleMouseDown(LocalFrame& mainFrame, const WebMouseEvent&);
     virtual void handleMouseUp(LocalFrame& mainFrame, const WebMouseEvent&);
+#if 0 // BKTODO:
     virtual WebInputEventResult handleMouseWheel(LocalFrame& mainFrame, const WebMouseWheelEvent&);
     virtual WebInputEventResult handleKeyEvent(const WebKeyboardEvent&) = 0;
     virtual WebInputEventResult handleCharEvent(const WebKeyboardEvent&) = 0;
     virtual WebInputEventResult handleGestureEvent(const WebGestureEvent&) = 0;
     virtual WebInputEventResult handleTouchEvent(LocalFrame& mainFrame, const WebTouchEvent&);
+#endif
     virtual ~PageWidgetEventHandler() { }
 protected:
-    const char* inputTypeToName(WebInputEvent::Type);
+    // BKTODO: const char* inputTypeToName(WebInputEvent::Type);
 };
 
 
@@ -75,11 +92,13 @@ public:
     // See documents of methods with the same names in FrameView class.
     static void updateAllLifecyclePhases(Page&, LocalFrame& root);
 
-    static void paint(Page&, WebCanvas*, const WebRect&, LocalFrame& root);
-    static void paintIgnoringCompositing(Page&, WebCanvas*, const WebRect&, LocalFrame& root);
+    static void paint(Page&, WebCanvas*, const IntRect&, LocalFrame& root);
+    static void paintIgnoringCompositing(Page&, WebCanvas*, const IntRect&, LocalFrame& root);
 
+#if 0 // BKTODO:
     // See FIXME in the function body about nullptr |root|.
     static WebInputEventResult handleInputEvent(PageWidgetEventHandler&, const WebInputEvent&, LocalFrame* root);
+#endif
 
 private:
     PageWidgetDelegate() { }

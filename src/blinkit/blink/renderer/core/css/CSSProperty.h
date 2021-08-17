@@ -46,10 +46,7 @@ namespace blink {
 
 struct StylePropertyMetadata {
     DISALLOW_NEW();
-    StylePropertyMetadata(void)
-    {
-        ASSERT(false); // BKTODO:
-    }
+    StylePropertyMetadata(void) : m_propertyID(CSSPropertyInvalid) {}
     StylePropertyMetadata(CSSPropertyID propertyID, bool isSetFromShorthand, int indexInShorthandsVector, bool important, bool implicit, bool inherited)
         : m_propertyID(propertyID)
         , m_isSetFromShorthand(isSetFromShorthand)
@@ -74,8 +71,10 @@ class CSSProperty {
     DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
 public:
     CSSProperty(void)
+#ifndef NDEBUG
+        : m_unused(true)
+#endif
     {
-        ASSERT(false); // BKTODO:
     }
     CSSProperty(CSSPropertyID propertyID, PassRefPtrWillBeRawPtr<CSSValue> value, bool important = false, bool isSetFromShorthand = false, int indexInShorthandsVector = 0, bool implicit = false)
         : m_metadata(propertyID, isSetFromShorthand, indexInShorthandsVector, important, implicit, CSSPropertyMetadata::isInheritedProperty(propertyID))
@@ -100,13 +99,20 @@ public:
     static CSSPropertyID resolveDirectionAwareProperty(CSSPropertyID, TextDirection, WritingMode);
     static bool isAffectedByAllProperty(CSSPropertyID);
 
-    const StylePropertyMetadata& metadata() const { return m_metadata; }
+    const StylePropertyMetadata& metadata() const
+    {
+        ASSERT(!m_unused);
+        return m_metadata;
+    }
 
     bool operator==(const CSSProperty& other) const;
 
     DEFINE_INLINE_TRACE() { visitor->trace(m_value); }
 
 private:
+#ifndef NDEBUG
+    bool m_unused = false;
+#endif
     StylePropertyMetadata m_metadata;
     RefPtrWillBeMember<CSSValue> m_value;
 };
