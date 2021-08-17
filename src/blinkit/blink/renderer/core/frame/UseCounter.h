@@ -35,6 +35,7 @@ public:
         BorderImageWithBorderStyleNone,
         CaseInsensitiveAttrSelectorMatch,
         ClientHintsContentDPR,
+        ClipCssOfPositionedElement,
         ClipPathOfPositionedElement,
         CSSAnimationsStackedNeutralKeyframe,
         CSSDeepCombinator,

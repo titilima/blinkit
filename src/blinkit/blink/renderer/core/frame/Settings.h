@@ -17,6 +17,7 @@
 #include "blinkit/blink/renderer/core/editing/SelectionStrategy.h"
 #include "blinkit/blink/public/platform/PointerProperties.h"
 #include "blinkit/blink/public/platform/WebDisplayMode.h"
+#include "blinkit/blink/renderer/platform/FontFamilyNames.h"
 #include "blinkit/blink/renderer/platform/graphics/ImageAnimationPolicy.h"
 #include "blinkit/blink/renderer/wtf/Allocator.h"
 #include "blinkit/blink/renderer/wtf/text/WTFString.h"
@@ -34,17 +35,20 @@ public:
     BLINKIT_BOOLEAN_SETTING_ITEM(caretBrowsingEnabled, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(deviceSupportsMouse, true);
     BLINKIT_BOOLEAN_SETTING_ITEM(downloadableBinaryFontsEnabled, true);
-    static constexpr bool forceZeroLayoutHeight = false;
+    BLINKIT_BOOLEAN_SETTING_ITEM(forceZeroLayoutHeight, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(ignoreMainFrameOverflowHiddenQuirk, false);
+    BLINKIT_BOOLEAN_SETTING_ITEM(imagesEnabled, true);
     BLINKIT_BOOLEAN_SETTING_ITEM(inertVisualViewport, false);
+    BLINKIT_BOOLEAN_SETTING_ITEM(loadsImagesAutomatically, true);
     BLINKIT_BOOLEAN_SETTING_ITEM(mainFrameClipsContent, true);
     BLINKIT_BOOLEAN_SETTING_ITEM(preferCompositingToLCDTextEnabled, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(reportScreenSizeInPhysicalPixelsQuirk, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(reportWheelOverscroll, false);
-    static constexpr bool resizeIsDeviceSizeChange = false;
+    BLINKIT_BOOLEAN_SETTING_ITEM(resizeIsDeviceSizeChange, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(rootLayerScrolls, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(scrollAnimatorEnabled, true);
     BLINKIT_BOOLEAN_SETTING_ITEM(selectionIncludesAltImageText, false);
+    BLINKIT_BOOLEAN_SETTING_ITEM(shrinksViewportContentToFit, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(shouldClearDocumentBackground, true);
     BLINKIT_BOOLEAN_SETTING_ITEM(shouldPrintBackgrounds, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(shouldRespectImageOrientation, false);
@@ -53,13 +57,12 @@ public:
     BLINKIT_BOOLEAN_SETTING_ITEM(textAreasAreResizable, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(textAutosizingEnabled, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(useLegacyBackgroundSizeShorthandBehavior, false);
-    BLINKIT_BOOLEAN_SETTING_ITEM(useMobileViewportStyle, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(useSolidColorScrollbars, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(usesEncodingDetector, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(viewportEnabled, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(viewportMetaEnabled, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(viewportMetaZeroValuesQuirk, false);
-    static constexpr bool viewportMetaMergeContentQuirk = false;
+    BLINKIT_BOOLEAN_SETTING_ITEM(viewportMetaMergeContentQuirk, false);
 
     static constexpr int availableHoverTypes(void) { return HoverTypeNone; }
     static constexpr int availablePointerTypes(void) { return PointerTypeNone; }
@@ -76,6 +79,7 @@ public:
     static constexpr SelectionStrategy selectionStrategy(void) { return SelectionStrategy::Character; }
 
     static String defaultTextEncodingName(void) { return String("UTF-8"); }
+    static const AtomicString& StandardFontFamilyName(void) { return FontFamilyNames::webkit_standard; }
 
 #if OS_WIN
     static constexpr EditingBehaviorType editingBehaviorType(void) { return EditingWindowsBehavior; }

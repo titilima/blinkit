@@ -60,7 +60,6 @@ inline bool isDebuggerPaused(...) { return false; }
 #define didScheduleStyleRecalculation(...)          DoNothing()
 #define didUpdateLayout(...)                        DoNothing()
 #define domContentLoadedEventFired(...)             DoNothing()
-#define frameAttachedToParent(...)                  DoNothing()
 #define frameDetachedFromParent(...)                DoNothing()
 #define layerTreeDidChange(...)                     DoNothing()
 #define loadEventFired(...)                         DoNothing()
