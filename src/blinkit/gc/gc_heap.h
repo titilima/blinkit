@@ -38,6 +38,9 @@ public:
     void RetainPersistentObject(GCObject &o);
     void ReleasePersistentObject(GCObject &o);
 
+    void RegisterWeakPtr(GCObject **pp);
+    void FlushWeakPtrs(GCObject &o);
+
     void CollectGarbage(void);
     void Persist(void *p);
     void Unpersist(void *p);
@@ -54,8 +57,8 @@ private:
     void CleanupStashObjects(void);
     void CleanupMembers(GCVisitor &visitor);
 
-
     std::unordered_set<GCObject *> m_persistentObjects;
+    std::unordered_map<GCObject *, std::vector<GCObject **>> m_weakPtrs;
     GCObjectSet m_rootObjects, m_memberObjects, m_stashObjects, m_globalObjects;
 };
 

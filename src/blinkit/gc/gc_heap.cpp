@@ -212,6 +212,11 @@ void GCHeap::CollectGarbage(void)
 #endif
 }
 
+void GCHeap::FlushWeakPtrs(GCObject &o)
+{
+    ASSERT(false); // BKTODO:
+}
+
 void GCHeap::FlushWeakSlot(void **slot, const GCObjectSet &objectsToGC)
 {
     void *o = *slot;
@@ -230,6 +235,11 @@ void GCHeap::Persist(void *p)
     ASSERT(false); // BKTODO: Remove it later!
 }
 
+void GCHeap::RegisterWeakPtr(GCObject **pp)
+{
+    ASSERT(false); // BKTODO:
+}
+
 void GCHeap::ReleasePersistentObject(GCObject &o)
 {
     ASSERT(zed::key_exists(m_persistentObjects, &o));
@@ -244,14 +254,9 @@ void GCHeap::ReleasePersistentObject(GCObject &o)
 void GCHeap::RetainPersistentObject(GCObject &o)
 {
     if (!zed::key_exists(m_persistentObjects, &o))
-    {
-        ASSERT(0 == o.m_refCnt);
         m_persistentObjects.insert(&o);
-    }
     else
-    {
         ASSERT(o.m_refCnt > 0);
-    }
     o.IncRef();
 }
 
@@ -302,6 +307,12 @@ void GCClearFlag(const void *p, GCObjectFlag flag)
     GCHeap::SetObjectFlag(p, flag, false);
 }
 
+void GCFlushWeakPtrs(GCObject *o)
+{
+    if (nullptr != o)
+        theHeap->FlushWeakPtrs(*o);
+}
+
 #ifdef NDEBUG
 void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr)
 {
@@ -319,6 +330,11 @@ void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr, const char *na
 void GCPersist(const void *p)
 {
     theHeap->Persist(const_cast<void *>(p));
+}
+
+void GCRegisterWeakPtr(GCObject **pp)
+{
+    theHeap->RegisterWeakPtr(pp);
 }
 
 void GCReleasePersistentObject(GCObject *o)

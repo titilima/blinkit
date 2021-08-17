@@ -32,7 +32,7 @@ namespace BlinKit {
 class GCObject
 {
 public:
-    virtual ~GCObject(void) = default;
+    virtual ~GCObject(void);
 protected:
     GCObject(void) = default;
 
@@ -54,6 +54,9 @@ private:
 
 void GCRetainPersistentObject(GCObject *o);
 void GCReleasePersistentObject(GCObject *o);
+
+void GCRegisterWeakPtr(GCObject **pp);
+void GCFlushWeakPtrs(GCObject *p);
 
 /**
  * GCRefCounted
@@ -198,6 +201,21 @@ public:
             GCRetainPersistentObject(static_cast<GCObject *>(this->m_ptr));
         return *this;
     }
+};
+
+template <class T>
+class GCWeakMember final : public GCMemberBase<GCObject>
+{
+public:
+    GCWeakMember(T *ptr) : GCMemberBase<GCObject>(ptr)
+    {
+        ASSERT(nullptr != this->m_ptr);
+        GCRegisterWeakPtr(&this->m_ptr);
+    }
+
+    T* get(void) const { return static_cast<T *>(const_cast<T *>(m_ptr)); }
+
+    T* operator->() const { return get(); }
 };
 
 struct GCTable {

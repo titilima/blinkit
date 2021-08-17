@@ -12,8 +12,14 @@
 #include "./gc_def.h"
 
 #include "blinkit/blink/renderer/wtf/MainThread.h"
+#include "blinkit/gc/gc_heap.h"
 
 namespace BlinKit {
+
+GCObject::~GCObject(void)
+{
+    GCFlushWeakPtrs(this);
+}
 
 unsigned GCObject::DecRef(void)
 {
