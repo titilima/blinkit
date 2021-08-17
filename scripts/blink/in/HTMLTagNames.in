@@ -12,6 +12,7 @@ aside interfaceName=HTMLElement
 b interfaceName=HTMLElement
 base
 basefont interfaceName=HTMLElement
+bdi interfaceName=HTMLBDIElement, JSInterfaceName=HTMLElement
 big interfaceName=HTMLElement
 blockquote interfaceName=HTMLQuoteElement
 body

@@ -2,6 +2,7 @@ namespace="HTTP"
 export="PLATFORM_EXPORT"
 
 Accept
+Content-Language
 Content-Type
 GET
 POST
