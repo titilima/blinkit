@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PaintInfo.h
+// Description: PaintInfo Struct
+//      Author: Ziming Li
+//     Created: 2021-08-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -95,7 +106,11 @@ struct CORE_EXPORT PaintInfo {
     bool skipRootBackground() const { return m_paintFlags & PaintLayerPaintingSkipRootBackground; }
     bool paintRootBackgroundOnly() const { return m_paintFlags & PaintLayerPaintingRootBackgroundOnly; }
 
-    bool isPrinting() const { return m_globalPaintFlags & GlobalPaintPrinting; }
+    constexpr bool isPrinting(void) const
+    {
+        ASSERT(0 == (GlobalPaintPrinting & m_globalPaintFlags));
+        return false;
+    }
 
     DisplayItem::Type displayItemTypeForClipping() const { return DisplayItem::paintPhaseToClipBoxType(phase); }
 
