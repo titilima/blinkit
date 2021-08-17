@@ -9,7 +9,7 @@
 // Copyright (C) 2018 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "bk_bitmap.h"
+#include "./bk_bitmap.h"
 
 namespace BlinKit {
 
@@ -30,7 +30,7 @@ HBITMAP BkBitmap::InstallDIBSection(int width, int height, HDC hdc)
     if (nullptr != ret)
     {
         const SkImageInfo info = SkImageInfo::MakeN32(width, height, kOpaque_SkAlphaType);
-        ASSERT(false); // BKTODO: installPixels(info, bits, info.minRowBytes(), OnFinalize, ret);
+        installPixels(info, bits, info.minRowBytes(), nullptr, OnFinalize, ret);
     }
     return ret;
 }
