@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - BlinKit Library
-// -------------------------------------------------
-//   File Name: FontSelector.h
-// Description: FontSelector Class
-//      Author: Ziming Li
-//     Created: 2021-08-13
-// -------------------------------------------------
-// Copyright (C) 2021 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -49,7 +38,7 @@ namespace blink {
 class FontData;
 class FontDescription;
 
-class PLATFORM_EXPORT FontSelector : public BlinKit::GCObject, public FontCacheClient {
+class PLATFORM_EXPORT FontSelector : public FontCacheClient {
 public:
     virtual ~FontSelector() { }
     virtual PassRefPtr<FontData> getFontData(const FontDescription&, const AtomicString& familyName) = 0;
