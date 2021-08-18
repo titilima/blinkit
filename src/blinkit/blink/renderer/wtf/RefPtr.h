@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: RefPtr.h
+// Description: RefPtr Class
+//      Author: Ziming Li
+//     Created: 2021-08-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  *  Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010, 2013 Apple Inc. All rights reserved.
  *
@@ -176,5 +187,16 @@ private:
 
 using WTF::RefPtr;
 using WTF::static_pointer_cast;
+
+namespace std {
+template <class T>
+struct hash<WTF::RefPtr<T>>
+{
+    std::size_t operator()(const WTF::RefPtr<T> &p) const noexcept
+    {
+        return reinterpret_cast<std::size_t>(p.get());
+    }
+};
+}
 
 #endif // WTF_RefPtr_h
