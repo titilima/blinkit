@@ -14,32 +14,22 @@
 
 #pragma once
 
-#include <unordered_set>
 #include "blinkit/blink/renderer/platform/heap/Visitor.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
 
 namespace BlinKit {
 
 class GCVisitor final : public blink::Visitor
 {
+    STACK_ALLOCATED();
 public:
-    GCVisitor(const std::unordered_set<void *> &memberObjects);
-
-    const std::unordered_set<void *>& ObjectsToGC(void) const { return m_objectsToGC; }
-    const std::vector<void **> WeakSlots(void) const { return m_weakSlots; }
+    GCVisitor(GCObject *root = nullptr);
+    ~GCVisitor(void);
 private:
-    void MainHandler(void *p);
-    void ChildrenHandler(void *p);
+    void TraceImpl(GCObject *o, void **slot) override;
 
-    void TraceImpl(GCObject &o) override;
-    void TraceImpl(void *p) override;
-    void RegisterWeakSlot(void **pp) override;
-
-    std::unordered_set<void *> m_objectsToGC;
-    std::vector<void **> m_weakSlots;
-    std::vector<void *> m_childrenStash;
-
-    using TraceHandler = void(GCVisitor::*)(void *);
-    TraceHandler m_currentHandler = &GCVisitor::MainHandler;
+    using Slots = std::vector<void **>;
+    std::unordered_map<GCObject *, Slots> m_objects;
 };
 
 } // namespace BlinKit

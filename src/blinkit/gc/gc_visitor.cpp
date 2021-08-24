@@ -9,50 +9,49 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "gc_visitor.h"
+#include "./gc_visitor.h"
 
-#include "blinkit/gc/gc_heap.h"
-#include "third_party/zed/include/zed/utility.hpp"
+#include "blinkit/blink/renderer/wtf/MainThread.h"
 
 namespace BlinKit {
 
-GCVisitor::GCVisitor(const std::unordered_set<void *> &memberObjects) : m_objectsToGC(memberObjects)
+GCVisitor::GCVisitor(GCObject *root)
 {
-}
-
-void GCVisitor::ChildrenHandler(void *p)
-{
-    m_childrenStash.push_back(p);
-}
-
-void GCVisitor::MainHandler(void *p)
-{
-    zed::scoped_swap _(m_currentHandler, &GCVisitor::ChildrenHandler);
-
-    m_childrenStash.push_back(p);
-    while (!m_childrenStash.empty())
+    ASSERT(isMainThread());
+    if (nullptr != root)
     {
-        std::vector<void *> childrenStash;
-        childrenStash.swap(m_childrenStash);
-        for (void *child : childrenStash)
-            GCHeap::Trace(child, this);
+        ASSERT(0 == root->m_refCnt);
+        m_objects.emplace(root, Slots());
     }
 }
 
-void GCVisitor::RegisterWeakSlot(void **pp)
+GCVisitor::~GCVisitor(void)
 {
-    if (nullptr != *pp)
-        m_weakSlots.push_back(pp);
+    std::vector<std::unique_ptr<GCObject>> objectsToGC;
+    for (auto &[o, slots] : m_objects)
+    {
+        if (slots.size() < o->m_refCnt)
+            continue; // Still retained by others.
+        ASSERT(o->m_refCnt == slots.size());
+
+        for (void **slot : slots)
+            *slot = nullptr;
+        objectsToGC.emplace_back(o);
+    }
 }
 
-void GCVisitor::TraceImpl(GCObject &o)
+void GCVisitor::TraceImpl(GCObject *o, void **slot)
 {
-    ASSERT(false); // BKTODO:
-}
+    ASSERT(isMainThread());
+    ASSERT(nullptr != o);
 
-void GCVisitor::TraceImpl(void *p)
-{
-    ASSERT(false); // BKTODO: Remove it later!
+    Slots &slots = m_objects[o];
+    if (!slots.empty())
+        ASSERT(slots.back() != slot);
+    slots.emplace_back(slot);
+
+    if (1 == slots.size())
+        o->trace(this);
 }
 
 } // namespace BlinKit
