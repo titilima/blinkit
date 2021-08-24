@@ -77,7 +77,7 @@ public:
     void ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const zed::url &baseURL);
 
     void clearWindowProxy(void);
-    void ClearForClose(void);
+    void clearForClose(void);
     void updateDocument(void);
 
     virtual void ConsoleOutput(int type, const char *msg);

@@ -78,7 +78,7 @@ void ScriptController::Attach(duk_context *ctx, duk_idx_t globalStashIndex)
     duk_put_prop_string(ctx, globalStashIndex, NativeContext);
 }
 
-void ScriptController::ClearForClose(void)
+void ScriptController::clearForClose(void)
 {
     DestroyDukSession();
 }
