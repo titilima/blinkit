@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MainThreadTaskRunner.h
+// Description: MainThreadTaskRunner Class
+//      Author: Ziming Li
+//     Created: 2021-08-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -42,12 +53,12 @@ namespace blink {
 class ExecutionContext;
 class ExecutionContextTask;
 
-class CORE_EXPORT MainThreadTaskRunner final : public NoBaseWillBeGarbageCollectedFinalized<MainThreadTaskRunner> {
+class CORE_EXPORT MainThreadTaskRunner final {
     WTF_MAKE_NONCOPYABLE(MainThreadTaskRunner);
     USING_FAST_MALLOC_WILL_BE_REMOVED(MainThreadTaskRunner);
 
 public:
-    static PassOwnPtrWillBeRawPtr<MainThreadTaskRunner> create(ExecutionContext*);
+    static std::unique_ptr<MainThreadTaskRunner> create(ExecutionContext*);
 
     ~MainThreadTaskRunner();
 
@@ -76,9 +87,9 @@ private:
     bool m_suspended;
 };
 
-inline PassOwnPtrWillBeRawPtr<MainThreadTaskRunner> MainThreadTaskRunner::create(ExecutionContext* context)
+inline std::unique_ptr<MainThreadTaskRunner> MainThreadTaskRunner::create(ExecutionContext* context)
 {
-    return adoptPtrWillBeNoop(new MainThreadTaskRunner(context));
+    return zed::wrap_unique(new MainThreadTaskRunner(context));
 }
 
 } // namespace

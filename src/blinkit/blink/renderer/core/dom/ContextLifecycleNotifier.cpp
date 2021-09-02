@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContextLifecycleNotifier.cpp
+// Description: ContextLifecycleNotifier Class
+//      Author: Ziming Li
+//     Created: 2021-08-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2013 Google Inc. All Rights Reserved.
@@ -35,8 +46,7 @@ namespace blink {
 void ContextLifecycleNotifier::notifyResumingActiveDOMObjects()
 {
     TemporaryChange<IterationType> scope(m_iterating, IteratingOverAll);
-    Vector<RawPtrWillBeUntracedMember<ContextLifecycleObserver>> snapshotOfObservers;
-    copyToVector(m_observers, snapshotOfObservers);
+    std::vector<ContextLifecycleObserver *> snapshotOfObservers = m_observers.GetSnapshot();
     for (ContextLifecycleObserver* observer : snapshotOfObservers) {
         // FIXME: Oilpan: At the moment, it's possible that a ActiveDOMObject
         // observer is destructed while iterating. Once we enable Oilpan by default
@@ -58,8 +68,7 @@ void ContextLifecycleNotifier::notifyResumingActiveDOMObjects()
 void ContextLifecycleNotifier::notifySuspendingActiveDOMObjects()
 {
     TemporaryChange<IterationType> scope(m_iterating, IteratingOverAll);
-    Vector<RawPtrWillBeUntracedMember<ContextLifecycleObserver>> snapshotOfObservers;
-    copyToVector(m_observers, snapshotOfObservers);
+    std::vector<ContextLifecycleObserver *> snapshotOfObservers = m_observers.GetSnapshot();
     for (ContextLifecycleObserver* observer : snapshotOfObservers) {
         // It's possible that the ActiveDOMObject is already destructed.
         // See a FIXME above.
@@ -77,8 +86,7 @@ void ContextLifecycleNotifier::notifySuspendingActiveDOMObjects()
 void ContextLifecycleNotifier::notifyStoppingActiveDOMObjects()
 {
     TemporaryChange<IterationType> scope(m_iterating, IteratingOverAll);
-    Vector<RawPtrWillBeUntracedMember<ContextLifecycleObserver>> snapshotOfObservers;
-    copyToVector(m_observers, snapshotOfObservers);
+    std::vector<ContextLifecycleObserver *> snapshotOfObservers = m_observers.GetSnapshot();
     for (ContextLifecycleObserver* observer : snapshotOfObservers) {
         // It's possible that the ActiveDOMObject is already destructed.
         // See a FIXME above.
@@ -96,16 +104,21 @@ void ContextLifecycleNotifier::notifyStoppingActiveDOMObjects()
 unsigned ContextLifecycleNotifier::activeDOMObjectCount() const
 {
     unsigned activeDOMObjects = 0;
+    ASSERT(false); // BKTODO:
+#if 0
     for (ContextLifecycleObserver* observer : m_observers) {
         if (observer->observerType() != ContextLifecycleObserver::ActiveDOMObjectType)
             continue;
         activeDOMObjects++;
     }
+#endif
     return activeDOMObjects;
 }
 
 bool ContextLifecycleNotifier::hasPendingActivity() const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     for (ContextLifecycleObserver* observer : m_observers) {
         if (observer->observerType() != ContextLifecycleObserver::ActiveDOMObjectType)
             continue;
@@ -113,16 +126,17 @@ bool ContextLifecycleNotifier::hasPendingActivity() const
         if (activeDOMObject->hasPendingActivity())
             return true;
     }
+#endif
     return false;
 }
 
 #if ENABLE(ASSERT)
 bool ContextLifecycleNotifier::contains(ActiveDOMObject* object) const
 {
-    for (ContextLifecycleObserver* observer : m_observers) {
-        if (observer->observerType() != ContextLifecycleObserver::ActiveDOMObjectType)
+    for (ContextLifecycleObserver &observer : m_observers) {
+        if (observer.observerType() != ContextLifecycleObserver::ActiveDOMObjectType)
             continue;
-        ActiveDOMObject* activeDOMObject = static_cast<ActiveDOMObject*>(observer);
+        ActiveDOMObject* activeDOMObject = static_cast<ActiveDOMObject*>(&observer);
         if (activeDOMObject == object)
             return true;
     }

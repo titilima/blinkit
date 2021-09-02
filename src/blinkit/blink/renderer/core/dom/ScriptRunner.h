@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScriptRunner.h
+// Description: ScriptRunner Class
+//      Author: Ziming Li
+//     Created: 2021-08-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -41,12 +52,12 @@ class Document;
 class ScriptLoader;
 class WebTaskRunner;
 
-class CORE_EXPORT ScriptRunner final : public NoBaseWillBeGarbageCollectedFinalized<ScriptRunner> {
+class CORE_EXPORT ScriptRunner final {
     WTF_MAKE_NONCOPYABLE(ScriptRunner); USING_FAST_MALLOC_WILL_BE_REMOVED(ScriptRunner);
 public:
-    static PassOwnPtrWillBeRawPtr<ScriptRunner> create(Document* document)
+    static std::unique_ptr<ScriptRunner> create(Document* document)
     {
-        return adoptPtrWillBeNoop(new ScriptRunner(document));
+        return zed::wrap_unique(new ScriptRunner(document));
     }
     ~ScriptRunner();
 #if !ENABLE(OILPAN)

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimationTimeline.h
+// Description: AnimationTimeline Class
+//      Author: Ziming Li
+//     Created: 2021-08-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -48,11 +59,11 @@ class Document;
 class AnimationEffect;
 
 // AnimationTimeline is constructed and owned by Document, and tied to its lifecycle.
-class CORE_EXPORT AnimationTimeline final : public GarbageCollectedFinalized<AnimationTimeline>, public ScriptWrappable {
+class CORE_EXPORT AnimationTimeline final : public BlinKit::GCObject, public ScriptWrappable {
     DEFINE_WRAPPERTYPEINFO();
     USING_PRE_FINALIZER(AnimationTimeline, dispose);
 public:
-    class PlatformTiming : public GarbageCollectedFinalized<PlatformTiming> {
+    class PlatformTiming : public BlinKit::GCObject {
     public:
         // Calls AnimationTimeline's wake() method after duration seconds.
         virtual void wakeAfter(double duration) = 0;
@@ -64,6 +75,8 @@ public:
     static AnimationTimeline* create(Document*, PlatformTiming* = nullptr);
     ~AnimationTimeline();
     void dispose();
+
+    BLINKIT_DEFINE_GC_CASTER(AnimationTimeline)
 
     void serviceAnimations(TimingUpdateReason);
     void scheduleNextService();
@@ -109,7 +122,7 @@ protected:
     AnimationTimeline(Document*, PlatformTiming*);
 
 private:
-    RawPtrWillBeMember<Document> m_document;
+    BlinKit::GCMember<Document> m_document;
     double m_zeroTime;
     bool m_zeroTimeInitialized;
     unsigned m_outdatedAnimationCount;
@@ -123,7 +136,7 @@ private:
     friend class SMILTimeContainer;
     static const double s_minimumDelay;
 
-    Member<PlatformTiming> m_timing;
+    BlinKit::GCMember<PlatformTiming> m_timing;
     double m_lastCurrentTimeInternal;
 
     OwnPtr<WebCompositorAnimationTimeline> m_compositorTimeline;
@@ -145,7 +158,7 @@ private:
         DECLARE_VIRTUAL_TRACE();
 
     private:
-        Member<AnimationTimeline> m_timeline;
+        BlinKit::GCMember<AnimationTimeline> m_timeline;
         Timer<AnimationTimelineTiming> m_timer;
     };
 
