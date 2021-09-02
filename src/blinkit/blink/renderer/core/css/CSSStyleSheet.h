@@ -59,10 +59,10 @@ enum StyleSheetUpdateType {
 class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
     DEFINE_WRAPPERTYPEINFO();
 public:
-    static PassRefPtrWillBeRawPtr<CSSStyleSheet> create(PassRefPtrWillBeRawPtr<StyleSheetContents>, CSSImportRule* ownerRule = 0);
-    static PassRefPtrWillBeRawPtr<CSSStyleSheet> create(PassRefPtrWillBeRawPtr<StyleSheetContents>, Node* ownerNode);
-    static PassRefPtrWillBeRawPtr<CSSStyleSheet> createInline(Node*, const KURL&, const TextPosition& startPosition = TextPosition::minimumPosition(), const String& encoding = String());
-    static PassRefPtrWillBeRawPtr<CSSStyleSheet> createInline(PassRefPtrWillBeRawPtr<StyleSheetContents>, Node* ownerNode, const TextPosition& startPosition = TextPosition::minimumPosition());
+    static GCPassPtr<CSSStyleSheet> create(GCPassPtr<StyleSheetContents>, CSSImportRule* ownerRule = 0);
+    static GCPassPtr<CSSStyleSheet> create(GCPassPtr<StyleSheetContents>, Node* ownerNode);
+    static GCPassPtr<CSSStyleSheet> createInline(Node*, const KURL&, const TextPosition& startPosition = TextPosition::minimumPosition(), const String& encoding = String());
+    static GCPassPtr<CSSStyleSheet> createInline(GCPassPtr<StyleSheetContents>, Node* ownerNode, const TextPosition& startPosition = TextPosition::minimumPosition());
 
     ~CSSStyleSheet() override;
 
@@ -135,8 +135,8 @@ public:
     DECLARE_VIRTUAL_TRACE();
 
 private:
-    CSSStyleSheet(PassRefPtrWillBeRawPtr<StyleSheetContents>, CSSImportRule* ownerRule);
-    CSSStyleSheet(PassRefPtrWillBeRawPtr<StyleSheetContents>, Node* ownerNode, bool isInlineStylesheet, const TextPosition& startPosition);
+    CSSStyleSheet(GCPassPtr<StyleSheetContents>&&, CSSImportRule* ownerRule);
+    CSSStyleSheet(GCPassPtr<StyleSheetContents>&&, Node* ownerNode, bool isInlineStylesheet, const TextPosition& startPosition);
 
     bool isCSSStyleSheet() const override { return true; }
     String type() const override { return "text/css"; }
@@ -147,7 +147,7 @@ private:
 
     void setLoadCompleted(bool);
 
-    RefPtrWillBeMember<StyleSheetContents> m_contents;
+    BlinKit::GCMember<StyleSheetContents> m_contents;
     bool m_isInlineStylesheet;
     bool m_isDisabled;
     String m_title;

@@ -52,6 +52,8 @@
 #endif
 #include "wtf/text/StringBuilder.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 class StyleSheetCSSRuleList final : public CSSRuleList {
@@ -102,31 +104,31 @@ static bool isAcceptableCSSStyleSheetParent(Node* parentNode)
 }
 #endif
 
-PassRefPtrWillBeRawPtr<CSSStyleSheet> CSSStyleSheet::create(PassRefPtrWillBeRawPtr<StyleSheetContents> sheet, CSSImportRule* ownerRule)
+GCPassPtr<CSSStyleSheet> CSSStyleSheet::create(GCPassPtr<StyleSheetContents> sheet, CSSImportRule* ownerRule)
 {
-    return adoptRefWillBeNoop(new CSSStyleSheet(sheet, ownerRule));
+    return WrapLeaked(new CSSStyleSheet(std::move(sheet), ownerRule));
 }
 
-PassRefPtrWillBeRawPtr<CSSStyleSheet> CSSStyleSheet::create(PassRefPtrWillBeRawPtr<StyleSheetContents> sheet, Node* ownerNode)
+GCPassPtr<CSSStyleSheet> CSSStyleSheet::create(GCPassPtr<StyleSheetContents> sheet, Node* ownerNode)
 {
-    return adoptRefWillBeNoop(new CSSStyleSheet(sheet, ownerNode, false, TextPosition::minimumPosition()));
+    return WrapLeaked(new CSSStyleSheet(std::move(sheet), ownerNode, false, TextPosition::minimumPosition()));
 }
 
-PassRefPtrWillBeRawPtr<CSSStyleSheet> CSSStyleSheet::createInline(PassRefPtrWillBeRawPtr<StyleSheetContents> sheet, Node* ownerNode, const TextPosition& startPosition)
+GCPassPtr<CSSStyleSheet> CSSStyleSheet::createInline(GCPassPtr<StyleSheetContents> sheet, Node* ownerNode, const TextPosition& startPosition)
 {
     ASSERT(sheet);
-    return adoptRefWillBeNoop(new CSSStyleSheet(sheet, ownerNode, true, startPosition));
+    return WrapLeaked(new CSSStyleSheet(std::move(sheet), ownerNode, true, startPosition));
 }
 
-PassRefPtrWillBeRawPtr<CSSStyleSheet> CSSStyleSheet::createInline(Node* ownerNode, const KURL& baseURL, const TextPosition& startPosition, const String& encoding)
+GCPassPtr<CSSStyleSheet> CSSStyleSheet::createInline(Node* ownerNode, const KURL& baseURL, const TextPosition& startPosition, const String& encoding)
 {
     CSSParserContext parserContext(ownerNode->document(), baseURL, encoding);
-    RefPtrWillBeRawPtr<StyleSheetContents> sheet = StyleSheetContents::create(baseURL.string(), parserContext);
-    return adoptRefWillBeNoop(new CSSStyleSheet(sheet.release(), ownerNode, true, startPosition));
+    GCMember<StyleSheetContents> sheet = StyleSheetContents::create(baseURL.string(), parserContext);
+    return WrapLeaked(new CSSStyleSheet(sheet.release(), ownerNode, true, startPosition));
 }
 
-CSSStyleSheet::CSSStyleSheet(PassRefPtrWillBeRawPtr<StyleSheetContents> contents, CSSImportRule* ownerRule)
-    : m_contents(contents)
+CSSStyleSheet::CSSStyleSheet(GCPassPtr<StyleSheetContents>&& contents, CSSImportRule* ownerRule)
+    : m_contents(std::move(contents))
     , m_isInlineStylesheet(false)
     , m_isDisabled(false)
     , m_ownerNode(nullptr)
@@ -137,8 +139,8 @@ CSSStyleSheet::CSSStyleSheet(PassRefPtrWillBeRawPtr<StyleSheetContents> contents
     m_contents->registerClient(this);
 }
 
-CSSStyleSheet::CSSStyleSheet(PassRefPtrWillBeRawPtr<StyleSheetContents> contents, Node* ownerNode, bool isInlineStylesheet, const TextPosition& startPosition)
-    : m_contents(contents)
+CSSStyleSheet::CSSStyleSheet(GCPassPtr<StyleSheetContents>&& contents, Node* ownerNode, bool isInlineStylesheet, const TextPosition& startPosition)
+    : m_contents(std::move(contents))
     , m_isInlineStylesheet(isInlineStylesheet)
     , m_isDisabled(false)
     , m_ownerNode(ownerNode)
@@ -304,7 +306,7 @@ unsigned CSSStyleSheet::insertRule(const String& ruleString, unsigned index, Exc
         return 0;
     }
     CSSParserContext context(m_contents->parserContext());
-    RefPtrWillBeRawPtr<StyleRuleBase> rule = CSSParser::parseRule(context, m_contents.get(), ruleString);
+    GCMember<StyleRuleBase> rule = CSSParser::parseRule(context, m_contents.get(), ruleString);
 
     if (!rule) {
         exceptionState.throwDOMException(SyntaxError, "Failed to parse the rule '" + ruleString + "'.");
