@@ -68,9 +68,9 @@ class CORE_EXPORT FrameSelection final : public NoBaseWillBeGarbageCollectedFina
     WTF_MAKE_NONCOPYABLE(FrameSelection);
     USING_FAST_MALLOC_WILL_BE_REMOVED(FrameSelection);
 public:
-    static PassOwnPtrWillBeRawPtr<FrameSelection> create(LocalFrame* frame = nullptr)
+    static std::unique_ptr<FrameSelection> create(LocalFrame* frame = nullptr)
     {
-        return adoptPtrWillBeNoop(new FrameSelection(frame));
+        return zed::wrap_unique(new FrameSelection(frame));
     }
     ~FrameSelection();
 

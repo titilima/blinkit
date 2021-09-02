@@ -67,9 +67,9 @@ InputMethodController::SelectionOffsetsScope::~SelectionOffsetsScope()
 
 // ----------------------------
 
-PassOwnPtrWillBeRawPtr<InputMethodController> InputMethodController::create(LocalFrame& frame)
+std::unique_ptr<InputMethodController> InputMethodController::create(LocalFrame& frame)
 {
-    return adoptPtrWillBeNoop(new InputMethodController(frame));
+    return zed::wrap_unique(new InputMethodController(frame));
 }
 
 InputMethodController::InputMethodController(LocalFrame& frame)

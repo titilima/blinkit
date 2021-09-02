@@ -50,7 +50,7 @@ public:
         KeepSelection,
     };
 
-    static PassOwnPtrWillBeRawPtr<InputMethodController> create(LocalFrame&);
+    static std::unique_ptr<InputMethodController> create(LocalFrame&);
     ~InputMethodController();
     DECLARE_TRACE();
 

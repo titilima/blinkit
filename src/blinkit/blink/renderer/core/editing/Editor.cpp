@@ -749,9 +749,9 @@ void Editor::reappliedEditing(PassRefPtrWillBeRawPtr<EditCommandComposition> cmd
 #endif
 }
 
-PassOwnPtrWillBeRawPtr<Editor> Editor::create(LocalFrame& frame)
+std::unique_ptr<Editor> Editor::create(LocalFrame& frame)
 {
-    return adoptPtrWillBeNoop(new Editor(frame));
+    return zed::wrap_unique(new Editor(frame));
 }
 
 Editor::Editor(LocalFrame& frame)

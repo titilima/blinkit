@@ -316,8 +316,10 @@ void FrameSelection::setSelectionAlgorithm(const VisibleSelectionTemplate<Strate
 
     m_granularity = granularity;
 
+#if 0 // BKTODO:
     if (closeTyping)
-        ASSERT(false); // BKTODO: TypingCommand::closeTyping(m_frame);
+        TypingCommand::closeTyping(m_frame);
+#endif
 
     if (shouldClearTypingStyle)
         clearTypingStyle();

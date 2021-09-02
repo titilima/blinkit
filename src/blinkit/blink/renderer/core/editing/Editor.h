@@ -74,7 +74,7 @@ class CORE_EXPORT Editor final : public NoBaseWillBeGarbageCollectedFinalized<Ed
     USING_FAST_MALLOC_WILL_BE_REMOVED(Editor);
     WTF_MAKE_NONCOPYABLE(Editor);
 public:
-    static PassOwnPtrWillBeRawPtr<Editor> create(LocalFrame&);
+    static std::unique_ptr<Editor> create(LocalFrame&);
     ~Editor();
 
     EditorClient& client() const;
