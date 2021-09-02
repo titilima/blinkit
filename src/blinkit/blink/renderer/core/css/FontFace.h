@@ -65,16 +65,18 @@ class StringOrArrayBufferOrArrayBufferView;
 class StylePropertySet;
 class StyleRuleFontFace;
 
-class FontFace : public RefCountedWillBeGarbageCollectedFinalized<FontFace>, public ScriptWrappable, public ActiveDOMObject {
+class FontFace : public ScriptWrappable, public ActiveDOMObject {
     DEFINE_WRAPPERTYPEINFO();
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(FontFace);
 public:
     enum LoadStatus { Unloaded, Loading, Loaded, Error };
 
     // BKTODO: static PassRefPtrWillBeRawPtr<FontFace> create(ExecutionContext*, const AtomicString& family, StringOrArrayBufferOrArrayBufferView&, const FontFaceDescriptors&);
-    static PassRefPtrWillBeRawPtr<FontFace> create(Document*, const StyleRuleFontFace*);
+    static GCPassPtr<FontFace> create(Document*, const StyleRuleFontFace*);
 
     ~FontFace();
+
+    BLINKIT_DEFINE_GC_CASTER(FontFace)
 
     const AtomicString& family() const { return m_family; }
     String style() const;
@@ -124,9 +126,11 @@ public:
     bool hasPendingActivity() const override;
 
 private:
+#if 0 // BKTODO:
     static PassRefPtrWillBeRawPtr<FontFace> create(ExecutionContext*, const AtomicString& family, PassRefPtr<DOMArrayBuffer> source, const FontFaceDescriptors&);
     static PassRefPtrWillBeRawPtr<FontFace> create(ExecutionContext*, const AtomicString& family, PassRefPtr<DOMArrayBufferView>, const FontFaceDescriptors&);
     static PassRefPtrWillBeRawPtr<FontFace> create(ExecutionContext*, const AtomicString& family, const String& source, const FontFaceDescriptors&);
+#endif
 
     explicit FontFace(ExecutionContext*);
     FontFace(ExecutionContext*, const AtomicString& family, const FontFaceDescriptors&);
@@ -143,6 +147,8 @@ private:
 
     using LoadedProperty = ScriptPromiseProperty<RawPtrWillBeMember<FontFace>, RawPtrWillBeMember<FontFace>, Member<DOMException>>;
 #endif
+
+    BlinKit::GCObject* ObjectForGC(void) final { return this; }
 
     AtomicString m_family;
     String m_otsParseMessage;
