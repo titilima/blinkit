@@ -216,8 +216,8 @@ private:
 
     bool shouldContinueForResponse() const;
 
-    RawPtrWillBeMember<LocalFrame> m_frame;
-    PersistentWillBeMember<ResourceFetcher> m_fetcher;
+    RawPtr<LocalFrame> m_frame;
+    BlinKit::GCMember<ResourceFetcher> m_fetcher;
 
     ResourcePtr<RawResource> m_mainResource;
 

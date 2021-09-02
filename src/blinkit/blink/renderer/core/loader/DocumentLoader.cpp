@@ -142,7 +142,7 @@ DocumentLoader::~DocumentLoader()
 
 DEFINE_TRACE(DocumentLoader)
 {
-    visitor->trace(m_frame);
+    // BKTODO: visitor->trace(m_frame);
     visitor->trace(m_fetcher);
     // TODO(sof): start tracing ResourcePtr<>s (and m_mainResource.)
     visitor->trace(m_writer);
@@ -687,8 +687,7 @@ void DocumentLoader::detachFromFrame()
 
     m_fetcher->clearContext();
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     m_applicationCacheHost->detachFromDocumentLoader();
     m_applicationCacheHost.clear();
     WeakIdentifierMap<DocumentLoader>::notifyObjectDestroyed(this);
