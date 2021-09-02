@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CustomElementObserver.h
+// Description: CustomElementObserver Class
+//      Author: Ziming Li
+//     Created: 2021-08-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -38,7 +49,7 @@ namespace blink {
 
 class Element;
 
-class CustomElementObserver : public NoBaseWillBeGarbageCollectedFinalized<CustomElementObserver> {
+class CustomElementObserver {
 public:
     virtual ~CustomElementObserver() { }
 

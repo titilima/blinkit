@@ -174,7 +174,7 @@ void CustomElementRegistrationContext::setTypeExtension(Element* element, const 
 
 DEFINE_TRACE(CustomElementRegistrationContext)
 {
-    visitor->trace(m_candidates);
+    // BKTODO: visitor->trace(m_candidates);
     visitor->trace(m_registry);
 }
 

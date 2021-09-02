@@ -45,9 +45,9 @@
 
 namespace blink {
 
-PassOwnPtrWillBeRawPtr<CustomElementUpgradeCandidateMap> CustomElementUpgradeCandidateMap::create()
+std::unique_ptr<CustomElementUpgradeCandidateMap> CustomElementUpgradeCandidateMap::create()
 {
-    return adoptPtrWillBeNoop(new CustomElementUpgradeCandidateMap());
+    return zed::wrap_unique(new CustomElementUpgradeCandidateMap());
 }
 
 CustomElementUpgradeCandidateMap::~CustomElementUpgradeCandidateMap()

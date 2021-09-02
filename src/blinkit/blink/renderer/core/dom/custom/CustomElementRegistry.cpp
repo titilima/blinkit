@@ -43,7 +43,7 @@
 
 #include "core/HTMLNames.h"
 // BKTODO: #include "core/SVGNames.h"
-#include "core/dom/DocumentLifecycleObserver.h"
+// BKTODO: #include "core/dom/DocumentLifecycleObserver.h"
 #include "core/dom/custom/CustomElementException.h"
 #include "core/dom/custom/CustomElementRegistrationContext.h"
 

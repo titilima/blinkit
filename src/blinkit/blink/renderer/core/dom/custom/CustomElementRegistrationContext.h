@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CustomElementRegistrationContext.h
+// Description: CustomElementRegistrationContext Class
+//      Author: Ziming Li
+//     Created: 2021-08-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -43,11 +54,11 @@
 
 namespace blink {
 
-class CustomElementRegistrationContext final : public RefCountedWillBeGarbageCollectedFinalized<CustomElementRegistrationContext> {
+class CustomElementRegistrationContext final : public BlinKit::GCObject {
 public:
-    static PassRefPtrWillBeRawPtr<CustomElementRegistrationContext> create()
+    static GCPassPtr<CustomElementRegistrationContext> create()
     {
-        return adoptRefWillBeNoop(new CustomElementRegistrationContext());
+        return BlinKit::WrapLeaked(new CustomElementRegistrationContext());
     }
 
     ~CustomElementRegistrationContext() { }
@@ -76,7 +87,7 @@ private:
     CustomElementRegistry m_registry;
 
     // Element creation
-    OwnPtrWillBeMember<CustomElementUpgradeCandidateMap> m_candidates;
+    std::unique_ptr<CustomElementUpgradeCandidateMap> m_candidates;
 };
 
 } // namespace blink
