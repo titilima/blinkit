@@ -42,6 +42,11 @@ DocumentStyleSheetCollection::DocumentStyleSheetCollection(TreeScope& treeScope)
     ASSERT(treeScope.rootNode() == treeScope.rootNode().document());
 }
 
+DocumentStyleSheetCollection::~DocumentStyleSheetCollection(void)
+{
+    CollectGarbage();
+}
+
 void DocumentStyleSheetCollection::collectStyleSheetsFromCandidates(StyleEngine& engine, DocumentStyleSheetCollector& collector)
 {
     for (Node* n : m_styleSheetCandidateNodes) {

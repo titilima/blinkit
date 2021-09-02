@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentStyleSheetCollection.h
+// Description: DocumentStyleSheetCollection Class
+//      Author: Ziming Li
+//     Created: 2021-08-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -36,14 +47,17 @@ class DocumentStyleSheetCollector;
 class StyleEngine;
 class TreeScope;
 
-class DocumentStyleSheetCollection final : public TreeScopeStyleSheetCollection {
+class DocumentStyleSheetCollection final : public TreeScopeStyleSheetCollection
+                                         , public BlinKit::GCRootObjectImpl<DocumentStyleSheetCollection>
+{
     WTF_MAKE_NONCOPYABLE(DocumentStyleSheetCollection);
     USING_FAST_MALLOC_WILL_BE_REMOVED(DocumentStyleSheetCollection);
 public:
-    static PassOwnPtrWillBeRawPtr<DocumentStyleSheetCollection> create(TreeScope& treeScope)
+    static std::unique_ptr<DocumentStyleSheetCollection> create(TreeScope& treeScope)
     {
-        return adoptPtrWillBeNoop(new DocumentStyleSheetCollection(treeScope));
+        return zed::wrap_unique(new DocumentStyleSheetCollection(treeScope));
     }
+    ~DocumentStyleSheetCollection(void);
 
     void updateActiveStyleSheets(StyleEngine&, StyleResolverUpdateMode);
     void collectStyleSheets(StyleEngine&, DocumentStyleSheetCollector&);
