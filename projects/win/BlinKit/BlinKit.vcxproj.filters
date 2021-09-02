@@ -801,9 +801,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ContextLifecycleNotifier.cpp">
       <Filter>blink\renderer\core\dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentLifecycleNotifier.cpp">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMException.cpp">
       <Filter>blink\renderer\core\dom</Filter>
     </ClCompile>
@@ -1205,9 +1202,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMStringList.cpp">
       <Filter>blink\renderer\core\dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\DOMWindowLifecycleNotifier.cpp">
-      <Filter>blink\renderer\core\frame</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ClassCollection.cpp">
       <Filter>blink\renderer\core\dom</Filter>
@@ -1645,9 +1639,6 @@
       <Filter>blink\renderer\core\page</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\page\PageAnimator.cpp">
-      <Filter>blink\renderer\core\page</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\page\PageLifecycleNotifier.cpp">
       <Filter>blink\renderer\core\page</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\Region.cpp">
@@ -2967,9 +2958,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\StyleMedia.cpp">
       <Filter>blink\renderer\core\css</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\DOMWindowEventQueue.cpp">
-      <Filter>blink\renderer\core\events</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\IdTargetObserver.cpp">
       <Filter>blink\renderer\core\dom</Filter>
     </ClCompile>
@@ -3268,9 +3256,6 @@
       <Filter>blink\renderer\core\fetch</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\loader\LinkHeader.cpp">
-      <Filter>blink\renderer\core\loader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\loader\PrerenderHandle.cpp">
       <Filter>blink\renderer\core\loader</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\Prerender.cpp">
@@ -4026,6 +4011,15 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\paint\ObjectPainter.cpp">
       <Filter>blink\renderer\core\paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\gc\lifecycle_data_manager.cpp">
+      <Filter>gc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\gc\gc_lifecycle_observer.cpp">
+      <Filter>gc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\gc\gc_root_object.cpp">
+      <Filter>gc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -4128,9 +4122,6 @@
       <Filter>gc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_visitor.h">
-      <Filter>gc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\gc\gc_static.h">
       <Filter>gc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\file_loader_task.h">
@@ -4612,6 +4603,93 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\IntRect.h">
       <Filter>blink\renderer\platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\RefPtr.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSValuePool.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSFontSelector.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\StyleEngine.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\lifecycle_data_manager.h">
+      <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\StyleSheetContents.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptRunner.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSStyleSheet.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\RuleSet.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\ScopedStyleResolver.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\StyleSheet.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\StyleRuleImport.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSRule.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\StyleRuleNamespace.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSParserImpl.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSPropertyParser.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\custom\CustomElementUpgradeCandidateMap.h">
+      <Filter>blink\renderer\core\dom\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\AnimationTimeline.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\IdTargetObserverRegistry.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\IdTargetObserver.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_object_set.h">
+      <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_weak_object_set.h">
+      <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\FontFace.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ContextLifecycleObserver.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintLayerScrollableArea.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollableArea.h">
+      <Filter>blink\renderer\platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleRareNonInheritedData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\DataRef.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_data_ref.h">
+      <Filter>gc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
