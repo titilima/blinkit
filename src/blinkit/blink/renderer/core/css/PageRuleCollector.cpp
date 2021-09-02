@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PageRuleCollector.cpp
+// Description: PageRuleCollector Class
+//      Author: Ziming Li
+//     Created: 2021-08-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -32,6 +43,8 @@
 #include "core/css/StyleRule.h"
 #include "core/css/resolver/StyleResolverState.h"
 #include <algorithm>
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -73,9 +86,9 @@ void PageRuleCollector::matchPageRules(RuleSet* rules)
         return;
 
     rules->compactRulesIfNeeded();
-    WillBeHeapVector<RawPtrWillBeMember<StyleRulePage>> matchedPageRules;
+    std::vector<StyleRulePage *> matchedPageRules;
     matchPageRulesForList(matchedPageRules, rules->pageRules(), m_isLeftPage, m_isFirstPage, m_pageName);
-    if (matchedPageRules.isEmpty())
+    if (matchedPageRules.empty())
         return;
 
     std::stable_sort(matchedPageRules.begin(), matchedPageRules.end(), comparePageRules);
@@ -104,10 +117,10 @@ static bool checkPageSelectorComponents(const CSSSelector* selector, bool isLeft
     return true;
 }
 
-void PageRuleCollector::matchPageRulesForList(WillBeHeapVector<RawPtrWillBeMember<StyleRulePage>>& matchedRules, const WillBeHeapVector<RawPtrWillBeMember<StyleRulePage>>& rules, bool isLeftPage, bool isFirstPage, const String& pageName)
+void PageRuleCollector::matchPageRulesForList(std::vector<StyleRulePage *>& matchedRules, const std::vector<GCMember<StyleRulePage>>& rules, bool isLeftPage, bool isFirstPage, const String& pageName)
 {
     for (unsigned i = 0; i < rules.size(); ++i) {
-        StyleRulePage* rule = rules[i];
+        StyleRulePage* rule = rules[i].get();
 
         if (!checkPageSelectorComponents(rule->selector(), isLeftPage, isFirstPage, pageName))
             continue;
@@ -118,7 +131,7 @@ void PageRuleCollector::matchPageRulesForList(WillBeHeapVector<RawPtrWillBeMembe
             continue;
 
         // Add this rule to our list of matched rules.
-        matchedRules.append(rule);
+        matchedRules.emplace_back(rule);
     }
 }
 

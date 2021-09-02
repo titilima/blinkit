@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PageRuleCollector.h
+// Description: PageRuleCollector Class
+//      Author: Ziming Li
+//     Created: 2021-08-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -23,7 +34,7 @@
 #define PageRuleCollector_h
 
 #include "core/css/resolver/MatchResult.h"
-#include "wtf/Vector.h"
+// BKTODO: #include "wtf/Vector.h"
 
 namespace blink {
 
@@ -43,7 +54,7 @@ private:
     bool isFirstPage(int pageIndex) const;
     String pageName(int pageIndex) const;
 
-    void matchPageRulesForList(WillBeHeapVector<RawPtrWillBeMember<StyleRulePage>>& matchedRules, const WillBeHeapVector<RawPtrWillBeMember<StyleRulePage>>& rules, bool isLeftPage, bool isFirstPage, const String& pageName);
+    void matchPageRulesForList(std::vector<StyleRulePage *>& matchedRules, const std::vector<BlinKit::GCMember<StyleRulePage>>& rules, bool isLeftPage, bool isFirstPage, const String& pageName);
 
     const bool m_isLeftPage;
     const bool m_isFirstPage;
