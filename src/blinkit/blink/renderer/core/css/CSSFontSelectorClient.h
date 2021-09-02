@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSFontSelectorClient.h
+// Description: CSSFontSelectorClient Class
+//      Author: Ziming Li
+//     Created: 2021-08-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All rights reserved.
  *
@@ -39,7 +50,7 @@ namespace blink {
 class CSSFontSelector;
 class Visitor;
 
-class CORE_EXPORT CSSFontSelectorClient : public WillBeGarbageCollectedMixin {
+class CORE_EXPORT CSSFontSelectorClient : public BlinKit::GCStub {
 public:
     virtual ~CSSFontSelectorClient() { }
 

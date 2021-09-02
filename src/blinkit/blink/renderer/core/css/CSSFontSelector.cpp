@@ -51,6 +51,8 @@
 #include "platform/fonts/SimpleFontData.h"
 #include "wtf/text/AtomicString.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 CSSFontSelector::CSSFontSelector(Document* document)
@@ -78,7 +80,9 @@ CSSFontSelector::~CSSFontSelector()
 
 void CSSFontSelector::registerForInvalidationCallbacks(CSSFontSelectorClient* client)
 {
-    m_clients.add(client);
+    GCObject *o = client->ObjectForGC();
+    Observe(o);
+    m_clients.emplace(o, client);
 }
 
 #if !ENABLE(OILPAN)
@@ -200,12 +204,18 @@ void CSSFontSelector::updateGenericFontFamilySettings(Document& document)
 DEFINE_TRACE(CSSFontSelector)
 {
 #if ENABLE(OILPAN)
-    visitor->trace(m_document);
+    // BKTODO: visitor->trace(m_document);
     visitor->trace(m_fontFaceCache);
-    visitor->trace(m_clients);
+    // BKTODO: visitor->trace(m_clients);
     visitor->trace(m_fontLoader);
 #endif
     FontSelector::trace(visitor);
+}
+
+void CSSFontSelector::ObjectFinalized(GCObject *o)
+{
+    ASSERT(zed::key_exists(m_clients, o));
+    m_clients.erase(o);
 }
 
 }

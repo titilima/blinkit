@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSFontSelector.h
+// Description: CSSFontSelector Class
+//      Author: Ziming Li
+//     Created: 2021-08-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2011 Apple Inc. All rights reserved.
  *
@@ -42,7 +53,7 @@ class CSSFontSelectorClient;
 class Document;
 class FontDescription;
 
-class CORE_EXPORT CSSFontSelector : public FontSelector {
+class CORE_EXPORT CSSFontSelector : public FontSelector, public BlinKit::GCLifecycleObserver {
 public:
     static PassRefPtrWillBeRawPtr<CSSFontSelector> create(Document* document)
     {
@@ -71,7 +82,7 @@ public:
     void unregisterForInvalidationCallbacks(CSSFontSelectorClient*);
 #endif
 
-    Document* document() const { return m_document; }
+    Document* document() const { return m_document.get(); }
     FontFaceCache* fontFaceCache() { return &m_fontFaceCache; }
     FontLoader* fontLoader() { return m_fontLoader.get(); }
 
@@ -86,15 +97,17 @@ protected:
     void dispatchInvalidationCallbacks();
 
 private:
+    void ObjectFinalized(BlinKit::GCObject *o) final;
+
     // FIXME: Oilpan: Ideally this should just be a traced Member but that will
     // currently leak because ComputedStyle and its data are not on the heap.
     // See crbug.com/383860 for details.
-    RawPtrWillBeWeakMember<Document> m_document;
+    BlinKit::GCWeakMember<Document> m_document;
     // FIXME: Move to Document or StyleEngine.
     FontFaceCache m_fontFaceCache;
-    WillBeHeapHashSet<RawPtrWillBeWeakMember<CSSFontSelectorClient>> m_clients;
+    std::unordered_map<BlinKit::GCObject *, CSSFontSelectorClient *> m_clients;
 
-    RefPtrWillBeMember<FontLoader> m_fontLoader;
+    BlinKit::GCMember<FontLoader> m_fontLoader;
     GenericFontFamilySettings m_genericFontFamilySettings;
 };
 
