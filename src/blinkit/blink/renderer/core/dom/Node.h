@@ -178,6 +178,8 @@ public:
 
     ~Node() override;
 
+    BLINKIT_DEFINE_GC_CASTER(Node);
+
     // DOM methods & attributes for Node
 
     bool hasTagName(const HTMLQualifiedName&) const;
@@ -817,9 +819,11 @@ private:
     WillBeHeapVector<OwnPtrWillBeMember<MutationObserverRegistration>>* mutationObserverRegistry();
     WillBeHeapHashSet<RawPtrWillBeMember<MutationObserverRegistration>>* transientMutationObserverRegistry();
 
+    BlinKit::GCObject* ObjectForGC(void) final { return this; }
+
     uint32_t m_nodeFlags;
-    RawPtrWillBeMember<ContainerNode> m_parentOrShadowHostNode;
-    RawPtrWillBeMember<TreeScope> m_treeScope;
+    BlinKit::GCMember<ContainerNode> m_parentOrShadowHostNode;
+    TreeScope *m_treeScope;
     BlinKit::GCMember<Node> m_previous;
     BlinKit::GCMember<Node> m_next;
     // When a node has rare data we move the layoutObject into the rare data.
@@ -832,16 +836,10 @@ private:
     } m_data;
 };
 
-inline void Node::setParentOrShadowHostNode(ContainerNode* parent)
-{
-    ASSERT(isMainThread());
-    m_parentOrShadowHostNode = parent;
-}
-
 inline ContainerNode* Node::parentOrShadowHostNode() const
 {
     ASSERT(isMainThread());
-    return m_parentOrShadowHostNode;
+    return m_parentOrShadowHostNode.get();
 }
 
 inline ContainerNode* Node::parentNode() const

@@ -2375,7 +2375,7 @@ DEFINE_TRACE(Node)
     if (hasRareData())
         visitor->trace(rareData());
 
-    visitor->trace(m_treeScope);
+    // BKTODO: visitor->trace(m_treeScope);
 #endif
     EventTarget::trace(visitor);
 }
@@ -2399,6 +2399,12 @@ unsigned Node::lengthOfContents() const
     }
     ASSERT_NOT_REACHED();
     return 0;
+}
+
+void Node::setParentOrShadowHostNode(ContainerNode* parent)
+{
+    ASSERT(isMainThread());
+    m_parentOrShadowHostNode = parent;
 }
 
 } // namespace blink
