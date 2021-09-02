@@ -189,14 +189,14 @@ ResourceFetcher::ResourceFetcher(FetchContext* context)
     , m_imagesEnabled(true)
     , m_allowStaleResources(false)
 {
-#if ENABLE(OILPAN)
-    // BKTODO: ThreadState::current()->registerPreFinalizer(this);
+#if 0 // BKTODO: ENABLE(OILPAN)
+    ThreadState::current()->registerPreFinalizer(this);
 #endif
 }
 
 ResourceFetcher::~ResourceFetcher()
 {
-#if !ENABLE(OILPAN)
+#if 1 // BKTODO: !ENABLE(OILPAN)
     clearPreloads();
 #endif
 }
@@ -1210,8 +1210,7 @@ ResourceFetcher::DeadResourceStatsRecorder::DeadResourceStatsRecorder()
 
 ResourceFetcher::DeadResourceStatsRecorder::~DeadResourceStatsRecorder()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     Platform::current()->histogramCustomCounts(
         "WebCore.ResourceFetcher.HitCount", m_useCount, 0, 1000, 50);
     Platform::current()->histogramCustomCounts(

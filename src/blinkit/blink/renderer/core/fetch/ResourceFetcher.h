@@ -77,7 +77,7 @@ class ResourceLoaderSet;
 // to ResourceFetcher for their lifetime (and will create one if they
 // are initialized without a LocalFrame), so a Document can keep a ResourceFetcher
 // alive past detach if scripts still reference the Document.
-class CORE_EXPORT ResourceFetcher : public GarbageCollectedFinalized<ResourceFetcher> {
+class CORE_EXPORT ResourceFetcher : public BlinKit::GCObject {
     WTF_MAKE_NONCOPYABLE(ResourceFetcher);
     WILL_BE_USING_PRE_FINALIZER(ResourceFetcher, clearPreloads);
 public:
