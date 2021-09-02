@@ -59,7 +59,7 @@ public:
 
     // FIXME: Remove CSSFontSelector as argument. Passing CSSFontSelector here is
     // a result of egregious spaghettification in FontFace/FontFaceSet.
-    void add(CSSFontSelector*, const StyleRuleFontFace*, PassRefPtrWillBeRawPtr<FontFace>);
+    void add(CSSFontSelector*, const StyleRuleFontFace*, GCPassPtr<FontFace>);
     void remove(const StyleRuleFontFace*);
     void clearCSSConnected();
     void clearAll();
