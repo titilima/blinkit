@@ -34,6 +34,8 @@
 #include "core/css/CSSPrimitiveValue.h"
 #include "wtf/text/StringBuilder.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 CSSValueList::CSSValueList(ClassType classType, ValueListSeparator listSeparator)
@@ -52,7 +54,7 @@ bool CSSValueList::removeAll(CSSValue* val)
 {
     bool found = false;
     for (int index = m_values.size() - 1; index >= 0; --index) {
-        RefPtrWillBeMember<CSSValue>& value = m_values.at(index);
+        GCMember<CSSValue>& value = m_values.at(index);
         if (value && val && value->equals(*val)) {
             m_values.erase(m_values.begin() + index);
             found = true;
@@ -65,7 +67,7 @@ bool CSSValueList::removeAll(CSSValue* val)
 bool CSSValueList::hasValue(CSSValue* val) const
 {
     for (size_t index = 0; index < m_values.size(); index++) {
-        const RefPtrWillBeMember<CSSValue>& value = m_values.at(index);
+        const GCMember<CSSValue>& value = m_values.at(index);
         if (value && val && value->equals(*val))
             return true;
     }
@@ -89,7 +91,7 @@ PassRefPtrWillBeRawPtr<CSSValueList> CSSValueList::copy()
         ASSERT_NOT_REACHED();
     }
     for (size_t index = 0; index < m_values.size(); index++)
-        newList->append(m_values[index]);
+        newList->append(m_values[index].get());
     return newList.release();
 }
 
