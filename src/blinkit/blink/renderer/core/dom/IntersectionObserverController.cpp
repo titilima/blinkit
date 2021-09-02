@@ -19,13 +19,13 @@
 
 namespace blink {
 
-typedef std::vector<Member<IntersectionObserver>> IntersectionObserverVector;
+typedef std::vector<IntersectionObserver *> IntersectionObserverVector;
 
-IntersectionObserverController* IntersectionObserverController::create(Document* document)
+GCPassPtr<IntersectionObserverController> IntersectionObserverController::create(Document* document)
 {
     IntersectionObserverController* result = new IntersectionObserverController(document);
     result->suspendIfNeeded();
-    return result;
+    return WrapLeaked(result);
 }
 
 IntersectionObserverController::IntersectionObserverController(Document* document)
@@ -44,7 +44,7 @@ void IntersectionObserverController::scheduleIntersectionObserverForDelivery(Int
     // that javascript will get a chance to run before the timer fires.
     if (!m_timer.isActive())
         m_timer.startOneShot(0, BLINK_FROM_HERE);
-    m_pendingIntersectionObservers.insert(&observer);
+    m_pendingIntersectionObservers.emplace(&observer);
 }
 
 void IntersectionObserverController::resume()
@@ -63,7 +63,7 @@ void IntersectionObserverController::deliverIntersectionObservations(Timer<Inter
         m_timerFiredWhileSuspended = true;
         return;
     }
-    IntersectionObserverVector observers(m_pendingIntersectionObservers.begin(), m_pendingIntersectionObservers.end());
+    IntersectionObserverVector observers = m_pendingIntersectionObservers.GetSnapshot();
     m_pendingIntersectionObservers.clear();
     for (auto& observer : observers)
         observer->deliver();
@@ -74,29 +74,29 @@ void IntersectionObserverController::computeTrackedIntersectionObservations()
     // TODO(szager): Need to define timestamp.
     double timestamp = currentTime();
     for (auto& observer : m_trackedIntersectionObservers) {
-        observer->computeIntersectionObservations(timestamp);
-        if (observer->hasEntries())
-            scheduleIntersectionObserverForDelivery(*observer);
+        observer.computeIntersectionObservations(timestamp);
+        if (observer.hasEntries())
+            scheduleIntersectionObserverForDelivery(observer);
     }
 }
 
 void IntersectionObserverController::addTrackedObserver(IntersectionObserver& observer)
 {
-    m_trackedIntersectionObservers.insert(&observer);
+    m_trackedIntersectionObservers.emplace(&observer);
 }
 
 void IntersectionObserverController::removeTrackedObserversForRoot(const Node& root)
 {
     for (auto it = m_trackedIntersectionObservers.begin(); m_trackedIntersectionObservers.end() != it; ++it)
     {
-        if (it->get()->root() == &root)
+        if (it->root() == &root)
             it = m_trackedIntersectionObservers.erase(it);
     }
 }
 
 DEFINE_TRACE(IntersectionObserverController)
 {
-    visitor->trace(m_trackedIntersectionObservers);
+    // BKTODO: visitor->trace(m_trackedIntersectionObservers);
     visitor->trace(m_pendingIntersectionObservers);
     ActiveDOMObject::trace(visitor);
 }

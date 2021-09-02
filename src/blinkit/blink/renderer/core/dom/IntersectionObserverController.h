@@ -16,7 +16,8 @@
 #ifndef IntersectionObserverController_h
 #define IntersectionObserverController_h
 
-#include <unordered_set>
+#include "blinkit/gc/gc_object_set.h"
+#include "blinkit/gc/gc_weak_object_set.h"
 #include "core/dom/Element.h"
 #include "core/dom/IntersectionObserver.h"
 #include "platform/Timer.h"
@@ -27,10 +28,10 @@
 
 namespace blink {
 
-class IntersectionObserverController : public GarbageCollectedFinalized<IntersectionObserverController>, public ActiveDOMObject {
+class IntersectionObserverController : public ActiveDOMObject {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(IntersectionObserverController);
 public:
-    static IntersectionObserverController* create(Document*);
+    static GCPassPtr<IntersectionObserverController> create(Document*);
     ~IntersectionObserverController();
 
     void resume() override;
@@ -49,9 +50,9 @@ private:
 private:
     Timer<IntersectionObserverController> m_timer;
     // IntersectionObservers for which this is the tracking document.
-    std::unordered_set<WeakMember<IntersectionObserver>> m_trackedIntersectionObservers;
+    BlinKit::GCWeakObjectSet<IntersectionObserver> m_trackedIntersectionObservers;
     // IntersectionObservers for which this is the execution context of the callback.
-    std::unordered_set<Member<IntersectionObserver>> m_pendingIntersectionObservers;
+    BlinKit::GCObjectSet<IntersectionObserver> m_pendingIntersectionObservers;
 
     bool m_timerFiredWhileSuspended;
 };

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IntersectionObserver.h
+// Description: IntersectionObserver Class
+//      Author: Ziming Li
+//     Created: 2021-08-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -21,12 +32,14 @@ class IntersectionObserverCallback;
 class IntersectionObserverInit;
 
 // TODO(oilpan): Switch to GarbageCollected<> after oilpan ships
-class IntersectionObserver final : public GarbageCollectedFinalized<IntersectionObserver>, public ScriptWrappable {
+class IntersectionObserver final : public BlinKit::GCObject, public ScriptWrappable {
     DEFINE_WRAPPERTYPEINFO();
 
 public:
     static IntersectionObserver* create(const IntersectionObserverInit&, IntersectionObserverCallback&, ExceptionState&);
     static void resumeSuspendedObservers();
+
+    BLINKIT_DEFINE_GC_CASTER(IntersectionObserver)
 
     // API methods
     void observe(Element*, ExceptionState&);
