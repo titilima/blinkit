@@ -2542,13 +2542,13 @@ void LayoutObject::willBeDestroyed()
     if (children)
         children->destroyLeftoverChildren();
 
+#if 0 // BKTODO:
     if (LocalFrame* frame = this->frame()) {
         // If this layoutObject is being autoscrolled, stop the autoscrolling.
         if (frame->page())
-            ASSERT(false); // BKTODO: frame->page()->autoscrollController().stopAutoscrollIfNeeded(this);
+            frame->page()->autoscrollController().stopAutoscrollIfNeeded(this);
     }
 
-#if 0 // BKTODO:
     // For accessibility management, notify the parent of the imminent change to its child set.
     // We do it now, before remove(), while the parent pointer is still available.
     if (AXObjectCache* cache = document().existingAXObjectCache())
