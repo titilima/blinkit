@@ -41,9 +41,11 @@
 #include "core/css/StyleSheet.h"
 #include "core/dom/DocumentStyleSheetCollection.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-DocumentStyleSheetCollector::DocumentStyleSheetCollector(WillBeHeapVector<RefPtrWillBeMember<StyleSheet>>& sheetsForList, WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& activeList, WillBeHeapHashSet<RawPtrWillBeMember<Document>>& visitedDocuments)
+DocumentStyleSheetCollector::DocumentStyleSheetCollector(std::vector<GCMember<StyleSheet>>& sheetsForList, std::vector<GCMember<CSSStyleSheet>>& activeList, std::unordered_set<Document *>& visitedDocuments)
     : m_styleSheetsForStyleSheetList(sheetsForList)
     , m_activeAuthorStyleSheets(activeList)
     , m_visitedDocuments(visitedDocuments)
@@ -61,12 +63,12 @@ void DocumentStyleSheetCollector::appendActiveStyleSheets(const WillBeHeapVector
 
 void DocumentStyleSheetCollector::appendActiveStyleSheet(CSSStyleSheet* sheet)
 {
-    m_activeAuthorStyleSheets.append(sheet);
+    m_activeAuthorStyleSheets.emplace_back(sheet);
 }
 
 void DocumentStyleSheetCollector::appendSheetForList(StyleSheet* sheet)
 {
-    m_styleSheetsForStyleSheetList.append(sheet);
+    m_styleSheetsForStyleSheetList.emplace_back(sheet);
 }
 
 ActiveDocumentStyleSheetCollector::ActiveDocumentStyleSheetCollector(StyleSheetCollection& collection)
@@ -74,7 +76,7 @@ ActiveDocumentStyleSheetCollector::ActiveDocumentStyleSheetCollector(StyleSheetC
 {
 }
 
-ImportedDocumentStyleSheetCollector::ImportedDocumentStyleSheetCollector(DocumentStyleSheetCollector& collector, WillBeHeapVector<RefPtrWillBeMember<StyleSheet>>& sheetForList)
+ImportedDocumentStyleSheetCollector::ImportedDocumentStyleSheetCollector(DocumentStyleSheetCollector& collector, std::vector<GCMember<StyleSheet>>& sheetForList)
     : DocumentStyleSheetCollector(sheetForList, collector.m_activeAuthorStyleSheets, collector.m_visitedDocuments)
 {
 }

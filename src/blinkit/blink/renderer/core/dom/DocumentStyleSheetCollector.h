@@ -27,10 +27,11 @@
 #ifndef DocumentStyleSheetCollector_h
 #define DocumentStyleSheetCollector_h
 
+#include <unordered_set>
 #include "platform/heap/Handle.h"
-#include "wtf/HashSet.h"
+// BKTODO: #include "wtf/HashSet.h"
 #include "wtf/RefPtr.h"
-#include "wtf/Vector.h"
+// BKTODO: #include "wtf/Vector.h"
 
 namespace blink {
 
@@ -47,32 +48,32 @@ class DocumentStyleSheetCollector {
 public:
     friend class ImportedDocumentStyleSheetCollector;
 
-    DocumentStyleSheetCollector(WillBeHeapVector<RefPtrWillBeMember<StyleSheet>>& sheetsForList, WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& activeList, WillBeHeapHashSet<RawPtrWillBeMember<Document>>&);
+    DocumentStyleSheetCollector(std::vector<BlinKit::GCMember<StyleSheet>>& sheetsForList, std::vector<BlinKit::GCMember<CSSStyleSheet>>& activeList, std::unordered_set<Document *>&);
     ~DocumentStyleSheetCollector();
 
     void appendActiveStyleSheets(const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>&);
     void appendActiveStyleSheet(CSSStyleSheet*);
     void appendSheetForList(StyleSheet*);
 
-    bool hasVisited(Document* document) const { return m_visitedDocuments.contains(document); }
-    void willVisit(Document* document) { m_visitedDocuments.add(document); }
+    bool hasVisited(Document* document) const { return zed::key_exists(m_visitedDocuments, document); }
+    void willVisit(Document* document) { m_visitedDocuments.emplace(document); }
 
 private:
-    WillBeHeapVector<RefPtrWillBeMember<StyleSheet>>& m_styleSheetsForStyleSheetList;
-    WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& m_activeAuthorStyleSheets;
-    WillBeHeapHashSet<RawPtrWillBeMember<Document>>& m_visitedDocuments;
+    std::vector<BlinKit::GCMember<StyleSheet>>& m_styleSheetsForStyleSheetList;
+    std::vector<BlinKit::GCMember<CSSStyleSheet>>& m_activeAuthorStyleSheets;
+    std::unordered_set<Document *>& m_visitedDocuments;
 };
 
 class ActiveDocumentStyleSheetCollector final : public DocumentStyleSheetCollector {
 public:
     ActiveDocumentStyleSheetCollector(StyleSheetCollection&);
 private:
-    WillBeHeapHashSet<RawPtrWillBeMember<Document>> m_visitedDocuments;
+    std::unordered_set<Document *> m_visitedDocuments;
 };
 
 class ImportedDocumentStyleSheetCollector final : public DocumentStyleSheetCollector {
 public:
-    ImportedDocumentStyleSheetCollector(DocumentStyleSheetCollector&, WillBeHeapVector<RefPtrWillBeMember<StyleSheet>>&);
+    ImportedDocumentStyleSheetCollector(DocumentStyleSheetCollector&, std::vector<BlinKit::GCMember<StyleSheet>>&);
 };
 
 } // namespace blink
