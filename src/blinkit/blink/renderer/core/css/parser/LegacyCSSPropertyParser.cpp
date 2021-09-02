@@ -91,7 +91,7 @@ void CSSPropertyParser::addProperty(CSSPropertyID propId, PassRefPtrWillBeRawPtr
             shorthandIndex = indexOfShorthandForLonghand(m_currentShorthand, shorthands);
     }
 
-    m_parsedProperties.append(CSSProperty(propId, value, important, setFromShorthand, shorthandIndex, m_implicitShorthand || implicit));
+    m_parsedProperties.emplace_back(propId, value, important, setFromShorthand, shorthandIndex, m_implicitShorthand || implicit);
 }
 
 bool CSSPropertyParser::validCalculationUnit(CSSParserValue* value, Units unitflags, ReleaseParsedCalcValueCondition releaseCalc)
@@ -1140,7 +1140,7 @@ bool CSSPropertyParser::parse4Values(CSSPropertyID propId, const CSSPropertyID *
         case 1: {
             if (!parseValue(properties[0], important))
                 return false;
-            CSSValue* value = m_parsedProperties.last().value();
+            CSSValue* value = m_parsedProperties.back().value();
             ImplicitScope implicitScope(this);
             addProperty(properties[1], value, important);
             addProperty(properties[2], value, important);
