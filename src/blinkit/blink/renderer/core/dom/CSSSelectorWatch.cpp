@@ -170,7 +170,7 @@ void CSSSelectorWatch::watchCSSSelectors(const Vector<String>& selectors)
         if (!allCompound(selectorList))
             continue;
 
-        m_watchedCallbackSelectors.append(StyleRule::create(std::move(selectorList), callbackPropertySet));
+        m_watchedCallbackSelectors.emplace_back(StyleRule::create(std::move(selectorList), callbackPropertySet));
     }
     document().changedSelectorWatch();
 }
