@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LifecycleNotifier.h
+// Description: LifecycleNotifier Class
+//      Author: Ziming Li
+//     Created: 2021-08-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2013 Google Inc. All Rights Reserved.
@@ -27,6 +38,7 @@
 #ifndef LifecycleNotifier_h
 #define LifecycleNotifier_h
 
+#include "blinkit/gc/gc_weak_object_set.h"
 #include "platform/heap/Handle.h"
 #include "wtf/HashSet.h"
 #include "wtf/TemporaryChange.h"
@@ -34,7 +46,7 @@
 namespace blink {
 
 template<typename T, typename Observer>
-class LifecycleNotifier : public virtual WillBeGarbageCollectedMixin {
+class LifecycleNotifier { // BKTODO: : public virtual WillBeGarbageCollectedMixin {
 public:
     virtual ~LifecycleNotifier();
 
@@ -48,12 +60,14 @@ public:
     // is still valid and safe to use during the notification.
     virtual void notifyContextDestroyed();
 
+#if 0 // BKTODO:
     DEFINE_INLINE_VIRTUAL_TRACE()
     {
 #if ENABLE(OILPAN)
         visitor->trace(m_observers);
 #endif
     }
+#endif
 
     bool isIteratingOverObservers() const { return m_iterating != IteratingNone; }
 
@@ -72,7 +86,7 @@ protected:
     IterationType m_iterating;
 
 protected:
-    using ObserverSet = WillBeHeapHashSet<RawPtrWillBeWeakMember<Observer>>;
+    using ObserverSet = BlinKit::GCWeakObjectSet<Observer>;
 
     ObserverSet m_observers;
 
@@ -106,8 +120,7 @@ inline void LifecycleNotifier<T, Observer>::notifyContextDestroyed()
         return;
 
     TemporaryChange<IterationType> scope(m_iterating, IteratingOverAll);
-    Vector<RawPtrWillBeUntracedMember<Observer>> snapshotOfObservers;
-    copyToVector(m_observers, snapshotOfObservers);
+    std::vector<Observer *> snapshotOfObservers = m_observers.GetSnapshot();
     for (Observer* observer : snapshotOfObservers) {
         // FIXME: Oilpan: At the moment, it's possible that the Observer is
         // destructed during the iteration.
@@ -129,13 +142,13 @@ template<typename T, typename Observer>
 inline void LifecycleNotifier<T, Observer>::addObserver(Observer* observer)
 {
     RELEASE_ASSERT(m_iterating != IteratingOverAll);
-    m_observers.add(observer);
+    m_observers.emplace(observer);
 }
 
 template<typename T, typename Observer>
 inline void LifecycleNotifier<T, Observer>::removeObserver(Observer* observer)
 {
-    m_observers.remove(observer);
+    m_observers.erase(observer);
 }
 
 } // namespace blink

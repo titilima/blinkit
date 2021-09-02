@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LifecycleObserver.h
+// Description: LifecycleObserver Class
+//      Author: Ziming Li
+//     Created: 2021-08-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -33,7 +44,7 @@
 namespace blink {
 
 template<typename T, typename Observer, typename Notifier>
-class LifecycleObserver : public WillBeGarbageCollectedMixin {
+class LifecycleObserver : public BlinKit::GCObject {
 public:
     using Context = T;
 
@@ -47,7 +58,7 @@ public:
     EAGERLY_FINALIZE_WILL_BE_REMOVED();
     DEFINE_INLINE_VIRTUAL_TRACE()
     {
-        visitor->trace(m_lifecycleContext);
+        // BKTODO: visitor->trace(m_lifecycleContext);
     }
 
     virtual void contextDestroyed() { }
@@ -70,19 +81,19 @@ protected:
     }
 
 private:
-    RawPtrWillBeWeakMember<Context> m_lifecycleContext;
+    Context *m_lifecycleContext; // BKTODO: Check if raw pointer is OK.
 };
 
 template<typename T, typename Observer, typename Notifier>
 inline void LifecycleObserver<T, Observer, Notifier>::setContext(typename LifecycleObserver<T, Observer, Notifier>::Context* context)
 {
     if (m_lifecycleContext)
-        static_cast<Notifier*>(m_lifecycleContext.get())->removeObserver(static_cast<Observer*>(this));
+        static_cast<Notifier*>(m_lifecycleContext)->removeObserver(static_cast<Observer*>(this));
 
     m_lifecycleContext = context;
 
     if (m_lifecycleContext)
-        static_cast<Notifier*>(m_lifecycleContext.get())->addObserver(static_cast<Observer*>(this));
+        static_cast<Notifier*>(m_lifecycleContext)->addObserver(static_cast<Observer*>(this));
 }
 
 } // namespace blink

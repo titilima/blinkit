@@ -125,7 +125,7 @@ template<bool>
 class SupplementTracing;
 
 template<>
-class PLATFORM_EXPORT SupplementTracing<true> : public GarbageCollectedMixin { };
+class PLATFORM_EXPORT SupplementTracing<true> : public BlinKit::GCObject { };
 
 template<>
 class GC_PLUGIN_IGNORE("crbug.com/476419") PLATFORM_EXPORT SupplementTracing<false> {
@@ -179,7 +179,7 @@ public:
 
 protected:
     SupplementableTracing() { }
-    using SupplementMap = std::unordered_map<const char *, Member<SupplementBase<T, true>>>;
+    using SupplementMap = std::unordered_map<const char *, BlinKit::GCMember<SupplementBase<T, true>>>;
     SupplementMap m_supplements;
 };
 
@@ -213,7 +213,7 @@ public:
     {
         ASSERT(m_threadId == currentThread());
         auto it = this->m_supplements.find(key);
-        return this->m_supplements.end() != it ? it->second : nullptr;
+        return this->m_supplements.end() != it ? it->second.get() : nullptr;
     }
 
     void reattachThread()
