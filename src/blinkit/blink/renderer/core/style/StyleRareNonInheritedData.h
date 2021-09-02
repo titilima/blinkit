@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleRareNonInheritedData.h
+// Description: StyleRareNonInheritedData Class
+//      Author: Ziming Li
+//     Created: 2021-09-02
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -25,6 +36,7 @@
 #ifndef StyleRareNonInheritedData_h
 #define StyleRareNonInheritedData_h
 
+#include "blinkit/gc/gc_data_ref.h"
 #include "core/CoreExport.h"
 #include "core/css/StyleColor.h"
 #include "core/layout/ClipPathOperation.h"
@@ -115,8 +127,8 @@ public:
     DataRef<StyleTransformData> m_transform; // Transform properties (rotate, scale, skew, etc.)
     DataRef<StyleWillChangeData> m_willChange; // CSS Will Change
 
-    DataRef<StyleFilterData> m_filter; // Filter operations (url, sepia, blur, etc.)
-    DataRef<StyleFilterData> m_backdropFilter; // Backdrop filter operations (url, sepia, blur, etc.)
+    BlinKit::GCDataRef<StyleFilterData> m_filter; // Filter operations (url, sepia, blur, etc.)
+    BlinKit::GCDataRef<StyleFilterData> m_backdropFilter; // Backdrop filter operations (url, sepia, blur, etc.)
 
     DataRef<StyleGridData> m_grid;
     DataRef<StyleGridItemData> m_gridItem;

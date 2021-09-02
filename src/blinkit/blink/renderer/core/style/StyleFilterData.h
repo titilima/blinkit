@@ -47,16 +47,16 @@ namespace blink {
 // FIXME: Oilpan: resorting to RefCountedGarbageCollected<> here so as to support
 // DataRef<StyleFilterData> uses. Once/if DataRef<> is able to move away from
 // relying on RefPtr<>, switch to GarbageCollected<>.
-class StyleFilterData final : public BlinKit::GCRefCounted {
+class StyleFilterData final : public BlinKit::GCObject {
 public:
-    static PassRefPtrWillBeRawPtr<StyleFilterData> create()
+    static GCPassPtr<StyleFilterData> create()
     {
-        return adoptRefWillBeNoop(new StyleFilterData);
+        return BlinKit::WrapLeaked(new StyleFilterData);
     }
 
-    PassRefPtrWillBeRawPtr<StyleFilterData> copy() const
+    GCPassPtr<StyleFilterData> copy() const
     {
-        return adoptRefWillBeNoop(new StyleFilterData(*this));
+        return BlinKit::WrapLeaked(new StyleFilterData(*this));
     }
 
     bool operator==(const StyleFilterData&) const;

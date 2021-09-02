@@ -1,8 +1,8 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: StylePath.cpp
-// Description: StylePath Class
+//   File Name: StyleRareNonInheritedData.cpp
+// Description: StyleRareNonInheritedData Class
 //      Author: Ziming Li
 //     Created: 2021-07-27
 // -------------------------------------------------
