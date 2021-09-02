@@ -16,7 +16,7 @@
 #ifndef NodeIntersectionObserverData_h
 #define NodeIntersectionObserverData_h
 
-#include <unordered_set>
+#include "blinkit/gc/gc_weak_object_set.h"
 #include "platform/heap/Handle.h"
 
 namespace blink {
@@ -47,7 +47,7 @@ public:
 
 private:
     // IntersectionObservers for which the Node owning this data is root.
-    std::unordered_set<WeakMember<IntersectionObserver>> m_intersectionObservers;
+    BlinKit::GCWeakObjectSet<IntersectionObserver> m_intersectionObservers;
     // IntersectionObservations for which the Node owning this data is target.
     std::unordered_map<Member<IntersectionObserver>, Member<IntersectionObservation>> m_intersectionObservations;
 

@@ -59,8 +59,8 @@ void NodeIntersectionObserverData::activateValidIntersectionObservers(Node& node
     IntersectionObserverController& controller = node.document().ensureIntersectionObserverController();
     // Activate observers for which node is root.
     for (auto& observer : m_intersectionObservers) {
-        controller.addTrackedObserver(*observer);
-        observer->setActive(true);
+        controller.addTrackedObserver(observer);
+        observer.setActive(true);
     }
     // A document can be root, but not target.
     if (node.isDocumentNode())
@@ -74,7 +74,7 @@ void NodeIntersectionObserverData::deactivateAllIntersectionObservers(Node& node
 {
     node.document().ensureIntersectionObserverController().removeTrackedObserversForRoot(node);
     for (auto& observer : m_intersectionObservers)
-        observer->setActive(false);
+        observer.setActive(false);
     for (auto& observation : m_intersectionObservations)
         observation.second->setActive(false);
 }
@@ -105,7 +105,7 @@ WeakPtrWillBeRawPtr<Node> NodeIntersectionObserverData::createWeakPtr(Node* node
 
 DEFINE_TRACE(NodeIntersectionObserverData)
 {
-    visitor->trace(m_intersectionObservers);
+    // BKTODO: visitor->trace(m_intersectionObservers);
     visitor->trace(m_intersectionObservations);
 }
 
