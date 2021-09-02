@@ -82,7 +82,7 @@ private:
 
     void assertNoActiveIterators();
 
-    std::vector<std::pair<AtomicString, Member<EventListenerVector>>> m_entries;
+    std::vector<std::pair<AtomicString, EventListenerVector>> m_entries;
 
 #if ENABLE(ASSERT)
     int m_activeIteratorCount;
