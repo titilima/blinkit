@@ -140,7 +140,7 @@ void FontLoader::clearPendingFonts()
 
 DEFINE_TRACE(FontLoader)
 {
-    visitor->trace(m_document);
+    // BKTODO: visitor->trace(m_document);
     visitor->trace(m_fontSelector);
 }
 

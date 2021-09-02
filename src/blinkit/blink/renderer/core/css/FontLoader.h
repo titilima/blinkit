@@ -28,7 +28,7 @@ class CSSFontSelector;
 class Document;
 class FontResource;
 
-class FontLoader : public RefCountedWillBeGarbageCollectedFinalized<FontLoader> {
+class FontLoader : public BlinKit::GCObject {
 public:
     static PassRefPtrWillBeRawPtr<FontLoader> create(CSSFontSelector* fontSelector, Document* document)
     {
