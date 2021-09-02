@@ -65,7 +65,9 @@ class StyleRuleFontFace;
 class StyleSheet;
 class StyleSheetContents;
 
-class CORE_EXPORT StyleEngine final : public NoBaseWillBeGarbageCollectedFinalized<StyleEngine>, public CSSFontSelectorClient  {
+class CORE_EXPORT StyleEngine final : public BlinKit::GCObject
+                                    , public BlinKit::GCStubImpl<StyleEngine, CSSFontSelectorClient>
+{
     USING_FAST_MALLOC_WILL_BE_REMOVED(StyleEngine);
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(StyleEngine);
 public:
@@ -81,15 +83,17 @@ public:
 
     friend class IgnoringPendingStylesheet;
 
-    static PassOwnPtrWillBeRawPtr<StyleEngine> create(Document& document) { return adoptPtrWillBeNoop(new StyleEngine(document)); }
+    static GCPassPtr<StyleEngine> create(Document& document) { return BlinKit::WrapLeaked(new StyleEngine(document)); }
 
     ~StyleEngine();
+
+    BLINKIT_DEFINE_GC_CASTER(StyleEngine)
 
 #if !ENABLE(OILPAN)
     void detachFromDocument();
 #endif
 
-    const WillBeHeapVector<RefPtrWillBeMember<StyleSheet>>& styleSheetsForStyleSheetList(TreeScope&);
+    const std::vector<BlinKit::GCMember<StyleSheet>>& styleSheetsForStyleSheetList(TreeScope&);
 
     const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& injectedAuthorStyleSheets() const { return m_injectedAuthorStyleSheets; }
 
@@ -164,7 +168,7 @@ public:
     CSSFontSelector* fontSelector() { return m_fontSelector.get(); }
     void setFontSelector(PassRefPtrWillBeRawPtr<CSSFontSelector>);
 
-    void removeFontFaceRules(const WillBeHeapVector<RawPtrWillBeMember<const StyleRuleFontFace>>&);
+    void removeFontFaceRules(const std::vector<BlinKit::GCMember<const StyleRuleFontFace>>&);
     void clearFontCache();
     // updateGenericFontFamilySettings is used from WebSettingsImpl.
     void updateGenericFontFamilySettings();
@@ -176,7 +180,7 @@ public:
 
     void markDocumentDirty();
 
-    PassRefPtrWillBeRawPtr<CSSStyleSheet> createSheet(Element*, const String& text, TextPosition startPosition);
+    GCPassPtr<CSSStyleSheet> createSheet(Element*, const String& text, TextPosition startPosition);
     void removeSheet(StyleSheetContents*);
 
     void collectScopedStyleFeaturesTo(RuleFeatureSet&) const;
@@ -215,7 +219,7 @@ private:
 
     void createResolver();
 
-    static PassRefPtrWillBeRawPtr<CSSStyleSheet> parseSheet(Element*, const String& text, TextPosition startPosition);
+    static GCPassPtr<CSSStyleSheet> parseSheet(Element*, const String& text, TextPosition startPosition);
 
     const DocumentStyleSheetCollection* documentStyleSheetCollection() const
     {
@@ -231,7 +235,7 @@ private:
 
     bool shouldSkipInvalidationFor(const Element&) const;
 
-    RawPtrWillBeMember<Document> m_document;
+    BlinKit::GCMember<Document> m_document;
     bool m_isMaster;
 
     // Track the number of currently loading top-level stylesheets needed for layout.
@@ -242,7 +246,7 @@ private:
 
     WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>> m_injectedAuthorStyleSheets;
 
-    OwnPtrWillBeMember<DocumentStyleSheetCollection> m_documentStyleSheetCollection;
+    std::unique_ptr<DocumentStyleSheetCollection> m_documentStyleSheetCollection;
 
     using StyleSheetCollectionMap = std::unordered_map<WeakMember<TreeScope>, Member<ShadowTreeStyleSheetCollection>>;
     StyleSheetCollectionMap m_styleSheetCollectionMap;
@@ -265,10 +269,10 @@ private:
     OwnPtrWillBeMember<StyleResolver> m_resolver;
     StyleInvalidator m_styleInvalidator;
 
-    RefPtrWillBeMember<CSSFontSelector> m_fontSelector;
+    BlinKit::GCMember<CSSFontSelector> m_fontSelector;
 
-    std::unordered_map<AtomicString, Member<StyleSheetContents>> m_textToSheetCache;
-    std::unordered_map<Member<StyleSheetContents>, AtomicString> m_sheetToTextCache;
+    std::unordered_map<AtomicString, BlinKit::GCMember<StyleSheetContents>> m_textToSheetCache;
+    std::unordered_map<StyleSheetContents *, AtomicString> m_sheetToTextCache;
 };
 
 }

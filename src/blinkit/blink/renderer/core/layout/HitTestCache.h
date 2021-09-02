@@ -49,7 +49,7 @@ class CORE_EXPORT HitTestCache final : public BlinKit::GCObject {
     USING_FAST_MALLOC_WILL_BE_REMOVED(HitTestCache);
     WTF_MAKE_NONCOPYABLE(HitTestCache);
 public:
-    static LeakedPtr<HitTestCache> create()
+    static GCPassPtr<HitTestCache> create()
     {
         return BlinKit::WrapLeaked(new HitTestCache);
     }

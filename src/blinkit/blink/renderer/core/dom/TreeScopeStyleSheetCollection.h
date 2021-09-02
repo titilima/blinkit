@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TreeScopeStyleSheetCollection.h
+// Description: TreeScopeStyleSheetCollection Class
+//      Author: Ziming Li
+//     Created: 2021-08-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -36,7 +47,7 @@
 #include "wtf/HashMap.h"
 #include "wtf/ListHashSet.h"
 #include "wtf/RefPtr.h"
-#include "wtf/Vector.h"
+// BKTODO: #include "wtf/Vector.h"
 #include "wtf/text/WTFString.h"
 
 namespace blink {
@@ -59,7 +70,7 @@ protected:
     explicit TreeScopeStyleSheetCollection(TreeScope&);
 
     Document& document() const { return treeScope().document(); }
-    TreeScope& treeScope() const { return *m_treeScope; }
+    TreeScope& treeScope() const { return m_treeScope; }
 
     enum StyleResolverUpdateType {
         Reconstruct,
@@ -72,23 +83,22 @@ protected:
     public:
         StyleResolverUpdateType styleResolverUpdateType;
         bool requiresFullStyleRecalc;
-        WillBeHeapVector<RawPtrWillBeMember<const StyleRuleFontFace>> fontFaceRulesToRemove;
+        std::vector<BlinKit::GCMember<const StyleRuleFontFace>> fontFaceRulesToRemove;
 
-        StyleSheetChange()
-            : styleResolverUpdateType(Reconstruct)
-            , requiresFullStyleRecalc(true) { }
+        StyleSheetChange(void);
+        ~StyleSheetChange(void);
     };
 
     void analyzeStyleSheetChange(StyleResolverUpdateMode, const StyleSheetCollection&, StyleSheetChange&);
 
 private:
-    static StyleResolverUpdateType compareStyleSheets(const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& oldStyleSheets, const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& newStylesheets, WillBeHeapVector<RawPtrWillBeMember<StyleSheetContents>>& addedSheets);
-    bool activeLoadingStyleSheetLoaded(const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& newStyleSheets);
+    static StyleResolverUpdateType compareStyleSheets(const std::vector<BlinKit::GCMember<CSSStyleSheet>>& oldStyleSheets, const std::vector<BlinKit::GCMember<CSSStyleSheet>>& newStylesheets, std::vector<BlinKit::GCMember<StyleSheetContents>>& addedSheets);
+    bool activeLoadingStyleSheetLoaded(const std::vector<BlinKit::GCMember<CSSStyleSheet>>& newStyleSheets);
 
     friend class TreeScopeStyleSheetCollectionTest;
 
 protected:
-    RawPtrWillBeMember<TreeScope> m_treeScope;
+    TreeScope &m_treeScope;
     bool m_hadActiveLoadingStylesheet;
 
     DocumentOrderedList m_styleSheetCandidateNodes;

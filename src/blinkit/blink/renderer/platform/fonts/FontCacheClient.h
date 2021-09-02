@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontCacheClient.h
+// Description: FontCacheClient Class
+//      Author: Ziming Li
+//     Created: 2021-08-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All rights reserved.
  *
@@ -37,12 +48,13 @@
 
 namespace blink {
 
-class PLATFORM_EXPORT FontCacheClient : public RefCountedWillBeGarbageCollectedFinalized<FontCacheClient> {
+class PLATFORM_EXPORT FontCacheClient : public BlinKit::GCObject {
 public:
     virtual ~FontCacheClient() { }
 
     virtual void fontCacheInvalidated() = 0;
-    DEFINE_INLINE_VIRTUAL_TRACE() { }
+
+    void trace(Visitor *visitor) override {}
 };
 
 } // namespace blink

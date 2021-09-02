@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TreeScopeStyleSheetCollection.cpp
+// Description: TreeScopeStyleSheetCollection Class
+//      Author: Ziming Li
+//     Created: 2021-08-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -36,6 +47,8 @@
 #include "core/html/HTMLLinkElement.h"
 #include "core/html/HTMLStyleElement.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 TreeScopeStyleSheetCollection::TreeScopeStyleSheetCollection(TreeScope& treeScope)
@@ -52,7 +65,7 @@ void TreeScopeStyleSheetCollection::addStyleSheetCandidateNode(Node* node, bool 
     m_styleSheetCandidateNodes.add(node);
 }
 
-TreeScopeStyleSheetCollection::StyleResolverUpdateType TreeScopeStyleSheetCollection::compareStyleSheets(const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& oldStyleSheets, const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& newStylesheets, WillBeHeapVector<RawPtrWillBeMember<StyleSheetContents>>& addedSheets)
+TreeScopeStyleSheetCollection::StyleResolverUpdateType TreeScopeStyleSheetCollection::compareStyleSheets(const std::vector<GCMember<CSSStyleSheet>>& oldStyleSheets, const std::vector<GCMember<CSSStyleSheet>>& newStylesheets, std::vector<GCMember<StyleSheetContents>>& addedSheets)
 {
     unsigned newStyleSheetCount = newStylesheets.size();
     unsigned oldStyleSheetCount = oldStyleSheets.size();
@@ -64,16 +77,16 @@ TreeScopeStyleSheetCollection::StyleResolverUpdateType TreeScopeStyleSheetCollec
     unsigned newIndex = 0;
     for (unsigned oldIndex = 0; oldIndex < oldStyleSheetCount; ++oldIndex) {
         while (oldStyleSheets[oldIndex] != newStylesheets[newIndex]) {
-            addedSheets.append(newStylesheets[newIndex]->contents());
+            addedSheets.emplace_back(newStylesheets[newIndex]->contents());
             if (++newIndex == newStyleSheetCount)
                 return Reconstruct;
         }
         if (++newIndex == newStyleSheetCount)
             return Reconstruct;
     }
-    bool hasInsertions = !addedSheets.isEmpty();
+    bool hasInsertions = !addedSheets.empty();
     while (newIndex < newStyleSheetCount) {
-        addedSheets.append(newStylesheets[newIndex]->contents());
+        addedSheets.emplace_back(newStylesheets[newIndex]->contents());
         ++newIndex;
     }
     // If all new sheets were added at the end of the list we can just add them to existing StyleResolver.
@@ -81,7 +94,7 @@ TreeScopeStyleSheetCollection::StyleResolverUpdateType TreeScopeStyleSheetCollec
     return hasInsertions ? Reset : Additive;
 }
 
-bool TreeScopeStyleSheetCollection::activeLoadingStyleSheetLoaded(const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& newStyleSheets)
+bool TreeScopeStyleSheetCollection::activeLoadingStyleSheetLoaded(const std::vector<GCMember<CSSStyleSheet>>& newStyleSheets)
 {
     // StyleSheets of <style> elements that @import stylesheets are active but loading. We need to trigger a full recalc when such loads are done.
     bool hasActiveLoadingStylesheet = false;
@@ -98,7 +111,7 @@ bool TreeScopeStyleSheetCollection::activeLoadingStyleSheetLoaded(const WillBeHe
     return false;
 }
 
-static bool findFontFaceRulesFromStyleSheetContents(const WillBeHeapVector<RawPtrWillBeMember<StyleSheetContents>>& sheets, WillBeHeapVector<RawPtrWillBeMember<const StyleRuleFontFace>>& fontFaceRules)
+static bool findFontFaceRulesFromStyleSheetContents(const std::vector<GCMember<StyleSheetContents>>& sheets, std::vector<GCMember<const StyleRuleFontFace>>& fontFaceRules)
 {
     bool hasFontFaceRule = false;
 
@@ -122,7 +135,7 @@ void TreeScopeStyleSheetCollection::analyzeStyleSheetChange(StyleResolverUpdateM
         return;
 
     // Find out which stylesheets are new.
-    WillBeHeapVector<RawPtrWillBeMember<StyleSheetContents>> addedSheets;
+    std::vector<GCMember<StyleSheetContents>> addedSheets;
     if (m_activeAuthorStyleSheets.size() <= newCollection.activeAuthorStyleSheets().size()) {
         change.styleResolverUpdateType = compareStyleSheets(m_activeAuthorStyleSheets, newCollection.activeAuthorStyleSheets(), addedSheets);
     } else {
@@ -150,7 +163,7 @@ void TreeScopeStyleSheetCollection::analyzeStyleSheetChange(StyleResolverUpdateM
     // If we are already parsing the body and so may have significant amount of elements, put some effort into trying to avoid style recalcs.
     if (!document().body() || document().hasNodesWithPlaceholderStyle())
         return;
-    StyleSheetInvalidationAnalysis invalidationAnalysis(*m_treeScope, addedSheets);
+    StyleSheetInvalidationAnalysis invalidationAnalysis(m_treeScope, addedSheets);
     if (invalidationAnalysis.dirtiesAllStyle())
         return;
     invalidationAnalysis.invalidateStyle();
@@ -169,9 +182,17 @@ void TreeScopeStyleSheetCollection::clearMediaQueryRuleSetStyleSheets()
 
 DEFINE_TRACE(TreeScopeStyleSheetCollection)
 {
-    visitor->trace(m_treeScope);
+    // BKTODO: visitor->trace(m_treeScope);
     visitor->trace(m_styleSheetCandidateNodes);
     StyleSheetCollection::trace(visitor);
 }
+
+TreeScopeStyleSheetCollection::StyleSheetChange::StyleSheetChange(void)
+    : styleResolverUpdateType(Reconstruct)
+    , requiresFullStyleRecalc(true)
+{
+}
+
+TreeScopeStyleSheetCollection::StyleSheetChange::~StyleSheetChange(void) = default;
 
 }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleSheetCollection.h
+// Description: StyleSheetCollection Class
+//      Author: Ziming Li
+//     Created: 2021-08-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -32,14 +43,14 @@
 #include "platform/heap/Handle.h"
 #include "wtf/Allocator.h"
 #include "wtf/RefPtr.h"
-#include "wtf/Vector.h"
+// BKTODO: #include "wtf/Vector.h"
 
 namespace blink {
 
 class CSSStyleSheet;
 class StyleSheet;
 
-class CORE_EXPORT StyleSheetCollection : public NoBaseWillBeGarbageCollected<StyleSheetCollection> {
+class CORE_EXPORT StyleSheetCollection {
     DECLARE_EMPTY_VIRTUAL_DESTRUCTOR_WILL_BE_REMOVED(StyleSheetCollection);
     WTF_MAKE_NONCOPYABLE(StyleSheetCollection);
     USING_FAST_MALLOC_WILL_BE_REMOVED(StyleSheetCollection);
@@ -49,21 +60,21 @@ public:
 
     StyleSheetCollection();
 
-    WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& activeAuthorStyleSheets() { return m_activeAuthorStyleSheets; }
-    WillBeHeapVector<RefPtrWillBeMember<StyleSheet>>& styleSheetsForStyleSheetList() { return m_styleSheetsForStyleSheetList; }
-    const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& activeAuthorStyleSheets() const { return m_activeAuthorStyleSheets; }
-    const WillBeHeapVector<RefPtrWillBeMember<StyleSheet>>& styleSheetsForStyleSheetList() const { return m_styleSheetsForStyleSheetList; }
+    std::vector<BlinKit::GCMember<CSSStyleSheet>>& activeAuthorStyleSheets() { return m_activeAuthorStyleSheets; }
+    std::vector<BlinKit::GCMember<StyleSheet>>& styleSheetsForStyleSheetList() { return m_styleSheetsForStyleSheetList; }
+    const std::vector<BlinKit::GCMember<CSSStyleSheet>>& activeAuthorStyleSheets() const { return m_activeAuthorStyleSheets; }
+    const std::vector<BlinKit::GCMember<StyleSheet>>& styleSheetsForStyleSheetList() const { return m_styleSheetsForStyleSheetList; }
 
     void swap(StyleSheetCollection&);
-    void swapSheetsForSheetList(WillBeHeapVector<RefPtrWillBeMember<StyleSheet>>&);
+    void swapSheetsForSheetList(std::vector<BlinKit::GCMember<StyleSheet>>&);
     void appendActiveStyleSheet(CSSStyleSheet*);
     void appendSheetForList(StyleSheet*);
 
     DECLARE_VIRTUAL_TRACE();
 
 protected:
-    WillBeHeapVector<RefPtrWillBeMember<StyleSheet>> m_styleSheetsForStyleSheetList;
-    WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>> m_activeAuthorStyleSheets;
+    std::vector<BlinKit::GCMember<StyleSheet>> m_styleSheetsForStyleSheetList;
+    std::vector<BlinKit::GCMember<CSSStyleSheet>> m_activeAuthorStyleSheets;
 };
 
 } // namespace blink

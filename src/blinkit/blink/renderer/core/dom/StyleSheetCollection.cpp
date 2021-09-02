@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleSheetCollection.cpp
+// Description: StyleSheetCollection Class
+//      Author: Ziming Li
+//     Created: 2021-08-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -28,6 +39,8 @@
 
 #include "core/css/CSSStyleSheet.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 StyleSheetCollection::StyleSheetCollection()
@@ -42,21 +55,21 @@ void StyleSheetCollection::swap(StyleSheetCollection& other)
     m_activeAuthorStyleSheets.swap(other.m_activeAuthorStyleSheets);
 }
 
-void StyleSheetCollection::swapSheetsForSheetList(WillBeHeapVector<RefPtrWillBeMember<StyleSheet>>& sheets)
+void StyleSheetCollection::swapSheetsForSheetList(std::vector<GCMember<StyleSheet>>& sheets)
 {
     // Only called for collection of HTML Imports that never has active sheets.
-    ASSERT(m_activeAuthorStyleSheets.isEmpty());
+    ASSERT(m_activeAuthorStyleSheets.empty());
     m_styleSheetsForStyleSheetList.swap(sheets);
 }
 
 void StyleSheetCollection::appendActiveStyleSheet(CSSStyleSheet* sheet)
 {
-    m_activeAuthorStyleSheets.append(sheet);
+    m_activeAuthorStyleSheets.emplace_back(sheet);
 }
 
 void StyleSheetCollection::appendSheetForList(StyleSheet* sheet)
 {
-    m_styleSheetsForStyleSheetList.append(sheet);
+    m_styleSheetsForStyleSheetList.emplace_back(sheet);
 }
 
 DEFINE_TRACE(StyleSheetCollection)

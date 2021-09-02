@@ -64,9 +64,9 @@ class CORE_EXPORT FrameConsole final : public NoBaseWillBeGarbageCollected<Frame
     USING_FAST_MALLOC_WILL_BE_REMOVED(FrameConsole);
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(FrameConsole);
 public:
-    static PassOwnPtrWillBeRawPtr<FrameConsole> create(LocalFrame& frame)
+    static std::unique_ptr<FrameConsole> create(LocalFrame& frame)
     {
-        return adoptPtrWillBeNoop(new FrameConsole(frame));
+        return zed::wrap_unique(new FrameConsole(frame));
     }
 
     void addMessage(PassRefPtrWillBeRawPtr<ConsoleMessage>);

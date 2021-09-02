@@ -62,6 +62,8 @@
 #include "core/page/Page.h"
 #include "wtf/Vector.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
@@ -349,18 +351,19 @@ WillBeHeapVector<RawPtrWillBeMember<Element>> TreeScope::elementsFromHitTestResu
     return elements;
 }
 
-WillBeHeapVector<RawPtrWillBeMember<Element>> TreeScope::elementsFromPoint(int x, int y) const
+std::vector<GCMember<Element>> TreeScope::elementsFromPoint(int x, int y) const
 {
     Document& document = rootNode().document();
     IntPoint hitPoint(x, y);
     if (!pointWithScrollAndZoomIfPossible(document, hitPoint))
-        return WillBeHeapVector<RawPtrWillBeMember<Element>>();
+        return std::vector<GCMember<Element>>();
 
     HitTestRequest request(HitTestRequest::ReadOnly | HitTestRequest::Active | HitTestRequest::ListBased | HitTestRequest::PenetratingList);
     HitTestResult result(request, hitPoint);
     document.layoutView()->hitTest(result);
 
-    return elementsFromHitTestResult(result);
+    ASSERT(false); // BKTODO: return elementsFromHitTestResult(result);
+    return std::vector<GCMember<Element>>();
 }
 
 void TreeScope::addLabel(const AtomicString& forAttributeValue, HTMLLabelElement* element)
@@ -586,6 +589,11 @@ void TreeScope::setNeedsStyleRecalcForViewportUnits()
         if (style && style->hasViewportUnits())
             element->setNeedsStyleRecalc(LocalStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::ViewportUnits));
     }
+}
+
+void TreeScope::setDocument(Document &document)
+{
+    m_document = &document;
 }
 
 DEFINE_TRACE(TreeScope)

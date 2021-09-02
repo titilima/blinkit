@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TextAutosizer.h
+// Description: TextAutosizer Class
+//      Author: Ziming Li
+//     Created: 2021-08-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -51,13 +62,13 @@ class LayoutBlock;
 // Single-pass text autosizer. Documentation at:
 // http://tinyurl.com/TextAutosizer
 
-class CORE_EXPORT TextAutosizer final : public NoBaseWillBeGarbageCollectedFinalized<TextAutosizer> {
+class CORE_EXPORT TextAutosizer final {
     USING_FAST_MALLOC_WILL_BE_REMOVED(TextAutosizer);
     WTF_MAKE_NONCOPYABLE(TextAutosizer);
 public:
-    static PassOwnPtrWillBeRawPtr<TextAutosizer> create(const Document* document)
+    static std::unique_ptr<TextAutosizer> create(const Document* document)
     {
-        return adoptPtrWillBeNoop(new TextAutosizer(document));
+        return zed::wrap_unique(new TextAutosizer(document));
     }
     static float computeAutosizedFontSize(float specifiedSize, float multiplier);
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PaintLayerScrollableArea.h
+// Description: PaintLayerScrollableArea Class
+//      Author: Ziming Li
+//     Created: 2021-08-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2009, 2012 Apple Inc. All rights reserved.
  *
@@ -97,7 +108,7 @@ class LayoutScrollbarPart;
 // to be painted on top of everything. Hardware accelerated overlay scrollbars
 // are painted by their associated GraphicsLayer that sets the paint flag
 // PaintLayerPaintingOverlayScrollbars.
-class CORE_EXPORT PaintLayerScrollableArea final : public NoBaseWillBeGarbageCollectedFinalized<PaintLayerScrollableArea>, public PaintInvalidationCapableScrollableArea {
+class CORE_EXPORT PaintLayerScrollableArea final : public PaintInvalidationCapableScrollableArea {
     USING_FAST_MALLOC_WILL_BE_REMOVED(PaintLayerScrollableArea);
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(PaintLayerScrollableArea);
     friend class Internals;
@@ -143,7 +154,7 @@ private:
         void destroyScrollbar(ScrollbarOrientation);
 
     private:
-        RawPtrWillBeMember<PaintLayerScrollableArea> m_scrollableArea;
+        BlinKit::GCMember<PaintLayerScrollableArea> m_scrollableArea;
 
         // The scrollbars associated with m_scrollableArea. Both can nullptr.
         RefPtrWillBeMember<Scrollbar> m_hBar;
@@ -157,9 +168,9 @@ private:
 public:
     // FIXME: We should pass in the LayoutBox but this opens a window
     // for crashers during PaintLayer setup (see crbug.com/368062).
-    static PassOwnPtrWillBeRawPtr<PaintLayerScrollableArea> create(PaintLayer& layer)
+    static GCPassPtr<PaintLayerScrollableArea> create(PaintLayer& layer)
     {
-        return adoptPtrWillBeNoop(new PaintLayerScrollableArea(layer));
+        return BlinKit::WrapLeaked(new PaintLayerScrollableArea(layer));
     }
 
     ~PaintLayerScrollableArea() override;

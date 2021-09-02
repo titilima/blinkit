@@ -89,7 +89,7 @@ public:
 
     Element* elementFromPoint(int x, int y) const;
     Element* hitTestPoint(int x, int y, const HitTestRequest&) const;
-    WillBeHeapVector<RawPtrWillBeMember<Element>> elementsFromPoint(int x, int y) const;
+    std::vector<BlinKit::GCMember<Element>> elementsFromPoint(int x, int y) const;
     WillBeHeapVector<RawPtrWillBeMember<Element>> elementsFromHitTestResult(HitTestResult&) const;
 
     // For accessibility.
@@ -163,7 +163,7 @@ protected:
     void destroyTreeScopeData();
 #endif
 
-    void setDocument(Document& document) { m_document = &document; }
+    void setDocument(Document& document);
     void setParentTreeScope(TreeScope&);
 
 #if !ENABLE(OILPAN)
@@ -189,8 +189,8 @@ private:
 
     bool rootNodeHasTreeSharedParent() const;
 
-    RawPtrWillBeMember<ContainerNode> m_rootNode;
-    RawPtrWillBeMember<Document> m_document;
+    BlinKit::GCMember<ContainerNode> m_rootNode;
+    BlinKit::GCMember<Document> m_document;
     RawPtrWillBeMember<TreeScope> m_parentTreeScope;
 
 #if !ENABLE(OILPAN)
@@ -201,7 +201,7 @@ private:
     OwnPtrWillBeMember<DocumentOrderedMap> m_imageMapsByName;
     OwnPtrWillBeMember<DocumentOrderedMap> m_labelsByForAttribute;
 
-    OwnPtrWillBeMember<IdTargetObserverRegistry> m_idTargetObserverRegistry;
+    BlinKit::GCMember<IdTargetObserverRegistry> m_idTargetObserverRegistry;
 
     OwnPtrWillBeMember<ScopedStyleResolver> m_scopedStyleResolver;
 
