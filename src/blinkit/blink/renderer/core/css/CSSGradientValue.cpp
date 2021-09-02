@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSGradientValue.cpp
+// Description: CSSGradientValue Class
+//      Author: Ziming Li
+//     Created: 2021-08-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc.  All rights reserved.
  * Copyright (C) 2015 Google Inc. All rights reserved.
@@ -104,7 +115,7 @@ struct GradientStop {
     { }
 };
 
-static void replaceColorHintsWithColorStops(Vector<GradientStop>& stops, const WillBeHeapVector<CSSGradientColorStop, 2>& cssGradientStops)
+static void replaceColorHintsWithColorStops(std::vector<GradientStop>& stops, const std::vector<CSSGradientColorStop>& cssGradientStops)
 {
     // This algorithm will replace each color interpolation hint with 9 regular
     // color stops. The color values for the new color stops will be calculated
@@ -147,7 +158,7 @@ static void replaceColorHintsWithColorStops(Vector<GradientStop>& stops, const W
         ASSERT(offsetLeft <= offset && offset <= offsetRight);
 
         if (WebCoreFloatNearlyEqual(leftDist, rightDist)) {
-            stops.remove(x);
+            stops.erase(stops.begin() + x);
             --indexOffset;
             continue;
         }
@@ -186,8 +197,8 @@ static void replaceColorHintsWithColorStops(Vector<GradientStop>& stops, const W
         }
 
         // Replace the color hint with the new color stops.
-        stops.remove(x);
-        stops.insert(x, newStops, 9);
+        stops.erase(stops.begin() + x);
+        stops.insert(stops.begin() + x, std::begin(newStops), std::end(newStops));
         indexOffset += 8;
     }
 }
@@ -218,7 +229,7 @@ void CSSGradientValue::addDeprecatedStops(Gradient* gradient, const LayoutObject
     }
 }
 
-static bool requiresStopsNormalization(const Vector<GradientStop>& stops, const Gradient* gradient)
+static bool requiresStopsNormalization(const std::vector<GradientStop>& stops, const Gradient* gradient)
 {
     // We need at least two stops to normalize
     if (stops.size() < 2)
@@ -230,19 +241,19 @@ static bool requiresStopsNormalization(const Vector<GradientStop>& stops, const 
         return true;
 
     // Degenerate stops
-    if (stops.first().offset < 0 || stops.last().offset > 1)
+    if (stops.front().offset < 0 || stops.back().offset > 1)
         return true;
 
     return false;
 }
 
 // Redistribute the stops such that they fully cover [0 , 1] and add them to the gradient.
-static bool normalizeAndAddStops(const Vector<GradientStop>& stops, Gradient* gradient)
+static bool normalizeAndAddStops(const std::vector<GradientStop>& stops, Gradient* gradient)
 {
     ASSERT(stops.size() > 1);
 
-    const float firstOffset = stops.first().offset;
-    const float lastOffset = stops.last().offset;
+    const float firstOffset = stops.front().offset;
+    const float lastOffset = stops.back().offset;
     const float span = lastOffset - firstOffset;
 
     if (fabs(span) < std::numeric_limits<float>::epsilon()) {
@@ -254,8 +265,8 @@ static bool normalizeAndAddStops(const Vector<GradientStop>& stops, Gradient* gr
         // For non-repeating gradients, both the first color and the last color can be significant
         // (padding on both sides of the offset).
         if (gradient->spreadMethod() != SpreadMethodRepeat)
-            gradient->addColorStop(clampedOffset, stops.first().color);
-        gradient->addColorStop(clampedOffset, stops.last().color);
+            gradient->addColorStop(clampedOffset, stops.front().color);
+        gradient->addColorStop(clampedOffset, stops.back().color);
 
         return false;
     }
@@ -276,7 +287,7 @@ static bool normalizeAndAddStops(const Vector<GradientStop>& stops, Gradient* gr
 }
 
 // Collapse all negative-offset stops to 0 and compute an interpolated color value for that point.
-static void clampNegativeOffsets(Vector<GradientStop>& stops)
+static void clampNegativeOffsets(std::vector<GradientStop>& stops)
 {
     float lastNegativeOffset = 0;
 
@@ -358,7 +369,7 @@ void CSSGradientValue::addStops(Gradient* gradient, const CSSToLengthConversionD
 
     size_t numStops = m_stops.size();
 
-    Vector<GradientStop> stops(numStops);
+    std::vector<GradientStop> stops(numStops);
 
     bool hasHints = false;
 
@@ -420,7 +431,7 @@ void CSSGradientValue::addStops(Gradient* gradient, const CSSToLengthConversionD
         }
     }
 
-    ASSERT(stops.first().specified && stops.last().specified);
+    ASSERT(stops.front().specified && stops.back().specified);
 
     // If any color-stop still does not have a position, then, for each run of adjacent
     // color-stops without positions, set their positions so that they are evenly spaced
@@ -466,9 +477,9 @@ void CSSGradientValue::addStops(Gradient* gradient, const CSSToLengthConversionD
 
         if (normalizeAndAddStops(stops, gradient)) {
             if (isLinearGradientValue()) {
-                adjustGradientPointsForOffsetRange(gradient, stops.first().offset, stops.last().offset);
+                adjustGradientPointsForOffsetRange(gradient, stops.front().offset, stops.back().offset);
             } else {
-                adjustGradientRadiiForOffsetRange(gradient, stops.first().offset, stops.last().offset);
+                adjustGradientRadiiForOffsetRange(gradient, stops.front().offset, stops.back().offset);
             }
         } else {
             // Normalization failed because the stop set is coincident.

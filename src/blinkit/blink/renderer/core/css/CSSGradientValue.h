@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSGradientValue.h
+// Description: CSSGradientValue Class
+//      Author: Ziming Li
+//     Created: 2021-08-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All rights reserved.
  *
@@ -58,8 +69,8 @@ struct CSSGradientColorStop {
     DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
 public:
     CSSGradientColorStop() : m_colorIsDerivedFromElement(false) { }
-    RefPtrWillBeMember<CSSPrimitiveValue> m_position; // percentage or length
-    RefPtrWillBeMember<CSSValue> m_color;
+    BlinKit::GCMember<CSSPrimitiveValue> m_position; // percentage or length
+    BlinKit::GCMember<CSSValue> m_color;
     bool m_colorIsDerivedFromElement;
     bool operator==(const CSSGradientColorStop& other) const
     {
@@ -93,7 +104,7 @@ public:
     void setSecondX(PassRefPtrWillBeRawPtr<CSSValue> val) { m_secondX = val; }
     void setSecondY(PassRefPtrWillBeRawPtr<CSSValue> val) { m_secondY = val; }
 
-    void addStop(const CSSGradientColorStop& stop) { m_stops.append(stop); }
+    void addStop(const CSSGradientColorStop& stop) { m_stops.emplace_back(stop); }
 
     unsigned stopCount() const { return m_stops.size(); }
 
@@ -133,14 +144,14 @@ protected:
     bool isCacheable() const;
 
     // Points. Some of these may be null.
-    RefPtrWillBeMember<CSSValue> m_firstX;
-    RefPtrWillBeMember<CSSValue> m_firstY;
+    BlinKit::GCMember<CSSValue> m_firstX;
+    BlinKit::GCMember<CSSValue> m_firstY;
 
-    RefPtrWillBeMember<CSSValue> m_secondX;
-    RefPtrWillBeMember<CSSValue> m_secondY;
+    BlinKit::GCMember<CSSValue> m_secondX;
+    BlinKit::GCMember<CSSValue> m_secondY;
 
     // Stops
-    WillBeHeapVector<CSSGradientColorStop, 2> m_stops;
+    std::vector<CSSGradientColorStop> m_stops;
     bool m_stopsSorted;
     CSSGradientType m_gradientType;
     bool m_repeating;
