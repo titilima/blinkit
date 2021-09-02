@@ -131,7 +131,7 @@ inline void UserActionElementSet::setFlags(Element* element, unsigned flags)
 DEFINE_TRACE(UserActionElementSet)
 {
 #if ENABLE(OILPAN)
-    ASSERT(false); // BKTODO: visitor->trace(m_elements);
+    // BKTODO: visitor->trace(m_elements); // Check if necessary.
 #endif
 }
 

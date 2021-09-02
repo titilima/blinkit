@@ -88,7 +88,7 @@ private:
     void clearFlags(Element*, unsigned);
     bool hasFlags(const Element*, unsigned flags) const;
 
-    typedef std::unordered_map<Member<Element>, unsigned> ElementFlagMap;
+    typedef std::unordered_map<Element *, unsigned> ElementFlagMap;
     ElementFlagMap m_elements;
 };
 
