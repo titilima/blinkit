@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FilterStyleInterpolation.cpp
+// Description: FilterStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2021-08-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -18,7 +29,7 @@ PassRefPtrWillBeRawPtr<CSSValueList> extendFilterList(const CSSValueList& shortF
     CSSValueList::const_iterator shortIter = shortFilterList.begin();
     CSSValueList::const_iterator otherIter = otherFilterList.begin();
     while (shortIter != shortFilterList.end()) {
-        result->append(*shortIter);
+        result->append(shortIter->get());
         ++shortIter;
         ++otherIter;
     }

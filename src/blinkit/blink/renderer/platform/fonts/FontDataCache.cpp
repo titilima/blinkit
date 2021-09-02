@@ -112,7 +112,7 @@ void FontDataCache::release(const SimpleFontData* fontData)
 
     ASSERT(it->value.second);
     if (!--it->value.second)
-        ASSERT(false); // BKTODO: m_inactiveFontData.add(it->value.first);
+        m_inactiveFontData.insert(it->value.first);
 }
 
 void FontDataCache::markAllVerticalData()

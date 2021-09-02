@@ -77,7 +77,7 @@ WebViewImpl::WebViewImpl(ClientCaller &clientCaller, PageVisibilityState visibil
 WebViewImpl::~WebViewImpl(void)
 {
     ASSERT(isMainThread());
-    ASSERT(false); // BKTODO: m_page->WillBeDestroyed();
+    m_page->willBeDestroyed();
 }
 
 #if 0 // BKTODO:

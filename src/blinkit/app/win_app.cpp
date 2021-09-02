@@ -71,7 +71,7 @@ DWORD WINAPI WinApp::BackgroundThread(PVOID param)
 
     BackgoundModeParams *params = reinterpret_cast<BackgoundModeParams *>(param);
 
-    WinApp *app = params->app;
+    std::unique_ptr<WinApp> app(params->app);
     app->Initialize();
     app->m_appCaller = std::make_unique<AppCallerImpl>(app->taskRunner());
     app->m_clientCallerStore = std::make_unique<ClientCallerStoreImpl>();

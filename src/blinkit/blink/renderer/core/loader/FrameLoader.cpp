@@ -203,7 +203,7 @@ FrameLoader::~FrameLoader()
 
 DEFINE_TRACE(FrameLoader)
 {
-    visitor->trace(m_frame);
+    // BKTODO: visitor->trace(m_frame);
     // BKTODO: visitor->trace(m_progressTracker);
     visitor->trace(m_documentLoader);
     visitor->trace(m_provisionalDocumentLoader);
@@ -267,8 +267,7 @@ void FrameLoader::setDefersLoading(bool defers)
 
 void FrameLoader::saveScrollState()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (!m_currentItem || !m_frame->view())
         return;
 
@@ -291,11 +290,15 @@ void FrameLoader::dispatchUnloadEvent()
 {
     saveScrollState();
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (m_frame->document() && !SVGImage::isInSVGImage(m_frame->document()))
         m_frame->document()->dispatchUnloadEvents();
+#else
+    if (Document *document = m_frame->document())
+        document->dispatchUnloadEvents();
+#endif
 
+#if 0 // BKTODO:
     if (Page* page = m_frame->page())
         page->undoStack().didUnloadFrame(*m_frame);
 #endif
@@ -341,8 +344,7 @@ void FrameLoader::clear()
     if (m_frame->view())
         m_frame->view()->clear();
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     m_frame->script().enableEval();
 
     m_frame->navigationScheduler().cancel();
@@ -1085,12 +1087,12 @@ void FrameLoader::stopAllLoaders()
 
     m_inStopAllLoaders = true;
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     for (RefPtrWillBeRawPtr<Frame> child = m_frame->tree().firstChild(); child; child = child->tree().nextSibling()) {
         if (child->isLocalFrame())
             toLocalFrame(child.get())->loader().stopAllLoaders();
     }
+#endif
 
     m_frame->document()->suppressLoadEvent();
     if (m_provisionalDocumentLoader)
@@ -1102,8 +1104,7 @@ void FrameLoader::stopAllLoaders()
     detachDocumentLoader(m_provisionalDocumentLoader);
 
     m_checkTimer.stop();
-    m_frame->navigationScheduler().cancel();
-#endif
+    // BKTODO: m_frame->navigationScheduler().cancel();
 
     m_inStopAllLoaders = false;
 }
@@ -1311,8 +1312,7 @@ void FrameLoader::detach()
     detachDocumentLoader(m_documentLoader);
     detachDocumentLoader(m_provisionalDocumentLoader);
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     Frame* parent = m_frame->tree().parent();
     if (parent && parent->isLocalFrame())
         toLocalFrame(parent)->loader().scheduleCheckCompleted();

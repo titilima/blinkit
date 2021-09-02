@@ -552,8 +552,7 @@ bool ChromeClientImpl::tabsToLinks()
 
 IntRect ChromeClientImpl::windowResizerRect() const
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: May be useful, leave it here.
     if (m_webView->client())
         return m_webView->client()->windowResizerRect();
 #endif

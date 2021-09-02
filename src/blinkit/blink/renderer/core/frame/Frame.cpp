@@ -103,7 +103,7 @@ DEFINE_TRACE(Frame)
 void Frame::detach()
 {
     ASSERT(m_client);
-    ASSERT(false); // BKTODO: m_client->setOpener(0);
+    // BKTODO: m_client->setOpener(0);
     domWindow()->resetLocation();
     disconnectOwnerElement();
     // After this, we must no longer talk to the client since this clears
@@ -128,8 +128,7 @@ void Frame::detachChildren()
 
 void Frame::disconnectOwnerElement()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (m_owner) {
         if (m_owner->isLocal())
             toHTMLFrameOwnerElement(m_owner)->clearContentFrame();

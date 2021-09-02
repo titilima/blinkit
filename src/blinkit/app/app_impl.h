@@ -23,7 +23,6 @@ class CrawlerImpl;
 
 namespace BlinKit {
 
-class GCHeap;
 class LoaderThread;
 
 class AppImpl : public blink::Platform, public Thread
@@ -58,7 +57,6 @@ private:
     double monotonicallyIncreasingTimeSeconds(void) override final;
 
     BkAppClient m_client;
-    std::unique_ptr<GCHeap> m_gcHeap;
     double m_firstMonotonicallyIncreasingTime;
     std::unordered_map<blink::PlatformThreadId, Thread *> m_threads;
     std::unique_ptr<LoaderThread> m_loaderThread;

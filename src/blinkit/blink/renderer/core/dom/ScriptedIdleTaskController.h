@@ -35,7 +35,8 @@ class ScriptedIdleTaskController : public RefCountedWillBeGarbageCollectedFinali
 public:
     static PassRefPtrWillBeRawPtr<ScriptedIdleTaskController> create(ExecutionContext* context)
     {
-        return adoptRefWillBeNoop(new ScriptedIdleTaskController(context));
+        ASSERT(false); // BKTODO: return adoptRefWillBeNoop(new ScriptedIdleTaskController(context));
+        return nullptr;
     }
     ~ScriptedIdleTaskController();
 

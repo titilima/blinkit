@@ -127,8 +127,7 @@ void ExecutionContext::postSuspendableTask(PassOwnPtr<SuspendableTask> task)
 
 void ExecutionContext::notifyContextDestroyed()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     Deque<OwnPtr<SuspendableTask>> suspendedTasks;
     suspendedTasks.swap(m_suspendedTasks);
     for (Deque<OwnPtr<SuspendableTask>>::iterator it = suspendedTasks.begin(); it != suspendedTasks.end(); ++it)
@@ -341,7 +340,7 @@ DEFINE_TRACE(ExecutionContext)
     visitor->trace(m_publicURLManager);
     HeapSupplementable<ExecutionContext>::trace(visitor);
 #endif
-    ContextLifecycleNotifier::trace(visitor);
+    // BKTODO: ContextLifecycleNotifier::trace(visitor);
 }
 
 } // namespace blink

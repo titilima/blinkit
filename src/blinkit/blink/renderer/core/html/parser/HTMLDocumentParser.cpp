@@ -40,7 +40,7 @@
 #include "core/css/MediaValuesCached.h"
 #include "core/css/resolver/StyleResolver.h"
 #include "core/dom/DocumentFragment.h"
-#include "core/dom/DocumentLifecycleObserver.h"
+// BKTODO: #include "core/dom/DocumentLifecycleObserver.h"
 #include "core/dom/Element.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"

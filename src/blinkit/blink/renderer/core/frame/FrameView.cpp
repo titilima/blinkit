@@ -316,10 +316,9 @@ void FrameView::dispose()
 
     if (m_didScrollTimer.isActive())
         m_didScrollTimer.stop();
-    ASSERT(false); // BKTODO: m_renderThrottlingObserverNotificationFactory->cancel();
+#if 0 // BKTODO:
+    m_renderThrottlingObserverNotificationFactory->cancel();
 
-    ASSERT(false); // BKTODO:
-#if 0
     // FIXME: Do we need to do something here for OOPI?
     HTMLFrameOwnerElement* ownerElement = m_frame->deprecatedLocalOwner();
     // TODO(dcheng): It seems buggy that we can have an owner element that

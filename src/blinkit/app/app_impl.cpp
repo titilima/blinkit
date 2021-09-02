@@ -29,10 +29,9 @@ using namespace blink;
 
 namespace BlinKit {
 
-AppImpl::AppImpl(BkAppClient *client)
-    : m_gcHeap(std::make_unique<GCHeap>())
-    , m_firstMonotonicallyIncreasingTime(base::Time::Now().ToDoubleT())
+AppImpl::AppImpl(BkAppClient *client) : m_firstMonotonicallyIncreasingTime(base::Time::Now().ToDoubleT())
 {
+    GCHeap::Initialize();
     memset(&m_client, 0, sizeof(BkAppClient));
     if (nullptr != client)
     {
@@ -44,7 +43,10 @@ AppImpl::AppImpl(BkAppClient *client)
     m_mainThread = this;
 }
 
-AppImpl::~AppImpl(void) = default;
+AppImpl::~AppImpl(void)
+{
+    GCHeap::Finalize();
+}
 
 WebURLLoader* AppImpl::createURLLoader(void)
 {
