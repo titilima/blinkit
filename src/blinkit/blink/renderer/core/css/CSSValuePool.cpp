@@ -46,7 +46,7 @@ namespace blink {
 
 CSSValuePool& cssValuePool()
 {
-    static GCPersistentMember<CSSValuePool> pool(WrapLeaked(new CSSValuePool));
+    static CSSValuePool *pool = GCWrapGlobal(new CSSValuePool);
     return *pool;
 }
 
@@ -72,7 +72,7 @@ PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSValuePool::createIdentifierValue(CS
 
     if (!m_identifierValueCache[ident])
         m_identifierValueCache[ident] = CSSPrimitiveValue::createIdentifier(ident);
-    return m_identifierValueCache[ident];
+    return m_identifierValueCache[ident].get();
 }
 
 PassRefPtrWillBeRawPtr<CSSCustomIdentValue> CSSValuePool::createIdentifierValue(CSSPropertyID ident)
@@ -84,22 +84,22 @@ PassRefPtrWillBeRawPtr<CSSColorValue> CSSValuePool::createColorValue(RGBA32 rgbV
 {
     // These are the empty and deleted values of the hash table.
     if (rgbValue == Color::transparent)
-        return m_colorTransparent;
+        return m_colorTransparent.get();
     if (rgbValue == Color::white)
-        return m_colorWhite;
+        return m_colorWhite.get();
     // Just because it is common.
     if (rgbValue == Color::black)
-        return m_colorBlack;
+        return m_colorBlack.get();
 
     // Just wipe out the cache and start rebuilding if it gets too big.
     const unsigned maximumColorCacheSize = 512;
     if (m_colorValueCache.size() > maximumColorCacheSize)
         m_colorValueCache.clear();
 
-    Member<CSSColorValue> &value = m_colorValueCache[rgbValue];
+    GCMember<CSSColorValue> &value = m_colorValueCache[rgbValue];
     if (!value)
         value = CSSColorValue::create(rgbValue);
-    return value;
+    return value.get();
 }
 
 PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSValuePool::createValue(double value, CSSPrimitiveValue::UnitType type)
@@ -118,16 +118,16 @@ PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSValuePool::createValue(double value
     case CSSPrimitiveValue::UnitType::Pixels:
         if (!m_pixelValueCache[intValue])
             m_pixelValueCache[intValue] = CSSPrimitiveValue::create(value, type);
-        return m_pixelValueCache[intValue];
+        return m_pixelValueCache[intValue].get();
     case CSSPrimitiveValue::UnitType::Percentage:
         if (!m_percentValueCache[intValue])
             m_percentValueCache[intValue] = CSSPrimitiveValue::create(value, type);
-        return m_percentValueCache[intValue];
+        return m_percentValueCache[intValue].get();
     case CSSPrimitiveValue::UnitType::Number:
     case CSSPrimitiveValue::UnitType::Integer:
         if (!m_numberValueCache[intValue])
             m_numberValueCache[intValue] = CSSPrimitiveValue::create(value, CSSPrimitiveValue::UnitType::Integer);
-        return m_numberValueCache[intValue];
+        return m_numberValueCache[intValue].get();
     default:
         return CSSPrimitiveValue::create(value, type);
     }
@@ -140,10 +140,10 @@ PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSValuePool::createValue(const Length
 
 PassRefPtrWillBeRawPtr<CSSCustomIdentValue> CSSValuePool::createFontFamilyValue(const String& familyName)
 {
-    Member<CSSCustomIdentValue> &value = m_fontFamilyValueCache[familyName];
+    GCMember<CSSCustomIdentValue> &value = m_fontFamilyValueCache[familyName];
     if (!value)
         value = CSSCustomIdentValue::create(familyName);
-    return value;
+    return value.get();
 }
 
 PassRefPtrWillBeRawPtr<CSSValueList> CSSValuePool::createFontFaceValue(const AtomicString& string)

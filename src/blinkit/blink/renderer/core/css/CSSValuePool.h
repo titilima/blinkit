@@ -58,10 +58,10 @@ class CORE_EXPORT CSSValuePool :  public BlinKit::GCObject {
 public:
     PassRefPtrWillBeRawPtr<CSSValueList> createFontFaceValue(const AtomicString&);
     PassRefPtrWillBeRawPtr<CSSCustomIdentValue> createFontFamilyValue(const String&);
-    PassRefPtrWillBeRawPtr<CSSInheritedValue> createInheritedValue() { return m_inheritedValue; }
-    PassRefPtrWillBeRawPtr<CSSInitialValue> createImplicitInitialValue() { return m_implicitInitialValue; }
-    PassRefPtrWillBeRawPtr<CSSInitialValue> createExplicitInitialValue() { return m_explicitInitialValue; }
-    PassRefPtrWillBeRawPtr<CSSUnsetValue> createUnsetValue() { return m_unsetValue; }
+    PassRefPtrWillBeRawPtr<CSSInheritedValue> createInheritedValue() { return m_inheritedValue.get(); }
+    PassRefPtrWillBeRawPtr<CSSInitialValue> createImplicitInitialValue() { return m_implicitInitialValue.get(); }
+    PassRefPtrWillBeRawPtr<CSSInitialValue> createExplicitInitialValue() { return m_explicitInitialValue.get(); }
+    PassRefPtrWillBeRawPtr<CSSUnsetValue> createUnsetValue() { return m_unsetValue.get(); }
     PassRefPtrWillBeRawPtr<CSSPrimitiveValue> createIdentifierValue(CSSValueID identifier);
     PassRefPtrWillBeRawPtr<CSSCustomIdentValue> createIdentifierValue(CSSPropertyID identifier);
     PassRefPtrWillBeRawPtr<CSSColorValue> createColorValue(RGBA32 rgbValue);
@@ -75,29 +75,29 @@ public:
 private:
     CSSValuePool();
 
-    RefPtrWillBeMember<CSSInheritedValue> m_inheritedValue;
-    RefPtrWillBeMember<CSSInitialValue> m_implicitInitialValue;
-    RefPtrWillBeMember<CSSInitialValue> m_explicitInitialValue;
-    RefPtrWillBeMember<CSSUnsetValue> m_unsetValue;
+    BlinKit::GCMember<CSSInheritedValue> m_inheritedValue;
+    BlinKit::GCMember<CSSInitialValue> m_implicitInitialValue;
+    BlinKit::GCMember<CSSInitialValue> m_explicitInitialValue;
+    BlinKit::GCMember<CSSUnsetValue> m_unsetValue;
 
-    WillBeHeapVector<RefPtrWillBeMember<CSSPrimitiveValue>, numCSSValueKeywords> m_identifierValueCache;
+    std::vector<BlinKit::GCMember<CSSPrimitiveValue>> m_identifierValueCache;
 
-    using ColorValueCache = WillBeHeapHashMap<unsigned, RefPtrWillBeMember<CSSColorValue>>;
+    using ColorValueCache = std::unordered_map<unsigned, BlinKit::GCMember<CSSColorValue>>;
     ColorValueCache m_colorValueCache;
-    RefPtrWillBeMember<CSSColorValue> m_colorTransparent;
-    RefPtrWillBeMember<CSSColorValue> m_colorWhite;
-    RefPtrWillBeMember<CSSColorValue> m_colorBlack;
+    BlinKit::GCMember<CSSColorValue> m_colorTransparent;
+    BlinKit::GCMember<CSSColorValue> m_colorWhite;
+    BlinKit::GCMember<CSSColorValue> m_colorBlack;
 
     static const int maximumCacheableIntegerValue = 255;
 
-    WillBeHeapVector<RefPtrWillBeMember<CSSPrimitiveValue>, maximumCacheableIntegerValue + 1> m_pixelValueCache;
-    WillBeHeapVector<RefPtrWillBeMember<CSSPrimitiveValue>, maximumCacheableIntegerValue + 1> m_percentValueCache;
-    WillBeHeapVector<RefPtrWillBeMember<CSSPrimitiveValue>, maximumCacheableIntegerValue + 1> m_numberValueCache;
+    std::vector<BlinKit::GCMember<CSSPrimitiveValue>> m_pixelValueCache;
+    std::vector<BlinKit::GCMember<CSSPrimitiveValue>> m_percentValueCache;
+    std::vector<BlinKit::GCMember<CSSPrimitiveValue>> m_numberValueCache;
 
     using FontFaceValueCache = WillBeHeapHashMap<AtomicString, RefPtrWillBeMember<CSSValueList>>;
     FontFaceValueCache m_fontFaceValueCache;
 
-    using FontFamilyValueCache = WillBeHeapHashMap<String, RefPtrWillBeMember<CSSCustomIdentValue>>;
+    using FontFamilyValueCache = std::unordered_map<String, BlinKit::GCMember<CSSCustomIdentValue>>;
     FontFamilyValueCache m_fontFamilyValueCache;
 
     friend CORE_EXPORT CSSValuePool& cssValuePool();
