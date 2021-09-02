@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScopedStyleResolver.h
+// Description: ScopedStyleResolver Class
+//      Author: Ziming Li
+//     Created: 2021-08-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -88,22 +99,22 @@ private:
 
     class RuleSubSet final : public NoBaseWillBeGarbageCollected<RuleSubSet> {
     public:
-        static PassOwnPtrWillBeRawPtr<RuleSubSet> create(CSSStyleSheet* sheet, unsigned index, PassOwnPtrWillBeRawPtr<RuleSet> rules)
+        static PassOwnPtrWillBeRawPtr<RuleSubSet> create(CSSStyleSheet* sheet, unsigned index, GCPassPtr<RuleSet> &&rules)
         {
-            return adoptPtrWillBeNoop(new RuleSubSet(sheet, index, rules));
+            return adoptPtrWillBeNoop(new RuleSubSet(sheet, index, std::move(rules)));
         }
 
         RawPtrWillBeMember<CSSStyleSheet> m_parentStyleSheet;
         unsigned m_parentIndex;
-        OwnPtrWillBeMember<RuleSet> m_ruleSet;
+        BlinKit::GCMember<RuleSet> m_ruleSet;
 
         DECLARE_TRACE();
 
     private:
-        RuleSubSet(CSSStyleSheet* sheet, unsigned index, PassOwnPtrWillBeRawPtr<RuleSet> rules)
+        RuleSubSet(CSSStyleSheet* sheet, unsigned index, GCPassPtr<RuleSet>&& rules)
             : m_parentStyleSheet(sheet)
             , m_parentIndex(index)
-            , m_ruleSet(rules)
+            , m_ruleSet(std::move(rules))
         {
         }
     };

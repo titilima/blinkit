@@ -54,6 +54,8 @@
 #include "core/html/HTMLStyleElement.h"
 // BKTODO: #include "core/svg/SVGStyleElement.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 ScopedStyleResolver* ScopedStyleResolver::parent() const
@@ -82,7 +84,7 @@ void ScopedStyleResolver::addFontFaceRules(const RuleSet& ruleSet)
     CSSFontSelector* cssFontSelector = document.styleEngine().fontSelector();
     const WillBeHeapVector<RawPtrWillBeMember<StyleRuleFontFace>> fontFaceRules = ruleSet.fontFaceRules();
     for (auto& fontFaceRule : fontFaceRules) {
-        if (RefPtrWillBeRawPtr<FontFace> fontFace = FontFace::create(&document, fontFaceRule))
+        if (GCPassPtr<FontFace> fontFace = FontFace::create(&document, fontFaceRule))
             cssFontSelector->fontFaceCache()->add(cssFontSelector, fontFaceRule, fontFace);
     }
     if (fontFaceRules.size())
@@ -217,7 +219,7 @@ static void addRules(RuleSet* ruleSet, const WillBeHeapVector<MinimalRuleData>& 
 {
     for (unsigned i = 0; i < rules.size(); ++i) {
         const MinimalRuleData& info = rules[i];
-        ruleSet->addRule(info.m_rule, info.m_selectorIndex, info.m_flags);
+        ruleSet->addRule(info.m_rule.get(), info.m_selectorIndex, info.m_flags);
     }
 }
 
@@ -230,7 +232,7 @@ void ScopedStyleResolver::addTreeBoundaryCrossingRules(const RuleSet& authorRule
     if (!authorRules.deepCombinatorOrShadowPseudoRules().isEmpty())
         m_hasDeepOrShadowSelector = true;
 
-    OwnPtrWillBeRawPtr<RuleSet> ruleSetForScope = RuleSet::create();
+    GCMember<RuleSet> ruleSetForScope = RuleSet::create();
     addRules(ruleSetForScope.get(), authorRules.deepCombinatorOrShadowPseudoRules());
 
     if (!isDocumentScope)
