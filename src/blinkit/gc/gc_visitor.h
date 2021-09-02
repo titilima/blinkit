@@ -27,8 +27,9 @@ public:
     ~GCVisitor(void);
 private:
     void TraceImpl(GCObject *o, void **slot) override;
+    void TraceObjectSet(GCObjectSetCallback &callback) override;
 
-    using Slots = std::vector<void **>;
+    using Slots = std::unordered_set<void **>;
     std::unordered_map<GCObject *, Slots> m_objects;
 };
 

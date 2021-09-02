@@ -14,9 +14,7 @@
 
 #pragma once
 
-#include <unordered_map>
-#include <unordered_set>
-#include "blinkit/gc/gc_def.h"
+#include "blinkit/gc/lifecycle_data_manager.h"
 
 namespace BlinKit {
 
@@ -26,40 +24,30 @@ class GCVisitor;
 class GCHeap
 {
 public:
+    static void Initialize(void);
+    static void Finalize(void);
+
+    void SetGlobalObject(GCObject &o);
+    void RetainPersistentObject(GCObject &o, void **slot);
+    void ReleasePersistentObject(GCObject &o, void **slot);
+
+    static void RegisterLifecycleObserver(GCObject *o, GCLifecycleObserver *ob);
+    static void RemoveLifecycleObserverForObject(GCObject *o, GCLifecycleObserver *ob);
+    static void RemoveLifecycleObserver(GCLifecycleObserver *ob);
+
+    void AttachWeakSlot(GCObject &o, void **slot) { m_lifecycleDataManager.AttachWeakSlot(&o, slot); }
+    void DetachWeakSlot(GCObject &o, void **slot) { m_lifecycleDataManager.DetachWeakSlot(&o, slot); }
+    static void ProcessObjectFinalizing(GCObject &o);
+private:
     GCHeap(void);
     ~GCHeap(void);
 
-#ifdef NDEBUG
-    GCObjectHeader* Alloc(GCObjectType type, size_t totalSize, GCTable *gcPtr);
-#else
-    GCObjectHeader* Alloc(GCObjectType type, size_t totalSize, GCTable *gcPtr, const char *name);
-#endif
+    void CleanupGlobalObjects(void);
+    void CleanupPersistentObjects(void);
 
-    void RetainPersistentObject(GCObject &o);
-    void ReleasePersistentObject(GCObject &o);
-
-    void RegisterWeakPtr(GCObject **pp);
-    void FlushWeakPtrs(GCObject &o);
-
-    void CollectGarbage(void);
-    void Persist(void *p);
-    void Unpersist(void *p);
-
-    static void SetObjectFlag(const void *p, GCObjectFlag flag, bool b);
-    static void Trace(void *p, blink::Visitor *visitor);
-private:
-    using GCObjectSet = std::unordered_set<void *>;
-    static void FlushWeakSlot(void **slot, const GCObjectSet &objectsToGC);
-    static void TraceObjects(const GCObjectSet &owners, GCVisitor &visitor);
-
-    void CleanupGlobals(void);
-    void CleanupRoots(void);
-    void CleanupStashObjects(void);
-    void CleanupMembers(GCVisitor &visitor);
-
-    std::unordered_set<GCObject *> m_persistentObjects;
-    std::unordered_map<GCObject *, std::vector<GCObject **>> m_weakPtrs;
-    GCObjectSet m_rootObjects, m_memberObjects, m_stashObjects, m_globalObjects;
+    LifecycleDataManager m_lifecycleDataManager;
+    std::unordered_set<GCObject *> m_globalObjects;
+    std::unordered_map<GCObject *, std::unordered_set<void **>> m_persistentObjects;
 };
 
 } // namespace BlinKit

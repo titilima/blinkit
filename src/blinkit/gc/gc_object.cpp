@@ -13,12 +13,19 @@
 
 #include "blinkit/blink/renderer/wtf/MainThread.h"
 #include "blinkit/gc/gc_heap.h"
+#include "blinkit/gc/gc_visitor.h"
 
 namespace BlinKit {
 
+GCObject::GCObject(void)
+{
+    // BKTODO: Track `this`.
+}
+
 GCObject::~GCObject(void)
 {
-    GCFlushWeakPtrs(this);
+    GCHeap::ProcessObjectFinalizing(*this);
+    // BKTODO: Untrack `this`.
 }
 
 unsigned GCObject::DecRef(void)
@@ -36,7 +43,10 @@ void GCObject::IncRef(void)
 void GCObject::Release(void)
 {
     if (0 == DecRef())
-        ASSERT(false); // BKTODO: Perform GC.
+    {
+        GCVisitor visitor(this);
+        this->trace(&visitor);
+    }
 }
 
 } // namespace BlinKit
