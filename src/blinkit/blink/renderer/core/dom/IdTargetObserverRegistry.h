@@ -37,7 +37,7 @@
 #ifndef IdTargetObserverRegistry_h
 #define IdTargetObserverRegistry_h
 
-#include <unordered_set>
+#include "blinkit/gc/gc_object_set.h"
 #include "platform/heap/Handle.h"
 #include "wtf/Forward.h"
 #include "wtf/text/StringHash.h"
@@ -46,12 +46,12 @@ namespace blink {
 
 class IdTargetObserver;
 
-class IdTargetObserverRegistry final : public NoBaseWillBeGarbageCollectedFinalized<IdTargetObserverRegistry> {
+class IdTargetObserverRegistry final : public BlinKit::GCObject {
     WTF_MAKE_NONCOPYABLE(IdTargetObserverRegistry);
     USING_FAST_MALLOC_WILL_BE_REMOVED(IdTargetObserverRegistry);
     friend class IdTargetObserver;
 public:
-    static PassOwnPtrWillBeRawPtr<IdTargetObserverRegistry> create();
+    static GCPassPtr<IdTargetObserverRegistry> create();
     DECLARE_TRACE();
     void notifyObservers(const AtomicString& id);
     bool hasObservers(const AtomicString& id) const;
@@ -62,15 +62,15 @@ private:
     void removeObserver(const AtomicString& id, IdTargetObserver*);
     void notifyObserversInternal(const AtomicString& id);
 
-    typedef std::unordered_set<Member<IdTargetObserver>> ObserverSet;
-    typedef std::unordered_map<StringImpl *, Member<ObserverSet>> IdToObserverSetMap;
+    typedef BlinKit::GCObjectSet<IdTargetObserver> ObserverSet;
+    typedef std::unordered_map<StringImpl *, ObserverSet> IdToObserverSetMap;
     IdToObserverSetMap m_registry;
-    Member<ObserverSet> m_notifyingObserversInSet;
+    ObserverSet *m_notifyingObserversInSet = nullptr;
 };
 
 inline void IdTargetObserverRegistry::notifyObservers(const AtomicString& id)
 {
-    ASSERT(!m_notifyingObserversInSet);
+    ASSERT(nullptr == m_notifyingObserversInSet);
     if (id.isEmpty() || m_registry.empty())
         return;
     IdTargetObserverRegistry::notifyObserversInternal(id);

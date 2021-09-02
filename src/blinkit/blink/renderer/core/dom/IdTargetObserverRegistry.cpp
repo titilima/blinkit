@@ -38,18 +38,20 @@
 
 #include "core/dom/IdTargetObserver.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-PassOwnPtrWillBeRawPtr<IdTargetObserverRegistry> IdTargetObserverRegistry::create()
+GCPassPtr<IdTargetObserverRegistry> IdTargetObserverRegistry::create()
 {
-    return adoptPtrWillBeNoop(new IdTargetObserverRegistry());
+    return WrapLeaked(new IdTargetObserverRegistry());
 }
 
 DEFINE_TRACE(IdTargetObserverRegistry)
 {
 #if ENABLE(OILPAN)
     visitor->trace(m_registry);
-    visitor->trace(m_notifyingObserversInSet);
+    // BKTODO: visitor->trace(m_notifyingObserversInSet);
 #endif
 }
 
@@ -58,11 +60,7 @@ void IdTargetObserverRegistry::addObserver(const AtomicString& id, IdTargetObser
     if (id.isEmpty())
         return;
 
-    Member<ObserverSet> &result = m_registry[id.impl()];
-    if (!result)
-        result = adoptPtrWillBeNoop(new ObserverSet());
-
-    result->emplace(observer);
+    m_registry[id.impl()].emplace(observer);
 }
 
 void IdTargetObserverRegistry::removeObserver(const AtomicString& id, IdTargetObserver* observer)
@@ -72,7 +70,7 @@ void IdTargetObserverRegistry::removeObserver(const AtomicString& id, IdTargetOb
 
     IdToObserverSetMap::iterator iter = m_registry.find(id.impl());
 
-    ObserverSet* set = iter->second.get();
+    ObserverSet *set = &(iter->second);
     set->erase(observer);
     if (set->empty() && set != m_notifyingObserversInSet)
         m_registry.erase(iter);
@@ -86,11 +84,11 @@ void IdTargetObserverRegistry::notifyObserversInternal(const AtomicString& id)
     auto it = m_registry.find(id.impl());
     if (m_registry.end() == it)
         return;
-    m_notifyingObserversInSet = it->second;
+    m_notifyingObserversInSet = &(it->second);
 
-    std::vector<Member<IdTargetObserver>> copy(m_notifyingObserversInSet->begin(), m_notifyingObserversInSet->end());
+    std::vector<IdTargetObserver *> copy = m_notifyingObserversInSet->GetSnapshot();
     for (const auto& observer : copy) {
-        if (zed::key_exists(*m_notifyingObserversInSet, observer))
+        if (m_notifyingObserversInSet->contains(observer))
             observer->idTargetChanged();
     }
 
@@ -105,7 +103,7 @@ bool IdTargetObserverRegistry::hasObservers(const AtomicString& id) const
     if (id.isEmpty() || m_registry.empty())
         return false;
     auto it = m_registry.find(id.impl());
-    return m_registry.end() != it && !it->second->empty();
+    return m_registry.end() != it && !it->second.empty();
 }
 
 } // namespace blink

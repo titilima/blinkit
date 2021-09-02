@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IdTargetObserver.h
+// Description: IdTargetObserver Class
+//      Author: Ziming Li
+//     Created: 2021-08-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All Rights Reserved.
  *
@@ -33,7 +44,7 @@ namespace blink {
 
 class IdTargetObserverRegistry;
 
-class IdTargetObserver : public NoBaseWillBeGarbageCollectedFinalized<IdTargetObserver> {
+class IdTargetObserver : public BlinKit::GCObject {
 public:
     virtual ~IdTargetObserver();
     DECLARE_VIRTUAL_TRACE();
@@ -46,7 +57,7 @@ protected:
 private:
     IdTargetObserverRegistry& registry() { return *m_registry; }
 
-    RawPtrWillBeMember<IdTargetObserverRegistry> m_registry;
+    BlinKit::GCMember<IdTargetObserverRegistry> m_registry;
     AtomicString m_id;
 };
 
