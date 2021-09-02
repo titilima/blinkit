@@ -90,7 +90,7 @@ public:
 
     DocumentInit& withRegistrationContext(CustomElementRegistrationContext*);
     DocumentInit& withNewRegistrationContext();
-    PassRefPtrWillBeRawPtr<CustomElementRegistrationContext> registrationContext(Document*) const;
+    GCPassPtr<CustomElementRegistrationContext> registrationContext(Document*) const;
     WeakPtrWillBeRawPtr<Document> contextDocument() const;
 
     static DocumentInit fromContext(WeakPtrWillBeRawPtr<Document> contextDocument, const KURL& = KURL());
@@ -106,7 +106,7 @@ private:
 #endif
     WeakPtrWillBeMember<Document> m_contextDocument;
     RawPtrWillBeMember<HTMLImportsController> m_importsController;
-    RefPtrWillBeMember<CustomElementRegistrationContext> m_registrationContext;
+    BlinKit::GCMember<CustomElementRegistrationContext> m_registrationContext;
     bool m_createNewRegistrationContext;
 
     // In some rare cases, we'll re-use a LocalDOMWindow for a new Document. For example,

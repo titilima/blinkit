@@ -47,8 +47,10 @@
 #include "core/dom/DocumentEncodingData.h"
 #include "core/dom/DocumentInit.h"
 #include "core/dom/DocumentLifecycle.h"
+#if 0 // BKTODO:
 #include "core/dom/DocumentLifecycleNotifier.h"
 #include "core/dom/DocumentLifecycleObserver.h"
+#endif
 // BKTODO: #include "core/dom/DocumentTiming.h"
 #include "core/dom/ExecutionContext.h"
 #include "core/dom/MutationObserver.h"
@@ -221,8 +223,12 @@ enum DocumentClass {
 
 using DocumentClassFlags = unsigned char;
 
-class CORE_EXPORT Document : public ContainerNode, public TreeScope, public ExecutionContext
-    , public WillBeHeapSupplementable<Document>, public DocumentLifecycleNotifier {
+class CORE_EXPORT Document : public ContainerNode
+                           , public TreeScope
+                           , public ExecutionContext
+                           , public WillBeHeapSupplementable<Document>
+                           // BKTODO: , public DocumentLifecycleNotifier
+{
     DEFINE_WRAPPERTYPEINFO();
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(Document);
 public:
@@ -312,7 +318,7 @@ public:
     PassRefPtrWillBeRawPtr<Element> createElement(const QualifiedName&, bool createdByParser);
 
     Element* elementFromPoint(int x, int y) const;
-    WillBeHeapVector<RawPtrWillBeMember<Element>> elementsFromPoint(int x, int y) const;
+    std::vector<BlinKit::GCMember<Element>> elementsFromPoint(int x, int y) const;
     PassRefPtrWillBeRawPtr<Range> caretRangeFromPoint(int x, int y);
     Element* scrollingElement();
 
@@ -649,7 +655,7 @@ public:
 
     // Updates for :target (CSS3 selector).
     void setCSSTarget(Element*);
-    Element* cssTarget() const { return m_cssTarget; }
+    Element* cssTarget() const { return m_cssTarget.get(); }
 
     void scheduleLayoutTreeUpdateIfNeeded();
     bool hasPendingForcedStyleRecalc() const;
@@ -1018,7 +1024,7 @@ public:
 
     void addToTopLayer(Element*, const Element* before = nullptr);
     void removeFromTopLayer(Element*);
-    const WillBeHeapVector<RefPtrWillBeMember<Element>>& topLayerElements() const { return m_topLayerElements; }
+    const std::vector<BlinKit::GCMember<Element>>& topLayerElements() const { return m_topLayerElements; }
     HTMLDialogElement* activeModalDialog() const;
 
     // A non-null m_templateDocumentHost implies that |this| was created by ensureTemplateDocument().
@@ -1218,14 +1224,14 @@ private:
     // do eventually load.
     PendingSheetLayout m_pendingSheetLayout;
 
-    RawPtrWillBeMember<LocalFrame> m_frame;
-    RawPtrWillBeMember<LocalDOMWindow> m_domWindow;
+    LocalFrame *m_frame;
+    LocalDOMWindow *m_domWindow;
     // FIXME: oilpan: when we get rid of the transition types change the
     // HTMLImportsController to not be a DocumentSupplement since it is
     // redundant with oilpan.
     RawPtrWillBeMember<HTMLImportsController> m_importsController;
 
-    PersistentWillBeMember<ResourceFetcher> m_fetcher;
+    BlinKit::GCMember<ResourceFetcher> m_fetcher;
     RefPtrWillBeMember<DocumentParser> m_parser;
     unsigned m_activeParserCount;
     // BKTODO: RefPtrWillBeMember<ContextFeatures> m_contextFeatures;
@@ -1245,10 +1251,10 @@ private:
     // Mime-type of the document in case it was cloned or created by XHR.
     AtomicString m_mimeType;
 
-    RefPtrWillBeMember<DocumentType> m_docType;
+    BlinKit::GCMember<DocumentType> m_docType;
     // BKTODO: OwnPtrWillBeMember<DOMImplementation> m_implementation;
 
-    RefPtrWillBeMember<CSSStyleSheet> m_elemSheet;
+    BlinKit::GCMember<CSSStyleSheet> m_elemSheet;
 
 #if 0 // BKTODO:
     bool m_printing;
@@ -1263,11 +1269,11 @@ private:
 
     bool m_hasAutofocused;
     Timer<Document> m_clearFocusedElementTimer;
-    RefPtrWillBeMember<Element> m_autofocusElement;
-    RefPtrWillBeMember<Element> m_focusedElement;
-    RefPtrWillBeMember<Node> m_hoverNode;
-    RefPtrWillBeMember<Element> m_activeHoverElement;
-    RefPtrWillBeMember<Element> m_documentElement;
+    BlinKit::GCMember<Element> m_autofocusElement;
+    BlinKit::GCMember<Element> m_focusedElement;
+    BlinKit::GCMember<Node> m_hoverNode;
+    BlinKit::GCMember<Element> m_activeHoverElement;
+    BlinKit::GCMember<Element> m_documentElement;
     UserActionElementSet m_userActionElements;
 
     uint64_t m_domTreeVersion;
@@ -1283,7 +1289,7 @@ private:
 
     MutationObserverOptions m_mutationObserverTypes;
 
-    OwnPtrWillBeMember<StyleEngine> m_styleEngine;
+    BlinKit::GCMember<StyleEngine> m_styleEngine;
     RefPtrWillBeMember<StyleSheetList> m_styleSheetList;
 
     OwnPtrWillBeMember<FormController> m_formController;
@@ -1307,22 +1313,22 @@ private:
 
     String m_title;
     String m_rawTitle;
-    RefPtrWillBeMember<Element> m_titleElement;
+    BlinKit::GCMember<Element> m_titleElement;
 
-    PersistentWillBeMember<AXObjectCache> m_axObjectCache;
+    // BKTODO: PersistentWillBeMember<AXObjectCache> m_axObjectCache;
     OwnPtrWillBeMember<DocumentMarkerController> m_markers;
 
     Timer<Document> m_updateFocusAppearanceTimer;
 
-    RawPtrWillBeMember<Element> m_cssTarget;
+    BlinKit::GCMember<Element> m_cssTarget;
 
     LoadEventProgress m_loadEventProgress;
 
     double m_startTime;
 
-    OwnPtrWillBeMember<ScriptRunner> m_scriptRunner;
+    std::unique_ptr<ScriptRunner> m_scriptRunner;
 
-    WillBeHeapVector<RefPtrWillBeMember<HTMLScriptElement>> m_currentScriptStack;
+    std::vector<BlinKit::GCMember<HTMLScriptElement>> m_currentScriptStack;
 
     // BKTODO: OwnPtr<TransformSource> m_transformSource;
 
@@ -1349,7 +1355,7 @@ private:
     unsigned m_nodeListCounts[numNodeListInvalidationTypes];
 #endif
 
-    OwnPtrWillBeMember<SVGDocumentExtensions> m_svgExtensions;
+    // BKTODO: OwnPtrWillBeMember<SVGDocumentExtensions> m_svgExtensions;
 
     Vector<AnnotatedRegionValue> m_annotatedRegions;
     bool m_hasAnnotatedRegions;
@@ -1383,7 +1389,7 @@ private:
 
     bool m_hasFullscreenSupplement; // For early return in Fullscreen::fromIfExists()
 
-    WillBeHeapVector<RefPtrWillBeMember<Element>> m_topLayerElements;
+    std::vector<BlinKit::GCMember<Element>> m_topLayerElements;
 
     int m_loadEventDelayCount;
     Timer<Document> m_loadEventDelayTimer;
@@ -1403,11 +1409,11 @@ private:
     unsigned m_writeRecursionDepth;
 
     RefPtrWillBeMember<ScriptedAnimationController> m_scriptedAnimationController;
-    RefPtrWillBeMember<ScriptedIdleTaskController> m_scriptedIdleTaskController;
-    OwnPtrWillBeMember<MainThreadTaskRunner> m_taskRunner;
-    OwnPtrWillBeMember<TextAutosizer> m_textAutosizer;
+    // BKTODO: RefPtrWillBeMember<ScriptedIdleTaskController> m_scriptedIdleTaskController;
+    std::unique_ptr<MainThreadTaskRunner> m_taskRunner;
+    std::unique_ptr<TextAutosizer> m_textAutosizer;
 
-    RefPtrWillBeMember<CustomElementRegistrationContext> m_registrationContext;
+    BlinKit::GCMember<CustomElementRegistrationContext> m_registrationContext;
     RefPtrWillBeMember<CustomElementMicrotaskRunQueue> m_customElementMicrotaskRunQueue;
 
     void elementDataCacheClearTimerFired(Timer<Document>*);
@@ -1418,7 +1424,7 @@ private:
     using LocaleIdentifierToLocaleMap = HashMap<AtomicString, OwnPtr<Locale>>;
     LocaleIdentifierToLocaleMap m_localeCache;
 
-    PersistentWillBeMember<AnimationTimeline> m_timeline;
+    BlinKit::GCMember<AnimationTimeline> m_timeline;
     CompositorPendingAnimations m_compositorPendingAnimations;
 
     RefPtrWillBeMember<Document> m_templateDocument;
@@ -1428,7 +1434,7 @@ private:
     RawPtrWillBeMember<Document> m_templateDocumentHost;
 
     Timer<Document> m_didAssociateFormControlsTimer;
-    WillBeHeapHashSet<RefPtrWillBeMember<Element>> m_associatedFormControls;
+    std::unordered_set<BlinKit::GCMember<Element>> m_associatedFormControls;
 
 #if 0 // BKTODO:
     WillBeHeapHashSet<RawPtrWillBeMember<SVGUseElement>> m_useElementsNeedingUpdate;
@@ -1454,7 +1460,7 @@ private:
     PersistentWillBeMember<CanvasFontCache> m_canvasFontCache;
 #endif
 
-    PersistentWillBeMember<IntersectionObserverController> m_intersectionObserverController;
+    BlinKit::GCMember<IntersectionObserverController> m_intersectionObserverController;
     PersistentWillBeMember<NodeIntersectionObserverData> m_intersectionObserverData;
 
     int m_nodeCount;

@@ -76,7 +76,7 @@
 #include "core/dom/DOMImplementation.h"
 #endif
 #include "core/dom/DocumentFragment.h"
-#include "core/dom/DocumentLifecycleObserver.h"
+// BKTODO: #include "core/dom/DocumentLifecycleObserver.h"
 #include "core/dom/DocumentType.h"
 #include "core/dom/DocumentVisibilityObserver.h" // BKTODO: Was in HTMLCanvasElement.h
 #include "core/dom/Element.h"
@@ -244,6 +244,7 @@
 #include "wtf/text/StringBuffer.h"
 #include "wtf/text/TextEncodingRegistry.h"
 
+using namespace BlinKit;
 using namespace WTF;
 using namespace Unicode;
 
@@ -411,7 +412,7 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_evaluateMediaQueriesOnStyleRecalc(false)
     , m_pendingSheetLayout(NoLayoutWithPendingSheets)
     , m_frame(initializer.frame())
-    , m_domWindow(m_frame ? m_frame->localDOMWindow() : 0)
+    , m_domWindow(nullptr != m_frame ? m_frame->localDOMWindow() : nullptr)
     , m_importsController(initializer.importsController())
     , m_activeParserCount(0)
     // BKTODO: , m_contextFeatures(ContextFeatures::defaultSwitch())
@@ -483,7 +484,7 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_nodeCount(0)
 {
     m_elementDataCacheClearTimer.SetHostAliveFlag(m_aliveFlag);
-    if (m_frame) {
+    if (nullptr != m_frame) {
         ASSERT(m_frame->page());
         // BKTODO: provideContextFeaturesToDocumentFrom(*this, *m_frame->page());
 
@@ -540,7 +541,7 @@ Document::~Document()
     ASSERT(!parentTreeScope());
     // If a top document with a cache, verify that it was comprehensively
     // cleared during detach.
-    ASSERT(!m_axObjectCache);
+    // BKTODO: ASSERT(!m_axObjectCache);
 #if !ENABLE(OILPAN)
     ASSERT(m_ranges.isEmpty());
     ASSERT(!hasGuardRefCount());
@@ -1245,10 +1246,10 @@ Element* Document::elementFromPoint(int x, int y) const
     return TreeScope::elementFromPoint(x, y);
 }
 
-WillBeHeapVector<RawPtrWillBeMember<Element>> Document::elementsFromPoint(int x, int y) const
+std::vector<GCMember<Element>> Document::elementsFromPoint(int x, int y) const
 {
     if (!layoutView())
-        return WillBeHeapVector<RawPtrWillBeMember<Element>>();
+        return std::vector<GCMember<Element>>();
     return TreeScope::elementsFromPoint(x, y);
 }
 
@@ -1334,7 +1335,7 @@ void Document::updateTitle(const String& title)
     else
         m_title = canonicalizedTitle<UChar>(this, m_rawTitle);
 
-    if (!m_frame || oldTitle == m_title)
+    if (nullptr == m_frame || oldTitle == m_title)
         return;
     m_frame->loader().client()->dispatchDidReceiveTitle(m_title);
 }
@@ -1343,7 +1344,7 @@ void Document::setTitle(const String& title)
 {
     // Title set by JavaScript -- overrides any title elements.
     if (!isHTMLDocument() && !isXHTMLDocument()) {
-        m_titleElement = nullptr;
+        m_titleElement.clear();
     } else if (!m_titleElement) {
         HTMLElement* headElement = head();
         if (!headElement)
@@ -1352,8 +1353,8 @@ void Document::setTitle(const String& title)
         headElement->appendChild(m_titleElement.get());
     }
 
-    if (isHTMLTitleElement(m_titleElement))
-        toHTMLTitleElement(m_titleElement)->setText(title);
+    if (isHTMLTitleElement(m_titleElement.get()))
+        toHTMLTitleElement(m_titleElement.get())->setText(title);
     else
         updateTitle(title);
 }
@@ -1361,7 +1362,7 @@ void Document::setTitle(const String& title)
 void Document::setTitleElement(Element* titleElement)
 {
     // Only allow the first title element to change the title -- others have no effect.
-    if (m_titleElement && m_titleElement != titleElement) {
+    if (m_titleElement && m_titleElement.get() != titleElement) {
         if (isHTMLDocument() || isXHTMLDocument()) {
             m_titleElement = Traversal<HTMLTitleElement>::firstWithin(*this);
         } else if (isSVGDocument()) {
@@ -1371,8 +1372,8 @@ void Document::setTitleElement(Element* titleElement)
         m_titleElement = titleElement;
     }
 
-    if (isHTMLTitleElement(m_titleElement))
-        updateTitle(toHTMLTitleElement(m_titleElement)->text());
+    if (isHTMLTitleElement(m_titleElement.get()))
+        updateTitle(toHTMLTitleElement(m_titleElement.get())->text());
 #if 0 // BKTODO:
     else if (isSVGTitleElement(m_titleElement))
         updateTitle(toSVGTitleElement(m_titleElement)->textContent());
@@ -1381,10 +1382,10 @@ void Document::setTitleElement(Element* titleElement)
 
 void Document::removeTitle(Element* titleElement)
 {
-    if (m_titleElement != titleElement)
+    if (m_titleElement.get() != titleElement)
         return;
 
-    m_titleElement = nullptr;
+    m_titleElement.clear();
 
     // Update title based on first title element in the document, if one exists.
     if (isHTMLDocument() || isXHTMLDocument()) {
@@ -1423,7 +1424,7 @@ PageVisibilityState Document::pageVisibilityState() const
     // page. If there is no page associated with the document, we will assume
     // that the page is hidden, as specified by the spec:
     // http://dvcs.w3.org/hg/webperf/raw-file/tip/specs/PageVisibility/Overview.html#dom-document-hidden
-    if (!m_frame || !m_frame->page())
+    if (nullptr == m_frame || !m_frame->page())
         return PageVisibilityStateHidden;
     return m_frame->page()->visibilityState();
 }
@@ -1508,17 +1509,17 @@ void Document::setStateForNewFormElements(const Vector<String>& stateVector)
 
 FrameView* Document::view() const
 {
-    return m_frame ? m_frame->view() : 0;
+    return nullptr != m_frame ? m_frame->view() : nullptr;
 }
 
 Page* Document::page() const
 {
-    return m_frame ? m_frame->page() : 0;
+    return nullptr != m_frame ? m_frame->page() : nullptr;
 }
 
 FrameHost* Document::frameHost() const
 {
-    return m_frame ? m_frame->host() : 0;
+    return nullptr != m_frame ? m_frame->host() : nullptr;
 }
 
 #if 0 // BKTODO:
@@ -1837,7 +1838,7 @@ void Document::updateLayoutTree(StyleRecalcChange change)
     // for an example stack see crbug.com/536194, it seems like we should just use
     // a PluginScriptForbiddenScope to block all script from running inside here
     // to avoid the crash.
-    RefPtrWillBeRawPtr<LocalFrame> protect(m_frame.get());
+    // BKTODO: RefPtrWillBeRawPtr<LocalFrame> protect(m_frame.get());
 
     TRACE_EVENT_BEGIN1("blink,devtools.timeline", "UpdateLayoutTree", "beginData", InspectorRecalculateStylesEvent::data(frame()));
     TRACE_EVENT_SCOPED_SAMPLING_STATE("blink", "UpdateLayoutTree");
@@ -2270,7 +2271,7 @@ void Document::attach(const AttachContext& context)
 void Document::detach(const AttachContext& context)
 {
     TRACE_EVENT0("blink", "Document::detach");
-    ASSERT(false); // BKTODO: ASSERT(!m_frame || m_frame->tree().childCount() == 0);
+    // BKTODO: ASSERT(!m_frame || m_frame->tree().childCount() == 0);
     if (!isActive())
         return;
 
@@ -2309,15 +2310,15 @@ void Document::detach(const AttachContext& context)
         m_scriptedAnimationController->clearDocumentPointer();
     m_scriptedAnimationController.clear();
 
+#if 0 // BKTODO:
     m_scriptedIdleTaskController.clear();
 
-#if 0 // BKTODO:
     if (svgExtensions())
         accessSVGExtensions().pauseAnimations();
 #endif
 
     // FIXME: This shouldn't be needed once LocalDOMWindow becomes ExecutionContext.
-    if (m_domWindow)
+    if (nullptr != m_domWindow)
         m_domWindow->clearEventQueue();
 
     if (m_layoutView)
@@ -2326,15 +2327,15 @@ void Document::detach(const AttachContext& context)
     if (registrationContext())
         registrationContext()->documentWasDetached();
 
-    m_hoverNode = nullptr;
-    m_activeHoverElement = nullptr;
-    m_autofocusElement = nullptr;
+    m_hoverNode.clear();
+    m_activeHoverElement.clear();
+    m_autofocusElement.clear();
 
     if (m_focusedElement.get()) {
-        RefPtrWillBeRawPtr<Element> oldFocusedElement = m_focusedElement;
-        m_focusedElement = nullptr;
+        Element *oldFocusedElement = m_focusedElement.get();
+        m_focusedElement.clear();
         if (frameHost())
-            frameHost()->chromeClient().focusedNodeChanged(oldFocusedElement.get(), nullptr);
+            frameHost()->chromeClient().focusedNodeChanged(oldFocusedElement, nullptr);
     }
 
 #if 0 // BKTODO:
@@ -2393,7 +2394,7 @@ void Document::detach(const AttachContext& context)
     if (m_mediaQueryMatcher)
         m_mediaQueryMatcher->documentDetached();
 
-    DocumentLifecycleNotifier::notifyDocumentWasDetached();
+    // BKTODO: DocumentLifecycleNotifier::notifyDocumentWasDetached();
     m_lifecycle.advanceTo(DocumentLifecycle::Stopped);
 
     // FIXME: Currently we call notifyContextDestroyed() only in
@@ -2402,7 +2403,7 @@ void Document::detach(const AttachContext& context)
     // If such a document has any observer, the observer won't get
     // a contextDestroyed() notification. This can happen for a document
     // created by DOMImplementation::createDocument().
-    DocumentLifecycleNotifier::notifyContextDestroyed();
+    // BKTODO: DocumentLifecycleNotifier::notifyContextDestroyed();
     ExecutionContext::notifyContextDestroyed();
 }
 
@@ -2547,7 +2548,7 @@ void Document::open()
 {
     ASSERT(!importLoader());
 
-    if (m_frame) {
+    if (nullptr != m_frame) {
         if (ScriptableDocumentParser* parser = scriptableDocumentParser()) {
             if (parser->isParsing()) {
                 // FIXME: HTML5 doesn't tell us to check this, it might not be correct.
@@ -2568,7 +2569,7 @@ void Document::open()
     if (ScriptableDocumentParser* parser = scriptableDocumentParser())
         parser->setWasCreatedByScript(true);
 
-    if (m_frame)
+    if (nullptr != m_frame)
         m_frame->loader().didExplicitOpen();
     if (m_loadEventProgress != LoadEventInProgress && pageDismissalEventBeingDispatched() == NoDismissal)
         m_loadEventProgress = LoadEventNotRun;
@@ -2720,7 +2721,7 @@ void Document::close()
     if (RefPtrWillBeRawPtr<DocumentParser> parser = m_parser)
         parser->finish();
 
-    if (!m_frame) {
+    if (nullptr == m_frame) {
         // Because we have no frame, we don't know if all loading has completed,
         // so we just call implicitClose() immediately. FIXME: This might fire
         // the load event prematurely <http://bugs.webkit.org/show_bug.cgi?id=14568>.
@@ -2826,7 +2827,7 @@ void Document::implicitClose()
 
 bool Document::dispatchBeforeUnloadEvent(ChromeClient& chromeClient, bool isReload, bool& didAllowNavigation)
 {
-    if (!m_domWindow)
+    if (nullptr == m_domWindow)
         return true;
 
     if (!body())
@@ -2877,7 +2878,7 @@ void Document::dispatchUnloadEvents()
             m_loadEventProgress = PageHideInProgress;
             if (LocalDOMWindow* window = domWindow())
                 window->dispatchEvent(PageTransitionEvent::create(EventTypeNames::pagehide, false), this);
-            if (!m_frame)
+            if (nullptr == m_frame)
                 return;
 
             // The DocumentLoader (and thus its DocumentLoadTiming) might get destroyed
@@ -2903,17 +2904,18 @@ void Document::dispatchUnloadEvents()
         m_loadEventProgress = UnloadEventHandled;
     }
 
-    if (!m_frame)
+    if (nullptr == m_frame)
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
     // Don't remove event listeners from a transitional empty document (see https://bugs.webkit.org/show_bug.cgi?id=28716 for more information).
+#if 0 // BKTODO:
     bool keepEventListeners = m_frame->loader().stateMachine()->isDisplayingInitialEmptyDocument() && m_frame->loader().provisionalDocumentLoader()
         && isSecureTransitionTo(m_frame->loader().provisionalDocumentLoader()->url());
+#else
+    bool keepEventListeners = m_frame->loader().stateMachine()->isDisplayingInitialEmptyDocument() && m_frame->loader().provisionalDocumentLoader();
+#endif
     if (!keepEventListeners)
         removeAllEventListenersRecursively();
-#endif
 }
 
 Document::PageDismissalType Document::pageDismissalEventBeingDispatched() const
@@ -3223,7 +3225,7 @@ void Document::maybeHandleHttpRefresh(const String& content, HttpRefreshType htt
     if (m_isViewSource || !m_frame)
         return;
 #else
-    if (!m_frame)
+    if (nullptr == m_frame)
         return;
 #endif
 
@@ -3666,7 +3668,7 @@ void Document::removeFocusedElementOfSubtree(Node* node, bool amongChildrenOnly)
     if (!node->inDocument())
         return;
     bool contains = node->containsIncludingShadowDOM(m_focusedElement.get());
-    if (contains && (m_focusedElement != node || !amongChildrenOnly))
+    if (contains && (m_focusedElement.get() != node || !amongChildrenOnly))
         clearFocusedElement();
 }
 
@@ -3676,7 +3678,7 @@ void Document::hoveredNodeDetached(Element& element)
         return;
 
     m_hoverNode->updateDistribution();
-    if (element != m_hoverNode && (!m_hoverNode->isTextNode() || element != ComposedTreeTraversal::parent(*m_hoverNode)))
+    if (element != m_hoverNode.get() && (!m_hoverNode->isTextNode() || element != ComposedTreeTraversal::parent(*m_hoverNode)))
         return;
 
     m_hoverNode = ComposedTreeTraversal::parent(element);
@@ -3698,7 +3700,7 @@ void Document::activeChainNodeDetached(Element& element)
     if (!m_activeHoverElement)
         return;
 
-    if (element != m_activeHoverElement)
+    if (element != m_activeHoverElement.get())
         return;
 
     Node* activeNode = ComposedTreeTraversal::parent(element);
@@ -3734,12 +3736,11 @@ bool Document::setFocusedElement(PassRefPtrWillBeRawPtr<Element> prpNewFocusedEl
     if (NodeChildRemovalTracker::isBeingRemoved(newFocusedElement.get()))
         return true;
 
-    if (m_focusedElement == newFocusedElement)
+    if (m_focusedElement.get() == newFocusedElement)
         return true;
 
     bool focusChangeBlocked = false;
-    RefPtrWillBeRawPtr<Element> oldFocusedElement = m_focusedElement;
-    m_focusedElement = nullptr;
+    GCMember<Element> oldFocusedElement = m_focusedElement.release();
 
     // Remove focus from the existing focus node (if any)
     if (oldFocusedElement) {
@@ -3802,14 +3803,14 @@ bool Document::setFocusedElement(PassRefPtrWillBeRawPtr<Element> prpNewFocusedEl
             m_focusedElement->dispatchFocusEvent(oldFocusedElement.get(), params.type, params.sourceCapabilities);
 
 
-            if (m_focusedElement != newFocusedElement) {
+            if (m_focusedElement.get() != newFocusedElement) {
                 // handler shifted focus
                 focusChangeBlocked = true;
                 goto SetFocusedElementDone;
             }
             m_focusedElement->dispatchFocusInEvent(EventTypeNames::focusin, oldFocusedElement.get(), params.type, params.sourceCapabilities); // DOM level 3 bubbling focus event.
 
-            if (m_focusedElement != newFocusedElement) {
+            if (m_focusedElement.get() != newFocusedElement) {
                 // handler shifted focus
                 focusChangeBlocked = true;
                 goto SetFocusedElementDone;
@@ -3819,7 +3820,7 @@ bool Document::setFocusedElement(PassRefPtrWillBeRawPtr<Element> prpNewFocusedEl
             // on it, probably when <rdar://problem/8503958> is m.
             m_focusedElement->dispatchFocusInEvent(EventTypeNames::DOMFocusIn, oldFocusedElement.get(), params.type, params.sourceCapabilities); // DOM level 2 for compatibility.
 
-            if (m_focusedElement != newFocusedElement) {
+            if (m_focusedElement.get() != newFocusedElement) {
                 // handler shifted focus
                 focusChangeBlocked = true;
                 goto SetFocusedElementDone;
@@ -4026,7 +4027,7 @@ void Document::didMergeTextNodes(Text& oldNode, unsigned offset)
             range->didMergeTextNodes(oldNodeWithIndex, offset);
     }
 
-    if (m_frame)
+    if (nullptr != m_frame)
         m_frame->selection().didMergeTextNodes(oldNode, offset);
 
     // FIXME: This should update markers for spelling and grammar checking.
@@ -4037,7 +4038,7 @@ void Document::didSplitTextNode(Text& oldNode)
     for (Range* range : m_ranges)
         range->didSplitTextNode(oldNode);
 
-    if (m_frame)
+    if (nullptr != m_frame)
         m_frame->selection().didSplitTextNode(oldNode);
 
     // FIXME: This should update markers for spelling and grammar checking.
@@ -4061,8 +4062,8 @@ EventListener* Document::getWindowAttributeEventListener(const AtomicString& eve
 
 EventQueue* Document::eventQueue() const
 {
-    if (!m_domWindow)
-        return 0;
+    if (nullptr == m_domWindow)
+        return nullptr;
     return m_domWindow->eventQueue();
 }
 
@@ -5332,7 +5333,7 @@ WeakPtrWillBeRawPtr<Document> Document::createWeakPtr()
 
 IntersectionObserverController* Document::intersectionObserverController()
 {
-    return m_intersectionObserverController;
+    return m_intersectionObserverController.get();
 }
 
 IntersectionObserverController& Document::ensureIntersectionObserverController()
@@ -5594,9 +5595,13 @@ void Document::serviceScriptedAnimations(double monotonicAnimationStartTime)
 
 ScriptedIdleTaskController& Document::ensureScriptedIdleTaskController()
 {
+    ASSERT(false); // BKTODO:
+    exit(0);
+#if 0
     if (!m_scriptedIdleTaskController)
         m_scriptedIdleTaskController = ScriptedIdleTaskController::create(this);
     return *m_scriptedIdleTaskController;
+#endif
 }
 
 int Document::requestIdleCallback(IdleRequestCallback* callback, const IdleRequestOptions& options)
@@ -5606,9 +5611,12 @@ int Document::requestIdleCallback(IdleRequestCallback* callback, const IdleReque
 
 void Document::cancelIdleCallback(int id)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_scriptedIdleTaskController)
         return;
     m_scriptedIdleTaskController->cancelCallback(id);
+#endif
 }
 
 #if 0 // BKTODO:
@@ -5649,8 +5657,8 @@ PassRefPtrWillBeRawPtr<TouchList> Document::createTouchList(WillBeHeapVector<Ref
 
 DocumentLoader* Document::loader() const
 {
-    if (!m_frame)
-        return 0;
+    if (nullptr == m_frame)
+        return nullptr;
 
     DocumentLoader* loader = m_frame->loader().documentLoader();
     if (!loader)
@@ -5745,7 +5753,7 @@ void Document::updateHoverActiveState(const HitTestRequest& request, Element* in
 {
     ASSERT(!request.readOnly());
 
-    if (request.active() && m_frame)
+    if (request.active() && nullptr != m_frame)
         m_frame->eventHandler().notifyElementActivated();
 
     Element* innerElementInDocument = innerElement;
@@ -5848,7 +5856,7 @@ void Document::updateHoverActiveState(const HitTestRequest& request, Element* in
             sawCommonAncestor = true;
         if (allowActiveChanges)
             nodesToAddToChain[i]->setActive(true);
-        if (!sawCommonAncestor || nodesToAddToChain[i] == m_hoverNode) {
+        if (!sawCommonAncestor || nodesToAddToChain[i] == m_hoverNode.get()) {
             nodesToAddToChain[i]->setHovered(true);
         }
     }
@@ -5903,7 +5911,7 @@ void Document::didAssociateFormControl(Element* element)
 {
     if (!frame() || !frame()->page())
         return;
-    m_associatedFormControls.add(element);
+    m_associatedFormControls.emplace(element);
     if (!m_didAssociateFormControlsTimer.isActive())
         m_didAssociateFormControlsTimer.startOneShot(0, BLINK_FROM_HERE);
 }
@@ -5917,7 +5925,7 @@ void Document::removeFormAssociation(Element* element)
         return;
     m_associatedFormControls.remove(it);
 #endif
-    if (m_associatedFormControls.isEmpty())
+    if (m_associatedFormControls.empty())
         m_didAssociateFormControlsTimer.stop();
 }
 
@@ -5927,16 +5935,19 @@ void Document::didAssociateFormControlsTimerFired(Timer<Document>* timer)
     if (!frame() || !frame()->page())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     WillBeHeapVector<RefPtrWillBeMember<Element>> associatedFormControls;
     copyToVector(m_associatedFormControls, associatedFormControls);
 
     frame()->page()->chromeClient().didAssociateFormControls(associatedFormControls, frame());
+#endif
     m_associatedFormControls.clear();
 }
 
 float Document::devicePixelRatio() const
 {
-    return m_frame ? m_frame->devicePixelRatio() : 1.0;
+    return nullptr != m_frame ? m_frame->devicePixelRatio() : 1.0;
 }
 
 void Document::removedStyleSheet(StyleSheet* sheet, StyleResolverUpdateMode updateMode)
@@ -5969,7 +5980,7 @@ TextAutosizer* Document::textAutosizer()
 void Document::setAutofocusElement(Element* element)
 {
     if (!element) {
-        m_autofocusElement = nullptr;
+        m_autofocusElement.clear();
         return;
     }
     if (m_hasAutofocused)
@@ -6110,23 +6121,21 @@ void Document::enforceStrictMixedContentChecking()
 
 DEFINE_TRACE(Document)
 {
-    ASSERT(false); // BKTODO:
-#if 0
 #if ENABLE(OILPAN)
     visitor->trace(m_importsController);
     visitor->trace(m_docType);
-    visitor->trace(m_implementation);
+    // BKTODO: visitor->trace(m_implementation);
     visitor->trace(m_autofocusElement);
     visitor->trace(m_focusedElement);
     visitor->trace(m_hoverNode);
     visitor->trace(m_activeHoverElement);
     visitor->trace(m_documentElement);
     visitor->trace(m_titleElement);
-    visitor->trace(m_axObjectCache);
-    visitor->trace(m_markers);
+    // BKTODO: visitor->trace(m_axObjectCache);
+    // BKTODO: visitor->trace(m_markers); // May be useless
     visitor->trace(m_cssTarget);
     visitor->trace(m_currentScriptStack);
-    visitor->trace(m_scriptRunner);
+    // BKTODO: visitor->trace(m_scriptRunner);
     visitor->trace(m_listsInvalidatedAtDocument);
     for (int i = 0; i < numNodeListInvalidationTypes; ++i)
         visitor->trace(m_nodeLists[i]);
@@ -6136,35 +6145,37 @@ DEFINE_TRACE(Document)
     visitor->trace(m_ranges);
     visitor->trace(m_styleEngine);
     visitor->trace(m_formController);
-    visitor->trace(m_visitedLinkState);
-    visitor->trace(m_frame);
-    visitor->trace(m_domWindow);
+    // BKTODO: visitor->trace(m_visitedLinkState);
+    // BKTODO: visitor->trace(m_frame);
+    // BKTODO: visitor->trace(m_domWindow);
     visitor->trace(m_fetcher);
     visitor->trace(m_parser);
-    visitor->trace(m_contextFeatures);
+    // BKTODO: visitor->trace(m_contextFeatures);
     visitor->trace(m_styleSheetList);
-    visitor->trace(m_documentTiming);
+    // BKTODO: visitor->trace(m_documentTiming);
     visitor->trace(m_mediaQueryMatcher);
     visitor->trace(m_scriptedAnimationController);
-    visitor->trace(m_scriptedIdleTaskController);
-    visitor->trace(m_taskRunner);
-    visitor->trace(m_textAutosizer);
+    // BKTODO: visitor->trace(m_scriptedIdleTaskController);
+    // BKTODO: visitor->trace(m_taskRunner);
+    // BKTODO: visitor->trace(m_textAutosizer);
     visitor->trace(m_registrationContext);
     visitor->trace(m_customElementMicrotaskRunQueue);
     visitor->trace(m_elementDataCache);
+#if 0 // BKTODO:
     visitor->trace(m_associatedFormControls);
     visitor->trace(m_useElementsNeedingUpdate);
     visitor->trace(m_layerUpdateSVGFilterElements);
     visitor->trace(m_timers);
+#endif
     visitor->trace(m_templateDocument);
     visitor->trace(m_templateDocumentHost);
     visitor->trace(m_visibilityObservers);
     visitor->trace(m_userActionElements);
-    visitor->trace(m_svgExtensions);
+    // BKTODO: visitor->trace(m_svgExtensions);
     visitor->trace(m_timeline);
     visitor->trace(m_compositorPendingAnimations);
-    visitor->trace(m_contextDocument);
-    visitor->trace(m_canvasFontCache);
+    // BKTODO: visitor->trace(m_contextDocument);
+    // BKTODO: visitor->trace(m_canvasFontCache);
     visitor->trace(m_intersectionObserverController);
     visitor->trace(m_intersectionObserverData);
     WillBeHeapSupplementable<Document>::trace(visitor);
@@ -6172,9 +6183,8 @@ DEFINE_TRACE(Document)
     TreeScope::trace(visitor);
     ContainerNode::trace(visitor);
     ExecutionContext::trace(visitor);
-    DocumentLifecycleNotifier::trace(visitor);
-    SecurityContext::trace(visitor);
-#endif
+    // BKTODO: DocumentLifecycleNotifier::trace(visitor);
+    // BKTODO: SecurityContext::trace(visitor);
 }
 
 template class CORE_TEMPLATE_EXPORT WillBeHeapSupplement<Document>;
