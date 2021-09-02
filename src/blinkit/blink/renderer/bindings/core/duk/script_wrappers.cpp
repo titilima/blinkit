@@ -11,6 +11,7 @@
 
 #include "./script_wrappers.h"
 
+#include "blinkit/blink/renderer/bindings/core/duk/duk_script_object.h"
 #include "blinkit/blink/renderer/bindings/core/duk/script_wrappable.h"
 
 using namespace blink;
@@ -29,7 +30,8 @@ PushWrapper::~PushWrapper(void)
     if (nullptr == m_nativeObject->m_contextObject)
     {
         m_nativeObject->m_contextObject = duk_get_heapptr(m_ctx, -1);
-        GCSetFlag(m_nativeObject, GCObjectFlag::JSRetained);
+        if (GCObject *o = m_nativeObject->ObjectForGC())
+            o->IncRef();
     }
 
     ASSERT(duk_get_heapptr(m_ctx, -1) == m_nativeObject->m_contextObject);

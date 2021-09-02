@@ -60,7 +60,8 @@ duk_ret_t DukScriptObject::DefaultFinalizer(duk_context *ctx)
     if (nullptr != nativeThis)
     {
         nativeThis->m_contextObject = nullptr;
-        GCClearFlag(nativeThis, GCObjectFlag::JSRetained);
+        if (GCObject *o = nativeThis->ObjectForGC())
+            o->Release();
     }
     return 0;
 }

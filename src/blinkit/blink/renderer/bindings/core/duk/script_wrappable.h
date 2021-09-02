@@ -24,19 +24,24 @@ class PushWrapper;
 
 namespace blink {
 
-class ScriptWrappable : public GarbageCollectedFinalized<ScriptWrappable>
+class ScriptWrappable : public BlinKit::GCStub
 {
     WTF_MAKE_NONCOPYABLE(ScriptWrappable);
 public:
-    BK_DECLARE_GC_NAME(ScriptWrappable)
-
     virtual ~ScriptWrappable(void) = default;
-    virtual void Trace(Visitor *visitor) {}
 protected:
     ScriptWrappable(void) = default;
 private:
     friend class BlinKit::DukScriptObject;
     friend class BlinKit::PushWrapper;
+
+#ifndef NDEBUG
+    BlinKit::GCObject* ObjectForGC(void) override
+    {
+        ASSERT_NOT_REACHED();
+        return nullptr;
+    }
+#endif
 
     void *m_contextObject = nullptr;
 };
