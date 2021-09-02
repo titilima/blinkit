@@ -124,9 +124,9 @@ public:
     DECLARE_VIRTUAL_TRACE();
 
 private:
-    static PassRefPtrWillBeRawPtr<FontFaceSet> create(Document& document)
+    static FontFaceSet* create(Document& document)
     {
-        return adoptRefWillBeNoop(new FontFaceSet(document));
+        return new FontFaceSet(document);
     }
 
 #if 0 // BKTODO:

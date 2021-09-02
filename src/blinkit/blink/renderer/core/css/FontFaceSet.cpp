@@ -228,7 +228,7 @@ void FontFaceSet::resume()
 
 void FontFaceSet::stop()
 {
-    ASSERT(false); // BKTODO: m_asyncRunner->stop();
+    // BKTODO: m_asyncRunner->stop();
 }
 
 void FontFaceSet::beginFontLoading(FontFace* fontFace)
