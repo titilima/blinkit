@@ -415,8 +415,10 @@ void Page::setVisibilityState(PageVisibilityState visibilityState, bool isInitia
         return;
     m_visibilityState = visibilityState;
 
+#if 0 // BKTODO:
     if (!isInitialState)
         notifyPageVisibilityChanged();
+#endif
 
     if (!isInitialState && m_mainFrame && m_mainFrame->isLocalFrame())
         deprecatedLocalMainFrame()->didChangeVisibilityState();
@@ -540,9 +542,9 @@ void Page::updateAcceleratedCompositingSettings()
 
 void Page::didCommitLoad(LocalFrame* frame)
 {
-    notifyDidCommitLoad(frame);
     ASSERT(false); // BKTODO:
 #if 0
+    notifyDidCommitLoad(frame);
     if (m_mainFrame == frame) {
         frame->console().clearMessages();
         useCounter().didCommitLoad();
@@ -599,7 +601,7 @@ DEFINE_TRACE(Page)
     // BKTODO: visitor->trace(m_memoryPurgeController);
     HeapSupplementable<Page>::trace(visitor);
 #endif
-    PageLifecycleNotifier::trace(visitor);
+    // BKTODO: PageLifecycleNotifier::trace(visitor);
     // BKTODO: MemoryPurgeClient::trace(visitor);
 }
 
@@ -626,8 +628,7 @@ void Page::willBeDestroyed()
 
     mainFrame->detach();
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     ASSERT(allPages().contains(this));
     allPages().remove(this);
     ordinaryPages().remove(this);
@@ -645,7 +646,7 @@ void Page::willBeDestroyed()
         m_validationMessageClient->willBeDestroyed();
     m_mainFrame = nullptr;
 
-    PageLifecycleNotifier::notifyContextDestroyed();
+    // BKTODO: PageLifecycleNotifier::notifyContextDestroyed();
 }
 
 Page::PageClients::PageClients()

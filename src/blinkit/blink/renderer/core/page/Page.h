@@ -42,8 +42,10 @@
 #include "core/frame/UseCounter.h"
 #include "core/page/Page.h"
 #include "core/page/PageAnimator.h"
+#if 0 // BKTODO:
 #include "core/page/PageLifecycleNotifier.h"
 #include "core/page/PageLifecycleObserver.h"
+#endif
 #include "core/page/PageVisibilityState.h"
 // BKTODO: #include "platform/MemoryPurgeController.h"
 #include "platform/Supplementable.h"
@@ -83,7 +85,7 @@ typedef uint64_t LinkHash;
 
 float deviceScaleFactor(LocalFrame*);
 
-class CORE_EXPORT Page final : public NoBaseWillBeGarbageCollectedFinalized<Page>, public WillBeHeapSupplementable<Page>, public PageLifecycleNotifier {
+class CORE_EXPORT Page final : public NoBaseWillBeGarbageCollectedFinalized<Page>, public WillBeHeapSupplementable<Page> { // BKTODO: , public PageLifecycleNotifier {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(Page);
     USING_FAST_MALLOC_WILL_BE_REMOVED(Page);
     WTF_MAKE_NONCOPYABLE(Page);
@@ -114,7 +116,7 @@ public:
     static PassOwnPtrWillBeRawPtr<Page> createOrdinary(PageClients&);
 #endif
 
-    ~Page() override;
+    ~Page();
 
     void willBeClosed();
 
