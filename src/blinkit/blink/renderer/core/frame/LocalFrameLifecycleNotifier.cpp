@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LocalFrameLifecycleNotifier.cpp
+// Description: LocalFrameLifecycleNotifier Class
+//      Author: Ziming Li
+//     Created: 2021-08-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -24,8 +35,8 @@ void LocalFrameLifecycleNotifier::notifyWillDetachFrameHost()
             observer->willDetachFrameHost();
     }
 #else
-    for (LocalFrameLifecycleObserver* observer : m_observers)
-        observer->willDetachFrameHost();
+    for (LocalFrameLifecycleObserver &observer : m_observers)
+        observer.willDetachFrameHost();
 #endif
 }
 
