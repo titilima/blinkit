@@ -64,4 +64,15 @@ void LifecycleDataManager::RemoveObserver(GCLifecycleObserver *ob)
     m_observers.erase(ob);
 }
 
+void LifecycleDataManager::RemoveObserverForObject(GCObject *o, GCLifecycleObserver *ob)
+{
+    ASSERT(zed::key_exists(m_observers, ob));
+    ASSERT(zed::key_exists(m_observers[ob], o));
+    m_observers[ob].erase(o);
+
+    ASSERT(zed::key_exists(m_lifecycleData, o));
+    ASSERT(zed::key_exists(m_lifecycleData[o].Observers, ob));
+    m_lifecycleData[o].Observers.erase(ob);
+}
+
 } // namespace BlinKit

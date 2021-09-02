@@ -29,6 +29,7 @@ public:
     void DetachWeakSlot(GCObject *o, void **slot);
 
     void RegisterObserver(GCObject *o, GCLifecycleObserver *ob);
+    void RemoveObserverForObject(GCObject *o, GCLifecycleObserver *ob);
     void RemoveObserver(GCLifecycleObserver *ob);
 private:
     struct DataEntry {
