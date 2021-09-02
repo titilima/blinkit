@@ -106,47 +106,53 @@ bool EventHandlerRegistry::hasEventHandlers(EventHandlerClass handlerClass) cons
 
 bool EventHandlerRegistry::updateEventHandlerTargets(ChangeOperation op, EventHandlerClass handlerClass, EventTarget* target)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     EventTargetSet* targets = &m_targets[handlerClass];
-    if (op == Add) {
+    if (op == Add)
+    {
+        ASSERT(false); // BKTODO:
+#if 0
         if (!targets->add(target).isNewEntry) {
             // Just incremented refcount, no real change.
             return false;
         }
-    } else {
+#endif
+    }
+    else
+    {
         ASSERT(op == Remove || op == RemoveAll);
-        ASSERT(op == RemoveAll || targets->contains(target));
+        ASSERT(op == RemoveAll || zed::key_exists(*targets, target));
 
-        if (op == RemoveAll) {
-            if (!targets->contains(target))
+        if (op == RemoveAll)
+        {
+            if (!zed::key_exists(*targets, target))
                 return false;
-            targets->removeAll(target);
-        } else {
+            targets->erase(target);
+        }
+        else
+        {
+            ASSERT(false); // BKTODO:
+#if 0
             if (!targets->remove(target)) {
                 // Just decremented refcount, no real update.
                 return false;
             }
+#endif
         }
     }
-#endif
     return true;
 }
 
 void EventHandlerRegistry::updateEventHandlerInternal(ChangeOperation op, EventHandlerClass handlerClass, EventTarget* target)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    bool hadHandlers = m_targets[handlerClass].size();
+    bool hadHandlers = !m_targets[handlerClass].empty();
     bool targetSetChanged = updateEventHandlerTargets(op, handlerClass, target);
-    bool hasHandlers = m_targets[handlerClass].size();
+    bool hasHandlers = !m_targets[handlerClass].empty();
 
     if (hadHandlers != hasHandlers)
         notifyHasHandlersChanged(handlerClass, hasHandlers);
 
     if (targetSetChanged)
         notifyDidAddOrRemoveEventHandlerTarget(handlerClass);
-#endif
 }
 
 void EventHandlerRegistry::updateEventHandlerOfType(ChangeOperation op, const AtomicString& eventType, EventTarget* target)
@@ -290,11 +296,11 @@ void EventHandlerRegistry::documentDetached(Document& document)
     // Remove all event targets under the detached document.
     for (size_t handlerClassIndex = 0; handlerClassIndex < EventHandlerClassCount; ++handlerClassIndex) {
         EventHandlerClass handlerClass = static_cast<EventHandlerClass>(handlerClassIndex);
-        Vector<RawPtrWillBeUntracedMember<EventTarget>> targetsToRemove;
-        ASSERT(false); // BKTODO:
-#if 0
+        std::vector<EventTarget *> targetsToRemove;
         const EventTargetSet* targets = &m_targets[handlerClass];
         for (const auto& eventTarget : *targets) {
+            ASSERT(false); // BKTODO:
+#if 0
             if (Node* node = eventTarget.key->toNode()) {
                 for (Document* doc = &node->document(); doc; doc = doc->ownerElement() ? &doc->ownerElement()->document() : 0) {
                     if (doc == &document) {
@@ -308,8 +314,8 @@ void EventHandlerRegistry::documentDetached(Document& document)
             } else {
                 ASSERT_NOT_REACHED();
             }
-        }
 #endif
+        }
         for (size_t i = 0; i < targetsToRemove.size(); ++i)
             updateEventHandlerInternal(RemoveAll, handlerClass, targetsToRemove[i]);
     }

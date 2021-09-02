@@ -18,14 +18,14 @@
 
 #include "core/CoreExport.h"
 #include "core/frame/FrameHost.h"
-#include "wtf/HashCountedSet.h"
+// BKTODO: #include "wtf/HashCountedSet.h"
 
 namespace blink {
 
 class Document;
 class EventTarget;
 
-typedef HashCountedSet<RawPtrWillBeUntracedMember<EventTarget>> EventTargetSet;
+using EventTargetSet = std::unordered_map<EventTarget *, unsigned>;
 
 // Registry for keeping track of event handlers. Note that only handlers on
 // documents that can be rendered or can receive input (i.e., are attached to a
@@ -111,7 +111,7 @@ private:
     void checkConsistency() const;
 
     RawPtrWillBeMember<FrameHost> m_frameHost;
-    // BKTODO: EventTargetSet m_targets[EventHandlerClassCount];
+    EventTargetSet m_targets[EventHandlerClassCount];
 };
 
 } // namespace blink
