@@ -32,6 +32,7 @@ GCHeap::~GCHeap(void)
 
     CleanupGlobalObjects();
     CleanupPersistentObjects();
+    ASSERT(m_allObjects.empty());
 
     theHeap = nullptr;
 }
@@ -139,6 +140,18 @@ void GCHeap::SetGlobalObject(GCObject &o)
     o.IncRef();
     m_globalObjects.emplace(&o);
 }
+
+#ifndef NDEBUG
+void GCHeap::TrackObject(GCObject &o)
+{
+    theHeap->m_allObjects.emplace(&o);
+}
+
+void GCHeap::UntrackObject(GCObject &o)
+{
+    theHeap->m_allObjects.erase(&o);
+}
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

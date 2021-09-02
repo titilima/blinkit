@@ -27,6 +27,11 @@ public:
     static void Initialize(void);
     static void Finalize(void);
 
+#ifndef NDEBUG
+    static void TrackObject(GCObject &o);
+    static void UntrackObject(GCObject &o);
+#endif
+
     void SetGlobalObject(GCObject &o);
     void RetainPersistentObject(GCObject &o, void **slot);
     void ReleasePersistentObject(GCObject &o, void **slot);
@@ -45,6 +50,9 @@ private:
     void CleanupGlobalObjects(void);
     void CleanupPersistentObjects(void);
 
+#ifndef NDEBUG
+    std::unordered_set<GCObject *> m_allObjects;
+#endif
     LifecycleDataManager m_lifecycleDataManager;
     std::unordered_set<GCObject *> m_globalObjects;
     std::unordered_map<GCObject *, std::unordered_set<void **>> m_persistentObjects;

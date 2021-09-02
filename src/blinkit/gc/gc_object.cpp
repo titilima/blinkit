@@ -19,13 +19,17 @@ namespace BlinKit {
 
 GCObject::GCObject(void)
 {
-    // BKTODO: Track `this`.
+#ifndef NDEBUG
+    GCHeap::TrackObject(*this);
+#endif
 }
 
 GCObject::~GCObject(void)
 {
     GCHeap::ProcessObjectFinalizing(*this);
-    // BKTODO: Untrack `this`.
+#ifndef NDEBUG
+    GCHeap::UntrackObject(*this);
+#endif
 }
 
 unsigned GCObject::DecRef(void)
