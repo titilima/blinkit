@@ -76,18 +76,18 @@ public:
 private:
     CSSDefaultStyleSheets();
 
-    OwnPtrWillBeMember<RuleSet> m_defaultStyle;
+    BlinKit::GCMember<RuleSet> m_defaultStyle;
     // BKTODO: OwnPtrWillBeMember<RuleSet> m_defaultMobileViewportStyle;
-    OwnPtrWillBeMember<RuleSet> m_defaultQuirksStyle;
+    BlinKit::GCMember<RuleSet> m_defaultQuirksStyle;
 #if 0 // BKTODO:
     OwnPtrWillBeMember<RuleSet> m_defaultPrintStyle;
     OwnPtrWillBeMember<RuleSet> m_defaultViewSourceStyle;
     OwnPtrWillBeMember<RuleSet> m_defaultXHTMLMobileProfileStyle;
 #endif
 
-    RefPtrWillBeMember<StyleSheetContents> m_defaultStyleSheet;
+    BlinKit::GCMember<StyleSheetContents> m_defaultStyleSheet;
     // BKTODO: RefPtrWillBeMember<StyleSheetContents> m_mobileViewportStyleSheet;
-    RefPtrWillBeMember<StyleSheetContents> m_quirksStyleSheet;
+    BlinKit::GCMember<StyleSheetContents> m_quirksStyleSheet;
 #if 0 // BKTODO:
     RefPtrWillBeMember<StyleSheetContents> m_svgStyleSheet;
     RefPtrWillBeMember<StyleSheetContents> m_mathmlStyleSheet;

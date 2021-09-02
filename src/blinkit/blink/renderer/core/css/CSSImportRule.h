@@ -54,9 +54,9 @@ private:
 
     CSSRule::Type type() const override { return IMPORT_RULE; }
 
-    RefPtrWillBeMember<StyleRuleImport> m_importRule;
+    BlinKit::GCMember<StyleRuleImport> m_importRule;
     mutable RefPtrWillBeMember<MediaList> m_mediaCSSOMWrapper;
-    mutable RefPtrWillBeMember<CSSStyleSheet> m_styleSheetCSSOMWrapper;
+    mutable BlinKit::GCMember<CSSStyleSheet> m_styleSheetCSSOMWrapper;
 };
 
 DEFINE_CSS_RULE_TYPE_CASTS(CSSImportRule, IMPORT_RULE);

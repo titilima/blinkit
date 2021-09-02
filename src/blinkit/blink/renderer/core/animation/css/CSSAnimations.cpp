@@ -70,6 +70,8 @@
 #include "wtf/HashSet.h"
 #include <algorithm>
 
+using namespace BlinKit;
+
 namespace blink {
 
 using PropertySet = HashSet<CSSPropertyID>;
@@ -84,7 +86,7 @@ static StringKeyframeEffectModel* createKeyframeEffectModel(StyleResolver* resol
     ASSERT(keyframesRule);
 
     StringKeyframeVector keyframes;
-    const WillBeHeapVector<RefPtrWillBeMember<StyleRuleKeyframe>>& styleKeyframes = keyframesRule->keyframes();
+    const std::vector<GCMember<StyleRuleKeyframe>>& styleKeyframes = keyframesRule->keyframes();
 
     // Construct and populate the style for each keyframe
     PropertySet specifiedPropertiesForUseCounter;

@@ -49,6 +49,8 @@
 #include "core/frame/UseCounter.h"
 #include "wtf/text/StringBuilder.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 CSSGroupingRule::CSSGroupingRule(StyleRuleGroup* groupRule, CSSStyleSheet* parent)
@@ -80,7 +82,7 @@ unsigned CSSGroupingRule::insertRule(const String& ruleString, unsigned index, E
 
     CSSStyleSheet* styleSheet = parentStyleSheet();
     CSSParserContext context(parserContext());
-    RefPtrWillBeRawPtr<StyleRuleBase> newRule = CSSParser::parseRule(context, styleSheet ? styleSheet->contents() : nullptr, ruleString);
+    GCMember<StyleRuleBase> newRule = CSSParser::parseRule(context, styleSheet ? styleSheet->contents() : nullptr, ruleString);
     if (!newRule) {
         exceptionState.throwDOMException(SyntaxError, "the rule '" + ruleString + "' is invalid and cannot be parsed.");
         return 0;

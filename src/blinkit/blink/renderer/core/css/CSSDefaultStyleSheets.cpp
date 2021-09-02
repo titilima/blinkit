@@ -58,13 +58,13 @@ using namespace HTMLNames;
 
 CSSDefaultStyleSheets& CSSDefaultStyleSheets::instance()
 {
-    static GCPersistentMember<CSSDefaultStyleSheets> cssDefaultStyleSheets(WrapLeaked(new CSSDefaultStyleSheets));
+    static CSSDefaultStyleSheets *cssDefaultStyleSheets = GCWrapGlobal(new CSSDefaultStyleSheets);
     return *cssDefaultStyleSheets;
 }
 
 static const MediaQueryEvaluator& screenEval()
 {
-    static GCPersistentMember<MediaQueryEvaluator> staticScreenEval(WrapLeaked(new MediaQueryEvaluator("screen")));
+    static MediaQueryEvaluator *staticScreenEval = GCMakeGlobal<MediaQueryEvaluator>("screen");
     return *staticScreenEval;
 }
 
@@ -74,13 +74,10 @@ static const MediaQueryEvaluator& printEval()
     return *staticPrintEval;
 }
 
-static PassRefPtrWillBeRawPtr<StyleSheetContents> parseUASheet(const String& str)
+static GCPassPtr<StyleSheetContents> parseUASheet(const String& str)
 {
-    RefPtrWillBeRawPtr<StyleSheetContents> sheet = StyleSheetContents::create(CSSParserContext(UASheetMode));
+    GCMember<StyleSheetContents> sheet = StyleSheetContents::create(CSSParserContext(UASheetMode));
     sheet->parseString(str);
-    // User Agent stylesheets are parsed once for the lifetime of the renderer
-    // process and are intentionally leaked.
-    LEAK_SANITIZER_IGNORE_OBJECT(sheet.get());
     return sheet.release();
 }
 

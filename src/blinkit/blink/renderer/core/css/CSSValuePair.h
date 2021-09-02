@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSValuePair.h
+// Description: CSSValuePair Class
+//      Author: Ziming Li
+//     Created: 2021-08-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.
@@ -82,8 +93,8 @@ private:
         ASSERT(m_second);
     }
 
-    RefPtrWillBeMember<CSSValue> m_first;
-    RefPtrWillBeMember<CSSValue> m_second;
+    BlinKit::GCMember<CSSValue> m_first;
+    BlinKit::GCMember<CSSValue> m_second;
     IdenticalValuesPolicy m_identicalValuesPolicy;
 };
 
