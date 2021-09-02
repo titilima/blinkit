@@ -55,14 +55,16 @@ namespace blink {
 
 static size_t sizeForImmutableStylePropertySetWithPropertyCount(unsigned count)
 {
-    return sizeof(ImmutableStylePropertySet) - sizeof(void*) + sizeof(RawPtrWillBeMember<CSSValue>) * count + sizeof(StylePropertyMetadata) * count;
+    return sizeof(ImmutableStylePropertySet) - sizeof(void*) + sizeof(GCMember<CSSValue>) * count + sizeof(StylePropertyMetadata) * count;
 }
 
 PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> ImmutableStylePropertySet::create(const CSSProperty* properties, unsigned count, CSSParserMode cssParserMode)
 {
     ASSERT(count <= MaxArraySize);
 #if ENABLE(OILPAN)
-    void* slot = ::operator new(sizeForImmutableStylePropertySetWithPropertyCount(count));
+    size_t cb = sizeForImmutableStylePropertySetWithPropertyCount(count);
+    void* slot = ::operator new(cb);
+    memset(slot, 0, cb);
 #else
     void* slot = WTF::Partitions::fastMalloc(sizeForImmutableStylePropertySetWithPropertyCount(count), "blink::ImmutableStylePropertySet");
 #endif // ENABLE(OILPAN)
@@ -93,8 +95,8 @@ MutableStylePropertySet::MutableStylePropertySet(const CSSProperty* properties, 
 ImmutableStylePropertySet::ImmutableStylePropertySet(const CSSProperty* properties, unsigned length, CSSParserMode cssParserMode)
     : StylePropertySet(cssParserMode, length)
 {
-    StylePropertyMetadata* metadataArray = const_cast<StylePropertyMetadata*>(this->metadataArray());
-    RawPtrWillBeMember<CSSValue>* valueArray = const_cast<RawPtrWillBeMember<CSSValue>*>(this->valueArray());
+    StylePropertyMetadata* metadataArray = mutableMetadataArray();
+    GCMember<CSSValue>* valueArray = mutableValueArray();
     for (unsigned i = 0; i < m_arraySize; ++i) {
         metadataArray[i] = properties[i].metadata();
         valueArray[i] = properties[i].value();
@@ -106,6 +108,9 @@ ImmutableStylePropertySet::ImmutableStylePropertySet(const CSSProperty* properti
 
 ImmutableStylePropertySet::~ImmutableStylePropertySet()
 {
+    GCMember<CSSValue> *valueArray = mutableValueArray();
+    for (unsigned i = 0; i < m_arraySize; ++i)
+        valueArray[i].clear();
 #if !ENABLE(OILPAN)
     RawPtrWillBeMember<CSSValue>* valueArray = const_cast<RawPtrWillBeMember<CSSValue>*>(this->valueArray());
     for (unsigned i = 0; i < m_arraySize; ++i) {
@@ -160,9 +165,9 @@ template CORE_EXPORT int ImmutableStylePropertySet::findPropertyIndex(AtomicStri
 
 DEFINE_TRACE_AFTER_DISPATCH(ImmutableStylePropertySet)
 {
-    const RawPtrWillBeMember<CSSValue>* values = valueArray();
+    const GCMember<CSSValue>* values = valueArray();
     for (unsigned i = 0; i < m_arraySize; i++)
-        visitor->trace(values[i]);
+        visitor->trace(const_cast<GCMember<CSSValue> &>(values[i])); // BKTODO: Support `const GCMember<T>` in trace?
     StylePropertySet::traceAfterDispatch(visitor);
 }
 

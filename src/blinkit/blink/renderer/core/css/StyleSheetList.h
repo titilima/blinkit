@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleSheetList.h
+// Description: StyleSheetList Class
+//      Author: Ziming Li
+//     Created: 2021-08-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2007 Apple Inc. All rights reserved.
@@ -57,7 +68,7 @@ public:
 
 private:
     explicit StyleSheetList(TreeScope*);
-    const WillBeHeapVector<RefPtrWillBeMember<StyleSheet>>& styleSheets();
+    const std::vector<BlinKit::GCMember<StyleSheet>>& styleSheets();
 
     RawPtrWillBeMember<TreeScope> m_treeScope;
 #if !ENABLE(OILPAN)

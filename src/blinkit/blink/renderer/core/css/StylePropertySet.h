@@ -177,7 +177,7 @@ public:
 
     unsigned propertyCount() const { return m_arraySize; }
 
-    const RawPtrWillBeMember<CSSValue>* valueArray() const;
+    const BlinKit::GCMember<CSSValue>* valueArray() const;
     const StylePropertyMetadata* metadataArray() const;
 
     template<typename T> // CSSPropertyID or AtomicString
@@ -194,16 +194,25 @@ public:
 
 private:
     ImmutableStylePropertySet(const CSSProperty*, unsigned count, CSSParserMode);
+
+    BlinKit::GCMember<CSSValue>* mutableValueArray(void)
+    {
+        return reinterpret_cast<BlinKit::GCMember<CSSValue> *>(&(this->m_storage));
+    }
+    StylePropertyMetadata* mutableMetadataArray(void)
+    {
+        return reinterpret_cast<StylePropertyMetadata *>(mutableValueArray() + m_arraySize);
+    }
 };
 
-inline const RawPtrWillBeMember<CSSValue>* ImmutableStylePropertySet::valueArray() const
+inline const BlinKit::GCMember<CSSValue>* ImmutableStylePropertySet::valueArray() const
 {
-    return reinterpret_cast<const RawPtrWillBeMember<CSSValue>*>(const_cast<const void**>(&(this->m_storage)));
+    return const_cast<ImmutableStylePropertySet *>(this)->mutableValueArray();
 }
 
 inline const StylePropertyMetadata* ImmutableStylePropertySet::metadataArray() const
 {
-    return reinterpret_cast<const StylePropertyMetadata*>(&reinterpret_cast<const char*>(&(this->m_storage))[m_arraySize * sizeof(RawPtrWillBeMember<CSSValue>)]);
+    return const_cast<ImmutableStylePropertySet *>(this)->mutableMetadataArray();
 }
 
 DEFINE_TYPE_CASTS(ImmutableStylePropertySet, StylePropertySet, set, !set->isMutable(), !set.isMutable());
@@ -292,7 +301,7 @@ inline const CSSValue* StylePropertySet::PropertyReference::propertyValue() cons
 {
     if (m_propertySet->isMutable())
         return toMutableStylePropertySet(*m_propertySet).m_propertyVector.at(m_index).value();
-    return toImmutableStylePropertySet(*m_propertySet).valueArray()[m_index];
+    return toImmutableStylePropertySet(*m_propertySet).valueArray()[m_index].get();
 }
 
 inline unsigned StylePropertySet::propertyCount() const

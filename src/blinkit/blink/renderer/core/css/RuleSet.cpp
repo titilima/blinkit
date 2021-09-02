@@ -54,6 +54,8 @@
 
 #include "wtf/TerminatedArrayBuilder.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
@@ -240,7 +242,7 @@ void RuleSet::addRule(StyleRule* rule, unsigned selectorIndex, AddRuleFlags addR
 void RuleSet::addPageRule(StyleRulePage* rule)
 {
     ensurePendingRules(); // So that m_pageRules.shrinkToFit() gets called.
-    m_pageRules.append(rule);
+    m_pageRules.emplace_back(rule);
 }
 
 void RuleSet::addViewportRule(StyleRuleViewport* rule)
@@ -261,7 +263,7 @@ void RuleSet::addKeyframesRule(StyleRuleKeyframes* rule)
     m_keyframesRules.append(rule);
 }
 
-void RuleSet::addChildRules(const std::vector<Member<StyleRuleBase>>& rules, const MediaQueryEvaluator& medium, AddRuleFlags addRuleFlags)
+void RuleSet::addChildRules(const std::vector<GCMember<StyleRuleBase>>& rules, const MediaQueryEvaluator& medium, AddRuleFlags addRuleFlags)
 {
     for (unsigned i = 0; i < rules.size(); ++i) {
         StyleRuleBase* rule = rules[i].get();
@@ -303,7 +305,7 @@ void RuleSet::addRulesFromSheet(StyleSheetContents* sheet, const MediaQueryEvalu
 
     ASSERT(sheet);
 
-    const std::vector<Member<StyleRuleImport>>& importRules = sheet->importRules();
+    const std::vector<GCMember<StyleRuleImport>>& importRules = sheet->importRules();
     for (unsigned i = 0; i < importRules.size(); ++i) {
         StyleRuleImport* importRule = importRules[i].get();
         if (importRule->styleSheet() && (!importRule->mediaQueries() || medium.eval(importRule->mediaQueries(), &m_viewportDependentMediaQueryResults, &m_deviceDependentMediaQueryResults)))
@@ -348,7 +350,7 @@ void RuleSet::compactRules()
     m_focusPseudoClassRules.shrinkToFit();
     m_universalRules.shrinkToFit();
     m_shadowHostRules.shrinkToFit();
-    m_pageRules.shrinkToFit();
+    m_pageRules.shrink_to_fit();
     m_viewportRules.shrinkToFit();
     m_fontFaceRules.shrinkToFit();
     m_keyframesRules.shrinkToFit();

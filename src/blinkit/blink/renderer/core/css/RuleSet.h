@@ -75,7 +75,7 @@ public:
 
     DECLARE_TRACE();
 
-    RawPtrWillBeMember<StyleRule> m_rule;
+    BlinKit::GCMember<StyleRule> m_rule;
     unsigned m_selectorIndex;
     AddRuleFlags m_flags;
 };
@@ -86,7 +86,7 @@ public:
     RuleData(StyleRule*, unsigned selectorIndex, unsigned position, AddRuleFlags);
 
     unsigned position() const { return m_position; }
-    StyleRule* rule() const { return m_rule; }
+    StyleRule* rule() const { return m_rule.get(); }
     const CSSSelector& selector() const { return m_rule->selectorList().selectorAt(m_selectorIndex); }
     unsigned selectorIndex() const { return m_selectorIndex; }
 
@@ -105,7 +105,7 @@ public:
     DECLARE_TRACE();
 
 private:
-    RawPtrWillBeMember<StyleRule> m_rule;
+    BlinKit::GCMember<StyleRule> m_rule;
     unsigned m_selectorIndex : 13;
     unsigned m_isLastInArray : 1; // We store an array of RuleData objects in a primitive array.
     // This number was picked fairly arbitrarily. We can probably lower it if we need to.
@@ -130,11 +130,11 @@ struct SameSizeAsRuleData {
 
 static_assert(sizeof(RuleData) == sizeof(SameSizeAsRuleData), "RuleData should stay small");
 
-class CORE_EXPORT RuleSet : public NoBaseWillBeGarbageCollectedFinalized<RuleSet> {
+class CORE_EXPORT RuleSet : public BlinKit::GCObject {
     WTF_MAKE_NONCOPYABLE(RuleSet);
     USING_FAST_MALLOC_WILL_BE_REMOVED(RuleSet);
 public:
-    static PassOwnPtrWillBeRawPtr<RuleSet> create() { return adoptPtrWillBeNoop(new RuleSet); }
+    static GCPassPtr<RuleSet> create() { return BlinKit::WrapLeaked(new RuleSet); }
 
     void addRulesFromSheet(StyleSheetContents*, const MediaQueryEvaluator&, AddRuleFlags = RuleHasNoSpecialState);
     void addStyleRule(StyleRule*, AddRuleFlags);
@@ -152,7 +152,7 @@ public:
     const WillBeHeapVector<RuleData>* focusPseudoClassRules() const { ASSERT(!m_pendingRules); return &m_focusPseudoClassRules; }
     const WillBeHeapVector<RuleData>* universalRules() const { ASSERT(!m_pendingRules); return &m_universalRules; }
     const WillBeHeapVector<RuleData>* shadowHostRules() const { ASSERT(!m_pendingRules); return &m_shadowHostRules; }
-    const WillBeHeapVector<RawPtrWillBeMember<StyleRulePage>>& pageRules() const { ASSERT(!m_pendingRules); return m_pageRules; }
+    const std::vector<BlinKit::GCMember<StyleRulePage>>& pageRules() const { ASSERT(!m_pendingRules); return m_pageRules; }
     const WillBeHeapVector<RawPtrWillBeMember<StyleRuleViewport>>& viewportRules() const { ASSERT(!m_pendingRules); return m_viewportRules; }
     const WillBeHeapVector<RawPtrWillBeMember<StyleRuleFontFace>>& fontFaceRules() const { return m_fontFaceRules; }
     const WillBeHeapVector<RawPtrWillBeMember<StyleRuleKeyframes>>& keyframesRules() const { return m_keyframesRules; }
@@ -191,7 +191,7 @@ private:
     void addFontFaceRule(StyleRuleFontFace*);
     void addKeyframesRule(StyleRuleKeyframes*);
 
-    void addChildRules(const std::vector<Member<StyleRuleBase>>&, const MediaQueryEvaluator& medium, AddRuleFlags);
+    void addChildRules(const std::vector<BlinKit::GCMember<StyleRuleBase>>&, const MediaQueryEvaluator& medium, AddRuleFlags);
     bool findBestRuleSetAndAdd(const CSSSelector&, RuleData&);
 
     const RulesArray* getRules(const CompactRuleMap &rules, const AtomicString &key) const
@@ -235,7 +235,7 @@ private:
     WillBeHeapVector<RuleData> m_universalRules;
     WillBeHeapVector<RuleData> m_shadowHostRules;
     RuleFeatureSet m_features;
-    WillBeHeapVector<RawPtrWillBeMember<StyleRulePage>> m_pageRules;
+    std::vector<BlinKit::GCMember<StyleRulePage>> m_pageRules;
     WillBeHeapVector<RawPtrWillBeMember<StyleRuleViewport>> m_viewportRules;
     WillBeHeapVector<RawPtrWillBeMember<StyleRuleFontFace>> m_fontFaceRules;
     WillBeHeapVector<RawPtrWillBeMember<StyleRuleKeyframes>> m_keyframesRules;

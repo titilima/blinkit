@@ -39,7 +39,7 @@
 #include "wtf/HashMap.h"
 #include "wtf/ListHashSet.h"
 #include "wtf/RefCounted.h"
-#include "wtf/Vector.h"
+// BKTODO: #include "wtf/Vector.h"
 #include "wtf/text/AtomicStringHash.h"
 #include "wtf/text/StringHash.h"
 #include "wtf/text/TextPosition.h"
@@ -57,19 +57,19 @@ class StyleRuleFontFace;
 class StyleRuleImport;
 class StyleRuleNamespace;
 
-class CORE_EXPORT StyleSheetContents : public RefCountedWillBeGarbageCollectedFinalized<StyleSheetContents> {
+class CORE_EXPORT StyleSheetContents : public BlinKit::GCObject {
 public:
-    static PassRefPtrWillBeRawPtr<StyleSheetContents> create(const CSSParserContext& context)
+    static GCPassPtr<StyleSheetContents> create(const CSSParserContext& context)
     {
-        return adoptRefWillBeNoop(new StyleSheetContents(0, String(), context));
+        return BlinKit::WrapLeaked(new StyleSheetContents(0, String(), context));
     }
-    static PassRefPtrWillBeRawPtr<StyleSheetContents> create(const String& originalURL, const CSSParserContext& context)
+    static GCPassPtr<StyleSheetContents> create(const String& originalURL, const CSSParserContext& context)
     {
-        return adoptRefWillBeNoop(new StyleSheetContents(0, originalURL, context));
+        return BlinKit::WrapLeaked(new StyleSheetContents(0, originalURL, context));
     }
-    static PassRefPtrWillBeRawPtr<StyleSheetContents> create(StyleRuleImport* ownerRule, const String& originalURL, const CSSParserContext& context)
+    static GCPassPtr<StyleSheetContents> create(StyleRuleImport* ownerRule, const String& originalURL, const CSSParserContext& context)
     {
-        return adoptRefWillBeNoop(new StyleSheetContents(ownerRule, originalURL, context));
+        return BlinKit::WrapLeaked(new StyleSheetContents(ownerRule, originalURL, context));
     }
 
     ~StyleSheetContents();
@@ -105,23 +105,23 @@ public:
 
     void setHasFontFaceRule(bool b) { m_hasFontFaceRule = b; }
     bool hasFontFaceRule() const { return m_hasFontFaceRule; }
-    void findFontFaceRules(WillBeHeapVector<RawPtrWillBeMember<const StyleRuleFontFace>>& fontFaceRules);
+    void findFontFaceRules(std::vector<BlinKit::GCMember<const StyleRuleFontFace>>& fontFaceRules);
 
     void parserAddNamespace(const AtomicString& prefix, const AtomicString& uri);
-    void parserAppendRule(PassRefPtrWillBeRawPtr<StyleRuleBase>);
+    void parserAppendRule(GCPassPtr<StyleRuleBase>);
 
     void clearRules();
 
     // Rules other than @import.
-    const std::vector<Member<StyleRuleBase>>& childRules() const { return m_childRules; }
-    const std::vector<Member<StyleRuleImport>>& importRules() const { return m_importRules; }
-    const std::vector<Member<StyleRuleNamespace>>& namespaceRules() const { return m_namespaceRules; }
+    const std::vector<BlinKit::GCMember<StyleRuleBase>>& childRules() const { return m_childRules; }
+    const std::vector<BlinKit::GCMember<StyleRuleImport>>& importRules() const { return m_importRules; }
+    const std::vector<BlinKit::GCMember<StyleRuleNamespace>>& namespaceRules() const { return m_namespaceRules; }
 
     void notifyLoadedSheet(const CSSStyleSheetResource*);
 
     StyleSheetContents* parentStyleSheet() const;
-    StyleRuleImport* ownerRule() const { return m_ownerRule; }
-    void clearOwnerRule() { m_ownerRule = nullptr; }
+    StyleRuleImport* ownerRule() const { return m_ownerRule.get(); }
+    void clearOwnerRule(void);
 
     // Note that href is the URL that started the redirect chain that led to
     // this style sheet. This property probably isn't useful for much except
@@ -134,7 +134,7 @@ public:
 
     unsigned estimatedSizeInBytes() const;
 
-    bool wrapperInsertRule(PassRefPtrWillBeRawPtr<StyleRuleBase>, unsigned index);
+    bool wrapperInsertRule(GCPassPtr<StyleRuleBase>, unsigned index);
     bool wrapperDeleteRule(unsigned index);
 
     PassRefPtrWillBeRawPtr<StyleSheetContents> copy() const
@@ -180,14 +180,14 @@ private:
 
     Document* clientSingleOwnerDocument() const;
 
-    RawPtrWillBeMember<StyleRuleImport> m_ownerRule;
+    BlinKit::GCMember<StyleRuleImport> m_ownerRule;
 
     String m_originalURL;
 
-    std::vector<Member<StyleRuleImport>> m_importRules;
-    std::vector<Member<StyleRuleNamespace>> m_namespaceRules;
-    std::vector<Member<StyleRuleBase>> m_childRules;
-    using PrefixNamespaceURIMap = HashMap<AtomicString, AtomicString>;
+    std::vector<BlinKit::GCMember<StyleRuleImport>> m_importRules;
+    std::vector<BlinKit::GCMember<StyleRuleNamespace>> m_namespaceRules;
+    std::vector<BlinKit::GCMember<StyleRuleBase>> m_childRules;
+    using PrefixNamespaceURIMap = std::unordered_map<AtomicString, AtomicString>;
     PrefixNamespaceURIMap m_namespaces;
     AtomicString m_defaultNamespace;
 
@@ -204,7 +204,7 @@ private:
     WillBeHeapHashSet<RawPtrWillBeWeakMember<CSSStyleSheet>> m_loadingClients;
     WillBeHeapHashSet<RawPtrWillBeWeakMember<CSSStyleSheet>> m_completedClients;
 
-    OwnPtrWillBeMember<RuleSet> m_ruleSet;
+    BlinKit::GCMember<RuleSet> m_ruleSet;
     String m_sourceMapURL;
 };
 

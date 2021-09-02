@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleSheet.h
+// Description: StyleSheet Class
+//      Author: Ziming Li
+//     Created: 2021-08-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2008, 2012 Apple Inc. All rights reserved.
@@ -34,11 +45,13 @@ class MediaList;
 class Node;
 class StyleSheet;
 
-class CORE_EXPORT StyleSheet : public RefCountedWillBeGarbageCollectedFinalized<StyleSheet>, public ScriptWrappable {
+class CORE_EXPORT StyleSheet : public BlinKit::GCObject, public ScriptWrappable {
     DEFINE_WRAPPERTYPEINFO();
 public:
     StyleSheet() { }
     virtual ~StyleSheet();
+
+    BLINKIT_DEFINE_GC_CASTER(StyleSheet);
 
     virtual bool disabled() const = 0;
     virtual void setDisabled(bool) = 0;

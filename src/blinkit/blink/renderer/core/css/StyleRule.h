@@ -76,7 +76,7 @@ public:
     bool isViewportRule() const { return type() == Viewport; }
     bool isImportRule() const { return type() == Import; }
 
-    PassRefPtrWillBeRawPtr<StyleRuleBase> copy() const;
+    GCPassPtr<StyleRuleBase> copy() const;
 
 #if !ENABLE(OILPAN)
     void deref()
@@ -116,9 +116,9 @@ class CORE_EXPORT StyleRule : public StyleRuleBase {
     USING_FAST_MALLOC_WITH_TYPE_NAME_WILL_BE_REMOVED(blink::StyleRule);
 public:
     // Adopts the selector list
-    static PassRefPtrWillBeRawPtr<StyleRule> create(CSSSelectorList selectorList, PassRefPtrWillBeRawPtr<StylePropertySet> properties)
+    static GCPassPtr<StyleRule> create(CSSSelectorList selectorList, PassRefPtrWillBeRawPtr<StylePropertySet> properties)
     {
-        return adoptRefWillBeNoop(new StyleRule(std::move(selectorList), properties));
+        return BlinKit::WrapLeaked(new StyleRule(std::move(selectorList), properties));
     }
 
     ~StyleRule();
@@ -129,7 +129,7 @@ public:
 
     void wrapperAdoptSelectorList(CSSSelectorList selectors) { m_selectorList = std::move(selectors); }
 
-    PassRefPtrWillBeRawPtr<StyleRule> copy() const { return adoptRefWillBeNoop(new StyleRule(*this)); }
+    GCPassPtr<StyleRule> copy() const { return BlinKit::WrapLeaked(new StyleRule(*this)); }
 
     static unsigned averageSizeInBytes();
 
@@ -139,15 +139,15 @@ private:
     StyleRule(CSSSelectorList, PassRefPtrWillBeRawPtr<StylePropertySet>);
     StyleRule(const StyleRule&);
 
-    RefPtrWillBeMember<StylePropertySet> m_properties; // Cannot be null.
+    BlinKit::GCMember<StylePropertySet> m_properties; // Cannot be null.
     CSSSelectorList m_selectorList;
 };
 
 class StyleRuleFontFace : public StyleRuleBase {
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleFontFace> create(PassRefPtrWillBeRawPtr<StylePropertySet> properties)
+    static GCPassPtr<StyleRuleFontFace> create(PassRefPtrWillBeRawPtr<StylePropertySet> properties)
     {
-        return adoptRefWillBeNoop(new StyleRuleFontFace(properties));
+        return BlinKit::WrapLeaked(new StyleRuleFontFace(properties));
     }
 
     ~StyleRuleFontFace();
@@ -155,7 +155,7 @@ public:
     const StylePropertySet& properties() const { return *m_properties; }
     MutableStylePropertySet& mutableProperties();
 
-    PassRefPtrWillBeRawPtr<StyleRuleFontFace> copy() const { return adoptRefWillBeNoop(new StyleRuleFontFace(*this)); }
+    GCPassPtr<StyleRuleFontFace> copy() const { return BlinKit::WrapLeaked(new StyleRuleFontFace(*this)); }
 
     DECLARE_TRACE_AFTER_DISPATCH();
 
@@ -163,15 +163,15 @@ private:
     StyleRuleFontFace(PassRefPtrWillBeRawPtr<StylePropertySet>);
     StyleRuleFontFace(const StyleRuleFontFace&);
 
-    RefPtrWillBeMember<StylePropertySet> m_properties; // Cannot be null.
+    BlinKit::GCMember<StylePropertySet> m_properties; // Cannot be null.
 };
 
 class StyleRulePage : public StyleRuleBase {
 public:
     // Adopts the selector list
-    static PassRefPtrWillBeRawPtr<StyleRulePage> create(CSSSelectorList selectorList, PassRefPtrWillBeRawPtr<StylePropertySet> properties)
+    static GCPassPtr<StyleRulePage> create(CSSSelectorList selectorList, PassRefPtrWillBeRawPtr<StylePropertySet> properties)
     {
-        return adoptRefWillBeNoop(new StyleRulePage(std::move(selectorList), properties));
+        return BlinKit::WrapLeaked(new StyleRulePage(std::move(selectorList), properties));
     }
 
     ~StyleRulePage();
@@ -182,7 +182,7 @@ public:
 
     void wrapperAdoptSelectorList(CSSSelectorList selectors) { m_selectorList = std::move(selectors); }
 
-    PassRefPtrWillBeRawPtr<StyleRulePage> copy() const { return adoptRefWillBeNoop(new StyleRulePage(*this)); }
+    GCPassPtr<StyleRulePage> copy() const { return BlinKit::WrapLeaked(new StyleRulePage(*this)); }
 
     DECLARE_TRACE_AFTER_DISPATCH();
 
@@ -190,42 +190,42 @@ private:
     StyleRulePage(CSSSelectorList, PassRefPtrWillBeRawPtr<StylePropertySet>);
     StyleRulePage(const StyleRulePage&);
 
-    RefPtrWillBeMember<StylePropertySet> m_properties; // Cannot be null.
+    BlinKit::GCMember<StylePropertySet> m_properties; // Cannot be null.
     CSSSelectorList m_selectorList;
 };
 
 class StyleRuleGroup : public StyleRuleBase {
 public:
-    const std::vector<Member<StyleRuleBase>>& childRules() const { return m_childRules; }
+    const std::vector<BlinKit::GCMember<StyleRuleBase>>& childRules() const { return m_childRules; }
 
-    void wrapperInsertRule(unsigned, PassRefPtrWillBeRawPtr<StyleRuleBase>);
+    void wrapperInsertRule(unsigned, GCPassPtr<StyleRuleBase>);
     void wrapperRemoveRule(unsigned);
 
     DECLARE_TRACE_AFTER_DISPATCH();
 
 protected:
-    StyleRuleGroup(Type, WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>>& adoptRule);
+    StyleRuleGroup(Type, std::vector<BlinKit::GCMember<StyleRuleBase>>& adoptRule);
     StyleRuleGroup(const StyleRuleGroup&);
 
 private:
-    std::vector<Member<StyleRuleBase>> m_childRules;
+    std::vector<BlinKit::GCMember<StyleRuleBase>> m_childRules;
 };
 
 class StyleRuleMedia : public StyleRuleGroup {
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleMedia> create(PassRefPtrWillBeRawPtr<MediaQuerySet> media, WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>>& adoptRules)
+    static GCPassPtr<StyleRuleMedia> create(PassRefPtrWillBeRawPtr<MediaQuerySet> media, std::vector<BlinKit::GCMember<StyleRuleBase>>& adoptRules)
     {
-        return adoptRefWillBeNoop(new StyleRuleMedia(media, adoptRules));
+        return BlinKit::WrapLeaked(new StyleRuleMedia(media, adoptRules));
     }
 
     MediaQuerySet* mediaQueries() const { return m_mediaQueries.get(); }
 
-    PassRefPtrWillBeRawPtr<StyleRuleMedia> copy() const { return adoptRefWillBeNoop(new StyleRuleMedia(*this)); }
+    GCPassPtr<StyleRuleMedia> copy() const { return BlinKit::WrapLeaked(new StyleRuleMedia(*this)); }
 
     DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
-    StyleRuleMedia(PassRefPtrWillBeRawPtr<MediaQuerySet>, WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>>& adoptRules);
+    StyleRuleMedia(PassRefPtrWillBeRawPtr<MediaQuerySet>, std::vector<BlinKit::GCMember<StyleRuleBase>>& adoptRules);
     StyleRuleMedia(const StyleRuleMedia&);
 
     RefPtrWillBeMember<MediaQuerySet> m_mediaQueries;
@@ -233,19 +233,19 @@ private:
 
 class StyleRuleSupports : public StyleRuleGroup {
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleSupports> create(const String& conditionText, bool conditionIsSupported, WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>>& adoptRules)
+    static GCPassPtr<StyleRuleSupports> create(const String& conditionText, bool conditionIsSupported, std::vector<BlinKit::GCMember<StyleRuleBase>>& adoptRules)
     {
-        return adoptRefWillBeNoop(new StyleRuleSupports(conditionText, conditionIsSupported, adoptRules));
+        return BlinKit::WrapLeaked(new StyleRuleSupports(conditionText, conditionIsSupported, adoptRules));
     }
 
     String conditionText() const { return m_conditionText; }
     bool conditionIsSupported() const { return m_conditionIsSupported; }
-    PassRefPtrWillBeRawPtr<StyleRuleSupports> copy() const { return adoptRefWillBeNoop(new StyleRuleSupports(*this)); }
+    GCPassPtr<StyleRuleSupports> copy() const { return BlinKit::WrapLeaked(new StyleRuleSupports(*this)); }
 
     DEFINE_INLINE_TRACE_AFTER_DISPATCH() { StyleRuleGroup::traceAfterDispatch(visitor); }
 
 private:
-    StyleRuleSupports(const String& conditionText, bool conditionIsSupported, WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>>& adoptRules);
+    StyleRuleSupports(const String& conditionText, bool conditionIsSupported, std::vector<BlinKit::GCMember<StyleRuleBase>>& adoptRules);
     StyleRuleSupports(const StyleRuleSupports&);
 
     String m_conditionText;
@@ -254,9 +254,9 @@ private:
 
 class StyleRuleViewport : public StyleRuleBase {
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleViewport> create(PassRefPtrWillBeRawPtr<StylePropertySet> properties)
+    static GCPassPtr<StyleRuleViewport> create(PassRefPtrWillBeRawPtr<StylePropertySet> properties)
     {
-        return adoptRefWillBeNoop(new StyleRuleViewport(properties));
+        return BlinKit::WrapLeaked(new StyleRuleViewport(properties));
     }
 
     ~StyleRuleViewport();
@@ -264,7 +264,7 @@ public:
     const StylePropertySet& properties() const { return *m_properties; }
     MutableStylePropertySet& mutableProperties();
 
-    PassRefPtrWillBeRawPtr<StyleRuleViewport> copy() const { return adoptRefWillBeNoop(new StyleRuleViewport(*this)); }
+    GCPassPtr<StyleRuleViewport> copy() const { return BlinKit::WrapLeaked(new StyleRuleViewport(*this)); }
 
     DECLARE_TRACE_AFTER_DISPATCH();
 
@@ -272,14 +272,14 @@ private:
     StyleRuleViewport(PassRefPtrWillBeRawPtr<StylePropertySet>);
     StyleRuleViewport(const StyleRuleViewport&);
 
-    RefPtrWillBeMember<StylePropertySet> m_properties; // Cannot be null
+    BlinKit::GCMember<StylePropertySet> m_properties; // Cannot be null
 };
 
 // This should only be used within the CSS Parser
 class StyleRuleCharset : public StyleRuleBase {
     USING_FAST_MALLOC_WILL_BE_REMOVED(StyleRuleCharset);
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleCharset> create() { return adoptRefWillBeNoop(new StyleRuleCharset()); }
+    static GCPassPtr<StyleRuleCharset> create() { return BlinKit::WrapLeaked(new StyleRuleCharset()); }
     DEFINE_INLINE_TRACE_AFTER_DISPATCH() { StyleRuleBase::traceAfterDispatch(visitor); }
 
 private:

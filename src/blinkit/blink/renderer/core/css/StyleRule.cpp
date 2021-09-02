@@ -185,7 +185,7 @@ void StyleRuleBase::destroy()
     ASSERT_NOT_REACHED();
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleBase> StyleRuleBase::copy() const
+GCPassPtr<StyleRuleBase> StyleRuleBase::copy() const
 {
     switch (type()) {
     case Style:
@@ -345,7 +345,7 @@ MutableStylePropertySet& StyleRuleFontFace::mutableProperties()
 {
     if (!m_properties->isMutable())
         m_properties = m_properties->mutableCopy();
-    return *toMutableStylePropertySet(m_properties);
+    return *toMutableStylePropertySet(m_properties.get());
 }
 
 DEFINE_TRACE_AFTER_DISPATCH(StyleRuleFontFace)
@@ -354,7 +354,7 @@ DEFINE_TRACE_AFTER_DISPATCH(StyleRuleFontFace)
     StyleRuleBase::traceAfterDispatch(visitor);
 }
 
-StyleRuleGroup::StyleRuleGroup(Type type, WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>>& adoptRule)
+StyleRuleGroup::StyleRuleGroup(Type type, std::vector<GCMember<StyleRuleBase>>& adoptRule)
     : StyleRuleBase(type)
 {
     m_childRules.swap(adoptRule);
@@ -368,9 +368,9 @@ StyleRuleGroup::StyleRuleGroup(const StyleRuleGroup& o)
         m_childRules[i] = o.m_childRules[i]->copy();
 }
 
-void StyleRuleGroup::wrapperInsertRule(unsigned index, PassRefPtrWillBeRawPtr<StyleRuleBase> rule)
+void StyleRuleGroup::wrapperInsertRule(unsigned index, GCPassPtr<StyleRuleBase> rule)
 {
-    m_childRules.emplace(m_childRules.begin() + index, rule);
+    m_childRules.emplace(m_childRules.begin() + index, std::move(rule));
 }
 
 void StyleRuleGroup::wrapperRemoveRule(unsigned index)
@@ -384,7 +384,7 @@ DEFINE_TRACE_AFTER_DISPATCH(StyleRuleGroup)
     StyleRuleBase::traceAfterDispatch(visitor);
 }
 
-StyleRuleMedia::StyleRuleMedia(PassRefPtrWillBeRawPtr<MediaQuerySet> media, WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>>& adoptRules)
+StyleRuleMedia::StyleRuleMedia(PassRefPtrWillBeRawPtr<MediaQuerySet> media, std::vector<GCMember<StyleRuleBase>>& adoptRules)
     : StyleRuleGroup(Media, adoptRules)
     , m_mediaQueries(media)
 {
@@ -403,7 +403,7 @@ DEFINE_TRACE_AFTER_DISPATCH(StyleRuleMedia)
     StyleRuleGroup::traceAfterDispatch(visitor);
 }
 
-StyleRuleSupports::StyleRuleSupports(const String& conditionText, bool conditionIsSupported, WillBeHeapVector<RefPtrWillBeMember<StyleRuleBase>>& adoptRules)
+StyleRuleSupports::StyleRuleSupports(const String& conditionText, bool conditionIsSupported, std::vector<GCMember<StyleRuleBase>>& adoptRules)
     : StyleRuleGroup(Supports, adoptRules)
     , m_conditionText(conditionText)
     , m_conditionIsSupported(conditionIsSupported)
@@ -437,7 +437,7 @@ MutableStylePropertySet& StyleRuleViewport::mutableProperties()
 {
     if (!m_properties->isMutable())
         m_properties = m_properties->mutableCopy();
-    return *toMutableStylePropertySet(m_properties);
+    return *toMutableStylePropertySet(m_properties.get());
 }
 
 DEFINE_TRACE_AFTER_DISPATCH(StyleRuleViewport)

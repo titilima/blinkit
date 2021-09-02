@@ -292,7 +292,7 @@ bool StyleInvalidator::invalidate(Element& element, RecursionData& recursionData
 DEFINE_TRACE(StyleInvalidator)
 {
 #if ENABLE(OILPAN)
-    ASSERT(false); // BKTODO: visitor->trace(m_pendingInvalidationMap);
+    // BKTODO: visitor->trace(m_pendingInvalidationMap);
 #endif
 }
 

@@ -36,7 +36,7 @@ class StyleSheetContents;
 class StyleRuleImport : public StyleRuleBase {
     USING_FAST_MALLOC_WILL_BE_REMOVED(StyleRuleImport);
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleImport> create(const String& href, PassRefPtrWillBeRawPtr<MediaQuerySet>);
+    static GCPassPtr<StyleRuleImport> create(const String& href, PassRefPtrWillBeRawPtr<MediaQuerySet>);
 
     ~StyleRuleImport();
 
@@ -88,7 +88,7 @@ private:
     ImportedStyleSheetClient m_styleSheetClient;
     String m_strHref;
     RefPtrWillBeMember<MediaQuerySet> m_mediaQueries;
-    RefPtrWillBeMember<StyleSheetContents> m_styleSheet;
+    BlinKit::GCMember<StyleSheetContents> m_styleSheet;
     ResourcePtr<CSSStyleSheetResource> m_resource;
     bool m_loading;
 };

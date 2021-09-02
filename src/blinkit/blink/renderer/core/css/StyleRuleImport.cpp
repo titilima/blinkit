@@ -39,11 +39,13 @@
 #include "core/fetch/FetchRequest.h"
 #include "core/fetch/ResourceFetcher.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-PassRefPtrWillBeRawPtr<StyleRuleImport> StyleRuleImport::create(const String& href, PassRefPtrWillBeRawPtr<MediaQuerySet> media)
+GCPassPtr<StyleRuleImport> StyleRuleImport::create(const String& href, PassRefPtrWillBeRawPtr<MediaQuerySet> media)
 {
-    return adoptRefWillBeNoop(new StyleRuleImport(href, media));
+    return WrapLeaked(new StyleRuleImport(href, media));
 }
 
 StyleRuleImport::StyleRuleImport(const String& href, PassRefPtrWillBeRawPtr<MediaQuerySet> media)

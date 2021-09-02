@@ -47,6 +47,8 @@
 // BKTODO: #include "platform/weborigin/SecurityOrigin.h"
 #include "wtf/Deque.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 // Rough size estimate for the memory cache.
@@ -154,34 +156,34 @@ bool StyleSheetContents::isCacheable() const
     return true;
 }
 
-void StyleSheetContents::parserAppendRule(PassRefPtrWillBeRawPtr<StyleRuleBase> rule)
+void StyleSheetContents::parserAppendRule(GCPassPtr<StyleRuleBase> rule)
 {
-    if (rule->isImportRule()) {
+    if (rule.get()->isImportRule()) {
         // Parser enforces that @import rules come before anything else
         ASSERT(m_childRules.empty());
-        StyleRuleImport* importRule = toStyleRuleImport(rule.get());
-        if (importRule->mediaQueries())
+        GCPassPtr<StyleRuleImport> importRule = rule.PassTo<StyleRuleImport>();
+        if (importRule.get()->mediaQueries())
             setHasMediaQueries();
-        m_importRules.emplace_back(importRule);
+        m_importRules.emplace_back(std::move(importRule));
         m_importRules.back()->setParentStyleSheet(this);
         m_importRules.back()->requestStyleSheet();
         return;
     }
 
-    if (rule->isNamespaceRule()) {
+    if (rule.get()->isNamespaceRule()) {
         // Parser enforces that @namespace rules come before all rules other than
         // import/charset rules
         ASSERT(m_childRules.empty());
-        StyleRuleNamespace& namespaceRule = toStyleRuleNamespace(*rule);
-        parserAddNamespace(namespaceRule.prefix(), namespaceRule.uri());
-        m_namespaceRules.emplace_back(&namespaceRule);
+        GCPassPtr<StyleRuleNamespace> namespaceRule = rule.PassTo<StyleRuleNamespace>();
+        parserAddNamespace(namespaceRule.get()->prefix(), namespaceRule.get()->uri());
+        m_namespaceRules.emplace_back(std::move(namespaceRule));
         return;
     }
 
-    if (rule->isMediaRule())
+    if (rule.get()->isMediaRule())
         setHasMediaQueries();
 
-    m_childRules.emplace_back(rule);
+    m_childRules.emplace_back(std::move(rule));
 }
 
 void StyleSheetContents::setHasMediaQueries()
@@ -224,17 +226,17 @@ void StyleSheetContents::clearRules()
     m_childRules.clear();
 }
 
-bool StyleSheetContents::wrapperInsertRule(PassRefPtrWillBeRawPtr<StyleRuleBase> rule, unsigned index)
+bool StyleSheetContents::wrapperInsertRule(GCPassPtr<StyleRuleBase> rule, unsigned index)
 {
     ASSERT(m_isMutable);
     ASSERT_WITH_SECURITY_IMPLICATION(index <= ruleCount());
 
-    if (index < m_importRules.size() || (index == m_importRules.size() && rule->isImportRule())) {
+    if (index < m_importRules.size() || (index == m_importRules.size() && rule.get()->isImportRule())) {
         // Inserting non-import rule before @import is not allowed.
-        if (!rule->isImportRule())
+        if (!rule.get()->isImportRule())
             return false;
 
-        StyleRuleImport* importRule = toStyleRuleImport(rule.get());
+        GCMember<StyleRuleImport> importRule = rule.PassTo<StyleRuleImport>();
         if (importRule->mediaQueries())
             setHasMediaQueries();
 
@@ -245,17 +247,17 @@ bool StyleSheetContents::wrapperInsertRule(PassRefPtrWillBeRawPtr<StyleRuleBase>
         return true;
     }
     // Inserting @import rule after a non-import rule is not allowed.
-    if (rule->isImportRule())
+    if (rule.get()->isImportRule())
         return false;
 
-    if (rule->isMediaRule())
+    if (rule.get()->isMediaRule())
         setHasMediaQueries();
 
     index -= m_importRules.size();
 
-    if (index < m_namespaceRules.size() || (index == m_namespaceRules.size() && rule->isNamespaceRule())) {
+    if (index < m_namespaceRules.size() || (index == m_namespaceRules.size() && rule.get()->isNamespaceRule())) {
         // Inserting non-namespace rules other than import rule before @namespace is not allowed.
-        if (!rule->isNamespaceRule())
+        if (!rule.get()->isNamespaceRule())
             return false;
         // Inserting @namespace rule when rules other than import/namespace/charset are present is not allowed.
         if (!m_childRules.empty())
@@ -272,14 +274,14 @@ bool StyleSheetContents::wrapperInsertRule(PassRefPtrWillBeRawPtr<StyleRuleBase>
         return true;
     }
 
-    if (rule->isNamespaceRule())
+    if (rule.get()->isNamespaceRule())
         return false;
 
     index -= m_namespaceRules.size();
 
-    if (rule->isFontFaceRule())
+    if (rule.get()->isFontFaceRule())
         setHasFontFaceRule(true);
-    m_childRules.emplace(m_childRules.begin() + index, rule);
+    m_childRules.emplace(m_childRules.begin() + index, std::move(rule));
     return true;
 }
 
@@ -318,10 +320,7 @@ void StyleSheetContents::parserAddNamespace(const AtomicString& prefix, const At
         m_defaultNamespace = uri;
         return;
     }
-    PrefixNamespaceURIMap::AddResult result = m_namespaces.add(prefix, uri);
-    if (result.isNewEntry)
-        return;
-    result.storedValue->value = uri;
+    m_namespaces[prefix] = uri;
 }
 
 const AtomicString& StyleSheetContents::determineNamespace(const AtomicString& prefix)
@@ -332,7 +331,11 @@ const AtomicString& StyleSheetContents::determineNamespace(const AtomicString& p
         return emptyAtom; // No namespace. If an element/attribute has a namespace, we won't match it.
     if (prefix == starAtom)
         return starAtom; // We'll match any namespace.
-    return m_namespaces.get(prefix);
+    auto it = m_namespaces.find(prefix);
+    if (m_namespaces.end() != it)
+        return it->second;
+    ASSERT(false); // BKTODO: Check this!
+    return emptyAtom;
 }
 
 void StyleSheetContents::parseAuthorStyleSheet(const CSSStyleSheetResource* cachedStyleSheet, const SecurityOrigin* securityOrigin)
@@ -485,7 +488,7 @@ Document* StyleSheetContents::singleOwnerDocument() const
     return root->clientSingleOwnerDocument();
 }
 
-static bool childRulesHaveFailedOrCanceledSubresources(const std::vector<Member<StyleRuleBase>>& rules)
+static bool childRulesHaveFailedOrCanceledSubresources(const std::vector<GCMember<StyleRuleBase>>& rules)
 {
     for (unsigned i = 0; i < rules.size(); ++i) {
         const StyleRuleBase* rule = rules[i].get();
@@ -611,7 +614,7 @@ RuleSet& StyleSheetContents::ensureRuleSet(const MediaQueryEvaluator& medium, Ad
         m_ruleSet = RuleSet::create();
         m_ruleSet->addRulesFromSheet(this, medium, addRuleFlags);
     }
-    return *m_ruleSet.get();
+    return *m_ruleSet;
 }
 
 static void clearResolvers(WillBeHeapHashSet<RawPtrWillBeWeakMember<CSSStyleSheet>>& clients)
@@ -655,7 +658,7 @@ void StyleSheetContents::notifyRemoveFontFaceRule(const StyleRuleFontFace* fontF
     removeFontFaceRules(root->m_completedClients, fontFaceRule);
 }
 
-static void findFontFaceRulesFromRules(const std::vector<Member<StyleRuleBase>>& rules, std::vector<Member<const StyleRuleFontFace>>& fontFaceRules)
+static void findFontFaceRulesFromRules(const std::vector<GCMember<StyleRuleBase>>& rules, std::vector<GCMember<const StyleRuleFontFace>>& fontFaceRules)
 {
     for (unsigned i = 0; i < rules.size(); ++i) {
         StyleRuleBase* rule = rules[i].get();
@@ -671,7 +674,7 @@ static void findFontFaceRulesFromRules(const std::vector<Member<StyleRuleBase>>&
     }
 }
 
-void StyleSheetContents::findFontFaceRules(WillBeHeapVector<RawPtrWillBeMember<const StyleRuleFontFace>>& fontFaceRules)
+void StyleSheetContents::findFontFaceRules(std::vector<GCMember<const StyleRuleFontFace>>& fontFaceRules)
 {
     for (unsigned i = 0; i < m_importRules.size(); ++i) {
         if (!m_importRules[i]->styleSheet())
@@ -680,6 +683,11 @@ void StyleSheetContents::findFontFaceRules(WillBeHeapVector<RawPtrWillBeMember<c
     }
 
     findFontFaceRulesFromRules(childRules(), fontFaceRules);
+}
+
+void StyleSheetContents::clearOwnerRule(void)
+{
+    m_ownerRule.clear();
 }
 
 DEFINE_TRACE(StyleSheetContents)

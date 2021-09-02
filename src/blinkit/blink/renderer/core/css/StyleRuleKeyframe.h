@@ -15,9 +15,9 @@ class StylePropertySet;
 class StyleRuleKeyframe final : public StyleRuleBase {
     USING_FAST_MALLOC_WILL_BE_REMOVED(StyleRuleKeyframe);
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleKeyframe> create(PassOwnPtr<Vector<double>> keys, PassRefPtrWillBeRawPtr<StylePropertySet> properties)
+    static GCPassPtr<StyleRuleKeyframe> create(PassOwnPtr<Vector<double>> keys, PassRefPtrWillBeRawPtr<StylePropertySet> properties)
     {
-        return adoptRefWillBeNoop(new StyleRuleKeyframe(keys, properties));
+        return BlinKit::WrapLeaked(new StyleRuleKeyframe(keys, properties));
     }
 
     // Exposed to JavaScript.

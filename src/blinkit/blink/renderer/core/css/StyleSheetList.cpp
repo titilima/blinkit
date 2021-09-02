@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleSheetList.cpp
+// Description: StyleSheetList Class
+//      Author: Ziming Li
+//     Created: 2021-08-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2007 Apple Inc. All rights reserved.
@@ -27,6 +38,8 @@
 #include "core/html/HTMLStyleElement.h"
 #include "wtf/text/WTFString.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
@@ -38,7 +51,7 @@ StyleSheetList::StyleSheetList(TreeScope* treeScope)
 
 DEFINE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(StyleSheetList);
 
-inline const WillBeHeapVector<RefPtrWillBeMember<StyleSheet>>& StyleSheetList::styleSheets()
+inline const std::vector<GCMember<StyleSheet>>& StyleSheetList::styleSheets()
 {
 #if !ENABLE(OILPAN)
     if (!m_treeScope)
@@ -62,7 +75,7 @@ unsigned StyleSheetList::length()
 
 StyleSheet* StyleSheetList::item(unsigned index)
 {
-    const WillBeHeapVector<RefPtrWillBeMember<StyleSheet>>& sheets = styleSheets();
+    const std::vector<GCMember<StyleSheet>>& sheets = styleSheets();
     return index < sheets.size() ? sheets[index].get() : nullptr;
 }
 
