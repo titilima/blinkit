@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSParserImpl.h
+// Description: CSSParserImpl Class
+//      Author: Ziming Li
+//     Created: 2021-08-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -58,7 +69,7 @@ public:
     static bool parseVariableValue(MutableStylePropertySet*, const AtomicString& propertyName, const String&, bool important, const CSSParserContext&);
     static PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> parseInlineStyleDeclaration(const String&, Element*);
     static bool parseDeclarationList(MutableStylePropertySet*, const String&, const CSSParserContext&);
-    static PassRefPtrWillBeRawPtr<StyleRuleBase> parseRule(const String&, const CSSParserContext&, StyleSheetContents*, AllowedRulesType);
+    static GCPassPtr<StyleRuleBase> parseRule(const String&, const CSSParserContext&, StyleSheetContents*, AllowedRulesType);
     static void parseStyleSheet(const String&, const CSSParserContext&, StyleSheetContents*);
 
     static PassOwnPtr<Vector<double>> parseKeyframeKeyList(const String&);
@@ -80,21 +91,21 @@ private:
     bool consumeRuleList(CSSParserTokenRange, RuleListType, T callback);
 
     // These two functions update the range they're given
-    PassRefPtrWillBeRawPtr<StyleRuleBase> consumeAtRule(CSSParserTokenRange&, AllowedRulesType);
-    PassRefPtrWillBeRawPtr<StyleRuleBase> consumeQualifiedRule(CSSParserTokenRange&, AllowedRulesType);
+    GCPassPtr<StyleRuleBase> consumeAtRule(CSSParserTokenRange&, AllowedRulesType);
+    GCPassPtr<StyleRuleBase> consumeQualifiedRule(CSSParserTokenRange&, AllowedRulesType);
 
-    static PassRefPtrWillBeRawPtr<StyleRuleCharset> consumeCharsetRule(CSSParserTokenRange prelude);
-    PassRefPtrWillBeRawPtr<StyleRuleImport> consumeImportRule(CSSParserTokenRange prelude);
-    PassRefPtrWillBeRawPtr<StyleRuleNamespace> consumeNamespaceRule(CSSParserTokenRange prelude);
-    PassRefPtrWillBeRawPtr<StyleRuleMedia> consumeMediaRule(CSSParserTokenRange prelude, CSSParserTokenRange block);
-    PassRefPtrWillBeRawPtr<StyleRuleSupports> consumeSupportsRule(CSSParserTokenRange prelude, CSSParserTokenRange block);
-    PassRefPtrWillBeRawPtr<StyleRuleViewport> consumeViewportRule(CSSParserTokenRange prelude, CSSParserTokenRange block);
-    PassRefPtrWillBeRawPtr<StyleRuleFontFace> consumeFontFaceRule(CSSParserTokenRange prelude, CSSParserTokenRange block);
-    PassRefPtrWillBeRawPtr<StyleRuleKeyframes> consumeKeyframesRule(bool webkitPrefixed, CSSParserTokenRange prelude, CSSParserTokenRange block);
-    PassRefPtrWillBeRawPtr<StyleRulePage> consumePageRule(CSSParserTokenRange prelude, CSSParserTokenRange block);
+    static GCPassPtr<StyleRuleCharset> consumeCharsetRule(CSSParserTokenRange prelude);
+    GCPassPtr<StyleRuleImport> consumeImportRule(CSSParserTokenRange prelude);
+    GCPassPtr<StyleRuleNamespace> consumeNamespaceRule(CSSParserTokenRange prelude);
+    GCPassPtr<StyleRuleMedia> consumeMediaRule(CSSParserTokenRange prelude, CSSParserTokenRange block);
+    GCPassPtr<StyleRuleSupports> consumeSupportsRule(CSSParserTokenRange prelude, CSSParserTokenRange block);
+    GCPassPtr<StyleRuleViewport> consumeViewportRule(CSSParserTokenRange prelude, CSSParserTokenRange block);
+    GCPassPtr<StyleRuleFontFace> consumeFontFaceRule(CSSParserTokenRange prelude, CSSParserTokenRange block);
+    GCPassPtr<StyleRuleKeyframes> consumeKeyframesRule(bool webkitPrefixed, CSSParserTokenRange prelude, CSSParserTokenRange block);
+    GCPassPtr<StyleRulePage> consumePageRule(CSSParserTokenRange prelude, CSSParserTokenRange block);
 
-    PassRefPtrWillBeRawPtr<StyleRuleKeyframe> consumeKeyframeStyleRule(CSSParserTokenRange prelude, CSSParserTokenRange block);
-    PassRefPtrWillBeRawPtr<StyleRule> consumeStyleRule(CSSParserTokenRange prelude, CSSParserTokenRange block);
+    GCPassPtr<StyleRuleKeyframe> consumeKeyframeStyleRule(CSSParserTokenRange prelude, CSSParserTokenRange block);
+    GCPassPtr<StyleRule> consumeStyleRule(CSSParserTokenRange prelude, CSSParserTokenRange block);
 
     void consumeDeclarationList(CSSParserTokenRange, StyleRule::Type);
     void consumeDeclaration(CSSParserTokenRange, StyleRule::Type);
@@ -105,10 +116,10 @@ private:
 
     // FIXME: Can we build StylePropertySets directly?
     // FIXME: Investigate using a smaller inline buffer
-    WillBeHeapVector<CSSProperty, 256> m_parsedProperties;
+    std::vector<CSSProperty> m_parsedProperties;
     CSSParserContext m_context;
 
-    RawPtrWillBeMember<StyleSheetContents> m_styleSheet;
+    BlinKit::GCMember<StyleSheetContents> m_styleSheet;
 
     // For the inspector
     CSSParserObserverWrapper* m_observerWrapper;
