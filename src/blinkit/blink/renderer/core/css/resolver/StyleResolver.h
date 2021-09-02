@@ -113,12 +113,12 @@ public:
 
     // FIXME: It could be better to call appendAuthorStyleSheets() directly after we factor StyleResolver further.
     // https://bugs.webkit.org/show_bug.cgi?id=108890
-    void appendAuthorStyleSheets(const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>&);
+    void appendAuthorStyleSheets(const std::vector<BlinKit::GCMember<CSSStyleSheet>>&);
     void resetAuthorStyle(TreeScope&);
     void finishAppendAuthorStyleSheets();
 
-    void lazyAppendAuthorStyleSheets(unsigned firstNew, const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>&);
-    void removePendingAuthorStyleSheets(const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>&);
+    void lazyAppendAuthorStyleSheets(unsigned firstNew, const std::vector<BlinKit::GCMember<CSSStyleSheet>>&);
+    void removePendingAuthorStyleSheets(const std::vector<BlinKit::GCMember<CSSStyleSheet>>&);
     void appendPendingAuthorStyleSheets();
     bool hasPendingAuthorStyleSheets() const { return m_pendingStyleSheets.size() > 0 || m_needCollectFeatures; }
 
@@ -258,9 +258,9 @@ private:
     // FIXME: The entire logic of collecting features on StyleResolver, as well as transferring them
     // between various parts of machinery smells wrong. This needs to be better somehow.
     RuleFeatureSet m_features;
-    OwnPtrWillBeMember<RuleSet> m_siblingRuleSet;
-    OwnPtrWillBeMember<RuleSet> m_uncommonAttributeRuleSet;
-    OwnPtrWillBeMember<RuleSet> m_watchedSelectorsRules;
+    BlinKit::GCMember<RuleSet> m_siblingRuleSet;
+    BlinKit::GCMember<RuleSet> m_uncommonAttributeRuleSet;
+    BlinKit::GCMember<RuleSet> m_watchedSelectorsRules;
 
     DocumentOrderedList m_treeBoundaryCrossingScopes;
 

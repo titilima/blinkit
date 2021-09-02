@@ -102,6 +102,8 @@
 #include "platform/RuntimeEnabledFeatures.h"
 #include "wtf/StdLibExtras.h"
 
+using namespace BlinKit;
+
 namespace {
 
 using namespace blink;
@@ -194,22 +196,22 @@ void StyleResolver::initWatchedSelectorRules()
     CSSSelectorWatch* watch = CSSSelectorWatch::fromIfExists(*m_document);
     if (!watch)
         return;
-    const WillBeHeapVector<RefPtrWillBeMember<StyleRule>>& watchedSelectors = watch->watchedCallbackSelectors();
-    if (!watchedSelectors.size())
+    const std::vector<GCMember<StyleRule>>& watchedSelectors = watch->watchedCallbackSelectors();
+    if (watchedSelectors.empty())
         return;
     m_watchedSelectorsRules = RuleSet::create();
     for (unsigned i = 0; i < watchedSelectors.size(); ++i)
         m_watchedSelectorsRules->addStyleRule(watchedSelectors[i].get(), RuleHasNoSpecialState);
 }
 
-void StyleResolver::lazyAppendAuthorStyleSheets(unsigned firstNew, const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& styleSheets)
+void StyleResolver::lazyAppendAuthorStyleSheets(unsigned firstNew, const std::vector<GCMember<CSSStyleSheet>>& styleSheets)
 {
     unsigned size = styleSheets.size();
     for (unsigned i = firstNew; i < size; ++i)
         m_pendingStyleSheets.insert(styleSheets[i].get());
 }
 
-void StyleResolver::removePendingAuthorStyleSheets(const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& styleSheets)
+void StyleResolver::removePendingAuthorStyleSheets(const std::vector<GCMember<CSSStyleSheet>>& styleSheets)
 {
     for (unsigned i = 0; i < styleSheets.size(); ++i)
         m_pendingStyleSheets.erase(styleSheets[i].get());
@@ -251,7 +253,7 @@ void StyleResolver::appendPendingAuthorStyleSheets()
     finishAppendAuthorStyleSheets();
 }
 
-void StyleResolver::appendAuthorStyleSheets(const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& styleSheets)
+void StyleResolver::appendAuthorStyleSheets(const std::vector<GCMember<CSSStyleSheet>>& styleSheets)
 {
     // This handles sheets added to the end of the stylesheet list only. In other cases the style resolver
     // needs to be reconstructed. To handle insertions too the rule order numbers would need to be updated.
@@ -304,14 +306,14 @@ void StyleResolver::resetAuthorStyle(TreeScope& treeScope)
     treeScope.clearScopedStyleResolver();
 }
 
-static PassOwnPtrWillBeRawPtr<RuleSet> makeRuleSet(const WillBeHeapVector<RuleFeature>& rules)
+static GCPassPtr<RuleSet> makeRuleSet(const WillBeHeapVector<RuleFeature>& rules)
 {
     size_t size = rules.size();
     if (!size)
         return nullptr;
-    OwnPtrWillBeRawPtr<RuleSet> ruleSet = RuleSet::create();
+    GCMember<RuleSet> ruleSet = RuleSet::create();
     for (size_t i = 0; i < size; ++i)
-        ruleSet->addRule(rules[i].rule, rules[i].selectorIndex, rules[i].hasDocumentSecurityOrigin ? RuleHasDocumentSecurityOrigin : RuleHasNoSpecialState);
+        ruleSet->addRule(rules[i].rule.get(), rules[i].selectorIndex, rules[i].hasDocumentSecurityOrigin ? RuleHasDocumentSecurityOrigin : RuleHasNoSpecialState);
     return ruleSet.release();
 }
 
