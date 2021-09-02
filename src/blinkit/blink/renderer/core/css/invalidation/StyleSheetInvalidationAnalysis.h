@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleSheetInvalidationAnalysis.h
+// Description: StyleSheetInvalidationAnalysis Class
+//      Author: Ziming Li
+//     Created: 2021-08-21
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -26,9 +37,10 @@
 #ifndef StyleSheetInvalidationAnalysis_h
 #define StyleSheetInvalidationAnalysis_h
 
+#include <unordered_set>
 #include "platform/heap/Handle.h"
-#include "wtf/HashSet.h"
-#include "wtf/Vector.h"
+// BKTODO: #include "wtf/HashSet.h"
+// BKTODO: #include "wtf/Vector.h"
 #include "wtf/text/StringImpl.h"
 
 namespace blink {
@@ -41,7 +53,7 @@ class TreeScope;
 class StyleSheetInvalidationAnalysis {
     STACK_ALLOCATED();
 public:
-    StyleSheetInvalidationAnalysis(const TreeScope&, const WillBeHeapVector<RawPtrWillBeMember<StyleSheetContents>>&);
+    StyleSheetInvalidationAnalysis(const TreeScope&, const std::vector<BlinKit::GCMember<StyleSheetContents>>&);
 
     bool dirtiesAllStyle() const { return m_dirtiesAllStyle; }
     void invalidateStyle();
@@ -50,9 +62,9 @@ private:
 
     void analyzeStyleSheet(StyleSheetContents*);
 
-    RawPtrWillBeMember<const TreeScope> m_treeScope;
-    HashSet<StringImpl*> m_idScopes;
-    HashSet<StringImpl*> m_classScopes;
+    const TreeScope *m_treeScope;
+    std::unordered_set<StringImpl*> m_idScopes;
+    std::unordered_set<StringImpl*> m_classScopes;
 
     bool m_dirtiesAllStyle = false;
 };

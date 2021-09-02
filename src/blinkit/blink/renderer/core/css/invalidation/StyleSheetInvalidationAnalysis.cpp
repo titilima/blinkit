@@ -46,16 +46,18 @@
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/html/HTMLStyleElement.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-StyleSheetInvalidationAnalysis::StyleSheetInvalidationAnalysis(const TreeScope& treeScope, const WillBeHeapVector<RawPtrWillBeMember<StyleSheetContents>>& sheets)
+StyleSheetInvalidationAnalysis::StyleSheetInvalidationAnalysis(const TreeScope& treeScope, const std::vector<GCMember<StyleSheetContents>>& sheets)
     : m_treeScope(&treeScope)
 {
     for (unsigned i = 0; i < sheets.size() && !m_dirtiesAllStyle; ++i)
-        analyzeStyleSheet(sheets[i]);
+        analyzeStyleSheet(sheets[i].get());
 }
 
-static bool determineSelectorScopes(const CSSSelectorList& selectorList, HashSet<StringImpl*>& idScopes, HashSet<StringImpl*>& classScopes)
+static bool determineSelectorScopes(const CSSSelectorList& selectorList, std::unordered_set<StringImpl*>& idScopes, std::unordered_set<StringImpl*>& classScopes)
 {
     for (const CSSSelector* selector = selectorList.first(); selector; selector = CSSSelectorList::next(*selector)) {
         const CSSSelector* scopeSelector = 0;
@@ -78,9 +80,9 @@ static bool determineSelectorScopes(const CSSSelectorList& selectorList, HashSet
             return false;
         ASSERT(scopeSelector->match() == CSSSelector::Class || scopeSelector->match() == CSSSelector::Id);
         if (scopeSelector->match() == CSSSelector::Id)
-            idScopes.add(scopeSelector->value().impl());
+            idScopes.emplace(scopeSelector->value().impl());
         else
-            classScopes.add(scopeSelector->value().impl());
+            classScopes.emplace(scopeSelector->value().impl());
     }
     return true;
 }
@@ -122,7 +124,7 @@ void StyleSheetInvalidationAnalysis::analyzeStyleSheet(StyleSheetContents* style
 
     // See if all rules on the sheet are scoped to some specific ids or classes.
     // Then test if we actually have any of those in the tree at the moment.
-    const std::vector<Member<StyleRuleImport>> &importRules = styleSheetContents->importRules();
+    const std::vector<GCMember<StyleRuleImport>> &importRules = styleSheetContents->importRules();
     for (unsigned i = 0; i < importRules.size(); ++i) {
         if (!importRules[i]->styleSheet())
             continue;
@@ -134,7 +136,7 @@ void StyleSheetInvalidationAnalysis::analyzeStyleSheet(StyleSheetContents* style
     if (m_treeScope->rootNode().isShadowRoot())
         return;
 
-    const std::vector<Member<StyleRuleBase>> &rules = styleSheetContents->childRules();
+    const std::vector<GCMember<StyleRuleBase>> &rules = styleSheetContents->childRules();
     for (unsigned i = 0; i < rules.size(); i++) {
         StyleRuleBase* rule = rules[i].get();
         if (!rule->isStyleRule()) {
@@ -152,15 +154,15 @@ void StyleSheetInvalidationAnalysis::analyzeStyleSheet(StyleSheetContents* style
     }
 }
 
-static bool elementMatchesSelectorScopes(const Element* element, const HashSet<StringImpl*>& idScopes, const HashSet<StringImpl*>& classScopes)
+static bool elementMatchesSelectorScopes(const Element* element, const std::unordered_set<StringImpl*>& idScopes, const std::unordered_set<StringImpl*>& classScopes)
 {
-    if (!idScopes.isEmpty() && element->hasID() && idScopes.contains(element->idForStyleResolution().impl()))
+    if (!idScopes.empty() && element->hasID() && zed::key_exists(idScopes, element->idForStyleResolution().impl()))
         return true;
-    if (classScopes.isEmpty() || !element->hasClass())
+    if (classScopes.empty() || !element->hasClass())
         return false;
     const SpaceSplitString& classNames = element->classNames();
     for (unsigned i = 0; i < classNames.size(); ++i) {
-        if (classScopes.contains(classNames[i].impl()))
+        if (zed::key_exists(classScopes, classNames[i].impl()))
             return true;
     }
     return false;
@@ -176,7 +178,7 @@ void StyleSheetInvalidationAnalysis::invalidateStyle()
         return;
     }
 
-    if (m_idScopes.isEmpty() && m_classScopes.isEmpty())
+    if (m_idScopes.empty() && m_classScopes.empty())
         return;
     Element* element = ElementTraversal::firstWithin(m_treeScope->document());
     while (element) {
