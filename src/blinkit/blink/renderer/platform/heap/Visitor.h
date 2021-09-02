@@ -16,9 +16,11 @@
 #include <unordered_set>
 #include "blinkit/blink/renderer/platform/heap/member.h"
 #include "blinkit/gc/gc_def.h"
-#include "third_party/zed/include/zed/memory.hpp"
 
 namespace BlinKit {
+template <class T>
+class GCObjectSet;
+class GCObjectSetCallback;
 template <typename T>
 struct TracePolicy;
 }
@@ -36,39 +38,44 @@ public:
     void trace(T *po)
     {
         if (nullptr != po)
-            TraceImpl(po);
+            ASSERT(false); // BKTODO: Remove it later!
     }
     template <typename T>
     void trace(BlinKit::GCMember<T> &m)
     {
         if (m)
-            TraceImpl(*m);
+            TraceImpl(m.m_ptr, reinterpret_cast<void **>(&m.m_ptr));
+    }
+    template <typename T>
+    void trace(BlinKit::GCObjectSet<T> &s)
+    {
+        TraceObjectSet(static_cast<BlinKit::GCObjectSetCallback &>(s));
     }
 
     template <typename T>
     void trace(blink::Member<T> &m)
     {
         if (T *p = m.get())
-            TraceImpl(zed::bit_cast<void *>(p));
+            ASSERT(false); // BKTODO: Remove it later!
     }
     template <typename T>
     void trace(const blink::Member<T> &m)
     {
         if (T *p = m.get())
-            TraceImpl(zed::bit_cast<void *>(p));
+            ASSERT(false); // BKTODO: Remove it later!
     }
 
     template <typename T>
     void trace(blink::WeakMember<T> &m)
     {
         if (m)
-            RegisterWeakSlot(zed::bit_cast<void **>(&m.m_rawPtr));
+            ASSERT(false); // BKTODO: Remove it later!
     }
     template <typename T>
     void trace(const blink::WeakMember<T> &m)
     {
         if (m)
-            RegisterWeakSlot(zed::bit_cast<void **>(&m.m_rawPtr));
+            ASSERT(false); // BKTODO: Remove it later!
     }
 
     template <typename T>
@@ -79,9 +86,8 @@ public:
 protected:
     Visitor(void) = default;
 
-    virtual void TraceImpl(BlinKit::GCObject &o) = 0;
-    virtual void TraceImpl(void *p) = 0;
-    virtual void RegisterWeakSlot(void **slot) = 0;
+    virtual void TraceImpl(BlinKit::GCObject *o, void **slot) = 0;
+    virtual void TraceObjectSet(BlinKit::GCObjectSetCallback &callback) = 0;
 };
 
 } // namespace blink
@@ -108,12 +114,20 @@ struct TracePolicy<std::unordered_map<K, T, H>>
 };
 
 template <typename T>
-struct TracePolicy<std::unordered_set<T>>
+struct TracePolicy<std::unordered_set<GCMember<T>>>
 {
-    static void Impl(std::unordered_set<T> &s, blink::Visitor *visitor)
+    static void Impl(std::unordered_set<GCMember<T>> &s, blink::Visitor *visitor)
     {
-        for (auto &v : s)
-            visitor->trace(v);
+        auto it = s.begin();
+        while (s.end() != it)
+        {
+            GCMember<T> m(*it);
+            visitor->trace(m);
+            if (!m)
+                it = s.erase(it);
+            else
+                ++it;
+        }
     }
 };
 

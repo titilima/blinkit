@@ -26,21 +26,21 @@ public:
     Persistent(const Persistent &other) : m_raw(other.m_raw)
     {
         if (nullptr != m_raw)
-            BlinKit::GCPersist(m_raw);
+            ASSERT(false); // BKTODO: Remove it later!
     }
     Persistent(T *raw) : m_raw(raw)
     {
         if (nullptr != m_raw)
-            BlinKit::GCPersist(m_raw);
+            ASSERT(false); // BKTODO: Remove it later!
     }
     Persistent(T &raw) : m_raw(&raw)
     {
-        BlinKit::GCPersist(m_raw);
+        ASSERT(false); // BKTODO: Remove it later!
     }
     ~Persistent(void)
     {
         if (nullptr != m_raw)
-            BlinKit::GCUnpersist(m_raw);
+            ASSERT(false); // BKTODO: Remove it later!
     }
 
     explicit operator bool() const { return nullptr != m_raw; }
@@ -65,7 +65,7 @@ public:
     {
         if (nullptr != m_raw)
         {
-            BlinKit::GCUnpersist(m_raw);
+            ASSERT(false); // BKTODO: Remove it later!
             m_raw = nullptr;
         }
     }
@@ -74,10 +74,10 @@ private:
     void Assign(U *p)
     {
         if (nullptr != m_raw)
-            BlinKit::GCUnpersist(m_raw);
+            ASSERT(false); // BKTODO: Remove it later!
         m_raw = p;
         if (nullptr != m_raw)
-            BlinKit::GCPersist(m_raw);
+            ASSERT(false); // BKTODO: Remove it later!
     }
 
     T *m_raw = nullptr;
