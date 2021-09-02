@@ -87,7 +87,12 @@ class WebFrameHostScheduler;
 class WebFrameScheduler;
 template <typename Strategy> class PositionWithAffinityTemplate;
 
-class CORE_EXPORT LocalFrame : public Frame, public LocalFrameLifecycleNotifier, public WillBeHeapSupplementable<LocalFrame>, public DisplayItemClient {
+class CORE_EXPORT LocalFrame : public Frame
+                             , public LocalFrameLifecycleNotifier
+                             , public WillBeHeapSupplementable<LocalFrame>
+                             , public DisplayItemClient
+                             , public BlinKit::GCRootObjectImpl<LocalFrame>
+{
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(LocalFrame);
 public:
     static std::unique_ptr<LocalFrame> create(FrameLoaderClient*, FrameHost*);
@@ -230,12 +235,12 @@ private:
     RefPtrWillBeMember<Element> m_pagePopupOwner;
 
     const std::unique_ptr<ScriptController> m_script;
-    const OwnPtrWillBeMember<Editor> m_editor;
+    const std::unique_ptr<Editor> m_editor;
     // BKTODO: const OwnPtrWillBeMember<SpellChecker> m_spellChecker;
-    const OwnPtrWillBeMember<FrameSelection> m_selection;
-    const OwnPtrWillBeMember<EventHandler> m_eventHandler;
-    const OwnPtrWillBeMember<FrameConsole> m_console;
-    const OwnPtrWillBeMember<InputMethodController> m_inputMethodController;
+    const std::unique_ptr<FrameSelection> m_selection;
+    const std::unique_ptr<EventHandler> m_eventHandler;
+    const std::unique_ptr<FrameConsole> m_console;
+    const std::unique_ptr<InputMethodController> m_inputMethodController;
     OwnPtr<WebFrameScheduler> m_frameScheduler;
 
     int m_navigationDisableCount;

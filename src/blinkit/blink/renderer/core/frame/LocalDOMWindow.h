@@ -42,8 +42,10 @@
 // BKTODO: #include "core/dom/MessagePort.h"
 #include "core/events/EventTarget.h"
 #include "core/frame/DOMWindow.h"
+#if 0 // BKTODO:
 #include "core/frame/DOMWindowLifecycleNotifier.h"
 #include "core/frame/DOMWindowLifecycleObserver.h"
+#endif
 #include "core/frame/LocalFrame.h"
 #include "core/frame/LocalFrameLifecycleObserver.h"
 #include "platform/Supplementable.h"
@@ -75,7 +77,11 @@ enum PageshowEventPersistence {
 
 // Note: if you're thinking of returning something DOM-related by reference,
 // please ping dcheng@chromium.org first. You probably don't want to do that.
-class CORE_EXPORT LocalDOMWindow final : public DOMWindow, public WillBeHeapSupplementable<LocalDOMWindow>, public DOMWindowLifecycleNotifier {
+class CORE_EXPORT LocalDOMWindow final : public DOMWindow
+                                       , public WillBeHeapSupplementable<LocalDOMWindow>
+                                       // BKTODO: , public DOMWindowLifecycleNotifier
+                                       , public BlinKit::GCRootObjectImpl<LocalDOMWindow>
+{
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(LocalDOMWindow);
     WILL_BE_USING_PRE_FINALIZER(LocalDOMWindow, dispose);
 public:
@@ -226,23 +232,22 @@ private:
     // has a frame() accessor that returns Frame* for bindings code, and
     // LocalFrameLifecycleObserver, which has a frame() accessor that returns a
     // LocalFrame*.
-    class WindowFrameObserver final : public NoBaseWillBeGarbageCollected<WindowFrameObserver>, public LocalFrameLifecycleObserver {
+    class WindowFrameObserver final : public LocalFrameLifecycleObserver {
         USING_FAST_MALLOC_WILL_BE_REMOVED(WindowFrameObserver);
         WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(WindowFrameObserver);
         DECLARE_EMPTY_VIRTUAL_DESTRUCTOR_WILL_BE_REMOVED(WindowFrameObserver);
     public:
-        static PassOwnPtrWillBeRawPtr<WindowFrameObserver> create(LocalDOMWindow*, LocalFrame&);
-
-        DECLARE_VIRTUAL_TRACE();
+        static BlinKit::GCPassPtr<WindowFrameObserver> create(LocalDOMWindow&, LocalFrame&);
 
         // LocalFrameLifecycleObserver overrides:
         void willDetachFrameHost() override;
         void contextDestroyed() override;
-
     private:
-        WindowFrameObserver(LocalDOMWindow*, LocalFrame&);
+        WindowFrameObserver(LocalDOMWindow&, LocalFrame&);
 
-        RawPtrWillBeMember<LocalDOMWindow> m_window;
+        void trace(Visitor *visitor) override {}
+
+        LocalDOMWindow &m_window;
     };
     friend WTF::OwnedPtrDeleter<WindowFrameObserver>;
 
@@ -255,8 +260,10 @@ private:
     void willDetachFrameHost();
     void frameDestroyed();
 
-    OwnPtrWillBeMember<WindowFrameObserver> m_frameObserver;
-    RefPtrWillBeMember<Document> m_document;
+    BlinKit::GCObject* ObjectForGC(void) final { return nullptr; }
+
+    BlinKit::GCMember<WindowFrameObserver> m_frameObserver;
+    BlinKit::GCMember<Document> m_document;
 
     // BKTODO: bool m_shouldPrintWhenFinishedLoading;
 #if ENABLE(ASSERT)
@@ -280,9 +287,9 @@ private:
     String m_status;
     String m_defaultStatus;
 
-    mutable PersistentWillBeMember<ApplicationCache> m_applicationCache;
+    // BKTODO: mutable PersistentWillBeMember<ApplicationCache> m_applicationCache;
 
-    RefPtrWillBeMember<DOMWindowEventQueue> m_eventQueue;
+    // BKTODO: RefPtrWillBeMember<DOMWindowEventQueue> m_eventQueue;
     // BKTODO: RefPtr<SerializedScriptValue> m_pendingStateObject;
 
     WillBeHeapHashSet<OwnPtrWillBeMember<PostMessageTimer>> m_postMessageTimers;

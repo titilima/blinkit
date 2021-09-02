@@ -212,6 +212,7 @@ void LocalFrame::createView(const IntSize& viewportSize, const Color& background
 
 LocalFrame::~LocalFrame()
 {
+    CollectGarbage();
     // Verify that the FrameView has been cleared as part of detaching
     // the frame owner.
     ASSERT(!m_view);
@@ -229,17 +230,19 @@ DEFINE_TRACE(LocalFrame)
     visitor->trace(m_loader);
     // BKTODO: visitor->trace(m_navigationScheduler);
     visitor->trace(m_view);
-    ASSERT(false); // BKTODO: visitor->trace(m_domWindow);
+    // BKTODO: visitor->trace(m_domWindow);
     visitor->trace(m_pagePopupOwner);
+#if 0 // BKTODO:
     visitor->trace(m_editor);
-    // BKTODO: visitor->trace(m_spellChecker);
+    visitor->trace(m_spellChecker);
     visitor->trace(m_selection);
     visitor->trace(m_eventHandler);
     visitor->trace(m_console);
     visitor->trace(m_inputMethodController);
+#endif
     HeapSupplementable<LocalFrame>::trace(visitor);
 #endif
-    LocalFrameLifecycleNotifier::trace(visitor);
+    // BKTODO: LocalFrameLifecycleNotifier::trace(visitor);
     Frame::trace(visitor);
 }
 
@@ -334,7 +337,7 @@ void LocalFrame::detach(void)
     client()->willBeDetached();
     // Notify ScriptController that the frame is closing, since its cleanup ends up calling
     // back to FrameLoaderClient via WindowProxy.
-    ASSERT(false); // BKTODO: script().clearForClose();
+    script().clearForClose();
     ScriptForbiddenScope forbidScript;
     setView(nullptr);
     willDetachFrameHost();
@@ -366,7 +369,7 @@ void LocalFrame::detach(void)
 
     m_supplements.clear();
     m_supplementStatus = SupplementStatus::Cleared;
-    ASSERT(false); // BKTODO: WeakIdentifierMap<LocalFrame>::notifyObjectDestroyed(this);
+    // BKTODO: WeakIdentifierMap<LocalFrame>::notifyObjectDestroyed(this);
 }
 
 bool LocalFrame::prepareForCommit()
@@ -427,7 +430,7 @@ void LocalFrame::willDetachFrameHost()
     // so page() could be null.
     if (page() && page()->focusController().focusedFrame() == this)
         page()->focusController().setFocusedFrame(nullptr);
-    ASSERT(false); // BKTODO: script().clearScriptObjects();
+    // BKTODO: script().clearScriptObjects();
 
     if (page() && page()->scrollingCoordinator() && m_view)
         page()->scrollingCoordinator()->willDestroyScrollableArea(m_view.get());
@@ -904,7 +907,7 @@ inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host)
     , m_editor(Editor::create(*this))
     // BKTODO:, m_spellChecker(SpellChecker::create(*this))
     , m_selection(FrameSelection::create(this))
-    , m_eventHandler(adoptPtrWillBeNoop(new EventHandler(this)))
+    , m_eventHandler(std::make_unique<EventHandler>(this))
     , m_console(FrameConsole::create(*this))
     , m_inputMethodController(InputMethodController::create(*this))
     , m_navigationDisableCount(0)

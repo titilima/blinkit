@@ -51,8 +51,8 @@
 #include "core/dom/FrameRequestCallback.h"
 // BKTODO: #include "core/dom/SandboxFlags.h"
 #include "core/editing/Editor.h"
-#include "core/events/DOMWindowEventQueue.h"
 #if 0 // BKTODO:
+#include "core/events/DOMWindowEventQueue.h"
 #include "core/events/HashChangeEvent.h"
 #include "core/events/MessageEvent.h"
 #endif
@@ -91,17 +91,19 @@
 #include "public/platform/WebFrameScheduler.h"
 #include "public/platform/WebScreenInfo.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-LocalDOMWindow::WindowFrameObserver::WindowFrameObserver(LocalDOMWindow* window, LocalFrame& frame)
+LocalDOMWindow::WindowFrameObserver::WindowFrameObserver(LocalDOMWindow& window, LocalFrame& frame)
     : LocalFrameLifecycleObserver(&frame)
     , m_window(window)
 {
 }
 
-PassOwnPtrWillBeRawPtr<LocalDOMWindow::WindowFrameObserver> LocalDOMWindow::WindowFrameObserver::create(LocalDOMWindow* window, LocalFrame& frame)
+GCPassPtr<LocalDOMWindow::WindowFrameObserver> LocalDOMWindow::WindowFrameObserver::create(LocalDOMWindow& window, LocalFrame& frame)
 {
-    return adoptPtrWillBeNoop(new WindowFrameObserver(window, frame));
+    return WrapLeaked(new WindowFrameObserver(window, frame));
 }
 
 #if !ENABLE(OILPAN)
@@ -110,20 +112,22 @@ LocalDOMWindow::WindowFrameObserver::~WindowFrameObserver()
 }
 #endif
 
+#if 0 // BKTODO:
 DEFINE_TRACE(LocalDOMWindow::WindowFrameObserver)
 {
     visitor->trace(m_window);
     LocalFrameLifecycleObserver::trace(visitor);
 }
+#endif
 
 void LocalDOMWindow::WindowFrameObserver::willDetachFrameHost()
 {
-    m_window->willDetachFrameHost();
+    m_window.willDetachFrameHost();
 }
 
 void LocalDOMWindow::WindowFrameObserver::contextDestroyed()
 {
-    m_window->frameDestroyed();
+    m_window.frameDestroyed();
     LocalFrameLifecycleObserver::contextDestroyed();
 }
 
@@ -242,8 +246,7 @@ static void removeUnloadEventListener(LocalDOMWindow* domWindow)
 
 static void removeAllUnloadEventListeners(LocalDOMWindow* domWindow)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Fix after addUnloadEventListener.
     DOMWindowSet& set = windowsWithUnloadEventListeners();
     DOMWindowSet::iterator it = set.find(domWindow);
     if (it == set.end())
@@ -282,8 +285,7 @@ static void removeBeforeUnloadEventListener(LocalDOMWindow* domWindow)
 
 static void removeAllBeforeUnloadEventListeners(LocalDOMWindow* domWindow)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Fix after addBeforeUnloadEventListener.
     DOMWindowSet& set = windowsWithBeforeUnloadEventListeners();
     DOMWindowSet::iterator it = set.find(domWindow);
     if (it == set.end())
@@ -328,7 +330,7 @@ bool LocalDOMWindow::allowPopUp()
 }
 
 LocalDOMWindow::LocalDOMWindow(LocalFrame& frame)
-    : m_frameObserver(WindowFrameObserver::create(this, frame))
+    : m_frameObserver(WindowFrameObserver::create(*this, frame))
     // BKTODO: , m_shouldPrintWhenFinishedLoading(false)
 #if ENABLE(ASSERT)
     , m_hasBeenReset(false)
@@ -350,15 +352,17 @@ void LocalDOMWindow::clearDocument()
     clearEventQueue();
 
     m_document->clearDOMWindow();
-    m_document = nullptr;
+    m_document.clear();
 }
 
 void LocalDOMWindow::clearEventQueue()
 {
+#if 0 // BKTODO:
     if (!m_eventQueue)
         return;
     m_eventQueue->close();
     m_eventQueue.clear();
+#endif
 }
 
 void LocalDOMWindow::acceptLanguagesChanged()
@@ -402,11 +406,11 @@ PassRefPtrWillBeRawPtr<Document> LocalDOMWindow::installNewDocument(const String
     clearDocument();
 
     m_document = createDocument(mimeType, init, forceXHTML);
-    m_eventQueue = DOMWindowEventQueue::create(m_document.get());
+    // BKTODO: m_eventQueue = DOMWindowEventQueue::create(m_document.get());
     m_document->attach();
 
     if (!frame())
-        return m_document;
+        return m_document.get();
 
     frame()->script().updateDocument();
     m_document->updateViewportDescription();
@@ -420,7 +424,7 @@ PassRefPtrWillBeRawPtr<Document> LocalDOMWindow::installNewDocument(const String
     }
 
     frame()->selection().updateSecureKeyboardEntryIfActive();
-    return m_document;
+    return m_document.get();
 }
 
 EventQueue* LocalDOMWindow::eventQueue() const
@@ -431,18 +435,24 @@ EventQueue* LocalDOMWindow::eventQueue() const
 
 void LocalDOMWindow::enqueueWindowEvent(PassRefPtrWillBeRawPtr<Event> event)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_eventQueue)
         return;
     event->setTarget(this);
     m_eventQueue->enqueueEvent(event);
+#endif
 }
 
 void LocalDOMWindow::enqueueDocumentEvent(PassRefPtrWillBeRawPtr<Event> event)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_eventQueue)
         return;
     event->setTarget(m_document.get());
     m_eventQueue->enqueueEvent(event);
+#endif
 }
 
 void LocalDOMWindow::dispatchWindowLoadEvent()
@@ -498,9 +508,10 @@ void LocalDOMWindow::statePopped(PassRefPtr<SerializedScriptValue> stateObject)
 
 LocalDOMWindow::~LocalDOMWindow()
 {
+    CollectGarbage();
 #if ENABLE(OILPAN)
     // Cleared when detaching document.
-    ASSERT(!m_eventQueue);
+    // BKTODO: ASSERT(!m_eventQueue);
 #else
     ASSERT(m_hasBeenReset);
     ASSERT(m_document->isStopped());
@@ -548,12 +559,9 @@ PassRefPtrWillBeRawPtr<MediaQueryList> LocalDOMWindow::matchMedia(const String& 
 
 void LocalDOMWindow::willDetachFrameHost()
 {
-    ASSERT(false); // BKTODO:
-#if 0
     frame()->host()->eventHandlerRegistry().didRemoveAllEventHandlers(*this);
-    frame()->host()->consoleMessageStorage().frameWindowDiscarded(this);
-#endif
-    LocalDOMWindow::notifyContextDestroyed();
+    // BKTODO: frame()->host()->consoleMessageStorage().frameWindowDiscarded(this);
+    // BKTODO: LocalDOMWindow::notifyContextDestroyed();
 }
 
 void LocalDOMWindow::frameDestroyed()
@@ -601,12 +609,12 @@ void LocalDOMWindow::reset()
     m_console = nullptr;
     m_navigator = nullptr;
     m_media = nullptr;
-    m_applicationCache = nullptr;
+    // BKTODO: m_applicationCache = nullptr;
 #if ENABLE(ASSERT)
     m_hasBeenReset = true;
 #endif
 
-    LocalDOMWindow::notifyContextDestroyed();
+    // BKTODO: LocalDOMWindow::notifyContextDestroyed();
 }
 
 void LocalDOMWindow::sendOrientationChangeEvent()
@@ -1413,7 +1421,7 @@ bool LocalDOMWindow::addEventListenerInternal(const AtomicString& eventType, Pas
         document->addListenerTypeIfNeeded(eventType);
     }
 
-    notifyAddEventListener(this, eventType);
+    // BKTODO: notifyAddEventListener(this, eventType);
 
     if (eventType == EventTypeNames::unload) {
         UseCounter::count(document(), UseCounter::DocumentUnloadRegistered);
@@ -1442,7 +1450,7 @@ bool LocalDOMWindow::removeEventListenerInternal(const AtomicString& eventType, 
     if (frame() && frame()->host())
         frame()->host()->eventHandlerRegistry().didRemoveEventHandler(*this, eventType);
 
-    notifyRemoveEventListener(this, eventType);
+    // BKTODO: notifyRemoveEventListener(this, eventType);
 
     if (eventType == EventTypeNames::unload) {
         removeUnloadEventListener(this);
@@ -1502,7 +1510,7 @@ void LocalDOMWindow::removeAllEventListeners()
 {
     EventTarget::removeAllEventListeners();
 
-    notifyRemoveAllEventListeners(this);
+    // BKTODO: notifyRemoveAllEventListeners(this);
     if (frame() && frame()->host())
         frame()->host()->eventHandlerRegistry().didRemoveAllEventHandlers(*this);
 
@@ -1594,7 +1602,7 @@ PassRefPtrWillBeRawPtr<DOMWindow> LocalDOMWindow::open(const String& urlString, 
 DEFINE_TRACE(LocalDOMWindow)
 {
 #if ENABLE(OILPAN)
-    visitor->trace(m_frameObserver);
+    // BKTODO: visitor->trace(m_frameObserver);
     visitor->trace(m_document);
     visitor->trace(m_properties);
     visitor->trace(m_screen);
@@ -1608,13 +1616,13 @@ DEFINE_TRACE(LocalDOMWindow)
     visitor->trace(m_console);
     // BKTODO: visitor->trace(m_navigator);
     visitor->trace(m_media);
-    visitor->trace(m_applicationCache);
-    visitor->trace(m_eventQueue);
+    // BKTODO: visitor->trace(m_applicationCache);
+    // BKTODO: visitor->trace(m_eventQueue);
     visitor->trace(m_postMessageTimers);
     HeapSupplementable<LocalDOMWindow>::trace(visitor);
 #endif
     DOMWindow::trace(visitor);
-    DOMWindowLifecycleNotifier::trace(visitor);
+    // BKTODO: DOMWindowLifecycleNotifier::trace(visitor);
 }
 
 LocalFrame* LocalDOMWindow::frame() const
