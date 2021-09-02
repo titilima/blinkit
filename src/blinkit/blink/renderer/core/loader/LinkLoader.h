@@ -98,7 +98,7 @@ private:
     Timer<LinkLoader> m_linkLoadTimer;
     Timer<LinkLoader> m_linkLoadingErrorTimer;
 
-    OwnPtrWillBeMember<PrerenderHandle> m_prerender;
+    // BKTODO: OwnPtrWillBeMember<PrerenderHandle> m_prerender;
 };
 
 }

@@ -55,7 +55,7 @@
 #include "core/loader/DocumentLoader.h"
 #include "core/loader/LinkHeader.h"
 // BKTODO: #include "core/loader/NetworkHintsInterface.h"
-#include "core/loader/PrerenderHandle.h"
+// BKTODO: #include "core/loader/PrerenderHandle.h"
 #include "platform/Prerender.h"
 #include "platform/RuntimeEnabledFeatures.h"
 // BKTODO: #include "platform/network/NetworkHints.h"
@@ -309,17 +309,20 @@ bool LinkLoader::loadLink(const LinkRelAttribute& relAttribute, CrossOriginAttri
 
 void LinkLoader::released()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // Only prerenders need treatment here; other links either use the Resource interface, or are notionally
     // atomic (dns prefetch).
     if (m_prerender) {
         m_prerender->cancel();
         m_prerender.clear();
     }
+#endif
 }
 
 DEFINE_TRACE(LinkLoader)
 {
-    visitor->trace(m_prerender);
+    // BKTODO: visitor->trace(m_prerender);
 }
 
 }
