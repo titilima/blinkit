@@ -97,7 +97,7 @@ public:
 
     static bool parseValue(CSSPropertyID, bool important,
         const CSSParserTokenRange&, const CSSParserContext&,
-        WillBeHeapVector<CSSProperty, 256>&, StyleRule::Type);
+        std::vector<CSSProperty>&, StyleRule::Type);
 
     static bool isSystemColor(CSSValueID);
     static bool isColorKeyword(CSSValueID);
@@ -123,7 +123,7 @@ public:
 
 private:
     CSSPropertyParser(const CSSParserTokenRange&, const CSSParserContext&,
-        WillBeHeapVector<CSSProperty, 256>&);
+        std::vector<CSSProperty>&);
 
     // TODO(timloh): Rename once the CSSParserValue-based parseValue is removed
     bool parseValueStart(CSSPropertyID unresolvedProperty, bool important);
@@ -327,7 +327,7 @@ private:
     const CSSParserContext& m_context;
 
     // Outputs:
-    WillBeHeapVector<CSSProperty, 256>& m_parsedProperties;
+    std::vector<CSSProperty>& m_parsedProperties;
 
     // Locals during parsing:
     int m_inParseShorthand;

@@ -50,7 +50,7 @@
 namespace blink {
 
 CSSPropertyParser::CSSPropertyParser(const CSSParserTokenRange& range,
-    const CSSParserContext& context, WillBeHeapVector<CSSProperty, 256>& parsedProperties)
+    const CSSParserContext& context, std::vector<CSSProperty>& parsedProperties)
     : m_range(range)
     , m_context(context)
     , m_parsedProperties(parsedProperties)
@@ -74,7 +74,7 @@ static bool hasInvalidNumericValues(const CSSParserTokenRange& range)
 
 bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool important,
     const CSSParserTokenRange& range, const CSSParserContext& context,
-    WillBeHeapVector<CSSProperty, 256>& parsedProperties, StyleRule::Type ruleType)
+    std::vector<CSSProperty>& parsedProperties, StyleRule::Type ruleType)
 {
     if (hasInvalidNumericValues(range))
         return false;
@@ -100,7 +100,10 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
 #endif
 
     if (!parseSuccess)
-        parsedProperties.shrink(parsedPropertiesSize);
+    {
+        parsedProperties.resize(parsedPropertiesSize);
+        parsedProperties.shrink_to_fit();
+    }
 
     return parseSuccess;
 }
