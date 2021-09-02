@@ -48,6 +48,8 @@
 #include "core/xml/parser/XMLDocumentParser.h" // for parseAttributes()
 #endif
 
+using namespace BlinKit;
+
 namespace blink {
 
 inline ProcessingInstruction::ProcessingInstruction(Document& document, const String& target, const String& data)
@@ -237,9 +239,9 @@ void ProcessingInstruction::setCSSStyleSheet(const String& href, const KURL& bas
     ASSERT(m_isCSS);
     CSSParserContext parserContext(document(), baseURL, charset);
 
-    RefPtrWillBeRawPtr<StyleSheetContents> newSheet = StyleSheetContents::create(href, parserContext);
+    GCMember<StyleSheetContents> newSheet = StyleSheetContents::create(href, parserContext);
 
-    RefPtrWillBeRawPtr<CSSStyleSheet> cssSheet = CSSStyleSheet::create(newSheet, this);
+    GCMember<CSSStyleSheet> cssSheet = CSSStyleSheet::create(newSheet.release(), this);
     cssSheet->setDisabled(m_alternate);
     cssSheet->setTitle(m_title);
     cssSheet->setMediaQueries(MediaQuerySet::create(m_media));
@@ -320,7 +322,7 @@ void ProcessingInstruction::removedFrom(ContainerNode* insertionPoint)
         document().styleEngine().removeStyleSheetCandidateNode(this);
 #endif
 
-    RefPtrWillBeRawPtr<StyleSheet> removedSheet = m_sheet;
+    GCMember<StyleSheet> removedSheet = m_sheet;
     if (m_sheet) {
         ASSERT(m_sheet->ownerNode() == this);
         clearSheet();
@@ -339,7 +341,8 @@ void ProcessingInstruction::clearSheet()
     ASSERT(m_sheet);
     if (m_sheet->isLoading())
         document().styleEngine().removePendingSheet(this);
-    m_sheet.release()->clearOwnerNode();
+    GCMember<StyleSheet> releasedSheet = m_sheet.release();
+    releasedSheet->clearOwnerNode();
 }
 
 DEFINE_TRACE(ProcessingInstruction)

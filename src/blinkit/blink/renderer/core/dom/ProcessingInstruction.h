@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ProcessingInstruction.h
+// Description: ProcessingInstruction Class
+//      Author: Ziming Li
+//     Created: 2021-08-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Peter Kelly (pmk@post.com)
  * Copyright (C) 2006 Apple Inc. All rights reserved.
@@ -104,7 +115,7 @@ private:
     String m_localHref;
     String m_title;
     String m_media;
-    RefPtrWillBeMember<StyleSheet> m_sheet;
+    BlinKit::GCMember<StyleSheet> m_sheet;
     bool m_loading;
     bool m_alternate;
     bool m_createdByParser;
