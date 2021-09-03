@@ -92,6 +92,8 @@
 #include "wtf/PassOwnPtr.h"
 #include "wtf/StdLibExtras.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
@@ -145,9 +147,9 @@ inline float parentTextZoomFactor(LocalFrame* frame)
 
 } // namespace
 
-std::unique_ptr<LocalFrame> LocalFrame::create(FrameLoaderClient* client, FrameHost* host)
+GCUniqueRoot<LocalFrame> LocalFrame::create(FrameLoaderClient* client, FrameHost* host)
 {
-    return zed::wrap_unique(new LocalFrame(client, host));
+    return WrapUniqueRoot(new LocalFrame(client, host));
 }
 
 void LocalFrame::setView(PassRefPtrWillBeRawPtr<FrameView> view)
@@ -212,7 +214,6 @@ void LocalFrame::createView(const IntSize& viewportSize, const Color& background
 
 LocalFrame::~LocalFrame()
 {
-    CollectGarbage();
     // Verify that the FrameView has been cleared as part of detaching
     // the frame owner.
     ASSERT(!m_view);
@@ -436,7 +437,7 @@ void LocalFrame::willDetachFrameHost()
         page()->scrollingCoordinator()->willDestroyScrollableArea(m_view.get());
 }
 
-void LocalFrame::setDOMWindow(std::unique_ptr<LocalDOMWindow> &&domWindow)
+void LocalFrame::setDOMWindow(GCUniqueRoot<LocalDOMWindow> &&domWindow)
 {
     // Oilpan: setDOMWindow() cannot be used when finalizing. Which
     // is acceptable as its actions are either not needed or handled

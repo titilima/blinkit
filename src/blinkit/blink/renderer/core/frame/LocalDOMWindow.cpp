@@ -508,7 +508,6 @@ void LocalDOMWindow::statePopped(PassRefPtr<SerializedScriptValue> stateObject)
 
 LocalDOMWindow::~LocalDOMWindow()
 {
-    CollectGarbage();
 #if ENABLE(OILPAN)
     // Cleared when detaching document.
     // BKTODO: ASSERT(!m_eventQueue);

@@ -444,7 +444,7 @@ void StyleEngine::clearResolver()
     if (m_resolver) {
         TRACE_EVENT1("blink", "StyleEngine::clearResolver", "frame", document().frame());
         m_resolver->dispose();
-        m_resolver.clear();
+        m_resolver.reset();
     }
 }
 
@@ -753,7 +753,7 @@ DEFINE_TRACE(StyleEngine)
     visitor->trace(m_injectedAuthorStyleSheets);
     // BKTODO: visitor->trace(m_documentStyleSheetCollection);
     visitor->trace(m_styleSheetCollectionMap);
-    visitor->trace(m_resolver);
+    // BKTODO: visitor->trace(m_resolver);
     visitor->trace(m_styleInvalidator);
     visitor->trace(m_dirtyTreeScopes);
     visitor->trace(m_activeTreeScopes);

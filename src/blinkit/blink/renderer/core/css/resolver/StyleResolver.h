@@ -33,6 +33,7 @@
 #ifndef StyleResolver_h
 #define StyleResolver_h
 
+#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 #include "core/animation/PropertyHandle.h"
 #include "core/css/ElementRuleCollector.h"
@@ -88,12 +89,12 @@ using StyleSharingList = WillBeHeapDeque<RawPtrWillBeMember<Element>, styleShari
 using ActiveInterpolationsMap = HashMap<PropertyHandle, Vector<RefPtr<Interpolation>, 1>>;
 
 // This class selects a ComputedStyle for a given element based on a collection of stylesheets.
-class CORE_EXPORT StyleResolver final : public NoBaseWillBeGarbageCollectedFinalized<StyleResolver> {
+class CORE_EXPORT StyleResolver final {
     WTF_MAKE_NONCOPYABLE(StyleResolver); USING_FAST_MALLOC_WILL_BE_REMOVED(StyleResolver);
 public:
-    static PassOwnPtrWillBeRawPtr<StyleResolver> create(Document& document)
+    static GCUniqueRoot<StyleResolver> create(Document& document)
     {
-        return adoptPtrWillBeNoop(new StyleResolver(document));
+        return BlinKit::WrapUniqueRoot(new StyleResolver(document));
     }
     ~StyleResolver();
     void dispose();
@@ -244,11 +245,11 @@ private:
 
     MatchedPropertiesCache m_matchedPropertiesCache;
 
-    OwnPtrWillBeMember<MediaQueryEvaluator> m_medium;
+    BlinKit::GCMember<MediaQueryEvaluator> m_medium;
     MediaQueryResultList m_viewportDependentMediaQueryResults;
     MediaQueryResultList m_deviceDependentMediaQueryResults;
 
-    RawPtrWillBeMember<Document> m_document;
+    BlinKit::GCMember<Document> m_document;
     SelectorFilter m_selectorFilter;
 
     OwnPtrWillBeMember<ViewportStyleResolver> m_viewportStyleResolver;

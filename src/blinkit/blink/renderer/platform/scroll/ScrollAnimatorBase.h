@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollAnimatorBase.h
+// Description: ScrollAnimatorBase Class
+//      Author: Ziming Li
+//     Created: 2021-09-02
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2010, Google Inc. All rights reserved.
  *
@@ -31,6 +42,7 @@
 #ifndef ScrollAnimatorBase_h
 #define ScrollAnimatorBase_h
 
+#include "blinkit/gc/gc_root.h"
 #include "platform/PlatformExport.h"
 #include "platform/PlatformWheelEvent.h"
 #include "platform/geometry/FloatPoint.h"
@@ -48,7 +60,7 @@ class WebCompositorAnimationTimeline;
 
 class PLATFORM_EXPORT ScrollAnimatorBase : public ScrollAnimatorCompositorCoordinator {
 public:
-    static PassOwnPtrWillBeRawPtr<ScrollAnimatorBase> create(ScrollableArea*);
+    static GCUniqueRoot<ScrollAnimatorBase> create(ScrollableArea*);
 
     virtual ~ScrollAnimatorBase();
 
@@ -79,7 +91,7 @@ public:
 
 
     // ScrollAnimatorCompositorCoordinator implementation.
-    ScrollableArea* scrollableArea() const override { return m_scrollableArea; }
+    ScrollableArea* scrollableArea() const override { return &m_scrollableArea; }
     void tickAnimation(double monotonicTime) override { };
     void cancelAnimation() override { }
     void updateCompositorAnimations() override { };
@@ -122,7 +134,7 @@ protected:
 
     float clampScrollPosition(ScrollbarOrientation, float) const;
 
-    RawPtrWillBeMember<ScrollableArea> m_scrollableArea;
+    ScrollableArea &m_scrollableArea;
     float m_currentPosX; // We avoid using a FloatPoint in order to reduce
     float m_currentPosY; // subclass code complexity.
 };

@@ -38,6 +38,7 @@
 #ifndef LocalDOMWindow_h
 #define LocalDOMWindow_h
 
+#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 // BKTODO: #include "core/dom/MessagePort.h"
 #include "core/events/EventTarget.h"
@@ -80,15 +81,14 @@ enum PageshowEventPersistence {
 class CORE_EXPORT LocalDOMWindow final : public DOMWindow
                                        , public WillBeHeapSupplementable<LocalDOMWindow>
                                        // BKTODO: , public DOMWindowLifecycleNotifier
-                                       , public BlinKit::GCRootObjectImpl<LocalDOMWindow>
 {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(LocalDOMWindow);
     WILL_BE_USING_PRE_FINALIZER(LocalDOMWindow, dispose);
 public:
     static PassRefPtrWillBeRawPtr<Document> createDocument(const String& mimeType, const DocumentInit&, bool forceXHTML);
-    static std::unique_ptr<LocalDOMWindow> create(LocalFrame& frame)
+    static GCUniqueRoot<LocalDOMWindow> create(LocalFrame& frame)
     {
-        return zed::wrap_unique(new LocalDOMWindow(frame));
+        return BlinKit::WrapUniqueRoot(new LocalDOMWindow(frame));
     }
 
     ~LocalDOMWindow() override;

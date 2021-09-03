@@ -39,6 +39,7 @@
 #ifndef StyleEngine_h
 #define StyleEngine_h
 
+#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 #include "core/css/CSSFontSelectorClient.h"
 #include "core/css/invalidation/StyleInvalidator.h"
@@ -246,7 +247,7 @@ private:
 
     WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>> m_injectedAuthorStyleSheets;
 
-    std::unique_ptr<DocumentStyleSheetCollection> m_documentStyleSheetCollection;
+    BlinKit::GCUniqueRoot<DocumentStyleSheetCollection> m_documentStyleSheetCollection;
 
     using StyleSheetCollectionMap = std::unordered_map<WeakMember<TreeScope>, Member<ShadowTreeStyleSheetCollection>>;
     StyleSheetCollectionMap m_styleSheetCollectionMap;
@@ -266,7 +267,7 @@ private:
 
     bool m_ignorePendingStylesheets;
     bool m_didCalculateResolver;
-    OwnPtrWillBeMember<StyleResolver> m_resolver;
+    BlinKit::GCUniqueRoot<StyleResolver> m_resolver;
     StyleInvalidator m_styleInvalidator;
 
     BlinKit::GCMember<CSSFontSelector> m_fontSelector;

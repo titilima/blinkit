@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollAnimatorBase.cpp
+// Description: ScrollAnimatorBase Class
+//      Author: Ziming Li
+//     Created: 2021-09-02
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2010, Google Inc. All rights reserved.
  *
@@ -39,7 +50,7 @@
 namespace blink {
 
 ScrollAnimatorBase::ScrollAnimatorBase(ScrollableArea* scrollableArea)
-    : m_scrollableArea(scrollableArea)
+    : m_scrollableArea(*scrollableArea)
     , m_currentPosX(0)
     , m_currentPosY(0)
 {
@@ -91,19 +102,19 @@ FloatPoint ScrollAnimatorBase::currentPosition() const
 
 void ScrollAnimatorBase::notifyPositionChanged()
 {
-    m_scrollableArea->scrollPositionChanged(DoublePoint(m_currentPosX, m_currentPosY), UserScroll);
+    m_scrollableArea.scrollPositionChanged(DoublePoint(m_currentPosX, m_currentPosY), UserScroll);
 }
 
 float ScrollAnimatorBase::clampScrollPosition(ScrollbarOrientation orientation, float pos) const
 {
-    float maxScrollPos = m_scrollableArea->maximumScrollPosition(orientation);
-    float minScrollPos = m_scrollableArea->minimumScrollPosition(orientation);
+    float maxScrollPos = m_scrollableArea.maximumScrollPosition(orientation);
+    float minScrollPos = m_scrollableArea.minimumScrollPosition(orientation);
     return clampTo(pos, minScrollPos, maxScrollPos);
 }
 
 DEFINE_TRACE(ScrollAnimatorBase)
 {
-    visitor->trace(m_scrollableArea);
+    // BKTODO: visitor->trace(m_scrollableArea);
     ScrollAnimatorCompositorCoordinator::trace(visitor);
 }
 

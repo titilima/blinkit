@@ -50,13 +50,15 @@
 #include "wtf/CurrentTime.h"
 #include "wtf/PassRefPtr.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-PassOwnPtrWillBeRawPtr<ScrollAnimatorBase> ScrollAnimatorBase::create(ScrollableArea* scrollableArea)
+GCUniqueRoot<ScrollAnimatorBase> ScrollAnimatorBase::create(ScrollableArea* scrollableArea)
 {
     if (scrollableArea && scrollableArea->scrollAnimatorEnabled())
-        return adoptPtrWillBeNoop(new ScrollAnimator(scrollableArea));
-    return adoptPtrWillBeNoop(new ScrollAnimatorBase(scrollableArea));
+        return WrapUniqueRoot<ScrollAnimatorBase>(new ScrollAnimator(scrollableArea));
+    return WrapUniqueRoot(new ScrollAnimatorBase(scrollableArea));
 }
 
 ScrollAnimator::ScrollAnimator(ScrollableArea* scrollableArea, WTF::TimeFunction timeFunction)
@@ -101,7 +103,7 @@ void ScrollAnimator::resetAnimationState()
 ScrollResultOneDimensional ScrollAnimator::userScroll(
     ScrollbarOrientation orientation, ScrollGranularity granularity, float step, float delta)
 {
-    if (!m_scrollableArea->scrollAnimatorEnabled())
+    if (!m_scrollableArea.scrollAnimatorEnabled())
         return ScrollAnimatorBase::userScroll(orientation, granularity, step, delta);
 
     TRACE_EVENT0("blink", "ScrollAnimator::scroll");
@@ -186,7 +188,7 @@ void ScrollAnimator::tickAnimation(double monotonicTime)
         ? m_animationCurve->targetValue()
         : m_animationCurve->getValue(elapsedTime));
 
-    offset = FloatPoint(m_scrollableArea->clampScrollPosition(offset));
+    offset = FloatPoint(m_scrollableArea.clampScrollPosition(offset));
 
     m_currentPosX = offset.x();
     m_currentPosY = offset.y();
@@ -251,7 +253,7 @@ void ScrollAnimator::updateCompositorAnimations()
         }
 
         bool sentToCompositor = false;
-        if (!m_scrollableArea->shouldScrollOnMainThread()) {
+        if (!m_scrollableArea.shouldScrollOnMainThread()) {
             ASSERT(false); // BKTODO:
 #if 0
             OwnPtr<WebCompositorAnimation> animation = adoptPtr(
@@ -311,7 +313,7 @@ void ScrollAnimator::layerForCompositedScrollingDidChange(
 bool ScrollAnimator::registerAndScheduleAnimation()
 {
     scrollableArea()->registerForAnimation();
-    if (!m_scrollableArea->scheduleAnimation()) {
+    if (!m_scrollableArea.scheduleAnimation()) {
         scrollToOffsetWithoutAnimation(m_targetOffset);
         resetAnimationState();
         return false;

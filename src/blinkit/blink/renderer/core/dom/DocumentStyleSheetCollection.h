@@ -39,6 +39,7 @@
 #ifndef DocumentStyleSheetCollection_h
 #define DocumentStyleSheetCollection_h
 
+#include "blinkit/gc/gc_root.h"
 #include "core/dom/TreeScopeStyleSheetCollection.h"
 
 namespace blink {
@@ -47,17 +48,14 @@ class DocumentStyleSheetCollector;
 class StyleEngine;
 class TreeScope;
 
-class DocumentStyleSheetCollection final : public TreeScopeStyleSheetCollection
-                                         , public BlinKit::GCRootObjectImpl<DocumentStyleSheetCollection>
-{
+class DocumentStyleSheetCollection final : public TreeScopeStyleSheetCollection {
     WTF_MAKE_NONCOPYABLE(DocumentStyleSheetCollection);
     USING_FAST_MALLOC_WILL_BE_REMOVED(DocumentStyleSheetCollection);
 public:
-    static std::unique_ptr<DocumentStyleSheetCollection> create(TreeScope& treeScope)
+    static GCUniqueRoot<DocumentStyleSheetCollection> create(TreeScope& treeScope)
     {
-        return zed::wrap_unique(new DocumentStyleSheetCollection(treeScope));
+        return BlinKit::WrapUniqueRoot(new DocumentStyleSheetCollection(treeScope));
     }
-    ~DocumentStyleSheetCollection(void);
 
     void updateActiveStyleSheets(StyleEngine&, StyleResolverUpdateMode);
     void collectStyleSheets(StyleEngine&, DocumentStyleSheetCollector&);

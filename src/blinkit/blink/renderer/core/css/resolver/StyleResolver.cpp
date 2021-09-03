@@ -240,7 +240,7 @@ void StyleResolver::appendCSSStyleSheet(CSSStyleSheet& cssSheet)
     // Sheets in the document scope of HTML imports apply to the main document
     // (m_document), so we override it for all document scoped sheets.
     if (treeScope->rootNode().isDocumentNode())
-        treeScope = m_document;
+        treeScope = m_document.get();
     treeScope->ensureScopedStyleResolver().appendCSSStyleSheet(cssSheet, *m_medium);
 }
 
