@@ -104,10 +104,12 @@ static PassRefPtr<AnimatableValue> createFromLength(const Length& length, const 
     return createFromLengthWithZoom(length, style.effectiveZoom());
 }
 
+#if 0 // BKTODO:
 static PassRefPtr<AnimatableValue> createFromUnzoomedLength(const UnzoomedLength& unzoomedLength)
 {
     return createFromLengthWithZoom(unzoomedLength.length(), 1);
 }
+#endif
 
 static PassRefPtr<AnimatableValue> createFromLineHeight(const Length& length, const ComputedStyle& style)
 {
@@ -312,12 +314,14 @@ static PassRefPtr<AnimatableValue> createFromFontWeight(FontWeight fontWeight)
     return createFromDouble(fontWeightToDouble(fontWeight));
 }
 
+#if 0 // BKTODO:
 static SVGPaintType normalizeSVGPaintType(SVGPaintType paintType)
 {
     // If the <paint> is 'currentColor', then create an AnimatableSVGPaint with
     // a <rgbcolor> type. This is similar in vein to the handling of colors.
     return paintType == SVG_PAINTTYPE_CURRENTCOLOR ? SVG_PAINTTYPE_RGBCOLOR : paintType;
 }
+#endif
 
 // FIXME: Generate this function.
 PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID property, const ComputedStyle& style)

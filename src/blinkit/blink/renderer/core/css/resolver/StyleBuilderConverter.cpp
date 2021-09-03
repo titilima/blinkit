@@ -549,10 +549,12 @@ Length StyleBuilderConverter::convertLength(const StyleResolverState& state, con
     return toCSSPrimitiveValue(value).convertToLength(state.cssToLengthConversionData());
 }
 
+#if 0 // BKTODO:
 UnzoomedLength StyleBuilderConverter::convertUnzoomedLength(const StyleResolverState& state, const CSSValue& value)
 {
     return UnzoomedLength(toCSSPrimitiveValue(value).convertToLength(state.cssToLengthConversionData().copyWithAdjustedZoom(1.0f)));
 }
+#endif
 
 Length StyleBuilderConverter::convertLengthOrAuto(const StyleResolverState& state, const CSSValue& value)
 {
@@ -710,6 +712,7 @@ static Length convertOriginLength(StyleResolverState& state, const CSSPrimitiveV
     return StyleBuilderConverter::convertLength(state, primitiveValue);
 }
 
+#if 0 // BKTODO:
 EPaintOrder StyleBuilderConverter::convertPaintOrder(StyleResolverState&, const CSSValue& cssPaintOrder)
 {
     if (cssPaintOrder.isValueList()) {
@@ -729,6 +732,7 @@ EPaintOrder StyleBuilderConverter::convertPaintOrder(StyleResolverState&, const 
 
     return PaintOrderNormal;
 }
+#endif
 
 Length StyleBuilderConverter::convertQuirkyLength(StyleResolverState& state, const CSSValue& value)
 {
@@ -829,6 +833,7 @@ float StyleBuilderConverter::convertSpacing(StyleResolverState& state, const CSS
     return primitiveValue.computeLength<float>(state.cssToLengthConversionData());
 }
 
+#if 0 // BKTODO:
 PassRefPtr<SVGDashArray> StyleBuilderConverter::convertStrokeDasharray(StyleResolverState& state, const CSSValue& value)
 {
     if (!value.isValueList())
@@ -844,6 +849,7 @@ PassRefPtr<SVGDashArray> StyleBuilderConverter::convertStrokeDasharray(StyleReso
 
     return array.release();
 }
+#endif
 
 StyleColor StyleBuilderConverter::convertStyleColor(StyleResolverState& state, const CSSValue& value, bool forVisitedLink)
 {
@@ -965,9 +971,11 @@ RespectImageOrientationEnum StyleBuilderConverter::convertImageOrientation(Style
     return primitiveValue.getValueID() == CSSValueFromImage ? RespectImageOrientation : DoNotRespectImageOrientation;
 }
 
+#if 0 // BKTODO:
 PassRefPtr<StylePath> StyleBuilderConverter::convertPath(StyleResolverState&, CSSValue& value)
 {
     return toCSSPathValue(value).cachedPath();
 }
+#endif
 
 } // namespace blink

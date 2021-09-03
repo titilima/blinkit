@@ -82,7 +82,7 @@
 #include "core/style/ComputedStyleConstants.h"
 #include "core/style/PathStyleMotionPath.h"
 #include "core/style/QuotesData.h"
-#include "core/style/SVGComputedStyle.h"
+// BKTODO: #include "core/style/SVGComputedStyle.h"
 #include "core/style/StyleGeneratedImage.h"
 #include "platform/fonts/FontDescription.h"
 #include "wtf/MathExtras.h"

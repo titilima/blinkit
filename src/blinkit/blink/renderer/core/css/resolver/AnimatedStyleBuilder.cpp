@@ -90,10 +90,12 @@ Length animatableValueToLength(const AnimatableValue* value, const StyleResolver
     return animatableValueToLengthWithZoom(value, state.style()->effectiveZoom(), range);
 }
 
+#if 0 // BKTODO:
 UnzoomedLength animatableValueToUnzoomedLength(const AnimatableValue* value, const StyleResolverState&, ValueRange range = ValueRangeAll)
 {
     return UnzoomedLength(animatableValueToLengthWithZoom(value, 1, range));
 }
+#endif
 
 BorderImageLength animatableValueToBorderImageLength(const AnimatableValue* value, const StyleResolverState& state)
 {

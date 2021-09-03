@@ -48,7 +48,7 @@
 #include "core/style/LineClampValue.h"
 #include "core/style/NinePieceImage.h"
 #include "core/style/OutlineValue.h"
-#include "core/style/SVGComputedStyle.h"
+// BKTODO: #include "core/style/SVGComputedStyle.h"
 #include "core/style/ShapeValue.h"
 #include "core/style/StyleBackgroundData.h"
 #include "core/style/StyleBoxData.h"

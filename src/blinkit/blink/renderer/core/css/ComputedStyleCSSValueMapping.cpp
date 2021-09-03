@@ -94,6 +94,7 @@ static PassRefPtrWillBeRawPtr<CSSPrimitiveValue> zoomAdjustedPixelValueForLength
     return cssValuePool().createValue(length, style);
 }
 
+#if 0 // BKTODO:
 static PassRefPtrWillBeRawPtr<CSSPrimitiveValue> pixelValueForUnzoomedLength(const UnzoomedLength& unzoomedLength, const ComputedStyle& style)
 {
     const Length& length = unzoomedLength.length();
@@ -101,6 +102,7 @@ static PassRefPtrWillBeRawPtr<CSSPrimitiveValue> pixelValueForUnzoomedLength(con
         return cssValuePool().createValue(length.value(), CSSPrimitiveValue::UnitType::Pixels);
     return cssValuePool().createValue(length, style);
 }
+#endif
 
 static PassRefPtrWillBeRawPtr<CSSValueList> createPositionListForLayer(CSSPropertyID propertyID, const FillLayer& layer, const ComputedStyle& style)
 {
@@ -1159,6 +1161,7 @@ static PassRefPtrWillBeRawPtr<CSSValueList> valueForBorderRadiusShorthand(const 
     return list.release();
 }
 
+#if 0 // BKTODO:
 static PassRefPtrWillBeRawPtr<CSSValue> strokeDashArrayToCSSValueList(const SVGDashArray& dashes, const ComputedStyle& style)
 {
     if (dashes.isEmpty())
@@ -1212,6 +1215,7 @@ static PassRefPtrWillBeRawPtr<CSSValue> adjustSVGPaintForCurrentColor(SVGPaintTy
 
     return CSSColorValue::create(color.rgb());
 }
+#endif
 
 static inline String serializeAsFragmentIdentifier(const AtomicString& resource)
 {

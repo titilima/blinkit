@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleBuilderConverter.h
+// Description: StyleBuilderConverter Class
+//      Author: Ziming Li
+//     Created: 2021-09-02
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -72,7 +83,7 @@ public:
     static GridTrackSize convertGridTrackSize(StyleResolverState&, const CSSValue&);
     template <typename T> static T convertLineWidth(StyleResolverState&, const CSSValue&);
     static Length convertLength(const StyleResolverState&, const CSSValue&);
-    static UnzoomedLength convertUnzoomedLength(const StyleResolverState&, const CSSValue&);
+    // BKTODO: static UnzoomedLength convertUnzoomedLength(const StyleResolverState&, const CSSValue&);
     static Length convertLengthOrAuto(const StyleResolverState&, const CSSValue&);
     static Length convertLengthSizing(StyleResolverState&, const CSSValue&);
     static Length convertLengthMaxSizing(StyleResolverState&, const CSSValue&);
@@ -84,12 +95,12 @@ public:
     static Length convertQuirkyLength(StyleResolverState&, const CSSValue&);
     static PassRefPtr<QuotesData> convertQuotes(StyleResolverState&, const CSSValue&);
     static LengthSize convertRadius(StyleResolverState&, const CSSValue&);
-    static EPaintOrder convertPaintOrder(StyleResolverState&, const CSSValue&);
+    // BKTODO: static EPaintOrder convertPaintOrder(StyleResolverState&, const CSSValue&);
     static PassRefPtr<ShadowList> convertShadow(StyleResolverState&, const CSSValue&);
     static PassRefPtrWillBeRawPtr<ShapeValue> convertShapeValue(StyleResolverState&, const CSSValue&);
     static float convertSpacing(StyleResolverState&, const CSSValue&);
     template <CSSValueID IdForNone> static AtomicString convertString(StyleResolverState&, const CSSValue&);
-    static PassRefPtr<SVGDashArray> convertStrokeDasharray(StyleResolverState&, const CSSValue&);
+    // BKTODO: static PassRefPtr<SVGDashArray> convertStrokeDasharray(StyleResolverState&, const CSSValue&);
     static StyleColor convertStyleColor(StyleResolverState&, const CSSValue&, bool forVisitedLink = false);
     static float convertTextStrokeWidth(StyleResolverState&, const CSSValue&);
     static TransformOrigin convertTransformOrigin(StyleResolverState&, const CSSValue&);
@@ -105,7 +116,7 @@ public:
     static PassRefPtr<RotateTransformOperation> convertRotate(StyleResolverState&, const CSSValue&);
     static PassRefPtr<ScaleTransformOperation> convertScale(StyleResolverState&, const CSSValue&);
     static RespectImageOrientationEnum convertImageOrientation(StyleResolverState&, const CSSValue&);
-    static PassRefPtr<StylePath> convertPath(StyleResolverState&, CSSValue&);
+    // BKTODO: static PassRefPtr<StylePath> convertPath(StyleResolverState&, CSSValue&);
 };
 
 template <typename T>

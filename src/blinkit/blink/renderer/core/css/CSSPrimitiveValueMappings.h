@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSPrimitiveValueMappings.h
+// Description: CSSPrimitiveValue Class
+//      Author: Ziming Li
+//     Created: 2021-09-02
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Alexey Proskuryakov <ap@nypop.com>.
  * Copyright (C) 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -36,7 +47,7 @@
 #include "core/css/CSSReflectionDirection.h"
 #include "core/css/CSSToLengthConversionData.h"
 #include "core/style/ComputedStyleConstants.h"
-#include "core/style/SVGComputedStyleDefs.h"
+// BKTODO: #include "core/style/SVGComputedStyleDefs.h"
 #include "core/style/LineClampValue.h"
 #include "platform/Length.h"
 #include "platform/ThemeTypes.h"
@@ -3660,7 +3671,7 @@ template<> inline WindRule CSSPrimitiveValue::convertTo() const
     return RULE_NONZERO;
 }
 
-
+#if 0 // BKTODO:
 template<> inline CSSPrimitiveValue::CSSPrimitiveValue(EAlignmentBaseline e)
     : CSSValue(PrimitiveClass)
 {
@@ -3740,6 +3751,7 @@ template<> inline EAlignmentBaseline CSSPrimitiveValue::convertTo() const
     ASSERT_NOT_REACHED();
     return AB_AUTO;
 }
+#endif
 
 template<> inline CSSPrimitiveValue::CSSPrimitiveValue(EBorderCollapse e)
     : CSSValue(PrimitiveClass)
@@ -3846,6 +3858,7 @@ template<> inline ETransformStyle3D CSSPrimitiveValue::convertTo() const
     return TransformStyle3DFlat;
 }
 
+#if 0 // BKTODO:
 template<> inline CSSPrimitiveValue::CSSPrimitiveValue(EBufferedRendering e)
     : CSSValue(PrimitiveClass)
 {
@@ -4204,6 +4217,7 @@ template<> inline EMaskType CSSPrimitiveValue::convertTo() const
     ASSERT_NOT_REACHED();
     return MT_LUMINANCE;
 }
+#endif
 
 template<> inline TouchAction CSSPrimitiveValue::convertTo() const
 {
