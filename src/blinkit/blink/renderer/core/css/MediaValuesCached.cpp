@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaValuesCached.cpp
+// Description: MediaValuesCached Class
+//      Author: Ziming Li
+//     Created: 2021-09-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -11,29 +22,29 @@
 
 namespace blink {
 
-PassRefPtrWillBeRawPtr<MediaValues> MediaValuesCached::create()
+std::shared_ptr<MediaValues> MediaValuesCached::create()
 {
-    return adoptRefWillBeNoop(new MediaValuesCached());
+    return zed::wrap_shared(new MediaValuesCached());
 }
 
-PassRefPtrWillBeRawPtr<MediaValues> MediaValuesCached::create(MediaValuesCachedData& data)
+std::shared_ptr<MediaValues> MediaValuesCached::create(MediaValuesCachedData& data)
 {
-    return adoptRefWillBeNoop(new MediaValuesCached(data));
+    return zed::wrap_shared(new MediaValuesCached(data));
 }
 
-PassRefPtrWillBeRawPtr<MediaValues> MediaValuesCached::create(Document& document)
+std::shared_ptr<MediaValues> MediaValuesCached::create(Document& document)
 {
     return MediaValuesCached::create(frameFrom(document));
 }
 
-PassRefPtrWillBeRawPtr<MediaValues> MediaValuesCached::create(LocalFrame* frame)
+std::shared_ptr<MediaValues> MediaValuesCached::create(LocalFrame* frame)
 {
     // FIXME - Added an assert here so we can better understand when a frame is present without its view().
     ASSERT(!frame || frame->view());
     if (!frame || !frame->view())
-        return adoptRefWillBeNoop(new MediaValuesCached());
+        return zed::wrap_shared(new MediaValuesCached());
     ASSERT(frame->document() && frame->document()->layoutView());
-    return adoptRefWillBeNoop(new MediaValuesCached(frame));
+    return zed::wrap_shared(new MediaValuesCached(frame));
 }
 
 MediaValuesCached::MediaValuesCached()
@@ -71,9 +82,9 @@ MediaValuesCached::MediaValuesCached(const MediaValuesCachedData& data)
 {
 }
 
-PassRefPtrWillBeRawPtr<MediaValues> MediaValuesCached::copy() const
+std::shared_ptr<MediaValues> MediaValuesCached::copy() const
 {
-    return adoptRefWillBeNoop(new MediaValuesCached(m_data));
+    return zed::wrap_shared(new MediaValuesCached(m_data));
 }
 
 bool MediaValuesCached::computeLength(double value, CSSPrimitiveValue::UnitType type, int& result) const

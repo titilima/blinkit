@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaValuesDynamic.cpp
+// Description: MediaValuesDynamic Class
+//      Author: Ziming Li
+//     Created: 2021-09-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -13,16 +24,16 @@
 
 namespace blink {
 
-PassRefPtrWillBeRawPtr<MediaValues> MediaValuesDynamic::create(Document& document)
+std::shared_ptr<MediaValues> MediaValuesDynamic::create(Document& document)
 {
     return MediaValuesDynamic::create(frameFrom(document));
 }
 
-PassRefPtrWillBeRawPtr<MediaValues> MediaValuesDynamic::create(LocalFrame* frame)
+std::shared_ptr<MediaValues> MediaValuesDynamic::create(LocalFrame* frame)
 {
     if (!frame || !frame->view() || !frame->document() || !frame->document()->layoutView())
         return MediaValuesCached::create();
-    return adoptRefWillBeNoop(new MediaValuesDynamic(frame));
+    return zed::wrap_shared(new MediaValuesDynamic(frame));
 }
 
 MediaValuesDynamic::MediaValuesDynamic(LocalFrame* frame)
@@ -31,9 +42,9 @@ MediaValuesDynamic::MediaValuesDynamic(LocalFrame* frame)
     ASSERT(m_frame);
 }
 
-PassRefPtrWillBeRawPtr<MediaValues> MediaValuesDynamic::copy() const
+std::shared_ptr<MediaValues> MediaValuesDynamic::copy() const
 {
-    return adoptRefWillBeNoop(new MediaValuesDynamic(m_frame));
+    return zed::wrap_shared(new MediaValuesDynamic(m_frame));
 }
 
 bool MediaValuesDynamic::computeLength(double value, CSSPrimitiveValue::UnitType type, int& result) const
@@ -144,12 +155,6 @@ Document* MediaValuesDynamic::document() const
 bool MediaValuesDynamic::hasValues() const
 {
     return m_frame;
-}
-
-DEFINE_TRACE(MediaValuesDynamic)
-{
-    visitor->trace(m_frame);
-    MediaValues::trace(visitor);
 }
 
 } // namespace

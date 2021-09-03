@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaValuesDynamic.h
+// Description: MediaValuesDynamic Class
+//      Author: Ziming Li
+//     Created: 2021-09-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -13,9 +24,9 @@ class Document;
 
 class MediaValuesDynamic final : public MediaValues {
 public:
-    static PassRefPtrWillBeRawPtr<MediaValues> create(Document&);
-    static PassRefPtrWillBeRawPtr<MediaValues> create(LocalFrame*);
-    PassRefPtrWillBeRawPtr<MediaValues> copy() const override;
+    static std::shared_ptr<MediaValues> create(Document&);
+    static std::shared_ptr<MediaValues> create(LocalFrame*);
+    std::shared_ptr<MediaValues> copy() const override;
     bool isSafeToSendToAnotherThread() const override;
     bool computeLength(double value, CSSPrimitiveValue::UnitType, int& result) const override;
     bool computeLength(double value, CSSPrimitiveValue::UnitType, double& result) const override;
@@ -38,14 +49,12 @@ public:
     Document* document() const override;
     bool hasValues() const override;
 
-    DECLARE_VIRTUAL_TRACE();
-
 protected:
     MediaValuesDynamic(LocalFrame*);
 
     // This raw ptr is safe, as MediaValues would not outlive MediaQueryEvaluator, and
     // MediaQueryEvaluator is reset on |Document::detach|.
-    RawPtrWillBeMember<LocalFrame> m_frame;
+    LocalFrame *m_frame;
 };
 
 } // namespace

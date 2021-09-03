@@ -107,7 +107,7 @@ MediaQueryEvaluator::~MediaQueryEvaluator()
 
 DEFINE_TRACE(MediaQueryEvaluator)
 {
-    visitor->trace(m_mediaValues);
+    // BKTODO: visitor->trace(m_mediaValues);
 }
 
 const String MediaQueryEvaluator::mediaType() const

@@ -106,7 +106,7 @@ private:
 
     String m_mediaType;
     bool m_expectedResult;
-    RefPtrWillBeMember<MediaValues> m_mediaValues;
+    std::shared_ptr<MediaValues> m_mediaValues;
 };
 
 } // namespace

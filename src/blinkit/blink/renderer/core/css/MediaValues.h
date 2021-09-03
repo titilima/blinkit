@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaValues.h
+// Description: MediaValues Class
+//      Author: Ziming Li
+//     Created: 2021-09-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -18,14 +29,13 @@ class Document;
 class CSSPrimitiveValue;
 class LocalFrame;
 
-class CORE_EXPORT MediaValues : public RefCountedWillBeGarbageCollectedFinalized<MediaValues> {
+class CORE_EXPORT MediaValues {
 public:
 
     virtual ~MediaValues() { }
-    DEFINE_INLINE_VIRTUAL_TRACE() { }
 
-    static PassRefPtrWillBeRawPtr<MediaValues> createDynamicIfFrameExists(LocalFrame*);
-    virtual PassRefPtrWillBeRawPtr<MediaValues> copy() const = 0;
+    static std::shared_ptr<MediaValues> createDynamicIfFrameExists(LocalFrame*);
+    virtual std::shared_ptr<MediaValues> copy() const = 0;
     virtual bool isSafeToSendToAnotherThread() const = 0;
 
     static bool computeLengthImpl(double value, CSSPrimitiveValue::UnitType, unsigned defaultFontSize, double viewportWidth, double viewportHeight, double& result);

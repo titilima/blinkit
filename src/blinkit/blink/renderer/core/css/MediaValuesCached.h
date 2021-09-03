@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaValuesCached.h
+// Description: MediaValuesCached Class
+//      Author: Ziming Li
+//     Created: 2021-09-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -52,11 +63,11 @@ public:
         }
     };
 
-    static PassRefPtrWillBeRawPtr<MediaValues> create();
-    static PassRefPtrWillBeRawPtr<MediaValues> create(Document&);
-    static PassRefPtrWillBeRawPtr<MediaValues> create(LocalFrame*);
-    static PassRefPtrWillBeRawPtr<MediaValues> create(MediaValuesCachedData&);
-    PassRefPtrWillBeRawPtr<MediaValues> copy() const override;
+    static std::shared_ptr<MediaValues> create();
+    static std::shared_ptr<MediaValues> create(Document&);
+    static std::shared_ptr<MediaValues> create(LocalFrame*);
+    static std::shared_ptr<MediaValues> create(MediaValuesCachedData&);
+    std::shared_ptr<MediaValues> copy() const override;
     bool isSafeToSendToAnotherThread() const override;
     bool computeLength(double value, CSSPrimitiveValue::UnitType, int& result) const override;
     bool computeLength(double value, CSSPrimitiveValue::UnitType, double& result) const override;
