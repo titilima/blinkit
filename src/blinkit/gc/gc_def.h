@@ -97,42 +97,6 @@ public:
 };
 
 /**
- * GCRootObject
- */
-
-class GCRootObject
-{
-public:
-#ifndef NDEBUG
-    ~GCRootObject(void) { ASSERT(m_garbageCollected); }
-#endif
-protected:
-    GCRootObject(void) = default;
-
-    void CollectGarbage(const std::function<void(blink::Visitor *)> &callback);
-#ifndef NDEBUG
-private:
-    bool m_garbageCollected = false;
-#endif
-};
-
-template <class T>
-class GCRootObjectImpl : GCRootObject
-{
-protected:
-    GCRootObjectImpl(void) = default;
-
-    void CollectGarbage(void)
-    {
-        auto callback = [this](blink::Visitor *visitor)
-        {
-            static_cast<T *>(this)->trace(visitor);
-        };
-        GCRootObject::CollectGarbage(callback);
-    }
-};
-
-/**
  * Global/Persistent APIs
  */
 
