@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ViewportAnchor.h
+// Description: ViewportAnchor Class
+//      Author: Ziming Li
+//     Created: 2021-09-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,8 +42,6 @@
 #ifndef ViewportAnchor_h
 #define ViewportAnchor_h
 
-#include "platform/heap/Handle.h"
-
 namespace blink {
 
 class FrameView;
@@ -46,13 +55,13 @@ class ViewportAnchor {
     STACK_ALLOCATED();
 protected:
     ViewportAnchor(FrameView& rootFrameView, VisualViewport& visualViewport)
-        : m_rootFrameView(&rootFrameView)
-        , m_visualViewport(&visualViewport)
+        : m_rootFrameView(rootFrameView)
+        , m_visualViewport(visualViewport)
     {
     }
 
-    RawPtrWillBeMember<FrameView> m_rootFrameView;
-    RawPtrWillBeMember<VisualViewport> m_visualViewport;
+    FrameView &m_rootFrameView;
+    VisualViewport &m_visualViewport;
 };
 
 } // namespace blink
