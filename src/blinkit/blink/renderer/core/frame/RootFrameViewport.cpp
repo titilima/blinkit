@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RootFrameViewport.cpp
+// Description: RootFrameViewport Class
+//      Author: Ziming Li
+//     Created: 2021-09-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -318,8 +329,10 @@ Widget* RootFrameViewport::widget()
 
 DEFINE_TRACE(RootFrameViewport)
 {
+#if 0 // BKTODO:
     visitor->trace(m_visualViewport);
     visitor->trace(m_layoutViewport);
+#endif
     ScrollableArea::trace(visitor);
 }
 

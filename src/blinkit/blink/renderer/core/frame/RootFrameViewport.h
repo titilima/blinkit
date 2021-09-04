@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RootFrameViewport.h
+// Description: RootFrameViewport Class
+//      Author: Ziming Li
+//     Created: 2021-09-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -21,13 +32,13 @@ class LayoutRect;
 // APIs that don't make sense on the combined viewport, the call is delegated to
 // the layout viewport. Thus, we could say this class is a decorator on the
 // FrameView scrollable area that adds pinch-zoom semantics to scrolling.
-class CORE_EXPORT RootFrameViewport final : public NoBaseWillBeGarbageCollectedFinalized<RootFrameViewport>, public ScrollableArea {
+class CORE_EXPORT RootFrameViewport final : public ScrollableArea {
     USING_FAST_MALLOC_WILL_BE_REMOVED(RootFrameViewport);
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(RootFrameViewport);
 public:
-    static PassOwnPtrWillBeRawPtr<RootFrameViewport> create(ScrollableArea& visualViewport, ScrollableArea& layoutViewport)
+    static std::unique_ptr<RootFrameViewport> create(ScrollableArea& visualViewport, ScrollableArea& layoutViewport)
     {
-        return adoptPtrWillBeNoop(new RootFrameViewport(visualViewport, layoutViewport));
+        return zed::wrap_unique(new RootFrameViewport(visualViewport, layoutViewport));
     }
 
     DECLARE_VIRTUAL_TRACE();
@@ -84,11 +95,11 @@ private:
     // animator so use this method to pull updated values when necessary.
     void updateScrollAnimator();
 
-    ScrollableArea& visualViewport() const { ASSERT(m_visualViewport); return *m_visualViewport; }
-    ScrollableArea& layoutViewport() const { ASSERT(m_layoutViewport); return *m_layoutViewport; }
+    ScrollableArea& visualViewport() const { return m_visualViewport; }
+    ScrollableArea& layoutViewport() const { return m_layoutViewport; }
 
-    RawPtrWillBeMember<ScrollableArea> m_visualViewport;
-    RawPtrWillBeMember<ScrollableArea> m_layoutViewport;
+    ScrollableArea &m_visualViewport;
+    ScrollableArea &m_layoutViewport;
 };
 
 } // namespace blink
