@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PageScaleConstraintsSet.h
+// Description: PageScaleConstraintsSet Class
+//      Author: Ziming Li
+//     Created: 2021-09-02
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -36,8 +47,9 @@
 #include "core/frame/PageScaleConstraints.h"
 #include "platform/Length.h"
 #include "platform/geometry/IntSize.h"
+#include "third_party/zed/include/zed/memory.hpp"
 #include "wtf/Allocator.h"
-#include "wtf/PassOwnPtr.h"
+// BKTODO: #include "wtf/PassOwnPtr.h"
 
 namespace blink {
 
@@ -46,9 +58,9 @@ namespace blink {
 class CORE_EXPORT PageScaleConstraintsSet {
     USING_FAST_MALLOC(PageScaleConstraintsSet);
 public:
-    static PassOwnPtr<PageScaleConstraintsSet> create()
+    static std::unique_ptr<PageScaleConstraintsSet> create()
     {
-        return adoptPtr(new PageScaleConstraintsSet);
+        return zed::wrap_unique(new PageScaleConstraintsSet);
     }
 
     void setDefaultConstraints(const PageScaleConstraints&);
