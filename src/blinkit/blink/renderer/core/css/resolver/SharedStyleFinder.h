@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SharedStyleFinder.h
+// Description: SharedStyleFinder Class
+//      Author: Ziming Li
+//     Created: 2021-09-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google, Inc.
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
@@ -46,7 +57,7 @@ public:
         , m_features(features)
         , m_siblingRuleSet(siblingRuleSet)
         , m_uncommonAttributeRuleSet(uncommonAttributeRuleSet)
-        , m_styleResolver(&styleResolver)
+        , m_styleResolver(styleResolver)
         , m_context(context)
     { }
 
@@ -74,7 +85,7 @@ private:
     const RuleFeatureSet& m_features;
     RawPtrWillBeMember<RuleSet> m_siblingRuleSet;
     RawPtrWillBeMember<RuleSet> m_uncommonAttributeRuleSet;
-    RawPtrWillBeMember<StyleResolver> m_styleResolver;
+    StyleResolver &m_styleResolver;
     const ElementResolveContext& m_context;
 };
 
