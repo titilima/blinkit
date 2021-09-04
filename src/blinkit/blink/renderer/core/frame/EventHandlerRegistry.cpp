@@ -59,7 +59,7 @@ inline bool isPointerEventType(const AtomicString& eventType)
 } // namespace
 
 EventHandlerRegistry::EventHandlerRegistry(FrameHost& frameHost)
-    : m_frameHost(&frameHost)
+    : m_frameHost(frameHost)
 {
 }
 
@@ -231,7 +231,7 @@ void EventHandlerRegistry::didRemoveAllEventHandlers(EventTarget& target)
 
 void EventHandlerRegistry::notifyHasHandlersChanged(EventHandlerClass handlerClass, bool hasActiveHandlers)
 {
-    ScrollingCoordinator* scrollingCoordinator = m_frameHost->page().scrollingCoordinator();
+    ScrollingCoordinator* scrollingCoordinator = m_frameHost.page().scrollingCoordinator();
 
     switch (handlerClass) {
     case ScrollEvent:
@@ -243,7 +243,7 @@ void EventHandlerRegistry::notifyHasHandlersChanged(EventHandlerClass handlerCla
             scrollingCoordinator->updateHaveWheelEventHandlers();
         break;
     case TouchEvent:
-        m_frameHost->chromeClient().needTouchEvents(hasActiveHandlers);
+        m_frameHost.chromeClient().needTouchEvents(hasActiveHandlers);
         break;
 #if ENABLE(ASSERT)
     case EventsForTesting:
@@ -257,16 +257,18 @@ void EventHandlerRegistry::notifyHasHandlersChanged(EventHandlerClass handlerCla
 
 void EventHandlerRegistry::notifyDidAddOrRemoveEventHandlerTarget(EventHandlerClass handlerClass)
 {
-    ScrollingCoordinator* scrollingCoordinator = m_frameHost->page().scrollingCoordinator();
+    ScrollingCoordinator* scrollingCoordinator = m_frameHost.page().scrollingCoordinator();
     if (scrollingCoordinator && handlerClass == TouchEvent)
         scrollingCoordinator->touchEventTargetRectsDidChange();
 }
 
+#if 0 // BKTODO:
 DEFINE_TRACE(EventHandlerRegistry)
 {
     visitor->trace(m_frameHost);
-    ASSERT(false); // BKTODO: visitor->template registerWeakMembers<EventHandlerRegistry, &EventHandlerRegistry::clearWeakMembers>(this);
+    visitor->template registerWeakMembers<EventHandlerRegistry, &EventHandlerRegistry::clearWeakMembers>(this);
 }
+#endif
 
 void EventHandlerRegistry::clearWeakMembers(Visitor* visitor)
 {
@@ -326,10 +328,10 @@ void EventHandlerRegistry::checkConsistency() const
 #if ENABLE(ASSERT)
     for (size_t i = 0; i < EventHandlerClassCount; ++i) {
         EventHandlerClass handlerClass = static_cast<EventHandlerClass>(i);
-        ASSERT(false); // BKTODO:
-#if 0
         const EventTargetSet* targets = &m_targets[handlerClass];
         for (const auto& eventTarget : *targets) {
+            ASSERT(false); // BKTODO:
+#if 0
             if (Node* node = eventTarget.key->toNode()) {
                 // See the comment for |documentDetached| if either of these assertions fails.
                 ASSERT(node->document().frameHost());
@@ -341,8 +343,8 @@ void EventHandlerRegistry::checkConsistency() const
                 ASSERT(window->frame()->host());
                 ASSERT(window->frame()->host() == m_frameHost);
             }
-        }
 #endif
+        }
     }
 #endif // ENABLE(ASSERT)
 }

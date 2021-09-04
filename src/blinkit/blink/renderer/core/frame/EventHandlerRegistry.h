@@ -30,7 +30,7 @@ using EventTargetSet = std::unordered_map<EventTarget *, unsigned>;
 // Registry for keeping track of event handlers. Note that only handlers on
 // documents that can be rendered or can receive input (i.e., are attached to a
 // FrameHost) are registered here.
-class CORE_EXPORT EventHandlerRegistry final : public NoBaseWillBeGarbageCollectedFinalized<EventHandlerRegistry> {
+class CORE_EXPORT EventHandlerRegistry final {
     USING_FAST_MALLOC_WILL_BE_REMOVED(EventHandlerRegistry);
 public:
     explicit EventHandlerRegistry(FrameHost&);
@@ -72,7 +72,7 @@ public:
     // references to handlers that are no longer related to it.
     void documentDetached(Document&);
 
-    DECLARE_TRACE();
+    // BKTODO: DECLARE_TRACE();
     void clearWeakMembers(Visitor*);
 
 private:
@@ -110,7 +110,7 @@ private:
 
     void checkConsistency() const;
 
-    RawPtrWillBeMember<FrameHost> m_frameHost;
+    FrameHost &m_frameHost;
     EventTargetSet m_targets[EventHandlerClassCount];
 };
 
