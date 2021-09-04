@@ -153,7 +153,7 @@ private:
     // If true, automatically resize the layout view around its content.
     bool m_shouldAutoResize = false;
     std::unique_ptr<blink::Page> m_page;
-    std::unique_ptr<blink::LocalFrame> m_frame;
+    BlinKit::GCUniqueRoot<blink::LocalFrame> m_frame;
     SkColor m_baseBackgroundColor;
     std::unique_ptr<SkCanvas> m_canvas;
 
