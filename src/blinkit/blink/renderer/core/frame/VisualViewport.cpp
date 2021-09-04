@@ -78,7 +78,7 @@ using blink::GraphicsLayerFactory;
 namespace blink {
 
 VisualViewport::VisualViewport(FrameHost& owner)
-    : m_frameHost(&owner)
+    : m_frameHost(owner)
     , m_scale(1)
     , m_topControlsAdjustment(0)
     , m_maxPageScale(-1)
@@ -94,7 +94,7 @@ VisualViewport::~VisualViewport()
 
 DEFINE_TRACE(VisualViewport)
 {
-    visitor->trace(m_frameHost);
+    // BKTODO: visitor->trace(m_frameHost);
     ScrollableArea::trace(visitor);
 }
 

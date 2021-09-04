@@ -42,6 +42,7 @@
 #ifndef VisualViewport_h
 #define VisualViewport_h
 
+#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 #include "platform/geometry/FloatPoint.h"
 #include "platform/geometry/FloatRect.h"
@@ -71,12 +72,14 @@ class LocalFrame;
 // offset is set through the GraphicsLayer <-> CC sync mechanisms. Its contents is the page's
 // main FrameView, which corresponds to the outer viewport. The inner viewport is always contained
 // in the outer viewport and can pan within it.
-class CORE_EXPORT VisualViewport final : public NoBaseWillBeGarbageCollectedFinalized<VisualViewport>, public GraphicsLayerClient, public ScrollableArea {
+class CORE_EXPORT VisualViewport final : public GraphicsLayerClient
+                                       , public ScrollableArea
+{
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(VisualViewport);
 public:
-    static PassOwnPtrWillBeRawPtr<VisualViewport> create(FrameHost& host)
+    static GCUniqueRoot<VisualViewport> create(FrameHost& host)
     {
-        return adoptPtrWillBeNoop(new VisualViewport(host));
+        return BlinKit::WrapUniqueRoot(new VisualViewport(host));
     }
     ~VisualViewport() override;
 
@@ -231,11 +234,10 @@ private:
 
     FrameHost& frameHost() const
     {
-        ASSERT(m_frameHost);
-        return *m_frameHost;
+        return m_frameHost;
     }
 
-    RawPtrWillBeMember<FrameHost> m_frameHost;
+    FrameHost &m_frameHost;
     OwnPtr<GraphicsLayer> m_rootTransformLayer;
     OwnPtr<GraphicsLayer> m_innerViewportContainerLayer;
     OwnPtr<GraphicsLayer> m_overscrollElasticityLayer;
