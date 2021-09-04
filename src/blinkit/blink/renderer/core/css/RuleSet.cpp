@@ -135,10 +135,7 @@ RuleData::RuleData(StyleRule* rule, unsigned selectorIndex, unsigned position, A
 
 void RuleSet::addToRuleSet(const AtomicString& key, PendingRuleMap& map, const RuleData& ruleData)
 {
-    OwnPtrWillBeMember<WillBeHeapLinkedStack<RuleData>> &rules = map[key];
-    if (!rules)
-        rules = adoptPtrWillBeNoop(new WillBeHeapLinkedStack<RuleData>);
-    rules->push(ruleData);
+    map[key].push(ruleData);
 }
 
 static void extractValuesforSelector(const CSSSelector* selector, AtomicString& id, AtomicString& className, AtomicString& customPseudoElementName, AtomicString& tagName)
@@ -323,24 +320,27 @@ void RuleSet::addStyleRule(StyleRule* rule, AddRuleFlags addRuleFlags)
 
 void RuleSet::compactPendingRules(PendingRuleMap& pendingMap, CompactRuleMap& compactMap)
 {
-    for (auto& item : pendingMap)
+    auto it = pendingMap.begin();
+    while (pendingMap.end() != it)
     {
-        OwnPtrWillBeRawPtr<WillBeHeapLinkedStack<RuleData>> pendingRules = item.second.release();
+        GCLinkedStack<RuleData> &pendingRules = it->second;
 
-        RulesArray &compactRules = compactMap[item.first];
-        compactRules.reserve(pendingRules->size());
-        while (!pendingRules->isEmpty())
+        RulesArray &compactRules = compactMap[it->first];
+        compactRules.reserve(pendingRules.size());
+        while (!pendingRules.empty())
         {
-            compactRules.emplace_back(pendingRules->peek());
-            pendingRules->pop();
+            compactRules.emplace_back(pendingRules.top());
+            pendingRules.pop();
         }
+
+        it = pendingMap.erase(it);
     }
 }
 
 void RuleSet::compactRules()
 {
     ASSERT(m_pendingRules);
-    OwnPtrWillBeRawPtr<PendingRuleMaps> pendingRules = m_pendingRules.release();
+    GCUniqueRoot<PendingRuleMaps> pendingRules = std::move(m_pendingRules);
     compactPendingRules(pendingRules->idRules, m_idRules);
     compactPendingRules(pendingRules->classRules, m_classRules);
     compactPendingRules(pendingRules->tagRules, m_tagRules);
@@ -399,7 +399,8 @@ DEFINE_TRACE(RuleSet)
     visitor->trace(m_shadowDistributedRules);
     visitor->trace(m_viewportDependentMediaQueryResults);
     visitor->trace(m_deviceDependentMediaQueryResults);
-    visitor->trace(m_pendingRules);
+    if (m_pendingRules)
+        m_pendingRules->trace(visitor);
 #ifndef NDEBUG
     visitor->trace(m_allRules);
 #endif

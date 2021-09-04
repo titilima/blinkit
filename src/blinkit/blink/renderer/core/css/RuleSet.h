@@ -33,13 +33,15 @@
 #ifndef RuleSet_h
 #define RuleSet_h
 
+#include "blinkit/gc/gc_linked_stack.h"
+#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 #include "core/css/CSSKeyframesRule.h"
 #include "core/css/MediaQueryEvaluator.h"
 #include "core/css/RuleFeature.h"
 #include "core/css/StyleRule.h"
 #include "core/css/resolver/MediaQueryResult.h"
-#include "platform/heap/HeapLinkedStack.h"
+// BKTODO: #include "platform/heap/HeapLinkedStack.h"
 #include "platform/heap/HeapTerminatedArray.h"
 #include "wtf/Forward.h"
 #include "wtf/HashMap.h"
@@ -177,7 +179,7 @@ public:
     DECLARE_TRACE();
 
 private:
-    using PendingRuleMap = WillBeHeapHashMap<AtomicString, OwnPtrWillBeMember<WillBeHeapLinkedStack<RuleData>>>;
+    using PendingRuleMap = std::unordered_map<AtomicString, BlinKit::GCLinkedStack<RuleData>>;
     using CompactRuleMap = std::unordered_map<AtomicString, RulesArray>;
 
     RuleSet()
@@ -203,9 +205,9 @@ private:
     void compactRules();
     static void compactPendingRules(PendingRuleMap&, CompactRuleMap&);
 
-    class PendingRuleMaps : public NoBaseWillBeGarbageCollected<PendingRuleMaps> {
+    class PendingRuleMaps {
     public:
-        static PassOwnPtrWillBeRawPtr<PendingRuleMaps> create() { return adoptPtrWillBeNoop(new PendingRuleMaps); }
+        static GCUniqueRoot<PendingRuleMaps> create() { return BlinKit::WrapUniqueRoot(new PendingRuleMaps); }
 
         PendingRuleMap idRules;
         PendingRuleMap classRules;
@@ -248,7 +250,7 @@ private:
     MediaQueryResultList m_deviceDependentMediaQueryResults;
 
     unsigned m_ruleCount;
-    OwnPtrWillBeMember<PendingRuleMaps> m_pendingRules;
+    BlinKit::GCUniqueRoot<PendingRuleMaps> m_pendingRules;
 
 #ifndef NDEBUG
     WillBeHeapVector<RuleData> m_allRules;
