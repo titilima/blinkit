@@ -154,7 +154,7 @@ private:
         void destroyScrollbar(ScrollbarOrientation);
 
     private:
-        BlinKit::GCMember<PaintLayerScrollableArea> m_scrollableArea;
+        PaintLayerScrollableArea &m_scrollableArea;
 
         // The scrollbars associated with m_scrollableArea. Both can nullptr.
         RefPtrWillBeMember<Scrollbar> m_hBar;
@@ -168,9 +168,9 @@ private:
 public:
     // FIXME: We should pass in the LayoutBox but this opens a window
     // for crashers during PaintLayer setup (see crbug.com/368062).
-    static GCPassPtr<PaintLayerScrollableArea> create(PaintLayer& layer)
+    static std::unique_ptr<PaintLayerScrollableArea> create(PaintLayer& layer)
     {
-        return BlinKit::WrapLeaked(new PaintLayerScrollableArea(layer));
+        return zed::wrap_unique(new PaintLayerScrollableArea(layer));
     }
 
     ~PaintLayerScrollableArea() override;
