@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ViewportStyleResolver.h
+// Description: ViewportStyleResolver Class
+//      Author: Ziming Li
+//     Created: 2021-09-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Intel Corporation. All rights reserved.
  *
@@ -30,12 +41,13 @@
 #ifndef ViewportStyleResolver_h
 #define ViewportStyleResolver_h
 
+#include "blinkit/gc/gc_root.h"
 #include "core/CSSPropertyNames.h"
 #include "core/CoreExport.h"
 #include "core/css/RuleSet.h"
 #include "platform/Length.h"
-#include "wtf/RefCounted.h"
-#include "wtf/RefPtr.h"
+// BKTODO: #include "wtf/RefCounted.h"
+// BKTODO: #include "wtf/RefPtr.h"
 
 namespace blink {
 
@@ -43,13 +55,13 @@ class Document;
 class MutableStylePropertySet;
 class StyleRuleViewport;
 
-class CORE_EXPORT ViewportStyleResolver : public NoBaseWillBeGarbageCollected<ViewportStyleResolver> {
+class CORE_EXPORT ViewportStyleResolver {
     USING_FAST_MALLOC_WILL_BE_REMOVED(ViewportStyleResolver);
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(ViewportStyleResolver);
 public:
-    static PassOwnPtrWillBeRawPtr<ViewportStyleResolver> create(Document* document)
+    static GCUniqueRoot<ViewportStyleResolver> create(Document* document)
     {
-        return adoptPtrWillBeNoop(new ViewportStyleResolver(document));
+        return BlinKit::WrapUniqueRoot(new ViewportStyleResolver(document));
     }
 
     enum Origin { UserAgentOrigin, AuthorOrigin };
@@ -68,8 +80,8 @@ private:
     float viewportArgumentValue(CSSPropertyID) const;
     Length viewportLengthValue(CSSPropertyID) const;
 
-    RawPtrWillBeMember<Document> m_document;
-    RefPtrWillBeMember<MutableStylePropertySet> m_propertySet;
+    BlinKit::GCMember<Document> m_document;
+    BlinKit::GCMember<MutableStylePropertySet> m_propertySet;
     bool m_hasAuthorStyle;
 };
 

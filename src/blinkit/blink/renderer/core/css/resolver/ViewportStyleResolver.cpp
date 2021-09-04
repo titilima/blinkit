@@ -135,7 +135,7 @@ void ViewportStyleResolver::resolve()
 
     m_document->setViewportDescription(description);
 
-    m_propertySet = nullptr;
+    m_propertySet.clear();
     m_hasAuthorStyle = false;
 }
 
