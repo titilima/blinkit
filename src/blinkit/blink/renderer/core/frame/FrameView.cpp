@@ -215,7 +215,7 @@ DEFINE_TRACE(FrameView)
     visitor->trace(m_horizontalScrollbar);
     visitor->trace(m_verticalScrollbar);
     visitor->trace(m_children);
-    visitor->trace(m_viewportScrollableArea);
+    // BKTODO: visitor->trace(m_viewportScrollableArea);
 #endif
     Widget::trace(visitor);
     ScrollableArea::trace(visitor);

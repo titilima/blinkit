@@ -893,7 +893,7 @@ private:
     // Exists only on root frame.
     // TODO(bokan): crbug.com/484188. We should specialize FrameView for the
     // main frame.
-    OwnPtrWillBeMember<ScrollableArea> m_viewportScrollableArea;
+    std::unique_ptr<ScrollableArea> m_viewportScrollableArea;
 
     // This frame's bounds in the root frame's content coordinates, clipped
     // recursively through every ancestor view.
