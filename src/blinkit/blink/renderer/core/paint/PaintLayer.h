@@ -818,7 +818,7 @@ private:
     IntRect m_blockSelectionGapsBounds;
 
     OwnPtr<CompositedLayerMapping> m_compositedLayerMapping;
-    BlinKit::GCPersistentMember<PaintLayerScrollableArea> m_scrollableArea;
+    std::unique_ptr<PaintLayerScrollableArea> m_scrollableArea;
 
     CompositedLayerMapping* m_groupedMapping;
 
