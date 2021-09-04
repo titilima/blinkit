@@ -1599,7 +1599,7 @@ DEFINE_TRACE(StyleResolver)
     visitor->trace(m_viewportDependentMediaQueryResults);
     visitor->trace(m_deviceDependentMediaQueryResults);
     visitor->trace(m_selectorFilter);
-    visitor->trace(m_viewportStyleResolver);
+    m_viewportStyleResolver->trace(visitor);
     visitor->trace(m_features);
     visitor->trace(m_siblingRuleSet);
     visitor->trace(m_uncommonAttributeRuleSet);

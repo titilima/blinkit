@@ -252,7 +252,7 @@ private:
     BlinKit::GCMember<Document> m_document;
     SelectorFilter m_selectorFilter;
 
-    OwnPtrWillBeMember<ViewportStyleResolver> m_viewportStyleResolver;
+    BlinKit::GCUniqueRoot<ViewportStyleResolver> m_viewportStyleResolver;
 
     WillBeHeapListHashSet<RawPtrWillBeMember<CSSStyleSheet>, 16> m_pendingStyleSheets;
 
