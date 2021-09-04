@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleResolverParentScope.h
+// Description: StyleResolverParentScope Class
+//      Author: Ziming Li
+//     Created: 2021-09-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -29,7 +40,7 @@ private:
     RawPtrWillBeMember<Node> m_parent;
     bool m_pushed;
     StyleResolverParentScope* m_previous;
-    RawPtrWillBeMember<StyleResolver> m_resolver;
+    StyleResolver &m_resolver;
 
     static StyleResolverParentScope* s_currentScope;
 };
@@ -38,22 +49,22 @@ inline StyleResolverParentScope::StyleResolverParentScope(Node& parent)
     : m_parent(parent)
     , m_pushed(false)
     , m_previous(s_currentScope)
-    , m_resolver(parent.document().styleResolver())
+    , m_resolver(*(parent.document().styleResolver()))
 {
     ASSERT(parent.document().inStyleRecalc());
     ASSERT(parent.isElementNode() || parent.isShadowRoot());
     s_currentScope = this;
-    m_resolver->increaseStyleSharingDepth();
+    m_resolver.increaseStyleSharingDepth();
 }
 
 inline StyleResolverParentScope::~StyleResolverParentScope()
 {
     s_currentScope = m_previous;
-    m_resolver->decreaseStyleSharingDepth();
+    m_resolver.decreaseStyleSharingDepth();
     if (!m_pushed)
         return;
     if (parent().isElementNode())
-        m_resolver->selectorFilter().popParent(toElement(parent()));
+        m_resolver.selectorFilter().popParent(toElement(parent()));
 }
 
 inline void StyleResolverParentScope::ensureParentStackIsPushed()
@@ -69,7 +80,7 @@ inline void StyleResolverParentScope::pushParentIfNeeded()
     if (m_previous)
         m_previous->pushParentIfNeeded();
     if (parent().isElementNode())
-        m_resolver->selectorFilter().pushParent(toElement(parent()));
+        m_resolver.selectorFilter().pushParent(toElement(parent()));
     m_pushed = true;
 }
 
