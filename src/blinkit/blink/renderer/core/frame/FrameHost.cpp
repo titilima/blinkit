@@ -49,19 +49,21 @@
 #include "public/platform/Platform.h"
 // BKTODO: #include "public/platform/WebScheduler.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-PassOwnPtrWillBeRawPtr<FrameHost> FrameHost::create(Page& page)
+std::unique_ptr<FrameHost> FrameHost::create(Page& page)
 {
-    return adoptPtrWillBeNoop(new FrameHost(page));
+    return zed::wrap_unique(new FrameHost(page));
 }
 
 FrameHost::FrameHost(Page& page)
-    : m_page(&page)
+    : m_page(page)
     , m_topControls(TopControls::create(*this))
     , m_pageScaleConstraintsSet(PageScaleConstraintsSet::create())
     , m_visualViewport(VisualViewport::create(*this))
-    , m_eventHandlerRegistry(adoptPtrWillBeNoop(new EventHandlerRegistry(*this)))
+    , m_eventHandlerRegistry(std::make_unique<EventHandlerRegistry>(*this))
     // BKTODO: , m_consoleMessageStorage(ConsoleMessageStorage::create())
     , m_subframeCount(0)
 {
@@ -81,7 +83,7 @@ Settings& FrameHost::settings() const
 
 ChromeClient& FrameHost::chromeClient() const
 {
-    return m_page->chromeClient();
+    return m_page.chromeClient();
 }
 
 #if 0 // BKTODO:
@@ -93,7 +95,7 @@ UseCounter& FrameHost::useCounter() const
 
 float FrameHost::deviceScaleFactor() const
 {
-    return m_page->deviceScaleFactor();
+    return m_page.deviceScaleFactor();
 }
 
 TopControls& FrameHost::topControls() const
@@ -116,6 +118,7 @@ EventHandlerRegistry& FrameHost::eventHandlerRegistry() const
     return *m_eventHandlerRegistry;
 }
 
+#if 0 // BKTODO:
 ConsoleMessageStorage& FrameHost::consoleMessageStorage() const
 {
     return *m_consoleMessageStorage;
@@ -129,6 +132,7 @@ DEFINE_TRACE(FrameHost)
     visitor->trace(m_eventHandlerRegistry);
     visitor->trace(m_consoleMessageStorage);
 }
+#endif
 
 #if ENABLE(ASSERT)
 void checkFrameCountConsistency(int expectedFrameCount, Frame* frame)

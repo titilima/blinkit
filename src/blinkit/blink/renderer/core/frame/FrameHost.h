@@ -42,6 +42,7 @@
 #ifndef FrameHost_h
 #define FrameHost_h
 
+#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 #include "core/frame/PageScaleConstraintsSet.h"
 #include "core/frame/TopControls.h"
@@ -72,14 +73,14 @@ class Visitor;
 // browser-level concept and Blink core/ only knows about its LocalFrame (and FrameHost).
 // Separating Page from the rest of core/ through this indirection
 // allows us to slowly refactor Page without breaking the rest of core.
-class CORE_EXPORT FrameHost final : public NoBaseWillBeGarbageCollectedFinalized<FrameHost> {
+class CORE_EXPORT FrameHost final {
     WTF_MAKE_NONCOPYABLE(FrameHost); USING_FAST_MALLOC_WILL_BE_REMOVED(FrameHost);
 public:
-    static PassOwnPtrWillBeRawPtr<FrameHost> create(Page&);
+    static std::unique_ptr<FrameHost> create(Page&);
     ~FrameHost();
 
     // Careful: This function will eventually be removed.
-    Page& page() const { return *m_page; }
+    Page& page() const { return m_page; }
     // BKTODO: Settings& settings() const;
     ChromeClient& chromeClient() const;
     // BKTODO: UseCounter& useCounter() const;
@@ -97,9 +98,11 @@ public:
     const AtomicString& overrideEncoding() const { return m_overrideEncoding; }
     void setOverrideEncoding(const AtomicString& encoding) { m_overrideEncoding = encoding; }
 
+#if 0 // BKTODO:
     ConsoleMessageStorage& consoleMessageStorage() const;
 
     DECLARE_TRACE();
+#endif
 
     // Don't allow more than a certain number of frames in a page.
     // This seems like a reasonable upper bound, and otherwise mutually
@@ -116,12 +119,12 @@ public:
 private:
     explicit FrameHost(Page&);
 
-    RawPtrWillBeMember<Page> m_page;
-    const OwnPtrWillBeMember<TopControls> m_topControls;
-    const OwnPtr<PageScaleConstraintsSet> m_pageScaleConstraintsSet;
-    const OwnPtrWillBeMember<VisualViewport> m_visualViewport;
-    const OwnPtrWillBeMember<EventHandlerRegistry> m_eventHandlerRegistry;
-    const OwnPtrWillBeMember<ConsoleMessageStorage> m_consoleMessageStorage;
+    Page &m_page;
+    const std::unique_ptr<TopControls> m_topControls;
+    const std::unique_ptr<PageScaleConstraintsSet> m_pageScaleConstraintsSet;
+    const BlinKit::GCUniqueRoot<VisualViewport> m_visualViewport;
+    const std::unique_ptr<EventHandlerRegistry> m_eventHandlerRegistry;
+    // BKTODO: const OwnPtrWillBeMember<ConsoleMessageStorage> m_consoleMessageStorage;
 
     AtomicString m_overrideEncoding;
     int m_subframeCount;
