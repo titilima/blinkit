@@ -963,9 +963,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\style\NinePieceImage.cpp">
       <Filter>blink\renderer\core\style</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\style\SVGComputedStyle.cpp">
-      <Filter>blink\renderer\core\style</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleBackgroundData.cpp">
       <Filter>blink\renderer\core\style</Filter>
     </ClCompile>
@@ -1028,9 +1025,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\ImageOrientation.cpp">
       <Filter>blink\renderer\platform\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\style\SVGComputedStyleDefs.cpp">
-      <Filter>blink\renderer\core\style</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\style\StylePath.cpp">
       <Filter>blink\renderer\core\style</Filter>
@@ -4017,9 +4011,6 @@
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_lifecycle_observer.cpp">
       <Filter>gc</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\gc\gc_root_object.cpp">
-      <Filter>gc</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -4690,6 +4681,78 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_data_ref.h">
       <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\FrameHost.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ViewportAnchor.h">
+      <Filter>blink\renderer\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\TopControls.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\PageScaleConstraintsSet.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\EventHandlerRegistry.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollAnimatorBase.h">
+      <Filter>blink\renderer\platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollAnimator.h">
+      <Filter>blink\renderer\platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollAnimatorCompositorCoordinator.h">
+      <Filter>blink\renderer\platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\ComputedStyle.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSPrimitiveValueMappings.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\FrameView.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\Scrollbar.h">
+      <Filter>blink\renderer\platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleResolver.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleResolverParentScope.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\SharedStyleFinder.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_root.h">
+      <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\VisualViewport.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentStyleSheetCollection.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\MediaQueryEvaluator.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\MediaValues.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\MediaValuesDynamic.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\MediaValuesCached.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_linked_stack.h">
+      <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\StylePropertySet.h">
+      <Filter>blink\renderer\core\css</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
