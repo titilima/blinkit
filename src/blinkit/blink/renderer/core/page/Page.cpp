@@ -597,7 +597,7 @@ DEFINE_TRACE(Page)
     visitor->trace(m_mainFrame);
     visitor->trace(m_validationMessageClient);
     visitor->trace(m_multisamplingChangedObservers);
-    visitor->trace(m_frameHost);
+    // BKTODO: visitor->trace(m_frameHost);
     // BKTODO: visitor->trace(m_memoryPurgeController);
     HeapSupplementable<Page>::trace(visitor);
 #endif

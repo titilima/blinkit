@@ -314,7 +314,7 @@ private:
 
     // A pointer to all the interfaces provided to in-process Frames for this Page.
     // FIXME: Most of the members of Page should move onto FrameHost.
-    OwnPtrWillBeMember<FrameHost> m_frameHost;
+    std::unique_ptr<FrameHost> m_frameHost;
 
     // BKTODO: OwnPtrWillBeMember<MemoryPurgeController> m_memoryPurgeController;
 };
