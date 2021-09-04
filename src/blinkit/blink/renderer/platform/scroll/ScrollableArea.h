@@ -78,7 +78,7 @@ enum IncludeScrollbarsInRect {
 // also from 'platform' as a result. Bringing about duplicate DummyBases
 // as core also exports same; with component build linking fails as a
 // result. Hence the workaround of not using a transition type.
-class PLATFORM_EXPORT ScrollableArea : public BlinKit::GCObject {
+class PLATFORM_EXPORT ScrollableArea {
 #else
 class PLATFORM_EXPORT ScrollableArea {
 #endif
@@ -343,7 +343,7 @@ private:
     virtual int documentStep(ScrollbarOrientation) const;
     virtual float pixelStep(ScrollbarOrientation) const;
 
-    mutable OwnPtrWillBeMember<ScrollAnimatorBase> m_scrollAnimator;
+    mutable std::unique_ptr<ScrollAnimatorBase> m_scrollAnimator;
     mutable OwnPtrWillBeMember<ProgrammaticScrollAnimator> m_programmaticScrollAnimator;
 
     unsigned m_inLiveResize : 1;
