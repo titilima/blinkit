@@ -45,7 +45,10 @@ GCVisitor::~GCVisitor(void)
     {
         if (slots.size() < o->m_refCnt)
             continue; // Still retained by others.
+
         ASSERT(o->m_refCnt == slots.size());
+        if (1 == o->m_refCnt)
+            continue; // Leave it to the dtor.
 
         for (void **slot : slots)
             *slot = nullptr;
