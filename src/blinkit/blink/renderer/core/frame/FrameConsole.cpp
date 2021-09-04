@@ -191,9 +191,13 @@ void FrameConsole::unmute()
 
 ConsoleMessageStorage* FrameConsole::messageStorage()
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!m_frame->host())
         return nullptr;
     return &m_frame->host()->consoleMessageStorage();
+#endif
 }
 
 void FrameConsole::clearMessages()
