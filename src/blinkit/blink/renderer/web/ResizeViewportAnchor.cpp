@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResizeViewportAnchor.cpp
+// Description: ViewportAnchor Class
+//      Author: Ziming Li
+//     Created: 2021-09-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -20,7 +31,7 @@ ResizeViewportAnchor::ResizeViewportAnchor(FrameView& rootFrameView, VisualViewp
 
 ResizeViewportAnchor::~ResizeViewportAnchor()
 {
-    m_rootFrameView->scrollableArea()->setScrollPosition(m_visualViewportInDocument, ProgrammaticScroll);
+    m_rootFrameView.scrollableArea()->setScrollPosition(m_visualViewportInDocument, ProgrammaticScroll);
 }
 
 } // namespace blink
