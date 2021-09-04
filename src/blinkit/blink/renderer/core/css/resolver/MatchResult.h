@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MatchResult.h
+// Description: MatchResult Class
+//      Author: Ziming Li
+//     Created: 2021-09-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -41,7 +52,7 @@ public:
 
     DECLARE_TRACE();
 
-    RefPtrWillBeMember<StylePropertySet> properties;
+    BlinKit::GCMember<StylePropertySet> properties;
 
     union {
         struct {

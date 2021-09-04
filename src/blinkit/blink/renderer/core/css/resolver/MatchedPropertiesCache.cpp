@@ -77,19 +77,18 @@ const CachedMatchedProperties* MatchedPropertiesCache::find(unsigned hash, const
     Cache::iterator it = m_cache.find(hash);
     if (it == m_cache.end())
         return nullptr;
-    CachedMatchedProperties* cacheItem = it->second.get();
-    ASSERT(cacheItem);
+    CachedMatchedProperties &cacheItem = it->second;
 
     size_t size = properties.size();
-    if (size != cacheItem->matchedProperties.size())
+    if (size != cacheItem.matchedProperties.size())
         return nullptr;
-    if (cacheItem->computedStyle->insideLink() != styleResolverState.style()->insideLink())
+    if (cacheItem.computedStyle->insideLink() != styleResolverState.style()->insideLink())
         return nullptr;
     for (size_t i = 0; i < size; ++i) {
-        if (properties[i] != cacheItem->matchedProperties[i])
+        if (properties[i] != cacheItem.matchedProperties[i])
             return nullptr;
     }
-    return cacheItem;
+    return &cacheItem;
 }
 
 void MatchedPropertiesCache::add(const ComputedStyle& style, const ComputedStyle& parentStyle, unsigned hash, const MatchedPropertiesVector& properties)
@@ -104,13 +103,9 @@ void MatchedPropertiesCache::add(const ComputedStyle& style, const ComputedStyle
 #endif
 
     ASSERT(hash);
-    Member<CachedMatchedProperties> &cacheItem = m_cache[hash];
-    if (!cacheItem)
-        cacheItem = adoptPtrWillBeNoop(new CachedMatchedProperties);
-    else
-        cacheItem->clear();
-
-    cacheItem->set(style, parentStyle, properties);
+    CachedMatchedProperties &cacheItem = m_cache[hash];
+    cacheItem.clear();
+    cacheItem.set(style, parentStyle, properties);
 }
 
 void MatchedPropertiesCache::clear()
@@ -119,7 +114,7 @@ void MatchedPropertiesCache::clear()
     // destructors in the properties (e.g., ~FontFallbackList) expect that
     // the destructors are called promptly without relying on a GC timing.
     for (auto& cacheEntry : m_cache) {
-        cacheEntry.second->clear();
+        cacheEntry.second.clear();
     }
     m_cache.clear();
 }
@@ -128,8 +123,8 @@ void MatchedPropertiesCache::clearViewportDependent()
 {
     for (auto it = m_cache.begin(); m_cache.end() != it; ++it)
     {
-        CachedMatchedProperties *cacheItem = it->second.get();
-        if (cacheItem->computedStyle->hasViewportUnits())
+        CachedMatchedProperties &cacheItem = it->second;
+        if (cacheItem.computedStyle->hasViewportUnits())
             it = m_cache.erase(it);
     }
 }

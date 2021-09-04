@@ -47,7 +47,7 @@ namespace blink {
 class ComputedStyle;
 class StyleResolverState;
 
-class CachedMatchedProperties final : public NoBaseWillBeGarbageCollectedFinalized<CachedMatchedProperties> {
+class CachedMatchedProperties final {
     USING_FAST_MALLOC_WILL_BE_REMOVED(CachedMatchedProperties);
 public:
     std::vector<MatchedProperties> matchedProperties;
@@ -113,7 +113,7 @@ public:
     MatchedPropertiesCache();
     ~MatchedPropertiesCache()
     {
-        ASSERT(false); // BKTODO: ASSERT(m_cache.isEmpty());
+        ASSERT(m_cache.empty());
     }
 
     const CachedMatchedProperties* find(unsigned hash, const StyleResolverState&, const MatchedPropertiesVector&);
@@ -128,7 +128,7 @@ public:
 
 private:
 #if ENABLE(OILPAN)
-    using Cache = std::unordered_map<unsigned, Member<CachedMatchedProperties>>;
+    using Cache = std::unordered_map<unsigned, CachedMatchedProperties>;
 #else
     // Every N additions to the matched declaration cache trigger a sweep where entries holding
     // the last reference to a style declaration are garbage collected.
