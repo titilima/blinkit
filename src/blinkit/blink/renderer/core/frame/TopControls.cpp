@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TopControls.cpp
+// Description: TopControls Class
+//      Author: Ziming Li
+//     Created: 2021-09-02
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -12,7 +23,7 @@
 namespace blink {
 
 TopControls::TopControls(const FrameHost& frameHost)
-    : m_frameHost(&frameHost)
+    : m_frameHost(frameHost)
     , m_height(0)
     , m_shownRatio(0)
     , m_baselineContentOffset(0)
@@ -26,10 +37,12 @@ TopControls::~TopControls()
 {
 }
 
+#if 0 // BKTODO:
 DEFINE_TRACE(TopControls)
 {
     visitor->trace(m_frameHost);
 }
+#endif
 
 void TopControls::scrollBegin()
 {
@@ -45,7 +58,7 @@ FloatSize TopControls::scrollBy(FloatSize pendingDelta)
         return pendingDelta;
 
     float oldOffset = contentOffset();
-    float pageScale = m_frameHost->visualViewport().scale();
+    float pageScale = m_frameHost.visualViewport().scale();
 
     // Update accumulated vertical scroll and apply it to top controls
     // Compute scroll delta in viewport space by applying page scale
@@ -93,7 +106,7 @@ void TopControls::setShownRatio(float shownRatio)
         return;
 
     m_shownRatio = shownRatio;
-    m_frameHost->chromeClient().didUpdateTopControls();
+    m_frameHost.chromeClient().didUpdateTopControls();
 }
 
 void TopControls::updateConstraints(WebTopControlsState constraints)
@@ -108,7 +121,7 @@ void TopControls::setHeight(float height, bool shrinkViewport)
 
     m_height = height;
     m_shrinkViewport = shrinkViewport;
-    m_frameHost->chromeClient().didUpdateTopControls();
+    m_frameHost.chromeClient().didUpdateTopControls();
 }
 
 } // namespace blink

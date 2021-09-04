@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TopControls.h
+// Description: TopControls Class
+//      Author: Ziming Li
+//     Created: 2021-09-02
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,8 +19,10 @@
 #include "core/CoreExport.h"
 #include "platform/heap/Handle.h"
 #include "public/platform/WebTopControlsState.h"
+#if 0 // BKTODO:
 #include "wtf/OwnPtr.h"
 #include "wtf/PassOwnPtr.h"
+#endif
 
 namespace blink {
 class FrameHost;
@@ -19,16 +32,16 @@ class FloatSize;
 // duplicating cc::TopControlsManager behaviour.  Top controls' self-animation
 // to completion is still handled by compositor and kicks in when scrolling is
 // complete (i.e, upon ScrollEnd or FlingEnd).
-class CORE_EXPORT TopControls final : public NoBaseWillBeGarbageCollectedFinalized<TopControls> {
+class CORE_EXPORT TopControls final {
     USING_FAST_MALLOC_WILL_BE_REMOVED(TopControls);
 public:
-    static PassOwnPtrWillBeRawPtr<TopControls> create(const FrameHost& host)
+    static std::unique_ptr<TopControls> create(const FrameHost& host)
     {
-        return adoptPtrWillBeNoop(new TopControls(host));
+        return zed::wrap_unique(new TopControls(host));
     }
 
     ~TopControls();
-    DECLARE_TRACE();
+    // BKTODO: DECLARE_TRACE();
 
     // The amount that the viewport was shrunk by to accommodate the top
     // controls.
@@ -55,7 +68,7 @@ private:
     explicit TopControls(const FrameHost&);
     void resetBaseline();
 
-    RawPtrWillBeMember<const FrameHost> m_frameHost;
+    const FrameHost &m_frameHost;
 
     // The top controls height regardless of whether it is visible or not.
     float m_height;
