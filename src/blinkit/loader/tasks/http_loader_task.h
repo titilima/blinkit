@@ -27,7 +27,7 @@ namespace BlinKit {
 class HTTPLoaderTask final : public LoaderTask, public ControllerImpl
 {
 public:
-    HTTPLoaderTask(const blink::ResourceRequest &request, const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
+    HTTPLoaderTask(const blink::ResourceRequest &request, blink::WebURLLoader *loader, const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
     ~HTTPLoaderTask(void) override;
 private:
     bool CreateRequest(const std::string &URL);
@@ -47,7 +47,7 @@ private:
     static bool_t BKAPI RequestRedirectImpl(BkResponse response, BkRequest request, void *userData);
 
     // LoaderTask
-    const zed::url& URI(void) const override { return m_resourceRequest.url(); }
+    const blink::KURL& URI(void) const override { return m_resourceRequest.url(); }
     int PreProcess(void) override;
     int PerformRequest(void) override;
     int PopulateResponse(blink::ResourceResponse &resourceResponse, std::string_view &body) const override;

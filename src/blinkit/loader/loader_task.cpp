@@ -16,19 +16,18 @@
 #include "blinkit/blink/public/platform/WebURLLoaderClient.h"
 #include "blinkit/blink/renderer/platform/network/ResourceError.h"
 #include "blinkit/blink/renderer/platform/network/ResourceRequest.h"
+#include "blinkit/blink/renderer/platform/network/ResourceResponse.h"
 #include "blinkit/blink/renderer/wtf/MainThread.h"
-#if 0 // BKTODO:
-#include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
-#ifndef BLINKIT_CRAWLER_ONLY
-#   include "third_party/blink/renderer/platform/network/mime/mime_type_registry.h"
+#ifdef BLINKIT_UI_ENABLED
+#   include "blinkit/blink/renderer/platform/MIMETypeRegistry.h"
 #endif
-#endif
+
 using namespace blink;
 
 namespace BlinKit {
 
-LoaderTask::LoaderTask(const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client)
-    : m_taskRunner(taskRunner), m_client(client)
+LoaderTask::LoaderTask(WebURLLoader *loader, const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client)
+    : GCGuard(client), m_loader(loader), m_taskRunner(taskRunner), m_client(client)
 {
 }
 
@@ -45,27 +44,23 @@ void LoaderTask::Run(void)
         {
             ASSERT(isMainThread());
 
-            ASSERT(false); // BKTODO:
-#if 0
-            const GURL &u = URI();
-
-            ResourceResponse resourceResponse(u);
+            ResourceResponse response;
+            response.setURL(URI());
             std::string_view body;
-            int r = PopulateResponse(resourceResponse, body);
+            int r = PopulateResponse(response, body);
             if (BK_ERR_CANCELLED == r)
                 return; // The task will process the response itself.
 
             if (BK_ERR_SUCCESS == r)
             {
-                m_client->DidReceiveResponse(resourceResponse);
-                m_client->DidReceiveData(body.data(), body.length());
-                m_client->DidFinishLoading();
+                m_client->didReceiveResponse(m_loader, response);
+                m_client->didReceiveData(m_loader, body.data(), body.length(), 0);
+                m_client->didFinishLoading(m_loader, body.length());
             }
             else
             {
-                m_client->DidFail(ResourceError(r, u));
+                ASSERT(false); // BKTODO:  m_client->DidFail(ResourceError(r, u));
             }
-#endif
             delete this;
         };
         m_taskRunner->postTask(BLINK_FROM_HERE, callback);
@@ -103,27 +98,23 @@ void LoaderTask::ReportError(WebURLLoaderClient *client, WebTaskRunner *taskRunn
 }
 
 #ifdef BLINKIT_UI_ENABLED
-LoaderTaskForUI::LoaderTaskForUI(const ResourceRequest &request, const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client)
-    : LoaderTask(taskRunner, client)
+LoaderTaskForUI::LoaderTaskForUI(const ResourceRequest &request, blink::WebURLLoader *loader, const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client)
+    : LoaderTask(loader, taskRunner, client)
     , m_URI(request.url())
-    // BKTODO: , m_scheduler(request.View())
+    , m_scheduler(request.View())
 {
 }
 
 AtomicString LoaderTaskForUI::MIMEType(void) const
 {
-    ASSERT(false); // BKTODO:
-    return nullAtom;
-#if 0
     const std::string fileName = m_URI.ExtractFileName();
 
     size_t p = fileName.rfind('.');
     if (std::string::npos == p)
         return AtomicString::fromUTF8("application/x-unknown-content-type");
 
-    String ret = MIMETypeRegistry::GetWellKnownMIMETypeForExtension(String::FromUTF8(fileName.data() + p + 1));
+    String ret = MIMETypeRegistry::getMIMETypeForExtension(String::fromUTF8(fileName.data() + p + 1));
     return AtomicString(ret);
-#endif
 }
 #endif
 

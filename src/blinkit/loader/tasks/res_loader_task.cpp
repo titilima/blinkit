@@ -18,8 +18,8 @@ using namespace blink;
 
 namespace BlinKit {
 
-ResLoaderTask::ResLoaderTask(const ResourceRequest &request, const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client)
-    : LoaderTaskForUI(request, taskRunner, client)
+ResLoaderTask::ResLoaderTask(const ResourceRequest &request, WebURLLoader *loader, const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client)
+    : LoaderTaskForUI(request, loader, taskRunner, client)
 {
     // Nothing
 }

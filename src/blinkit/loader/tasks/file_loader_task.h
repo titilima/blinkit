@@ -21,7 +21,7 @@ namespace BlinKit {
 class FileLoaderTask final : public LoaderTaskForUI
 {
 public:
-    FileLoaderTask(const blink::ResourceRequest &request, const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
+    FileLoaderTask(const blink::ResourceRequest &request, blink::WebURLLoader *loader, const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
 private:
     static int LoadFileData(const zed::url &URI, std::string &dst);
 

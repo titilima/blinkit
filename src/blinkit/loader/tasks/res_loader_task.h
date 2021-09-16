@@ -21,7 +21,7 @@ namespace BlinKit {
 class ResLoaderTask final : public LoaderTaskForUI
 {
 public:
-    ResLoaderTask(const blink::ResourceRequest &request, const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
+    ResLoaderTask(const blink::ResourceRequest &request, blink::WebURLLoader *loader, const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
 private:
     static int LoadResData(const zed::url &URI, std::string &dst);
 

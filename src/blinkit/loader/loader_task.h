@@ -16,54 +16,59 @@
 
 #include <string_view>
 #include "bk_def.h"
-#include "third_party/zed/include/zed/net/url.hpp"
+#include "blinkit/blink/renderer/platform/weborigin/KURL.h"
+#include "blinkit/gc/gc_def.h"
 #ifdef BLINKIT_UI_ENABLED
 #   include "blinkit/blink/renderer/wtf/text/AtomicString.h"
+#   include "blinkit/ui/rendering_scheduler.h"
 #endif
 
 namespace blink {
 class ResourceRequest;
 class ResourceResponse;
 class WebTaskRunner;
+class WebURLLoader;
 class WebURLLoaderClient;
 }
 
 namespace BlinKit {
 
-class LoaderTask
+class LoaderTask : private GCGuard
 {
 public:
     virtual ~LoaderTask(void);
 
     void Run(void);
 
-    virtual const zed::url& URI(void) const = 0;
+    virtual const blink::KURL& URI(void) const = 0;
     virtual int PreProcess(void) { return BK_ERR_SUCCESS; }
 
     static void ReportError(blink::WebURLLoaderClient *client, blink::WebTaskRunner *taskRunner, int errorCode, const zed::url &URL);
 protected:
-    LoaderTask(const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
+    LoaderTask(blink::WebURLLoader *loader, const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
 
     const std::shared_ptr<blink::WebTaskRunner> m_taskRunner;
     blink::WebURLLoaderClient *m_client;
 private:
     virtual int PerformRequest(void) = 0;
     virtual int PopulateResponse(blink::ResourceResponse &resourceResponse, std::string_view &body) const = 0;
+
+    blink::WebURLLoader *m_loader;
 };
 
 #ifdef BLINKIT_UI_ENABLED
 class LoaderTaskForUI : public LoaderTask
 {
 public:
-    const zed::url& URI(void) const final { return m_URI; }
+    const blink::KURL& URI(void) const final { return m_URI; }
 protected:
-    LoaderTaskForUI(const blink::ResourceRequest &request, const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
+    LoaderTaskForUI(const blink::ResourceRequest &request, blink::WebURLLoader *loader, const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
 
     AtomicString MIMEType(void) const;
 
-    const zed::url m_URI;
+    const blink::KURL m_URI;
     std::string m_data;
-    // BKTODO: ScopedRenderingScheduler m_scheduler;
+    ScopedRenderingScheduler m_scheduler;
 };
 #endif
 
