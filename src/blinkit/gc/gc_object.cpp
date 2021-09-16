@@ -12,8 +12,8 @@
 #include "./gc_def.h"
 
 #include "blinkit/blink/renderer/wtf/MainThread.h"
+#include "blinkit/gc/garbage_collector.h"
 #include "blinkit/gc/gc_heap.h"
-#include "blinkit/gc/gc_visitor.h"
 
 namespace BlinKit {
 
@@ -44,13 +44,16 @@ void GCObject::IncRef(void)
     ++m_refCnt;
 }
 
-void GCObject::Release(void)
+void GCObject::Release(GCOption option)
 {
-    if (0 == DecRef())
+    if (DecRef() > 0)
     {
-        GCVisitor visitor(this);
-        this->trace(&visitor);
+        if (GCOption::Auto == option)
+            return;
     }
+
+    ASSERT(0 == m_refCnt || GCOption::Full == option);
+    GarbageCollector::PerformOnMember(*this);
 }
 
 } // namespace BlinKit

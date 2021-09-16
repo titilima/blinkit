@@ -12,7 +12,7 @@
 #include "./gc_heap.h"
 
 #include "blinkit/blink/renderer/wtf/MainThread.h"
-#include "blinkit/gc/gc_visitor.h"
+#include "blinkit/gc/garbage_collector.h"
 #include "third_party/zed/include/zed/container_utilites.hpp"
 
 namespace BlinKit {
@@ -48,8 +48,7 @@ void GCHeap::CleanupGlobalObjects(void)
         o->DecRef();
         ASSERT(0 == o->m_refCnt);
 
-        GCVisitor visitor(o);
-        o->trace(&visitor);
+        GarbageCollector::PerformOnMember(*o);
     }
 }
 
@@ -68,8 +67,7 @@ void GCHeap::CleanupPersistentObjects(void)
 
         it = m_persistentObjects.erase(it);
 
-        GCVisitor visitor(o);
-        o->trace(&visitor);
+        GarbageCollector::PerformOnMember(*o);
     }
 }
 
@@ -109,8 +107,7 @@ void GCHeap::ReleasePersistentObject(GCObject &o, void **slot)
     if (o.DecRef() > 0)
         return;
 
-    GCVisitor visitor(&o);
-    o.trace(&visitor);
+    GarbageCollector::PerformOnMember(o);
 }
 
 void GCHeap::RemoveLifecycleObserver(GCLifecycleObserver *ob)

@@ -21,8 +21,7 @@ namespace BlinKit {
 struct GCSession
 {
     using Slots = std::unordered_set<void **>;
-
-    std::vector<GCObject *> RootMembers;
+    GCObject *RootMember = nullptr;
     std::unordered_map<GCObject *, Slots> MemberObjects;
 };
 

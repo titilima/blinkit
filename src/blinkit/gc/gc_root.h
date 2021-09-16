@@ -13,8 +13,7 @@
 #ifndef BLINKIT_BLINKIT_GC_ROOT_H
 #define BLINKIT_BLINKIT_GC_ROOT_H
 
-#include "blinkit/gc/gc_def.h"
-#include "blinkit/gc/gc_visitor.h"
+#include "blinkit/gc/garbage_collector.h"
 
 namespace BlinKit {
 
@@ -23,10 +22,7 @@ struct GCRootDeleter final : public std::default_delete<T>
 {
     void operator()(T *p) const
     {
-        {
-            GCVisitor visitor;
-            p->trace(&visitor);
-        }
+        GarbageCollector::PerformOnRoot(*p);
         std::default_delete<T>::operator()(p);
     }
 };
@@ -38,6 +34,12 @@ template <class T>
 GCUniqueRoot<T> WrapUniqueRoot(T *p)
 {
     return GCUniqueRoot<T>(p);
+}
+
+template <class T, class... Types>
+GCUniqueRoot<T> MakeUniqueRoot(Types&&... args)
+{
+    return WrapUniqueRoot(new T(std::forward<Types>(args)...));
 }
 
 } // namespace BlinKit

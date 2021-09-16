@@ -27,10 +27,13 @@ class Visitor;
 namespace BlinKit {
 
 template <class> class GCMember;
+class GCStub;
 
 #ifndef NDEBUG
 bool IsCollectingGarbage(void);
 #endif
+
+enum class GCOption { Auto, Full };
 
 /**
  * GCObject
@@ -41,14 +44,17 @@ class GCObject
 public:
     virtual ~GCObject(void);
 
+    enum Category { Default, TreeNode };
+    virtual Category GCCategory(void) const { return Default; }
+    virtual bool IsRetainedInTree(void) const { return false; }
+
     bool IsUnique(void) const
     {
         ASSERT(0 != m_refCnt);
         return 1 == m_refCnt;
     }
-
     void IncRef(void);
-    void Release(void);
+    void Release(GCOption option = GCOption::Auto);
 
     static GCObject* GCCast(GCObject *o)
     {
@@ -59,15 +65,26 @@ public:
 protected:
     GCObject(void);
 private:
+    friend class GCCleanupVisitor;
     friend class GCHeap;
     template <class T> friend class GCMember;
-    friend class GCVisitor;
+    friend class GarbageCollector;
 
     GCObject(const GCObject &o) = delete;
 
     unsigned DecRef(void);
 
     unsigned m_refCnt = 0;
+};
+
+class GCGuard
+{
+public:
+    GCGuard(GCObject &o) : m_guardedObject(o) { m_guardedObject.IncRef(); }
+    GCGuard(GCStub *stub);
+    ~GCGuard(void) { m_guardedObject.Release(); }
+private:
+    GCObject &m_guardedObject;
 };
 
 /**
@@ -237,7 +254,7 @@ protected:
 
     GCObject* AccessGCObject(void)
     {
-        return T::GCCast(const_cast<std::remove_const_t<T> *>(this->m_ptr));
+        return static_cast<GCObject *>(const_cast<std::remove_const_t<T> *>(this->m_ptr));
     }
     void** GetSlot(void)
     {
@@ -278,13 +295,13 @@ public:
     {
         ASSERT(!IsCollectingGarbage());
         if (nullptr != this->m_ptr)
-            Release();
+            Release(GCOption::Auto);
     }
 
     GCMember& operator=(const GCMember<T> &other)
     {
         if (nullptr != this->m_ptr)
-            Release();
+            Release(GCOption::Auto);
         GCMemberBase<T>::operator=(other.get());
         if (nullptr != this->m_ptr)
             IncRef();
@@ -294,9 +311,9 @@ public:
     GCMember& operator=(U *other)
     {
         if (nullptr != other)
-            U::GCCast(other)->IncRef();
+            static_cast<GCObject *>(other)->IncRef();
         if (nullptr != this->m_ptr)
-            Release();
+            Release(GCOption::Auto);
         GCMemberBase<T>::operator=(other);
         return *this;
     }
@@ -304,9 +321,9 @@ public:
     GCMember& operator=(const WTF::RawPtr<U> &other)
     {
         if (other)
-            U::GCCast(other)->IncRef();
+            static_cast<GCObject *>(other)->IncRef();
         if (nullptr != this->m_ptr)
-            Release();
+            Release(GCOption::Auto);
         GCMemberBase<T>::operator=(other.get());
         return *this;
     }
@@ -316,7 +333,7 @@ public:
         if (this->m_ptr != other.m_ptr)
         {
             if (nullptr != this->m_ptr)
-                Release();
+                Release(GCOption::Auto);
             other.PassTo(this->m_ptr);
             if (nullptr != this->m_ptr)
                 IncRef();
@@ -333,18 +350,20 @@ public:
         T *ret = this->m_ptr;
         if (nullptr != ret)
         {
-            DecRef();
+            this->AccessGCObject()->DecRef();
             this->m_ptr = nullptr;
         }
         return WrapLeaked(ret);
     }
-    void clear(void)
+    void clear(GCOption option = GCOption::Auto)
     {
         if (nullptr != this->m_ptr)
-        {
-            Release();
-            this->m_ptr = nullptr;
-        }
+            Release(option);
+    }
+    void swap(GCMember<T> &o)
+    {
+        ASSERT(!IsCollectingGarbage());
+        std::swap(this->m_ptr, o.m_ptr);
     }
 private:
     void IncRef(void)
@@ -352,15 +371,12 @@ private:
         ASSERT(nullptr != this->m_ptr);
         this->AccessGCObject()->IncRef();
     }
-    void DecRef(void)
+    void Release(GCOption option)
     {
         ASSERT(nullptr != this->m_ptr);
-        this->AccessGCObject()->DecRef();
-    }
-    void Release(void)
-    {
-        ASSERT(nullptr != this->m_ptr);
-        this->AccessGCObject()->Release();
+        GCObject *o = this->AccessGCObject();
+        this->m_ptr = nullptr;
+        o->Release(option);
     }
 };
 
@@ -480,6 +496,8 @@ private:
 /**
  * Implementations
  */
+
+inline GCGuard::GCGuard(GCStub *stub) : GCGuard(*stub->ObjectForGC()) {}
 
 template <class T>
 template <class U>
