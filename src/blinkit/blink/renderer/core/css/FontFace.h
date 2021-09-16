@@ -76,8 +76,6 @@ public:
 
     ~FontFace();
 
-    BLINKIT_DEFINE_GC_CASTER(FontFace)
-
     const AtomicString& family() const { return m_family; }
     String style() const;
     String weight() const;

@@ -51,8 +51,6 @@ public:
     StyleSheet() { }
     virtual ~StyleSheet();
 
-    BLINKIT_DEFINE_GC_CASTER(StyleSheet);
-
     virtual bool disabled() const = 0;
     virtual void setDisabled(bool) = 0;
     virtual Node* ownerNode() const = 0;

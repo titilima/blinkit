@@ -88,8 +88,6 @@ public:
 
     ~StyleEngine();
 
-    BLINKIT_DEFINE_GC_CASTER(StyleEngine)
-
 #if !ENABLE(OILPAN)
     void detachFromDocument();
 #endif

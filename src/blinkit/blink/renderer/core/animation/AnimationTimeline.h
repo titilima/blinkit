@@ -76,8 +76,6 @@ public:
     ~AnimationTimeline();
     void dispose();
 
-    BLINKIT_DEFINE_GC_CASTER(AnimationTimeline)
-
     void serviceAnimations(TimingUpdateReason);
     void scheduleNextService();
 
