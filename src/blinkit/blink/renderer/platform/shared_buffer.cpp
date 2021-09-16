@@ -55,8 +55,20 @@ std::shared_ptr<SharedBuffer> SharedBuffer::create(const unsigned char* data, si
 
 size_t SharedBuffer::getSomeData(const char *&data, size_t position) const
 {
-    ASSERT(false); // BKTODO:
-    return 0;
+    if (position >= m_data.size())
+    {
+        data = nullptr;
+        return 0;
+    }
+
+    ASSERT(position < m_data.size());
+    data = m_data.data();
+    return m_data.size();
+}
+
+bool SharedBuffer::isLocked(void) const
+{
+    return true; // BKTODO: Check the logic.
 }
 
 } // namespace blink

@@ -30,6 +30,9 @@ public:
     size_t getSomeData(const char *&data, size_t position) const;
 
     void append(const char *data, size_t length);
+    void clear(void) { m_data.clear(); }
+
+    bool isLocked(void) const;
 private:
     SharedBuffer(void) = default;
     SharedBuffer(const char *data, size_t length);
