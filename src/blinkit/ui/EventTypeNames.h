@@ -61,6 +61,7 @@ CORE_EXPORT extern const WTF::AtomicString& mouseover;
 CORE_EXPORT extern const WTF::AtomicString& mouseup;
 CORE_EXPORT extern const WTF::AtomicString& mousewheel;
 CORE_EXPORT extern const WTF::AtomicString& pagehide;
+CORE_EXPORT extern const WTF::AtomicString& pageshow;
 CORE_EXPORT extern const WTF::AtomicString& paste;
 CORE_EXPORT extern const WTF::AtomicString& readystatechange;
 CORE_EXPORT extern const WTF::AtomicString& reset;
@@ -81,7 +82,7 @@ CORE_EXPORT extern const WTF::AtomicString& webkitEditableContentChanged;
 CORE_EXPORT extern const WTF::AtomicString& webkitvisibilitychange;
 CORE_EXPORT extern const WTF::AtomicString& wheel;
 
-const unsigned EventTypeNamesCount = 66;
+const unsigned EventTypeNamesCount = 67;
 
 CORE_EXPORT void init();
 

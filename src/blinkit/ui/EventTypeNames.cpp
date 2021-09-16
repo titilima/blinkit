@@ -63,25 +63,26 @@ const AtomicString& mouseover = reinterpret_cast<AtomicString*>(&NamesStorage)[4
 const AtomicString& mouseup = reinterpret_cast<AtomicString*>(&NamesStorage)[44];
 const AtomicString& mousewheel = reinterpret_cast<AtomicString*>(&NamesStorage)[45];
 const AtomicString& pagehide = reinterpret_cast<AtomicString*>(&NamesStorage)[46];
-const AtomicString& paste = reinterpret_cast<AtomicString*>(&NamesStorage)[47];
-const AtomicString& readystatechange = reinterpret_cast<AtomicString*>(&NamesStorage)[48];
-const AtomicString& reset = reinterpret_cast<AtomicString*>(&NamesStorage)[49];
-const AtomicString& resize = reinterpret_cast<AtomicString*>(&NamesStorage)[50];
-const AtomicString& scroll = reinterpret_cast<AtomicString*>(&NamesStorage)[51];
-const AtomicString& search = reinterpret_cast<AtomicString*>(&NamesStorage)[52];
-const AtomicString& select = reinterpret_cast<AtomicString*>(&NamesStorage)[53];
-const AtomicString& selectionchange = reinterpret_cast<AtomicString*>(&NamesStorage)[54];
-const AtomicString& selectstart = reinterpret_cast<AtomicString*>(&NamesStorage)[55];
-const AtomicString& submit = reinterpret_cast<AtomicString*>(&NamesStorage)[56];
-const AtomicString& textInput = reinterpret_cast<AtomicString*>(&NamesStorage)[57];
-const AtomicString& toggle = reinterpret_cast<AtomicString*>(&NamesStorage)[58];
-const AtomicString& transitionend = reinterpret_cast<AtomicString*>(&NamesStorage)[59];
-const AtomicString& unload = reinterpret_cast<AtomicString*>(&NamesStorage)[60];
-const AtomicString& visibilitychange = reinterpret_cast<AtomicString*>(&NamesStorage)[61];
-const AtomicString& webkitBeforeTextInserted = reinterpret_cast<AtomicString*>(&NamesStorage)[62];
-const AtomicString& webkitEditableContentChanged = reinterpret_cast<AtomicString*>(&NamesStorage)[63];
-const AtomicString& webkitvisibilitychange = reinterpret_cast<AtomicString*>(&NamesStorage)[64];
-const AtomicString& wheel = reinterpret_cast<AtomicString*>(&NamesStorage)[65];
+const AtomicString& pageshow = reinterpret_cast<AtomicString*>(&NamesStorage)[47];
+const AtomicString& paste = reinterpret_cast<AtomicString*>(&NamesStorage)[48];
+const AtomicString& readystatechange = reinterpret_cast<AtomicString*>(&NamesStorage)[49];
+const AtomicString& reset = reinterpret_cast<AtomicString*>(&NamesStorage)[50];
+const AtomicString& resize = reinterpret_cast<AtomicString*>(&NamesStorage)[51];
+const AtomicString& scroll = reinterpret_cast<AtomicString*>(&NamesStorage)[52];
+const AtomicString& search = reinterpret_cast<AtomicString*>(&NamesStorage)[53];
+const AtomicString& select = reinterpret_cast<AtomicString*>(&NamesStorage)[54];
+const AtomicString& selectionchange = reinterpret_cast<AtomicString*>(&NamesStorage)[55];
+const AtomicString& selectstart = reinterpret_cast<AtomicString*>(&NamesStorage)[56];
+const AtomicString& submit = reinterpret_cast<AtomicString*>(&NamesStorage)[57];
+const AtomicString& textInput = reinterpret_cast<AtomicString*>(&NamesStorage)[58];
+const AtomicString& toggle = reinterpret_cast<AtomicString*>(&NamesStorage)[59];
+const AtomicString& transitionend = reinterpret_cast<AtomicString*>(&NamesStorage)[60];
+const AtomicString& unload = reinterpret_cast<AtomicString*>(&NamesStorage)[61];
+const AtomicString& visibilitychange = reinterpret_cast<AtomicString*>(&NamesStorage)[62];
+const AtomicString& webkitBeforeTextInserted = reinterpret_cast<AtomicString*>(&NamesStorage)[63];
+const AtomicString& webkitEditableContentChanged = reinterpret_cast<AtomicString*>(&NamesStorage)[64];
+const AtomicString& webkitvisibilitychange = reinterpret_cast<AtomicString*>(&NamesStorage)[65];
+const AtomicString& wheel = reinterpret_cast<AtomicString*>(&NamesStorage)[66];
 
 void init()
 {
@@ -139,6 +140,7 @@ void init()
         { "mouseup", 8467273, 7 },
         { "mousewheel", 15891108, 10 },
         { "pagehide", 16640617, 8 },
+        { "pageshow", 12320166, 8 },
         { "paste", 369957, 5 },
         { "readystatechange", 11011948, 16 },
         { "reset", 13674204, 5 },

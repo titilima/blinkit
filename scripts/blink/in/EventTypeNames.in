@@ -48,6 +48,7 @@ mouseover
 mouseup
 mousewheel
 pagehide
+pageshow
 paste
 readystatechange
 reset
