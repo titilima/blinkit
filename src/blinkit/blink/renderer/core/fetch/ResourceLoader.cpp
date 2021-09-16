@@ -63,6 +63,8 @@
 #include "wtf/Assertions.h"
 #include "wtf/CurrentTime.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 namespace {
@@ -75,11 +77,11 @@ bool isManualRedirectFetchRequest(const ResourceRequest& request)
 
 } // namespace
 
-ResourceLoader* ResourceLoader::create(ResourceFetcher* fetcher, Resource* resource, const ResourceRequest& request, const ResourceLoaderOptions& options)
+GCPassPtr<ResourceLoader> ResourceLoader::create(ResourceFetcher* fetcher, Resource* resource, const ResourceRequest& request, const ResourceLoaderOptions& options)
 {
     ResourceLoader* loader = new ResourceLoader(fetcher, resource, options);
     loader->init(request);
-    return loader;
+    return WrapLeaked(loader);
 }
 
 ResourceLoader::ResourceLoader(ResourceFetcher* fetcher, Resource* resource, const ResourceLoaderOptions& options)
@@ -116,14 +118,14 @@ void ResourceLoader::releaseResources()
         return;
     m_resource->clearLoader();
     m_resource->deleteIfPossible();
-    m_resource = nullptr;
+    m_resource.clear();
 
     ASSERT(m_state != Terminated);
 
     m_state = Terminated;
     if (m_loader) {
-        ASSERT(false); // BKTODO: m_loader->cancel();
-        m_loader.clear();
+        m_loader->cancel();
+        m_loader.reset();
     }
     m_deferredRequest = ResourceRequest();
     m_fetcher.clear();
@@ -133,7 +135,7 @@ void ResourceLoader::init(const ResourceRequest& passedRequest)
 {
     ASSERT(m_state != Terminated);
     ResourceRequest request(passedRequest);
-    m_fetcher->willSendRequest(m_resource->identifier(), request, ResourceResponse(), m_options.initiatorInfo);
+    m_fetcher->willSendRequest(m_resource->identifier(), request, ResourceResponse());
     ASSERT(m_state != Terminated);
     ASSERT(!request.isNull());
     m_originalRequest = m_request = applyOptions(request);
@@ -148,7 +150,7 @@ void ResourceLoader::start()
     ASSERT(!m_request.isNull());
     ASSERT(m_deferredRequest.isNull());
 
-    m_fetcher->willStartLoadingResource(m_resource, m_request);
+    m_fetcher->willStartLoadingResource(m_resource.get(), m_request);
 
 #if 0 // BKTODO:
     if (m_options.synchronousPolicy == RequestSynchronously) {
@@ -168,14 +170,10 @@ void ResourceLoader::start()
     RELEASE_ASSERT(m_connectionState == ConnectionStateNew);
     m_connectionState = ConnectionStateStarted;
 
-    m_loader = adoptPtr(Platform::current()->createURLLoader());
+    m_loader = zed::wrap_unique(Platform::current()->createURLLoader());
     ASSERT(m_loader);
-    ASSERT(false); // BKTODO:
-#if 0
     m_loader->setLoadingTaskRunner(m_fetcher->loadingTaskRunner());
-    WrappedResourceRequest wrappedRequest(m_request);
-    m_loader->loadAsynchronously(wrappedRequest, this);
-#endif
+    m_loader->loadAsynchronously(m_request, this);
 }
 
 #if 0 // BKTODO:
@@ -219,13 +217,13 @@ void ResourceLoader::didDownloadData(WebURLLoader*, int length, int encodedDataL
 {
     ASSERT(m_state != Terminated);
     RELEASE_ASSERT(m_connectionState == ConnectionStateReceivedResponse);
-    m_fetcher->didDownloadData(m_resource, length, encodedDataLength);
+    m_fetcher->didDownloadData(m_resource.get(), length, encodedDataLength);
     if (m_state == Terminated)
         return;
     m_resource->didDownloadData(length);
 }
 
-void ResourceLoader::didFinishLoadingOnePart(double finishTime, int64_t encodedDataLength)
+void ResourceLoader::didFinishLoadingOnePart(int64_t encodedDataLength)
 {
     // If load has been cancelled after finishing (which could happen with a
     // JavaScript that changes the window location), do nothing.
@@ -235,7 +233,7 @@ void ResourceLoader::didFinishLoadingOnePart(double finishTime, int64_t encodedD
     if (m_notifiedLoadComplete)
         return;
     m_notifiedLoadComplete = true;
-    m_fetcher->didFinishLoading(m_resource, finishTime, encodedDataLength);
+    m_fetcher->didFinishLoading(m_resource.get(), encodedDataLength);
 }
 
 #if 0 // BKTODO:
@@ -296,7 +294,7 @@ void ResourceLoader::cancel(const ResourceError& error)
 #endif
 }
 
-void ResourceLoader::willFollowRedirect(WebURLLoader*, WebURLRequest& passedNewRequest, const WebURLResponse& passedRedirectResponse)
+void ResourceLoader::willFollowRedirect(WebURLLoader*, ResourceRequest& passedNewRequest, const ResourceResponse& passedRedirectResponse)
 {
     ASSERT(m_state != Terminated);
 
@@ -434,9 +432,87 @@ void ResourceLoader::didReceiveResponse(WebURLLoader*, const WebURLResponse& res
 }
 #endif
 
-void ResourceLoader::didReceiveResponse(WebURLLoader* loader, const WebURLResponse& response)
+void ResourceLoader::didReceiveResponse(WebURLLoader* loader, const ResourceResponse& resourceResponse)
 {
-    ASSERT(false); // BKTODO: didReceiveResponse(loader, response, nullptr);
+    ASSERT(!resourceResponse.isNull());
+    ASSERT(m_state == Initialized);
+
+    bool isMultipartPayload = resourceResponse.isMultipartPayload();
+    bool isValidStateTransition = (m_connectionState == ConnectionStateStarted || m_connectionState == ConnectionStateReceivedResponse);
+    // In the case of multipart loads, calls to didReceiveData & didReceiveResponse can be interleaved.
+    RELEASE_ASSERT(isMultipartPayload || isValidStateTransition);
+    m_connectionState = ConnectionStateReceivedResponse;
+
+#if 0 // BKTODO:
+    if (responseNeedsAccessControlCheck()) {
+        if (response.wasFetchedViaServiceWorker()) {
+            if (response.wasFallbackRequiredByServiceWorker()) {
+                m_loader->cancel();
+                m_loader.clear();
+                m_connectionState = ConnectionStateStarted;
+                m_loader = adoptPtr(Platform::current()->createURLLoader());
+                ASSERT(m_loader);
+                ASSERT(!m_request.skipServiceWorker());
+                m_request.setSkipServiceWorker(true);
+                WrappedResourceRequest wrappedRequest(m_request);
+                m_loader->loadAsynchronously(wrappedRequest, this);
+                return;
+            }
+        }
+        else {
+            // If the response successfully validated a cached resource, perform
+            // the access control with respect to it. Need to do this right here
+            // before the resource switches clients over to that validated resource.
+            Resource* resource = m_resource;
+            if (!resource->isCacheValidator() || resourceResponse.httpStatusCode() != 304)
+                m_resource->setResponse(resourceResponse);
+            if (!m_fetcher->canAccessResource(resource, m_options.securityOrigin.get(), response.url(), ResourceFetcher::ShouldLogAccessControlErrors)) {
+                m_fetcher->didReceiveResponse(m_resource, resourceResponse);
+                cancel(ResourceError::cancelledDueToAccessCheckError(KURL(response.url())));
+                return;
+            }
+        }
+    }
+#endif
+
+    m_resource->responseReceived(resourceResponse);
+    if (m_state == Terminated)
+        return;
+
+    m_fetcher->didReceiveResponse(m_resource.get(), resourceResponse);
+    if (m_state == Terminated)
+        return;
+
+    if (resourceResponse.isMultipart()) {
+        // We only support multipart for images, though the image may be loaded
+        // as a main resource that we end up displaying through an ImageDocument.
+        if (!m_resource->isImage() && m_resource->type() != Resource::MainResource) {
+            cancel();
+            return;
+        }
+        m_loadingMultipartContent = true;
+    }
+    else if (isMultipartPayload) {
+        // Since a subresource loader does not load multipart sections progressively, data was delivered to the loader all at once.
+        // After the first multipart section is complete, signal to delegates that this load is "finished"
+        m_fetcher->subresourceLoaderFinishedLoadingOnePart(this);
+        didFinishLoadingOnePart(WebURLLoaderClient::kUnknownEncodedDataLength);
+    }
+    if (m_state == Terminated)
+        return;
+
+    if (m_resource->response().httpStatusCode() < 400 || m_resource->shouldIgnoreHTTPStatusCodeErrors())
+        return;
+    m_state = Finishing;
+
+    if (!m_notifiedLoadComplete) {
+        m_notifiedLoadComplete = true;
+        ASSERT(false); // BKTODO: m_fetcher->didFailLoading(m_resource.get(), ResourceError::cancelledError(m_request.url()));
+    }
+
+    ASSERT(m_state != Terminated);
+    m_resource->error(Resource::LoadError);
+    cancel();
 }
 
 void ResourceLoader::didReceiveData(WebURLLoader*, const char* data, int length, int encodedDataLength)
@@ -454,29 +530,26 @@ void ResourceLoader::didReceiveData(WebURLLoader*, const char* data, int length,
     // FIXME: If we get a resource with more than 2B bytes, this code won't do the right thing.
     // However, with today's computers and networking speeds, this won't happen in practice.
     // Could be an issue with a giant local file.
-    m_fetcher->didReceiveData(m_resource, data, length, encodedDataLength);
+    m_fetcher->didReceiveData(m_resource.get(), data, length, encodedDataLength);
     if (m_state == Terminated)
         return;
     RELEASE_ASSERT(length >= 0);
     m_resource->appendData(data, length);
 }
 
-void ResourceLoader::didFinishLoading(WebURLLoader*, double finishTime, int64_t encodedDataLength)
+void ResourceLoader::didFinishLoading(WebURLLoader*, int64_t encodedDataLength)
 {
     RELEASE_ASSERT(m_connectionState == ConnectionStateReceivedResponse || m_connectionState == ConnectionStateReceivingData);
     m_connectionState = ConnectionStateFinishedLoading;
     if (m_state != Initialized)
         return;
     ASSERT(m_state != Terminated);
-    ASSERT(false); // BKTODO:
-#if 0
     WTF_LOG(ResourceLoading, "Received '%s'.", m_resource->url().string().latin1().data());
 
-    ResourcePtr<Resource> protectResource(m_resource);
+    ResourcePtr<Resource> protectResource(m_resource.get());
     m_state = Finishing;
-    m_resource->setLoadFinishTime(finishTime);
-    didFinishLoadingOnePart(finishTime, encodedDataLength);
-#endif
+    // BKTODO: m_resource->setLoadFinishTime(finishTime);
+    didFinishLoadingOnePart(encodedDataLength);
     if (m_state == Terminated)
         return;
     m_resource->finish();

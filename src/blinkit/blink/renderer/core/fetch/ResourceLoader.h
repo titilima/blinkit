@@ -56,9 +56,9 @@ class ResourceError;
 class ResourceFetcher;
 class ThreadedDataReceiver;
 
-class CORE_EXPORT ResourceLoader final : public GarbageCollectedFinalized<ResourceLoader>, protected WebURLLoaderClient {
+class CORE_EXPORT ResourceLoader final : public BlinKit::GCObject, protected WebURLLoaderClient {
 public:
-    static ResourceLoader* create(ResourceFetcher*, Resource*, const ResourceRequest&, const ResourceLoaderOptions&);
+    static GCPassPtr<ResourceLoader> create(ResourceFetcher*, Resource*, const ResourceRequest&, const ResourceLoaderOptions&);
     ~ResourceLoader() override;
     DECLARE_TRACE();
 
@@ -69,7 +69,7 @@ public:
     void cancel(const ResourceError&);
     void cancelIfNotFinishing();
 
-    Resource* cachedResource() { return m_resource; }
+    Resource* cachedResource() { return m_resource.get(); }
     const ResourceRequest& originalRequest() const { return m_originalRequest; }
 
     // BKTODO: void setDefersLoading(bool);
@@ -82,13 +82,13 @@ public:
     // BKTODO: void didChangePriority(ResourceLoadPriority, int intraPriorityValue);
 
     // WebURLLoaderClient
-    void willFollowRedirect(WebURLLoader*, WebURLRequest&, const WebURLResponse& redirectResponse) override;
+    void willFollowRedirect(WebURLLoader*, ResourceRequest&, const ResourceResponse& redirectResponse) override;
     void didSendData(WebURLLoader*, unsigned long long bytesSent, unsigned long long totalBytesToBeSent) override;
-    void didReceiveResponse(WebURLLoader*, const WebURLResponse&) override;
+    void didReceiveResponse(WebURLLoader*, const ResourceResponse&) override;
     // BKTODO: void didReceiveResponse(WebURLLoader*, const WebURLResponse&, WebDataConsumerHandle*) override;
     void didReceiveData(WebURLLoader*, const char*, int, int encodedDataLength) override;
     void didReceiveCachedMetadata(WebURLLoader*, const char* data, int length) override;
-    void didFinishLoading(WebURLLoader*, double finishTime, int64_t encodedDataLength) override;
+    void didFinishLoading(WebURLLoader*, int64_t encodedDataLength) override;
     void didFail(WebURLLoader*, const WebURLError&) override;
     void didDownloadData(WebURLLoader*, int, int) override;
 
@@ -107,14 +107,16 @@ private:
     void init(const ResourceRequest&);
     // BKTODO: void requestSynchronously();
 
-    void didFinishLoadingOnePart(double finishTime, int64_t encodedDataLength);
+    void didFinishLoadingOnePart(int64_t encodedDataLength);
 
     bool responseNeedsAccessControlCheck() const;
 
     ResourceRequest& applyOptions(ResourceRequest&) const;
 
-    OwnPtr<WebURLLoader> m_loader;
-    Member<ResourceFetcher> m_fetcher;
+    BlinKit::GCObject* ObjectForGC(void) final { return this; }
+
+    std::unique_ptr<WebURLLoader> m_loader;
+    BlinKit::GCMember<ResourceFetcher> m_fetcher;
 
     ResourceRequest m_request;
     ResourceRequest m_originalRequest; // Before redirects.
@@ -142,7 +144,7 @@ private:
         ConnectionStateFailed,
     };
 
-    RawPtrWillBeMember<Resource> m_resource;
+    BlinKit::GCMember<Resource> m_resource;
     ResourceLoaderState m_state;
 
     // Used for sanity checking to make sure we don't experience illegal state
