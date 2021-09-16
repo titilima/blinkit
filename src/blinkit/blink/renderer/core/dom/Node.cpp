@@ -269,7 +269,6 @@ void Node::trackForDebugging()
 
 Node::Node(TreeScope* treeScope, ConstructionType type)
     : m_nodeFlags(type)
-    , m_parentOrShadowHostNode(nullptr)
     , m_treeScope(treeScope)
     , m_previous(nullptr)
     , m_next(nullptr)
@@ -2364,10 +2363,15 @@ void Node::setCustomElementState(CustomElementState newState)
         toElement(this)->pseudoStateChanged(CSSSelector::PseudoUnresolved);
 }
 
+bool Node::IsRetainedInTree(void) const
+{
+    return isInTreeScope();
+}
+
 DEFINE_TRACE(Node)
 {
 #if ENABLE(OILPAN)
-    visitor->trace(m_parentOrShadowHostNode);
+    // BKTODO: visitor->trace(m_parentOrShadowHostNode);
     visitor->trace(m_previous);
     visitor->trace(m_next);
     // rareData() and m_data.m_layoutObject share their storage. We have to trace
@@ -2399,12 +2403,6 @@ unsigned Node::lengthOfContents() const
     }
     ASSERT_NOT_REACHED();
     return 0;
-}
-
-void Node::setParentOrShadowHostNode(ContainerNode* parent)
-{
-    ASSERT(isMainThread());
-    m_parentOrShadowHostNode = parent;
 }
 
 } // namespace blink

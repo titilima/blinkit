@@ -178,8 +178,6 @@ public:
 
     ~Node() override;
 
-    BLINKIT_DEFINE_GC_CASTER(Node);
-
     // DOM methods & attributes for Node
 
     bool hasTagName(const HTMLQualifiedName&) const;
@@ -820,9 +818,11 @@ private:
     WillBeHeapHashSet<RawPtrWillBeMember<MutationObserverRegistration>>* transientMutationObserverRegistry();
 
     BlinKit::GCObject* ObjectForGC(void) final { return this; }
+    Category GCCategory(void) const final { return TreeNode; }
+    bool IsRetainedInTree(void) const override;
 
     uint32_t m_nodeFlags;
-    BlinKit::GCMember<ContainerNode> m_parentOrShadowHostNode;
+    ContainerNode *m_parentOrShadowHostNode = nullptr;
     TreeScope *m_treeScope;
     BlinKit::GCMember<Node> m_previous;
     BlinKit::GCMember<Node> m_next;
@@ -836,10 +836,16 @@ private:
     } m_data;
 };
 
+inline void Node::setParentOrShadowHostNode(ContainerNode* parent)
+{
+    ASSERT(isMainThread());
+    m_parentOrShadowHostNode = parent;
+}
+
 inline ContainerNode* Node::parentOrShadowHostNode() const
 {
     ASSERT(isMainThread());
-    return m_parentOrShadowHostNode.get();
+    return m_parentOrShadowHostNode;
 }
 
 inline ContainerNode* Node::parentNode() const
