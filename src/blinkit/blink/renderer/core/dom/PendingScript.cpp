@@ -123,7 +123,7 @@ void PendingScript::setElement(Element* element)
     m_element = element;
 }
 
-PassRefPtrWillBeRawPtr<Element> PendingScript::releaseElementAndClear()
+GCPassPtr<Element> PendingScript::releaseElementAndClear()
 {
     setScriptResource(0);
     m_watchingForLoad = false;

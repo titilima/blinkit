@@ -69,7 +69,7 @@ public:
 
     Element* element() const { return m_element.get(); }
     void setElement(Element*);
-    PassRefPtrWillBeRawPtr<Element> releaseElementAndClear();
+    GCPassPtr<Element> releaseElementAndClear();
 
     void setScriptResource(ScriptResource*);
 
@@ -87,7 +87,7 @@ public:
 
 private:
     bool m_watchingForLoad;
-    RefPtrWillBeMember<Element> m_element;
+    BlinKit::GCMember<Element> m_element;
     TextPosition m_startingPosition; // Only used for inline script tags.
     bool m_integrityFailure;
 
