@@ -22,7 +22,9 @@ class KURL final : public zed::url
 {
 public:
     KURL(void) = default;
+    KURL(const char *psz) : zed::url(psz) {}
     KURL(const std::string &s) : zed::url(s) {}
+    KURL(const String &s) : zed::url(s.stdUtf8()) {}
 
     bool isEmpty(void) const { return spec().empty(); }
     bool isValid(void) const { return is_valid(); }
@@ -40,6 +42,8 @@ public:
     String pass(void) const { return is_valid() ? PartToString(raw_parts().password) : String(); }
     String host(void) const { return is_valid() ? PartToString(raw_parts().host) : String(); }
     String path(void) const { return is_valid() ? PartToString(raw_parts().path) : String(); }
+
+    std::string ExtractFileName(void) const;
 private:
     String PartToString(const zed::url_parts::part& part) const;
 };

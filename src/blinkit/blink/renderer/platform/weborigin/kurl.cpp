@@ -13,6 +13,13 @@
 
 namespace blink {
 
+std::string KURL::ExtractFileName(void) const
+{
+    std::string path = get_path();
+    size_t p = path.rfind('/');
+    return std::string::npos != p ? path.substr(p + 1) : path;
+}
+
 String KURL::PartToString(const zed::url_parts::part& part) const
 {
     ASSERT(is_valid());
