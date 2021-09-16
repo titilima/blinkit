@@ -42,6 +42,7 @@
 #ifndef HTMLImportLoader_h
 #define HTMLImportLoader_h
 
+#include "blinkit/gc/gc_root.h"
 #include "core/dom/DocumentParserClient.h"
 #include "core/fetch/RawResource.h"
 #include "core/fetch/ResourceOwner.h"
@@ -112,7 +113,11 @@ private:
     HTMLImportLoader(HTMLImportsController*);
 
     // RawResourceClient
-    // BKTODO: void responseReceived(Resource*, const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) override;
+#if 0 // BKTODO:
+    void responseReceived(Resource*, const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) override;
+#else
+    void responseReceived(Resource*, const ResourceResponse&) override;
+#endif
     void dataReceived(Resource*, const char* data, size_t length) override;
     void notifyFinished(Resource*) override;
     String debugName() const override { return "HTMLImportLoader"; }
@@ -138,7 +143,7 @@ private:
     WillBeHeapVector<RawPtrWillBeMember<HTMLImportChild>> m_imports;
     State m_state;
     RefPtrWillBeMember<Document> m_document;
-    RefPtrWillBeMember<DocumentWriter> m_writer;
+    BlinKit::GCUniqueRoot<DocumentWriter> m_writer;
     // BKTODO: RefPtrWillBeMember<CustomElementSyncMicrotaskQueue> m_microtaskQueue;
 };
 

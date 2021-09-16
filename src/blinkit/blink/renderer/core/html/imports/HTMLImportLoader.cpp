@@ -96,6 +96,20 @@ void HTMLImportLoader::responseReceived(Resource* resource, const ResourceRespon
     }
     setState(startWritingAndParsing(response));
 }
+#else
+void HTMLImportLoader::responseReceived(Resource* resource, const ResourceResponse& response)
+{
+    ASSERT(false); // BKTODO:
+#if 0
+    // Resource may already have been loaded with the import loader
+    // being added as a client later & now being notified. Fail early.
+    if (resource->loadFailedOrCanceled() || response.httpStatusCode() >= 400 || !response.httpHeaderField(HTTPNames::Content_Disposition).isNull()) {
+        setState(StateError);
+        return;
+    }
+    setState(startWritingAndParsing(response));
+#endif
+}
 #endif
 
 void HTMLImportLoader::dataReceived(Resource*, const char* data, size_t length)
@@ -252,8 +266,9 @@ DEFINE_TRACE(HTMLImportLoader)
     visitor->trace(m_imports);
 #endif
     visitor->trace(m_document);
-    visitor->trace(m_writer);
-    ASSERT(false); // BKTODO: visitor->trace(m_microtaskQueue);
+    if (m_writer)
+        m_writer->trace(visitor);
+    // BKTODO: visitor->trace(m_microtaskQueue);
     DocumentParserClient::trace(visitor);
 }
 
