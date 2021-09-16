@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourcePtr.h
+// Description: ResourcePtr Class
+//      Author: Ziming Li
+//     Created: 2021-09-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -35,13 +46,17 @@ namespace blink {
 class CORE_EXPORT ResourcePtrBase {
     DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
 public:
-    Resource* get() const { return m_resource; }
+    Resource* get() const { return m_resource.get(); }
     bool operator!() const { return !m_resource; }
     void clear() { setResource(nullptr); }
 
+#if 0 // BKTODO:
     // This conversion operator allows implicit conversion to bool but not to other integer types.
     typedef Resource* ResourcePtrBase::*UnspecifiedBoolType;
     operator UnspecifiedBoolType() const { return m_resource ? &ResourcePtrBase::m_resource : nullptr; }
+#else
+    operator bool() const { return m_resource.operator bool(); }
+#endif
 
 protected:
     ResourcePtrBase() : m_resource(nullptr) { }
@@ -58,7 +73,7 @@ private:
     // The lifetime of the Resource object is explicitly managed by
     // reference-counting.
     GC_PLUGIN_IGNORE("503485")
-    Resource* m_resource;
+    BlinKit::GCMember<Resource> m_resource;
 };
 
 inline ResourcePtrBase::ResourcePtrBase(Resource* res)

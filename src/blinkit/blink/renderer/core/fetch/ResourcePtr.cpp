@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ResourcePtr.cpp
+// Description: ResourcePtr Class
+//      Author: Ziming Li
+//     Created: 2021-09-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -29,7 +40,7 @@ namespace blink {
 
 void ResourcePtrBase::setResource(Resource* resource)
 {
-    if (resource == m_resource)
+    if (resource == m_resource.get())
         return;
     if (m_resource)
         m_resource->unregisterHandle(this);
