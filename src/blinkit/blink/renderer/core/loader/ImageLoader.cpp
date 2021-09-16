@@ -62,17 +62,19 @@
 #endif
 #include "public/platform/WebURLRequest.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 static ImageEventSender& loadEventSender()
 {
-    DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<ImageEventSender>, sender, (ImageEventSender::create(EventTypeNames::load)));
+    static ImageEventSender *sender = GCWrapGlobal(ImageEventSender::create(EventTypeNames::load));
     return *sender;
 }
 
 static ImageEventSender& errorEventSender()
 {
-    DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<ImageEventSender>, sender, (ImageEventSender::create(EventTypeNames::error)));
+    static ImageEventSender *sender = GCWrapGlobal(ImageEventSender::create(EventTypeNames::error));
     return *sender;
 }
 
