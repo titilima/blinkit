@@ -570,7 +570,7 @@ public:
 
     CSSStyleSheet& elementSheet();
 
-    virtual PassRefPtrWillBeRawPtr<DocumentParser> createParser();
+    virtual GCPassPtr<DocumentParser> createParser();
     DocumentParser* parser() const { return m_parser.get(); }
     ScriptableDocumentParser* scriptableDocumentParser() const;
 
@@ -1108,7 +1108,7 @@ public:
     static WeakDocumentSet& liveDocumentSet();
 #endif
 
-    WebTaskRunner* loadingTaskRunner() const;
+    std::shared_ptr<WebTaskRunner> loadingTaskRunner(void) const;
     WebTaskRunner* timerTaskRunner() const;
 
     void enforceStrictMixedContentChecking();
@@ -1212,6 +1212,7 @@ private:
     void setNthIndexCache(NthIndexCache* nthIndexCache) { ASSERT(!m_nthIndexCache || !nthIndexCache); m_nthIndexCache = nthIndexCache; }
 
     // BKTODO: const OriginAccessEntry& accessEntryFromURL();
+    bool IsRetainedInTree(void) const final;
 
     DocumentLifecycle m_lifecycle;
     std::shared_ptr<bool> m_aliveFlag;
@@ -1232,7 +1233,7 @@ private:
     RawPtrWillBeMember<HTMLImportsController> m_importsController;
 
     BlinKit::GCMember<ResourceFetcher> m_fetcher;
-    RefPtrWillBeMember<DocumentParser> m_parser;
+    BlinKit::GCMember<DocumentParser> m_parser;
     unsigned m_activeParserCount;
     // BKTODO: RefPtrWillBeMember<ContextFeatures> m_contextFeatures;
 
@@ -1408,7 +1409,7 @@ private:
     bool m_writeRecursionIsTooDeep;
     unsigned m_writeRecursionDepth;
 
-    RefPtrWillBeMember<ScriptedAnimationController> m_scriptedAnimationController;
+    BlinKit::GCUniqueRoot<ScriptedAnimationController> m_scriptedAnimationController;
     // BKTODO: RefPtrWillBeMember<ScriptedIdleTaskController> m_scriptedIdleTaskController;
     std::unique_ptr<MainThreadTaskRunner> m_taskRunner;
     std::unique_ptr<TextAutosizer> m_textAutosizer;
@@ -1419,7 +1420,7 @@ private:
     void elementDataCacheClearTimerFired(Timer<Document>*);
     Timer<Document> m_elementDataCacheClearTimer;
 
-    OwnPtrWillBeMember<ElementDataCache> m_elementDataCache;
+    BlinKit::GCUniqueRoot<ElementDataCache> m_elementDataCache;
 
     using LocaleIdentifierToLocaleMap = HashMap<AtomicString, OwnPtr<Locale>>;
     LocaleIdentifierToLocaleMap m_localeCache;

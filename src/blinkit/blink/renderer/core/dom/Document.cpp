@@ -41,6 +41,7 @@
 #include "bindings/core/v8/ExceptionState.h"
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
 #include "bindings/core/v8/ScriptController.h"
+#include "blinkit/blink/public/platform/WebThread.h"
 #include "core/HTMLElementFactory.h"
 #include "core/HTMLNames.h"
 // BKTODO: #include "core/SVGElementFactory.h"
@@ -373,7 +374,7 @@ static bool isOriginPotentiallyTrustworthy(SecurityOrigin* origin, String* error
 
 uint64_t Document::s_globalTreeVersion = 0;
 
-static bool s_threadedParsingEnabledForTesting = true;
+static bool s_threadedParsingEnabledForTesting = false; // BKTODO: Remove it later.
 
 #if 0 // BKTODO:
 Document::WeakDocumentSet& Document::liveDocumentSet()
@@ -480,7 +481,7 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     // BKTODO: , m_timers(timerTaskRunner()->adoptClone())
     , m_hasViewportUnits(false)
     , m_styleRecalcElementCounter(0)
-    , m_parserSyncPolicy(AllowAsynchronousParsing)
+    , m_parserSyncPolicy(ForceSynchronousParsing) // BKTODO: Remove this member.
     , m_nodeCount(0)
 {
     m_elementDataCacheClearTimer.SetHostAliveFlag(m_aliveFlag);
@@ -2308,7 +2309,7 @@ void Document::detach(const AttachContext& context)
     // FIXME: consider using ActiveDOMObject.
     if (m_scriptedAnimationController)
         m_scriptedAnimationController->clearDocumentPointer();
-    m_scriptedAnimationController.clear();
+    m_scriptedAnimationController.reset();
 
 #if 0 // BKTODO:
     m_scriptedIdleTaskController.clear();
@@ -2500,7 +2501,7 @@ CanvasFontCache* Document::canvasFontCache()
 #endif
 }
 
-PassRefPtrWillBeRawPtr<DocumentParser> Document::createParser()
+GCPassPtr<DocumentParser> Document::createParser()
 {
     if (isHTMLDocument()) {
         bool reportErrors = InspectorInstrumentation::collectingHTMLParseErrors(this);
@@ -2607,7 +2608,7 @@ PassRefPtrWillBeRawPtr<DocumentParser> Document::implicitOpen(ParserSynchronizat
     setParsingState(Parsing);
     setReadyState(Loading);
 
-    return m_parser;
+    return m_parser.get();
 }
 
 HTMLElement* Document::body() const
@@ -2718,8 +2719,8 @@ void Document::close()
     if (!scriptableDocumentParser() || !scriptableDocumentParser()->wasCreatedByScript() || !scriptableDocumentParser()->isParsing())
         return;
 
-    if (RefPtrWillBeRawPtr<DocumentParser> parser = m_parser)
-        parser->finish();
+    if (m_parser)
+        m_parser->finish();
 
     if (nullptr == m_frame) {
         // Because we have no frame, we don't know if all loading has completed,
@@ -2737,12 +2738,12 @@ void Document::implicitClose()
     ASSERT(!inStyleRecalc());
     if (processingLoadEvent() || !m_parser)
         return;
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (frame() && frame()->navigationScheduler().locationChangePending()) {
         suppressLoadEvent();
         return;
     }
+#endif
 
     // The call to dispatchWindowLoadEvent (from documentWasClosed()) can detach
     // the LocalDOMWindow and cause it (and its attached Document) to be
@@ -2769,17 +2770,19 @@ void Document::implicitClose()
     // JS running below could remove the frame or destroy the LayoutView so we call
     // those two functions repeatedly and don't save them on the stack.
 
+#if 0 // BKTODO:
     // To align the HTML load event and the SVGLoad event for the outermost <svg> element, fire it from
     // here, instead of doing it from SVGElement::finishedParsingChildren.
     if (svgExtensions())
         accessSVGExtensions().dispatchSVGLoadEventToOutermostSVGElements();
+#endif
 
     if (protectedWindow)
         protectedWindow->documentWasClosed();
 
     if (frame()) {
         frame()->loader().client()->dispatchDidHandleOnloadEvents();
-        loader()->applicationCacheHost()->stopDeferringEvents();
+        // BKTODO: loader()->applicationCacheHost()->stopDeferringEvents();
     }
 
     if (!frame()) {
@@ -2791,6 +2794,7 @@ void Document::implicitClose()
     // fires. This will improve onload scores, and other browsers do it.
     // If they wanna cheat, we can too. -dwh
 
+#if 0 // BKTODO:
     if (frame()->navigationScheduler().locationChangePending() && elapsedTime() < cLayoutScheduleThreshold) {
         // Just bail out. Before or during the onload we were shifted to another page.
         // The old i-Bench suite does this. When this happens don't bother painting or laying out.
@@ -2808,9 +2812,17 @@ void Document::implicitClose()
         if (view() && layoutView() && (!layoutView()->firstChild() || layoutView()->needsLayout()))
             view()->layout();
     }
+#else
+    updateLayoutTreeIfNeeded();
+
+    // Always do a layout after loading if needed.
+    if (view() && layoutView() && (!layoutView()->firstChild() || layoutView()->needsLayout()))
+        view()->layout();
+#endif
 
     m_loadEventProgress = LoadEventCompleted;
 
+#if 0 // BKTODO:
     if (frame() && layoutView() && settings()->accessibilityEnabled()) {
         if (AXObjectCache* cache = axObjectCache()) {
             if (this == &axObjectCacheOwner())
@@ -3060,17 +3072,14 @@ void Document::logExceptionToConsole(const String& errorMessage, int scriptId, c
 
 void Document::setURL(const KURL& url)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     const KURL& newURL = url.isEmpty() ? blankURL() : url;
     if (newURL == m_url)
         return;
 
     m_url = newURL;
-    m_accessEntryFromURL = nullptr;
+    // BKTODO: m_accessEntryFromURL = nullptr;
     updateBaseURL();
-    contextFeatures().urlDidChange(this);
-#endif
+    // BKTODO: contextFeatures().urlDidChange(this);
 }
 
 void Document::updateBaseURL()
@@ -3097,8 +3106,7 @@ void Document::updateBaseURL()
         m_elemSheet = CSSStyleSheet::createInline(this, m_baseURL);
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (!equalIgnoringFragmentIdentifier(oldBaseURL, m_baseURL)) {
         // Base URL change changes any relative visited links.
         // FIXME: There are other URLs in the tree that would need to be re-evaluated on dynamic base URL change. Style should be invalidated too.
@@ -4996,7 +5004,7 @@ void Document::finishedParsing()
 
 void Document::elementDataCacheClearTimerFired(Timer<Document>*)
 {
-    m_elementDataCache.clear();
+    m_elementDataCache.reset();
 }
 
 Vector<IconURL> Document::iconURLs(int iconTypesMask)
@@ -5527,9 +5535,7 @@ void Document::checkLoadEventSoon()
 
 bool Document::isDelayingLoadEvent()
 {
-#if ENABLE(OILPAN)
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: ENABLE(OILPAN)
     // Always delay load events until after garbage collection.
     // This way we don't have to explicitly delay load events via
     // incrementLoadEventDelayCount and decrementLoadEventDelayCount in
@@ -5539,7 +5545,6 @@ bool Document::isDelayingLoadEvent()
             checkLoadEventSoon();
         return true;
     }
-#endif
 #endif
     return m_loadEventDelayCount;
 }
@@ -6079,11 +6084,9 @@ bool Document::isSecureContext(const SecureContextCheck privilegeContextCheck) c
     return isSecureContextImpl(nullptr, privilegeContextCheck);
 }
 
-WebTaskRunner* Document::loadingTaskRunner() const
+std::shared_ptr<WebTaskRunner> Document::loadingTaskRunner(void) const
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
+#if 0 // BKTODO:
     if (frame())
         return frame()->frameScheduler()->loadingTaskRunner();
     if (m_importsController)
@@ -6091,6 +6094,8 @@ WebTaskRunner* Document::loadingTaskRunner() const
     if (m_contextDocument)
         return m_contextDocument->loadingTaskRunner();
     return Platform::current()->currentThread()->scheduler()->loadingTaskRunner();
+#else
+    return Platform::current()->currentThread()->taskRunner();
 #endif
 }
 
@@ -6117,6 +6122,11 @@ void Document::enforceStrictMixedContentChecking()
     if (frame())
         frame()->loader().client()->didEnforceStrictMixedContentChecking();
 #endif
+}
+
+bool Document::IsRetainedInTree(void) const
+{
+    return nullptr != m_domWindow;
 }
 
 DEFINE_TRACE(Document)
@@ -6154,13 +6164,15 @@ DEFINE_TRACE(Document)
     visitor->trace(m_styleSheetList);
     // BKTODO: visitor->trace(m_documentTiming);
     visitor->trace(m_mediaQueryMatcher);
-    visitor->trace(m_scriptedAnimationController);
+    if (m_scriptedAnimationController)
+        m_scriptedAnimationController->trace(visitor);
     // BKTODO: visitor->trace(m_scriptedIdleTaskController);
     // BKTODO: visitor->trace(m_taskRunner);
     // BKTODO: visitor->trace(m_textAutosizer);
     visitor->trace(m_registrationContext);
     visitor->trace(m_customElementMicrotaskRunQueue);
-    visitor->trace(m_elementDataCache);
+    if (m_elementDataCache)
+        m_elementDataCache->trace(visitor);
 #if 0 // BKTODO:
     visitor->trace(m_associatedFormControls);
     visitor->trace(m_useElementsNeedingUpdate);
