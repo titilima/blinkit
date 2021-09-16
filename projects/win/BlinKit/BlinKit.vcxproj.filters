@@ -289,6 +289,12 @@
     <Filter Include="blink\renderer\web">
       <UniqueIdentifier>{3ed8aaa4-3fb8-4bf6-84ef-aadda4045411}</UniqueIdentifier>
     </Filter>
+    <Filter Include="stub">
+      <UniqueIdentifier>{2dceb5a8-a8fa-4c91-9816-be0cf3ee23d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="stub\icu">
+      <UniqueIdentifier>{9b798fbe-4cd8-4964-b4b7-6f524b24655f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -370,9 +376,6 @@
       <Filter>win</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_heap.cpp">
-      <Filter>gc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\gc\gc_visitor.cpp">
       <Filter>gc</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\loader\tasks\file_loader_task.cpp">
@@ -4011,6 +4014,18 @@
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_lifecycle_observer.cpp">
       <Filter>gc</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\stub\icu\uchar_props.cpp">
+      <Filter>stub\icu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\gc\garbage_collector.cpp">
+      <Filter>gc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\gc\gc_trace_visitor.cpp">
+      <Filter>gc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\gc\gc_cleanup_visitor.cpp">
+      <Filter>gc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -4110,9 +4125,6 @@
       <Filter>gc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_heap.h">
-      <Filter>gc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\gc\gc_visitor.h">
       <Filter>gc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\file_loader_task.h">
@@ -4753,6 +4765,78 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\StylePropertySet.h">
       <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\FrameLoadRequest.h">
+      <Filter>blink\renderer\core\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\fetch\ResourceLoaderOptions.h">
+      <Filter>blink\renderer\core\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\fetch\Resource.h">
+      <Filter>blink\renderer\core\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\fetch\ResourceLoader.h">
+      <Filter>blink\renderer\core\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\fetch\RawResource.h">
+      <Filter>blink\renderer\core\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\fetch\ImageResource.h">
+      <Filter>blink\renderer\core\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\imports\HTMLImportLoader.h">
+      <Filter>blink\renderer\core\html\imports</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\stub\icu\uchar_props_data.h">
+      <Filter>stub\icu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\ImageLoader.h">
+      <Filter>blink\renderer\core\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\Event.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\fetch\ResourcePtr.h">
+      <Filter>blink\renderer\core\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\NodeEventContext.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\garbage_collector.h">
+      <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_trace_visitor.h">
+      <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_session.h">
+      <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLTreeBuilder.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLDocumentParser.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLConstructionSite.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLParserScheduler.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLScriptRunner.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementDataCache.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\fetch\ResourceFetcher.h">
+      <Filter>blink\renderer\core\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_cleanup_visitor.h">
+      <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\FrameRequestCallbackCollection.h">
+      <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
