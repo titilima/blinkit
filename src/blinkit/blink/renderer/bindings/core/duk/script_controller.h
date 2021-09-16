@@ -58,6 +58,11 @@ class ExecutionContext;
 class LocalFrame;
 class ScriptSourceCode;
 
+enum ReasonForCallingCanExecuteScripts {
+    AboutToExecuteScript,
+    NotAboutToExecuteScript
+};
+
 // This class exposes methods to run script in a frame (in the main world and
 // in isolated worlds). An instance can be obtained by using
 // LocalFrame::GetScriptController().
@@ -73,9 +78,9 @@ public:
 
     const blink::LocalFrame& GetFrame(void) const { return m_frame; }
 
-    virtual bool ScriptEnabled(const std::string &URL) const { return true; }
     void ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const zed::url &baseURL);
 
+    virtual bool canExecuteScripts(ReasonForCallingCanExecuteScripts) { return true; }
     void clearWindowProxy(void);
     void clearForClose(void);
     void updateDocument(void);
