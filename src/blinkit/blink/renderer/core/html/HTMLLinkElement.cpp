@@ -69,6 +69,8 @@
 #include "public/platform/Platform.h"
 #include "wtf/StdLibExtras.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
@@ -136,7 +138,7 @@ static void parseSizes(const CharacterType* value, unsigned length, Vector<IntSi
 
 static LinkEventSender& linkLoadEventSender()
 {
-    DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<LinkEventSender>, sharedLoadEventSender, (LinkEventSender::create(EventTypeNames::load)));
+    static LinkEventSender *sharedLoadEventSender = GCWrapGlobal(LinkEventSender::create(EventTypeNames::load));
     return *sharedLoadEventSender;
 }
 

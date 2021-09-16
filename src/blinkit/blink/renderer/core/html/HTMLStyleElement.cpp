@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLStyleElement.cpp
+// Description: HTMLStyleElement Class
+//      Author: Ziming Li
+//     Created: 2021-09-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -30,13 +41,15 @@
 #include "core/events/Event.h"
 #include "core/events/EventSender.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
 
 static StyleEventSender& styleLoadEventSender()
 {
-    DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<StyleEventSender>, sharedLoadEventSender, (StyleEventSender::create(EventTypeNames::load)));
+    static StyleEventSender *sharedLoadEventSender = GCWrapGlobal(StyleEventSender::create(EventTypeNames::load));
     return *sharedLoadEventSender;
 }
 
