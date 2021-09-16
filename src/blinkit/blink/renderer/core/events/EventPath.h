@@ -55,7 +55,7 @@ class TouchEvent;
 class TouchList;
 class TreeScope;
 
-class CORE_EXPORT EventPath final : public NoBaseWillBeGarbageCollectedFinalized<EventPath> {
+class CORE_EXPORT EventPath final {
     USING_FAST_MALLOC_WILL_BE_REMOVED(EventPath);
     WTF_MAKE_NONCOPYABLE(EventPath);
 public:
@@ -87,7 +87,7 @@ public:
     }
 
 private:
-    EventPath();
+    EventPath() = delete;
 
     void initialize();
     void calculatePath();
@@ -105,7 +105,7 @@ private:
 
     void adjustTouchList(const TouchList*, WillBeHeapVector<RawPtrWillBeMember<TouchList>> adjustedTouchList, const WillBeHeapVector<RawPtrWillBeMember<TreeScope>>& treeScopes);
 
-    using TreeScopeEventContextMap = std::unordered_map<Member<TreeScope>, Member<TreeScopeEventContext>>;
+    using TreeScopeEventContextMap = std::unordered_map<TreeScope *, BlinKit::GCMember<TreeScopeEventContext>>;
     TreeScopeEventContext* ensureTreeScopeEventContext(Node* currentTarget, TreeScope*, TreeScopeEventContextMap&);
 
     using RelatedTargetMap = std::unordered_map<Member<TreeScope>, Member<EventTarget>>;
@@ -120,10 +120,10 @@ private:
     const NodeEventContext& topNodeEventContext();
 
     std::vector<NodeEventContext> m_nodeEventContexts;
-    RawPtrWillBeMember<Node> m_node;
-    RawPtrWillBeMember<Event> m_event;
-    std::vector<Member<TreeScopeEventContext>> m_treeScopeEventContexts;
-    OwnPtrWillBeMember<WindowEventContext> m_windowEventContext;
+    BlinKit::GCMember<Node> m_node;
+    Event *m_event;
+    std::vector<BlinKit::GCMember<TreeScopeEventContext>> m_treeScopeEventContexts;
+    std::unique_ptr<WindowEventContext> m_windowEventContext;
 };
 
 } // namespace

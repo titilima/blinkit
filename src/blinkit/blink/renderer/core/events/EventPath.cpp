@@ -52,6 +52,8 @@
 #include "core/events/Event.h"
 #endif
 
+using namespace BlinKit;
+
 namespace blink {
 
 EventTarget* EventPath::eventTargetRespectingTargetRules(Node& referenceNode)
@@ -123,8 +125,8 @@ void EventPath::calculatePath()
     // path using as few bytes as possible and with as few allocations
     // as possible which is why we gather the data on the stack before
     // storing it in a perfectly sized m_nodeEventContexts Vector.
-    std::vector<Member<Node>> nodesInPath;
-    Node* current = m_node;
+    std::vector<Node *> nodesInPath;
+    Node* current = m_node.get();
     nodesInPath.emplace_back(current);
     while (current) {
         if (m_event && current->keepEventInNode(m_event))
@@ -204,7 +206,7 @@ TreeScopeEventContext* EventPath::ensureTreeScopeEventContext(Node* currentTarge
     TreeScopeEventContext* treeScopeEventContext;
     bool isNewEntry;
     {
-        Member<TreeScopeEventContext> &entry = treeScopeEventContextMap[treeScope];
+        GCMember<TreeScopeEventContext> &entry = treeScopeEventContextMap[treeScope];
         if (!entry)
         {
             isNewEntry = true;
@@ -214,7 +216,7 @@ TreeScopeEventContext* EventPath::ensureTreeScopeEventContext(Node* currentTarge
         {
             isNewEntry = false;
         }
-        treeScopeEventContext = entry;
+        treeScopeEventContext = entry.get();
     }
     if (isNewEntry) {
         TreeScopeEventContext* parentTreeScopeEventContext = ensureTreeScopeEventContext(0, treeScope->olderShadowRootOrParentTreeScope(), treeScopeEventContextMap);
@@ -253,7 +255,7 @@ void EventPath::calculateAdjustedTargets()
 
 void EventPath::buildRelatedNodeMap(const Node& relatedNode, RelatedTargetMap& relatedTargetMap)
 {
-    OwnPtrWillBeRawPtr<EventPath> relatedTargetEventPath = adoptPtrWillBeNoop(new EventPath(const_cast<Node&>(relatedNode)));
+    std::unique_ptr<EventPath> relatedTargetEventPath = std::make_unique<EventPath>(const_cast<Node&>(relatedNode));
     for (size_t i = 0; i < relatedTargetEventPath->m_treeScopeEventContexts.size(); ++i) {
         TreeScopeEventContext* treeScopeEventContext = relatedTargetEventPath->m_treeScopeEventContexts[i].get();
         relatedTargetMap.emplace(&treeScopeEventContext->treeScope(), treeScopeEventContext->target());
@@ -394,7 +396,7 @@ void EventPath::ensureWindowEventContext()
 {
     ASSERT(m_event);
     if (!m_windowEventContext)
-        m_windowEventContext = adoptPtrWillBeNoop(new WindowEventContext(*m_event, topNodeEventContext()));
+        m_windowEventContext = std::make_unique<WindowEventContext>(*m_event, topNodeEventContext());
 }
 
 #if ENABLE(ASSERT)
@@ -413,9 +415,9 @@ DEFINE_TRACE(EventPath)
 #if ENABLE(OILPAN)
     visitor->trace(m_nodeEventContexts);
     visitor->trace(m_node);
-    visitor->trace(m_event);
+    // BKTODO: visitor->trace(m_event);
     visitor->trace(m_treeScopeEventContexts);
-    visitor->trace(m_windowEventContext);
+    // BKTODO: visitor->trace(m_windowEventContext);
 #endif
 }
 
