@@ -23,6 +23,11 @@ using namespace blink;
 
 namespace BlinKit {
 
+void URLLoader::cancel(void)
+{
+    // Currently nothing to do.
+}
+
 void URLLoader::loadAsynchronously(const ResourceRequest &request, WebURLLoaderClient *client)
 {
     const zed::url &url = request.url();
@@ -33,7 +38,7 @@ void URLLoader::loadAsynchronously(const ResourceRequest &request, WebURLLoaderC
         if (request.IsForCrawler())
         {
             if (url.scheme_is_in_http_family())
-                task = new HTTPLoaderTask(request, m_taskRunner, client);
+                task = new HTTPLoaderTask(request, this, m_taskRunner, client);
             else
                 ASSERT(url.scheme_is_in_http_family());
             break;
@@ -43,12 +48,12 @@ void URLLoader::loadAsynchronously(const ResourceRequest &request, WebURLLoaderC
 #ifdef BLINKIT_UI_ENABLED
         if (url.scheme_is_file())
         {
-            task = new FileLoaderTask(request, m_taskRunner, client);
+            task = new FileLoaderTask(request, this, m_taskRunner, client);
             break;
         }
         if (url.scheme_is("res"))
         {
-            task = new ResLoaderTask(request, m_taskRunner, client);
+            task = new ResLoaderTask(request, this, m_taskRunner, client);
             break;
         }
 #endif

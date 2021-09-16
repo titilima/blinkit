@@ -76,11 +76,11 @@ public:
     virtual void loadAsynchronously(const ResourceRequest&,
         WebURLLoaderClient*) = 0;
 
-#if 0 // BKTODO:
     // Cancels an asynchronous load.  This will appear as a load error to
     // the client.
     virtual void cancel() = 0;
 
+#if 0 // BKTODO:
     // Suspends/resumes an asynchronous load.
     virtual void setDefersLoading(bool) = 0;
 

@@ -25,6 +25,7 @@ public:
 private:
     // blink::WebURLLoader
     void loadAsynchronously(const blink::ResourceRequest &request, blink::WebURLLoaderClient *client) override;
+    void cancel(void) override;
     void setLoadingTaskRunner(const std::shared_ptr<blink::WebTaskRunner> &taskRunner) override { m_taskRunner = taskRunner; }
 
     std::shared_ptr<blink::WebTaskRunner> m_taskRunner;
