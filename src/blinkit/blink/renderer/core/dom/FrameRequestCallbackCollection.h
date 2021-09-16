@@ -45,7 +45,7 @@ private:
 
     CallbackId m_nextCallbackId = 0;
 
-    RawPtrWillBeMember<ExecutionContext> m_context;
+    ExecutionContext *m_context;
 };
 
 } // namespace blink

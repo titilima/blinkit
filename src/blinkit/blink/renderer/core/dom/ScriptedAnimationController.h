@@ -38,6 +38,7 @@
 #define ScriptedAnimationController_h
 
 #include <unordered_set>
+#include "blinkit/gc/gc_root.h"
 #include "core/dom/FrameRequestCallbackCollection.h"
 #include "platform/heap/Handle.h"
 #include "wtf/ListHashSet.h"
@@ -55,12 +56,12 @@ class EventTarget;
 class FrameRequestCallback;
 class MediaQueryListListener;
 
-class ScriptedAnimationController : public RefCountedWillBeGarbageCollected<ScriptedAnimationController> {
+class ScriptedAnimationController {
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(ScriptedAnimationController);
 public:
-    static PassRefPtrWillBeRawPtr<ScriptedAnimationController> create(Document* document)
+    static GCUniqueRoot<ScriptedAnimationController> create(Document* document)
     {
-        return adoptRefWillBeNoop(new ScriptedAnimationController(document));
+        return BlinKit::WrapUniqueRoot(new ScriptedAnimationController(document));
     }
 
     DECLARE_TRACE();
@@ -91,10 +92,10 @@ private:
 
     bool hasScheduledItems() const;
 
-    RawPtrWillBeMember<Document> m_document;
+    Document *m_document;
     FrameRequestCallbackCollection m_callbackCollection;
     int m_suspendCount;
-    WillBeHeapVector<RefPtrWillBeMember<Event>> m_eventQueue;
+    std::vector<BlinKit::GCMember<Event>> m_eventQueue;
     std::unordered_set<unsigned> m_perFrameEventHashes;
     using MediaQueryListListeners = WillBeHeapListHashSet<RefPtrWillBeMember<MediaQueryListListener>>;
     MediaQueryListListeners m_mediaQueryListListeners;

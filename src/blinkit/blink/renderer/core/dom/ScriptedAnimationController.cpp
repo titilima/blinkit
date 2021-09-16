@@ -68,11 +68,11 @@ DEFINE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(ScriptedAnimationController);
 DEFINE_TRACE(ScriptedAnimationController)
 {
 #if ENABLE(OILPAN)
-    visitor->trace(m_document);
+    // BKTODO: visitor->trace(m_document);
     visitor->trace(m_callbackCollection);
     visitor->trace(m_eventQueue);
     visitor->trace(m_mediaQueryListListeners);
-    ASSERT(false); // BKTODO: visitor->trace(m_perFrameEvents);
+    // BKTODO: visitor->trace(m_perFrameEvents);
 #endif
 }
 
@@ -110,18 +110,18 @@ void ScriptedAnimationController::cancelCallback(CallbackId id)
 
 void ScriptedAnimationController::dispatchEvents(const AtomicString& eventInterfaceFilter)
 {
-    WillBeHeapVector<RefPtrWillBeMember<Event>> events;
+    std::vector<GCMember<Event>> events;
     if (eventInterfaceFilter.isEmpty()) {
         events.swap(m_eventQueue);
         m_perFrameEventHashes.clear();
     } else {
-        WillBeHeapVector<RefPtrWillBeMember<Event>> remaining;
+        std::vector<GCMember<Event>> remaining;
         for (auto& event : m_eventQueue) {
             if (event && event->interfaceName() == eventInterfaceFilter) {
                 m_perFrameEventHashes.erase(eventTargetKey(event.get()));
-                events.append(event.release());
+                events.emplace_back(event.release());
             } else {
-                remaining.append(event.release());
+                remaining.emplace_back(event.release());
             }
         }
         remaining.swap(m_eventQueue);
@@ -134,9 +134,9 @@ void ScriptedAnimationController::dispatchEvents(const AtomicString& eventInterf
         // special casting window.
         // FIXME: We should not fire events for nodes that are no longer in the tree.
         if (LocalDOMWindow* window = eventTarget->toDOMWindow())
-            window->dispatchEvent(events[i], nullptr);
+            window->dispatchEvent(events[i].get(), nullptr);
         else
-            eventTarget->dispatchEvent(events[i]);
+            eventTarget->dispatchEvent(events[i].get());
 
         InspectorInstrumentation::didRemoveEvent(eventTarget, events[i].get());
     }
@@ -171,7 +171,7 @@ bool ScriptedAnimationController::hasScheduledItems() const
     if (m_suspendCount)
         return false;
 
-    return !m_callbackCollection.isEmpty() || !m_eventQueue.isEmpty() || !m_mediaQueryListListeners.isEmpty();
+    return !m_callbackCollection.isEmpty() || !m_eventQueue.empty() || !m_mediaQueryListListeners.isEmpty();
 }
 
 void ScriptedAnimationController::serviceScriptedAnimations(double monotonicTimeNow)
@@ -191,12 +191,13 @@ void ScriptedAnimationController::serviceScriptedAnimations(double monotonicTime
 void ScriptedAnimationController::enqueueEvent(PassRefPtrWillBeRawPtr<Event> event)
 {
     InspectorInstrumentation::didEnqueueEvent(event->target(), event.get());
-    m_eventQueue.append(event);
+    m_eventQueue.emplace_back(event);
     scheduleAnimationIfNeeded();
 }
 
 void ScriptedAnimationController::enqueuePerFrameEvent(PassRefPtrWillBeRawPtr<Event> event)
 {
+    GCGuard _(*event);
     unsigned key = eventTargetKey(event.get());
     if (zed::key_exists(m_perFrameEventHashes, key))
         return;
