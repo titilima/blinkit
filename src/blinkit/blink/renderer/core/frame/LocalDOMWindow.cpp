@@ -352,7 +352,7 @@ void LocalDOMWindow::clearDocument()
     clearEventQueue();
 
     m_document->clearDOMWindow();
-    m_document.clear();
+    m_document.clear(GCOption::Full);
 }
 
 void LocalDOMWindow::clearEventQueue()
@@ -465,8 +465,7 @@ void LocalDOMWindow::documentWasClosed()
 {
     dispatchWindowLoadEvent();
     enqueuePageshowEvent(PageshowEventNotPersisted);
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (m_pendingStateObject)
         enqueuePopstateEvent(m_pendingStateObject.release());
 #endif
@@ -477,7 +476,7 @@ void LocalDOMWindow::enqueuePageshowEvent(PageshowEventPersistence persisted)
     // FIXME: https://bugs.webkit.org/show_bug.cgi?id=36334 Pageshow event needs to fire asynchronously.
     // As per spec pageshow must be triggered asynchronously.
     // However to be compatible with other browsers blink fires pageshow synchronously.
-    ASSERT(false); // BKTODO: dispatchEvent(PageTransitionEvent::create(EventTypeNames::pageshow, persisted), m_document.get());
+    dispatchEvent(PageTransitionEvent::create(EventTypeNames::pageshow, persisted), m_document.get());
 }
 
 void LocalDOMWindow::enqueueHashchangeEvent(const String& oldURL, const String& newURL)
@@ -1462,9 +1461,8 @@ bool LocalDOMWindow::removeEventListenerInternal(const AtomicString& eventType, 
 
 void LocalDOMWindow::dispatchLoadEvent()
 {
-    ASSERT(false); // BKTODO:
-#if 0
     RefPtrWillBeRawPtr<Event> loadEvent(Event::create(EventTypeNames::load));
+#if 0 // BKTODO:
     if (frame() && frame()->loader().documentLoader() && !frame()->loader().documentLoader()->timing().loadEventStart()) {
         // The DocumentLoader (and thus its DocumentLoadTiming) might get destroyed while dispatching
         // the event, so protect it to prevent writing the end time into freed memory.
@@ -1476,7 +1474,11 @@ void LocalDOMWindow::dispatchLoadEvent()
     } else {
         dispatchEvent(loadEvent, document());
     }
+#else
+    dispatchEvent(loadEvent, document());
+#endif
 
+#if 0 // BKTODO:
     // For load events, send a separate load event to the enclosing frame only.
     // This is a DOM extension and is independent of bubbling/capturing rules of
     // the DOM.
@@ -1496,6 +1498,7 @@ bool LocalDOMWindow::dispatchEvent(PassRefPtrWillBeRawPtr<Event> prpEvent, PassR
     RefPtrWillBeRawPtr<EventTarget> protect(this);
     RefPtrWillBeRawPtr<Event> event = prpEvent;
 
+    GCGuard _(*event);
     event->setTrusted(true);
     event->setTarget(prpTarget ? prpTarget : this);
     event->setCurrentTarget(this);

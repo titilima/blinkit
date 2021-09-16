@@ -335,10 +335,12 @@ bool Text::textLayoutObjectIsNeeded(const ComputedStyle& style, const LayoutObje
 
 static bool isSVGText(Text* text)
 {
+    return false;
+#if 0 // BKTODO: Remove it later.
     Node* parentOrShadowHostNode = text->parentOrShadowHostNode();
     ASSERT(parentOrShadowHostNode);
-    ASSERT(false); // BKTODO: return parentOrShadowHostNode->isSVGElement() && !isSVGForeignObjectElement(*parentOrShadowHostNode);
-    return false;
+    return parentOrShadowHostNode->isSVGElement() && !isSVGForeignObjectElement(*parentOrShadowHostNode);
+#endif
 }
 
 LayoutText* Text::createTextLayoutObject(const ComputedStyle& style)

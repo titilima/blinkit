@@ -87,7 +87,11 @@ private:
 
     void willFollowRedirect(ResourceRequest&, const ResourceResponse&) override;
     void updateRequest(const ResourceRequest&) override;
-    // BKTODO: void responseReceived(const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) override;
+#if 0 // BKTODO:
+    void responseReceived(const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) override;
+#else
+    void responseReceived(const ResourceResponse&) override;
+#endif
     void setSerializedCachedMetadata(const char*, size_t) override;
     void didSendData(unsigned long long bytesSent, unsigned long long totalBytesToBeSent) override;
     void didDownloadData(int) override;
@@ -114,7 +118,11 @@ public:
     ResourceClientType resourceClientType() const final { return expectedType(); }
 
     virtual void dataSent(Resource*, unsigned long long /* bytesSent */, unsigned long long /* totalBytesToBeSent */) { }
-    // BKTODO: virtual void responseReceived(Resource*, const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) { }
+#if 0 // BKTODO:
+    virtual void responseReceived(Resource*, const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) { }
+#else
+    virtual void responseReceived(Resource*, const ResourceResponse&) { }
+#endif
     virtual void setSerializedCachedMetadata(Resource*, const char*, size_t) { }
     virtual void dataReceived(Resource*, const char* /* data */, size_t /* length */) { }
     virtual void redirectReceived(Resource*, ResourceRequest&, const ResourceResponse&) { }

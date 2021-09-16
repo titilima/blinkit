@@ -811,8 +811,7 @@ inline bool BreakingContext::handleText(WordMeasurements& wordMeasurements, bool
 
 inline void BreakingContext::prepareForNextCharacter(const LineLayoutText& layoutText, bool& prohibitBreakInside, bool previousCharacterIsSpace)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (layoutText.isSVGInlineText() && m_current.offset()) {
         // Force creation of new InlineBoxes for each absolute positioned character (those that start new text chunks).
         if (LineLayoutSVGInlineText(layoutText).characterStartsNewTextChunk(m_current.offset()))

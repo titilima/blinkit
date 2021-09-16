@@ -195,8 +195,7 @@ inline bool isAlphanumeric(UChar32 c)
 
 inline bool isSeparatorSpace(UChar32 c)
 {
-    ASSERT(false); // BKTODO: return u_charType(c) == U_SPACE_SEPARATOR;
-    return false;
+    return u_charType(c) == U_SPACE_SEPARATOR;
 }
 
 inline bool isPrintableChar(UChar32 c)
@@ -225,8 +224,7 @@ inline UChar32 mirroredChar(UChar32 c)
 
 inline CharCategory category(UChar32 c)
 {
-    ASSERT(false); // BKTODO: return static_cast<CharCategory>(U_GET_GC_MASK(c));
-    return NoCategory;
+    return static_cast<CharCategory>(U_GET_GC_MASK(c));
 }
 
 inline Direction direction(UChar32 c)

@@ -86,7 +86,7 @@ ImageResource::ImageResource(const ResourceRequest& resourceRequest)
 }
 
 ImageResource::ImageResource(blink::Image* image)
-    : Resource(ResourceRequest(""), Image)
+    : Resource(ResourceRequest(), Image)
     , m_devicePixelRatioHeaderValue(1.0)
     , m_image(image)
     , m_hasDevicePixelRatioHeaderValue(false)
@@ -385,6 +385,22 @@ void ImageResource::responseReceived(const ResourceResponse& response, PassOwnPt
         }
 
     }
+}
+#else
+void ImageResource::responseReceived(const ResourceResponse& response)
+{
+    if (loadingMultipartContent() && m_data)
+        finishOnePart();
+    Resource::responseReceived(response);
+#if 0 // BKTODO:
+    if (RuntimeEnabledFeatures::clientHintsEnabled()) {
+        m_devicePixelRatioHeaderValue = m_response.httpHeaderField(HTTPNames::Content_DPR).toFloat(&m_hasDevicePixelRatioHeaderValue);
+        if (!m_hasDevicePixelRatioHeaderValue || m_devicePixelRatioHeaderValue <= 0.0) {
+            m_devicePixelRatioHeaderValue = 1.0;
+            m_hasDevicePixelRatioHeaderValue = false;
+        }
+    }
+#endif
 }
 #endif
 

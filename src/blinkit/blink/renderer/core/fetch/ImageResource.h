@@ -103,7 +103,11 @@ public:
 
     void appendData(const char*, size_t) override;
     void error(Resource::Status) override;
-    // BKTODO: void responseReceived(const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) override;
+#if 0 // BKTODO:
+    void responseReceived(const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) override;
+#else
+    void responseReceived(const ResourceResponse&) override;
+#endif
     void finishOnePart() override;
 
     // For compatibility, images keep loading even if there are HTTP errors.

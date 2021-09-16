@@ -199,11 +199,8 @@ void HTMLElement::mapLanguageAttributeToLocale(const AtomicString& value, Mutabl
 
 bool HTMLElement::isPresentationAttribute(const QualifiedName& name) const
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    if (name == alignAttr || name == contenteditableAttr || name == hiddenAttr || name == langAttr || name.matches(XMLNames::langAttr) || name == draggableAttr || name == dirAttr)
+    if (name == alignAttr || name == contenteditableAttr || name == hiddenAttr || name == langAttr/* // BKTODO: || name.matches(XMLNames::langAttr) */ || name == draggableAttr || name == dirAttr)
         return true;
-#endif
     return Element::isPresentationAttribute(name);
 }
 
@@ -381,9 +378,7 @@ const AtomicString& HTMLElement::eventNameForAttributeName(const QualifiedName& 
 
 void HTMLElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    if (name == tabindexAttr || name == XMLNames::langAttr)
+    if (name == tabindexAttr) // BKTODO: || name == XMLNames::langAttr)
         return Element::parseAttribute(name, oldValue, value);
 
     if (name == dirAttr) {
@@ -393,9 +388,8 @@ void HTMLElement::parseAttribute(const QualifiedName& name, const AtomicString& 
     } else {
         const AtomicString& eventName = eventNameForAttributeName(name);
         if (!eventName.isNull())
-            setAttributeEventListener(eventName, createAttributeEventListener(this, name, value, eventParameterName()));
+            ASSERT(false); // BKTODO: setAttributeEventListener(eventName, createAttributeEventListener(this, name, value, eventParameterName()));
     }
-#endif
 }
 
 PassRefPtrWillBeRawPtr<DocumentFragment> HTMLElement::textToFragment(const String& text, ExceptionState& exceptionState)

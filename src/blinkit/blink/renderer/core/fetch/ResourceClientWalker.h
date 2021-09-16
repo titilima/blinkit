@@ -52,11 +52,8 @@ public:
         : m_clientSet(set), m_clientVector(set.size()), m_index(0)
     {
         size_t clientIndex = 0;
-        ASSERT(false); // BKTODO:
-#if 0
         for (const auto& resourceClient : set)
-            m_clientVector[clientIndex++] = resourceClient.key;
-#endif
+            m_clientVector[clientIndex++] = resourceClient.first;
     }
 
     T* next()

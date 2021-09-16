@@ -76,8 +76,7 @@ ResourcePtr<RawResource> RawResource::fetch(FetchRequest& request, ResourceFetch
 
 ResourcePtr<RawResource> RawResource::fetchMainResource(FetchRequest& request, ResourceFetcher* fetcher, const SubstituteData& substituteData)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     ASSERT(request.resourceRequest().frameType() != WebURLRequest::FrameTypeNone);
     ASSERT(request.resourceRequest().requestContext() == WebURLRequest::RequestContextForm || request.resourceRequest().requestContext() == WebURLRequest::RequestContextFrame || request.resourceRequest().requestContext() == WebURLRequest::RequestContextHyperlink || request.resourceRequest().requestContext() == WebURLRequest::RequestContextIframe || request.resourceRequest().requestContext() == WebURLRequest::RequestContextInternal || request.resourceRequest().requestContext() == WebURLRequest::RequestContextLocation);
 #endif
@@ -191,6 +190,32 @@ void RawResource::responseReceived(const ResourceResponse& response, PassOwnPtr<
         // |handle| is cleared when passed, but it's not a problem because
         // |handle| is null when there are two or more clients, as asserted.
         c->responseReceived(this, m_response, handle);
+    }
+
+    // If we successfully revalidated, we won't get appendData() calls.
+    // Forward the data to clients now instead.
+    // Note: |m_data| can be null when no data is appended to the original
+    // resource.
+    if (isSuccessfulRevalidation && m_data) {
+        ResourceClientWalker<RawResourceClient> w(m_clients);
+        while (RawResourceClient* c = w.next())
+            c->dataReceived(this, m_data->data(), m_data->size());
+    }
+}
+#else
+void RawResource::responseReceived(const ResourceResponse& response)
+{
+    InternalResourcePtr protect(this);
+
+    bool isSuccessfulRevalidation = isCacheValidator() && response.httpStatusCode() == 304;
+    Resource::responseReceived(response);
+
+    ResourceClientWalker<RawResourceClient> w(m_clients);
+    // BKTODO: ASSERT(count() <= 1 || !handle);
+    while (RawResourceClient* c = w.next()) {
+        // |handle| is cleared when passed, but it's not a problem because
+        // |handle| is null when there are two or more clients, as asserted.
+        c->responseReceived(this, m_response);
     }
 
     // If we successfully revalidated, we won't get appendData() calls.

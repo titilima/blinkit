@@ -42,12 +42,13 @@
 #ifndef ResourceLoaderOptions_h
 #define ResourceLoaderOptions_h
 
-#include "core/fetch/FetchInitiatorInfo.h"
 #if 0 // BKTODO:
+#include "core/fetch/FetchInitiatorInfo.h"
 #include "platform/CrossThreadCopier.h"
 #include "platform/weborigin/SecurityOrigin.h"
 #else
-#include "platform/heap/Handle.h" // Was included in CrossThreadCopier.h
+#include "blinkit/blink/renderer/platform/heap/Handle.h" // Was included in CrossThreadCopier.h
+#include "blinkit/blink/renderer/wtf/text/TextPosition.h" // Was included in FetchInitiatorInfo.h
 #endif
 #include "wtf/Allocator.h"
 
@@ -153,7 +154,7 @@ public:
     StoredCredentials allowCredentials; // Whether HTTP credentials and cookies are sent with the request.
     CredentialRequest credentialsRequested; // Whether the client (e.g. XHR) wanted credentials in the first place.
     ContentSecurityPolicyDisposition contentSecurityPolicyOption;
-    FetchInitiatorInfo initiatorInfo;
+    // BKTODO: FetchInitiatorInfo initiatorInfo;
     RequestInitiatorContext requestInitiatorContext;
 #if 0 // BKTODO:
     SynchronousPolicy synchronousPolicy;
