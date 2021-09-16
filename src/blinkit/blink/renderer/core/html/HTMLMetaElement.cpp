@@ -491,13 +491,10 @@ void HTMLMetaElement::processViewportContentAttribute(const String& content, Vie
 
 void HTMLMetaElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (name == http_equivAttr || name == contentAttr) {
         process();
         return;
     }
-#endif
 
     if (name != nameAttr)
         HTMLElement::parseAttribute(name, oldValue, value);
