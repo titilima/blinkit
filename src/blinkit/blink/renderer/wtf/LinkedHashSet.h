@@ -79,7 +79,7 @@ template <typename T, typename Hash = std::hash<T>, typename V = int, typename W
 class LinkedHashSet : public LinkedHashSetBase<T, Hash>
 {
 public:
-    bool Contains(const T &o) const { return this->end() != this->find(o); }
+    bool contains(const T &o) const { return this->end() != this->find(o); }
 
     using LinkedHashSetBase<T, Hash>::erase;
     void erase(const T &o)

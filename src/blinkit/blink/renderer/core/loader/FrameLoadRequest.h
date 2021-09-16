@@ -131,8 +131,7 @@ private:
     }
     void initializeFetchFlags()
     {
-        ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
         // These flags are passed to a service worker which controls the page.
         m_resourceRequest.setFetchRequestMode(WebURLRequest::FetchRequestModeNavigate);
         m_resourceRequest.setFetchCredentialsMode(WebURLRequest::FetchCredentialsModeInclude);

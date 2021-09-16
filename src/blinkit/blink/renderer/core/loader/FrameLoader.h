@@ -232,9 +232,11 @@ private:
 #if 0 // BKTODO:
     bool shouldPerformFragmentNavigation(bool isFormSubmission, const String& httpMethod, FrameLoadType, const KURL&);
     void processFragment(const KURL&, LoadStartType);
+#endif
 
-    void startLoad(FrameLoadRequest&, FrameLoadType, NavigationPolicy);
+    void startLoad(FrameLoadRequest&);
 
+#if 0 // BKTODO:
     enum class HistoryNavigationType {
         DifferentDocument,
         Fragment,

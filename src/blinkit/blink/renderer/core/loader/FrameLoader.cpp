@@ -469,18 +469,24 @@ void FrameLoader::receivedFirstData()
     if (m_stateMachine.creatingInitialEmptyDocument())
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     HistoryCommitType historyCommitType = loadTypeToCommitType(m_loadType);
     if (historyCommitType == StandardCommit && (m_documentLoader->urlForHistory().isEmpty() || (opener() && !m_currentItem && m_documentLoader->originalRequest().url().isEmpty())))
         historyCommitType = HistoryInertCommit;
     else if (historyCommitType == InitialCommitInChildFrame && MixedContentChecker::isMixedContent(m_frame->tree().top()->securityContext()->securityOrigin(), m_documentLoader->url()))
         historyCommitType = HistoryInertCommit;
     setHistoryItemStateForCommit(historyCommitType, HistoryNavigationType::DifferentDocument);
+#endif
 
+#if 0 // BKTODO:
     if (!m_stateMachine.committedMultipleRealLoads() && m_loadType == FrameLoadTypeStandard)
         m_stateMachine.advanceTo(FrameLoaderStateMachine::CommittedMultipleRealLoads);
+#else
+    if (!m_stateMachine.committedMultipleRealLoads())
+        m_stateMachine.advanceTo(FrameLoaderStateMachine::CommittedMultipleRealLoads);
+#endif
 
+#if 0 // BKTODO:
     client()->dispatchDidCommitLoad(m_currentItem.get(), historyCommitType);
 
     TRACE_EVENT1("devtools.timeline", "CommitLoad", "data", InspectorCommitLoadEvent::data(m_frame));
@@ -554,14 +560,12 @@ void FrameLoader::finishedParsing()
     if (m_stateMachine.creatingInitialEmptyDocument())
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
     // This can be called from the LocalFrame's destructor, in which case we shouldn't protect ourselves
     // because doing so will cause us to re-enter the destructor when protector goes out of scope.
     // Null-checking the FrameView indicates whether or not we're in the destructor.
     RefPtrWillBeRawPtr<LocalFrame> protect(m_frame->view() ? m_frame.get() : nullptr);
 
-    m_progressTracker->finishedParsing();
+    // BKTODO: m_progressTracker->finishedParsing();
 
     if (client())
         client()->dispatchDidFinishDocumentLoad(m_documentLoader ? m_documentLoader->isCommittedButEmpty() : true);
@@ -574,14 +578,12 @@ void FrameLoader::finishedParsing()
     // Check if the scrollbars are really needed for the content.
     // If not, remove them, relayout, and repaint.
     m_frame->view()->restoreScrollbar();
-    processFragment(m_frame->document()->url(), NavigationToDifferentDocument);
-#endif
+    // BKTODO: processFragment(m_frame->document()->url(), NavigationToDifferentDocument);
 }
 
 static bool allDescendantsAreComplete(Frame* frame)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     for (Frame* child = frame->tree().firstChild(); child; child = child->tree().traverseNext(frame)) {
         if (child->isLoading())
             return false;
@@ -662,9 +664,7 @@ void FrameLoader::checkCompleted()
     if (m_frame->document()->loadEventStillNeeded())
         m_frame->document()->implicitClose();
 
-    ASSERT(false); // BKTODO:
-#if 0
-    m_frame->navigationScheduler().startTimer();
+    // BKTODO: m_frame->navigationScheduler().startTimer();
 
     if (m_frame->view())
         m_frame->view()->handleLoadCompleted();
@@ -685,15 +685,19 @@ void FrameLoader::checkCompleted()
     }
 
     if (shouldSendCompleteNotification(m_frame)) {
+        ASSERT(false); // BKTODO:
+#if 0
         m_progressTracker->progressCompleted();
         // Retry restoring scroll offset since finishing loading disables content
         // size clamping.
         restoreScrollPositionAndViewState();
 
         m_loadType = FrameLoadTypeStandard;
+#endif
         m_frame->localDOMWindow()->finishedLoading();
     }
 
+#if 0 // BKTODO:
     Frame* parent = m_frame->tree().parent();
     if (parent && parent->isLocalFrame())
         toLocalFrame(parent)->loader().checkCompleted();
@@ -979,19 +983,20 @@ void FrameLoader::load(const FrameLoadRequest& passedRequest)
     if (m_inStopAllLoaders)
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (m_frame->page()->defersLoading() && isBackForwardLoadType(frameLoadType)) {
         m_deferredHistoryLoad = DeferredHistoryLoad::create(passedRequest.resourceRequest(), historyItem, frameLoadType, historyLoadType);
         return;
     }
+#endif
 
     FrameLoadRequest request(passedRequest);
-    request.resourceRequest().setHasUserGesture(UserGestureIndicator::processingUserGesture());
+    // BKTODO: request.resourceRequest().setHasUserGesture(UserGestureIndicator::processingUserGesture());
 
     if (!prepareRequestForThisFrame(request))
         return;
 
+#if 0 // BKTODO:
     RefPtrWillBeRawPtr<Frame> targetFrame = request.form() ? nullptr : m_frame->findFrameForNavigation(AtomicString(request.frameName()), *m_frame);
 
     if (isBackForwardLoadType(frameLoadType)) {
@@ -1048,9 +1053,9 @@ void FrameLoader::load(const FrameLoadRequest& passedRequest)
         loadInSameDocument(url, stateObject, newLoadType, historyLoadType, request.clientRedirect());
         return;
     }
-
-    startLoad(request, newLoadType, policy);
 #endif
+
+    startLoad(request);
 }
 
 SubstituteData FrameLoader::defaultSubstituteDataForURL(const KURL& url)
@@ -1478,23 +1483,28 @@ bool FrameLoader::shouldContinueForNavigationPolicy(const ResourceRequest& reque
     client()->loadURLExternally(request, policy, String(), replacesCurrentHistoryItem);
     return false;
 }
+#endif
 
-void FrameLoader::startLoad(FrameLoadRequest& frameLoadRequest, FrameLoadType type, NavigationPolicy navigationPolicy)
+void FrameLoader::startLoad(FrameLoadRequest& frameLoadRequest)
 {
-    ASSERT(client()->hasWebView());
+    // BKTODO: ASSERT(client()->hasWebView());
     // Lots of things in this function can detach the LocalFrame (stopAllLoaders, beforeunload handlers, etc.), so protect the frame.
     RefPtrWillBeRawPtr<LocalFrame> protect(m_frame.get());
     if (m_frame->document()->pageDismissalEventBeingDispatched() != Document::NoDismissal)
         return;
 
+#if 0 // BKTODO:
     NavigationType navigationType = determineNavigationType(type, frameLoadRequest.resourceRequest().httpBody() || frameLoadRequest.form(), frameLoadRequest.triggeringEvent());
     frameLoadRequest.resourceRequest().setRequestContext(determineRequestContextFromNavigationType(navigationType));
     frameLoadRequest.resourceRequest().setFrameType(m_frame->isMainFrame() ? WebURLRequest::FrameTypeTopLevel : WebURLRequest::FrameTypeNested);
+#endif
     ResourceRequest& request = frameLoadRequest.resourceRequest();
+#if 0 // BKTODO:
     if (!shouldContinueForNavigationPolicy(request, frameLoadRequest.substituteData(), nullptr, frameLoadRequest.shouldCheckMainWorldContentSecurityPolicy(), navigationType, navigationPolicy, type == FrameLoadTypeReplaceCurrentItem))
         return;
     if (!shouldClose(navigationType == NavigationTypeReload))
         return;
+#endif
 
     m_frame->document()->cancelParsing();
 
@@ -1509,6 +1519,7 @@ void FrameLoader::startLoad(FrameLoadRequest& frameLoadRequest, FrameLoadType ty
         return;
 
     m_provisionalDocumentLoader = client()->createDocumentLoader(m_frame, request, frameLoadRequest.substituteData().isValid() ? frameLoadRequest.substituteData() : defaultSubstituteDataForURL(request.url()));
+#if 0 // BKTODO:
     m_provisionalDocumentLoader->setNavigationType(navigationType);
     m_provisionalDocumentLoader->setReplacesCurrentHistoryItem(type == FrameLoadTypeReplaceCurrentItem);
     m_provisionalDocumentLoader->setIsClientRedirect(frameLoadRequest.clientRedirect() == ClientRedirect);
@@ -1516,23 +1527,26 @@ void FrameLoader::startLoad(FrameLoadRequest& frameLoadRequest, FrameLoadType ty
     InspectorInstrumentation::didStartProvisionalLoad(m_frame);
 
     m_frame->navigationScheduler().cancel();
+#endif
     m_checkTimer.stop();
 
-    m_loadType = type;
+    // BKTODO: m_loadType = type;
 
+    ASSERT(nullptr == frameLoadRequest.form()); // BKTODO:
+#if 0
     if (frameLoadRequest.form())
         client()->dispatchWillSubmitForm(frameLoadRequest.form());
+#endif
 
-    m_progressTracker->progressStarted();
+    // BKTODO: m_progressTracker->progressStarted();
     if (m_provisionalDocumentLoader->isClientRedirect())
         m_provisionalDocumentLoader->appendRedirect(m_frame->document()->url());
     m_provisionalDocumentLoader->appendRedirect(m_provisionalDocumentLoader->request().url());
-    double triggeringEventTime = frameLoadRequest.triggeringEvent() ? frameLoadRequest.triggeringEvent()->platformTimeStamp() : 0;
-    client()->dispatchDidStartProvisionalLoad(triggeringEventTime);
+    // BKTODO: double triggeringEventTime = frameLoadRequest.triggeringEvent() ? frameLoadRequest.triggeringEvent()->platformTimeStamp() : 0;
+    client()->dispatchDidStartProvisionalLoad();
     ASSERT(m_provisionalDocumentLoader);
     m_provisionalDocumentLoader->startLoadingMainResource();
 }
-#endif
 
 void FrameLoader::applyUserAgent(ResourceRequest& request)
 {
@@ -1600,9 +1614,8 @@ bool FrameLoader::shouldTreatURLAsSameAsCurrent(const KURL& url) const
 
 bool FrameLoader::shouldTreatURLAsSrcdocDocument(const KURL& url) const
 {
-    ASSERT(false); // BKTODO:
     return false;
-#if 0
+#if 0 // BKTODO: Check if necessary.
     if (!url.isAboutSrcdocURL())
         return false;
     HTMLFrameOwnerElement* ownerElement = m_frame->deprecatedLocalOwner();
@@ -1619,17 +1632,16 @@ void FrameLoader::dispatchDocumentElementAvailable()
 
 void FrameLoader::dispatchDidClearDocumentOfWindowObject()
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (!m_frame->script().canExecuteScripts(NotAboutToExecuteScript))
         return;
 
-    InspectorInstrumentation::didClearDocumentOfWindowObject(m_frame);
+    // BKTODO: InspectorInstrumentation::didClearDocumentOfWindowObject(m_frame);
 
     if (m_dispatchingDidClearWindowObjectInMainWorld)
         return;
     TemporaryChange<bool>
         inDidClearWindowObject(m_dispatchingDidClearWindowObjectInMainWorld, true);
+#if 0 // BKTODO: Check if necessary.
     // We just cleared the document, not the entire window object, but for the
     // embedder that's close enough.
     client()->dispatchDidClearWindowObjectInMainWorld();
@@ -1638,8 +1650,6 @@ void FrameLoader::dispatchDidClearDocumentOfWindowObject()
 
 void FrameLoader::dispatchDidClearWindowObjectInMainWorld()
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (!m_frame->script().canExecuteScripts(NotAboutToExecuteScript))
         return;
 
@@ -1647,6 +1657,7 @@ void FrameLoader::dispatchDidClearWindowObjectInMainWorld()
         return;
     TemporaryChange<bool>
         inDidClearWindowObject(m_dispatchingDidClearWindowObjectInMainWorld, true);
+#if 0 // BKTODO: Check if necessary.
     client()->dispatchDidClearWindowObjectInMainWorld();
 #endif
 }

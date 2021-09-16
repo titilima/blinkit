@@ -479,8 +479,7 @@ void MixedContentChecker::checkMixedPrivatePublic(LocalFrame* frame, const Atomi
     if (!frame || !frame->document() || !frame->document()->loader())
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // Just count these for the moment, don't block them.
     if (Platform::current()->isReservedIPAddress(resourceIPAddress) && !frame->document()->isHostedInReservedIPRange())
         UseCounter::count(frame->document(), UseCounter::MixedContentPrivateHostnameInPublicHostname);

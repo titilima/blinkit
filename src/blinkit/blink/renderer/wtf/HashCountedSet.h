@@ -19,13 +19,16 @@ template <typename T>
 class HashCountedSet
 {
 public:
+    using const_iterator = typename std::unordered_map<T, unsigned>::const_iterator;
     using iterator = typename std::unordered_map<T, unsigned>::iterator;
 
     bool isEmpty(void) const { return m_impl.empty(); }
     size_t size(void) const { return m_impl.size(); }
 
     iterator begin(void) { return m_impl.begin(); }
+    const_iterator begin(void) const { return m_impl.begin(); }
     iterator end(void) { return m_impl.end(); }
+    const_iterator end(void) const { return m_impl.end(); }
     void erase(iterator it) { m_impl.erase(it); }
     iterator find(const T &o) { return m_impl.find(o); }
 

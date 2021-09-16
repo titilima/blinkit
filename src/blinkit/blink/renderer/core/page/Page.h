@@ -180,10 +180,12 @@ public:
     String mainThreadScrollingReasonsAsText();
     ClientRectList* nonFastScrollableRects(const LocalFrame*);
 
-    // BKTODO: Settings& settings() const { return *m_settings; }
+#if 0 // BKTODO:
+    Settings& settings() const { return *m_settings; }
 
     UseCounter& useCounter() { return m_useCounter; }
-    // BKTODO: OriginsUsingFeatures& originsUsingFeatures() { return m_originsUsingFeatures; }
+    OriginsUsingFeatures& originsUsingFeatures() { return m_originsUsingFeatures; }
+#endif
 
     void setTabKeyCyclesThroughElements(bool b) { m_tabKeyCyclesThroughElements = b; }
     bool tabKeyCyclesThroughElements() const { return m_tabKeyCyclesThroughElements; }
@@ -292,8 +294,10 @@ private:
     // BKTODO: SpellCheckerClient* const m_spellCheckerClient;
     OwnPtrWillBeMember<ValidationMessageClient> m_validationMessageClient;
 
+#if 0 // BKTODO:
     UseCounter m_useCounter;
-    // BKTODO: OriginsUsingFeatures m_originsUsingFeatures;
+    OriginsUsingFeatures m_originsUsingFeatures;
+#endif
 
     bool m_openedByDOM;
 

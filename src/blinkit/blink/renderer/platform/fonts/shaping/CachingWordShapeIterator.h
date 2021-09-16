@@ -128,9 +128,6 @@ private:
         if (m_startIndex + 1u == length || isWordDelimiter(m_textRun[m_startIndex]))
             return m_startIndex + 1;
 
-        ASSERT(false); // BKTODO:
-        return 0;
-#if 0
         // Delimit every CJK character because these scripts do not delimit
         // words by spaces, and not delimiting hits the performance.
         if (!m_textRun.is8Bit()) {
@@ -172,7 +169,6 @@ private:
                     return i;
             }
         }
-#endif
     }
 
     bool shapeToEndIndex(RefPtr<ShapeResult>* result, unsigned endIndex)

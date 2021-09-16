@@ -537,8 +537,7 @@ bool ChromeClientImpl::openJavaScriptPromptDelegate(LocalFrame* frame, const Str
 
 void ChromeClientImpl::setStatusbarText(const String& message)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Remove it later.
     if (m_webView->client())
         m_webView->client()->setStatusText(message);
 #endif

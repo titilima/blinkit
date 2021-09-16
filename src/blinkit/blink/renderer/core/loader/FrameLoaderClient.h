@@ -95,27 +95,27 @@ class Widget;
 
 class CORE_EXPORT FrameLoaderClient : public FrameClient {
 public:
-#if 0 // BKTODO:
-    virtual void dispatchWillSendRequest(DocumentLoader*, unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse) = 0;
-    virtual void dispatchDidReceiveResponse(DocumentLoader*, unsigned long identifier, const ResourceResponse&) = 0;
-    virtual void dispatchDidFinishLoading(DocumentLoader*, unsigned long identifier) = 0;
-    virtual void dispatchDidLoadResourceFromMemoryCache(const ResourceRequest&, const ResourceResponse&) = 0;
+    virtual void dispatchWillSendRequest(DocumentLoader*, unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse) {}
+    virtual void dispatchDidReceiveResponse(DocumentLoader*, unsigned long identifier, const ResourceResponse&) {}
+    virtual void dispatchDidFinishLoading(DocumentLoader*, unsigned long identifier) {}
+    // BKTODO: virtual void dispatchDidLoadResourceFromMemoryCache(const ResourceRequest&, const ResourceResponse&) = 0;
 
-    virtual void dispatchDidHandleOnloadEvents() = 0;
+    virtual void dispatchDidHandleOnloadEvents(void) {}
+#if 0 // BKTODO:
     virtual void dispatchDidReceiveServerRedirectForProvisionalLoad() = 0;
     virtual void dispatchDidNavigateWithinPage(HistoryItem*, HistoryCommitType) { }
 #endif
     virtual void dispatchWillClose(void) {}
-    // BKTODO: virtual void dispatchDidStartProvisionalLoad(double triggeringEventTime) = 0;
+    virtual void dispatchDidStartProvisionalLoad(void) {}
     virtual void dispatchDidReceiveTitle(const String&) {}
 #if 0 // BKTODO:
     virtual void dispatchDidChangeIcons(IconType) = 0;
     virtual void dispatchDidCommitLoad(HistoryItem*, HistoryCommitType) = 0;
     virtual void dispatchDidFailProvisionalLoad(const ResourceError&, HistoryCommitType) = 0;
     virtual void dispatchDidFailLoad(const ResourceError&, HistoryCommitType) = 0;
-    virtual void dispatchDidFinishDocumentLoad(bool documentIsEmpty) = 0;
-    virtual void dispatchDidFinishLoad() = 0;
 #endif
+    virtual void dispatchDidFinishDocumentLoad(bool documentIsEmpty) {}
+    virtual void dispatchDidFinishLoad() = 0;
     virtual void dispatchDidChangeThemeColor(void) {}
 
 #if 0 // BKTODO:

@@ -78,11 +78,8 @@ PassRefPtr<SimpleFontData> FontDataCache::get(const FontPlatformData* platformDa
     }
 
     if (!result.get()->value.second) {
-        ASSERT(false); // BKTODO:
-#if 0
         ASSERT(m_inactiveFontData.contains(result.get()->value.first));
-        m_inactiveFontData.remove(result.get()->value.first);
-#endif
+        m_inactiveFontData.erase(result.get()->value.first);
     }
 
     if (shouldRetain == Retain) {
@@ -90,7 +87,7 @@ PassRefPtr<SimpleFontData> FontDataCache::get(const FontPlatformData* platformDa
     } else if (!result.get()->value.second) {
         // If shouldRetain is DoNotRetain and count is 0, we want to remove the fontData from
         // m_inactiveFontData (above) and re-add here to update LRU position.
-        ASSERT(false); // BKTODO: m_inactiveFontData.add(result.get()->value.first);
+        m_inactiveFontData.insert(result.get()->value.first);
     }
 
     return result.get()->value.first;

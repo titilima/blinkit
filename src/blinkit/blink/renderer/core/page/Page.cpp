@@ -542,9 +542,8 @@ void Page::updateAcceleratedCompositingSettings()
 
 void Page::didCommitLoad(LocalFrame* frame)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    notifyDidCommitLoad(frame);
+    // BKTODO: notifyDidCommitLoad(frame);
+#if 0 // BKTODO: May be useless.
     if (m_mainFrame == frame) {
         frame->console().clearMessages();
         useCounter().didCommitLoad();
