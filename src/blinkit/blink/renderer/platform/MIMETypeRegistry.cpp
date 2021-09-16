@@ -48,9 +48,27 @@
 
 namespace blink {
 
+namespace MIMETypes {
+static const char ImageGIF[] = "image/gif";
+static const char ImagePNG[] = "image/png";
+static const char TextCSS[] = "text/css";
+static const char TextHTML[] = "text/html";
+}
+
 String MIMETypeRegistry::getMIMETypeForExtension(const String &ext)
 {
-    ASSERT(false); // BKTODO: return Platform::current()->mimeRegistry()->mimeTypeForExtension(ext);
+    if (0 == equalIgnoringCase(ext, "css"))
+        return String::fromUTF8(MIMETypes::TextCSS);
+    if (0 == equalIgnoringCase(ext, "gif"))
+        return String::fromUTF8(MIMETypes::ImageGIF);
+    if (0 == equalIgnoringCase(ext, "html"))
+        return String::fromUTF8(MIMETypes::TextHTML);
+    if (0 == equalIgnoringCase(ext, "png"))
+        return String::fromUTF8(MIMETypes::ImagePNG);
+#ifndef NDEBUG
+    const std::string s = ext.stdUtf8();
+    ASSERT(false); // BKTODO:
+#endif
     return String();
 }
 
