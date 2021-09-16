@@ -44,7 +44,7 @@
 
 #include "core/CoreExport.h"
 // BKTODO: #include "core/fetch/CachePolicy.h"
-#include "core/fetch/FetchInitiatorInfo.h"
+// BKTODO: #include "core/fetch/FetchInitiatorInfo.h"
 #include "core/fetch/FetchRequest.h"
 #include "core/fetch/Resource.h"
 #include "platform/heap/Handle.h"
@@ -66,7 +66,7 @@ enum FetchResourceType {
     FetchSubresource
 };
 
-class CORE_EXPORT FetchContext : public GarbageCollectedFinalized<FetchContext> {
+class CORE_EXPORT FetchContext {
     WTF_MAKE_NONCOPYABLE(FetchContext);
 public:
     static FetchContext& nullInstance();
@@ -87,12 +87,12 @@ public:
     virtual ResourceRequestCachePolicy resourceRequestCachePolicy(const ResourceRequest&, Resource::Type) const;
 
     // BKTODO: virtual void dispatchDidChangeResourcePriority(unsigned long identifier, ResourceLoadPriority, int intraPriorityValue);
-    virtual void dispatchWillSendRequest(unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse, const FetchInitiatorInfo& = FetchInitiatorInfo());
+    virtual void dispatchWillSendRequest(unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse);
     virtual void dispatchDidLoadResourceFromMemoryCache(const Resource*);
     virtual void dispatchDidReceiveResponse(unsigned long identifier, const ResourceResponse&, ResourceLoader* = 0);
     virtual void dispatchDidReceiveData(unsigned long identifier, const char* data, int dataLength, int encodedDataLength);
     virtual void dispatchDidDownloadData(unsigned long identifier, int dataLength, int encodedDataLength);
-    virtual void dispatchDidFinishLoading(unsigned long identifier, double finishTime, int64_t encodedDataLength);
+    virtual void dispatchDidFinishLoading(unsigned long identifier, int64_t encodedDataLength);
     virtual void dispatchDidFail(unsigned long identifier, const ResourceError&, bool isInternalRequest);
 
     virtual bool shouldLoadNewResource(Resource::Type) const { return false; }
@@ -121,7 +121,7 @@ public:
 
     // BKTODO: virtual ResourceLoadPriority modifyPriorityForExperiments(ResourceLoadPriority priority, Resource::Type, const FetchRequest&, ResourcePriority::VisibilityStatus) { return priority; }
 
-    virtual WebTaskRunner* loadingTaskRunner() const { return nullptr; }
+    virtual std::shared_ptr<WebTaskRunner> loadingTaskRunner() const { return nullptr; }
 
 protected:
     FetchContext() { }

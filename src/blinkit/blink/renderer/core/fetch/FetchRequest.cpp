@@ -51,10 +51,10 @@ FetchRequest::FetchRequest(const ResourceRequest& resourceRequest, const AtomicS
     , m_defer(NoDefer)
     , m_originRestriction(UseDefaultOriginRestrictionForType)
 {
-    m_options.initiatorInfo.name = initiator;
+    // BKTODO: m_options.initiatorInfo.name = initiator;
 }
 
-FetchRequest::FetchRequest(const ResourceRequest& resourceRequest, const AtomicString& initiator, const ResourceLoaderOptions& options)
+FetchRequest::FetchRequest(const ResourceRequest& resourceRequest, const ResourceLoaderOptions& options)
     : m_resourceRequest(resourceRequest)
     , m_options(options)
     // BKTODO: , m_priority(ResourceLoadPriorityUnresolved)
@@ -63,7 +63,7 @@ FetchRequest::FetchRequest(const ResourceRequest& resourceRequest, const AtomicS
     , m_defer(NoDefer)
     , m_originRestriction(UseDefaultOriginRestrictionForType)
 {
-    m_options.initiatorInfo.name = initiator;
+    // BKTODO: m_options.initiatorInfo.name = initiator;
 }
 
 FetchRequest::FetchRequest(const ResourceRequest& resourceRequest, const FetchInitiatorInfo& initiator)
@@ -75,7 +75,7 @@ FetchRequest::FetchRequest(const ResourceRequest& resourceRequest, const FetchIn
     , m_defer(NoDefer)
     , m_originRestriction(UseDefaultOriginRestrictionForType)
 {
-    m_options.initiatorInfo = initiator;
+    // BKTODO: m_options.initiatorInfo = initiator;
 }
 
 FetchRequest::~FetchRequest()

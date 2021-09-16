@@ -76,7 +76,7 @@ ResourceRequestCachePolicy FetchContext::resourceRequestCachePolicy(const Resour
     return UseProtocolCachePolicy;
 }
 
-void FetchContext::dispatchWillSendRequest(unsigned long, ResourceRequest&, const ResourceResponse&, const FetchInitiatorInfo&)
+void FetchContext::dispatchWillSendRequest(unsigned long, ResourceRequest&, const ResourceResponse&)
 {
 }
 
@@ -96,7 +96,7 @@ void FetchContext::dispatchDidDownloadData(unsigned long, int, int)
 {
 }
 
-void FetchContext::dispatchDidFinishLoading(unsigned long, double, int64_t)
+void FetchContext::dispatchDidFinishLoading(unsigned long, int64_t)
 {
 }
 
