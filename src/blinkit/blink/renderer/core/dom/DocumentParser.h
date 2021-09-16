@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentParser.h
+// Description: DocumentParser Class
+//      Author: Ziming Li
+//     Created: 2021-09-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Peter Kelly (pmk@post.com)
  * Copyright (C) 2005, 2006 Apple Computer, Inc.
@@ -36,7 +47,7 @@ class SegmentedString;
 class ScriptableDocumentParser;
 class TextResourceDecoder;
 
-class DocumentParser : public RefCountedWillBeGarbageCollectedFinalized<DocumentParser> {
+class DocumentParser : public BlinKit::GCObject {
 public:
     virtual ~DocumentParser();
     DECLARE_VIRTUAL_TRACE();
@@ -67,7 +78,7 @@ public:
     virtual bool processingData() const { return false; }
 
     // document() will return 0 after detach() is called.
-    Document* document() const { ASSERT(m_document); return m_document; }
+    Document* document() const { ASSERT(m_document); return m_document.get(); }
 
     bool isParsing() const { return m_state == ParsingState; }
     bool isStopping() const { return m_state == StoppingState; }
@@ -119,7 +130,7 @@ private:
 
     // Every DocumentParser needs a pointer back to the document.
     // m_document will be 0 after the parser is stopped.
-    RawPtrWillBeMember<Document> m_document;
+    BlinKit::GCMember<Document> m_document;
 
     WillBeHeapHashSet<RawPtrWillBeWeakMember<DocumentParserClient>> m_clients;
 };

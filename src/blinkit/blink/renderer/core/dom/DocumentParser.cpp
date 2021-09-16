@@ -103,7 +103,7 @@ void DocumentParser::stopParsing()
 void DocumentParser::detach()
 {
     m_state = DetachedState;
-    m_document = nullptr;
+    m_document.clear();
 }
 
 void DocumentParser::suspendScheduledTasks()
