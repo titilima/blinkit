@@ -35,10 +35,8 @@
 #include "bindings/core/v8/ExceptionState.h"
 #include "core/dom/Document.h"
 #include "core/dom/ExceptionCode.h"
-#if 0 // BKTODO: MutationEvent stuff is not recommended, remove it later. See also: https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent
 #include "core/dom/MutationObserverInterestGroup.h"
 #include "core/dom/MutationRecord.h"
-#endif
 // BKTODO: #include "core/dom/ProcessingInstruction.h"
 #include "core/dom/Text.h"
 #include "core/editing/FrameSelection.h"
@@ -204,8 +202,6 @@ void CharacterData::setDataAndUpdate(const String& newData, unsigned offsetOfRep
 
 void CharacterData::didModifyData(const String& oldData, UpdateSource source)
 {
-    ASSERT(false); // TODO:
-#if 0
     if (OwnPtrWillBeRawPtr<MutationObserverInterestGroup> mutationRecipients = MutationObserverInterestGroup::createForCharacterDataMutation(*this))
         mutationRecipients->enqueueMutationRecord(MutationRecord::createCharacterData(this, oldData));
 
@@ -213,17 +209,13 @@ void CharacterData::didModifyData(const String& oldData, UpdateSource source)
         ContainerNode::ChildrenChange change = {ContainerNode::TextChanged, previousSibling(), nextSibling(), ContainerNode::ChildrenChangeSourceAPI};
         parentNode()->childrenChanged(change);
     }
-#endif
 
     // Skip DOM mutation events if the modification is from parser.
     // Note that mutation observer events will still fire.
     // Spec: https://html.spec.whatwg.org/multipage/syntax.html#insert-a-character
     if (source != UpdateFromParser && !isInShadowTree()) {
-        ASSERT(false); // TODO:
-#if 0
         if (document().hasListenerType(Document::DOMCHARACTERDATAMODIFIED_LISTENER))
-            dispatchScopedEvent(MutationEvent::create(EventTypeNames::DOMCharacterDataModified, true, nullptr, oldData, m_data));
-#endif
+            ASSERT(false); // BKTODO: dispatchScopedEvent(MutationEvent::create(EventTypeNames::DOMCharacterDataModified, true, nullptr, oldData, m_data));
         dispatchSubtreeModifiedEvent();
     }
     InspectorInstrumentation::characterDataModified(this);

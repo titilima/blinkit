@@ -70,6 +70,8 @@
 #include "wtf/text/StringBuilder.h"
 #include "wtf/text/StringHash.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 ScriptLoader::ScriptLoader(Element* element, bool parserInserted, bool alreadyStarted)
@@ -460,7 +462,7 @@ void ScriptLoader::execute()
     ASSERT(m_pendingScript.resource());
     bool errorOccurred = false;
     ScriptSourceCode source = m_pendingScript.getSource(KURL(), errorOccurred);
-    RefPtrWillBeRawPtr<Element> element = m_pendingScript.releaseElementAndClear();
+    GCMember<Element> element = m_pendingScript.releaseElementAndClear();
     ALLOW_UNUSED_LOCAL(element);
     if (errorOccurred) {
         dispatchErrorEvent();
