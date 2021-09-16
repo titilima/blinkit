@@ -42,6 +42,8 @@
 #include "core/events/EventPath.h"
 // BKTODO: #include "core/events/TouchEventContext.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 bool TreeScopeEventContext::isUnclosedTreeOf(const TreeScopeEventContext& other)
@@ -67,21 +69,21 @@ bool TreeScopeEventContext::isUnclosedTreeOf(const TreeScopeEventContext& other)
     return false;
 }
 
-WillBeHeapVector<RefPtrWillBeMember<EventTarget>>& TreeScopeEventContext::ensureEventPath(EventPath& path)
+std::vector<EventTarget *>& TreeScopeEventContext::ensureEventPath(EventPath& path)
 {
     if (m_eventPath)
         return *m_eventPath;
 
-    m_eventPath = adoptPtrWillBeNoop(new WillBeHeapVector<RefPtrWillBeMember<EventTarget>>());
+    m_eventPath = std::make_unique<std::vector<EventTarget *>>();
     LocalDOMWindow* window = path.windowEventContext().window();
     m_eventPath->reserve(path.size() + (window ? 1 : 0));
 
     for (size_t i = 0; i < path.size(); ++i) {
         if (path[i].treeScopeEventContext().isUnclosedTreeOf(*this))
-            m_eventPath->append(path[i].node());
+            m_eventPath->emplace_back(path[i].node());
     }
     if (window)
-        m_eventPath->append(window);
+        m_eventPath->emplace_back(window);
     return *m_eventPath;
 }
 
@@ -92,9 +94,9 @@ TouchEventContext* TreeScopeEventContext::ensureTouchEventContext()
     return m_touchEventContext.get();
 }
 
-PassRefPtrWillBeRawPtr<TreeScopeEventContext> TreeScopeEventContext::create(TreeScope& treeScope)
+GCPassPtr<TreeScopeEventContext> TreeScopeEventContext::create(TreeScope& treeScope)
 {
-    return adoptRefWillBeNoop(new TreeScopeEventContext(treeScope));
+    return WrapLeaked(new TreeScopeEventContext(treeScope));
 }
 
 TreeScopeEventContext::TreeScopeEventContext(TreeScope& treeScope)
@@ -110,11 +112,13 @@ DEFINE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(TreeScopeEventContext)
 
 DEFINE_TRACE(TreeScopeEventContext)
 {
-    visitor->trace(m_treeScope);
+    // BKTODO: visitor->trace(m_treeScope);
     visitor->trace(m_rootNode);
+#if 0 // BKTODO:
     visitor->trace(m_target);
     visitor->trace(m_relatedTarget);
     visitor->trace(m_eventPath);
+#endif
     visitor->trace(m_touchEventContext);
     visitor->trace(m_containingClosedShadowTree);
 #if ENABLE(OILPAN)

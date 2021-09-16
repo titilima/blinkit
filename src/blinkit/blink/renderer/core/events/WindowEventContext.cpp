@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WindowEventContext.cpp
+// Description: WindowEventContext Class
+//      Author: Ziming Li
+//     Created: 2021-09-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All Rights Reserved.
  *
@@ -57,10 +68,12 @@ bool WindowEventContext::handleLocalEvents(Event& event)
     return true;
 }
 
+#if 0 // BKTODO:
 DEFINE_TRACE(WindowEventContext)
 {
     visitor->trace(m_window);
     visitor->trace(m_target);
 }
+#endif
 
 }

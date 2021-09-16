@@ -57,7 +57,7 @@ NodeEventContext::NodeEventContext(PassRefPtrWillBeRawPtr<Node> node, PassRefPtr
 DEFINE_TRACE(NodeEventContext)
 {
     visitor->trace(m_node);
-    visitor->trace(m_currentTarget);
+    // BKTODO: visitor->trace(m_currentTarget);
     visitor->trace(m_treeScopeEventContext);
 }
 

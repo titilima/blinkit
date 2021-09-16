@@ -74,9 +74,9 @@ public:
     void handleLocalEvents(Event&) const;
 
 private:
-    RefPtrWillBeMember<Node> m_node;
-    RefPtrWillBeMember<EventTarget> m_currentTarget;
-    RefPtrWillBeMember<TreeScopeEventContext> m_treeScopeEventContext;
+    BlinKit::GCMember<Node> m_node;
+    RawPtr<EventTarget> m_currentTarget;
+    BlinKit::GCMember<TreeScopeEventContext> m_treeScopeEventContext;
 };
 
 } // namespace blink

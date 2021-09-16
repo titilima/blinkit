@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TreeScopeEventContext.h
+// Description: TreeScopeEventContext Class
+//      Author: Ziming Li
+//     Created: 2021-09-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All Rights Reserved.
  *
@@ -45,13 +56,13 @@ using StaticNodeList = StaticNodeTypeList<Node>;
 class TouchEventContext;
 class TreeScope;
 
-class CORE_EXPORT TreeScopeEventContext final : public RefCountedWillBeGarbageCollected<TreeScopeEventContext> {
+class CORE_EXPORT TreeScopeEventContext final : public BlinKit::GCObject {
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(TreeScopeEventContext);
 public:
-    static PassRefPtrWillBeRawPtr<TreeScopeEventContext> create(TreeScope&);
+    static GCPassPtr<TreeScopeEventContext> create(TreeScope&);
     DECLARE_TRACE();
 
-    TreeScope& treeScope() const { return *m_treeScope; }
+    TreeScope& treeScope() const { return m_treeScope; }
     Node& rootNode() const { return *m_rootNode; }
 
     EventTarget* target() const { return m_target.get(); }
@@ -63,7 +74,7 @@ public:
     TouchEventContext* touchEventContext() const { return m_touchEventContext.get(); }
     TouchEventContext* ensureTouchEventContext();
 
-    WillBeHeapVector<RefPtrWillBeMember<EventTarget>>& ensureEventPath(EventPath&);
+    std::vector<EventTarget *>& ensureEventPath(EventPath&);
 
     bool isInclusiveAncestorOf(const TreeScopeEventContext&) const;
     bool isDescendantOf(const TreeScopeEventContext&) const;
@@ -87,11 +98,11 @@ private:
 
     bool isUnclosedTreeOf(const TreeScopeEventContext& other);
 
-    RawPtrWillBeMember<TreeScope> m_treeScope;
-    RefPtrWillBeMember<Node> m_rootNode; // Prevents TreeScope from being freed. TreeScope itself isn't RefCounted.
-    RefPtrWillBeMember<EventTarget> m_target;
-    RefPtrWillBeMember<EventTarget> m_relatedTarget;
-    OwnPtrWillBeMember<WillBeHeapVector<RefPtrWillBeMember<EventTarget>>> m_eventPath;
+    TreeScope &m_treeScope;
+    BlinKit::GCMember<Node> m_rootNode; // Prevents TreeScope from being freed. TreeScope itself isn't RefCounted.
+    RawPtr<EventTarget> m_target;
+    RawPtr<EventTarget> m_relatedTarget;
+    std::unique_ptr<std::vector<EventTarget *>> m_eventPath;
     RefPtrWillBeMember<TouchEventContext> m_touchEventContext;
     RawPtrWillBeMember<TreeScopeEventContext> m_containingClosedShadowTree;
 
