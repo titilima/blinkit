@@ -9,7 +9,7 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "loader_thread.h"
+#include "./loader_thread.h"
 
 #include "blinkit/blink/impl/thread.h"
 #include "blinkit/blink/renderer/wtf/MainThread.h"
@@ -43,6 +43,7 @@ void LoaderThread::Run(void)
             task = m_tasks.front();
             m_tasks.pop();
         }
+        m_signal.reset();
 
         if (nullptr == task)
             break;
