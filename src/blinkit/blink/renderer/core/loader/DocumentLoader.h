@@ -181,7 +181,7 @@ protected:
     Vector<KURL> m_redirectChain;
 
 private:
-    static PassRefPtrWillBeRawPtr<DocumentWriter> createWriterFor(const Document* ownerDocument, const DocumentInit&, const AtomicString& mimeType, const AtomicString& encoding, bool dispatch, ParserSynchronizationPolicy);
+    static GCUniqueRoot<DocumentWriter> createWriterFor(const Document* ownerDocument, const DocumentInit&, const AtomicString& mimeType, const AtomicString& encoding, bool dispatch, ParserSynchronizationPolicy);
 
     void ensureWriter(const AtomicString& mimeType, const KURL& overridingURL = KURL());
     void endWriting(DocumentWriter*);
@@ -204,7 +204,11 @@ private:
     void cancelLoadAfterXFrameOptionsOrCSPDenied(const ResourceResponse&);
     void redirectReceived(Resource*, ResourceRequest&, const ResourceResponse&) final;
     void updateRequest(Resource*, const ResourceRequest&) final;
-    // BKTODO: void responseReceived(Resource*, const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) final;
+#if 0 // BKTODO:
+    void responseReceived(Resource*, const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>) final;
+#else
+    void responseReceived(Resource*, const ResourceResponse&) final;
+#endif
     void dataReceived(Resource*, const char* data, size_t length) final;
     void processData(const char* data, size_t length);
     void notifyFinished(Resource*) final;
@@ -221,7 +225,7 @@ private:
 
     ResourcePtr<RawResource> m_mainResource;
 
-    RefPtrWillBeMember<DocumentWriter> m_writer;
+    BlinKit::GCUniqueRoot<DocumentWriter> m_writer;
 
     // A reference to actual request used to create the data source.
     // The only part of this request that should change is the url, and
@@ -246,9 +250,9 @@ private:
     RefPtrWillBeMember<MHTMLArchive> m_archive;
 
     DocumentLoadTiming m_documentLoadTiming;
-#endif
 
     double m_timeOfLastDataReceived;
+#endif
 
 #if 0 // BKTODO:
     PersistentWillBeMember<ApplicationCacheHost> m_applicationCacheHost;

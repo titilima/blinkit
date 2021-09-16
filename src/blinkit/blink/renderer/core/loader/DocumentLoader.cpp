@@ -40,6 +40,7 @@
 
 #include "core/loader/DocumentLoader.h"
 
+#include "blinkit/blink/renderer/platform/MIMETypeRegistry.h"
 #include "core/dom/Document.h"
 #include "core/dom/DocumentParser.h"
 // BKTODO: #include "core/dom/WeakIdentifierMap.h"
@@ -89,6 +90,7 @@
 #include "platform/weborigin/SecurityPolicy.h"
 #endif
 #include "public/platform/Platform.h"
+#include "third_party/zed/include/zed/float.hpp"
 // BKTODO: #include "public/platform/WebMimeRegistry.h"
 #include "wtf/Assertions.h"
 #include "wtf/TemporaryChange.h"
@@ -112,8 +114,8 @@ DocumentLoader::DocumentLoader(LocalFrame* frame, const ResourceRequest& req, co
 #if 0 // BKTODO:
     , m_navigationType(NavigationTypeOther)
     , m_documentLoadTiming(*this)
-#endif
     , m_timeOfLastDataReceived(0.0)
+#endif
     // BKTODO: , m_applicationCacheHost(ApplicationCacheHost::create(this))
     , m_state(NotStarted)
     , m_inDataReceived(false)
@@ -145,7 +147,8 @@ DEFINE_TRACE(DocumentLoader)
     // BKTODO: visitor->trace(m_frame);
     visitor->trace(m_fetcher);
     // TODO(sof): start tracing ResourcePtr<>s (and m_mainResource.)
-    visitor->trace(m_writer);
+    if (m_writer)
+        m_writer->trace(visitor);
 #if 0 // BKTODO:
     visitor->trace(m_archive);
     visitor->trace(m_documentLoadTiming);
@@ -317,9 +320,11 @@ void DocumentLoader::finishedLoading(double finishTime)
     RefPtrWillBeRawPtr<DocumentLoader> protect(this);
 
     double responseEndTime = finishTime;
+#if 0 // BKTODO:
     if (!responseEndTime)
         responseEndTime = m_timeOfLastDataReceived;
-    if (!responseEndTime)
+#endif
+    if (zed::is_almost_zero(responseEndTime))
         responseEndTime = monotonicallyIncreasingTime();
     // BKTODO: timing().setResponseEnd(responseEndTime);
 
@@ -372,20 +377,22 @@ static bool isFormSubmission(NavigationType type)
 
 void DocumentLoader::willSendRequest(ResourceRequest& newRequest, const ResourceResponse& redirectResponse)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     // Note that there are no asserts here as there are for the other callbacks. This is due to the
     // fact that this "callback" is sent when starting every load, and the state of callback
     // deferrals plays less of a part in this function in preventing the bad behavior deferring
     // callbacks is meant to prevent.
     ASSERT(!newRequest.isNull());
+#if 0 // BKTODO:
     if (isFormSubmission(m_navigationType) && !m_frame->document()->contentSecurityPolicy()->allowFormAction(newRequest.url())) {
         cancelMainResourceLoad(ResourceError::cancelledError(newRequest.url()));
         return;
     }
+#endif
 
-    ASSERT(timing().fetchStart());
+    // BKTODO: ASSERT(timing().fetchStart());
     if (!redirectResponse.isNull()) {
+        ASSERT(false); // BKTODO:
+#if 0
         // If the redirecting url is not allowed to display content from the target origin,
         // then block the redirect.
         RefPtr<SecurityOrigin> redirectingOrigin = SecurityOrigin::create(redirectResponse.url());
@@ -395,6 +402,7 @@ void DocumentLoader::willSendRequest(ResourceRequest& newRequest, const Resource
             return;
         }
         timing().addRedirect(redirectResponse.url(), newRequest.url());
+#endif
     }
 
     // If we're fielding a redirect in response to a POST, force a load from origin, since
@@ -410,6 +418,7 @@ void DocumentLoader::willSendRequest(ResourceRequest& newRequest, const Resource
 
     appendRedirect(newRequest.url());
     frameLoader()->receivedMainResourceRedirect(m_request.url());
+#if 0 // BKTODO: Check the logic below.
     if (!frameLoader()->shouldContinueForNavigationPolicy(newRequest, SubstituteData(), this, CheckContentSecurityPolicy, m_navigationType, NavigationPolicyCurrentTab, replacesCurrentHistoryItem()))
         cancelMainResourceLoad(ResourceError::cancelledError(m_request.url()));
 #endif
@@ -438,8 +447,7 @@ bool DocumentLoader::shouldContinueForResponse() const
         return false;
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check the logic below.
     if (contentDispositionType(m_response.httpHeaderField(HTTPNames::Content_Disposition)) == ContentDispositionAttachment) {
         // The server wants us to download instead of replacing the page contents.
         // Downloading is handled by the embedder, but we still get the initial
@@ -535,6 +543,77 @@ void DocumentLoader::responseReceived(Resource* resource, const ResourceResponse
             m_frame->owner()->renderFallbackContent();
     }
 }
+#else
+void DocumentLoader::responseReceived(Resource* resource, const ResourceResponse& response)
+{
+    ASSERT_UNUSED(resource, m_mainResource == resource);
+    RefPtrWillBeRawPtr<DocumentLoader> protect(this);
+    ASSERT(frame());
+
+#if 0 // BKTODO:
+    m_applicationCacheHost->didReceiveResponseForMainResource(response);
+
+    // The memory cache doesn't understand the application cache or its caching rules. So if a main resource is served
+    // from the application cache, ensure we don't save the result for future use. All responses loaded
+    // from appcache will have a non-zero appCacheID().
+    if (response.appCacheID())
+        memoryCache()->remove(m_mainResource.get());
+
+    m_contentSecurityPolicy = ContentSecurityPolicy::create();
+    m_contentSecurityPolicy->setOverrideURLForSelf(response.url());
+    m_contentSecurityPolicy->didReceiveHeaders(ContentSecurityPolicyResponseHeaders(response));
+    if (!m_contentSecurityPolicy->allowAncestors(m_frame, response.url())) {
+        cancelLoadAfterXFrameOptionsOrCSPDenied(response);
+        return;
+    }
+
+    // 'frame-ancestors' obviates 'x-frame-options': https://w3c.github.io/webappsec/specs/content-security-policy/#frame-ancestors-and-frame-options
+    if (!m_contentSecurityPolicy->isFrameAncestorsEnforced()) {
+        HTTPHeaderMap::const_iterator it = response.httpHeaderFields().find(HTTPNames::X_Frame_Options);
+        if (it != response.httpHeaderFields().end()) {
+            String content = it->value;
+            if (frameLoader()->shouldInterruptLoadForXFrameOptions(content, response.url(), mainResourceIdentifier())) {
+                String message = "Refused to display '" + response.url().elidedString() + "' in a frame because it set 'X-Frame-Options' to '" + content + "'.";
+                RefPtrWillBeRawPtr<ConsoleMessage> consoleMessage = ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, message);
+                consoleMessage->setRequestIdentifier(mainResourceIdentifier());
+                frame()->document()->addConsoleMessage(consoleMessage.release());
+
+                cancelLoadAfterXFrameOptionsOrCSPDenied(response);
+                return;
+            }
+        }
+    }
+#endif
+
+    ASSERT(!mainResourceLoader() || !mainResourceLoader()->defersLoading());
+
+    m_response = response;
+
+#if 0 // BKTODO:
+    if (isArchiveMIMEType(m_response.mimeType()) && m_mainResource->dataBufferingPolicy() != BufferData)
+        m_mainResource->setDataBufferingPolicy(BufferData);
+#endif
+
+    if (!shouldContinueForResponse()) {
+        ASSERT(false); // BKTODO:
+#if 0
+        InspectorInstrumentation::continueWithPolicyIgnore(m_frame, this, m_mainResource->identifier(), m_response);
+        cancelMainResourceLoad(ResourceError::cancelledError(m_request.url()));
+#endif
+        return;
+    }
+
+#ifdef BLINKIT_CRAWLER_ENABLED
+    if (m_response.isHTTP()) {
+        int status = m_response.httpStatusCode();
+        ASSERT(false); // BKTODO:
+#if 0
+        if ((status < 200 || status >= 300) && m_frame->owner())
+            m_frame->owner()->renderFallbackContent();
+#endif
+    }
+#endif
+}
 #endif
 
 void DocumentLoader::ensureWriter(const AtomicString& mimeType, const KURL& overridingURL)
@@ -618,8 +697,6 @@ void DocumentLoader::dataReceived(Resource* resource, const char* data, size_t l
     TemporaryChange<bool> reentrancyProtector(m_inDataReceived, true);
     processData(data, length);
 
-    ASSERT(false); // BKTODO:
-#if 0
     // Process data received in reentrant invocations. Note that the
     // invocations of processData() may queue more data in reentrant
     // invocations, so iterate until it's empty.
@@ -631,18 +708,17 @@ void DocumentLoader::dataReceived(Resource* resource, const char* data, size_t l
     }
     // All data has been consumed, so flush the buffer.
     m_dataBuffer->clear();
-#endif
 }
 
 void DocumentLoader::processData(const char* data, size_t length)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     m_applicationCacheHost->mainResourceDataReceived(data, length);
     m_timeOfLastDataReceived = monotonicallyIncreasingTime();
 
     if (isArchiveMIMEType(response().mimeType()))
         return;
+#endif
     commitIfReady();
     if (!frameLoader())
         return;
@@ -651,8 +727,7 @@ void DocumentLoader::processData(const char* data, size_t length)
     // If we are sending data to MediaDocument, we should stop here
     // and cancel the request.
     if (m_frame && m_frame->document()->isMediaDocument())
-        cancelMainResourceLoad(ResourceError::cancelledError(m_request.url()));
-#endif
+        ASSERT(false); // BKTODO: cancelMainResourceLoad(ResourceError::cancelledError(m_request.url()));
 }
 
 void DocumentLoader::clearRedirectChain()
@@ -742,8 +817,7 @@ bool DocumentLoader::maybeCreateArchive()
 
 void DocumentLoader::prepareSubframeArchiveLoadIfNeeded()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: May be useless.
     if (!m_frame->tree().parent() || !m_frame->tree().parent()->isLocalFrame())
         return;
 
@@ -805,7 +879,7 @@ void DocumentLoader::startLoadingMainResource()
 #if 0 // BKTODO:
     timing().markNavigationStart();
 #else
-    if (abs(m_referenceMonotonicTime) < DBL_EPSILON)
+    if (zed::is_almost_zero(m_referenceMonotonicTime))
         m_referenceMonotonicTime = monotonicallyIncreasingTime();
 #endif
     ASSERT(!m_mainResource);
@@ -815,33 +889,35 @@ void DocumentLoader::startLoadingMainResource()
     if (maybeLoadEmpty())
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     ASSERT(timing().navigationStart());
     ASSERT(!timing().fetchStart());
     timing().markFetchStart();
+#endif
     willSendRequest(m_request, ResourceResponse());
 
     // willSendRequest() may lead to our LocalFrame being detached or cancelling the load via nulling the ResourceRequest.
     if (!m_frame || m_request.isNull())
         return;
 
-    m_applicationCacheHost->willStartLoadingMainResource(m_request);
+    // BKTODO: m_applicationCacheHost->willStartLoadingMainResource(m_request);
     prepareSubframeArchiveLoadIfNeeded();
 
     ResourceRequest request(m_request);
     DEFINE_STATIC_LOCAL(ResourceLoaderOptions, mainResourceLoadOptions,
         (DoNotBufferData, AllowStoredCredentials, ClientRequestedCredentials, CheckContentSecurityPolicy, DocumentContext));
-    FetchRequest cachedResourceRequest(request, FetchInitiatorTypeNames::document, mainResourceLoadOptions);
+    FetchRequest cachedResourceRequest(request, mainResourceLoadOptions);
     m_mainResource = RawResource::fetchMainResource(cachedResourceRequest, fetcher(), m_substituteData);
     if (!m_mainResource) {
         m_request = ResourceRequest();
+#if 0 // BKTODO:
         // If the load was aborted by clearing m_request, it's possible the ApplicationCacheHost
         // is now in a state where starting an empty load will be inconsistent. Replace it with
         // a new ApplicationCacheHost.
         if (m_applicationCacheHost)
             m_applicationCacheHost->detachFromDocumentLoader();
         m_applicationCacheHost = ApplicationCacheHost::create(this);
+#endif
         maybeLoadEmpty();
         return;
     }
@@ -850,12 +926,13 @@ void DocumentLoader::startLoadingMainResource()
     // A bunch of headers are set when the underlying ResourceLoader is created, and m_request needs to include those.
     if (mainResourceLoader())
         request = mainResourceLoader()->originalRequest();
+#if 0 // BKTODO:
     // If there was a fragment identifier on m_request, the cache will have stripped it. m_request should include
     // the fragment identifier, so add that back in.
     if (equalIgnoringFragmentIdentifier(m_request.url(), request.url()))
         request.setURL(m_request.url());
-    m_request = request;
 #endif
+    m_request = request;
 }
 
 void DocumentLoader::cancelMainResourceLoad(const ResourceError& resourceError)
@@ -888,12 +965,12 @@ void DocumentLoader::acceptDataFromThreadedReceiver(const char* data, int dataLe
 
 void DocumentLoader::endWriting(DocumentWriter* writer)
 {
-    ASSERT_UNUSED(writer, m_writer == writer);
+    ASSERT_UNUSED(writer, m_writer.get() == writer);
     m_writer->end();
-    m_writer.clear();
+    m_writer.reset();
 }
 
-PassRefPtrWillBeRawPtr<DocumentWriter> DocumentLoader::createWriterFor(const Document* ownerDocument, const DocumentInit& init, const AtomicString& mimeType, const AtomicString& encoding, bool dispatch, ParserSynchronizationPolicy parsingPolicy)
+GCUniqueRoot<DocumentWriter> DocumentLoader::createWriterFor(const Document* ownerDocument, const DocumentInit& init, const AtomicString& mimeType, const AtomicString& encoding, bool dispatch, ParserSynchronizationPolicy parsingPolicy)
 {
     LocalFrame* frame = init.frame();
 

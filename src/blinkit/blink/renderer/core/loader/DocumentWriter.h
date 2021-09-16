@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentWriter.h
+// Description: DocumentWriter Class
+//      Author: Ziming Li
+//     Created: 2021-09-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010. Adam Barth. All rights reserved.
  *
@@ -29,6 +40,7 @@
 #ifndef DocumentWriter_h
 #define DocumentWriter_h
 
+#include "blinkit/gc/gc_root.h"
 #include "core/html/parser/ParserSynchronizationPolicy.h"
 #include "core/loader/TextResourceDecoderBuilder.h"
 #include "platform/heap/Handle.h"
@@ -40,10 +52,10 @@ namespace blink {
 class Document;
 class DocumentParser;
 
-class DocumentWriter final : public RefCountedWillBeGarbageCollectedFinalized<DocumentWriter> {
+class DocumentWriter final {
     WTF_MAKE_NONCOPYABLE(DocumentWriter);
 public:
-    static PassRefPtrWillBeRawPtr<DocumentWriter> create(Document*, ParserSynchronizationPolicy, const AtomicString& mimeType, const AtomicString& encoding);
+    static GCUniqueRoot<DocumentWriter> create(Document*, ParserSynchronizationPolicy, const AtomicString& mimeType, const AtomicString& encoding);
 
     ~DocumentWriter();
     DECLARE_TRACE();
@@ -63,10 +75,10 @@ public:
 private:
     DocumentWriter(Document*, ParserSynchronizationPolicy, const AtomicString& mimeType, const AtomicString& encoding);
 
-    RawPtrWillBeMember<Document> m_document;
+    BlinKit::GCMember<Document> m_document;
     TextResourceDecoderBuilder m_decoderBuilder;
 
-    RefPtrWillBeMember<DocumentParser> m_parser;
+    BlinKit::GCMember<DocumentParser> m_parser;
 };
 
 } // namespace blink

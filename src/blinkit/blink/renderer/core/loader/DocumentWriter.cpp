@@ -52,11 +52,13 @@
 // BKTODO: #include "platform/weborigin/SecurityOrigin.h"
 #include "wtf/PassOwnPtr.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-PassRefPtrWillBeRawPtr<DocumentWriter> DocumentWriter::create(Document* document, ParserSynchronizationPolicy parsingPolicy, const AtomicString& mimeType, const AtomicString& encoding)
+GCUniqueRoot<DocumentWriter> DocumentWriter::create(Document* document, ParserSynchronizationPolicy parsingPolicy, const AtomicString& mimeType, const AtomicString& encoding)
 {
-    return adoptRefWillBeNoop(new DocumentWriter(document, parsingPolicy, mimeType, encoding));
+    return WrapUniqueRoot(new DocumentWriter(document, parsingPolicy, mimeType, encoding));
 }
 
 DocumentWriter::DocumentWriter(Document* document, ParserSynchronizationPolicy parserSyncPolicy, const AtomicString& mimeType, const AtomicString& encoding)
@@ -97,7 +99,7 @@ void DocumentWriter::addData(const char* bytes, size_t length)
 {
     ASSERT(m_parser);
     if (m_parser->needsDecoder() && 0 < length) {
-        OwnPtr<TextResourceDecoder> decoder = m_decoderBuilder.buildFor(m_document);
+        OwnPtr<TextResourceDecoder> decoder = m_decoderBuilder.buildFor(m_document.get());
         m_parser->setDecoder(decoder.release());
     }
     // appendBytes() can result replacing DocumentLoader::m_writer.
@@ -117,15 +119,15 @@ void DocumentWriter::end()
         return;
 
     if (m_parser->needsDecoder()) {
-        OwnPtr<TextResourceDecoder> decoder = m_decoderBuilder.buildFor(m_document);
+        OwnPtr<TextResourceDecoder> decoder = m_decoderBuilder.buildFor(m_document.get());
         m_parser->setDecoder(decoder.release());
     }
 
     // finish() can result replacing DocumentLoader::m_writer.
     RefPtrWillBeRawPtr<DocumentWriter> protectingThis(this);
     m_parser->finish();
-    m_parser = nullptr;
-    m_document = nullptr;
+    m_parser.clear();
+    m_document.clear();
 }
 
 void DocumentWriter::setDocumentWasLoadedAsPartOfNavigation()
