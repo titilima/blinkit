@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ElementData.h
+// Description: ElementData Classes
+//      Author: Ziming Li
+//     Created: 2021-09-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  * Copyright (C) 2014 Apple Inc. All rights reserved.
@@ -46,7 +57,7 @@ class UniqueElementData;
 
 // ElementData represents very common, but not necessarily unique to an element,
 // data such as attributes, inline style, and parsed class names and ids.
-class ElementData : public RefCountedWillBeGarbageCollectedFinalized<ElementData> {
+class ElementData : public BlinKit::GCObject {
     USING_FAST_MALLOC_WILL_BE_REMOVED(ElementData);
 public:
 #if ENABLE(OILPAN)
@@ -94,7 +105,7 @@ protected:
     mutable unsigned m_styleAttributeIsDirty : 1;
     mutable unsigned m_animatedSVGAttributesAreDirty : 1;
 
-    mutable RefPtrWillBeMember<StylePropertySet> m_inlineStyle;
+    mutable BlinKit::GCMember<StylePropertySet> m_inlineStyle;
     mutable SpaceSplitString m_classNames;
     mutable AtomicString m_idForStyleResolution;
 
@@ -126,7 +137,7 @@ private:
 // duplicate sets of attributes (ex. the same classes).
 class ShareableElementData final : public ElementData {
 public:
-    static PassRefPtrWillBeRawPtr<ShareableElementData> createWithAttributes(const Vector<Attribute>&);
+    static GCPassPtr<ShareableElementData> createWithAttributes(const Vector<Attribute>&);
 
     explicit ShareableElementData(const Vector<Attribute>&);
     explicit ShareableElementData(const UniqueElementData&);
@@ -163,8 +174,8 @@ DEFINE_ELEMENT_DATA_TYPE_CASTS(ShareableElementData, !data->isUnique(), !data.is
 // attribute will have the same inline style.
 class UniqueElementData final : public ElementData {
 public:
-    static PassRefPtrWillBeRawPtr<UniqueElementData> create();
-    PassRefPtrWillBeRawPtr<ShareableElementData> makeShareableCopy() const;
+    static GCPassPtr<UniqueElementData> create();
+    GCPassPtr<ShareableElementData> makeShareableCopy() const;
 
     MutableAttributeCollection attributes();
     AttributeCollection attributes() const;

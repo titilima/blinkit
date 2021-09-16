@@ -38,6 +38,7 @@
 #ifndef ElementDataCache_h
 #define ElementDataCache_h
 
+#include "blinkit/gc/gc_root.h"
 #include "platform/heap/Handle.h"
 #include "wtf/HashMap.h"
 #include "wtf/PassOwnPtr.h"
@@ -51,20 +52,20 @@ namespace blink {
 class Attribute;
 class ShareableElementData;
 
-class ElementDataCache final : public NoBaseWillBeGarbageCollected<ElementDataCache>  {
+class ElementDataCache final {
     USING_FAST_MALLOC_WILL_BE_REMOVED(ElementDataCache);
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(ElementDataCache)
 public:
-    static PassOwnPtrWillBeRawPtr<ElementDataCache> create() { return adoptPtrWillBeNoop(new ElementDataCache); }
+    static GCUniqueRoot<ElementDataCache> create() { return BlinKit::WrapUniqueRoot(new ElementDataCache); }
 
-    PassRefPtrWillBeRawPtr<ShareableElementData> cachedShareableElementDataWithAttributes(const Vector<Attribute>&);
+    GCPassPtr<ShareableElementData> cachedShareableElementDataWithAttributes(const Vector<Attribute>&);
 
     DECLARE_TRACE();
 
 private:
     ElementDataCache();
 
-    using ShareableElementDataCache = std::unordered_map<unsigned, Member<ShareableElementData>>;
+    using ShareableElementDataCache = std::unordered_map<unsigned, BlinKit::GCMember<ShareableElementData>>;
     ShareableElementDataCache m_shareableElementDataCache;
 };
 

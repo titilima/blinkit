@@ -45,9 +45,11 @@
 #include "core/dom/QualifiedName.h"
 #include "wtf/Vector.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-struct SameSizeAsElementData : public RefCountedWillBeGarbageCollectedFinalized<SameSizeAsElementData> {
+struct SameSizeAsElementData : public GCObject {
     unsigned bitfield;
     RawPtrWillBeMember<void*> willbeMember;
     void* pointers[2];
@@ -172,14 +174,14 @@ ShareableElementData::ShareableElementData(const UniqueElementData& other)
         new (&m_attributeArray[i]) Attribute(other.m_attributeVector.at(i));
 }
 
-PassRefPtrWillBeRawPtr<ShareableElementData> ShareableElementData::createWithAttributes(const Vector<Attribute>& attributes)
+GCPassPtr<ShareableElementData> ShareableElementData::createWithAttributes(const Vector<Attribute>& attributes)
 {
 #if ENABLE(OILPAN)
     void* slot = nullptr; // BKTODO: Heap::allocate<ElementData>(sizeForShareableElementDataWithAttributeCount(attributes.size()));
 #else
     void* slot = WTF::Partitions::fastMalloc(sizeForShareableElementDataWithAttributeCount(attributes.size()), WTF_HEAP_PROFILER_TYPE_NAME(ShareableElementData));
 #endif
-    return adoptRefWillBeNoop(new (slot) ShareableElementData(attributes));
+    return WrapLeaked(new (slot) ShareableElementData(attributes));
 }
 
 UniqueElementData::UniqueElementData()
@@ -207,19 +209,19 @@ UniqueElementData::UniqueElementData(const ShareableElementData& other)
         m_attributeVector.uncheckedAppend(other.m_attributeArray[i]);
 }
 
-PassRefPtrWillBeRawPtr<UniqueElementData> UniqueElementData::create()
+GCPassPtr<UniqueElementData> UniqueElementData::create()
 {
-    return adoptRefWillBeNoop(new UniqueElementData);
+    return WrapLeaked(new UniqueElementData);
 }
 
-PassRefPtrWillBeRawPtr<ShareableElementData> UniqueElementData::makeShareableCopy() const
+GCPassPtr<ShareableElementData> UniqueElementData::makeShareableCopy() const
 {
 #if ENABLE(OILPAN)
     void* slot = nullptr; // BKTODO: Heap::allocate<ElementData>(sizeForShareableElementDataWithAttributeCount(m_attributeVector.size()));
 #else
     void* slot = WTF::Partitions::fastMalloc(sizeForShareableElementDataWithAttributeCount(m_attributeVector.size()), WTF_HEAP_PROFILER_TYPE_NAME(ShareableElementData));
 #endif
-    return adoptRefWillBeNoop(new (slot) ShareableElementData(*this));
+    return WrapLeaked(new (slot) ShareableElementData(*this));
 }
 
 DEFINE_TRACE_AFTER_DISPATCH(UniqueElementData)

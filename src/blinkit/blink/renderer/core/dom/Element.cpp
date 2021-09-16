@@ -139,6 +139,8 @@
 #include "wtf/text/StringBuilder.h"
 #include "wtf/text/TextPosition.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 namespace {
@@ -3422,7 +3424,7 @@ void Element::cloneAttributesFromElement(const Element& other)
     if (other.m_elementData->isUnique()
         && !ownerDocumentsHaveDifferentCaseSensitivity
         && !other.m_elementData->presentationAttributeStyle())
-        const_cast<Element&>(other).m_elementData = toUniqueElementData(other.m_elementData)->makeShareableCopy();
+        const_cast<Element&>(other).m_elementData = toUniqueElementData(other.m_elementData.get())->makeShareableCopy();
 
     if (!other.m_elementData->isUnique() && !ownerDocumentsHaveDifferentCaseSensitivity && !needsURLResolutionForInlineStyle(other, other.document(), document()))
         m_elementData = other.m_elementData;
@@ -3446,7 +3448,7 @@ void Element::createUniqueElementData()
         m_elementData = UniqueElementData::create();
     } else {
         ASSERT(!m_elementData->isUnique());
-        m_elementData = toShareableElementData(m_elementData)->makeUniqueCopy();
+        m_elementData = toShareableElementData(m_elementData.get())->makeUniqueCopy();
     }
 }
 
@@ -3471,14 +3473,14 @@ CSSStyleDeclaration* Element::style()
 MutableStylePropertySet& Element::ensureMutableInlineStyle()
 {
     ASSERT(isStyledElement());
-    RefPtrWillBeMember<StylePropertySet>& inlineStyle = ensureUniqueElementData().m_inlineStyle;
+    GCMember<StylePropertySet>& inlineStyle = ensureUniqueElementData().m_inlineStyle;
     if (!inlineStyle) {
         CSSParserMode mode = (!isHTMLElement() || document().inQuirksMode()) ? HTMLQuirksMode : HTMLStandardMode;
         inlineStyle = MutableStylePropertySet::create(mode);
     } else if (!inlineStyle->isMutable()) {
         inlineStyle = inlineStyle->mutableCopy();
     }
-    return *toMutableStylePropertySet(inlineStyle);
+    return *toMutableStylePropertySet(inlineStyle.get());
 }
 
 void Element::clearMutableInlineStyleIfEmpty()
@@ -3491,7 +3493,7 @@ void Element::clearMutableInlineStyleIfEmpty()
 inline void Element::setInlineStyleFromString(const AtomicString& newStyleString)
 {
     ASSERT(isStyledElement());
-    RefPtrWillBeMember<StylePropertySet>& inlineStyle = elementData()->m_inlineStyle;
+    GCMember<StylePropertySet>& inlineStyle = elementData()->m_inlineStyle;
 
     // Avoid redundant work if we're using shared attribute data with already parsed inline style.
     if (inlineStyle && !elementData()->isUnique())
