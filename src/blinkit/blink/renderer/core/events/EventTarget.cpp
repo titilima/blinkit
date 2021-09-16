@@ -54,6 +54,7 @@
 #include "wtf/Threading.h"
 #include "wtf/Vector.h"
 
+using namespace BlinKit;
 using namespace WTF;
 
 namespace blink {
@@ -288,6 +289,7 @@ bool EventTarget::dispatchEventForBindings(PassRefPtrWillBeRawPtr<Event> event, 
 
 bool EventTarget::dispatchEvent(PassRefPtrWillBeRawPtr<Event> event)
 {
+    GCGuard _(*event);
     event->setTrusted(true);
     return dispatchEventInternal(event);
 }

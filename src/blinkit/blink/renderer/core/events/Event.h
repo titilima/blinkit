@@ -51,7 +51,7 @@ class DOMWrapperWorld;
 class EventTarget;
 class ExecutionContext;
 
-class CORE_EXPORT Event : public RefCountedWillBeGarbageCollectedFinalized<Event>,  public ScriptWrappable {
+class CORE_EXPORT Event : public BlinKit::GCObject,  public ScriptWrappable {
     DEFINE_WRAPPERTYPEINFO();
 public:
     enum PhaseType {
@@ -228,6 +228,8 @@ protected:
     void setCanBubble(bool bubble) { m_canBubble = bubble; }
 
 private:
+    BlinKit::GCObject* ObjectForGC(void) final { return this; }
+
     AtomicString m_type;
     unsigned m_canBubble:1;
     unsigned m_cancelable:1;
@@ -244,8 +246,8 @@ private:
     RefPtrWillBeMember<EventTarget> m_currentTarget;
     RefPtrWillBeMember<EventTarget> m_target;
     DOMTimeStamp m_createTime;
-    RefPtrWillBeMember<Event> m_underlyingEvent;
-    OwnPtrWillBeMember<EventPath> m_eventPath;
+    BlinKit::GCMember<Event> m_underlyingEvent;
+    BlinKit::GCUniqueRoot<EventPath> m_eventPath;
     // The monotonic platform time in seconds, for input events it is the
     // event timestamp provided by the host OS and reported in the original
     // WebInputEvent instance.

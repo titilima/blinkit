@@ -43,6 +43,8 @@
 // BKTODO: #include "core/timing/Performance.h"
 #include "wtf/CurrentTime.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 Event::Event()
@@ -210,7 +212,7 @@ void Event::preventDefault()
 
 void Event::setTarget(PassRefPtrWillBeRawPtr<EventTarget> target)
 {
-    if (m_target == target)
+    if (m_target.get() == target)
         return;
 
     m_target = target;
@@ -234,7 +236,7 @@ void Event::setUnderlyingEvent(PassRefPtrWillBeRawPtr<Event> ue)
 void Event::initEventPath(Node& node)
 {
     if (!m_eventPath) {
-        m_eventPath = adoptPtrWillBeNoop(new EventPath(node, this));
+        m_eventPath = MakeUniqueRoot<EventPath>(node, this);
     } else {
         m_eventPath->initializeWith(node, this);
     }
@@ -318,10 +320,11 @@ double Event::timeStamp(ScriptState* scriptState) const
 
 DEFINE_TRACE(Event)
 {
-    visitor->trace(m_currentTarget);
-    visitor->trace(m_target);
+    // BKTODO: visitor->trace(m_currentTarget);
+    // BKTODO: visitor->trace(m_target);
     visitor->trace(m_underlyingEvent);
-    visitor->trace(m_eventPath);
+    if (m_eventPath)
+        m_eventPath->trace(visitor);
 }
 
 } // namespace blink

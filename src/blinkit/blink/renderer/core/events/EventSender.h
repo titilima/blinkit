@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EventSender.h
+// Description: EventSender Class
+//      Author: Ziming Li
+//     Created: 2021-09-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -34,13 +45,13 @@
 namespace blink {
 
 template<typename T>
-class EventSender final : public NoBaseWillBeGarbageCollectedFinalized<EventSender<T>> {
+class EventSender final : public BlinKit::GCObject {
     WTF_MAKE_NONCOPYABLE(EventSender);
     USING_FAST_MALLOC_WILL_BE_REMOVED(EventSender);
 public:
-    static PassOwnPtrWillBeRawPtr<EventSender> create(const AtomicString& eventType)
+    static EventSender* create(const AtomicString& eventType)
     {
-        return adoptPtrWillBeNoop(new EventSender(eventType));
+        return new EventSender(eventType);
     }
 
     const AtomicString& eventType() const { return m_eventType; }
