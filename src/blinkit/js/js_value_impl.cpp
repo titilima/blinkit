@@ -11,8 +11,8 @@
 
 #include "./js_value_impl.h"
 
-#include <cfloat>
 #include "blinkit/blink/renderer/bindings/core/duk/duk.h"
+#include "third_party/zed/include/zed/float.hpp"
 
 using namespace BlinKit;
 
@@ -125,7 +125,7 @@ bool JSSimpleValue::CanBeTreatedAsInteger(void) const
 
     int intVal = static_cast<int>(m_numberVal);
     double doubleVal = intVal;
-    return abs(m_numberVal - doubleVal) < DBL_EPSILON;
+    return zed::almost_equals(m_numberVal, doubleVal);
 }
 
 int JSSimpleValue::GetAsBoolean(bool_t *dst) const

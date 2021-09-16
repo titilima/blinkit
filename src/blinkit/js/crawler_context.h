@@ -33,7 +33,7 @@ private:
     void Attach(duk_context *ctx, duk_idx_t globalStashIndex) override;
     void Detach(duk_context *ctx) override;
     void* GetUserObject(void) override { return m_userObject; }
-    bool ScriptEnabled(const std::string &URL) const override;
+    // BKTODO: bool ScriptEnabled(const std::string &URL) const override;
     void ConsoleOutput(int type, const char *msg) override;
 
     // BKTODO: CrawlerImpl &m_crawler;

@@ -136,11 +136,11 @@ private:
 #endif
     // FrameLoaderClient
     void transitionToCommittedForNewPage(void) final;
+    void dispatchDidFinishLoad(void) final;
 #if 0 // BKTODO:
     // LocalFrameClient
     bool HasWebView(void) const final { return true; }
     void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) final;
-    void DidFinishLoad(void) final;
 #endif
 
     mutable zed::shared_mutex m_lock;

@@ -134,10 +134,12 @@ void CrawlerContext::RegisterPrototypes(duk_context *ctx, duk_idx_t globalStashI
     DukXHR::RegisterPrototype(helper);
 }
 
+#if 0 // BKTODO:
 bool CrawlerContext::ScriptEnabled(const std::string &URL) const
 {
     ASSERT(false); // BKTODO: return m_crawler.ScriptEnabled(URL);
     return false;
 }
+#endif
 
 } // namespace BlinKit

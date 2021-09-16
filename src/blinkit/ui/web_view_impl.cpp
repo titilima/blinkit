@@ -20,12 +20,14 @@
 #include "blinkit/blink/renderer/core/frame/Settings.h"
 #include "blinkit/blink/renderer/core/layout/LayoutView.h"
 #include "blinkit/blink/renderer/core/layout/TextAutosizer.h"
+#include "blinkit/blink/renderer/core/loader/FrameLoadRequest.h"
 #include "blinkit/blink/renderer/core/page/FocusController.h"
 #include "blinkit/blink/renderer/core/page/Page.h"
 #include "blinkit/blink/renderer/web/ChromeClientImpl.h"
 #include "blinkit/blink/renderer/web/PageWidgetDelegate.h"
 #include "blinkit/blink/renderer/web/ResizeViewportAnchor.h"
 #include "blinkit/ui/rendering_scheduler.h"
+#include "third_party/zed/include/zed/float.hpp"
 #if 0 // BKTODO:
 #include "blinkit/blink/renderer/core/editing/editor.h"
 #include "blinkit/blink/renderer/core/frame/browser_controls.h"
@@ -35,7 +37,6 @@
 #include "blinkit/blink/renderer/core/editing/editing_utilities.h"
 #include "blinkit/blink/renderer/core/editing/selection_template.h"
 #include "blinkit/blink/renderer/core/layout/text_autosizer.h"
-#include "blinkit/blink/renderer/core/loader/frame_load_request.h"
 #include "blinkit/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #endif
 
@@ -109,14 +110,6 @@ void WebViewImpl::didChangeContentsSize(void)
     GetPageScaleConstraintsSet().didChangeContentsSize(ContentsSize(), PageScaleFactor());
 }
 
-#if 0 // BKTODO:
-void WebViewImpl::DidFinishLoad(void)
-{
-    std::shared_lock<BkSharedMutex> lock(m_lock);
-    m_client.DocumentReady(m_client.UserData);
-}
-#endif
-
 void WebViewImpl::DidUpdateTopControls(void)
 {
 #if 0 // BKTODO:
@@ -149,7 +142,15 @@ void WebViewImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 {
     ASSERT(false); // BKTODO:
 }
+#endif
 
+void WebViewImpl::dispatchDidFinishLoad(void)
+{
+    auto _ = m_lock.guard_shared();
+    m_client.DocumentReady(m_client.UserData);
+}
+
+#if 0 // BKTODO:
 IntSize WebViewImpl::FrameSize(void)
 {
     // The frame size should match the viewport size at minimum scale, since the
@@ -243,12 +244,11 @@ void WebViewImpl::layoutUpdated(LocalFrame *frame)
 
 int WebViewImpl::LoadUI(const char *URI)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    GURL u(URI);
-    if (u.SchemeIsHTTPOrHTTPS())
+    KURL u(URI);
+    if (!u.isValid() || u.scheme_is_in_http_family())
     {
-        BKLOG("URLs are not supported: %s", URI);
+        ASSERT(u.isValid());
+        ASSERT(!u.scheme_is_in_http_family()); // Standard URL is for crawlers only!
         return BK_ERR_URI;
     }
 
@@ -256,10 +256,9 @@ int WebViewImpl::LoadUI(const char *URI)
     {
         ResourceRequest request(u);
         request.SetView(this);
-        m_frame->Loader().StartNavigation(FrameLoadRequest(nullptr, request));
+        m_frame->loader().load(FrameLoadRequest(nullptr, request));
     };
-    m_appCaller.Call(FROM_HERE, task);
-#endif
+    m_appCaller.Call(BLINK_FROM_HERE, task);
     return BK_ERR_SUCCESS;
 }
 
@@ -619,7 +618,7 @@ void WebViewImpl::SetPageScaleFactor(float scaleFactor)
     ASSERT(m_page);
 
     scaleFactor = ClampPageScaleFactorToLimits(scaleFactor);
-    if (abs(scaleFactor - PageScaleFactor()) < FLT_EPSILON)
+    if (zed::almost_equals(scaleFactor, PageScaleFactor()))
         return;
 
     m_page->frameHost().visualViewport().setScale(scaleFactor);
