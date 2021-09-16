@@ -51,7 +51,7 @@ namespace blink {
 
 class ContainerNode;
 
-class HTMLStackItem : public RefCountedWillBeGarbageCollectedFinalized<HTMLStackItem> {
+class HTMLStackItem : public BlinKit::GCObject {
 public:
     enum ItemType {
         ItemForContextElement,
@@ -59,15 +59,15 @@ public:
     };
 
     // Used by document fragment node and context element.
-    static PassRefPtrWillBeRawPtr<HTMLStackItem> create(PassRefPtrWillBeRawPtr<ContainerNode> node, ItemType type)
+    static GCPassPtr<HTMLStackItem> create(PassRefPtrWillBeRawPtr<ContainerNode> node, ItemType type)
     {
-        return adoptRefWillBeNoop(new HTMLStackItem(node, type));
+        return BlinKit::WrapLeaked(new HTMLStackItem(node, type));
     }
 
     // Used by HTMLElementStack and HTMLFormattingElementList.
-    static PassRefPtrWillBeRawPtr<HTMLStackItem> create(PassRefPtrWillBeRawPtr<ContainerNode> node, AtomicHTMLToken* token, const AtomicString& namespaceURI = HTMLNames::xhtmlNamespaceURI)
+    static GCPassPtr<HTMLStackItem> create(PassRefPtrWillBeRawPtr<ContainerNode> node, AtomicHTMLToken* token, const AtomicString& namespaceURI = HTMLNames::xhtmlNamespaceURI)
     {
-        return adoptRefWillBeNoop(new HTMLStackItem(node, token, namespaceURI));
+        return BlinKit::WrapLeaked(new HTMLStackItem(node, token, namespaceURI));
     }
 
     Element* element() const { return toElement(m_node.get()); }
@@ -249,7 +249,7 @@ private:
     {
     }
 
-    RefPtrWillBeMember<ContainerNode> m_node;
+    BlinKit::GCMember<ContainerNode> m_node;
 
     AtomicString m_tokenLocalName;
     Vector<Attribute> m_tokenAttributes;

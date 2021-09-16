@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTreeBuilder.h
+// Description: HTMLTreeBuilder Class
+//      Author: Ziming Li
+//     Created: 2021-09-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -47,16 +58,16 @@ class Element;
 class HTMLDocument;
 class HTMLDocumentParser;
 
-class HTMLTreeBuilder final : public NoBaseWillBeGarbageCollectedFinalized<HTMLTreeBuilder> {
+class HTMLTreeBuilder final {
     WTF_MAKE_NONCOPYABLE(HTMLTreeBuilder); USING_FAST_MALLOC_WILL_BE_REMOVED(HTMLTreeBuilder);
 public:
-    static PassOwnPtrWillBeRawPtr<HTMLTreeBuilder> create(HTMLDocumentParser* parser, HTMLDocument* document, ParserContentPolicy parserContentPolicy, bool reportErrors, const HTMLParserOptions& options)
+    static GCUniqueRoot<HTMLTreeBuilder> create(HTMLDocumentParser* parser, HTMLDocument* document, ParserContentPolicy parserContentPolicy, bool reportErrors, const HTMLParserOptions& options)
     {
-        return adoptPtrWillBeNoop(new HTMLTreeBuilder(parser, document, parserContentPolicy, reportErrors, options));
+        return BlinKit::WrapUniqueRoot(new HTMLTreeBuilder(parser, document, parserContentPolicy, reportErrors, options));
     }
-    static PassOwnPtrWillBeRawPtr<HTMLTreeBuilder> create(HTMLDocumentParser* parser, DocumentFragment* fragment, Element* contextElement, ParserContentPolicy parserContentPolicy, const HTMLParserOptions& options)
+    static GCUniqueRoot<HTMLTreeBuilder> create(HTMLDocumentParser* parser, DocumentFragment* fragment, Element* contextElement, ParserContentPolicy parserContentPolicy, const HTMLParserOptions& options)
     {
-        return adoptPtrWillBeNoop(new HTMLTreeBuilder(parser, fragment, contextElement, parserContentPolicy, options));
+        return BlinKit::WrapUniqueRoot(new HTMLTreeBuilder(parser, fragment, contextElement, parserContentPolicy, options));
     }
     ~HTMLTreeBuilder();
     DECLARE_TRACE();
@@ -73,7 +84,7 @@ public:
 
     bool hasParserBlockingScript() const { return !!m_scriptToProcess; }
     // Must be called to take the parser-blocking script before calling the parser again.
-    PassRefPtrWillBeRawPtr<Element> takeScriptToProcess(TextPosition& scriptStartPosition);
+    GCPassPtr<Element> takeScriptToProcess(TextPosition& scriptStartPosition);
 
     // Done, close any open tags, etc.
     void finished();
@@ -196,15 +207,15 @@ private:
         FragmentParsingContext(DocumentFragment*, Element* contextElement);
         ~FragmentParsingContext();
 
-        DocumentFragment* fragment() const { return m_fragment; }
+        DocumentFragment* fragment() const { return m_fragment.get(); }
         Element* contextElement() const { ASSERT(m_fragment); return m_contextElementStackItem->element(); }
         HTMLStackItem* contextElementStackItem() const { ASSERT(m_fragment); return m_contextElementStackItem.get(); }
 
         DECLARE_TRACE();
 
     private:
-        RawPtrWillBeMember<DocumentFragment> m_fragment;
-        RefPtrWillBeMember<HTMLStackItem> m_contextElementStackItem;
+        BlinKit::GCMember<DocumentFragment> m_fragment;
+        BlinKit::GCMember<HTMLStackItem> m_contextElementStackItem;
     };
 
     // https://html.spec.whatwg.org/#frameset-ok-flag
@@ -230,9 +241,9 @@ private:
 
     // We access parser because HTML5 spec requires that we be able to change the state of the tokenizer
     // from within parser actions. We also need it to track the current position.
-    RawPtrWillBeMember<HTMLDocumentParser> m_parser;
+    HTMLDocumentParser *m_parser;
 
-    RefPtrWillBeMember<Element> m_scriptToProcess; // <script> tag which needs processing before resuming the parser.
+    BlinKit::GCMember<Element> m_scriptToProcess; // <script> tag which needs processing before resuming the parser.
     TextPosition m_scriptToProcessStartPosition; // Starting line number of the script tag needing processing.
 
     HTMLParserOptions m_options;

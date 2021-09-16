@@ -60,6 +60,8 @@
 #include "wtf/MainThread.h"
 #include "wtf/text/CharacterNames.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
@@ -329,7 +331,7 @@ DEFINE_TRACE(HTMLTreeBuilder)
 {
     visitor->trace(m_fragmentContext);
     visitor->trace(m_tree);
-    visitor->trace(m_parser);
+    // BKTODO: visitor->trace(m_parser);
     visitor->trace(m_scriptToProcess);
 }
 
@@ -367,7 +369,7 @@ DEFINE_TRACE(HTMLTreeBuilder::FragmentParsingContext)
     visitor->trace(m_contextElementStackItem);
 }
 
-PassRefPtrWillBeRawPtr<Element> HTMLTreeBuilder::takeScriptToProcess(TextPosition& scriptStartPosition)
+GCPassPtr<Element> HTMLTreeBuilder::takeScriptToProcess(TextPosition& scriptStartPosition)
 {
     ASSERT(m_scriptToProcess);
     ASSERT(!m_tree.hasPendingTasks());
@@ -1595,11 +1597,11 @@ void HTMLTreeBuilder::callTheAdoptionAgency(AtomicHTMLToken* token)
             if (node == formattingElementRecord)
                 break;
             // 9.7
-            RefPtrWillBeRawPtr<HTMLStackItem> newItem = m_tree.createElementFromSavedToken(node->stackItem().get());
+            GCMember<HTMLStackItem> newItem = m_tree.createElementFromSavedToken(node->stackItem().get());
 
             HTMLFormattingElementList::Entry* nodeEntry = m_tree.activeFormattingElements()->find(node->element());
-            nodeEntry->replaceElement(newItem);
-            node->replaceElement(newItem.release());
+            nodeEntry->replaceElement(newItem.get());
+            node->replaceElement(newItem.get());
 
             // 9.8
             if (lastNode == furthestBlock)
@@ -1612,16 +1614,16 @@ void HTMLTreeBuilder::callTheAdoptionAgency(AtomicHTMLToken* token)
         // 10.
         m_tree.insertAlreadyParsedChild(commonAncestor.get(), lastNode);
         // 11.
-        RefPtrWillBeRawPtr<HTMLStackItem> newItem = m_tree.createElementFromSavedToken(formattingElementRecord->stackItem().get());
+        GCMember<HTMLStackItem> newItem = m_tree.createElementFromSavedToken(formattingElementRecord->stackItem().get());
         // 12.
         m_tree.takeAllChildren(newItem.get(), furthestBlock);
         // 13.
         m_tree.reparent(furthestBlock, newItem.get());
         // 14.
-        m_tree.activeFormattingElements()->swapTo(formattingElement, newItem, bookmark);
+        m_tree.activeFormattingElements()->swapTo(formattingElement, newItem.get(), bookmark);
         // 15.
         m_tree.openElements()->remove(formattingElement);
-        m_tree.openElements()->insertAbove(newItem, furthestBlock);
+        m_tree.openElements()->insertAbove(newItem.release(), furthestBlock);
     }
 }
 
@@ -1849,7 +1851,7 @@ void HTMLTreeBuilder::processEndTagForInBody(AtomicHTMLToken* token)
         return;
     }
     if (token->name() == formTag) {
-        RefPtrWillBeRawPtr<Element> node = m_tree.takeForm();
+        GCMember<HTMLFormElement> node = m_tree.takeForm();
         if (!node || !m_tree.openElements()->inScope(node.get())) {
             parseError(token);
             return;

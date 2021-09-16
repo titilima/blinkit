@@ -51,6 +51,8 @@
 #include "public/platform/Platform.h"
 #include "public/platform/WebFrameScheduler.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
@@ -92,7 +94,7 @@ void HTMLScriptRunner::detach()
         pendingScript.stopWatchingForLoad(this);
         pendingScript.releaseElementAndClear();
     }
-    m_document = nullptr;
+    m_document.clear();
 }
 
 static KURL documentURLForScriptExecution(Document* document)
@@ -138,7 +140,7 @@ void HTMLScriptRunner::executePendingScriptAndDispatchEvent(PendingScript& pendi
 {
     bool errorOccurred = false;
     double loadFinishTime = pendingScript.resource() && pendingScript.resource()->url().protocolIsInHTTPFamily() ? pendingScript.resource()->loadFinishTime() : 0;
-    ScriptSourceCode sourceCode = pendingScript.getSource(documentURLForScriptExecution(m_document), errorOccurred);
+    ScriptSourceCode sourceCode = pendingScript.getSource(documentURLForScriptExecution(m_document.get()), errorOccurred);
 
     // Stop watching loads before executeScript to prevent recursion if the script reloads itself.
     pendingScript.stopWatchingForLoad(this);
@@ -154,11 +156,11 @@ void HTMLScriptRunner::executePendingScriptAndDispatchEvent(PendingScript& pendi
     }
 
     // Clear the pending script before possible rentrancy from executeScript()
-    RefPtrWillBeRawPtr<Element> element = pendingScript.releaseElementAndClear();
+    GCMember<Element> element = pendingScript.releaseElementAndClear();
     double compilationFinishTime = 0;
     if (ScriptLoader* scriptLoader = toScriptLoaderIfPossible(element.get())) {
         NestingLevelIncrementer nestingLevelIncrementer(m_scriptNestingLevel);
-        IgnoreDestructiveWriteCountIncrementer ignoreDestructiveWriteCountIncrementer(m_document);
+        IgnoreDestructiveWriteCountIncrementer ignoreDestructiveWriteCountIncrementer(m_document.get());
         if (errorOccurred)
             scriptLoader->dispatchErrorEvent();
         else {
@@ -381,7 +383,7 @@ void HTMLScriptRunner::runScript(Element* script, const TextPosition& scriptStar
                 m_parserBlockingScript.setElement(script);
                 m_parserBlockingScript.setStartingPosition(scriptStartPosition);
             } else {
-                ScriptSourceCode sourceCode(script->textContent(), documentURLForScriptExecution(m_document), scriptStartPosition);
+                ScriptSourceCode sourceCode(script->textContent(), documentURLForScriptExecution(m_document.get()), scriptStartPosition);
                 scriptLoader->executeScript(sourceCode);
             }
         } else {
@@ -393,9 +395,9 @@ void HTMLScriptRunner::runScript(Element* script, const TextPosition& scriptStar
 DEFINE_TRACE(HTMLScriptRunner)
 {
     visitor->trace(m_document);
-    visitor->trace(m_host);
+    // BKTODO: visitor->trace(m_host);
     visitor->trace(m_parserBlockingScript);
-    ASSERT(false); // BKTODO: visitor->trace(m_scriptsToExecuteAfterParsing);
+    // BKTODO: visitor->trace(m_scriptsToExecuteAfterParsing);
 }
 
 } // namespace blink

@@ -63,6 +63,8 @@
 #include "platform/text/TextBreakIterator.h"
 #include <limits>
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
@@ -114,7 +116,7 @@ static inline bool isAllWhitespace(const String& string)
 static inline void insert(HTMLConstructionSiteTask& task)
 {
     if (isHTMLTemplateElement(*task.parent))
-        task.parent = toHTMLTemplateElement(task.parent.get())->content();
+        task.parent = toHTMLTemplateElement(task.parent)->content();
 
     if (task.nextChild)
         task.parent->parserInsertBefore(task.child.get(), *task.nextChild);
@@ -161,7 +163,7 @@ static inline void executeReparentTask(HTMLConstructionSiteTask& task)
 {
     ASSERT(task.operation == HTMLConstructionSiteTask::Reparent);
 
-    task.parent->parserAppendChild(task.child);
+    task.parent->parserAppendChild(task.child.get());
 }
 
 static inline void executeInsertAlreadyParsedChildTask(HTMLConstructionSiteTask& task)
@@ -180,7 +182,7 @@ static inline void executeTakeAllChildrenTask(HTMLConstructionSiteTask& task)
 
 void HTMLConstructionSite::executeTask(HTMLConstructionSiteTask& task)
 {
-    ASSERT(m_taskQueue.isEmpty());
+    ASSERT(m_taskQueue.empty());
     if (task.operation == HTMLConstructionSiteTask::Insert)
         return executeInsertTask(task);
 
@@ -284,7 +286,7 @@ void HTMLConstructionSite::queueTask(const HTMLConstructionSiteTask& task)
 {
     flushPendingText(FlushAlways);
     ASSERT(m_pendingText.isEmpty());
-    m_taskQueue.append(task);
+    m_taskQueue.emplace_back(task);
 }
 
 void HTMLConstructionSite::attachLater(ContainerNode* parent, PassRefPtrWillBeRawPtr<Node> prpChild, bool selfClosing)
@@ -298,7 +300,7 @@ void HTMLConstructionSite::attachLater(ContainerNode* parent, PassRefPtrWillBeRa
     task.selfClosing = selfClosing;
 
     if (shouldFosterParent()) {
-        fosterParent(task.child);
+        fosterParent(task.child.get());
         return;
     }
 
@@ -355,7 +357,7 @@ HTMLConstructionSite::~HTMLConstructionSite()
 {
     // Depending on why we're being destroyed it might be OK
     // to forget queued tasks, but currently we don't expect to.
-    ASSERT(m_taskQueue.isEmpty());
+    ASSERT(m_taskQueue.empty());
     // Currently we assume that text will never be the last token in the
     // document and that we'll always queue some additional task to cause it to flush.
     ASSERT(m_pendingText.isEmpty());
@@ -369,8 +371,8 @@ DEFINE_TRACE(HTMLConstructionSite)
     visitor->trace(m_form);
     visitor->trace(m_openElements);
     visitor->trace(m_activeFormattingElements);
-    visitor->trace(m_taskQueue);
-    visitor->trace(m_pendingText);
+    ASSERT(m_taskQueue.empty()); // BKTODO: visitor->trace(m_taskQueue);
+    // BKTODO: visitor->trace(m_pendingText);
 }
 
 void HTMLConstructionSite::detach()
@@ -379,8 +381,8 @@ void HTMLConstructionSite::detach()
     // text that really should have made it into the DOM earlier, but there
     // doesn't seem to be a nice way to do that.
     m_pendingText.discard();
-    m_document = nullptr;
-    m_attachmentRoot = nullptr;
+    m_document.clear();
+    m_attachmentRoot.clear();
 }
 
 void HTMLConstructionSite::setForm(HTMLFormElement* form)
@@ -390,7 +392,7 @@ void HTMLConstructionSite::setForm(HTMLFormElement* form)
     m_form = form;
 }
 
-PassRefPtrWillBeRawPtr<HTMLFormElement> HTMLConstructionSite::takeForm()
+GCPassPtr<HTMLFormElement> HTMLConstructionSite::takeForm()
 {
     return m_form.release();
 }
@@ -407,7 +409,7 @@ void HTMLConstructionSite::insertHTMLHtmlStartTagBeforeHTML(AtomicHTMLToken* tok
     ASSERT(m_document);
     RefPtrWillBeRawPtr<HTMLHtmlElement> element = HTMLHtmlElement::create(*m_document);
     setAttributes(element.get(), token, m_parserContentPolicy);
-    attachLater(m_attachmentRoot, element);
+    attachLater(m_attachmentRoot.get(), element);
     m_openElements.pushHTMLHtmlElement(HTMLStackItem::create(element, token));
 
     executeQueuedTasks();
@@ -553,7 +555,7 @@ void HTMLConstructionSite::processEndOfFile()
 void HTMLConstructionSite::finishedParsing()
 {
     // We shouldn't have any queued tasks but we might have pending text which we need to promote to tasks and execute.
-    ASSERT(m_taskQueue.isEmpty());
+    ASSERT(m_taskQueue.empty());
     flush(FlushAlways);
     m_document->finishedParsing();
 }
@@ -564,8 +566,8 @@ void HTMLConstructionSite::insertDoctype(AtomicHTMLToken* token)
 
     const String& publicId = StringImpl::create8BitIfPossible(token->publicIdentifier());
     const String& systemId = StringImpl::create8BitIfPossible(token->systemIdentifier());
-    RefPtrWillBeRawPtr<DocumentType> doctype = DocumentType::create(m_document, token->name(), publicId, systemId);
-    attachLater(m_attachmentRoot, doctype.release());
+    RefPtrWillBeRawPtr<DocumentType> doctype = DocumentType::create(m_document.get(), token->name(), publicId, systemId);
+    attachLater(m_attachmentRoot.get(), doctype.release());
 
     // DOCTYPE nodes are only processed when parsing fragments w/o contextElements, which
     // never occurs.  However, if we ever chose to support such, this code is subtly wrong,
@@ -593,7 +595,7 @@ void HTMLConstructionSite::insertCommentOnDocument(AtomicHTMLToken* token)
 {
     ASSERT(token->type() == HTMLToken::Comment);
     ASSERT(m_document);
-    attachLater(m_attachmentRoot, Comment::create(*m_document, token->comment()));
+    attachLater(m_attachmentRoot.get(), Comment::create(*m_document, token->comment()));
 }
 
 void HTMLConstructionSite::insertCommentOnHTMLHtmlElement(AtomicHTMLToken* token)
@@ -696,7 +698,7 @@ void HTMLConstructionSite::insertTextNode(const String& string, WhitespaceMode w
 
     // FIXME: This probably doesn't need to be done both here and in insert(Task).
     if (isHTMLTemplateElement(*dummyTask.parent))
-        dummyTask.parent = toHTMLTemplateElement(dummyTask.parent.get())->content();
+        dummyTask.parent = toHTMLTemplateElement(dummyTask.parent)->content();
 
     // Unclear when parent != case occurs. Somehow we insert text into two separate nodes while processing the same Token.
     // The nextChild != dummy.nextChild case occurs whenever foster parenting happened and we hit a new text node "<table>a</table>b"
@@ -772,16 +774,16 @@ PassRefPtrWillBeRawPtr<HTMLElement> HTMLConstructionSite::createHTMLElement(Atom
     return element.release();
 }
 
-PassRefPtrWillBeRawPtr<HTMLStackItem> HTMLConstructionSite::createElementFromSavedToken(HTMLStackItem* item)
+GCPassPtr<HTMLStackItem> HTMLConstructionSite::createElementFromSavedToken(HTMLStackItem* item)
 {
-    RefPtrWillBeRawPtr<Element> element;
+    GCMember<Element> element;
     // NOTE: Moving from item -> token -> item copies the Attribute vector twice!
     AtomicHTMLToken fakeToken(HTMLToken::StartTag, item->localName(), item->attributes());
     if (item->namespaceURI() == HTMLNames::xhtmlNamespaceURI)
         element = createHTMLElement(&fakeToken);
     else
         element = createElement(&fakeToken, item->namespaceURI());
-    return HTMLStackItem::create(element.release(), &fakeToken, item->namespaceURI());
+    return HTMLStackItem::create(element.get(), &fakeToken, item->namespaceURI());
 }
 
 bool HTMLConstructionSite::indexOfFirstUnopenFormattingElement(unsigned& firstUnopenElementIndex) const
@@ -811,10 +813,10 @@ void HTMLConstructionSite::reconstructTheActiveFormattingElements()
     ASSERT(unopenEntryIndex < m_activeFormattingElements.size());
     for (; unopenEntryIndex < m_activeFormattingElements.size(); ++unopenEntryIndex) {
         HTMLFormattingElementList::Entry& unopenedEntry = m_activeFormattingElements.at(unopenEntryIndex);
-        RefPtrWillBeRawPtr<HTMLStackItem> reconstructed = createElementFromSavedToken(unopenedEntry.stackItem().get());
-        attachLater(currentNode(), reconstructed->node());
+        GCPassPtr<HTMLStackItem> reconstructed = createElementFromSavedToken(unopenedEntry.stackItem().get());
+        attachLater(currentNode(), reconstructed.get()->node());
         m_openElements.push(reconstructed);
-        unopenedEntry.replaceElement(reconstructed.release());
+        unopenedEntry.replaceElement(reconstructed.get());
     }
 }
 
@@ -886,11 +888,12 @@ void HTMLConstructionSite::fosterParent(PassRefPtrWillBeRawPtr<Node> node)
     queueTask(task);
 }
 
+#if 0 // BKTODO:
 DEFINE_TRACE(HTMLConstructionSite::PendingText)
 {
     visitor->trace(parent);
     visitor->trace(nextChild);
 }
-
+#endif
 
 }

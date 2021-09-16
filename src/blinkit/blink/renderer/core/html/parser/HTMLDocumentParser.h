@@ -37,6 +37,7 @@
 #ifndef HTMLDocumentParser_h
 #define HTMLDocumentParser_h
 
+#include "blinkit/gc/gc_root.h"
 #include "core/dom/ParserContentPolicy.h"
 #include "core/dom/ScriptableDocumentParser.h"
 #include "core/fetch/ResourceClient.h"
@@ -83,9 +84,9 @@ class HTMLDocumentParser :  public ScriptableDocumentParser, private HTMLScriptR
     USING_FAST_MALLOC_WILL_BE_REMOVED(HTMLDocumentParser);
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(HTMLDocumentParser);
 public:
-    static PassRefPtrWillBeRawPtr<HTMLDocumentParser> create(HTMLDocument& document, bool reportErrors, ParserSynchronizationPolicy backgroundParsingPolicy)
+    static GCPassPtr<HTMLDocumentParser> create(HTMLDocument& document, bool reportErrors, ParserSynchronizationPolicy backgroundParsingPolicy)
     {
-        return adoptRefWillBeNoop(new HTMLDocumentParser(document, reportErrors, backgroundParsingPolicy));
+        return BlinKit::WrapLeaked(new HTMLDocumentParser(document, reportErrors, backgroundParsingPolicy));
     }
     ~HTMLDocumentParser() override;
     DECLARE_VIRTUAL_TRACE();
@@ -196,12 +197,12 @@ private:
 
     OwnPtr<HTMLToken> m_token;
     OwnPtr<HTMLTokenizer> m_tokenizer;
-    OwnPtrWillBeMember<HTMLScriptRunner> m_scriptRunner;
-    OwnPtrWillBeMember<HTMLTreeBuilder> m_treeBuilder;
+    BlinKit::GCUniqueRoot<HTMLScriptRunner> m_scriptRunner;
+    BlinKit::GCUniqueRoot<HTMLTreeBuilder> m_treeBuilder;
     OwnPtr<HTMLPreloadScanner> m_preloadScanner;
     OwnPtr<HTMLPreloadScanner> m_insertionPreloadScanner;
-    OwnPtr<WebTaskRunner> m_loadingTaskRunner;
-    OwnPtrWillBeMember<HTMLParserScheduler> m_parserScheduler;
+    std::shared_ptr<WebTaskRunner> m_loadingTaskRunner;
+    BlinKit::GCUniqueRoot<HTMLParserScheduler> m_parserScheduler; // BKTODO: Check if necessary in the single thread mode.
     HTMLSourceTracker m_sourceTracker;
     TextPosition m_textPosition;
 #if 0 // BKTODO:
@@ -215,7 +216,7 @@ private:
     Deque<OwnPtr<ParsedChunk>> m_speculations;
     WeakPtrFactory<HTMLDocumentParser> m_weakFactory;
     WeakPtr<BackgroundHTMLParser> m_backgroundParser;
-    OwnPtrWillBeMember<HTMLResourcePreloader> m_preloader;
+    // BKTODO: OwnPtrWillBeMember<HTMLResourcePreloader> m_preloader;
     PreloadRequestStream m_queuedPreloads;
     RefPtr<ParsedChunkQueue> m_parsedChunkQueue;
 

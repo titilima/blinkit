@@ -43,10 +43,11 @@
 #include "core/dom/Element.h"
 #include "core/html/HTMLElement.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
-
 
 namespace {
 
@@ -131,9 +132,9 @@ inline bool isSelectScopeMarker(HTMLStackItem* item)
 
 }
 
-HTMLElementStack::ElementRecord::ElementRecord(PassRefPtrWillBeRawPtr<HTMLStackItem> item, PassOwnPtrWillBeRawPtr<ElementRecord> next)
-    : m_item(item)
-    , m_next(next)
+HTMLElementStack::ElementRecord::ElementRecord(GCPassPtr<HTMLStackItem> item, GCPassPtr<ElementRecord> next)
+    : m_item(std::move(item))
+    , m_next(std::move(next))
 {
     ASSERT(m_item);
 }
@@ -200,23 +201,23 @@ bool HTMLElementStack::secondElementIsHTMLBodyElement() const
 
 void HTMLElementStack::popHTMLHeadElement()
 {
-    ASSERT(top() == m_headElement);
-    m_headElement = nullptr;
+    ASSERT(top() == m_headElement.get());
+    m_headElement.clear();
     popCommon();
 }
 
 void HTMLElementStack::popHTMLBodyElement()
 {
-    ASSERT(top() == m_bodyElement);
-    m_bodyElement = nullptr;
+    ASSERT(top() == m_bodyElement.get());
+    m_bodyElement.clear();
     popCommon();
 }
 
 void HTMLElementStack::popAll()
 {
-    m_rootNode = nullptr;
-    m_headElement = nullptr;
-    m_bodyElement = nullptr;
+    m_rootNode.clear();
+    m_headElement.clear();
+    m_bodyElement.clear();
     m_stackDepth = 0;
     while (m_top) {
         Node& node = *topNode();
@@ -331,61 +332,61 @@ void HTMLElementStack::popUntilForeignContentScopeMarker()
         pop();
 }
 
-void HTMLElementStack::pushRootNode(PassRefPtrWillBeRawPtr<HTMLStackItem> rootItem)
+void HTMLElementStack::pushRootNode(GCPassPtr<HTMLStackItem> rootItem)
 {
-    ASSERT(rootItem->isDocumentFragmentNode());
-    pushRootNodeCommon(rootItem);
+    ASSERT(rootItem.get()->isDocumentFragmentNode());
+    pushRootNodeCommon(std::move(rootItem));
 }
 
-void HTMLElementStack::pushHTMLHtmlElement(PassRefPtrWillBeRawPtr<HTMLStackItem> item)
+void HTMLElementStack::pushHTMLHtmlElement(GCPassPtr<HTMLStackItem> item)
 {
-    ASSERT(item->hasTagName(htmlTag));
-    pushRootNodeCommon(item);
+    ASSERT(item.get()->hasTagName(htmlTag));
+    pushRootNodeCommon(std::move(item));
 }
 
-void HTMLElementStack::pushRootNodeCommon(PassRefPtrWillBeRawPtr<HTMLStackItem> rootItem)
+void HTMLElementStack::pushRootNodeCommon(GCPassPtr<HTMLStackItem> &&rootItem)
 {
     ASSERT(!m_top);
     ASSERT(!m_rootNode);
-    m_rootNode = rootItem->node();
-    pushCommon(rootItem);
+    m_rootNode = rootItem.get()->node();
+    pushCommon(std::move(rootItem));
 }
 
-void HTMLElementStack::pushHTMLHeadElement(PassRefPtrWillBeRawPtr<HTMLStackItem> item)
+void HTMLElementStack::pushHTMLHeadElement(GCPassPtr<HTMLStackItem> item)
 {
-    ASSERT(item->hasTagName(HTMLNames::headTag));
+    ASSERT(item.get()->hasTagName(HTMLNames::headTag));
     ASSERT(!m_headElement);
-    m_headElement = item->element();
-    pushCommon(item);
+    m_headElement = item.get()->element();
+    pushCommon(std::move(item));
 }
 
-void HTMLElementStack::pushHTMLBodyElement(PassRefPtrWillBeRawPtr<HTMLStackItem> item)
+void HTMLElementStack::pushHTMLBodyElement(GCPassPtr<HTMLStackItem> item)
 {
-    ASSERT(item->hasTagName(HTMLNames::bodyTag));
+    ASSERT(item.get()->hasTagName(HTMLNames::bodyTag));
     ASSERT(!m_bodyElement);
-    m_bodyElement = item->element();
-    pushCommon(item);
+    m_bodyElement = item.get()->element();
+    pushCommon(std::move(item));
 }
 
-void HTMLElementStack::push(PassRefPtrWillBeRawPtr<HTMLStackItem> item)
+void HTMLElementStack::push(GCPassPtr<HTMLStackItem> item)
 {
-    ASSERT(!item->hasTagName(htmlTag));
-    ASSERT(!item->hasTagName(headTag));
-    ASSERT(!item->hasTagName(bodyTag));
+    ASSERT(!item.get()->hasTagName(htmlTag));
+    ASSERT(!item.get()->hasTagName(headTag));
+    ASSERT(!item.get()->hasTagName(bodyTag));
     ASSERT(m_rootNode);
-    pushCommon(item);
+    pushCommon(std::move(item));
 }
 
-void HTMLElementStack::insertAbove(PassRefPtrWillBeRawPtr<HTMLStackItem> item, ElementRecord* recordBelow)
+void HTMLElementStack::insertAbove(GCPassPtr<HTMLStackItem> item, ElementRecord* recordBelow)
 {
     ASSERT(item);
     ASSERT(recordBelow);
     ASSERT(m_top);
-    ASSERT(!item->hasTagName(htmlTag));
-    ASSERT(!item->hasTagName(headTag));
-    ASSERT(!item->hasTagName(bodyTag));
+    ASSERT(!item.get()->hasTagName(htmlTag));
+    ASSERT(!item.get()->hasTagName(headTag));
+    ASSERT(!item.get()->hasTagName(bodyTag));
     ASSERT(m_rootNode);
-    if (recordBelow == m_top) {
+    if (recordBelow == m_top.get()) {
         push(item);
         return;
     }
@@ -395,7 +396,7 @@ void HTMLElementStack::insertAbove(PassRefPtrWillBeRawPtr<HTMLStackItem> item, E
             continue;
 
         m_stackDepth++;
-        recordAbove->setNext(adoptPtrWillBeNoop(new ElementRecord(item, recordAbove->releaseNext())));
+        recordAbove->setNext(WrapLeaked(new ElementRecord(item, recordAbove->releaseNext())));
         recordAbove->next()->element()->beginParsingChildren();
         return;
     }
@@ -425,7 +426,7 @@ void HTMLElementStack::removeHTMLHeadElement(Element* element)
         popHTMLHeadElement();
         return;
     }
-    m_headElement = nullptr;
+    m_headElement.clear();
     removeNonTopCommon(element);
 }
 
@@ -565,33 +566,33 @@ bool HTMLElementStack::hasTemplateInHTMLScope() const
 Element* HTMLElementStack::htmlElement() const
 {
     ASSERT(m_rootNode);
-    return toElement(m_rootNode);
+    return toElement(m_rootNode.get());
 }
 
 Element* HTMLElementStack::headElement() const
 {
     ASSERT(m_headElement);
-    return m_headElement;
+    return m_headElement.get();
 }
 
 Element* HTMLElementStack::bodyElement() const
 {
     ASSERT(m_bodyElement);
-    return m_bodyElement;
+    return m_bodyElement.get();
 }
 
 ContainerNode* HTMLElementStack::rootNode() const
 {
     ASSERT(m_rootNode);
-    return m_rootNode;
+    return m_rootNode.get();
 }
 
-void HTMLElementStack::pushCommon(PassRefPtrWillBeRawPtr<HTMLStackItem> item)
+void HTMLElementStack::pushCommon(GCPassPtr<HTMLStackItem> &&item)
 {
     ASSERT(m_rootNode);
 
     m_stackDepth++;
-    m_top = adoptPtrWillBeNoop(new ElementRecord(item, m_top.release()));
+    m_top = WrapLeaked(new ElementRecord(std::move(item), m_top.release()));
 }
 
 void HTMLElementStack::popCommon()

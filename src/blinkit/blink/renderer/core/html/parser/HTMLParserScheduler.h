@@ -37,6 +37,7 @@
 #ifndef HTMLParserScheduler_h
 #define HTMLParserScheduler_h
 
+#include "blinkit/gc/gc_root.h"
 #include "core/html/parser/NestingLevelIncrementer.h"
 // BKTODO: #include "platform/scheduler/CancellableTaskFactory.h"
 #include "wtf/Allocator.h"
@@ -81,13 +82,13 @@ private:
     size_t m_processedElementTokens;
 };
 
-class HTMLParserScheduler final : public NoBaseWillBeGarbageCollectedFinalized<HTMLParserScheduler> {
+class HTMLParserScheduler final {
     WTF_MAKE_NONCOPYABLE(HTMLParserScheduler);
     USING_FAST_MALLOC_WILL_BE_REMOVED(HTMLParserScheduler);
 public:
-    static PassOwnPtrWillBeRawPtr<HTMLParserScheduler> create(HTMLDocumentParser* parser, WebTaskRunner* loadingTaskRunner)
+    static GCUniqueRoot<HTMLParserScheduler> create(HTMLDocumentParser* parser, const std::shared_ptr<WebTaskRunner> &loadingTaskRunner)
     {
-        return adoptPtrWillBeNoop(new HTMLParserScheduler(parser, loadingTaskRunner));
+        return BlinKit::WrapUniqueRoot(new HTMLParserScheduler(parser, loadingTaskRunner));
     }
     ~HTMLParserScheduler();
 
@@ -117,13 +118,13 @@ public:
     DECLARE_TRACE();
 
 private:
-    HTMLParserScheduler(HTMLDocumentParser*, WebTaskRunner*);
+    HTMLParserScheduler(HTMLDocumentParser*, const std::shared_ptr<WebTaskRunner>&);
 
     bool shouldYield(const SpeculationsPumpSession&, bool startingScript) const;
     void continueParsing();
 
-    RawPtrWillBeMember<HTMLDocumentParser> m_parser;
-    OwnPtr<WebTaskRunner> m_loadingTaskRunner;
+    BlinKit::GCMember<HTMLDocumentParser> m_parser;
+    std::shared_ptr<WebTaskRunner> m_loadingTaskRunner;
 
     // BKTODO: OwnPtr<CancellableTaskFactory> m_cancellableContinueParse;
     bool m_isSuspendedWithActiveTimer;

@@ -49,7 +49,7 @@ public:
     HTMLElementStack();
     ~HTMLElementStack();
 
-    class ElementRecord final : public NoBaseWillBeGarbageCollected<ElementRecord> {
+    class ElementRecord final : public BlinKit::GCObject {
         WTF_MAKE_NONCOPYABLE(ElementRecord); USING_FAST_MALLOC_WILL_BE_REMOVED(ElementRecord);
     public:
 #if !ENABLE(OILPAN)
@@ -59,7 +59,7 @@ public:
         Element* element() const { return m_item->element(); }
         ContainerNode* node() const { return m_item->node(); }
         const AtomicString& namespaceURI() const { return m_item->namespaceURI(); }
-        PassRefPtrWillBeRawPtr<HTMLStackItem> stackItem() const { return m_item; }
+        PassRefPtrWillBeRawPtr<HTMLStackItem> stackItem() const { return m_item.get(); }
         void replaceElement(PassRefPtrWillBeRawPtr<HTMLStackItem>);
 
         bool isAbove(ElementRecord*) const;
@@ -70,13 +70,13 @@ public:
     private:
         friend class HTMLElementStack;
 
-        ElementRecord(PassRefPtrWillBeRawPtr<HTMLStackItem>, PassOwnPtrWillBeRawPtr<ElementRecord>);
+        ElementRecord(GCPassPtr<HTMLStackItem>, GCPassPtr<ElementRecord>);
 
-        PassOwnPtrWillBeRawPtr<ElementRecord> releaseNext() { return m_next.release(); }
-        void setNext(PassOwnPtrWillBeRawPtr<ElementRecord> next) { m_next = next; }
+        GCPassPtr<ElementRecord> releaseNext() { return m_next.release(); }
+        void setNext(GCPassPtr<ElementRecord> next) { m_next = std::move(next); }
 
-        RefPtrWillBeMember<HTMLStackItem> m_item;
-        OwnPtrWillBeMember<ElementRecord> m_next;
+        BlinKit::GCMember<HTMLStackItem> m_item;
+        BlinKit::GCMember<ElementRecord> m_next;
     };
 
     unsigned stackDepth() const { return m_stackDepth; }
@@ -107,13 +107,13 @@ public:
     ElementRecord* furthestBlockForFormattingElement(Element*) const;
     ElementRecord* topmost(const AtomicString& tagName) const;
 
-    void insertAbove(PassRefPtrWillBeRawPtr<HTMLStackItem>, ElementRecord*);
+    void insertAbove(GCPassPtr<HTMLStackItem>, ElementRecord*);
 
-    void push(PassRefPtrWillBeRawPtr<HTMLStackItem>);
-    void pushRootNode(PassRefPtrWillBeRawPtr<HTMLStackItem>);
-    void pushHTMLHtmlElement(PassRefPtrWillBeRawPtr<HTMLStackItem>);
-    void pushHTMLHeadElement(PassRefPtrWillBeRawPtr<HTMLStackItem>);
-    void pushHTMLBodyElement(PassRefPtrWillBeRawPtr<HTMLStackItem>);
+    void push(GCPassPtr<HTMLStackItem>);
+    void pushRootNode(GCPassPtr<HTMLStackItem>);
+    void pushHTMLHtmlElement(GCPassPtr<HTMLStackItem>);
+    void pushHTMLHeadElement(GCPassPtr<HTMLStackItem>);
+    void pushHTMLBodyElement(GCPassPtr<HTMLStackItem>);
 
     void pop();
     void popUntil(const AtomicString& tagName);
@@ -170,21 +170,21 @@ public:
 #endif
 
 private:
-    void pushCommon(PassRefPtrWillBeRawPtr<HTMLStackItem>);
-    void pushRootNodeCommon(PassRefPtrWillBeRawPtr<HTMLStackItem>);
+    void pushCommon(GCPassPtr<HTMLStackItem> &&);
+    void pushRootNodeCommon(GCPassPtr<HTMLStackItem> &&);
     void popCommon();
     void removeNonTopCommon(Element*);
 
-    OwnPtrWillBeMember<ElementRecord> m_top;
+    BlinKit::GCMember<ElementRecord> m_top;
 
     // We remember the root node, <head> and <body> as they are pushed. Their
     // ElementRecords keep them alive. The root node is never popped.
     // FIXME: We don't currently require type-specific information about
     // these elements so we haven't yet bothered to plumb the types all the
     // way down through createElement, etc.
-    RawPtrWillBeMember<ContainerNode> m_rootNode;
-    RawPtrWillBeMember<Element> m_headElement;
-    RawPtrWillBeMember<Element> m_bodyElement;
+    BlinKit::GCMember<ContainerNode> m_rootNode;
+    BlinKit::GCMember<Element> m_headElement;
+    BlinKit::GCMember<Element> m_bodyElement;
     unsigned m_stackDepth;
 };
 

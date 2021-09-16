@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLConstructionSite.h
+// Description: HTMLConstructionSite Class
+//      Author: Ziming Li
+//     Created: 2021-09-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -56,12 +67,14 @@ public:
     {
     }
 
+#if 0 // BKTODO:
     DEFINE_INLINE_TRACE()
     {
         visitor->trace(parent);
         visitor->trace(nextChild);
         visitor->trace(child);
     }
+#endif
 
     ContainerNode* oldParent()
     {
@@ -72,9 +85,9 @@ public:
     }
 
     Operation operation;
-    RefPtrWillBeMember<ContainerNode> parent;
-    RefPtrWillBeMember<Node> nextChild;
-    RefPtrWillBeMember<Node> child;
+    ContainerNode *parent = nullptr;
+    Node *nextChild = nullptr;
+    BlinKit::GCMember<Node> child;
     bool selfClosing;
 };
 
@@ -135,7 +148,7 @@ public:
 
     bool hasPendingTasks()
     {
-        return !m_pendingText.isEmpty() || !m_taskQueue.isEmpty();
+        return !m_pendingText.isEmpty() || !m_taskQueue.empty();
     }
 
     void setDefaultCompatibilityMode();
@@ -168,7 +181,7 @@ public:
     void insertAlreadyParsedChild(HTMLStackItem* newParent, HTMLElementStack::ElementRecord* child);
     void takeAllChildren(HTMLStackItem* newParent, HTMLElementStack::ElementRecord* oldParent);
 
-    PassRefPtrWillBeRawPtr<HTMLStackItem> createElementFromSavedToken(HTMLStackItem*);
+    GCPassPtr<HTMLStackItem> createElementFromSavedToken(HTMLStackItem*);
 
     bool shouldFosterParent() const;
     void fosterParent(PassRefPtrWillBeRawPtr<Node>);
@@ -197,7 +210,7 @@ public:
 
     void setForm(HTMLFormElement*);
     HTMLFormElement* form() const { return m_form.get(); }
-    PassRefPtrWillBeRawPtr<HTMLFormElement> takeForm();
+    GCPassPtr<HTMLFormElement> takeForm();
 
     ParserContentPolicy parserContentPolicy() { return m_parserContentPolicy; }
 
@@ -225,7 +238,7 @@ public:
 private:
     // In the common case, this queue will have only one task because most
     // tokens produce only one DOM mutation.
-    typedef WillBeHeapVector<HTMLConstructionSiteTask, 1> TaskQueue;
+    typedef std::vector<HTMLConstructionSiteTask> TaskQueue;
 
     void setCompatibilityMode(Document::CompatibilityMode);
     void setCompatibilityModeFromDoctype(const String& name, const String& publicId, const String& systemId);
@@ -243,15 +256,15 @@ private:
     void executeTask(HTMLConstructionSiteTask&);
     void queueTask(const HTMLConstructionSiteTask&);
 
-    RawPtrWillBeMember<Document> m_document;
+    BlinKit::GCMember<Document> m_document;
 
     // This is the root ContainerNode to which the parser attaches all newly
     // constructed nodes. It points to a DocumentFragment when parsing fragments
     // and a Document in all other cases.
-    RawPtrWillBeMember<ContainerNode> m_attachmentRoot;
+    BlinKit::GCMember<ContainerNode> m_attachmentRoot;
 
-    RefPtrWillBeMember<HTMLStackItem> m_head;
-    RefPtrWillBeMember<HTMLFormElement> m_form;
+    BlinKit::GCMember<HTMLStackItem> m_head;
+    BlinKit::GCMember<HTMLFormElement> m_form;
     mutable HTMLElementStack m_openElements;
     mutable HTMLFormattingElementList m_activeFormattingElements;
 
@@ -278,8 +291,8 @@ private:
         void swap(PendingText& other)
         {
             std::swap(whitespaceMode, other.whitespaceMode);
-            parent.swap(other.parent);
-            nextChild.swap(other.nextChild);
+            std::swap(parent, other.parent);
+            std::swap(nextChild, other.nextChild);
             stringBuilder.swap(other.stringBuilder);
         }
 
@@ -298,10 +311,10 @@ private:
             return stringBuilder.isEmpty();
         }
 
-        DECLARE_TRACE();
+        // BKTODO: DECLARE_TRACE();
 
-        RefPtrWillBeMember<ContainerNode> parent;
-        RefPtrWillBeMember<Node> nextChild;
+        ContainerNode *parent = nullptr;
+        Node *nextChild = nullptr;
         StringBuilder stringBuilder;
         WhitespaceMode whitespaceMode;
     };

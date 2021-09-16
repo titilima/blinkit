@@ -161,11 +161,11 @@ HTMLDocumentParser::HTMLDocumentParser(HTMLDocument& document, bool reportErrors
     , m_tokenizer(syncPolicy == ForceSynchronousParsing ? HTMLTokenizer::create(m_options) : nullptr)
     , m_scriptRunner(HTMLScriptRunner::create(&document, this))
     , m_treeBuilder(HTMLTreeBuilder::create(this, &document, parserContentPolicy(), reportErrors, m_options))
-    // BKTODO: , m_loadingTaskRunner(adoptPtr(document.loadingTaskRunner()->clone()))
-    , m_parserScheduler(HTMLParserScheduler::create(this, m_loadingTaskRunner.get()))
+    , m_loadingTaskRunner(document.loadingTaskRunner())
+    , m_parserScheduler(HTMLParserScheduler::create(this, m_loadingTaskRunner))
     // BKTODO: , m_xssAuditorDelegate(&document)
     , m_weakFactory(this)
-    , m_preloader(HTMLResourcePreloader::create(document))
+    // BKTODO: , m_preloader(HTMLResourcePreloader::create(document))
     , m_parsedChunkQueue(ParsedChunkQueue::create())
     , m_shouldUseThreading(syncPolicy == AllowAsynchronousParsing)
     , m_endWasDelayed(false)
@@ -186,7 +186,7 @@ HTMLDocumentParser::HTMLDocumentParser(DocumentFragment* fragment, Element* cont
     , m_token(adoptPtr(new HTMLToken))
     , m_tokenizer(HTMLTokenizer::create(m_options))
     , m_treeBuilder(HTMLTreeBuilder::create(this, fragment, contextElement, this->parserContentPolicy(), m_options))
-    // BKTODO: , m_loadingTaskRunner(adoptPtr(fragment->document().loadingTaskRunner()->clone()))
+    , m_loadingTaskRunner(fragment->document().loadingTaskRunner())
     // BKTODO: , m_xssAuditorDelegate(&fragment->document())
     , m_weakFactory(this)
     , m_shouldUseThreading(false)
@@ -222,11 +222,13 @@ HTMLDocumentParser::~HTMLDocumentParser()
 
 DEFINE_TRACE(HTMLDocumentParser)
 {
-    visitor->trace(m_treeBuilder);
-    visitor->trace(m_parserScheduler);
+    m_treeBuilder->trace(visitor);
+    if (m_parserScheduler)
+        m_parserScheduler->trace(visitor);
     // BKTODO: visitor->trace(m_xssAuditorDelegate);
-    visitor->trace(m_scriptRunner);
-    visitor->trace(m_preloader);
+    if (m_scriptRunner)
+        m_scriptRunner->trace(visitor);
+    // BKTODO: visitor->trace(m_preloader);
     ScriptableDocumentParser::trace(visitor);
     HTMLScriptRunnerHost::trace(visitor);
 }
@@ -245,7 +247,7 @@ void HTMLDocumentParser::detach()
     m_insertionPreloadScanner.clear();
     if (m_parserScheduler) {
         m_parserScheduler->detach();
-        m_parserScheduler.clear();
+        m_parserScheduler.reset();
     }
     // Oilpan: It is important to clear m_token to deallocate backing memory of
     // HTMLToken::m_data and let the allocator reuse the memory for
@@ -260,7 +262,7 @@ void HTMLDocumentParser::stopParsing()
     DocumentParser::stopParsing();
     if (m_parserScheduler) {
         m_parserScheduler->detach();
-        m_parserScheduler.clear();
+        m_parserScheduler.reset();
     }
     if (m_haveBackgroundParser)
         stopBackgroundParser();
@@ -341,10 +343,13 @@ void HTMLDocumentParser::runScriptsForPausedTreeBuilder()
     ASSERT(scriptingContentIsAllowed(parserContentPolicy()));
 
     TextPosition scriptStartPosition = TextPosition::belowRangePosition();
+    ASSERT(false); // BKTODO:
+#if 0
     RefPtrWillBeRawPtr<Element> scriptElement = m_treeBuilder->takeScriptToProcess(scriptStartPosition);
     // We will not have a scriptRunner when parsing a DocumentFragment.
     if (m_scriptRunner)
         m_scriptRunner->execute(scriptElement.release(), scriptStartPosition);
+#endif
 }
 
 bool HTMLDocumentParser::canTakeNextToken()
@@ -401,7 +406,7 @@ void HTMLDocumentParser::notifyPendingParsedChunks()
         // after the document element is created in pumpPendingSpeculations().
         ASSERT(m_queuedPreloads.isEmpty());
         for (auto& chunk : pendingChunks)
-            m_preloader->takeAndPreload(chunk->preloads);
+            ASSERT(false); // BKTODO: m_preloader->takeAndPreload(chunk->preloads);
     }
 
     for (auto& chunk : pendingChunks)
@@ -542,7 +547,7 @@ size_t HTMLDocumentParser::processParsedChunkFromBackgroundParser(PassOwnPtr<Par
             break;
 
         if (!m_queuedPreloads.isEmpty() && document()->documentElement())
-            m_preloader->takeAndPreload(m_queuedPreloads);
+            ASSERT(false); // BKTODO: m_preloader->takeAndPreload(m_queuedPreloads);
 
         if (isWaitingForScripts()) {
             ASSERT(it + 1 == tokens->end()); // The </script> is assumed to be the last token of this bunch.
@@ -712,6 +717,8 @@ void HTMLDocumentParser::pumpTokenizer()
     if (isWaitingForScripts()) {
         ASSERT(m_tokenizer->state() == HTMLTokenizer::DataState);
 
+        ASSERT(false); // BKTODO:
+#if 0
         ASSERT(m_preloader);
         // TODO(kouhei): m_preloader should be always available for synchronous parsing case,
         // adding paranoia if for speculative crash fix for crbug.com/465478
@@ -724,6 +731,7 @@ void HTMLDocumentParser::pumpTokenizer()
             }
             m_preloadScanner->scan(m_preloader.get(), document()->baseElementURL());
         }
+#endif
     }
 
     TRACE_EVENT_END1("devtools.timeline", "ParseHTML", "endData", InspectorParseHtmlEvent::endData(m_input.current().currentLine().zeroBasedInt() - 1));
@@ -807,7 +815,7 @@ void HTMLDocumentParser::insert(const SegmentedString& source)
         }
 
         m_insertionPreloadScanner->appendToEnd(source);
-        m_insertionPreloadScanner->scan(m_preloader.get(), document()->baseElementURL());
+        ASSERT(false); // BKTODO: m_insertionPreloadScanner->scan(m_preloader.get(), document()->baseElementURL());
     }
 
     endIfDelayed();
@@ -892,7 +900,7 @@ void HTMLDocumentParser::append(const String& inputSource)
         } else {
             m_preloadScanner->appendToEnd(source);
             if (isWaitingForScripts())
-                m_preloadScanner->scan(m_preloader.get(), document()->baseElementURL());
+                ASSERT(false); // BKTODO: m_preloadScanner->scan(m_preloader.get(), document()->baseElementURL());
         }
     }
 
@@ -1072,7 +1080,7 @@ void HTMLDocumentParser::appendCurrentInputStreamToPreloadScannerAndScan()
 {
     ASSERT(m_preloadScanner);
     m_preloadScanner->appendToEnd(m_input.current());
-    m_preloadScanner->scan(m_preloader.get(), document()->baseElementURL());
+    ASSERT(false); // BKTODO: m_preloadScanner->scan(m_preloader.get(), document()->baseElementURL());
 }
 
 void HTMLDocumentParser::notifyScriptLoaded(Resource* cachedResource)

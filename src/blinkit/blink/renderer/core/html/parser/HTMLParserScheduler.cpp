@@ -92,10 +92,10 @@ void SpeculationsPumpSession::addedElementTokens(size_t count)
     m_processedElementTokens += count;
 }
 
-HTMLParserScheduler::HTMLParserScheduler(HTMLDocumentParser* parser, WebTaskRunner* loadingTaskRunner)
+HTMLParserScheduler::HTMLParserScheduler(HTMLDocumentParser* parser, const std::shared_ptr<WebTaskRunner> &loadingTaskRunner)
     : m_parser(parser)
+    , m_loadingTaskRunner(loadingTaskRunner)
 #if 0 // BKTODO:
-    , m_loadingTaskRunner(adoptPtr(loadingTaskRunner->clone()))
     , m_cancellableContinueParse(CancellableTaskFactory::create(this, &HTMLParserScheduler::continueParsing))
 #endif
     , m_isSuspendedWithActiveTimer(false)
