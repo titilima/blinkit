@@ -34,6 +34,7 @@
 #ifndef Resource_h
 #define Resource_h
 
+#include "blinkit/gc/gc_object_set.h"
 #include "core/CoreExport.h"
 #include "core/fetch/CachedMetadataHandler.h"
 #include "core/fetch/ResourceLoaderOptions.h"
@@ -73,7 +74,7 @@ class SharedBuffer;
 // A resource that is held in the cache. Classes who want to use this object should derive
 // from ResourceClient, to get the function calls in case the requested data has arrived.
 // This class also does the actual communication with the loader to obtain the resource from the network.
-class CORE_EXPORT Resource : public NoBaseWillBeGarbageCollectedFinalized<Resource> {
+class CORE_EXPORT Resource : public BlinKit::GCObject {
     WTF_MAKE_NONCOPYABLE(Resource);
     USING_FAST_MALLOC_WITH_TYPE_NAME_WILL_BE_REMOVED(blink::Resource);
     friend class InspectorResource;
@@ -212,7 +213,11 @@ public:
     virtual void willFollowRedirect(ResourceRequest&, const ResourceResponse&);
 
     virtual void updateRequest(const ResourceRequest&) { }
-    // BKTODO: virtual void responseReceived(const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>);
+#if 0 // BKTODO:
+    virtual void responseReceived(const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>);
+#else
+    virtual void responseReceived(const ResourceResponse&);
+#endif
     void setResponse(const ResourceResponse& response) { m_response = response; }
     const ResourceResponse& response() const { return m_response; }
 
@@ -333,7 +338,7 @@ protected:
     HashCountedSet<ResourceClient*> m_clientsAwaitingCallback;
     HashCountedSet<ResourceClient*> m_finishedClients;
 
-    class ResourceCallback : public NoBaseWillBeGarbageCollectedFinalized<ResourceCallback> {
+    class ResourceCallback : public BlinKit::GCObject {
     public:
         static ResourceCallback* callbackHandler();
         DECLARE_TRACE();
@@ -344,7 +349,7 @@ protected:
         ResourceCallback();
         void runTask();
         // BKTODO: OwnPtr<CancellableTaskFactory> m_callbackTaskFactory;
-        WillBeHeapHashSet<RawPtrWillBeMember<Resource>> m_resourcesWithPendingClients;
+        BlinKit::GCObjectSet<Resource> m_resourcesWithPendingClients;
     };
 
     bool hasClient(ResourceClient* client) { return m_clients.contains(client) || m_clientsAwaitingCallback.contains(client) || m_finishedClients.contains(client); }
@@ -374,7 +379,7 @@ protected:
     ResourceRequest m_resourceRequest;
     ResourceRequest m_revalidatingRequest;
     AtomicString m_accept;
-    PersistentWillBeMember<ResourceLoader> m_loader;
+    BlinKit::GCMember<ResourceLoader> m_loader;
     ResourceLoaderOptions m_options;
 
     ResourceResponse m_response;

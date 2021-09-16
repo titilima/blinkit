@@ -60,6 +60,7 @@
 #include "wtf/text/CString.h"
 #include <algorithm>
 
+using namespace BlinKit;
 using namespace WTF;
 
 namespace blink {
@@ -195,8 +196,7 @@ Resource::Resource(const ResourceRequest& request, Type type)
     if (m_resourceRequest.url().protocolIsInHTTPFamily())
         m_cacheHandler = CacheHandler::create(this);
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (!m_resourceRequest.url().hasFragmentIdentifier())
         return;
     KURL urlForCache = MemoryCache::removeFragmentIdentifierIfNeeded(m_resourceRequest.url());
@@ -210,17 +210,14 @@ Resource::Resource(const ResourceRequest& request, Type type)
 Resource::~Resource()
 {
     ASSERT(canDelete());
-    ASSERT(false); // BKTODO:
-#if 0
-    RELEASE_ASSERT(!memoryCache()->contains(this));
+    // BKTODO: RELEASE_ASSERT(!memoryCache()->contains(this));
     RELEASE_ASSERT(!ResourceCallback::callbackHandler()->isScheduled(this));
     assertAlive();
 
 #ifdef ENABLE_RESOURCE_IS_DELETED_CHECK
     m_deleted = true;
 #endif
-    InstanceCounters::decrementCounter(InstanceCounters::ResourceCounter);
-#endif
+    // BKTODO: InstanceCounters::decrementCounter(InstanceCounters::ResourceCounter);
 }
 
 void Resource::dispose()
@@ -490,12 +487,29 @@ bool Resource::unlock()
 
 bool Resource::hasRightHandleCountApartFromCache(unsigned targetCount) const
 {
-    ASSERT(false); // BKTODO: return m_handleCount == targetCount + (memoryCache()->contains(this) ? 1 : 0);
-    return false;
+    return true; // BKTODO: return m_handleCount == targetCount + (memoryCache()->contains(this) ? 1 : 0);
 }
 
 #if 0 // BKTODO:
 void Resource::responseReceived(const ResourceResponse& response, PassOwnPtr<WebDataConsumerHandle>)
+{
+    m_responseTimestamp = currentTime();
+
+    if (!m_revalidatingRequest.isNull()) {
+        if (response.httpStatusCode() == 304) {
+            revalidationSucceeded(response);
+            return;
+        }
+        revalidationFailed();
+    }
+
+    setResponse(response);
+    String encoding = response.textEncodingName();
+    if (!encoding.isNull())
+        setEncoding(encoding);
+}
+#else
+void Resource::responseReceived(const ResourceResponse& response)
 {
     m_responseTimestamp = currentTime();
 
@@ -654,7 +668,7 @@ CachedMetadata* Resource::cachedMetadata(unsigned dataTypeID) const
 
 void Resource::clearLoader()
 {
-    m_loader = nullptr;
+    m_loader.clear();
 }
 
 void Resource::didAddClient(ResourceClient* c)
@@ -702,8 +716,10 @@ void Resource::addClient(ResourceClient* client)
         else
             m_preloadResult = PreloadReferenced;
     }
+#if 0 // BKTODO:
     if (!hasClients())
-        ASSERT(false); // BKTODO: memoryCache()->makeLive(this);
+        memoryCache()->makeLive(this);
+#endif
 
     if (!m_revalidatingRequest.isNull()) {
         ASSERT(false); // BKTODO: m_clients.add(client);
@@ -717,7 +733,7 @@ void Resource::addClient(ResourceClient* client)
         return;
     }
 
-    ASSERT(false); // BKTODO: m_clients.add(client);
+    m_clients.insert(client);
     didAddClient(client);
     return;
 }
@@ -730,7 +746,7 @@ void Resource::removeClient(ResourceClient* client)
     else if (m_clientsAwaitingCallback.contains(client))
         ASSERT(false); // BKTODO: m_clientsAwaitingCallback.remove(client);
     else
-        ASSERT(false); // BKTODO: m_clients.remove(client);
+        m_clients.erase(client);
 
     didRemoveClient(client);
 
@@ -739,12 +755,11 @@ void Resource::removeClient(ResourceClient* client)
 
     bool deleted = deleteIfPossible();
     if (!deleted && !hasClients()) {
-        ASSERT(false); // BKTODO: memoryCache()->makeDead(this);
+        // BKTODO: memoryCache()->makeDead(this);
         if (!m_switchingClientsToRevalidatedResource)
             allClientsRemoved();
 
-        ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
         // RFC2616 14.9.2:
         // "no-store: ... MUST make a best-effort attempt to remove the information from volatile storage as promptly as possible"
         // "... History buffers MAY store such responses as part of their normal operation."
@@ -779,14 +794,15 @@ void Resource::cancelTimerFired(Timer<Resource>* timer)
         return;
     ResourcePtr<Resource> protect(this);
     m_loader->cancelIfNotFinishing();
+#if 0 // BKTODO:
     if (m_status != Cached)
-        ASSERT(false); // BKTODO: memoryCache()->remove(this);
+        memoryCache()->remove(this);
+#endif
 }
 
 bool Resource::deleteIfPossible()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (canDelete() && !memoryCache()->contains(this)) {
         InspectorInstrumentation::willDestroyResource(this);
         dispose();
@@ -794,6 +810,11 @@ bool Resource::deleteIfPossible()
 #if !ENABLE(OILPAN)
         delete this;
 #endif
+        return true;
+    }
+#else
+    if (canDelete()) {
+        dispose();
         return true;
     }
 #endif
@@ -986,13 +1007,14 @@ void Resource::unregisterHandle(ResourcePtrBase* h)
     ASSERT(m_handleCount > 0);
     --m_handleCount;
 
-    ASSERT(false); // BKTODO:
-#if 0
-    if (!m_handleCount) {
+    if (!m_handleCount)
+    {
         if (deleteIfPossible())
             return;
         unlock();
-    } else if (m_handleCount == 1 && memoryCache()->contains(this)) {
+    }
+#if 0 // BKTODO: Check the logic later.
+    else if (m_handleCount == 1 && memoryCache()->contains(this)) {
         unlock();
         if (!hasClients())
             memoryCache()->prune(this);
@@ -1039,8 +1061,7 @@ bool Resource::canUseCacheValidator()
 
 bool Resource::isPurgeable() const
 {
-    ASSERT(false); // BKTODO: return m_data && !m_data->isLocked();
-    return false;
+    return m_data && !m_data->isLocked();
 }
 
 bool Resource::wasPurged() const
@@ -1098,14 +1119,8 @@ ResourcePriority Resource::priorityFromClients()
 
 Resource::ResourceCallback* Resource::ResourceCallback::callbackHandler()
 {
-    // Oilpan + LSan: as the callbackHandler() singleton is used by Resource
-    // and ResourcePtr finalizers, it cannot be released upon shutdown in
-    // preparation for leak detection.
-    //
-    // Keep it out of LSan's reach instead.
-    LEAK_SANITIZER_DISABLED_SCOPE;
-    DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<ResourceCallback>, callbackHandler, (adoptPtrWillBeNoop(new ResourceCallback)));
-    return callbackHandler.get();
+    static ResourceCallback *callbackHandler = GCWrapGlobal(new ResourceCallback);
+    return callbackHandler;
 }
 
 DEFINE_TRACE(Resource::ResourceCallback)
@@ -1133,10 +1148,9 @@ void Resource::ResourceCallback::schedule(Resource* resource)
 
 void Resource::ResourceCallback::cancel(Resource* resource)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     resource->assertAlive();
-    m_resourcesWithPendingClients.remove(resource);
+    m_resourcesWithPendingClients.erase(resource);
+#if 0 // BKTODO:
     if (m_callbackTaskFactory->isPending() && m_resourcesWithPendingClients.isEmpty())
         m_callbackTaskFactory->cancel();
 #endif
@@ -1149,9 +1163,7 @@ bool Resource::ResourceCallback::isScheduled(Resource* resource) const
 
 void Resource::ResourceCallback::runTask()
 {
-    Vector<ResourcePtr<Resource>> resources;
-    for (const RawPtrWillBeMember<Resource>& resource : m_resourcesWithPendingClients)
-        resources.append(resource.get());
+    std::vector<Resource *> resources = m_resourcesWithPendingClients.GetSnapshot();
     m_resourcesWithPendingClients.clear();
 
     for (const auto& resource : resources) {
