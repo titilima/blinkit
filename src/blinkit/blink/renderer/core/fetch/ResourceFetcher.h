@@ -89,7 +89,7 @@ public:
 
     Resource* cachedResource(const KURL&) const;
 
-    using DocumentResourceMap = WillBeHeapHashMap<String, WeakPtrWillBeWeakMember<Resource>>;
+    using DocumentResourceMap = std::unordered_map<std::string, BlinKit::GCWeakMember<Resource>>;
     const DocumentResourceMap& allResources() const { return m_documentResources; }
 
     bool autoLoadImages() const { return m_autoLoadImages; }
@@ -100,7 +100,7 @@ public:
     bool shouldDeferImageLoad(const KURL&) const;
 
     FetchContext& context() const { return m_context ? *m_context.get() : FetchContext::nullInstance(); }
-    void clearContext() { m_context.clear(); }
+    void clearContext() { m_context.reset(); }
 
     int requestCount() const;
 
@@ -120,9 +120,9 @@ public:
 
     void didLoadResource(Resource*);
     void redirectReceived(Resource*, const ResourceResponse&);
-    void didFinishLoading(Resource*, double finishTime, int64_t encodedDataLength);
+    void didFinishLoading(Resource*, int64_t encodedDataLength);
     void didFailLoading(const Resource*, const ResourceError&);
-    void willSendRequest(unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse, const FetchInitiatorInfo&);
+    void willSendRequest(unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse);
     void didReceiveResponse(const Resource*, const ResourceResponse&);
     void didReceiveData(const Resource*, const char* data, int dataLength, int encodedDataLength);
     void didDownloadData(const Resource*, int dataLength, int encodedDataLength);
@@ -158,12 +158,14 @@ public:
     static void determineRequestContext(ResourceRequest&, Resource::Type, bool isMainFrame);
     void determineRequestContext(ResourceRequest&, Resource::Type);
 
-    WebTaskRunner* loadingTaskRunner();
+    std::shared_ptr<WebTaskRunner> loadingTaskRunner();
 
     void updateAllImageResourcePriorities();
 
+#if 0 // BKTODO:
     // This is only exposed for testing purposes.
     WillBeHeapListHashSet<RawPtrWillBeMember<Resource>>* preloads() { return m_preloads.get(); }
+#endif
 
 private:
     friend class ResourceCacheValidationSuppressor;
@@ -193,18 +195,20 @@ private:
 
     // BKTODO: ResourceLoadPriority modifyPriorityForExperiments(ResourceLoadPriority, Resource::Type, const FetchRequest&);
 
-    Member<FetchContext> m_context;
+    std::unique_ptr<FetchContext> m_context;
 
-    HashSet<String> m_validatedURLs;
+    std::unordered_set<std::string> m_validatedURLs; // BKTODO: Check if necessary.
     mutable DocumentResourceMap m_documentResources;
 
+#if 0 // BKTODO:
     // We intentionally use a Member instead of a ResourcePtr.
     // Using a ResourcePtrs can lead to a wrong behavior because
     // the underlying Resource of the ResourcePtr is updated when the Resource
     // is revalidated. What we really want to hold here is not the ResourcePtr
     // but the underlying Resource.
     OwnPtrWillBeMember<WillBeHeapListHashSet<RawPtrWillBeMember<Resource>>> m_preloads;
-    // BKTODO: OwnPtrWillBeMember<ArchiveResourceCollection> m_archiveResourceCollection;
+    OwnPtrWillBeMember<ArchiveResourceCollection> m_archiveResourceCollection;
+#endif
 
     Timer<ResourceFetcher> m_resourceTimingReportTimer;
 
@@ -217,8 +221,8 @@ private:
     Vector<OwnPtr<ResourceTimingInfo>> m_scheduledResourceTimingReports;
 #endif
 
-    Member<ResourceLoaderSet> m_loaders;
-    Member<ResourceLoaderSet> m_nonBlockingLoaders;
+    std::unique_ptr<ResourceLoaderSet> m_loaders;
+    std::unique_ptr<ResourceLoaderSet> m_nonBlockingLoaders;
 
     // Used in hit rate histograms.
     class DeadResourceStatsRecorder {

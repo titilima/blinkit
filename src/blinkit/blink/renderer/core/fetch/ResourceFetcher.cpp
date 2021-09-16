@@ -201,7 +201,7 @@ ResourceFetcher::~ResourceFetcher()
 #endif
 }
 
-WebTaskRunner* ResourceFetcher::loadingTaskRunner()
+std::shared_ptr<WebTaskRunner> ResourceFetcher::loadingTaskRunner()
 {
     if (!m_context)
         return nullptr;
@@ -270,14 +270,15 @@ static const int kMaxValidatedURLsSize = 10000;
 
 void ResourceFetcher::requestLoadStarted(Resource* resource, const FetchRequest& request, ResourceLoadStartType type, bool isStaticData)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (type == ResourceLoadingFromCache && resource->status() == Resource::Cached && !m_validatedURLs.contains(resource->url()))
         context().dispatchDidLoadResourceFromMemoryCache(resource);
+#endif
 
     if (isStaticData)
         return;
 
+#if 0 // BKTODO:
     if (type == ResourceLoadingFromCache && !resource->stillNeedsLoad() && !m_validatedURLs.contains(request.resourceRequest().url())) {
         // Resources loaded from memory cache should be reported the first time they're used.
         OwnPtr<ResourceTimingInfo> info = ResourceTimingInfo::create(request.options().initiatorInfo.name, monotonicallyIncreasingTime(), resource->type() == Resource::MainResource);
@@ -286,12 +287,12 @@ void ResourceFetcher::requestLoadStarted(Resource* resource, const FetchRequest&
         if (!m_resourceTimingReportTimer.isActive())
             m_resourceTimingReportTimer.startOneShot(0, BLINK_FROM_HERE);
     }
+#endif
 
     if (m_validatedURLs.size() >= kMaxValidatedURLsSize) {
         m_validatedURLs.clear();
     }
-    m_validatedURLs.add(request.resourceRequest().url());
-#endif
+    m_validatedURLs.emplace(request.resourceRequest().url().spec());
 }
 
 #if 0 // BKTODO:
@@ -372,10 +373,9 @@ void ResourceFetcher::moveCachedNonBlockingResourceToBlocking(Resource* resource
 
 ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, const ResourceFactory& factory, const SubstituteData& substituteData)
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
+#if 0 // BKTODO: Check the assertion later.
     ASSERT(request.options().synchronousPolicy == RequestAsynchronously || factory.type() == Resource::Raw || factory.type() == Resource::XSLStyleSheet);
+#endif
 
     context().upgradeInsecureRequest(request);
     context().addClientHintsIfNecessary(request);
@@ -386,8 +386,10 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
 
     WTF_LOG(ResourceLoading, "ResourceFetcher::requestResource '%s', charset '%s', priority=%d, forPreload=%u, type=%s", url.elidedString().latin1().data(), request.charset().latin1().data(), request.priority(), request.forPreload(), ResourceTypeName(factory.type()));
 
+#if 0 // BKTODO: May be useless
     // If only the fragment identifiers differ, it is the same resource.
     url = MemoryCache::removeFragmentIdentifierIfNeeded(url);
+#endif
 
     if (!url.isValid())
         return nullptr;
@@ -395,6 +397,7 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
     if (!context().canRequest(factory.type(), request.resourceRequest(), url, request.options(), request.forPreload(), request.originRestriction()))
         return nullptr;
 
+#if 0 // BKTODO: Remove it later.
     if (!request.forPreload()) {
         V8DOMActivityLogger* activityLogger = nullptr;
         if (request.options().initiatorInfo.name == FetchInitiatorTypeNames::xmlhttprequest)
@@ -409,13 +412,16 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
             activityLogger->logEvent("blinkRequestResource", argv.size(), argv.data());
         }
     }
+#endif
 
     bool isStaticData = request.resourceRequest().url().protocolIsData() || substituteData.isValid();
     ResourcePtr<Resource> resource;
     if (isStaticData)
         resource = preCacheData(request, factory, substituteData);
+#if 0 // BKTODO: Check the logic later.
     if (!resource)
         resource = memoryCache()->resourceForURL(url, getCacheIdentifier());
+#endif
 
     // See if we can use an existing resource from the cache. If so, we need to move it to be load blocking.
     moveCachedNonBlockingResourceToBlocking(resource.get(), request);
@@ -423,7 +429,7 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
     const RevalidationPolicy policy = determineRevalidationPolicy(factory.type(), request, resource.get(), isStaticData);
     switch (policy) {
     case Reload:
-        memoryCache()->remove(resource.get());
+        ASSERT(false); // BKTODO: memoryCache()->remove(resource.get());
         // Fall through
     case Load:
         resource = createResourceForLoading(request, request.charset(), factory);
@@ -432,7 +438,7 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
         initializeRevalidation(request, resource.get());
         break;
     case Use:
-        memoryCache()->updateForAccess(resource.get());
+        ASSERT(false); // BKTODO: memoryCache()->updateForAccess(resource.get());
         break;
     }
 
@@ -449,6 +455,7 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
     if (policy != Use)
         resource->setIdentifier(createUniqueIdentifier());
 
+#if 0 // BKTODO: Check the logic later.
     if (!request.forPreload() || policy != Use) {
         ResourceLoadPriority priority = loadPriority(factory.type(), request, ResourcePriority::NotVisible);
         // When issuing another request for a resource that is already in-flight make
@@ -459,16 +466,24 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
         if (priority > resource->resourceRequest().priority())
             resource->didChangePriority(priority, 0);
     }
+#endif
 
     if (resourceNeedsLoad(resource.get(), request, policy)) {
         if (!context().shouldLoadNewResource(factory.type())) {
+            ASSERT(false); // BKTODO:
+#if 0
             if (memoryCache()->contains(resource.get()))
                 memoryCache()->remove(resource.get());
+#endif
             return nullptr;
         }
 
+#if 0 // BKTODO:
         if (!scheduleArchiveLoad(resource.get(), request.resourceRequest()))
             resource->load(this, request.options());
+#else
+        resource->load(this, request.options());
+#endif
 
         // For asynchronous loads that immediately fail, it's sufficient to return a
         // null Resource, as it indicates that something prevented the load from starting.
@@ -477,9 +492,12 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
         // In that case, the requester should have access to the relevant ResourceError, so
         // we need to return a non-null Resource.
         if (resource->errorOccurred()) {
+            ASSERT(false); // BKTODO:
+#if 0
             if (memoryCache()->contains(resource.get()))
                 memoryCache()->remove(resource.get());
             return request.options().synchronousPolicy == RequestSynchronously ? resource : nullptr;
+#endif
         }
     }
 
@@ -491,15 +509,14 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
     if (factory.type() == Resource::MainResource) {
         ASSERT(policy != Use || isStaticData);
         ASSERT(policy != Revalidate);
-        memoryCache()->remove(resource.get());
+        // BKTODO: memoryCache()->remove(resource.get());
     }
 
     requestLoadStarted(resource.get(), request, policy == Use ? ResourceLoadingFromCache : ResourceLoadingFromNetwork, isStaticData);
 
     ASSERT(resource->url() == url.string());
-    m_documentResources.set(resource->url(), resource->asWeakPtr());
+    m_documentResources.emplace(resource->url().spec(), resource.get());
     return resource;
-#endif
 }
 
 void ResourceFetcher::resourceTimingReportTimerFired(Timer<ResourceFetcher>* timer)
@@ -529,15 +546,14 @@ void ResourceFetcher::initializeResourceRequest(ResourceRequest& request, Resour
 {
     if (request.cachePolicy() == UseProtocolCachePolicy)
         request.setCachePolicy(context().resourceRequestCachePolicy(request, type));
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (request.requestContext() == WebURLRequest::RequestContextUnspecified)
         determineRequestContext(request, type);
     if (type == Resource::LinkPrefetch || type == Resource::LinkSubresource)
         request.setHTTPHeaderField(HTTPNames::Purpose, "prefetch");
+#endif
 
     context().addAdditionalRequestHeaders(request, (type == Resource::MainResource) ? FetchMainResource : FetchSubresource);
-#endif
 }
 
 void ResourceFetcher::initializeRevalidation(const FetchRequest& request, Resource* resource)
@@ -579,10 +595,7 @@ void ResourceFetcher::initializeRevalidation(const FetchRequest& request, Resour
 ResourcePtr<Resource> ResourceFetcher::createResourceForLoading(FetchRequest& request, const String& charset, const ResourceFactory& factory)
 {
     const String cacheIdentifier = getCacheIdentifier();
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
-    ASSERT(!memoryCache()->resourceForURL(request.resourceRequest().url(), cacheIdentifier));
+    // BKTODO: ASSERT(!memoryCache()->resourceForURL(request.resourceRequest().url(), cacheIdentifier));
 
     WTF_LOG(ResourceLoading, "Loading Resource for '%s'.", request.resourceRequest().url().elidedString().latin1().data());
 
@@ -591,15 +604,13 @@ ResourcePtr<Resource> ResourceFetcher::createResourceForLoading(FetchRequest& re
     resource->setAvoidBlockingOnLoad(request.avoidBlockingOnLoad());
     resource->setCacheIdentifier(cacheIdentifier);
 
-    memoryCache()->add(resource.get());
+    // BKTODO: memoryCache()->add(resource.get());
     return resource;
-#endif
 }
 
 void ResourceFetcher::storeResourceTimingInitiatorInformation(Resource* resource)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (resource->options().initiatorInfo.name == FetchInitiatorTypeNames::internal)
         return;
 
@@ -880,34 +891,35 @@ void ResourceFetcher::preloadStarted(Resource* resource)
 
 bool ResourceFetcher::isPreloaded(const KURL& url) const
 {
+#if 0 // BKTODO:
     if (m_preloads) {
         for (auto resource : *m_preloads) {
             if (resource->url() == url)
                 return true;
         }
     }
+#endif
 
     return false;
 }
 
 void ResourceFetcher::clearPreloads()
 {
+#if 0 // BKTODO:
 #if PRELOAD_DEBUG
     printPreloadStats();
 #endif
     if (!m_preloads)
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
     for (auto resource : *m_preloads) {
         resource->decreasePreloadCount();
         bool deleted = resource->deleteIfPossible();
         if (!deleted && resource->preloadResult() == Resource::PreloadNotReferenced)
             memoryCache()->remove(resource.get());
     }
-#endif
     m_preloads.clear();
+#endif
 }
 
 #if 0 // BKTODO:
@@ -940,13 +952,12 @@ bool ResourceFetcher::scheduleArchiveLoad(Resource* resource, const ResourceRequ
 }
 #endif
 
-void ResourceFetcher::didFinishLoading(Resource* resource, double finishTime, int64_t encodedDataLength)
+void ResourceFetcher::didFinishLoading(Resource* resource, int64_t encodedDataLength)
 {
     TRACE_EVENT_ASYNC_END0("blink.net", "Resource", resource);
     willTerminateResourceLoader(resource->loader());
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (resource && resource->response().isHTTP() && resource->response().httpStatusCode() < 400) {
         ResourceTimingInfoMap::iterator it = m_resourceTimingInfoMap.find(resource);
         if (it != m_resourceTimingInfoMap.end()) {
@@ -959,7 +970,7 @@ void ResourceFetcher::didFinishLoading(Resource* resource, double finishTime, in
         }
     }
 #endif
-    context().dispatchDidFinishLoading(resource->identifier(), finishTime, encodedDataLength);
+    context().dispatchDidFinishLoading(resource->identifier(), encodedDataLength);
 }
 
 void ResourceFetcher::didFailLoading(const Resource* resource, const ResourceError& error)
@@ -973,15 +984,14 @@ void ResourceFetcher::didFailLoading(const Resource* resource, const ResourceErr
 #endif
 }
 
-void ResourceFetcher::willSendRequest(unsigned long identifier, ResourceRequest& request, const ResourceResponse& redirectResponse, const FetchInitiatorInfo& initiatorInfo)
+void ResourceFetcher::willSendRequest(unsigned long identifier, ResourceRequest& request, const ResourceResponse& redirectResponse)
 {
-    context().dispatchWillSendRequest(identifier, request, redirectResponse, initiatorInfo);
+    context().dispatchWillSendRequest(identifier, request, redirectResponse);
 }
 
 void ResourceFetcher::didReceiveResponse(const Resource* resource, const ResourceResponse& response)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // If the response is fetched via ServiceWorker, the original URL of the response could be different from the URL of the request.
     // We check the URL not to load the resources which are forbidden by the page CSP.
     // https://w3c.github.io/webappsec-csp/#should-block-response
@@ -1195,10 +1205,13 @@ const ResourceLoaderOptions& ResourceFetcher::defaultResourceOptions()
 
 String ResourceFetcher::getCacheIdentifier() const
 {
+#if 0 // BKTODO: Check the logic later.
     if (context().isControlledByServiceWorker())
         return String::number(context().serviceWorkerID());
-    ASSERT(false); // BKTODO: return MemoryCache::defaultCacheIdentifier();
-    return String();
+    return MemoryCache::defaultCacheIdentifier();
+#else
+    return emptyString();
+#endif
 }
 
 ResourceFetcher::DeadResourceStatsRecorder::DeadResourceStatsRecorder()
@@ -1238,14 +1251,17 @@ void ResourceFetcher::DeadResourceStatsRecorder::update(RevalidationPolicy polic
 
 DEFINE_TRACE(ResourceFetcher)
 {
-    visitor->trace(m_context);
-    // BKTODO: visitor->trace(m_archiveResourceCollection);
+    if (m_context)
+        m_context->trace(visitor);
+#if 0 // BKTODO:
+    visitor->trace(m_archiveResourceCollection);
     visitor->trace(m_loaders);
     visitor->trace(m_nonBlockingLoaders);
 #if ENABLE(OILPAN)
     visitor->trace(m_documentResources);
     visitor->trace(m_preloads);
-    // BKTODO: visitor->trace(m_resourceTimingInfoMap);
+    visitor->trace(m_resourceTimingInfoMap);
+#endif
 #endif
 }
 
