@@ -41,23 +41,30 @@
 
 #include "core/fetch/ResourceLoaderSet.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-ResourceLoaderSet* ResourceLoaderSet::create()
+std::unique_ptr<ResourceLoaderSet> ResourceLoaderSet::create()
 {
-    return new ResourceLoaderSet;
+    return zed::wrap_unique(new ResourceLoaderSet);
 }
 
+#if 0 // BKTODO:
 DEFINE_TRACE(ResourceLoaderSet)
 {
     visitor->trace(m_set);
 }
+#endif
 
 void ResourceLoaderSet::cancelAll()
 {
+    ASSERT(m_set.empty()); // BKTODO:
+#if 0
     std::vector<Member<ResourceLoader>> loadersCopy(m_set.begin(), m_set.end());
     for (const auto& loader : loadersCopy)
         loader->cancel();
+#endif
 }
 
 #if 0 // BKTODO:

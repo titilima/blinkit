@@ -43,21 +43,21 @@
 #define ResourceLoaderSet_h
 
 #include "core/fetch/ResourceLoader.h"
-#include "wtf/HashSet.h"
+//#include "wtf/HashSet.h"
 
 namespace blink {
 
-class ResourceLoaderSet final : public GarbageCollected<ResourceLoaderSet> {
+class ResourceLoaderSet final {
 public:
-    using SetType = HeapHashSet<Member<ResourceLoader>>;
+    using SetType = std::unordered_set<ResourceLoader *>;
 
-    static ResourceLoaderSet* create();
-    DECLARE_TRACE();
+    static std::unique_ptr<ResourceLoaderSet> create();
+    // BKTODO: DECLARE_TRACE();
 
-    void add(ResourceLoader* loader) { m_set.add(loader); }
-    void remove(ResourceLoader* loader) { m_set.remove(loader); }
-    bool isEmpty() const { return m_set.isEmpty(); }
-    bool contains(ResourceLoader* loader) const { return m_set.contains(loader); }
+    void add(ResourceLoader* loader) { m_set.emplace(loader); }
+    void remove(ResourceLoader* loader) { m_set.erase(loader); }
+    bool isEmpty() const { return m_set.empty(); }
+    bool contains(ResourceLoader* loader) const { return zed::key_exists(m_set, loader); }
     void cancelAll();
     // BKTODO: void setAllDefersLoading(bool);
     int size() const { return m_set.size(); }
