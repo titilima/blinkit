@@ -362,8 +362,7 @@ bool equalIgnoringHeaderFields(const ResourceRequest& a, const ResourceRequest& 
     if (a.allowStoredCredentials() != b.allowStoredCredentials())
         return false;
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (a.priority() != b.priority())
         return false;
 

@@ -54,6 +54,9 @@
 #ifdef BLINKIT_CRAWLER_ENABLED
 #   include "bk_crawler.h"
 #endif
+#ifdef BLINKIT_UI_ENABLED
+#   include "bk_ui.h"
+#endif
 
 namespace blink {
 
@@ -97,7 +100,7 @@ public:
 
     ResourceRequest(const String& urlString)
     {
-        ASSERT(false); // BKTODO: initialize(KURL(ParsedURLString, urlString));
+        initialize(KURL(urlString));
     }
 
     ResourceRequest(const KURL& url)
@@ -116,6 +119,11 @@ public:
     BkCrawler Crawler(void) const { return m_crawler; }
     bool IsForCrawler(void) const { return nullptr != m_crawler; }
     void SetCrawler(BkCrawler crawler) { m_crawler = crawler; }
+#endif
+#ifdef BLINKIT_UI_ENABLED
+    BkWebView View(void) const { return m_view; }
+    bool IsForUI(void) const { return nullptr != m_view; }
+    void SetView(BkWebView view) { m_view = view; }
 #endif
 
     bool isNull() const;
@@ -288,6 +296,9 @@ private:
 
 #ifdef BLINKIT_CRAWLER_ENABLED
     BkCrawler m_crawler = nullptr;
+#endif
+#ifdef BLINKIT_UI_ENABLED
+    BkWebView m_view = nullptr;
 #endif
     KURL m_url;
     ResourceRequestCachePolicy m_cachePolicy;
