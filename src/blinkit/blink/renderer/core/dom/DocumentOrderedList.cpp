@@ -73,12 +73,14 @@ void DocumentOrderedList::remove(const Node* node)
     m_nodes.erase(const_cast<Node*>(node));
 }
 
+#if 0 // BKTODO: Check if necessary.
 DEFINE_TRACE(DocumentOrderedList)
 {
 #if ENABLE(OILPAN)
     visitor->trace(m_nodes);
 #endif
 }
+#endif
 
 }
 

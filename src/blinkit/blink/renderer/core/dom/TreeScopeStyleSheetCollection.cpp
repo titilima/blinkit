@@ -182,8 +182,10 @@ void TreeScopeStyleSheetCollection::clearMediaQueryRuleSetStyleSheets()
 
 DEFINE_TRACE(TreeScopeStyleSheetCollection)
 {
-    // BKTODO: visitor->trace(m_treeScope);
+#if 0 // BKTODO:
+    visitor->trace(m_treeScope);
     visitor->trace(m_styleSheetCandidateNodes);
+#endif
     StyleSheetCollection::trace(visitor);
 }
 

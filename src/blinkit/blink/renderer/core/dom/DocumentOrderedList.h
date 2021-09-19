@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DocumentOrderedList.h
+// Description: DocumentOrderedList Class
+//      Author: Ziming Li
+//     Created: 2021-09-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -52,7 +63,7 @@ public:
     iterator begin() { return m_nodes.begin(); }
     iterator end() { return m_nodes.end(); }
 
-    DECLARE_TRACE();
+    // BKTODO: DECLARE_TRACE();
 
 private:
     WillBeHeapListHashSet<RawPtrWillBeMember<Node>, 32> m_nodes;
