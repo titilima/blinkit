@@ -67,7 +67,7 @@ public:
     ~CSSStyleSheet() override;
 
     CSSStyleSheet* parentStyleSheet() const override;
-    Node* ownerNode() const override { return m_ownerNode; }
+    Node* ownerNode() const override { return m_ownerNode.get(); }
     MediaList* media() const override;
     String href() const override;
     String title() const override { return m_title; }
@@ -98,7 +98,7 @@ public:
     void clearOwnerRule() { m_ownerRule = nullptr; }
     Document* ownerDocument() const;
     MediaQuerySet* mediaQueries() const { return m_mediaQueries.get(); }
-    void setMediaQueries(PassRefPtrWillBeRawPtr<MediaQuerySet>);
+    void setMediaQueries(std::unique_ptr<MediaQuerySet> &&);
     void setTitle(const String& title) { m_title = title; }
 #if 0 // BKTODO:
     // Set by LinkStyle iff CORS-enabled fetch of stylesheet succeeded from this origin.
@@ -151,11 +151,11 @@ private:
     bool m_isInlineStylesheet;
     bool m_isDisabled;
     String m_title;
-    RefPtrWillBeMember<MediaQuerySet> m_mediaQueries;
+    std::unique_ptr<MediaQuerySet> m_mediaQueries;
 
     // BKTODO: RefPtr<SecurityOrigin> m_allowRuleAccessFromOrigin;
 
-    RawPtrWillBeMember<Node> m_ownerNode;
+    BlinKit::GCMember<Node> m_ownerNode;
     RawPtrWillBeMember<CSSRule> m_ownerRule;
 
     TextPosition m_startPosition;

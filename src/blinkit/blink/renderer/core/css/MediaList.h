@@ -50,15 +50,15 @@ class ExceptionState;
 class MediaList;
 class MediaQuery;
 
-class CORE_EXPORT MediaQuerySet : public RefCountedWillBeGarbageCollected<MediaQuerySet> {
+class CORE_EXPORT MediaQuerySet {
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(MediaQuerySet);
 public:
-    static PassRefPtrWillBeRawPtr<MediaQuerySet> create()
+    static std::unique_ptr<MediaQuerySet> create()
     {
-        return adoptRefWillBeNoop(new MediaQuerySet());
+        return zed::wrap_unique(new MediaQuerySet());
     }
-    static PassRefPtrWillBeRawPtr<MediaQuerySet> create(const String& mediaString);
-    static PassRefPtrWillBeRawPtr<MediaQuerySet> createOffMainThread(const String& mediaString);
+    static std::unique_ptr<MediaQuerySet> create(const String& mediaString);
+    static std::unique_ptr<MediaQuerySet> createOffMainThread(const String& mediaString);
 
     bool set(const String&);
     bool add(const String&);

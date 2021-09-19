@@ -72,25 +72,28 @@ MediaQuerySet::MediaQuerySet(const MediaQuerySet& o)
 
 DEFINE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(MediaQuerySet);
 
-PassRefPtrWillBeRawPtr<MediaQuerySet> MediaQuerySet::create(const String& mediaString)
+std::unique_ptr<MediaQuerySet> MediaQuerySet::create(const String& mediaString)
 {
     if (mediaString.isEmpty())
         return MediaQuerySet::create();
 
-    return MediaQueryParser::parseMediaQuerySet(mediaString);
+    std::string s = mediaString.stdUtf8();
+    ASSERT(false); // BKTODO: return MediaQueryParser::parseMediaQuerySet(mediaString);
+    return nullptr;
 }
 
-PassRefPtrWillBeRawPtr<MediaQuerySet> MediaQuerySet::createOffMainThread(const String& mediaString)
+std::unique_ptr<MediaQuerySet> MediaQuerySet::createOffMainThread(const String& mediaString)
 {
     if (mediaString.isEmpty())
         return MediaQuerySet::create();
 
-    return MediaQueryParser::parseMediaQuerySet(mediaString);
+    ASSERT(false); // BKTODO: return MediaQueryParser::parseMediaQuerySet(mediaString);
+    return nullptr;
 }
 
 bool MediaQuerySet::set(const String& mediaString)
 {
-    RefPtrWillBeRawPtr<MediaQuerySet> result = create(mediaString);
+    std::unique_ptr<MediaQuerySet> result = create(mediaString);
     m_queries.swap(result->m_queries);
     return true;
 }
@@ -100,7 +103,7 @@ bool MediaQuerySet::add(const String& queryString)
     // To "parse a media query" for a given string means to follow "the parse
     // a media query list" steps and return "null" if more than one media query
     // is returned, or else the returned media query.
-    RefPtrWillBeRawPtr<MediaQuerySet> result = create(queryString);
+    std::unique_ptr<MediaQuerySet> result = create(queryString);
 
     // Only continue if exactly one media query is found, as described above.
     if (result->m_queries.size() != 1)
@@ -126,7 +129,7 @@ bool MediaQuerySet::remove(const String& queryStringToRemove)
     // To "parse a media query" for a given string means to follow "the parse
     // a media query list" steps and return "null" if more than one media query
     // is returned, or else the returned media query.
-    RefPtrWillBeRawPtr<MediaQuerySet> result = create(queryStringToRemove);
+    std::unique_ptr<MediaQuerySet> result = create(queryStringToRemove);
 
     // Only continue if exactly one media query is found, as described above.
     if (result->m_queries.size() != 1)
