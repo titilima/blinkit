@@ -1243,6 +1243,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\PlatformKeyboardEvent.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\PlatformResourceLoader.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\Prerender.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scheduler\cancellable_task_factory.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\ScriptForbiddenScope.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ProgrammaticScrollAnimator.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollableArea.cpp" />
@@ -1473,12 +1474,14 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSFontSelector.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSPrimitiveValueMappings.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSRule.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSSelectorList.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSStyleSheet.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSValueList.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSValuePool.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\FontFace.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\FontFaceDescriptors.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\FontFaceSetLoadEventInit.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\MediaList.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\MediaQueryEvaluator.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\MediaQueryListEventInit.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\MediaValues.h" />
@@ -1489,6 +1492,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSPropertyParser.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\ScopedStyleResolver.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\SharedStyleFinder.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleBuilder.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleResolver.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleResolverParentScope.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleResolverStats.h" />
@@ -1520,6 +1524,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\Node.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptRunner.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\StyleEngine.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\TreeScope.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\EventNames.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\AnimationEventInit.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\AnimationPlayerEventInit.h" />
@@ -1527,6 +1532,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventInit.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventListenerOptions.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventModifierInit.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventPath.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventTarget.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\FocusEventInit.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\KeyboardEventInit.h" />
@@ -1607,6 +1613,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\network\ResourceRequest.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PlatformInstrumentation.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\RuntimeEnabledFeatures.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scheduler\cancellable_task_factory.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollableArea.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollAnimator.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollAnimatorBase.h" />
@@ -1709,11 +1716,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\html.css" />
-    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\quirks.css" />
-    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\themeInputMultipleFields.css" />
-    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\themeWin.css" />
-    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\themeWinQuirks.css" />
+    <None Include="..\..\..\src\blinkit\blink\renderer\core\css\html.css" />
+    <None Include="..\..\..\src\blinkit\blink\renderer\core\css\quirks.css" />
+    <None Include="..\..\..\src\blinkit\blink\renderer\core\css\themeInputMultipleFields.css" />
+    <None Include="..\..\..\src\blinkit\blink\renderer\core\css\themeWin.css" />
+    <None Include="..\..\..\src\blinkit\blink\renderer\core\css\themeWinQuirks.css" />
     <None Include="BlinKit.def" />
   </ItemGroup>
   <ItemGroup>

@@ -295,6 +295,9 @@
     <Filter Include="stub\icu">
       <UniqueIdentifier>{9b798fbe-4cd8-4964-b4b7-6f524b24655f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="blink\renderer\platform\scheduler">
+      <UniqueIdentifier>{e07fe00c-73ca-4bbb-a2f8-d1dc0c2d749a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -4026,6 +4029,9 @@
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_cleanup_visitor.cpp">
       <Filter>gc</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scheduler\cancellable_task_factory.cpp">
+      <Filter>blink\renderer\platform\scheduler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -4838,24 +4844,42 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\FrameRequestCallbackCollection.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\MediaList.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleBuilder.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scheduler\cancellable_task_factory.h">
+      <Filter>blink\renderer\platform\scheduler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\TreeScope.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventPath.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSSelectorList.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BlinKit.def">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\html.css">
+    <None Include="..\..\..\src\blinkit\blink\renderer\core\css\html.css">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\themeInputMultipleFields.css">
+    <None Include="..\..\..\src\blinkit\blink\renderer\core\css\quirks.css">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\themeWin.css">
+    <None Include="..\..\..\src\blinkit\blink\renderer\core\css\themeInputMultipleFields.css">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\quirks.css">
+    <None Include="..\..\..\src\blinkit\blink\renderer\core\css\themeWin.css">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\themeWinQuirks.css">
+    <None Include="..\..\..\src\blinkit\blink\renderer\core\css\themeWinQuirks.css">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
