@@ -42,6 +42,7 @@
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
 #include "bindings/core/v8/ScriptController.h"
 #include "blinkit/blink/public/platform/WebThread.h"
+#include "blinkit/blink/renderer/platform/scheduler/cancellable_task_factory.h"
 #include "core/HTMLElementFactory.h"
 #include "core/HTMLNames.h"
 // BKTODO: #include "core/SVGElementFactory.h"
@@ -224,7 +225,6 @@
 #include "platform/TraceEvent.h"
 // BKTODO: #include "platform/network/ContentSecurityPolicyParsers.h"
 #include "platform/network/HTTPParsers.h"
-// BKTODO: #include "platform/scheduler/CancellableTaskFactory.h"
 #include "platform/scroll/ScrollbarTheme.h"
 #include "platform/text/PlatformLocale.h"
 #include "platform/text/SegmentedString.h"
@@ -425,7 +425,7 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_paginatedForScreen(false)
     , m_compatibilityMode(NoQuirksMode)
     , m_compatibilityModeLocked(false)
-    // BKTODO: , m_executeScriptsWaitingForResourcesTask(CancellableTaskFactory::create(this, &Document::executeScriptsWaitingForResources))
+    , m_executeScriptsWaitingForResourcesTask(CancellableTaskFactory::create(this, &Document::executeScriptsWaitingForResources))
     , m_hasAutofocused(false)
     , m_clearFocusedElementTimer(this, &Document::clearFocusedElementTimerFired)
     , m_domTreeVersion(++s_globalTreeVersion)
@@ -3200,13 +3200,12 @@ void Document::didRemoveAllPendingStylesheet()
 
 void Document::didLoadAllScriptBlockingResources()
 {
-    ASSERT(false); // BKTODO:
-#if 0
     loadingTaskRunner()->postTask(BLINK_FROM_HERE, m_executeScriptsWaitingForResourcesTask->cancelAndCreate());
 
     if (frame())
         frame()->loader().client()->didRemoveAllPendingStylesheet();
 
+#if 0 // BKTODO:
     if (m_gotoAnchorNeededAfterStylesheetsLoad && view())
         view()->processUrlFragment(m_url);
 #endif

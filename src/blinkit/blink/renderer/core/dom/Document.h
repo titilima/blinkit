@@ -1266,7 +1266,7 @@ private:
     CompatibilityMode m_compatibilityMode;
     bool m_compatibilityModeLocked; // This is cheaper than making setCompatibilityMode virtual.
 
-    // BKTODO: OwnPtr<CancellableTaskFactory> m_executeScriptsWaitingForResourcesTask;
+    std::unique_ptr<CancellableTaskFactory> m_executeScriptsWaitingForResourcesTask;
 
     bool m_hasAutofocused;
     Timer<Document> m_clearFocusedElementTimer;
