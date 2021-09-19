@@ -53,16 +53,16 @@ class StyleSheetContents;
 class ViewportStyleResolver;
 
 // This class selects a ComputedStyle for a given element based on a collection of stylesheets.
-class ScopedStyleResolver final : public NoBaseWillBeGarbageCollected<ScopedStyleResolver> {
+class ScopedStyleResolver final {
     WTF_MAKE_NONCOPYABLE(ScopedStyleResolver);
     USING_FAST_MALLOC_WILL_BE_REMOVED(ScopedStyleResolver);
 public:
-    static PassOwnPtrWillBeRawPtr<ScopedStyleResolver> create(TreeScope& scope)
+    static GCUniqueRoot<ScopedStyleResolver> create(TreeScope& scope)
     {
-        return adoptPtrWillBeNoop(new ScopedStyleResolver(scope));
+        return BlinKit::WrapUniqueRoot(new ScopedStyleResolver(scope));
     }
 
-    const TreeScope& treeScope() const { return *m_scope; }
+    const TreeScope& treeScope() const { return m_scope; }
     ScopedStyleResolver* parent() const;
 
     StyleRuleKeyframes* keyframeStylesForAnimation(const StringImpl* animationName);
@@ -72,7 +72,7 @@ public:
     void collectMatchingShadowHostRules(ElementRuleCollector&, CascadeOrder = ignoreCascadeOrder);
     void collectMatchingTreeBoundaryCrossingRules(ElementRuleCollector&, CascadeOrder);
     void matchPageRules(PageRuleCollector&);
-    void collectFeaturesTo(RuleFeatureSet&, WillBeHeapHashSet<RawPtrWillBeMember<const StyleSheetContents>>& visitedSharedStyleSheetContents) const;
+    void collectFeaturesTo(RuleFeatureSet&, std::unordered_set<const StyleSheetContents *>& visitedSharedStyleSheetContents) const;
     void resetAuthorStyle();
     void collectViewportRulesTo(ViewportStyleResolver*) const;
     bool hasDeepOrShadowSelector() const { return m_hasDeepOrShadowSelector; }
@@ -90,9 +90,9 @@ private:
     void addFontFaceRules(const RuleSet&);
     void addKeyframeStyle(PassRefPtrWillBeRawPtr<StyleRuleKeyframes>);
 
-    RawPtrWillBeMember<TreeScope> m_scope;
+    TreeScope &m_scope;
 
-    WillBeHeapVector<RawPtrWillBeMember<CSSStyleSheet>> m_authorStyleSheets;
+    std::vector<BlinKit::GCMember<CSSStyleSheet>> m_authorStyleSheets;
 
     using KeyframesRuleMap = WillBeHeapHashMap<const StringImpl*, RefPtrWillBeMember<StyleRuleKeyframes>>;
     KeyframesRuleMap m_keyframesRuleMap;

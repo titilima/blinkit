@@ -93,12 +93,14 @@ void ScopedStyleResolver::addFontFaceRules(const RuleSet& ruleSet)
 
 void ScopedStyleResolver::appendCSSStyleSheet(CSSStyleSheet& cssSheet, const MediaQueryEvaluator& medium)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     unsigned index = m_authorStyleSheets.size();
-    m_authorStyleSheets.append(&cssSheet);
+    m_authorStyleSheets.emplace_back(&cssSheet);
     StyleSheetContents* sheet = cssSheet.contents();
+#if 0 // BKTODO: Check the original logic later.
     AddRuleFlags addRuleFlags = treeScope().document().securityOrigin()->canRequest(sheet->baseURL()) ? RuleHasDocumentSecurityOrigin : RuleHasNoSpecialState;
+#else
+    AddRuleFlags addRuleFlags = RuleHasDocumentSecurityOrigin;
+#endif
     const RuleSet& ruleSet = sheet->ensureRuleSet(medium, addRuleFlags);
 
     addKeyframeRules(ruleSet);
@@ -106,18 +108,21 @@ void ScopedStyleResolver::appendCSSStyleSheet(CSSStyleSheet& cssSheet, const Med
     addTreeBoundaryCrossingRules(ruleSet, &cssSheet, index);
     treeScope().document().styleResolver()->addViewportDependentMediaQueries(ruleSet.viewportDependentMediaQueryResults());
     treeScope().document().styleResolver()->addDeviceDependentMediaQueries(ruleSet.deviceDependentMediaQueryResults());
-#endif
 }
 
-void ScopedStyleResolver::collectFeaturesTo(RuleFeatureSet& features, WillBeHeapHashSet<RawPtrWillBeMember<const StyleSheetContents>>& visitedSharedStyleSheetContents) const
+void ScopedStyleResolver::collectFeaturesTo(RuleFeatureSet& features, std::unordered_set<const StyleSheetContents *>& visitedSharedStyleSheetContents) const
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    for (size_t i = 0; i < m_authorStyleSheets.size(); ++i) {
+    for (size_t i = 0; i < m_authorStyleSheets.size(); ++i)
+    {
         ASSERT(m_authorStyleSheets[i]->ownerNode());
         StyleSheetContents* contents = m_authorStyleSheets[i]->contents();
-        if (contents->hasOneClient() || visitedSharedStyleSheetContents.add(contents).isNewEntry)
-            features.add(contents->ruleSet().features());
+        if (!contents->hasOneClient())
+        {
+            if (zed::key_exists(visitedSharedStyleSheetContents, contents))
+                continue;
+            visitedSharedStyleSheetContents.emplace(contents);
+        }
+        features.add(contents->ruleSet().features());
     }
 
     if (!m_treeBoundaryCrossingRuleSet)
@@ -125,7 +130,6 @@ void ScopedStyleResolver::collectFeaturesTo(RuleFeatureSet& features, WillBeHeap
 
     for (const auto& rules : *m_treeBoundaryCrossingRuleSet)
         features.add(rules->m_ruleSet->features());
-#endif
 }
 
 void ScopedStyleResolver::resetAuthorStyle()
@@ -167,7 +171,7 @@ void ScopedStyleResolver::collectMatchingAuthorRules(ElementRuleCollector& colle
 {
     for (size_t i = 0; i < m_authorStyleSheets.size(); ++i) {
         ASSERT(m_authorStyleSheets[i]->ownerNode());
-        MatchRequest matchRequest(&m_authorStyleSheets[i]->contents()->ruleSet(), &m_scope->rootNode(), m_authorStyleSheets[i], i);
+        MatchRequest matchRequest(&m_authorStyleSheets[i]->contents()->ruleSet(), &m_scope.rootNode(), m_authorStyleSheets[i].get(), i);
         collector.collectMatchingRules(matchRequest, cascadeOrder);
     }
 }
@@ -176,7 +180,7 @@ void ScopedStyleResolver::collectMatchingShadowHostRules(ElementRuleCollector& c
 {
     for (size_t i = 0; i < m_authorStyleSheets.size(); ++i) {
         ASSERT(m_authorStyleSheets[i]->ownerNode());
-        MatchRequest matchRequest(&m_authorStyleSheets[i]->contents()->ruleSet(), &m_scope->rootNode(), m_authorStyleSheets[i], i);
+        MatchRequest matchRequest(&m_authorStyleSheets[i]->contents()->ruleSet(), &m_scope.rootNode(), m_authorStyleSheets[i].get(), i);
         collector.collectMatchingShadowHostRules(matchRequest, cascadeOrder);
     }
 }
@@ -192,14 +196,14 @@ void ScopedStyleResolver::collectMatchingTreeBoundaryCrossingRules(ElementRuleCo
 void ScopedStyleResolver::matchPageRules(PageRuleCollector& collector)
 {
     // Only consider the global author RuleSet for @page rules, as per the HTML5 spec.
-    ASSERT(m_scope->rootNode().isDocumentNode());
+    ASSERT(m_scope.rootNode().isDocumentNode());
     for (size_t i = 0; i < m_authorStyleSheets.size(); ++i)
         collector.matchPageRules(&m_authorStyleSheets[i]->contents()->ruleSet());
 }
 
 void ScopedStyleResolver::collectViewportRulesTo(ViewportStyleResolver* resolver) const
 {
-    if (!m_scope->rootNode().isDocumentNode())
+    if (!m_scope.rootNode().isDocumentNode())
         return;
     for (size_t i = 0; i < m_authorStyleSheets.size(); ++i)
         resolver->collectViewportRules(&m_authorStyleSheets[i]->contents()->ruleSet(), ViewportStyleResolver::AuthorOrigin);
@@ -208,7 +212,7 @@ void ScopedStyleResolver::collectViewportRulesTo(ViewportStyleResolver* resolver
 DEFINE_TRACE(ScopedStyleResolver)
 {
 #if ENABLE(OILPAN)
-    visitor->trace(m_scope);
+    // BKTODO: visitor->trace(m_scope);
     visitor->trace(m_authorStyleSheets);
     visitor->trace(m_keyframesRuleMap);
     visitor->trace(m_treeBoundaryCrossingRuleSet);
