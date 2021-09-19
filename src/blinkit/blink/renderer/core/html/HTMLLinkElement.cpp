@@ -758,10 +758,13 @@ void LinkStyle::process()
         bool mediaQueryMatches = true;
         LocalFrame* frame = loadingFrame();
         if (!m_owner->media().isEmpty() && frame && frame->document()) {
+            ASSERT(false); // BKTODO:
+#if 0
             RefPtr<ComputedStyle> documentStyle = StyleResolver::styleForDocument(*frame->document());
             RefPtrWillBeRawPtr<MediaQuerySet> media = MediaQuerySet::create(m_owner->media());
             MediaQueryEvaluator evaluator(frame);
             mediaQueryMatches = evaluator.eval(media.get());
+#endif
         }
 
         // Don't hold up layout tree construction and script execution on stylesheets

@@ -244,7 +244,7 @@ void ProcessingInstruction::setCSSStyleSheet(const String& href, const KURL& bas
     GCMember<CSSStyleSheet> cssSheet = CSSStyleSheet::create(newSheet.release(), this);
     cssSheet->setDisabled(m_alternate);
     cssSheet->setTitle(m_title);
-    cssSheet->setMediaQueries(MediaQuerySet::create(m_media));
+    ASSERT(false); // BKTODO: cssSheet->setMediaQueries(MediaQuerySet::create(m_media));
 
     m_sheet = cssSheet.release();
 

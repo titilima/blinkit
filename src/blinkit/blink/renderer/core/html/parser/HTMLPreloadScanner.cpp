@@ -120,9 +120,13 @@ static String initiatorFor(const StringImpl* tagImpl)
 
 static bool mediaAttributeMatches(const MediaValues& mediaValues, const String& attributeValue)
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     RefPtrWillBeRawPtr<MediaQuerySet> mediaQueries = MediaQuerySet::createOffMainThread(attributeValue);
     MediaQueryEvaluator mediaQueryEvaluator(mediaValues);
     return mediaQueryEvaluator.eval(mediaQueries.get());
+#endif
 }
 
 #if 0 // BKTODO:

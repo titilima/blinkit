@@ -110,6 +110,19 @@ void WebViewImpl::didChangeContentsSize(void)
     GetPageScaleConstraintsSet().didChangeContentsSize(ContentsSize(), PageScaleFactor());
 }
 
+void WebViewImpl::didRemoveAllPendingStylesheet(void)
+{
+    Document *document = m_frame->document();
+
+    ASSERT(document->isHTMLDocument());
+    // For HTML if we have no more stylesheets to load and we're past the body
+    // tag, we should have something to paint so resume.
+    if (nullptr == document->body())
+        return;
+
+    ResumeTreeViewCommitsIfRenderingReady();
+}
+
 void WebViewImpl::DidUpdateTopControls(void)
 {
 #if 0 // BKTODO:
@@ -487,6 +500,21 @@ void WebViewImpl::ResizeWithBrowserControls(
     SendResizeEventAndRepaint();
 }
 #endif
+
+void WebViewImpl::ResumeTreeViewCommitsIfRenderingReady(void)
+{
+#if 0 // BKTODO:
+    LocalFrame* frame = mainFrameImpl()->frame();
+    if (!frame->loader().stateMachine()->committedFirstRealDocumentLoad())
+        return;
+    if (!frame->document()->isRenderingReady())
+        return;
+    if (m_layerTreeView) {
+        m_layerTreeView->setDeferCommits(false);
+        m_layerTreeView->setNeedsBeginFrame();
+    }
+#endif
+}
 
 void WebViewImpl::scheduleAnimation(void)
 {

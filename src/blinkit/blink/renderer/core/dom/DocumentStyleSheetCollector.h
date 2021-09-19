@@ -51,7 +51,7 @@ public:
     DocumentStyleSheetCollector(std::vector<BlinKit::GCMember<StyleSheet>>& sheetsForList, std::vector<BlinKit::GCMember<CSSStyleSheet>>& activeList, std::unordered_set<Document *>&);
     ~DocumentStyleSheetCollector();
 
-    void appendActiveStyleSheets(const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>&);
+    void appendActiveStyleSheets(const std::vector<BlinKit::GCMember<CSSStyleSheet>>&);
     void appendActiveStyleSheet(CSSStyleSheet*);
     void appendSheetForList(StyleSheet*);
 
@@ -60,7 +60,7 @@ public:
 
 private:
     std::vector<BlinKit::GCMember<StyleSheet>>& m_styleSheetsForStyleSheetList;
-    std::vector<BlinKit::GCMember<CSSStyleSheet>>& m_activeAuthorStyleSheets;
+    std::vector<BlinKit::GCMember<CSSStyleSheet>>& m_activeAuthorStyleSheets; // BKTODO: Check if necessary.
     std::unordered_set<Document *>& m_visitedDocuments;
 };
 

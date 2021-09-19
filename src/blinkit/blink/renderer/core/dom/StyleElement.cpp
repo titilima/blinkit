@@ -47,6 +47,8 @@
 #include "platform/TraceEvent.h"
 #include "wtf/text/StringBuilder.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 static bool isCSS(Element* element, const AtomicString& type)
@@ -163,7 +165,8 @@ void StyleElement::clearSheet(Element* ownerElement)
     if (ownerElement && m_sheet->isLoading())
         ownerElement->document().styleEngine().removePendingSheet(ownerElement);
 
-    m_sheet.release()->clearOwnerNode();
+    GCMember<CSSStyleSheet> sheet = m_sheet.release();
+    sheet->clearOwnerNode();
 }
 
 static bool shouldBypassMainWorldCSP(Element* element)
@@ -187,30 +190,31 @@ StyleElement::ProcessingResult StyleElement::createSheet(Element* e, const Strin
     ASSERT(e->inDocument());
     Document& document = e->document();
 
-    ASSERT(false); // BKTODO:
-    return ProcessingFatalError;
-#if 0
+#if 0 // BKTODO:
     const ContentSecurityPolicy* csp = document.contentSecurityPolicy();
     bool passesContentSecurityPolicyChecks = shouldBypassMainWorldCSP(e)
         || csp->allowStyleWithHash(text)
         || csp->allowStyleWithNonce(e->fastGetAttribute(HTMLNames::nonceAttr))
         || csp->allowInlineStyle(e->document().url(), m_startPosition.m_line, text);
+#else
+    constexpr bool passesContentSecurityPolicyChecks = true;
+#endif
 
     // Clearing the current sheet may remove the cache entry so create the new sheet first
-    RefPtrWillBeRawPtr<CSSStyleSheet> newSheet = nullptr;
+    GCMember<CSSStyleSheet> newSheet;
 
     // If type is empty or CSS, this is a CSS style sheet.
     const AtomicString& type = this->type();
     if (isCSS(e, type) && passesContentSecurityPolicyChecks) {
-        RefPtrWillBeRawPtr<MediaQuerySet> mediaQueries = MediaQuerySet::create(media());
+        std::unique_ptr<MediaQuerySet> mediaQueries = MediaQuerySet::create(media());
 
         MediaQueryEvaluator screenEval("screen", true);
-        MediaQueryEvaluator printEval("print", true);
-        if (screenEval.eval(mediaQueries.get()) || printEval.eval(mediaQueries.get())) {
+        // BKTODO: MediaQueryEvaluator printEval("print", true);
+        if (screenEval.eval(mediaQueries.get())) { // BKTODO: || printEval.eval(mediaQueries.get())) {
             m_loading = true;
             TextPosition startPosition = m_startPosition == TextPosition::belowRangePosition() ? TextPosition::minimumPosition() : m_startPosition;
             newSheet = document.styleEngine().createSheet(e, text, startPosition);
-            newSheet->setMediaQueries(mediaQueries.release());
+            newSheet->setMediaQueries(std::move(mediaQueries));
             m_loading = false;
         }
     }
@@ -223,7 +227,6 @@ StyleElement::ProcessingResult StyleElement::createSheet(Element* e, const Strin
         m_sheet->contents()->checkLoaded();
 
     return passesContentSecurityPolicyChecks ? ProcessingSuccessful : ProcessingFatalError;
-#endif
 }
 
 bool StyleElement::isLoading() const

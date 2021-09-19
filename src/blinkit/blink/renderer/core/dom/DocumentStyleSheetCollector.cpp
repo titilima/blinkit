@@ -56,9 +56,9 @@ DocumentStyleSheetCollector::~DocumentStyleSheetCollector()
 {
 }
 
-void DocumentStyleSheetCollector::appendActiveStyleSheets(const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& sheets)
+void DocumentStyleSheetCollector::appendActiveStyleSheets(const std::vector<GCMember<CSSStyleSheet>>& sheets)
 {
-    ASSERT(false); // BKTODO: m_activeAuthorStyleSheets.appendVector(sheets);
+    ASSERT(sheets.empty()); // BKTODO: m_activeAuthorStyleSheets.appendVector(sheets);
 }
 
 void DocumentStyleSheetCollector::appendActiveStyleSheet(CSSStyleSheet* sheet)

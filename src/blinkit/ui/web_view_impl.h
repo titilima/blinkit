@@ -117,6 +117,7 @@ private:
     void PostLayoutResize(blink::LocalFrame *frame);
     void RefreshPageScaleFactorAfterLayout(void);
     void ResizeViewWhileAnchored(blink::FrameView *view);
+    void ResumeTreeViewCommitsIfRenderingReady(void);
 #if 0 // BKTODO:
     bool ShouldAutoResize(void) const { return m_shouldAutoResize; }
     void UpdateICBAndResizeViewport(void);
@@ -137,6 +138,7 @@ private:
     // FrameLoaderClient
     void transitionToCommittedForNewPage(void) final;
     void dispatchDidFinishLoad(void) final;
+    void didRemoveAllPendingStylesheet(void) final;
 #if 0 // BKTODO:
     // LocalFrameClient
     bool HasWebView(void) const final { return true; }

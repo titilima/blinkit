@@ -80,7 +80,7 @@ void HTMLStyleElement::parseAttribute(const QualifiedName& name, const AtomicStr
     if (name == titleAttr && m_sheet) {
         m_sheet->setTitle(value);
     } else if (name == mediaAttr && inDocument() && document().isActive() && m_sheet) {
-        m_sheet->setMediaQueries(MediaQuerySet::create(value));
+        ASSERT(false); // BKTODO: m_sheet->setMediaQueries(MediaQuerySet::create(value));
         document().modifiedStyleSheet(m_sheet.get());
     } else {
         HTMLElement::parseAttribute(name, oldValue, value);

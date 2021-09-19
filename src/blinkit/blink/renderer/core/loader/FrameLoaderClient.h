@@ -200,8 +200,10 @@ public:
 
     virtual void didChangeScrollOffset() { }
     virtual void didUpdateCurrentHistoryItem() { }
+#endif
     virtual void didRemoveAllPendingStylesheet() { }
 
+#if 0 // BKTODO:
     virtual bool allowScript(bool enabledPerSettings) { return enabledPerSettings; }
     virtual bool allowScriptFromSource(bool enabledPerSettings, const KURL&) { return enabledPerSettings; }
     virtual bool allowPlugins(bool enabledPerSettings) { return enabledPerSettings; }

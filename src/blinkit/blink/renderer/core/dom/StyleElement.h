@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleElement.h
+// Description: StyleElement Class
+//      Author: Ziming Li
+//     Created: 2021-09-16
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Rob Buis
  *
@@ -58,7 +69,7 @@ protected:
     ProcessingResult childrenChanged(Element*);
     ProcessingResult finishParsingChildren(Element*);
 
-    RefPtrWillBeMember<CSSStyleSheet> m_sheet;
+    BlinKit::GCMember<CSSStyleSheet> m_sheet;
 
 private:
     ProcessingResult createSheet(Element*, const String& text = String());
