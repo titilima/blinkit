@@ -53,12 +53,15 @@ StyleRuleImport::StyleRuleImport(const String& href, PassRefPtrWillBeRawPtr<Medi
     , m_parentStyleSheet(nullptr)
     , m_styleSheetClient(this)
     , m_strHref(href)
-    , m_mediaQueries(media)
+    // BKTODO: , m_mediaQueries(media)
     , m_resource(nullptr)
     , m_loading(false)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!m_mediaQueries)
         m_mediaQueries = MediaQuerySet::create(String());
+#endif
 }
 
 StyleRuleImport::~StyleRuleImport()

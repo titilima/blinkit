@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleMedia.cpp
+// Description: StyleMedia Class
+//      Author: Ziming Li
+//     Created: 2021-09-16
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All rights reserved.
  *
@@ -58,7 +69,7 @@ bool StyleMedia::matchMedium(const String& query) const
     if (!documentElement)
         return false;
 
-    RefPtrWillBeRawPtr<MediaQuerySet> media = MediaQuerySet::create();
+    std::unique_ptr<MediaQuerySet> media = MediaQuerySet::create();
     if (!media->set(query))
         return false;
 

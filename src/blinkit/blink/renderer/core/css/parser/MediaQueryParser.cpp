@@ -52,12 +52,15 @@ const MediaQueryParser::State MediaQueryParser::Done = &MediaQueryParser::done;
 
 MediaQueryParser::MediaQueryParser(ParserType parserType)
     : m_parserType(parserType)
-    , m_querySet(MediaQuerySet::create())
+    // BKTODO: , m_querySet(MediaQuerySet::create())
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (parserType == MediaQuerySetParser)
         m_state = &MediaQueryParser::readRestrictor;
     else // MediaConditionParser
         m_state = &MediaQueryParser::readMediaNot;
+#endif
 }
 
 MediaQueryParser::~MediaQueryParser() { }

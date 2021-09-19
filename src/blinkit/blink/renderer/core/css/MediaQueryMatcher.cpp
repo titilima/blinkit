@@ -94,8 +94,12 @@ PassRefPtrWillBeRawPtr<MediaQueryList> MediaQueryMatcher::matchMedia(const Strin
     if (!m_document)
         return nullptr;
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     RefPtrWillBeRawPtr<MediaQuerySet> media = MediaQuerySet::create(query);
     return MediaQueryList::create(m_document, this, media);
+#endif
 }
 
 void MediaQueryMatcher::addMediaQueryList(MediaQueryList* query)
