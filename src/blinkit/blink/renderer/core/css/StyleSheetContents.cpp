@@ -387,7 +387,7 @@ bool StyleSheetContents::loadCompleted() const
         return parentSheet->loadCompleted();
 
     StyleSheetContents* root = rootStyleSheet();
-    return root->m_loadingClients.isEmpty();
+    return root->m_loadingClients.empty();
 }
 
 void StyleSheetContents::checkLoaded()
@@ -407,7 +407,7 @@ void StyleSheetContents::checkLoaded()
     }
 
     ASSERT(this == rootStyleSheet());
-    if (m_loadingClients.isEmpty())
+    if (m_loadingClients.empty())
         return;
 
     // Avoid |CSSSStyleSheet| and |ownerNode| being deleted by scripts that run via
@@ -418,8 +418,7 @@ void StyleSheetContents::checkLoaded()
     // When a sheet is loaded it is moved from the set of loading clients
     // to the set of completed clients. We therefore need the copy in order to
     // not modify the set while iterating it.
-    WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>> loadingClients;
-    ASSERT(false); // BKTODO: copyToVector(m_loadingClients, loadingClients);
+    std::vector<CSSStyleSheet *> loadingClients(m_loadingClients.begin(), m_loadingClients.end());
 
     for (unsigned i = 0; i < loadingClients.size(); ++i) {
         if (loadingClients[i]->loadCompleted())
@@ -543,7 +542,7 @@ StyleSheetContents* StyleSheetContents::parentStyleSheet() const
 
 void StyleSheetContents::registerClient(CSSStyleSheet* sheet)
 {
-    ASSERT(!m_loadingClients.contains(sheet) && !m_completedClients.contains(sheet));
+    ASSERT(!zed::key_exists(m_loadingClients, sheet) && !zed::key_exists(m_completedClients, sheet));
 
     // InspectorCSSAgent::buildObjectForRule creates CSSStyleSheet without any owner node.
     if (!sheet->ownerDocument())
@@ -553,15 +552,15 @@ void StyleSheetContents::registerClient(CSSStyleSheet* sheet)
         if (sheet->ownerDocument() != document)
             m_hasSingleOwnerDocument = false;
     }
-    m_loadingClients.add(sheet);
+    m_loadingClients.emplace(sheet);
 }
 
 void StyleSheetContents::unregisterClient(CSSStyleSheet* sheet)
 {
-    m_loadingClients.remove(sheet);
-    m_completedClients.remove(sheet);
+    m_loadingClients.erase(sheet);
+    m_completedClients.erase(sheet);
 
-    if (!sheet->ownerDocument() || !m_loadingClients.isEmpty() || !m_completedClients.isEmpty())
+    if (!sheet->ownerDocument() || !m_loadingClients.empty() || !m_completedClients.empty())
         return;
 
     if (m_hasSingleOwnerDocument)
@@ -571,21 +570,21 @@ void StyleSheetContents::unregisterClient(CSSStyleSheet* sheet)
 
 void StyleSheetContents::clientLoadCompleted(CSSStyleSheet* sheet)
 {
-    ASSERT(m_loadingClients.contains(sheet) || !sheet->ownerDocument());
-    m_loadingClients.remove(sheet);
+    ASSERT(zed::key_exists(m_loadingClients, sheet) || !sheet->ownerDocument());
+    m_loadingClients.erase(sheet);
     // In m_ownerNode->sheetLoaded, the CSSStyleSheet might be detached.
     // (i.e. clearOwnerNode was invoked.)
     // In this case, we don't need to add the stylesheet to completed clients.
     if (!sheet->ownerDocument())
         return;
-    m_completedClients.add(sheet);
+    m_completedClients.emplace(sheet);
 }
 
 void StyleSheetContents::clientLoadStarted(CSSStyleSheet* sheet)
 {
-    ASSERT(m_completedClients.contains(sheet));
-    m_completedClients.remove(sheet);
-    m_loadingClients.add(sheet);
+    ASSERT(zed::key_exists(m_completedClients, sheet));
+    m_completedClients.erase(sheet);
+    m_loadingClients.emplace(sheet);
 }
 
 void StyleSheetContents::removeSheetFromCache(Document* document)
@@ -617,7 +616,7 @@ RuleSet& StyleSheetContents::ensureRuleSet(const MediaQueryEvaluator& medium, Ad
     return *m_ruleSet;
 }
 
-static void clearResolvers(WillBeHeapHashSet<RawPtrWillBeWeakMember<CSSStyleSheet>>& clients)
+static void clearResolvers(std::unordered_set<CSSStyleSheet *>& clients)
 {
     for (const auto& sheet : clients) {
         if (Document* document = sheet->ownerDocument())
@@ -643,7 +642,7 @@ void StyleSheetContents::clearRuleSet()
     m_ruleSet.clear();
 }
 
-static void removeFontFaceRules(WillBeHeapHashSet<RawPtrWillBeWeakMember<CSSStyleSheet>>& clients, const StyleRuleFontFace* fontFaceRule)
+static void removeFontFaceRules(std::unordered_set<CSSStyleSheet *>& clients, const StyleRuleFontFace* fontFaceRule)
 {
     for (const auto& sheet : clients) {
         if (Node* ownerNode = sheet->ownerNode())
@@ -697,8 +696,10 @@ DEFINE_TRACE(StyleSheetContents)
     visitor->trace(m_importRules);
     visitor->trace(m_namespaceRules);
     visitor->trace(m_childRules);
+#if 0 // BKTODO:
     visitor->trace(m_loadingClients);
     visitor->trace(m_completedClients);
+#endif
     visitor->trace(m_ruleSet);
 #endif
 }

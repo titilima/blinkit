@@ -201,8 +201,8 @@ private:
 
     CSSParserContext m_parserContext;
 
-    WillBeHeapHashSet<RawPtrWillBeWeakMember<CSSStyleSheet>> m_loadingClients;
-    WillBeHeapHashSet<RawPtrWillBeWeakMember<CSSStyleSheet>> m_completedClients;
+    std::unordered_set<CSSStyleSheet *> m_loadingClients;
+    std::unordered_set<CSSStyleSheet *> m_completedClients;
 
     BlinKit::GCMember<RuleSet> m_ruleSet;
     String m_sourceMapURL;
