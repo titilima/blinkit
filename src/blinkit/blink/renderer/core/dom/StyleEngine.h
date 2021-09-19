@@ -94,7 +94,7 @@ public:
 
     const std::vector<BlinKit::GCMember<StyleSheet>>& styleSheetsForStyleSheetList(TreeScope&);
 
-    const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>>& injectedAuthorStyleSheets() const { return m_injectedAuthorStyleSheets; }
+    const std::vector<BlinKit::GCMember<CSSStyleSheet>>& injectedAuthorStyleSheets() const { return m_injectedAuthorStyleSheets; }
 
     // BKTODO: const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>> activeStyleSheetsForInspector() const;
 
@@ -243,7 +243,7 @@ private:
     // elements and when it is safe to execute scripts.
     int m_pendingStylesheets;
 
-    WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>> m_injectedAuthorStyleSheets;
+    std::vector<BlinKit::GCMember<CSSStyleSheet>> m_injectedAuthorStyleSheets; // BKTODO: Check if necessary.
 
     BlinKit::GCUniqueRoot<DocumentStyleSheetCollection> m_documentStyleSheetCollection;
 

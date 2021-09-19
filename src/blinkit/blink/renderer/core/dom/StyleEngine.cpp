@@ -93,8 +93,7 @@ StyleEngine::~StyleEngine()
 
 static bool isStyleElement(Node& node)
 {
-    ASSERT(false); // BKTODO: return isHTMLStyleElement(node) || isSVGStyleElement(node);
-    return isHTMLStyleElement(node);
+    return isHTMLStyleElement(node); // BKTODO: || isSVGStyleElement(node);
 }
 
 #if !ENABLE(OILPAN)
@@ -604,7 +603,7 @@ void StyleEngine::removeSheet(StyleSheetContents* contents)
 
 void StyleEngine::collectScopedStyleFeaturesTo(RuleFeatureSet& features) const
 {
-    WillBeHeapHashSet<RawPtrWillBeMember<const StyleSheetContents>> visitedSharedStyleSheetContents;
+    std::unordered_set<const StyleSheetContents *> visitedSharedStyleSheetContents;
     if (document().scopedStyleResolver())
         document().scopedStyleResolver()->collectFeaturesTo(features, visitedSharedStyleSheetContents);
     for (TreeScope* treeScope : m_activeTreeScopes) {
