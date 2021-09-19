@@ -38,6 +38,7 @@
 #ifndef TreeScope_h
 #define TreeScope_h
 
+#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 #include "core/dom/DocumentOrderedMap.h"
 #include "core/layout/HitTestRequest.h"
@@ -203,7 +204,7 @@ private:
 
     BlinKit::GCMember<IdTargetObserverRegistry> m_idTargetObserverRegistry;
 
-    OwnPtrWillBeMember<ScopedStyleResolver> m_scopedStyleResolver;
+    BlinKit::GCUniqueRoot<ScopedStyleResolver> m_scopedStyleResolver;
 
     mutable RefPtrWillBeMember<DOMSelection> m_selection;
 };

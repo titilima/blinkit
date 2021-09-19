@@ -168,7 +168,7 @@ ScopedStyleResolver& TreeScope::ensureScopedStyleResolver()
 
 void TreeScope::clearScopedStyleResolver()
 {
-    m_scopedStyleResolver.clear();
+    m_scopedStyleResolver.reset();
 }
 
 Element* TreeScope::getElementById(const AtomicString& elementId) const
@@ -606,7 +606,8 @@ DEFINE_TRACE(TreeScope)
     visitor->trace(m_elementsById);
     visitor->trace(m_imageMapsByName);
     visitor->trace(m_labelsByForAttribute);
-    visitor->trace(m_scopedStyleResolver);
+    if (m_scopedStyleResolver)
+        m_scopedStyleResolver->trace(visitor);
 }
 
 } // namespace blink
