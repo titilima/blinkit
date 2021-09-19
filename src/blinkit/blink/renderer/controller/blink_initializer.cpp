@@ -16,6 +16,8 @@
 #include "blinkit/blink/renderer/core/EventTypeNames.h"
 #include "blinkit/blink/renderer/core/HTMLNames.h"
 #include "blinkit/blink/renderer/core/HTMLTokenizerNames.h"
+#include "blinkit/blink/renderer/core/css/CSSPrimitiveValue.h"
+#include "blinkit/blink/renderer/core/css/parser/CSSParserTokenRange.h"
 #include "blinkit/blink/renderer/platform/HTTPNames.h"
 #include "blinkit/blink/renderer/wtf/MainThread.h"
 #include "blinkit/blink/renderer/wtf/WTF.h"
@@ -51,6 +53,13 @@ static void InitializeCommon(Platform *platform)
     InputTypeNames::init();
     FontFamilyNames::init();
 #endif
+
+#ifdef BLINKIT_UI_ENABLED
+    CSSPrimitiveValue::initUnitTable();
+#endif
+    CSSParserTokenRange::initStaticEOFToken();
+
+    StringImpl::freezeStaticStrings();
 }
 
 static double CurrentTimeFunction(void)
