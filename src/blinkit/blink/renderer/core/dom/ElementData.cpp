@@ -177,7 +177,9 @@ ShareableElementData::ShareableElementData(const UniqueElementData& other)
 GCPassPtr<ShareableElementData> ShareableElementData::createWithAttributes(const Vector<Attribute>& attributes)
 {
 #if ENABLE(OILPAN)
-    void* slot = nullptr; // BKTODO: Heap::allocate<ElementData>(sizeForShareableElementDataWithAttributeCount(attributes.size()));
+    size_t cb = sizeForShareableElementDataWithAttributeCount(attributes.size());
+    void* slot = ::operator new(cb);
+    memset(slot, 0, cb);
 #else
     void* slot = WTF::Partitions::fastMalloc(sizeForShareableElementDataWithAttributeCount(attributes.size()), WTF_HEAP_PROFILER_TYPE_NAME(ShareableElementData));
 #endif
