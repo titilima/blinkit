@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMSettableTokenList.h
+// Description: DOMSettableTokenList Class
+//      Author: Ziming Li
+//     Created: 2021-09-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -53,9 +64,9 @@ class CORE_EXPORT DOMSettableTokenList
     DEFINE_WRAPPERTYPEINFO();
     USING_FAST_MALLOC_WILL_BE_REMOVED(DOMSettableTokenList);
 public:
-    static PassRefPtrWillBeRawPtr<DOMSettableTokenList> create(DOMSettableTokenListObserver* observer = nullptr)
+    static std::unique_ptr<DOMSettableTokenList> create(DOMSettableTokenListObserver* observer = nullptr)
     {
-        return adoptRefWillBeNoop(new DOMSettableTokenList(observer));
+        return zed::wrap_unique(new DOMSettableTokenList(observer));
     }
     ~DOMSettableTokenList() override;
 
@@ -73,7 +84,7 @@ public:
     const SpaceSplitString& tokens() const { return m_tokens; }
     void setObserver(DOMSettableTokenListObserver* observer) { m_observer = observer; }
 
-    DECLARE_VIRTUAL_TRACE();
+    // BKTODO: DECLARE_VIRTUAL_TRACE();
 
 protected:
     explicit DOMSettableTokenList(DOMSettableTokenListObserver*);
@@ -83,7 +94,7 @@ private:
 
     AtomicString m_value;
     SpaceSplitString m_tokens;
-    RawPtrWillBeWeakMember<DOMSettableTokenListObserver> m_observer;
+    DOMSettableTokenListObserver *m_observer;
 };
 
 } // namespace blink

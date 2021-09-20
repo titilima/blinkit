@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RelList.h
+// Description: RelList Class
+//      Author: Ziming Li
+//     Created: 2021-09-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -15,9 +26,9 @@ namespace blink {
 
 class RelList final : public DOMTokenList {
 public:
-    static PassOwnPtrWillBeRawPtr<RelList> create(Element* element)
+    static std::unique_ptr<RelList> create(Element* element)
     {
-        return adoptPtrWillBeNoop(new RelList(element));
+        return zed::wrap_unique(new RelList(element));
     }
 
 #if !ENABLE(OILPAN)
@@ -31,7 +42,7 @@ public:
     Element* element() override { return m_element; }
     void setRelValues(const AtomicString&);
 
-    DECLARE_VIRTUAL_TRACE();
+    // BKTODO: DECLARE_VIRTUAL_TRACE();
 
     using SupportedTokens = HashSet<AtomicString>;
 
@@ -45,7 +56,7 @@ private:
 
     bool validateTokenValue(const AtomicString&, ExceptionState&) const override;
 
-    RawPtrWillBeMember<Element> m_element;
+    Element *m_element;
     SpaceSplitString m_relValues;
 };
 

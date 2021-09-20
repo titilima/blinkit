@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMSettableTokenList.cpp
+// Description: DOMSettableTokenList Class
+//      Author: Ziming Li
+//     Created: 2021-09-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -39,11 +50,13 @@ DOMSettableTokenList::~DOMSettableTokenList()
 {
 }
 
+#if 0 // BKTODO:
 DEFINE_TRACE(DOMSettableTokenList)
 {
     visitor->trace(m_observer);
     DOMTokenList::trace(visitor);
 }
+#endif
 
 const AtomicString DOMSettableTokenList::item(unsigned index) const
 {
