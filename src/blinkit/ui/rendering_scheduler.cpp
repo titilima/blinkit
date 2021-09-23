@@ -77,15 +77,11 @@ RefPtr<RenderingScheduler> ScopedRenderingScheduler::GetRenderingScheduler(WebVi
         auto &allSchedulers = RenderingScheduler::m_allSchedulers;
 
         auto it = allSchedulers.find(view);
-        if (std::end(allSchedulers) == it)
-        {
-            ret = new RenderingScheduler(view);
-            allSchedulers[view] = ret;
-        }
-        else
-        {
-            ret = it->second;
-        }
+        if (std::end(allSchedulers) != it)
+            return it->second;
+
+        ret = new RenderingScheduler(view);
+        allSchedulers[view] = ret;
     }
     return adoptRef(ret);
 }
