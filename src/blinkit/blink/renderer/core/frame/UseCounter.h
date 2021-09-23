@@ -81,6 +81,7 @@ public:
         HTMLImportsAsyncAttribute,
         HTMLImportsHasStyleSheets,
         HTMLLabelElementFormContentAttribute,
+        HTMLLinkElementDisabled,
         InnerTextWithShadowTree,
         InputTypeColor,
         InputTypeDate,
