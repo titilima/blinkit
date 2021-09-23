@@ -16,6 +16,10 @@
 #include "blinkit/blink/renderer/wtf/text/WTFString.h"
 #include "third_party/zed/include/zed/net/url.hpp"
 
+namespace WTF {
+class TextEncoding;
+}
+
 namespace blink {
 
 class KURL final : public zed::url
@@ -25,6 +29,8 @@ public:
     KURL(const char *psz) : zed::url(psz) {}
     KURL(const std::string &s) : zed::url(s) {}
     KURL(const String &s) : zed::url(s.stdUtf8()) {}
+    KURL(const KURL &base, const String &relative);
+    KURL(const KURL &base, const String &relative, const WTF::TextEncoding &);
 
     bool isEmpty(void) const { return spec().empty(); }
     bool isValid(void) const { return is_valid(); }

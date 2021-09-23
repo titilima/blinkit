@@ -11,7 +11,20 @@
 
 #include "./KURL.h"
 
+#include "blinkit/blink/renderer/wtf/text/TextEncoding.h"
+
 namespace blink {
+
+KURL::KURL(const KURL &base, const String &relative)
+{
+    ASSERT(false); // BKTODO:
+}
+
+KURL::KURL(const KURL &base, const String &relative, const WTF::TextEncoding &encoding)
+    : zed::url(base.combine(relative.stdUtf8()))
+{
+    ASSERT(zed::strequ(encoding.name(), "UTF-8")); // BKTODO: Support other encodings?
+}
 
 std::string KURL::ExtractFileName(void) const
 {
@@ -23,7 +36,8 @@ std::string KURL::ExtractFileName(void) const
 String KURL::PartToString(const zed::url_parts::part& part) const
 {
     ASSERT(is_valid());
-    return String::fromUTF8(part.data(), part.length());
+    std::string_view scheme = piece_of(part);
+    return String::fromUTF8(scheme.data(), scheme.length());
 }
 
 const KURL& blankURL(void)
