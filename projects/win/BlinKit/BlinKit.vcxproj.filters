@@ -4032,6 +4032,9 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\scheduler\cancellable_task_factory.cpp">
       <Filter>blink\renderer\platform\scheduler</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\stub\icu\ubidi_props.cpp">
+      <Filter>stub\icu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -4792,9 +4795,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\imports\HTMLImportLoader.h">
       <Filter>blink\renderer\core\html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\stub\icu\uchar_props_data.h">
-      <Filter>stub\icu</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\ImageLoader.h">
       <Filter>blink\renderer\core\loader</Filter>

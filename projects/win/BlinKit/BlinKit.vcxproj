@@ -1384,6 +1384,7 @@
     <ClCompile Include="..\..\..\src\blinkit\loader\tasks\res_loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\tasks\res_loader_task_win.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\win_loader_thread.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\stub\icu\ubidi_props.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\stub\icu\uchar_props.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\EventNames.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\EventTargetNames.cpp" />
@@ -1676,7 +1677,6 @@
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\http_loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\res_loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\win_loader_thread.h" />
-    <ClInclude Include="..\..\..\src\blinkit\stub\icu\uchar_props_data.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\rendering_scheduler.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\web_view_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\win_web_view.h" />
