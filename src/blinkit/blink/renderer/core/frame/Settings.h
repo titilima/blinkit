@@ -66,10 +66,10 @@ public:
 
     static constexpr int availableHoverTypes(void) { return HoverTypeNone; }
     static constexpr int availablePointerTypes(void) { return PointerTypeNone; }
-    static constexpr int defaultFixedFontSize(void) { return 0; }
-    static constexpr int defaultFontSize(void) { return 0; }
-    static constexpr int minimumFontSize(void) { return 0; }
-    static constexpr int minimumLogicalFontSize(void) { return 0; }
+    static constexpr int defaultFixedFontSize(void) { return 16; }
+    static constexpr int defaultFontSize(void) { return 16; }
+    static constexpr int minimumFontSize(void) { return 10; }
+    static constexpr int minimumLogicalFontSize(void) { return 10; }
     static constexpr double passwordEchoDurationInSeconds(void) { return 1.0; }
 
     static constexpr WebDisplayMode displayModeOverride(void) { return WebDisplayModeUndefined; }

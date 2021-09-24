@@ -31,7 +31,6 @@ class RuntimeEnabledFeatures final
 {
     STATIC_ONLY(RuntimeEnabledFeatures);
 public:
-    BLINK_DEFINE_STABLE_FEATURE(alwaysUseComplexText);
     BLINK_DEFINE_STABLE_FEATURE(cssCompositing);
     BLINK_DEFINE_STABLE_FEATURE(cssVariables);
     BLINK_DEFINE_STABLE_FEATURE(eventListenerOptions);
@@ -72,6 +71,7 @@ public:
     BLINK_DEFINE_TEST_FEATURE(cssScrollSnapPoints);
     BLINK_DEFINE_TEST_FEATURE(imageOrientation);
 
+    BLINKIT_DISABLE_FEATURE(alwaysUseComplexText);
     BLINKIT_DISABLE_FEATURE(authorShadowDOMForAnyElement);
     BLINKIT_DISABLE_FEATURE(compositedSelectionUpdate);
     BLINKIT_DISABLE_FEATURE(compositorAnimationTimelines);
