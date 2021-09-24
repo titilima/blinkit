@@ -206,8 +206,10 @@ DEFINE_TRACE(CSSFontSelector)
 #if ENABLE(OILPAN)
     // BKTODO: visitor->trace(m_document);
     visitor->trace(m_fontFaceCache);
-    // BKTODO: visitor->trace(m_clients);
+#if 0 // BKTODO:
+    visitor->trace(m_clients);
     visitor->trace(m_fontLoader);
+#endif
 #endif
     FontSelector::trace(visitor);
 }

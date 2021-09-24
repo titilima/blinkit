@@ -107,7 +107,7 @@ private:
     FontFaceCache m_fontFaceCache;
     std::unordered_map<BlinKit::GCObject *, CSSFontSelectorClient *> m_clients;
 
-    BlinKit::GCMember<FontLoader> m_fontLoader;
+    std::unique_ptr<FontLoader> m_fontLoader;
     GenericFontFamilySettings m_genericFontFamilySettings;
 };
 

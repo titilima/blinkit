@@ -28,11 +28,11 @@ class CSSFontSelector;
 class Document;
 class FontResource;
 
-class FontLoader : public BlinKit::GCObject {
+class FontLoader {
 public:
-    static PassRefPtrWillBeRawPtr<FontLoader> create(CSSFontSelector* fontSelector, Document* document)
+    static std::unique_ptr<FontLoader> create(CSSFontSelector* fontSelector, Document* document)
     {
-        return adoptRefWillBeNoop(new FontLoader(fontSelector, document));
+        return zed::wrap_unique(new FontLoader(fontSelector, document));
     }
     ~FontLoader();
 
@@ -57,8 +57,8 @@ private:
     struct FontToLoad;
     using FontsToLoadVector = Vector<OwnPtr<FontToLoad>>;
     FontsToLoadVector m_fontsToBeginLoading;
-    BlinKit::GCMember<CSSFontSelector> m_fontSelector;
-    RawPtrWillBeWeakMember<Document> m_document;
+    CSSFontSelector *m_fontSelector;
+    Document *m_document;
 };
 
 } // namespace blink
