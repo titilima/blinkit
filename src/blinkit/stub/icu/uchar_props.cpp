@@ -15,7 +15,7 @@
 #include "chromium/third_party/icu/source/common/utrie2.h"
 
 #define INCLUDED_FROM_UCHAR_C
-#include "blinkit/stub/icu/uchar_props_data.h"
+#include "chromium/third_party/icu/source/common/uchar_props_data.h"
 
 #define GET_PROPS(c, result) ((result)=UTRIE2_GET16(&propsTrie, c));
 

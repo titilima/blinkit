@@ -416,7 +416,7 @@ DocumentMarkerVector DocumentMarkerController::markersFor(Node* node, DocumentMa
 {
     DocumentMarkerVector result;
 
-    ASSERT(false); // BKTODO:
+    ASSERT(m_markers.empty()); // BKTODO:
 #if 0
     MarkerLists* markers = m_markers.get(node);
     if (!markers)
