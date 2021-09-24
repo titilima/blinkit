@@ -52,7 +52,7 @@ namespace blink {
 class HTMLLinkElement;
 class LocalFrame;
 
-class LinkResource : public NoBaseWillBeGarbageCollectedFinalized<LinkResource>  {
+class LinkResource : public BlinKit::GCObject {
     WTF_MAKE_NONCOPYABLE(LinkResource); USING_FAST_MALLOC_WILL_BE_REMOVED(LinkResource);
 public:
     enum Type {
@@ -76,7 +76,7 @@ public:
     DECLARE_VIRTUAL_TRACE();
 
 protected:
-    RawPtrWillBeMember<HTMLLinkElement> m_owner;
+    HTMLLinkElement *m_owner;
 };
 
 class LinkRequestBuilder {
@@ -87,10 +87,10 @@ public:
     bool isValid() const { return !m_url.isEmpty() && m_url.isValid(); }
     const KURL& url() const { return m_url; }
     const AtomicString& charset() const { return m_charset; }
-    // BKTODO: FetchRequest build(bool blocking) const;
+    FetchRequest build(bool blocking) const;
 
 private:
-    RawPtrWillBeMember<HTMLLinkElement> m_owner;
+    HTMLLinkElement *m_owner;
     KURL m_url;
     AtomicString m_charset;
 };

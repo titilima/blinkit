@@ -41,6 +41,7 @@
 
 #include "core/html/LinkResource.h"
 
+#include "blinkit/ui/web_view_impl.h"
 #include "core/HTMLNames.h"
 #include "core/dom/Document.h"
 #include "core/html/HTMLLinkElement.h"
@@ -74,7 +75,7 @@ LocalFrame* LinkResource::loadingFrame() const
 
 DEFINE_TRACE(LinkResource)
 {
-    visitor->trace(m_owner);
+    // BKTODO: visitor->trace(m_owner);
 }
 
 LinkRequestBuilder::LinkRequestBuilder(HTMLLinkElement* owner)
@@ -86,12 +87,12 @@ LinkRequestBuilder::LinkRequestBuilder(HTMLLinkElement* owner)
         m_charset = m_owner->document().characterSet();
 }
 
-#if 0 // BKTODO:
 FetchRequest LinkRequestBuilder::build(bool blocking) const
 {
-    ResourceLoadPriority priority = blocking ? ResourceLoadPriorityUnresolved : ResourceLoadPriorityVeryLow;
-    return FetchRequest(ResourceRequest(m_owner->document().completeURL(m_url)), m_owner->localName(), m_charset, priority);
+    // BKTODO: ResourceLoadPriority priority = blocking ? ResourceLoadPriorityUnresolved : ResourceLoadPriorityVeryLow;
+    ResourceRequest resourceRequest(m_owner->document().completeURL(m_url.string()));
+    resourceRequest.SetView(WebViewImpl::From(m_owner->document()));
+    return FetchRequest(resourceRequest, m_owner->localName(), m_charset);
 }
-#endif
 
 } // namespace blink
