@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSStyleSheetResource.h
+// Description: CSSStyleSheetResource Class
+//      Author: Ziming Li
+//     Created: 2021-09-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller <mueller@kde.org>
@@ -82,7 +93,7 @@ private:
 
     String m_decodedSheetText;
 
-    RefPtrWillBeMember<StyleSheetContents> m_parsedStyleSheetCache;
+    BlinKit::GCMember<StyleSheetContents> m_parsedStyleSheetCache;
 };
 
 DEFINE_RESOURCE_TYPE_CASTS(CSSStyleSheet);
