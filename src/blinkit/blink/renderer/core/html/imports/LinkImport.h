@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LinkImport.h
+// Description: LinkImport Class
+//      Author: Ziming Li
+//     Created: 2021-09-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -50,7 +61,7 @@ class LinkImport final : public LinkResource, public HTMLImportChildClient {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(LinkImport);
 public:
 
-    static PassOwnPtrWillBeRawPtr<LinkImport> create(HTMLLinkElement* owner);
+    static GCPassPtr<LinkImport> create(HTMLLinkElement* owner);
 
     explicit LinkImport(HTMLLinkElement* owner);
     ~LinkImport() override;

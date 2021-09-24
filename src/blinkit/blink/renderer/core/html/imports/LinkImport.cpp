@@ -48,11 +48,13 @@
 #include "core/html/imports/HTMLImportTreeRoot.h"
 #include "core/html/imports/HTMLImportsController.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-PassOwnPtrWillBeRawPtr<LinkImport> LinkImport::create(HTMLLinkElement* owner)
+GCPassPtr<LinkImport> LinkImport::create(HTMLLinkElement* owner)
 {
-    return adoptPtrWillBeNoop(new LinkImport(owner));
+    return WrapLeaked(new LinkImport(owner));
 }
 
 LinkImport::LinkImport(HTMLLinkElement* owner)
