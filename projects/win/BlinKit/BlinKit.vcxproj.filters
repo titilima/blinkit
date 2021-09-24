@@ -4862,6 +4862,15 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSSelectorList.h">
       <Filter>blink\renderer\core\css</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\LinkLoader.h">
+      <Filter>blink\renderer\core\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\RelList.h">
+      <Filter>blink\renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\FontLoader.h">
+      <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BlinKit.def">

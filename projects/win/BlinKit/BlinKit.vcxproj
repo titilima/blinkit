@@ -1481,6 +1481,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\FontFace.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\FontFaceDescriptors.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\FontFaceSetLoadEventInit.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\FontLoader.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\MediaList.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\MediaQueryEvaluator.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\MediaQueryListEventInit.h" />
@@ -1577,6 +1578,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLParserScheduler.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLScriptRunner.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLTreeBuilder.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\RelList.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\input\InputDeviceCapabilitiesInit.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\inspector\InspectorInstrumentation.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\inspector\InspectorTraceEvents.h" />
@@ -1589,6 +1591,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\FrameLoaderClient.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\FrameLoadRequest.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\ImageLoader.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\LinkLoader.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\LinkLoaderClient.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\Page.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintLayer.h" />
