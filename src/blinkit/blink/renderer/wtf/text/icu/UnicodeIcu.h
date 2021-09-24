@@ -229,8 +229,7 @@ inline CharCategory category(UChar32 c)
 
 inline Direction direction(UChar32 c)
 {
-    ASSERT(false); // BKTODO: return static_cast<Direction>(u_charDirection(c));
-    return LeftToRight;
+    return static_cast<Direction>(u_charDirection(c));
 }
 
 inline bool isLower(UChar32 c)
