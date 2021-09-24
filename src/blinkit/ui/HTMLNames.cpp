@@ -217,26 +217,27 @@ const QualifiedName& scopeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[
 const QualifiedName& selectAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[81];
 const QualifiedName& selectedAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[82];
 const QualifiedName& sizeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[83];
-const QualifiedName& slotAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[84];
-const QualifiedName& spanAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[85];
-const QualifiedName& srcAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[86];
-const QualifiedName& srcsetAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[87];
-const QualifiedName& startAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[88];
-const QualifiedName& stepAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[89];
-const QualifiedName& styleAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[90];
-const QualifiedName& summaryAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[91];
-const QualifiedName& tabindexAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[92];
-const QualifiedName& targetAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[93];
-const QualifiedName& textAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[94];
-const QualifiedName& titleAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[95];
-const QualifiedName& topmarginAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[96];
-const QualifiedName& typeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[97];
-const QualifiedName& valignAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[98];
-const QualifiedName& valueAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[99];
-const QualifiedName& vlinkAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[100];
-const QualifiedName& vspaceAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[101];
-const QualifiedName& widthAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[102];
-const QualifiedName& wrapAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[103];
+const QualifiedName& sizesAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[84];
+const QualifiedName& slotAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[85];
+const QualifiedName& spanAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[86];
+const QualifiedName& srcAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[87];
+const QualifiedName& srcsetAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[88];
+const QualifiedName& startAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[89];
+const QualifiedName& stepAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[90];
+const QualifiedName& styleAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[91];
+const QualifiedName& summaryAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[92];
+const QualifiedName& tabindexAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[93];
+const QualifiedName& targetAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[94];
+const QualifiedName& textAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[95];
+const QualifiedName& titleAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[96];
+const QualifiedName& topmarginAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[97];
+const QualifiedName& typeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[98];
+const QualifiedName& valignAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[99];
+const QualifiedName& valueAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[100];
+const QualifiedName& vlinkAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[101];
+const QualifiedName& vspaceAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[102];
+const QualifiedName& widthAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[103];
+const QualifiedName& wrapAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[104];
 
 
 
@@ -411,6 +412,7 @@ void init()
         { "selected", 15762609, 8, 0, 1 },
         { "shadow", 1972219, 6, 1, 0 },
         { "size", 12715024, 4, 0, 1 },
+        { "sizes", 6795010, 5, 0, 1 },
         { "slot", 8744197, 4, 1, 1 },
         { "small", 14362904, 5, 1, 0 },
         { "span", 11168892, 4, 1, 1 },
