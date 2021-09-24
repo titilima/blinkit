@@ -228,7 +228,6 @@ static void preloadIfNeeded(const LinkRelAttribute& relAttribute, const KURL& hr
         document.loader()->startPreload(type, linkRequest);
     }
 }
-#endif
 
 bool LinkLoader::loadLinkFromHeader(const String& headerValue, Document* document, const NetworkHintsInterface& networkHintsInterface, CanLoadResources canLoadResources)
 {
@@ -258,12 +257,13 @@ bool LinkLoader::loadLinkFromHeader(const String& headerValue, Document* documen
     }
     return true;
 }
+#endif
 
-#if 0 // BKTODO:
-bool LinkLoader::loadLink(const LinkRelAttribute& relAttribute, CrossOriginAttributeValue crossOrigin, const String& type, const String& as, const KURL& href, Document& document, const NetworkHintsInterface& networkHintsInterface)
+bool LinkLoader::loadLink(const LinkRelAttribute& relAttribute, const String& type, const KURL& href, Document& document)
 {
     // TODO(yoav): Do all links need to load only after they're in document???
 
+#if 0 // BKTODO:
     // TODO(yoav): Convert all uses of the CrossOriginAttribute to CrossOriginAttributeValue. crbug.com/486689
     // FIXME(crbug.com/463266): We're ignoring type here. Maybe we shouldn't.
     dnsPrefetchIfNeeded(relAttribute, href, document, networkHintsInterface, LinkCalledFromMarkup);
@@ -272,6 +272,7 @@ bool LinkLoader::loadLink(const LinkRelAttribute& relAttribute, CrossOriginAttri
 
     if (m_client->shouldLoadLink())
         preloadIfNeeded(relAttribute, href, document, as);
+#endif
 
     // FIXME(crbug.com/323096): Should take care of import.
     if ((relAttribute.isLinkPrefetch() || relAttribute.isLinkSubresource()) && href.isValid() && document.frame()) {
@@ -280,17 +281,20 @@ bool LinkLoader::loadLink(const LinkRelAttribute& relAttribute, CrossOriginAttri
         Resource::Type type = Resource::LinkPrefetch;
         if (relAttribute.isLinkSubresource()) {
             type = Resource::LinkSubresource;
-            UseCounter::count(document, UseCounter::LinkRelSubresource);
+            // BKTODO: UseCounter::count(document, UseCounter::LinkRelSubresource);
         } else {
-            UseCounter::count(document, UseCounter::LinkRelPrefetch);
+            // BKTODO: UseCounter::count(document, UseCounter::LinkRelPrefetch);
         }
 
-        FetchRequest linkRequest(ResourceRequest(document.completeURL(href)), FetchInitiatorTypeNames::link);
+        FetchRequest linkRequest(ResourceRequest(document.completeURL(String::fromStdUTF8(href.spec()))));
+#if 0 // BKTODO:
         if (crossOrigin != CrossOriginAttributeNotSet)
             linkRequest.setCrossOriginAccessControl(document.securityOrigin(), crossOrigin);
+#endif
         setResource(LinkFetchResource::fetch(type, linkRequest, document.fetcher()));
     }
 
+#if 0 // BKTODO:
     if (const unsigned prerenderRelTypes = prerenderRelTypesFromRelAttribute(relAttribute, document)) {
         if (!m_prerender) {
             m_prerender = PrerenderHandle::create(document, this, href, prerenderRelTypes);
@@ -303,9 +307,9 @@ bool LinkLoader::loadLink(const LinkRelAttribute& relAttribute, CrossOriginAttri
         m_prerender->cancel();
         m_prerender.clear();
     }
+#endif
     return true;
 }
-#endif
 
 void LinkLoader::released()
 {

@@ -338,26 +338,29 @@ const AtomicString& StyleSheetContents::determineNamespace(const AtomicString& p
     return emptyAtom;
 }
 
-void StyleSheetContents::parseAuthorStyleSheet(const CSSStyleSheetResource* cachedStyleSheet, const SecurityOrigin* securityOrigin)
+void StyleSheetContents::parseAuthorStyleSheet(const CSSStyleSheetResource* cachedStyleSheet)
 {
     TRACE_EVENT1("blink,devtools.timeline", "ParseAuthorStyleSheet", "data", InspectorParseAuthorStyleSheetEvent::data(cachedStyleSheet));
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     bool isSameOriginRequest = securityOrigin && securityOrigin->canRequest(baseURL());
     CSSStyleSheetResource::MIMETypeCheck mimeTypeCheck = isQuirksModeBehavior(m_parserContext.mode()) && isSameOriginRequest ? CSSStyleSheetResource::MIMETypeCheck::Lax : CSSStyleSheetResource::MIMETypeCheck::Strict;
+#else
+    constexpr CSSStyleSheetResource::MIMETypeCheck mimeTypeCheck = CSSStyleSheetResource::MIMETypeCheck::Lax;
+#endif
     String sheetText = cachedStyleSheet->sheetText(mimeTypeCheck);
 
+#if 0 // BKTODO:
     const ResourceResponse& response = cachedStyleSheet->response();
     m_sourceMapURL = response.httpHeaderField(HTTPNames::SourceMap);
     if (m_sourceMapURL.isEmpty()) {
         // Try to get deprecated header.
         m_sourceMapURL = response.httpHeaderField(HTTPNames::X_SourceMap);
     }
+#endif
 
     CSSParserContext context(parserContext());
     CSSParser::parseSheet(context, this, sheetText);
-#endif
 }
 
 void StyleSheetContents::parseString(const String& sheetText)

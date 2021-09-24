@@ -514,7 +514,7 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
 
     requestLoadStarted(resource.get(), request, policy == Use ? ResourceLoadingFromCache : ResourceLoadingFromNetwork, isStaticData);
 
-    ASSERT(resource->url() == url.string());
+    ASSERT(resource->url() == url);
     m_documentResources.emplace(resource->url().spec(), resource.get());
     return resource;
 }

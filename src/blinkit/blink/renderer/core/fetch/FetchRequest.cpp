@@ -66,7 +66,7 @@ FetchRequest::FetchRequest(const ResourceRequest& resourceRequest, const Resourc
     // BKTODO: m_options.initiatorInfo.name = initiator;
 }
 
-FetchRequest::FetchRequest(const ResourceRequest& resourceRequest, const FetchInitiatorInfo& initiator)
+FetchRequest::FetchRequest(const ResourceRequest& resourceRequest)
     : m_resourceRequest(resourceRequest)
     , m_options(ResourceFetcher::defaultResourceOptions())
     // BKTODO: , m_priority(ResourceLoadPriorityUnresolved)

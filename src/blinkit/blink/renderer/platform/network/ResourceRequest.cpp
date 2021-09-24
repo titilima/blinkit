@@ -236,7 +236,18 @@ void ResourceRequest::setHTTPReferrer(const Referrer& referrer)
     m_referrerPolicy = referrer.referrerPolicy;
     m_didSetHTTPReferrer = true;
 }
+#else
+void ResourceRequest::setHTTPReferrer(const AtomicString &referrer)
+{
+    if (referrer.isEmpty())
+        m_httpHeaderFields.remove(HTTPNames::Referer);
+    else
+        setHTTPHeaderField(HTTPNames::Referer, referrer);
+    m_didSetHTTPReferrer = true;
+}
+#endif
 
+#if 0 // BKTODO:
 void ResourceRequest::clearHTTPReferrer()
 {
     m_httpHeaderFields.remove(HTTPNames::Referer);

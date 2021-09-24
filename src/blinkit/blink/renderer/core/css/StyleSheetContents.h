@@ -51,7 +51,7 @@ class CSSStyleSheet;
 class CSSStyleSheetResource;
 class Document;
 class Node;
-class SecurityOrigin;
+// BKTODO: class SecurityOrigin;
 class StyleRuleBase;
 class StyleRuleFontFace;
 class StyleRuleImport;
@@ -79,7 +79,7 @@ public:
     const AtomicString& defaultNamespace() { return m_defaultNamespace; }
     const AtomicString& determineNamespace(const AtomicString& prefix);
 
-    void parseAuthorStyleSheet(const CSSStyleSheetResource*, const SecurityOrigin*);
+    void parseAuthorStyleSheet(const CSSStyleSheetResource*);
     void parseString(const String&);
     void parseStringAtPosition(const String&, const TextPosition&);
 

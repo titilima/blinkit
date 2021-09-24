@@ -50,13 +50,11 @@ namespace blink {
 
 ResourcePtr<CSSStyleSheetResource> CSSStyleSheetResource::fetch(FetchRequest& request, ResourceFetcher* fetcher)
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
+#if 0 // BKTODO:
     ASSERT(request.resourceRequest().frameType() == WebURLRequest::FrameTypeNone);
     request.mutableResourceRequest().setRequestContext(WebURLRequest::RequestContextStyle);
-    return toCSSStyleSheetResource(fetcher->requestResource(request, CSSStyleSheetResourceFactory()));
 #endif
+    return toCSSStyleSheetResource(fetcher->requestResource(request, CSSStyleSheetResourceFactory()));
 }
 
 ResourcePtr<CSSStyleSheetResource> CSSStyleSheetResource::createForTest(const ResourceRequest& request, const String& charset)
@@ -132,7 +130,7 @@ void CSSStyleSheetResource::checkNotify()
 
     ResourceClientWalker<StyleSheetResourceClient> w(m_clients);
     while (StyleSheetResourceClient* c = w.next())
-        ASSERT(false); // BKTODO: c->setCSSStyleSheet(m_resourceRequest.url(), m_response.url(), encoding(), this);
+        c->setCSSStyleSheet(m_resourceRequest.url().string(), m_response.url(), encoding(), this);
     // Clear the decoded text as it is unlikely to be needed immediately again and is cheap to regenerate.
     m_decodedSheetText = String();
 }
@@ -190,7 +188,7 @@ PassRefPtrWillBeRawPtr<StyleSheetContents> CSSStyleSheetResource::restoreParsedS
 
     didAccessDecodedData();
 
-    return m_parsedStyleSheetCache;
+    return m_parsedStyleSheetCache.get();
 }
 
 void CSSStyleSheetResource::saveParsedStyleSheet(PassRefPtrWillBeRawPtr<StyleSheetContents> sheet)

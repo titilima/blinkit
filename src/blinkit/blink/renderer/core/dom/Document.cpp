@@ -4602,21 +4602,15 @@ KURL Document::completeURLWithOverride(const String& url, const KURL& baseURLOve
         return KURL();
     // This logic is deliberately spread over many statements in an attempt to track down http://crbug.com/312410.
     const KURL& baseURL = baseURLForOverride(baseURLOverride);
-    ASSERT(false); // BKTODO:
-    return KURL();
-#if 0
     if (!encoding().isValid())
         return KURL(baseURL, url);
     return KURL(baseURL, url, encoding());
-#endif
 }
 
 const KURL& Document::baseURLForOverride(const KURL& baseURLOverride) const
 {
     // This logic is deliberately spread over many statements in an attempt to track down http://crbug.com/312410.
     const KURL* baseURLFromParent = 0;
-    ASSERT(false); // BKTODO:
-#if 0
     bool shouldUseParentBaseURL = baseURLOverride.isEmpty();
     if (!shouldUseParentBaseURL) {
         const KURL& aboutBlankURL = blankURL();
@@ -4626,7 +4620,6 @@ const KURL& Document::baseURLForOverride(const KURL& baseURLOverride) const
         if (Document* parent = parentDocument())
             baseURLFromParent = &parent->baseURL();
     }
-#endif
     return baseURLFromParent ? *baseURLFromParent : baseURLOverride;
 }
 

@@ -44,13 +44,16 @@ KURL PreloadRequest::completeURL(Document* document)
 FetchRequest PreloadRequest::resourceRequest(Document* document)
 {
     ASSERT(isMainThread());
+    ASSERT(false); // BKTODO:
+#if 0 // BKTODO:
     FetchInitiatorInfo initiatorInfo;
     initiatorInfo.name = AtomicString(m_initiatorName);
     initiatorInfo.position = m_initiatorPosition;
+#endif
     ResourceRequest resourceRequest(completeURL(document));
     ASSERT(false); // BKTODO: resourceRequest.setHTTPReferrer(SecurityPolicy::generateReferrer(m_referrerPolicy, resourceRequest.url(), document->outgoingReferrer()));
     ResourceFetcher::determineRequestContext(resourceRequest, m_resourceType, false);
-    FetchRequest request(resourceRequest, initiatorInfo);
+    FetchRequest request(resourceRequest);
 
     if (m_resourceType == Resource::ImportResource) {
         ASSERT(false); // BKTODO:

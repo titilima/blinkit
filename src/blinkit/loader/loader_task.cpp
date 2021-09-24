@@ -103,6 +103,7 @@ LoaderTaskForUI::LoaderTaskForUI(const ResourceRequest &request, blink::WebURLLo
     , m_URI(request.url())
     , m_scheduler(request.View())
 {
+    ASSERT(nullptr != request.View());
 }
 
 AtomicString LoaderTaskForUI::MIMEType(void) const

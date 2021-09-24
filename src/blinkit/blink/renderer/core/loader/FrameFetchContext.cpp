@@ -114,9 +114,9 @@ LocalFrame* FrameFetchContext::frame() const
 void FrameFetchContext::addAdditionalRequestHeaders(ResourceRequest& request, FetchResourceType type)
 {
     bool isMainResource = type == FetchMainResource;
-    if (!isMainResource) {
-        ASSERT(false); // BKTODO:
-#if 0
+    if (!isMainResource)
+    {
+#if 0 // BKTODO:
         RefPtr<SecurityOrigin> outgoingOrigin;
         if (!request.didSetHTTPReferrer()) {
             ASSERT(m_document);
@@ -129,17 +129,25 @@ void FrameFetchContext::addAdditionalRequestHeaders(ResourceRequest& request, Fe
 
         request.addHTTPOriginIfNeeded(outgoingOrigin);
 #endif
+#ifdef BLINKIT_CRAWLER_ENABLED
+        if (request.IsForCrawler())
+        {
+            AtomicString referrer(m_document->outgoingReferrer());
+            request.setHTTPReferrer(referrer);
+        }
+#endif
     }
 
+#if 0 // BKTODO:
     if (m_document)
-        ASSERT(false); // BKTODO: request.setOriginatesFromReservedIPRange(m_document->isHostedInReservedIPRange());
+        request.setOriginatesFromReservedIPRange(m_document->isHostedInReservedIPRange());
+#endif
 
     // The remaining modifications are only necessary for HTTP and HTTPS.
     if (!request.url().isEmpty() && !request.url().protocolIsInHTTPFamily())
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (frame()->settings() && frame()->settings()->dataSaverEnabled())
         request.addHTTPHeaderField("Save-Data", "on");
 #endif
@@ -224,8 +232,7 @@ ResourceRequestCachePolicy FrameFetchContext::resourceRequestCachePolicy(const R
         return UseProtocolCachePolicy;
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // For users on slow connections, we want to avoid blocking the parser in
     // the main frame on script loads inserted via document.write, since it can
     // add significant delays before page content is displayed on the screen.

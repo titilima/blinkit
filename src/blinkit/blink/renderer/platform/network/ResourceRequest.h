@@ -175,6 +175,8 @@ public:
     void setHTTPOrigin(PassRefPtr<SecurityOrigin>);
     void clearHTTPOrigin();
     void addHTTPOriginIfNeeded(PassRefPtr<SecurityOrigin>);
+#else
+    void setHTTPReferrer(const AtomicString&);
 #endif
 
     const AtomicString& httpUserAgent() const { return httpHeaderField(HTTPNames::User_Agent); }

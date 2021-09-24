@@ -71,7 +71,7 @@ public:
 
     explicit FetchRequest(const ResourceRequest&, const AtomicString& initiator, const String& charset = String()); // BKTODO: , ResourceLoadPriority = ResourceLoadPriorityUnresolved);
     FetchRequest(const ResourceRequest&, const ResourceLoaderOptions&);
-    FetchRequest(const ResourceRequest&, const FetchInitiatorInfo&);
+    FetchRequest(const ResourceRequest&);
     ~FetchRequest();
 
     ResourceRequest& mutableResourceRequest() { return m_resourceRequest; }

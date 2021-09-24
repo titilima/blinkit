@@ -283,7 +283,7 @@ void Resource::appendData(const char* data, size_t length)
     if (m_data)
         m_data->append(data, length);
     else
-        ASSERT(false); // BKTODO: m_data = SharedBuffer::createPurgeable(data, length);
+        m_data = SharedBuffer::create(data, length); // BKTODO: Should use createPurgeable?
     setEncodedSize(m_data->size());
 }
 
@@ -307,13 +307,10 @@ void Resource::markClientsFinished()
 {
     while (!m_clients.isEmpty()) {
         HashCountedSet<ResourceClient*>::iterator it = m_clients.begin();
-        ASSERT(false); // BKTODO:
-#if 0
-        for (int i = it->value; i; i--) {
-            m_finishedClients.add(it->key);
-            m_clients.remove(it);
+        for (int i = it->second; i; i--) {
+            m_finishedClients.insert(it->first);
+            m_clients.erase(it);
         }
-#endif
     }
 }
 
@@ -742,7 +739,7 @@ void Resource::removeClient(ResourceClient* client)
 {
     ASSERT(hasClient(client));
     if (m_finishedClients.contains(client))
-        ASSERT(false); // BKTODO: m_finishedClients.remove(client);
+        m_finishedClients.erase(client);
     else if (m_clientsAwaitingCallback.contains(client))
         ASSERT(false); // BKTODO: m_clientsAwaitingCallback.remove(client);
     else
@@ -827,8 +824,7 @@ void Resource::setDecodedSize(size_t decodedSize)
         return;
     size_t oldSize = size();
     m_decodedSize = decodedSize;
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     memoryCache()->update(this, oldSize, size());
     memoryCache()->updateDecodedResource(this, UpdateForPropertyChange);
 #endif
@@ -840,13 +836,12 @@ void Resource::setEncodedSize(size_t encodedSize)
         return;
     size_t oldSize = size();
     m_encodedSize = encodedSize;
-    ASSERT(false); // BKTODO: memoryCache()->update(this, oldSize, size());
+    // BKTODO: memoryCache()->update(this, oldSize, size());
 }
 
 void Resource::didAccessDecodedData()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     memoryCache()->updateDecodedResource(this, UpdateForAccess);
     memoryCache()->prune();
 #endif
