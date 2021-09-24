@@ -59,7 +59,7 @@ using LinkEventSender = EventSender<HTMLLinkElement>;
 class LinkStyle final : public LinkResource, ResourceOwner<StyleSheetResource> {
     USING_FAST_MALLOC_WILL_BE_REMOVED(LinkStyle);
 public:
-    static PassOwnPtrWillBeRawPtr<LinkStyle> create(HTMLLinkElement* owner);
+    static GCPassPtr<LinkStyle> create(HTMLLinkElement* owner);
 
     explicit LinkStyle(HTMLLinkElement* owner);
     ~LinkStyle() override;
@@ -118,7 +118,7 @@ private:
         m_fetchFollowingCORS = false;
     }
 
-    RefPtrWillBeMember<CSSStyleSheet> m_sheet;
+    BlinKit::GCMember<CSSStyleSheet> m_sheet;
     DisabledState m_disabledState;
     PendingSheetType m_pendingSheetType;
     bool m_loading;
@@ -139,7 +139,7 @@ public:
     const AtomicString& rel() const;
     String media() const { return m_media; }
     String typeValue() const { return m_type; }
-    String asValue() const { return m_as; }
+    // BKTODO: String asValue() const { return m_as; }
     const LinkRelAttribute& relAttribute() const { return m_relAttribute; }
     DOMTokenList& relList() const { return static_cast<DOMTokenList&>(*m_relList); }
 
@@ -172,7 +172,7 @@ public:
     bool shouldLoadLink() override;
 
     // For LinkStyle
-    bool loadLink(const String& type, const String& as, const KURL&);
+    bool loadLink(const String& type, const KURL&);
     bool isAlternate() const { return linkStyle()->isUnset() && m_relAttribute.isAlternate(); }
     bool shouldProcessStyle() { return linkResourceToProcess() && linkStyle(); }
     bool isCreatedByParser() const { return m_createdByParser; }
@@ -216,15 +216,15 @@ private:
     // From DOMSettableTokenListObserver
     void valueWasSet() final;
 
-    OwnPtrWillBeMember<LinkResource> m_link;
+    BlinKit::GCMember<LinkResource> m_link;
     LinkLoader m_linkLoader;
 
     String m_type;
-    String m_as;
+    // BKTODO: String m_as;
     String m_media;
-    RefPtrWillBeMember<DOMSettableTokenList> m_sizes;
+    std::unique_ptr<DOMSettableTokenList> m_sizes;
     Vector<IntSize> m_iconSizes;
-    OwnPtrWillBeMember<RelList> m_relList;
+    std::unique_ptr<RelList> m_relList;
     LinkRelAttribute m_relAttribute;
 
     bool m_createdByParser;
