@@ -1197,7 +1197,7 @@ private:
     void addListenerType(ListenerType listenerType) { m_listenerTypes |= listenerType; }
     void addMutationEventListenerTypeIfEnabled(ListenerType);
 
-    void didAssociateFormControlsTimerFired(Timer<Document>*);
+    // BKTODO: void didAssociateFormControlsTimerFired(Timer<Document>*);
 
     void clearFocusedElementSoon();
     void clearFocusedElementTimerFired(Timer<Document>*);
@@ -1434,10 +1434,10 @@ private:
     // is a manually managed backpointer from m_templateDocument.
     RawPtrWillBeMember<Document> m_templateDocumentHost;
 
-    Timer<Document> m_didAssociateFormControlsTimer;
-    std::unordered_set<BlinKit::GCMember<Element>> m_associatedFormControls;
-
 #if 0 // BKTODO:
+    Timer<Document> m_didAssociateFormControlsTimer;
+    std::unordered_set<Element *> m_associatedFormControls;
+
     WillBeHeapHashSet<RawPtrWillBeMember<SVGUseElement>> m_useElementsNeedingUpdate;
     WillBeHeapHashSet<RawPtrWillBeMember<Element>> m_layerUpdateSVGFilterElements;
 

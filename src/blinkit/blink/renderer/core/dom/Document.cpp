@@ -477,7 +477,7 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_elementDataCacheClearTimer(this, &Document::elementDataCacheClearTimerFired)
     , m_timeline(AnimationTimeline::create(this))
     , m_templateDocumentHost(nullptr)
-    , m_didAssociateFormControlsTimer(this, &Document::didAssociateFormControlsTimerFired)
+    // BKTODO: , m_didAssociateFormControlsTimer(this, &Document::didAssociateFormControlsTimerFired)
     // BKTODO: , m_timers(timerTaskRunner()->adoptClone())
     , m_hasViewportUnits(false)
     , m_styleRecalcElementCounter(0)
@@ -5906,41 +5906,41 @@ Document& Document::ensureTemplateDocument()
 
 void Document::didAssociateFormControl(Element* element)
 {
+#if 0 // BKTODO:
     if (!frame() || !frame()->page())
         return;
     m_associatedFormControls.emplace(element);
     if (!m_didAssociateFormControlsTimer.isActive())
         m_didAssociateFormControlsTimer.startOneShot(0, BLINK_FROM_HERE);
+#endif
 }
 
 void Document::removeFormAssociation(Element* element)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     auto it = m_associatedFormControls.find(element);
     if (it == m_associatedFormControls.end())
         return;
     m_associatedFormControls.remove(it);
-#endif
     if (m_associatedFormControls.empty())
         m_didAssociateFormControlsTimer.stop();
+#endif
 }
 
+#if 0 // BKTODO: May be useless.
 void Document::didAssociateFormControlsTimerFired(Timer<Document>* timer)
 {
     ASSERT_UNUSED(timer, timer == &m_didAssociateFormControlsTimer);
     if (!frame() || !frame()->page())
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
     WillBeHeapVector<RefPtrWillBeMember<Element>> associatedFormControls;
     copyToVector(m_associatedFormControls, associatedFormControls);
 
     frame()->page()->chromeClient().didAssociateFormControls(associatedFormControls, frame());
-#endif
     m_associatedFormControls.clear();
 }
+#endif
 
 float Document::devicePixelRatio() const
 {
