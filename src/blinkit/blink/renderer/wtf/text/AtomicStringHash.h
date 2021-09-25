@@ -82,7 +82,7 @@ struct hash<WTF::AtomicString>
 {
     std::size_t operator()(const WTF::AtomicString &s) const noexcept
     {
-        return s.impl()->hash();
+        return s.impl()->existingHash();
     }
 };
 }
