@@ -724,9 +724,11 @@ using WTF::reverseFind;
 
 namespace std {
 template<>
-struct hash<WTF::String> {
-    std::size_t operator()(const WTF::String &s) const noexcept {
-        return s.impl()->existingHash();
+struct hash<WTF::String>
+{
+    std::size_t operator()(const WTF::String &s) const noexcept
+    {
+        return s.impl()->hash();
     }
 };
 }

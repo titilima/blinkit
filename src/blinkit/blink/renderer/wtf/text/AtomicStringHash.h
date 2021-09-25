@@ -77,11 +77,12 @@ template<> struct HashTraits<AtomicString> : SimpleClassHashTraits<AtomicString>
 using WTF::AtomicStringHash;
 
 namespace std {
-template<> struct hash<WTF::AtomicString>
+template<>
+struct hash<WTF::AtomicString>
 {
     std::size_t operator()(const WTF::AtomicString &s) const noexcept
     {
-        return s.impl()->existingHash();
+        return s.impl()->hash();
     }
 };
 }
