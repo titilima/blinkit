@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - BlinKit Library
-// -------------------------------------------------
-//   File Name: UTF16TextIterator.h
-// Description: UTF16TextIterator Class
-//      Author: Ziming Li
-//     Created: 2021-08-07
-// -------------------------------------------------
-// Copyright (C) 2021 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) Research In Motion Limited 2011. All rights reserved.
  *
@@ -59,14 +48,11 @@ public:
         character = *m_characters;
         m_currentGlyphLength = 1;
 
-        ASSERT(false); // BKTODO:
-#if 0
         if (!U16_IS_SURROGATE(character) || consumeSurrogatePair(character)) {
             if (U_GET_GC_MASK(character) & U_GC_M_MASK)
                 consumeMultipleUChar();
             return true;
         }
-#endif
 
         return false;
     }
