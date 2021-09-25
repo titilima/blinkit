@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TextBreakIterator.h
+// Description: TextBreakIterator Classes
+//      Author: Ziming Li
+//     Created: 2021-09-24
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Lars Knoll <lars@trolltech.com>
  * Copyright (C) 2007, 2011, 2012 Apple Inc. All rights reserved.
@@ -26,11 +37,46 @@
 #include "wtf/text/AtomicString.h"
 #include "wtf/text/Unicode.h"
 
+#if 0 // BKTODO:
 #include <unicode/brkiter.h>
+#else
+#include <unicode/utypes.h>
+#endif
 
 namespace blink {
 
-typedef icu::BreakIterator TextBreakIterator;
+class TextBreakIterator
+{
+public:
+    virtual ~TextBreakIterator(void) = default;
+
+    void Attach(const UChar *string, int length)
+    {
+        m_string = std::basic_string_view<UChar>(string, length);
+    }
+
+    virtual int32_t first(void) = 0;
+    virtual int32_t last(void) = 0;
+    virtual int32_t previous(void) = 0;
+    virtual int32_t next(void) = 0;
+    virtual int32_t current(void) const = 0;
+
+    int32_t following(int32_t offset)
+    {
+        m_pos = offset;
+        return next();
+    }
+    int32_t preceding(int32_t offset)
+    {
+        m_pos = offset;
+        return previous();
+    }
+
+    virtual UBool isBoundary(int32_t offset) = 0;
+protected:
+    std::basic_string_view<UChar> m_string;
+    int32_t m_pos = 0;
+};
 
 // Note: The returned iterator is good only until you get another iterator, with the exception of acquireLineBreakIterator.
 
