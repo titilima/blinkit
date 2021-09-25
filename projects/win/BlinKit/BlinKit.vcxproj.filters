@@ -298,6 +298,9 @@
     <Filter Include="blink\renderer\platform\scheduler">
       <UniqueIdentifier>{e07fe00c-73ca-4bbb-a2f8-d1dc0c2d749a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="blink\renderer\platform\text\brkiter">
+      <UniqueIdentifier>{51bf66de-b2ce-4826-a848-b73652bf0659}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -3915,9 +3918,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\dtoa\bignum.cc">
       <Filter>blink\renderer\wtf\dtoa</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextBreakIteratorICU.cpp">
-      <Filter>blink\renderer\platform\text</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextBreakIteratorInternalICU.cpp">
       <Filter>blink\renderer\platform\text</Filter>
     </ClCompile>
@@ -4034,6 +4034,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\stub\icu\ubidi_props.cpp">
       <Filter>stub\icu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\text_break_iterator_impl.cpp">
+      <Filter>blink\renderer\platform\text</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -4870,6 +4873,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\FontLoader.h">
       <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextBreakIterator.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\brkiter\line_break_iterator.h">
+      <Filter>blink\renderer\platform\text\brkiter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

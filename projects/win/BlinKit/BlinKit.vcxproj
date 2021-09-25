@@ -1270,10 +1270,10 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\StringTruncator.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextBoundaries.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextBreakIterator.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextBreakIteratorICU.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextBreakIteratorInternalICU.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextRun.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextStream.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\text_break_iterator_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\UnicodeUtilities.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\Timer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\transforms\AffineTransform.cpp" />
@@ -1625,6 +1625,8 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\Scrollbar.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\SharedBuffer.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\Task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\brkiter\line_break_iterator.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextBreakIterator.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\Timer.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\TracedValue.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\TraceEvent.h" />
