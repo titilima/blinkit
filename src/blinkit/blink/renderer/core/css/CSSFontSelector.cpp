@@ -124,8 +124,6 @@ static AtomicString familyNameFromSettings(const GenericFontFamilySettings& sett
     UScriptCode script = fontDescription.script();
     if (fontDescription.genericFamily() == FontDescription::StandardFamily)
         return settings.standard(script);
-    ASSERT(false); // BKTODO:
-#if 0
     if (genericFamilyName == FontFamilyNames::webkit_serif)
         return settings.serif(script);
     if (genericFamilyName == FontFamilyNames::webkit_sans_serif)
@@ -140,7 +138,6 @@ static AtomicString familyNameFromSettings(const GenericFontFamilySettings& sett
         return settings.pictograph(script);
     if (genericFamilyName == FontFamilyNames::webkit_standard)
         return settings.standard(script);
-#endif
 #endif
     return emptyAtom;
 }

@@ -12,10 +12,10 @@
 #include "./win_theme_engine.h"
 
 #include <vsstyle.h>
-#include <SkCanvas.h>
-#include <SkColorPriv.h>
 #include "blinkit/blink/renderer/platform/geometry/IntRect.h"
-// BKTODO: #include "win/dib_section.h"
+#include "blinkit/win/bk_bitmap.h"
+#include "third_party/skia/include/core/SkCanvas.h"
+#include "third_party/skia/include/core/SkColorPriv.h"
 
 using namespace blink;
 
@@ -116,25 +116,23 @@ void WinThemeEngine::paint(WebCanvas *canvas, Part part, State state, const IntR
 
     HDC hdc = CreateCompatibleDC(nullptr);
 
-    ASSERT(false); // BKTODO:
-#if 0
-    DIBSection bitmap(rect.width, rect.height, hdc);
-    HGDIOBJ oldBitmap = SelectObject(hdc, bitmap.GetHBITMAP());
+    BkBitmap bitmap;
+    HGDIOBJ oldBitmap = SelectObject(hdc, bitmap.InstallDIBSection(rect.width(), rect.height(), hdc));
 
     SkCanvas dcCanvas(bitmap);
 
     const SkColor placeholder = SkColorSetARGB(1, 0, 0, 0);
     dcCanvas.clear(placeholder);
 
-    (this->*m_paint)(hdc, part, state, WebSize(rect.width, rect.height), extra);
+    (this->*m_paint)(hdc, part, state, rect.size(), extra);
 
     // Post-process the pixels to fix up the alpha values (see big comment above).
-    const SkPMColor placeholder_value = SkPreMultiplyColor(placeholder);
-    const int pixel_count = rect.width * rect.height;
+    const SkPMColor placeholderValue = SkPreMultiplyColor(placeholder);
+    const int pixelCount = rect.width() * rect.height();
     SkPMColor *pixels = bitmap.getAddr32(0, 0);
-    for (int i = 0; i < pixel_count; ++i)
+    for (int i = 0; i < pixelCount; ++i)
     {
-        if (placeholder_value == pixels[i])
+        if (placeholderValue == pixels[i])
         {
             // Pixel wasn't touched - make it fully transparent.
             pixels[i] = SkPackARGB32(0, 0, 0, 0);
@@ -148,10 +146,9 @@ void WinThemeEngine::paint(WebCanvas *canvas, Part part, State state, const IntR
                 SkGetPackedB32(pixels[i]));
         }
     }
-    canvas->drawBitmap(bitmap, static_cast<SkScalar>(rect.x), static_cast<SkScalar>(rect.y));
+    canvas->drawBitmap(bitmap, static_cast<SkScalar>(rect.x()), static_cast<SkScalar>(rect.y()));
 
     SelectObject(hdc, oldBitmap);
-#endif
     DeleteDC(hdc);
 }
 

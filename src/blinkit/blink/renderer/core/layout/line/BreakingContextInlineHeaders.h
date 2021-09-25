@@ -484,12 +484,18 @@ inline void BreakingContext::handleReplaced()
     if (m_atStart)
         m_width.updateAvailableWidth(replacedBox.logicalHeight());
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // Break on replaced elements if either has normal white-space,
     // or if the replaced element is ruby that can break before.
     if ((m_autoWrap || ComputedStyle::autoWrap(m_lastWS)) && (!m_current.object().isImage() || m_allowImagesToBreak)
         && (!m_current.object().isRubyRun() || toLayoutRubyRun(m_current.object())->canBreakBefore(m_layoutTextInfo.m_lineBreakIterator))) {
+        m_width.commit();
+        m_lineBreak.moveToStartOf(m_current.object());
+    }
+#else
+    // Break on replaced elements if either has normal white-space,
+    // or if the replaced element is ruby that can break before.
+    if ((m_autoWrap || ComputedStyle::autoWrap(m_lastWS)) && (!m_current.object().isImage() || m_allowImagesToBreak)) {
         m_width.commit();
         m_lineBreak.moveToStartOf(m_current.object());
     }
@@ -518,8 +524,7 @@ inline void BreakingContext::handleReplaced()
     } else {
         m_width.addUncommittedWidth(replacedLogicalWidth.toFloat());
     }
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (m_current.object().isRubyRun())
         m_width.applyOverhang(LineLayoutRubyRun(m_current.object()), m_lastObject, m_nextObject);
 #endif

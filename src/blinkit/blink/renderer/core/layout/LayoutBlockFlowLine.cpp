@@ -659,8 +659,7 @@ BidiRun* LayoutBlockFlow::computeInlineDirectionPositionsForSegment(RootInlineBo
             isAfterExpansion = false;
             if (!r->m_object->isLayoutInline()) {
                 LayoutBox* layoutBox = toLayoutBox(r->m_object);
-                ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
                 if (layoutBox->isRubyRun())
                     setMarginsForRubyRun(r, toLayoutRubyRun(layoutBox), previousObject, lineInfo);
 #endif
