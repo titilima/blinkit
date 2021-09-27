@@ -77,16 +77,6 @@ private:
     unsigned m_refCnt = 0;
 };
 
-class GCGuard
-{
-public:
-    GCGuard(GCObject &o) : m_guardedObject(o) { m_guardedObject.IncRef(); }
-    GCGuard(GCStub *stub);
-    ~GCGuard(void) { m_guardedObject.Release(); }
-private:
-    GCObject &m_guardedObject;
-};
-
 /**
  * GCStub
  */
@@ -230,6 +220,53 @@ GCPassPtr<T> WrapLeaked(T *rawPtr)
     return GCPassPtr<T>(rawPtr, true);
 #endif
 }
+
+/**
+ * GCPtr Stuff
+ */
+
+class GCPtrBase
+{
+public:
+    ~GCPtrBase(void)
+    {
+        if (nullptr != m_object)
+            m_object->Release();
+    }
+protected:
+    GCPtrBase(GCObject *object) : m_object(object)
+    {
+        if (nullptr != m_object)
+            m_object->IncRef();
+    }
+
+    template <class T>
+    T* cast_to(void) const
+    {
+        return static_cast<T *>(m_object);
+    }
+private:
+    GCObject *m_object;
+};
+
+class GCGuard final : public GCPtrBase
+{
+public:
+    GCGuard(GCObject &o) : GCPtrBase(&o) {}
+    GCGuard(GCStub *stub) : GCPtrBase(stub->ObjectForGC()) {}
+};
+
+template <class T>
+class GCPtr final : public GCPtrBase
+{
+public:
+    explicit GCPtr(T *p = nullptr) : GCPtrBase(p) {}
+
+    template <class U>
+    GCPtr(const WTF::RawPtr<U> &ptr) : GCPtr(ptr.get()) {}
+
+    T* get(void) const { return GCPtrBase::cast_to<T>(); }
+};
 
 /**
  * Member Stuff
@@ -496,8 +533,6 @@ private:
 /**
  * Implementations
  */
-
-inline GCGuard::GCGuard(GCStub *stub) : GCGuard(*stub->ObjectForGC()) {}
 
 template <class T>
 template <class U>
