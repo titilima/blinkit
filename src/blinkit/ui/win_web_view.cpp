@@ -48,7 +48,6 @@ WinWebView::WinWebView(HWND hWnd, ClientCaller &clientCaller, bool isWindowVisib
     ASSERT(GetDeviceCaps(dc, LOGPIXELSX) == m_dpi);
     m_memoryDC = CreateCompatibleDC(dc);
     ReleaseDC(m_hWnd, dc);
-    UpdateScaleFactor();
 
     m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_ARROW);
 }
@@ -161,6 +160,12 @@ void WinWebView::OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc)
     UpdateScaleFactor();
     SetWindowPos(hwnd, nullptr, rc->left, rc->top, rc->right - rc->left, rc->bottom - rc->top,
         SWP_NOZORDER | SWP_NOACTIVATE);
+}
+
+void WinWebView::OnInitialized(void)
+{
+    WebViewImpl::OnInitialized();
+    UpdateScaleFactor();
 }
 
 void WinWebView::OnMouse(UINT message, UINT keyFlags, int x, int y)

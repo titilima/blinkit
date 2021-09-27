@@ -46,6 +46,7 @@ private:
     // WebViewImpl
     void InvalidateNativeView(const blink::IntRect &rect) override;
     void didChangeCursor(const blink::WebCursorInfo &cursorInfo) override;
+    void OnInitialized(void) override;
     SkBitmap PrepareBitmapForCanvas(const blink::IntSize &size) override;
 
     HWND m_hWnd;

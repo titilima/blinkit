@@ -88,6 +88,7 @@ public:
 protected:
     WebViewImpl(BlinKit::ClientCaller &clientCaller, blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor = SK_ColorWHITE);
 
+    virtual void OnInitialized(void) {}
     void ProcessMouseEvent(blink::WebInputEvent::Type type, blink::WebPointerProperties::Button button, int x, int y);
     bool ProcessTitleChange(const std::string &newTitle) const;
     // BKTODO: void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);

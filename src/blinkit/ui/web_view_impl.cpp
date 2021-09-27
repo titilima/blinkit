@@ -311,6 +311,7 @@ void WebViewImpl::Initialize(void)
     ScopedRenderingScheduler scheduler(this);
     m_frame = LocalFrame::create(this, &(m_page->frameHost()));
     m_frame->init();
+    OnInitialized();
 }
 
 void WebViewImpl::invalidateRect(const IntRect &rect)
@@ -844,15 +845,8 @@ void WebViewImpl::SetPageScaleFactor(float scaleFactor)
 
 void WebViewImpl::SetScaleFactor(float scaleFactor)
 {
-    if (!m_page)
-        return;
-
-    m_page->setDeviceScaleFactor(scaleFactor);
-
-#if 0 // BKTODO:
-    if (m_layerTreeView)
-        updateLayerTreeDeviceScaleFactor();
-#endif
+    if (m_frame)
+        m_frame->setPageZoomFactor(scaleFactor);
 }
 
 void WebViewImpl::SetVisibilityState(PageVisibilityState visibilityState)
