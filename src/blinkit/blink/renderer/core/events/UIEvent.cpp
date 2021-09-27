@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: UIEvent.cpp
+// Description: UIEvent Class
+//      Author: Ziming Li
+//     Created: 2021-09-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -94,8 +105,10 @@ int UIEvent::which() const
 
 DEFINE_TRACE(UIEvent)
 {
+#if 0 // BKTODO:
     visitor->trace(m_view);
     visitor->trace(m_sourceCapabilities);
+#endif
     Event::trace(visitor);
 }
 

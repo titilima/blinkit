@@ -255,7 +255,7 @@ Node* MouseEvent::fromElement() const
 
 DEFINE_TRACE(MouseEvent)
 {
-    visitor->trace(m_relatedTarget);
+    // BKTODO: visitor->trace(m_relatedTarget);
     MouseRelatedEvent::trace(visitor);
 }
 

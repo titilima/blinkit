@@ -764,13 +764,13 @@ bool Node::shouldHaveFocusAppearance() const
 
 bool Node::isInert() const
 {
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
+#if 0 // BKTODO:
     const HTMLDialogElement* dialog = document().activeModalDialog();
     if (dialog && this != document() && (!canParticipateInComposedTree() || !ComposedTreeTraversal::containsIncludingPseudoElement(*dialog, *this)))
         return true;
     return document().ownerElement() && document().ownerElement()->isInert();
+#else
+    return false;
 #endif
 }
 

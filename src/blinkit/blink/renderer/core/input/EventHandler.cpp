@@ -115,6 +115,8 @@
 #include "wtf/StdLibExtras.h"
 #include "wtf/TemporaryChange.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 namespace {
@@ -617,8 +619,7 @@ AutoscrollController* EventHandler::autoscrollController() const
 
 bool EventHandler::panScrollInProgress() const
 {
-    ASSERT(false); // BKTODO: return autoscrollController() && autoscrollController()->panScrollInProgress();
-    return false;
+    return false; // BKTODO: return autoscrollController() && autoscrollController()->panScrollInProgress();
 }
 
 HitTestResult EventHandler::hitTestResultAtPoint(const LayoutPoint& point, HitTestRequest::HitTestRequestType hitType, const LayoutSize& padding)
@@ -786,8 +787,7 @@ static LocalFrame* subframeForHitTestResult(const MouseEventWithHitTestResults& 
 
 static bool isSubmitImage(Node* node)
 {
-    ASSERT(false); // BKTODO: return isHTMLInputElement(node) && toHTMLInputElement(node)->type() == InputTypeNames::image;
-    return false;
+    return isHTMLInputElement(node) && toHTMLInputElement(node)->type() == InputTypeNames::image;
 }
 
 bool EventHandler::useHandCursor(Node* node, bool isOverLink)
@@ -1022,11 +1022,10 @@ WebInputEventResult EventHandler::handleMousePressEvent(const PlatformMouseEvent
 
     RefPtrWillBeRawPtr<FrameView> protector(m_frame->view());
 
-    ASSERT(false); // BKTODO:
-    return WebInputEventResult::NotHandled;
-#if 0
+#if 0 // BKTODO:
     UserGestureIndicator gestureIndicator(DefinitelyProcessingUserGesture);
     m_frame->localFrameRoot()->eventHandler().m_lastMouseDownUserGestureToken = gestureIndicator.currentToken();
+#endif
 
     cancelFakeMouseMoveEvent();
     if (m_eventHandlerWillResetCapturingMouseEventsNode)
@@ -1152,7 +1151,6 @@ WebInputEventResult EventHandler::handleMousePressEvent(const PlatformMouseEvent
     }
 
     return eventResult;
-#endif
 }
 
 static PaintLayer* layerForNode(Node* node)
@@ -1296,8 +1294,7 @@ WebInputEventResult EventHandler::handleMouseMoveOrLeaveEvent(const PlatformMous
     WebInputEventResult eventResult = WebInputEventResult::NotHandled;
     RefPtrWillBeRawPtr<LocalFrame> newSubframe = m_capturingMouseEventsNode.get() ? subframeForTargetNode(m_capturingMouseEventsNode.get()) : subframeForHitTestResult(mev);
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // We want mouseouts to happen first, from the inside out.  First send a move event to the last subframe so that it will fire mouseouts.
     if (m_lastMouseMoveEventSubframe && m_lastMouseMoveEventSubframe->tree().isDescendantOf(m_frame) && m_lastMouseMoveEventSubframe != newSubframe)
         m_lastMouseMoveEventSubframe->eventHandler().handleMouseLeaveEvent(mouseEvent);
@@ -1358,9 +1355,7 @@ WebInputEventResult EventHandler::handleMouseReleaseEvent(const PlatformMouseEve
 
     m_frame->selection().setCaretBlinkingSuspended(false);
 
-    ASSERT(false); // BKTODO:
-    return WebInputEventResult::NotHandled;
-#if 0
+#if 0 // BKTODO:
     OwnPtr<UserGestureIndicator> gestureIndicator;
 
     if (m_frame->localFrameRoot()->eventHandler().m_lastMouseDownUserGestureToken)
@@ -1372,10 +1367,12 @@ WebInputEventResult EventHandler::handleMouseReleaseEvent(const PlatformMouseEve
     if (Page* page = m_frame->page())
         page->autoscrollController().handleMouseReleaseForPanScrolling(m_frame, mouseEvent);
 #endif
+#endif
 
     m_mousePressed = false;
     setLastKnownMousePosition(mouseEvent);
 
+#if 0 // BKTODO:
     if (m_svgPan) {
         m_svgPan = false;
         m_frame->document()->accessSVGExtensions().updatePan(m_frame->view()->rootFrameToContents(m_lastKnownMousePosition));
@@ -1384,6 +1381,7 @@ WebInputEventResult EventHandler::handleMouseReleaseEvent(const PlatformMouseEve
 
     if (m_frameSetBeingResized)
         return dispatchMouseEvent(EventTypeNames::mouseup, m_frameSetBeingResized.get(), m_clickCount, mouseEvent);
+#endif
 
     if (m_lastScrollbarUnderMouse) {
         invalidateClick();
@@ -1448,7 +1446,6 @@ WebInputEventResult EventHandler::handleMouseReleaseEvent(const PlatformMouseEve
     invalidateClick();
 
     return mergeEventResult(clickEventResult, eventResult);
-#endif
 }
 
 WebInputEventResult EventHandler::dispatchDragEvent(const AtomicString& eventType, Node* dragTarget, const PlatformMouseEvent& event, DataTransfer* dataTransfer)
@@ -1727,7 +1724,7 @@ void EventHandler::sendMouseEventsForNodeTransition(Node* exitedNode, Node* ente
 
     // Dispatch pointerout/mouseout events
     if (isNodeInDocument(exitedNode)) {
-        ASSERT(false); // BKTODO: dispatchPointerEvent(exitedNode, EventTypeNames::pointerout, mouseEvent, enteredNode);
+        // BKTODO: dispatchPointerEvent(exitedNode, EventTypeNames::pointerout, mouseEvent, enteredNode);
         exitedNode->dispatchMouseEvent(mouseEvent, EventTypeNames::mouseout, 0, enteredNode);
     }
 
@@ -1778,29 +1775,34 @@ void EventHandler::sendMouseEventsForNodeTransition(Node* exitedNode, Node* ente
             break;
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
     bool exitedNodeHasCapturingAncestor = false;
     for (size_t j = 0; j < numExitedAncestors; j++) {
+#if 0 // BKTODO:
         if (exitedAncestors[j]->hasCapturingEventListeners(EventTypeNames::mouseleave)
             || (RuntimeEnabledFeatures::pointerEventEnabled()
             && exitedAncestors[j]->hasCapturingEventListeners(EventTypeNames::pointerleave)))
             exitedNodeHasCapturingAncestor = true;
+#else
+        if (exitedAncestors[j]->hasCapturingEventListeners(EventTypeNames::mouseleave))
+            exitedNodeHasCapturingAncestor = true;
+#endif
     }
 
     // Dispatch pointerleave/mouseleave events, in child-to-parent order.
     for (size_t j = 0; j < exitedAncestorIndex; j++) {
+#if 0 // BKTODO:
         if (exitedNodeHasCapturingAncestor || exitedAncestors[j]->hasEventListeners(EventTypeNames::pointerleave)) {
             dispatchPointerEvent(exitedAncestors[j].get(), EventTypeNames::pointerleave, mouseEvent,
                 enteredNode);
         }
+#endif
         if (exitedNodeHasCapturingAncestor || exitedAncestors[j]->hasEventListeners(EventTypeNames::mouseleave))
             exitedAncestors[j]->dispatchMouseEvent(mouseEvent, EventTypeNames::mouseleave, 0, enteredNode);
     }
 
     // Dispatch pointerover/mouseover.
     if (isNodeInDocument(enteredNode)) {
-        dispatchPointerEvent(enteredNode, EventTypeNames::pointerover, mouseEvent, exitedNode);
+        // BKTODO: dispatchPointerEvent(enteredNode, EventTypeNames::pointerover, mouseEvent, exitedNode);
         enteredNode->dispatchMouseEvent(mouseEvent, EventTypeNames::mouseover, 0, exitedNode);
     }
 
@@ -1808,22 +1810,28 @@ void EventHandler::sendMouseEventsForNodeTransition(Node* exitedNode, Node* ente
     // the leave handlers might set a capturing enter handler.
     bool enteredNodeHasCapturingAncestor = false;
     for (size_t i = 0; i < numEnteredAncestors; i++) {
+#if 0 // BKTODO:
         if (enteredAncestors[i]->hasCapturingEventListeners(EventTypeNames::mouseenter)
             || (RuntimeEnabledFeatures::pointerEventEnabled()
             && enteredAncestors[i]->hasCapturingEventListeners(EventTypeNames::pointerenter)))
             enteredNodeHasCapturingAncestor = true;
+#else
+        if (enteredAncestors[i]->hasCapturingEventListeners(EventTypeNames::mouseenter))
+            enteredNodeHasCapturingAncestor = true;
+#endif
     }
 
     // Dispatch pointerenter/mouseenter events, in parent-to-child order.
     for (size_t i = enteredAncestorIndex; i > 0; i--) {
+#if 0 // BKTODO:
         if (enteredNodeHasCapturingAncestor || enteredAncestors[i-1]->hasEventListeners(EventTypeNames::pointerenter)) {
             dispatchPointerEvent(enteredAncestors[i-1].get(), EventTypeNames::pointerenter, mouseEvent,
                 exitedNode);
         }
+#endif
         if (enteredNodeHasCapturingAncestor || enteredAncestors[i-1]->hasEventListeners(EventTypeNames::mouseenter))
             enteredAncestors[i-1]->dispatchMouseEvent(mouseEvent, EventTypeNames::mouseenter, 0, exitedNode);
     }
-#endif
 }
 
 WebInputEventResult EventHandler::dispatchMouseEvent(const AtomicString& eventType, Node* targetNode, int clickCount, const PlatformMouseEvent& mouseEvent)
@@ -1848,9 +1856,7 @@ WebInputEventResult EventHandler::updatePointerTargetAndDispatchEvents(const Ato
     if (!m_nodeUnderMouse)
         return WebInputEventResult::NotHandled;
 
-    ASSERT(false); // BKTODO:
-    return WebInputEventResult::NotHandled;
-#if 0
+#if 0 // BKTODO:
     AtomicString pointerEventType = pointerEventNameForMouseEventName(mouseEventType);
     unsigned short pointerButtonsPressed = MouseEvent::platformModifiersToButtons(mouseEvent.modifiers());
 
@@ -1864,15 +1870,17 @@ WebInputEventResult EventHandler::updatePointerTargetAndDispatchEvents(const Ato
 
     if (result != WebInputEventResult::NotHandled && pointerEventType == EventTypeNames::pointerdown)
         m_preventMouseEventForPointerTypeMouse = true;
+#else
+    WebInputEventResult result = WebInputEventResult::NotHandled;
+#endif
 
     if (!m_preventMouseEventForPointerTypeMouse) {
-        RefPtrWillBeRawPtr<MouseEvent> event = MouseEvent::create(mouseEventType, m_nodeUnderMouse->document().domWindow(), mouseEvent, clickCount, nullptr);
-        bool dispatchResult = m_nodeUnderMouse->dispatchEvent(event);
-        result = mergeEventResult(result, eventToEventResult(event, dispatchResult));
+        GCPtr<MouseEvent> event = MouseEvent::create(mouseEventType, m_nodeUnderMouse->document().domWindow(), mouseEvent, clickCount, nullptr);
+        bool dispatchResult = m_nodeUnderMouse->dispatchEvent(event.get());
+        result = mergeEventResult(result, eventToEventResult(event.get(), dispatchResult));
     }
 
     return result;
-#endif
 }
 
 WebInputEventResult EventHandler::handleMouseFocus(const MouseEventWithHitTestResults& targetedEvent, InputDeviceCapabilities* sourceCapabilities)
