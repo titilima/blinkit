@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebInputEventConversion.h
+// Description: Event Builder Classes
+//      Author: Ziming Li
+//     Created: 2021-09-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -31,10 +42,10 @@
 #ifndef WebInputEventConversion_h
 #define WebInputEventConversion_h
 
-#include "platform/PlatformGestureEvent.h"
+// BKTODO: #include "platform/PlatformGestureEvent.h"
 #include "platform/PlatformKeyboardEvent.h"
 #include "platform/PlatformMouseEvent.h"
-#include "platform/PlatformTouchEvent.h"
+// BKTODO: #include "platform/PlatformTouchEvent.h"
 #include "platform/PlatformWheelEvent.h"
 #include "public/web/WebInputEvent.h"
 
@@ -66,10 +77,12 @@ public:
     PlatformWheelEventBuilder(Widget*, const WebMouseWheelEvent&);
 };
 
+#if 0 // BKTODO:
 class PlatformGestureEventBuilder : public PlatformGestureEvent {
 public:
     PlatformGestureEventBuilder(Widget*, const WebGestureEvent&);
 };
+#endif
 
 class PlatformKeyboardEventBuilder : public PlatformKeyboardEvent {
 public:
@@ -78,6 +91,7 @@ public:
     bool isCharacterKey() const;
 };
 
+#if 0 // BKTODO:
 // Converts a WebTouchPoint to a PlatformTouchPoint.
 class PlatformTouchPointBuilder : public PlatformTouchPoint {
 public:
@@ -89,6 +103,7 @@ class PlatformTouchEventBuilder : public PlatformTouchEvent {
 public:
     PlatformTouchEventBuilder(Widget*, const WebTouchEvent&);
 };
+#endif
 
 class WebMouseEventBuilder : public WebMouseEvent {
 public:
@@ -97,7 +112,7 @@ public:
     // mousedown and mouseup. If the event mapping fails, the event type will
     // be set to Undefined.
     WebMouseEventBuilder(const Widget*, const LayoutObject*, const MouseEvent&);
-    WebMouseEventBuilder(const Widget*, const LayoutObject*, const TouchEvent&);
+    // BKTODO: WebMouseEventBuilder(const Widget*, const LayoutObject*, const TouchEvent&);
 };
 
 // Converts a WheelEvent to a corresponding WebMouseWheelEvent.
@@ -117,6 +132,7 @@ public:
     WebKeyboardEventBuilder(const KeyboardEvent&);
 };
 
+#if 0 // BKTODO:
 // Converts a TouchEvent to a corresponding WebTouchEvent.
 // NOTE: WebTouchEvents have a cap on the number of WebTouchPoints. Any points
 // exceeding that cap will be dropped.
@@ -131,6 +147,7 @@ class WebGestureEventBuilder : public WebGestureEvent {
 public:
     WebGestureEventBuilder(const LayoutObject*, const GestureEvent&);
 };
+#endif
 
 } // namespace blink
 

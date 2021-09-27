@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebInputEventConversion.cpp
+// Description: Event Builder Classes
+//      Author: Ziming Li
+//     Created: 2021-09-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -30,12 +41,14 @@
 
 #include "web/WebInputEventConversion.h"
 
+#if 0 // BKTODO:
 #include "core/dom/Touch.h"
 #include "core/dom/TouchList.h"
 #include "core/events/GestureEvent.h"
+#endif
 #include "core/events/KeyboardEvent.h"
 #include "core/events/MouseEvent.h"
-#include "core/events/TouchEvent.h"
+// BKTODO: #include "core/events/TouchEvent.h"
 #include "core/events/WheelEvent.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
@@ -177,6 +190,7 @@ PlatformWheelEventBuilder::PlatformWheelEventBuilder(Widget* widget, const WebMo
 #endif
 }
 
+#if 0 // BKTODO:
 // PlatformGestureEventBuilder --------------------------------------------------
 
 PlatformGestureEventBuilder::PlatformGestureEventBuilder(Widget* widget, const WebGestureEvent& e)
@@ -272,6 +286,7 @@ PlatformGestureEventBuilder::PlatformGestureEventBuilder(Widget* widget, const W
         ASSERT_NOT_REACHED();
     }
 }
+#endif
 
 // MakePlatformKeyboardEvent --------------------------------------------------
 
@@ -300,9 +315,12 @@ PlatformKeyboardEventBuilder::PlatformKeyboardEventBuilder(const WebKeyboardEven
     m_keyIdentifier = String(e.keyIdentifier);
     m_nativeVirtualKeyCode = e.nativeKeyCode;
     m_isSystemKey = e.isSystemKey;
+    ASSERT(false); // BKTODO:
+#if 0
     // TODO: BUG482880 Fix this initialization to lazy initialization.
     m_code = Platform::current()->domCodeStringFromEnum(e.domCode);
     m_key = Platform::current()->domKeyStringFromEnum(e.domKey);
+#endif
 
     m_modifiers = e.modifiers;
     m_timestamp = e.timeStampSeconds;
@@ -357,6 +375,7 @@ inline PlatformEvent::Type toPlatformTouchEventType(const WebInputEvent::Type ty
     return PlatformEvent::TouchStart;
 }
 
+#if 0 // BKTODO:
 inline PlatformTouchPoint::State toPlatformTouchPointState(const WebTouchPoint::State state)
 {
     switch (state) {
@@ -417,6 +436,7 @@ PlatformTouchEventBuilder::PlatformTouchEventBuilder(Widget* widget, const WebTo
 
     m_cancelable = event.cancelable;
 }
+#endif
 
 static FloatPoint convertAbsoluteLocationForLayoutObjectFloat(const LayoutPoint& location, const LayoutObject& layoutObject)
 {
@@ -498,6 +518,7 @@ WebMouseEventBuilder::WebMouseEventBuilder(const Widget* widget, const LayoutObj
     clickCount = event.detail();
 }
 
+#if 0 // BKTODO:
 // Generate a synthetic WebMouseEvent given a TouchEvent (eg. for emulating a mouse
 // with touch input for plugins that don't support touch input).
 WebMouseEventBuilder::WebMouseEventBuilder(const Widget* widget, const LayoutObject* layoutObject, const TouchEvent& event)
@@ -545,6 +566,7 @@ WebMouseEventBuilder::WebMouseEventBuilder(const Widget* widget, const LayoutObj
     x = localPoint.x();
     y = localPoint.y();
 }
+#endif
 
 WebMouseWheelEventBuilder::WebMouseWheelEventBuilder(const Widget* widget, const LayoutObject* layoutObject, const WheelEvent& event)
 {
@@ -584,8 +606,11 @@ WebKeyboardEventBuilder::WebKeyboardEventBuilder(const KeyboardEvent& event)
     if (!event.keyEvent())
         return;
     nativeKeyCode = event.keyEvent()->nativeVirtualKeyCode();
+    ASSERT(false); // BKTODO:
+#if 0
     domCode = Platform::current()->domEnumFromCodeString(event.keyEvent()->code());
     domKey = Platform::current()->domKeyEnumFromString(event.keyEvent()->key());
+#endif
     unsigned numberOfCharacters = std::min(event.keyEvent()->text().length(), static_cast<unsigned>(textLengthCap));
     for (unsigned i = 0; i < numberOfCharacters; ++i) {
         text[i] = event.keyEvent()->text()[i];
@@ -610,6 +635,7 @@ WebInputEvent::Type toWebKeyboardEventType(PlatformEvent::Type type)
     }
 }
 
+#if 0 // BKTODO:
 static WebTouchPoint toWebTouchPoint(const Touch* touch, const LayoutObject* layoutObject, WebTouchPoint::State state)
 {
     WebTouchPoint point;
@@ -732,5 +758,6 @@ WebGestureEventBuilder::WebGestureEventBuilder(const LayoutObject* layoutObject,
         ASSERT_NOT_REACHED();
     }
 }
+#endif
 
 } // namespace blink
