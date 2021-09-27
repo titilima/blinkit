@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HitTestResult.cpp
+// Description: HitTestResult Class
+//      Author: Ziming Li
+//     Created: 2021-07-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies)
@@ -150,9 +161,11 @@ void HitTestResult::populateFromCachedResult(const HitTestResult& other)
 
 DEFINE_TRACE(HitTestResult)
 {
+#if 0 // BKTODO:
     visitor->trace(m_innerNode);
     visitor->trace(m_innerPossiblyPseudoNode);
     visitor->trace(m_innerURLElement);
+#endif
     visitor->trace(m_scrollbar);
 #if ENABLE(OILPAN)
     visitor->trace(m_listBasedTestResult);
@@ -280,9 +293,9 @@ String HitTestResult::title(TextDirection& dir) const
     dir = LTR;
     // Find the title in the nearest enclosing DOM node.
     // For <area> tags in image maps, walk the tree for the <area>, not the <img> using it.
-    if (m_innerNode.get())
+    if (m_innerNode)
         m_innerNode->updateDistribution();
-    for (Node* titleNode = m_innerNode.get(); titleNode; titleNode = ComposedTreeTraversal::parent(*titleNode)) {
+    for (Node* titleNode = m_innerNode; titleNode; titleNode = ComposedTreeTraversal::parent(*titleNode)) {
         if (titleNode->isElementNode()) {
             String title = toElement(titleNode)->title();
             if (!title.isNull()) {
@@ -523,7 +536,7 @@ void HitTestResult::resolveRectBasedTest(Node* resolvedInnerNode, const LayoutPo
 
 Element* HitTestResult::innerElement() const
 {
-    for (Node* node = m_innerNode.get(); node; node = ComposedTreeTraversal::parent(*node)) {
+    for (Node* node = m_innerNode; node; node = ComposedTreeTraversal::parent(*node)) {
         if (node->isElementNode())
             return toElement(node);
     }
@@ -546,7 +559,7 @@ Node* HitTestResult::innerNodeOrImageMapImage() const
 #endif
 
     if (!imageMapImageElement)
-        return m_innerNode.get();
+        return m_innerNode;
 
     return imageMapImageElement;
 }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HitTestResult.h
+// Description: HitTestResult Class
+//      Author: Ziming Li
+//     Created: 2021-09-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.
  * Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies)
@@ -77,14 +88,14 @@ public:
     // under the point. For rect-based hit tests they are meaningless (reflect the
     // last candidate node observed in the rect).
     // FIXME: Make these less error-prone for rect-based hit tests (center point or fail).
-    Node* innerNode() const { return m_innerNode.get(); }
-    Node* innerPossiblyPseudoNode() const { return m_innerPossiblyPseudoNode.get(); }
+    Node* innerNode() const { return m_innerNode; }
+    Node* innerPossiblyPseudoNode() const { return m_innerPossiblyPseudoNode; }
     Element* innerElement() const;
 
     // If innerNode is an image map or image map area, return the associated image node.
     Node* innerNodeOrImageMapImage() const;
 
-    Element* URLElement() const { return m_innerURLElement.get(); }
+    Element* URLElement() const { return m_innerURLElement; }
     Scrollbar* scrollbar() const { return m_scrollbar.get(); }
     bool isOverWidget() const { return m_isOverWidget; }
 
@@ -157,13 +168,13 @@ private:
     HitTestRequest m_hitTestRequest;
     bool m_cacheable;
 
-    RefPtrWillBeMember<Node> m_innerNode;
-    RefPtrWillBeMember<Node> m_innerPossiblyPseudoNode;
+    Node *m_innerNode = nullptr;
+    Node *m_innerPossiblyPseudoNode = nullptr;
     // FIXME: Nothing changes this to a value different from m_hitTestLocation!
     LayoutPoint m_pointInInnerNodeFrame; // The hit-tested point in innerNode frame coordinates.
     LayoutPoint m_localPoint; // A point in the local coordinate space of m_innerNode's layoutObject. Allows us to efficiently
         // determine where inside the layoutObject we hit on subsequent operations.
-    RefPtrWillBeMember<Element> m_innerURLElement;
+    Element *m_innerURLElement = nullptr;
     RefPtrWillBeMember<Scrollbar> m_scrollbar;
     bool m_isOverWidget; // Returns true if we are over a widget (and not in the border/padding area of a LayoutPart for example).
 
