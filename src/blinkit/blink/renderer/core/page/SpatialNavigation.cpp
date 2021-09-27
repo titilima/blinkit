@@ -93,7 +93,7 @@ FocusCandidate::FocusCandidate(Node* node, WebFocusType type)
 
 bool isSpatialNavigationEnabled(const LocalFrame* frame)
 {
-    ASSERT(false); // BKTODO: return (frame && frame->settings() && frame->settings()->spatialNavigationEnabled());
+    // BKTODO: return (frame && frame->settings() && frame->settings()->spatialNavigationEnabled());
     return false;
 }
 

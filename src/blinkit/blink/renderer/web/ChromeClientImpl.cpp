@@ -42,6 +42,7 @@
 
 #include "web/ChromeClientImpl.h"
 
+#include "blinkit/blink/public/platform/WebCursorInfo.h"
 #include "blinkit/ui/web_view_impl.h"
 #include "bindings/core/v8/ScriptController.h"
 #include "core/HTMLNames.h"
@@ -75,7 +76,6 @@
 #include "platform/graphics/GraphicsLayer.h"
 // BKTODO: #include "platform/weborigin/SecurityOrigin.h"
 #include "public/platform/Platform.h"
-// BKTODO: #include "public/platform/WebCursorInfo.h"
 #include "public/platform/WebFrameScheduler.h"
 #include "public/platform/WebURLRequest.h"
 #include "public/platform/WebViewScheduler.h"
@@ -618,8 +618,7 @@ void ChromeClientImpl::layoutUpdated(LocalFrame* frame) const
 
 void ChromeClientImpl::showMouseOverURL(const HitTestResult& result)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
     if (!m_webView->client())
         return;
 
@@ -646,8 +645,7 @@ void ChromeClientImpl::showMouseOverURL(const HitTestResult& result)
 
 void ChromeClientImpl::setToolTip(const String& tooltipText, TextDirection dir)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
     if (!m_webView->client())
         return;
     if (!tooltipText.isEmpty()) {
@@ -762,17 +760,12 @@ Cursor ChromeClientImpl::lastSetCursorForTesting() const
 
 void ChromeClientImpl::setCursor(const Cursor& cursor, LocalFrame* localRoot)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    m_lastSetMouseCursorForTesting = cursor;
+    // m_lastSetMouseCursorForTesting = cursor;
     setCursor(WebCursorInfo(cursor), localRoot);
-#endif
 }
 
 void ChromeClientImpl::setCursor(const WebCursorInfo& cursor, LocalFrame* localRoot)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (m_cursorOverridden)
         return;
 
@@ -782,6 +775,7 @@ void ChromeClientImpl::setCursor(const WebCursorInfo& cursor, LocalFrame* localR
     if (m_webView->hasOpenedPopup())
         return;
 #endif
+#if 0 // BKTODO:
     if (!m_webView->client())
         return;
     // TODO(kenrb, dcheng): For top-level frames we still use the WebView as
@@ -796,6 +790,8 @@ void ChromeClientImpl::setCursor(const WebCursorInfo& cursor, LocalFrame* localR
         if (toWebFrameWidgetImpl(webFrame->frameWidget())->client())
             toWebFrameWidgetImpl(webFrame->frameWidget())->client()->didChangeCursor(cursor);
     }
+#else
+    m_webView->didChangeCursor(cursor);
 #endif
 }
 
@@ -1048,8 +1044,7 @@ void ChromeClientImpl::didCancelCompositionOnSelectionChange()
 
 void ChromeClientImpl::willSetInputMethodState()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check the logic later.
     if (m_webView->client())
         m_webView->client()->resetInputMethod();
 #endif
@@ -1084,8 +1079,7 @@ void ChromeClientImpl::showUnhandledTapUIIfNeeded(IntPoint tappedPositionInViewp
 
 void ChromeClientImpl::onMouseDown(Node* mouseDownNode)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (m_webView->client())
         m_webView->client()->onMouseDown(WebNode(mouseDownNode));
 #endif
@@ -1190,8 +1184,7 @@ void ChromeClientImpl::notifyPopupOpeningObservers() const
 
 FloatSize ChromeClientImpl::elasticOverscroll() const
 {
-    ASSERT(false); // BKTODO: return m_webView->elasticOverscroll();
-    return FloatSize();
+    return m_webView->elasticOverscroll();
 }
 
 void ChromeClientImpl::didObserveNonGetFetchFromScript() const

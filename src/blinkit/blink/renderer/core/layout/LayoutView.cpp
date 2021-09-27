@@ -68,6 +68,7 @@ namespace blink {
 
 namespace {
 
+#if 0 // BKTODO:
 class HitTestLatencyRecorder {
 public:
     HitTestLatencyRecorder(bool allowsChildFrameContent)
@@ -79,13 +80,14 @@ public:
     ~HitTestLatencyRecorder()
     {
         int duration = static_cast<int>((WTF::monotonicallyIncreasingTime() - m_start) * 1000000);
-        ASSERT(false); // BKTODO: Platform::current()->histogramCustomCounts(m_allowsChildFrameContent ? "Event.Latency.HitTestRecursive" : "Event.Latency.HitTest", duration, 0, 10000000, 100);
+        Platform::current()->histogramCustomCounts(m_allowsChildFrameContent ? "Event.Latency.HitTestRecursive" : "Event.Latency.HitTest", duration, 0, 10000000, 100);
     }
 
 private:
     double m_start;
     bool m_allowsChildFrameContent;
 };
+#endif
 
 } // namespace
 
@@ -128,7 +130,7 @@ bool LayoutView::hitTest(HitTestResult& result)
     // Note that Document::updateLayout calls its parent's updateLayout.
     DocumentLifecycle::PreventThrottlingScope preventThrottling(document().lifecycle());
     frameView()->updateLifecycleToCompositingCleanPlusScrolling();
-    HitTestLatencyRecorder hitTestLatencyRecorder(result.hitTestRequest().allowsChildFrameContent());
+    // BKTODO: HitTestLatencyRecorder hitTestLatencyRecorder(result.hitTestRequest().allowsChildFrameContent());
     return hitTestNoLifecycleUpdate(result);
 }
 

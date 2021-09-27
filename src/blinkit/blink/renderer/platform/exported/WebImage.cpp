@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebImage.cpp
+// Description: WebImage Class
+//      Author: Ziming Li
+//     Created: 2021-09-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -34,7 +45,7 @@
 #include "platform/graphics/Image.h"
 #include "platform/image-decoders/ImageDecoder.h"
 #include "public/platform/WebData.h"
-#include "public/platform/WebSize.h"
+// BKTODO: #include "public/platform/WebSize.h"
 #include "third_party/skia/include/core/SkImage.h"
 #include "wtf/OwnPtr.h"
 #include "wtf/PassOwnPtr.h"
@@ -44,8 +55,11 @@
 
 namespace blink {
 
-WebImage WebImage::fromData(const WebData& data, const WebSize& desiredSize)
+WebImage WebImage::fromData(const WebData& data, const IntSize& desiredSize)
 {
+    ASSERT(false); // BKTODO:
+    return WebImage();
+#if 0
     RefPtr<SharedBuffer> buffer = PassRefPtr<SharedBuffer>(data);
     OwnPtr<ImageDecoder> decoder(ImageDecoder::create(*buffer.get(), ImageDecoder::AlphaPremultiplied, ImageDecoder::GammaAndColorProfileIgnored));
     if (!decoder)
@@ -83,8 +97,10 @@ WebImage WebImage::fromData(const WebData& data, const WebSize& desiredSize)
         return WebImage();
 
     return WebImage(frame->bitmap());
+#endif
 }
 
+#if 0 // BKTODO:
 WebVector<WebImage> WebImage::framesFromData(const WebData& data)
 {
     // This is to protect from malicious images. It should be big enough that it's never hit in pracice.
@@ -122,6 +138,7 @@ WebVector<WebImage> WebImage::framesFromData(const WebData& data)
 
     return frames;
 }
+#endif
 
 void WebImage::reset()
 {
@@ -138,9 +155,9 @@ bool WebImage::isNull() const
     return m_bitmap.isNull();
 }
 
-WebSize WebImage::size() const
+IntSize WebImage::size() const
 {
-    return WebSize(m_bitmap.width(), m_bitmap.height());
+    return IntSize(m_bitmap.width(), m_bitmap.height());
 }
 
 WebImage::WebImage(const PassRefPtr<Image>& image)
