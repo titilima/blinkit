@@ -108,6 +108,8 @@
 #include "wtf/text/CString.h"
 #include "wtf/text/StringBuilder.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
@@ -2047,6 +2049,7 @@ void Node::handleLocalEvents(Event& event)
 
 void Node::dispatchScopedEvent(PassRefPtrWillBeRawPtr<Event> event)
 {
+    GCGuard _(*event);
     event->setTrusted(true);
     EventDispatcher::dispatchScopedEvent(*this, event->createMediator());
 }
