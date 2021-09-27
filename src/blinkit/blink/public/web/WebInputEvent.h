@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebInputEvent.h
+// Description: WebInputEvent Classes
+//      Author: Ziming Li
+//     Created: 2021-09-25
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -32,10 +43,12 @@
 #define WebInputEvent_h
 
 #include "../platform/WebCommon.h"
-#include "../platform/WebGestureDevice.h"
+// BKTODO: #include "../platform/WebGestureDevice.h"
 #include "../platform/WebPointerProperties.h"
+#if 0 // BKTODO:
 #include "../platform/WebRect.h"
 #include "WebTouchPoint.h"
+#endif
 
 #include <string.h>
 
@@ -452,6 +465,7 @@ public:
     }
 };
 
+#if 0 // BKTODO:
 // WebGestureEvent --------------------------------------------------------------
 
 class WebGestureEvent : public WebInputEvent {
@@ -460,7 +474,7 @@ public:
     int y;
     int globalX;
     int globalY;
-    WebGestureDevice sourceDevice;
+    // BKTODO: WebGestureDevice sourceDevice;
     // This field exists to allow BrowserPlugin to mark GestureScroll events as
     // 'resent' to handle the case where an event is not consumed when first
     // encountered; it should be handled differently by the plugin when it is
@@ -548,7 +562,7 @@ public:
         , y(0)
         , globalX(0)
         , globalY(0)
-        , sourceDevice(WebGestureDeviceUninitialized)
+        // BKTODO: , sourceDevice(WebGestureDeviceUninitialized)
         , resendingPluginId(-1)
     {
         memset(&data, 0, sizeof(data));
@@ -591,6 +605,7 @@ public:
     {
     }
 };
+#endif
 
 #pragma pack(pop)
 

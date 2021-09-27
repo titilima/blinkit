@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebImage.h
+// Description: WebImage Class
+//      Author: Ziming Li
+//     Created: 2021-09-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -32,7 +43,7 @@
 #define WebImage_h
 
 #include "WebCommon.h"
-#include "WebVector.h"
+// BKTODO: #include "WebVector.h"
 
 #include "third_party/skia/include/core/SkBitmap.h"
 
@@ -44,7 +55,7 @@ namespace blink {
 
 class Image;
 class WebData;
-struct WebSize;
+class IntSize;
 
 // A container for an ARGB bitmap.
 class WebImage {
@@ -67,17 +78,19 @@ public:
     // Decodes the given image data. If the image has multiple frames,
     // then the frame whose size is desiredSize is returned. Otherwise,
     // the first frame is returned.
-    BLINK_PLATFORM_EXPORT static WebImage fromData(const WebData&, const WebSize& desiredSize);
+    BLINK_PLATFORM_EXPORT static WebImage fromData(const WebData&, const IntSize& desiredSize);
 
+#if 0 // BKTODO:
     // Returns a list of all frames in the image. Only the first frame at each pixel
     // size will be returned.
     BLINK_PLATFORM_EXPORT static WebVector<WebImage> framesFromData(const WebData&);
+#endif
 
     BLINK_PLATFORM_EXPORT void reset();
     BLINK_PLATFORM_EXPORT void assign(const WebImage&);
 
     BLINK_PLATFORM_EXPORT bool isNull() const;
-    BLINK_PLATFORM_EXPORT WebSize size() const;
+    BLINK_PLATFORM_EXPORT IntSize size() const;
 
 #if INSIDE_BLINK
     BLINK_PLATFORM_EXPORT WebImage(const WTF::PassRefPtr<Image>&);

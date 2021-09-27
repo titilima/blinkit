@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebCursorInfo.h
+// Description: WebCursorInfo Struct
+//      Author: Ziming Li
+//     Created: 2021-09-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -32,7 +43,11 @@
 #define WebCursorInfo_h
 
 #include "WebImage.h"
+#if 0 // BKTODO:
 #include "WebPoint.h"
+#else
+#include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
+#endif
 
 #ifdef WIN32
 typedef struct HICON__* HICON;
@@ -92,7 +107,7 @@ struct WebCursorInfo {
     };
 
     Type type;
-    WebPoint hotSpot;
+    IntPoint hotSpot;
     float imageScaleFactor;
     WebImage customImage;
 
