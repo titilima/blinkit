@@ -27,7 +27,7 @@ using namespace blink;
 namespace BlinKit {
 
 LoaderTask::LoaderTask(WebURLLoader *loader, const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client)
-    : GCGuard(client), m_loader(loader), m_taskRunner(taskRunner), m_client(client)
+    : m_clientGuard(client), m_loader(loader), m_taskRunner(taskRunner), m_client(client)
 {
 }
 

@@ -33,7 +33,7 @@ class WebURLLoaderClient;
 
 namespace BlinKit {
 
-class LoaderTask : private GCGuard
+class LoaderTask
 {
 public:
     virtual ~LoaderTask(void);
@@ -53,6 +53,7 @@ private:
     virtual int PerformRequest(void) = 0;
     virtual int PopulateResponse(blink::ResourceResponse &resourceResponse, std::string_view &body) const = 0;
 
+    GCGuard m_clientGuard;
     blink::WebURLLoader *m_loader;
 };
 
