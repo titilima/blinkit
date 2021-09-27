@@ -39,7 +39,7 @@ bool HitTestCache::lookupCachedResult(HitTestResult& hitResult, uint64_t domTree
             }
         }
     }
-    ASSERT(false); // BKTODO: Platform::current()->histogramEnumeration("Event.HitTest", static_cast<int>(metric), static_cast<int>(HitHistogramMetric::MAX_HIT_METRIC));
+    // BKTODO: Platform::current()->histogramEnumeration("Event.HitTest", static_cast<int>(metric), static_cast<int>(HitHistogramMetric::MAX_HIT_METRIC));
     return result;
 }
 

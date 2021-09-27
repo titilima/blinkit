@@ -14,19 +14,21 @@
 #include "blinkit/app/app_impl.h"
 #include "blinkit/blink/renderer/core/editing/FrameSelection.h"
 #include "blinkit/blink/renderer/core/editing/InputMethodController.h"
+#include "blinkit/blink/renderer/core/events/UIEventWithKeyState.h"
 #include "blinkit/blink/renderer/core/frame/FrameHost.h"
 #include "blinkit/blink/renderer/core/frame/FrameView.h"
 #include "blinkit/blink/renderer/core/frame/LocalFrame.h"
 #include "blinkit/blink/renderer/core/frame/Settings.h"
+#include "blinkit/blink/renderer/core/input/EventHandler.h"
 #include "blinkit/blink/renderer/core/layout/LayoutView.h"
 #include "blinkit/blink/renderer/core/layout/TextAutosizer.h"
 #include "blinkit/blink/renderer/core/loader/FrameLoadRequest.h"
 #include "blinkit/blink/renderer/core/page/FocusController.h"
 #include "blinkit/blink/renderer/core/page/Page.h"
 #include "blinkit/blink/renderer/web/ChromeClientImpl.h"
-#include "blinkit/blink/renderer/web/PageWidgetDelegate.h"
 #include "blinkit/blink/renderer/web/ResizeViewportAnchor.h"
 #include "blinkit/ui/rendering_scheduler.h"
+#include "chromium/base/time/time.h"
 #include "third_party/zed/include/zed/float.hpp"
 #if 0 // BKTODO:
 #include "blinkit/blink/renderer/core/editing/editor.h"
@@ -46,6 +48,8 @@ using namespace BlinKit;
 // Constants for viewport anchoring on resize.
 static const float ViewportAnchorCoordX = 0.5f;
 static const float ViewportAnchorCoordY = 0;
+
+const WebInputEvent* WebViewImpl::m_currentInputEvent = nullptr;
 
 WebViewImpl::WebViewImpl(ClientCaller &clientCaller, PageVisibilityState visibilityState, SkColor baseBackgroundColor)
     : FrameLoaderClient(AppImpl::Get().GetAppCaller(), clientCaller)
@@ -200,6 +204,100 @@ PageScaleConstraintsSet& WebViewImpl::GetPageScaleConstraintsSet(void) const
     return m_page->frameHost().pageScaleConstraintsSet();
 }
 
+WebInputEventResult WebViewImpl::handleCharEvent(const WebKeyboardEvent &event)
+{
+    ASSERT(false); // BKTODO:
+    return WebInputEventResult::NotHandled;
+}
+
+WebInputEventResult WebViewImpl::handleKeyEvent(const WebKeyboardEvent &event)
+{
+    ASSERT(false); // BKTODO:
+    return WebInputEventResult::NotHandled;
+}
+
+void WebViewImpl::handleMouseDown(LocalFrame &frame, const WebMouseEvent &event)
+{
+#if 0 // BKTODO:
+    // If there is a popup open, close it as the user is clicking on the page
+    // (outside of the popup). We also save it so we can prevent a click on an
+    // element from immediately reopening the same popup.
+    RefPtr<WebPagePopupImpl> pagePopup;
+    if (event.button == WebMouseEvent::ButtonLeft) {
+        pagePopup = m_pagePopup;
+        hidePopups();
+        ASSERT(!m_pagePopup);
+    }
+#endif
+
+    m_mouseEventSession.SetLastMouseDownPosition(event.x, event.y);
+
+    // Take capture on a mouse down on a plugin so we can send it mouse events.
+    // If the hit node is a plugin but a scrollbar is over it don't start mouse
+    // capture because it will interfere with the scrollbar receiving events.
+    IntPoint point(event.x, event.y);
+    if (WebMouseEvent::ButtonLeft == event.button && m_page->mainFrame()->isLocalFrame())
+    {
+        point = m_page->deprecatedLocalMainFrame()->view()->rootFrameToContents(point);
+        HitTestResult result(m_page->deprecatedLocalMainFrame()->eventHandler().hitTestResultAtPoint(point));
+        result.setToShadowHostIfInUserAgentShadowRoot();
+#if 0 // BKTODO:
+        Node* hitNode = result.innerNodeOrImageMapImage();
+
+        if (!result.scrollbar() && hitNode && hitNode->layoutObject() && hitNode->layoutObject()->isEmbeddedObject()) {
+            m_mouseCaptureNode = hitNode;
+            TRACE_EVENT_ASYNC_BEGIN0("input", "capturing mouse", this);
+        }
+#endif
+    }
+
+    PageWidgetEventHandler::handleMouseDown(frame, event);
+
+#if 0 // BKTODO:
+    if (event.button == WebMouseEvent::ButtonLeft && m_mouseCaptureNode)
+        m_mouseCaptureGestureToken = mainFrame.eventHandler().takeLastMouseDownGestureToken();
+
+    if (m_pagePopup && pagePopup && m_pagePopup->hasSamePopupClient(pagePopup.get())) {
+        // That click triggered a page popup that is the same as the one we just closed.
+        // It needs to be closed.
+        cancelPagePopup();
+    }
+#endif
+
+    // Dispatch the contextmenu event regardless of if the click was swallowed.
+    if (!Settings::showContextMenuOnMouseUp())
+    {
+#if OS(MACOSX)
+        if (event.button == WebMouseEvent::ButtonRight
+            || (event.button == WebMouseEvent::ButtonLeft
+                && event.modifiers & WebMouseEvent::ControlKey))
+            mouseContextMenu(event);
+#else
+        if (WebMouseEvent::ButtonRight == event.button)
+            mouseContextMenu(event);
+#endif
+    }
+}
+
+void WebViewImpl::handleMouseUp(LocalFrame &frame, const WebMouseEvent &event)
+{
+    PageWidgetEventHandler::handleMouseUp(frame, event);
+
+    if (Settings::showContextMenuOnMouseUp())
+    {
+        // Dispatch the contextmenu event regardless of if the click was swallowed.
+        // On Mac/Linux, we handle it on mouse down, not up.
+        if (WebMouseEvent::ButtonRight == event.button)
+            mouseContextMenu(event);
+    }
+}
+
+WebInputEventResult WebViewImpl::handleMouseWheel(LocalFrame &frame, const WebMouseWheelEvent &event)
+{
+    ASSERT(false); // BKTODO:
+    return WebInputEventResult::NotHandled;
+}
+
 void WebViewImpl::HidePopups(void)
 {
 #if 0 // BKTODO:
@@ -308,6 +406,11 @@ float WebViewImpl::MinimumPageScaleFactor(void) const
     return GetPageScaleConstraintsSet().finalConstraints().minimumScale;
 }
 
+void WebViewImpl::mouseContextMenu(const WebMouseEvent &event)
+{
+    ASSERT(false); // BKTODO:
+}
+
 float WebViewImpl::PageScaleFactor(void) const
 {
     if (m_page)
@@ -344,6 +447,77 @@ void WebViewImpl::PerformResize(void)
 void WebViewImpl::PostLayoutResize(LocalFrame *frame)
 {
     frame->view()->resize(MainFrameSize());
+}
+
+WebInputEventResult WebViewImpl::ProcessInput(const WebInputEvent &e)
+{
+    ASSERT(isMainThread());
+
+    // TODO(dcheng): The fact that this is getting called when there is no local
+    // main frame is problematic and probably indicates a bug in the input event
+    // routing code.
+    if (!m_frame)
+        return WebInputEventResult::NotHandled;
+
+    // If we've started a drag and drop operation, ignore input events until
+    // we're done.
+    if (m_doingDragAndDrop)
+        return WebInputEventResult::HandledSuppressed;
+
+    // Report the event to be NOT processed by WebKit, so that the browser can handle it appropriately.
+    if (m_ignoreInputEvents)
+        return WebInputEventResult::NotHandled;
+
+    zed::scoped_swap<const WebInputEvent *> currentEventChange(m_currentInputEvent, &e);
+    UIEventWithKeyState::clearNewTabModifierSetFromIsolatedWorld();
+
+    if (isPointerLocked() && WebInputEvent::isMouseEventType(e.type))
+    {
+        ASSERT(false); // BKTODO: pointerLockMouseEvent(inputEvent);
+        return WebInputEventResult::HandledSystem;
+    }
+
+    // FIXME: This should take in the intended frame, not the local frame root.
+    WebInputEventResult result = PageWidgetDelegate::handleInputEvent(*this, e, m_frame.get());
+    if (result != WebInputEventResult::NotHandled)
+        return result;
+
+    return WebInputEventResult::NotHandled;
+}
+
+void WebViewImpl::ProcessMouseEvent(WebInputEvent::Type type, WebPointerProperties::Button button, int x, int y)
+{
+    ASSERT(IsClientThread());
+    auto task = [this, type, button, x, y]
+    {
+        ScopedRenderingScheduler _(this);
+
+        WebMouseEvent e;
+        e.timeStampSeconds = base::Time::Now().ToDoubleT();
+        e.type = type;
+        if (WebInputEvent::MouseDown == type || WebInputEvent::MouseMove == type)
+        {
+            switch (button)
+            {
+                case WebPointerProperties::ButtonLeft:
+                    e.modifiers |= WebInputEvent::LeftButtonDown;
+                    break;
+                case WebPointerProperties::ButtonRight:
+                    e.modifiers |= WebInputEvent::RightButtonDown;
+                    break;
+                case WebPointerProperties::ButtonMiddle:
+                    e.modifiers |= WebInputEvent::MiddleButtonDown;
+                    break;
+            }
+        }
+        e.x = e.windowX = e.globalX = x;
+        e.y = e.windowY = e.globalY = y;
+        e.button = button;
+        m_mouseEventSession.PreProcess(e);
+        ProcessInput(e);
+        m_mouseEventSession.PostProcess(e);
+    };
+    m_appCaller.SyncCall(BLINK_FROM_HERE, task);
 }
 
 bool WebViewImpl::ProcessTitleChange(const std::string &title) const

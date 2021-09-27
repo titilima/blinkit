@@ -20,6 +20,8 @@
 #include "blinkit/blink/renderer/web/ContextMenuClientImpl.h"
 #include "blinkit/blink/renderer/web/DragClientImpl.h"
 #include "blinkit/blink/renderer/web/EditorClientImpl.h"
+#include "blinkit/blink/renderer/web/PageWidgetDelegate.h"
+#include "blinkit/ui/mouse_event_session.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/resize_viewport_anchor.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
@@ -36,9 +38,10 @@ namespace blink {
 class BrowserControls;
 class PageScaleConstraintsSet;
 struct ViewportDescription;
+struct WebCursorInfo;
 }
 
-class WebViewImpl : public blink::FrameLoaderClient
+class WebViewImpl : public blink::FrameLoaderClient, public blink::PageWidgetEventHandler
 {
 public:
     virtual ~WebViewImpl(void);
@@ -63,6 +66,8 @@ public:
     virtual void InvalidateNativeView(const blink::IntRect &rect) = 0;
 
     void didChangeContentsSize(void);
+    virtual void didChangeCursor(const blink::WebCursorInfo &cursorInfo) = 0;
+    blink::FloatSize elasticOverscroll(void) const { return m_elasticOverscroll; }
     void invalidateRect(const blink::IntRect &rect);
     void layoutUpdated(blink::LocalFrame *frame);
     void scheduleAnimation(void);
@@ -83,6 +88,7 @@ public:
 protected:
     WebViewImpl(BlinKit::ClientCaller &clientCaller, blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor = SK_ColorWHITE);
 
+    void ProcessMouseEvent(blink::WebInputEvent::Type type, blink::WebPointerProperties::Button button, int x, int y);
     bool ProcessTitleChange(const std::string &newTitle) const;
     // BKTODO: void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
     void Resize(const blink::IntSize &size);
@@ -90,7 +96,9 @@ protected:
     void SetFocus(bool focus);
     void SetVisibilityState(blink::PageVisibilityState visibilityState);
 
+    mutable zed::shared_mutex m_lock;
     mutable zed::mutex m_canvasLock;
+    BlinKit::MouseEventSession m_mouseEventSession;
 private:
     void SetFocusImpl(bool focus);
     void SetVisibilityStateImpl(blink::PageVisibilityState visibilityState, bool isInitialState);
@@ -114,10 +122,13 @@ private:
     void DidUpdateTopControls(void);
     blink::PageScaleConstraintsSet& GetPageScaleConstraintsSet(void) const;
     void HidePopups(void);
+    constexpr bool isPointerLocked(void) { return false; } // May be useful in the future, just leave it here.
     float MinimumPageScaleFactor(void) const;
+    void mouseContextMenu(const blink::WebMouseEvent &event);
     float PageScaleFactor(void) const;
     void PerformResize(void);
     void PostLayoutResize(blink::LocalFrame *frame);
+    blink::WebInputEventResult ProcessInput(const blink::WebInputEvent &e);
     void RefreshPageScaleFactorAfterLayout(void);
     void ResizeViewWhileAnchored(blink::FrameView *view);
     void ResumeTreeViewCommitsIfRenderingReady(void);
@@ -142,13 +153,19 @@ private:
     void transitionToCommittedForNewPage(void) final;
     void dispatchDidFinishLoad(void) final;
     void didRemoveAllPendingStylesheet(void) final;
+    // PageWidgetEventHandler
+    void handleMouseDown(blink::LocalFrame &frame, const blink::WebMouseEvent &event) override;
+    void handleMouseUp(blink::LocalFrame &frame, const blink::WebMouseEvent &event) override;
+    blink::WebInputEventResult handleMouseWheel(blink::LocalFrame &frame, const blink::WebMouseWheelEvent &event) override;
+    blink::WebInputEventResult handleKeyEvent(const blink::WebKeyboardEvent &event) override;
+    blink::WebInputEventResult handleCharEvent(const blink::WebKeyboardEvent &event) override;
+
 #if 0 // BKTODO:
     // LocalFrameClient
     bool HasWebView(void) const final { return true; }
     void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) final;
 #endif
 
-    mutable zed::shared_mutex m_lock;
     BkWebViewClient m_client;
     std::unique_ptr<blink::ChromeClient> m_chromeClient;
     blink::ContextMenuClientImpl m_contextMenuClientImpl;
@@ -161,12 +178,15 @@ private:
     BlinKit::GCUniqueRoot<blink::LocalFrame> m_frame;
     SkColor m_baseBackgroundColor;
     std::unique_ptr<SkCanvas> m_canvas;
+    blink::FloatSize m_elasticOverscroll;
 
+    static const blink::WebInputEvent *m_currentInputEvent;
     // TODO(ekaramad): Can we remove this and make sure IME events are not called
     // when there is no page focus?
     // Represents whether or not this object should process incoming IME events.
     bool m_imeAcceptEvents = true;
-
+    bool m_doingDragAndDrop = false;
+    bool m_ignoreInputEvents = false;
 #if 0 // BKTODO:
     bool m_shouldDispatchFirstVisuallyNonEmptyLayout = false;
     bool m_shouldDispatchFirstLayoutAfterFinishedParsing = false;

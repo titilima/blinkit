@@ -56,10 +56,8 @@
 #include "platform/graphics/paint/DrawingRecorder.h"
 #include "platform/graphics/paint/SkPictureBuilder.h"
 #include "platform/transforms/AffineTransform.h"
-#if 0 // BKTODO:
-#include "public/web/WebInputEvent.h"
+// BKTODO: #include "public/web/WebInputEvent.h"
 #include "web/WebInputEventConversion.h"
-#endif
 #include "wtf/CurrentTime.h"
 
 namespace blink {
@@ -121,7 +119,6 @@ void PageWidgetDelegate::paintIgnoringCompositing(Page& page, WebCanvas* canvas,
     paintInternal(page, canvas, rect, root, GlobalPaintFlattenCompositingLayers);
 }
 
-#if 0 // BKTODO:
 WebInputEventResult PageWidgetDelegate::handleInputEvent(PageWidgetEventHandler& handler, const WebInputEvent& event, LocalFrame* root)
 {
     switch (event.type) {
@@ -163,6 +160,7 @@ WebInputEventResult PageWidgetDelegate::handleInputEvent(PageWidgetEventHandler&
 
     case WebInputEvent::Char:
         return handler.handleCharEvent(static_cast<const WebKeyboardEvent&>(event));
+#if 0 // BKTODO:
     case WebInputEvent::GestureScrollBegin:
     case WebInputEvent::GestureScrollEnd:
     case WebInputEvent::GestureScrollUpdate:
@@ -192,16 +190,15 @@ WebInputEventResult PageWidgetDelegate::handleInputEvent(PageWidgetEventHandler&
         // Touchscreen pinch events are currently not handled in main thread. Once they are,
         // these should be passed to |handleGestureEvent| similar to gesture scroll events.
         return WebInputEventResult::NotHandled;
+#endif
     default:
         return WebInputEventResult::NotHandled;
     }
 }
-#endif
 
 // ----------------------------------------------------------------
 // Default handlers for PageWidgetEventHandler
 
-#if 0 // BKTODO:
 void PageWidgetEventHandler::handleMouseMove(LocalFrame& mainFrame, const WebMouseEvent& event)
 {
     mainFrame.eventHandler().handleMouseMoveEvent(PlatformMouseEventBuilder(mainFrame.view(), event));
@@ -227,6 +224,7 @@ WebInputEventResult PageWidgetEventHandler::handleMouseWheel(LocalFrame& mainFra
     return mainFrame.eventHandler().handleWheelEvent(PlatformWheelEventBuilder(mainFrame.view(), event));
 }
 
+#if 0 // BKTODO:
 WebInputEventResult PageWidgetEventHandler::handleTouchEvent(LocalFrame& mainFrame, const WebTouchEvent& event)
 {
     return mainFrame.eventHandler().handleTouchEvent(PlatformTouchEventBuilder(mainFrame.view(), event));

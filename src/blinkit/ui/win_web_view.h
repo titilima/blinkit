@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "blinkit/blink/public/platform/WebCursorInfo.h"
 #include "blinkit/ui/web_view_impl.h"
 
 namespace BlinKit {
@@ -33,6 +34,7 @@ private:
 
     bool ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
     void OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc);
+    void OnMouse(UINT message, UINT keyFlags, int x, int y);
     static BOOL OnNCCreate(HWND hwnd, LPCREATESTRUCT cs);
     void OnNCDestroy(HWND hwnd);
     void OnPaint(HWND hwnd);
@@ -43,12 +45,15 @@ private:
     void dispatchDidReceiveTitle(const String &title) override;
     // WebViewImpl
     void InvalidateNativeView(const blink::IntRect &rect) override;
+    void didChangeCursor(const blink::WebCursorInfo &cursorInfo) override;
     SkBitmap PrepareBitmapForCanvas(const blink::IntSize &size) override;
 
     HWND m_hWnd;
     HDC m_memoryDC = nullptr;
     HBITMAP m_oldBitmap = nullptr;
     UINT m_dpi = 96;
+    bool m_changingSizeOrPosition = false;
+    blink::WebCursorInfo m_cursorInfo;
 };
 
 } // namespace BlinKit

@@ -9,7 +9,7 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "win_web_view.h"
+#include "./win_web_view.h"
 
 #include <windowsx.h>
 #include "blinkit/app/win_app.h"
@@ -17,7 +17,6 @@
 #include "blinkit/win/message_task.h"
 #include "blinkit/win/view_store.h"
 #include "third_party/zed/include/zed/string/conv.hpp"
-// BKTODO: #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 using namespace blink;
 
@@ -50,6 +49,8 @@ WinWebView::WinWebView(HWND hWnd, ClientCaller &clientCaller, bool isWindowVisib
     m_memoryDC = CreateCompatibleDC(dc);
     ReleaseDC(m_hWnd, dc);
     UpdateScaleFactor();
+
+    m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_ARROW);
 }
 
 WinWebView::~WinWebView(void)
@@ -59,6 +60,80 @@ WinWebView::~WinWebView(void)
     DeleteDC(m_memoryDC);
 
     g_viewStore.OnViewDestroyed(m_hWnd);
+}
+
+void WinWebView::didChangeCursor(const WebCursorInfo &cursorInfo)
+{
+    if (m_changingSizeOrPosition)
+        return;
+
+    PCTSTR cursorName = nullptr;
+    switch (cursorInfo.type)
+    {
+        case WebCursorInfo::TypePointer:
+            cursorName = IDC_ARROW;
+            break;
+        case WebCursorInfo::TypeCross:
+            cursorName = IDC_CROSS;
+            break;
+        case WebCursorInfo::TypeHand:
+            cursorName = IDC_HAND;
+            break;
+        case WebCursorInfo::TypeIBeam:
+            cursorName = IDC_IBEAM;
+            break;
+        case WebCursorInfo::TypeWait:
+            cursorName = IDC_WAIT;
+            break;
+        case WebCursorInfo::TypeHelp:
+            cursorName = IDC_HELP;
+            break;
+        case WebCursorInfo::TypeEastResize:
+        case WebCursorInfo::TypeWestResize:
+        case WebCursorInfo::TypeEastWestResize:
+        case WebCursorInfo::TypeColumnResize:
+            cursorName = IDC_SIZEWE;
+            break;
+        case WebCursorInfo::TypeNorthResize:
+        case WebCursorInfo::TypeSouthResize:
+        case WebCursorInfo::TypeNorthSouthResize:
+        case WebCursorInfo::TypeRowResize:
+            cursorName = IDC_SIZENS;
+            break;
+        case WebCursorInfo::TypeNorthEastResize:
+        case WebCursorInfo::TypeSouthWestResize:
+            cursorName = IDC_SIZENESW;
+            break;
+        case WebCursorInfo::TypeNorthWestResize:
+        case WebCursorInfo::TypeSouthEastResize:
+            cursorName = IDC_SIZENWSE;
+            break;
+        case WebCursorInfo::TypeNorthEastSouthWestResize:
+        case WebCursorInfo::TypeNorthWestSouthEastResize:
+        case WebCursorInfo::TypeMove:
+            cursorName = IDC_SIZEALL;
+            break;
+        case WebCursorInfo::TypeProgress:
+            cursorName = IDC_APPSTARTING;
+            break;
+        case WebCursorInfo::TypeNoDrop:
+        case WebCursorInfo::TypeNotAllowed:
+            cursorName = IDC_NO;
+            break;
+        case WebCursorInfo::TypeCustom:
+            break;
+        default:
+            ASSERT_NOT_REACHED();
+            cursorName = IDC_ARROW;
+    }
+
+    auto _ = m_lock.guard();
+    if (WebCursorInfo::TypeCustom == m_cursorInfo.type)
+        DestroyCursor(m_cursorInfo.externalHandle);
+    m_cursorInfo = cursorInfo;
+    if (nullptr != cursorName)
+        m_cursorInfo.externalHandle = LoadCursor(nullptr, cursorName);
+    SetCursor(m_cursorInfo.externalHandle);
 }
 
 void WinWebView::dispatchDidReceiveTitle(const String &title)
@@ -88,6 +163,74 @@ void WinWebView::OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc)
         SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
+void WinWebView::OnMouse(UINT message, UINT keyFlags, int x, int y)
+{
+    if (m_changingSizeOrPosition)
+        return;
+
+    bool trackLeave = !m_mouseEventSession.MouseEntered();
+
+    WebInputEvent::Type type;
+    WebPointerProperties::Button button = WebMouseEvent::ButtonNone;
+    switch (message)
+    {
+        case WM_LBUTTONDOWN:
+            type = WebInputEvent::MouseDown;
+            button = WebPointerProperties::ButtonLeft;
+            SetCapture(m_hWnd);
+            break;
+        case WM_LBUTTONUP:
+            type = WebInputEvent::MouseUp;
+            button = WebPointerProperties::ButtonLeft;
+            break;
+        case WM_MOUSEMOVE:
+            type = WebInputEvent::MouseMove;
+            if (MK_LBUTTON & keyFlags)
+                button = WebPointerProperties::ButtonLeft;
+            else if (MK_RBUTTON & keyFlags)
+                button = WebPointerProperties::ButtonRight;
+            else if (MK_MBUTTON & keyFlags)
+                button = WebPointerProperties::ButtonMiddle;
+            break;
+        case WM_RBUTTONDOWN:
+            type = WebInputEvent::MouseDown;
+            button = WebPointerProperties::ButtonRight;
+            break;
+        case WM_RBUTTONUP:
+            type = WebInputEvent::MouseUp;
+            button = WebPointerProperties::ButtonRight;
+            break;
+        case WM_MOUSELEAVE:
+            type = WebInputEvent::MouseLeave;
+            break;
+        case WM_MBUTTONDOWN:
+            type = WebInputEvent::MouseDown;
+            button = WebPointerProperties::ButtonMiddle;
+            break;
+        case WM_MBUTTONUP:
+            type = WebInputEvent::MouseUp;
+            button = WebPointerProperties::ButtonMiddle;
+            break;
+        default:
+            NOTREACHED();
+            return;
+    }
+
+    ProcessMouseEvent(type, button, x, y);
+
+    if (WM_LBUTTONUP == message)
+        ReleaseCapture();
+
+    if (trackLeave)
+    {
+        TRACKMOUSEEVENT tme = { 0 };
+        tme.cbSize = sizeof(tme);
+        tme.dwFlags = TME_LEAVE;
+        tme.hwndTrack = m_hWnd;
+        TrackMouseEvent(&tme);
+    }
+}
+
 BOOL WinWebView::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
 {
     AppImpl &app = AppImpl::Get();
@@ -101,6 +244,9 @@ BOOL WinWebView::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
         webView->Initialize();
     };
     app.GetAppCaller().SyncCall(BLINK_FROM_HERE, task);
+
+    if (GetClassLong(hwnd, GCL_STYLE) & CS_DBLCLKS)
+        webView->m_mouseEventSession.SetHasDoubleClickEvent();
     return TRUE;
 }
 
@@ -185,9 +331,39 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
         case WM_ERASEBKGND:
             *result = TRUE;
             break;
+
+        case WM_LBUTTONDOWN:
+        case WM_LBUTTONUP:
+        case WM_MOUSEMOVE:
+        case WM_RBUTTONDOWN:
+        case WM_RBUTTONUP:
+        case WM_MBUTTONDOWN:
+        case WM_MBUTTONUP:
+            OnMouse(Msg, wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+            break;
+
+        case WM_SETCURSOR:
+        {
+            const UINT hitTestCode = LOWORD(lParam);
+            if (HTCLIENT != hitTestCode)
+                return false;
+
+            auto _ = m_lock.guard_shared();
+            SetCursor(m_cursorInfo.externalHandle);
+            *result = TRUE;
+            break;
+        }
+
         case WM_SIZE:
             HANDLE_WM_SIZE(hWnd, wParam, lParam, OnSize);
             break;
+        case WM_ENTERSIZEMOVE:
+            m_changingSizeOrPosition = true;
+            break;
+        case WM_EXITSIZEMOVE:
+            m_changingSizeOrPosition = false;
+            break;
+
         case WM_SETFOCUS:
             WebViewImpl::SetFocus(true);
             break;
