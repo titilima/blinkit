@@ -390,7 +390,7 @@ DEFINE_TRACE(EventHandler)
 
 DragState& EventHandler::dragState()
 {
-    DEFINE_STATIC_LOCAL(Persistent<DragState>, state, (new DragState()));
+    static DragState *state = GCMakeGlobal<DragState>();
     return *state;
 }
 
@@ -575,8 +575,7 @@ void EventHandler::updateSelectionForMouseDrag()
 
 WebInputEventResult EventHandler::handleMouseReleaseEvent(const MouseEventWithHitTestResults& event)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     AutoscrollController* controller = autoscrollController();
     if (controller && controller->autoscrollInProgress())
         stopAutoscroll();

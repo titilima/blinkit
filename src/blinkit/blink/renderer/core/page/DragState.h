@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DragState.h
+// Description: DragState Class
+//      Author: Ziming Li
+//     Created: 2021-09-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc.
  *
@@ -37,7 +48,7 @@ class DataTransfer;
 class Node;
 
 // TODO(Oilpan): when Node is always on the heap, just derive from GarbageCollected<>.
-class DragState final : public GarbageCollectedFinalized<DragState> {
+class DragState final : public BlinKit::GCObject {
     WTF_MAKE_NONCOPYABLE(DragState);
 public:
     DragState() { }
