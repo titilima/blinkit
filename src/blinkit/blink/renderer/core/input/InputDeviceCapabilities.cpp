@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InputDeviceCapabilities.cpp
+// Description: InputDeviceCapabilities Class
+//      Author: Ziming Li
+//     Created: 2021-09-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,14 +33,14 @@ InputDeviceCapabilities::~InputDeviceCapabilities()
 
 InputDeviceCapabilities* InputDeviceCapabilities::firesTouchEventsSourceCapabilities()
 {
-    DEFINE_STATIC_LOCAL(Persistent<InputDeviceCapabilities>, instance, (InputDeviceCapabilities::create(true)));
-    return instance;
+    static InputDeviceCapabilities instance(true);
+    return &instance;
 }
 
 InputDeviceCapabilities* InputDeviceCapabilities::doesntFireTouchEventsSourceCapabilities()
 {
-    DEFINE_STATIC_LOCAL(Persistent<InputDeviceCapabilities>, instance, (InputDeviceCapabilities::create(false)));
-    return instance;
+    static InputDeviceCapabilities instance(false);
+    return &instance;
 }
 
 } // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InputDeviceCapabilities.h
+// Description: InputDeviceCapabilities Class
+//      Author: Ziming Li
+//     Created: 2021-09-26
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -11,7 +22,7 @@
 
 namespace blink {
 
-class CORE_EXPORT InputDeviceCapabilities final : public GarbageCollectedFinalized<InputDeviceCapabilities>, public ScriptWrappable {
+class CORE_EXPORT InputDeviceCapabilities final : public ScriptWrappable {
     DEFINE_WRAPPERTYPEINFO();
 
 public:
