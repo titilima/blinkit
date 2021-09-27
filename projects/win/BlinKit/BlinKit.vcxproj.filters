@@ -4038,6 +4038,18 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\text_break_iterator_impl.cpp">
       <Filter>blink\renderer\platform\text</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\mouse_event_session.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\WebInputEventConversion.cpp">
+      <Filter>blink\renderer\web</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebCursorInfo.cpp">
+      <Filter>blink\renderer\platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebImage.cpp">
+      <Filter>blink\renderer\platform\exported</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -4879,6 +4891,21 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\brkiter\line_break_iterator.h">
       <Filter>blink\renderer\platform\text\brkiter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebInputEvent.h">
+      <Filter>blink\public\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\mouse_event_session.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\WebInputEventConversion.h">
+      <Filter>blink\renderer\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\IntSize.h">
+      <Filter>blink\renderer\platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\IntPoint.h">
+      <Filter>blink\renderer\platform\geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
