@@ -778,8 +778,7 @@ bool FrameSelection::contains(const LayoutPoint& point)
 // mouse or the keyboard after setting the selection.
 void FrameSelection::selectFrameElementInParentIfFullySelected()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // Find the parent frame; if there is none, then we have nothing to do.
     Frame* parent = m_frame->tree().parent();
     if (!parent)

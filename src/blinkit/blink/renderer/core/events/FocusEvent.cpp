@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FocusEvent.cpp
+// Description: FocusEvent Class
+//      Author: Ziming Li
+//     Created: 2021-09-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -64,7 +75,7 @@ PassRefPtrWillBeRawPtr<EventDispatchMediator> FocusEvent::createMediator()
 
 DEFINE_TRACE(FocusEvent)
 {
-    visitor->trace(m_relatedTarget);
+    // BKTODO: visitor->trace(m_relatedTarget);
     UIEvent::trace(visitor);
 }
 

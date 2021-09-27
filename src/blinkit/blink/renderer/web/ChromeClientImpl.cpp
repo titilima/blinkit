@@ -228,8 +228,7 @@ void ChromeClientImpl::takeFocus(WebFocusType type)
 
 void ChromeClientImpl::focusedNodeChanged(Node* fromNode, Node* toNode)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: May be useful in the future, leave it here.
     if (!m_webView->client())
         return;
 

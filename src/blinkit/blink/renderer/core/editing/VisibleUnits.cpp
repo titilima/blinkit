@@ -2408,13 +2408,10 @@ static bool endsOfNodeAreVisuallyDistinctPositions(Node* node)
     if (isHTMLTableElement(*node))
         return false;
 
-    ASSERT(false); // BKTODO:
-#if 0
     // A Marquee elements are moving so we should assume their ends are always
     // visibily distinct.
     if (isHTMLMarqueeElement(*node))
         return true;
-#endif
 
     // There is a VisiblePosition inside an empty inline-block container.
     return node->layoutObject()->isAtomicInlineLevel() && canHaveChildrenForEditing(node) && toLayoutBox(node->layoutObject())->size().height() != 0 && !node->hasChildren();
