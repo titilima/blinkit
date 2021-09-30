@@ -154,12 +154,12 @@ GCUniqueRoot<LocalFrame> LocalFrame::create(FrameLoaderClient* client, FrameHost
 
 void LocalFrame::setView(PassRefPtrWillBeRawPtr<FrameView> view)
 {
-    ASSERT(!m_view || m_view != view);
+    ASSERT(!m_view || m_view.get() != view);
     ASSERT(!document() || !document()->isActive());
 
     eventHandler().clear();
 
-    m_view = view;
+    m_view.reset(view);
 }
 
 void LocalFrame::createView(const IntSize& viewportSize, const Color& backgroundColor, bool transparent,
@@ -229,9 +229,11 @@ DEFINE_TRACE(LocalFrame)
     // BKTODO: visitor->trace(m_instrumentingAgents);
 #if ENABLE(OILPAN)
     visitor->trace(m_loader);
-    // BKTODO: visitor->trace(m_navigationScheduler);
+#if 0 // BKTODO:
+    visitor->trace(m_navigationScheduler);
     visitor->trace(m_view);
-    // BKTODO: visitor->trace(m_domWindow);
+    visitor->trace(m_domWindow);
+#endif
     visitor->trace(m_pagePopupOwner);
 #if 0 // BKTODO:
     visitor->trace(m_editor);

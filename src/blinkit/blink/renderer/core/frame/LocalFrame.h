@@ -229,7 +229,7 @@ private:
     mutable FrameLoader m_loader;
     // BKTODO: OwnPtrWillBeMember<NavigationScheduler> m_navigationScheduler;
 
-    RefPtrWillBeMember<FrameView> m_view;
+    BlinKit::GCUniqueRoot<FrameView> m_view;
     BlinKit::GCUniqueRoot<LocalDOMWindow> m_domWindow;
     // Usually 0. Non-null if this is the top frame of PagePopup.
     RefPtrWillBeMember<Element> m_pagePopupOwner;
