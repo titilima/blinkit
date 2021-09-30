@@ -206,7 +206,7 @@ FrameView::~FrameView()
 DEFINE_TRACE(FrameView)
 {
 #if ENABLE(OILPAN)
-    visitor->trace(m_frame);
+    // BKTODO: visitor->trace(m_frame);
     visitor->trace(m_nodeToDraw);
     visitor->trace(m_scrollAnchor);
     visitor->trace(m_scrollableAreas);
@@ -525,7 +525,7 @@ bool FrameView::shouldUseCustomScrollbars(Element*& customScrollbarElement, Loca
     // If we have an owning ipage/LocalFrame element, then it can set the custom scrollbar also.
     LayoutPart* frameLayoutObject = m_frame->ownerLayoutObject();
     if (frameLayoutObject && frameLayoutObject->style()->hasPseudoStyle(SCROLLBAR)) {
-        customScrollbarFrame = m_frame.get();
+        customScrollbarFrame = m_frame;
         return true;
     }
 
@@ -558,7 +558,7 @@ void FrameView::setContentsSize(const IntSize& size)
 
     updateScrollableAreaSet();
 
-    page->chromeClient().contentsSizeChanged(m_frame.get(), size);
+    page->chromeClient().contentsSizeChanged(m_frame, size);
     frame().loader().restoreScrollPositionAndViewState();
 }
 
@@ -1806,7 +1806,7 @@ void FrameView::scheduleRelayout()
     m_hasPendingLayout = true;
 
     if (!shouldThrottleRendering())
-        page()->animator().scheduleVisualUpdate(m_frame.get());
+        page()->animator().scheduleVisualUpdate(m_frame);
     lifecycle().ensureStateAtMost(DocumentLifecycle::StyleClean);
 }
 
@@ -1833,7 +1833,7 @@ void FrameView::scheduleRelayoutOfSubtree(LayoutObject* relayoutRoot)
     if (m_layoutSchedulingEnabled) {
         m_hasPendingLayout = true;
 
-        page()->animator().scheduleVisualUpdate(m_frame.get());
+        page()->animator().scheduleVisualUpdate(m_frame);
         lifecycle().ensureStateAtMost(DocumentLifecycle::StyleClean);
     }
     TRACE_EVENT_INSTANT1(TRACE_DISABLED_BY_DEFAULT("devtools.timeline"), "InvalidateLayout", TRACE_EVENT_SCOPE_THREAD, "data", InspectorInvalidateLayoutEvent::data(m_frame.get()));
@@ -4037,7 +4037,7 @@ void FrameView::collectFrameTimingRequests(GraphicsLayerFrameTimingRequests& gra
 {
     if (!m_frame->isLocalFrame())
         return;
-    Frame* frame = m_frame.get();
+    Frame* frame = m_frame;
     LocalFrame* localFrame = toLocalFrame(frame);
     LayoutRect viewRect = localFrame->contentLayoutObject()->viewRect();
     const LayoutBoxModelObject& paintInvalidationContainer = localFrame->contentLayoutObject()->containerForPaintInvalidation();
@@ -4156,7 +4156,7 @@ void FrameView::notifyRenderThrottlingObservers()
 
     bool becameUnthrottled = wasThrottled && !canThrottleRendering();
     if (becameUnthrottled)
-        page()->animator().scheduleVisualUpdate(m_frame.get());
+        page()->animator().scheduleVisualUpdate(m_frame);
 }
 
 bool FrameView::shouldThrottleRendering() const

@@ -789,7 +789,7 @@ private:
     // For Oilpan, Member reference cycles pose no problem, but
     // LocalFrame's FrameView is also cleared by that setView(), so as to
     // keep the observable lifespan of LocalFrame::view() identical.
-    RefPtrWillBeMember<LocalFrame> m_frame;
+    LocalFrame *m_frame;
 
     WebDisplayMode m_displayMode;
 
