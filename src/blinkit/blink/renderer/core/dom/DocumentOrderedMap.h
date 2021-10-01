@@ -55,11 +55,11 @@ namespace blink {
 class Element;
 class TreeScope;
 
-class DocumentOrderedMap : public NoBaseWillBeGarbageCollected<DocumentOrderedMap> {
+class DocumentOrderedMap {
     USING_FAST_MALLOC_WILL_BE_REMOVED(DocumentOrderedMap);
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(DocumentOrderedMap);
 public:
-    static DocumentOrderedMap* create();
+    static std::unique_ptr<DocumentOrderedMap> create();
 
     void add(const AtomicString&, Element*);
     void remove(const AtomicString&, Element*);
@@ -68,12 +68,12 @@ public:
     bool containsMultiple(const AtomicString&) const;
     // concrete instantiations of the get<>() method template
     Element* getElementById(const AtomicString&, const TreeScope*) const;
-    const std::vector<Member<Element>>& getAllElementsById(const AtomicString&, const TreeScope*) const;
+    const std::vector<Element *>& getAllElementsById(const AtomicString&, const TreeScope*) const;
     Element* getElementByMapName(const AtomicString&, const TreeScope*) const;
     Element* getElementByLowercasedMapName(const AtomicString&, const TreeScope*) const;
     Element* getElementByLabelForAttribute(const AtomicString&, const TreeScope*) const;
 
-    DECLARE_TRACE();
+    // BKTODO: DECLARE_TRACE();
 
 #if ENABLE(ASSERT)
     // While removing a ContainerNode, ID lookups won't be precise should the tree
@@ -105,11 +105,11 @@ private:
     struct MapEntry {
     public:
         explicit MapEntry(Element *firstElement) : element(firstElement) {}
-        DECLARE_TRACE();
+        // BKTODO: DECLARE_TRACE();
 
-        Member<Element> element;
+        Element *element;
         unsigned count = 1;
-        std::vector<Member<Element>> orderedList;
+        std::vector<Element *> orderedList;
     };
 
     using Map = std::unordered_map<AtomicString, MapEntry>;

@@ -51,10 +51,9 @@ namespace blink {
 
 using namespace HTMLNames;
 
-
-DocumentOrderedMap* DocumentOrderedMap::create()
+std::unique_ptr<DocumentOrderedMap> DocumentOrderedMap::create()
 {
-    return new DocumentOrderedMap;
+    return zed::wrap_unique(new DocumentOrderedMap);
 }
 
 DocumentOrderedMap::DocumentOrderedMap()
@@ -115,9 +114,9 @@ void DocumentOrderedMap::add(const AtomicString& key, Element* element)
 
     MapEntry &entry = it->second;
     ASSERT(entry.count > 0);
-    entry.element.clear();
+    entry.element = nullptr;
     ++entry.count;
-    entry.orderedList.clear();
+    entry.orderedList.push_back(element);
 }
 
 void DocumentOrderedMap::remove(const AtomicString& key, Element* element)
@@ -133,7 +132,7 @@ void DocumentOrderedMap::remove(const AtomicString& key, Element* element)
     ASSERT(entry.count > 0);
     if (entry.count == 1)
     {
-        ASSERT(!entry.element || entry.element == element);
+        ASSERT(nullptr == entry.element || entry.element == element);
         m_map.erase(it);
     }
     else
@@ -183,9 +182,9 @@ Element* DocumentOrderedMap::getElementById(const AtomicString& key, const TreeS
     return get<keyMatchesId>(key, scope);
 }
 
-const std::vector<Member<Element>>& DocumentOrderedMap::getAllElementsById(const AtomicString& key, const TreeScope* scope) const
+const std::vector<Element *>& DocumentOrderedMap::getAllElementsById(const AtomicString& key, const TreeScope* scope) const
 {
-    static std::vector<Member<Element>> emptyVector;
+    static std::vector<Element *> emptyVector;
 
     ASSERT(key);
     ASSERT(scope);
@@ -200,7 +199,7 @@ const std::vector<Member<Element>>& DocumentOrderedMap::getAllElementsById(const
     if (entry.orderedList.empty())
     {
         entry.orderedList.reserve(entry.count);
-        for (Element *element = entry.element ? entry.element.get() : ElementTraversal::firstWithin(scope->rootNode());
+        for (Element *element = entry.element ? entry.element : ElementTraversal::firstWithin(scope->rootNode());
             entry.orderedList.size() < entry.count;
             element = ElementTraversal::next(*element))
         {
@@ -231,6 +230,7 @@ Element* DocumentOrderedMap::getElementByLabelForAttribute(const AtomicString& k
     return get<keyMatchesLabelForAttribute>(key, scope);
 }
 
+#if 0 // BKTODO:
 DEFINE_TRACE(DocumentOrderedMap)
 {
 #if ENABLE(OILPAN)
@@ -245,5 +245,6 @@ DEFINE_TRACE(DocumentOrderedMap::MapEntry)
     visitor->trace(orderedList);
 #endif
 }
+#endif
 
 } // namespace blink
