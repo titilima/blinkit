@@ -482,7 +482,7 @@ void SelectorDataList::execute(ContainerNode& rootNode, typename SelectorQueryTr
     if (const CSSSelector* idSelector = selectorForIdLookup(firstSelector)) {
         const AtomicString& idToMatch = idSelector->value();
         if (rootNode.treeScope().containsMultipleElementsWithId(idToMatch)) {
-            const std::vector<Member<Element>>& elements = rootNode.treeScope().getAllElementsById(idToMatch);
+            const std::vector<Element *>& elements = rootNode.treeScope().getAllElementsById(idToMatch);
             size_t count = elements.size();
             for (size_t i = 0; i < count; ++i) {
                 Element& element = *elements[i];

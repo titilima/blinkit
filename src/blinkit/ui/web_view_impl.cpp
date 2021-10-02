@@ -709,6 +709,10 @@ void WebViewImpl::ResumeTreeViewCommitsIfRenderingReady(void)
 
 void WebViewImpl::scheduleAnimation(void)
 {
+    Document *document = m_frame->document();
+    if (nullptr == document || !document->isActive())
+        return;
+
 #if 0 // BKTODO:
     if (m_layerTreeView)
     {

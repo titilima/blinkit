@@ -1129,8 +1129,7 @@ void ChromeClientImpl::openTextDataListChooser(HTMLInputElement& input)
 
 void ChromeClientImpl::textFieldDataListChanged(HTMLInputElement& input)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     WebLocalFrameImpl* webframe = WebLocalFrameImpl::fromFrame(input.document().frame());
     if (webframe->autofillClient())
         webframe->autofillClient()->dataListOptionsChanged(WebInputElement(&input));
@@ -1139,8 +1138,7 @@ void ChromeClientImpl::textFieldDataListChanged(HTMLInputElement& input)
 
 void ChromeClientImpl::ajaxSucceeded(LocalFrame* frame)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     WebLocalFrameImpl* webframe = WebLocalFrameImpl::fromFrame(frame);
     if (webframe->autofillClient())
         webframe->autofillClient()->ajaxSucceeded();

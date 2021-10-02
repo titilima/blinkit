@@ -177,8 +177,11 @@ const AtomicString& SearchFieldDecorationElement::shadowPseudoId() const
     if (!host)
         return resultsDecorationId;
     if (isHTMLInputElement(*host)) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (toHTMLInputElement(host)->maxResults() < 0)
             return decorationId;
+#endif
         return resultsDecorationId;
     }
     return resultsDecorationId;

@@ -1336,8 +1336,7 @@ void PaintLayerScrollableArea::updateScrollableAreaSet(bool hasOverflow)
 
     // FIXME: Does this need to be fixed later for OOPI?
     bool isVisibleToHitTest = box().visibleToHitTesting();
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (HTMLFrameOwnerElement* owner = frame->deprecatedLocalOwner())
         isVisibleToHitTest &= owner->layoutObject() && owner->layoutObject()->visibleToHitTesting();
 #endif

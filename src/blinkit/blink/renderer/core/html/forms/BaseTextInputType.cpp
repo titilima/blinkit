@@ -84,10 +84,10 @@ bool BaseTextInputType::tooShort(const String& value, HTMLTextFormControlElement
 
 bool BaseTextInputType::patternMismatch(const String& value) const
 {
-    ASSERT(false); // BKTODO:
+    const AtomicString& rawPattern = element().fastGetAttribute(patternAttr);
+    ASSERT(rawPattern.isNull() || value.isEmpty()); // BKTODO:
     return false;
 #if 0
-    const AtomicString& rawPattern = element().fastGetAttribute(patternAttr);
     // Empty values can't be mismatched
     if (rawPattern.isNull() || value.isEmpty() || !ScriptRegexp(rawPattern, TextCaseSensitive).isValid())
         return false;

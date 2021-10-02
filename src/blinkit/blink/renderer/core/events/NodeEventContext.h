@@ -68,7 +68,7 @@ public:
 
     EventTarget* target() const { return m_treeScopeEventContext->target(); }
     EventTarget* relatedTarget() const { return m_treeScopeEventContext->relatedTarget(); }
-    TouchEventContext* touchEventContext() const { return m_treeScopeEventContext->touchEventContext(); }
+    // BKTODO: TouchEventContext* touchEventContext() const { return m_treeScopeEventContext->touchEventContext(); }
 
     bool currentTargetSameAsTarget() const { return m_currentTarget.get() == target(); }
     void handleLocalEvents(Event&) const;
