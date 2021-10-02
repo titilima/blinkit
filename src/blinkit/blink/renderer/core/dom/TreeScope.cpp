@@ -85,9 +85,8 @@ TreeScope::TreeScope(ContainerNode& rootNode, Document& document)
 }
 
 TreeScope::TreeScope(Document& document)
-    : m_rootNode(document)
+    : m_rootNode(&document)
     , m_document(&document)
-    , m_parentTreeScope(nullptr)
 #if !ENABLE(OILPAN)
     , m_guardRefCount(0)
 #endif
@@ -180,13 +179,13 @@ Element* TreeScope::getElementById(const AtomicString& elementId) const
     return m_elementsById->getElementById(elementId, this);
 }
 
-const std::vector<Member<Element>>& TreeScope::getAllElementsById(const AtomicString& elementId) const
+const std::vector<Element *>& TreeScope::getAllElementsById(const AtomicString& elementId) const
 {
-    DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<WillBeHeapVector<RawPtrWillBeMember<Element>>>, emptyVector, (adoptPtrWillBeNoop(new WillBeHeapVector<RawPtrWillBeMember<Element>>())));
+    static std::vector<Element *> emptyVector;
     if (elementId.isEmpty())
-        return *emptyVector;
+        return emptyVector;
     if (!m_elementsById)
-        return *emptyVector;
+        return emptyVector;
     return m_elementsById->getAllElementsById(elementId, this);
 }
 
@@ -598,14 +597,18 @@ void TreeScope::setDocument(Document &document)
 
 DEFINE_TRACE(TreeScope)
 {
+#if 0 // BKTODO:
     visitor->trace(m_rootNode);
     visitor->trace(m_document);
     visitor->trace(m_parentTreeScope);
+#endif
     visitor->trace(m_idTargetObserverRegistry);
     visitor->trace(m_selection);
+#if 0 // BKTODO:
     visitor->trace(m_elementsById);
     visitor->trace(m_imageMapsByName);
     visitor->trace(m_labelsByForAttribute);
+#endif
     if (m_scopedStyleResolver)
         m_scopedStyleResolver->trace(visitor);
 }

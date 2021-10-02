@@ -70,7 +70,7 @@ public:
 
     Element* adjustedFocusedElement() const;
     Element* getElementById(const AtomicString&) const;
-    const std::vector<Member<Element>>& getAllElementsById(const AtomicString&) const;
+    const std::vector<Element *>& getAllElementsById(const AtomicString&) const;
     bool hasElementWithId(const AtomicString& id) const;
     bool containsMultipleElementsWithId(const AtomicString& id) const;
     void addElementById(const AtomicString& elementId, Element*);
@@ -94,7 +94,7 @@ public:
     WillBeHeapVector<RawPtrWillBeMember<Element>> elementsFromHitTestResult(HitTestResult&) const;
 
     // For accessibility.
-    bool shouldCacheLabelsByForAttribute() const { return m_labelsByForAttribute; }
+    bool shouldCacheLabelsByForAttribute() const { return !!m_labelsByForAttribute; }
     void addLabel(const AtomicString& forAttributeValue, HTMLLabelElement*);
     void removeLabel(const AtomicString& forAttributeValue, HTMLLabelElement*);
     HTMLLabelElement* labelElementForId(const AtomicString& forAttributeValue);
@@ -190,17 +190,17 @@ private:
 
     bool rootNodeHasTreeSharedParent() const;
 
-    BlinKit::GCMember<ContainerNode> m_rootNode;
-    BlinKit::GCMember<Document> m_document;
-    RawPtrWillBeMember<TreeScope> m_parentTreeScope;
+    ContainerNode *m_rootNode;
+    Document *m_document;
+    TreeScope *m_parentTreeScope = nullptr;
 
 #if !ENABLE(OILPAN)
     int m_guardRefCount;
 #endif
 
-    OwnPtrWillBeMember<DocumentOrderedMap> m_elementsById;
-    OwnPtrWillBeMember<DocumentOrderedMap> m_imageMapsByName;
-    OwnPtrWillBeMember<DocumentOrderedMap> m_labelsByForAttribute;
+    std::unique_ptr<DocumentOrderedMap> m_elementsById;
+    std::unique_ptr<DocumentOrderedMap> m_imageMapsByName;
+    std::unique_ptr<DocumentOrderedMap> m_labelsByForAttribute;
 
     BlinKit::GCMember<IdTargetObserverRegistry> m_idTargetObserverRegistry;
 
