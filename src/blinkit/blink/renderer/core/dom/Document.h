@@ -1293,7 +1293,7 @@ private:
     BlinKit::GCMember<StyleEngine> m_styleEngine;
     RefPtrWillBeMember<StyleSheetList> m_styleSheetList;
 
-    OwnPtrWillBeMember<FormController> m_formController;
+    BlinKit::GCUniqueRoot<FormController> m_formController;
 
     TextLinkColors m_textLinkColors;
     // BKTODO: const OwnPtrWillBeMember<VisitedLinkState> m_visitedLinkState;

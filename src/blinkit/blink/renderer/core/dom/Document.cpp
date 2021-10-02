@@ -1485,8 +1485,7 @@ FormController& Document::formController()
 {
     if (!m_formController) {
         m_formController = FormController::create();
-        ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
         if (m_frame && m_frame->loader().currentItem() && m_frame->loader().currentItem()->isCurrentDocument(this))
             m_frame->loader().currentItem()->setDocumentState(m_formController->formElementsState());
 #endif
@@ -6145,7 +6144,8 @@ DEFINE_TRACE(Document)
     visitor->trace(m_nodeIterators);
     visitor->trace(m_ranges);
     visitor->trace(m_styleEngine);
-    visitor->trace(m_formController);
+    if (m_formController)
+        m_formController->trace(visitor);
     // BKTODO: visitor->trace(m_visitedLinkState);
     // BKTODO: visitor->trace(m_frame);
     // BKTODO: visitor->trace(m_domWindow);
