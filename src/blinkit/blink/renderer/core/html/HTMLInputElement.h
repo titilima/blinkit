@@ -174,7 +174,7 @@ public:
 
     String altText() const final;
 
-    int maxResults() const { return m_maxResults; }
+    // BKTODO: int maxResults() const { return m_maxResults; }
 
     const AtomicString& defaultValue() const;
 
@@ -283,7 +283,7 @@ protected:
     void defaultEventHandler(Event*) override;
 
 private:
-    enum AutoCompleteSetting { Uninitialized, On, Off };
+    // BKTODO: enum AutoCompleteSetting { Uninitialized, On, Off };
 
     void didAddUserAgentShadowRoot(ShadowRoot&) final;
     void willAddFirstAuthorShadowRoot() final;
@@ -387,12 +387,12 @@ private:
     int m_size;
     int m_maxLength;
     int m_minLength;
-    short m_maxResults;
+    // BKTODO: short m_maxResults;
     unsigned m_isChecked : 1;
     unsigned m_reflectsCheckedAttribute : 1;
     unsigned m_isIndeterminate : 1;
     unsigned m_isActivatedSubmit : 1;
-    unsigned m_autocomplete : 2; // AutoCompleteSetting
+    unsigned m_autocomplete : 2; // Not used.
     unsigned m_hasNonEmptyList : 1;
     unsigned m_stateRestored : 1;
     unsigned m_parsingInProgress : 1;
@@ -402,13 +402,13 @@ private:
     unsigned m_shouldRevealPassword : 1;
     unsigned m_needsToUpdateViewValue : 1;
     unsigned m_isPlaceholderVisible : 1;
-    RefPtrWillBeMember<InputType> m_inputType;
-    RefPtrWillBeMember<InputTypeView> m_inputTypeView;
+    BlinKit::GCPtr<InputType> m_inputType;
+    BlinKit::GCPtr<InputTypeView> m_inputTypeView;
     // The ImageLoader must be owned by this element because the loader code assumes
     // that it lives as long as its owning element lives. If we move the loader into
     // the ImageInput object we may delete the loader while this element lives on.
     OwnPtrWillBeMember<HTMLImageLoader> m_imageLoader;
-    OwnPtrWillBeMember<ListAttributeTargetObserver> m_listAttributeTargetObserver;
+    BlinKit::GCPtr<ListAttributeTargetObserver> m_listAttributeTargetObserver;
 };
 
 } // namespace blink

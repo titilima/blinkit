@@ -97,7 +97,7 @@ public:
 private:
     ListAttributeTargetObserver(const AtomicString& id, HTMLInputElement*);
 
-    RawPtrWillBeMember<HTMLInputElement> m_element;
+    HTMLInputElement *m_element;
 };
 
 // FIXME: According to HTML4, the length attribute's value can be arbitrarily
@@ -113,12 +113,12 @@ HTMLInputElement::HTMLInputElement(Document& document, HTMLFormElement* form, bo
     , m_size(defaultSize)
     , m_maxLength(maximumLength)
     , m_minLength(0)
-    , m_maxResults(-1)
+    // BKTODO: , m_maxResults(-1)
     , m_isChecked(false)
     , m_reflectsCheckedAttribute(true)
     , m_isIndeterminate(false)
     , m_isActivatedSubmit(false)
-    , m_autocomplete(Uninitialized)
+    , m_autocomplete(0)
     , m_hasNonEmptyList(false)
     , m_stateRestored(false)
     , m_parsingInProgress(createdByParser)
@@ -148,9 +148,11 @@ PassRefPtrWillBeRawPtr<HTMLInputElement> HTMLInputElement::create(Document& docu
 
 DEFINE_TRACE(HTMLInputElement)
 {
+#if 0 // BKTODO:
     visitor->trace(m_inputType);
     visitor->trace(m_inputTypeView);
     visitor->trace(m_listAttributeTargetObserver);
+#endif
     visitor->trace(m_imageLoader);
     HTMLTextFormControlElement::trace(visitor);
 }
@@ -201,9 +203,13 @@ Vector<FileChooserFileInfo> HTMLInputElement::filesFromFileInputFormControlState
 
 bool HTMLInputElement::shouldAutocomplete() const
 {
+#if 0 // BKTODO:
     if (m_autocomplete != Uninitialized)
         return m_autocomplete == On;
     return HTMLTextFormControlElement::shouldAutocomplete();
+#else
+    return false;
+#endif
 }
 
 bool HTMLInputElement::isValidValue(const String& value) const
@@ -476,7 +482,7 @@ void HTMLInputElement::updateType()
     m_inputTypeView->destroyShadowSubtree();
     lazyReattachIfAttached();
 
-    m_inputType = newType.release();
+    m_inputType = newType;
     if (openShadowRoot())
         m_inputTypeView = InputTypeView::create(*this);
     else
@@ -645,19 +651,14 @@ void HTMLInputElement::accessKeyAction(bool sendMouseEvents)
 
 bool HTMLInputElement::isPresentationAttribute(const QualifiedName& name) const
 {
-    ASSERT(false); // BKTODO:
-#if 0
     // FIXME: Remove type check.
     if (name == vspaceAttr || name == hspaceAttr || name == alignAttr || name == widthAttr || name == heightAttr || (name == borderAttr && type() == InputTypeNames::image))
         return true;
-#endif
     return HTMLTextFormControlElement::isPresentationAttribute(name);
 }
 
 void HTMLInputElement::collectStyleForPresentationAttribute(const QualifiedName& name, const AtomicString& value, MutableStylePropertySet* style)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (name == vspaceAttr) {
         addHTMLLengthToStyle(style, CSSPropertyMarginTop, value);
         addHTMLLengthToStyle(style, CSSPropertyMarginBottom, value);
@@ -678,7 +679,6 @@ void HTMLInputElement::collectStyleForPresentationAttribute(const QualifiedName&
     } else {
         HTMLTextFormControlElement::collectStyleForPresentationAttribute(name, value, style);
     }
-#endif
 }
 
 void HTMLInputElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
@@ -686,14 +686,15 @@ void HTMLInputElement::parseAttribute(const QualifiedName& name, const AtomicStr
     ASSERT(m_inputType);
     ASSERT(m_inputTypeView);
 
-    ASSERT(false); // BKTODO:
-#if 0
-    if (name == nameAttr) {
+    if (name == nameAttr)
+    {
         removeFromRadioButtonGroup();
         m_name = value;
         addToRadioButtonGroup();
         HTMLTextFormControlElement::parseAttribute(name, oldValue, value);
-    } else if (name == autocompleteAttr) {
+    }
+#if 0 // BKTODO:
+    else if (name == autocompleteAttr) {
         if (equalIgnoringCase(value, "off")) {
             m_autocomplete = Off;
         } else {
@@ -702,9 +703,14 @@ void HTMLInputElement::parseAttribute(const QualifiedName& name, const AtomicStr
             else
                 m_autocomplete = On;
         }
-    } else if (name == typeAttr) {
+    }
+#endif
+    else if (name == typeAttr)
+    {
         updateType();
-    } else if (name == valueAttr) {
+    }
+    else if (name == valueAttr)
+    {
         // We only need to setChanged if the form is looking at the default value right now.
         if (!hasDirtyValue()) {
             updatePlaceholderVisibility();
@@ -740,12 +746,19 @@ void HTMLInputElement::parseAttribute(const QualifiedName& name, const AtomicStr
         m_inputTypeView->altAttributeChanged();
     } else if (name == srcAttr) {
         m_inputTypeView->srcAttributeChanged();
-    } else if (name == usemapAttr || name == accesskeyAttr) {
+    }
+    else if (name == usemapAttr || name == accesskeyAttr)
+    {
         // FIXME: ignore for the moment
-    } else if (name == onsearchAttr) {
+    }
+#if 0 // BKTODO:
+    else if (name == onsearchAttr)
+    {
         // Search field and slider attributes all just cause updateFromElement to be called through style recalcing.
         setAttributeEventListener(EventTypeNames::search, createAttributeEventListener(this, name, value, eventParameterName()));
-    } else if (name == resultsAttr) {
+    }
+    else if (name == resultsAttr)
+    {
         int oldResults = m_maxResults;
         m_maxResults = !value.isNull() ? std::min(value.toInt(), maxSavedResults) : -1;
         // FIXME: Detaching just for maxResults change is not ideal.  We should figure out the right
@@ -753,51 +766,73 @@ void HTMLInputElement::parseAttribute(const QualifiedName& name, const AtomicStr
         if ((m_maxResults < 0) != (oldResults < 0))
             lazyReattachIfAttached();
         UseCounter::count(document(), UseCounter::ResultsAttribute);
-    } else if (name == incrementalAttr) {
+    }
+#endif
+    else if (name == incrementalAttr)
+    {
         UseCounter::count(document(), UseCounter::IncrementalAttribute);
-    } else if (name == minAttr) {
+    }
+    else if (name == minAttr)
+    {
         m_inputTypeView->minOrMaxAttributeChanged();
         m_inputType->sanitizeValueInResponseToMinOrMaxAttributeChange();
         setNeedsValidityCheck();
         UseCounter::count(document(), UseCounter::MinAttribute);
-    } else if (name == maxAttr) {
+    }
+    else if (name == maxAttr)
+    {
         m_inputTypeView->minOrMaxAttributeChanged();
         m_inputType->sanitizeValueInResponseToMinOrMaxAttributeChange();
         setNeedsValidityCheck();
         UseCounter::count(document(), UseCounter::MaxAttribute);
-    } else if (name == multipleAttr) {
+    }
+    else if (name == multipleAttr)
+    {
         m_inputTypeView->multipleAttributeChanged();
         setNeedsValidityCheck();
-    } else if (name == stepAttr) {
+    }
+    else if (name == stepAttr)
+    {
         m_inputTypeView->stepAttributeChanged();
         setNeedsValidityCheck();
         UseCounter::count(document(), UseCounter::StepAttribute);
-    } else if (name == patternAttr) {
+    }
+    else if (name == patternAttr)
+    {
         setNeedsValidityCheck();
         UseCounter::count(document(), UseCounter::PatternAttribute);
-    } else if (name == disabledAttr) {
+    }
+    else if (name == disabledAttr)
+    {
         HTMLTextFormControlElement::parseAttribute(name, oldValue, value);
         m_inputTypeView->disabledAttributeChanged();
-    } else if (name == readonlyAttr) {
+    }
+    else if (name == readonlyAttr)
+    {
         HTMLTextFormControlElement::parseAttribute(name, oldValue, value);
         m_inputTypeView->readonlyAttributeChanged();
-    } else if (name == listAttr) {
+    }
+    else if (name == listAttr)
+{
         m_hasNonEmptyList = !value.isEmpty();
         if (m_hasNonEmptyList) {
             resetListAttributeTargetObserver();
             listAttributeTargetChanged();
         }
         UseCounter::count(document(), UseCounter::ListAttribute);
-    } else if (name == webkitdirectoryAttr) {
+    }
+    else if (name == webkitdirectoryAttr)
+    {
         HTMLTextFormControlElement::parseAttribute(name, oldValue, value);
         UseCounter::count(document(), UseCounter::PrefixedDirectoryAttribute);
-    } else {
+    }
+    else
+    {
         if (name == formactionAttr)
             logUpdateAttributeIfIsolatedWorldAndInDocument("input", formactionAttr, oldValue, value);
         HTMLTextFormControlElement::parseAttribute(name, oldValue, value);
     }
     m_inputTypeView->attributeChanged();
-#endif
 }
 
 void HTMLInputElement::parserDidSetAttributes()
@@ -1817,7 +1852,7 @@ ListAttributeTargetObserver::ListAttributeTargetObserver(const AtomicString& id,
 
 DEFINE_TRACE(ListAttributeTargetObserver)
 {
-    visitor->trace(m_element);
+    // BKTODO: visitor->trace(m_element);
     IdTargetObserver::trace(visitor);
 }
 
