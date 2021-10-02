@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FormController.h
+// Description: FormController Class
+//      Author: Ziming Li
+//     Created: 2021-09-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2010, 2011, 2012 Google Inc. All rights reserved.
@@ -22,6 +33,7 @@
 #ifndef FormController_h
 #define FormController_h
 
+#include "blinkit/gc/gc_root.h"
 #include "core/html/forms/RadioButtonGroupScope.h"
 #include "platform/heap/Handle.h"
 #include "wtf/Allocator.h"
@@ -75,11 +87,11 @@ inline void FormControlState::append(const String& value)
 
 using SavedFormStateMap = HashMap<AtomicString, OwnPtr<SavedFormState>>;
 
-class DocumentState final : public RefCountedWillBeGarbageCollected<DocumentState> {
+class DocumentState final {
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(DocumentState);
 public:
-    static PassRefPtrWillBeRawPtr<DocumentState> create();
-    DECLARE_TRACE();
+    static std::unique_ptr<DocumentState> create();
+    // BKTODO: DECLARE_TRACE();
 
     void addControl(HTMLFormControlElementWithState*);
     void removeControl(HTMLFormControlElementWithState*);
@@ -93,9 +105,9 @@ private:
 class FormController final : public NoBaseWillBeGarbageCollectedFinalized<FormController> {
     USING_FAST_MALLOC_WILL_BE_REMOVED(FormController);
 public:
-    static PassOwnPtrWillBeRawPtr<FormController> create()
+    static GCUniqueRoot<FormController> create()
     {
-        return adoptPtrWillBeNoop(new FormController);
+        return BlinKit::WrapUniqueRoot(new FormController);
     }
     ~FormController();
     DECLARE_TRACE();
@@ -120,7 +132,7 @@ private:
     static void formStatesFromStateVector(const Vector<String>&, SavedFormStateMap&);
 
     RadioButtonGroupScope m_radioButtonGroupScope;
-    RefPtrWillBeMember<DocumentState> m_documentState;
+    std::unique_ptr<DocumentState> m_documentState;
     SavedFormStateMap m_savedFormStateMap;
     OwnPtrWillBeMember<FormKeyGenerator> m_formKeyGenerator;
 };

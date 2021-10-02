@@ -400,36 +400,32 @@ void FormKeyGenerator::willDeleteForm(HTMLFormElement* form)
 
 // ----------------------------------------------------------------------------
 
-PassRefPtrWillBeRawPtr<DocumentState> DocumentState::create()
+std::unique_ptr<DocumentState> DocumentState::create()
 {
-    return adoptRefWillBeNoop(new DocumentState);
+    return std::make_unique<DocumentState>();
 }
 
 DEFINE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(DocumentState)
 
+#if 0 // BKTODO:
 DEFINE_TRACE(DocumentState)
 {
 #if ENABLE(OILPAN)
     visitor->trace(m_formControls);
 #endif
 }
+#endif
 
 void DocumentState::addControl(HTMLFormControlElementWithState* control)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     ASSERT(!m_formControls.contains(control));
-    m_formControls.add(control);
-#endif
+    m_formControls.insert(control);
 }
 
 void DocumentState::removeControl(HTMLFormControlElementWithState* control)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     RELEASE_ASSERT(m_formControls.contains(control));
-    m_formControls.remove(control);
-#endif
+    m_formControls.erase(control);
 }
 
 static String formStateSignature()
@@ -483,7 +479,7 @@ FormController::~FormController()
 DEFINE_TRACE(FormController)
 {
     visitor->trace(m_radioButtonGroupScope);
-    visitor->trace(m_documentState);
+    // BKTODO: visitor->trace(m_documentState);
     visitor->trace(m_formKeyGenerator);
 }
 
