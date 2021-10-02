@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ElementRareData.cpp
+// Description: ElementRareData Class
+//      Author: Ziming Li
+//     Created: 2021-10-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -32,14 +43,17 @@
 #include "core/dom/CompositorProxiedPropertySet.h"
 #include "core/style/ComputedStyle.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 struct SameSizeAsElementRareData : NodeRareData {
     short indices[1];
     LayoutSize sizeForResizing;
     IntSize scrollOffset;
-    void* pointers[13];
+    void* pointers[12];
     PersistentWillBeMember<void*> persistentMember[2];
+    GCUniqueRoot<void> uniqueRoot;
 };
 
 CSSStyleDeclaration& ElementRareData::ensureInlineCSSStyleDeclaration(Element* ownerElement)
@@ -60,7 +74,7 @@ DEFINE_TRACE_AFTER_DISPATCH(ElementRareData)
 {
     visitor->trace(m_dataset);
     visitor->trace(m_classList);
-    visitor->trace(m_shadow);
+    // BKTODO: visitor->trace(m_shadow);
     visitor->trace(m_attributeMap);
 #if ENABLE(OILPAN)
     visitor->trace(m_attrNodeList);

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ElementRareData.h
+// Description: ElementRareData Class
+//      Author: Ziming Li
+//     Created: 2021-10-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2008 David Smith <catfish.man@gmail.com>
@@ -146,7 +157,7 @@ private:
 
     OwnPtrWillBeMember<DatasetDOMStringMap> m_dataset;
     OwnPtrWillBeMember<ClassList> m_classList;
-    OwnPtrWillBeMember<ElementShadow> m_shadow;
+    BlinKit::GCUniqueRoot<ElementShadow> m_shadow;
     OwnPtrWillBeMember<NamedNodeMap> m_attributeMap;
     OwnPtrWillBeMember<AttrNodeList> m_attrNodeList;
     OwnPtrWillBeMember<InlineCSSStyleDeclaration> m_cssomWrapper;
