@@ -193,6 +193,7 @@ CORE_EXPORT extern const blink::QualifiedName& noshadeAttr;
 CORE_EXPORT extern const blink::QualifiedName& nowrapAttr;
 CORE_EXPORT extern const blink::QualifiedName& openAttr;
 CORE_EXPORT extern const blink::QualifiedName& optimumAttr;
+CORE_EXPORT extern const blink::QualifiedName& patternAttr;
 CORE_EXPORT extern const blink::QualifiedName& placeholderAttr;
 CORE_EXPORT extern const blink::QualifiedName& pseudoAttr;
 CORE_EXPORT extern const blink::QualifiedName& radiogroupAttr;
@@ -222,17 +223,19 @@ CORE_EXPORT extern const blink::QualifiedName& textAttr;
 CORE_EXPORT extern const blink::QualifiedName& titleAttr;
 CORE_EXPORT extern const blink::QualifiedName& topmarginAttr;
 CORE_EXPORT extern const blink::QualifiedName& typeAttr;
+CORE_EXPORT extern const blink::QualifiedName& usemapAttr;
 CORE_EXPORT extern const blink::QualifiedName& valignAttr;
 CORE_EXPORT extern const blink::QualifiedName& valueAttr;
 CORE_EXPORT extern const blink::QualifiedName& vlinkAttr;
 CORE_EXPORT extern const blink::QualifiedName& vspaceAttr;
+CORE_EXPORT extern const blink::QualifiedName& webkitdirectoryAttr;
 CORE_EXPORT extern const blink::QualifiedName& widthAttr;
 CORE_EXPORT extern const blink::QualifiedName& wrapAttr;
 
 const unsigned HTMLTagsCount = 102;
 CORE_EXPORT PassOwnPtr<const HTMLQualifiedName*[]> getHTMLTags();
 
-const unsigned HTMLAttrsCount = 105;
+const unsigned HTMLAttrsCount = 108;
 
 void init();
 

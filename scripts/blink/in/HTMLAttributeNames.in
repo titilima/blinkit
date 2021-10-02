@@ -74,6 +74,7 @@ noshade
 nowrap
 open
 optimum
+pattern
 placeholder
 pseudo
 radiogroup
@@ -103,9 +104,11 @@ text
 title
 topmargin
 type
+usemap
 valign
 value
 vlink
 vspace
+webkitdirectory
 width
 wrap
