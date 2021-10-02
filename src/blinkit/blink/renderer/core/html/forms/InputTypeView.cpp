@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InputTypeView.cpp
+// Description: InputTypeView Class
+//      Author: Ziming Li
+//     Created: 2021-09-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -45,7 +56,7 @@ InputTypeView::~InputTypeView()
 
 DEFINE_TRACE(InputTypeView)
 {
-    visitor->trace(m_element);
+    // BKTODO: visitor->trace(m_element);
 }
 
 bool InputTypeView::sizeShouldIncludeDecoration(int, int& preferredSize) const

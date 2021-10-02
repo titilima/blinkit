@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InputTypeView.h
+// Description: InputTypeView Class
+//      Author: Ziming Li
+//     Created: 2021-09-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -70,7 +81,7 @@ public:
 // An InputTypeView object represents the UI-specific part of an
 // HTMLInputElement. Do not expose instances of InputTypeView and classes
 // derived from it to classes other than HTMLInputElement.
-class CORE_EXPORT InputTypeView : public RefCountedWillBeGarbageCollectedFinalized<InputTypeView> {
+class CORE_EXPORT InputTypeView : public BlinKit::GCObject {
     WTF_MAKE_NONCOPYABLE(InputTypeView);
     USING_FAST_MALLOC_WILL_BE_REMOVED(InputTypeView);
 
@@ -131,7 +142,7 @@ protected:
 private:
     // Not a RefPtr because the HTMLInputElement object owns this InputTypeView
     // object.
-    RawPtrWillBeMember<HTMLInputElement> m_element;
+    HTMLInputElement *m_element;
 };
 
 } // namespace blink
