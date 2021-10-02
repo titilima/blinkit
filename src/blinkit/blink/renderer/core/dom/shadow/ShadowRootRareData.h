@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ShadowRootRareData.h
+// Description: ShadowRootRareData Class
+//      Author: Ziming Li
+//     Created: 2021-09-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -64,8 +75,8 @@ public:
 
     unsigned childShadowRootCount() const { return m_childShadowRootCount; }
 
-    const WillBeHeapVector<RefPtrWillBeMember<InsertionPoint>>& descendantInsertionPoints() { return m_descendantInsertionPoints; }
-    void setDescendantInsertionPoints(WillBeHeapVector<RefPtrWillBeMember<InsertionPoint>>& list) { m_descendantInsertionPoints.swap(list); }
+    const std::vector<InsertionPoint *>& descendantInsertionPoints() { return m_descendantInsertionPoints; }
+    void setDescendantInsertionPoints(std::vector<InsertionPoint *>& list) { m_descendantInsertionPoints.swap(list); }
     void clearDescendantInsertionPoints() { m_descendantInsertionPoints.clear(); }
 
     StyleSheetList* styleSheets() { return m_styleSheetList.get(); }
@@ -83,7 +94,7 @@ private:
     unsigned m_descendantShadowElementCount;
     unsigned m_descendantContentElementCount;
     unsigned m_childShadowRootCount;
-    WillBeHeapVector<RefPtrWillBeMember<InsertionPoint>> m_descendantInsertionPoints;
+    std::vector<InsertionPoint *> m_descendantInsertionPoints;
     RefPtrWillBeMember<StyleSheetList> m_styleSheetList;
 };
 
