@@ -317,9 +317,16 @@ Node::~Node()
     // or eventTargetDataMap() may keep a raw pointer to a deleted object.
     ASSERT(!hasEventTargetData());
 #else
+#if 0 // BKTODO:
     // With Oilpan, the rare data finalizer also asserts for
     // this condition (we cannot directly access it here.)
     RELEASE_ASSERT(hasRareData() || !layoutObject());
+#else
+    if (hasRareData())
+        clearRareData();
+
+    RELEASE_ASSERT(!layoutObject());
+#endif
 #endif
 
     InstanceCounters::decrementCounter(InstanceCounters::NodeCounter);
@@ -366,7 +373,7 @@ NodeRareData& Node::ensureRareData()
     return *rareData();
 }
 
-#if !ENABLE(OILPAN)
+#if 1 // BKTODO: !ENABLE(OILPAN)
 void Node::clearRareData()
 {
     ASSERT(hasRareData());
@@ -2374,15 +2381,19 @@ bool Node::IsRetainedInTree(void) const
 DEFINE_TRACE(Node)
 {
 #if ENABLE(OILPAN)
-    // BKTODO: visitor->trace(m_parentOrShadowHostNode);
+#if 0 // BKTODO:
+    visitor->trace(m_parentOrShadowHostNode);
     visitor->trace(m_previous);
+#endif
     visitor->trace(m_next);
+#if 0 // BKTODO:
     // rareData() and m_data.m_layoutObject share their storage. We have to trace
     // only one of them.
     if (hasRareData())
         visitor->trace(rareData());
 
-    // BKTODO: visitor->trace(m_treeScope);
+    visitor->trace(m_treeScope);
+#endif
 #endif
     EventTarget::trace(visitor);
 }

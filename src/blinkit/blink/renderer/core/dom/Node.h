@@ -190,7 +190,7 @@ public:
     Element* parentElement() const;
     ContainerNode* parentElementOrShadowRoot() const;
     ContainerNode* parentElementOrDocumentFragment() const;
-    Node* previousSibling() const { return m_previous.get(); }
+    Node* previousSibling() const { return m_previous; }
     Node* nextSibling() const { return m_next.get(); }
     PassRefPtrWillBeRawPtr<NodeList> childNodes();
     Node* firstChild() const;
@@ -760,10 +760,12 @@ protected:
 
     NodeRareData* rareData() const;
     NodeRareData& ensureRareData();
-#if !ENABLE(OILPAN)
+#if !ENABLE(OILPAN) // BKTODO:
     void clearRareData();
 
     void clearEventTargetData();
+#else
+    void clearRareData(void);
 #endif
 
     void setHasCustomStyleCallbacks() { setFlag(true, HasCustomStyleCallbacksFlag); }
@@ -824,7 +826,7 @@ private:
     uint32_t m_nodeFlags;
     ContainerNode *m_parentOrShadowHostNode = nullptr;
     TreeScope *m_treeScope;
-    BlinKit::GCMember<Node> m_previous;
+    Node *m_previous = nullptr;
     BlinKit::GCMember<Node> m_next;
     // When a node has rare data we move the layoutObject into the rare data.
     union DataUnion {
