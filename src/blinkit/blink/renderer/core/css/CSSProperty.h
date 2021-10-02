@@ -89,12 +89,32 @@ public:
     {
     }
 
+    CSSProperty(const CSSProperty &o) : m_metadata(o.m_metadata), m_value(o.m_value)
+    {
+#ifndef NDEBUG
+        m_unused = o.m_unused;
+#endif
+    }
+
+    CSSProperty(CSSProperty &&o) : m_metadata(o.m_metadata), m_value(o.m_value.release())
+    {
+        o.m_metadata.m_propertyID = CSSPropertyInvalid;
+#ifndef NDEBUG
+        m_unused = o.m_unused;
+        o.m_unused = true;
+#endif
+    }
+
     CSSPropertyID id() const { return static_cast<CSSPropertyID>(m_metadata.m_propertyID); }
     bool isSetFromShorthand() const { return m_metadata.m_isSetFromShorthand; }
     CSSPropertyID shorthandID() const { return m_metadata.shorthandID(); }
     bool isImportant() const { return m_metadata.m_important; }
 
-    CSSValue* value() const { return m_value.get(); }
+    CSSValue* value() const
+    {
+        ASSERT(!m_unused);
+        return m_value.get();
+    }
 
     static CSSPropertyID resolveDirectionAwareProperty(CSSPropertyID, TextDirection, WritingMode);
     static bool isAffectedByAllProperty(CSSPropertyID);
@@ -103,6 +123,16 @@ public:
     {
         ASSERT(!m_unused);
         return m_metadata;
+    }
+
+    CSSProperty& operator=(const CSSProperty &o)
+    {
+        m_metadata = o.m_metadata;
+        m_value = o.m_value;
+#ifndef NDEBUG
+        m_unused = false;
+#endif
+        return *this;
     }
 
     bool operator==(const CSSProperty& other) const;
@@ -114,7 +144,7 @@ private:
     bool m_unused = false;
 #endif
     StylePropertyMetadata m_metadata;
-    RefPtrWillBeMember<CSSValue> m_value;
+    BlinKit::GCPtr<CSSValue> m_value;
 };
 
 } // namespace blink

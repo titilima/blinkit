@@ -71,7 +71,7 @@ public:
         STACK_ALLOCATED();
     public:
         PropertyReference(const StylePropertySet& propertySet, unsigned index)
-            : m_propertySet(&propertySet)
+            : m_propertySet(propertySet)
             , m_index(index)
         {
         }
@@ -95,7 +95,7 @@ public:
     private:
         const CSSValue* propertyValue() const;
 
-        RawPtrWillBeMember<const StylePropertySet> m_propertySet;
+        const StylePropertySet &m_propertySet;
         unsigned m_index;
     };
 
@@ -177,7 +177,7 @@ public:
 
     unsigned propertyCount() const { return m_arraySize; }
 
-    const BlinKit::GCMember<CSSValue>* valueArray() const;
+    const BlinKit::GCPtr<CSSValue>* valueArray() const;
     const StylePropertyMetadata* metadataArray() const;
 
     template<typename T> // CSSPropertyID or AtomicString
@@ -195,9 +195,9 @@ public:
 private:
     ImmutableStylePropertySet(const CSSProperty*, unsigned count, CSSParserMode);
 
-    BlinKit::GCMember<CSSValue>* mutableValueArray(void)
+    BlinKit::GCPtr<CSSValue>* mutableValueArray(void)
     {
-        return reinterpret_cast<BlinKit::GCMember<CSSValue> *>(&(this->m_storage));
+        return reinterpret_cast<BlinKit::GCPtr<CSSValue> *>(&(this->m_storage));
     }
     StylePropertyMetadata* mutableMetadataArray(void)
     {
@@ -205,7 +205,7 @@ private:
     }
 };
 
-inline const BlinKit::GCMember<CSSValue>* ImmutableStylePropertySet::valueArray() const
+inline const BlinKit::GCPtr<CSSValue>* ImmutableStylePropertySet::valueArray() const
 {
     return const_cast<ImmutableStylePropertySet *>(this)->mutableValueArray();
 }
@@ -292,16 +292,16 @@ inline MutableStylePropertySet* toMutableStylePropertySet(const Member<StyleProp
 
 inline const StylePropertyMetadata& StylePropertySet::PropertyReference::propertyMetadata() const
 {
-    if (m_propertySet->isMutable())
-        return toMutableStylePropertySet(*m_propertySet).m_propertyVector.at(m_index).metadata();
-    return toImmutableStylePropertySet(*m_propertySet).metadataArray()[m_index];
+    if (m_propertySet.isMutable())
+        return toMutableStylePropertySet(m_propertySet).m_propertyVector.at(m_index).metadata();
+    return toImmutableStylePropertySet(m_propertySet).metadataArray()[m_index];
 }
 
 inline const CSSValue* StylePropertySet::PropertyReference::propertyValue() const
 {
-    if (m_propertySet->isMutable())
-        return toMutableStylePropertySet(*m_propertySet).m_propertyVector.at(m_index).value();
-    return toImmutableStylePropertySet(*m_propertySet).valueArray()[m_index].get();
+    if (m_propertySet.isMutable())
+        return toMutableStylePropertySet(m_propertySet).m_propertyVector.at(m_index).value();
+    return toImmutableStylePropertySet(m_propertySet).valueArray()[m_index].get();
 }
 
 inline unsigned StylePropertySet::propertyCount() const
