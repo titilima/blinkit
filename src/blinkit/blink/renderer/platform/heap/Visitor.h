@@ -40,6 +40,12 @@ public:
         if (nullptr != po)
             ASSERT(false); // BKTODO: Remove it later!
     }
+    template <class T>
+    void trace(BlinKit::GCPtr<T> &ptr)
+    {
+        if (ptr)
+            TraceImpl(ptr.get(), reinterpret_cast<void **>(&ptr.m_object));
+    }
     template <typename T>
     void trace(BlinKit::GCMember<T> &m)
     {
@@ -85,8 +91,8 @@ public:
     }
 protected:
     Visitor(void) = default;
-
-    virtual void TraceImpl(BlinKit::GCObject *o, void **slot) = 0;
+    
+    virtual void TraceImpl(BlinKit::GCObject *o, void **slot) = 0; // BKTODO: Replace with BlinKit::GCPtrBase.
     virtual void TraceObjectSet(BlinKit::GCObjectSetCallback &callback) = 0;
 };
 
