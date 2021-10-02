@@ -44,23 +44,23 @@
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/dom/shadow/SlotAssignment.h"
 #include "platform/heap/Handle.h"
-#include "wtf/DoublyLinkedList.h"
+// BKTODO: #include "wtf/DoublyLinkedList.h"
 #include "wtf/HashMap.h"
 #include "wtf/Noncopyable.h"
 #include "wtf/PassOwnPtr.h"
 
 namespace blink {
 
-class CORE_EXPORT ElementShadow final : public NoBaseWillBeGarbageCollectedFinalized<ElementShadow> {
+class CORE_EXPORT ElementShadow final {
     WTF_MAKE_NONCOPYABLE(ElementShadow);
     USING_FAST_MALLOC_WILL_BE_REMOVED(ElementShadow);
 public:
-    static PassOwnPtrWillBeRawPtr<ElementShadow> create();
+    static GCUniqueRoot<ElementShadow> create();
     ~ElementShadow();
 
     Element* host() const;
-    ShadowRoot& youngestShadowRoot() const { ASSERT(m_shadowRoots.head()); return *m_shadowRoots.head(); }
-    ShadowRoot* oldestShadowRoot() const { return m_shadowRoots.tail(); }
+    ShadowRoot& youngestShadowRoot() const { ASSERT(nullptr != m_youngestShadowRoot); return *m_youngestShadowRoot; }
+    ShadowRoot* oldestShadowRoot() const { return m_oldestShadowRoot.get(); }
     ElementShadow* containingShadow() const;
 
     ShadowRoot* shadowRootIfV1() const
@@ -128,8 +128,13 @@ private:
     NodeToDestinationInsertionPoints m_nodeToInsertionPoints;
 
     SelectRuleFeatureSet m_selectFeatures;
+#if 0 // BKTODO:
     // FIXME: Oilpan: add a heap-based version of DoublyLinkedList<>.
     DoublyLinkedList<ShadowRoot> m_shadowRoots;
+#else
+    BlinKit::GCPtr<ShadowRoot> m_oldestShadowRoot;
+    ShadowRoot *m_youngestShadowRoot = nullptr;
+#endif
     bool m_needsDistributionRecalc;
     bool m_needsSelectFeatureSet;
 
@@ -139,7 +144,7 @@ private:
 
 inline Element* ElementShadow::host() const
 {
-    ASSERT(!m_shadowRoots.isEmpty());
+    ASSERT(m_youngestShadowRoot);
     return youngestShadowRoot().host();
 }
 

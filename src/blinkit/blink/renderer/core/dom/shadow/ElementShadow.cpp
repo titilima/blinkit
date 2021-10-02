@@ -48,6 +48,8 @@
 #include "platform/EventDispatchForbiddenScope.h"
 #include "platform/ScriptForbiddenScope.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 class DistributionPool final {
@@ -139,9 +141,9 @@ inline void DistributionPool::detachNonDistributedNodes()
     }
 }
 
-PassOwnPtrWillBeRawPtr<ElementShadow> ElementShadow::create()
+GCUniqueRoot<ElementShadow> ElementShadow::create()
 {
-    return adoptPtrWillBeNoop(new ElementShadow());
+    return WrapUniqueRoot(new ElementShadow());
 }
 
 ElementShadow::ElementShadow()
@@ -163,9 +165,10 @@ ShadowRoot& ElementShadow::addShadowRoot(Element& shadowHost, ShadowRootType typ
     ScriptForbiddenScope forbidScript;
 
     if (type == ShadowRootType::V0) {
-        if (m_shadowRoots.isEmpty()) {
+        if (!m_oldestShadowRoot) {
+            ASSERT(nullptr == m_youngestShadowRoot);
             shadowHost.willAddFirstAuthorShadowRoot();
-        } else if (m_shadowRoots.head()->type() == ShadowRootType::UserAgent) {
+        } else if (m_youngestShadowRoot->type() == ShadowRootType::UserAgent) {
             shadowHost.willAddFirstAuthorShadowRoot();
             UseCounter::countDeprecation(shadowHost.document(), UseCounter::ElementCreateShadowRootMultipleWithUserAgentShadowRoot);
         } else {
@@ -175,13 +178,23 @@ ShadowRoot& ElementShadow::addShadowRoot(Element& shadowHost, ShadowRootType typ
         shadowHost.willAddFirstAuthorShadowRoot();
     }
 
-    for (ShadowRoot* root = m_shadowRoots.head(); root; root = root->olderShadowRoot())
+    for (ShadowRoot* root = m_youngestShadowRoot; root; root = root->olderShadowRoot())
         root->lazyReattachIfAttached();
 
     RefPtrWillBeRawPtr<ShadowRoot> shadowRoot = ShadowRoot::create(shadowHost.document(), type);
     shadowRoot->setParentOrShadowHostNode(&shadowHost);
     shadowRoot->setParentTreeScope(shadowHost.treeScope());
-    m_shadowRoots.push(shadowRoot.get());
+    shadowRoot->m_older = m_youngestShadowRoot;
+    if (m_oldestShadowRoot)
+    {
+        ASSERT(nullptr != m_youngestShadowRoot);
+        m_youngestShadowRoot->m_younger = shadowRoot;
+    }
+    else
+    {
+        m_oldestShadowRoot = shadowRoot;
+    }
+    m_youngestShadowRoot = shadowRoot.get();
     setNeedsDistributionRecalc();
 
     shadowRoot->insertedInto(&shadowHost);
@@ -304,9 +317,9 @@ void ElementShadow::distributeV0()
 
     for (ShadowRoot* root = &youngestShadowRoot(); root; root = root->olderShadowRoot()) {
         HTMLShadowElement* shadowInsertionPoint = 0;
-        const WillBeHeapVector<RefPtrWillBeMember<InsertionPoint>>& insertionPoints = root->descendantInsertionPoints();
+        const std::vector<InsertionPoint *>& insertionPoints = root->descendantInsertionPoints();
         for (size_t i = 0; i < insertionPoints.size(); ++i) {
-            InsertionPoint* point = insertionPoints[i].get();
+            InsertionPoint* point = insertionPoints[i];
             if (!point->isActive())
                 continue;
             if (isHTMLShadowElement(*point)) {
@@ -413,7 +426,7 @@ DEFINE_TRACE(ElementShadow)
     // Shadow roots are linked with previous and next pointers which are traced.
     // It is therefore enough to trace one of the shadow roots here and the
     // rest will be traced from there.
-    visitor->trace(m_shadowRoots.head());
+    visitor->trace(m_oldestShadowRoot);
     visitor->trace(m_slotAssignment);
 #endif
 }

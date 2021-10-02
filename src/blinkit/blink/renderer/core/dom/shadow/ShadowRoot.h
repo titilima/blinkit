@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ShadowRoot.h
+// Description: ShadowRoot Class
+//      Author: Ziming Li
+//     Created: 2021-09-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -51,10 +62,10 @@ enum class ShadowRootType {
     Closed
 };
 
-class CORE_EXPORT ShadowRoot final : public DocumentFragment, public TreeScope, public DoublyLinkedListNode<ShadowRoot> {
+class CORE_EXPORT ShadowRoot final : public DocumentFragment, public TreeScope {
     DEFINE_WRAPPERTYPEINFO();
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(ShadowRoot);
-    friend class WTF::DoublyLinkedListNode<ShadowRoot>;
+    friend class ElementShadow;
 public:
     // FIXME: Current implementation does not work well if a shadow root is dynamically created.
     // So multiple shadow subtrees in several elements are prohibited.
@@ -75,7 +86,7 @@ public:
     Element* host() const { return toElement(parentOrShadowHostNode()); }
     ElementShadow* owner() const { return host() ? host()->shadow() : 0; }
 
-    ShadowRoot* youngerShadowRoot() const { return prev(); }
+    ShadowRoot* youngerShadowRoot() const { return m_younger.get(); }
 
     ShadowRoot* olderShadowRootForBindings() const;
 
@@ -110,7 +121,7 @@ public:
 
     void didAddInsertionPoint(InsertionPoint*);
     void didRemoveInsertionPoint(InsertionPoint*);
-    const WillBeHeapVector<RefPtrWillBeMember<InsertionPoint>>& descendantInsertionPoints();
+    const std::vector<InsertionPoint *>& descendantInsertionPoints();
 
     ShadowRootType type() const { return static_cast<ShadowRootType>(m_type); }
 
@@ -121,7 +132,7 @@ public:
 public:
     Element* activeElement() const;
 
-    ShadowRoot* olderShadowRoot() const { return next(); }
+    ShadowRoot* olderShadowRoot() const { return m_older; }
 
     String innerHTML() const;
     void setInnerHTML(const String&, ExceptionState&);
@@ -157,8 +168,8 @@ private:
     // FIXME: This shouldn't happen. https://bugs.webkit.org/show_bug.cgi?id=88834
     bool isOrphan() const { return !host(); }
 
-    RawPtrWillBeMember<ShadowRoot> m_prev;
-    RawPtrWillBeMember<ShadowRoot> m_next;
+    BlinKit::GCPtr<ShadowRoot> m_younger;
+    ShadowRoot *m_older = nullptr;
     OwnPtrWillBeMember<ShadowRootRareData> m_shadowRootRareData;
     unsigned m_numberOfStyles : 27;
     unsigned m_type : 2;

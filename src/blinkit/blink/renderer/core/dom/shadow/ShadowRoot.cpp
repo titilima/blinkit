@@ -63,8 +63,6 @@ static_assert(sizeof(ShadowRoot) == sizeof(SameSizeAsShadowRoot), "ShadowRoot sh
 ShadowRoot::ShadowRoot(Document& document, ShadowRootType type)
     : DocumentFragment(0, CreateShadowRoot)
     , TreeScope(*this, document)
-    , m_prev(nullptr)
-    , m_next(nullptr)
     , m_numberOfStyles(0)
     , m_type(static_cast<unsigned>(type))
     , m_registeredWithParentShadowRoot(false)
@@ -302,12 +300,9 @@ void ShadowRoot::invalidateDescendantInsertionPoints()
     m_shadowRootRareData->clearDescendantInsertionPoints();
 }
 
-const WillBeHeapVector<RefPtrWillBeMember<InsertionPoint>>& ShadowRoot::descendantInsertionPoints()
+const std::vector<InsertionPoint *>& ShadowRoot::descendantInsertionPoints()
 {
-    ASSERT(false); // BKTODO:
-    exit(0);
-#if 0
-    DEFINE_STATIC_LOCAL(WillBePersistentHeapVector<RefPtrWillBeMember<InsertionPoint>>, emptyList, ());
+    static std::vector<InsertionPoint *> emptyList;
     if (m_shadowRootRareData && m_descendantInsertionPointsIsValid)
         return m_shadowRootRareData->descendantInsertionPoints();
 
@@ -316,14 +311,13 @@ const WillBeHeapVector<RefPtrWillBeMember<InsertionPoint>>& ShadowRoot::descenda
     if (!containsInsertionPoints())
         return emptyList;
 
-    WillBeHeapVector<RefPtrWillBeMember<InsertionPoint>> insertionPoints;
+    std::vector<InsertionPoint *> insertionPoints;
     for (InsertionPoint& insertionPoint : Traversal<InsertionPoint>::descendantsOf(*this))
-        insertionPoints.append(&insertionPoint);
+        insertionPoints.push_back(&insertionPoint);
 
     ensureShadowRootRareData()->setDescendantInsertionPoints(insertionPoints);
 
     return m_shadowRootRareData->descendantInsertionPoints();
-#endif
 }
 
 StyleSheetList* ShadowRoot::styleSheets()
@@ -336,8 +330,7 @@ StyleSheetList* ShadowRoot::styleSheets()
 
 DEFINE_TRACE(ShadowRoot)
 {
-    visitor->trace(m_prev);
-    visitor->trace(m_next);
+    visitor->trace(m_younger);
     visitor->trace(m_shadowRootRareData);
     TreeScope::trace(visitor);
     DocumentFragment::trace(visitor);
