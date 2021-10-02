@@ -68,6 +68,7 @@ private:
     friend class GCCleanupVisitor;
     friend class GCHeap;
     template <class T> friend class GCMember;
+    friend class GCPtrBase;
     friend class GarbageCollector;
 
     GCObject(const GCObject &o) = delete;
@@ -227,11 +228,21 @@ GCPassPtr<T> WrapLeaked(T *rawPtr)
 
 class GCPtrBase
 {
+    friend class blink::Visitor;
 public:
     ~GCPtrBase(void)
     {
         if (nullptr != m_object)
             m_object->Release();
+    }
+
+    void clear(void)
+    {
+        if (nullptr != m_object)
+        {
+            m_object->Release();
+            m_object = nullptr;
+        }
     }
 protected:
     GCPtrBase(GCObject *object) : m_object(object)
@@ -245,11 +256,39 @@ protected:
     {
         return static_cast<T *>(m_object);
     }
+
+    template <class T>
+    T* release_to(void)
+    {
+        T *ret = nullptr;
+        if (nullptr != m_object)
+        {
+            m_object->DecRef();
+            ret = static_cast<T *>(m_object);
+            m_object = nullptr;
+        }
+        return ret;
+    }
+
+    template <class T>
+    void reset_from(T *p)
+    {
+        GCObject *object = p;
+
+        if (m_object == object)
+            return;
+
+        if (nullptr != m_object)
+            m_object->Release();
+        m_object = object;
+        if (nullptr != m_object)
+            m_object->IncRef();
+    }
 private:
     GCObject *m_object;
 };
 
-class GCGuard final : public GCPtrBase
+class GCGuard final : private GCPtrBase
 {
 public:
     GCGuard(GCObject &o) : GCPtrBase(&o) {}
@@ -265,7 +304,44 @@ public:
     template <class U>
     GCPtr(const WTF::RawPtr<U> &ptr) : GCPtr(ptr.get()) {}
 
+    GCPtr(const GCPtr &o) : GCPtr(o.get()) {}
+    template <class U>
+    GCPtr(const GCPtr<U> &o) : GCPtr(o.get()) {}
+
     T* get(void) const { return GCPtrBase::cast_to<T>(); }
+
+    T& operator*() const { return *get(); }
+    T* operator->() const { return get(); }
+    operator bool() const { return nullptr != get(); }
+    bool operator!() const { return nullptr == get(); }
+
+    template <class U>
+    GCPtr& operator=(U *p)
+    {
+        GCPtrBase::reset_from<T>(p);
+        return *this;
+    }
+
+    template <class U>
+    GCPtr& operator=(const WTF::RawPtr<U> &ptr)
+    {
+        GCPtrBase::reset_from<T>(ptr.get());
+        return *this;
+    }
+
+    GCPtr& operator=(const GCPtr &o)
+    {
+        GCPtrBase::reset_from<T>(o.get());
+        return *this;
+    }
+    template <class U>
+    GCPtr& operator=(const GCPtr<U> &o)
+    {
+        GCPtrBase::reset_from<T>(o.get());
+        return *this;
+    }
+
+    T* release(void) { return GCPtrBase::release_to<T>(); }
 };
 
 /**
