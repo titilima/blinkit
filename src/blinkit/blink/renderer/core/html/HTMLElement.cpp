@@ -109,8 +109,6 @@ String HTMLElement::nodeName() const
 
 bool HTMLElement::ieForbidsInsertHTML() const
 {
-    ASSERT(false); // BKTODO:
-#if 0
     // FIXME: Supposedly IE disallows settting innerHTML, outerHTML
     // and createContextualFragment on these tags.  We have no tests to
     // verify this however, so this list could be totally wrong.
@@ -123,8 +121,10 @@ bool HTMLElement::ieForbidsInsertHTML() const
         || hasTagName(basefontTag)
         || hasTagName(brTag)
         || hasTagName(colTag)
+#if 0 // BKTODO:
         || hasTagName(embedTag)
         || hasTagName(frameTag)
+#endif
         || hasTagName(hrTag)
         || hasTagName(imageTag)
         || hasTagName(imgTag)
@@ -132,11 +132,12 @@ bool HTMLElement::ieForbidsInsertHTML() const
         || hasTagName(linkTag)
         || (RuntimeEnabledFeatures::contextMenuEnabled() && hasTagName(menuitemTag))
         || hasTagName(metaTag)
+#if 0 // BKTODO:
         || hasTagName(paramTag)
         || hasTagName(sourceTag)
+#endif
         || hasTagName(wbrTag))
         return true;
-#endif
     return false;
 }
 
