@@ -65,14 +65,16 @@ public:
     TreeScope& treeScope() const { return m_treeScope; }
     Node& rootNode() const { return *m_rootNode; }
 
-    EventTarget* target() const { return m_target.get(); }
+    EventTarget* target() const { return m_target; }
     void setTarget(PassRefPtrWillBeRawPtr<EventTarget>);
 
-    EventTarget* relatedTarget() const { return m_relatedTarget.get(); }
+    EventTarget* relatedTarget() const { return m_relatedTarget; }
     void setRelatedTarget(PassRefPtrWillBeRawPtr<EventTarget>);
 
+#if 0 // BKTODO:
     TouchEventContext* touchEventContext() const { return m_touchEventContext.get(); }
     TouchEventContext* ensureTouchEventContext();
+#endif
 
     std::vector<EventTarget *>& ensureEventPath(EventPath&);
 
@@ -81,13 +83,13 @@ public:
 #if ENABLE(ASSERT)
     bool isExclusivePartOf(const TreeScopeEventContext&) const;
 #endif
-    void addChild(TreeScopeEventContext& child) { m_children.append(&child); }
+    void addChild(TreeScopeEventContext& child) { m_children.emplace_back(&child); }
 
     // For ancestor-descendant relationship check in O(1).
     // Preprocessing takes O(N).
     int calculateTreeOrderAndSetNearestAncestorClosedTree(int orderNumber, TreeScopeEventContext* nearestAncestorClosedTreeScopeEventContext);
 
-    TreeScopeEventContext* containingClosedShadowTree() const { return m_containingClosedShadowTree.get(); }
+    TreeScopeEventContext* containingClosedShadowTree() const { return m_containingClosedShadowTree; }
 
 private:
     TreeScopeEventContext(TreeScope&);
@@ -100,13 +102,13 @@ private:
 
     TreeScope &m_treeScope;
     BlinKit::GCMember<Node> m_rootNode; // Prevents TreeScope from being freed. TreeScope itself isn't RefCounted.
-    RawPtr<EventTarget> m_target;
-    RawPtr<EventTarget> m_relatedTarget;
+    EventTarget *m_target = nullptr;
+    EventTarget *m_relatedTarget = nullptr;
     std::unique_ptr<std::vector<EventTarget *>> m_eventPath;
-    RefPtrWillBeMember<TouchEventContext> m_touchEventContext;
-    RawPtrWillBeMember<TreeScopeEventContext> m_containingClosedShadowTree;
+    // BKTODO: RefPtrWillBeMember<TouchEventContext> m_touchEventContext;
+    TreeScopeEventContext *m_containingClosedShadowTree = nullptr;
 
-    WillBeHeapVector<RawPtrWillBeMember<TreeScopeEventContext>> m_children;
+    std::vector<TreeScopeEventContext *> m_children;
     int m_preOrder;
     int m_postOrder;
 };

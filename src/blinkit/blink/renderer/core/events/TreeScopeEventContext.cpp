@@ -87,12 +87,14 @@ std::vector<EventTarget *>& TreeScopeEventContext::ensureEventPath(EventPath& pa
     return *m_eventPath;
 }
 
+#if 0 // BKTODO:
 TouchEventContext* TreeScopeEventContext::ensureTouchEventContext()
 {
     if (!m_touchEventContext)
-        ASSERT(false); // BKTODO: m_touchEventContext = TouchEventContext::create();
+        m_touchEventContext = TouchEventContext::create();
     return m_touchEventContext.get();
 }
+#endif
 
 GCPassPtr<TreeScopeEventContext> TreeScopeEventContext::create(TreeScope& treeScope)
 {
@@ -118,11 +120,11 @@ DEFINE_TRACE(TreeScopeEventContext)
     visitor->trace(m_target);
     visitor->trace(m_relatedTarget);
     visitor->trace(m_eventPath);
-#endif
     visitor->trace(m_touchEventContext);
     visitor->trace(m_containingClosedShadowTree);
 #if ENABLE(OILPAN)
     visitor->trace(m_children);
+#endif
 #endif
 }
 
