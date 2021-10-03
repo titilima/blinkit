@@ -42,17 +42,9 @@ using namespace BlinKit;
 
 namespace blink {
 
-GCPassPtr<IdTargetObserverRegistry> IdTargetObserverRegistry::create()
+std::unique_ptr<IdTargetObserverRegistry> IdTargetObserverRegistry::create()
 {
-    return WrapLeaked(new IdTargetObserverRegistry());
-}
-
-DEFINE_TRACE(IdTargetObserverRegistry)
-{
-#if ENABLE(OILPAN)
-    visitor->trace(m_registry);
-    // BKTODO: visitor->trace(m_notifyingObserversInSet);
-#endif
+    return zed::wrap_unique(new IdTargetObserverRegistry());
 }
 
 void IdTargetObserverRegistry::addObserver(const AtomicString& id, IdTargetObserver* observer)
@@ -86,9 +78,9 @@ void IdTargetObserverRegistry::notifyObserversInternal(const AtomicString& id)
         return;
     m_notifyingObserversInSet = &(it->second);
 
-    std::vector<IdTargetObserver *> copy = m_notifyingObserversInSet->GetSnapshot();
+    std::vector<IdTargetObserver *> copy(m_notifyingObserversInSet->begin(), m_notifyingObserversInSet->end());
     for (const auto& observer : copy) {
-        if (m_notifyingObserversInSet->contains(observer))
+        if (zed::key_exists(*m_notifyingObserversInSet, observer))
             observer->idTargetChanged();
     }
 

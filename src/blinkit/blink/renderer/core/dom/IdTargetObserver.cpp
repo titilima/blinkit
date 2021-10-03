@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IdTargetObserver.cpp
+// Description: IdTargetObserver Class
+//      Author: Ziming Li
+//     Created: 2021-10-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All Rights Reserved.
  *
@@ -30,7 +41,7 @@
 namespace blink {
 
 IdTargetObserver::IdTargetObserver(IdTargetObserverRegistry& observerRegistry, const AtomicString& id)
-    : m_registry(&observerRegistry)
+    : m_registry(observerRegistry)
     , m_id(id)
 {
     registry().addObserver(m_id, this);
@@ -38,21 +49,12 @@ IdTargetObserver::IdTargetObserver(IdTargetObserverRegistry& observerRegistry, c
 
 IdTargetObserver::~IdTargetObserver()
 {
-#if !ENABLE(OILPAN)
     registry().removeObserver(m_id, this);
-#endif
-}
-
-DEFINE_TRACE(IdTargetObserver)
-{
-    visitor->trace(m_registry);
 }
 
 void IdTargetObserver::unregister()
 {
-#if ENABLE(OILPAN)
-    registry().removeObserver(m_id, this);
-#endif
+    // Nothing to do.
 }
 
 } // namespace blink

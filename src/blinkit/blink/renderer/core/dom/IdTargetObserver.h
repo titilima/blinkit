@@ -44,20 +44,17 @@ namespace blink {
 
 class IdTargetObserverRegistry;
 
-class IdTargetObserver : public BlinKit::GCObject {
+class IdTargetObserver {
 public:
     virtual ~IdTargetObserver();
-    DECLARE_VIRTUAL_TRACE();
     virtual void idTargetChanged() = 0;
     virtual void unregister();
-
 protected:
     IdTargetObserver(IdTargetObserverRegistry&, const AtomicString& id);
-
 private:
-    IdTargetObserverRegistry& registry() { return *m_registry; }
+    IdTargetObserverRegistry& registry() { return m_registry; }
 
-    BlinKit::GCMember<IdTargetObserverRegistry> m_registry;
+    IdTargetObserverRegistry &m_registry;
     AtomicString m_id;
 };
 
