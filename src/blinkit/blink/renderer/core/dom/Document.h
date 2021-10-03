@@ -291,7 +291,7 @@ public:
     String outgoingOrigin() const;
 
     void setDoctype(PassRefPtrWillBeRawPtr<DocumentType>);
-    DocumentType* doctype() const { return m_docType.get(); }
+    DocumentType* doctype(void) const;
 
     // BKTODO: DOMImplementation& implementation();
 
@@ -318,7 +318,7 @@ public:
     PassRefPtrWillBeRawPtr<Element> createElement(const QualifiedName&, bool createdByParser);
 
     Element* elementFromPoint(int x, int y) const;
-    std::vector<BlinKit::GCMember<Element>> elementsFromPoint(int x, int y) const;
+    std::vector<Element *> elementsFromPoint(int x, int y) const;
     PassRefPtrWillBeRawPtr<Range> caretRangeFromPoint(int x, int y);
     Element* scrollingElement();
 
@@ -483,7 +483,7 @@ public:
     // auto is specified.
     void pageSizeAndMarginsInPixels(int pageIndex, IntSize& pageSize, int& marginTop, int& marginRight, int& marginBottom, int& marginLeft);
 
-    ResourceFetcher* fetcher() { return m_fetcher.get(); }
+    ResourceFetcher* fetcher(void);
 
     void attach(const AttachContext& = AttachContext()) override;
     void detach(const AttachContext& = AttachContext()) override;
@@ -570,8 +570,8 @@ public:
 
     CSSStyleSheet& elementSheet();
 
-    virtual GCPassPtr<DocumentParser> createParser();
-    DocumentParser* parser() const { return m_parser.get(); }
+    virtual PassRefPtrWillBeRawPtr<DocumentParser> createParser();
+    DocumentParser* parser(void) const;
     ScriptableDocumentParser* scriptableDocumentParser() const;
 
 #if 0 // BKTODO:
@@ -1019,12 +1019,12 @@ public:
     Locale& getCachedLocale(const AtomicString& locale = nullAtom);
 
     AnimationClock& animationClock();
-    AnimationTimeline& timeline() const { return *m_timeline; }
+    AnimationTimeline& timeline(void) const;
     CompositorPendingAnimations& compositorPendingAnimations() { return m_compositorPendingAnimations; }
 
     void addToTopLayer(Element*, const Element* before = nullptr);
     void removeFromTopLayer(Element*);
-    const std::vector<BlinKit::GCMember<Element>>& topLayerElements() const { return m_topLayerElements; }
+    const std::vector<GCRefPtr<Element>>& topLayerElements() const { return m_topLayerElements; }
     HTMLDialogElement* activeModalDialog() const;
 
     // A non-null m_templateDocumentHost implies that |this| was created by ensureTemplateDocument().
@@ -1232,8 +1232,8 @@ private:
     // redundant with oilpan.
     RawPtrWillBeMember<HTMLImportsController> m_importsController;
 
-    BlinKit::GCMember<ResourceFetcher> m_fetcher;
-    BlinKit::GCMember<DocumentParser> m_parser;
+    GCRefPtr<ResourceFetcher> m_fetcher;
+    GCRefPtr<DocumentParser> m_parser;
     unsigned m_activeParserCount;
     // BKTODO: RefPtrWillBeMember<ContextFeatures> m_contextFeatures;
 
@@ -1252,10 +1252,10 @@ private:
     // Mime-type of the document in case it was cloned or created by XHR.
     AtomicString m_mimeType;
 
-    BlinKit::GCMember<DocumentType> m_docType;
+    GCRefPtr<DocumentType> m_docType;
     // BKTODO: OwnPtrWillBeMember<DOMImplementation> m_implementation;
 
-    BlinKit::GCMember<CSSStyleSheet> m_elemSheet;
+    GCRefPtr<CSSStyleSheet> m_elemSheet;
 
 #if 0 // BKTODO:
     bool m_printing;
@@ -1270,11 +1270,11 @@ private:
 
     bool m_hasAutofocused;
     Timer<Document> m_clearFocusedElementTimer;
-    BlinKit::GCMember<Element> m_autofocusElement;
-    BlinKit::GCMember<Element> m_focusedElement;
-    BlinKit::GCMember<Node> m_hoverNode;
-    BlinKit::GCMember<Element> m_activeHoverElement;
-    BlinKit::GCMember<Element> m_documentElement;
+    GCRefPtr<Element> m_autofocusElement;
+    GCRefPtr<Element> m_focusedElement;
+    GCRefPtr<Node> m_hoverNode;
+    GCRefPtr<Element> m_activeHoverElement;
+    GCRefPtr<Element> m_documentElement;
     UserActionElementSet m_userActionElements;
 
     uint64_t m_domTreeVersion;
@@ -1290,10 +1290,10 @@ private:
 
     MutationObserverOptions m_mutationObserverTypes;
 
-    BlinKit::GCMember<StyleEngine> m_styleEngine;
+    GCRefPtr<StyleEngine> m_styleEngine;
     RefPtrWillBeMember<StyleSheetList> m_styleSheetList;
 
-    BlinKit::GCUniqueRoot<FormController> m_formController;
+    GCUniquePtr<FormController> m_formController;
 
     TextLinkColors m_textLinkColors;
     // BKTODO: const OwnPtrWillBeMember<VisitedLinkState> m_visitedLinkState;
@@ -1314,14 +1314,14 @@ private:
 
     String m_title;
     String m_rawTitle;
-    BlinKit::GCMember<Element> m_titleElement;
+    GCRefPtr<Element> m_titleElement;
 
     // BKTODO: PersistentWillBeMember<AXObjectCache> m_axObjectCache;
     OwnPtrWillBeMember<DocumentMarkerController> m_markers;
 
     Timer<Document> m_updateFocusAppearanceTimer;
 
-    BlinKit::GCMember<Element> m_cssTarget;
+    GCRefPtr<Element> m_cssTarget;
 
     LoadEventProgress m_loadEventProgress;
 
@@ -1329,7 +1329,7 @@ private:
 
     std::unique_ptr<ScriptRunner> m_scriptRunner;
 
-    std::vector<BlinKit::GCMember<HTMLScriptElement>> m_currentScriptStack;
+    std::vector<GCRefPtr<HTMLScriptElement>> m_currentScriptStack;
 
     // BKTODO: OwnPtr<TransformSource> m_transformSource;
 
@@ -1390,7 +1390,7 @@ private:
 
     bool m_hasFullscreenSupplement; // For early return in Fullscreen::fromIfExists()
 
-    std::vector<BlinKit::GCMember<Element>> m_topLayerElements;
+    std::vector<GCRefPtr<Element>> m_topLayerElements;
 
     int m_loadEventDelayCount;
     Timer<Document> m_loadEventDelayTimer;
@@ -1409,23 +1409,23 @@ private:
     bool m_writeRecursionIsTooDeep;
     unsigned m_writeRecursionDepth;
 
-    BlinKit::GCUniqueRoot<ScriptedAnimationController> m_scriptedAnimationController;
+    GCUniquePtr<ScriptedAnimationController> m_scriptedAnimationController;
     // BKTODO: RefPtrWillBeMember<ScriptedIdleTaskController> m_scriptedIdleTaskController;
     std::unique_ptr<MainThreadTaskRunner> m_taskRunner;
     std::unique_ptr<TextAutosizer> m_textAutosizer;
 
-    BlinKit::GCMember<CustomElementRegistrationContext> m_registrationContext;
+    GCRefPtr<CustomElementRegistrationContext> m_registrationContext;
     RefPtrWillBeMember<CustomElementMicrotaskRunQueue> m_customElementMicrotaskRunQueue;
 
     void elementDataCacheClearTimerFired(Timer<Document>*);
     Timer<Document> m_elementDataCacheClearTimer;
 
-    BlinKit::GCUniqueRoot<ElementDataCache> m_elementDataCache;
+    GCUniquePtr<ElementDataCache> m_elementDataCache;
 
     using LocaleIdentifierToLocaleMap = HashMap<AtomicString, OwnPtr<Locale>>;
     LocaleIdentifierToLocaleMap m_localeCache;
 
-    BlinKit::GCMember<AnimationTimeline> m_timeline;
+    GCRefPtr<AnimationTimeline> m_timeline;
     CompositorPendingAnimations m_compositorPendingAnimations;
 
     RefPtrWillBeMember<Document> m_templateDocument;
@@ -1461,7 +1461,7 @@ private:
     PersistentWillBeMember<CanvasFontCache> m_canvasFontCache;
 #endif
 
-    BlinKit::GCMember<IntersectionObserverController> m_intersectionObserverController;
+    GCRefPtr<IntersectionObserverController> m_intersectionObserverController;
     PersistentWillBeMember<NodeIntersectionObserverData> m_intersectionObserverData;
 
     int m_nodeCount;

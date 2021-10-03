@@ -1247,10 +1247,10 @@ Element* Document::elementFromPoint(int x, int y) const
     return TreeScope::elementFromPoint(x, y);
 }
 
-std::vector<GCMember<Element>> Document::elementsFromPoint(int x, int y) const
+std::vector<Element *> Document::elementsFromPoint(int x, int y) const
 {
     if (!layoutView())
-        return std::vector<GCMember<Element>>();
+        return std::vector<Element *>();
     return TreeScope::elementsFromPoint(x, y);
 }
 
@@ -2500,7 +2500,7 @@ CanvasFontCache* Document::canvasFontCache()
 #endif
 }
 
-GCPassPtr<DocumentParser> Document::createParser()
+PassRefPtrWillBeRawPtr<DocumentParser> Document::createParser()
 {
     if (isHTMLDocument()) {
         bool reportErrors = InspectorInstrumentation::collectingHTMLParseErrors(this);
@@ -3746,7 +3746,7 @@ bool Document::setFocusedElement(PassRefPtrWillBeRawPtr<Element> prpNewFocusedEl
         return true;
 
     bool focusChangeBlocked = false;
-    GCMember<Element> oldFocusedElement = m_focusedElement.release();
+    GCRefPtr<Element> oldFocusedElement(m_focusedElement.release());
 
     // Remove focus from the existing focus node (if any)
     if (oldFocusedElement) {
@@ -6117,6 +6117,26 @@ void Document::enforceStrictMixedContentChecking()
 bool Document::IsRetainedInTree(void) const
 {
     return nullptr != m_domWindow;
+}
+
+DocumentType* Document::doctype(void) const
+{
+    return m_docType.get();
+}
+
+ResourceFetcher* Document::fetcher(void)
+{
+    return m_fetcher.get();
+}
+
+DocumentParser* Document::parser(void) const
+{
+    return m_parser.get();
+}
+
+AnimationTimeline& Document::timeline(void) const
+{
+    return *m_timeline;
 }
 
 DEFINE_TRACE(Document)
