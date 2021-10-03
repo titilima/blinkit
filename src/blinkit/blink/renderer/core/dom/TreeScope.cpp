@@ -53,7 +53,6 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLAnchorElement.h"
-// BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLLabelElement.h"
 // BKTODO: #include "core/html/HTMLMapElement.h"
 #include "core/layout/HitTestResult.h"
@@ -315,9 +314,9 @@ Element* TreeScope::hitTestPoint(int x, int y, const HitTestRequest& request) co
     return toElement(node);
 }
 
-WillBeHeapVector<RawPtrWillBeMember<Element>> TreeScope::elementsFromHitTestResult(HitTestResult& result) const
+std::vector<Element *> TreeScope::elementsFromHitTestResult(HitTestResult& result) const
 {
-    WillBeHeapVector<RawPtrWillBeMember<Element>> elements;
+    std::vector<Element *> elements;
 
     Node* lastNode = nullptr;
     for (const auto rectBasedNode : result.listBasedTestResult()) {
@@ -335,34 +334,33 @@ WillBeHeapVector<RawPtrWillBeMember<Element>> TreeScope::elementsFromHitTestResu
             continue;
 
         if (node && node->isElementNode()) {
-            elements.append(toElement(node));
+            elements.emplace_back(toElement(node));
             lastNode = node;
         }
     }
 
     if (rootNode().isDocumentNode()) {
         if (Element* rootElement = toDocument(rootNode()).documentElement()) {
-            if (elements.isEmpty() || elements.last() != rootElement)
-                elements.append(rootElement);
+            if (elements.empty() || elements.back() != rootElement)
+                elements.emplace_back(rootElement);
         }
     }
 
     return elements;
 }
 
-std::vector<GCMember<Element>> TreeScope::elementsFromPoint(int x, int y) const
+std::vector<Element *> TreeScope::elementsFromPoint(int x, int y) const
 {
     Document& document = rootNode().document();
     IntPoint hitPoint(x, y);
     if (!pointWithScrollAndZoomIfPossible(document, hitPoint))
-        return std::vector<GCMember<Element>>();
+        return std::vector<Element *>();
 
     HitTestRequest request(HitTestRequest::ReadOnly | HitTestRequest::Active | HitTestRequest::ListBased | HitTestRequest::PenetratingList);
     HitTestResult result(request, hitPoint);
     document.layoutView()->hitTest(result);
 
-    ASSERT(false); // BKTODO: return elementsFromHitTestResult(result);
-    return std::vector<GCMember<Element>>();
+    return elementsFromHitTestResult(result);
 }
 
 void TreeScope::addLabel(const AtomicString& forAttributeValue, HTMLLabelElement* element)
@@ -597,20 +595,7 @@ void TreeScope::setDocument(Document &document)
 
 DEFINE_TRACE(TreeScope)
 {
-#if 0 // BKTODO:
-    visitor->trace(m_rootNode);
-    visitor->trace(m_document);
-    visitor->trace(m_parentTreeScope);
-#endif
-    visitor->trace(m_idTargetObserverRegistry);
     visitor->trace(m_selection);
-#if 0 // BKTODO:
-    visitor->trace(m_elementsById);
-    visitor->trace(m_imageMapsByName);
-    visitor->trace(m_labelsByForAttribute);
-#endif
-    if (m_scopedStyleResolver)
-        m_scopedStyleResolver->trace(visitor);
 }
 
 } // namespace blink

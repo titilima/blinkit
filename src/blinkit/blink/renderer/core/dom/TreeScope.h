@@ -38,7 +38,6 @@
 #ifndef TreeScope_h
 #define TreeScope_h
 
-#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 #include "core/dom/DocumentOrderedMap.h"
 #include "core/layout/HitTestRequest.h"
@@ -90,8 +89,8 @@ public:
 
     Element* elementFromPoint(int x, int y) const;
     Element* hitTestPoint(int x, int y, const HitTestRequest&) const;
-    std::vector<BlinKit::GCMember<Element>> elementsFromPoint(int x, int y) const;
-    WillBeHeapVector<RawPtrWillBeMember<Element>> elementsFromHitTestResult(HitTestResult&) const;
+    std::vector<Element *> elementsFromPoint(int x, int y) const;
+    std::vector<Element *> elementsFromHitTestResult(HitTestResult&) const;
 
     // For accessibility.
     bool shouldCacheLabelsByForAttribute() const { return !!m_labelsByForAttribute; }
@@ -202,9 +201,9 @@ private:
     std::unique_ptr<DocumentOrderedMap> m_imageMapsByName;
     std::unique_ptr<DocumentOrderedMap> m_labelsByForAttribute;
 
-    BlinKit::GCMember<IdTargetObserverRegistry> m_idTargetObserverRegistry;
+    std::unique_ptr<IdTargetObserverRegistry> m_idTargetObserverRegistry;
 
-    BlinKit::GCUniqueRoot<ScopedStyleResolver> m_scopedStyleResolver;
+    GCUniquePtr<ScopedStyleResolver> m_scopedStyleResolver;
 
     mutable RefPtrWillBeMember<DOMSelection> m_selection;
 };
