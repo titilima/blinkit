@@ -54,11 +54,11 @@ using namespace BlinKit;
 
 namespace blink {
 
-GCUniqueRoot<ScrollAnimatorBase> ScrollAnimatorBase::create(ScrollableArea* scrollableArea)
+GCUniquePtr<ScrollAnimatorBase> ScrollAnimatorBase::create(ScrollableArea* scrollableArea)
 {
     if (scrollableArea && scrollableArea->scrollAnimatorEnabled())
-        return WrapUniqueRoot<ScrollAnimatorBase>(new ScrollAnimator(scrollableArea));
-    return WrapUniqueRoot(new ScrollAnimatorBase(scrollableArea));
+        return GCWrapUnique<ScrollAnimatorBase>(new ScrollAnimator(scrollableArea));
+    return GCWrapUnique(new ScrollAnimatorBase(scrollableArea));
 }
 
 ScrollAnimator::ScrollAnimator(ScrollableArea* scrollableArea, WTF::TimeFunction timeFunction)

@@ -59,7 +59,7 @@ using LinkEventSender = EventSender<HTMLLinkElement>;
 class LinkStyle final : public LinkResource, ResourceOwner<StyleSheetResource> {
     USING_FAST_MALLOC_WILL_BE_REMOVED(LinkStyle);
 public:
-    static GCPassPtr<LinkStyle> create(HTMLLinkElement* owner);
+    static PassOwnPtrWillBeRawPtr<LinkStyle> create(HTMLLinkElement* owner);
 
     explicit LinkStyle(HTMLLinkElement* owner);
     ~LinkStyle() override;
@@ -118,7 +118,7 @@ private:
         m_fetchFollowingCORS = false;
     }
 
-    BlinKit::GCMember<CSSStyleSheet> m_sheet;
+    GCRefPtr<CSSStyleSheet> m_sheet;
     DisabledState m_disabledState;
     PendingSheetType m_pendingSheetType;
     bool m_loading;
@@ -216,7 +216,7 @@ private:
     // From DOMSettableTokenListObserver
     void valueWasSet() final;
 
-    BlinKit::GCMember<LinkResource> m_link;
+    GCRefPtr<LinkResource> m_link;
     LinkLoader m_linkLoader;
 
     String m_type;

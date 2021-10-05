@@ -42,7 +42,6 @@
 #ifndef FrameHost_h
 #define FrameHost_h
 
-#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 #include "core/frame/PageScaleConstraintsSet.h"
 #include "core/frame/TopControls.h"
@@ -122,7 +121,7 @@ private:
     Page &m_page;
     const std::unique_ptr<TopControls> m_topControls;
     const std::unique_ptr<PageScaleConstraintsSet> m_pageScaleConstraintsSet;
-    const BlinKit::GCUniqueRoot<VisualViewport> m_visualViewport;
+    const GCUniquePtr<VisualViewport> m_visualViewport;
     const std::unique_ptr<EventHandlerRegistry> m_eventHandlerRegistry;
     // BKTODO: const OwnPtrWillBeMember<ConsoleMessageStorage> m_consoleMessageStorage;
 

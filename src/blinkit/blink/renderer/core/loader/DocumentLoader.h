@@ -100,7 +100,7 @@ public:
 
     const ResourceRequest& request() const;
 
-    ResourceFetcher* fetcher() const { return m_fetcher.get(); }
+    ResourceFetcher* fetcher(void) const;
 
     const SubstituteData& substituteData() const { return m_substituteData; }
 
@@ -181,7 +181,7 @@ protected:
     Vector<KURL> m_redirectChain;
 
 private:
-    static GCUniqueRoot<DocumentWriter> createWriterFor(const Document* ownerDocument, const DocumentInit&, const AtomicString& mimeType, const AtomicString& encoding, bool dispatch, ParserSynchronizationPolicy);
+    static GCUniquePtr<DocumentWriter> createWriterFor(const Document* ownerDocument, const DocumentInit&, const AtomicString& mimeType, const AtomicString& encoding, bool dispatch, ParserSynchronizationPolicy);
 
     void ensureWriter(const AtomicString& mimeType, const KURL& overridingURL = KURL());
     void endWriting(DocumentWriter*);
@@ -220,12 +220,12 @@ private:
 
     bool shouldContinueForResponse() const;
 
-    RawPtr<LocalFrame> m_frame;
-    BlinKit::GCMember<ResourceFetcher> m_fetcher;
+    LocalFrame *m_frame;
+    GCRefPtr<ResourceFetcher> m_fetcher;
 
     ResourcePtr<RawResource> m_mainResource;
 
-    BlinKit::GCUniqueRoot<DocumentWriter> m_writer;
+    BlinKit::GCUniquePtr<DocumentWriter> m_writer;
 
     // A reference to actual request used to create the data source.
     // The only part of this request that should change is the url, and

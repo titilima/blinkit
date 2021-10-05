@@ -56,7 +56,7 @@ public:
     void setCreatedByParser(bool createdByParser) { m_createdByParser = createdByParser; }
 
     const String& localHref() const { return m_localHref; }
-    StyleSheet* sheet() const { return m_sheet.get(); }
+    StyleSheet* sheet(void) const;
 
     bool isCSS() const { return m_isCSS; }
     bool isXSL() const { return m_isXSL; }
@@ -115,7 +115,7 @@ private:
     String m_localHref;
     String m_title;
     String m_media;
-    BlinKit::GCMember<StyleSheet> m_sheet;
+    GCRefPtr<StyleSheet> m_sheet;
     bool m_loading;
     bool m_alternate;
     bool m_createdByParser;

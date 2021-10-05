@@ -41,13 +41,10 @@
 #ifndef ViewportStyleResolver_h
 #define ViewportStyleResolver_h
 
-#include "blinkit/gc/gc_root.h"
 #include "core/CSSPropertyNames.h"
 #include "core/CoreExport.h"
 #include "core/css/RuleSet.h"
 #include "platform/Length.h"
-// BKTODO: #include "wtf/RefCounted.h"
-// BKTODO: #include "wtf/RefPtr.h"
 
 namespace blink {
 
@@ -59,9 +56,9 @@ class CORE_EXPORT ViewportStyleResolver {
     USING_FAST_MALLOC_WILL_BE_REMOVED(ViewportStyleResolver);
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(ViewportStyleResolver);
 public:
-    static GCUniqueRoot<ViewportStyleResolver> create(Document* document)
+    static GCUniquePtr<ViewportStyleResolver> create(Document* document)
     {
-        return BlinKit::WrapUniqueRoot(new ViewportStyleResolver(document));
+        return BlinKit::GCWrapUnique(new ViewportStyleResolver(document));
     }
 
     enum Origin { UserAgentOrigin, AuthorOrigin };
@@ -80,8 +77,8 @@ private:
     float viewportArgumentValue(CSSPropertyID) const;
     Length viewportLengthValue(CSSPropertyID) const;
 
-    BlinKit::GCMember<Document> m_document;
-    BlinKit::GCMember<MutableStylePropertySet> m_propertySet;
+    GCRefPtr<Document> m_document;
+    GCRefPtr<MutableStylePropertySet> m_propertySet;
     bool m_hasAuthorStyle;
 };
 

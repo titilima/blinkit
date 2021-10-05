@@ -33,7 +33,6 @@
 #ifndef FormController_h
 #define FormController_h
 
-#include "blinkit/gc/gc_root.h"
 #include "core/html/forms/RadioButtonGroupScope.h"
 #include "platform/heap/Handle.h"
 #include "wtf/Allocator.h"
@@ -105,9 +104,9 @@ private:
 class FormController final : public NoBaseWillBeGarbageCollectedFinalized<FormController> {
     USING_FAST_MALLOC_WILL_BE_REMOVED(FormController);
 public:
-    static GCUniqueRoot<FormController> create()
+    static GCUniquePtr<FormController> create()
     {
-        return BlinKit::WrapUniqueRoot(new FormController);
+        return BlinKit::GCWrapUnique(new FormController);
     }
     ~FormController();
     DECLARE_TRACE();

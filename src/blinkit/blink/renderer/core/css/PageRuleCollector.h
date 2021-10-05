@@ -54,7 +54,7 @@ private:
     bool isFirstPage(int pageIndex) const;
     String pageName(int pageIndex) const;
 
-    void matchPageRulesForList(std::vector<StyleRulePage *>& matchedRules, const std::vector<BlinKit::GCMember<StyleRulePage>>& rules, bool isLeftPage, bool isFirstPage, const String& pageName);
+    void matchPageRulesForList(std::vector<StyleRulePage *>& matchedRules, const std::vector<GCRefPtr<StyleRulePage>>& rules, bool isLeftPage, bool isFirstPage, const String& pageName);
 
     const bool m_isLeftPage;
     const bool m_isFirstPage;

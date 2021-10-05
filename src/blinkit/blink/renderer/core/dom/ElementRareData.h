@@ -82,7 +82,7 @@ public:
 
     CSSStyleDeclaration& ensureInlineCSSStyleDeclaration(Element* ownerElement);
 
-    void clearShadow() { m_shadow = nullptr; }
+    void clearShadow() { m_shadow.reset(); }
     ElementShadow* shadow() const { return m_shadow.get(); }
     ElementShadow& ensureShadow()
     {
@@ -157,7 +157,7 @@ private:
 
     OwnPtrWillBeMember<DatasetDOMStringMap> m_dataset;
     OwnPtrWillBeMember<ClassList> m_classList;
-    BlinKit::GCUniqueRoot<ElementShadow> m_shadow;
+    GCUniquePtr<ElementShadow> m_shadow;
     OwnPtrWillBeMember<NamedNodeMap> m_attributeMap;
     OwnPtrWillBeMember<AttrNodeList> m_attrNodeList;
     OwnPtrWillBeMember<InlineCSSStyleDeclaration> m_cssomWrapper;

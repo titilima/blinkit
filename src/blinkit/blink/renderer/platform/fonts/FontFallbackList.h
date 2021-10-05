@@ -141,7 +141,7 @@ private:
     GlyphPages m_pages;
     GlyphPageTreeNodeBase* m_pageZero;
     mutable const SimpleFontData* m_cachedPrimarySimpleFontData;
-    BlinKit::GCPersistentMember<FontSelector> m_fontSelector;
+    GCRefPtr<FontSelector> m_fontSelector;
     unsigned m_fontSelectorVersion;
     mutable int m_familyIndex;
     unsigned short m_generation;

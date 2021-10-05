@@ -69,8 +69,8 @@ struct CSSGradientColorStop {
     DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
 public:
     CSSGradientColorStop() : m_colorIsDerivedFromElement(false) { }
-    BlinKit::GCMember<CSSPrimitiveValue> m_position; // percentage or length
-    BlinKit::GCMember<CSSValue> m_color;
+    GCRefPtr<CSSPrimitiveValue> m_position; // percentage or length
+    GCRefPtr<CSSValue> m_color;
     bool m_colorIsDerivedFromElement;
     bool operator==(const CSSGradientColorStop& other) const
     {
@@ -144,11 +144,11 @@ protected:
     bool isCacheable() const;
 
     // Points. Some of these may be null.
-    BlinKit::GCMember<CSSValue> m_firstX;
-    BlinKit::GCMember<CSSValue> m_firstY;
+    GCRefPtr<CSSValue> m_firstX;
+    GCRefPtr<CSSValue> m_firstY;
 
-    BlinKit::GCMember<CSSValue> m_secondX;
-    BlinKit::GCMember<CSSValue> m_secondY;
+    GCRefPtr<CSSValue> m_secondX;
+    GCRefPtr<CSSValue> m_secondY;
 
     // Stops
     std::vector<CSSGradientColorStop> m_stops;
@@ -184,7 +184,7 @@ private:
     {
     }
 
-    RefPtrWillBeMember<CSSPrimitiveValue> m_angle; // may be null.
+    GCRefPtr<CSSPrimitiveValue> m_angle; // may be null.
 };
 
 DEFINE_CSS_VALUE_TYPE_CASTS(CSSLinearGradientValue, isLinearGradientValue());
@@ -224,15 +224,15 @@ private:
     float resolveRadius(CSSPrimitiveValue*, const CSSToLengthConversionData&, float* widthOrHeight = 0);
 
     // These may be null for non-deprecated gradients.
-    RefPtrWillBeMember<CSSPrimitiveValue> m_firstRadius;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_secondRadius;
+    GCRefPtr<CSSPrimitiveValue> m_firstRadius;
+    GCRefPtr<CSSPrimitiveValue> m_secondRadius;
 
     // The below are only used for non-deprecated gradients. Any of them may be null.
-    RefPtrWillBeMember<CSSPrimitiveValue> m_shape;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_sizingBehavior;
+    GCRefPtr<CSSPrimitiveValue> m_shape;
+    GCRefPtr<CSSPrimitiveValue> m_sizingBehavior;
 
-    RefPtrWillBeMember<CSSPrimitiveValue> m_endHorizontalSize;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_endVerticalSize;
+    GCRefPtr<CSSPrimitiveValue> m_endHorizontalSize;
+    GCRefPtr<CSSPrimitiveValue> m_endVerticalSize;
 };
 
 DEFINE_CSS_VALUE_TYPE_CASTS(CSSRadialGradientValue, isRadialGradientValue());

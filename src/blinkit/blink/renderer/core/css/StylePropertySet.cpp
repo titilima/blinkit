@@ -55,7 +55,7 @@ namespace blink {
 
 static size_t sizeForImmutableStylePropertySetWithPropertyCount(unsigned count)
 {
-    return sizeof(ImmutableStylePropertySet) - sizeof(void*) + sizeof(GCPtr<CSSValue>) * count + sizeof(StylePropertyMetadata) * count;
+    return sizeof(ImmutableStylePropertySet) - sizeof(void*) + sizeof(GCRefPtr<CSSValue>) * count + sizeof(StylePropertyMetadata) * count;
 }
 
 PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> ImmutableStylePropertySet::create(const CSSProperty* properties, unsigned count, CSSParserMode cssParserMode)
@@ -96,7 +96,7 @@ ImmutableStylePropertySet::ImmutableStylePropertySet(const CSSProperty* properti
     : StylePropertySet(cssParserMode, length)
 {
     StylePropertyMetadata* metadataArray = mutableMetadataArray();
-    GCPtr<CSSValue>* valueArray = mutableValueArray();
+    GCRefPtr<CSSValue>* valueArray = mutableValueArray();
     for (unsigned i = 0; i < m_arraySize; ++i) {
         metadataArray[i] = properties[i].metadata();
         valueArray[i] = properties[i].value();
@@ -108,7 +108,7 @@ ImmutableStylePropertySet::ImmutableStylePropertySet(const CSSProperty* properti
 
 ImmutableStylePropertySet::~ImmutableStylePropertySet()
 {
-    GCPtr<CSSValue> *valueArray = mutableValueArray();
+    GCRefPtr<CSSValue> *valueArray = mutableValueArray();
     for (unsigned i = 0; i < m_arraySize; ++i)
         valueArray[i].clear();
 #if !ENABLE(OILPAN)
@@ -165,7 +165,7 @@ template CORE_EXPORT int ImmutableStylePropertySet::findPropertyIndex(AtomicStri
 
 DEFINE_TRACE_AFTER_DISPATCH(ImmutableStylePropertySet)
 {
-    GCPtr<CSSValue> *values = mutableValueArray();
+    GCRefPtr<CSSValue> *values = mutableValueArray();
     for (unsigned i = 0; i < m_arraySize; i++)
         visitor->trace(values[i]);
     StylePropertySet::traceAfterDispatch(visitor);

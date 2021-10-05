@@ -43,7 +43,7 @@
 
 namespace blink {
 
-class CORE_EXPORT CSSSelectorWatch final : public NoBaseWillBeGarbageCollectedFinalized<CSSSelectorWatch>, public WillBeHeapSupplement<Document> {
+class CORE_EXPORT CSSSelectorWatch final : public WillBeHeapSupplement<Document> {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(CSSSelectorWatch);
     USING_FAST_MALLOC_WILL_BE_REMOVED(CSSSelectorWatch);
 public:
@@ -53,7 +53,7 @@ public:
     static CSSSelectorWatch* fromIfExists(Document&);
 
     void watchCSSSelectors(const Vector<String>& selectors);
-    const std::vector<BlinKit::GCMember<StyleRule>>& watchedCallbackSelectors() const { return m_watchedCallbackSelectors; }
+    const std::vector<GCRefPtr<StyleRule>>& watchedCallbackSelectors() const { return m_watchedCallbackSelectors; }
 
     void updateSelectorMatches(const Vector<String>& removedSelectors, const Vector<String>& addedSelectors);
 
@@ -62,11 +62,11 @@ public:
 private:
     explicit CSSSelectorWatch(Document&);
     void callbackSelectorChangeTimerFired(Timer<CSSSelectorWatch>*);
-    Document& document() const { return *m_document; }
+    Document& document() const { return m_document; }
 
-    BlinKit::GCMember<Document> m_document;
+    Document &m_document;
 
-    std::vector<BlinKit::GCMember<StyleRule>> m_watchedCallbackSelectors;
+    std::vector<GCRefPtr<StyleRule>> m_watchedCallbackSelectors;
 
     // Maps a CSS selector string with a -webkit-callback property to the number
     // of matching ComputedStyle objects in this document.

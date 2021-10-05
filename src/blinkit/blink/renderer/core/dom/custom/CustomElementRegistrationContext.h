@@ -56,9 +56,9 @@ namespace blink {
 
 class CustomElementRegistrationContext final : public BlinKit::GCObject {
 public:
-    static GCPassPtr<CustomElementRegistrationContext> create()
+    static PassRefPtrWillBeRawPtr<CustomElementRegistrationContext> create()
     {
-        return BlinKit::WrapLeaked(new CustomElementRegistrationContext());
+        return adoptRefWillBeNoop(new CustomElementRegistrationContext());
     }
 
     ~CustomElementRegistrationContext() { }

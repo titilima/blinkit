@@ -361,6 +361,7 @@ private:
     ALWAYS_INLINE explicit ComputedStyle(InitialStyleTag);
     ALWAYS_INLINE ComputedStyle(const ComputedStyle&);
 
+#if 0 // BKTODO:
     static PassRefPtr<ComputedStyle> createInitialStyle();
     static inline ComputedStyle* initialStyle()
     {
@@ -368,6 +369,9 @@ private:
         DEFINE_STATIC_REF(ComputedStyle, s_initialStyle, (ComputedStyle::createInitialStyle()));
         return s_initialStyle;
     }
+#else
+    static ComputedStyle* initialStyle(void);
+#endif
 
 public:
     static PassRefPtr<ComputedStyle> create();

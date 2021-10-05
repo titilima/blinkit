@@ -93,7 +93,7 @@ private:
 
     String m_decodedSheetText;
 
-    BlinKit::GCMember<StyleSheetContents> m_parsedStyleSheetCache;
+    GCRefPtr<StyleSheetContents> m_parsedStyleSheetCache;
 };
 
 DEFINE_RESOURCE_TYPE_CASTS(CSSStyleSheet);

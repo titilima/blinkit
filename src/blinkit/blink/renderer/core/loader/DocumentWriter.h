@@ -40,7 +40,6 @@
 #ifndef DocumentWriter_h
 #define DocumentWriter_h
 
-#include "blinkit/gc/gc_root.h"
 #include "core/html/parser/ParserSynchronizationPolicy.h"
 #include "core/loader/TextResourceDecoderBuilder.h"
 #include "platform/heap/Handle.h"
@@ -55,7 +54,7 @@ class DocumentParser;
 class DocumentWriter final {
     WTF_MAKE_NONCOPYABLE(DocumentWriter);
 public:
-    static GCUniqueRoot<DocumentWriter> create(Document*, ParserSynchronizationPolicy, const AtomicString& mimeType, const AtomicString& encoding);
+    static GCUniquePtr<DocumentWriter> create(Document*, ParserSynchronizationPolicy, const AtomicString& mimeType, const AtomicString& encoding);
 
     ~DocumentWriter();
     DECLARE_TRACE();
@@ -75,10 +74,10 @@ public:
 private:
     DocumentWriter(Document*, ParserSynchronizationPolicy, const AtomicString& mimeType, const AtomicString& encoding);
 
-    BlinKit::GCMember<Document> m_document;
+    GCRefPtr<Document> m_document;
     TextResourceDecoderBuilder m_decoderBuilder;
 
-    BlinKit::GCMember<DocumentParser> m_parser;
+    GCRefPtr<DocumentParser> m_parser;
 };
 
 } // namespace blink

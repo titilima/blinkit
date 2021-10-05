@@ -371,7 +371,6 @@ void AnimationTimeline::detachFromDocument()
 
 DEFINE_TRACE(AnimationTimeline)
 {
-    visitor->trace(m_document);
     visitor->trace(m_timing);
     visitor->trace(m_animationsNeedingUpdate);
     visitor->trace(m_animations);

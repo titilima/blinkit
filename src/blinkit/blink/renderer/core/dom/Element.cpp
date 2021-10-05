@@ -3473,7 +3473,7 @@ CSSStyleDeclaration* Element::style()
 MutableStylePropertySet& Element::ensureMutableInlineStyle()
 {
     ASSERT(isStyledElement());
-    GCMember<StylePropertySet>& inlineStyle = ensureUniqueElementData().m_inlineStyle;
+    GCRefPtr<StylePropertySet>& inlineStyle = ensureUniqueElementData().m_inlineStyle;
     if (!inlineStyle) {
         CSSParserMode mode = (!isHTMLElement() || document().inQuirksMode()) ? HTMLQuirksMode : HTMLStandardMode;
         inlineStyle = MutableStylePropertySet::create(mode);
@@ -3493,7 +3493,7 @@ void Element::clearMutableInlineStyleIfEmpty()
 inline void Element::setInlineStyleFromString(const AtomicString& newStyleString)
 {
     ASSERT(isStyledElement());
-    GCMember<StylePropertySet>& inlineStyle = elementData()->m_inlineStyle;
+    GCRefPtr<StylePropertySet>& inlineStyle = elementData()->m_inlineStyle;
 
     // Avoid redundant work if we're using shared attribute data with already parsed inline style.
     if (inlineStyle && !elementData()->isUnique())
@@ -3670,6 +3670,13 @@ void Element::logAddElementIfIsolatedWorldAndInDocument(const char element[], co
 void Element::logUpdateAttributeIfIsolatedWorldAndInDocument(const char element[], const QualifiedName& attributeName, const AtomicString& oldValue, const AtomicString& newValue)
 {
     // Currently nothing to do.
+}
+
+const StylePropertySet* Element::inlineStyle(void) const
+{
+    if (const ElementData *data = elementData())
+        return data->m_inlineStyle.get();
+    return nullptr;
 }
 
 DEFINE_TRACE(Element)

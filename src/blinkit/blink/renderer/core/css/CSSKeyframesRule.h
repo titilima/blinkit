@@ -50,14 +50,14 @@ class StyleRuleKeyframe;
 
 class StyleRuleKeyframes final : public StyleRuleBase {
 public:
-    static GCPassPtr<StyleRuleKeyframes> create() { return BlinKit::WrapLeaked(new StyleRuleKeyframes()); }
+    static PassRefPtrWillBeRawPtr<StyleRuleKeyframes> create() { return adoptRefWillBeNoop(new StyleRuleKeyframes()); }
 
     ~StyleRuleKeyframes();
 
-    const std::vector<BlinKit::GCMember<StyleRuleKeyframe>>& keyframes() const { return m_keyframes; }
+    const std::vector<GCRefPtr<StyleRuleKeyframe>>& keyframes() const { return m_keyframes; }
 
     void parserAppendKeyframe(PassRefPtrWillBeRawPtr<StyleRuleKeyframe>);
-    void wrapperAppendKeyframe(GCPassPtr<StyleRuleKeyframe>);
+    void wrapperAppendKeyframe(PassRefPtrWillBeRawPtr<StyleRuleKeyframe>);
     void wrapperRemoveKeyframe(unsigned);
 
     String name() const { return m_name; }
@@ -68,7 +68,7 @@ public:
 
     int findKeyframeIndex(const String& key) const;
 
-    GCPassPtr<StyleRuleKeyframes> copy() const { return BlinKit::WrapLeaked(new StyleRuleKeyframes(*this)); }
+    PassRefPtrWillBeRawPtr<StyleRuleKeyframes> copy() const { return adoptRefWillBeNoop(new StyleRuleKeyframes(*this)); }
 
     DECLARE_TRACE_AFTER_DISPATCH();
 
@@ -79,7 +79,7 @@ private:
     StyleRuleKeyframes();
     explicit StyleRuleKeyframes(const StyleRuleKeyframes&);
 
-    std::vector<BlinKit::GCMember<StyleRuleKeyframe>> m_keyframes;
+    std::vector<GCRefPtr<StyleRuleKeyframe>> m_keyframes;
     AtomicString m_name;
     unsigned m_version : 31;
     unsigned m_isPrefixed : 1;
@@ -128,7 +128,7 @@ private:
 
     CSSRule::Type type() const override { return KEYFRAMES_RULE; }
 
-    BlinKit::GCMember<StyleRuleKeyframes> m_keyframesRule;
+    GCRefPtr<StyleRuleKeyframes> m_keyframesRule;
     mutable std::vector<Member<CSSKeyframeRule>> m_childRuleCSSOMWrappers;
     mutable OwnPtrWillBeMember<CSSRuleList> m_ruleListCSSOMWrapper;
     bool m_isPrefixed;

@@ -462,7 +462,7 @@ void ScriptLoader::execute()
     ASSERT(m_pendingScript.resource());
     bool errorOccurred = false;
     ScriptSourceCode source = m_pendingScript.getSource(KURL(), errorOccurred);
-    GCMember<Element> element = m_pendingScript.releaseElementAndClear();
+    GCRefPtr<Element> element = m_pendingScript.releaseElementAndClear();
     ALLOW_UNUSED_LOCAL(element);
     if (errorOccurred) {
         dispatchErrorEvent();

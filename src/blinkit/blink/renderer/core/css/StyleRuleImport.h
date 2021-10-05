@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleRuleImport.h
+// Description: StyleRuleImport Class
+//      Author: Ziming Li
+//     Created: 2021-10-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -36,7 +47,7 @@ class StyleSheetContents;
 class StyleRuleImport : public StyleRuleBase {
     USING_FAST_MALLOC_WILL_BE_REMOVED(StyleRuleImport);
 public:
-    static GCPassPtr<StyleRuleImport> create(const String& href, PassRefPtrWillBeRawPtr<MediaQuerySet>);
+    static PassRefPtrWillBeRawPtr<StyleRuleImport> create(const String& href, PassRefPtrWillBeRawPtr<MediaQuerySet>);
 
     ~StyleRuleImport();
 
@@ -45,7 +56,7 @@ public:
     void clearParentStyleSheet() { m_parentStyleSheet = nullptr; }
 
     String href() const { return m_strHref; }
-    StyleSheetContents* styleSheet() const { return m_styleSheet.get(); }
+    StyleSheetContents* styleSheet(void) const;
 
     bool isLoading() const;
     MediaQuerySet* mediaQueries() { return m_mediaQueries.get(); }
@@ -88,7 +99,7 @@ private:
     ImportedStyleSheetClient m_styleSheetClient;
     String m_strHref;
     RefPtrWillBeMember<MediaQuerySet> m_mediaQueries;
-    BlinKit::GCMember<StyleSheetContents> m_styleSheet;
+    GCRefPtr<StyleSheetContents> m_styleSheet;
     ResourcePtr<CSSStyleSheetResource> m_resource;
     bool m_loading;
 };

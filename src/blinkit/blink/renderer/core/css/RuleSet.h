@@ -34,7 +34,6 @@
 #define RuleSet_h
 
 #include "blinkit/gc/gc_linked_stack.h"
-#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 #include "core/css/CSSKeyframesRule.h"
 #include "core/css/MediaQueryEvaluator.h"
@@ -77,7 +76,7 @@ public:
 
     DECLARE_TRACE();
 
-    BlinKit::GCMember<StyleRule> m_rule;
+    GCRefPtr<StyleRule> m_rule;
     unsigned m_selectorIndex;
     AddRuleFlags m_flags;
 };
@@ -107,7 +106,7 @@ public:
     DECLARE_TRACE();
 
 private:
-    BlinKit::GCMember<StyleRule> m_rule;
+    GCRefPtr<StyleRule> m_rule;
     unsigned m_selectorIndex : 13;
     unsigned m_isLastInArray : 1; // We store an array of RuleData objects in a primitive array.
     // This number was picked fairly arbitrarily. We can probably lower it if we need to.
@@ -136,7 +135,7 @@ class CORE_EXPORT RuleSet : public BlinKit::GCObject {
     WTF_MAKE_NONCOPYABLE(RuleSet);
     USING_FAST_MALLOC_WILL_BE_REMOVED(RuleSet);
 public:
-    static GCPassPtr<RuleSet> create() { return BlinKit::WrapLeaked(new RuleSet); }
+    static PassOwnPtrWillBeRawPtr<RuleSet> create() { return adoptPtrWillBeNoop(new RuleSet); }
 
     void addRulesFromSheet(StyleSheetContents*, const MediaQueryEvaluator&, AddRuleFlags = RuleHasNoSpecialState);
     void addStyleRule(StyleRule*, AddRuleFlags);
@@ -154,7 +153,7 @@ public:
     const WillBeHeapVector<RuleData>* focusPseudoClassRules() const { ASSERT(!m_pendingRules); return &m_focusPseudoClassRules; }
     const WillBeHeapVector<RuleData>* universalRules() const { ASSERT(!m_pendingRules); return &m_universalRules; }
     const WillBeHeapVector<RuleData>* shadowHostRules() const { ASSERT(!m_pendingRules); return &m_shadowHostRules; }
-    const std::vector<BlinKit::GCMember<StyleRulePage>>& pageRules() const { ASSERT(!m_pendingRules); return m_pageRules; }
+    const std::vector<GCRefPtr<StyleRulePage>>& pageRules() const { ASSERT(!m_pendingRules); return m_pageRules; }
     const WillBeHeapVector<RawPtrWillBeMember<StyleRuleViewport>>& viewportRules() const { ASSERT(!m_pendingRules); return m_viewportRules; }
     const WillBeHeapVector<RawPtrWillBeMember<StyleRuleFontFace>>& fontFaceRules() const { return m_fontFaceRules; }
     const WillBeHeapVector<RawPtrWillBeMember<StyleRuleKeyframes>>& keyframesRules() const { return m_keyframesRules; }
@@ -193,7 +192,7 @@ private:
     void addFontFaceRule(StyleRuleFontFace*);
     void addKeyframesRule(StyleRuleKeyframes*);
 
-    void addChildRules(const std::vector<BlinKit::GCMember<StyleRuleBase>>&, const MediaQueryEvaluator& medium, AddRuleFlags);
+    void addChildRules(const std::vector<GCRefPtr<StyleRuleBase>>&, const MediaQueryEvaluator& medium, AddRuleFlags);
     bool findBestRuleSetAndAdd(const CSSSelector&, RuleData&);
 
     const RulesArray* getRules(const CompactRuleMap &rules, const AtomicString &key) const
@@ -207,7 +206,7 @@ private:
 
     class PendingRuleMaps {
     public:
-        static GCUniqueRoot<PendingRuleMaps> create() { return BlinKit::WrapUniqueRoot(new PendingRuleMaps); }
+        static GCUniquePtr<PendingRuleMaps> create() { return BlinKit::GCWrapUnique(new PendingRuleMaps); }
 
         PendingRuleMap idRules;
         PendingRuleMap classRules;
@@ -237,7 +236,7 @@ private:
     WillBeHeapVector<RuleData> m_universalRules;
     WillBeHeapVector<RuleData> m_shadowHostRules;
     RuleFeatureSet m_features;
-    std::vector<BlinKit::GCMember<StyleRulePage>> m_pageRules;
+    std::vector<GCRefPtr<StyleRulePage>> m_pageRules;
     WillBeHeapVector<RawPtrWillBeMember<StyleRuleViewport>> m_viewportRules;
     WillBeHeapVector<RawPtrWillBeMember<StyleRuleFontFace>> m_fontFaceRules;
     WillBeHeapVector<RawPtrWillBeMember<StyleRuleKeyframes>> m_keyframesRules;
@@ -250,7 +249,7 @@ private:
     MediaQueryResultList m_deviceDependentMediaQueryResults;
 
     unsigned m_ruleCount;
-    BlinKit::GCUniqueRoot<PendingRuleMaps> m_pendingRules;
+    GCUniquePtr<PendingRuleMaps> m_pendingRules;
 
 #ifndef NDEBUG
     WillBeHeapVector<RuleData> m_allRules;

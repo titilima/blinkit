@@ -392,7 +392,7 @@ void HTMLConstructionSite::setForm(HTMLFormElement* form)
     m_form = form;
 }
 
-GCPassPtr<HTMLFormElement> HTMLConstructionSite::takeForm()
+PassRefPtrWillBeRawPtr<HTMLFormElement> HTMLConstructionSite::takeForm()
 {
     return m_form.release();
 }
@@ -610,7 +610,7 @@ void HTMLConstructionSite::insertHTMLHeadElement(AtomicHTMLToken* token)
     ASSERT(!shouldFosterParent());
     m_head = HTMLStackItem::create(createHTMLElement(token), token);
     attachLater(currentNode(), m_head->element());
-    m_openElements.pushHTMLHeadElement(m_head);
+    m_openElements.pushHTMLHeadElement(m_head.get());
 }
 
 void HTMLConstructionSite::insertHTMLBodyElement(AtomicHTMLToken* token)
@@ -774,16 +774,16 @@ PassRefPtrWillBeRawPtr<HTMLElement> HTMLConstructionSite::createHTMLElement(Atom
     return element.release();
 }
 
-GCPassPtr<HTMLStackItem> HTMLConstructionSite::createElementFromSavedToken(HTMLStackItem* item)
+PassRefPtrWillBeRawPtr<HTMLStackItem> HTMLConstructionSite::createElementFromSavedToken(HTMLStackItem* item)
 {
-    GCMember<Element> element;
+    RefPtrWillBeRawPtr<Element> element;
     // NOTE: Moving from item -> token -> item copies the Attribute vector twice!
     AtomicHTMLToken fakeToken(HTMLToken::StartTag, item->localName(), item->attributes());
     if (item->namespaceURI() == HTMLNames::xhtmlNamespaceURI)
         element = createHTMLElement(&fakeToken);
     else
         element = createElement(&fakeToken, item->namespaceURI());
-    return HTMLStackItem::create(element.get(), &fakeToken, item->namespaceURI());
+    return HTMLStackItem::create(element.release(), &fakeToken, item->namespaceURI());
 }
 
 bool HTMLConstructionSite::indexOfFirstUnopenFormattingElement(unsigned& firstUnopenElementIndex) const
@@ -813,10 +813,10 @@ void HTMLConstructionSite::reconstructTheActiveFormattingElements()
     ASSERT(unopenEntryIndex < m_activeFormattingElements.size());
     for (; unopenEntryIndex < m_activeFormattingElements.size(); ++unopenEntryIndex) {
         HTMLFormattingElementList::Entry& unopenedEntry = m_activeFormattingElements.at(unopenEntryIndex);
-        GCPassPtr<HTMLStackItem> reconstructed = createElementFromSavedToken(unopenedEntry.stackItem().get());
-        attachLater(currentNode(), reconstructed.get()->node());
+        RefPtrWillBeRawPtr<HTMLStackItem> reconstructed = createElementFromSavedToken(unopenedEntry.stackItem().get());
+        attachLater(currentNode(), reconstructed->node());
         m_openElements.push(reconstructed);
-        unopenedEntry.replaceElement(reconstructed.get());
+        unopenedEntry.replaceElement(reconstructed.release());
     }
 }
 
@@ -886,6 +886,11 @@ void HTMLConstructionSite::fosterParent(PassRefPtrWillBeRawPtr<Node> node)
     task.child = node;
     ASSERT(task.parent);
     queueTask(task);
+}
+
+HTMLFormElement* HTMLConstructionSite::form(void) const
+{
+    return m_form.get();
 }
 
 #if 0 // BKTODO:

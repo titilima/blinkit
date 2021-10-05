@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSImportRule.h
+// Description: CSSImportRule Class
+//      Author: Ziming Li
+//     Created: 2021-10-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -54,9 +65,9 @@ private:
 
     CSSRule::Type type() const override { return IMPORT_RULE; }
 
-    BlinKit::GCMember<StyleRuleImport> m_importRule;
+    GCRefPtr<StyleRuleImport> m_importRule;
     mutable RefPtrWillBeMember<MediaList> m_mediaCSSOMWrapper;
-    mutable BlinKit::GCMember<CSSStyleSheet> m_styleSheetCSSOMWrapper;
+    mutable GCRefPtr<CSSStyleSheet> m_styleSheetCSSOMWrapper;
 };
 
 DEFINE_CSS_RULE_TYPE_CASTS(CSSImportRule, IMPORT_RULE);

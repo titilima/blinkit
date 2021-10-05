@@ -56,9 +56,9 @@ using namespace BlinKit;
 
 namespace blink {
 
-GCUniqueRoot<DocumentWriter> DocumentWriter::create(Document* document, ParserSynchronizationPolicy parsingPolicy, const AtomicString& mimeType, const AtomicString& encoding)
+GCUniquePtr<DocumentWriter> DocumentWriter::create(Document* document, ParserSynchronizationPolicy parsingPolicy, const AtomicString& mimeType, const AtomicString& encoding)
 {
-    return WrapUniqueRoot(new DocumentWriter(document, parsingPolicy, mimeType, encoding));
+    return GCWrapUnique(new DocumentWriter(document, parsingPolicy, mimeType, encoding));
 }
 
 DocumentWriter::DocumentWriter(Document* document, ParserSynchronizationPolicy parserSyncPolicy, const AtomicString& mimeType, const AtomicString& encoding)

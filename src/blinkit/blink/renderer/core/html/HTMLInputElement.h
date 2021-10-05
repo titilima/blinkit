@@ -402,13 +402,13 @@ private:
     unsigned m_shouldRevealPassword : 1;
     unsigned m_needsToUpdateViewValue : 1;
     unsigned m_isPlaceholderVisible : 1;
-    BlinKit::GCPtr<InputType> m_inputType;
-    BlinKit::GCPtr<InputTypeView> m_inputTypeView;
+    GCRefPtr<InputType> m_inputType;
+    GCRefPtr<InputTypeView> m_inputTypeView;
     // The ImageLoader must be owned by this element because the loader code assumes
     // that it lives as long as its owning element lives. If we move the loader into
     // the ImageInput object we may delete the loader while this element lives on.
     OwnPtrWillBeMember<HTMLImageLoader> m_imageLoader;
-    BlinKit::GCPtr<ListAttributeTargetObserver> m_listAttributeTargetObserver;
+    std::unique_ptr<ListAttributeTargetObserver> m_listAttributeTargetObserver;
 };
 
 } // namespace blink

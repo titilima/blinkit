@@ -57,9 +57,9 @@ class ScopedStyleResolver final {
     WTF_MAKE_NONCOPYABLE(ScopedStyleResolver);
     USING_FAST_MALLOC_WILL_BE_REMOVED(ScopedStyleResolver);
 public:
-    static GCUniqueRoot<ScopedStyleResolver> create(TreeScope& scope)
+    static GCUniquePtr<ScopedStyleResolver> create(TreeScope& scope)
     {
-        return BlinKit::WrapUniqueRoot(new ScopedStyleResolver(scope));
+        return BlinKit::GCWrapUnique(new ScopedStyleResolver(scope));
     }
 
     const TreeScope& treeScope() const { return m_scope; }
@@ -92,29 +92,29 @@ private:
 
     TreeScope &m_scope;
 
-    std::vector<BlinKit::GCMember<CSSStyleSheet>> m_authorStyleSheets;
+    std::vector<GCRefPtr<CSSStyleSheet>> m_authorStyleSheets;
 
     using KeyframesRuleMap = WillBeHeapHashMap<const StringImpl*, RefPtrWillBeMember<StyleRuleKeyframes>>;
     KeyframesRuleMap m_keyframesRuleMap;
 
     class RuleSubSet final : public NoBaseWillBeGarbageCollected<RuleSubSet> {
     public:
-        static PassOwnPtrWillBeRawPtr<RuleSubSet> create(CSSStyleSheet* sheet, unsigned index, GCPassPtr<RuleSet> &&rules)
+        static PassOwnPtrWillBeRawPtr<RuleSubSet> create(CSSStyleSheet* sheet, unsigned index, PassOwnPtrWillBeRawPtr<RuleSet> rules)
         {
-            return adoptPtrWillBeNoop(new RuleSubSet(sheet, index, std::move(rules)));
+            return adoptPtrWillBeNoop(new RuleSubSet(sheet, index, rules));
         }
 
         RawPtrWillBeMember<CSSStyleSheet> m_parentStyleSheet;
         unsigned m_parentIndex;
-        BlinKit::GCMember<RuleSet> m_ruleSet;
+        GCRefPtr<RuleSet> m_ruleSet;
 
         DECLARE_TRACE();
 
     private:
-        RuleSubSet(CSSStyleSheet* sheet, unsigned index, GCPassPtr<RuleSet>&& rules)
+        RuleSubSet(CSSStyleSheet* sheet, unsigned index, PassOwnPtrWillBeRawPtr<RuleSet> rules)
             : m_parentStyleSheet(sheet)
             , m_parentIndex(index)
-            , m_ruleSet(std::move(rules))
+            , m_ruleSet(rules)
         {
         }
     };

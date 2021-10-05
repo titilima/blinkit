@@ -144,7 +144,7 @@ private:
     bool m_unused = false;
 #endif
     StylePropertyMetadata m_metadata;
-    BlinKit::GCPtr<CSSValue> m_value;
+    GCRefPtr<CSSValue> m_value;
 };
 
 } // namespace blink

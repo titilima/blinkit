@@ -56,7 +56,7 @@ public:
 
     DECLARE_TRACE();
 
-    BlinKit::GCMember<StyleRule> rule;
+    GCRefPtr<StyleRule> rule;
     unsigned selectorIndex;
     bool hasDocumentSecurityOrigin;
 };

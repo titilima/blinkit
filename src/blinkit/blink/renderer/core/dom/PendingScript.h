@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PendingScript.h
+// Description: PendingScript Class
+//      Author: Ziming Li
+//     Created: 2021-10-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -67,9 +78,9 @@ public:
     void watchForLoad(ScriptResourceClient*);
     void stopWatchingForLoad(ScriptResourceClient*);
 
-    Element* element() const { return m_element.get(); }
+    Element* element(void) const;
     void setElement(Element*);
-    GCPassPtr<Element> releaseElementAndClear();
+    PassRefPtrWillBeRawPtr<Element> releaseElementAndClear();
 
     void setScriptResource(ScriptResource*);
 
@@ -87,7 +98,7 @@ public:
 
 private:
     bool m_watchingForLoad;
-    BlinKit::GCMember<Element> m_element;
+    GCRefPtr<Element> m_element;
     TextPosition m_startingPosition; // Only used for inline script tags.
     bool m_integrityFailure;
 

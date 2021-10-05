@@ -82,7 +82,7 @@ unsigned CSSGroupingRule::insertRule(const String& ruleString, unsigned index, E
 
     CSSStyleSheet* styleSheet = parentStyleSheet();
     CSSParserContext context(parserContext());
-    GCMember<StyleRuleBase> newRule = CSSParser::parseRule(context, styleSheet ? styleSheet->contents() : nullptr, ruleString);
+    GCRefPtr<StyleRuleBase> newRule = CSSParser::parseRule(context, styleSheet ? styleSheet->contents() : nullptr, ruleString);
     if (!newRule) {
         exceptionState.throwDOMException(SyntaxError, "the rule '" + ruleString + "' is invalid and cannot be parsed.");
         return 0;
@@ -101,7 +101,7 @@ unsigned CSSGroupingRule::insertRule(const String& ruleString, unsigned index, E
     }
     CSSStyleSheet::RuleMutationScope mutationScope(this);
 
-    m_groupRule->wrapperInsertRule(index, newRule);
+    m_groupRule->wrapperInsertRule(index, newRule.get());
 
     m_childRuleCSSOMWrappers.emplace(m_childRuleCSSOMWrappers.begin() + index, nullptr);
     return index;

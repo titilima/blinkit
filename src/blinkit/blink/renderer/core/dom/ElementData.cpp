@@ -135,6 +135,11 @@ bool ElementData::isEquivalent(const ElementData* other) const
     return true;
 }
 
+const StylePropertySet* ElementData::inlineStyle(void) const
+{
+    return m_inlineStyle.get();
+}
+
 DEFINE_TRACE(ElementData)
 {
     if (m_isUnique)
@@ -174,7 +179,7 @@ ShareableElementData::ShareableElementData(const UniqueElementData& other)
         new (&m_attributeArray[i]) Attribute(other.m_attributeVector.at(i));
 }
 
-GCPassPtr<ShareableElementData> ShareableElementData::createWithAttributes(const Vector<Attribute>& attributes)
+PassRefPtrWillBeRawPtr<ShareableElementData> ShareableElementData::createWithAttributes(const Vector<Attribute>& attributes)
 {
 #if ENABLE(OILPAN)
     size_t cb = sizeForShareableElementDataWithAttributeCount(attributes.size());
@@ -183,7 +188,7 @@ GCPassPtr<ShareableElementData> ShareableElementData::createWithAttributes(const
 #else
     void* slot = WTF::Partitions::fastMalloc(sizeForShareableElementDataWithAttributeCount(attributes.size()), WTF_HEAP_PROFILER_TYPE_NAME(ShareableElementData));
 #endif
-    return WrapLeaked(new (slot) ShareableElementData(attributes));
+    return adoptRefWillBeNoop(new (slot) ShareableElementData(attributes));
 }
 
 UniqueElementData::UniqueElementData()
@@ -211,19 +216,19 @@ UniqueElementData::UniqueElementData(const ShareableElementData& other)
         m_attributeVector.uncheckedAppend(other.m_attributeArray[i]);
 }
 
-GCPassPtr<UniqueElementData> UniqueElementData::create()
+PassRefPtrWillBeRawPtr<UniqueElementData> UniqueElementData::create()
 {
-    return WrapLeaked(new UniqueElementData);
+    return adoptRefWillBeNoop(new UniqueElementData);
 }
 
-GCPassPtr<ShareableElementData> UniqueElementData::makeShareableCopy() const
+PassRefPtrWillBeRawPtr<ShareableElementData> UniqueElementData::makeShareableCopy() const
 {
 #if ENABLE(OILPAN)
     void* slot = nullptr; // BKTODO: Heap::allocate<ElementData>(sizeForShareableElementDataWithAttributeCount(m_attributeVector.size()));
 #else
     void* slot = WTF::Partitions::fastMalloc(sizeForShareableElementDataWithAttributeCount(m_attributeVector.size()), WTF_HEAP_PROFILER_TYPE_NAME(ShareableElementData));
 #endif
-    return WrapLeaked(new (slot) ShareableElementData(*this));
+    return adoptRefWillBeNoop(new (slot) ShareableElementData(*this));
 }
 
 DEFINE_TRACE_AFTER_DISPATCH(UniqueElementData)

@@ -70,13 +70,13 @@ public:
     EventTarget* relatedTarget() const { return m_treeScopeEventContext->relatedTarget(); }
     // BKTODO: TouchEventContext* touchEventContext() const { return m_treeScopeEventContext->touchEventContext(); }
 
-    bool currentTargetSameAsTarget() const { return m_currentTarget.get() == target(); }
+    bool currentTargetSameAsTarget() const { return m_currentTarget == target(); }
     void handleLocalEvents(Event&) const;
 
 private:
-    BlinKit::GCMember<Node> m_node;
-    RawPtr<EventTarget> m_currentTarget;
-    BlinKit::GCMember<TreeScopeEventContext> m_treeScopeEventContext;
+    GCRefPtr<Node> m_node;
+    EventTarget *m_currentTarget = nullptr;
+    GCRefPtr<TreeScopeEventContext> m_treeScopeEventContext;
 };
 
 } // namespace blink

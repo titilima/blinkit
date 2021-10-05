@@ -37,7 +37,6 @@
 #ifndef HTMLParserScheduler_h
 #define HTMLParserScheduler_h
 
-#include "blinkit/gc/gc_root.h"
 #include "core/html/parser/NestingLevelIncrementer.h"
 // BKTODO: #include "platform/scheduler/CancellableTaskFactory.h"
 #include "wtf/Allocator.h"
@@ -86,9 +85,9 @@ class HTMLParserScheduler final {
     WTF_MAKE_NONCOPYABLE(HTMLParserScheduler);
     USING_FAST_MALLOC_WILL_BE_REMOVED(HTMLParserScheduler);
 public:
-    static GCUniqueRoot<HTMLParserScheduler> create(HTMLDocumentParser* parser, const std::shared_ptr<WebTaskRunner> &loadingTaskRunner)
+    static GCUniquePtr<HTMLParserScheduler> create(HTMLDocumentParser* parser, const std::shared_ptr<WebTaskRunner> &loadingTaskRunner)
     {
-        return BlinKit::WrapUniqueRoot(new HTMLParserScheduler(parser, loadingTaskRunner));
+        return BlinKit::GCWrapUnique(new HTMLParserScheduler(parser, loadingTaskRunner));
     }
     ~HTMLParserScheduler();
 
@@ -123,7 +122,7 @@ private:
     bool shouldYield(const SpeculationsPumpSession&, bool startingScript) const;
     void continueParsing();
 
-    BlinKit::GCMember<HTMLDocumentParser> m_parser;
+    GCRefPtr<HTMLDocumentParser> m_parser;
     std::shared_ptr<WebTaskRunner> m_loadingTaskRunner;
 
     // BKTODO: OwnPtr<CancellableTaskFactory> m_cancellableContinueParse;

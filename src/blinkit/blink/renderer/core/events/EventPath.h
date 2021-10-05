@@ -105,7 +105,7 @@ private:
 
     void adjustTouchList(const TouchList*, WillBeHeapVector<RawPtrWillBeMember<TouchList>> adjustedTouchList, const WillBeHeapVector<RawPtrWillBeMember<TreeScope>>& treeScopes);
 
-    using TreeScopeEventContextMap = std::unordered_map<TreeScope *, BlinKit::GCMember<TreeScopeEventContext>>;
+    using TreeScopeEventContextMap = std::unordered_map<TreeScope *, GCRefPtr<TreeScopeEventContext>>;
     TreeScopeEventContext* ensureTreeScopeEventContext(Node* currentTarget, TreeScope*, TreeScopeEventContextMap&);
 
     using RelatedTargetMap = std::unordered_map<Member<TreeScope>, Member<EventTarget>>;
@@ -120,9 +120,9 @@ private:
     const NodeEventContext& topNodeEventContext();
 
     std::vector<NodeEventContext> m_nodeEventContexts;
-    BlinKit::GCMember<Node> m_node;
+    GCRefPtr<Node> m_node;
     Event *m_event;
-    std::vector<BlinKit::GCMember<TreeScopeEventContext>> m_treeScopeEventContexts;
+    std::vector<GCRefPtr<TreeScopeEventContext>> m_treeScopeEventContexts;
     std::unique_ptr<WindowEventContext> m_windowEventContext;
 };
 

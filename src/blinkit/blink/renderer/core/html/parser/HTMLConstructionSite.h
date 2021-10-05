@@ -87,7 +87,7 @@ public:
     Operation operation;
     ContainerNode *parent = nullptr;
     Node *nextChild = nullptr;
-    BlinKit::GCMember<Node> child;
+    GCRefPtr<Node> child;
     bool selfClosing;
 };
 
@@ -181,7 +181,7 @@ public:
     void insertAlreadyParsedChild(HTMLStackItem* newParent, HTMLElementStack::ElementRecord* child);
     void takeAllChildren(HTMLStackItem* newParent, HTMLElementStack::ElementRecord* oldParent);
 
-    GCPassPtr<HTMLStackItem> createElementFromSavedToken(HTMLStackItem*);
+    PassRefPtrWillBeRawPtr<HTMLStackItem> createElementFromSavedToken(HTMLStackItem*);
 
     bool shouldFosterParent() const;
     void fosterParent(PassRefPtrWillBeRawPtr<Node>);
@@ -209,8 +209,8 @@ public:
     HTMLStackItem* headStackItem() const { return m_head.get(); }
 
     void setForm(HTMLFormElement*);
-    HTMLFormElement* form() const { return m_form.get(); }
-    GCPassPtr<HTMLFormElement> takeForm();
+    HTMLFormElement* form(void) const;
+    PassRefPtrWillBeRawPtr<HTMLFormElement> takeForm();
 
     ParserContentPolicy parserContentPolicy() { return m_parserContentPolicy; }
 
@@ -256,15 +256,15 @@ private:
     void executeTask(HTMLConstructionSiteTask&);
     void queueTask(const HTMLConstructionSiteTask&);
 
-    BlinKit::GCMember<Document> m_document;
+    GCRefPtr<Document> m_document;
 
     // This is the root ContainerNode to which the parser attaches all newly
     // constructed nodes. It points to a DocumentFragment when parsing fragments
     // and a Document in all other cases.
-    BlinKit::GCMember<ContainerNode> m_attachmentRoot;
+    GCRefPtr<ContainerNode> m_attachmentRoot;
 
-    BlinKit::GCMember<HTMLStackItem> m_head;
-    BlinKit::GCMember<HTMLFormElement> m_form;
+    GCRefPtr<HTMLStackItem> m_head;
+    GCRefPtr<HTMLFormElement> m_form;
     mutable HTMLElementStack m_openElements;
     mutable HTMLFormattingElementList m_activeFormattingElements;
 

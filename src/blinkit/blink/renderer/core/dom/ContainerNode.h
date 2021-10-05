@@ -84,7 +84,7 @@ public:
     ~ContainerNode() override;
 
     Node* firstChild() const { return m_firstChild.get(); }
-    Node* lastChild() const { return m_lastChild.get(); }
+    Node* lastChild() const { return m_lastChild; }
     bool hasChildren() const { return m_firstChild; }
 
     bool hasOneChild() const { return m_firstChild && !m_firstChild->nextSibling(); }
@@ -278,8 +278,8 @@ private:
     bool getUpperLeftCorner(FloatPoint&) const;
     bool getLowerRightCorner(FloatPoint&) const;
 
-    BlinKit::GCMember<Node> m_firstChild;
-    BlinKit::GCMember<Node> m_lastChild;
+    GCRefPtr<Node> m_firstChild;
+    Node *m_lastChild = nullptr;
 };
 
 #if ENABLE(ASSERT)

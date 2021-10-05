@@ -59,6 +59,17 @@
 
 #include <algorithm>
 
+namespace BlinKit {
+template <>
+struct GCGlobalWrapper<blink::ComputedStyle>
+{
+    static void IncRef(blink::ComputedStyle *p) { /* Need not to ref. */ }
+    static void Release(blink::ComputedStyle *p) { p->deref(); }
+};
+}
+
+using namespace BlinKit;
+
 namespace blink {
 
 struct SameSizeAsBorderValue {
@@ -89,10 +100,12 @@ PassRefPtr<ComputedStyle> ComputedStyle::create()
     return adoptRef(new ComputedStyle());
 }
 
+#if 0 // BKTODO:
 PassRefPtr<ComputedStyle> ComputedStyle::createInitialStyle()
 {
     return adoptRef(new ComputedStyle(InitialStyle));
 }
+#endif
 
 PassRefPtr<ComputedStyle> ComputedStyle::createAnonymousStyleWithDisplay(const ComputedStyle& parentStyle, EDisplay display)
 {
@@ -125,6 +138,7 @@ ALWAYS_INLINE ComputedStyle::ComputedStyle()
 
 ALWAYS_INLINE ComputedStyle::ComputedStyle(InitialStyleTag)
 {
+    adopted(this);
     setBitDefaults();
 
     m_box.init();
@@ -1862,6 +1876,12 @@ void ComputedStyle::copyChildDependentFlagsFrom(const ComputedStyle& other)
     setEmptyState(other.emptyState());
     if (other.hasExplicitlyInheritedProperties())
         setHasExplicitlyInheritedProperties();
+}
+
+ComputedStyle* ComputedStyle::initialStyle(void)
+{
+    static ComputedStyle *s_initialStyle = GCWrapGlobal(new ComputedStyle(InitialStyle));
+    return s_initialStyle;
 }
 
 } // namespace blink

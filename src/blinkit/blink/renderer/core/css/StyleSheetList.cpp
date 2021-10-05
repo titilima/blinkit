@@ -51,7 +51,7 @@ StyleSheetList::StyleSheetList(TreeScope* treeScope)
 
 DEFINE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(StyleSheetList);
 
-inline const std::vector<GCMember<StyleSheet>>& StyleSheetList::styleSheets()
+inline const std::vector<GCRefPtr<StyleSheet>>& StyleSheetList::styleSheets()
 {
 #if !ENABLE(OILPAN)
     if (!m_treeScope)
@@ -75,7 +75,7 @@ unsigned StyleSheetList::length()
 
 StyleSheet* StyleSheetList::item(unsigned index)
 {
-    const std::vector<GCMember<StyleSheet>>& sheets = styleSheets();
+    const std::vector<GCRefPtr<StyleSheet>>& sheets = styleSheets();
     return index < sheets.size() ? sheets[index].get() : nullptr;
 }
 

@@ -33,7 +33,6 @@
 #ifndef StyleResolver_h
 #define StyleResolver_h
 
-#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 #include "core/animation/PropertyHandle.h"
 #include "core/css/ElementRuleCollector.h"
@@ -92,9 +91,9 @@ using ActiveInterpolationsMap = HashMap<PropertyHandle, Vector<RefPtr<Interpolat
 class CORE_EXPORT StyleResolver final {
     WTF_MAKE_NONCOPYABLE(StyleResolver); USING_FAST_MALLOC_WILL_BE_REMOVED(StyleResolver);
 public:
-    static GCUniqueRoot<StyleResolver> create(Document& document)
+    static GCUniquePtr<StyleResolver> create(Document& document)
     {
-        return BlinKit::WrapUniqueRoot(new StyleResolver(document));
+        return BlinKit::GCWrapUnique(new StyleResolver(document));
     }
     ~StyleResolver();
     void dispose();
@@ -114,12 +113,12 @@ public:
 
     // FIXME: It could be better to call appendAuthorStyleSheets() directly after we factor StyleResolver further.
     // https://bugs.webkit.org/show_bug.cgi?id=108890
-    void appendAuthorStyleSheets(const std::vector<BlinKit::GCMember<CSSStyleSheet>>&);
+    void appendAuthorStyleSheets(const std::vector<GCRefPtr<CSSStyleSheet>>&);
     void resetAuthorStyle(TreeScope&);
     void finishAppendAuthorStyleSheets();
 
-    void lazyAppendAuthorStyleSheets(unsigned firstNew, const std::vector<BlinKit::GCMember<CSSStyleSheet>>&);
-    void removePendingAuthorStyleSheets(const std::vector<BlinKit::GCMember<CSSStyleSheet>>&);
+    void lazyAppendAuthorStyleSheets(unsigned firstNew, const std::vector<GCRefPtr<CSSStyleSheet>>&);
+    void removePendingAuthorStyleSheets(const std::vector<GCRefPtr<CSSStyleSheet>>&);
     void appendPendingAuthorStyleSheets();
     bool hasPendingAuthorStyleSheets() const { return m_pendingStyleSheets.size() > 0 || m_needCollectFeatures; }
 
@@ -239,29 +238,29 @@ private:
 
     PassRefPtrWillBeRawPtr<PseudoElement> createPseudoElement(Element* parent, PseudoId);
 
-    Document& document() { return *m_document; }
+    Document& document() { return m_document; }
 
     static ComputedStyle* s_styleNotYetAvailable;
 
     MatchedPropertiesCache m_matchedPropertiesCache;
 
-    BlinKit::GCMember<MediaQueryEvaluator> m_medium;
+    GCRefPtr<MediaQueryEvaluator> m_medium;
     MediaQueryResultList m_viewportDependentMediaQueryResults;
     MediaQueryResultList m_deviceDependentMediaQueryResults;
 
-    BlinKit::GCMember<Document> m_document;
+    Document &m_document;
     SelectorFilter m_selectorFilter;
 
-    BlinKit::GCUniqueRoot<ViewportStyleResolver> m_viewportStyleResolver;
+    GCUniquePtr<ViewportStyleResolver> m_viewportStyleResolver;
 
     WillBeHeapListHashSet<RawPtrWillBeMember<CSSStyleSheet>, 16> m_pendingStyleSheets;
 
     // FIXME: The entire logic of collecting features on StyleResolver, as well as transferring them
     // between various parts of machinery smells wrong. This needs to be better somehow.
     RuleFeatureSet m_features;
-    BlinKit::GCMember<RuleSet> m_siblingRuleSet;
-    BlinKit::GCMember<RuleSet> m_uncommonAttributeRuleSet;
-    BlinKit::GCMember<RuleSet> m_watchedSelectorsRules;
+    GCRefPtr<RuleSet> m_siblingRuleSet;
+    GCRefPtr<RuleSet> m_uncommonAttributeRuleSet;
+    GCRefPtr<RuleSet> m_watchedSelectorsRules;
 
     DocumentOrderedList m_treeBoundaryCrossingScopes;
 

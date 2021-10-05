@@ -65,7 +65,7 @@ void TreeScopeStyleSheetCollection::addStyleSheetCandidateNode(Node* node, bool 
     m_styleSheetCandidateNodes.add(node);
 }
 
-TreeScopeStyleSheetCollection::StyleResolverUpdateType TreeScopeStyleSheetCollection::compareStyleSheets(const std::vector<GCMember<CSSStyleSheet>>& oldStyleSheets, const std::vector<GCMember<CSSStyleSheet>>& newStylesheets, std::vector<GCMember<StyleSheetContents>>& addedSheets)
+TreeScopeStyleSheetCollection::StyleResolverUpdateType TreeScopeStyleSheetCollection::compareStyleSheets(const std::vector<GCRefPtr<CSSStyleSheet>>& oldStyleSheets, const std::vector<GCRefPtr<CSSStyleSheet>>& newStylesheets, std::vector<GCRefPtr<StyleSheetContents>>& addedSheets)
 {
     unsigned newStyleSheetCount = newStylesheets.size();
     unsigned oldStyleSheetCount = oldStyleSheets.size();
@@ -94,7 +94,7 @@ TreeScopeStyleSheetCollection::StyleResolverUpdateType TreeScopeStyleSheetCollec
     return hasInsertions ? Reset : Additive;
 }
 
-bool TreeScopeStyleSheetCollection::activeLoadingStyleSheetLoaded(const std::vector<GCMember<CSSStyleSheet>>& newStyleSheets)
+bool TreeScopeStyleSheetCollection::activeLoadingStyleSheetLoaded(const std::vector<GCRefPtr<CSSStyleSheet>> &newStyleSheets)
 {
     // StyleSheets of <style> elements that @import stylesheets are active but loading. We need to trigger a full recalc when such loads are done.
     bool hasActiveLoadingStylesheet = false;
@@ -111,7 +111,7 @@ bool TreeScopeStyleSheetCollection::activeLoadingStyleSheetLoaded(const std::vec
     return false;
 }
 
-static bool findFontFaceRulesFromStyleSheetContents(const std::vector<GCMember<StyleSheetContents>>& sheets, std::vector<GCMember<const StyleRuleFontFace>>& fontFaceRules)
+static bool findFontFaceRulesFromStyleSheetContents(const std::vector<GCRefPtr<StyleSheetContents>> &sheets, std::vector<const StyleRuleFontFace *> &fontFaceRules)
 {
     bool hasFontFaceRule = false;
 
@@ -135,7 +135,7 @@ void TreeScopeStyleSheetCollection::analyzeStyleSheetChange(StyleResolverUpdateM
         return;
 
     // Find out which stylesheets are new.
-    std::vector<GCMember<StyleSheetContents>> addedSheets;
+    std::vector<GCRefPtr<StyleSheetContents>> addedSheets;
     if (m_activeAuthorStyleSheets.size() <= newCollection.activeAuthorStyleSheets().size()) {
         change.styleResolverUpdateType = compareStyleSheets(m_activeAuthorStyleSheets, newCollection.activeAuthorStyleSheets(), addedSheets);
     } else {

@@ -58,7 +58,7 @@ class ThreadedDataReceiver;
 
 class CORE_EXPORT ResourceLoader final : public BlinKit::GCObject, protected WebURLLoaderClient {
 public:
-    static GCPassPtr<ResourceLoader> create(ResourceFetcher*, Resource*, const ResourceRequest&, const ResourceLoaderOptions&);
+    static ResourceLoader* create(ResourceFetcher*, Resource*, const ResourceRequest&, const ResourceLoaderOptions&);
     ~ResourceLoader() override;
     DECLARE_TRACE();
 
@@ -69,7 +69,7 @@ public:
     void cancel(const ResourceError&);
     void cancelIfNotFinishing();
 
-    Resource* cachedResource() { return m_resource.get(); }
+    Resource* cachedResource(void);
     const ResourceRequest& originalRequest() const { return m_originalRequest; }
 
     // BKTODO: void setDefersLoading(bool);
@@ -116,7 +116,7 @@ private:
     BlinKit::GCObject* ObjectForGC(void) final { return this; }
 
     std::unique_ptr<WebURLLoader> m_loader;
-    BlinKit::GCMember<ResourceFetcher> m_fetcher;
+    GCRefPtr<ResourceFetcher> m_fetcher;
 
     ResourceRequest m_request;
     ResourceRequest m_originalRequest; // Before redirects.
@@ -144,7 +144,7 @@ private:
         ConnectionStateFailed,
     };
 
-    BlinKit::GCMember<Resource> m_resource;
+    GCRefPtr<Resource> m_resource;
     ResourceLoaderState m_state;
 
     // Used for sanity checking to make sure we don't experience illegal state

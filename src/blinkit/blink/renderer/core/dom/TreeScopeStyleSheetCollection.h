@@ -83,7 +83,7 @@ protected:
     public:
         StyleResolverUpdateType styleResolverUpdateType;
         bool requiresFullStyleRecalc;
-        std::vector<BlinKit::GCMember<const StyleRuleFontFace>> fontFaceRulesToRemove;
+        std::vector<const StyleRuleFontFace *> fontFaceRulesToRemove;
 
         StyleSheetChange(void);
         ~StyleSheetChange(void);
@@ -92,8 +92,8 @@ protected:
     void analyzeStyleSheetChange(StyleResolverUpdateMode, const StyleSheetCollection&, StyleSheetChange&);
 
 private:
-    static StyleResolverUpdateType compareStyleSheets(const std::vector<BlinKit::GCMember<CSSStyleSheet>>& oldStyleSheets, const std::vector<BlinKit::GCMember<CSSStyleSheet>>& newStylesheets, std::vector<BlinKit::GCMember<StyleSheetContents>>& addedSheets);
-    bool activeLoadingStyleSheetLoaded(const std::vector<BlinKit::GCMember<CSSStyleSheet>>& newStyleSheets);
+    static StyleResolverUpdateType compareStyleSheets(const std::vector<GCRefPtr<CSSStyleSheet>>& oldStyleSheets, const std::vector<GCRefPtr<CSSStyleSheet>>& newStylesheets, std::vector<GCRefPtr<StyleSheetContents>>& addedSheets);
+    bool activeLoadingStyleSheetLoaded(const std::vector<GCRefPtr<CSSStyleSheet>>& newStyleSheets);
 
     friend class TreeScopeStyleSheetCollectionTest;
 

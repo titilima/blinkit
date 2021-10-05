@@ -1263,6 +1263,11 @@ bool Resource::isLoadEventBlockingResourceType() const
     return false;
 }
 
+ResourceLoader* Resource::loader(void) const
+{
+    return m_loader.get();
+}
+
 #if !LOG_DISABLED
 const char* ResourceTypeName(Resource::Type type)
 {

@@ -193,10 +193,10 @@ void StyleResolver::dispose()
 
 void StyleResolver::initWatchedSelectorRules()
 {
-    CSSSelectorWatch* watch = CSSSelectorWatch::fromIfExists(*m_document);
+    CSSSelectorWatch* watch = CSSSelectorWatch::fromIfExists(m_document);
     if (!watch)
         return;
-    const std::vector<GCMember<StyleRule>>& watchedSelectors = watch->watchedCallbackSelectors();
+    const std::vector<GCRefPtr<StyleRule>>& watchedSelectors = watch->watchedCallbackSelectors();
     if (watchedSelectors.empty())
         return;
     m_watchedSelectorsRules = RuleSet::create();
@@ -204,14 +204,14 @@ void StyleResolver::initWatchedSelectorRules()
         m_watchedSelectorsRules->addStyleRule(watchedSelectors[i].get(), RuleHasNoSpecialState);
 }
 
-void StyleResolver::lazyAppendAuthorStyleSheets(unsigned firstNew, const std::vector<GCMember<CSSStyleSheet>>& styleSheets)
+void StyleResolver::lazyAppendAuthorStyleSheets(unsigned firstNew, const std::vector<GCRefPtr<CSSStyleSheet>>& styleSheets)
 {
     unsigned size = styleSheets.size();
     for (unsigned i = firstNew; i < size; ++i)
         m_pendingStyleSheets.insert(styleSheets[i].get());
 }
 
-void StyleResolver::removePendingAuthorStyleSheets(const std::vector<GCMember<CSSStyleSheet>>& styleSheets)
+void StyleResolver::removePendingAuthorStyleSheets(const std::vector<GCRefPtr<CSSStyleSheet>>& styleSheets)
 {
     for (unsigned i = 0; i < styleSheets.size(); ++i)
         m_pendingStyleSheets.erase(styleSheets[i].get());
@@ -244,7 +244,7 @@ void StyleResolver::appendCSSStyleSheet(CSSStyleSheet& cssSheet)
     // Sheets in the document scope of HTML imports apply to the main document
     // (m_document), so we override it for all document scoped sheets.
     if (treeScope->rootNode().isDocumentNode())
-        treeScope = m_document.get();
+        treeScope = &m_document;
     treeScope->ensureScopedStyleResolver().appendCSSStyleSheet(cssSheet, *m_medium);
 }
 
@@ -257,7 +257,7 @@ void StyleResolver::appendPendingAuthorStyleSheets()
     finishAppendAuthorStyleSheets();
 }
 
-void StyleResolver::appendAuthorStyleSheets(const std::vector<GCMember<CSSStyleSheet>>& styleSheets)
+void StyleResolver::appendAuthorStyleSheets(const std::vector<GCRefPtr<CSSStyleSheet>>& styleSheets)
 {
     // This handles sheets added to the end of the stylesheet list only. In other cases the style resolver
     // needs to be reconstructed. To handle insertions too the rule order numbers would need to be updated.
@@ -310,12 +310,12 @@ void StyleResolver::resetAuthorStyle(TreeScope& treeScope)
     treeScope.clearScopedStyleResolver();
 }
 
-static GCPassPtr<RuleSet> makeRuleSet(const WillBeHeapVector<RuleFeature>& rules)
+static PassOwnPtrWillBeRawPtr<RuleSet> makeRuleSet(const WillBeHeapVector<RuleFeature>& rules)
 {
     size_t size = rules.size();
     if (!size)
         return nullptr;
-    GCMember<RuleSet> ruleSet = RuleSet::create();
+    GCRefPtr<RuleSet> ruleSet = RuleSet::create();
     for (size_t i = 0; i < size; ++i)
         ruleSet->addRule(rules[i].rule.get(), rules[i].selectorIndex, rules[i].hasDocumentSecurityOrigin ? RuleHasDocumentSecurityOrigin : RuleHasNoSpecialState);
     return ruleSet.release();
@@ -1611,7 +1611,6 @@ DEFINE_TRACE(StyleResolver)
     // BKTODO: visitor->trace(m_treeBoundaryCrossingScopes);
     visitor->trace(m_styleSharingLists);
     visitor->trace(m_pendingStyleSheets);
-    visitor->trace(m_document);
 #endif
 }
 

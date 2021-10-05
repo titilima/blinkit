@@ -179,7 +179,7 @@ public:
 
 protected:
     SupplementableTracing() { }
-    using SupplementMap = std::unordered_map<const char *, BlinKit::GCMember<SupplementBase<T, true>>>;
+    using SupplementMap = std::unordered_map<const char *, GCRefPtr<SupplementBase<T, true>>>;
     SupplementMap m_supplements;
 };
 

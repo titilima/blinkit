@@ -35,14 +35,13 @@
 #include "core/CoreExport.h"
 #include "core/css/CSSValue.h"
 #include "wtf/PassRefPtr.h"
-// BKTODO: #include "wtf/Vector.h"
 
 namespace blink {
 
 class CORE_EXPORT CSSValueList : public CSSValue {
 public:
-    using iterator = std::vector<BlinKit::GCMember<CSSValue>>::iterator;
-    using const_iterator = std::vector<BlinKit::GCMember<CSSValue>>::const_iterator;
+    using iterator = std::vector<GCRefPtr<CSSValue>>::iterator;
+    using const_iterator = std::vector<GCRefPtr<CSSValue>>::const_iterator;
 
     static PassRefPtrWillBeRawPtr<CSSValueList> createCommaSeparated()
     {
@@ -87,7 +86,7 @@ protected:
 private:
     explicit CSSValueList(ValueListSeparator);
 
-    std::vector<BlinKit::GCMember<CSSValue>> m_values;
+    std::vector<GCRefPtr<CSSValue>> m_values;
 };
 
 DEFINE_CSS_VALUE_TYPE_CASTS(CSSValueList, isValueList());

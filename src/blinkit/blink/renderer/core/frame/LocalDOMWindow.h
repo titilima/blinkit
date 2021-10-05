@@ -38,7 +38,6 @@
 #ifndef LocalDOMWindow_h
 #define LocalDOMWindow_h
 
-#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 // BKTODO: #include "core/dom/MessagePort.h"
 #include "core/events/EventTarget.h"
@@ -86,9 +85,9 @@ class CORE_EXPORT LocalDOMWindow final : public DOMWindow
     WILL_BE_USING_PRE_FINALIZER(LocalDOMWindow, dispose);
 public:
     static PassRefPtrWillBeRawPtr<Document> createDocument(const String& mimeType, const DocumentInit&, bool forceXHTML);
-    static GCUniqueRoot<LocalDOMWindow> create(LocalFrame& frame)
+    static GCUniquePtr<LocalDOMWindow> create(LocalFrame& frame)
     {
-        return BlinKit::WrapUniqueRoot(new LocalDOMWindow(frame));
+        return BlinKit::GCWrapUnique(new LocalDOMWindow(frame));
     }
 
     ~LocalDOMWindow() override;
@@ -237,7 +236,7 @@ private:
         WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(WindowFrameObserver);
         DECLARE_EMPTY_VIRTUAL_DESTRUCTOR_WILL_BE_REMOVED(WindowFrameObserver);
     public:
-        static BlinKit::GCPassPtr<WindowFrameObserver> create(LocalDOMWindow&, LocalFrame&);
+        static PassOwnPtrWillBeRawPtr<WindowFrameObserver> create(LocalDOMWindow&, LocalFrame&);
 
         // LocalFrameLifecycleObserver overrides:
         void willDetachFrameHost() override;
@@ -262,8 +261,8 @@ private:
 
     BlinKit::GCObject* ObjectForGC(void) final { return nullptr; }
 
-    BlinKit::GCMember<WindowFrameObserver> m_frameObserver;
-    BlinKit::GCMember<Document> m_document;
+    GCRefPtr<WindowFrameObserver> m_frameObserver;
+    GCRefPtr<Document> m_document;
 
     // BKTODO: bool m_shouldPrintWhenFinishedLoading;
 #if ENABLE(ASSERT)

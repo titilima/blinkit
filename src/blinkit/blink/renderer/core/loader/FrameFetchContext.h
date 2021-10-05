@@ -139,7 +139,7 @@ private:
     // currently leak because ComputedStyle and its data are not on the heap.
     // See crbug.com/383860 for details.
     BlinKit::GCWeakMember<Document> m_document;
-    BlinKit::GCMember<DocumentLoader> m_documentLoader;
+    GCRefPtr<DocumentLoader> m_documentLoader;
 
     bool m_imageFetched : 1;
 };

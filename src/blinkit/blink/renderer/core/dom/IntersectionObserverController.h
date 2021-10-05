@@ -31,7 +31,7 @@ namespace blink {
 class IntersectionObserverController : public ActiveDOMObject {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(IntersectionObserverController);
 public:
-    static GCPassPtr<IntersectionObserverController> create(Document*);
+    static IntersectionObserverController* create(Document*);
     ~IntersectionObserverController();
 
     void resume() override;

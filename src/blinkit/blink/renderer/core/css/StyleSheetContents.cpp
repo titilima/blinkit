@@ -156,13 +156,13 @@ bool StyleSheetContents::isCacheable() const
     return true;
 }
 
-void StyleSheetContents::parserAppendRule(GCPassPtr<StyleRuleBase> rule)
+void StyleSheetContents::parserAppendRule(PassRefPtrWillBeRawPtr<StyleRuleBase> rule)
 {
-    if (rule.get()->isImportRule()) {
+    if (rule->isImportRule()) {
         // Parser enforces that @import rules come before anything else
         ASSERT(m_childRules.empty());
-        GCPassPtr<StyleRuleImport> importRule = rule.PassTo<StyleRuleImport>();
-        if (importRule.get()->mediaQueries())
+        StyleRuleImport* importRule = toStyleRuleImport(rule.get());
+        if (importRule->mediaQueries())
             setHasMediaQueries();
         m_importRules.emplace_back(std::move(importRule));
         m_importRules.back()->setParentStyleSheet(this);
@@ -174,9 +174,9 @@ void StyleSheetContents::parserAppendRule(GCPassPtr<StyleRuleBase> rule)
         // Parser enforces that @namespace rules come before all rules other than
         // import/charset rules
         ASSERT(m_childRules.empty());
-        GCPassPtr<StyleRuleNamespace> namespaceRule = rule.PassTo<StyleRuleNamespace>();
-        parserAddNamespace(namespaceRule.get()->prefix(), namespaceRule.get()->uri());
-        m_namespaceRules.emplace_back(std::move(namespaceRule));
+        StyleRuleNamespace& namespaceRule = toStyleRuleNamespace(*rule);
+        parserAddNamespace(namespaceRule.prefix(), namespaceRule.uri());
+        m_namespaceRules.emplace_back(&namespaceRule);
         return;
     }
 
@@ -226,17 +226,17 @@ void StyleSheetContents::clearRules()
     m_childRules.clear();
 }
 
-bool StyleSheetContents::wrapperInsertRule(GCPassPtr<StyleRuleBase> rule, unsigned index)
+bool StyleSheetContents::wrapperInsertRule(PassRefPtrWillBeRawPtr<StyleRuleBase> rule, unsigned index)
 {
     ASSERT(m_isMutable);
     ASSERT_WITH_SECURITY_IMPLICATION(index <= ruleCount());
 
-    if (index < m_importRules.size() || (index == m_importRules.size() && rule.get()->isImportRule())) {
+    if (index < m_importRules.size() || (index == m_importRules.size() && rule->isImportRule())) {
         // Inserting non-import rule before @import is not allowed.
-        if (!rule.get()->isImportRule())
+        if (!rule->isImportRule())
             return false;
 
-        GCMember<StyleRuleImport> importRule = rule.PassTo<StyleRuleImport>();
+        StyleRuleImport* importRule = toStyleRuleImport(rule.get());
         if (importRule->mediaQueries())
             setHasMediaQueries();
 
@@ -247,17 +247,17 @@ bool StyleSheetContents::wrapperInsertRule(GCPassPtr<StyleRuleBase> rule, unsign
         return true;
     }
     // Inserting @import rule after a non-import rule is not allowed.
-    if (rule.get()->isImportRule())
+    if (rule->isImportRule())
         return false;
 
-    if (rule.get()->isMediaRule())
+    if (rule->isMediaRule())
         setHasMediaQueries();
 
     index -= m_importRules.size();
 
-    if (index < m_namespaceRules.size() || (index == m_namespaceRules.size() && rule.get()->isNamespaceRule())) {
+    if (index < m_namespaceRules.size() || (index == m_namespaceRules.size() && rule->isNamespaceRule())) {
         // Inserting non-namespace rules other than import rule before @namespace is not allowed.
-        if (!rule.get()->isNamespaceRule())
+        if (!rule->isNamespaceRule())
             return false;
         // Inserting @namespace rule when rules other than import/namespace/charset are present is not allowed.
         if (!m_childRules.empty())
@@ -274,14 +274,14 @@ bool StyleSheetContents::wrapperInsertRule(GCPassPtr<StyleRuleBase> rule, unsign
         return true;
     }
 
-    if (rule.get()->isNamespaceRule())
+    if (rule->isNamespaceRule())
         return false;
 
     index -= m_namespaceRules.size();
 
-    if (rule.get()->isFontFaceRule())
+    if (rule->isFontFaceRule())
         setHasFontFaceRule(true);
-    m_childRules.emplace(m_childRules.begin() + index, std::move(rule));
+    m_childRules.emplace(m_childRules.begin() + index, rule);
     return true;
 }
 
@@ -490,7 +490,7 @@ Document* StyleSheetContents::singleOwnerDocument() const
     return root->clientSingleOwnerDocument();
 }
 
-static bool childRulesHaveFailedOrCanceledSubresources(const std::vector<GCMember<StyleRuleBase>>& rules)
+static bool childRulesHaveFailedOrCanceledSubresources(const std::vector<GCRefPtr<StyleRuleBase>>& rules)
 {
     for (unsigned i = 0; i < rules.size(); ++i) {
         const StyleRuleBase* rule = rules[i].get();
@@ -660,7 +660,7 @@ void StyleSheetContents::notifyRemoveFontFaceRule(const StyleRuleFontFace* fontF
     removeFontFaceRules(root->m_completedClients, fontFaceRule);
 }
 
-static void findFontFaceRulesFromRules(const std::vector<GCMember<StyleRuleBase>>& rules, std::vector<GCMember<const StyleRuleFontFace>>& fontFaceRules)
+static void findFontFaceRulesFromRules(const std::vector<GCRefPtr<StyleRuleBase>> &rules, std::vector<const StyleRuleFontFace *> &fontFaceRules)
 {
     for (unsigned i = 0; i < rules.size(); ++i) {
         StyleRuleBase* rule = rules[i].get();
@@ -676,7 +676,7 @@ static void findFontFaceRulesFromRules(const std::vector<GCMember<StyleRuleBase>
     }
 }
 
-void StyleSheetContents::findFontFaceRules(std::vector<GCMember<const StyleRuleFontFace>>& fontFaceRules)
+void StyleSheetContents::findFontFaceRules(std::vector<const StyleRuleFontFace *> &fontFaceRules)
 {
     for (unsigned i = 0; i < m_importRules.size(); ++i) {
         if (!m_importRules[i]->styleSheet())
@@ -690,6 +690,11 @@ void StyleSheetContents::findFontFaceRules(std::vector<GCMember<const StyleRuleF
 void StyleSheetContents::clearOwnerRule(void)
 {
     m_ownerRule.clear();
+}
+
+StyleRuleImport* StyleSheetContents::ownerRule(void) const
+{
+    return m_ownerRule.get();
 }
 
 DEFINE_TRACE(StyleSheetContents)

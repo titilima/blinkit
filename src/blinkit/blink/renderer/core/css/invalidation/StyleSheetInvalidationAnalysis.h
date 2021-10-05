@@ -53,7 +53,7 @@ class TreeScope;
 class StyleSheetInvalidationAnalysis {
     STACK_ALLOCATED();
 public:
-    StyleSheetInvalidationAnalysis(const TreeScope&, const std::vector<BlinKit::GCMember<StyleSheetContents>>&);
+    StyleSheetInvalidationAnalysis(const TreeScope&, const std::vector<GCRefPtr<StyleSheetContents>>&);
 
     bool dirtiesAllStyle() const { return m_dirtiesAllStyle; }
     void invalidateStyle();

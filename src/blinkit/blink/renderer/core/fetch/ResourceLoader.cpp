@@ -77,11 +77,11 @@ bool isManualRedirectFetchRequest(const ResourceRequest& request)
 
 } // namespace
 
-GCPassPtr<ResourceLoader> ResourceLoader::create(ResourceFetcher* fetcher, Resource* resource, const ResourceRequest& request, const ResourceLoaderOptions& options)
+ResourceLoader* ResourceLoader::create(ResourceFetcher* fetcher, Resource* resource, const ResourceRequest& request, const ResourceLoaderOptions& options)
 {
     ResourceLoader* loader = new ResourceLoader(fetcher, resource, options);
     loader->init(request);
-    return WrapLeaked(loader);
+    return loader;
 }
 
 ResourceLoader::ResourceLoader(ResourceFetcher* fetcher, Resource* resource, const ResourceLoaderOptions& options)
@@ -646,6 +646,11 @@ ResourceRequest& ResourceLoader::applyOptions(ResourceRequest& request) const
 {
     request.setAllowStoredCredentials(m_options.allowCredentials == AllowStoredCredentials);
     return request;
+}
+
+Resource* ResourceLoader::cachedResource(void)
+{
+    return m_resource.get();
 }
 
 }

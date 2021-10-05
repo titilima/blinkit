@@ -236,7 +236,7 @@ void Event::setUnderlyingEvent(PassRefPtrWillBeRawPtr<Event> ue)
 void Event::initEventPath(Node& node)
 {
     if (!m_eventPath) {
-        m_eventPath = MakeUniqueRoot<EventPath>(node, this);
+        m_eventPath = GCMakeUnique<EventPath>(node, this);
     } else {
         m_eventPath->initializeWith(node, this);
     }

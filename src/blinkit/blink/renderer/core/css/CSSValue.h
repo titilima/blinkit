@@ -252,15 +252,15 @@ inline bool compareCSSValueVector(const WillBeHeapVector<RefPtrWillBeMember<CSSV
 }
 
 template<typename CSSValueType>
-inline bool compareCSSValueVector(const std::vector<BlinKit::GCMember<CSSValueType>>& firstVector, const std::vector<BlinKit::GCMember<CSSValueType>>& secondVector)
+inline bool compareCSSValueVector(const std::vector<GCRefPtr<CSSValueType>>& firstVector, const std::vector<GCRefPtr<CSSValueType>>& secondVector)
 {
     size_t size = firstVector.size();
     if (size != secondVector.size())
         return false;
 
     for (size_t i = 0; i < size; i++) {
-        const BlinKit::GCMember<CSSValueType>& firstPtr = firstVector[i];
-        const BlinKit::GCMember<CSSValueType>& secondPtr = secondVector[i];
+        const GCRefPtr<CSSValueType>& firstPtr = firstVector[i];
+        const GCRefPtr<CSSValueType>& secondPtr = secondVector[i];
         if (firstPtr == secondPtr || (firstPtr && secondPtr && firstPtr->equals(*secondPtr)))
             continue;
         return false;
@@ -299,7 +299,7 @@ inline bool compareCSSValuePtr(const Member<CSSValueType>& first, const Member<C
 }
 
 template<typename CSSValueType>
-inline bool compareCSSValuePtr(const BlinKit::GCMember<CSSValueType>& first, const BlinKit::GCMember<CSSValueType>& second)
+inline bool compareCSSValuePtr(const GCRefPtr<CSSValueType>& first, const GCRefPtr<CSSValueType>& second)
 {
     if (first.get() == second.get())
         return true;

@@ -38,7 +38,6 @@
 #define ScriptedAnimationController_h
 
 #include <unordered_set>
-#include "blinkit/gc/gc_root.h"
 #include "core/dom/FrameRequestCallbackCollection.h"
 #include "platform/heap/Handle.h"
 #include "wtf/ListHashSet.h"
@@ -59,9 +58,9 @@ class MediaQueryListListener;
 class ScriptedAnimationController {
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(ScriptedAnimationController);
 public:
-    static GCUniqueRoot<ScriptedAnimationController> create(Document* document)
+    static GCUniquePtr<ScriptedAnimationController> create(Document* document)
     {
-        return BlinKit::WrapUniqueRoot(new ScriptedAnimationController(document));
+        return BlinKit::GCWrapUnique(new ScriptedAnimationController(document));
     }
 
     DECLARE_TRACE();
@@ -95,7 +94,7 @@ private:
     Document *m_document;
     FrameRequestCallbackCollection m_callbackCollection;
     int m_suspendCount;
-    std::vector<BlinKit::GCMember<Event>> m_eventQueue;
+    std::vector<GCRefPtr<Event>> m_eventQueue;
     std::unordered_set<unsigned> m_perFrameEventHashes;
     using MediaQueryListListeners = WillBeHeapListHashSet<RefPtrWillBeMember<MediaQueryListListener>>;
     MediaQueryListListeners m_mediaQueryListListeners;

@@ -85,7 +85,7 @@ static inline bool shouldStopAtShadowRoot(Event& event, ShadowRoot& shadowRoot, 
 }
 
 EventPath::EventPath(Node& node, Event* event)
-    : m_node(node)
+    : m_node(&node)
     , m_event(event)
 {
     initialize();
@@ -206,7 +206,7 @@ TreeScopeEventContext* EventPath::ensureTreeScopeEventContext(Node* currentTarge
     TreeScopeEventContext* treeScopeEventContext;
     bool isNewEntry;
     {
-        GCMember<TreeScopeEventContext> &entry = treeScopeEventContextMap[treeScope];
+        GCRefPtr<TreeScopeEventContext> &entry = treeScopeEventContextMap[treeScope];
         if (!entry)
         {
             isNewEntry = true;

@@ -6114,9 +6114,19 @@ void Document::enforceStrictMixedContentChecking()
 #endif
 }
 
-bool Document::IsRetainedInTree(void) const
+Element* Document::activeHoverElement(void) const
 {
-    return nullptr != m_domWindow;
+    return m_activeHoverElement.get();
+}
+
+Element* Document::autofocusElement(void) const
+{
+    return m_autofocusElement.get();
+}
+
+Element* Document::cssTarget(void) const
+{
+    return m_cssTarget.get();
 }
 
 DocumentType* Document::doctype(void) const
@@ -6124,9 +6134,24 @@ DocumentType* Document::doctype(void) const
     return m_docType.get();
 }
 
+Element* Document::documentElement(void) const
+{
+    return m_documentElement.get();
+}
+
 ResourceFetcher* Document::fetcher(void)
 {
     return m_fetcher.get();
+}
+
+Element* Document::focusedElement(void) const
+{
+    return m_focusedElement.get();
+}
+
+bool Document::IsRetainedInTree(void) const
+{
+    return nullptr != m_domWindow;
 }
 
 DocumentParser* Document::parser(void) const
@@ -6134,9 +6159,20 @@ DocumentParser* Document::parser(void) const
     return m_parser.get();
 }
 
+StyleEngine& Document::styleEngine(void)
+{
+    ASSERT(m_styleEngine);
+    return *m_styleEngine;
+}
+
 AnimationTimeline& Document::timeline(void) const
 {
     return *m_timeline;
+}
+
+Element* Document::titleElement(void) const
+{
+    return m_titleElement.get();
 }
 
 DEFINE_TRACE(Document)

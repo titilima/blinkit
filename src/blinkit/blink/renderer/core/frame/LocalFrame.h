@@ -39,7 +39,6 @@
 #ifndef LocalFrame_h
 #define LocalFrame_h
 
-#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 // BKTODO: #include "core/dom/WeakIdentifierMap.h"
 #include "core/frame/Frame.h"
@@ -95,7 +94,7 @@ class CORE_EXPORT LocalFrame : public Frame
 {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(LocalFrame);
 public:
-    static GCUniqueRoot<LocalFrame> create(FrameLoaderClient*, FrameHost*);
+    static GCUniquePtr<LocalFrame> create(FrameLoaderClient*, FrameHost*);
 
     void init();
     void setView(PassRefPtrWillBeRawPtr<FrameView>);
@@ -122,7 +121,7 @@ public:
     void willDetachFrameHost();
 
     LocalDOMWindow* localDOMWindow() const;
-    void setDOMWindow(GCUniqueRoot<LocalDOMWindow> &&);
+    void setDOMWindow(GCUniquePtr<LocalDOMWindow> &&);
     FrameView* view() const;
     Document* document() const;
     void setPagePopupOwner(Element&);
@@ -229,8 +228,8 @@ private:
     mutable FrameLoader m_loader;
     // BKTODO: OwnPtrWillBeMember<NavigationScheduler> m_navigationScheduler;
 
-    BlinKit::GCUniqueRoot<FrameView> m_view;
-    BlinKit::GCUniqueRoot<LocalDOMWindow> m_domWindow;
+    GCUniquePtr<FrameView> m_view;
+    GCUniquePtr<LocalDOMWindow> m_domWindow;
     // Usually 0. Non-null if this is the top frame of PagePopup.
     RefPtrWillBeMember<Element> m_pagePopupOwner;
 

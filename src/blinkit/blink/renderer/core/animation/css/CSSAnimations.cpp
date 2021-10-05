@@ -86,7 +86,7 @@ static StringKeyframeEffectModel* createKeyframeEffectModel(StyleResolver* resol
     ASSERT(keyframesRule);
 
     StringKeyframeVector keyframes;
-    const std::vector<GCMember<StyleRuleKeyframe>>& styleKeyframes = keyframesRule->keyframes();
+    const std::vector<GCRefPtr<StyleRuleKeyframe>>& styleKeyframes = keyframesRule->keyframes();
 
     // Construct and populate the style for each keyframe
     PropertySet specifiedPropertiesForUseCounter;

@@ -165,7 +165,7 @@ void StyleElement::clearSheet(Element* ownerElement)
     if (ownerElement && m_sheet->isLoading())
         ownerElement->document().styleEngine().removePendingSheet(ownerElement);
 
-    GCMember<CSSStyleSheet> sheet = m_sheet.release();
+    GCRefPtr<CSSStyleSheet> sheet(m_sheet.release());
     sheet->clearOwnerNode();
 }
 
@@ -201,7 +201,7 @@ StyleElement::ProcessingResult StyleElement::createSheet(Element* e, const Strin
 #endif
 
     // Clearing the current sheet may remove the cache entry so create the new sheet first
-    GCMember<CSSStyleSheet> newSheet;
+    GCRefPtr<CSSStyleSheet> newSheet;
 
     // If type is empty or CSS, this is a CSS style sheet.
     const AtomicString& type = this->type();

@@ -45,13 +45,13 @@ namespace blink {
 // size of 1.
 #define HIT_TEST_CACHE_SIZE (2)
 
-class CORE_EXPORT HitTestCache final : public BlinKit::GCObject {
+class CORE_EXPORT HitTestCache final {
     USING_FAST_MALLOC_WILL_BE_REMOVED(HitTestCache);
     WTF_MAKE_NONCOPYABLE(HitTestCache);
 public:
-    static GCPassPtr<HitTestCache> create()
+    static GCUniquePtr<HitTestCache> create()
     {
-        return BlinKit::WrapLeaked(new HitTestCache);
+        return BlinKit::GCWrapUnique(new HitTestCache);
     }
 
     // Check the cache for a possible hit and update |result| if

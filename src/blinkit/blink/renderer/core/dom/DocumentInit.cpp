@@ -190,7 +190,7 @@ DocumentInit& DocumentInit::withNewRegistrationContext()
     return *this;
 }
 
-GCPassPtr<CustomElementRegistrationContext> DocumentInit::registrationContext(Document* document) const
+PassRefPtrWillBeRawPtr<CustomElementRegistrationContext> DocumentInit::registrationContext(Document* document) const
 {
     if (!document->isHTMLDocument() && !document->isXHTMLDocument())
         return nullptr;
@@ -198,7 +198,7 @@ GCPassPtr<CustomElementRegistrationContext> DocumentInit::registrationContext(Do
     if (m_createNewRegistrationContext)
         return CustomElementRegistrationContext::create();
 
-    return m_registrationContext;
+    return m_registrationContext.get();
 }
 
 WeakPtrWillBeRawPtr<Document> DocumentInit::contextDocument() const

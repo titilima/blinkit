@@ -185,7 +185,7 @@ void StyleRuleBase::destroy()
     ASSERT_NOT_REACHED();
 }
 
-GCPassPtr<StyleRuleBase> StyleRuleBase::copy() const
+PassRefPtrWillBeRawPtr<StyleRuleBase> StyleRuleBase::copy() const
 {
     switch (type()) {
     case Style:
@@ -354,7 +354,7 @@ DEFINE_TRACE_AFTER_DISPATCH(StyleRuleFontFace)
     StyleRuleBase::traceAfterDispatch(visitor);
 }
 
-StyleRuleGroup::StyleRuleGroup(Type type, std::vector<GCMember<StyleRuleBase>>& adoptRule)
+StyleRuleGroup::StyleRuleGroup(Type type, std::vector<GCRefPtr<StyleRuleBase>>& adoptRule)
     : StyleRuleBase(type)
 {
     m_childRules.swap(adoptRule);
@@ -368,9 +368,9 @@ StyleRuleGroup::StyleRuleGroup(const StyleRuleGroup& o)
         m_childRules[i] = o.m_childRules[i]->copy();
 }
 
-void StyleRuleGroup::wrapperInsertRule(unsigned index, GCPassPtr<StyleRuleBase> rule)
+void StyleRuleGroup::wrapperInsertRule(unsigned index, PassRefPtrWillBeRawPtr<StyleRuleBase> rule)
 {
-    m_childRules.emplace(m_childRules.begin() + index, std::move(rule));
+    m_childRules.emplace(m_childRules.begin() + index, rule);
 }
 
 void StyleRuleGroup::wrapperRemoveRule(unsigned index)
@@ -384,7 +384,7 @@ DEFINE_TRACE_AFTER_DISPATCH(StyleRuleGroup)
     StyleRuleBase::traceAfterDispatch(visitor);
 }
 
-StyleRuleMedia::StyleRuleMedia(PassRefPtrWillBeRawPtr<MediaQuerySet> media, std::vector<GCMember<StyleRuleBase>>& adoptRules)
+StyleRuleMedia::StyleRuleMedia(PassRefPtrWillBeRawPtr<MediaQuerySet> media, std::vector<GCRefPtr<StyleRuleBase>>& adoptRules)
     : StyleRuleGroup(Media, adoptRules)
     , m_mediaQueries(media)
 {
@@ -403,7 +403,7 @@ DEFINE_TRACE_AFTER_DISPATCH(StyleRuleMedia)
     StyleRuleGroup::traceAfterDispatch(visitor);
 }
 
-StyleRuleSupports::StyleRuleSupports(const String& conditionText, bool conditionIsSupported, std::vector<GCMember<StyleRuleBase>>& adoptRules)
+StyleRuleSupports::StyleRuleSupports(const String& conditionText, bool conditionIsSupported, std::vector<GCRefPtr<StyleRuleBase>>& adoptRules)
     : StyleRuleGroup(Supports, adoptRules)
     , m_conditionText(conditionText)
     , m_conditionIsSupported(conditionIsSupported)

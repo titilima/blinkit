@@ -49,14 +49,14 @@ namespace blink {
 // relying on RefPtr<>, switch to GarbageCollected<>.
 class StyleFilterData final : public BlinKit::GCObject {
 public:
-    static GCPassPtr<StyleFilterData> create()
+    static PassRefPtrWillBeRawPtr<StyleFilterData> create()
     {
-        return BlinKit::WrapLeaked(new StyleFilterData);
+        return adoptRefWillBeNoop(new StyleFilterData);
     }
 
-    GCPassPtr<StyleFilterData> copy() const
+    PassRefPtrWillBeRawPtr<StyleFilterData> copy() const
     {
-        return BlinKit::WrapLeaked(new StyleFilterData(*this));
+        return adoptRefWillBeNoop(new StyleFilterData(*this));
     }
 
     bool operator==(const StyleFilterData&) const;

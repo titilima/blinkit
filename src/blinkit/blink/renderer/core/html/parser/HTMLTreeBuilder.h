@@ -61,13 +61,13 @@ class HTMLDocumentParser;
 class HTMLTreeBuilder final {
     WTF_MAKE_NONCOPYABLE(HTMLTreeBuilder); USING_FAST_MALLOC_WILL_BE_REMOVED(HTMLTreeBuilder);
 public:
-    static GCUniqueRoot<HTMLTreeBuilder> create(HTMLDocumentParser* parser, HTMLDocument* document, ParserContentPolicy parserContentPolicy, bool reportErrors, const HTMLParserOptions& options)
+    static GCUniquePtr<HTMLTreeBuilder> create(HTMLDocumentParser* parser, HTMLDocument* document, ParserContentPolicy parserContentPolicy, bool reportErrors, const HTMLParserOptions& options)
     {
-        return BlinKit::WrapUniqueRoot(new HTMLTreeBuilder(parser, document, parserContentPolicy, reportErrors, options));
+        return BlinKit::GCWrapUnique(new HTMLTreeBuilder(parser, document, parserContentPolicy, reportErrors, options));
     }
-    static GCUniqueRoot<HTMLTreeBuilder> create(HTMLDocumentParser* parser, DocumentFragment* fragment, Element* contextElement, ParserContentPolicy parserContentPolicy, const HTMLParserOptions& options)
+    static GCUniquePtr<HTMLTreeBuilder> create(HTMLDocumentParser* parser, DocumentFragment* fragment, Element* contextElement, ParserContentPolicy parserContentPolicy, const HTMLParserOptions& options)
     {
-        return BlinKit::WrapUniqueRoot(new HTMLTreeBuilder(parser, fragment, contextElement, parserContentPolicy, options));
+        return BlinKit::GCWrapUnique(new HTMLTreeBuilder(parser, fragment, contextElement, parserContentPolicy, options));
     }
     ~HTMLTreeBuilder();
     DECLARE_TRACE();
@@ -84,7 +84,7 @@ public:
 
     bool hasParserBlockingScript() const { return !!m_scriptToProcess; }
     // Must be called to take the parser-blocking script before calling the parser again.
-    GCPassPtr<Element> takeScriptToProcess(TextPosition& scriptStartPosition);
+    PassRefPtrWillBeRawPtr<Element> takeScriptToProcess(TextPosition& scriptStartPosition);
 
     // Done, close any open tags, etc.
     void finished();
@@ -207,15 +207,15 @@ private:
         FragmentParsingContext(DocumentFragment*, Element* contextElement);
         ~FragmentParsingContext();
 
-        DocumentFragment* fragment() const { return m_fragment.get(); }
+        DocumentFragment* fragment(void) const;
         Element* contextElement() const { ASSERT(m_fragment); return m_contextElementStackItem->element(); }
         HTMLStackItem* contextElementStackItem() const { ASSERT(m_fragment); return m_contextElementStackItem.get(); }
 
         DECLARE_TRACE();
 
     private:
-        BlinKit::GCMember<DocumentFragment> m_fragment;
-        BlinKit::GCMember<HTMLStackItem> m_contextElementStackItem;
+        GCRefPtr<DocumentFragment> m_fragment;
+        GCRefPtr<HTMLStackItem> m_contextElementStackItem;
     };
 
     // https://html.spec.whatwg.org/#frameset-ok-flag
@@ -243,7 +243,7 @@ private:
     // from within parser actions. We also need it to track the current position.
     HTMLDocumentParser *m_parser;
 
-    BlinKit::GCMember<Element> m_scriptToProcess; // <script> tag which needs processing before resuming the parser.
+    GCRefPtr<Element> m_scriptToProcess; // <script> tag which needs processing before resuming the parser.
     TextPosition m_scriptToProcessStartPosition; // Starting line number of the script tag needing processing.
 
     HTMLParserOptions m_options;

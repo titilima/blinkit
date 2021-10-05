@@ -39,7 +39,6 @@
 #ifndef DocumentStyleSheetCollection_h
 #define DocumentStyleSheetCollection_h
 
-#include "blinkit/gc/gc_root.h"
 #include "core/dom/TreeScopeStyleSheetCollection.h"
 
 namespace blink {
@@ -52,9 +51,9 @@ class DocumentStyleSheetCollection final : public TreeScopeStyleSheetCollection 
     WTF_MAKE_NONCOPYABLE(DocumentStyleSheetCollection);
     USING_FAST_MALLOC_WILL_BE_REMOVED(DocumentStyleSheetCollection);
 public:
-    static GCUniqueRoot<DocumentStyleSheetCollection> create(TreeScope& treeScope)
+    static GCUniquePtr<DocumentStyleSheetCollection> create(TreeScope& treeScope)
     {
-        return BlinKit::WrapUniqueRoot(new DocumentStyleSheetCollection(treeScope));
+        return BlinKit::GCWrapUnique(new DocumentStyleSheetCollection(treeScope));
     }
 
     void updateActiveStyleSheets(StyleEngine&, StyleResolverUpdateMode);

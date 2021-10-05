@@ -78,7 +78,7 @@ public:
     virtual bool processingData() const { return false; }
 
     // document() will return 0 after detach() is called.
-    Document* document() const { ASSERT(m_document); return m_document.get(); }
+    Document* document(void) const;
 
     bool isParsing() const { return m_state == ParsingState; }
     bool isStopping() const { return m_state == StoppingState; }
@@ -130,7 +130,7 @@ private:
 
     // Every DocumentParser needs a pointer back to the document.
     // m_document will be 0 after the parser is stopped.
-    BlinKit::GCMember<Document> m_document;
+    GCRefPtr<Document> m_document;
 
     WillBeHeapHashSet<RawPtrWillBeWeakMember<DocumentParserClient>> m_clients;
 };

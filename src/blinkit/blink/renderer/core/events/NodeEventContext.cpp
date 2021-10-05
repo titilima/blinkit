@@ -86,7 +86,7 @@ void NodeEventContext::handleLocalEvents(Event& event) const
     }
 #endif
     event.setTarget(target());
-    event.setCurrentTarget(m_currentTarget.get());
+    event.setCurrentTarget(m_currentTarget);
     m_node->handleLocalEvents(event);
 }
 

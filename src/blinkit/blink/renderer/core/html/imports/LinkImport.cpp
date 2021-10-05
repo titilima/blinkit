@@ -52,9 +52,9 @@ using namespace BlinKit;
 
 namespace blink {
 
-GCPassPtr<LinkImport> LinkImport::create(HTMLLinkElement* owner)
+PassOwnPtrWillBeRawPtr<LinkImport> LinkImport::create(HTMLLinkElement* owner)
 {
-    return WrapLeaked(new LinkImport(owner));
+    return adoptPtrWillBeNoop(new LinkImport(owner));
 }
 
 LinkImport::LinkImport(HTMLLinkElement* owner)

@@ -48,10 +48,10 @@ class DocumentStyleSheetCollector {
 public:
     friend class ImportedDocumentStyleSheetCollector;
 
-    DocumentStyleSheetCollector(std::vector<BlinKit::GCMember<StyleSheet>>& sheetsForList, std::vector<BlinKit::GCMember<CSSStyleSheet>>& activeList, std::unordered_set<Document *>&);
+    DocumentStyleSheetCollector(std::vector<GCRefPtr<StyleSheet>>& sheetsForList, std::vector<GCRefPtr<CSSStyleSheet>>& activeList, std::unordered_set<Document *>&);
     ~DocumentStyleSheetCollector();
 
-    void appendActiveStyleSheets(const std::vector<BlinKit::GCMember<CSSStyleSheet>>&);
+    void appendActiveStyleSheets(const std::vector<GCRefPtr<CSSStyleSheet>>&);
     void appendActiveStyleSheet(CSSStyleSheet*);
     void appendSheetForList(StyleSheet*);
 
@@ -59,8 +59,8 @@ public:
     void willVisit(Document* document) { m_visitedDocuments.emplace(document); }
 
 private:
-    std::vector<BlinKit::GCMember<StyleSheet>>& m_styleSheetsForStyleSheetList;
-    std::vector<BlinKit::GCMember<CSSStyleSheet>>& m_activeAuthorStyleSheets; // BKTODO: Check if necessary.
+    std::vector<GCRefPtr<StyleSheet>>& m_styleSheetsForStyleSheetList;
+    std::vector<GCRefPtr<CSSStyleSheet>>& m_activeAuthorStyleSheets; // BKTODO: Check if necessary.
     std::unordered_set<Document *>& m_visitedDocuments;
 };
 
@@ -73,7 +73,7 @@ private:
 
 class ImportedDocumentStyleSheetCollector final : public DocumentStyleSheetCollector {
 public:
-    ImportedDocumentStyleSheetCollector(DocumentStyleSheetCollector&, std::vector<BlinKit::GCMember<StyleSheet>>&);
+    ImportedDocumentStyleSheetCollector(DocumentStyleSheetCollector&, std::vector<GCRefPtr<StyleSheet>>&);
 };
 
 } // namespace blink

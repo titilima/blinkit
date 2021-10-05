@@ -124,5 +124,11 @@ void DocumentParser::removeClient(DocumentParserClient* client)
     m_clients.remove(client);
 }
 
+Document* DocumentParser::document(void) const
+{
+    ASSERT(m_document);
+    return m_document.get();
+}
+
 };
 

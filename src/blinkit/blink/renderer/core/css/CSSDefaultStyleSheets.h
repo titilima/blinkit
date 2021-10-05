@@ -34,6 +34,17 @@
 #ifndef CSSDefaultStyleSheets_h
 #define CSSDefaultStyleSheets_h
 
+ // -------------------------------------------------
+ // BlinKit - BlinKit Library
+ // -------------------------------------------------
+ //   File Name: CSSDefaultStyleSheets.h
+ // Description: CSSDefaultStyleSheets Class
+ //      Author: Ziming Li
+ //     Created: 2021-07-29
+ // -------------------------------------------------
+ // Copyright (C) 2021 MingYang Software Technology.
+ // -------------------------------------------------
+
 #include "platform/heap/Handle.h"
 #include "wtf/Allocator.h"
 
@@ -53,47 +64,20 @@ public:
 
     RuleSet* defaultStyle() { return m_defaultStyle.get(); }
     RuleSet* defaultQuirksStyle() { return m_defaultQuirksStyle.get(); }
-#if 0 // BKTODO:
-    RuleSet* defaultPrintStyle() { return m_defaultPrintStyle.get(); }
-    RuleSet* defaultViewSourceStyle();
-    RuleSet* defaultMobileViewportStyle();
 
-    // FIXME: Remove WAP support.
-    RuleSet* defaultXHTMLMobileProfileStyle();
-#endif
-
-    StyleSheetContents* defaultStyleSheet() { return m_defaultStyleSheet.get(); }
-    StyleSheetContents* quirksStyleSheet() { return m_quirksStyleSheet.get(); }
-#if 0 // BKTODO:
-    StyleSheetContents* svgStyleSheet() { return m_svgStyleSheet.get(); }
-    StyleSheetContents* mathmlStyleSheet() { return m_mathmlStyleSheet.get(); }
-    StyleSheetContents* mediaControlsStyleSheet() { return m_mediaControlsStyleSheet.get(); }
-    StyleSheetContents* fullscreenStyleSheet() { return m_fullscreenStyleSheet.get(); }
-#endif
+    StyleSheetContents* defaultStyleSheet(void);
+    StyleSheetContents* quirksStyleSheet(void);
 
     DECLARE_TRACE();
 
 private:
     CSSDefaultStyleSheets();
 
-    BlinKit::GCMember<RuleSet> m_defaultStyle;
-    // BKTODO: OwnPtrWillBeMember<RuleSet> m_defaultMobileViewportStyle;
-    BlinKit::GCMember<RuleSet> m_defaultQuirksStyle;
-#if 0 // BKTODO:
-    OwnPtrWillBeMember<RuleSet> m_defaultPrintStyle;
-    OwnPtrWillBeMember<RuleSet> m_defaultViewSourceStyle;
-    OwnPtrWillBeMember<RuleSet> m_defaultXHTMLMobileProfileStyle;
-#endif
+    GCRefPtr<RuleSet> m_defaultStyle;
+    GCRefPtr<RuleSet> m_defaultQuirksStyle;
 
-    BlinKit::GCMember<StyleSheetContents> m_defaultStyleSheet;
-    // BKTODO: RefPtrWillBeMember<StyleSheetContents> m_mobileViewportStyleSheet;
-    BlinKit::GCMember<StyleSheetContents> m_quirksStyleSheet;
-#if 0 // BKTODO:
-    RefPtrWillBeMember<StyleSheetContents> m_svgStyleSheet;
-    RefPtrWillBeMember<StyleSheetContents> m_mathmlStyleSheet;
-    RefPtrWillBeMember<StyleSheetContents> m_mediaControlsStyleSheet;
-    RefPtrWillBeMember<StyleSheetContents> m_fullscreenStyleSheet;
-#endif
+    GCRefPtr<StyleSheetContents> m_defaultStyleSheet;
+    GCRefPtr<StyleSheetContents> m_quirksStyleSheet;
 };
 
 } // namespace blink

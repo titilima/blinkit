@@ -91,7 +91,7 @@ class ListAttributeTargetObserver : public IdTargetObserver {
     USING_FAST_MALLOC_WILL_BE_REMOVED(ListAttributeTargetObserver);
 public:
     static PassOwnPtrWillBeRawPtr<ListAttributeTargetObserver> create(const AtomicString& id, HTMLInputElement*);
-    DECLARE_VIRTUAL_TRACE();
+    // BKTODO: DECLARE_VIRTUAL_TRACE();
     void idTargetChanged() override;
 
 private:
@@ -1663,7 +1663,7 @@ void HTMLInputElement::setListAttributeTargetObserver(PassOwnPtrWillBeRawPtr<Lis
 {
     if (m_listAttributeTargetObserver)
         m_listAttributeTargetObserver->unregister();
-    m_listAttributeTargetObserver = newObserver;
+    m_listAttributeTargetObserver.reset(newObserver);
 }
 
 void HTMLInputElement::resetListAttributeTargetObserver()
@@ -1850,11 +1850,13 @@ ListAttributeTargetObserver::ListAttributeTargetObserver(const AtomicString& id,
 {
 }
 
+#if 0 // BKTODO:
 DEFINE_TRACE(ListAttributeTargetObserver)
 {
     // BKTODO: visitor->trace(m_element);
     IdTargetObserver::trace(visitor);
 }
+#endif
 
 void ListAttributeTargetObserver::idTargetChanged()
 {

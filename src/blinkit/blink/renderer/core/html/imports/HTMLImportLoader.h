@@ -42,7 +42,6 @@
 #ifndef HTMLImportLoader_h
 #define HTMLImportLoader_h
 
-#include "blinkit/gc/gc_root.h"
 #include "core/dom/DocumentParserClient.h"
 #include "core/fetch/RawResource.h"
 #include "core/fetch/ResourceOwner.h"
@@ -143,7 +142,7 @@ private:
     WillBeHeapVector<RawPtrWillBeMember<HTMLImportChild>> m_imports;
     State m_state;
     RefPtrWillBeMember<Document> m_document;
-    BlinKit::GCUniqueRoot<DocumentWriter> m_writer;
+    GCUniquePtr<DocumentWriter> m_writer;
     // BKTODO: RefPtrWillBeMember<CustomElementSyncMicrotaskQueue> m_microtaskQueue;
 };
 

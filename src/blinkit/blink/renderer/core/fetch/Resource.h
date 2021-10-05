@@ -188,7 +188,7 @@ public:
     void setLoading(bool b) { m_loading = b; }
     virtual bool stillNeedsLoad() const { return false; }
 
-    ResourceLoader* loader() const { return m_loader.get(); }
+    ResourceLoader* loader() const;
 
     virtual bool isImage() const { return false; }
     bool shouldBlockLoadEvent() const;
@@ -379,7 +379,7 @@ protected:
     ResourceRequest m_resourceRequest;
     ResourceRequest m_revalidatingRequest;
     AtomicString m_accept;
-    BlinKit::GCMember<ResourceLoader> m_loader;
+    GCRefPtr<ResourceLoader> m_loader;
     ResourceLoaderOptions m_options;
 
     ResourceResponse m_response;

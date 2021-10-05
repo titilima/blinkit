@@ -77,7 +77,7 @@ public:
     const AtomicString& idForStyleResolution() const { return m_idForStyleResolution; }
     void setIdForStyleResolution(const AtomicString& newId) const { m_idForStyleResolution = newId; }
 
-    const StylePropertySet* inlineStyle() const { return m_inlineStyle.get(); }
+    const StylePropertySet* inlineStyle(void) const;
 
     const StylePropertySet* presentationAttributeStyle() const;
 
@@ -105,7 +105,7 @@ protected:
     mutable unsigned m_styleAttributeIsDirty : 1;
     mutable unsigned m_animatedSVGAttributesAreDirty : 1;
 
-    mutable BlinKit::GCMember<StylePropertySet> m_inlineStyle;
+    mutable GCRefPtr<StylePropertySet> m_inlineStyle;
     mutable SpaceSplitString m_classNames;
     mutable AtomicString m_idForStyleResolution;
 
@@ -137,7 +137,7 @@ private:
 // duplicate sets of attributes (ex. the same classes).
 class ShareableElementData final : public ElementData {
 public:
-    static GCPassPtr<ShareableElementData> createWithAttributes(const Vector<Attribute>&);
+    static PassRefPtrWillBeRawPtr<ShareableElementData> createWithAttributes(const Vector<Attribute>&);
 
     explicit ShareableElementData(const Vector<Attribute>&);
     explicit ShareableElementData(const UniqueElementData&);
@@ -174,8 +174,8 @@ DEFINE_ELEMENT_DATA_TYPE_CASTS(ShareableElementData, !data->isUnique(), !data.is
 // attribute will have the same inline style.
 class UniqueElementData final : public ElementData {
 public:
-    static GCPassPtr<UniqueElementData> create();
-    GCPassPtr<ShareableElementData> makeShareableCopy() const;
+    static PassRefPtrWillBeRawPtr<UniqueElementData> create();
+    PassRefPtrWillBeRawPtr<ShareableElementData> makeShareableCopy() const;
 
     MutableAttributeCollection attributes();
     AttributeCollection attributes() const;

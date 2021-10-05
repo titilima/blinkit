@@ -101,9 +101,9 @@ LocalDOMWindow::WindowFrameObserver::WindowFrameObserver(LocalDOMWindow& window,
 {
 }
 
-GCPassPtr<LocalDOMWindow::WindowFrameObserver> LocalDOMWindow::WindowFrameObserver::create(LocalDOMWindow& window, LocalFrame& frame)
+PassOwnPtrWillBeRawPtr<LocalDOMWindow::WindowFrameObserver> LocalDOMWindow::WindowFrameObserver::create(LocalDOMWindow& window, LocalFrame& frame)
 {
-    return WrapLeaked(new WindowFrameObserver(window, frame));
+    return adoptPtrWillBeNoop(new WindowFrameObserver(window, frame));
 }
 
 #if !ENABLE(OILPAN)

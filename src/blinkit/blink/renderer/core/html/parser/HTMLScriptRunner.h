@@ -38,7 +38,6 @@
 #define HTMLScriptRunner_h
 
 #include <deque>
-#include "blinkit/gc/gc_root.h"
 #include "core/dom/PendingScript.h"
 #include "core/fetch/ResourceClient.h"
 #include "platform/heap/Handle.h"
@@ -55,9 +54,9 @@ class HTMLScriptRunnerHost;
 class HTMLScriptRunner final : private ScriptResourceClient {
     WTF_MAKE_NONCOPYABLE(HTMLScriptRunner); USING_FAST_MALLOC_WILL_BE_REMOVED(HTMLScriptRunner);
 public:
-    static GCUniqueRoot<HTMLScriptRunner> create(Document* document, HTMLScriptRunnerHost* host)
+    static GCUniquePtr<HTMLScriptRunner> create(Document* document, HTMLScriptRunnerHost* host)
     {
-        return BlinKit::WrapUniqueRoot(new HTMLScriptRunner(document, host));
+        return BlinKit::GCWrapUnique(new HTMLScriptRunner(document, host));
     }
     ~HTMLScriptRunner();
 
@@ -97,7 +96,7 @@ private:
 
     void stopWatchingResourceForLoad(Resource*);
 
-    BlinKit::GCMember<Document> m_document;
+    GCRefPtr<Document> m_document;
     HTMLScriptRunnerHost *m_host;
     PendingScript m_parserBlockingScript;
     // http://www.whatwg.org/specs/web-apps/current-work/#list-of-scripts-that-will-execute-when-the-document-has-finished-parsing

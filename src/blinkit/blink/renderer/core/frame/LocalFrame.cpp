@@ -147,9 +147,9 @@ inline float parentTextZoomFactor(LocalFrame* frame)
 
 } // namespace
 
-GCUniqueRoot<LocalFrame> LocalFrame::create(FrameLoaderClient* client, FrameHost* host)
+GCUniquePtr<LocalFrame> LocalFrame::create(FrameLoaderClient* client, FrameHost* host)
 {
-    return WrapUniqueRoot(new LocalFrame(client, host));
+    return GCWrapUnique(new LocalFrame(client, host));
 }
 
 void LocalFrame::setView(PassRefPtrWillBeRawPtr<FrameView> view)
@@ -439,7 +439,7 @@ void LocalFrame::willDetachFrameHost()
         page()->scrollingCoordinator()->willDestroyScrollableArea(m_view.get());
 }
 
-void LocalFrame::setDOMWindow(GCUniqueRoot<LocalDOMWindow> &&domWindow)
+void LocalFrame::setDOMWindow(GCUniquePtr<LocalDOMWindow> &&domWindow)
 {
     // Oilpan: setDOMWindow() cannot be used when finalizing. Which
     // is acceptable as its actions are either not needed or handled

@@ -55,7 +55,7 @@ class CORE_EXPORT ElementShadow final {
     WTF_MAKE_NONCOPYABLE(ElementShadow);
     USING_FAST_MALLOC_WILL_BE_REMOVED(ElementShadow);
 public:
-    static GCUniqueRoot<ElementShadow> create();
+    static GCUniquePtr<ElementShadow> create();
     ~ElementShadow();
 
     Element* host() const;
@@ -132,7 +132,7 @@ private:
     // FIXME: Oilpan: add a heap-based version of DoublyLinkedList<>.
     DoublyLinkedList<ShadowRoot> m_shadowRoots;
 #else
-    BlinKit::GCPtr<ShadowRoot> m_oldestShadowRoot;
+    GCRefPtr<ShadowRoot> m_oldestShadowRoot;
     ShadowRoot *m_youngestShadowRoot = nullptr;
 #endif
     bool m_needsDistributionRecalc;

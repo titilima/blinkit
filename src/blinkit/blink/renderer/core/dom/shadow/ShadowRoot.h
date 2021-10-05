@@ -168,7 +168,7 @@ private:
     // FIXME: This shouldn't happen. https://bugs.webkit.org/show_bug.cgi?id=88834
     bool isOrphan() const { return !host(); }
 
-    BlinKit::GCPtr<ShadowRoot> m_younger;
+    GCRefPtr<ShadowRoot> m_younger;
     ShadowRoot *m_older = nullptr;
     OwnPtrWillBeMember<ShadowRootRareData> m_shadowRootRareData;
     unsigned m_numberOfStyles : 27;

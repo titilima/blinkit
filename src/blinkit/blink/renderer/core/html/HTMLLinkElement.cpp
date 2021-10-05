@@ -262,7 +262,7 @@ LinkResource* HTMLLinkElement::linkResourceToProcess()
         } else if (m_relAttribute.isManifest()) {
             ASSERT(false); // BKTODO: m_link = LinkManifest::create(this);
         } else {
-            GCMember<LinkStyle> link = LinkStyle::create(this);
+            GCRefPtr<LinkStyle> link = LinkStyle::create(this);
             if (fastHasAttribute(disabledAttr)) {
                 UseCounter::count(document(), UseCounter::HTMLLinkElementDisabled);
                 link->setDisabledState(true);
@@ -501,9 +501,9 @@ DEFINE_TRACE(HTMLLinkElement)
     DOMSettableTokenListObserver::trace(visitor);
 }
 
-GCPassPtr<LinkStyle> LinkStyle::create(HTMLLinkElement* owner)
+PassOwnPtrWillBeRawPtr<LinkStyle> LinkStyle::create(HTMLLinkElement* owner)
 {
-    return WrapLeaked(new LinkStyle(owner));
+    return adoptPtrWillBeNoop(new LinkStyle(owner));
 }
 
 LinkStyle::LinkStyle(HTMLLinkElement* owner)
@@ -582,12 +582,12 @@ void LinkStyle::setCSSStyleSheet(const String& href, const KURL& baseURL, const 
     }
     // BKTODO: Platform::current()->histogramEnumeration("Blink.RestoredCachedStyleSheet", false, 2);
 
-    GCMember<StyleSheetContents> styleSheet = StyleSheetContents::create(href, parserContext);
+    GCRefPtr<StyleSheetContents> styleSheet = StyleSheetContents::create(href, parserContext);
 
     if (m_sheet)
         clearSheet();
 
-    m_sheet = CSSStyleSheet::create(styleSheet, m_owner);
+    m_sheet = CSSStyleSheet::create(styleSheet.get(), m_owner);
     m_sheet->setMediaQueries(MediaQuerySet::create(m_owner->media()));
     m_sheet->setTitle(m_owner->title());
     setCrossOriginStylesheetStatus(m_sheet.get());
@@ -631,7 +631,7 @@ void LinkStyle::clearSheet()
 {
     ASSERT(m_sheet);
     ASSERT(m_sheet->ownerNode() == m_owner);
-    GCMember<CSSStyleSheet> sheet = m_sheet.release();
+    GCRefPtr<CSSStyleSheet> sheet(m_sheet.release());
     sheet->clearOwnerNode();
 }
 

@@ -827,7 +827,7 @@ private:
     ContainerNode *m_parentOrShadowHostNode = nullptr;
     TreeScope *m_treeScope;
     Node *m_previous = nullptr;
-    BlinKit::GCMember<Node> m_next;
+    GCRefPtr<Node> m_next;
     // When a node has rare data we move the layoutObject into the rare data.
     union DataUnion {
         DataUnion() : m_layoutObject(nullptr) { }

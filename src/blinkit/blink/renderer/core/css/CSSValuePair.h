@@ -93,8 +93,8 @@ private:
         ASSERT(m_second);
     }
 
-    BlinKit::GCMember<CSSValue> m_first;
-    BlinKit::GCMember<CSSValue> m_second;
+    GCRefPtr<CSSValue> m_first;
+    GCRefPtr<CSSValue> m_second;
     IdenticalValuesPolicy m_identicalValuesPolicy;
 };
 

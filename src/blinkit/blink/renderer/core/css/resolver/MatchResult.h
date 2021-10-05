@@ -52,7 +52,7 @@ public:
 
     DECLARE_TRACE();
 
-    BlinKit::GCMember<StylePropertySet> properties;
+    GCRefPtr<StylePropertySet> properties;
 
     union {
         struct {

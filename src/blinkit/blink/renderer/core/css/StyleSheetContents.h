@@ -59,17 +59,17 @@ class StyleRuleNamespace;
 
 class CORE_EXPORT StyleSheetContents : public BlinKit::GCObject {
 public:
-    static GCPassPtr<StyleSheetContents> create(const CSSParserContext& context)
+    static PassRefPtrWillBeRawPtr<StyleSheetContents> create(const CSSParserContext& context)
     {
-        return BlinKit::WrapLeaked(new StyleSheetContents(0, String(), context));
+        return adoptRefWillBeNoop(new StyleSheetContents(0, String(), context));
     }
-    static GCPassPtr<StyleSheetContents> create(const String& originalURL, const CSSParserContext& context)
+    static PassRefPtrWillBeRawPtr<StyleSheetContents> create(const String& originalURL, const CSSParserContext& context)
     {
-        return BlinKit::WrapLeaked(new StyleSheetContents(0, originalURL, context));
+        return adoptRefWillBeNoop(new StyleSheetContents(0, originalURL, context));
     }
-    static GCPassPtr<StyleSheetContents> create(StyleRuleImport* ownerRule, const String& originalURL, const CSSParserContext& context)
+    static PassRefPtrWillBeRawPtr<StyleSheetContents> create(StyleRuleImport* ownerRule, const String& originalURL, const CSSParserContext& context)
     {
-        return BlinKit::WrapLeaked(new StyleSheetContents(ownerRule, originalURL, context));
+        return adoptRefWillBeNoop(new StyleSheetContents(ownerRule, originalURL, context));
     }
 
     ~StyleSheetContents();
@@ -105,22 +105,22 @@ public:
 
     void setHasFontFaceRule(bool b) { m_hasFontFaceRule = b; }
     bool hasFontFaceRule() const { return m_hasFontFaceRule; }
-    void findFontFaceRules(std::vector<BlinKit::GCMember<const StyleRuleFontFace>>& fontFaceRules);
+    void findFontFaceRules(std::vector<const StyleRuleFontFace *> &fontFaceRules);
 
     void parserAddNamespace(const AtomicString& prefix, const AtomicString& uri);
-    void parserAppendRule(GCPassPtr<StyleRuleBase>);
+    void parserAppendRule(PassRefPtrWillBeRawPtr<StyleRuleBase>);
 
     void clearRules();
 
     // Rules other than @import.
-    const std::vector<BlinKit::GCMember<StyleRuleBase>>& childRules() const { return m_childRules; }
-    const std::vector<BlinKit::GCMember<StyleRuleImport>>& importRules() const { return m_importRules; }
-    const std::vector<BlinKit::GCMember<StyleRuleNamespace>>& namespaceRules() const { return m_namespaceRules; }
+    const std::vector<GCRefPtr<StyleRuleBase>>& childRules() const { return m_childRules; }
+    const std::vector<GCRefPtr<StyleRuleImport>>& importRules() const { return m_importRules; }
+    const std::vector<GCRefPtr<StyleRuleNamespace>>& namespaceRules() const { return m_namespaceRules; }
 
     void notifyLoadedSheet(const CSSStyleSheetResource*);
 
     StyleSheetContents* parentStyleSheet() const;
-    StyleRuleImport* ownerRule() const { return m_ownerRule.get(); }
+    StyleRuleImport* ownerRule(void) const;
     void clearOwnerRule(void);
 
     // Note that href is the URL that started the redirect chain that led to
@@ -134,7 +134,7 @@ public:
 
     unsigned estimatedSizeInBytes() const;
 
-    bool wrapperInsertRule(GCPassPtr<StyleRuleBase>, unsigned index);
+    bool wrapperInsertRule(PassRefPtrWillBeRawPtr<StyleRuleBase>, unsigned index);
     bool wrapperDeleteRule(unsigned index);
 
     PassRefPtrWillBeRawPtr<StyleSheetContents> copy() const
@@ -180,13 +180,13 @@ private:
 
     Document* clientSingleOwnerDocument() const;
 
-    BlinKit::GCMember<StyleRuleImport> m_ownerRule;
+    GCRefPtr<StyleRuleImport> m_ownerRule;
 
     String m_originalURL;
 
-    std::vector<BlinKit::GCMember<StyleRuleImport>> m_importRules;
-    std::vector<BlinKit::GCMember<StyleRuleNamespace>> m_namespaceRules;
-    std::vector<BlinKit::GCMember<StyleRuleBase>> m_childRules;
+    std::vector<GCRefPtr<StyleRuleImport>> m_importRules;
+    std::vector<GCRefPtr<StyleRuleNamespace>> m_namespaceRules;
+    std::vector<GCRefPtr<StyleRuleBase>> m_childRules;
     using PrefixNamespaceURIMap = std::unordered_map<AtomicString, AtomicString>;
     PrefixNamespaceURIMap m_namespaces;
     AtomicString m_defaultNamespace;
@@ -204,7 +204,7 @@ private:
     std::unordered_set<CSSStyleSheet *> m_loadingClients;
     std::unordered_set<CSSStyleSheet *> m_completedClients;
 
-    BlinKit::GCMember<RuleSet> m_ruleSet;
+    GCRefPtr<RuleSet> m_ruleSet;
     String m_sourceMapURL;
 };
 

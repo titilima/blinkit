@@ -110,12 +110,12 @@ void ScriptedAnimationController::cancelCallback(CallbackId id)
 
 void ScriptedAnimationController::dispatchEvents(const AtomicString& eventInterfaceFilter)
 {
-    std::vector<GCMember<Event>> events;
+    std::vector<GCRefPtr<Event>> events;
     if (eventInterfaceFilter.isEmpty()) {
         events.swap(m_eventQueue);
         m_perFrameEventHashes.clear();
     } else {
-        std::vector<GCMember<Event>> remaining;
+        std::vector<GCRefPtr<Event>> remaining;
         for (auto& event : m_eventQueue) {
             if (event && event->interfaceName() == eventInterfaceFilter) {
                 m_perFrameEventHashes.erase(eventTargetKey(event.get()));

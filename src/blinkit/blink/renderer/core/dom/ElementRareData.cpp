@@ -53,7 +53,7 @@ struct SameSizeAsElementRareData : NodeRareData {
     IntSize scrollOffset;
     void* pointers[12];
     PersistentWillBeMember<void*> persistentMember[2];
-    GCUniqueRoot<void> uniqueRoot;
+    GCUniquePtr<void> uniqueRoot;
 };
 
 CSSStyleDeclaration& ElementRareData::ensureInlineCSSStyleDeclaration(Element* ownerElement)

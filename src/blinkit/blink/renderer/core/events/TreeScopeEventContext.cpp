@@ -96,14 +96,14 @@ TouchEventContext* TreeScopeEventContext::ensureTouchEventContext()
 }
 #endif
 
-GCPassPtr<TreeScopeEventContext> TreeScopeEventContext::create(TreeScope& treeScope)
+PassRefPtrWillBeRawPtr<TreeScopeEventContext> TreeScopeEventContext::create(TreeScope& treeScope)
 {
-    return WrapLeaked(new TreeScopeEventContext(treeScope));
+    return adoptRefWillBeNoop(new TreeScopeEventContext(treeScope));
 }
 
 TreeScopeEventContext::TreeScopeEventContext(TreeScope& treeScope)
     : m_treeScope(treeScope)
-    , m_rootNode(treeScope.rootNode())
+    , m_rootNode(&(treeScope.rootNode()))
     , m_containingClosedShadowTree(nullptr)
     , m_preOrder(-1)
     , m_postOrder(-1)

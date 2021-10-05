@@ -72,7 +72,7 @@ public:
     enum LoadStatus { Unloaded, Loading, Loaded, Error };
 
     // BKTODO: static PassRefPtrWillBeRawPtr<FontFace> create(ExecutionContext*, const AtomicString& family, StringOrArrayBufferOrArrayBufferView&, const FontFaceDescriptors&);
-    static GCPassPtr<FontFace> create(Document*, const StyleRuleFontFace*);
+    static PassRefPtrWillBeRawPtr<FontFace> create(Document*, const StyleRuleFontFace*);
 
     ~FontFace();
 

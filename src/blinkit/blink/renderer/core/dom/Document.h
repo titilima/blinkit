@@ -295,10 +295,7 @@ public:
 
     // BKTODO: DOMImplementation& implementation();
 
-    Element* documentElement() const
-    {
-        return m_documentElement.get();
-    }
+    Element* documentElement(void) const;
 
     // Returns whether the Document has an AppCache manifest.
     bool hasAppCacheManifest() const;
@@ -407,7 +404,7 @@ public:
     // This is a DOM function.
     StyleSheetList* styleSheets();
 
-    StyleEngine& styleEngine() { ASSERT(m_styleEngine.get()); return *m_styleEngine.get(); }
+    StyleEngine& styleEngine(void);
 
     bool gotoAnchorNeededAfterStylesheetsLoad() { return m_gotoAnchorNeededAfterStylesheetsLoad; }
     void setGotoAnchorNeededAfterStylesheetsLoad(bool b) { m_gotoAnchorNeededAfterStylesheetsLoad = b; }
@@ -635,15 +632,15 @@ public:
 
     bool setFocusedElement(PassRefPtrWillBeRawPtr<Element>, const FocusParams&);
     void clearFocusedElement();
-    Element* focusedElement() const { return m_focusedElement.get(); }
+    Element* focusedElement(void) const;
     UserActionElementSet& userActionElements()  { return m_userActionElements; }
     const UserActionElementSet& userActionElements() const { return m_userActionElements; }
     void setNeedsFocusedElementCheck();
     void setAutofocusElement(Element*);
-    Element* autofocusElement() const { return m_autofocusElement.get(); }
+    Element* autofocusElement(void) const;
 
     void setActiveHoverElement(PassRefPtrWillBeRawPtr<Element>);
-    Element* activeHoverElement() const { return m_activeHoverElement.get(); }
+    Element* activeHoverElement(void) const;
 
     Node* hoverNode() const { return m_hoverNode.get(); }
 
@@ -655,7 +652,7 @@ public:
 
     // Updates for :target (CSS3 selector).
     void setCSSTarget(Element*);
-    Element* cssTarget() const { return m_cssTarget.get(); }
+    Element* cssTarget(void) const;
 
     void scheduleLayoutTreeUpdateIfNeeded();
     bool hasPendingForcedStyleRecalc() const;
@@ -744,7 +741,7 @@ public:
     String title() const { return m_title; }
     void setTitle(const String&);
 
-    Element* titleElement() const { return m_titleElement.get(); }
+    Element* titleElement(void) const;
     void setTitleElement(Element*);
     void removeTitle(Element* titleElement);
 

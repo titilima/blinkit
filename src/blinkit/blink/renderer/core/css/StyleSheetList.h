@@ -68,7 +68,7 @@ public:
 
 private:
     explicit StyleSheetList(TreeScope*);
-    const std::vector<BlinKit::GCMember<StyleSheet>>& styleSheets();
+    const std::vector<GCRefPtr<StyleSheet>>& styleSheets();
 
     RawPtrWillBeMember<TreeScope> m_treeScope;
 #if !ENABLE(OILPAN)

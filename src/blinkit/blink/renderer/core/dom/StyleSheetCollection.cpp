@@ -55,7 +55,7 @@ void StyleSheetCollection::swap(StyleSheetCollection& other)
     m_activeAuthorStyleSheets.swap(other.m_activeAuthorStyleSheets);
 }
 
-void StyleSheetCollection::swapSheetsForSheetList(std::vector<GCMember<StyleSheet>>& sheets)
+void StyleSheetCollection::swapSheetsForSheetList(std::vector<GCRefPtr<StyleSheet>>& sheets)
 {
     // Only called for collection of HTML Imports that never has active sheets.
     ASSERT(m_activeAuthorStyleSheets.empty());

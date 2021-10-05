@@ -54,7 +54,7 @@ bool CSSValueList::removeAll(CSSValue* val)
 {
     bool found = false;
     for (int index = m_values.size() - 1; index >= 0; --index) {
-        GCMember<CSSValue>& value = m_values.at(index);
+        GCRefPtr<CSSValue> &value = m_values.at(index);
         if (value && val && value->equals(*val)) {
             m_values.erase(m_values.begin() + index);
             found = true;
@@ -67,7 +67,7 @@ bool CSSValueList::removeAll(CSSValue* val)
 bool CSSValueList::hasValue(CSSValue* val) const
 {
     for (size_t index = 0; index < m_values.size(); index++) {
-        const GCMember<CSSValue>& value = m_values.at(index);
+        const GCRefPtr<CSSValue> &value = m_values.at(index);
         if (value && val && value->equals(*val))
             return true;
     }

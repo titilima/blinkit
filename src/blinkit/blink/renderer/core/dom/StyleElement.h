@@ -69,7 +69,7 @@ protected:
     ProcessingResult childrenChanged(Element*);
     ProcessingResult finishParsingChildren(Element*);
 
-    BlinKit::GCMember<CSSStyleSheet> m_sheet;
+    GCRefPtr<CSSStyleSheet> m_sheet;
 
 private:
     ProcessingResult createSheet(Element*, const String& text = String());

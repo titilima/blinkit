@@ -117,7 +117,7 @@ static bool checkPageSelectorComponents(const CSSSelector* selector, bool isLeft
     return true;
 }
 
-void PageRuleCollector::matchPageRulesForList(std::vector<StyleRulePage *>& matchedRules, const std::vector<GCMember<StyleRulePage>>& rules, bool isLeftPage, bool isFirstPage, const String& pageName)
+void PageRuleCollector::matchPageRulesForList(std::vector<StyleRulePage *>& matchedRules, const std::vector<GCRefPtr<StyleRulePage>>& rules, bool isLeftPage, bool isFirstPage, const String& pageName)
 {
     for (unsigned i = 0; i < rules.size(); ++i) {
         StyleRulePage* rule = rules[i].get();

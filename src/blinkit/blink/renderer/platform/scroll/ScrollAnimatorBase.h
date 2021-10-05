@@ -42,7 +42,6 @@
 #ifndef ScrollAnimatorBase_h
 #define ScrollAnimatorBase_h
 
-#include "blinkit/gc/gc_root.h"
 #include "platform/PlatformExport.h"
 #include "platform/PlatformWheelEvent.h"
 #include "platform/geometry/FloatPoint.h"
@@ -60,7 +59,7 @@ class WebCompositorAnimationTimeline;
 
 class PLATFORM_EXPORT ScrollAnimatorBase : public ScrollAnimatorCompositorCoordinator {
 public:
-    static GCUniqueRoot<ScrollAnimatorBase> create(ScrollableArea*);
+    static GCUniquePtr<ScrollAnimatorBase> create(ScrollableArea*);
 
     virtual ~ScrollAnimatorBase();
 

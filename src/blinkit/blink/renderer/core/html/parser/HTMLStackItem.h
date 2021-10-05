@@ -59,15 +59,15 @@ public:
     };
 
     // Used by document fragment node and context element.
-    static GCPassPtr<HTMLStackItem> create(PassRefPtrWillBeRawPtr<ContainerNode> node, ItemType type)
+    static PassRefPtrWillBeRawPtr<HTMLStackItem> create(PassRefPtrWillBeRawPtr<ContainerNode> node, ItemType type)
     {
-        return BlinKit::WrapLeaked(new HTMLStackItem(node, type));
+        return adoptRefWillBeNoop(new HTMLStackItem(node, type));
     }
 
     // Used by HTMLElementStack and HTMLFormattingElementList.
-    static GCPassPtr<HTMLStackItem> create(PassRefPtrWillBeRawPtr<ContainerNode> node, AtomicHTMLToken* token, const AtomicString& namespaceURI = HTMLNames::xhtmlNamespaceURI)
+    static PassRefPtrWillBeRawPtr<HTMLStackItem> create(PassRefPtrWillBeRawPtr<ContainerNode> node, AtomicHTMLToken* token, const AtomicString& namespaceURI = HTMLNames::xhtmlNamespaceURI)
     {
-        return BlinKit::WrapLeaked(new HTMLStackItem(node, token, namespaceURI));
+        return adoptRefWillBeNoop(new HTMLStackItem(node, token, namespaceURI));
     }
 
     Element* element() const { return toElement(m_node.get()); }
@@ -249,7 +249,7 @@ private:
     {
     }
 
-    BlinKit::GCMember<ContainerNode> m_node;
+    GCRefPtr<ContainerNode> m_node;
 
     AtomicString m_tokenLocalName;
     Vector<Attribute> m_tokenAttributes;

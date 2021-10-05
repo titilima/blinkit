@@ -209,6 +209,11 @@ void CSSSegmentedFontFace::match(const String& text, WillBeHeapVector<RefPtrWill
     }
 }
 
+CSSFontSelector* CSSSegmentedFontFace::fontSelector(void) const
+{
+    return m_fontSelector.get();
+}
+
 DEFINE_TRACE(CSSSegmentedFontFace)
 {
 #if ENABLE(OILPAN)

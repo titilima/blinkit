@@ -42,7 +42,6 @@
 #ifndef VisualViewport_h
 #define VisualViewport_h
 
-#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 #include "platform/geometry/FloatPoint.h"
 #include "platform/geometry/FloatRect.h"
@@ -77,9 +76,9 @@ class CORE_EXPORT VisualViewport final : public GraphicsLayerClient
 {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(VisualViewport);
 public:
-    static GCUniqueRoot<VisualViewport> create(FrameHost& host)
+    static GCUniquePtr<VisualViewport> create(FrameHost& host)
     {
-        return BlinKit::WrapUniqueRoot(new VisualViewport(host));
+        return BlinKit::GCWrapUnique(new VisualViewport(host));
     }
     ~VisualViewport() override;
 

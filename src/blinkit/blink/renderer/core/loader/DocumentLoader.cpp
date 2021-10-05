@@ -274,7 +274,7 @@ void DocumentLoader::mainReceivedError(const ResourceError& error)
 // but not loads initiated by child frames' data sources -- that's the WebFrame's job.
 void DocumentLoader::stopLoading()
 {
-    RefPtrWillBeRawPtr<LocalFrame> protectFrame(m_frame.get());
+    RefPtrWillBeRawPtr<LocalFrame> protectFrame(m_frame);
     RefPtrWillBeRawPtr<DocumentLoader> protectLoader(this);
 
     if (isLoading())
@@ -691,7 +691,7 @@ void DocumentLoader::dataReceived(Resource* resource, const char* data, size_t l
 
     // Both unloading the old page and parsing the new page may execute JavaScript which destroys the datasource
     // by starting a new load, so retain temporarily.
-    RefPtrWillBeRawPtr<LocalFrame> protectFrame(m_frame.get());
+    RefPtrWillBeRawPtr<LocalFrame> protectFrame(m_frame);
     RefPtrWillBeRawPtr<DocumentLoader> protectLoader(this);
 
     TemporaryChange<bool> reentrancyProtector(m_inDataReceived, true);
@@ -748,7 +748,7 @@ bool DocumentLoader::loadingMultipartContent() const
 void DocumentLoader::detachFromFrame()
 {
     ASSERT(m_frame);
-    RefPtrWillBeRawPtr<LocalFrame> protectFrame(m_frame.get());
+    RefPtrWillBeRawPtr<LocalFrame> protectFrame(m_frame);
     RefPtrWillBeRawPtr<DocumentLoader> protectLoader(this);
 
     // It never makes sense to have a document loader that is detached from its
@@ -970,7 +970,7 @@ void DocumentLoader::endWriting(DocumentWriter* writer)
     m_writer.reset();
 }
 
-GCUniqueRoot<DocumentWriter> DocumentLoader::createWriterFor(const Document* ownerDocument, const DocumentInit& init, const AtomicString& mimeType, const AtomicString& encoding, bool dispatch, ParserSynchronizationPolicy parsingPolicy)
+GCUniquePtr<DocumentWriter> DocumentLoader::createWriterFor(const Document* ownerDocument, const DocumentInit& init, const AtomicString& mimeType, const AtomicString& encoding, bool dispatch, ParserSynchronizationPolicy parsingPolicy)
 {
     LocalFrame* frame = init.frame();
 
@@ -1005,6 +1005,11 @@ void DocumentLoader::replaceDocumentWhileExecutingJavaScriptURL(const DocumentIn
     if (!source.isNull())
         m_writer->appendReplacingData(source);
     endWriting(m_writer.get());
+}
+
+ResourceFetcher* DocumentLoader::fetcher(void) const
+{
+    return m_fetcher.get();
 }
 
 // BKTODO: DEFINE_WEAK_IDENTIFIER_MAP(DocumentLoader);

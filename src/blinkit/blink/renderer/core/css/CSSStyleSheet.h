@@ -59,15 +59,15 @@ enum StyleSheetUpdateType {
 class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
     DEFINE_WRAPPERTYPEINFO();
 public:
-    static GCPassPtr<CSSStyleSheet> create(GCPassPtr<StyleSheetContents>, CSSImportRule* ownerRule = 0);
-    static GCPassPtr<CSSStyleSheet> create(GCPassPtr<StyleSheetContents>, Node* ownerNode);
-    static GCPassPtr<CSSStyleSheet> createInline(Node*, const KURL&, const TextPosition& startPosition = TextPosition::minimumPosition(), const String& encoding = String());
-    static GCPassPtr<CSSStyleSheet> createInline(GCPassPtr<StyleSheetContents>, Node* ownerNode, const TextPosition& startPosition = TextPosition::minimumPosition());
+    static PassRefPtrWillBeRawPtr<CSSStyleSheet> create(PassRefPtrWillBeRawPtr<StyleSheetContents>, CSSImportRule* ownerRule = 0);
+    static PassRefPtrWillBeRawPtr<CSSStyleSheet> create(PassRefPtrWillBeRawPtr<StyleSheetContents>, Node* ownerNode);
+    static PassRefPtrWillBeRawPtr<CSSStyleSheet> createInline(Node*, const KURL&, const TextPosition& startPosition = TextPosition::minimumPosition(), const String& encoding = String());
+    static PassRefPtrWillBeRawPtr<CSSStyleSheet> createInline(PassRefPtrWillBeRawPtr<StyleSheetContents>, Node* ownerNode, const TextPosition& startPosition = TextPosition::minimumPosition());
 
     ~CSSStyleSheet() override;
 
     CSSStyleSheet* parentStyleSheet() const override;
-    Node* ownerNode() const override { return m_ownerNode.get(); }
+    Node* ownerNode(void) const override;
     MediaList* media() const override;
     String href() const override;
     String title() const override { return m_title; }
@@ -123,7 +123,7 @@ public:
 
     void clearChildRuleCSSOMWrappers();
 
-    StyleSheetContents* contents() const { return m_contents.get(); }
+    StyleSheetContents* contents(void) const;
 
     bool isInline() const { return m_isInlineStylesheet; }
     TextPosition startPositionInSource() const { return m_startPosition; }
@@ -135,8 +135,8 @@ public:
     DECLARE_VIRTUAL_TRACE();
 
 private:
-    CSSStyleSheet(GCPassPtr<StyleSheetContents>&&, CSSImportRule* ownerRule);
-    CSSStyleSheet(GCPassPtr<StyleSheetContents>&&, Node* ownerNode, bool isInlineStylesheet, const TextPosition& startPosition);
+    CSSStyleSheet(PassRefPtrWillBeRawPtr<StyleSheetContents>, CSSImportRule* ownerRule);
+    CSSStyleSheet(PassRefPtrWillBeRawPtr<StyleSheetContents>, Node* ownerNode, bool isInlineStylesheet, const TextPosition& startPosition);
 
     bool isCSSStyleSheet() const override { return true; }
     String type() const override { return "text/css"; }
@@ -147,7 +147,7 @@ private:
 
     void setLoadCompleted(bool);
 
-    BlinKit::GCMember<StyleSheetContents> m_contents;
+    GCRefPtr<StyleSheetContents> m_contents;
     bool m_isInlineStylesheet;
     bool m_isDisabled;
     String m_title;
@@ -155,7 +155,7 @@ private:
 
     // BKTODO: RefPtr<SecurityOrigin> m_allowRuleAccessFromOrigin;
 
-    BlinKit::GCMember<Node> m_ownerNode;
+    GCRefPtr<Node> m_ownerNode;
     RawPtrWillBeMember<CSSRule> m_ownerRule;
 
     TextPosition m_startPosition;

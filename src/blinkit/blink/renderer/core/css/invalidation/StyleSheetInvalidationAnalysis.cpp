@@ -50,7 +50,7 @@ using namespace BlinKit;
 
 namespace blink {
 
-StyleSheetInvalidationAnalysis::StyleSheetInvalidationAnalysis(const TreeScope& treeScope, const std::vector<GCMember<StyleSheetContents>>& sheets)
+StyleSheetInvalidationAnalysis::StyleSheetInvalidationAnalysis(const TreeScope& treeScope, const std::vector<GCRefPtr<StyleSheetContents>>& sheets)
     : m_treeScope(&treeScope)
 {
     for (unsigned i = 0; i < sheets.size() && !m_dirtiesAllStyle; ++i)
@@ -124,7 +124,7 @@ void StyleSheetInvalidationAnalysis::analyzeStyleSheet(StyleSheetContents* style
 
     // See if all rules on the sheet are scoped to some specific ids or classes.
     // Then test if we actually have any of those in the tree at the moment.
-    const std::vector<GCMember<StyleRuleImport>> &importRules = styleSheetContents->importRules();
+    const std::vector<GCRefPtr<StyleRuleImport>> &importRules = styleSheetContents->importRules();
     for (unsigned i = 0; i < importRules.size(); ++i) {
         if (!importRules[i]->styleSheet())
             continue;
@@ -136,7 +136,7 @@ void StyleSheetInvalidationAnalysis::analyzeStyleSheet(StyleSheetContents* style
     if (m_treeScope->rootNode().isShadowRoot())
         return;
 
-    const std::vector<GCMember<StyleRuleBase>> &rules = styleSheetContents->childRules();
+    const std::vector<GCRefPtr<StyleRuleBase>> &rules = styleSheetContents->childRules();
     for (unsigned i = 0; i < rules.size(); i++) {
         StyleRuleBase* rule = rules[i].get();
         if (!rule->isStyleRule()) {

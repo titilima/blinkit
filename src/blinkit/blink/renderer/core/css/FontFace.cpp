@@ -119,7 +119,7 @@ PassRefPtrWillBeRawPtr<FontFace> FontFace::create(ExecutionContext* context, con
 }
 #endif
 
-GCPassPtr<FontFace> FontFace::create(Document* document, const StyleRuleFontFace* fontFaceRule)
+PassRefPtrWillBeRawPtr<FontFace> FontFace::create(Document* document, const StyleRuleFontFace* fontFaceRule)
 {
     const StylePropertySet& properties = fontFaceRule->properties();
 
@@ -131,7 +131,7 @@ GCPassPtr<FontFace> FontFace::create(Document* document, const StyleRuleFontFace
     if (!src || !src->isValueList())
         return nullptr;
 
-    GCMember<FontFace> fontFace = WrapLeaked(new FontFace(document));
+    GCRefPtr<FontFace> fontFace(new FontFace(document));
 
     if (fontFace->setFamilyValue(*family)
         && fontFace->setPropertyFromStyle(properties, CSSPropertyFontStyle)

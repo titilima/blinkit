@@ -37,7 +37,6 @@
 #ifndef HTMLDocumentParser_h
 #define HTMLDocumentParser_h
 
-#include "blinkit/gc/gc_root.h"
 #include "core/dom/ParserContentPolicy.h"
 #include "core/dom/ScriptableDocumentParser.h"
 #include "core/fetch/ResourceClient.h"
@@ -84,9 +83,9 @@ class HTMLDocumentParser :  public ScriptableDocumentParser, private HTMLScriptR
     USING_FAST_MALLOC_WILL_BE_REMOVED(HTMLDocumentParser);
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(HTMLDocumentParser);
 public:
-    static GCPassPtr<HTMLDocumentParser> create(HTMLDocument& document, bool reportErrors, ParserSynchronizationPolicy backgroundParsingPolicy)
+    static PassRefPtrWillBeRawPtr<HTMLDocumentParser> create(HTMLDocument& document, bool reportErrors, ParserSynchronizationPolicy backgroundParsingPolicy)
     {
-        return BlinKit::WrapLeaked(new HTMLDocumentParser(document, reportErrors, backgroundParsingPolicy));
+        return adoptRefWillBeNoop(new HTMLDocumentParser(document, reportErrors, backgroundParsingPolicy));
     }
     ~HTMLDocumentParser() override;
     DECLARE_VIRTUAL_TRACE();
@@ -197,12 +196,12 @@ private:
 
     OwnPtr<HTMLToken> m_token;
     OwnPtr<HTMLTokenizer> m_tokenizer;
-    BlinKit::GCUniqueRoot<HTMLScriptRunner> m_scriptRunner;
-    BlinKit::GCUniqueRoot<HTMLTreeBuilder> m_treeBuilder;
+    GCUniquePtr<HTMLScriptRunner> m_scriptRunner;
+    GCUniquePtr<HTMLTreeBuilder> m_treeBuilder;
     OwnPtr<HTMLPreloadScanner> m_preloadScanner;
     OwnPtr<HTMLPreloadScanner> m_insertionPreloadScanner;
     std::shared_ptr<WebTaskRunner> m_loadingTaskRunner;
-    BlinKit::GCUniqueRoot<HTMLParserScheduler> m_parserScheduler; // BKTODO: Check if necessary in the single thread mode.
+    GCUniquePtr<HTMLParserScheduler> m_parserScheduler; // BKTODO: Check if necessary in the single thread mode.
     HTMLSourceTracker m_sourceTracker;
     TextPosition m_textPosition;
 #if 0 // BKTODO:

@@ -239,9 +239,9 @@ void ProcessingInstruction::setCSSStyleSheet(const String& href, const KURL& bas
     ASSERT(m_isCSS);
     CSSParserContext parserContext(document(), baseURL, charset);
 
-    GCMember<StyleSheetContents> newSheet = StyleSheetContents::create(href, parserContext);
+    GCRefPtr<StyleSheetContents> newSheet = StyleSheetContents::create(href, parserContext);
 
-    GCMember<CSSStyleSheet> cssSheet = CSSStyleSheet::create(newSheet.release(), this);
+    GCRefPtr<CSSStyleSheet> cssSheet = CSSStyleSheet::create(newSheet.release(), this);
     cssSheet->setDisabled(m_alternate);
     cssSheet->setTitle(m_title);
     ASSERT(false); // BKTODO: cssSheet->setMediaQueries(MediaQuerySet::create(m_media));
@@ -322,7 +322,7 @@ void ProcessingInstruction::removedFrom(ContainerNode* insertionPoint)
         document().styleEngine().removeStyleSheetCandidateNode(this);
 #endif
 
-    GCMember<StyleSheet> removedSheet = m_sheet;
+    GCRefPtr<StyleSheet> removedSheet = m_sheet;
     if (m_sheet) {
         ASSERT(m_sheet->ownerNode() == this);
         clearSheet();
@@ -341,8 +341,13 @@ void ProcessingInstruction::clearSheet()
     ASSERT(m_sheet);
     if (m_sheet->isLoading())
         document().styleEngine().removePendingSheet(this);
-    GCMember<StyleSheet> releasedSheet = m_sheet.release();
+    GCRefPtr<StyleSheet> releasedSheet(m_sheet.release());
     releasedSheet->clearOwnerNode();
+}
+
+StyleSheet* ProcessingInstruction::sheet(void) const
+{
+    return m_sheet.get();
 }
 
 DEFINE_TRACE(ProcessingInstruction)

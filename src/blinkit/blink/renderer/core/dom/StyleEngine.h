@@ -39,7 +39,6 @@
 #ifndef StyleEngine_h
 #define StyleEngine_h
 
-#include "blinkit/gc/gc_root.h"
 #include "core/CoreExport.h"
 #include "core/css/CSSFontSelectorClient.h"
 #include "core/css/invalidation/StyleInvalidator.h"
@@ -66,7 +65,7 @@ class StyleRuleFontFace;
 class StyleSheet;
 class StyleSheetContents;
 
-class CORE_EXPORT StyleEngine final : public BlinKit::GCObject
+class CORE_EXPORT StyleEngine final : public BlinKit::GCObject // BKTODO: GCObject may be unnecessary.
                                     , public BlinKit::GCStubImpl<StyleEngine, CSSFontSelectorClient>
 {
     USING_FAST_MALLOC_WILL_BE_REMOVED(StyleEngine);
@@ -84,7 +83,7 @@ public:
 
     friend class IgnoringPendingStylesheet;
 
-    static GCPassPtr<StyleEngine> create(Document& document) { return BlinKit::WrapLeaked(new StyleEngine(document)); }
+    static PassOwnPtrWillBeRawPtr<StyleEngine> create(Document& document) { return adoptPtrWillBeNoop(new StyleEngine(document)); }
 
     ~StyleEngine();
 
@@ -92,9 +91,9 @@ public:
     void detachFromDocument();
 #endif
 
-    const std::vector<BlinKit::GCMember<StyleSheet>>& styleSheetsForStyleSheetList(TreeScope&);
+    const std::vector<GCRefPtr<StyleSheet>>& styleSheetsForStyleSheetList(TreeScope&);
 
-    const std::vector<BlinKit::GCMember<CSSStyleSheet>>& injectedAuthorStyleSheets() const { return m_injectedAuthorStyleSheets; }
+    const std::vector<GCRefPtr<CSSStyleSheet>>& injectedAuthorStyleSheets() const { return m_injectedAuthorStyleSheets; }
 
     // BKTODO: const WillBeHeapVector<RefPtrWillBeMember<CSSStyleSheet>> activeStyleSheetsForInspector() const;
 
@@ -164,10 +163,10 @@ public:
 
     StyleInvalidator& styleInvalidator() { return m_styleInvalidator; }
 
-    CSSFontSelector* fontSelector() { return m_fontSelector.get(); }
+    CSSFontSelector* fontSelector(void);
     void setFontSelector(PassRefPtrWillBeRawPtr<CSSFontSelector>);
 
-    void removeFontFaceRules(const std::vector<BlinKit::GCMember<const StyleRuleFontFace>>&);
+    void removeFontFaceRules(const std::vector<const StyleRuleFontFace *>&);
     void clearFontCache();
     // updateGenericFontFamilySettings is used from WebSettingsImpl.
     void updateGenericFontFamilySettings();
@@ -179,7 +178,7 @@ public:
 
     void markDocumentDirty();
 
-    GCPassPtr<CSSStyleSheet> createSheet(Element*, const String& text, TextPosition startPosition);
+    PassRefPtrWillBeRawPtr<CSSStyleSheet> createSheet(Element*, const String& text, TextPosition startPosition);
     void removeSheet(StyleSheetContents*);
 
     void collectScopedStyleFeaturesTo(RuleFeatureSet&) const;
@@ -210,7 +209,7 @@ private:
 
     bool isMaster() const { return m_isMaster; }
     Document* master();
-    Document& document() const { return *m_document; }
+    Document& document() const { return m_document; }
 
     typedef WillBeHeapHashSet<RawPtrWillBeMember<TreeScope>> UnorderedTreeScopeSet;
 
@@ -218,7 +217,7 @@ private:
 
     void createResolver();
 
-    static GCPassPtr<CSSStyleSheet> parseSheet(Element*, const String& text, TextPosition startPosition);
+    static PassRefPtrWillBeRawPtr<CSSStyleSheet> parseSheet(Element*, const String& text, TextPosition startPosition);
 
     const DocumentStyleSheetCollection* documentStyleSheetCollection() const
     {
@@ -234,7 +233,7 @@ private:
 
     bool shouldSkipInvalidationFor(const Element&) const;
 
-    BlinKit::GCMember<Document> m_document;
+    Document &m_document;
     bool m_isMaster;
 
     // Track the number of currently loading top-level stylesheets needed for layout.
@@ -243,9 +242,9 @@ private:
     // elements and when it is safe to execute scripts.
     int m_pendingStylesheets;
 
-    std::vector<BlinKit::GCMember<CSSStyleSheet>> m_injectedAuthorStyleSheets; // BKTODO: Check if necessary.
+    std::vector<GCRefPtr<CSSStyleSheet>> m_injectedAuthorStyleSheets; // BKTODO: Check if necessary.
 
-    BlinKit::GCUniqueRoot<DocumentStyleSheetCollection> m_documentStyleSheetCollection;
+    GCUniquePtr<DocumentStyleSheetCollection> m_documentStyleSheetCollection;
 
     using StyleSheetCollectionMap = std::unordered_map<WeakMember<TreeScope>, Member<ShadowTreeStyleSheetCollection>>;
     StyleSheetCollectionMap m_styleSheetCollectionMap;
@@ -265,12 +264,12 @@ private:
 
     bool m_ignorePendingStylesheets;
     bool m_didCalculateResolver;
-    BlinKit::GCUniqueRoot<StyleResolver> m_resolver;
+    GCUniquePtr<StyleResolver> m_resolver;
     StyleInvalidator m_styleInvalidator;
 
-    BlinKit::GCMember<CSSFontSelector> m_fontSelector;
+    GCRefPtr<CSSFontSelector> m_fontSelector;
 
-    std::unordered_map<AtomicString, BlinKit::GCMember<StyleSheetContents>> m_textToSheetCache;
+    std::unordered_map<AtomicString, GCRefPtr<StyleSheetContents>> m_textToSheetCache;
     std::unordered_map<StyleSheetContents *, AtomicString> m_sheetToTextCache;
 };
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FormAssociatedElement.h
+// Description: FormAssociatedElement Class
+//      Author: Ziming Li
+//     Created: 2021-10-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -125,7 +136,7 @@ private:
     void setFormAttributeTargetObserver(PassOwnPtrWillBeRawPtr<FormAttributeTargetObserver>);
     void resetFormAttributeTargetObserver();
 
-    OwnPtrWillBeMember<FormAttributeTargetObserver> m_formAttributeTargetObserver;
+    std::unique_ptr<FormAttributeTargetObserver> m_formAttributeTargetObserver;
     WeakPtrWillBeMember<HTMLFormElement> m_form;
     OwnPtrWillBeMember<ValidityState> m_validityState;
     String m_customValidationMessage;

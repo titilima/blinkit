@@ -57,11 +57,11 @@ inline bool hasSameAttributes(const Vector<Attribute>& attributes, ShareableElem
     return !memcmp(attributes.data(), elementData.m_attributeArray, attributes.size() * sizeof(Attribute));
 }
 
-GCPassPtr<ShareableElementData> ElementDataCache::cachedShareableElementDataWithAttributes(const Vector<Attribute>& attributes)
+PassRefPtrWillBeRawPtr<ShareableElementData> ElementDataCache::cachedShareableElementDataWithAttributes(const Vector<Attribute>& attributes)
 {
     ASSERT(!attributes.isEmpty());
 
-    GCMember<ShareableElementData> &data = m_shareableElementDataCache[attributeHash(attributes)];
+    GCRefPtr<ShareableElementData> &data = m_shareableElementDataCache[attributeHash(attributes)];
 
     // FIXME: This prevents sharing when there's a hash collision.
     if (data && !hasSameAttributes(attributes, *data))

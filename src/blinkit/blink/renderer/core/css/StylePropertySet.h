@@ -177,7 +177,7 @@ public:
 
     unsigned propertyCount() const { return m_arraySize; }
 
-    const BlinKit::GCPtr<CSSValue>* valueArray() const;
+    const GCRefPtr<CSSValue>* valueArray() const;
     const StylePropertyMetadata* metadataArray() const;
 
     template<typename T> // CSSPropertyID or AtomicString
@@ -195,9 +195,9 @@ public:
 private:
     ImmutableStylePropertySet(const CSSProperty*, unsigned count, CSSParserMode);
 
-    BlinKit::GCPtr<CSSValue>* mutableValueArray(void)
+    GCRefPtr<CSSValue>* mutableValueArray(void)
     {
-        return reinterpret_cast<BlinKit::GCPtr<CSSValue> *>(&(this->m_storage));
+        return reinterpret_cast<GCRefPtr<CSSValue> *>(&(this->m_storage));
     }
     StylePropertyMetadata* mutableMetadataArray(void)
     {
@@ -205,7 +205,7 @@ private:
     }
 };
 
-inline const BlinKit::GCPtr<CSSValue>* ImmutableStylePropertySet::valueArray() const
+inline const GCRefPtr<CSSValue>* ImmutableStylePropertySet::valueArray() const
 {
     return const_cast<ImmutableStylePropertySet *>(this)->mutableValueArray();
 }

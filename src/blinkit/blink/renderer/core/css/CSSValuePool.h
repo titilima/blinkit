@@ -75,29 +75,29 @@ public:
 private:
     CSSValuePool();
 
-    BlinKit::GCMember<CSSInheritedValue> m_inheritedValue;
-    BlinKit::GCMember<CSSInitialValue> m_implicitInitialValue;
-    BlinKit::GCMember<CSSInitialValue> m_explicitInitialValue;
-    BlinKit::GCMember<CSSUnsetValue> m_unsetValue;
+    GCRefPtr<CSSInheritedValue> m_inheritedValue;
+    GCRefPtr<CSSInitialValue> m_implicitInitialValue;
+    GCRefPtr<CSSInitialValue> m_explicitInitialValue;
+    GCRefPtr<CSSUnsetValue> m_unsetValue;
 
-    std::vector<BlinKit::GCMember<CSSPrimitiveValue>> m_identifierValueCache;
+    std::vector<GCRefPtr<CSSPrimitiveValue>> m_identifierValueCache;
 
-    using ColorValueCache = std::unordered_map<unsigned, BlinKit::GCMember<CSSColorValue>>;
+    using ColorValueCache = std::unordered_map<unsigned, GCRefPtr<CSSColorValue>>;
     ColorValueCache m_colorValueCache;
-    BlinKit::GCMember<CSSColorValue> m_colorTransparent;
-    BlinKit::GCMember<CSSColorValue> m_colorWhite;
-    BlinKit::GCMember<CSSColorValue> m_colorBlack;
+    GCRefPtr<CSSColorValue> m_colorTransparent;
+    GCRefPtr<CSSColorValue> m_colorWhite;
+    GCRefPtr<CSSColorValue> m_colorBlack;
 
     static const int maximumCacheableIntegerValue = 255;
 
-    std::vector<BlinKit::GCMember<CSSPrimitiveValue>> m_pixelValueCache;
-    std::vector<BlinKit::GCMember<CSSPrimitiveValue>> m_percentValueCache;
-    std::vector<BlinKit::GCMember<CSSPrimitiveValue>> m_numberValueCache;
+    std::vector<GCRefPtr<CSSPrimitiveValue>> m_pixelValueCache;
+    std::vector<GCRefPtr<CSSPrimitiveValue>> m_percentValueCache;
+    std::vector<GCRefPtr<CSSPrimitiveValue>> m_numberValueCache;
 
     using FontFaceValueCache = WillBeHeapHashMap<AtomicString, RefPtrWillBeMember<CSSValueList>>;
     FontFaceValueCache m_fontFaceValueCache;
 
-    using FontFamilyValueCache = std::unordered_map<String, BlinKit::GCMember<CSSCustomIdentValue>>;
+    using FontFamilyValueCache = std::unordered_map<String, GCRefPtr<CSSCustomIdentValue>>;
     FontFamilyValueCache m_fontFamilyValueCache;
 
     friend CORE_EXPORT CSSValuePool& cssValuePool();

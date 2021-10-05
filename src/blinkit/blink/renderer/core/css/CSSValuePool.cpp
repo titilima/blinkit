@@ -96,7 +96,7 @@ PassRefPtrWillBeRawPtr<CSSColorValue> CSSValuePool::createColorValue(RGBA32 rgbV
     if (m_colorValueCache.size() > maximumColorCacheSize)
         m_colorValueCache.clear();
 
-    GCMember<CSSColorValue> &value = m_colorValueCache[rgbValue];
+    GCRefPtr<CSSColorValue> &value = m_colorValueCache[rgbValue];
     if (!value)
         value = CSSColorValue::create(rgbValue);
     return value.get();
@@ -140,7 +140,7 @@ PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSValuePool::createValue(const Length
 
 PassRefPtrWillBeRawPtr<CSSCustomIdentValue> CSSValuePool::createFontFamilyValue(const String& familyName)
 {
-    GCMember<CSSCustomIdentValue> &value = m_fontFamilyValueCache[familyName];
+    GCRefPtr<CSSCustomIdentValue> &value = m_fontFamilyValueCache[familyName];
     if (!value)
         value = CSSCustomIdentValue::create(familyName);
     return value.get();

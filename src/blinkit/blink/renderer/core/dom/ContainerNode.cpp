@@ -268,7 +268,7 @@ void ContainerNode::insertBeforeCommon(Node& nextChild, Node& newChild)
     ASSERT(!newChild.isShadowRoot());
 
     Node* prev = nextChild.previousSibling();
-    ASSERT(m_lastChild.get() != prev);
+    ASSERT(m_lastChild != prev);
     nextChild.setPreviousSibling(&newChild);
     if (prev) {
         ASSERT(firstChild() != nextChild);
@@ -288,7 +288,7 @@ void ContainerNode::appendChildCommon(Node& child)
     child.setParentOrShadowHostNode(this);
 
     if (m_lastChild) {
-        child.setPreviousSibling(m_lastChild.get());
+        child.setPreviousSibling(m_lastChild);
         m_lastChild->setNextSibling(&child);
     } else {
         setFirstChild(&child);
@@ -555,7 +555,6 @@ void ContainerNode::addChildNodesToDeletionQueue(Node*& head, Node*& tail, Conta
 DEFINE_TRACE(ContainerNode)
 {
     visitor->trace(m_firstChild);
-    visitor->trace(m_lastChild);
     Node::trace(visitor);
 }
 
@@ -628,7 +627,7 @@ void ContainerNode::removeBetween(Node* previousChild, Node* nextChild, Node& ol
         previousChild->setNextSibling(nextChild);
     if (m_firstChild.get() == &oldChild)
         m_firstChild = nextChild;
-    if (m_lastChild.get() == &oldChild)
+    if (m_lastChild == &oldChild)
         m_lastChild = previousChild;
 
     oldChild.setPreviousSibling(nullptr);
@@ -746,7 +745,7 @@ PassRefPtrWillBeRawPtr<Node> ContainerNode::appendChild(PassRefPtrWillBeRawPtr<N
     }
     ASSERT(newChild);
 
-    if (newChild == m_lastChild.get()) // nothing to do
+    if (newChild == m_lastChild) // nothing to do
         return newChild;
 
     NodeVector targets;

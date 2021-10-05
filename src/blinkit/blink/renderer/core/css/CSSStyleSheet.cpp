@@ -104,31 +104,31 @@ static bool isAcceptableCSSStyleSheetParent(Node* parentNode)
 }
 #endif
 
-GCPassPtr<CSSStyleSheet> CSSStyleSheet::create(GCPassPtr<StyleSheetContents> sheet, CSSImportRule* ownerRule)
+PassRefPtrWillBeRawPtr<CSSStyleSheet> CSSStyleSheet::create(PassRefPtrWillBeRawPtr<StyleSheetContents> sheet, CSSImportRule* ownerRule)
 {
-    return WrapLeaked(new CSSStyleSheet(std::move(sheet), ownerRule));
+    return adoptRefWillBeNoop(new CSSStyleSheet(sheet, ownerRule));
 }
 
-GCPassPtr<CSSStyleSheet> CSSStyleSheet::create(GCPassPtr<StyleSheetContents> sheet, Node* ownerNode)
+PassRefPtrWillBeRawPtr<CSSStyleSheet> CSSStyleSheet::create(PassRefPtrWillBeRawPtr<StyleSheetContents> sheet, Node* ownerNode)
 {
-    return WrapLeaked(new CSSStyleSheet(std::move(sheet), ownerNode, false, TextPosition::minimumPosition()));
+    return adoptRefWillBeNoop(new CSSStyleSheet(sheet, ownerNode, false, TextPosition::minimumPosition()));
 }
 
-GCPassPtr<CSSStyleSheet> CSSStyleSheet::createInline(GCPassPtr<StyleSheetContents> sheet, Node* ownerNode, const TextPosition& startPosition)
+PassRefPtrWillBeRawPtr<CSSStyleSheet> CSSStyleSheet::createInline(PassRefPtrWillBeRawPtr<StyleSheetContents> sheet, Node* ownerNode, const TextPosition& startPosition)
 {
     ASSERT(sheet);
-    return WrapLeaked(new CSSStyleSheet(std::move(sheet), ownerNode, true, startPosition));
+    return adoptRefWillBeNoop(new CSSStyleSheet(sheet, ownerNode, true, startPosition));
 }
 
-GCPassPtr<CSSStyleSheet> CSSStyleSheet::createInline(Node* ownerNode, const KURL& baseURL, const TextPosition& startPosition, const String& encoding)
+PassRefPtrWillBeRawPtr<CSSStyleSheet> CSSStyleSheet::createInline(Node* ownerNode, const KURL& baseURL, const TextPosition& startPosition, const String& encoding)
 {
     CSSParserContext parserContext(ownerNode->document(), baseURL, encoding);
-    GCMember<StyleSheetContents> sheet = StyleSheetContents::create(baseURL.string(), parserContext);
-    return WrapLeaked(new CSSStyleSheet(sheet.release(), ownerNode, true, startPosition));
+    GCRefPtr<StyleSheetContents> sheet = StyleSheetContents::create(baseURL.string(), parserContext);
+    return adoptRefWillBeNoop(new CSSStyleSheet(sheet.release(), ownerNode, true, startPosition));
 }
 
-CSSStyleSheet::CSSStyleSheet(GCPassPtr<StyleSheetContents>&& contents, CSSImportRule* ownerRule)
-    : m_contents(std::move(contents))
+CSSStyleSheet::CSSStyleSheet(PassRefPtrWillBeRawPtr<StyleSheetContents> contents, CSSImportRule* ownerRule)
+    : m_contents(contents)
     , m_isInlineStylesheet(false)
     , m_isDisabled(false)
     , m_ownerNode(nullptr)
@@ -139,8 +139,8 @@ CSSStyleSheet::CSSStyleSheet(GCPassPtr<StyleSheetContents>&& contents, CSSImport
     m_contents->registerClient(this);
 }
 
-CSSStyleSheet::CSSStyleSheet(GCPassPtr<StyleSheetContents>&& contents, Node* ownerNode, bool isInlineStylesheet, const TextPosition& startPosition)
-    : m_contents(std::move(contents))
+CSSStyleSheet::CSSStyleSheet(PassRefPtrWillBeRawPtr<StyleSheetContents> contents, Node* ownerNode, bool isInlineStylesheet, const TextPosition& startPosition)
+    : m_contents(contents)
     , m_isInlineStylesheet(isInlineStylesheet)
     , m_isDisabled(false)
     , m_ownerNode(ownerNode)
@@ -305,7 +305,7 @@ unsigned CSSStyleSheet::insertRule(const String& ruleString, unsigned index, Exc
         return 0;
     }
     CSSParserContext context(m_contents->parserContext());
-    GCMember<StyleRuleBase> rule = CSSParser::parseRule(context, m_contents.get(), ruleString);
+    GCRefPtr<StyleRuleBase> rule = CSSParser::parseRule(context, m_contents.get(), ruleString);
 
     if (!rule) {
         exceptionState.throwDOMException(SyntaxError, "Failed to parse the rule '" + ruleString + "'.");
@@ -313,7 +313,7 @@ unsigned CSSStyleSheet::insertRule(const String& ruleString, unsigned index, Exc
     }
     RuleMutationScope mutationScope(this);
 
-    bool success = m_contents->wrapperInsertRule(rule, index);
+    bool success = m_contents->wrapperInsertRule(rule.get(), index);
     if (!success) {
         if (rule->isNamespaceRule())
             exceptionState.throwDOMException(InvalidStateError, "Failed to insert the rule");
@@ -459,6 +459,16 @@ void CSSStyleSheet::setLoadCompleted(bool completed)
         m_contents->clientLoadCompleted(this);
     else
         m_contents->clientLoadStarted(this);
+}
+
+StyleSheetContents* CSSStyleSheet::contents(void) const
+{
+    return m_contents.get();
+}
+
+Node* CSSStyleSheet::ownerNode(void) const
+{
+    return m_ownerNode.get();
 }
 
 DEFINE_TRACE(CSSStyleSheet)

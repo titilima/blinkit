@@ -73,7 +73,7 @@ private:
     // The lifetime of the Resource object is explicitly managed by
     // reference-counting.
     GC_PLUGIN_IGNORE("503485")
-    BlinKit::GCMember<Resource> m_resource;
+    GCRefPtr<Resource> m_resource;
 };
 
 inline ResourcePtrBase::ResourcePtrBase(Resource* res)

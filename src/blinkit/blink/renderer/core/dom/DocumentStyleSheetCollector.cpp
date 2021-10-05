@@ -45,7 +45,7 @@ using namespace BlinKit;
 
 namespace blink {
 
-DocumentStyleSheetCollector::DocumentStyleSheetCollector(std::vector<GCMember<StyleSheet>>& sheetsForList, std::vector<GCMember<CSSStyleSheet>>& activeList, std::unordered_set<Document *>& visitedDocuments)
+DocumentStyleSheetCollector::DocumentStyleSheetCollector(std::vector<GCRefPtr<StyleSheet>>& sheetsForList, std::vector<GCRefPtr<CSSStyleSheet>>& activeList, std::unordered_set<Document *>& visitedDocuments)
     : m_styleSheetsForStyleSheetList(sheetsForList)
     , m_activeAuthorStyleSheets(activeList)
     , m_visitedDocuments(visitedDocuments)
@@ -56,7 +56,7 @@ DocumentStyleSheetCollector::~DocumentStyleSheetCollector()
 {
 }
 
-void DocumentStyleSheetCollector::appendActiveStyleSheets(const std::vector<GCMember<CSSStyleSheet>>& sheets)
+void DocumentStyleSheetCollector::appendActiveStyleSheets(const std::vector<GCRefPtr<CSSStyleSheet>>& sheets)
 {
     ASSERT(sheets.empty()); // BKTODO: m_activeAuthorStyleSheets.appendVector(sheets);
 }
@@ -76,7 +76,7 @@ ActiveDocumentStyleSheetCollector::ActiveDocumentStyleSheetCollector(StyleSheetC
 {
 }
 
-ImportedDocumentStyleSheetCollector::ImportedDocumentStyleSheetCollector(DocumentStyleSheetCollector& collector, std::vector<GCMember<StyleSheet>>& sheetForList)
+ImportedDocumentStyleSheetCollector::ImportedDocumentStyleSheetCollector(DocumentStyleSheetCollector& collector, std::vector<GCRefPtr<StyleSheet>>& sheetForList)
     : DocumentStyleSheetCollector(sheetForList, collector.m_activeAuthorStyleSheets, collector.m_visitedDocuments)
 {
 }

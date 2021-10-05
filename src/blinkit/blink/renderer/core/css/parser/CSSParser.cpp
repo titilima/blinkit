@@ -48,7 +48,7 @@ CSSSelectorList CSSParser::parseSelector(const CSSParserContext& context, const 
     return CSSSelectorParser::parseSelector(scope.tokenRange(), context, nullptr);
 }
 
-GCPassPtr<StyleRuleBase> CSSParser::parseRule(const CSSParserContext& context, StyleSheetContents* styleSheet, const String& rule)
+PassRefPtrWillBeRawPtr<StyleRuleBase> CSSParser::parseRule(const CSSParserContext& context, StyleSheetContents* styleSheet, const String& rule)
 {
     return CSSParserImpl::parseRule(rule, context, styleSheet, CSSParserImpl::AllowImportRules);
 }
@@ -121,10 +121,10 @@ PassOwnPtr<Vector<double>> CSSParser::parseKeyframeKeyList(const String& keyList
     return CSSParserImpl::parseKeyframeKeyList(keyList);
 }
 
-GCPassPtr<StyleRuleKeyframe> CSSParser::parseKeyframeRule(const CSSParserContext& context, const String& rule)
+PassRefPtrWillBeRawPtr<StyleRuleKeyframe> CSSParser::parseKeyframeRule(const CSSParserContext& context, const String& rule)
 {
-    GCPassPtr<StyleRuleBase> keyframe = CSSParserImpl::parseRule(rule, context, nullptr, CSSParserImpl::KeyframeRules);
-    return keyframe.PassTo<StyleRuleKeyframe>();
+    RefPtrWillBeRawPtr<StyleRuleBase> keyframe = CSSParserImpl::parseRule(rule, context, nullptr, CSSParserImpl::KeyframeRules);
+    return toStyleRuleKeyframe(keyframe.get());
 }
 
 bool CSSParser::parseSupportsCondition(const String& condition)
@@ -178,8 +178,8 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSParser::parseFontFaceDescriptor(CSSPropertyI
     builder.appendLiteral(" : ");
     builder.append(propertyValue);
     builder.appendLiteral("; }");
-    GCPassPtr<StyleRuleBase> rule = parseRule(context, nullptr, builder.toString());
-    if (!rule || !rule.get()->isFontFaceRule())
+    RefPtrWillBeRawPtr<StyleRuleBase> rule = parseRule(context, nullptr, builder.toString());
+    if (!rule || !rule->isFontFaceRule())
         return nullptr;
     return toStyleRuleFontFace(rule.get())->properties().getPropertyCSSValue(propertyID);
 }

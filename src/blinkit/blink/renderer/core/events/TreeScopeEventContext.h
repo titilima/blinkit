@@ -59,7 +59,7 @@ class TreeScope;
 class CORE_EXPORT TreeScopeEventContext final : public BlinKit::GCObject {
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(TreeScopeEventContext);
 public:
-    static GCPassPtr<TreeScopeEventContext> create(TreeScope&);
+    static PassRefPtrWillBeRawPtr<TreeScopeEventContext> create(TreeScope&);
     DECLARE_TRACE();
 
     TreeScope& treeScope() const { return m_treeScope; }
@@ -101,7 +101,7 @@ private:
     bool isUnclosedTreeOf(const TreeScopeEventContext& other);
 
     TreeScope &m_treeScope;
-    BlinKit::GCMember<Node> m_rootNode; // Prevents TreeScope from being freed. TreeScope itself isn't RefCounted.
+    GCRefPtr<Node> m_rootNode; // Prevents TreeScope from being freed. TreeScope itself isn't RefCounted.
     EventTarget *m_target = nullptr;
     EventTarget *m_relatedTarget = nullptr;
     std::unique_ptr<std::vector<EventTarget *>> m_eventPath;

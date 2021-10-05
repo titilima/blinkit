@@ -390,7 +390,7 @@ DEFINE_TRACE(EventHandler)
 
 DragState& EventHandler::dragState()
 {
-    static DragState *state = GCMakeGlobal<DragState>();
+    static DragState *state = GCWrapGlobal(new DragState);
     return *state;
 }
 
@@ -1874,7 +1874,7 @@ WebInputEventResult EventHandler::updatePointerTargetAndDispatchEvents(const Ato
 #endif
 
     if (!m_preventMouseEventForPointerTypeMouse) {
-        GCPtr<MouseEvent> event = MouseEvent::create(mouseEventType, m_nodeUnderMouse->document().domWindow(), mouseEvent, clickCount, nullptr);
+        GCRefPtr<MouseEvent> event = MouseEvent::create(mouseEventType, m_nodeUnderMouse->document().domWindow(), mouseEvent, clickCount, nullptr);
         bool dispatchResult = m_nodeUnderMouse->dispatchEvent(event.get());
         result = mergeEventResult(result, eventToEventResult(event.get(), dispatchResult));
     }

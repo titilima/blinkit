@@ -84,7 +84,7 @@ void ScopedStyleResolver::addFontFaceRules(const RuleSet& ruleSet)
     CSSFontSelector* cssFontSelector = document.styleEngine().fontSelector();
     const WillBeHeapVector<RawPtrWillBeMember<StyleRuleFontFace>> fontFaceRules = ruleSet.fontFaceRules();
     for (auto& fontFaceRule : fontFaceRules) {
-        if (GCPassPtr<FontFace> fontFace = FontFace::create(&document, fontFaceRule))
+        if (RefPtrWillBeRawPtr<FontFace> fontFace = FontFace::create(&document, fontFaceRule))
             cssFontSelector->fontFaceCache()->add(cssFontSelector, fontFaceRule, fontFace);
     }
     if (fontFaceRules.size())
@@ -236,7 +236,7 @@ void ScopedStyleResolver::addTreeBoundaryCrossingRules(const RuleSet& authorRule
     if (!authorRules.deepCombinatorOrShadowPseudoRules().isEmpty())
         m_hasDeepOrShadowSelector = true;
 
-    GCMember<RuleSet> ruleSetForScope = RuleSet::create();
+    GCRefPtr<RuleSet> ruleSetForScope = RuleSet::create();
     addRules(ruleSetForScope.get(), authorRules.deepCombinatorOrShadowPseudoRules());
 
     if (!isDocumentScope)

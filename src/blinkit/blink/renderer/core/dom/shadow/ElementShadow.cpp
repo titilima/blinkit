@@ -141,9 +141,9 @@ inline void DistributionPool::detachNonDistributedNodes()
     }
 }
 
-GCUniqueRoot<ElementShadow> ElementShadow::create()
+GCUniquePtr<ElementShadow> ElementShadow::create()
 {
-    return WrapUniqueRoot(new ElementShadow());
+    return GCWrapUnique(new ElementShadow());
 }
 
 ElementShadow::ElementShadow()

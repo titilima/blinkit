@@ -21,11 +21,11 @@ namespace blink {
 
 typedef std::vector<IntersectionObserver *> IntersectionObserverVector;
 
-GCPassPtr<IntersectionObserverController> IntersectionObserverController::create(Document* document)
+IntersectionObserverController* IntersectionObserverController::create(Document* document)
 {
     IntersectionObserverController* result = new IntersectionObserverController(document);
     result->suspendIfNeeded();
-    return WrapLeaked(result);
+    return result;
 }
 
 IntersectionObserverController::IntersectionObserverController(Document* document)

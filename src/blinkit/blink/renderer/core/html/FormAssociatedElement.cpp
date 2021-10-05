@@ -52,13 +52,13 @@ class FormAttributeTargetObserver : public IdTargetObserver {
     USING_FAST_MALLOC_WILL_BE_REMOVED(FormAttributeTargetObserver);
 public:
     static PassOwnPtrWillBeRawPtr<FormAttributeTargetObserver> create(const AtomicString& id, FormAssociatedElement*);
-    DECLARE_VIRTUAL_TRACE();
+    // BKTODO: DECLARE_VIRTUAL_TRACE();
     void idTargetChanged() override;
 
 private:
     FormAttributeTargetObserver(const AtomicString& id, FormAssociatedElement*);
 
-    RawPtrWillBeMember<FormAssociatedElement> m_element;
+    FormAssociatedElement *m_element;
 };
 
 FormAssociatedElement::FormAssociatedElement()
@@ -73,7 +73,7 @@ FormAssociatedElement::~FormAssociatedElement()
 
 DEFINE_TRACE(FormAssociatedElement)
 {
-    visitor->trace(m_formAttributeTargetObserver);
+    // BKTODO: visitor->trace(m_formAttributeTargetObserver);
     visitor->trace(m_form);
     visitor->trace(m_validityState);
 }
@@ -289,7 +289,7 @@ void FormAssociatedElement::setFormAttributeTargetObserver(PassOwnPtrWillBeRawPt
 {
     if (m_formAttributeTargetObserver)
         m_formAttributeTargetObserver->unregister();
-    m_formAttributeTargetObserver = newObserver;
+    m_formAttributeTargetObserver.reset(newObserver);
 }
 
 void FormAssociatedElement::resetFormAttributeTargetObserver()
@@ -355,11 +355,13 @@ FormAttributeTargetObserver::FormAttributeTargetObserver(const AtomicString& id,
 {
 }
 
+#if 0 // BKTODO:
 DEFINE_TRACE(FormAttributeTargetObserver)
 {
     visitor->trace(m_element);
     IdTargetObserver::trace(visitor);
 }
+#endif
 
 void FormAttributeTargetObserver::idTargetChanged()
 {

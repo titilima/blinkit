@@ -107,7 +107,7 @@ public:
 
     WebCompositorAnimationTimeline* compositorTimeline() const { return m_compositorTimeline.get(); }
 
-    Document* document() { return m_document.get(); }
+    Document* document() { return m_document; }
 #if !ENABLE(OILPAN)
     void detachFromDocument();
 #endif
@@ -120,7 +120,7 @@ protected:
     AnimationTimeline(Document*, PlatformTiming*);
 
 private:
-    BlinKit::GCMember<Document> m_document;
+    Document *m_document;
     double m_zeroTime;
     bool m_zeroTimeInitialized;
     unsigned m_outdatedAnimationCount;
@@ -134,7 +134,7 @@ private:
     friend class SMILTimeContainer;
     static const double s_minimumDelay;
 
-    BlinKit::GCMember<PlatformTiming> m_timing;
+    GCRefPtr<PlatformTiming> m_timing;
     double m_lastCurrentTimeInternal;
 
     OwnPtr<WebCompositorAnimationTimeline> m_compositorTimeline;
@@ -156,7 +156,7 @@ private:
         DECLARE_VIRTUAL_TRACE();
 
     private:
-        BlinKit::GCMember<AnimationTimeline> m_timeline;
+        GCRefPtr<AnimationTimeline> m_timeline;
         Timer<AnimationTimelineTiming> m_timer;
     };
 

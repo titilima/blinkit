@@ -60,21 +60,21 @@ public:
 
     StyleSheetCollection();
 
-    std::vector<BlinKit::GCMember<CSSStyleSheet>>& activeAuthorStyleSheets() { return m_activeAuthorStyleSheets; }
-    std::vector<BlinKit::GCMember<StyleSheet>>& styleSheetsForStyleSheetList() { return m_styleSheetsForStyleSheetList; }
-    const std::vector<BlinKit::GCMember<CSSStyleSheet>>& activeAuthorStyleSheets() const { return m_activeAuthorStyleSheets; }
-    const std::vector<BlinKit::GCMember<StyleSheet>>& styleSheetsForStyleSheetList() const { return m_styleSheetsForStyleSheetList; }
+    std::vector<GCRefPtr<CSSStyleSheet>>& activeAuthorStyleSheets() { return m_activeAuthorStyleSheets; }
+    std::vector<GCRefPtr<StyleSheet>>& styleSheetsForStyleSheetList() { return m_styleSheetsForStyleSheetList; }
+    const std::vector<GCRefPtr<CSSStyleSheet>>& activeAuthorStyleSheets() const { return m_activeAuthorStyleSheets; }
+    const std::vector<GCRefPtr<StyleSheet>>& styleSheetsForStyleSheetList() const { return m_styleSheetsForStyleSheetList; }
 
     void swap(StyleSheetCollection&);
-    void swapSheetsForSheetList(std::vector<BlinKit::GCMember<StyleSheet>>&);
+    void swapSheetsForSheetList(std::vector<GCRefPtr<StyleSheet>>&);
     void appendActiveStyleSheet(CSSStyleSheet*);
     void appendSheetForList(StyleSheet*);
 
     DECLARE_VIRTUAL_TRACE();
 
 protected:
-    std::vector<BlinKit::GCMember<StyleSheet>> m_styleSheetsForStyleSheetList;
-    std::vector<BlinKit::GCMember<CSSStyleSheet>> m_activeAuthorStyleSheets;
+    std::vector<GCRefPtr<StyleSheet>> m_styleSheetsForStyleSheetList;
+    std::vector<GCRefPtr<CSSStyleSheet>> m_activeAuthorStyleSheets;
 };
 
 } // namespace blink

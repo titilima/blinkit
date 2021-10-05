@@ -776,7 +776,7 @@ void FrameLoader::updateForSameDocumentNavigation(const KURL& newURL, SameDocume
 }
 #endif
 
-void FrameLoader::detachDocumentLoader(GCMember<DocumentLoader>& loader)
+void FrameLoader::detachDocumentLoader(GCRefPtr<DocumentLoader> &loader)
 {
     if (!loader)
         return;
@@ -1720,5 +1720,15 @@ SecurityContext::InsecureNavigationsSet* FrameLoader::insecureNavigationsToUpgra
     return toLocalFrame(parentFrame)->document()->insecureNavigationsToUpgrade();
 }
 #endif
+
+DocumentLoader* FrameLoader::documentLoader(void) const
+{
+    return m_documentLoader.get();
+}
+
+DocumentLoader* FrameLoader::provisionalDocumentLoader(void) const
+{
+    return m_provisionalDocumentLoader.get();
+}
 
 } // namespace blink

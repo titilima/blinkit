@@ -156,7 +156,7 @@ void HTMLScriptRunner::executePendingScriptAndDispatchEvent(PendingScript& pendi
     }
 
     // Clear the pending script before possible rentrancy from executeScript()
-    GCMember<Element> element = pendingScript.releaseElementAndClear();
+    GCRefPtr<Element> element = pendingScript.releaseElementAndClear();
     double compilationFinishTime = 0;
     if (ScriptLoader* scriptLoader = toScriptLoaderIfPossible(element.get())) {
         NestingLevelIncrementer nestingLevelIncrementer(m_scriptNestingLevel);

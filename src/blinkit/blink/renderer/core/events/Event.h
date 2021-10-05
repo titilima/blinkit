@@ -246,8 +246,8 @@ private:
     RefPtrWillBeMember<EventTarget> m_currentTarget;
     RefPtrWillBeMember<EventTarget> m_target;
     DOMTimeStamp m_createTime;
-    BlinKit::GCMember<Event> m_underlyingEvent;
-    BlinKit::GCUniqueRoot<EventPath> m_eventPath;
+    GCRefPtr<Event> m_underlyingEvent;
+    GCUniquePtr<EventPath> m_eventPath;
     // The monotonic platform time in seconds, for input events it is the
     // event timestamp provided by the host OS and reported in the original
     // WebInputEvent instance.

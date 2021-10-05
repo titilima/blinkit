@@ -64,7 +64,7 @@ public:
     }
     ~CSSSegmentedFontFace();
 
-    CSSFontSelector* fontSelector() const { return m_fontSelector.get(); }
+    CSSFontSelector* fontSelector(void) const;
     FontTraits traits() const { return m_traits; }
 
     // Called when status of a FontFace has changed (e.g. loaded or timed out)
@@ -92,7 +92,7 @@ private:
 
     using FontFaceList = WillBeHeapListHashSet<RefPtrWillBeMember<FontFace>>;
 
-    BlinKit::GCMember<CSSFontSelector> m_fontSelector;
+    GCRefPtr<CSSFontSelector> m_fontSelector;
     FontTraits m_traits;
     HashMap<unsigned, RefPtr<SegmentedFontData>> m_fontDataTable;
     // All non-CSS-connected FontFaces are stored after the CSS-connected ones.

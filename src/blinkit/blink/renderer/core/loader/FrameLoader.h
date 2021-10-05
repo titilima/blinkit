@@ -125,8 +125,8 @@ public:
     // waiting to notify would allow a URL spoof.
     void notifyIfInitialDocumentAccessed();
 
-    DocumentLoader* documentLoader() const { return m_documentLoader.get(); }
-    DocumentLoader* provisionalDocumentLoader() const { return m_provisionalDocumentLoader.get(); }
+    DocumentLoader* documentLoader(void) const;
+    DocumentLoader* provisionalDocumentLoader(void) const;
 
     void receivedMainResourceError(DocumentLoader*, const ResourceError&);
 
@@ -249,7 +249,7 @@ private:
 
     void scheduleCheckCompleted();
 
-    void detachDocumentLoader(BlinKit::GCMember<DocumentLoader>&);
+    void detachDocumentLoader(GCRefPtr<DocumentLoader>&);
 
     RawPtrWillBeMember<LocalFrame> m_frame;
 
@@ -266,8 +266,8 @@ private:
     // a new request is being loaded, the old document loader may still be referenced.
     // E.g. while a new request is in the "policy" state, the old document loader may
     // be consulted in particular as it makes sense to imply certain settings on the new loader.
-    BlinKit::GCMember<DocumentLoader> m_documentLoader;
-    BlinKit::GCMember<DocumentLoader> m_provisionalDocumentLoader;
+    GCRefPtr<DocumentLoader> m_documentLoader;
+    GCRefPtr<DocumentLoader> m_provisionalDocumentLoader;
 
 #if 0 // BKTODO:
     RefPtrWillBeMember<HistoryItem> m_currentItem;
