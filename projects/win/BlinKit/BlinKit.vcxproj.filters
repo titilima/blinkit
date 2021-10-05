@@ -4715,9 +4715,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\DataRef.h">
       <Filter>blink\renderer\core\style</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\gc\gc_data_ref.h">
-      <Filter>gc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\FrameHost.h">
       <Filter>blink\renderer\core\frame</Filter>
     </ClInclude>
@@ -4762,9 +4759,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\SharedStyleFinder.h">
       <Filter>blink\renderer\core\css\resolver</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\gc\gc_root.h">
-      <Filter>gc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\VisualViewport.h">
       <Filter>blink\renderer\core\frame</Filter>
@@ -5929,6 +5923,306 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\StyleSheetList.h">
       <Filter>blink\renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\AppliedTextDecoration.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\BasicShapes.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\BorderData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\BorderEdge.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\BorderImageLength.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\BorderImageLengthBox.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\BorderValue.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\CachedUAStyle.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\CollapsedBorderValue.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\ComputedStyleConstants.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\ContentData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\CounterContent.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\CounterDirectives.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\CursorData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\DataEquivalency.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\FillLayer.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\GridCoordinate.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\GridLength.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\GridPosition.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\GridResolvedPosition.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\GridTrackSize.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\LineClampValue.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\NinePieceImage.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\OutlineValue.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\PathStyleMotionPath.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\QuotesData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\ShadowData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\ShadowList.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\ShapeValue.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleBackgroundData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleBoxData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleContentAlignmentData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleDeprecatedFlexibleBoxData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleDifference.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleFetchedImage.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleFetchedImageSet.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleFlexibleBoxData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleGeneratedImage.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleGridData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleGridItemData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleImage.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleInheritedData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleMotionData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleMotionPath.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleMultiColData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StylePath.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StylePendingImage.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleRareInheritedData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleReflection.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleScrollSnapData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleSelfAlignmentData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleSurroundData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleTransformData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleVariableData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleVisualData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleWillChangeData.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\TransformOrigin.h">
+      <Filter>blink\renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_data_ref.h">
+      <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\AlternateFontFamily.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\Character.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\CustomFontData.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FallbackListCompositeKey.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\Font.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontBaseline.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontCacheClient.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontCacheKey.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontCustomPlatformData.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontData.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontDataCache.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontDataRange.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontDescription.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontFaceCreationParams.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontFallbackIterator.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontFallbackList.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontFamily.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontFeatureSettings.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontMetrics.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontOrientation.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontPlatformData.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontRenderStyle.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontSmoothingMode.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontTraits.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontWidthVariant.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\GenericFontFamilySettings.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\Glyph.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\GlyphBuffer.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\GlyphMetricsMap.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\GlyphPage.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\GlyphPageTreeNode.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\Latin1TextIterator.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\OrientationIterator.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\ScriptRunIterator.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\SegmentedFontData.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\SimpleFontData.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\SmallCapsIterator.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\TextBlob.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\TextRenderingMode.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\TypesettingFeatures.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\UTF16TextIterator.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\VDMXParser.h">
+      <Filter>blink\renderer\platform\fonts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
