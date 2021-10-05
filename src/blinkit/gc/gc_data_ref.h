@@ -18,48 +18,43 @@
 namespace BlinKit {
 
 template <class T>
-class GCDataRef final : public GCPersistentMember<T>
+class GCDataRef final
 {
 public:
-    GCDataRef(void) = default;
-    GCDataRef(const GCDataRef<T> &o)
-    {
-        GCPersistentMember<T>::operator=(o);
-    }
-
-    const T* get(void) const { return this->m_ptr; }
+    const T* get(void) const { return m_data.get(); }
 
     const T& operator*() const { return *get(); }
     const T* operator->() const { return get(); }
 
     T* access(void)
     {
-        if (!get()->IsUnique())
-            GCPersistentMember<T>::operator=(get()->copy());
-        return this->m_ptr;
+        if (!m_data->IsUnique())
+            m_data = m_data->copy();
+        return m_data.get();
     }
 
     void init(void)
     {
-        ASSERT(nullptr == this->m_ptr);
-        GCPersistentMember<T>::operator=(T::create());
+        ASSERT(!m_data);
+        m_data = T::create();
     }
 
-    bool operator==(const GCDataRef<T>& o) const
+    bool operator==(const GCDataRef<T> &o) const
     {
-        ASSERT(nullptr != this->m_ptr);
-        ASSERT(nullptr != o.m_ptr);
-        return this->m_ptr == o.m_ptr || *(this->m_ptr) == *(o.m_ptr);
+        ASSERT(m_data);
+        ASSERT(o.m_data);
+        return m_data == o.m_data || *m_data == *o.m_data;
     }
-
-    bool operator!=(const GCDataRef<T>& o) const
+    bool operator!=(const GCDataRef<T> &o) const
     {
-        ASSERT(nullptr != this->m_ptr);
-        ASSERT(nullptr != o.m_ptr);
-        return this->m_ptr != o.m_ptr && *(this->m_ptr) != *(o.m_ptr);
+        ASSERT(m_data);
+        ASSERT(o.m_data);
+        return m_data != o.m_data && *m_data != *o.m_data;
     }
 
-    void operator=(std::nullptr_t) { this->Release(); }
+    void operator=(std::nullptr_t) { m_data.clear(); }
+private:
+    GCRefPtr<T> m_data;
 };
 
 } // namespace BlinKit

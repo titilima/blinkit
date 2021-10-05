@@ -18,6 +18,7 @@
 #include <type_traits>
 #include "blinkit/blink/renderer/wtf/build_config.h"
 #include "blinkit/blink/renderer/wtf/RawPtr.h"
+#include "blinkit/gc/garbage_collector.h"
 #include "third_party/zed/include/zed/memory.hpp"
 
 namespace blink {
@@ -25,9 +26,6 @@ class Visitor;
 }
 
 namespace BlinKit {
-
-template <class> class GCMember;
-class GCStub;
 
 #ifndef NDEBUG
 bool IsCollectingGarbage(void);
@@ -67,8 +65,7 @@ protected:
 private:
     friend class GCCleanupVisitor;
     friend class GCHeap;
-    template <class T> friend class GCMember;
-    friend class GCPtrBase;
+    friend class GCRefPtrBase;
     friend class GarbageCollector;
 
     GCObject(const GCObject &o) = delete;
@@ -105,26 +102,25 @@ public:
 };
 
 /**
- * Global/Persistent APIs
+ * Global Stuff
  */
 
-void GCSetGlobalObject(GCObject *o);
+void GCAddGlobalFinalizer(const std::function<void()> &finalizer);
+
+template <class T>
+struct GCGlobalWrapper
+{
+    static void IncRef(T *p) { p->IncRef(); }
+    static void Release(T *p) { p->Release(GCOption::Full); }
+};
 
 template <class T>
 T* GCWrapGlobal(T *p)
 {
-    GCSetGlobalObject(static_cast<GCObject *>(p));
+    GCGlobalWrapper<T>::IncRef(p);
+    GCAddGlobalFinalizer(std::bind(&GCGlobalWrapper<T>::Release, p));
     return p;
 }
-
-template <class T, class... Types>
-T* GCMakeGlobal(Types&&... args)
-{
-    return GCWrapGlobal(new T(std::forward<Types>(args)...));
-}
-
-void GCRetainPersistentObject(GCObject *o, void **slot);
-void GCReleasePersistentObject(GCObject *o, void **slot);
 
 /**
  * Lifecycle Stuff
@@ -145,107 +141,36 @@ void GCAttachWeakSlot(GCObject *o, void **weakSlot);
 void GCDetachWeakSlot(GCObject *o, void **weakSlot);
 
 /**
- * GCPassPtr
+ * GCRefPtr Stuff
  */
 
-template <class T>
-class GCPassPtr final
+class GCRefPtrBase
 {
-    template <class> friend class GCMemberBase;
-    template <class> friend class GCMember;
-    template <class> friend class GCPersistentMember;
+    friend class GCCleanupVisitor;
+    friend class GCTraceVisitor;
 public:
-    GCPassPtr(void) = default;
-#ifdef NDEBUG
-    GCPassPtr(T *ptr) : m_ptr(ptr) {}
-#else
-    GCPassPtr(T *ptr, bool shouldBeAdopted = false) : m_ptr(ptr), m_shouldBeAdopted(shouldBeAdopted) {}
-#endif
-    template <class U>
-    GCPassPtr(GCPassPtr<U> &&o)
-#ifndef NDEBUG
-        : m_shouldBeAdopted(o.ShouldBeAdopted())
-#endif
-    {
-        o.PassTo(m_ptr);
-    }
-    template <class U>
-    GCPassPtr(const GCMember<U> &m);
-    ~GCPassPtr(void)
-    {
-        ASSERT(!m_shouldBeAdopted || nullptr == m_ptr);
-    }
-
-    operator bool() const { return nullptr != m_ptr; }
-    bool operator!() const { return nullptr == m_ptr; }
-    T* get(void) const { return m_ptr; }
-
-    void Clear(void) { m_ptr = nullptr; }
-#ifndef NDEBUG
-    bool ShouldBeAdopted(void) const { return m_shouldBeAdopted; }
-#endif
-
-    template <class U>
-    GCPassPtr<U> PassTo(void)
-    {
-        U *ret = static_cast<U *>(m_ptr);
-        m_ptr = nullptr;
-#ifdef NDEBUG
-        return GCPassPtr<U>(ret);
-#else
-        return GCPassPtr<U>(ret, m_shouldBeAdopted);
-#endif
-    }
-    template <class U>
-    void PassTo(U *&dst)
-    {
-        dst = m_ptr;
-#ifndef NDEBUG
-        if (m_shouldBeAdopted)
-            Clear();
-#endif
-    }
-private:
-#ifndef NDEBUG
-    const bool m_shouldBeAdopted = false;
-#endif
-    T *m_ptr = nullptr;
-};
-
-template <class T>
-GCPassPtr<T> WrapLeaked(T *rawPtr)
-{
-#ifdef NDEBUG
-    return GCPassPtr<T>(rawPtr);
-#else
-    return GCPassPtr<T>(rawPtr, true);
-#endif
-}
-
-/**
- * GCPtr Stuff
- */
-
-class GCPtrBase
-{
-    friend class blink::Visitor;
-public:
-    ~GCPtrBase(void)
+    ~GCRefPtrBase(void)
     {
         if (nullptr != m_object)
             m_object->Release();
     }
 
-    void clear(void)
+    void clear(GCOption option = GCOption::Auto)
     {
         if (nullptr != m_object)
         {
-            m_object->Release();
+            m_object->Release(option);
             m_object = nullptr;
         }
     }
+
+    operator bool() const { return nullptr != m_object; }
+    bool operator!() const { return nullptr == m_object; }
+
+    bool operator==(const GCObject *object) const { return m_object == object; }
+    bool operator!=(const GCObject *object) const { return m_object != object; }
 protected:
-    GCPtrBase(GCObject *object) : m_object(object)
+    GCRefPtrBase(GCObject *object) : m_object(object)
     {
         if (nullptr != m_object)
             m_object->IncRef();
@@ -288,61 +213,88 @@ private:
     GCObject *m_object;
 };
 
-class GCGuard final : private GCPtrBase
+class GCGuard final : private GCRefPtrBase
 {
 public:
-    GCGuard(GCObject &o) : GCPtrBase(&o) {}
-    GCGuard(GCStub *stub) : GCPtrBase(stub->ObjectForGC()) {}
+    GCGuard(GCObject &o) : GCRefPtrBase(&o) {}
+    GCGuard(GCStub *stub) : GCRefPtrBase(stub->ObjectForGC()) {}
 };
 
 template <class T>
-class GCPtr final : public GCPtrBase
+class GCRefPtr final : public GCRefPtrBase
 {
 public:
-    explicit GCPtr(T *p = nullptr) : GCPtrBase(p) {}
+    explicit GCRefPtr(T *p = nullptr) : GCRefPtrBase(p) {}
 
     template <class U>
-    GCPtr(const WTF::RawPtr<U> &ptr) : GCPtr(ptr.get()) {}
+    GCRefPtr(const WTF::RawPtr<U> &ptr) : GCRefPtr(ptr.get()) {}
 
-    GCPtr(const GCPtr &o) : GCPtr(o.get()) {}
+    GCRefPtr(const GCRefPtr &o) : GCRefPtr(o.get()) {}
     template <class U>
-    GCPtr(const GCPtr<U> &o) : GCPtr(o.get()) {}
+    GCRefPtr(const GCRefPtr<U> &o) : GCRefPtr(o.get()) {}
 
-    T* get(void) const { return GCPtrBase::cast_to<T>(); }
+    T* get(void) const { return GCRefPtrBase::cast_to<T>(); }
 
     T& operator*() const { return *get(); }
     T* operator->() const { return get(); }
-    operator bool() const { return nullptr != get(); }
-    bool operator!() const { return nullptr == get(); }
 
     template <class U>
-    GCPtr& operator=(U *p)
+    GCRefPtr& operator=(U *p)
     {
-        GCPtrBase::reset_from<T>(p);
+        GCRefPtrBase::reset_from<T>(p);
         return *this;
     }
 
     template <class U>
-    GCPtr& operator=(const WTF::RawPtr<U> &ptr)
+    GCRefPtr& operator=(const WTF::RawPtr<U> &ptr)
     {
-        GCPtrBase::reset_from<T>(ptr.get());
+        GCRefPtrBase::reset_from<T>(ptr.get());
         return *this;
     }
 
-    GCPtr& operator=(const GCPtr &o)
+    GCRefPtr& operator=(const GCRefPtr &o)
     {
-        GCPtrBase::reset_from<T>(o.get());
+        GCRefPtrBase::reset_from<T>(o.get());
         return *this;
     }
     template <class U>
-    GCPtr& operator=(const GCPtr<U> &o)
+    GCRefPtr& operator=(const GCRefPtr<U> &o)
     {
-        GCPtrBase::reset_from<T>(o.get());
+        GCRefPtrBase::reset_from<T>(o.get());
         return *this;
     }
 
-    T* release(void) { return GCPtrBase::release_to<T>(); }
+    T* release(void) { return GCRefPtrBase::release_to<T>(); }
 };
+
+/**
+ * GCUniquePtr Stuff
+ */
+
+template <class T>
+struct GCDeleter final : public std::default_delete<T>
+{
+    void operator()(T *p) const
+    {
+        GarbageCollector::PerformOnRoot(*p);
+        std::default_delete<T>::operator()(p);
+    }
+};
+
+template <class T>
+using GCUniquePtr = std::unique_ptr<T, GCDeleter<T>>;
+
+template <class T>
+GCUniquePtr<T> GCWrapUnique(T *p)
+{
+    return GCUniquePtr<T>(p);
+}
+
+template <class T, class... Types>
+GCUniquePtr<T> GCMakeUnique(Types&&... args)
+{
+    return GCWrapUnique(new T(std::forward<Types>(args)...));
+}
 
 /**
  * Member Stuff
@@ -353,10 +305,6 @@ class GCMemberBase : public zed::ptr_base<T>
 {
 protected:
     GCMemberBase(T *ptr) : zed::ptr_base<T>(ptr) {}
-    GCMemberBase(GCPassPtr<T> &&o) : zed::ptr_base<T>(nullptr)
-    {
-        o.PassTo(this->m_ptr);
-    }
 
     template <typename U>
     GCMemberBase& operator=(U *other)
@@ -372,190 +320,6 @@ protected:
     void** GetSlot(void)
     {
         return reinterpret_cast<void **>(&this->m_ptr);
-    }
-};
-
-template <class T>
-class GCMember final : public GCMemberBase<T>
-{
-    friend class blink::Visitor;
-public:
-    explicit GCMember(T *ptr = nullptr) : GCMemberBase<T>(ptr)
-    {
-        ASSERT(!IsCollectingGarbage());
-        if (nullptr != this->m_ptr)
-            IncRef();
-    }
-    explicit GCMember(T &rawObj) : GCMember(&rawObj) {}
-    GCMember(GCMember<T> &&o) : GCMemberBase<T>(o.m_ptr)
-    {
-        ASSERT(!IsCollectingGarbage());
-        o.m_ptr = nullptr;
-    }
-    GCMember(const GCMember<T> &o) : GCMemberBase<T>(o.m_ptr)
-    {
-        ASSERT(!IsCollectingGarbage());
-        if (nullptr != this->m_ptr)
-            IncRef();
-    }
-    GCMember(GCPassPtr<T> &&other) : GCMemberBase<T>(std::move(other))
-    {
-        ASSERT(!IsCollectingGarbage());
-        if (nullptr != this->m_ptr)
-            IncRef();
-    }
-    ~GCMember(void)
-    {
-        ASSERT(!IsCollectingGarbage());
-        if (nullptr != this->m_ptr)
-            Release(GCOption::Auto);
-    }
-
-    GCMember& operator=(const GCMember<T> &other)
-    {
-        if (nullptr != this->m_ptr)
-            Release(GCOption::Auto);
-        GCMemberBase<T>::operator=(other.get());
-        if (nullptr != this->m_ptr)
-            IncRef();
-        return *this;
-    }
-    template <typename U>
-    GCMember& operator=(U *other)
-    {
-        if (nullptr != other)
-            static_cast<GCObject *>(other)->IncRef();
-        if (nullptr != this->m_ptr)
-            Release(GCOption::Auto);
-        GCMemberBase<T>::operator=(other);
-        return *this;
-    }
-    template <typename U>
-    GCMember& operator=(const WTF::RawPtr<U> &other)
-    {
-        if (other)
-            static_cast<GCObject *>(other)->IncRef();
-        if (nullptr != this->m_ptr)
-            Release(GCOption::Auto);
-        GCMemberBase<T>::operator=(other.get());
-        return *this;
-    }
-    template <typename U>
-    GCMember& operator=(GCPassPtr<U> &&other)
-    {
-        if (this->m_ptr != other.m_ptr)
-        {
-            if (nullptr != this->m_ptr)
-                Release(GCOption::Auto);
-            other.PassTo(this->m_ptr);
-            if (nullptr != this->m_ptr)
-                IncRef();
-        }
-        else
-        {
-            other.Clear();
-        }
-        return *this;
-    }
-
-    GCPassPtr<T> release(void)
-    {
-        T *ret = this->m_ptr;
-        if (nullptr != ret)
-        {
-            this->AccessGCObject()->DecRef();
-            this->m_ptr = nullptr;
-        }
-        return WrapLeaked(ret);
-    }
-    void clear(GCOption option = GCOption::Auto)
-    {
-        if (nullptr != this->m_ptr)
-            Release(option);
-    }
-    void swap(GCMember<T> &o)
-    {
-        ASSERT(!IsCollectingGarbage());
-        std::swap(this->m_ptr, o.m_ptr);
-    }
-private:
-    void IncRef(void)
-    {
-        ASSERT(nullptr != this->m_ptr);
-        this->AccessGCObject()->IncRef();
-    }
-    void Release(GCOption option)
-    {
-        ASSERT(nullptr != this->m_ptr);
-        GCObject *o = this->AccessGCObject();
-        this->m_ptr = nullptr;
-        o->Release(option);
-    }
-};
-
-template <class T>
-class GCPersistentMember : public GCMemberBase<T>
-{
-public:
-    GCPersistentMember(void) : GCMemberBase<T>(nullptr) {}
-    GCPersistentMember(GCPassPtr<T> &&o) : GCMemberBase<T>(std::move(o))
-    {
-        if (nullptr != this->m_ptr)
-            Retain();
-    }
-    ~GCPersistentMember(void)
-    {
-        if (nullptr != this->m_ptr)
-            Release();
-    }
-
-    GCPersistentMember& operator=(const GCPersistentMember<T> &other)
-    {
-        if (nullptr != this->m_ptr)
-            Release();
-        GCMemberBase<T>::operator=(other.m_ptr);
-        if (nullptr != this->m_ptr)
-            Retain();
-        return *this;
-    }
-    template <typename U>
-    GCPersistentMember& operator=(const WTF::RawPtr<U> &other)
-    {
-        if (nullptr != this->m_ptr)
-            Release();
-        GCMemberBase<T>::operator=(other.get());
-        if (nullptr != this->m_ptr)
-            Retain();
-        return *this;
-    }
-    template <typename U>
-    GCPersistentMember& operator=(GCPassPtr<U> &&other)
-    {
-        if (this->m_ptr != other.m_ptr)
-        {
-            if (nullptr != this->m_ptr)
-                Release();
-            other.PassTo(this->m_ptr);
-            if (nullptr != this->m_ptr)
-                Retain();
-        }
-        else
-        {
-            other.Clear();
-        }
-        return *this;
-    }
-protected:
-    void Retain(void)
-    {
-        ASSERT(nullptr != this->m_ptr);
-        GCRetainPersistentObject(this->AccessGCObject(), this->GetSlot());
-    }
-    void Release(void)
-    {
-        ASSERT(nullptr != this->m_ptr);
-        GCReleasePersistentObject(this->AccessGCObject(), this->GetSlot());
-        ASSERT(nullptr == this->m_ptr);
     }
 };
 
@@ -606,24 +370,19 @@ private:
     }
 };
 
-/**
- * Implementations
- */
-
-template <class T>
-template <class U>
-GCPassPtr<T>::GCPassPtr(const GCMember<U> &m) : m_ptr(m.get()) {}
-
 } // namespace BlinKit
 
-using BlinKit::GCPassPtr;
+namespace blink {
+using BlinKit::GCRefPtr;
+using BlinKit::GCUniquePtr;
+}
 
 namespace std {
 
 template <class T>
-struct hash<BlinKit::GCMember<T>>
+struct hash<BlinKit::GCRefPtr<T>>
 {
-    size_t operator()(const BlinKit::GCMember<T> &m) const noexcept
+    size_t operator()(const BlinKit::GCRefPtr<T> &m) const noexcept
     {
         return reinterpret_cast<size_t>(m.get());
     }

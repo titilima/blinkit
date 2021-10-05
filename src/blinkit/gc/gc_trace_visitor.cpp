@@ -29,19 +29,21 @@ GCTraceVisitor::GCTraceVisitor(GCSession &session) : m_session(session), m_fastT
 {
 }
 
-void GCTraceVisitor::TraceImpl(GCObject *o, void **slot)
+void GCTraceVisitor::TraceImpl(GCRefPtrBase &ptr)
 {
     ASSERT(isMainThread());
+
+    GCObject *o = ptr.m_object;
     ASSERT(nullptr != o);
 
     if (m_fastTrace && o->IsRetainedInTree())
         return;
 
     GCSession::Slots &slots = m_session.MemberObjects[o];
-    if (zed::key_exists(slots, slot))
+    if (zed::key_exists(slots, &ptr))
         return;
 
-    slots.emplace(slot);
+    slots.emplace(&ptr);
     if (slots.size() > 1)
         return;
 

@@ -13,11 +13,15 @@
 #ifndef BLINKIT_BLINKIT_GARBAGE_COLLECTOR_H
 #define BLINKIT_BLINKIT_GARBAGE_COLLECTOR_H
 
-#include "blinkit/blink/renderer/platform/heap/Visitor.h"
-#include "blinkit/blink/renderer/wtf/Allocator.h"
+#include <functional>
+
+namespace blink {
+class Visitor;
+}
 
 namespace BlinKit {
 
+class GCObject;
 struct GCSession;
 
 class GarbageCollector final

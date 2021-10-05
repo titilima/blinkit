@@ -28,7 +28,7 @@ public:
 private:
     bool IsFullyRetained(const GCObject &o) const;
 
-    void TraceImpl(GCObject *o, void **slot) override;
+    void TraceImpl(GCRefPtrBase &ptr) override;
     void TraceObjectSet(GCObjectSetCallback &callback) override;
 
     GCSession &m_session;

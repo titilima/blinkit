@@ -34,8 +34,11 @@ GCCleanupVisitor::~GCCleanupVisitor(void)
         auto it = m_session.MemberObjects.find(o);
         ASSERT(m_session.MemberObjects.end() != it);
 
-        for (void **slot : it->second)
-            *slot = nullptr;
+        for (GCRefPtrBase *slot : it->second)
+        {
+            ASSERT(slot->m_object == o);
+            slot->m_object = nullptr;
+        }
         objectsToCleanup.emplace_back(o);
 
         m_session.MemberObjects.erase(it);
@@ -54,8 +57,9 @@ bool GCCleanupVisitor::IsFullyRetained(const GCObject &o) const
     return true;
 }
 
-void GCCleanupVisitor::TraceImpl(GCObject *o, void **)
+void GCCleanupVisitor::TraceImpl(GCRefPtrBase &ptr)
 {
+    GCObject *o = ptr.m_object;
     if (!zed::key_exists(m_session.MemberObjects, o))
         return;
 

@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <stack>
 #include "blinkit/gc/lifecycle_data_manager.h"
 
 namespace BlinKit {
@@ -32,9 +33,7 @@ public:
     static void UntrackObject(GCObject &o);
 #endif
 
-    void SetGlobalObject(GCObject &o);
-    void RetainPersistentObject(GCObject &o, void **slot);
-    void ReleasePersistentObject(GCObject &o, void **slot);
+    void AddGlobalFinalizer(const std::function<void()> &finalizer) { m_globalFinalizers.emplace(finalizer); }
 
     static void RegisterLifecycleObserver(GCObject *o, GCLifecycleObserver *ob);
     static void RemoveLifecycleObserverForObject(GCObject *o, GCLifecycleObserver *ob);
@@ -48,14 +47,12 @@ private:
     ~GCHeap(void);
 
     void CleanupGlobalObjects(void);
-    void CleanupPersistentObjects(void);
 
 #ifndef NDEBUG
     std::unordered_set<GCObject *> m_allObjects;
 #endif
     LifecycleDataManager m_lifecycleDataManager;
-    std::unordered_set<GCObject *> m_globalObjects;
-    std::unordered_map<GCObject *, std::unordered_set<void **>> m_persistentObjects;
+    std::stack<std::function<void()>> m_globalFinalizers;
 };
 
 } // namespace BlinKit

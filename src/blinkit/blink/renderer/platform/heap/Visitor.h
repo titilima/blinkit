@@ -13,9 +13,8 @@
 #ifndef BLINKIT_BLINKIT_VISITOR_H
 #define BLINKIT_BLINKIT_VISITOR_H
 
-#include <unordered_set>
-#include "blinkit/blink/renderer/platform/heap/member.h"
 #include "blinkit/gc/gc_def.h"
+#include "blinkit/blink/renderer/platform/heap/member.h"
 
 namespace BlinKit {
 template <class T>
@@ -41,16 +40,10 @@ public:
             ASSERT(false); // BKTODO: Remove it later!
     }
     template <class T>
-    void trace(BlinKit::GCPtr<T> &ptr)
+    void trace(BlinKit::GCRefPtr<T> &ptr)
     {
         if (ptr)
-            TraceImpl(ptr.get(), reinterpret_cast<void **>(&ptr.m_object));
-    }
-    template <typename T>
-    void trace(BlinKit::GCMember<T> &m)
-    {
-        if (m)
-            TraceImpl(m.m_ptr, reinterpret_cast<void **>(&m.m_ptr));
+            TraceImpl(ptr);
     }
     template <typename T>
     void trace(BlinKit::GCObjectSet<T> &s)
@@ -91,8 +84,8 @@ public:
     }
 protected:
     Visitor(void) = default;
-    
-    virtual void TraceImpl(BlinKit::GCObject *o, void **slot) = 0; // BKTODO: Replace with BlinKit::GCPtrBase.
+
+    virtual void TraceImpl(BlinKit::GCRefPtrBase &ptr) = 0;
     virtual void TraceObjectSet(BlinKit::GCObjectSetCallback &callback) = 0;
 };
 
@@ -116,24 +109,6 @@ struct TracePolicy<std::unordered_map<K, T, H>>
     {
         for (auto &[_, v] : m)
             visitor->trace(v);
-    }
-};
-
-template <typename T>
-struct TracePolicy<std::unordered_set<GCMember<T>>>
-{
-    static void Impl(std::unordered_set<GCMember<T>> &s, blink::Visitor *visitor)
-    {
-        auto it = s.begin();
-        while (s.end() != it)
-        {
-            GCMember<T> m(*it);
-            visitor->trace(m);
-            if (!m)
-                it = s.erase(it);
-            else
-                ++it;
-        }
     }
 };
 

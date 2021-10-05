@@ -23,7 +23,7 @@ class GCTraceVisitor final : public blink::Visitor
 public:
     GCTraceVisitor(GCSession &session);
 private:
-    void TraceImpl(GCObject *o, void **slot) override;
+    void TraceImpl(GCRefPtrBase &ptr) override;
     void TraceObjectSet(GCObjectSetCallback &callback) override;
 
     GCSession &m_session;

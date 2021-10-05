@@ -20,7 +20,7 @@ namespace BlinKit {
 
 struct GCSession
 {
-    using Slots = std::unordered_set<void **>;
+    using Slots = std::unordered_set<GCRefPtrBase *>;
     GCObject *RootMember = nullptr;
     std::unordered_map<GCObject *, Slots> MemberObjects;
 };
