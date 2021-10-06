@@ -2381,10 +2381,8 @@ bool Node::IsRetainedInTree(void) const
 DEFINE_TRACE(Node)
 {
 #if ENABLE(OILPAN)
-#if 0 // BKTODO:
-    visitor->trace(m_parentOrShadowHostNode);
+    // BKTODO: visitor->trace(m_parentOrShadowHostNode);
     visitor->trace(m_previous);
-#endif
     visitor->trace(m_next);
 #if 0 // BKTODO:
     // rareData() and m_data.m_layoutObject share their storage. We have to trace

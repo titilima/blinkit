@@ -190,7 +190,7 @@ public:
     Element* parentElement() const;
     ContainerNode* parentElementOrShadowRoot() const;
     ContainerNode* parentElementOrDocumentFragment() const;
-    Node* previousSibling() const { return m_previous; }
+    Node* previousSibling() const { return m_previous.get(); }
     Node* nextSibling() const { return m_next.get(); }
     PassRefPtrWillBeRawPtr<NodeList> childNodes();
     Node* firstChild() const;
@@ -826,7 +826,7 @@ private:
     uint32_t m_nodeFlags;
     ContainerNode *m_parentOrShadowHostNode = nullptr;
     TreeScope *m_treeScope;
-    Node *m_previous = nullptr;
+    GCRefPtr<Node> m_previous;
     GCRefPtr<Node> m_next;
     // When a node has rare data we move the layoutObject into the rare data.
     union DataUnion {

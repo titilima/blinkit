@@ -84,7 +84,7 @@ public:
     ~ContainerNode() override;
 
     Node* firstChild() const { return m_firstChild.get(); }
-    Node* lastChild() const { return m_lastChild; }
+    Node* lastChild() const { return m_lastChild.get(); }
     bool hasChildren() const { return m_firstChild; }
 
     bool hasOneChild() const { return m_firstChild && !m_firstChild->nextSibling(); }
@@ -279,7 +279,7 @@ private:
     bool getLowerRightCorner(FloatPoint&) const;
 
     GCRefPtr<Node> m_firstChild;
-    Node *m_lastChild = nullptr;
+    GCRefPtr<Node> m_lastChild;
 };
 
 #if ENABLE(ASSERT)
