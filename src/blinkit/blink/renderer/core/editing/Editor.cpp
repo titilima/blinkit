@@ -1328,7 +1328,7 @@ void Editor::setMarkedTextMatchesAreHighlighted(bool flag)
 
 void Editor::respondToChangedSelection(const VisibleSelection& oldSelection, FrameSelection::SetSelectionOptions options)
 {
-    ASSERT(false); // BKTODO: spellChecker().respondToChangedSelection(oldSelection, options);
+    // BKTODO: spellChecker().respondToChangedSelection(oldSelection, options);
     frame().inputMethodController().cancelCompositionIfSelectionIsInvalid();
     notifyComponentsOnChangedSelection(oldSelection, options);
 }

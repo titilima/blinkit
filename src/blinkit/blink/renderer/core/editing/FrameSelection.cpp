@@ -895,13 +895,12 @@ bool FrameSelection::isInPasswordField() const
 
 void FrameSelection::notifyAccessibilityForSelectionChange()
 {
+#if 0 // BKTODO:
     if (selection().start().isNotNull() && selection().end().isNotNull()) {
-        ASSERT(false); // BKTODO:
-#if 0
         if (AXObjectCache* cache = m_frame->document()->existingAXObjectCache())
             cache->selectionChanged(selection().start().computeContainerNode());
-#endif
     }
+#endif
 }
 
 void FrameSelection::notifyCompositorForSelectionChange()
@@ -988,7 +987,7 @@ bool FrameSelection::isFocusedAndActive() const
 
 inline static bool shouldStopBlinkingDueToTypingCommand(LocalFrame* frame)
 {
-    ASSERT(false); // BKTODO: return frame->editor().lastEditCommand() && frame->editor().lastEditCommand()->shouldStopCaretBlinking();
+    ASSERT(nullptr == frame->editor().lastEditCommand()); // BKTODO: return frame->editor().lastEditCommand() && frame->editor().lastEditCommand()->shouldStopCaretBlinking();
     return false;
 }
 

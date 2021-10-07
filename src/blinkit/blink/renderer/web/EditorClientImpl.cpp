@@ -59,8 +59,7 @@ EditorClientImpl::~EditorClientImpl()
 
 void EditorClientImpl::respondToChangedSelection(LocalFrame* frame, SelectionType selectionType)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     WebLocalFrameImpl* webFrame = WebLocalFrameImpl::fromFrame(frame);
     if (webFrame->client())
         webFrame->client()->didChangeSelection(selectionType != RangeSelection);
