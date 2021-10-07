@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMWindowEventQueue.h
+// Description: DOMWindowEventQueue Class
+//      Author: Ziming Li
+//     Created: 2021-10-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All Rights Reserved.
  *
@@ -27,9 +38,9 @@
 #ifndef DOMWindowEventQueue_h
 #define DOMWindowEventQueue_h
 
+#include "blinkit/gc/gc_listed_set.h"
 #include "core/events/EventQueue.h"
 #include "wtf/HashSet.h"
-#include "wtf/ListHashSet.h"
 #include "wtf/OwnPtr.h"
 #include "wtf/RefCounted.h"
 
@@ -47,7 +58,7 @@ class ExecutionContext;
 
 class DOMWindowEventQueue final : DOMWINDOWEVENTQUEUE_BASE_CLASSES {
 public:
-    static PassRefPtrWillBeRawPtr<DOMWindowEventQueue> create(ExecutionContext*);
+    static GCUniquePtr<DOMWindowEventQueue> create(ExecutionContext*);
     ~DOMWindowEventQueue() override;
 
     // EventQueue
@@ -62,8 +73,8 @@ private:
     void pendingEventTimerFired();
     void dispatchEvent(PassRefPtrWillBeRawPtr<Event>);
 
-    OwnPtrWillBeMember<DOMWindowEventQueueTimer> m_pendingEventTimer;
-    WillBeHeapListHashSet<RefPtrWillBeMember<Event>, 16> m_queuedEvents;
+    GCUniquePtr<DOMWindowEventQueueTimer> m_pendingEventTimer;
+    BlinKit::GCListedSet<Event> m_queuedEvents;
     bool m_isClosed;
 
     friend class DOMWindowEventQueueTimer;

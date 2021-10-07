@@ -51,8 +51,8 @@
 #include "core/dom/FrameRequestCallback.h"
 // BKTODO: #include "core/dom/SandboxFlags.h"
 #include "core/editing/Editor.h"
-#if 0 // BKTODO:
 #include "core/events/DOMWindowEventQueue.h"
+#if 0 // BKTODO:
 #include "core/events/HashChangeEvent.h"
 #include "core/events/MessageEvent.h"
 #endif
@@ -357,12 +357,10 @@ void LocalDOMWindow::clearDocument()
 
 void LocalDOMWindow::clearEventQueue()
 {
-#if 0 // BKTODO:
     if (!m_eventQueue)
         return;
     m_eventQueue->close();
-    m_eventQueue.clear();
-#endif
+    m_eventQueue.reset();
 }
 
 void LocalDOMWindow::acceptLanguagesChanged()
@@ -406,7 +404,7 @@ PassRefPtrWillBeRawPtr<Document> LocalDOMWindow::installNewDocument(const String
     clearDocument();
 
     m_document = createDocument(mimeType, init, forceXHTML);
-    // BKTODO: m_eventQueue = DOMWindowEventQueue::create(m_document.get());
+    m_eventQueue = DOMWindowEventQueue::create(m_document.get());
     m_document->attach();
 
     if (!frame())
@@ -429,30 +427,25 @@ PassRefPtrWillBeRawPtr<Document> LocalDOMWindow::installNewDocument(const String
 
 EventQueue* LocalDOMWindow::eventQueue() const
 {
-    ASSERT(false); // BKTODO: return m_eventQueue.get();
-    return nullptr;
+    return m_eventQueue.get();
 }
 
 void LocalDOMWindow::enqueueWindowEvent(PassRefPtrWillBeRawPtr<Event> event)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+    GCGuard _(*event);
     if (!m_eventQueue)
         return;
     event->setTarget(this);
     m_eventQueue->enqueueEvent(event);
-#endif
 }
 
 void LocalDOMWindow::enqueueDocumentEvent(PassRefPtrWillBeRawPtr<Event> event)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+    GCGuard _(*event);
     if (!m_eventQueue)
         return;
     event->setTarget(m_document.get());
     m_eventQueue->enqueueEvent(event);
-#endif
 }
 
 void LocalDOMWindow::dispatchWindowLoadEvent()
@@ -509,7 +502,7 @@ LocalDOMWindow::~LocalDOMWindow()
 {
 #if ENABLE(OILPAN)
     // Cleared when detaching document.
-    // BKTODO: ASSERT(!m_eventQueue);
+    ASSERT(!m_eventQueue);
 #else
     ASSERT(m_hasBeenReset);
     ASSERT(m_document->isStopped());
@@ -1619,7 +1612,8 @@ DEFINE_TRACE(LocalDOMWindow)
     // BKTODO: visitor->trace(m_navigator);
     visitor->trace(m_media);
     // BKTODO: visitor->trace(m_applicationCache);
-    // BKTODO: visitor->trace(m_eventQueue);
+    if (m_eventQueue)
+        m_eventQueue->trace(visitor);
     visitor->trace(m_postMessageTimers);
     HeapSupplementable<LocalDOMWindow>::trace(visitor);
 #endif

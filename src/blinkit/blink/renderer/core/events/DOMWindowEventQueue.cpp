@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMWindowEventQueue.cpp
+// Description: DOMWindowEventQueue Class
+//      Author: Ziming Li
+//     Created: 2021-10-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All Rights Reserved.
  *
@@ -31,13 +42,15 @@
 #include "core/frame/SuspendableTimer.h"
 #include "core/inspector/InspectorInstrumentation.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 class DOMWindowEventQueueTimer final : public NoBaseWillBeGarbageCollectedFinalized<DOMWindowEventQueueTimer>, public SuspendableTimer {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(DOMWindowEventQueueTimer);
     WTF_MAKE_NONCOPYABLE(DOMWindowEventQueueTimer);
 public:
-    DOMWindowEventQueueTimer(DOMWindowEventQueue* eventQueue, ExecutionContext* context)
+    DOMWindowEventQueueTimer(DOMWindowEventQueue &eventQueue, ExecutionContext* context)
         : SuspendableTimer(context)
         , m_eventQueue(eventQueue)
     {
@@ -46,25 +59,27 @@ public:
     // Eager finalization is needed to promptly stop this timer object.
     // (see DOMTimer comment for more.)
     EAGERLY_FINALIZE();
+#if 0 // BKTODO:
     DEFINE_INLINE_VIRTUAL_TRACE()
     {
         visitor->trace(m_eventQueue);
         SuspendableTimer::trace(visitor);
     }
+#endif
 
 private:
-    virtual void fired() { m_eventQueue->pendingEventTimerFired(); }
+    virtual void fired() { m_eventQueue.pendingEventTimerFired(); }
 
-    RawPtrWillBeMember<DOMWindowEventQueue> m_eventQueue;
+    DOMWindowEventQueue &m_eventQueue;
 };
 
-PassRefPtrWillBeRawPtr<DOMWindowEventQueue> DOMWindowEventQueue::create(ExecutionContext* context)
+GCUniquePtr<DOMWindowEventQueue> DOMWindowEventQueue::create(ExecutionContext* context)
 {
-    return adoptRefWillBeNoop(new DOMWindowEventQueue(context));
+    return GCWrapUnique(new DOMWindowEventQueue(context));
 }
 
 DOMWindowEventQueue::DOMWindowEventQueue(ExecutionContext* context)
-    : m_pendingEventTimer(adoptPtrWillBeNoop(new DOMWindowEventQueueTimer(this, context)))
+    : m_pendingEventTimer(GCMakeUnique<DOMWindowEventQueueTimer>(*this, context))
     , m_isClosed(false)
 {
     m_pendingEventTimer->suspendIfNeeded();
@@ -77,7 +92,7 @@ DOMWindowEventQueue::~DOMWindowEventQueue()
 DEFINE_TRACE(DOMWindowEventQueue)
 {
 #if ENABLE(OILPAN)
-    visitor->trace(m_pendingEventTimer);
+    // BKTODO: visitor->trace(m_pendingEventTimer);
     visitor->trace(m_queuedEvents);
 #endif
     EventQueue::trace(visitor);
@@ -91,8 +106,12 @@ bool DOMWindowEventQueue::enqueueEvent(PassRefPtrWillBeRawPtr<Event> event)
     ASSERT(event->target());
     InspectorInstrumentation::didEnqueueEvent(event->target(), event.get());
 
+#if 0 // BKTODO:
     bool wasAdded = m_queuedEvents.add(event).isNewEntry;
     ASSERT_UNUSED(wasAdded, wasAdded); // It should not have already been in the list.
+#else
+    m_queuedEvents.insert(event);
+#endif
 
     if (!m_pendingEventTimer->isActive())
         m_pendingEventTimer->startOneShot(0, BLINK_FROM_HERE);
@@ -102,7 +121,9 @@ bool DOMWindowEventQueue::enqueueEvent(PassRefPtrWillBeRawPtr<Event> event)
 
 bool DOMWindowEventQueue::cancelEvent(Event* event)
 {
-    WillBeHeapListHashSet<RefPtrWillBeMember<Event>, 16>::iterator it = m_queuedEvents.find(event);
+    ASSERT(false); // BKTODO:
+#if 0
+    auto it = m_queuedEvents.find(event);
     bool found = it != m_queuedEvents.end();
     if (found) {
         InspectorInstrumentation::didRemoveEvent(event->target(), event);
@@ -111,12 +132,16 @@ bool DOMWindowEventQueue::cancelEvent(Event* event)
     if (m_queuedEvents.isEmpty())
         m_pendingEventTimer->stop();
     return found;
+#else
+    return false;
+#endif
 }
 
 void DOMWindowEventQueue::close()
 {
     m_isClosed = true;
     m_pendingEventTimer->stop();
+#if 0 // BKTODO:
     if (InspectorInstrumentation::hasFrontends()) {
         for (const auto& queuedEvent : m_queuedEvents) {
             RefPtrWillBeRawPtr<Event> event = queuedEvent;
@@ -124,25 +149,29 @@ void DOMWindowEventQueue::close()
                 InspectorInstrumentation::didRemoveEvent(event->target(), event.get());
         }
     }
+#endif
     m_queuedEvents.clear();
 }
 
 void DOMWindowEventQueue::pendingEventTimerFired()
 {
     ASSERT(!m_pendingEventTimer->isActive());
-    ASSERT(!m_queuedEvents.isEmpty());
+    ASSERT(!m_queuedEvents.empty());
 
     // Insert a marker for where we should stop.
     ASSERT(!m_queuedEvents.contains(nullptr));
+#if 0 // BKTODO:
     bool wasAdded = m_queuedEvents.add(nullptr).isNewEntry;
     ASSERT_UNUSED(wasAdded, wasAdded); // It should not have already been in the list.
+#else
+    m_queuedEvents.insert(nullptr);
+#endif
 
-    RefPtrWillBeRawPtr<DOMWindowEventQueue> protector(this);
-
-    while (!m_queuedEvents.isEmpty()) {
-        WillBeHeapListHashSet<RefPtrWillBeMember<Event>, 16>::iterator iter = m_queuedEvents.begin();
-        RefPtrWillBeRawPtr<Event> event = *iter;
-        m_queuedEvents.remove(iter);
+    while (!m_queuedEvents.empty())
+    {
+        auto iter = m_queuedEvents.begin();
+        GCRefPtr<Event> event = *iter;
+        m_queuedEvents.erase(iter);
         if (!event)
             break;
         dispatchEvent(event.get());

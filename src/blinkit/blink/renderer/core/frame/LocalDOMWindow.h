@@ -288,7 +288,7 @@ private:
 
     // BKTODO: mutable PersistentWillBeMember<ApplicationCache> m_applicationCache;
 
-    // BKTODO: RefPtrWillBeMember<DOMWindowEventQueue> m_eventQueue;
+    GCUniquePtr<DOMWindowEventQueue> m_eventQueue;
     // BKTODO: RefPtr<SerializedScriptValue> m_pendingStateObject;
 
     WillBeHeapHashSet<OwnPtrWillBeMember<PostMessageTimer>> m_postMessageTimers;
