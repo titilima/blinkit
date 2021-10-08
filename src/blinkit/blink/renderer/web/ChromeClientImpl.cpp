@@ -1108,8 +1108,7 @@ void ChromeClientImpl::didChangeValueInTextField(HTMLFormControlElement& element
 
 void ChromeClientImpl::didEndEditingOnTextField(HTMLInputElement& inputElement)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     WebLocalFrameImpl* webframe = WebLocalFrameImpl::fromFrame(inputElement.document().frame());
     if (webframe->autofillClient())
         webframe->autofillClient()->textFieldDidEndEditing(WebInputElement(&inputElement));
