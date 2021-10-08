@@ -16,13 +16,30 @@
 #include "blinkit/win/bk_bitmap.h"
 #include "blinkit/win/message_task.h"
 #include "blinkit/win/view_store.h"
-#include "third_party/zed/include/zed/string/conv.hpp"
+#include "third_party/zed/include/zed/log.hpp"
 
 using namespace blink;
 
 namespace BlinKit {
 
 static ViewStore g_viewStore;
+
+#ifndef NDEBUG
+class MessageLogger
+{
+public:
+    MessageLogger(const UINT msg) : m_msg(msg)
+    {
+        ZLOG("ProcessWindowMessage begin: {}", m_msg);
+    }
+    ~MessageLogger(void)
+    {
+        ZLOG("ProcessWindowMessage end: {}", m_msg);
+    }
+private:
+    const UINT m_msg;
+};
+#endif
 
 static PageVisibilityState GetPageVisibilityState(bool isWindowVisible)
 {
@@ -313,6 +330,7 @@ SkBitmap WinWebView::PrepareBitmapForCanvas(const IntSize &size)
 
 bool WinWebView::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
 {
+    // MessageLogger _(Msg);
     if (WM_NCCREATE == Msg)
     {
         *result = HANDLE_WM_NCCREATE(hWnd, wParam, lParam, OnNCCreate);
