@@ -37,6 +37,8 @@
 #include "core/editing/FrameSelection.h"
 
 #include "bindings/core/v8/ExceptionState.h"
+#include "blinkit/ui/rendering_scheduler.h"
+#include "blinkit/ui/web_view_impl.h"
 #include "core/HTMLNames.h"
 // BKTODO: #include "core/InputTypeNames.h"
 #include "core/css/StylePropertySet.h"
@@ -91,6 +93,8 @@
 #include <stdio.h>
 
 #define EDIT_DEBUG 0
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -1074,6 +1078,8 @@ void FrameSelection::caretBlinkTimerFired(Timer<FrameSelection>*)
     ASSERT(isCaret());
     if (isCaretBlinkingSuspended() && m_shouldPaintCaret)
         return;
+
+    ScopedRenderingScheduler _(WebViewImpl::From(*m_frame));
     m_shouldPaintCaret = !m_shouldPaintCaret;
     setCaretRectNeedsUpdate();
 }
