@@ -4050,6 +4050,9 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebImage.cpp">
       <Filter>blink\renderer\platform\exported</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\DOMWindowEventQueue.cpp">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -6223,6 +6226,96 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\VDMXParser.h">
       <Filter>blink\renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\AnimationEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\AnimationPlayerEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\BeforeTextInsertedEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\BeforeUnloadEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\DOMWindowEventQueue.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\DragEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventDispatcher.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventDispatchMediator.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventFactory.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventListener.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventListenerMap.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventQueue.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventSender.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\FocusEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\GenericEventQueue.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\KeyboardEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\MouseEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\MouseRelatedEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\PageTransitionEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\RegisteredEventListener.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\ScopedEventQueue.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\TextEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\TextEventInputType.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\TransitionEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\TreeScopeEventContext.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\UIEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\UIEventWithKeyState.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\WheelEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\WindowEventContext.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_listed_set.h">
+      <Filter>gc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
