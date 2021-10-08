@@ -106,7 +106,8 @@ void MessageLoop::InstallTimer(TimerData *timerData)
         NewTimer();
     m_tasks[slot] = std::move(timerData->task);
 
-    base::TimeDelta delta = base::TimeTicks::Now() - timerData->fireTick;
+    base::TimeDelta delta = timerData->fireTick - base::TimeTicks::Now();
+
     LARGE_INTEGER delay = { 0 };
     delay.QuadPart -= delta.InMicroseconds() * 10;
     SetWaitableTimer(m_timers.at(slot), &delay, 0, nullptr, nullptr, FALSE);
