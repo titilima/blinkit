@@ -31,6 +31,7 @@ finish
 focus
 focusin
 focusout
+input
 invalid
 keydown
 keypress
