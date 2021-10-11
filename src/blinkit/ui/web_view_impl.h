@@ -71,6 +71,7 @@ public:
     void invalidateRect(const blink::IntRect &rect);
     void layoutUpdated(blink::LocalFrame *frame);
     void scheduleAnimation(void);
+    bool SelectionBounds(blink::IntRect &anchor, blink::IntRect &focus) const;
     void UpdateAndPaint(void);
     void updatePageDefinedViewportConstraints(const blink::ViewportDescription &description);
     void UpdateLayerTreeViewport(void);

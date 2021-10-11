@@ -12,6 +12,7 @@
 #include "./web_view_impl.h"
 
 #include "blinkit/app/app_impl.h"
+#include "blinkit/blink/renderer/core/editing/Editor.h"
 #include "blinkit/blink/renderer/core/editing/FrameSelection.h"
 #include "blinkit/blink/renderer/core/editing/InputMethodController.h"
 #include "blinkit/blink/renderer/core/events/UIEventWithKeyState.h"
@@ -33,7 +34,6 @@
 #include "chromium/base/time/time.h"
 #include "third_party/zed/include/zed/float.hpp"
 #if 0 // BKTODO:
-#include "blinkit/blink/renderer/core/editing/editor.h"
 #include "blinkit/blink/renderer/core/frame/browser_controls.h"
 #include "blinkit/blink/renderer/core/frame/page_scale_constraints_set.h"
 #include "blinkit/blink/renderer/core/frame/viewport_data.h"
@@ -1015,6 +1015,33 @@ bool WebViewImpl::ScrollViewWithKeyboard(int keyCode, int modifiers)
     if (m_frame)
         return m_frame->eventHandler().bubblingScroll(toScrollDirection(scrollDirectionPhysical), scrollGranularity);
     return false;
+}
+
+bool WebViewImpl::SelectionBounds(IntRect &anchor, IntRect &focus) const
+{
+    if (!m_frame)
+        return false;
+
+    FrameSelection &selection = m_frame->selection();
+    if (selection.isCaret())
+    {
+        anchor = focus = selection.absoluteCaretBounds();
+    }
+    else
+    {
+        const EphemeralRange selectedRange = selection.selection().toNormalizedEphemeralRange();
+        if (selectedRange.isNull())
+            return false;
+        anchor = m_frame->editor().firstRectForRange(EphemeralRange(selectedRange.startPosition()));
+        focus = m_frame->editor().firstRectForRange(EphemeralRange(selectedRange.endPosition()));
+    }
+
+    anchor = m_frame->view()->contentsToViewport(anchor);
+    focus = m_frame->view()->contentsToViewport(focus);
+
+    if (!selection.selection().isBaseFirst())
+        std::swap(anchor, focus);
+    return true;
 }
 
 void WebViewImpl::SendResizeEventAndRepaint(void)
