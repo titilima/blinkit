@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PendingSelection.h
+// Description: PendingSelection Class
+//      Author: Ziming Li
+//     Created: 2021-10-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2006 Apple Computer, Inc.
@@ -32,19 +43,16 @@ class Document;
 class FrameSelection;
 class LayoutView;
 
-class PendingSelection final : public NoBaseWillBeGarbageCollected<PendingSelection> {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(PendingSelection);
+class PendingSelection final {
 public:
-    static PassOwnPtrWillBeRawPtr<PendingSelection> create(FrameSelection& frameSelection)
+    static std::unique_ptr<PendingSelection> create(FrameSelection& frameSelection)
     {
-        return adoptPtrWillBeNoop(new PendingSelection(frameSelection));
+        return zed::wrap_unique(new PendingSelection(frameSelection));
     }
 
     bool hasPendingSelection() const { return m_hasPendingSelection; }
     void setHasPendingSelection() { m_hasPendingSelection = true; }
     void commit(LayoutView&);
-
-    DECLARE_TRACE();
 
 private:
     PendingSelection(FrameSelection&);
@@ -56,7 +64,7 @@ private:
     template <typename Strategy>
     void commitAlgorithm(LayoutView&);
 
-    RawPtrWillBeMember<FrameSelection> m_frameSelection;
+    FrameSelection &m_frameSelection;
     bool m_hasPendingSelection : 1;
 };
 

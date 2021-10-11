@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PendingSelection.cpp
+// Description: PendingSelection Class
+//      Author: Ziming Li
+//     Created: 2021-10-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
@@ -31,14 +42,14 @@
 namespace blink {
 
 PendingSelection::PendingSelection(FrameSelection& frameSelection)
-    : m_frameSelection(&frameSelection)
+    : m_frameSelection(frameSelection)
     , m_hasPendingSelection(false)
 {
 }
 
 const VisibleSelection& PendingSelection::visibleSelection() const
 {
-    return m_frameSelection->selection();
+    return m_frameSelection.selection();
 }
 
 template <typename Strategy>
@@ -64,7 +75,7 @@ VisibleSelectionTemplate<Strategy> PendingSelection::calcVisibleSelectionAlgorit
     SelectionType selectionType = originalSelection.selectionType();
     const TextAffinity affinity = originalSelection.affinity();
 
-    bool paintBlockCursor = m_frameSelection->shouldShowBlockCursor() && selectionType == SelectionType::CaretSelection && !isLogicalEndOfLine(createVisiblePosition(end, affinity));
+    bool paintBlockCursor = m_frameSelection.shouldShowBlockCursor() && selectionType == SelectionType::CaretSelection && !isLogicalEndOfLine(createVisiblePosition(end, affinity));
     VisibleSelectionTemplate<Strategy> selection;
     if (enclosingTextFormControl(start.computeContainerNode())) {
         // TODO(yosin) We should use |PositionMoveType::Character| to avoid
@@ -92,7 +103,7 @@ void PendingSelection::commitAlgorithm(LayoutView& layoutView)
     ASSERT(!layoutView.needsLayout());
     m_hasPendingSelection = false;
 
-    const VisibleSelectionTemplate<Strategy> originalSelection = m_frameSelection->visibleSelection<Strategy>();
+    const VisibleSelectionTemplate<Strategy> originalSelection = m_frameSelection.visibleSelection<Strategy>();
 
     // Skip if pending VisibilePositions became invalid before we reach here.
     if (!isSelectionInDocument(originalSelection, layoutView.document()))
@@ -142,11 +153,6 @@ void PendingSelection::commit(LayoutView& layoutView)
     if (RuntimeEnabledFeatures::selectionForComposedTreeEnabled())
         return commitAlgorithm<EditingInComposedTreeStrategy>(layoutView);
     commitAlgorithm<EditingStrategy>(layoutView);
-}
-
-DEFINE_TRACE(PendingSelection)
-{
-    visitor->trace(m_frameSelection);
 }
 
 } // namespace blink
