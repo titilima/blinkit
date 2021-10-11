@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FrameSelection.h
+// Description: FrameSelection Class
+//      Author: Ziming Li
+//     Created: 2021-10-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -64,9 +75,8 @@ enum RevealExtentOption {
 
 enum class SelectionDirectionalMode { NonDirectional, Directional };
 
-class CORE_EXPORT FrameSelection final : public NoBaseWillBeGarbageCollectedFinalized<FrameSelection>, private CaretBase {
+class CORE_EXPORT FrameSelection final : private CaretBase {
     WTF_MAKE_NONCOPYABLE(FrameSelection);
-    USING_FAST_MALLOC_WILL_BE_REMOVED(FrameSelection);
 public:
     static std::unique_ptr<FrameSelection> create(LocalFrame* frame = nullptr)
     {
@@ -177,7 +187,7 @@ public:
 
     // If this FrameSelection has a logical range which is still valid, this function return its clone. Otherwise,
     // the return value from underlying VisibleSelection's firstRange() is returned.
-    PassRefPtrWillBeRawPtr<Range> firstRange() const;
+    GCRefPtr<Range> firstRange() const;
 
     void nodeWillBeRemoved(Node&);
     void didUpdateCharacterData(CharacterData*, unsigned offset, unsigned oldLength, unsigned newLength);
@@ -241,8 +251,6 @@ public:
     bool shouldShowBlockCursor() const { return m_shouldShowBlockCursor; }
     void setShouldShowBlockCursor(bool);
 
-    DECLARE_VIRTUAL_TRACE();
-
 private:
     friend class FrameSelectionTest;
 
@@ -288,9 +296,9 @@ private:
 
     GranularityStrategy* granularityStrategy();
 
-    RawPtrWillBeMember<LocalFrame> m_frame;
-    const OwnPtrWillBeMember<PendingSelection> m_pendingSelection;
-    const OwnPtrWillBeMember<SelectionEditor> m_selectionEditor;
+    LocalFrame *m_frame;
+    const std::unique_ptr<PendingSelection> m_pendingSelection;
+    const std::unique_ptr<SelectionEditor> m_selectionEditor;
 
     // Used to store base before the adjustment at bidi boundary
     VisiblePosition m_originalBase;
@@ -301,7 +309,7 @@ private:
     LayoutRect m_previousCaretRect;
     CaretVisibility m_previousCaretVisibility;
 
-    RefPtrWillBeMember<EditingStyle> m_typingStyle;
+    GCRefPtr<EditingStyle> m_typingStyle;
 
     Timer<FrameSelection> m_caretBlinkTimer;
 

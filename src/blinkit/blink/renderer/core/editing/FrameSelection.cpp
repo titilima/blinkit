@@ -40,7 +40,7 @@
 #include "blinkit/ui/rendering_scheduler.h"
 #include "blinkit/ui/web_view_impl.h"
 #include "core/HTMLNames.h"
-// BKTODO: #include "core/InputTypeNames.h"
+#include "core/InputTypeNames.h"
 #include "core/css/StylePropertySet.h"
 // BKTODO: #include "core/dom/AXObjectCache.h"
 #include "core/dom/CharacterData.h"
@@ -59,7 +59,7 @@
 #include "core/editing/SelectionEditor.h"
 #include "core/editing/TextAffinity.h"
 #include "core/editing/VisibleUnits.h"
-// BKTODO: #include "core/editing/commands/TypingCommand.h"
+#include "core/editing/commands/TypingCommand.h"
 #include "core/editing/iterators/TextIterator.h"
 #include "core/editing/serializers/Serialization.h"
 // BKTODO: #include "core/editing/spellcheck/SpellChecker.h"
@@ -354,7 +354,6 @@ void FrameSelection::setSelectionAlgorithm(const VisibleSelectionTemplate<Strate
     // Always clear the x position used for vertical arrow navigation.
     // It will be restored by the vertical arrow navigation code if necessary.
     m_selectionEditor->resetXPosForVerticalArrowNavigation();
-    RefPtrWillBeRawPtr<LocalFrame> protector(m_frame.get());
     // This may dispatch a synchronous focus-related events.
     selectFrameElementInParentIfFullySelected();
     notifyLayoutObjectOfSelectionChange(userTriggered);
@@ -885,7 +884,7 @@ bool FrameSelection::setSelectedRange(const EphemeralRange& range, TextAffinity 
     return m_selectionEditor->setSelectedRange(range, affinity, directional, options);
 }
 
-PassRefPtrWillBeRawPtr<Range> FrameSelection::firstRange() const
+GCRefPtr<Range> FrameSelection::firstRange() const
 {
     return m_selectionEditor->firstRange();
 }
@@ -893,8 +892,7 @@ PassRefPtrWillBeRawPtr<Range> FrameSelection::firstRange() const
 bool FrameSelection::isInPasswordField() const
 {
     HTMLTextFormControlElement* textControl = enclosingTextFormControl(start());
-    ASSERT(false); // BKTODO: return isHTMLInputElement(textControl) && toHTMLInputElement(textControl)->type() == InputTypeNames::password;
-    return false;
+    return isHTMLInputElement(textControl) && toHTMLInputElement(textControl)->type() == InputTypeNames::password;
 }
 
 void FrameSelection::notifyAccessibilityForSelectionChange()
@@ -991,8 +989,7 @@ bool FrameSelection::isFocusedAndActive() const
 
 inline static bool shouldStopBlinkingDueToTypingCommand(LocalFrame* frame)
 {
-    ASSERT(nullptr == frame->editor().lastEditCommand()); // BKTODO: return frame->editor().lastEditCommand() && frame->editor().lastEditCommand()->shouldStopCaretBlinking();
-    return false;
+    return frame->editor().lastEditCommand() && frame->editor().lastEditCommand()->shouldStopCaretBlinking();
 }
 
 bool FrameSelection::isAppearanceDirty() const
@@ -1337,17 +1334,6 @@ void FrameSelection::showTreeForThis() const
 }
 
 #endif
-
-DEFINE_TRACE(FrameSelection)
-{
-    visitor->trace(m_frame);
-    visitor->trace(m_pendingSelection);
-    visitor->trace(m_selectionEditor);
-    visitor->trace(m_originalBase);
-    visitor->trace(m_originalBaseInComposedTree);
-    visitor->trace(m_previousCaretNode);
-    visitor->trace(m_typingStyle);
-}
 
 void FrameSelection::setCaretRectNeedsUpdate()
 {
