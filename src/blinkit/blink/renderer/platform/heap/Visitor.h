@@ -87,6 +87,9 @@ protected:
 
     virtual void TraceImpl(BlinKit::GCRefPtrBase &ptr) = 0;
     virtual void TraceObjectSet(BlinKit::GCObjectSetCallback &callback) = 0;
+private:
+    template <class T, typename D>
+    void trace(const std::unique_ptr<T, D> &) = delete;
 };
 
 } // namespace blink

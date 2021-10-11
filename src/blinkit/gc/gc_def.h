@@ -225,6 +225,7 @@ class GCRefPtr final : public GCRefPtrBase
 {
 public:
     explicit GCRefPtr(T *p = nullptr) : GCRefPtrBase(p) {}
+    GCRefPtr(std::nullptr_t) : GCRefPtrBase(nullptr) {}
 
     template <class U>
     GCRefPtr(const WTF::RawPtr<U> &ptr) : GCRefPtr(ptr.get()) {}
@@ -266,6 +267,12 @@ public:
 
     T* release(void) { return GCRefPtrBase::release_to<T>(); }
 };
+
+template <class T>
+GCRefPtr<T> GCWrapShared(T *p)
+{
+    return GCRefPtr<T>(p);
+}
 
 /**
  * GCUniquePtr Stuff
