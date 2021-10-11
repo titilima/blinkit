@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSStyleDeclaration.h
+// Description: CSSStyleDeclaration Class
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2008, 2012 Apple Inc. All rights reserved.
@@ -35,7 +46,7 @@ class CSSValue;
 class ExceptionState;
 class MutableStylePropertySet;
 
-class CORE_EXPORT CSSStyleDeclaration : public NoBaseWillBeGarbageCollectedFinalized<CSSStyleDeclaration>, public ScriptWrappable {
+class CORE_EXPORT CSSStyleDeclaration : public BlinKit::GCObject, public ScriptWrappable {
     DEFINE_WRAPPERTYPEINFO();
     WTF_MAKE_NONCOPYABLE(CSSStyleDeclaration); USING_FAST_MALLOC_WILL_BE_REMOVED(CSSStyleDeclaration);
 public:
@@ -80,6 +91,8 @@ public:
 
 protected:
     CSSStyleDeclaration() { }
+private:
+    BlinKit::GCObject* ObjectForGC(void) final { return this; }
 };
 
 } // namespace blink

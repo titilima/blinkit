@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PropertySetCSSStyleDeclaration.cpp
+// Description: PropertySetCSSStyleDeclaration Classes
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All rights reserved.
@@ -124,18 +135,6 @@ bool StyleAttributeMutationScope::s_shouldNotifyInspector = false;
 bool StyleAttributeMutationScope::s_shouldDeliver = false;
 
 } // namespace
-
-#if !ENABLE(OILPAN)
-void PropertySetCSSStyleDeclaration::ref()
-{
-    m_propertySet->ref();
-}
-
-void PropertySetCSSStyleDeclaration::deref()
-{
-    m_propertySet->deref();
-}
-#endif
 
 DEFINE_TRACE(PropertySetCSSStyleDeclaration)
 {
@@ -317,36 +316,11 @@ DEFINE_TRACE(AbstractPropertySetCSSStyleDeclaration)
 
 StyleRuleCSSStyleDeclaration::StyleRuleCSSStyleDeclaration(MutableStylePropertySet& propertySetArg, CSSRule* parentRule)
     : PropertySetCSSStyleDeclaration(propertySetArg)
-#if !ENABLE(OILPAN)
-    , m_refCount(1)
-#endif
     , m_parentRule(parentRule)
 {
-#if !ENABLE(OILPAN)
-    m_propertySet->ref();
-#endif
 }
 
-StyleRuleCSSStyleDeclaration::~StyleRuleCSSStyleDeclaration()
-{
-#if !ENABLE(OILPAN)
-    m_propertySet->deref();
-#endif
-}
-
-#if !ENABLE(OILPAN)
-void StyleRuleCSSStyleDeclaration::ref()
-{
-    ++m_refCount;
-}
-
-void StyleRuleCSSStyleDeclaration::deref()
-{
-    ASSERT(m_refCount);
-    if (!--m_refCount)
-        delete this;
-}
-#endif
+StyleRuleCSSStyleDeclaration::~StyleRuleCSSStyleDeclaration(void) = default;
 
 void StyleRuleCSSStyleDeclaration::willMutate()
 {
@@ -368,13 +342,7 @@ CSSStyleSheet* StyleRuleCSSStyleDeclaration::parentStyleSheet() const
 
 void StyleRuleCSSStyleDeclaration::reattach(MutableStylePropertySet& propertySet)
 {
-#if !ENABLE(OILPAN)
-    m_propertySet->deref();
-#endif
     m_propertySet = &propertySet;
-#if !ENABLE(OILPAN)
-    m_propertySet->ref();
-#endif
 }
 
 DEFINE_TRACE(StyleRuleCSSStyleDeclaration)
@@ -405,24 +373,6 @@ void InlineCSSStyleDeclaration::didMutate(MutationType type)
 CSSStyleSheet* InlineCSSStyleDeclaration::parentStyleSheet() const
 {
     return m_parentElement ? &m_parentElement->document().elementSheet() : nullptr;
-}
-
-#if !ENABLE(OILPAN)
-void InlineCSSStyleDeclaration::ref()
-{
-    m_parentElement->ref();
-}
-
-void InlineCSSStyleDeclaration::deref()
-{
-    m_parentElement->deref();
-}
-#endif
-
-DEFINE_TRACE(InlineCSSStyleDeclaration)
-{
-    visitor->trace(m_parentElement);
-    AbstractPropertySetCSSStyleDeclaration::trace(visitor);
 }
 
 } // namespace blink

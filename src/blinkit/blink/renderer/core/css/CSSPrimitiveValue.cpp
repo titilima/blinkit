@@ -167,38 +167,13 @@ bool CSSPrimitiveValue::colorIsDerivedFromElement() const
     }
 }
 
-// BKTODO: using CSSTextCache = WillBePersistentHeapHashMap<RawPtrWillBeWeakMember<const CSSPrimitiveValue>, String>;
+using CSSTextCache = std::unordered_map<const CSSPrimitiveValue *, String>;
 
-#if ENABLE(OILPAN) && defined(LEAK_SANITIZER)
-
-namespace {
-// With LSan, wrap the persistent cache so that the registration of the
-// (per-thread) static reference can be done.
-class CSSTextCacheWrapper {
-public:
-    CSSTextCacheWrapper()
-    {
-        m_cache.registerAsStaticReference();
-    }
-
-    operator CSSTextCache&() { return m_cache; }
-
-private:
-    CSSTextCache m_cache;
-};
-
-}
-#else
-// BKTODO: using CSSTextCacheWrapper = CSSTextCache;
-#endif
-
-#if 0 // BKTODO:
 static CSSTextCache& cssTextCache()
 {
-    DEFINE_THREAD_SAFE_STATIC_LOCAL(ThreadSpecific<CSSTextCacheWrapper>, cache, new ThreadSpecific<CSSTextCacheWrapper>);
-    return *cache;
+    static CSSTextCache s_cache;
+    return s_cache;
 }
-#endif
 
 CSSPrimitiveValue::UnitType CSSPrimitiveValue::typeWithCalcResolved() const
 {
@@ -381,11 +356,11 @@ CSSPrimitiveValue::~CSSPrimitiveValue()
     case UnitType::ValueID:
         break;
     }
+#endif
     if (m_hasCachedCSSText) {
-        cssTextCache().remove(this);
+        cssTextCache().erase(this);
         m_hasCachedCSSText = false;
     }
-#endif
 }
 
 double CSSPrimitiveValue::computeSeconds() const
@@ -753,11 +728,9 @@ const char* CSSPrimitiveValue::unitTypeToString(UnitType type)
 String CSSPrimitiveValue::customCSSText() const
 {
     if (m_hasCachedCSSText) {
-        ASSERT(false); // BKTODO:
-#if 0
-        ASSERT(cssTextCache().contains(this));
-        return cssTextCache().get(this);
-#endif
+        auto it = cssTextCache().find(this);
+        ASSERT(cssTextCache().end() != it);
+        return it->second;
     }
 
     String text;
@@ -812,11 +785,8 @@ String CSSPrimitiveValue::customCSSText() const
         break;
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
-    ASSERT(!cssTextCache().contains(this));
-    cssTextCache().set(this, text);
-#endif
+    ASSERT(!zed::key_exists(cssTextCache(), this));
+    cssTextCache().emplace(this, text);
     m_hasCachedCSSText = true;
     return text;
 }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSViewportRule.h
+// Description: CSSViewportRule Class
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Intel Corporation. All rights reserved.
  * Copyright (C) 2012 Apple Inc. All rights reserved.
@@ -62,7 +73,7 @@ private:
     CSSRule::Type type() const override { return VIEWPORT_RULE; }
 
     RefPtrWillBeMember<StyleRuleViewport> m_viewportRule;
-    mutable RefPtrWillBeMember<StyleRuleCSSStyleDeclaration> m_propertiesCSSOMWrapper;
+    mutable GCRefPtr<StyleRuleCSSStyleDeclaration> m_propertiesCSSOMWrapper;
 };
 
 DEFINE_CSS_RULE_TYPE_CASTS(CSSViewportRule, VIEWPORT_RULE);

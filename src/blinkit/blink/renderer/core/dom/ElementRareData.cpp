@@ -59,7 +59,7 @@ struct SameSizeAsElementRareData : NodeRareData {
 CSSStyleDeclaration& ElementRareData::ensureInlineCSSStyleDeclaration(Element* ownerElement)
 {
     if (!m_cssomWrapper)
-        m_cssomWrapper = adoptPtrWillBeNoop(new InlineCSSStyleDeclaration(ownerElement));
+        m_cssomWrapper = GCWrapShared(new InlineCSSStyleDeclaration(ownerElement));
     return *m_cssomWrapper;
 }
 
@@ -80,7 +80,7 @@ DEFINE_TRACE_AFTER_DISPATCH(ElementRareData)
     visitor->trace(m_attrNodeList);
 #endif
     visitor->trace(m_elementAnimations);
-    visitor->trace(m_cssomWrapper);
+    // BKTODO: visitor->trace(m_cssomWrapper);
     visitor->trace(m_customElementDefinition);
     visitor->trace(m_generatedBefore);
     visitor->trace(m_generatedAfter);

@@ -160,7 +160,7 @@ private:
     GCUniquePtr<ElementShadow> m_shadow;
     OwnPtrWillBeMember<NamedNodeMap> m_attributeMap;
     OwnPtrWillBeMember<AttrNodeList> m_attrNodeList;
-    OwnPtrWillBeMember<InlineCSSStyleDeclaration> m_cssomWrapper;
+    GCRefPtr<InlineCSSStyleDeclaration> m_cssomWrapper;
     OwnPtr<CompositorProxiedPropertySet> m_proxiedProperties;
 
     PersistentWillBeMember<ElementAnimations> m_elementAnimations;

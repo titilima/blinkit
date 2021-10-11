@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PropertySetCSSStyleDeclaration.h
+// Description: PropertySetCSSStyleDeclaration Classes
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -27,8 +38,6 @@
 #define PropertySetCSSStyleDeclaration_h
 
 #include "core/css/CSSStyleDeclaration.h"
-#include "wtf/HashMap.h"
-#include "wtf/OwnPtr.h"
 
 namespace blink {
 
@@ -77,32 +86,20 @@ class PropertySetCSSStyleDeclaration : public AbstractPropertySetCSSStyleDeclara
 public:
     PropertySetCSSStyleDeclaration(MutableStylePropertySet& propertySet) : m_propertySet(&propertySet) { }
 
-#if !ENABLE(OILPAN)
-    void ref() override;
-    void deref() override;
-#endif
-
     DECLARE_VIRTUAL_TRACE();
 
 protected:
     MutableStylePropertySet& propertySet() const final { ASSERT(m_propertySet); return *m_propertySet; }
 
-    RawPtrWillBeMember<MutableStylePropertySet> m_propertySet; // Cannot be null
+    GCRefPtr<MutableStylePropertySet> m_propertySet; // Cannot be null
 };
 
 class StyleRuleCSSStyleDeclaration : public PropertySetCSSStyleDeclaration {
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleCSSStyleDeclaration> create(MutableStylePropertySet& propertySet, CSSRule* parentRule)
+    static GCRefPtr<StyleRuleCSSStyleDeclaration> create(MutableStylePropertySet& propertySet, CSSRule* parentRule)
     {
-        return adoptRefWillBeNoop(new StyleRuleCSSStyleDeclaration(propertySet, parentRule));
+        return BlinKit::GCWrapShared(new StyleRuleCSSStyleDeclaration(propertySet, parentRule));
     }
-
-#if !ENABLE(OILPAN)
-    void clearParentRule() { m_parentRule = nullptr; }
-
-    void ref() override;
-    void deref() override;
-#endif
 
     void reattach(MutableStylePropertySet&);
 
@@ -119,9 +116,6 @@ protected:
     void willMutate() override;
     void didMutate(MutationType) override;
 
-#if !ENABLE(OILPAN)
-    unsigned m_refCount;
-#endif
     RawPtrWillBeMember<CSSRule> m_parentRule;
 };
 
@@ -131,21 +125,14 @@ public:
         : m_parentElement(parentElement)
     {
     }
-
-    DECLARE_VIRTUAL_TRACE();
-
 private:
     MutableStylePropertySet& propertySet() const override;
-#if !ENABLE(OILPAN)
-    void ref() override;
-    void deref() override;
-#endif
     CSSStyleSheet* parentStyleSheet() const override;
     Element* parentElement() const override { return m_parentElement; }
 
     void didMutate(MutationType) override;
 
-    RawPtrWillBeMember<Element> m_parentElement;
+    Element *m_parentElement;
 };
 
 } // namespace blink
