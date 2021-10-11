@@ -21,15 +21,16 @@ const AtomicString& MediaQueryListEvent = reinterpret_cast<AtomicString*>(&Names
 const AtomicString& AnimationEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[2];
 const AtomicString& AnimationPlayerEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[3];
 const AtomicString& BeforeUnloadEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[4];
-const AtomicString& Event = reinterpret_cast<AtomicString*>(&NamesStorage)[5];
-const AtomicString& FocusEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[6];
-const AtomicString& KeyboardEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[7];
-const AtomicString& MouseEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[8];
-const AtomicString& PageTransitionEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[9];
-const AtomicString& TextEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[10];
-const AtomicString& TransitionEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[11];
-const AtomicString& UIEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[12];
-const AtomicString& WheelEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[13];
+const AtomicString& ClipboardEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[5];
+const AtomicString& Event = reinterpret_cast<AtomicString*>(&NamesStorage)[6];
+const AtomicString& FocusEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[7];
+const AtomicString& KeyboardEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[8];
+const AtomicString& MouseEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[9];
+const AtomicString& PageTransitionEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[10];
+const AtomicString& TextEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[11];
+const AtomicString& TransitionEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[12];
+const AtomicString& UIEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[13];
+const AtomicString& WheelEvent = reinterpret_cast<AtomicString*>(&NamesStorage)[14];
 
 void init()
 {
@@ -45,6 +46,7 @@ void init()
         { "AnimationEvent", 6834880, 14 },
         { "AnimationPlayerEvent", 11993449, 20 },
         { "BeforeUnloadEvent", 6032602, 17 },
+        { "ClipboardEvent", 10110691, 14 },
         { "Event", 14343017, 5 },
         { "FocusEvent", 8217765, 10 },
         { "KeyboardEvent", 6959608, 13 },

@@ -19,6 +19,7 @@ CORE_EXPORT extern const WTF::AtomicString& MediaQueryListEvent;
 CORE_EXPORT extern const WTF::AtomicString& AnimationEvent;
 CORE_EXPORT extern const WTF::AtomicString& AnimationPlayerEvent;
 CORE_EXPORT extern const WTF::AtomicString& BeforeUnloadEvent;
+CORE_EXPORT extern const WTF::AtomicString& ClipboardEvent;
 CORE_EXPORT extern const WTF::AtomicString& Event;
 CORE_EXPORT extern const WTF::AtomicString& FocusEvent;
 CORE_EXPORT extern const WTF::AtomicString& KeyboardEvent;
@@ -29,7 +30,7 @@ CORE_EXPORT extern const WTF::AtomicString& TransitionEvent;
 CORE_EXPORT extern const WTF::AtomicString& UIEvent;
 CORE_EXPORT extern const WTF::AtomicString& WheelEvent;
 
-const unsigned EventNamesCount = 14;
+const unsigned EventNamesCount = 15;
 
 CORE_EXPORT void init();
 

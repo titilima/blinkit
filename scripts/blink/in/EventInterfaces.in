@@ -6,6 +6,7 @@ core/css/MediaQueryListEvent
 core/events/AnimationEvent
 core/events/AnimationPlayerEvent
 core/events/BeforeUnloadEvent
+core/events/ClipboardEvent
 core/events/Event
 core/events/FocusEvent
 core/events/KeyboardEvent
