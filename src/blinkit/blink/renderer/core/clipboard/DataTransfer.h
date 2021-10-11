@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DataTransfer.h
+// Description: DataTransfer Class
+//      Author: Ziming Li
+//     Created: 2021-10-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -52,7 +63,7 @@ class Range;
 // Used for drag and drop and copy/paste.
 // Drag and Drop: http://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html
 // Clipboard API (copy/paste): http://dev.w3.org/2006/webapi/clipops/clipops.html
-class CORE_EXPORT DataTransfer final : public GarbageCollectedFinalized<DataTransfer>, public ScriptWrappable {
+class CORE_EXPORT DataTransfer final : public BlinKit::GCObject, public ScriptWrappable {
     DEFINE_WRAPPERTYPEINFO();
 public:
     // Whether this transfer is serving a drag-drop or copy-paste request.
@@ -61,7 +72,7 @@ public:
         DragAndDrop,
     };
 
-    static DataTransfer* create(DataTransferType, DataTransferAccessPolicy, DataObject*);
+    static GCRefPtr<DataTransfer> create(DataTransferType, DataTransferAccessPolicy, DataObject*);
     ~DataTransfer();
 
     bool isForCopyAndPaste() const { return m_transferType == CopyAndPaste; }
@@ -123,12 +134,14 @@ private:
     bool hasFileOfType(const String&) const;
     bool hasStringOfType(const String&) const;
 
+    BlinKit::GCObject* ObjectForGC(void) override { return this; }
+
     // Instead of using this member directly, prefer to use the can*() methods above.
     DataTransferAccessPolicy m_policy;
     String m_dropEffect;
     String m_effectAllowed;
     DataTransferType m_transferType;
-    Member<DataObject> m_dataObject;
+    GCRefPtr<DataObject> m_dataObject;
 
     IntPoint m_dragLoc;
     ResourcePtr<ImageResource> m_dragImage;

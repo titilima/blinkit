@@ -55,6 +55,8 @@
 #include "platform/clipboard/ClipboardMimeTypes.h"
 #include "platform/clipboard/ClipboardUtilities.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 static DragOperation convertEffectAllowedToDragOperation(const String& op)
@@ -118,9 +120,9 @@ static String normalizeType(const String& type, bool* convertToURL = 0)
     return cleanType;
 }
 
-DataTransfer* DataTransfer::create(DataTransferType type, DataTransferAccessPolicy policy, DataObject* dataObject)
+GCRefPtr<DataTransfer> DataTransfer::create(DataTransferType type, DataTransferAccessPolicy policy, DataObject* dataObject)
 {
-    return new DataTransfer(type, policy, dataObject);
+    return GCWrapShared(new DataTransfer(type, policy, dataObject));
 }
 
 DataTransfer::~DataTransfer()
@@ -451,12 +453,13 @@ DataTransferItemList* DataTransfer::items()
     // FIXME: According to the spec, we are supposed to return the same collection of items each
     // time. We now return a wrapper that always wraps the *same* set of items, so JS shouldn't be
     // able to tell, but we probably still want to fix this.
-    return DataTransferItemList::create(this, m_dataObject);
+    ASSERT(false); // BKTODO: return DataTransferItemList::create(this, m_dataObject);
+    return nullptr;
 }
 
 DataObject* DataTransfer::dataObject() const
 {
-    return m_dataObject;
+    return m_dataObject.get();
 }
 
 DataTransfer::DataTransfer(DataTransferType type, DataTransferAccessPolicy policy, DataObject* dataObject)

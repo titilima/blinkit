@@ -49,13 +49,14 @@
 #include "public/platform/WebClipboard.h"
 // BKTODO: #include "public/platform/WebDragData.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-DataObject* DataObject::createFromPasteboard(PasteMode pasteMode)
+GCRefPtr<DataObject> DataObject::createFromPasteboard(PasteMode pasteMode)
 {
+#if 0 // BKTODO:
     DataObject* dataObject = create();
-    ASSERT(false); // BKTODO:
-#if 0
     WebClipboard::Buffer buffer = Pasteboard::generalPasteboard()->buffer();
     uint64_t sequenceNumber = Platform::current()->clipboard()->sequenceNumber(buffer);
     bool ignored;
@@ -68,13 +69,15 @@ DataObject* DataObject::createFromPasteboard(PasteMode pasteMode)
             continue;
         dataObject->m_itemList.append(DataObjectItem::createFromPasteboard(type, sequenceNumber));
     }
-#endif
     return dataObject;
+#else
+    return create();
+#endif
 }
 
-DataObject* DataObject::create()
+GCRefPtr<DataObject> DataObject::create()
 {
-    return new DataObject;
+    return GCWrapShared(new DataObject);
 }
 
 DataObject::~DataObject()
@@ -265,7 +268,7 @@ void DataObject::internalAddFileItem(DataObjectItem* item)
 DEFINE_TRACE(DataObject)
 {
     visitor->trace(m_itemList);
-    HeapSupplementable<DataObject>::trace(visitor);
+    // BKTODO: HeapSupplementable<DataObject>::trace(visitor);
 }
 
 #if 0 // BKTODO:
