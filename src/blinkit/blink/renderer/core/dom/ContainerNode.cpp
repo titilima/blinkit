@@ -559,7 +559,7 @@ DEFINE_TRACE(ContainerNode)
     Node::trace(visitor);
 }
 
-PassRefPtrWillBeRawPtr<Node> ContainerNode::removeChild(PassRefPtrWillBeRawPtr<Node> oldChild, ExceptionState& exceptionState)
+GCRefPtr<Node> ContainerNode::removeChild(PassRefPtrWillBeRawPtr<Node> oldChild, ExceptionState& exceptionState)
 {
 #if !ENABLE(OILPAN)
     // Check that this node is not "floating".
@@ -578,7 +578,7 @@ PassRefPtrWillBeRawPtr<Node> ContainerNode::removeChild(PassRefPtrWillBeRawPtr<N
         return nullptr;
     }
 
-    RefPtrWillBeRawPtr<Node> child = oldChild;
+    GCRefPtr<Node> child = oldChild;
 
     document().removeFocusedElementOfSubtree(child.get());
 
