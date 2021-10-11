@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CompositeEditCommand.h
+// Description: CompositeEditCommand Class
+//      Author: Ziming Li
+//     Created: 2021-10-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -62,12 +73,12 @@ public:
 private:
     EditCommandComposition(Document*, const VisibleSelection& startingSelection, const VisibleSelection& endingSelection, EditAction);
 
-    RefPtrWillBeMember<Document> m_document;
+    Document *m_document;
     VisibleSelection m_startingSelection;
     VisibleSelection m_endingSelection;
-    WillBeHeapVector<RefPtrWillBeMember<SimpleEditCommand>> m_commands;
-    RefPtrWillBeMember<Element> m_startingRootEditableElement;
-    RefPtrWillBeMember<Element> m_endingRootEditableElement;
+    std::vector<GCRefPtr<SimpleEditCommand>> m_commands;
+    GCRefPtr<Element> m_startingRootEditableElement;
+    GCRefPtr<Element> m_endingRootEditableElement;
     EditAction m_editAction;
 };
 
@@ -76,7 +87,7 @@ public:
     ~CompositeEditCommand() override;
 
     void apply();
-    bool isFirstCommand(EditCommand* command) { return !m_commands.isEmpty() && m_commands.first() == command; }
+    bool isFirstCommand(EditCommand* command) { return !m_commands.empty() && m_commands.front().get() == command; }
     EditCommandComposition* composition() { return m_composition.get(); }
     EditCommandComposition* ensureComposition();
 
@@ -167,12 +178,12 @@ protected:
 
     PassRefPtrWillBeRawPtr<Node> splitTreeToNode(Node*, Node*, bool splitAncestor = false);
 
-    WillBeHeapVector<RefPtrWillBeMember<EditCommand>> m_commands;
+    std::vector<GCRefPtr<EditCommand>> m_commands;
 
 private:
     bool isCompositeEditCommand() const final { return true; }
 
-    RefPtrWillBeMember<EditCommandComposition> m_composition;
+    GCRefPtr<EditCommandComposition> m_composition;
 };
 
 DEFINE_TYPE_CASTS(CompositeEditCommand, EditCommand, command, command->isCompositeEditCommand(), command.isCompositeEditCommand());

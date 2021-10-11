@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CompositeEditCommand.cpp
+// Description: CompositeEditCommand Class
+//      Author: Ziming Li
+//     Created: 2021-10-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -38,16 +49,19 @@
 #include "core/editing/PlainTextRange.h"
 #include "core/editing/VisibleUnits.h"
 #include "core/editing/commands/AppendNodeCommand.h"
-#include "core/editing/commands/ApplyStyleCommand.h"
+// BKTODO: #include "core/editing/commands/ApplyStyleCommand.h"
 #include "core/editing/commands/DeleteFromTextNodeCommand.h"
 #include "core/editing/commands/DeleteSelectionCommand.h"
 #include "core/editing/commands/InsertIntoTextNodeCommand.h"
+#if 0 // BKTODO:
 #include "core/editing/commands/InsertLineBreakCommand.h"
 #include "core/editing/commands/InsertNodeBeforeCommand.h"
 #include "core/editing/commands/InsertParagraphSeparatorCommand.h"
 #include "core/editing/commands/MergeIdenticalElementsCommand.h"
 #include "core/editing/commands/RemoveCSSPropertyCommand.h"
+#endif
 #include "core/editing/commands/RemoveNodeCommand.h"
+#if 0 // BKTODO:
 #include "core/editing/commands/RemoveNodePreservingChildrenCommand.h"
 #include "core/editing/commands/ReplaceNodeWithSpanCommand.h"
 #include "core/editing/commands/ReplaceSelectionCommand.h"
@@ -56,10 +70,11 @@
 #include "core/editing/commands/SplitTextNodeCommand.h"
 #include "core/editing/commands/SplitTextNodeContainingElementCommand.h"
 #include "core/editing/commands/WrapContentsInDummySpanCommand.h"
+#endif
 #include "core/editing/iterators/TextIterator.h"
 #include "core/editing/markers/DocumentMarkerController.h"
 #include "core/editing/serializers/Serialization.h"
-#include "core/editing/spellcheck/SpellChecker.h"
+// BKTODO: #include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/ScopedEventQueue.h"
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLBRElement.h"
@@ -141,7 +156,7 @@ void EditCommandComposition::reapply()
 
 void EditCommandComposition::append(SimpleEditCommand* command)
 {
-    m_commands.append(command);
+    m_commands.emplace_back(command);
 }
 
 void EditCommandComposition::setStartingSelection(const VisibleSelection& selection)
@@ -158,7 +173,7 @@ void EditCommandComposition::setEndingSelection(const VisibleSelection& selectio
 
 DEFINE_TRACE(EditCommandComposition)
 {
-    visitor->trace(m_document);
+    // BKTODO: visitor->trace(m_document);
     visitor->trace(m_startingSelection);
     visitor->trace(m_endingSelection);
     visitor->trace(m_commands);
@@ -243,14 +258,14 @@ void CompositeEditCommand::setShouldRetainAutocorrectionIndicator(bool)
 //
 void CompositeEditCommand::applyCommandToComposite(PassRefPtrWillBeRawPtr<EditCommand> prpCommand)
 {
-    RefPtrWillBeRawPtr<EditCommand> command = prpCommand;
+    GCRefPtr<EditCommand> command = prpCommand;
     command->setParent(this);
     command->doApply();
     if (command->isSimpleEditCommand()) {
         command->setParent(0);
         ensureComposition()->append(toSimpleEditCommand(command.get()));
     }
-    m_commands.append(command.release());
+    m_commands.emplace_back(command);
 }
 
 void CompositeEditCommand::applyCommandToComposite(PassRefPtrWillBeRawPtr<CompositeEditCommand> command, const VisibleSelection& selection)
@@ -261,32 +276,32 @@ void CompositeEditCommand::applyCommandToComposite(PassRefPtrWillBeRawPtr<Compos
         command->setEndingSelection(selection);
     }
     command->doApply();
-    m_commands.append(command);
+    m_commands.emplace_back(command);
 }
 
 void CompositeEditCommand::applyStyle(const EditingStyle* style, EditAction editingAction)
 {
-    applyCommandToComposite(ApplyStyleCommand::create(document(), style, editingAction));
+    ASSERT(false); // BKTODO: applyCommandToComposite(ApplyStyleCommand::create(document(), style, editingAction));
 }
 
 void CompositeEditCommand::applyStyle(const EditingStyle* style, const Position& start, const Position& end, EditAction editingAction)
 {
-    applyCommandToComposite(ApplyStyleCommand::create(document(), style, start, end, editingAction));
+    ASSERT(false); // BKTODO: applyCommandToComposite(ApplyStyleCommand::create(document(), style, start, end, editingAction));
 }
 
 void CompositeEditCommand::applyStyledElement(PassRefPtrWillBeRawPtr<Element> element)
 {
-    applyCommandToComposite(ApplyStyleCommand::create(element, false));
+    ASSERT(false); // BKTODO: applyCommandToComposite(ApplyStyleCommand::create(element, false));
 }
 
 void CompositeEditCommand::removeStyledElement(PassRefPtrWillBeRawPtr<Element> element)
 {
-    applyCommandToComposite(ApplyStyleCommand::create(element, true));
+    ASSERT(false); // BKTODO: applyCommandToComposite(ApplyStyleCommand::create(element, true));
 }
 
 void CompositeEditCommand::insertParagraphSeparator(bool useDefaultParagraphElement, bool pasteBlockqutoeIntoUnquotedArea)
 {
-    applyCommandToComposite(InsertParagraphSeparatorCommand::create(document(), useDefaultParagraphElement, pasteBlockqutoeIntoUnquotedArea));
+    ASSERT(false); // BKTODO: applyCommandToComposite(InsertParagraphSeparatorCommand::create(document(), useDefaultParagraphElement, pasteBlockqutoeIntoUnquotedArea));
 }
 
 bool CompositeEditCommand::isRemovableBlock(const Node* node)
@@ -309,7 +324,7 @@ bool CompositeEditCommand::isRemovableBlock(const Node* node)
 void CompositeEditCommand::insertNodeBefore(PassRefPtrWillBeRawPtr<Node> insertChild, PassRefPtrWillBeRawPtr<Node> refChild, ShouldAssumeContentIsAlwaysEditable shouldAssumeContentIsAlwaysEditable)
 {
     ASSERT(!isHTMLBodyElement(*refChild));
-    applyCommandToComposite(InsertNodeBeforeCommand::create(insertChild, refChild, shouldAssumeContentIsAlwaysEditable));
+    ASSERT(false); // BKTODO: applyCommandToComposite(InsertNodeBeforeCommand::create(insertChild, refChild, shouldAssumeContentIsAlwaysEditable));
 }
 
 void CompositeEditCommand::insertNodeAfter(PassRefPtrWillBeRawPtr<Node> insertChild, PassRefPtrWillBeRawPtr<Node> refChild)
@@ -361,12 +376,16 @@ void CompositeEditCommand::insertNodeAt(PassRefPtrWillBeRawPtr<Node> insertChild
 
 void CompositeEditCommand::appendNode(PassRefPtrWillBeRawPtr<Node> node, PassRefPtrWillBeRawPtr<ContainerNode> parent)
 {
+#if 0 // BKTODO:
     // When cloneParagraphUnderNewElement() clones the fallback content
     // of an OBJECT element, the ASSERT below may fire since the return
     // value of canHaveChildrenForEditing is not reliable until the layout
     // object of the OBJECT is created. Hence we ignore this check for OBJECTs.
     ASSERT(canHaveChildrenForEditing(parent.get())
         || (parent->isElementNode() && toElement(parent.get())->tagQName() == objectTag));
+#else
+    ASSERT(canHaveChildrenForEditing(parent.get()));
+#endif
     applyCommandToComposite(AppendNodeCommand::create(parent, node));
 }
 
@@ -391,7 +410,7 @@ void CompositeEditCommand::removeNode(PassRefPtrWillBeRawPtr<Node> node, ShouldA
 
 void CompositeEditCommand::removeNodePreservingChildren(PassRefPtrWillBeRawPtr<Node> node, ShouldAssumeContentIsAlwaysEditable shouldAssumeContentIsAlwaysEditable)
 {
-    applyCommandToComposite(RemoveNodePreservingChildrenCommand::create(node, shouldAssumeContentIsAlwaysEditable));
+    ASSERT(false); // BKTODO: applyCommandToComposite(RemoveNodePreservingChildrenCommand::create(node, shouldAssumeContentIsAlwaysEditable));
 }
 
 void CompositeEditCommand::removeNodeAndPruneAncestors(PassRefPtrWillBeRawPtr<Node> node, Node* excludeNode)
@@ -427,6 +446,9 @@ void CompositeEditCommand::updatePositionForNodeRemovalPreservingChildren(Positi
 
 HTMLSpanElement* CompositeEditCommand::replaceElementWithSpanPreservingChildrenAndAttributes(PassRefPtrWillBeRawPtr<HTMLElement> node)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     // It would also be possible to implement all of ReplaceNodeWithSpanCommand
     // as a series of existing smaller edit commands.  Someone who wanted to
     // reduce the number of edit commands could do so here.
@@ -437,6 +459,7 @@ HTMLSpanElement* CompositeEditCommand::replaceElementWithSpanPreservingChildrenA
     // in the DOM tree, and thus alive whie it has a parent.
     ASSERT(command->spanElement()->inDocument());
     return command->spanElement();
+#endif
 }
 
 void CompositeEditCommand::prune(PassRefPtrWillBeRawPtr<Node> node, Node* excludeNode)
@@ -447,12 +470,12 @@ void CompositeEditCommand::prune(PassRefPtrWillBeRawPtr<Node> node, Node* exclud
 
 void CompositeEditCommand::splitTextNode(PassRefPtrWillBeRawPtr<Text> node, unsigned offset)
 {
-    applyCommandToComposite(SplitTextNodeCommand::create(node, offset));
+    ASSERT(false); // BKTODO: applyCommandToComposite(SplitTextNodeCommand::create(node, offset));
 }
 
 void CompositeEditCommand::splitElement(PassRefPtrWillBeRawPtr<Element> element, PassRefPtrWillBeRawPtr<Node> atChild)
 {
-    applyCommandToComposite(SplitElementCommand::create(element, atChild));
+    ASSERT(false); // BKTODO: applyCommandToComposite(SplitElementCommand::create(element, atChild));
 }
 
 void CompositeEditCommand::mergeIdenticalElements(PassRefPtrWillBeRawPtr<Element> prpFirst, PassRefPtrWillBeRawPtr<Element> prpSecond)
@@ -464,17 +487,17 @@ void CompositeEditCommand::mergeIdenticalElements(PassRefPtrWillBeRawPtr<Element
         removeNode(second);
         insertNodeAfter(second, first);
     }
-    applyCommandToComposite(MergeIdenticalElementsCommand::create(first, second));
+    ASSERT(false); // BKTODO: applyCommandToComposite(MergeIdenticalElementsCommand::create(first, second));
 }
 
 void CompositeEditCommand::wrapContentsInDummySpan(PassRefPtrWillBeRawPtr<Element> element)
 {
-    applyCommandToComposite(WrapContentsInDummySpanCommand::create(element));
+    ASSERT(false); // BKTODO: applyCommandToComposite(WrapContentsInDummySpanCommand::create(element));
 }
 
 void CompositeEditCommand::splitTextNodeContainingElement(PassRefPtrWillBeRawPtr<Text> text, unsigned offset)
 {
-    applyCommandToComposite(SplitTextNodeContainingElementCommand::create(text, offset));
+    ASSERT(false); // BKTODO: applyCommandToComposite(SplitTextNodeContainingElementCommand::create(text, offset));
 }
 
 void CompositeEditCommand::insertTextIntoNode(PassRefPtrWillBeRawPtr<Text> node, unsigned offset, const String& text)
@@ -586,7 +609,7 @@ void CompositeEditCommand::deleteSelection(const VisibleSelection &selection, bo
 
 void CompositeEditCommand::removeCSSProperty(PassRefPtrWillBeRawPtr<Element> element, CSSPropertyID property)
 {
-    applyCommandToComposite(RemoveCSSPropertyCommand::create(document(), element, property));
+    ASSERT(false); // BKTODO: applyCommandToComposite(RemoveCSSPropertyCommand::create(document(), element, property));
 }
 
 void CompositeEditCommand::removeElementAttribute(PassRefPtrWillBeRawPtr<Element> element, const QualifiedName& attribute)
@@ -596,7 +619,7 @@ void CompositeEditCommand::removeElementAttribute(PassRefPtrWillBeRawPtr<Element
 
 void CompositeEditCommand::setNodeAttribute(PassRefPtrWillBeRawPtr<Element> element, const QualifiedName& attribute, const AtomicString& value)
 {
-    applyCommandToComposite(SetNodeAttributeCommand::create(element, attribute, value));
+    ASSERT(false); // BKTODO: applyCommandToComposite(SetNodeAttributeCommand::create(element, attribute, value));
 }
 
 static inline bool containsOnlyWhitespace(const String& text)
@@ -1232,7 +1255,7 @@ void CompositeEditCommand::moveParagraphs(const VisiblePosition& startOfParagrap
     // FIXME (5098931): We should add a new insert action "WebViewInsertActionMoved" and call shouldInsertFragment here.
 
     setEndingSelection(VisibleSelection(start, end));
-    document().frame()->spellChecker().clearMisspellingsAndBadGrammar(endingSelection());
+    // BKTODO: document().frame()->spellChecker().clearMisspellingsAndBadGrammar(endingSelection());
     deleteSelection(false, false, false);
 
     ASSERT(destination.deepEquivalent().inDocument());
@@ -1259,12 +1282,15 @@ void CompositeEditCommand::moveParagraphs(const VisiblePosition& startOfParagrap
 
     setEndingSelection(VisibleSelection(destination, originalIsDirectional));
     ASSERT(endingSelection().isCaretOrRange());
+    ASSERT(false); // BKTODO:
+#if 0
     ReplaceSelectionCommand::CommandOptions options = ReplaceSelectionCommand::SelectReplacement | ReplaceSelectionCommand::MovingParagraph;
     if (!preserveStyle)
         options |= ReplaceSelectionCommand::MatchStyle;
     applyCommandToComposite(ReplaceSelectionCommand::create(document(), fragment, options));
+#endif
 
-    document().frame()->spellChecker().markMisspellingsAndBadGrammar(endingSelection());
+    // BKTODO: document().frame()->spellChecker().markMisspellingsAndBadGrammar(endingSelection());
 
     // If the selection is in an empty paragraph, restore styles from the old empty paragraph to the new empty paragraph.
     bool selectionIsEmptyParagraph = endingSelection().isCaret() && isStartOfParagraph(endingSelection().visibleStart()) && isEndOfParagraph(endingSelection().visibleStart());
@@ -1503,7 +1529,7 @@ PassRefPtrWillBeRawPtr<Node> CompositeEditCommand::splitTreeToNode(Node* start, 
 
 DEFINE_TRACE(CompositeEditCommand)
 {
-    visitor->trace(m_commands);
+    // BKTODO: visitor->trace(m_commands);
     visitor->trace(m_composition);
     EditCommand::trace(visitor);
 }
