@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ClipboardEvent.h
+// Description: ClipboardEvent Class
+//      Author: Ziming Li
+//     Created: 2021-10-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -54,7 +65,7 @@ private:
     const AtomicString& interfaceName() const override;
     bool isClipboardEvent() const override;
 
-    PersistentWillBeMember<DataTransfer> m_clipboardData;
+    GCRefPtr<DataTransfer> m_clipboardData;
 };
 
 } // namespace blink

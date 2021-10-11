@@ -131,7 +131,7 @@ static PlatformMouseEvent createMouseEvent(DragData* dragData)
         PlatformMouseEvent::RealOrIndistinguishable, monotonicallyIncreasingTime());
 }
 
-static DataTransfer* createDraggingDataTransfer(DataTransferAccessPolicy policy, DragData* dragData)
+static GCRefPtr<DataTransfer> createDraggingDataTransfer(DataTransferAccessPolicy policy, DragData* dragData)
 {
     return DataTransfer::create(DataTransfer::DragAndDrop, policy, dragData->platformData());
 }
@@ -256,9 +256,9 @@ bool DragController::performDrag(DragData* dragData)
         bool preventedDefault = false;
         if (mainFrame->view()) {
             // Sending an event can result in the destruction of the view and part.
-            DataTransfer* dataTransfer = createDraggingDataTransfer(DataTransferReadable, dragData);
+            GCRefPtr<DataTransfer> dataTransfer = createDraggingDataTransfer(DataTransferReadable, dragData);
             dataTransfer->setSourceOperation(dragData->draggingSourceOperationMask());
-            preventedDefault = mainFrame->eventHandler().performDragAndDrop(createMouseEvent(dragData), dataTransfer) != WebInputEventResult::NotHandled;
+            preventedDefault = mainFrame->eventHandler().performDragAndDrop(createMouseEvent(dragData), dataTransfer.get()) != WebInputEventResult::NotHandled;
             dataTransfer->setAccessPolicy(DataTransferNumb); // Invalidate clipboard here for security
         }
         if (preventedDefault) {

@@ -240,7 +240,7 @@ public:
 private:
     static DragState& dragState();
 
-    DataTransfer* createDraggingDataTransfer() const;
+    GCRefPtr<DataTransfer> createDraggingDataTransfer() const;
 
     WebInputEventResult handleMouseMoveOrLeaveEvent(const PlatformMouseEvent&, HitTestResult* hoveredNode = nullptr, bool onlyUpdateScrollbars = false, bool forceLeave = false);
     WebInputEventResult handleMousePressEvent(const MouseEventWithHitTestResults&);

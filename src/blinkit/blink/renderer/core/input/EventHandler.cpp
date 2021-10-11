@@ -4265,9 +4265,10 @@ WebInputEventResult EventHandler::passWheelEventToWidget(const PlatformWheelEven
     return toFrameView(&widget)->frame().eventHandler().handleWheelEvent(wheelEvent);
 }
 
-DataTransfer* EventHandler::createDraggingDataTransfer() const
+GCRefPtr<DataTransfer> EventHandler::createDraggingDataTransfer() const
 {
-    return DataTransfer::create(DataTransfer::DragAndDrop, DataTransferWritable, DataObject::create());
+    GCRefPtr<DataObject> dataObject = DataObject::create();
+    return DataTransfer::create(DataTransfer::DragAndDrop, DataTransferWritable, dataObject.get());
 }
 
 void EventHandler::focusDocumentView()

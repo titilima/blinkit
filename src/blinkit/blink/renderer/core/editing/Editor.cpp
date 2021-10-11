@@ -72,10 +72,8 @@
 #endif
 #include "core/editing/markers/DocumentMarkerController.h"
 #include "core/editing/serializers/Serialization.h"
-#if 0 // BKTODO:
-#include "core/editing/spellcheck/SpellChecker.h"
+// BKTODO: #include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/ClipboardEvent.h"
-#endif
 #include "core/events/KeyboardEvent.h"
 #include "core/events/ScopedEventQueue.h"
 #include "core/events/TextEvent.h"
@@ -487,18 +485,14 @@ bool Editor::dispatchCPPEvent(const AtomicString& eventType, DataTransferAccessP
     if (!target)
         return true;
 
-    DataTransfer* dataTransfer = DataTransfer::create(
-        DataTransfer::CopyAndPaste,
-        policy,
-        policy == DataTransferWritable
-            ? DataObject::create()
-            : DataObject::createFromPasteboard(pasteMode));
+    GCRefPtr<DataObject> dataObject = DataTransferWritable == policy
+        ? DataObject::create()
+        : DataObject::createFromPasteboard(pasteMode);
 
-    ASSERT(false); // BKTODO:
-    return true;
-#if 0
-    RefPtrWillBeRawPtr<Event> evt = ClipboardEvent::create(eventType, true, true, dataTransfer);
-    target->dispatchEvent(evt);
+    GCRefPtr<DataTransfer> dataTransfer = DataTransfer::create(DataTransfer::CopyAndPaste, policy, dataObject.get());
+
+    GCRefPtr<Event> evt = ClipboardEvent::create(eventType, true, true, dataTransfer.get());
+    target->dispatchEvent(evt.get());
     bool noDefaultProcessing = evt->defaultPrevented();
     if (noDefaultProcessing && policy == DataTransferWritable)
         Pasteboard::generalPasteboard()->writeDataObject(dataTransfer->dataObject());
@@ -507,7 +501,6 @@ bool Editor::dispatchCPPEvent(const AtomicString& eventType, DataTransferAccessP
     dataTransfer->setAccessPolicy(DataTransferNumb);
 
     return !noDefaultProcessing;
-#endif
 }
 
 bool Editor::canSmartReplaceWithPasteboard(Pasteboard* pasteboard)
@@ -891,7 +884,7 @@ void Editor::paste()
         return; // DHTML did the whole operation
     if (!canPaste())
         return;
-    ASSERT(false); // BKTODO: spellChecker().updateMarkersForWordsAffectedByEditing(false);
+    // BKTODO: spellChecker().updateMarkersForWordsAffectedByEditing(false);
     ResourceFetcher* loader = frame().document()->fetcher();
     ResourceCacheValidationSuppressor validationSuppressor(loader);
     if (frame().selection().isContentRichlyEditable())
