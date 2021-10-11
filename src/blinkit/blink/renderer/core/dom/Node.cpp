@@ -490,7 +490,7 @@ PassRefPtrWillBeRawPtr<Node> Node::replaceChild(PassRefPtrWillBeRawPtr<Node> new
     return nullptr;
 }
 
-PassRefPtrWillBeRawPtr<Node> Node::removeChild(PassRefPtrWillBeRawPtr<Node> oldChild, ExceptionState& exceptionState)
+GCRefPtr<Node> Node::removeChild(PassRefPtrWillBeRawPtr<Node> oldChild, ExceptionState& exceptionState)
 {
     if (isContainerNode())
         return toContainerNode(this)->removeChild(oldChild, exceptionState);
@@ -2104,7 +2104,7 @@ void Node::dispatchSimulatedClick(Event* underlyingEvent, SimulatedClickMouseEve
 
 void Node::dispatchInputEvent()
 {
-    ASSERT(false); // BKTODO: dispatchScopedEvent(Event::createBubble(EventTypeNames::input));
+    dispatchScopedEvent(Event::createBubble(EventTypeNames::input));
 }
 
 void Node::defaultEventHandler(Event* event)
