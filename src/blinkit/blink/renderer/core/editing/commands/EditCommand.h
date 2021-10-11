@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EditCommand.h
+// Description: EditCommand Class
+//      Author: Ziming Li
+//     Created: 2021-10-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -35,7 +46,7 @@ namespace blink {
 class CompositeEditCommand;
 class Document;
 
-class EditCommand : public RefCountedWillBeGarbageCollectedFinalized<EditCommand> {
+class EditCommand : public BlinKit::GCObject {
 public:
     virtual ~EditCommand();
 
@@ -57,7 +68,7 @@ public:
 protected:
     explicit EditCommand(Document&);
 
-    Document& document() const { return *m_document.get(); }
+    Document& document() const { return m_document; }
     CompositeEditCommand* parent() const { return m_parent; }
     void setStartingSelection(const VisibleSelection&);
     void setEndingSelection(const VisibleSelection&);
@@ -69,10 +80,10 @@ protected:
     static bool isRenderedCharacter(const Position&);
 
 private:
-    RefPtrWillBeMember<Document> m_document;
+    Document &m_document;
     VisibleSelection m_startingSelection;
     VisibleSelection m_endingSelection;
-    RawPtrWillBeMember<CompositeEditCommand> m_parent;
+    CompositeEditCommand *m_parent = nullptr;;
 };
 
 enum ShouldAssumeContentIsAlwaysEditable {

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EditCommand.cpp
+// Description: EditCommand Class
+//      Author: Ziming Li
+//     Created: 2021-10-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2007 Apple, Inc.  All rights reserved.
  *
@@ -35,12 +46,11 @@
 namespace blink {
 
 EditCommand::EditCommand(Document& document)
-    : m_document(&document)
+    : m_document(document)
     , m_parent(nullptr)
 {
-    ASSERT(m_document);
-    ASSERT(m_document->frame());
-    setStartingSelection(m_document->frame()->selection().selection());
+    ASSERT(m_document.frame());
+    setStartingSelection(m_document.frame()->selection().selection());
     setEndingSelection(m_startingSelection);
 }
 
@@ -122,10 +132,8 @@ void SimpleEditCommand::doReapply()
 
 DEFINE_TRACE(EditCommand)
 {
-    visitor->trace(m_document);
     visitor->trace(m_startingSelection);
     visitor->trace(m_endingSelection);
-    visitor->trace(m_parent);
 }
 
 } // namespace blink
