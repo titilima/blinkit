@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RemoveNodeCommand.h
+// Description: RemoveNodeCommand Class
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -45,9 +56,9 @@ private:
     void doApply() override;
     void doUnapply() override;
 
-    RefPtrWillBeMember<Node> m_node;
-    RefPtrWillBeMember<ContainerNode> m_parent;
-    RefPtrWillBeMember<Node> m_refChild;
+    GCRefPtr<Node> m_node;
+    GCRefPtr<ContainerNode> m_parent;
+    GCRefPtr<Node> m_refChild;
     ShouldAssumeContentIsAlwaysEditable m_shouldAssumeContentIsAlwaysEditable;
 };
 

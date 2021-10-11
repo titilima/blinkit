@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EditorCommand.cpp
+// Description: Editor Class
+//      Author: Ziming Li
+//     Created: 2021-10-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Nokia Corporation and/or its subsidiary(-ies)
@@ -38,15 +49,17 @@
 #include "core/dom/DocumentFragment.h"
 #include "core/editing/EditingUtilities.h"
 #include "core/editing/FrameSelection.h"
+#if 0 // BKTODO:
 #include "core/editing/commands/CreateLinkCommand.h"
 #include "core/editing/commands/FormatBlockCommand.h"
 #include "core/editing/commands/IndentOutdentCommand.h"
 #include "core/editing/commands/InsertListCommand.h"
 #include "core/editing/commands/ReplaceSelectionCommand.h"
+#endif
 #include "core/editing/commands/TypingCommand.h"
-#include "core/editing/commands/UnlinkCommand.h"
+// BKTODO: #include "core/editing/commands/UnlinkCommand.h"
 #include "core/editing/serializers/Serialization.h"
-#include "core/editing/spellcheck/SpellChecker.h"
+// BKTODO: #include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/Event.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
@@ -60,7 +73,7 @@
 #include "core/page/ChromeClient.h"
 #include "core/page/EditorClient.h"
 #include "platform/KillRing.h"
-#include "platform/UserGestureIndicator.h"
+// BKTODO: #include "platform/UserGestureIndicator.h"
 #include "platform/scroll/Scrollbar.h"
 #include "public/platform/Platform.h"
 #include "wtf/text/AtomicString.h"
@@ -197,7 +210,7 @@ static bool executeApplyParagraphStyle(LocalFrame& frame, EditorCommandSource so
 static bool executeInsertFragment(LocalFrame& frame, PassRefPtrWillBeRawPtr<DocumentFragment> fragment)
 {
     ASSERT(frame.document());
-    ReplaceSelectionCommand::create(*frame.document(), fragment, ReplaceSelectionCommand::PreventNesting, EditActionUnspecified)->apply();
+    ASSERT(false); // BKTODO: ReplaceSelectionCommand::create(*frame.document(), fragment, ReplaceSelectionCommand::PreventNesting, EditActionUnspecified)->apply();
     return true;
 }
 
@@ -300,9 +313,13 @@ static bool canWriteClipboard(LocalFrame& frame, EditorCommandSource source)
 {
     if (source == CommandFromMenuOrKeyBinding)
         return true;
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     Settings* settings = frame.settings();
     bool defaultValue = (settings && settings->javaScriptCanAccessClipboard()) || UserGestureIndicator::processingUserGesture();
     return frame.editor().client().canCopyCut(&frame, defaultValue);
+#endif
 }
 
 static bool executeCopy(LocalFrame& frame, Event*, EditorCommandSource source, const String&)
@@ -323,7 +340,7 @@ static bool executeCreateLink(LocalFrame& frame, Event*, EditorCommandSource, co
     if (value.isEmpty())
         return false;
     ASSERT(frame.document());
-    CreateLinkCommand::create(*frame.document(), value)->apply();
+    ASSERT(false); // BKTODO: CreateLinkCommand::create(*frame.document(), value)->apply();
     return true;
 }
 
@@ -482,9 +499,13 @@ static bool executeFormatBlock(LocalFrame& frame, Event*, EditorCommandSource, c
     QualifiedName qualifiedTagName(prefix, localName, xhtmlNamespaceURI);
 
     ASSERT(frame.document());
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     RefPtrWillBeRawPtr<FormatBlockCommand> command = FormatBlockCommand::create(*frame.document(), qualifiedTagName);
     command->apply();
     return command->didApply();
+#endif
 }
 
 static bool executeForwardDelete(LocalFrame& frame, Event*, EditorCommandSource source, const String&)
@@ -507,14 +528,14 @@ static bool executeForwardDelete(LocalFrame& frame, Event*, EditorCommandSource 
 
 static bool executeIgnoreSpelling(LocalFrame& frame, Event*, EditorCommandSource, const String&)
 {
-    frame.spellChecker().ignoreSpelling();
+    ASSERT(false); // BKTODO: frame.spellChecker().ignoreSpelling();
     return true;
 }
 
 static bool executeIndent(LocalFrame& frame, Event*, EditorCommandSource, const String&)
 {
     ASSERT(frame.document());
-    IndentOutdentCommand::create(*frame.document(), IndentOutdentCommand::Indent)->apply();
+    ASSERT(false); // BKTODO: IndentOutdentCommand::create(*frame.document(), IndentOutdentCommand::Indent)->apply();
     return true;
 }
 
@@ -580,7 +601,7 @@ static bool executeInsertNewlineInQuotedContent(LocalFrame& frame, Event*, Edito
 static bool executeInsertOrderedList(LocalFrame& frame, Event*, EditorCommandSource, const String&)
 {
     ASSERT(frame.document());
-    InsertListCommand::create(*frame.document(), InsertListCommand::OrderedList)->apply();
+    ASSERT(false); // BKTODO: InsertListCommand::create(*frame.document(), InsertListCommand::OrderedList)->apply();
     return true;
 }
 
@@ -606,7 +627,7 @@ static bool executeInsertText(LocalFrame& frame, Event*, EditorCommandSource, co
 static bool executeInsertUnorderedList(LocalFrame& frame, Event*, EditorCommandSource, const String&)
 {
     ASSERT(frame.document());
-    InsertListCommand::create(*frame.document(), InsertListCommand::UnorderedList)->apply();
+    ASSERT(false); // BKTODO: InsertListCommand::create(*frame.document(), InsertListCommand::UnorderedList)->apply();
     return true;
 }
 
@@ -955,7 +976,7 @@ static bool executeMoveToRightEndOfLineAndModifySelection(LocalFrame& frame, Eve
 static bool executeOutdent(LocalFrame& frame, Event*, EditorCommandSource, const String&)
 {
     ASSERT(frame.document());
-    IndentOutdentCommand::create(*frame.document(), IndentOutdentCommand::Outdent)->apply();
+    ASSERT(false); // BKTODO: IndentOutdentCommand::create(*frame.document(), IndentOutdentCommand::Outdent)->apply();
     return true;
 }
 
@@ -969,9 +990,13 @@ static bool canReadClipboard(LocalFrame& frame, EditorCommandSource source)
 {
     if (source == CommandFromMenuOrKeyBinding)
         return true;
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     Settings* settings = frame.settings();
     bool defaultValue = settings && settings->javaScriptCanAccessClipboard() && settings->DOMPasteAllowed();
     return frame.editor().client().canPaste(&frame, defaultValue);
+#endif
 }
 
 static bool executePaste(LocalFrame& frame, Event*, EditorCommandSource source, const String&)
@@ -1013,6 +1038,7 @@ static bool executePasteAndMatchStyle(LocalFrame& frame, Event*, EditorCommandSo
     return true;
 }
 
+#if 0 // BKTODO:
 static bool executePrint(LocalFrame& frame, Event*, EditorCommandSource, const String&)
 {
     FrameHost* host = frame.host();
@@ -1021,6 +1047,7 @@ static bool executePrint(LocalFrame& frame, Event*, EditorCommandSource, const S
     host->chromeClient().print(&frame);
     return true;
 }
+#endif
 
 static bool executeRedo(LocalFrame& frame, Event*, EditorCommandSource, const String&)
 {
@@ -1176,7 +1203,7 @@ static bool executeUndo(LocalFrame& frame, Event*, EditorCommandSource, const St
 static bool executeUnlink(LocalFrame& frame, Event*, EditorCommandSource, const String&)
 {
     ASSERT(frame.document());
-    UnlinkCommand::create(*frame.document())->apply();
+    ASSERT(false); // BKTODO: UnlinkCommand::create(*frame.document())->apply();
     return true;
 }
 
@@ -1233,7 +1260,7 @@ static bool enabledVisibleSelection(LocalFrame& frame, Event* event, EditorComma
 
 static bool caretBrowsingEnabled(LocalFrame& frame)
 {
-    return frame.settings() && frame.settings()->caretBrowsingEnabled();
+    return Settings::caretBrowsingEnabled();
 }
 
 static EditorCommandSource dummyEditorCommandSource = static_cast<EditorCommandSource>(0);
@@ -1465,10 +1492,14 @@ static String valueFormatBlock(LocalFrame& frame, Event*)
     const VisibleSelection& selection = frame.selection().selection();
     if (!selection.isNonOrphanedCaretOrRange() || !selection.isContentEditable())
         return "";
+    ASSERT(false); // BKTODO:
+    return "";
+#if 0
     Element* formatBlockElement = FormatBlockCommand::elementForFormatBlockCommand(firstRangeOf(selection).get());
     if (!formatBlockElement)
         return "";
     return formatBlockElement->localName();
+#endif
 }
 
 // Map of functions
@@ -1589,7 +1620,7 @@ static const CommandMap& createCommandMap()
         { "Paste", {103, executePaste, supported, enabledPaste, stateNone, valueNull, notTextInsertion, allowExecutionWhenDisabled } },
         { "PasteAndMatchStyle", {104, executePasteAndMatchStyle, supported, enabledPaste, stateNone, valueNull, notTextInsertion, allowExecutionWhenDisabled } },
         { "PasteGlobalSelection", {105, executePasteGlobalSelection, supportedFromMenuOrKeyBinding, enabledPaste, stateNone, valueNull, notTextInsertion, allowExecutionWhenDisabled } },
-        { "Print", {106, executePrint, supported, enabled, stateNone, valueNull, notTextInsertion, doNotAllowExecutionWhenDisabled } },
+        // BKTODO: { "Print", {106, executePrint, supported, enabled, stateNone, valueNull, notTextInsertion, doNotAllowExecutionWhenDisabled } },
         { "Redo", {107, executeRedo, supported, enabledRedo, stateNone, valueNull, notTextInsertion, doNotAllowExecutionWhenDisabled } },
         { "RemoveFormat", {108, executeRemoveFormat, supported, enabledRangeInEditableText, stateNone, valueNull, notTextInsertion, doNotAllowExecutionWhenDisabled } },
         { "ScrollPageBackward", {109, executeScrollPageBackward, supportedFromMenuOrKeyBinding, enabled, stateNone, valueNull, notTextInsertion, doNotAllowExecutionWhenDisabled } },
@@ -1695,12 +1726,12 @@ static const EditorInternalCommand* internalCommand(const String& commandName)
 
 Editor::Command Editor::command(const String& commandName)
 {
-    return Command(internalCommand(commandName), CommandFromMenuOrKeyBinding, m_frame);
+    return Command(internalCommand(commandName), CommandFromMenuOrKeyBinding, &m_frame);
 }
 
 Editor::Command Editor::command(const String& commandName, EditorCommandSource source)
 {
-    return Command(internalCommand(commandName), source, m_frame);
+    return Command(internalCommand(commandName), source, &m_frame);
 }
 
 bool Editor::executeCommand(const String& commandName)
@@ -1718,11 +1749,11 @@ bool Editor::executeCommand(const String& commandName)
         return command(AtomicString("ForwardDelete")).execute();
     if (commandName == "AdvanceToNextMisspelling") {
         // Wee need to pass false here or else the currently selected word will never be skipped.
-        spellChecker().advanceToNextMisspelling(false);
+        ASSERT(false); // BKTODO: spellChecker().advanceToNextMisspelling(false);
         return true;
     }
     if (commandName == "ToggleSpellPanel") {
-        spellChecker().showSpellingGuessPanel();
+        ASSERT(false); // BKTODO: spellChecker().showSpellingGuessPanel();
         return true;
     }
     return command(commandName).execute();
@@ -1738,7 +1769,7 @@ bool Editor::executeCommand(const String& commandName, const String& value)
         return frame().eventHandler().bubblingScroll(ScrollDownIgnoringWritingMode, ScrollByDocument);
 
     if (commandName == "showGuessPanel") {
-        spellChecker().showSpellingGuessPanel();
+        ASSERT(false); // BKTODO: spellChecker().showSpellingGuessPanel();
         return true;
     }
 
@@ -1774,7 +1805,7 @@ bool Editor::Command::execute(const String& parameter, Event* triggeringEvent) c
             return false;
     }
     frame().document()->updateLayoutIgnorePendingStylesheets();
-    Platform::current()->histogramSparse("WebCore.Editing.Commands", m_command->idForUserMetrics);
+    // BKTODO: Platform::current()->histogramSparse("WebCore.Editing.Commands", m_command->idForUserMetrics);
     return m_command->execute(*m_frame, triggeringEvent, m_source, parameter);
 }
 
@@ -1791,7 +1822,7 @@ bool Editor::Command::isSupported() const
     case CommandFromMenuOrKeyBinding:
         return true;
     case CommandFromDOM:
-        return m_command->isSupportedFromDOM(m_frame.get());
+        return m_command->isSupportedFromDOM(m_frame);
     }
     ASSERT_NOT_REACHED();
     return false;

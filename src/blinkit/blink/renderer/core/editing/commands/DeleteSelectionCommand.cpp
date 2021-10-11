@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DeleteSelectionCommand.cpp
+// Description: DeleteSelectionCommand Class
+//      Author: Ziming Li
+//     Created: 2021-10-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005 Apple Computer, Inc.  All rights reserved.
  *
@@ -386,12 +397,12 @@ void DeleteSelectionCommand::removeNode(PassRefPtrWillBeRawPtr<Node> node, Shoul
         return;
     }
 
-    if (node == m_startBlock) {
+    if (node == m_startBlock.get()) {
         VisiblePosition previous = previousPositionOf(createVisiblePosition(firstPositionInNode(m_startBlock.get())));
         if (previous.isNotNull() && !isEndOfBlock(previous))
             m_needPlaceholder = true;
     }
-    if (node == m_endBlock) {
+    if (node == m_endBlock.get()) {
         VisiblePosition next = nextPositionOf(createVisiblePosition(lastPositionInNode(m_endBlock.get())));
         if (next.isNotNull() && !isStartOfBlock(next))
             m_needPlaceholder = true;
@@ -429,7 +440,7 @@ void DeleteSelectionCommand::deleteTextFromNode(PassRefPtrWillBeRawPtr<Text> nod
 
 void DeleteSelectionCommand::makeStylingElementsDirectChildrenOfEditableRootToPreventStyleLoss()
 {
-    RefPtrWillBeRawPtr<Range> range = createRange(m_selectionToDelete.toNormalizedEphemeralRange());
+    GCRefPtr<Range> range = createRange(m_selectionToDelete.toNormalizedEphemeralRange());
     RefPtrWillBeRawPtr<Node> node = range->firstNode();
     while (node && node != range->pastLastNode()) {
         RefPtrWillBeRawPtr<Node> nextNode = NodeTraversal::next(*node);
@@ -595,7 +606,7 @@ void DeleteSelectionCommand::mergeParagraphs()
     if (!m_mergeBlocksAfterDelete) {
         if (m_pruneStartBlockIfNecessary) {
             // We aren't going to merge into the start block, so remove it if it's empty.
-            prune(m_startBlock);
+            prune(m_startBlock.get());
             // Removing the start block during a deletion is usually an indication that we need
             // a placeholder, but not in this case.
             m_needPlaceholder = false;
@@ -686,7 +697,7 @@ void DeleteSelectionCommand::removePreviouslySelectedEmptyTableRows()
 {
     if (m_endTableRow && m_endTableRow->inDocument() && m_endTableRow != m_startTableRow) {
         Node* row = m_endTableRow->previousSibling();
-        while (row && row != m_startTableRow) {
+        while (row && row != m_startTableRow.get()) {
             RefPtrWillBeRawPtr<Node> previousRow = row->previousSibling();
             if (isTableRowEmpty(row)) {
                 // Use a raw removeNode, instead of DeleteSelectionCommand's,
@@ -701,7 +712,7 @@ void DeleteSelectionCommand::removePreviouslySelectedEmptyTableRows()
     // Remove empty rows after the start row.
     if (m_startTableRow && m_startTableRow->inDocument() && m_startTableRow != m_endTableRow) {
         Node* row = m_startTableRow->nextSibling();
-        while (row && row != m_endTableRow) {
+        while (row && row != m_endTableRow.get()) {
             RefPtrWillBeRawPtr<Node> nextRow = row->nextSibling();
             if (isTableRowEmpty(row))
                 CompositeEditCommand::removeNode(row);
@@ -750,7 +761,7 @@ void DeleteSelectionCommand::calculateTypingStyleAfterDelete()
     // In this case if we start typing, the new characters should have the same style as the just deleted ones,
     // but, if we change the selection, come back and start typing that style should be lost.  Also see
     // preserveTypingStyle() below.
-    document().frame()->selection().setTypingStyle(m_typingStyle);
+    document().frame()->selection().setTypingStyle(m_typingStyle.get());
 }
 
 void DeleteSelectionCommand::clearTransientState()

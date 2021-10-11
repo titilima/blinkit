@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DeleteSelectionCommand.h
+// Description: DeleteSelectionCommand Class
+//      Author: Ziming Li
+//     Created: 2021-10-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -89,15 +100,15 @@ private:
     Position m_endingPosition;
     Position m_leadingWhitespace;
     Position m_trailingWhitespace;
-    RefPtrWillBeMember<Node> m_startBlock;
-    RefPtrWillBeMember<Node> m_endBlock;
-    RefPtrWillBeMember<EditingStyle> m_typingStyle;
-    RefPtrWillBeMember<EditingStyle> m_deleteIntoBlockquoteStyle;
-    RefPtrWillBeMember<Element> m_startRoot;
-    RefPtrWillBeMember<Element> m_endRoot;
-    RefPtrWillBeMember<HTMLTableRowElement> m_startTableRow;
-    RefPtrWillBeMember<HTMLTableRowElement> m_endTableRow;
-    RefPtrWillBeMember<Node> m_temporaryPlaceholder;
+    GCRefPtr<Node> m_startBlock;
+    GCRefPtr<Node> m_endBlock;
+    GCRefPtr<EditingStyle> m_typingStyle;
+    GCRefPtr<EditingStyle> m_deleteIntoBlockquoteStyle;
+    GCRefPtr<Element> m_startRoot;
+    GCRefPtr<Element> m_endRoot;
+    GCRefPtr<HTMLTableRowElement> m_startTableRow;
+    GCRefPtr<HTMLTableRowElement> m_endTableRow;
+    GCRefPtr<Node> m_temporaryPlaceholder;
 };
 
 } // namespace blink

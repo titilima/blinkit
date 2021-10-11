@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InsertIntoTextNodeCommand.h
+// Description: InsertIntoTextNodeCommand Class
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -47,7 +58,7 @@ private:
     void doApply() override;
     void doUnapply() override;
 
-    RefPtrWillBeMember<Text> m_node;
+    GCRefPtr<Text> m_node;
     unsigned m_offset;
     String m_text;
 };

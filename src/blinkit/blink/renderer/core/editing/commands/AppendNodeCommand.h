@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AppendNodeCommand.h
+// Description: AppendNodeCommand Class
+//      Author: Ziming Li
+//     Created: 2021-10-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -45,8 +56,8 @@ private:
     void doApply() override;
     void doUnapply() override;
 
-    RefPtrWillBeMember<ContainerNode> m_parent;
-    RefPtrWillBeMember<Node> m_node;
+    GCRefPtr<ContainerNode> m_parent;
+    GCRefPtr<Node> m_node;
 };
 
 } // namespace blink

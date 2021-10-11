@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TextInsertionBaseCommand.cpp
+// Description: TextInsertionBaseCommand Class
+//      Author: Ziming Li
+//     Created: 2021-10-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -62,8 +73,8 @@ String dispatchBeforeTextInsertedEvent(const String& text, const VisibleSelectio
     if (Node* startNode = selectionForInsertion.start().computeContainerNode()) {
         if (startNode->rootEditableElement()) {
             // Send BeforeTextInsertedEvent. The event handler will update text if necessary.
-            RefPtrWillBeRawPtr<BeforeTextInsertedEvent> evt = BeforeTextInsertedEvent::create(text);
-            startNode->rootEditableElement()->dispatchEvent(evt);
+            GCRefPtr<BeforeTextInsertedEvent> evt = BeforeTextInsertedEvent::create(text);
+            startNode->rootEditableElement()->dispatchEvent(evt.get());
             newText = evt->text();
         }
     }
@@ -76,8 +87,8 @@ bool canAppendNewLineFeedToSelection(const VisibleSelection& selection)
     if (!element)
         return false;
 
-    RefPtrWillBeRawPtr<BeforeTextInsertedEvent> event = BeforeTextInsertedEvent::create(String("\n"));
-    element->dispatchEvent(event);
+    GCRefPtr<BeforeTextInsertedEvent> event = BeforeTextInsertedEvent::create(String("\n"));
+    element->dispatchEvent(event.get());
     return event->text().length();
 }
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: UndoStep.h
+// Description: UndoStep Class
+//      Author: Ziming Li
+//     Created: 2021-10-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -39,7 +50,7 @@ namespace blink {
 
 class LocalFrame;
 
-class UndoStep : public RefCountedWillBeGarbageCollectedFinalized<UndoStep> {
+class UndoStep : public BlinKit::GCObject {
 public:
     virtual ~UndoStep() { }
     DEFINE_INLINE_VIRTUAL_TRACE() { }

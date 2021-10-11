@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InsertIntoTextNodeCommand.cpp
+// Description: InsertIntoTextNodeCommand Class
+//      Author: Ziming Li
+//     Created: 2021-10-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2008 Apple Inc. All rights reserved.
  *
@@ -46,7 +57,7 @@ InsertIntoTextNodeCommand::InsertIntoTextNodeCommand(PassRefPtrWillBeRawPtr<Text
 
 void InsertIntoTextNodeCommand::doApply()
 {
-    bool passwordEchoEnabled = document().settings() && document().settings()->passwordEchoEnabled();
+    constexpr bool passwordEchoEnabled = Settings::passwordEchoEnabled();
     if (passwordEchoEnabled)
         document().updateLayoutIgnorePendingStylesheets();
 
