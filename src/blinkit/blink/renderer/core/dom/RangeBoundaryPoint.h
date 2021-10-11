@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RangeBoundaryPoint.h
+// Description: RangeBoundaryPoint Class
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -68,9 +79,9 @@ public:
 private:
     static const int invalidOffset = -1;
 
-    RefPtrWillBeMember<Node> m_containerNode;
+    GCRefPtr<Node> m_containerNode;
     mutable int m_offsetInContainer;
-    RefPtrWillBeMember<Node> m_childBeforeBoundary;
+    GCRefPtr<Node> m_childBeforeBoundary;
 };
 
 inline RangeBoundaryPoint::RangeBoundaryPoint(PassRefPtrWillBeRawPtr<Node> container)

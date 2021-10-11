@@ -178,14 +178,14 @@ static duk_ret_t RemoveChild(duk_context *ctx)
     Node *child = DukScriptObject::To<Node>(ctx, 0);
 
     DukExceptionState exceptionState(ctx);
-    Node *ret = node->removeChild(child, exceptionState);
+    GCRefPtr<Node> ret = node->removeChild(child, exceptionState);
     if (exceptionState.hadException())
     {
         exceptionState.ThrowIfNeeded();
         return 0;
     }
 
-    DukNode::Push(ctx, ret);
+    DukNode::Push(ctx, ret.get());
     return 1;
 }
 
