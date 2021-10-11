@@ -42,7 +42,7 @@
 #include "core/dom/Text.h"
 #include "core/editing/EditingUtilities.h"
 #include "core/editing/Editor.h"
-// BKTODO: #include "core/editing/commands/TypingCommand.h"
+#include "core/editing/commands/TypingCommand.h"
 #include "core/editing/markers/DocumentMarkerController.h"
 // BKTODO: #include "core/events/CompositionEvent.h"
 #include "core/frame/LocalFrame.h"
@@ -54,15 +54,15 @@
 
 namespace blink {
 
-InputMethodController::SelectionOffsetsScope::SelectionOffsetsScope(InputMethodController* inputMethodController)
+InputMethodController::SelectionOffsetsScope::SelectionOffsetsScope(InputMethodController &inputMethodController)
     : m_inputMethodController(inputMethodController)
-    , m_offsets(inputMethodController->getSelectionOffsets())
+    , m_offsets(inputMethodController.getSelectionOffsets())
 {
 }
 
 InputMethodController::SelectionOffsetsScope::~SelectionOffsetsScope()
 {
-    m_inputMethodController->setSelectionOffsets(m_offsets);
+    m_inputMethodController.setSelectionOffsets(m_offsets);
 }
 
 // ----------------------------
@@ -73,7 +73,7 @@ std::unique_ptr<InputMethodController> InputMethodController::create(LocalFrame&
 }
 
 InputMethodController::InputMethodController(LocalFrame& frame)
-    : m_frame(&frame)
+    : m_frame(frame)
     , m_isDirty(false)
     , m_hasComposition(false)
 {
@@ -179,7 +179,7 @@ bool InputMethodController::confirmComposition(const String& text)
     // non-empty, InsertTextCommand::input will delete the old composition with
     // an optimized replace operation.
     if (text.isEmpty())
-        ASSERT(false); // BKTODO: TypingCommand::deleteSelection(*frame().document(), 0);
+        TypingCommand::deleteSelection(*frame().document(), 0);
 
     clear();
 
@@ -205,7 +205,7 @@ bool InputMethodController::confirmCompositionOrInsertText(const String& text, C
     if (confirmBehavior != KeepSelection)
         return confirmComposition();
 
-    SelectionOffsetsScope selectionOffsetsScope(this);
+    SelectionOffsetsScope selectionOffsetsScope(*this);
     return confirmComposition();
 }
 
@@ -225,7 +225,7 @@ void InputMethodController::cancelComposition()
 
     // An open typing command that disagrees about current selection would cause
     // issues with typing later on.
-    ASSERT(false); // BKTODO:TypingCommand::closeTyping(m_frame);
+    TypingCommand::closeTyping(&m_frame);
 }
 
 void InputMethodController::cancelCompositionIfSelectionIsInvalid()
@@ -300,7 +300,7 @@ void InputMethodController::setComposition(const String& text, const Vector<Comp
     // will delete the old composition with an optimized replace operation.
     if (text.isEmpty()) {
         ASSERT(frame().document());
-        ASSERT(false); // BKTODO: TypingCommand::deleteSelection(*frame().document(), TypingCommand::PreventSpellChecking);
+        TypingCommand::deleteSelection(*frame().document(), TypingCommand::PreventSpellChecking);
     }
 
     clear();
@@ -308,7 +308,7 @@ void InputMethodController::setComposition(const String& text, const Vector<Comp
     if (text.isEmpty())
         return;
     ASSERT(frame().document());
-    ASSERT(false); // BKTODO: TypingCommand::insertText(*frame().document(), text, TypingCommand::SelectInsertedText | TypingCommand::PreventSpellChecking, TypingCommand::TextCompositionUpdate);
+    TypingCommand::insertText(*frame().document(), text, TypingCommand::SelectInsertedText | TypingCommand::PreventSpellChecking, TypingCommand::TextCompositionUpdate);
 
     // Find out what node has the composition now.
     Position base = mostForwardCaretPosition(frame().selection().base());
@@ -338,7 +338,7 @@ void InputMethodController::setComposition(const String& text, const Vector<Comp
 
     unsigned start = std::min(baseOffset + selectionStart, extentOffset);
     unsigned end = std::min(std::max(start, baseOffset + selectionEnd), extentOffset);
-    RefPtrWillBeRawPtr<Range> selectedRange = Range::create(baseNode->document(), baseNode, start, baseNode, end);
+    GCRefPtr<Range> selectedRange = Range::create(baseNode->document(), baseNode, start, baseNode, end);
     frame().selection().setSelectedRange(selectedRange.get(), TextAffinity::Downstream, SelectionDirectionalMode::NonDirectional, NotUserTriggered);
 
     if (underlines.isEmpty()) {
@@ -398,7 +398,7 @@ EphemeralRange InputMethodController::compositionEphemeralRange() const
     return EphemeralRange(m_compositionRange.get());
 }
 
-PassRefPtrWillBeRawPtr<Range> InputMethodController::compositionRange() const
+GCRefPtr<Range> InputMethodController::compositionRange() const
 {
     return hasComposition() ? m_compositionRange : nullptr;
 }
@@ -467,13 +467,7 @@ void InputMethodController::extendSelectionAndDelete(int before, int after)
             break;
         ++before;
     } while (frame().selection().start() == frame().selection().end() && before <= static_cast<int>(selectionOffsets.start()));
-    ASSERT(false); // BKTODO: TypingCommand::deleteSelection(*frame().document());
-}
-
-DEFINE_TRACE(InputMethodController)
-{
-    visitor->trace(m_frame);
-    visitor->trace(m_compositionRange);
+    TypingCommand::deleteSelection(*frame().document());
 }
 
 } // namespace blink

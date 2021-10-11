@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InputMethodController.h
+// Description: InputMethodController Class
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -41,8 +52,7 @@ class LocalFrame;
 class Range;
 class Text;
 
-class CORE_EXPORT InputMethodController final : public NoBaseWillBeGarbageCollectedFinalized<InputMethodController> {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(InputMethodController);
+class CORE_EXPORT InputMethodController final {
     WTF_MAKE_NONCOPYABLE(InputMethodController);
 public:
     enum ConfirmCompositionBehavior {
@@ -52,7 +62,6 @@ public:
 
     static std::unique_ptr<InputMethodController> create(LocalFrame&);
     ~InputMethodController();
-    DECLARE_TRACE();
 
     // international text input composition
     bool hasComposition() const;
@@ -71,7 +80,7 @@ public:
     void cancelComposition();
     void cancelCompositionIfSelectionIsInvalid();
     EphemeralRange compositionEphemeralRange() const;
-    PassRefPtrWillBeRawPtr<Range> compositionRange() const;
+    GCRefPtr<Range> compositionRange() const;
 
     void clear();
     void documentDetached();
@@ -86,16 +95,16 @@ private:
         WTF_MAKE_NONCOPYABLE(SelectionOffsetsScope);
         STACK_ALLOCATED();
     public:
-        explicit SelectionOffsetsScope(InputMethodController*);
+        explicit SelectionOffsetsScope(InputMethodController&);
         ~SelectionOffsetsScope();
     private:
-        RawPtrWillBeMember<InputMethodController> m_inputMethodController;
+        InputMethodController &m_inputMethodController;
         const PlainTextRange m_offsets;
     };
     friend class SelectionOffsetsScope;
 
-    RawPtrWillBeMember<LocalFrame> m_frame;
-    RefPtrWillBeMember<Range> m_compositionRange;
+    LocalFrame &m_frame;
+    GCRefPtr<Range> m_compositionRange;
     bool m_isDirty;
     bool m_hasComposition;
 
@@ -104,8 +113,7 @@ private:
     Editor& editor() const;
     LocalFrame& frame() const
     {
-        ASSERT(m_frame);
-        return *m_frame;
+        return m_frame;
     }
 
     String composingText() const;
