@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMSelection.h
+// Description: DOMSelection Class
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Apple Inc.  All rights reserved.
  * Copyright (C) 2012 Google Inc.  All rights reserved.
@@ -47,13 +58,11 @@ class Node;
 class Range;
 class TreeScope;
 
-class DOMSelection final : public RefCountedWillBeGarbageCollected<DOMSelection>, public ScriptWrappable, public DOMWindowProperty {
-    DEFINE_WRAPPERTYPEINFO();
-    WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(DOMSelection);
+class DOMSelection final : public ScriptWrappable, public DOMWindowProperty {
 public:
-    static PassRefPtrWillBeRawPtr<DOMSelection> create(const TreeScope* treeScope)
+    static std::unique_ptr<DOMSelection> create(const TreeScope* treeScope)
     {
-        return adoptRefWillBeNoop(new DOMSelection(treeScope));
+        return zed::wrap_unique(new DOMSelection(treeScope));
     }
 
     void clearTreeScope();
@@ -84,7 +93,7 @@ public:
     void collapseToEnd(ExceptionState&);
     void collapseToStart(ExceptionState&);
     void extend(Node*, int offset, ExceptionState&);
-    PassRefPtrWillBeRawPtr<Range> getRangeAt(int, ExceptionState&);
+    GCRefPtr<Range> getRangeAt(int, ExceptionState&);
     void removeAllRanges();
     void addRange(Range*);
     void deleteFromDocument();
@@ -95,8 +104,6 @@ public:
 
     // Microsoft Selection Object API
     void empty();
-
-    DECLARE_VIRTUAL_TRACE();
 
 private:
     explicit DOMSelection(const TreeScope*);
@@ -111,7 +118,7 @@ private:
 
     void addConsoleError(const String& message);
 
-    RawPtrWillBeMember<const TreeScope> m_treeScope;
+    const TreeScope *m_treeScope;
 };
 
 } // namespace blink

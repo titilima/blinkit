@@ -230,7 +230,7 @@ void DOMSelection::collapse(Node* node, int offset, ExceptionState& exceptionSta
 
     if (!isValidForPosition(node))
         return;
-    RefPtrWillBeRawPtr<Range> range = Range::create(node->document());
+    GCRefPtr<Range> range = Range::create(node->document());
     range->setStart(node, offset, exceptionState);
     if (exceptionState.hadException())
         return;
@@ -376,7 +376,7 @@ void DOMSelection::extend(Node* node, int offset, ExceptionState& exceptionState
     m_frame->selection().setExtent(createVisiblePosition(createPosition(node, offset)));
 }
 
-PassRefPtrWillBeRawPtr<Range> DOMSelection::getRangeAt(int index, ExceptionState& exceptionState)
+GCRefPtr<Range> DOMSelection::getRangeAt(int index, ExceptionState& exceptionState)
 {
     if (!m_frame)
         return nullptr;
@@ -424,7 +424,7 @@ void DOMSelection::addRange(Range* newRange)
         return;
     }
 
-    RefPtrWillBeRawPtr<Range> originalRange = selection.firstRange();
+    GCRefPtr<Range> originalRange = selection.firstRange();
 
     if (originalRange->startContainer()->document() != newRange->startContainer()->document()) {
         addConsoleError("The given range does not belong to the current selection's document.");
@@ -448,7 +448,7 @@ void DOMSelection::addRange(Range* newRange)
 
     Range* start = originalRange->compareBoundaryPoints(Range::START_TO_START, newRange, ASSERT_NO_EXCEPTION) < 0 ? originalRange.get() : newRange;
     Range* end = originalRange->compareBoundaryPoints(Range::END_TO_END, newRange, ASSERT_NO_EXCEPTION) < 0 ? newRange : originalRange.get();
-    RefPtrWillBeRawPtr<Range> merged = Range::create(originalRange->startContainer()->document(), start->startContainer(), start->startOffset(), end->endContainer(), end->endOffset());
+    GCRefPtr<Range> merged = Range::create(originalRange->startContainer()->document(), start->startContainer(), start->startOffset(), end->endContainer(), end->endOffset());
     TextAffinity affinity = selection.selection().affinity();
     selection.setSelectedRange(merged.get(), affinity);
 }
@@ -463,7 +463,7 @@ void DOMSelection::deleteFromDocument()
     if (selection.isNone())
         return;
 
-    RefPtrWillBeRawPtr<Range> selectedRange = createRange(selection.selection().toNormalizedEphemeralRange());
+    GCRefPtr<Range> selectedRange = createRange(selection.selection().toNormalizedEphemeralRange());
     if (!selectedRange)
         return;
 
@@ -574,12 +574,6 @@ void DOMSelection::addConsoleError(const String& message)
 {
     if (m_treeScope)
         ASSERT(false); // BKTODO: m_treeScope->document().addConsoleMessage(ConsoleMessage::create(JSMessageSource, ErrorMessageLevel, message));
-}
-
-DEFINE_TRACE(DOMSelection)
-{
-    visitor->trace(m_treeScope);
-    DOMWindowProperty::trace(visitor);
 }
 
 } // namespace blink
