@@ -368,7 +368,7 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromMarkupWithContext(Doc
     root->appendChild(taggedFragment.get());
     taggedDocument->appendChild(root);
 
-    RefPtrWillBeRawPtr<Range> range = Range::create(*taggedDocument.get(),
+    GCRefPtr<Range> range = Range::create(*taggedDocument.get(),
         positionAfterNode(nodeBeforeContext.get()).parentAnchoredEquivalent(),
         positionBeforeNode(nodeAfterContext.get()).parentAnchoredEquivalent());
 

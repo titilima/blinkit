@@ -186,7 +186,7 @@ static bool doesNotInclude(const OwnPtrWillBeMember<RenderedDocumentMarker>& mar
 
 static bool updateMarkerRenderedRect(Node* node, RenderedDocumentMarker& marker)
 {
-    RefPtrWillBeRawPtr<Range> range = Range::create(node->document());
+    GCRefPtr<Range> range = Range::create(node->document());
     // The offsets of the marker may be out-dated, so check for exceptions.
     TrackExceptionState exceptionState;
     range->setStart(node, marker.startOffset(), exceptionState);

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Range.h
+// Description: Range Class
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Gunnstein Lye (gunnstein@netcom.no)
@@ -48,25 +59,17 @@ class Node;
 class NodeWithIndex;
 class Text;
 
-class CORE_EXPORT Range final
-#ifndef NDEBUG
-    : public RefCountedWillBeGarbageCollectedFinalized<Range>
-#else
-    : public RefCountedWillBeGarbageCollected<Range>
-#endif
-    , public ScriptWrappable {
+class CORE_EXPORT Range final : public BlinKit::GCObject, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
-    static PassRefPtrWillBeRawPtr<Range> create(Document&);
-    static PassRefPtrWillBeRawPtr<Range> create(Document&, Node* startContainer, int startOffset, Node* endContainer, int endOffset);
-    static PassRefPtrWillBeRawPtr<Range> create(Document&, const Position&, const Position&);
-    static PassRefPtrWillBeRawPtr<Range> createAdjustedToTreeScope(const TreeScope&, const Position&);
-#if !ENABLE(OILPAN) || !defined(NDEBUG)
+    static GCRefPtr<Range> create(Document&);
+    static GCRefPtr<Range> create(Document&, Node* startContainer, int startOffset, Node* endContainer, int endOffset);
+    static GCRefPtr<Range> create(Document&, const Position&, const Position&);
+    static GCRefPtr<Range> createAdjustedToTreeScope(const TreeScope&, const Position&);
     ~Range();
-#endif
-    void dispose();
 
-    Document& ownerDocument() const { ASSERT(m_ownerDocument); return *m_ownerDocument.get(); }
+    Document& ownerDocument() const { ASSERT(m_ownerDocument); return *m_ownerDocument; }
     Node* startContainer() const { return m_start.container(); }
     int startOffset() const { return m_start.offset(); }
     Node* endContainer() const { return m_end.container(); }
@@ -102,7 +105,7 @@ public:
     PassRefPtrWillBeRawPtr<DocumentFragment> createContextualFragment(const String& html, ExceptionState&);
 
     void detach();
-    PassRefPtrWillBeRawPtr<Range> cloneRange() const;
+    GCRefPtr<Range> cloneRange() const;
 
     void setStartAfter(Node*, ExceptionState& = ASSERT_NO_EXCEPTION);
     void setEndBefore(Node*, ExceptionState& = ASSERT_NO_EXCEPTION);
@@ -179,7 +182,9 @@ private:
     enum ContentsProcessDirection { ProcessContentsForward, ProcessContentsBackward };
     static PassRefPtrWillBeRawPtr<Node> processAncestorsAndTheirSiblings(ActionType, Node* container, ContentsProcessDirection, PassRefPtrWillBeRawPtr<Node> clonedContainer, Node* commonRoot, ExceptionState&);
 
-    RefPtrWillBeMember<Document> m_ownerDocument; // Cannot be null.
+    BlinKit::GCObject* ObjectForGC(void) override { return this; }
+
+    Document *m_ownerDocument; // Cannot be null.
     RangeBoundaryPoint m_start;
     RangeBoundaryPoint m_end;
 };

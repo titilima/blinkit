@@ -446,7 +446,7 @@ DragOperation DragController::operationForLoad(DragData* dragData)
     return dragOperation(dragData);
 }
 
-static bool setSelectionToDragCaret(LocalFrame* frame, VisibleSelection& dragCaret, RefPtrWillBeRawPtr<Range>& range, const IntPoint& point)
+static bool setSelectionToDragCaret(LocalFrame* frame, VisibleSelection& dragCaret, GCRefPtr<Range>& range, const IntPoint& point)
 {
     frame->selection().setSelection(dragCaret);
     if (frame->selection().isNone()) {
@@ -505,7 +505,7 @@ bool DragController::concludeEditDrag(DragData* dragData)
 
     VisibleSelection dragCaret(m_page->dragCaretController().caretPosition());
     m_page->dragCaretController().clear();
-    RefPtrWillBeRawPtr<Range> range = createRange(dragCaret.toNormalizedEphemeralRange());
+    GCRefPtr<Range> range = createRange(dragCaret.toNormalizedEphemeralRange());
     RefPtrWillBeRawPtr<Element> rootEditableElement = innerFrame->selection().rootEditableElement();
 
     // For range to be null a WebKit client must have done something bad while
@@ -516,7 +516,7 @@ bool DragController::concludeEditDrag(DragData* dragData)
     ResourceCacheValidationSuppressor validationSuppressor(fetcher);
     if (dragIsMove(innerFrame->selection(), dragData) || dragCaret.isContentRichlyEditable()) {
         bool chosePlainText = false;
-        RefPtrWillBeRawPtr<DocumentFragment> fragment = documentFragmentFromDragData(dragData, innerFrame.get(), range, true, chosePlainText);
+        RefPtrWillBeRawPtr<DocumentFragment> fragment = documentFragmentFromDragData(dragData, innerFrame.get(), range.get(), true, chosePlainText);
         if (!fragment)
             return false;
 
@@ -678,16 +678,11 @@ Node* DragController::draggableNode(const LocalFrame* src, Node* startNode, cons
             EUserDrag dragMode = layoutObject->style()->userDrag();
             if (dragMode == DRAG_NONE)
                 continue;
-            ASSERT(false); // BKTODO:
-#if 0
             // Even if the image is part of a selection, we always only drag the image in this case.
-            if (layoutObject->isImage()
-                && src->settings()
-                && src->settings()->loadsImagesAutomatically()) {
+            if (layoutObject->isImage() && Settings::loadsImagesAutomatically()) {
                 dragType = DragSourceActionImage;
                 return node;
             }
-#endif
             // Other draggable elements are considered unselectable.
             if (isHTMLAnchorElement(*node) && toHTMLAnchorElement(node)->isLiveLink()) {
                 candidateDragType = DragSourceActionLink;
@@ -745,7 +740,7 @@ static Image* getImage(Element* element)
 static void prepareDataTransferForImageDrag(LocalFrame* source, DataTransfer* dataTransfer, Element* node, const KURL& linkURL, const KURL& imageURL, const String& label)
 {
     if (node->isContentRichlyEditable()) {
-        RefPtrWillBeRawPtr<Range> range = source->document()->createRange();
+        GCRefPtr<Range> range = source->document()->createRange();
         range->selectNode(node, ASSERT_NO_EXCEPTION);
         source->selection().setSelection(VisibleSelection(EphemeralRange(range.get())));
     }

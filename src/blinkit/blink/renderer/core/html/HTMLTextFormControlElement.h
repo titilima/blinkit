@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTextFormControlElement.h
+// Description: HTMLTextFormControlElement Class
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -79,7 +90,7 @@ public:
     virtual void setRangeText(const String& replacement, unsigned start, unsigned end, const String& selectionMode, ExceptionState&);
     void setSelectionRange(int start, int end, const String& direction);
     void setSelectionRange(int start, int end, TextFieldSelectionDirection = SelectionHasNoDirection, NeedToDispatchSelectEvent = DispatchSelectEvent, SelectionOption = ChangeSelection);
-    PassRefPtrWillBeRawPtr<Range> selection() const;
+    GCRefPtr<Range> selection() const;
 
     virtual bool supportsAutocapitalize() const = 0;
     virtual const AtomicString& defaultAutocapitalize() const = 0;

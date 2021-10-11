@@ -419,7 +419,7 @@ int HTMLTextFormControlElement::indexForVisiblePosition(const VisiblePosition& p
     if (enclosingTextFormControl(indexPosition) != this)
         return 0;
     ASSERT(indexPosition.document());
-    RefPtrWillBeRawPtr<Range> range = Range::create(*indexPosition.document());
+    GCRefPtr<Range> range = Range::create(*indexPosition.document());
     range->setStart(innerEditorElement(), 0, ASSERT_NO_EXCEPTION);
     range->setEnd(indexPosition.computeContainerNode(), indexPosition.offsetInContainerNode(), ASSERT_NO_EXCEPTION);
     return TextIterator::rangeLength(range->startPosition(), range->endPosition());
@@ -515,7 +515,7 @@ static inline void setContainerAndOffsetForRange(Node* node, int offset, Node*& 
     }
 }
 
-PassRefPtrWillBeRawPtr<Range> HTMLTextFormControlElement::selection() const
+GCRefPtr<Range> HTMLTextFormControlElement::selection() const
 {
     if (!layoutObject() || !isTextFormControl())
         return nullptr;

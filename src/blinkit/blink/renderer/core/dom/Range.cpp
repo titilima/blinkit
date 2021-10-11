@@ -64,32 +64,21 @@
 #include <stdio.h>
 #endif
 
+using namespace BlinKit;
+
 namespace blink {
-namespace {
-#if 0 // BKTODO: ndef NDEBUG
-WTF::RefCountedLeakCounter& rangeCounter()
-{
-    DEFINE_STATIC_LOCAL(WTF::RefCountedLeakCounter, staticRangeCounter, ("Range"));
-    return staticRangeCounter;
-}
-#endif
-} // namespace
 
 inline Range::Range(Document& ownerDocument)
     : m_ownerDocument(&ownerDocument)
     , m_start(m_ownerDocument)
     , m_end(m_ownerDocument)
 {
-#ifndef NDEBUG
-    ASSERT(false); // BKTODO: rangeCounter().increment();
-#endif
-
     m_ownerDocument->attachRange(this);
 }
 
-PassRefPtrWillBeRawPtr<Range> Range::create(Document& ownerDocument)
+GCRefPtr<Range> Range::create(Document& ownerDocument)
 {
-    return adoptRefWillBeNoop(new Range(ownerDocument));
+    return GCWrapShared(new Range(ownerDocument));
 }
 
 inline Range::Range(Document& ownerDocument, Node* startContainer, int startOffset, Node* endContainer, int endOffset)
@@ -97,10 +86,6 @@ inline Range::Range(Document& ownerDocument, Node* startContainer, int startOffs
     , m_start(m_ownerDocument)
     , m_end(m_ownerDocument)
 {
-#ifndef NDEBUG
-    ASSERT(false); // BKTODO: rangeCounter().increment();
-#endif
-
     m_ownerDocument->attachRange(this);
 
     // Simply setting the containers and offsets directly would not do any of the checking
@@ -109,19 +94,19 @@ inline Range::Range(Document& ownerDocument, Node* startContainer, int startOffs
     setEnd(endContainer, endOffset);
 }
 
-PassRefPtrWillBeRawPtr<Range> Range::create(Document& ownerDocument, Node* startContainer, int startOffset, Node* endContainer, int endOffset)
+GCRefPtr<Range> Range::create(Document& ownerDocument, Node* startContainer, int startOffset, Node* endContainer, int endOffset)
 {
-    return adoptRefWillBeNoop(new Range(ownerDocument, startContainer, startOffset, endContainer, endOffset));
+    return GCWrapShared(new Range(ownerDocument, startContainer, startOffset, endContainer, endOffset));
 }
 
-PassRefPtrWillBeRawPtr<Range> Range::create(Document& ownerDocument, const Position& start, const Position& end)
+GCRefPtr<Range> Range::create(Document& ownerDocument, const Position& start, const Position& end)
 {
-    return adoptRefWillBeNoop(new Range(ownerDocument, start.computeContainerNode(), start.computeOffsetInContainerNode(), end.computeContainerNode(), end.computeOffsetInContainerNode()));
+    return GCWrapShared(new Range(ownerDocument, start.computeContainerNode(), start.computeOffsetInContainerNode(), end.computeContainerNode(), end.computeOffsetInContainerNode()));
 }
 
-PassRefPtrWillBeRawPtr<Range> Range::createAdjustedToTreeScope(const TreeScope& treeScope, const Position& position)
+GCRefPtr<Range> Range::createAdjustedToTreeScope(const TreeScope& treeScope, const Position& position)
 {
-    RefPtrWillBeRawPtr<Range> range = create(treeScope.document(), position, position);
+    GCRefPtr<Range> range = create(treeScope.document(), position, position);
 
     // Make sure the range is in this scope.
     Node* firstNode = range->firstNode();
@@ -129,7 +114,7 @@ PassRefPtrWillBeRawPtr<Range> Range::createAdjustedToTreeScope(const TreeScope& 
     Node* shadowHostInThisScopeOrFirstNode = treeScope.ancestorInThisScope(firstNode);
     ASSERT(shadowHostInThisScopeOrFirstNode);
     if (shadowHostInThisScopeOrFirstNode == firstNode)
-        return range.release();
+        return range;
 
     // If not, create a range for the shadow host in this scope.
     ContainerNode* container = shadowHostInThisScopeOrFirstNode->parentNode();
@@ -138,26 +123,10 @@ PassRefPtrWillBeRawPtr<Range> Range::createAdjustedToTreeScope(const TreeScope& 
     return Range::create(treeScope.document(), container, offset, container, offset);
 }
 
-#if !ENABLE(OILPAN) || !defined(NDEBUG)
 Range::~Range()
 {
-#if !ENABLE(OILPAN)
     // Always detach (even if we've already detached) to fix https://bugs.webkit.org/show_bug.cgi?id=26044
     m_ownerDocument->detachRange(this);
-#endif
-
-#ifndef NDEBUG
-    ASSERT(false); // BKTODO: rangeCounter().decrement();
-#endif
-}
-#endif
-
-void Range::dispose()
-{
-#if ENABLE(OILPAN)
-    // A prompt detach from the owning Document helps avoid GC overhead.
-    m_ownerDocument->detachRange(this);
-#endif
 }
 
 bool Range::inDocument() const
@@ -424,7 +393,7 @@ bool Range::intersectsNode(Node* refNode, ExceptionState& exceptionState)
 {
     // http://developer.mozilla.org/en/docs/DOM:range.intersectsNode
     // Returns a bool if the node intersects the range.
-    if (!nodeValidForIntersects(refNode, m_ownerDocument.get(), exceptionState))
+    if (!nodeValidForIntersects(refNode, m_ownerDocument, exceptionState))
         return false;
 
     ContainerNode* parentNode = refNode->parentNode();
@@ -519,7 +488,7 @@ PassRefPtrWillBeRawPtr<DocumentFragment> Range::processContents(ActionType actio
 
     RefPtrWillBeRawPtr<DocumentFragment> fragment = nullptr;
     if (action == EXTRACT_CONTENTS || action == CLONE_CONTENTS)
-        fragment = DocumentFragment::create(*m_ownerDocument.get());
+        fragment = DocumentFragment::create(*m_ownerDocument);
 
     if (collapsed())
         return fragment.release();
@@ -1043,9 +1012,9 @@ void Range::checkNodeBA(Node* n, ExceptionState& exceptionState) const
     }
 }
 
-PassRefPtrWillBeRawPtr<Range> Range::cloneRange() const
+GCRefPtr<Range> Range::cloneRange() const
 {
-    return Range::create(*m_ownerDocument.get(), m_start.container(), m_start.offset(), m_end.container(), m_end.offset());
+    return Range::create(*m_ownerDocument, m_start.container(), m_start.offset(), m_end.container(), m_end.offset());
 }
 
 void Range::setStartAfter(Node* refNode, ExceptionState& exceptionState)
@@ -1463,7 +1432,7 @@ static inline void boundaryNodeWillBeRemoved(RangeBoundaryPoint& boundary, Node&
 void Range::nodeWillBeRemoved(Node& node)
 {
     ASSERT(node.document() == m_ownerDocument);
-    ASSERT(node != m_ownerDocument.get());
+    ASSERT(node != m_ownerDocument);
 
     // FIXME: Once DOMNodeRemovedFromDocument mutation event removed, we
     // should change following if-statement to ASSERT(!node->parentNode).
@@ -1657,7 +1626,6 @@ FloatRect Range::boundingRect() const
 
 DEFINE_TRACE(Range)
 {
-    visitor->trace(m_ownerDocument);
     visitor->trace(m_start);
     visitor->trace(m_end);
 }

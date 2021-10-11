@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EditingUtilities.cpp
+// Description: Editing Utilities
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007 Apple Inc. All rights reserved.
  *
@@ -1272,7 +1283,7 @@ HTMLSpanElement* tabSpanElement(const Node* node)
 
 static PassRefPtrWillBeRawPtr<HTMLSpanElement> createTabSpanElement(Document& document, PassRefPtrWillBeRawPtr<Text> prpTabTextNode)
 {
-    RefPtrWillBeRawPtr<Text> tabTextNode = prpTabTextNode;
+    GCRefPtr<Text> tabTextNode = prpTabTextNode;
 
     // Make the span to hold the tab.
     RefPtrWillBeRawPtr<HTMLSpanElement> spanElement = HTMLSpanElement::create(document);
@@ -1500,7 +1511,7 @@ int indexForVisiblePosition(const VisiblePosition& visiblePosition, RefPtrWillBe
     else
         scope = document.documentElement();
 
-    RefPtrWillBeRawPtr<Range> range = Range::create(document, firstPositionInNode(scope.get()), p.parentAnchoredEquivalent());
+    GCRefPtr<Range> range = Range::create(document, firstPositionInNode(scope.get()), p.parentAnchoredEquivalent());
 
     return TextIterator::rangeLength(range->startPosition(), range->endPosition(), true);
 }

@@ -130,7 +130,7 @@ static String selectMisspellingAsync(LocalFrame* selectedFrame, String& descript
         return String();
 
     // Caret and range selections always return valid normalized ranges.
-    RefPtrWillBeRawPtr<Range> selectionRange = createRange(selection.toNormalizedEphemeralRange());
+    GCRefPtr<Range> selectionRange = createRange(selection.toNormalizedEphemeralRange());
     DocumentMarkerVector markers = selectedFrame->document()->markers().markersInRange(EphemeralRange(selectionRange.get()), DocumentMarker::MisspellingMarkers());
     if (markers.size() != 1)
         return String();
@@ -138,7 +138,7 @@ static String selectMisspellingAsync(LocalFrame* selectedFrame, String& descript
     hash = markers[0]->hash();
 
     // Cloning a range fails only for invalid ranges.
-    RefPtrWillBeRawPtr<Range> markerRange = selectionRange->cloneRange();
+    GCRefPtr<Range> markerRange = selectionRange->cloneRange();
     markerRange->setStart(markerRange->startContainer(), markers[0]->startOffset());
     markerRange->setEnd(markerRange->endContainer(), markers[0]->endOffset());
 
