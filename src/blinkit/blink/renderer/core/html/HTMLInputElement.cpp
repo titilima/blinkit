@@ -51,7 +51,7 @@
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/editing/FrameSelection.h"
 // BKTODO: #include "core/editing/spellcheck/SpellChecker.h"
-// BKTODO: #include "core/events/BeforeTextInsertedEvent.h"
+#include "core/events/BeforeTextInsertedEvent.h"
 #include "core/events/KeyboardEvent.h"
 #include "core/events/MouseEvent.h"
 #include "core/events/ScopedEventQueue.h"
@@ -1309,7 +1309,7 @@ void HTMLInputElement::defaultEventHandler(Event* evt)
     }
 
     if (evt->isBeforeTextInsertedEvent())
-        ASSERT(false); // BKTODO: m_inputTypeView->handleBeforeTextInsertedEvent(static_cast<BeforeTextInsertedEvent*>(evt));
+        m_inputTypeView->handleBeforeTextInsertedEvent(static_cast<BeforeTextInsertedEvent*>(evt));
 
     if (evt->isMouseEvent() && evt->type() == EventTypeNames::mousedown) {
         m_inputTypeView->handleMouseDownEvent(toMouseEvent(evt));

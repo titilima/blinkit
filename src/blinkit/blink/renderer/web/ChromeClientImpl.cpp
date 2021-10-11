@@ -1086,8 +1086,7 @@ void ChromeClientImpl::onMouseDown(Node* mouseDownNode)
 
 void ChromeClientImpl::handleKeyboardEventOnTextField(HTMLInputElement& inputElement, KeyboardEvent& event)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     WebLocalFrameImpl* webframe = WebLocalFrameImpl::fromFrame(inputElement.document().frame());
     if (webframe->autofillClient())
         webframe->autofillClient()->textFieldDidReceiveKeyDown(WebInputElement(&inputElement), WebKeyboardEventBuilder(event));
@@ -1096,8 +1095,7 @@ void ChromeClientImpl::handleKeyboardEventOnTextField(HTMLInputElement& inputEle
 
 void ChromeClientImpl::didChangeValueInTextField(HTMLFormControlElement& element)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     WebLocalFrameImpl* webframe = WebLocalFrameImpl::fromFrame(element.document().frame());
     if (webframe->autofillClient())
         webframe->autofillClient()->textFieldDidChange(WebFormControlElement(&element));

@@ -68,8 +68,7 @@ void EditorClientImpl::respondToChangedSelection(LocalFrame* frame, SelectionTyp
 
 void EditorClientImpl::respondToChangedContents()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (m_webView->client())
         m_webView->client()->didChangeContents();
 #endif
@@ -101,8 +100,7 @@ bool EditorClientImpl::canPaste(LocalFrame* frame, bool defaultValue) const
 
 bool EditorClientImpl::handleKeyboardEvent()
 {
-    ASSERT(false); // BKTODO: return m_webView->client() && m_webView->client()->handleCurrentKeyboardEvent();
-    return false;
+    return false; // BKTODO: return m_webView->client() && m_webView->client()->handleCurrentKeyboardEvent();
 }
 
 } // namespace blink

@@ -514,11 +514,10 @@ void LayoutBox::scrollToOffset(const DoubleSize& offset, ScrollBehavior scrollBe
         layer()->scrollableArea()->scrollToOffset(offset, ScrollOffsetClamped, scrollBehavior);
 }
 
+#if 0 // BKTODO:
 // Returns true iff we are attempting an autoscroll inside an iframe with scrolling="no".
 static bool isDisallowedAutoscroll(HTMLFrameOwnerElement* ownerElement, FrameView* frameView)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (ownerElement && isHTMLFrameElementBase(*ownerElement)) {
         HTMLFrameElementBase* frameElementBase = toHTMLFrameElementBase(ownerElement);
         if (Page* page = frameView->frame().page()) {
@@ -526,9 +525,9 @@ static bool isDisallowedAutoscroll(HTMLFrameOwnerElement* ownerElement, FrameVie
                 && frameElementBase->scrollingMode() == ScrollbarAlwaysOff;
         }
     }
-#endif
     return false;
 }
+#endif
 
 void LayoutBox::scrollRectToVisible(const LayoutRect& rect, const ScrollAlignment& alignX, const ScrollAlignment& alignY, ScrollType scrollType, bool makeVisibleInVisualViewport)
 {
@@ -551,8 +550,7 @@ void LayoutBox::scrollRectToVisible(const LayoutRect& rect, const ScrollAlignmen
         newRect = layer()->scrollableArea()->scrollIntoView(rect, alignX, alignY, scrollType);
     } else if (!parentBox && canBeProgramaticallyScrolled()) {
         if (FrameView* frameView = this->frameView()) {
-            ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
             HTMLFrameOwnerElement* ownerElement = document().ownerElement();
             if (!isDisallowedAutoscroll(ownerElement, frameView)) {
                 if (makeVisibleInVisualViewport) {
@@ -572,6 +570,11 @@ void LayoutBox::scrollRectToVisible(const LayoutRect& rect, const ScrollAlignmen
                     }
                 }
             }
+#else
+            if (makeVisibleInVisualViewport)
+                frameView->scrollableArea()->scrollIntoView(rect, alignX, alignY, scrollType);
+            else
+                frameView->layoutViewportScrollableArea()->scrollIntoView(rect, alignX, alignY, scrollType);
 #endif
         }
     }
@@ -580,8 +583,7 @@ void LayoutBox::scrollRectToVisible(const LayoutRect& rect, const ScrollAlignmen
     if (hasLayer() && layer()->scrollsWithViewport())
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (frame()->page()->autoscrollController().autoscrollInProgress())
         parentBox = enclosingScrollableBox();
 #endif

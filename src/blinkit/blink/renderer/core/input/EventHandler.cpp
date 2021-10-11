@@ -3358,10 +3358,9 @@ WebInputEventResult EventHandler::keyEvent(const PlatformKeyboardEvent& initialK
     if (!node)
         return WebInputEventResult::NotHandled;
 
-    ASSERT(false); // BKTODO:
-    return WebInputEventResult::NotHandled;
-#if 0
+#if 0 // BKTODO:
     UserGestureIndicator gestureIndicator(DefinitelyProcessingUserGesture);
+#endif
 
     // In IE, access keys are special, they are handled after default keydown processing, but cannot be canceled - this is hard to match.
     // On Mac OS X, we process them before dispatching keydown, as the default keydown handler implements Emacs key bindings, which may conflict
@@ -3374,23 +3373,23 @@ WebInputEventResult EventHandler::keyEvent(const PlatformKeyboardEvent& initialK
 
     // FIXME: it would be fair to let an input method handle KeyUp events before DOM dispatch.
     if (initialKeyEvent.type() == PlatformEvent::KeyUp || initialKeyEvent.type() == PlatformEvent::Char) {
-        RefPtrWillBeRawPtr<KeyboardEvent> domEvent = KeyboardEvent::create(initialKeyEvent, m_frame->document()->domWindow());
+        GCRefPtr<KeyboardEvent> domEvent = KeyboardEvent::create(initialKeyEvent, m_frame->document()->domWindow());
 
-        bool dispatchResult = node->dispatchEvent(domEvent);
-        return eventToEventResult(domEvent, dispatchResult);
+        bool dispatchResult = node->dispatchEvent(domEvent.get());
+        return eventToEventResult(domEvent.get(), dispatchResult);
     }
 
     PlatformKeyboardEvent keyDownEvent = initialKeyEvent;
     if (keyDownEvent.type() != PlatformEvent::RawKeyDown)
         keyDownEvent.disambiguateKeyDownEvent(PlatformEvent::RawKeyDown);
-    RefPtrWillBeRawPtr<KeyboardEvent> keydown = KeyboardEvent::create(keyDownEvent, m_frame->document()->domWindow());
+    GCRefPtr<KeyboardEvent> keydown = KeyboardEvent::create(keyDownEvent, m_frame->document()->domWindow());
     if (matchedAnAccessKey)
         keydown->setDefaultPrevented(true);
     keydown->setTarget(node);
 
     if (initialKeyEvent.type() == PlatformEvent::RawKeyDown) {
-        if (!node->dispatchEvent(keydown))
-            return eventToEventResult(keydown, false);
+        if (!node->dispatchEvent(keydown.get()))
+            return eventToEventResult(keydown.get(), false);
         // If frame changed as a result of keydown dispatch, then return true to avoid sending a subsequent keypress message to the new frame.
         bool changedFocusedFrame = m_frame->page() && m_frame != m_frame->page()->focusController().focusedOrMainFrame();
         if (changedFocusedFrame)
@@ -3398,8 +3397,8 @@ WebInputEventResult EventHandler::keyEvent(const PlatformKeyboardEvent& initialK
         return WebInputEventResult::NotHandled;
     }
 
-    if (!node->dispatchEvent(keydown))
-        return eventToEventResult(keydown, false);
+    if (!node->dispatchEvent(keydown.get()))
+        return eventToEventResult(keydown.get(), false);
     // If frame changed as a result of keydown dispatch, then return early to avoid sending a subsequent keypress message to the new frame.
     bool changedFocusedFrame = m_frame->page() && m_frame != m_frame->page()->focusController().focusedOrMainFrame();
     if (changedFocusedFrame)
@@ -3415,11 +3414,10 @@ WebInputEventResult EventHandler::keyEvent(const PlatformKeyboardEvent& initialK
     keyPressEvent.disambiguateKeyDownEvent(PlatformEvent::Char);
     if (keyPressEvent.text().isEmpty())
         return WebInputEventResult::NotHandled;
-    RefPtrWillBeRawPtr<KeyboardEvent> keypress = KeyboardEvent::create(keyPressEvent, m_frame->document()->domWindow());
+    GCRefPtr<KeyboardEvent> keypress = KeyboardEvent::create(keyPressEvent, m_frame->document()->domWindow());
     keypress->setTarget(node);
-    bool dispatchResult = node->dispatchEvent(keypress);
-    return eventToEventResult(keypress, dispatchResult);
-#endif
+    bool dispatchResult = node->dispatchEvent(keypress.get());
+    return eventToEventResult(keypress.get(), dispatchResult);
 }
 
 static WebFocusType focusDirectionForKey(const AtomicString& keyIdentifier)

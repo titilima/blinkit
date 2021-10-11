@@ -315,12 +315,9 @@ PlatformKeyboardEventBuilder::PlatformKeyboardEventBuilder(const WebKeyboardEven
     m_keyIdentifier = String(e.keyIdentifier);
     m_nativeVirtualKeyCode = e.nativeKeyCode;
     m_isSystemKey = e.isSystemKey;
-    ASSERT(false); // BKTODO:
-#if 0
     // TODO: BUG482880 Fix this initialization to lazy initialization.
     m_code = Platform::current()->domCodeStringFromEnum(e.domCode);
     m_key = Platform::current()->domKeyStringFromEnum(e.domKey);
-#endif
 
     m_modifiers = e.modifiers;
     m_timestamp = e.timeStampSeconds;

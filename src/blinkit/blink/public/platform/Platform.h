@@ -688,25 +688,29 @@ public:
     // Request the platform to stop listening to the specified event and no
     // longer notify the listener, if any.
     virtual void stopListening(WebPlatformEventType type) { }
+#endif
 
     // This method converts from the supplied DOM code enum to the
     // embedder's DOM code value for the key pressed. |domCode| values are
     // based on the value defined in ui/events/keycodes/dom4/keycode_converter_data.h.
     // Returns null string, if DOM code value is not found.
-    virtual WebString domCodeStringFromEnum(int domCode) { return WebString(); }
+    virtual String domCodeStringFromEnum(int domCode) { return String(); }
 
+#if 0 // BKTODO:
     // This method converts from the suppled DOM code value to the
     // embedder's DOM code enum for the key pressed. |codeString| is defined in
     // ui/events/keycodes/dom4/keycode_converter_data.h.
     // Returns 0, if DOM code enum is not found.
     virtual int domEnumFromCodeString(const WebString& codeString) { return 0; }
+#endif
 
     // This method converts from the supplied DOM |key| enum to the
     // corresponding DOM |key| string value for the key pressed. |domKey| values are
     // based on the value defined in ui/events/keycodes/dom3/dom_key_data.h.
     // Returns empty string, if DOM key value is not found.
-    virtual WebString domKeyStringFromEnum(int domKey) { return WebString(); }
+    virtual String domKeyStringFromEnum(int domKey) { return String(); }
 
+#if 0 // BKTODO:
     // This method converts from the suppled DOM |key| value to the
     // embedder's DOM |key| enum for the key pressed. |keyString| is defined in
     // ui/events/keycodes/dom3/dom_key_data.h.
