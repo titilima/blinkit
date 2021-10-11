@@ -41,6 +41,7 @@ public:
     BLINKIT_BOOLEAN_SETTING_ITEM(inertVisualViewport, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(loadsImagesAutomatically, true);
     BLINKIT_BOOLEAN_SETTING_ITEM(mainFrameClipsContent, true);
+    BLINKIT_BOOLEAN_SETTING_ITEM(passwordEchoEnabled, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(preferCompositingToLCDTextEnabled, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(reportScreenSizeInPhysicalPixelsQuirk, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(reportWheelOverscroll, false);

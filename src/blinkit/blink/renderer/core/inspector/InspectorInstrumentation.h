@@ -23,6 +23,7 @@ inline void DoNothing(void) {}
 inline int DoNothingAndReturnInt(void) { return 0; }
 
 inline bool collectingHTMLParseErrors(...) { return false; }
+inline void didInvalidateStyleAttr(...) {}
 inline void documentDetached(...) {}
 inline bool forcePseudoState(...) { return false; }
 inline bool hasFrontends(...) { return false; }
@@ -45,7 +46,6 @@ inline bool isDebuggerPaused(...) { return false; }
 #define didFireAnimationFrame(...)                  DoNothing()
 #define didHandleEvent(...)                         DoNothing()
 #define didInsertDOMNode(...)                       DoNothing()
-#define didInvalidateStyleAttr(...)                 DoNothing()
 #define didModifyDOMAttr(...)                       DoNothing()
 #define didPaint(...)                               DoNothing()
 #define didPerformElementShadowDistribution(...)    DoNothing()
