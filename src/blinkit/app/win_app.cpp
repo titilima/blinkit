@@ -29,6 +29,7 @@
 
 #pragma comment(lib, "Shlwapi.lib")
 #ifdef BLINKIT_UI_ENABLED
+#   pragma comment(lib, "Imm32.lib")
 #   pragma comment(lib, "Usp10.lib")
 #   pragma comment(lib, "UxTheme.lib")
 #   pragma comment(lib, "Winmm.lib")

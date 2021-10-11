@@ -184,6 +184,28 @@ void WinWebView::OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc)
         SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
+void WinWebView::OnIMEStartComposition(HWND hwnd)
+{
+    std::optional<POINT> caretPos;
+    const auto task = [this, &caretPos] {
+        IntRect anchor, focus;
+        if (WebViewImpl::SelectionBounds(anchor, focus))
+            caretPos = { focus.x(), focus.y() };
+    };
+    AppImpl::Get().GetAppCaller().SyncCall(BLINK_FROM_HERE, task);
+
+    if (caretPos.has_value())
+    {
+        COMPOSITIONFORM cf = { 0 };
+        cf.dwStyle = CFS_POINT | CFS_FORCE_POSITION;
+        cf.ptCurrentPos = caretPos.value();
+
+        HIMC hIMC = ImmGetContext(hwnd);
+        ImmSetCompositionWindow(hIMC, &cf);
+        ImmReleaseContext(hwnd, hIMC);
+    }
+}
+
 void WinWebView::OnInitialized(void)
 {
     WebViewImpl::OnInitialized();
@@ -403,6 +425,9 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
             break;
         case WM_CHAR:
             HANDLE_WM_CHAR(hWnd, wParam, lParam, OnChar);
+            break;
+        case WM_IME_STARTCOMPOSITION:
+            OnIMEStartComposition(hWnd);
             break;
 
         case WM_SIZE:

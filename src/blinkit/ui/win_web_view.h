@@ -35,6 +35,7 @@ private:
     bool ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
     void OnChar(HWND hwnd, TCHAR ch, int cRepeat);
     void OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc);
+    void OnIMEStartComposition(HWND hwnd);
     void OnKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags);
     void OnMouse(UINT message, UINT keyFlags, int x, int y);
     static BOOL OnNCCreate(HWND hwnd, LPCREATESTRUCT cs);
