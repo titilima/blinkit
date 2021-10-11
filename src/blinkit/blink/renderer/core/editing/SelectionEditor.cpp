@@ -75,7 +75,7 @@ SelectionEditor::~SelectionEditor()
 
 LocalFrame* SelectionEditor::frame() const
 {
-    return m_frameSelection->frame();
+    return m_frameSelection.frame();
 }
 
 template <>
@@ -695,7 +695,7 @@ bool SelectionEditor::modify(EAlteration alter, SelectionDirection direction, Te
 
     switch (alter) {
     case FrameSelection::AlterationMove:
-        m_frameSelection->moveTo(position, userTriggered);
+        m_frameSelection.moveTo(position, userTriggered);
         break;
     case FrameSelection::AlterationExtend:
 
@@ -718,13 +718,13 @@ bool SelectionEditor::modify(EAlteration alter, SelectionDirection direction, Te
         if (!frame() || !frame()->editor().behavior().shouldAlwaysGrowSelectionWhenExtendingToBoundary()
             || m_selection.isCaret()
             || !isBoundary(granularity)) {
-            m_frameSelection->setExtent(position, userTriggered);
+            m_frameSelection.setExtent(position, userTriggered);
         } else {
             TextDirection textDirection = directionOfEnclosingBlock();
             if (direction == DirectionForward || (textDirection == LTR && direction == DirectionRight) || (textDirection == RTL && direction == DirectionLeft))
-                m_frameSelection->setEnd(position, userTriggered);
+                m_frameSelection.setEnd(position, userTriggered);
             else
-                m_frameSelection->setStart(position, userTriggered);
+                m_frameSelection.setStart(position, userTriggered);
         }
         break;
     }
@@ -808,10 +808,10 @@ bool SelectionEditor::modify(EAlteration alter, unsigned verticalDistance, Verti
 
     switch (alter) {
     case FrameSelection::AlterationMove:
-        m_frameSelection->moveTo(result, userTriggered, align);
+        m_frameSelection.moveTo(result, userTriggered, align);
         break;
     case FrameSelection::AlterationExtend:
-        m_frameSelection->setExtent(result, userTriggered);
+        m_frameSelection.setExtent(result, userTriggered);
         break;
     }
 
@@ -898,12 +898,12 @@ bool SelectionEditor::setSelectedRange(const EphemeralRange& range, TextAffinity
     m_logicalRange = createRange(range);
 
     VisibleSelection newSelection(range.startPosition(), range.endPosition(), affinity, directional == SelectionDirectionalMode::Directional);
-    m_frameSelection->setSelection(newSelection, options);
+    m_frameSelection.setSelection(newSelection, options);
     startObservingVisibleSelectionChange();
     return true;
 }
 
-PassRefPtrWillBeRawPtr<Range> SelectionEditor::firstRange() const
+GCRefPtr<Range> SelectionEditor::firstRange() const
 {
     if (m_logicalRange)
         return m_logicalRange->cloneRange();
@@ -941,15 +941,6 @@ void SelectionEditor::stopObservingVisibleSelectionChangeIfNecessary()
         return;
     m_selection.clearChangeObserver();
     m_observingVisibleSelection = false;
-}
-
-DEFINE_TRACE(SelectionEditor)
-{
-    visitor->trace(m_frameSelection);
-    visitor->trace(m_selection);
-    visitor->trace(m_selectionInComposedTree);
-    visitor->trace(m_logicalRange);
-    VisibleSelectionChangeObserver::trace(visitor);
 }
 
 } // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SelectionEditor.h
+// Description: SelectionEditor Class
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -30,21 +41,19 @@
 
 namespace blink {
 
-class SelectionEditor final : public NoBaseWillBeGarbageCollectedFinalized<SelectionEditor>, public VisibleSelectionChangeObserver {
+class SelectionEditor final : public VisibleSelectionChangeObserver {
     WTF_MAKE_NONCOPYABLE(SelectionEditor);
-    USING_FAST_MALLOC_WILL_BE_REMOVED(SelectionEditor);
-    WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(SelectionEditor);
 public:
     // TODO(yosin) We should move |EAlteration| and |VerticalDirection| out
     // from |FrameSelection| class like |EUserTriggered|.
     typedef FrameSelection::EAlteration EAlteration;
     typedef FrameSelection::VerticalDirection VerticalDirection;
 
-    static PassOwnPtrWillBeRawPtr<SelectionEditor> create(FrameSelection& frameSelection)
+    static std::unique_ptr<SelectionEditor> create(FrameSelection& frameSelection)
     {
-        return adoptPtrWillBeNoop(new SelectionEditor(frameSelection));
+        return zed::wrap_unique(new SelectionEditor(frameSelection));
     }
-    virtual ~SelectionEditor();
+    ~SelectionEditor(void) override;
 
     bool hasEditableStyle() const { return m_selection.hasEditableStyle(); }
     bool isContentEditable() const { return m_selection.isContentEditable(); }
@@ -70,12 +79,10 @@ public:
     // If this FrameSelection has a logical range which is still valid, this
     // function return its clone. Otherwise, the return value from underlying
     // |VisibleSelection|'s |firstRange()| is returned.
-    PassRefPtrWillBeRawPtr<Range> firstRange() const;
+    GCRefPtr<Range> firstRange() const;
 
     // VisibleSelectionChangeObserver interface.
     void didChangeVisibleSelection() override;
-
-    DECLARE_VIRTUAL_TRACE();
 
 private:
     explicit SelectionEditor(FrameSelection&);
@@ -111,7 +118,7 @@ private:
     LayoutUnit lineDirectionPointForBlockDirectionNavigation(EPositionType);
     bool dispatchSelectStart();
 
-    RawPtrWillBeMember<FrameSelection> m_frameSelection;
+    FrameSelection &m_frameSelection;
 
     LayoutUnit m_xPosForVerticalArrowNavigation;
     VisibleSelection m_selection;
@@ -122,7 +129,7 @@ private:
     // (hence "logical"). This will be invalidated if the underlying
     // |VisibleSelection| changes. If that happens, this variable will
     // become |nullptr|, in which case logical positions == visible positions.
-    RefPtrWillBeMember<Range> m_logicalRange;
+    GCRefPtr<Range> m_logicalRange;
 };
 
 } // namespace blink
