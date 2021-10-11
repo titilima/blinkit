@@ -70,7 +70,7 @@ private:
     static void initialize();
     void dispatchEvent(PassRefPtrWillBeRawPtr<EventDispatchMediator>) const;
 
-    // BKTODO: WillBePersistentHeapVector<RefPtrWillBeMember<EventDispatchMediator>> m_queuedEventDispatchMediators;
+    std::vector<GCRefPtr<EventDispatchMediator>> m_queuedEventDispatchMediators;
     unsigned m_scopingLevel;
 
     static ScopedEventQueue* s_instance;

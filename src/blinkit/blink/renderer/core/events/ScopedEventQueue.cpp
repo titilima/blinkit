@@ -47,6 +47,8 @@
 #include "core/events/EventTarget.h"
 #include "wtf/OwnPtr.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 ScopedEventQueue* ScopedEventQueue::s_instance = nullptr;
@@ -59,7 +61,7 @@ ScopedEventQueue::ScopedEventQueue()
 ScopedEventQueue::~ScopedEventQueue()
 {
     ASSERT(!m_scopingLevel);
-    ASSERT(false); // BKTODO: ASSERT(!m_queuedEventDispatchMediators.size());
+    ASSERT(m_queuedEventDispatchMediators.empty());
 }
 
 void ScopedEventQueue::initialize()
@@ -72,25 +74,23 @@ void ScopedEventQueue::initialize()
 void ScopedEventQueue::enqueueEventDispatchMediator(PassRefPtrWillBeRawPtr<EventDispatchMediator> mediator)
 {
     if (m_scopingLevel)
-        ASSERT(false); // BKTODO: m_queuedEventDispatchMediators.append(mediator);
+        m_queuedEventDispatchMediators.emplace_back(mediator);
     else
         dispatchEvent(mediator);
 }
 
 void ScopedEventQueue::dispatchAllEvents()
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    WillBeHeapVector<RefPtrWillBeMember<EventDispatchMediator>> queuedEventDispatchMediators;
+    std::vector<GCRefPtr<EventDispatchMediator>> queuedEventDispatchMediators;
     queuedEventDispatchMediators.swap(m_queuedEventDispatchMediators);
 
     for (size_t i = 0; i < queuedEventDispatchMediators.size(); i++)
-        dispatchEvent(queuedEventDispatchMediators[i].release());
-#endif
+        dispatchEvent(queuedEventDispatchMediators[i].get());
 }
 
 void ScopedEventQueue::dispatchEvent(PassRefPtrWillBeRawPtr<EventDispatchMediator> mediator) const
 {
+    GCGuard _(*mediator);
     ASSERT(mediator->event().target());
     Node* node = mediator->event().target()->toNode();
     EventDispatcher::dispatchEvent(*node, mediator);
