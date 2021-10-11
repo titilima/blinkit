@@ -372,9 +372,6 @@ static const Vector<CSSPropertyID>& computableProperties()
 CSSComputedStyleDeclaration::CSSComputedStyleDeclaration(PassRefPtrWillBeRawPtr<Node> n, bool allowVisitedStyle, const String& pseudoElementName)
     : m_node(n)
     , m_allowVisitedStyle(allowVisitedStyle)
-#if !ENABLE(OILPAN)
-    , m_refCount(1)
-#endif
 {
     unsigned nameWithoutColonsStart = pseudoElementName[0] == ':' ? (pseudoElementName[1] == ':' ? 2 : 1) : 0;
     m_pseudoElementSpecifier = CSSSelector::pseudoId(CSSSelector::parsePseudoType(
@@ -384,20 +381,6 @@ CSSComputedStyleDeclaration::CSSComputedStyleDeclaration(PassRefPtrWillBeRawPtr<
 CSSComputedStyleDeclaration::~CSSComputedStyleDeclaration()
 {
 }
-
-#if !ENABLE(OILPAN)
-void CSSComputedStyleDeclaration::ref()
-{
-    ++m_refCount;
-}
-
-void CSSComputedStyleDeclaration::deref()
-{
-    ASSERT(m_refCount);
-    if (!--m_refCount)
-        delete this;
-}
-#endif
 
 String CSSComputedStyleDeclaration::cssText() const
 {
@@ -540,7 +523,7 @@ Node* CSSComputedStyleDeclaration::styledNode() const
     if (!m_node)
         return nullptr;
     if (m_node->isElementNode()) {
-        if (PseudoElement* element = toElement(m_node)->pseudoElement(m_pseudoElementSpecifier))
+        if (PseudoElement* element = toElement(m_node.get())->pseudoElement(m_pseudoElementSpecifier))
             return element;
     }
     return m_node.get();

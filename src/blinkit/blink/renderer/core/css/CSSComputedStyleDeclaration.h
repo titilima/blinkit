@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSComputedStyleDeclaration.h
+// Description: CSSComputedStyleDeclaration Class
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004 Zack Rusin <zack@kde.org>
  * Copyright (C) 2004, 2005, 2006, 2008, 2012 Apple Inc. All rights reserved.
@@ -47,16 +58,11 @@ class StylePropertyShorthand;
 
 class CORE_EXPORT CSSComputedStyleDeclaration final : public CSSStyleDeclaration {
 public:
-    static PassRefPtrWillBeRawPtr<CSSComputedStyleDeclaration> create(PassRefPtrWillBeRawPtr<Node> node, bool allowVisitedStyle = false, const String& pseudoElementName = String())
+    static GCRefPtr<CSSComputedStyleDeclaration> create(PassRefPtrWillBeRawPtr<Node> node, bool allowVisitedStyle = false, const String& pseudoElementName = String())
     {
-        return adoptRefWillBeNoop(new CSSComputedStyleDeclaration(node, allowVisitedStyle, pseudoElementName));
+        return BlinKit::GCWrapShared(new CSSComputedStyleDeclaration(node, allowVisitedStyle, pseudoElementName));
     }
     ~CSSComputedStyleDeclaration() override;
-
-#if !ENABLE(OILPAN)
-    void ref() override;
-    void deref() override;
-#endif
 
     String getPropertyValue(CSSPropertyID) const;
     bool getPropertyPriority(CSSPropertyID) const;
@@ -105,12 +111,9 @@ private:
 
     bool cssPropertyMatches(CSSPropertyID, const CSSValue*) const override;
 
-    RefPtrWillBeMember<Node> m_node;
+    GCRefPtr<Node> m_node;
     PseudoId m_pseudoElementSpecifier;
     bool m_allowVisitedStyle;
-#if !ENABLE(OILPAN)
-    unsigned m_refCount;
-#endif
 };
 
 } // namespace blink
