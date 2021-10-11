@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EphemeralRange.h
+// Description: EphemeralRange Classes
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -93,7 +104,7 @@ using EphemeralRangeInComposedTree = EphemeralRangeTemplate<EditingInComposedTre
 
 // Returns a newly created |Range| object from |range| or |nullptr| if
 // |range.isNull()| returns true.
-CORE_EXPORT PassRefPtrWillBeRawPtr<Range> createRange(const EphemeralRange& /* range */);
+CORE_EXPORT GCRefPtr<Range> createRange(const EphemeralRange& /* range */);
 
 } // namespace blink
 

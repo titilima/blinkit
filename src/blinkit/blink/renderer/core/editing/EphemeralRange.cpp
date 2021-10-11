@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EphemeralRange.cpp
+// Description: EphemeralRange Classes
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -137,7 +148,7 @@ bool EphemeralRangeTemplate<Strategy>::isValid() const
 }
 #endif
 
-PassRefPtrWillBeRawPtr<Range> createRange(const EphemeralRange& range)
+GCRefPtr<Range> createRange(const EphemeralRange& range)
 {
     if (range.isNull())
         return nullptr;
