@@ -79,7 +79,7 @@ public:
 
     EditorClient& client() const;
 
-    CompositeEditCommand* lastEditCommand() { return m_lastEditCommand.get(); }
+    CompositeEditCommand* lastEditCommand(void);
 
     void handleKeyboardEvent(KeyboardEvent*);
     bool handleTextEvent(TextEvent*);
@@ -160,7 +160,7 @@ public:
 
         const EditorInternalCommand* m_command;
         EditorCommandSource m_source;
-        RefPtrWillBeMember<LocalFrame> m_frame;
+        LocalFrame *m_frame = nullptr;
     };
     Command command(const String& commandName); // Command source is CommandFromMenuOrKeyBinding.
     Command command(const String& commandName, EditorCommandSource);
@@ -250,12 +250,12 @@ public:
     DECLARE_TRACE();
 
 private:
-    RawPtrWillBeMember<LocalFrame> m_frame;
-    RefPtrWillBeMember<CompositeEditCommand> m_lastEditCommand;
+    LocalFrame &m_frame;
+    GCRefPtr<CompositeEditCommand> m_lastEditCommand;
     int m_preventRevealSelection;
     bool m_shouldStartNewKillRingSequence;
     bool m_shouldStyleWithCSS;
-    const OwnPtr<KillRing> m_killRing;
+    const std::unique_ptr<KillRing> m_killRing;
     VisibleSelection m_mark;
     bool m_areMarkedTextMatchesHighlighted;
     EditorParagraphSeparator m_defaultParagraphSeparator;
@@ -265,8 +265,7 @@ private:
 
     LocalFrame& frame() const
     {
-        ASSERT(m_frame);
-        return *m_frame;
+        return m_frame;
     }
 
     bool canDeleteRange(const EphemeralRange&) const;

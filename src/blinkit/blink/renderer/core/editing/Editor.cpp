@@ -64,7 +64,9 @@
 #include "core/editing/commands/RemoveFormatCommand.h"
 #include "core/editing/commands/ReplaceSelectionCommand.h"
 #include "core/editing/commands/SimplifyMarkupCommand.h"
+#endif
 #include "core/editing/commands/TypingCommand.h"
+#if 0 // BKTODO:
 #include "core/editing/commands/UndoStack.h"
 #include "core/editing/iterators/SearchBuffer.h"
 #endif
@@ -132,7 +134,7 @@ VisibleSelection Editor::selectionForCommand(Event* event)
     HTMLTextFormControlElement* textFormControlOfSelectionStart = enclosingTextFormControl(selection.start());
     HTMLTextFormControlElement* textFromControlOfTarget = isHTMLTextFormControlElement(*event->target()->toNode()) ? toHTMLTextFormControlElement(event->target()->toNode()) : 0;
     if (textFromControlOfTarget && (selection.start().isNull() || textFromControlOfTarget != textFormControlOfSelectionStart)) {
-        if (RefPtrWillBeRawPtr<Range> range = textFromControlOfTarget->selection())
+        if (GCRefPtr<Range> range = textFromControlOfTarget->selection())
             return VisibleSelection(EphemeralRange(range.get()), TextAffinity::Downstream, selection.isDirectional());
     }
     return selection;
@@ -299,8 +301,6 @@ bool Editor::deleteWithDirection(SelectionDirection direction, TextGranularity g
     if (!canEdit())
         return false;
 
-    ASSERT(false); // BKTODO:
-#if 0
     if (frame().selection().isRange()) {
         if (isTypingAction) {
             ASSERT(frame().document());
@@ -338,7 +338,6 @@ bool Editor::deleteWithDirection(SelectionDirection direction, TextGranularity g
     // when the selection was updated by deleting the range
     if (killRing)
         setStartNewKillRingSequence(false);
-#endif
 
     return true;
 }
@@ -560,7 +559,7 @@ bool Editor::shouldDeleteRange(const EphemeralRange& range) const
 
 void Editor::notifyComponentsOnChangedSelection(const VisibleSelection& oldSelection, FrameSelection::SetSelectionOptions options)
 {
-    client().respondToChangedSelection(m_frame, frame().selection().selectionType());
+    client().respondToChangedSelection(&m_frame, frame().selection().selectionType());
     setStartNewKillRingSequence(true);
 }
 
@@ -681,8 +680,6 @@ void Editor::appliedEditing(PassRefPtrWillBeRawPtr<CompositeEditCommand> cmd)
     EventQueueScope scope;
     frame().document()->updateLayout();
 
-    ASSERT(false); // BKTODO:
-#if 0
     EditCommandComposition* composition = cmd->composition();
     ASSERT(composition);
     dispatchEditableContentChangedEvents(composition->startingRootEditableElement(), composition->endingRootEditableElement());
@@ -702,11 +699,10 @@ void Editor::appliedEditing(PassRefPtrWillBeRawPtr<CompositeEditCommand> cmd)
         // different from the last command
         m_lastEditCommand = cmd;
         if (UndoStack* undoStack = this->undoStack())
-            undoStack->registerUndoStep(m_lastEditCommand->ensureComposition());
+            ASSERT(false); // BKTODO: undoStack->registerUndoStep(m_lastEditCommand->ensureComposition());
     }
 
     respondToChangedContents(newSelection);
-#endif
 }
 
 void Editor::unappliedEditing(PassRefPtrWillBeRawPtr<EditCommandComposition> cmd)
@@ -755,12 +751,12 @@ std::unique_ptr<Editor> Editor::create(LocalFrame& frame)
 }
 
 Editor::Editor(LocalFrame& frame)
-    : m_frame(&frame)
+    : m_frame(frame)
     , m_preventRevealSelection(0)
     , m_shouldStartNewKillRingSequence(false)
     // This is off by default, since most editors want this behavior (this matches IE but not FF).
     , m_shouldStyleWithCSS(false)
-    , m_killRing(adoptPtr(new KillRing))
+    , m_killRing(std::make_unique<KillRing>())
     , m_areMarkedTextMatchesHighlighted(false)
     , m_defaultParagraphSeparator(EditorParagraphSeparatorIsDiv)
     , m_overwriteModeEnabled(false)
@@ -792,9 +788,7 @@ bool Editor::insertTextWithoutSendingTextEvent(const String& text, bool selectIn
     if (!selection.isContentEditable())
         return false;
 
-    ASSERT(false); // BKTODO:
-#if 0
-    spellChecker().updateMarkersForWordsAffectedByEditing(isSpaceOrNewline(text[0]));
+    // BKTODO: spellChecker().updateMarkersForWordsAffectedByEditing(isSpaceOrNewline(text[0]));
 
     // Get the selection to use for the event that triggered this insertText.
     // If the event handler changed the selection, we may want to use a different selection
@@ -817,7 +811,6 @@ bool Editor::insertTextWithoutSendingTextEvent(const String& text, bool selectIn
             }
         }
     }
-#endif
 
     return true;
 }
@@ -1119,7 +1112,7 @@ void Editor::changeSelectionAfterCommand(const VisibleSelection& newSelection,  
     // does not call EditorClient::respondToChangedSelection(), which, on the Mac, sends selection change notifications and
     // starts a new kill ring sequence, but we want to do these things (matches AppKit).
     if (selectionDidNotChangeDOMPosition)
-        client().respondToChangedSelection(m_frame, frame().selection().selectionType());
+        client().respondToChangedSelection(&m_frame, frame().selection().selectionType());
 }
 
 IntRect Editor::firstRectForRange(const EphemeralRange& range) const
@@ -1346,9 +1339,13 @@ void Editor::toggleOverwriteModeEnabled()
     frame().selection().setShouldShowBlockCursor(m_overwriteModeEnabled);
 }
 
+CompositeEditCommand* Editor::lastEditCommand(void)
+{
+    return m_lastEditCommand.get();
+}
+
 DEFINE_TRACE(Editor)
 {
-    visitor->trace(m_frame);
     visitor->trace(m_lastEditCommand);
     visitor->trace(m_mark);
 }
