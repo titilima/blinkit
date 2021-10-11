@@ -4053,6 +4053,39 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\DOMWindowEventQueue.cpp">
       <Filter>blink\renderer\core\events</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\EditorCommand.cpp">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\TypingCommand.cpp">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\TextInsertionBaseCommand.cpp">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\CompositeEditCommand.cpp">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\EditCommand.cpp">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\InsertTextCommand.cpp">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\AppendNodeCommand.cpp">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\InsertIntoTextNodeCommand.cpp">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\DeleteSelectionCommand.cpp">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\DeleteFromTextNodeCommand.cpp">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\RemoveNodeCommand.cpp">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -6316,6 +6349,192 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_listed_set.h">
       <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\EditAction.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\TypingCommand.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\TextInsertionBaseCommand.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\CompositeEditCommand.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\UndoStep.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\EditCommand.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\InsertTextCommand.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\AppendNodeCommand.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\InsertIntoTextNodeCommand.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\brkiter\char_break_iterator.h">
+      <Filter>blink\renderer\platform\text\brkiter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\DeleteSelectionCommand.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\DeleteFromTextNodeCommand.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\RemoveNodeCommand.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\CaretBase.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\CompositionUnderline.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\DOMSelection.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\DragCaretController.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\EditingBehavior.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\EditingBehaviorTypes.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\EditingBoundary.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\EditingStrategy.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\EditingStyle.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\EditingUtilities.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\Editor.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\EphemeralRange.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\FindOptions.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\FrameSelection.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\GranularityStrategy.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\InputMethodController.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\PendingSelection.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\PlainTextRange.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\Position.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\PositionIterator.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\PositionWithAffinity.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\RenderedPosition.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\SelectionController.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\SelectionEditor.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\SelectionStrategy.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\SelectionType.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\TextAffinity.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\TextGranularity.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\VisiblePosition.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\VisibleSelection.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\VisibleUnits.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\WritingDirection.h">
+      <Filter>blink\renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\AbstractInlineTextBox.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\BreakingContextInlineHeaders.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\EllipsisBox.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\GlyphOverflow.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\InlineBox.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\InlineFlowBox.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\InlineIterator.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\InlineTextBox.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\LayoutTextInfo.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\LineBoxList.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\LineBreaker.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\LineInfo.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\LineLayoutState.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\LineWidth.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\RootInlineBox.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\TrailingObjects.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\WordMeasurement.h">
+      <Filter>blink\renderer\core\layout\line</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
