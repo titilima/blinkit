@@ -53,7 +53,7 @@
 
 namespace blink {
 
-struct SameSizeAsShadowRoot : public DocumentFragment, public TreeScope, public DoublyLinkedListNode<ShadowRoot> {
+struct SameSizeAsShadowRoot : public DocumentFragment, public TreeScope {
     RawPtrWillBeMember<void*> willbeMember[3];
     unsigned countersAndFlags[1];
 };
