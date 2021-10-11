@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: VisibleSelection.h
+// Description: VisibleSelection Classes
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004 Apple Computer, Inc.  All rights reserved.
  *
@@ -215,7 +226,7 @@ bool equalSelectionsInDOMTree(const VisibleSelection&, const VisibleSelection&);
 CORE_EXPORT EphemeralRange firstEphemeralRangeOf(const VisibleSelection&);
 
 // TODO(sof): move more firstRangeOf() uses to be over EphemeralRange instead.
-CORE_EXPORT PassRefPtrWillBeRawPtr<Range> firstRangeOf(const VisibleSelection&);
+CORE_EXPORT GCRefPtr<Range> firstRangeOf(const VisibleSelection&);
 
 } // namespace blink
 

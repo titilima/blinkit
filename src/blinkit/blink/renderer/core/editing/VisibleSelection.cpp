@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: VisibleSelection.cpp
+// Description: VisibleSelection Classes
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -235,7 +246,7 @@ EphemeralRange firstEphemeralRangeOf(const VisibleSelection& selection)
     return EphemeralRange(start, end);
 }
 
-PassRefPtrWillBeRawPtr<Range> firstRangeOf(const VisibleSelection& selection)
+GCRefPtr<Range> firstRangeOf(const VisibleSelection& selection)
 {
     return createRange(firstEphemeralRangeOf(selection));
 }
