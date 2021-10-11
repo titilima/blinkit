@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EventDispatchMediator.h
+// Description: EventDispatchMediator Class
+//      Author: Ziming Li
+//     Created: 2021-10-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -41,7 +52,7 @@ namespace blink {
 class Event;
 class EventDispatcher;
 
-class EventDispatchMediator : public RefCountedWillBeGarbageCollectedFinalized<EventDispatchMediator> {
+class EventDispatchMediator : public BlinKit::GCObject {
 public:
     static PassRefPtrWillBeRawPtr<EventDispatchMediator> create(PassRefPtrWillBeRawPtr<Event>);
     virtual ~EventDispatchMediator() { }
@@ -55,7 +66,7 @@ protected:
     void setEvent(PassRefPtrWillBeRawPtr<Event> event) { ASSERT(event.get()); m_event = event; }
 
 private:
-    RefPtrWillBeMember<Event> m_event;
+    GCRefPtr<Event> m_event;
 };
 
 } // namespace blink
