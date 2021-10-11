@@ -155,7 +155,7 @@ public:
     void resizeBy(int x, int y) const override;
     void resizeTo(int width, int height) const override;
     PassRefPtrWillBeRawPtr<MediaQueryList> matchMedia(const String&) override;
-    PassRefPtrWillBeRawPtr<CSSStyleDeclaration> getComputedStyle(Element*, const String& pseudoElt) const override;
+    GCRefPtr<CSSStyleDeclaration> getComputedStyle(Element*, const String& pseudoElt) const override;
     PassRefPtrWillBeRawPtr<CSSRuleList> getMatchedCSSRules(Element*, const String& pseudoElt) const override;
     int requestAnimationFrame(FrameRequestCallback*) override;
     int webkitRequestAnimationFrame(FrameRequestCallback*) override;
