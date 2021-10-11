@@ -60,7 +60,7 @@ class Node;
 // A class which inherits both Node and TreeScope must call clearRareData() in its destructor
 // so that the Node destructor no longer does problematic NodeList cache manipulation in
 // the destructor.
-class CORE_EXPORT TreeScope : public WillBeGarbageCollectedMixin {
+class CORE_EXPORT TreeScope {
 public:
     TreeScope* parentTreeScope() const { return m_parentTreeScope; }
 
@@ -114,30 +114,6 @@ public:
 
     IdTargetObserverRegistry& idTargetObserverRegistry() const { return *m_idTargetObserverRegistry.get(); }
 
-#if !ENABLE(OILPAN)
-    // Nodes belonging to this scope hold guard references -
-    // these are enough to keep the scope from being destroyed, but
-    // not enough to keep it from removing its children. This allows a
-    // node that outlives its scope to still have a valid document
-    // pointer without introducing reference cycles.
-    void guardRef()
-    {
-        ASSERT(!deletionHasBegun());
-        ++m_guardRefCount;
-    }
-
-    void guardDeref()
-    {
-        ASSERT(m_guardRefCount > 0);
-        ASSERT(!deletionHasBegun());
-        --m_guardRefCount;
-        if (!m_guardRefCount && !refCount() && !rootNodeHasTreeSharedParent()) {
-            beginDeletion();
-            delete this;
-        }
-    }
-#endif
-
     void removedLastRefToScope();
 
     bool isInclusiveAncestorOf(const TreeScope&) const;
@@ -159,43 +135,17 @@ protected:
     TreeScope(Document&);
     virtual ~TreeScope();
 
-#if !ENABLE(OILPAN)
-    void destroyTreeScopeData();
-#endif
-
     void setDocument(Document& document);
     void setParentTreeScope(TreeScope&);
-
-#if !ENABLE(OILPAN)
-    bool hasGuardRefCount() const { return m_guardRefCount; }
-#endif
 
     void setNeedsStyleRecalcForViewportUnits();
 
 private:
-#if !ENABLE(OILPAN)
-    virtual void dispose() { }
-
-    int refCount() const;
-
-#if ENABLE(SECURITY_ASSERT)
-    bool deletionHasBegun();
-    void beginDeletion();
-#else
-    bool deletionHasBegun() { return false; }
-    void beginDeletion() { }
-#endif
-#endif
-
     bool rootNodeHasTreeSharedParent() const;
 
     ContainerNode *m_rootNode;
     Document *m_document;
     TreeScope *m_parentTreeScope = nullptr;
-
-#if !ENABLE(OILPAN)
-    int m_guardRefCount;
-#endif
 
     std::unique_ptr<DocumentOrderedMap> m_elementsById;
     std::unique_ptr<DocumentOrderedMap> m_imageMapsByName;
@@ -205,7 +155,7 @@ private:
 
     GCUniquePtr<ScopedStyleResolver> m_scopedStyleResolver;
 
-    mutable RefPtrWillBeMember<DOMSelection> m_selection;
+    mutable std::unique_ptr<DOMSelection> m_selection;
 };
 
 inline bool TreeScope::hasElementWithId(const AtomicString& id) const
