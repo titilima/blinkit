@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSRule.h
+// Description: CSSRule Class
+//      Author: Ziming Li
+//     Created: 2021-10-10
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -35,7 +46,7 @@ class CSSRuleList;
 class CSSStyleSheet;
 class StyleRuleBase;
 
-class CSSRule : public RefCountedWillBeGarbageCollectedFinalized<CSSRule>, public ScriptWrappable {
+class CSSRule : public BlinKit::GCObject, public ScriptWrappable {
     DEFINE_WRAPPERTYPEINFO();
 public:
     virtual ~CSSRule() { }
@@ -102,6 +113,8 @@ protected:
     const CSSParserContext& parserContext() const;
 
 private:
+    BlinKit::GCObject* ObjectForGC(void) final { return this; }
+
     mutable unsigned char m_hasCachedSelectorText : 1;
     unsigned char m_parentIsRule : 1;
 
