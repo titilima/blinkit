@@ -2360,8 +2360,6 @@ bool rendersInDifferentPosition(const Position& position1, const Position& posit
     InlineBoxPosition boxPosition1 = computeInlineBoxPosition(position1, TextAffinity::Downstream);
     InlineBoxPosition boxPosition2 = computeInlineBoxPosition(position2, TextAffinity::Downstream);
 
-    ASSERT(false); // BKTODO:
-#if 0
     WTF_LOG(Editing, "layoutObject1:   %p [%p]\n", layoutObject, boxPosition1.inlineBox);
     WTF_LOG(Editing, "renderedOffset1: %d\n", renderedOffset1);
     WTF_LOG(Editing, "layoutObject2:   %p [%p]\n", posLayoutObject, boxPosition2.inlineBox);
@@ -2369,7 +2367,6 @@ bool rendersInDifferentPosition(const Position& position1, const Position& posit
     WTF_LOG(Editing, "node1 min/max:   %d:%d\n", caretMinOffset(position1.anchorNode()), caretMaxOffset(position1.anchorNode()));
     WTF_LOG(Editing, "node2 min/max:   %d:%d\n", caretMinOffset(position2.anchorNode()), caretMaxOffset(position2.anchorNode()));
     WTF_LOG(Editing, "----------------------------------------------------------------------\n");
-#endif
 
     if (!boxPosition1.inlineBox || !boxPosition2.inlineBox) {
         return false;

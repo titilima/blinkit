@@ -76,11 +76,13 @@ bool HTMLFormControlElementWithState::shouldAutocomplete() const
 
 void HTMLFormControlElementWithState::notifyFormStateChanged()
 {
+#if 0 // BKTODO:
     // This can be called during fragment parsing as a result of option
     // selection before the document is active (or even in a frame).
     if (!document().isActive())
         return;
-    ASSERT(false); // BKTODO: document().frame()->loader().client()->didUpdateCurrentHistoryItem();
+    document().frame()->loader().client()->didUpdateCurrentHistoryItem();
+#endif
 }
 
 bool HTMLFormControlElementWithState::shouldSaveAndRestoreFormControlState() const

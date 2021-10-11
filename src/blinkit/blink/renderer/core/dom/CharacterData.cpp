@@ -37,7 +37,7 @@
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/MutationObserverInterestGroup.h"
 #include "core/dom/MutationRecord.h"
-// BKTODO: #include "core/dom/ProcessingInstruction.h"
+#include "core/dom/ProcessingInstruction.h"
 #include "core/dom/Text.h"
 #include "core/editing/FrameSelection.h"
 #if 0 // BKTODO: MutationEvent stuff is not recommended, remove it later. See also: https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent
@@ -186,14 +186,11 @@ void CharacterData::setDataAndUpdate(const String& newData, unsigned offsetOfRep
         toText(this)->updateTextLayoutObject(offsetOfReplacedData, oldLength, recalcStyleBehavior);
 
     if (source != UpdateFromParser) {
-        ASSERT(false); // TODO:
-#if 0
         if (nodeType() == PROCESSING_INSTRUCTION_NODE)
             toProcessingInstruction(this)->didAttributeChanged();
 
         if (document().frame())
             document().frame()->selection().didUpdateCharacterData(this, offsetOfReplacedData, oldLength, newLength);
-#endif
     }
 
     document().incDOMTreeVersion();
