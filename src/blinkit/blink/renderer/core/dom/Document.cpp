@@ -543,8 +543,8 @@ Document::~Document()
     // If a top document with a cache, verify that it was comprehensively
     // cleared during detach.
     // BKTODO: ASSERT(!m_axObjectCache);
+    ASSERT(m_ranges.empty());
 #if !ENABLE(OILPAN)
-    ASSERT(m_ranges.isEmpty());
     ASSERT(!hasGuardRefCount());
     ASSERT(!m_importsController);
     // With Oilpan, either the document outlives the visibility observers
@@ -918,7 +918,7 @@ PassRefPtrWillBeRawPtr<ProcessingInstruction> Document::createProcessingInstruct
     return ProcessingInstruction::create(*this, target, data);
 }
 
-PassRefPtrWillBeRawPtr<Text> Document::createEditingTextNode(const String& text)
+GCRefPtr<Text> Document::createEditingTextNode(const String& text)
 {
     return Text::createEditingText(*this, text);
 }
@@ -1254,7 +1254,7 @@ std::vector<Element *> Document::elementsFromPoint(int x, int y) const
     return TreeScope::elementsFromPoint(x, y);
 }
 
-PassRefPtrWillBeRawPtr<Range> Document::caretRangeFromPoint(int x, int y)
+GCRefPtr<Range> Document::caretRangeFromPoint(int x, int y)
 {
     if (!layoutView())
         return nullptr;
@@ -1529,7 +1529,7 @@ Settings* Document::settings() const
 }
 #endif
 
-PassRefPtrWillBeRawPtr<Range> Document::createRange()
+GCRefPtr<Range> Document::createRange()
 {
     return Range::create(*this);
 }
@@ -3964,7 +3964,7 @@ void Document::updateRangesAfterChildrenChanged(ContainerNode* container)
 void Document::updateRangesAfterNodeMovedToAnotherDocument(const Node& node)
 {
     ASSERT(node.document() != this);
-    if (m_ranges.isEmpty())
+    if (m_ranges.empty())
         return;
 
     AttachedRangeSet ranges = m_ranges;
@@ -4026,7 +4026,7 @@ void Document::didRemoveText(Node* text, unsigned offset, unsigned length)
 
 void Document::didMergeTextNodes(Text& oldNode, unsigned offset)
 {
-    if (!m_ranges.isEmpty()) {
+    if (!m_ranges.empty()) {
         NodeWithIndex oldNodeWithIndex(oldNode);
         for (Range* range : m_ranges)
             range->didMergeTextNodes(oldNodeWithIndex, offset);
@@ -5282,15 +5282,15 @@ void Document::updateFocusAppearanceTimerFired(Timer<Document>*)
 
 void Document::attachRange(Range* range)
 {
-    ASSERT(!m_ranges.contains(range));
-    m_ranges.add(range);
+    ASSERT(!zed::key_exists(m_ranges, range));
+    m_ranges.emplace(range);
 }
 
 void Document::detachRange(Range* range)
 {
     // We don't ASSERT m_ranges.contains(range) to allow us to call this
     // unconditionally to fix: https://bugs.webkit.org/show_bug.cgi?id=26044
-    m_ranges.remove(range);
+    m_ranges.erase(range);
 }
 
 #if 0 // BKTODO:
@@ -6198,7 +6198,7 @@ DEFINE_TRACE(Document)
     visitor->trace(m_topLayerElements);
     visitor->trace(m_elemSheet);
     visitor->trace(m_nodeIterators);
-    visitor->trace(m_ranges);
+    // BKTODO: visitor->trace(m_ranges);
     visitor->trace(m_styleEngine);
     if (m_formController)
         m_formController->trace(visitor);

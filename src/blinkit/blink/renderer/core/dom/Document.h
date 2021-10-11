@@ -316,7 +316,7 @@ public:
 
     Element* elementFromPoint(int x, int y) const;
     std::vector<Element *> elementsFromPoint(int x, int y) const;
-    PassRefPtrWillBeRawPtr<Range> caretRangeFromPoint(int x, int y);
+    GCRefPtr<Range> caretRangeFromPoint(int x, int y);
     Element* scrollingElement();
 
     String readyState() const;
@@ -444,13 +444,13 @@ public:
 
     float devicePixelRatio() const;
 
-    PassRefPtrWillBeRawPtr<Range> createRange();
+    GCRefPtr<Range> createRange();
 
     PassRefPtrWillBeRawPtr<NodeIterator> createNodeIterator(Node* root, unsigned whatToShow, PassRefPtrWillBeRawPtr<NodeFilter>);
     PassRefPtrWillBeRawPtr<TreeWalker> createTreeWalker(Node* root, unsigned whatToShow, PassRefPtrWillBeRawPtr<NodeFilter>);
 
     // Special support for editing
-    PassRefPtrWillBeRawPtr<Text> createEditingTextNode(const String&);
+    GCRefPtr<Text> createEditingTextNode(const String&);
 
     void setupFontBuilder(ComputedStyle& documentStyle);
 
@@ -1280,7 +1280,7 @@ private:
     uint64_t m_styleVersion;
 
     WillBeHeapHashSet<RawPtrWillBeWeakMember<NodeIterator>> m_nodeIterators;
-    using AttachedRangeSet = WillBeHeapHashSet<RawPtrWillBeWeakMember<Range>>;
+    using AttachedRangeSet = std::unordered_set<Range *>;
     AttachedRangeSet m_ranges;
 
     unsigned short m_listenerTypes;
