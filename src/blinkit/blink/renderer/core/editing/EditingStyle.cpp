@@ -138,7 +138,7 @@ static const Vector<CSSPropertyID>& inheritableEditingProperties()
 }
 
 template <class StyleDeclarationType>
-static PassRefPtrWillBeRawPtr<MutableStylePropertySet> copyEditingProperties(StyleDeclarationType* style, EditingPropertiesType type = OnlyInheritableEditingProperties)
+static GCRefPtr<MutableStylePropertySet> copyEditingProperties(StyleDeclarationType* style, EditingPropertiesType type = OnlyInheritableEditingProperties)
 {
     if (type == AllEditingProperties)
         return style->copyPropertiesInSet(allEditingProperties());
@@ -150,14 +150,14 @@ static inline bool isEditingProperty(int id)
     return allEditingProperties().contains(static_cast<CSSPropertyID>(id));
 }
 
-static PassRefPtrWillBeRawPtr<MutableStylePropertySet> editingStyleFromComputedStyle(PassRefPtrWillBeRawPtr<CSSComputedStyleDeclaration> style, EditingPropertiesType type = OnlyInheritableEditingProperties)
+static GCRefPtr<MutableStylePropertySet> editingStyleFromComputedStyle(const GCRefPtr<CSSComputedStyleDeclaration> &style, EditingPropertiesType type = OnlyInheritableEditingProperties)
 {
     if (!style)
         return MutableStylePropertySet::create(HTMLQuirksMode);
     return copyEditingProperties(style.get(), type);
 }
 
-static PassRefPtrWillBeRawPtr<CSSComputedStyleDeclaration> ensureComputedStyle(const Position& position)
+static GCRefPtr<CSSComputedStyleDeclaration> ensureComputedStyle(const Position& position)
 {
     Element* elem = associatedElementOf(position);
     if (!elem)
@@ -479,13 +479,13 @@ void EditingStyle::init(Node* node, PropertiesToInclude propertiesToInclude)
     else if (isTabHTMLSpanElement(node))
         node = node->parentNode();
 
-    RefPtrWillBeRawPtr<CSSComputedStyleDeclaration> computedStyleAtPosition = CSSComputedStyleDeclaration::create(node);
+    GCRefPtr<CSSComputedStyleDeclaration> computedStyleAtPosition = CSSComputedStyleDeclaration::create(node);
     m_mutableStyle = propertiesToInclude == AllProperties && computedStyleAtPosition ? computedStyleAtPosition->copyProperties() : editingStyleFromComputedStyle(computedStyleAtPosition);
 
     if (propertiesToInclude == EditingPropertiesInEffect) {
-        if (RefPtrWillBeRawPtr<CSSValue> value = backgroundColorValueInEffect(node))
+        if (GCRefPtr<CSSValue> value = backgroundColorValueInEffect(node))
             m_mutableStyle->setProperty(CSSPropertyBackgroundColor, value->cssText());
-        if (RefPtrWillBeRawPtr<CSSValue> value = computedStyleAtPosition->getPropertyCSSValue(CSSPropertyWebkitTextDecorationsInEffect))
+        if (GCRefPtr<CSSValue> value = computedStyleAtPosition->getPropertyCSSValue(CSSPropertyWebkitTextDecorationsInEffect))
             m_mutableStyle->setProperty(CSSPropertyTextDecoration, value->cssText());
     }
 
@@ -681,8 +681,8 @@ void EditingStyle::removeStyleAddedByElement(Element* element)
 {
     if (!element || !element->parentNode())
         return;
-    RefPtrWillBeRawPtr<MutableStylePropertySet> parentStyle = editingStyleFromComputedStyle(CSSComputedStyleDeclaration::create(element->parentNode()), AllEditingProperties);
-    RefPtrWillBeRawPtr<MutableStylePropertySet> nodeStyle = editingStyleFromComputedStyle(CSSComputedStyleDeclaration::create(element), AllEditingProperties);
+    GCRefPtr<MutableStylePropertySet> parentStyle = editingStyleFromComputedStyle(CSSComputedStyleDeclaration::create(element->parentNode()), AllEditingProperties);
+    GCRefPtr<MutableStylePropertySet> nodeStyle = editingStyleFromComputedStyle(CSSComputedStyleDeclaration::create(element), AllEditingProperties);
     nodeStyle->removeEquivalentProperties(parentStyle.get());
     m_mutableStyle->removeEquivalentProperties(nodeStyle.get());
 }
@@ -692,8 +692,8 @@ void EditingStyle::removeStyleConflictingWithStyleOfElement(Element* element)
     if (!element || !element->parentNode() || !m_mutableStyle)
         return;
 
-    RefPtrWillBeRawPtr<MutableStylePropertySet> parentStyle = editingStyleFromComputedStyle(CSSComputedStyleDeclaration::create(element->parentNode()), AllEditingProperties);
-    RefPtrWillBeRawPtr<MutableStylePropertySet> nodeStyle = editingStyleFromComputedStyle(CSSComputedStyleDeclaration::create(element), AllEditingProperties);
+    GCRefPtr<MutableStylePropertySet> parentStyle = editingStyleFromComputedStyle(CSSComputedStyleDeclaration::create(element->parentNode()), AllEditingProperties);
+    GCRefPtr<MutableStylePropertySet> nodeStyle = editingStyleFromComputedStyle(CSSComputedStyleDeclaration::create(element), AllEditingProperties);
     nodeStyle->removeEquivalentProperties(parentStyle.get());
 
     unsigned propertyCount = nodeStyle->propertyCount();
@@ -763,7 +763,7 @@ TriState EditingStyle::triStateOfStyle(const VisibleSelection& selection) const
     bool nodeIsStart = true;
     for (Node& node : NodeTraversal::startsAt(selection.start().anchorNode())) {
         if (node.layoutObject() && node.hasEditableStyle()) {
-            RefPtrWillBeRawPtr<CSSComputedStyleDeclaration> nodeStyle = CSSComputedStyleDeclaration::create(&node);
+            GCRefPtr<CSSComputedStyleDeclaration> nodeStyle = CSSComputedStyleDeclaration::create(&node);
             if (nodeStyle) {
                 TriState nodeState = triStateOfStyle(nodeStyle.get(), node.isTextNode() ? EditingStyle::DoNotIgnoreTextOnlyProperties : EditingStyle::IgnoreTextOnlyProperties);
                 if (nodeIsStart) {
@@ -1008,7 +1008,7 @@ void EditingStyle::prepareToApplyAt(const Position& position, ShouldPreserveWrit
     // ReplaceSelectionCommand::handleStyleSpans() requires that this function only removes the editing style.
     // If this function was modified in the future to delete all redundant properties, then add a boolean value to indicate
     // which one of editingStyleAtPosition or computedStyle is called.
-    RefPtrWillBeRawPtr<EditingStyle> editingStyleAtPosition = EditingStyle::create(position, EditingPropertiesInEffect);
+    GCRefPtr<EditingStyle> editingStyleAtPosition = EditingStyle::create(position, EditingPropertiesInEffect);
     StylePropertySet* styleAtPosition = editingStyleAtPosition->m_mutableStyle.get();
 
     RefPtrWillBeRawPtr<CSSValue> unicodeBidi = nullptr;
@@ -1074,7 +1074,7 @@ static inline bool elementMatchesAndPropertyIsNotInInlineStyleDecl(const HTMLEle
         && (mode == EditingStyle::OverrideValues || !equivalent->propertyExistsInStyle(style));
 }
 
-static PassRefPtrWillBeRawPtr<MutableStylePropertySet> extractEditingProperties(const StylePropertySet* style, EditingStyle::PropertiesToInclude propertiesToInclude)
+static GCRefPtr<MutableStylePropertySet> extractEditingProperties(const StylePropertySet* style, EditingStyle::PropertiesToInclude propertiesToInclude)
 {
     if (!style)
         return nullptr;
@@ -1222,8 +1222,8 @@ void EditingStyle::mergeStyleFromRulesForSerialization(Element* element)
     // The property value, if it's a percentage, may not reflect the actual computed value.
     // For example: style="height: 1%; overflow: visible;" in quirksmode
     // FIXME: There are others like this, see <rdar://problem/5195123> Slashdot copy/paste fidelity problem
-    RefPtrWillBeRawPtr<CSSComputedStyleDeclaration> computedStyleForElement = CSSComputedStyleDeclaration::create(element);
-    RefPtrWillBeRawPtr<MutableStylePropertySet> fromComputedStyle = MutableStylePropertySet::create(HTMLQuirksMode);
+    GCRefPtr<CSSComputedStyleDeclaration> computedStyleForElement = CSSComputedStyleDeclaration::create(element);
+    GCRefPtr<MutableStylePropertySet> fromComputedStyle = MutableStylePropertySet::create(HTMLQuirksMode);
     {
         unsigned propertyCount = m_mutableStyle->propertyCount();
         for (unsigned i = 0; i < propertyCount; ++i) {
@@ -1232,8 +1232,8 @@ void EditingStyle::mergeStyleFromRulesForSerialization(Element* element)
             if (!value->isPrimitiveValue())
                 continue;
             if (toCSSPrimitiveValue(value)->isPercentage()) {
-                if (RefPtrWillBeRawPtr<CSSValue> computedPropertyValue = computedStyleForElement->getPropertyCSSValue(property.id()))
-                    fromComputedStyle->addRespectingCascade(CSSProperty(property.id(), computedPropertyValue));
+                if (GCRefPtr<CSSValue> computedPropertyValue = computedStyleForElement->getPropertyCSSValue(property.id()))
+                    fromComputedStyle->addRespectingCascade(CSSProperty(property.id(), computedPropertyValue.get()));
             }
         }
     }
@@ -1400,8 +1400,8 @@ WritingDirection EditingStyle::textDirectionForSelection(const VisibleSelection&
             if (!n->isStyledElement())
                 continue;
 
-            RefPtrWillBeRawPtr<CSSComputedStyleDeclaration> style = CSSComputedStyleDeclaration::create(n);
-            RefPtrWillBeRawPtr<CSSValue> unicodeBidi = style->getPropertyCSSValue(CSSPropertyUnicodeBidi);
+            GCRefPtr<CSSComputedStyleDeclaration> style = CSSComputedStyleDeclaration::create(n);
+            GCRefPtr<CSSValue> unicodeBidi = style->getPropertyCSSValue(CSSPropertyUnicodeBidi);
             if (!unicodeBidi || !unicodeBidi->isPrimitiveValue())
                 continue;
 
@@ -1430,8 +1430,8 @@ WritingDirection EditingStyle::textDirectionForSelection(const VisibleSelection&
             continue;
 
         Element* element = toElement(node);
-        RefPtrWillBeRawPtr<CSSComputedStyleDeclaration> style = CSSComputedStyleDeclaration::create(element);
-        RefPtrWillBeRawPtr<CSSValue> unicodeBidi = style->getPropertyCSSValue(CSSPropertyUnicodeBidi);
+        GCRefPtr<CSSComputedStyleDeclaration> style = CSSComputedStyleDeclaration::create(element);
+        GCRefPtr<CSSValue> unicodeBidi = style->getPropertyCSSValue(CSSPropertyUnicodeBidi);
         if (!unicodeBidi || !unicodeBidi->isPrimitiveValue())
             continue;
 
@@ -1462,6 +1462,11 @@ WritingDirection EditingStyle::textDirectionForSelection(const VisibleSelection&
     }
     hasNestedOrMultipleEmbeddings = false;
     return foundDirection;
+}
+
+MutableStylePropertySet* EditingStyle::style(void)
+{
+    return m_mutableStyle.get();
 }
 
 DEFINE_TRACE(EditingStyle)
@@ -1498,9 +1503,9 @@ StyleChange::StyleChange(EditingStyle* style, const Position& position)
     if (!style || !style->style() || !document || !document->frame() || !associatedElementOf(position))
         return;
 
-    RefPtrWillBeRawPtr<CSSComputedStyleDeclaration> computedStyle = ensureComputedStyle(position);
+    GCRefPtr<CSSComputedStyleDeclaration> computedStyle = ensureComputedStyle(position);
     // FIXME: take care of background-color in effect
-    RefPtrWillBeRawPtr<MutableStylePropertySet> mutableStyle = getPropertiesNotIn(style->style(), computedStyle.get());
+    GCRefPtr<MutableStylePropertySet> mutableStyle = getPropertiesNotIn(style->style(), computedStyle.get());
     ASSERT(mutableStyle);
 
     reconcileTextDecorationProperties(mutableStyle.get());
@@ -1744,14 +1749,14 @@ bool hasTransparentBackgroundColor(CSSStyleDeclaration* style)
 
 bool hasTransparentBackgroundColor(StylePropertySet* style)
 {
-    RefPtrWillBeRawPtr<CSSValue> cssValue = style->getPropertyCSSValue(CSSPropertyBackgroundColor);
+    GCRefPtr<CSSValue> cssValue = style->getPropertyCSSValue(CSSPropertyBackgroundColor);
     return isTransparentColorValue(cssValue.get());
 }
 
 PassRefPtrWillBeRawPtr<CSSValue> backgroundColorValueInEffect(Node* node)
 {
     for (Node* ancestor = node; ancestor; ancestor = ancestor->parentNode()) {
-        RefPtrWillBeRawPtr<CSSComputedStyleDeclaration> ancestorStyle = CSSComputedStyleDeclaration::create(ancestor);
+        GCRefPtr<CSSComputedStyleDeclaration> ancestorStyle = CSSComputedStyleDeclaration::create(ancestor);
         if (!hasTransparentBackgroundColor(ancestorStyle.get()))
             return ancestorStyle->getPropertyCSSValue(CSSPropertyBackgroundColor);
     }

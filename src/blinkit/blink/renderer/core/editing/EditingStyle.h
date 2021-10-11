@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EditingStyle.h
+// Description: EditingStyle Class
+//      Author: Ziming Li
+//     Created: 2021-10-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  * Copyright (C) 2013 Apple Inc. All rights reserved.
@@ -59,7 +70,7 @@ class QualifiedName;
 class ComputedStyle;
 class StylePropertySet;
 
-class EditingStyle final : public RefCountedWillBeGarbageCollectedFinalized<EditingStyle> {
+class EditingStyle final : public BlinKit::GCObject {
 public:
 
     enum PropertiesToInclude { AllProperties, OnlyEditingInheritableProperties, EditingPropertiesInEffect };
@@ -94,7 +105,7 @@ public:
 
     ~EditingStyle();
 
-    MutableStylePropertySet* style() { return m_mutableStyle.get(); }
+    MutableStylePropertySet* style(void);
     bool textDirection(WritingDirection&) const;
     bool isEmpty() const;
     void overrideWithStyle(const StylePropertySet*);
@@ -164,7 +175,7 @@ private:
     void mergeInlineAndImplicitStyleOfElement(Element*, CSSPropertyOverrideMode, PropertiesToInclude);
     void mergeStyle(const StylePropertySet*, CSSPropertyOverrideMode);
 
-    RefPtrWillBeMember<MutableStylePropertySet> m_mutableStyle;
+    GCRefPtr<MutableStylePropertySet> m_mutableStyle;
     bool m_isMonospaceFont;
     float m_fontSizeDelta;
 
