@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Text.h
+// Description: Text Class
+//      Author: Ziming Li
+//     Created: 2021-10-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -37,7 +48,7 @@ public:
     static const unsigned defaultLengthLimit = 1 << 16;
 
     static PassRefPtrWillBeRawPtr<Text> create(Document&, const String&);
-    static PassRefPtrWillBeRawPtr<Text> createEditingText(Document&, const String&);
+    static GCRefPtr<Text> createEditingText(Document&, const String&);
 
     LayoutText* layoutObject() const;
 

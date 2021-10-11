@@ -52,6 +52,8 @@
 #include "wtf/text/CString.h"
 #include "wtf/text/StringBuilder.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 PassRefPtrWillBeRawPtr<Text> Text::create(Document& document, const String& data)
@@ -59,9 +61,9 @@ PassRefPtrWillBeRawPtr<Text> Text::create(Document& document, const String& data
     return adoptRefWillBeNoop(new Text(document, data, CreateText));
 }
 
-PassRefPtrWillBeRawPtr<Text> Text::createEditingText(Document& document, const String& data)
+GCRefPtr<Text> Text::createEditingText(Document& document, const String& data)
 {
-    return adoptRefWillBeNoop(new Text(document, data, CreateEditingText));
+    return GCWrapShared(new Text(document, data, CreateEditingText));
 }
 
 PassRefPtrWillBeRawPtr<Node> Text::mergeNextSiblingNodesIfPossible()
