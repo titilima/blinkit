@@ -691,7 +691,7 @@ static LayoutRect sizingBox(const LayoutObject* layoutObject)
 static PassRefPtrWillBeRawPtr<CSSValue> renderTextDecorationFlagsToCSSValue(int textDecoration)
 {
     // Blink value is ignored.
-    RefPtrWillBeRawPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
+    GCRefPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
     if (textDecoration & TextDecorationUnderline)
         list->append(cssValuePool().createIdentifierValue(CSSValueUnderline));
     if (textDecoration & TextDecorationOverline)
@@ -1052,7 +1052,7 @@ static PassRefPtrWillBeRawPtr<CSSValue> valueForCounterDirectives(const Computed
     if (!map)
         return cssValuePool().createIdentifierValue(CSSValueNone);
 
-    RefPtrWillBeRawPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
+    GCRefPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
     for (const auto& item : *map) {
         bool isValidCounterValue = propertyID == CSSPropertyCounterIncrement ? item.value.isIncrement() : item.value.isReset();
         if (!isValidCounterValue)
@@ -1092,7 +1092,7 @@ static PassRefPtrWillBeRawPtr<CSSValue> valueForShape(const ComputedStyle& style
 
 static PassRefPtrWillBeRawPtr<CSSValueList> valuesForSidesShorthand(const StylePropertyShorthand& shorthand, const ComputedStyle& style, const LayoutObject* layoutObject, Node* styledNode, bool allowVisitedStyle)
 {
-    RefPtrWillBeRawPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
+    GCRefPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
     // Assume the properties are in the usual order top, right, bottom, left.
     RefPtrWillBeRawPtr<CSSValue> topValue = ComputedStyleCSSValueMapping::get(shorthand.properties()[0], style, layoutObject, styledNode, allowVisitedStyle);
     RefPtrWillBeRawPtr<CSSValue> rightValue = ComputedStyleCSSValueMapping::get(shorthand.properties()[1], style, layoutObject, styledNode, allowVisitedStyle);
