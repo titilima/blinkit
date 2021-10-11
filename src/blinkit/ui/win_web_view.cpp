@@ -171,6 +171,11 @@ void WinWebView::InvalidateNativeView(const IntRect &rect)
     ::InvalidateRect(m_hWnd, &rc, FALSE);
 }
 
+void WinWebView::OnChar(HWND hwnd, TCHAR ch, int)
+{
+    ProcessKeyEvent(WebInputEvent::Char, ch, 0);
+}
+
 void WinWebView::OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc)
 {
     m_dpi = newDPI;
@@ -183,6 +188,19 @@ void WinWebView::OnInitialized(void)
 {
     WebViewImpl::OnInitialized();
     UpdateScaleFactor();
+}
+
+void WinWebView::OnKey(HWND, UINT vk, BOOL fDown, int, UINT)
+{
+    WebInputEvent::Type type = fDown ? WebInputEvent::RawKeyDown : WebInputEvent::KeyUp;
+    int modifiers = 0;
+    if (GetKeyState(VK_SHIFT) < 0)
+        modifiers |= WebInputEvent::ShiftKey;
+    if (GetKeyState(VK_CONTROL) < 0)
+        modifiers |= WebInputEvent::ControlKey;
+    if (GetKeyState(VK_MENU) < 0)
+        modifiers |= WebInputEvent::AltKey;
+    ProcessKeyEvent(type, vk, modifiers);
 }
 
 void WinWebView::OnMouse(UINT message, UINT keyFlags, int x, int y)
@@ -376,6 +394,16 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
             *result = TRUE;
             break;
         }
+
+        case WM_KEYDOWN:
+            HANDLE_WM_KEYDOWN(hWnd, wParam, lParam, OnKey);
+            break;
+        case WM_KEYUP:
+            HANDLE_WM_KEYUP(hWnd, wParam, lParam, OnKey);
+            break;
+        case WM_CHAR:
+            HANDLE_WM_CHAR(hWnd, wParam, lParam, OnChar);
+            break;
 
         case WM_SIZE:
             HANDLE_WM_SIZE(hWnd, wParam, lParam, OnSize);

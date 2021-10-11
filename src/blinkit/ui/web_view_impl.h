@@ -89,6 +89,7 @@ protected:
     WebViewImpl(BlinKit::ClientCaller &clientCaller, blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor = SK_ColorWHITE);
 
     virtual void OnInitialized(void) {}
+    void ProcessKeyEvent(blink::WebInputEvent::Type type, int code, int modifiers);
     void ProcessMouseEvent(blink::WebInputEvent::Type type, blink::WebPointerProperties::Button button, int x, int y);
     bool ProcessTitleChange(const std::string &newTitle) const;
     // BKTODO: void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
@@ -121,9 +122,15 @@ private:
     blink::IntSize ContentsSize(void) const;
     // Called anytime top controls layout height or content offset have changed.
     void DidUpdateTopControls(void);
+    bool EndActiveFlingAnimation(void);
     blink::PageScaleConstraintsSet& GetPageScaleConstraintsSet(void) const;
     void HidePopups(void);
     constexpr bool isPointerLocked(void) { return false; } // May be useful in the future, just leave it here.
+    // Returns true if the event was actually processed.
+    bool KeyEventDefault(const blink::WebKeyboardEvent &event);
+    // Returns true if the event leads to scrolling.
+    static bool MapKeyCodeForScroll(int keyCode, blink::ScrollDirectionPhysical *scrollDirection,
+        blink::ScrollGranularity *scrollGranularity);
     float MinimumPageScaleFactor(void) const;
     void mouseContextMenu(const blink::WebMouseEvent &event);
     float PageScaleFactor(void) const;
@@ -133,6 +140,8 @@ private:
     void RefreshPageScaleFactorAfterLayout(void);
     void ResizeViewWhileAnchored(blink::FrameView *view);
     void ResumeTreeViewCommitsIfRenderingReady(void);
+    // Returns true if the view was scrolled.
+    bool ScrollViewWithKeyboard(int keyCode, int modifiers);
 #if 0 // BKTODO:
     bool ShouldAutoResize(void) const { return m_shouldAutoResize; }
     void UpdateICBAndResizeViewport(void);
@@ -188,6 +197,11 @@ private:
     bool m_imeAcceptEvents = true;
     bool m_doingDragAndDrop = false;
     bool m_ignoreInputEvents = false;
+    // Webkit expects keyPress events to be suppressed if the associated keyDown
+    // event was handled. Safari implements this behavior by peeking out the
+    // associated WM_CHAR event if the keydown was handled. We emulate
+    // this behavior by setting this flag if the keyDown was handled.
+    bool m_suppressNextKeypressEvent = false;
 #if 0 // BKTODO:
     bool m_shouldDispatchFirstVisuallyNonEmptyLayout = false;
     bool m_shouldDispatchFirstLayoutAfterFinishedParsing = false;

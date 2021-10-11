@@ -25,8 +25,10 @@
 #include "blinkit/blink/renderer/core/loader/FrameLoadRequest.h"
 #include "blinkit/blink/renderer/core/page/FocusController.h"
 #include "blinkit/blink/renderer/core/page/Page.h"
+#include "blinkit/blink/renderer/platform/KeyboardCodes.h"
 #include "blinkit/blink/renderer/web/ChromeClientImpl.h"
 #include "blinkit/blink/renderer/web/ResizeViewportAnchor.h"
+#include "blinkit/blink/renderer/web/WebInputEventConversion.h"
 #include "blinkit/ui/rendering_scheduler.h"
 #include "chromium/base/time/time.h"
 #include "third_party/zed/include/zed/float.hpp"
@@ -167,6 +169,20 @@ void WebViewImpl::dispatchDidFinishLoad(void)
     m_client.DocumentReady(m_client.UserData);
 }
 
+bool WebViewImpl::EndActiveFlingAnimation(void)
+{
+#if 0 // BKTODO: Check the logic later
+    if (m_gestureAnimation) {
+        m_gestureAnimation.clear();
+        m_flingSourceDevice = WebGestureDeviceUninitialized;
+        if (m_layerTreeView)
+            m_layerTreeView->didStopFlinging();
+        return true;
+    }
+#endif
+    return false;
+}
+
 #if 0 // BKTODO:
 IntSize WebViewImpl::FrameSize(void)
 {
@@ -206,13 +222,154 @@ PageScaleConstraintsSet& WebViewImpl::GetPageScaleConstraintsSet(void) const
 
 WebInputEventResult WebViewImpl::handleCharEvent(const WebKeyboardEvent &event)
 {
-    ASSERT(false); // BKTODO:
+    ASSERT(event.type == WebInputEvent::Char);
+
+    // Please refer to the comments explaining the m_suppressNextKeypressEvent
+    // member.  The m_suppressNextKeypressEvent is set if the KeyDown is
+    // handled by Webkit. A keyDown event is typically associated with a
+    // keyPress(char) event and a keyUp event. We reset this flag here as it
+    // only applies to the current keyPress event.
+    bool suppress = m_suppressNextKeypressEvent;
+    m_suppressNextKeypressEvent = false;
+
+#if 0 // BKTODO: Process later.
+    // If there is a popup, it should be the one processing the event, not the
+    // page.
+    if (m_pagePopup)
+        return m_pagePopup->handleKeyEvent(PlatformKeyboardEventBuilder(event));
+#endif
+
+    if (!m_frame)
+        return suppress ? WebInputEventResult::HandledSuppressed : WebInputEventResult::NotHandled;
+
+    EventHandler &handler = m_frame->eventHandler();
+
+    PlatformKeyboardEventBuilder evt(event);
+    if (!evt.isCharacterKey())
+        return WebInputEventResult::HandledSuppressed;
+
+    // Accesskeys are triggered by char events and can't be suppressed.
+    if (handler.handleAccessKey(evt))
+        return WebInputEventResult::HandledSystem;
+
+    // Safari 3.1 does not pass off windows system key messages (WM_SYSCHAR) to
+    // the eventHandler::keyEvent. We mimic this behavior on all platforms since
+    // for now we are converting other platform's key events to windows key
+    // events.
+    if (evt.isSystemKey())
+        return WebInputEventResult::NotHandled;
+
+    if (suppress)
+        return WebInputEventResult::HandledSuppressed;
+
+    WebInputEventResult result = handler.keyEvent(evt);
+    if (result != WebInputEventResult::NotHandled)
+        return result;
+    if (KeyEventDefault(event))
+        return WebInputEventResult::HandledSystem;
+
     return WebInputEventResult::NotHandled;
 }
 
 WebInputEventResult WebViewImpl::handleKeyEvent(const WebKeyboardEvent &event)
 {
-    ASSERT(false); // BKTODO:
+    ASSERT((event.type == WebInputEvent::RawKeyDown)
+        || (event.type == WebInputEvent::KeyDown)
+        || (event.type == WebInputEvent::KeyUp));
+
+    // Halt an in-progress fling on a key event.
+    EndActiveFlingAnimation();
+
+    // Please refer to the comments explaining the m_suppressNextKeypressEvent
+    // member.
+    // The m_suppressNextKeypressEvent is set if the KeyDown is handled by
+    // Webkit. A keyDown event is typically associated with a keyPress(char)
+    // event and a keyUp event. We reset this flag here as this is a new keyDown
+    // event.
+    m_suppressNextKeypressEvent = false;
+
+#if 0 // BKTODO: Process later.
+    // If there is a popup, it should be the one processing the event, not the
+    // page.
+    if (m_pagePopup) {
+        m_pagePopup->handleKeyEvent(PlatformKeyboardEventBuilder(event));
+        // We need to ignore the next Char event after this otherwise pressing
+        // enter when selecting an item in the popup will go to the page.
+        if (WebInputEvent::RawKeyDown == event.type)
+            m_suppressNextKeypressEvent = true;
+        return WebInputEventResult::HandledSystem;
+    }
+#endif
+
+#if 0 // BKTODO: Check the logic later.
+    RefPtrWillBeRawPtr<Frame> focusedFrame = focusedCoreFrame();
+    if (focusedFrame && focusedFrame->isRemoteFrame()) {
+        WebRemoteFrameImpl* webFrame = WebRemoteFrameImpl::fromFrame(*toRemoteFrame(focusedFrame.get()));
+        webFrame->client()->forwardInputEvent(&event);
+        return WebInputEventResult::HandledSystem;
+    }
+
+    if (!focusedFrame || !focusedFrame->isLocalFrame())
+        return WebInputEventResult::NotHandled;
+
+    LocalFrame* frame = toLocalFrame(focusedFrame.get());
+#else
+    if (!m_frame)
+        return WebInputEventResult::NotHandled;
+
+    LocalFrame *frame = m_frame.get();
+#endif
+
+    PlatformKeyboardEventBuilder evt(event);
+
+    WebInputEventResult result = frame->eventHandler().keyEvent(evt);
+    if (result != WebInputEventResult::NotHandled)
+    {
+        if (WebInputEvent::RawKeyDown == event.type)
+        {
+#if 0 // BKTODO:
+            // Suppress the next keypress event unless the focused node is a plugin node.
+            // (Flash needs these keypress events to handle non-US keyboards.)
+            Element *element = focusedElement();
+            if (element && element->layoutObject() && element->layoutObject()->isEmbeddedObject()) {
+                if (event.windowsKeyCode == VKEY_TAB) {
+                    // If the plugin supports keyboard focus then we should not send a tab keypress event.
+                    Widget* widget = toLayoutPart(element->layoutObject())->widget();
+                    if (widget && widget->isPluginContainer()) {
+                        WebPluginContainerImpl* plugin = toWebPluginContainerImpl(widget);
+                        if (plugin && plugin->supportsKeyboardFocus())
+                            m_suppressNextKeypressEvent = true;
+                    }
+                }
+            } else {
+                m_suppressNextKeypressEvent = true;
+            }
+#else
+            m_suppressNextKeypressEvent = true;
+#endif
+        }
+        return result;
+    }
+
+#if !OS(MACOSX)
+    const WebInputEvent::Type contextMenuTriggeringEventType =
+#if OS(WIN)
+        WebInputEvent::KeyUp;
+#else
+        WebInputEvent::RawKeyDown;
+#endif
+
+    bool isUnmodifiedMenuKey = !(event.modifiers & WebInputEvent::InputModifiers) && event.windowsKeyCode == VKEY_APPS;
+    bool isShiftF10 = event.modifiers == WebInputEvent::ShiftKey && event.windowsKeyCode == VKEY_F10;
+    if ((isUnmodifiedMenuKey || isShiftF10) && event.type == contextMenuTriggeringEventType)
+    {
+        ASSERT(false); // BKTODO: sendContextMenuEvent(event);
+        return WebInputEventResult::HandledSystem;
+    }
+#endif // !OS(MACOSX)
+
+    if (KeyEventDefault(event))
+        return WebInputEventResult::HandledSystem;
     return WebInputEventResult::NotHandled;
 }
 
@@ -333,6 +490,54 @@ bool WebViewImpl::IsAcceleratedCompositingActive(void) const
 }
 #endif
 
+bool WebViewImpl::KeyEventDefault(const WebKeyboardEvent &event)
+{
+    if (!m_frame)
+        return false;
+
+    switch (event.type)
+    {
+        case WebInputEvent::Char:
+            if (event.windowsKeyCode == VKEY_SPACE)
+            {
+                int keyCode = (0 != (event.modifiers & WebInputEvent::ShiftKey) ? VKEY_PRIOR : VKEY_NEXT);
+                ASSERT(false); // BKTODO: return scrollViewWithKeyboard(keyCode, event.modifiers);
+            }
+            break;
+        case WebInputEvent::RawKeyDown:
+            if (event.modifiers == WebInputEvent::ControlKey)
+            {
+                switch (event.windowsKeyCode)
+                {
+#if !OS(MACOSX)
+                    case 'A':
+                        ASSERT(false); // BKTODO: frame->executeCommand(WebString::fromUTF8("SelectAll"));
+                        return true;
+                    case VKEY_INSERT:
+                    case 'C':
+                        ASSERT(false); // BKTODO: frame->executeCommand(WebString::fromUTF8("Copy"));
+                        return true;
+#endif
+                    // Match FF behavior in the sense that Ctrl+home/end are the only Ctrl
+                    // key combinations which affect scrolling. Safari is buggy in the
+                    // sense that it scrolls the page for all Ctrl+scrolling key
+                    // combinations. For e.g. Ctrl+pgup/pgdn/up/down, etc.
+                    case VKEY_HOME:
+                    case VKEY_END:
+                        break;
+                    default:
+                        return false;
+                }
+            }
+            if (!event.isSystemKey && 0 == (event.modifiers & WebInputEvent::ShiftKey))
+                return ScrollViewWithKeyboard(event.windowsKeyCode, event.modifiers);
+            break;
+        default:
+            break;
+    }
+    return false;
+}
+
 void WebViewImpl::layoutUpdated(LocalFrame *frame)
 {
     if (m_shouldAutoResize)
@@ -400,6 +605,52 @@ void WebViewImpl::MainFrameLayoutUpdated(void)
 IntSize WebViewImpl::MainFrameSize(void)
 {
     return GetPageScaleConstraintsSet().mainFrameSize();
+}
+
+bool WebViewImpl::MapKeyCodeForScroll(
+    int keyCode,
+    ScrollDirectionPhysical *scrollDirection,
+    ScrollGranularity *scrollGranularity)
+{
+    switch (keyCode)
+    {
+        case VKEY_LEFT:
+            *scrollDirection = ScrollLeft;
+            *scrollGranularity = ScrollByLine;
+            break;
+        case VKEY_RIGHT:
+            *scrollDirection = ScrollRight;
+            *scrollGranularity = ScrollByLine;
+            break;
+        case VKEY_UP:
+            *scrollDirection = ScrollUp;
+            *scrollGranularity = ScrollByLine;
+            break;
+        case VKEY_DOWN:
+            *scrollDirection = ScrollDown;
+            *scrollGranularity = ScrollByLine;
+            break;
+        case VKEY_HOME:
+            *scrollDirection = ScrollUp;
+            *scrollGranularity = ScrollByDocument;
+            break;
+        case VKEY_END:
+            *scrollDirection = ScrollDown;
+            *scrollGranularity = ScrollByDocument;
+            break;
+        case VKEY_PRIOR:  // page up
+            *scrollDirection = ScrollUp;
+            *scrollGranularity = ScrollByPage;
+            break;
+        case VKEY_NEXT:  // page down
+            *scrollDirection = ScrollDown;
+            *scrollGranularity = ScrollByPage;
+            break;
+        default:
+            return false;
+    }
+
+    return true;
 }
 
 float WebViewImpl::MinimumPageScaleFactor(void) const
@@ -484,6 +735,27 @@ WebInputEventResult WebViewImpl::ProcessInput(const WebInputEvent &e)
         return result;
 
     return WebInputEventResult::NotHandled;
+}
+
+void WebViewImpl::ProcessKeyEvent(WebInputEvent::Type type, int code, int modifiers)
+{
+    ASSERT(IsClientThread());
+    auto task = [this, type, code, modifiers]
+    {
+        ScopedRenderingScheduler _(this);
+
+        WebKeyboardEvent e;
+        e.timeStampSeconds = base::Time::Now().ToDoubleT();
+        e.type = type;
+        e.modifiers = modifiers;
+        e.windowsKeyCode = e.nativeKeyCode = code;
+
+        memset(e.text, 0, sizeof(e.text));
+        e.text[0] = code;
+
+        ProcessInput(e);
+    };
+    m_appCaller.SyncCall(BLINK_FROM_HERE, task);
 }
 
 void WebViewImpl::ProcessMouseEvent(WebInputEvent::Type type, WebPointerProperties::Button button, int x, int y)
@@ -721,6 +993,28 @@ void WebViewImpl::scheduleAnimation(void)
     }
 #endif
     RenderingScheduler::From(this)->ScheduleAnimation();
+}
+
+bool WebViewImpl::ScrollViewWithKeyboard(int keyCode, int modifiers)
+{
+    ScrollDirectionPhysical scrollDirectionPhysical;
+    ScrollGranularity scrollGranularity;
+#if OS(MACOSX)
+    // Control-Up/Down should be PageUp/Down on Mac.
+    if (0 != (modifiers & WebMouseEvent::ControlKey))
+    {
+        if (keyCode == VKEY_UP)
+            keyCode = VKEY_PRIOR;
+        else if (keyCode == VKEY_DOWN)
+            keyCode = VKEY_NEXT;
+    }
+#endif
+    if (!MapKeyCodeForScroll(keyCode, &scrollDirectionPhysical, &scrollGranularity))
+        return false;
+
+    if (m_frame)
+        return m_frame->eventHandler().bubblingScroll(toScrollDirection(scrollDirectionPhysical), scrollGranularity);
+    return false;
 }
 
 void WebViewImpl::SendResizeEventAndRepaint(void)
