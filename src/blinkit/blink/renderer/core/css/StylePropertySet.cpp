@@ -549,7 +549,7 @@ CSSStyleDeclaration* MutableStylePropertySet::ensureCSSStyleDeclaration()
         ASSERT(!m_cssomWrapper->parentElement());
         return m_cssomWrapper.get();
     }
-    m_cssomWrapper = adoptPtrWillBeNoop(new PropertySetCSSStyleDeclaration(*this));
+    m_cssomWrapper = GCWrapShared(new PropertySetCSSStyleDeclaration(*this));
     return m_cssomWrapper.get();
 }
 

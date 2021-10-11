@@ -266,7 +266,7 @@ private:
     bool removeShorthandProperty(CSSPropertyID);
     bool removeShorthandProperty(const AtomicString& customPropertyName) { return false; }
     CSSProperty* findCSSPropertyWithID(CSSPropertyID);
-    OwnPtrWillBeMember<PropertySetCSSStyleDeclaration> m_cssomWrapper;
+    GCRefPtr<PropertySetCSSStyleDeclaration> m_cssomWrapper;
 
     friend class StylePropertySet;
 
