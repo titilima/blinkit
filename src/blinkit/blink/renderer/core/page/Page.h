@@ -271,7 +271,7 @@ private:
     const std::unique_ptr<FocusController> m_focusController;
     const std::unique_ptr<ContextMenuController> m_contextMenuController;
     const std::unique_ptr<PointerLockController> m_pointerLockController;
-    OwnPtrWillBeMember<ScrollingCoordinator> m_scrollingCoordinator;
+    std::unique_ptr<ScrollingCoordinator> m_scrollingCoordinator;
     const OwnPtrWillBeMember<UndoStack> m_undoStack;
 
     // Typically, the main frame and Page should both be owned by the embedder,

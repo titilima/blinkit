@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollingCoordinator.h
+// Description: ScrollingCoordinator Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -51,14 +62,12 @@ class ScrollableArea;
 class WebCompositorAnimationTimeline;
 class WebLayerTreeView;
 
-class CORE_EXPORT ScrollingCoordinator final : public NoBaseWillBeGarbageCollectedFinalized<ScrollingCoordinator> {
+class CORE_EXPORT ScrollingCoordinator final {
     WTF_MAKE_NONCOPYABLE(ScrollingCoordinator);
-    USING_FAST_MALLOC_WILL_BE_REMOVED(ScrollingCoordinator);
 public:
-    static PassOwnPtrWillBeRawPtr<ScrollingCoordinator> create(Page*);
+    static std::unique_ptr<ScrollingCoordinator> create(Page*);
 
     ~ScrollingCoordinator();
-    DECLARE_TRACE();
 
     void layerTreeViewInitialized(WebLayerTreeView&);
     void willCloseLayerTreeView(WebLayerTreeView&);
@@ -135,7 +144,7 @@ protected:
     bool isForMainFrame(ScrollableArea*) const;
     bool isForViewport(ScrollableArea*) const;
 
-    RawPtrWillBeMember<Page> m_page;
+    Page *m_page;
 
     // Dirty flags used to idenfity what really needs to be computed after compositing is updated.
     bool m_scrollGestureRegionIsDirty;
