@@ -44,9 +44,9 @@
 
 #include "WebCommon.h"
 #include "WebData.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 #if 0 // BKTODO:
 #include "WebImage.h"
-#include "WebString.h"
 #include "WebURL.h"
 #include "WebVector.h"
 #endif
@@ -73,16 +73,18 @@ public:
         BufferSelection,
     };
 
+#if 0 // BKTODO:
     // Returns an identifier which can be used to determine whether the data
     // contained within the clipboard has changed.
     virtual uint64_t sequenceNumber(Buffer) { return 0; }
 
     virtual bool isFormatAvailable(Format, Buffer) { return false; }
 
-#if 0 // BKTODO:
     virtual WebVector<WebString> readAvailableTypes(
         Buffer, bool* containsFilenames) { return WebVector<WebString>(); }
-    virtual WebString readPlainText(Buffer) { return WebString(); }
+#endif
+    virtual String readPlainText(Buffer) { return String(); }
+#if 0 // BKTODO:
     // fragmentStart and fragmentEnd are indexes into the returned markup that
     // indicate the start and end of the fragment if the returned markup
     // contains additional context. If there is no additional context,
@@ -91,20 +93,20 @@ public:
     virtual WebString readHTML(
         Buffer buffer, WebURL* pageURL, unsigned* fragmentStart,
         unsigned* fragmentEnd) { return WebString(); }
-#endif
     virtual WebData readImage(Buffer) { return WebData(); }
-#if 0 // BKTODO:
     virtual WebString readCustomData(
         Buffer, const WebString& type) { return WebString(); }
+#endif
 
-    virtual void writePlainText(const WebString&) { }
+    virtual void writePlainText(const String&) { }
+#if 0 // BKTODO:
     virtual void writeHTML(
         const WebString& htmlText, const WebURL&,
         const WebString& plainText, bool writeSmartPaste) { }
     virtual void writeImage(
         const WebImage&, const WebURL&, const WebString& title) { }
-#endif
     virtual void writeDataObject(const WebDragData&) { }
+#endif
 
 protected:
     ~WebClipboard() { }

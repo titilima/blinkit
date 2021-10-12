@@ -79,7 +79,9 @@ namespace blink {
 class WebAudioBus;
 class WebBlobRegistry;
 class WebCanvasCaptureHandler;
+#endif
 class WebClipboard;
+#if 0 // BKTODO:
 class WebCompositorSupport;
 class WebConvertableToTraceFormat;
 class WebCookieJar;
@@ -159,10 +161,12 @@ public:
 #if 0 // BKTODO:
     // May return null.
     virtual WebCookieJar* cookieJar() { return nullptr; }
+#endif
 
     // Must return non-null.
     virtual WebClipboard* clipboard() { return nullptr; }
 
+#if 0 // BKTODO:
     // Must return non-null.
     virtual WebFileUtilities* fileUtilities() { return nullptr; }
 

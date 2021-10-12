@@ -41,8 +41,8 @@ private:
     // blink::Platform
     WTF::String defaultLocale(void) override;
 #ifdef BLINKIT_UI_ENABLED
+    blink::WebClipboard* clipboard(void) override;
     // Returns a blob of data corresponding to the named resource.
-    // BKTODO: std::string GetDataResource(const char *name) override;
     blink::WebThemeEngine* themeEngine(void) override;
     blink::WebData loadResource(const char *name) override;
 #endif
@@ -58,15 +58,9 @@ private:
     std::unique_ptr<MessageLoop> m_messageLoop;
     std::unique_ptr<ClientCallerStore> m_clientCallerStore;
 #ifdef BLINKIT_UI_ENABLED
+    std::unique_ptr<WinClipboard> m_clipboard;
     std::unique_ptr<WinThemeEngine> m_themeEngine;
 #endif
-
-#if 0 // BKTODO:
-    // blink::Platform
-    blink::WebClipboard* clipboard(void) override;
-
-    std::unique_ptr<WinClipboard> m_clipboard;
-#endif // 0
 };
 
 } // namespace BlinKit

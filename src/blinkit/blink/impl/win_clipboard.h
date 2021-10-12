@@ -14,16 +14,15 @@
 
 #pragma once
 
-#include "clipboard_impl.h"
+#include "blinkit/blink/public/platform/WebClipboard.h"
 
 namespace BlinKit {
 
-class WinClipboard final : public ClipboardImpl
+class WinClipboard final : public blink::WebClipboard
 {
 private:
-    uint64_t sequenceNumber(Buffer buffer) override;
-    blink::WebString readPlainText(Buffer buffer) override;
-    void writePlainText(const blink::WebString &plainText) override;
+    String readPlainText(Buffer buffer) override;
+    void writePlainText(const String &plainText) override;
 };
 
 } // namespace BlinKit

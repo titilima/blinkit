@@ -83,7 +83,7 @@ void Pasteboard::writePlainText(const String& text, SmartReplaceOption)
 #if OS(WIN)
     String plainText(text);
     replaceNewlinesWithWindowsStyleNewlines(plainText);
-    ASSERT(false); // BKTODO: Platform::current()->clipboard()->writePlainText(plainText);
+    Platform::current()->clipboard()->writePlainText(plainText);
 #else
     Platform::current()->clipboard()->writePlainText(text);
 #endif
@@ -122,8 +122,7 @@ bool Pasteboard::isHTMLAvailable()
 
 String Pasteboard::plainText()
 {
-    ASSERT(false); // BKTODO: return Platform::current()->clipboard()->readPlainText(m_buffer);
-    return String();
+    return Platform::current()->clipboard()->readPlainText(m_buffer);
 }
 
 String Pasteboard::readHTML(KURL& url, unsigned& fragmentStart, unsigned& fragmentEnd)

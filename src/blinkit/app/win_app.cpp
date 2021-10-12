@@ -9,23 +9,18 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "win_app.h"
+#include "./win_app.h"
 
 #include "blinkit/app/app_caller_impl.h"
 #include "blinkit/win/client_caller_store.h"
 #include "blinkit/win/message_loop.h"
 #include "third_party/zed/include/zed/string/conv.hpp"
 #ifdef BLINKIT_UI_ENABLED
+#   include "blinkit/blink/impl/win_clipboard.h"
 #   include "blinkit/blink/impl/win_theme_engine.h"
 #   include "blinkit/blink/renderer/wtf/MainThread.h"
 #   include "third_party/zed/include/zed/win/hmodule.hpp"
 #endif
-#if 0 // BKTODO:
-#   include "blinkit/ui/win_web_view.h"
-#   include "third_party/blink/renderer/platform/fonts/font_cache.h"
-#   include "third_party/skia/include/ports/SkTypeface_win.h"
-#   include "blink_impl/win_clipboard.h"
-#endif // 0
 
 #pragma comment(lib, "Shlwapi.lib")
 #ifdef BLINKIT_UI_ENABLED
@@ -46,10 +41,6 @@ struct BackgoundModeParams {
 
 WinApp::WinApp(BkAppClient *client) : AppImpl(client)
 {
-#if 0 // TODO: ndef BLINKIT_CRAWLER_ONLY
-    auto fontMgr = SkFontMgr_New_GDI();
-    FontCache::SetFontManager(std::move(fontMgr));
-#endif
 }
 
 WinApp::~WinApp(void)
@@ -145,6 +136,14 @@ std::shared_ptr<blink::WebTaskRunner> WinApp::taskRunner(void)
 }
 
 #ifdef BLINKIT_UI_ENABLED
+WebClipboard* WinApp::clipboard(void)
+{
+    ASSERT(isMainThread());
+    if (!m_clipboard)
+        m_clipboard = std::make_unique<WinClipboard>();
+    return m_clipboard.get();
+}
+
 WebData WinApp::loadResource(const char *name)
 {
     static PCSTR RT_HTMLA = MAKEINTRESOURCEA(23);
@@ -166,19 +165,6 @@ WebThemeEngine* WinApp::themeEngine(void)
     return m_themeEngine.get();
 }
 #endif // BLINKIT_UI_ENABLED
-
-#if 0 // BKTODO:
-blink::WebClipboard* WinApp::clipboard(void)
-{
-    if (!m_clipboard)
-    {
-        AutoLock lock(m_lock);
-        if (!m_clipboard)
-            m_clipboard = std::make_unique<WinClipboard>();
-    }
-    return m_clipboard.get();
-}
-#endif // 0
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

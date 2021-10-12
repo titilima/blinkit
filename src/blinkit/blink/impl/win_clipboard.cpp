@@ -9,9 +9,9 @@
 // Copyright (C) 2018 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "win_clipboard.h"
+#include "./win_clipboard.h"
 
-#include "base/strings/sys_string_conversions.h"
+#include "third_party/zed/include/zed/string/conv.hpp"
 
 using namespace blink;
 
@@ -30,37 +30,37 @@ public:
     }
 };
 
-WebString WinClipboard::readPlainText(Buffer buffer)
+String WinClipboard::readPlainText(Buffer buffer)
 {
     ScopedClipboard sc;
 
     HANDLE hMem = GetClipboardData(CF_UNICODETEXT);
     if (nullptr == hMem)
-        return WebString();
+        return String();
 
-    WebString ret;
-    PCWSTR s = reinterpret_cast<PCWSTR>(GlobalLock(hMem));
-    ret.assign(s, wcslen(s));
+    String ret(reinterpret_cast<PCWSTR>(GlobalLock(hMem)));
     GlobalUnlock(hMem);
     return ret;
 }
 
+#if 0 // BKTODO:
 uint64_t WinClipboard::sequenceNumber(Buffer)
 {
     return GetClipboardSequenceNumber();
 }
+#endif
 
-void WinClipboard::writePlainText(const WebString &plainText)
+void WinClipboard::writePlainText(const String &plainText)
 {
     ScopedClipboard sc;
     EmptyClipboard();
 
-    std::wstring ws = base::SysUTF8ToWide(plainText.utf8());
+    std::wstring ws = zed::multi_byte_to_wide_string(plainText.stdUtf8(), CP_UTF8);
 
     HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, sizeof(WCHAR) * (ws.length() + 1));
     if (nullptr == hMem)
     {
-        assert(nullptr != hMem);
+        ASSERT(nullptr != hMem);
         return;
     }
 
