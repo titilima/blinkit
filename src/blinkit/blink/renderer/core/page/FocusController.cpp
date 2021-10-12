@@ -565,9 +565,9 @@ FocusController::FocusController(Page* page)
 {
 }
 
-PassOwnPtrWillBeRawPtr<FocusController> FocusController::create(Page* page)
+std::unique_ptr<FocusController> FocusController::create(Page* page)
 {
-    return adoptPtrWillBeNoop(new FocusController(page));
+    return zed::wrap_unique(new FocusController(page));
 }
 
 void FocusController::setFocusedFrame(PassRefPtrWillBeRawPtr<Frame> frame, bool notifyEmbedder)
@@ -578,7 +578,7 @@ void FocusController::setFocusedFrame(PassRefPtrWillBeRawPtr<Frame> frame, bool 
 
     m_isChangingFocusedFrame = true;
 
-    RefPtrWillBeRawPtr<LocalFrame> oldFrame = (m_focusedFrame && m_focusedFrame->isLocalFrame()) ? toLocalFrame(m_focusedFrame.get()) : nullptr;
+    RefPtrWillBeRawPtr<LocalFrame> oldFrame = (m_focusedFrame && m_focusedFrame->isLocalFrame()) ? toLocalFrame(m_focusedFrame) : nullptr;
 
     RefPtrWillBeRawPtr<LocalFrame> newFrame = (frame && frame->isLocalFrame()) ? toLocalFrame(frame.get()) : nullptr;
 
@@ -609,7 +609,7 @@ void FocusController::focusDocumentView(PassRefPtrWillBeRawPtr<Frame> frame, boo
     if (m_focusedFrame == frame)
         return;
 
-    RefPtrWillBeRawPtr<LocalFrame> focusedFrame = (m_focusedFrame && m_focusedFrame->isLocalFrame()) ? toLocalFrame(m_focusedFrame.get()) : nullptr;
+    RefPtrWillBeRawPtr<LocalFrame> focusedFrame = (m_focusedFrame && m_focusedFrame->isLocalFrame()) ? toLocalFrame(m_focusedFrame) : nullptr;
     if (focusedFrame && focusedFrame->view()) {
         RefPtrWillBeRawPtr<Document> document = focusedFrame->document();
         Element* focusedElement = document ? document->focusedElement() : nullptr;
@@ -636,7 +636,7 @@ LocalFrame* FocusController::focusedFrame() const
     // added).
     if (m_focusedFrame && m_focusedFrame->isRemoteFrame())
         return nullptr;
-    return toLocalFrame(m_focusedFrame.get());
+    return toLocalFrame(m_focusedFrame);
 }
 
 Frame* FocusController::focusedOrMainFrame() const
@@ -659,7 +659,7 @@ Frame* FocusController::focusedOrMainFrame() const
 
 HTMLFrameOwnerElement* FocusController::focusedFrameOwnerElement(LocalFrame& currentFrame) const
 {
-    Frame* focusedFrame = m_focusedFrame.get();
+    Frame* focusedFrame = m_focusedFrame;
     ASSERT(false); // BKTODO:
 #if 0
     for (; focusedFrame; focusedFrame = focusedFrame->tree().parent()) {
@@ -696,9 +696,9 @@ void FocusController::setFocused(bool focused)
 
     // setFocusedFrame above might reject to update m_focusedFrame, or
     // m_focusedFrame might be changed by blur/focus event handlers.
-    if (m_focusedFrame && m_focusedFrame->isLocalFrame() && toLocalFrame(m_focusedFrame.get())->view()) {
-        toLocalFrame(m_focusedFrame.get())->selection().setFocused(focused);
-        dispatchEventsOnWindowAndFocusedElement(toLocalFrame(m_focusedFrame.get())->document(), focused);
+    if (m_focusedFrame && m_focusedFrame->isLocalFrame() && toLocalFrame(m_focusedFrame)->view()) {
+        toLocalFrame(m_focusedFrame)->selection().setFocused(focused);
+        dispatchEventsOnWindowAndFocusedElement(toLocalFrame(m_focusedFrame)->document(), focused);
     }
 }
 
@@ -1166,12 +1166,6 @@ bool FocusController::advanceFocusDirectionally(WebFocusType type)
     } while (!consumed && container);
 
     return consumed;
-}
-
-DEFINE_TRACE(FocusController)
-{
-    visitor->trace(m_page);
-    visitor->trace(m_focusedFrame);
 }
 
 } // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FocusController.h
+// Description: FocusController Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple Inc. All rights reserved.
  *
@@ -48,10 +59,10 @@ class Node;
 class Page;
 class RemoteFrame;
 
-class CORE_EXPORT FocusController final : public NoBaseWillBeGarbageCollectedFinalized<FocusController> {
-    WTF_MAKE_NONCOPYABLE(FocusController); USING_FAST_MALLOC_WILL_BE_REMOVED(FocusController);
+class CORE_EXPORT FocusController final {
+    WTF_MAKE_NONCOPYABLE(FocusController);
 public:
-    static PassOwnPtrWillBeRawPtr<FocusController> create(Page*);
+    static std::unique_ptr<FocusController> create(Page*);
 
     void setFocusedFrame(PassRefPtrWillBeRawPtr<Frame>, bool notifyEmbedder = true);
     void focusDocumentView(PassRefPtrWillBeRawPtr<Frame>, bool notifyEmbedder = true);
@@ -83,8 +94,6 @@ public:
     void setFocused(bool);
     bool isFocused() const { return m_isFocused; }
 
-    DECLARE_TRACE();
-
 private:
     explicit FocusController(Page*);
 
@@ -95,8 +104,8 @@ private:
     bool advanceFocusDirectionallyInContainer(Node* container, const LayoutRect& startingRect, WebFocusType);
     void findFocusCandidateInContainer(Node& container, const LayoutRect& startingRect, WebFocusType, FocusCandidate& closest);
 
-    RawPtrWillBeMember<Page> m_page;
-    RefPtrWillBeMember<Frame> m_focusedFrame;
+    Page *m_page;
+    Frame *m_focusedFrame = nullptr;
     bool m_isActive;
     bool m_isFocused;
     bool m_isChangingFocusedFrame;

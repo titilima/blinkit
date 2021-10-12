@@ -268,7 +268,7 @@ private:
     ChromeClient *m_chromeClient;
     const std::unique_ptr<DragCaretController> m_dragCaretController;
     const std::unique_ptr<DragController> m_dragController;
-    const OwnPtrWillBeMember<FocusController> m_focusController;
+    const std::unique_ptr<FocusController> m_focusController;
     const OwnPtrWillBeMember<ContextMenuController> m_contextMenuController;
     const OwnPtrWillBeMember<PointerLockController> m_pointerLockController;
     OwnPtrWillBeMember<ScrollingCoordinator> m_scrollingCoordinator;
