@@ -82,7 +82,7 @@ static void collectChildrenAndRemoveFromOldParent(Node& node, NodeVector& nodes,
         fragment.removeChildren();
         return;
     }
-    nodes.append(&node);
+    nodes.emplace_back(&node);
     if (ContainerNode* oldParent = node.parentNode())
         oldParent->removeChild(&node, exceptionState);
 }
@@ -215,7 +215,7 @@ PassRefPtrWillBeRawPtr<Node> ContainerNode::insertBefore(PassRefPtrWillBeRawPtr<
     collectChildrenAndRemoveFromOldParent(*newChild, targets, exceptionState);
     if (exceptionState.hadException())
         return nullptr;
-    if (targets.isEmpty())
+    if (targets.empty())
         return newChild;
 
     // We need this extra check because collectChildrenAndRemoveFromOldParent() can fire mutation events.
@@ -711,7 +711,7 @@ void ContainerNode::removeChildren(SubtreeModificationAction action)
 #if !ENABLE(OILPAN)
             removedChildren.reserveInitialCapacity(countChildren());
 #endif
-            while (RefPtrWillBeRawPtr<Node> child = m_firstChild.get()) {
+            while (GCRefPtr<Node> child = m_firstChild) {
                 removeBetween(0, child->nextSibling(), *child);
 #if !ENABLE(OILPAN)
                 removedChildren.append(child.get());
@@ -754,7 +754,7 @@ PassRefPtrWillBeRawPtr<Node> ContainerNode::appendChild(PassRefPtrWillBeRawPtr<N
     if (exceptionState.hadException())
         return nullptr;
 
-    if (targets.isEmpty())
+    if (targets.empty())
         return newChild;
 
     // We need this extra check because collectChildrenAndRemoveFromOldParent() can fire mutation events.
@@ -858,7 +858,7 @@ void ContainerNode::notifyNodeInsertedInternal(Node& root, NodeVector& postInser
         if (!inDocument() && !isInShadowTree() && !node.isContainerNode())
             continue;
         if (Node::InsertionShouldCallDidNotifySubtreeInsertions == node.insertedInto(this))
-            postInsertionNotificationTargets.append(&node);
+            postInsertionNotificationTargets.emplace_back(&node);
         for (ShadowRoot* shadowRoot = node.youngestShadowRoot(); shadowRoot; shadowRoot = shadowRoot->olderShadowRoot())
             notifyNodeInsertedInternal(*shadowRoot, postInsertionNotificationTargets);
     }
@@ -1285,21 +1285,24 @@ static void dispatchChildRemovalEvents(Node& child)
     // BKTODO:
     //   MutationEvent is not recommended, remove it later.
     //   See also: https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent
-    ASSERT(false); 
-#if 0
     // Dispatch pre-removal mutation events.
     if (c->parentNode() && document->hasListenerType(Document::DOMNODEREMOVED_LISTENER)) {
+        ASSERT(false);
+#if 0
         NodeChildRemovalTracker scope(child);
         c->dispatchScopedEvent(MutationEvent::create(EventTypeNames::DOMNodeRemoved, true, c->parentNode()));
+#endif
     }
 
     // Dispatch the DOMNodeRemovedFromDocument event to all descendants.
     if (c->inDocument() && document->hasListenerType(Document::DOMNODEREMOVEDFROMDOCUMENT_LISTENER)) {
         NodeChildRemovalTracker scope(child);
+        ASSERT(false);
+#if 0
         for (; c; c = NodeTraversal::next(*c, &child))
             c->dispatchScopedEvent(MutationEvent::create(EventTypeNames::DOMNodeRemovedFromDocument, false));
-    }
 #endif
+    }
 }
 
 void ContainerNode::updateTreeAfterInsertion(Node& child)

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ReplaceSelectionCommand.h
+// Description: ReplaceSelectionCommand Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -107,11 +118,11 @@ private:
 
     Position m_startOfInsertedContent;
     Position m_endOfInsertedContent;
-    RefPtrWillBeMember<EditingStyle> m_insertionStyle;
+    GCRefPtr<EditingStyle> m_insertionStyle;
     bool m_selectReplacement;
     bool m_smartReplace;
     bool m_matchStyle;
-    RefPtrWillBeMember<DocumentFragment> m_documentFragment;
+    GCRefPtr<DocumentFragment> m_documentFragment;
     bool m_preventNesting;
     bool m_movingParagraph;
     EditAction m_editAction;

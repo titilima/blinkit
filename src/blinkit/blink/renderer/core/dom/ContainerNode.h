@@ -73,11 +73,7 @@ enum SubtreeModificationAction {
     OmitSubtreeModifiedEvent
 };
 
-// This constant controls how much buffer is initially allocated
-// for a Node Vector that is used to store child Nodes of a given Node.
-// FIXME: Optimize the value.
-const int initialNodeVectorSize = 11;
-using NodeVector = WillBeHeapVector<RefPtrWillBeMember<Node>, initialNodeVectorSize>;
+using NodeVector = std::vector<GCRefPtr<Node>>;
 
 class CORE_EXPORT ContainerNode : public Node {
 public:

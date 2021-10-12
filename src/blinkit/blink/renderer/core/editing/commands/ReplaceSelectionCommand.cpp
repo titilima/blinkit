@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ReplaceSelectionCommand.cpp
+// Description: ReplaceSelectionCommand Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2008 Apple Inc. All rights reserved.
  * Copyright (C) 2009, 2010, 2011 Google Inc. All rights reserved.
@@ -39,10 +50,12 @@
 #include "core/editing/EditingUtilities.h"
 #include "core/editing/FrameSelection.h"
 #include "core/editing/VisibleUnits.h"
+#if 0 // BKTODO:
 #include "core/editing/commands/ApplyStyleCommand.h"
 #include "core/editing/commands/BreakBlockquoteCommand.h"
 #include "core/editing/commands/SimplifyMarkupCommand.h"
 #include "core/editing/commands/SmartReplace.h"
+#endif
 #include "core/editing/iterators/TextIterator.h"
 #include "core/editing/serializers/HTMLInterchange.h"
 #include "core/editing/serializers/Serialization.h"
@@ -60,6 +73,8 @@
 #include "core/layout/LayoutText.h"
 #include "wtf/StdLibExtras.h"
 #include "wtf/Vector.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -174,7 +189,7 @@ ReplacementFragment::ReplacementFragment(Document* document, DocumentFragment* f
         return;
     }
 
-    RefPtrWillBeRawPtr<HTMLElement> holder = insertFragmentForTestRendering(editableRoot.get());
+    GCRefPtr<HTMLElement> holder = insertFragmentForTestRendering(editableRoot.get());
     if (!holder) {
         removeInterchangeNodes(m_fragment.get());
         return;
@@ -188,8 +203,8 @@ ReplacementFragment::ReplacementFragment(Document* document, DocumentFragment* f
     restoreAndRemoveTestRenderingNodesToFragment(holder.get());
 
     // Give the root a chance to change the text.
-    RefPtrWillBeRawPtr<BeforeTextInsertedEvent> evt = BeforeTextInsertedEvent::create(text);
-    editableRoot->dispatchEvent(evt);
+    GCRefPtr<BeforeTextInsertedEvent> evt = BeforeTextInsertedEvent::create(text);
+    editableRoot->dispatchEvent(evt.get());
     if (text != evt->text() || !editableRoot->layoutObjectIsRichlyEditable()) {
         restoreAndRemoveTestRenderingNodesToFragment(holder.get());
 
@@ -273,6 +288,7 @@ void ReplacementFragment::restoreAndRemoveTestRenderingNodesToFragment(Element* 
         return;
 
     while (RefPtrWillBeRawPtr<Node> node = holder->firstChild()) {
+        GCGuard _(*node);
         holder->removeChild(node.get());
         m_fragment->appendChild(node.get());
     }
@@ -530,11 +546,14 @@ void ReplaceSelectionCommand::removeRedundantStylesAndKeepStyleSpanInline(Insert
         }
 
         if (!inlineStyle || newInlineStyle->isEmpty()) {
+            ASSERT(false); // BKTODO:
+#if 0
             if (isStyleSpanOrSpanWithOnlyStyleAttribute(element) || isEmptyFontTag(element, AllowNonEmptyStyleAttribute)) {
                 insertedNodes.willRemoveNodePreservingChildren(*element);
                 removeNodePreservingChildren(element);
                 continue;
             }
+#endif
             removeElementAttribute(element, styleAttr);
         } else if (newInlineStyle->style()->propertyCount() != inlineStyle->propertyCount()) {
             setNodeAttribute(element, styleAttr, AtomicString(newInlineStyle->style()->asText()));
@@ -552,6 +571,8 @@ void ReplaceSelectionCommand::removeRedundantStylesAndKeepStyleSpanInline(Insert
         if (element->parentNode() && element->parentNode()->layoutObjectIsRichlyEditable())
             removeElementAttribute(element, contenteditableAttr);
 
+        ASSERT(false); // BKTODO:
+#if 0
         // WebKit used to not add display: inline and float: none on copy.
         // Keep this code around for backward compatibility
         if (isLegacyAppleHTMLSpanElement(element)) {
@@ -573,6 +594,7 @@ void ReplaceSelectionCommand::removeRedundantStylesAndKeepStyleSpanInline(Insert
             if (element->layoutObject() && element->layoutObject()->style()->isFloating())
                 element->style()->setPropertyInternal(CSSPropertyFloat, String(), "none", false, IGNORE_EXCEPTION);
         }
+#endif
     }
 }
 
@@ -747,10 +769,13 @@ static bool handleStyleSpansBeforeInsertion(ReplacementFragment& fragment, const
     if (isMailPasteAsQuotationHTMLBlockQuoteElement(topNode) || enclosingNodeOfType(firstPositionInOrBeforeNode(topNode), isMailHTMLBlockquoteElement, CanCrossEditingBoundary))
         return false;
 
+    ASSERT(false); // BKTODO:
+#if 0
     // Either there are no style spans in the fragment or a WebKit client has added content to the fragment
     // before inserting it.  Look for and handle style spans after insertion.
     if (!isLegacyAppleHTMLSpanElement(topNode))
         return false;
+#endif
 
     HTMLSpanElement* wrappingStyleSpan = toHTMLSpanElement(topNode);
     RefPtrWillBeRawPtr<EditingStyle> styleAtInsertionPos = EditingStyle::create(insertionPos.parentAnchoredEquivalent());
@@ -781,10 +806,13 @@ void ReplaceSelectionCommand::handleStyleSpans(InsertedNodes& insertedNodes)
     // so search for the top level style span instead of assuming it's at the top.
 
     for (Node& node : NodeTraversal::startsAt(insertedNodes.firstNodeInserted())) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (isLegacyAppleHTMLSpanElement(&node)) {
             wrappingStyleSpan = toHTMLSpanElement(&node);
             break;
         }
+#endif
     }
 
     // There might not be any style spans if we're pasting from another application or if
@@ -1003,7 +1031,7 @@ void ReplaceSelectionCommand::doApply()
     // out of any surrounding Mail blockquotes. Unless we're inserting in a table, in which case
     // breaking the blockquote will prevent the content from actually being inserted in the table.
     if (enclosingNodeOfType(insertionPos, isMailHTMLBlockquoteElement, CanCrossEditingBoundary) && m_preventNesting && !(enclosingNodeOfType(insertionPos, &isTableStructureNode))) {
-        applyCommandToComposite(BreakBlockquoteCommand::create(document()));
+        ASSERT(false); // BKTODO: applyCommandToComposite(BreakBlockquoteCommand::create(document()));
         // This will leave a br between the split.
         Node* br = endingSelection().start().anchorNode();
         ASSERT(isHTMLBRElement(br));
@@ -1108,6 +1136,8 @@ void ReplaceSelectionCommand::doApply()
     fragment.removeNode(refNode);
 
     Element* blockStart = enclosingBlock(insertionPos.anchorNode());
+    ASSERT(false); // BKTODO:
+#if 0
     if ((isHTMLListElement(refNode.get()) || (isLegacyAppleHTMLSpanElement(refNode.get()) && isHTMLListElement(refNode->firstChild())))
         && blockStart && blockStart->layoutObject()->isListItem()) {
         refNode = insertAsListItems(toHTMLElement(refNode), blockStart, insertionPos, insertedNodes);
@@ -1115,6 +1145,7 @@ void ReplaceSelectionCommand::doApply()
         insertNodeAt(refNode, insertionPos);
         insertedNodes.respondToNodeInsertion(*refNode);
     }
+#endif
 
     // Mutation events (bug 22634) may have already removed the inserted content
     if (!refNode->inDocument())
@@ -1174,7 +1205,7 @@ void ReplaceSelectionCommand::doApply()
     removeRedundantStylesAndKeepStyleSpanInline(insertedNodes);
 
     if (m_sanitizeFragment)
-        applyCommandToComposite(SimplifyMarkupCommand::create(document(), insertedNodes.firstNodeInserted(), insertedNodes.pastLastLeaf()));
+        ASSERT(false); // BKTODO: applyCommandToComposite(SimplifyMarkupCommand::create(document(), insertedNodes.firstNodeInserted(), insertedNodes.pastLastLeaf()));
 
     // Setup m_startOfInsertedContent and m_endOfInsertedContent. This should be the last two lines of code that access insertedNodes.
     m_startOfInsertedContent = firstPositionInOrBeforeNode(insertedNodes.firstNodeInserted());
@@ -1297,7 +1328,8 @@ bool ReplaceSelectionCommand::shouldPerformSmartReplace() const
 
 static bool isCharacterSmartReplaceExemptConsideringNonBreakingSpace(UChar32 character, bool previousCharacter)
 {
-    return isCharacterSmartReplaceExempt(character == noBreakSpaceCharacter ? ' ' : character, previousCharacter);
+    ASSERT(false); // BKTODO: return isCharacterSmartReplaceExempt(character == noBreakSpaceCharacter ? ' ' : character, previousCharacter);
+    return false;
 }
 
 void ReplaceSelectionCommand::addSpacesForSmartReplace()
@@ -1321,8 +1353,8 @@ void ReplaceSelectionCommand::addSpacesForSmartReplace()
             if (m_endOfInsertedContent.computeContainerNode() == endNode)
                 m_endOfInsertedContent = Position(endNode, m_endOfInsertedContent.offsetInContainerNode() + 1);
         } else {
-            RefPtrWillBeRawPtr<Text> node = document().createEditingTextNode(collapseWhiteSpace ? nonBreakingSpaceString() : " ");
-            insertNodeAfter(node, endNode);
+            GCRefPtr<Text> node = document().createEditingTextNode(collapseWhiteSpace ? nonBreakingSpaceString() : " ");
+            insertNodeAfter(node.get(), endNode);
             updateNodesInserted(node.get());
         }
     }
@@ -1345,10 +1377,10 @@ void ReplaceSelectionCommand::addSpacesForSmartReplace()
             if (m_endOfInsertedContent.computeContainerNode() == startNode && m_endOfInsertedContent.offsetInContainerNode())
                 m_endOfInsertedContent = Position(startNode, m_endOfInsertedContent.offsetInContainerNode() + 1);
         } else {
-            RefPtrWillBeRawPtr<Text> node = document().createEditingTextNode(collapseWhiteSpace ? nonBreakingSpaceString() : " ");
+            GCRefPtr<Text> node = document().createEditingTextNode(collapseWhiteSpace ? nonBreakingSpaceString() : " ");
             // Don't updateNodesInserted. Doing so would set m_endOfInsertedContent to be the node containing the leading space,
             // but m_endOfInsertedContent is supposed to mark the end of pasted content.
-            insertNodeBefore(node, startNode);
+            insertNodeBefore(node.get(), startNode);
             m_startOfInsertedContent = firstPositionInNode(node.get());
         }
     }

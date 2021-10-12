@@ -62,9 +62,9 @@
 #include "core/editing/commands/IndentOutdentCommand.h"
 #include "core/editing/commands/InsertListCommand.h"
 #include "core/editing/commands/RemoveFormatCommand.h"
-#include "core/editing/commands/ReplaceSelectionCommand.h"
-#include "core/editing/commands/SimplifyMarkupCommand.h"
 #endif
+#include "core/editing/commands/ReplaceSelectionCommand.h"
+// BKTODO: #include "core/editing/commands/SimplifyMarkupCommand.h"
 #include "core/editing/commands/TypingCommand.h"
 #if 0 // BKTODO:
 #include "core/editing/commands/UndoStack.h"
@@ -513,8 +513,6 @@ void Editor::replaceSelectionWithFragment(PassRefPtrWillBeRawPtr<DocumentFragmen
     if (frame().selection().isNone() || !frame().selection().isContentEditable() || !fragment)
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
     ReplaceSelectionCommand::CommandOptions options = ReplaceSelectionCommand::PreventNesting | ReplaceSelectionCommand::SanitizeFragment;
     if (selectReplacement)
         options |= ReplaceSelectionCommand::SelectReplacement;
@@ -526,6 +524,7 @@ void Editor::replaceSelectionWithFragment(PassRefPtrWillBeRawPtr<DocumentFragmen
     ReplaceSelectionCommand::create(*frame().document(), fragment, options, EditActionPaste)->apply();
     revealSelectionAfterEditingOperation();
 
+#if 0 // BKTODO:
     if (frame().selection().isInPasswordField() || !spellChecker().isContinuousSpellCheckingEnabled())
         return;
     spellChecker().chunkAndMarkAllMisspellingsAndBadGrammar(frame().selection().rootEditableElement());

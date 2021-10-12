@@ -427,11 +427,11 @@ void CompositeEditCommand::moveRemainingSiblingsToNewParent(Node* node, Node* pa
     RefPtrWillBeRawPtr<Element> newParent = prpNewParent;
 
     for (; node && node != pastLastNodeToMove; node = node->nextSibling())
-        nodesToRemove.append(node);
+        nodesToRemove.emplace_back(node);
 
     for (unsigned i = 0; i < nodesToRemove.size(); i++) {
-        removeNode(nodesToRemove[i]);
-        appendNode(nodesToRemove[i], newParent);
+        removeNode(nodesToRemove[i].get());
+        appendNode(nodesToRemove[i].get(), newParent);
     }
 }
 
