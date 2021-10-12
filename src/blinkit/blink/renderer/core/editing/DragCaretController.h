@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DragCaretController.h
+// Description: DragCaretController Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -32,11 +43,10 @@ namespace blink {
 
 class CullRect;
 
-class DragCaretController final : public NoBaseWillBeGarbageCollectedFinalized<DragCaretController>, private CaretBase {
+class DragCaretController final : private CaretBase {
     WTF_MAKE_NONCOPYABLE(DragCaretController);
-    USING_FAST_MALLOC_WILL_BE_REMOVED(DragCaretController);
 public:
-    static PassOwnPtrWillBeRawPtr<DragCaretController> create();
+    static std::unique_ptr<DragCaretController> create();
 
     LayoutBlock* caretLayoutObject() const;
     void paintDragCaret(LocalFrame*, GraphicsContext&, const LayoutPoint&) const;
@@ -50,8 +60,6 @@ public:
     void clear() { setCaretPosition(PositionWithAffinity()); }
 
     void nodeWillBeRemoved(Node&);
-
-    DECLARE_TRACE();
 
 private:
     DragCaretController();

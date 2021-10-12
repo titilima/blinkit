@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DragCaretController.cpp
+// Description: DragCaretController Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -36,9 +47,9 @@ DragCaretController::DragCaretController()
 {
 }
 
-PassOwnPtrWillBeRawPtr<DragCaretController> DragCaretController::create()
+std::unique_ptr<DragCaretController> DragCaretController::create()
 {
-    return adoptPtrWillBeNoop(new DragCaretController);
+    return zed::wrap_unique(new DragCaretController);
 }
 
 bool DragCaretController::isContentRichlyEditable() const
@@ -94,11 +105,6 @@ void DragCaretController::nodeWillBeRemoved(Node& node)
 
     m_position.deepEquivalent().document()->layoutView()->clearSelection();
     clear();
-}
-
-DEFINE_TRACE(DragCaretController)
-{
-    visitor->trace(m_position);
 }
 
 LayoutBlock* DragCaretController::caretLayoutObject() const

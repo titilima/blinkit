@@ -266,7 +266,7 @@ private:
     std::unique_ptr<PageAnimator> m_animator;
     // BKTODO: const OwnPtrWillBeMember<AutoscrollController> m_autoscrollController;
     ChromeClient *m_chromeClient;
-    const OwnPtrWillBeMember<DragCaretController> m_dragCaretController;
+    const std::unique_ptr<DragCaretController> m_dragCaretController;
     const std::unique_ptr<DragController> m_dragController;
     const OwnPtrWillBeMember<FocusController> m_focusController;
     const OwnPtrWillBeMember<ContextMenuController> m_contextMenuController;
