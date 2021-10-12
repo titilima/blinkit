@@ -653,7 +653,7 @@ Page::PageClients::PageClients()
     , contextMenuClient(nullptr)
     , editorClient(nullptr)
     , dragClient(nullptr)
-    , spellCheckerClient(nullptr)
+    // BKTODO: , spellCheckerClient(nullptr)
 {
 }
 

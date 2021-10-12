@@ -99,11 +99,11 @@ public:
         PageClients();
         ~PageClients();
 
-        RawPtrWillBeMember<ChromeClient> chromeClient;
+        ChromeClient* chromeClient;
         ContextMenuClient* contextMenuClient;
         EditorClient* editorClient;
         DragClient* dragClient;
-        SpellCheckerClient* spellCheckerClient;
+        // BKTODO: SpellCheckerClient* spellCheckerClient;
     };
 
     static std::unique_ptr<Page> create(PageClients& pageClients)
@@ -265,7 +265,7 @@ private:
 
     std::unique_ptr<PageAnimator> m_animator;
     // BKTODO: const OwnPtrWillBeMember<AutoscrollController> m_autoscrollController;
-    RawPtrWillBeMember<ChromeClient> m_chromeClient;
+    ChromeClient *m_chromeClient;
     const OwnPtrWillBeMember<DragCaretController> m_dragCaretController;
     const std::unique_ptr<DragController> m_dragController;
     const OwnPtrWillBeMember<FocusController> m_focusController;
