@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PointerLockController.h
+// Description: PointerLockController Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -37,11 +48,10 @@ class Document;
 class Page;
 class PlatformMouseEvent;
 
-class CORE_EXPORT PointerLockController final : public NoBaseWillBeGarbageCollected<PointerLockController> {
+class CORE_EXPORT PointerLockController final {
     WTF_MAKE_NONCOPYABLE(PointerLockController);
-    USING_FAST_MALLOC_WILL_BE_REMOVED(PointerLockController);
 public:
-    static PassOwnPtrWillBeRawPtr<PointerLockController> create(Page*);
+    static std::unique_ptr<PointerLockController> create(Page*);
 
     void requestPointerLock(Element* target);
     void requestPointerUnlock();
@@ -55,15 +65,13 @@ public:
     void didLosePointerLock();
     void dispatchLockedMouseEvent(const PlatformMouseEvent&, const AtomicString& eventType);
 
-    DECLARE_TRACE();
-
 private:
     explicit PointerLockController(Page*);
     void clearElement();
     void enqueueEvent(const AtomicString& type, Element*);
     void enqueueEvent(const AtomicString& type, Document*);
 
-    RawPtrWillBeMember<Page> m_page;
+    Page *m_page;
     bool m_lockPending;
     RefPtrWillBeMember<Element> m_element;
     RefPtrWillBeMember<Document> m_documentOfRemovedElementWhileWaitingForUnlock;

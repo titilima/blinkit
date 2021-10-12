@@ -270,7 +270,7 @@ private:
     const std::unique_ptr<DragController> m_dragController;
     const std::unique_ptr<FocusController> m_focusController;
     const std::unique_ptr<ContextMenuController> m_contextMenuController;
-    const OwnPtrWillBeMember<PointerLockController> m_pointerLockController;
+    const std::unique_ptr<PointerLockController> m_pointerLockController;
     OwnPtrWillBeMember<ScrollingCoordinator> m_scrollingCoordinator;
     const OwnPtrWillBeMember<UndoStack> m_undoStack;
 

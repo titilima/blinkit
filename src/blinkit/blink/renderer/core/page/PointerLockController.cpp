@@ -51,9 +51,9 @@ PointerLockController::PointerLockController(Page* page)
 {
 }
 
-PassOwnPtrWillBeRawPtr<PointerLockController> PointerLockController::create(Page* page)
+std::unique_ptr<PointerLockController> PointerLockController::create(Page* page)
 {
-    return adoptPtrWillBeNoop(new PointerLockController(page));
+    return zed::wrap_unique(new PointerLockController(page));
 }
 
 void PointerLockController::requestPointerLock(Element* target)
@@ -171,13 +171,6 @@ void PointerLockController::enqueueEvent(const AtomicString& type, Document* doc
 {
     if (document && document->domWindow())
         document->domWindow()->enqueueDocumentEvent(Event::create(type));
-}
-
-DEFINE_TRACE(PointerLockController)
-{
-    visitor->trace(m_page);
-    visitor->trace(m_element);
-    visitor->trace(m_documentOfRemovedElementWhileWaitingForUnlock);
 }
 
 } // namespace blink
