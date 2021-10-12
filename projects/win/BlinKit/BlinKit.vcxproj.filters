@@ -4086,6 +4086,15 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\RemoveNodeCommand.cpp">
       <Filter>blink\renderer\core\editing\commands</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\ClipboardEvent.cpp">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_clipboard.cpp">
+      <Filter>blink\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\ReplaceSelectionCommand.cpp">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -6535,6 +6544,39 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\WordMeasurement.h">
       <Filter>blink\renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\ClipboardEvent.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\DataObject.h">
+      <Filter>blink\renderer\core\clipboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\DataObjectItem.h">
+      <Filter>blink\renderer\core\clipboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\DataTransfer.h">
+      <Filter>blink\renderer\core\clipboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\DataTransferAccessPolicy.h">
+      <Filter>blink\renderer\core\clipboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\DataTransferItem.h">
+      <Filter>blink\renderer\core\clipboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\DataTransferItemList.h">
+      <Filter>blink\renderer\core\clipboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\DraggedIsolatedFileSystem.h">
+      <Filter>blink\renderer\core\clipboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\Pasteboard.h">
+      <Filter>blink\renderer\core\clipboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\impl\win_clipboard.h">
+      <Filter>blink\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\ReplaceSelectionCommand.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

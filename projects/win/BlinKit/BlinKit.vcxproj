@@ -165,6 +165,7 @@
     <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\url_loader.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_clipboard.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_theme_engine.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk.cpp" />
@@ -569,6 +570,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\InsertIntoTextNodeCommand.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\InsertTextCommand.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\RemoveNodeCommand.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\ReplaceSelectionCommand.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\TextInsertionBaseCommand.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\TypingCommand.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\DOMSelection.cpp" />
@@ -615,6 +617,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\AnimationPlayerEvent.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\BeforeTextInsertedEvent.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\BeforeUnloadEvent.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\ClipboardEvent.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\DOMWindowEventQueue.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\DragEvent.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\Event.cpp" />
@@ -1438,6 +1441,7 @@
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\impl\thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\impl\url_loader.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\impl\win_clipboard.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\impl\win_theme_engine.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\Platform.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebBlobData.h" />
@@ -1489,6 +1493,14 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\AnimationTimeline.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\ComputedTimingProperties.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\KeyframeEffectOptions.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\DataObject.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\DataObjectItem.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\DataTransfer.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\DataTransferAccessPolicy.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\DataTransferItem.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\DataTransferItemList.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\DraggedIsolatedFileSystem.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\clipboard\Pasteboard.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\BasicShapeFunctions.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\BinaryDataFontFaceSource.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\ComputedStyleCSSValueMapping.h" />
@@ -1766,6 +1778,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\InsertIntoTextNodeCommand.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\InsertTextCommand.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\RemoveNodeCommand.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\ReplaceSelectionCommand.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\TextInsertionBaseCommand.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\TypingCommand.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\UndoStep.h" />
@@ -1807,6 +1820,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\AnimationPlayerEventInit.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\BeforeTextInsertedEvent.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\BeforeUnloadEvent.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\ClipboardEvent.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\DOMWindowEventQueue.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\DragEvent.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\Event.h" />
