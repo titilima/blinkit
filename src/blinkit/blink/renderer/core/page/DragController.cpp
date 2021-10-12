@@ -158,7 +158,7 @@ PassOwnPtrWillBeRawPtr<DragController> DragController::create(Page* page, DragCl
     return adoptPtrWillBeNoop(new DragController(page, client));
 }
 
-static PassRefPtrWillBeRawPtr<DocumentFragment> documentFragmentFromDragData(DragData* dragData, LocalFrame* frame, RefPtrWillBeRawPtr<Range> context, bool allowPlainText, bool& chosePlainText)
+static GCRefPtr<DocumentFragment> documentFragmentFromDragData(DragData* dragData, LocalFrame* frame, RefPtrWillBeRawPtr<Range> context, bool allowPlainText, bool& chosePlainText)
 {
     ASSERT(dragData);
     chosePlainText = false;
@@ -183,15 +183,15 @@ static PassRefPtrWillBeRawPtr<DocumentFragment> documentFragmentFromDragData(Dra
                 }
                 RefPtrWillBeRawPtr<Node> anchorText = document.createTextNode(title);
                 anchor->appendChild(anchorText);
-                RefPtrWillBeRawPtr<DocumentFragment> fragment = document.createDocumentFragment();
+                GCRefPtr<DocumentFragment> fragment = document.createDocumentFragment();
                 fragment->appendChild(anchor);
-                return fragment.release();
+                return fragment;
             }
         }
     }
     if (allowPlainText && dragData->containsPlainText()) {
         chosePlainText = true;
-        return createFragmentFromText(EphemeralRange(context.get()), dragData->asPlainText()).get();
+        return createFragmentFromText(EphemeralRange(context.get()), dragData->asPlainText());
     }
 
     return nullptr;
@@ -516,7 +516,7 @@ bool DragController::concludeEditDrag(DragData* dragData)
     ResourceCacheValidationSuppressor validationSuppressor(fetcher);
     if (dragIsMove(innerFrame->selection(), dragData) || dragCaret.isContentRichlyEditable()) {
         bool chosePlainText = false;
-        RefPtrWillBeRawPtr<DocumentFragment> fragment = documentFragmentFromDragData(dragData, innerFrame.get(), range.get(), true, chosePlainText);
+        GCRefPtr<DocumentFragment> fragment = documentFragmentFromDragData(dragData, innerFrame.get(), range.get(), true, chosePlainText);
         if (!fragment)
             return false;
 

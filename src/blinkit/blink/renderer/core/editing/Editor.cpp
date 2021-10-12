@@ -394,7 +394,7 @@ void Editor::pasteAsPlainTextWithPasteboard(Pasteboard* pasteboard)
 
 void Editor::pasteWithPasteboard(Pasteboard* pasteboard)
 {
-    RefPtrWillBeRawPtr<DocumentFragment> fragment = nullptr;
+    GCRefPtr<DocumentFragment> fragment;
     bool chosePlainText = false;
 
     if (pasteboard->isHTMLAvailable()) {
@@ -417,7 +417,7 @@ void Editor::pasteWithPasteboard(Pasteboard* pasteboard)
     }
 
     if (fragment)
-        pasteAsFragment(fragment, canSmartReplaceWithPasteboard(pasteboard), chosePlainText);
+        pasteAsFragment(fragment.get(), canSmartReplaceWithPasteboard(pasteboard), chosePlainText);
 }
 
 void Editor::writeSelectionToPasteboard()
@@ -533,7 +533,8 @@ void Editor::replaceSelectionWithFragment(PassRefPtrWillBeRawPtr<DocumentFragmen
 
 void Editor::replaceSelectionWithText(const String& text, bool selectReplacement, bool smartReplace)
 {
-    replaceSelectionWithFragment(createFragmentFromText(selectedRange(), text), selectReplacement, smartReplace, true);
+    GCRefPtr<DocumentFragment> fragment = createFragmentFromText(selectedRange(), text);
+    replaceSelectionWithFragment(fragment.get(), selectReplacement, smartReplace, true);
 }
 
 EphemeralRange Editor::selectedRange()

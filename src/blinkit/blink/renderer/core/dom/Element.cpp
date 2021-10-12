@@ -2570,11 +2570,11 @@ void Element::setInnerHTML(const String& html, ExceptionState& exceptionState)
 {
     InspectorInstrumentation::willSetInnerHTML(this);
 
-    if (RefPtrWillBeRawPtr<DocumentFragment> fragment = createFragmentForInnerOuterHTML(html, this, AllowScriptingContent, "innerHTML", exceptionState)) {
+    if (GCRefPtr<DocumentFragment> fragment = createFragmentForInnerOuterHTML(html, this, AllowScriptingContent, "innerHTML", exceptionState)) {
         ContainerNode* container = this;
         if (isHTMLTemplateElement(*this))
             container = toHTMLTemplateElement(this)->content();
-        replaceChildrenWithFragment(container, fragment.release(), exceptionState);
+        replaceChildrenWithFragment(container, fragment.get(), exceptionState);
     }
 }
 
@@ -2594,11 +2594,11 @@ void Element::setOuterHTML(const String& html, ExceptionState& exceptionState)
     RefPtrWillBeRawPtr<Node> prev = previousSibling();
     RefPtrWillBeRawPtr<Node> next = nextSibling();
 
-    RefPtrWillBeRawPtr<DocumentFragment> fragment = createFragmentForInnerOuterHTML(html, parent.get(), AllowScriptingContent, "outerHTML", exceptionState);
+    GCRefPtr<DocumentFragment> fragment = createFragmentForInnerOuterHTML(html, parent.get(), AllowScriptingContent, "outerHTML", exceptionState);
     if (exceptionState.hadException())
         return;
 
-    parent->replaceChild(fragment.release(), this, exceptionState);
+    parent->replaceChild(fragment.get(), this, exceptionState);
     RefPtrWillBeRawPtr<Node> node = next ? next->previousSibling() : nullptr;
     if (!exceptionState.hadException() && node && node->isTextNode())
         mergeWithNextTextNode(toText(node.get()), exceptionState);
@@ -2687,7 +2687,7 @@ void Element::insertAdjacentHTML(const String& where, const String& markup, Exce
     if (!contextElement)
         return;
 
-    RefPtrWillBeRawPtr<DocumentFragment> fragment = createFragmentForInnerOuterHTML(markup, contextElement.get(), AllowScriptingContent, "insertAdjacentHTML", exceptionState);
+    GCRefPtr<DocumentFragment> fragment = createFragmentForInnerOuterHTML(markup, contextElement.get(), AllowScriptingContent, "insertAdjacentHTML", exceptionState);
     if (!fragment)
         return;
     insertAdjacent(where, fragment.get(), exceptionState);

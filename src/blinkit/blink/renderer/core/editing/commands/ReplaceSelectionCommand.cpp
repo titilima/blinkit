@@ -110,7 +110,7 @@ private:
     void insertNodeBefore(PassRefPtrWillBeRawPtr<Node>, Node* refNode);
 
     RefPtrWillBeMember<Document> m_document;
-    RefPtrWillBeMember<DocumentFragment> m_fragment;
+    GCRefPtr<DocumentFragment> m_fragment;
     bool m_hasInterchangeNewlineAtStart;
     bool m_hasInterchangeNewlineAtEnd;
 };
@@ -275,7 +275,7 @@ PassRefPtrWillBeRawPtr<HTMLElement> ReplacementFragment::insertFragmentForTestRe
     ASSERT(m_document);
     RefPtrWillBeRawPtr<HTMLElement> holder = createDefaultParagraphElement(*m_document.get());
 
-    holder->appendChild(m_fragment);
+    holder->appendChild(m_fragment.get());
     rootEditableElement->appendChild(holder.get());
     m_document->updateLayoutIgnorePendingStylesheets();
 

@@ -134,8 +134,8 @@ void ShadowRoot::setInnerHTML(const String& markup, ExceptionState& exceptionSta
         return;
     }
 
-    if (RefPtrWillBeRawPtr<DocumentFragment> fragment = createFragmentForInnerOuterHTML(markup, host(), AllowScriptingContent, "innerHTML", exceptionState))
-        replaceChildrenWithFragment(this, fragment.release(), exceptionState);
+    if (GCRefPtr<DocumentFragment> fragment = createFragmentForInnerOuterHTML(markup, host(), AllowScriptingContent, "innerHTML", exceptionState))
+        replaceChildrenWithFragment(this, fragment.get(), exceptionState);
 }
 
 void ShadowRoot::recalcStyle(StyleRecalcChange change)

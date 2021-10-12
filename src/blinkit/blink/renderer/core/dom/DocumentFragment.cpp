@@ -37,6 +37,8 @@
 #include "core/html/parser/HTMLDocumentParser.h"
 // BKTODO: #include "core/xml/parser/XMLDocumentParser.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 DocumentFragment::DocumentFragment(Document* document, ConstructionType constructionType)
@@ -44,9 +46,9 @@ DocumentFragment::DocumentFragment(Document* document, ConstructionType construc
 {
 }
 
-PassRefPtrWillBeRawPtr<DocumentFragment> DocumentFragment::create(Document& document)
+GCRefPtr<DocumentFragment> DocumentFragment::create(Document& document)
 {
-    return adoptRefWillBeNoop(new DocumentFragment(&document, Node::CreateDocumentFragment));
+    return GCWrapShared(new DocumentFragment(&document, Node::CreateDocumentFragment));
 }
 
 String DocumentFragment::nodeName() const
@@ -75,7 +77,7 @@ bool DocumentFragment::childTypeAllowed(NodeType type) const
 
 PassRefPtrWillBeRawPtr<Node> DocumentFragment::cloneNode(bool deep)
 {
-    RefPtrWillBeRawPtr<DocumentFragment> clone = create(document());
+    GCRefPtr<DocumentFragment> clone = create(document());
     if (deep)
         cloneChildNodes(clone.get());
     return clone.release();

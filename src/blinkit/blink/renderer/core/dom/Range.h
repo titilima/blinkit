@@ -95,14 +95,14 @@ public:
     bool intersectsNode(Node* refNode, ExceptionState&);
     static bool intersectsNode(Node* refNode, const Position& start, const Position& end, ExceptionState&);
     void deleteContents(ExceptionState&);
-    PassRefPtrWillBeRawPtr<DocumentFragment> extractContents(ExceptionState&);
-    PassRefPtrWillBeRawPtr<DocumentFragment> cloneContents(ExceptionState&);
+    GCRefPtr<DocumentFragment> extractContents(ExceptionState&);
+    GCRefPtr<DocumentFragment> cloneContents(ExceptionState&);
     void insertNode(PassRefPtrWillBeRawPtr<Node>, ExceptionState&);
     String toString() const;
 
     String text() const;
 
-    PassRefPtrWillBeRawPtr<DocumentFragment> createContextualFragment(const String& html, ExceptionState&);
+    GCRefPtr<DocumentFragment> createContextualFragment(const String& html, ExceptionState&);
 
     void detach();
     GCRefPtr<Range> cloneRange() const;
@@ -176,7 +176,7 @@ private:
     void checkExtractPrecondition(ExceptionState&);
 
     enum ActionType { DELETE_CONTENTS, EXTRACT_CONTENTS, CLONE_CONTENTS };
-    PassRefPtrWillBeRawPtr<DocumentFragment> processContents(ActionType, ExceptionState&);
+    GCRefPtr<DocumentFragment> processContents(ActionType, ExceptionState&);
     static PassRefPtrWillBeRawPtr<Node> processContentsBetweenOffsets(ActionType, PassRefPtrWillBeRawPtr<DocumentFragment>, Node*, unsigned startOffset, unsigned endOffset, ExceptionState&);
     static void processNodes(ActionType, WillBeHeapVector<RefPtrWillBeMember<Node>>&, PassRefPtrWillBeRawPtr<Node> oldContainer, PassRefPtrWillBeRawPtr<Node> newContainer, ExceptionState&);
     enum ContentsProcessDirection { ProcessContentsForward, ProcessContentsBackward };

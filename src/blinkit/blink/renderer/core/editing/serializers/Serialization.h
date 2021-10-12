@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Serialization.h
+// Description: Serialization Helpers
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004 Apple Computer, Inc.  All rights reserved.
  *
@@ -51,12 +62,12 @@ enum EChildrenOnly { IncludeNode, ChildrenOnly };
 enum EAbsoluteURLs { DoNotResolveURLs, ResolveAllURLs, ResolveNonLocalURLs };
 enum class ConvertBlocksToInlines { NotConvert, Convert };
 
-PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromText(const EphemeralRange& context, const String& text);
-PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromMarkup(Document&, const String& markup, const String& baseURL, ParserContentPolicy = AllowScriptingContent);
-PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromMarkupWithContext(Document&, const String& markup, unsigned fragmentStart, unsigned fragmentEnd, const String& baseURL, ParserContentPolicy);
-PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentForInnerOuterHTML(const String&, Element*, ParserContentPolicy, const char* method, ExceptionState&);
-PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentForTransformToFragment(const String&, const String& sourceMIMEType, Document& outputDoc);
-PassRefPtrWillBeRawPtr<DocumentFragment> createContextualFragment(const String&, Element*, ParserContentPolicy, ExceptionState&);
+GCRefPtr<DocumentFragment> createFragmentFromText(const EphemeralRange& context, const String& text);
+GCRefPtr<DocumentFragment> createFragmentFromMarkup(Document&, const String& markup, const String& baseURL, ParserContentPolicy = AllowScriptingContent);
+GCRefPtr<DocumentFragment> createFragmentFromMarkupWithContext(Document&, const String& markup, unsigned fragmentStart, unsigned fragmentEnd, const String& baseURL, ParserContentPolicy);
+GCRefPtr<DocumentFragment> createFragmentForInnerOuterHTML(const String&, Element*, ParserContentPolicy, const char* method, ExceptionState&);
+GCRefPtr<DocumentFragment> createFragmentForTransformToFragment(const String&, const String& sourceMIMEType, Document& outputDoc);
+GCRefPtr<DocumentFragment> createContextualFragment(const String&, Element*, ParserContentPolicy, ExceptionState&);
 
 bool isPlainTextMarkup(Node*);
 

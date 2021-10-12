@@ -78,6 +78,8 @@
 #include "wtf/StdLibExtras.h"
 #include "wtf/text/StringBuilder.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
@@ -286,11 +288,11 @@ String createMarkup(const PositionInComposedTree& startPosition, const PositionI
     return CreateMarkupAlgorithm<EditingInComposedTreeStrategy>::createMarkup(startPosition, endPosition, shouldAnnotate, convertBlocksToInlines, shouldResolveURLs, constrainingAncestor);
 }
 
-PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromMarkup(Document& document, const String& markup, const String& baseURL, ParserContentPolicy parserContentPolicy)
+GCRefPtr<DocumentFragment> createFragmentFromMarkup(Document& document, const String& markup, const String& baseURL, ParserContentPolicy parserContentPolicy)
 {
     // We use a fake body element here to trick the HTML parser to using the InBody insertion mode.
     RefPtrWillBeRawPtr<HTMLBodyElement> fakeBody = HTMLBodyElement::create(document);
-    RefPtrWillBeRawPtr<DocumentFragment> fragment = DocumentFragment::create(document);
+    GCRefPtr<DocumentFragment> fragment = DocumentFragment::create(document);
 
     fragment->parseHTML(markup, fakeBody.get(), parserContentPolicy);
 
@@ -300,7 +302,7 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromMarkup(Document& docu
         completeURLs(*fragment, baseURL);
 #endif
 
-    return fragment.release();
+    return fragment;
 }
 
 static const char fragmentMarkerTag[] = "webkit-fragment-marker";
@@ -342,7 +344,7 @@ static void trimFragment(DocumentFragment* fragment, Comment* nodeBeforeContext,
     }
 }
 
-PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromMarkupWithContext(Document& document, const String& markup, unsigned fragmentStart, unsigned fragmentEnd,
+GCRefPtr<DocumentFragment> createFragmentFromMarkupWithContext(Document& document, const String& markup, unsigned fragmentStart, unsigned fragmentEnd,
     const String& baseURL, ParserContentPolicy parserContentPolicy)
 {
     // FIXME: Need to handle the case where the markup already contains these markers.
@@ -354,7 +356,7 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromMarkupWithContext(Doc
     MarkupFormatter::appendComment(taggedMarkup, fragmentMarkerTag);
     taggedMarkup.append(markup.substring(fragmentEnd));
 
-    RefPtrWillBeRawPtr<DocumentFragment> taggedFragment = createFragmentFromMarkup(document, taggedMarkup.toString(), baseURL, parserContentPolicy);
+    GCRefPtr<DocumentFragment> taggedFragment = createFragmentFromMarkup(document, taggedMarkup.toString(), baseURL, parserContentPolicy);
 
     RefPtrWillBeRawPtr<Comment> nodeBeforeContext = nullptr;
     RefPtrWillBeRawPtr<Comment> nodeAfterContext = nullptr;
@@ -378,7 +380,7 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromMarkupWithContext(Doc
     // When there's a special common ancestor outside of the fragment, we must include it as well to
     // preserve the structure and appearance of the fragment. For example, if the fragment contains
     // TD, we need to include the enclosing TABLE tag as well.
-    RefPtrWillBeRawPtr<DocumentFragment> fragment = DocumentFragment::create(document);
+    GCRefPtr<DocumentFragment> fragment = DocumentFragment::create(document);
     if (specialCommonAncestor)
         fragment->appendChild(specialCommonAncestor);
     else
@@ -469,16 +471,16 @@ static bool shouldPreserveNewline(const EphemeralRange& range)
     return false;
 }
 
-PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromText(const EphemeralRange& context, const String& text)
+GCRefPtr<DocumentFragment> createFragmentFromText(const EphemeralRange& context, const String& text)
 {
     if (context.isNull())
         return nullptr;
 
     Document& document = context.document();
-    RefPtrWillBeRawPtr<DocumentFragment> fragment = document.createDocumentFragment();
+    GCRefPtr<DocumentFragment> fragment = document.createDocumentFragment();
 
     if (text.isEmpty())
-        return fragment.release();
+        return fragment;
 
     String string = text;
     string.replace("\r\n", "\n");
@@ -491,13 +493,13 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromText(const EphemeralR
             element->setAttribute(classAttr, AppleInterchangeNewline);
             fragment->appendChild(element.release());
         }
-        return fragment.release();
+        return fragment;
     }
 
     // A string with no newlines gets added inline, rather than being put into a paragraph.
     if (string.find('\n') == kNotFound) {
         fillContainerFromString(fragment.get(), string);
-        return fragment.release();
+        return fragment;
     }
 
     // Break string into paragraphs. Extra line breaks turn into empty paragraphs.
@@ -531,7 +533,7 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromText(const EphemeralR
         }
         fragment->appendChild(element.release());
     }
-    return fragment.release();
+    return fragment;
 }
 
 String urlToMarkup(const KURL& url, const String& title)
@@ -545,11 +547,11 @@ String urlToMarkup(const KURL& url, const String& title)
     return markup.toString();
 }
 
-PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentForInnerOuterHTML(const String& markup, Element* contextElement, ParserContentPolicy parserContentPolicy, const char* method, ExceptionState& exceptionState)
+GCRefPtr<DocumentFragment> createFragmentForInnerOuterHTML(const String& markup, Element* contextElement, ParserContentPolicy parserContentPolicy, const char* method, ExceptionState& exceptionState)
 {
     ASSERT(contextElement);
     Document& document = isHTMLTemplateElement(*contextElement) ? contextElement->document().ensureTemplateDocument() : contextElement->document();
-    RefPtrWillBeRawPtr<DocumentFragment> fragment = DocumentFragment::create(document);
+    GCRefPtr<DocumentFragment> fragment = DocumentFragment::create(document);
 
     if (document.isHTMLDocument()) {
         fragment->parseHTML(markup, contextElement, parserContentPolicy);
@@ -564,12 +566,12 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentForInnerOuterHTML(const S
         return nullptr;
     }
 #endif
-    return fragment.release();
+    return fragment;
 }
 
-PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentForTransformToFragment(const String& sourceString, const String& sourceMIMEType, Document& outputDoc)
+GCRefPtr<DocumentFragment> createFragmentForTransformToFragment(const String& sourceString, const String& sourceMIMEType, Document& outputDoc)
 {
-    RefPtrWillBeRawPtr<DocumentFragment> fragment = outputDoc.createDocumentFragment();
+    GCRefPtr<DocumentFragment> fragment = outputDoc.createDocumentFragment();
 
     if (sourceMIMEType == "text/html") {
         // As far as I can tell, there isn't a spec for how transformToFragment is supposed to work.
@@ -591,13 +593,14 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentForTransformToFragment(co
 
     // FIXME: Do we need to mess with URLs here?
 
-    return fragment.release();
+    return fragment;
 }
 
 static inline void removeElementPreservingChildren(PassRefPtrWillBeRawPtr<DocumentFragment> fragment, HTMLElement* element)
 {
     RefPtrWillBeRawPtr<Node> nextChild = nullptr;
     for (RefPtrWillBeRawPtr<Node> child = element->firstChild(); child; child = nextChild) {
+        GCGuard _(*child);
         nextChild = child->nextSibling();
         element->removeChild(child.get());
         fragment->insertBefore(child, element);
@@ -622,7 +625,7 @@ static inline bool isSupportedContainer(Element* element)
     return !htmlElement.ieForbidsInsertHTML();
 }
 
-PassRefPtrWillBeRawPtr<DocumentFragment> createContextualFragment(const String& markup, Element* element, ParserContentPolicy parserContentPolicy, ExceptionState& exceptionState)
+GCRefPtr<DocumentFragment> createContextualFragment(const String& markup, Element* element, ParserContentPolicy parserContentPolicy, ExceptionState& exceptionState)
 {
     ASSERT(element);
     if (!isSupportedContainer(element)) {
@@ -630,7 +633,7 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createContextualFragment(const String& 
         return nullptr;
     }
 
-    RefPtrWillBeRawPtr<DocumentFragment> fragment = createFragmentForInnerOuterHTML(markup, element, parserContentPolicy, "createContextualFragment", exceptionState);
+    GCRefPtr<DocumentFragment> fragment = createFragmentForInnerOuterHTML(markup, element, parserContentPolicy, "createContextualFragment", exceptionState);
     if (!fragment)
         return nullptr;
 
@@ -645,10 +648,10 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createContextualFragment(const String& 
             HTMLElement* element = toHTMLElement(node);
             if (Node* firstChild = element->firstChild())
                 nextNode = firstChild;
-            removeElementPreservingChildren(fragment, element);
+            removeElementPreservingChildren(fragment.get(), element);
         }
     }
-    return fragment.release();
+    return fragment;
 }
 
 void replaceChildrenWithFragment(ContainerNode* container, PassRefPtrWillBeRawPtr<DocumentFragment> fragment, ExceptionState& exceptionState)

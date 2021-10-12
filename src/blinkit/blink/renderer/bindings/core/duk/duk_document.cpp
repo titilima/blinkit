@@ -104,8 +104,8 @@ static duk_ret_t CreateDocumentFragment(duk_context *ctx)
     duk_push_this(ctx);
     Document *document = DukScriptObject::To<Document>(ctx, -1);
 
-    DocumentFragment *ret = document->createDocumentFragment();
-    DukNode::Push(ctx, ret);
+    GCRefPtr<DocumentFragment> ret = document->createDocumentFragment();
+    DukNode::Push(ctx, ret.get());
     return 1;
 }
 

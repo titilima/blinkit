@@ -44,7 +44,7 @@ namespace blink {
 class CORE_EXPORT DocumentFragment : public ContainerNode {
     DEFINE_WRAPPERTYPEINFO();
 public:
-    static PassRefPtrWillBeRawPtr<DocumentFragment> create(Document&);
+    static GCRefPtr<DocumentFragment> create(Document&);
 
     void parseHTML(const String&, Element* contextElement, ParserContentPolicy = AllowScriptingContent);
     // BKTODO: bool parseXML(const String&, Element* contextElement, ParserContentPolicy = AllowScriptingContent);

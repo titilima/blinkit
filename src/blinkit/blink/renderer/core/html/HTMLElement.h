@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLElement.h
+// Description: HTMLElement Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -129,7 +140,7 @@ private:
 
     void mapLanguageAttributeToLocale(const AtomicString&, MutableStylePropertySet*);
 
-    PassRefPtrWillBeRawPtr<DocumentFragment> textToFragment(const String&, ExceptionState&);
+    GCRefPtr<DocumentFragment> textToFragment(const String&, ExceptionState&);
 
     bool selfOrAncestorHasDirAutoAttribute() const;
     void dirAttributeChanged(const AtomicString&);

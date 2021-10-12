@@ -877,7 +877,7 @@ LocalFrame* Document::executingFrame()
     return window->frame();
 }
 
-PassRefPtrWillBeRawPtr<DocumentFragment> Document::createDocumentFragment()
+GCRefPtr<DocumentFragment> Document::createDocumentFragment()
 {
     return DocumentFragment::create(*this);
 }
@@ -986,8 +986,8 @@ PassRefPtrWillBeRawPtr<Node> Document::importNode(Node* importedNode, bool deep,
             return nullptr;
         }
         DocumentFragment* oldFragment = toDocumentFragment(importedNode);
-        RefPtrWillBeRawPtr<DocumentFragment> newFragment = createDocumentFragment();
-        if (deep && !importContainerNodeChildren(oldFragment, newFragment, exceptionState))
+        GCRefPtr<DocumentFragment> newFragment = createDocumentFragment();
+        if (deep && !importContainerNodeChildren(oldFragment, newFragment.get(), exceptionState))
             return nullptr;
 
         return newFragment.release();

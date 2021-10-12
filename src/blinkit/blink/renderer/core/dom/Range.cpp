@@ -482,22 +482,22 @@ static inline Node* childOfCommonRootBeforeOffset(Node* container, unsigned offs
     return container;
 }
 
-PassRefPtrWillBeRawPtr<DocumentFragment> Range::processContents(ActionType action, ExceptionState& exceptionState)
+GCRefPtr<DocumentFragment> Range::processContents(ActionType action, ExceptionState& exceptionState)
 {
     typedef WillBeHeapVector<RefPtrWillBeMember<Node>> NodeVector;
 
-    RefPtrWillBeRawPtr<DocumentFragment> fragment = nullptr;
+    GCRefPtr<DocumentFragment> fragment;
     if (action == EXTRACT_CONTENTS || action == CLONE_CONTENTS)
         fragment = DocumentFragment::create(*m_ownerDocument);
 
     if (collapsed())
-        return fragment.release();
+        return fragment;
 
     RefPtrWillBeRawPtr<Node> commonRoot = commonAncestorContainer();
     ASSERT(commonRoot);
 
     if (m_start.container() == m_end.container()) {
-        processContentsBetweenOffsets(action, fragment, m_start.container(), m_start.offset(), m_end.offset(), exceptionState);
+        processContentsBetweenOffsets(action, fragment.get(), m_start.container(), m_start.offset(), m_end.offset(), exceptionState);
         return fragment;
     }
 
@@ -576,13 +576,13 @@ PassRefPtrWillBeRawPtr<DocumentFragment> Range::processContents(ActionType actio
         NodeVector nodes;
         for (Node* n = processStart.get(); n && n != processEnd; n = n->nextSibling())
             nodes.append(n);
-        processNodes(action, nodes, commonRoot, fragment, exceptionState);
+        processNodes(action, nodes, commonRoot, fragment.get(), exceptionState);
     }
 
     if ((action == EXTRACT_CONTENTS || action == CLONE_CONTENTS) && rightContents)
         fragment->appendChild(rightContents, exceptionState);
 
-    return fragment.release();
+    return fragment;
 }
 
 static inline void deleteCharacterData(PassRefPtrWillBeRawPtr<CharacterData> data, unsigned startOffset, unsigned endOffset, ExceptionState& exceptionState)
@@ -721,7 +721,7 @@ PassRefPtrWillBeRawPtr<Node> Range::processAncestorsAndTheirSiblings(ActionType 
     return clonedContainer.release();
 }
 
-PassRefPtrWillBeRawPtr<DocumentFragment> Range::extractContents(ExceptionState& exceptionState)
+GCRefPtr<DocumentFragment> Range::extractContents(ExceptionState& exceptionState)
 {
     checkExtractPrecondition(exceptionState);
     if (exceptionState.hadException())
@@ -730,7 +730,7 @@ PassRefPtrWillBeRawPtr<DocumentFragment> Range::extractContents(ExceptionState& 
     return processContents(EXTRACT_CONTENTS, exceptionState);
 }
 
-PassRefPtrWillBeRawPtr<DocumentFragment> Range::cloneContents(ExceptionState& exceptionState)
+GCRefPtr<DocumentFragment> Range::cloneContents(ExceptionState& exceptionState)
 {
     return processContents(CLONE_CONTENTS, exceptionState);
 }
@@ -875,7 +875,7 @@ String Range::text() const
     return plainText(EphemeralRange(this), TextIteratorEmitsObjectReplacementCharacter);
 }
 
-PassRefPtrWillBeRawPtr<DocumentFragment> Range::createContextualFragment(const String& markup, ExceptionState& exceptionState)
+GCRefPtr<DocumentFragment> Range::createContextualFragment(const String& markup, ExceptionState& exceptionState)
 {
     // Algorithm: http://domparsing.spec.whatwg.org/#extensions-to-the-range-interface
 
@@ -915,11 +915,11 @@ PassRefPtrWillBeRawPtr<DocumentFragment> Range::createContextualFragment(const S
     }
 
     // Steps 3, 4, 5.
-    RefPtrWillBeRawPtr<DocumentFragment> fragment = blink::createContextualFragment(markup, element.get(), AllowScriptingContentAndDoNotMarkAlreadyStarted, exceptionState);
+    GCRefPtr<DocumentFragment> fragment = blink::createContextualFragment(markup, element.get(), AllowScriptingContentAndDoNotMarkAlreadyStarted, exceptionState);
     if (!fragment)
         return nullptr;
 
-    return fragment.release();
+    return fragment;
 }
 
 
@@ -1214,13 +1214,13 @@ void Range::surroundContents(PassRefPtrWillBeRawPtr<Node> passNewParent, Excepti
         if (exceptionState.hadException())
             return;
     }
-    RefPtrWillBeRawPtr<DocumentFragment> fragment = extractContents(exceptionState);
+    GCRefPtr<DocumentFragment> fragment = extractContents(exceptionState);
     if (exceptionState.hadException())
         return;
     insertNode(newParent, exceptionState);
     if (exceptionState.hadException())
         return;
-    newParent->appendChild(fragment.release(), exceptionState);
+    newParent->appendChild(fragment.get(), exceptionState);
     if (exceptionState.hadException())
         return;
     selectNode(newParent.get(), exceptionState);

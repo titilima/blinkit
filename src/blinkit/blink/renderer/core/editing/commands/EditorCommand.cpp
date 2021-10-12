@@ -217,12 +217,12 @@ static bool executeInsertFragment(LocalFrame& frame, PassRefPtrWillBeRawPtr<Docu
 static bool executeInsertElement(LocalFrame& frame, PassRefPtrWillBeRawPtr<HTMLElement> content)
 {
     ASSERT(frame.document());
-    RefPtrWillBeRawPtr<DocumentFragment> fragment = DocumentFragment::create(*frame.document());
+    GCRefPtr<DocumentFragment> fragment = DocumentFragment::create(*frame.document());
     TrackExceptionState exceptionState;
     fragment->appendChild(content, exceptionState);
     if (exceptionState.hadException())
         return false;
-    return executeInsertFragment(frame, fragment.release());
+    return executeInsertFragment(frame, fragment.get());
 }
 
 static bool expandSelectionToGranularity(LocalFrame& frame, TextGranularity granularity)
@@ -556,7 +556,8 @@ static bool executeInsertHorizontalRule(LocalFrame& frame, Event*, EditorCommand
 static bool executeInsertHTML(LocalFrame& frame, Event*, EditorCommandSource, const String& value)
 {
     ASSERT(frame.document());
-    return executeInsertFragment(frame, createFragmentFromMarkup(*frame.document(), value, ""));
+    GCRefPtr<DocumentFragment> fragment = createFragmentFromMarkup(*frame.document(), value, "");
+    return executeInsertFragment(frame, fragment.get());
 }
 
 static bool executeInsertImage(LocalFrame& frame, Event*, EditorCommandSource, const String& value)
