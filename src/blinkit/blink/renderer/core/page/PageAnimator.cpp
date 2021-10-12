@@ -34,15 +34,17 @@ PageAnimator::PageAnimator(Page& page)
 {
 }
 
-PassRefPtrWillBeRawPtr<PageAnimator> PageAnimator::create(Page& page)
+std::unique_ptr<PageAnimator> PageAnimator::create(Page& page)
 {
-    return adoptRefWillBeNoop(new PageAnimator(page));
+    return zed::wrap_unique(new PageAnimator(page));
 }
 
+#if 0 // BKTODO:
 DEFINE_TRACE(PageAnimator)
 {
     visitor->trace(m_page);
 }
+#endif
 
 void PageAnimator::serviceScriptedAnimations(double monotonicAnimationStartTime)
 {
@@ -90,7 +92,7 @@ void PageAnimator::scheduleVisualUpdate(LocalFrame* frame)
 {
     if (m_servicingAnimations || m_updatingLayoutAndStyleForPainting)
         return;
-    m_page->chromeClient().scheduleAnimation(frame->view());
+    m_page.chromeClient().scheduleAnimation(frame->view());
 }
 
 void PageAnimator::updateAllLifecyclePhases(LocalFrame& rootFrame)

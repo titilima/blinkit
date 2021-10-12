@@ -263,7 +263,7 @@ private:
     void settingsChanged(SettingsDelegate::ChangeType) override;
 #endif
 
-    RefPtrWillBeMember<PageAnimator> m_animator;
+    std::unique_ptr<PageAnimator> m_animator;
     // BKTODO: const OwnPtrWillBeMember<AutoscrollController> m_autoscrollController;
     RawPtrWillBeMember<ChromeClient> m_chromeClient;
     const OwnPtrWillBeMember<DragCaretController> m_dragCaretController;

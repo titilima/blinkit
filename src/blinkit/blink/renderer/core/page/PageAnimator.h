@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PageAnimator.h
+// Description: PageAnimator Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -14,10 +25,10 @@ namespace blink {
 class LocalFrame;
 class Page;
 
-class CORE_EXPORT PageAnimator final : public RefCountedWillBeGarbageCollected<PageAnimator> {
+class CORE_EXPORT PageAnimator final {
 public:
-    static PassRefPtrWillBeRawPtr<PageAnimator> create(Page&);
-    DECLARE_TRACE();
+    static std::unique_ptr<PageAnimator> create(Page&);
+    // BKTODO: DECLARE_TRACE();
     void scheduleVisualUpdate(LocalFrame*);
     void serviceScriptedAnimations(double monotonicAnimationStartTime);
 
@@ -30,7 +41,7 @@ public:
 private:
     explicit PageAnimator(Page&);
 
-    RawPtrWillBeMember<Page> m_page;
+    Page &m_page;
     bool m_servicingAnimations;
     bool m_updatingLayoutAndStyleForPainting;
     AnimationClock m_animationClock;
