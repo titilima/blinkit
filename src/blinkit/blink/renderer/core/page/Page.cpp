@@ -578,13 +578,12 @@ void Page::purgeMemory(DeviceKind deviceKind)
     if (deviceKind == DeviceKind::LowEnd)
         memoryCache()->pruneAll();
 }
-#endif
 
 DEFINE_TRACE(Page)
 {
 #if ENABLE(OILPAN)
     visitor->trace(m_animator);
-    // BKTODO: visitor->trace(m_autoscrollController);
+    visitor->trace(m_autoscrollController);
     visitor->trace(m_chromeClient);
     visitor->trace(m_dragCaretController);
     visitor->trace(m_dragController);
@@ -596,13 +595,14 @@ DEFINE_TRACE(Page)
     visitor->trace(m_mainFrame);
     visitor->trace(m_validationMessageClient);
     visitor->trace(m_multisamplingChangedObservers);
-    // BKTODO: visitor->trace(m_frameHost);
-    // BKTODO: visitor->trace(m_memoryPurgeController);
+    visitor->trace(m_frameHost);
+    visitor->trace(m_memoryPurgeController);
     HeapSupplementable<Page>::trace(visitor);
 #endif
-    // BKTODO: PageLifecycleNotifier::trace(visitor);
-    // BKTODO: MemoryPurgeClient::trace(visitor);
+    PageLifecycleNotifier::trace(visitor);
+    MemoryPurgeClient::trace(visitor);
 }
+#endif
 
 void Page::layerTreeViewInitialized(WebLayerTreeView& layerTreeView)
 {

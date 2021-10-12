@@ -153,9 +153,9 @@ DragController::~DragController()
 {
 }
 
-PassOwnPtrWillBeRawPtr<DragController> DragController::create(Page* page, DragClient* client)
+std::unique_ptr<DragController> DragController::create(Page* page, DragClient* client)
 {
-    return adoptPtrWillBeNoop(new DragController(page, client));
+    return zed::wrap_unique(new DragController(page, client));
 }
 
 static GCRefPtr<DocumentFragment> documentFragmentFromDragData(DragData* dragData, LocalFrame* frame, RefPtrWillBeRawPtr<Range> context, bool allowPlainText, bool& chosePlainText)
@@ -990,6 +990,7 @@ void DragController::cleanupAfterSystemDrag()
 {
 }
 
+#if 0 // BKTODO:
 DEFINE_TRACE(DragController)
 {
     visitor->trace(m_page);
@@ -997,5 +998,6 @@ DEFINE_TRACE(DragController)
     visitor->trace(m_dragInitiator);
     visitor->trace(m_fileInputElementUnderMouse);
 }
+#endif
 
 } // namespace blink

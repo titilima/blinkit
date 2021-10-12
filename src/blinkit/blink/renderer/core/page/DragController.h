@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DragController.h
+// Description: DragController Class
+//      Author: Ziming Li
+//     Created: 2021-07-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2009 Apple Inc. All rights reserved.
  *
@@ -49,13 +60,12 @@ class Node;
 class Page;
 class PlatformMouseEvent;
 
-class CORE_EXPORT DragController final : public NoBaseWillBeGarbageCollectedFinalized<DragController> {
+class CORE_EXPORT DragController final {
     WTF_MAKE_NONCOPYABLE(DragController);
-    USING_FAST_MALLOC_WILL_BE_REMOVED(DragController);
 public:
     ~DragController();
 
-    static PassOwnPtrWillBeRawPtr<DragController> create(Page*, DragClient*);
+    static std::unique_ptr<DragController> create(Page*, DragClient*);
 
     DragSession dragEntered(DragData*);
     void dragExited(DragData*);
@@ -72,7 +82,7 @@ public:
     bool populateDragDataTransfer(LocalFrame* src, const DragState&, const IntPoint& dragOrigin);
     bool startDrag(LocalFrame* src, const DragState&, const PlatformMouseEvent& dragEvent, const IntPoint& dragOrigin);
 
-    DECLARE_TRACE();
+    // BKTODO: DECLARE_TRACE();
 
     static const int DragIconRightInset;
     static const int DragIconBottomInset;
@@ -97,7 +107,7 @@ private:
     void doSystemDrag(DragImage*, const IntPoint& dragLocation, const IntPoint& dragOrigin, DataTransfer*, LocalFrame*, bool forLink);
     void cleanupAfterSystemDrag();
 
-    RawPtrWillBeMember<Page> m_page;
+    Page *m_page;
     DragClient* m_client;
 
     RefPtrWillBeMember<Document> m_documentUnderMouse; // The document the mouse was last dragged over.

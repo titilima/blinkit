@@ -242,9 +242,9 @@ public:
     MemoryPurgeController& memoryPurgeController();
 
     void purgeMemory(DeviceKind) override;
-#endif
 
     DECLARE_TRACE();
+#endif
 
     void layerTreeViewInitialized(WebLayerTreeView&);
     void willCloseLayerTreeView(WebLayerTreeView&);
@@ -267,7 +267,7 @@ private:
     // BKTODO: const OwnPtrWillBeMember<AutoscrollController> m_autoscrollController;
     RawPtrWillBeMember<ChromeClient> m_chromeClient;
     const OwnPtrWillBeMember<DragCaretController> m_dragCaretController;
-    const OwnPtrWillBeMember<DragController> m_dragController;
+    const std::unique_ptr<DragController> m_dragController;
     const OwnPtrWillBeMember<FocusController> m_focusController;
     const OwnPtrWillBeMember<ContextMenuController> m_contextMenuController;
     const OwnPtrWillBeMember<PointerLockController> m_pointerLockController;
