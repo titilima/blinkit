@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContextMenuItem.h
+// Description: ContextMenuItem Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2010 Igalia S.L
@@ -29,7 +40,6 @@
 
 #include "platform/PlatformExport.h"
 #include "wtf/Allocator.h"
-#include "wtf/OwnPtr.h"
 #include "wtf/text/WTFString.h"
 
 namespace blink {
@@ -79,7 +89,7 @@ public:
     void setIcon(const String& icon) { m_icon = icon; }
     const String& icon() const { return m_icon; }
 
-    const Vector<ContextMenuItem>& subMenuItems() const { return m_subMenuItems; }
+    const std::vector<ContextMenuItem>& subMenuItems() const { return m_subMenuItems; }
 
 private:
     ContextMenuItemType m_type;
@@ -88,7 +98,7 @@ private:
     String m_icon;
     bool m_enabled;
     bool m_checked;
-    Vector<ContextMenuItem> m_subMenuItems;
+    std::vector<ContextMenuItem> m_subMenuItems;
 };
 
 }

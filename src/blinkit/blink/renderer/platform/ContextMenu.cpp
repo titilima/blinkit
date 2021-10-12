@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContextMenu.cpp
+// Description: ContextMenu Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Apple Inc. All rights reserved.
  *
@@ -27,7 +38,7 @@
 
 namespace blink {
 
-static const ContextMenuItem* findItemWithAction(unsigned action, const Vector<ContextMenuItem>& items)
+static const ContextMenuItem* findItemWithAction(unsigned action, const std::vector<ContextMenuItem>& items)
 {
     for (size_t i = 0; i < items.size(); ++i) {
         const ContextMenuItem& item = items[i];

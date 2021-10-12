@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContextMenu.h
+// Description: ContextMenu Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -29,21 +40,20 @@
 #include "platform/ContextMenuItem.h"
 #include "platform/PlatformExport.h"
 #include "wtf/Noncopyable.h"
-#include "wtf/Vector.h"
 
 namespace blink {
 
 class PLATFORM_EXPORT ContextMenu {
-    WTF_MAKE_NONCOPYABLE(ContextMenu); USING_FAST_MALLOC(ContextMenu);
+    WTF_MAKE_NONCOPYABLE(ContextMenu);
 public:
     ContextMenu() { }
     const ContextMenuItem* itemWithAction(unsigned) const;
-    const Vector<ContextMenuItem>& items() const { return m_items; }
-    void appendItem(const ContextMenuItem& item) { m_items.append(item); }
-    void removeLastItem() { m_items.removeLast(); }
+    const std::vector<ContextMenuItem>& items() const { return m_items; }
+    void appendItem(const ContextMenuItem& item) { m_items.emplace_back(item); }
+    void removeLastItem() { m_items.pop_back(); }
 
 private:
-    Vector<ContextMenuItem> m_items;
+    std::vector<ContextMenuItem> m_items;
 };
 
 }
