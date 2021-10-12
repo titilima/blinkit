@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContextMenuController.h
+// Description: ContextMenuController Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple Inc. All rights reserved.
  *
@@ -45,12 +56,11 @@ class Event;
 class LocalFrame;
 class Page;
 
-class CORE_EXPORT ContextMenuController final : public NoBaseWillBeGarbageCollectedFinalized<ContextMenuController> {
-    WTF_MAKE_NONCOPYABLE(ContextMenuController); USING_FAST_MALLOC_WILL_BE_REMOVED(ContextMenuController);
+class CORE_EXPORT ContextMenuController final {
+    WTF_MAKE_NONCOPYABLE(ContextMenuController);
 public:
-    static PassOwnPtrWillBeRawPtr<ContextMenuController> create(Page*, ContextMenuClient*);
+    static std::unique_ptr<ContextMenuController> create(Page*, ContextMenuClient*);
     ~ContextMenuController();
-    DECLARE_TRACE();
 
     ContextMenu* contextMenu() const { return m_contextMenu.get(); }
     void clearContextMenu();
@@ -68,13 +78,13 @@ public:
 private:
     ContextMenuController(Page*, ContextMenuClient*);
 
-    PassOwnPtr<ContextMenu> createContextMenu(Event*);
-    PassOwnPtr<ContextMenu> createContextMenu(LocalFrame*, const LayoutPoint&);
+    std::unique_ptr<ContextMenu> createContextMenu(Event*);
+    std::unique_ptr<ContextMenu> createContextMenu(LocalFrame*, const LayoutPoint&);
     void populateCustomContextMenu(const Event&);
     void showContextMenu(Event*);
 
     ContextMenuClient* m_client;
-    OwnPtr<ContextMenu> m_contextMenu;
+    std::unique_ptr<ContextMenu> m_contextMenu;
     RefPtrWillBeMember<ContextMenuProvider> m_menuProvider;
     HitTestResult m_hitTestResult;
 };

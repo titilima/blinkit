@@ -65,20 +65,14 @@ ContextMenuController::~ContextMenuController()
 {
 }
 
-PassOwnPtrWillBeRawPtr<ContextMenuController> ContextMenuController::create(Page* page, ContextMenuClient* client)
+std::unique_ptr<ContextMenuController> ContextMenuController::create(Page* page, ContextMenuClient* client)
 {
-    return adoptPtrWillBeNoop(new ContextMenuController(page, client));
-}
-
-DEFINE_TRACE(ContextMenuController)
-{
-    visitor->trace(m_menuProvider);
-    visitor->trace(m_hitTestResult);
+    return zed::wrap_unique(new ContextMenuController(page, client));
 }
 
 void ContextMenuController::clearContextMenu()
 {
-    m_contextMenu.clear();
+    m_contextMenu.reset();
     if (m_menuProvider)
         m_menuProvider->contextMenuCleared();
     m_menuProvider = nullptr;
@@ -158,7 +152,7 @@ void ContextMenuController::showContextMenuAtPoint(LocalFrame* frame, float x, f
     showContextMenu(nullptr);
 }
 
-PassOwnPtr<ContextMenu> ContextMenuController::createContextMenu(Event* event)
+std::unique_ptr<ContextMenu> ContextMenuController::createContextMenu(Event* event)
 {
     ASSERT(event);
 
@@ -169,7 +163,7 @@ PassOwnPtr<ContextMenu> ContextMenuController::createContextMenu(Event* event)
     return createContextMenu(event->target()->toNode()->document().frame(), mouseEvent->absoluteLocation());
 }
 
-PassOwnPtr<ContextMenu> ContextMenuController::createContextMenu(LocalFrame* frame, const LayoutPoint& location)
+std::unique_ptr<ContextMenu> ContextMenuController::createContextMenu(LocalFrame* frame, const LayoutPoint& location)
 {
     HitTestRequest::HitTestRequestType type = HitTestRequest::ReadOnly | HitTestRequest::Active;
     HitTestResult result(type, location);
@@ -182,7 +176,7 @@ PassOwnPtr<ContextMenu> ContextMenuController::createContextMenu(LocalFrame* fra
 
     m_hitTestResult = result;
 
-    return adoptPtr(new ContextMenu);
+    return std::make_unique<ContextMenu>();
 }
 
 void ContextMenuController::showContextMenu(Event* event)
