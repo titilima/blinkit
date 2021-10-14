@@ -95,6 +95,8 @@ class Widget;
 
 class CORE_EXPORT FrameLoaderClient : public FrameClient {
 public:
+    BlinKit::AppCaller& GetCaller(void) const { return m_appCaller; }
+
     virtual void dispatchWillSendRequest(DocumentLoader*, unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse) {}
     virtual void dispatchDidReceiveResponse(DocumentLoader*, unsigned long identifier, const ResourceResponse&) {}
     virtual void dispatchDidFinishLoading(DocumentLoader*, unsigned long identifier) {}
