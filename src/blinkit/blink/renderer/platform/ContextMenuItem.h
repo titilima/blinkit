@@ -81,7 +81,7 @@ public:
 
     void setSubMenu(ContextMenu*);
 
-    ContextMenuItem(ContextMenuAction, const String&, bool enabled, bool checked, const Vector<ContextMenuItem>& subMenuItems);
+    ContextMenuItem(ContextMenuAction, const String&, bool enabled, bool checked, const std::vector<ContextMenuItem>& subMenuItems);
 
     void setTitle(const String& title) { m_title = title; }
     const String& title() const { return m_title; }

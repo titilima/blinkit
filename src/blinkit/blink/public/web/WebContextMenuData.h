@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebContextMenuData.h
+// Description: WebContextMenuData Struct
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2012 Google Inc. All rights reserved.
  *
@@ -31,15 +42,16 @@
 #ifndef WebContextMenuData_h
 #define WebContextMenuData_h
 
-#include "../platform/WebPoint.h"
+#include "blinkit/blink/public/web/WebMenuItemInfo.h"
+#include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
+#include "blinkit/blink/renderer/platform/weborigin/KURL.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
+#if 0 // BKTODO:
 #include "../platform/WebReferrerPolicy.h"
-#include "../platform/WebString.h"
-#include "../platform/WebURL.h"
 #include "../platform/WebURLResponse.h"
-#include "../platform/WebVector.h"
 #include "WebHistoryItem.h"
-#include "WebMenuItemInfo.h"
 #include "WebNode.h"
+#endif
 
 #define WEBCONTEXT_MEDIATYPEFILE_DEFINED
 
@@ -68,11 +80,12 @@ struct WebContextMenuData {
     MediaType mediaType;
 
     // The x and y position of the mouse pointer (relative to the webview).
-    WebPoint mousePosition;
+    IntPoint mousePosition;
 
     // The absolute URL of the link that is in context.
-    WebURL linkURL;
+    KURL linkURL;
 
+#if 0 // BKTODO:
     // The absolute URL of the image/video/audio that is in context.
     WebURL srcURL;
 
@@ -98,6 +111,7 @@ struct WebContextMenuData {
 
     // History state of the subframe in context.
     WebHistoryItem frameHistoryItem;
+#endif
 
     enum MediaFlags {
         MediaNone = 0x0,
@@ -116,15 +130,18 @@ struct WebContextMenuData {
     // Extra attributes describing media elements.
     int mediaFlags;
 
+#if 0 // BKTODO:
     // The text of the link that is in the context.
     WebString linkText;
+#endif
 
     // The raw text of the selection in context.
-    WebString selectedText;
+    String selectedText;
 
     // Title attribute or alt attribute (if title is not available) of the selection in context.
-    WebString titleText;
+    String titleText;
 
+#if 0 // BKTODO:
     // Whether spell checking is enabled.
     bool isSpellCheckingEnabled;
 
@@ -133,12 +150,15 @@ struct WebContextMenuData {
 
     // The editable (possibily) misspelled word.
     WebString misspelledWord;
+#endif
 
     // The identifier of the misspelling.
     uint32_t misspellingHash;
 
+#if 0 // BKTODO:
     // If misspelledWord is not empty, holds suggestions from the dictionary.
     WebVector<WebString> dictionarySuggestions;
+#endif
 
     // Whether context is editable.
     bool isEditable;
@@ -185,23 +205,27 @@ struct WebContextMenuData {
     // Which edit operations are available in the context.
     int editFlags;
 
+#if 0 // BKTODO:
     // Security information for the context.
     WebCString securityInfo;
 
     // The referrer policy applicable to this context.
     WebReferrerPolicy referrerPolicy;
+#endif
 
     // Custom context menu items provided by the WebCore internals.
-    WebVector<WebMenuItemInfo> customItems;
+    std::vector<WebMenuItemInfo> customItems;
 
+#if 0 // BKTODO:
     // The node that was clicked.
     WebNode node;
+#endif
 
     WebContextMenuData()
         : mediaType(MediaTypeNone)
-        , hasImageContents(true)
+        // BKTODO: , hasImageContents(true)
         , mediaFlags(MediaNone)
-        , isSpellCheckingEnabled(false)
+        // BKTODO: , isSpellCheckingEnabled(false)
         , misspellingHash(0)
         , isEditable(false)
         , writingDirectionDefault(CheckableMenuItemDisabled)

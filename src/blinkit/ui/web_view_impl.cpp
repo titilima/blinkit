@@ -12,6 +12,7 @@
 #include "./web_view_impl.h"
 
 #include "blinkit/app/app_impl.h"
+#include "blinkit/blink/public/web/WebContextMenuData.h"
 #include "blinkit/blink/renderer/core/editing/Editor.h"
 #include "blinkit/blink/renderer/core/editing/FrameSelection.h"
 #include "blinkit/blink/renderer/core/editing/InputMethodController.h"
@@ -24,15 +25,18 @@
 #include "blinkit/blink/renderer/core/layout/LayoutView.h"
 #include "blinkit/blink/renderer/core/layout/TextAutosizer.h"
 #include "blinkit/blink/renderer/core/loader/FrameLoadRequest.h"
+#include "blinkit/blink/renderer/core/page/ContextMenuController.h"
 #include "blinkit/blink/renderer/core/page/FocusController.h"
 #include "blinkit/blink/renderer/core/page/Page.h"
 #include "blinkit/blink/renderer/platform/KeyboardCodes.h"
 #include "blinkit/blink/renderer/web/ChromeClientImpl.h"
+#include "blinkit/blink/renderer/web/ContextMenuAllowedScope.h"
 #include "blinkit/blink/renderer/web/ResizeViewportAnchor.h"
 #include "blinkit/blink/renderer/web/WebInputEventConversion.h"
 #include "blinkit/ui/rendering_scheduler.h"
 #include "chromium/base/time/time.h"
 #include "third_party/zed/include/zed/float.hpp"
+#include "third_party/zed/include/zed/threading/signal.hpp"
 #if 0 // BKTODO:
 #include "blinkit/blink/renderer/core/frame/browser_controls.h"
 #include "blinkit/blink/renderer/core/frame/page_scale_constraints_set.h"
@@ -660,7 +664,26 @@ float WebViewImpl::MinimumPageScaleFactor(void) const
 
 void WebViewImpl::mouseContextMenu(const WebMouseEvent &event)
 {
-    ASSERT(false); // BKTODO:
+    if (!m_frame)
+        return;
+
+    FrameView *frameView = m_frame->view();
+    if (nullptr == frameView)
+        return;
+
+    m_page->contextMenuController().clearContextMenu();
+
+    PlatformMouseEventBuilder pme(frameView, event);
+#if OS(WIN)
+    frameView->setCursor(pointerCursor());
+#endif
+
+    {
+        ContextMenuAllowedScope scope;
+        m_frame->eventHandler().sendContextMenuEvent(pme, nullptr);
+    }
+    // Actually showing the context menu is handled by the ContextMenuClient
+    // implementation...
 }
 
 float WebViewImpl::PageScaleFactor(void) const
@@ -1202,6 +1225,44 @@ void WebViewImpl::SetVisibilityStateImpl(PageVisibilityState visibilityState, bo
         m_scheduler->setPageInBackground(true);
     }
 #endif
+}
+
+bool WebViewImpl::ShouldShowContextMenu(const WebContextMenuData &data)
+{
+    if (data.isEditable)
+        return true;
+
+    switch (data.inputFieldType)
+    {
+        case WebContextMenuData::InputFieldTypePlainText:
+            return true;
+        case WebContextMenuData::InputFieldTypePassword:
+            return false;
+    }
+
+    ASSERT(false); // BKTODO:
+#if 0
+    if (!data.node.isElementNode())
+        return false;
+
+    const WebElement e = data.node.toConst<WebElement>();
+    WebString name = e.tagName();
+    if (name == "TEXTAREA")
+        return true;
+#endif
+
+    return false;
+}
+
+void WebViewImpl::showContextMenu(const WebContextMenuData &data)
+{
+    if (!ShouldShowContextMenu(data))
+        return;
+
+    std::shared_ptr<ContextMenu> menu = CreateContextMenu(data);
+    m_clientCaller.Post(BLINK_FROM_HERE, [menu] {
+        menu->Show();
+    });
 }
 
 void WebViewImpl::transitionToCommittedForNewPage(void)

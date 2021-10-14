@@ -70,12 +70,12 @@ void CustomContextMenuProvider::contextMenuCleared()
 void CustomContextMenuProvider::appendSeparator(ContextMenu& contextMenu)
 {
     // Avoid separators at the start of any menu and submenu.
-    if (!contextMenu.items().size())
+    if (contextMenu.items().empty())
         return;
 
     // Collapse all sequences of two or more adjacent separators in the menu or
     // any submenus to a single separator.
-    ContextMenuItem lastItem = contextMenu.items().last();
+    const ContextMenuItem &lastItem = contextMenu.items().back();
     if (lastItem.type() == SeparatorType)
         return;
 
@@ -139,7 +139,7 @@ void CustomContextMenuProvider::populateContextMenuItems(const HTMLMenuElement& 
     }
 
     // Remove separators at the end of the menu and any submenus.
-    while (contextMenu.items().size() && contextMenu.items().last().type() == SeparatorType)
+    while (!contextMenu.items().empty() && contextMenu.items().back().type() == SeparatorType)
         contextMenu.removeLastItem();
 }
 

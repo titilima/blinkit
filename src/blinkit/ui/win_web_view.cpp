@@ -13,6 +13,7 @@
 
 #include <windowsx.h>
 #include "blinkit/app/win_app.h"
+#include "blinkit/ui/win_context_menu_impl.h"
 #include "blinkit/win/bk_bitmap.h"
 #include "blinkit/win/message_task.h"
 #include "blinkit/win/view_store.h"
@@ -149,7 +150,7 @@ void WinWebView::didChangeCursor(const WebCursorInfo &cursorInfo)
     m_cursorInfo = cursorInfo;
     if (nullptr != cursorName)
         m_cursorInfo.externalHandle = LoadCursor(nullptr, cursorName);
-    SetCursor(m_cursorInfo.externalHandle);
+    ::SetCursor(m_cursorInfo.externalHandle);
 }
 
 void WinWebView::dispatchDidReceiveTitle(const String &title)
@@ -412,7 +413,7 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
                 return false;
 
             auto _ = m_lock.guard_shared();
-            SetCursor(m_cursorInfo.externalHandle);
+            ::SetCursor(m_cursorInfo.externalHandle);
             *result = TRUE;
             break;
         }

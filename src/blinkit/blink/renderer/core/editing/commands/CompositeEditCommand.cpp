@@ -598,13 +598,19 @@ void CompositeEditCommand::insertNodeAtTabSpanPosition(PassRefPtrWillBeRawPtr<No
 void CompositeEditCommand::deleteSelection(bool smartDelete, bool mergeBlocksAfterDelete, bool expandForSpecialElements, bool sanitizeMarkup)
 {
     if (endingSelection().isRange())
-        applyCommandToComposite(DeleteSelectionCommand::create(document(), smartDelete, mergeBlocksAfterDelete, expandForSpecialElements, sanitizeMarkup));
+    {
+        GCRefPtr<DeleteSelectionCommand> command = DeleteSelectionCommand::create(document(), smartDelete, mergeBlocksAfterDelete, expandForSpecialElements, sanitizeMarkup);
+        applyCommandToComposite(command.get());
+    }
 }
 
 void CompositeEditCommand::deleteSelection(const VisibleSelection &selection, bool smartDelete, bool mergeBlocksAfterDelete, bool expandForSpecialElements, bool sanitizeMarkup)
 {
     if (selection.isRange())
-        applyCommandToComposite(DeleteSelectionCommand::create(selection, smartDelete, mergeBlocksAfterDelete, expandForSpecialElements, sanitizeMarkup));
+    {
+        GCRefPtr<DeleteSelectionCommand> command = DeleteSelectionCommand::create(selection, smartDelete, mergeBlocksAfterDelete, expandForSpecialElements, sanitizeMarkup);
+        applyCommandToComposite(command.get());
+    }
 }
 
 void CompositeEditCommand::removeCSSProperty(PassRefPtrWillBeRawPtr<Element> element, CSSPropertyID property)

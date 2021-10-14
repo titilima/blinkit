@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContextMenuItem.cpp
+// Description: ContextMenuItem Class
+//      Author: Ziming Li
+//     Created: 2021-10-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Apple Inc. All rights reserved.
  *
@@ -51,7 +62,7 @@ ContextMenuItem::ContextMenuItem(ContextMenuItemType type, ContextMenuAction act
 {
 }
 
-ContextMenuItem::ContextMenuItem(ContextMenuAction action, const String& title, bool enabled, bool checked, const Vector<ContextMenuItem>& subMenuItems)
+ContextMenuItem::ContextMenuItem(ContextMenuAction action, const String& title, bool enabled, bool checked, const std::vector<ContextMenuItem>& subMenuItems)
     : m_type(SubmenuType)
     , m_action(action)
     , m_title(title)

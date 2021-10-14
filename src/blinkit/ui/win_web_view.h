@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -12,8 +13,6 @@
 #ifndef BLINKIT_BLINKIT_WIN_WEB_VIEW_H
 #define BLINKIT_BLINKIT_WIN_WEB_VIEW_H
 
-#pragma once
-
 #include "blinkit/blink/public/platform/WebCursorInfo.h"
 #include "blinkit/ui/web_view_impl.h"
 
@@ -24,6 +23,8 @@ class WinWebView final : public WebViewImpl
 public:
     WinWebView(HWND hWnd, ClientCaller &clientCaller, bool isWindowVisible);
     ~WinWebView(void);
+
+    HWND GetHWND(void) const { return m_hWnd; }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
@@ -50,7 +51,10 @@ private:
     void InvalidateNativeView(const blink::IntRect &rect) override;
     void didChangeCursor(const blink::WebCursorInfo &cursorInfo) override;
     void OnInitialized(void) override;
+    std::shared_ptr<ContextMenu> CreateContextMenu(const blink::WebContextMenuData &data) override;
     SkBitmap PrepareBitmapForCanvas(const blink::IntSize &size) override;
+
+    class ContextMenuImpl;
 
     HWND m_hWnd;
     HDC m_memoryDC = nullptr;

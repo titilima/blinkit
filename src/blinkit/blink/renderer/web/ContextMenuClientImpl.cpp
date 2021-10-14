@@ -42,6 +42,9 @@
 #include "web/ContextMenuClientImpl.h"
 
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
+#include "blinkit/blink/public/web/WebContextMenuData.h"
+#include "blinkit/blink/renderer/web/ContextMenuAllowedScope.h"
+#include "blinkit/ui/web_view_impl.h"
 #include "core/CSSPropertyNames.h"
 #include "core/HTMLNames.h"
 #include "core/InputTypeNames.h"
@@ -82,7 +85,6 @@
 #include "public/platform/WebURL.h"
 #include "public/platform/WebURLResponse.h"
 #include "public/platform/WebVector.h"
-#include "public/web/WebContextMenuData.h"
 #include "public/web/WebFormElement.h"
 #include "public/web/WebFrameClient.h"
 #include "public/web/WebMenuItemInfo.h"
@@ -90,11 +92,9 @@
 #include "public/web/WebSearchableFormData.h"
 #include "public/web/WebSpellCheckClient.h"
 #include "public/web/WebViewClient.h"
-#include "web/ContextMenuAllowedScope.h"
 #include "web/WebDataSourceImpl.h"
 #include "web/WebLocalFrameImpl.h"
 #include "web/WebPluginContainerImpl.h"
-#include "web/WebViewImpl.h"
 #endif
 #include "wtf/text/WTFString.h"
 
@@ -150,8 +150,6 @@ static String selectMisspellingAsync(LocalFrame* selectedFrame, String& descript
 
 void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     // Displaying the context menu in this function is a big hack as we don't
     // have context, i.e. whether this is being invoked via a script or in
     // response to user input (Mouse event WM_RBUTTONDOWN,
@@ -171,17 +169,17 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
 
     // Compute edit flags.
     data.editFlags = WebContextMenuData::CanDoNone;
-    if (toLocalFrame(m_webView->focusedCoreFrame())->editor().canUndo())
+    if (m_webView->focusedCoreFrame()->editor().canUndo())
         data.editFlags |= WebContextMenuData::CanUndo;
-    if (toLocalFrame(m_webView->focusedCoreFrame())->editor().canRedo())
+    if (m_webView->focusedCoreFrame()->editor().canRedo())
         data.editFlags |= WebContextMenuData::CanRedo;
-    if (toLocalFrame(m_webView->focusedCoreFrame())->editor().canCut())
+    if (m_webView->focusedCoreFrame()->editor().canCut())
         data.editFlags |= WebContextMenuData::CanCut;
-    if (toLocalFrame(m_webView->focusedCoreFrame())->editor().canCopy())
+    if (m_webView->focusedCoreFrame()->editor().canCopy())
         data.editFlags |= WebContextMenuData::CanCopy;
-    if (toLocalFrame(m_webView->focusedCoreFrame())->editor().canPaste())
+    if (m_webView->focusedCoreFrame()->editor().canPaste())
         data.editFlags |= WebContextMenuData::CanPaste;
-    if (toLocalFrame(m_webView->focusedCoreFrame())->editor().canDelete())
+    if (m_webView->focusedCoreFrame()->editor().canDelete())
         data.editFlags |= WebContextMenuData::CanDelete;
     // We can always select all...
     data.editFlags |= WebContextMenuData::CanSelectAll;
@@ -200,6 +198,7 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
         }
     }
 
+#if 0 // BKTODO:
     if (isHTMLCanvasElement(r.innerNode())) {
         data.mediaType = WebContextMenuData::MediaTypeCanvas;
         data.hasImageContents = true;
@@ -300,6 +299,7 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
         if (historyItem)
             data.frameHistoryItem = WebHistoryItem(historyItem);
     }
+#endif
 
     if (r.isSelected()) {
         if (!isHTMLInputElement(*r.innerNode()) || toHTMLInputElement(r.innerNode())->type() != InputTypeNames::password)
@@ -309,6 +309,7 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
     if (r.isContentEditable()) {
         data.isEditable = true;
 
+#if 0 // BKTODO:
         // Spellchecker adds spelling markers to misspelled words and attaches
         // suggestions to these markers in the background. Therefore, when a
         // user right-clicks a mouse on a word, Chrome just needs to find a
@@ -333,6 +334,7 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
             if (ws.url().isValid())
                 data.keywordURL = ws.url();
         }
+#endif
     }
 
     if (selectedFrame->editor().selectionHasStyle(CSSPropertyDirection, "ltr") != FalseTriState)
@@ -340,6 +342,7 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
     if (selectedFrame->editor().selectionHasStyle(CSSPropertyDirection, "rtl") != FalseTriState)
         data.writingDirectionRightToLeft |= WebContextMenuData::CheckableMenuItemChecked;
 
+#if 0 // BKTODO:
     // Now retrieve the security info.
     DocumentLoader* dl = selectedFrame->loader().documentLoader();
     WebDataSource* ds = WebDataSourceImpl::fromDocumentLoader(dl);
@@ -347,6 +350,7 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
         data.securityInfo = ds->response().securityInfo();
 
     data.referrerPolicy = static_cast<WebReferrerPolicy>(selectedFrame->document()->referrerPolicy());
+#endif
 
     // Filter out custom menu elements and add them into the data.
     populateCustomMenuItems(defaultMenu, &data);
@@ -354,6 +358,8 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
     if (isHTMLAnchorElement(r.URLElement())) {
         HTMLAnchorElement* anchor = toHTMLAnchorElement(r.URLElement());
 
+        ASSERT(false); // BKTODO:
+#if 0
         // Extract suggested filename for saving file.
         data.suggestedFilename = anchor->fastGetAttribute(HTMLNames::downloadAttr);
 
@@ -362,6 +368,7 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
             data.referrerPolicy = WebReferrerPolicyNever;
 
         data.linkText = anchor->innerText();
+#endif
     }
 
     // Find the input field type.
@@ -377,33 +384,24 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
         data.inputFieldType = WebContextMenuData::InputFieldTypeNone;
     }
 
-    data.node = r.innerNodeOrImageMapImage();
+    // BKTODO: data.node = r.innerNodeOrImageMapImage();
 
-    WebLocalFrameImpl* selectedWebFrame = WebLocalFrameImpl::fromFrame(selectedFrame);
-    if (selectedWebFrame->client())
-        selectedWebFrame->client()->showContextMenu(data);
-#endif
+    m_webView->showContextMenu(data);
 }
 
 void ContextMenuClientImpl::clearContextMenu()
 {
-    ASSERT(false); // BKTODO:
-#if 0
     HitTestResult r = m_webView->page()->contextMenuController().hitTestResult();
     LocalFrame* selectedFrame = r.innerNodeFrame();
     if (!selectedFrame)
         return;
 
-    WebLocalFrameImpl* selectedWebFrame = WebLocalFrameImpl::fromFrame(selectedFrame);
-    if (selectedWebFrame->client())
-        selectedWebFrame->client()->clearContextMenu();
-#endif
+    m_webView->clearContextMenu();
 }
 
-#if 0 // BKTODO:
-static void populateSubMenuItems(const Vector<ContextMenuItem>& inputMenu, WebVector<WebMenuItemInfo>& subMenuItems)
+static void populateSubMenuItems(const std::vector<ContextMenuItem>& inputMenu, std::vector<WebMenuItemInfo>& subMenuItems)
 {
-    Vector<WebMenuItemInfo> subItems;
+    std::vector<WebMenuItemInfo> subItems;
     for (size_t i = 0; i < inputMenu.size(); ++i) {
         const ContextMenuItem* inputItem = &inputMenu.at(i);
         if (inputItem->action() < ContextMenuItemBaseCustomTag || inputItem->action() > ContextMenuItemLastCustomTag)
@@ -430,19 +428,18 @@ static void populateSubMenuItems(const Vector<ContextMenuItem>& inputMenu, WebVe
             populateSubMenuItems(inputItem->subMenuItems(), outputItem.subMenuItems);
             break;
         }
-        subItems.append(outputItem);
+        subItems.emplace_back(outputItem);
     }
 
-    WebVector<WebMenuItemInfo> outputItems(subItems.size());
+    std::vector<WebMenuItemInfo> outputItems(subItems.size());
     for (size_t i = 0; i < subItems.size(); ++i)
         outputItems[i] = subItems[i];
     subMenuItems.swap(outputItems);
 }
-#endif
 
 void ContextMenuClientImpl::populateCustomMenuItems(const ContextMenu* defaultMenu, WebContextMenuData* data)
 {
-    ASSERT(false); // BKTODO: populateSubMenuItems(defaultMenu->items(), data->customItems);
+    populateSubMenuItems(defaultMenu->items(), data->customItems);
 }
 
 } // namespace blink

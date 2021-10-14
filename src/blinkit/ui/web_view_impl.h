@@ -38,6 +38,7 @@ namespace blink {
 class BrowserControls;
 class PageScaleConstraintsSet;
 struct ViewportDescription;
+struct WebContextMenuData;
 struct WebCursorInfo;
 }
 
@@ -56,22 +57,22 @@ public:
     int LoadUI(const char *URI);
     void SetClient(const BkWebViewClient &client);
 
-#if 0 // BKTODO:
-    // Returns the page object associated with this view. This may be null when
-    // the page is shutting down, but will be valid at all other times.
-    blink::Page* GetPage(void) const { return m_page.get(); }
-#endif
     blink::IntSize MainFrameSize(void);
 
     virtual void InvalidateNativeView(const blink::IntRect &rect) = 0;
 
+    virtual void clearContextMenu(void) {}
     void didChangeContentsSize(void);
     virtual void didChangeCursor(const blink::WebCursorInfo &cursorInfo) = 0;
     blink::FloatSize elasticOverscroll(void) const { return m_elasticOverscroll; }
+    blink::LocalFrame* focusedCoreFrame(void) const { return m_frame.get(); }
+    blink::LocalFrame& GetFrame(void) const { return *m_frame; }
     void invalidateRect(const blink::IntRect &rect);
     void layoutUpdated(blink::LocalFrame *frame);
+    blink::Page* page(void) const { return m_page.get(); }
     void scheduleAnimation(void);
     bool SelectionBounds(blink::IntRect &anchor, blink::IntRect &focus) const;
+    void showContextMenu(const blink::WebContextMenuData &data);
     void UpdateAndPaint(void);
     void updatePageDefinedViewportConstraints(const blink::ViewportDescription &description);
     void UpdateLayerTreeViewport(void);
@@ -88,6 +89,13 @@ public:
 #endif
 protected:
     WebViewImpl(BlinKit::ClientCaller &clientCaller, blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor = SK_ColorWHITE);
+
+    class ContextMenu {
+    public:
+        virtual ~ContextMenu(void) = default;
+
+        virtual void Show(void) = 0;
+    };
 
     virtual void OnInitialized(void) {}
     void ProcessKeyEvent(blink::WebInputEvent::Type type, int code, int modifiers);
@@ -121,6 +129,7 @@ private:
 #endif
     float ClampPageScaleFactorToLimits(float scaleFactor) const;
     blink::IntSize ContentsSize(void) const;
+    virtual std::shared_ptr<ContextMenu> CreateContextMenu(const blink::WebContextMenuData &data) = 0;
     // Called anytime top controls layout height or content offset have changed.
     void DidUpdateTopControls(void);
     bool EndActiveFlingAnimation(void);
@@ -151,6 +160,7 @@ private:
 #endif
     void SendResizeEventAndRepaint(void);
     void SetPageScaleFactor(float scaleFactor);
+    static bool ShouldShowContextMenu(const blink::WebContextMenuData &data);
     void UpdatePageOverlays(void);
 
     // BKTODO: bool IsAcceleratedCompositingActive(void) const;

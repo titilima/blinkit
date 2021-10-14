@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: WebMenuItemInfo.h
+// Description: WebMenuItemInfo Struct
+//      Author: Ziming Li
+//     Created: 2021-10-13
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -32,9 +43,8 @@
 #define WebMenuItemInfo_h
 
 #include "../platform/WebCommon.h"
-#include "../platform/WebString.h"
-#include "../platform/WebVector.h"
 #include "WebTextDirection.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
@@ -57,14 +67,14 @@ struct WebMenuItemInfo {
     {
     }
 
-    WebString label;
+    String label;
     // "icon" provides absolute URL of an image that repesents the command.
-    WebString icon;
-    WebString toolTip;
+    String icon;
+    String toolTip;
     Type type;
     unsigned action;
     WebTextDirection textDirection;
-    WebVector<WebMenuItemInfo> subMenuItems;
+    std::vector<WebMenuItemInfo> subMenuItems;
     bool hasTextDirectionOverride;
     bool enabled;
     bool checked;

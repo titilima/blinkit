@@ -56,9 +56,9 @@
 #include "core/editing/InputMethodController.h"
 #include "core/editing/RenderedPosition.h"
 #include "core/editing/VisibleUnits.h"
-#if 0 // BKTODO:
-#include "core/editing/commands/ApplyStyleCommand.h"
+// BKTODO: #include "core/editing/commands/ApplyStyleCommand.h"
 #include "core/editing/commands/DeleteSelectionCommand.h"
+#if 0 // BKTODO:
 #include "core/editing/commands/IndentOutdentCommand.h"
 #include "core/editing/commands/InsertListCommand.h"
 #include "core/editing/commands/RemoveFormatCommand.h"
@@ -346,7 +346,7 @@ void Editor::deleteSelectionWithSmartDelete(bool smartDelete)
         return;
 
     ASSERT(frame().document());
-    ASSERT(false); // BKTODO: DeleteSelectionCommand::create(*frame().document(), smartDelete)->apply();
+    DeleteSelectionCommand::create(*frame().document(), smartDelete)->apply();
 }
 
 void Editor::pasteAsPlainText(const String& pastingText, bool smartReplace)
@@ -847,7 +847,7 @@ void Editor::cut()
         return;
     // TODO(yosin) We should use early return style here.
     if (shouldDeleteRange(selectedRange())) {
-        ASSERT(false); // BKTODO: spellChecker().updateMarkersForWordsAffectedByEditing(true);
+        // BKTODO: spellChecker().updateMarkersForWordsAffectedByEditing(true);
         if (enclosingTextFormControl(frame().selection().start())) {
             String plainText = frame().selectedTextForClipboard();
             Pasteboard::generalPasteboard()->writePlainText(plainText,
@@ -899,7 +899,7 @@ void Editor::pasteAsPlainText()
         return;
     if (!canPaste())
         return;
-    ASSERT(false); // BKTODO: spellChecker().updateMarkersForWordsAffectedByEditing(false);
+    // BKTODO: spellChecker().updateMarkersForWordsAffectedByEditing(false);
     pasteAsPlainTextWithPasteboard(Pasteboard::generalPasteboard());
 }
 
