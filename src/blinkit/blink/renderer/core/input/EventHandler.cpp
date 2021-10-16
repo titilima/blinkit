@@ -83,7 +83,7 @@
 #include "core/loader/DocumentLoader.h"
 #include "core/loader/FrameLoader.h"
 #include "core/loader/FrameLoaderClient.h"
-// BKTODO: #include "core/page/AutoscrollController.h"
+#include "core/page/AutoscrollController.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/DragController.h"
 #include "core/page/DragState.h"
@@ -559,7 +559,7 @@ WebInputEventResult EventHandler::handleMouseDraggedEvent(const MouseEventWithHi
 
     if (m_mouseDownMayStartAutoscroll && !panScrollInProgress()) {
         if (AutoscrollController* controller = autoscrollController()) {
-            ASSERT(false); // BKTODO: controller->startAutoscrollForSelection(layoutObject);
+            controller->startAutoscrollForSelection(layoutObject);
             m_mouseDownMayStartAutoscroll = false;
         }
     }
@@ -575,11 +575,9 @@ void EventHandler::updateSelectionForMouseDrag()
 
 WebInputEventResult EventHandler::handleMouseReleaseEvent(const MouseEventWithHitTestResults& event)
 {
-#if 0 // BKTODO:
     AutoscrollController* controller = autoscrollController();
     if (controller && controller->autoscrollInProgress())
         stopAutoscroll();
-#endif
 
     // Used to prevent mouseMoveEvent from initiating a drag before
     // the mouse is pressed again.
@@ -600,7 +598,7 @@ void EventHandler::startPanScrolling(LayoutObject* layoutObject)
     AutoscrollController* controller = autoscrollController();
     if (!controller)
         return;
-    ASSERT(false); // BKTODO: controller->startPanScrolling(toLayoutBox(layoutObject), lastKnownMousePosition());
+    controller->startPanScrolling(toLayoutBox(layoutObject), lastKnownMousePosition());
     invalidateClick();
 }
 
@@ -608,17 +606,14 @@ void EventHandler::startPanScrolling(LayoutObject* layoutObject)
 
 AutoscrollController* EventHandler::autoscrollController() const
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (Page* page = m_frame->page())
         return &page->autoscrollController();
-#endif
     return nullptr;
 }
 
 bool EventHandler::panScrollInProgress() const
 {
-    return false; // BKTODO: return autoscrollController() && autoscrollController()->panScrollInProgress();
+    return autoscrollController() && autoscrollController()->panScrollInProgress();
 }
 
 HitTestResult EventHandler::hitTestResultAtPoint(const LayoutPoint& point, HitTestRequest::HitTestRequestType hitType, const LayoutSize& padding)
@@ -663,10 +658,8 @@ HitTestResult EventHandler::hitTestResultAtPoint(const LayoutPoint& point, HitTe
 
 void EventHandler::stopAutoscroll()
 {
-#if 0 // BKTODO:
     if (AutoscrollController* controller = autoscrollController())
         controller->stopAutoscroll();
-#endif
 }
 
 ScrollResultOneDimensional EventHandler::scroll(ScrollDirection direction, ScrollGranularity granularity, Node* startNode, Node** stopNode, float delta, IntPoint absolutePoint)
@@ -1361,11 +1354,11 @@ WebInputEventResult EventHandler::handleMouseReleaseEvent(const PlatformMouseEve
         gestureIndicator = adoptPtr(new UserGestureIndicator(m_frame->localFrameRoot()->eventHandler().m_lastMouseDownUserGestureToken.release()));
     else
         gestureIndicator = adoptPtr(new UserGestureIndicator(DefinitelyProcessingUserGesture));
+#endif
 
 #if OS(WIN)
     if (Page* page = m_frame->page())
         page->autoscrollController().handleMouseReleaseForPanScrolling(m_frame, mouseEvent);
-#endif
 #endif
 
     m_mousePressed = false;
@@ -1540,7 +1533,7 @@ WebInputEventResult EventHandler::updateDragAndDrop(const PlatformMouseEvent& ev
         newTarget = ComposedTreeTraversal::parent(*newTarget);
 
     if (AutoscrollController* controller = autoscrollController())
-        ASSERT(false); // BKTODO: controller->updateDragAndDrop(newTarget.get(), event.position(), event.timestamp());
+        controller->updateDragAndDrop(newTarget.get(), event.position(), event.timestamp());
 
     if (m_dragTarget != newTarget) {
         // FIXME: this ordering was explicitly chosen to match WinIE. However,

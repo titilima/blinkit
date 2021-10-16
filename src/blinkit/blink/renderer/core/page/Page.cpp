@@ -50,7 +50,7 @@
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/TextAutosizer.h"
-// BKTODO: #include "core/page/AutoscrollController.h"
+#include "core/page/AutoscrollController.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/ContextMenuController.h"
 #include "core/page/DragController.h"
@@ -138,7 +138,7 @@ PassOwnPtrWillBeRawPtr<Page> Page::createOrdinary(PageClients& pageClients)
 
 Page::Page(PageClients& pageClients)
     : m_animator(PageAnimator::create(*this))
-    // BKTODO: , m_autoscrollController(AutoscrollController::create(*this))
+    , m_autoscrollController(AutoscrollController::create(*this))
     , m_chromeClient(pageClients.chromeClient)
     , m_dragCaretController(DragCaretController::create())
     , m_dragController(DragController::create(this, pageClients.dragClient))

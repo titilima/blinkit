@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AutoscrollController.h
+// Description: AutoscrollController Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2009, 2010, 2011 Apple Inc. All rights reserved.
  *
@@ -52,11 +63,9 @@ enum AutoscrollType {
 };
 
 // AutscrollController handels autoscroll and pan scroll for EventHandler.
-class CORE_EXPORT AutoscrollController final : public NoBaseWillBeGarbageCollected<AutoscrollController> {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(AutoscrollController);
+class CORE_EXPORT AutoscrollController final {
 public:
-    static PassOwnPtrWillBeRawPtr<AutoscrollController> create(Page&);
-    DECLARE_TRACE();
+    static std::unique_ptr<AutoscrollController> create(Page&);
 
     static const int noPanScrollRadius = 15;
 
@@ -78,12 +87,13 @@ private:
     explicit AutoscrollController(Page&);
 
     void startAutoscroll();
+    void ScheduleAnimation(void);
 
 #if OS(WIN)
     void updatePanScrollState(FrameView*, const IntPoint& lastKnownMousePosition);
 #endif
 
-    RawPtrWillBeMember<Page> m_page;
+    Page &m_page;
     LayoutBox* m_autoscrollLayoutObject;
     AutoscrollType m_autoscrollType;
     IntPoint m_dragAndDropAutoscrollReferencePosition;

@@ -82,7 +82,7 @@
 #include "core/layout/LayoutTheme.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
-// BKTODO: #include "core/page/AutoscrollController.h"
+#include "core/page/AutoscrollController.h"
 #include "core/page/Page.h"
 #include "core/paint/ObjectPaintProperties.h"
 // BKTODO: #include "core/paint/ObjectPainter.h"
@@ -2542,13 +2542,13 @@ void LayoutObject::willBeDestroyed()
     if (children)
         children->destroyLeftoverChildren();
 
-#if 0 // BKTODO:
     if (LocalFrame* frame = this->frame()) {
         // If this layoutObject is being autoscrolled, stop the autoscrolling.
         if (frame->page())
             frame->page()->autoscrollController().stopAutoscrollIfNeeded(this);
     }
 
+#if 0 // BKTODO:
     // For accessibility management, notify the parent of the imminent change to its child set.
     // We do it now, before remove(), while the parent pointer is still available.
     if (AXObjectCache* cache = document().existingAXObjectCache())

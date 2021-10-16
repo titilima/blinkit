@@ -166,7 +166,7 @@ public:
 
     PageAnimator& animator() { return *m_animator; }
     ChromeClient& chromeClient() const { return *m_chromeClient; }
-    // BKTODO: AutoscrollController& autoscrollController() const { return *m_autoscrollController; }
+    AutoscrollController& autoscrollController() const { return *m_autoscrollController; }
     DragCaretController& dragCaretController() const { return *m_dragCaretController; }
     DragController& dragController() const { return *m_dragController; }
     FocusController& focusController() const { return *m_focusController; }
@@ -264,7 +264,7 @@ private:
 #endif
 
     std::unique_ptr<PageAnimator> m_animator;
-    // BKTODO: const OwnPtrWillBeMember<AutoscrollController> m_autoscrollController;
+    const std::unique_ptr<AutoscrollController> m_autoscrollController;
     ChromeClient *m_chromeClient;
     const std::unique_ptr<DragCaretController> m_dragCaretController;
     const std::unique_ptr<DragController> m_dragController;

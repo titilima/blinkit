@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AutoscrollController.cpp
+// Description: AutoscrollController Class
+//      Author: Ziming Li
+//     Created: 2021-10-12
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -28,6 +39,10 @@
 
 #include "core/page/AutoscrollController.h"
 
+#include "blinkit/blink/renderer/platform/Task.h"
+#include "blinkit/ui/rendering_scheduler.h"
+#include "blinkit/ui/web_view_impl.h"
+#include "chromium/base/time/time.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/input/EventHandler.h"
@@ -38,27 +53,24 @@
 #include "core/page/Page.h"
 #include "wtf/CurrentTime.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 // Delay time in second for start autoscroll if pointer is in border edge of scrollable element.
 static double autoscrollDelay = 0.2;
 
-PassOwnPtrWillBeRawPtr<AutoscrollController> AutoscrollController::create(Page& page)
+std::unique_ptr<AutoscrollController> AutoscrollController::create(Page& page)
 {
-    return adoptPtrWillBeNoop(new AutoscrollController(page));
+    return zed::wrap_unique(new AutoscrollController(page));
 }
 
 AutoscrollController::AutoscrollController(Page& page)
-    : m_page(&page)
+    : m_page(page)
     , m_autoscrollLayoutObject(nullptr)
     , m_autoscrollType(NoAutoscroll)
     , m_dragAndDropAutoscrollStartTime(0)
 {
-}
-
-DEFINE_TRACE(AutoscrollController)
-{
-    visitor->trace(m_page);
 }
 
 bool AutoscrollController::autoscrollInProgress() const
@@ -263,12 +275,12 @@ void AutoscrollController::animate(double)
 #endif
     }
     if (m_autoscrollType != NoAutoscroll)
-        m_page->chromeClient().scheduleAnimation(m_autoscrollLayoutObject->frame()->view());
+        ScheduleAnimation();
 }
 
 void AutoscrollController::startAutoscroll()
 {
-    m_page->chromeClient().scheduleAnimation(m_autoscrollLayoutObject->frame()->view());
+    ScheduleAnimation();
 }
 
 #if OS(WIN)
@@ -307,5 +319,19 @@ void AutoscrollController::updatePanScrollState(FrameView* view, const IntPoint&
     }
 }
 #endif
+
+void AutoscrollController::ScheduleAnimation(void)
+{
+    LocalFrame *frame = toLocalFrame(m_page.mainFrame());
+
+    m_page.chromeClient().scheduleAnimation(frame->view());
+
+    auto task = [this, frame] {
+        ScopedRenderingScheduler _(WebViewImpl::From(*frame));
+        animate(monotonicallyIncreasingTime());
+    };
+    double delay = base::TimeDelta::FromSecondsD(autoscrollDelay).InMillisecondsF();
+    frame->document()->timerTaskRunner()->postDelayedTask(BLINK_FROM_HERE, new Task(std::move(task)), delay);
+}
 
 } // namespace blink

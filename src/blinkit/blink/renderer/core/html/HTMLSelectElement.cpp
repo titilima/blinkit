@@ -71,7 +71,7 @@
 #include "core/layout/LayoutText.h"
 #include "core/layout/LayoutTheme.h"
 #include "core/layout/LayoutView.h"
-// BKTODO: #include "core/page/AutoscrollController.h"
+#include "core/page/AutoscrollController.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/Page.h"
 #include "core/page/SpatialNavigation.h"
@@ -1517,11 +1517,8 @@ int HTMLSelectElement::listIndexForOption(const HTMLOptionElement& option)
 
 AutoscrollController* HTMLSelectElement::autoscrollController() const
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (Page* page = document().page())
         return &page->autoscrollController();
-#endif
     return nullptr;
 }
 

@@ -66,7 +66,7 @@
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
 #include "core/layout/shapes/ShapeOutsideInfo.h"
-// BKTODO: #include "core/page/AutoscrollController.h"
+#include "core/page/AutoscrollController.h"
 #include "core/page/Page.h"
 #include "core/paint/BackgroundImageGeometry.h"
 #include "core/paint/BoxPainter.h"
@@ -583,10 +583,8 @@ void LayoutBox::scrollRectToVisible(const LayoutRect& rect, const ScrollAlignmen
     if (hasLayer() && layer()->scrollsWithViewport())
         return;
 
-#if 0 // BKTODO:
     if (frame()->page()->autoscrollController().autoscrollInProgress())
         parentBox = enclosingScrollableBox();
-#endif
 
     if (parentBox)
         parentBox->scrollRectToVisible(newRect, alignX, alignY, scrollType, makeVisibleInVisualViewport);
@@ -872,18 +870,14 @@ IntSize LayoutBox::calculateAutoscrollDirection(const IntPoint& pointInRootFrame
 
 LayoutBox* LayoutBox::findAutoscrollable(LayoutObject* layoutObject)
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     while (layoutObject && !(layoutObject->isBox() && toLayoutBox(layoutObject)->canAutoscroll())) {
         if (!layoutObject->parent() && layoutObject->node() == layoutObject->document() && layoutObject->document().ownerElement())
-            layoutObject = layoutObject->document().ownerElement()->layoutObject();
+            ASSERT(false); // BKTODO: layoutObject = layoutObject->document().ownerElement()->layoutObject();
         else
             layoutObject = layoutObject->parent();
     }
 
     return layoutObject && layoutObject->isBox() ? toLayoutBox(layoutObject) : 0;
-#endif
 }
 
 static inline int adjustedScrollDelta(int beginningDelta)
@@ -923,13 +917,10 @@ void LayoutBox::panScroll(const IntPoint& sourcePoint)
 
     IntSize delta = lastKnownMousePosition - sourcePoint;
 
-    ASSERT(false); // BKTODO:
-#if 0
     if (abs(delta.width()) <= AutoscrollController::noPanScrollRadius) // at the center we let the space for the icon
         delta.setWidth(0);
     if (abs(delta.height()) <= AutoscrollController::noPanScrollRadius)
         delta.setHeight(0);
-#endif
     scrollByRecursively(adjustedScrollDelta(delta), ScrollOffsetClamped);
 }
 
@@ -952,12 +943,9 @@ void LayoutBox::scrollByRecursively(const DoubleSize& delta, ScrollOffsetClampin
             if (LayoutBox* scrollableBox = enclosingScrollableBox())
                 scrollableBox->scrollByRecursively(remainingScrollOffset, clamp);
 
-            ASSERT(false); // BKTODO:
-#if 0
             LocalFrame* frame = this->frame();
             if (frame && frame->page())
                 frame->page()->autoscrollController().updateAutoscrollLayoutObject();
-#endif
         }
     } else if (view()->frameView()) {
         // If we are here, we were called on a layoutObject that can be programmatically scrolled, but doesn't
