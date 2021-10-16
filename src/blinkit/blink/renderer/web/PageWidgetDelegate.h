@@ -81,7 +81,7 @@ protected:
 // Common implementation of WebViewImpl and WebPagePopupImpl.
 class PageWidgetDelegate {
 public:
-    static void animate(Page&, double monotonicFrameBeginTime);
+    // BKTODO: static void animate(Page&, double monotonicFrameBeginTime);
 
     // For the following methods, the |root| argument indicates a root localFrame from which
     // to start performing the specified operation.

@@ -62,11 +62,13 @@
 
 namespace blink {
 
+#if 0 // BKTODO:
 void PageWidgetDelegate::animate(Page& page, double monotonicFrameBeginTime)
 {
-    ASSERT(false); // BKTODO: page.autoscrollController().animate(monotonicFrameBeginTime);
+    page.autoscrollController().animate(monotonicFrameBeginTime);
     page.animator().serviceScriptedAnimations(monotonicFrameBeginTime);
 }
+#endif
 
 void PageWidgetDelegate::updateAllLifecyclePhases(Page& page, LocalFrame& root)
 {

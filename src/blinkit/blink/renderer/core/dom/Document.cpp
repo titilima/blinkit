@@ -6089,11 +6089,9 @@ std::shared_ptr<WebTaskRunner> Document::loadingTaskRunner(void) const
 #endif
 }
 
-WebTaskRunner* Document::timerTaskRunner() const
+std::shared_ptr<WebTaskRunner> Document::timerTaskRunner(void) const
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
+#if 0 // BKTODO:
     if (frame())
         return m_frame->frameScheduler()->timerTaskRunner();
     if (m_importsController)
@@ -6101,6 +6099,8 @@ WebTaskRunner* Document::timerTaskRunner() const
     if (m_contextDocument)
         return m_contextDocument->timerTaskRunner();
     return Platform::current()->currentThread()->scheduler()->timerTaskRunner();
+#else
+    return Platform::current()->currentThread()->taskRunner();
 #endif
 }
 

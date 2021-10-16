@@ -550,10 +550,9 @@ Node* HitTestResult::innerNodeOrImageMapImage() const
         return nullptr;
 
     HTMLImageElement* imageMapImageElement = nullptr;
-    ASSERT(false); // BKTODO:
-#if 0
     if (isHTMLAreaElement(m_innerNode))
         imageMapImageElement = toHTMLAreaElement(m_innerNode)->imageElement();
+#if 0 // BKTODO:
     else if (isHTMLMapElement(m_innerNode))
         imageMapImageElement = toHTMLMapElement(m_innerNode)->imageElement();
 #endif

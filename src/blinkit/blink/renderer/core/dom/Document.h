@@ -1106,7 +1106,7 @@ public:
 #endif
 
     std::shared_ptr<WebTaskRunner> loadingTaskRunner(void) const;
-    WebTaskRunner* timerTaskRunner() const;
+    std::shared_ptr<WebTaskRunner> timerTaskRunner(void) const;
 
     void enforceStrictMixedContentChecking();
 
