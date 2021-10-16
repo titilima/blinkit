@@ -4095,6 +4095,15 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\ReplaceSelectionCommand.cpp">
       <Filter>blink\renderer\core\editing\commands</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\page\AutoscrollController.cpp">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\ContextMenuAllowedScope.cpp">
+      <Filter>blink\renderer\web</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\win_context_menu_impl.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -6577,6 +6586,120 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\ReplaceSelectionCommand.h">
       <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\AutoscrollController.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\ChromeClient.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\ContextMenuClient.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\ContextMenuController.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\ContextMenuProvider.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\CustomContextMenuProvider.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\DragActions.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\DragClient.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\DragController.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\DragData.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\DragSession.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\DragState.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\EditorClient.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\EventWithHitTestResults.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\FocusController.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\PageAnimator.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\PageVisibilityState.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\PointerLockController.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\PopupOpeningObserver.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\SpatialNavigation.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\ValidationMessageClient.h">
+      <Filter>blink\renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\scrolling\ScrollCustomizationCallbacks.h">
+      <Filter>blink\renderer\core\page\scrolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\scrolling\ScrollingConstraints.h">
+      <Filter>blink\renderer\core\page\scrolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\scrolling\ScrollingCoordinator.h">
+      <Filter>blink\renderer\core\page\scrolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\scrolling\ScrollState.h">
+      <Filter>blink\renderer\core\page\scrolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\page\scrolling\ScrollStateCallback.h">
+      <Filter>blink\renderer\core\page\scrolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ContextMenuAllowedScope.h">
+      <Filter>blink\renderer\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebContextMenuData.h">
+      <Filter>blink\public\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebMenuItemInfo.h">
+      <Filter>blink\public\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebTextDirection.h">
+      <Filter>blink\public\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\win_context_menu_impl.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ChromeClientImpl.h">
+      <Filter>blink\renderer\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ContextMenuClientImpl.h">
+      <Filter>blink\renderer\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\DragClientImpl.h">
+      <Filter>blink\renderer\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\EditorClientImpl.h">
+      <Filter>blink\renderer\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\PageWidgetDelegate.h">
+      <Filter>blink\renderer\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ResizeViewportAnchor.h">
+      <Filter>blink\renderer\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\WebDataSourceImpl.h">
+      <Filter>blink\renderer\web</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
