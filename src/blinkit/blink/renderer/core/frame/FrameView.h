@@ -314,7 +314,7 @@ public:
     bool isTrackingPaintInvalidations() const { return m_isTrackingPaintInvalidations; }
     void resetTrackedPaintInvalidations();
 
-    using ScrollableAreaSet = WillBeHeapHashSet<RawPtrWillBeMember<ScrollableArea>>;
+    using ScrollableAreaSet = std::unordered_set<ScrollableArea *>;
     void addScrollableArea(ScrollableArea*);
     void removeScrollableArea(ScrollableArea*);
     const ScrollableAreaSet* scrollableAreas() const { return m_scrollableAreas.get(); }
@@ -837,8 +837,8 @@ private:
     // layoutObject to hold our custom scroll corner.
     LayoutScrollbarPart* m_scrollCorner;
 
-    OwnPtrWillBeMember<ScrollableAreaSet> m_scrollableAreas;
-    OwnPtrWillBeMember<ScrollableAreaSet> m_animatingScrollableAreas;
+    std::unique_ptr<ScrollableAreaSet> m_scrollableAreas;
+    std::unique_ptr<ScrollableAreaSet> m_animatingScrollableAreas;
     OwnPtr<ResizerAreaSet> m_resizerAreas;
     OwnPtr<ViewportConstrainedObjectSet> m_viewportConstrainedObjects;
     ViewportConstrainedObjectSet m_backgroundAttachmentFixedObjects;

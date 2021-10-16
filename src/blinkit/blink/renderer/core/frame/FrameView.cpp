@@ -209,8 +209,6 @@ DEFINE_TRACE(FrameView)
     // BKTODO: visitor->trace(m_frame);
     visitor->trace(m_nodeToDraw);
     visitor->trace(m_scrollAnchor);
-    visitor->trace(m_scrollableAreas);
-    visitor->trace(m_animatingScrollableAreas);
     visitor->trace(m_autoSizeInfo);
     visitor->trace(m_horizontalScrollbar);
     visitor->trace(m_verticalScrollbar);
@@ -2988,8 +2986,8 @@ void FrameView::addScrollableArea(ScrollableArea* scrollableArea)
 {
     ASSERT(scrollableArea);
     if (!m_scrollableAreas)
-        m_scrollableAreas = adoptPtrWillBeNoop(new ScrollableAreaSet);
-    m_scrollableAreas->add(scrollableArea);
+        m_scrollableAreas = std::make_unique<ScrollableAreaSet>();
+    m_scrollableAreas->emplace(scrollableArea);
 
     if (ScrollingCoordinator* scrollingCoordinator = this->scrollingCoordinator())
         scrollingCoordinator->scrollableAreasDidChange();
@@ -2999,7 +2997,7 @@ void FrameView::removeScrollableArea(ScrollableArea* scrollableArea)
 {
     if (!m_scrollableAreas)
         return;
-    m_scrollableAreas->remove(scrollableArea);
+    m_scrollableAreas->erase(scrollableArea);
 
     if (ScrollingCoordinator* scrollingCoordinator = this->scrollingCoordinator())
         scrollingCoordinator->scrollableAreasDidChange();
@@ -3009,15 +3007,15 @@ void FrameView::addAnimatingScrollableArea(ScrollableArea* scrollableArea)
 {
     ASSERT(scrollableArea);
     if (!m_animatingScrollableAreas)
-        m_animatingScrollableAreas = adoptPtrWillBeNoop(new ScrollableAreaSet);
-    m_animatingScrollableAreas->add(scrollableArea);
+        m_animatingScrollableAreas = std::make_unique<ScrollableAreaSet>();
+    m_animatingScrollableAreas->emplace(scrollableArea);
 }
 
 void FrameView::removeAnimatingScrollableArea(ScrollableArea* scrollableArea)
 {
     if (!m_animatingScrollableAreas)
         return;
-    m_animatingScrollableAreas->remove(scrollableArea);
+    m_animatingScrollableAreas->erase(scrollableArea);
 }
 
 void FrameView::setParent(Widget* parentView)
