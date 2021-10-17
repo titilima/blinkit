@@ -50,17 +50,21 @@
 #include "platform/scroll/ScrollableArea.h"
 #include "platform/scroll/ScrollbarTheme.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-PassRefPtrWillBeRawPtr<Scrollbar> Scrollbar::create(ScrollableArea* scrollableArea, ScrollbarOrientation orientation, ScrollbarControlSize size, HostWindow* hostWindow)
+GCRefPtr<Scrollbar> Scrollbar::create(ScrollableArea* scrollableArea, ScrollbarOrientation orientation, ScrollbarControlSize size, HostWindow* hostWindow)
 {
-    return adoptRefWillBeNoop(new Scrollbar(scrollableArea, orientation, size, hostWindow));
+    return GCWrapShared(new Scrollbar(scrollableArea, orientation, size, hostWindow));
 }
 
+#if 0 // BKTODO:
 PassRefPtrWillBeRawPtr<Scrollbar> Scrollbar::createForTesting(ScrollableArea* scrollableArea, ScrollbarOrientation orientation, ScrollbarControlSize size, ScrollbarTheme* theme)
 {
     return adoptRefWillBeNoop(new Scrollbar(scrollableArea, orientation, size, nullptr, theme));
 }
+#endif
 
 Scrollbar::Scrollbar(ScrollableArea* scrollableArea, ScrollbarOrientation orientation, ScrollbarControlSize controlSize, HostWindow* hostWindow, ScrollbarTheme* theme)
     : m_scrollableArea(scrollableArea)
@@ -105,9 +109,11 @@ Scrollbar::~Scrollbar()
 
 DEFINE_TRACE(Scrollbar)
 {
+#if 0 // BKTODO:
     visitor->trace(m_scrollableArea);
     visitor->trace(m_hostWindow);
     Widget::trace(visitor);
+#endif
 }
 
 void Scrollbar::setFrameRect(const IntRect& frameRect)

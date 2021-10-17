@@ -57,12 +57,14 @@ class ScrollAnimatorBase;
 class ScrollableArea;
 class ScrollbarTheme;
 
-class PLATFORM_EXPORT Scrollbar : public Widget, public ScrollbarThemeClient {
+class PLATFORM_EXPORT Scrollbar : public BlinKit::GCObject, public Widget, public ScrollbarThemeClient {
 public:
-    static PassRefPtrWillBeRawPtr<Scrollbar> create(ScrollableArea*, ScrollbarOrientation, ScrollbarControlSize, HostWindow*);
+    static GCRefPtr<Scrollbar> create(ScrollableArea*, ScrollbarOrientation, ScrollbarControlSize, HostWindow*);
 
+#if 0 // BKTODO:
     // Theme object ownership remains with the caller and it must outlive the scrollbar.
     static PassRefPtrWillBeRawPtr<Scrollbar> createForTesting(ScrollableArea*, ScrollbarOrientation, ScrollbarControlSize, ScrollbarTheme*);
+#endif
 
     ~Scrollbar() override;
 
@@ -183,10 +185,12 @@ public:
     // part.
     void setNeedsPaintInvalidation(ScrollbarPart invalidParts);
 
+#if 0 // BKTODO:
     // Promptly unregister from the theme manager + run finalizers of derived Scrollbars.
     EAGERLY_FINALIZE();
 #if ENABLE(OILPAN)
     DECLARE_EAGER_FINALIZATION_OPERATOR_NEW();
+#endif
 #endif
     DECLARE_VIRTUAL_TRACE();
 
@@ -200,11 +204,11 @@ protected:
     ScrollDirectionPhysical pressedPartScrollDirectionPhysical();
     ScrollGranularity pressedPartScrollGranularity();
 
-    RawPtrWillBeMember<ScrollableArea> m_scrollableArea;
+    ScrollableArea *m_scrollableArea;
     ScrollbarOrientation m_orientation;
     ScrollbarControlSize m_controlSize;
     ScrollbarTheme& m_theme;
-    RawPtrWillBeMember<HostWindow> m_hostWindow;
+    HostWindow *m_hostWindow;
 
     int m_visibleSize;
     int m_totalSize;

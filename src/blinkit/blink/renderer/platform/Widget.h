@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Widget.h
+// Description: Widget Class
+//      Author: Ziming Li
+//     Created: 2021-10-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2008 Collabora Ltd.  All rights reserved.
@@ -48,7 +59,7 @@ class HostWindow;
 // Widgets are connected in a hierarchy, with the restriction that plugins and
 // scrollbars are always leaves of the tree. Only FrameView can have children
 // (and therefore the Widget class has no concept of children).
-class PLATFORM_EXPORT Widget : public RefCountedWillBeGarbageCollectedFinalized<Widget> {
+class PLATFORM_EXPORT Widget {
 public:
     Widget();
     virtual ~Widget();
