@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FrameViewAutoSizeInfo.cpp
+// Description: FrameViewAutoSizeInfo Class
+//      Author: Ziming Li
+//     Created: 2021-10-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -86,7 +97,7 @@ void FrameViewAutoSizeInfo::autoSizeIfNeeded()
         // Since the dimensions are only for the view rectangle, once a
         // dimension exceeds the maximum, there is no need to increase it further.
         if (newSize.width() > m_maxAutoSize.width()) {
-            RefPtrWillBeRawPtr<Scrollbar> localHorizontalScrollbar = m_frameView->horizontalScrollbar();
+            GCRefPtr<Scrollbar> localHorizontalScrollbar(m_frameView->horizontalScrollbar());
             if (!localHorizontalScrollbar)
                 localHorizontalScrollbar = m_frameView->createScrollbar(HorizontalScrollbar);
             if (!localHorizontalScrollbar->isOverlayScrollbar())
@@ -95,7 +106,7 @@ void FrameViewAutoSizeInfo::autoSizeIfNeeded()
             // Don't bother checking for a vertical scrollbar because the width is at
             // already greater the maximum.
         } else if (newSize.height() > m_maxAutoSize.height()) {
-            RefPtrWillBeRawPtr<Scrollbar> localVerticalScrollbar = m_frameView->verticalScrollbar();
+            GCRefPtr<Scrollbar> localVerticalScrollbar(m_frameView->verticalScrollbar());
             if (!localVerticalScrollbar)
                 localVerticalScrollbar = m_frameView->createScrollbar(VerticalScrollbar);
             if (!localVerticalScrollbar->isOverlayScrollbar())

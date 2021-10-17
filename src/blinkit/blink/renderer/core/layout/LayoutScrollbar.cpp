@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutScrollbar.cpp
+// Description: LayoutScrollbar Class
+//      Author: Ziming Li
+//     Created: 2021-10-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2009 Apple Inc. All Rights Reserved.
  *
@@ -34,11 +45,13 @@
 #include "core/layout/LayoutView.h"
 #include "platform/graphics/GraphicsContext.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-PassRefPtrWillBeRawPtr<Scrollbar> LayoutScrollbar::createCustomScrollbar(ScrollableArea* scrollableArea, ScrollbarOrientation orientation, Node* ownerNode, LocalFrame* owningFrame)
+GCRefPtr<Scrollbar> LayoutScrollbar::createCustomScrollbar(ScrollableArea* scrollableArea, ScrollbarOrientation orientation, Node* ownerNode, LocalFrame* owningFrame)
 {
-    return adoptRefWillBeNoop(new LayoutScrollbar(scrollableArea, orientation, ownerNode, owningFrame));
+    return GCWrapShared(new LayoutScrollbar(scrollableArea, orientation, ownerNode, owningFrame));
 }
 
 LayoutScrollbar::LayoutScrollbar(ScrollableArea* scrollableArea, ScrollbarOrientation orientation, Node* ownerNode, LocalFrame* owningFrame)
@@ -80,6 +93,7 @@ LayoutScrollbar::~LayoutScrollbar()
     updateScrollbarParts(true);
 }
 
+#if 0 // BKTODO:
 DEFINE_TRACE(LayoutScrollbar)
 {
 #if ENABLE(OILPAN)
@@ -88,6 +102,7 @@ DEFINE_TRACE(LayoutScrollbar)
 #endif
     Scrollbar::trace(visitor);
 }
+#endif
 
 LayoutBox* LayoutScrollbar::owningLayoutObject() const
 {

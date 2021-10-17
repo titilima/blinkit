@@ -1501,10 +1501,10 @@ void PaintLayerScrollableArea::ScrollbarManager::setHasVerticalScrollbar(bool ha
     }
 }
 
-PassRefPtrWillBeRawPtr<Scrollbar> PaintLayerScrollableArea::ScrollbarManager::createScrollbar(ScrollbarOrientation orientation)
+GCRefPtr<Scrollbar> PaintLayerScrollableArea::ScrollbarManager::createScrollbar(ScrollbarOrientation orientation)
 {
     ASSERT(orientation == HorizontalScrollbar ? !m_hBarIsAttached : !m_vBarIsAttached);
-    RefPtrWillBeRawPtr<Scrollbar> scrollbar = nullptr;
+    GCRefPtr<Scrollbar> scrollbar;
     const LayoutObject& actualLayoutObject = layoutObjectForScrollbar(m_scrollableArea.box());
     bool hasCustomScrollbarStyle = actualLayoutObject.isBox() && actualLayoutObject.styleRef().hasPseudoStyle(SCROLLBAR);
     if (hasCustomScrollbarStyle) {
@@ -1520,12 +1520,12 @@ PassRefPtrWillBeRawPtr<Scrollbar> PaintLayerScrollableArea::ScrollbarManager::cr
             m_scrollableArea.didAddScrollbar(*scrollbar, VerticalScrollbar);
     }
     m_scrollableArea.box().document().view()->addChild(scrollbar.get());
-    return scrollbar.release();
+    return scrollbar;
 }
 
 void PaintLayerScrollableArea::ScrollbarManager::destroyScrollbar(ScrollbarOrientation orientation)
 {
-    RefPtrWillBeMember<Scrollbar>& scrollbar = orientation == HorizontalScrollbar ? m_hBar : m_vBar;
+    GCRefPtr<Scrollbar>& scrollbar = orientation == HorizontalScrollbar ? m_hBar : m_vBar;
     ASSERT(orientation == HorizontalScrollbar ? !m_hBarIsAttached: !m_vBarIsAttached);
     if (!scrollbar)
         return;
@@ -1537,7 +1537,7 @@ void PaintLayerScrollableArea::ScrollbarManager::destroyScrollbar(ScrollbarOrien
 
     toFrameView(scrollbar->parent())->removeChild(scrollbar.get());
     scrollbar->disconnectFromScrollableArea();
-    scrollbar = nullptr;
+    scrollbar.clear();
 }
 
 DEFINE_TRACE(PaintLayerScrollableArea::ScrollbarManager)

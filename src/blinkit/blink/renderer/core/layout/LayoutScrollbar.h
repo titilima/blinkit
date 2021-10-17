@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutScrollbar.h
+// Description: LayoutScrollbar Class
+//      Author: Ziming Li
+//     Created: 2021-10-17
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2009 Apple Inc. All Rights Reserved.
  *
@@ -43,7 +54,7 @@ class PaintInvalidationState;
 
 class LayoutScrollbar final : public Scrollbar {
 public:
-    static PassRefPtrWillBeRawPtr<Scrollbar> createCustomScrollbar(ScrollableArea*, ScrollbarOrientation, Node*, LocalFrame* owningFrame = nullptr);
+    static GCRefPtr<Scrollbar> createCustomScrollbar(ScrollableArea*, ScrollbarOrientation, Node*, LocalFrame* owningFrame = nullptr);
     ~LayoutScrollbar() override;
 
     LayoutBox* owningLayoutObject() const;
@@ -62,7 +73,7 @@ public:
 
     void invalidateDisplayItemClientsOfScrollbarParts(const LayoutBoxModelObject& paintInvalidationContainer);
 
-    DECLARE_VIRTUAL_TRACE();
+    // BKTODO: DECLARE_VIRTUAL_TRACE();
 
 protected:
     LayoutScrollbar(ScrollableArea*, ScrollbarOrientation, Node*, LocalFrame*);

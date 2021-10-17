@@ -530,7 +530,7 @@ bool FrameView::shouldUseCustomScrollbars(Element*& customScrollbarElement, Loca
     return false;
 }
 
-PassRefPtrWillBeRawPtr<Scrollbar> FrameView::createScrollbar(ScrollbarOrientation orientation)
+GCRefPtr<Scrollbar> FrameView::createScrollbar(ScrollbarOrientation orientation)
 {
     Element* customScrollbarElement = nullptr;
     LocalFrame* customScrollbarFrame = nullptr;
@@ -2166,7 +2166,7 @@ void FrameView::scrollTo(const DoublePoint& newPosition)
     clearScrollAnchor();
     updateLayersAndCompositingAfterScrollIfNeeded();
     scrollPositionChanged();
-    ASSERT(false); // BKTODO: frame().loader().client()->didChangeScrollOffset();
+    // BKTODO: frame().loader().client()->didChangeScrollOffset();
 }
 
 void FrameView::invalidatePaintForTickmarks()
@@ -2243,8 +2243,6 @@ bool FrameView::isProgrammaticallyScrollable()
 
 FrameView::ScrollingReasons FrameView::scrollingReasons()
 {
-    ASSERT(false); // BKTODO:
-#if 0
     // Check for:
     // 1) If there an actual overflow.
     // 2) display:none or visibility:hidden set to self or inherited.
@@ -2257,11 +2255,13 @@ FrameView::ScrollingReasons FrameView::scrollingReasons()
     if ((contentsSize.height() <= visibleContentSize.height() && contentsSize.width() <= visibleContentSize.width()))
         return NotScrollableNoOverflow;
 
+#if 0 // BKTODO:
     // Covers #2.
     // FIXME: Do we need to fix this for OOPI?
     HTMLFrameOwnerElement* owner = m_frame->deprecatedLocalOwner();
     if (owner && (!owner->layoutObject() || !owner->layoutObject()->visibleToHitTesting()))
         return NotScrollableNotVisible;
+#endif
 
     // Cover #3 and #4.
     ScrollbarMode horizontalMode;
@@ -2269,7 +2269,6 @@ FrameView::ScrollingReasons FrameView::scrollingReasons()
     calculateScrollbarModes(horizontalMode, verticalMode, RulesFromWebContentOnly);
     if (horizontalMode == ScrollbarAlwaysOff && verticalMode == ScrollbarAlwaysOff)
         return NotScrollableExplicitlyDisabled;
-#endif
 
     return Scrollable;
 }

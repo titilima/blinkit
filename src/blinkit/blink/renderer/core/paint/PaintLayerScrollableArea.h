@@ -150,15 +150,15 @@ private:
         DECLARE_TRACE();
 
     private:
-        PassRefPtrWillBeRawPtr<Scrollbar> createScrollbar(ScrollbarOrientation);
+        GCRefPtr<Scrollbar> createScrollbar(ScrollbarOrientation);
         void destroyScrollbar(ScrollbarOrientation);
 
     private:
         PaintLayerScrollableArea &m_scrollableArea;
 
         // The scrollbars associated with m_scrollableArea. Both can nullptr.
-        RefPtrWillBeMember<Scrollbar> m_hBar;
-        RefPtrWillBeMember<Scrollbar> m_vBar;
+        GCRefPtr<Scrollbar> m_hBar;
+        GCRefPtr<Scrollbar> m_vBar;
 
         unsigned m_canDetachScrollbars: 1;
         unsigned m_hBarIsAttached: 1;

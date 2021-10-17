@@ -118,7 +118,7 @@ public:
 
     void setCanHaveScrollbars(bool);
 
-    PassRefPtrWillBeRawPtr<Scrollbar> createScrollbar(ScrollbarOrientation);
+    GCRefPtr<Scrollbar> createScrollbar(ScrollbarOrientation);
 
     void setContentsSize(const IntSize&);
 
@@ -865,8 +865,8 @@ private:
     bool m_hasBeenDisposed;
 #endif
 
-    RefPtrWillBeMember<Scrollbar> m_horizontalScrollbar;
-    RefPtrWillBeMember<Scrollbar> m_verticalScrollbar;
+    GCRefPtr<Scrollbar> m_horizontalScrollbar;
+    GCRefPtr<Scrollbar> m_verticalScrollbar;
     ScrollbarMode m_horizontalScrollbarMode;
     ScrollbarMode m_verticalScrollbarMode;
 
