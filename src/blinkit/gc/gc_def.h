@@ -209,6 +209,11 @@ protected:
         if (nullptr != m_object)
             m_object->IncRef();
     }
+
+    void swap(GCRefPtrBase &o)
+    {
+        std::swap(m_object, o.m_object);
+    }
 private:
     GCObject *m_object;
 };
@@ -266,6 +271,8 @@ public:
     }
 
     T* release(void) { return GCRefPtrBase::release_to<T>(); }
+
+    void swap(GCRefPtr &o) { GCRefPtrBase::swap(o); }
 };
 
 template <class T>
