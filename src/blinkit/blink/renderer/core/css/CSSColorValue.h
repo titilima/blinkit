@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSColorValue.h
+// Description: CSSColorValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,16 +18,15 @@
 
 #include "core/css/CSSValue.h"
 #include "platform/graphics/Color.h"
-#include "wtf/PassRefPtr.h"
 
 namespace blink {
 
 // Represents the non-keyword subset of <color>.
 class CSSColorValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSColorValue> create(Color color)
+    static GCRefPtr<CSSColorValue> create(Color color)
     {
-        return adoptRefWillBeNoop(new CSSColorValue(color));
+        return BlinKit::GCWrapShared(new CSSColorValue(color));
     }
 
     String customCSSText() const
@@ -29,11 +39,6 @@ public:
     bool equals(const CSSColorValue& other) const
     {
         return m_color == other.m_color;
-    }
-
-    DEFINE_INLINE_TRACE_AFTER_DISPATCH()
-    {
-        CSSValue::traceAfterDispatch(visitor);
     }
 
 private:
