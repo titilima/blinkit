@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSStringValue.cpp
+// Description: CSSStringValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -16,11 +27,6 @@ CSSStringValue::CSSStringValue(const String& str)
 String CSSStringValue::customCSSText() const
 {
     return serializeString(m_string);
-}
-
-DEFINE_TRACE_AFTER_DISPATCH(CSSStringValue)
-{
-    CSSValue::traceAfterDispatch(visitor);
 }
 
 } // namespace blink
