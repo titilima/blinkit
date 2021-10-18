@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSContentDistributionValue.h
+// Description: CSSContentDistributionValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,29 +18,26 @@
 
 #include "core/css/CSSValue.h"
 #include "core/css/CSSValuePool.h"
-#include "wtf/RefPtr.h"
 
 namespace blink {
 
 class CSSContentDistributionValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSContentDistributionValue> create(CSSValueID distribution, CSSValueID position, CSSValueID overflow)
+    static GCRefPtr<CSSContentDistributionValue> create(CSSValueID distribution, CSSValueID position, CSSValueID overflow)
     {
-        return adoptRefWillBeNoop(new CSSContentDistributionValue(distribution, position, overflow));
+        return BlinKit::GCWrapShared(new CSSContentDistributionValue(distribution, position, overflow));
     }
     ~CSSContentDistributionValue();
 
-    PassRefPtrWillBeRawPtr<CSSPrimitiveValue> distribution() const { return cssValuePool().createIdentifierValue(m_distribution); }
+    GCRefPtr<CSSPrimitiveValue> distribution() const { return cssValuePool().createIdentifierValue(m_distribution); }
 
-    PassRefPtrWillBeRawPtr<CSSPrimitiveValue> position() const { return cssValuePool().createIdentifierValue(m_position); }
+    GCRefPtr<CSSPrimitiveValue> position() const { return cssValuePool().createIdentifierValue(m_position); }
 
-    PassRefPtrWillBeRawPtr<CSSPrimitiveValue> overflow() const { return cssValuePool().createIdentifierValue(m_overflow); }
+    GCRefPtr<CSSPrimitiveValue> overflow() const { return cssValuePool().createIdentifierValue(m_overflow); }
 
     String customCSSText() const;
 
     bool equals(const CSSContentDistributionValue&) const;
-
-    DEFINE_INLINE_TRACE_AFTER_DISPATCH() { CSSValue::traceAfterDispatch(visitor); }
 
 private:
     CSSContentDistributionValue(CSSValueID distribution, CSSValueID position, CSSValueID overflow);

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSContentDistributionValue.cpp
+// Description: CSSContentDistributionValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -23,7 +34,7 @@ CSSContentDistributionValue::~CSSContentDistributionValue()
 
 String CSSContentDistributionValue::customCSSText() const
 {
-    RefPtrWillBeRawPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
+    GCRefPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
 
     if (m_distribution != CSSValueInvalid)
         list->append(distribution());
@@ -32,7 +43,7 @@ String CSSContentDistributionValue::customCSSText() const
     if (m_overflow != CSSValueInvalid)
         list->append(overflow());
 
-    return list.release()->customCSSText();
+    return list->customCSSText();
 }
 
 bool CSSContentDistributionValue::equals(const CSSContentDistributionValue& other) const
