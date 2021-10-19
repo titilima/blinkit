@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSBorderImage.h
+// Description: CSSBorderImage Stuff
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies)
  *
@@ -22,12 +33,16 @@
 
 #include "core/css/CSSBorderImageSliceValue.h"
 #include "core/css/CSSValueList.h"
-#include "wtf/PassRefPtr.h"
 
 namespace blink {
 
-PassRefPtrWillBeRawPtr<CSSValueList> createBorderImageValue(PassRefPtrWillBeRawPtr<CSSValue> image, PassRefPtrWillBeRawPtr<CSSValue> imageSlice, PassRefPtrWillBeRawPtr<CSSValue> borderSlice,
-    PassRefPtrWillBeRawPtr<CSSValue> outset, PassRefPtrWillBeRawPtr<CSSValue> repeat);
+GCRefPtr<CSSValueList> createBorderImageValue(
+    const GCRefPtr<CSSValue> &image,
+    const GCRefPtr<CSSValue> &imageSlice,
+    const GCRefPtr<CSSValue> &borderSlice,
+    const GCRefPtr<CSSValue> &outset,
+    const GCRefPtr<CSSValue> &repeat
+);
 
 } // namespace blink
 

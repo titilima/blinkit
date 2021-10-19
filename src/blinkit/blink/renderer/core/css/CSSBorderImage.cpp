@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSBorderImage.cpp
+// Description: CSSBorderImage Stuff
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies)
  *
@@ -21,15 +32,19 @@
 
 namespace blink {
 
-PassRefPtrWillBeRawPtr<CSSValueList> createBorderImageValue(PassRefPtrWillBeRawPtr<CSSValue> image, PassRefPtrWillBeRawPtr<CSSValue> imageSlice,
-    PassRefPtrWillBeRawPtr<CSSValue> borderSlice, PassRefPtrWillBeRawPtr<CSSValue> outset, PassRefPtrWillBeRawPtr<CSSValue> repeat)
+GCRefPtr<CSSValueList> createBorderImageValue(
+    const GCRefPtr<CSSValue> &image,
+    const GCRefPtr<CSSValue> &imageSlice,
+    const GCRefPtr<CSSValue> &borderSlice,
+    const GCRefPtr<CSSValue> &outset,
+    const GCRefPtr<CSSValue> &repeat)
 {
-    RefPtrWillBeRawPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
+    GCRefPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
     if (image)
         list->append(image);
 
     if (borderSlice || outset) {
-        RefPtrWillBeRawPtr<CSSValueList> listSlash = CSSValueList::createSlashSeparated();
+        GCRefPtr<CSSValueList> listSlash = CSSValueList::createSlashSeparated();
         if (imageSlice)
             listSlash->append(imageSlice);
 
@@ -39,13 +54,13 @@ PassRefPtrWillBeRawPtr<CSSValueList> createBorderImageValue(PassRefPtrWillBeRawP
         if (outset)
             listSlash->append(outset);
 
-        list->append(listSlash);
+        list->append(listSlash.get());
     } else if (imageSlice) {
         list->append(imageSlice);
     }
     if (repeat)
         list->append(repeat);
-    return list.release();
+    return list;
 }
 
 } // namespace blink
