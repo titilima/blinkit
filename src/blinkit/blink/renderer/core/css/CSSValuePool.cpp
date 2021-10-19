@@ -65,31 +65,31 @@ CSSValuePool::CSSValuePool()
     m_numberValueCache.resize(maximumCacheableIntegerValue + 1);
 }
 
-PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSValuePool::createIdentifierValue(CSSValueID ident)
+GCRefPtr<CSSPrimitiveValue> CSSValuePool::createIdentifierValue(CSSValueID ident)
 {
     if (ident <= 0)
         return CSSPrimitiveValue::createIdentifier(ident);
 
     if (!m_identifierValueCache[ident])
         m_identifierValueCache[ident] = CSSPrimitiveValue::createIdentifier(ident);
-    return m_identifierValueCache[ident].get();
+    return m_identifierValueCache[ident];
 }
 
-PassRefPtrWillBeRawPtr<CSSCustomIdentValue> CSSValuePool::createIdentifierValue(CSSPropertyID ident)
+GCRefPtr<CSSCustomIdentValue> CSSValuePool::createIdentifierValue(CSSPropertyID ident)
 {
     return CSSCustomIdentValue::create(ident);
 }
 
-PassRefPtrWillBeRawPtr<CSSColorValue> CSSValuePool::createColorValue(RGBA32 rgbValue)
+GCRefPtr<CSSColorValue> CSSValuePool::createColorValue(RGBA32 rgbValue)
 {
     // These are the empty and deleted values of the hash table.
     if (rgbValue == Color::transparent)
-        return m_colorTransparent.get();
+        return m_colorTransparent;
     if (rgbValue == Color::white)
-        return m_colorWhite.get();
+        return m_colorWhite;
     // Just because it is common.
     if (rgbValue == Color::black)
-        return m_colorBlack.get();
+        return m_colorBlack;
 
     // Just wipe out the cache and start rebuilding if it gets too big.
     const unsigned maximumColorCacheSize = 512;
@@ -99,10 +99,10 @@ PassRefPtrWillBeRawPtr<CSSColorValue> CSSValuePool::createColorValue(RGBA32 rgbV
     GCRefPtr<CSSColorValue> &value = m_colorValueCache[rgbValue];
     if (!value)
         value = CSSColorValue::create(rgbValue);
-    return value.get();
+    return value;
 }
 
-PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSValuePool::createValue(double value, CSSPrimitiveValue::UnitType type)
+GCRefPtr<CSSPrimitiveValue> CSSValuePool::createValue(double value, CSSPrimitiveValue::UnitType type)
 {
     if (std::isinf(value))
         value = 0;
@@ -118,44 +118,44 @@ PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSValuePool::createValue(double value
     case CSSPrimitiveValue::UnitType::Pixels:
         if (!m_pixelValueCache[intValue])
             m_pixelValueCache[intValue] = CSSPrimitiveValue::create(value, type);
-        return m_pixelValueCache[intValue].get();
+        return m_pixelValueCache[intValue];
     case CSSPrimitiveValue::UnitType::Percentage:
         if (!m_percentValueCache[intValue])
             m_percentValueCache[intValue] = CSSPrimitiveValue::create(value, type);
-        return m_percentValueCache[intValue].get();
+        return m_percentValueCache[intValue];
     case CSSPrimitiveValue::UnitType::Number:
     case CSSPrimitiveValue::UnitType::Integer:
         if (!m_numberValueCache[intValue])
             m_numberValueCache[intValue] = CSSPrimitiveValue::create(value, CSSPrimitiveValue::UnitType::Integer);
-        return m_numberValueCache[intValue].get();
+        return m_numberValueCache[intValue];
     default:
         return CSSPrimitiveValue::create(value, type);
     }
 }
 
-PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSValuePool::createValue(const Length& value, const ComputedStyle& style)
+GCRefPtr<CSSPrimitiveValue> CSSValuePool::createValue(const Length& value, const ComputedStyle& style)
 {
     return CSSPrimitiveValue::create(value, style.effectiveZoom());
 }
 
-PassRefPtrWillBeRawPtr<CSSCustomIdentValue> CSSValuePool::createFontFamilyValue(const String& familyName)
+GCRefPtr<CSSCustomIdentValue> CSSValuePool::createFontFamilyValue(const String& familyName)
 {
     GCRefPtr<CSSCustomIdentValue> &value = m_fontFamilyValueCache[familyName];
     if (!value)
         value = CSSCustomIdentValue::create(familyName);
-    return value.get();
+    return value;
 }
 
-PassRefPtrWillBeRawPtr<CSSValueList> CSSValuePool::createFontFaceValue(const AtomicString& string)
+GCRefPtr<CSSValueList> CSSValuePool::createFontFaceValue(const AtomicString& string)
 {
     // Just wipe out the cache and start rebuilding if it gets too big.
     const unsigned maximumFontFaceCacheSize = 128;
     if (m_fontFaceValueCache.size() > maximumFontFaceCacheSize)
         m_fontFaceValueCache.clear();
 
-    Member<CSSValueList> &value = m_fontFaceValueCache[string];
+    GCRefPtr<CSSValueList> &value = m_fontFaceValueCache[string];
     if (!value) {
-        RefPtrWillBeRawPtr<CSSValue> parsedValue = CSSParser::parseSingleValue(CSSPropertyFontFamily, string);
+        GCRefPtr<CSSValue> parsedValue = CSSParser::parseSingleValue(CSSPropertyFontFamily, string);
         if (parsedValue && parsedValue->isValueList())
             value = toCSSValueList(parsedValue.get());
     }

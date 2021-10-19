@@ -47,28 +47,25 @@
 #include "core/css/CSSPrimitiveValue.h"
 #include "core/css/CSSUnsetValue.h"
 #include "core/css/CSSValueList.h"
-#include "wtf/HashMap.h"
-#include "wtf/RefPtr.h"
 #include "wtf/text/AtomicStringHash.h"
 
 namespace blink {
 
 class CORE_EXPORT CSSValuePool :  public BlinKit::GCObject {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(CSSValuePool);
 public:
-    PassRefPtrWillBeRawPtr<CSSValueList> createFontFaceValue(const AtomicString&);
-    PassRefPtrWillBeRawPtr<CSSCustomIdentValue> createFontFamilyValue(const String&);
-    PassRefPtrWillBeRawPtr<CSSInheritedValue> createInheritedValue() { return m_inheritedValue.get(); }
-    PassRefPtrWillBeRawPtr<CSSInitialValue> createImplicitInitialValue() { return m_implicitInitialValue.get(); }
-    PassRefPtrWillBeRawPtr<CSSInitialValue> createExplicitInitialValue() { return m_explicitInitialValue.get(); }
-    PassRefPtrWillBeRawPtr<CSSUnsetValue> createUnsetValue() { return m_unsetValue.get(); }
-    PassRefPtrWillBeRawPtr<CSSPrimitiveValue> createIdentifierValue(CSSValueID identifier);
-    PassRefPtrWillBeRawPtr<CSSCustomIdentValue> createIdentifierValue(CSSPropertyID identifier);
-    PassRefPtrWillBeRawPtr<CSSColorValue> createColorValue(RGBA32 rgbValue);
-    PassRefPtrWillBeRawPtr<CSSPrimitiveValue> createValue(double value, CSSPrimitiveValue::UnitType);
-    PassRefPtrWillBeRawPtr<CSSPrimitiveValue> createValue(const Length& value, const ComputedStyle&);
-    PassRefPtrWillBeRawPtr<CSSPrimitiveValue> createValue(const Length& value, float zoom) { return CSSPrimitiveValue::create(value, zoom); }
-    template<typename T> static PassRefPtrWillBeRawPtr<CSSPrimitiveValue> createValue(T value) { return CSSPrimitiveValue::create(value); }
+    GCRefPtr<CSSValueList> createFontFaceValue(const AtomicString&);
+    GCRefPtr<CSSCustomIdentValue> createFontFamilyValue(const String&);
+    GCRefPtr<CSSInheritedValue> createInheritedValue() { return m_inheritedValue; }
+    GCRefPtr<CSSInitialValue> createImplicitInitialValue() { return m_implicitInitialValue; }
+    GCRefPtr<CSSInitialValue> createExplicitInitialValue() { return m_explicitInitialValue; }
+    GCRefPtr<CSSUnsetValue> createUnsetValue() { return m_unsetValue; }
+    GCRefPtr<CSSPrimitiveValue> createIdentifierValue(CSSValueID identifier);
+    GCRefPtr<CSSCustomIdentValue> createIdentifierValue(CSSPropertyID identifier);
+    GCRefPtr<CSSColorValue> createColorValue(RGBA32 rgbValue);
+    GCRefPtr<CSSPrimitiveValue> createValue(double value, CSSPrimitiveValue::UnitType);
+    GCRefPtr<CSSPrimitiveValue> createValue(const Length& value, const ComputedStyle&);
+    GCRefPtr<CSSPrimitiveValue> createValue(const Length& value, float zoom) { return CSSPrimitiveValue::create(value, zoom); }
+    template<typename T> static GCRefPtr<CSSPrimitiveValue> createValue(T value) { return CSSPrimitiveValue::create(value); }
 
     DECLARE_TRACE();
 
@@ -94,7 +91,7 @@ private:
     std::vector<GCRefPtr<CSSPrimitiveValue>> m_percentValueCache;
     std::vector<GCRefPtr<CSSPrimitiveValue>> m_numberValueCache;
 
-    using FontFaceValueCache = WillBeHeapHashMap<AtomicString, RefPtrWillBeMember<CSSValueList>>;
+    using FontFaceValueCache = std::unordered_map<AtomicString, GCRefPtr<CSSValueList>>;
     FontFaceValueCache m_fontFaceValueCache;
 
     using FontFamilyValueCache = std::unordered_map<String, GCRefPtr<CSSCustomIdentValue>>;
