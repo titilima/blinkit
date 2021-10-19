@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSBorderImageSliceValue.h
+// Description: CSSBorderImageSliceValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -27,16 +38,14 @@
 #define CSSBorderImageSliceValue_h
 
 #include "core/css/CSSQuadValue.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefPtr.h"
 
 namespace blink {
 
 class CSSBorderImageSliceValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSBorderImageSliceValue> create(PassRefPtrWillBeRawPtr<CSSQuadValue> slices, bool fill)
+    static GCRefPtr<CSSBorderImageSliceValue> create(const GCRefPtr<CSSQuadValue> &slices, bool fill)
     {
-        return adoptRefWillBeNoop(new CSSBorderImageSliceValue(slices, fill));
+        return BlinKit::GCWrapShared(new CSSBorderImageSliceValue(slices, fill));
     }
 
     String customCSSText() const;
@@ -49,11 +58,11 @@ public:
 
     // These four values are used to make "cuts" in the border image. They can be numbers
     // or percentages.
-    RefPtrWillBeMember<CSSQuadValue> m_slices;
+    GCRefPtr<CSSQuadValue> m_slices;
     bool m_fill;
 
 private:
-    CSSBorderImageSliceValue(PassRefPtrWillBeRawPtr<CSSQuadValue> slices, bool fill);
+    CSSBorderImageSliceValue(const GCRefPtr<CSSQuadValue> &slices, bool fill);
 };
 
 DEFINE_CSS_VALUE_TYPE_CASTS(CSSBorderImageSliceValue, isBorderImageSliceValue());

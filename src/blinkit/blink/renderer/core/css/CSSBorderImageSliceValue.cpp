@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSBorderImageSliceValue.cpp
+// Description: CSSBorderImageSliceValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -29,7 +40,7 @@
 
 namespace blink {
 
-CSSBorderImageSliceValue::CSSBorderImageSliceValue(PassRefPtrWillBeRawPtr<CSSQuadValue> slices, bool fill)
+CSSBorderImageSliceValue::CSSBorderImageSliceValue(const GCRefPtr<CSSQuadValue> &slices, bool fill)
     : CSSValue(BorderImageSliceClass)
     , m_slices(slices)
     , m_fill(fill)
