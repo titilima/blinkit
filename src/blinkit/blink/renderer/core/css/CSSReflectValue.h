@@ -38,8 +38,6 @@
 #define CSSReflectValue_h
 
 #include "core/css/CSSValue.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefPtr.h"
 
 namespace blink {
 
