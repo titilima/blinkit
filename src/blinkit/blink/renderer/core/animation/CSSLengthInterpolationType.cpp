@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSLengthInterpolationType.cpp
+// Description: CSSLengthInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -279,23 +290,23 @@ static CSSPrimitiveValue::UnitType toUnitType(int lengthUnitType)
     return static_cast<CSSPrimitiveValue::UnitType>(CSSPrimitiveValue::lengthUnitTypeToUnitType(static_cast<CSSPrimitiveValue::LengthUnitType>(lengthUnitType)));
 }
 
-static PassRefPtrWillBeRawPtr<CSSCalcExpressionNode> createCalcExpression(const InterpolableList& values, bool hasPercentage)
+static GCRefPtr<CSSCalcExpressionNode> createCalcExpression(const InterpolableList& values, bool hasPercentage)
 {
-    RefPtrWillBeRawPtr<CSSCalcExpressionNode> result = nullptr;
+    GCRefPtr<CSSCalcExpressionNode> result;
     for (size_t i = 0; i < CSSPrimitiveValue::LengthUnitTypeCount; i++) {
         double value = toInterpolableNumber(values.get(i))->value();
         if (value || (i == CSSPrimitiveValue::UnitTypePercentage && hasPercentage)) {
-            RefPtrWillBeRawPtr<CSSCalcExpressionNode> node = CSSCalcValue::createExpressionNode(CSSPrimitiveValue::create(value, toUnitType(i)));
-            result = result ? CSSCalcValue::createExpressionNode(result.release(), node.release(), CalcAdd) : node.release();
+            GCRefPtr<CSSCalcExpressionNode> node = CSSCalcValue::createExpressionNode(CSSPrimitiveValue::create(value, toUnitType(i)));
+            result = result ? CSSCalcValue::createExpressionNode(result, node, CalcAdd) : node;
         }
     }
     ASSERT(result);
-    return result.release();
+    return result;
 }
 
-static PassRefPtrWillBeRawPtr<CSSValue> createCSSValue(const InterpolableList& values, bool hasPercentage, ValueRange range)
+static GCRefPtr<CSSValue> createCSSValue(const InterpolableList& values, bool hasPercentage, ValueRange range)
 {
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> result;
+    GCRefPtr<CSSPrimitiveValue> result;
     size_t firstUnitIndex = CSSPrimitiveValue::LengthUnitTypeCount;
     size_t unitTypeCount = 0;
     for (size_t i = 0; i < CSSPrimitiveValue::LengthUnitTypeCount; i++) {
