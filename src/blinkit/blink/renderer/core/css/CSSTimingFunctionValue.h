@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSTimingFunctionValue.h
+// Description: CSSTimingFunctionValue Classes
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2012 Apple Inc. All rights reserved.
  *
@@ -34,9 +45,9 @@ namespace blink {
 
 class CSSCubicBezierTimingFunctionValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSCubicBezierTimingFunctionValue> create(double x1, double y1, double x2, double y2)
+    static GCRefPtr<CSSCubicBezierTimingFunctionValue> create(double x1, double y1, double x2, double y2)
     {
-        return adoptRefWillBeNoop(new CSSCubicBezierTimingFunctionValue(x1, y1, x2, y2));
+        return BlinKit::GCWrapShared(new CSSCubicBezierTimingFunctionValue(x1, y1, x2, y2));
     }
 
     String customCSSText() const;
@@ -47,8 +58,6 @@ public:
     double y2() const { return m_y2; }
 
     bool equals(const CSSCubicBezierTimingFunctionValue&) const;
-
-    DEFINE_INLINE_TRACE_AFTER_DISPATCH() { CSSValue::traceAfterDispatch(visitor); }
 
 private:
     CSSCubicBezierTimingFunctionValue(double x1, double y1, double x2, double y2)
@@ -70,9 +79,9 @@ DEFINE_CSS_VALUE_TYPE_CASTS(CSSCubicBezierTimingFunctionValue, isCubicBezierTimi
 
 class CSSStepsTimingFunctionValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSStepsTimingFunctionValue> create(int steps, StepsTimingFunction::StepAtPosition stepAtPosition)
+    static GCRefPtr<CSSStepsTimingFunctionValue> create(int steps, StepsTimingFunction::StepAtPosition stepAtPosition)
     {
-        return adoptRefWillBeNoop(new CSSStepsTimingFunctionValue(steps, stepAtPosition));
+        return BlinKit::GCWrapShared(new CSSStepsTimingFunctionValue(steps, stepAtPosition));
     }
 
     int numberOfSteps() const { return m_steps; }
@@ -81,8 +90,6 @@ public:
     String customCSSText() const;
 
     bool equals(const CSSStepsTimingFunctionValue&) const;
-
-    DEFINE_INLINE_TRACE_AFTER_DISPATCH() { CSSValue::traceAfterDispatch(visitor); }
 
 private:
     CSSStepsTimingFunctionValue(int steps, StepsTimingFunction::StepAtPosition stepAtPosition)
