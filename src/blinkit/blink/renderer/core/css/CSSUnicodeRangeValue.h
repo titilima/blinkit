@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSUnicodeRangeValue.h
+// Description: CSSUnicodeRangeValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All rights reserved.
  *
@@ -27,15 +38,14 @@
 #define CSSUnicodeRangeValue_h
 
 #include "core/css/CSSValue.h"
-#include "wtf/PassRefPtr.h"
 
 namespace blink {
 
 class CSSUnicodeRangeValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSUnicodeRangeValue> create(UChar32 from, UChar32 to)
+    static GCRefPtr<CSSUnicodeRangeValue> create(UChar32 from, UChar32 to)
     {
-        return adoptRefWillBeNoop(new CSSUnicodeRangeValue(from, to));
+        return BlinKit::GCWrapShared(new CSSUnicodeRangeValue(from, to));
     }
 
     UChar32 from() const { return m_from; }
@@ -44,8 +54,6 @@ public:
     String customCSSText() const;
 
     bool equals(const CSSUnicodeRangeValue&) const;
-
-    DEFINE_INLINE_TRACE_AFTER_DISPATCH() { CSSValue::traceAfterDispatch(visitor); }
 
 private:
     CSSUnicodeRangeValue(UChar32 from, UChar32 to)
