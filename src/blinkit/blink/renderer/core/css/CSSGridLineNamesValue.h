@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSGridLineNamesValue.h
+// Description: CSSGridLineNamesValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Igalia, S.L. All rights reserved.
  *
@@ -32,20 +43,17 @@
 #define CSSGridLineNamesValue_h
 
 #include "core/css/CSSValueList.h"
-#include "wtf/PassRefPtr.h"
 
 namespace blink {
 
 class CSSGridLineNamesValue : public CSSValueList {
 public:
-    static PassRefPtrWillBeRawPtr<CSSGridLineNamesValue> create()
+    static GCRefPtr<CSSGridLineNamesValue> create()
     {
-        return adoptRefWillBeNoop(new CSSGridLineNamesValue());
+        return BlinKit::GCWrapShared(new CSSGridLineNamesValue);
     }
 
     String customCSSText() const;
-
-    DEFINE_INLINE_TRACE_AFTER_DISPATCH() { CSSValueList::traceAfterDispatch(visitor); }
 
 private:
     CSSGridLineNamesValue();
