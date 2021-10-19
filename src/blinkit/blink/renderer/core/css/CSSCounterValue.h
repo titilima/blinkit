@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSCounterValue.h
+// Description: CSSCounterValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2008 Apple Inc. All rights reserved.
@@ -30,9 +41,9 @@ namespace blink {
 
 class CSSCounterValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSCounterValue> create(PassRefPtrWillBeRawPtr<CSSCustomIdentValue> identifier, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> listStyle, PassRefPtrWillBeRawPtr<CSSCustomIdentValue> separator)
+    static GCRefPtr<CSSCounterValue> create(const GCRefPtr<CSSCustomIdentValue> &identifier, const GCRefPtr<CSSPrimitiveValue> &listStyle, const GCRefPtr<CSSCustomIdentValue> &separator)
     {
-        return adoptRefWillBeNoop(new CSSCounterValue(identifier, listStyle, separator));
+        return BlinKit::GCWrapShared(new CSSCounterValue(identifier, listStyle, separator));
     }
 
     String identifier() const { return m_identifier->value(); }
@@ -51,7 +62,7 @@ public:
     DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
-    CSSCounterValue(PassRefPtrWillBeRawPtr<CSSCustomIdentValue> identifier, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> listStyle, PassRefPtrWillBeRawPtr<CSSCustomIdentValue> separator)
+    CSSCounterValue(const GCRefPtr<CSSCustomIdentValue> &identifier, const GCRefPtr<CSSPrimitiveValue> &listStyle, const GCRefPtr<CSSCustomIdentValue> &separator)
         : CSSValue(CounterClass)
         , m_identifier(identifier)
         , m_listStyle(listStyle)
@@ -60,9 +71,9 @@ private:
         ASSERT(m_listStyle->isValueID());
     }
 
-    RefPtrWillBeMember<CSSCustomIdentValue> m_identifier; // string
-    RefPtrWillBeMember<CSSPrimitiveValue> m_listStyle; // ident
-    RefPtrWillBeMember<CSSCustomIdentValue> m_separator; // string
+    GCRefPtr<CSSCustomIdentValue> m_identifier; // string
+    GCRefPtr<CSSPrimitiveValue> m_listStyle; // ident
+    GCRefPtr<CSSCustomIdentValue> m_separator; // string
 };
 
 DEFINE_CSS_VALUE_TYPE_CASTS(CSSCounterValue, isCounterValue());
