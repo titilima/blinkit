@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSFunctionValue.h
+// Description: CSSFunctionValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -12,9 +23,9 @@ namespace blink {
 
 class CSSFunctionValue : public CSSValueList {
 public:
-    static PassRefPtrWillBeRawPtr<CSSFunctionValue> create(CSSValueID id)
+    static GCRefPtr<CSSFunctionValue> create(CSSValueID id)
     {
-        return adoptRefWillBeNoop(new CSSFunctionValue(id));
+        return BlinKit::GCWrapShared(new CSSFunctionValue(id));
     }
 
     String customCSSText() const;
