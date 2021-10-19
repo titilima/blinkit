@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSCalculationValue.h
+// Description: CSS Calculation Value Classes
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011, 2012 Google Inc. All rights reserved.
  *
@@ -65,7 +76,7 @@ enum CalculationCategory {
     CalcOther
 };
 
-class CSSCalcExpressionNode : public RefCountedWillBeGarbageCollected<CSSCalcExpressionNode> {
+class CSSCalcExpressionNode : public BlinKit::GCObject {
     DECLARE_EMPTY_VIRTUAL_DESTRUCTOR_WILL_BE_REMOVED(CSSCalcExpressionNode);
 public:
     enum Type {
@@ -100,14 +111,14 @@ protected:
     bool m_isInteger;
 };
 
-class CORE_EXPORT CSSCalcValue : public RefCountedWillBeGarbageCollected<CSSCalcValue> {
+class CORE_EXPORT CSSCalcValue : public BlinKit::GCObject {
 public:
-    static PassRefPtrWillBeRawPtr<CSSCalcValue> create(const CSSParserTokenRange&, ValueRange);
-    static PassRefPtrWillBeRawPtr<CSSCalcValue> create(PassRefPtrWillBeRawPtr<CSSCalcExpressionNode>, ValueRange = ValueRangeAll);
+    static GCRefPtr<CSSCalcValue> create(const CSSParserTokenRange&, ValueRange);
+    static GCRefPtr<CSSCalcValue> create(const GCRefPtr<CSSCalcExpressionNode> &, ValueRange = ValueRangeAll);
 
-    static PassRefPtrWillBeRawPtr<CSSCalcExpressionNode> createExpressionNode(PassRefPtrWillBeRawPtr<CSSPrimitiveValue>, bool isInteger = false);
-    static PassRefPtrWillBeRawPtr<CSSCalcExpressionNode> createExpressionNode(PassRefPtrWillBeRawPtr<CSSCalcExpressionNode>, PassRefPtrWillBeRawPtr<CSSCalcExpressionNode>, CalcOperator);
-    static PassRefPtrWillBeRawPtr<CSSCalcExpressionNode> createExpressionNode(double pixels, double percent);
+    static GCRefPtr<CSSCalcExpressionNode> createExpressionNode(const GCRefPtr<CSSPrimitiveValue> &, bool isInteger = false);
+    static GCRefPtr<CSSCalcExpressionNode> createExpressionNode(const GCRefPtr<CSSCalcExpressionNode> &, const GCRefPtr<CSSCalcExpressionNode> &, CalcOperator);
+    static GCRefPtr<CSSCalcExpressionNode> createExpressionNode(double pixels, double percent);
 
     PassRefPtr<CalculationValue> toCalcValue(const CSSToLengthConversionData& conversionData) const
     {
@@ -127,13 +138,10 @@ public:
     String customCSSText() const;
     bool equals(const CSSCalcValue&) const;
 
-    DEFINE_INLINE_TRACE()
-    {
-        visitor->trace(m_expression);
-    }
+    void trace(Visitor *visitor) override;
 
 private:
-    CSSCalcValue(PassRefPtrWillBeRawPtr<CSSCalcExpressionNode> expression, ValueRange range)
+    CSSCalcValue(const GCRefPtr<CSSCalcExpressionNode> &expression, ValueRange range)
         : m_expression(expression)
         , m_nonNegative(range == ValueRangeNonNegative)
     {
@@ -141,7 +149,7 @@ private:
 
     double clampToPermittedRange(double) const;
 
-    const RefPtrWillBeMember<CSSCalcExpressionNode> m_expression;
+    const GCRefPtr<CSSCalcExpressionNode> m_expression;
     const bool m_nonNegative;
 };
 
