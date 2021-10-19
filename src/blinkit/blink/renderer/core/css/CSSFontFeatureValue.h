@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSFontFeatureValue.h
+// Description: CSSFontFeatureValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -33,9 +44,9 @@ namespace blink {
 
 class CSSFontFeatureValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSFontFeatureValue> create(const AtomicString& tag, int value)
+    static GCRefPtr<CSSFontFeatureValue> create(const AtomicString& tag, int value)
     {
-        return adoptRefWillBeNoop(new CSSFontFeatureValue(tag, value));
+        return BlinKit::GCWrapShared(new CSSFontFeatureValue(tag, value));
     }
 
     const AtomicString& tag() const { return m_tag; }
@@ -43,8 +54,6 @@ public:
     String customCSSText() const;
 
     bool equals(const CSSFontFeatureValue&) const;
-
-    DEFINE_INLINE_TRACE_AFTER_DISPATCH() { CSSValue::traceAfterDispatch(visitor); }
 
 private:
     CSSFontFeatureValue(const AtomicString& tag, int value);
