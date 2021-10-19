@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSPrimitiveValue.h
+// Description: CSSPrimitiveValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2008 Apple Inc. All rights reserved.
@@ -184,22 +195,22 @@ public:
     bool isValueID() const { return type() == UnitType::ValueID; }
     bool colorIsDerivedFromElement() const;
 
-    static PassRefPtrWillBeRawPtr<CSSPrimitiveValue> createIdentifier(CSSValueID valueID)
+    static GCRefPtr<CSSPrimitiveValue> createIdentifier(CSSValueID valueID)
     {
-        return adoptRefWillBeNoop(new CSSPrimitiveValue(valueID));
+        return BlinKit::GCWrapShared(new CSSPrimitiveValue(valueID));
     }
-    static PassRefPtrWillBeRawPtr<CSSPrimitiveValue> create(double value, UnitType type)
+    static GCRefPtr<CSSPrimitiveValue> create(double value, UnitType type)
     {
-        return adoptRefWillBeNoop(new CSSPrimitiveValue(value, type));
+        return BlinKit::GCWrapShared(new CSSPrimitiveValue(value, type));
     }
-    static PassRefPtrWillBeRawPtr<CSSPrimitiveValue> create(const Length& value, float zoom)
+    static GCRefPtr<CSSPrimitiveValue> create(const Length& value, float zoom)
     {
-        return adoptRefWillBeNoop(new CSSPrimitiveValue(value, zoom));
+        return BlinKit::GCWrapShared(new CSSPrimitiveValue(value, zoom));
     }
-    template<typename T> static PassRefPtrWillBeRawPtr<CSSPrimitiveValue> create(T value)
+    template<typename T> static GCRefPtr<CSSPrimitiveValue> create(T value)
     {
         static_assert(!std::is_same<T, CSSValueID>::value, "Do not call create() with a CSSValueID; call createIdentifier() instead");
-        return adoptRefWillBeNoop(new CSSPrimitiveValue(value));
+        return BlinKit::GCWrapShared(new CSSPrimitiveValue(value));
     }
 
     ~CSSPrimitiveValue();
