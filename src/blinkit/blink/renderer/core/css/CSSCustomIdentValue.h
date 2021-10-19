@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSCustomIdentValue.h
+// Description: CSSCustomIdentValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,22 +18,20 @@
 
 #include "core/CSSPropertyNames.h"
 #include "core/css/CSSValue.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
 
 namespace blink {
 
 class CSSCustomIdentValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSCustomIdentValue> create(const String& str)
+    static GCRefPtr<CSSCustomIdentValue> create(const String& str)
     {
-        return adoptRefWillBeNoop(new CSSCustomIdentValue(str));
+        return BlinKit::GCWrapShared(new CSSCustomIdentValue(str));
     }
 
     // TODO(sashab, timloh): Remove this and lazily parse the CSSPropertyID in isKnownPropertyID().
-    static PassRefPtrWillBeRawPtr<CSSCustomIdentValue> create(CSSPropertyID id)
+    static GCRefPtr<CSSCustomIdentValue> create(CSSPropertyID id)
     {
-        return adoptRefWillBeNoop(new CSSCustomIdentValue(id));
+        return BlinKit::GCWrapShared(new CSSCustomIdentValue(id));
     }
 
     String value() const { ASSERT(!isKnownPropertyID()); return m_string; }
@@ -35,8 +44,6 @@ public:
     {
         return isKnownPropertyID() ? m_propertyId == other.m_propertyId : m_string == other.m_string;
     }
-
-    DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
     CSSCustomIdentValue(const String&);

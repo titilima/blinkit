@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSCustomIdentValue.cpp
+// Description: CSSCustomIdentValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,17 +33,11 @@ CSSCustomIdentValue::CSSCustomIdentValue(CSSPropertyID id)
     ASSERT(isKnownPropertyID());
 }
 
-
 String CSSCustomIdentValue::customCSSText() const
 {
     if (isKnownPropertyID())
         return getPropertyNameAtomicString(m_propertyId);
     return quoteCSSStringIfNeeded(m_string);
-}
-
-DEFINE_TRACE_AFTER_DISPATCH(CSSCustomIdentValue)
-{
-    CSSValue::traceAfterDispatch(visitor);
 }
 
 } // namespace blink
