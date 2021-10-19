@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSReflectValue.h
+// Description: CSSReflectValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All rights reserved.
  *
@@ -36,10 +47,10 @@ class CSSPrimitiveValue;
 
 class CSSReflectValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSReflectValue> create(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> direction,
-        PassRefPtrWillBeRawPtr<CSSPrimitiveValue> offset, PassRefPtrWillBeRawPtr<CSSValue> mask)
+    static GCRefPtr<CSSReflectValue> create(const GCRefPtr<CSSPrimitiveValue> &direction,
+        const GCRefPtr<CSSPrimitiveValue> &offset, const GCRefPtr<CSSValue> &mask)
     {
-        return adoptRefWillBeNoop(new CSSReflectValue(direction, offset, mask));
+        return BlinKit::GCWrapShared(new CSSReflectValue(direction, offset, mask));
     }
 
     CSSPrimitiveValue* direction() const { return m_direction.get(); }
@@ -53,7 +64,7 @@ public:
     DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
-    CSSReflectValue(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> direction, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> offset, PassRefPtrWillBeRawPtr<CSSValue> mask)
+    CSSReflectValue(const GCRefPtr<CSSPrimitiveValue> &direction, const GCRefPtr<CSSPrimitiveValue> &offset, const GCRefPtr<CSSValue> &mask)
         : CSSValue(ReflectClass)
         , m_direction(direction)
         , m_offset(offset)
@@ -61,9 +72,9 @@ private:
     {
     }
 
-    RefPtrWillBeMember<CSSPrimitiveValue> m_direction;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_offset;
-    RefPtrWillBeMember<CSSValue> m_mask;
+    GCRefPtr<CSSPrimitiveValue> m_direction;
+    GCRefPtr<CSSPrimitiveValue> m_offset;
+    GCRefPtr<CSSValue> m_mask;
 };
 
 DEFINE_CSS_VALUE_TYPE_CASTS(CSSReflectValue, isReflectValue());
