@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSURIValue.h
+// Description: CSSURIValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,16 +17,14 @@
 #define CSSURIValue_h
 
 #include "core/css/CSSValue.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
 
 namespace blink {
 
 class CSSURIValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSURIValue> create(const String& str)
+    static GCRefPtr<CSSURIValue> create(const String& str)
     {
-        return adoptRefWillBeNoop(new CSSURIValue(str));
+        return BlinKit::GCWrapShared(new CSSURIValue(str));
     }
 
     String value() const { return m_string; }
@@ -26,8 +35,6 @@ public:
     {
         return m_string == other.m_string;
     }
-
-    DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
     CSSURIValue(const String&);
