@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSShadowValue.cpp
+// Description: CSSShadowValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2009 Apple Computer, Inc.
@@ -26,12 +37,12 @@
 namespace blink {
 
 // Used for text-shadow and box-shadow
-CSSShadowValue::CSSShadowValue(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> x,
-    PassRefPtrWillBeRawPtr<CSSPrimitiveValue> y,
-    PassRefPtrWillBeRawPtr<CSSPrimitiveValue> blur,
-    PassRefPtrWillBeRawPtr<CSSPrimitiveValue> spread,
-    PassRefPtrWillBeRawPtr<CSSPrimitiveValue> style,
-    PassRefPtrWillBeRawPtr<CSSValue> color)
+CSSShadowValue::CSSShadowValue(const GCRefPtr<CSSPrimitiveValue> &x,
+    const GCRefPtr<CSSPrimitiveValue> &y,
+    const GCRefPtr<CSSPrimitiveValue> &blur,
+    const GCRefPtr<CSSPrimitiveValue> &spread,
+    const GCRefPtr<CSSPrimitiveValue> &style,
+    const GCRefPtr<CSSValue> &color)
     : CSSValue(ShadowClass)
     , x(x)
     , y(y)
