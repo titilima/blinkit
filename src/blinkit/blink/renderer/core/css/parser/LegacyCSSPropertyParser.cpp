@@ -76,7 +76,7 @@ static bool equalIgnoringCase(const CSSParserString& a, const char (&b)[N])
     return a.is8Bit() ? WTF::equalIgnoringCase(b, a.characters8(), length) : WTF::equalIgnoringCase(b, a.characters16(), length);
 }
 
-void CSSPropertyParser::addProperty(CSSPropertyID propId, PassRefPtrWillBeRawPtr<CSSValue> value, bool important, bool implicit)
+void CSSPropertyParser::addProperty(CSSPropertyID propId, CSSValue *value, bool important, bool implicit)
 {
     ASSERT(!isPropertyAlias(propId));
 
@@ -92,6 +92,11 @@ void CSSPropertyParser::addProperty(CSSPropertyID propId, PassRefPtrWillBeRawPtr
     }
 
     m_parsedProperties.emplace_back(propId, value, important, setFromShorthand, shorthandIndex, m_implicitShorthand || implicit);
+}
+
+void CSSPropertyParser::addProperty(CSSPropertyID propId, const GCRefPtr<CSSValue> &value, bool important, bool implicit)
+{
+    addProperty(propId, value.get(), important, implicit);
 }
 
 bool CSSPropertyParser::validCalculationUnit(CSSParserValue* value, Units unitflags, ReleaseParsedCalcValueCondition releaseCalc)
@@ -228,7 +233,7 @@ bool CSSPropertyParser::validUnit(CSSParserValue* value, Units unitflags, CSSPar
     }
 }
 
-PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSPropertyParser::createPrimitiveNumericValue(CSSParserValue* value)
+GCRefPtr<CSSPrimitiveValue> CSSPropertyParser::createPrimitiveNumericValue(CSSParserValue* value)
 {
     if (m_parsedCalculation) {
         ASSERT(isCalculation(value));
@@ -242,7 +247,7 @@ PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSPropertyParser::createPrimitiveNume
     return cssValuePool().createValue(value->fValue, value->unit());
 }
 
-inline PassRefPtrWillBeRawPtr<CSSCustomIdentValue> CSSPropertyParser::createPrimitiveCustomIdentValue(CSSParserValue* value)
+inline GCRefPtr<CSSCustomIdentValue> CSSPropertyParser::createPrimitiveCustomIdentValue(CSSParserValue* value)
 {
     ASSERT(value->m_unit == CSSParserValue::String || value->m_unit == CSSParserValue::Identifier);
     return CSSCustomIdentValue::create(value->string);
@@ -269,7 +274,7 @@ static inline bool isForwardSlashOperator(CSSParserValue* value)
     return value->m_unit == CSSParserValue::Operator && value->iValue == '/';
 }
 
-inline PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSPropertyParser::parseValidPrimitive(CSSValueID identifier, CSSParserValue* value)
+inline GCRefPtr<CSSPrimitiveValue> CSSPropertyParser::parseValidPrimitive(CSSValueID identifier, CSSParserValue* value)
 {
     if (identifier)
         return cssValuePool().createIdentifierValue(identifier);
@@ -289,7 +294,7 @@ inline PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSPropertyParser::parseValidPr
     return nullptr;
 }
 
-void CSSPropertyParser::addExpandedPropertyForValue(CSSPropertyID propId, PassRefPtrWillBeRawPtr<CSSValue> prpValue, bool important)
+void CSSPropertyParser::addExpandedPropertyForValue(CSSPropertyID propId, const GCRefPtr<CSSValue> &prpValue, bool important)
 {
     const StylePropertyShorthand& shorthand = shorthandForProperty(propId);
     unsigned shorthandLength = shorthand.length();
@@ -298,11 +303,10 @@ void CSSPropertyParser::addExpandedPropertyForValue(CSSPropertyID propId, PassRe
         return;
     }
 
-    RefPtrWillBeRawPtr<CSSValue> value = prpValue;
     ShorthandScope scope(this, propId);
     const CSSPropertyID* longhands = shorthand.properties();
     for (unsigned i = 0; i < shorthandLength; ++i)
-        addProperty(longhands[i], value, important);
+        addProperty(longhands[i], prpValue, important);
 }
 
 bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool important)
@@ -329,7 +333,7 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
 
     bool validPrimitive = false;
     Units unitless = FUnknown;
-    RefPtrWillBeRawPtr<CSSValue> parsedValue = nullptr;
+    GCRefPtr<CSSValue> parsedValue;
 
     switch (propId) {
     case CSSPropertyBackgroundColor: // <color> | inherit
@@ -373,8 +377,8 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
     case CSSPropertyWebkitMaskRepeatX:
     case CSSPropertyWebkitMaskRepeatY:
     {
-        RefPtrWillBeRawPtr<CSSValue> val1 = nullptr;
-        RefPtrWillBeRawPtr<CSSValue> val2 = nullptr;
+        GCRefPtr<CSSValue> val1;
+        GCRefPtr<CSSValue> val2;
         CSSPropertyID propId1, propId2;
         bool result = false;
         if (parseFillProperty(unresolvedProperty, propId1, propId2, val1, val2)) {
@@ -451,7 +455,7 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
     case CSSPropertyWebkitMaskBoxImage:
         return parseBorderImageShorthand(propId, important);
     case CSSPropertyWebkitBorderImage: {
-        if (RefPtrWillBeRawPtr<CSSValue> result = parseBorderImage(propId)) {
+        if (GCRefPtr<CSSValue> result = parseBorderImage(propId)) {
             addProperty(propId, result, important);
             return true;
         }
@@ -460,7 +464,7 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
 
     case CSSPropertyBorderImageOutset:
     case CSSPropertyWebkitMaskBoxImageOutset: {
-        RefPtrWillBeRawPtr<CSSQuadValue> result = nullptr;
+        GCRefPtr<CSSQuadValue> result;
         if (parseBorderImageOutset(result)) {
             addProperty(propId, result, important);
             return true;
@@ -469,7 +473,7 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
     }
     case CSSPropertyBorderImageRepeat:
     case CSSPropertyWebkitMaskBoxImageRepeat: {
-        RefPtrWillBeRawPtr<CSSValue> result = nullptr;
+        GCRefPtr<CSSValue> result;
         if (parseBorderImageRepeat(result)) {
             addProperty(propId, result, important);
             return true;
@@ -478,7 +482,7 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
     }
     case CSSPropertyBorderImageSlice:
     case CSSPropertyWebkitMaskBoxImageSlice: {
-        RefPtrWillBeRawPtr<CSSBorderImageSliceValue> result = nullptr;
+        GCRefPtr<CSSBorderImageSliceValue> result;
         if (parseBorderImageSlice(propId, result)) {
             addProperty(propId, result, important);
             return true;
@@ -487,7 +491,7 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
     }
     case CSSPropertyBorderImageWidth:
     case CSSPropertyWebkitMaskBoxImageWidth: {
-        RefPtrWillBeRawPtr<CSSQuadValue> result = nullptr;
+        GCRefPtr<CSSQuadValue> result;
         if (parseBorderImageWidth(result)) {
             addProperty(propId, result, important);
             return true;
@@ -892,14 +896,14 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
     return false;
 }
 
-void CSSPropertyParser::addFillValue(RefPtrWillBeRawPtr<CSSValue>& lval, PassRefPtrWillBeRawPtr<CSSValue> rval)
+void CSSPropertyParser::addFillValue(GCRefPtr<CSSValue> &lval, const GCRefPtr<CSSValue> &rval)
 {
     if (lval) {
         if (lval->isBaseValueList())
             toCSSValueList(lval.get())->append(rval);
         else {
-            PassRefPtrWillBeRawPtr<CSSValue> oldlVal(lval.release());
-            PassRefPtrWillBeRawPtr<CSSValueList> list = CSSValueList::createCommaSeparated();
+            GCRefPtr<CSSValue> oldlVal(lval.release());
+            GCRefPtr<CSSValueList> list = CSSValueList::createCommaSeparated();
             list->append(oldlVal);
             list->append(rval);
             lval = list;
@@ -909,7 +913,7 @@ void CSSPropertyParser::addFillValue(RefPtrWillBeRawPtr<CSSValue>& lval, PassRef
         lval = rval;
 }
 
-static bool parseBackgroundClip(CSSParserValue* parserValue, RefPtrWillBeRawPtr<CSSValue>& cssValue)
+static bool parseBackgroundClip(CSSParserValue* parserValue, GCRefPtr<CSSValue>& cssValue)
 {
     if (parserValue->id == CSSValueBorderBox || parserValue->id == CSSValuePaddingBox
         || parserValue->id == CSSValueContentBox || parserValue->id == CSSValueWebkitText) {
@@ -930,14 +934,10 @@ bool CSSPropertyParser::parseFillShorthand(CSSPropertyID propId, const CSSProper
     ShorthandScope scope(this, propId);
 
     bool parsedProperty[cMaxFillProperties] = { false };
-    RefPtrWillBeRawPtr<CSSValue> values[cMaxFillProperties];
-#if ENABLE(OILPAN)
-    // Zero initialize the array of raw pointers.
-    memset(&values, 0, sizeof(values));
-#endif
-    RefPtrWillBeRawPtr<CSSValue> clipValue = nullptr;
-    RefPtrWillBeRawPtr<CSSValue> positionYValue = nullptr;
-    RefPtrWillBeRawPtr<CSSValue> repeatYValue = nullptr;
+    GCRefPtr<CSSValue> values[cMaxFillProperties];
+    GCRefPtr<CSSValue> clipValue;
+    GCRefPtr<CSSValue> positionYValue;
+    GCRefPtr<CSSValue> repeatYValue;
     bool foundClip = false;
     int i;
     bool foundPositionCSSProperty = false;
@@ -986,29 +986,28 @@ bool CSSPropertyParser::parseFillShorthand(CSSPropertyID propId, const CSSProper
                 continue;
 
             if (!parsedProperty[i]) {
-                RefPtrWillBeRawPtr<CSSValue> val1 = nullptr;
-                RefPtrWillBeRawPtr<CSSValue> val2 = nullptr;
+                GCRefPtr<CSSValue> val1, val2;
                 CSSPropertyID propId1, propId2;
                 CSSParserValue* parserValue = m_valueList->current();
                 // parseFillProperty() may modify m_implicitShorthand, so we MUST reset it
                 // before EACH return below.
                 if (parserValue && parseFillProperty(properties[i], propId1, propId2, val1, val2)) {
                     parsedProperty[i] = found = true;
-                    addFillValue(values[i], val1.release());
+                    addFillValue(values[i], val1);
                     if (properties[i] == CSSPropertyBackgroundPosition || properties[i] == CSSPropertyWebkitMaskPosition)
-                        addFillValue(positionYValue, val2.release());
+                        addFillValue(positionYValue, val2);
                     if (properties[i] == CSSPropertyBackgroundRepeat || properties[i] == CSSPropertyWebkitMaskRepeat)
-                        addFillValue(repeatYValue, val2.release());
+                        addFillValue(repeatYValue, val2);
                     if (properties[i] == CSSPropertyBackgroundOrigin || properties[i] == CSSPropertyWebkitMaskOrigin) {
                         // Reparse the value as a clip, and see if we succeed.
                         if (parseBackgroundClip(parserValue, val1))
-                            addFillValue(clipValue, val1.release()); // The property parsed successfully.
+                            addFillValue(clipValue, val1); // The property parsed successfully.
                         else
                             addFillValue(clipValue, cssValuePool().createImplicitInitialValue()); // Some value was used for origin that is not supported by clip. Just reset clip instead.
                     }
                     if (properties[i] == CSSPropertyBackgroundClip || properties[i] == CSSPropertyWebkitMaskClip) {
                         // Update clipValue
-                        addFillValue(clipValue, val1.release());
+                        addFillValue(clipValue, val1);
                         foundClip = true;
                     }
                     if (properties[i] == CSSPropertyBackgroundPosition || properties[i] == CSSPropertyWebkitMaskPosition)
@@ -1179,7 +1178,7 @@ bool CSSPropertyParser::parse4Values(CSSPropertyID propId, const CSSPropertyID *
     return true;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseColor(const CSSParserValue* value, bool acceptQuirkyColors)
+GCRefPtr<CSSValue> CSSPropertyParser::parseColor(const CSSParserValue* value, bool acceptQuirkyColors)
 {
     CSSValueID id = value->id;
     if (isColorKeyword(id)) {
@@ -1197,7 +1196,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseColor(const CSSParserVa
     return cssValuePool().createColorValue(c);
 }
 
-bool CSSPropertyParser::parseFillImage(CSSParserValueList* valueList, RefPtrWillBeRawPtr<CSSValue>& value)
+bool CSSPropertyParser::parseFillImage(CSSParserValueList* valueList, GCRefPtr<CSSValue>& value)
 {
     if (valueList->current()->id == CSSValueNone) {
         value = cssValuePool().createIdentifierValue(CSSValueNone);
@@ -1222,7 +1221,7 @@ bool CSSPropertyParser::parseFillImage(CSSParserValueList* valueList, RefPtrWill
     return false;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseFillPositionX(CSSParserValueList* valueList)
+GCRefPtr<CSSValue> CSSPropertyParser::parseFillPositionX(CSSParserValueList* valueList)
 {
     int id = valueList->current()->id;
     if (id == CSSValueLeft || id == CSSValueRight || id == CSSValueCenter) {
@@ -1238,7 +1237,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseFillPositionX(CSSParser
     return nullptr;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseFillPositionY(CSSParserValueList* valueList)
+GCRefPtr<CSSValue> CSSPropertyParser::parseFillPositionY(CSSParserValueList* valueList)
 {
     int id = valueList->current()->id;
     if (id == CSSValueTop || id == CSSValueBottom || id == CSSValueCenter) {
@@ -1254,7 +1253,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseFillPositionY(CSSParser
     return nullptr;
 }
 
-PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSPropertyParser::parseFillPositionComponent(CSSParserValueList* valueList, unsigned& cumulativeFlags, FillPositionFlag& individualFlag, FillPositionParsingMode parsingMode, Units unitless)
+GCRefPtr<CSSPrimitiveValue> CSSPropertyParser::parseFillPositionComponent(CSSParserValueList* valueList, unsigned& cumulativeFlags, FillPositionFlag& individualFlag, FillPositionParsingMode parsingMode, Units unitless)
 {
     CSSValueID id = valueList->current()->id;
     if (id == CSSValueLeft || id == CSSValueTop || id == CSSValueRight || id == CSSValueBottom || id == CSSValueCenter) {
@@ -1319,7 +1318,7 @@ static bool isFillPositionKeyword(CSSValueID value)
     return value == CSSValueLeft || value == CSSValueTop || value == CSSValueBottom || value == CSSValueRight || value == CSSValueCenter;
 }
 
-void CSSPropertyParser::parse4ValuesFillPosition(CSSParserValueList* valueList, RefPtrWillBeRawPtr<CSSValue>& value1, RefPtrWillBeRawPtr<CSSValue>& value2, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> parsedValue1, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> parsedValue2)
+void CSSPropertyParser::parse4ValuesFillPosition(CSSParserValueList *valueList, GCRefPtr<CSSValue> &value1, GCRefPtr<CSSValue> &value2, CSSPrimitiveValue *parsedValue1, CSSPrimitiveValue *parsedValue2)
 {
     // [ left | right ] [ <percentage] | <length> ] && [ top | bottom ] [ <percentage> | <length> ]
     // In the case of 4 values <position> requires the second value to be a length or a percentage.
@@ -1328,7 +1327,7 @@ void CSSPropertyParser::parse4ValuesFillPosition(CSSParserValueList* valueList, 
 
     unsigned cumulativeFlags = 0;
     FillPositionFlag value3Flag = InvalidFillPosition;
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> value3 = parseFillPositionComponent(valueList, cumulativeFlags, value3Flag, ResolveValuesAsKeyword);
+    GCRefPtr<CSSPrimitiveValue> value3 = parseFillPositionComponent(valueList, cumulativeFlags, value3Flag, ResolveValuesAsKeyword);
     if (!value3)
         return;
 
@@ -1351,7 +1350,7 @@ void CSSPropertyParser::parse4ValuesFillPosition(CSSParserValueList* valueList, 
 
     cumulativeFlags = 0;
     FillPositionFlag value4Flag = InvalidFillPosition;
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> value4 = parseFillPositionComponent(valueList, cumulativeFlags, value4Flag, ResolveValuesAsKeyword);
+    GCRefPtr<CSSPrimitiveValue> value4 = parseFillPositionComponent(valueList, cumulativeFlags, value4Flag, ResolveValuesAsKeyword);
     if (!value4)
         return;
 
@@ -1360,18 +1359,18 @@ void CSSPropertyParser::parse4ValuesFillPosition(CSSParserValueList* valueList, 
         return;
 
     value1 = CSSValuePair::create(parsedValue1, parsedValue2, CSSValuePair::DropIdenticalValues);
-    value2 = CSSValuePair::create(value3, value4, CSSValuePair::DropIdenticalValues);
+    value2 = CSSValuePair::create(value3.get(), value4.get(), CSSValuePair::DropIdenticalValues);
 
     if (ident1 == CSSValueTop || ident1 == CSSValueBottom)
         value1.swap(value2);
 
     valueList->next();
 }
-void CSSPropertyParser::parse3ValuesFillPosition(CSSParserValueList* valueList, RefPtrWillBeRawPtr<CSSValue>& value1, RefPtrWillBeRawPtr<CSSValue>& value2, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> parsedValue1, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> parsedValue2)
+void CSSPropertyParser::parse3ValuesFillPosition(CSSParserValueList* valueList, GCRefPtr<CSSValue> &value1, GCRefPtr<CSSValue> &value2, CSSPrimitiveValue *parsedValue1, CSSPrimitiveValue *parsedValue2)
 {
     unsigned cumulativeFlags = 0;
     FillPositionFlag value3Flag = InvalidFillPosition;
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> value3 = parseFillPositionComponent(valueList, cumulativeFlags, value3Flag, ResolveValuesAsKeyword);
+    GCRefPtr<CSSPrimitiveValue> value3 = parseFillPositionComponent(valueList, cumulativeFlags, value3Flag, ResolveValuesAsKeyword);
 
     // value3 is not an expected value, we return.
     if (!value3)
@@ -1402,7 +1401,7 @@ void CSSPropertyParser::parse3ValuesFillPosition(CSSParserValueList* valueList, 
             swapNeeded = true;
         }
         value1 = CSSValuePair::create(cssValuePool().createIdentifierValue(firstPositionKeyword), cssValuePool().createValue(50, CSSPrimitiveValue::UnitType::Percentage), CSSValuePair::DropIdenticalValues);
-        value2 = CSSValuePair::create(parsedValue2, value3, CSSValuePair::DropIdenticalValues);
+        value2 = CSSValuePair::create(parsedValue2, value3.get(), CSSValuePair::DropIdenticalValues);
     } else if (ident3 == CSSValueCenter) {
         if (isFillPositionKeyword(ident2))
             return;
@@ -1415,8 +1414,7 @@ void CSSPropertyParser::parse3ValuesFillPosition(CSSParserValueList* valueList, 
         value1 = CSSValuePair::create(parsedValue1, parsedValue2, CSSValuePair::DropIdenticalValues);
         value2 = CSSValuePair::create(cssValuePool().createIdentifierValue(secondPositionKeyword), cssValuePool().createValue(50, CSSPrimitiveValue::UnitType::Percentage), CSSValuePair::DropIdenticalValues);
     } else {
-        RefPtrWillBeRawPtr<CSSPrimitiveValue> firstPositionValue = nullptr;
-        RefPtrWillBeRawPtr<CSSPrimitiveValue> secondPositionValue = nullptr;
+        GCRefPtr<CSSPrimitiveValue> firstPositionValue, secondPositionValue;
 
         if (isFillPositionKeyword(ident2)) {
             // To match CSS grammar, we should only accept: [ center | left | right | bottom | top ] [ left | right | top | bottom ] [ <percentage> | <length> ].
@@ -1441,7 +1439,7 @@ void CSSPropertyParser::parse3ValuesFillPosition(CSSParserValueList* valueList, 
         if (isValueConflictingWithCurrentEdge(ident1, secondPositionKeyword))
             return;
 
-        value1 = CSSValuePair::create(parsedValue1, firstPositionValue, CSSValuePair::DropIdenticalValues);
+        value1 = CSSValuePair::create(parsedValue1, firstPositionValue.get(), CSSValuePair::DropIdenticalValues);
         value2 = CSSValuePair::create(cssValuePool().createIdentifierValue(secondPositionKeyword), secondPositionValue, CSSValuePair::DropIdenticalValues);
     }
 
@@ -1463,7 +1461,7 @@ inline bool CSSPropertyParser::isPotentialPositionValue(CSSParserValue* value)
     return isFillPositionKeyword(value->id) || validUnit(value, FPercent | FLength, ReleaseParsedCalcValue);
 }
 
-void CSSPropertyParser::parseFillPosition(CSSParserValueList* valueList, RefPtrWillBeRawPtr<CSSValue>& value1, RefPtrWillBeRawPtr<CSSValue>& value2, Units unitless)
+void CSSPropertyParser::parseFillPosition(CSSParserValueList* valueList, GCRefPtr<CSSValue>& value1, GCRefPtr<CSSValue>& value2, Units unitless)
 {
     unsigned numberOfValues = 0;
     for (unsigned i = valueList->currentIndex(); i < valueList->size(); ++i, ++numberOfValues) {
@@ -1510,8 +1508,8 @@ void CSSPropertyParser::parseFillPosition(CSSParserValueList* valueList, RefPtrW
         return;
     }
 
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> parsedValue1 = toCSSPrimitiveValue(value1.get());
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> parsedValue2 = toCSSPrimitiveValue(value2.get());
+    GCRefPtr<CSSPrimitiveValue> parsedValue1(toCSSPrimitiveValue(value1.get()));
+    GCRefPtr<CSSPrimitiveValue> parsedValue2(toCSSPrimitiveValue(value2.get()));
 
     value1.clear();
     value2.clear();
@@ -1521,12 +1519,12 @@ void CSSPropertyParser::parseFillPosition(CSSParserValueList* valueList, RefPtrW
         return;
 
     if (numberOfValues == 3)
-        parse3ValuesFillPosition(valueList, value1, value2, parsedValue1.release(), parsedValue2.release());
+        parse3ValuesFillPosition(valueList, value1, value2, parsedValue1.get(), parsedValue2.get());
     else
-        parse4ValuesFillPosition(valueList, value1, value2, parsedValue1.release(), parsedValue2.release());
+        parse4ValuesFillPosition(valueList, value1, value2, parsedValue1.get(), parsedValue2.get());
 }
 
-void CSSPropertyParser::parse2ValuesFillPosition(CSSParserValueList* valueList, RefPtrWillBeRawPtr<CSSValue>& value1, RefPtrWillBeRawPtr<CSSValue>& value2, Units unitless)
+void CSSPropertyParser::parse2ValuesFillPosition(CSSParserValueList* valueList, GCRefPtr<CSSValue>& value1, GCRefPtr<CSSValue>& value2, Units unitless)
 {
     // Parse the first value.  We're just making sure that it is one of the valid keywords or a percentage/length.
     unsigned cumulativeFlags = 0;
@@ -1569,7 +1567,7 @@ void CSSPropertyParser::parse2ValuesFillPosition(CSSParserValueList* valueList, 
         value1.swap(value2);
 }
 
-void CSSPropertyParser::parseFillRepeat(RefPtrWillBeRawPtr<CSSValue>& value1, RefPtrWillBeRawPtr<CSSValue>& value2)
+void CSSPropertyParser::parseFillRepeat(GCRefPtr<CSSValue>& value1, GCRefPtr<CSSValue>& value2)
 {
     CSSValueID id = m_valueList->current()->id;
     if (id == CSSValueRepeatX) {
@@ -1589,7 +1587,7 @@ void CSSPropertyParser::parseFillRepeat(RefPtrWillBeRawPtr<CSSValue>& value1, Re
     if (id == CSSValueRepeat || id == CSSValueNoRepeat || id == CSSValueRound || id == CSSValueSpace)
         value1 = cssValuePool().createIdentifierValue(id);
     else {
-        value1 = nullptr;
+        value1.clear();
         return;
     }
 
@@ -1610,7 +1608,7 @@ void CSSPropertyParser::parseFillRepeat(RefPtrWillBeRawPtr<CSSValue>& value1, Re
     value2 = cssValuePool().createIdentifierValue(toCSSPrimitiveValue(value1.get())->getValueID());
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseFillSize(CSSPropertyID unresolvedProperty)
+GCRefPtr<CSSValue> CSSPropertyParser::parseFillSize(CSSPropertyID unresolvedProperty)
 {
     CSSParserValue* value = m_valueList->current();
     m_valueList->next();
@@ -1618,7 +1616,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseFillSize(CSSPropertyID 
     if (value->id == CSSValueContain || value->id == CSSValueCover)
         return cssValuePool().createIdentifierValue(value->id);
 
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> parsedValue1 = nullptr;
+    GCRefPtr<CSSPrimitiveValue> parsedValue1;
 
     if (value->id == CSSValueAuto)
         parsedValue1 = cssValuePool().createIdentifierValue(CSSValueAuto);
@@ -1628,7 +1626,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseFillSize(CSSPropertyID 
         parsedValue1 = createPrimitiveNumericValue(value);
     }
 
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> parsedValue2 = nullptr;
+    GCRefPtr<CSSPrimitiveValue> parsedValue2;
     value = m_valueList->current();
     if (value) {
         if (value->id == CSSValueAuto) {
@@ -1648,18 +1646,16 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseFillSize(CSSPropertyID 
     if (!parsedValue2)
         return parsedValue1;
 
-    return CSSValuePair::create(parsedValue1.release(), parsedValue2.release(), CSSValuePair::KeepIdenticalValues);
+    return CSSValuePair::create(parsedValue1, parsedValue2, CSSValuePair::KeepIdenticalValues);
 }
 
 bool CSSPropertyParser::parseFillProperty(CSSPropertyID propId, CSSPropertyID& propId1, CSSPropertyID& propId2,
-    RefPtrWillBeRawPtr<CSSValue>& retValue1, RefPtrWillBeRawPtr<CSSValue>& retValue2)
+    GCRefPtr<CSSValue>& retValue1, GCRefPtr<CSSValue>& retValue2)
 {
     // We initially store the first value in value/value2, and only create
     // CSSValueLists if we have more values.
-    RefPtrWillBeRawPtr<CSSValueList> values = nullptr;
-    RefPtrWillBeRawPtr<CSSValueList> values2 = nullptr;
-    RefPtrWillBeRawPtr<CSSValue> value = nullptr;
-    RefPtrWillBeRawPtr<CSSValue> value2 = nullptr;
+    GCRefPtr<CSSValueList> values, values2;
+    GCRefPtr<CSSValue> value, value2;
 
     retValue1 = retValue2 = nullptr;
     propId1 = resolveCSSPropertyID(propId);
@@ -1679,8 +1675,8 @@ bool CSSPropertyParser::parseFillProperty(CSSPropertyID propId, CSSPropertyID& p
     }
 
     while (true) {
-        RefPtrWillBeRawPtr<CSSValue> currValue = nullptr;
-        RefPtrWillBeRawPtr<CSSValue> currValue2 = nullptr;
+        GCRefPtr<CSSValue> currValue;
+        GCRefPtr<CSSValue> currValue2;
 
         Units unitless = FUnknown;
         CSSParserValue* val = m_valueList->current();
@@ -1863,7 +1859,7 @@ static inline bool isValidCustomIdentForGridPositions(const CSSParserValue& valu
 }
 
 // The function parses [ <integer> || <custom-ident> ] in <grid-line> (which can be stand alone or with 'span').
-bool CSSPropertyParser::parseIntegerOrCustomIdentFromGridPosition(RefPtrWillBeRawPtr<CSSPrimitiveValue>& numericValue, RefPtrWillBeRawPtr<CSSCustomIdentValue>& gridLineName)
+bool CSSPropertyParser::parseIntegerOrCustomIdentFromGridPosition(GCRefPtr<CSSPrimitiveValue>& numericValue, GCRefPtr<CSSCustomIdentValue>& gridLineName)
 {
     CSSParserValue* value = m_valueList->current();
     if (validUnit(value, FInteger) && value->fValue) {
@@ -1889,7 +1885,7 @@ bool CSSPropertyParser::parseIntegerOrCustomIdentFromGridPosition(RefPtrWillBeRa
     return false;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseGridPosition()
+GCRefPtr<CSSValue> CSSPropertyParser::parseGridPosition()
 {
     ASSERT(RuntimeEnabledFeatures::cssGridLayoutEnabled());
 
@@ -1899,8 +1895,8 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseGridPosition()
         return cssValuePool().createIdentifierValue(CSSValueAuto);
     }
 
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> numericValue = nullptr;
-    RefPtrWillBeRawPtr<CSSCustomIdentValue> gridLineName = nullptr;
+    GCRefPtr<CSSPrimitiveValue> numericValue;
+    GCRefPtr<CSSCustomIdentValue> gridLineName;
     bool hasSeenSpanKeyword = false;
 
     if (parseIntegerOrCustomIdentFromGridPosition(numericValue, gridLineName)) {
@@ -1934,7 +1930,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseGridPosition()
     if (gridLineName && !numericValue && !hasSeenSpanKeyword)
         return CSSCustomIdentValue::create(gridLineName->value());
 
-    RefPtrWillBeRawPtr<CSSValueList> values = CSSValueList::createSpaceSeparated();
+    GCRefPtr<CSSValueList> values = CSSValueList::createSpaceSeparated();
     if (hasSeenSpanKeyword)
         values->append(cssValuePool().createIdentifierValue(CSSValueSpan));
     if (numericValue)
@@ -1942,13 +1938,13 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseGridPosition()
     if (gridLineName)
         values->append(gridLineName.release());
     ASSERT(values->length());
-    return values.release();
+    return values;
 }
 
-static PassRefPtrWillBeRawPtr<CSSValue> gridMissingGridPositionValue(CSSValue* value)
+static GCRefPtr<CSSValue> gridMissingGridPositionValue(CSSValue* value)
 {
     if (value->isCustomIdentValue())
-        return value;
+        return GCWrapShared(value);
 
     return cssValuePool().createIdentifierValue(CSSValueAuto);
 }
@@ -1959,11 +1955,11 @@ bool CSSPropertyParser::parseGridItemPositionShorthand(CSSPropertyID shorthandId
     const StylePropertyShorthand& shorthand = shorthandForProperty(shorthandId);
     ASSERT(shorthand.length() == 2);
 
-    RefPtrWillBeRawPtr<CSSValue> startValue = parseGridPosition();
+    GCRefPtr<CSSValue> startValue = parseGridPosition();
     if (!startValue)
         return false;
 
-    RefPtrWillBeRawPtr<CSSValue> endValue = nullptr;
+    GCRefPtr<CSSValue> endValue;
     if (m_valueList->current()) {
         if (!isForwardSlashOperator(m_valueList->current()))
             return false;
@@ -1978,8 +1974,8 @@ bool CSSPropertyParser::parseGridItemPositionShorthand(CSSPropertyID shorthandId
         endValue = gridMissingGridPositionValue(startValue.get());
     }
 
-    addProperty(shorthand.properties()[0], startValue, important);
-    addProperty(shorthand.properties()[1], endValue, important);
+    addProperty(shorthand.properties()[0], startValue.get(), important);
+    addProperty(shorthand.properties()[1], endValue.get(), important);
     return true;
 }
 
@@ -1995,8 +1991,8 @@ bool CSSPropertyParser::parseGridGapShorthand(bool important)
     if (!validUnit(value, FLength | FNonNeg))
         return false;
 
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> columnGap = createPrimitiveNumericValue(value);
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> rowGap = nullptr;
+    GCRefPtr<CSSPrimitiveValue> columnGap = createPrimitiveNumericValue(value);
+    GCRefPtr<CSSPrimitiveValue> rowGap;
 
     value = m_valueList->next();
     if (value) {
@@ -2016,13 +2012,13 @@ bool CSSPropertyParser::parseGridGapShorthand(bool important)
     return true;
 }
 
-bool CSSPropertyParser::parseGridTemplateRowsAndAreas(PassRefPtrWillBeRawPtr<CSSValue> templateColumns, bool important)
+bool CSSPropertyParser::parseGridTemplateRowsAndAreas(CSSValue *templateColumns, bool important)
 {
     NamedGridAreaMap gridAreaMap;
     size_t rowCount = 0;
     size_t columnCount = 0;
     bool trailingIdentWasAdded = false;
-    RefPtrWillBeRawPtr<CSSValueList> templateRows = CSSValueList::createSpaceSeparated();
+    GCRefPtr<CSSValueList> templateRows = CSSValueList::createSpaceSeparated();
 
     // At least template-areas strings must be defined.
     if (!m_valueList->current())
@@ -2040,7 +2036,7 @@ bool CSSPropertyParser::parseGridTemplateRowsAndAreas(PassRefPtrWillBeRawPtr<CSS
 
         // Handle template-rows's track-size.
         if (m_valueList->current() && m_valueList->current()->m_unit != CSSParserValue::String) {
-            RefPtrWillBeRawPtr<CSSValue> value = parseGridTrackSize(*m_valueList);
+            GCRefPtr<CSSValue> value = parseGridTrackSize(*m_valueList);
             if (!value)
                 return false;
             templateRows->append(value);
@@ -2061,9 +2057,9 @@ bool CSSPropertyParser::parseGridTemplateRowsAndAreas(PassRefPtrWillBeRawPtr<CSS
         addProperty(CSSPropertyGridTemplateColumns,  cssValuePool().createIdentifierValue(CSSValueNone), important);
 
     // [<line-names>? <string> [<track-size> <line-names>]? ]+
-    RefPtrWillBeRawPtr<CSSValue> templateAreas = CSSGridTemplateAreasValue::create(gridAreaMap, rowCount, columnCount);
-    addProperty(CSSPropertyGridTemplateAreas, templateAreas.release(), important);
-    addProperty(CSSPropertyGridTemplateRows, templateRows.release(), important);
+    GCRefPtr<CSSValue> templateAreas = CSSGridTemplateAreasValue::create(gridAreaMap, rowCount, columnCount);
+    addProperty(CSSPropertyGridTemplateAreas, templateAreas, important);
+    addProperty(CSSPropertyGridTemplateRows, templateRows, important);
 
     return true;
 }
@@ -2091,7 +2087,7 @@ bool CSSPropertyParser::parseGridTemplateShorthand(bool important)
     }
 
     unsigned index = 0;
-    RefPtrWillBeRawPtr<CSSValue> columnsValue = nullptr;
+    GCRefPtr<CSSValue> columnsValue;
     if (firstValueIsNone) {
         columnsValue = cssValuePool().createIdentifierValue(CSSValueNone);
     } else {
@@ -2103,11 +2099,11 @@ bool CSSPropertyParser::parseGridTemplateShorthand(bool important)
         if (!(m_valueList->current() && isForwardSlashOperator(m_valueList->current()) && m_valueList->next()))
             return false;
         index = m_valueList->currentIndex();
-        if (RefPtrWillBeRawPtr<CSSValue> rowsValue = parseGridTrackList()) {
+        if (GCRefPtr<CSSValue> rowsValue = parseGridTrackList()) {
             if (m_valueList->current())
                 return false;
-            addProperty(CSSPropertyGridTemplateColumns, columnsValue, important);
-            addProperty(CSSPropertyGridTemplateRows, rowsValue, important);
+            addProperty(CSSPropertyGridTemplateColumns, columnsValue.get(), important);
+            addProperty(CSSPropertyGridTemplateRows, rowsValue.get(), important);
             addProperty(CSSPropertyGridTemplateAreas, cssValuePool().createIdentifierValue(CSSValueNone), important);
             return true;
         }
@@ -2120,7 +2116,7 @@ bool CSSPropertyParser::parseGridTemplateShorthand(bool important)
         return false;
     // It requires to rewind parsing due to previous syntax failures.
     m_valueList->setCurrentIndex(index);
-    return parseGridTemplateRowsAndAreas(columnsValue, important);
+    return parseGridTemplateRowsAndAreas(columnsValue.get(), important);
 }
 
 bool CSSPropertyParser::parseGridShorthand(bool important)
@@ -2145,8 +2141,7 @@ bool CSSPropertyParser::parseGridShorthand(bool important)
     if (!parseValue(CSSPropertyGridAutoFlow, important))
         return false;
 
-    RefPtrWillBeRawPtr<CSSValue> autoColumnsValue = nullptr;
-    RefPtrWillBeRawPtr<CSSValue> autoRowsValue = nullptr;
+    GCRefPtr<CSSValue> autoColumnsValue, autoRowsValue;
 
     if (m_valueList->current()) {
         autoColumnsValue = parseGridTrackSize(*m_valueList);
@@ -2191,19 +2186,19 @@ bool CSSPropertyParser::parseGridAreaShorthand(bool important)
     const StylePropertyShorthand& shorthand = gridAreaShorthand();
     ASSERT_UNUSED(shorthand, shorthand.length() == 4);
 
-    RefPtrWillBeRawPtr<CSSValue> rowStartValue = parseGridPosition();
+    GCRefPtr<CSSValue> rowStartValue = parseGridPosition();
     if (!rowStartValue)
         return false;
 
-    RefPtrWillBeRawPtr<CSSValue> columnStartValue = nullptr;
+    GCRefPtr<CSSValue> columnStartValue;
     if (!parseSingleGridAreaLonghand(columnStartValue))
         return false;
 
-    RefPtrWillBeRawPtr<CSSValue> rowEndValue = nullptr;
+    GCRefPtr<CSSValue> rowEndValue;
     if (!parseSingleGridAreaLonghand(rowEndValue))
         return false;
 
-    RefPtrWillBeRawPtr<CSSValue> columnEndValue = nullptr;
+    GCRefPtr<CSSValue> columnEndValue;
     if (!parseSingleGridAreaLonghand(columnEndValue))
         return false;
 
@@ -2216,14 +2211,14 @@ bool CSSPropertyParser::parseGridAreaShorthand(bool important)
     if (!columnEndValue)
         columnEndValue = gridMissingGridPositionValue(columnStartValue.get());
 
-    addProperty(CSSPropertyGridRowStart, rowStartValue, important);
-    addProperty(CSSPropertyGridColumnStart, columnStartValue, important);
-    addProperty(CSSPropertyGridRowEnd, rowEndValue, important);
-    addProperty(CSSPropertyGridColumnEnd, columnEndValue, important);
+    addProperty(CSSPropertyGridRowStart, rowStartValue.get(), important);
+    addProperty(CSSPropertyGridColumnStart, columnStartValue.get(), important);
+    addProperty(CSSPropertyGridRowEnd, rowEndValue.get(), important);
+    addProperty(CSSPropertyGridColumnEnd, columnEndValue.get(), important);
     return true;
 }
 
-bool CSSPropertyParser::parseSingleGridAreaLonghand(RefPtrWillBeRawPtr<CSSValue>& property)
+bool CSSPropertyParser::parseSingleGridAreaLonghand(GCRefPtr<CSSValue>& property)
 {
     if (!m_valueList->current())
         return true;
@@ -2251,7 +2246,7 @@ bool CSSPropertyParser::parseGridLineNames(CSSParserValueList& inputList, CSSVal
     // Skip '['
     inputList.next();
 
-    RefPtrWillBeRawPtr<CSSGridLineNamesValue> lineNames = previousNamedAreaTrailingLineNames;
+    GCRefPtr<CSSGridLineNamesValue> lineNames(previousNamedAreaTrailingLineNames);
     if (!lineNames)
         lineNames = CSSGridLineNamesValue::create();
 
@@ -2262,8 +2257,8 @@ bool CSSPropertyParser::parseGridLineNames(CSSParserValueList& inputList, CSSVal
         if (!isValidCustomIdentForGridPositions(*identValue))
             return false;
 
-        RefPtrWillBeRawPtr<CSSCustomIdentValue> lineName = createPrimitiveCustomIdentValue(identValue);
-        lineNames->append(lineName.release());
+        GCRefPtr<CSSCustomIdentValue> lineName = createPrimitiveCustomIdentValue(identValue);
+        lineNames->append(lineName);
         inputList.next();
     }
 
@@ -2271,14 +2266,14 @@ bool CSSPropertyParser::parseGridLineNames(CSSParserValueList& inputList, CSSVal
         return false;
 
     if (!previousNamedAreaTrailingLineNames)
-        valueList.append(lineNames.release());
+        valueList.append(lineNames);
 
     // Consume ']'
     inputList.next();
     return true;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseGridTrackList()
+GCRefPtr<CSSValue> CSSPropertyParser::parseGridTrackList()
 {
     ASSERT(RuntimeEnabledFeatures::cssGridLayoutEnabled());
 
@@ -2288,7 +2283,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseGridTrackList()
         return cssValuePool().createIdentifierValue(CSSValueNone);
     }
 
-    RefPtrWillBeRawPtr<CSSValueList> values = CSSValueList::createSpaceSeparated();
+    GCRefPtr<CSSValueList> values = CSSValueList::createSpaceSeparated();
     // Handle leading  <custom-ident>*.
     if (!parseGridLineNames(*m_valueList, *values))
         return nullptr;
@@ -2302,7 +2297,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseGridTrackList()
                 return nullptr;
             seenTrackSizeOrRepeatFunction = true;
         } else {
-            RefPtrWillBeRawPtr<CSSValue> value = parseGridTrackSize(*m_valueList);
+            GCRefPtr<CSSValue> value = parseGridTrackSize(*m_valueList);
             if (!value)
                 return nullptr;
             values->append(value);
@@ -2329,7 +2324,7 @@ bool CSSPropertyParser::parseGridTrackRepeatFunction(CSSValueList& list)
     ASSERT(arguments->valueAt(0)->fValue > 0);
     size_t repetitions = clampTo<size_t>(arguments->valueAt(0)->fValue, 0, kGridMaxTracks);
 
-    RefPtrWillBeRawPtr<CSSValueList> repeatedValues = CSSValueList::createSpaceSeparated();
+    GCRefPtr<CSSValueList> repeatedValues = CSSValueList::createSpaceSeparated();
     arguments->next(); // Skip the repetition count.
     arguments->next(); // Skip the comma.
 
@@ -2339,7 +2334,7 @@ bool CSSPropertyParser::parseGridTrackRepeatFunction(CSSValueList& list)
 
     size_t numberOfTracks = 0;
     while (arguments->current()) {
-        RefPtrWillBeRawPtr<CSSValue> trackSize = parseGridTrackSize(*arguments);
+        GCRefPtr<CSSValue> trackSize = parseGridTrackSize(*arguments);
         if (!trackSize)
             return false;
 
@@ -2370,7 +2365,7 @@ bool CSSPropertyParser::parseGridTrackRepeatFunction(CSSValueList& list)
 }
 
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseGridTrackSize(CSSParserValueList& inputList)
+GCRefPtr<CSSValue> CSSPropertyParser::parseGridTrackSize(CSSParserValueList& inputList)
 {
     ASSERT(RuntimeEnabledFeatures::cssGridLayoutEnabled());
 
@@ -2386,24 +2381,24 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseGridTrackSize(CSSParser
         if (!arguments || arguments->size() != 3 || !isComma(arguments->valueAt(1)))
             return nullptr;
 
-        RefPtrWillBeRawPtr<CSSPrimitiveValue> minTrackBreadth = parseGridBreadth(arguments->valueAt(0));
+        GCRefPtr<CSSPrimitiveValue> minTrackBreadth = parseGridBreadth(arguments->valueAt(0));
         if (!minTrackBreadth)
             return nullptr;
 
-        RefPtrWillBeRawPtr<CSSPrimitiveValue> maxTrackBreadth = parseGridBreadth(arguments->valueAt(2));
+        GCRefPtr<CSSPrimitiveValue> maxTrackBreadth = parseGridBreadth(arguments->valueAt(2));
         if (!maxTrackBreadth)
             return nullptr;
 
-        RefPtrWillBeRawPtr<CSSFunctionValue> result = CSSFunctionValue::create(CSSValueMinmax);
+        GCRefPtr<CSSFunctionValue> result = CSSFunctionValue::create(CSSValueMinmax);
         result->append(minTrackBreadth);
         result->append(maxTrackBreadth);
-        return result.release();
+        return result;
     }
 
     return parseGridBreadth(currentValue);
 }
 
-PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSPropertyParser::parseGridBreadth(CSSParserValue* currentValue)
+GCRefPtr<CSSPrimitiveValue> CSSPropertyParser::parseGridBreadth(CSSParserValue* currentValue)
 {
     if (currentValue->id == CSSValueMinContent || currentValue->id == CSSValueMaxContent || currentValue->id == CSSValueAuto)
         return cssValuePool().createIdentifierValue(currentValue->id);
@@ -2524,7 +2519,7 @@ bool CSSPropertyParser::parseGridTemplateAreasRow(NamedGridAreaMap& gridAreaMap,
     return true;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseGridTemplateAreas()
+GCRefPtr<CSSValue> CSSPropertyParser::parseGridTemplateAreas()
 {
     if (m_valueList->current() && m_valueList->current()->id == CSSValueNone) {
         m_valueList->next();
@@ -2547,7 +2542,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseGridTemplateAreas()
     return CSSGridTemplateAreasValue::create(gridAreaMap, rowCount, columnCount);
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseGridAutoFlow(CSSParserValueList& list)
+GCRefPtr<CSSValue> CSSPropertyParser::parseGridAutoFlow(CSSParserValueList& list)
 {
     // [ row | column ] || dense
     ASSERT(RuntimeEnabledFeatures::cssGridLayoutEnabled());
@@ -2556,7 +2551,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseGridAutoFlow(CSSParserV
     if (!value)
         return nullptr;
 
-    RefPtrWillBeRawPtr<CSSValueList> parsedValues = CSSValueList::createSpaceSeparated();
+    GCRefPtr<CSSValueList> parsedValues = CSSValueList::createSpaceSeparated();
 
     // First parameter.
     CSSValueID firstId = value->id;
@@ -2587,7 +2582,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseGridAutoFlow(CSSParserV
     return parsedValues;
 }
 
-void completeBorderRadii(RefPtrWillBeRawPtr<CSSPrimitiveValue> radii[4])
+void completeBorderRadii(GCRefPtr<CSSPrimitiveValue> radii[4])
 {
     if (radii[3])
         return;
@@ -2599,14 +2594,14 @@ void completeBorderRadii(RefPtrWillBeRawPtr<CSSPrimitiveValue> radii[4])
     radii[3] = radii[1];
 }
 
-PassRefPtrWillBeRawPtr<CSSBasicShapeInsetValue> CSSPropertyParser::parseBasicShapeInset(CSSParserValueList* args)
+GCRefPtr<CSSBasicShapeInsetValue> CSSPropertyParser::parseBasicShapeInset(CSSParserValueList* args)
 {
     ASSERT(args);
 
-    RefPtrWillBeRawPtr<CSSBasicShapeInsetValue> shape = CSSBasicShapeInsetValue::create();
+    GCRefPtr<CSSBasicShapeInsetValue> shape = CSSBasicShapeInsetValue::create();
 
     CSSParserValue* argument = args->current();
-    WillBeHeapVector<RefPtrWillBeMember<CSSPrimitiveValue>> widthArguments;
+    std::vector<GCRefPtr<CSSPrimitiveValue>> widthArguments;
     bool hasRoundedInset = false;
 
     while (argument) {
@@ -2621,7 +2616,7 @@ PassRefPtrWillBeRawPtr<CSSBasicShapeInsetValue> CSSPropertyParser::parseBasicSha
         if (!validUnit(argument, unitFlags) || widthArguments.size() > 4)
             return nullptr;
 
-        widthArguments.append(createPrimitiveNumericValue(argument));
+        widthArguments.emplace_back(createPrimitiveNumericValue(argument));
         argument = args->next();
     }
 
@@ -2648,8 +2643,7 @@ PassRefPtrWillBeRawPtr<CSSBasicShapeInsetValue> CSSPropertyParser::parseBasicSha
 
     if (hasRoundedInset) {
         // FIXME: Refactor completeBorderRadii and the array
-        RefPtrWillBeRawPtr<CSSPrimitiveValue> radii[4];
-        RefPtrWillBeRawPtr<CSSPrimitiveValue> radii2[4];
+        GCRefPtr<CSSPrimitiveValue> radii[4], radii2[4];
         if (!parseRadii(radii, radii2, args))
             return nullptr;
         shape->setTopLeftRadius(CSSValuePair::create(radii[0].release(), radii2[0].release(), CSSValuePair::DropIdenticalValues));
@@ -2658,7 +2652,7 @@ PassRefPtrWillBeRawPtr<CSSBasicShapeInsetValue> CSSPropertyParser::parseBasicSha
         shape->setBottomLeftRadius(CSSValuePair::create(radii[3].release(), radii2[3].release(), CSSValuePair::DropIdenticalValues));
     }
 
-    return shape.release();
+    return shape;
 }
 
 static bool isContentDistributionKeyword(CSSValueID id)
@@ -2715,7 +2709,7 @@ bool CSSPropertyParser::parseLegacyPosition(CSSPropertyID propId, bool important
     return !m_valueList->next();
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseContentDistributionOverflowPosition()
+GCRefPtr<CSSValue> CSSPropertyParser::parseContentDistributionOverflowPosition()
 {
     // auto | <baseline-position> | <content-distribution> || [ <overflow-position>? && <content-position> ]
     // <baseline-position> = baseline | last-baseline;
@@ -2782,8 +2776,7 @@ bool CSSPropertyParser::parseItemPositionOverflowPosition(CSSPropertyID propId, 
         return true;
     }
 
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> position = nullptr;
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> overflowAlignmentKeyword = nullptr;
+    GCRefPtr<CSSPrimitiveValue> position, overflowAlignmentKeyword;
     if (isItemPositionKeyword(value->id)) {
         position = cssValuePool().createIdentifierValue(value->id);
         value = m_valueList->next();
@@ -2816,7 +2809,7 @@ bool CSSPropertyParser::parseItemPositionOverflowPosition(CSSPropertyID propId, 
     return true;
 }
 
-PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSPropertyParser::parseShapeRadius(CSSParserValue* value)
+GCRefPtr<CSSPrimitiveValue> CSSPropertyParser::parseShapeRadius(CSSParserValue* value)
 {
     if (value->id == CSSValueClosestSide || value->id == CSSValueFarthestSide)
         return cssValuePool().createIdentifierValue(value->id);
@@ -2827,7 +2820,7 @@ PassRefPtrWillBeRawPtr<CSSPrimitiveValue> CSSPropertyParser::parseShapeRadius(CS
     return createPrimitiveNumericValue(value);
 }
 
-PassRefPtrWillBeRawPtr<CSSBasicShapeCircleValue> CSSPropertyParser::parseBasicShapeCircle(CSSParserValueList* args)
+GCRefPtr<CSSBasicShapeCircleValue> CSSPropertyParser::parseBasicShapeCircle(CSSParserValueList* args)
 {
     ASSERT(args);
 
@@ -2835,7 +2828,7 @@ PassRefPtrWillBeRawPtr<CSSBasicShapeCircleValue> CSSPropertyParser::parseBasicSh
     // circle(radius at <position>)
     // circle(at <position>)
     // where position defines centerX and centerY using a CSS <position> data type.
-    RefPtrWillBeRawPtr<CSSBasicShapeCircleValue> shape = CSSBasicShapeCircleValue::create();
+    GCRefPtr<CSSBasicShapeCircleValue> shape = CSSBasicShapeCircleValue::create();
 
     for (CSSParserValue* argument = args->current(); argument; argument = args->next()) {
         // The call to parseFillPosition below should consume all of the
@@ -2845,7 +2838,7 @@ PassRefPtrWillBeRawPtr<CSSBasicShapeCircleValue> CSSPropertyParser::parseBasicSh
             return nullptr;
 
         if (!args->currentIndex() && argument->id != CSSValueAt) {
-            if (RefPtrWillBeRawPtr<CSSPrimitiveValue> radius = parseShapeRadius(argument)) {
+            if (GCRefPtr<CSSPrimitiveValue> radius = parseShapeRadius(argument)) {
                 shape->setRadius(radius);
                 continue;
             }
@@ -2854,8 +2847,7 @@ PassRefPtrWillBeRawPtr<CSSBasicShapeCircleValue> CSSPropertyParser::parseBasicSh
         }
 
         if (argument->id == CSSValueAt && args->next()) {
-            RefPtrWillBeRawPtr<CSSValue> centerX = nullptr;
-            RefPtrWillBeRawPtr<CSSValue> centerY = nullptr;
+            GCRefPtr<CSSValue> centerX, centerY;
             parseFillPosition(args, centerX, centerY);
             if (centerX && centerY && !args->current()) {
                 shape->setCenterX(centerX);
@@ -2868,10 +2860,10 @@ PassRefPtrWillBeRawPtr<CSSBasicShapeCircleValue> CSSPropertyParser::parseBasicSh
         }
     }
 
-    return shape.release();
+    return shape;
 }
 
-PassRefPtrWillBeRawPtr<CSSBasicShapeEllipseValue> CSSPropertyParser::parseBasicShapeEllipse(CSSParserValueList* args)
+GCRefPtr<CSSBasicShapeEllipseValue> CSSPropertyParser::parseBasicShapeEllipse(CSSParserValueList* args)
 {
     ASSERT(args);
 
@@ -2881,7 +2873,7 @@ PassRefPtrWillBeRawPtr<CSSBasicShapeEllipseValue> CSSPropertyParser::parseBasicS
     // ellipse(radiusX radiusY at <position>)
     // ellipse(at <position>)
     // where position defines centerX and centerY using a CSS <position> data type.
-    RefPtrWillBeRawPtr<CSSBasicShapeEllipseValue> shape = CSSBasicShapeEllipseValue::create();
+    GCRefPtr<CSSBasicShapeEllipseValue> shape = CSSBasicShapeEllipseValue::create();
 
     for (CSSParserValue* argument = args->current(); argument; argument = args->next()) {
         // The call to parseFillPosition below should consume all of the
@@ -2891,7 +2883,7 @@ PassRefPtrWillBeRawPtr<CSSBasicShapeEllipseValue> CSSPropertyParser::parseBasicS
             return nullptr;
 
         if (args->currentIndex() < 2 && argument->id != CSSValueAt) {
-            if (RefPtrWillBeRawPtr<CSSPrimitiveValue> radius = parseShapeRadius(argument)) {
+            if (GCRefPtr<CSSPrimitiveValue> radius = parseShapeRadius(argument)) {
                 if (!shape->radiusX())
                     shape->setRadiusX(radius);
                 else
@@ -2904,8 +2896,7 @@ PassRefPtrWillBeRawPtr<CSSBasicShapeEllipseValue> CSSPropertyParser::parseBasicS
 
         if (argument->id != CSSValueAt || !args->next()) // expecting ellipse(.. at <position>)
             return nullptr;
-        RefPtrWillBeRawPtr<CSSValue> centerX = nullptr;
-        RefPtrWillBeRawPtr<CSSValue> centerY = nullptr;
+        GCRefPtr<CSSValue> centerX, centerY;
         parseFillPosition(args, centerX, centerY);
         if (!centerX || !centerY || args->current())
             return nullptr;
@@ -2914,10 +2905,10 @@ PassRefPtrWillBeRawPtr<CSSBasicShapeEllipseValue> CSSPropertyParser::parseBasicS
         shape->setCenterY(centerY);
     }
 
-    return shape.release();
+    return shape;
 }
 
-PassRefPtrWillBeRawPtr<CSSBasicShapePolygonValue> CSSPropertyParser::parseBasicShapePolygon(CSSParserValueList* args)
+GCRefPtr<CSSBasicShapePolygonValue> CSSPropertyParser::parseBasicShapePolygon(CSSParserValueList* args)
 {
     ASSERT(args);
 
@@ -2925,7 +2916,7 @@ PassRefPtrWillBeRawPtr<CSSBasicShapePolygonValue> CSSPropertyParser::parseBasicS
     if (!size)
         return nullptr;
 
-    RefPtrWillBeRawPtr<CSSBasicShapePolygonValue> shape = CSSBasicShapePolygonValue::create();
+    GCRefPtr<CSSBasicShapePolygonValue> shape = CSSBasicShapePolygonValue::create();
 
     CSSParserValue* argument = args->current();
     if (argument->id == CSSValueEvenodd || argument->id == CSSValueNonzero) {
@@ -2946,14 +2937,14 @@ PassRefPtrWillBeRawPtr<CSSBasicShapePolygonValue> CSSPropertyParser::parseBasicS
         CSSParserValue* argumentX = args->current();
         if (!argumentX || !validUnit(argumentX, FLength | FPercent))
             return nullptr;
-        RefPtrWillBeRawPtr<CSSPrimitiveValue> xLength = createPrimitiveNumericValue(argumentX);
+        GCRefPtr<CSSPrimitiveValue> xLength = createPrimitiveNumericValue(argumentX);
 
         CSSParserValue* argumentY = args->next();
         if (!argumentY || !validUnit(argumentY, FLength | FPercent))
             return nullptr;
-        RefPtrWillBeRawPtr<CSSPrimitiveValue> yLength = createPrimitiveNumericValue(argumentY);
+        GCRefPtr<CSSPrimitiveValue> yLength = createPrimitiveNumericValue(argumentY);
 
-        shape->appendPoint(xLength.release(), yLength.release());
+        shape->appendPoint(xLength, yLength);
 
         if (!args->next())
             break;
@@ -2961,7 +2952,7 @@ PassRefPtrWillBeRawPtr<CSSBasicShapePolygonValue> CSSPropertyParser::parseBasicS
             return nullptr;
     }
 
-    return shape.release();
+    return shape;
 }
 
 static bool isBoxValue(CSSValueID valueId)
@@ -2979,18 +2970,18 @@ static bool isBoxValue(CSSValueID valueId)
     return false;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseShapeProperty(CSSPropertyID propId)
+GCRefPtr<CSSValue> CSSPropertyParser::parseShapeProperty(CSSPropertyID propId)
 {
-    RefPtrWillBeRawPtr<CSSValue> imageValue = nullptr;
+    GCRefPtr<CSSValue> imageValue;
     if (parseFillImage(m_valueList, imageValue)) {
         m_valueList->next();
-        return imageValue.release();
+        return imageValue;
     }
 
     return parseBasicShapeAndOrBox();
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseBasicShapeAndOrBox()
+GCRefPtr<CSSValue> CSSPropertyParser::parseBasicShapeAndOrBox()
 {
     CSSParserValue* value = m_valueList->current();
 
@@ -2998,17 +2989,17 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseBasicShapeAndOrBox()
     bool boxFound = false;
     CSSValueID valueId;
 
-    RefPtrWillBeRawPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
+    GCRefPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
     for (unsigned i = 0; i < 2; ++i) {
         if (!value)
             break;
         valueId = value->id;
         if (value->m_unit == CSSParserValue::Function && !shapeFound) {
             // parseBasicShape already asks for the next value list item.
-            RefPtrWillBeRawPtr<CSSValue> shapeValue = parseBasicShape();
+            GCRefPtr<CSSValue> shapeValue = parseBasicShape();
             if (!shapeValue)
                 return nullptr;
-            list->append(shapeValue.release());
+            list->append(shapeValue);
             shapeFound = true;
         } else if (isBoxValue(valueId) && !boxFound) {
             list->append(parseValidPrimitive(valueId, value));
@@ -3023,10 +3014,10 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseBasicShapeAndOrBox()
 
     if (m_valueList->current())
         return nullptr;
-    return list.release();
+    return list;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseBasicShape()
+GCRefPtr<CSSValue> CSSPropertyParser::parseBasicShape()
 {
     CSSParserValue* value = m_valueList->current();
     ASSERT(value->m_unit == CSSParserValue::Function);
@@ -3035,7 +3026,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseBasicShape()
     if (!args)
         return nullptr;
 
-    RefPtrWillBeRawPtr<CSSValue> shape = nullptr;
+    GCRefPtr<CSSValue> shape;
     if (value->function->id == CSSValueCircle)
         shape = parseBasicShapeCircle(args);
     else if (value->function->id == CSSValueEllipse)
@@ -3050,7 +3041,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseBasicShape()
 
     m_valueList->next();
 
-    return shape.release();
+    return shape;
 }
 
 inline int CSSPropertyParser::colorIntFromValue(CSSParserValue* v)
@@ -3230,13 +3221,13 @@ bool CSSPropertyParser::parseColorFromValue(const CSSParserValue* value, RGBA32&
     return true;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseReflect()
+GCRefPtr<CSSValue> CSSPropertyParser::parseReflect()
 {
     // box-reflect: <direction> <offset> <mask>
 
     // Direction comes first.
     CSSParserValue* val = m_valueList->current();
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> direction = nullptr;
+    GCRefPtr<CSSPrimitiveValue> direction;
     switch (val->id) {
     case CSSValueAbove:
     case CSSValueBelow:
@@ -3250,7 +3241,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseReflect()
 
     // The offset comes next.
     val = m_valueList->next();
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> offset = nullptr;
+    GCRefPtr<CSSPrimitiveValue> offset;
     if (!val)
         offset = cssValuePool().createValue(0, CSSPrimitiveValue::UnitType::Pixels);
     else {
@@ -3260,7 +3251,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseReflect()
     }
 
     // Now for the mask.
-    RefPtrWillBeRawPtr<CSSValue> mask = nullptr;
+    GCRefPtr<CSSValue> mask;
     val = m_valueList->next();
     if (val) {
         mask = parseBorderImage(CSSPropertyWebkitBoxReflect);
@@ -3268,7 +3259,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseReflect()
             return nullptr;
     }
 
-    return CSSReflectValue::create(direction.release(), offset.release(), mask.release());
+    return CSSReflectValue::create(direction, offset, mask);
 }
 
 class BorderImageParseContext {
@@ -3297,7 +3288,7 @@ public:
     bool allowWidth() const { return m_allowWidth; }
     bool requireOutset() const { return m_requireOutset; }
 
-    void commitImage(PassRefPtrWillBeRawPtr<CSSValue> image)
+    void commitImage(const GCRefPtr<CSSValue> &image)
     {
         m_image = image;
         m_canAdvance = true;
@@ -3309,7 +3300,7 @@ public:
         m_allowImageSlice = !m_imageSlice;
         m_allowRepeat = !m_repeat;
     }
-    void commitImageSlice(PassRefPtrWillBeRawPtr<CSSBorderImageSliceValue> slice)
+    void commitImageSlice(const GCRefPtr<CSSBorderImageSliceValue> slice)
     {
         m_imageSlice = slice;
         m_canAdvance = true;
@@ -3338,7 +3329,7 @@ public:
             m_allowWidth = false;
         }
     }
-    void commitBorderWidth(PassRefPtrWillBeRawPtr<CSSQuadValue> width)
+    void commitBorderWidth(const GCRefPtr<CSSQuadValue> &width)
     {
         m_borderWidth = width;
         m_canAdvance = true;
@@ -3350,7 +3341,7 @@ public:
         m_allowImage = !m_image;
         m_allowRepeat = !m_repeat;
     }
-    void commitBorderOutset(PassRefPtrWillBeRawPtr<CSSQuadValue> outset)
+    void commitBorderOutset(const GCRefPtr<CSSQuadValue> &outset)
     {
         m_outset = outset;
         m_canAdvance = true;
@@ -3362,7 +3353,7 @@ public:
         m_allowImage = !m_image;
         m_allowRepeat = !m_repeat;
     }
-    void commitRepeat(PassRefPtrWillBeRawPtr<CSSValue> repeat)
+    void commitRepeat(const GCRefPtr<CSSValue> &repeat)
     {
         m_repeat = repeat;
         m_canAdvance = true;
@@ -3375,9 +3366,9 @@ public:
         m_allowImage = !m_image;
     }
 
-    PassRefPtrWillBeRawPtr<CSSValue> commitCSSValue()
+    GCRefPtr<CSSValue> commitCSSValue()
     {
-        return createBorderImageValue(m_image, m_imageSlice.get(), m_borderWidth.get(), m_outset.get(), m_repeat.get());
+        return createBorderImageValue(m_image, m_imageSlice, m_borderWidth, m_outset, m_repeat);
     }
 
     bool m_canAdvance;
@@ -3391,12 +3382,12 @@ public:
     bool m_allowWidth;
     bool m_requireOutset;
 
-    RefPtrWillBeMember<CSSValue> m_image;
-    RefPtrWillBeMember<CSSBorderImageSliceValue> m_imageSlice;
-    RefPtrWillBeMember<CSSQuadValue> m_borderWidth;
-    RefPtrWillBeMember<CSSQuadValue> m_outset;
+    GCRefPtr<CSSValue> m_image;
+    GCRefPtr<CSSBorderImageSliceValue> m_imageSlice;
+    GCRefPtr<CSSQuadValue> m_borderWidth;
+    GCRefPtr<CSSQuadValue> m_outset;
 
-    RefPtrWillBeMember<CSSValue> m_repeat;
+    GCRefPtr<CSSValue> m_repeat;
 };
 
 bool CSSPropertyParser::buildBorderImageParseContext(CSSPropertyID propId, BorderImageParseContext& context)
@@ -3413,15 +3404,15 @@ bool CSSPropertyParser::buildBorderImageParseContext(CSSPropertyID propId, Borde
                 context.commitImage(createCSSImageValueWithReferrer(val->string, m_context));
             } else if (val->m_unit == CSSParserValue::Function) {
                 if (CSSPropertyParser::isGeneratedImage(val->function->id)) {
-                    RefPtrWillBeRawPtr<CSSValue> value = nullptr;
+                    GCRefPtr<CSSValue> value;
                     if (parseGeneratedImage(m_valueList, value))
-                        context.commitImage(value.release());
+                        context.commitImage(value);
                     else
                         return false;
                 } else if (val->function->id == CSSValueWebkitImageSet) {
-                    RefPtrWillBeRawPtr<CSSValue> value = parseImageSet(m_valueList);
+                    GCRefPtr<CSSValue> value = parseImageSet(m_valueList);
                     if (value)
-                        context.commitImage(value.release());
+                        context.commitImage(value);
                     else
                         return false;
                 }
@@ -3430,27 +3421,27 @@ bool CSSPropertyParser::buildBorderImageParseContext(CSSPropertyID propId, Borde
         }
 
         if (!context.canAdvance() && context.allowImageSlice()) {
-            RefPtrWillBeRawPtr<CSSBorderImageSliceValue> imageSlice = nullptr;
+            GCRefPtr<CSSBorderImageSliceValue> imageSlice;
             if (parseBorderImageSlice(propId, imageSlice))
-                context.commitImageSlice(imageSlice.release());
+                context.commitImageSlice(imageSlice);
         }
 
         if (!context.canAdvance() && context.allowRepeat()) {
-            RefPtrWillBeRawPtr<CSSValue> repeat = nullptr;
+            GCRefPtr<CSSValue> repeat;
             if (parseBorderImageRepeat(repeat))
-                context.commitRepeat(repeat.release());
+                context.commitRepeat(repeat);
         }
 
         if (!context.canAdvance() && context.allowWidth()) {
-            RefPtrWillBeRawPtr<CSSQuadValue> borderWidth = nullptr;
+            GCRefPtr<CSSQuadValue> borderWidth;
             if (parseBorderImageWidth(borderWidth))
-                context.commitBorderWidth(borderWidth.release());
+                context.commitBorderWidth(borderWidth);
         }
 
         if (!context.canAdvance() && context.requireOutset()) {
-            RefPtrWillBeRawPtr<CSSQuadValue> borderOutset = nullptr;
+            GCRefPtr<CSSQuadValue> borderOutset;
             if (parseBorderImageOutset(borderOutset))
-                context.commitBorderOutset(borderOutset.release());
+                context.commitBorderOutset(borderOutset);
         }
 
         if (!context.canAdvance())
@@ -3462,7 +3453,7 @@ bool CSSPropertyParser::buildBorderImageParseContext(CSSPropertyID propId, Borde
     return context.allowCommit();
 }
 
-void CSSPropertyParser::commitBorderImageProperty(CSSPropertyID propId, PassRefPtrWillBeRawPtr<CSSValue> value, bool important)
+void CSSPropertyParser::commitBorderImageProperty(CSSPropertyID propId, const GCRefPtr<CSSValue> &value, bool important)
 {
     if (value)
         addProperty(propId, value, important);
@@ -3477,16 +3468,16 @@ bool CSSPropertyParser::parseBorderImageShorthand(CSSPropertyID propId, bool imp
         switch (propId) {
         case CSSPropertyWebkitMaskBoxImage:
             commitBorderImageProperty(CSSPropertyWebkitMaskBoxImageSource, context.m_image, important);
-            commitBorderImageProperty(CSSPropertyWebkitMaskBoxImageSlice, context.m_imageSlice.get(), important);
-            commitBorderImageProperty(CSSPropertyWebkitMaskBoxImageWidth, context.m_borderWidth.get(), important);
-            commitBorderImageProperty(CSSPropertyWebkitMaskBoxImageOutset, context.m_outset.get(), important);
-            commitBorderImageProperty(CSSPropertyWebkitMaskBoxImageRepeat, context.m_repeat.get(), important);
+            commitBorderImageProperty(CSSPropertyWebkitMaskBoxImageSlice, context.m_imageSlice, important);
+            commitBorderImageProperty(CSSPropertyWebkitMaskBoxImageWidth, context.m_borderWidth, important);
+            commitBorderImageProperty(CSSPropertyWebkitMaskBoxImageOutset, context.m_outset, important);
+            commitBorderImageProperty(CSSPropertyWebkitMaskBoxImageRepeat, context.m_repeat, important);
             return true;
         case CSSPropertyBorderImage:
             commitBorderImageProperty(CSSPropertyBorderImageSource, context.m_image, important);
-            commitBorderImageProperty(CSSPropertyBorderImageSlice, context.m_imageSlice.get(), important);
-            commitBorderImageProperty(CSSPropertyBorderImageWidth, context.m_borderWidth.get(), important);
-            commitBorderImageProperty(CSSPropertyBorderImageOutset, context.m_outset.get(), important);
+            commitBorderImageProperty(CSSPropertyBorderImageSlice, context.m_imageSlice, important);
+            commitBorderImageProperty(CSSPropertyBorderImageWidth, context.m_borderWidth, important);
+            commitBorderImageProperty(CSSPropertyBorderImageOutset, context.m_outset, important);
             commitBorderImageProperty(CSSPropertyBorderImageRepeat, context.m_repeat, important);
             return true;
         default:
@@ -3497,7 +3488,7 @@ bool CSSPropertyParser::parseBorderImageShorthand(CSSPropertyID propId, bool imp
     return false;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseBorderImage(CSSPropertyID propId)
+GCRefPtr<CSSValue> CSSPropertyParser::parseBorderImage(CSSPropertyID propId)
 {
     BorderImageParseContext context;
     if (buildBorderImageParseContext(propId, context)) {
@@ -3511,10 +3502,9 @@ static bool isBorderImageRepeatKeyword(int id)
     return id == CSSValueStretch || id == CSSValueRepeat || id == CSSValueSpace || id == CSSValueRound;
 }
 
-bool CSSPropertyParser::parseBorderImageRepeat(RefPtrWillBeRawPtr<CSSValue>& result)
+bool CSSPropertyParser::parseBorderImageRepeat(GCRefPtr<CSSValue> &result)
 {
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> firstValue = nullptr;
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> secondValue = nullptr;
+    GCRefPtr<CSSPrimitiveValue> firstValue, secondValue;
     CSSParserValue* val = m_valueList->current();
     if (!val)
         return false;
@@ -3539,7 +3529,7 @@ bool CSSPropertyParser::parseBorderImageRepeat(RefPtrWillBeRawPtr<CSSValue>& res
     } else
         secondValue = firstValue;
 
-    result = CSSValuePair::create(firstValue, secondValue, CSSValuePair::DropIdenticalValues);
+    result = CSSValuePair::create(firstValue.get(), secondValue.get(), CSSValuePair::DropIdenticalValues);
     return true;
 }
 
@@ -3558,7 +3548,7 @@ public:
     bool allowFinalCommit() const { return m_allowFinalCommit; }
     CSSPrimitiveValue* top() const { return m_top.get(); }
 
-    void commitNumber(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> val)
+    void commitNumber(const GCRefPtr<CSSPrimitiveValue> &val)
     {
         if (!m_top)
             m_top = val;
@@ -3577,7 +3567,7 @@ public:
 
     void commitFill() { m_fill = true; m_allowFill = false; m_allowNumber = !m_top; }
 
-    PassRefPtrWillBeRawPtr<CSSBorderImageSliceValue> commitBorderImageSlice()
+    GCRefPtr<CSSBorderImageSliceValue> commitBorderImageSlice()
     {
         // We need to clone and repeat values for any omissions.
         ASSERT(m_top);
@@ -3593,7 +3583,7 @@ public:
         if (!m_left)
             m_left = m_right;
 
-        return CSSBorderImageSliceValue::create(CSSQuadValue::create(m_top.release(), m_right.release(), m_bottom.release(), m_left.release(), CSSQuadValue::SerializeAsQuad), m_fill);
+        return CSSBorderImageSliceValue::create(CSSQuadValue::create(m_top, m_right, m_bottom, m_left, CSSQuadValue::SerializeAsQuad), m_fill);
     }
 
 private:
@@ -3601,15 +3591,15 @@ private:
     bool m_allowFill;
     bool m_allowFinalCommit;
 
-    RefPtrWillBeMember<CSSPrimitiveValue> m_top;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_right;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_bottom;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_left;
+    GCRefPtr<CSSPrimitiveValue> m_top;
+    GCRefPtr<CSSPrimitiveValue> m_right;
+    GCRefPtr<CSSPrimitiveValue> m_bottom;
+    GCRefPtr<CSSPrimitiveValue> m_left;
 
     bool m_fill;
 };
 
-bool CSSPropertyParser::parseBorderImageSlice(CSSPropertyID propId, RefPtrWillBeRawPtr<CSSBorderImageSliceValue>& result)
+bool CSSPropertyParser::parseBorderImageSlice(CSSPropertyID propId, GCRefPtr<CSSBorderImageSliceValue>& result)
 {
     BorderImageSliceParseContext context;
     for (CSSParserValue* val = m_valueList->current(); val; val = m_valueList->next()) {
@@ -3656,7 +3646,7 @@ public:
     bool allowFinalCommit() const { return m_allowFinalCommit; }
     CSSPrimitiveValue* top() const { return m_top.get(); }
 
-    void commitNumber(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> val)
+    void commitNumber(const GCRefPtr<CSSPrimitiveValue> &val)
     {
         if (!m_top)
             m_top = val;
@@ -3673,9 +3663,9 @@ public:
         m_allowFinalCommit = true;
     }
 
-    void setTop(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> val) { m_top = val; }
+    void setTop(const GCRefPtr<CSSPrimitiveValue> &val) { m_top = val; }
 
-    PassRefPtrWillBeRawPtr<CSSQuadValue> commitBorderImageQuad()
+    GCRefPtr<CSSQuadValue> commitBorderImageQuad()
     {
         // We need to clone and repeat values for any omissions.
         ASSERT(m_top);
@@ -3691,20 +3681,20 @@ public:
         if (!m_left)
             m_left = m_right;
 
-        return CSSQuadValue::create(m_top.release(), m_right.release(), m_bottom.release(), m_left.release(), CSSQuadValue::SerializeAsQuad);
+        return CSSQuadValue::create(m_top, m_right, m_bottom, m_left, CSSQuadValue::SerializeAsQuad);
     }
 
 private:
     bool m_allowNumber;
     bool m_allowFinalCommit;
 
-    RefPtrWillBeMember<CSSPrimitiveValue> m_top;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_right;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_bottom;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_left;
+    GCRefPtr<CSSPrimitiveValue> m_top;
+    GCRefPtr<CSSPrimitiveValue> m_right;
+    GCRefPtr<CSSPrimitiveValue> m_bottom;
+    GCRefPtr<CSSPrimitiveValue> m_left;
 };
 
-bool CSSPropertyParser::parseBorderImageQuad(Units validUnits, RefPtrWillBeRawPtr<CSSQuadValue>& result)
+bool CSSPropertyParser::parseBorderImageQuad(Units validUnits, GCRefPtr<CSSQuadValue> &result)
 {
     BorderImageQuadParseContext context;
     for (CSSParserValue* val = m_valueList->current(); val; val = m_valueList->next()) {
@@ -3731,17 +3721,17 @@ bool CSSPropertyParser::parseBorderImageQuad(Units validUnits, RefPtrWillBeRawPt
     return false;
 }
 
-bool CSSPropertyParser::parseBorderImageWidth(RefPtrWillBeRawPtr<CSSQuadValue>& result)
+bool CSSPropertyParser::parseBorderImageWidth(GCRefPtr<CSSQuadValue>& result)
 {
     return parseBorderImageQuad(FLength | FNumber | FNonNeg | FPercent, result);
 }
 
-bool CSSPropertyParser::parseBorderImageOutset(RefPtrWillBeRawPtr<CSSQuadValue>& result)
+bool CSSPropertyParser::parseBorderImageOutset(GCRefPtr<CSSQuadValue> &result)
 {
     return parseBorderImageQuad(FLength | FNumber | FNonNeg, result);
 }
 
-bool CSSPropertyParser::parseRadii(RefPtrWillBeRawPtr<CSSPrimitiveValue> radii[4], RefPtrWillBeRawPtr<CSSPrimitiveValue> radii2[4], CSSParserValueList* args, CSSPropertyID unresolvedProperty)
+bool CSSPropertyParser::parseRadii(GCRefPtr<CSSPrimitiveValue> radii[4], GCRefPtr<CSSPrimitiveValue> radii2[4], CSSParserValueList *args, CSSPropertyID unresolvedProperty)
 {
 #if ENABLE(OILPAN)
     // Unconditionally zero initialize the arrays of raw pointers.
@@ -3784,9 +3774,9 @@ bool CSSPropertyParser::parseRadii(RefPtrWillBeRawPtr<CSSPrimitiveValue> radii[4
 }
 
 // This should go away once we drop support for -webkit-gradient
-static PassRefPtrWillBeRawPtr<CSSPrimitiveValue> parseDeprecatedGradientPoint(CSSParserValue* a, bool horizontal)
+static GCRefPtr<CSSPrimitiveValue> parseDeprecatedGradientPoint(CSSParserValue* a, bool horizontal)
 {
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> result = nullptr;
+    GCRefPtr<CSSPrimitiveValue> result;
     if (a->m_unit == CSSParserValue::Identifier) {
         if ((a->id == CSSValueLeft && horizontal)
             || (a->id == CSSValueTop && !horizontal))
@@ -3803,7 +3793,7 @@ static PassRefPtrWillBeRawPtr<CSSPrimitiveValue> parseDeprecatedGradientPoint(CS
 }
 
 // Used to parse colors for -webkit-gradient(...).
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseDeprecatedGradientStopColor(const CSSParserValue* value)
+GCRefPtr<CSSValue> CSSPropertyParser::parseDeprecatedGradientStopColor(const CSSParserValue* value)
 {
     // Disallow currentcolor.
     if (value->id == CSSValueCurrentcolor)
@@ -3865,7 +3855,7 @@ bool CSSPropertyParser::parseDeprecatedGradientColorStop(CSSParserValue* a, CSSG
     return true;
 }
 
-bool CSSPropertyParser::parseDeprecatedGradient(CSSParserValueList* valueList, RefPtrWillBeRawPtr<CSSValue>& gradient)
+bool CSSPropertyParser::parseDeprecatedGradient(CSSParserValueList* valueList, GCRefPtr<CSSValue>& gradient)
 {
     // Walk the arguments.
     CSSParserValueList* args = valueList->current()->function->args.get();
@@ -3884,7 +3874,7 @@ bool CSSPropertyParser::parseDeprecatedGradient(CSSParserValueList* valueList, R
     else
         return false;
 
-    RefPtrWillBeRawPtr<CSSGradientValue> result = nullptr;
+    GCRefPtr<CSSGradientValue> result;
     switch (gradientType) {
     case CSSDeprecatedLinearGradient:
         result = CSSLinearGradientValue::create(NonRepeating, gradientType);
@@ -3907,10 +3897,10 @@ bool CSSPropertyParser::parseDeprecatedGradient(CSSParserValueList* valueList, R
     a = args->current();
     if (!a)
         return false;
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> point = parseDeprecatedGradientPoint(a, true);
+    GCRefPtr<CSSPrimitiveValue> point = parseDeprecatedGradientPoint(a, true);
     if (!point)
         return false;
-    result->setFirstX(point.release());
+    result->setFirstX(point);
 
     // First Y.  It can be top, bottom, number or percent.
     a = args->next();
@@ -3919,7 +3909,7 @@ bool CSSPropertyParser::parseDeprecatedGradient(CSSParserValueList* valueList, R
     point = parseDeprecatedGradientPoint(a, false);
     if (!point)
         return false;
-    result->setFirstY(point.release());
+    result->setFirstY(point);
 
     // Comma after the first point.
     args->next();
@@ -3947,7 +3937,7 @@ bool CSSPropertyParser::parseDeprecatedGradient(CSSParserValueList* valueList, R
     point = parseDeprecatedGradientPoint(a, true);
     if (!point)
         return false;
-    result->setSecondX(point.release());
+    result->setSecondX(point);
 
     // Second Y.  It can be top, bottom, number or percent.
     a = args->next();
@@ -3956,7 +3946,7 @@ bool CSSPropertyParser::parseDeprecatedGradient(CSSParserValueList* valueList, R
     point = parseDeprecatedGradientPoint(a, false);
     if (!point)
         return false;
-    result->setSecondY(point.release());
+    result->setSecondY(point);
     args->next();
 
     // For radial gradients only, we now expect the second radius.
@@ -3994,11 +3984,11 @@ bool CSSPropertyParser::parseDeprecatedGradient(CSSParserValueList* valueList, R
         a = args->next();
     }
 
-    gradient = result.release();
+    gradient = result;
     return true;
 }
 
-static PassRefPtrWillBeRawPtr<CSSPrimitiveValue> valueFromSideKeyword(CSSParserValue* a, bool& isHorizontal)
+static GCRefPtr<CSSPrimitiveValue> valueFromSideKeyword(CSSParserValue* a, bool& isHorizontal)
 {
     if (a->m_unit != CSSParserValue::Identifier)
         return nullptr;
@@ -4018,9 +4008,9 @@ static PassRefPtrWillBeRawPtr<CSSPrimitiveValue> valueFromSideKeyword(CSSParserV
     return cssValuePool().createIdentifierValue(a->id);
 }
 
-bool CSSPropertyParser::parseDeprecatedLinearGradient(CSSParserValueList* valueList, RefPtrWillBeRawPtr<CSSValue>& gradient, CSSGradientRepeat repeating)
+bool CSSPropertyParser::parseDeprecatedLinearGradient(CSSParserValueList* valueList, GCRefPtr<CSSValue>& gradient, CSSGradientRepeat repeating)
 {
-    RefPtrWillBeRawPtr<CSSLinearGradientValue> result = CSSLinearGradientValue::create(repeating, CSSPrefixedLinearGradient);
+    GCRefPtr<CSSLinearGradientValue> result = CSSLinearGradientValue::create(repeating, CSSPrefixedLinearGradient);
 
     // Walk the arguments.
     CSSParserValueList* args = valueList->current()->function->args.get();
@@ -4040,10 +4030,9 @@ bool CSSPropertyParser::parseDeprecatedLinearGradient(CSSParserValueList* valueL
         expectComma = true;
     } else {
         // Look one or two optional keywords that indicate a side or corner.
-        RefPtrWillBeRawPtr<CSSPrimitiveValue> startX = nullptr;
-        RefPtrWillBeRawPtr<CSSPrimitiveValue> startY = nullptr;
+        GCRefPtr<CSSPrimitiveValue> startX, startY;
 
-        RefPtrWillBeRawPtr<CSSPrimitiveValue> location = nullptr;
+        GCRefPtr<CSSPrimitiveValue> location;
         bool isHorizontal = false;
         if ((location = valueFromSideKeyword(a, isHorizontal))) {
             if (isHorizontal)
@@ -4074,8 +4063,8 @@ bool CSSPropertyParser::parseDeprecatedLinearGradient(CSSParserValueList* valueL
         if (!startX && !startY)
             startY = cssValuePool().createIdentifierValue(CSSValueTop);
 
-        result->setFirstX(startX.release());
-        result->setFirstY(startY.release());
+        result->setFirstX(startX);
+        result->setFirstY(startY);
     }
 
     if (!parseGradientColorStops(args, result.get(), expectComma))
@@ -4084,13 +4073,13 @@ bool CSSPropertyParser::parseDeprecatedLinearGradient(CSSParserValueList* valueL
     if (!result->stopCount())
         return false;
 
-    gradient = result.release();
+    gradient = result;
     return true;
 }
 
-bool CSSPropertyParser::parseDeprecatedRadialGradient(CSSParserValueList* valueList, RefPtrWillBeRawPtr<CSSValue>& gradient, CSSGradientRepeat repeating)
+bool CSSPropertyParser::parseDeprecatedRadialGradient(CSSParserValueList* valueList, GCRefPtr<CSSValue>& gradient, CSSGradientRepeat repeating)
 {
-    RefPtrWillBeRawPtr<CSSRadialGradientValue> result = CSSRadialGradientValue::create(repeating, CSSPrefixedRadialGradient);
+    GCRefPtr<CSSRadialGradientValue> result = CSSRadialGradientValue::create(repeating, CSSPrefixedRadialGradient);
 
     // Walk the arguments.
     CSSParserValueList* args = valueList->current()->function->args.get();
@@ -4104,8 +4093,8 @@ bool CSSPropertyParser::parseDeprecatedRadialGradient(CSSParserValueList* valueL
     bool expectComma = false;
 
     // Optional background-position
-    RefPtrWillBeRawPtr<CSSValue> centerX = nullptr;
-    RefPtrWillBeRawPtr<CSSValue> centerY = nullptr;
+    GCRefPtr<CSSValue> centerX;
+    GCRefPtr<CSSValue> centerY;
     // parse2ValuesFillPosition advances the args next pointer.
     parse2ValuesFillPosition(args, centerX, centerY);
 
@@ -4122,8 +4111,7 @@ bool CSSPropertyParser::parseDeprecatedRadialGradient(CSSParserValueList* valueL
     result->setFirstY(toCSSPrimitiveValue(centerY.get()));
     result->setSecondY(toCSSPrimitiveValue(centerY.get()));
 
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> shapeValue = nullptr;
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> sizeValue = nullptr;
+    GCRefPtr<CSSPrimitiveValue> shapeValue, sizeValue;
 
     // Optional shape and/or size in any order.
     for (int i = 0; i < 2; ++i) {
@@ -4163,8 +4151,7 @@ bool CSSPropertyParser::parseDeprecatedRadialGradient(CSSParserValueList* valueL
     result->setSizingBehavior(sizeValue);
 
     // Or, two lengths or percentages
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> horizontalSize = nullptr;
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> verticalSize = nullptr;
+    GCRefPtr<CSSPrimitiveValue> horizontalSize, verticalSize;
 
     if (!shapeValue && !sizeValue) {
         if (validUnit(a, FLength | FPercent)) {
@@ -4196,13 +4183,13 @@ bool CSSPropertyParser::parseDeprecatedRadialGradient(CSSParserValueList* valueL
     if (!parseGradientColorStops(args, result.get(), expectComma))
         return false;
 
-    gradient = result.release();
+    gradient = result;
     return true;
 }
 
-bool CSSPropertyParser::parseLinearGradient(CSSParserValueList* valueList, RefPtrWillBeRawPtr<CSSValue>& gradient, CSSGradientRepeat repeating)
+bool CSSPropertyParser::parseLinearGradient(CSSParserValueList* valueList, GCRefPtr<CSSValue>& gradient, CSSGradientRepeat repeating)
 {
-    RefPtrWillBeRawPtr<CSSLinearGradientValue> result = CSSLinearGradientValue::create(repeating, CSSLinearGradient);
+    GCRefPtr<CSSLinearGradientValue> result = CSSLinearGradientValue::create(repeating, CSSLinearGradient);
 
     CSSParserFunction* function = valueList->current()->function;
     CSSParserValueList* args = function->args.get();
@@ -4226,9 +4213,7 @@ bool CSSPropertyParser::parseLinearGradient(CSSParserValueList* valueList, RefPt
         if (!a)
             return false;
 
-        RefPtrWillBeRawPtr<CSSPrimitiveValue> endX = nullptr;
-        RefPtrWillBeRawPtr<CSSPrimitiveValue> endY = nullptr;
-        RefPtrWillBeRawPtr<CSSPrimitiveValue> location = nullptr;
+        GCRefPtr<CSSPrimitiveValue> endX, endY, location;
         bool isHorizontal = false;
 
         location = valueFromSideKeyword(a, isHorizontal);
@@ -4260,8 +4245,8 @@ bool CSSPropertyParser::parseLinearGradient(CSSParserValueList* valueList, RefPt
         }
 
         expectComma = true;
-        result->setFirstX(endX.release());
-        result->setFirstY(endY.release());
+        result->setFirstX(endX);
+        result->setFirstY(endY);
     }
 
     if (!parseGradientColorStops(args, result.get(), expectComma))
@@ -4270,13 +4255,13 @@ bool CSSPropertyParser::parseLinearGradient(CSSParserValueList* valueList, RefPt
     if (!result->stopCount())
         return false;
 
-    gradient = result.release();
+    gradient = result;
     return true;
 }
 
-bool CSSPropertyParser::parseRadialGradient(CSSParserValueList* valueList, RefPtrWillBeRawPtr<CSSValue>& gradient, CSSGradientRepeat repeating)
+bool CSSPropertyParser::parseRadialGradient(CSSParserValueList* valueList, GCRefPtr<CSSValue>& gradient, CSSGradientRepeat repeating)
 {
-    RefPtrWillBeRawPtr<CSSRadialGradientValue> result = CSSRadialGradientValue::create(repeating, CSSRadialGradient);
+    GCRefPtr<CSSRadialGradientValue> result = CSSRadialGradientValue::create(repeating, CSSRadialGradient);
 
     CSSParserValueList* args = valueList->current()->function->args.get();
     if (!args || !args->size())
@@ -4288,10 +4273,7 @@ bool CSSPropertyParser::parseRadialGradient(CSSParserValueList* valueList, RefPt
 
     bool expectComma = false;
 
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> shapeValue = nullptr;
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> sizeValue = nullptr;
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> horizontalSize = nullptr;
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> verticalSize = nullptr;
+    GCRefPtr<CSSPrimitiveValue> shapeValue, sizeValue, horizontalSize, verticalSize;
 
     // First part of grammar, the size/shape clause:
     // [ circle || <length> ] |
@@ -4366,8 +4348,7 @@ bool CSSPropertyParser::parseRadialGradient(CSSParserValueList* valueList, RefPt
 
     // Second part of grammar, the center-position clause:
     // at <position>
-    RefPtrWillBeRawPtr<CSSValue> centerX = nullptr;
-    RefPtrWillBeRawPtr<CSSValue> centerY = nullptr;
+    GCRefPtr<CSSValue> centerX, centerY;
     if (a->m_unit == CSSParserValue::Identifier && a->id == CSSValueAt) {
         a = args->next();
         if (!a)
@@ -4393,7 +4374,7 @@ bool CSSPropertyParser::parseRadialGradient(CSSParserValueList* valueList, RefPt
     if (!parseGradientColorStops(args, result.get(), expectComma))
         return false;
 
-    gradient = result.release();
+    gradient = result;
     return true;
 }
 
@@ -4454,7 +4435,7 @@ bool CSSPropertyParser::parseGradientColorStops(CSSParserValueList* valueList, C
     return gradient->stopCount() >= 2;
 }
 
-bool CSSPropertyParser::parseGeneratedImage(CSSParserValueList* valueList, RefPtrWillBeRawPtr<CSSValue>& value)
+bool CSSPropertyParser::parseGeneratedImage(CSSParserValueList* valueList, GCRefPtr<CSSValue>& value)
 {
     CSSParserValue* val = valueList->current();
 
@@ -4523,14 +4504,14 @@ bool CSSPropertyParser::parseGeneratedImage(CSSParserValueList* valueList, RefPt
     return false;
 }
 
-bool CSSPropertyParser::parseCrossfade(CSSParserValueList* valueList, RefPtrWillBeRawPtr<CSSValue>& crossfade)
+bool CSSPropertyParser::parseCrossfade(CSSParserValueList* valueList, GCRefPtr<CSSValue>& crossfade)
 {
     // Walk the arguments.
     CSSParserValueList* args = valueList->current()->function->args.get();
     if (!args || args->size() != 5)
         return false;
-    RefPtrWillBeRawPtr<CSSValue> fromImageValue = nullptr;
-    RefPtrWillBeRawPtr<CSSValue> toImageValue = nullptr;
+    GCRefPtr<CSSValue> fromImageValue;
+    GCRefPtr<CSSValue> toImageValue;
 
     // The first argument is the "from" image. It is a fill image.
     if (!args->current() || !parseFillImage(args, fromImageValue))
@@ -4549,7 +4530,7 @@ bool CSSPropertyParser::parseCrossfade(CSSParserValueList* valueList, RefPtrWill
         return false;
 
     // The third argument is the crossfade value. It is a percentage or a fractional number.
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> percentage = nullptr;
+    GCRefPtr<CSSPrimitiveValue> percentage;
     CSSParserValue* value = args->current();
     if (!value)
         return false;
@@ -4566,7 +4547,7 @@ bool CSSPropertyParser::parseCrossfade(CSSParserValueList* valueList, RefPtrWill
     return true;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseImageSet(CSSParserValueList* valueList)
+GCRefPtr<CSSValue> CSSPropertyParser::parseImageSet(CSSParserValueList* valueList)
 {
     CSSParserValue* function = valueList->current();
 
@@ -4577,14 +4558,14 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseImageSet(CSSParserValue
     if (!functionArgs || !functionArgs->size() || !functionArgs->current())
         return nullptr;
 
-    RefPtrWillBeRawPtr<CSSImageSetValue> imageSet = CSSImageSetValue::create();
+    GCRefPtr<CSSImageSetValue> imageSet = CSSImageSetValue::create();
 
     while (functionArgs->current()) {
         CSSParserValue* arg = functionArgs->current();
         if (arg->m_unit != CSSParserValue::URI)
             return nullptr;
 
-        RefPtrWillBeRawPtr<CSSValue> image = createCSSImageValueWithReferrer(arg->string, m_context);
+        GCRefPtr<CSSValue> image = createCSSImageValueWithReferrer(arg->string, m_context);
         imageSet->append(image);
 
         arg = functionArgs->next();
@@ -4612,7 +4593,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseImageSet(CSSParserValue
             return nullptr;
     }
 
-    return imageSet.release();
+    return imageSet;
 }
 
 bool CSSPropertyParser::parseCalculation(CSSParserValue* value, ValueRange range)
