@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSVariableReferenceValue.h
+// Description: CSSVariableReferenceValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -13,9 +24,9 @@ namespace blink {
 
 class CSSVariableReferenceValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSVariableReferenceValue> create(PassRefPtr<CSSVariableData> data)
+    static GCRefPtr<CSSVariableReferenceValue> create(PassRefPtr<CSSVariableData> data)
     {
-        return adoptRefWillBeNoop(new CSSVariableReferenceValue(data));
+        return BlinKit::GCWrapShared(new CSSVariableReferenceValue(data));
     }
 
     CSSVariableData* variableDataValue() const
@@ -26,7 +37,6 @@ public:
     bool equals(const CSSVariableReferenceValue& other) const { return m_data == other.m_data; }
     String customCSSText() const;
 
-    DECLARE_TRACE_AFTER_DISPATCH();
 private:
     CSSVariableReferenceValue(PassRefPtr<CSSVariableData> data)
         : CSSValue(VariableReferenceClass)
