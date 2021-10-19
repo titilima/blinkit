@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSQuadValue.h
+// Description: CSSQuadValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008 Apple Inc. All rights reserved.
@@ -23,8 +34,6 @@
 
 #include "core/CoreExport.h"
 #include "core/css/CSSPrimitiveValue.h"
-#include "core/css/CSSValue.h"
-#include "wtf/RefPtr.h"
 
 namespace blink {
 
@@ -35,9 +44,9 @@ public:
         SerializeAsQuad
     };
 
-    static PassRefPtrWillBeRawPtr<CSSQuadValue> create(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> top, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> right, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> bottom, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> left, SerializationType serializationType)
+    static GCRefPtr<CSSQuadValue> create(const GCRefPtr<CSSPrimitiveValue> &top, const GCRefPtr<CSSPrimitiveValue> &right, const GCRefPtr<CSSPrimitiveValue> &bottom, const GCRefPtr<CSSPrimitiveValue> &left, SerializationType serializationType)
     {
-        return adoptRefWillBeNoop(new CSSQuadValue(top, right, bottom, left, serializationType));
+        return BlinKit::GCWrapShared(new CSSQuadValue(top, right, bottom, left, serializationType));
     }
 
     CSSPrimitiveValue* top() const { return m_top.get(); }
@@ -60,7 +69,7 @@ public:
     DECLARE_TRACE_AFTER_DISPATCH();
 
 protected:
-    CSSQuadValue(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> top, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> right, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> bottom, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> left, SerializationType serializationType)
+    CSSQuadValue(const GCRefPtr<CSSPrimitiveValue> &top, const GCRefPtr<CSSPrimitiveValue> &right, const GCRefPtr<CSSPrimitiveValue> &bottom, const GCRefPtr<CSSPrimitiveValue> &left, SerializationType serializationType)
         : CSSValue(QuadClass)
         , m_serializationType(serializationType)
         , m_top(top)
@@ -70,10 +79,10 @@ protected:
 
 private:
     SerializationType m_serializationType;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_top;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_right;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_bottom;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_left;
+    GCRefPtr<CSSPrimitiveValue> m_top;
+    GCRefPtr<CSSPrimitiveValue> m_right;
+    GCRefPtr<CSSPrimitiveValue> m_bottom;
+    GCRefPtr<CSSPrimitiveValue> m_left;
 };
 
 DEFINE_CSS_VALUE_TYPE_CASTS(CSSQuadValue, isQuadValue());
