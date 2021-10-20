@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSCrossfadeValue.h
+// Description: CSSCrossfadeValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -42,11 +53,10 @@ class LayoutObject;
 
 class CORE_EXPORT CSSCrossfadeValue final : public CSSImageGeneratorValue {
     friend class CrossfadeSubimageObserverProxy;
-    WILL_BE_USING_PRE_FINALIZER(CSSCrossfadeValue, dispose);
 public:
-    static PassRefPtrWillBeRawPtr<CSSCrossfadeValue> create(PassRefPtrWillBeRawPtr<CSSValue> fromValue, PassRefPtrWillBeRawPtr<CSSValue> toValue, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> percentageValue)
+    static GCRefPtr<CSSCrossfadeValue> create(const GCRefPtr<CSSValue> &fromValue, const GCRefPtr<CSSValue> &toValue, const GCRefPtr<CSSPrimitiveValue> &percentageValue)
     {
-        return adoptRefWillBeNoop(new CSSCrossfadeValue(fromValue, toValue, percentageValue));
+        return BlinKit::GCWrapShared(new CSSCrossfadeValue(fromValue, toValue, percentageValue));
     }
 
     ~CSSCrossfadeValue();
@@ -66,12 +76,12 @@ public:
 
     bool equals(const CSSCrossfadeValue&) const;
 
-    PassRefPtrWillBeRawPtr<CSSCrossfadeValue> valueWithURLsMadeAbsolute();
+    GCRefPtr<CSSCrossfadeValue> valueWithURLsMadeAbsolute();
 
     DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
-    CSSCrossfadeValue(PassRefPtrWillBeRawPtr<CSSValue> fromValue, PassRefPtrWillBeRawPtr<CSSValue> toValue, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> percentageValue);
+    CSSCrossfadeValue(const GCRefPtr<CSSValue> &fromValue, const GCRefPtr<CSSValue> &toValue, const GCRefPtr<CSSPrimitiveValue> &percentageValue);
 
     void dispose();
 
@@ -98,9 +108,9 @@ private:
 
     void crossfadeChanged(const IntRect&);
 
-    RefPtrWillBeMember<CSSValue> m_fromValue;
-    RefPtrWillBeMember<CSSValue> m_toValue;
-    RefPtrWillBeMember<CSSPrimitiveValue> m_percentageValue;
+    GCRefPtr<CSSValue> m_fromValue;
+    GCRefPtr<CSSValue> m_toValue;
+    GCRefPtr<CSSPrimitiveValue> m_percentageValue;
 
     ResourcePtr<ImageResource> m_cachedFromImage;
     ResourcePtr<ImageResource> m_cachedToImage;

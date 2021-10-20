@@ -114,7 +114,7 @@ static KURL urlForCSSValue(const CSSValue* value)
     return KURL();
 }
 
-CSSCrossfadeValue::CSSCrossfadeValue(PassRefPtrWillBeRawPtr<CSSValue> fromValue, PassRefPtrWillBeRawPtr<CSSValue> toValue, PassRefPtrWillBeRawPtr<CSSPrimitiveValue> percentageValue)
+CSSCrossfadeValue::CSSCrossfadeValue(const GCRefPtr<CSSValue> &fromValue, const GCRefPtr<CSSValue> &toValue, const GCRefPtr<CSSPrimitiveValue> &percentageValue)
     : CSSImageGeneratorValue(CrossfadeClass)
     , m_fromValue(fromValue)
     , m_toValue(toValue)
@@ -130,9 +130,7 @@ CSSCrossfadeValue::CSSCrossfadeValue(PassRefPtrWillBeRawPtr<CSSValue> fromValue,
 
 CSSCrossfadeValue::~CSSCrossfadeValue()
 {
-#if !ENABLE(OILPAN)
     dispose();
-#endif
 }
 
 void CSSCrossfadeValue::dispose()
@@ -156,15 +154,15 @@ String CSSCrossfadeValue::customCSSText() const
     return result.toString();
 }
 
-PassRefPtrWillBeRawPtr<CSSCrossfadeValue> CSSCrossfadeValue::valueWithURLsMadeAbsolute()
+GCRefPtr<CSSCrossfadeValue> CSSCrossfadeValue::valueWithURLsMadeAbsolute()
 {
-    RefPtrWillBeRawPtr<CSSValue> fromValue = m_fromValue;
+    GCRefPtr<CSSValue> fromValue = m_fromValue;
     if (m_fromValue->isImageValue())
         fromValue = toCSSImageValue(*m_fromValue).valueWithURLMadeAbsolute();
-    RefPtrWillBeRawPtr<CSSValue> toValue = m_toValue;
+    GCRefPtr<CSSValue> toValue = m_toValue;
     if (m_toValue->isImageValue())
         toValue = toCSSImageValue(*m_toValue).valueWithURLMadeAbsolute();
-    return CSSCrossfadeValue::create(fromValue.release(), toValue.release(), m_percentageValue);
+    return CSSCrossfadeValue::create(fromValue, toValue, m_percentageValue);
 }
 
 IntSize CSSCrossfadeValue::fixedSize(const LayoutObject* layoutObject)
