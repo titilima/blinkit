@@ -64,9 +64,9 @@ void HTMLTablePartElement::collectStyleForPresentationAttribute(const QualifiedN
     } else if (name == backgroundAttr) {
         String url = stripLeadingAndTrailingHTMLSpaces(value);
         if (!url.isEmpty()) {
-            RefPtrWillBeRawPtr<CSSImageValue> imageValue = CSSImageValue::create(url, document().completeURL(url));
+            GCRefPtr<CSSImageValue> imageValue = CSSImageValue::create(url, document().completeURL(url));
             ASSERT(false); // BKTODO: imageValue->setReferrer(Referrer(document().outgoingReferrer(), document().referrerPolicy()));
-            style->setProperty(CSSProperty(CSSPropertyBackgroundImage, imageValue.release()));
+            style->setProperty(CSSProperty(CSSPropertyBackgroundImage, imageValue));
         }
     } else if (name == valignAttr) {
         if (equalIgnoringCase(value, "top"))

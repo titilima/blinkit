@@ -71,10 +71,10 @@ void HTMLBodyElement::collectStyleForPresentationAttribute(const QualifiedName& 
     if (name == backgroundAttr) {
         String url = stripLeadingAndTrailingHTMLSpaces(value);
         if (!url.isEmpty()) {
-            RefPtrWillBeRawPtr<CSSImageValue> imageValue = CSSImageValue::create(url, document().completeURL(url));
+            GCRefPtr<CSSImageValue> imageValue = CSSImageValue::create(url, document().completeURL(url));
             imageValue->setInitiator(localName());
             ASSERT(false); // BKTODO: imageValue->setReferrer(Referrer(document().outgoingReferrer(), document().referrerPolicy()));
-            style->setProperty(CSSProperty(CSSPropertyBackgroundImage, imageValue.release()));
+            style->setProperty(CSSProperty(CSSPropertyBackgroundImage, imageValue));
         }
     } else if (name == marginwidthAttr || name == leftmarginAttr) {
         addHTMLLengthToStyle(style, CSSPropertyMarginRight, value);

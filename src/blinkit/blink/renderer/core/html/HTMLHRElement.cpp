@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLHRElement.cpp
+// Description: HTMLHRElement Class
+//      Author: Ziming Li
+//     Created: 2021-10-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -74,7 +85,7 @@ void HTMLHRElement::collectStyleForPresentationAttribute(const QualifiedName& na
         if (!hasAttribute(colorAttr)) {
             addPropertyToPresentationAttributeStyle(style, CSSPropertyBorderStyle, CSSValueSolid);
 
-            RefPtrWillBeRawPtr<CSSColorValue> darkGrayValue = cssValuePool().createColorValue(Color::darkGray);
+            GCRefPtr<CSSColorValue> darkGrayValue = cssValuePool().createColorValue(Color::darkGray);
             style->setProperty(CSSPropertyBorderColor, darkGrayValue);
             style->setProperty(CSSPropertyBackgroundColor, darkGrayValue);
         }

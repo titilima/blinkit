@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLFontElement.cpp
+// Description: HTMLFontElement Class
+//      Author: Ziming Li
+//     Created: 2021-10-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -188,8 +199,8 @@ void HTMLFontElement::collectStyleForPresentationAttribute(const QualifiedName& 
     } else if (name == colorAttr) {
         addHTMLColorToStyle(style, CSSPropertyColor, value);
     } else if (name == faceAttr && !value.isEmpty()) {
-        if (RefPtrWillBeRawPtr<CSSValueList> fontFaceValue = cssValuePool().createFontFaceValue(value))
-            style->setProperty(CSSProperty(CSSPropertyFontFamily, fontFaceValue.release()));
+        if (GCRefPtr<CSSValueList> fontFaceValue = cssValuePool().createFontFaceValue(value))
+            style->setProperty(CSSProperty(CSSPropertyFontFamily, fontFaceValue));
     } else {
         HTMLElement::collectStyleForPresentationAttribute(name, value, style);
     }
