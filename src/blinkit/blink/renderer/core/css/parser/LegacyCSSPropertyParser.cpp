@@ -91,7 +91,7 @@ void CSSPropertyParser::addProperty(CSSPropertyID propId, CSSValue *value, bool 
             shorthandIndex = indexOfShorthandForLonghand(m_currentShorthand, shorthands);
     }
 
-    m_parsedProperties.emplace_back(propId, value, important, setFromShorthand, shorthandIndex, m_implicitShorthand || implicit);
+    m_parsedProperties.emplace_back(propId, GCWrapShared(value), important, setFromShorthand, shorthandIndex, m_implicitShorthand || implicit);
 }
 
 void CSSPropertyParser::addProperty(CSSPropertyID propId, const GCRefPtr<CSSValue> &value, bool important, bool implicit)
@@ -377,8 +377,7 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
     case CSSPropertyWebkitMaskRepeatX:
     case CSSPropertyWebkitMaskRepeatY:
     {
-        GCRefPtr<CSSValue> val1;
-        GCRefPtr<CSSValue> val2;
+        GCRefPtr<CSSValue> val1, val2;
         CSSPropertyID propId1, propId2;
         bool result = false;
         if (parseFillProperty(unresolvedProperty, propId1, propId2, val1, val2)) {
@@ -387,13 +386,13 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
                 propId == CSSPropertyWebkitMaskPosition ||
                 propId == CSSPropertyWebkitMaskRepeat) {
                 ShorthandScope scope(this, propId);
-                addProperty(propId1, val1.release(), important);
+                addProperty(propId1, val1, important);
                 if (val2)
-                    addProperty(propId2, val2.release(), important);
+                    addProperty(propId2, val2, important);
             } else {
-                addProperty(propId1, val1.release(), important);
+                addProperty(propId1, val1, important);
                 if (val2)
-                    addProperty(propId2, val2.release(), important);
+                    addProperty(propId2, val2, important);
             }
             result = true;
         }
@@ -639,7 +638,7 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
             parsedValue = parseBasicShape();
         } else if (value->m_unit == CSSParserValue::URI) {
             parsedValue = CSSURIValue::create(value->string);
-            addProperty(propId, parsedValue.release(), important);
+            addProperty(propId, parsedValue, important);
             return true;
         }
         break;
@@ -889,7 +888,7 @@ bool CSSPropertyParser::parseValue(CSSPropertyID unresolvedProperty, bool import
     ASSERT(!m_parsedCalculation);
     if (parsedValue) {
         if (!m_valueList->current() || inShorthand()) {
-            addProperty(propId, parsedValue.release(), important);
+            addProperty(propId, parsedValue, important);
             return true;
         }
     }
@@ -1039,34 +1038,34 @@ bool CSSPropertyParser::parseFillShorthand(CSSPropertyID propId, const CSSProper
             }
         }
         if (properties[i] == CSSPropertyBackgroundPosition) {
-            addProperty(CSSPropertyBackgroundPositionX, values[i].release(), important);
+            addProperty(CSSPropertyBackgroundPositionX, values[i], important);
             // it's OK to call positionYValue.release() since we only see CSSPropertyBackgroundPosition once
-            addProperty(CSSPropertyBackgroundPositionY, positionYValue.release(), important);
+            addProperty(CSSPropertyBackgroundPositionY, positionYValue, important);
         } else if (properties[i] == CSSPropertyWebkitMaskPosition) {
-            addProperty(CSSPropertyWebkitMaskPositionX, values[i].release(), important);
+            addProperty(CSSPropertyWebkitMaskPositionX, values[i], important);
             // it's OK to call positionYValue.release() since we only see CSSPropertyWebkitMaskPosition once
-            addProperty(CSSPropertyWebkitMaskPositionY, positionYValue.release(), important);
+            addProperty(CSSPropertyWebkitMaskPositionY, positionYValue, important);
         } else if (properties[i] == CSSPropertyBackgroundRepeat) {
-            addProperty(CSSPropertyBackgroundRepeatX, values[i].release(), important);
+            addProperty(CSSPropertyBackgroundRepeatX, values[i], important);
             // it's OK to call repeatYValue.release() since we only see CSSPropertyBackgroundPosition once
-            addProperty(CSSPropertyBackgroundRepeatY, repeatYValue.release(), important);
+            addProperty(CSSPropertyBackgroundRepeatY, repeatYValue, important);
         } else if (properties[i] == CSSPropertyWebkitMaskRepeat) {
-            addProperty(CSSPropertyWebkitMaskRepeatX, values[i].release(), important);
+            addProperty(CSSPropertyWebkitMaskRepeatX, values[i], important);
             // it's OK to call repeatYValue.release() since we only see CSSPropertyBackgroundPosition once
-            addProperty(CSSPropertyWebkitMaskRepeatY, repeatYValue.release(), important);
+            addProperty(CSSPropertyWebkitMaskRepeatY, repeatYValue, important);
         } else if ((properties[i] == CSSPropertyBackgroundClip || properties[i] == CSSPropertyWebkitMaskClip) && !foundClip)
             // Value is already set while updating origin
             continue;
         else if (properties[i] == CSSPropertyBackgroundSize && !parsedProperty[i] && m_context.useLegacyBackgroundSizeShorthandBehavior())
             continue;
         else
-            addProperty(properties[i], values[i].release(), important);
+            addProperty(properties[i], values[i], important);
 
         // Add in clip values when we hit the corresponding origin property.
         if (properties[i] == CSSPropertyBackgroundOrigin && !foundClip)
-            addProperty(CSSPropertyBackgroundClip, clipValue.release(), important);
+            addProperty(CSSPropertyBackgroundClip, clipValue, important);
         else if (properties[i] == CSSPropertyWebkitMaskOrigin && !foundClip)
-            addProperty(CSSPropertyWebkitMaskClip, clipValue.release(), important);
+            addProperty(CSSPropertyWebkitMaskClip, clipValue, important);
     }
 
     m_implicitShorthand = false;
@@ -1974,8 +1973,8 @@ bool CSSPropertyParser::parseGridItemPositionShorthand(CSSPropertyID shorthandId
         endValue = gridMissingGridPositionValue(startValue.get());
     }
 
-    addProperty(shorthand.properties()[0], startValue.get(), important);
-    addProperty(shorthand.properties()[1], endValue.get(), important);
+    addProperty(shorthand.properties()[0], startValue, important);
+    addProperty(shorthand.properties()[1], endValue, important);
     return true;
 }
 
@@ -2054,7 +2053,7 @@ bool CSSPropertyParser::parseGridTemplateRowsAndAreas(CSSValue *templateColumns,
     if (templateColumns)
         addProperty(CSSPropertyGridTemplateColumns, templateColumns, important);
     else
-        addProperty(CSSPropertyGridTemplateColumns,  cssValuePool().createIdentifierValue(CSSValueNone), important);
+        addProperty(CSSPropertyGridTemplateColumns, cssValuePool().createIdentifierValue(CSSValueNone), important);
 
     // [<line-names>? <string> [<track-size> <line-names>]? ]+
     GCRefPtr<CSSValue> templateAreas = CSSGridTemplateAreasValue::create(gridAreaMap, rowCount, columnCount);
@@ -2102,8 +2101,8 @@ bool CSSPropertyParser::parseGridTemplateShorthand(bool important)
         if (GCRefPtr<CSSValue> rowsValue = parseGridTrackList()) {
             if (m_valueList->current())
                 return false;
-            addProperty(CSSPropertyGridTemplateColumns, columnsValue.get(), important);
-            addProperty(CSSPropertyGridTemplateRows, rowsValue.get(), important);
+            addProperty(CSSPropertyGridTemplateColumns, columnsValue, important);
+            addProperty(CSSPropertyGridTemplateRows, rowsValue, important);
             addProperty(CSSPropertyGridTemplateAreas, cssValuePool().createIdentifierValue(CSSValueNone), important);
             return true;
         }
@@ -2211,10 +2210,10 @@ bool CSSPropertyParser::parseGridAreaShorthand(bool important)
     if (!columnEndValue)
         columnEndValue = gridMissingGridPositionValue(columnStartValue.get());
 
-    addProperty(CSSPropertyGridRowStart, rowStartValue.get(), important);
-    addProperty(CSSPropertyGridColumnStart, columnStartValue.get(), important);
-    addProperty(CSSPropertyGridRowEnd, rowEndValue.get(), important);
-    addProperty(CSSPropertyGridColumnEnd, columnEndValue.get(), important);
+    addProperty(CSSPropertyGridRowStart, rowStartValue, important);
+    addProperty(CSSPropertyGridColumnStart, columnStartValue, important);
+    addProperty(CSSPropertyGridRowEnd, rowEndValue, important);
+    addProperty(CSSPropertyGridColumnEnd, columnEndValue, important);
     return true;
 }
 
@@ -2804,7 +2803,7 @@ bool CSSPropertyParser::parseItemPositionOverflowPosition(CSSPropertyID propId, 
     if (overflowAlignmentKeyword)
         addProperty(propId, CSSValuePair::create(position, overflowAlignmentKeyword, CSSValuePair::DropIdenticalValues), important);
     else
-        addProperty(propId, position.release(), important);
+        addProperty(propId, position, important);
 
     return true;
 }
