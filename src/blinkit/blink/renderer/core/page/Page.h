@@ -272,7 +272,7 @@ private:
     const std::unique_ptr<ContextMenuController> m_contextMenuController;
     const std::unique_ptr<PointerLockController> m_pointerLockController;
     std::unique_ptr<ScrollingCoordinator> m_scrollingCoordinator;
-    const OwnPtrWillBeMember<UndoStack> m_undoStack;
+    const std::unique_ptr<UndoStack> m_undoStack;
 
     // Typically, the main frame and Page should both be owned by the embedder,
     // which must call Page::willBeDestroyed() prior to destroying Page. This

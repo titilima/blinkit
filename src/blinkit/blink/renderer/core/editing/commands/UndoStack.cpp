@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: UndoStack.cpp
+// Description: UndoStack Class
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple, Inc.  All rights reserved.
  * Copyright (C) 2012 Google, Inc.  All rights reserved.
@@ -44,25 +55,23 @@ UndoStack::UndoStack()
 {
 }
 
-DEFINE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(UndoStack)
-
-PassOwnPtrWillBeRawPtr<UndoStack> UndoStack::create()
+std::unique_ptr<UndoStack> UndoStack::create()
 {
-    return adoptPtrWillBeNoop(new UndoStack());
+    return zed::wrap_unique(new UndoStack());
 }
 
 void UndoStack::registerUndoStep(PassRefPtrWillBeRawPtr<UndoStep> step)
 {
     if (m_undoStack.size() == maximumUndoStackDepth)
-        m_undoStack.removeFirst(); // drop oldest item off the far end
+        m_undoStack.pop_front(); // drop oldest item off the far end
     if (!m_inRedo)
         m_redoStack.clear();
-    m_undoStack.append(step);
+    m_undoStack.emplace_back(step);
 }
 
 void UndoStack::registerRedoStep(PassRefPtrWillBeRawPtr<UndoStep> step)
 {
-    m_redoStack.append(step);
+    m_redoStack.emplace_back(step);
 }
 
 void UndoStack::didUnloadFrame(const LocalFrame& frame)
@@ -75,31 +84,31 @@ void UndoStack::didUnloadFrame(const LocalFrame& frame)
 void UndoStack::filterOutUndoSteps(UndoStepStack& stack, const LocalFrame& frame)
 {
     UndoStepStack newStack;
-    while (!stack.isEmpty()) {
-        UndoStep* step = stack.first().get();
+    while (!stack.empty()) {
+        UndoStep* step = stack.front().get();
         if (!step->belongsTo(frame))
-            newStack.append(step);
-        stack.removeFirst();
+            newStack.emplace_back(step);
+        stack.pop_front();
     }
     stack.swap(newStack);
 }
 
 bool UndoStack::canUndo() const
 {
-    return !m_undoStack.isEmpty();
+    return !m_undoStack.empty();
 }
 
 bool UndoStack::canRedo() const
 {
-    return !m_redoStack.isEmpty();
+    return !m_redoStack.empty();
 }
 
 void UndoStack::undo()
 {
     if (canUndo()) {
         UndoStepStack::iterator back = --m_undoStack.end();
-        RefPtrWillBeRawPtr<UndoStep> step(back->get());
-        m_undoStack.remove(back);
+        GCRefPtr<UndoStep> step(back->get());
+        m_undoStack.erase(back);
         step->unapply();
         // unapply will call us back to push this command onto the redo stack.
     }
@@ -109,20 +118,14 @@ void UndoStack::redo()
 {
     if (canRedo()) {
         UndoStepStack::iterator back = --m_redoStack.end();
-        RefPtrWillBeRawPtr<UndoStep> step(back->get());
-        m_redoStack.remove(back);
+        GCRefPtr<UndoStep> step(back->get());
+        m_redoStack.erase(back);
 
         ASSERT(!m_inRedo);
         TemporaryChange<bool> redoScope(m_inRedo, true);
         step->reapply();
         // reapply will call us back to push this command onto the undo stack.
     }
-}
-
-DEFINE_TRACE(UndoStack)
-{
-    visitor->trace(m_undoStack);
-    visitor->trace(m_redoStack);
 }
 
 } // namespace blink

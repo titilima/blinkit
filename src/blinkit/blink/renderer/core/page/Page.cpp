@@ -34,7 +34,7 @@
 #include "core/dom/ClientRectList.h"
 // BKTODO: #include "core/dom/VisitedLinkState.h"
 #include "core/editing/DragCaretController.h"
-// BKTODO: #include "core/editing/commands/UndoStack.h"
+#include "core/editing/commands/UndoStack.h"
 #include "core/editing/markers/DocumentMarkerController.h"
 #include "core/events/Event.h"
 // BKTODO: #include "core/fetch/MemoryCache.h"
@@ -145,7 +145,7 @@ Page::Page(PageClients& pageClients)
     , m_focusController(FocusController::create(this))
     , m_contextMenuController(ContextMenuController::create(this, pageClients.contextMenuClient))
     , m_pointerLockController(PointerLockController::create(this))
-    // BKTODO: , m_undoStack(UndoStack::create())
+    , m_undoStack(UndoStack::create())
     , m_mainFrame(nullptr)
     , m_editorClient(pageClients.editorClient)
     // BKTODO: , m_spellCheckerClient(pageClients.spellCheckerClient)

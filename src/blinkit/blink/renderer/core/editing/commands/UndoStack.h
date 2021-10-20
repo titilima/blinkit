@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: UndoStack.h
+// Description: UndoStack Class
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -31,8 +42,8 @@
 #ifndef UndoStack_h
 #define UndoStack_h
 
+#include <deque>
 #include "platform/heap/Handle.h"
-#include "wtf/Deque.h"
 #include "wtf/Forward.h"
 
 namespace blink {
@@ -40,12 +51,10 @@ namespace blink {
 class LocalFrame;
 class UndoStep;
 
-class UndoStack final : public NoBaseWillBeGarbageCollected<UndoStack> {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(UndoStack);
+class UndoStack final {
     WTF_MAKE_NONCOPYABLE(UndoStack);
-    DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(UndoStack)
 public:
-    static PassOwnPtrWillBeRawPtr<UndoStack> create();
+    static std::unique_ptr<UndoStack> create();
 
     void registerUndoStep(PassRefPtrWillBeRawPtr<UndoStep>);
     void registerRedoStep(PassRefPtrWillBeRawPtr<UndoStep>);
@@ -55,12 +64,10 @@ public:
     void undo();
     void redo();
 
-    DECLARE_TRACE();
-
 private:
     UndoStack();
 
-    typedef WillBeHeapDeque<RefPtrWillBeMember<UndoStep>> UndoStepStack;
+    typedef std::deque<GCRefPtr<UndoStep>> UndoStepStack;
 
     void filterOutUndoSteps(UndoStepStack&, const LocalFrame&);
 

@@ -66,10 +66,8 @@
 #include "core/editing/commands/ReplaceSelectionCommand.h"
 // BKTODO: #include "core/editing/commands/SimplifyMarkupCommand.h"
 #include "core/editing/commands/TypingCommand.h"
-#if 0 // BKTODO:
 #include "core/editing/commands/UndoStack.h"
-#include "core/editing/iterators/SearchBuffer.h"
-#endif
+// BKTODO: #include "core/editing/iterators/SearchBuffer.h"
 #include "core/editing/markers/DocumentMarkerController.h"
 #include "core/editing/serializers/Serialization.h"
 // BKTODO: #include "core/editing/spellcheck/SpellChecker.h"
@@ -650,7 +648,7 @@ TriState Editor::selectionHasStyle(CSSPropertyID propertyID, const String& value
 
 String Editor::selectionStartCSSPropertyValue(CSSPropertyID propertyID)
 {
-    RefPtrWillBeRawPtr<EditingStyle> selectionStyle = EditingStyle::styleAtSelectionStart(frame().selection().selection(),
+    GCRefPtr<EditingStyle> selectionStyle = EditingStyle::styleAtSelectionStart(frame().selection().selection(),
         propertyID == CSSPropertyBackgroundColor);
     if (!selectionStyle || !selectionStyle->style())
         return String();
@@ -692,7 +690,7 @@ void Editor::appliedEditing(PassRefPtrWillBeRawPtr<CompositeEditCommand> cmd)
         // different from the last command
         m_lastEditCommand = cmd;
         if (UndoStack* undoStack = this->undoStack())
-            ASSERT(false); // BKTODO: undoStack->registerUndoStep(m_lastEditCommand->ensureComposition());
+            undoStack->registerUndoStep(m_lastEditCommand->ensureComposition());
     }
 
     respondToChangedContents(newSelection);
@@ -703,8 +701,6 @@ void Editor::unappliedEditing(PassRefPtrWillBeRawPtr<EditCommandComposition> cmd
     EventQueueScope scope;
     frame().document()->updateLayout();
 
-    ASSERT(false); // BKTODO:
-#if 0
     dispatchEditableContentChangedEvents(cmd->startingRootEditableElement(), cmd->endingRootEditableElement());
 
     VisibleSelection newSelection(cmd->startingSelection());
@@ -712,11 +708,10 @@ void Editor::unappliedEditing(PassRefPtrWillBeRawPtr<EditCommandComposition> cmd
     if (newSelection.start().document() == frame().document() && newSelection.end().document() == frame().document())
         changeSelectionAfterCommand(newSelection, FrameSelection::CloseTyping | FrameSelection::ClearTypingStyle);
 
-    m_lastEditCommand = nullptr;
+    m_lastEditCommand.clear();
     if (UndoStack* undoStack = this->undoStack())
         undoStack->registerRedoStep(cmd);
     respondToChangedContents(newSelection);
-#endif
 }
 
 void Editor::reappliedEditing(PassRefPtrWillBeRawPtr<EditCommandComposition> cmd)
@@ -724,18 +719,15 @@ void Editor::reappliedEditing(PassRefPtrWillBeRawPtr<EditCommandComposition> cmd
     EventQueueScope scope;
     frame().document()->updateLayout();
 
-    ASSERT(false); // BKTODO:
-#if 0
     dispatchEditableContentChangedEvents(cmd->startingRootEditableElement(), cmd->endingRootEditableElement());
 
     VisibleSelection newSelection(cmd->endingSelection());
     changeSelectionAfterCommand(newSelection, FrameSelection::CloseTyping | FrameSelection::ClearTypingStyle);
 
-    m_lastEditCommand = nullptr;
+    m_lastEditCommand.clear();
     if (UndoStack* undoStack = this->undoStack())
         undoStack->registerUndoStep(cmd);
     respondToChangedContents(newSelection);
-#endif
 }
 
 std::unique_ptr<Editor> Editor::create(LocalFrame& frame)
@@ -992,27 +984,27 @@ void Editor::copyImage(const HitTestResult& result)
 bool Editor::canUndo()
 {
     if (UndoStack* undoStack = this->undoStack())
-        ASSERT(false); // BKTODO: return undoStack->canUndo();
+        return undoStack->canUndo();
     return false;
 }
 
 void Editor::undo()
 {
     if (UndoStack* undoStack = this->undoStack())
-        ASSERT(false); // BKTODO: undoStack->undo();
+        undoStack->undo();
 }
 
 bool Editor::canRedo()
 {
     if (UndoStack* undoStack = this->undoStack())
-        ASSERT(false); // BKTODO: return undoStack->canRedo();
+        undoStack->canRedo();
     return false;
 }
 
 void Editor::redo()
 {
     if (UndoStack* undoStack = this->undoStack())
-        ASSERT(false); // BKTODO: undoStack->redo();
+        undoStack->redo();
 }
 
 void Editor::setBaseWritingDirection(WritingDirection direction)
@@ -1027,7 +1019,7 @@ void Editor::setBaseWritingDirection(WritingDirection direction)
         return;
     }
 
-    RefPtrWillBeRawPtr<MutableStylePropertySet> style = MutableStylePropertySet::create(HTMLQuirksMode);
+    GCRefPtr<MutableStylePropertySet> style = MutableStylePropertySet::create(HTMLQuirksMode);
     style->setProperty(CSSPropertyDirection, direction == LeftToRightWritingDirection ? "ltr" : direction == RightToLeftWritingDirection ? "rtl" : "inherit", false);
     applyParagraphStyleToSelection(style.get(), EditActionSetWritingDirection);
 }
@@ -1150,7 +1142,7 @@ void Editor::computeAndSetTypingStyle(StylePropertySet* style, EditAction editin
     }
 
     // Calculate the current typing style.
-    RefPtrWillBeRawPtr<EditingStyle> typingStyle = nullptr;
+    GCRefPtr<EditingStyle> typingStyle;
     if (frame().selection().typingStyle()) {
         typingStyle = frame().selection().typingStyle()->copy();
         typingStyle->overrideWithStyle(style);
@@ -1161,14 +1153,14 @@ void Editor::computeAndSetTypingStyle(StylePropertySet* style, EditAction editin
     typingStyle->prepareToApplyAt(frame().selection().selection().visibleStart().deepEquivalent(), EditingStyle::PreserveWritingDirection);
 
     // Handle block styles, substracting these from the typing style.
-    RefPtrWillBeRawPtr<EditingStyle> blockStyle = typingStyle->extractAndRemoveBlockProperties();
+    GCRefPtr<EditingStyle> blockStyle = typingStyle->extractAndRemoveBlockProperties();
     if (!blockStyle->isEmpty()) {
         ASSERT(frame().document());
         ASSERT(false); // BKTODO: ApplyStyleCommand::create(*frame().document(), blockStyle.get(), editingAction)->apply();
     }
 
     // Set the remaining style as the typing style.
-    frame().selection().setTypingStyle(typingStyle);
+    frame().selection().setTypingStyle(typingStyle.get());
 }
 
 bool Editor::findString(const String& target, FindOptions options)
