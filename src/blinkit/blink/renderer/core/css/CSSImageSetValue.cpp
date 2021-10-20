@@ -191,12 +191,12 @@ DEFINE_TRACE_AFTER_DISPATCH(CSSImageSetValue)
     CSSValueList::traceAfterDispatch(visitor);
 }
 
-PassRefPtrWillBeRawPtr<CSSImageSetValue> CSSImageSetValue::valueWithURLsMadeAbsolute()
+GCRefPtr<CSSImageSetValue> CSSImageSetValue::valueWithURLsMadeAbsolute()
 {
-    RefPtrWillBeRawPtr<CSSImageSetValue> value = CSSImageSetValue::create();
+    GCRefPtr<CSSImageSetValue> value = CSSImageSetValue::create();
     for (auto& item : *this)
         item->isImageValue() ? value->append(toCSSImageValue(*item).valueWithURLMadeAbsolute()) : value->append(item.get());
-    return value.release();
+    return value;
 }
 
 

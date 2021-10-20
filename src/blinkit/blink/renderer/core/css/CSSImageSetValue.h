@@ -52,9 +52,9 @@ class StyleFetchedImageSet;
 class CSSImageSetValue : public CSSValueList {
 public:
 
-    static PassRefPtrWillBeRawPtr<CSSImageSetValue> create()
+    static GCRefPtr<CSSImageSetValue> create()
     {
-        return adoptRefWillBeNoop(new CSSImageSetValue());
+        return BlinKit::GCWrapShared(new CSSImageSetValue);
     }
     ~CSSImageSetValue();
 
@@ -71,7 +71,7 @@ public:
         float scaleFactor;
     };
 
-    PassRefPtrWillBeRawPtr<CSSImageSetValue> valueWithURLsMadeAbsolute();
+    GCRefPtr<CSSImageSetValue> valueWithURLsMadeAbsolute();
 
     bool hasFailedOrCanceledSubresources() const;
 
