@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSCursorImageValue.h
+// Description: CSSCursorImageValue Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Rob Buis <buis@kde.org>
  * Copyright (C) 2008 Apple Inc. All right reserved.
@@ -32,9 +43,9 @@ class SVGElement;
 
 class CSSCursorImageValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSCursorImageValue> create(PassRefPtrWillBeRawPtr<CSSValue> imageValue, bool hotSpotSpecified, const IntPoint& hotSpot)
+    static GCRefPtr<CSSCursorImageValue> create(const GCRefPtr<CSSValue> &imageValue, bool hotSpotSpecified, const IntPoint& hotSpot)
     {
-        return adoptRefWillBeNoop(new CSSCursorImageValue(imageValue, hotSpotSpecified, hotSpot));
+        return BlinKit::GCWrapShared(new CSSCursorImageValue(imageValue, hotSpotSpecified, hotSpot));
     }
 
     ~CSSCursorImageValue();
@@ -59,13 +70,13 @@ public:
     DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
-    CSSCursorImageValue(PassRefPtrWillBeRawPtr<CSSValue> imageValue, bool hotSpotSpecified, const IntPoint& hotSpot);
+    CSSCursorImageValue(const GCRefPtr<CSSValue> &imageValue, bool hotSpotSpecified, const IntPoint& hotSpot);
 
     bool isSVGCursor() const;
     String cachedImageURL();
     void clearImageResource();
 
-    RefPtrWillBeMember<CSSValue> m_imageValue;
+    GCRefPtr<CSSValue> m_imageValue;
 
     bool m_hotSpotSpecified;
     IntPoint m_hotSpot;
