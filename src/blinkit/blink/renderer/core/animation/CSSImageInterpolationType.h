@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSImageInterpolationType.h
+// Description: CSSImageInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -25,7 +36,7 @@ public:
     static InterpolationComponent maybeConvertStyleImage(const StyleImage&, bool acceptGradients);
     static InterpolationComponent maybeConvertStyleImage(const StyleImage* image, bool acceptGradients) { return image ? maybeConvertStyleImage(*image, acceptGradients) : nullptr; }
     static PairwiseInterpolationComponent mergeSingleConversionComponents(InterpolationComponent& startValue, InterpolationComponent& endValue);
-    static PassRefPtrWillBeRawPtr<CSSValue> createCSSValue(const InterpolableValue&, const NonInterpolableValue*);
+    static GCRefPtr<CSSValue> createCSSValue(const InterpolableValue&, const NonInterpolableValue*);
     static PassRefPtrWillBeRawPtr<StyleImage> resolveStyleImage(CSSPropertyID, const InterpolableValue&, const NonInterpolableValue*, StyleResolverState&);
     static bool equalNonInterpolableValues(const NonInterpolableValue*, const NonInterpolableValue*);
 

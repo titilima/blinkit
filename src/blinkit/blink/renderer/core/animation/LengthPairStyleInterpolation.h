@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LengthPairStyleInterpolation.h
+// Description: LengthPairStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -29,7 +40,7 @@ private:
     }
 
     static PassOwnPtr<InterpolableValue> lengthPairToInterpolableValue(const CSSValue&);
-    static PassRefPtrWillBeRawPtr<CSSValue> interpolableValueToLengthPair(InterpolableValue*, InterpolationRange);
+    static GCRefPtr<CSSValue> interpolableValueToLengthPair(InterpolableValue*, InterpolationRange);
 
     InterpolationRange m_range;
 

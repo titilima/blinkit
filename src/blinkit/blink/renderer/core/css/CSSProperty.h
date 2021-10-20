@@ -76,14 +76,14 @@ public:
 #endif
     {
     }
-    CSSProperty(CSSPropertyID propertyID, PassRefPtrWillBeRawPtr<CSSValue> value, bool important = false, bool isSetFromShorthand = false, int indexInShorthandsVector = 0, bool implicit = false)
+    CSSProperty(CSSPropertyID propertyID, const GCRefPtr<CSSValue> &value, bool important = false, bool isSetFromShorthand = false, int indexInShorthandsVector = 0, bool implicit = false)
         : m_metadata(propertyID, isSetFromShorthand, indexInShorthandsVector, important, implicit, CSSPropertyMetadata::isInheritedProperty(propertyID))
         , m_value(value)
     {
     }
 
     // FIXME: Remove this.
-    CSSProperty(StylePropertyMetadata metadata, CSSValue* value)
+    CSSProperty(StylePropertyMetadata metadata, CSSValue *value)
         : m_metadata(metadata)
         , m_value(value)
     {

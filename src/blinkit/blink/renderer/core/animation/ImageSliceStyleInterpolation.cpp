@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageSliceStyleInterpolation.cpp
+// Description: ImageSliceStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -54,15 +65,15 @@ private:
     }
 };
 
-PassRefPtrWillBeRawPtr<CSSBorderImageSliceValue> compose(const InterpolableValue& value, const ImageSliceStyleInterpolation::Metadata& metadata)
+GCRefPtr<CSSBorderImageSliceValue> compose(const InterpolableValue& value, const ImageSliceStyleInterpolation::Metadata& metadata)
 {
     const InterpolableList& interpolableList = toInterpolableList(value);
     CSSPrimitiveValue::UnitType type = metadata.isPercentage ? CSSPrimitiveValue::UnitType::Percentage : CSSPrimitiveValue::UnitType::Number;
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> top = CSSPrimitiveValue::create(clampTo<double>(toInterpolableNumber(interpolableList.get(0))->value(), 0), type);
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> right = CSSPrimitiveValue::create(clampTo<double>(toInterpolableNumber(interpolableList.get(1))->value(), 0), type);
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> bottom = CSSPrimitiveValue::create(clampTo<double>(toInterpolableNumber(interpolableList.get(2))->value(), 0), type);
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> left = CSSPrimitiveValue::create(clampTo<double>(toInterpolableNumber(interpolableList.get(3))->value(), 0), type);
-    return CSSBorderImageSliceValue::create(CSSQuadValue::create(top.release(), right.release(), bottom.release(), left.release(), CSSQuadValue::SerializeAsQuad), metadata.fill);
+    GCRefPtr<CSSPrimitiveValue> top = CSSPrimitiveValue::create(clampTo<double>(toInterpolableNumber(interpolableList.get(0))->value(), 0), type);
+    GCRefPtr<CSSPrimitiveValue> right = CSSPrimitiveValue::create(clampTo<double>(toInterpolableNumber(interpolableList.get(1))->value(), 0), type);
+    GCRefPtr<CSSPrimitiveValue> bottom = CSSPrimitiveValue::create(clampTo<double>(toInterpolableNumber(interpolableList.get(2))->value(), 0), type);
+    GCRefPtr<CSSPrimitiveValue> left = CSSPrimitiveValue::create(clampTo<double>(toInterpolableNumber(interpolableList.get(3))->value(), 0), type);
+    return CSSBorderImageSliceValue::create(CSSQuadValue::create(top, right, bottom, left, CSSQuadValue::SerializeAsQuad), metadata.fill);
 }
 
 } // namespace

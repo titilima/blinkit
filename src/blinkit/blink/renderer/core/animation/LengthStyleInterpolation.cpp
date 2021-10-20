@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LengthStyleInterpolation.cpp
+// Description: LengthStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -72,23 +83,23 @@ static CSSPrimitiveValue::UnitType toUnitType(int lengthUnitType)
     return static_cast<CSSPrimitiveValue::UnitType>(CSSPrimitiveValue::lengthUnitTypeToUnitType(static_cast<CSSPrimitiveValue::LengthUnitType>(lengthUnitType)));
 }
 
-static PassRefPtrWillBeRawPtr<CSSCalcExpressionNode> constructCalcExpression(const InterpolableList* list)
+static GCRefPtr<CSSCalcExpressionNode> constructCalcExpression(const InterpolableList* list)
 {
     const InterpolableList* listOfValues = toInterpolableList(list->get(0));
     const InterpolableList* listOfTypes = toInterpolableList(list->get(1));
-    RefPtrWillBeRawPtr<CSSCalcExpressionNode> expression = nullptr;
+    GCRefPtr<CSSCalcExpressionNode> expression;
     for (size_t position = 0; position < CSSPrimitiveValue::LengthUnitTypeCount; position++) {
         const InterpolableNumber *subValueType = toInterpolableNumber(listOfTypes->get(position));
         if (!subValueType->value())
             continue;
         double value = toInterpolableNumber(listOfValues->get(position))->value();
-        RefPtrWillBeRawPtr<CSSCalcExpressionNode> currentTerm = CSSCalcValue::createExpressionNode(CSSPrimitiveValue::create(value, toUnitType(position)));
+        GCRefPtr<CSSCalcExpressionNode> currentTerm = CSSCalcValue::createExpressionNode(CSSPrimitiveValue::create(value, toUnitType(position)));
         if (expression)
-            expression = CSSCalcValue::createExpressionNode(expression.release(), currentTerm.release(), CalcAdd);
+            expression = CSSCalcValue::createExpressionNode(expression, currentTerm, CalcAdd);
         else
             expression = currentTerm.release();
     }
-    return expression.release();
+    return expression;
 }
 
 static double clampToRange(double x, ValueRange range)
@@ -122,7 +133,7 @@ static Length lengthFromInterpolableValue(const InterpolableValue& value, Interp
 
 }
 
-PassRefPtrWillBeRawPtr<CSSPrimitiveValue> LengthStyleInterpolation::fromInterpolableValue(const InterpolableValue& value, InterpolationRange range)
+GCRefPtr<CSSPrimitiveValue> LengthStyleInterpolation::fromInterpolableValue(const InterpolableValue& value, InterpolationRange range)
 {
     const InterpolableList* listOfValuesAndTypes = toInterpolableList(&value);
     const InterpolableList* listOfValues = toInterpolableList(listOfValuesAndTypes->get(0));

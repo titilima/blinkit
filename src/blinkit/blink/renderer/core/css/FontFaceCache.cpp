@@ -58,14 +58,15 @@ FontFaceCache::FontFaceCache()
 {
 }
 
-void FontFaceCache::add(CSSFontSelector* cssFontSelector, const StyleRuleFontFace* fontFaceRule, PassRefPtrWillBeRawPtr<FontFace> prpFontFace)
+void FontFaceCache::add(CSSFontSelector* cssFontSelector, const StyleRuleFontFace* fontFaceRule, FontFace *prpFontFace)
 {
-    Member<FontFace> &fontFace = m_styleRuleToFontFace[fontFaceRule];
-    if (!fontFace)
-        addFontFace(cssFontSelector, fontFace, true);
+    if (zed::key_exists(m_styleRuleToFontFace, fontFaceRule))
+        return;
+    m_styleRuleToFontFace.emplace(fontFaceRule, prpFontFace);
+    addFontFace(cssFontSelector, prpFontFace, true);
 }
 
-void FontFaceCache::addFontFace(CSSFontSelector* cssFontSelector, PassRefPtrWillBeRawPtr<FontFace> prpFontFace, bool cssConnected)
+void FontFaceCache::addFontFace(CSSFontSelector* cssFontSelector, FontFace *prpFontFace, bool cssConnected)
 {
     RefPtrWillBeRawPtr<FontFace> fontFace = prpFontFace;
 

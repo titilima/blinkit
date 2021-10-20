@@ -69,11 +69,11 @@ public:
 
     PassRefPtrWillBeRawPtr<MutableStylePropertySet> copyProperties() const;
 
-    PassRefPtrWillBeRawPtr<CSSValue> getPropertyCSSValue(CSSPropertyID) const;
-    PassRefPtrWillBeRawPtr<CSSValue> getPropertyCSSValue(AtomicString customPropertyName) const;
+    GCRefPtr<CSSValue> getPropertyCSSValue(CSSPropertyID) const;
+    GCRefPtr<CSSValue> getPropertyCSSValue(AtomicString customPropertyName) const;
     const HashMap<AtomicString, RefPtr<CSSVariableData>>* getVariables() const;
 
-    PassRefPtrWillBeRawPtr<CSSValue> getFontSizeCSSValuePreferringKeyword() const;
+    GCRefPtr<CSSValue> getFontSizeCSSValuePreferringKeyword() const;
     bool isMonospaceFont() const;
 
     PassRefPtrWillBeRawPtr<MutableStylePropertySet> copyPropertiesInSet(const Vector<CSSPropertyID>&) const;
@@ -105,7 +105,7 @@ private:
     void setCSSFloat(const String&, ExceptionState&);
     String cssText() const override;
     void setCSSText(const String&, ExceptionState&) override;
-    PassRefPtrWillBeRawPtr<CSSValue> getPropertyCSSValueInternal(CSSPropertyID) override;
+    GCRefPtr<CSSValue> getPropertyCSSValueInternal(CSSPropertyID) override;
     String getPropertyValueInternal(CSSPropertyID) override;
     void setPropertyInternal(CSSPropertyID, const String& customPropertyName, const String& value, bool important, ExceptionState&) override;
 

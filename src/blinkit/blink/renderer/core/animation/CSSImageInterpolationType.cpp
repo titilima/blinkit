@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSImageInterpolationType.cpp
+// Description: CSSImageInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -16,7 +27,7 @@ class CSSImageNonInterpolableValue : public NonInterpolableValue {
 public:
     ~CSSImageNonInterpolableValue() final { }
 
-    static PassRefPtr<CSSImageNonInterpolableValue> create(PassRefPtrWillBeRawPtr<CSSValue> start, PassRefPtrWillBeRawPtr<CSSValue> end)
+    static PassRefPtr<CSSImageNonInterpolableValue> create(CSSValue *start, CSSValue *end)
     {
         return adoptRef(new CSSImageNonInterpolableValue(start, end));
     }
@@ -29,7 +40,7 @@ public:
 
     static PassRefPtr<CSSImageNonInterpolableValue> merge(PassRefPtr<NonInterpolableValue> start, PassRefPtr<NonInterpolableValue> end);
 
-    PassRefPtrWillBeRawPtr<CSSValue> crossfade(double progress) const
+    GCRefPtr<CSSValue> crossfade(double progress) const
     {
         if (m_isSingle || progress <= 0)
             return m_start;
@@ -41,7 +52,7 @@ public:
     DECLARE_NON_INTERPOLABLE_VALUE_TYPE();
 
 private:
-    CSSImageNonInterpolableValue(PassRefPtrWillBeRawPtr<CSSValue> start, PassRefPtrWillBeRawPtr<CSSValue> end)
+    CSSImageNonInterpolableValue(CSSValue *start, CSSValue *end)
         : m_start(start)
         , m_end(end)
         , m_isSingle(m_start == m_end)
@@ -50,8 +61,8 @@ private:
         ASSERT(m_end);
     }
 
-    RefPtrWillBePersistent<CSSValue> m_start;
-    RefPtrWillBePersistent<CSSValue> m_end;
+    GCRefPtr<CSSValue> m_start;
+    GCRefPtr<CSSValue> m_end;
     const bool m_isSingle;
 };
 
@@ -64,7 +75,7 @@ PassRefPtr<CSSImageNonInterpolableValue> CSSImageNonInterpolableValue::merge(Pas
     const CSSImageNonInterpolableValue& endImagePair = toCSSImageNonInterpolableValue(*end);
     ASSERT(startImagePair.m_isSingle);
     ASSERT(endImagePair.m_isSingle);
-    return create(startImagePair.m_start, endImagePair.m_end);
+    return create(startImagePair.m_start.get(), endImagePair.m_end.get());
 }
 
 InterpolationComponent CSSImageInterpolationType::maybeConvertStyleImage(const StyleImage& styleImage, bool acceptGradients)
@@ -93,14 +104,14 @@ PairwiseInterpolationComponent CSSImageInterpolationType::mergeSingleConversionC
         CSSImageNonInterpolableValue::merge(startValue.nonInterpolableValue, endValue.nonInterpolableValue));
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSImageInterpolationType::createCSSValue(const InterpolableValue& interpolableValue, const NonInterpolableValue* nonInterpolableValue)
+GCRefPtr<CSSValue> CSSImageInterpolationType::createCSSValue(const InterpolableValue& interpolableValue, const NonInterpolableValue* nonInterpolableValue)
 {
     return toCSSImageNonInterpolableValue(nonInterpolableValue)->crossfade(toInterpolableNumber(interpolableValue).value());
 }
 
 PassRefPtrWillBeRawPtr<StyleImage> CSSImageInterpolationType::resolveStyleImage(CSSPropertyID property, const InterpolableValue& interpolableValue, const NonInterpolableValue* nonInterpolableValue, StyleResolverState& state)
 {
-    RefPtrWillBeRawPtr<CSSValue> image = createCSSValue(interpolableValue, nonInterpolableValue);
+    GCRefPtr<CSSValue> image = createCSSValue(interpolableValue, nonInterpolableValue);
     return state.styleImage(property, *image);
 }
 

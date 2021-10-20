@@ -197,7 +197,7 @@ static String serializeShorthand(const StylePropertySet&, const AtomicString& cu
 template<typename T>
 String StylePropertySet::getPropertyValue(T property) const
 {
-    RefPtrWillBeRawPtr<CSSValue> value = getPropertyCSSValue(property);
+    GCRefPtr<CSSValue> value = getPropertyCSSValue(property);
     if (value)
         return value->cssText();
     return serializeShorthand(*this, property);
@@ -206,15 +206,15 @@ template CORE_EXPORT String StylePropertySet::getPropertyValue<CSSPropertyID>(CS
 template CORE_EXPORT String StylePropertySet::getPropertyValue<AtomicString>(AtomicString) const;
 
 template<typename T>
-PassRefPtrWillBeRawPtr<CSSValue> StylePropertySet::getPropertyCSSValue(T property) const
+GCRefPtr<CSSValue> StylePropertySet::getPropertyCSSValue(T property) const
 {
     int foundPropertyIndex = findPropertyIndex(property);
     if (foundPropertyIndex == -1)
         return nullptr;
-    return propertyAt(foundPropertyIndex).value();
+    return GCWrapShared(propertyAt(foundPropertyIndex).value());
 }
-template CORE_EXPORT PassRefPtrWillBeRawPtr<CSSValue> StylePropertySet::getPropertyCSSValue<CSSPropertyID>(CSSPropertyID) const;
-template CORE_EXPORT PassRefPtrWillBeRawPtr<CSSValue> StylePropertySet::getPropertyCSSValue<AtomicString>(AtomicString) const;
+template CORE_EXPORT GCRefPtr<CSSValue> StylePropertySet::getPropertyCSSValue<CSSPropertyID>(CSSPropertyID) const;
+template CORE_EXPORT GCRefPtr<CSSValue> StylePropertySet::getPropertyCSSValue<AtomicString>(AtomicString) const;
 
 DEFINE_TRACE(StylePropertySet)
 {
@@ -342,7 +342,7 @@ bool MutableStylePropertySet::setProperty(const AtomicString& customPropertyName
     return CSSParser::parseValueForCustomProperty(this, customPropertyName, value, important, contextStyleSheet);
 }
 
-void MutableStylePropertySet::setProperty(CSSPropertyID propertyID, PassRefPtrWillBeRawPtr<CSSValue> prpValue, bool important)
+void MutableStylePropertySet::setProperty(CSSPropertyID propertyID, const GCRefPtr<CSSValue> &prpValue, bool important)
 {
     StylePropertyShorthand shorthand = shorthandForProperty(propertyID);
     if (!shorthand.length()) {
@@ -352,9 +352,8 @@ void MutableStylePropertySet::setProperty(CSSPropertyID propertyID, PassRefPtrWi
 
     removePropertiesInSet(shorthand.properties(), shorthand.length());
 
-    RefPtrWillBeRawPtr<CSSValue> value = prpValue;
     for (unsigned i = 0; i < shorthand.length(); ++i)
-        m_propertyVector.emplace_back(CSSProperty(shorthand.properties()[i], value, important));
+        m_propertyVector.emplace_back(CSSProperty(shorthand.properties()[i], prpValue, important));
 }
 
 bool MutableStylePropertySet::setProperty(const CSSProperty& property, CSSProperty* slot)
@@ -533,9 +532,9 @@ PassRefPtrWillBeRawPtr<MutableStylePropertySet> StylePropertySet::copyProperties
     WillBeHeapVector<CSSProperty, 256> list;
     list.reserve(properties.size());
     for (unsigned i = 0; i < properties.size(); ++i) {
-        RefPtrWillBeRawPtr<CSSValue> value = getPropertyCSSValue(properties[i]);
+        GCRefPtr<CSSValue> value = getPropertyCSSValue(properties[i]);
         if (value)
-            list.append(CSSProperty(properties[i], value.release(), false));
+            list.append(CSSProperty(properties[i], value, false));
     }
     return MutableStylePropertySet::create(list.data(), list.size());
 }

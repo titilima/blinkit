@@ -1075,7 +1075,7 @@ static GCRefPtr<CSSValue> valueForShape(const ComputedStyle& style, ShapeValue* 
         return cssValuePool().createValue(shapeValue->cssBox());
     if (shapeValue->type() == ShapeValue::Image) {
         if (shapeValue->image())
-            return GCWrapShared(shapeValue->image()->computedCSSValue());
+            return shapeValue->image()->computedCSSValue();
         return cssValuePool().createIdentifierValue(CSSValueNone);
     }
 
@@ -1504,7 +1504,7 @@ GCRefPtr<CSSValue> ComputedStyleCSSValueMapping::get(CSSPropertyID propertyID, c
         return zoomAdjustedPixelValue(style.verticalBorderSpacing(), style);
     case CSSPropertyBorderImageSource:
         if (style.borderImageSource())
-            return GCWrapShared(style.borderImageSource()->computedCSSValue());
+            return style.borderImageSource()->computedCSSValue();
         return cssValuePool().createIdentifierValue(CSSValueNone);
     case CSSPropertyBorderTopColor:
         if (allowVisitedStyle)
@@ -1818,7 +1818,7 @@ GCRefPtr<CSSValue> ComputedStyleCSSValueMapping::get(CSSPropertyID propertyID, c
         return valueForLineHeight(style);
     case CSSPropertyListStyleImage:
         if (style.listStyleImage())
-            return GCWrapShared(style.listStyleImage()->computedCSSValue());
+            return style.listStyleImage()->computedCSSValue();
         return cssValuePool().createIdentifierValue(CSSValueNone);
     case CSSPropertyListStylePosition:
         return cssValuePool().createValue(style.listStylePosition());
@@ -2270,7 +2270,7 @@ GCRefPtr<CSSValue> ComputedStyleCSSValueMapping::get(CSSPropertyID propertyID, c
         return valueForNinePieceImageQuad(style.maskBoxImage().borderSlices(), style);
     case CSSPropertyWebkitMaskBoxImageSource:
         if (style.maskBoxImageSource())
-            return GCWrapShared(style.maskBoxImageSource()->computedCSSValue());
+            return style.maskBoxImageSource()->computedCSSValue();
         return cssValuePool().createIdentifierValue(CSSValueNone);
     case CSSPropertyWebkitFontSizeDelta:
         // Not a real style property -- used by the editing engine -- so has no computed value.

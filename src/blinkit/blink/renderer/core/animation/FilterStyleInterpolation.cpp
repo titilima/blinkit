@@ -23,9 +23,9 @@ namespace blink {
 
 namespace {
 
-PassRefPtrWillBeRawPtr<CSSValueList> extendFilterList(const CSSValueList& shortFilterList, const CSSValueList& otherFilterList)
+GCRefPtr<CSSValueList> extendFilterList(const CSSValueList& shortFilterList, const CSSValueList& otherFilterList)
 {
-    RefPtrWillBeRawPtr<CSSValueList> result = CSSValueList::createSpaceSeparated();
+    GCRefPtr<CSSValueList> result = CSSValueList::createSpaceSeparated();
     CSSValueList::const_iterator shortIter = shortFilterList.begin();
     CSSValueList::const_iterator otherIter = otherFilterList.begin();
     while (shortIter != shortFilterList.end()) {
@@ -35,7 +35,7 @@ PassRefPtrWillBeRawPtr<CSSValueList> extendFilterList(const CSSValueList& shortF
     }
     while (otherIter != otherFilterList.end()) {
         CSSFunctionValue* function = toCSSFunctionValue(otherIter->get());
-        RefPtrWillBeRawPtr<CSSValueList> defaultFunction = CSSFunctionValue::create(function->functionType());
+        GCRefPtr<CSSValueList> defaultFunction = CSSFunctionValue::create(function->functionType());
         switch (function->functionType()) {
         case CSSValueUrl:
             // Discrete interpolation occurs - see canCreateFrom.
@@ -67,7 +67,7 @@ PassRefPtrWillBeRawPtr<CSSValueList> extendFilterList(const CSSValueList& shortF
         result->append(defaultFunction);
         ++otherIter;
     }
-    return result.release();
+    return result;
 }
 
 PassRefPtr<FilterStyleInterpolation::FilterListStyleInterpolation> maybeCreateFromList(const CSSValueList& startList, const CSSValueList& endList, CSSPropertyID property)
@@ -140,11 +140,11 @@ PassOwnPtr<InterpolableValue> FilterStyleInterpolation::toInterpolableValue(cons
     return result.release();
 }
 
-PassRefPtrWillBeRawPtr<CSSFunctionValue> FilterStyleInterpolation::fromInterpolableValue(const InterpolableValue& value, CSSValueID functionType, InterpolationRange)
+GCRefPtr<CSSFunctionValue> FilterStyleInterpolation::fromInterpolableValue(const InterpolableValue& value, CSSValueID functionType, InterpolationRange)
 {
     const InterpolableList& list = toInterpolableList(value);
     size_t length = list.length();
-    RefPtrWillBeRawPtr<CSSFunctionValue> result = CSSFunctionValue::create(functionType);
+    GCRefPtr<CSSFunctionValue> result = CSSFunctionValue::create(functionType);
     for (size_t i = 0; i < length; ++i) {
         switch (functionType) {
         case CSSValueGrayscale:
@@ -171,7 +171,7 @@ PassRefPtrWillBeRawPtr<CSSFunctionValue> FilterStyleInterpolation::fromInterpola
             break;
         }
     }
-    return result.release();
+    return result;
 }
 
 } // namespace blink

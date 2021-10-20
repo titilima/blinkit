@@ -266,7 +266,7 @@ String AbstractPropertySetCSSStyleDeclaration::removeProperty(const String& prop
     return result;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> AbstractPropertySetCSSStyleDeclaration::getPropertyCSSValueInternal(CSSPropertyID propertyID)
+GCRefPtr<CSSValue> AbstractPropertySetCSSStyleDeclaration::getPropertyCSSValueInternal(CSSPropertyID propertyID)
 {
     return propertySet().getPropertyCSSValue(propertyID);
 }

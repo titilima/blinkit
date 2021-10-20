@@ -84,8 +84,8 @@ void ScopedStyleResolver::addFontFaceRules(const RuleSet& ruleSet)
     CSSFontSelector* cssFontSelector = document.styleEngine().fontSelector();
     const WillBeHeapVector<RawPtrWillBeMember<StyleRuleFontFace>> fontFaceRules = ruleSet.fontFaceRules();
     for (auto& fontFaceRule : fontFaceRules) {
-        if (RefPtrWillBeRawPtr<FontFace> fontFace = FontFace::create(&document, fontFaceRule))
-            cssFontSelector->fontFaceCache()->add(cssFontSelector, fontFaceRule, fontFace);
+        if (GCRefPtr<FontFace> fontFace = FontFace::create(&document, fontFaceRule))
+            cssFontSelector->fontFaceCache()->add(cssFontSelector, fontFaceRule, fontFace.get());
     }
     if (fontFaceRules.size())
         document.styleResolver()->invalidateMatchedPropertiesCache();

@@ -109,7 +109,7 @@ public:
     bool hasProperty(CSSPropertyID property) const { return findPropertyIndex(property) != -1; }
 
     template<typename T> // CSSPropertyID or AtomicString
-    PassRefPtrWillBeRawPtr<CSSValue> getPropertyCSSValue(T property) const;
+    GCRefPtr<CSSValue> getPropertyCSSValue(T property) const;
 
     template<typename T> // CSSPropertyID or AtomicString
     String getPropertyValue(T property) const;
@@ -232,7 +232,7 @@ public:
     // These expand shorthand properties into multiple properties.
     bool setProperty(CSSPropertyID unresolvedProperty, const String& value, bool important = false, StyleSheetContents* contextStyleSheet = 0);
     bool setProperty(const AtomicString& customPropertyName, const String& value, bool important = false, StyleSheetContents* contextStyleSheet = 0);
-    void setProperty(CSSPropertyID, PassRefPtrWillBeRawPtr<CSSValue>, bool important = false);
+    void setProperty(CSSPropertyID, const GCRefPtr<CSSValue> &, bool important = false);
 
     // These do not. FIXME: This is too messy, we can do better.
     bool setProperty(CSSPropertyID, CSSValueID identifier, bool important = false);

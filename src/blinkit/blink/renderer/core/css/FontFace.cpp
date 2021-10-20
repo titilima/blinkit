@@ -73,7 +73,7 @@ using namespace BlinKit;
 
 namespace blink {
 
-static PassRefPtrWillBeRawPtr<CSSValue> parseCSSValue(const Document* document, const String& value, CSSPropertyID propertyID)
+static GCRefPtr<CSSValue> parseCSSValue(const Document* document, const String& value, CSSPropertyID propertyID)
 {
     CSSParserContext context(*document);
     return CSSParser::parseFontFaceDescriptor(propertyID, value, context);
@@ -119,15 +119,15 @@ PassRefPtrWillBeRawPtr<FontFace> FontFace::create(ExecutionContext* context, con
 }
 #endif
 
-PassRefPtrWillBeRawPtr<FontFace> FontFace::create(Document* document, const StyleRuleFontFace* fontFaceRule)
+GCRefPtr<FontFace> FontFace::create(Document* document, const StyleRuleFontFace* fontFaceRule)
 {
     const StylePropertySet& properties = fontFaceRule->properties();
 
     // Obtain the font-family property and the src property. Both must be defined.
-    RefPtrWillBeRawPtr<CSSValue> family = properties.getPropertyCSSValue(CSSPropertyFontFamily);
+    GCRefPtr<CSSValue> family = properties.getPropertyCSSValue(CSSPropertyFontFamily);
     if (!family || (!family->isCustomIdentValue() && !family->isPrimitiveValue()))
         return nullptr;
-    RefPtrWillBeRawPtr<CSSValue> src = properties.getPropertyCSSValue(CSSPropertySrc);
+    GCRefPtr<CSSValue> src = properties.getPropertyCSSValue(CSSPropertySrc);
     if (!src || !src->isValueList())
         return nullptr;
 
@@ -144,7 +144,7 @@ PassRefPtrWillBeRawPtr<FontFace> FontFace::create(Document* document, const Styl
         && !fontFace->family().isEmpty()
         && fontFace->traits().bitfield()) {
         fontFace->initCSSFontFace(document, src);
-        return fontFace.release();
+        return fontFace;
     }
     return nullptr;
 }
@@ -238,7 +238,7 @@ void FontFace::setFeatureSettings(ExecutionContext* context, const String& s, Ex
 
 void FontFace::setPropertyFromString(const Document* document, const String& s, CSSPropertyID propertyID, ExceptionState* exceptionState)
 {
-    RefPtrWillBeRawPtr<CSSValue> value = parseCSSValue(document, s, propertyID);
+    GCRefPtr<CSSValue> value = parseCSSValue(document, s, propertyID);
     if (value && setPropertyValue(value, propertyID))
         return;
 
@@ -254,7 +254,7 @@ bool FontFace::setPropertyFromStyle(const StylePropertySet& properties, CSSPrope
     return setPropertyValue(properties.getPropertyCSSValue(propertyID), propertyID);
 }
 
-bool FontFace::setPropertyValue(PassRefPtrWillBeRawPtr<CSSValue> value, CSSPropertyID propertyID)
+bool FontFace::setPropertyValue(const GCRefPtr<CSSValue> &value, CSSPropertyID propertyID)
 {
     switch (propertyID) {
     case CSSPropertyFontStyle:
@@ -293,8 +293,6 @@ bool FontFace::setFamilyValue(const CSSValue& familyValue)
     if (familyValue.isCustomIdentValue()) {
         family = AtomicString(toCSSCustomIdentValue(familyValue).value());
     } else if (toCSSPrimitiveValue(familyValue).isValueID()) {
-        ASSERT(false); // BKTODO:
-#if 0
         // We need to use the raw text for all the generic family types, since @font-face is a way of actually
         // defining what font to use for those types.
         switch (toCSSPrimitiveValue(familyValue).getValueID()) {
@@ -319,7 +317,6 @@ bool FontFace::setFamilyValue(const CSSValue& familyValue)
         default:
             return false;
         }
-#endif
     }
     m_family = family;
     return true;
@@ -520,10 +517,10 @@ FontTraits FontFace::traits() const
     }
 
     FontVariant variant = FontVariantNormal;
-    if (RefPtrWillBeRawPtr<CSSValue> fontVariant = m_variant) {
+    if (GCRefPtr<CSSValue> fontVariant = m_variant) {
         // font-variant descriptor can be a value list.
         if (fontVariant->isPrimitiveValue()) {
-            RefPtrWillBeRawPtr<CSSValueList> list = CSSValueList::createCommaSeparated();
+            GCRefPtr<CSSValueList> list = CSSValueList::createCommaSeparated();
             list->append(fontVariant);
             fontVariant = list;
         } else if (!fontVariant->isValueList()) {
@@ -587,7 +584,7 @@ static PassOwnPtrWillBeRawPtr<CSSFontFace> createCSSFontFace(FontFace* fontFace,
     return adoptPtrWillBeNoop(new CSSFontFace(fontFace, ranges));
 }
 
-void FontFace::initCSSFontFace(Document* document, PassRefPtrWillBeRawPtr<CSSValue> src)
+void FontFace::initCSSFontFace(Document* document, const GCRefPtr<CSSValue> &src)
 {
     m_cssFontFace = createCSSFontFace(this, m_unicodeRange.get());
     if (m_error)

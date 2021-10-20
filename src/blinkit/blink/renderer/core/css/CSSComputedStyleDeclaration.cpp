@@ -411,12 +411,12 @@ static CSSValueID cssIdentifierForFontSizeKeyword(int keywordSize)
     return static_cast<CSSValueID>(CSSValueXxSmall + keywordSize - 1);
 }
 
-inline static PassRefPtrWillBeRawPtr<CSSPrimitiveValue> zoomAdjustedPixelValue(double value, const ComputedStyle& style)
+inline static GCRefPtr<CSSPrimitiveValue> zoomAdjustedPixelValue(double value, const ComputedStyle& style)
 {
     return cssValuePool().createValue(adjustFloatForAbsoluteZoom(value, style), CSSPrimitiveValue::UnitType::Pixels);
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSComputedStyleDeclaration::getFontSizeCSSValuePreferringKeyword() const
+GCRefPtr<CSSValue> CSSComputedStyleDeclaration::getFontSizeCSSValuePreferringKeyword() const
 {
     if (!m_node)
         return nullptr;
@@ -529,7 +529,7 @@ Node* CSSComputedStyleDeclaration::styledNode() const
     return m_node.get();
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSComputedStyleDeclaration::getPropertyCSSValue(AtomicString customPropertyName) const
+GCRefPtr<CSSValue> CSSComputedStyleDeclaration::getPropertyCSSValue(AtomicString customPropertyName) const
 {
     const ComputedStyle* style = computeComputedStyle();
     if (!style)
@@ -545,7 +545,7 @@ const HashMap<AtomicString, RefPtr<CSSVariableData>>* CSSComputedStyleDeclaratio
     return ComputedStyleCSSValueMapping::getVariables(*style);
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSComputedStyleDeclaration::getPropertyCSSValue(CSSPropertyID propertyID) const
+GCRefPtr<CSSValue> CSSComputedStyleDeclaration::getPropertyCSSValue(CSSPropertyID propertyID) const
 {
     Node* styledNode = this->styledNode();
     if (!styledNode)
@@ -578,7 +578,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSComputedStyleDeclaration::getPropertyCSSValu
     if (!style)
         return nullptr;
 
-    RefPtrWillBeRawPtr<CSSValue> value = ComputedStyleCSSValueMapping::get(propertyID, *style, layoutObject, styledNode, m_allowVisitedStyle);
+    GCRefPtr<CSSValue> value = ComputedStyleCSSValueMapping::get(propertyID, *style, layoutObject, styledNode, m_allowVisitedStyle);
     if (value)
         return value;
 
@@ -588,7 +588,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSComputedStyleDeclaration::getPropertyCSSValu
 
 String CSSComputedStyleDeclaration::getPropertyValue(CSSPropertyID propertyID) const
 {
-    RefPtrWillBeRawPtr<CSSValue> value = getPropertyCSSValue(propertyID);
+    GCRefPtr<CSSValue> value = getPropertyCSSValue(propertyID);
     if (value)
         return value->cssText();
     return "";
@@ -622,7 +622,7 @@ bool CSSComputedStyleDeclaration::cssPropertyMatches(CSSPropertyID propertyID, c
                 return true;
         }
     }
-    RefPtrWillBeRawPtr<CSSValue> value = getPropertyCSSValue(propertyID);
+    GCRefPtr<CSSValue> value = getPropertyCSSValue(propertyID);
     return value && propertyValue && value->equals(*propertyValue);
 }
 
@@ -636,9 +636,9 @@ PassRefPtrWillBeRawPtr<MutableStylePropertySet> CSSComputedStyleDeclaration::cop
     std::vector<CSSProperty> list;
     list.reserve(properties.size());
     for (unsigned i = 0; i < properties.size(); ++i) {
-        RefPtrWillBeRawPtr<CSSValue> value = getPropertyCSSValue(properties[i]);
+        GCRefPtr<CSSValue> value = getPropertyCSSValue(properties[i]);
         if (value)
-            list.emplace_back(CSSProperty(properties[i], value.release(), false));
+            list.emplace_back(CSSProperty(properties[i], value, false));
     }
     return MutableStylePropertySet::create(list.data(), list.size());
 }
@@ -653,7 +653,7 @@ String CSSComputedStyleDeclaration::getPropertyValue(const String& propertyName)
     CSSPropertyID propertyID = cssPropertyID(propertyName);
     if (!propertyID) {
         if (RuntimeEnabledFeatures::cssVariablesEnabled() && CSSVariableParser::isValidVariableName(propertyName)) {
-            RefPtrWillBeRawPtr<CSSValue> value = getPropertyCSSValue(AtomicString(propertyName));
+            GCRefPtr<CSSValue> value = getPropertyCSSValue(AtomicString(propertyName));
             if (value)
                 return value->cssText();
         }
@@ -690,7 +690,7 @@ String CSSComputedStyleDeclaration::removeProperty(const String& name, Exception
     return String();
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSComputedStyleDeclaration::getPropertyCSSValueInternal(CSSPropertyID propertyID)
+GCRefPtr<CSSValue> CSSComputedStyleDeclaration::getPropertyCSSValueInternal(CSSPropertyID propertyID)
 {
     return getPropertyCSSValue(propertyID);
 }

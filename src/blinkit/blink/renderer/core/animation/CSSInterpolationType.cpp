@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSInterpolationType.cpp
+// Description: CSSInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2021-10-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -15,13 +26,13 @@ namespace blink {
 
 class ResolvedVariableChecker : public InterpolationType::ConversionChecker {
 public:
-    static PassOwnPtr<ResolvedVariableChecker> create(const InterpolationType& type, CSSPropertyID property, PassRefPtrWillBeRawPtr<CSSVariableReferenceValue> variableReference, PassRefPtrWillBeRawPtr<CSSValue> resolvedValue)
+    static PassOwnPtr<ResolvedVariableChecker> create(const InterpolationType& type, CSSPropertyID property, CSSVariableReferenceValue *variableReference, const GCRefPtr<CSSValue> &resolvedValue)
     {
         return adoptPtr(new ResolvedVariableChecker(type, property, variableReference, resolvedValue));
     }
 
 private:
-    ResolvedVariableChecker(const InterpolationType& type, CSSPropertyID property, PassRefPtrWillBeRawPtr<CSSVariableReferenceValue> variableReference, PassRefPtrWillBeRawPtr<CSSValue> resolvedValue)
+    ResolvedVariableChecker(const InterpolationType& type, CSSPropertyID property, CSSVariableReferenceValue *variableReference, const GCRefPtr<CSSValue> &resolvedValue)
         : ConversionChecker(type)
         , m_property(property)
         , m_variableReference(variableReference)
@@ -31,18 +42,18 @@ private:
     bool isValid(const InterpolationEnvironment& environment, const UnderlyingValue&) const final
     {
         // TODO(alancutter): Just check the variables referenced instead of doing a full CSSValue resolve.
-        RefPtrWillBeRawPtr<CSSValue> resolvedValue = CSSVariableResolver::resolveVariableReferences(environment.state().style()->variables(), m_property, *m_variableReference);
+        GCRefPtr<CSSValue> resolvedValue = CSSVariableResolver::resolveVariableReferences(environment.state().style()->variables(), m_property, *m_variableReference);
         return m_resolvedValue->equals(*resolvedValue);
     }
 
     CSSPropertyID m_property;
-    RefPtrWillBePersistent<CSSVariableReferenceValue> m_variableReference;
-    RefPtrWillBePersistent<CSSValue> m_resolvedValue;
+    GCRefPtr<CSSVariableReferenceValue> m_variableReference;
+    GCRefPtr<CSSValue> m_resolvedValue;
 };
 
 PassOwnPtr<InterpolationValue> CSSInterpolationType::maybeConvertSingle(const PropertySpecificKeyframe& keyframe, const InterpolationEnvironment& environment, const UnderlyingValue& underlyingValue, ConversionCheckers& conversionCheckers) const
 {
-    RefPtrWillBeRawPtr<CSSValue> resolvedCSSValueOwner;
+    GCRefPtr<CSSValue> resolvedCSSValueOwner;
     const CSSValue* value = toCSSPropertySpecificKeyframe(keyframe).value();
 
     if (!value)

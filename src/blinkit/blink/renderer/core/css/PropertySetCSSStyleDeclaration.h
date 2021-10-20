@@ -69,7 +69,7 @@ private:
     void setCSSFloat(const String&, ExceptionState&);
     String cssText() const final;
     void setCSSText(const String&, ExceptionState&) final;
-    PassRefPtrWillBeRawPtr<CSSValue> getPropertyCSSValueInternal(CSSPropertyID) final;
+    GCRefPtr<CSSValue> getPropertyCSSValueInternal(CSSPropertyID) final;
     String getPropertyValueInternal(CSSPropertyID) final;
     void setPropertyInternal(CSSPropertyID, const String& customPropertyName, const String& value, bool important, ExceptionState&) final;
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ListStyleInterpolation.h
+// Description: ListStyleInterpolation Classes
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -70,16 +81,16 @@ private:
         return result.release();
     }
 
-    static PassRefPtrWillBeRawPtr<CSSValue> interpolableValueToList(InterpolableValue* value, const Vector<typename InterpolationType::NonInterpolableType>& nonInterpolableData, InterpolationRange range = RangeAll)
+    static GCRefPtr<CSSValue> interpolableValueToList(InterpolableValue* value, const Vector<typename InterpolationType::NonInterpolableType>& nonInterpolableData, InterpolationRange range = RangeAll)
     {
         InterpolableList* listValue = toInterpolableList(value);
-        RefPtrWillBeRawPtr<CSSValueList> result = CSSValueList::createCommaSeparated();
+        GCRefPtr<CSSValueList> result = CSSValueList::createCommaSeparated();
 
         ASSERT(nonInterpolableData.size() == listValue->length());
 
         for (size_t i = 0; i < listValue->length(); i++)
             result->append(InterpolationType::fromInterpolableValue(*(listValue->get(i)), nonInterpolableData[i], range));
-        return result.release();
+        return result;
     }
 
     friend class ListStyleInterpolationTest;
@@ -127,7 +138,7 @@ private:
     static PassRefPtrWillBeRawPtr<CSSValue> interpolableValueToList(InterpolableValue* value, InterpolationRange range = RangeAll)
     {
         InterpolableList* listValue = toInterpolableList(value);
-        RefPtrWillBeRawPtr<CSSValueList> result = CSSValueList::createCommaSeparated();
+        GCRefPtr<CSSValueList> result = CSSValueList::createCommaSeparated();
 
         for (size_t i = 0; i < listValue->length(); i++)
             result->append(InterpolationType::fromInterpolableValue(*(listValue->get(i)), range));

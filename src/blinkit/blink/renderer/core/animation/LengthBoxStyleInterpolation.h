@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LengthBoxStyleInterpolation.h
+// Description: LengthBoxStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -27,10 +38,10 @@ private:
     { }
 
     static PassOwnPtr<InterpolableValue> lengthBoxtoInterpolableValue(const CSSValue&, const CSSValue&, bool);
-    static PassRefPtrWillBeRawPtr<CSSValue> interpolableValueToLengthBox(InterpolableValue*, const CSSValue&, const CSSValue&);
+    static GCRefPtr<CSSValue> interpolableValueToLengthBox(InterpolableValue*, const CSSValue&, const CSSValue&);
 
-    RefPtrWillBePersistent<CSSValue> m_startCSSValue;
-    RefPtrWillBePersistent<CSSValue> m_endCSSValue;
+    GCRefPtr<CSSValue> m_startCSSValue;
+    GCRefPtr<CSSValue> m_endCSSValue;
 
     friend class AnimationLengthBoxStyleInterpolationTest;
 };

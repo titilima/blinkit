@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: VisibilityStyleInterpolation.cpp
+// Description: VisibilityStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 #include "core/animation/VisibilityStyleInterpolation.h"
 
 #include "core/css/CSSPrimitiveValue.h"
@@ -28,7 +39,7 @@ PassOwnPtr<InterpolableValue> VisibilityStyleInterpolation::visibilityToInterpol
     return InterpolableNumber::create(0.0);
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> VisibilityStyleInterpolation::interpolableValueToVisibility(InterpolableValue* value, CSSValueID notVisible)
+GCRefPtr<CSSValue> VisibilityStyleInterpolation::interpolableValueToVisibility(InterpolableValue* value, CSSValueID notVisible)
 {
     ASSERT(value->isNumber());
     InterpolableNumber* number = toInterpolableNumber(value);

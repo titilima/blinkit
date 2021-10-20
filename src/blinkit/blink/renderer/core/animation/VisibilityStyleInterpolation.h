@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: VisibilityStyleInterpolation.h
+// Description: VisibilityStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 #ifndef VisibilityStyleInterpolation_h
 #define VisibilityStyleInterpolation_h
 
@@ -36,7 +47,7 @@ private:
     }
 
     static PassOwnPtr<InterpolableValue> visibilityToInterpolableValue(const CSSValue&);
-    static PassRefPtrWillBeRawPtr<CSSValue> interpolableValueToVisibility(InterpolableValue*, CSSValueID);
+    static GCRefPtr<CSSValue> interpolableValueToVisibility(InterpolableValue*, CSSValueID);
 
     CSSValueID m_notVisible;
 

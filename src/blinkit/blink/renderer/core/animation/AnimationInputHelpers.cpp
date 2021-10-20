@@ -225,7 +225,7 @@ PassRefPtr<TimingFunction> AnimationInputHelpers::parseTimingFunction(const Stri
     if (string.isEmpty())
         return nullptr;
 
-    RefPtrWillBeRawPtr<CSSValue> value = CSSParser::parseSingleValue(CSSPropertyTransitionTimingFunction, string);
+    GCRefPtr<CSSValue> value = CSSParser::parseSingleValue(CSSPropertyTransitionTimingFunction, string);
     if (!value || !value->isValueList()) {
         ASSERT(!value || value->isCSSWideKeyword());
         return nullptr;

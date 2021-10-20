@@ -59,11 +59,11 @@ public:
 
     // FIXME: Remove CSSFontSelector as argument. Passing CSSFontSelector here is
     // a result of egregious spaghettification in FontFace/FontFaceSet.
-    void add(CSSFontSelector*, const StyleRuleFontFace*, PassRefPtrWillBeRawPtr<FontFace>);
+    void add(CSSFontSelector*, const StyleRuleFontFace*, FontFace*);
     void remove(const StyleRuleFontFace*);
     void clearCSSConnected();
     void clearAll();
-    void addFontFace(CSSFontSelector*, PassRefPtrWillBeRawPtr<FontFace>, bool cssConnected);
+    void addFontFace(CSSFontSelector*, FontFace*, bool cssConnected);
     void removeFontFace(FontFace*, bool cssConnected);
 
     // FIXME: It's sort of weird that add/remove uses StyleRuleFontFace* as key,
@@ -80,7 +80,7 @@ public:
 private:
     using TraitsMap = std::unordered_map<unsigned, Member<CSSSegmentedFontFace>>;
     using FamilyToTraitsMap = std::unordered_map<String, Member<TraitsMap>, CaseFoldingHash>;
-    using StyleRuleToFontFace = std::unordered_map<Member<const StyleRuleFontFace>, Member<FontFace>>;
+    using StyleRuleToFontFace = std::unordered_map<const StyleRuleFontFace *, GCRefPtr<FontFace>>;
     FamilyToTraitsMap m_fontFaces;
     FamilyToTraitsMap m_fonts;
     StyleRuleToFontFace m_styleRuleToFontFace;

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FilterStyleInterpolation.h
+// Description: FilterStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -21,7 +32,7 @@ public:
     // The following are called by ListStyleInterpolation.
     static bool canCreateFrom(const CSSValue& start, const CSSValue& end);
     static PassOwnPtr<InterpolableValue> toInterpolableValue(const CSSValue&, CSSValueID&);
-    static PassRefPtrWillBeRawPtr<CSSFunctionValue> fromInterpolableValue(const InterpolableValue&, CSSValueID, InterpolationRange = RangeAll);
+    static GCRefPtr<CSSFunctionValue> fromInterpolableValue(const InterpolableValue&, CSSValueID, InterpolationRange = RangeAll);
 
 private:
     FilterStyleInterpolation(PassOwnPtr<InterpolableValue> start, PassOwnPtr<InterpolableValue> end, CSSPropertyID id)

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LengthBoxStyleInterpolation.cpp
+// Description: LengthBoxStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,6 +17,8 @@
 
 #include "core/css/CSSQuadValue.h"
 #include "core/css/resolver/StyleBuilder.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -70,19 +83,19 @@ bool LengthBoxStyleInterpolation::usesDefaultInterpolation(const CSSValue& start
 
 namespace {
 
-PassRefPtrWillBeRawPtr<CSSPrimitiveValue> indexedValueToLength(InterpolableList& lengthBox, size_t i, CSSPrimitiveValue* start[], CSSPrimitiveValue* end[])
+GCRefPtr<CSSPrimitiveValue> indexedValueToLength(InterpolableList& lengthBox, size_t i, CSSPrimitiveValue* start[], CSSPrimitiveValue* end[])
 {
     if (lengthBox.get(i)->isBool()) {
         if (toInterpolableBool(lengthBox.get(i))->value())
-            return end[i];
-        return start[i];
+            return GCWrapShared(end[i]);
+        return GCWrapShared(start[i]);
     }
     return LengthStyleInterpolation::fromInterpolableValue(*lengthBox.get(i), RangeAll);
 }
 
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> LengthBoxStyleInterpolation::interpolableValueToLengthBox(InterpolableValue* value, const CSSValue& originalStart, const CSSValue& originalEnd)
+GCRefPtr<CSSValue> LengthBoxStyleInterpolation::interpolableValueToLengthBox(InterpolableValue* value, const CSSValue& originalStart, const CSSValue& originalEnd)
 {
     InterpolableList* lengthBox = toInterpolableList(value);
     const CSSQuadValue& startRect = toCSSQuadValue(originalStart);
@@ -90,12 +103,12 @@ PassRefPtrWillBeRawPtr<CSSValue> LengthBoxStyleInterpolation::interpolableValueT
     CSSPrimitiveValue* startSides[4] = { startRect.left(), startRect.right(), startRect.top(), startRect.bottom() };
     CSSPrimitiveValue* endSides[4] = { endRect.left(), endRect.right(), endRect.top(), endRect.bottom() };
 
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> left = indexedValueToLength(*lengthBox, 0, startSides, endSides);
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> right = indexedValueToLength(*lengthBox, 1, startSides, endSides);
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> top = indexedValueToLength(*lengthBox, 2, startSides, endSides);
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> bottom = indexedValueToLength(*lengthBox, 3, startSides, endSides);
+    GCRefPtr<CSSPrimitiveValue> left = indexedValueToLength(*lengthBox, 0, startSides, endSides);
+    GCRefPtr<CSSPrimitiveValue> right = indexedValueToLength(*lengthBox, 1, startSides, endSides);
+    GCRefPtr<CSSPrimitiveValue> top = indexedValueToLength(*lengthBox, 2, startSides, endSides);
+    GCRefPtr<CSSPrimitiveValue> bottom = indexedValueToLength(*lengthBox, 3, startSides, endSides);
 
-    return CSSQuadValue::create(top.release(), right.release(), bottom.release(), left.release(), CSSQuadValue::SerializeAsRect);
+    return CSSQuadValue::create(top, right, bottom, left, CSSQuadValue::SerializeAsRect);
 }
 
 void LengthBoxStyleInterpolation::apply(StyleResolverState& state) const

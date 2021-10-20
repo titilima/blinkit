@@ -2,7 +2,7 @@
 // BlinKit - BlinKit Library
 // -------------------------------------------------
 //   File Name: CSSGradientValue.h
-// Description: CSSGradientValue Class
+// Description: CSSGradientValue Classes
 //      Author: Ziming Li
 //     Created: 2021-08-20
 // -------------------------------------------------
@@ -99,10 +99,14 @@ class CSSGradientValue : public CSSImageGeneratorValue {
 public:
     PassRefPtr<Image> image(const LayoutObject*, const IntSize&);
 
-    void setFirstX(PassRefPtrWillBeRawPtr<CSSValue> val) { m_firstX = val; }
-    void setFirstY(PassRefPtrWillBeRawPtr<CSSValue> val) { m_firstY = val; }
-    void setSecondX(PassRefPtrWillBeRawPtr<CSSValue> val) { m_secondX = val; }
-    void setSecondY(PassRefPtrWillBeRawPtr<CSSValue> val) { m_secondY = val; }
+    void setFirstX(CSSPrimitiveValue *val) { m_firstX = val; }
+    void setFirstX(const GCRefPtr<CSSValue> &val) { m_firstX = val; }
+    void setFirstY(CSSPrimitiveValue *val) { m_firstY = val; }
+    void setFirstY(const GCRefPtr<CSSValue> &val) { m_firstY = val; }
+    void setSecondX(CSSPrimitiveValue *val) { m_secondX = val; }
+    void setSecondX(const GCRefPtr<CSSValue> &val) { m_secondX = val; }
+    void setSecondY(CSSPrimitiveValue *val) { m_secondY = val; }
+    void setSecondY(const GCRefPtr<CSSValue> &val) { m_secondY = val; }
 
     void addStop(const CSSGradientColorStop& stop) { m_stops.emplace_back(stop); }
 
@@ -162,12 +166,12 @@ DEFINE_CSS_VALUE_TYPE_CASTS(CSSGradientValue, isGradientValue());
 class CSSLinearGradientValue final : public CSSGradientValue {
 public:
 
-    static PassRefPtrWillBeRawPtr<CSSLinearGradientValue> create(CSSGradientRepeat repeat, CSSGradientType gradientType = CSSLinearGradient)
+    static GCRefPtr<CSSLinearGradientValue> create(CSSGradientRepeat repeat, CSSGradientType gradientType = CSSLinearGradient)
     {
-        return adoptRefWillBeNoop(new CSSLinearGradientValue(repeat, gradientType));
+        return BlinKit::GCWrapShared(new CSSLinearGradientValue(repeat, gradientType));
     }
 
-    void setAngle(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> val) { m_angle = val; }
+    void setAngle(const GCRefPtr<CSSPrimitiveValue> &val) { m_angle = val; }
 
     String customCSSText() const;
 
@@ -191,21 +195,21 @@ DEFINE_CSS_VALUE_TYPE_CASTS(CSSLinearGradientValue, isLinearGradientValue());
 
 class CSSRadialGradientValue final : public CSSGradientValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSRadialGradientValue> create(CSSGradientRepeat repeat, CSSGradientType gradientType = CSSRadialGradient)
+    static GCRefPtr<CSSRadialGradientValue> create(CSSGradientRepeat repeat, CSSGradientType gradientType = CSSRadialGradient)
     {
-        return adoptRefWillBeNoop(new CSSRadialGradientValue(repeat, gradientType));
+        return BlinKit::GCWrapShared(new CSSRadialGradientValue(repeat, gradientType));
     }
 
     String customCSSText() const;
 
-    void setFirstRadius(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> val) { m_firstRadius = val; }
-    void setSecondRadius(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> val) { m_secondRadius = val; }
+    void setFirstRadius(const GCRefPtr<CSSPrimitiveValue> &val) { m_firstRadius = val; }
+    void setSecondRadius(const GCRefPtr<CSSPrimitiveValue> &val) { m_secondRadius = val; }
 
-    void setShape(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> val) { m_shape = val; }
-    void setSizingBehavior(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> val) { m_sizingBehavior = val; }
+    void setShape(const GCRefPtr<CSSPrimitiveValue> &val) { m_shape = val; }
+    void setSizingBehavior(const GCRefPtr<CSSPrimitiveValue> &val) { m_sizingBehavior = val; }
 
-    void setEndHorizontalSize(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> val) { m_endHorizontalSize = val; }
-    void setEndVerticalSize(PassRefPtrWillBeRawPtr<CSSPrimitiveValue> val) { m_endVerticalSize = val; }
+    void setEndHorizontalSize(const GCRefPtr<CSSPrimitiveValue> &val) { m_endHorizontalSize = val; }
+    void setEndVerticalSize(const GCRefPtr<CSSPrimitiveValue> &val) { m_endVerticalSize = val; }
 
     // Create the gradient for a given size.
     PassRefPtr<Gradient> createGradient(const CSSToLengthConversionData&, const IntSize&, const LayoutObject&);

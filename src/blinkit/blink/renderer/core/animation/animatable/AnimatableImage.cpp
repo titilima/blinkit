@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimatableImage.cpp
+// Description: AnimatableImage Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -51,8 +62,8 @@ PassRefPtr<AnimatableValue> AnimatableImage::interpolateTo(const AnimatableValue
     if (fraction <= 0 || fraction >= 1 || usesDefaultInterpolationWith(value))
         return defaultInterpolateTo(this, value, fraction);
 
-    CSSValue* fromValue = toCSSValue();
-    CSSValue* toValue = toAnimatableImage(value)->toCSSValue();
+    GCRefPtr<CSSValue> fromValue(toCSSValue());
+    GCRefPtr<CSSValue> toValue(toAnimatableImage(value)->toCSSValue());
 
     return create(CSSCrossfadeValue::create(fromValue, toValue, CSSPrimitiveValue::create(fraction, CSSPrimitiveValue::UnitType::Number)));
 }

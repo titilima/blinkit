@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimatableUnknown.h
+// Description: AnimatableUnknown Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -41,7 +52,7 @@ class AnimatableUnknown final : public AnimatableValue {
 public:
     ~AnimatableUnknown() override { }
 
-    static PassRefPtr<AnimatableUnknown> create(PassRefPtrWillBeRawPtr<CSSValue> value)
+    static PassRefPtr<AnimatableUnknown> create(const GCRefPtr<CSSValue> &value)
     {
         return adoptRef(new AnimatableUnknown(value));
     }
@@ -50,7 +61,7 @@ public:
         return adoptRef(new AnimatableUnknown(cssValuePool().createIdentifierValue(value)));
     }
 
-    PassRefPtrWillBeRawPtr<CSSValue> toCSSValue() const { return m_value; }
+    GCRefPtr<CSSValue> toCSSValue() const { return m_value; }
     CSSValueID toCSSValueID() const { return toCSSPrimitiveValue(m_value.get())->getValueID(); }
 
 protected:
@@ -62,7 +73,7 @@ protected:
     bool usesDefaultInterpolationWith(const AnimatableValue*) const override { return true; }
 
 private:
-    explicit AnimatableUnknown(PassRefPtrWillBeRawPtr<CSSValue> value)
+    explicit AnimatableUnknown(const GCRefPtr<CSSValue> &value)
         : m_value(value)
     {
         ASSERT(m_value);
@@ -70,7 +81,7 @@ private:
     AnimatableType type() const override { return TypeUnknown; }
     bool equalTo(const AnimatableValue*) const override;
 
-    const RefPtrWillBePersistent<CSSValue> m_value;
+    const GCRefPtr<CSSValue> m_value;
 };
 
 DEFINE_ANIMATABLE_VALUE_TYPE_CASTS(AnimatableUnknown, isUnknown());

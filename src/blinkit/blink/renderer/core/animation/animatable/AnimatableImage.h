@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimatableImage.h
+// Description: AnimatableImage Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -40,7 +51,7 @@ namespace blink {
 class AnimatableImage final : public AnimatableValue {
 public:
     ~AnimatableImage() override { }
-    static PassRefPtr<AnimatableImage> create(PassRefPtrWillBeRawPtr<CSSValue> value)
+    static PassRefPtr<AnimatableImage> create(const GCRefPtr<CSSValue> &value)
     {
         return adoptRef(new AnimatableImage(value));
     }
@@ -51,15 +62,15 @@ protected:
     bool usesDefaultInterpolationWith(const AnimatableValue*) const override;
 
 private:
-    AnimatableImage(PassRefPtrWillBeRawPtr<CSSValue> value)
+    AnimatableImage(const GCRefPtr<CSSValue> &value)
         : m_value(value)
     {
-        ASSERT(m_value.get());
+        ASSERT(m_value);
     }
     AnimatableType type() const override { return TypeImage; }
     bool equalTo(const AnimatableValue*) const override;
 
-    const RefPtrWillBePersistent<CSSValue> m_value;
+    const GCRefPtr<CSSValue> m_value;
 };
 
 DEFINE_ANIMATABLE_VALUE_TYPE_CASTS(AnimatableImage, isImage());

@@ -230,8 +230,7 @@ bool SharedStyleFinder::canShareStyleWithElement(Element& candidate) const
         return false;
     if (candidate.needsStyleRecalc())
         return false;
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (candidate.isSVGElement() && toSVGElement(candidate).animatedSMILStyleProperties())
         return false;
 #endif

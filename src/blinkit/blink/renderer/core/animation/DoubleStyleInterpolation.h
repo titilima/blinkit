@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DoubleStyleInterpolation.h
+// Description: DoubleStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -27,7 +38,7 @@ public:
     void apply(StyleResolverState&) const override;
 
     static PassOwnPtr<InterpolableValue> toInterpolableValue(const CSSValue&, CSSPropertyID = CSSPropertyInvalid);
-    static PassRefPtrWillBeRawPtr<CSSValue> fromInterpolableValue(const InterpolableValue&, InterpolationRange);
+    static GCRefPtr<CSSValue> fromInterpolableValue(const InterpolableValue&, InterpolationRange);
 
 private:
     DoubleStyleInterpolation(PassOwnPtr<InterpolableValue> start, PassOwnPtr<InterpolableValue> end, CSSPropertyID id, bool isNumber, InterpolationRange clamp, bool flag)
@@ -40,8 +51,8 @@ private:
     static PassOwnPtr<InterpolableValue> doubleToInterpolableValue(const CSSValue&);
     static PassOwnPtr<InterpolableValue> motionRotationToInterpolableValue(const CSSValue&);
 
-    static PassRefPtrWillBeRawPtr<CSSValue> interpolableValueToDouble(const InterpolableValue*, bool, InterpolationRange);
-    static PassRefPtrWillBeRawPtr<CSSValue> interpolableValueToMotionRotation(InterpolableValue*, bool);
+    static GCRefPtr<CSSValue> interpolableValueToDouble(const InterpolableValue*, bool, InterpolationRange);
+    static GCRefPtr<CSSValue> interpolableValueToMotionRotation(InterpolableValue*, bool);
 
     bool m_isNumber;
     InterpolationRange m_clamp;

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LengthStyleInterpolation.h
+// Description: LengthStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -28,7 +39,7 @@ public:
     void apply(StyleResolverState&) const override;
 
     static PassOwnPtr<InterpolableValue> toInterpolableValue(const CSSValue&, CSSPropertyID = CSSPropertyInvalid);
-    static PassRefPtrWillBeRawPtr<CSSPrimitiveValue> fromInterpolableValue(const InterpolableValue&, InterpolationRange);
+    static GCRefPtr<CSSPrimitiveValue> fromInterpolableValue(const InterpolableValue&, InterpolationRange);
     static void applyInterpolableValue(CSSPropertyID, const InterpolableValue&, InterpolationRange, StyleResolverState&);
 
 private:

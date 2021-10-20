@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BasicShapeFunctions.h
+// Description: Basic Shape Functions
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  *
@@ -43,7 +54,7 @@ class FloatPoint;
 class StyleResolverState;
 class ComputedStyle;
 
-PassRefPtrWillBeRawPtr<CSSValue> valueForBasicShape(const ComputedStyle&, const BasicShape*);
+GCRefPtr<CSSValue> valueForBasicShape(const ComputedStyle&, const BasicShape*);
 PassRefPtr<BasicShape> basicShapeForValue(const StyleResolverState&, const CSSValue&);
 FloatPoint floatPointForCenterCoordinate(const BasicShapeCenterCoordinate&, const BasicShapeCenterCoordinate&, FloatSize);
 

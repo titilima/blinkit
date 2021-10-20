@@ -72,7 +72,7 @@ public:
     enum LoadStatus { Unloaded, Loading, Loaded, Error };
 
     // BKTODO: static PassRefPtrWillBeRawPtr<FontFace> create(ExecutionContext*, const AtomicString& family, StringOrArrayBufferOrArrayBufferView&, const FontFaceDescriptors&);
-    static PassRefPtrWillBeRawPtr<FontFace> create(Document*, const StyleRuleFontFace*);
+    static GCRefPtr<FontFace> create(Document*, const StyleRuleFontFace*);
 
     ~FontFace();
 
@@ -133,11 +133,11 @@ private:
     explicit FontFace(ExecutionContext*);
     FontFace(ExecutionContext*, const AtomicString& family, const FontFaceDescriptors&);
 
-    void initCSSFontFace(Document*, PassRefPtrWillBeRawPtr<CSSValue> src);
+    void initCSSFontFace(Document*, const GCRefPtr<CSSValue> &src);
     void initCSSFontFace(const unsigned char* data, size_t);
     void setPropertyFromString(const Document*, const String&, CSSPropertyID, ExceptionState* = 0);
     bool setPropertyFromStyle(const StylePropertySet&, CSSPropertyID);
-    bool setPropertyValue(PassRefPtrWillBeRawPtr<CSSValue>, CSSPropertyID);
+    bool setPropertyValue(const GCRefPtr<CSSValue> &, CSSPropertyID);
     bool setFamilyValue(const CSSValue&);
     void loadInternal(ExecutionContext*);
 #if 0 // BKTODO:
@@ -150,13 +150,13 @@ private:
 
     AtomicString m_family;
     String m_otsParseMessage;
-    RefPtrWillBeMember<CSSValue> m_style;
-    RefPtrWillBeMember<CSSValue> m_weight;
-    RefPtrWillBeMember<CSSValue> m_stretch;
-    RefPtrWillBeMember<CSSValue> m_unicodeRange;
-    RefPtrWillBeMember<CSSValue> m_variant;
-    RefPtrWillBeMember<CSSValue> m_featureSettings;
-    RefPtrWillBeMember<CSSValue> m_display;
+    GCRefPtr<CSSValue> m_style;
+    GCRefPtr<CSSValue> m_weight;
+    GCRefPtr<CSSValue> m_stretch;
+    GCRefPtr<CSSValue> m_unicodeRange;
+    GCRefPtr<CSSValue> m_variant;
+    GCRefPtr<CSSValue> m_featureSettings;
+    GCRefPtr<CSSValue> m_display;
     LoadStatus m_status;
     PersistentWillBeMember<DOMException> m_error;
 

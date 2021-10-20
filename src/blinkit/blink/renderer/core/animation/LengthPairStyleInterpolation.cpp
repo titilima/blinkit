@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LengthPairStyleInterpolation.cpp
+// Description: LengthPairStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -25,12 +36,12 @@ PassOwnPtr<InterpolableValue> LengthPairStyleInterpolation::lengthPairToInterpol
     return result.release();
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> LengthPairStyleInterpolation::interpolableValueToLengthPair(InterpolableValue* value, InterpolationRange range)
+GCRefPtr<CSSValue> LengthPairStyleInterpolation::interpolableValueToLengthPair(InterpolableValue* value, InterpolationRange range)
 {
     InterpolableList* lengthPair = toInterpolableList(value);
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> first = LengthStyleInterpolation::fromInterpolableValue(*lengthPair->get(0), range);
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> second = LengthStyleInterpolation::fromInterpolableValue(*lengthPair->get(1), range);
-    return CSSValuePair::create(first.release(), second.release(), CSSValuePair::KeepIdenticalValues);
+    GCRefPtr<CSSPrimitiveValue> first = LengthStyleInterpolation::fromInterpolableValue(*lengthPair->get(0), range);
+    GCRefPtr<CSSPrimitiveValue> second = LengthStyleInterpolation::fromInterpolableValue(*lengthPair->get(1), range);
+    return CSSValuePair::create(first, second, CSSValuePair::KeepIdenticalValues);
 }
 
 void LengthPairStyleInterpolation::apply(StyleResolverState& state) const

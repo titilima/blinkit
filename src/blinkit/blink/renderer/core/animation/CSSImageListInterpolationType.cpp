@@ -140,7 +140,7 @@ PassOwnPtr<InterpolationValue> CSSImageListInterpolationType::maybeConvertValue(
     if (value.isPrimitiveValue() && toCSSPrimitiveValue(value).getValueID() == CSSValueNone)
         return nullptr;
 
-    RefPtrWillBeRawPtr<CSSValueList> tempList = nullptr;
+    GCRefPtr<CSSValueList> tempList;
     if (!value.isBaseValueList()) {
         tempList = CSSValueList::createCommaSeparated();
         tempList->append(const_cast<CSSValue*>(&value)); // Take ref.

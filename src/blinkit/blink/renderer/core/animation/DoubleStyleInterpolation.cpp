@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DoubleStyleInterpolation.cpp
+// Description: DoubleStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -53,7 +64,7 @@ static double clampToRange(double value, InterpolationRange clamp)
     }
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> DoubleStyleInterpolation::interpolableValueToDouble(const InterpolableValue* value, bool isNumber, InterpolationRange clamp)
+GCRefPtr<CSSValue> DoubleStyleInterpolation::interpolableValueToDouble(const InterpolableValue* value, bool isNumber, InterpolationRange clamp)
 {
     ASSERT(value->isNumber());
     double doubleValue = clampToRange(toInterpolableNumber(value)->value(), clamp);
@@ -79,7 +90,7 @@ PassOwnPtr<InterpolableValue> DoubleStyleInterpolation::toInterpolableValue(cons
     return doubleToInterpolableValue(value);
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> DoubleStyleInterpolation::fromInterpolableValue(const InterpolableValue& value, InterpolationRange range)
+GCRefPtr<CSSValue> DoubleStyleInterpolation::fromInterpolableValue(const InterpolableValue& value, InterpolationRange range)
 {
     return interpolableValueToDouble(&value, true, range);
 }
@@ -117,14 +128,14 @@ bool extractMotionRotation(const CSSValue& value, float* rotation, MotionRotatio
 
 } // namespace
 
-PassRefPtrWillBeRawPtr<CSSValue> DoubleStyleInterpolation::interpolableValueToMotionRotation(InterpolableValue* value, bool flag)
+GCRefPtr<CSSValue> DoubleStyleInterpolation::interpolableValueToMotionRotation(InterpolableValue* value, bool flag)
 {
-    RefPtrWillBeRawPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
+    GCRefPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
     if (flag)
         list->append(CSSPrimitiveValue::createIdentifier(CSSValueAuto));
     ASSERT(value->isNumber());
     list->append(CSSPrimitiveValue::create(toInterpolableNumber(value)->value(), CSSPrimitiveValue::UnitType::Degrees));
-    return list.release();
+    return list;
 }
 
 PassOwnPtr<InterpolableValue> DoubleStyleInterpolation::motionRotationToInterpolableValue(const CSSValue& value)
