@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleFetchedImage.h
+// Description: StyleFetchedImage Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -34,19 +45,17 @@ class Document;
 class ImageResource;
 
 class StyleFetchedImage final : public StyleImage, private ImageResourceClient {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(StyleFetchedImage);
-    WILL_BE_USING_PRE_FINALIZER(StyleFetchedImage, dispose);
 public:
-    static PassRefPtrWillBeRawPtr<StyleFetchedImage> create(ImageResource* image, Document* document, const KURL& url)
+    static GCRefPtr<StyleFetchedImage> create(ImageResource* image, Document* document, const KURL& url)
     {
-        return adoptRefWillBeNoop(new StyleFetchedImage(image, document, url));
+        return BlinKit::GCWrapShared(new StyleFetchedImage(image, document, url));
     }
     ~StyleFetchedImage() override;
 
     WrappedImagePtr data() const override;
 
-    PassRefPtrWillBeRawPtr<CSSValue> cssValue() const override;
-    PassRefPtrWillBeRawPtr<CSSValue> computedCSSValue() const override;
+    GCRefPtr<CSSValue> cssValue() const override;
+    GCRefPtr<CSSValue> computedCSSValue() const override;
 
     bool canRender() const override;
     bool isLoaded() const override;
@@ -72,7 +81,7 @@ private:
     void dispose();
 
     ResourcePtr<ImageResource> m_image;
-    RawPtrWillBeMember<Document> m_document;
+    Document *m_document;
     const KURL m_url;
 };
 

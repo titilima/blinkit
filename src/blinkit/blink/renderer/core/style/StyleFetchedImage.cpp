@@ -58,9 +58,7 @@ StyleFetchedImage::StyleFetchedImage(ImageResource* image, Document* document, c
 
 StyleFetchedImage::~StyleFetchedImage()
 {
-#if !ENABLE(OILPAN)
     dispose();
-#endif
 }
 
 void StyleFetchedImage::dispose()
@@ -78,12 +76,12 @@ ImageResource* StyleFetchedImage::cachedImage() const
     return m_image.get();
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> StyleFetchedImage::cssValue() const
+GCRefPtr<CSSValue> StyleFetchedImage::cssValue() const
 {
     return CSSImageValue::create(m_image->url(), const_cast<StyleFetchedImage*>(this));
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> StyleFetchedImage::computedCSSValue() const
+GCRefPtr<CSSValue> StyleFetchedImage::computedCSSValue() const
 {
     return cssValue();
 }
@@ -145,8 +143,6 @@ void StyleFetchedImage::notifyFinished(Resource* resource)
     if (m_document && m_image && m_image->image() && m_image->image()->isSVGImage())
         toSVGImage(m_image->image())->updateUseCounters(*m_document);
 #endif
-    // Oilpan: do not prolong the Document's lifetime.
-    m_document.clear();
 }
 
 PassRefPtr<Image> StyleFetchedImage::image(const LayoutObject*, const IntSize& containerSize, float zoom) const

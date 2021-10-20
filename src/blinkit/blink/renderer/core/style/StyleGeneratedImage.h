@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleGeneratedImage.h
+// Description: StyleGeneratedImage Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -41,8 +52,8 @@ public:
 
     WrappedImagePtr data() const override { return m_imageGeneratorValue.get(); }
 
-    PassRefPtrWillBeRawPtr<CSSValue> cssValue() const override;
-    PassRefPtrWillBeRawPtr<CSSValue> computedCSSValue() const override;
+    GCRefPtr<CSSValue> cssValue() const override;
+    GCRefPtr<CSSValue> computedCSSValue() const override;
 
     LayoutSize imageSize(const LayoutObject*, float multiplier) const override;
     bool imageHasRelativeWidth() const override { return !m_fixedSize; }
@@ -61,7 +72,7 @@ private:
 
     // TODO(sashab): Replace this with <const CSSImageGeneratorValue> once RefPtrWillBeMember<>
     // supports const types.
-    RefPtrWillBeMember<CSSImageGeneratorValue> m_imageGeneratorValue;
+    GCRefPtr<CSSImageGeneratorValue> m_imageGeneratorValue;
     bool m_fixedSize;
 };
 

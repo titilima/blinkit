@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StylePendingImage.h
+// Description: StylePendingImage Class
+//      Author: Ziming Li
+//     Created: 2021-10-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Apple Inc. All rights reserved.
  *
@@ -48,9 +59,9 @@ public:
 
     WrappedImagePtr data() const override { return m_value.get(); }
 
-    PassRefPtrWillBeRawPtr<CSSValue> cssValue() const override { return m_value; }
+    GCRefPtr<CSSValue> cssValue() const override { return m_value; }
 
-    PassRefPtrWillBeRawPtr<CSSValue> computedCSSValue() const override
+    GCRefPtr<CSSValue> computedCSSValue() const override
     {
         ASSERT_NOT_REACHED();
         return nullptr;
@@ -90,7 +101,7 @@ private:
 
     // TODO(sashab): Replace this with <const CSSValue> once RefPtrWillBeMember<>
     // supports const types.
-    RefPtrWillBeMember<CSSValue> m_value;
+    GCRefPtr<CSSValue> m_value;
 };
 
 DEFINE_STYLE_IMAGE_TYPE_CASTS(StylePendingImage, isPendingImage());

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleGeneratedImage.cpp
+// Description: StyleGeneratedImage Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -36,12 +47,12 @@ StyleGeneratedImage::StyleGeneratedImage(const CSSImageGeneratorValue& value)
     m_isGeneratedImage = true;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> StyleGeneratedImage::cssValue() const
+GCRefPtr<CSSValue> StyleGeneratedImage::cssValue() const
 {
-    return m_imageGeneratorValue.get();
+    return m_imageGeneratorValue;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> StyleGeneratedImage::computedCSSValue() const
+GCRefPtr<CSSValue> StyleGeneratedImage::computedCSSValue() const
 {
     return m_imageGeneratorValue->valueWithURLsMadeAbsolute();
 }
