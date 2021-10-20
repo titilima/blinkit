@@ -260,10 +260,10 @@ private:
     template<typename T> CSSPrimitiveValue(T* val)
         : CSSValue(PrimitiveClass)
     {
-        init(PassRefPtrWillBeRawPtr<T>(val));
+        init(GCRefPtr<T>(val));
     }
 
-    template<typename T> CSSPrimitiveValue(PassRefPtrWillBeRawPtr<T> val)
+    template<typename T> CSSPrimitiveValue(const GCRefPtr<T> &val)
         : CSSValue(PrimitiveClass)
     {
         init(val);
@@ -275,7 +275,7 @@ private:
 
     void init(UnitType);
     void init(const Length&);
-    void init(PassRefPtrWillBeRawPtr<CSSCalcValue>);
+    void init(const GCRefPtr<CSSCalcValue> &);
 
     double computeLengthDouble(const CSSToLengthConversionData&) const;
 

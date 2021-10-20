@@ -302,61 +302,18 @@ void CSSPrimitiveValue::init(UnitType type)
     m_primitiveUnitType = static_cast<unsigned>(type);
 }
 
-void CSSPrimitiveValue::init(PassRefPtrWillBeRawPtr<CSSCalcValue> c)
+void CSSPrimitiveValue::init(const GCRefPtr<CSSCalcValue> &c)
 {
     init(UnitType::Calc);
     m_hasCachedCSSText = false;
-    m_value.calc = c.leakRef();
+    m_value.calc = c.get();
+    m_value.calc->IncRef();
 }
 
 CSSPrimitiveValue::~CSSPrimitiveValue()
 {
-#if !ENABLE(OILPAN)
-    switch (type()) {
-    case UnitType::Calc:
-        // We must not call deref() when oilpan is enabled because m_value.calc is traced.
-        m_value.calc->deref();
-        break;
-    case UnitType::CalcPercentageWithNumber:
-    case UnitType::CalcPercentageWithLength:
-        ASSERT_NOT_REACHED();
-        break;
-    case UnitType::Number:
-    case UnitType::Integer:
-    case UnitType::Percentage:
-    case UnitType::Ems:
-    case UnitType::QuirkyEms:
-    case UnitType::Exs:
-    case UnitType::Rems:
-    case UnitType::Chs:
-    case UnitType::Pixels:
-    case UnitType::Centimeters:
-    case UnitType::Millimeters:
-    case UnitType::Inches:
-    case UnitType::Points:
-    case UnitType::Picas:
-    case UnitType::UserUnits:
-    case UnitType::Degrees:
-    case UnitType::Radians:
-    case UnitType::Gradians:
-    case UnitType::Milliseconds:
-    case UnitType::Seconds:
-    case UnitType::Hertz:
-    case UnitType::Kilohertz:
-    case UnitType::Turns:
-    case UnitType::ViewportWidth:
-    case UnitType::ViewportHeight:
-    case UnitType::ViewportMin:
-    case UnitType::ViewportMax:
-    case UnitType::DotsPerPixel:
-    case UnitType::DotsPerInch:
-    case UnitType::DotsPerCentimeter:
-    case UnitType::Fraction:
-    case UnitType::Unknown:
-    case UnitType::ValueID:
-        break;
-    }
-#endif
+    if (UnitType::Calc == type())
+        m_value.calc->Release();
     if (m_hasCachedCSSText) {
         cssTextCache().erase(this);
         m_hasCachedCSSText = false;
