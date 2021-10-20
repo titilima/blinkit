@@ -69,9 +69,9 @@ bool CSSParser::parseValue(MutableStylePropertySet* declaration, CSSPropertyID u
         return false;
     CSSPropertyID resolvedProperty = resolveCSSPropertyID(unresolvedProperty);
     CSSParserMode parserMode = declaration->cssParserMode();
-    RefPtrWillBeRawPtr<CSSValue> value = CSSParserFastPaths::maybeParseValue(resolvedProperty, string, parserMode);
+    GCRefPtr<CSSValue> value = CSSParserFastPaths::maybeParseValue(resolvedProperty, string, parserMode);
     if (value)
-        return declaration->setProperty(CSSProperty(resolvedProperty, value.release(), important));
+        return declaration->setProperty(CSSProperty(resolvedProperty, value, important));
     CSSParserContext context(parserMode);
     if (styleSheet) {
         context = styleSheet->parserContext();
@@ -99,11 +99,11 @@ bool CSSParser::parseValue(MutableStylePropertySet* declaration, CSSPropertyID u
     return CSSParserImpl::parseValue(declaration, unresolvedProperty, string, important, context);
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSParser::parseSingleValue(CSSPropertyID propertyID, const String& string, const CSSParserContext& context)
+GCRefPtr<CSSValue> CSSParser::parseSingleValue(CSSPropertyID propertyID, const String& string, const CSSParserContext& context)
 {
     if (string.isEmpty())
         return nullptr;
-    if (RefPtrWillBeRawPtr<CSSValue> value = CSSParserFastPaths::maybeParseValue(propertyID, string, context.mode()))
+    if (GCRefPtr<CSSValue> value = CSSParserFastPaths::maybeParseValue(propertyID, string, context.mode()))
         return value;
     RefPtrWillBeRawPtr<MutableStylePropertySet> stylePropertySet = MutableStylePropertySet::create(HTMLQuirksMode);
     bool changed = parseValue(stylePropertySet.get(), propertyID, string, false, context);
@@ -147,7 +147,7 @@ bool CSSParser::parseColor(Color& color, const String& string, bool strict)
         return true;
     }
 
-    RefPtrWillBeRawPtr<CSSValue> value = CSSParserFastPaths::parseColor(string, strict ? HTMLStandardMode : HTMLQuirksMode);
+    GCRefPtr<CSSValue> value = CSSParserFastPaths::parseColor(string, strict ? HTMLStandardMode : HTMLQuirksMode);
     // TODO(timloh): Why is this always strict mode?
     if (!value)
         value = parseSingleValue(CSSPropertyColor, string, strictCSSParserContext());
@@ -170,7 +170,7 @@ bool CSSParser::parseSystemColor(Color& color, const String& colorString)
     return true;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSParser::parseFontFaceDescriptor(CSSPropertyID propertyID, const String& propertyValue, const CSSParserContext& context)
+GCRefPtr<CSSValue> CSSParser::parseFontFaceDescriptor(CSSPropertyID propertyID, const String& propertyValue, const CSSParserContext& context)
 {
     StringBuilder builder;
     builder.appendLiteral("@font-face { ");
