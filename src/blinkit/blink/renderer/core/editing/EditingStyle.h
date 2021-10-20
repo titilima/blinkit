@@ -78,29 +78,29 @@ public:
     enum ShouldExtractMatchingStyle { ExtractMatchingStyle, DoNotExtractMatchingStyle };
     static float NoFontDelta;
 
-    static PassRefPtrWillBeRawPtr<EditingStyle> create()
+    static GCRefPtr<EditingStyle> create()
     {
-        return adoptRefWillBeNoop(new EditingStyle());
+        return BlinKit::GCWrapShared(new EditingStyle());
     }
 
-    static PassRefPtrWillBeRawPtr<EditingStyle> create(ContainerNode* node, PropertiesToInclude propertiesToInclude = OnlyEditingInheritableProperties)
+    static GCRefPtr<EditingStyle> create(ContainerNode* node, PropertiesToInclude propertiesToInclude = OnlyEditingInheritableProperties)
     {
-        return adoptRefWillBeNoop(new EditingStyle(node, propertiesToInclude));
+        return BlinKit::GCWrapShared(new EditingStyle(node, propertiesToInclude));
     }
 
-    static PassRefPtrWillBeRawPtr<EditingStyle> create(const Position& position, PropertiesToInclude propertiesToInclude = OnlyEditingInheritableProperties)
+    static GCRefPtr<EditingStyle> create(const Position& position, PropertiesToInclude propertiesToInclude = OnlyEditingInheritableProperties)
     {
-        return adoptRefWillBeNoop(new EditingStyle(position, propertiesToInclude));
+        return BlinKit::GCWrapShared(new EditingStyle(position, propertiesToInclude));
     }
 
-    static PassRefPtrWillBeRawPtr<EditingStyle> create(const StylePropertySet* style)
+    static GCRefPtr<EditingStyle> create(const StylePropertySet* style)
     {
-        return adoptRefWillBeNoop(new EditingStyle(style));
+        return BlinKit::GCWrapShared(new EditingStyle(style));
     }
 
-    static PassRefPtrWillBeRawPtr<EditingStyle> create(CSSPropertyID propertyID, const String& value)
+    static GCRefPtr<EditingStyle> create(CSSPropertyID propertyID, const String& value)
     {
-        return adoptRefWillBeNoop(new EditingStyle(propertyID, value));
+        return BlinKit::GCWrapShared(new EditingStyle(propertyID, value));
     }
 
     ~EditingStyle();
@@ -110,9 +110,9 @@ public:
     bool isEmpty() const;
     void overrideWithStyle(const StylePropertySet*);
     void clear();
-    PassRefPtrWillBeRawPtr<EditingStyle> copy() const;
-    PassRefPtrWillBeRawPtr<EditingStyle> extractAndRemoveBlockProperties();
-    PassRefPtrWillBeRawPtr<EditingStyle> extractAndRemoveTextDirection();
+    GCRefPtr<EditingStyle> copy() const;
+    GCRefPtr<EditingStyle> extractAndRemoveBlockProperties();
+    GCRefPtr<EditingStyle> extractAndRemoveTextDirection();
     void removeBlockProperties();
     void removeStyleAddedByElement(Element*);
     void removeStyleConflictingWithStyleOfElement(Element*);
@@ -137,8 +137,8 @@ public:
     void mergeTypingStyle(Document*);
     enum CSSPropertyOverrideMode { OverrideValues, DoNotOverrideValues };
     void mergeInlineStyleOfElement(HTMLElement*, CSSPropertyOverrideMode, PropertiesToInclude = AllProperties);
-    static PassRefPtrWillBeRawPtr<EditingStyle> wrappingStyleForAnnotatedSerialization(ContainerNode* context);
-    static PassRefPtrWillBeRawPtr<EditingStyle> wrappingStyleForSerialization(ContainerNode* context);
+    static GCRefPtr<EditingStyle> wrappingStyleForAnnotatedSerialization(ContainerNode* context);
+    static GCRefPtr<EditingStyle> wrappingStyleForSerialization(ContainerNode* context);
     void mergeStyleFromRules(Element*);
     void mergeStyleFromRulesForSerialization(Element*);
     void removeStyleFromRulesAndContext(Element*, ContainerNode* context);
@@ -150,7 +150,7 @@ public:
     float fontSizeDelta() const { return m_fontSizeDelta; }
     bool hasFontSizeDelta() const { return m_fontSizeDelta != NoFontDelta; }
 
-    static PassRefPtrWillBeRawPtr<EditingStyle> styleAtSelectionStart(const VisibleSelection&, bool shouldUseBackgroundColorInEffect = false);
+    static GCRefPtr<EditingStyle> styleAtSelectionStart(const VisibleSelection&, bool shouldUseBackgroundColorInEffect = false);
     static WritingDirection textDirectionForSelection(const VisibleSelection&, EditingStyle* typingStyle, bool& hasNestedOrMultipleEmbeddings);
     static bool isEmbedOrIsolate(CSSValueID unicodeBidi)
     {

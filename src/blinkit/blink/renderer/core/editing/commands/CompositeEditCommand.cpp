@@ -1250,7 +1250,7 @@ void CompositeEditCommand::moveParagraphs(const VisiblePosition& startOfParagrap
     // A non-empty paragraph's style is moved when we copy and move it.  We don't move
     // anything if we're given an empty paragraph, but an empty paragraph can have style
     // too, <div><b><br></b></div> for example.  Save it so that we can preserve it later.
-    RefPtrWillBeRawPtr<EditingStyle> styleInEmptyParagraph = nullptr;
+    GCRefPtr<EditingStyle> styleInEmptyParagraph;
     if (startOfParagraphToMove.deepEquivalent() == endOfParagraphToMove.deepEquivalent() && preserveStyle) {
         styleInEmptyParagraph = EditingStyle::create(startOfParagraphToMove.deepEquivalent());
         styleInEmptyParagraph->mergeTypingStyle(&document());
@@ -1329,7 +1329,7 @@ bool CompositeEditCommand::breakOutOfEmptyListItem()
     if (!emptyListItem)
         return false;
 
-    RefPtrWillBeRawPtr<EditingStyle> style = EditingStyle::create(endingSelection().start());
+    GCRefPtr<EditingStyle> style = EditingStyle::create(endingSelection().start());
     style->mergeTypingStyle(&document());
 
     RefPtrWillBeRawPtr<ContainerNode> listNode = emptyListItem->parentNode();
