@@ -37,8 +37,6 @@
 #include "core/css/CSSValue.h"
 #include "core/style/ComputedStyle.h"
 #include "platform/Length.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
 #include "wtf/text/StringBuilder.h"
 
 namespace blink {
@@ -47,15 +45,24 @@ class CORE_EXPORT CSSValuePair : public CSSValue {
 public:
     enum IdenticalValuesPolicy { DropIdenticalValues, KeepIdenticalValues };
 
-    static PassRefPtrWillBeRawPtr<CSSValuePair> create(PassRefPtrWillBeRawPtr<CSSValue> first, PassRefPtrWillBeRawPtr<CSSValue> second,
+    static GCRefPtr<CSSValuePair> create(CSSValue *first, CSSValue *second,
         IdenticalValuesPolicy identicalValuesPolicy)
     {
-        return adoptRefWillBeNoop(new CSSValuePair(first, second, identicalValuesPolicy));
+        return BlinKit::GCWrapShared(new CSSValuePair(first, second, identicalValuesPolicy));
     }
 
-    static PassRefPtrWillBeRawPtr<CSSValuePair> create(const LengthSize& lengthSize, const ComputedStyle& style)
+    template <class T1, class T2>
+    static GCRefPtr<CSSValuePair> create(const GCRefPtr<T1> &first, const GCRefPtr<T2> &second,
+        IdenticalValuesPolicy identicalValuesPolicy)
     {
-        return adoptRefWillBeNoop(new CSSValuePair(CSSPrimitiveValue::create(lengthSize.width(), style.effectiveZoom()), CSSPrimitiveValue::create(lengthSize.height(), style.effectiveZoom()), KeepIdenticalValues));
+        return BlinKit::GCWrapShared(new CSSValuePair(first.get(), second.get(), identicalValuesPolicy));
+    }
+
+    static GCRefPtr<CSSValuePair> create(const LengthSize& lengthSize, const ComputedStyle& style)
+    {
+        GCRefPtr<CSSPrimitiveValue> first = CSSPrimitiveValue::create(lengthSize.width(), style.effectiveZoom());
+        GCRefPtr<CSSPrimitiveValue> second = CSSPrimitiveValue::create(lengthSize.height(), style.effectiveZoom());
+        return BlinKit::GCWrapShared(new CSSValuePair(first.get(), second.get(), KeepIdenticalValues));
     }
 
     // TODO(sashab): Remove these non-const versions.
@@ -83,7 +90,7 @@ public:
     DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
-    CSSValuePair(PassRefPtrWillBeRawPtr<CSSValue> first, PassRefPtrWillBeRawPtr<CSSValue> second, IdenticalValuesPolicy identicalValuesPolicy)
+    CSSValuePair(CSSValue *first, CSSValue *second, IdenticalValuesPolicy identicalValuesPolicy)
         : CSSValue(ValuePairClass)
         , m_first(first)
         , m_second(second)
