@@ -31,6 +31,8 @@
 #include "core/style/StyleVariableData.h"
 #include "wtf/Vector.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 void CSSVariableResolver::resolveFallback(CSSParserTokenRange range,
@@ -119,7 +121,7 @@ void CSSVariableResolver::resolveVariableReferencesFromTokens(CSSParserTokenRang
     return;
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> CSSVariableResolver::resolveVariableReferences(StyleVariableData* styleVariableData, CSSPropertyID id, const CSSVariableReferenceValue& value)
+GCRefPtr<CSSValue> CSSVariableResolver::resolveVariableReferences(StyleVariableData* styleVariableData, CSSPropertyID id, const CSSVariableReferenceValue& value)
 {
     ASSERT(!isShorthandProperty(id));
 
@@ -137,7 +139,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSVariableResolver::resolveVariableReferences(
     if (!CSSPropertyParser::parseValue(id, false, CSSParserTokenRange(tokens), context, parsedProperties, StyleRule::Type::Style))
         return cssValuePool().createUnsetValue();
     ASSERT(parsedProperties.size() == 1);
-    return parsedProperties[0].value();
+    return GCWrapShared(parsedProperties[0].value());
 }
 
 void CSSVariableResolver::resolveAndApplyVariableReferences(StyleResolverState& state, CSSPropertyID id, const CSSVariableReferenceValue& value)
@@ -163,7 +165,7 @@ void CSSVariableResolver::resolveAndApplyVariableReferences(StyleResolverState& 
         }
     }
 
-    RefPtrWillBeRawPtr<CSSUnsetValue> unset = cssValuePool().createUnsetValue();
+    GCRefPtr<CSSUnsetValue> unset = cssValuePool().createUnsetValue();
     if (isShorthandProperty(id)) {
         StylePropertyShorthand shorthand = shorthandForProperty(id);
         for (unsigned i = 0; i < shorthand.length(); i++)
