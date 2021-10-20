@@ -41,6 +41,8 @@
 #include "core/layout/LayoutObject.h"
 // BKTODO: #include "core/svg/graphics/SVGImageForContainer.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 StyleFetchedImageSet::StyleFetchedImageSet(ImageResource* image, float imageScaleFactor, CSSImageSetValue* value, const KURL& url)
@@ -58,9 +60,7 @@ StyleFetchedImageSet::StyleFetchedImageSet(ImageResource* image, float imageScal
 
 StyleFetchedImageSet::~StyleFetchedImageSet()
 {
-#if !ENABLE(OILPAN)
     dispose();
-#endif
 }
 
 void StyleFetchedImageSet::dispose()
@@ -78,12 +78,12 @@ ImageResource* StyleFetchedImageSet::cachedImage() const
     return m_bestFitImage.get();
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> StyleFetchedImageSet::cssValue() const
+GCRefPtr<CSSValue> StyleFetchedImageSet::cssValue() const
 {
-    return m_imageSetValue;
+    return GCWrapShared(m_imageSetValue);
 }
 
-PassRefPtrWillBeRawPtr<CSSValue> StyleFetchedImageSet::computedCSSValue() const
+GCRefPtr<CSSValue> StyleFetchedImageSet::computedCSSValue() const
 {
     return m_imageSetValue->valueWithURLsMadeAbsolute();
 }

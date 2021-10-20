@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleFetchedImageSet.h
+// Description: StyleFetchedImageSet Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -39,17 +50,15 @@ class CSSImageSetValue;
 // This class keeps one cached image and has access to a set of alternatives.
 
 class StyleFetchedImageSet final : public StyleImage, private ImageResourceClient {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(StyleFetchedImageSet);
-    WILL_BE_USING_PRE_FINALIZER(StyleFetchedImageSet, dispose);
 public:
-    static PassRefPtrWillBeRawPtr<StyleFetchedImageSet> create(ImageResource* image, float imageScaleFactor, CSSImageSetValue* value, const KURL& url)
+    static GCRefPtr<StyleFetchedImageSet> create(ImageResource* image, float imageScaleFactor, CSSImageSetValue* value, const KURL& url)
     {
-        return adoptRefWillBeNoop(new StyleFetchedImageSet(image, imageScaleFactor, value, url));
+        return BlinKit::GCWrapShared(new StyleFetchedImageSet(image, imageScaleFactor, value, url));
     }
     ~StyleFetchedImageSet() override;
 
-    PassRefPtrWillBeRawPtr<CSSValue> cssValue() const override;
-    PassRefPtrWillBeRawPtr<CSSValue> computedCSSValue() const override;
+    GCRefPtr<CSSValue> cssValue() const override;
+    GCRefPtr<CSSValue> computedCSSValue() const override;
 
     // FIXME: This is used by StyleImage for equals comparison, but this implementation
     // only looks at the image from the set that we have loaded. I'm not sure if that is
@@ -87,7 +96,7 @@ private:
     ResourcePtr<ImageResource> m_bestFitImage;
     float m_imageScaleFactor;
 
-    RawPtrWillBeMember<CSSImageSetValue> m_imageSetValue; // Not retained; it owns us.
+    CSSImageSetValue *m_imageSetValue; // Not retained; it owns us.
     const KURL m_url;
 };
 
