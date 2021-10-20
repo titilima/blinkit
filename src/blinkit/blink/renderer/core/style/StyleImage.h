@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleImage.h
+// Description: StyleImage Class
+//      Author: Ziming Li
+//     Created: 2021-10-19
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -41,7 +52,7 @@ class LayoutObject;
 
 typedef void* WrappedImagePtr;
 
-class CORE_EXPORT StyleImage : public RefCountedWillBeGarbageCollectedFinalized<StyleImage> {
+class CORE_EXPORT StyleImage : public BlinKit::GCObject {
 public:
     virtual ~StyleImage() { }
 
@@ -50,8 +61,8 @@ public:
         return data() == other.data();
     }
 
-    virtual PassRefPtrWillBeRawPtr<CSSValue> cssValue() const = 0;
-    virtual PassRefPtrWillBeRawPtr<CSSValue> computedCSSValue() const = 0;
+    virtual GCRefPtr<CSSValue> cssValue() const = 0;
+    virtual GCRefPtr<CSSValue> computedCSSValue() const = 0;
 
     virtual bool canRender() const { return true; }
     virtual bool isLoaded() const { return true; }
