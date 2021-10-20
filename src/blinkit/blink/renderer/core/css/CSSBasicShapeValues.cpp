@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSBasicShapeValues.cpp
+// Description: CSS Basic Shape Value Classes
+//      Author: Ziming Li
+//     Created: 2021-10-18
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Adobe Systems Incorporated. All rights reserved.
  *
@@ -68,20 +79,20 @@ static String serializePositionOffset(const CSSValuePair& offset, const CSSValue
     return offset.cssText();
 }
 
-static PassRefPtrWillBeRawPtr<CSSValuePair> buildSerializablePositionOffset(PassRefPtrWillBeRawPtr<CSSValue> offset, CSSValueID defaultSide)
+static GCRefPtr<CSSValuePair> buildSerializablePositionOffset(CSSValue *offset, CSSValueID defaultSide)
 {
     CSSValueID side = defaultSide;
-    RefPtrWillBeRawPtr<CSSPrimitiveValue> amount = nullptr;
+    GCRefPtr<CSSPrimitiveValue> amount;
 
     if (!offset) {
         side = CSSValueCenter;
-    } else if (offset->isPrimitiveValue() && toCSSPrimitiveValue(offset.get())->isValueID()) {
-        side = toCSSPrimitiveValue(offset.get())->getValueID();
+    } else if (offset->isPrimitiveValue() && toCSSPrimitiveValue(offset)->isValueID()) {
+        side = toCSSPrimitiveValue(offset)->getValueID();
     } else if (offset->isValuePair()) {
         side = toCSSPrimitiveValue(toCSSValuePair(*offset).first()).getValueID();
         amount = &toCSSPrimitiveValue(toCSSValuePair(*offset).second());
     } else {
-        amount = toCSSPrimitiveValue(offset.get());
+        amount = toCSSPrimitiveValue(offset);
     }
 
     if (side == CSSValueCenter) {
@@ -99,13 +110,13 @@ static PassRefPtrWillBeRawPtr<CSSValuePair> buildSerializablePositionOffset(Pass
         side = defaultSide;
     }
 
-    return CSSValuePair::create(cssValuePool().createIdentifierValue(side), amount.release(), CSSValuePair::KeepIdenticalValues);
+    return CSSValuePair::create(cssValuePool().createIdentifierValue(side), amount, CSSValuePair::KeepIdenticalValues);
 }
 
 String CSSBasicShapeCircleValue::customCSSText() const
 {
-    RefPtrWillBeRawPtr<CSSValuePair> normalizedCX = buildSerializablePositionOffset(m_centerX, CSSValueLeft);
-    RefPtrWillBeRawPtr<CSSValuePair> normalizedCY = buildSerializablePositionOffset(m_centerY, CSSValueTop);
+    GCRefPtr<CSSValuePair> normalizedCX = buildSerializablePositionOffset(m_centerX.get(), CSSValueLeft);
+    GCRefPtr<CSSValuePair> normalizedCY = buildSerializablePositionOffset(m_centerY.get(), CSSValueTop);
 
     String radius;
     if (m_radius && m_radius->getValueID() != CSSValueClosestSide)
@@ -164,8 +175,8 @@ static String buildEllipseString(const String& radiusX, const String& radiusY, c
 
 String CSSBasicShapeEllipseValue::customCSSText() const
 {
-    RefPtrWillBeRawPtr<CSSValuePair> normalizedCX = buildSerializablePositionOffset(m_centerX, CSSValueLeft);
-    RefPtrWillBeRawPtr<CSSValuePair> normalizedCY = buildSerializablePositionOffset(m_centerY, CSSValueTop);
+    GCRefPtr<CSSValuePair> normalizedCX = buildSerializablePositionOffset(m_centerX.get(), CSSValueLeft);
+    GCRefPtr<CSSValuePair> normalizedCY = buildSerializablePositionOffset(m_centerY.get(), CSSValueTop);
 
     String radiusX;
     String radiusY;
