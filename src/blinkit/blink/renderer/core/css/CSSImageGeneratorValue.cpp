@@ -40,6 +40,8 @@
 #include "core/css/CSSGradientValue.h"
 #include "platform/graphics/Image.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 CSSImageGeneratorValue::CSSImageGeneratorValue(ClassType classType)
@@ -78,11 +80,11 @@ void CSSImageGeneratorValue::addClient(const LayoutObject* layoutObject, const I
     }
 }
 
-PassRefPtrWillBeRawPtr<CSSImageGeneratorValue> CSSImageGeneratorValue::valueWithURLsMadeAbsolute()
+GCRefPtr<CSSImageGeneratorValue> CSSImageGeneratorValue::valueWithURLsMadeAbsolute()
 {
     if (isCrossfadeValue())
         return toCSSCrossfadeValue(this)->valueWithURLsMadeAbsolute();
-    return this;
+    return GCWrapShared(this);
 }
 
 void CSSImageGeneratorValue::removeClient(const LayoutObject* layoutObject)

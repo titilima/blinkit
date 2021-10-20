@@ -79,7 +79,7 @@ public:
 
     void loadSubimages(Document*);
 
-    PassRefPtrWillBeRawPtr<CSSImageGeneratorValue> valueWithURLsMadeAbsolute();
+    GCRefPtr<CSSImageGeneratorValue> valueWithURLsMadeAbsolute();
 
     DEFINE_INLINE_TRACE_AFTER_DISPATCH() { CSSValue::traceAfterDispatch(visitor); }
 
