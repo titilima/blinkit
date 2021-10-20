@@ -58,23 +58,19 @@ static size_t sizeForImmutableStylePropertySetWithPropertyCount(unsigned count)
     return sizeof(ImmutableStylePropertySet) - sizeof(void*) + sizeof(GCRefPtr<CSSValue>) * count + sizeof(StylePropertyMetadata) * count;
 }
 
-PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> ImmutableStylePropertySet::create(const CSSProperty* properties, unsigned count, CSSParserMode cssParserMode)
+GCRefPtr<ImmutableStylePropertySet> ImmutableStylePropertySet::create(const CSSProperty* properties, unsigned count, CSSParserMode cssParserMode)
 {
     ASSERT(count <= MaxArraySize);
-#if ENABLE(OILPAN)
     size_t cb = sizeForImmutableStylePropertySetWithPropertyCount(count);
     void* slot = ::operator new(cb);
     memset(slot, 0, cb);
-#else
-    void* slot = WTF::Partitions::fastMalloc(sizeForImmutableStylePropertySetWithPropertyCount(count), "blink::ImmutableStylePropertySet");
-#endif // ENABLE(OILPAN)
-    return adoptRefWillBeNoop(new (slot) ImmutableStylePropertySet(properties, count, cssParserMode));
+    return GCWrapShared(new (slot) ImmutableStylePropertySet(properties, count, cssParserMode));
 }
 
-PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> StylePropertySet::immutableCopyIfNeeded() const
+GCRefPtr<ImmutableStylePropertySet> StylePropertySet::immutableCopyIfNeeded() const
 {
     if (!isMutable())
-        return toImmutableStylePropertySet(const_cast<StylePropertySet*>(this));
+        return GCWrapShared(toImmutableStylePropertySet(const_cast<StylePropertySet*>(this)));
     const MutableStylePropertySet* mutableThis = toMutableStylePropertySet(this);
     return ImmutableStylePropertySet::create(mutableThis->m_propertyVector.data(), mutableThis->m_propertyVector.size(), cssParserMode());
 }
@@ -100,9 +96,6 @@ ImmutableStylePropertySet::ImmutableStylePropertySet(const CSSProperty* properti
     for (unsigned i = 0; i < m_arraySize; ++i) {
         metadataArray[i] = properties[i].metadata();
         valueArray[i] = properties[i].value();
-#if !ENABLE(OILPAN)
-        valueArray[i]->ref();
-#endif
     }
 }
 
@@ -111,14 +104,6 @@ ImmutableStylePropertySet::~ImmutableStylePropertySet()
     GCRefPtr<CSSValue> *valueArray = mutableValueArray();
     for (unsigned i = 0; i < m_arraySize; ++i)
         valueArray[i].clear();
-#if !ENABLE(OILPAN)
-    RawPtrWillBeMember<CSSValue>* valueArray = const_cast<RawPtrWillBeMember<CSSValue>*>(this->valueArray());
-    for (unsigned i = 0; i < m_arraySize; ++i) {
-        // Checking for nullptr here is a workaround to prevent crashing.  http://crbug.com/449032
-        if (valueArray[i])
-            valueArray[i]->deref();
-    }
-#endif
 }
 
 // Convert property into an uint16_t for comparison with metadata's m_propertyID to avoid
@@ -522,19 +507,19 @@ void MutableStylePropertySet::removeEquivalentProperties(const CSSStyleDeclarati
         removeProperty(propertiesToRemove[i]);
 }
 
-PassRefPtrWillBeRawPtr<MutableStylePropertySet> StylePropertySet::mutableCopy() const
+GCRefPtr<MutableStylePropertySet> StylePropertySet::mutableCopy() const
 {
-    return adoptRefWillBeNoop(new MutableStylePropertySet(*this));
+    return GCWrapShared(new MutableStylePropertySet(*this));
 }
 
-PassRefPtrWillBeRawPtr<MutableStylePropertySet> StylePropertySet::copyPropertiesInSet(const Vector<CSSPropertyID>& properties) const
+GCRefPtr<MutableStylePropertySet> StylePropertySet::copyPropertiesInSet(const Vector<CSSPropertyID>& properties) const
 {
-    WillBeHeapVector<CSSProperty, 256> list;
+    std::vector<CSSProperty> list;
     list.reserve(properties.size());
     for (unsigned i = 0; i < properties.size(); ++i) {
         GCRefPtr<CSSValue> value = getPropertyCSSValue(properties[i]);
         if (value)
-            list.append(CSSProperty(properties[i], value, false));
+            list.emplace_back(properties[i], value, false);
     }
     return MutableStylePropertySet::create(list.data(), list.size());
 }
@@ -597,14 +582,14 @@ void StylePropertySet::showStyle()
 }
 #endif
 
-PassRefPtrWillBeRawPtr<MutableStylePropertySet> MutableStylePropertySet::create(CSSParserMode cssParserMode)
+GCRefPtr<MutableStylePropertySet> MutableStylePropertySet::create(CSSParserMode cssParserMode)
 {
-    return adoptRefWillBeNoop(new MutableStylePropertySet(cssParserMode));
+    return GCWrapShared(new MutableStylePropertySet(cssParserMode));
 }
 
-PassRefPtrWillBeRawPtr<MutableStylePropertySet> MutableStylePropertySet::create(const CSSProperty* properties, unsigned count)
+GCRefPtr<MutableStylePropertySet> MutableStylePropertySet::create(const CSSProperty* properties, unsigned count)
 {
-    return adoptRefWillBeNoop(new MutableStylePropertySet(properties, count));
+    return GCWrapShared(new MutableStylePropertySet(properties, count));
 }
 
 } // namespace blink

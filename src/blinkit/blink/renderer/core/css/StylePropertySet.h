@@ -38,7 +38,6 @@
 #include "core/css/CSSProperty.h"
 #include "core/css/PropertySetCSSStyleDeclaration.h"
 #include "core/css/parser/CSSParserMode.h"
-#include "wtf/ListHashSet.h"
 #include "wtf/Noncopyable.h"
 #include "wtf/Vector.h"
 #include "wtf/text/WTFString.h"
@@ -125,10 +124,10 @@ public:
 
     CSSParserMode cssParserMode() const { return static_cast<CSSParserMode>(m_cssParserMode); }
 
-    PassRefPtrWillBeRawPtr<MutableStylePropertySet> mutableCopy() const;
-    PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> immutableCopyIfNeeded() const;
+    GCRefPtr<MutableStylePropertySet> mutableCopy() const;
+    GCRefPtr<ImmutableStylePropertySet> immutableCopyIfNeeded() const;
 
-    PassRefPtrWillBeRawPtr<MutableStylePropertySet> copyPropertiesInSet(const Vector<CSSPropertyID>&) const;
+    GCRefPtr<MutableStylePropertySet> copyPropertiesInSet(const Vector<CSSPropertyID>&) const;
 
     String asText() const;
 
@@ -173,7 +172,7 @@ protected:
 class CORE_EXPORT ImmutableStylePropertySet : public StylePropertySet {
 public:
     ~ImmutableStylePropertySet();
-    static PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> create(const CSSProperty* properties, unsigned count, CSSParserMode);
+    static GCRefPtr<ImmutableStylePropertySet> create(const CSSProperty* properties, unsigned count, CSSParserMode);
 
     unsigned propertyCount() const { return m_arraySize; }
 
@@ -220,8 +219,8 @@ DEFINE_TYPE_CASTS(ImmutableStylePropertySet, StylePropertySet, set, !set->isMuta
 class CORE_EXPORT MutableStylePropertySet : public StylePropertySet {
 public:
     ~MutableStylePropertySet() { }
-    static PassRefPtrWillBeRawPtr<MutableStylePropertySet> create(CSSParserMode);
-    static PassRefPtrWillBeRawPtr<MutableStylePropertySet> create(const CSSProperty* properties, unsigned count);
+    static GCRefPtr<MutableStylePropertySet> create(CSSParserMode);
+    static GCRefPtr<MutableStylePropertySet> create(const CSSProperty* properties, unsigned count);
 
     unsigned propertyCount() const { return m_propertyVector.size(); }
 
@@ -275,17 +274,7 @@ private:
 
 DEFINE_TYPE_CASTS(MutableStylePropertySet, StylePropertySet, set, set->isMutable(), set.isMutable());
 
-inline MutableStylePropertySet* toMutableStylePropertySet(const RefPtrWillBeRawPtr<StylePropertySet>& set)
-{
-    return toMutableStylePropertySet(set.get());
-}
-
-inline MutableStylePropertySet* toMutableStylePropertySet(const Persistent<StylePropertySet>& set)
-{
-    return toMutableStylePropertySet(set.get());
-}
-
-inline MutableStylePropertySet* toMutableStylePropertySet(const Member<StylePropertySet>& set)
+inline MutableStylePropertySet* toMutableStylePropertySet(const GCRefPtr<StylePropertySet>& set)
 {
     return toMutableStylePropertySet(set.get());
 }
