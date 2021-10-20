@@ -52,22 +52,22 @@ class LayoutObject;
 
 class CORE_EXPORT CSSImageValue : public CSSValue {
 public:
-    static PassRefPtrWillBeRawPtr<CSSImageValue> create(const KURL& url, StyleFetchedImage* image = 0)
+    static GCRefPtr<CSSImageValue> create(const KURL& url, StyleFetchedImage* image = 0)
     {
         return create(String::fromStdUTF8(url.spec()), url, image);
     }
-    static PassRefPtrWillBeRawPtr<CSSImageValue> create(const String& rawValue, const KURL& url, StyleFetchedImage* image = 0)
+    static GCRefPtr<CSSImageValue> create(const String& rawValue, const KURL& url, StyleFetchedImage* image = 0)
     {
         return create(AtomicString(rawValue), url, image);
     }
-    static PassRefPtrWillBeRawPtr<CSSImageValue> create(const AtomicString& rawValue, const KURL& url, StyleFetchedImage* image = 0)
+    static GCRefPtr<CSSImageValue> create(const AtomicString& rawValue, const KURL& url, StyleFetchedImage* image = 0)
     {
-        return adoptRefWillBeNoop(new CSSImageValue(rawValue, url, image));
+        return BlinKit::GCWrapShared(new CSSImageValue(rawValue, url, image));
     }
     ~CSSImageValue();
 
     bool isCachePending() const { return m_isCachePending; }
-    StyleFetchedImage* cachedImage() const { ASSERT(!isCachePending()); return m_cachedImage.get(); }
+    StyleFetchedImage* cachedImage(void) const;
     StyleFetchedImage* cacheImage(Document*);
 
     const String& url() const { return m_absoluteURL; }
@@ -87,7 +87,7 @@ public:
 
     bool knownToBeOpaque(const LayoutObject*) const;
 
-    PassRefPtrWillBeRawPtr<CSSImageValue> valueWithURLMadeAbsolute()
+    GCRefPtr<CSSImageValue> valueWithURLMadeAbsolute()
     {
         ASSERT(false); // BKTODO: return create(KURL(ParsedURLString, m_absoluteURL), m_cachedImage.get());
         return nullptr;
@@ -105,7 +105,7 @@ private:
     AtomicString m_absoluteURL;
     // BKTODO: Referrer m_referrer;
     bool m_isCachePending;
-    RefPtrWillBeMember<StyleFetchedImage> m_cachedImage;
+    GCRefPtr<StyleFetchedImage> m_cachedImage;
     AtomicString m_initiatorName;
 };
 

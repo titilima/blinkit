@@ -142,4 +142,10 @@ void CSSImageValue::reResolveURL(const Document& document)
     m_cachedImage.clear();
 }
 
+StyleFetchedImage* CSSImageValue::cachedImage(void) const
+{
+    ASSERT(!isCachePending());
+    return m_cachedImage.get();
+}
+
 } // namespace blink
