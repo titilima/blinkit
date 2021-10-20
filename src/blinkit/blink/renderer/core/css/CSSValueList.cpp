@@ -74,9 +74,9 @@ bool CSSValueList::hasValue(CSSValue* val) const
     return false;
 }
 
-PassRefPtrWillBeRawPtr<CSSValueList> CSSValueList::copy()
+GCRefPtr<CSSValueList> CSSValueList::copy()
 {
-    RefPtrWillBeRawPtr<CSSValueList> newList = nullptr;
+    GCRefPtr<CSSValueList> newList;
     switch (m_valueListSeparator) {
     case SpaceSeparator:
         newList = createSpaceSeparated();
@@ -92,7 +92,7 @@ PassRefPtrWillBeRawPtr<CSSValueList> CSSValueList::copy()
     }
     for (size_t index = 0; index < m_values.size(); index++)
         newList->append(m_values[index].get());
-    return newList.release();
+    return newList;
 }
 
 String CSSValueList::customCSSText() const

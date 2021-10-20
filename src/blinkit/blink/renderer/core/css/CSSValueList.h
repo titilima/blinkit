@@ -34,7 +34,6 @@
 
 #include "core/CoreExport.h"
 #include "core/css/CSSValue.h"
-#include "wtf/PassRefPtr.h"
 
 namespace blink {
 
@@ -43,17 +42,17 @@ public:
     using iterator = std::vector<GCRefPtr<CSSValue>>::iterator;
     using const_iterator = std::vector<GCRefPtr<CSSValue>>::const_iterator;
 
-    static PassRefPtrWillBeRawPtr<CSSValueList> createCommaSeparated()
+    static GCRefPtr<CSSValueList> createCommaSeparated()
     {
-        return adoptRefWillBeNoop(new CSSValueList(CommaSeparator));
+        return BlinKit::GCWrapShared(new CSSValueList(CommaSeparator));
     }
-    static PassRefPtrWillBeRawPtr<CSSValueList> createSpaceSeparated()
+    static GCRefPtr<CSSValueList> createSpaceSeparated()
     {
-        return adoptRefWillBeNoop(new CSSValueList(SpaceSeparator));
+        return BlinKit::GCWrapShared(new CSSValueList(SpaceSeparator));
     }
-    static PassRefPtrWillBeRawPtr<CSSValueList> createSlashSeparated()
+    static GCRefPtr<CSSValueList> createSlashSeparated()
     {
-        return adoptRefWillBeNoop(new CSSValueList(SlashSeparator));
+        return BlinKit::GCWrapShared(new CSSValueList(SlashSeparator));
     }
 
     iterator begin() { return m_values.begin(); }
@@ -67,11 +66,13 @@ public:
     CSSValue* itemWithBoundsCheck(size_t index) { return index < m_values.size() ? m_values[index].get() : nullptr; }
     const CSSValue* itemWithBoundsCheck(size_t index) const { return index < m_values.size() ? m_values[index].get() : nullptr; }
 
-    void append(PassRefPtrWillBeRawPtr<CSSValue> value) { m_values.emplace_back(value); }
-    void prepend(PassRefPtrWillBeRawPtr<CSSValue> value) { m_values.emplace(m_values.begin(), value); }
+    void append(CSSValue *value) { m_values.emplace_back(value); }
+    void append(const GCRefPtr<CSSValue> &value) { m_values.emplace_back(value); }
+    void prepend(CSSValue *value) { m_values.emplace(m_values.begin(), value); }
+    void prepend(const GCRefPtr<CSSValue> &value) { m_values.emplace(m_values.begin(), value); }
     bool removeAll(CSSValue*);
     bool hasValue(CSSValue*) const;
-    PassRefPtrWillBeRawPtr<CSSValueList> copy();
+    GCRefPtr<CSSValueList> copy();
 
     String customCSSText() const;
     bool equals(const CSSValueList&) const;
