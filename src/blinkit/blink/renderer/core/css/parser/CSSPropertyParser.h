@@ -334,7 +334,7 @@ private:
     int m_inParseShorthand;
     CSSPropertyID m_currentShorthand;
     bool m_implicitShorthand;
-    RefPtrWillBeMember<CSSCalcValue> m_parsedCalculation;
+    GCRefPtr<CSSCalcValue> m_parsedCalculation;
 };
 
 CSSPropertyID unresolvedCSSPropertyID(const CSSParserString&);

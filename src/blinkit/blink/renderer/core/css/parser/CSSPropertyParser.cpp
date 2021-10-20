@@ -399,7 +399,7 @@ public:
 private:
     CSSParserTokenRange& m_sourceRange;
     CSSParserTokenRange m_range;
-    RefPtrWillBeMember<CSSCalcValue> m_calcValue;
+    GCRefPtr<CSSCalcValue> m_calcValue;
 };
 
 static GCRefPtr<CSSPrimitiveValue> consumeInteger(CSSParserTokenRange& range, double minimumValue = -std::numeric_limits<double>::max())
