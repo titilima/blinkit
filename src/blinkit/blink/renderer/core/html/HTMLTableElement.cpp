@@ -401,14 +401,14 @@ void HTMLTableElement::parseAttribute(const QualifiedName& name, const AtomicStr
     }
 }
 
-static PassRefPtrWillBeRawPtr<StylePropertySet> createBorderStyle(CSSValueID value)
+static GCRefPtr<StylePropertySet> createBorderStyle(CSSValueID value)
 {
-    RefPtrWillBeRawPtr<MutableStylePropertySet> style = MutableStylePropertySet::create(HTMLQuirksMode);
+    GCRefPtr<MutableStylePropertySet> style = MutableStylePropertySet::create(HTMLQuirksMode);
     style->setProperty(CSSPropertyBorderTopStyle, value);
     style->setProperty(CSSPropertyBorderBottomStyle, value);
     style->setProperty(CSSPropertyBorderLeftStyle, value);
     style->setProperty(CSSPropertyBorderRightStyle, value);
-    return style.release();
+    return style;
 }
 
 const StylePropertySet* HTMLTableElement::additionalPresentationAttributeStyle()
@@ -461,9 +461,9 @@ HTMLTableElement::CellBorders HTMLTableElement::cellBorders() const
     return NoBorders;
 }
 
-PassRefPtrWillBeRawPtr<StylePropertySet> HTMLTableElement::createSharedCellStyle()
+GCRefPtr<StylePropertySet> HTMLTableElement::createSharedCellStyle()
 {
-    RefPtrWillBeRawPtr<MutableStylePropertySet> style = MutableStylePropertySet::create(HTMLQuirksMode);
+    GCRefPtr<MutableStylePropertySet> style = MutableStylePropertySet::create(HTMLQuirksMode);
 
     switch (cellBorders()) {
     case SolidBordersColsOnly:
@@ -498,7 +498,7 @@ PassRefPtrWillBeRawPtr<StylePropertySet> HTMLTableElement::createSharedCellStyle
     if (m_padding)
         style->setProperty(CSSPropertyPadding, cssValuePool().createValue(m_padding, CSSPrimitiveValue::UnitType::Pixels));
 
-    return style.release();
+    return style;
 }
 
 const StylePropertySet* HTMLTableElement::additionalCellStyle()
@@ -508,9 +508,9 @@ const StylePropertySet* HTMLTableElement::additionalCellStyle()
     return m_sharedCellStyle.get();
 }
 
-static PassRefPtrWillBeRawPtr<StylePropertySet> createGroupBorderStyle(int rows)
+static GCRefPtr<StylePropertySet> createGroupBorderStyle(int rows)
 {
-    RefPtrWillBeRawPtr<MutableStylePropertySet> style = MutableStylePropertySet::create(HTMLQuirksMode);
+    GCRefPtr<MutableStylePropertySet> style = MutableStylePropertySet::create(HTMLQuirksMode);
     if (rows) {
         style->setProperty(CSSPropertyBorderTopWidth, CSSValueThin);
         style->setProperty(CSSPropertyBorderBottomWidth, CSSValueThin);
@@ -522,7 +522,7 @@ static PassRefPtrWillBeRawPtr<StylePropertySet> createGroupBorderStyle(int rows)
         style->setProperty(CSSPropertyBorderLeftStyle, CSSValueSolid);
         style->setProperty(CSSPropertyBorderRightStyle, CSSValueSolid);
     }
-    return style.release();
+    return style;
 }
 
 const StylePropertySet* HTMLTableElement::additionalGroupStyle(bool rows)

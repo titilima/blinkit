@@ -124,8 +124,8 @@ private:
 
     bool isStringKeyframe() const override { return true; }
 
-    RefPtrWillBePersistent<MutableStylePropertySet> m_cssPropertyMap;
-    RefPtrWillBePersistent<MutableStylePropertySet> m_presentationAttributeMap;
+    GCRefPtr<MutableStylePropertySet> m_cssPropertyMap;
+    GCRefPtr<MutableStylePropertySet> m_presentationAttributeMap;
     HashMap<const QualifiedName*, String> m_svgAttributeMap;
 };
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleRuleKeyframe.cpp
+// Description: StyleRuleKeyframe Class
+//      Author: Ziming Li
+//     Created: 2021-10-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,10 +21,8 @@
 
 namespace blink {
 
-StyleRuleKeyframe::StyleRuleKeyframe(PassOwnPtr<Vector<double>> keys, PassRefPtrWillBeRawPtr<StylePropertySet> properties)
-: StyleRuleBase(Keyframe)
-, m_properties(properties)
-, m_keys(*keys)
+StyleRuleKeyframe::StyleRuleKeyframe(PassOwnPtr<Vector<double>> keys, const GCRefPtr<StylePropertySet> &properties)
+    : StyleRuleBase(Keyframe), m_properties(properties), m_keys(*keys)
 {
 }
 

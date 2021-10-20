@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleRuleKeyframe.h
+// Description: StyleRuleKeyframe Class
+//      Author: Ziming Li
+//     Created: 2021-10-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -15,7 +26,7 @@ class StylePropertySet;
 class StyleRuleKeyframe final : public StyleRuleBase {
     USING_FAST_MALLOC_WILL_BE_REMOVED(StyleRuleKeyframe);
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleKeyframe> create(PassOwnPtr<Vector<double>> keys, PassRefPtrWillBeRawPtr<StylePropertySet> properties)
+    static PassRefPtrWillBeRawPtr<StyleRuleKeyframe> create(PassOwnPtr<Vector<double>> keys, const GCRefPtr<StylePropertySet> &properties)
     {
         return adoptRefWillBeNoop(new StyleRuleKeyframe(keys, properties));
     }
@@ -35,9 +46,9 @@ public:
     DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
-    StyleRuleKeyframe(PassOwnPtr<Vector<double>>, PassRefPtrWillBeRawPtr<StylePropertySet>);
+    StyleRuleKeyframe(PassOwnPtr<Vector<double>>, const GCRefPtr<StylePropertySet> &);
 
-    RefPtrWillBeMember<StylePropertySet> m_properties;
+    GCRefPtr<StylePropertySet> m_properties;
     Vector<double> m_keys;
 };
 

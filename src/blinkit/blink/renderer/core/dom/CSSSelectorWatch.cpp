@@ -159,7 +159,7 @@ void CSSSelectorWatch::watchCSSSelectors(const Vector<String>& selectors)
 {
     m_watchedCallbackSelectors.clear();
 
-    const RefPtrWillBeRawPtr<StylePropertySet> callbackPropertySet = ImmutableStylePropertySet::create(nullptr, 0, UASheetMode);
+    const GCRefPtr<StylePropertySet> callbackPropertySet = ImmutableStylePropertySet::create(nullptr, 0, UASheetMode);
 
     for (unsigned i = 0; i < selectors.size(); ++i) {
         CSSSelectorList selectorList = CSSParser::parseSelector(CSSParserContext(UASheetMode), selectors[i]);

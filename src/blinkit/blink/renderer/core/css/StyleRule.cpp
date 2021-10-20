@@ -263,7 +263,7 @@ unsigned StyleRule::averageSizeInBytes()
     return sizeof(StyleRule) + sizeof(CSSSelector) + StylePropertySet::averageSizeInBytes();
 }
 
-StyleRule::StyleRule(CSSSelectorList selectorList, PassRefPtrWillBeRawPtr<StylePropertySet> properties)
+StyleRule::StyleRule(CSSSelectorList selectorList, const GCRefPtr<StylePropertySet> &properties)
     : StyleRuleBase(Style)
     , m_properties(properties)
 {
@@ -294,7 +294,7 @@ DEFINE_TRACE_AFTER_DISPATCH(StyleRule)
     StyleRuleBase::traceAfterDispatch(visitor);
 }
 
-StyleRulePage::StyleRulePage(CSSSelectorList selectorList, PassRefPtrWillBeRawPtr<StylePropertySet> properties)
+StyleRulePage::StyleRulePage(CSSSelectorList selectorList, const GCRefPtr<StylePropertySet> &properties)
     : StyleRuleBase(Page)
     , m_properties(properties)
     , m_selectorList(std::move(selectorList))
@@ -325,7 +325,7 @@ DEFINE_TRACE_AFTER_DISPATCH(StyleRulePage)
     StyleRuleBase::traceAfterDispatch(visitor);
 }
 
-StyleRuleFontFace::StyleRuleFontFace(PassRefPtrWillBeRawPtr<StylePropertySet> properties)
+StyleRuleFontFace::StyleRuleFontFace(const GCRefPtr<StylePropertySet> &properties)
     : StyleRuleBase(FontFace)
     , m_properties(properties)
 {
@@ -417,7 +417,7 @@ StyleRuleSupports::StyleRuleSupports(const StyleRuleSupports& o)
 {
 }
 
-StyleRuleViewport::StyleRuleViewport(PassRefPtrWillBeRawPtr<StylePropertySet> properties)
+StyleRuleViewport::StyleRuleViewport(const GCRefPtr<StylePropertySet> &properties)
     : StyleRuleBase(Viewport)
     , m_properties(properties)
 {

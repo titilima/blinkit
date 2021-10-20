@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTableElement.h
+// Description: HTMLTableElement Class
+//      Author: Ziming Li
+//     Created: 2021-10-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1997 Martin Jones (mjones@kde.org)
  *           (C) 1997 Torben Weis (weis@kde.org)
@@ -91,7 +102,7 @@ private:
 
     CellBorders cellBorders() const;
 
-    PassRefPtrWillBeRawPtr<StylePropertySet> createSharedCellStyle();
+    GCRefPtr<StylePropertySet> createSharedCellStyle();
 
     HTMLTableSectionElement* lastBody() const;
 
@@ -104,7 +115,7 @@ private:
                                 // are present, to none otherwise).
 
     unsigned short m_padding;
-    RefPtrWillBeMember<StylePropertySet> m_sharedCellStyle;
+    GCRefPtr<StylePropertySet> m_sharedCellStyle;
 };
 
 } // namespace blink

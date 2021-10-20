@@ -116,7 +116,7 @@ class CORE_EXPORT StyleRule : public StyleRuleBase {
     USING_FAST_MALLOC_WITH_TYPE_NAME_WILL_BE_REMOVED(blink::StyleRule);
 public:
     // Adopts the selector list
-    static PassRefPtrWillBeRawPtr<StyleRule> create(CSSSelectorList selectorList, PassRefPtrWillBeRawPtr<StylePropertySet> properties)
+    static PassRefPtrWillBeRawPtr<StyleRule> create(CSSSelectorList selectorList, const GCRefPtr<StylePropertySet> &properties)
     {
         return adoptRefWillBeNoop(new StyleRule(std::move(selectorList), properties));
     }
@@ -136,7 +136,7 @@ public:
     DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
-    StyleRule(CSSSelectorList, PassRefPtrWillBeRawPtr<StylePropertySet>);
+    StyleRule(CSSSelectorList, const GCRefPtr<StylePropertySet> &);
     StyleRule(const StyleRule&);
 
     GCRefPtr<StylePropertySet> m_properties; // Cannot be null.
@@ -145,7 +145,7 @@ private:
 
 class StyleRuleFontFace : public StyleRuleBase {
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleFontFace> create(PassRefPtrWillBeRawPtr<StylePropertySet> properties)
+    static PassRefPtrWillBeRawPtr<StyleRuleFontFace> create(const GCRefPtr<StylePropertySet> &properties)
     {
         return adoptRefWillBeNoop(new StyleRuleFontFace(properties));
     }
@@ -160,7 +160,7 @@ public:
     DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
-    StyleRuleFontFace(PassRefPtrWillBeRawPtr<StylePropertySet>);
+    StyleRuleFontFace(const GCRefPtr<StylePropertySet> &);
     StyleRuleFontFace(const StyleRuleFontFace&);
 
     GCRefPtr<StylePropertySet> m_properties; // Cannot be null.
@@ -169,7 +169,7 @@ private:
 class StyleRulePage : public StyleRuleBase {
 public:
     // Adopts the selector list
-    static PassRefPtrWillBeRawPtr<StyleRulePage> create(CSSSelectorList selectorList, PassRefPtrWillBeRawPtr<StylePropertySet> properties)
+    static PassRefPtrWillBeRawPtr<StyleRulePage> create(CSSSelectorList selectorList, const GCRefPtr<StylePropertySet> &properties)
     {
         return adoptRefWillBeNoop(new StyleRulePage(std::move(selectorList), properties));
     }
@@ -187,7 +187,7 @@ public:
     DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
-    StyleRulePage(CSSSelectorList, PassRefPtrWillBeRawPtr<StylePropertySet>);
+    StyleRulePage(CSSSelectorList, const GCRefPtr<StylePropertySet> &);
     StyleRulePage(const StyleRulePage&);
 
     GCRefPtr<StylePropertySet> m_properties; // Cannot be null.
@@ -254,7 +254,7 @@ private:
 
 class StyleRuleViewport : public StyleRuleBase {
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleViewport> create(PassRefPtrWillBeRawPtr<StylePropertySet> properties)
+    static PassRefPtrWillBeRawPtr<StyleRuleViewport> create(const GCRefPtr<StylePropertySet> &properties)
     {
         return adoptRefWillBeNoop(new StyleRuleViewport(properties));
     }
@@ -269,7 +269,7 @@ public:
     DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
-    StyleRuleViewport(PassRefPtrWillBeRawPtr<StylePropertySet>);
+    StyleRuleViewport(const GCRefPtr<StylePropertySet> &);
     StyleRuleViewport(const StyleRuleViewport&);
 
     GCRefPtr<StylePropertySet> m_properties; // Cannot be null

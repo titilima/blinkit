@@ -67,7 +67,7 @@ public:
     String getPropertyValue(CSSPropertyID) const;
     bool getPropertyPriority(CSSPropertyID) const;
 
-    PassRefPtrWillBeRawPtr<MutableStylePropertySet> copyProperties() const;
+    GCRefPtr<MutableStylePropertySet> copyProperties() const;
 
     GCRefPtr<CSSValue> getPropertyCSSValue(CSSPropertyID) const;
     GCRefPtr<CSSValue> getPropertyCSSValue(AtomicString customPropertyName) const;
@@ -76,7 +76,7 @@ public:
     GCRefPtr<CSSValue> getFontSizeCSSValuePreferringKeyword() const;
     bool isMonospaceFont() const;
 
-    PassRefPtrWillBeRawPtr<MutableStylePropertySet> copyPropertiesInSet(const Vector<CSSPropertyID>&) const;
+    GCRefPtr<MutableStylePropertySet> copyPropertiesInSet(const Vector<CSSPropertyID>&) const;
 
     DECLARE_VIRTUAL_TRACE();
 

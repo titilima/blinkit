@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMWindowCSS.cpp
+// Description: DOMWindowCSS Class
+//      Author: Ziming Li
+//     Created: 2021-10-20
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Motorola Mobility Inc. All rights reserved.
  *
@@ -46,7 +57,7 @@ bool DOMWindowCSS::supports(const String& property, const String& value)
     ASSERT(CSSPropertyMetadata::isEnabledProperty(unresolvedProperty));
 
     // This will return false when !important is present
-    RefPtrWillBeRawPtr<MutableStylePropertySet> dummyStyle = MutableStylePropertySet::create(HTMLStandardMode);
+    GCRefPtr<MutableStylePropertySet> dummyStyle = MutableStylePropertySet::create(HTMLStandardMode);
     return CSSParser::parseValue(dummyStyle.get(), unresolvedProperty, value, false, 0);
 }
 

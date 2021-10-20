@@ -626,12 +626,12 @@ bool CSSComputedStyleDeclaration::cssPropertyMatches(CSSPropertyID propertyID, c
     return value && propertyValue && value->equals(*propertyValue);
 }
 
-PassRefPtrWillBeRawPtr<MutableStylePropertySet> CSSComputedStyleDeclaration::copyProperties() const
+GCRefPtr<MutableStylePropertySet> CSSComputedStyleDeclaration::copyProperties() const
 {
     return copyPropertiesInSet(computableProperties());
 }
 
-PassRefPtrWillBeRawPtr<MutableStylePropertySet> CSSComputedStyleDeclaration::copyPropertiesInSet(const Vector<CSSPropertyID>& properties) const
+GCRefPtr<MutableStylePropertySet> CSSComputedStyleDeclaration::copyPropertiesInSet(const Vector<CSSPropertyID>& properties) const
 {
     std::vector<CSSProperty> list;
     list.reserve(properties.size());

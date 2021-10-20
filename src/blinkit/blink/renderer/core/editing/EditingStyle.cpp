@@ -165,7 +165,7 @@ static GCRefPtr<CSSComputedStyleDeclaration> ensureComputedStyle(const Position&
     return CSSComputedStyleDeclaration::create(elem);
 }
 
-static PassRefPtrWillBeRawPtr<MutableStylePropertySet> getPropertiesNotIn(StylePropertySet* styleWithRedundantProperties, CSSStyleDeclaration* baseStyle);
+static GCRefPtr<MutableStylePropertySet> getPropertiesNotIn(StylePropertySet* styleWithRedundantProperties, CSSStyleDeclaration* baseStyle);
 enum LegacyFontSizeMode { AlwaysUseLegacyFontSize, UseLegacyFontSizeOnlyIfPixelValuesMatch };
 static int legacyFontSizeFromCSSValue(Document*, CSSPrimitiveValue*, bool, LegacyFontSizeMode);
 static bool isTransparentColorValue(CSSValue*);
@@ -320,8 +320,7 @@ GCRefPtr<CSSValue> HTMLAttributeEquivalent::attributeValueAsCSSValue(Element* el
     if (value.isNull())
         return nullptr;
 
-    RefPtrWillBeRawPtr<MutableStylePropertySet> dummyStyle = nullptr;
-    dummyStyle = MutableStylePropertySet::create(HTMLQuirksMode);
+    GCRefPtr<MutableStylePropertySet> dummyStyle = MutableStylePropertySet::create(HTMLQuirksMode);
     dummyStyle->setProperty(m_propertyID, value);
     return dummyStyle->getPropertyCSSValue(m_propertyID);
 }
@@ -730,7 +729,7 @@ TriState EditingStyle::triStateOfStyle(EditingStyle* style) const
 
 TriState EditingStyle::triStateOfStyle(CSSStyleDeclaration* styleToCompare, ShouldIgnoreTextOnlyProperties shouldIgnoreTextOnlyProperties) const
 {
-    RefPtrWillBeRawPtr<MutableStylePropertySet> difference = getPropertiesNotIn(m_mutableStyle.get(), styleToCompare);
+    GCRefPtr<MutableStylePropertySet> difference = getPropertiesNotIn(m_mutableStyle.get(), styleToCompare);
 
     if (shouldIgnoreTextOnlyProperties == IgnoreTextOnlyProperties)
         difference->removePropertiesInSet(textOnlyProperties, WTF_ARRAY_LENGTH(textOnlyProperties));
@@ -1182,20 +1181,20 @@ void EditingStyle::mergeStyle(const StylePropertySet* style, CSSPropertyOverride
     }
 }
 
-static PassRefPtrWillBeRawPtr<MutableStylePropertySet> styleFromMatchedRulesForElement(Element* element, unsigned rulesToInclude)
+static GCRefPtr<MutableStylePropertySet> styleFromMatchedRulesForElement(Element* element, unsigned rulesToInclude)
 {
-    RefPtrWillBeRawPtr<MutableStylePropertySet> style = MutableStylePropertySet::create(HTMLQuirksMode);
+    GCRefPtr<MutableStylePropertySet> style = MutableStylePropertySet::create(HTMLQuirksMode);
     RefPtrWillBeRawPtr<StyleRuleList> matchedRules = element->document().ensureStyleResolver().styleRulesForElement(element, rulesToInclude);
     if (matchedRules) {
         for (unsigned i = 0; i < matchedRules->size(); ++i)
             style->mergeAndOverrideOnConflict(&matchedRules->at(i)->properties());
     }
-    return style.release();
+    return style;
 }
 
 void EditingStyle::mergeStyleFromRules(Element* element)
 {
-    RefPtrWillBeRawPtr<MutableStylePropertySet> styleFromMatchedRules = styleFromMatchedRulesForElement(element,
+    GCRefPtr<MutableStylePropertySet> styleFromMatchedRules = styleFromMatchedRulesForElement(element,
         StyleResolver::AuthorCSSRules | StyleResolver::CrossOriginCSSRules);
     // Styles from the inline style declaration, held in the variable "style", take precedence
     // over those from matched rules.
@@ -1248,7 +1247,7 @@ void EditingStyle::removeStyleFromRulesAndContext(Element* element, ContainerNod
         return;
 
     // 1. Remove style from matched rules because style remain without repeating it in inline style declaration
-    RefPtrWillBeRawPtr<MutableStylePropertySet> styleFromMatchedRules = styleFromMatchedRulesForElement(element, StyleResolver::AllButEmptyCSSRules);
+    GCRefPtr<MutableStylePropertySet> styleFromMatchedRules = styleFromMatchedRulesForElement(element, StyleResolver::AllButEmptyCSSRules);
     if (styleFromMatchedRules && !styleFromMatchedRules->isEmpty())
         m_mutableStyle = getPropertiesNotIn(m_mutableStyle.get(), styleFromMatchedRules->ensureCSSStyleDeclaration());
 
@@ -1280,7 +1279,7 @@ void EditingStyle::removePropertiesInElementDefaultStyle(Element* element)
     if (!m_mutableStyle || m_mutableStyle->isEmpty())
         return;
 
-    RefPtrWillBeRawPtr<StylePropertySet> defaultStyle = styleFromMatchedRulesForElement(element, StyleResolver::UAAndUserCSSRules);
+    GCRefPtr<StylePropertySet> defaultStyle = styleFromMatchedRulesForElement(element, StyleResolver::UAAndUserCSSRules);
 
     removePropertiesInStyle(m_mutableStyle.get(), defaultStyle.get());
 }
@@ -1646,11 +1645,11 @@ static bool fontWeightNeedsResolving(CSSValue* fontWeight)
     return value == CSSValueLighter || value == CSSValueBolder;
 }
 
-PassRefPtrWillBeRawPtr<MutableStylePropertySet> getPropertiesNotIn(StylePropertySet* styleWithRedundantProperties, CSSStyleDeclaration* baseStyle)
+GCRefPtr<MutableStylePropertySet> getPropertiesNotIn(StylePropertySet* styleWithRedundantProperties, CSSStyleDeclaration* baseStyle)
 {
     ASSERT(styleWithRedundantProperties);
     ASSERT(baseStyle);
-    RefPtrWillBeRawPtr<MutableStylePropertySet> result = styleWithRedundantProperties->mutableCopy();
+    GCRefPtr<MutableStylePropertySet> result = styleWithRedundantProperties->mutableCopy();
 
     result->removeEquivalentProperties(baseStyle);
 
@@ -1676,7 +1675,7 @@ PassRefPtrWillBeRawPtr<MutableStylePropertySet> getPropertiesNotIn(StyleProperty
     if (baseStyle->getPropertyCSSValueInternal(CSSPropertyBackgroundColor) && getBackgroundColor(result.get()) == getBackgroundColor(baseStyle))
         result->removeProperty(CSSPropertyBackgroundColor);
 
-    return result.release();
+    return result;
 }
 
 CSSValueID getIdentifierValue(StylePropertySet* style, CSSPropertyID propertyID)

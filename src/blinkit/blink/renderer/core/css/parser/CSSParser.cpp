@@ -105,13 +105,13 @@ GCRefPtr<CSSValue> CSSParser::parseSingleValue(CSSPropertyID propertyID, const S
         return nullptr;
     if (GCRefPtr<CSSValue> value = CSSParserFastPaths::maybeParseValue(propertyID, string, context.mode()))
         return value;
-    RefPtrWillBeRawPtr<MutableStylePropertySet> stylePropertySet = MutableStylePropertySet::create(HTMLQuirksMode);
+    GCRefPtr<MutableStylePropertySet> stylePropertySet = MutableStylePropertySet::create(HTMLQuirksMode);
     bool changed = parseValue(stylePropertySet.get(), propertyID, string, false, context);
     ASSERT_UNUSED(changed, changed == stylePropertySet->hasProperty(propertyID));
     return stylePropertySet->getPropertyCSSValue(propertyID);
 }
 
-PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> CSSParser::parseInlineStyleDeclaration(const String& styleString, Element* element)
+GCRefPtr<ImmutableStylePropertySet> CSSParser::parseInlineStyleDeclaration(const String& styleString, Element* element)
 {
     return CSSParserImpl::parseInlineStyleDeclaration(styleString, element);
 }

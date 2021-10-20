@@ -91,7 +91,7 @@ static inline void filterProperties(bool important, const std::vector<CSSPropert
     }
 }
 
-static PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> createStylePropertySet(std::vector<CSSProperty>& parsedProperties, CSSParserMode mode)
+static GCRefPtr<ImmutableStylePropertySet> createStylePropertySet(std::vector<CSSProperty>& parsedProperties, CSSParserMode mode)
 {
     BitArray<numCSSProperties> seenProperties;
     size_t unusedEntries = parsedProperties.size();
@@ -100,12 +100,12 @@ static PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> createStylePropertySet(
     filterProperties(true, parsedProperties, results, unusedEntries, seenProperties);
     filterProperties(false, parsedProperties, results, unusedEntries, seenProperties);
 
-    RefPtrWillBeRawPtr<ImmutableStylePropertySet> result = ImmutableStylePropertySet::create(results.data() + unusedEntries, results.size() - unusedEntries, mode);
+    GCRefPtr<ImmutableStylePropertySet> result = ImmutableStylePropertySet::create(results.data() + unusedEntries, results.size() - unusedEntries, mode);
     parsedProperties.clear();
-    return result.release();
+    return result;
 }
 
-PassRefPtrWillBeRawPtr<ImmutableStylePropertySet> CSSParserImpl::parseInlineStyleDeclaration(const String& string, Element* element)
+GCRefPtr<ImmutableStylePropertySet> CSSParserImpl::parseInlineStyleDeclaration(const String& string, Element* element)
 {
     Document& document = element->document();
     CSSParserContext context = CSSParserContext(document.elementSheet().contents()->parserContext());
