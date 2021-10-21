@@ -99,7 +99,8 @@ protected:
 
     virtual void OnInitialized(void) {}
     void ProcessKeyEvent(blink::WebInputEvent::Type type, int code, int modifiers);
-    void ProcessMouseEvent(blink::WebInputEvent::Type type, blink::WebPointerProperties::Button button, int x, int y);
+    void ProcessMouseEvent(blink::WebInputEvent::Type type, blink::WebPointerProperties::Button button, int x, int y,
+        bool &animationScheduled);
     bool ProcessTitleChange(const std::string &newTitle) const;
     // BKTODO: void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
     void Resize(const blink::IntSize &size);

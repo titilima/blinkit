@@ -781,12 +781,16 @@ void WebViewImpl::ProcessKeyEvent(WebInputEvent::Type type, int code, int modifi
     m_appCaller.SyncCall(BLINK_FROM_HERE, task);
 }
 
-void WebViewImpl::ProcessMouseEvent(WebInputEvent::Type type, WebPointerProperties::Button button, int x, int y)
+void WebViewImpl::ProcessMouseEvent(
+    WebInputEvent::Type type,
+    WebPointerProperties::Button button,
+    int x, int y,
+    bool &animationScheduled)
 {
     ASSERT(IsClientThread());
-    auto task = [this, type, button, x, y]
+    auto task = [this, type, button, x, y, &animationScheduled]
     {
-        ScopedRenderingScheduler _(this);
+        ScopedRenderingScheduler scheduler(this);
 
         WebMouseEvent e;
         e.timeStampSeconds = base::Time::Now().ToDoubleT();
@@ -812,6 +816,8 @@ void WebViewImpl::ProcessMouseEvent(WebInputEvent::Type type, WebPointerProperti
         m_mouseEventSession.PreProcess(e);
         ProcessInput(e);
         m_mouseEventSession.PostProcess(e);
+
+        animationScheduled = scheduler.AnimationScheduled();
     };
     m_appCaller.SyncCall(BLINK_FROM_HERE, task);
 }

@@ -46,6 +46,8 @@ class ScopedRenderingScheduler
 {
 public:
     ScopedRenderingScheduler(WebViewImpl *view = nullptr) : m_renderingScheduler(GetRenderingScheduler(view)) {}
+
+    bool AnimationScheduled(void) const { return m_renderingScheduler->m_animationScheduled; }
 private:
     static RefPtr<RenderingScheduler> GetRenderingScheduler(WebViewImpl *view);
 

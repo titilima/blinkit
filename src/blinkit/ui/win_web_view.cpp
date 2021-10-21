@@ -279,10 +279,19 @@ void WinWebView::OnMouse(UINT message, UINT keyFlags, int x, int y)
             return;
     }
 
-    ProcessMouseEvent(type, button, x, y);
+    bool animationScheduled = false;
+    ProcessMouseEvent(type, button, x, y, animationScheduled);
 
-    if (WM_LBUTTONUP == message)
-        ReleaseCapture();
+    switch (message)
+    {
+        case WM_MOUSEMOVE:
+            if (animationScheduled)
+                UpdateWindow(m_hWnd);
+            break;
+        case WM_LBUTTONUP:
+            ReleaseCapture();
+            break;
+    }
 
     if (trackLeave)
     {
