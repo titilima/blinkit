@@ -62,6 +62,7 @@ public:
     virtual void InvalidateNativeView(const blink::IntRect &rect) = 0;
 
     virtual void clearContextMenu(void) {}
+    void convertViewportToWindow(blink::IntRect *rect) const;
     void didChangeContentsSize(void);
     virtual void didChangeCursor(const blink::WebCursorInfo &cursorInfo) = 0;
     blink::FloatSize elasticOverscroll(void) const { return m_elasticOverscroll; }

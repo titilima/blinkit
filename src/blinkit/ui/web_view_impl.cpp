@@ -115,6 +115,11 @@ IntSize WebViewImpl::ContentsSize(void) const
     return IntSize();
 }
 
+void WebViewImpl::convertViewportToWindow(IntRect *rect) const
+{
+    rect->scale(m_frame->pageZoomFactor());
+}
+
 void WebViewImpl::didChangeContentsSize(void)
 {
     GetPageScaleConstraintsSet().didChangeContentsSize(ContentsSize(), PageScaleFactor());
