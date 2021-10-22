@@ -1256,7 +1256,22 @@ void LayoutObject::invalidatePaintUsingContainer(const LayoutBoxModelObject& pai
     // This conditional handles situations where non-rooted (and hence non-composited) frames are
     // painted, such as SVG images.
     if (!paintInvalidationContainer.isPaintInvalidationContainer())
-        invalidatePaintRectangleOnWindow(paintInvalidationContainer, enclosingIntRect(dirtyRect));
+    {
+        IntRect dirtyIntRect = enclosingIntRect(dirtyRect);
+        if (PaintInvalidationScroll == invalidationReason && isLayoutView())
+        {
+            ASSERT(&paintInvalidationContainer == this);
+            if (FrameView *frameView = paintInvalidationContainer.frameView())
+            {
+                if (HostWindow *window = frameView->hostWindow())
+                    window->invalidateRect(dirtyIntRect);
+            }
+        }
+        else
+        {
+            invalidatePaintRectangleOnWindow(paintInvalidationContainer, dirtyIntRect);
+        }
+    }
 
     if (paintInvalidationContainer.view()->usesCompositing() && paintInvalidationContainer.isPaintInvalidationContainer())
         paintInvalidationContainer.setBackingNeedsPaintInvalidationInRect(dirtyRect, invalidationReason);
