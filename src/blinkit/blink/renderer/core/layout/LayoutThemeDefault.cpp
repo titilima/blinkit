@@ -197,7 +197,7 @@ int LayoutThemeDefault::sliderTickOffsetFromTrackCenter() const
 
 void LayoutThemeDefault::adjustSliderThumbSize(ComputedStyle& style) const
 {
-    IntSize size = Platform::current()->themeEngine()->getSize(WebThemeEngine::PartSliderThumb);
+    IntSize size = Platform::current()->themeEngine()->GetViewportSize(WebThemeEngine::PartSliderThumb);
 
     // FIXME: Mock theme doesn't handle zoomed sliders.
     float zoomLevel = useMockTheme() ? 1 : style.effectiveZoom();
@@ -235,7 +235,7 @@ void LayoutThemeDefault::setCheckboxSize(ComputedStyle& style) const
     if (!style.width().isIntrinsicOrAuto() && !style.height().isAuto())
         return;
 
-    IntSize size = Platform::current()->themeEngine()->getSize(WebThemeEngine::PartCheckbox);
+    IntSize size = Platform::current()->themeEngine()->GetViewportSize(WebThemeEngine::PartCheckbox);
     float zoomLevel = style.effectiveZoom();
     size.setWidth(size.width() * zoomLevel);
     size.setHeight(size.height() * zoomLevel);
@@ -248,7 +248,7 @@ void LayoutThemeDefault::setRadioSize(ComputedStyle& style) const
     if (!style.width().isIntrinsicOrAuto() && !style.height().isAuto())
         return;
 
-    IntSize size = Platform::current()->themeEngine()->getSize(WebThemeEngine::PartRadio);
+    IntSize size = Platform::current()->themeEngine()->GetViewportSize(WebThemeEngine::PartRadio);
     float zoomLevel = style.effectiveZoom();
     size.setWidth(size.width() * zoomLevel);
     size.setHeight(size.height() * zoomLevel);
@@ -257,7 +257,7 @@ void LayoutThemeDefault::setRadioSize(ComputedStyle& style) const
 
 void LayoutThemeDefault::adjustInnerSpinButtonStyle(ComputedStyle& style) const
 {
-    IntSize size = Platform::current()->themeEngine()->getSize(WebThemeEngine::PartInnerSpinButton);
+    IntSize size = Platform::current()->themeEngine()->GetViewportSize(WebThemeEngine::PartInnerSpinButton);
 
     style.setWidth(Length(size.width(), Fixed));
     style.setMinWidth(Length(size.width(), Fixed));

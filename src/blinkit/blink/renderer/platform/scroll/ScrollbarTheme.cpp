@@ -53,6 +53,7 @@
 #endif
 #include "public/platform/Platform.h"
 #include "public/platform/WebScrollbarBehavior.h"
+#include "third_party/zed/include/zed/float.hpp"
 
 #if !OS(MACOSX)
 #include "public/platform/WebThemeEngine.h"
@@ -138,7 +139,7 @@ bool ScrollbarTheme::paint(const ScrollbarThemeClient& scrollbar, GraphicsContex
     if (scrollMask & ThumbPart) {
         std::optional<CompositingRecorder> compositingRecorder;
         float opacity = thumbOpacity(scrollbar);
-        if (opacity != 1.0f) {
+        if (!zed::almost_equals(opacity, 1.0f)) {
             FloatRect floatThumbRect(thumbRect);
             floatThumbRect.inflate(1); // some themes inflate thumb bounds
             compositingRecorder.emplace(graphicsContext, scrollbar, SkXfermode::kSrcOver_Mode, opacity, &floatThumbRect);
@@ -208,16 +209,14 @@ void ScrollbarTheme::paintScrollCorner(GraphicsContext& context, const DisplayIt
 
 bool ScrollbarTheme::shouldCenterOnThumb(const ScrollbarThemeClient& scrollbar, const PlatformMouseEvent& evt)
 {
-    ASSERT(false); // BKTODO: return Platform::current()->scrollbarBehavior()->shouldCenterOnThumb(static_cast<WebScrollbarBehavior::Button>(evt.button()), evt.shiftKey(), evt.altKey());
-    return false;
+    return Platform::current()->scrollbarBehavior()->shouldCenterOnThumb(static_cast<WebScrollbarBehavior::Button>(evt.button()), evt.shiftKey(), evt.altKey());
 }
 
 bool ScrollbarTheme::shouldSnapBackToDragOrigin(const ScrollbarThemeClient& scrollbar, const PlatformMouseEvent& evt)
 {
     IntPoint mousePosition = scrollbar.convertFromRootFrame(evt.position());
     mousePosition.move(scrollbar.x(), scrollbar.y());
-    ASSERT(false); // BKTODO: return Platform::current()->scrollbarBehavior()->shouldSnapBackToDragOrigin(mousePosition, trackRect(scrollbar), scrollbar.orientation() == HorizontalScrollbar);
-    return false;
+    return Platform::current()->scrollbarBehavior()->shouldSnapBackToDragOrigin(mousePosition, trackRect(scrollbar), scrollbar.orientation() == HorizontalScrollbar);
 }
 
 int ScrollbarTheme::thumbPosition(const ScrollbarThemeClient& scrollbar, float scrollPosition)

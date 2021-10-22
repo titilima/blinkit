@@ -332,7 +332,7 @@ void ScrollableArea::mouseEnteredContentArea() const
 void ScrollableArea::mouseExitedContentArea() const
 {
     if (ScrollAnimatorBase* scrollAnimator = existingScrollAnimator())
-        scrollAnimator->mouseEnteredContentArea();
+        scrollAnimator->mouseExitedContentArea();
 }
 
 void ScrollableArea::mouseMovedInContentArea() const
@@ -420,16 +420,29 @@ void ScrollableArea::setScrollbarOverlayStyle(ScrollbarOverlayStyle overlayStyle
 
 void ScrollableArea::setScrollbarNeedsPaintInvalidation(ScrollbarOrientation orientation)
 {
-    if (orientation == HorizontalScrollbar) {
-        if (GraphicsLayer* graphicsLayer = layerForHorizontalScrollbar()) {
+    if (orientation == HorizontalScrollbar)
+    {
+        if (GraphicsLayer* graphicsLayer = layerForHorizontalScrollbar())
+        {
             graphicsLayer->setNeedsDisplay();
             graphicsLayer->setContentsNeedsDisplay();
         }
+        else
+        {
+            scheduleAnimation();
+        }
         m_horizontalScrollbarNeedsPaintInvalidation = true;
-    } else {
-        if (GraphicsLayer* graphicsLayer = layerForVerticalScrollbar()) {
+    }
+    else
+    {
+        if (GraphicsLayer* graphicsLayer = layerForVerticalScrollbar())
+        {
             graphicsLayer->setNeedsDisplay();
             graphicsLayer->setContentsNeedsDisplay();
+        }
+        else
+        {
+            scheduleAnimation();
         }
         m_verticalScrollbarNeedsPaintInvalidation = true;
     }

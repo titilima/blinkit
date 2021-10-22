@@ -75,7 +75,7 @@ int ScrollbarThemeAura::scrollbarThickness(ScrollbarControlSize controlSize)
     // In unit tests we don't have the mock theme engine (because of layering violations), so we hard code the size (see bug 327470).
     if (useMockTheme())
         return 15;
-    IntSize scrollbarSize = Platform::current()->themeEngine()->getSize(WebThemeEngine::PartScrollbarVerticalTrack);
+    IntSize scrollbarSize = Platform::current()->themeEngine()->GetViewportSize(WebThemeEngine::PartScrollbarVerticalTrack);
     return scrollbarSize.width();
 }
 
@@ -169,26 +169,40 @@ void ScrollbarThemeAura::paintThumb(GraphicsContext& gc, const ScrollbarThemeCli
     Platform::current()->themeEngine()->paint(canvas, scrollbar.orientation() == HorizontalScrollbar ? WebThemeEngine::PartScrollbarHorizontalThumb : WebThemeEngine::PartScrollbarVerticalThumb, state, rect, 0);
 }
 
+static void ScaleButton(IntSize &size, int viewportThickness, int thickness)
+{
+    if (thickness != viewportThickness)
+    {
+        float scale = static_cast<float>(thickness) / static_cast<float>(viewportThickness);
+        size.scale(scale);
+    }
+}
+
 IntSize ScrollbarThemeAura::buttonSize(const ScrollbarThemeClient& scrollbar)
 {
+    WebThemeEngine *themeEngine = Platform::current()->themeEngine();
+
+    int viewportThickness = scrollbarThickness(scrollbar.controlSize());
     if (scrollbar.orientation() == VerticalScrollbar) {
-        IntSize size = Platform::current()->themeEngine()->getSize(WebThemeEngine::PartScrollbarUpArrow);
+        IntSize size = themeEngine->GetViewportSize(WebThemeEngine::PartScrollbarUpArrow);
+        ScaleButton(size, viewportThickness, scrollbar.size().width());
         return IntSize(size.width(), scrollbar.height() < 2 * size.height() ? scrollbar.height() / 2 : size.height());
     }
 
     // HorizontalScrollbar
-    IntSize size = Platform::current()->themeEngine()->getSize(WebThemeEngine::PartScrollbarLeftArrow);
+    IntSize size = Platform::current()->themeEngine()->GetViewportSize(WebThemeEngine::PartScrollbarLeftArrow);
+    ScaleButton(size, viewportThickness, scrollbar.size().height());
     return IntSize(scrollbar.width() < 2 * size.width() ? scrollbar.width() / 2 : size.width(), size.height());
 }
 
 int ScrollbarThemeAura::minimumThumbLength(const ScrollbarThemeClient& scrollbar)
 {
     if (scrollbar.orientation() == VerticalScrollbar) {
-        IntSize size = Platform::current()->themeEngine()->getSize(WebThemeEngine::PartScrollbarVerticalThumb);
+        IntSize size = Platform::current()->themeEngine()->GetViewportSize(WebThemeEngine::PartScrollbarVerticalThumb);
         return size.height();
     }
 
-    IntSize size = Platform::current()->themeEngine()->getSize(WebThemeEngine::PartScrollbarHorizontalThumb);
+    IntSize size = Platform::current()->themeEngine()->GetViewportSize(WebThemeEngine::PartScrollbarHorizontalThumb);
     return size.width();
 }
 

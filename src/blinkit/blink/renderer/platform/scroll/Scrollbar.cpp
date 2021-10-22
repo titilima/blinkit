@@ -91,13 +91,16 @@ Scrollbar::Scrollbar(ScrollableArea* scrollableArea, ScrollbarOrientation orient
 {
     m_theme.registerScrollbar(*this);
 
+    IntRect frameRect;
     // FIXME: This is ugly and would not be necessary if we fix cross-platform code to actually query for
     // scrollbar thickness and use it when sizing scrollbars (rather than leaving one dimension of the scrollbar
     // alone when sizing).
     int thickness = m_theme.scrollbarThickness(controlSize);
+    frameRect.setWidth(thickness);
+    frameRect.setHeight(thickness);
     if (m_hostWindow)
-        thickness = m_hostWindow->screenToViewport(thickness);
-    Widget::setFrameRect(IntRect(0, 0, thickness, thickness));
+        frameRect = m_hostWindow->viewportToScreen(frameRect);
+    Widget::setFrameRect(frameRect);
 
     m_currentPos = scrollableAreaCurrentPos();
 }
@@ -497,9 +500,12 @@ void Scrollbar::setEnabled(bool e)
 int Scrollbar::scrollbarThickness() const
 {
     int thickness = orientation() == HorizontalScrollbar ? height() : width();
-    if (!thickness || !m_hostWindow)
-        return thickness;
-    return m_hostWindow->screenToViewport(m_theme.scrollbarThickness(controlSize()));
+    if (0 == thickness)
+    {
+        if (nullptr != m_hostWindow)
+            thickness = m_hostWindow->screenToViewport(m_theme.scrollbarThickness(controlSize()));
+    }
+    return thickness;
 }
 
 
