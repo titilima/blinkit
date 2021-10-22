@@ -35,7 +35,7 @@ private:
     void Draw(HDC hdc, PCWSTR classList, int partId, int stateId, const blink::IntSize &size);
 
     // blink::WebThemeEngine
-    blink::IntSize getSize(Part part) override;
+    blink::IntSize GetViewportSize(Part part) override;
     void paint(blink::WebCanvas *canvas, Part part, State state, const blink::IntRect &rect, const ExtraParams *extra) override;
 
     using GetMetricsType = decltype(GetSystemMetricsForDpi) *;

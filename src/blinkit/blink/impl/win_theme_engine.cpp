@@ -68,14 +68,14 @@ void WinThemeEngine::Draw(HDC hdc, PCWSTR classList, int partId, int stateId, co
     rc.bottom = size.height();
 
     const UINT dpi = GetDeviceCaps(hdc, LOGPIXELSY);
-    assert(dpi == GetDeviceCaps(hdc, LOGPIXELSX));
+    ASSERT(dpi == GetDeviceCaps(hdc, LOGPIXELSX));
 
     HTHEME t = m_openTheme(nullptr, classList, dpi);
     DrawThemeBackground(t, hdc, partId, stateId, &rc, &rc);
     CloseThemeData(t);
 }
 
-IntSize WinThemeEngine::getSize(Part part)
+IntSize WinThemeEngine::GetViewportSize(Part part)
 {
     IntSize size;
     switch (part)
@@ -170,7 +170,7 @@ void WinThemeEngine::PaintButtonByUxTheme(HDC hdc, State state, const IntSize &s
             stateId = PBS_DISABLED;
             break;
         default:
-            assert(false); // Not reached!
+            ASSERT_NOT_REACHED();
             return;
     }
 
@@ -179,7 +179,7 @@ void WinThemeEngine::PaintButtonByUxTheme(HDC hdc, State state, const IntSize &s
 
 void WinThemeEngine::PaintByUser32(HDC hdc, Part part, State state, const IntSize &size, const ExtraParams *extra)
 {
-    assert(false); // BKTODO:
+    ASSERT(false); // BKTODO:
 }
 
 void WinThemeEngine::PaintByUxTheme(HDC hdc, Part part, State state, const IntSize &size, const ExtraParams *extra)
@@ -208,7 +208,7 @@ void WinThemeEngine::PaintByUxTheme(HDC hdc, Part part, State state, const IntSi
             PaintTextFieldByUxTheme(hdc, state, size, &extra->textField);
             break;
         default:
-            assert(false); // Not reached!
+            ASSERT_NOT_REACHED();
     }
 }
 
@@ -267,7 +267,7 @@ void WinThemeEngine::PaintScrollArrowByUxTheme(HDC hdc, Part part, State state, 
             stateId = ABS_UPPRESSED;
             break;
         default:
-            assert(false); // Not reached!
+            ASSERT_NOT_REACHED();
             return;
     }
 
@@ -302,7 +302,7 @@ void WinThemeEngine::PaintScrollPartByUxTheme(HDC hdc, Part part, State state, c
             partId = extra->isBack ? SBP_UPPERTRACKVERT : SBP_LOWERTRACKVERT;
             break;
         default:
-            assert(false); // Not reached!
+            ASSERT_NOT_REACHED();
             return;
     }
 
@@ -321,7 +321,7 @@ void WinThemeEngine::PaintScrollPartByUxTheme(HDC hdc, Part part, State state, c
             stateId = SCRBS_PRESSED;
             break;
         default:
-            assert(false); // Not reached!
+            ASSERT_NOT_REACHED();
             return;
     }
 
@@ -352,7 +352,7 @@ void WinThemeEngine::PaintTextFieldByUxTheme(HDC hdc, State state, const IntSize
             stateId = ETS_DISABLED;
             break;
         default:
-            assert(false); // Not reached!
+            ASSERT_NOT_REACHED();
             return;
     }
 

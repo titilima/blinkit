@@ -161,7 +161,7 @@ public:
     // Gets the size of the given theme part. For variable sized items
     // like vertical scrollbar thumbs, the width will be the required width of
     // the track while the height will be the minimum height.
-    virtual IntSize getSize(Part) { return IntSize(); }
+    virtual IntSize GetViewportSize(Part) { return IntSize(); }
     // Paint the given the given theme part.
     virtual void paint(WebCanvas*, Part, State, const IntRect&, const ExtraParams*) { }
 };
