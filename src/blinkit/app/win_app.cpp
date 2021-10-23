@@ -17,6 +17,7 @@
 #include "third_party/zed/include/zed/string/conv.hpp"
 #ifdef BLINKIT_UI_ENABLED
 #   include "blinkit/blink/impl/win_clipboard.h"
+#   include "blinkit/blink/impl/win_scrollbar_behavior.h"
 #   include "blinkit/blink/impl/win_theme_engine.h"
 #   include "blinkit/blink/renderer/wtf/MainThread.h"
 #   include "third_party/zed/include/zed/win/hmodule.hpp"
@@ -138,10 +139,8 @@ std::shared_ptr<blink::WebTaskRunner> WinApp::taskRunner(void)
 #ifdef BLINKIT_UI_ENABLED
 WebClipboard* WinApp::clipboard(void)
 {
-    ASSERT(isMainThread());
-    if (!m_clipboard)
-        m_clipboard = std::make_unique<WinClipboard>();
-    return m_clipboard.get();
+    static WinClipboard s_clipboard;
+    return &s_clipboard;
 }
 
 WebData WinApp::loadResource(const char *name)
@@ -155,6 +154,12 @@ WebData WinApp::loadResource(const char *name)
         return AppImpl::loadResource(name);
     }
     return WebData(reinterpret_cast<const char *>(std::get<0>(data)), std::get<1>(data));
+}
+
+WebScrollbarBehavior* WinApp::scrollbarBehavior(void)
+{
+    static WinScrollbarBehavior s_scrollbarBehavior;
+    return &s_scrollbarBehavior;
 }
 
 WebThemeEngine* WinApp::themeEngine(void)

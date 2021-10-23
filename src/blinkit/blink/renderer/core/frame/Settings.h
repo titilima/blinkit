@@ -47,7 +47,7 @@ public:
     BLINKIT_BOOLEAN_SETTING_ITEM(reportWheelOverscroll, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(resizeIsDeviceSizeChange, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(rootLayerScrolls, false);
-    BLINKIT_BOOLEAN_SETTING_ITEM(scrollAnimatorEnabled, true);
+    BLINKIT_BOOLEAN_SETTING_ITEM(scrollAnimatorEnabled, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(selectionIncludesAltImageText, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(shrinksViewportContentToFit, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(shouldClearDocumentBackground, true);

@@ -64,7 +64,6 @@
 #include "WebSpeechSynthesizer.h"
 #include "WebStorageQuotaCallbacks.h"
 #include "WebStorageQuotaType.h"
-#include "WebString.h"
 #include "WebURLError.h"
 #include "WebVector.h"
 #include "WebWaitableEvent.h"
@@ -118,7 +117,9 @@ class WebRTCCertificateGenerator;
 class WebRTCPeerConnectionHandler;
 class WebRTCPeerConnectionHandlerClient;
 class WebSandboxSupport;
+#endif
 class WebScrollbarBehavior;
+#if 0 // BKTODO:
 class WebSecurityOrigin;
 class WebServicePortProvider;
 class WebServicePortProviderClient;
@@ -163,8 +164,10 @@ public:
     virtual WebCookieJar* cookieJar() { return nullptr; }
 #endif
 
+#ifdef BLINKIT_UI_ENABLED
     // Must return non-null.
     virtual WebClipboard* clipboard() { return nullptr; }
+#endif
 
 #if 0 // BKTODO:
     // Must return non-null.
@@ -177,8 +180,10 @@ public:
     virtual WebSandboxSupport* sandboxSupport() { return nullptr; }
 #endif
 
+#ifdef BLINKIT_UI_ENABLED
     // May return null on some platforms.
     virtual WebThemeEngine* themeEngine() { return nullptr; }
+#endif
 
 #if 0 // BKTODO:
     virtual WebFallbackThemeEngine* fallbackThemeEngine() { return nullptr; }
@@ -419,10 +424,12 @@ public:
 #endif
 
 
+#ifdef BLINKIT_UI_ENABLED
     // Resources -----------------------------------------------------------
 
     // Returns a blob of data corresponding to the named resource.
     virtual WebData loadResource(const char* name) { return WebData(); }
+#endif
 
 #if 0 // BKTODO:
     // Decodes the in-memory audio file data and returns the linear PCM audio data in the destinationBus.
@@ -434,14 +441,18 @@ public:
 
     // Supplies the system monitor color profile.
     virtual void screenColorProfile(WebVector<char>* profile) { }
+#endif
 
 
+#ifdef BLINKIT_UI_ENABLED
     // Scrollbar ----------------------------------------------------------
 
     // Must return non-null.
     virtual WebScrollbarBehavior* scrollbarBehavior() { return nullptr; }
+#endif
 
 
+#if 0 // BKTODO:
     // Sudden Termination --------------------------------------------------
 
     // Disable/Enable sudden termination on a process level. When possible, it
@@ -694,6 +705,7 @@ public:
     virtual void stopListening(WebPlatformEventType type) { }
 #endif
 
+#ifdef BLINKIT_UI_ENABLED
     // This method converts from the supplied DOM code enum to the
     // embedder's DOM code value for the key pressed. |domCode| values are
     // based on the value defined in ui/events/keycodes/dom4/keycode_converter_data.h.
@@ -713,6 +725,7 @@ public:
     // based on the value defined in ui/events/keycodes/dom3/dom_key_data.h.
     // Returns empty string, if DOM key value is not found.
     virtual String domKeyStringFromEnum(int domKey) { return String(); }
+#endif
 
 #if 0 // BKTODO:
     // This method converts from the suppled DOM |key| value to the
