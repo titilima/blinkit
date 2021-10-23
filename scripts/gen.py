@@ -90,6 +90,11 @@ run_script('blink/make_css_value_keywords.py',                                  
     '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
 )
 
+run_script('blink/make_media_feature_names.py',                                 \
+    os.path.normpath('blink/in/MediaFeatureNames.in') + ' ' +                   \
+    '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
+)
+
 run_script('blink/make_style_builder.py',                                       \
     os.path.normpath('blink/in/CSSProperties.in') + ' ' +                       \
     '--output_dir ' + os.path.normpath('../src/blinkit/blink/renderer/core')    \
