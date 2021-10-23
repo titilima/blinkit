@@ -4104,6 +4104,12 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\win_context_menu_impl.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_scrollbar_behavior.cpp">
+      <Filter>blink\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\UndoStack.cpp">
+      <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -6700,6 +6706,462 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\WebDataSourceImpl.h">
       <Filter>blink\renderer\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\PointerProperties.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebBlendMode.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCanvas.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebClipboard.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebColor.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCommon.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimation.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationCurve.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationDelegate.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationPlayer.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationPlayerClient.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationTimeline.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorMutableProperties.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorSupport.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebContentLayer.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebContentLayerClient.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCursorInfo.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebDisplayItemList.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebDisplayMode.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebExternalTextureLayer.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebExternalTextureLayerClient.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebExternalTextureMailbox.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFallbackThemeEngine.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFilterAnimationCurve.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFilterKeyframe.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFilterOperations.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFloatAnimationCurve.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFloatKeyframe.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFocusType.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFrameScheduler.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebImage.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebImageLayer.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebInputEventResult.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayer.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayerPositionConstraint.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayerScrollClient.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayerTreeView.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLocalizedString.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebNativeScrollBehavior.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebPointerProperties.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebReferrerPolicy.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScreenInfo.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbar.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarBehavior.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarButtonsPlacement.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarLayer.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarThemeGeometry.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarThemePainter.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollBlocksOn.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollOffsetAnimationCurve.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollStateData.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebThemeEngine.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTopControlsState.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTraceLocation.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTransformAnimationCurve.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTransformKeyframe.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTransformOperations.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebURLLoaderClient.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebURLRequest.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebViewScheduler.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\impl\win_scrollbar_behavior.h">
+      <Filter>blink\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\BidiRun.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\BidiRunForLine.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\ClipPathOperation.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\ClipRect.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\ClipRects.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\ClipRectsCache.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\ColumnBalancer.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\FragmentationContext.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\GapRects.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\GeneratedChildren.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\HitTestingTransformState.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\HitTestLocation.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\HitTestRequest.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\HitTestResult.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\ImageQualityController.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutBlock.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutBlockFlow.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutBox.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutBoxModelObject.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutBR.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutButton.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutDeprecatedFlexibleBox.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutDetailsMarker.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutFieldset.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutFileUploadControl.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutFlexibleBox.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutFlowThread.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutGeometryMap.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutGeometryMapStep.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutGrid.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutImage.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutImageResource.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutImageResourceStyleImage.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutInline.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutListBox.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutListItem.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutListMarker.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutMenuList.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutMeter.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutMultiColumnFlowThread.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutMultiColumnSet.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutMultiColumnSpannerPlaceholder.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutObject.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutObjectChildList.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutObjectInlines.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutPagedFlowThread.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutPart.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutProgress.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutQuote.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutReplaced.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutReplica.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutScrollbar.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutScrollbarPart.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutScrollbarTheme.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutSearchField.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutSlider.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutSliderContainer.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutSliderThumb.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutState.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTable.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTableCaption.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTableCell.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTableCol.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTableRow.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTableSection.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutText.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTextCombine.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTextControl.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTextControlMultiLine.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTextControlSingleLine.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTextFragment.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTheme.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutThemeDefault.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutThemeFontProvider.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutThemeWin.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutWordBreak.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\ListMarkerText.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\MultiColumnFragmentainerGroup.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\OrderIterator.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\OverflowModel.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\PaintInvalidationState.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\ScrollAlignment.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\SubtreeLayoutScope.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\TableLayoutAlgorithm.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\TableLayoutAlgorithmAuto.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\TableLayoutAlgorithmFixed.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\TextAutosizer.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\TextRunConstructor.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\VerticalPositionCache.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\ViewFragmentationContext.h">
+      <Filter>blink\renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\UndoStack.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
