@@ -17,13 +17,6 @@
 #include "blinkit/gc/gc_heap.h"
 #include "blinkit/loader/loader_thread.h"
 #include "chromium/base/time/time.h"
-#if 0 // BKTODO:
-#include "third_party/blink/public/platform/web_thread_scheduler.h"
-#include "third_party/blink/public/web/blink.h"
-#include "third_party/blink/renderer/platform/wtf/wtf.h"
-
-#include "blink_impl/mime_registry_impl.h"
-#endif
 
 using namespace blink;
 
@@ -105,7 +98,6 @@ void AppImpl::OnExit(void)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-using namespace blink;
 using namespace BlinKit;
 
 extern "C" {
