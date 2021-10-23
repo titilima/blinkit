@@ -15,7 +15,7 @@ namespace blink {
 namespace MediaTypeNames {
 
 CORE_EXPORT extern const WTF::AtomicString& all;
-CORE_EXPORT extern const WTF::AtomicString& speech;
+CORE_EXPORT extern const WTF::AtomicString& screen;
 
 const unsigned MediaTypeNamesCount = 2;
 

@@ -17,7 +17,7 @@ using namespace WTF;
 void* NamesStorage[MediaTypeNamesCount * ((sizeof(AtomicString) + sizeof(void *) - 1) / sizeof(void *))];
 
 const AtomicString& all = reinterpret_cast<AtomicString*>(&NamesStorage)[0];
-const AtomicString& speech = reinterpret_cast<AtomicString*>(&NamesStorage)[1];
+const AtomicString& screen = reinterpret_cast<AtomicString*>(&NamesStorage)[1];
 
 void init()
 {
@@ -29,7 +29,7 @@ void init()
 
     static const NameEntry kNames[] = {
         { "all", 10505778, 3 },
-        { "speech", 4509099, 6 },
+        { "screen", 13980269, 6 },
     };
 
     for (size_t i = 0; i < WTF_ARRAY_LENGTH(kNames); i++) {

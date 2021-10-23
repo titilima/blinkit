@@ -56,8 +56,7 @@ const AtomicString& monochromeMediaFeature = reinterpret_cast<AtomicString*>(&Na
 const AtomicString& orientationMediaFeature = reinterpret_cast<AtomicString*>(&NamesStorage)[37];
 const AtomicString& pointerMediaFeature = reinterpret_cast<AtomicString*>(&NamesStorage)[38];
 const AtomicString& resolutionMediaFeature = reinterpret_cast<AtomicString*>(&NamesStorage)[39];
-const AtomicString& scanMediaFeature = reinterpret_cast<AtomicString*>(&NamesStorage)[40];
-const AtomicString& widthMediaFeature = reinterpret_cast<AtomicString*>(&NamesStorage)[41];
+const AtomicString& widthMediaFeature = reinterpret_cast<AtomicString*>(&NamesStorage)[40];
 
 void init()
 {
@@ -108,7 +107,6 @@ void init()
         { "orientation", 10339552, 11 },
         { "pointer", 8738242, 7 },
         { "resolution", 1320318, 10 },
-        { "scan", 2480616, 4 },
         { "width", 12902275, 5 },
     };
 

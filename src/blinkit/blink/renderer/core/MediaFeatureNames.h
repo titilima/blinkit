@@ -54,10 +54,9 @@ extern const WTF::AtomicString& monochromeMediaFeature;
 extern const WTF::AtomicString& orientationMediaFeature;
 extern const WTF::AtomicString& pointerMediaFeature;
 extern const WTF::AtomicString& resolutionMediaFeature;
-extern const WTF::AtomicString& scanMediaFeature;
 extern const WTF::AtomicString& widthMediaFeature;
 
-const unsigned MediaFeatureNamesCount = 42;
+const unsigned MediaFeatureNamesCount = 41;
 
 void init();
 
