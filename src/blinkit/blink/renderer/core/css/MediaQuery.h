@@ -53,15 +53,15 @@ class MediaQueryExp;
 
 using ExpressionHeapVector = std::vector<Member<MediaQueryExp>>;
 
-class CORE_EXPORT MediaQuery : public NoBaseWillBeGarbageCollectedFinalized<MediaQuery> {
+class CORE_EXPORT MediaQuery {
     USING_FAST_MALLOC_WILL_BE_REMOVED(MediaQuery);
 public:
     enum Restrictor {
         Only, Not, None
     };
 
-    static PassOwnPtrWillBeRawPtr<MediaQuery> create(Restrictor, String mediaType, ExpressionHeapVector &);
-    static PassOwnPtrWillBeRawPtr<MediaQuery> createNotAll();
+    static std::unique_ptr<MediaQuery> create(Restrictor, String mediaType, ExpressionHeapVector &);
+    static std::unique_ptr<MediaQuery> createNotAll();
 
     ~MediaQuery();
 
@@ -71,7 +71,7 @@ public:
     bool operator==(const MediaQuery& other) const;
     String cssText() const;
 
-    PassOwnPtrWillBeRawPtr<MediaQuery> copy() const { return adoptPtrWillBeNoop(new MediaQuery(*this)); }
+    std::unique_ptr<MediaQuery> copy() const { return zed::wrap_unique(new MediaQuery(*this)); }
 
     DECLARE_TRACE();
 

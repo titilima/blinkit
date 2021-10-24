@@ -39,7 +39,7 @@
 
 #include "core/css/MediaQuery.h"
 
-// BKTODO: #include "core/MediaTypeNames.h"
+#include "core/MediaTypeNames.h"
 #include "core/css/MediaQueryExp.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "wtf/NonCopyingSort.h"
@@ -67,13 +67,10 @@ String MediaQuery::serialize() const
         return result.toString();
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
     if (m_mediaType != MediaTypeNames::all || m_restrictor != None) {
         result.append(m_mediaType);
         result.appendLiteral(" and ");
     }
-#endif
 
     result.append(m_expressions.at(0)->serialize());
     for (size_t i = 1; i < m_expressions.size(); ++i) {
@@ -88,15 +85,15 @@ static bool expressionCompare(const OwnPtrWillBeMember<MediaQueryExp>& a, const 
     return codePointCompare(a->serialize(), b->serialize()) < 0;
 }
 
-PassOwnPtrWillBeRawPtr<MediaQuery> MediaQuery::createNotAll()
+std::unique_ptr<MediaQuery> MediaQuery::createNotAll()
 {
-    ASSERT(false); // BKTODO: return adoptPtrWillBeNoop(new MediaQuery(MediaQuery::Not, MediaTypeNames::all, ExpressionHeapVector()));
-    return nullptr;
+    ExpressionHeapVector emptyVector;
+    return zed::wrap_unique(new MediaQuery(MediaQuery::Not, MediaTypeNames::all, emptyVector));
 }
 
-PassOwnPtrWillBeRawPtr<MediaQuery> MediaQuery::create(Restrictor restrictor, String mediaType, ExpressionHeapVector &expressions)
+std::unique_ptr<MediaQuery> MediaQuery::create(Restrictor restrictor, String mediaType, ExpressionHeapVector &expressions)
 {
-    return adoptPtrWillBeNoop(new MediaQuery(restrictor, std::move(mediaType), expressions));
+    return zed::wrap_unique(new MediaQuery(restrictor, std::move(mediaType), expressions));
 }
 
 MediaQuery::MediaQuery(Restrictor r, String mediaType, ExpressionHeapVector &expressions)
