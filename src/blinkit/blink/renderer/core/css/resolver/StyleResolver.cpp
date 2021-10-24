@@ -124,6 +124,12 @@ using namespace HTMLNames;
 
 ComputedStyle* StyleResolver::s_styleNotYetAvailable;
 
+static ComputedStyle* CreateStyleNotYetAvailable(void)
+{
+    RefPtr<ComputedStyle> style = ComputedStyle::create();
+    return GCWrapGlobal(style.get());
+}
+
 static StylePropertySet* leftToRightDeclaration()
 {
     ASSERT(false); // BKTODO:
@@ -599,7 +605,7 @@ PassRefPtr<ComputedStyle> StyleResolver::styleForElement(Element* element, const
     // will vanish if a style recalc happens during loading.
     if (sharingBehavior == AllowStyleSharing && !document().isRenderingReady() && !element->layoutObject()) {
         if (!s_styleNotYetAvailable) {
-            s_styleNotYetAvailable = ComputedStyle::create().leakRef();
+            s_styleNotYetAvailable = CreateStyleNotYetAvailable();
             s_styleNotYetAvailable->setDisplay(NONE);
             s_styleNotYetAvailable->font().update(document().styleEngine().fontSelector());
         }
