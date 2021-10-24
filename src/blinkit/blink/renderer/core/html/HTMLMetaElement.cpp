@@ -543,8 +543,10 @@ void HTMLMetaElement::process()
             document().frame()->loader().client()->dispatchDidChangeThemeColor();
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
+#ifdef BLINKIT_CRAWLER_ENABLED
+    if (isUINode())
+        return;
+
     // Get the document to process the tag, but only if we're actually part of DOM
     // tree (changing a meta tag while it's not in the tree shouldn't have any effect
     // on the document).
@@ -553,7 +555,7 @@ void HTMLMetaElement::process()
     if (httpEquivValue.isEmpty())
         return;
 
-    HttpEquiv::process(document(), httpEquivValue, contentValue, inDocumentHead(this));
+    ASSERT(false); // BKTODO: HttpEquiv::process(document(), httpEquivValue, contentValue, inDocumentHead(this));
 #endif
 }
 
