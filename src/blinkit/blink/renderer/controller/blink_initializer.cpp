@@ -23,6 +23,8 @@
 #include "blinkit/blink/renderer/wtf/WTF.h"
 #ifdef BLINKIT_UI_ENABLED
 #   include "blinkit/blink/renderer/core/InputTypeNames.h"
+#   include "blinkit/blink/renderer/core/MediaFeatureNames.h"
+#   include "blinkit/blink/renderer/core/MediaTypeNames.h"
 #   include "blinkit/blink/renderer/platform/FontFamilyNames.h"
 #endif
 
@@ -34,7 +36,8 @@ static void InitializeCommon(Platform *platform)
     constexpr unsigned kCoreStaticStringsCount = EventNames::EventNamesCount + EventTargetNames::EventTargetNamesCount
         + EventTypeNames::EventTypeNamesCount + HTMLTokenizerNames::HTMLTokenizerNamesCount + HTTPNames::HTTPNamesCount
 #ifdef BLINKIT_UI_ENABLED
-        + InputTypeNames::InputTypeNamesCount + FontFamilyNames::FontFamilyNamesCount
+        + InputTypeNames::InputTypeNamesCount + MediaFeatureNames::MediaFeatureNamesCount
+        + MediaTypeNames::MediaTypeNamesCount + FontFamilyNames::FontFamilyNamesCount
 #endif
         ;
 
@@ -51,6 +54,8 @@ static void InitializeCommon(Platform *platform)
     HTTPNames::init();
 #ifdef BLINKIT_UI_ENABLED
     InputTypeNames::init();
+    MediaFeatureNames::init();
+    MediaTypeNames::init();
     FontFamilyNames::init();
 #endif
 

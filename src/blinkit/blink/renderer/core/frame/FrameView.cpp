@@ -38,7 +38,7 @@
 #include "core/frame/FrameView.h"
 
 #include "core/HTMLNames.h"
-// BKTODO: #include "core/MediaTypeNames.h"
+#include "core/MediaTypeNames.h"
 #include "core/css/FontFaceSet.h"
 #include "core/css/resolver/StyleResolver.h"
 #if 0 // BKTODO:
@@ -1253,13 +1253,13 @@ void FrameView::setMediaType(const AtomicString& mediaType)
 
 AtomicString FrameView::mediaType() const
 {
-    ASSERT(false); // BKTODO:
-    return nullAtom;
-#if 0
+#if 0 // BKTODO:
     // See if we have an override type.
     if (m_frame->settings() && !m_frame->settings()->mediaTypeOverride().isEmpty())
         return AtomicString(m_frame->settings()->mediaTypeOverride());
     return m_mediaType;
+#else
+    return MediaTypeNames::screen;
 #endif
 }
 

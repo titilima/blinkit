@@ -93,9 +93,8 @@ void HTMLBodyElement::collectStyleForPresentationAttribute(const QualifiedName& 
 
 void HTMLBodyElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    if (name == vlinkAttr || name == alinkAttr || name == linkAttr) {
+    if (name == vlinkAttr || name == alinkAttr || name == linkAttr)
+    {
         if (value.isNull()) {
             if (name == linkAttr)
                 document().textLinkColors().resetLinkColor();
@@ -116,7 +115,9 @@ void HTMLBodyElement::parseAttribute(const QualifiedName& name, const AtomicStri
         }
 
         setNeedsStyleRecalc(SubtreeStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::LinkColorChange));
-    } else if (name == onloadAttr) {
+    }
+#if 0 // BKTODO:
+    else if (name == onloadAttr) {
         document().setWindowAttributeEventListener(EventTypeNames::load, createAttributeEventListener(document().frame(), name, value, eventParameterName()));
     } else if (name == onbeforeunloadAttr) {
         document().setWindowAttributeEventListener(EventTypeNames::beforeunload, createAttributeEventListener(document().frame(), name, value, eventParameterName()));
@@ -154,10 +155,11 @@ void HTMLBodyElement::parseAttribute(const QualifiedName& name, const AtomicStri
         document().setWindowAttributeEventListener(EventTypeNames::offline, createAttributeEventListener(document().frame(), name, value, eventParameterName()));
     } else if (name == onlanguagechangeAttr) {
         document().setWindowAttributeEventListener(EventTypeNames::languagechange, createAttributeEventListener(document().frame(), name, value, eventParameterName()));
-    } else {
-        HTMLElement::parseAttribute(name, oldValue, value);
     }
 #endif
+    else {
+        HTMLElement::parseAttribute(name, oldValue, value);
+    }
 }
 
 Node::InsertionNotificationRequest HTMLBodyElement::insertedInto(ContainerNode* insertionPoint)
