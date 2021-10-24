@@ -59,7 +59,7 @@ public:
         return o;
     }
 
-    virtual void trace(blink::Visitor *visitor) = 0;
+    virtual void trace(blink::Visitor *visitor) {}
 protected:
     GCObject(void);
 private:
@@ -115,9 +115,10 @@ struct GCGlobalWrapper
 };
 
 template <class T>
-T* GCWrapGlobal(T *p)
+T* GCWrapGlobal(T *p, bool ref = true)
 {
-    GCGlobalWrapper<T>::IncRef(p);
+    if (ref)
+        GCGlobalWrapper<T>::IncRef(p);
     GCAddGlobalFinalizer(std::bind(&GCGlobalWrapper<T>::Release, p));
     return p;
 }
