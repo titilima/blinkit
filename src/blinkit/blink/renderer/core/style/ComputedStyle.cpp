@@ -59,15 +59,6 @@
 
 #include <algorithm>
 
-namespace BlinKit {
-template <>
-struct GCGlobalWrapper<blink::ComputedStyle>
-{
-    static void IncRef(blink::ComputedStyle *p) { /* Need not to ref. */ }
-    static void Release(blink::ComputedStyle *p) { p->deref(); }
-};
-}
-
 using namespace BlinKit;
 
 namespace blink {
@@ -175,6 +166,13 @@ ALWAYS_INLINE ComputedStyle::ComputedStyle(const ComputedStyle& o)
     , noninherited_flags(o.noninherited_flags)
 {
 }
+
+#ifndef NDEBUG
+ComputedStyle::~ComputedStyle(void)
+{
+    // Leave it just for debugging.
+}
+#endif
 
 static StyleRecalcChange diffPseudoStyles(const ComputedStyle& oldStyle, const ComputedStyle& newStyle)
 {
@@ -1880,7 +1878,7 @@ void ComputedStyle::copyChildDependentFlagsFrom(const ComputedStyle& other)
 
 ComputedStyle* ComputedStyle::initialStyle(void)
 {
-    static ComputedStyle *s_initialStyle = GCWrapGlobal(new ComputedStyle(InitialStyle));
+    static ComputedStyle *s_initialStyle = GCWrapGlobal(new ComputedStyle(InitialStyle), false); // Need not to ref.
     return s_initialStyle;
 }
 

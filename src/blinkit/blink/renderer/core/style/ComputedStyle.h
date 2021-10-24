@@ -377,6 +377,9 @@ public:
     static PassRefPtr<ComputedStyle> create();
     static PassRefPtr<ComputedStyle> createAnonymousStyleWithDisplay(const ComputedStyle& parentStyle, EDisplay);
     static PassRefPtr<ComputedStyle> clone(const ComputedStyle&);
+#ifndef NDEBUG
+    ~ComputedStyle(void);
+#endif
 
     // Computes how the style change should be propagated down the tree.
     static StyleRecalcChange stylePropagationDiff(const ComputedStyle* oldStyle, const ComputedStyle* newStyle);
@@ -2033,5 +2036,14 @@ inline bool ComputedStyle::hasPseudoElementStyle() const
 }
 
 } // namespace blink
+
+namespace BlinKit {
+template <>
+struct GCGlobalWrapper<blink::ComputedStyle>
+{
+    static void IncRef(blink::ComputedStyle *p) { p->ref(); }
+    static void Release(blink::ComputedStyle *p) { p->deref(); }
+};
+}
 
 #endif // ComputedStyle_h
