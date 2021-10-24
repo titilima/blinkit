@@ -4110,6 +4110,12 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\UndoStack.cpp">
       <Filter>blink\renderer\core\editing\commands</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\MediaTypeNames.cpp">
+      <Filter>blink\renderer\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\MediaFeatureNames.cpp">
+      <Filter>blink\renderer\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -7162,6 +7168,159 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\UndoStack.h">
       <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\MediaTypeNames.h">
+      <Filter>blink\renderer\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\MediaFeatureNames.h">
+      <Filter>blink\renderer\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSAtRuleID.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSParser.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSParserFastPaths.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSParserIdioms.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSParserObserver.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSParserObserverWrapper.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSParserSelector.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSParserString.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSParserToken.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSParserTokenRange.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSParserValues.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSSelectorParser.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSSupportsParser.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSTokenizer.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSTokenizerInputStream.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSVariableParser.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\MediaQueryBlockWatcher.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\MediaQueryParser.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\SizesAttributeParser.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\SizesCalcParser.h">
+      <Filter>blink\renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\ASCIIFastPath.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\AtomicString.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\Base64.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\CharacterNames.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\CString.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\IntegerToStringConversion.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\StringBuffer.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\StringBuilder.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\StringConcatenate.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\StringHash.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\StringImpl.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\StringOperators.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\StringStatics.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\StringUTF8Adaptor.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\StringView.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\TextCodec.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\TextCodecASCIIFastPath.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\TextCodecICU.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\TextCodecLatin1.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\TextCodecReplacement.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\TextCodecUserDefined.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\TextCodecUTF8.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\TextCodecUTF16.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\TextEncoding.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\TextEncodingRegistry.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\TextPosition.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\Unicode.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\UTF8.h">
+      <Filter>blink\renderer\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\MediaFeatures.h">
+      <Filter>blink\renderer\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
