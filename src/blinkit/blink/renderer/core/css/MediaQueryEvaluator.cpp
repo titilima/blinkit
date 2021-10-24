@@ -42,10 +42,8 @@
 
 #include "core/CSSValueKeywords.h"
 #include "core/MediaFeatureNames.h"
-#if 0 // BKTODO:
 #include "core/MediaFeatures.h"
 #include "core/MediaTypeNames.h"
-#endif
 #include "core/css/CSSHelper.h"
 #include "core/css/CSSPrimitiveValue.h"
 #include "core/css/CSSToLengthConversionData.h"
@@ -66,17 +64,17 @@
 #include "platform/geometry/FloatRect.h"
 #include "public/platform/PointerProperties.h"
 #include "public/platform/WebDisplayMode.h"
-#include "wtf/HashMap.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
-// BKTODO: using namespace MediaFeatureNames;
+using namespace MediaFeatureNames;
 
 enum MediaFeaturePrefix { MinPrefix, MaxPrefix, NoPrefix };
 
 using EvalFunc = bool (*)(const MediaQueryExpValue&, MediaFeaturePrefix, const MediaValues&);
-using FunctionMap = HashMap<StringImpl*, EvalFunc>;
-static FunctionMap* gFunctionMap;
+using FunctionMap = std::unordered_map<StringImpl*, EvalFunc>;
 
 MediaQueryEvaluator::MediaQueryEvaluator(bool mediaFeatureResult)
     : m_expectedResult(mediaFeatureResult)
@@ -123,13 +121,9 @@ const String MediaQueryEvaluator::mediaType() const
 
 bool MediaQueryEvaluator::mediaTypeMatch(const String& mediaTypeToMatch) const
 {
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
     return mediaTypeToMatch.isEmpty()
         || equalIgnoringCase(mediaTypeToMatch, MediaTypeNames::all)
         || equalIgnoringCase(mediaTypeToMatch, mediaType());
-#endif
 }
 
 static bool applyRestrictor(MediaQuery::Restrictor r, bool value)
@@ -148,9 +142,9 @@ bool MediaQueryEvaluator::eval(const MediaQuery* query, MediaQueryResultList* vi
     for (; i < expressions.size(); ++i) {
         bool exprResult = eval(expressions.at(i).get());
         if (viewportDependentMediaQueryResults && expressions.at(i)->isViewportDependent())
-            viewportDependentMediaQueryResults->append(adoptRefWillBeNoop(new MediaQueryResult(*expressions.at(i), exprResult)));
+            viewportDependentMediaQueryResults->emplace_back(GCWrapShared(new MediaQueryResult(*expressions.at(i), exprResult)));
         if (deviceDependentMediaQueryResults && expressions.at(i)->isDeviceDependent())
-            deviceDependentMediaQueryResults->append(adoptRefWillBeNoop(new MediaQueryResult(*expressions.at(i), exprResult)));
+            deviceDependentMediaQueryResults->emplace_back(GCWrapShared(new MediaQueryResult(*expressions.at(i), exprResult)));
         if (!exprResult)
             break;
     }
@@ -164,7 +158,7 @@ bool MediaQueryEvaluator::eval(const MediaQuerySet* querySet, MediaQueryResultLi
     if (!querySet)
         return true;
 
-    const std::vector<Member<MediaQuery>>& queries = querySet->queryVector();
+    const std::vector<std::unique_ptr<MediaQuery>>& queries = querySet->queryVector();
     if (queries.empty())
         return true; // Empty query list evaluates to true.
 
@@ -309,15 +303,16 @@ static bool evalResolution(const MediaQueryExpValue& value, MediaFeaturePrefix o
     // FIXME: What should speech match? https://www.w3.org/Style/CSS/Tracker/issues/348
     float actualResolution = 0;
 
-    ASSERT(false); // BKTODO:
-#if 0
     // This checks the actual media type applied to the document, and we know
     // this method only got called if this media type matches the one defined
     // in the query. Thus, if if the document's media type is "print", the
     // media type of the query will either be "print" or "all".
-    if (equalIgnoringCase(mediaValues.mediaType(), MediaTypeNames::screen)) {
+    if (equalIgnoringCase(mediaValues.mediaType(), MediaTypeNames::screen))
+    {
         actualResolution = clampTo<float>(mediaValues.devicePixelRatio());
-    } else if (equalIgnoringCase(mediaValues.mediaType(), MediaTypeNames::print)) {
+    }
+#if 0 // BKTODO:
+    else if (equalIgnoringCase(mediaValues.mediaType(), MediaTypeNames::print)) {
         // The resolution of images while printing should not depend on the DPI
         // of the screen. Until we support proper ways of querying this info
         // we use 300px which is considered minimum for current printers.
@@ -646,11 +641,9 @@ static bool anyPointerMediaFeatureEval(const MediaQueryExpValue& value, MediaFea
     }
 }
 
+#if 0 // BKTODO:
 static bool scanMediaFeatureEval(const MediaQueryExpValue& value, MediaFeaturePrefix, const MediaValues& mediaValues)
 {
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
     // Scan only applies to 'tv' media.
     if (!equalIgnoringCase(mediaValues.mediaType(), MediaTypeNames::tv))
         return false;
@@ -665,20 +658,18 @@ static bool scanMediaFeatureEval(const MediaQueryExpValue& value, MediaFeaturePr
     // future, it needs to be handled here. For now, assume a modern TV with
     // progressive display.
     return (value.id == CSSValueProgressive);
-#endif
 }
+#endif
 
-static void createFunctionMap()
+static FunctionMap* createFunctionMap()
 {
     // Create the table.
-    gFunctionMap = new FunctionMap;
-    ASSERT(false); // BKTODO:
-#if 0
+    FunctionMap *ret = new FunctionMap;
 #define ADD_TO_FUNCTIONMAP(name)  \
-    gFunctionMap->set(name##MediaFeature.impl(), name##MediaFeatureEval);
+    ret->emplace(name##MediaFeature.impl(), name##MediaFeatureEval);
     CSS_MEDIAQUERY_NAMES_FOR_EACH_MEDIAFEATURE(ADD_TO_FUNCTIONMAP);
 #undef ADD_TO_FUNCTIONMAP
-#endif
+    return ret;
 }
 
 bool MediaQueryEvaluator::eval(const MediaQueryExp* expr) const
@@ -686,14 +677,13 @@ bool MediaQueryEvaluator::eval(const MediaQueryExp* expr) const
     if (!m_mediaValues || !m_mediaValues->hasValues())
         return m_expectedResult;
 
-    if (!gFunctionMap)
-        createFunctionMap();
+    static FunctionMap *s_functionMap = createFunctionMap();
 
     // Call the media feature evaluation function. Assume no prefix and let
     // trampoline functions override the prefix if prefix is used.
-    EvalFunc func = gFunctionMap->get(expr->mediaFeature().impl());
-    if (func)
-        return func(expr->expValue(), NoPrefix, *m_mediaValues);
+    auto it = s_functionMap->find(expr->mediaFeature().impl());
+    if (s_functionMap->end() != it)
+        return it->second(expr->expValue(), NoPrefix, *m_mediaValues);
 
     return false;
 }

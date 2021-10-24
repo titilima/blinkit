@@ -51,7 +51,7 @@ class MediaQueryResult;
 class MediaQuerySet;
 class MediaValues;
 
-using MediaQueryResultList = WillBeHeapVector<RefPtrWillBeMember<MediaQueryResult>>;
+using MediaQueryResultList = std::vector<GCRefPtr<MediaQueryResult>>;
 
 // Class that evaluates css media queries as defined in
 // CSS3 Module "Media Queries" (http://www.w3.org/TR/css3-mediaqueries/)
@@ -66,7 +66,6 @@ using MediaQueryResultList = WillBeHeapVector<RefPtrWillBeMember<MediaQueryResul
 
 class CORE_EXPORT MediaQueryEvaluator final : public BlinKit::GCObject {
     WTF_MAKE_NONCOPYABLE(MediaQueryEvaluator);
-    USING_FAST_MALLOC_WILL_BE_REMOVED(MediaQueryEvaluator);
 public:
     // Creates evaluator which evaluates only simple media queries
     // Evaluator returns true for "all", and returns value of \mediaFeatureResult
