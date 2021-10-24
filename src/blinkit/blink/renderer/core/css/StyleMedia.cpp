@@ -69,7 +69,7 @@ bool StyleMedia::matchMedium(const String& query) const
     if (!documentElement)
         return false;
 
-    std::unique_ptr<MediaQuerySet> media = MediaQuerySet::create();
+    GCRefPtr<MediaQuerySet> media = MediaQuerySet::create();
     if (!media->set(query))
         return false;
 

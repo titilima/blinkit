@@ -236,9 +236,9 @@ void CSSStyleSheet::setDisabled(bool disabled)
     didMutate();
 }
 
-void CSSStyleSheet::setMediaQueries(std::unique_ptr<MediaQuerySet> &&mediaQueries)
+void CSSStyleSheet::setMediaQueries(const GCRefPtr<MediaQuerySet> &mediaQueries)
 {
-    m_mediaQueries = std::move(mediaQueries);
+    m_mediaQueries = mediaQueries;
     if (m_mediaCSSOMWrapper && m_mediaQueries)
         m_mediaCSSOMWrapper->reattach(m_mediaQueries.get());
 }
@@ -471,11 +471,15 @@ Node* CSSStyleSheet::ownerNode(void) const
     return m_ownerNode.get();
 }
 
+MediaQuerySet* CSSStyleSheet::mediaQueries(void) const
+{
+    return m_mediaQueries.get();
+}
+
 DEFINE_TRACE(CSSStyleSheet)
 {
     visitor->trace(m_contents);
-    if (m_mediaQueries)
-        m_mediaQueries->trace(visitor);
+    visitor->trace(m_mediaQueries);
     visitor->trace(m_ownerNode);
     visitor->trace(m_ownerRule);
     visitor->trace(m_mediaCSSOMWrapper);

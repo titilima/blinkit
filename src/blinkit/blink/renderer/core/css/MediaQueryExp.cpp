@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaQueryExp.cpp
+// Description: MediaQueryExp Class
+//      Author: Ziming Li
+//     Created: 2021-10-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * CSS Media Query
  *
@@ -53,9 +64,6 @@ static inline bool featureWithValidIdent(const String& mediaFeature, CSSValueID 
 
     if (mediaFeature == hoverMediaFeature || mediaFeature == anyHoverMediaFeature)
         return ident == CSSValueNone || ident == CSSValueOnDemand || ident == CSSValueHover;
-
-    if (mediaFeature == scanMediaFeature)
-        return ident == CSSValueInterlace || ident == CSSValueProgressive;
 
     return false;
 }
@@ -156,8 +164,7 @@ static inline bool featureWithoutValue(const String& mediaFeature)
         || mediaFeature == anyPointerMediaFeature
         || mediaFeature == devicePixelRatioMediaFeature
         || mediaFeature == resolutionMediaFeature
-        || mediaFeature == displayModeMediaFeature
-        || mediaFeature == scanMediaFeature;
+        || mediaFeature == displayModeMediaFeature;
 }
 
 bool MediaQueryExp::isViewportDependent() const

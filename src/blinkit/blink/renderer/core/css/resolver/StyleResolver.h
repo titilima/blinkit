@@ -146,7 +146,7 @@ public:
     ViewportStyleResolver* viewportStyleResolver() { return m_viewportStyleResolver.get(); }
 
     void addViewportDependentMediaQueries(const MediaQueryResultList&);
-    bool hasViewportDependentMediaQueries() const { return !m_viewportDependentMediaQueryResults.isEmpty(); }
+    bool hasViewportDependentMediaQueries() const { return !m_viewportDependentMediaQueryResults.empty(); }
     bool mediaQueryAffectedByViewportChange() const;
     void addDeviceDependentMediaQueries(const MediaQueryResultList&);
     bool mediaQueryAffectedByDeviceChange() const;

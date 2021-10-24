@@ -69,7 +69,7 @@ ScopedStyleResolver* ScopedStyleResolver::parent() const
 
 void ScopedStyleResolver::addKeyframeRules(const RuleSet& ruleSet)
 {
-    const WillBeHeapVector<RawPtrWillBeMember<StyleRuleKeyframes>> keyframesRules = ruleSet.keyframesRules();
+    const std::vector<GCRefPtr<StyleRuleKeyframes>> keyframesRules = ruleSet.keyframesRules();
     for (unsigned i = 0; i < keyframesRules.size(); ++i)
         addKeyframeStyle(keyframesRules[i]);
 }
@@ -142,7 +142,7 @@ void ScopedStyleResolver::resetAuthorStyle()
 
 StyleRuleKeyframes* ScopedStyleResolver::keyframeStylesForAnimation(const StringImpl* animationName)
 {
-    if (m_keyframesRuleMap.isEmpty())
+    if (m_keyframesRuleMap.empty())
         return nullptr;
 
     KeyframesRuleMap::iterator it = m_keyframesRuleMap.find(animationName);
@@ -152,7 +152,7 @@ StyleRuleKeyframes* ScopedStyleResolver::keyframeStylesForAnimation(const String
     return it->second.get();
 }
 
-void ScopedStyleResolver::addKeyframeStyle(PassRefPtrWillBeRawPtr<StyleRuleKeyframes> rule)
+void ScopedStyleResolver::addKeyframeStyle(const GCRefPtr<StyleRuleKeyframes> &rule)
 {
     AtomicString s(rule->name());
 

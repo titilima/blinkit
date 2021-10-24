@@ -15,24 +15,24 @@
 
 #include "core/css/parser/MediaQueryParser.h"
 
-// BKTODO: #include "core/MediaTypeNames.h"
+#include "core/MediaTypeNames.h"
 #include "core/css/parser/CSSPropertyParser.h"
 #include "core/css/parser/CSSTokenizer.h"
 #include "wtf/Vector.h"
 
 namespace blink {
 
-PassRefPtrWillBeRawPtr<MediaQuerySet> MediaQueryParser::parseMediaQuerySet(const String& queryString)
+GCRefPtr<MediaQuerySet> MediaQueryParser::parseMediaQuerySet(const String& queryString)
 {
     return parseMediaQuerySet(CSSTokenizer::Scope(queryString).tokenRange());
 }
 
-PassRefPtrWillBeRawPtr<MediaQuerySet> MediaQueryParser::parseMediaQuerySet(CSSParserTokenRange range)
+GCRefPtr<MediaQuerySet> MediaQueryParser::parseMediaQuerySet(CSSParserTokenRange range)
 {
     return MediaQueryParser(MediaQuerySetParser).parseImpl(range);
 }
 
-PassRefPtrWillBeRawPtr<MediaQuerySet> MediaQueryParser::parseMediaCondition(CSSParserTokenRange range)
+GCRefPtr<MediaQuerySet> MediaQueryParser::parseMediaCondition(CSSParserTokenRange range)
 {
     return MediaQueryParser(MediaConditionParser).parseImpl(range);
 }
@@ -52,15 +52,12 @@ const MediaQueryParser::State MediaQueryParser::Done = &MediaQueryParser::done;
 
 MediaQueryParser::MediaQueryParser(ParserType parserType)
     : m_parserType(parserType)
-    // BKTODO: , m_querySet(MediaQuerySet::create())
+    , m_querySet(MediaQuerySet::create())
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (parserType == MediaQuerySetParser)
         m_state = &MediaQueryParser::readRestrictor;
     else // MediaConditionParser
         m_state = &MediaQueryParser::readMediaNot;
-#endif
 }
 
 MediaQueryParser::~MediaQueryParser() { }
@@ -228,7 +225,7 @@ void MediaQueryParser::processToken(const CSSParserToken& token)
 }
 
 // The state machine loop
-PassRefPtrWillBeRawPtr<MediaQuerySet> MediaQueryParser::parseImpl(CSSParserTokenRange range)
+GCRefPtr<MediaQuerySet> MediaQueryParser::parseImpl(CSSParserTokenRange range)
 {
     while (!range.atEnd())
         processToken(range.consume());
@@ -247,7 +244,7 @@ PassRefPtrWillBeRawPtr<MediaQuerySet> MediaQueryParser::parseImpl(CSSParserToken
 
 MediaQueryData::MediaQueryData()
     : m_restrictor(MediaQuery::None)
-    // BKTODO: , m_mediaType(MediaTypeNames::all)
+    , m_mediaType(MediaTypeNames::all)
     , m_mediaTypeSet(false)
 {
 }
@@ -255,18 +252,18 @@ MediaQueryData::MediaQueryData()
 void MediaQueryData::clear()
 {
     m_restrictor = MediaQuery::None;
-    // BKTODO: m_mediaType = MediaTypeNames::all;
+    m_mediaType = MediaTypeNames::all;
     m_mediaTypeSet = false;
     m_mediaFeature = String();
     m_valueList.clear();
     m_expressions.clear();
 }
 
-PassOwnPtrWillBeRawPtr<MediaQuery> MediaQueryData::takeMediaQuery()
+std::unique_ptr<MediaQuery> MediaQueryData::takeMediaQuery()
 {
-    OwnPtrWillBeRawPtr<MediaQuery> mediaQuery = MediaQuery::create(m_restrictor, std::move(m_mediaType), m_expressions);
+    std::unique_ptr<MediaQuery> mediaQuery = MediaQuery::create(m_restrictor, std::move(m_mediaType), m_expressions);
     clear();
-    return mediaQuery.release();
+    return mediaQuery;
 }
 
 bool MediaQueryData::addExpression()

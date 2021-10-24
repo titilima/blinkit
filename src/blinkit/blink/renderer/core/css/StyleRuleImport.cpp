@@ -43,12 +43,12 @@ using namespace BlinKit;
 
 namespace blink {
 
-PassRefPtrWillBeRawPtr<StyleRuleImport> StyleRuleImport::create(const String& href, PassRefPtrWillBeRawPtr<MediaQuerySet> media)
+PassRefPtrWillBeRawPtr<StyleRuleImport> StyleRuleImport::create(const String& href, const GCRefPtr<MediaQuerySet>& media)
 {
     return adoptRefWillBeNoop(new StyleRuleImport(href, media));
 }
 
-StyleRuleImport::StyleRuleImport(const String& href, PassRefPtrWillBeRawPtr<MediaQuerySet> media)
+StyleRuleImport::StyleRuleImport(const String& href, const GCRefPtr<MediaQuerySet>& media)
     : StyleRuleBase(Import)
     , m_parentStyleSheet(nullptr)
     , m_styleSheetClient(this)

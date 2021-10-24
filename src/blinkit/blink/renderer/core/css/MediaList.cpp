@@ -72,28 +72,25 @@ MediaQuerySet::MediaQuerySet(const MediaQuerySet& o)
 
 DEFINE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(MediaQuerySet);
 
-std::unique_ptr<MediaQuerySet> MediaQuerySet::create(const String& mediaString)
+GCRefPtr<MediaQuerySet> MediaQuerySet::create(const String& mediaString)
 {
     if (mediaString.isEmpty())
         return MediaQuerySet::create();
 
-    std::string s = mediaString.stdUtf8();
-    ASSERT(false); // BKTODO: return MediaQueryParser::parseMediaQuerySet(mediaString);
-    return nullptr;
+    return MediaQueryParser::parseMediaQuerySet(mediaString);
 }
 
-std::unique_ptr<MediaQuerySet> MediaQuerySet::createOffMainThread(const String& mediaString)
+GCRefPtr<MediaQuerySet> MediaQuerySet::createOffMainThread(const String& mediaString)
 {
     if (mediaString.isEmpty())
         return MediaQuerySet::create();
 
-    ASSERT(false); // BKTODO: return MediaQueryParser::parseMediaQuerySet(mediaString);
-    return nullptr;
+    return MediaQueryParser::parseMediaQuerySet(mediaString);
 }
 
 bool MediaQuerySet::set(const String& mediaString)
 {
-    std::unique_ptr<MediaQuerySet> result = create(mediaString);
+    GCRefPtr<MediaQuerySet> result = create(mediaString);
     m_queries.swap(result->m_queries);
     return true;
 }
@@ -103,13 +100,13 @@ bool MediaQuerySet::add(const String& queryString)
     // To "parse a media query" for a given string means to follow "the parse
     // a media query list" steps and return "null" if more than one media query
     // is returned, or else the returned media query.
-    std::unique_ptr<MediaQuerySet> result = create(queryString);
+    GCRefPtr<MediaQuerySet> result = create(queryString);
 
     // Only continue if exactly one media query is found, as described above.
     if (result->m_queries.size() != 1)
         return true;
 
-    OwnPtrWillBeRawPtr<MediaQuery> newQuery = result->m_queries[0].release();
+    std::unique_ptr<MediaQuery> &newQuery = result->m_queries[0];
     ASSERT(newQuery);
 
     // If comparing with any of the media queries in the collection of media
@@ -120,7 +117,7 @@ bool MediaQuerySet::add(const String& queryString)
             return true;
     }
 
-    m_queries.emplace_back(newQuery.release());
+    m_queries.emplace_back(std::move(newQuery));
     return true;
 }
 
@@ -129,14 +126,14 @@ bool MediaQuerySet::remove(const String& queryStringToRemove)
     // To "parse a media query" for a given string means to follow "the parse
     // a media query list" steps and return "null" if more than one media query
     // is returned, or else the returned media query.
-    std::unique_ptr<MediaQuerySet> result = create(queryStringToRemove);
+    GCRefPtr<MediaQuerySet> result = create(queryStringToRemove);
 
     // Only continue if exactly one media query is found, as described above.
     if (result->m_queries.size() != 1)
         return true;
 
-    OwnPtrWillBeRawPtr<MediaQuery> newQuery = result->m_queries[0].release();
-    ASSERT(newQuery);
+    MediaQuery *newQuery = result->m_queries[0].get();
+    ASSERT(nullptr != newQuery);
 
     // Remove any media query from the collection of media queries for which
     // comparing with the media query returns true.
@@ -153,9 +150,9 @@ bool MediaQuerySet::remove(const String& queryStringToRemove)
     return found;
 }
 
-void MediaQuerySet::addMediaQuery(PassOwnPtrWillBeRawPtr<MediaQuery> mediaQuery)
+void MediaQuerySet::addMediaQuery(std::unique_ptr<MediaQuery> &&mediaQuery)
 {
-    m_queries.emplace_back(mediaQuery);
+    m_queries.emplace_back(std::move(mediaQuery));
 }
 
 String MediaQuerySet::mediaText() const
@@ -175,11 +172,6 @@ String MediaQuerySet::mediaText() const
 
 DEFINE_TRACE(MediaQuerySet)
 {
-    // We don't support tracing of vectors of OwnPtrs (ie. OwnPtr<Vector<OwnPtr<MediaQuery>>>).
-    // Since this is a transitional object we are just ifdef'ing it out when oilpan is not enabled.
-#if ENABLE(OILPAN)
-    visitor->trace(m_queries);
-#endif
 }
 
 MediaList::MediaList(MediaQuerySet* mediaQueries, CSSStyleSheet* parentSheet)
@@ -210,7 +202,7 @@ void MediaList::setMediaText(const String& value)
 
 String MediaList::item(unsigned index) const
 {
-    const std::vector<Member<MediaQuery>>& queries = m_mediaQueries->queryVector();
+    const std::vector<std::unique_ptr<MediaQuery>> &queries = m_mediaQueries->queryVector();
     if (index < queries.size())
         return queries[index]->cssText();
     return String();

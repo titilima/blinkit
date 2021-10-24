@@ -50,27 +50,27 @@ class ExceptionState;
 class MediaList;
 class MediaQuery;
 
-class CORE_EXPORT MediaQuerySet {
+class CORE_EXPORT MediaQuerySet : public BlinKit::GCObject {
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(MediaQuerySet);
 public:
-    static std::unique_ptr<MediaQuerySet> create()
+    static GCRefPtr<MediaQuerySet> create()
     {
-        return zed::wrap_unique(new MediaQuerySet());
+        return BlinKit::GCWrapShared(new MediaQuerySet());
     }
-    static std::unique_ptr<MediaQuerySet> create(const String& mediaString);
-    static std::unique_ptr<MediaQuerySet> createOffMainThread(const String& mediaString);
+    static GCRefPtr<MediaQuerySet> create(const String& mediaString);
+    static GCRefPtr<MediaQuerySet> createOffMainThread(const String& mediaString);
 
     bool set(const String&);
     bool add(const String&);
     bool remove(const String&);
 
-    void addMediaQuery(PassOwnPtrWillBeRawPtr<MediaQuery>);
+    void addMediaQuery(std::unique_ptr<MediaQuery> &&);
 
-    const std::vector<Member<MediaQuery>>& queryVector() const { return m_queries; }
+    const std::vector<std::unique_ptr<MediaQuery>>& queryVector() const { return m_queries; }
 
     String mediaText() const;
 
-    PassRefPtrWillBeRawPtr<MediaQuerySet> copy() const { return adoptRefWillBeNoop(new MediaQuerySet(*this)); }
+    GCRefPtr<MediaQuerySet> copy() const { return BlinKit::GCWrapShared(new MediaQuerySet(*this)); }
 
     DECLARE_TRACE();
 
@@ -78,7 +78,7 @@ private:
     MediaQuerySet();
     MediaQuerySet(const MediaQuerySet&);
 
-    std::vector<Member<MediaQuery>> m_queries;
+    std::vector<std::unique_ptr<MediaQuery>> m_queries;
 };
 
 class MediaList final : public RefCountedWillBeGarbageCollected<MediaList>, public ScriptWrappable {

@@ -213,7 +213,7 @@ private:
 
 class StyleRuleMedia : public StyleRuleGroup {
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleMedia> create(PassRefPtrWillBeRawPtr<MediaQuerySet> media, std::vector<GCRefPtr<StyleRuleBase>>& adoptRules)
+    static PassRefPtrWillBeRawPtr<StyleRuleMedia> create(const GCRefPtr<MediaQuerySet> &media, std::vector<GCRefPtr<StyleRuleBase>>& adoptRules)
     {
         return adoptRefWillBeNoop(new StyleRuleMedia(media, adoptRules));
     }
@@ -225,10 +225,10 @@ public:
     DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
-    StyleRuleMedia(PassRefPtrWillBeRawPtr<MediaQuerySet>, std::vector<GCRefPtr<StyleRuleBase>>& adoptRules);
+    StyleRuleMedia(const GCRefPtr<MediaQuerySet>&, std::vector<GCRefPtr<StyleRuleBase>>& adoptRules);
     StyleRuleMedia(const StyleRuleMedia&);
 
-    RefPtrWillBeMember<MediaQuerySet> m_mediaQueries;
+    GCRefPtr<MediaQuerySet> m_mediaQueries;
 };
 
 class StyleRuleSupports : public StyleRuleGroup {

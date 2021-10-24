@@ -384,7 +384,7 @@ DEFINE_TRACE_AFTER_DISPATCH(StyleRuleGroup)
     StyleRuleBase::traceAfterDispatch(visitor);
 }
 
-StyleRuleMedia::StyleRuleMedia(PassRefPtrWillBeRawPtr<MediaQuerySet> media, std::vector<GCRefPtr<StyleRuleBase>>& adoptRules)
+StyleRuleMedia::StyleRuleMedia(const GCRefPtr<MediaQuerySet> &media, std::vector<GCRefPtr<StyleRuleBase>> &adoptRules)
     : StyleRuleGroup(Media, adoptRules)
     , m_mediaQueries(media)
 {

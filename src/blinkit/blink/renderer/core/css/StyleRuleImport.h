@@ -47,7 +47,7 @@ class StyleSheetContents;
 class StyleRuleImport : public StyleRuleBase {
     USING_FAST_MALLOC_WILL_BE_REMOVED(StyleRuleImport);
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleImport> create(const String& href, PassRefPtrWillBeRawPtr<MediaQuerySet>);
+    static PassRefPtrWillBeRawPtr<StyleRuleImport> create(const String& href, const GCRefPtr<MediaQuerySet>&);
 
     ~StyleRuleImport();
 
@@ -92,13 +92,13 @@ private:
     void setCSSStyleSheet(const String& href, const KURL& baseURL, const String& charset, const CSSStyleSheetResource*);
     friend class ImportedStyleSheetClient;
 
-    StyleRuleImport(const String& href, PassRefPtrWillBeRawPtr<MediaQuerySet>);
+    StyleRuleImport(const String& href, const GCRefPtr<MediaQuerySet>&);
 
     RawPtrWillBeMember<StyleSheetContents> m_parentStyleSheet;
 
     ImportedStyleSheetClient m_styleSheetClient;
     String m_strHref;
-    RefPtrWillBeMember<MediaQuerySet> m_mediaQueries;
+    GCRefPtr<MediaQuerySet> m_mediaQueries;
     GCRefPtr<StyleSheetContents> m_styleSheet;
     ResourcePtr<CSSStyleSheetResource> m_resource;
     bool m_loading;

@@ -97,8 +97,8 @@ public:
 
     void clearOwnerRule() { m_ownerRule = nullptr; }
     Document* ownerDocument() const;
-    MediaQuerySet* mediaQueries() const { return m_mediaQueries.get(); }
-    void setMediaQueries(std::unique_ptr<MediaQuerySet> &&);
+    MediaQuerySet* mediaQueries(void) const;
+    void setMediaQueries(const GCRefPtr<MediaQuerySet> &);
     void setTitle(const String& title) { m_title = title; }
 #if 0 // BKTODO:
     // Set by LinkStyle iff CORS-enabled fetch of stylesheet succeeded from this origin.
@@ -151,7 +151,7 @@ private:
     bool m_isInlineStylesheet;
     bool m_isDisabled;
     String m_title;
-    std::unique_ptr<MediaQuerySet> m_mediaQueries;
+    GCRefPtr<MediaQuerySet> m_mediaQueries;
 
     // BKTODO: RefPtr<SecurityOrigin> m_allowRuleAccessFromOrigin;
 

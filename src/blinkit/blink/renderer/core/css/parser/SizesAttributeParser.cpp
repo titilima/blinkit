@@ -15,7 +15,6 @@
 
 #include "core/css/parser/SizesAttributeParser.h"
 
-// BKTODO: #include "core/MediaTypeNames.h"
 #include "core/css/MediaQueryEvaluator.h"
 #include "core/css/parser/CSSTokenizer.h"
 #include "core/css/parser/SizesCalcParser.h"
@@ -63,11 +62,11 @@ bool SizesAttributeParser::calculateLengthInPixels(CSSParserTokenRange range, fl
     return false;
 }
 
-bool SizesAttributeParser::mediaConditionMatches(PassRefPtrWillBeRawPtr<MediaQuerySet> mediaCondition)
+bool SizesAttributeParser::mediaConditionMatches(const MediaQuerySet *mediaCondition)
 {
     // A Media Condition cannot have a media type other then screen.
     MediaQueryEvaluator mediaQueryEvaluator(*m_mediaValues);
-    return mediaQueryEvaluator.eval(mediaCondition.get());
+    return mediaQueryEvaluator.eval(mediaCondition);
 }
 
 bool SizesAttributeParser::parse(CSSParserTokenRange range)
@@ -89,8 +88,8 @@ bool SizesAttributeParser::parse(CSSParserTokenRange range)
         float length;
         if (!calculateLengthInPixels(range.makeSubRange(lengthTokenStart, lengthTokenEnd), length))
             continue;
-        RefPtrWillBeRawPtr<MediaQuerySet> mediaCondition = MediaQueryParser::parseMediaCondition(range.makeSubRange(mediaConditionStart, lengthTokenStart));
-        if (!mediaCondition || !mediaConditionMatches(mediaCondition))
+        GCRefPtr<MediaQuerySet> mediaCondition = MediaQueryParser::parseMediaCondition(range.makeSubRange(mediaConditionStart, lengthTokenStart));
+        if (!mediaCondition || !mediaConditionMatches(mediaCondition.get()))
             continue;
         m_length = length;
         m_lengthWasSet = true;

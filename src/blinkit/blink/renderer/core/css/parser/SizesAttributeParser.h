@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SizesAttributeParser.h
+// Description: SizesAttributeParser Class
+//      Author: Ziming Li
+//     Created: 2021-10-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -25,10 +36,9 @@ private:
     bool parse(CSSParserTokenRange);
     float effectiveSize();
     bool calculateLengthInPixels(CSSParserTokenRange, float& result);
-    bool mediaConditionMatches(PassRefPtrWillBeRawPtr<MediaQuerySet> mediaCondition);
+    bool mediaConditionMatches(const MediaQuerySet *mediaCondition);
     unsigned effectiveSizeDefaultValue();
 
-    RefPtrWillBeMember<MediaQuerySet> m_mediaCondition;
     RefPtrWillBeMember<MediaValues> m_mediaValues;
     float m_length;
     bool m_lengthWasSet;

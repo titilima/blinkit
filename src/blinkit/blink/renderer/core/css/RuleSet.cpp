@@ -257,7 +257,7 @@ void RuleSet::addFontFaceRule(StyleRuleFontFace* rule)
 void RuleSet::addKeyframesRule(StyleRuleKeyframes* rule)
 {
     ensurePendingRules(); // So that m_keyframesRules.shrinkToFit() gets called.
-    m_keyframesRules.append(rule);
+    m_keyframesRules.emplace_back(rule);
 }
 
 void RuleSet::addChildRules(const std::vector<GCRefPtr<StyleRuleBase>>& rules, const MediaQueryEvaluator& medium, AddRuleFlags addRuleFlags)
@@ -353,7 +353,7 @@ void RuleSet::compactRules()
     m_pageRules.shrink_to_fit();
     m_viewportRules.shrinkToFit();
     m_fontFaceRules.shrinkToFit();
-    m_keyframesRules.shrinkToFit();
+    m_keyframesRules.shrink_to_fit();
     m_deepCombinatorOrShadowPseudoRules.shrinkToFit();
     m_shadowDistributedRules.shrinkToFit();
 }

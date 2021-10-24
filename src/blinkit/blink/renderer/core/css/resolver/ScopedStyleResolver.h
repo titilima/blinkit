@@ -88,13 +88,13 @@ private:
     void addTreeBoundaryCrossingRules(const RuleSet&, CSSStyleSheet*, unsigned sheetIndex);
     void addKeyframeRules(const RuleSet&);
     void addFontFaceRules(const RuleSet&);
-    void addKeyframeStyle(PassRefPtrWillBeRawPtr<StyleRuleKeyframes>);
+    void addKeyframeStyle(const GCRefPtr<StyleRuleKeyframes>&);
 
     TreeScope &m_scope;
 
     std::vector<GCRefPtr<CSSStyleSheet>> m_authorStyleSheets;
 
-    using KeyframesRuleMap = WillBeHeapHashMap<const StringImpl*, RefPtrWillBeMember<StyleRuleKeyframes>>;
+    using KeyframesRuleMap = std::unordered_map<const StringImpl*, GCRefPtr<StyleRuleKeyframes>>;
     KeyframesRuleMap m_keyframesRuleMap;
 
     class RuleSubSet final : public NoBaseWillBeGarbageCollected<RuleSubSet> {

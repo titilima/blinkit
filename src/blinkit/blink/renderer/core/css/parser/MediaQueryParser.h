@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MediaQueryParser.h
+// Description: MediaQueryParser Class
+//      Author: Ziming Li
+//     Created: 2021-10-23
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -35,7 +46,7 @@ public:
     bool addExpression();
     bool tryAddParserToken(CSSParserTokenType, const CSSParserToken&);
     void setMediaType(const String&);
-    PassOwnPtrWillBeRawPtr<MediaQuery> takeMediaQuery();
+    std::unique_ptr<MediaQuery> takeMediaQuery();
 
     inline bool currentMediaQueryChanged() const
     {
@@ -51,9 +62,9 @@ public:
 class CORE_EXPORT MediaQueryParser {
     STACK_ALLOCATED();
 public:
-    static PassRefPtrWillBeRawPtr<MediaQuerySet> parseMediaQuerySet(const String&);
-    static PassRefPtrWillBeRawPtr<MediaQuerySet> parseMediaQuerySet(CSSParserTokenRange);
-    static PassRefPtrWillBeRawPtr<MediaQuerySet> parseMediaCondition(CSSParserTokenRange);
+    static GCRefPtr<MediaQuerySet> parseMediaQuerySet(const String&);
+    static GCRefPtr<MediaQuerySet> parseMediaQuerySet(CSSParserTokenRange);
+    static GCRefPtr<MediaQuerySet> parseMediaCondition(CSSParserTokenRange);
 
 private:
     enum ParserType {
@@ -64,7 +75,7 @@ private:
     MediaQueryParser(ParserType);
     virtual ~MediaQueryParser();
 
-    PassRefPtrWillBeRawPtr<MediaQuerySet> parseImpl(CSSParserTokenRange);
+    GCRefPtr<MediaQuerySet> parseImpl(CSSParserTokenRange);
 
     void processToken(const CSSParserToken&);
 
@@ -89,7 +100,7 @@ private:
     State m_state;
     ParserType m_parserType;
     MediaQueryData m_mediaQueryData;
-    RefPtrWillBeMember<MediaQuerySet> m_querySet;
+    GCRefPtr<MediaQuerySet> m_querySet;
     MediaQueryBlockWatcher m_blockWatcher;
 
     const static State ReadRestrictor;

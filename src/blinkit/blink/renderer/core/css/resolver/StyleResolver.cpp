@@ -1574,13 +1574,13 @@ void StyleResolver::computeFont(ComputedStyle* style, const StylePropertySet& pr
 void StyleResolver::addViewportDependentMediaQueries(const MediaQueryResultList& list)
 {
     for (size_t i = 0; i < list.size(); ++i)
-        m_viewportDependentMediaQueryResults.append(list[i]);
+        m_viewportDependentMediaQueryResults.emplace_back(list[i]);
 }
 
 void StyleResolver::addDeviceDependentMediaQueries(const MediaQueryResultList& list)
 {
     for (size_t i = 0; i < list.size(); ++i)
-        m_deviceDependentMediaQueryResults.append(list[i]);
+        m_deviceDependentMediaQueryResults.emplace_back(list[i]);
 }
 
 bool StyleResolver::mediaQueryAffectedByViewportChange() const
