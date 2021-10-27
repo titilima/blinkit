@@ -192,7 +192,7 @@ public:
     void removeAllEventListeners() override;
 
     using EventTarget::dispatchEvent;
-    bool dispatchEvent(PassRefPtrWillBeRawPtr<Event> prpEvent, PassRefPtrWillBeRawPtr<EventTarget> prpTarget);
+    bool dispatchEvent(const GCRefPtr<Event> &prpEvent, PassRefPtrWillBeRawPtr<EventTarget> prpTarget);
 
     void dispatchLoadEvent();
 
@@ -205,8 +205,8 @@ public:
     void willDetachDocumentFromFrame();
 
     EventQueue* eventQueue() const;
-    void enqueueWindowEvent(PassRefPtrWillBeRawPtr<Event>);
-    void enqueueDocumentEvent(PassRefPtrWillBeRawPtr<Event>);
+    void enqueueWindowEvent(const GCRefPtr<Event> &);
+    void enqueueDocumentEvent(const GCRefPtr<Event> &);
     void enqueuePageshowEvent(PageshowEventPersistence);
     void enqueueHashchangeEvent(const String& oldURL, const String& newURL);
     // BKTODO: void enqueuePopstateEvent(PassRefPtr<SerializedScriptValue>);

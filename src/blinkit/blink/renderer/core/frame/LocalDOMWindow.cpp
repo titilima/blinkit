@@ -352,7 +352,7 @@ void LocalDOMWindow::clearDocument()
     clearEventQueue();
 
     m_document->clearDOMWindow();
-    m_document.clear(GCOption::Full);
+    m_document.clear();
 }
 
 void LocalDOMWindow::clearEventQueue()
@@ -430,22 +430,20 @@ EventQueue* LocalDOMWindow::eventQueue() const
     return m_eventQueue.get();
 }
 
-void LocalDOMWindow::enqueueWindowEvent(PassRefPtrWillBeRawPtr<Event> event)
+void LocalDOMWindow::enqueueWindowEvent(const GCRefPtr<Event> &event)
 {
-    GCGuard _(*event);
     if (!m_eventQueue)
         return;
     event->setTarget(this);
-    m_eventQueue->enqueueEvent(event);
+    m_eventQueue->enqueueEvent(event.get());
 }
 
-void LocalDOMWindow::enqueueDocumentEvent(PassRefPtrWillBeRawPtr<Event> event)
+void LocalDOMWindow::enqueueDocumentEvent(const GCRefPtr<Event> &event)
 {
-    GCGuard _(*event);
     if (!m_eventQueue)
         return;
     event->setTarget(m_document.get());
-    m_eventQueue->enqueueEvent(event);
+    m_eventQueue->enqueueEvent(event.get());
 }
 
 void LocalDOMWindow::dispatchWindowLoadEvent()
@@ -1454,7 +1452,7 @@ bool LocalDOMWindow::removeEventListenerInternal(const AtomicString& eventType, 
 
 void LocalDOMWindow::dispatchLoadEvent()
 {
-    RefPtrWillBeRawPtr<Event> loadEvent(Event::create(EventTypeNames::load));
+    GCRefPtr<Event> loadEvent = Event::create(EventTypeNames::load);
 #if 0 // BKTODO:
     if (frame() && frame()->loader().documentLoader() && !frame()->loader().documentLoader()->timing().loadEventStart()) {
         // The DocumentLoader (and thus its DocumentLoadTiming) might get destroyed while dispatching
@@ -1484,14 +1482,10 @@ void LocalDOMWindow::dispatchLoadEvent()
     InspectorInstrumentation::loadEventFired(frame());
 }
 
-bool LocalDOMWindow::dispatchEvent(PassRefPtrWillBeRawPtr<Event> prpEvent, PassRefPtrWillBeRawPtr<EventTarget> prpTarget)
+bool LocalDOMWindow::dispatchEvent(const GCRefPtr<Event> &event, PassRefPtrWillBeRawPtr<EventTarget> prpTarget)
 {
     ASSERT(!EventDispatchForbiddenScope::isEventDispatchForbidden());
 
-    RefPtrWillBeRawPtr<EventTarget> protect(this);
-    RefPtrWillBeRawPtr<Event> event = prpEvent;
-
-    GCGuard _(*event);
     event->setTrusted(true);
     event->setTarget(prpTarget ? prpTarget : this);
     event->setCurrentTarget(this);
