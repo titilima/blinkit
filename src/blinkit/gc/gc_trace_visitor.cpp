@@ -18,14 +18,7 @@
 
 namespace BlinKit {
 
-static bool PerformFastTrace(const GCSession &session)
-{
-    if (nullptr == session.RootMember)
-        return false;
-    return GCObject::TreeNode != session.RootMember->GCCategory();
-}
-
-GCTraceVisitor::GCTraceVisitor(GCSession &session) : m_session(session), m_fastTrace(PerformFastTrace(session))
+GCTraceVisitor::GCTraceVisitor(GCSession &session) : m_session(session)
 {
 }
 
@@ -35,9 +28,6 @@ void GCTraceVisitor::TraceImpl(GCRefPtrBase &ptr)
 
     GCObject *o = ptr.m_object;
     ASSERT(nullptr != o);
-
-    if (m_fastTrace && o->IsRetainedInTree())
-        return;
 
     GCSession::Slots &slots = m_session.MemberObjects[o];
     if (zed::key_exists(slots, &ptr))

@@ -27,7 +27,6 @@ private:
     void TraceObjectSet(GCObjectSetCallback &callback) override;
 
     GCSession &m_session;
-    const bool m_fastTrace;
 };
 
 } // namespace BlinKit

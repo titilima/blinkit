@@ -32,28 +32,19 @@ GCObject::~GCObject(void)
 #endif
 }
 
-unsigned GCObject::DecRef(void)
-{
-    ASSERT(isMainThread());
-    return --m_refCnt;
-}
-
 void GCObject::IncRef(void)
 {
     ASSERT(isMainThread());
     ++m_refCnt;
 }
 
-void GCObject::Release(GCOption option)
+void GCObject::Release(void)
 {
-    if (DecRef() > 0)
-    {
-        if (GCOption::Auto == option)
-            return;
-    }
-
-    ASSERT(0 == m_refCnt || GCOption::Full == option);
-    GarbageCollector::PerformOnMember(*this);
+    --m_refCnt;
+    if (ShouldPerformFullGC())
+        GarbageCollector::PerformOnMember(*this);
+    else if (0 == m_refCnt)
+        delete this;
 }
 
 } // namespace BlinKit

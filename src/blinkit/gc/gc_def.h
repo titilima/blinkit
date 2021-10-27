@@ -31,8 +31,6 @@ namespace BlinKit {
 bool IsCollectingGarbage(void);
 #endif
 
-enum class GCOption { Auto, Full };
-
 /**
  * GCObject
  */
@@ -42,17 +40,13 @@ class GCObject
 public:
     virtual ~GCObject(void);
 
-    enum Category { Default, TreeNode };
-    virtual Category GCCategory(void) const { return Default; }
-    virtual bool IsRetainedInTree(void) const { return false; }
-
     bool IsUnique(void) const
     {
         ASSERT(0 != m_refCnt);
         return 1 == m_refCnt;
     }
     void IncRef(void);
-    void Release(GCOption option = GCOption::Auto);
+    void Release(void);
 
     static GCObject* GCCast(GCObject *o)
     {
@@ -62,6 +56,8 @@ public:
     virtual void trace(blink::Visitor *visitor) {}
 protected:
     GCObject(void);
+
+    virtual bool ShouldPerformFullGC(void) const { return false; }
 private:
     friend class GCCleanupVisitor;
     friend class GCHeap;
@@ -69,8 +65,6 @@ private:
     friend class GarbageCollector;
 
     GCObject(const GCObject &o) = delete;
-
-    unsigned DecRef(void);
 
     unsigned m_refCnt = 0;
 };
@@ -111,7 +105,7 @@ template <class T>
 struct GCGlobalWrapper
 {
     static void IncRef(T *p) { p->IncRef(); }
-    static void Release(T *p) { p->Release(GCOption::Full); }
+    static void Release(T *p) { p->Release(); }
 };
 
 template <class T>
@@ -156,11 +150,11 @@ public:
             m_object->Release();
     }
 
-    void clear(GCOption option = GCOption::Auto)
+    void clear(void)
     {
         if (nullptr != m_object)
         {
-            m_object->Release(option);
+            m_object->Release();
             m_object = nullptr;
         }
     }
@@ -189,7 +183,7 @@ protected:
         T *ret = nullptr;
         if (nullptr != m_object)
         {
-            m_object->DecRef();
+            --m_object->m_refCnt;
             ret = static_cast<T *>(m_object);
             m_object = nullptr;
         }
