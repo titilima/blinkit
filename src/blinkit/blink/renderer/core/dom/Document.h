@@ -936,9 +936,9 @@ public:
 
     void enqueueResizeEvent();
     void enqueueScrollEventForNode(Node*);
-    void enqueueAnimationFrameEvent(PassRefPtrWillBeRawPtr<Event>);
+    void enqueueAnimationFrameEvent(const GCRefPtr<Event> &);
     // Only one event for a target/event type combination will be dispatched per frame.
-    void enqueueUniqueAnimationFrameEvent(PassRefPtrWillBeRawPtr<Event>);
+    void enqueueUniqueAnimationFrameEvent(const GCRefPtr<Event> &);
     void enqueueMediaQueryChangeListeners(WillBeHeapVector<RefPtrWillBeMember<MediaQueryListListener>>&);
 
     void dispatchEventsForPrinting();
@@ -1209,7 +1209,7 @@ private:
     void setNthIndexCache(NthIndexCache* nthIndexCache) { ASSERT(!m_nthIndexCache || !nthIndexCache); m_nthIndexCache = nthIndexCache; }
 
     // BKTODO: const OriginAccessEntry& accessEntryFromURL();
-    bool IsRetainedInTree(void) const final;
+    bool ShouldPerformFullGC(void) const final;
 
     DocumentLifecycle m_lifecycle;
     std::shared_ptr<bool> m_aliveFlag;

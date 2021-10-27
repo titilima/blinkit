@@ -2054,14 +2054,13 @@ void Node::handleLocalEvents(Event& event)
     fireEventListeners(&event);
 }
 
-void Node::dispatchScopedEvent(PassRefPtrWillBeRawPtr<Event> event)
+void Node::dispatchScopedEvent(const GCRefPtr<Event> &event)
 {
-    GCGuard _(*event);
     event->setTrusted(true);
     EventDispatcher::dispatchScopedEvent(*this, event->createMediator());
 }
 
-bool Node::dispatchEventInternal(PassRefPtrWillBeRawPtr<Event> event)
+bool Node::dispatchEventInternal(const GCRefPtr<Event> &event)
 {
     return EventDispatcher::dispatchEvent(*this, event->createMediator());
 }
@@ -2093,7 +2092,7 @@ bool Node::dispatchDOMActivateEvent(int detail, PassRefPtrWillBeRawPtr<Event> un
 bool Node::dispatchMouseEvent(const PlatformMouseEvent& nativeEvent, const AtomicString& eventType,
     int detail, Node* relatedTarget)
 {
-    RefPtrWillBeRawPtr<MouseEvent> event = MouseEvent::create(eventType, document().domWindow(), nativeEvent, detail, relatedTarget);
+    GCRefPtr<MouseEvent> event = MouseEvent::create(eventType, document().domWindow(), nativeEvent, detail, relatedTarget);
     return dispatchEvent(event);
 }
 
@@ -2373,9 +2372,9 @@ void Node::setCustomElementState(CustomElementState newState)
         toElement(this)->pseudoStateChanged(CSSSelector::PseudoUnresolved);
 }
 
-bool Node::IsRetainedInTree(void) const
+bool Node::ShouldPerformFullGC(void) const
 {
-    return isInTreeScope();
+    return getFlag(FullGCFlag);
 }
 
 DEFINE_TRACE(Node)

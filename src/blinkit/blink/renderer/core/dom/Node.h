@@ -623,7 +623,7 @@ public:
     virtual void* preDispatchEventHandler(Event*) { return nullptr; }
     virtual void postDispatchEventHandler(Event*, void* /*dataFromPreDispatch*/) { }
 
-    void dispatchScopedEvent(PassRefPtrWillBeRawPtr<Event>);
+    void dispatchScopedEvent(const GCRefPtr<Event> &);
 
     virtual void handleLocalEvents(Event&);
 
@@ -713,6 +713,7 @@ private:
         HasEventTargetDataFlag = 1 << 26,
         AlreadySpellCheckedFlag = 1 << 27,
         CrawlerFlag = 1 << 28,
+        FullGCFlag = 1 << 29,
 
         DefaultNodeFlags = IsFinishedParsingChildrenFlag | NeedsReattachStyleChange
     };
@@ -748,7 +749,7 @@ protected:
 
     bool addEventListenerInternal(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener>, const EventListenerOptions&) override;
     bool removeEventListenerInternal(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener>, const EventListenerOptions&) override;
-    bool dispatchEventInternal(PassRefPtrWillBeRawPtr<Event>) override;
+    bool dispatchEventInternal(const GCRefPtr<Event> &) override;
 
     static void reattachWhitespaceSiblingsIfNeeded(Text* start);
 
@@ -819,9 +820,7 @@ private:
     WillBeHeapVector<OwnPtrWillBeMember<MutationObserverRegistration>>* mutationObserverRegistry();
     WillBeHeapHashSet<RawPtrWillBeMember<MutationObserverRegistration>>* transientMutationObserverRegistry();
 
-    BlinKit::GCObject* ObjectForGC(void) final { return this; }
-    Category GCCategory(void) const final { return TreeNode; }
-    bool IsRetainedInTree(void) const override;
+    bool ShouldPerformFullGC(void) const override;
 
     uint32_t m_nodeFlags;
     ContainerNode *m_parentOrShadowHostNode = nullptr;

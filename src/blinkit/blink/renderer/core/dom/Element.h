@@ -862,6 +862,7 @@ inline Node::InsertionNotificationRequest Node::insertedInto(ContainerNode* inse
         setFlag(IsInShadowTreeFlag);
     if (childNeedsDistributionRecalc() && !insertionPoint->childNeedsDistributionRecalc())
         insertionPoint->markAncestorsWithChildNeedsDistributionRecalc();
+    clearFlag(FullGCFlag);
     return InsertionDone;
 }
 
@@ -874,6 +875,7 @@ inline void Node::removedFrom(ContainerNode* insertionPoint)
     }
     if (isInShadowTree() && !treeScope().rootNode().isShadowRoot())
         clearFlag(IsInShadowTreeFlag);
+    setFlag(FullGCFlag);
 #if 0 // BKTODO:
     if (AXObjectCache* cache = document().existingAXObjectCache())
         cache->remove(this);

@@ -2851,7 +2851,7 @@ bool Document::dispatchBeforeUnloadEvent(ChromeClient& chromeClient, bool isRelo
 
     RefPtrWillBeRawPtr<BeforeUnloadEvent> beforeUnloadEvent = BeforeUnloadEvent::create();
     m_loadEventProgress = BeforeUnloadEventInProgress;
-    m_domWindow->dispatchEvent(beforeUnloadEvent.get(), this);
+    m_domWindow->dispatchEvent(beforeUnloadEvent, this);
     m_loadEventProgress = BeforeUnloadEventCompleted;
     if (!beforeUnloadEvent->defaultPrevented())
         defaultEventHandler(beforeUnloadEvent.get());
@@ -2897,7 +2897,7 @@ void Document::dispatchUnloadEvents()
             // time into freed memory.
             RefPtrWillBeRawPtr<DocumentLoader> documentLoader = m_frame->loader().provisionalDocumentLoader();
             m_loadEventProgress = UnloadEventInProgress;
-            RefPtrWillBeRawPtr<Event> unloadEvent(Event::create(EventTypeNames::unload));
+            GCRefPtr<Event> unloadEvent = Event::create(EventTypeNames::unload);
 #if 0 // BKTODO:
             if (documentLoader && !documentLoader->timing().unloadEventStart() && !documentLoader->timing().unloadEventEnd()) {
                 DocumentLoadTiming& timing = documentLoader->timing();
@@ -4072,12 +4072,12 @@ EventQueue* Document::eventQueue() const
     return m_domWindow->eventQueue();
 }
 
-void Document::enqueueAnimationFrameEvent(PassRefPtrWillBeRawPtr<Event> event)
+void Document::enqueueAnimationFrameEvent(const GCRefPtr<Event> &event)
 {
     ensureScriptedAnimationController().enqueueEvent(event);
 }
 
-void Document::enqueueUniqueAnimationFrameEvent(PassRefPtrWillBeRawPtr<Event> event)
+void Document::enqueueUniqueAnimationFrameEvent(const GCRefPtr<Event> &event)
 {
     ensureScriptedAnimationController().enqueuePerFrameEvent(event);
 }
@@ -4085,16 +4085,16 @@ void Document::enqueueUniqueAnimationFrameEvent(PassRefPtrWillBeRawPtr<Event> ev
 void Document::enqueueScrollEventForNode(Node* target)
 {
     // Per the W3C CSSOM View Module only scroll events fired at the document should bubble.
-    RefPtrWillBeRawPtr<Event> scrollEvent = target->isDocumentNode() ? Event::createBubble(EventTypeNames::scroll) : Event::create(EventTypeNames::scroll);
+    GCRefPtr<Event> scrollEvent = target->isDocumentNode() ? Event::createBubble(EventTypeNames::scroll) : Event::create(EventTypeNames::scroll);
     scrollEvent->setTarget(target);
-    ensureScriptedAnimationController().enqueuePerFrameEvent(scrollEvent.release());
+    ensureScriptedAnimationController().enqueuePerFrameEvent(scrollEvent);
 }
 
 void Document::enqueueResizeEvent()
 {
-    RefPtrWillBeRawPtr<Event> event = Event::create(EventTypeNames::resize);
+    GCRefPtr<Event> event = Event::create(EventTypeNames::resize);
     event->setTarget(domWindow());
-    ensureScriptedAnimationController().enqueuePerFrameEvent(event.release());
+    ensureScriptedAnimationController().enqueuePerFrameEvent(event);
 }
 
 void Document::enqueueMediaQueryChangeListeners(WillBeHeapVector<RefPtrWillBeMember<MediaQueryListListener>>& listeners)
@@ -6149,9 +6149,9 @@ Element* Document::focusedElement(void) const
     return m_focusedElement.get();
 }
 
-bool Document::IsRetainedInTree(void) const
+bool Document::ShouldPerformFullGC(void) const
 {
-    return nullptr != m_domWindow;
+    return nullptr == m_domWindow;
 }
 
 DocumentParser* Document::parser(void) const
