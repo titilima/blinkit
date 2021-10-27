@@ -108,6 +108,8 @@ void GenericEventQueue::timerFired(Timer<GenericEventQueue>*)
     ASSERT(!m_timer.isActive());
     ASSERT(!m_pendingEvents.isEmpty());
 
+    ASSERT(m_pendingEvents.empty()); // BKTODO:
+#if 0
     WillBeHeapVector<RefPtrWillBeMember<Event>> pendingEvents;
     m_pendingEvents.swap(pendingEvents);
 
@@ -121,6 +123,7 @@ void GenericEventQueue::timerFired(Timer<GenericEventQueue>*)
         TRACE_EVENT_ASYNC_END1("event", "GenericEventQueue:enqueueEvent", event, "type", type);
         InspectorInstrumentation::didRemoveEvent(target, event);
     }
+#endif
 }
 
 void GenericEventQueue::close()

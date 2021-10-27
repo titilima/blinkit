@@ -1448,15 +1448,15 @@ WebInputEventResult EventHandler::dispatchDragEvent(const AtomicString& eventTyp
     if (!view)
         return WebInputEventResult::NotHandled;
 
-    RefPtrWillBeRawPtr<DragEvent> me = DragEvent::create(eventType,
+    GCRefPtr<DragEvent> me = DragEvent::create(eventType,
         true, true, m_frame->document()->domWindow(),
         0, event.globalPosition().x(), event.globalPosition().y(), event.position().x(), event.position().y(),
         event.movementDelta().x(), event.movementDelta().y(),
         event.modifiers(),
         0, MouseEvent::platformModifiersToButtons(event.modifiers()), nullptr, event.timestamp(), dataTransfer, event.syntheticEventType());
 
-    bool dispatchResult = dragTarget->dispatchEvent(me.get());
-    return eventToEventResult(me, dispatchResult);
+    bool dispatchResult = dragTarget->dispatchEvent(me);
+    return eventToEventResult(me.get(), dispatchResult);
 }
 
 static bool targetIsFrame(Node* target, LocalFrame*& frame)
@@ -1832,9 +1832,9 @@ WebInputEventResult EventHandler::dispatchMouseEvent(const AtomicString& eventTy
     if (!m_nodeUnderMouse)
         return WebInputEventResult::NotHandled;
 
-    RefPtrWillBeRawPtr<MouseEvent> event = MouseEvent::create(eventType, m_nodeUnderMouse->document().domWindow(), mouseEvent, clickCount, nullptr);
+    GCRefPtr<MouseEvent> event = MouseEvent::create(eventType, m_nodeUnderMouse->document().domWindow(), mouseEvent, clickCount, nullptr);
     bool dispatchResult = m_nodeUnderMouse->dispatchEvent(event);
-    return eventToEventResult(event, dispatchResult);
+    return eventToEventResult(event.get(), dispatchResult);
 }
 
 // TODO(mustaq): Make PE drive ME dispatch & bookkeeping in EventHandler.
@@ -1868,7 +1868,7 @@ WebInputEventResult EventHandler::updatePointerTargetAndDispatchEvents(const Ato
 
     if (!m_preventMouseEventForPointerTypeMouse) {
         GCRefPtr<MouseEvent> event = MouseEvent::create(mouseEventType, m_nodeUnderMouse->document().domWindow(), mouseEvent, clickCount, nullptr);
-        bool dispatchResult = m_nodeUnderMouse->dispatchEvent(event.get());
+        bool dispatchResult = m_nodeUnderMouse->dispatchEvent(event);
         result = mergeEventResult(result, eventToEventResult(event.get(), dispatchResult));
     }
 
@@ -3368,7 +3368,7 @@ WebInputEventResult EventHandler::keyEvent(const PlatformKeyboardEvent& initialK
     if (initialKeyEvent.type() == PlatformEvent::KeyUp || initialKeyEvent.type() == PlatformEvent::Char) {
         GCRefPtr<KeyboardEvent> domEvent = KeyboardEvent::create(initialKeyEvent, m_frame->document()->domWindow());
 
-        bool dispatchResult = node->dispatchEvent(domEvent.get());
+        bool dispatchResult = node->dispatchEvent(domEvent);
         return eventToEventResult(domEvent.get(), dispatchResult);
     }
 
@@ -3381,7 +3381,7 @@ WebInputEventResult EventHandler::keyEvent(const PlatformKeyboardEvent& initialK
     keydown->setTarget(node);
 
     if (initialKeyEvent.type() == PlatformEvent::RawKeyDown) {
-        if (!node->dispatchEvent(keydown.get()))
+        if (!node->dispatchEvent(keydown))
             return eventToEventResult(keydown.get(), false);
         // If frame changed as a result of keydown dispatch, then return true to avoid sending a subsequent keypress message to the new frame.
         bool changedFocusedFrame = m_frame->page() && m_frame != m_frame->page()->focusController().focusedOrMainFrame();
@@ -3390,7 +3390,7 @@ WebInputEventResult EventHandler::keyEvent(const PlatformKeyboardEvent& initialK
         return WebInputEventResult::NotHandled;
     }
 
-    if (!node->dispatchEvent(keydown.get()))
+    if (!node->dispatchEvent(keydown))
         return eventToEventResult(keydown.get(), false);
     // If frame changed as a result of keydown dispatch, then return early to avoid sending a subsequent keypress message to the new frame.
     bool changedFocusedFrame = m_frame->page() && m_frame != m_frame->page()->focusController().focusedOrMainFrame();
@@ -3409,7 +3409,7 @@ WebInputEventResult EventHandler::keyEvent(const PlatformKeyboardEvent& initialK
         return WebInputEventResult::NotHandled;
     GCRefPtr<KeyboardEvent> keypress = KeyboardEvent::create(keyPressEvent, m_frame->document()->domWindow());
     keypress->setTarget(node);
-    bool dispatchResult = node->dispatchEvent(keypress.get());
+    bool dispatchResult = node->dispatchEvent(keypress);
     return eventToEventResult(keypress.get(), dispatchResult);
 }
 

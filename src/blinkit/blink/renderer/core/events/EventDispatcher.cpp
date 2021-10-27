@@ -59,11 +59,11 @@ bool EventDispatcher::dispatchEvent(Node& node, PassRefPtrWillBeRawPtr<EventDisp
     GCGuard _(*mediator);
     TRACE_EVENT0(TRACE_DISABLED_BY_DEFAULT("blink.debug"), "EventDispatcher::dispatchEvent");
     ASSERT(!EventDispatchForbiddenScope::isEventDispatchForbidden());
-    EventDispatcher dispatcher(node, &mediator->event());
+    EventDispatcher dispatcher(node, GCWrapShared(&mediator->event()));
     return mediator->dispatchEvent(dispatcher);
 }
 
-EventDispatcher::EventDispatcher(Node& node, PassRefPtrWillBeRawPtr<Event> event)
+EventDispatcher::EventDispatcher(Node &node, const GCRefPtr<Event> &event)
     : m_node(node)
     , m_event(event)
 #if ENABLE(ASSERT)
@@ -97,20 +97,21 @@ void EventDispatcher::dispatchSimulatedClick(Node& node, Event* underlyingEvent,
 
     nodesDispatchingSimulatedClicks->add(&node);
 
+    GCRefPtr prpEvent(underlyingEvent);
     if (mouseEventOptions == SendMouseOverUpDownEvents)
-        EventDispatcher(node, MouseEvent::create(EventTypeNames::mouseover, node.document().domWindow(), underlyingEvent, creationScope)).dispatch();
+        EventDispatcher(node, MouseEvent::create(EventTypeNames::mouseover, node.document().domWindow(), prpEvent, creationScope)).dispatch();
 
     if (mouseEventOptions != SendNoEvents) {
-        EventDispatcher(node, MouseEvent::create(EventTypeNames::mousedown, node.document().domWindow(), underlyingEvent, creationScope)).dispatch();
+        EventDispatcher(node, MouseEvent::create(EventTypeNames::mousedown, node.document().domWindow(), prpEvent, creationScope)).dispatch();
         node.setActive(true);
-        EventDispatcher(node, MouseEvent::create(EventTypeNames::mouseup, node.document().domWindow(), underlyingEvent, creationScope)).dispatch();
+        EventDispatcher(node, MouseEvent::create(EventTypeNames::mouseup, node.document().domWindow(), prpEvent, creationScope)).dispatch();
     }
     // Some elements (e.g. the color picker) may set active state to true before
     // calling this method and expect the state to be reset during the call.
     node.setActive(false);
 
     // always send click
-    EventDispatcher(node, MouseEvent::create(EventTypeNames::click, node.document().domWindow(), underlyingEvent, creationScope)).dispatch();
+    EventDispatcher(node, MouseEvent::create(EventTypeNames::click, node.document().domWindow(), prpEvent, creationScope)).dispatch();
 
     nodesDispatchingSimulatedClicks->remove(&node);
 }

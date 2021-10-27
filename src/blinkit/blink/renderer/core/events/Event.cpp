@@ -236,7 +236,7 @@ void Event::setUnderlyingEvent(PassRefPtrWillBeRawPtr<Event> ue)
 void Event::initEventPath(Node& node)
 {
     if (!m_eventPath) {
-        m_eventPath = GCMakeUnique<EventPath>(node, this);
+        m_eventPath = std::make_unique<EventPath>(node, this);
     } else {
         m_eventPath->initializeWith(node, this);
     }
@@ -317,14 +317,5 @@ double Event::timeStamp(ScriptState* scriptState) const
     return timeStamp;
 }
 #endif
-
-DEFINE_TRACE(Event)
-{
-    // BKTODO: visitor->trace(m_currentTarget);
-    // BKTODO: visitor->trace(m_target);
-    visitor->trace(m_underlyingEvent);
-    if (m_eventPath)
-        m_eventPath->trace(visitor);
-}
 
 } // namespace blink

@@ -287,14 +287,13 @@ bool EventTarget::dispatchEventForBindings(PassRefPtrWillBeRawPtr<Event> event, 
     return dispatchEventInternal(event);
 }
 
-bool EventTarget::dispatchEvent(PassRefPtrWillBeRawPtr<Event> event)
+bool EventTarget::dispatchEvent(const GCRefPtr<Event> &event)
 {
-    GCGuard _(*event);
     event->setTrusted(true);
     return dispatchEventInternal(event);
 }
 
-bool EventTarget::dispatchEventInternal(PassRefPtrWillBeRawPtr<Event> event)
+bool EventTarget::dispatchEventInternal(const GCRefPtr<Event> &event)
 {
     event->setTarget(this);
     event->setCurrentTarget(this);

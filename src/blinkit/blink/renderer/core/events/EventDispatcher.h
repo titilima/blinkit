@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EventDispatcher.h
+// Description: EventDispatcher Class
+//      Author: Ziming Li
+//     Created: 2021-10-27
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -58,7 +69,7 @@ public:
     Event& event() const { return *m_event; }
 
 private:
-    EventDispatcher(Node&, PassRefPtrWillBeRawPtr<Event>);
+    EventDispatcher(Node &, const GCRefPtr<Event> &);
 
     EventDispatchContinuation dispatchEventPreProcess(void*& preDispatchEventHandlerResult);
     EventDispatchContinuation dispatchEventAtCapturing();
@@ -67,7 +78,7 @@ private:
     void dispatchEventPostProcess(void* preDispatchEventHandlerResult);
 
     RefPtrWillBeMember<Node> m_node;
-    RefPtrWillBeMember<Event> m_event;
+    GCRefPtr<Event> m_event;
     RefPtrWillBeMember<FrameView> m_view;
 #if ENABLE(ASSERT)
     bool m_eventDispatched;

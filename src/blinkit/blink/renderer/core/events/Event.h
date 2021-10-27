@@ -86,34 +86,34 @@ public:
         RailsModeVertical   = 2
     };
 
-    static PassRefPtrWillBeRawPtr<Event> create()
+    static GCRefPtr<Event> create()
     {
-        return adoptRefWillBeNoop(new Event);
+        return BlinKit::GCWrapShared(new Event);
     }
 
     // A factory for a simple event. The event doesn't bubble, and isn't
     // cancelable.
     // http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#fire-a-simple-event
-    static PassRefPtrWillBeRawPtr<Event> create(const AtomicString& type)
+    static GCRefPtr<Event> create(const AtomicString& type)
     {
-        return adoptRefWillBeNoop(new Event(type, false, false));
+        return BlinKit::GCWrapShared(new Event(type, false, false));
     }
-    static PassRefPtrWillBeRawPtr<Event> createCancelable(const AtomicString& type)
+    static GCRefPtr<Event> createCancelable(const AtomicString& type)
     {
-        return adoptRefWillBeNoop(new Event(type, false, true));
+        return BlinKit::GCWrapShared(new Event(type, false, true));
     }
-    static PassRefPtrWillBeRawPtr<Event> createBubble(const AtomicString& type)
+    static GCRefPtr<Event> createBubble(const AtomicString& type)
     {
-        return adoptRefWillBeNoop(new Event(type, true, false));
+        return BlinKit::GCWrapShared(new Event(type, true, false));
     }
-    static PassRefPtrWillBeRawPtr<Event> createCancelableBubble(const AtomicString& type)
+    static GCRefPtr<Event> createCancelableBubble(const AtomicString& type)
     {
-        return adoptRefWillBeNoop(new Event(type, true, true));
+        return BlinKit::GCWrapShared(new Event(type, true, true));
     }
 
-    static PassRefPtrWillBeRawPtr<Event> create(const AtomicString& type, const EventInit& initializer)
+    static GCRefPtr<Event> create(const AtomicString& type, const EventInit& initializer)
     {
-        return adoptRefWillBeNoop(new Event(type, initializer));
+        return BlinKit::GCWrapShared(new Event(type, initializer));
     }
 
     virtual ~Event();
@@ -214,8 +214,6 @@ public:
 
     void setHandlingPassive(bool value) { m_handlingPassive = value; }
 
-    DECLARE_VIRTUAL_TRACE();
-
 protected:
     Event();
     Event(const AtomicString& type, bool canBubble, bool cancelable);
@@ -247,7 +245,7 @@ private:
     RefPtrWillBeMember<EventTarget> m_target;
     DOMTimeStamp m_createTime;
     GCRefPtr<Event> m_underlyingEvent;
-    GCUniquePtr<EventPath> m_eventPath;
+    std::unique_ptr<EventPath> m_eventPath;
     // The monotonic platform time in seconds, for input events it is the
     // event timestamp provided by the host OS and reported in the original
     // WebInputEvent instance.

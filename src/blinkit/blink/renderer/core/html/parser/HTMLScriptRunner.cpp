@@ -112,7 +112,7 @@ static KURL documentURLForScriptExecution(Document* document)
     return document->frame()->document()->url();
 }
 
-inline PassRefPtrWillBeRawPtr<Event> createScriptLoadEvent()
+inline GCRefPtr<Event> createScriptLoadEvent()
 {
     return Event::create(EventTypeNames::load);
 }

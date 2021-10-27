@@ -48,13 +48,13 @@ class EventDispatcher;
 class CORE_EXPORT MouseEvent : public MouseRelatedEvent {
     DEFINE_WRAPPERTYPEINFO();
 public:
-    static PassRefPtrWillBeRawPtr<MouseEvent> create()
+    static GCRefPtr<MouseEvent> create()
     {
-        return adoptRefWillBeNoop(new MouseEvent);
+        return BlinKit::GCWrapShared(new MouseEvent);
     }
 
     // TODO(mustaq): Should replace most/all of these params with a MouseEventInit.
-    static PassRefPtrWillBeRawPtr<MouseEvent> create(const AtomicString& type, bool canBubble, bool cancelable, PassRefPtrWillBeRawPtr<AbstractView>,
+    static GCRefPtr<MouseEvent> create(const AtomicString& type, bool canBubble, bool cancelable, PassRefPtrWillBeRawPtr<AbstractView>,
         int detail, int screenX, int screenY, int windowX, int windowY,
         int movementX, int movementY, PlatformEvent::Modifiers,
         short button, unsigned short buttons,
@@ -62,11 +62,11 @@ public:
         double platformTimeStamp,
         PlatformMouseEvent::SyntheticEventType = PlatformMouseEvent::RealOrIndistinguishable);
 
-    static PassRefPtrWillBeRawPtr<MouseEvent> create(const AtomicString& eventType, PassRefPtrWillBeRawPtr<AbstractView>, const PlatformMouseEvent&, int detail, PassRefPtrWillBeRawPtr<Node> relatedTarget);
+    static GCRefPtr<MouseEvent> create(const AtomicString& eventType, PassRefPtrWillBeRawPtr<AbstractView>, const PlatformMouseEvent&, int detail, PassRefPtrWillBeRawPtr<Node> relatedTarget);
 
     // BKTODO: static PassRefPtrWillBeRawPtr<MouseEvent> create(ScriptState*, const AtomicString& eventType, const MouseEventInit&);
 
-    static PassRefPtrWillBeRawPtr<MouseEvent> create(const AtomicString& eventType, PassRefPtrWillBeRawPtr<AbstractView>, PassRefPtrWillBeRawPtr<Event> underlyingEvent, SimulatedClickCreationScope);
+    static GCRefPtr<MouseEvent> create(const AtomicString& eventType, PassRefPtrWillBeRawPtr<AbstractView>, const GCRefPtr<Event> &underlyingEvent, SimulatedClickCreationScope);
 
     ~MouseEvent() override;
 

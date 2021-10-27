@@ -37,6 +37,8 @@
 #include "core/events/EventDispatcher.h"
 #include "platform/PlatformMouseEvent.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 #if 0 // BKTODO:
@@ -48,7 +50,7 @@ PassRefPtrWillBeRawPtr<MouseEvent> MouseEvent::create(ScriptState* scriptState, 
 }
 #endif
 
-PassRefPtrWillBeRawPtr<MouseEvent> MouseEvent::create(const AtomicString& eventType, PassRefPtrWillBeRawPtr<AbstractView> view, const PlatformMouseEvent& event, int detail, PassRefPtrWillBeRawPtr<Node> relatedTarget)
+GCRefPtr<MouseEvent> MouseEvent::create(const AtomicString& eventType, PassRefPtrWillBeRawPtr<AbstractView> view, const PlatformMouseEvent& event, int detail, PassRefPtrWillBeRawPtr<Node> relatedTarget)
 {
     ASSERT(event.type() == PlatformEvent::MouseMoved || event.button() != NoButton);
 
@@ -65,7 +67,7 @@ PassRefPtrWillBeRawPtr<MouseEvent> MouseEvent::create(const AtomicString& eventT
         relatedTarget, event.timestamp(), event.syntheticEventType());
 }
 
-PassRefPtrWillBeRawPtr<MouseEvent> MouseEvent::create(const AtomicString& type, bool canBubble, bool cancelable, PassRefPtrWillBeRawPtr<AbstractView> view,
+GCRefPtr<MouseEvent> MouseEvent::create(const AtomicString& type, bool canBubble, bool cancelable, PassRefPtrWillBeRawPtr<AbstractView> view,
     int detail, int screenX, int screenY, int windowX, int windowY,
     int movementX, int movementY,
     PlatformEvent::Modifiers modifiers,
@@ -74,13 +76,13 @@ PassRefPtrWillBeRawPtr<MouseEvent> MouseEvent::create(const AtomicString& type, 
     double platformTimeStamp,
     PlatformMouseEvent::SyntheticEventType syntheticEventType)
 {
-    return adoptRefWillBeNoop(new MouseEvent(type, canBubble, cancelable, view,
+    return GCWrapShared(new MouseEvent(type, canBubble, cancelable, view,
         detail, screenX, screenY, windowX, windowY,
         movementX, movementY,
         modifiers, button, buttons, relatedTarget, platformTimeStamp, syntheticEventType));
 }
 
-PassRefPtrWillBeRawPtr<MouseEvent> MouseEvent::create(const AtomicString& eventType, PassRefPtrWillBeRawPtr<AbstractView> view, PassRefPtrWillBeRawPtr<Event> underlyingEvent, SimulatedClickCreationScope creationScope)
+GCRefPtr<MouseEvent> MouseEvent::create(const AtomicString& eventType, PassRefPtrWillBeRawPtr<AbstractView> view, const GCRefPtr<Event> &underlyingEvent, SimulatedClickCreationScope creationScope)
 {
     PlatformEvent::Modifiers modifiers = PlatformEvent::NoModifiers;
     if (UIEventWithKeyState* keyStateEvent = findEventWithKeyState(underlyingEvent.get())) {
@@ -98,18 +100,18 @@ PassRefPtrWillBeRawPtr<MouseEvent> MouseEvent::create(const AtomicString& eventT
     }
 
     double timestamp = underlyingEvent ? underlyingEvent->platformTimeStamp() : monotonicallyIncreasingTime();
-    RefPtrWillBeRawPtr<MouseEvent> createdEvent = MouseEvent::create(eventType, true, true, view,
+    GCRefPtr<MouseEvent> createdEvent = MouseEvent::create(eventType, true, true, view,
         0, screenX, screenY, 0, 0, 0, 0, modifiers, 0, 0, nullptr,
         timestamp, syntheticType);
 
     createdEvent->setTrusted(creationScope == SimulatedClickCreationScope::FromUserAgent);
-    createdEvent->setUnderlyingEvent(underlyingEvent);
+    createdEvent->setUnderlyingEvent(underlyingEvent.get());
     if (syntheticType == PlatformMouseEvent::RealOrIndistinguishable) {
         MouseEvent* mouseEvent = toMouseEvent(createdEvent->underlyingEvent());
         createdEvent->initCoordinates(mouseEvent->clientLocation());
     }
 
-    return createdEvent.release();
+    return createdEvent;
 }
 
 MouseEvent::MouseEvent()
@@ -307,7 +309,7 @@ bool MouseEventDispatchMediator::dispatchEvent(EventDispatcher& dispatcher) cons
     // Special case: If it's a double click event, we also send the dblclick event. This is not part
     // of the DOM specs, but is used for compatibility with the ondblclick="" attribute. This is treated
     // as a separate event in other DOM-compliant browsers like Firefox, and so we do the same.
-    RefPtrWillBeRawPtr<MouseEvent> doubleClickEvent = MouseEvent::create();
+    GCRefPtr<MouseEvent> doubleClickEvent = MouseEvent::create();
     doubleClickEvent->initMouseEventInternal(EventTypeNames::dblclick, mouseEvent.bubbles(), mouseEvent.cancelable(), mouseEvent.view(),
         mouseEvent.detail(), mouseEvent.screenX(), mouseEvent.screenY(), mouseEvent.clientX(), mouseEvent.clientY(),
         mouseEvent.modifiers(), mouseEvent.button(), relatedTarget, mouseEvent.sourceCapabilities(), mouseEvent.buttons());
@@ -316,7 +318,7 @@ bool MouseEventDispatchMediator::dispatchEvent(EventDispatcher& dispatcher) cons
     doubleClickEvent->setTrusted(mouseEvent.isTrusted());
     if (mouseEvent.defaultHandled())
         doubleClickEvent->setDefaultHandled();
-    EventDispatcher::dispatchEvent(dispatcher.node(), MouseEventDispatchMediator::create(doubleClickEvent));
+    EventDispatcher::dispatchEvent(dispatcher.node(), MouseEventDispatchMediator::create(doubleClickEvent.get()));
     if (doubleClickEvent->defaultHandled() || doubleClickEvent->defaultPrevented())
         return false;
     return !swallowEvent;

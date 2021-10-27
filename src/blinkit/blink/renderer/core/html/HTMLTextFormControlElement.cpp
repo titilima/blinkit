@@ -604,9 +604,9 @@ void HTMLTextFormControlElement::selectionChanged(bool userTriggered)
 
 void HTMLTextFormControlElement::scheduleSelectEvent()
 {
-    RefPtrWillBeRawPtr<Event> event = Event::createBubble(EventTypeNames::select);
+    GCRefPtr<Event> event = Event::createBubble(EventTypeNames::select);
     event->setTarget(this);
-    document().enqueueUniqueAnimationFrameEvent(event.release());
+    document().enqueueUniqueAnimationFrameEvent(event);
 }
 
 void HTMLTextFormControlElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)

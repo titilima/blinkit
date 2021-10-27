@@ -44,14 +44,14 @@ class ClipboardEvent final : public Event {
     DEFINE_WRAPPERTYPEINFO();
 public:
     ~ClipboardEvent() override;
-    static PassRefPtrWillBeRawPtr<ClipboardEvent> create()
+    static GCRefPtr<ClipboardEvent> create()
     {
-        return adoptRefWillBeNoop(new ClipboardEvent());
+        return BlinKit::GCWrapShared(new ClipboardEvent());
     }
 
-    static PassRefPtrWillBeRawPtr<ClipboardEvent> create(const AtomicString& type, bool canBubble, bool cancelable, DataTransfer* dataTransfer)
+    static GCRefPtr<ClipboardEvent> create(const AtomicString& type, bool canBubble, bool cancelable, DataTransfer* dataTransfer)
     {
-        return adoptRefWillBeNoop(new ClipboardEvent(type, canBubble, cancelable, dataTransfer));
+        return BlinKit::GCWrapShared(new ClipboardEvent(type, canBubble, cancelable, dataTransfer));
     }
 
     DataTransfer* clipboardData() const { return m_clipboardData.get(); }

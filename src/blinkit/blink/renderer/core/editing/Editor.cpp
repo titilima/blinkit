@@ -490,7 +490,7 @@ bool Editor::dispatchCPPEvent(const AtomicString& eventType, DataTransferAccessP
     GCRefPtr<DataTransfer> dataTransfer = DataTransfer::create(DataTransfer::CopyAndPaste, policy, dataObject.get());
 
     GCRefPtr<Event> evt = ClipboardEvent::create(eventType, true, true, dataTransfer.get());
-    target->dispatchEvent(evt.get());
+    target->dispatchEvent(evt);
     bool noDefaultProcessing = evt->defaultPrevented();
     if (noDefaultProcessing && policy == DataTransferWritable)
         Pasteboard::generalPasteboard()->writeDataObject(dataTransfer->dataObject());
