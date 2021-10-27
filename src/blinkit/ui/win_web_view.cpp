@@ -150,7 +150,11 @@ void WinWebView::didChangeCursor(const WebCursorInfo &cursorInfo)
     m_cursorInfo = cursorInfo;
     if (nullptr != cursorName)
         m_cursorInfo.externalHandle = LoadCursor(nullptr, cursorName);
-    ::SetCursor(m_cursorInfo.externalHandle);
+
+    auto task = [this] {
+        ::SetCursor(m_cursorInfo.externalHandle);
+    };
+    MessageTask::Post(m_hWnd, std::move(task));
 }
 
 void WinWebView::dispatchDidReceiveTitle(const String &title)
@@ -193,7 +197,7 @@ void WinWebView::OnIMEStartComposition(HWND hwnd)
         if (WebViewImpl::SelectionBounds(anchor, focus))
             caretPos = { focus.x(), focus.y() };
     };
-    AppImpl::Get().GetAppCaller().SyncCall(BLINK_FROM_HERE, task);
+    m_appCaller.SyncCall(BLINK_FROM_HERE, task);
 
     if (caretPos.has_value())
     {

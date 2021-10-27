@@ -432,6 +432,7 @@ CodePath Font::codePath(const TextRunPaintInfo& runInfo) const
     if (m_fontDescription.widthVariant() != RegularWidth)
         return ComplexPath;
 
+#if 0 // BKTODO:
     if (run.length() > 1 && fontDescription().typesettingFeatures())
         return ComplexPath;
 
@@ -440,6 +441,7 @@ CodePath Font::codePath(const TextRunPaintInfo& runInfo) const
     // for the prefs width calculation.
     if (fontDescription().textRendering() == OptimizeLegibility || fontDescription().textRendering() == GeometricPrecision)
         return ComplexPath;
+#endif
 
     if (run.is8Bit())
         return SimplePath;
