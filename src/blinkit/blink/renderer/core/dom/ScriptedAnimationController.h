@@ -72,8 +72,8 @@ public:
     void cancelCallback(CallbackId);
     void serviceScriptedAnimations(double monotonicTimeNow);
 
-    void enqueueEvent(PassRefPtrWillBeRawPtr<Event>);
-    void enqueuePerFrameEvent(PassRefPtrWillBeRawPtr<Event>);
+    void enqueueEvent(const GCRefPtr<Event> &);
+    void enqueuePerFrameEvent(const GCRefPtr<Event> &);
     void enqueueMediaQueryChangeListeners(WillBeHeapVector<RefPtrWillBeMember<MediaQueryListListener>>&);
 
     void suspend();

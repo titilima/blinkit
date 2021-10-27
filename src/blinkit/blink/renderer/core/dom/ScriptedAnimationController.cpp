@@ -134,9 +134,9 @@ void ScriptedAnimationController::dispatchEvents(const AtomicString& eventInterf
         // special casting window.
         // FIXME: We should not fire events for nodes that are no longer in the tree.
         if (LocalDOMWindow* window = eventTarget->toDOMWindow())
-            window->dispatchEvent(events[i].get(), nullptr);
+            window->dispatchEvent(events[i], nullptr);
         else
-            eventTarget->dispatchEvent(events[i].get());
+            eventTarget->dispatchEvent(events[i]);
 
         InspectorInstrumentation::didRemoveEvent(eventTarget, events[i].get());
     }
@@ -188,16 +188,15 @@ void ScriptedAnimationController::serviceScriptedAnimations(double monotonicTime
     scheduleAnimationIfNeeded();
 }
 
-void ScriptedAnimationController::enqueueEvent(PassRefPtrWillBeRawPtr<Event> event)
+void ScriptedAnimationController::enqueueEvent(const GCRefPtr<Event> &event)
 {
     InspectorInstrumentation::didEnqueueEvent(event->target(), event.get());
     m_eventQueue.emplace_back(event);
     scheduleAnimationIfNeeded();
 }
 
-void ScriptedAnimationController::enqueuePerFrameEvent(PassRefPtrWillBeRawPtr<Event> event)
+void ScriptedAnimationController::enqueuePerFrameEvent(const GCRefPtr<Event> &event)
 {
-    GCGuard _(*event);
     unsigned key = eventTargetKey(event.get());
     if (zed::key_exists(m_perFrameEventHashes, key))
         return;
