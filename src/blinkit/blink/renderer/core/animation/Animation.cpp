@@ -657,9 +657,9 @@ void Animation::stop()
     m_pendingFinishedEvent = nullptr;
 }
 
-bool Animation::dispatchEventInternal(PassRefPtrWillBeRawPtr<Event> event)
+bool Animation::dispatchEventInternal(const GCRefPtr<Event> &event)
 {
-    if (m_pendingFinishedEvent == event)
+    if (m_pendingFinishedEvent == event.get())
         m_pendingFinishedEvent = nullptr;
     return EventTargetWithInlineData::dispatchEventInternal(event);
 }

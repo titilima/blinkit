@@ -191,7 +191,7 @@ public:
     DECLARE_VIRTUAL_TRACE();
 
 protected:
-    bool dispatchEventInternal(PassRefPtrWillBeRawPtr<Event>) override;
+    bool dispatchEventInternal(const GCRefPtr<Event> &) override;
     bool addEventListenerInternal(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener>, const EventListenerOptions&) override;
 
 private:
@@ -262,7 +262,7 @@ private:
     // Holds a 'finished' event queued for asynchronous dispatch via the
     // ScriptedAnimationController. This object remains active until the
     // event is actually dispatched.
-    RefPtrWillBeMember<Event> m_pendingFinishedEvent;
+    GCRefPtr<Event> m_pendingFinishedEvent;
 
     enum CompositorAction {
         None,
