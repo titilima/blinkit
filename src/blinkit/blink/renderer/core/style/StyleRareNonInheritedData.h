@@ -134,7 +134,7 @@ public:
     DataRef<StyleGridItemData> m_gridItem;
     DataRef<StyleScrollSnapData> m_scrollSnap;
 
-    OwnPtrWillBePersistent<ContentData> m_content;
+    std::unique_ptr<ContentData> m_content;
     OwnPtr<CounterDirectiveMap> m_counterDirectives;
     OwnPtr<CSSAnimationData> m_animations;
     OwnPtr<CSSTransitionData> m_transitions;

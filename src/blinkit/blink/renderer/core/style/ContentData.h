@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContentData.h
+// Description: ContentData Class
+//      Author: Ziming Li
+//     Created: 2021-10-29
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -36,13 +47,12 @@ class Document;
 class LayoutObject;
 class ComputedStyle;
 
-class ContentData : public NoBaseWillBeGarbageCollectedFinalized<ContentData> {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(ContentData);
+class ContentData {
 public:
-    static PassOwnPtrWillBeRawPtr<ContentData> create(PassRefPtrWillBeRawPtr<StyleImage>);
-    static PassOwnPtrWillBeRawPtr<ContentData> create(const String&);
-    static PassOwnPtrWillBeRawPtr<ContentData> create(PassOwnPtr<CounterContent>);
-    static PassOwnPtrWillBeRawPtr<ContentData> create(QuoteType);
+    static std::unique_ptr<ContentData> create(PassRefPtrWillBeRawPtr<StyleImage>);
+    static std::unique_ptr<ContentData> create(const String&);
+    static std::unique_ptr<ContentData> create(PassOwnPtr<CounterContent>);
+    static std::unique_ptr<ContentData> create(QuoteType);
 
     virtual ~ContentData() { }
 
@@ -53,19 +63,17 @@ public:
 
     virtual LayoutObject* createLayoutObject(Document&, ComputedStyle&) const = 0;
 
-    virtual PassOwnPtrWillBeRawPtr<ContentData> clone() const;
+    virtual std::unique_ptr<ContentData> clone() const;
 
     ContentData* next() const { return m_next.get(); }
-    void setNext(PassOwnPtrWillBeRawPtr<ContentData> next) { m_next = next; }
+    void setNext(std::unique_ptr<ContentData> &&next) { m_next = std::move(next); }
 
     virtual bool equals(const ContentData&) const = 0;
 
-    DECLARE_VIRTUAL_TRACE();
-
 private:
-    virtual PassOwnPtrWillBeRawPtr<ContentData> cloneInternal() const = 0;
+    virtual std::unique_ptr<ContentData> cloneInternal() const = 0;
 
-    OwnPtrWillBeMember<ContentData> m_next;
+    std::unique_ptr<ContentData> m_next;
 };
 
 #define DEFINE_CONTENT_DATA_TYPE_CASTS(typeName) \
@@ -88,21 +96,19 @@ public:
         return *static_cast<const ImageContentData&>(data).image() == *image();
     }
 
-    DECLARE_VIRTUAL_TRACE();
-
 private:
     ImageContentData(PassRefPtrWillBeRawPtr<StyleImage> image)
         : m_image(image)
     {
     }
 
-    PassOwnPtrWillBeRawPtr<ContentData> cloneInternal() const override
+    std::unique_ptr<ContentData> cloneInternal() const override
     {
         RefPtrWillBeRawPtr<StyleImage> image = const_cast<StyleImage*>(this->image());
         return create(image.release());
     }
 
-    RefPtrWillBeMember<StyleImage> m_image;
+    GCRefPtr<StyleImage> m_image;
 };
 
 DEFINE_CONTENT_DATA_TYPE_CASTS(Image);
@@ -129,7 +135,7 @@ private:
     {
     }
 
-    PassOwnPtrWillBeRawPtr<ContentData> cloneInternal() const override { return create(text()); }
+    std::unique_ptr<ContentData> cloneInternal() const override { return create(text()); }
 
     String m_text;
 };
@@ -151,7 +157,7 @@ private:
     {
     }
 
-    PassOwnPtrWillBeRawPtr<ContentData> cloneInternal() const override
+    std::unique_ptr<ContentData> cloneInternal() const override
     {
         OwnPtr<CounterContent> counterData = adoptPtr(new CounterContent(*counter()));
         return create(counterData.release());
@@ -191,7 +197,7 @@ private:
     {
     }
 
-    PassOwnPtrWillBeRawPtr<ContentData> cloneInternal() const override { return create(quote()); }
+    std::unique_ptr<ContentData> cloneInternal() const override { return create(quote()); }
 
     QuoteType m_quote;
 };

@@ -1912,7 +1912,7 @@ private:
     Color lightingColor() const { return svgStyle().lightingColor(); }
 #endif
 
-    void appendContent(PassOwnPtrWillBeRawPtr<ContentData>);
+    void appendContent(std::unique_ptr<ContentData> &&);
     void addAppliedTextDecoration(const AppliedTextDecoration&);
     void applyMotionPathTransform(float originX, float originY, TransformationMatrix&) const;
 

@@ -42,43 +42,38 @@
 
 namespace blink {
 
-PassOwnPtrWillBeRawPtr<ContentData> ContentData::create(PassRefPtrWillBeRawPtr<StyleImage> image)
+std::unique_ptr<ContentData> ContentData::create(PassRefPtrWillBeRawPtr<StyleImage> image)
 {
-    return adoptPtrWillBeNoop(new ImageContentData(image));
+    return zed::wrap_unique(new ImageContentData(image));
 }
 
-PassOwnPtrWillBeRawPtr<ContentData> ContentData::create(const String& text)
+std::unique_ptr<ContentData> ContentData::create(const String& text)
 {
-    return adoptPtrWillBeNoop(new TextContentData(text));
+    return zed::wrap_unique(new TextContentData(text));
 }
 
-PassOwnPtrWillBeRawPtr<ContentData> ContentData::create(PassOwnPtr<CounterContent> counter)
+std::unique_ptr<ContentData> ContentData::create(PassOwnPtr<CounterContent> counter)
 {
-    return adoptPtrWillBeNoop(new CounterContentData(counter));
+    return zed::wrap_unique(new CounterContentData(counter));
 }
 
-PassOwnPtrWillBeRawPtr<ContentData> ContentData::create(QuoteType quote)
+std::unique_ptr<ContentData> ContentData::create(QuoteType quote)
 {
-    return adoptPtrWillBeNoop(new QuoteContentData(quote));
+    return zed::wrap_unique(new QuoteContentData(quote));
 }
 
-PassOwnPtrWillBeRawPtr<ContentData> ContentData::clone() const
+std::unique_ptr<ContentData> ContentData::clone() const
 {
-    OwnPtrWillBeRawPtr<ContentData> result = cloneInternal();
+    std::unique_ptr<ContentData> result = cloneInternal();
 
     ContentData* lastNewData = result.get();
     for (const ContentData* contentData = next(); contentData; contentData = contentData->next()) {
-        OwnPtrWillBeRawPtr<ContentData> newData = contentData->cloneInternal();
-        lastNewData->setNext(newData.release());
+        std::unique_ptr<ContentData> newData = contentData->cloneInternal();
+        lastNewData->setNext(std::move(newData));
         lastNewData = lastNewData->next();
     }
 
-    return result.release();
-}
-
-DEFINE_TRACE(ContentData)
-{
-    visitor->trace(m_next);
+    return result;
 }
 
 LayoutObject* ImageContentData::createLayoutObject(Document& doc, ComputedStyle& pseudoStyle) const
@@ -90,12 +85,6 @@ LayoutObject* ImageContentData::createLayoutObject(Document& doc, ComputedStyle&
     else
         image->setImageResource(LayoutImageResource::create());
     return image;
-}
-
-DEFINE_TRACE(ImageContentData)
-{
-    visitor->trace(m_image);
-    ContentData::trace(visitor);
 }
 
 LayoutObject* TextContentData::createLayoutObject(Document& doc, ComputedStyle& pseudoStyle) const

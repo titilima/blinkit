@@ -845,17 +845,17 @@ void ComputedStyle::clearContent()
         rareNonInheritedData.access()->m_content = nullptr;
 }
 
-void ComputedStyle::appendContent(PassOwnPtrWillBeRawPtr<ContentData> contentData)
+void ComputedStyle::appendContent(std::unique_ptr<ContentData> &&contentData)
 {
-    OwnPtrWillBePersistent<ContentData>& content = rareNonInheritedData.access()->m_content;
+    std::unique_ptr<ContentData>& content = rareNonInheritedData.access()->m_content;
     ContentData* lastContent = content.get();
     while (lastContent && lastContent->next())
         lastContent = lastContent->next();
 
     if (lastContent)
-        lastContent->setNext(contentData);
+        lastContent->setNext(std::move(contentData));
     else
-        content = contentData;
+        content = std::move(contentData);
 }
 
 void ComputedStyle::setContent(PassRefPtrWillBeRawPtr<StyleImage> image, bool add)
@@ -873,7 +873,7 @@ void ComputedStyle::setContent(PassRefPtrWillBeRawPtr<StyleImage> image, bool ad
 
 void ComputedStyle::setContent(const String& string, bool add)
 {
-    OwnPtrWillBePersistent<ContentData>& content = rareNonInheritedData.access()->m_content;
+    std::unique_ptr<ContentData> &content = rareNonInheritedData.access()->m_content;
     if (add) {
         ContentData* lastContent = content.get();
         while (lastContent && lastContent->next())
