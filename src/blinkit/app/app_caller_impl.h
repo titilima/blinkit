@@ -30,9 +30,9 @@ public:
     {
         task();
     }
-    void SyncCall(const blink::WebTraceLocation &, std::function<void()> &&task) override
+    void SyncCall(const blink::WebTraceLocation &, const std::function<void()> &callback) override
     {
-        task();
+        callback();
     }
 };
 #endif
@@ -44,7 +44,7 @@ public:
     ~AppCallerImpl(void) override;
 private:
     void Call(const blink::WebTraceLocation &loc, std::function<void()> &&task) override;
-    void SyncCall(const blink::WebTraceLocation &loc, std::function<void()> &&task) override;
+    void SyncCall(const blink::WebTraceLocation &loc, const std::function<void()> &callback) override;
 
     std::shared_ptr<blink::WebTaskRunner> m_taskRunner;
 };

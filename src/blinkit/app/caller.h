@@ -25,7 +25,7 @@ public:
     virtual ~AppCaller(void) = default;
 
     virtual void Call(const blink::WebTraceLocation &loc, std::function<void()> &&task) = 0;
-    virtual void SyncCall(const blink::WebTraceLocation &loc, std::function<void()> &&task) = 0;
+    virtual void SyncCall(const blink::WebTraceLocation &loc, const std::function<void()> &callback) = 0;
 protected:
     AppCaller(void) = default;
 };

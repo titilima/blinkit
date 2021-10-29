@@ -30,18 +30,18 @@ void AppCallerImpl::Call(const WebTraceLocation &loc, std::function<void()> &&ta
     m_taskRunner->postTask(loc, std::move(task));
 }
 
-void AppCallerImpl::SyncCall(const WebTraceLocation &loc, std::function<void()> &&task)
+void AppCallerImpl::SyncCall(const WebTraceLocation &loc, const std::function<void()> &callback)
 {
     if (isMainThread())
     {
-        task();
+        callback();
     }
     else
     {
         zed::signal waiter;
-        auto waitableTask = [&waiter, task = std::move(task)]
+        auto waitableTask = [&waiter, &callback]
         {
-            task();
+            callback();
             waiter.notify();
         };
         m_taskRunner->postTask(loc, std::move(waitableTask));
