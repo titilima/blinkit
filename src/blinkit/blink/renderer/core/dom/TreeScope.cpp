@@ -534,8 +534,4 @@ void TreeScope::setDocument(Document &document)
     m_document = &document;
 }
 
-DEFINE_TRACE(TreeScope)
-{
-}
-
 } // namespace blink

@@ -209,16 +209,6 @@ void ScopedStyleResolver::collectViewportRulesTo(ViewportStyleResolver* resolver
         resolver->collectViewportRules(&m_authorStyleSheets[i]->contents()->ruleSet(), ViewportStyleResolver::AuthorOrigin);
 }
 
-DEFINE_TRACE(ScopedStyleResolver)
-{
-#if ENABLE(OILPAN)
-    // BKTODO: visitor->trace(m_scope);
-    visitor->trace(m_authorStyleSheets);
-    visitor->trace(m_keyframesRuleMap);
-    visitor->trace(m_treeBoundaryCrossingRuleSet);
-#endif
-}
-
 static void addRules(RuleSet* ruleSet, const WillBeHeapVector<MinimalRuleData>& rules)
 {
     for (unsigned i = 0; i < rules.size(); ++i) {
@@ -243,17 +233,11 @@ void ScopedStyleResolver::addTreeBoundaryCrossingRules(const RuleSet& authorRule
         addRules(ruleSetForScope.get(), authorRules.shadowDistributedRules());
 
     if (!m_treeBoundaryCrossingRuleSet) {
-        m_treeBoundaryCrossingRuleSet = adoptPtrWillBeNoop(new CSSStyleSheetRuleSubSet());
+        m_treeBoundaryCrossingRuleSet = std::make_unique<CSSStyleSheetRuleSubSet>();
         treeScope().document().styleResolver()->addTreeBoundaryCrossingScope(treeScope().rootNode());
     }
 
-    m_treeBoundaryCrossingRuleSet->append(RuleSubSet::create(parentStyleSheet, sheetIndex, ruleSetForScope.release()));
-}
-
-DEFINE_TRACE(ScopedStyleResolver::RuleSubSet)
-{
-    visitor->trace(m_parentStyleSheet);
-    visitor->trace(m_ruleSet);
+    m_treeBoundaryCrossingRuleSet->emplace_back(RuleSubSet::create(parentStyleSheet, sheetIndex, ruleSetForScope));
 }
 
 } // namespace blink

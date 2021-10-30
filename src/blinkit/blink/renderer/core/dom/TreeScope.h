@@ -124,8 +124,6 @@ public:
 
     Element* getElementByAccessKey(const String& key) const;
 
-    DECLARE_VIRTUAL_TRACE();
-
     ScopedStyleResolver* scopedStyleResolver() const { return m_scopedStyleResolver.get(); }
     ScopedStyleResolver& ensureScopedStyleResolver();
     void clearScopedStyleResolver();
@@ -153,7 +151,7 @@ private:
 
     std::unique_ptr<IdTargetObserverRegistry> m_idTargetObserverRegistry;
 
-    GCUniquePtr<ScopedStyleResolver> m_scopedStyleResolver;
+    std::unique_ptr<ScopedStyleResolver> m_scopedStyleResolver;
 
     mutable std::unique_ptr<DOMSelection> m_selection;
 };

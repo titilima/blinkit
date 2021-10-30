@@ -41,10 +41,6 @@
 #include "core/css/ElementRuleCollector.h"
 #include "core/css/RuleSet.h"
 #include "core/dom/TreeScope.h"
-#include "wtf/HashMap.h"
-#include "wtf/HashSet.h"
-#include "wtf/OwnPtr.h"
-#include "wtf/PassOwnPtr.h"
 
 namespace blink {
 
@@ -55,11 +51,10 @@ class ViewportStyleResolver;
 // This class selects a ComputedStyle for a given element based on a collection of stylesheets.
 class ScopedStyleResolver final {
     WTF_MAKE_NONCOPYABLE(ScopedStyleResolver);
-    USING_FAST_MALLOC_WILL_BE_REMOVED(ScopedStyleResolver);
 public:
-    static GCUniquePtr<ScopedStyleResolver> create(TreeScope& scope)
+    static std::unique_ptr<ScopedStyleResolver> create(TreeScope& scope)
     {
-        return BlinKit::GCWrapUnique(new ScopedStyleResolver(scope));
+        return zed::wrap_unique(new ScopedStyleResolver(scope));
     }
 
     const TreeScope& treeScope() const { return m_scope; }
@@ -76,8 +71,6 @@ public:
     void resetAuthorStyle();
     void collectViewportRulesTo(ViewportStyleResolver*) const;
     bool hasDeepOrShadowSelector() const { return m_hasDeepOrShadowSelector; }
-
-    DECLARE_TRACE();
 
 private:
     explicit ScopedStyleResolver(TreeScope& scope)
@@ -97,30 +90,28 @@ private:
     using KeyframesRuleMap = std::unordered_map<const StringImpl*, GCRefPtr<StyleRuleKeyframes>>;
     KeyframesRuleMap m_keyframesRuleMap;
 
-    class RuleSubSet final : public NoBaseWillBeGarbageCollected<RuleSubSet> {
+    class RuleSubSet final {
     public:
-        static PassOwnPtrWillBeRawPtr<RuleSubSet> create(CSSStyleSheet* sheet, unsigned index, PassOwnPtrWillBeRawPtr<RuleSet> rules)
+        static std::unique_ptr<RuleSubSet> create(CSSStyleSheet *sheet, unsigned index, const GCRefPtr<RuleSet> &rules)
         {
-            return adoptPtrWillBeNoop(new RuleSubSet(sheet, index, rules));
+            return zed::wrap_unique(new RuleSubSet(sheet, index, rules));
         }
 
-        RawPtrWillBeMember<CSSStyleSheet> m_parentStyleSheet;
+        CSSStyleSheet *m_parentStyleSheet;
         unsigned m_parentIndex;
         GCRefPtr<RuleSet> m_ruleSet;
 
-        DECLARE_TRACE();
-
     private:
-        RuleSubSet(CSSStyleSheet* sheet, unsigned index, PassOwnPtrWillBeRawPtr<RuleSet> rules)
+        RuleSubSet(CSSStyleSheet *sheet, unsigned index, const GCRefPtr<RuleSet> &rules)
             : m_parentStyleSheet(sheet)
             , m_parentIndex(index)
             , m_ruleSet(rules)
         {
         }
     };
-    using CSSStyleSheetRuleSubSet = WillBeHeapVector<OwnPtrWillBeMember<RuleSubSet>>;
+    using CSSStyleSheetRuleSubSet = std::vector<std::unique_ptr<RuleSubSet>>;
 
-    OwnPtrWillBeMember<CSSStyleSheetRuleSubSet> m_treeBoundaryCrossingRuleSet;
+    std::unique_ptr<CSSStyleSheetRuleSubSet> m_treeBoundaryCrossingRuleSet;
     bool m_hasDeepOrShadowSelector = false;
 };
 
