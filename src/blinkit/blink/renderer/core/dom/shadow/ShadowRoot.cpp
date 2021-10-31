@@ -332,7 +332,6 @@ DEFINE_TRACE(ShadowRoot)
 {
     visitor->trace(m_younger);
     visitor->trace(m_shadowRootRareData);
-    TreeScope::trace(visitor);
     DocumentFragment::trace(visitor);
 }
 
