@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FirstLetterPseudoElement.h
+// Description: FirstLetterPseudoElement Class
+//      Author: Ziming Li
+//     Created: 2021-10-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -37,9 +48,9 @@ class LayoutTextFragment;
 class FirstLetterPseudoElement final : public PseudoElement {
     WTF_MAKE_NONCOPYABLE(FirstLetterPseudoElement);
 public:
-    static PassRefPtrWillBeRawPtr<FirstLetterPseudoElement> create(Element* parent)
+    static GCRefPtr<FirstLetterPseudoElement> create(Element* parent)
     {
-        return adoptRefWillBeNoop(new FirstLetterPseudoElement(parent));
+        return BlinKit::GCWrapShared(new FirstLetterPseudoElement(parent));
     }
 
     ~FirstLetterPseudoElement() override;

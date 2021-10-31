@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PseudoElement.h
+// Description: PseudoElement Class
+//      Author: Ziming Li
+//     Created: 2021-10-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -35,7 +46,7 @@ namespace blink {
 
 class CORE_EXPORT PseudoElement : public Element {
 public:
-    static PassRefPtrWillBeRawPtr<PseudoElement> create(Element* parent, PseudoId);
+    static GCRefPtr<PseudoElement> create(Element* parent, PseudoId);
 
     PassRefPtr<ComputedStyle> customStyleForLayoutObject() override;
     void attach(const AttachContext& = AttachContext()) override;

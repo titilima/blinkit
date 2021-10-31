@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PseudoElement.cpp
+// Description: PseudoElement Class
+//      Author: Ziming Li
+//     Created: 2021-10-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -33,11 +44,13 @@
 #include "core/layout/LayoutQuote.h"
 #include "core/style/ContentData.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-PassRefPtrWillBeRawPtr<PseudoElement> PseudoElement::create(Element* parent, PseudoId pseudoId)
+GCRefPtr<PseudoElement> PseudoElement::create(Element* parent, PseudoId pseudoId)
 {
-    return adoptRefWillBeNoop(new PseudoElement(parent, pseudoId));
+    return GCWrapShared(new PseudoElement(parent, pseudoId));
 }
 
 const QualifiedName& pseudoElementTagName(PseudoId pseudoId)
