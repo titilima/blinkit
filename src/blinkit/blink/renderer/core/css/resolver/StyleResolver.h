@@ -89,11 +89,11 @@ using ActiveInterpolationsMap = HashMap<PropertyHandle, Vector<RefPtr<Interpolat
 
 // This class selects a ComputedStyle for a given element based on a collection of stylesheets.
 class CORE_EXPORT StyleResolver final {
-    WTF_MAKE_NONCOPYABLE(StyleResolver); USING_FAST_MALLOC_WILL_BE_REMOVED(StyleResolver);
+    WTF_MAKE_NONCOPYABLE(StyleResolver);
 public:
-    static GCUniquePtr<StyleResolver> create(Document& document)
+    static std::unique_ptr<StyleResolver> create(Document& document)
     {
-        return BlinKit::GCWrapUnique(new StyleResolver(document));
+        return zed::wrap_unique(new StyleResolver(document));
     }
     ~StyleResolver();
     void dispose();
@@ -189,7 +189,7 @@ public:
     void increaseStyleSharingDepth() { ++m_styleSharingDepth; }
     void decreaseStyleSharingDepth() { --m_styleSharingDepth; }
 
-    PassRefPtrWillBeRawPtr<PseudoElement> createPseudoElementIfNeeded(Element& parent, PseudoId);
+    GCRefPtr<PseudoElement> createPseudoElementIfNeeded(Element& parent, PseudoId);
 
     DECLARE_TRACE();
 
@@ -236,7 +236,7 @@ private:
     bool hasAuthorBackground(const StyleResolverState&);
     bool hasAuthorBorder(const StyleResolverState&);
 
-    PassRefPtrWillBeRawPtr<PseudoElement> createPseudoElement(Element* parent, PseudoId);
+    GCRefPtr<PseudoElement> createPseudoElement(Element* parent, PseudoId);
 
     Document& document() { return m_document; }
 
@@ -251,7 +251,7 @@ private:
     Document &m_document;
     SelectorFilter m_selectorFilter;
 
-    GCUniquePtr<ViewportStyleResolver> m_viewportStyleResolver;
+    std::unique_ptr<ViewportStyleResolver> m_viewportStyleResolver;
 
     WillBeHeapListHashSet<RawPtrWillBeMember<CSSStyleSheet>, 16> m_pendingStyleSheets;
 

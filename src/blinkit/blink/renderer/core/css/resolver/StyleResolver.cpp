@@ -743,14 +743,14 @@ PassRefPtr<AnimatableValue> StyleResolver::createAnimatableValueSnapshot(StyleRe
     return CSSAnimatableValueFactory::create(property, *state.style());
 }
 
-PassRefPtrWillBeRawPtr<PseudoElement> StyleResolver::createPseudoElement(Element* parent, PseudoId pseudoId)
+GCRefPtr<PseudoElement> StyleResolver::createPseudoElement(Element* parent, PseudoId pseudoId)
 {
     if (pseudoId == FIRST_LETTER)
         return FirstLetterPseudoElement::create(parent);
     return PseudoElement::create(parent, pseudoId);
 }
 
-PassRefPtrWillBeRawPtr<PseudoElement> StyleResolver::createPseudoElementIfNeeded(Element& parent, PseudoId pseudoId)
+GCRefPtr<PseudoElement> StyleResolver::createPseudoElementIfNeeded(Element& parent, PseudoId pseudoId)
 {
     LayoutObject* parentLayoutObject = parent.layoutObject();
     if (!parentLayoutObject)
@@ -787,12 +787,12 @@ PassRefPtrWillBeRawPtr<PseudoElement> StyleResolver::createPseudoElementIfNeeded
     if (!pseudoElementLayoutObjectIsNeeded(style.get()))
         return nullptr;
 
-    RefPtrWillBeRawPtr<PseudoElement> pseudo = createPseudoElement(&parent, pseudoId);
+    GCRefPtr<PseudoElement> pseudo = createPseudoElement(&parent, pseudoId);
 
     setAnimationUpdateIfNeeded(state, *pseudo);
     if (ElementAnimations* elementAnimations = pseudo->elementAnimations())
         elementAnimations->cssAnimations().maybeApplyPendingUpdate(pseudo.get());
-    return pseudo.release();
+    return pseudo;
 }
 
 bool StyleResolver::pseudoStyleForElementInternal(Element& element, const PseudoStyleRequest& pseudoStyleRequest, const ComputedStyle* parentStyle, StyleResolverState& state)
@@ -1609,7 +1609,6 @@ DEFINE_TRACE(StyleResolver)
     visitor->trace(m_viewportDependentMediaQueryResults);
     visitor->trace(m_deviceDependentMediaQueryResults);
     visitor->trace(m_selectorFilter);
-    m_viewportStyleResolver->trace(visitor);
     visitor->trace(m_features);
     visitor->trace(m_siblingRuleSet);
     visitor->trace(m_uncommonAttributeRuleSet);
