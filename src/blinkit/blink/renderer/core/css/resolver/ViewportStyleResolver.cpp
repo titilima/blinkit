@@ -55,8 +55,6 @@
 
 namespace blink {
 
-DEFINE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(ViewportStyleResolver);
-
 ViewportStyleResolver::ViewportStyleResolver(Document* document)
     : m_document(document)
     , m_hasAuthorStyle(false)
@@ -230,12 +228,6 @@ Length ViewportStyleResolver::viewportLengthValue(CSSPropertyID id) const
     documentStyle->setHasViewportUnits(documentStyleHasViewportUnits);
 
     return result;
-}
-
-DEFINE_TRACE(ViewportStyleResolver)
-{
-    visitor->trace(m_propertySet);
-    visitor->trace(m_document);
 }
 
 } // namespace blink

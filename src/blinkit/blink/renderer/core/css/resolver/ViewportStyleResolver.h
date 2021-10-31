@@ -53,12 +53,10 @@ class MutableStylePropertySet;
 class StyleRuleViewport;
 
 class CORE_EXPORT ViewportStyleResolver {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(ViewportStyleResolver);
-    DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(ViewportStyleResolver);
 public:
-    static GCUniquePtr<ViewportStyleResolver> create(Document* document)
+    static std::unique_ptr<ViewportStyleResolver> create(Document* document)
     {
-        return BlinKit::GCWrapUnique(new ViewportStyleResolver(document));
+        return zed::wrap_unique(new ViewportStyleResolver(document));
     }
 
     enum Origin { UserAgentOrigin, AuthorOrigin };
@@ -66,8 +64,6 @@ public:
     void collectViewportRules();
     void collectViewportRules(RuleSet*, Origin);
     void resolve();
-
-    DECLARE_TRACE();
 
 private:
     explicit ViewportStyleResolver(Document*);
@@ -77,7 +73,7 @@ private:
     float viewportArgumentValue(CSSPropertyID) const;
     Length viewportLengthValue(CSSPropertyID) const;
 
-    GCRefPtr<Document> m_document;
+    Document *m_document;
     GCRefPtr<MutableStylePropertySet> m_propertySet;
     bool m_hasAuthorStyle;
 };
