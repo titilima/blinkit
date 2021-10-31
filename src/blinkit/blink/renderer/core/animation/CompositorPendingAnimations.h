@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CompositorPendingAnimations.h
+// Description: CompositorPendingAnimations Class
+//      Author: Ziming Li
+//     Created: 2021-10-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -35,7 +46,6 @@
 #include "core/animation/Animation.h"
 #include "platform/Timer.h"
 #include "platform/heap/Handle.h"
-#include "wtf/Vector.h"
 
 namespace blink {
 
@@ -59,13 +69,11 @@ public:
     bool update(bool startOnCompositor = true);
     void notifyCompositorAnimationStarted(double monotonicAnimationStartTime, int compositorGroup = 0);
 
-    DECLARE_TRACE();
-
 private:
     void timerFired(Timer<CompositorPendingAnimations>*) { update(false); }
 
-    PersistentHeapVectorWillBeHeapVector<Member<Animation>> m_pending;
-    PersistentHeapVectorWillBeHeapVector<Member<Animation>> m_waitingForCompositorAnimationStart;
+    std::vector<Animation *> m_pending;
+    std::vector<Animation *> m_waitingForCompositorAnimationStart;
     Timer<CompositorPendingAnimations> m_timer;
     int m_compositorGroup;
 };
