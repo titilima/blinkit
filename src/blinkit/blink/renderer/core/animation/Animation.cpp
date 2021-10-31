@@ -75,10 +75,7 @@ Animation* Animation::create(AnimationEffect* effect, AnimationTimeline* timelin
         return nullptr;
     }
 
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
-    Animation* animation = new Animation(timeline->document()->contextDocument().get(), *timeline, effect);
+    Animation* animation = new Animation(timeline->document(), *timeline, effect);
     animation->suspendIfNeeded();
 
     if (timeline) {
@@ -87,7 +84,6 @@ Animation* Animation::create(AnimationEffect* effect, AnimationTimeline* timelin
     }
 
     return animation;
-#endif
 }
 
 Animation::Animation(ExecutionContext* executionContext, AnimationTimeline& timeline, AnimationEffect* content)
@@ -1028,8 +1024,7 @@ Animation::PlayStateUpdateScope::~PlayStateUpdateScope()
             TRACE_EVENT_NESTABLE_ASYNC_INSTANT1("blink.animations,devtools.timeline,benchmark", "Animation", m_animation, "data", InspectorAnimationStateEvent::data(*m_animation));
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // Ordering is important, the ready promise should resolve/reject before
     // the finished promise.
     if (m_animation->m_readyPromise && newPlayState != oldPlayState) {
@@ -1119,7 +1114,7 @@ DEFINE_TRACE(Animation)
     visitor->trace(m_pendingFinishedEvent);
     // BKTODO: visitor->trace(m_finishedPromise);
     // BKTODO: visitor->trace(m_readyPromise);
-    RefCountedGarbageCollectedEventTargetWithInlineData<Animation>::trace(visitor);
+    EventTargetWithInlineData::trace(visitor);
     ActiveDOMObject::trace(visitor);
 }
 

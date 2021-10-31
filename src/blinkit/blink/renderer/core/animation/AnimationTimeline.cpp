@@ -70,25 +70,20 @@ bool compareAnimations(const Member<Animation>& left, const Member<Animation>& r
 const double AnimationTimeline::s_minimumDelay = 0.04;
 
 
-AnimationTimeline* AnimationTimeline::create(Document* document, PlatformTiming* timing)
+std::unique_ptr<AnimationTimeline> AnimationTimeline::create(Document* document)
 {
-    return new AnimationTimeline(document, timing);
+    return zed::wrap_unique(new AnimationTimeline(document));
 }
 
-AnimationTimeline::AnimationTimeline(Document* document, PlatformTiming* timing)
+AnimationTimeline::AnimationTimeline(Document* document)
     : m_document(document)
     , m_zeroTime(0) // 0 is used by unit tests which cannot initialize from the loader
     , m_zeroTimeInitialized(false)
     , m_outdatedAnimationCount(0)
     , m_playbackRate(1)
+    , m_timing(std::make_unique<AnimationTimelineTiming>(*this))
     , m_lastCurrentTimeInternal(0)
 {
-    // BKTODO: ThreadState::current()->registerPreFinalizer(this);
-    if (!timing)
-        m_timing = new AnimationTimelineTiming(this);
-    else
-        m_timing = timing;
-
 #if 0 // BKTODO:
     if (RuntimeEnabledFeatures::compositorAnimationTimelinesEnabled() && Platform::current()->isThreadedAnimationEnabled()) {
         ASSERT(Platform::current()->compositorSupport());
@@ -101,6 +96,7 @@ AnimationTimeline::AnimationTimeline(Document* document, PlatformTiming* timing)
 
 AnimationTimeline::~AnimationTimeline()
 {
+    dispose();
 }
 
 void AnimationTimeline::dispose()
@@ -110,8 +106,9 @@ void AnimationTimeline::dispose()
     // for that safely, this dispose() method will return first
     // during prefinalization, notifying each Animation object of
     // impending destruction.
-    for (const auto& animation : m_animations)
-        animation->dispose();
+    m_animations.for_each([](Animation &animation) {
+        animation.dispose();
+    });
 }
 
 bool AnimationTimeline::isActive()
@@ -123,7 +120,7 @@ void AnimationTimeline::animationAttached(Animation& animation)
 {
     ASSERT(animation.timeline() == this);
     ASSERT(!m_animations.contains(&animation));
-    m_animations.add(&animation);
+    m_animations.emplace(&animation);
 }
 
 Animation* AnimationTimeline::play(AnimationEffect* child)
@@ -135,7 +132,7 @@ Animation* AnimationTimeline::play(AnimationEffect* child)
     ASSERT(m_animations.contains(animation));
 
     animation->play();
-    ASSERT(m_animationsNeedingUpdate.contains(animation));
+    ASSERT(zed::key_exists(m_animationsNeedingUpdate, animation));
 
     return animation;
 }
@@ -143,10 +140,13 @@ Animation* AnimationTimeline::play(AnimationEffect* child)
 HeapVector<Member<Animation>> AnimationTimeline::getAnimations()
 {
     HeapVector<Member<Animation>> animations;
+    ASSERT(false); // BKTODO:
+#if 0
     for (const auto& animation : m_animations) {
         if (animation->effect() && (animation->effect()->isCurrent() || animation->effect()->isInEffect()))
             animations.emplace_back(animation);
     }
+#endif
     std::sort(animations.begin(), animations.end(), compareAnimations);
     return animations;
 }
@@ -162,16 +162,16 @@ void AnimationTimeline::serviceAnimations(TimingUpdateReason reason)
 
     m_lastCurrentTimeInternal = currentTimeInternal();
 
-    HeapVector<Member<Animation>> animations;
+    std::vector<Animation *> animations;
     animations.reserve(m_animationsNeedingUpdate.size());
-    for (Animation* animation : m_animationsNeedingUpdate)
-        animations.append(animation);
+    for (Animation *animation : m_animationsNeedingUpdate)
+        animations.emplace_back(animation);
 
     std::sort(animations.begin(), animations.end(), Animation::hasLowerPriority);
 
     for (Animation* animation : animations) {
         if (!animation->update(reason))
-            m_animationsNeedingUpdate.remove(animation);
+            m_animationsNeedingUpdate.erase(animation);
     }
 
     ASSERT(m_outdatedAnimationCount == 0);
@@ -208,14 +208,8 @@ void AnimationTimeline::AnimationTimelineTiming::wakeAfter(double duration)
 
 void AnimationTimeline::AnimationTimelineTiming::serviceOnNextFrame()
 {
-    if (m_timeline->m_document && m_timeline->m_document->view())
-        m_timeline->m_document->view()->scheduleAnimation();
-}
-
-DEFINE_TRACE(AnimationTimeline::AnimationTimelineTiming)
-{
-    visitor->trace(m_timeline);
-    AnimationTimeline::PlatformTiming::trace(visitor);
+    if (m_timeline.m_document && m_timeline.m_document->view())
+        m_timeline.m_document->view()->scheduleAnimation();
 }
 
 double AnimationTimeline::zeroTime()
@@ -278,10 +272,10 @@ void AnimationTimeline::setCurrentTimeInternal(double currentTime)
         : document()->animationClock().currentTime() - currentTime / m_playbackRate;
     m_zeroTimeInitialized = true;
 
-    for (const auto& animation : m_animations) {
+    m_animations.for_each([](Animation &animation) {
         // The Player needs a timing update to pick up a new time.
-        animation->setOutdated();
-    }
+        animation.setOutdated();
+    });
 
     // Any corresponding compositor animation will need to be restarted. Marking the
     // effect changed forces this.
@@ -296,8 +290,10 @@ double AnimationTimeline::effectiveTime()
 
 void AnimationTimeline::pauseAnimationsForTesting(double pauseTime)
 {
-    for (const auto& animation : m_animationsNeedingUpdate)
-        animation->pauseForTesting(pauseTime);
+    // BKTODO: Check if necessary.
+    m_animations.for_each([pauseTime](Animation &animation) {
+        animation.pauseForTesting(pauseTime);
+    });
     serviceAnimations(TimingUpdateOnDemand);
 }
 
@@ -312,10 +308,10 @@ bool AnimationTimeline::needsAnimationTimingUpdate()
     // We allow m_lastCurrentTimeInternal to advance here when there
     // are no animations to allow animations spawned during style
     // recalc to not invalidate this flag.
-    if (m_animationsNeedingUpdate.isEmpty())
+    if (m_animationsNeedingUpdate.empty())
         m_lastCurrentTimeInternal = currentTimeInternal();
 
-    return !m_animationsNeedingUpdate.isEmpty();
+    return !m_animationsNeedingUpdate.empty();
 }
 
 void AnimationTimeline::clearOutdatedAnimation(Animation* animation)
@@ -328,7 +324,7 @@ void AnimationTimeline::setOutdatedAnimation(Animation* animation)
 {
     ASSERT(animation->outdated());
     m_outdatedAnimationCount++;
-    m_animationsNeedingUpdate.add(animation);
+    m_animationsNeedingUpdate.emplace(animation);
     if (isActive() && !m_document->page()->animator().isServicingAnimations())
         m_timing->serviceOnNextFrame();
 }
@@ -351,9 +347,9 @@ void AnimationTimeline::setPlaybackRate(double playbackRate)
 
 void AnimationTimeline::setAllCompositorPending(bool sourceChanged)
 {
-    for (const auto& animation : m_animations) {
-        animation->setCompositorPending(sourceChanged);
-    }
+    m_animations.for_each([sourceChanged](Animation &animation) {
+        animation.setCompositorPending(sourceChanged);
+    });
 }
 
 double AnimationTimeline::playbackRate() const
@@ -368,12 +364,5 @@ void AnimationTimeline::detachFromDocument()
     m_document = nullptr;
 }
 #endif
-
-DEFINE_TRACE(AnimationTimeline)
-{
-    visitor->trace(m_timing);
-    visitor->trace(m_animationsNeedingUpdate);
-    visitor->trace(m_animations);
-}
 
 } // namespace

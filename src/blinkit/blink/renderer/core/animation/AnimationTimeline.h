@@ -43,6 +43,7 @@
 #define AnimationTimeline_h
 
 #include "bindings/core/v8/ScriptWrappable.h"
+#include "blinkit/gc/gc_object_set.h"
 #include "core/CoreExport.h"
 #include "core/animation/Animation.h"
 #include "core/animation/EffectModel.h"
@@ -59,22 +60,20 @@ class Document;
 class AnimationEffect;
 
 // AnimationTimeline is constructed and owned by Document, and tied to its lifecycle.
-class CORE_EXPORT AnimationTimeline final : public BlinKit::GCObject, public ScriptWrappable {
+class CORE_EXPORT AnimationTimeline final // BKTODO: Support ScriptWrappable?
+{
     DEFINE_WRAPPERTYPEINFO();
-    USING_PRE_FINALIZER(AnimationTimeline, dispose);
 public:
-    class PlatformTiming : public BlinKit::GCObject {
+    class PlatformTiming {
     public:
         // Calls AnimationTimeline's wake() method after duration seconds.
         virtual void wakeAfter(double duration) = 0;
         virtual void serviceOnNextFrame() = 0;
         virtual ~PlatformTiming() { }
-        DEFINE_INLINE_VIRTUAL_TRACE() { }
     };
 
-    static AnimationTimeline* create(Document*, PlatformTiming* = nullptr);
+    static std::unique_ptr<AnimationTimeline> create(Document*);
     ~AnimationTimeline();
-    void dispose();
 
     void serviceAnimations(TimingUpdateReason);
     void scheduleNextService();
@@ -85,7 +84,7 @@ public:
     void animationAttached(Animation&);
 
     bool isActive();
-    bool hasPendingUpdates() const { return !m_animationsNeedingUpdate.isEmpty(); }
+    bool hasPendingUpdates() const { return !m_animationsNeedingUpdate.empty(); }
     double zeroTime();
     double currentTime(bool& isNull);
     double currentTime();
@@ -114,53 +113,48 @@ public:
     void wake();
     void resetForTesting();
 
-    DECLARE_TRACE();
-
 protected:
-    AnimationTimeline(Document*, PlatformTiming*);
+    AnimationTimeline(Document*);
 
 private:
+    void dispose();
+
     Document *m_document;
     double m_zeroTime;
     bool m_zeroTimeInitialized;
     unsigned m_outdatedAnimationCount;
     // Animations which will be updated on the next frame
     // i.e. current, in effect, or had timing changed
-    HeapHashSet<Member<Animation>> m_animationsNeedingUpdate;
-    HeapHashSet<WeakMember<Animation>> m_animations;
+    std::unordered_set<Animation *> m_animationsNeedingUpdate;
+    BlinKit::GCObjectSet<Animation> m_animations;
 
     double m_playbackRate;
 
     friend class SMILTimeContainer;
     static const double s_minimumDelay;
 
-    GCRefPtr<PlatformTiming> m_timing;
+    std::unique_ptr<PlatformTiming> m_timing;
     double m_lastCurrentTimeInternal;
 
     OwnPtr<WebCompositorAnimationTimeline> m_compositorTimeline;
 
     class AnimationTimelineTiming final : public PlatformTiming {
     public:
-        AnimationTimelineTiming(AnimationTimeline* timeline)
+        AnimationTimelineTiming(AnimationTimeline &timeline)
             : m_timeline(timeline)
             , m_timer(this, &AnimationTimelineTiming::timerFired)
         {
-            ASSERT(m_timeline);
         }
 
         void wakeAfter(double duration) override;
         void serviceOnNextFrame() override;
 
-        void timerFired(Timer<AnimationTimelineTiming>*) { m_timeline->wake(); }
-
-        DECLARE_VIRTUAL_TRACE();
+        void timerFired(Timer<AnimationTimelineTiming>*) { m_timeline.wake(); }
 
     private:
-        GCRefPtr<AnimationTimeline> m_timeline;
+        AnimationTimeline &m_timeline;
         Timer<AnimationTimelineTiming> m_timer;
     };
-
-    friend class AnimationAnimationTimelineTest;
 };
 
 } // namespace blink

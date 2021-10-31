@@ -61,7 +61,7 @@ class ExceptionState;
 class WebCompositorAnimationPlayer;
 
 class CORE_EXPORT Animation final
-    : public RefCountedGarbageCollectedEventTargetWithInlineData<Animation>
+    : public EventTargetWithInlineData
     , public ActiveDOMObject
     , public WebCompositorAnimationDelegate
     , public WebCompositorAnimationPlayerClient {
@@ -188,6 +188,7 @@ public:
         return animation1->sequenceNumber() < animation2->sequenceNumber();
     }
 
+    static BlinKit::GCObject* GCCast(Animation *o) { return o; }
     DECLARE_VIRTUAL_TRACE();
 
 protected:
