@@ -156,7 +156,7 @@ bool StyleSheetContents::isCacheable() const
     return true;
 }
 
-void StyleSheetContents::parserAppendRule(PassRefPtrWillBeRawPtr<StyleRuleBase> rule)
+void StyleSheetContents::parserAppendRule(const GCRefPtr<StyleRuleBase> &rule)
 {
     if (rule->isImportRule()) {
         // Parser enforces that @import rules come before anything else
@@ -164,13 +164,13 @@ void StyleSheetContents::parserAppendRule(PassRefPtrWillBeRawPtr<StyleRuleBase> 
         StyleRuleImport* importRule = toStyleRuleImport(rule.get());
         if (importRule->mediaQueries())
             setHasMediaQueries();
-        m_importRules.emplace_back(std::move(importRule));
+        m_importRules.emplace_back(importRule);
         m_importRules.back()->setParentStyleSheet(this);
         m_importRules.back()->requestStyleSheet();
         return;
     }
 
-    if (rule.get()->isNamespaceRule()) {
+    if (rule->isNamespaceRule()) {
         // Parser enforces that @namespace rules come before all rules other than
         // import/charset rules
         ASSERT(m_childRules.empty());
@@ -180,10 +180,10 @@ void StyleSheetContents::parserAppendRule(PassRefPtrWillBeRawPtr<StyleRuleBase> 
         return;
     }
 
-    if (rule.get()->isMediaRule())
+    if (rule->isMediaRule())
         setHasMediaQueries();
 
-    m_childRules.emplace_back(std::move(rule));
+    m_childRules.emplace_back(rule);
 }
 
 void StyleSheetContents::setHasMediaQueries()

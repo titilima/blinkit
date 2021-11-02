@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleRuleNamespace.h
+// Description: StyleRuleNamespace Class
+//      Author: Ziming Li
+//     Created: 2021-10-31
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -14,9 +25,9 @@ namespace blink {
 class StyleRuleNamespace final : public StyleRuleBase {
     USING_FAST_MALLOC_WILL_BE_REMOVED(StyleRuleNamespace);
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleNamespace> create(AtomicString prefix, AtomicString uri)
+    static GCRefPtr<StyleRuleNamespace> create(AtomicString prefix, AtomicString uri)
     {
-        return adoptRefWillBeNoop(new StyleRuleNamespace(prefix, uri));
+        return BlinKit::GCWrapShared(new StyleRuleNamespace(prefix, uri));
     }
 
     AtomicString prefix() const { return m_prefix; }

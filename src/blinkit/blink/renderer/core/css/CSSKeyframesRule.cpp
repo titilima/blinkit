@@ -64,16 +64,16 @@ StyleRuleKeyframes::~StyleRuleKeyframes()
 {
 }
 
-void StyleRuleKeyframes::parserAppendKeyframe(PassRefPtrWillBeRawPtr<StyleRuleKeyframe> keyframe)
+void StyleRuleKeyframes::parserAppendKeyframe(const GCRefPtr<StyleRuleKeyframe> &keyframe)
 {
     if (!keyframe)
         return;
     m_keyframes.emplace_back(keyframe);
 }
 
-void StyleRuleKeyframes::wrapperAppendKeyframe(PassRefPtrWillBeRawPtr<StyleRuleKeyframe> keyframe)
+void StyleRuleKeyframes::wrapperAppendKeyframe(const GCRefPtr<StyleRuleKeyframe> &keyframe)
 {
-    m_keyframes.emplace_back(std::move(keyframe));
+    m_keyframes.emplace_back(keyframe);
     styleChanged();
 }
 
@@ -133,7 +133,7 @@ void CSSKeyframesRule::appendRule(const String& ruleText)
 
     CSSStyleSheet* styleSheet = parentStyleSheet();
     CSSParserContext context(parserContext());
-    RefPtrWillBeRawPtr<StyleRuleKeyframe> keyframe = CSSParser::parseKeyframeRule(context, ruleText);
+    GCRefPtr<StyleRuleKeyframe> keyframe = CSSParser::parseKeyframeRule(context, ruleText);
     if (!keyframe)
         return;
 

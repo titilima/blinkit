@@ -30,6 +30,8 @@
 #include "core/css/parser/CSSVariableParser.h"
 #include "core/layout/LayoutTheme.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 bool CSSParser::parseDeclarationList(const CSSParserContext& context, MutableStylePropertySet* propertySet, const String& declaration)
@@ -48,7 +50,7 @@ CSSSelectorList CSSParser::parseSelector(const CSSParserContext& context, const 
     return CSSSelectorParser::parseSelector(scope.tokenRange(), context, nullptr);
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleBase> CSSParser::parseRule(const CSSParserContext& context, StyleSheetContents* styleSheet, const String& rule)
+GCRefPtr<StyleRuleBase> CSSParser::parseRule(const CSSParserContext& context, StyleSheetContents* styleSheet, const String& rule)
 {
     return CSSParserImpl::parseRule(rule, context, styleSheet, CSSParserImpl::AllowImportRules);
 }
@@ -121,10 +123,10 @@ PassOwnPtr<Vector<double>> CSSParser::parseKeyframeKeyList(const String& keyList
     return CSSParserImpl::parseKeyframeKeyList(keyList);
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleKeyframe> CSSParser::parseKeyframeRule(const CSSParserContext& context, const String& rule)
+GCRefPtr<StyleRuleKeyframe> CSSParser::parseKeyframeRule(const CSSParserContext& context, const String& rule)
 {
-    RefPtrWillBeRawPtr<StyleRuleBase> keyframe = CSSParserImpl::parseRule(rule, context, nullptr, CSSParserImpl::KeyframeRules);
-    return toStyleRuleKeyframe(keyframe.get());
+    GCRefPtr<StyleRuleBase> keyframe = CSSParserImpl::parseRule(rule, context, nullptr, CSSParserImpl::KeyframeRules);
+    return GCWrapShared(toStyleRuleKeyframe(keyframe.get()));
 }
 
 bool CSSParser::parseSupportsCondition(const String& condition)
@@ -178,7 +180,7 @@ GCRefPtr<CSSValue> CSSParser::parseFontFaceDescriptor(CSSPropertyID propertyID, 
     builder.appendLiteral(" : ");
     builder.append(propertyValue);
     builder.appendLiteral("; }");
-    RefPtrWillBeRawPtr<StyleRuleBase> rule = parseRule(context, nullptr, builder.toString());
+    GCRefPtr<StyleRuleBase> rule = parseRule(context, nullptr, builder.toString());
     if (!rule || !rule->isFontFaceRule())
         return nullptr;
     return toStyleRuleFontFace(rule.get())->properties().getPropertyCSSValue(propertyID);

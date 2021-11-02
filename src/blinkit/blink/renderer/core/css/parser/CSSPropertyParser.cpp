@@ -126,7 +126,7 @@ bool CSSPropertyParser::parseValueStart(CSSPropertyID unresolvedProperty, bool i
     if (GCRefPtr<CSSValue> parsedValue = parseSingleValue(unresolvedProperty)) {
         if (!m_range.atEnd())
             return false;
-        addProperty(propertyId, parsedValue.release(), important);
+        addProperty(propertyId, parsedValue, important);
         return true;
     }
 

@@ -50,14 +50,14 @@ class StyleRuleKeyframe;
 
 class StyleRuleKeyframes final : public StyleRuleBase {
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleKeyframes> create() { return adoptRefWillBeNoop(new StyleRuleKeyframes()); }
+    static GCRefPtr<StyleRuleKeyframes> create() { return BlinKit::GCWrapShared(new StyleRuleKeyframes()); }
 
     ~StyleRuleKeyframes();
 
     const std::vector<GCRefPtr<StyleRuleKeyframe>>& keyframes() const { return m_keyframes; }
 
-    void parserAppendKeyframe(PassRefPtrWillBeRawPtr<StyleRuleKeyframe>);
-    void wrapperAppendKeyframe(PassRefPtrWillBeRawPtr<StyleRuleKeyframe>);
+    void parserAppendKeyframe(const GCRefPtr<StyleRuleKeyframe> &);
+    void wrapperAppendKeyframe(const GCRefPtr<StyleRuleKeyframe> &);
     void wrapperRemoveKeyframe(unsigned);
 
     String name() const { return m_name; }
@@ -68,7 +68,7 @@ public:
 
     int findKeyframeIndex(const String& key) const;
 
-    PassRefPtrWillBeRawPtr<StyleRuleKeyframes> copy() const { return adoptRefWillBeNoop(new StyleRuleKeyframes(*this)); }
+    GCRefPtr<StyleRuleKeyframes> copy() const { return BlinKit::GCWrapShared(new StyleRuleKeyframes(*this)); }
 
     DECLARE_TRACE_AFTER_DISPATCH();
 

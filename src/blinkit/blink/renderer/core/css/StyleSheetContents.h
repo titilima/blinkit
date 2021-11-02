@@ -108,7 +108,7 @@ public:
     void findFontFaceRules(std::vector<const StyleRuleFontFace *> &fontFaceRules);
 
     void parserAddNamespace(const AtomicString& prefix, const AtomicString& uri);
-    void parserAppendRule(PassRefPtrWillBeRawPtr<StyleRuleBase>);
+    void parserAppendRule(const GCRefPtr<StyleRuleBase> &);
 
     void clearRules();
 

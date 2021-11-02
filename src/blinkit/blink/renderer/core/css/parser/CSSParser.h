@@ -39,7 +39,7 @@ class CORE_EXPORT CSSParser {
     STATIC_ONLY(CSSParser);
 public:
     // As well as regular rules, allows @import and @namespace but not @charset
-    static PassRefPtrWillBeRawPtr<StyleRuleBase> parseRule(const CSSParserContext&, StyleSheetContents*, const String&);
+    static GCRefPtr<StyleRuleBase> parseRule(const CSSParserContext&, StyleSheetContents*, const String&);
     static void parseSheet(const CSSParserContext&, StyleSheetContents*, const String&);
     static CSSSelectorList parseSelector(const CSSParserContext&, const String&);
     static bool parseDeclarationList(const CSSParserContext&, MutableStylePropertySet*, const String&);
@@ -56,7 +56,7 @@ public:
     static GCRefPtr<ImmutableStylePropertySet> parseInlineStyleDeclaration(const String&, Element*);
 
     static PassOwnPtr<Vector<double>> parseKeyframeKeyList(const String&);
-    static PassRefPtrWillBeRawPtr<StyleRuleKeyframe> parseKeyframeRule(const CSSParserContext&, const String&);
+    static GCRefPtr<StyleRuleKeyframe> parseKeyframeRule(const CSSParserContext&, const String&);
 
     static bool parseSupportsCondition(const String&);
 

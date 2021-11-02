@@ -185,7 +185,7 @@ void StyleRuleBase::destroy()
     ASSERT_NOT_REACHED();
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleBase> StyleRuleBase::copy() const
+GCRefPtr<StyleRuleBase> StyleRuleBase::copy() const
 {
     switch (type()) {
     case Style:

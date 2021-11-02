@@ -43,9 +43,9 @@ using namespace BlinKit;
 
 namespace blink {
 
-PassRefPtrWillBeRawPtr<StyleRuleImport> StyleRuleImport::create(const String& href, const GCRefPtr<MediaQuerySet>& media)
+GCRefPtr<StyleRuleImport> StyleRuleImport::create(const String& href, const GCRefPtr<MediaQuerySet>& media)
 {
-    return adoptRefWillBeNoop(new StyleRuleImport(href, media));
+    return GCWrapShared(new StyleRuleImport(href, media));
 }
 
 StyleRuleImport::StyleRuleImport(const String& href, const GCRefPtr<MediaQuerySet>& media)
@@ -53,15 +53,12 @@ StyleRuleImport::StyleRuleImport(const String& href, const GCRefPtr<MediaQuerySe
     , m_parentStyleSheet(nullptr)
     , m_styleSheetClient(this)
     , m_strHref(href)
-    // BKTODO: , m_mediaQueries(media)
+    , m_mediaQueries(media)
     , m_resource(nullptr)
     , m_loading(false)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (!m_mediaQueries)
         m_mediaQueries = MediaQuerySet::create(String());
-#endif
 }
 
 StyleRuleImport::~StyleRuleImport()

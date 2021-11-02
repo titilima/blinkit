@@ -26,9 +26,9 @@ class StylePropertySet;
 class StyleRuleKeyframe final : public StyleRuleBase {
     USING_FAST_MALLOC_WILL_BE_REMOVED(StyleRuleKeyframe);
 public:
-    static PassRefPtrWillBeRawPtr<StyleRuleKeyframe> create(PassOwnPtr<Vector<double>> keys, const GCRefPtr<StylePropertySet> &properties)
+    static GCRefPtr<StyleRuleKeyframe> create(PassOwnPtr<Vector<double>> keys, const GCRefPtr<StylePropertySet> &properties)
     {
-        return adoptRefWillBeNoop(new StyleRuleKeyframe(keys, properties));
+        return BlinKit::GCWrapShared(new StyleRuleKeyframe(keys, properties));
     }
 
     // Exposed to JavaScript.

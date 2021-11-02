@@ -138,7 +138,7 @@ bool CSSParserImpl::parseDeclarationList(MutableStylePropertySet* declaration, c
     return declaration->addParsedProperties(results);
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleBase> CSSParserImpl::parseRule(const String& string, const CSSParserContext& context, StyleSheetContents* styleSheet, AllowedRulesType allowedRules)
+GCRefPtr<StyleRuleBase> CSSParserImpl::parseRule(const String& string, const CSSParserContext& context, StyleSheetContents* styleSheet, AllowedRulesType allowedRules)
 {
     CSSParserImpl parser(context, styleSheet);
     CSSTokenizer::Scope scope(string);
@@ -156,7 +156,7 @@ PassRefPtrWillBeRawPtr<StyleRuleBase> CSSParserImpl::parseRule(const String& str
     range.consumeWhitespace();
     if (!rule || !range.atEnd())
         return nullptr; // Parse error, trailing garbage
-    return rule.release();
+    return rule;
 }
 
 void CSSParserImpl::parseStyleSheet(const String& string, const CSSParserContext& context, StyleSheetContents* styleSheet)
@@ -172,7 +172,7 @@ void CSSParserImpl::parseStyleSheet(const String& string, const CSSParserContext
 
     TRACE_EVENT_BEGIN0("blink,blink_style", "CSSParserImpl::parseStyleSheet.parse");
     CSSParserImpl parser(context, styleSheet);
-    bool firstRuleValid = parser.consumeRuleList(scope.tokenRange(), TopLevelRuleList, [&styleSheet](PassRefPtrWillBeRawPtr<StyleRuleBase> rule) {
+    bool firstRuleValid = parser.consumeRuleList(scope.tokenRange(), TopLevelRuleList, [&styleSheet](const GCRefPtr<StyleRuleBase> &rule) {
         if (rule->isCharsetRule())
             return;
         styleSheet->parserAppendRule(rule);
@@ -217,7 +217,7 @@ void CSSParserImpl::parseStyleSheetForInspector(const String& string, const CSSP
     CSSParserObserverWrapper wrapper(observer);
     parser.m_observerWrapper = &wrapper;
     CSSTokenizer::Scope scope(string, wrapper);
-    bool firstRuleValid = parser.consumeRuleList(scope.tokenRange(), TopLevelRuleList, [&styleSheet](PassRefPtrWillBeRawPtr<StyleRuleBase> rule) {
+    bool firstRuleValid = parser.consumeRuleList(scope.tokenRange(), TopLevelRuleList, [&styleSheet](const GCRefPtr<StyleRuleBase> &rule) {
         if (rule->isCharsetRule())
             return;
         styleSheet->parserAppendRule(rule);
@@ -283,14 +283,14 @@ bool CSSParserImpl::consumeRuleList(CSSParserTokenRange range, RuleListType rule
         }
         if (rule) {
             allowedRules = computeNewAllowedRules(allowedRules, rule.get());
-            callback(rule.release());
+            callback(rule);
         }
     }
 
     return firstRuleValid;
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleBase> CSSParserImpl::consumeAtRule(CSSParserTokenRange& range, AllowedRulesType allowedRules)
+GCRefPtr<StyleRuleBase> CSSParserImpl::consumeAtRule(CSSParserTokenRange& range, AllowedRulesType allowedRules)
 {
     ASSERT(range.peek().type() == AtKeywordToken);
     const CSSParserString& name = range.consume().value();
@@ -344,7 +344,7 @@ PassRefPtrWillBeRawPtr<StyleRuleBase> CSSParserImpl::consumeAtRule(CSSParserToke
     }
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleBase> CSSParserImpl::consumeQualifiedRule(CSSParserTokenRange& range, AllowedRulesType allowedRules)
+GCRefPtr<StyleRuleBase> CSSParserImpl::consumeQualifiedRule(CSSParserTokenRange& range, AllowedRulesType allowedRules)
 {
     const CSSParserToken* preludeStart = &range.peek();
     while (!range.atEnd() && range.peek().type() != LeftBraceToken)
@@ -384,7 +384,7 @@ static AtomicString consumeStringOrURI(CSSParserTokenRange& range)
     return uri.value();
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleCharset> CSSParserImpl::consumeCharsetRule(CSSParserTokenRange prelude)
+GCRefPtr<StyleRuleCharset> CSSParserImpl::consumeCharsetRule(CSSParserTokenRange prelude)
 {
     prelude.consumeWhitespace();
     const CSSParserToken& string = prelude.consumeIncludingWhitespace();
@@ -393,7 +393,7 @@ PassRefPtrWillBeRawPtr<StyleRuleCharset> CSSParserImpl::consumeCharsetRule(CSSPa
     return StyleRuleCharset::create();
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleImport> CSSParserImpl::consumeImportRule(CSSParserTokenRange prelude)
+GCRefPtr<StyleRuleImport> CSSParserImpl::consumeImportRule(CSSParserTokenRange prelude)
 {
     prelude.consumeWhitespace();
     AtomicString uri(consumeStringOrURI(prelude));
@@ -411,7 +411,7 @@ PassRefPtrWillBeRawPtr<StyleRuleImport> CSSParserImpl::consumeImportRule(CSSPars
     return StyleRuleImport::create(uri, MediaQueryParser::parseMediaQuerySet(prelude));
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleNamespace> CSSParserImpl::consumeNamespaceRule(CSSParserTokenRange prelude)
+GCRefPtr<StyleRuleNamespace> CSSParserImpl::consumeNamespaceRule(CSSParserTokenRange prelude)
 {
     prelude.consumeWhitespace();
     AtomicString namespacePrefix;
@@ -426,7 +426,7 @@ PassRefPtrWillBeRawPtr<StyleRuleNamespace> CSSParserImpl::consumeNamespaceRule(C
     return StyleRuleNamespace::create(namespacePrefix, uri);
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleMedia> CSSParserImpl::consumeMediaRule(CSSParserTokenRange prelude, CSSParserTokenRange block)
+GCRefPtr<StyleRuleMedia> CSSParserImpl::consumeMediaRule(CSSParserTokenRange prelude, CSSParserTokenRange block)
 {
     std::vector<GCRefPtr<StyleRuleBase>> rules;
 
@@ -438,7 +438,7 @@ PassRefPtrWillBeRawPtr<StyleRuleMedia> CSSParserImpl::consumeMediaRule(CSSParser
         m_observerWrapper->observer().startRuleBody(m_observerWrapper->previousTokenStartOffset(block));
     }
 
-    consumeRuleList(block, RegularRuleList, [&rules](PassRefPtrWillBeRawPtr<StyleRuleBase> rule) {
+    consumeRuleList(block, RegularRuleList, [&rules](const GCRefPtr<StyleRuleBase> &rule) {
         rules.emplace_back(rule);
     });
 
@@ -448,7 +448,7 @@ PassRefPtrWillBeRawPtr<StyleRuleMedia> CSSParserImpl::consumeMediaRule(CSSParser
     return StyleRuleMedia::create(MediaQueryParser::parseMediaQuerySet(prelude), rules);
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleSupports> CSSParserImpl::consumeSupportsRule(CSSParserTokenRange prelude, CSSParserTokenRange block)
+GCRefPtr<StyleRuleSupports> CSSParserImpl::consumeSupportsRule(CSSParserTokenRange prelude, CSSParserTokenRange block)
 {
     CSSSupportsParser::SupportsResult supported = CSSSupportsParser::supportsCondition(prelude, *this);
     if (supported == CSSSupportsParser::Invalid)
@@ -461,7 +461,7 @@ PassRefPtrWillBeRawPtr<StyleRuleSupports> CSSParserImpl::consumeSupportsRule(CSS
     }
 
     std::vector<GCRefPtr<StyleRuleBase>> rules;
-    consumeRuleList(block, RegularRuleList, [&rules](PassRefPtrWillBeRawPtr<StyleRuleBase> rule) {
+    consumeRuleList(block, RegularRuleList, [&rules](const GCRefPtr<StyleRuleBase> &rule) {
         rules.emplace_back(rule);
     });
 
@@ -471,7 +471,7 @@ PassRefPtrWillBeRawPtr<StyleRuleSupports> CSSParserImpl::consumeSupportsRule(CSS
     return StyleRuleSupports::create(prelude.serialize().stripWhiteSpace(), supported, rules);
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleViewport> CSSParserImpl::consumeViewportRule(CSSParserTokenRange prelude, CSSParserTokenRange block)
+GCRefPtr<StyleRuleViewport> CSSParserImpl::consumeViewportRule(CSSParserTokenRange prelude, CSSParserTokenRange block)
 {
     // Allow @viewport rules from UA stylesheets even if the feature is disabled.
     if (!RuntimeEnabledFeatures::cssViewportEnabled() && !isUASheetBehavior(m_context.mode()))
@@ -493,7 +493,7 @@ PassRefPtrWillBeRawPtr<StyleRuleViewport> CSSParserImpl::consumeViewportRule(CSS
     return StyleRuleViewport::create(createStylePropertySet(m_parsedProperties, CSSViewportRuleMode));
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleFontFace> CSSParserImpl::consumeFontFaceRule(CSSParserTokenRange prelude, CSSParserTokenRange block)
+GCRefPtr<StyleRuleFontFace> CSSParserImpl::consumeFontFaceRule(CSSParserTokenRange prelude, CSSParserTokenRange block)
 {
     prelude.consumeWhitespace();
     if (!prelude.atEnd())
@@ -514,7 +514,7 @@ PassRefPtrWillBeRawPtr<StyleRuleFontFace> CSSParserImpl::consumeFontFaceRule(CSS
     return StyleRuleFontFace::create(createStylePropertySet(m_parsedProperties, m_context.mode()));
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleKeyframes> CSSParserImpl::consumeKeyframesRule(bool webkitPrefixed, CSSParserTokenRange prelude, CSSParserTokenRange block)
+GCRefPtr<StyleRuleKeyframes> CSSParserImpl::consumeKeyframesRule(bool webkitPrefixed, CSSParserTokenRange prelude, CSSParserTokenRange block)
 {
     prelude.consumeWhitespace();
     CSSParserTokenRange rangeCopy = prelude; // For inspector callbacks
@@ -543,15 +543,15 @@ PassRefPtrWillBeRawPtr<StyleRuleKeyframes> CSSParserImpl::consumeKeyframesRule(b
     }
 
     GCRefPtr<StyleRuleKeyframes> keyframeRule = StyleRuleKeyframes::create();
-    consumeRuleList(block, KeyframesRuleList, [keyframeRule](PassRefPtrWillBeRawPtr<StyleRuleBase> keyframe) {
-        keyframeRule->parserAppendKeyframe(toStyleRuleKeyframe(keyframe.get()));
+    consumeRuleList(block, KeyframesRuleList, [keyframeRule](const GCRefPtr<StyleRuleBase> &keyframe) {
+        keyframeRule->parserAppendKeyframe(GCWrapShared(toStyleRuleKeyframe(keyframe.get())));
     });
     keyframeRule->setName(name);
     keyframeRule->setVendorPrefixed(webkitPrefixed);
-    return keyframeRule.release();
+    return keyframeRule;
 }
 
-PassRefPtrWillBeRawPtr<StyleRulePage> CSSParserImpl::consumePageRule(CSSParserTokenRange prelude, CSSParserTokenRange block)
+GCRefPtr<StyleRulePage> CSSParserImpl::consumePageRule(CSSParserTokenRange prelude, CSSParserTokenRange block)
 {
     // We only support a small subset of the css-page spec.
     prelude.consumeWhitespace();
@@ -602,7 +602,7 @@ PassRefPtrWillBeRawPtr<StyleRulePage> CSSParserImpl::consumePageRule(CSSParserTo
     return StyleRulePage::create(std::move(selectorList), createStylePropertySet(m_parsedProperties, m_context.mode()));
 }
 
-PassRefPtrWillBeRawPtr<StyleRuleKeyframe> CSSParserImpl::consumeKeyframeStyleRule(CSSParserTokenRange prelude, CSSParserTokenRange block)
+GCRefPtr<StyleRuleKeyframe> CSSParserImpl::consumeKeyframeStyleRule(CSSParserTokenRange prelude, CSSParserTokenRange block)
 {
     OwnPtr<Vector<double>> keyList = consumeKeyframeKeyList(prelude);
     if (!keyList)
@@ -638,7 +638,7 @@ static void observeSelectors(CSSParserObserverWrapper& wrapper, CSSParserTokenRa
 }
 
 
-PassRefPtrWillBeRawPtr<StyleRule> CSSParserImpl::consumeStyleRule(CSSParserTokenRange prelude, CSSParserTokenRange block)
+GCRefPtr<StyleRule> CSSParserImpl::consumeStyleRule(CSSParserTokenRange prelude, CSSParserTokenRange block)
 {
     CSSSelectorList selectorList = CSSSelectorParser::parseSelector(prelude, m_context, m_styleSheet.get());
     if (!selectorList.isValid())
