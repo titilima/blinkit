@@ -148,7 +148,7 @@ void ScriptedAnimationController::executeCallbacks(double monotonicTimeNow)
     if (!m_document)
         return;
 
-    ASSERT(false); // BKTODO:
+    ASSERT(m_callbackCollection.isEmpty()); // BKTODO:
 #if 0
     double highResNowMs = 1000.0 * m_document->loader()->timing().monotonicTimeToZeroBasedDocumentTime(monotonicTimeNow);
     double legacyHighResNowMs = 1000.0 * m_document->loader()->timing().monotonicTimeToPseudoWallTime(monotonicTimeNow);
@@ -159,7 +159,7 @@ void ScriptedAnimationController::executeCallbacks(double monotonicTimeNow)
 void ScriptedAnimationController::callMediaQueryListListeners()
 {
     MediaQueryListListeners listeners;
-    ASSERT(false); // BKTODO: listeners.swap(m_mediaQueryListListeners);
+    listeners.swap(m_mediaQueryListListeners);
 
     for (const auto& listener : listeners) {
         listener->notifyMediaQueryChanged();

@@ -1401,14 +1401,24 @@ void LayoutBlock::insertIntoTrackedLayoutBoxMaps(LayoutBox* descendant, TrackedD
         descendantSet = new TrackedLayoutBoxListHashSet;
         descendantsMap->set(this, adoptPtr(descendantSet));
     }
-    ASSERT(false); // BKTODO:
-#if 0
+
+#if 0 // BKTODO:
     bool added = descendantSet->add(descendant).isNewEntry;
     if (!added) {
         ASSERT(containerMap->get(descendant));
         ASSERT(containerMap->get(descendant)->contains(this));
         return;
     }
+#else
+    auto it = descendantSet->find(descendant);
+    if (descendantSet->end() != it)
+    {
+        ASSERT(containerMap->get(descendant));
+        ASSERT(containerMap->get(descendant)->contains(this));
+        return;
+    }
+    descendantSet->insert(descendant);
+#endif
 
     HashSet<LayoutBlock*>* containerSet = containerMap->get(descendant);
     if (!containerSet) {
@@ -1417,7 +1427,6 @@ void LayoutBlock::insertIntoTrackedLayoutBoxMaps(LayoutBox* descendant, TrackedD
     }
     ASSERT(!containerSet->contains(this));
     containerSet->add(this);
-#endif
 }
 
 void LayoutBlock::removeFromTrackedLayoutBoxMaps(LayoutBox* descendant, TrackedDescendantsMap*& descendantsMap, TrackedContainerMap*& containerMap)
@@ -2778,7 +2787,7 @@ bool LayoutBlock::recalcChildOverflowAfterStyleChange()
             if (recalcNormalFlowChildOverflowIfNeeded(layoutObject)) {
                 childrenOverflowChanged = true;
                 if (InlineBox* inlineBoxWrapper = toLayoutBlock(layoutObject)->inlineBoxWrapper())
-                    ASSERT(false); // BKTODO: lineBoxes.add(&inlineBoxWrapper->root());
+                    lineBoxes.insert(&inlineBoxWrapper->root());
             }
         }
 
