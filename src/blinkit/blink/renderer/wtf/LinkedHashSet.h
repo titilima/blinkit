@@ -51,7 +51,7 @@ public:
 
     bool isEmpty(void) const { return std::list<T>::empty(); }
 
-    void Swap(LinkedHashSetBase<T, Hash> &other)
+    void swap(LinkedHashSetBase<T, Hash> &other)
     {
         std::list<T>::swap(other);
         std::swap(m_indices, other.m_indices);
