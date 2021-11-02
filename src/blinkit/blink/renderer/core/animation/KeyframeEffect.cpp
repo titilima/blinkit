@@ -56,28 +56,32 @@
 #include "core/paint/PaintLayer.h"
 // BKTODO: #include "core/svg/SVGElement.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-KeyframeEffect* KeyframeEffect::create(Element* target, EffectModel* model, const Timing& timing, Priority priority, EventDelegate* eventDelegate)
+GCRefPtr<KeyframeEffect> KeyframeEffect::create(Element* target, EffectModel* model, const Timing& timing, Priority priority, EventDelegate* eventDelegate)
 {
-    return new KeyframeEffect(target, model, timing, priority, eventDelegate);
+    return GCWrapShared(new KeyframeEffect(target, model, timing, priority, eventDelegate));
 }
 
-KeyframeEffect* KeyframeEffect::create(Element* element, const Vector<Dictionary>& keyframeDictionaryVector, double duration, ExceptionState& exceptionState)
+GCRefPtr<KeyframeEffect> KeyframeEffect::create(Element* element, const Vector<Dictionary>& keyframeDictionaryVector, double duration, ExceptionState& exceptionState)
 {
     ASSERT(RuntimeEnabledFeatures::webAnimationsAPIEnabled());
     if (element)
         UseCounter::count(element->document(), UseCounter::AnimationConstructorKeyframeListEffectObjectTiming);
     return create(element, EffectInput::convert(element, keyframeDictionaryVector, exceptionState), TimingInput::convert(duration));
 }
-KeyframeEffect* KeyframeEffect::create(Element* element, const Vector<Dictionary>& keyframeDictionaryVector, const KeyframeEffectOptions& timingInput, ExceptionState& exceptionState)
+
+GCRefPtr<KeyframeEffect> KeyframeEffect::create(Element* element, const Vector<Dictionary>& keyframeDictionaryVector, const KeyframeEffectOptions& timingInput, ExceptionState& exceptionState)
 {
     ASSERT(RuntimeEnabledFeatures::webAnimationsAPIEnabled());
     if (element)
         UseCounter::count(element->document(), UseCounter::AnimationConstructorKeyframeListEffectObjectTiming);
     return create(element, EffectInput::convert(element, keyframeDictionaryVector, exceptionState), TimingInput::convert(timingInput));
 }
-KeyframeEffect* KeyframeEffect::create(Element* element, const Vector<Dictionary>& keyframeDictionaryVector, ExceptionState& exceptionState)
+
+GCRefPtr<KeyframeEffect> KeyframeEffect::create(Element* element, const Vector<Dictionary>& keyframeDictionaryVector, ExceptionState& exceptionState)
 {
     ASSERT(RuntimeEnabledFeatures::webAnimationsAPIEnabled());
     if (element)

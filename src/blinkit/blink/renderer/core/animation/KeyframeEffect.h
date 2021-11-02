@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: KeyframeEffect.h
+// Description: KeyframeEffect Class
+//      Author: Ziming Li
+//     Created: 2021-11-02
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -53,11 +64,11 @@ class CORE_EXPORT KeyframeEffect final : public AnimationEffect {
 public:
     enum Priority { DefaultPriority, TransitionPriority };
 
-    static KeyframeEffect* create(Element*, EffectModel*, const Timing&, Priority = DefaultPriority, EventDelegate* = nullptr);
+    static GCRefPtr<KeyframeEffect> create(Element*, EffectModel*, const Timing&, Priority = DefaultPriority, EventDelegate* = nullptr);
     // Web Animations API Bindings constructors.
-    static KeyframeEffect* create(Element*, const Vector<Dictionary>& keyframeDictionaryVector, double duration, ExceptionState&);
-    static KeyframeEffect* create(Element*, const Vector<Dictionary>& keyframeDictionaryVector, const KeyframeEffectOptions& timingInput, ExceptionState&);
-    static KeyframeEffect* create(Element*, const Vector<Dictionary>& keyframeDictionaryVector, ExceptionState&);
+    static GCRefPtr<KeyframeEffect> create(Element*, const Vector<Dictionary>& keyframeDictionaryVector, double duration, ExceptionState&);
+    static GCRefPtr<KeyframeEffect> create(Element*, const Vector<Dictionary>& keyframeDictionaryVector, const KeyframeEffectOptions& timingInput, ExceptionState&);
+    static GCRefPtr<KeyframeEffect> create(Element*, const Vector<Dictionary>& keyframeDictionaryVector, ExceptionState&);
 
     ~KeyframeEffect() override;
 
@@ -108,7 +119,7 @@ private:
     KeyframeEffect(Element*, EffectModel*, const Timing&, Priority, EventDelegate*);
 
     RawPtrWillBeMember<Element> m_target;
-    Member<EffectModel> m_model;
+    GCRefPtr<EffectModel> m_model;
     Member<SampledEffect> m_sampledEffect;
 
     Priority m_priority;
