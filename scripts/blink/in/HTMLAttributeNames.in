@@ -31,9 +31,11 @@ content
 contenteditable
 contextmenu
 dir
+direction
 dirname
 disabled
 draggable
+enctype
 face
 for
 form
@@ -88,6 +90,7 @@ rules
 scope
 select
 selected
+shape
 size
 sizes
 slot

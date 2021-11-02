@@ -150,9 +150,11 @@ CORE_EXPORT extern const blink::QualifiedName& contentAttr;
 CORE_EXPORT extern const blink::QualifiedName& contenteditableAttr;
 CORE_EXPORT extern const blink::QualifiedName& contextmenuAttr;
 CORE_EXPORT extern const blink::QualifiedName& dirAttr;
+CORE_EXPORT extern const blink::QualifiedName& directionAttr;
 CORE_EXPORT extern const blink::QualifiedName& dirnameAttr;
 CORE_EXPORT extern const blink::QualifiedName& disabledAttr;
 CORE_EXPORT extern const blink::QualifiedName& draggableAttr;
+CORE_EXPORT extern const blink::QualifiedName& enctypeAttr;
 CORE_EXPORT extern const blink::QualifiedName& faceAttr;
 CORE_EXPORT extern const blink::QualifiedName& forAttr;
 CORE_EXPORT extern const blink::QualifiedName& formAttr;
@@ -207,6 +209,7 @@ CORE_EXPORT extern const blink::QualifiedName& rulesAttr;
 CORE_EXPORT extern const blink::QualifiedName& scopeAttr;
 CORE_EXPORT extern const blink::QualifiedName& selectAttr;
 CORE_EXPORT extern const blink::QualifiedName& selectedAttr;
+CORE_EXPORT extern const blink::QualifiedName& shapeAttr;
 CORE_EXPORT extern const blink::QualifiedName& sizeAttr;
 CORE_EXPORT extern const blink::QualifiedName& sizesAttr;
 CORE_EXPORT extern const blink::QualifiedName& slotAttr;
@@ -235,7 +238,7 @@ CORE_EXPORT extern const blink::QualifiedName& wrapAttr;
 const unsigned HTMLTagsCount = 102;
 CORE_EXPORT PassOwnPtr<const HTMLQualifiedName*[]> getHTMLTags();
 
-const unsigned HTMLAttrsCount = 108;
+const unsigned HTMLAttrsCount = 111;
 
 void init();
 

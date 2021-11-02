@@ -160,87 +160,90 @@ const QualifiedName& contentAttr = reinterpret_cast<QualifiedName*>(&AttrStorage
 const QualifiedName& contenteditableAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[24];
 const QualifiedName& contextmenuAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[25];
 const QualifiedName& dirAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[26];
-const QualifiedName& dirnameAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[27];
-const QualifiedName& disabledAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[28];
-const QualifiedName& draggableAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[29];
-const QualifiedName& faceAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[30];
-const QualifiedName& forAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[31];
-const QualifiedName& formAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[32];
-const QualifiedName& formactionAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[33];
-const QualifiedName& formenctypeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[34];
-const QualifiedName& formmethodAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[35];
-const QualifiedName& formnovalidateAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[36];
-const QualifiedName& formtargetAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[37];
-const QualifiedName& frameAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[38];
-const QualifiedName& headersAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[39];
-const QualifiedName& heightAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[40];
-const QualifiedName& hiddenAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[41];
-const QualifiedName& highAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[42];
-const QualifiedName& hrefAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[43];
-const QualifiedName& hspaceAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[44];
-const QualifiedName& http_equivAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[45];
-const QualifiedName& idAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[46];
-const QualifiedName& incrementalAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[47];
-const QualifiedName& isAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[48];
-const QualifiedName& labelAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[49];
-const QualifiedName& langAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[50];
-const QualifiedName& languageAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[51];
-const QualifiedName& leftmarginAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[52];
-const QualifiedName& linkAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[53];
-const QualifiedName& listAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[54];
-const QualifiedName& lowAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[55];
-const QualifiedName& marginheightAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[56];
-const QualifiedName& marginwidthAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[57];
-const QualifiedName& maxAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[58];
-const QualifiedName& maxlengthAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[59];
-const QualifiedName& mediaAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[60];
-const QualifiedName& methodAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[61];
-const QualifiedName& minAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[62];
-const QualifiedName& minlengthAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[63];
-const QualifiedName& multipleAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[64];
-const QualifiedName& nameAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[65];
-const QualifiedName& noshadeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[66];
-const QualifiedName& nowrapAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[67];
-const QualifiedName& openAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[68];
-const QualifiedName& optimumAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[69];
-const QualifiedName& patternAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[70];
-const QualifiedName& placeholderAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[71];
-const QualifiedName& pseudoAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[72];
-const QualifiedName& radiogroupAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[73];
-const QualifiedName& readonlyAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[74];
-const QualifiedName& relAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[75];
-const QualifiedName& requiredAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[76];
-const QualifiedName& reversedAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[77];
-const QualifiedName& rowsAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[78];
-const QualifiedName& rowspanAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[79];
-const QualifiedName& rulesAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[80];
-const QualifiedName& scopeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[81];
-const QualifiedName& selectAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[82];
-const QualifiedName& selectedAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[83];
-const QualifiedName& sizeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[84];
-const QualifiedName& sizesAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[85];
-const QualifiedName& slotAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[86];
-const QualifiedName& spanAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[87];
-const QualifiedName& srcAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[88];
-const QualifiedName& srcsetAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[89];
-const QualifiedName& startAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[90];
-const QualifiedName& stepAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[91];
-const QualifiedName& styleAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[92];
-const QualifiedName& summaryAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[93];
-const QualifiedName& tabindexAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[94];
-const QualifiedName& targetAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[95];
-const QualifiedName& textAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[96];
-const QualifiedName& titleAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[97];
-const QualifiedName& topmarginAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[98];
-const QualifiedName& typeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[99];
-const QualifiedName& usemapAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[100];
-const QualifiedName& valignAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[101];
-const QualifiedName& valueAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[102];
-const QualifiedName& vlinkAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[103];
-const QualifiedName& vspaceAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[104];
-const QualifiedName& webkitdirectoryAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[105];
-const QualifiedName& widthAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[106];
-const QualifiedName& wrapAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[107];
+const QualifiedName& directionAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[27];
+const QualifiedName& dirnameAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[28];
+const QualifiedName& disabledAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[29];
+const QualifiedName& draggableAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[30];
+const QualifiedName& enctypeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[31];
+const QualifiedName& faceAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[32];
+const QualifiedName& forAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[33];
+const QualifiedName& formAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[34];
+const QualifiedName& formactionAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[35];
+const QualifiedName& formenctypeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[36];
+const QualifiedName& formmethodAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[37];
+const QualifiedName& formnovalidateAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[38];
+const QualifiedName& formtargetAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[39];
+const QualifiedName& frameAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[40];
+const QualifiedName& headersAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[41];
+const QualifiedName& heightAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[42];
+const QualifiedName& hiddenAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[43];
+const QualifiedName& highAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[44];
+const QualifiedName& hrefAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[45];
+const QualifiedName& hspaceAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[46];
+const QualifiedName& http_equivAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[47];
+const QualifiedName& idAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[48];
+const QualifiedName& incrementalAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[49];
+const QualifiedName& isAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[50];
+const QualifiedName& labelAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[51];
+const QualifiedName& langAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[52];
+const QualifiedName& languageAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[53];
+const QualifiedName& leftmarginAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[54];
+const QualifiedName& linkAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[55];
+const QualifiedName& listAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[56];
+const QualifiedName& lowAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[57];
+const QualifiedName& marginheightAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[58];
+const QualifiedName& marginwidthAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[59];
+const QualifiedName& maxAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[60];
+const QualifiedName& maxlengthAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[61];
+const QualifiedName& mediaAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[62];
+const QualifiedName& methodAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[63];
+const QualifiedName& minAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[64];
+const QualifiedName& minlengthAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[65];
+const QualifiedName& multipleAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[66];
+const QualifiedName& nameAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[67];
+const QualifiedName& noshadeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[68];
+const QualifiedName& nowrapAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[69];
+const QualifiedName& openAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[70];
+const QualifiedName& optimumAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[71];
+const QualifiedName& patternAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[72];
+const QualifiedName& placeholderAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[73];
+const QualifiedName& pseudoAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[74];
+const QualifiedName& radiogroupAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[75];
+const QualifiedName& readonlyAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[76];
+const QualifiedName& relAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[77];
+const QualifiedName& requiredAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[78];
+const QualifiedName& reversedAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[79];
+const QualifiedName& rowsAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[80];
+const QualifiedName& rowspanAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[81];
+const QualifiedName& rulesAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[82];
+const QualifiedName& scopeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[83];
+const QualifiedName& selectAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[84];
+const QualifiedName& selectedAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[85];
+const QualifiedName& shapeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[86];
+const QualifiedName& sizeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[87];
+const QualifiedName& sizesAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[88];
+const QualifiedName& slotAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[89];
+const QualifiedName& spanAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[90];
+const QualifiedName& srcAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[91];
+const QualifiedName& srcsetAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[92];
+const QualifiedName& startAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[93];
+const QualifiedName& stepAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[94];
+const QualifiedName& styleAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[95];
+const QualifiedName& summaryAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[96];
+const QualifiedName& tabindexAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[97];
+const QualifiedName& targetAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[98];
+const QualifiedName& textAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[99];
+const QualifiedName& titleAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[100];
+const QualifiedName& topmarginAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[101];
+const QualifiedName& typeAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[102];
+const QualifiedName& usemapAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[103];
+const QualifiedName& valignAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[104];
+const QualifiedName& valueAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[105];
+const QualifiedName& vlinkAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[106];
+const QualifiedName& vspaceAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[107];
+const QualifiedName& webkitdirectoryAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[108];
+const QualifiedName& widthAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[109];
+const QualifiedName& wrapAttr = reinterpret_cast<QualifiedName*>(&AttrStorage)[110];
 
 
 
@@ -310,6 +313,7 @@ void init()
         { "dd", 16480447, 2, 1, 0 },
         { "details", 4653180, 7, 1, 0 },
         { "dir", 5122803, 3, 1, 1 },
+        { "direction", 16092904, 9, 0, 1 },
         { "dirname", 9899348, 7, 0, 1 },
         { "disabled", 12237545, 8, 0, 1 },
         { "div", 9762591, 3, 1, 0 },
@@ -317,6 +321,7 @@ void init()
         { "draggable", 9281278, 9, 0, 1 },
         { "dt", 8177126, 2, 1, 0 },
         { "em", 2724661, 2, 1, 0 },
+        { "enctype", 11388071, 7, 0, 1 },
         { "face", 12427611, 4, 0, 1 },
         { "fieldset", 37097, 8, 1, 0 },
         { "figcaption", 13388641, 10, 1, 0 },
@@ -415,6 +420,7 @@ void init()
         { "select", 210571, 6, 1, 1 },
         { "selected", 15762609, 8, 0, 1 },
         { "shadow", 1972219, 6, 1, 0 },
+        { "shape", 15210140, 5, 0, 1 },
         { "size", 12715024, 4, 0, 1 },
         { "sizes", 6795010, 5, 0, 1 },
         { "slot", 8744197, 4, 1, 1 },
