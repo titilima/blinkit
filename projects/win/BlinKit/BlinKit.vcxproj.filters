@@ -7322,6 +7322,558 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\MediaFeatures.h">
       <Filter>blink\renderer\core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\AddressSanitizer.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\AddressSpaceRandomization.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Alignment.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Allocator.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\ArrayBuffer.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\ArrayBufferContents.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\ArrayBufferView.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\ASCIICType.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Assertions.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Atomics.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\BitArray.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\BitVector.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\BitwiseOperations.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\BloomFilter.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\build_config.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\ByteOrder.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\ByteSwap.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\CheckedArithmetic.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Compiler.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\ConditionalDestructor.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\ContainerAnnotations.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\CPU.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\CryptographicallyRandomNumber.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\CurrentTime.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\DataLog.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\DateMath.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Deque.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\DoublyLinkedList.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\dtoa.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\DynamicAnnotations.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\FilePrintStream.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Forward.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Functional.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\HashFunctions.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\HashIterators.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\HashMap.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\HashSet.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\HashTable.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\HashTableDeletedValueType.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\HashTraits.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\HexNumber.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\IntegralTypedArrayBase.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\LeakAnnotations.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\LinkedStack.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Locker.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\MainThread.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\MathExtras.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Noncopyable.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\NonCopyingSort.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\NotFound.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\OwnPtr.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\OwnPtrCommon.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\PageAllocator.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\PartitionAlloc.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\PartitionAllocator.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Partitions.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\PassOwnPtr.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\PassRefPtr.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\PrintStream.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\RawPtr.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\RefVector.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\SaturatedArithmetic.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\SpinLock.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\StaticConstructors.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\StringExtras.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\StringHasher.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\TerminatedArray.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\TerminatedArrayBuilder.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Threading.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\ThreadingPrimitives.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\ThreadRestrictionVerifier.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\ThreadSafeRefCounted.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\ThreadSpecific.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\TreeNode.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\TriState.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\TypedArrayBase.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\TypeTraits.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Uint8Array.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Uint8ClampedArray.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\Vector.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\VectorTraits.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\WeakPtr.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\WTF.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\WTFExport.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\WTFThreadData.h">
+      <Filter>blink\renderer\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\Animation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\AnimationClock.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\AnimationEffect.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\AnimationEffectTiming.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\AnimationInputHelpers.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\AnimationStack.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\AnimationTranslationUtil.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\ColorPropertyFunctions.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CompositorAnimations.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CompositorAnimationsImpl.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CompositorPendingAnimations.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\ConstantStyleInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CSSColorInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CSSFontWeightInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CSSImageInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CSSImageListInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CSSInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CSSLengthInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CSSLengthListInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CSSNumberInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CSSPaintInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CSSShadowListInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CSSValueInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CSSVisibilityInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\DefaultSVGInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\DeferredLegacyStyleInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\DocumentAnimations.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\DoubleStyleInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\EffectInput.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\EffectModel.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\ElementAnimations.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\FilterStyleInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\ImageListPropertyFunctions.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\ImagePropertyFunctions.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\ImageSliceStyleInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\InertEffect.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\InterpolableValue.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\Interpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\InterpolationComponent.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\InterpolationEffect.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\InterpolationEnvironment.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\InterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\InterpolationValue.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\InvalidatableInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\Keyframe.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\KeyframeEffect.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\KeyframeEffectModel.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\LegacyStyleInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\LengthBoxStyleInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\LengthPairStyleInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\LengthPropertyFunctions.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\LengthStyleInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\ListInterpolationFunctions.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\ListStyleInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\NonInterpolableValue.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\NumberPropertyFunctions.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\PrimitiveInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\PropertyHandle.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SampledEffect.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\ShadowInterpolationFunctions.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\ShadowListPropertyFunctions.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\StringKeyframe.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\StyleInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SVGAngleInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SVGIntegerInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SVGIntegerOptionalIntegerInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SVGLengthInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SVGLengthListInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SVGNumberInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SVGNumberListInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SVGNumberOptionalNumberInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SVGPathInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SVGPointListInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SVGRectInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SVGTransformListInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SVGValueInterpolationType.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\Timing.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\TimingCalculations.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\TimingInput.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\UnderlyingLengthChecker.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\UnderlyingValue.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\VisibilityStyleInterpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\AnimatedStyleBuilder.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\CSSPropertyPriority.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\CSSToStyleMap.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\CSSVariableResolver.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\ElementResolveContext.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\ElementStyleResources.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\FilterOperationResolver.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\FontBuilder.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\MatchedPropertiesCache.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\MatchRequest.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\MatchResult.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\MediaQueryResult.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleAdjuster.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleBuilderConverter.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleResolverState.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\TransformBuilder.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\ViewportStyleResolver.h">
+      <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BlinKit.def">
