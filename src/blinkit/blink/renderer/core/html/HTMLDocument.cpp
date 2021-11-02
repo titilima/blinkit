@@ -226,28 +226,40 @@ static HashSet<StringImpl*>* createHtmlCaseInsensitiveAttributesSet()
     // Mozilla treats all other values as case-sensitive, thus so do we.
     HashSet<StringImpl*>* attrSet = new HashSet<StringImpl*>;
 
-    ASSERT(false); // BKTODO:
-#if 0
+    /**
+     * NOTE: BlinKit ignores the following attributes:
+     *   - accept-charset
+     *   - codetype (only for <object>)
+     *   - compact (not supported by HTML5)
+     *   - declare (only for <object>)
+     *   - defer
+     *   - hreflang
+     *   - http-equiv
+     *   - nohref
+     *   - noresize (only for <frame>)
+     *   - rev
+     *   - scrolling (only for <frame> & <iframe>)
+     *   - valuetype (only for <param>)
+     */
+
     const QualifiedName* caseInsesitiveAttributes[] = {
-        &accept_charsetAttr, &acceptAttr, &alignAttr, &alinkAttr, &axisAttr,
+        &acceptAttr, &alignAttr, &alinkAttr, &axisAttr,
         &bgcolorAttr,
-        &charsetAttr, &checkedAttr, &clearAttr, &codetypeAttr, &colorAttr, &compactAttr,
-        &declareAttr, &deferAttr, &dirAttr, &directionAttr, &disabledAttr,
+        &charsetAttr, &checkedAttr, &clearAttr, &colorAttr,
+        &dirAttr, &directionAttr, &disabledAttr,
         &enctypeAttr,
         &faceAttr, &frameAttr,
-        &hreflangAttr, &http_equivAttr,
         &langAttr, &languageAttr, &linkAttr,
         &mediaAttr, &methodAttr, &multipleAttr,
-        &nohrefAttr, &noresizeAttr, &noshadeAttr, &nowrapAttr,
-        &readonlyAttr, &relAttr, &revAttr, &rulesAttr,
-        &scopeAttr, &scrollingAttr, &selectedAttr, &shapeAttr,
+        &noshadeAttr, &nowrapAttr,
+        &readonlyAttr, &relAttr, &rulesAttr,
+        &scopeAttr, &selectedAttr, &shapeAttr,
         &targetAttr, &textAttr, &typeAttr,
-        &valignAttr, &valuetypeAttr, &vlinkAttr };
+        &valignAttr, &vlinkAttr };
 
     attrSet->reserveCapacityForSize(WTF_ARRAY_LENGTH(caseInsesitiveAttributes));
     for (const QualifiedName* attr : caseInsesitiveAttributes)
         attrSet->add(attr->localName().impl());
-#endif
 
     return attrSet;
 }
