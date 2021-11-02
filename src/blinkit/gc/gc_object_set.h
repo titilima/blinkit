@@ -33,6 +33,11 @@ class GCObjectSetImpl : public GCObjectSetCallback, protected std::unordered_set
 {
     using StdSet = std::unordered_set<GCObject *>;
 public:
+    ~GCObjectSetImpl(void)
+    {
+        clear();
+    }
+
     using StdSet::empty;
 
     void clear(void)
@@ -78,7 +83,6 @@ private:
 template <class T>
 class GCObjectSet final : public GCObjectSetImpl
 {
-    using StdSet = std::unordered_set<T *>;
 public:
     bool contains(T *o) const
     {
@@ -91,6 +95,12 @@ public:
     void erase(T *o)
     {
         GCObjectSetImpl::erase(T::GCCast(o));
+    }
+    void for_each(const std::function<void(T &)> &callback) const
+    {
+        GCObjectSetImpl::EnumObjects([&callback](GCObject &o) {
+            callback(static_cast<T &>(o));
+        });
     }
 
     std::vector<T *> GetSnapshot(void) const
