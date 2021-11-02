@@ -6199,7 +6199,9 @@ DEFINE_TRACE(Document)
     visitor->trace(m_elemSheet);
     visitor->trace(m_nodeIterators);
     // BKTODO: visitor->trace(m_ranges);
+#if 0 // BKTODO: Tracing may be not required.
     visitor->trace(m_styleEngine);
+#endif
     if (m_formController)
         m_formController->trace(visitor);
     // BKTODO: visitor->trace(m_visitedLinkState);
@@ -6231,15 +6233,12 @@ DEFINE_TRACE(Document)
     visitor->trace(m_visibilityObservers);
     visitor->trace(m_userActionElements);
     // BKTODO: visitor->trace(m_svgExtensions);
-    visitor->trace(m_timeline);
-    visitor->trace(m_compositorPendingAnimations);
     // BKTODO: visitor->trace(m_contextDocument);
     // BKTODO: visitor->trace(m_canvasFontCache);
     visitor->trace(m_intersectionObserverController);
     visitor->trace(m_intersectionObserverData);
     WillBeHeapSupplementable<Document>::trace(visitor);
 #endif
-    TreeScope::trace(visitor);
     ContainerNode::trace(visitor);
     ExecutionContext::trace(visitor);
     // BKTODO: DocumentLifecycleNotifier::trace(visitor);

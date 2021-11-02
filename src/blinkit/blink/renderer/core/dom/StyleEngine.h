@@ -83,7 +83,7 @@ public:
 
     friend class IgnoringPendingStylesheet;
 
-    static PassOwnPtrWillBeRawPtr<StyleEngine> create(Document& document) { return adoptPtrWillBeNoop(new StyleEngine(document)); }
+    static GCRefPtr<StyleEngine> create(Document& document) { return BlinKit::GCWrapShared(new StyleEngine(document)); }
 
     ~StyleEngine();
 
@@ -264,7 +264,7 @@ private:
 
     bool m_ignorePendingStylesheets;
     bool m_didCalculateResolver;
-    GCUniquePtr<StyleResolver> m_resolver;
+    std::unique_ptr<StyleResolver> m_resolver;
     StyleInvalidator m_styleInvalidator;
 
     GCRefPtr<CSSFontSelector> m_fontSelector;

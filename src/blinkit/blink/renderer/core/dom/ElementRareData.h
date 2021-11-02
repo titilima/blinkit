@@ -63,7 +63,7 @@ public:
 
     ~ElementRareData();
 
-    void setPseudoElement(PseudoId, PassRefPtrWillBeRawPtr<PseudoElement>);
+    void setPseudoElement(PseudoId, const GCRefPtr<PseudoElement> &);
     PseudoElement* pseudoElement(PseudoId) const;
 
     short tabIndex() const { return m_tabindex; }
@@ -169,10 +169,10 @@ private:
     RefPtr<ComputedStyle> m_computedStyle;
     RefPtrWillBeMember<CustomElementDefinition> m_customElementDefinition;
 
-    RefPtrWillBeMember<PseudoElement> m_generatedBefore;
-    RefPtrWillBeMember<PseudoElement> m_generatedAfter;
-    RefPtrWillBeMember<PseudoElement> m_generatedFirstLetter;
-    RefPtrWillBeMember<PseudoElement> m_backdrop;
+    GCRefPtr<PseudoElement> m_generatedBefore;
+    GCRefPtr<PseudoElement> m_generatedAfter;
+    GCRefPtr<PseudoElement> m_generatedFirstLetter;
+    GCRefPtr<PseudoElement> m_backdrop;
 
     explicit ElementRareData(LayoutObject*);
 };
@@ -218,7 +218,7 @@ inline void ElementRareData::clearPseudoElements()
     setPseudoElement(FIRST_LETTER, nullptr);
 }
 
-inline void ElementRareData::setPseudoElement(PseudoId pseudoId, PassRefPtrWillBeRawPtr<PseudoElement> element)
+inline void ElementRareData::setPseudoElement(PseudoId pseudoId, const GCRefPtr<PseudoElement> &element)
 {
     switch (pseudoId) {
     case BEFORE:

@@ -2933,7 +2933,7 @@ void Element::createPseudoElementIfNeeded(PseudoId pseudoId)
         return;
 
     // Document::ensureStyleResolver is not inlined and shows up on profiles, avoid it here.
-    RefPtrWillBeRawPtr<PseudoElement> element = document().styleEngine().ensureResolver().createPseudoElementIfNeeded(*this, pseudoId);
+    GCRefPtr<PseudoElement> element = document().styleEngine().ensureResolver().createPseudoElementIfNeeded(*this, pseudoId);
     if (!element)
         return;
 
@@ -2944,7 +2944,7 @@ void Element::createPseudoElementIfNeeded(PseudoId pseudoId)
 
     InspectorInstrumentation::pseudoElementCreated(element.get());
 
-    ensureElementRareData().setPseudoElement(pseudoId, element.release());
+    ensureElementRareData().setPseudoElement(pseudoId, element);
 }
 
 PseudoElement* Element::pseudoElement(PseudoId pseudoId) const
