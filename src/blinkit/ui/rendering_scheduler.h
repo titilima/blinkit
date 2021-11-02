@@ -15,43 +15,33 @@
 #pragma once
 
 #include "blinkit/blink/renderer/platform/geometry/IntRect.h"
-#include "blinkit/blink/renderer/wtf/RefCounted.h"
-#include "blinkit/blink/renderer/wtf/RefPtr.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
 
 class WebViewImpl;
 
 namespace BlinKit {
 
-class RenderingScheduler final : public RefCounted<RenderingScheduler>
+class RenderingScheduler final
 {
+    STACK_ALLOCATED();
 public:
-    static RenderingScheduler* From(WebViewImpl *view);
+    RenderingScheduler(WebViewImpl &view);
     ~RenderingScheduler(void);
 
+    static RenderingScheduler* From(WebViewImpl &view);
+
     void ScheduleAnimation(void) { m_animationScheduled = true; }
+    bool AnimationScheduled(void) const { return m_animationScheduled; }
+
     void InvalidateRect(const blink::IntRect &rect) { m_rectToInvalidate.unite(rect); }
+    void Update(void);
 private:
-    friend class ScopedRenderingScheduler;
-
-    RenderingScheduler(WebViewImpl *view) : m_view(view) {}
-
-    static std::unordered_map<WebViewImpl *, RenderingScheduler *> m_allSchedulers;
-
-    WebViewImpl *m_view;
+    WebViewImpl &m_view;
+    double m_tick = 0.0;
+    bool m_enabled = false;
+    bool m_updated = false;
     bool m_animationScheduled = false;
     blink::IntRect m_rectToInvalidate;
-};
-
-class ScopedRenderingScheduler
-{
-public:
-    ScopedRenderingScheduler(WebViewImpl *view = nullptr) : m_renderingScheduler(GetRenderingScheduler(view)) {}
-
-    bool AnimationScheduled(void) const { return m_renderingScheduler->m_animationScheduled; }
-private:
-    static RefPtr<RenderingScheduler> GetRenderingScheduler(WebViewImpl *view);
-
-    RefPtr<RenderingScheduler> m_renderingScheduler;
 };
 
 } // namespace BlinKit
