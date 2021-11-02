@@ -46,7 +46,7 @@
 #include "core/input/EventHandler.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
-// BKTODO: #include "core/page/AutoscrollController.h"
+#include "core/page/AutoscrollController.h"
 #include "core/page/Page.h"
 #include "core/paint/TransformRecorder.h"
 // BKTODO: #include "platform/Logging.h"
@@ -62,13 +62,11 @@
 
 namespace blink {
 
-#if 0 // BKTODO:
 void PageWidgetDelegate::animate(Page& page, double monotonicFrameBeginTime)
 {
     page.autoscrollController().animate(monotonicFrameBeginTime);
     page.animator().serviceScriptedAnimations(monotonicFrameBeginTime);
 }
-#endif
 
 void PageWidgetDelegate::updateAllLifecyclePhases(Page& page, LocalFrame& root)
 {

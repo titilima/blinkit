@@ -59,8 +59,9 @@ public:
 
     blink::IntSize MainFrameSize(void);
 
-    virtual void InvalidateNativeView(const blink::IntRect &rect) = 0;
+    virtual void InvalidateNativeView(const blink::IntRect *rect = nullptr) = 0;
 
+    void BeginFrame(void);
     virtual void clearContextMenu(void) {}
     void convertViewportToWindow(blink::IntRect *rect) const;
     void didChangeContentsSize(void);
@@ -71,6 +72,7 @@ public:
     void invalidateRect(const blink::IntRect &rect);
     void layoutUpdated(blink::LocalFrame *frame);
     blink::Page* page(void) const { return m_page.get(); }
+    void PostAnimationTask(void);
     void scheduleAnimation(void);
     bool SelectionBounds(blink::IntRect &anchor, blink::IntRect &focus) const;
     void showContextMenu(const blink::WebContextMenuData &data);
@@ -100,8 +102,7 @@ protected:
 
     virtual void OnInitialized(void) {}
     void ProcessKeyEvent(blink::WebInputEvent::Type type, int code, int modifiers);
-    void ProcessMouseEvent(blink::WebInputEvent::Type type, blink::WebPointerProperties::Button button, int x, int y,
-        bool &animationScheduled);
+    void ProcessMouseEvent(blink::WebInputEvent::Type type, blink::WebPointerProperties::Button button, int x, int y);
     bool ProcessTitleChange(const std::string &newTitle) const;
     // BKTODO: void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
     void Resize(const blink::IntSize &size);
@@ -127,8 +128,8 @@ private:
     blink::BrowserControls& GetBrowserControls(void);
 
     blink::IntSize FrameSize(void);
-    blink::Color BaseBackgroundColor(void) const;
 #endif
+    void AnimationTimerFired(blink::Timer<WebViewImpl> *);
     float ClampPageScaleFactorToLimits(float scaleFactor) const;
     blink::IntSize ContentsSize(void) const;
     virtual std::shared_ptr<ContextMenu> CreateContextMenu(const blink::WebContextMenuData &data) = 0;
@@ -222,6 +223,8 @@ private:
 
     std::unique_ptr<blink::ResizeViewportAnchor> m_resizeViewportAnchor;
 #endif
+
+    blink::Timer<WebViewImpl> m_animationTimer;
 };
 
 // BKTODO: DEFINE_TYPE_CASTS(WebViewImpl, ::blink::LocalFrameClient, client, client->IsWebView(), client.IsWebView());

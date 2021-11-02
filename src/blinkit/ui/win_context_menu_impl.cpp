@@ -54,11 +54,13 @@ WinWebView::ContextMenuImpl::~ContextMenuImpl(void)
             return;
     }
 
+#if 0 // BKTODO:
     WebViewImpl *webView = &m_webView;
     m_webView.GetCaller().Call(BLINK_FROM_HERE, [webView, callback = std::move(callback)]{
         ScopedRenderingScheduler _(webView);
         callback();
     });
+#endif
 }
 
 bool WinWebView::ContextMenuImpl::BindEditorCommand(std::function<void()> &dst, UINT cmd) const

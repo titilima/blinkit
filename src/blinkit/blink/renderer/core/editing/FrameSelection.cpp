@@ -1075,8 +1075,6 @@ void FrameSelection::caretBlinkTimerFired(Timer<FrameSelection>*)
     ASSERT(isCaret());
     if (isCaretBlinkingSuspended() && m_shouldPaintCaret)
         return;
-
-    ScopedRenderingScheduler _(WebViewImpl::From(*m_frame));
     m_shouldPaintCaret = !m_shouldPaintCaret;
     setCaretRectNeedsUpdate();
 }

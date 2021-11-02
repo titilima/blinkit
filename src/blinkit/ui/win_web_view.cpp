@@ -170,10 +170,17 @@ void WinWebView::dispatchDidReceiveTitle(const String &title)
     MessageTask::Post(m_hWnd, std::move(task));
 }
 
-void WinWebView::InvalidateNativeView(const IntRect &rect)
+void WinWebView::InvalidateNativeView(const IntRect *rect)
 {
-    RECT rc = { rect.x(), rect.y(), rect.maxX(), rect.maxY() };
-    ::InvalidateRect(m_hWnd, &rc, FALSE);
+    if (nullptr != rect)
+    {
+        RECT rc = { rect->x(), rect->y(), rect->maxX(), rect->maxY() };
+        ::InvalidateRect(m_hWnd, &rc, FALSE);
+    }
+    else
+    {
+        ::InvalidateRect(m_hWnd, nullptr, FALSE);
+    }
 }
 
 void WinWebView::OnChar(HWND hwnd, TCHAR ch, int)
@@ -283,15 +290,10 @@ void WinWebView::OnMouse(UINT message, UINT keyFlags, int x, int y)
             return;
     }
 
-    bool animationScheduled = false;
-    ProcessMouseEvent(type, button, x, y, animationScheduled);
+    ProcessMouseEvent(type, button, x, y);
 
     switch (message)
     {
-        case WM_MOUSEMOVE:
-            if (animationScheduled)
-                UpdateWindow(m_hWnd);
-            break;
         case WM_LBUTTONUP:
             ReleaseCapture();
             break;
@@ -395,18 +397,31 @@ bool WinWebView::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM
     if (nullptr == v)
         return false;
 
-    return v->ProcessWindowMessageImpl(hWnd, Msg, wParam, lParam, result);
+    const unsigned handlingFlags = v->ProcessWindowMessageImpl(hWnd, Msg, wParam, lParam, result);
+    if (0 != (UpdateRequired & handlingFlags))
+        UpdateWindow(hWnd);
+    return 0 != (MessageHandled & handlingFlags);
 }
 
-bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
+unsigned WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
 {
+    switch (Msg)
+    {
+        case WM_ERASEBKGND:
+            *result = TRUE;
+            return MessageHandled;
+        case WM_NCDESTROY:
+            HANDLE_WM_NCDESTROY(hWnd, wParam, lParam, OnNCDestroy);
+            return MessageNotHandled;
+    }
+
+    unsigned handlingFlags = MessageHandled;
+
+    RenderingScheduler scheduler(*this);
     switch (Msg)
     {
         case WM_PAINT:
             HANDLE_WM_PAINT(hWnd, wParam, lParam, OnPaint);
-            break;
-        case WM_ERASEBKGND:
-            *result = TRUE;
             break;
 
         case WM_LBUTTONDOWN:
@@ -423,7 +438,7 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
         {
             const UINT hitTestCode = LOWORD(lParam);
             if (HTCLIENT != hitTestCode)
-                return false;
+                return MessageNotHandled;
 
             auto _ = m_lock.guard_shared();
             ::SetCursor(m_cursorInfo.externalHandle);
@@ -467,13 +482,14 @@ bool WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LP
             ASSERT(HIWORD(wParam) == LOWORD(lParam));
             OnDPIChanged(hWnd, HIWORD(wParam), reinterpret_cast<LPRECT>(lParam));
             break;
-        case WM_NCDESTROY:
-            HANDLE_WM_NCDESTROY(hWnd, wParam, lParam, OnNCDestroy);
-            break;
         default:
-            return MessageTask::Process(Msg, wParam, lParam);
+            if (!MessageTask::Process(Msg, wParam, lParam))
+                handlingFlags = 0;
     }
-    return true;
+
+    if (WM_MOUSEMOVE == Msg && scheduler.AnimationScheduled())
+        handlingFlags |= UpdateRequired;
+    return handlingFlags;
 }
 
 void WinWebView::UpdateScaleFactor(void)

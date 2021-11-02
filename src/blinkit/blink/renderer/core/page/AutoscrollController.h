@@ -87,7 +87,6 @@ private:
     explicit AutoscrollController(Page&);
 
     void startAutoscroll();
-    void ScheduleAnimation(void);
 
 #if OS(WIN)
     void updatePanScrollState(FrameView*, const IntPoint& lastKnownMousePosition);

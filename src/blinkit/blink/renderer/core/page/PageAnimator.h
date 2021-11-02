@@ -28,7 +28,7 @@ class Page;
 class CORE_EXPORT PageAnimator final {
 public:
     static std::unique_ptr<PageAnimator> create(Page&);
-    // BKTODO: DECLARE_TRACE();
+
     void scheduleVisualUpdate(LocalFrame*);
     void serviceScriptedAnimations(double monotonicAnimationStartTime);
 

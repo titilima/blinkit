@@ -33,7 +33,13 @@ public:
 private:
     void UpdateScaleFactor(void);
 
-    bool ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
+    enum HandlingFlags {
+        MessageNotHandled = 0,
+        MessageHandled    = 0x1,
+        UpdateRequired    = 0x2,
+    };
+    unsigned ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
+
     void OnChar(HWND hwnd, TCHAR ch, int cRepeat);
     void OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc);
     void OnIMEStartComposition(HWND hwnd);
@@ -48,7 +54,7 @@ private:
     // FrameLoaderClient
     void dispatchDidReceiveTitle(const String &title) override;
     // WebViewImpl
-    void InvalidateNativeView(const blink::IntRect &rect) override;
+    void InvalidateNativeView(const blink::IntRect *rect) override;
     void didChangeCursor(const blink::WebCursorInfo &cursorInfo) override;
     void OnInitialized(void) override;
     std::shared_ptr<ContextMenu> CreateContextMenu(const blink::WebContextMenuData &data) override;

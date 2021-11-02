@@ -275,12 +275,12 @@ void AutoscrollController::animate(double)
 #endif
     }
     if (m_autoscrollType != NoAutoscroll)
-        ScheduleAnimation();
+        m_page.chromeClient().scheduleAnimation(m_autoscrollLayoutObject->frame()->view());
 }
 
 void AutoscrollController::startAutoscroll()
 {
-    ScheduleAnimation();
+    m_page.chromeClient().scheduleAnimation(m_autoscrollLayoutObject->frame()->view());
 }
 
 #if OS(WIN)
@@ -319,19 +319,5 @@ void AutoscrollController::updatePanScrollState(FrameView* view, const IntPoint&
     }
 }
 #endif
-
-void AutoscrollController::ScheduleAnimation(void)
-{
-    LocalFrame *frame = toLocalFrame(m_page.mainFrame());
-
-    m_page.chromeClient().scheduleAnimation(frame->view());
-
-    auto task = [this, frame] {
-        ScopedRenderingScheduler _(WebViewImpl::From(*frame));
-        animate(monotonicallyIncreasingTime());
-    };
-    double delay = base::TimeDelta::FromSecondsD(autoscrollDelay).InMillisecondsF();
-    frame->document()->timerTaskRunner()->postDelayedTask(BLINK_FROM_HERE, new Task(std::move(task)), delay);
-}
 
 } // namespace blink

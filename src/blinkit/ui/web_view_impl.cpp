@@ -64,6 +64,7 @@ WebViewImpl::WebViewImpl(ClientCaller &clientCaller, PageVisibilityState visibil
     , m_dragClientImpl(this)
     , m_editorClientImpl(this)
     , m_baseBackgroundColor(baseBackgroundColor)
+    , m_animationTimer(this, &WebViewImpl::AnimationTimerFired)
 {
     ASSERT(isMainThread());
     memset(&m_client, 0, sizeof(m_client));
@@ -91,12 +92,20 @@ WebViewImpl::~WebViewImpl(void)
     m_page->willBeDestroyed();
 }
 
-#if 0 // BKTODO:
-Color WebViewImpl::BaseBackgroundColor(void) const
+void WebViewImpl::AnimationTimerFired(Timer<WebViewImpl> *)
 {
-    return m_baseBackgroundColor;
+    RenderingScheduler scheduler(*this);
+    scheduler.Update();
 }
 
+void WebViewImpl::BeginFrame(void)
+{
+    ASSERT(isMainThread());
+    if (m_page)
+        PageWidgetDelegate::animate(*m_page, monotonicallyIncreasingTime());
+}
+
+#if 0 // BKTODO:
 void WebViewImpl::CancelPagePopup(void)
 {
     BKLOG("// BKTODO: CancelPagePopup");
@@ -474,7 +483,7 @@ void WebViewImpl::HidePopups(void)
 
 void WebViewImpl::Initialize(void)
 {
-    ScopedRenderingScheduler scheduler(this);
+    RenderingScheduler scheduler(*this);
     m_frame = LocalFrame::create(this, &(m_page->frameHost()));
     m_frame->init();
     OnInitialized();
@@ -488,7 +497,8 @@ void WebViewImpl::invalidateRect(const IntRect &rect)
     else if (m_client)
         m_client->didInvalidateRect(rect);
 #else
-    RenderingScheduler::From(this)->InvalidateRect(rect);
+    if (RenderingScheduler *scheduler = RenderingScheduler::From(*this))
+        scheduler->InvalidateRect(rect);
 #endif
 }
 
@@ -724,6 +734,12 @@ void WebViewImpl::PerformResize(void)
     }
 }
 
+void WebViewImpl::PostAnimationTask(void)
+{
+    constexpr double AnimationFrameLimit = 1.0 / 24.0;
+    m_animationTimer.startOneShot(AnimationFrameLimit, BLINK_FROM_HERE);
+}
+
 void WebViewImpl::PostLayoutResize(LocalFrame *frame)
 {
     frame->view()->resize(MainFrameSize());
@@ -770,8 +786,6 @@ void WebViewImpl::ProcessKeyEvent(WebInputEvent::Type type, int code, int modifi
     ASSERT(IsClientThread());
     auto task = [this, type, code, modifiers]
     {
-        ScopedRenderingScheduler _(this);
-
         WebKeyboardEvent e;
         e.timeStampSeconds = base::Time::Now().ToDoubleT();
         e.type = type;
@@ -789,14 +803,11 @@ void WebViewImpl::ProcessKeyEvent(WebInputEvent::Type type, int code, int modifi
 void WebViewImpl::ProcessMouseEvent(
     WebInputEvent::Type type,
     WebPointerProperties::Button button,
-    int x, int y,
-    bool &animationScheduled)
+    int x, int y)
 {
     ASSERT(IsClientThread());
-    auto task = [this, type, button, x, y, &animationScheduled]
+    auto task = [this, type, button, x, y]
     {
-        ScopedRenderingScheduler scheduler(this);
-
         WebMouseEvent e;
         e.timeStampSeconds = base::Time::Now().ToDoubleT();
         e.type = type;
@@ -821,8 +832,6 @@ void WebViewImpl::ProcessMouseEvent(
         m_mouseEventSession.PreProcess(e);
         ProcessInput(e);
         m_mouseEventSession.PostProcess(e);
-
-        animationScheduled = scheduler.AnimationScheduled();
     };
     m_appCaller.SyncCall(BLINK_FROM_HERE, task);
 }
@@ -885,12 +894,9 @@ void WebViewImpl::Resize(const IntSize &size)
         return;
     m_size = size;
 
-    ScopedRenderingScheduler scheduler(this);
-    {
-        ResizeViewportAnchor anchor(*view, m_page->frameHost().visualViewport());
-        ResizeViewWhileAnchored(view);
-        SendResizeEventAndRepaint();
-    }
+    ResizeViewportAnchor anchor(*view, m_page->frameHost().visualViewport());
+    ResizeViewWhileAnchored(view);
+    SendResizeEventAndRepaint();
 }
 
 #if 0 // BKTODO:
@@ -1015,10 +1021,6 @@ void WebViewImpl::ResumeTreeViewCommitsIfRenderingReady(void)
 
 void WebViewImpl::scheduleAnimation(void)
 {
-    Document *document = m_frame->document();
-    if (nullptr == document || !document->isActive())
-        return;
-
 #if 0 // BKTODO:
     if (m_layerTreeView)
     {
@@ -1026,7 +1028,8 @@ void WebViewImpl::scheduleAnimation(void)
         return;
     }
 #endif
-    RenderingScheduler::From(this)->ScheduleAnimation();
+    if (RenderingScheduler *scheduler = RenderingScheduler::From(*this))
+        scheduler->ScheduleAnimation();
 }
 
 bool WebViewImpl::ScrollViewWithKeyboard(int keyCode, int modifiers)
@@ -1093,8 +1096,11 @@ void WebViewImpl::SendResizeEventAndRepaint(void)
     if (m_layerTreeView)
         UpdateLayerTreeViewport();
 #else
-    IntRect damagedRect(IntPoint(0, 0), m_size);
-    RenderingScheduler::From(this)->InvalidateRect(damagedRect);
+    if (RenderingScheduler *scheduler = RenderingScheduler::From(*this))
+    {
+        IntRect damagedRect(IntPoint(0, 0), m_size);
+        scheduler->InvalidateRect(damagedRect);
+    }
 #endif
     UpdatePageOverlays();
 }
@@ -1124,7 +1130,6 @@ void WebViewImpl::SetFocusImpl(bool focus)
 {
     ASSERT(isMainThread());
 
-    ScopedRenderingScheduler scheduler(this);
     m_page->focusController().setFocused(focus);
     if (focus)
     {
