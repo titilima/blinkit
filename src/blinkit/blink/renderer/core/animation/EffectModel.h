@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EffectModel.h
+// Description: EffectModel Class
+//      Author: Ziming Li
+//     Created: 2021-11-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -43,7 +54,7 @@ namespace blink {
 
 class Interpolation;
 
-class CORE_EXPORT EffectModel : public GarbageCollectedFinalized<EffectModel>, public ScriptWrappable {
+class CORE_EXPORT EffectModel : public BlinKit::GCObject, public ScriptWrappable {
     DEFINE_WRAPPERTYPEINFO();
 public:
     enum CompositeOperation {
@@ -59,7 +70,8 @@ public:
     virtual bool isTransformRelatedEffect() const { return false; }
     virtual bool isKeyframeEffectModel() const { return false; }
 
-    DEFINE_INLINE_VIRTUAL_TRACE() { }
+private:
+    BlinKit::GCObject* ObjectForGC(void) final { return this; }
 };
 
 } // namespace blink
