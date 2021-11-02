@@ -56,7 +56,6 @@ private:
     double currentTimeSeconds(void) final;
     double monotonicallyIncreasingTimeSeconds(void) final;
 
-
     BkAppClient m_client;
     double m_firstMonotonicallyIncreasingTime;
     std::unordered_map<blink::PlatformThreadId, Thread *> m_threads;
