@@ -69,7 +69,6 @@ protected:
 
     const blink::KURL m_URI;
     std::string m_data;
-    ScopedRenderingScheduler m_scheduler;
 };
 #endif
 

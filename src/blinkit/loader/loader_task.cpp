@@ -101,7 +101,6 @@ void LoaderTask::ReportError(WebURLLoaderClient *client, WebTaskRunner *taskRunn
 LoaderTaskForUI::LoaderTaskForUI(const ResourceRequest &request, blink::WebURLLoader *loader, const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client)
     : LoaderTask(loader, taskRunner, client)
     , m_URI(request.url())
-    , m_scheduler(request.View())
 {
     ASSERT(nullptr != request.View());
 }
