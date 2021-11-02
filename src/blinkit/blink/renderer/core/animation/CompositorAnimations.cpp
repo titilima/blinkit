@@ -333,12 +333,12 @@ void CompositorAnimations::cancelIncompatibleAnimationsOnCompositor(const Elemen
 
 bool CompositorAnimations::canStartAnimationOnCompositor(const Element& element)
 {
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
+#if 0 // BKTODO:
     if (!Platform::current()->isThreadedAnimationEnabled())
         return false;
     return element.layoutObject() && element.layoutObject()->compositingState() == PaintsIntoOwnBacking;
+#else
+    return false;
 #endif
 }
 

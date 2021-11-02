@@ -123,7 +123,7 @@ void AnimationTimeline::animationAttached(Animation& animation)
     m_animations.emplace(&animation);
 }
 
-Animation* AnimationTimeline::play(AnimationEffect* child)
+Animation* AnimationTimeline::play(const GCRefPtr<AnimationEffect> &child)
 {
     if (!m_document)
         return nullptr;

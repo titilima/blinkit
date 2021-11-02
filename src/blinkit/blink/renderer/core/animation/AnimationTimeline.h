@@ -78,7 +78,7 @@ public:
     void serviceAnimations(TimingUpdateReason);
     void scheduleNextService();
 
-    Animation* play(AnimationEffect*);
+    Animation* play(const GCRefPtr<AnimationEffect> &);
     HeapVector<Member<Animation>> getAnimations();
 
     void animationAttached(Animation&);

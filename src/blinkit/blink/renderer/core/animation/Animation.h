@@ -77,7 +77,7 @@ public:
         Finished
     };
 
-    static Animation* create(AnimationEffect*, AnimationTimeline*);
+    static Animation* create(const GCRefPtr<AnimationEffect>&, AnimationTimeline*);
     ~Animation();
     void dispose();
 
@@ -196,7 +196,7 @@ protected:
     bool addEventListenerInternal(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener>, const EventListenerOptions&) override;
 
 private:
-    Animation(ExecutionContext*, AnimationTimeline&, AnimationEffect*);
+    Animation(ExecutionContext*, AnimationTimeline&, const GCRefPtr<AnimationEffect>&);
 
     void clearOutdated();
 
@@ -246,7 +246,7 @@ private:
     Member<AnimationPromise> m_readyPromise;
 #endif
 
-    Member<AnimationEffect> m_content;
+    GCRefPtr<AnimationEffect> m_content;
     Member<AnimationTimeline> m_timeline;
 
     // Reflects all pausing, including via pauseForTesting().

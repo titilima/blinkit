@@ -133,8 +133,7 @@ static StringKeyframeEffectModel* createKeyframeEffectModel(StyleResolver* resol
         }
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     for (CSSPropertyID property : specifiedPropertiesForUseCounter) {
         ASSERT(property != CSSPropertyInvalid);
         Platform::current()->histogramSparse("WebCore.Animation.CSSProperties", UseCounter::mapCSSPropertyIdToCSSSampleIdForHistogram(property));
@@ -346,7 +345,7 @@ void CSSAnimations::calculateAnimationUpdate(CSSAnimationUpdate& update, const E
 
                 if (keyframesRule != existingAnimation->styleRule || keyframesRule->version() != existingAnimation->styleRuleVersion || existingAnimation->specifiedTiming != specifiedTiming) {
                     ASSERT(!isAnimationStyleChange);
-                    update.updateAnimation(existingAnimationIndex, animation, *InertEffect::create(
+                    update.updateAnimation(existingAnimationIndex, animation, InertEffect::create(
                         createKeyframeEffectModel(resolver, animatingElement, element, &style, parentStyle, name, keyframeTimingFunction.get(), i),
                         timing, isPaused, animation->unlimitedCurrentTimeInternal()), specifiedTiming, keyframesRule);
                 }
@@ -357,7 +356,7 @@ void CSSAnimations::calculateAnimationUpdate(CSSAnimationUpdate& update, const E
                 }
             } else {
                 ASSERT(!isAnimationStyleChange);
-                update.startAnimation(name, nameIndex, *InertEffect::create(
+                update.startAnimation(name, nameIndex, InertEffect::create(
                     createKeyframeEffectModel(resolver, animatingElement, element, &style, parentStyle, name, keyframeTimingFunction.get(), i),
                     timing, isPaused, 0), specifiedTiming, keyframesRule);
             }
@@ -419,7 +418,7 @@ void CSSAnimations::maybeApplyPendingUpdate(Element* element)
     for (const auto& entry : m_pendingUpdate.newAnimations()) {
         const InertEffect* inertAnimation = entry.effect.get();
         AnimationEventDelegate* eventDelegate = new AnimationEventDelegate(element, entry.name);
-        KeyframeEffect* effect = KeyframeEffect::create(element, inertAnimation->model(), inertAnimation->specifiedTiming(), KeyframeEffect::DefaultPriority, eventDelegate);
+        GCRefPtr<KeyframeEffect> effect = KeyframeEffect::create(element, inertAnimation->model(), inertAnimation->specifiedTiming(), KeyframeEffect::DefaultPriority, eventDelegate);
         effect->setName(entry.name);
         Animation* animation = element->document().timeline().play(effect);
         if (inertAnimation->paused())
@@ -490,7 +489,7 @@ void CSSAnimations::maybeApplyPendingUpdate(Element* element)
             newFrames[0]->clearPropertyValue(id);
             newFrames[1]->clearPropertyValue(id);
 
-            InertEffect* inertAnimationForSampling = InertEffect::create(oldAnimation->model(), oldAnimation->specifiedTiming(), false, inheritedTime);
+            GCRefPtr<InertEffect> inertAnimationForSampling = InertEffect::create(oldAnimation->model(), oldAnimation->specifiedTiming(), false, inheritedTime);
             Vector<RefPtr<Interpolation>> sample;
             inertAnimationForSampling->sample(sample);
             if (sample.size() == 1) {
@@ -500,7 +499,7 @@ void CSSAnimations::maybeApplyPendingUpdate(Element* element)
             }
         }
 
-        KeyframeEffect* transition = KeyframeEffect::create(element, model, inertAnimation->specifiedTiming(), KeyframeEffect::TransitionPriority, eventDelegate);
+        GCRefPtr<KeyframeEffect> transition = KeyframeEffect::create(element, model, inertAnimation->specifiedTiming(), KeyframeEffect::TransitionPriority, eventDelegate);
         transition->setName(getPropertyName(newTransition.id));
         Animation* animation = element->document().timeline().play(transition);
         // Set the current time as the start time for retargeted transitions
@@ -684,9 +683,9 @@ void CSSAnimations::calculateAnimationActiveInterpolations(CSSAnimationUpdate& u
 
     HeapVector<Member<const InertEffect>> newEffects;
     for (const auto& newAnimation : update.newAnimations())
-        newEffects.append(newAnimation.effect);
+        newEffects.append(newAnimation.effect.get());
     for (const auto& updatedAnimation : update.animationsWithUpdates())
-        newEffects.append(updatedAnimation.effect); // Animations with updates use a temporary InertEffect for the current frame.
+        newEffects.append(updatedAnimation.effect.get()); // Animations with updates use a temporary InertEffect for the current frame.
 
     ActiveInterpolationsMap activeInterpolationsForAnimations(AnimationStack::activeInterpolations(animationStack, &newEffects, &update.suppressedAnimations(), KeyframeEffect::DefaultPriority, isStylePropertyHandle));
     update.adoptActiveInterpolationsForAnimations(activeInterpolationsForAnimations);

@@ -83,7 +83,7 @@ public:
 
         void populateAnimatableValueCaches(CSSPropertyID, Keyframe::PropertySpecificKeyframe&, Element*, CSSValue& fromCSSValue, CSSValue& toCSSValue) const;
 
-        RefPtrWillBePersistent<CSSValue> m_value;
+        GCRefPtr<CSSValue> m_value;
         mutable RefPtr<AnimatableValue> m_animatableValueCache;
     };
 

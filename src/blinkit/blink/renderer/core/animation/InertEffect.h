@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InertEffect.h
+// Description: InertEffect Class
+//      Author: Ziming Li
+//     Created: 2021-11-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -40,7 +51,7 @@ namespace blink {
 
 class CORE_EXPORT InertEffect final : public AnimationEffect {
 public:
-    static InertEffect* create(EffectModel*, const Timing&, bool paused, double inheritedTime);
+    static GCRefPtr<InertEffect> create(EffectModel*, const Timing&, bool paused, double inheritedTime);
     void sample(Vector<RefPtr<Interpolation>>&) const;
     EffectModel* model() const { return m_model.get(); }
     bool paused() const { return m_paused; }
@@ -52,8 +63,8 @@ protected:
     double calculateTimeToEffectChange(bool forwards, double inheritedTime, double timeToNextIteration) const override;
 
 private:
-    InertEffect(EffectModel*, const Timing&, bool paused, double inheritedTime);
-    Member<EffectModel> m_model;
+    InertEffect(const GCRefPtr<EffectModel>&, const Timing&, bool paused, double inheritedTime);
+    GCRefPtr<EffectModel> m_model;
     bool m_paused;
     double m_inheritedTime;
 };

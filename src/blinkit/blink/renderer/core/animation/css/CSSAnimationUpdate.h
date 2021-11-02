@@ -42,7 +42,7 @@ public:
     class NewAnimation {
         DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
     public:
-        NewAnimation(AtomicString name, size_t nameIndex, const InertEffect& effect, Timing timing, PassRefPtrWillBeRawPtr<StyleRuleKeyframes> styleRule)
+        NewAnimation(AtomicString name, size_t nameIndex, const GCRefPtr<InertEffect>& effect, Timing timing, PassRefPtrWillBeRawPtr<StyleRuleKeyframes> styleRule)
             : name(name)
             , nameIndex(nameIndex)
             , effect(effect)
@@ -60,7 +60,7 @@ public:
 
         AtomicString name;
         size_t nameIndex;
-        Member<const InertEffect> effect;
+        GCRefPtr<InertEffect> effect;
         Timing timing;
         RefPtrWillBeMember<StyleRuleKeyframes> styleRule;
         unsigned styleRuleVersion;
@@ -69,10 +69,10 @@ public:
     class UpdatedAnimation {
         DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
     public:
-        UpdatedAnimation(size_t index, Animation* animation, const InertEffect& effect, Timing specifiedTiming, PassRefPtrWillBeRawPtr<StyleRuleKeyframes> styleRule)
+        UpdatedAnimation(size_t index, Animation* animation, const GCRefPtr<InertEffect>& effect, Timing specifiedTiming, PassRefPtrWillBeRawPtr<StyleRuleKeyframes> styleRule)
             : index(index)
             , animation(animation)
-            , effect(&effect)
+            , effect(effect)
             , specifiedTiming(specifiedTiming)
             , styleRule(styleRule)
             , styleRuleVersion(this->styleRule->version())
@@ -88,7 +88,7 @@ public:
 
         size_t index;
         Member<Animation> animation;
-        Member<const InertEffect> effect;
+        GCRefPtr<InertEffect> effect;
         Timing specifiedTiming;
         RefPtrWillBeMember<StyleRuleKeyframes> styleRule;
         unsigned styleRuleVersion;
@@ -134,7 +134,7 @@ public:
         m_updatedCompositorKeyframes.clear();
     }
 
-    void startAnimation(const AtomicString& animationName, size_t nameIndex, const InertEffect& effect, const Timing& timing, PassRefPtrWillBeRawPtr<StyleRuleKeyframes> styleRule)
+    void startAnimation(const AtomicString& animationName, size_t nameIndex, const GCRefPtr<InertEffect>& effect, const Timing& timing, PassRefPtrWillBeRawPtr<StyleRuleKeyframes> styleRule)
     {
         m_newAnimations.append(NewAnimation(animationName, nameIndex, effect, timing, styleRule));
     }
@@ -149,7 +149,7 @@ public:
     {
         m_animationIndicesWithPauseToggled.append(index);
     }
-    void updateAnimation(size_t index, Animation* animation, const InertEffect& effect, const Timing& specifiedTiming,
+    void updateAnimation(size_t index, Animation* animation, const GCRefPtr<InertEffect>& effect, const Timing& specifiedTiming,
         PassRefPtrWillBeRawPtr<StyleRuleKeyframes> styleRule)
     {
         m_animationsWithUpdates.append(UpdatedAnimation(index, animation, effect, specifiedTiming, styleRule));

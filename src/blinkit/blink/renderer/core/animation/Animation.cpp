@@ -68,7 +68,7 @@ static unsigned nextSequenceNumber()
 
 }
 
-Animation* Animation::create(AnimationEffect* effect, AnimationTimeline* timeline)
+Animation* Animation::create(const GCRefPtr<AnimationEffect>& effect, AnimationTimeline* timeline)
 {
     if (!timeline) {
         // FIXME: Support creating animations without a timeline.
@@ -86,7 +86,7 @@ Animation* Animation::create(AnimationEffect* effect, AnimationTimeline* timelin
     return animation;
 }
 
-Animation::Animation(ExecutionContext* executionContext, AnimationTimeline& timeline, AnimationEffect* content)
+Animation::Animation(ExecutionContext* executionContext, AnimationTimeline& timeline, const GCRefPtr<AnimationEffect>& content)
     : ActiveDOMObject(executionContext)
     , m_playState(Idle)
     , m_playbackRate(1)

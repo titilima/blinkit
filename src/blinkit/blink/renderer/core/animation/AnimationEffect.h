@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimationEffect.h
+// Description: AnimationEffect Class
+//      Author: Ziming Li
+//     Created: 2021-11-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -61,7 +72,7 @@ static inline double nullValue()
     return std::numeric_limits<double>::quiet_NaN();
 }
 
-class CORE_EXPORT AnimationEffect : public GarbageCollectedFinalized<AnimationEffect>, public ScriptWrappable {
+class CORE_EXPORT AnimationEffect : public BlinKit::GCObject, public ScriptWrappable {
     DEFINE_WRAPPERTYPEINFO();
     friend class Animation; // Calls attach/detach, updateInheritedTime.
 public:
@@ -162,6 +173,8 @@ protected:
     String m_name;
 
     const CalculatedTiming& ensureCalculated() const;
+private:
+    BlinKit::GCObject* ObjectForGC(void) final { return this; }
 };
 
 } // namespace blink

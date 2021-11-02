@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InertEffect.cpp
+// Description: InertEffect Class
+//      Author: Ziming Li
+//     Created: 2021-11-01
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -32,14 +43,16 @@
 
 #include "core/animation/Interpolation.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-InertEffect* InertEffect::create(EffectModel* effect, const Timing& timing, bool paused, double inheritedTime)
+GCRefPtr<InertEffect> InertEffect::create(EffectModel* effect, const Timing& timing, bool paused, double inheritedTime)
 {
-    return new InertEffect(effect, timing, paused, inheritedTime);
+    return GCWrapShared(new InertEffect(GCWrapShared(effect), timing, paused, inheritedTime));
 }
 
-InertEffect::InertEffect(EffectModel* model, const Timing& timing, bool paused, double inheritedTime)
+InertEffect::InertEffect(const GCRefPtr<EffectModel>& model, const Timing& timing, bool paused, double inheritedTime)
     : AnimationEffect(timing)
     , m_model(model)
     , m_paused(paused)
