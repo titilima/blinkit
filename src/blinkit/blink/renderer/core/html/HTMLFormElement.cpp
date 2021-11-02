@@ -681,7 +681,7 @@ const AtomicString& HTMLFormElement::action() const
 
 void HTMLFormElement::setEnctype(const AtomicString& value)
 {
-    ASSERT(false); // BKTODO: setAttribute(enctypeAttr, value);
+    setAttribute(enctypeAttr, value);
 }
 
 String HTMLFormElement::method() const
