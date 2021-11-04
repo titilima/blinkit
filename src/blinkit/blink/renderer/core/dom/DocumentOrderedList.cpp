@@ -59,13 +59,13 @@ void DocumentOrderedList::add(Node* node)
         Node* n = *it;
         unsigned short position = n->compareDocumentPosition(node, Node::TreatShadowTreesAsComposed);
         if (position & Node::DOCUMENT_POSITION_FOLLOWING) {
-            ASSERT(false); // BKTODO: m_nodes.insertBefore(followingNode, node);
+            m_nodes.insertBefore(followingNode, node);
             return;
         }
         followingNode = n;
     } while (it != begin);
 
-    ASSERT(false); // BKTODO:m_nodes.insertBefore(followingNode, node);
+    m_nodes.insertBefore(followingNode, node);
 }
 
 void DocumentOrderedList::remove(const Node* node)

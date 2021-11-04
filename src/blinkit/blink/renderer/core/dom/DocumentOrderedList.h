@@ -58,7 +58,7 @@ public:
     void clear() { m_nodes.clear(); }
     size_t size() const { return m_nodes.size(); }
 
-    using iterator = WillBeHeapListHashSet<RawPtrWillBeMember<Node>, 32>::iterator;
+    using iterator = ListHashSet<Node *>::iterator;
 
     iterator begin() { return m_nodes.begin(); }
     iterator end() { return m_nodes.end(); }
@@ -66,7 +66,7 @@ public:
     // BKTODO: DECLARE_TRACE();
 
 private:
-    WillBeHeapListHashSet<RawPtrWillBeMember<Node>, 32> m_nodes;
+    ListHashSet<Node *> m_nodes;
 };
 
 }
