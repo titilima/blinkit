@@ -1605,7 +1605,7 @@ void HTMLTreeBuilder::callTheAdoptionAgency(AtomicHTMLToken* token)
             GCRefPtr<HTMLStackItem> newItem = m_tree.createElementFromSavedToken(node->stackItem().get());
 
             HTMLFormattingElementList::Entry* nodeEntry = m_tree.activeFormattingElements()->find(node->element());
-            nodeEntry->replaceElement(newItem.get());
+            nodeEntry->replaceElement(newItem);
             node->replaceElement(newItem.get());
 
             // 9.8

@@ -610,7 +610,7 @@ void HTMLConstructionSite::insertHTMLHeadElement(AtomicHTMLToken* token)
     ASSERT(!shouldFosterParent());
     m_head = HTMLStackItem::create(createHTMLElement(token), token);
     attachLater(currentNode(), m_head->element());
-    m_openElements.pushHTMLHeadElement(m_head.get());
+    m_openElements.pushHTMLHeadElement(m_head);
 }
 
 void HTMLConstructionSite::insertHTMLBodyElement(AtomicHTMLToken* token)
@@ -774,7 +774,7 @@ PassRefPtrWillBeRawPtr<HTMLElement> HTMLConstructionSite::createHTMLElement(Atom
     return element.release();
 }
 
-PassRefPtrWillBeRawPtr<HTMLStackItem> HTMLConstructionSite::createElementFromSavedToken(HTMLStackItem* item)
+GCRefPtr<HTMLStackItem> HTMLConstructionSite::createElementFromSavedToken(HTMLStackItem* item)
 {
     RefPtrWillBeRawPtr<Element> element;
     // NOTE: Moving from item -> token -> item copies the Attribute vector twice!
@@ -813,10 +813,10 @@ void HTMLConstructionSite::reconstructTheActiveFormattingElements()
     ASSERT(unopenEntryIndex < m_activeFormattingElements.size());
     for (; unopenEntryIndex < m_activeFormattingElements.size(); ++unopenEntryIndex) {
         HTMLFormattingElementList::Entry& unopenedEntry = m_activeFormattingElements.at(unopenEntryIndex);
-        RefPtrWillBeRawPtr<HTMLStackItem> reconstructed = createElementFromSavedToken(unopenedEntry.stackItem().get());
+        GCRefPtr<HTMLStackItem> reconstructed = createElementFromSavedToken(unopenedEntry.stackItem().get());
         attachLater(currentNode(), reconstructed->node());
         m_openElements.push(reconstructed);
-        unopenedEntry.replaceElement(reconstructed.release());
+        unopenedEntry.replaceElement(reconstructed);
     }
 }
 

@@ -181,7 +181,7 @@ public:
     void insertAlreadyParsedChild(HTMLStackItem* newParent, HTMLElementStack::ElementRecord* child);
     void takeAllChildren(HTMLStackItem* newParent, HTMLElementStack::ElementRecord* oldParent);
 
-    PassRefPtrWillBeRawPtr<HTMLStackItem> createElementFromSavedToken(HTMLStackItem*);
+    GCRefPtr<HTMLStackItem> createElementFromSavedToken(HTMLStackItem*);
 
     bool shouldFosterParent() const;
     void fosterParent(PassRefPtrWillBeRawPtr<Node>);
@@ -206,7 +206,7 @@ public:
     bool currentIsRootNode() { return m_openElements.topNode() == m_openElements.rootNode(); }
 
     Element* head() const { return m_head->element(); }
-    HTMLStackItem* headStackItem() const { return m_head.get(); }
+    const GCRefPtr<HTMLStackItem>& headStackItem() const { return m_head; }
 
     void setForm(HTMLFormElement*);
     HTMLFormElement* form(void) const;

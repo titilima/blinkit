@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLFormattingElementList.h
+// Description: HTMLFormattingElementList Class
+//      Author: Ziming Li
+//     Created: 2021-11-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -50,20 +61,17 @@ public:
         DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
     public:
         // Inline because they're hot and Vector<T> uses them.
-        explicit Entry(PassRefPtrWillBeRawPtr<HTMLStackItem> item)
+        explicit Entry(const GCRefPtr<HTMLStackItem> &item)
             : m_item(item)
         {
         }
         enum MarkerEntryType { MarkerEntry };
-        explicit Entry(MarkerEntryType)
-            : m_item(nullptr)
-        {
-        }
+        explicit Entry(MarkerEntryType) {}
         ~Entry() {}
 
         bool isMarker() const { return !m_item; }
 
-        PassRefPtrWillBeRawPtr<HTMLStackItem> stackItem() const { return m_item; }
+        PassRefPtrWillBeRawPtr<HTMLStackItem> stackItem() const { return m_item.get(); }
         Element* element() const
         {
             // The fact that !m_item == isMarker() is an implementation detail
@@ -71,7 +79,7 @@ public:
             ASSERT(m_item);
             return m_item->element();
         }
-        void replaceElement(PassRefPtrWillBeRawPtr<HTMLStackItem> item) { m_item = item; }
+        void replaceElement(const GCRefPtr<HTMLStackItem> &item) { m_item = item; }
 
         // Needed for use with Vector.  These are super-hot and must be inline.
         bool operator==(Element* element) const { return !m_item ? !element : m_item->element() == element; }
@@ -80,7 +88,7 @@ public:
         DEFINE_INLINE_TRACE() { visitor->trace(m_item); }
 
     private:
-        RefPtrWillBeMember<HTMLStackItem> m_item;
+        GCRefPtr<HTMLStackItem> m_item;
     };
 
     class Bookmark {
@@ -145,7 +153,7 @@ private:
     void tryToEnsureNoahsArkConditionQuickly(HTMLStackItem*, WillBeHeapVector<RawPtrWillBeMember<HTMLStackItem>>& remainingCandiates);
     void ensureNoahsArkCondition(HTMLStackItem*);
 
-    WillBeHeapVector<Entry> m_entries;
+    std::vector<Entry> m_entries;
 };
 
 } // namespace blink

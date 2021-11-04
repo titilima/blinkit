@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLElementStack.h
+// Description: HTMLElementStack Class
+//      Author: Ziming Li
+//     Created: 2021-11-03
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -49,8 +60,8 @@ public:
     HTMLElementStack();
     ~HTMLElementStack();
 
-    class ElementRecord final : public BlinKit::GCObject {
-        WTF_MAKE_NONCOPYABLE(ElementRecord); USING_FAST_MALLOC_WILL_BE_REMOVED(ElementRecord);
+    class ElementRecord final {
+        WTF_MAKE_NONCOPYABLE(ElementRecord);
     public:
 #if !ENABLE(OILPAN)
         ~ElementRecord(); // Public for ~PassOwnPtr()
@@ -70,13 +81,13 @@ public:
     private:
         friend class HTMLElementStack;
 
-        ElementRecord(PassRefPtrWillBeRawPtr<HTMLStackItem>, PassOwnPtrWillBeRawPtr<ElementRecord>);
+        ElementRecord(const GCRefPtr<HTMLStackItem> &, std::unique_ptr<ElementRecord> &&);
 
-        PassOwnPtrWillBeRawPtr<ElementRecord> releaseNext() { return m_next.release(); }
-        void setNext(PassOwnPtrWillBeRawPtr<ElementRecord> next) { m_next = next; }
+        std::unique_ptr<ElementRecord> releaseNext() { return zed::wrap_unique(m_next.release()); }
+        void setNext(std::unique_ptr<ElementRecord> &&next) { m_next = std::move(next); }
 
         GCRefPtr<HTMLStackItem> m_item;
-        GCRefPtr<ElementRecord> m_next;
+        std::unique_ptr<ElementRecord> m_next;
     };
 
     unsigned stackDepth() const { return m_stackDepth; }
@@ -109,11 +120,11 @@ public:
 
     void insertAbove(PassRefPtrWillBeRawPtr<HTMLStackItem>, ElementRecord*);
 
-    void push(PassRefPtrWillBeRawPtr<HTMLStackItem>);
-    void pushRootNode(PassRefPtrWillBeRawPtr<HTMLStackItem>);
-    void pushHTMLHtmlElement(PassRefPtrWillBeRawPtr<HTMLStackItem>);
-    void pushHTMLHeadElement(PassRefPtrWillBeRawPtr<HTMLStackItem>);
-    void pushHTMLBodyElement(PassRefPtrWillBeRawPtr<HTMLStackItem>);
+    void push(const GCRefPtr<HTMLStackItem> &);
+    void pushRootNode(const GCRefPtr<HTMLStackItem> &);
+    void pushHTMLHtmlElement(const GCRefPtr<HTMLStackItem> &);
+    void pushHTMLHeadElement(const GCRefPtr<HTMLStackItem> &);
+    void pushHTMLBodyElement(const GCRefPtr<HTMLStackItem> &);
 
     void pop();
     void popUntil(const AtomicString& tagName);
@@ -170,12 +181,12 @@ public:
 #endif
 
 private:
-    void pushCommon(PassRefPtrWillBeRawPtr<HTMLStackItem>);
-    void pushRootNodeCommon(PassRefPtrWillBeRawPtr<HTMLStackItem>);
+    void pushCommon(const GCRefPtr<HTMLStackItem> &);
+    void pushRootNodeCommon(const GCRefPtr<HTMLStackItem> &);
     void popCommon();
     void removeNonTopCommon(Element*);
 
-    GCRefPtr<ElementRecord> m_top;
+    std::unique_ptr<ElementRecord> m_top;
 
     // We remember the root node, <head> and <body> as they are pushed. Their
     // ElementRecords keep them alive. The root node is never popped.

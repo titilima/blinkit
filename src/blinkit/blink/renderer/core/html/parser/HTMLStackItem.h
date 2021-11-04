@@ -59,15 +59,15 @@ public:
     };
 
     // Used by document fragment node and context element.
-    static PassRefPtrWillBeRawPtr<HTMLStackItem> create(PassRefPtrWillBeRawPtr<ContainerNode> node, ItemType type)
+    static GCRefPtr<HTMLStackItem> create(PassRefPtrWillBeRawPtr<ContainerNode> node, ItemType type)
     {
-        return adoptRefWillBeNoop(new HTMLStackItem(node, type));
+        return BlinKit::GCWrapShared(new HTMLStackItem(node, type));
     }
 
     // Used by HTMLElementStack and HTMLFormattingElementList.
-    static PassRefPtrWillBeRawPtr<HTMLStackItem> create(PassRefPtrWillBeRawPtr<ContainerNode> node, AtomicHTMLToken* token, const AtomicString& namespaceURI = HTMLNames::xhtmlNamespaceURI)
+    static GCRefPtr<HTMLStackItem> create(PassRefPtrWillBeRawPtr<ContainerNode> node, AtomicHTMLToken* token, const AtomicString& namespaceURI = HTMLNames::xhtmlNamespaceURI)
     {
-        return adoptRefWillBeNoop(new HTMLStackItem(node, token, namespaceURI));
+        return BlinKit::GCWrapShared(new HTMLStackItem(node, token, namespaceURI));
     }
 
     Element* element() const { return toElement(m_node.get()); }
