@@ -31,7 +31,7 @@ public:
     }
 
     ResourcePtr<FontResource> fontResource;
-    OwnPtr<IncrementLoadEventDelayCount> delay;
+    std::unique_ptr<IncrementLoadEventDelayCount> delay;
 
 private:
     FontToLoad(FontResource* resource, Document& document)

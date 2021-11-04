@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IncrementLoadEventDelayCount.h
+// Description: IncrementLoadEventDelayCount Class
+//      Author: Ziming Li
+//     Created: 2021-11-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,7 +19,6 @@
 #include "platform/heap/Handle.h"
 #include "wtf/Allocator.h"
 #include "wtf/Noncopyable.h"
-#include "wtf/RefPtr.h"
 
 namespace blink {
 
@@ -17,11 +27,10 @@ class Document;
 // A helper class that will increment a document's loadEventDelayCount on
 // contruction and decrement it on destruction (semantics similar to RefPtr).
 class IncrementLoadEventDelayCount {
-    USING_FAST_MALLOC(IncrementLoadEventDelayCount);
     WTF_MAKE_NONCOPYABLE(IncrementLoadEventDelayCount);
 
 public:
-    static PassOwnPtr<IncrementLoadEventDelayCount> create(Document&);
+    static std::unique_ptr<IncrementLoadEventDelayCount> create(Document&);
     ~IncrementLoadEventDelayCount();
 
     // Increments the new document's count and decrements the old count.
@@ -29,7 +38,7 @@ public:
 
 private:
     IncrementLoadEventDelayCount(Document&);
-    RefPtrWillBePersistent<Document> m_document;
+    GCRefPtr<Document> m_document;
 };
 }
 

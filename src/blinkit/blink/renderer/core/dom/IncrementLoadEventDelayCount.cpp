@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IncrementLoadEventDelayCount.cpp
+// Description: IncrementLoadEventDelayCount Class
+//      Author: Ziming Li
+//     Created: 2021-11-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,9 +19,9 @@
 
 namespace blink {
 
-PassOwnPtr<IncrementLoadEventDelayCount> IncrementLoadEventDelayCount::create(Document& document)
+std::unique_ptr<IncrementLoadEventDelayCount> IncrementLoadEventDelayCount::create(Document& document)
 {
-    return adoptPtr(new IncrementLoadEventDelayCount(document));
+    return zed::wrap_unique(new IncrementLoadEventDelayCount(document));
 }
 
 IncrementLoadEventDelayCount::IncrementLoadEventDelayCount(Document& document)
