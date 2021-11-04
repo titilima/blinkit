@@ -71,6 +71,13 @@ protected:
             return this->end();
         return it->second;
     }
+    iterator Insert(iterator it, const T &o)
+    {
+        size_t h = Hash{}(o);
+        auto ret = std::list<T>::insert(it, o);
+        this->m_indices.insert({ h, ret });
+        return ret;
+    }
 
     std::unordered_map<size_t, iterator> m_indices;
 };
@@ -98,10 +105,11 @@ public:
 
     auto insert(const T &o)
     {
-        size_t h = Hash{}(o);
-        auto ret = std::list<T>::insert(this->end(), o);
-        this->m_indices.insert({ h, ret });
-        return ret;
+        return this->Insert(this->end(), o);
+    }
+    auto insertBefore(const T &before, const T &o)
+    {
+        return this->Insert(find(before), o);
     }
 };
 
