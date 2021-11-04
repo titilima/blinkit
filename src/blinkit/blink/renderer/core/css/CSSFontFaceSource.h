@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSFontFaceSource.h
+// Description: CSSFontFaceSource Class
+//      Author: Ziming Li
+//     Created: 2021-11-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2011 Apple Inc. All rights reserved.
  *
@@ -37,8 +48,7 @@ class CSSFontFace;
 class FontDescription;
 class SimpleFontData;
 
-class CSSFontFaceSource : public NoBaseWillBeGarbageCollectedFinalized<CSSFontFaceSource> {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(CSSFontFaceSource);
+class CSSFontFaceSource {
     WTF_MAKE_NONCOPYABLE(CSSFontFaceSource);
 public:
     virtual ~CSSFontFaceSource();
@@ -59,7 +69,7 @@ public:
     // For UMA reporting
     virtual bool hadBlankText() { return false; }
 
-    DECLARE_VIRTUAL_TRACE();
+    DEFINE_INLINE_VIRTUAL_TRACE() {} // BKTODO: Check if necessary.
 
 protected:
     CSSFontFaceSource();
@@ -67,7 +77,7 @@ protected:
 
     using FontDataTable = HashMap<unsigned, RefPtr<SimpleFontData>>; // The hash key is composed of size synthetic styles.
 
-    RawPtrWillBeMember<CSSFontFace> m_face; // Our owning font face.
+    CSSFontFace *m_face = nullptr; // Our owning font face.
     FontDataTable m_fontDataTable;
 };
 

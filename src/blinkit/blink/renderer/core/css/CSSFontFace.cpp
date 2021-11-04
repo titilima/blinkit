@@ -48,10 +48,10 @@
 
 namespace blink {
 
-void CSSFontFace::addSource(PassOwnPtrWillBeRawPtr<CSSFontFaceSource> source)
+void CSSFontFace::addSource(std::unique_ptr<CSSFontFaceSource> &&source)
 {
     source->setFontFace(this);
-    m_sources.emplace_back(source);
+    m_sources.emplace_back(std::move(source));
 }
 
 void CSSFontFace::setSegmentedFontFace(CSSSegmentedFontFace* segmentedFontFace)
@@ -68,7 +68,7 @@ void CSSFontFace::didBeginLoad()
 
 void CSSFontFace::fontLoaded(RemoteFontFaceSource* source)
 {
-    if (!isValid() || source != m_sources.front())
+    if (!isValid() || source != m_sources.front().get())
         return;
 
     if (loadStatus() == FontFace::Loading) {
@@ -89,7 +89,7 @@ void CSSFontFace::fontLoaded(RemoteFontFaceSource* source)
 
 void CSSFontFace::didBecomeVisibleFallback(RemoteFontFaceSource* source)
 {
-    if (!isValid() || source != m_sources.front())
+    if (!isValid() || source != m_sources.front().get())
         return;
     if (m_segmentedFontFace)
         m_segmentedFontFace->fontFaceInvalidated();
@@ -101,7 +101,7 @@ PassRefPtr<SimpleFontData> CSSFontFace::getFontData(const FontDescription& fontD
         return nullptr;
 
     while (!m_sources.empty()) {
-        OwnPtrWillBeMember<CSSFontFaceSource>& source = m_sources.front();
+        std::unique_ptr<CSSFontFaceSource>& source = m_sources.front();
         if (RefPtr<SimpleFontData> result = source->getFontData(fontDescription)) {
             if (loadStatus() == FontFace::Unloaded && (source->isLoading() || source->isLoaded()))
                 setLoadStatus(FontFace::Loading);
@@ -157,7 +157,7 @@ void CSSFontFace::load(const FontDescription& fontDescription)
     ASSERT(loadStatus() == FontFace::Loading);
 
     while (!m_sources.empty()) {
-        OwnPtrWillBeMember<CSSFontFaceSource>& source = m_sources.front();
+        std::unique_ptr<CSSFontFaceSource>& source = m_sources.front();
         if (source->isValid()) {
             if (source->isLocal()) {
                 if (source->isLocalFontAvailable(fontDescription)) {

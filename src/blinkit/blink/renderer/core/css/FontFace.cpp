@@ -344,9 +344,9 @@ void FontFace::setLoadStatus(LoadStatus status)
     m_status = status;
     ASSERT(m_status != Error || m_error);
 
-    ASSERT(false); // BKTODO:
-#if 0
     if (m_status == Loaded || m_status == Error) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (m_loadedProperty) {
             if (m_status == Loaded)
                 m_loadedProperty->resolve(this);
@@ -362,8 +362,8 @@ void FontFace::setLoadStatus(LoadStatus status)
             else
                 callbacks[i]->notifyError(this);
         }
-    }
 #endif
+    }
 }
 
 void FontFace::setError(DOMException* error)
@@ -570,7 +570,7 @@ static FontDisplay CSSValueToFontDisplay(CSSValue* value)
     return FontDisplayAuto;
 }
 
-static PassOwnPtrWillBeRawPtr<CSSFontFace> createCSSFontFace(FontFace* fontFace, CSSValue* unicodeRange)
+static std::unique_ptr<CSSFontFace> createCSSFontFace(FontFace* fontFace, CSSValue* unicodeRange)
 {
     Vector<CSSFontFace::UnicodeRange> ranges;
     if (CSSValueList* rangeList = toCSSValueList(unicodeRange)) {
@@ -581,7 +581,7 @@ static PassOwnPtrWillBeRawPtr<CSSFontFace> createCSSFontFace(FontFace* fontFace,
         }
     }
 
-    return adoptPtrWillBeNoop(new CSSFontFace(fontFace, ranges));
+    return std::make_unique<CSSFontFace>(fontFace, ranges);
 }
 
 void FontFace::initCSSFontFace(Document* document, const GCRefPtr<CSSValue> &src)
@@ -599,7 +599,7 @@ void FontFace::initCSSFontFace(Document* document, const GCRefPtr<CSSValue> &src
     for (int i = 0; i < srcLength; i++) {
         // An item in the list either specifies a string (local font name) or a URL (remote font to download).
         CSSFontFaceSrcValue* item = toCSSFontFaceSrcValue(srcList->item(i));
-        OwnPtrWillBeRawPtr<CSSFontFaceSource> source = nullptr;
+        std::unique_ptr<CSSFontFaceSource> source;
 
         if (!item->isLocal()) {
             bool allowDownloading = Settings::downloadableBinaryFontsEnabled();
@@ -607,15 +607,15 @@ void FontFace::initCSSFontFace(Document* document, const GCRefPtr<CSSValue> &src
                 FontResource* fetched = item->fetch(document);
                 if (fetched) {
                     FontLoader* fontLoader = document->styleEngine().fontSelector()->fontLoader();
-                    source = adoptPtrWillBeNoop(new RemoteFontFaceSource(fetched, fontLoader, CSSValueToFontDisplay(m_display.get())));
+                    source = std::make_unique<RemoteFontFaceSource>(fetched, fontLoader, CSSValueToFontDisplay(m_display.get()));
                 }
             }
         } else {
-            source = adoptPtrWillBeNoop(new LocalFontFaceSource(item->resource()));
+            source = std::make_unique<LocalFontFaceSource>(item->resource());
         }
 
         if (source)
-            m_cssFontFace->addSource(source.release());
+            m_cssFontFace->addSource(std::move(source));
     }
 }
 
@@ -626,12 +626,12 @@ void FontFace::initCSSFontFace(const unsigned char* data, size_t size)
         return;
 
     std::shared_ptr<SharedBuffer> buffer = SharedBuffer::create(data, size);
-    OwnPtrWillBeRawPtr<BinaryDataFontFaceSource> source = adoptPtrWillBeNoop(new BinaryDataFontFaceSource(buffer.get(), m_otsParseMessage));
+    std::unique_ptr<BinaryDataFontFaceSource> source = std::make_unique<BinaryDataFontFaceSource>(buffer.get(), m_otsParseMessage);
     if (source->isValid())
         setLoadStatus(Loaded);
     else
         setError(DOMException::create(SyntaxError, "Invalid font data in ArrayBuffer."));
-    m_cssFontFace->addSource(source.release());
+    m_cssFontFace->addSource(std::move(source));
 }
 
 DEFINE_TRACE(FontFace)
@@ -645,7 +645,6 @@ DEFINE_TRACE(FontFace)
     visitor->trace(m_display);
     visitor->trace(m_error);
     // BKTODO: visitor->trace(m_loadedProperty);
-    visitor->trace(m_cssFontFace);
     visitor->trace(m_callbacks);
     ActiveDOMObject::trace(visitor);
 }

@@ -161,7 +161,7 @@ private:
     PersistentWillBeMember<DOMException> m_error;
 
     // BKTODO: PersistentWillBeMember<LoadedProperty> m_loadedProperty;
-    OwnPtrWillBeMember<CSSFontFace> m_cssFontFace;
+    std::unique_ptr<CSSFontFace> m_cssFontFace;
     WillBeHeapVector<RefPtrWillBeMember<LoadFontCallback>> m_callbacks;
 };
 

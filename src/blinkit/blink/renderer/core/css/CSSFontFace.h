@@ -53,8 +53,7 @@ class FontDescription;
 class RemoteFontFaceSource;
 class SimpleFontData;
 
-class CORE_EXPORT CSSFontFace final : public NoBaseWillBeGarbageCollectedFinalized<CSSFontFace> {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(CSSFontFace);
+class CORE_EXPORT CSSFontFace final {
     WTF_MAKE_NONCOPYABLE(CSSFontFace);
 public:
     struct UnicodeRange;
@@ -77,7 +76,7 @@ public:
 
     bool isValid() const { return !m_sources.empty(); }
 
-    void addSource(PassOwnPtrWillBeRawPtr<CSSFontFaceSource>);
+    void addSource(std::unique_ptr<CSSFontFaceSource> &&);
 
     void didBeginLoad();
     void fontLoaded(RemoteFontFaceSource*);
@@ -134,7 +133,7 @@ private:
 
     UnicodeRangeSet m_ranges;
     RawPtrWillBeMember<CSSSegmentedFontFace> m_segmentedFontFace;
-    std::deque<Member<CSSFontFaceSource>> m_sources;
+    std::deque<std::unique_ptr<CSSFontFaceSource>> m_sources;
     RawPtrWillBeMember<FontFace> m_fontFace;
 };
 

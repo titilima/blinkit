@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSFontFaceSource.cpp
+// Description: CSSFontFaceSource Class
+//      Author: Ziming Li
+//     Created: 2021-11-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2010, 2011 Apple Inc. All rights reserved.
  *
@@ -34,7 +45,6 @@
 namespace blink {
 
 CSSFontFaceSource::CSSFontFaceSource()
-    : m_face(nullptr)
 {
 }
 
@@ -61,11 +71,6 @@ PassRefPtr<SimpleFontData> CSSFontFaceSource::getFontData(const FontDescription&
     if (!fontData)
         fontData = createFontData(fontDescription);
     return fontData; // No release, because fontData is a reference to a RefPtr that is held in the m_fontDataTable.
-}
-
-DEFINE_TRACE(CSSFontFaceSource)
-{
-    visitor->trace(m_face);
 }
 
 }
