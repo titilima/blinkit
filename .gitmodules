@@ -13,9 +13,6 @@
 [submodule "third_party/zlib"]
 	path = third_party/zlib
 	url = https://github.com/madler/zlib.git
-[submodule "third_party/woff2"]
-	path = third_party/woff2
-	url = https://github.com/google/woff2.git
 [submodule "third_party/duktape"]
 	path = third_party/duktape
 	url = https://github.com/svaarala/duktape.git
