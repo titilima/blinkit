@@ -47,7 +47,7 @@
 #include "platform/SharedBuffer.h"
 #include "platform/fonts/FontCache.h"
 #include "platform/fonts/FontPlatformData.h"
-// BKTODO: #include "platform/fonts/opentype/OpenTypeSanitizer.h"
+#include "platform/fonts/opentype/OpenTypeSanitizer.h"
 #include "third_party/skia/include/core/SkStream.h"
 #include "third_party/skia/include/core/SkTypeface.h"
 #include "wtf/PassOwnPtr.h"
@@ -126,8 +126,7 @@ PassOwnPtr<FontCustomPlatformData> FontCustomPlatformData::create(SharedBuffer* 
 
 bool FontCustomPlatformData::supportsFormat(const String& format)
 {
-    ASSERT(false); // BKTODO: return equalIgnoringCase(format, "truetype") || equalIgnoringCase(format, "opentype") || OpenTypeSanitizer::supportsFormat(format);
-    return false;
+    return equalIgnoringCase(format, "truetype") || equalIgnoringCase(format, "opentype") || OpenTypeSanitizer::supportsFormat(format);
 }
 
 } // namespace blink
