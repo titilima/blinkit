@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: OpenTypeSanitizer.H
+// Description: OpenTypeSanitizer Class
+//      Author: Ziming Li
+//     Created: 2021-11-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -49,7 +60,7 @@ public:
     {
     }
 
-    PassRefPtr<SharedBuffer> sanitize();
+    std::shared_ptr<SharedBuffer> sanitize();
 
     static bool supportsFormat(const String&);
     String getErrorString() const { return static_cast<String>(m_otsErrorString); }

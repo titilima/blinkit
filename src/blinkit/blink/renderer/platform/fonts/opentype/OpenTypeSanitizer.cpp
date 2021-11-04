@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: OpenTypeSanitizer.cpp
+// Description: OpenTypeSanitizer Class
+//      Author: Ziming Li
+//     Created: 2021-11-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -41,6 +52,7 @@
 
 namespace blink {
 
+#if 0 // BKTODO:
 static void recordDecodeSpeedHistogram(SharedBuffer* buffer, double decodeTime, size_t decodedSize)
 {
     if (decodeTime <= 0)
@@ -58,8 +70,9 @@ static void recordDecodeSpeedHistogram(SharedBuffer* buffer, double decodeTime, 
     double kbPerSecond = decodedSize / (1000 * decodeTime);
     Platform::current()->histogramCustomCounts(histogramName, kbPerSecond, 1000, 300000, 50);
 }
+#endif
 
-PassRefPtr<SharedBuffer> OpenTypeSanitizer::sanitize()
+std::shared_ptr<SharedBuffer> OpenTypeSanitizer::sanitize()
 {
     if (!m_buffer) {
         setErrorString("Empty Buffer");
@@ -94,7 +107,7 @@ PassRefPtr<SharedBuffer> OpenTypeSanitizer::sanitize()
     }
 
     const size_t transcodeLen = output.Tell();
-    recordDecodeSpeedHistogram(m_buffer, currentTime() - start, transcodeLen);
+    // BKTODO:recordDecodeSpeedHistogram(m_buffer, currentTime() - start, transcodeLen);
     return SharedBuffer::create(static_cast<unsigned char*>(output.get()), transcodeLen);
 }
 
