@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLTL|Win32">
+      <Configuration>ReleaseLTL</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLTL|x64">
+      <Configuration>ReleaseLTL</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{35DDB613-6C23-4B17-9B1A-643C91B09A16}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ots</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141_xp</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\_debug.props" />
+    <Import Project="..\BlinKit.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\_release.props" />
+    <Import Project="..\BlinKit.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\_release.props" />
+    <Import Project="..\BlinKit.props" />
+    <Import Project="..\VC-LTL helper for Visual Studio.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\_debug.props" />
+    <Import Project="..\BlinKit.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\_release.props" />
+    <Import Project="..\BlinKit.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\_release.props" />
+    <Import Project="..\BlinKit.props" />
+    <Import Project="..\VC-LTL helper for Visual Studio.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(RepoRoot)third_party\zlib;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(RepoRoot)third_party\zlib;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(RepoRoot)third_party\zlib;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(RepoRoot)third_party\ots\include;$(RepoRoot)third_party\ots\third_party\woff2\src;$(RepoRoot)third_party\ots\third_party\woff2\brotli\dec;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4018;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(RepoRoot)third_party\ots\include;$(RepoRoot)third_party\ots\third_party\woff2\src;$(RepoRoot)third_party\ots\third_party\woff2\brotli\dec;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4018;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(RepoRoot)third_party\ots\include;$(RepoRoot)third_party\ots\third_party\woff2\src;$(RepoRoot)third_party\ots\third_party\woff2\brotli\dec;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4018;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\third_party\ots\src\cff.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\cff_type2_charstring.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\cmap.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\cvt.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\fpgm.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\gasp.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\gdef.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\glyf.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\gpos.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\gsub.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\hdmx.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\head.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\hhea.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\hmtx.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\kern.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\layout.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\loca.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\ltsh.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\math.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\maxp.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\metrics.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\name.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\os2.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\ots.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\post.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\prep.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\vdmx.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\vhea.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\vmtx.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\src\vorg.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\third_party\woff2\brotli\dec\bit_reader.c" />
+    <ClCompile Include="..\..\..\third_party\ots\third_party\woff2\brotli\dec\decode.c" />
+    <ClCompile Include="..\..\..\third_party\ots\third_party\woff2\brotli\dec\huffman.c" />
+    <ClCompile Include="..\..\..\third_party\ots\third_party\woff2\brotli\dec\safe_malloc.c" />
+    <ClCompile Include="..\..\..\third_party\ots\third_party\woff2\brotli\dec\state.c" />
+    <ClCompile Include="..\..\..\third_party\ots\third_party\woff2\brotli\dec\streams.c" />
+    <ClCompile Include="..\..\..\third_party\ots\third_party\woff2\src\table_tags.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\third_party\woff2\src\variable_length.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\third_party\woff2\src\woff2_common.cc" />
+    <ClCompile Include="..\..\..\third_party\ots\third_party\woff2\src\woff2_dec.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\third_party\ots\src\cff.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\cff_type2_charstring.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\cmap.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\cvt.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\fpgm.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\gasp.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\gdef.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\glyf.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\gpos.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\gsub.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\hdmx.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\head.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\hhea.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\hmtx.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\kern.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\layout.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\loca.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\ltsh.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\math_.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\maxp.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\metrics.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\name.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\os2.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\ots.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\post.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\prep.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\vdmx.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\vhea.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\vmtx.h" />
+    <ClInclude Include="..\..\..\third_party\ots\src\vorg.h" />
+    <ClInclude Include="..\..\..\third_party\ots\third_party\woff2\brotli\dec\bit_reader.h" />
+    <ClInclude Include="..\..\..\third_party\ots\third_party\woff2\brotli\dec\decode.h" />
+    <ClInclude Include="..\..\..\third_party\ots\third_party\woff2\brotli\dec\dictionary.h" />
+    <ClInclude Include="..\..\..\third_party\ots\third_party\woff2\brotli\dec\huffman.h" />
+    <ClInclude Include="..\..\..\third_party\ots\third_party\woff2\brotli\dec\safe_malloc.h" />
+    <ClInclude Include="..\..\..\third_party\ots\third_party\woff2\brotli\dec\state.h" />
+    <ClInclude Include="..\..\..\third_party\ots\third_party\woff2\brotli\dec\streams.h" />
+    <ClInclude Include="..\..\..\third_party\ots\third_party\woff2\src\table_tags.h" />
+    <ClInclude Include="..\..\..\third_party\ots\third_party\woff2\src\variable_length.h" />
+    <ClInclude Include="..\..\..\third_party\ots\third_party\woff2\src\woff2_common.h" />
+    <ClInclude Include="..\..\..\third_party\ots\third_party\woff2\src\woff2_dec.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
