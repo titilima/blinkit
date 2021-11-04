@@ -71,4 +71,29 @@ bool SharedBuffer::isLocked(void) const
     return true; // BKTODO: Check the logic.
 }
 
+#ifdef BLINKIT_UI_ENABLED
+PassRefPtr<SkData> SharedBuffer::getAsSkData() const
+{
+    size_t bufferLength = size();
+
+    SkData *data = SkData::NewUninitialized(bufferLength);
+    char *buffer = static_cast<char *>(data->writable_data());
+    const char *segment = nullptr;
+    size_t position = 0;
+    while (size_t segmentSize = getSomeData(segment, position))
+    {
+        memcpy(buffer + position, segment, segmentSize);
+        position += segmentSize;
+    }
+
+    if (position != bufferLength)
+    {
+        ASSERT_NOT_REACHED();
+        // Don't return the incomplete SkData.
+        return nullptr;
+    }
+    return adoptRef(data);
+}
+#endif
+
 } // namespace blink

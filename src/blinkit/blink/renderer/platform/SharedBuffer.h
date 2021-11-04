@@ -13,6 +13,11 @@
 #ifndef BLINKIT_BLINKIT_SHARED_BUFFER_H
 #define BLINKIT_BLINKIT_SHARED_BUFFER_H
 
+#ifdef BLINKIT_UI_ENABLED
+#   include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#   include "third_party/skia/include/core/SkData.h"
+#endif
+
 namespace blink {
 
 class SharedBuffer : public std::enable_shared_from_this<SharedBuffer>
@@ -33,6 +38,12 @@ public:
     void clear(void) { m_data.clear(); }
 
     bool isLocked(void) const;
+
+#ifdef BLINKIT_UI_ENABLED
+    // Creates an SkData and copies this SharedBuffer's contents to that
+    // SkData without merging segmented buffers into a flat buffer.
+    PassRefPtr<SkData> getAsSkData(void) const;
+#endif
 private:
     SharedBuffer(void) = default;
     SharedBuffer(const char *data, size_t length);
