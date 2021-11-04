@@ -71,7 +71,7 @@ protected:
             return this->end();
         return it->second;
     }
-    iterator Insert(iterator it, const T &o)
+    iterator insertBefore(iterator it, const T &o)
     {
         size_t h = Hash{}(o);
         auto ret = std::list<T>::insert(it, o);
@@ -105,11 +105,13 @@ public:
 
     auto insert(const T &o)
     {
-        return this->Insert(this->end(), o);
+        return insertBefore(this->end(), o);
     }
+
+    using LinkedHashSetBase<T, Hash>::insertBefore;
     auto insertBefore(const T &before, const T &o)
     {
-        return this->Insert(find(before), o);
+        return insertBefore(find(before), o);
     }
 };
 
