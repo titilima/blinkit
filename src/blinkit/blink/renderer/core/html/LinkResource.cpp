@@ -91,7 +91,6 @@ FetchRequest LinkRequestBuilder::build(bool blocking) const
 {
     // BKTODO: ResourceLoadPriority priority = blocking ? ResourceLoadPriorityUnresolved : ResourceLoadPriorityVeryLow;
     ResourceRequest resourceRequest(m_owner->document().completeURL(m_url.string()));
-    resourceRequest.SetView(WebViewImpl::From(m_owner->document()));
     return FetchRequest(resourceRequest, m_owner->localName(), m_charset);
 }
 
