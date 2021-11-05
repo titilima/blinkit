@@ -4116,6 +4116,9 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\MediaFeatureNames.cpp">
       <Filter>blink\renderer\core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\opentype\OpenTypeSanitizer.cpp">
+      <Filter>blink\renderer\platform\fonts\opentype</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -7873,6 +7876,105 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\ViewportStyleResolver.h">
       <Filter>blink\renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\AtomicHTMLToken.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\BackgroundHTMLInputStream.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\BackgroundHTMLParser.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\CompactHTMLToken.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\CSSPreloadScanner.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLElementStack.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLEntityParser.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLEntitySearch.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLEntityTable.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLFormattingElementList.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLInputStream.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLMetaCharsetParser.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLParserIdioms.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLParserThread.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLPreloadScanner.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLResourcePreloader.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLScriptRunnerHost.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLSourceTracker.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLSrcsetParser.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLStackItem.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLToken.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLTokenizer.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLTreeBuilderSimulator.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\InputStreamPreprocessor.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\NestingLevelIncrementer.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\ParsedChunkQueue.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\ParserSynchronizationPolicy.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\PreloadRequest.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\ResourcePreloader.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\TextResourceDecoder.h">
+      <Filter>blink\renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\opentype\OpenTypeSanitizer.h">
+      <Filter>blink\renderer\platform\fonts\opentype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\opentype\OpenTypeTypes.h">
+      <Filter>blink\renderer\platform\fonts\opentype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\opentype\OpenTypeVerticalData.h">
+      <Filter>blink\renderer\platform\fonts\opentype</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

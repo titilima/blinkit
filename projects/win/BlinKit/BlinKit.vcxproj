@@ -99,7 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;BLINKIT_EXPORTS;BLINKIT_CRAWLER_ENABLED;BLINKIT_UI_ENABLED;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;$(SrcRoot)blinkit\blink;$(SrcRoot)blinkit\blink\renderer;$(SrcRoot)chromium;$(SrcRoot)libpng;$(RepoRoot)third_party\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;$(SrcRoot)blinkit\blink;$(SrcRoot)blinkit\blink\renderer;$(SrcRoot)chromium;$(SrcRoot)libpng;$(RepoRoot)third_party\libpng;$(RepoRoot)third_party\ots\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -117,7 +117,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;BLINKIT_EXPORTS;BLINKIT_CRAWLER_ENABLED;BLINKIT_UI_ENABLED;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;$(SrcRoot)blinkit\blink;$(SrcRoot)blinkit\blink\renderer;$(SrcRoot)chromium;$(SrcRoot)libpng;$(RepoRoot)third_party\libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;$(SrcRoot)blinkit\blink;$(SrcRoot)blinkit\blink\renderer;$(SrcRoot)chromium;$(SrcRoot)libpng;$(RepoRoot)third_party\libpng;$(RepoRoot)third_party\ots\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -1138,6 +1138,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontPlatformData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\GenericFontFamilySettings.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\GlyphPageTreeNode.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\opentype\OpenTypeSanitizer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\opentype\OpenTypeVerticalData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\OrientationIterator.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\ScriptRunIterator.cpp" />
@@ -2206,12 +2207,42 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\LabelsNodeList.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\LinkRelAttribute.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\LinkResource.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\AtomicHTMLToken.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\BackgroundHTMLInputStream.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\BackgroundHTMLParser.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\CompactHTMLToken.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\CSSPreloadScanner.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLConstructionSite.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLDocumentParser.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLElementStack.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLEntityParser.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLEntitySearch.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLEntityTable.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLFormattingElementList.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLInputStream.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLMetaCharsetParser.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLParserIdioms.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLParserOptions.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLParserScheduler.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLParserThread.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLPreloadScanner.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLResourcePreloader.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLScriptRunner.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLScriptRunnerHost.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLSourceTracker.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLSrcsetParser.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLStackItem.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLToken.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLTokenizer.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLTreeBuilder.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLTreeBuilderSimulator.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\InputStreamPreprocessor.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\NestingLevelIncrementer.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\ParsedChunkQueue.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\ParserSynchronizationPolicy.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\PreloadRequest.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\ResourcePreloader.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\TextResourceDecoder.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\RadioNodeList.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\RelList.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\ValidityState.h" />
@@ -2464,6 +2495,9 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\GlyphPage.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\GlyphPageTreeNode.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\Latin1TextIterator.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\opentype\OpenTypeSanitizer.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\opentype\OpenTypeTypes.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\opentype\OpenTypeVerticalData.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\OrientationIterator.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\ScriptRunIterator.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\SegmentedFontData.h" />
@@ -2710,6 +2744,9 @@
     </ProjectReference>
     <ProjectReference Include="..\net\net.vcxproj">
       <Project>{103e87cb-36eb-49c3-adfc-6c036aa14b21}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ots\ots.vcxproj">
+      <Project>{35ddb613-6c23-4b17-9b1a-643c91b09a16}</Project>
     </ProjectReference>
     <ProjectReference Include="..\skia\skia.vcxproj">
       <Project>{295edf31-49b6-48e3-b7c5-377c60665a78}</Project>
