@@ -26,6 +26,7 @@ public:
     using const_iterator         = typename std::list<T>::const_iterator;
     using const_reverse_iterator = typename std::list<T>::const_reverse_iterator;
     using iterator               = typename std::list<T>::iterator;
+    using reverse_iterator       = typename std::list<T>::reverse_iterator;
 
     using std::list<T>::back;
     using std::list<T>::begin;
