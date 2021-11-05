@@ -338,10 +338,10 @@ protected:
     HashCountedSet<ResourceClient*> m_clientsAwaitingCallback;
     HashCountedSet<ResourceClient*> m_finishedClients;
 
-    class ResourceCallback : public BlinKit::GCObject {
+    class ResourceCallback {
     public:
         static ResourceCallback* callbackHandler();
-        DECLARE_TRACE();
+
         void schedule(Resource*);
         void cancel(Resource*);
         bool isScheduled(Resource*) const;
@@ -349,7 +349,7 @@ protected:
         ResourceCallback();
         void runTask();
         // BKTODO: OwnPtr<CancellableTaskFactory> m_callbackTaskFactory;
-        BlinKit::GCObjectSet<Resource> m_resourcesWithPendingClients;
+        std::unordered_set<Resource *> m_resourcesWithPendingClients;
     };
 
     bool hasClient(ResourceClient* client) { return m_clients.contains(client) || m_clientsAwaitingCallback.contains(client) || m_finishedClients.contains(client); }

@@ -673,11 +673,8 @@ void Resource::didAddClient(ResourceClient* c)
     if (!isLoading() && !stillNeedsLoad()) {
         c->notifyFinished(this);
         if (m_clients.contains(c)) {
-            ASSERT(false); // BKTODO:
-#if 0
-            m_finishedClients.add(c);
-            m_clients.remove(c);
-#endif
+            m_finishedClients.insert(c);
+            m_clients.erase(c);
         }
     }
 }
@@ -1114,16 +1111,18 @@ ResourcePriority Resource::priorityFromClients()
 
 Resource::ResourceCallback* Resource::ResourceCallback::callbackHandler()
 {
-    static ResourceCallback *callbackHandler = GCWrapGlobal(new ResourceCallback);
-    return callbackHandler;
+    static ResourceCallback callbackHandler;
+    return &callbackHandler; // BKTODO: ResourceCallback may be useless.
 }
 
+#if 0 // BKTODO:
 DEFINE_TRACE(Resource::ResourceCallback)
 {
 #if ENABLE(OILPAN)
     visitor->trace(m_resourcesWithPendingClients);
 #endif
 }
+#endif
 
 Resource::ResourceCallback::ResourceCallback()
     // BKTODO: : m_callbackTaskFactory(CancellableTaskFactory::create(this, &ResourceCallback::runTask))
@@ -1153,12 +1152,12 @@ void Resource::ResourceCallback::cancel(Resource* resource)
 
 bool Resource::ResourceCallback::isScheduled(Resource* resource) const
 {
-    return m_resourcesWithPendingClients.contains(resource);
+    return zed::key_exists(m_resourcesWithPendingClients, resource);
 }
 
 void Resource::ResourceCallback::runTask()
 {
-    std::vector<Resource *> resources = m_resourcesWithPendingClients.GetSnapshot();
+    std::vector<Resource *> resources(m_resourcesWithPendingClients.begin(), m_resourcesWithPendingClients.end());
     m_resourcesWithPendingClients.clear();
 
     for (const auto& resource : resources) {
