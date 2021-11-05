@@ -90,25 +90,17 @@ bool CSSParserContext::operator==(const CSSParserContext& other) const
 
 const CSSParserContext& strictCSSParserContext()
 {
-    ASSERT(false); // BKTODO:
-    exit(0);
-#if 0
-    DEFINE_STATIC_LOCAL(CSSParserContext, strictContext, (HTMLStandardMode, 0));
+    static CSSParserContext strictContext(HTMLStandardMode);
     return strictContext;
-#endif
 }
 
 KURL CSSParserContext::completeURL(const String& url) const
 {
     if (url.isNull())
         return KURL();
-    ASSERT(false); // BKTODO:
-    return KURL();
-#if 0
     if (charset().isEmpty())
         return KURL(baseURL(), url);
     return KURL(baseURL(), url, charset());
-#endif
 }
 
 } // namespace blink

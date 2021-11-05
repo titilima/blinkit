@@ -211,12 +211,12 @@ std::shared_ptr<WebTaskRunner> ResourceFetcher::loadingTaskRunner()
 
 Resource* ResourceFetcher::cachedResource(const KURL& resourceURL) const
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
+#if 0 // BKTODO:
     KURL url = MemoryCache::removeFragmentIdentifierIfNeeded(resourceURL);
     const WeakPtrWillBeWeakMember<Resource>& resource = m_documentResources.get(url);
     return resource.get();
+#else
+    return nullptr;
 #endif
 }
 
