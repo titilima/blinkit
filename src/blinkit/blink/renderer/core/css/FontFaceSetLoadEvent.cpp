@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontFaceSetLoadEvent.cpp
+// Description: FontFaceSetLoadEvent Class
+//      Author: Ziming Li
+//     Created: 2021-11-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -42,11 +53,13 @@ FontFaceSetLoadEvent::FontFaceSetLoadEvent(const AtomicString& type, const FontF
 {
 }
 
+#if 0 // BKTODO:
 FontFaceSetLoadEvent::FontFaceSetLoadEvent(const AtomicString& type, const FontFaceSetLoadEventInit& initializer)
     : Event(type, initializer)
     , m_fontfaces(initializer.fontfaces())
 {
 }
+#endif
 
 FontFaceSetLoadEvent::~FontFaceSetLoadEvent()
 {

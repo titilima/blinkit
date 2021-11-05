@@ -101,15 +101,14 @@ static void setCrossOriginAccessControl(FetchRequest& request, SecurityOrigin* s
 FontResource* CSSFontFaceSrcValue::fetch(Document* document)
 {
     if (!m_fetched) {
-        ASSERT(false); // BKTODO:
-#if 0
-        FetchRequest request(ResourceRequest(document->completeURL(m_resource)), FetchInitiatorTypeNames::css);
+        FetchRequest request(ResourceRequest(document->completeURL(m_resource)));
+#if 0 // BKTODO:
         request.setContentSecurityCheck(m_shouldCheckContentSecurityPolicy);
         SecurityOrigin* securityOrigin = document->securityOrigin();
         setCrossOriginAccessControl(request, securityOrigin);
         request.mutableResourceRequest().setHTTPReferrer(SecurityPolicy::generateReferrer(m_referrer.referrerPolicy, request.url(), m_referrer.referrer));
-        m_fetched = FontResource::fetch(request, document->fetcher());
 #endif
+        m_fetched = FontResource::fetch(request, document->fetcher());
     } else {
         // FIXME: CSSFontFaceSrcValue::fetch is invoked when @font-face rule
         // is processed by StyleResolver / StyleEngine.
@@ -123,18 +122,17 @@ void CSSFontFaceSrcValue::restoreCachedResourceIfNeeded(Document* document)
     ASSERT(m_fetched);
     ASSERT(document && document->fetcher());
 
-    ASSERT(false); // BKTODO:
-#if 0
-    const String resourceURL = document->completeURL(m_resource);
-    if (document->fetcher()->cachedResource(KURL(ParsedURLString, resourceURL)))
+    const String resourceURL = document->completeURL(m_resource).string();
+    if (document->fetcher()->cachedResource(KURL(resourceURL)))
         return;
 
-    FetchRequest request(ResourceRequest(resourceURL), FetchInitiatorTypeNames::css);
+    ResourceRequest request(resourceURL);
+#if 0 // BKTODO:
     request.setContentSecurityCheck(m_shouldCheckContentSecurityPolicy);
     MixedContentChecker::shouldBlockFetch(document->frame(), m_fetched->lastResourceRequest(),
         m_fetched->lastResourceRequest().url(), MixedContentChecker::SendReport);
-    document->fetcher()->requestLoadStarted(m_fetched.get(), request, ResourceFetcher::ResourceLoadingFromCache);
 #endif
+    document->fetcher()->requestLoadStarted(m_fetched.get(), FetchRequest(request), ResourceFetcher::ResourceLoadingFromCache);
 }
 
 bool CSSFontFaceSrcValue::equals(const CSSFontFaceSrcValue& other) const

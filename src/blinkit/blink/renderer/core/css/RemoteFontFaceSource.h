@@ -34,7 +34,6 @@ enum FontDisplay {
 };
 
 class RemoteFontFaceSource final : public CSSFontFaceSource, public FontResourceClient {
-    WILL_BE_USING_PRE_FINALIZER(RemoteFontFaceSource, dispose);
 public:
     enum DisplayPeriod { BlockPeriod, SwapPeriod, FailurePeriod };
 
@@ -56,11 +55,12 @@ public:
     void fontLoadLongLimitExceeded(FontResource*) override;
     String debugName() const override { return "RemoteFontFaceSource"; }
 
-#if 0 // BKTODO:
     // For UMA reporting
-    bool hadBlankText() override { return m_histograms.hadBlankText(); }
-    void paintRequested() { m_histograms.fallbackFontPainted(); }
-#endif
+    // BKTODO: bool hadBlankText() override { return m_histograms.hadBlankText(); }
+    void paintRequested()
+    {
+        // BKTODO: m_histograms.fallbackFontPainted();
+    }
 
     DECLARE_VIRTUAL_TRACE();
 

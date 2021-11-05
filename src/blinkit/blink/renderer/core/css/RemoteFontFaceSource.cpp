@@ -36,7 +36,7 @@ RemoteFontFaceSource::RemoteFontFaceSource(FontResource* font, PassRefPtrWillBeR
     , m_isInterventionTriggered(false)
 {
 #if ENABLE(OILPAN)
-    ASSERT(false); // BKTODO: ThreadState::current()->registerPreFinalizer(this);
+    // BKTODO: ThreadState::current()->registerPreFinalizer(this);
 #endif
     m_font->addClient(this);
 
@@ -55,9 +55,7 @@ RemoteFontFaceSource::RemoteFontFaceSource(FontResource* font, PassRefPtrWillBeR
 
 RemoteFontFaceSource::~RemoteFontFaceSource()
 {
-#if !ENABLE(OILPAN)
     dispose();
-#endif
 }
 
 void RemoteFontFaceSource::dispose()
@@ -187,12 +185,8 @@ PassRefPtr<SimpleFontData> RemoteFontFaceSource::createLoadingFallbackFontData(c
         ASSERT_NOT_REACHED();
         return nullptr;
     }
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     RefPtr<CSSCustomFontData> cssFontData = CSSCustomFontData::create(this, m_period == BlockPeriod ? CSSCustomFontData::InvisibleFallback : CSSCustomFontData::VisibleFallback);
     return SimpleFontData::create(temporaryFont->platformData(), cssFontData);
-#endif
 }
 
 void RemoteFontFaceSource::beginLoadIfNeeded()

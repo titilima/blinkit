@@ -82,10 +82,10 @@ void ScopedStyleResolver::addFontFaceRules(const RuleSet& ruleSet)
 
     Document& document = treeScope().document();
     CSSFontSelector* cssFontSelector = document.styleEngine().fontSelector();
-    const WillBeHeapVector<RawPtrWillBeMember<StyleRuleFontFace>> fontFaceRules = ruleSet.fontFaceRules();
+    const std::vector<GCRefPtr<StyleRuleFontFace>> fontFaceRules = ruleSet.fontFaceRules();
     for (auto& fontFaceRule : fontFaceRules) {
         if (GCRefPtr<FontFace> fontFace = FontFace::create(&document, fontFaceRule))
-            cssFontSelector->fontFaceCache()->add(cssFontSelector, fontFaceRule, fontFace.get());
+            cssFontSelector->fontFaceCache()->add(cssFontSelector, fontFaceRule.get(), fontFace.get());
     }
     if (fontFaceRules.size())
         document.styleResolver()->invalidateMatchedPropertiesCache();

@@ -96,8 +96,8 @@ void CSSFontSelector::dispatchInvalidationCallbacks()
 {
     m_fontFaceCache.incrementVersion();
 
-    WillBeHeapVector<RawPtrWillBeMember<CSSFontSelectorClient>> clients;
-    ASSERT(false); // BKTODO: copyToVector(m_clients, clients);
+    std::vector<CSSFontSelectorClient *> clients;
+    zed::get_values(clients, m_clients);
     for (size_t i = 0; i < clients.size(); ++i)
         clients[i]->fontsNeedUpdate(this);
 }

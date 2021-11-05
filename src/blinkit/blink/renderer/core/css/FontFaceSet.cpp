@@ -179,7 +179,7 @@ AtomicString FontFaceSet::status() const
 void FontFaceSet::handlePendingEventsAndPromisesSoon()
 {
     // m_asyncRunner will be automatically stopped on destruction.
-    ASSERT(false); // BKTODO: m_asyncRunner->runAsync();
+    // BKTODO: m_asyncRunner->runAsync();
 }
 
 void FontFaceSet::didLayout()
@@ -240,14 +240,14 @@ void FontFaceSet::beginFontLoading(FontFace* fontFace)
 void FontFaceSet::fontLoaded(FontFace* fontFace)
 {
     m_histogram.updateStatus(fontFace);
-    m_loadedFonts.append(fontFace);
+    m_loadedFonts.emplace_back(fontFace);
     removeFromLoadingFonts(fontFace);
 }
 
 void FontFaceSet::loadError(FontFace* fontFace)
 {
     m_histogram.updateStatus(fontFace);
-    m_failedFonts.append(fontFace);
+    m_failedFonts.emplace_back(fontFace);
     removeFromLoadingFonts(fontFace);
 }
 
@@ -256,8 +256,7 @@ void FontFaceSet::addToLoadingFonts(PassRefPtrWillBeRawPtr<FontFace> fontFace)
     if (!m_isLoading) {
         m_isLoading = true;
         m_shouldFireLoadingEvent = true;
-        ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
         if (m_ready->state() != ReadyProperty::Pending)
             m_ready->reset();
 #endif
@@ -374,11 +373,10 @@ void FontFaceSet::fireDoneEventIfPossible()
         return;
 
     if (m_isLoading) {
-        RefPtrWillBeRawPtr<FontFaceSetLoadEvent> doneEvent = nullptr;
-        RefPtrWillBeRawPtr<FontFaceSetLoadEvent> errorEvent = nullptr;
-        doneEvent = FontFaceSetLoadEvent::createForFontFaces(EventTypeNames::loadingdone, m_loadedFonts);
+        GCRefPtr<FontFaceSetLoadEvent> errorEvent;
+        GCRefPtr<FontFaceSetLoadEvent> doneEvent = FontFaceSetLoadEvent::createForFontFaces(EventTypeNames::loadingdone, m_loadedFonts);
         m_loadedFonts.clear();
-        if (!m_failedFonts.isEmpty()) {
+        if (!m_failedFonts.empty()) {
             errorEvent = FontFaceSetLoadEvent::createForFontFaces(EventTypeNames::loadingerror, m_failedFonts);
             m_failedFonts.clear();
         }

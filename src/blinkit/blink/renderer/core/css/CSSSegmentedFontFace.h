@@ -56,15 +56,15 @@ class FontDescription;
 class FontFace;
 class SegmentedFontData;
 
-class CSSSegmentedFontFace final : public RefCountedWillBeGarbageCollectedFinalized<CSSSegmentedFontFace> {
+class CSSSegmentedFontFace final : public BlinKit::GCObject {
 public:
-    static PassRefPtrWillBeRawPtr<CSSSegmentedFontFace> create(CSSFontSelector* selector, FontTraits traits)
+    static GCRefPtr<CSSSegmentedFontFace> create(CSSFontSelector* selector, FontTraits traits)
     {
-        return adoptRefWillBeNoop(new CSSSegmentedFontFace(selector, traits));
+        return BlinKit::GCWrapShared(new CSSSegmentedFontFace(selector, traits));
     }
     ~CSSSegmentedFontFace();
 
-    CSSFontSelector* fontSelector(void) const;
+    CSSFontSelector* fontSelector() const { return m_fontSelector; }
     FontTraits traits() const { return m_traits; }
 
     // Called when status of a FontFace has changed (e.g. loaded or timed out)
@@ -78,7 +78,7 @@ public:
     PassRefPtr<FontData> getFontData(const FontDescription&);
 
     bool checkFont(const String&) const;
-    void match(const String&, WillBeHeapVector<RefPtrWillBeMember<FontFace>>&) const;
+    void match(const String&, std::vector<GCRefPtr<FontFace>>&) const;
     void willUseFontData(const FontDescription&, UChar32);
     void willUseRange(const FontDescription&, const FontDataRange&);
 
@@ -90,9 +90,9 @@ private:
     void pruneTable();
     bool isValid() const;
 
-    using FontFaceList = WillBeHeapListHashSet<RefPtrWillBeMember<FontFace>>;
+    using FontFaceList = LinkedHashSet<GCRefPtr<FontFace>>;
 
-    GCRefPtr<CSSFontSelector> m_fontSelector;
+    CSSFontSelector *m_fontSelector;
     FontTraits m_traits;
     HashMap<unsigned, RefPtr<SegmentedFontData>> m_fontDataTable;
     // All non-CSS-connected FontFaces are stored after the CSS-connected ones.

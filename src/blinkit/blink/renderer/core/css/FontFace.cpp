@@ -119,7 +119,7 @@ PassRefPtrWillBeRawPtr<FontFace> FontFace::create(ExecutionContext* context, con
 }
 #endif
 
-GCRefPtr<FontFace> FontFace::create(Document* document, const StyleRuleFontFace* fontFaceRule)
+GCRefPtr<FontFace> FontFace::create(Document *document, const GCRefPtr<StyleRuleFontFace> &fontFaceRule)
 {
     const StylePropertySet& properties = fontFaceRule->properties();
 
@@ -345,15 +345,17 @@ void FontFace::setLoadStatus(LoadStatus status)
     ASSERT(m_status != Error || m_error);
 
     if (m_status == Loaded || m_status == Error) {
-        ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
         if (m_loadedProperty) {
             if (m_status == Loaded)
                 m_loadedProperty->resolve(this);
             else
                 m_loadedProperty->reject(m_error.get());
         }
+#endif
 
+        ASSERT(m_callbacks.empty()); // BKTODO:
+#if 0
         WillBeHeapVector<RefPtrWillBeMember<LoadFontCallback>> callbacks;
         m_callbacks.swap(callbacks);
         for (size_t i = 0; i < callbacks.size(); ++i) {

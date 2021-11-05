@@ -3257,14 +3257,11 @@ static GCRefPtr<CSSValue> consumeFontFaceSrcURI(CSSParserTokenRange& range, cons
     String url = consumeUrl(range);
     if (url.isNull())
         return nullptr;
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
-    RefPtrWillBeRawPtr<CSSFontFaceSrcValue> uriValue(CSSFontFaceSrcValue::create(context.completeURL(url), context.shouldCheckContentSecurityPolicy()));
-    uriValue->setReferrer(context.referrer());
+    GCRefPtr<CSSFontFaceSrcValue> uriValue = CSSFontFaceSrcValue::create(context.completeURL(url).string());
+    // BKTODO: uriValue->setReferrer(context.referrer());
 
     if (range.peek().functionId() != CSSValueFormat)
-        return uriValue.release();
+        return uriValue;
 
     // FIXME: https://drafts.csswg.org/css-fonts says that format() contains a comma-separated list of strings,
     // but CSSFontFaceSrcValue stores only one format. Allowing one format for now.
@@ -3274,29 +3271,24 @@ static GCRefPtr<CSSValue> consumeFontFaceSrcURI(CSSParserTokenRange& range, cons
     if ((arg.type() != StringToken && arg.type() != IdentToken) || !args.atEnd())
         return nullptr;
     uriValue->setFormat(arg.value());
-    return uriValue.release();
-#endif
+    return uriValue;
 }
 
 static GCRefPtr<CSSValue> consumeFontFaceSrcLocal(CSSParserTokenRange& range, const CSSParserContext& context)
 {
     CSSParserTokenRange args = consumeFunction(range);
-    ASSERT(false); // BKTODO:
-#if 0
-    ContentSecurityPolicyDisposition shouldCheckContentSecurityPolicy = context.shouldCheckContentSecurityPolicy();
     if (args.peek().type() == StringToken) {
         const CSSParserToken& arg = args.consumeIncludingWhitespace();
         if (!args.atEnd())
             return nullptr;
-        return CSSFontFaceSrcValue::createLocal(arg.value(), shouldCheckContentSecurityPolicy);
+        return CSSFontFaceSrcValue::createLocal(arg.value());
     }
     if (args.peek().type() == IdentToken) {
         String familyName = concatenateFamilyName(args);
         if (!args.atEnd())
             return nullptr;
-        return CSSFontFaceSrcValue::createLocal(familyName, shouldCheckContentSecurityPolicy);
+        return CSSFontFaceSrcValue::createLocal(familyName);
     }
-#endif
     return nullptr;
 }
 

@@ -78,8 +78,8 @@ public:
     DECLARE_TRACE();
 
 private:
-    using TraitsMap = std::unordered_map<unsigned, Member<CSSSegmentedFontFace>>;
-    using FamilyToTraitsMap = std::unordered_map<String, Member<TraitsMap>, CaseFoldingHash>;
+    using TraitsMap = std::unordered_map<unsigned, GCRefPtr<CSSSegmentedFontFace>>;
+    using FamilyToTraitsMap = std::unordered_map<String, std::unique_ptr<TraitsMap>, CaseFoldingHash>;
     using StyleRuleToFontFace = std::unordered_map<const StyleRuleFontFace *, GCRefPtr<FontFace>>;
     FamilyToTraitsMap m_fontFaces;
     FamilyToTraitsMap m_fonts;

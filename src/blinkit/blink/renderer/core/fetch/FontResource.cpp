@@ -84,13 +84,11 @@ static void recordPackageFormatHistogram(FontPackageFormat format)
 
 ResourcePtr<FontResource> FontResource::fetch(FetchRequest& request, ResourceFetcher* fetcher)
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
+#if 0 // BKTODO:
     ASSERT(request.resourceRequest().frameType() == WebURLRequest::FrameTypeNone);
     request.mutableResourceRequest().setRequestContext(WebURLRequest::RequestContextFont);
-    return toFontResource(fetcher->requestResource(request, FontResourceFactory()));
 #endif
+    return toFontResource(fetcher->requestResource(request, FontResourceFactory()));
 }
 
 FontResource::FontResource(const ResourceRequest& resourceRequest)

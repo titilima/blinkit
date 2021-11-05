@@ -251,7 +251,7 @@ void RuleSet::addViewportRule(StyleRuleViewport* rule)
 void RuleSet::addFontFaceRule(StyleRuleFontFace* rule)
 {
     ensurePendingRules(); // So that m_fontFaceRules.shrinkToFit() gets called.
-    m_fontFaceRules.append(rule);
+    m_fontFaceRules.emplace_back(rule);
 }
 
 void RuleSet::addKeyframesRule(StyleRuleKeyframes* rule)
@@ -352,7 +352,7 @@ void RuleSet::compactRules()
     m_shadowHostRules.shrinkToFit();
     m_pageRules.shrink_to_fit();
     m_viewportRules.shrinkToFit();
-    m_fontFaceRules.shrinkToFit();
+    m_fontFaceRules.shrink_to_fit();
     m_keyframesRules.shrink_to_fit();
     m_deepCombinatorOrShadowPseudoRules.shrinkToFit();
     m_shadowDistributedRules.shrinkToFit();

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FontFaceSetLoadEvent.h
+// Description: FontFaceSetLoadEvent Class
+//      Author: Ziming Li
+//     Created: 2021-11-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -43,19 +54,21 @@ namespace blink {
 class FontFaceSetLoadEvent final : public Event {
     DEFINE_WRAPPERTYPEINFO();
 public:
-    static PassRefPtrWillBeRawPtr<FontFaceSetLoadEvent> create()
+    static GCRefPtr<FontFaceSetLoadEvent> create()
     {
-        return adoptRefWillBeNoop(new FontFaceSetLoadEvent());
+        return BlinKit::GCWrapShared(new FontFaceSetLoadEvent());
     }
 
+#if 0 // BKTODO:
     static PassRefPtrWillBeRawPtr<FontFaceSetLoadEvent> create(const AtomicString& type, const FontFaceSetLoadEventInit& initializer)
     {
         return adoptRefWillBeNoop(new FontFaceSetLoadEvent(type, initializer));
     }
+#endif
 
-    static PassRefPtrWillBeRawPtr<FontFaceSetLoadEvent> createForFontFaces(const AtomicString& type, const FontFaceArray& fontfaces = FontFaceArray())
+    static GCRefPtr<FontFaceSetLoadEvent> createForFontFaces(const AtomicString& type, const FontFaceArray& fontfaces = FontFaceArray())
     {
-        return adoptRefWillBeNoop(new FontFaceSetLoadEvent(type, fontfaces));
+        return BlinKit::GCWrapShared(new FontFaceSetLoadEvent(type, fontfaces));
     }
 
     ~FontFaceSetLoadEvent() override;
@@ -69,7 +82,7 @@ public:
 private:
     FontFaceSetLoadEvent();
     FontFaceSetLoadEvent(const AtomicString&, const FontFaceArray&);
-    FontFaceSetLoadEvent(const AtomicString&, const FontFaceSetLoadEventInit&);
+    // BKTODO: FontFaceSetLoadEvent(const AtomicString&, const FontFaceSetLoadEventInit&);
 
     FontFaceArray m_fontfaces;
 };

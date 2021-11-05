@@ -72,7 +72,7 @@ public:
     enum LoadStatus { Unloaded, Loading, Loaded, Error };
 
     // BKTODO: static PassRefPtrWillBeRawPtr<FontFace> create(ExecutionContext*, const AtomicString& family, StringOrArrayBufferOrArrayBufferView&, const FontFaceDescriptors&);
-    static GCRefPtr<FontFace> create(Document*, const StyleRuleFontFace*);
+    static GCRefPtr<FontFace> create(Document *, const GCRefPtr<StyleRuleFontFace> &);
 
     ~FontFace();
 
@@ -165,7 +165,7 @@ private:
     WillBeHeapVector<RefPtrWillBeMember<LoadFontCallback>> m_callbacks;
 };
 
-using FontFaceArray = WillBeHeapVector<RefPtrWillBeMember<FontFace>>;
+using FontFaceArray = std::vector<GCRefPtr<FontFace>>;
 
 } // namespace blink
 

@@ -93,7 +93,7 @@ void CSSSegmentedFontFace::addFontFace(PassRefPtrWillBeRawPtr<FontFace> prpFontF
     pruneTable();
     fontFace->cssFontFace()->setSegmentedFontFace(this);
     if (cssConnected) {
-        ASSERT(false); // BKTODO: m_fontFaces.insertBefore(m_firstNonCssConnectedFace, fontFace);
+        m_fontFaces.insertBefore(m_firstNonCssConnectedFace, fontFace);
     } else {
         ASSERT(false); // BKTODO:
 #if 0
@@ -108,16 +108,13 @@ void CSSSegmentedFontFace::addFontFace(PassRefPtrWillBeRawPtr<FontFace> prpFontF
 void CSSSegmentedFontFace::removeFontFace(PassRefPtrWillBeRawPtr<FontFace> prpFontFace)
 {
     RefPtrWillBeRawPtr<FontFace> fontFace = prpFontFace;
-    ASSERT(false); // BKTODO:
-#if 0
     FontFaceList::iterator it = m_fontFaces.find(fontFace);
     if (it == m_fontFaces.end())
         return;
 
     if (it == m_firstNonCssConnectedFace)
         ++m_firstNonCssConnectedFace;
-    m_fontFaces.remove(it);
-#endif
+    m_fontFaces.erase(it);
 
     pruneTable();
     fontFace->cssFontFace()->clearSegmentedFontFace();
@@ -201,17 +198,12 @@ bool CSSSegmentedFontFace::checkFont(const String& text) const
     return true;
 }
 
-void CSSSegmentedFontFace::match(const String& text, WillBeHeapVector<RefPtrWillBeMember<FontFace>>& faces) const
+void CSSSegmentedFontFace::match(const String& text, std::vector<GCRefPtr<FontFace>>& faces) const
 {
     for (const auto& fontFace : m_fontFaces) {
         if (fontFace->cssFontFace()->ranges().intersectsWith(text))
-            faces.append(fontFace);
+            faces.emplace_back(fontFace);
     }
-}
-
-CSSFontSelector* CSSSegmentedFontFace::fontSelector(void) const
-{
-    return m_fontSelector.get();
 }
 
 DEFINE_TRACE(CSSSegmentedFontFace)

@@ -99,11 +99,8 @@ PassOwnPtr<FontCustomPlatformData> FontCustomPlatformData::create(SharedBuffer* 
 {
     ASSERT_ARG(buffer, buffer);
 
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     OpenTypeSanitizer sanitizer(buffer);
-    RefPtr<SharedBuffer> transcodeBuffer = sanitizer.sanitize();
+    std::shared_ptr<SharedBuffer> transcodeBuffer = sanitizer.sanitize();
 
     if (!transcodeBuffer) {
         otsParseMessage = sanitizer.getErrorString();
@@ -121,7 +118,6 @@ PassOwnPtr<FontCustomPlatformData> FontCustomPlatformData::create(SharedBuffer* 
         return nullptr;
 
     return adoptPtr(new FontCustomPlatformData(typeface.release()));
-#endif
 }
 
 bool FontCustomPlatformData::supportsFormat(const String& format)

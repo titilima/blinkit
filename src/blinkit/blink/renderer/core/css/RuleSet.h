@@ -155,7 +155,7 @@ public:
     const WillBeHeapVector<RuleData>* shadowHostRules() const { ASSERT(!m_pendingRules); return &m_shadowHostRules; }
     const std::vector<GCRefPtr<StyleRulePage>>& pageRules() const { ASSERT(!m_pendingRules); return m_pageRules; }
     const WillBeHeapVector<RawPtrWillBeMember<StyleRuleViewport>>& viewportRules() const { ASSERT(!m_pendingRules); return m_viewportRules; }
-    const WillBeHeapVector<RawPtrWillBeMember<StyleRuleFontFace>>& fontFaceRules() const { return m_fontFaceRules; }
+    const std::vector<GCRefPtr<StyleRuleFontFace>>& fontFaceRules() const { return m_fontFaceRules; }
     const std::vector<GCRefPtr<StyleRuleKeyframes>>& keyframesRules() const { return m_keyframesRules; }
     const WillBeHeapVector<MinimalRuleData>& deepCombinatorOrShadowPseudoRules() const { return m_deepCombinatorOrShadowPseudoRules; }
     const WillBeHeapVector<MinimalRuleData>& shadowDistributedRules() const { return m_shadowDistributedRules; }
@@ -238,7 +238,7 @@ private:
     RuleFeatureSet m_features;
     std::vector<GCRefPtr<StyleRulePage>> m_pageRules;
     WillBeHeapVector<RawPtrWillBeMember<StyleRuleViewport>> m_viewportRules;
-    WillBeHeapVector<RawPtrWillBeMember<StyleRuleFontFace>> m_fontFaceRules;
+    std::vector<GCRefPtr<StyleRuleFontFace>> m_fontFaceRules;
     std::vector<GCRefPtr<StyleRuleKeyframes>> m_keyframesRules;
     WillBeHeapVector<MinimalRuleData> m_deepCombinatorOrShadowPseudoRules;
     // TODO(kochi): "shadowDistributed" means the selector has ::content pseudo element.
