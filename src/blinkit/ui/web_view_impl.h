@@ -49,9 +49,6 @@ public:
 
     void Initialize(void);
 
-    static WebViewImpl* From(blink::LocalFrame &frame);
-    static WebViewImpl* From(blink::Document &document);
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
     int LoadUI(const char *URI);

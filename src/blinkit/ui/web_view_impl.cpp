@@ -210,23 +210,7 @@ IntSize WebViewImpl::FrameSize(void)
     frameSize.Scale(1 / MinimumPageScaleFactor());
     return ExpandedIntSize(frameSize);
 }
-#endif
 
-WebViewImpl* WebViewImpl::From(LocalFrame &frame)
-{
-    ASSERT(frame.client()->GetType() == FrameClient::Type::WebView);
-    return static_cast<WebViewImpl *>(frame.client());
-}
-
-WebViewImpl* WebViewImpl::From(Document &document)
-{
-    ASSERT(document.isUINode());
-    if (LocalFrame *frame = document.frame())
-        return WebViewImpl::From(*frame);
-    return nullptr;
-}
-
-#if 0 // BKTODO:
 BrowserControls& WebViewImpl::GetBrowserControls(void)
 {
     return m_page->GetBrowserControls();
@@ -607,7 +591,6 @@ int WebViewImpl::LoadUI(const char *URI)
     auto task = [this, u]
     {
         ResourceRequest request(u);
-        request.SetView(this);
         m_frame->loader().load(FrameLoadRequest(nullptr, request));
     };
     m_appCaller.Call(BLINK_FROM_HERE, task);
