@@ -220,9 +220,6 @@
     <ProjectReference Include="..\openssl\openssl.vcxproj">
       <Project>{0250b8c0-4549-4760-a0e2-eddb970dc250}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\url\url.vcxproj">
-      <Project>{849ce42e-6457-4c6d-8ba0-854932a2aedb}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

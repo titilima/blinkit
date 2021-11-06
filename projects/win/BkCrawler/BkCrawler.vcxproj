@@ -273,9 +273,6 @@
     <ProjectReference Include="..\net\net.vcxproj">
       <Project>{103e87cb-36eb-49c3-adfc-6c036aa14b21}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\url\url.vcxproj">
-      <Project>{849ce42e-6457-4c6d-8ba0-854932a2aedb}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BkCrawler.rc" />
