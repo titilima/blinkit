@@ -155,6 +155,7 @@ CORE_EXPORT extern const blink::QualifiedName& dirnameAttr;
 CORE_EXPORT extern const blink::QualifiedName& disabledAttr;
 CORE_EXPORT extern const blink::QualifiedName& draggableAttr;
 CORE_EXPORT extern const blink::QualifiedName& enctypeAttr;
+CORE_EXPORT extern const blink::QualifiedName& eventAttr;
 CORE_EXPORT extern const blink::QualifiedName& faceAttr;
 CORE_EXPORT extern const blink::QualifiedName& forAttr;
 CORE_EXPORT extern const blink::QualifiedName& formAttr;
@@ -238,7 +239,7 @@ CORE_EXPORT extern const blink::QualifiedName& wrapAttr;
 const unsigned HTMLTagsCount = 102;
 CORE_EXPORT PassOwnPtr<const HTMLQualifiedName*[]> getHTMLTags();
 
-const unsigned HTMLAttrsCount = 111;
+const unsigned HTMLAttrsCount = 112;
 
 void init();
 
