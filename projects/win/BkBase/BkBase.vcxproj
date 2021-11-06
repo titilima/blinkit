@@ -197,9 +197,6 @@
     <ProjectReference Include="..\curl\curl.vcxproj">
       <Project>{6755af57-3c12-476d-ab7d-32bbdeb75223}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\url\url.vcxproj">
-      <Project>{849ce42e-6457-4c6d-8ba0-854932a2aedb}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\zlib\zlib.vcxproj">
       <Project>{96726f77-e8d9-4c40-bdb2-c00e4989200f}</Project>
     </ProjectReference>

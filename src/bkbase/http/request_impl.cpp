@@ -135,7 +135,7 @@ int RequestImpl::Perform(void)
 {
     int err = BK_ERR_UNKNOWN;
 
-    if (m_URL.SchemeIsHTTPOrHTTPS())
+    if (m_URL.scheme_is_in_http_family())
     {
         if (PrepareCURLSession() && StartWorkThread())
             return BK_ERR_SUCCESS;
@@ -210,7 +210,7 @@ void RequestImpl::PerformImpl(void)
 void RequestImpl::PerformSynchronously(void)
 {
     int err = BK_ERR_UNKNOWN;
-    if (m_URL.SchemeIsHTTPOrHTTPS())
+    if (m_URL.scheme_is_in_http_family())
     {
         if (PrepareCURLSession())
         {
@@ -277,7 +277,7 @@ bool RequestImpl::PrepareCURLSession(void)
     {
         curl_easy_setopt(m_curl, CURLOPT_PROXYTYPE, proxy->first);
         curl_easy_setopt(m_curl, CURLOPT_PROXY, proxy->second.c_str());
-        if (m_URL.SchemeIs(url::kHttpsScheme))
+        if (m_URL.scheme_is("https"))
         {
             curl_easy_setopt(m_curl, CURLOPT_HTTPPROXYTUNNEL, OPT_TRUE);
 #if MANUALLY_SUPPRESS_CONNECT_HEADERS
@@ -327,8 +327,8 @@ bool RequestImpl::ProcessResponse(CURLcode code)
                 if (BK_ERR_SUCCESS != m_response->GetHeader("Location", BufferImpl::Wrap(location)))
                     break;
 
-                m_URL = m_URL.Resolve(location);
-                if (m_URL.is_valid() && m_URL.SchemeIsHTTPOrHTTPS())
+                m_URL = m_URL.combine(location);
+                if (m_URL.is_valid() && m_URL.scheme_is_in_http_family())
                     return false;
             }
             break;

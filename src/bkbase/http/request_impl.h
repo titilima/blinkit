@@ -20,7 +20,7 @@
 #include <curl/easy.h>
 #include "bk_http.h"
 #include "bkcommon/bk_http_header_map.h"
-#include "url/gurl.h"
+#include "third_party/zed/include/zed/net/url.hpp"
 
 #if (LIBCURL_VERSION_NUM < 0x073600) // `CURLOPT_SUPPRESS_CONNECT_HEADERS` is available in libcurl 7.54.0.
 #   define MANUALLY_SUPPRESS_CONNECT_HEADERS    1
@@ -56,7 +56,7 @@ public:
 protected:
     RequestImpl(const char *URL, const BkRequestClient &client);
 
-    const GURL& CurrentURL(void) const { return m_URL; }
+    const zed::url& CurrentURL(void) const { return m_URL; }
 
     int ProxyType(void) const { return m_proxyType; }
     virtual std::optional<CURLProxy> GetProxyForCURL(void) const;
@@ -76,7 +76,7 @@ private:
     BkRequestClient m_client;
     Controller *m_controller;
 
-    GURL m_URL;
+    zed::url m_URL;
     std::string m_method;
     std::unordered_map<CURLoption, std::string> m_standardHeaders;
     BlinKit::BkHTTPHeaderMap m_userHeaders;
