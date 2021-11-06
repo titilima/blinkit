@@ -7,7 +7,6 @@
 
 #include "platform/heap/Handle.h"
 #include "wtf/Forward.h"
-#include "wtf/PassRefPtr.h"
 
 namespace blink {
 
@@ -17,7 +16,7 @@ class HTMLFormElement;
 
 class HTMLElementFactory {
 public:
-    static PassRefPtrWillBeRawPtr<HTMLElement> createHTMLElement(
+    static GCRefPtr<HTMLElement> createHTMLElement(
         const AtomicString& localName,
         Document&,
         HTMLFormElement* = 0,

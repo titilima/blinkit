@@ -1,7 +1,7 @@
 {% from "macros.tmpl" import license %}
 {{ license() }}
 
-#include "{{namespace}}ElementFactory.h"
+#include "./{{namespace}}ElementFactory.h"
 
 #include "{{namespace}}Names.h"
 {% for tag in tags|groupby('interface') %}
@@ -15,25 +15,24 @@
 #include "core/dom/Document.h"
 #include "core/frame/Settings.h"
 #include "platform/RuntimeEnabledFeatures.h"
-#include "wtf/HashMap.h"
 
 namespace blink {
 
 using namespace {{namespace}}Names;
 
-typedef PassRefPtrWillBeRawPtr<{{namespace}}Element> (*ConstructorFunction)(
+typedef GCRefPtr<{{namespace}}Element> (*ConstructorFunction)(
     Document&,
     {% if namespace == 'HTML' %}
     HTMLFormElement*,
     {% endif %}
     bool createdByParser);
 
-typedef HashMap<AtomicString, ConstructorFunction> FunctionMap;
+typedef std::unordered_map<AtomicString, ConstructorFunction> FunctionMap;
 
 static FunctionMap* g_constructors = 0;
 
 {% for tag in tags|sort if not tag.noConstructor %}
-static PassRefPtrWillBeRawPtr<{{namespace}}Element> {{tag|symbol}}Constructor(
+static GCRefPtr<{{namespace}}Element> {{tag|symbol}}Constructor(
     Document& document,
     {% if namespace == 'HTML' %}
     HTMLFormElement* formElement,
@@ -70,10 +69,10 @@ static void create{{namespace}}FunctionMap()
     {% endfor %}
     };
     for (size_t i = 0; i < WTF_ARRAY_LENGTH(data); i++)
-        g_constructors->set(data[i].tag.localName(), data[i].func);
+        g_constructors->emplace(data[i].tag.localName(), data[i].func);
 }
 
-PassRefPtrWillBeRawPtr<{{namespace}}Element> {{namespace}}ElementFactory::create{{namespace}}Element(
+GCRefPtr<{{namespace}}Element> {{namespace}}ElementFactory::create{{namespace}}Element(
     const AtomicString& localName,
     Document& document,
     {% if namespace == 'HTML' %}
@@ -83,7 +82,7 @@ PassRefPtrWillBeRawPtr<{{namespace}}Element> {{namespace}}ElementFactory::create
 {
     if (!g_constructors)
         create{{namespace}}FunctionMap();
-    if (ConstructorFunction function = g_constructors->get(localName))
+    if (ConstructorFunction function = zed::query_value(*g_constructors, localName, nullptr))
         return function(document, {% if namespace == 'HTML' %}formElement, {% endif %}createdByParser);
 
     if (document.registrationContext() && CustomElement::isValidName(localName)) {
