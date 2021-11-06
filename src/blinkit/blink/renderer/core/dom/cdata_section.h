@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: cdata_section.h
+// Description: CDATASection Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -23,21 +35,20 @@
 #ifndef CDATASection_h
 #define CDATASection_h
 
-#include "core/dom/Text.h"
+#include "blinkit/blink/renderer/core/dom/Text.h"
 
 namespace blink {
 
-class CDATASection final : public Text {
-    DEFINE_WRAPPERTYPEINFO();
+class CDATASection final : public Text
+{
 public:
-    static PassRefPtrWillBeRawPtr<CDATASection> create(Document&, const String&);
-
+    static GCRefPtr<CDATASection> create(Document&, const String&);
 private:
     CDATASection(Document&, const String&);
 
     String nodeName() const override;
     NodeType nodeType() const override;
-    PassRefPtrWillBeRawPtr<Text> cloneWithData(const String&) override;
+    GCRefPtr<Text> cloneWithData(const String&) override;
 };
 
 DEFINE_NODE_TYPE_CASTS(CDATASection, nodeType() == Node::CDATA_SECTION_NODE);

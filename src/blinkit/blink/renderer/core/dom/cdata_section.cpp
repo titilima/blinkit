@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: cdata_section.cpp
+// Description: CDATASection Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -19,9 +30,11 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/dom/CDATASection.h"
+#include "./cdata_section.h"
 
-#include "core/dom/Document.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -30,9 +43,9 @@ inline CDATASection::CDATASection(Document& document, const String& data)
 {
 }
 
-PassRefPtrWillBeRawPtr<CDATASection> CDATASection::create(Document& document, const String& data)
+GCRefPtr<CDATASection> CDATASection::create(Document& document, const String& data)
 {
-    return adoptRefWillBeNoop(new CDATASection(document, data));
+    return GCWrapShared(new CDATASection(document, data));
 }
 
 String CDATASection::nodeName() const
@@ -45,7 +58,7 @@ Node::NodeType CDATASection::nodeType() const
     return CDATA_SECTION_NODE;
 }
 
-PassRefPtrWillBeRawPtr<Text> CDATASection::cloneWithData(const String& data)
+GCRefPtr<Text> CDATASection::cloneWithData(const String& data)
 {
     return create(document(), data);
 }
