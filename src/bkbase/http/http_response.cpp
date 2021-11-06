@@ -9,14 +9,13 @@
 // Copyright (C) 2018 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "http_response.h"
+#include "./http_response.h"
 
 #include <regex>
 #include <zlib.h>
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "bkcommon/bk_strings.h"
-#include "url/gurl.h"
 
 namespace BlinKit {
 
