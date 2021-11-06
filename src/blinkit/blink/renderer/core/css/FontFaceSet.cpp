@@ -563,10 +563,12 @@ bool FontFaceSet::IterationSource::next(ScriptState*, RefPtrWillBeMember<FontFac
 DEFINE_TRACE(FontFaceSet)
 {
 #if ENABLE(OILPAN)
-    // BKTODO: visitor->trace(m_ready);
+#if 0 // BKTODO:
+    visitor->trace(m_ready);
     visitor->trace(m_loadingFonts);
     visitor->trace(m_loadedFonts);
     visitor->trace(m_failedFonts);
+#endif
     visitor->trace(m_nonCSSConnectedFaces);
     // BKTODO: visitor->trace(m_asyncRunner);
     // BKTODO: HeapSupplement<Document>::trace(visitor);
