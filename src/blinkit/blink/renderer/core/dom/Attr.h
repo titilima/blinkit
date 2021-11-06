@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Attr.h
+// Description: Attr Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -31,11 +43,11 @@
 
 namespace blink {
 
-class CORE_EXPORT Attr final : public Node {
-    DEFINE_WRAPPERTYPEINFO();
+class CORE_EXPORT Attr final : public Node
+{
 public:
-    static PassRefPtrWillBeRawPtr<Attr> create(Element&, const QualifiedName&);
-    static PassRefPtrWillBeRawPtr<Attr> create(Document&, const QualifiedName&, const AtomicString& value);
+    static GCRefPtr<Attr> create(Element&, const QualifiedName&);
+    static GCRefPtr<Attr> create(Document&, const QualifiedName&, const AtomicString& value);
     ~Attr() override;
 
     String name() const { return m_name.toString(); }
@@ -56,9 +68,6 @@ public:
     const AtomicString& localName() const { return m_name.localName(); }
     const AtomicString& namespaceURI() const { return m_name.namespaceURI(); }
     const AtomicString& prefix() const { return m_name.prefix(); }
-
-    DECLARE_VIRTUAL_TRACE();
-
 private:
     Attr(Element&, const QualifiedName&);
     Attr(Document&, const QualifiedName&, const AtomicString& value);
@@ -70,13 +79,13 @@ private:
 
     String nodeValue() const override { return value(); }
     void setNodeValue(const String&) override;
-    PassRefPtrWillBeRawPtr<Node> cloneNode(bool deep) override;
+    GCRefPtr<Node> cloneNode(bool deep) override;
 
     bool isAttributeNode() const override { return true; }
 
     // Attr wraps either an element/name, or a name/value pair (when it's a standalone Node.)
     // Note that m_name is always set, but m_element/m_standaloneValue may be null.
-    RawPtrWillBeMember<Element> m_element;
+    Element *m_element = nullptr;
     QualifiedName m_name;
     // Holds the value if it is a standalone Node, or the local name of the
     // attribute it is attached to on an Element. The latter may (letter case)

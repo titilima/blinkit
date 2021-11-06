@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Attr.cpp
+// Description: Attr Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -29,9 +40,10 @@
 #include "core/dom/Element.h"
 #include "core/dom/Text.h"
 #include "core/events/ScopedEventQueue.h"
-#include "core/frame/UseCounter.h"
 #include "wtf/text/AtomicString.h"
 #include "wtf/text/StringBuilder.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -46,29 +58,27 @@ Attr::Attr(Element& element, const QualifiedName& name)
 
 Attr::Attr(Document& document, const QualifiedName& name, const AtomicString& standaloneValue)
     : Node(&document, CreateOther)
-    , m_element(nullptr)
     , m_name(name)
     , m_standaloneValueOrAttachedLocalName(standaloneValue)
 {
 }
 
-PassRefPtrWillBeRawPtr<Attr> Attr::create(Element& element, const QualifiedName& name)
+Attr::~Attr(void) = default;
+
+GCRefPtr<Attr> Attr::create(Element& element, const QualifiedName& name)
 {
-    return adoptRefWillBeNoop(new Attr(element, name));
+    return GCWrapShared(new Attr(element, name));
 }
 
-PassRefPtrWillBeRawPtr<Attr> Attr::create(Document& document, const QualifiedName& name, const AtomicString& value)
+GCRefPtr<Attr> Attr::create(Document& document, const QualifiedName& name, const AtomicString& value)
 {
-    return adoptRefWillBeNoop(new Attr(document, name, value));
-}
-
-Attr::~Attr()
-{
+    return GCWrapShared(new Attr(document, name, value));
 }
 
 const QualifiedName Attr::qualifiedName() const
 {
-    if (m_element && !m_standaloneValueOrAttachedLocalName.isNull()) {
+    if (nullptr != m_element && !m_standaloneValueOrAttachedLocalName.isNull())
+    {
         // In the unlikely case the Element attribute has a local name
         // that differs by case, construct the qualified name based on
         // it. This is the qualified name that must be used when
@@ -81,14 +91,14 @@ const QualifiedName Attr::qualifiedName() const
 
 const AtomicString& Attr::value() const
 {
-    if (m_element)
+    if (nullptr != m_element)
         return m_element->getAttribute(qualifiedName());
     return m_standaloneValueOrAttachedLocalName;
 }
 
 void Attr::setValue(const AtomicString& value)
 {
-    if (m_element)
+    if (nullptr != m_element)
         m_element->setAttribute(qualifiedName(), value);
     else
         m_standaloneValueOrAttachedLocalName = value;
@@ -96,15 +106,11 @@ void Attr::setValue(const AtomicString& value)
 
 const AtomicString& Attr::valueForBindings() const
 {
-    UseCounter::count(document(), UseCounter::AttrGetValue);
     return value();
 }
 
 void Attr::setValueForBindings(const AtomicString& value)
 {
-    UseCounter::count(document(), UseCounter::AttrSetValue);
-    if (m_element)
-        UseCounter::count(document(), UseCounter::AttrSetValueWithElement);
     setValue(value);
 }
 
@@ -115,30 +121,23 @@ void Attr::setNodeValue(const String& v)
     setValue(AtomicString(v));
 }
 
-PassRefPtrWillBeRawPtr<Node> Attr::cloneNode(bool /*deep*/)
+GCRefPtr<Node> Attr::cloneNode(bool /*deep*/)
 {
-    UseCounter::count(document(), UseCounter::AttrCloneNode);
-    return adoptRefWillBeNoop(new Attr(document(), m_name, value()));
+    return GCWrapShared(new Attr(document(), m_name, value()));
 }
 
 void Attr::detachFromElementWithValue(const AtomicString& value)
 {
-    ASSERT(m_element);
+    ASSERT(nullptr != m_element);
     m_standaloneValueOrAttachedLocalName = value;
     m_element = nullptr;
 }
 
 void Attr::attachToElement(Element* element, const AtomicString& attachedLocalName)
 {
-    ASSERT(!m_element);
+    ASSERT(nullptr == m_element);
     m_element = element;
     m_standaloneValueOrAttachedLocalName = attachedLocalName;
-}
-
-DEFINE_TRACE(Attr)
-{
-    visitor->trace(m_element);
-    Node::trace(visitor);
 }
 
 }
