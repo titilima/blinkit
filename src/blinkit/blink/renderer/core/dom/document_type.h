@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: document_type.h
+// Description: DocumentType Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,28 +36,27 @@
 #ifndef DocumentType_h
 #define DocumentType_h
 
-#include "core/dom/Node.h"
+#include "blinkit/blink/renderer/core/dom/Node.h"
 
 namespace blink {
 
-class DocumentType final : public Node {
-    DEFINE_WRAPPERTYPEINFO();
+class DocumentType final : public Node
+{
 public:
-    static PassRefPtrWillBeRawPtr<DocumentType> create(Document* document, const String& name, const String& publicId, const String& systemId)
+    static GCRefPtr<DocumentType> create(Document* document, const String& name, const String& publicId, const String& systemId)
     {
-        return adoptRefWillBeNoop(new DocumentType(document, name, publicId, systemId));
+        return BlinKit::GCWrapShared(new DocumentType(document, name, publicId, systemId));
     }
 
     const String& name() const { return m_name; }
     const String& publicId() const { return m_publicId; }
     const String& systemId() const { return m_systemId; }
-
 private:
     DocumentType(Document*, const String& name, const String& publicId, const String& systemId);
 
     String nodeName() const override;
     NodeType nodeType() const override;
-    PassRefPtrWillBeRawPtr<Node> cloneNode(bool deep) override;
+    GCRefPtr<Node> cloneNode(bool deep) override;
 
     InsertionNotificationRequest insertedInto(ContainerNode*) override;
     void removedFrom(ContainerNode*) override;

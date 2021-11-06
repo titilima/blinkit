@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: document_type.cpp
+// Description: DocumentType Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -20,10 +31,10 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/dom/DocumentType.h"
+#include "./document_type.h"
 
-#include "core/dom/Document.h"
-#include "core/dom/NamedNodeMap.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/core/dom/NamedNodeMap.h"
 
 namespace blink {
 
@@ -45,7 +56,7 @@ Node::NodeType DocumentType::nodeType() const
     return DOCUMENT_TYPE_NODE;
 }
 
-PassRefPtrWillBeRawPtr<Node> DocumentType::cloneNode(bool /*deep*/)
+GCRefPtr<Node> DocumentType::cloneNode(bool /*deep*/)
 {
     return create(&document(), m_name, m_publicId, m_systemId);
 }
