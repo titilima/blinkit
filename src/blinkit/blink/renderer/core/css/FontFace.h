@@ -76,6 +76,8 @@ public:
 
     ~FontFace();
 
+    static BlinKit::GCObject* GCCast(FontFace *o) { return o; }
+
     const AtomicString& family() const { return m_family; }
     String style() const;
     String weight() const;

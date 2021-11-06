@@ -127,10 +127,8 @@ FontFaceSet::FontFaceSet(Document& document)
     : ActiveDOMObject(&document)
     , m_shouldFireLoadingEvent(false)
     , m_isLoading(false)
-#if 0 // BKTODO:
-    , m_ready(new ReadyProperty(executionContext(), this, ReadyProperty::Ready))
+    // BKTODO: , m_ready(new ReadyProperty(executionContext(), this, ReadyProperty::Ready))
     , m_asyncRunner(AsyncMethodRunner<FontFaceSet>::create(this, &FontFaceSet::handlePendingEventsAndPromises))
-#endif
 {
     suspendIfNeeded();
 }
@@ -179,12 +177,12 @@ AtomicString FontFaceSet::status() const
 void FontFaceSet::handlePendingEventsAndPromisesSoon()
 {
     // m_asyncRunner will be automatically stopped on destruction.
-    // BKTODO: m_asyncRunner->runAsync();
+    m_asyncRunner->runAsync();
 }
 
 void FontFaceSet::didLayout()
 {
-    if (document()->frame()->isMainFrame() && m_loadingFonts.isEmpty())
+    if (document()->frame()->isMainFrame() && m_loadingFonts.empty())
         m_histogram.record();
     if (!shouldSignalReady())
         return;
@@ -193,7 +191,7 @@ void FontFaceSet::didLayout()
 
 bool FontFaceSet::shouldSignalReady() const
 {
-    if (!m_loadingFonts.isEmpty())
+    if (!m_loadingFonts.empty())
         return false;
 #if 0 // BKTODO:
     return m_isLoading || m_ready->state() == ReadyProperty::Pending;
@@ -218,17 +216,17 @@ void FontFaceSet::fireLoadingEvent()
 
 void FontFaceSet::suspend()
 {
-    ASSERT(false); // BKTODO: m_asyncRunner->suspend();
+    m_asyncRunner->suspend();
 }
 
 void FontFaceSet::resume()
 {
-    ASSERT(false); // BKTODO: m_asyncRunner->resume();
+    m_asyncRunner->resume();
 }
 
 void FontFaceSet::stop()
 {
-    // BKTODO: m_asyncRunner->stop();
+    m_asyncRunner->stop();
 }
 
 void FontFaceSet::beginFontLoading(FontFace* fontFace)
@@ -262,13 +260,13 @@ void FontFaceSet::addToLoadingFonts(PassRefPtrWillBeRawPtr<FontFace> fontFace)
 #endif
         handlePendingEventsAndPromisesSoon();
     }
-    m_loadingFonts.add(fontFace);
+    m_loadingFonts.emplace(fontFace);
 }
 
 void FontFaceSet::removeFromLoadingFonts(PassRefPtrWillBeRawPtr<FontFace> fontFace)
 {
-    m_loadingFonts.remove(fontFace);
-    if (m_loadingFonts.isEmpty())
+    m_loadingFonts.erase(fontFace);
+    if (m_loadingFonts.empty())
         handlePendingEventsAndPromisesSoon();
 }
 
@@ -386,8 +384,7 @@ void FontFaceSet::fireDoneEventIfPossible()
             dispatchEvent(errorEvent);
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (m_ready->state() == ReadyProperty::Pending)
         m_ready->resolve(this);
 #endif

@@ -37,6 +37,7 @@
 #ifndef FontFaceSet_h
 #define FontFaceSet_h
 
+#include "blinkit/gc/gc_object_set.h"
 #include "core/css/FontFace.h"
 #include "core/dom/ActiveDOMObject.h"
 #include "core/events/EventListener.h"
@@ -182,7 +183,7 @@ private:
 
     // BKTODO: using ReadyProperty = ScriptPromiseProperty<RawPtrWillBeMember<FontFaceSet>, RawPtrWillBeMember<FontFaceSet>, Member<DOMException>>;
 
-    WillBeHeapHashSet<RefPtrWillBeMember<FontFace>> m_loadingFonts;
+    BlinKit::GCObjectSet<FontFace> m_loadingFonts;
     bool m_shouldFireLoadingEvent;
     bool m_isLoading;
     // BKTODO: PersistentWillBeMember<ReadyProperty> m_ready;
@@ -190,7 +191,7 @@ private:
     FontFaceArray m_failedFonts;
     WillBeHeapListHashSet<RefPtrWillBeMember<FontFace>> m_nonCSSConnectedFaces;
 
-    // BKTODO: PersistentWillBeMember<AsyncMethodRunner<FontFaceSet>> m_asyncRunner;
+    std::unique_ptr<AsyncMethodRunner<FontFaceSet>> m_asyncRunner;
 
     FontLoadHistogram m_histogram;
 };
