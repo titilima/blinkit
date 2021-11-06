@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Comment.h
+// Description: Comment Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -23,21 +35,20 @@
 #ifndef Comment_h
 #define Comment_h
 
-#include "core/dom/CharacterData.h"
+#include "blinkit/blink/renderer/core/dom/CharacterData.h"
 
 namespace blink {
 
-class Comment final : public CharacterData {
-    DEFINE_WRAPPERTYPEINFO();
+class Comment final : public CharacterData
+{
 public:
-    static PassRefPtrWillBeRawPtr<Comment> create(Document&, const String&);
-
+    static GCRefPtr<Comment> create(Document&, const String&);
 private:
     Comment(Document&, const String&);
 
     String nodeName() const override;
     NodeType nodeType() const override;
-    PassRefPtrWillBeRawPtr<Node> cloneNode(bool deep) override;
+    GCRefPtr<Node> cloneNode(bool deep) override;
 };
 
 DEFINE_NODE_TYPE_CASTS(Comment, nodeType() == Node::COMMENT_NODE);

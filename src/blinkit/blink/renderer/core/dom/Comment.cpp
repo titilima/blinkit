@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Comment.cpp
+// Description: Comment Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -19,9 +30,11 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/dom/Comment.h"
+#include "./comment.h"
 
-#include "core/dom/Document.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -30,9 +43,9 @@ inline Comment::Comment(Document& document, const String& text)
 {
 }
 
-PassRefPtrWillBeRawPtr<Comment> Comment::create(Document& document, const String& text)
+GCRefPtr<Comment> Comment::create(Document& document, const String& text)
 {
-    return adoptRefWillBeNoop(new Comment(document, text));
+    return GCWrapShared(new Comment(document, text));
 }
 
 String Comment::nodeName() const
@@ -45,7 +58,7 @@ Node::NodeType Comment::nodeType() const
     return COMMENT_NODE;
 }
 
-PassRefPtrWillBeRawPtr<Node> Comment::cloneNode(bool /*deep*/)
+GCRefPtr<Node> Comment::cloneNode(bool /*deep*/)
 {
     return create(document(), data());
 }
