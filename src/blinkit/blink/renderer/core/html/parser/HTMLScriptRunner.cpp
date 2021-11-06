@@ -94,7 +94,7 @@ void HTMLScriptRunner::detach()
         pendingScript.stopWatchingForLoad(this);
         pendingScript.releaseElementAndClear();
     }
-    m_document.clear();
+    m_document = nullptr;
 }
 
 static KURL documentURLForScriptExecution(Document* document)
@@ -140,7 +140,7 @@ void HTMLScriptRunner::executePendingScriptAndDispatchEvent(PendingScript& pendi
 {
     bool errorOccurred = false;
     double loadFinishTime = pendingScript.resource() && pendingScript.resource()->url().protocolIsInHTTPFamily() ? pendingScript.resource()->loadFinishTime() : 0;
-    ScriptSourceCode sourceCode = pendingScript.getSource(documentURLForScriptExecution(m_document.get()), errorOccurred);
+    ScriptSourceCode sourceCode = pendingScript.getSource(documentURLForScriptExecution(m_document), errorOccurred);
 
     // Stop watching loads before executeScript to prevent recursion if the script reloads itself.
     pendingScript.stopWatchingForLoad(this);
@@ -160,7 +160,7 @@ void HTMLScriptRunner::executePendingScriptAndDispatchEvent(PendingScript& pendi
     double compilationFinishTime = 0;
     if (ScriptLoader* scriptLoader = toScriptLoaderIfPossible(element.get())) {
         NestingLevelIncrementer nestingLevelIncrementer(m_scriptNestingLevel);
-        IgnoreDestructiveWriteCountIncrementer ignoreDestructiveWriteCountIncrementer(m_document.get());
+        IgnoreDestructiveWriteCountIncrementer ignoreDestructiveWriteCountIncrementer(m_document);
         if (errorOccurred)
             scriptLoader->dispatchErrorEvent();
         else {
@@ -217,7 +217,7 @@ void HTMLScriptRunner::notifyFinished(Resource* cachedResource)
 // Implements the steps for 'An end tag whose tag name is "script"'
 // http://whatwg.org/html#scriptEndTag
 // Script handling lives outside the tree builder to keep each class simple.
-void HTMLScriptRunner::execute(PassRefPtrWillBeRawPtr<Element> scriptElement, const TextPosition& scriptStartPosition)
+void HTMLScriptRunner::execute(const GCRefPtr<Element> &scriptElement, const TextPosition& scriptStartPosition)
 {
     ASSERT(scriptElement);
     // FIXME: If scripting is disabled, always just return.
@@ -383,21 +383,13 @@ void HTMLScriptRunner::runScript(Element* script, const TextPosition& scriptStar
                 m_parserBlockingScript.setElement(script);
                 m_parserBlockingScript.setStartingPosition(scriptStartPosition);
             } else {
-                ScriptSourceCode sourceCode(script->textContent(), documentURLForScriptExecution(m_document.get()), scriptStartPosition);
+                ScriptSourceCode sourceCode(script->textContent(), documentURLForScriptExecution(m_document), scriptStartPosition);
                 scriptLoader->executeScript(sourceCode);
             }
         } else {
             requestParsingBlockingScript(script);
         }
     }
-}
-
-DEFINE_TRACE(HTMLScriptRunner)
-{
-    visitor->trace(m_document);
-    // BKTODO: visitor->trace(m_host);
-    visitor->trace(m_parserBlockingScript);
-    // BKTODO: visitor->trace(m_scriptsToExecuteAfterParsing);
 }
 
 } // namespace blink

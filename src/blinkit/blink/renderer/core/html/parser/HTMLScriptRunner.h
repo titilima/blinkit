@@ -52,18 +52,18 @@ class Element;
 class HTMLScriptRunnerHost;
 
 class HTMLScriptRunner final : private ScriptResourceClient {
-    WTF_MAKE_NONCOPYABLE(HTMLScriptRunner); USING_FAST_MALLOC_WILL_BE_REMOVED(HTMLScriptRunner);
+    WTF_MAKE_NONCOPYABLE(HTMLScriptRunner);
 public:
-    static GCUniquePtr<HTMLScriptRunner> create(Document* document, HTMLScriptRunnerHost* host)
+    static std::unique_ptr<HTMLScriptRunner> create(Document* document, HTMLScriptRunnerHost* host)
     {
-        return BlinKit::GCWrapUnique(new HTMLScriptRunner(document, host));
+        return zed::wrap_unique(new HTMLScriptRunner(document, host));
     }
     ~HTMLScriptRunner();
 
     void detach();
 
     // Processes the passed in script and any pending scripts if possible.
-    void execute(PassRefPtrWillBeRawPtr<Element> scriptToProcess, const TextPosition& scriptStartPosition);
+    void execute(const GCRefPtr<Element> &scriptToProcess, const TextPosition& scriptStartPosition);
 
     void executeScriptsWaitingForLoad(Resource*);
     bool hasScriptsWaitingForResources() const { return m_hasScriptsWaitingForResources; }
@@ -76,8 +76,6 @@ public:
     // ResourceClient
     void notifyFinished(Resource*) override;
     String debugName() const override { return "HTMLScriptRunner"; }
-
-    DECLARE_TRACE();
 
 private:
     HTMLScriptRunner(Document*, HTMLScriptRunnerHost*);
@@ -96,7 +94,7 @@ private:
 
     void stopWatchingResourceForLoad(Resource*);
 
-    GCRefPtr<Document> m_document;
+    Document *m_document;
     HTMLScriptRunnerHost *m_host;
     PendingScript m_parserBlockingScript;
     // http://www.whatwg.org/specs/web-apps/current-work/#list-of-scripts-that-will-execute-when-the-document-has-finished-parsing
