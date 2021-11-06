@@ -824,7 +824,7 @@ public:
 
     Document* parentDocument() const;
     Document& topDocument() const;
-    // BKTODO: WeakPtrWillBeRawPtr<Document> contextDocument();
+    Document* contextDocument(void);
 
     ScriptRunner* scriptRunner() { return m_scriptRunner.get(); }
 

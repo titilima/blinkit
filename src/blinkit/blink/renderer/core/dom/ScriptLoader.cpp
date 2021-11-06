@@ -98,12 +98,6 @@ ScriptLoader::~ScriptLoader()
     m_pendingScript.stopWatchingForLoad(this);
 }
 
-DEFINE_TRACE(ScriptLoader)
-{
-    visitor->trace(m_element);
-    visitor->trace(m_pendingScript);
-}
-
 void ScriptLoader::didNotifySubtreeInsertionsToDocument()
 {
     if (!m_parserInserted)
@@ -236,15 +230,15 @@ bool ScriptLoader::prepareScript(const TextPosition& scriptStartPosition, Legacy
 
     // FIXME: If script is parser inserted, verify it's still in the original document.
     Document& elementDocument = m_element->document();
-    ASSERT(false); // BKTODO:
-#if 0
-    Document* contextDocument = elementDocument.contextDocument().get();
+    Document* contextDocument = elementDocument.contextDocument();
 
     if (!contextDocument || !contextDocument->allowExecutingScripts(m_element))
         return false;
 
+#ifdef BLINKIT_CRAWLER_ENABLED
     if (!isScriptForEventSupported())
         return false;
+#endif
 
     if (!client->charsetAttributeValue().isEmpty())
         m_characterEncoding = client->charsetAttributeValue();
@@ -277,9 +271,12 @@ bool ScriptLoader::prepareScript(const TextPosition& scriptStartPosition, Legacy
         m_pendingScript = PendingScript(m_element, m_resource.get());
         LocalFrame* frame = m_element->document().frame();
         if (frame) {
+            ASSERT(false); // BKTODO:
+#if 0
             ScriptState* scriptState = ScriptState::forMainWorld(frame);
             if (scriptState)
                 ScriptStreamer::startStreaming(m_pendingScript, PendingScript::Async, frame->settings(), scriptState, frame->frameScheduler()->loadingTaskRunner());
+#endif
         }
         contextDocument->scriptRunner()->queueScriptForExecution(this, ScriptRunner::ASYNC_EXECUTION);
         // Note that watchForLoad can immediately call notifyFinished.
@@ -293,7 +290,6 @@ bool ScriptLoader::prepareScript(const TextPosition& scriptStartPosition, Legacy
             return false;
         }
     }
-#endif
 
     return true;
 }
@@ -505,6 +501,7 @@ bool ScriptLoader::ignoresLoadRequest() const
     return m_alreadyStarted || m_isExternalScript || m_parserInserted || !element() || !element()->inDocument();
 }
 
+#ifdef BLINKIT_CRAWLER_ENABLED
 bool ScriptLoader::isScriptForEventSupported() const
 {
     String eventAttribute = client()->eventAttributeValue();
@@ -518,6 +515,7 @@ bool ScriptLoader::isScriptForEventSupported() const
     eventAttribute = eventAttribute.stripWhiteSpace();
     return equalIgnoringCase(eventAttribute, "onload") || equalIgnoringCase(eventAttribute, "onload()");
 }
+#endif
 
 String ScriptLoader::scriptContent() const
 {

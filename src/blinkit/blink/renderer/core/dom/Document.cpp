@@ -4819,17 +4819,14 @@ Document& Document::topDocument() const
     return *doc;
 }
 
-#if 0 // BKTODO:
-WeakPtrWillBeRawPtr<Document> Document::contextDocument()
+Document* Document::contextDocument(void)
 {
+#if 0 // BKTODO:
     if (m_contextDocument)
         return m_contextDocument;
-    if (m_frame) {
-        return createWeakPtr();
-    }
-    return nullptr;
-}
 #endif
+    return nullptr != m_frame ? this : nullptr;
+}
 
 PassRefPtrWillBeRawPtr<Attr> Document::createAttribute(const AtomicString& name, ExceptionState& exceptionState)
 {
@@ -5222,8 +5219,6 @@ bool Document::allowInlineEventHandlers(Node* node, EventListener* listener, con
 
 bool Document::allowExecutingScripts(Node* node)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     // FIXME: Eventually we'd like to evaluate scripts which are inserted into a
     // viewless document but this'll do for now.
     // See http://bugs.webkit.org/show_bug.cgi?id=5727
@@ -5234,7 +5229,6 @@ bool Document::allowExecutingScripts(Node* node)
         return false;
     if (!frame->script().canExecuteScripts(AboutToExecuteScript))
         return false;
-#endif
     return true;
 }
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScriptLoaderClient.h
+// Description: ScriptLoaderClient Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Nikolas Zimmermann <zimmermann@kde.org>
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -36,8 +47,10 @@ public:
     virtual String charsetAttributeValue() const = 0;
     virtual String typeAttributeValue() const = 0;
     virtual String languageAttributeValue() const = 0;
+#ifdef BLINKIT_CRAWLER_ENABLED
     virtual String forAttributeValue() const = 0;
     virtual String eventAttributeValue() const = 0;
+#endif
     virtual bool asyncAttributeValue() const = 0;
     virtual bool deferAttributeValue() const = 0;
     virtual bool hasSourceAttribute() const = 0;

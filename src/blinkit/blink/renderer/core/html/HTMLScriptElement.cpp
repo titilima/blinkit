@@ -157,27 +157,26 @@ String HTMLScriptElement::languageAttributeValue() const
     return getAttribute(languageAttr).string();
 }
 
+#ifdef BLINKIT_CRAWLER_ENABLED
 String HTMLScriptElement::forAttributeValue() const
 {
-    return getAttribute(forAttr).string();
+    return emptyString();
 }
 
 String HTMLScriptElement::eventAttributeValue() const
 {
-    ASSERT(false); // BKTODO: return getAttribute(eventAttr).string();
-    return String();
+    return emptyString();
 }
+#endif
 
 bool HTMLScriptElement::asyncAttributeValue() const
 {
-    ASSERT(false); // BKTODO: return fastHasAttribute(asyncAttr);
-    return false;
+    return false; // BKTODO: return fastHasAttribute(asyncAttr);
 }
 
 bool HTMLScriptElement::deferAttributeValue() const
 {
-    ASSERT(false); // BKTODO: return fastHasAttribute(deferAttr);
-    return false;
+    return false; // BKTODO: return fastHasAttribute(deferAttr);
 }
 
 bool HTMLScriptElement::hasSourceAttribute() const

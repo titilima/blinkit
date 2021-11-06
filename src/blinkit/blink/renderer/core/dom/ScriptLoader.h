@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScriptLoader.h
+// Description: ScriptLoader Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Nikolas Zimmermann <zimmermann@kde.org>
  *
@@ -37,16 +48,14 @@ class ScriptLoaderClient;
 class ScriptSourceCode;
 class LocalFrame;
 
-class CORE_EXPORT ScriptLoader : public NoBaseWillBeGarbageCollectedFinalized<ScriptLoader>, private ScriptResourceClient {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(ScriptLoader);
+class CORE_EXPORT ScriptLoader : private ScriptResourceClient {
 public:
-    static PassOwnPtrWillBeRawPtr<ScriptLoader> create(Element* element, bool createdByParser, bool isEvaluated)
+    static std::unique_ptr<ScriptLoader> create(Element* element, bool createdByParser, bool isEvaluated)
     {
-        return adoptPtrWillBeNoop(new ScriptLoader(element, createdByParser, isEvaluated));
+        return zed::wrap_unique(new ScriptLoader(element, createdByParser, isEvaluated));
     }
 
     ~ScriptLoader() override;
-    DECLARE_VIRTUAL_TRACE();
 
     Element* element() const { return m_element; }
 
@@ -91,7 +100,9 @@ protected:
 
 private:
     bool ignoresLoadRequest() const;
+#ifdef BLINKIT_CRAWLER_ENABLED
     bool isScriptForEventSupported() const;
+#endif
     void logScriptMimetype(ScriptResource*, LocalFrame*, String);
 
     bool fetchScript(const String& sourceUrl, FetchRequest::DeferOption);
@@ -102,7 +113,7 @@ private:
     void notifyFinished(Resource*) override;
     String debugName() const override { return "ScriptLoader"; }
 
-    RawPtrWillBeMember<Element> m_element;
+    Element *m_element;
     ResourcePtr<ScriptResource> m_resource;
     WTF::OrdinalNumber m_startLineNumber;
     String m_characterEncoding;

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLScriptElement.h
+// Description: HTMLScriptElement Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -65,8 +76,10 @@ private:
     String charsetAttributeValue() const override;
     String typeAttributeValue() const override;
     String languageAttributeValue() const override;
+#ifdef BLINKIT_CRAWLER_ENABLED
     String forAttributeValue() const override;
     String eventAttributeValue() const override;
+#endif
     bool asyncAttributeValue() const override;
     bool deferAttributeValue() const override;
     bool hasSourceAttribute() const override;
@@ -75,7 +88,7 @@ private:
 
     PassRefPtrWillBeRawPtr<Element> cloneElementWithoutAttributesAndChildren() override;
 
-    OwnPtrWillBeMember<ScriptLoader> m_loader;
+    std::unique_ptr<ScriptLoader> m_loader;
 };
 
 } // namespace blink
