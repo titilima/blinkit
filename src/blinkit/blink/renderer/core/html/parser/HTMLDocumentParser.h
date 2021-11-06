@@ -196,7 +196,7 @@ private:
 
     OwnPtr<HTMLToken> m_token;
     OwnPtr<HTMLTokenizer> m_tokenizer;
-    GCUniquePtr<HTMLScriptRunner> m_scriptRunner;
+    std::unique_ptr<HTMLScriptRunner> m_scriptRunner;
     GCUniquePtr<HTMLTreeBuilder> m_treeBuilder;
     OwnPtr<HTMLPreloadScanner> m_preloadScanner;
     OwnPtr<HTMLPreloadScanner> m_insertionPreloadScanner;

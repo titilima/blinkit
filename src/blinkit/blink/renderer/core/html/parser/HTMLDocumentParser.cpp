@@ -226,8 +226,6 @@ DEFINE_TRACE(HTMLDocumentParser)
     if (m_parserScheduler)
         m_parserScheduler->trace(visitor);
     // BKTODO: visitor->trace(m_xssAuditorDelegate);
-    if (m_scriptRunner)
-        m_scriptRunner->trace(visitor);
     // BKTODO: visitor->trace(m_preloader);
     ScriptableDocumentParser::trace(visitor);
     HTMLScriptRunnerHost::trace(visitor);
@@ -343,13 +341,10 @@ void HTMLDocumentParser::runScriptsForPausedTreeBuilder()
     ASSERT(scriptingContentIsAllowed(parserContentPolicy()));
 
     TextPosition scriptStartPosition = TextPosition::belowRangePosition();
-    ASSERT(false); // BKTODO:
-#if 0
-    RefPtrWillBeRawPtr<Element> scriptElement = m_treeBuilder->takeScriptToProcess(scriptStartPosition);
+    GCRefPtr<Element> scriptElement = m_treeBuilder->takeScriptToProcess(scriptStartPosition);
     // We will not have a scriptRunner when parsing a DocumentFragment.
     if (m_scriptRunner)
-        m_scriptRunner->execute(scriptElement.release(), scriptStartPosition);
-#endif
+        m_scriptRunner->execute(scriptElement, scriptStartPosition);
 }
 
 bool HTMLDocumentParser::canTakeNextToken()
