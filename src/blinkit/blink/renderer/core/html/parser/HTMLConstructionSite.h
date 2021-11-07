@@ -243,12 +243,12 @@ private:
     void setCompatibilityMode(Document::CompatibilityMode);
     void setCompatibilityModeFromDoctype(const String& name, const String& publicId, const String& systemId);
 
-    void attachLater(ContainerNode* parent, PassRefPtrWillBeRawPtr<Node> child, bool selfClosing = false);
+    void attachLater(ContainerNode* parent, const GCRefPtr<Node> &child, bool selfClosing = false);
 
     void findFosterSite(HTMLConstructionSiteTask&);
 
-    PassRefPtrWillBeRawPtr<HTMLElement> createHTMLElement(AtomicHTMLToken*);
-    PassRefPtrWillBeRawPtr<Element> createElement(AtomicHTMLToken*, const AtomicString& namespaceURI);
+    GCRefPtr<HTMLElement> createHTMLElement(AtomicHTMLToken*);
+    GCRefPtr<Element> createElement(AtomicHTMLToken*, const AtomicString& namespaceURI);
 
     void mergeAttributesFromTokenIntoElement(AtomicHTMLToken*, Element*);
     void dispatchDocumentElementAvailableIfNeeded();

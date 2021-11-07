@@ -37,11 +37,11 @@
 
 #include "core/html/parser/HTMLConstructionSite.h"
 
+#include "blinkit/blink/renderer/core/dom/document_type.h"
 #include "core/HTMLElementFactory.h"
 #include "core/HTMLNames.h"
 #include "core/dom/Comment.h"
 #include "core/dom/DocumentFragment.h"
-#include "core/dom/DocumentType.h"
 #include "core/dom/Element.h"
 #include "core/dom/ScriptLoader.h"
 #include "core/dom/TemplateContentDocumentFragment.h"
@@ -289,7 +289,7 @@ void HTMLConstructionSite::queueTask(const HTMLConstructionSiteTask& task)
     m_taskQueue.emplace_back(task);
 }
 
-void HTMLConstructionSite::attachLater(ContainerNode* parent, PassRefPtrWillBeRawPtr<Node> prpChild, bool selfClosing)
+void HTMLConstructionSite::attachLater(ContainerNode* parent, const GCRefPtr<Node> &prpChild, bool selfClosing)
 {
     ASSERT(scriptingContentIsAllowed(m_parserContentPolicy) || !prpChild.get()->isElementNode() || !toScriptLoaderIfPossible(toElement(prpChild.get())));
     // BKTODO: ASSERT(pluginContentIsAllowed(m_parserContentPolicy) || !isHTMLPlugInElement(prpChild));
@@ -407,7 +407,7 @@ void HTMLConstructionSite::dispatchDocumentElementAvailableIfNeeded()
 void HTMLConstructionSite::insertHTMLHtmlStartTagBeforeHTML(AtomicHTMLToken* token)
 {
     ASSERT(m_document);
-    RefPtrWillBeRawPtr<HTMLHtmlElement> element = HTMLHtmlElement::create(*m_document);
+    GCRefPtr<HTMLHtmlElement> element = HTMLHtmlElement::create(*m_document);
     setAttributes(element.get(), token, m_parserContentPolicy);
     attachLater(m_attachmentRoot.get(), element);
     m_openElements.pushHTMLHtmlElement(HTMLStackItem::create(element, token));
@@ -566,8 +566,8 @@ void HTMLConstructionSite::insertDoctype(AtomicHTMLToken* token)
 
     const String& publicId = StringImpl::create8BitIfPossible(token->publicIdentifier());
     const String& systemId = StringImpl::create8BitIfPossible(token->systemIdentifier());
-    RefPtrWillBeRawPtr<DocumentType> doctype = DocumentType::create(m_document.get(), token->name(), publicId, systemId);
-    attachLater(m_attachmentRoot.get(), doctype.release());
+    GCRefPtr<DocumentType> doctype = DocumentType::create(m_document.get(), token->name(), publicId, systemId);
+    attachLater(m_attachmentRoot.get(), doctype);
 
     // DOCTYPE nodes are only processed when parsing fragments w/o contextElements, which
     // never occurs.  However, if we ever chose to support such, this code is subtly wrong,
@@ -609,35 +609,35 @@ void HTMLConstructionSite::insertHTMLHeadElement(AtomicHTMLToken* token)
 {
     ASSERT(!shouldFosterParent());
     m_head = HTMLStackItem::create(createHTMLElement(token), token);
-    attachLater(currentNode(), m_head->element());
+    attachLater(currentNode(), GCWrapShared(m_head->element()));
     m_openElements.pushHTMLHeadElement(m_head);
 }
 
 void HTMLConstructionSite::insertHTMLBodyElement(AtomicHTMLToken* token)
 {
     ASSERT(!shouldFosterParent());
-    RefPtrWillBeRawPtr<HTMLElement> body = createHTMLElement(token);
+    GCRefPtr<HTMLElement> body = createHTMLElement(token);
     attachLater(currentNode(), body);
-    m_openElements.pushHTMLBodyElement(HTMLStackItem::create(body.release(), token));
+    m_openElements.pushHTMLBodyElement(HTMLStackItem::create(body, token));
     if (m_document && m_document->frame())
         m_document->frame()->loader().client()->dispatchWillInsertBody();
 }
 
 void HTMLConstructionSite::insertHTMLFormElement(AtomicHTMLToken* token, bool isDemoted)
 {
-    RefPtrWillBeRawPtr<HTMLElement> element = createHTMLElement(token);
-    ASSERT(isHTMLFormElement(element));
-    m_form = static_pointer_cast<HTMLFormElement>(element.release());
+    GCRefPtr<HTMLElement> element = createHTMLElement(token);
+    ASSERT(isHTMLFormElement(element.get()));
+    m_form = toHTMLFormElement(element.get());
     m_form->setDemoted(isDemoted);
-    attachLater(currentNode(), m_form.get());
-    m_openElements.push(HTMLStackItem::create(m_form.get(), token));
+    attachLater(currentNode(), m_form);
+    m_openElements.push(HTMLStackItem::create(m_form, token));
 }
 
 void HTMLConstructionSite::insertHTMLElement(AtomicHTMLToken* token)
 {
-    RefPtrWillBeRawPtr<HTMLElement> element = createHTMLElement(token);
+    GCRefPtr<HTMLElement> element = createHTMLElement(token);
     attachLater(currentNode(), element);
-    m_openElements.push(HTMLStackItem::create(element.release(), token));
+    m_openElements.push(HTMLStackItem::create(element, token));
 }
 
 void HTMLConstructionSite::insertSelfClosingHTMLElementDestroyingToken(AtomicHTMLToken* token)
@@ -669,11 +669,11 @@ void HTMLConstructionSite::insertScriptElement(AtomicHTMLToken* token)
     // those flags or effects thereof.
     const bool parserInserted = m_parserContentPolicy != AllowScriptingContentAndDoNotMarkAlreadyStarted;
     const bool alreadyStarted = m_isParsingFragment && parserInserted;
-    RefPtrWillBeRawPtr<HTMLScriptElement> element = HTMLScriptElement::create(ownerDocumentForCurrentNode(), parserInserted, alreadyStarted);
+    GCRefPtr<HTMLScriptElement> element = HTMLScriptElement::create(ownerDocumentForCurrentNode(), parserInserted, alreadyStarted);
     setAttributes(element.get(), token, m_parserContentPolicy);
     if (scriptingContentIsAllowed(m_parserContentPolicy))
         attachLater(currentNode(), element);
-    m_openElements.push(HTMLStackItem::create(element.release(), token));
+    m_openElements.push(HTMLStackItem::create(element, token));
 }
 
 void HTMLConstructionSite::insertForeignElement(AtomicHTMLToken* token, const AtomicString& namespaceURI)
@@ -681,11 +681,11 @@ void HTMLConstructionSite::insertForeignElement(AtomicHTMLToken* token, const At
     ASSERT(token->type() == HTMLToken::StartTag);
     notImplemented(); // parseError when xmlns or xmlns:xlink are wrong.
 
-    RefPtrWillBeRawPtr<Element> element = createElement(token, namespaceURI);
+    GCRefPtr<Element> element = createElement(token, namespaceURI);
     if (scriptingContentIsAllowed(m_parserContentPolicy) || !toScriptLoaderIfPossible(element.get()))
         attachLater(currentNode(), element, token->selfClosing());
     if (!token->selfClosing())
-        m_openElements.push(HTMLStackItem::create(element.release(), token, namespaceURI));
+        m_openElements.push(HTMLStackItem::create(element, token, namespaceURI));
 }
 
 void HTMLConstructionSite::insertTextNode(const String& string, WhitespaceMode whitespaceMode)
@@ -745,12 +745,12 @@ void HTMLConstructionSite::takeAllChildren(HTMLStackItem* newParent, HTMLElement
     queueTask(task);
 }
 
-PassRefPtrWillBeRawPtr<Element> HTMLConstructionSite::createElement(AtomicHTMLToken* token, const AtomicString& namespaceURI)
+GCRefPtr<Element> HTMLConstructionSite::createElement(AtomicHTMLToken* token, const AtomicString& namespaceURI)
 {
     QualifiedName tagName(nullAtom, token->name(), namespaceURI);
-    RefPtrWillBeRawPtr<Element> element = ownerDocumentForCurrentNode().createElement(tagName, true);
+    GCRefPtr<Element> element = ownerDocumentForCurrentNode().createElement(tagName, true);
     setAttributes(element.get(), token, m_parserContentPolicy);
-    return element.release();
+    return element;
 }
 
 inline Document& HTMLConstructionSite::ownerDocumentForCurrentNode()
@@ -760,7 +760,7 @@ inline Document& HTMLConstructionSite::ownerDocumentForCurrentNode()
     return currentNode()->document();
 }
 
-PassRefPtrWillBeRawPtr<HTMLElement> HTMLConstructionSite::createHTMLElement(AtomicHTMLToken* token)
+GCRefPtr<HTMLElement> HTMLConstructionSite::createHTMLElement(AtomicHTMLToken* token)
 {
     Document& document = ownerDocumentForCurrentNode();
     // Only associate the element with the current form if we're creating the new element
@@ -769,21 +769,21 @@ PassRefPtrWillBeRawPtr<HTMLElement> HTMLConstructionSite::createHTMLElement(Atom
     // FIXME: This can't use HTMLConstructionSite::createElement because we
     // have to pass the current form element.  We should rework form association
     // to occur after construction to allow better code sharing here.
-    RefPtrWillBeRawPtr<HTMLElement> element = HTMLElementFactory::createHTMLElement(token->name(), document, form, true);
+    GCRefPtr<HTMLElement> element = HTMLElementFactory::createHTMLElement(token->name(), document, form, true);
     setAttributes(element.get(), token, m_parserContentPolicy);
-    return element.release();
+    return element;
 }
 
 GCRefPtr<HTMLStackItem> HTMLConstructionSite::createElementFromSavedToken(HTMLStackItem* item)
 {
-    RefPtrWillBeRawPtr<Element> element;
+    GCRefPtr<Element> element;
     // NOTE: Moving from item -> token -> item copies the Attribute vector twice!
     AtomicHTMLToken fakeToken(HTMLToken::StartTag, item->localName(), item->attributes());
     if (item->namespaceURI() == HTMLNames::xhtmlNamespaceURI)
         element = createHTMLElement(&fakeToken);
     else
         element = createElement(&fakeToken, item->namespaceURI());
-    return HTMLStackItem::create(element.release(), &fakeToken, item->namespaceURI());
+    return HTMLStackItem::create(element, &fakeToken, item->namespaceURI());
 }
 
 bool HTMLConstructionSite::indexOfFirstUnopenFormattingElement(unsigned& firstUnopenElementIndex) const
@@ -814,7 +814,7 @@ void HTMLConstructionSite::reconstructTheActiveFormattingElements()
     for (; unopenEntryIndex < m_activeFormattingElements.size(); ++unopenEntryIndex) {
         HTMLFormattingElementList::Entry& unopenedEntry = m_activeFormattingElements.at(unopenEntryIndex);
         GCRefPtr<HTMLStackItem> reconstructed = createElementFromSavedToken(unopenedEntry.stackItem().get());
-        attachLater(currentNode(), reconstructed->node());
+        attachLater(currentNode(), GCWrapShared(reconstructed->node()));
         m_openElements.push(reconstructed);
         unopenedEntry.replaceElement(reconstructed);
     }
