@@ -47,7 +47,7 @@ class CORE_EXPORT Text : public CharacterData {
 public:
     static const unsigned defaultLengthLimit = 1 << 16;
 
-    static PassRefPtrWillBeRawPtr<Text> create(Document&, const String&);
+    static GCRefPtr<Text> create(Document&, const String&);
     static GCRefPtr<Text> createEditingText(Document&, const String&);
 
     LayoutText* layoutObject() const;
@@ -55,7 +55,7 @@ public:
     // mergeNextSiblingNodesIfPossible() merges next sibling nodes if possible
     // then returns a node not merged.
     PassRefPtrWillBeRawPtr<Node> mergeNextSiblingNodesIfPossible();
-    PassRefPtrWillBeRawPtr<Text> splitText(unsigned offset, ExceptionState&);
+    GCRefPtr<Text> splitText(unsigned offset, ExceptionState&);
 
     // DOM Level 3: http://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-1312295772
 
@@ -81,13 +81,13 @@ protected:
 
 private:
     String nodeName() const override;
-    PassRefPtrWillBeRawPtr<Node> cloneNode(bool deep) final;
+    GCRefPtr<Node> cloneNode(bool deep) final;
 
     bool isTextNode() const = delete; // This will catch anyone doing an unnecessary check.
 
     bool needsWhitespaceLayoutObject();
 
-    virtual PassRefPtrWillBeRawPtr<Text> cloneWithData(const String&);
+    virtual GCRefPtr<Text> cloneWithData(const String&);
 
 #ifndef NDEBUG
     void formatForDebugger(char* buffer, unsigned length) const override;

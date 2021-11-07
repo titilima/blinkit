@@ -374,11 +374,11 @@ void LocalDOMWindow::acceptLanguagesChanged()
 #endif
 }
 
-PassRefPtrWillBeRawPtr<Document> LocalDOMWindow::createDocument(const String& mimeType, const DocumentInit& init, bool forceXHTML)
+GCRefPtr<Document> LocalDOMWindow::createDocument(const String& mimeType, const DocumentInit& init, bool forceXHTML)
 {
     FrameClient::Type type = init.frame()->client()->GetType();
 
-    RefPtrWillBeRawPtr<Document> document = nullptr;
+    GCRefPtr<Document> document;
     switch (type)
     {
 #ifdef BLINKIT_CRAWLER_ENABLED
@@ -394,7 +394,7 @@ PassRefPtrWillBeRawPtr<Document> LocalDOMWindow::createDocument(const String& mi
         default:
             NOTREACHED();
     }
-    return document.release();
+    return document;
 }
 
 PassRefPtrWillBeRawPtr<Document> LocalDOMWindow::installNewDocument(const String& mimeType, const DocumentInit& init, bool forceXHTML)

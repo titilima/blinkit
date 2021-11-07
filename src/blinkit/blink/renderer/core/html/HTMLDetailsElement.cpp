@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLDetailsElement.cpp
+// Description: HTMLDetailsElement Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010, 2011 Nokia Corporation and/or its subsidiary(-ies)
  *
@@ -113,7 +124,8 @@ LayoutObject* HTMLDetailsElement::createLayoutObject(const ComputedStyle&)
 void HTMLDetailsElement::didAddUserAgentShadowRoot(ShadowRoot& root)
 {
     RefPtrWillBeRawPtr<HTMLSummaryElement> defaultSummary = HTMLSummaryElement::create(document());
-    defaultSummary->appendChild(Text::create(document(), locale().queryString(WebLocalizedString::DetailsLabel)));
+    GCRefPtr<Text> text = Text::create(document(), locale().queryString(WebLocalizedString::DetailsLabel));
+    defaultSummary->appendChild(text.get());
 
     RefPtrWillBeRawPtr<HTMLContentElement> summary = HTMLContentElement::create(document(), FirstSummarySelectFilter::create());
     summary->setIdAttribute(ShadowElementNames::detailsSummary());

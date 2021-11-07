@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLDocument.h
+// Description: HTMLDocument Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -34,9 +45,9 @@ class HTMLBodyElement;
 class CORE_EXPORT HTMLDocument : public Document, public ResourceClient {
     DEFINE_WRAPPERTYPEINFO();
 public:
-    static PassRefPtrWillBeRawPtr<HTMLDocument> create(const DocumentInit& initializer = DocumentInit())
+    static GCRefPtr<HTMLDocument> create(const DocumentInit& initializer = DocumentInit())
     {
-        return adoptRefWillBeNoop(new HTMLDocument(initializer));
+        return BlinKit::GCWrapShared(new HTMLDocument(initializer));
     }
     ~HTMLDocument() override;
 
@@ -66,7 +77,7 @@ public:
 
     static bool isCaseSensitiveAttribute(const QualifiedName&);
 
-    PassRefPtrWillBeRawPtr<Document> cloneDocumentWithoutChildren() final;
+    GCRefPtr<Document> cloneDocumentWithoutChildren() final;
 
 protected:
     HTMLDocument(const DocumentInit&, DocumentClassFlags extendedDocumentClasses = DefaultDocumentClass);

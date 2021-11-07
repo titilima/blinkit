@@ -47,7 +47,7 @@ class EventListener;
 class ProcessingInstruction final : public CharacterData, private ResourceOwner<StyleSheetResource> {
     DEFINE_WRAPPERTYPEINFO();
 public:
-    static PassRefPtrWillBeRawPtr<ProcessingInstruction> create(Document&, const String& target, const String& data);
+    static GCRefPtr<ProcessingInstruction> create(Document&, const String& target, const String& data);
     ~ProcessingInstruction() override;
     DECLARE_VIRTUAL_TRACE();
 
@@ -93,7 +93,7 @@ private:
 
     String nodeName() const override;
     NodeType nodeType() const override;
-    PassRefPtrWillBeRawPtr<Node> cloneNode(bool deep) override;
+    GCRefPtr<Node> cloneNode(bool deep) override;
 
     InsertionNotificationRequest insertedInto(ContainerNode*) override;
     void removedFrom(ContainerNode*) override;

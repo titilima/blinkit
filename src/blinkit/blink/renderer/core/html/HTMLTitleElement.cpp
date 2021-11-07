@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTitleElement.cpp
+// Description: HTMLTitleElement Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -88,7 +99,10 @@ void HTMLTitleElement::setText(const String &value)
     m_ignoreTitleUpdatesWhenChildrenChange = false;
 
     if (!value.isEmpty())
-        appendChild(document().createTextNode(value.impl()), IGNORE_EXCEPTION);
+    {
+        GCRefPtr<Text> text = document().createTextNode(value.impl());
+        appendChild(text.get(), IGNORE_EXCEPTION);
+    }
 }
 
 }

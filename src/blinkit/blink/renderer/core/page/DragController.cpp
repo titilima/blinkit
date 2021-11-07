@@ -172,7 +172,7 @@ static GCRefPtr<DocumentFragment> documentFragmentFromDragData(DragData* dragDat
             String title;
             String url = dragData->asURL(DragData::DoNotConvertFilenames, &title);
             if (!url.isEmpty()) {
-                RefPtrWillBeRawPtr<HTMLAnchorElement> anchor = HTMLAnchorElement::create(document);
+                GCRefPtr<HTMLAnchorElement> anchor = HTMLAnchorElement::create(document);
                 anchor->setHref(AtomicString(url));
                 if (title.isEmpty()) {
                     // Try the plain text first because the url might be normalized or escaped.
@@ -181,10 +181,10 @@ static GCRefPtr<DocumentFragment> documentFragmentFromDragData(DragData* dragDat
                     if (title.isEmpty())
                         title = url;
                 }
-                RefPtrWillBeRawPtr<Node> anchorText = document.createTextNode(title);
-                anchor->appendChild(anchorText);
+                GCRefPtr<Node> anchorText = document.createTextNode(title);
+                anchor->appendChild(anchorText.get());
                 GCRefPtr<DocumentFragment> fragment = document.createDocumentFragment();
-                fragment->appendChild(anchor);
+                fragment->appendChild(anchor.get());
                 return fragment;
             }
         }

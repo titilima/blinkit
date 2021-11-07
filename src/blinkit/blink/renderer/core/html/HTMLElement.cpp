@@ -398,21 +398,25 @@ GCRefPtr<DocumentFragment> HTMLElement::textToFragment(const String& text, Excep
     GCRefPtr<DocumentFragment> fragment = DocumentFragment::create(document());
     unsigned i, length = text.length();
     UChar c = 0;
-    for (unsigned start = 0; start < length; ) {
-
+    for (unsigned start = 0; start < length; )
+    {
         // Find next line break.
-        for (i = start; i < length; i++) {
+        for (i = start; i < length; i++)
+        {
             c = text[i];
             if (c == '\r' || c == '\n')
                 break;
         }
 
-        fragment->appendChild(Text::create(document(), text.substring(start, i - start)), exceptionState);
+        GCRefPtr<Text> textNode = Text::create(document(), text.substring(start, i - start));
+        fragment->appendChild(textNode.get(), exceptionState);
         if (exceptionState.hadException())
             return nullptr;
 
-        if (c == '\r' || c == '\n') {
-            fragment->appendChild(HTMLBRElement::create(document()), exceptionState);
+        if (c == '\r' || c == '\n')
+        {
+            GCRefPtr<HTMLBRElement> br = HTMLBRElement::create(document());
+            fragment->appendChild(br.get(), exceptionState);
             if (exceptionState.hadException())
                 return nullptr;
             // Make sure \r\n doesn't result in two line breaks.

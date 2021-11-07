@@ -40,7 +40,7 @@
 
 #include "core/frame/Frame.h"
 
-#include "core/dom/DocumentType.h"
+#include "blinkit/blink/renderer/core/dom/document_type.h"
 #include "core/events/Event.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/FrameHost.h"

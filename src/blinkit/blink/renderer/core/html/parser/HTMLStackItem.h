@@ -59,13 +59,13 @@ public:
     };
 
     // Used by document fragment node and context element.
-    static GCRefPtr<HTMLStackItem> create(PassRefPtrWillBeRawPtr<ContainerNode> node, ItemType type)
+    static GCRefPtr<HTMLStackItem> create(const GCRefPtr<ContainerNode> &node, ItemType type)
     {
         return BlinKit::GCWrapShared(new HTMLStackItem(node, type));
     }
 
     // Used by HTMLElementStack and HTMLFormattingElementList.
-    static GCRefPtr<HTMLStackItem> create(PassRefPtrWillBeRawPtr<ContainerNode> node, AtomicHTMLToken* token, const AtomicString& namespaceURI = HTMLNames::xhtmlNamespaceURI)
+    static GCRefPtr<HTMLStackItem> create(const GCRefPtr<ContainerNode> &node, AtomicHTMLToken* token, const AtomicString& namespaceURI = HTMLNames::xhtmlNamespaceURI)
     {
         return BlinKit::GCWrapShared(new HTMLStackItem(node, token, namespaceURI));
     }
@@ -225,7 +225,7 @@ public:
     DEFINE_INLINE_TRACE() { visitor->trace(m_node); }
 
 private:
-    HTMLStackItem(PassRefPtrWillBeRawPtr<ContainerNode> node, ItemType type)
+    HTMLStackItem(const GCRefPtr<ContainerNode> &node, ItemType type)
         : m_node(node)
     {
         switch (type) {
@@ -240,7 +240,7 @@ private:
         }
     }
 
-    HTMLStackItem(PassRefPtrWillBeRawPtr<ContainerNode> node, AtomicHTMLToken* token, const AtomicString& namespaceURI = HTMLNames::xhtmlNamespaceURI)
+    HTMLStackItem(const GCRefPtr<ContainerNode> &node, AtomicHTMLToken* token, const AtomicString& namespaceURI = HTMLNames::xhtmlNamespaceURI)
         : m_node(node)
         , m_tokenLocalName(token->name())
         , m_tokenAttributes(token->attributes())

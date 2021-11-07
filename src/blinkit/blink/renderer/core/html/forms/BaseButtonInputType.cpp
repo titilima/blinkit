@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BaseButtonInputType.cpp
+// Description: BaseButtonInputType Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -45,7 +56,8 @@ using namespace HTMLNames;
 void BaseButtonInputType::createShadowSubtree()
 {
     ASSERT(element().userAgentShadowRoot());
-    element().userAgentShadowRoot()->appendChild(Text::create(element().document(), displayValue()));
+    GCRefPtr<Text> text = Text::create(element().document(), displayValue());
+    element().userAgentShadowRoot()->appendChild(text.get());
 }
 
 void BaseButtonInputType::valueAttributeChanged()

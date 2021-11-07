@@ -119,7 +119,7 @@ struct FocusParams {
     Member<InputDeviceCapabilities> sourceCapabilities = nullptr;
 };
 
-typedef std::vector<Member<Attr>> AttrNodeList;
+typedef std::vector<GCRefPtr<Attr>> AttrNodeList;
 
 class CORE_EXPORT Element : public ContainerNode {
     DEFINE_WRAPPERTYPEINFO();
@@ -280,8 +280,8 @@ public:
 
     String nodeName() const override;
 
-    PassRefPtrWillBeRawPtr<Element> cloneElementWithChildren();
-    PassRefPtrWillBeRawPtr<Element> cloneElementWithoutChildren();
+    GCRefPtr<Element> cloneElementWithChildren();
+    GCRefPtr<Element> cloneElementWithoutChildren();
 
     // BKTODO: void scheduleSVGFilterLayerUpdateHack();
 
@@ -695,8 +695,8 @@ private:
 
     // cloneNode is private so that non-virtual cloneElementWithChildren and cloneElementWithoutChildren
     // are used instead.
-    PassRefPtrWillBeRawPtr<Node> cloneNode(bool deep) override;
-    virtual PassRefPtrWillBeRawPtr<Element> cloneElementWithoutAttributesAndChildren();
+    GCRefPtr<Node> cloneNode(bool deep) override;
+    virtual GCRefPtr<Element> cloneElementWithoutAttributesAndChildren();
 
     QualifiedName m_tagName;
 

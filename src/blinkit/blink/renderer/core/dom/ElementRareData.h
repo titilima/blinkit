@@ -134,7 +134,7 @@ public:
 
     AttrNodeList& ensureAttrNodeList();
     AttrNodeList* attrNodeList() { return m_attrNodeList.get(); }
-    void removeAttrNodeList() { m_attrNodeList.clear(); }
+    void removeAttrNodeList() { m_attrNodeList.reset(); }
 
     NodeIntersectionObserverData* intersectionObserverData() const { return m_intersectionObserverData.get(); }
     NodeIntersectionObserverData& ensureIntersectionObserverData()
@@ -159,7 +159,7 @@ private:
     OwnPtrWillBeMember<ClassList> m_classList;
     GCUniquePtr<ElementShadow> m_shadow;
     OwnPtrWillBeMember<NamedNodeMap> m_attributeMap;
-    OwnPtrWillBeMember<AttrNodeList> m_attrNodeList;
+    std::unique_ptr<AttrNodeList> m_attrNodeList;
     GCRefPtr<InlineCSSStyleDeclaration> m_cssomWrapper;
     OwnPtr<CompositorProxiedPropertySet> m_proxiedProperties;
 

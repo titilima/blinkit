@@ -57,8 +57,6 @@ public:
 
     ScriptLoader* loader() const { return m_loader.get(); }
 
-    DECLARE_VIRTUAL_TRACE();
-
 private:
     HTMLScriptElement(Document&, bool wasInsertedByParser, bool alreadyStarted);
 
@@ -86,7 +84,7 @@ private:
 
     void dispatchLoadEvent() override;
 
-    PassRefPtrWillBeRawPtr<Element> cloneElementWithoutAttributesAndChildren() override;
+    GCRefPtr<Element> cloneElementWithoutAttributesAndChildren() override;
 
     std::unique_ptr<ScriptLoader> m_loader;
 };

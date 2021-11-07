@@ -86,7 +86,9 @@ PassRefPtrWillBeRawPtr<HTMLOptionElement> HTMLOptionElement::createForJSConstruc
 {
     RefPtrWillBeRawPtr<HTMLOptionElement> element = adoptRefWillBeNoop(new HTMLOptionElement(document));
     element->ensureUserAgentShadowRoot();
-    element->appendChild(Text::create(document, data.isNull() ? "" : data), exceptionState);
+
+    GCRefPtr<Text> text = Text::create(document, data.isNull() ? "" : data);
+    element->appendChild(text.get(), exceptionState);
     if (exceptionState.hadException())
         return nullptr;
 
@@ -164,7 +166,8 @@ void HTMLOptionElement::setText(const String &text, ExceptionState& exceptionSta
         toText(firstChild())->setData(text);
     } else {
         removeChildren();
-        appendChild(Text::create(document(), text), exceptionState);
+        GCRefPtr<Text> textNode = Text::create(document(), text);
+        appendChild(textNode.get(), exceptionState);
     }
 
     if (selectIsMenuList && select->selectedIndex() != oldSelectedIndex)

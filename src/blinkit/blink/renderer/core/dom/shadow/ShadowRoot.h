@@ -137,7 +137,7 @@ public:
     String innerHTML() const;
     void setInnerHTML(const String&, ExceptionState&);
 
-    PassRefPtrWillBeRawPtr<Node> cloneNode(bool, ExceptionState&);
+    GCRefPtr<Node> cloneNode(bool, ExceptionState&);
 
     StyleSheetList* styleSheets();
 
@@ -163,7 +163,7 @@ private:
     void invalidateDescendantInsertionPoints();
 
     // ShadowRoots should never be cloned.
-    PassRefPtrWillBeRawPtr<Node> cloneNode(bool) override { return nullptr; }
+    GCRefPtr<Node> cloneNode(bool) override { return nullptr; }
 
     // FIXME: This shouldn't happen. https://bugs.webkit.org/show_bug.cgi?id=88834
     bool isOrphan() const { return !host(); }

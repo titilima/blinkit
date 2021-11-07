@@ -211,7 +211,7 @@ public:
     PassRefPtrWillBeRawPtr<Node> appendChild(PassRefPtrWillBeRawPtr<Node> newChild, ExceptionState& = ASSERT_NO_EXCEPTION);
 
     bool hasChildren() const { return firstChild(); }
-    virtual PassRefPtrWillBeRawPtr<Node> cloneNode(bool deep) = 0;
+    virtual GCRefPtr<Node> cloneNode(bool deep) = 0;
     void normalize();
 
     bool isSameNode(Node* other) const { return this == other; }

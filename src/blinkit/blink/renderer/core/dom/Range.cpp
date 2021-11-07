@@ -529,16 +529,16 @@ GCRefPtr<DocumentFragment> Range::processContents(ActionType action, ExceptionSt
     // Note that we are verifying that our common root hierarchy is still intact
     // after any DOM mutation event, at various stages below. See webkit bug 60350.
 
-    RefPtrWillBeRawPtr<Node> leftContents = nullptr;
+    GCRefPtr<Node> leftContents;
     if (originalStart.container() != commonRoot && commonRoot->contains(originalStart.container())) {
         leftContents = processContentsBetweenOffsets(action, nullptr, originalStart.container(), originalStart.offset(), originalStart.container()->lengthOfContents(), exceptionState);
-        leftContents = processAncestorsAndTheirSiblings(action, originalStart.container(), ProcessContentsForward, leftContents, commonRoot.get(), exceptionState);
+        leftContents = processAncestorsAndTheirSiblings(action, originalStart.container(), ProcessContentsForward, leftContents.get(), commonRoot.get(), exceptionState);
     }
 
-    RefPtrWillBeRawPtr<Node> rightContents = nullptr;
+    GCRefPtr<Node> rightContents;
     if (m_end.container() != commonRoot && commonRoot->contains(originalEnd.container())) {
         rightContents = processContentsBetweenOffsets(action, nullptr, originalEnd.container(), 0, originalEnd.offset(), exceptionState);
-        rightContents = processAncestorsAndTheirSiblings(action, originalEnd.container(), ProcessContentsBackward, rightContents, commonRoot.get(), exceptionState);
+        rightContents = processAncestorsAndTheirSiblings(action, originalEnd.container(), ProcessContentsBackward, rightContents.get(), commonRoot.get(), exceptionState);
     }
 
     // delete all children of commonRoot between the start and end container
@@ -570,7 +570,7 @@ GCRefPtr<DocumentFragment> Range::processContents(ActionType action, ExceptionSt
     // (or just delete the stuff in between)
 
     if ((action == EXTRACT_CONTENTS || action == CLONE_CONTENTS) && leftContents)
-        fragment->appendChild(leftContents, exceptionState);
+        fragment->appendChild(leftContents.get(), exceptionState);
 
     if (processStart) {
         NodeVector nodes;
@@ -580,7 +580,7 @@ GCRefPtr<DocumentFragment> Range::processContents(ActionType action, ExceptionSt
     }
 
     if ((action == EXTRACT_CONTENTS || action == CLONE_CONTENTS) && rightContents)
-        fragment->appendChild(rightContents, exceptionState);
+        fragment->appendChild(rightContents.get(), exceptionState);
 
     return fragment;
 }
@@ -593,14 +593,14 @@ static inline void deleteCharacterData(PassRefPtrWillBeRawPtr<CharacterData> dat
         data->deleteData(0, startOffset, exceptionState);
 }
 
-PassRefPtrWillBeRawPtr<Node> Range::processContentsBetweenOffsets(ActionType action, PassRefPtrWillBeRawPtr<DocumentFragment> fragment,
+GCRefPtr<Node> Range::processContentsBetweenOffsets(ActionType action, PassRefPtrWillBeRawPtr<DocumentFragment> fragment,
     Node* container, unsigned startOffset, unsigned endOffset, ExceptionState& exceptionState)
 {
     ASSERT(container);
     ASSERT(startOffset <= endOffset);
 
     // This switch statement must be consistent with that of Node::lengthOfContents.
-    RefPtrWillBeRawPtr<Node> result = nullptr;
+    GCRefPtr<Node> result;
     switch (container->nodeType()) {
     case Node::TEXT_NODE:
     case Node::CDATA_SECTION_NODE:
@@ -608,13 +608,14 @@ PassRefPtrWillBeRawPtr<Node> Range::processContentsBetweenOffsets(ActionType act
     case Node::PROCESSING_INSTRUCTION_NODE:
         endOffset = std::min(endOffset, toCharacterData(container)->length());
         if (action == EXTRACT_CONTENTS || action == CLONE_CONTENTS) {
-            RefPtrWillBeRawPtr<CharacterData> c = static_pointer_cast<CharacterData>(container->cloneNode(true));
+            GCRefPtr<Node> clone = container->cloneNode(true);
+            CharacterData *c = toCharacterData(clone.get());
             deleteCharacterData(c, startOffset, endOffset, exceptionState);
             if (fragment) {
                 result = fragment;
-                result->appendChild(c.release(), exceptionState);
+                result->appendChild(c, exceptionState);
             } else {
-                result = c.release();
+                result = clone;
             }
         }
         if (action == EXTRACT_CONTENTS || action == DELETE_CONTENTS)
@@ -640,35 +641,37 @@ PassRefPtrWillBeRawPtr<Node> Range::processContentsBetweenOffsets(ActionType act
         for (unsigned i = startOffset; n && i < endOffset; i++, n = n->nextSibling())
             nodes.append(n);
 
-        processNodes(action, nodes, container, result, exceptionState);
+        processNodes(action, nodes, container, result.get(), exceptionState);
         break;
     }
 
-    return result.release();
+    return result;
 }
 
 void Range::processNodes(ActionType action, WillBeHeapVector<RefPtrWillBeMember<Node>>& nodes, PassRefPtrWillBeRawPtr<Node> oldContainer, PassRefPtrWillBeRawPtr<Node> newContainer, ExceptionState& exceptionState)
 {
-    for (auto& node : nodes) {
-        switch (action) {
-        case DELETE_CONTENTS:
-            oldContainer->removeChild(node.get(), exceptionState);
-            break;
-        case EXTRACT_CONTENTS:
-            newContainer->appendChild(node.release(), exceptionState); // Will remove n from its parent.
-            break;
-        case CLONE_CONTENTS:
-            newContainer->appendChild(node->cloneNode(true), exceptionState);
-            break;
+    for (auto& node : nodes)
+    {
+        switch (action)
+        {
+            case DELETE_CONTENTS:
+                oldContainer->removeChild(node.get(), exceptionState);
+                break;
+            case EXTRACT_CONTENTS:
+                newContainer->appendChild(node.release(), exceptionState); // Will remove n from its parent.
+                break;
+            case CLONE_CONTENTS:
+                newContainer->appendChild(node->cloneNode(true).get(), exceptionState);
+                break;
         }
     }
 }
 
-PassRefPtrWillBeRawPtr<Node> Range::processAncestorsAndTheirSiblings(ActionType action, Node* container, ContentsProcessDirection direction, PassRefPtrWillBeRawPtr<Node> passedClonedContainer, Node* commonRoot, ExceptionState& exceptionState)
+GCRefPtr<Node> Range::processAncestorsAndTheirSiblings(ActionType action, Node* container, ContentsProcessDirection direction, PassRefPtrWillBeRawPtr<Node> passedClonedContainer, Node* commonRoot, ExceptionState& exceptionState)
 {
     typedef WillBeHeapVector<RefPtrWillBeMember<Node>> NodeVector;
 
-    RefPtrWillBeRawPtr<Node> clonedContainer = passedClonedContainer;
+    GCRefPtr<Node> clonedContainer = passedClonedContainer;
     NodeVector ancestors;
     for (ContainerNode* n = container->parentNode(); n && n != commonRoot; n = n->parentNode())
         ancestors.append(n);
@@ -676,8 +679,8 @@ PassRefPtrWillBeRawPtr<Node> Range::processAncestorsAndTheirSiblings(ActionType 
     RefPtrWillBeRawPtr<Node> firstChildInAncestorToProcess = direction == ProcessContentsForward ? container->nextSibling() : container->previousSibling();
     for (const RefPtrWillBeRawPtr<Node>& ancestor : ancestors) {
         if (action == EXTRACT_CONTENTS || action == CLONE_CONTENTS) {
-            if (RefPtrWillBeRawPtr<Node> clonedAncestor = ancestor->cloneNode(false)) { // Might have been removed already during mutation event.
-                clonedAncestor->appendChild(clonedContainer, exceptionState);
+            if (GCRefPtr<Node> clonedAncestor = ancestor->cloneNode(false)) { // Might have been removed already during mutation event.
+                clonedAncestor->appendChild(clonedContainer.get(), exceptionState);
                 clonedContainer = clonedAncestor;
             }
         }
@@ -709,16 +712,16 @@ PassRefPtrWillBeRawPtr<Node> Range::processAncestorsAndTheirSiblings(ActionType 
                 break;
             case CLONE_CONTENTS:
                 if (direction == ProcessContentsForward)
-                    clonedContainer->appendChild(child->cloneNode(true), exceptionState);
+                    clonedContainer->appendChild(child->cloneNode(true).get(), exceptionState);
                 else
-                    clonedContainer->insertBefore(child->cloneNode(true), clonedContainer->firstChild(), exceptionState);
+                    clonedContainer->insertBefore(child->cloneNode(true).get(), clonedContainer->firstChild(), exceptionState);
                 break;
             }
         }
         firstChildInAncestorToProcess = direction == ProcessContentsForward ? ancestor->nextSibling() : ancestor->previousSibling();
     }
 
-    return clonedContainer.release();
+    return clonedContainer;
 }
 
 GCRefPtr<DocumentFragment> Range::extractContents(ExceptionState& exceptionState)
@@ -809,7 +812,7 @@ void Range::insertNode(PassRefPtrWillBeRawPtr<Node> prpNewNode, ExceptionState& 
     RefPtrWillBeRawPtr<Node> container = nullptr;
     if (startIsText) {
         container = m_start.container();
-        RefPtrWillBeRawPtr<Text> newText = toText(container)->splitText(m_start.offset(), exceptionState);
+        GCRefPtr<Text> newText = toText(container)->splitText(m_start.offset(), exceptionState);
         if (exceptionState.hadException())
             return;
 

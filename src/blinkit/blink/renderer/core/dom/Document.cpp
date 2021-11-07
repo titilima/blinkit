@@ -40,8 +40,10 @@
 
 #include "bindings/core/v8/ExceptionState.h"
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "bindings/core/v8/ScriptController.h"
 #include "blinkit/blink/public/platform/WebThread.h"
+#include "blinkit/blink/renderer/bindings/core/duk/script_controller.h"
+#include "blinkit/blink/renderer/core/dom/cdata_section.h"
+#include "blinkit/blink/renderer/core/dom/document_type.h"
 #include "blinkit/blink/renderer/platform/scheduler/cancellable_task_factory.h"
 #include "core/HTMLElementFactory.h"
 #include "core/HTMLNames.h"
@@ -70,7 +72,6 @@
 #include "core/dom/AddConsoleMessageTask.h"
 #endif
 #include "core/dom/Attr.h"
-#include "core/dom/CDATASection.h"
 #include "core/dom/ClientRect.h"
 #include "core/dom/Comment.h"
 #if 0 // BKTODO:
@@ -79,7 +80,6 @@
 #endif
 #include "core/dom/DocumentFragment.h"
 // BKTODO: #include "core/dom/DocumentLifecycleObserver.h"
-#include "core/dom/DocumentType.h"
 #include "core/dom/DocumentVisibilityObserver.h" // BKTODO: Was in HTMLCanvasElement.h
 #include "core/dom/Element.h"
 #include "core/dom/ElementDataCache.h"
@@ -737,7 +737,7 @@ AtomicString Document::convertLocalName(const AtomicString& name)
     return isHTMLDocument() ? name.lower() : name;
 }
 
-PassRefPtrWillBeRawPtr<Element> Document::createElement(const AtomicString& name, ExceptionState& exceptionState)
+GCRefPtr<Element> Document::createElement(const AtomicString& name, ExceptionState& exceptionState)
 {
     if (!isValidName(name)) {
         exceptionState.throwDOMException(InvalidCharacterError, "The tag name provided ('" + name + "') is not a valid name.");
@@ -750,14 +750,14 @@ PassRefPtrWillBeRawPtr<Element> Document::createElement(const AtomicString& name
     return Element::create(QualifiedName(nullAtom, name, nullAtom), this);
 }
 
-PassRefPtrWillBeRawPtr<Element> Document::createElement(const AtomicString& localName, const AtomicString& typeExtension, ExceptionState& exceptionState)
+GCRefPtr<Element> Document::createElement(const AtomicString& localName, const AtomicString& typeExtension, ExceptionState& exceptionState)
 {
     if (!isValidName(localName)) {
         exceptionState.throwDOMException(InvalidCharacterError, "The tag name provided ('" + localName + "') is not a valid name.");
         return nullptr;
     }
 
-    RefPtrWillBeRawPtr<Element> element;
+    GCRefPtr<Element> element;
 
     if (CustomElement::isValidName(localName) && registrationContext()) {
         element = registrationContext()->createCustomTagElement(*this, QualifiedName(nullAtom, convertLocalName(localName), xhtmlNamespaceURI));
@@ -770,7 +770,7 @@ PassRefPtrWillBeRawPtr<Element> Document::createElement(const AtomicString& loca
     if (!typeExtension.isEmpty())
         CustomElementRegistrationContext::setIsAttributeAndTypeExtension(element.get(), typeExtension);
 
-    return element.release();
+    return element;
 }
 
 static inline QualifiedName createQualifiedName(const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState& exceptionState)
@@ -788,7 +788,7 @@ static inline QualifiedName createQualifiedName(const AtomicString& namespaceURI
     return qName;
 }
 
-PassRefPtrWillBeRawPtr<Element> Document::createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState& exceptionState)
+GCRefPtr<Element> Document::createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState& exceptionState)
 {
     QualifiedName qName(createQualifiedName(namespaceURI, qualifiedName, exceptionState));
     if (qName == QualifiedName::null())
@@ -797,13 +797,13 @@ PassRefPtrWillBeRawPtr<Element> Document::createElementNS(const AtomicString& na
     return createElement(qName, false);
 }
 
-PassRefPtrWillBeRawPtr<Element> Document::createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, const AtomicString& typeExtension, ExceptionState& exceptionState)
+GCRefPtr<Element> Document::createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, const AtomicString& typeExtension, ExceptionState& exceptionState)
 {
     QualifiedName qName(createQualifiedName(namespaceURI, qualifiedName, exceptionState));
     if (qName == QualifiedName::null())
         return nullptr;
 
-    RefPtrWillBeRawPtr<Element> element;
+    GCRefPtr<Element> element;
     if (CustomElement::isValidName(qName.localName()) && registrationContext())
         element = registrationContext()->createCustomTagElement(*this, qName);
     else
@@ -812,7 +812,7 @@ PassRefPtrWillBeRawPtr<Element> Document::createElementNS(const AtomicString& na
     if (!typeExtension.isEmpty())
         CustomElementRegistrationContext::setIsAttributeAndTypeExtension(element.get(), typeExtension);
 
-    return element.release();
+    return element;
 }
 
 #if 0 // BKTODO:
@@ -882,17 +882,17 @@ GCRefPtr<DocumentFragment> Document::createDocumentFragment()
     return DocumentFragment::create(*this);
 }
 
-PassRefPtrWillBeRawPtr<Text> Document::createTextNode(const String& data)
+GCRefPtr<Text> Document::createTextNode(const String& data)
 {
     return Text::create(*this, data);
 }
 
-PassRefPtrWillBeRawPtr<Comment> Document::createComment(const String& data)
+GCRefPtr<Comment> Document::createComment(const String& data)
 {
     return Comment::create(*this, data);
 }
 
-PassRefPtrWillBeRawPtr<CDATASection> Document::createCDATASection(const String& data, ExceptionState& exceptionState)
+GCRefPtr<CDATASection> Document::createCDATASection(const String& data, ExceptionState& exceptionState)
 {
     if (isHTMLDocument()) {
         exceptionState.throwDOMException(NotSupportedError, "This operation is not supported for HTML documents.");
@@ -905,7 +905,7 @@ PassRefPtrWillBeRawPtr<CDATASection> Document::createCDATASection(const String& 
     return CDATASection::create(*this, data);
 }
 
-PassRefPtrWillBeRawPtr<ProcessingInstruction> Document::createProcessingInstruction(const String& target, const String& data, ExceptionState& exceptionState)
+GCRefPtr<ProcessingInstruction> Document::createProcessingInstruction(const String& target, const String& data, ExceptionState& exceptionState)
 {
     if (!isValidName(target)) {
         exceptionState.throwDOMException(InvalidCharacterError, "The target provided ('" + target + "') is not a valid name.");
@@ -926,10 +926,10 @@ GCRefPtr<Text> Document::createEditingTextNode(const String& text)
 bool Document::importContainerNodeChildren(ContainerNode* oldContainerNode, PassRefPtrWillBeRawPtr<ContainerNode> newContainerNode, ExceptionState& exceptionState)
 {
     for (Node& oldChild : NodeTraversal::childrenOf(*oldContainerNode)) {
-        RefPtrWillBeRawPtr<Node> newChild = importNode(&oldChild, true, exceptionState);
+        GCRefPtr<Node> newChild = importNode(&oldChild, true, exceptionState);
         if (exceptionState.hadException())
             return false;
-        newContainerNode->appendChild(newChild.release(), exceptionState);
+        newContainerNode->appendChild(newChild.get(), exceptionState);
         if (exceptionState.hadException())
             return false;
     }
@@ -937,7 +937,7 @@ bool Document::importContainerNodeChildren(ContainerNode* oldContainerNode, Pass
     return true;
 }
 
-PassRefPtrWillBeRawPtr<Node> Document::importNode(Node* importedNode, bool deep, ExceptionState& exceptionState)
+GCRefPtr<Node> Document::importNode(Node* importedNode, bool deep, ExceptionState& exceptionState)
 {
     switch (importedNode->nodeType()) {
     case TEXT_NODE:
@@ -960,21 +960,21 @@ PassRefPtrWillBeRawPtr<Node> Document::importNode(Node* importedNode, bool deep,
             exceptionState.throwDOMException(NamespaceError, "The imported node has an invalid namespace.");
             return nullptr;
         }
-        RefPtrWillBeRawPtr<Element> newElement = createElement(oldElement->tagQName(), false);
+        GCRefPtr<Element> newElement = createElement(oldElement->tagQName(), false);
 
         newElement->cloneDataFromElement(*oldElement);
 
         if (deep) {
-            if (!importContainerNodeChildren(oldElement, newElement, exceptionState))
+            if (!importContainerNodeChildren(oldElement, newElement.get(), exceptionState))
                 return nullptr;
             if (isHTMLTemplateElement(*oldElement)
                 && !ensureTemplateDocument().importContainerNodeChildren(
                     toHTMLTemplateElement(oldElement)->content(),
-                    toHTMLTemplateElement(newElement)->content(), exceptionState))
+                    toHTMLTemplateElement(newElement.get())->content(), exceptionState))
                 return nullptr;
         }
 
-        return newElement.release();
+        return newElement;
     }
     case ATTRIBUTE_NODE:
         return Attr::create(*this, QualifiedName(nullAtom, AtomicString(toAttr(importedNode)->name()), nullAtom), toAttr(importedNode)->value());
@@ -990,7 +990,7 @@ PassRefPtrWillBeRawPtr<Node> Document::importNode(Node* importedNode, bool deep,
         if (deep && !importContainerNodeChildren(oldFragment, newFragment.get(), exceptionState))
             return nullptr;
 
-        return newFragment.release();
+        return newFragment;
     }
     case DOCUMENT_NODE:
         exceptionState.throwDOMException(NotSupportedError, "The node provided is a document, which may not be imported.");
@@ -1072,9 +1072,9 @@ bool Document::hasValidNamespaceForAttributes(const QualifiedName& qName)
 }
 
 // FIXME: This should really be in a possible ElementFactory class
-PassRefPtrWillBeRawPtr<Element> Document::createElement(const QualifiedName& qName, bool createdByParser)
+GCRefPtr<Element> Document::createElement(const QualifiedName& qName, bool createdByParser)
 {
-    RefPtrWillBeRawPtr<Element> e = nullptr;
+    GCRefPtr<Element> e;
 
     ASSERT(false); // BKTODO:
 #if 0
@@ -1095,7 +1095,7 @@ PassRefPtrWillBeRawPtr<Element> Document::createElement(const QualifiedName& qNa
 
     ASSERT(qName == e->tagQName());
 
-    return e.release();
+    return e;
 }
 
 String Document::readyState() const
@@ -3481,16 +3481,16 @@ bool Document::canAcceptChild(const Node& newChild, const Node* oldChild, Except
     return true;
 }
 
-PassRefPtrWillBeRawPtr<Node> Document::cloneNode(bool deep)
+GCRefPtr<Node> Document::cloneNode(bool deep)
 {
-    RefPtrWillBeRawPtr<Document> clone = cloneDocumentWithoutChildren();
+    GCRefPtr<Document> clone = cloneDocumentWithoutChildren();
     clone->cloneDataFromDocument(*this);
     if (deep)
         cloneChildNodes(clone.get());
-    return clone.release();
+    return clone;
 }
 
-PassRefPtrWillBeRawPtr<Document> Document::cloneDocumentWithoutChildren()
+GCRefPtr<Document> Document::cloneDocumentWithoutChildren()
 {
     DocumentInit init(url());
     ASSERT(false); // BKTODO:
@@ -4828,14 +4828,14 @@ Document* Document::contextDocument(void)
     return nullptr != m_frame ? this : nullptr;
 }
 
-PassRefPtrWillBeRawPtr<Attr> Document::createAttribute(const AtomicString& name, ExceptionState& exceptionState)
+GCRefPtr<Attr> Document::createAttribute(const AtomicString& name, ExceptionState& exceptionState)
 {
     if (isHTMLDocument() && name != name.lower())
         UseCounter::count(*this, UseCounter::HTMLDocumentCreateAttributeNameNotLowercase);
     return createAttributeNS(nullAtom, name, exceptionState, true);
 }
 
-PassRefPtrWillBeRawPtr<Attr> Document::createAttributeNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState& exceptionState, bool shouldIgnoreNamespaceChecks)
+GCRefPtr<Attr> Document::createAttributeNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState& exceptionState, bool shouldIgnoreNamespaceChecks)
 {
     AtomicString prefix, localName;
     if (!parseQualifiedName(qualifiedName, prefix, localName, exceptionState))

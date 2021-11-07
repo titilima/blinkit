@@ -302,17 +302,17 @@ public:
 
     Location* location() const;
 
-    PassRefPtrWillBeRawPtr<Element> createElement(const AtomicString& name, ExceptionState&);
+    GCRefPtr<Element> createElement(const AtomicString& name, ExceptionState&);
     GCRefPtr<DocumentFragment> createDocumentFragment();
-    PassRefPtrWillBeRawPtr<Text> createTextNode(const String& data);
-    PassRefPtrWillBeRawPtr<Comment> createComment(const String& data);
-    PassRefPtrWillBeRawPtr<CDATASection> createCDATASection(const String& data, ExceptionState&);
-    PassRefPtrWillBeRawPtr<ProcessingInstruction> createProcessingInstruction(const String& target, const String& data, ExceptionState&);
-    PassRefPtrWillBeRawPtr<Attr> createAttribute(const AtomicString& name, ExceptionState&);
-    PassRefPtrWillBeRawPtr<Attr> createAttributeNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState&, bool shouldIgnoreNamespaceChecks = false);
-    PassRefPtrWillBeRawPtr<Node> importNode(Node* importedNode, bool deep, ExceptionState&);
-    PassRefPtrWillBeRawPtr<Element> createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState&);
-    PassRefPtrWillBeRawPtr<Element> createElement(const QualifiedName&, bool createdByParser);
+    GCRefPtr<Text> createTextNode(const String& data);
+    GCRefPtr<Comment> createComment(const String& data);
+    GCRefPtr<CDATASection> createCDATASection(const String& data, ExceptionState&);
+    GCRefPtr<ProcessingInstruction> createProcessingInstruction(const String& target, const String& data, ExceptionState&);
+    GCRefPtr<Attr> createAttribute(const AtomicString& name, ExceptionState&);
+    GCRefPtr<Attr> createAttributeNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState&, bool shouldIgnoreNamespaceChecks = false);
+    GCRefPtr<Node> importNode(Node* importedNode, bool deep, ExceptionState&);
+    GCRefPtr<Element> createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState&);
+    GCRefPtr<Element> createElement(const QualifiedName&, bool createdByParser);
 
     Element* elementFromPoint(int x, int y) const;
     std::vector<Element *> elementsFromPoint(int x, int y) const;
@@ -979,8 +979,8 @@ public:
 
     TextAutosizer* textAutosizer();
 
-    PassRefPtrWillBeRawPtr<Element> createElement(const AtomicString& localName, const AtomicString& typeExtension, ExceptionState&);
-    PassRefPtrWillBeRawPtr<Element> createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, const AtomicString& typeExtension, ExceptionState&);
+    GCRefPtr<Element> createElement(const AtomicString& localName, const AtomicString& typeExtension, ExceptionState&);
+    GCRefPtr<Element> createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, const AtomicString& typeExtension, ExceptionState&);
     // BKTODO: ScriptValue registerElement(ScriptState*, const AtomicString& name, const ElementRegistrationOptions&, ExceptionState&, CustomElement::NameSet validNames = CustomElement::StandardNames);
     CustomElementRegistrationContext* registrationContext() { return m_registrationContext.get(); }
     CustomElementMicrotaskRunQueue* customElementMicrotaskRunQueue();
@@ -1121,7 +1121,7 @@ protected:
     void dispose() override;
 #endif
 
-    virtual PassRefPtrWillBeRawPtr<Document> cloneDocumentWithoutChildren();
+    virtual GCRefPtr<Document> cloneDocumentWithoutChildren();
 
     bool importContainerNodeChildren(ContainerNode* oldContainerNode, PassRefPtrWillBeRawPtr<ContainerNode> newContainerNode, ExceptionState&);
     void lockCompatibilityMode() { m_compatibilityModeLocked = true; }
@@ -1168,7 +1168,7 @@ private:
     String nodeName() const final;
     NodeType nodeType() const final;
     bool childTypeAllowed(NodeType) const final;
-    PassRefPtrWillBeRawPtr<Node> cloneNode(bool deep) final;
+    GCRefPtr<Node> cloneNode(bool deep) final;
     void cloneDataFromDocument(const Document&);
     bool isSecureContextImpl(String* errorMessage, const SecureContextCheck priviligeContextCheck) const;
 

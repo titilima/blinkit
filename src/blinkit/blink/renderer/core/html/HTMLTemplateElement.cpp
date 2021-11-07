@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTemplateElement.cpp
+// Description: HTMLTemplateElement Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -61,15 +72,15 @@ DocumentFragment* HTMLTemplateElement::content() const
     return m_content.get();
 }
 
-PassRefPtrWillBeRawPtr<Node> HTMLTemplateElement::cloneNode(bool deep)
+GCRefPtr<Node> HTMLTemplateElement::cloneNode(bool deep)
 {
     if (!deep)
         return cloneElementWithoutChildren();
 
-    RefPtrWillBeRawPtr<Node> clone = cloneElementWithChildren();
+    GCRefPtr<Node> clone = cloneElementWithChildren();
     if (m_content)
         content()->cloneChildNodes(toHTMLTemplateElement(clone.get())->content());
-    return clone.release();
+    return clone;
 }
 
 void HTMLTemplateElement::didMoveToNewDocument(Document& oldDocument)

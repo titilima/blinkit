@@ -66,7 +66,7 @@ CSSStyleDeclaration& ElementRareData::ensureInlineCSSStyleDeclaration(Element* o
 AttrNodeList& ElementRareData::ensureAttrNodeList()
 {
     if (!m_attrNodeList)
-        m_attrNodeList = adoptPtrWillBeNoop(new AttrNodeList);
+        m_attrNodeList = std::make_unique<AttrNodeList>();
     return *m_attrNodeList;
 }
 
@@ -77,7 +77,8 @@ DEFINE_TRACE_AFTER_DISPATCH(ElementRareData)
     // BKTODO: visitor->trace(m_shadow);
     visitor->trace(m_attributeMap);
 #if ENABLE(OILPAN)
-    visitor->trace(m_attrNodeList);
+    if (m_attrNodeList)
+        visitor->trace(*m_attrNodeList);
 #endif
     visitor->trace(m_elementAnimations);
     // BKTODO: visitor->trace(m_cssomWrapper);

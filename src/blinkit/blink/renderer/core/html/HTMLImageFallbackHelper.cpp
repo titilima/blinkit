@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLImageFallbackHelper.cpp
+// Description: HTMLImageFallbackHelper Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -60,8 +71,8 @@ void HTMLImageFallbackHelper::createAltTextShadowTree(Element& element)
     altText->setInlineStyleProperty(CSSPropertyOverflow, CSSValueHidden);
     altText->setInlineStyleProperty(CSSPropertyDisplay, CSSValueBlock);
 
-    RefPtrWillBeRawPtr<Text> text = Text::create(element.document(), toHTMLElement(element).altText());
-    altText->appendChild(text);
+    GCRefPtr<Text> text = Text::create(element.document(), toHTMLElement(element).altText());
+    altText->appendChild(text.get());
 }
 
 PassRefPtr<ComputedStyle> HTMLImageFallbackHelper::customStyleForAltText(Element& element, PassRefPtr<ComputedStyle> newStyle)

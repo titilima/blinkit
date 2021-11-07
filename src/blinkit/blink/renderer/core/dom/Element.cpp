@@ -290,30 +290,30 @@ bool Element::layoutObjectIsFocusable() const
     return true;
 }
 
-PassRefPtrWillBeRawPtr<Node> Element::cloneNode(bool deep)
+GCRefPtr<Node> Element::cloneNode(bool deep)
 {
     return deep ? cloneElementWithChildren() : cloneElementWithoutChildren();
 }
 
-PassRefPtrWillBeRawPtr<Element> Element::cloneElementWithChildren()
+GCRefPtr<Element> Element::cloneElementWithChildren()
 {
-    RefPtrWillBeRawPtr<Element> clone = cloneElementWithoutChildren();
+    GCRefPtr<Element> clone = cloneElementWithoutChildren();
     cloneChildNodes(clone.get());
-    return clone.release();
+    return clone;
 }
 
-PassRefPtrWillBeRawPtr<Element> Element::cloneElementWithoutChildren()
+GCRefPtr<Element> Element::cloneElementWithoutChildren()
 {
-    RefPtrWillBeRawPtr<Element> clone = cloneElementWithoutAttributesAndChildren();
+    GCRefPtr<Element> clone = cloneElementWithoutAttributesAndChildren();
     // This will catch HTML elements in the wrong namespace that are not correctly copied.
     // This is a sanity check as HTML overloads some of the DOM methods.
     ASSERT(isHTMLElement() == clone->isHTMLElement());
 
     clone->cloneDataFromElement(*this);
-    return clone.release();
+    return clone;
 }
 
-PassRefPtrWillBeRawPtr<Element> Element::cloneElementWithoutAttributesAndChildren()
+GCRefPtr<Element> Element::cloneElementWithoutAttributesAndChildren()
 {
     return document().createElement(tagQName(), false);
 }
@@ -322,7 +322,7 @@ PassRefPtrWillBeRawPtr<Attr> Element::detachAttribute(size_t index)
 {
     ASSERT(elementData());
     const Attribute& attribute = elementData()->attributes().at(index);
-    RefPtrWillBeRawPtr<Attr> attrNode = attrIfExists(attribute.name());
+    GCRefPtr<Attr> attrNode = attrIfExists(attribute.name());
     if (attrNode) {
         detachAttrNodeAtIndex(attrNode.get(), index);
     } else {
@@ -2181,7 +2181,7 @@ void Element::removeAttrNodeList()
 
 PassRefPtrWillBeRawPtr<Attr> Element::setAttributeNode(Attr* attrNode, ExceptionState& exceptionState)
 {
-    RefPtrWillBeRawPtr<Attr> oldAttrNode = attrIfExists(attrNode->qualifiedName());
+    GCRefPtr<Attr> oldAttrNode = attrIfExists(attrNode->qualifiedName());
     if (oldAttrNode.get() == attrNode)
         return attrNode; // This Attr is already attached to the element.
 
@@ -3336,7 +3336,7 @@ PassRefPtrWillBeRawPtr<Attr> Element::attrIfExists(const QualifiedName& name)
 
 PassRefPtrWillBeRawPtr<Attr> Element::ensureAttr(const QualifiedName& name)
 {
-    RefPtrWillBeRawPtr<Attr> attrNode = attrIfExists(name);
+    GCRefPtr<Attr> attrNode = attrIfExists(name);
     if (!attrNode) {
         attrNode = Attr::create(*this, name);
         treeScope().adoptIfNeeded(*attrNode);

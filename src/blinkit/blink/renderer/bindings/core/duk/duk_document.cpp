@@ -94,8 +94,8 @@ static duk_ret_t CreateComment(duk_context *ctx)
     duk_push_this(ctx);
     Document *document = DukScriptObject::To<Document>(ctx, -1);
 
-    Comment *ret = document->createComment(data);
-    DukNode::Push(ctx, ret);
+    GCRefPtr<Comment> ret = document->createComment(data);
+    DukNode::Push(ctx, ret.get());
     return 1;
 }
 
@@ -117,14 +117,14 @@ static duk_ret_t CreateElement(duk_context *ctx)
     Document *document = DukScriptObject::To<Document>(ctx, -1);
 
     DukExceptionState exceptionState(ctx);
-    Element *ret = document->createElement(name, exceptionState);
+    GCRefPtr<Element> ret = document->createElement(name, exceptionState);
     if (exceptionState.hadException())
     {
         exceptionState.ThrowIfNeeded();
         return 0;
     }
 
-    DukElement::Push(ctx, ret);
+    DukElement::Push(ctx, ret.get());
     return 1;
 }
 

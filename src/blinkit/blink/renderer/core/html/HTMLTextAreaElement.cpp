@@ -458,7 +458,8 @@ void HTMLTextAreaElement::setDefaultValue(const String& defaultValue)
     value.replace("\r\n", "\n");
     value.replace('\r', '\n');
 
-    insertBefore(document().createTextNode(value), firstChild(), IGNORE_EXCEPTION);
+    GCRefPtr<Text> text = document().createTextNode(value);
+    insertBefore(text.get(), firstChild(), IGNORE_EXCEPTION);
 
     if (!m_isDirty)
         setNonDirtyValue(value);

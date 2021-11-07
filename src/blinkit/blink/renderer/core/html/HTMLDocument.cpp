@@ -167,7 +167,7 @@ void HTMLDocument::setVlinkColor(const AtomicString& value)
     setBodyAttribute(vlinkAttr, value);
 }
 
-PassRefPtrWillBeRawPtr<Document> HTMLDocument::cloneDocumentWithoutChildren()
+GCRefPtr<Document> HTMLDocument::cloneDocumentWithoutChildren()
 {
     return create(DocumentInit(url()).withRegistrationContext(registrationContext()));
 }

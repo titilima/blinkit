@@ -84,7 +84,7 @@ class CORE_EXPORT LocalDOMWindow final : public DOMWindow
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(LocalDOMWindow);
     WILL_BE_USING_PRE_FINALIZER(LocalDOMWindow, dispose);
 public:
-    static PassRefPtrWillBeRawPtr<Document> createDocument(const String& mimeType, const DocumentInit&, bool forceXHTML);
+    static GCRefPtr<Document> createDocument(const String& mimeType, const DocumentInit&, bool forceXHTML);
     static GCUniquePtr<LocalDOMWindow> create(LocalFrame& frame)
     {
         return BlinKit::GCWrapUnique(new LocalDOMWindow(frame));

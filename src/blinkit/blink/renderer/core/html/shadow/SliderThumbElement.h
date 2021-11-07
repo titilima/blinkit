@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SliderThumbElement.h
+// Description: SliderThumbElement Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2010 Google Inc. All rights reserved.
@@ -61,7 +72,7 @@ public:
 private:
     SliderThumbElement(Document&);
     LayoutObject* createLayoutObject(const ComputedStyle&) override;
-    PassRefPtrWillBeRawPtr<Element> cloneElementWithoutAttributesAndChildren() override;
+    GCRefPtr<Element> cloneElementWithoutAttributesAndChildren() override;
     bool isDisabledFormControl() const override;
     bool matchesReadOnlyPseudoClass() const override;
     bool matchesReadWritePseudoClass() const override;
@@ -71,7 +82,7 @@ private:
     bool m_inDragMode;
 };
 
-inline PassRefPtrWillBeRawPtr<Element> SliderThumbElement::cloneElementWithoutAttributesAndChildren()
+inline GCRefPtr<Element> SliderThumbElement::cloneElementWithoutAttributesAndChildren()
 {
     return create(document());
 }

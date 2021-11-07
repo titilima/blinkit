@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTemplateElement.h
+// Description: HTMLTemplateElement Class
+//      Author: Ziming Li
+//     Created: 2021-11-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2012, Google Inc. All rights reserved.
  *
@@ -48,7 +59,7 @@ public:
     DocumentFragment* content() const;
 
 private:
-    PassRefPtrWillBeRawPtr<Node> cloneNode(bool deep) override;
+    GCRefPtr<Node> cloneNode(bool deep) override;
     void didMoveToNewDocument(Document& oldDocument) override;
 
     explicit HTMLTemplateElement(Document&);

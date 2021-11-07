@@ -258,7 +258,7 @@ Position InsertTextCommand::insertTab(const Position& pos)
     }
 
     // create new tab span
-    RefPtrWillBeRawPtr<HTMLSpanElement> spanElement = createTabSpanElement(document());
+    GCRefPtr<HTMLSpanElement> spanElement = createTabSpanElement(document());
 
     // place it
     if (!node->isTextNode()) {
@@ -266,7 +266,7 @@ Position InsertTextCommand::insertTab(const Position& pos)
     } else {
         RefPtrWillBeRawPtr<Text> textNode = toText(node);
         if (offset >= textNode->length()) {
-            insertNodeAfter(spanElement, textNode.release());
+            insertNodeAfter(spanElement.get(), textNode.release());
         } else {
             // split node to make room for the span
             // NOTE: splitTextNode uses textNode for the
@@ -274,7 +274,7 @@ Position InsertTextCommand::insertTab(const Position& pos)
             // insert the span before it.
             if (offset > 0)
                 splitTextNode(textNode, offset);
-            insertNodeBefore(spanElement, textNode.release());
+            insertNodeBefore(spanElement.get(), textNode.release());
         }
     }
 

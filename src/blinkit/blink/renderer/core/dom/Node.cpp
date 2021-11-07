@@ -35,7 +35,8 @@
 
 #include "core/dom/Node.h"
 
-#include "bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/bindings/core/duk/exception_state.h"
+#include "blinkit/blink/renderer/core/dom/document_type.h"
 #include "blinkit/blink/renderer/platform/ScriptForbiddenScope.h"
 #include "core/HTMLNames.h"
 #include "core/css/CSSSelector.h"
@@ -48,7 +49,6 @@
 #include "core/dom/DOMNodeIds.h"
 #include "core/dom/Document.h"
 #include "core/dom/DocumentFragment.h"
-#include "core/dom/DocumentType.h"
 #include "core/dom/Element.h"
 #include "core/dom/ElementRareData.h"
 #include "core/dom/ElementTraversal.h"
@@ -1368,7 +1368,8 @@ void Node::setTextContent(const String& text)
             container->removeChildren(DispatchSubtreeModifiedEvent);
         } else {
             container->removeChildren(OmitSubtreeModifiedEvent);
-            container->appendChild(document().createTextNode(text), ASSERT_NO_EXCEPTION);
+            GCRefPtr<Text> textNode = document().createTextNode(text);
+            container->appendChild(textNode.get(), ASSERT_NO_EXCEPTION);
         }
         return;
     }

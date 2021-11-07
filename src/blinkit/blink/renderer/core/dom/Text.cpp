@@ -56,9 +56,9 @@ using namespace BlinKit;
 
 namespace blink {
 
-PassRefPtrWillBeRawPtr<Text> Text::create(Document& document, const String& data)
+GCRefPtr<Text> Text::create(Document& document, const String& data)
 {
-    return adoptRefWillBeNoop(new Text(document, data, CreateText));
+    return GCWrapShared(new Text(document, data, CreateText));
 }
 
 GCRefPtr<Text> Text::createEditingText(Document& document, const String& data)
@@ -116,7 +116,7 @@ PassRefPtrWillBeRawPtr<Node> Text::mergeNextSiblingNodesIfPossible()
     return NodeTraversal::nextPostOrder(*this);
 }
 
-PassRefPtrWillBeRawPtr<Text> Text::splitText(unsigned offset, ExceptionState& exceptionState)
+GCRefPtr<Text> Text::splitText(unsigned offset, ExceptionState& exceptionState)
 {
     // IndexSizeError: Raised if the specified offset is negative or greater than
     // the number of 16-bit units in data.
@@ -127,7 +127,7 @@ PassRefPtrWillBeRawPtr<Text> Text::splitText(unsigned offset, ExceptionState& ex
 
     EventQueueScope scope;
     String oldStr = data();
-    RefPtrWillBeRawPtr<Text> newText = cloneWithData(oldStr.substring(offset));
+    GCRefPtr<Text> newText = cloneWithData(oldStr.substring(offset));
     setDataWithoutUpdate(oldStr.substring(0, offset));
 
     didModifyData(oldStr, CharacterData::UpdateFromNonParser);
@@ -143,7 +143,7 @@ PassRefPtrWillBeRawPtr<Text> Text::splitText(unsigned offset, ExceptionState& ex
     if (parentNode())
         document().didSplitTextNode(*this);
 
-    return newText.release();
+    return newText;
 }
 
 static const Text* earliestLogicallyAdjacentTextNode(const Text* t)
@@ -246,7 +246,7 @@ Node::NodeType Text::nodeType() const
     return TEXT_NODE;
 }
 
-PassRefPtrWillBeRawPtr<Node> Text::cloneNode(bool /*deep*/)
+GCRefPtr<Node> Text::cloneNode(bool /*deep*/)
 {
     return cloneWithData(data());
 }
@@ -433,7 +433,7 @@ void Text::updateTextLayoutObject(unsigned offsetOfReplacedData, unsigned length
     textLayoutObject->setTextWithOffset(dataImpl(), offsetOfReplacedData, lengthOfReplacedData);
 }
 
-PassRefPtrWillBeRawPtr<Text> Text::cloneWithData(const String& data)
+GCRefPtr<Text> Text::cloneWithData(const String& data)
 {
     return create(document(), data);
 }

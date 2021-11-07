@@ -62,7 +62,9 @@ static duk_ret_t CloneNode(duk_context *ctx)
 {
     duk_push_this(ctx);
     Node *node = DukScriptObject::To<Node>(ctx, -1);
-    DukNode::Push(ctx, node->cloneNode(duk_to_boolean(ctx, 0)));
+
+    GCRefPtr ret = node->cloneNode(duk_to_boolean(ctx, 0));
+    DukNode::Push(ctx, ret.get());
     return 1;
 }
 

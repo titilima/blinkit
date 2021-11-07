@@ -40,8 +40,8 @@
 
 #include "core/frame/LocalFrame.h"
 
-#include "bindings/core/v8/ScriptController.h"
-#include "core/dom/DocumentType.h"
+#include "blinkit/blink/renderer/bindings/core/duk/script_controller.h"
+#include "blinkit/blink/renderer/core/dom/document_type.h"
 #include "core/editing/EditingUtilities.h"
 #include "core/editing/Editor.h"
 #include "core/editing/FrameSelection.h"

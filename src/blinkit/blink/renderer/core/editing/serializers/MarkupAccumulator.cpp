@@ -37,6 +37,8 @@
 
 #include "core/editing/serializers/MarkupAccumulator.h"
 
+#include "blinkit/blink/renderer/core/dom/cdata_section.h"
+#include "blinkit/blink/renderer/core/dom/document_type.h"
 #include "core/HTMLNames.h"
 #if 0 // BKTODO:
 #include "core/XLinkNames.h"
@@ -44,11 +46,9 @@
 #include "core/XMLNames.h"
 #endif
 #include "core/dom/Attr.h"
-#include "core/dom/CDATASection.h"
 #include "core/dom/Comment.h"
 #include "core/dom/Document.h"
 #include "core/dom/DocumentFragment.h"
-#include "core/dom/DocumentType.h"
 #include "core/dom/ProcessingInstruction.h"
 #include "core/editing/Editor.h"
 #include "core/html/HTMLElement.h"

@@ -43,6 +43,8 @@
 #include "core/events/Event.h"
 #include "core/frame/UseCounter.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
@@ -190,15 +192,9 @@ void HTMLScriptElement::dispatchLoadEvent()
     dispatchEvent(Event::create(EventTypeNames::load));
 }
 
-PassRefPtrWillBeRawPtr<Element> HTMLScriptElement::cloneElementWithoutAttributesAndChildren()
+GCRefPtr<Element> HTMLScriptElement::cloneElementWithoutAttributesAndChildren()
 {
-    return adoptRefWillBeNoop(new HTMLScriptElement(document(), false, m_loader->alreadyStarted()));
-}
-
-DEFINE_TRACE(HTMLScriptElement)
-{
-    visitor->trace(m_loader);
-    HTMLElement::trace(visitor);
+    return GCWrapShared(new HTMLScriptElement(document(), false, m_loader->alreadyStarted()));
 }
 
 }

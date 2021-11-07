@@ -264,7 +264,7 @@ VisiblePosition visiblePositionForIndex(int index, ContainerNode* scope);
 // Functions returning HTMLElement
 
 PassRefPtrWillBeRawPtr<HTMLElement> createDefaultParagraphElement(Document&);
-PassRefPtrWillBeRawPtr<HTMLElement> createHTMLElement(Document&, const QualifiedName&);
+GCRefPtr<HTMLElement> createHTMLElement(Document&, const QualifiedName&);
 
 HTMLElement* enclosingList(Node*);
 HTMLElement* outermostEnclosingList(Node*, HTMLElement* rootList = nullptr);
@@ -276,8 +276,8 @@ Node* enclosingListChild(Node*);
 
 // Functions returning Element
 
-PassRefPtrWillBeRawPtr<HTMLSpanElement> createTabSpanElement(Document&);
-PassRefPtrWillBeRawPtr<HTMLSpanElement> createTabSpanElement(Document&, const String& tabText);
+GCRefPtr<HTMLSpanElement> createTabSpanElement(Document&);
+GCRefPtr<HTMLSpanElement> createTabSpanElement(Document&, const String& tabText);
 
 Element* editableRootForPosition(const Position&, EditableType = ContentIsEditable);
 Element* editableRootForPosition(const PositionInComposedTree&, EditableType = ContentIsEditable);

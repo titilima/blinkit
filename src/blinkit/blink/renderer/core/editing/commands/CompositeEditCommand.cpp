@@ -1032,14 +1032,14 @@ void CompositeEditCommand::cloneParagraphUnderNewElement(const Position& start, 
     ASSERT(blockElement);
 
     // First we clone the outerNode
-    RefPtrWillBeRawPtr<Node> lastNode = nullptr;
+    GCRefPtr<Node> lastNode;
     RefPtrWillBeRawPtr<Node> outerNode = passedOuterNode;
 
     if (outerNode->isRootEditableElement()) {
         lastNode = blockElement;
     } else {
         lastNode = outerNode->cloneNode(isRenderedHTMLTableElement(outerNode.get()));
-        appendNode(lastNode, blockElement);
+        appendNode(lastNode.get(), blockElement);
     }
 
     if (start.anchorNode() != outerNode && lastNode->isElementNode() && start.anchorNode()->isDescendantOf(outerNode.get())) {
@@ -1053,9 +1053,9 @@ void CompositeEditCommand::cloneParagraphUnderNewElement(const Position& start, 
 
         for (size_t i = ancestors.size(); i != 0; --i) {
             Node* item = ancestors[i - 1].get();
-            RefPtrWillBeRawPtr<Node> child = item->cloneNode(isRenderedHTMLTableElement(item));
-            appendNode(child, toElement(lastNode));
-            lastNode = child.release();
+            GCRefPtr<Node> child = item->cloneNode(isRenderedHTMLTableElement(item));
+            appendNode(child.get(), toElement(lastNode.get()));
+            lastNode = child;
         }
     }
 
@@ -1091,8 +1091,8 @@ void CompositeEditCommand::cloneParagraphUnderNewElement(const Position& start, 
             if (!lastNode || !lastNode->parentNode())
                 return;
 
-            RefPtrWillBeRawPtr<Node> clonedNode = node->cloneNode(true);
-            insertNodeAfter(clonedNode, lastNode);
+            GCRefPtr<Node> clonedNode = node->cloneNode(true);
+            insertNodeAfter(clonedNode.get(), lastNode.get());
             lastNode = clonedNode.release();
             if (node == end.anchorNode() || end.anchorNode()->isDescendantOf(node.get()))
                 break;

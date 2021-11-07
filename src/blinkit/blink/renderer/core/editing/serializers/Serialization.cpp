@@ -39,13 +39,13 @@
 
 #include "core/editing/serializers/Serialization.h"
 
+#include "blinkit/blink/renderer/core/dom/cdata_section.h"
 #include "bindings/core/v8/ExceptionState.h"
 #include "core/CSSValueKeywords.h"
 #include "core/HTMLNames.h"
 #include "core/css/CSSPrimitiveValue.h"
 #include "core/css/CSSValue.h"
 #include "core/css/StylePropertySet.h"
-#include "core/dom/CDATASection.h"
 #include "core/dom/ChildListMutationScope.h"
 #include "core/dom/Comment.h"
 // BKTODO: #include "core/dom/ContextFeatures.h"
@@ -422,19 +422,25 @@ static void fillContainerFromString(ContainerNode* paragraph, const String& stri
         // append the non-tab textual part
         if (!s.isEmpty()) {
             if (!tabText.isEmpty()) {
-                paragraph->appendChild(createTabSpanElement(document, tabText.toString()));
+                GCRefPtr<HTMLSpanElement> tabSpan = createTabSpanElement(document, tabText.toString());
+                paragraph->appendChild(tabSpan.get());
                 tabText.clear();
             }
-            RefPtrWillBeRawPtr<Text> textNode = document.createTextNode(stringWithRebalancedWhitespace(s, first, i + 1 == numEntries));
-            paragraph->appendChild(textNode.release());
+            GCRefPtr<Text> textNode = document.createTextNode(stringWithRebalancedWhitespace(s, first, i + 1 == numEntries));
+            paragraph->appendChild(textNode.get());
         }
 
         // there is a tab after every entry, except the last entry
         // (if the last character is a tab, the list gets an extra empty entry)
         if (i + 1 != numEntries)
+        {
             tabText.append('\t');
+        }
         else if (!tabText.isEmpty())
-            paragraph->appendChild(createTabSpanElement(document, tabText.toString()));
+        {
+            GCRefPtr<HTMLSpanElement> tabSpan = createTabSpanElement(document, tabText.toString());
+            paragraph->appendChild(tabSpan.get());
+        }
 
         first = false;
     }
@@ -486,12 +492,15 @@ GCRefPtr<DocumentFragment> createFragmentFromText(const EphemeralRange& context,
     string.replace("\r\n", "\n");
     string.replace('\r', '\n');
 
-    if (shouldPreserveNewline(context)) {
-        fragment->appendChild(document.createTextNode(string));
-        if (string.endsWith('\n')) {
-            RefPtrWillBeRawPtr<HTMLBRElement> element = HTMLBRElement::create(document);
+    if (shouldPreserveNewline(context))
+    {
+        GCRefPtr<Text> text = document.createTextNode(string);
+        fragment->appendChild(text.get());
+        if (string.endsWith('\n'))
+        {
+            GCRefPtr<HTMLBRElement> element = HTMLBRElement::create(document);
             element->setAttribute(classAttr, AppleInterchangeNewline);
-            fragment->appendChild(element.release());
+            fragment->appendChild(element.get());
         }
         return fragment;
     }
@@ -516,7 +525,7 @@ GCRefPtr<DocumentFragment> createFragmentFromText(const EphemeralRange& context,
     for (size_t i = 0; i < numLines; ++i) {
         const String& s = list[i];
 
-        RefPtrWillBeRawPtr<Element> element = nullptr;
+        GCRefPtr<Element> element;
         if (s.isEmpty() && i + 1 == numLines) {
             // For last line, use the "magic BR" rather than a P.
             element = HTMLBRElement::create(document);
@@ -531,7 +540,7 @@ GCRefPtr<DocumentFragment> createFragmentFromText(const EphemeralRange& context,
                 element = createDefaultParagraphElement(document);
             fillContainerFromString(element.get(), s);
         }
-        fragment->appendChild(element.release());
+        fragment->appendChild(element.get());
     }
     return fragment;
 }
@@ -573,16 +582,22 @@ GCRefPtr<DocumentFragment> createFragmentForTransformToFragment(const String& so
 {
     GCRefPtr<DocumentFragment> fragment = outputDoc.createDocumentFragment();
 
-    if (sourceMIMEType == "text/html") {
+    if (sourceMIMEType == "text/html")
+    {
         // As far as I can tell, there isn't a spec for how transformToFragment is supposed to work.
         // Based on the documentation I can find, it looks like we want to start parsing the fragment in the InBody insertion mode.
         // Unfortunately, that's an implementation detail of the parser.
         // We achieve that effect here by passing in a fake body element as context for the fragment.
-        RefPtrWillBeRawPtr<HTMLBodyElement> fakeBody = HTMLBodyElement::create(outputDoc);
+        GCRefPtr<HTMLBodyElement> fakeBody = HTMLBodyElement::create(outputDoc);
         fragment->parseHTML(sourceString, fakeBody.get());
-    } else if (sourceMIMEType == "text/plain") {
-        fragment->parserAppendChild(Text::create(outputDoc, sourceString));
-    } else {
+    }
+    else if (sourceMIMEType == "text/plain")
+    {
+        GCRefPtr<Text> text = Text::create(outputDoc, sourceString);
+        fragment->parserAppendChild(text.get());
+    }
+    else
+    {
         ASSERT(false); // BKTODO:
 #if 0
         bool successfulParse = fragment->parseXML(sourceString, 0);
@@ -705,16 +720,16 @@ void replaceChildrenWithText(ContainerNode* container, const String& text, Excep
     }
 
     // NOTE: This method currently always creates a text node, even if that text node will be empty.
-    RefPtrWillBeRawPtr<Text> textNode = Text::create(containerNode->document(), text);
+    GCRefPtr<Text> textNode = Text::create(containerNode->document(), text);
 
     // FIXME: No need to replace the child it is a text node and its contents are already == text.
     if (containerNode->hasOneChild()) {
-        containerNode->replaceChild(textNode.release(), containerNode->firstChild(), exceptionState);
+        containerNode->replaceChild(textNode.get(), containerNode->firstChild(), exceptionState);
         return;
     }
 
     containerNode->removeChildren();
-    containerNode->appendChild(textNode.release(), exceptionState);
+    containerNode->appendChild(textNode.get(), exceptionState);
 }
 
 void mergeWithNextTextNode(Text* textNode, ExceptionState& exceptionState)

@@ -75,12 +75,12 @@ bool DocumentFragment::childTypeAllowed(NodeType type) const
     }
 }
 
-PassRefPtrWillBeRawPtr<Node> DocumentFragment::cloneNode(bool deep)
+GCRefPtr<Node> DocumentFragment::cloneNode(bool deep)
 {
     GCRefPtr<DocumentFragment> clone = create(document());
     if (deep)
         cloneChildNodes(clone.get());
-    return clone.release();
+    return clone;
 }
 
 void DocumentFragment::parseHTML(const String& source, Element* contextElement, ParserContentPolicy parserContentPolicy)
