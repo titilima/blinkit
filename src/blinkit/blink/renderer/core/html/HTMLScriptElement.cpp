@@ -31,17 +31,16 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/html/HTMLScriptElement.h"
+#include "./HTMLScriptElement.h"
 
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/HTMLNames.h"
-#include "core/dom/Attribute.h"
-#include "core/dom/Document.h"
-#include "core/dom/ScriptLoader.h"
-#include "core/dom/ScriptRunner.h"
-#include "core/dom/Text.h"
-#include "core/events/Event.h"
-#include "core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionStatePlaceholder.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/Attribute.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/core/dom/ScriptLoader.h"
+#include "blinkit/blink/renderer/core/dom/ScriptRunner.h"
+#include "blinkit/blink/renderer/core/dom/Text.h"
+#include "blinkit/blink/renderer/core/events/Event.h"
 
 using namespace BlinKit;
 
@@ -55,9 +54,9 @@ inline HTMLScriptElement::HTMLScriptElement(Document& document, bool wasInserted
 {
 }
 
-PassRefPtrWillBeRawPtr<HTMLScriptElement> HTMLScriptElement::create(Document& document, bool wasInsertedByParser, bool alreadyStarted)
+GCRefPtr<HTMLScriptElement> HTMLScriptElement::create(Document& document, bool wasInsertedByParser, bool alreadyStarted)
 {
-    return adoptRefWillBeNoop(new HTMLScriptElement(document, wasInsertedByParser, alreadyStarted));
+    return GCWrapShared(new HTMLScriptElement(document, wasInsertedByParser, alreadyStarted));
 }
 
 bool HTMLScriptElement::isURLAttribute(const Attribute& attribute) const
@@ -90,25 +89,15 @@ void HTMLScriptElement::didMoveToNewDocument(Document& oldDocument)
 
 void HTMLScriptElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    if (name == srcAttr) {
+    if (name == srcAttr)
         m_loader->handleSourceAttribute(value);
-        logUpdateAttributeIfIsolatedWorldAndInDocument("script", srcAttr, oldValue, value);
-    } else if (name == asyncAttr) {
-        m_loader->handleAsyncAttribute();
-    } else {
+    else
         HTMLElement::parseAttribute(name, oldValue, value);
-    }
-#endif
 }
 
 Node::InsertionNotificationRequest HTMLScriptElement::insertedInto(ContainerNode* insertionPoint)
 {
-    if (insertionPoint->inDocument() && hasSourceAttribute() && !loader()->isScriptTypeSupported(ScriptLoader::DisallowLegacyTypeInTypeAttribute))
-        UseCounter::count(document(), UseCounter::ScriptElementWithInvalidTypeHasSrc);
     HTMLElement::insertedInto(insertionPoint);
-    logAddElementIfIsolatedWorldAndInDocument("script", srcAttr);
     return InsertionShouldCallDidNotifySubtreeInsertions;
 }
 
@@ -120,18 +109,6 @@ void HTMLScriptElement::didNotifySubtreeInsertionsToDocument()
 void HTMLScriptElement::setText(const String &value)
 {
     setTextContent(value);
-}
-
-void HTMLScriptElement::setAsync(bool async)
-{
-    ASSERT(false); // BKTODO: setBooleanAttribute(asyncAttr, async);
-    m_loader->handleAsyncAttribute();
-}
-
-bool HTMLScriptElement::async() const
-{
-    ASSERT(false); // BKTODO: return fastHasAttribute(asyncAttr) || (m_loader->forceAsync());
-    return false;
 }
 
 KURL HTMLScriptElement::src() const
@@ -162,23 +139,23 @@ String HTMLScriptElement::languageAttributeValue() const
 #ifdef BLINKIT_CRAWLER_ENABLED
 String HTMLScriptElement::forAttributeValue() const
 {
-    return emptyString();
+    return String();
 }
 
 String HTMLScriptElement::eventAttributeValue() const
 {
-    return emptyString();
+    return String();
 }
 #endif
 
 bool HTMLScriptElement::asyncAttributeValue() const
 {
-    return false; // BKTODO: return fastHasAttribute(asyncAttr);
+    return false;
 }
 
 bool HTMLScriptElement::deferAttributeValue() const
 {
-    return false; // BKTODO: return fastHasAttribute(deferAttr);
+    return false;
 }
 
 bool HTMLScriptElement::hasSourceAttribute() const

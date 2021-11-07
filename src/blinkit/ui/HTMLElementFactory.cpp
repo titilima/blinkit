@@ -68,8 +68,6 @@
 #include "core/dom/custom/CustomElement.h"
 #include "core/dom/custom/CustomElementRegistrationContext.h"
 #include "core/dom/Document.h"
-#include "core/frame/Settings.h"
-#include "platform/RuntimeEnabledFeatures.h"
 
 namespace blink {
 

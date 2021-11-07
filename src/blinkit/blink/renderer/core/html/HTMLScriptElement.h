@@ -35,28 +35,25 @@
 #ifndef HTMLScriptElement_h
 #define HTMLScriptElement_h
 
-#include "core/CoreExport.h"
-#include "core/dom/ScriptLoader.h"
-#include "core/dom/ScriptLoaderClient.h"
-#include "core/html/HTMLElement.h"
+#include "blinkit/blink/renderer/core/dom/ScriptLoader.h"
+#include "blinkit/blink/renderer/core/dom/ScriptLoaderClient.h"
+#include "blinkit/blink/renderer/core/html/HTMLElement.h"
 
 namespace blink {
 
-class CORE_EXPORT HTMLScriptElement final : public HTMLElement, public ScriptLoaderClient {
-    DEFINE_WRAPPERTYPEINFO();
+class HTMLScriptElement final : public HTMLElement, public ScriptLoaderClient
+{
 public:
-    static PassRefPtrWillBeRawPtr<HTMLScriptElement> create(Document&, bool wasInsertedByParser, bool alreadyStarted = false);
+    static GCRefPtr<HTMLScriptElement> create(Document&, bool wasInsertedByParser, bool alreadyStarted = false);
 
     String text() { return textFromChildren(); }
     void setText(const String&);
 
     KURL src() const;
 
-    void setAsync(bool);
-    bool async() const;
+    constexpr bool async(void) const { return false; }
 
     ScriptLoader* loader() const { return m_loader.get(); }
-
 private:
     HTMLScriptElement(Document&, bool wasInsertedByParser, bool alreadyStarted);
 

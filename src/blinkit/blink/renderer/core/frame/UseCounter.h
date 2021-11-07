@@ -141,7 +141,6 @@ public:
         ReadingCheckedInClickHandler,
         Reflection,
         RequiredAttribute,
-        ScriptElementWithInvalidTypeHasSrc,
         SelectionCollapseNull,
         SelectionSetBaseAndExtentNull,
         SelectionToStringWithShadowTree,
