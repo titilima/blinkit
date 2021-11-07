@@ -1446,7 +1446,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\MutationObserver.cpp">
       <Filter>blink\renderer\core\dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentType.cpp">
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\document_type.cpp">
       <Filter>blink\renderer\core\dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementRareData.cpp">
@@ -1839,7 +1839,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\StyleSheetList.cpp">
       <Filter>blink\renderer\core\css</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\CDATASection.cpp">
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\cdata_section.cpp">
       <Filter>blink\renderer\core\dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\Comment.cpp">
@@ -5369,7 +5369,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\AttributeCollection.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\CDATASection.h">
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\cdata_section.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\CharacterData.h">
@@ -5423,7 +5423,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentStyleSheetCollector.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentType.h">
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\document_type.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentVisibilityObserver.h">
@@ -7975,6 +7975,27 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\opentype\OpenTypeVerticalData.h">
       <Filter>blink\renderer\platform\fonts\opentype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\DetailsMarkerControl.h">
+      <Filter>blink\renderer\core\html\shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\MeterShadowElement.h">
+      <Filter>blink\renderer\core\html\shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\ProgressShadowElement.h">
+      <Filter>blink\renderer\core\html\shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\ShadowElementNames.h">
+      <Filter>blink\renderer\core\html\shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\SliderThumbElement.h">
+      <Filter>blink\renderer\core\html\shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\SpinButtonElement.h">
+      <Filter>blink\renderer\core\html\shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\TextControlInnerElements.h">
+      <Filter>blink\renderer\core\html\shadow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -437,7 +437,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\StyleSheetList.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ActiveDOMObject.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\Attr.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\CDATASection.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\cdata_section.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\CharacterData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ChildListMutationScope.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ChildNodeList.cpp" />
@@ -473,7 +473,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentParser.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentStyleSheetCollection.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentStyleSheetCollector.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentType.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\document_type.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentVisibilityObserver.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMArrayBuffer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMError.cpp" />
@@ -1824,7 +1824,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\Attr.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\Attribute.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\AttributeCollection.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\CDATASection.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\cdata_section.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\CharacterData.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ChildFrameDisconnector.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ChildListMutationScope.h" />
@@ -1853,7 +1853,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentParserClient.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentStyleSheetCollection.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentStyleSheetCollector.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentType.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\document_type.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentVisibilityObserver.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMArrayBuffer.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMArrayBufferBase.h" />
@@ -2245,6 +2245,13 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\TextResourceDecoder.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\RadioNodeList.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\RelList.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\DetailsMarkerControl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\MeterShadowElement.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\ProgressShadowElement.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\ShadowElementNames.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\SliderThumbElement.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\SpinButtonElement.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\TextControlInnerElements.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\ValidityState.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\WindowNameCollection.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\input\InputDeviceCapabilitiesInit.h" />
