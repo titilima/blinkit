@@ -7997,6 +7997,60 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\shadow\TextControlInnerElements.h">
       <Filter>blink\renderer\core\html\shadow</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\ConsoleTypes.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\DeprecatedScheduleStyleRecalcDuringLayout.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\DOMTimer.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\DOMTimerCoordinator.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\DOMWindow.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\DOMWindowBase64.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\DOMWindowProperty.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\FrameConsole.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\FrameViewAutoSizeInfo.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\ImageBitmap.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\LayoutSubtreeRootList.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\LocalFrameLifecycleNotifier.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\LocalFrameLifecycleObserver.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\Location.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\Navigator.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\PageScaleConstraints.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\RootFrameViewport.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\SuspendableTimer.h">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BlinKit.def">
