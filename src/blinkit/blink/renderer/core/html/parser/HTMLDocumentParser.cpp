@@ -67,6 +67,8 @@
 #include "wtf/RefCounted.h"
 #include "wtf/TemporaryChange.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 using namespace HTMLNames;
@@ -276,7 +278,7 @@ void HTMLDocumentParser::prepareToStopParsing()
 
     // pumpTokenizer can cause this parser to be detached from the Document,
     // but we need to ensure it isn't deleted yet.
-    RefPtrWillBeRawPtr<HTMLDocumentParser> protect(this);
+    GCGuard _(*this);
 
     // NOTE: This pump should only ever emit buffered character tokens.
     if (m_tokenizer) {
@@ -712,8 +714,7 @@ void HTMLDocumentParser::pumpTokenizer()
     if (isWaitingForScripts()) {
         ASSERT(m_tokenizer->state() == HTMLTokenizer::DataState);
 
-        ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
         ASSERT(m_preloader);
         // TODO(kouhei): m_preloader should be always available for synchronous parsing case,
         // adding paranoia if for speculative crash fix for crbug.com/465478
