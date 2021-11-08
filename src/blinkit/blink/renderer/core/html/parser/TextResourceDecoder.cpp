@@ -105,8 +105,7 @@ TextResourceDecoder::ContentType TextResourceDecoder::determineContentType(const
         return CSSContent;
     if (equalIgnoringCase(mimeType, "text/html"))
         return HTMLContent;
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (DOMImplementation::isXMLMIMEType(mimeType))
         return XMLContent;
 #endif
