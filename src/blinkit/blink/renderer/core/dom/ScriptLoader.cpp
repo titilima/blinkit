@@ -298,38 +298,19 @@ bool ScriptLoader::fetchScript(const String& sourceUrl, FetchRequest::DeferOptio
 {
     ASSERT(m_element);
 
-    RefPtrWillBeRawPtr<Document> elementDocument(m_element->document());
-    ASSERT(false); // BKTODO:
-#if 0
-    if (!m_element->inDocument() || m_element->document() != elementDocument)
+    GCRefPtr<Document> elementDocument(&(m_element->document()));
+    if (!m_element->inDocument() || m_element->document() != elementDocument.get())
         return false;
 
     ASSERT(!m_resource);
-    if (!stripLeadingAndTrailingHTMLSpaces(sourceUrl).isEmpty()) {
+    if (!stripLeadingAndTrailingHTMLSpaces(sourceUrl).isEmpty())
+    {
         FetchRequest request(ResourceRequest(elementDocument->completeURL(sourceUrl)), m_element->localName());
-
-        CrossOriginAttributeValue crossOrigin = crossOriginAttributeValue(m_element->fastGetAttribute(HTMLNames::crossoriginAttr));
-        if (crossOrigin != CrossOriginAttributeNotSet)
-            request.setCrossOriginAccessControl(elementDocument->securityOrigin(), crossOrigin);
         request.setCharset(scriptCharset());
 
-        bool scriptPassesCSP = elementDocument->contentSecurityPolicy()->allowScriptWithNonce(m_element->fastGetAttribute(HTMLNames::nonceAttr));
-        if (scriptPassesCSP)
-            request.setContentSecurityCheck(DoNotCheckContentSecurityPolicy);
-        request.setDefer(defer);
-
-        String integrityAttr = m_element->fastGetAttribute(HTMLNames::integrityAttr);
-        if (!integrityAttr.isEmpty()) {
-            IntegrityMetadataSet metadataSet;
-            SubresourceIntegrity::parseIntegrityAttribute(integrityAttr, metadataSet, elementDocument.get());
-            request.setIntegrityMetadata(metadataSet);
-        }
-
         m_resource = ScriptResource::fetch(request, elementDocument->fetcher());
-
         m_isExternalScript = true;
     }
-#endif
 
     if (m_resource)
         return true;
@@ -367,68 +348,21 @@ void ScriptLoader::logScriptMimetype(ScriptResource* resource, LocalFrame* frame
 #endif
 }
 
-bool ScriptLoader::executeScript(const ScriptSourceCode& sourceCode, double* compilationFinishTime)
+bool ScriptLoader::executeScript(const ScriptSourceCode &sourceCode)
 {
     ASSERT(m_alreadyStarted);
 
     if (sourceCode.isEmpty())
         return true;
 
-    RefPtrWillBeRawPtr<Document> elementDocument(m_element->document());
-    ASSERT(false); // BKTODO:
-#if 0
-    RefPtrWillBeRawPtr<Document> contextDocument = elementDocument->contextDocument().get();
+    GCRefPtr<Document> elementDocument(&(m_element->document()));
+    GCRefPtr<Document> contextDocument(elementDocument->contextDocument());
     if (!contextDocument)
         return true;
 
-    LocalFrame* frame = contextDocument->frame();
-
-    const ContentSecurityPolicy* csp = elementDocument->contentSecurityPolicy();
-    bool shouldBypassMainWorldCSP = (frame && frame->script().shouldBypassMainWorldCSP())
-        || csp->allowScriptWithNonce(m_element->fastGetAttribute(HTMLNames::nonceAttr))
-        || csp->allowScriptWithHash(sourceCode.source());
-
-    if (!m_isExternalScript && (!shouldBypassMainWorldCSP && !csp->allowInlineScript(elementDocument->url(), m_startLineNumber, sourceCode.source()))) {
-        return false;
-    }
-
-    if (m_isExternalScript) {
-        ScriptResource* resource = m_resource ? m_resource.get() : sourceCode.resource();
-        if (resource) {
-            if (!resource->mimeTypeAllowedByNosniff()) {
-                contextDocument->addConsoleMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, "Refused to execute script from '" + resource->url().elidedString() + "' because its MIME type ('" + resource->mimeType() + "') is not executable, and strict MIME type checking is enabled."));
-                return false;
-            }
-
-            String mimetype = resource->mimeType();
-            if (mimetype.lower().startsWith("image/")) {
-                contextDocument->addConsoleMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, "Refused to execute script from '" + resource->url().elidedString() + "' because its MIME type ('" + resource->mimeType() + "') is not executable."));
-                UseCounter::count(frame, UseCounter::BlockedSniffingImageToScript);
-                return false;
-            }
-
-            logScriptMimetype(resource, frame, mimetype);
-        }
-    }
-
-    // FIXME: Can this be moved earlier in the function?
-    // Why are we ever attempting to execute scripts without a frame?
-    if (!frame)
+    LocalFrame *frame = contextDocument->frame();
+    if (nullptr == frame)
         return true;
-
-    AccessControlStatus accessControlStatus = NotSharableCrossOrigin;
-    if (!m_isExternalScript) {
-        accessControlStatus = SharableCrossOrigin;
-    } else if (sourceCode.resource()) {
-        if (sourceCode.resource()->response().wasFetchedViaServiceWorker()) {
-            if (sourceCode.resource()->response().serviceWorkerResponseType() == WebServiceWorkerResponseTypeOpaque)
-                accessControlStatus = OpaqueResource;
-            else
-                accessControlStatus = SharableCrossOrigin;
-        } else if (sourceCode.resource()->passesAccessControlCheck(m_element->document().securityOrigin())) {
-            accessControlStatus = SharableCrossOrigin;
-        }
-    }
 
     const bool isImportedScript = contextDocument != elementDocument;
     // http://www.whatwg.org/specs/web-apps/current-work/#execute-the-script-block step 2.3
@@ -441,13 +375,13 @@ bool ScriptLoader::executeScript(const ScriptSourceCode& sourceCode, double* com
     // Create a script from the script element node, using the script
     // block's source and the script block's type.
     // Note: This is where the script is compiled and actually executed.
-    frame->script().executeScriptInMainWorld(sourceCode, accessControlStatus, compilationFinishTime);
+    frame->script().executeScriptInMainWorld(sourceCode);
 
-    if (isHTMLScriptLoader(m_element)) {
+    if (isHTMLScriptLoader(m_element))
+    {
         ASSERT(contextDocument->currentScript() == m_element);
         contextDocument->popCurrentScript();
     }
-#endif
 
     return true;
 }

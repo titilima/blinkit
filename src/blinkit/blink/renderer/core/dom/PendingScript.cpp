@@ -123,7 +123,7 @@ void PendingScript::setElement(Element* element)
     m_element = element;
 }
 
-PassRefPtrWillBeRawPtr<Element> PendingScript::releaseElementAndClear()
+GCRefPtr<Element> PendingScript::releaseElementAndClear()
 {
     setScriptResource(0);
     m_watchingForLoad = false;
@@ -131,8 +131,8 @@ PassRefPtrWillBeRawPtr<Element> PendingScript::releaseElementAndClear()
     m_integrityFailure = false;
     if (m_streamer)
         m_streamer->cancel();
-    m_streamer.release();
-    return m_element.release();
+    m_streamer.clear();
+    return GCWrapShared(m_element.release());
 }
 
 void PendingScript::setScriptResource(ScriptResource* resource)
@@ -166,9 +166,8 @@ void PendingScript::notifyFinished(Resource* resource)
     // See https://crbug.com/500701 for more information.
     if (m_element) {
         ASSERT(resource->type() == Resource::Script);
+#if 0 // BKTODO:
         ScriptResource* scriptResource = toScriptResource(resource);
-        ASSERT(false); // BKTODO:
-#if 0
         String integrityAttr = m_element->fastGetAttribute(HTMLNames::integrityAttr);
 
         // It is possible to get back a script resource with integrity metadata
@@ -220,7 +219,7 @@ ScriptSourceCode PendingScript::getSource(const KURL& documentURL, bool& errorOc
     return ScriptSourceCode(m_element->textContent(), documentURL, startingPosition());
 }
 
-void PendingScript::setStreamer(PassRefPtrWillBeRawPtr<ScriptStreamer> streamer)
+void PendingScript::setStreamer(const GCRefPtr<ScriptStreamer> &streamer)
 {
     ASSERT(!m_streamer);
     ASSERT(!m_watchingForLoad);

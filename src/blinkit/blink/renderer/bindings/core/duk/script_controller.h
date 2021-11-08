@@ -48,10 +48,6 @@
 #include "blinkit/blink/renderer/platform/heap/Handle.h"
 #include "blinkit/blink/renderer/wtf/Noncopyable.h"
 
-namespace zed {
-class url;
-}
-
 namespace blink {
 
 class ExecutionContext;
@@ -78,7 +74,7 @@ public:
 
     const blink::LocalFrame& GetFrame(void) const { return m_frame; }
 
-    void ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const zed::url &baseURL);
+    void executeScriptInMainWorld(const ScriptSourceCode &sourceCode);
 
     virtual bool canExecuteScripts(ReasonForCallingCanExecuteScripts) { return true; }
     void clearWindowProxy(void);

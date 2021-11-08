@@ -157,7 +157,6 @@ void HTMLScriptRunner::executePendingScriptAndDispatchEvent(PendingScript& pendi
 
     // Clear the pending script before possible rentrancy from executeScript()
     GCRefPtr<Element> element = pendingScript.releaseElementAndClear();
-    double compilationFinishTime = 0;
     if (ScriptLoader* scriptLoader = toScriptLoaderIfPossible(element.get())) {
         NestingLevelIncrementer nestingLevelIncrementer(m_scriptNestingLevel);
         IgnoreDestructiveWriteCountIncrementer ignoreDestructiveWriteCountIncrementer(m_document);
@@ -165,20 +164,13 @@ void HTMLScriptRunner::executePendingScriptAndDispatchEvent(PendingScript& pendi
             scriptLoader->dispatchErrorEvent();
         else {
             ASSERT(isExecutingScript());
-            if (!scriptLoader->executeScript(sourceCode, &compilationFinishTime)) {
+            if (!scriptLoader->executeScript(sourceCode)) {
                 scriptLoader->dispatchErrorEvent();
             } else {
                 element->dispatchEvent(createScriptLoadEvent());
             }
         }
     }
-#if 0 // BKTODO:
-    // The exact value doesn't matter; valid time stamps are much bigger than this value.
-    const double epsilon = 1;
-    if (pendingScriptType == PendingScript::ParsingBlocking && !m_parserBlockingScriptAlreadyLoaded && compilationFinishTime > epsilon && loadFinishTime > epsilon) {
-        Platform::current()->histogramCustomCounts("WebCore.Scripts.ParsingBlocking.TimeBetweenLoadedAndCompiled", (compilationFinishTime - loadFinishTime) * 1000, 0, 10000, 50);
-    }
-#endif
 
     ASSERT(!isExecutingScript());
 }
@@ -299,11 +291,12 @@ void HTMLScriptRunner::requestParsingBlockingScript(Element* element)
     // if possible before returning control to the parser.
     if (!m_parserBlockingScript.isReady()) {
         if (m_document->frame()) {
-            ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
             ScriptState* scriptState = ScriptState::forMainWorld(m_document->frame());
             if (scriptState)
                 ScriptStreamer::startStreaming(m_parserBlockingScript, PendingScript::ParsingBlocking, m_document->frame()->settings(), scriptState, m_document->loadingTaskRunner());
+#else
+            ScriptStreamer::startStreaming(m_parserBlockingScript, PendingScript::ParsingBlocking, m_document->loadingTaskRunner());
 #endif
         }
 

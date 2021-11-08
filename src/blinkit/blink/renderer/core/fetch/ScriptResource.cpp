@@ -50,16 +50,8 @@ namespace blink {
 
 ResourcePtr<ScriptResource> ScriptResource::fetch(FetchRequest& request, ResourceFetcher* fetcher)
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
-    ASSERT(request.resourceRequest().frameType() == WebURLRequest::FrameTypeNone);
-    request.mutableResourceRequest().setRequestContext(WebURLRequest::RequestContextScript);
     ResourcePtr<ScriptResource> resource = toScriptResource(fetcher->requestResource(request, ScriptResourceFactory()));
-    if (resource && !request.integrityMetadata().isEmpty())
-        resource->setIntegrityMetadata(request.integrityMetadata());
     return resource;
-#endif
 }
 
 ScriptResource::ScriptResource(const ResourceRequest& resourceRequest, const String& charset)

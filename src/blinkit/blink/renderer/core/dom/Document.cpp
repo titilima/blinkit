@@ -4753,19 +4753,24 @@ KURL Document::openSearchDescriptionURL()
     return KURL();
 }
 
-#if 0 // BKTODO:
+HTMLScriptElement* Document::currentScript(void) const
+{
+    return m_currentScriptStack.empty() ? nullptr : m_currentScriptStack.back().get();
+}
+
 void Document::pushCurrentScript(PassRefPtrWillBeRawPtr<HTMLScriptElement> newCurrentScript)
 {
     ASSERT(newCurrentScript);
-    m_currentScriptStack.append(newCurrentScript);
+    m_currentScriptStack.emplace_back(newCurrentScript);
 }
 
 void Document::popCurrentScript()
 {
-    ASSERT(!m_currentScriptStack.isEmpty());
-    m_currentScriptStack.removeLast();
+    ASSERT(!m_currentScriptStack.empty());
+    m_currentScriptStack.pop_back();
 }
 
+#if 0 // BKTODO:
 void Document::setTransformSource(PassOwnPtr<TransformSource> source)
 {
     m_transformSource = source;

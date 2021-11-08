@@ -80,7 +80,7 @@ public:
 
     Element* element(void) const;
     void setElement(Element*);
-    PassRefPtrWillBeRawPtr<Element> releaseElementAndClear();
+    GCRefPtr<Element> releaseElementAndClear();
 
     void setScriptResource(ScriptResource*);
 
@@ -92,7 +92,7 @@ public:
 
     ScriptSourceCode getSource(const KURL& documentURL, bool& errorOccurred) const;
 
-    void setStreamer(PassRefPtrWillBeRawPtr<ScriptStreamer>);
+    void setStreamer(const GCRefPtr<ScriptStreamer> &);
 
     bool isReady() const;
 
@@ -102,7 +102,7 @@ private:
     TextPosition m_startingPosition; // Only used for inline script tags.
     bool m_integrityFailure;
 
-    RefPtrWillBeMember<ScriptStreamer> m_streamer;
+    GCRefPtr<ScriptStreamer> m_streamer;
 };
 
 } // namespace blink

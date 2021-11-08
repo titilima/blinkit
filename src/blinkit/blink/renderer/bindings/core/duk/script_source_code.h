@@ -29,7 +29,7 @@ public:
     explicit ScriptSourceCode(ScriptResource *);
     ScriptSourceCode(const String &, const KURL & = KURL(),
         const TextPosition &startPosition = TextPosition::minimumPosition());
-    ScriptSourceCode(PassRefPtrWillBeRawPtr<ScriptStreamer>, ScriptResource*);
+    ScriptSourceCode(const GCRefPtr<ScriptStreamer> &, ScriptResource *);
 
     bool isEmpty(void) const { return m_source.isEmpty(); }
     const String& source(void) const { return m_source; }

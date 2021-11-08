@@ -112,8 +112,10 @@ std::unique_ptr<ScriptController> ScriptController::Create(LocalFrame &frame)
     return nullptr;
 }
 
-void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const zed::url &baseURL)
+void ScriptController::executeScriptInMainWorld(const ScriptSourceCode &sourceCode)
 {
+    std::string source = sourceCode.source().stdUtf8();
+
     const auto callback = [this](duk_context *ctx) {
         if (!duk_is_error(ctx, -1))
             return;
@@ -124,7 +126,7 @@ void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCo
         std::string str = Duk::To<std::string>(ctx, -1);
         ConsoleOutput(BK_CONSOLE_ERROR, str.c_str());
     };
-    ASSERT(false); // BKTODO: ContextImpl::Eval(sourceCode.source(), callback, sourceCode.FileName().c_str());
+    ContextImpl::Eval(source, callback, sourceCode.FileName().c_str());
 }
 
 ScriptController* ScriptController::From(duk_context *ctx)

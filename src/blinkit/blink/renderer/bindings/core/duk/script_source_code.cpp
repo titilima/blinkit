@@ -26,7 +26,7 @@ ScriptSourceCode::ScriptSourceCode(ScriptResource *resource)
     TreatNullSourceAsEmpty();
 }
 
-ScriptSourceCode::ScriptSourceCode(PassRefPtrWillBeRawPtr<ScriptStreamer> streamer, ScriptResource *resource)
+ScriptSourceCode::ScriptSourceCode(const GCRefPtr<ScriptStreamer> &, ScriptResource *resource)
     : m_source(resource->script())
     , m_resource(resource)
 {
@@ -35,20 +35,18 @@ ScriptSourceCode::ScriptSourceCode(PassRefPtrWillBeRawPtr<ScriptStreamer> stream
 
 std::string ScriptSourceCode::FileName(void) const
 {
-    ASSERT(false); // BKTODO:
-    return std::string();
-#if 0
-    if (m_resource)
-        return m_resource->url().lastPathComponent().to_string();
-    else
+    if (!m_resource)
         return std::string("inline");
-#endif
+
+    std::string path = m_resource->url().get_path();
+    size_t p = path.rfind('/');
+    return std::string::npos == p ? path : path.substr(p + 1);
 }
 
 void ScriptSourceCode::TreatNullSourceAsEmpty(void)
 {
     if (m_source.isNull())
-        m_source = "";
+        m_source = emptyString();
 }
 
 } // namespace blink

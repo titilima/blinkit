@@ -32,7 +32,6 @@
 #ifndef ScriptLoader_h
 #define ScriptLoader_h
 
-#include "core/CoreExport.h"
 #include "core/dom/PendingScript.h"
 #include "core/fetch/FetchRequest.h"
 #include "core/fetch/ResourceClient.h"
@@ -48,7 +47,8 @@ class ScriptLoaderClient;
 class ScriptSourceCode;
 class LocalFrame;
 
-class CORE_EXPORT ScriptLoader : private ScriptResourceClient {
+class ScriptLoader : private ScriptResourceClient
+{
 public:
     static std::unique_ptr<ScriptLoader> create(Element* element, bool createdByParser, bool isEvaluated)
     {
@@ -65,7 +65,7 @@ public:
     String scriptCharset() const { return m_characterEncoding; }
     String scriptContent() const;
     // Returns false if and only if execution was blocked.
-    bool executeScript(const ScriptSourceCode&, double* compilationFinishTime = 0);
+    bool executeScript(const ScriptSourceCode &);
     virtual void execute();
 
     // XML parser calls these

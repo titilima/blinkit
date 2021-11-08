@@ -828,11 +828,11 @@ public:
 
     ScriptRunner* scriptRunner() { return m_scriptRunner.get(); }
 
-#if 0 // BKTODO:
-    HTMLScriptElement* currentScript() const { return !m_currentScriptStack.isEmpty() ? m_currentScriptStack.last().get() : nullptr; }
+    HTMLScriptElement* currentScript(void) const;
     void pushCurrentScript(PassRefPtrWillBeRawPtr<HTMLScriptElement>);
     void popCurrentScript();
 
+#if 0 // BKTODO:
     void setTransformSource(PassOwnPtr<TransformSource>);
     TransformSource* transformSource() const { return m_transformSource.get(); }
 #endif
