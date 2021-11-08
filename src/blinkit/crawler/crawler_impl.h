@@ -27,6 +27,8 @@ public:
     CrawlerImpl(const BkCrawlerClient &client, BlinKit::ClientCaller &clientCaller);
     ~CrawlerImpl(void);
 
+    static CrawlerImpl* From(const blink::Document &document);
+
     // BkCrawlerClient Wrappers
     bool GetConfig(int cfg, std::string &dst) const;
     std::string GetCookies(const std::string &URL) const;

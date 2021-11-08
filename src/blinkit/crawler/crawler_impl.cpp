@@ -87,6 +87,12 @@ void CrawlerImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 }
 #endif
 
+CrawlerImpl* CrawlerImpl::From(const Document &document)
+{
+    ASSERT(document.isCrawlerNode());
+    return static_cast<CrawlerImpl *>(document.frame()->client());
+}
+
 bool CrawlerImpl::GetConfig(int cfg, std::string &dst) const
 {
     ASSERT(isMainThread());
