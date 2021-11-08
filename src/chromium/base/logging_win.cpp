@@ -9,10 +9,11 @@
 // Copyright (C) 2018 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "logging.h"
+#include "./logging.h"
 
 #include <Windows.h>
-#include "base/strings/stringprintf.h"
+#include "chromium/base/strings/stringprintf.h"
+#include "third_party/zed/include/zed/string/conv.hpp"
 
 namespace BlinKit {
 
@@ -23,12 +24,9 @@ void BkLog(const char *format, ...)
     std::string s = base::StringPrintV(format, args);
     va_end(args);
 
-    ASSERT(false); // BKTODO:
-#if 0
-    std::wstring log = base::SysUTF8ToWide(s);
+    std::wstring log = zed::multi_byte_to_wide_string(s, CP_UTF8);
     log.append(L"\r\n");
     OutputDebugStringW(log.c_str());
-#endif
 }
 
 } // namespace BlinKit
