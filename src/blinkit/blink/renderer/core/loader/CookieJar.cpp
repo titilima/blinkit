@@ -49,7 +49,9 @@
 #include "public/platform/WebCookieJar.h"
 #include "public/platform/WebURL.h"
 #endif
-
+#ifdef BLINKIT_CRAWLER_ENABLED
+#   include "blinkit/crawler/crawler_impl.h"
+#endif
 namespace blink {
 
 static WebCookieJar* toCookieJar(const Document* document)
@@ -77,12 +79,16 @@ void setCookies(Document* document, const KURL& url, const String& cookieString)
     ASSERT(false); // BKTODO: cookieJar->setCookie(url, document->firstPartyForCookies(), cookieString);
 }
 
-bool cookiesEnabled(const Document* document)
+bool cookiesEnabled(const Document *document)
 {
-    WebCookieJar* cookieJar = toCookieJar(document);
-    if (!cookieJar)
-        return false;
-    ASSERT(false); // BKTODO: return cookieJar->cookiesEnabled(document->cookieURL(), document->firstPartyForCookies());
+#ifdef BLINKIT_CRAWLER_ENABLED
+    if (document->isCrawlerNode())
+    {
+        CrawlerImpl *crawler = CrawlerImpl::From(*document);
+        if (nullptr != crawler->GetCookieJar(false))
+            return true;
+    }
+#endif
     return false;
 }
 

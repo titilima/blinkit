@@ -70,6 +70,8 @@ public:
 
 private:
     explicit Navigator(LocalFrame*);
+
+    BlinKit::GCObject* ObjectForGC(void) override { return nullptr; }
 };
 
 } // namespace blink

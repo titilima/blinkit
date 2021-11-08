@@ -87,14 +87,6 @@ bool Navigator::cookieEnabled() const
 {
     if (!m_frame)
         return false;
-
-    ASSERT(false); // BKTODO:
-#if 0
-    Settings* settings = m_frame->settings();
-    if (!settings || !settings->cookieEnabled())
-        return false;
-#endif
-
     return cookiesEnabled(m_frame->document());
 }
 
