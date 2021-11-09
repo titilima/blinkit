@@ -16,9 +16,15 @@ copy
 cut
 dblclick
 DOMActivate
+DOMCharacterDataModified
 DOMContentLoaded
 DOMFocusIn
 DOMFocusOut
+DOMNodeInserted
+DOMNodeInsertedIntoDocument
+DOMNodeRemoved
+DOMNodeRemovedFromDocument
+DOMSubtreeModified
 drag
 dragend
 dragenter
@@ -65,7 +71,11 @@ toggle
 transitionend
 unload
 visibilitychange
+webkitAnimationEnd
+webkitAnimationIteration
+webkitAnimationStart
 webkitBeforeTextInserted
 webkitEditableContentChanged
+webkitTransitionEnd
 webkitvisibilitychange
 wheel

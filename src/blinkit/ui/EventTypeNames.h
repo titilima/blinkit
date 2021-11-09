@@ -15,9 +15,15 @@ namespace blink {
 namespace EventTypeNames {
 
 CORE_EXPORT extern const WTF::AtomicString& DOMActivate;
+CORE_EXPORT extern const WTF::AtomicString& DOMCharacterDataModified;
 CORE_EXPORT extern const WTF::AtomicString& DOMContentLoaded;
 CORE_EXPORT extern const WTF::AtomicString& DOMFocusIn;
 CORE_EXPORT extern const WTF::AtomicString& DOMFocusOut;
+CORE_EXPORT extern const WTF::AtomicString& DOMNodeInserted;
+CORE_EXPORT extern const WTF::AtomicString& DOMNodeInsertedIntoDocument;
+CORE_EXPORT extern const WTF::AtomicString& DOMNodeRemoved;
+CORE_EXPORT extern const WTF::AtomicString& DOMNodeRemovedFromDocument;
+CORE_EXPORT extern const WTF::AtomicString& DOMSubtreeModified;
 CORE_EXPORT extern const WTF::AtomicString& abort;
 CORE_EXPORT extern const WTF::AtomicString& animationend;
 CORE_EXPORT extern const WTF::AtomicString& animationiteration;
@@ -78,12 +84,16 @@ CORE_EXPORT extern const WTF::AtomicString& toggle;
 CORE_EXPORT extern const WTF::AtomicString& transitionend;
 CORE_EXPORT extern const WTF::AtomicString& unload;
 CORE_EXPORT extern const WTF::AtomicString& visibilitychange;
+CORE_EXPORT extern const WTF::AtomicString& webkitAnimationEnd;
+CORE_EXPORT extern const WTF::AtomicString& webkitAnimationIteration;
+CORE_EXPORT extern const WTF::AtomicString& webkitAnimationStart;
 CORE_EXPORT extern const WTF::AtomicString& webkitBeforeTextInserted;
 CORE_EXPORT extern const WTF::AtomicString& webkitEditableContentChanged;
+CORE_EXPORT extern const WTF::AtomicString& webkitTransitionEnd;
 CORE_EXPORT extern const WTF::AtomicString& webkitvisibilitychange;
 CORE_EXPORT extern const WTF::AtomicString& wheel;
 
-const unsigned EventTypeNamesCount = 68;
+const unsigned EventTypeNamesCount = 78;
 
 CORE_EXPORT void init();
 
