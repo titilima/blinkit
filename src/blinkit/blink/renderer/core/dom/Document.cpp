@@ -4154,25 +4154,17 @@ void Document::addMutationEventListenerTypeIfEnabled(ListenerType listenerType)
 
 void Document::addListenerTypeIfNeeded(const AtomicString& eventType)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (eventType == EventTypeNames::DOMSubtreeModified) {
-        UseCounter::count(*this, UseCounter::DOMSubtreeModifiedEvent);
         addMutationEventListenerTypeIfEnabled(DOMSUBTREEMODIFIED_LISTENER);
     } else if (eventType == EventTypeNames::DOMNodeInserted) {
-        UseCounter::count(*this, UseCounter::DOMNodeInsertedEvent);
         addMutationEventListenerTypeIfEnabled(DOMNODEINSERTED_LISTENER);
     } else if (eventType == EventTypeNames::DOMNodeRemoved) {
-        UseCounter::count(*this, UseCounter::DOMNodeRemovedEvent);
         addMutationEventListenerTypeIfEnabled(DOMNODEREMOVED_LISTENER);
     } else if (eventType == EventTypeNames::DOMNodeRemovedFromDocument) {
-        UseCounter::count(*this, UseCounter::DOMNodeRemovedFromDocumentEvent);
         addMutationEventListenerTypeIfEnabled(DOMNODEREMOVEDFROMDOCUMENT_LISTENER);
     } else if (eventType == EventTypeNames::DOMNodeInsertedIntoDocument) {
-        UseCounter::count(*this, UseCounter::DOMNodeInsertedIntoDocumentEvent);
         addMutationEventListenerTypeIfEnabled(DOMNODEINSERTEDINTODOCUMENT_LISTENER);
     } else if (eventType == EventTypeNames::DOMCharacterDataModified) {
-        UseCounter::count(*this, UseCounter::DOMCharacterDataModifiedEvent);
         addMutationEventListenerTypeIfEnabled(DOMCHARACTERDATAMODIFIED_LISTENER);
     } else if (eventType == EventTypeNames::webkitAnimationStart || eventType == EventTypeNames::animationstart) {
         addListenerType(ANIMATIONSTART_LISTENER);
@@ -4189,7 +4181,6 @@ void Document::addListenerTypeIfNeeded(const AtomicString& eventType)
     } else if (eventType == EventTypeNames::scroll) {
         addListenerType(SCROLL_LISTENER);
     }
-#endif
 }
 
 HTMLFrameOwnerElement* Document::ownerElement() const
@@ -4213,60 +4204,29 @@ bool Document::isInInvisibleSubframe() const
     return !frame()->ownerLayoutObject();
 }
 
-String Document::cookie(ExceptionState& exceptionState) const
+String Document::cookie(ExceptionState &) const
 {
-#if 0 // BKTODO:
-    if (settings() && !settings()->cookieEnabled())
-        return String();
-
-    // FIXME: The HTML5 DOM spec states that this attribute can raise an
-    // InvalidStateError exception on getting if the Document has no
-    // browsing context.
-
-    if (!securityOrigin()->canAccessCookies()) {
-        if (isSandboxed(SandboxOrigin))
-            exceptionState.throwSecurityError("The document is sandboxed and lacks the 'allow-same-origin' flag.");
-        else if (url().protocolIs("data"))
-            exceptionState.throwSecurityError("Cookies are disabled inside 'data:' URLs.");
-        else
-            exceptionState.throwSecurityError("Access is denied for this document.");
-        return String();
+#ifdef BLINKIT_CRAWLER_ENABLED
+    if (isCrawlerNode())
+    {
+        const KURL &cookieURL = this->cookieURL();
+        if (!cookieURL.isEmpty())
+            return cookies(this, cookieURL);
     }
 #endif
-
-    KURL cookieURL = this->cookieURL();
-    if (cookieURL.isEmpty())
-        return String();
-
-    return cookies(this, cookieURL);
+    return String();
 }
 
-void Document::setCookie(const String& value, ExceptionState& exceptionState)
+void Document::setCookie(const String& value, ExceptionState &)
 {
-#if 0 // BKTODO:
-    if (settings() && !settings()->cookieEnabled())
-        return;
-
-    // FIXME: The HTML5 DOM spec states that this attribute can raise an
-    // InvalidStateError exception on setting if the Document has no
-    // browsing context.
-
-    if (!securityOrigin()->canAccessCookies()) {
-        if (isSandboxed(SandboxOrigin))
-            exceptionState.throwSecurityError("The document is sandboxed and lacks the 'allow-same-origin' flag.");
-        else if (url().protocolIs("data"))
-            exceptionState.throwSecurityError("Cookies are disabled inside 'data:' URLs.");
-        else
-            exceptionState.throwSecurityError("Access is denied for this document.");
-        return;
+#ifdef BLINKIT_CRAWLER_ENABLED
+    if (isCrawlerNode())
+    {
+        const KURL &cookieURL = this->cookieURL();
+        if (!cookieURL.isEmpty())
+            setCookies(this, cookieURL, value);
     }
 #endif
-
-    KURL cookieURL = this->cookieURL();
-    if (cookieURL.isEmpty())
-        return;
-
-    setCookies(this, cookieURL, value);
 }
 
 const AtomicString& Document::referrer() const

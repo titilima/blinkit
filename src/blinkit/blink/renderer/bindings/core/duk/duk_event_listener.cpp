@@ -48,6 +48,12 @@ DukEventListener::~DukEventListener(void)
     duk_pop(m_ctx);
 }
 
+bool DukEventListener::BelongsToTheCurrentWorld(ExecutionContext *executionContext) const
+{
+    ScriptController *ctx = ScriptController::From(executionContext);
+    return ctx->IsSameSession(m_ctx);
+}
+
 bool DukEventListener::belongsToTheCurrentWorld(void) const
 {
     ASSERT(false); // BKTODO:
@@ -58,7 +64,7 @@ bool DukEventListener::belongsToTheCurrentWorld(void) const
 #endif
 }
 
-std::shared_ptr<EventListener> DukEventListener::CreateAttributeEventListener(Node *node, const QualifiedName &name, const AtomicString &value)
+GCRefPtr<EventListener> DukEventListener::CreateAttributeEventListener(Node *node, const QualifiedName &name, const AtomicString &value)
 {
     ASSERT(nullptr != node);
     if (value.isNull())
@@ -79,6 +85,32 @@ std::shared_ptr<EventListener> DukEventListener::CreateAttributeEventListener(No
     return nullptr;
 }
 
+GCRefPtr<EventListener> DukEventListener::From(duk_context *ctx, duk_idx_t idx, EventTarget *target, const AtomicString &type, bool createIfNotExists)
+{
+    GCRefPtr<EventListener> ret;
+
+    void *heapPtr = duk_get_heapptr(ctx, idx);
+    std::string key = GenerateKey(target, type, heapPtr);
+
+    do {
+        Duk::StackGuard _(ctx);
+        duk_push_global_object(ctx);
+        if (duk_get_prop_lstring(ctx, -1, key.data(), key.length()))
+        {
+            duk_get_prop_string(ctx, -1, NativeLister);
+            ret = GCWrapShared(reinterpret_cast<DukEventListener *>(duk_to_pointer(ctx, -1)));;
+            break;
+        }
+
+        if (!createIfNotExists)
+            break;
+
+        ret = GCWrapShared(new DukEventListener(ctx, heapPtr, key));
+    } while (false);
+
+    return ret;
+}
+
 std::string DukEventListener::GenerateKey(EventTarget *target, const AtomicString &type, void *heapPtr)
 {
     std::string ret(ListenerPrefix);
@@ -86,39 +118,11 @@ std::string DukEventListener::GenerateKey(EventTarget *target, const AtomicStrin
     return ret;
 }
 
-std::shared_ptr<EventListener> DukEventListener::Get(duk_context *ctx, duk_idx_t idx, EventTarget *target, const AtomicString &type, bool createIfNotExists)
-{
-    std::shared_ptr<EventListener> ret;
-
-    void *heapPtr = duk_get_heapptr(ctx, idx);
-    std::string key = GenerateKey(target, type, heapPtr);
-
-    do {
-        Duk::StackGuard sg(ctx);
-        duk_push_global_object(ctx);
-        if (!duk_get_prop_lstring(ctx, -1, key.data(), key.length()))
-        {
-            if (createIfNotExists)
-                ret = zed::wrap_shared(new DukEventListener(ctx, heapPtr, key));
-            break;
-        }
-
-        if (!duk_get_prop_string(ctx, -1, NativeLister))
-        {
-            NOTREACHED();
-            break;
-        }
-
-        ASSERT(false); // BKTODO: ret = reinterpret_cast<DukEventListener *>(duk_to_pointer(ctx, -1))->shared_from_this();
-    } while (false);
-    return ret;
-}
-
 void DukEventListener::handleEvent(ExecutionContext *executionContext, Event *event)
 {
-    ASSERT(false); // BKTODO: ASSERT(BelongsToTheCurrentWorld(executionContext));
+    ASSERT(BelongsToTheCurrentWorld(executionContext));
 
-    Duk::StackGuard sg(m_ctx);
+    Duk::StackGuard _(m_ctx);
 
     duk_push_heapptr(m_ctx, m_heapPtr);
     DukEvent::Push(m_ctx, event);

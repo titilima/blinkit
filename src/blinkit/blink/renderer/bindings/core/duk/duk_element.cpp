@@ -211,7 +211,7 @@ duk_ret_t DukElement::SetAttributeEventListenerImpl(duk_context *ctx, const Atom
     duk_push_this(ctx);
     Element *element = DukScriptObject::To<Element>(ctx, -1);
 
-    std::shared_ptr<EventListener> listener = DukEventListener::Get(ctx, 0, element, attrName, true);
+    GCRefPtr<EventListener> listener = DukEventListener::From(ctx, 0, element, attrName, true);
     element->setAttributeEventListener(attrName, listener.get());
 
     return 0;

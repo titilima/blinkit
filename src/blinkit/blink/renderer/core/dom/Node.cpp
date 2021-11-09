@@ -327,6 +327,9 @@ Node::~Node()
         clearRareData();
 
     RELEASE_ASSERT(!layoutObject());
+
+    if (hasEventTargetData())
+        clearEventTargetData();
 #endif
 #endif
 
@@ -1791,8 +1794,7 @@ const AtomicString& Node::interfaceName() const
 
 ExecutionContext* Node::executionContext() const
 {
-    ASSERT(false); // BKTODO: return document().contextDocument().get();
-    return nullptr;
+    return document().contextDocument();
 }
 
 void Node::didMoveToNewDocument(Document& oldDocument)
@@ -1873,7 +1875,7 @@ void Node::removeAllEventListenersRecursively()
 
 static EventTargetDataMap& eventTargetDataMap()
 {
-    EventTargetDataMap *map = GCWrapGlobal(new EventTargetDataMap, false);
+    static EventTargetDataMap *map = GCWrapGlobal(new EventTargetDataMap, false);
     return *map;
 }
 
@@ -1889,27 +1891,29 @@ EventTargetData* Node::eventTargetData()
 
 EventTargetData& Node::ensureEventTargetData()
 {
+    EventTargetDataMap &map = eventTargetDataMap();
+
     if (hasEventTargetData())
     {
-        if (auto v = zed::find_value(eventTargetDataMap(), this))
+        if (auto v = zed::find_value(map, this))
             return *v->get();
     }
-    ASSERT(!zed::key_exists(eventTargetDataMap(), this));
+    ASSERT(!zed::key_exists(map, this));
+
     setHasEventTargetData(true);
+
     EventTargetData *dataPtr = new EventTargetData;
-    eventTargetDataMap().emplace(this, dataPtr);
+    map.emplace(this, dataPtr);
     return *dataPtr;
 }
 
-#if !ENABLE(OILPAN)
 void Node::clearEventTargetData()
 {
-    eventTargetDataMap().remove(this);
-#if ENABLE(ASSERT)
+    eventTargetDataMap().erase(this);
+#ifndef NDEBUG
     setHasEventTargetData(false);
 #endif
 }
-#endif
 
 WillBeHeapVector<OwnPtrWillBeMember<MutationObserverRegistration>>* Node::mutationObserverRegistry()
 {

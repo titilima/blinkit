@@ -26,10 +26,8 @@ static duk_ret_t AddEventListener(duk_context *ctx)
     const duk_idx_t argc = duk_get_top(ctx);
 
     duk_push_this(ctx);
-    ASSERT(false); // BKTODO:
-#if 0
     EventTarget *eventTarget = DukScriptObject::To<EventTarget>(ctx, -1);
-    if (const LocalDOMWindow *window = eventTarget->ToLocalDOMWindow())
+    if (const LocalDOMWindow *window = eventTarget->toDOMWindow())
     {
         if (nullptr == window->document())
             return 0;
@@ -50,9 +48,8 @@ static duk_ret_t AddEventListener(duk_context *ctx)
             return 0;
     }
 
-    std::shared_ptr<EventListener> listener = DukEventListener::Get(ctx, 1, eventTarget, type, true);
+    GCRefPtr<EventListener> listener = DukEventListener::From(ctx, 1, eventTarget, type, true);
     eventTarget->addEventListener(type, listener.get(), useCapture);
-#endif
     return 0;
 }
 

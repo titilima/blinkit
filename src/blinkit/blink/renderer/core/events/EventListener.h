@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EventListener.h
+// Description: EventListener Class
+//      Author: Ziming Li
+//     Created: 2021-11-08
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008, 2009 Apple Inc. All rights reserved.
  *
@@ -21,16 +32,14 @@
 #ifndef EventListener_h
 #define EventListener_h
 
-#include "core/CoreExport.h"
 #include "platform/heap/Handle.h"
-#include "wtf/RefCounted.h"
 
 namespace blink {
 
 class Event;
 class ExecutionContext;
 
-class CORE_EXPORT EventListener : public RefCountedWillBeGarbageCollectedFinalized<EventListener> {
+class EventListener : public BlinKit::GCObject {
 public:
     enum Type {
         JSEventListenerType,

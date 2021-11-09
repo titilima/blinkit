@@ -191,7 +191,7 @@ static void copyListenersNotCreatedFromMarkupToTarget(const AtomicString& eventT
         if (eventListener.listener->wasCreatedFromMarkup())
             continue;
         EventListenerOptions options = eventListener.options();
-        target->addEventListener(eventType, eventListener.listener, options);
+        target->addEventListener(eventType, eventListener.listener.get(), options);
     }
 }
 

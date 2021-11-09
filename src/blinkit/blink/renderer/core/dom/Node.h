@@ -761,13 +761,9 @@ protected:
 
     NodeRareData* rareData() const;
     NodeRareData& ensureRareData();
-#if !ENABLE(OILPAN) // BKTODO:
     void clearRareData();
 
     void clearEventTargetData();
-#else
-    void clearRareData(void);
-#endif
 
     void setHasCustomStyleCallbacks() { setFlag(true, HasCustomStyleCallbacksFlag); }
 

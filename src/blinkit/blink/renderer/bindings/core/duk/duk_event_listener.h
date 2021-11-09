@@ -29,14 +29,15 @@ namespace BlinKit {
 class DukEventListener : public blink::EventListener
 {
 public:
-    static std::shared_ptr<EventListener> Get(duk_context *ctx, duk_idx_t idx, blink::EventTarget *target, const AtomicString &type, bool createIfNotExists);
-    static std::shared_ptr<EventListener> CreateAttributeEventListener(blink::Node *node, const blink::QualifiedName &name, const AtomicString &value);
+    static GCRefPtr<EventListener> From(duk_context *ctx, duk_idx_t idx, blink::EventTarget *target, const AtomicString &type, bool createIfNotExists);
+    static GCRefPtr<EventListener> CreateAttributeEventListener(blink::Node *node, const blink::QualifiedName &name, const AtomicString &value);
     ~DukEventListener(void) override;
 
 private:
     DukEventListener(duk_context *ctx, void *heapPtr, const std::string &key);
 
     static std::string GenerateKey(blink::EventTarget *target, const AtomicString &type, void *heapPtr);
+    bool BelongsToTheCurrentWorld(blink::ExecutionContext *executionContext) const;
 
     // blink::EventListener
     bool operator==(const blink::EventListener &other) const final { return this == &other; }

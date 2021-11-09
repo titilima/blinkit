@@ -28,21 +28,19 @@ namespace {
 
 inline bool isTouchEventType(const AtomicString& eventType)
 {
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
+#if 0 // BKTODO:
     return eventType == EventTypeNames::touchstart
         || eventType == EventTypeNames::touchmove
         || eventType == EventTypeNames::touchend
         || eventType == EventTypeNames::touchcancel;
+#else
+    return false;
 #endif
 }
 
 inline bool isPointerEventType(const AtomicString& eventType)
 {
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
+#if 0 // BKTODO:
     return eventType == EventTypeNames::gotpointercapture
         || eventType == EventTypeNames::lostpointercapture
         || eventType == EventTypeNames::pointercancel
@@ -53,6 +51,8 @@ inline bool isPointerEventType(const AtomicString& eventType)
         || eventType == EventTypeNames::pointerout
         || eventType == EventTypeNames::pointerover
         || eventType == EventTypeNames::pointerup;
+#else
+    return false;
 #endif
 }
 

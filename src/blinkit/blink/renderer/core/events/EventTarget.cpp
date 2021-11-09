@@ -161,8 +161,7 @@ bool EventTarget::addEventListenerInternal(const AtomicString& eventType, PassRe
     if (!listener)
         return false;
 
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     V8DOMActivityLogger* activityLogger = V8DOMActivityLogger::currentActivityLoggerIfIsolatedWorld();
     if (activityLogger) {
         Vector<String> argv;

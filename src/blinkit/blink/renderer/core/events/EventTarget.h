@@ -121,8 +121,7 @@ public:
 //
 // Optionally, add a FooEvent.idl class, but that's outside the scope of this
 // comment (and much more straightforward).
-class CORE_EXPORT EventTarget : public NoBaseWillBeGarbageCollectedFinalized<EventTarget>, public ScriptWrappable {
-    DEFINE_WRAPPERTYPEINFO();
+class CORE_EXPORT EventTarget : public ScriptWrappable {
 public:
     virtual ~EventTarget();
 
