@@ -76,6 +76,18 @@ static duk_ret_t QuerySelectorAll(duk_context *ctx)
 
 } // namespace Impl
 
+duk_ret_t DukContainerNode::GetElementById(duk_context *ctx)
+{
+    const AtomicString id = Duk::To<AtomicString>(ctx, 0);
+
+    duk_push_this(ctx);
+    ContainerNode *node = DukScriptObject::To<ContainerNode>(ctx, -1);
+
+    Element *ret = node->getElementById(id);
+    DukElement::Push(ctx, ret);
+    return 1;
+}
+
 void DukContainerNode::FillPrototypeEntry(PrototypeEntry &entry)
 {
     static const PrototypeEntry::Method Methods[] = {

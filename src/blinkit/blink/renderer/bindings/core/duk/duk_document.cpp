@@ -2,7 +2,7 @@
 // BlinKit - blink Library
 // -------------------------------------------------
 //   File Name: duk_document.cpp
-// Description: DukDocument Class
+// Description: DukDocument Classes
 //      Author: Ziming Li
 //     Created: 2020-02-07
 // -------------------------------------------------
@@ -42,6 +42,7 @@ static void CollectStringArgs(duk_context *ctx, std::vector<std::string> &dst)
     }
 }
 
+#ifdef BLINKIT_CRAWLER_ENABLED
 namespace Crawler {
 
 static duk_ret_t CookieGetter(duk_context *ctx)
@@ -76,6 +77,7 @@ static duk_ret_t CookieSetter(duk_context *ctx)
 }
 
 } // namespace Crawler
+#endif
 
 namespace Impl {
 
@@ -134,18 +136,6 @@ static duk_ret_t DocumentElementGetter(duk_context *ctx)
     Document *document = DukScriptObject::To<Document>(ctx, -1);
 
     DukElement::Push(ctx, document->documentElement());
-    return 1;
-}
-
-static duk_ret_t GetElementById(duk_context *ctx)
-{
-    const AtomicString id = Duk::To<AtomicString>(ctx, 0);
-
-    duk_push_this(ctx);
-    Document *document = DukScriptObject::To<Document>(ctx, -1);
-
-    Element *ret = document->getElementById(id);
-    DukElement::Push(ctx, ret);
     return 1;
 }
 
@@ -227,19 +217,18 @@ static duk_ret_t Writeln(duk_context *ctx)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void DukDocument::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
+void DukDocument::FillPrototypeEntry(PrototypeEntry &entry)
 {
     static const PrototypeEntry::Method Methods[] = {
         { "createComment",          Impl::CreateComment,          1           },
         { "createDocumentFragment", Impl::CreateDocumentFragment, 0           },
         { "createElement",          Impl::CreateElement,          1           },
-        { "getElementById",         Impl::GetElementById,         1           },
+        { "getElementById",         GetElementById,               1           },
         { "write",                  Impl::Write,                  DUK_VARARGS },
         { "writeln",                Impl::Writeln,                DUK_VARARGS },
     };
     static const PrototypeEntry::Property Properties[] = {
         { "body",            Impl::BodyGetter,            nullptr               },
-        { "cookie",          Crawler::CookieGetter,       Crawler::CookieSetter },
         { "documentElement", Impl::DocumentElementGetter, nullptr               },
         { "head",            Impl::HeadGetter,            nullptr               },
         { "location",        Impl::LocationGetter,        Impl::LocationSetter  },
@@ -252,9 +241,28 @@ void DukDocument::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
     entry.Add(Properties, std::size(Properties));
 }
 
-void DukDocument::RegisterPrototypeForCrawler(PrototypeHelper &helper)
+#ifdef BLINKIT_CRAWLER_ENABLED
+void DukCrawlerDocument::FillPrototypeEntry(PrototypeEntry &entry)
 {
-    helper.Register(ProtoName, FillPrototypeEntryForCrawler);
+    static const PrototypeEntry::Property Properties[] = {
+        { "cookie", Crawler::CookieGetter, Crawler::CookieSetter },
+    };
+
+    DukDocument::FillPrototypeEntry(entry);
+    entry.Add(Properties, std::size(Properties));
 }
+
+void DukCrawlerDocument::RegisterPrototype(PrototypeHelper &helper)
+{
+    helper.Register(ProtoName, FillPrototypeEntry);
+}
+#endif
+
+#ifdef BLINKIT_UI_ENABLED
+void DukUIDocument::RegisterPrototype(PrototypeHelper &helper)
+{
+    helper.Register(ProtoName, FillPrototypeEntry);
+}
+#endif
 
 } // namespace BlinKit

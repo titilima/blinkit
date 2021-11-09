@@ -120,7 +120,7 @@ void CrawlerContext::RegisterPrototypes(duk_context *ctx, duk_idx_t globalStashI
     DukAttr::RegisterPrototype(helper);
     DukNode::RegisterPrototype(helper, ProtoNames::Comment);
     DukConsole::RegisterPrototype(helper);
-    DukDocument::RegisterPrototypeForCrawler(helper);
+    DukCrawlerDocument::RegisterPrototype(helper);
     DukNode::RegisterPrototype(helper, ProtoNames::DocumentFragment);
     DukElement::RegisterPrototypeForCrawler(helper);
     DukEvent::RegisterPrototype(helper);

@@ -23,6 +23,8 @@ class DukContainerNode : public DukNode
 {
 protected:
     static void FillPrototypeEntry(PrototypeEntry &entry);
+
+    static duk_ret_t GetElementById(duk_context *ctx);
 };
 
 } // namespace BlinKit

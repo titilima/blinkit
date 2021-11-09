@@ -2,7 +2,7 @@
 // BlinKit - blink Library
 // -------------------------------------------------
 //   File Name: duk_document.h
-// Description: DukDocument Class
+// Description: DukDocument Classes
 //      Author: Ziming Li
 //     Created: 2020-02-07
 // -------------------------------------------------
@@ -19,14 +19,31 @@
 
 namespace BlinKit {
 
-class DukDocument final : public DukContainerNode
+class DukDocument : public DukContainerNode
 {
 public:
     static const char ProtoName[];
-    static void RegisterPrototypeForCrawler(PrototypeHelper &helper);
-private:
-    static void FillPrototypeEntryForCrawler(PrototypeEntry &entry);
+protected:
+    static void FillPrototypeEntry(PrototypeEntry &entry);
 };
+
+#ifdef BLINKIT_CRAWLER_ENABLED
+class DukCrawlerDocument final : public DukDocument
+{
+public:
+    static void RegisterPrototype(PrototypeHelper &helper);
+private:
+    static void FillPrototypeEntry(PrototypeEntry &entry);
+};
+#endif
+
+#ifdef BLINKIT_UI_ENABLED
+class DukUIDocument final : public DukDocument
+{
+public:
+    static void RegisterPrototype(PrototypeHelper &helper);
+};
+#endif
 
 } // namespace BlinKit
 
