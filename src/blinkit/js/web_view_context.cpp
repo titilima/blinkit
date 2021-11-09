@@ -13,6 +13,7 @@
 
 #include "blinkit/blink/renderer/bindings/core/duk/duk_attr.h"
 #include "blinkit/blink/renderer/bindings/core/duk/duk_console.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_document.h"
 #include "blinkit/blink/renderer/bindings/core/duk/duk_event.h"
 #include "blinkit/blink/renderer/bindings/core/duk/duk_location.h"
 #include "blinkit/blink/renderer/bindings/core/duk/duk_navigator.h"
@@ -41,6 +42,7 @@ void WebViewContext::RegisterPrototypes(duk_context *ctx, duk_idx_t globalStashI
     DukAttr::RegisterPrototype(helper);
     DukNode::RegisterPrototype(helper, ProtoNames::Comment);
     DukConsole::RegisterPrototype(helper);
+    DukUIDocument::RegisterPrototype(helper);
     DukNode::RegisterPrototype(helper, ProtoNames::DocumentFragment);
     DukElement::RegisterPrototypeForUI(helper);
     DukEvent::RegisterPrototype(helper);
