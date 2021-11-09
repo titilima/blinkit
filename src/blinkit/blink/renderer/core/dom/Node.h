@@ -821,6 +821,7 @@ private:
     WillBeHeapHashSet<RawPtrWillBeMember<MutationObserverRegistration>>* transientMutationObserverRegistry();
 
     bool ShouldPerformFullGC(void) const override;
+    BlinKit::GCObject* ObjectForGC(void) final { return this; }
 
     uint32_t m_nodeFlags;
     ContainerNode *m_parentOrShadowHostNode = nullptr;
