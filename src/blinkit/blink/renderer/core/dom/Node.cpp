@@ -38,6 +38,7 @@
 #include "blinkit/blink/renderer/bindings/core/duk/exception_state.h"
 #include "blinkit/blink/renderer/core/dom/document_type.h"
 #include "blinkit/blink/renderer/platform/ScriptForbiddenScope.h"
+#include "blinkit/blink/renderer/core/events/event_target_data_map.h"
 #include "core/HTMLNames.h"
 #include "core/css/CSSSelector.h"
 #include "core/css/resolver/StyleResolver.h"
@@ -1870,10 +1871,9 @@ void Node::removeAllEventListenersRecursively()
     }
 }
 
-using EventTargetDataMap = WillBeHeapHashMap<RawPtrWillBeWeakMember<Node>, OwnPtrWillBeMember<EventTargetData>>;
 static EventTargetDataMap& eventTargetDataMap()
 {
-    DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<EventTargetDataMap>, map, (adoptPtrWillBeNoop(new EventTargetDataMap())));
+    EventTargetDataMap *map = GCWrapGlobal(new EventTargetDataMap, false);
     return *map;
 }
 
@@ -1894,7 +1894,7 @@ EventTargetData& Node::ensureEventTargetData()
         if (auto v = zed::find_value(eventTargetDataMap(), this))
             return *v->get();
     }
-    ASSERT(!eventTargetDataMap().contains(this));
+    ASSERT(!zed::key_exists(eventTargetDataMap(), this));
     setHasEventTargetData(true);
     EventTargetData *dataPtr = new EventTargetData;
     eventTargetDataMap().emplace(this, dataPtr);
