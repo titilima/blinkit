@@ -8051,6 +8051,9 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\SuspendableTimer.h">
       <Filter>blink\renderer\core\frame</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\event_target_data_map.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BlinKit.def">

@@ -2028,6 +2028,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventQueue.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventSender.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventTarget.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\event_target_data_map.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\FocusEvent.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\FocusEventInit.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\GenericEventQueue.h" />
