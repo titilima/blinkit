@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RegisteredEventListener.h
+// Description: RegisteredEventListener Class
+//      Author: Ziming Li
+//     Created: 2021-11-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -52,7 +63,7 @@ public:
         return result;
     }
 
-    RefPtrWillBeMember<EventListener> listener;
+    GCRefPtr<EventListener> listener;
     unsigned useCapture : 1;
     unsigned passive : 1;
 };
