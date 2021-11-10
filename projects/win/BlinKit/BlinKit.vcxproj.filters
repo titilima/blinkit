@@ -4119,6 +4119,9 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\opentype\OpenTypeSanitizer.cpp">
       <Filter>blink\renderer\platform\fonts\opentype</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\event_factory.cpp">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -6317,7 +6320,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventDispatchMediator.h">
       <Filter>blink\renderer\core\events</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventFactory.h">
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\event_factory.h">
       <Filter>blink\renderer\core\events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventListener.h">

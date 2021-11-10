@@ -628,6 +628,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\EventListenerMap.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\EventPath.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\EventTarget.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\event_factory.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\FocusEvent.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\GenericEventQueue.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\KeyboardEvent.cpp" />
@@ -2018,7 +2019,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\Event.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventDispatcher.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventDispatchMediator.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventFactory.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\event_factory.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventInit.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventListener.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventListenerMap.h" />
