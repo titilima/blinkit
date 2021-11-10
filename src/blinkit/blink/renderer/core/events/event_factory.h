@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: event_factory.h
+// Description: EventFactory Classes
+//      Author: Ziming Li
+//     Created: 2021-11-09
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google, Inc. All Rights Reserved.
  *
@@ -28,7 +40,6 @@
 
 #include "platform/heap/Handle.h"
 #include "wtf/Allocator.h"
-#include "wtf/PassRefPtr.h"
 #include "wtf/text/AtomicString.h"
 
 namespace blink {
@@ -38,7 +49,7 @@ class Event;
 class EventFactoryBase {
     USING_FAST_MALLOC(EventFactoryBase);
 public:
-    virtual PassRefPtrWillBeRawPtr<Event> create(const String& eventType) = 0;
+    virtual GCRefPtr<Event> create(const String& eventType) = 0;
     virtual ~EventFactoryBase() { }
 
 protected:
@@ -52,7 +63,7 @@ public:
         return adoptPtr(new EventFactory());
     }
 
-    PassRefPtrWillBeRawPtr<Event> create(const String& eventType) override;
+    GCRefPtr<Event> create(const String& eventType) override;
 };
 
 }
