@@ -42,6 +42,9 @@ public:
     virtual ClientCaller& AcquireCallerForClient(void) = 0;
     LoaderThread& GetLoaderThread(void);
     void Log(const char *s);
+
+    bool HasClientLoader(void) const { return nullptr != m_client.LoadResource; }
+    bool LoadResourceFromClient(const char *URI, std::string &dst) const;
 protected:
     AppImpl(BkAppClient *client);
 

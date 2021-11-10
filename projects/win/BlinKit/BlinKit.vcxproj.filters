@@ -4122,6 +4122,9 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\event_factory.cpp">
       <Filter>blink\renderer\core\events</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader\tasks\client_loader_task.cpp">
+      <Filter>loader\tasks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -8056,6 +8059,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\event_target_data_map.h">
       <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader\tasks\client_loader_task.h">
+      <Filter>loader\tasks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

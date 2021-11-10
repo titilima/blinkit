@@ -23,6 +23,7 @@ struct BkAppClient {
     size_t SizeOfStruct; // sizeof(BkAppClient)
     void *UserData;
     void (BKAPI * Exit)(void *);
+    bool_t (BKAPI * LoadResource)(const char *, struct BkBuffer *, void *);
 };
 
 BKEXPORT bool_t BKAPI BkInitialize(struct BkAppClient *client);

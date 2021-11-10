@@ -11,6 +11,7 @@
 
 #include "./app_impl.h"
 
+#include "bkcommon/buffer_impl.hpp"
 #include "blinkit/blink/impl/url_loader.h"
 #include "blinkit/blink/public/web/blink.h"
 #include "blinkit/blink/renderer/wtf/MainThread.h"
@@ -80,6 +81,12 @@ void AppImpl::Initialize(void)
 
     blink::Initialize(this);
     m_mainThread = this;
+}
+
+bool AppImpl::LoadResourceFromClient(const char *URI, std::string &dst) const
+{
+    ASSERT(nullptr != m_client.LoadResource);
+    return m_client.LoadResource(URI, BufferImpl::Wrap(dst), m_client.UserData);
 }
 
 double AppImpl::monotonicallyIncreasingTimeSeconds(void)

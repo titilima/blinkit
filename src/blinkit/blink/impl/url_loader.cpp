@@ -13,8 +13,11 @@
 
 #include "blinkit/app/app_impl.h"
 #include "blinkit/loader/loader_thread.h"
-#include "blinkit/loader/tasks/http_loader_task.h"
+#ifdef BLINKIT_CRAWLER_ENABLED
+#   include "blinkit/loader/tasks/http_loader_task.h"
+#endif
 #ifdef BLINKIT_UI_ENABLED
+#   include "blinkit/loader/tasks/client_loader_task.h"
 #   include "blinkit/loader/tasks/file_loader_task.h"
 #   include "blinkit/loader/tasks/res_loader_task.h"
 #endif
@@ -56,6 +59,13 @@ void URLLoader::loadAsynchronously(const ResourceRequest &request, WebURLLoaderC
             task = new ResLoaderTask(request, this, m_taskRunner, client);
             break;
         }
+        if (AppImpl::Get().HasClientLoader())
+        {
+            task = new ClientLoaderTask(request, this, m_taskRunner, client);
+            break;
+        }
+
+        BKLOG("WARNING: Unexpected URI `%s`!", url.spec().c_str());
 #endif
     } while (false);
 
