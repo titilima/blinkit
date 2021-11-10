@@ -18,6 +18,8 @@
 #include "blinkit/blink/renderer/core/HTMLTokenizerNames.h"
 #include "blinkit/blink/renderer/core/css/CSSPrimitiveValue.h"
 #include "blinkit/blink/renderer/core/css/parser/CSSParserTokenRange.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/core/events/event_factory.h"
 #include "blinkit/blink/renderer/platform/HTTPNames.h"
 #include "blinkit/blink/renderer/wtf/MainThread.h"
 #include "blinkit/blink/renderer/wtf/WTF.h"
@@ -65,6 +67,8 @@ static void InitializeCommon(Platform *platform)
     CSSParserTokenRange::initStaticEOFToken();
 
     StringImpl::freezeStaticStrings();
+
+    Document::registerEventFactory(EventFactory::create());
 }
 
 static double CurrentTimeFunction(void)

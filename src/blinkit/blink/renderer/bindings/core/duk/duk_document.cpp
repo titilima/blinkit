@@ -13,6 +13,7 @@
 
 #include "blinkit/blink/renderer/bindings/core/duk/duk.h"
 #include "blinkit/blink/renderer/bindings/core/duk/duk_element.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_event.h"
 #include "blinkit/blink/renderer/bindings/core/duk/duk_exception_state.h"
 #include "blinkit/blink/renderer/bindings/core/duk/duk_location.h"
 #include "blinkit/blink/renderer/core/dom/Comment.h"
@@ -130,6 +131,22 @@ static duk_ret_t CreateElement(duk_context *ctx)
     return 1;
 }
 
+static duk_ret_t CreateEvent(duk_context *ctx)
+{
+    const AtomicString type = Duk::To<AtomicString>(ctx, 0);
+
+    DukExceptionState exceptionState(ctx);
+    GCRefPtr<Event> ret = Document::createEvent(type, exceptionState);
+    if (exceptionState.hadException())
+    {
+        exceptionState.ThrowIfNeeded();
+        return 0;
+    }
+
+    DukEvent::Push(ctx, ret.get());
+    return 1;
+}
+
 static duk_ret_t DocumentElementGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -223,6 +240,7 @@ void DukDocument::FillPrototypeEntry(PrototypeEntry &entry)
         { "createComment",          Impl::CreateComment,          1           },
         { "createDocumentFragment", Impl::CreateDocumentFragment, 0           },
         { "createElement",          Impl::CreateElement,          1           },
+        { "createEvent",            Impl::CreateEvent,            1           },
         { "getElementById",         GetElementById,               1           },
         { "write",                  Impl::Write,                  DUK_VARARGS },
         { "writeln",                Impl::Writeln,                DUK_VARARGS },

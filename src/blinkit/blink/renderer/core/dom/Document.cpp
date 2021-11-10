@@ -44,6 +44,7 @@
 #include "blinkit/blink/renderer/bindings/core/duk/script_controller.h"
 #include "blinkit/blink/renderer/core/dom/cdata_section.h"
 #include "blinkit/blink/renderer/core/dom/document_type.h"
+#include "blinkit/blink/renderer/core/events/event_factory.h"
 #include "blinkit/blink/renderer/platform/scheduler/cancellable_task_factory.h"
 #include "core/HTMLElementFactory.h"
 #include "core/HTMLNames.h"
@@ -128,7 +129,6 @@
 // BKTODO: #include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/BeforeUnloadEvent.h"
 #include "core/events/Event.h"
-#include "core/events/EventFactory.h"
 #include "core/events/EventListener.h"
 // BKTODO: #include "core/events/HashChangeEvent.h"
 #include "core/events/PageTransitionEvent.h"
@@ -4131,13 +4131,12 @@ void Document::registerEventFactory(PassOwnPtr<EventFactoryBase> eventFactory)
     eventFactories().add(eventFactory);
 }
 
-PassRefPtrWillBeRawPtr<Event> Document::createEvent(const String& eventType, ExceptionState& exceptionState)
+GCRefPtr<Event> Document::createEvent(const String& eventType, ExceptionState& exceptionState)
 {
-    RefPtrWillBeRawPtr<Event> event = nullptr;
     for (const auto& factory : eventFactories()) {
-        event = factory->create(eventType);
+        GCRefPtr<Event> event = factory->create(eventType);
         if (event)
-            return event.release();
+            return event;
     }
     exceptionState.throwDOMException(NotSupportedError, "The provided event type ('" + eventType + "') is invalid.");
     return nullptr;

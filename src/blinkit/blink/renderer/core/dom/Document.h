@@ -692,7 +692,7 @@ public:
     EventListener* getWindowAttributeEventListener(const AtomicString& eventType);
 
     static void registerEventFactory(PassOwnPtr<EventFactoryBase>);
-    static PassRefPtrWillBeRawPtr<Event> createEvent(const String& eventType, ExceptionState&);
+    static GCRefPtr<Event> createEvent(const String& eventType, ExceptionState&);
 
     // keep track of what types of event listeners are registered, so we don't
     // dispatch events unnecessarily
