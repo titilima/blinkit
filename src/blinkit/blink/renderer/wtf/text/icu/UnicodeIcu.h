@@ -212,8 +212,7 @@ inline bool isPunct(UChar32 c)
 
 inline bool hasLineBreakingPropertyComplexContext(UChar32 c)
 {
-    ASSERT(false); // BKTODO: return u_getIntPropertyValue(c, UCHAR_LINE_BREAK) == U_LB_COMPLEX_CONTEXT;
-    return false;
+    return u_getIntPropertyValue(c, UCHAR_LINE_BREAK) == U_LB_COMPLEX_CONTEXT;
 }
 
 inline UChar32 mirroredChar(UChar32 c)
@@ -246,8 +245,7 @@ inline uint8_t combiningClass(UChar32 c)
 
 inline DecompositionType decompositionType(UChar32 c)
 {
-    ASSERT(false); // BKTODO: return static_cast<DecompositionType>(u_getIntPropertyValue(c, UCHAR_DECOMPOSITION_TYPE));
-    return DecompositionNone;
+    return static_cast<DecompositionType>(u_getIntPropertyValue(c, UCHAR_DECOMPOSITION_TYPE));
 }
 
 inline int umemcasecmp(const UChar* a, const UChar* b, int len)
