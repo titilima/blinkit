@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - BlinKit Library
-// -------------------------------------------------
-//   File Name: SmallCapsIterator.cpp
-// Description: SmallCapsIterator Class
-//      Author: Ziming Li
-//     Created: 2021-08-07
-// -------------------------------------------------
-// Copyright (C) 2021 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2010 Apple Inc. All rights reserved.
@@ -214,12 +203,8 @@ static inline ULineBreak lineBreakPropertyValue(UChar lastCh, UChar ch)
 {
     if (ch == '+') // IE tailors '+' to AL-like class when break-all is enabled.
         return U_LB_ALPHABETIC;
-    ASSERT(false); // BKTODO:
-    return U_LB_UNKNOWN;
-#if 0
     UChar32 ch32 = U16_IS_LEAD(lastCh) && U16_IS_TRAIL(ch) ? U16_GET_SUPPLEMENTARY(lastCh, ch) : ch;
     return static_cast<ULineBreak>(u_getIntPropertyValue(ch32, UCHAR_LINE_BREAK));
-#endif
 }
 
 static inline bool shouldBreakAfterBreakAll(ULineBreak lastLineBreak, ULineBreak lineBreak)
@@ -288,15 +273,11 @@ static inline int nextBreakablePosition(LazyLineBreakIterator& lazyBreakIterator
 
 static inline bool shouldKeepAfter(UChar lastCh, UChar ch, UChar nextCh)
 {
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
     UChar preCh = U_MASK(u_charType(ch)) & U_GC_M_MASK ? lastCh : ch;
     return U_MASK(u_charType(preCh)) & (U_GC_L_MASK | U_GC_N_MASK)
         && !WTF::Unicode::hasLineBreakingPropertyComplexContext(preCh)
         && U_MASK(u_charType(nextCh)) & (U_GC_L_MASK | U_GC_N_MASK)
         && !WTF::Unicode::hasLineBreakingPropertyComplexContext(nextCh);
-#endif
 }
 
 static inline int nextBreakablePositionKeepAllInternal(LazyLineBreakIterator& lazyBreakIterator, const UChar* str, unsigned length, int pos)
