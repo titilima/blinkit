@@ -136,7 +136,6 @@ public:
         PrefixedMinDevicePixelRatioMediaFeature,
         PrefixedTransform3dMediaFeature,
         PrefixedTransitionEndEvent,
-        ProgressElement,
         PseudoBeforeAfterForInputElement,
         ReadingCheckedInClickHandler,
         Reflection,
