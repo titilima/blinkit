@@ -52,6 +52,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
     int LoadUI(const char *URI);
+    bool QueryElementPosition(const char *id, blink::IntRect &dst) const;
     void SetClient(const BkWebViewClient &client);
 
     blink::IntSize MainFrameSize(void);

@@ -35,6 +35,12 @@ BKEXPORT void BKAPI BkWebViewSetClient(BkWebView view, struct BkWebViewClient *c
 
 BKEXPORT int BKAPI BkLoadUI(BkWebView view, const char *URI);
 
+struct BkPoint { int x, y; };
+struct BkSize { int width, height; };
+struct BkRect { BkPoint location; BkSize size; };
+
+BKEXPORT bool BKAPI BkQueryElementPosition(BkWebView view, const char *id, struct BkRect *dst);
+
 #ifdef _WIN32
 
 BKEXPORT BkWebView BKAPI BkGetWebView(HWND hWnd);

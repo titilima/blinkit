@@ -183,8 +183,11 @@ void WebViewImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 
 void WebViewImpl::dispatchDidFinishLoad(void)
 {
-    auto _ = m_lock.guard_shared();
-    m_client.DocumentReady(m_client.UserData);
+    auto task = [this] {
+        auto _ = m_lock.guard_shared();
+        m_client.DocumentReady(m_client.UserData);
+    };
+    m_clientCaller.Post(BLINK_FROM_HERE, std::move(task));
 }
 
 bool WebViewImpl::EndActiveFlingAnimation(void)
@@ -827,6 +830,25 @@ bool WebViewImpl::ProcessTitleChange(const std::string &title) const
     if (nullptr == m_client.TitleChange)
         return false;
     return m_client.TitleChange(title.c_str(), m_client.UserData);
+}
+
+bool WebViewImpl::QueryElementPosition(const char *id, IntRect &dst) const
+{
+    bool ret = false;
+    const auto task = [this, id, &dst, &ret] {
+        Document *document = m_frame->document();
+        if (nullptr == document)
+            return;
+
+        Element *element = document->getElementById(AtomicString::fromUTF8(id));
+        if (nullptr == document)
+            return;
+
+        dst = element->pixelSnappedBoundingBox();
+        ret = true;
+    };
+    m_appCaller.SyncCall(BLINK_FROM_HERE, task);
+    return ret;
 }
 
 void WebViewImpl::RefreshPageScaleFactorAfterLayout(void)
@@ -1501,6 +1523,18 @@ extern "C" {
 BKEXPORT int BKAPI BkLoadUI(BkWebView view, const char *URI)
 {
     return view->LoadUI(URI);
+}
+
+BKEXPORT bool BKAPI BkQueryElementPosition(BkWebView view, const char *id, struct BkRect *dst)
+{
+    IntRect rc;
+    if (!view->QueryElementPosition(id, rc))
+        return false;
+    dst->location.x = rc.x();
+    dst->location.y = rc.y();
+    dst->size.width = rc.width();
+    dst->size.height = rc.height();
+    return true;
 }
 
 BKEXPORT void BKAPI BkWebViewSetClient(BkWebView view, BkWebViewClient *client)
