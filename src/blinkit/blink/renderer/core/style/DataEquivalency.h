@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DataEquivalency.h
+// Description: dataEquivalent Implementations
+//      Author: Ziming Li
+//     Created: 2021-11-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -18,6 +29,12 @@ bool dataEquivalent(const T* a, const T* b)
     if (!a || !b)
         return false;
     return *a == *b;
+}
+
+template <typename T>
+bool dataEquivalent(const GCRefPtr<T> &a, const GCRefPtr<T> &b)
+{
+    return dataEquivalent(a.get(), b.get());
 }
 
 template <typename T>
