@@ -36,10 +36,11 @@
 #include "core/HTMLNames.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/shadow/ShadowRoot.h"
-#include "core/frame/UseCounter.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/html/shadow/ProgressShadowElement.h"
 #include "core/layout/LayoutProgress.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -50,20 +51,18 @@ const double HTMLProgressElement::InvalidPosition = -2;
 
 HTMLProgressElement::HTMLProgressElement(Document& document)
     : LabelableElement(progressTag, document)
-    , m_value(nullptr)
 {
-    UseCounter::count(document, UseCounter::ProgressElement);
 }
 
 HTMLProgressElement::~HTMLProgressElement()
 {
 }
 
-PassRefPtrWillBeRawPtr<HTMLProgressElement> HTMLProgressElement::create(Document& document)
+GCRefPtr<HTMLProgressElement> HTMLProgressElement::create(Document& document)
 {
-    RefPtrWillBeRawPtr<HTMLProgressElement> progress = adoptRefWillBeNoop(new HTMLProgressElement(document));
+    GCRefPtr<HTMLProgressElement> progress = GCWrapShared(new HTMLProgressElement(document));
     progress->ensureUserAgentShadowRoot();
-    return progress.release();
+    return progress;
 }
 
 LayoutObject* HTMLProgressElement::createLayoutObject(const ComputedStyle& style)
@@ -158,19 +157,19 @@ void HTMLProgressElement::didAddUserAgentShadowRoot(ShadowRoot& root)
 {
     ASSERT(!m_value);
 
-    RefPtrWillBeRawPtr<ProgressInnerElement> inner = ProgressInnerElement::create(document());
+    GCRefPtr<ProgressInnerElement> inner = ProgressInnerElement::create(document());
     inner->setShadowPseudoId(AtomicString("-webkit-progress-inner-element", AtomicString::ConstructFromLiteral));
-    root.appendChild(inner);
+    root.appendChild(inner.get());
 
-    RefPtrWillBeRawPtr<ProgressBarElement> bar = ProgressBarElement::create(document());
+    GCRefPtr<ProgressBarElement> bar = ProgressBarElement::create(document());
     bar->setShadowPseudoId(AtomicString("-webkit-progress-bar", AtomicString::ConstructFromLiteral));
-    RefPtrWillBeRawPtr<ProgressValueElement> value = ProgressValueElement::create(document());
+    GCRefPtr<ProgressValueElement> value = ProgressValueElement::create(document());
     m_value = value.get();
     m_value->setShadowPseudoId(AtomicString("-webkit-progress-value", AtomicString::ConstructFromLiteral));
     m_value->setWidthPercentage(HTMLProgressElement::IndeterminatePosition * 100);
     bar->appendChild(m_value);
 
-    inner->appendChild(bar);
+    inner->appendChild(bar.get());
 }
 
 bool HTMLProgressElement::shouldAppearIndeterminate() const
@@ -182,12 +181,6 @@ void HTMLProgressElement::willAddFirstAuthorShadowRoot()
 {
     ASSERT(RuntimeEnabledFeatures::authorShadowDOMForAnyElementEnabled());
     lazyReattachIfAttached();
-}
-
-DEFINE_TRACE(HTMLProgressElement)
-{
-    visitor->trace(m_value);
-    LabelableElement::trace(visitor);
 }
 
 } // namespace

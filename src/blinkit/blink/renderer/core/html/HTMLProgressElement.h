@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLProgressElement.h
+// Description: HTMLProgressElement Class
+//      Author: Ziming Li
+//     Created: 2021-11-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
  *
@@ -21,7 +32,6 @@
 #ifndef HTMLProgressElement_h
 #define HTMLProgressElement_h
 
-#include "core/CoreExport.h"
 #include "core/html/LabelableElement.h"
 
 namespace blink {
@@ -29,13 +39,13 @@ namespace blink {
 class ProgressValueElement;
 class LayoutProgress;
 
-class CORE_EXPORT HTMLProgressElement final : public LabelableElement {
-    DEFINE_WRAPPERTYPEINFO();
+class HTMLProgressElement final : public LabelableElement
+{
 public:
     static const double IndeterminatePosition;
     static const double InvalidPosition;
 
-    static PassRefPtrWillBeRawPtr<HTMLProgressElement> create(Document&);
+    static GCRefPtr<HTMLProgressElement> create(Document&);
 
     double value() const;
     void setValue(double);
@@ -46,9 +56,6 @@ public:
     double position() const;
 
     bool canContainRangeEndPoint() const override { return false; }
-
-    DECLARE_VIRTUAL_TRACE();
-
 private:
     explicit HTMLProgressElement(Document&);
     ~HTMLProgressElement() override;
@@ -69,7 +76,7 @@ private:
     void didAddUserAgentShadowRoot(ShadowRoot&) override;
     bool isDeterminate() const;
 
-    RawPtrWillBeMember<ProgressValueElement> m_value;
+    ProgressValueElement *m_value = nullptr;
 };
 
 } // namespace blink
