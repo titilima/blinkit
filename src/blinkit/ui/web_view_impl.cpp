@@ -33,6 +33,7 @@
 #include "blinkit/blink/renderer/web/ContextMenuAllowedScope.h"
 #include "blinkit/blink/renderer/web/ResizeViewportAnchor.h"
 #include "blinkit/blink/renderer/web/WebInputEventConversion.h"
+#include "blinkit/ui/element_impl.h"
 #include "blinkit/ui/rendering_scheduler.h"
 #include "chromium/base/time/time.h"
 #include "third_party/zed/include/zed/float.hpp"
@@ -219,6 +220,32 @@ BrowserControls& WebViewImpl::GetBrowserControls(void)
     return m_page->GetBrowserControls();
 }
 #endif
+
+ElementImpl* WebViewImpl::GetElementById(const char *id) const
+{
+    ElementImpl *ret = nullptr;
+    const auto callback = [this, id, &ret] {
+        Document *document = m_frame->document();
+        if (nullptr == document)
+            return;
+
+        Element *element = document->getElementById(AtomicString::fromUTF8(id));
+        if (nullptr == document)
+            return;
+
+        auto it = m_exposedElements.find(element);
+        if (m_exposedElements.end() != it)
+        {
+            ret = it->second.get();
+            return;
+        }
+
+        ret = new ElementImpl(*element);
+        m_exposedElements.emplace(element, ret);
+    };
+    m_appCaller.SyncCall(BLINK_FROM_HERE, callback);
+    return ret;
+}
 
 PageScaleConstraintsSet& WebViewImpl::GetPageScaleConstraintsSet(void) const
 {
@@ -832,25 +859,6 @@ bool WebViewImpl::ProcessTitleChange(const std::string &title) const
     return m_client.TitleChange(title.c_str(), m_client.UserData);
 }
 
-bool WebViewImpl::QueryElementPosition(const char *id, IntRect &dst) const
-{
-    bool ret = false;
-    const auto task = [this, id, &dst, &ret] {
-        Document *document = m_frame->document();
-        if (nullptr == document)
-            return;
-
-        Element *element = document->getElementById(AtomicString::fromUTF8(id));
-        if (nullptr == document)
-            return;
-
-        dst = element->pixelSnappedBoundingBox();
-        ret = true;
-    };
-    m_appCaller.SyncCall(BLINK_FROM_HERE, task);
-    return ret;
-}
-
 void WebViewImpl::RefreshPageScaleFactorAfterLayout(void)
 {
     if (!m_frame || !m_page || nullptr == m_page->mainFrame())
@@ -1290,6 +1298,7 @@ void WebViewImpl::transitionToCommittedForNewPage(void)
 {
     ASSERT(m_frame);
 
+    m_exposedElements.clear();
     m_frame->createView(m_size, m_baseBackgroundColor, false); // BKTODO: Is transparent needed?
     if (m_shouldAutoResize)
         ASSERT(false); // BKTODO: frame()->view()->enableAutoSizeMode(webView->minAutoSize(), webView->maxAutoSize());
@@ -1520,21 +1529,14 @@ void WebViewImpl::UpdatePageOverlays(void)
 
 extern "C" {
 
+BKEXPORT BkElement BKAPI BkGetElementById(BkWebView view, const char *id)
+{
+    return view->GetElementById(id);
+}
+
 BKEXPORT int BKAPI BkLoadUI(BkWebView view, const char *URI)
 {
     return view->LoadUI(URI);
-}
-
-BKEXPORT bool BKAPI BkQueryElementPosition(BkWebView view, const char *id, struct BkRect *dst)
-{
-    IntRect rc;
-    if (!view->QueryElementPosition(id, rc))
-        return false;
-    dst->location.x = rc.x();
-    dst->location.y = rc.y();
-    dst->size.width = rc.width();
-    dst->size.height = rc.height();
-    return true;
 }
 
 BKEXPORT void BKAPI BkWebViewSetClient(BkWebView view, BkWebViewClient *client)

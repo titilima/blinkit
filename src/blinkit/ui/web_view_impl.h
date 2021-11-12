@@ -51,8 +51,8 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
+    ElementImpl* GetElementById(const char *id) const;
     int LoadUI(const char *URI);
-    bool QueryElementPosition(const char *id, blink::IntRect &dst) const;
     void SetClient(const BkWebViewClient &client);
 
     blink::IntSize MainFrameSize(void);
@@ -223,6 +223,7 @@ private:
 #endif
 
     blink::Timer<WebViewImpl> m_animationTimer;
+    mutable std::unordered_map<blink::Element *, std::unique_ptr<ElementImpl>> m_exposedElements;
 };
 
 // BKTODO: DEFINE_TYPE_CASTS(WebViewImpl, ::blink::LocalFrameClient, client, client->IsWebView(), client.IsWebView());

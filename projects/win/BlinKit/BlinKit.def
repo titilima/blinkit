@@ -8,10 +8,11 @@ IsBlinKitThread
 
 BkWebViewSetClient
 BkLoadUI
+BkGetElementById
 BkGetWebView
 BkDefWindowProc
 BkProcessWindowMessage
-BkQueryElementPosition
+BkGetElementPosition
 
 BkCreateCrawler
 BkDestroyCrawler

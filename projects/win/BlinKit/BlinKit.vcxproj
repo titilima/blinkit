@@ -1413,6 +1413,7 @@
     <ClCompile Include="..\..\..\src\blinkit\loader\win_loader_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\stub\icu\ubidi_props.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\stub\icu\uchar_props.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\ui\element_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\EventNames.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\EventTargetNames.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\EventTypeNames.cpp" />
@@ -2738,6 +2739,7 @@
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\http_loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\res_loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\win_loader_thread.h" />
+    <ClInclude Include="..\..\..\src\blinkit\ui\element_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\mouse_event_session.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\rendering_scheduler.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\web_view_impl.h" />

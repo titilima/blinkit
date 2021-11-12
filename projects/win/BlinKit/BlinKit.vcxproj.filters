@@ -4125,6 +4125,9 @@
     <ClCompile Include="..\..\..\src\blinkit\loader\tasks\client_loader_task.cpp">
       <Filter>loader\tasks</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\element_impl.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -8062,6 +8065,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\client_loader_task.h">
       <Filter>loader\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\element_impl.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

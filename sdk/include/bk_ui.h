@@ -22,7 +22,12 @@
 extern "C" {
 #endif
 
+/**
+ * Web View
+ */
+
 BK_DECLARE_HANDLE(BkWebView, WebViewImpl);
+BK_DECLARE_HANDLE(BkElement, ElementImpl);
 
 struct BkWebViewClient {
     size_t SizeOfStruct; // sizeof(BkWebViewClient)
@@ -35,11 +40,7 @@ BKEXPORT void BKAPI BkWebViewSetClient(BkWebView view, struct BkWebViewClient *c
 
 BKEXPORT int BKAPI BkLoadUI(BkWebView view, const char *URI);
 
-struct BkPoint { int x, y; };
-struct BkSize { int width, height; };
-struct BkRect { BkPoint location; BkSize size; };
-
-BKEXPORT bool BKAPI BkQueryElementPosition(BkWebView view, const char *id, struct BkRect *dst);
+BKEXPORT BkElement BKAPI BkGetElementById(BkWebView view, const char *id);
 
 #ifdef _WIN32
 
@@ -50,6 +51,16 @@ BKEXPORT LRESULT CALLBACK BkDefWindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LP
 BKEXPORT bool_t BKAPI BkProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
 
 #endif // _WIN32
+
+/**
+ * Element
+ */
+
+struct BkPoint { int x, y; };
+struct BkSize { int width, height; };
+struct BkRect { BkPoint location; BkSize size; };
+
+BKEXPORT void BKAPI BkGetElementPosition(BkElement e, struct BkRect *dst);
 
 #ifdef __cplusplus
 }
