@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FillLayer.h
+// Description: FillLayer Class
+//      Author: Ziming Li
+//     Created: 2021-11-11
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -25,7 +36,6 @@
 #ifndef FillLayer_h
 #define FillLayer_h
 
-#include "core/CoreExport.h"
 #include "core/style/ComputedStyleConstants.h"
 #include "core/style/StyleImage.h"
 #include "platform/Length.h"
@@ -63,8 +73,8 @@ struct FillSize {
 };
 
 // FIXME(Oilpan): Move FillLayer to Oilpan's heap.
-class CORE_EXPORT FillLayer {
-    USING_FAST_MALLOC(FillLayer);
+class FillLayer
+{
 public:
     FillLayer(EFillLayerType, bool useInitialValues = false);
     ~FillLayer();
@@ -213,7 +223,7 @@ private:
 
     FillLayer* m_next;
 
-    RefPtrWillBePersistent<StyleImage> m_image;
+    GCRefPtr<StyleImage> m_image;
 
     Length m_xPosition;
     Length m_yPosition;
