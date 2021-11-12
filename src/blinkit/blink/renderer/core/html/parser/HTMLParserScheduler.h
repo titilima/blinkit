@@ -81,13 +81,13 @@ private:
     size_t m_processedElementTokens;
 };
 
-class HTMLParserScheduler final {
+class HTMLParserScheduler final
+{
     WTF_MAKE_NONCOPYABLE(HTMLParserScheduler);
-    USING_FAST_MALLOC_WILL_BE_REMOVED(HTMLParserScheduler);
 public:
-    static GCUniquePtr<HTMLParserScheduler> create(HTMLDocumentParser* parser, const std::shared_ptr<WebTaskRunner> &loadingTaskRunner)
+    static std::unique_ptr<HTMLParserScheduler> create(HTMLDocumentParser* parser, const std::shared_ptr<WebTaskRunner> &loadingTaskRunner)
     {
-        return BlinKit::GCWrapUnique(new HTMLParserScheduler(parser, loadingTaskRunner));
+        return zed::wrap_unique(new HTMLParserScheduler(parser, loadingTaskRunner));
     }
     ~HTMLParserScheduler();
 
@@ -113,16 +113,13 @@ public:
     void resume();
 
     void detach(); // Clear active tasks if any.
-
-    DECLARE_TRACE();
-
 private:
     HTMLParserScheduler(HTMLDocumentParser*, const std::shared_ptr<WebTaskRunner>&);
 
     bool shouldYield(const SpeculationsPumpSession&, bool startingScript) const;
     void continueParsing();
 
-    GCRefPtr<HTMLDocumentParser> m_parser;
+    HTMLDocumentParser *m_parser;
     std::shared_ptr<WebTaskRunner> m_loadingTaskRunner;
 
     // BKTODO: OwnPtr<CancellableTaskFactory> m_cancellableContinueParse;

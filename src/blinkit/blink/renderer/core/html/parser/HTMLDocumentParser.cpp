@@ -225,8 +225,6 @@ HTMLDocumentParser::~HTMLDocumentParser()
 DEFINE_TRACE(HTMLDocumentParser)
 {
     m_treeBuilder->trace(visitor);
-    if (m_parserScheduler)
-        m_parserScheduler->trace(visitor);
     // BKTODO: visitor->trace(m_xssAuditorDelegate);
     // BKTODO: visitor->trace(m_preloader);
     ScriptableDocumentParser::trace(visitor);

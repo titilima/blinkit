@@ -201,7 +201,7 @@ private:
     OwnPtr<HTMLPreloadScanner> m_preloadScanner;
     OwnPtr<HTMLPreloadScanner> m_insertionPreloadScanner;
     std::shared_ptr<WebTaskRunner> m_loadingTaskRunner;
-    GCUniquePtr<HTMLParserScheduler> m_parserScheduler; // BKTODO: Check if necessary in the single thread mode.
+    std::unique_ptr<HTMLParserScheduler> m_parserScheduler; // BKTODO: Check if necessary in the single thread mode.
     HTMLSourceTracker m_sourceTracker;
     TextPosition m_textPosition;
 #if 0 // BKTODO:

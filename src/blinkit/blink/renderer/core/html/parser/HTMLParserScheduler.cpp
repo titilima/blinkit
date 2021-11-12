@@ -106,11 +106,6 @@ HTMLParserScheduler::~HTMLParserScheduler()
 {
 }
 
-DEFINE_TRACE(HTMLParserScheduler)
-{
-    visitor->trace(m_parser);
-}
-
 void HTMLParserScheduler::scheduleForResume()
 {
     ASSERT(!m_isSuspendedWithActiveTimer);
