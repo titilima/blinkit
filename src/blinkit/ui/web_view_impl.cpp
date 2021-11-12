@@ -205,6 +205,14 @@ bool WebViewImpl::EndActiveFlingAnimation(void)
     return false;
 }
 
+WebViewImpl* WebViewImpl::From(Document &document)
+{
+    ASSERT(document.isUINode());
+    if (LocalFrame *frame = document.frame())
+        return static_cast<WebViewImpl *>(frame->client());
+    return nullptr;
+}
+
 #if 0 // BKTODO:
 IntSize WebViewImpl::FrameSize(void)
 {

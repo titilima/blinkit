@@ -49,6 +49,8 @@ public:
 
     void Initialize(void);
 
+    static WebViewImpl* From(blink::Document &document);
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
     ElementImpl* GetElementById(const char *id) const;
