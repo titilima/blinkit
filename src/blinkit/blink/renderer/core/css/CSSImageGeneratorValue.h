@@ -61,7 +61,7 @@ struct SizeAndCount {
     int count;
 };
 
-using LayoutObjectSizeCountMap = HashMap<const LayoutObject*, SizeAndCount>;
+using LayoutObjectSizeCountMap = std::unordered_map<const LayoutObject*, SizeAndCount>;
 
 class CORE_EXPORT CSSImageGeneratorValue : public CSSValue {
 public:
