@@ -1449,13 +1449,10 @@ void LayoutBlock::removeFromTrackedLayoutBoxMaps(LayoutBox* descendant, TrackedD
         if (descendantsMapIterator == descendantsMap->end())
             continue;
         TrackedLayoutBoxListHashSet* descendantSet = descendantsMapIterator->value.get();
-        ASSERT(false); // BKTODO:
-#if 0
         ASSERT(descendantSet->contains(descendant));
-        descendantSet->remove(descendant);
+        descendantSet->erase(descendant);
         if (descendantSet->isEmpty())
             descendantsMap->remove(descendantsMapIterator);
-#endif
     }
 }
 
