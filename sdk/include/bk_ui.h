@@ -56,6 +56,11 @@ BKEXPORT bool_t BKAPI BkProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam,
  * Element
  */
 
+BKEXPORT bool_t BKAPI BkGetElementAttribute(BkElement e, const char *name, struct BkBuffer *dst);
+
+BKEXPORT void BKAPI BkSetElementAttribute(BkElement e, const char *name, const char *value);
+BKEXPORT void BKAPI BkSetElementIntegalAttribute(BkElement e, const char *name, int value);
+
 struct BkPoint { int x, y; };
 struct BkSize { int width, height; };
 struct BkRect { BkPoint location; BkSize size; };

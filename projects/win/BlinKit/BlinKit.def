@@ -12,6 +12,9 @@ BkGetElementById
 BkGetWebView
 BkDefWindowProc
 BkProcessWindowMessage
+BkGetElementAttribute
+BkSetElementAttribute
+BkSetElementIntegalAttribute
 BkGetElementPosition
 
 BkCreateCrawler
