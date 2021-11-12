@@ -59,12 +59,13 @@ void CSSImageGeneratorValue::addClient(const LayoutObject* layoutObject, const I
 #if !ENABLE(OILPAN)
     ref();
 #else
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (m_clients.isEmpty()) {
         ASSERT(!m_keepAlive);
         m_keepAlive = this;
     }
+#else
+    IncRef();
 #endif
 #endif
 
@@ -73,9 +74,9 @@ void CSSImageGeneratorValue::addClient(const LayoutObject* layoutObject, const I
 
     LayoutObjectSizeCountMap::iterator it = m_clients.find(layoutObject);
     if (it == m_clients.end()) {
-        m_clients.add(layoutObject, SizeAndCount(size, 1));
+        m_clients.emplace(layoutObject, SizeAndCount(size, 1));
     } else {
-        SizeAndCount& sizeCount = it->value;
+        SizeAndCount& sizeCount = it->second;
         ++sizeCount.count;
     }
 }
@@ -94,7 +95,7 @@ void CSSImageGeneratorValue::removeClient(const LayoutObject* layoutObject)
     ASSERT_WITH_SECURITY_IMPLICATION(it != m_clients.end());
 
     IntSize removedImageSize;
-    SizeAndCount& sizeCount = it->value;
+    SizeAndCount& sizeCount = it->second;
     IntSize size = sizeCount.size;
     if (!size.isEmpty()) {
         m_sizes.erase(size);
@@ -103,17 +104,18 @@ void CSSImageGeneratorValue::removeClient(const LayoutObject* layoutObject)
     }
 
     if (!--sizeCount.count)
-        m_clients.remove(layoutObject);
+        m_clients.erase(layoutObject);
 
 #if !ENABLE(OILPAN)
     deref();
 #else
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (m_clients.isEmpty()) {
         ASSERT(m_keepAlive);
         m_keepAlive.clear();
     }
+#else
+    Release();
 #endif
 #endif
 }
@@ -122,10 +124,10 @@ Image* CSSImageGeneratorValue::getImage(const LayoutObject* layoutObject, const 
 {
     LayoutObjectSizeCountMap::iterator it = m_clients.find(layoutObject);
     if (it != m_clients.end()) {
-        SizeAndCount& sizeCount = it->value;
+        SizeAndCount& sizeCount = it->second;
         IntSize oldSize = sizeCount.size;
         if (oldSize != size) {
-            RefPtrWillBeRawPtr<CSSImageGeneratorValue> protect(this);
+            GCGuard _(*this);
             removeClient(layoutObject);
             addClient(layoutObject, size);
         }

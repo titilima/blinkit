@@ -251,7 +251,7 @@ PassRefPtr<Image> CSSCrossfadeValue::image(const LayoutObject* layoutObject, con
 void CSSCrossfadeValue::crossfadeChanged(const IntRect&)
 {
     for (const auto& curr : clients()) {
-        LayoutObject* client = const_cast<LayoutObject*>(curr.key);
+        LayoutObject* client = const_cast<LayoutObject*>(curr.first);
         client->imageChanged(static_cast<WrappedImagePtr>(this));
     }
 }

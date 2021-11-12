@@ -69,7 +69,7 @@ PassRefPtr<Image> CSSGradientValue::image(const LayoutObject* layoutObject, cons
 
     bool cacheable = isCacheable();
     if (cacheable) {
-        if (!clients().contains(layoutObject))
+        if (!zed::key_exists(clients(), layoutObject))
             return nullptr;
 
         // Need to look up our size.  Create a string of width*height to use as a hash key.
