@@ -35,6 +35,10 @@ RenderingScheduler::RenderingScheduler(WebViewImpl &view) : m_view(view)
     m_view.GetCaller().SyncCall(BLINK_FROM_HERE, callback);
 }
 
+RenderingScheduler::RenderingScheduler(Document &document) : RenderingScheduler(*WebViewImpl::From(document))
+{
+}
+
 RenderingScheduler::~RenderingScheduler(void)
 {
     if (!m_enabled)

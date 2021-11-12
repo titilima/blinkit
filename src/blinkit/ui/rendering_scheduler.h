@@ -19,6 +19,10 @@
 
 class WebViewImpl;
 
+namespace blink {
+class Document;
+}
+
 namespace BlinKit {
 
 class RenderingScheduler final
@@ -26,6 +30,7 @@ class RenderingScheduler final
     STACK_ALLOCATED();
 public:
     RenderingScheduler(WebViewImpl &view);
+    RenderingScheduler(blink::Document &document);
     ~RenderingScheduler(void);
 
     static RenderingScheduler* From(WebViewImpl &view);
