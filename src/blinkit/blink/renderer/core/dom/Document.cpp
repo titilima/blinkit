@@ -595,6 +595,9 @@ Document::~Document()
         ASSERT(!m_nodeListCounts[i]);
 
     liveDocumentSet().remove(this);
+#else
+    // We need to destroy CSSFontSelector before destroying m_fetcher.
+    m_styleEngine->detachFromDocument();
 #endif
 
     InstanceCounters::decrementCounter(InstanceCounters::DocumentCounter);

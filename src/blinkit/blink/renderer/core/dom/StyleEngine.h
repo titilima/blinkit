@@ -87,9 +87,7 @@ public:
 
     ~StyleEngine();
 
-#if !ENABLE(OILPAN)
     void detachFromDocument();
-#endif
 
     const std::vector<GCRefPtr<StyleSheet>>& styleSheetsForStyleSheetList(TreeScope&);
 

@@ -96,7 +96,6 @@ static bool isStyleElement(Node& node)
     return isHTMLStyleElement(node); // BKTODO: || isSVGStyleElement(node);
 }
 
-#if !ENABLE(OILPAN)
 void StyleEngine::detachFromDocument()
 {
     // Cleanup is performed eagerly when the StyleEngine is removed from the
@@ -112,11 +111,10 @@ void StyleEngine::detachFromDocument()
 
     // Decrement reference counts for things we could be keeping alive.
     m_fontSelector.clear();
-    m_resolver.clear();
+    m_resolver.reset();
     m_styleSheetCollectionMap.clear();
     m_activeTreeScopes.clear();
 }
-#endif
 
 inline Document* StyleEngine::master()
 {
@@ -628,10 +626,8 @@ void StyleEngine::fontsNeedUpdate(CSSFontSelector*)
 
 void StyleEngine::setFontSelector(PassRefPtrWillBeRawPtr<CSSFontSelector> fontSelector)
 {
-#if !ENABLE(OILPAN)
     if (m_fontSelector)
         m_fontSelector->unregisterForInvalidationCallbacks(this);
-#endif
     m_fontSelector = fontSelector;
     if (m_fontSelector)
         m_fontSelector->registerForInvalidationCallbacks(this);
