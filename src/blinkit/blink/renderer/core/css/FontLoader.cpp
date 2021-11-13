@@ -23,22 +23,16 @@
 
 namespace blink {
 
-struct FontLoader::FontToLoad {
-public:
-    static PassOwnPtr<FontToLoad> create(FontResource* fontResource, Document& document)
-    {
-        return adoptPtr(new FontToLoad(fontResource, document));
-    }
-
-    ResourcePtr<FontResource> fontResource;
-    std::unique_ptr<IncrementLoadEventDelayCount> delay;
-
-private:
+struct FontLoader::FontToLoad
+{
     FontToLoad(FontResource* resource, Document& document)
         : fontResource(resource)
         , delay(IncrementLoadEventDelayCount::create(document))
     {
     }
+
+    ResourcePtr<FontResource> fontResource;
+    std::unique_ptr<IncrementLoadEventDelayCount> delay;
 };
 
 FontLoader::FontLoader(CSSFontSelector* fontSelector, Document* document)
@@ -48,26 +42,14 @@ FontLoader::FontLoader(CSSFontSelector* fontSelector, Document* document)
 {
 }
 
-FontLoader::~FontLoader()
-{
-#if ENABLE(OILPAN)
-    if (!m_document) {
-        ASSERT(m_fontsToBeginLoading.isEmpty());
-        return;
-    }
-    m_beginLoadingTimer.stop();
-    // This will decrement the request counts on the ResourceFetcher for all the
-    // fonts that were pending at the time the FontLoader dies.
-    clearPendingFonts();
-#endif
-}
+FontLoader::~FontLoader(void) = default;
 
 void FontLoader::addFontToBeginLoading(FontResource* fontResource)
 {
     if (!m_document || !fontResource->stillNeedsLoad() || fontResource->loadScheduled())
         return;
 
-    m_fontsToBeginLoading.append(FontToLoad::create(fontResource, *m_document));
+    m_fontsToBeginLoading.emplace_back(std::make_unique<FontToLoad>(fontResource, *m_document));
     fontResource->didScheduleLoad();
     if (!m_beginLoadingTimer.isActive())
         m_beginLoadingTimer.startOneShot(0, BLINK_FROM_HERE);
@@ -116,11 +98,10 @@ void FontLoader::didFailToDecode(FontResource* fontResource)
     }
 }
 
-#if !ENABLE(OILPAN)
 void FontLoader::clearDocumentAndFontSelector()
 {
     if (!m_document) {
-        ASSERT(m_fontsToBeginLoading.isEmpty());
+        ASSERT(m_fontsToBeginLoading.empty());
         return;
     }
 
@@ -129,19 +110,12 @@ void FontLoader::clearDocumentAndFontSelector()
     m_document = nullptr;
     m_fontSelector = nullptr;
 }
-#endif
 
 void FontLoader::clearPendingFonts()
 {
     for (const auto& fontToLoad : m_fontsToBeginLoading)
         fontToLoad->fontResource->didUnscheduleLoad();
     m_fontsToBeginLoading.clear();
-}
-
-DEFINE_TRACE(FontLoader)
-{
-    // BKTODO: visitor->trace(m_document);
-    visitor->trace(m_fontSelector);
 }
 
 } // namespace blink

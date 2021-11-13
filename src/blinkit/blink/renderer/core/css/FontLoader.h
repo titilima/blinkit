@@ -20,7 +20,6 @@
 #include "core/fetch/ResourcePtr.h"
 #include "platform/Timer.h"
 #include "platform/heap/Handle.h"
-#include "wtf/Vector.h"
 
 namespace blink {
 
@@ -41,12 +40,7 @@ public:
     void fontFaceInvalidated();
     void didFailToDecode(FontResource*);
 
-#if !ENABLE(OILPAN)
     void clearDocumentAndFontSelector();
-#endif
-
-    DECLARE_TRACE();
-
 private:
     FontLoader(CSSFontSelector*, Document*);
     void beginLoadTimerFired(Timer<FontLoader>*);
@@ -55,7 +49,7 @@ private:
     Timer<FontLoader> m_beginLoadingTimer;
 
     struct FontToLoad;
-    using FontsToLoadVector = Vector<OwnPtr<FontToLoad>>;
+    using FontsToLoadVector = std::vector<std::unique_ptr<FontToLoad>>;
     FontsToLoadVector m_fontsToBeginLoading;
     CSSFontSelector *m_fontSelector;
     Document *m_document;
