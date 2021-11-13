@@ -72,32 +72,25 @@ CSSFontSelector::CSSFontSelector(Document* document)
 
 CSSFontSelector::~CSSFontSelector()
 {
-#if !ENABLE(OILPAN)
     clearDocument();
-#endif
     FontCache::fontCache()->removeClient(this);
 }
 
 void CSSFontSelector::registerForInvalidationCallbacks(CSSFontSelectorClient* client)
 {
-    GCObject *o = client->ObjectForGC();
-    Observe(o);
-    m_clients.emplace(o, client);
+    m_clients.emplace(client);
 }
 
-#if !ENABLE(OILPAN)
 void CSSFontSelector::unregisterForInvalidationCallbacks(CSSFontSelectorClient* client)
 {
-    m_clients.remove(client);
+    m_clients.erase(client);
 }
-#endif
 
 void CSSFontSelector::dispatchInvalidationCallbacks()
 {
     m_fontFaceCache.incrementVersion();
 
-    std::vector<CSSFontSelectorClient *> clients;
-    zed::get_values(clients, m_clients);
+    std::vector<CSSFontSelectorClient *> clients(m_clients.begin(), m_clients.end());
     for (size_t i = 0; i < clients.size(); ++i)
         clients[i]->fontsNeedUpdate(this);
 }
@@ -177,14 +170,12 @@ bool CSSFontSelector::isPlatformFontAvailable(const FontDescription& fontDescrip
     return FontCache::fontCache()->isPlatformFontAvailable(fontDescription, family);
 }
 
-#if !ENABLE(OILPAN)
 void CSSFontSelector::clearDocument()
 {
     m_fontLoader->clearDocumentAndFontSelector();
     m_document = nullptr;
     m_fontFaceCache.clearAll();
 }
-#endif
 
 void CSSFontSelector::updateGenericFontFamilySettings(Document& document)
 {
@@ -209,12 +200,6 @@ DEFINE_TRACE(CSSFontSelector)
 #endif
 #endif
     FontSelector::trace(visitor);
-}
-
-void CSSFontSelector::ObjectFinalized(GCObject *o)
-{
-    ASSERT(zed::key_exists(m_clients, o));
-    m_clients.erase(o);
 }
 
 }

@@ -53,11 +53,11 @@ class CSSFontSelectorClient;
 class Document;
 class FontDescription;
 
-class CORE_EXPORT CSSFontSelector : public FontSelector, public BlinKit::GCLifecycleObserver {
+class CORE_EXPORT CSSFontSelector : public FontSelector {
 public:
-    static PassRefPtrWillBeRawPtr<CSSFontSelector> create(Document* document)
+    static GCRefPtr<CSSFontSelector> create(Document* document)
     {
-        return adoptRefWillBeNoop(new CSSFontSelector(document));
+        return BlinKit::GCWrapShared(new CSSFontSelector(document));
     }
     ~CSSFontSelector() override;
 
@@ -68,9 +68,7 @@ public:
     void willUseRange(const FontDescription&, const AtomicString& familyName, const FontDataRange&) override;
     bool isPlatformFontAvailable(const FontDescription&, const AtomicString& family);
 
-#if !ENABLE(OILPAN)
     void clearDocument();
-#endif
 
     void fontFaceInvalidated();
 
@@ -78,11 +76,9 @@ public:
     void fontCacheInvalidated() override;
 
     void registerForInvalidationCallbacks(CSSFontSelectorClient*);
-#if !ENABLE(OILPAN)
     void unregisterForInvalidationCallbacks(CSSFontSelectorClient*);
-#endif
 
-    Document* document() const { return m_document.get(); }
+    Document* document() const { return m_document; }
     FontFaceCache* fontFaceCache() { return &m_fontFaceCache; }
     FontLoader* fontLoader() { return m_fontLoader.get(); }
 
@@ -97,15 +93,13 @@ protected:
     void dispatchInvalidationCallbacks();
 
 private:
-    void ObjectFinalized(BlinKit::GCObject *o) final;
-
     // FIXME: Oilpan: Ideally this should just be a traced Member but that will
     // currently leak because ComputedStyle and its data are not on the heap.
     // See crbug.com/383860 for details.
-    BlinKit::GCWeakMember<Document> m_document;
+    Document *m_document;
     // FIXME: Move to Document or StyleEngine.
     FontFaceCache m_fontFaceCache;
-    std::unordered_map<BlinKit::GCObject *, CSSFontSelectorClient *> m_clients;
+    std::unordered_set<CSSFontSelectorClient *> m_clients;
 
     std::unique_ptr<FontLoader> m_fontLoader;
     GenericFontFamilySettings m_genericFontFamilySettings;
