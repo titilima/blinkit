@@ -201,18 +201,17 @@ void HTMLAnchorElement::parseAttribute(const QualifiedName& name, const AtomicSt
             // events here.
             document().setNeedsFocusedElementCheck();
         }
+#if 0 // BKTODO:
         if (isLink()) {
             String parsedURL = stripLeadingAndTrailingHTMLSpaces(value);
-            ASSERT(false); // BKTODO:
-#if 0
             if (document().isDNSPrefetchEnabled()) {
                 if (protocolIs(parsedURL, "http") || protocolIs(parsedURL, "https") || parsedURL.startsWith("//"))
                     prefetchDNS(document().completeURL(parsedURL).host());
             }
-#endif
         }
-        // BKTODO: invalidateCachedVisitedLinkHash();
+        invalidateCachedVisitedLinkHash();
         logUpdateAttributeIfIsolatedWorldAndInDocument("a", hrefAttr, oldValue, value);
+#endif
     } else if (name == nameAttr || name == titleAttr) {
         // Do nothing.
     } else if (name == relAttr) {

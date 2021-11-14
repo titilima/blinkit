@@ -131,8 +131,7 @@ bool SharedStyleFinder::sharingCandidateHasIdenticalStyleAffectingAttributes(Ele
 {
     if (element().sharesSameElementData(candidate))
         return true;
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (element().fastGetAttribute(XMLNames::langAttr) != candidate.fastGetAttribute(XMLNames::langAttr))
         return false;
 #endif
@@ -276,8 +275,7 @@ bool SharedStyleFinder::canShareStyleWithElement(Element& candidate) const
             return false;
         if (parent->inlineStyle())
             return false;
-        ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
         if (parent->isSVGElement() && toSVGElement(parent)->animatedSMILStyleProperties())
             return false;
 #endif

@@ -687,7 +687,7 @@ void Node::recalcDistribution()
 
 void Node::setIsLink(bool isLink)
 {
-    ASSERT(false); // BKTODO: setFlag(isLink && !SVGImage::isInSVGImage(toElement(this)), IsLinkFlag);
+    setFlag(isLink, IsLinkFlag);
 }
 
 void Node::setNeedsStyleInvalidation()
