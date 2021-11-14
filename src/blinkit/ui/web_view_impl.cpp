@@ -33,6 +33,7 @@
 #include "blinkit/blink/renderer/web/ContextMenuAllowedScope.h"
 #include "blinkit/blink/renderer/web/ResizeViewportAnchor.h"
 #include "blinkit/blink/renderer/web/WebInputEventConversion.h"
+#include "blinkit/ui/click_observer_wrapper.h"
 #include "blinkit/ui/element_impl.h"
 #include "blinkit/ui/rendering_scheduler.h"
 #include "chromium/base/time/time.h"
@@ -91,6 +92,25 @@ WebViewImpl::~WebViewImpl(void)
 {
     ASSERT(isMainThread());
     m_page->willBeDestroyed();
+}
+
+bool WebViewImpl::AddClickObserver(const char *id, BkClickObserver ob, void *userData)
+{
+    bool ret = false;
+    const auto callback = [this, id, ob, userData, &ret] {
+        Document *document = m_frame->document();
+        if (nullptr == document)
+            return;
+
+        Element *element = document->getElementById(AtomicString::fromUTF8(id));
+        if (nullptr == document)
+            return;
+
+        GCRefPtr<ClickObserverWrapper> listener = ClickObserverWrapper::Create(ob, userData);
+        ret = element->addEventListener(EventTypeNames::click, listener.get());
+    };
+    m_appCaller.SyncCall(BLINK_FROM_HERE, callback);
+    return ret;
 }
 
 void WebViewImpl::AnimationTimerFired(Timer<WebViewImpl> *)
@@ -1536,6 +1556,11 @@ void WebViewImpl::UpdatePageOverlays(void)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
+
+BKEXPORT bool_t BKAPI BkAddClickObserver(BkWebView view, const char *id, BkClickObserver ob, void *userData)
+{
+    return view->AddClickObserver(id, ob, userData);
+}
 
 BKEXPORT BkElement BKAPI BkGetElementById(BkWebView view, const char *id)
 {

@@ -53,6 +53,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
+    bool AddClickObserver(const char *id, BkClickObserver ob, void *userData);
     ElementImpl* GetElementById(const char *id) const;
     int LoadUI(const char *URI);
     void SetClient(const BkWebViewClient &client);

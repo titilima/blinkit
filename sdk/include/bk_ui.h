@@ -42,6 +42,10 @@ BKEXPORT int BKAPI BkLoadUI(BkWebView view, const char *URI);
 
 BKEXPORT BkElement BKAPI BkGetElementById(BkWebView view, const char *id);
 
+typedef void (BKAPI * BkClickObserver)(void *);
+
+BKEXPORT bool_t BKAPI BkAddClickObserver(BkWebView view, const char *id, BkClickObserver ob, void *userData);
+
 #ifdef _WIN32
 
 BKEXPORT BkWebView BKAPI BkGetWebView(HWND hWnd);

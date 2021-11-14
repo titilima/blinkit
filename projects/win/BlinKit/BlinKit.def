@@ -9,6 +9,7 @@ IsBlinKitThread
 BkWebViewSetClient
 BkLoadUI
 BkGetElementById
+BkAddClickObserver
 BkGetWebView
 BkDefWindowProc
 BkProcessWindowMessage
