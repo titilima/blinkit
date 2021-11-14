@@ -4128,6 +4128,9 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\element_impl.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\click_observer_wrapper.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -8067,6 +8070,198 @@
       <Filter>loader\tasks</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\element_impl.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\BackgroundImageGeometry.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\BlockFlowPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\BlockPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\BoxBorderPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\BoxClipper.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\BoxDecorationData.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\BoxPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ClipScope.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\DetailsMarkerPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\EllipsisBoxPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\FieldsetPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\FileUploadControlPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\FilterEffectBuilder.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\FilterPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\FramePainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\GridPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ImagePainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\InlineFlowBoxPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\InlinePainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\InlineTextBoxPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\LayerClipRecorder.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\LayerFixedPositionRecorder.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\LayoutObjectDrawingRecorder.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\LineBoxListPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\LineLayoutPaintShim.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ListItemPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ListMarkerPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\MultiColumnSetPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\NinePieceImageGrid.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\NinePieceImagePainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ObjectPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ObjectPaintProperties.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintInfo.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintInvalidationCapableScrollableArea.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintLayerClipper.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintLayerFilterInfo.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintLayerFragment.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintLayerPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintLayerPaintingInfo.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintLayerReflectionInfo.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintLayerStackingNode.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintLayerStackingNodeIterator.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintPhase.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintPropertyTreeBuilder.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PartPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ReplacedPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ReplicaPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\RootInlineBoxPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\RoundedInnerRectClipper.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ScopeRecorder.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ScrollableAreaPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ScrollbarPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ScrollRecorder.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\TableCellPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\TablePainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\TableRowPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\TableSectionPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\TextPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ThemePainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ThemePainterDefault.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\Transform3DRecorder.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\TransformRecorder.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\ViewPainter.h">
+      <Filter>blink\renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\click_observer_wrapper.h">
       <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
