@@ -1563,7 +1563,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\PseudoElement.cpp">
       <Filter>blink\renderer\core\dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\ClassList.cpp">
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\class_list.cpp">
       <Filter>blink\renderer\core\html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMTokenList.cpp">
@@ -5105,7 +5105,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\WeekInputType.h">
       <Filter>blink\renderer\core\html\forms</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\ClassList.h">
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\class_list.h">
       <Filter>blink\renderer\core\html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\CollectionIndexCache.h">

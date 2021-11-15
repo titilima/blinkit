@@ -689,7 +689,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\TopControls.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\VisualViewport.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\HTMLTokenizerNames.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\ClassList.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\class_list.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\DocumentNameCollection.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\FormAssociatedElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\FormData.cpp" />
@@ -2102,7 +2102,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\HTMLElementLookupTrie.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\HTMLElementTypeHelpers.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\HTMLNames.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\ClassList.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\class_list.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\CollectionIndexCache.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\CollectionItemsCache.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\CollectionType.h" />
