@@ -69,7 +69,7 @@ struct BkPoint { int x, y; };
 struct BkSize { int width, height; };
 struct BkRect { BkPoint location; BkSize size; };
 
-BKEXPORT void BKAPI BkGetElementPosition(BkElement e, struct BkRect *dst);
+BKEXPORT void BKAPI BkGetElementPosition(BkElement e, struct BkRect *dst, unsigned reserved);
 
 #ifdef __cplusplus
 }

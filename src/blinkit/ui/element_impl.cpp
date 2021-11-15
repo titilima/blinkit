@@ -59,11 +59,11 @@ BKEXPORT bool_t BKAPI BkGetElementAttribute(BkElement e, const char *name, struc
 }
 
 
-BKEXPORT void BKAPI BkGetElementPosition(BkElement e, struct BkRect *dst)
+BKEXPORT void BKAPI BkGetElementPosition(BkElement e, struct BkRect *dst, unsigned)
 {
     IntRect rc;
     const auto callback = [&rc](Element &e) {
-        rc = e.pixelSnappedBoundingBox();
+        rc = e.boundsInViewport();
     };
     e->SafeAccess(callback);
 
