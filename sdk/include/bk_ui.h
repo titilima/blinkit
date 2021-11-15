@@ -32,8 +32,8 @@ BK_DECLARE_HANDLE(BkElement, ElementImpl);
 struct BkWebViewClient {
     size_t SizeOfStruct; // sizeof(BkWebViewClient)
     void *UserData;
-    void (BKAPI * DocumentReady)(void *);
-    bool_t (BKAPI * TitleChange)(const char *, void *);
+    void (BKAPI * DocumentReady)(BkWebView, void *);
+    bool_t (BKAPI * TitleChange)(BkWebView, const char *, void *);
 };
 
 BKEXPORT void BKAPI BkWebViewSetClient(BkWebView view, struct BkWebViewClient *client);

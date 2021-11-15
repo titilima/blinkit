@@ -206,7 +206,7 @@ void WebViewImpl::dispatchDidFinishLoad(void)
 {
     auto task = [this] {
         auto _ = m_lock.guard_shared();
-        m_client.DocumentReady(m_client.UserData);
+        m_client.DocumentReady(this, m_client.UserData);
     };
     m_clientCaller.Post(BLINK_FROM_HERE, std::move(task));
 }
@@ -884,7 +884,7 @@ bool WebViewImpl::ProcessTitleChange(const std::string &title) const
     auto _ = m_lock.guard_shared();
     if (nullptr == m_client.TitleChange)
         return false;
-    return m_client.TitleChange(title.c_str(), m_client.UserData);
+    return m_client.TitleChange(const_cast<WebViewImpl *>(this), title.c_str(), m_client.UserData);
 }
 
 void WebViewImpl::RefreshPageScaleFactorAfterLayout(void)

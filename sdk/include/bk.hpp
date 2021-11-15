@@ -100,9 +100,9 @@ public:
 protected:
     void adjust_raw_client(BkWebViewClient &client) const override;
 private:
-    virtual void document_ready(void) = 0;
+    virtual void document_ready(BkWebView v) = 0;
 
-    static void BKAPI document_ready_callback(void *p);
+    static void BKAPI document_ready_callback(BkWebView v, void *p);
 };
 
 template <class T>
@@ -450,9 +450,9 @@ inline void web_view_client_root::adjust_raw_client(BkWebViewClient &client) con
     client.DocumentReady = document_ready_callback;
 }
 
-inline void BKAPI web_view_client_root::document_ready_callback(void *p)
+inline void BKAPI web_view_client_root::document_ready_callback(BkWebView v, void *p)
 {
-    get_client_root(p)->document_ready();
+    get_client_root(p)->document_ready(v);
 }
 
 #ifdef __ATLWIN_H__
