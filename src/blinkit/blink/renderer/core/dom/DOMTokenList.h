@@ -46,18 +46,12 @@ namespace blink {
 class Element;
 class ExceptionState;
 
-class CORE_EXPORT DOMTokenList : public NoBaseWillBeGarbageCollectedFinalized<DOMTokenList>, public ScriptWrappable {
-    DEFINE_WRAPPERTYPEINFO();
-    USING_FAST_MALLOC_WILL_BE_REMOVED(DOMTokenList);
+class CORE_EXPORT DOMTokenList : public ScriptWrappable
+{
     WTF_MAKE_NONCOPYABLE(DOMTokenList);
 public:
     DOMTokenList() { }
     virtual ~DOMTokenList() { }
-
-#if !ENABLE(OILPAN)
-    virtual void ref() = 0;
-    virtual void deref() = 0;
-#endif
 
     virtual unsigned length() const = 0;
     virtual const AtomicString item(unsigned index) const = 0;
@@ -74,9 +68,6 @@ public:
     const AtomicString& toString() const { return value(); }
 
     virtual Element* element() { return 0; }
-
-    DEFINE_INLINE_VIRTUAL_TRACE() { }
-
 protected:
 
     virtual const AtomicString& value() const = 0;
@@ -93,6 +84,8 @@ protected:
     static AtomicString addTokens(const AtomicString&, const Vector<String>&);
     static AtomicString removeToken(const AtomicString&, const AtomicString&);
     static AtomicString removeTokens(const AtomicString&, const Vector<String>&);
+private:
+    BlinKit::GCObject* ObjectForGC(void) final { return nullptr; }
 };
 
 } // namespace blink
