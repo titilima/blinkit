@@ -65,6 +65,10 @@ BKEXPORT bool_t BKAPI BkGetElementAttribute(BkElement e, const char *name, struc
 BKEXPORT void BKAPI BkSetElementAttribute(BkElement e, const char *name, const char *value);
 BKEXPORT void BKAPI BkSetElementIntegalAttribute(BkElement e, const char *name, int value);
 
+BKEXPORT void BKAPI BkAddClassToElement(BkElement e, const char *className);
+BKEXPORT void BKAPI BkRemoveClassFromElement(BkElement e, const char *className);
+BKEXPORT void BKAPI BkToggleElementClass(BkElement e, const char *className);
+
 struct BkPoint { int x, y; };
 struct BkSize { int width, height; };
 struct BkRect { BkPoint location; BkSize size; };

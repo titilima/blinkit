@@ -16,6 +16,9 @@ BkProcessWindowMessage
 BkGetElementAttribute
 BkSetElementAttribute
 BkSetElementIntegalAttribute
+BkAddClassToElement
+BkRemoveClassFromElement
+BkToggleElementClass
 BkGetElementPosition
 
 BkCreateCrawler

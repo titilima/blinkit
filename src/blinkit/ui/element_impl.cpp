@@ -13,6 +13,7 @@
 
 #include "blinkit/app/app_impl.h"
 #include "blinkit/blink/renderer/bindings/core/v8/ExceptionStatePlaceholder.h"
+#include "blinkit/blink/renderer/core/dom/DOMTokenList.h"
 #include "blinkit/blink/renderer/core/dom/Element.h"
 #include "blinkit/ui/rendering_scheduler.h"
 
@@ -35,6 +36,16 @@ void ElementImpl::SafeAccess(const std::function<void(Element &)> &callback) con
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
+
+BKEXPORT void BKAPI BkAddClassToElement(BkElement e, const char *className)
+{
+    const auto callback = [className](Element &e) {
+        RenderingScheduler _(e.document());
+        DOMTokenList &classList = e.classList();
+        classList.add(AtomicString::fromUTF8(className), ASSERT_NO_EXCEPTION);
+    };
+    e->SafeAccess(callback);
+}
 
 BKEXPORT bool_t BKAPI BkGetElementAttribute(BkElement e, const char *name, struct BkBuffer *dst)
 {
@@ -73,6 +84,16 @@ BKEXPORT void BKAPI BkGetElementPosition(BkElement e, struct BkRect *dst, unsign
     dst->size.height = rc.height();
 }
 
+BKEXPORT void BKAPI BkRemoveClassFromElement(BkElement e, const char *className)
+{
+    const auto callback = [className](Element &e) {
+        RenderingScheduler _(e.document());
+        DOMTokenList &classList = e.classList();
+        classList.remove(AtomicString::fromUTF8(className), ASSERT_NO_EXCEPTION);
+    };
+    e->SafeAccess(callback);
+}
+
 BKEXPORT void BKAPI BkSetElementAttribute(BkElement e, const char *name, const char *value)
 {
     const auto callback = [name, value](Element &e) {
@@ -91,6 +112,16 @@ BKEXPORT void BKAPI BkSetElementIntegalAttribute(BkElement e, const char *name, 
     const auto callback = [name, value](Element &e) {
         RenderingScheduler _(e.document());
         e.setAttribute(AtomicString::fromUTF8(name), AtomicString::number(value), ASSERT_NO_EXCEPTION);
+    };
+    e->SafeAccess(callback);
+}
+
+BKEXPORT void BKAPI BkToggleElementClass(BkElement e, const char *className)
+{
+    const auto callback = [className](Element &e) {
+        RenderingScheduler _(e.document());
+        DOMTokenList &classList = e.classList();
+        classList.toggle(AtomicString::fromUTF8(className), ASSERT_NO_EXCEPTION);
     };
     e->SafeAccess(callback);
 }
