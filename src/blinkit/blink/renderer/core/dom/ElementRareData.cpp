@@ -73,7 +73,6 @@ AttrNodeList& ElementRareData::ensureAttrNodeList()
 DEFINE_TRACE_AFTER_DISPATCH(ElementRareData)
 {
     visitor->trace(m_dataset);
-    visitor->trace(m_classList);
     // BKTODO: visitor->trace(m_shadow);
     visitor->trace(m_attributeMap);
 #if ENABLE(OILPAN)

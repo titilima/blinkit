@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: class_list.cpp
+// Description: ClassList Class
+//      Author: Ziming Li
+//     Created: 2021-11-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -22,27 +33,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/html/ClassList.h"
+#include "./class_list.h"
 
-#include "core/dom/Document.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
 
 namespace blink {
 
 using namespace HTMLNames;
 
 ClassList::ClassList(Element* element) : m_element(element) { }
-
-#if !ENABLE(OILPAN)
-void ClassList::ref()
-{
-    m_element->ref();
-}
-
-void ClassList::deref()
-{
-    m_element->deref();
-}
-#endif
 
 unsigned ClassList::length() const
 {
@@ -66,16 +65,10 @@ const SpaceSplitString& ClassList::classNames() const
     ASSERT(m_element->hasClass());
     if (m_element->document().inQuirksMode()) {
         if (!m_classNamesForQuirksMode)
-            m_classNamesForQuirksMode = adoptPtr(new SpaceSplitString(value(), SpaceSplitString::ShouldNotFoldCase));
+            m_classNamesForQuirksMode = std::make_unique<SpaceSplitString>(value(), SpaceSplitString::ShouldNotFoldCase);
         return *m_classNamesForQuirksMode.get();
     }
     return m_element->classNames();
-}
-
-DEFINE_TRACE(ClassList)
-{
-    visitor->trace(m_element);
-    DOMTokenList::trace(visitor);
 }
 
 } // namespace blink

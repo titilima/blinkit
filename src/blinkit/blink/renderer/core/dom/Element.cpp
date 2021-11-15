@@ -36,7 +36,8 @@
 
 #include "core/dom/Element.h"
 
-#include "bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/bindings/core/duk/exception_state.h"
+#include "blinkit/blink/renderer/core/html/class_list.h"
 #include "core/CSSValueKeywords.h"
 #include "core/SVGNames.h"
 #include "core/XLinkNames.h"
@@ -97,7 +98,6 @@
 #include "core/frame/Settings.h"
 #include "core/frame/UseCounter.h"
 // BKTODO: #include "core/frame/csp/ContentSecurityPolicy.h"
-#include "core/html/ClassList.h"
 // BKTODO: #include "core/html/HTMLCanvasElement.h"
 #include "core/html/HTMLCollection.h"
 #include "core/html/HTMLDocument.h"

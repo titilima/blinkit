@@ -33,6 +33,7 @@
 #ifndef ElementRareData_h
 #define ElementRareData_h
 
+#include "blinkit/blink/renderer/core/html/class_list.h"
 #include "core/animation/ElementAnimations.h"
 #include "core/dom/Attr.h"
 #include "core/dom/CompositorProxiedPropertySet.h"
@@ -43,7 +44,6 @@
 #include "core/dom/PseudoElement.h"
 #include "core/dom/custom/CustomElementDefinition.h"
 #include "core/dom/shadow/ElementShadow.h"
-#include "core/html/ClassList.h"
 #include "core/style/StyleInheritedData.h"
 #include "platform/heap/Handle.h"
 #include "wtf/HashSet.h"
@@ -99,7 +99,7 @@ public:
     void clearComputedStyle() { m_computedStyle = nullptr; }
 
     ClassList* classList() const { return m_classList.get(); }
-    void setClassList(PassOwnPtrWillBeRawPtr<ClassList> classList) { m_classList = classList; }
+    void setClassList(std::unique_ptr<ClassList> &&classList) { m_classList = std::move(classList); }
     void clearClassListValueForQuirksMode()
     {
         if (!m_classList)
@@ -156,7 +156,7 @@ private:
     IntSize m_savedLayerScrollOffset;
 
     OwnPtrWillBeMember<DatasetDOMStringMap> m_dataset;
-    OwnPtrWillBeMember<ClassList> m_classList;
+    std::unique_ptr<ClassList> m_classList;
     GCUniquePtr<ElementShadow> m_shadow;
     OwnPtrWillBeMember<NamedNodeMap> m_attributeMap;
     std::unique_ptr<AttrNodeList> m_attrNodeList;

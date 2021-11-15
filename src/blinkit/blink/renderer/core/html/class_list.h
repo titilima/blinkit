@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: class_list.h
+// Description: ClassList Class
+//      Author: Ziming Li
+//     Created: 2021-11-15
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -25,12 +36,10 @@
 #ifndef ClassList_h
 #define ClassList_h
 
-#include "core/HTMLNames.h"
-#include "core/dom/DOMTokenList.h"
-#include "core/dom/Element.h"
-#include "core/dom/SpaceSplitString.h"
-#include "wtf/OwnPtr.h"
-#include "wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/DOMTokenList.h"
+#include "blinkit/blink/renderer/core/dom/Element.h"
+#include "blinkit/blink/renderer/core/dom/SpaceSplitString.h"
 
 namespace blink {
 
@@ -38,17 +47,13 @@ class Element;
 
 typedef int ExceptionCode;
 
-class ClassList final : public DOMTokenList {
+class ClassList final : public DOMTokenList
+{
 public:
-    static PassOwnPtrWillBeRawPtr<ClassList> create(Element* element)
+    static std::unique_ptr<ClassList> create(Element* element)
     {
-        return adoptPtrWillBeNoop(new ClassList(element));
+        return zed::wrap_unique(new ClassList(element));
     }
-
-#if !ENABLE(OILPAN)
-    void ref() override;
-    void deref() override;
-#endif
 
     unsigned length() const override;
     const AtomicString item(unsigned index) const override;
@@ -56,9 +61,6 @@ public:
     Element* element() override { return m_element; }
 
     void clearValueForQuirksMode() { m_classNamesForQuirksMode = nullptr; }
-
-    DECLARE_VIRTUAL_TRACE();
-
 private:
     explicit ClassList(Element*);
 
@@ -69,8 +71,8 @@ private:
     const AtomicString& value() const override { return m_element->getAttribute(HTMLNames::classAttr); }
     void setValue(const AtomicString& value) override { m_element->setAttribute(HTMLNames::classAttr, value); }
 
-    RawPtrWillBeMember<Element> m_element;
-    mutable OwnPtr<SpaceSplitString> m_classNamesForQuirksMode;
+    Element *m_element;
+    mutable std::unique_ptr<SpaceSplitString> m_classNamesForQuirksMode;
 };
 
 } // namespace blink
