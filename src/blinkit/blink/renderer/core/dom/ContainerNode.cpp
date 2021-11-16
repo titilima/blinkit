@@ -1234,7 +1234,7 @@ PassRefPtrWillBeRawPtr<Element> ContainerNode::querySelector(const AtomicString&
     return selectorQuery->queryFirst(*this);
 }
 
-PassRefPtrWillBeRawPtr<StaticElementList> ContainerNode::querySelectorAll(const AtomicString& selectors, ExceptionState& exceptionState)
+GCRefPtr<StaticElementList> ContainerNode::querySelectorAll(const AtomicString& selectors, ExceptionState& exceptionState)
 {
     if (selectors.isEmpty()) {
         exceptionState.throwDOMException(SyntaxError, "The provided selector is empty.");

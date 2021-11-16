@@ -35,16 +35,14 @@
 #ifndef NodeList_h
 #define NodeList_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "wtf/RefCounted.h"
+#include "blinkit/blink/renderer/bindings/core/duk/script_wrappable.h"
 
 namespace blink {
 
 class Node;
 
-class CORE_EXPORT NodeList : public RefCountedWillBeGarbageCollectedFinalized<NodeList>, public ScriptWrappable {
-    DEFINE_WRAPPERTYPEINFO();
+class NodeList : public BlinKit::GCObject, public ScriptWrappable
+{
 public:
     virtual ~NodeList() { }
 
@@ -57,13 +55,11 @@ public:
     virtual bool isChildNodeList() const { return false; }
 
     virtual Node* virtualOwnerNode() const { return 0; }
-
-    DEFINE_INLINE_VIRTUAL_TRACE() { }
-
 protected:
     NodeList() { }
-
 private:
+    BlinKit::GCObject* ObjectForGC(void) override { return this; }
+
     // BKTODO: IterationSource* startIteration(ScriptState*, ExceptionState&) override;
 };
 

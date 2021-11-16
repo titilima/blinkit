@@ -1,8 +1,8 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: StyleSheetContents.cpp
-// Description: StyleSheetContents Class
+//   File Name: DOMTokenList.cpp
+// Description: DOMTokenList Class
 //      Author: Ziming Li
 //     Created: 2021-07-20
 // -------------------------------------------------

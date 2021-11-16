@@ -63,14 +63,14 @@ static duk_ret_t QuerySelectorAll(duk_context *ctx)
     ContainerNode *node = DukScriptObject::To<ContainerNode>(ctx, -1);
 
     DukExceptionState exceptionState(ctx);
-    StaticElementList *ret = node->querySelectorAll(selectors, exceptionState);
+    GCRefPtr<StaticElementList> ret = node->querySelectorAll(selectors, exceptionState);
     if (exceptionState.hadException())
     {
         exceptionState.ThrowIfNeeded();
         return 0;
     }
 
-    DukNodeList::Push(ctx, ret);
+    DukNodeList::Push(ctx, ret.get());
     return 1;
 }
 

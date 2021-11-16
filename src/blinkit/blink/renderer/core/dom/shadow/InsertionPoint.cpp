@@ -185,7 +185,7 @@ bool InsertionPoint::isContentInsertionPoint() const
     return isHTMLContentElement(*this) && isActive();
 }
 
-PassRefPtrWillBeRawPtr<StaticNodeList> InsertionPoint::getDistributedNodes()
+GCRefPtr<StaticNodeList> InsertionPoint::getDistributedNodes()
 {
     updateDistribution();
 

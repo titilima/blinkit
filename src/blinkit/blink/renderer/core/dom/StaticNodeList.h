@@ -53,11 +53,11 @@ class Node;
 template <typename NodeType>
 class StaticNodeTypeList final : public NodeList {
 public:
-    static PassRefPtrWillBeRawPtr<StaticNodeTypeList> adopt(WillBeHeapVector<RefPtrWillBeMember<NodeType>>& nodes);
+    static GCRefPtr<StaticNodeTypeList> adopt(WillBeHeapVector<RefPtrWillBeMember<NodeType>>& nodes);
 
-    static PassRefPtrWillBeRawPtr<StaticNodeTypeList> createEmpty()
+    static GCRefPtr<StaticNodeTypeList> createEmpty()
     {
-        return adoptRefWillBeNoop(new StaticNodeTypeList);
+        return BlinKit::GCWrapShared(new StaticNodeTypeList);
     }
 
     ~StaticNodeTypeList() override;
@@ -80,18 +80,18 @@ typedef StaticNodeTypeList<Node> StaticNodeList;
 typedef StaticNodeTypeList<Element> StaticElementList;
 
 template <typename NodeType>
-PassRefPtrWillBeRawPtr<StaticNodeTypeList<NodeType>> StaticNodeTypeList<NodeType>::adopt(WillBeHeapVector<RefPtrWillBeMember<NodeType>>& nodes)
+GCRefPtr<StaticNodeTypeList<NodeType>> StaticNodeTypeList<NodeType>::adopt(WillBeHeapVector<RefPtrWillBeMember<NodeType>>& nodes)
 {
-    RefPtrWillBeRawPtr<StaticNodeTypeList<NodeType>> nodeList = adoptRefWillBeNoop(new StaticNodeTypeList<NodeType>);
+    GCRefPtr<StaticNodeTypeList<NodeType>> nodeList = BlinKit::GCWrapShared(new StaticNodeTypeList<NodeType>);
     nodeList->m_nodes.swap(nodes);
-    ASSERT(false); // BKTODO: v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(nodeList->AllocationSize());
-    return nodeList.release();
+    // BKTODO: v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(nodeList->AllocationSize());
+    return nodeList;
 }
 
 template <typename NodeType>
 StaticNodeTypeList<NodeType>::~StaticNodeTypeList()
 {
-    ASSERT(false); // BKTODO: v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(-AllocationSize());
+    // BKTODO: v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(-AllocationSize());
 }
 
 template <typename NodeType>

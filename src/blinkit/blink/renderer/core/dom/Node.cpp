@@ -2278,7 +2278,7 @@ void Node::updateAncestorConnectedSubframeCountForInsertion() const
         node->incrementConnectedSubframeCount(count);
 }
 
-PassRefPtrWillBeRawPtr<StaticNodeList> Node::getDestinationInsertionPoints()
+GCRefPtr<StaticNodeList> Node::getDestinationInsertionPoints()
 {
     updateDistribution();
     WillBeHeapVector<RawPtrWillBeMember<InsertionPoint>, 8> insertionPoints;

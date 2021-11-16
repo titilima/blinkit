@@ -655,7 +655,7 @@ public:
     void decrementConnectedSubframeCount(unsigned amount = 1);
     void updateAncestorConnectedSubframeCountForInsertion() const;
 
-    PassRefPtrWillBeRawPtr<StaticNodeList> getDestinationInsertionPoints();
+    GCRefPtr<StaticNodeList> getDestinationInsertionPoints();
     HTMLSlotElement* assignedSlot() const;
     HTMLSlotElement* assignedSlotForBinding();
 

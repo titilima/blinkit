@@ -165,7 +165,7 @@ Element* SelectorDataList::closest(Element& targetElement) const
     return nullptr;
 }
 
-PassRefPtrWillBeRawPtr<StaticElementList> SelectorDataList::queryAll(ContainerNode& rootNode) const
+GCRefPtr<StaticElementList> SelectorDataList::queryAll(ContainerNode& rootNode) const
 {
     WillBeHeapVector<RefPtrWillBeMember<Element>> result;
     execute<AllElementsSelectorQueryTrait>(rootNode, result);
@@ -542,7 +542,7 @@ Element* SelectorQuery::closest(Element& element) const
     return m_selectors.closest(element);
 }
 
-PassRefPtrWillBeRawPtr<StaticElementList> SelectorQuery::queryAll(ContainerNode& rootNode) const
+GCRefPtr<StaticElementList> SelectorQuery::queryAll(ContainerNode& rootNode) const
 {
     return m_selectors.queryAll(rootNode);
 }

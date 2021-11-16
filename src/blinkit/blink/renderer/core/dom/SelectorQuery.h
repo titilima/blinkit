@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SelectorQuery.h
+// Description: SelectorQuery Class
+//      Author: Ziming Li
+//     Created: 2021-11-16
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011, 2013 Apple Inc. All rights reserved.
  * Copyright (C) 2014 Samsung Electronics. All rights reserved.
@@ -49,7 +60,7 @@ public:
     void initialize(const CSSSelectorList&);
     bool matches(Element&) const;
     Element* closest(Element&) const;
-    PassRefPtrWillBeRawPtr<StaticElementList> queryAll(ContainerNode& rootNode) const;
+    GCRefPtr<StaticElementList> queryAll(ContainerNode& rootNode) const;
     PassRefPtrWillBeRawPtr<Element> queryFirst(ContainerNode& rootNode) const;
 
 private:
@@ -93,7 +104,7 @@ public:
 
     bool matches(Element&) const;
     Element* closest(Element&) const;
-    PassRefPtrWillBeRawPtr<StaticElementList> queryAll(ContainerNode& rootNode) const;
+    GCRefPtr<StaticElementList> queryAll(ContainerNode& rootNode) const;
     PassRefPtrWillBeRawPtr<Element> queryFirst(ContainerNode& rootNode) const;
 private:
     explicit SelectorQuery(CSSSelectorList);

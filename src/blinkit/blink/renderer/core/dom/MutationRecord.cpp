@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MutationRecord.cpp
+// Description: MutationRecord Class
+//      Author: Ziming Li
+//     Created: 2021-11-16
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -98,7 +109,7 @@ private:
     StaticNodeList* addedNodes() override { return lazilyInitializeEmptyNodeList(m_addedNodes); }
     StaticNodeList* removedNodes() override { return lazilyInitializeEmptyNodeList(m_removedNodes); }
 
-    static StaticNodeList* lazilyInitializeEmptyNodeList(RefPtrWillBeMember<StaticNodeList>& nodeList)
+    static StaticNodeList* lazilyInitializeEmptyNodeList(GCRefPtr<StaticNodeList>& nodeList)
     {
         if (!nodeList)
             nodeList = StaticNodeList::createEmpty();
@@ -107,8 +118,8 @@ private:
 
     RefPtrWillBeMember<Node> m_target;
     String m_oldValue;
-    RefPtrWillBeMember<StaticNodeList> m_addedNodes;
-    RefPtrWillBeMember<StaticNodeList> m_removedNodes;
+    GCRefPtr<StaticNodeList> m_addedNodes;
+    GCRefPtr<StaticNodeList> m_removedNodes;
 };
 
 class AttributesRecord : public RecordWithEmptyNodeLists {

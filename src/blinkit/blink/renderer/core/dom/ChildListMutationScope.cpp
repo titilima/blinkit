@@ -142,11 +142,14 @@ void ChildListMutationAccumulator::enqueueMutationRecord()
     ASSERT(hasObservers());
     ASSERT(!isEmpty());
 
-    RefPtrWillBeRawPtr<StaticNodeList> addedNodes = StaticNodeList::adopt(m_addedNodes);
-    RefPtrWillBeRawPtr<StaticNodeList> removedNodes = StaticNodeList::adopt(m_removedNodes);
+    GCRefPtr<StaticNodeList> addedNodes = StaticNodeList::adopt(m_addedNodes);
+    GCRefPtr<StaticNodeList> removedNodes = StaticNodeList::adopt(m_removedNodes);
+    ASSERT(false); // BKTODO:
+#if 0
     RefPtrWillBeRawPtr<MutationRecord> record = MutationRecord::createChildList(m_target, addedNodes.release(), removedNodes.release(), m_previousSibling.release(), m_nextSibling.release());
     m_observers->enqueueMutationRecord(record.release());
     m_lastAdded = nullptr;
+#endif
     ASSERT(isEmpty());
 }
 

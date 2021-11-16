@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ParentNode.h
+// Description: ParentNode Class
+//      Author: Ziming Li
+//     Created: 2021-11-16
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Samsung Electronics. All rights reserved.
  *
@@ -68,7 +79,7 @@ public:
         return node.querySelector(selectors, exceptionState);
     }
 
-    static PassRefPtrWillBeRawPtr<StaticElementList> querySelectorAll(ContainerNode& node, const AtomicString& selectors, ExceptionState& exceptionState)
+    static GCRefPtr<StaticElementList> querySelectorAll(ContainerNode& node, const AtomicString& selectors, ExceptionState& exceptionState)
     {
         return node.querySelectorAll(selectors, exceptionState);
     }

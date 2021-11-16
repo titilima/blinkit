@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: InsertionPoint.h
+// Description: InsertionPoint Class
+//      Author: Ziming Li
+//     Created: 2021-11-16
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -52,7 +63,7 @@ public:
     bool isShadowInsertionPoint() const;
     bool isContentInsertionPoint() const;
 
-    PassRefPtrWillBeRawPtr<StaticNodeList> getDistributedNodes();
+    GCRefPtr<StaticNodeList> getDistributedNodes();
 
     virtual bool canAffectSelector() const { return false; }
 
