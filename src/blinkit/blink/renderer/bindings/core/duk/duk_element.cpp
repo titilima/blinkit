@@ -13,6 +13,7 @@
 
 #include "blinkit/blink/renderer/bindings/core/duk/duk.h"
 #include "blinkit/blink/renderer/bindings/core/duk/duk_anchor_element.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_dom_token_list.h"
 #include "blinkit/blink/renderer/bindings/core/duk/duk_event_listener.h"
 #include "blinkit/blink/renderer/bindings/core/duk/duk_exception_state.h"
 #include "blinkit/blink/renderer/bindings/core/duk/duk_image_element.h"
@@ -40,6 +41,14 @@ static duk_ret_t AttributesGetter(duk_context *ctx)
     Element *element = DukScriptObject::To<Element>(ctx, -1);
 
     DukNamedNodeMap::Push(ctx, element->attributesForBindings());
+    return 1;
+}
+
+static duk_ret_t ClassListGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Element *element = DukScriptObject::To<Element>(ctx, -1);
+    DukDOMTokenList::Push(ctx, element->classList());
     return 1;
 }
 
@@ -290,6 +299,7 @@ void DukElement::FillPrototypeEntryForUI(PrototypeEntry &entry)
     };
     static const PrototypeEntry::Property Properties[] = {
         { "attributes",             Impl::AttributesGetter,             nullptr                    },
+        { "classList",              Impl::ClassListGetter,              nullptr                    },
         { "firstElementChild",      Impl::FirstElementChildGetter,      nullptr                    },
         { "innerHTML",              Impl::InnerHTMLGetter,              Impl::InnerHTMLSetter      },
         { "lastElementChild",       Impl::LastElementChildGetter,       nullptr                    },

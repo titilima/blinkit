@@ -175,6 +175,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_console.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_container_node.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_document.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_dom_token_list.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event_listener.cpp" />
@@ -1535,6 +1536,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_console.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_container_node.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_document.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_dom_token_list.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event_listener.h" />

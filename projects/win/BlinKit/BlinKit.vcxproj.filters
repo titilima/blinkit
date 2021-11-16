@@ -4131,6 +4131,9 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\click_observer_wrapper.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_dom_token_list.cpp">
+      <Filter>blink\renderer\bindings\core\duk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -8263,6 +8266,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\click_observer_wrapper.h">
       <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_dom_token_list.h">
+      <Filter>blink\renderer\bindings\core\duk</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
