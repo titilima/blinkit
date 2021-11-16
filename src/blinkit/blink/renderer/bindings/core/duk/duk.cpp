@@ -14,6 +14,20 @@
 namespace BlinKit {
 namespace Duk {
 
+void CollectStringArgs(duk_context *ctx, std::vector<std::string> &dst)
+{
+    const duk_idx_t n = duk_get_top(ctx);
+    for (duk_idx_t i = 0; i < n; ++i)
+    {
+        size_t l = 0;
+        const char *s = duk_safe_to_lstring(ctx, i, &l);
+        if (nullptr == s)
+            continue;
+
+        dst.emplace_back(s, l);
+    }
+}
+
 const char* PushString(duk_context *ctx, const std::string &s)
 {
     return duk_push_lstring(ctx, s.data(), s.length());

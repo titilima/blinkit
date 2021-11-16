@@ -46,6 +46,8 @@ inline WTF::String To<WTF::String>(duk_context *ctx, duk_idx_t idx)
     return WTF::String::fromUTF8(s, l);
 }
 
+void CollectStringArgs(duk_context *ctx, std::vector<std::string> &dst);
+
 bool TryToArrayIndex(duk_context *ctx, duk_idx_t idx, duk_uarridx_t &dst);
 
 const char* PushString(duk_context *ctx, const std::string &s);

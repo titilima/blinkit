@@ -27,22 +27,6 @@ namespace BlinKit {
 
 const char DukDocument::ProtoName[] = "HTMLDocument";
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-static void CollectStringArgs(duk_context *ctx, std::vector<std::string> &dst)
-{
-    const duk_idx_t n = duk_get_top(ctx);
-    for (duk_idx_t i = 0; i < n; ++i)
-    {
-        size_t l = 0;
-        const char *s = duk_safe_to_lstring(ctx, i, &l);
-        if (nullptr == s)
-            continue;
-
-        dst.emplace_back(s, l);
-    }
-}
-
 #ifdef BLINKIT_CRAWLER_ENABLED
 namespace Crawler {
 
@@ -197,7 +181,7 @@ static duk_ret_t URLGetter(duk_context *ctx)
 static duk_ret_t Write(duk_context *ctx)
 {
     std::vector<std::string> text;
-    CollectStringArgs(ctx, text);
+    Duk::CollectStringArgs(ctx, text);
 
     duk_push_this(ctx);
     Document *doc = DukScriptObject::To<Document>(ctx, -1);
@@ -215,7 +199,7 @@ static duk_ret_t Write(duk_context *ctx)
 static duk_ret_t Writeln(duk_context *ctx)
 {
     std::vector<std::string> text;
-    CollectStringArgs(ctx, text);
+    Duk::CollectStringArgs(ctx, text);
 
     duk_push_this(ctx);
     Document *doc = DukScriptObject::To<Document>(ctx, -1);
