@@ -42,9 +42,11 @@ private:
 
     void OnChar(HWND hwnd, TCHAR ch, int cRepeat);
     void OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc);
+    void OnEnterSizeMove(void);
+    void OnExitSizeMove(void);
     void OnIMEStartComposition(HWND hwnd);
     void OnKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags);
-    void OnMouse(UINT message, UINT keyFlags, int x, int y);
+    unsigned OnMouse(UINT message, UINT keyFlags, int x, int y);
     static BOOL OnNCCreate(HWND hwnd, LPCREATESTRUCT cs);
     void OnNCDestroy(HWND hwnd);
     void OnPaint(HWND hwnd);
@@ -66,7 +68,6 @@ private:
     HDC m_memoryDC = nullptr;
     HBITMAP m_oldBitmap = nullptr;
     UINT m_dpi = 96;
-    bool m_changingSizeOrPosition = false;
     blink::WebCursorInfo m_cursorInfo;
 };
 

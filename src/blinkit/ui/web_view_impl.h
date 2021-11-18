@@ -22,6 +22,7 @@
 #include "blinkit/blink/renderer/web/EditorClientImpl.h"
 #include "blinkit/blink/renderer/web/PageWidgetDelegate.h"
 #include "blinkit/ui/mouse_event_session.h"
+#include "blinkit/ui/rendering_session.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/resize_viewport_anchor.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
@@ -60,6 +61,8 @@ public:
 
     blink::IntSize MainFrameSize(void);
 
+    void EnterRenderingSession(void);
+    void LeaveRenderingSession(void);
     virtual void InvalidateNativeView(const blink::IntRect *rect = nullptr) = 0;
 
     void BeginFrame(void);
@@ -103,7 +106,8 @@ protected:
 
     virtual void OnInitialized(void) {}
     void ProcessKeyEvent(blink::WebInputEvent::Type type, int code, int modifiers);
-    void ProcessMouseEvent(blink::WebInputEvent::Type type, blink::WebPointerProperties::Button button, int x, int y);
+    void ProcessMouseEvent(blink::WebInputEvent::Type type, blink::WebPointerProperties::Button button, int x, int y,
+        bool &animationScheduled);
     bool ProcessTitleChange(const std::string &newTitle) const;
     // BKTODO: void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
     void Resize(const blink::IntSize &size);
@@ -113,6 +117,7 @@ protected:
 
     mutable zed::shared_mutex m_lock;
     mutable zed::mutex m_canvasLock;
+    BlinKit::RenderingSession m_renderingSession;
     BlinKit::MouseEventSession m_mouseEventSession;
 private:
     void SetFocusImpl(bool focus);

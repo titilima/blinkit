@@ -115,8 +115,8 @@ bool WebViewImpl::AddClickObserver(const char *id, BkClickObserver ob, void *use
 
 void WebViewImpl::AnimationTimerFired(Timer<WebViewImpl> *)
 {
-    RenderingScheduler scheduler(*this);
-    scheduler.Update();
+    RenderingScheduler _(*this);
+    m_renderingSession.Update(*this);
 }
 
 void WebViewImpl::BeginFrame(void)
@@ -208,6 +208,7 @@ void WebViewImpl::dispatchDidFinishLoad(void)
         auto _ = m_lock.guard_shared();
         m_client.DocumentReady(this, m_client.UserData);
     };
+    m_renderingSession.OnLoadFinished(); // BKTODO: Update here?
     m_clientCaller.Post(BLINK_FROM_HERE, std::move(task));
 }
 
@@ -223,6 +224,13 @@ bool WebViewImpl::EndActiveFlingAnimation(void)
     }
 #endif
     return false;
+}
+
+void WebViewImpl::EnterRenderingSession(void)
+{
+    GetCaller().SyncCall(BLINK_FROM_HERE, [this] {
+        m_renderingSession.Enter(*this);
+    });
 }
 
 WebViewImpl* WebViewImpl::From(Document &document)
@@ -539,8 +547,7 @@ void WebViewImpl::invalidateRect(const IntRect &rect)
     else if (m_client)
         m_client->didInvalidateRect(rect);
 #else
-    if (RenderingScheduler *scheduler = RenderingScheduler::From(*this))
-        scheduler->InvalidateRect(rect);
+    m_renderingSession.InvalidateRect(rect);
 #endif
 }
 
@@ -636,6 +643,13 @@ void WebViewImpl::layoutUpdated(LocalFrame *frame)
     // m_client->didUpdateLayout();
 }
 
+void WebViewImpl::LeaveRenderingSession(void)
+{
+    GetCaller().SyncCall(BLINK_FROM_HERE, [this] {
+        m_renderingSession.Leave(*this);
+    });
+}
+
 int WebViewImpl::LoadUI(const char *URI)
 {
     KURL u(URI);
@@ -648,6 +662,8 @@ int WebViewImpl::LoadUI(const char *URI)
 
     auto task = [this, u]
     {
+        m_renderingSession.OnLoadStarted();
+
         ResourceRequest request(u);
         m_frame->loader().load(FrameLoadRequest(nullptr, request));
     };
@@ -844,10 +860,11 @@ void WebViewImpl::ProcessKeyEvent(WebInputEvent::Type type, int code, int modifi
 void WebViewImpl::ProcessMouseEvent(
     WebInputEvent::Type type,
     WebPointerProperties::Button button,
-    int x, int y)
+    int x, int y,
+    bool &animationScheduled)
 {
     ASSERT(IsClientThread());
-    auto task = [this, type, button, x, y]
+    auto task = [this, type, button, x, y, &animationScheduled]
     {
         WebMouseEvent e;
         e.timeStampSeconds = base::Time::Now().ToDoubleT();
@@ -873,6 +890,8 @@ void WebViewImpl::ProcessMouseEvent(
         m_mouseEventSession.PreProcess(e);
         ProcessInput(e);
         m_mouseEventSession.PostProcess(e);
+
+        animationScheduled = m_renderingSession.AnimationScheduled();
     };
     m_appCaller.SyncCall(BLINK_FROM_HERE, task);
 }
@@ -1069,8 +1088,7 @@ void WebViewImpl::scheduleAnimation(void)
         return;
     }
 #endif
-    if (RenderingScheduler *scheduler = RenderingScheduler::From(*this))
-        scheduler->ScheduleAnimation();
+    m_renderingSession.ScheduleAnimation();
 }
 
 bool WebViewImpl::ScrollViewWithKeyboard(int keyCode, int modifiers)
@@ -1137,11 +1155,8 @@ void WebViewImpl::SendResizeEventAndRepaint(void)
     if (m_layerTreeView)
         UpdateLayerTreeViewport();
 #else
-    if (RenderingScheduler *scheduler = RenderingScheduler::From(*this))
-    {
-        IntRect damagedRect(IntPoint(0, 0), m_size);
-        scheduler->InvalidateRect(damagedRect);
-    }
+    IntRect damagedRect(IntPoint(0, 0), m_size);
+    m_renderingSession.InvalidateRect(damagedRect);
 #endif
     UpdatePageOverlays();
 }
@@ -1268,7 +1283,17 @@ void WebViewImpl::SetVisibilityStateImpl(PageVisibilityState visibilityState, bo
     ASSERT(isMainThread());
     ASSERT(m_page);
     m_page->setVisibilityState(visibilityState, isInitialState);
-
+    switch (visibilityState)
+    {
+        case PageVisibilityStateVisible:
+            m_renderingSession.OnShow();
+            break;
+        case PageVisibilityStateHidden:
+            m_renderingSession.OnHide();
+            break;
+        default:
+            ASSERT_NOT_REACHED();
+    }
 #if 0 // BKTODO:
     if (m_layerTreeView) {
         bool visible = visibilityState == WebPageVisibilityStateVisible;

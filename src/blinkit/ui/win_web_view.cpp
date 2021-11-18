@@ -31,11 +31,11 @@ class MessageLogger
 public:
     MessageLogger(const UINT msg) : m_msg(msg)
     {
-        ZLOG("ProcessWindowMessage begin: {}", m_msg);
+        BKLOG("ProcessWindowMessage begin: 0x%04X at %d", m_msg, GetTickCount());
     }
     ~MessageLogger(void)
     {
-        ZLOG("ProcessWindowMessage end: {}", m_msg);
+        BKLOG("ProcessWindowMessage end: 0x%04X at %d", m_msg, GetTickCount());
     }
 private:
     const UINT m_msg;
@@ -81,9 +81,6 @@ WinWebView::~WinWebView(void)
 
 void WinWebView::didChangeCursor(const WebCursorInfo &cursorInfo)
 {
-    if (m_changingSizeOrPosition)
-        return;
-
     PCTSTR cursorName = nullptr;
     switch (cursorInfo.type)
     {
@@ -196,6 +193,22 @@ void WinWebView::OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc)
         SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
+void WinWebView::OnEnterSizeMove(void)
+{
+    const auto callback = [this] {
+        m_renderingSession.OnEnterSizeMove();
+    };
+    GetCaller().SyncCall(BLINK_FROM_HERE, callback);
+}
+
+void WinWebView::OnExitSizeMove(void)
+{
+    const auto callback = [this] {
+        m_renderingSession.OnExitSizeMove();
+    };
+    GetCaller().SyncCall(BLINK_FROM_HERE, callback);
+}
+
 void WinWebView::OnIMEStartComposition(HWND hwnd)
 {
     std::optional<POINT> caretPos;
@@ -237,11 +250,8 @@ void WinWebView::OnKey(HWND, UINT vk, BOOL fDown, int, UINT)
     ProcessKeyEvent(type, vk, modifiers);
 }
 
-void WinWebView::OnMouse(UINT message, UINT keyFlags, int x, int y)
+unsigned WinWebView::OnMouse(UINT message, UINT keyFlags, int x, int y)
 {
-    if (m_changingSizeOrPosition)
-        return;
-
     bool trackLeave = !m_mouseEventSession.MouseEntered();
 
     WebInputEvent::Type type;
@@ -287,13 +297,19 @@ void WinWebView::OnMouse(UINT message, UINT keyFlags, int x, int y)
             break;
         default:
             NOTREACHED();
-            return;
+            return 0;
     }
 
-    ProcessMouseEvent(type, button, x, y);
+    bool animationScheduled = false;
+    ProcessMouseEvent(type, button, x, y, animationScheduled);
 
+    unsigned ret = 0;
     switch (message)
     {
+        case WM_MOUSEMOVE:
+            if (animationScheduled)
+                ret |= UpdateRequired;
+            break;
         case WM_LBUTTONUP:
             ReleaseCapture();
             break;
@@ -307,6 +323,7 @@ void WinWebView::OnMouse(UINT message, UINT keyFlags, int x, int y)
         tme.hwndTrack = m_hWnd;
         TrackMouseEvent(&tme);
     }
+    return ret;
 }
 
 BOOL WinWebView::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
@@ -366,6 +383,7 @@ void WinWebView::OnSize(HWND, UINT state, int cx, int cy)
     if (SIZE_MINIMIZED == state)
         return;
 
+    BKLOG("OnSize: %d, %d", cx, cy);
     auto task = [this, cx, cy]
     {
         Resize(IntSize(cx, cy));
@@ -386,7 +404,7 @@ SkBitmap WinWebView::PrepareBitmapForCanvas(const IntSize &size)
 
 bool WinWebView::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
 {
-    // MessageLogger _(Msg);
+    MessageLogger _(Msg);
     if (WM_NCCREATE == Msg)
     {
         *result = HANDLE_WM_NCCREATE(hWnd, wParam, lParam, OnNCCreate);
@@ -410,28 +428,8 @@ unsigned WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam
         case WM_ERASEBKGND:
             *result = TRUE;
             return MessageHandled;
-        case WM_NCDESTROY:
-            HANDLE_WM_NCDESTROY(hWnd, wParam, lParam, OnNCDestroy);
-            return MessageNotHandled;
-    }
-
-    unsigned handlingFlags = MessageHandled;
-
-    RenderingScheduler scheduler(*this);
-    switch (Msg)
-    {
         case WM_PAINT:
             HANDLE_WM_PAINT(hWnd, wParam, lParam, OnPaint);
-            break;
-
-        case WM_LBUTTONDOWN:
-        case WM_LBUTTONUP:
-        case WM_MOUSEMOVE:
-        case WM_RBUTTONDOWN:
-        case WM_RBUTTONUP:
-        case WM_MBUTTONDOWN:
-        case WM_MBUTTONUP:
-            OnMouse(Msg, wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
             break;
 
         case WM_SETCURSOR:
@@ -443,8 +441,28 @@ unsigned WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam
             auto _ = m_lock.guard_shared();
             ::SetCursor(m_cursorInfo.externalHandle);
             *result = TRUE;
-            break;
+            return MessageHandled;
         }
+
+        case WM_NCDESTROY:
+            HANDLE_WM_NCDESTROY(hWnd, wParam, lParam, OnNCDestroy);
+            return MessageNotHandled;
+    }
+
+    unsigned handlingFlags = MessageHandled;
+
+    RenderingScheduler scheduler(*this);
+    switch (Msg)
+    {
+        case WM_LBUTTONDOWN:
+        case WM_LBUTTONUP:
+        case WM_MOUSEMOVE:
+        case WM_RBUTTONDOWN:
+        case WM_RBUTTONUP:
+        case WM_MBUTTONDOWN:
+        case WM_MBUTTONUP:
+            handlingFlags |= OnMouse(Msg, wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+            break;
 
         case WM_KEYDOWN:
             HANDLE_WM_KEYDOWN(hWnd, wParam, lParam, OnKey);
@@ -463,10 +481,10 @@ unsigned WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam
             HANDLE_WM_SIZE(hWnd, wParam, lParam, OnSize);
             break;
         case WM_ENTERSIZEMOVE:
-            m_changingSizeOrPosition = true;
+            OnEnterSizeMove();
             break;
         case WM_EXITSIZEMOVE:
-            m_changingSizeOrPosition = false;
+            OnExitSizeMove();
             break;
 
         case WM_SETFOCUS:
@@ -487,8 +505,6 @@ unsigned WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam
                 handlingFlags = 0;
     }
 
-    if (WM_MOUSEMOVE == Msg && scheduler.AnimationScheduled())
-        handlingFlags |= UpdateRequired;
     return handlingFlags;
 }
 

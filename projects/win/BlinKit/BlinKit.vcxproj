@@ -1425,6 +1425,7 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\HTTPNames.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\mouse_event_session.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\rendering_scheduler.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\ui\rendering_session.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\web_view_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\win_context_menu_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\win_web_view.cpp" />
@@ -2809,6 +2810,7 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\element_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\mouse_event_session.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\rendering_scheduler.h" />
+    <ClInclude Include="..\..\..\src\blinkit\ui\rendering_session.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\web_view_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\win_context_menu_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\win_web_view.h" />
