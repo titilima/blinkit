@@ -59,8 +59,8 @@ static const float ViewportAnchorCoordY = 0;
 
 const WebInputEvent* WebViewImpl::m_currentInputEvent = nullptr;
 
-WebViewImpl::WebViewImpl(ClientCaller &clientCaller, PageVisibilityState visibilityState, SkColor baseBackgroundColor)
-    : FrameLoaderClient(AppImpl::Get().GetAppCaller(), clientCaller)
+WebViewImpl::WebViewImpl(const BkWebViewClient &client, PageVisibilityState visibilityState, SkColor baseBackgroundColor)
+    : m_client(client)
     , m_chromeClient(ChromeClientImpl::create(this))
     , m_contextMenuClientImpl(this)
     , m_dragClientImpl(this)
@@ -69,7 +69,6 @@ WebViewImpl::WebViewImpl(ClientCaller &clientCaller, PageVisibilityState visibil
     , m_animationTimer(this, &WebViewImpl::AnimationTimerFired)
 {
     ASSERT(isMainThread());
-    memset(&m_client, 0, sizeof(m_client));
 
     Page::PageClients pageClients;
     pageClients.chromeClient = m_chromeClient.get();
@@ -77,7 +76,7 @@ WebViewImpl::WebViewImpl(ClientCaller &clientCaller, PageVisibilityState visibil
     pageClients.dragClient = &m_dragClientImpl;
     pageClients.editorClient = &m_editorClientImpl;
     m_page = Page::create(pageClients);
-    SetVisibilityStateImpl(visibilityState, true);
+    SetVisibilityState(visibilityState, true);
 
 #if 0 // BKTODO:
     initializeLayerTreeView();
@@ -96,21 +95,16 @@ WebViewImpl::~WebViewImpl(void)
 
 bool WebViewImpl::AddClickObserver(const char *id, BkClickObserver ob, void *userData)
 {
-    bool ret = false;
-    const auto callback = [this, id, ob, userData, &ret] {
-        Document *document = m_frame->document();
-        if (nullptr == document)
-            return;
+    Document *document = m_frame->document();
+    if (nullptr == document)
+        return false;
 
-        Element *element = document->getElementById(AtomicString::fromUTF8(id));
-        if (nullptr == document)
-            return;
+    Element *element = document->getElementById(AtomicString::fromUTF8(id));
+    if (nullptr == document)
+        return false;
 
-        GCRefPtr<ClickObserverWrapper> listener = ClickObserverWrapper::Create(ob, userData);
-        ret = element->addEventListener(EventTypeNames::click, listener.get());
-    };
-    m_appCaller.SyncCall(BLINK_FROM_HERE, callback);
-    return ret;
+    GCRefPtr<ClickObserverWrapper> listener = ClickObserverWrapper::Create(ob, userData);
+    return element->addEventListener(EventTypeNames::click, listener.get());
 }
 
 void WebViewImpl::AnimationTimerFired(Timer<WebViewImpl> *)
@@ -204,12 +198,9 @@ void WebViewImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 
 void WebViewImpl::dispatchDidFinishLoad(void)
 {
-    auto task = [this] {
-        auto _ = m_lock.guard_shared();
-        m_client.DocumentReady(this, m_client.UserData);
-    };
-    m_renderingSession.OnLoadFinished(); // BKTODO: Update here?
-    m_clientCaller.Post(BLINK_FROM_HERE, std::move(task));
+    RenderingScheduler _(*this);
+    m_renderingSession.OnLoadFinished();
+    m_client.DocumentReady(this, m_client.UserData);
 }
 
 bool WebViewImpl::EndActiveFlingAnimation(void)
@@ -224,13 +215,6 @@ bool WebViewImpl::EndActiveFlingAnimation(void)
     }
 #endif
     return false;
-}
-
-void WebViewImpl::EnterRenderingSession(void)
-{
-    GetCaller().SyncCall(BLINK_FROM_HERE, [this] {
-        m_renderingSession.Enter(*this);
-    });
 }
 
 WebViewImpl* WebViewImpl::From(Document &document)
@@ -259,27 +243,20 @@ BrowserControls& WebViewImpl::GetBrowserControls(void)
 
 ElementImpl* WebViewImpl::GetElementById(const char *id) const
 {
-    ElementImpl *ret = nullptr;
-    const auto callback = [this, id, &ret] {
-        Document *document = m_frame->document();
-        if (nullptr == document)
-            return;
+    Document *document = m_frame->document();
+    if (nullptr == document)
+        return nullptr;
 
-        Element *element = document->getElementById(AtomicString::fromUTF8(id));
-        if (nullptr == document)
-            return;
+    Element *element = document->getElementById(AtomicString::fromUTF8(id));
+    if (nullptr == document)
+        return nullptr;
 
-        auto it = m_exposedElements.find(element);
-        if (m_exposedElements.end() != it)
-        {
-            ret = it->second.get();
-            return;
-        }
+    auto it = m_exposedElements.find(element);
+    if (m_exposedElements.end() != it)
+        return it->second.get();
 
-        ret = new ElementImpl(*element);
-        m_exposedElements.emplace(element, ret);
-    };
-    m_appCaller.SyncCall(BLINK_FROM_HERE, callback);
+    ElementImpl *ret = new ElementImpl(*element);
+    m_exposedElements.emplace(element, ret);
     return ret;
 }
 
@@ -643,13 +620,6 @@ void WebViewImpl::layoutUpdated(LocalFrame *frame)
     // m_client->didUpdateLayout();
 }
 
-void WebViewImpl::LeaveRenderingSession(void)
-{
-    GetCaller().SyncCall(BLINK_FROM_HERE, [this] {
-        m_renderingSession.Leave(*this);
-    });
-}
-
 int WebViewImpl::LoadUI(const char *URI)
 {
     KURL u(URI);
@@ -660,14 +630,10 @@ int WebViewImpl::LoadUI(const char *URI)
         return BK_ERR_URI;
     }
 
-    auto task = [this, u]
-    {
-        m_renderingSession.OnLoadStarted();
+    m_renderingSession.OnLoadStarted();
 
-        ResourceRequest request(u);
-        m_frame->loader().load(FrameLoadRequest(nullptr, request));
-    };
-    m_appCaller.Call(BLINK_FROM_HERE, task);
+    ResourceRequest request(u);
+    m_frame->loader().load(FrameLoadRequest(nullptr, request));
     return BK_ERR_SUCCESS;
 }
 
@@ -794,7 +760,8 @@ void WebViewImpl::PerformResize(void)
 void WebViewImpl::PostAnimationTask(void)
 {
     constexpr double AnimationFrameLimit = 1.0 / 24.0;
-    m_animationTimer.startOneShot(AnimationFrameLimit, BLINK_FROM_HERE);
+    if (!m_changingSizeOrPosition)
+        m_animationTimer.startOneShot(AnimationFrameLimit, BLINK_FROM_HERE);
 }
 
 void WebViewImpl::PostLayoutResize(LocalFrame *frame)
@@ -840,21 +807,18 @@ WebInputEventResult WebViewImpl::ProcessInput(const WebInputEvent &e)
 
 void WebViewImpl::ProcessKeyEvent(WebInputEvent::Type type, int code, int modifiers)
 {
-    ASSERT(IsClientThread());
-    auto task = [this, type, code, modifiers]
-    {
-        WebKeyboardEvent e;
-        e.timeStampSeconds = base::Time::Now().ToDoubleT();
-        e.type = type;
-        e.modifiers = modifiers;
-        e.windowsKeyCode = e.nativeKeyCode = code;
+    RenderingScheduler _(*this);
 
-        memset(e.text, 0, sizeof(e.text));
-        e.text[0] = code;
+    WebKeyboardEvent e;
+    e.timeStampSeconds = base::Time::Now().ToDoubleT();
+    e.type = type;
+    e.modifiers = modifiers;
+    e.windowsKeyCode = e.nativeKeyCode = code;
 
-        ProcessInput(e);
-    };
-    m_appCaller.SyncCall(BLINK_FROM_HERE, task);
+    memset(e.text, 0, sizeof(e.text));
+    e.text[0] = code;
+
+    ProcessInput(e);
 }
 
 void WebViewImpl::ProcessMouseEvent(
@@ -863,44 +827,38 @@ void WebViewImpl::ProcessMouseEvent(
     int x, int y,
     bool &animationScheduled)
 {
-    ASSERT(IsClientThread());
-    auto task = [this, type, button, x, y, &animationScheduled]
-    {
-        WebMouseEvent e;
-        e.timeStampSeconds = base::Time::Now().ToDoubleT();
-        e.type = type;
-        if (WebInputEvent::MouseDown == type || WebInputEvent::MouseMove == type)
-        {
-            switch (button)
-            {
-                case WebPointerProperties::ButtonLeft:
-                    e.modifiers |= WebInputEvent::LeftButtonDown;
-                    break;
-                case WebPointerProperties::ButtonRight:
-                    e.modifiers |= WebInputEvent::RightButtonDown;
-                    break;
-                case WebPointerProperties::ButtonMiddle:
-                    e.modifiers |= WebInputEvent::MiddleButtonDown;
-                    break;
-            }
-        }
-        e.x = e.windowX = e.globalX = x;
-        e.y = e.windowY = e.globalY = y;
-        e.button = button;
-        m_mouseEventSession.PreProcess(e);
-        ProcessInput(e);
-        m_mouseEventSession.PostProcess(e);
+    RenderingScheduler _(*this);
 
-        animationScheduled = m_renderingSession.AnimationScheduled();
-    };
-    m_appCaller.SyncCall(BLINK_FROM_HERE, task);
+    WebMouseEvent e;
+    e.timeStampSeconds = base::Time::Now().ToDoubleT();
+    e.type = type;
+    if (WebInputEvent::MouseDown == type || WebInputEvent::MouseMove == type)
+    {
+        switch (button)
+        {
+            case WebPointerProperties::ButtonLeft:
+                e.modifiers |= WebInputEvent::LeftButtonDown;
+                break;
+            case WebPointerProperties::ButtonRight:
+                e.modifiers |= WebInputEvent::RightButtonDown;
+                break;
+            case WebPointerProperties::ButtonMiddle:
+                e.modifiers |= WebInputEvent::MiddleButtonDown;
+                break;
+        }
+    }
+    e.x = e.windowX = e.globalX = x;
+    e.y = e.windowY = e.globalY = y;
+    e.button = button;
+    m_mouseEventSession.PreProcess(e);
+    ProcessInput(e);
+    m_mouseEventSession.PostProcess(e);
+
+    animationScheduled = m_renderingSession.AnimationScheduled();
 }
 
 bool WebViewImpl::ProcessTitleChange(const std::string &title) const
 {
-    ASSERT(IsClientThread());
-
-    auto _ = m_lock.guard_shared();
     if (nullptr == m_client.TitleChange)
         return false;
     return m_client.TitleChange(const_cast<WebViewImpl *>(this), title.c_str(), m_client.UserData);
@@ -954,6 +912,7 @@ void WebViewImpl::Resize(const IntSize &size)
         return;
     m_size = size;
 
+    RenderingScheduler _(*this);
     ResizeViewportAnchor anchor(*view, m_page->frameHost().visualViewport());
     ResizeViewWhileAnchored(view);
     SendResizeEventAndRepaint();
@@ -1161,30 +1120,9 @@ void WebViewImpl::SendResizeEventAndRepaint(void)
     UpdatePageOverlays();
 }
 
-void WebViewImpl::SetClient(const BkWebViewClient &client)
-{
-    auto _ = m_lock.guard();
-    memset(&m_client, 0, sizeof(m_client));
-
-    m_client.UserData = client.UserData;
-    m_client.DocumentReady = client.DocumentReady;
-    m_client.TitleChange = client.TitleChange;
-
-    // Use `offsetof` macro for different client versions.
-}
-
 void WebViewImpl::SetFocus(bool focus)
 {
-    ASSERT(IsClientThread());
-    m_appCaller.Call(
-        BLINK_FROM_HERE,
-        std::bind(&WebViewImpl::SetFocusImpl, this, focus)
-    );
-}
-
-void WebViewImpl::SetFocusImpl(bool focus)
-{
-    ASSERT(isMainThread());
+    RenderingScheduler _(*this);
 
     m_page->focusController().setFocused(focus);
     if (focus)
@@ -1269,16 +1207,7 @@ void WebViewImpl::SetScaleFactor(float scaleFactor)
         m_frame->setPageZoomFactor(scaleFactor);
 }
 
-void WebViewImpl::SetVisibilityState(PageVisibilityState visibilityState)
-{
-    ASSERT(IsClientThread());
-    m_appCaller.Call(
-        BLINK_FROM_HERE,
-        std::bind(&WebViewImpl::SetVisibilityStateImpl, this, visibilityState, false)
-    );
-}
-
-void WebViewImpl::SetVisibilityStateImpl(PageVisibilityState visibilityState, bool isInitialState)
+void WebViewImpl::SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState)
 {
     ASSERT(isMainThread());
     ASSERT(m_page);
@@ -1342,9 +1271,7 @@ void WebViewImpl::showContextMenu(const WebContextMenuData &data)
         return;
 
     std::shared_ptr<ContextMenu> menu = CreateContextMenu(data);
-    m_clientCaller.Post(BLINK_FROM_HERE, [menu] {
-        menu->Show();
-    });
+    menu->Show();
 }
 
 void WebViewImpl::transitionToCommittedForNewPage(void)
@@ -1377,7 +1304,6 @@ void WebViewImpl::UpdateAndPaint(void)
             resetCanvas = false;
     }
 
-    auto _ = m_canvasLock.guard();
     if (resetCanvas)
     {
         m_canvas = std::make_unique<SkCanvas>(PrepareBitmapForCanvas(m_size));
@@ -1595,11 +1521,6 @@ BKEXPORT BkElement BKAPI BkGetElementById(BkWebView view, const char *id)
 BKEXPORT int BKAPI BkLoadUI(BkWebView view, const char *URI)
 {
     return view->LoadUI(URI);
-}
-
-BKEXPORT void BKAPI BkWebViewSetClient(BkWebView view, BkWebViewClient *client)
-{
-    view->SetClient(*client);
 }
 
 } // extern "C"

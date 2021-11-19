@@ -21,18 +21,10 @@ namespace BlinKit {
 class RenderingStatus {
 public:
     enum {
-        Hide           = 0x1,
-        Loading        = 0x2,
-        SizingOrMoving = 0x4,
-
-        Disabled = Hide | Loading
+        Hide    = 0x1,
+        Loading = 0x2
     };
 };
-
-bool RenderingSession::Enabled(void) const
-{
-    return 0 == (m_status & RenderingStatus::Disabled);
-}
 
 void RenderingSession::Enter(WebViewImpl &webView)
 {
@@ -44,6 +36,7 @@ void RenderingSession::Enter(WebViewImpl &webView)
 void RenderingSession::Leave(WebViewImpl &webView)
 {
     ASSERT(isMainThread());
+    ASSERT(m_scheduledCount > 0);
     if (--m_scheduledCount > 0)
         return;
 
@@ -58,7 +51,7 @@ void RenderingSession::Leave(WebViewImpl &webView)
             else
                 webView.InvalidateNativeView(&m_rectToInvalidate);
         }
-        else if (0 == (m_status & RenderingStatus::SizingOrMoving))
+        else
         {
             webView.PostAnimationTask();
         }
@@ -66,16 +59,6 @@ void RenderingSession::Leave(WebViewImpl &webView)
 
     m_animationScheduled = m_updated = false;
     m_rectToInvalidate = IntRect();
-}
-
-void RenderingSession::OnEnterSizeMove(void)
-{
-    m_status |= RenderingStatus::SizingOrMoving;
-}
-
-void RenderingSession::OnExitSizeMove(void)
-{
-    m_status &= ~RenderingStatus::SizingOrMoving;
 }
 
 void RenderingSession::OnHide(void)

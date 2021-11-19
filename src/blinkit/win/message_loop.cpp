@@ -136,7 +136,7 @@ void MessageLoop::ProcessTimer(size_t slot)
     task();
 }
 
-int MessageLoop::Run(void)
+int MessageLoop::Run(BkMessageFilter filter, void *userData)
 {
     std::optional<int> ret;
     while (!ret.has_value())
@@ -161,6 +161,8 @@ int MessageLoop::Run(void)
             }
 
             if (MessageTask::Process(msg.message, msg.wParam, msg.lParam))
+                continue;
+            if (filter(&msg, userData))
                 continue;
 
             TranslateMessage(&msg);

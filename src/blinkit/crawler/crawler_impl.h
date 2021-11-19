@@ -24,7 +24,7 @@ class CookieJarImpl;
 class CrawlerImpl final : public blink::FrameLoaderClient
 {
 public:
-    CrawlerImpl(const BkCrawlerClient &client, BlinKit::ClientCaller &clientCaller);
+    CrawlerImpl(const BkCrawlerClient &client);
     ~CrawlerImpl(void);
 
     static CrawlerImpl* From(const blink::Document &document);

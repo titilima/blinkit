@@ -13,12 +13,10 @@
 #ifndef BLINKIT_BLINKIT_ELEMENT_IMPL_H
 #define BLINKIT_BLINKIT_ELEMENT_IMPL_H
 
-#include <functional>
 #include "bk_ui.h"
 
 namespace blink {
 class Element;
-class IntRect;
 }
 
 class ElementImpl
@@ -26,7 +24,7 @@ class ElementImpl
 public:
     ElementImpl(blink::Element &element);
 
-    void SafeAccess(const std::function<void(blink::Element &)> &callback) const;
+    blink::Element& GetRawElement(void) { return m_element; }
 private:
     blink::Element &m_element;
 };

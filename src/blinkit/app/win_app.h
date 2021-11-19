@@ -17,7 +17,6 @@
 
 namespace BlinKit {
 
-class ClientCallerStore;
 class MessageLoop;
 #ifdef BLINKIT_UI_ENABLED
 class WinThemeEngine;
@@ -26,18 +25,15 @@ class WinThemeEngine;
 class WinApp final : public AppImpl
 {
 public:
+    WinApp(BkAppClient *client);
     ~WinApp(void) override;
 
     static WinApp& Get(void);
+
+    int RunMessageLoop(BkMessageFilter filter, void *userData);
 private:
-    friend AppImpl;
-    WinApp(BkAppClient *client);
-
-    bool InitializeForBackgroundMode(void);
-    static DWORD WINAPI BackgroundThread(PVOID param);
-
     // blink::Platform
-    WTF::String defaultLocale(void) override;
+    String defaultLocale(void) override;
 #ifdef BLINKIT_UI_ENABLED
     blink::WebClipboard* clipboard(void) override;
     // Returns a blob of data corresponding to the named resource.
@@ -47,15 +43,8 @@ private:
 #endif
     // blink::Thread
     std::shared_ptr<blink::WebTaskRunner> taskRunner(void) override;
-    // AppImpl
-    int RunMessageLoop(void) override;
-    void Exit(int code) override;
-    ClientCaller& AcquireCallerForClient(void) override;
-    void Initialize(void) override;
 
-    HANDLE m_appThread = nullptr; // nullptr for exclusive mode
     std::unique_ptr<MessageLoop> m_messageLoop;
-    std::unique_ptr<ClientCallerStore> m_clientCallerStore;
 #ifdef BLINKIT_UI_ENABLED
     std::unique_ptr<WinThemeEngine> m_themeEngine;
 #endif

@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "bk_app.h"
 #include "blinkit/blink/public/platform/WebTaskRunner.h"
 
 namespace BlinKit {
@@ -24,7 +25,7 @@ public:
     MessageLoop(void);
     ~MessageLoop(void);
 
-    int Run(void);
+    int Run(BkMessageFilter filter, void *userData);
 
     std::shared_ptr<blink::WebTaskRunner> GetTaskRunner(void) const;
     bool PostTask(const blink::WebTraceLocation &loc, std::function<void()> &&task);

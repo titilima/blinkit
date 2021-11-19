@@ -31,9 +31,6 @@ public:
     void OnLoadStarted(void);
     void OnLoadFinished(void);
 
-    void OnEnterSizeMove(void);
-    void OnExitSizeMove(void);
-
     bool AnimationScheduled(void) const { return m_animationScheduled; }
     void ScheduleAnimation(void)
     {
@@ -48,7 +45,7 @@ public:
 
     void Update(WebViewImpl &webView);
 private:
-    bool Enabled(void) const;
+    bool Enabled(void) const { return 0 == m_status; }
 
     unsigned m_status = 0;
     unsigned m_scheduledCount = 0;

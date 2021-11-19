@@ -16,14 +16,13 @@
 #include "blinkit/ui/win_context_menu_impl.h"
 #include "blinkit/win/bk_bitmap.h"
 #include "blinkit/win/message_task.h"
-#include "blinkit/win/view_store.h"
 #include "third_party/zed/include/zed/log.hpp"
 
 using namespace blink;
 
 namespace BlinKit {
 
-static ViewStore g_viewStore;
+static std::unordered_map<HWND, WinWebView *> g_views;
 
 #ifndef NDEBUG
 class MessageLogger
@@ -55,11 +54,11 @@ static SkColor WindowColor(void)
     return SkColorSetARGB(0xff, GetRValue(color), GetGValue(color), GetBValue(color));
 }
 
-WinWebView::WinWebView(HWND hWnd, ClientCaller &clientCaller, bool isWindowVisible)
-    : WebViewImpl(clientCaller, GetPageVisibilityState(isWindowVisible), WindowColor())
+WinWebView::WinWebView(const BkWebViewClient &client, HWND hWnd, bool isWindowVisible)
+    : WebViewImpl(client, GetPageVisibilityState(isWindowVisible), WindowColor())
     , m_hWnd(hWnd)
 {
-    g_viewStore.OnNewView(m_hWnd, this);
+    g_views.emplace(m_hWnd, this);
 
     HDC dc = GetDC(m_hWnd);
     m_dpi = GetDeviceCaps(dc, LOGPIXELSY);
@@ -76,11 +75,15 @@ WinWebView::~WinWebView(void)
         SelectBitmap(m_memoryDC, m_oldBitmap);
     DeleteDC(m_memoryDC);
 
-    g_viewStore.OnViewDestroyed(m_hWnd);
+    if (nullptr != m_hWnd)
+        g_views.erase(m_hWnd);
 }
 
 void WinWebView::didChangeCursor(const WebCursorInfo &cursorInfo)
 {
+    if (m_changingSizeOrPosition)
+        return;
+
     PCTSTR cursorName = nullptr;
     switch (cursorInfo.type)
     {
@@ -141,30 +144,22 @@ void WinWebView::didChangeCursor(const WebCursorInfo &cursorInfo)
             cursorName = IDC_ARROW;
     }
 
-    auto _ = m_lock.guard();
     if (WebCursorInfo::TypeCustom == m_cursorInfo.type)
         DestroyCursor(m_cursorInfo.externalHandle);
     m_cursorInfo = cursorInfo;
     if (nullptr != cursorName)
         m_cursorInfo.externalHandle = LoadCursor(nullptr, cursorName);
-
-    auto task = [this] {
-        ::SetCursor(m_cursorInfo.externalHandle);
-    };
-    MessageTask::Post(m_hWnd, std::move(task));
+    ::SetCursor(m_cursorInfo.externalHandle);
 }
 
 void WinWebView::dispatchDidReceiveTitle(const String &title)
 {
-    auto task = [this, newTitle = title.stdUtf8()]
-    {
-        if (ProcessTitleChange(newTitle))
-            return;
+    std::string newTitle = title.stdUtf8();
+    if (ProcessTitleChange(newTitle))
+        return;
 
-        std::wstring ws = zed::multi_byte_to_wide_string(newTitle, CP_UTF8);
-        SetWindowTextW(m_hWnd, ws.c_str());
-    };
-    MessageTask::Post(m_hWnd, std::move(task));
+    std::wstring ws = zed::multi_byte_to_wide_string(newTitle, CP_UTF8);
+    SetWindowTextW(m_hWnd, ws.c_str());
 }
 
 void WinWebView::InvalidateNativeView(const IntRect *rect)
@@ -187,43 +182,22 @@ void WinWebView::OnChar(HWND hwnd, TCHAR ch, int)
 
 void WinWebView::OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc)
 {
+    RenderingScheduler _(*this);
+
     m_dpi = newDPI;
     UpdateScaleFactor();
     SetWindowPos(hwnd, nullptr, rc->left, rc->top, rc->right - rc->left, rc->bottom - rc->top,
         SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
-void WinWebView::OnEnterSizeMove(void)
-{
-    const auto callback = [this] {
-        m_renderingSession.OnEnterSizeMove();
-    };
-    GetCaller().SyncCall(BLINK_FROM_HERE, callback);
-}
-
-void WinWebView::OnExitSizeMove(void)
-{
-    const auto callback = [this] {
-        m_renderingSession.OnExitSizeMove();
-    };
-    GetCaller().SyncCall(BLINK_FROM_HERE, callback);
-}
-
 void WinWebView::OnIMEStartComposition(HWND hwnd)
 {
-    std::optional<POINT> caretPos;
-    const auto task = [this, &caretPos] {
-        IntRect anchor, focus;
-        if (WebViewImpl::SelectionBounds(anchor, focus))
-            caretPos = { focus.x(), focus.y() };
-    };
-    m_appCaller.SyncCall(BLINK_FROM_HERE, task);
-
-    if (caretPos.has_value())
+    IntRect anchor, focus;
+    if (WebViewImpl::SelectionBounds(anchor, focus))
     {
         COMPOSITIONFORM cf = { 0 };
         cf.dwStyle = CFS_POINT | CFS_FORCE_POSITION;
-        cf.ptCurrentPos = caretPos.value();
+        cf.ptCurrentPos = { focus.x(), focus.y() };
 
         HIMC hIMC = ImmGetContext(hwnd);
         ImmSetCompositionWindow(hIMC, &cf);
@@ -252,6 +226,9 @@ void WinWebView::OnKey(HWND, UINT vk, BOOL fDown, int, UINT)
 
 unsigned WinWebView::OnMouse(UINT message, UINT keyFlags, int x, int y)
 {
+    if (m_changingSizeOrPosition)
+        return 0;
+
     bool trackLeave = !m_mouseEventSession.MouseEntered();
 
     WebInputEvent::Type type;
@@ -328,18 +305,15 @@ unsigned WinWebView::OnMouse(UINT message, UINT keyFlags, int x, int y)
 
 BOOL WinWebView::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
 {
-    AppImpl &app = AppImpl::Get();
-
-    ClientCaller &clientCaller = app.AcquireCallerForClient();
-
-    WinWebView *webView = nullptr;
-    auto task = [&webView, &clientCaller, hwnd, style = cs->style]
+    BkWebViewClient *client = reinterpret_cast<BkWebViewClient *>(cs->lpCreateParams);
+    if (nullptr == client)
     {
-        webView = new WinWebView(hwnd, clientCaller, 0 != (style & WS_VISIBLE));
-        webView->Initialize();
-    };
-    app.GetAppCaller().SyncCall(BLINK_FROM_HERE, task);
+        ASSERT(nullptr != client);
+        return FALSE;
+    }
 
+    WinWebView *webView = new WinWebView(*client, hwnd, 0 != (cs->style & WS_VISIBLE));
+    webView->Initialize();
     if (GetClassLong(hwnd, GCL_STYLE) & CS_DBLCLKS)
         webView->m_mouseEventSession.SetHasDoubleClickEvent();
     return TRUE;
@@ -347,10 +321,7 @@ BOOL WinWebView::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
 
 void WinWebView::OnNCDestroy(HWND hwnd)
 {
-    m_appCaller.Call(
-        BLINK_FROM_HERE,
-        std::bind(std::default_delete<WinWebView>(), this)
-    );
+    delete this;
 }
 
 void WinWebView::OnPaint(HWND hwnd)
@@ -364,32 +335,22 @@ void WinWebView::OnPaint(HWND hwnd)
     int y = ps.rcPaint.top;
     int w = ps.rcPaint.right - ps.rcPaint.left;
     int h = ps.rcPaint.bottom - ps.rcPaint.top;
-    {
-        auto _ = m_canvasLock.guard();
-        BitBlt(hdc, x, y, w, h, m_memoryDC, x, y, SRCCOPY);
-    }
+    BitBlt(hdc, x, y, w, h, m_memoryDC, x, y, SRCCOPY);
 
     EndPaint(hwnd, &ps);
 }
 
 void WinWebView::OnShowWindow(HWND, BOOL fShow, UINT)
 {
+    RenderingScheduler _(*this);
     PageVisibilityState state = GetPageVisibilityState(fShow);
     WebViewImpl::SetVisibilityState(state);
 }
 
 void WinWebView::OnSize(HWND, UINT state, int cx, int cy)
 {
-    if (SIZE_MINIMIZED == state)
-        return;
-
-    BKLOG("OnSize: %d, %d", cx, cy);
-    auto task = [this, cx, cy]
-    {
+    if (SIZE_MINIMIZED != state)
         Resize(IntSize(cx, cy));
-        UpdateAndPaint();
-    };
-    m_appCaller.Call(BLINK_FROM_HERE, std::move(task));
 }
 
 SkBitmap WinWebView::PrepareBitmapForCanvas(const IntSize &size)
@@ -404,14 +365,14 @@ SkBitmap WinWebView::PrepareBitmapForCanvas(const IntSize &size)
 
 bool WinWebView::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
 {
-    MessageLogger _(Msg);
+    // MessageLogger _(Msg);
     if (WM_NCCREATE == Msg)
     {
         *result = HANDLE_WM_NCCREATE(hWnd, wParam, lParam, OnNCCreate);
         return true;
     }
 
-    WinWebView *v = g_viewStore.Lookup(hWnd);
+    WinWebView *v = zed::query_value(g_views, hWnd, nullptr);
     if (nullptr == v)
         return false;
 
@@ -423,11 +384,13 @@ bool WinWebView::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM
 
 unsigned WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
 {
+    unsigned handlingFlags = MessageHandled;
+
     switch (Msg)
     {
         case WM_ERASEBKGND:
-            *result = TRUE;
-            return MessageHandled;
+            *result = FALSE;
+            break;
         case WM_PAINT:
             HANDLE_WM_PAINT(hWnd, wParam, lParam, OnPaint);
             break;
@@ -438,22 +401,11 @@ unsigned WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam
             if (HTCLIENT != hitTestCode)
                 return MessageNotHandled;
 
-            auto _ = m_lock.guard_shared();
             ::SetCursor(m_cursorInfo.externalHandle);
             *result = TRUE;
-            return MessageHandled;
+            break;
         }
 
-        case WM_NCDESTROY:
-            HANDLE_WM_NCDESTROY(hWnd, wParam, lParam, OnNCDestroy);
-            return MessageNotHandled;
-    }
-
-    unsigned handlingFlags = MessageHandled;
-
-    RenderingScheduler scheduler(*this);
-    switch (Msg)
-    {
         case WM_LBUTTONDOWN:
         case WM_LBUTTONUP:
         case WM_MOUSEMOVE:
@@ -480,12 +432,6 @@ unsigned WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam
         case WM_SIZE:
             HANDLE_WM_SIZE(hWnd, wParam, lParam, OnSize);
             break;
-        case WM_ENTERSIZEMOVE:
-            OnEnterSizeMove();
-            break;
-        case WM_EXITSIZEMOVE:
-            OnExitSizeMove();
-            break;
 
         case WM_SETFOCUS:
             WebViewImpl::SetFocus(true);
@@ -493,16 +439,30 @@ unsigned WinWebView::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam
         case WM_KILLFOCUS:
             WebViewImpl::SetFocus(false);
             break;
+
+        case WM_ENTERSIZEMOVE:
+            m_changingSizeOrPosition = true;
+            break;
+        case WM_EXITSIZEMOVE:
+            m_changingSizeOrPosition = false;
+            break;
+
         case WM_SHOWWINDOW:
             HANDLE_WM_SHOWWINDOW(hWnd, wParam, lParam, OnShowWindow);
             break;
+
         case WM_DPICHANGED:
             ASSERT(HIWORD(wParam) == LOWORD(lParam));
             OnDPIChanged(hWnd, HIWORD(wParam), reinterpret_cast<LPRECT>(lParam));
             break;
+
+        case WM_NCDESTROY:
+            HANDLE_WM_NCDESTROY(hWnd, wParam, lParam, OnNCDestroy);
+            return MessageNotHandled;
+
         default:
             if (!MessageTask::Process(Msg, wParam, lParam))
-                handlingFlags = 0;
+                return MessageNotHandled;
     }
 
     return handlingFlags;
@@ -535,12 +495,14 @@ void WinWebView::UpdateScaleFactor(void)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+using namespace BlinKit;
+
 extern "C" {
 
 BKEXPORT LRESULT CALLBACK BkDefWindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
     LRESULT r = 0;
-    bool handled = BlinKit::WinWebView::ProcessWindowMessage(hWnd, Msg, wParam, lParam, &r);
+    bool handled = WinWebView::ProcessWindowMessage(hWnd, Msg, wParam, lParam, &r);
     if (handled)
     {
         switch (Msg)
@@ -559,12 +521,12 @@ BKEXPORT LRESULT CALLBACK BkDefWindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LP
 
 BKEXPORT BkWebView BKAPI BkGetWebView(HWND hWnd)
 {
-    return BlinKit::g_viewStore.Lookup(hWnd);
+    return zed::query_value(g_views, hWnd, nullptr);
 }
 
 BKEXPORT bool_t BKAPI BkProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
 {
-    return BlinKit::WinWebView::ProcessWindowMessage(hWnd, Msg, wParam, lParam, result);
+    return WinWebView::ProcessWindowMessage(hWnd, Msg, wParam, lParam, result);
 }
 
 } // extern "C"

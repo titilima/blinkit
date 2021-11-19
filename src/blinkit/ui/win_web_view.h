@@ -21,7 +21,7 @@ namespace BlinKit {
 class WinWebView final : public WebViewImpl
 {
 public:
-    WinWebView(HWND hWnd, ClientCaller &clientCaller, bool isWindowVisible);
+    WinWebView(const BkWebViewClient &client, HWND hWnd, bool isWindowVisible);
     ~WinWebView(void);
 
     HWND GetHWND(void) const { return m_hWnd; }
@@ -42,8 +42,6 @@ private:
 
     void OnChar(HWND hwnd, TCHAR ch, int cRepeat);
     void OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc);
-    void OnEnterSizeMove(void);
-    void OnExitSizeMove(void);
     void OnIMEStartComposition(HWND hwnd);
     void OnKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags);
     unsigned OnMouse(UINT message, UINT keyFlags, int x, int y);

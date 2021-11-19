@@ -26,6 +26,7 @@ namespace BlinKit {
 AppImpl::AppImpl(BkAppClient *client) : m_firstMonotonicallyIncreasingTime(base::Time::Now().ToDoubleT())
 {
     GCHeap::Initialize();
+
     memset(&m_client, 0, sizeof(BkAppClient));
     if (nullptr != client)
     {
@@ -34,7 +35,11 @@ AppImpl::AppImpl(BkAppClient *client) : m_firstMonotonicallyIncreasingTime(base:
             size = client->SizeOfStruct;
         memcpy(&m_client, client, size);
     }
+
+    m_threadId = Thread::CurrentThreadId();
     m_mainThread = this;
+
+    blink::Initialize(this);
 }
 
 AppImpl::~AppImpl(void)
@@ -74,15 +79,6 @@ LoaderThread& AppImpl::GetLoaderThread(void)
     return *m_loaderThread;
 }
 
-void AppImpl::Initialize(void)
-{
-    m_threadId = Thread::CurrentThreadId();
-    m_threads[m_threadId] = this;
-
-    blink::Initialize(this);
-    m_mainThread = this;
-}
-
 bool AppImpl::LoadResourceFromClient(const char *URI, std::string &dst) const
 {
     ASSERT(nullptr != m_client.LoadResource);
@@ -108,43 +104,6 @@ void AppImpl::OnExit(void)
 using namespace BlinKit;
 
 extern "C" {
-
-#ifdef BLINKIT_CRAWLER_ONLY
-BKEXPORT int BKAPI BkCrawlerMain(BkAppClient *client, void (BKAPI * Init)(void *))
-{
-    Platform *p = Platform::Current();
-    if (nullptr != p)
-    {
-        ASSERT(nullptr == p);
-        return EXIT_FAILURE;
-    }
-
-    std::unique_ptr<AppImpl> app = AppImpl::CreateInstanceForExclusiveMode(client);
-    Init(client->UserData);
-    return app->RunMessageLoop();
-}
-
-BKEXPORT void BKAPI BkExit(int code)
-{
-    AppImpl::Get().Exit(code);
-}
-#endif
-
-BKEXPORT void BKAPI BkFinalize(void)
-{
-    Platform *p = Platform::current();
-    if (nullptr == p)
-        return;
-
-    static_cast<AppImpl *>(p)->Exit(EXIT_SUCCESS);
-}
-
-BKEXPORT bool_t BKAPI BkInitialize(BkAppClient *client)
-{
-    if (nullptr != Platform::current())
-        return false;
-    return AppImpl::InitializeForBackgroundMode(client);
-}
 
 BKEXPORT bool_t BKAPI IsBlinKitThread(void)
 {

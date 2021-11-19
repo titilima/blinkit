@@ -27,9 +27,8 @@
 using namespace blink;
 using namespace BlinKit;
 
-CrawlerImpl::CrawlerImpl(const BkCrawlerClient &client, ClientCaller &clientCaller)
-    : FrameLoaderClient(AppImpl::Get().GetAppCaller(), clientCaller)
-    , m_client(client)
+CrawlerImpl::CrawlerImpl(const BkCrawlerClient &client)
+    : m_client(client)
     // BKTODO: , m_frame(LocalFrame::create(this))
 {
     ASSERT(isMainThread());
@@ -262,8 +261,10 @@ BKEXPORT void BKAPI BkCrawlerEnableCookies(BkCrawler crawler, BkCookieJar *cooki
 
 BKEXPORT BkCrawler BKAPI BkCreateCrawler(BkCrawlerClient *client)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     AppImpl &app = AppImpl::Get();
-
     ClientCaller &clientCaller = app.AcquireCallerForClient();
 
     CrawlerImpl *ret = nullptr;
@@ -273,6 +274,7 @@ BKEXPORT BkCrawler BKAPI BkCreateCrawler(BkCrawlerClient *client)
     };
     app.GetAppCaller().SyncCall(BLINK_FROM_HERE, task);
     return ret;
+#endif
 }
 
 BKEXPORT void BKAPI BkDestroyCrawler(BkCrawler crawler)

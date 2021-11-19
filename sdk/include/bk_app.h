@@ -14,6 +14,9 @@
 #pragma once
 
 #include "bk_def.h"
+#ifdef _WIN32
+#   include <WinUser.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,24 +31,16 @@ struct BkAppClient {
 
 BKEXPORT bool_t BKAPI BkInitialize(struct BkAppClient *client);
 
-/**
- * If you have your own message loops, call BkFinalize before application exiting.
- *   Cannot be used with BkRunApp.
- *   Mainthread mode only.
- */
-BKEXPORT void BKAPI BkFinalize(void);
+#ifdef _WIN32
+
+BKEXPORT int BKAPI BkRunMessageLoop(void);
+
+typedef bool_t (BKAPI * BkMessageFilter)(const MSG *, void *);
+BKEXPORT int BKAPI BkRunMessageLoopEx(BkMessageFilter filter, void *userData);
+
+#endif
 
 BKEXPORT bool_t BKAPI IsBlinKitThread(void);
-
-/**
- * Run crawler(s) in exclusive mode.
- */
-BKEXPORT int BKAPI BkCrawlerMain(struct BkAppClient *client, void (BKAPI * Init)(void *));
-
-/**
- * BkExitApp exits the message loop which created by BkRunApp or in backgound mode.
- */
-BKEXPORT void BKAPI BkExit(int code);
 
 #ifdef __cplusplus
 } // extern "C"

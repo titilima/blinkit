@@ -3,10 +3,10 @@ LIBRARY "BlinKit"
 EXPORTS
 
 BkInitialize
-BkFinalize
+BkRunMessageLoop
+BkRunMessageLoopEx
 IsBlinKitThread
 
-BkWebViewSetClient
 BkLoadUI
 BkGetElementById
 BkAddClickObserver

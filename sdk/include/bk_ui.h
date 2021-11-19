@@ -36,7 +36,6 @@ struct BkWebViewClient {
     bool_t (BKAPI * TitleChange)(BkWebView, const char *, void *);
 };
 
-BKEXPORT void BKAPI BkWebViewSetClient(BkWebView view, struct BkWebViewClient *client);
 
 BKEXPORT int BKAPI BkLoadUI(BkWebView view, const char *URI);
 

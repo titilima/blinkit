@@ -95,9 +95,6 @@ class Widget;
 
 class CORE_EXPORT FrameLoaderClient : public FrameClient {
 public:
-    BlinKit::AppCaller& GetCaller(void) const { return m_appCaller; }
-    BlinKit::ClientCaller& GetClientCaller(void) const { return m_clientCaller; }
-
     virtual void dispatchWillSendRequest(DocumentLoader*, unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse) {}
     virtual void dispatchDidReceiveResponse(DocumentLoader*, unsigned long identifier, const ResourceResponse&) {}
     virtual void dispatchDidFinishLoading(DocumentLoader*, unsigned long identifier) {}
@@ -281,14 +278,7 @@ public:
     virtual void suddenTerminationDisablerChanged(bool present, SuddenTerminationDisablerType) { }
 #endif
 protected:
-    FrameLoaderClient(BlinKit::AppCaller &appCaller, BlinKit::ClientCaller &clientCaller);
-
-#ifndef NDEBUG
-    bool IsClientThread(void) const;
-#endif
-
-    BlinKit::AppCaller &m_appCaller;
-    BlinKit::ClientCaller &m_clientCaller;
+    FrameLoaderClient(void) = default;
 };
 
 } // namespace blink

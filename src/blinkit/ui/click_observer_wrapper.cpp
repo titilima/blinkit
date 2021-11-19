@@ -11,9 +11,7 @@
 
 #include "./click_observer_wrapper.h"
 
-#include "blinkit/app/caller.h"
 #include "blinkit/blink/renderer/core/dom/Document.h"
-#include "blinkit/ui/web_view_impl.h"
 
 using namespace blink;
 
@@ -32,12 +30,7 @@ GCRefPtr<ClickObserverWrapper> ClickObserverWrapper::Create(BkClickObserver ob, 
 void ClickObserverWrapper::handleEvent(ExecutionContext *executionContext, Event *)
 {
     ASSERT(executionContext->isDocument());
-
-    WebViewImpl *view = WebViewImpl::From(toDocument(*executionContext));
-    auto task = [ob = m_ob, userData = m_userData] {
-        ob(userData);
-    };
-    view->GetClientCaller().Post(BLINK_FROM_HERE, std::move(task));
+    m_ob(m_userData);
 }
 
 } // namespace BlinKit

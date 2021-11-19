@@ -11,8 +11,6 @@
 
 #include "./win_app.h"
 
-#include "blinkit/app/app_caller_impl.h"
-#include "blinkit/win/client_caller_store.h"
 #include "blinkit/win/message_loop.h"
 #include "third_party/zed/include/zed/string/conv.hpp"
 #ifdef BLINKIT_UI_ENABLED
@@ -35,45 +33,16 @@ using namespace blink;
 
 namespace BlinKit {
 
-struct BackgoundModeParams {
-    WinApp *app;
-    HANDLE hEvent;
-};
-
-WinApp::WinApp(BkAppClient *client) : AppImpl(client)
-{
-}
-
-WinApp::~WinApp(void)
-{
-    if (nullptr != m_appThread)
-        CloseHandle(m_appThread);
-}
-
-ClientCaller& WinApp::AcquireCallerForClient(void)
-{
-    ASSERT(m_clientCallerStore);
-    return m_clientCallerStore->Acquire();
-}
-
-DWORD WINAPI WinApp::BackgroundThread(PVOID param)
+WinApp::WinApp(BkAppClient *client) : AppImpl(client), m_messageLoop(std::make_unique<MessageLoop>())
 {
 #ifndef NDEBUG
     Thread::SetName("BlinKit Thread");
 #endif
-
-    BackgoundModeParams *params = reinterpret_cast<BackgoundModeParams *>(param);
-
-    std::unique_ptr<WinApp> app(params->app);
-    app->Initialize();
-    app->m_appCaller = std::make_unique<AppCallerImpl>(app->taskRunner());
-    app->m_clientCallerStore = std::make_unique<ClientCallerStoreImpl>();
-    SetEvent(params->hEvent);
-
-    return app->RunMessageLoop();
 }
 
-WTF::String WinApp::defaultLocale(void)
+WinApp::~WinApp(void) = default;
+
+String WinApp::defaultLocale(void)
 {
     std::string localName("en-US");
 
@@ -84,18 +53,7 @@ WTF::String WinApp::defaultLocale(void)
         GetLocaleInfoA(LOCALE_USER_DEFAULT, LOCALE_SNAME, const_cast<PSTR>(localName.c_str()), len);
     }
 
-    return WTF::String::fromStdUTF8(localName);
-}
-
-void WinApp::Exit(int code)
-{
-    const DWORD tid = threadId();
-    PostThreadMessage(tid, WM_QUIT, code, 0);
-    if (nullptr != m_appThread)
-    {
-        ASSERT(GetCurrentThreadId() != tid);
-        WaitForSingleObject(m_appThread, INFINITE);
-    }
+    return String::fromStdUTF8(localName);
 }
 
 WinApp& WinApp::Get(void)
@@ -103,32 +61,11 @@ WinApp& WinApp::Get(void)
     return static_cast<WinApp &>(AppImpl::Get());
 }
 
-void WinApp::Initialize(void)
+int WinApp::RunMessageLoop(BkMessageFilter filter, void *userData)
 {
-    AppImpl::Initialize();
-    m_messageLoop = std::make_unique<MessageLoop>();
-    IsGUIThread(TRUE);
-}
-
-bool WinApp::InitializeForBackgroundMode(void)
-{
-    BackgoundModeParams params;
-    params.hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-    if (nullptr == params.hEvent)
-        return false;
-
-    params.app = this;
-    m_appThread = CreateThread(nullptr, 0, BackgroundThread, &params, 0, nullptr);
-    WaitForSingleObject(params.hEvent, INFINITE);
-    CloseHandle(params.hEvent);
-    return true;
-}
-
-int WinApp::RunMessageLoop(void)
-{
-    int r = m_messageLoop->Run();
-    OnExit();
-    return r;
+    int ret = m_messageLoop->Run(filter, userData);
+    delete this;
+    return ret;
 }
 
 std::shared_ptr<blink::WebTaskRunner> WinApp::taskRunner(void)
@@ -173,32 +110,6 @@ WebThemeEngine* WinApp::themeEngine(void)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef BLINKIT_CRAWLER_ONLY
-std::unique_ptr<AppImpl> AppImpl::CreateInstanceForExclusiveMode(BkAppClient *client)
-{
-    WinApp *app = new WinApp(client);
-    if (nullptr != app)
-    {
-        app->Initialize();
-        app->m_appCaller = std::make_unique<SyncAppCallerImpl>();
-        app->m_clientCallerStore = std::make_unique<SingletonClientCallerStore>();
-    }
-    return base::WrapUnique(app);
-}
-#endif
-
-bool AppImpl::InitializeForBackgroundMode(BkAppClient *client)
-{
-    WinApp *app = new WinApp(client);
-    if (nullptr == app)
-    {
-        ASSERT(nullptr != app);
-        return false;
-    }
-
-    return app->InitializeForBackgroundMode();
-}
-
 void AppImpl::Log(const char *s)
 {
     std::wstring ws = zed::multi_byte_to_wide_string(s);
@@ -207,3 +118,45 @@ void AppImpl::Log(const char *s)
 }
 
 } // namespace BlinKit
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+using namespace BlinKit;
+
+extern "C" {
+
+BKEXPORT bool_t BKAPI BkInitialize(BkAppClient *client)
+{
+    if (nullptr != Platform::current())
+        return false;
+    new WinApp(client);
+    return true;
+}
+
+static bool_t BKAPI DummyMessageFilter(const MSG *, void *)
+{
+    return false;
+}
+
+BKEXPORT int BKAPI BkRunMessageLoop(void)
+{
+    return BkRunMessageLoopEx(DummyMessageFilter, nullptr);
+}
+
+BKEXPORT int BKAPI BkRunMessageLoopEx(BkMessageFilter filter, void *userData)
+{
+    return WinApp::Get().RunMessageLoop(filter, userData);
+}
+
+#if 0 // BKTODO:
+BKEXPORT void BKAPI BkFinalize(void)
+{
+    Platform *p = Platform::current();
+    if (nullptr == p)
+        return;
+
+    static_cast<AppImpl *>(p)->Exit(EXIT_SUCCESS);
+}
+#endif
+
+} // extern "C"

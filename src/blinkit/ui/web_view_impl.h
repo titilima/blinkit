@@ -57,12 +57,11 @@ public:
     bool AddClickObserver(const char *id, BkClickObserver ob, void *userData);
     ElementImpl* GetElementById(const char *id) const;
     int LoadUI(const char *URI);
-    void SetClient(const BkWebViewClient &client);
 
     blink::IntSize MainFrameSize(void);
 
-    void EnterRenderingSession(void);
-    void LeaveRenderingSession(void);
+    void EnterRenderingSession(void) { m_renderingSession.Enter(*this); }
+    void LeaveRenderingSession(void) { m_renderingSession.Leave(*this); }
     virtual void InvalidateNativeView(const blink::IntRect *rect = nullptr) = 0;
 
     void BeginFrame(void);
@@ -95,7 +94,7 @@ public:
     }
 #endif
 protected:
-    WebViewImpl(BlinKit::ClientCaller &clientCaller, blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor = SK_ColorWHITE);
+    WebViewImpl(const BkWebViewClient &client, blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor = SK_ColorWHITE);
 
     class ContextMenu {
     public:
@@ -113,16 +112,12 @@ protected:
     void Resize(const blink::IntSize &size);
     void SetScaleFactor(float scaleFactor);
     void SetFocus(bool focus);
-    void SetVisibilityState(blink::PageVisibilityState visibilityState);
+    void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState = false);
 
-    mutable zed::shared_mutex m_lock;
-    mutable zed::mutex m_canvasLock;
+    bool m_changingSizeOrPosition = false;
     BlinKit::RenderingSession m_renderingSession;
     BlinKit::MouseEventSession m_mouseEventSession;
 private:
-    void SetFocusImpl(bool focus);
-    void SetVisibilityStateImpl(blink::PageVisibilityState visibilityState, bool isInitialState);
-
     // By default, all phases are updated by |UpdateLifecycle| (e.g., style,
     // layout, prepaint, paint, etc. See: document_lifecycle.h). |LifecycleUpdate|
     // can be used to only update to a specific lifecycle phase.
@@ -196,7 +191,7 @@ private:
     void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) final;
 #endif
 
-    BkWebViewClient m_client;
+    const BkWebViewClient m_client;
     std::unique_ptr<blink::ChromeClient> m_chromeClient;
     blink::ContextMenuClientImpl m_contextMenuClientImpl;
     blink::DragClientImpl m_dragClientImpl;
