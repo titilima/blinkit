@@ -95,8 +95,6 @@ private:
 };
 
 class web_view_client_root : public client_root_impl<web_view_client_root, BkWebViewClient> {
-public:
-    BkRequest create_request(const char *url) const;
 protected:
     void adjust_raw_client(BkWebViewClient &client) const override;
 private:
@@ -112,13 +110,27 @@ template <class T>
 class request_client_impl : public client_impl<T, request_client_root> {};
 
 #ifdef __ATLWIN_H__
+
 template <class T>
-class ATL_NO_VTABLE web_view_client_impl : public client_impl<T, web_view_client_root> {
-public:
-    bool OnCreate(BkWebView v, LPCREATESTRUCT cs) { return true; }
+class ATL_NO_VTABLE web_view_client_impl : public client_impl<T, web_view_client_root>
+{
 protected:
     BOOL ProcessWindowMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &r);
 };
+
+template <class T, class TBase = ATL::CWindow, class TWinTraits = ATL::CControlWinTraits>
+class ATL_NO_VTABLE web_view_window_impl : public ATL::CWindowImpl<T, TBase, TWinTraits>
+                                         , public web_view_client_impl<T>
+{
+public:
+    HWND Create(HWND hWndParent, ATL::_U_RECT rect = nullptr, PCTSTR szWindowName = nullptr,
+        DWORD dwStyle = 0, DWORD dwExStyle = 0, ATL::_U_MENUorID MenuOrID = 0U);
+
+    BEGIN_MSG_MAP(web_view_window_impl)
+        CHAIN_MSG_MAP(web_view_client_impl<T>)
+    END_MSG_MAP()
+};
+
 #endif
 
 class js_call
@@ -459,23 +471,20 @@ inline void BKAPI web_view_client_root::document_ready_callback(BkWebView v, voi
 template <class T>
 BOOL web_view_client_impl<T>::ProcessWindowMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &r)
 {
-    BOOL ret = BkProcessWindowMessage(h, m, w, l, &r);
-    if (WM_CREATE == m)
-    {
-        bool ok = false;
-        if (BkWebView v = BkGetWebView(h))
-        {
-            BkWebViewClient client = client_impl<T, web_view_client_root>::get_client();
-            BkWebViewSetClient(v, &client);
+    return BkProcessWindowMessage(h, m, w, l, &r);
+}
 
-            ok = static_cast<T *>(this)->OnCreate(v, reinterpret_cast<LPCREATESTRUCT>(l));
-        }
-
-        if (!ok)
-            r = -1;
-        ret = TRUE;
-    }
-    return ret;
+template <class T, class TBase, class TWinTraits>
+HWND web_view_window_impl<T, TBase, TWinTraits>::Create(
+    HWND hWndParent,
+    ATL::_U_RECT rect,
+    PCTSTR szWindowName,
+    DWORD dwStyle, DWORD dwExStyle,
+    ATL::_U_MENUorID MenuOrID)
+{
+    BkWebViewClient client = web_view_client_impl<T>::get_client();
+    return ATL::CWindowImpl<T, TBase, TWinTraits>::Create(hWndParent, rect, szWindowName,
+        dwStyle, dwExStyle, MenuOrID, &client);
 }
 #endif
 
