@@ -44,6 +44,8 @@ AppImpl::AppImpl(BkAppClient *client) : m_firstMonotonicallyIncreasingTime(base:
 
 AppImpl::~AppImpl(void)
 {
+    if (nullptr != m_client.Exit)
+        m_client.Exit(m_client.UserData);
     GCHeap::Finalize();
 }
 
@@ -89,12 +91,6 @@ double AppImpl::monotonicallyIncreasingTimeSeconds(void)
 {
     double t = currentTimeSeconds();
     return t - m_firstMonotonicallyIncreasingTime;
-}
-
-void AppImpl::OnExit(void)
-{
-    if (nullptr != m_client.Exit)
-        m_client.Exit(m_client.UserData);
 }
 
 } // namespace BlinKit
