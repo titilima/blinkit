@@ -84,6 +84,7 @@ private:
 class request_client_root : public client_root_impl<request_client_root, BkRequestClient> {
 public:
     BkRequest create_request(const char *url) const;
+    BkRequest create_request_for_app_thread(const char *url) const;
 protected:
     void adjust_raw_client(BkRequestClient &client) const override;
 private:
@@ -439,6 +440,12 @@ inline BkRequest request_client_root::create_request(const char *url) const
 {
     BkRequestClient client = get_client();
     return BkCreateRequest(url, &client);
+}
+
+inline BkRequest request_client_root::create_request_for_app_thread(const char *url) const
+{
+    BkRequestClient client = get_client();
+    return BkCreateRequestForAppThread(url, &client);
 }
 
 inline void request_client_root::adjust_raw_client(BkRequestClient &client) const

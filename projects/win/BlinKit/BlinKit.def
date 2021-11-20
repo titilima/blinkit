@@ -2,6 +2,8 @@ LIBRARY "BlinKit"
 
 EXPORTS
 
+BkCreateRequestForAppThread
+
 BkInitialize
 BkRunMessageLoop
 BkRunMessageLoopEx

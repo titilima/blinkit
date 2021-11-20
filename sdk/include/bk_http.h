@@ -32,6 +32,7 @@ struct BkRequestClient {
 };
 
 BKEXPORT BkRequest BKAPI BkCreateRequest(const char *URL, struct BkRequestClient *client);
+BKEXPORT BkRequest BKAPI BkCreateRequestForAppThread(const char *URL, struct BkRequestClient *client);
 
 BKEXPORT int BKAPI BkPerformRequest(BkRequest request, BkWorkController *controller);
 BKEXPORT void BKAPI BkPerformRequestSynchronously(BkRequest request);
