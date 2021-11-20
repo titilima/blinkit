@@ -160,8 +160,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\blinkit\app\app_caller_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\app\app_thread_request_client.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\url_loader.cpp" />
@@ -1430,13 +1430,11 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\win_context_menu_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\win_web_view.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\bk_bitmap.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\win\client_caller_store.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\icu_stub.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\message_loop.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\message_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\time_ticker.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\win\view_store.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -1449,9 +1447,8 @@
     <ClInclude Include="..\..\..\sdk\include\bk_def.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_js.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_ui.h" />
-    <ClInclude Include="..\..\..\src\blinkit\app\app_caller_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\app\caller.h" />
+    <ClInclude Include="..\..\..\src\blinkit\app\app_thread_request_client.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\impl\thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\impl\url_loader.h" />
@@ -2815,11 +2812,9 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\win_context_menu_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\win_web_view.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\bk_bitmap.h" />
-    <ClInclude Include="..\..\..\src\blinkit\win\client_caller_store.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\message_loop.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\message_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\time_ticker.h" />
-    <ClInclude Include="..\..\..\src\blinkit\win\view_store.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

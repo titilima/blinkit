@@ -399,15 +399,6 @@
     <ClCompile Include="..\..\..\src\blinkit\win\message_task.cpp">
       <Filter>win</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\win\view_store.cpp">
-      <Filter>win</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\app\app_caller_impl.cpp">
-      <Filter>app</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\win\client_caller_store.cpp">
-      <Filter>win</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\win\time_ticker.cpp">
       <Filter>win</Filter>
     </ClCompile>
@@ -4137,6 +4128,9 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\rendering_session.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\app\app_thread_request_client.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -4248,18 +4242,6 @@
       <Filter>win</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\message_task.h">
-      <Filter>win</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\win\view_store.h">
-      <Filter>win</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\app\app_caller_impl.h">
-      <Filter>app</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\app\caller.h">
-      <Filter>app</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\win\client_caller_store.h">
       <Filter>win</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\time_ticker.h">
@@ -8275,6 +8257,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\rendering_session.h">
       <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\app\app_thread_request_client.h">
+      <Filter>app</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
