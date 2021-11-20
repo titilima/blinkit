@@ -14,6 +14,7 @@
 #include "blinkit/blink/renderer/bindings/core/v8/ExceptionStatePlaceholder.h"
 #include "blinkit/blink/renderer/core/dom/DOMTokenList.h"
 #include "blinkit/blink/renderer/core/dom/Element.h"
+#include "blinkit/ui/rendering_scheduler.h"
 
 using namespace blink;
 using namespace BlinKit;
@@ -29,7 +30,10 @@ extern "C" {
 
 BKEXPORT void BKAPI BkAddClassToElement(BkElement e, const char *className)
 {
-    DOMTokenList &classList = e->GetRawElement().classList();
+    Element &re = e->GetRawElement();
+
+    RenderingScheduler _(re.document());
+    DOMTokenList &classList = re.classList();
     classList.add(AtomicString::fromUTF8(className), ASSERT_NO_EXCEPTION);
 }
 
@@ -60,29 +64,39 @@ BKEXPORT void BKAPI BkGetElementPosition(BkElement e, struct BkRect *dst, unsign
 
 BKEXPORT void BKAPI BkRemoveClassFromElement(BkElement e, const char *className)
 {
-    DOMTokenList &classList = e->GetRawElement().classList();
+    Element &re = e->GetRawElement();
+
+    RenderingScheduler _(re.document());
+    DOMTokenList &classList = re.classList();
     classList.remove(AtomicString::fromUTF8(className), ASSERT_NO_EXCEPTION);
 }
 
 BKEXPORT void BKAPI BkSetElementAttribute(BkElement e, const char *name, const char *value)
 {
-    Element &rawElement = e->GetRawElement();
+    Element &re = e->GetRawElement();
 
+    RenderingScheduler _(re.document());
     const AtomicString n = AtomicString::fromUTF8(name);
     if (nullptr == value)
-        rawElement.removeAttribute(n);
+        re.removeAttribute(n);
     else
-        rawElement.setAttribute(n, AtomicString::fromUTF8(value), ASSERT_NO_EXCEPTION);
+        re.setAttribute(n, AtomicString::fromUTF8(value), ASSERT_NO_EXCEPTION);
 }
 
 BKEXPORT void BKAPI BkSetElementIntegalAttribute(BkElement e, const char *name, int value)
 {
-    e->GetRawElement().setAttribute(AtomicString::fromUTF8(name), AtomicString::number(value), ASSERT_NO_EXCEPTION);
+    Element &re = e->GetRawElement();
+
+    RenderingScheduler _(re.document());
+    re.setAttribute(AtomicString::fromUTF8(name), AtomicString::number(value), ASSERT_NO_EXCEPTION);
 }
 
 BKEXPORT void BKAPI BkToggleElementClass(BkElement e, const char *className)
 {
-    DOMTokenList &classList = e->GetRawElement().classList();
+    Element &re = e->GetRawElement();
+
+    RenderingScheduler _(re.document());
+    DOMTokenList &classList = re.classList();
     classList.toggle(AtomicString::fromUTF8(className), ASSERT_NO_EXCEPTION);
 }
 
