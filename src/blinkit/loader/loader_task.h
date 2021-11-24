@@ -9,8 +9,8 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_LOADER_TASK_H
-#define BLINKIT_BLINKIT_LOADER_TASK_H
+#ifndef BLINKIT_LOADER_TASK_H
+#define BLINKIT_LOADER_TASK_H
 
 #pragma once
 
@@ -20,7 +20,6 @@
 #include "blinkit/gc/gc_def.h"
 #ifdef BLINKIT_UI_ENABLED
 #   include "blinkit/blink/renderer/wtf/text/AtomicString.h"
-#   include "blinkit/ui/rendering_scheduler.h"
 #endif
 
 namespace blink {
@@ -74,4 +73,4 @@ protected:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BLINKIT_LOADER_TASK_H
+#endif // BLINKIT_LOADER_TASK_H
