@@ -40,7 +40,6 @@
 #include "core/page/AutoscrollController.h"
 
 #include "blinkit/blink/renderer/platform/Task.h"
-#include "blinkit/ui/rendering_scheduler.h"
 #include "blinkit/ui/web_view_impl.h"
 #include "chromium/base/time/time.h"
 #include "core/frame/FrameView.h"

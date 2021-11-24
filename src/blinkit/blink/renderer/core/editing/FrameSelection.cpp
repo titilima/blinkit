@@ -36,8 +36,7 @@
 
 #include "core/editing/FrameSelection.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "blinkit/ui/rendering_scheduler.h"
+#include "blinkit/blink/renderer/bindings/core/duk/exception_state.h"
 #include "blinkit/ui/web_view_impl.h"
 #include "core/HTMLNames.h"
 #include "core/InputTypeNames.h"

@@ -14,7 +14,6 @@
 #include "blinkit/blink/renderer/bindings/core/v8/ExceptionStatePlaceholder.h"
 #include "blinkit/blink/renderer/core/dom/DOMTokenList.h"
 #include "blinkit/blink/renderer/core/dom/Element.h"
-#include "blinkit/ui/rendering_scheduler.h"
 
 using namespace blink;
 using namespace BlinKit;
@@ -32,7 +31,6 @@ BKEXPORT void BKAPI BkAddClassToElement(BkElement e, const char *className)
 {
     Element &re = e->GetRawElement();
 
-    RenderingScheduler _(re.document());
     DOMTokenList &classList = re.classList();
     classList.add(AtomicString::fromUTF8(className), ASSERT_NO_EXCEPTION);
 }
@@ -66,7 +64,6 @@ BKEXPORT void BKAPI BkRemoveClassFromElement(BkElement e, const char *className)
 {
     Element &re = e->GetRawElement();
 
-    RenderingScheduler _(re.document());
     DOMTokenList &classList = re.classList();
     classList.remove(AtomicString::fromUTF8(className), ASSERT_NO_EXCEPTION);
 }
@@ -75,7 +72,6 @@ BKEXPORT void BKAPI BkSetElementAttribute(BkElement e, const char *name, const c
 {
     Element &re = e->GetRawElement();
 
-    RenderingScheduler _(re.document());
     const AtomicString n = AtomicString::fromUTF8(name);
     if (nullptr == value)
         re.removeAttribute(n);
@@ -87,7 +83,6 @@ BKEXPORT void BKAPI BkSetElementIntegalAttribute(BkElement e, const char *name, 
 {
     Element &re = e->GetRawElement();
 
-    RenderingScheduler _(re.document());
     re.setAttribute(AtomicString::fromUTF8(name), AtomicString::number(value), ASSERT_NO_EXCEPTION);
 }
 
@@ -95,7 +90,6 @@ BKEXPORT void BKAPI BkToggleElementClass(BkElement e, const char *className)
 {
     Element &re = e->GetRawElement();
 
-    RenderingScheduler _(re.document());
     DOMTokenList &classList = re.classList();
     classList.toggle(AtomicString::fromUTF8(className), ASSERT_NO_EXCEPTION);
 }
