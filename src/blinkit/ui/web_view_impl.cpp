@@ -35,7 +35,8 @@
 #include "blinkit/blink/renderer/web/WebInputEventConversion.h"
 #include "blinkit/ui/click_observer_wrapper.h"
 #include "blinkit/ui/element_impl.h"
-#include "blinkit/ui/rendering_scheduler.h"
+#include "blinkit/ui/input_events.h"
+#include "blinkit/ui/web_view_host.h"
 #include "chromium/base/time/time.h"
 #include "third_party/zed/include/zed/float.hpp"
 #include "third_party/zed/include/zed/threading/signal.hpp"
@@ -66,7 +67,6 @@ WebViewImpl::WebViewImpl(const BkWebViewClient &client, PageVisibilityState visi
     , m_dragClientImpl(this)
     , m_editorClientImpl(this)
     , m_baseBackgroundColor(baseBackgroundColor)
-    , m_animationTimer(this, &WebViewImpl::AnimationTimerFired)
 {
     ASSERT(isMainThread());
 
@@ -107,12 +107,6 @@ bool WebViewImpl::AddClickObserver(const char *id, BkClickObserver ob, void *use
     return element->addEventListener(EventTypeNames::click, listener.get());
 }
 
-void WebViewImpl::AnimationTimerFired(Timer<WebViewImpl> *)
-{
-    RenderingScheduler _(*this);
-    m_renderingSession.Update(*this);
-}
-
 void WebViewImpl::BeginFrame(void)
 {
     ASSERT(isMainThread());
@@ -132,6 +126,12 @@ float WebViewImpl::ClampPageScaleFactorToLimits(float scaleFactor) const
     return GetPageScaleConstraintsSet().finalConstraints().clampToConstraints(scaleFactor);
 }
 
+void WebViewImpl::clearContextMenu(void)
+{
+    if (nullptr != m_host)
+        m_host->ClearContextMenu();
+}
+
 IntSize WebViewImpl::ContentsSize(void) const
 {
     if (LayoutView *layoutView = m_frame->contentLayoutObject())
@@ -147,6 +147,12 @@ void WebViewImpl::convertViewportToWindow(IntRect *rect) const
 void WebViewImpl::didChangeContentsSize(void)
 {
     GetPageScaleConstraintsSet().didChangeContentsSize(ContentsSize(), PageScaleFactor());
+}
+
+void WebViewImpl::didChangeCursor(const WebCursorInfo &cursorInfo)
+{
+    if (nullptr != m_host)
+        m_host->DidChangeCursor(cursorInfo);
 }
 
 void WebViewImpl::didRemoveAllPendingStylesheet(void)
@@ -198,9 +204,25 @@ void WebViewImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 
 void WebViewImpl::dispatchDidFinishLoad(void)
 {
-    RenderingScheduler _(*this);
-    m_renderingSession.OnLoadFinished();
+    if (nullptr != m_host)
+        UpdateAndPaint();
     m_client.DocumentReady(this, m_client.UserData);
+}
+
+void WebViewImpl::dispatchDidReceiveTitle(const String &title)
+{
+    if (nullptr == m_client.TitleChange && nullptr == m_host)
+        return;
+
+    std::string newTitle = title.stdUtf8();
+    if (m_client.TitleChange(this, newTitle.c_str(), m_client.UserData))
+        return;
+
+    m_host->ChangeTitle(newTitle);
+#if 0 // BKTODO:
+    std::wstring ws = zed::multi_byte_to_wide_string(newTitle, CP_UTF8);
+    SetWindowTextW(m_hWnd, ws.c_str());
+#endif
 }
 
 bool WebViewImpl::EndActiveFlingAnimation(void)
@@ -432,8 +454,6 @@ void WebViewImpl::handleMouseDown(LocalFrame &frame, const WebMouseEvent &event)
     }
 #endif
 
-    m_mouseEventSession.SetLastMouseDownPosition(event.x, event.y);
-
     // Take capture on a mouse down on a plugin so we can send it mouse events.
     // If the hit node is a plugin but a scrollbar is over it don't start mouse
     // capture because it will interfere with the scrollbar receiving events.
@@ -508,12 +528,19 @@ void WebViewImpl::HidePopups(void)
 #endif
 }
 
-void WebViewImpl::Initialize(void)
+void WebViewImpl::Initialize(WebViewHost *host)
 {
-    RenderingScheduler scheduler(*this);
+    ASSERT(nullptr == m_host);
+    m_host = host;
+
     m_frame = LocalFrame::create(this, &(m_page->frameHost()));
     m_frame->init();
-    OnInitialized();
+}
+
+void WebViewImpl::InvalidateHost(const IntRect *rect)
+{
+    ASSERT(nullptr != m_host);
+    m_host->Invalidate(rect);
 }
 
 void WebViewImpl::invalidateRect(const IntRect &rect)
@@ -524,7 +551,8 @@ void WebViewImpl::invalidateRect(const IntRect &rect)
     else if (m_client)
         m_client->didInvalidateRect(rect);
 #else
-    m_renderingSession.InvalidateRect(rect);
+    if (nullptr != m_host)
+        m_host->Invalidate(&rect);
 #endif
 }
 
@@ -629,8 +657,6 @@ int WebViewImpl::LoadUI(const char *URI)
         ASSERT(!u.scheme_is_in_http_family()); // Standard URL is for crawlers only!
         return BK_ERR_URI;
     }
-
-    m_renderingSession.OnLoadStarted();
 
     ResourceRequest request(u);
     m_frame->loader().load(FrameLoadRequest(nullptr, request));
@@ -757,13 +783,6 @@ void WebViewImpl::PerformResize(void)
     }
 }
 
-void WebViewImpl::PostAnimationTask(void)
-{
-    constexpr double AnimationFrameLimit = 1.0 / 24.0;
-    if (!m_changingSizeOrPosition)
-        m_animationTimer.startOneShot(AnimationFrameLimit, BLINK_FROM_HERE);
-}
-
 void WebViewImpl::PostLayoutResize(LocalFrame *frame)
 {
     frame->view()->resize(MainFrameSize());
@@ -807,8 +826,6 @@ WebInputEventResult WebViewImpl::ProcessInput(const WebInputEvent &e)
 
 void WebViewImpl::ProcessKeyEvent(WebInputEvent::Type type, int code, int modifiers)
 {
-    RenderingScheduler _(*this);
-
     WebKeyboardEvent e;
     e.timeStampSeconds = base::Time::Now().ToDoubleT();
     e.type = type;
@@ -821,40 +838,9 @@ void WebViewImpl::ProcessKeyEvent(WebInputEvent::Type type, int code, int modifi
     ProcessInput(e);
 }
 
-void WebViewImpl::ProcessMouseEvent(
-    WebInputEvent::Type type,
-    WebPointerProperties::Button button,
-    int x, int y,
-    bool &animationScheduled)
+void WebViewImpl::ProcessMouseEvent(const BlinKit::MouseEvent &e)
 {
-    RenderingScheduler _(*this);
-
-    WebMouseEvent e;
-    e.timeStampSeconds = base::Time::Now().ToDoubleT();
-    e.type = type;
-    if (WebInputEvent::MouseDown == type || WebInputEvent::MouseMove == type)
-    {
-        switch (button)
-        {
-            case WebPointerProperties::ButtonLeft:
-                e.modifiers |= WebInputEvent::LeftButtonDown;
-                break;
-            case WebPointerProperties::ButtonRight:
-                e.modifiers |= WebInputEvent::RightButtonDown;
-                break;
-            case WebPointerProperties::ButtonMiddle:
-                e.modifiers |= WebInputEvent::MiddleButtonDown;
-                break;
-        }
-    }
-    e.x = e.windowX = e.globalX = x;
-    e.y = e.windowY = e.globalY = y;
-    e.button = button;
-    m_mouseEventSession.PreProcess(e);
-    ProcessInput(e);
-    m_mouseEventSession.PostProcess(e);
-
-    animationScheduled = m_renderingSession.AnimationScheduled();
+    ProcessInput(e.Translate());
 }
 
 bool WebViewImpl::ProcessTitleChange(const std::string &title) const
@@ -912,7 +898,6 @@ void WebViewImpl::Resize(const IntSize &size)
         return;
     m_size = size;
 
-    RenderingScheduler _(*this);
     ResizeViewportAnchor anchor(*view, m_page->frameHost().visualViewport());
     ResizeViewWhileAnchored(view);
     SendResizeEventAndRepaint();
@@ -1047,7 +1032,8 @@ void WebViewImpl::scheduleAnimation(void)
         return;
     }
 #endif
-    m_renderingSession.ScheduleAnimation();
+    if (nullptr != m_host)
+        m_host->ScheduleAnimation();
 }
 
 bool WebViewImpl::ScrollViewWithKeyboard(int keyCode, int modifiers)
@@ -1114,16 +1100,17 @@ void WebViewImpl::SendResizeEventAndRepaint(void)
     if (m_layerTreeView)
         UpdateLayerTreeViewport();
 #else
-    IntRect damagedRect(IntPoint(0, 0), m_size);
-    m_renderingSession.InvalidateRect(damagedRect);
+    if (nullptr != m_host)
+    {
+        IntRect damagedRect(IntPoint(0, 0), m_size);
+        m_host->Invalidate(&damagedRect);
+    }
 #endif
     UpdatePageOverlays();
 }
 
 void WebViewImpl::SetFocus(bool focus)
 {
-    RenderingScheduler _(*this);
-
     m_page->focusController().setFocused(focus);
     if (focus)
     {
@@ -1212,17 +1199,6 @@ void WebViewImpl::SetVisibilityState(PageVisibilityState visibilityState, bool i
     ASSERT(isMainThread());
     ASSERT(m_page);
     m_page->setVisibilityState(visibilityState, isInitialState);
-    switch (visibilityState)
-    {
-        case PageVisibilityStateVisible:
-            m_renderingSession.OnShow();
-            break;
-        case PageVisibilityStateHidden:
-            m_renderingSession.OnHide();
-            break;
-        default:
-            ASSERT_NOT_REACHED();
-    }
 #if 0 // BKTODO:
     if (m_layerTreeView) {
         bool visible = visibilityState == WebPageVisibilityStateVisible;
@@ -1267,11 +1243,8 @@ bool WebViewImpl::ShouldShowContextMenu(const WebContextMenuData &data)
 
 void WebViewImpl::showContextMenu(const WebContextMenuData &data)
 {
-    if (!ShouldShowContextMenu(data))
-        return;
-
-    std::shared_ptr<ContextMenu> menu = CreateContextMenu(data);
-    menu->Show();
+    if (nullptr != m_host && ShouldShowContextMenu(data))
+        m_host->ShowContextMenu(data);
 }
 
 void WebViewImpl::transitionToCommittedForNewPage(void)
@@ -1296,20 +1269,8 @@ void WebViewImpl::UpdateAndPaint(void)
     if (m_size.isEmpty())
         return;
 
-    bool resetCanvas = true;
-    if (m_canvas)
-    {
-        SkImageInfo imageInfo = m_canvas->imageInfo();
-        if (imageInfo.width() == m_size.width() && imageInfo.height() == m_size.height())
-            resetCanvas = false;
-    }
-
-    if (resetCanvas)
-    {
-        m_canvas = std::make_unique<SkCanvas>(PrepareBitmapForCanvas(m_size));
-        m_canvas->drawColor(m_baseBackgroundColor);
-    }
-    PageWidgetDelegate::paint(*m_page, m_canvas.get(), IntRect(IntPoint(), m_size), *m_page->deprecatedLocalMainFrame());
+    SkCanvas *canvas = m_host->RequireCanvas(m_size.width(), m_size.height());
+    PageWidgetDelegate::paint(*m_page, canvas, IntRect(IntPoint(), m_size), *m_page->deprecatedLocalMainFrame());
 }
 
 #if 0 // BKTODO:

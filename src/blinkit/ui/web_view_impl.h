@@ -15,14 +15,13 @@
 #pragma once
 
 #include "bk_ui.h"
+#include "blinkit/blink/public/web/WebInputEvent.h"
 #include "blinkit/blink/renderer/core/loader/FrameLoaderClient.h"
 #include "blinkit/blink/renderer/platform/geometry/IntRect.h"
 #include "blinkit/blink/renderer/web/ContextMenuClientImpl.h"
 #include "blinkit/blink/renderer/web/DragClientImpl.h"
 #include "blinkit/blink/renderer/web/EditorClientImpl.h"
 #include "blinkit/blink/renderer/web/PageWidgetDelegate.h"
-#include "blinkit/ui/mouse_event_session.h"
-#include "blinkit/ui/rendering_session.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/resize_viewport_anchor.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
@@ -30,7 +29,6 @@
 #include "third_party/blink/renderer/core/page/page_widget_delegate.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
 #endif
-#include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "third_party/zed/include/zed/mutex.hpp"
 #include "third_party/zed/include/zed/shared_mutex.hpp"
@@ -43,12 +41,18 @@ struct WebContextMenuData;
 struct WebCursorInfo;
 }
 
-class WebViewImpl : public blink::FrameLoaderClient, public blink::PageWidgetEventHandler
+namespace BlinKit {
+class MouseEvent;
+class WebViewHost;
+}
+
+class WebViewImpl final : public blink::FrameLoaderClient, public blink::PageWidgetEventHandler
 {
 public:
-    virtual ~WebViewImpl(void);
+    WebViewImpl(const BkWebViewClient &client, blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor = SK_ColorWHITE);
+    ~WebViewImpl(void);
 
-    void Initialize(void);
+    void Initialize(BlinKit::WebViewHost *host);
 
     static WebViewImpl* From(blink::Document &document);
 
@@ -60,24 +64,28 @@ public:
 
     blink::IntSize MainFrameSize(void);
 
-    void EnterRenderingSession(void) { m_renderingSession.Enter(*this); }
-    void LeaveRenderingSession(void) { m_renderingSession.Leave(*this); }
-    virtual void InvalidateNativeView(const blink::IntRect *rect = nullptr) = 0;
-
     void BeginFrame(void);
-    virtual void clearContextMenu(void) {}
+    void clearContextMenu(void);
     void convertViewportToWindow(blink::IntRect *rect) const;
     void didChangeContentsSize(void);
-    virtual void didChangeCursor(const blink::WebCursorInfo &cursorInfo) = 0;
+    void didChangeCursor(const blink::WebCursorInfo &cursorInfo);
     blink::FloatSize elasticOverscroll(void) const { return m_elasticOverscroll; }
     blink::LocalFrame* focusedCoreFrame(void) const { return m_frame.get(); }
     blink::LocalFrame& GetFrame(void) const { return *m_frame; }
+    void InvalidateHost(const blink::IntRect *rect = nullptr);
     void invalidateRect(const blink::IntRect &rect);
     void layoutUpdated(blink::LocalFrame *frame);
     blink::Page* page(void) const { return m_page.get(); }
-    void PostAnimationTask(void);
+    void ProcessKeyEvent(blink::WebInputEvent::Type type, int code, int modifiers);
+    void ProcessMouseEvent(const BlinKit::MouseEvent &e);
+    bool ProcessTitleChange(const std::string &newTitle) const;
+    // BKTODO: void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
+    void Resize(const blink::IntSize &size);
     void scheduleAnimation(void);
     bool SelectionBounds(blink::IntRect &anchor, blink::IntRect &focus) const;
+    void SetScaleFactor(float scaleFactor);
+    void SetFocus(bool focus);
+    void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState = false);
     void showContextMenu(const blink::WebContextMenuData &data);
     void UpdateAndPaint(void);
     void updatePageDefinedViewportConstraints(const blink::ViewportDescription &description);
@@ -93,30 +101,6 @@ public:
         // BKTODO: Check this later.
     }
 #endif
-protected:
-    WebViewImpl(const BkWebViewClient &client, blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor = SK_ColorWHITE);
-
-    class ContextMenu {
-    public:
-        virtual ~ContextMenu(void) = default;
-
-        virtual void Show(void) = 0;
-    };
-
-    virtual void OnInitialized(void) {}
-    void ProcessKeyEvent(blink::WebInputEvent::Type type, int code, int modifiers);
-    void ProcessMouseEvent(blink::WebInputEvent::Type type, blink::WebPointerProperties::Button button, int x, int y,
-        bool &animationScheduled);
-    bool ProcessTitleChange(const std::string &newTitle) const;
-    // BKTODO: void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
-    void Resize(const blink::IntSize &size);
-    void SetScaleFactor(float scaleFactor);
-    void SetFocus(bool focus);
-    void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState = false);
-
-    bool m_changingSizeOrPosition = false;
-    BlinKit::RenderingSession m_renderingSession;
-    BlinKit::MouseEventSession m_mouseEventSession;
 private:
     // By default, all phases are updated by |UpdateLifecycle| (e.g., style,
     // layout, prepaint, paint, etc. See: document_lifecycle.h). |LifecycleUpdate|
@@ -130,10 +114,8 @@ private:
 
     blink::IntSize FrameSize(void);
 #endif
-    void AnimationTimerFired(blink::Timer<WebViewImpl> *);
     float ClampPageScaleFactorToLimits(float scaleFactor) const;
     blink::IntSize ContentsSize(void) const;
-    virtual std::shared_ptr<ContextMenu> CreateContextMenu(const blink::WebContextMenuData &data) = 0;
     // Called anytime top controls layout height or content offset have changed.
     void DidUpdateTopControls(void);
     bool EndActiveFlingAnimation(void);
@@ -168,16 +150,16 @@ private:
     void UpdatePageOverlays(void);
 
     // BKTODO: bool IsAcceleratedCompositingActive(void) const;
-    virtual SkBitmap PrepareBitmapForCanvas(const blink::IntSize &size) = 0;
 
     // FrameClient
 #ifdef BLINKIT_FULL_BUILD
     Type GetType(void) const override { return Type::WebView; }
 #endif
     // FrameLoaderClient
-    void transitionToCommittedForNewPage(void) final;
-    void dispatchDidFinishLoad(void) final;
-    void didRemoveAllPendingStylesheet(void) final;
+    void dispatchDidReceiveTitle(const String &title) override;
+    void dispatchDidFinishLoad(void) override;
+    void transitionToCommittedForNewPage(void) override;
+    void didRemoveAllPendingStylesheet(void) override;
     // PageWidgetEventHandler
     void handleMouseDown(blink::LocalFrame &frame, const blink::WebMouseEvent &event) override;
     void handleMouseUp(blink::LocalFrame &frame, const blink::WebMouseEvent &event) override;
@@ -192,6 +174,7 @@ private:
 #endif
 
     const BkWebViewClient m_client;
+    BlinKit::WebViewHost *m_host = nullptr;
     std::unique_ptr<blink::ChromeClient> m_chromeClient;
     blink::ContextMenuClientImpl m_contextMenuClientImpl;
     blink::DragClientImpl m_dragClientImpl;
@@ -202,7 +185,6 @@ private:
     std::unique_ptr<blink::Page> m_page;
     BlinKit::GCUniquePtr<blink::LocalFrame> m_frame;
     SkColor m_baseBackgroundColor;
-    std::unique_ptr<SkCanvas> m_canvas;
     blink::FloatSize m_elasticOverscroll;
 
     static const blink::WebInputEvent *m_currentInputEvent;
@@ -225,7 +207,6 @@ private:
     std::unique_ptr<blink::ResizeViewportAnchor> m_resizeViewportAnchor;
 #endif
 
-    blink::Timer<WebViewImpl> m_animationTimer;
     mutable std::unordered_map<blink::Element *, std::unique_ptr<ElementImpl>> m_exposedElements;
 };
 
