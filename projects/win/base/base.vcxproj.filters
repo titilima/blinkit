@@ -92,12 +92,6 @@
     <ClCompile Include="..\..\..\src\chromium\base\time\time.cpp">
       <Filter>base\time</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\base\task_runner.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\base\sequenced_task_runner.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\base\location.cc">
       <Filter>base</Filter>
     </ClCompile>
@@ -243,15 +237,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\base\memory\ptr_util.h">
       <Filter>base\memory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\base\task_runner.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\base\sequenced_task_runner.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\base\single_thread_task_runner.h">
-      <Filter>base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\base\location.h">
       <Filter>base</Filter>
