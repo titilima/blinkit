@@ -808,7 +808,7 @@ bool Editor::insertLineBreak()
     VisiblePosition caret = frame().selection().selection().visibleStart();
     bool alignToEdge = isEndOfEditableOrNonEditableContent(caret);
     ASSERT(frame().document());
-    ASSERT(false); // BKTODO: TypingCommand::insertLineBreak(*frame().document(), 0);
+    TypingCommand::insertLineBreak(*frame().document(), 0);
     revealSelectionAfterEditingOperation(alignToEdge ? ScrollAlignment::alignToEdgeIfNeeded : ScrollAlignment::alignCenterIfNeeded);
 
     return true;
