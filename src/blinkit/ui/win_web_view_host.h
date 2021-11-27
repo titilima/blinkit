@@ -31,16 +31,18 @@ public:
     HWND GetHWND(void) const { return m_hWnd; }
     WebViewImpl* GetView(void) const { return m_view; }
 
-    void StartAnimationTimerIfNecessary(void);
+    void ScheduleAnimationTaskIfNecessary(void);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
     static bool ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-private:
-    friend class WinPaintSession;
 
-    void AnimationTimerFired(blink::Timer<WinWebViewHost> *);
+    // WebViewHost
+    void Invalidate(const blink::IntRect *rect = nullptr) override;
+private:
+    void ScheduleNextAnimationTask(double delay);
+    void ScheduledAnimationTask(void);
     void UpdateScaleFactor(void);
 
     bool ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
@@ -58,7 +60,6 @@ private:
 
     // WebViewHost
     SkCanvas* RequireCanvas(int width, int height) override;
-    void Invalidate(const blink::IntRect *rect = nullptr) override;
     void ScheduleAnimation(void) override;
     void ChangeTitle(const std::string &title) override;
     void DidChangeCursor(const blink::WebCursorInfo &cursorInfo) override;
@@ -75,9 +76,9 @@ private:
     WinMouseSession m_mouseSession;
     WinPaintSession m_paintSession;
 
+    bool m_animationTaskScheduled = false;
     bool m_changingSizeOrPosition = false;
     blink::WebCursorInfo m_cursorInfo;
-    blink::Timer<WinWebViewHost> m_animationTimer;
 };
 
 } // namespace BlinKit

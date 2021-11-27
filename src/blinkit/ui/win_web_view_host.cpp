@@ -14,9 +14,12 @@
 #include <windowsx.h>
 #include "blinkit/app/win_app.h"
 #include "blinkit/ui/web_view_impl.h"
+#include "blinkit/blink/renderer/platform/Task.h"
 // BKTODO: #include "blinkit/ui/win_context_menu_impl.h"
 #include "blinkit/win/bk_bitmap.h"
 #include "blinkit/win/message_task.h"
+#include "chromium/base/time/time.h"
+#include "third_party/zed/include/zed/float.hpp"
 #include "third_party/zed/include/zed/log.hpp"
 
 using namespace blink;
@@ -24,6 +27,7 @@ using namespace blink;
 namespace BlinKit {
 
 static std::unordered_map<HWND, WinWebViewHost *> g_hosts;
+static constexpr double AnimationFrameLimit = 1.0 / 24.0;
 
 #ifndef NDEBUG
 class MessageLogger
@@ -58,7 +62,6 @@ static SkColor WindowColor(void)
 WinWebViewHost::WinWebViewHost(const BkWebViewClient &client, HWND hWnd, bool isWindowVisible)
     : m_hWnd(hWnd)
     , m_view(new WebViewImpl(client, GetPageVisibilityState(isWindowVisible), WindowColor()))
-    , m_animationTimer(this, &WinWebViewHost::AnimationTimerFired)
 {
     g_hosts.emplace(m_hWnd, this);
 
@@ -86,12 +89,6 @@ WinWebViewHost::~WinWebViewHost(void)
     if (nullptr != m_hWnd)
         g_hosts.erase(m_hWnd);
     delete m_view;
-}
-
-void WinWebViewHost::AnimationTimerFired(Timer<WinWebViewHost> *)
-{
-    ScopedPaintSession _(*this, m_paintSession);
-    m_paintSession.Update(*m_view);
 }
 
 void WinWebViewHost::ChangeTitle(const std::string &title)
@@ -439,16 +436,50 @@ void WinWebViewHost::ScheduleAnimation(void)
     m_paintSession.ScheduleAnimation();
 }
 
+void WinWebViewHost::ScheduleAnimationTaskIfNecessary(void)
+{
+    if (m_changingSizeOrPosition || m_animationTaskScheduled)
+        return;
+
+    double delta = m_paintSession.TimeDeltaSinceLastLeft();
+    double delay = std::max(0.0, AnimationFrameLimit - delta);
+    ScheduleNextAnimationTask(delay);
+}
+
+void WinWebViewHost::ScheduleNextAnimationTask(double delay)
+{
+    ASSERT(!m_animationTaskScheduled);
+    m_animationTaskScheduled = true;
+
+    if (!zed::almost_equals(delay, 0.0))
+        delay *= base::Time::kMillisecondsPerSecond;
+    auto task = std::bind(&WinWebViewHost::ScheduledAnimationTask, this);
+    AppImpl::Get().taskRunner()->postDelayedTask(BLINK_FROM_HERE, new Task(std::move(task)), delay);
+}
+
+void WinWebViewHost::ScheduledAnimationTask(void)
+{
+    double delta = m_paintSession.TimeDeltaSinceLastLeft();
+    if (delta < AnimationFrameLimit)
+    {
+        double delay = AnimationFrameLimit - delta;
+        if (delay > 0.01)
+        {
+            m_animationTaskScheduled = false;
+            ScheduleNextAnimationTask(delay);
+            return;
+        }
+    }
+
+    ASSERT(m_animationTaskScheduled);
+    m_animationTaskScheduled = false;
+    ScopedPaintSession _(*this, m_paintSession);
+    m_paintSession.Update(*m_view);
+}
+
 void WinWebViewHost::ShowContextMenu(const WebContextMenuData &data)
 {
     ASSERT(false); // BKTODO:
-}
-
-void WinWebViewHost::StartAnimationTimerIfNecessary(void)
-{
-    constexpr double AnimationFrameLimit = 1.0 / 24.0;
-    if (!m_changingSizeOrPosition)
-        m_animationTimer.startOneShot(AnimationFrameLimit, BLINK_FROM_HERE);
 }
 
 void WinWebViewHost::UpdateScaleFactor(void)

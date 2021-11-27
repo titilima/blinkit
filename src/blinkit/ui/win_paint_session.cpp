@@ -13,6 +13,7 @@
 
 #include "blinkit/ui/web_view_impl.h"
 #include "blinkit/ui/win_web_view_host.h"
+#include "chromium/base/time/time.h"
 
 using namespace blink;
 
@@ -43,13 +44,17 @@ void WinPaintSession::Leave(WinWebViewHost &host)
         else
             host.Invalidate(&m_damagedRect);
     }
-    else
-    {
-        host.StartAnimationTimerIfNecessary();
-    }
 
     m_animationScheduled = m_updated = false;
     m_damagedRect = IntRect();
+
+    host.ScheduleAnimationTaskIfNecessary();
+    m_lastLeftTime = base::Time::Now().ToDoubleT();
+}
+
+double WinPaintSession::TimeDeltaSinceLastLeft(void) const
+{
+    return base::Time::Now().ToDoubleT() - m_lastLeftTime;
 }
 
 void WinPaintSession::Update(WebViewImpl &view)

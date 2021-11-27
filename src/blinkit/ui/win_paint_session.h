@@ -32,8 +32,11 @@ public:
 
     bool AnimationScheduled(void) const { return m_animationScheduled; }
     void ScheduleAnimation(void) { m_animationScheduled = true; }
+
+    double TimeDeltaSinceLastLeft(void) const;
 private:
     unsigned m_enteredTimes = 0;
+    double m_lastLeftTime = 0.0;
 
     bool m_animationScheduled = false;
     bool m_updated = false;
