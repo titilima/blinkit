@@ -215,14 +215,10 @@ void WebViewImpl::dispatchDidReceiveTitle(const String &title)
         return;
 
     std::string newTitle = title.stdUtf8();
-    if (m_client.TitleChange(this, newTitle.c_str(), m_client.UserData))
+    if (nullptr != m_client.TitleChange && m_client.TitleChange(this, newTitle.c_str(), m_client.UserData))
         return;
-
-    m_host->ChangeTitle(newTitle);
-#if 0 // BKTODO:
-    std::wstring ws = zed::multi_byte_to_wide_string(newTitle, CP_UTF8);
-    SetWindowTextW(m_hWnd, ws.c_str());
-#endif
+    if (nullptr != m_host)
+        m_host->ChangeTitle(newTitle);
 }
 
 bool WebViewImpl::EndActiveFlingAnimation(void)
