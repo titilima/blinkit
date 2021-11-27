@@ -68,10 +68,12 @@ extern HMODULE theModule;
 #endif
 
 #include "base/logging.h"
+#include "third_party/zed/include/zed/log.hpp"
 #ifdef BLINKIT_UI_ENABLED
 #   include "skia/_skia.h"
 #endif
 
+#include "blinkit/blink/renderer/wtf/Assertions.h"
 #ifdef NDEBUG
 // Used for speeding up compilation
 #   include "blinkit/blink/renderer/core/dom/Document.h" 
