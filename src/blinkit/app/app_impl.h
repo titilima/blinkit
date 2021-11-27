@@ -38,6 +38,12 @@ public:
     bool LoadResourceFromClient(const char *URI, std::string &dst) const;
 protected:
     AppImpl(BkAppClient *client);
+
+#ifdef BLINKIT_UI_ENABLED
+#   ifndef NDEBUG
+    blink::WebData loadResource(const char *name) override;
+#   endif
+#endif
 private:
     // blink::Platform
     blink::WebURLLoader* createURLLoader(void) final;

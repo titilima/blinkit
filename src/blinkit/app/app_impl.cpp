@@ -81,6 +81,14 @@ LoaderThread& AppImpl::GetLoaderThread(void)
     return *m_loaderThread;
 }
 
+#ifndef NDEBUG
+WebData AppImpl::loadResource(const char *name)
+{
+    BKLOG("WARNING: Resource '%s' not found.", name);
+    return WebData();
+}
+#endif
+
 bool AppImpl::LoadResourceFromClient(const char *URI, std::string &dst) const
 {
     ASSERT(nullptr != m_client.LoadResource);

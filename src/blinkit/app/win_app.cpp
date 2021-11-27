@@ -85,12 +85,9 @@ WebData WinApp::loadResource(const char *name)
     static PCSTR RT_HTMLA = MAKEINTRESOURCEA(23);
 
     zed::hmodule::resource_data data;
-    if (!zed::hmodule::get_resource_data(data, theModule, RT_HTMLA, name))
-    {
-        ASSERT(false); // Resource not found!
-        return AppImpl::loadResource(name);
-    }
-    return WebData(reinterpret_cast<const char *>(std::get<0>(data)), std::get<1>(data));
+    if (zed::hmodule::get_resource_data(data, theModule, RT_HTMLA, name))
+        return WebData(reinterpret_cast<const char *>(std::get<0>(data)), std::get<1>(data));
+    return AppImpl::loadResource(name);
 }
 
 WebScrollbarBehavior* WinApp::scrollbarBehavior(void)
