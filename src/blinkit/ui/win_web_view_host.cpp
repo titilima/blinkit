@@ -13,9 +13,10 @@
 
 #include <windowsx.h>
 #include "blinkit/app/win_app.h"
-#include "blinkit/ui/web_view_impl.h"
+#include "blinkit/blink/renderer/core/editing/Editor.h"
 #include "blinkit/blink/renderer/platform/Task.h"
-// BKTODO: #include "blinkit/ui/win_context_menu_impl.h"
+#include "blinkit/ui/win_context_menu_controller.h"
+#include "blinkit/ui/web_view_impl.h"
 #include "blinkit/win/bk_bitmap.h"
 #include "blinkit/win/message_task.h"
 #include "chromium/base/time/time.h"
@@ -473,13 +474,54 @@ void WinWebViewHost::ScheduledAnimationTask(void)
 
     ASSERT(m_animationTaskScheduled);
     m_animationTaskScheduled = false;
+
     ScopedPaintSession _(*this, m_paintSession);
     m_paintSession.Update(*m_view);
 }
 
 void WinWebViewHost::ShowContextMenu(const WebContextMenuData &data)
 {
-    ASSERT(false); // BKTODO:
+    WinContextMenuController &menuController = WinApp::Get().ContextMenuController();
+
+    POINT pt;
+    GetCursorPos(&pt);
+
+    HMENU hPopupMenu = menuController.RequireMenu(data.editFlags);
+
+    SetForegroundWindow(m_hWnd);
+    UINT returnCmd = TrackPopupMenu(hPopupMenu, TPM_RETURNCMD, pt.x, pt.y, 0, m_hWnd, nullptr);
+    if (0 == returnCmd)
+        return;
+
+    if (CommandID::SelectAll == returnCmd)
+    {
+        m_view->GetFrame().selection().selectAll();
+        return;
+    }
+
+    WinContextMenuController::EditorFunction pfn = nullptr;
+    switch (returnCmd)
+    {
+        case CommandID::Undo:
+            pfn = &Editor::undo;
+            break;
+        case CommandID::Cut:
+            pfn = &Editor::cut;
+            break;
+        case CommandID::Copy:
+            pfn = &Editor::copy;
+            break;
+        case CommandID::Paste:
+            pfn = &Editor::pasteAsPlainText;
+            break;
+        case CommandID::Delete:
+            pfn = &Editor::performDelete;
+            break;
+        default:
+            ASSERT_NOT_REACHED();
+            return;
+    }
+    menuController.RunEditorFunction(m_view->GetFrame().editor(), pfn);
 }
 
 void WinWebViewHost::UpdateScaleFactor(void)
