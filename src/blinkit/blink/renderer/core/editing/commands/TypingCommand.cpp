@@ -366,7 +366,7 @@ void TypingCommand::insertTextRunWithoutNewlines(const String &text, bool select
     GCRefPtr<InsertTextCommand> command = InsertTextCommand::create(document(), text, selectInsertedText,
         m_compositionType == TextCompositionNone ? InsertTextCommand::RebalanceLeadingAndTrailingWhitespaces : InsertTextCommand::RebalanceAllWhitespaces);
 
-    applyCommandToComposite(command.get(), endingSelection());
+    applyCommandToComposite(command, endingSelection());
 
     typingAddedToOpenCommand(InsertText);
 }

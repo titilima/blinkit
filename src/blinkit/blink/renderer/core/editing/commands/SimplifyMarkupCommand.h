@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SimplifyMarkupCommand.h
+// Description: SimplifyMarkupCommand Class
+//      Author: Ziming Li
+//     Created: 2021-11-28
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -32,9 +43,9 @@ namespace blink {
 
 class SimplifyMarkupCommand final : public CompositeEditCommand {
 public:
-    static PassRefPtrWillBeRawPtr<SimplifyMarkupCommand> create(Document& document, Node* firstNode, Node* nodeAfterLast)
+    static GCRefPtr<SimplifyMarkupCommand> create(Document& document, Node* firstNode, Node* nodeAfterLast)
     {
-        return adoptRefWillBeNoop(new SimplifyMarkupCommand(document, firstNode, nodeAfterLast));
+        return BlinKit::GCWrapShared(new SimplifyMarkupCommand(document, firstNode, nodeAfterLast));
     }
 
     DECLARE_VIRTUAL_TRACE();

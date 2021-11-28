@@ -53,9 +53,9 @@
 #if 0 // BKTODO:
 #include "core/editing/commands/ApplyStyleCommand.h"
 #include "core/editing/commands/BreakBlockquoteCommand.h"
-#include "core/editing/commands/SimplifyMarkupCommand.h"
-#include "core/editing/commands/SmartReplace.h"
 #endif
+#include "core/editing/commands/SimplifyMarkupCommand.h"
+// BKTODO: #include "core/editing/commands/SmartReplace.h"
 #include "core/editing/iterators/TextIterator.h"
 #include "core/editing/serializers/HTMLInterchange.h"
 #include "core/editing/serializers/Serialization.h"
@@ -114,6 +114,11 @@ private:
     bool m_hasInterchangeNewlineAtStart;
     bool m_hasInterchangeNewlineAtEnd;
 };
+
+static constexpr bool isLegacyAppleHTMLSpanElement(const Node *)
+{
+    return false;
+}
 
 static bool isInterchangeHTMLBRElement(const Node* node)
 {
@@ -762,6 +767,7 @@ static void removeHeadContents(ReplacementFragment& fragment)
 // avoid doing a layout.
 static bool handleStyleSpansBeforeInsertion(ReplacementFragment& fragment, const Position& insertionPos)
 {
+#if 0 // BKTODO:
     Node* topNode = fragment.firstChild();
 
     // Handling the case where we are doing Paste as Quotation or pasting into quoted content is more complicated (see handleStyleSpans)
@@ -769,13 +775,10 @@ static bool handleStyleSpansBeforeInsertion(ReplacementFragment& fragment, const
     if (isMailPasteAsQuotationHTMLBlockQuoteElement(topNode) || enclosingNodeOfType(firstPositionInOrBeforeNode(topNode), isMailHTMLBlockquoteElement, CanCrossEditingBoundary))
         return false;
 
-    ASSERT(false); // BKTODO:
-#if 0
     // Either there are no style spans in the fragment or a WebKit client has added content to the fragment
     // before inserting it.  Look for and handle style spans after insertion.
     if (!isLegacyAppleHTMLSpanElement(topNode))
         return false;
-#endif
 
     HTMLSpanElement* wrappingStyleSpan = toHTMLSpanElement(topNode);
     GCRefPtr<EditingStyle> styleAtInsertionPos = EditingStyle::create(insertionPos.parentAnchoredEquivalent());
@@ -788,6 +791,10 @@ static bool handleStyleSpansBeforeInsertion(ReplacementFragment& fragment, const
 
     fragment.removeNodePreservingChildren(wrappingStyleSpan);
     return true;
+#else
+    // isLegacyAppleHTMLSpanElement always returns false.
+    return false;
+#endif
 }
 
 // At copy time, WebKit wraps copied content in a span that contains the source document's
@@ -800,19 +807,17 @@ static bool handleStyleSpansBeforeInsertion(ReplacementFragment& fragment, const
 // or at copy time.
 void ReplaceSelectionCommand::handleStyleSpans(InsertedNodes& insertedNodes)
 {
+#if 0 // BKTODO: isLegacyAppleHTMLSpanElement always returns false.
     HTMLSpanElement* wrappingStyleSpan = nullptr;
     // The style span that contains the source document's default style should be at
     // the top of the fragment, but Mail sometimes adds a wrapper (for Paste As Quotation),
     // so search for the top level style span instead of assuming it's at the top.
 
     for (Node& node : NodeTraversal::startsAt(insertedNodes.firstNodeInserted())) {
-        ASSERT(false); // BKTODO:
-#if 0
         if (isLegacyAppleHTMLSpanElement(&node)) {
             wrappingStyleSpan = toHTMLSpanElement(&node);
             break;
         }
-#endif
     }
 
     // There might not be any style spans if we're pasting from another application or if
@@ -847,6 +852,7 @@ void ReplaceSelectionCommand::handleStyleSpans(InsertedNodes& insertedNodes)
     } else {
         setNodeAttribute(wrappingStyleSpan, styleAttr, AtomicString(style->style()->asText()));
     }
+#endif
 }
 
 void ReplaceSelectionCommand::mergeEndIfNeeded()
@@ -1129,23 +1135,20 @@ void ReplaceSelectionCommand::doApply()
     // 6) Select the replacement if requested, and match style if requested.
 
     InsertedNodes insertedNodes;
-    RefPtrWillBeRawPtr<Node> refNode = fragment.firstChild();
+    GCRefPtr<Node> refNode(fragment.firstChild());
     ASSERT(refNode);
-    RefPtrWillBeRawPtr<Node> node = refNode->nextSibling();
+    GCRefPtr<Node> node(refNode->nextSibling());
 
-    fragment.removeNode(refNode);
+    fragment.removeNode(refNode.get());
 
     Element* blockStart = enclosingBlock(insertionPos.anchorNode());
-    ASSERT(false); // BKTODO:
-#if 0
     if ((isHTMLListElement(refNode.get()) || (isLegacyAppleHTMLSpanElement(refNode.get()) && isHTMLListElement(refNode->firstChild())))
         && blockStart && blockStart->layoutObject()->isListItem()) {
-        refNode = insertAsListItems(toHTMLElement(refNode), blockStart, insertionPos, insertedNodes);
+        refNode = insertAsListItems(toHTMLElement(refNode.get()), blockStart, insertionPos, insertedNodes);
     } else {
-        insertNodeAt(refNode, insertionPos);
+        insertNodeAt(refNode.get(), insertionPos);
         insertedNodes.respondToNodeInsertion(*refNode);
     }
-#endif
 
     // Mutation events (bug 22634) may have already removed the inserted content
     if (!refNode->inDocument())
@@ -1154,9 +1157,9 @@ void ReplaceSelectionCommand::doApply()
     bool plainTextFragment = isPlainTextMarkup(refNode.get());
 
     while (node) {
-        RefPtrWillBeRawPtr<Node> next = node->nextSibling();
+        GCRefPtr<Node> next(node->nextSibling());
         fragment.removeNode(node.get());
-        insertNodeAfter(node, refNode);
+        insertNodeAfter(node.get(), refNode.get());
         insertedNodes.respondToNodeInsertion(*node);
 
         // Mutation events (bug 22634) may have already removed the inserted content
@@ -1205,7 +1208,7 @@ void ReplaceSelectionCommand::doApply()
     removeRedundantStylesAndKeepStyleSpanInline(insertedNodes);
 
     if (m_sanitizeFragment)
-        ASSERT(false); // BKTODO: applyCommandToComposite(SimplifyMarkupCommand::create(document(), insertedNodes.firstNodeInserted(), insertedNodes.pastLastLeaf()));
+        applyCommandToComposite(SimplifyMarkupCommand::create(document(), insertedNodes.firstNodeInserted(), insertedNodes.pastLastLeaf()));
 
     // Setup m_startOfInsertedContent and m_endOfInsertedContent. This should be the last two lines of code that access insertedNodes.
     m_startOfInsertedContent = firstPositionInOrBeforeNode(insertedNodes.firstNodeInserted());

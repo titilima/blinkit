@@ -91,7 +91,7 @@ public:
 protected:
     MutableStylePropertySet& propertySet() const final { ASSERT(m_propertySet); return *m_propertySet; }
 
-    GCRefPtr<MutableStylePropertySet> m_propertySet; // Cannot be null
+    MutableStylePropertySet *m_propertySet; // Cannot be null
 };
 
 class StyleRuleCSSStyleDeclaration : public PropertySetCSSStyleDeclaration {

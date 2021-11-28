@@ -58,9 +58,9 @@ public:
 
     typedef unsigned CommandOptions;
 
-    static PassRefPtrWillBeRawPtr<ReplaceSelectionCommand> create(Document& document, PassRefPtrWillBeRawPtr<DocumentFragment> fragment, CommandOptions options, EditAction action = EditActionPaste)
+    static GCRefPtr<ReplaceSelectionCommand> create(Document& document, PassRefPtrWillBeRawPtr<DocumentFragment> fragment, CommandOptions options, EditAction action = EditActionPaste)
     {
-        return adoptRefWillBeNoop(new ReplaceSelectionCommand(document, fragment, options, action));
+        return BlinKit::GCWrapShared(new ReplaceSelectionCommand(document, fragment, options, action));
     }
 
     DECLARE_VIRTUAL_TRACE();
