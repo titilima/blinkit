@@ -105,8 +105,8 @@ protected:
     // sugary-sweet convenience functions to help create and apply edit commands in composite commands
     //
     void appendNode(PassRefPtrWillBeRawPtr<Node>, PassRefPtrWillBeRawPtr<ContainerNode> parent);
-    void applyCommandToComposite(PassRefPtrWillBeRawPtr<EditCommand>);
-    void applyCommandToComposite(PassRefPtrWillBeRawPtr<CompositeEditCommand>, const VisibleSelection&);
+    void applyCommandToComposite(const GCRefPtr<EditCommand> &);
+    void applyCommandToComposite(const GCRefPtr<CompositeEditCommand>&, const VisibleSelection&);
     void applyStyle(const EditingStyle*, EditAction = EditActionChangeAttributes);
     void applyStyle(const EditingStyle*, const Position& start, const Position& end, EditAction = EditActionChangeAttributes);
     void applyStyledElement(PassRefPtrWillBeRawPtr<Element>);

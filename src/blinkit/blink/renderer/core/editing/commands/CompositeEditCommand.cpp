@@ -256,9 +256,8 @@ void CompositeEditCommand::setShouldRetainAutocorrectionIndicator(bool)
 //
 // sugary-sweet convenience functions to help create and apply edit commands in composite commands
 //
-void CompositeEditCommand::applyCommandToComposite(PassRefPtrWillBeRawPtr<EditCommand> prpCommand)
+void CompositeEditCommand::applyCommandToComposite(const GCRefPtr<EditCommand> &command)
 {
-    GCRefPtr<EditCommand> command = prpCommand;
     command->setParent(this);
     command->doApply();
     if (command->isSimpleEditCommand()) {
@@ -268,7 +267,7 @@ void CompositeEditCommand::applyCommandToComposite(PassRefPtrWillBeRawPtr<EditCo
     m_commands.emplace_back(command);
 }
 
-void CompositeEditCommand::applyCommandToComposite(PassRefPtrWillBeRawPtr<CompositeEditCommand> command, const VisibleSelection& selection)
+void CompositeEditCommand::applyCommandToComposite(const GCRefPtr<CompositeEditCommand> &command, const VisibleSelection &selection)
 {
     command->setParent(this);
     if (!equalSelectionsInDOMTree(selection, command->endingSelection())) {
@@ -598,19 +597,13 @@ void CompositeEditCommand::insertNodeAtTabSpanPosition(PassRefPtrWillBeRawPtr<No
 void CompositeEditCommand::deleteSelection(bool smartDelete, bool mergeBlocksAfterDelete, bool expandForSpecialElements, bool sanitizeMarkup)
 {
     if (endingSelection().isRange())
-    {
-        GCRefPtr<DeleteSelectionCommand> command = DeleteSelectionCommand::create(document(), smartDelete, mergeBlocksAfterDelete, expandForSpecialElements, sanitizeMarkup);
-        applyCommandToComposite(command.get());
-    }
+        applyCommandToComposite(DeleteSelectionCommand::create(document(), smartDelete, mergeBlocksAfterDelete, expandForSpecialElements, sanitizeMarkup));
 }
 
 void CompositeEditCommand::deleteSelection(const VisibleSelection &selection, bool smartDelete, bool mergeBlocksAfterDelete, bool expandForSpecialElements, bool sanitizeMarkup)
 {
     if (selection.isRange())
-    {
-        GCRefPtr<DeleteSelectionCommand> command = DeleteSelectionCommand::create(selection, smartDelete, mergeBlocksAfterDelete, expandForSpecialElements, sanitizeMarkup);
-        applyCommandToComposite(command.get());
-    }
+        applyCommandToComposite(DeleteSelectionCommand::create(selection, smartDelete, mergeBlocksAfterDelete, expandForSpecialElements, sanitizeMarkup));
 }
 
 void CompositeEditCommand::removeCSSProperty(PassRefPtrWillBeRawPtr<Element> element, CSSPropertyID property)
