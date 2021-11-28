@@ -357,7 +357,7 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\web_view_impl.cpp">
       <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\win_web_view.cpp">
+    <ClCompile Include="..\..\..\src\blinkit\ui\win_web_view_host.cpp">
       <Filter>ui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\loader\loader_task.cpp">
@@ -3984,9 +3984,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\weborigin\kurl.cpp">
       <Filter>blink\renderer\platform\weborigin</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\rendering_scheduler.cpp">
-      <Filter>ui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\PageWidgetDelegate.cpp">
       <Filter>blink\renderer\web</Filter>
     </ClCompile>
@@ -4092,9 +4089,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\ContextMenuAllowedScope.cpp">
       <Filter>blink\renderer\web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\win_context_menu_impl.cpp">
-      <Filter>ui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_scrollbar_behavior.cpp">
       <Filter>blink\impl</Filter>
     </ClCompile>
@@ -4125,11 +4119,23 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_dom_token_list.cpp">
       <Filter>blink\renderer\bindings\core\duk</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\rendering_session.cpp">
-      <Filter>ui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\app\app_thread_request_client.cpp">
       <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\win_mouse_session.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\win_paint_session.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\input_events.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\win_context_menu_controller.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\SimplifyMarkupCommand.cpp">
+      <Filter>blink\renderer\core\editing\commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -4208,7 +4214,7 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\web_view_impl.h">
       <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\win_web_view.h">
+    <ClInclude Include="..\..\..\src\blinkit\ui\win_web_view_host.h">
       <Filter>ui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\loader\loader_task.h">
@@ -4687,9 +4693,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\paint\PaintLayer.h">
       <Filter>blink\renderer\core\paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\rendering_scheduler.h">
-      <Filter>ui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\parser\HTMLParserOptions.h">
       <Filter>blink\renderer\core\html\parser</Filter>
@@ -6692,9 +6695,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebTextDirection.h">
       <Filter>blink\public\web</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\win_context_menu_impl.h">
-      <Filter>ui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ChromeClientImpl.h">
       <Filter>blink\renderer\web</Filter>
     </ClInclude>
@@ -8255,11 +8255,26 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_dom_token_list.h">
       <Filter>blink\renderer\bindings\core\duk</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\rendering_session.h">
-      <Filter>ui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\app\app_thread_request_client.h">
       <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\web_view_host.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\win_mouse_session.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\win_paint_session.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\input_events.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\win_context_menu_controller.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\SimplifyMarkupCommand.h">
+      <Filter>blink\renderer\core\editing\commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
