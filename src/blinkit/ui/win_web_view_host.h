@@ -14,8 +14,8 @@
 #define BLINKIT_WIN_WEB_VIEW_HOST_H
 
 #include "blinkit/blink/renderer/platform/Timer.h"
-#include "blinkit/ui/win_mouse_session.h"
 #include "blinkit/ui/web_view_host.h"
+#include "blinkit/win/mouse_session.h"
 #include "blinkit/win/paint_session.h"
 
 struct BkWebViewClient;
@@ -76,7 +76,7 @@ private:
     HDC m_memoryDC = nullptr;
     HBITMAP m_oldBitmap = nullptr;
 
-    WinMouseSession m_mouseSession;
+    MouseSession m_mouseSession;
     PaintSession m_paintSession;
 
     const std::shared_ptr<bool> m_hostAliveFlag;
