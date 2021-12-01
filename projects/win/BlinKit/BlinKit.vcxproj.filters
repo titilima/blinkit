@@ -4026,9 +4026,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\text\text_break_iterator_impl.cpp">
       <Filter>blink\renderer\platform\text</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\mouse_event_session.cpp">
-      <Filter>ui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\WebInputEventConversion.cpp">
       <Filter>blink\renderer\web</Filter>
     </ClCompile>
@@ -4125,9 +4122,6 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\win_mouse_session.cpp">
       <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\win_paint_session.cpp">
-      <Filter>ui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\ui\input_events.cpp">
       <Filter>ui</Filter>
     </ClCompile>
@@ -4136,6 +4130,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\SimplifyMarkupCommand.cpp">
       <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\win\scoped_paint_scheduler.cpp">
+      <Filter>win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\win\paint_session.cpp">
+      <Filter>win</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -4960,9 +4960,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebInputEvent.h">
       <Filter>blink\public\web</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\mouse_event_session.h">
-      <Filter>ui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\WebInputEventConversion.h">
       <Filter>blink\renderer\web</Filter>
@@ -8264,9 +8261,6 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\win_mouse_session.h">
       <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\win_paint_session.h">
-      <Filter>ui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\input_events.h">
       <Filter>ui</Filter>
     </ClInclude>
@@ -8275,6 +8269,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\SimplifyMarkupCommand.h">
       <Filter>blink\renderer\core\editing\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\win\scoped_paint_scheduler.h">
+      <Filter>win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\win\paint_session.h">
+      <Filter>win</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1425,10 +1425,8 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\HTMLNames.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\HTTPNames.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\input_events.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\ui\mouse_event_session.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\web_view_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\win_mouse_session.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\ui\win_paint_session.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\win_context_menu_controller.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\win_web_view_host.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\bk_bitmap.cpp" />
@@ -1436,6 +1434,8 @@
     <ClCompile Include="..\..\..\src\blinkit\win\icu_stub.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\message_loop.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\message_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\paint_session.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\scoped_paint_scheduler.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\time_ticker.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -2809,16 +2809,16 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\click_observer_wrapper.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\element_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\input_events.h" />
-    <ClInclude Include="..\..\..\src\blinkit\ui\mouse_event_session.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\web_view_host.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\web_view_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\win_mouse_session.h" />
-    <ClInclude Include="..\..\..\src\blinkit\ui\win_paint_session.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\win_context_menu_controller.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\win_web_view_host.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\bk_bitmap.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\message_loop.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\message_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\win\paint_session.h" />
+    <ClInclude Include="..\..\..\src\blinkit\win\scoped_paint_scheduler.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\time_ticker.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
     <ClInclude Include="resource.h" />
