@@ -4119,9 +4119,6 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\input_events.cpp">
       <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\win_context_menu_controller.cpp">
-      <Filter>ui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\SimplifyMarkupCommand.cpp">
       <Filter>blink\renderer\core\editing\commands</Filter>
     </ClCompile>
@@ -4135,6 +4132,9 @@
       <Filter>win</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\win\web_view_host_window.cpp">
+      <Filter>win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\win\context_menu_controller.cpp">
       <Filter>win</Filter>
     </ClCompile>
   </ItemGroup>
@@ -8258,9 +8258,6 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\input_events.h">
       <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\win_context_menu_controller.h">
-      <Filter>ui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\SimplifyMarkupCommand.h">
       <Filter>blink\renderer\core\editing\commands</Filter>
     </ClInclude>
@@ -8274,6 +8271,9 @@
       <Filter>win</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\web_view_host_window.h">
+      <Filter>win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\win\context_menu_controller.h">
       <Filter>win</Filter>
     </ClInclude>
   </ItemGroup>

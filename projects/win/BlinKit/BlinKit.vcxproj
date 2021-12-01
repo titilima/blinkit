@@ -1426,8 +1426,8 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\HTTPNames.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\input_events.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\web_view_impl.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\ui\win_context_menu_controller.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\bk_bitmap.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\context_menu_controller.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\icu_stub.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\message_loop.cpp" />
@@ -2811,8 +2811,8 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\input_events.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\web_view_host.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\web_view_impl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\ui\win_context_menu_controller.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\bk_bitmap.h" />
+    <ClInclude Include="..\..\..\src\blinkit\win\context_menu_controller.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\message_loop.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\message_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\mouse_session.h" />

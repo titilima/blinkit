@@ -18,7 +18,7 @@
 #   include "blinkit/blink/impl/win_scrollbar_behavior.h"
 #   include "blinkit/blink/impl/win_theme_engine.h"
 #   include "blinkit/blink/renderer/wtf/MainThread.h"
-#   include "blinkit/ui/win_context_menu_controller.h"
+#   include "blinkit/win/context_menu_controller.h"
 #   include "third_party/zed/include/zed/win/hmodule.hpp"
 #endif
 
@@ -37,7 +37,7 @@ namespace BlinKit {
 WinApp::WinApp(BkAppClient *client)
     : AppImpl(client)
     , m_messageLoop(std::make_unique<MessageLoop>())
-    , m_contextMenuController(std::make_unique<WinContextMenuController>())
+    , m_contextMenuController(std::make_unique<ContextMenuController>())
 {
 #ifndef NDEBUG
     Thread::SetName("BlinKit Thread");

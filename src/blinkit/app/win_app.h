@@ -19,7 +19,7 @@ namespace BlinKit {
 
 class MessageLoop;
 #ifdef BLINKIT_UI_ENABLED
-class WinContextMenuController;
+class ContextMenuController;
 class WinThemeEngine;
 #endif
 
@@ -31,7 +31,7 @@ public:
 
     static WinApp& Get(void);
 
-    WinContextMenuController& ContextMenuController(void) { return *m_contextMenuController; }
+    ContextMenuController& GetContextMenuController(void) { return *m_contextMenuController; }
 
     int RunMessageLoop(BkMessageFilter filter, void *userData);
 private:
@@ -50,7 +50,7 @@ private:
     std::unique_ptr<MessageLoop> m_messageLoop;
 #ifdef BLINKIT_UI_ENABLED
     std::unique_ptr<WinThemeEngine> m_themeEngine;
-    std::unique_ptr<WinContextMenuController> m_contextMenuController;
+    std::unique_ptr<ContextMenuController> m_contextMenuController;
 #endif
 };
 

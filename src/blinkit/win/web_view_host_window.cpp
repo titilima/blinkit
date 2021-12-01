@@ -15,9 +15,9 @@
 #include "blinkit/app/win_app.h"
 #include "blinkit/blink/renderer/core/editing/Editor.h"
 #include "blinkit/blink/renderer/platform/Task.h"
-#include "blinkit/ui/win_context_menu_controller.h"
 #include "blinkit/ui/web_view_impl.h"
 #include "blinkit/win/bk_bitmap.h"
+#include "blinkit/win/context_menu_controller.h"
 #include "blinkit/win/message_task.h"
 #include "third_party/zed/include/zed/float.hpp"
 #include "third_party/zed/include/zed/log.hpp"
@@ -472,7 +472,7 @@ void WebViewHostWindow::ScheduledAnimationTask(void)
 
 void WebViewHostWindow::ShowContextMenu(const WebContextMenuData &data)
 {
-    WinContextMenuController &menuController = WinApp::Get().ContextMenuController();
+    ContextMenuController &menuController = WinApp::Get().GetContextMenuController();
 
     POINT pt;
     GetCursorPos(&pt);
@@ -490,7 +490,7 @@ void WebViewHostWindow::ShowContextMenu(const WebContextMenuData &data)
         return;
     }
 
-    WinContextMenuController::EditorFunction pfn = nullptr;
+    ContextMenuController::EditorFunction pfn = nullptr;
     switch (returnCmd)
     {
         case CommandID::Undo:
