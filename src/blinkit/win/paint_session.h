@@ -17,17 +17,17 @@
 
 namespace BlinKit {
 
-class WinWebViewHost;
+class WebViewHostWindow;
 
 class PaintSession
 {
 public:
     ~PaintSession(void);
 
-    void Begin(WinWebViewHost &host);
-    void Flush(WinWebViewHost &host);
+    void Begin(WebViewHostWindow &host);
+    void Flush(WebViewHostWindow &host);
 
-    void AttachToScheduler(WinWebViewHost &host);
+    void AttachToScheduler(WebViewHostWindow &host);
     void DetachFromScheduler(void);
     bool IsAttached(void) const { return m_attached; }
 

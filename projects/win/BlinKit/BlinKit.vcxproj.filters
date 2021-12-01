@@ -357,9 +357,6 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\web_view_impl.cpp">
       <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\win_web_view_host.cpp">
-      <Filter>ui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\loader\loader_task.cpp">
       <Filter>loader</Filter>
     </ClCompile>
@@ -4119,9 +4116,6 @@
     <ClCompile Include="..\..\..\src\blinkit\app\app_thread_request_client.cpp">
       <Filter>app</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\win_mouse_session.cpp">
-      <Filter>ui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\ui\input_events.cpp">
       <Filter>ui</Filter>
     </ClCompile>
@@ -4135,6 +4129,12 @@
       <Filter>win</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\win\paint_session.cpp">
+      <Filter>win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\win\mouse_session.cpp">
+      <Filter>win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\win\web_view_host_window.cpp">
       <Filter>win</Filter>
     </ClCompile>
   </ItemGroup>
@@ -4212,9 +4212,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\web_view_impl.h">
-      <Filter>ui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\win_web_view_host.h">
       <Filter>ui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\loader\loader_task.h">
@@ -8258,9 +8255,6 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\web_view_host.h">
       <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\win_mouse_session.h">
-      <Filter>ui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\input_events.h">
       <Filter>ui</Filter>
     </ClInclude>
@@ -8274,6 +8268,12 @@
       <Filter>win</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\paint_session.h">
+      <Filter>win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\win\mouse_session.h">
+      <Filter>win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\win\web_view_host_window.h">
       <Filter>win</Filter>
     </ClInclude>
   </ItemGroup>

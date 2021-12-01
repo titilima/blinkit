@@ -18,7 +18,7 @@
 namespace BlinKit {
 
 class PaintSession;
-class WinWebViewHost;
+class WebViewHostWindow;
 
 class ScopedPaintScheduler
 {
@@ -26,7 +26,7 @@ class ScopedPaintScheduler
 public:
     static ScopedPaintScheduler* Current(void) { return m_current; }
 
-    void Attach(PaintSession &session, WinWebViewHost &host);
+    void Attach(PaintSession &session, WebViewHostWindow &host);
     void Detach(PaintSession &session);
 private:
     friend class MessageLoop;
@@ -34,7 +34,7 @@ private:
     ~ScopedPaintScheduler(void);
 
     static ScopedPaintScheduler *m_current;
-    std::unordered_map<PaintSession *, WinWebViewHost *> m_sessions;
+    std::unordered_map<PaintSession *, WebViewHostWindow *> m_sessions;
 };
 
 } // namespace BlinKit

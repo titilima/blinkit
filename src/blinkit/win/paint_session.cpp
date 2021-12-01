@@ -12,8 +12,8 @@
 #include "./paint_session.h"
 
 #include "blinkit/ui/web_view_impl.h"
-#include "blinkit/ui/win_web_view_host.h"
 #include "blinkit/win/scoped_paint_scheduler.h"
+#include "blinkit/win/web_view_host_window.h"
 
 using namespace blink;
 
@@ -25,14 +25,14 @@ PaintSession::~PaintSession(void)
         ScopedPaintScheduler::Current()->Detach(*this);
 }
 
-void PaintSession::AttachToScheduler(WinWebViewHost &host)
+void PaintSession::AttachToScheduler(WebViewHostWindow &host)
 {
     ASSERT(!m_attached);
     ScopedPaintScheduler::Current()->Attach(*this, host);
     ASSERT(m_attached);
 }
 
-void PaintSession::Begin(WinWebViewHost &host)
+void PaintSession::Begin(WebViewHostWindow &host)
 {
     if (!m_beginFrameCalled)
     {
@@ -49,7 +49,7 @@ void PaintSession::DetachFromScheduler(void)
     ASSERT(!m_attached);
 }
 
-void PaintSession::Flush(WinWebViewHost &host)
+void PaintSession::Flush(WebViewHostWindow &host)
 {
     HWND hWnd = host.GetHWND();
 

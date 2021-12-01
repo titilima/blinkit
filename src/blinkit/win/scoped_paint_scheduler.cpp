@@ -37,7 +37,7 @@ ScopedPaintScheduler::~ScopedPaintScheduler(void)
     m_current = nullptr;
 }
 
-void ScopedPaintScheduler::Attach(PaintSession &session, WinWebViewHost &host)
+void ScopedPaintScheduler::Attach(PaintSession &session, WebViewHostWindow &host)
 {
     ASSERT(!zed::key_exists(m_sessions, &session));
     m_sessions.emplace(&session, &host);
