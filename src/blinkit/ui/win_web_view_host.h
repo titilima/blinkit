@@ -15,8 +15,8 @@
 
 #include "blinkit/blink/renderer/platform/Timer.h"
 #include "blinkit/ui/win_mouse_session.h"
-#include "blinkit/ui/win_paint_session.h"
 #include "blinkit/ui/web_view_host.h"
+#include "blinkit/win/paint_session.h"
 
 struct BkWebViewClient;
 
@@ -25,24 +25,25 @@ namespace BlinKit {
 class WinWebViewHost final : public WebViewHost
 {
 public:
-    WinWebViewHost(const BkWebViewClient &client, HWND hWnd, bool isWindowVisible);
+    WinWebViewHost(const BkWebViewClient &client, HWND hWnd, LPCREATESTRUCT cs);
     ~WinWebViewHost(void);
 
     HWND GetHWND(void) const { return m_hWnd; }
     WebViewImpl* GetView(void) const { return m_view; }
 
-    void ScheduleAnimationTaskIfNecessary(void);
+    void Redraw(const blink::IntRect &rect);
+    void StartAnimationTimer(double delay);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
     static bool ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // WebViewHost
-    void Invalidate(const blink::IntRect *rect = nullptr) override;
 private:
+    std::unique_ptr<SkCanvas> CreateCanvas(int width, int height);
+#if 0 // BKTODO:
     void ScheduleNextAnimationTask(double delay);
     void ScheduledAnimationTask(void);
+#endif
     void UpdateScaleFactor(void);
 
     bool ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
@@ -58,8 +59,10 @@ private:
     void OnShowWindow(HWND hwnd, BOOL fShow, UINT status);
     void OnSize(HWND hwnd, UINT state, int cx, int cy);
 
+    void OnAnimationTimer(blink::Timer<WinWebViewHost> *);
+
     // WebViewHost
-    SkCanvas* RequireCanvas(int width, int height) override;
+    void Invalidate(const blink::IntRect &rect) override;
     void ScheduleAnimation(void) override;
     void ChangeTitle(const std::string &title) override;
     void DidChangeCursor(const blink::WebCursorInfo &cursorInfo) override;
@@ -74,7 +77,10 @@ private:
     HBITMAP m_oldBitmap = nullptr;
 
     WinMouseSession m_mouseSession;
-    WinPaintSession m_paintSession;
+    PaintSession m_paintSession;
+
+    const std::shared_ptr<bool> m_hostAliveFlag;
+    blink::Timer<WinWebViewHost> m_animationTimer;
 
     bool m_animationTaskScheduled = false;
     bool m_changingSizeOrPosition = false;
