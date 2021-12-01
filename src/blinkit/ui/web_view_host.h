@@ -27,8 +27,7 @@ class WebViewHost
 public:
     virtual ~WebViewHost(void) = default;
 
-    virtual SkCanvas* RequireCanvas(int width, int height) = 0;
-    virtual void Invalidate(const blink::IntRect *rect) = 0;
+    virtual void Invalidate(const blink::IntRect &rect) = 0;
     virtual void ScheduleAnimation(void) = 0;
 
     virtual void ChangeTitle(const std::string &title) {}

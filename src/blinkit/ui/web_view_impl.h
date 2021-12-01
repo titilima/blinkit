@@ -56,15 +56,13 @@ public:
 
     static WebViewImpl* From(blink::Document &document);
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Exports
-    bool AddClickObserver(const char *id, BkClickObserver ob, void *userData);
-    ElementImpl* GetElementById(const char *id) const;
-    int LoadUI(const char *URI);
+    void BeginFrame(double tick);
+    void UpdateLifecycle(void);
+    void PaintContent(SkCanvas *canvas, const blink::IntRect &rect);
 
     blink::IntSize MainFrameSize(void);
 
-    void BeginFrame(void);
+    SkColor BaseBackgroundColor(void) const { return m_baseBackgroundColor; }
     void clearContextMenu(void);
     void convertViewportToWindow(blink::IntRect *rect) const;
     void didChangeContentsSize(void);
@@ -72,14 +70,13 @@ public:
     blink::FloatSize elasticOverscroll(void) const { return m_elasticOverscroll; }
     blink::LocalFrame* focusedCoreFrame(void) const { return m_frame.get(); }
     blink::LocalFrame& GetFrame(void) const { return *m_frame; }
-    void InvalidateHost(const blink::IntRect *rect = nullptr);
+    bool HasHost(void) const { return nullptr != m_host; }
     void invalidateRect(const blink::IntRect &rect);
     void layoutUpdated(blink::LocalFrame *frame);
     blink::Page* page(void) const { return m_page.get(); }
     void ProcessKeyEvent(blink::WebInputEvent::Type type, int code, int modifiers);
     void ProcessMouseEvent(const BlinKit::MouseEvent &e);
     bool ProcessTitleChange(const std::string &newTitle) const;
-    // BKTODO: void PaintContent(cc::PaintCanvas *canvas, const blink::WebRect &rect);
     void Resize(const blink::IntSize &size);
     void scheduleAnimation(void);
     bool SelectionBounds(blink::IntRect &anchor, blink::IntRect &focus) const;
@@ -87,7 +84,7 @@ public:
     void SetFocus(bool focus);
     void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState = false);
     void showContextMenu(const blink::WebContextMenuData &data);
-    void UpdateAndPaint(void);
+    const blink::IntSize& Size(void) const { return m_size; }
     void updatePageDefinedViewportConstraints(const blink::ViewportDescription &description);
     void UpdateLayerTreeViewport(void);
     void UpdateMainFrameLayoutSize(void);
@@ -101,11 +98,14 @@ public:
         // BKTODO: Check this later.
     }
 #endif
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Exports
+    bool AddClickObserver(const char *id, BkClickObserver ob, void *userData);
+    ElementImpl* GetElementById(const char *id) const;
+    int LoadUI(const char *URI);
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private:
-    // By default, all phases are updated by |UpdateLifecycle| (e.g., style,
-    // layout, prepaint, paint, etc. See: document_lifecycle.h). |LifecycleUpdate|
-    // can be used to only update to a specific lifecycle phase.
-    void UpdateLifecycle(void);
     void UpdateLayerTreeBackgroundColor(void);
 #if 0 // BKTODO:
     void CancelPagePopup(void);
@@ -207,6 +207,7 @@ private:
     std::unique_ptr<blink::ResizeViewportAnchor> m_resizeViewportAnchor;
 #endif
 
+    bool m_loadFinished = false;
     mutable std::unordered_map<blink::Element *, std::unique_ptr<ElementImpl>> m_exposedElements;
 };
 

@@ -107,11 +107,11 @@ bool WebViewImpl::AddClickObserver(const char *id, BkClickObserver ob, void *use
     return element->addEventListener(EventTypeNames::click, listener.get());
 }
 
-void WebViewImpl::BeginFrame(void)
+void WebViewImpl::BeginFrame(double tick)
 {
     ASSERT(isMainThread());
     if (m_page)
-        PageWidgetDelegate::animate(*m_page, monotonicallyIncreasingTime());
+        PageWidgetDelegate::animate(*m_page, tick);
 }
 
 #if 0 // BKTODO:
@@ -204,9 +204,14 @@ void WebViewImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 
 void WebViewImpl::dispatchDidFinishLoad(void)
 {
+    m_loadFinished = true;
     if (nullptr != m_host)
-        UpdateAndPaint();
-    m_client.DocumentReady(this, m_client.UserData);
+        m_host->ScheduleAnimation();
+
+    auto task = [this] {
+        m_client.DocumentReady(this, m_client.UserData);
+    };
+    AppImpl::Get().taskRunner()->postTask(BLINK_FROM_HERE, std::move(task));
 }
 
 void WebViewImpl::dispatchDidReceiveTitle(const String &title)
@@ -533,12 +538,6 @@ void WebViewImpl::Initialize(WebViewHost *host)
     m_frame->init();
 }
 
-void WebViewImpl::InvalidateHost(const IntRect *rect)
-{
-    ASSERT(nullptr != m_host);
-    m_host->Invalidate(rect);
-}
-
 void WebViewImpl::invalidateRect(const IntRect &rect)
 {
 #if 0 // BKTODO:
@@ -548,7 +547,7 @@ void WebViewImpl::invalidateRect(const IntRect &rect)
         m_client->didInvalidateRect(rect);
 #else
     if (nullptr != m_host)
-        m_host->Invalidate(&rect);
+        m_host->Invalidate(rect);
 #endif
 }
 
@@ -653,6 +652,7 @@ int WebViewImpl::LoadUI(const char *URI)
         ASSERT(!u.scheme_is_in_http_family()); // Standard URL is for crawlers only!
         return BK_ERR_URI;
     }
+    m_loadFinished = false;
 
     ResourceRequest request(u);
     m_frame->loader().load(FrameLoadRequest(nullptr, request));
@@ -753,15 +753,11 @@ float WebViewImpl::PageScaleFactor(void) const
     return 1.0;
 }
 
-#if 0 // BKTODO:
-void WebViewImpl::PaintContent(cc::PaintCanvas *canvas, const WebRect &rect)
+void WebViewImpl::PaintContent(SkCanvas *canvas, const IntRect &rect)
 {
-    // This should only be used when compositing is not being used for this
-    // WebView, and it is painting into the recording of its parent.
-    ASSERT(!IsAcceleratedCompositingActive());
-    PageWidgetDelegate::PaintContent(*m_page, canvas, rect, *m_page->MainFrame());
+    if (!m_size.isEmpty())
+        PageWidgetDelegate::paint(*m_page, canvas, rect, *m_frame);
 }
-#endif
 
 void WebViewImpl::PerformResize(void)
 {
@@ -1028,7 +1024,7 @@ void WebViewImpl::scheduleAnimation(void)
         return;
     }
 #endif
-    if (nullptr != m_host)
+    if (nullptr != m_host && m_loadFinished)
         m_host->ScheduleAnimation();
 }
 
@@ -1099,7 +1095,7 @@ void WebViewImpl::SendResizeEventAndRepaint(void)
     if (nullptr != m_host)
     {
         IntRect damagedRect(IntPoint(0, 0), m_size);
-        m_host->Invalidate(&damagedRect);
+        m_host->Invalidate(damagedRect);
     }
 #endif
     UpdatePageOverlays();
@@ -1256,17 +1252,6 @@ void WebViewImpl::transitionToCommittedForNewPage(void)
     m_frame->view()->setInputEventsTransformForEmulation(m_inputEventsOffsetForEmulation, m_inputEventsScaleFactorForEmulation);
     m_frame->view()->setDisplayMode(webView->displayMode());
 #endif
-}
-
-void WebViewImpl::UpdateAndPaint(void)
-{
-    UpdateLifecycle();
-
-    if (m_size.isEmpty())
-        return;
-
-    SkCanvas *canvas = m_host->RequireCanvas(m_size.width(), m_size.height());
-    PageWidgetDelegate::paint(*m_page, canvas, IntRect(IntPoint(), m_size), *m_page->deprecatedLocalMainFrame());
 }
 
 #if 0 // BKTODO:
@@ -1468,6 +1453,22 @@ extern "C" {
 BKEXPORT bool_t BKAPI BkAddClickObserver(BkWebView view, const char *id, BkClickObserver ob, void *userData)
 {
     return view->AddClickObserver(id, ob, userData);
+}
+
+BKEXPORT BkWebView BKAPI BkCreateWebView(struct BkWebViewClient *client)
+{   
+    WebViewImpl *ret = new WebViewImpl(*client, PageVisibilityStateHidden);
+    if (nullptr != ret)
+        ret->Initialize(nullptr);
+    return ret;
+}
+
+BKEXPORT int BKAPI BkDestroyWebView(BkWebView view)
+{
+    if (view->HasHost())
+        return BK_ERR_FORBIDDEN;
+    delete view;
+    return BK_ERR_SUCCESS;
 }
 
 BKEXPORT BkElement BKAPI BkGetElementById(BkWebView view, const char *id)
