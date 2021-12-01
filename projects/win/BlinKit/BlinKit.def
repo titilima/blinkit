@@ -9,6 +9,8 @@ BkRunMessageLoop
 BkRunMessageLoopEx
 IsBlinKitThread
 
+BkCreateWebView
+BkDestroyWebView
 BkLoadUI
 BkGetElementById
 BkAddClickObserver

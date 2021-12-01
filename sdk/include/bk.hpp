@@ -96,6 +96,8 @@ private:
 };
 
 class web_view_client_root : public client_root_impl<web_view_client_root, BkWebViewClient> {
+public:
+    BkWebView create_web_view(const char *uri = nullptr) const;
 protected:
     void adjust_raw_client(BkWebViewClient &client) const override;
 private:
@@ -110,10 +112,12 @@ class crawler_client_impl : public client_impl<T, crawler_client_root> {};
 template <class T>
 class request_client_impl : public client_impl<T, request_client_root> {};
 
+template <class T>
+class web_view_client_impl : public client_impl<T, web_view_client_root> {};
+
 #ifdef __ATLWIN_H__
 
-template <class T>
-class ATL_NO_VTABLE web_view_client_impl : public client_impl<T, web_view_client_root>
+class message_handler
 {
 protected:
     BOOL ProcessWindowMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &r);
@@ -122,13 +126,14 @@ protected:
 template <class T, class TBase = ATL::CWindow, class TWinTraits = ATL::CControlWinTraits>
 class ATL_NO_VTABLE web_view_window_impl : public ATL::CWindowImpl<T, TBase, TWinTraits>
                                          , public web_view_client_impl<T>
+                                         , public message_handler
 {
 public:
     HWND Create(HWND hWndParent, ATL::_U_RECT rect = nullptr, PCTSTR szWindowName = nullptr,
         DWORD dwStyle = 0, DWORD dwExStyle = 0, ATL::_U_MENUorID MenuOrID = 0U);
-
+protected:
     BEGIN_MSG_MAP(web_view_window_impl)
-        CHAIN_MSG_MAP(web_view_client_impl<T>)
+        CHAIN_MSG_MAP(message_handler)
     END_MSG_MAP()
 };
 
@@ -469,14 +474,23 @@ inline void web_view_client_root::adjust_raw_client(BkWebViewClient &client) con
     client.DocumentReady = document_ready_callback;
 }
 
+inline BkWebView web_view_client_root::create_web_view(const char *uri) const
+{
+    BkWebViewClient client = get_client();
+    BkWebView ret = BkCreateWebView(&client);
+    if (nullptr != ret && nullptr != uri)
+        BkLoadUI(ret, uri);
+    return ret;
+}
+
 inline void BKAPI web_view_client_root::document_ready_callback(BkWebView v, void *p)
 {
     get_client_root(p)->document_ready(v);
 }
 
 #ifdef __ATLWIN_H__
-template <class T>
-BOOL web_view_client_impl<T>::ProcessWindowMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &r)
+
+inline BOOL message_handler::ProcessWindowMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &r)
 {
     return BkProcessWindowMessage(h, m, w, l, &r);
 }
@@ -493,6 +507,7 @@ HWND web_view_window_impl<T, TBase, TWinTraits>::Create(
     return ATL::CWindowImpl<T, TBase, TWinTraits>::Create(hWndParent, rect, szWindowName,
         dwStyle, dwExStyle, MenuOrID, &client);
 }
+
 #endif
 
 inline js_call* js_call::prepare(std::function<void(BkJSContext)> &&callback)
