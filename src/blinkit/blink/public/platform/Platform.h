@@ -80,8 +80,8 @@ class WebBlobRegistry;
 class WebCanvasCaptureHandler;
 #endif
 class WebClipboard;
-#if 0 // BKTODO:
 class WebCompositorSupport;
+#if 0 // BKTODO:
 class WebConvertableToTraceFormat;
 class WebCookieJar;
 class WebCrypto;
@@ -656,9 +656,13 @@ public:
 
     virtual bool isThreadedCompositingEnabled() { return false; }
     virtual bool isThreadedAnimationEnabled() { return true; }
+#endif
 
+#ifdef BLINKIT_UI_ENABLED
     virtual WebCompositorSupport* compositorSupport() { return nullptr; }
+#endif
 
+#if 0 // BKTODO:
     virtual WebFlingAnimator* createFlingAnimator() { return nullptr; }
 
     // Creates a new fling animation curve instance for device |deviceSource|

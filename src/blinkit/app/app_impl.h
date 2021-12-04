@@ -50,6 +50,9 @@ private:
     blink::WebThread* currentThread(void) final;
     double currentTimeSeconds(void) final;
     double monotonicallyIncreasingTimeSeconds(void) final;
+#ifdef BLINKIT_UI_ENABLED
+    blink::WebCompositorSupport* compositorSupport(void);
+#endif
 
     BkAppClient m_client;
     double m_firstMonotonicallyIncreasingTime;

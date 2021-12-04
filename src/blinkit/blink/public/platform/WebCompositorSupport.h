@@ -72,14 +72,17 @@ class WebTransformOperations;
 class WebCompositorSupport {
 public:
 
+#if 0 // BKTODO:
     // Layers -------------------------------------------------------
 
     virtual WebLayer* createLayer() { return nullptr; }
 
     virtual WebLayer* createLayerFromCCLayer(cc::Layer*) { return nullptr; }
+#endif
 
-    virtual WebContentLayer* createContentLayer(WebContentLayerClient*) { return nullptr; }
+    virtual WebContentLayer* createContentLayer(WebContentLayerClient *) { return nullptr; }
 
+#if 0 // BKTODO:
     virtual WebExternalTextureLayer* createExternalTextureLayer(WebExternalTextureLayerClient*) { return nullptr; }
 
     virtual WebImageLayer* createImageLayer() { return nullptr; }
@@ -111,6 +114,7 @@ public:
     virtual WebCompositorAnimationPlayer* createAnimationPlayer() { return nullptr; }
 
     virtual WebCompositorAnimationTimeline* createAnimationTimeline() { return nullptr; }
+#endif
 
 protected:
     virtual ~WebCompositorSupport() { }

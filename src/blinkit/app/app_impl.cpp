@@ -18,6 +18,9 @@
 #include "blinkit/gc/gc_heap.h"
 #include "blinkit/loader/loader_thread.h"
 #include "chromium/base/time/time.h"
+#ifdef BLINKIT_UI_ENABLED
+#   include "blinkit/blink/impl/compositor_support.h"
+#endif
 
 using namespace blink;
 
@@ -81,14 +84,6 @@ LoaderThread& AppImpl::GetLoaderThread(void)
     return *m_loaderThread;
 }
 
-#ifndef NDEBUG
-WebData AppImpl::loadResource(const char *name)
-{
-    BKLOG("WARNING: Resource '%s' not found.", name);
-    return WebData();
-}
-#endif
-
 bool AppImpl::LoadResourceFromClient(const char *URI, std::string &dst) const
 {
     ASSERT(nullptr != m_client.LoadResource);
@@ -100,6 +95,22 @@ double AppImpl::monotonicallyIncreasingTimeSeconds(void)
     double t = currentTimeSeconds();
     return t - m_firstMonotonicallyIncreasingTime;
 }
+
+#ifdef BLINKIT_UI_ENABLED
+WebCompositorSupport* AppImpl::compositorSupport(void)
+{
+    static CompositorSupport s_compositorSupport;
+    return &s_compositorSupport;
+}
+
+#   ifndef NDEBUG
+WebData AppImpl::loadResource(const char *name)
+{
+    BKLOG("WARNING: Resource '%s' not found.", name);
+    return WebData();
+}
+#   endif
+#endif
 
 } // namespace BlinKit
 
