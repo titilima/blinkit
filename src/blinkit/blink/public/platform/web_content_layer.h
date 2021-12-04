@@ -1,5 +1,17 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: web_content_layer.h
+// Description: WebContentLayer Class
+//      Author: Ziming Li
+//     Created: 2021-12-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
- * Copyright (C) 2012 Google Inc. All rights reserved.
+ * Copyright (C) 2011 Google Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -23,24 +35,21 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef WebScrollbarLayer_h
-#define WebScrollbarLayer_h
+#ifndef WebContentLayer_h
+#define WebContentLayer_h
 
-#include "WebLayer.h"
-#include "WebScrollbarThemeGeometry.h"
-#include "WebScrollbarThemePainter.h"
+#include "blinkit/blink/public/platform/web_layer.h"
 
 namespace blink {
 
-class WebScrollbarLayer {
+class WebContentLayer {
 public:
-    virtual ~WebScrollbarLayer() { }
+    virtual ~WebContentLayer() { }
 
+    // The WebContentLayer has ownership of this wrapper.
     virtual WebLayer* layer() = 0;
-
-    virtual void setScrollLayer(WebLayer*) = 0;
 };
 
 } // namespace blink
 
-#endif // WebScrollbarLayer_h
+#endif // WebContentLayer_h

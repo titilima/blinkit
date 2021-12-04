@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: web_scrollbar_layer.h
+// Description: WebScrollbarLayer Class
+//      Author: Ziming Li
+//     Created: 2021-12-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -23,26 +35,24 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef WebImageLayer_h
-#define WebImageLayer_h
+#ifndef WebScrollbarLayer_h
+#define WebScrollbarLayer_h
 
-#include "WebCommon.h"
-#include "WebLayer.h"
-
-class SkBitmap;
-class SkImage;
+#include "blinkit/blink/public/platform/web_layer.h"
+#include "WebScrollbarThemeGeometry.h"
+#include "WebScrollbarThemePainter.h"
 
 namespace blink {
 
-class WebImageLayer {
+class WebScrollbarLayer {
 public:
-    virtual ~WebImageLayer() { }
+    virtual ~WebScrollbarLayer() { }
 
     virtual WebLayer* layer() = 0;
-    virtual void setImage(const SkImage*) = 0;
-    virtual void setNearestNeighbor(bool) = 0;
+
+    virtual void setScrollLayer(WebLayer*) = 0;
 };
 
 } // namespace blink
 
-#endif // WebImageLayer_h
+#endif // WebScrollbarLayer_h

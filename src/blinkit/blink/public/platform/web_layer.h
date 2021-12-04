@@ -1,7 +1,8 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: WebLayer.h
+//   File Name: web_layer.h
 // Description: WebLayer Class
 //      Author: Ziming Li
 //     Created: 2021-07-17
@@ -66,6 +67,7 @@ class WebLayer {
 public:
     virtual ~WebLayer() { }
 
+#if 0 // BKTODO:
     // Returns a positive ID that will be unique across all WebLayers allocated in this process.
     virtual int id() const = 0;
 
@@ -102,8 +104,10 @@ public:
 
     virtual void setOpaque(bool) = 0;
     virtual bool opaque() const = 0;
+#endif
 
     virtual void setPosition(const FloatPoint&) = 0;
+#if 0 // BKTODO:
     virtual FloatPoint position() const = 0;
 
     virtual void setTransform(const SkMatrix44&) = 0;
@@ -111,9 +115,11 @@ public:
 
     virtual void setTransformOrigin(const FloatPoint3D&) { }
     virtual FloatPoint3D transformOrigin() const { return FloatPoint3D(); }
+#endif
 
     // Sets whether the layer draws its content when compositing.
     virtual void setDrawsContent(bool) = 0;
+#if 0 // BKTODO:
     virtual bool drawsContent() const = 0;
 
     // Set to true if the backside of this layer's contents should be visible
@@ -228,9 +234,11 @@ public:
     // See http://w3c.github.io/frame-timing/ for definition of terms.
     virtual void setFrameTimingRequests(const std::vector<std::pair<int64_t, IntRect>>&) = 0;
     virtual std::vector<std::pair<int64_t, IntRect>> frameTimingRequests() const = 0;
+#endif
 
     // FIXME: Make pure once cc is updated.  crbug.com/347272
     virtual void setScrollBlocksOn(WebScrollBlocksOn) { }
+#if 0 // BKTODO:
     virtual WebScrollBlocksOn scrollBlocksOn() const { return WebScrollBlocksOnNone; }
 
     virtual void setIsContainerForFixedPositionLayers(bool) = 0;
@@ -254,10 +262,12 @@ public:
 
     // True if the layer is not part of a tree attached to a WebLayerTreeView.
     virtual bool isOrphan() const = 0;
+#endif
 
     // Sets the cc-side layer client.
     virtual void setLayerClient(cc::LayerClient*) = 0;
 
+#if 0 // BKTODO:
     // Gets the underlying cc layer.
     virtual const cc::Layer* ccLayer() const = 0;
 
@@ -266,6 +276,7 @@ public:
 
     virtual void setCompositorMutableProperties(uint32_t) = 0;
     virtual uint32_t compositorMutableProperties() const = 0;
+#endif
 };
 
 } // namespace blink

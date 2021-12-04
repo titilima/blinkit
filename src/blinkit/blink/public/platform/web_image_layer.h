@@ -1,5 +1,17 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: web_image_layer.h
+// Description: WebImageLayer Class
+//      Author: Ziming Li
+//     Created: 2021-12-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
- * Copyright (C) 2011 Google Inc. All rights reserved.
+ * Copyright (C) 2012 Google Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -23,22 +35,25 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef WebContentLayer_h
-#define WebContentLayer_h
+#ifndef WebImageLayer_h
+#define WebImageLayer_h
 
-#include "WebCommon.h"
-#include "WebLayer.h"
+#include "blinkit/blink/public/platform/web_layer.h"
+
+class SkBitmap;
+class SkImage;
 
 namespace blink {
 
-class WebContentLayer {
+class WebImageLayer {
 public:
-    virtual ~WebContentLayer() { }
+    virtual ~WebImageLayer() { }
 
-    // The WebContentLayer has ownership of this wrapper.
     virtual WebLayer* layer() = 0;
+    virtual void setImage(const SkImage*) = 0;
+    virtual void setNearestNeighbor(bool) = 0;
 };
 
 } // namespace blink
 
-#endif // WebContentLayer_h
+#endif // WebImageLayer_h
