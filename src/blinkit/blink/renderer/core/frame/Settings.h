@@ -30,7 +30,7 @@ class Settings
 {
     STATIC_ONLY(Settings);
 public:
-    BLINKIT_BOOLEAN_SETTING_ITEM(acceleratedCompositingEnabled, false); // BKTODO: Support
+    BLINKIT_BOOLEAN_SETTING_ITEM(acceleratedCompositingEnabled, true);
     BLINKIT_BOOLEAN_SETTING_ITEM(allowCustomScrollbarInMainFrame, true);
     BLINKIT_BOOLEAN_SETTING_ITEM(caretBrowsingEnabled, false);
     BLINKIT_BOOLEAN_SETTING_ITEM(deviceSupportsMouse, true);

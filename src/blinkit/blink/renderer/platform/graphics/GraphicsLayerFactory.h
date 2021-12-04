@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: GraphicsLayerFactory.h
+// Description: GraphicsLayerFactory Class
+//      Author: Ziming Li
+//     Created: 2021-12-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -26,9 +37,6 @@
 #ifndef GraphicsLayerFactory_h
 #define GraphicsLayerFactory_h
 
-#include "platform/PlatformExport.h"
-#include "wtf/Allocator.h"
-#include "wtf/Forward.h"
 #include "wtf/Noncopyable.h"
 
 namespace blink {
@@ -36,14 +44,14 @@ namespace blink {
 class GraphicsLayer;
 class GraphicsLayerClient;
 
-class PLATFORM_EXPORT GraphicsLayerFactory {
-    USING_FAST_MALLOC(GraphicsLayerFactory);
+class GraphicsLayerFactory
+{
     WTF_MAKE_NONCOPYABLE(GraphicsLayerFactory);
 public:
     GraphicsLayerFactory() { }
     virtual ~GraphicsLayerFactory() { }
 
-    virtual PassOwnPtr<GraphicsLayer> createGraphicsLayer(GraphicsLayerClient*) = 0;
+    virtual std::unique_ptr<GraphicsLayer> createGraphicsLayer(GraphicsLayerClient*) = 0;
 };
 
 } // namespace blink
