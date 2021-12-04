@@ -9,20 +9,20 @@
 // Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "./DOMNodeIds.h"
+#include "./dom_node_ids.h"
 
 namespace blink {
 
+static_assert(sizeof(Node *) == sizeof(int));
+
 int DOMNodeIds::idForNode(Node *node)
 {
-    ASSERT(false); // BKTODO: Use pointer value?
-    return 0;
+    return reinterpret_cast<int>(node);
 }
 
 Node* DOMNodeIds::nodeForId(int id)
 {
-    ASSERT(false); // BKTODO: Use pointer value?
-    return nullptr;
+    return reinterpret_cast<Node *>(id);
 }
 
 } // namespace blink

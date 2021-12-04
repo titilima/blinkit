@@ -1,7 +1,8 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: DOMNodeIds.h
+//   File Name: dom_node_ids.h
 // Description: DOMNodeIds Class
 //      Author: Ziming Li
 //     Created: 2021-07-12
@@ -16,16 +17,16 @@
 #ifndef DOMNodeIds_h
 #define DOMNodeIds_h
 
-#include "core/CoreExport.h"
-#include "core/dom/Node.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/renderer/core/dom/Node.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
 
 namespace blink {
 
-class CORE_EXPORT DOMNodeIds {
+class DOMNodeIds
+{
     STATIC_ONLY(DOMNodeIds);
 public:
-    static int idForNode(Node*);
+    static int idForNode(Node *node);
     static Node* nodeForId(int id);
 };
 
