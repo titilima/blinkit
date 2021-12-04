@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FloatSize.h
+// Description: FloatSize Class
+//      Author: Ziming Li
+//     Created: 2021-12-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2005 Nokia.  All rights reserved.
@@ -30,6 +42,7 @@
 
 #include "platform/geometry/IntPoint.h"
 #include "third_party/skia/include/core/SkSize.h"
+#include "third_party/zed/include/zed/float.hpp"
 #include "wtf/Allocator.h"
 #include "wtf/MathExtras.h"
 #include <iosfwd>
@@ -177,14 +190,14 @@ inline FloatSize operator*(const float a, const FloatSize& b)
     return FloatSize(a * b.width(), a * b.height());
 }
 
-inline bool operator==(const FloatSize& a, const FloatSize& b)
+inline bool operator==(const FloatSize &a, const FloatSize &b)
 {
-    return a.width() == b.width() && a.height() == b.height();
+    return zed::almost_equals(a.width(), b.width()) && zed::almost_equals(a.height(), b.height());
 }
 
-inline bool operator!=(const FloatSize& a, const FloatSize& b)
+inline bool operator!=(const FloatSize &a, const FloatSize &b)
 {
-    return a.width() != b.width() || a.height() != b.height();
+    return !zed::almost_equals(a.width(), b.width()) || !zed::almost_equals(a.height(), b.height());
 }
 
 inline IntSize roundedIntSize(const FloatSize& p)

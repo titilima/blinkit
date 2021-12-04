@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FloatPoint.h
+// Description: FloatPoint Class
+//      Author: Ziming Li
+//     Created: 2021-12-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006, 2007 Apple Inc.  All rights reserved.
  * Copyright (C) 2005 Nokia.  All rights reserved.
@@ -224,14 +236,14 @@ inline FloatPoint operator-(const FloatPoint& a)
     return FloatPoint(-a.x(), -a.y());
 }
 
-inline bool operator==(const FloatPoint& a, const FloatPoint& b)
+inline bool operator==(const FloatPoint &a, const FloatPoint &b)
 {
-    return a.x() == b.x() && a.y() == b.y();
+    return zed::almost_equals(a.x(), b.x()) && zed::almost_equals(a.y(), b.y());
 }
 
-inline bool operator!=(const FloatPoint& a, const FloatPoint& b)
+inline bool operator!=(const FloatPoint &a, const FloatPoint &b)
 {
-    return a.x() != b.x() || a.y() != b.y();
+    return !zed::almost_equals(a.x(), b.x()) || !zed::almost_equals(a.y(), b.y());
 }
 
 inline float operator*(const FloatPoint& a, const FloatPoint& b)
