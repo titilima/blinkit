@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FloatPoint3D.h
+// Description: FloatPoint3D Class
+//      Author: Ziming Li
+//     Created: 2021-12-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 2004, 2005, 2006 Nikolas Zimmermann <wildfox@kde.org>
                   2004, 2005 Rob Buis <buis@kde.org>
@@ -29,7 +41,8 @@
 
 namespace blink {
 
-class PLATFORM_EXPORT FloatPoint3D {
+class FloatPoint3D
+{
     DISALLOW_NEW();
 public:
     FloatPoint3D()
@@ -162,12 +175,12 @@ inline FloatPoint3D operator-(const FloatPoint3D& a, const FloatPoint3D& b)
 
 inline bool operator==(const FloatPoint3D& a, const FloatPoint3D& b)
 {
-    return a.x() == b.x() && a.y() == b.y() && a.z() == b.z();
+    return zed::almost_equals(a.x(), b.x()) && zed::almost_equals(a.y(), b.y()) && zed::almost_equals(a.z(), b.z());
 }
 
 inline bool operator!=(const FloatPoint3D& a, const FloatPoint3D& b)
 {
-    return a.x() != b.x() || a.y() != b.y() || a.z() != b.z();
+    return !zed::almost_equals(a.x(), b.x()) || !zed::almost_equals(a.y(), b.y()) || !zed::almost_equals(a.z(), b.z());
 }
 
 inline float operator*(const FloatPoint3D& a, const FloatPoint3D& b)
