@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DoubleSize.h
+// Description: DoubleSize Class
+//      Author: Ziming Li
+//     Created: 2021-12-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -14,7 +26,7 @@ namespace blink {
 
 class LayoutSize;
 
-class PLATFORM_EXPORT DoubleSize {
+class DoubleSize {
     DISALLOW_NEW();
 public:
     DoubleSize() : m_width(0), m_height(0) { }
@@ -80,12 +92,12 @@ inline DoubleSize operator-(const DoubleSize& a, const DoubleSize& b)
 
 inline bool operator==(const DoubleSize& a, const DoubleSize& b)
 {
-    return a.width() == b.width() && a.height() == b.height();
+    return zed::almost_equals(a.width(), b.width()) && zed::almost_equals(a.height(), b.height());
 }
 
 inline bool operator!=(const DoubleSize& a, const DoubleSize& b)
 {
-    return a.width() != b.width() || a.height() != b.height();
+    return !zed::almost_equals(a.width(), b.width()) || !zed::almost_equals(a.height(), b.height());
 }
 
 inline IntSize flooredIntSize(const DoubleSize& p)

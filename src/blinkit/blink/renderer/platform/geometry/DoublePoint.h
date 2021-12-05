@@ -1,3 +1,14 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DoublePoint.h
+// Description: DoublePoint Class
+//      Author: Ziming Li
+//     Created: 2021-12-05
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
 
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -15,7 +26,7 @@ namespace blink {
 
 class LayoutPoint;
 
-class PLATFORM_EXPORT DoublePoint {
+class DoublePoint {
     DISALLOW_NEW();
 public:
     DoublePoint()
@@ -104,12 +115,12 @@ private:
 
 inline bool operator==(const DoublePoint& a, const DoublePoint& b)
 {
-    return a.x() == b.x() && a.y() == b.y();
+    return zed::almost_equals(a.x(), b.x()) && zed::almost_equals(a.y(), b.y());
 }
 
 inline bool operator!=(const DoublePoint& a, const DoublePoint& b)
 {
-    return a.x() != b.x() || a.y() != b.y();
+    return !zed::almost_equals(a.x(), b.x()) || !zed::almost_equals(a.y(), b.y());
 }
 
 inline DoublePoint& operator+=(DoublePoint& a, const DoubleSize& b)
