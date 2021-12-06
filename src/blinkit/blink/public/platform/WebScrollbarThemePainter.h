@@ -37,7 +37,8 @@
 #ifndef WebScrollbarThemePainter_h
 #define WebScrollbarThemePainter_h
 
-#include "public/platform/WebCanvas.h"
+#include "blinkit/blink/public/platform/WebCanvas.h"
+#include "blinkit/gc/gc_def.h"
 
 namespace blink {
 
@@ -48,12 +49,13 @@ class WebScrollbar;
 
 class WebScrollbarThemePainter {
 public:
-    WebScrollbarThemePainter() : m_theme(0), m_deviceScaleFactor(1.0) { }
-    WebScrollbarThemePainter(const WebScrollbarThemePainter& painter) { assign(painter); }
-    virtual ~WebScrollbarThemePainter()
+    WebScrollbarThemePainter(void);
+    WebScrollbarThemePainter(const WebScrollbarThemePainter &painter);
+    virtual ~WebScrollbarThemePainter(void)
     {
         reset();
     }
+
     WebScrollbarThemePainter& operator=(const WebScrollbarThemePainter& painter)
     {
         assign(painter);
@@ -91,13 +93,11 @@ private:
     // from the same thread that it is created on.
     ScrollbarTheme* m_theme;
 
-#if 0 // BKTODO:
     // It is assumed that the constructor of this paint object is responsible
     // for the lifetime of this scrollbar. The painter has to use the real
     // scrollbar (and not a WebScrollbar wrapper) due to static_casts for
     // LayoutScrollbar and pointer-based HashMap lookups for Lion scrollbars.
-    WebPrivatePtr<Scrollbar> m_scrollbar;
-#endif
+    GCRefPtr<Scrollbar> m_scrollbar;
 
     float m_deviceScaleFactor;
 };

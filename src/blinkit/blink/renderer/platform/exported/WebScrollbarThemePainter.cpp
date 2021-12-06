@@ -44,17 +44,26 @@
 
 namespace blink {
 
+WebScrollbarThemePainter::WebScrollbarThemePainter(void) : m_theme(0), m_deviceScaleFactor(1.0)
+{
+}
+
+WebScrollbarThemePainter::WebScrollbarThemePainter(const WebScrollbarThemePainter &painter)
+{
+    assign(painter);
+}
+
 void WebScrollbarThemePainter::assign(const WebScrollbarThemePainter& painter)
 {
     // This is a pointer to a static object, so no ownership transferral.
     m_theme = painter.m_theme;
-    ASSERT(false); // BKTODO: m_scrollbar = painter.m_scrollbar;
+    m_scrollbar = painter.m_scrollbar;
     m_deviceScaleFactor = painter.m_deviceScaleFactor;
 }
 
 void WebScrollbarThemePainter::reset()
 {
-    ASSERT(false); // BKTODO: m_scrollbar = nullptr;
+    m_scrollbar.clear();
 }
 
 void WebScrollbarThemePainter::paintScrollbarBackground(WebCanvas* canvas, const IntRect& rect)
@@ -65,7 +74,7 @@ void WebScrollbarThemePainter::paintScrollbarBackground(WebCanvas* canvas, const
     IntRect intRect(rect);
     SkPictureBuilder pictureBuilder(intRect);
     pictureBuilder.context().setDeviceScaleFactor(m_deviceScaleFactor);
-    ASSERT(false); // BKTODO: m_theme->paintScrollbarBackground(pictureBuilder.context(), *m_scrollbar);
+    m_theme->paintScrollbarBackground(pictureBuilder.context(), *m_scrollbar);
     pictureBuilder.endRecording()->playback(canvas);
 }
 
@@ -73,17 +82,17 @@ void WebScrollbarThemePainter::paintTrackBackground(WebCanvas* canvas, const Int
 {
     SkPictureBuilder pictureBuilder(rect);
     pictureBuilder.context().setDeviceScaleFactor(m_deviceScaleFactor);
-    ASSERT(false); // BKTODO: m_theme->paintTrackBackground(pictureBuilder.context(), *m_scrollbar, intRect);
+    m_theme->paintTrackBackground(pictureBuilder.context(), *m_scrollbar, rect);
     pictureBuilder.endRecording()->playback(canvas);
     if (!m_theme->shouldRepaintAllPartsOnInvalidation())
-        ASSERT(false); // BKTODO: m_scrollbar->clearTrackNeedsRepaint();
+        m_scrollbar->clearTrackNeedsRepaint();
 }
 
 void WebScrollbarThemePainter::paintBackTrackPart(WebCanvas* canvas, const IntRect& rect)
 {
     SkPictureBuilder pictureBuilder(rect);
     pictureBuilder.context().setDeviceScaleFactor(m_deviceScaleFactor);
-    ASSERT(false); // BKTODO: m_theme->paintTrackPiece(pictureBuilder.context(), *m_scrollbar, intRect, BackTrackPart);
+    m_theme->paintTrackPiece(pictureBuilder.context(), *m_scrollbar, rect, BackTrackPart);
     pictureBuilder.endRecording()->playback(canvas);
 }
 
@@ -91,7 +100,7 @@ void WebScrollbarThemePainter::paintForwardTrackPart(WebCanvas* canvas, const In
 {
     SkPictureBuilder pictureBuilder(rect);
     pictureBuilder.context().setDeviceScaleFactor(m_deviceScaleFactor);
-    ASSERT(false); // BKTODO: m_theme->paintTrackPiece(pictureBuilder.context(), *m_scrollbar, intRect, ForwardTrackPart);
+    m_theme->paintTrackPiece(pictureBuilder.context(), *m_scrollbar, rect, ForwardTrackPart);
     pictureBuilder.endRecording()->playback(canvas);
 }
 
@@ -100,7 +109,7 @@ void WebScrollbarThemePainter::paintBackButtonStart(WebCanvas* canvas, const Int
     IntRect intRect(rect);
     SkPictureBuilder pictureBuilder(intRect);
     pictureBuilder.context().setDeviceScaleFactor(m_deviceScaleFactor);
-    ASSERT(false); // BKTODO: m_theme->paintButton(pictureBuilder.context(), *m_scrollbar, intRect, BackButtonStartPart);
+    m_theme->paintButton(pictureBuilder.context(), *m_scrollbar, rect, BackButtonStartPart);
     pictureBuilder.endRecording()->playback(canvas);
 }
 
@@ -108,7 +117,7 @@ void WebScrollbarThemePainter::paintBackButtonEnd(WebCanvas* canvas, const IntRe
 {
     SkPictureBuilder pictureBuilder(rect);
     pictureBuilder.context().setDeviceScaleFactor(m_deviceScaleFactor);
-    ASSERT(false); // BKTODO: m_theme->paintButton(pictureBuilder.context(), *m_scrollbar, intRect, BackButtonEndPart);
+    m_theme->paintButton(pictureBuilder.context(), *m_scrollbar, rect, BackButtonEndPart);
     pictureBuilder.endRecording()->playback(canvas);
 }
 
@@ -116,7 +125,7 @@ void WebScrollbarThemePainter::paintForwardButtonStart(WebCanvas* canvas, const 
 {
     SkPictureBuilder pictureBuilder(rect);
     pictureBuilder.context().setDeviceScaleFactor(m_deviceScaleFactor);
-    ASSERT(false); // BKTODO: m_theme->paintButton(pictureBuilder.context(), *m_scrollbar, intRect, ForwardButtonStartPart);
+    m_theme->paintButton(pictureBuilder.context(), *m_scrollbar, rect, ForwardButtonStartPart);
     pictureBuilder.endRecording()->playback(canvas);
 }
 
@@ -124,7 +133,7 @@ void WebScrollbarThemePainter::paintForwardButtonEnd(WebCanvas* canvas, const In
 {
     SkPictureBuilder pictureBuilder(rect);
     pictureBuilder.context().setDeviceScaleFactor(m_deviceScaleFactor);
-    ASSERT(false); // BKTODO: m_theme->paintButton(pictureBuilder.context(), *m_scrollbar, intRect, ForwardButtonEndPart);
+    m_theme->paintButton(pictureBuilder.context(), *m_scrollbar, rect, ForwardButtonEndPart);
     pictureBuilder.endRecording()->playback(canvas);
 }
 
@@ -132,7 +141,7 @@ void WebScrollbarThemePainter::paintTickmarks(WebCanvas* canvas, const IntRect& 
 {
     SkPictureBuilder pictureBuilder(rect);
     pictureBuilder.context().setDeviceScaleFactor(m_deviceScaleFactor);
-    ASSERT(false); // BKTODO: m_theme->paintTickmarks(pictureBuilder.context(), *m_scrollbar, intRect);
+    m_theme->paintTickmarks(pictureBuilder.context(), *m_scrollbar, rect);
     pictureBuilder.endRecording()->playback(canvas);
 }
 
@@ -140,35 +149,32 @@ void WebScrollbarThemePainter::paintThumb(WebCanvas* canvas, const IntRect& rect
 {
     SkPictureBuilder pictureBuilder(rect);
     pictureBuilder.context().setDeviceScaleFactor(m_deviceScaleFactor);
-    ASSERT(false); // BKTODO: m_theme->paintThumb(pictureBuilder.context(), *m_scrollbar, intRect);
+    m_theme->paintThumb(pictureBuilder.context(), *m_scrollbar, rect);
     pictureBuilder.endRecording()->playback(canvas);
     if (!m_theme->shouldRepaintAllPartsOnInvalidation())
-        ASSERT(false); // BKTODO: m_scrollbar->clearThumbNeedsRepaint();
+        m_scrollbar->clearThumbNeedsRepaint();
 }
 
 WebScrollbarThemePainter::WebScrollbarThemePainter(ScrollbarTheme& theme, Scrollbar& scrollbar, float deviceScaleFactor)
     : m_theme(&theme)
-    // BKTODO: , m_scrollbar(&scrollbar)
+    , m_scrollbar(&scrollbar)
     , m_deviceScaleFactor(deviceScaleFactor)
 {
 }
 
 float WebScrollbarThemePainter::thumbOpacity() const
 {
-    ASSERT(false); // BKTODO: return m_theme->thumbOpacity(*m_scrollbar);
-    return 0;
+    return m_theme->thumbOpacity(*m_scrollbar);
 }
 
 bool WebScrollbarThemePainter::trackNeedsRepaint() const
 {
-    ASSERT(false); // BKTODO: return m_scrollbar->trackNeedsRepaint();
-    return false;
+    return m_scrollbar->trackNeedsRepaint();
 }
 
 bool WebScrollbarThemePainter::thumbNeedsRepaint() const
 {
-    ASSERT(false); // BKTODO: return m_scrollbar->thumbNeedsRepaint();
-    return false;
+    return m_scrollbar->thumbNeedsRepaint();
 }
 
 } // namespace blink
