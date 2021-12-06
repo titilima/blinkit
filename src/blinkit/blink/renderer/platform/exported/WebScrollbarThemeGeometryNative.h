@@ -41,18 +41,17 @@
 #include "public/platform/WebScrollbarThemeGeometry.h"
 #include "wtf/Allocator.h"
 #include "wtf/Noncopyable.h"
-#include "wtf/PassOwnPtr.h"
 
 namespace blink {
 
 class ScrollbarTheme;
 class WebScrollbar;
 
-class PLATFORM_EXPORT WebScrollbarThemeGeometryNative : public WebScrollbarThemeGeometry {
-    USING_FAST_MALLOC(WebScrollbarThemeGeometryNative);
+class PLATFORM_EXPORT WebScrollbarThemeGeometryNative : public WebScrollbarThemeGeometry
+{
     WTF_MAKE_NONCOPYABLE(WebScrollbarThemeGeometryNative);
 public:
-    static PassOwnPtr<WebScrollbarThemeGeometryNative> create(ScrollbarTheme&);
+    static std::unique_ptr<WebScrollbarThemeGeometryNative> create(ScrollbarTheme&);
 
     bool hasButtons(WebScrollbar*) override;
     bool hasThumb(WebScrollbar*) override;

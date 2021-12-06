@@ -39,12 +39,13 @@
 #include "platform/exported/WebScrollbarThemeClientImpl.h"
 #include "platform/scroll/ScrollbarTheme.h"
 #include "public/platform/WebScrollbar.h"
+#include "third_party/zed/include/zed/memory.hpp"
 
 namespace blink {
 
-PassOwnPtr<WebScrollbarThemeGeometryNative> WebScrollbarThemeGeometryNative::create(ScrollbarTheme& theme)
+std::unique_ptr<WebScrollbarThemeGeometryNative> WebScrollbarThemeGeometryNative::create(ScrollbarTheme& theme)
 {
-    return adoptPtr(new WebScrollbarThemeGeometryNative(theme));
+    return zed::wrap_unique(new WebScrollbarThemeGeometryNative(theme));
 }
 
 WebScrollbarThemeGeometryNative::WebScrollbarThemeGeometryNative(ScrollbarTheme& theme)
