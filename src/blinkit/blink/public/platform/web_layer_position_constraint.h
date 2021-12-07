@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: web_layer_position_constraint.h
+// Description: WebLayerPositionConstraint Struct
+//      Author: Ziming Li
+//     Created: 2021-12-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -47,6 +59,13 @@ struct WebLayerPositionConstraint {
         constraint.isFixedToRightEdge = fixedToRightEdge;
         constraint.isFixedToBottomEdge = fixedToBottomEdge;
         return constraint;
+    }
+
+    bool operator==(const WebLayerPositionConstraint &o) const
+    {
+        return isFixedPosition == o.isFixedPosition
+            && isFixedToRightEdge == o.isFixedToRightEdge
+            && isFixedToBottomEdge == o.isFixedToBottomEdge;
     }
 };
 
