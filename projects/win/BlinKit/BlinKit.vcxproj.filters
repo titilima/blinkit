@@ -301,6 +301,18 @@
     <Filter Include="blink\renderer\platform\text\brkiter">
       <UniqueIdentifier>{51bf66de-b2ce-4826-a848-b73652bf0659}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cc">
+      <UniqueIdentifier>{530814be-8e85-4ad0-b7ef-e5f4a67ef25e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cc\blink">
+      <UniqueIdentifier>{1fd818c6-5dd5-42b0-9798-139a758b1e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cc\layers">
+      <UniqueIdentifier>{b6c5fb73-44b1-4dcf-811b-7122602a6fc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cc\trees">
+      <UniqueIdentifier>{07ca5aad-f4f9-44fc-95c7-a8fb2786af38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -2367,9 +2379,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\LayoutTableRow.cpp">
       <Filter>blink\renderer\core\layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\filters\SkiaImageFilterBuilder.cpp">
-      <Filter>blink\renderer\platform\graphics\filters</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\transforms\InterpolatedTransformOperation.cpp">
       <Filter>blink\renderer\platform\transforms</Filter>
     </ClCompile>
@@ -4122,12 +4131,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\SimplifyMarkupCommand.cpp">
       <Filter>blink\renderer\core\editing\commands</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\win\scoped_paint_scheduler.cpp">
-      <Filter>win</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\win\paint_session.cpp">
-      <Filter>win</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\win\mouse_session.cpp">
       <Filter>win</Filter>
     </ClCompile>
@@ -4136,6 +4139,30 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\win\context_menu_controller.cpp">
       <Filter>win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\cc\blink\content_layer.cpp">
+      <Filter>cc\blink</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\cc\blink\layer.cpp">
+      <Filter>cc\blink</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\cc\blink\scrollbar_layer.cpp">
+      <Filter>cc\blink</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\cc\layers\painted_scrollbar_layer.cpp">
+      <Filter>cc\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\cc\layers\solid_color_scrollbar_layer.cpp">
+      <Filter>cc\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\cc\trees\layer_tree_host.cpp">
+      <Filter>cc\trees</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\impl\compositor_support.cpp">
+      <Filter>blink\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\impl\graphics_layer_factory_impl.cpp">
+      <Filter>blink\impl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -4256,20 +4283,8 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\impl\thread.h">
       <Filter>blink\impl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\Platform.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\impl\url_loader.h">
       <Filter>blink\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebHTTPBody.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebBlobData.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebData.h">
-      <Filter>blink\public\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\RefCounted.h">
       <Filter>blink\renderer\wtf</Filter>
@@ -4279,9 +4294,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\testing\WTFUnitTestHelpersExport.h">
       <Filter>blink\renderer\wtf\testing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebURLLoader.h">
-      <Filter>blink\public\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\network\ResourceRequest.h">
       <Filter>blink\renderer\platform\network</Filter>
@@ -4294,12 +4306,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\SharedBuffer.h">
       <Filter>blink\renderer\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebThread.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTaskRunner.h">
-      <Filter>blink\public\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\FrameLoaderClient.h">
       <Filter>blink\renderer\core\loader</Filter>
@@ -6710,186 +6716,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\WebDataSourceImpl.h">
       <Filter>blink\renderer\web</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\PointerProperties.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebBlendMode.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCanvas.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebClipboard.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebColor.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCommon.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimation.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationCurve.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationDelegate.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationPlayer.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationPlayerClient.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationTimeline.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorMutableProperties.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorSupport.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebContentLayer.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebContentLayerClient.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCursorInfo.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebDisplayItemList.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebDisplayMode.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebExternalTextureLayer.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebExternalTextureLayerClient.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebExternalTextureMailbox.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFallbackThemeEngine.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFilterAnimationCurve.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFilterKeyframe.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFilterOperations.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFloatAnimationCurve.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFloatKeyframe.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFocusType.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFrameScheduler.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebImage.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebImageLayer.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebInputEventResult.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayer.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayerPositionConstraint.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayerScrollClient.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayerTreeView.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLocalizedString.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebNativeScrollBehavior.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebPointerProperties.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebReferrerPolicy.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScreenInfo.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbar.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarBehavior.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarButtonsPlacement.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarLayer.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarThemeGeometry.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarThemePainter.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollBlocksOn.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollOffsetAnimationCurve.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollStateData.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebThemeEngine.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTopControlsState.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTraceLocation.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTransformAnimationCurve.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTransformKeyframe.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTransformOperations.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebURLLoaderClient.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebURLRequest.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebViewScheduler.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\impl\win_scrollbar_behavior.h">
       <Filter>blink\impl</Filter>
     </ClInclude>
@@ -8261,12 +8087,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\editing\commands\SimplifyMarkupCommand.h">
       <Filter>blink\renderer\core\editing\commands</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\win\scoped_paint_scheduler.h">
-      <Filter>win</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\win\paint_session.h">
-      <Filter>win</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\mouse_session.h">
       <Filter>win</Filter>
     </ClInclude>
@@ -8275,6 +8095,228 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\context_menu_controller.h">
       <Filter>win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\cc\blink\content_layer.h">
+      <Filter>cc\blink</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\cc\blink\layer.h">
+      <Filter>cc\blink</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\cc\blink\scrollbar_layer.h">
+      <Filter>cc\blink</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\cc\layers\painted_scrollbar_layer.h">
+      <Filter>cc\layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\cc\layers\solid_color_scrollbar_layer.h">
+      <Filter>cc\layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\cc\trees\layer_tree_host.h">
+      <Filter>cc\trees</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\Platform.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\PointerProperties.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_content_layer.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_image_layer.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_layer.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_layer_position_constraint.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_scrollbar_layer.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebBlendMode.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebBlobData.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCanvas.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebClipboard.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebColor.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCommon.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimation.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationCurve.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationDelegate.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationPlayer.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationPlayerClient.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorAnimationTimeline.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorMutableProperties.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCompositorSupport.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebContentLayerClient.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebCursorInfo.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebData.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebDisplayItemList.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebDisplayMode.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebExternalTextureLayer.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebExternalTextureLayerClient.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebExternalTextureMailbox.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFallbackThemeEngine.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFilterAnimationCurve.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFilterKeyframe.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFloatAnimationCurve.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFloatKeyframe.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFocusType.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebFrameScheduler.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebHTTPBody.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebImage.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebInputEventResult.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayerScrollClient.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayerTreeView.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLocalizedString.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebNativeScrollBehavior.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebPointerProperties.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebReferrerPolicy.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScreenInfo.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbar.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarBehavior.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarButtonsPlacement.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarThemeGeometry.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarThemePainter.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollBlocksOn.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollOffsetAnimationCurve.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollStateData.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTaskRunner.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebThemeEngine.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebThread.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTopControlsState.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTraceLocation.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTransformAnimationCurve.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTransformKeyframe.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebTransformOperations.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebURLLoader.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebURLLoaderClient.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebURLRequest.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebViewScheduler.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\impl\compositor_support.h">
+      <Filter>blink\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\impl\graphics_layer_factory_impl.h">
+      <Filter>blink\impl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
