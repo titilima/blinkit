@@ -816,14 +816,12 @@ String ChromeClientImpl::acceptLanguages()
 
 GraphicsLayerFactory* ChromeClientImpl::graphicsLayerFactory() const
 {
-    ASSERT(false); // BKTODO: return m_webView->graphicsLayerFactory();
-    return nullptr;
+    return m_webView->graphicsLayerFactory();
 }
 
 void ChromeClientImpl::attachRootGraphicsLayer(GraphicsLayer* rootLayer, LocalFrame* localRoot)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // FIXME: For top-level frames we still use the WebView as a WebWidget. This
     // special case will be removed when top-level frames get WebFrameWidgets.
     if (localRoot->isMainFrame()) {
@@ -840,6 +838,8 @@ void ChromeClientImpl::attachRootGraphicsLayer(GraphicsLayer* rootLayer, LocalFr
         ASSERT(webFrame->frameWidget());
         toWebFrameWidgetImpl(webFrame->frameWidget())->setRootGraphicsLayer(rootLayer);
     }
+#else
+    m_webView->setRootGraphicsLayer(rootLayer);
 #endif
 }
 
