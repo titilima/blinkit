@@ -69,7 +69,7 @@ PassRefPtr<AnimatableValue> AnimatableFilterOperations::interpolateTo(const Anim
         FilterOperation* from = (i < fromSize) ? m_operations.operations()[i].get() : 0;
         FilterOperation* to = (i < toSize) ? target->m_operations.operations()[i].get() : 0;
 #endif
-        RefPtrWillBeRawPtr<FilterOperation> blendedOp = FilterOperation::blend(from, to, fraction);
+        GCRefPtr<FilterOperation> blendedOp = FilterOperation::blend(from, to, fraction);
         if (blendedOp)
             result.operations().emplace_back(blendedOp);
         else
