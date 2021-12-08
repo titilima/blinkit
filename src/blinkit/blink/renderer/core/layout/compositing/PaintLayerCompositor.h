@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PaintLayerCompositor.h
+// Description: PaintLayerCompositor Class
+//      Author: Ziming Li
+//     Created: 2021-12-04
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All rights reserved.
  *
@@ -26,10 +37,8 @@
 #ifndef PaintLayerCompositor_h
 #define PaintLayerCompositor_h
 
-#include "core/CoreExport.h"
 #include "core/layout/compositing/CompositingReasonFinder.h"
 #include "platform/graphics/GraphicsLayerClient.h"
-#include "wtf/HashMap.h"
 
 namespace blink {
 
@@ -67,8 +76,8 @@ enum CompositingStateTransitionType {
 // In Slimming Paint v2, PaintLayerCompositor will be eventually replaced by
 // PaintArtifactCompositor.
 
-class CORE_EXPORT PaintLayerCompositor final : public GraphicsLayerClient {
-    USING_FAST_MALLOC(PaintLayerCompositor);
+class PaintLayerCompositor final : public GraphicsLayerClient
+{
 public:
     explicit PaintLayerCompositor(LayoutView&);
     ~PaintLayerCompositor() override;
@@ -213,7 +222,7 @@ private:
     void applyOverlayFullscreenVideoAdjustmentIfNeeded();
 
     LayoutView& m_layoutView;
-    OwnPtr<GraphicsLayer> m_rootContentLayer;
+    std::unique_ptr<GraphicsLayer> m_rootContentLayer;
 
     CompositingReasonFinder m_compositingReasonFinder;
 
@@ -238,16 +247,16 @@ private:
     RootLayerAttachment m_rootLayerAttachment;
 
     // Enclosing container layer, which clips for iframe content
-    OwnPtr<GraphicsLayer> m_containerLayer;
-    OwnPtr<GraphicsLayer> m_scrollLayer;
+    std::unique_ptr<GraphicsLayer> m_containerLayer;
+    std::unique_ptr<GraphicsLayer> m_scrollLayer;
 
     // Enclosing layer for overflow controls and the clipping layer
-    OwnPtr<GraphicsLayer> m_overflowControlsHostLayer;
+    std::unique_ptr<GraphicsLayer> m_overflowControlsHostLayer;
 
     // Layers for overflow controls
-    OwnPtr<GraphicsLayer> m_layerForHorizontalScrollbar;
-    OwnPtr<GraphicsLayer> m_layerForVerticalScrollbar;
-    OwnPtr<GraphicsLayer> m_layerForScrollCorner;
+    std::unique_ptr<GraphicsLayer> m_layerForHorizontalScrollbar;
+    std::unique_ptr<GraphicsLayer> m_layerForVerticalScrollbar;
+    std::unique_ptr<GraphicsLayer> m_layerForScrollCorner;
 };
 
 } // namespace blink

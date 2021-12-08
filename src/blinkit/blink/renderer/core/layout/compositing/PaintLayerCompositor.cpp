@@ -36,9 +36,9 @@
 
 #include "core/layout/compositing/PaintLayerCompositor.h"
 
+#include "blinkit/blink/renderer/core/dom/dom_node_ids.h"
 #include "core/animation/AnimationTimeline.h"
 #include "core/animation/DocumentAnimations.h"
-#include "core/dom/DOMNodeIds.h"
 // BKTODO: #include "core/dom/Fullscreen.h"
 #include "core/editing/FrameSelection.h"
 #include "core/frame/FrameHost.h"
@@ -309,8 +309,15 @@ void PaintLayerCompositor::applyOverlayFullscreenVideoAdjustmentIfNeeded()
         return;
 
     bool isLocalRoot = m_layoutView.frame()->isLocalRoot();
-    ASSERT(false); // BKTODO:
-#if 0
+#if 1
+    if (isLocalRoot)
+    {
+        GraphicsLayer* backgroundLayer = fixedRootBackgroundLayer();
+        if (backgroundLayer && !backgroundLayer->parent())
+            rootFixedBackgroundsChanged();
+    }
+    return;
+#else // BKTODO:
     LayoutVideo* video = findFullscreenVideoLayoutObject(m_layoutView.document());
     if (!video || !video->layer()->hasCompositedLayerMapping() || !video->videoElement()->usesOverlayFullscreenVideo()) {
         if (isLocalRoot) {
@@ -335,8 +342,8 @@ void PaintLayerCompositor::applyOverlayFullscreenVideoAdjustmentIfNeeded()
     m_overflowControlsHostLayer->addChild(videoLayer);
     if (GraphicsLayer* backgroundLayer = fixedRootBackgroundLayer())
         backgroundLayer->removeFromParent();
-#endif
     m_inOverlayFullscreenVideo = true;
+#endif
 }
 
 void PaintLayerCompositor::updateWithoutAcceleratedCompositing(CompositingUpdateType updateType)
@@ -449,7 +456,7 @@ void PaintLayerCompositor::updateIfNeeded()
             GraphicsLayerTreeBuilder().rebuild(*updateRoot, ancestorInfo);
         }
 
-        if (childList.isEmpty())
+        if (childList.empty())
             destroyRootLayer();
         else
             m_rootContentLayer->setChildren(childList);
@@ -1005,7 +1012,7 @@ void PaintLayerCompositor::ensureRootLayer()
         IntRect overflowRect = m_layoutView.pixelSnappedLayoutOverflowRect();
         m_rootContentLayer->setSize(FloatSize(overflowRect.maxX(), overflowRect.maxY()));
         m_rootContentLayer->setPosition(FloatPoint());
-        ASSERT(false); // BKTODO: m_rootContentLayer->setOwnerNodeId(DOMNodeIds::idForNode(m_layoutView.generatingNode()));
+        m_rootContentLayer->setOwnerNodeId(DOMNodeIds::idForNode(m_layoutView.generatingNode()));
 
         // FIXME: with rootLayerScrolls, we probably don't even need m_rootContentLayer?
         if (!Settings::rootLayerScrolls()) {
