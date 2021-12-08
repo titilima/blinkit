@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SourceGraphic.h
+// Description: SourceGraphic Class
+//      Author: Ziming Li
+//     Created: 2021-12-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Alex Mathews <possessedpenguinbob@gmail.com>
  * Copyright (C) 2009 Dirk Schulze <krit@webkit.org>
@@ -29,9 +41,9 @@ class SkPicture;
 
 namespace blink {
 
-class PLATFORM_EXPORT SourceGraphic final : public FilterEffect {
+class SourceGraphic final : public FilterEffect {
 public:
-    static PassRefPtrWillBeRawPtr<SourceGraphic> create(Filter*);
+    static GCRefPtr<SourceGraphic> create(Filter*);
     ~SourceGraphic() override;
 
     FloatRect determineAbsolutePaintRect(const FloatRect& requestedRect) override;

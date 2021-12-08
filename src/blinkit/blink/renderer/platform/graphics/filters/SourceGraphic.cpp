@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SourceGraphic.cpp
+// Description: SourceGraphic Class
+//      Author: Ziming Li
+//     Created: 2021-12-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Dirk Schulze <krit@webkit.org>
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -25,6 +36,8 @@
 #include "third_party/skia/include/core/SkPicture.h"
 #include "third_party/skia/include/effects/SkPictureImageFilter.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 SourceGraphic::SourceGraphic(Filter* filter)
@@ -37,9 +50,9 @@ SourceGraphic::~SourceGraphic()
 {
 }
 
-PassRefPtrWillBeRawPtr<SourceGraphic> SourceGraphic::create(Filter* filter)
+GCRefPtr<SourceGraphic> SourceGraphic::create(Filter* filter)
 {
-    return adoptRefWillBeNoop(new SourceGraphic(filter));
+    return GCWrapShared(new SourceGraphic(filter));
 }
 
 FloatRect SourceGraphic::determineAbsolutePaintRect(const FloatRect& requestedRect)
