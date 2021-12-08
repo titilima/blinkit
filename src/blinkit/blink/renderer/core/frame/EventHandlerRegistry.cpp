@@ -93,15 +93,13 @@ bool EventHandlerRegistry::eventTypeToClass(const AtomicString& eventType, Event
 const EventTargetSet* EventHandlerRegistry::eventHandlerTargets(EventHandlerClass handlerClass) const
 {
     checkConsistency();
-    ASSERT(false); // BKTODO: return &m_targets[handlerClass];
-    return nullptr;
+    return &m_targets[handlerClass];
 }
 
 bool EventHandlerRegistry::hasEventHandlers(EventHandlerClass handlerClass) const
 {
     checkConsistency();
-    ASSERT(false); // BKTODO: return m_targets[handlerClass].size();
-    return false;
+    return !m_targets[handlerClass].empty();
 }
 
 bool EventHandlerRegistry::updateEventHandlerTargets(ChangeOperation op, EventHandlerClass handlerClass, EventTarget* target)
