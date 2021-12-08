@@ -12,6 +12,8 @@
 #include "./web_view_impl.h"
 
 #include "blinkit/app/app_impl.h"
+#include "blinkit/blink/impl/graphics_layer_factory_impl.h"
+#include "blinkit/blink/public/platform/WebLayerTreeView.h"
 #include "blinkit/blink/public/web/WebContextMenuData.h"
 #include "blinkit/blink/renderer/core/editing/Editor.h"
 #include "blinkit/blink/renderer/core/editing/FrameSelection.h"
@@ -62,6 +64,7 @@ const WebInputEvent* WebViewImpl::m_currentInputEvent = nullptr;
 
 WebViewImpl::WebViewImpl(const BkWebViewClient &client, PageVisibilityState visibilityState, SkColor baseBackgroundColor)
     : m_client(client)
+    , m_graphicsLayerFactory(std::make_unique<GraphicsLayerFactoryImpl>(*this))
     , m_chromeClient(ChromeClientImpl::create(this))
     , m_contextMenuClientImpl(this)
     , m_dragClientImpl(this)
@@ -105,6 +108,20 @@ bool WebViewImpl::AddClickObserver(const char *id, BkClickObserver ob, void *use
 
     GCRefPtr<ClickObserverWrapper> listener = ClickObserverWrapper::Create(ob, userData);
     return element->addEventListener(EventTypeNames::click, listener.get());
+}
+
+SkColor WebViewImpl::BackgroundColor(void) const
+{
+#if 0 // BKTODO:
+    if (isTransparent())
+        return Color::transparent;
+#endif
+
+    if (!m_page || !m_frame)
+        return m_baseBackgroundColor;
+
+    FrameView *view = m_frame->view();
+    return view->documentBackgroundColor().rgb();
 }
 
 void WebViewImpl::BeginFrame(double tick)
@@ -170,13 +187,12 @@ void WebViewImpl::didRemoveAllPendingStylesheet(void)
 
 void WebViewImpl::DidUpdateTopControls(void)
 {
-#if 0 // BKTODO:
-    if (m_layerTreeView)
+    if (nullptr != m_layerTreeView)
     {
-        m_layerTreeView->setTopControlsShownRatio(topControls().shownRatio());
-        m_layerTreeView->setTopControlsHeight(topControls().height(), topControls().shrinkViewport());
+        TopControls &topControls = GetTopControls();
+        m_layerTreeView->setTopControlsShownRatio(topControls.shownRatio());
+        m_layerTreeView->setTopControlsHeight(topControls.height(), topControls.shrinkViewport());
     }
-#endif
 
     if (!m_frame)
         return;
@@ -186,7 +202,7 @@ void WebViewImpl::DidUpdateTopControls(void)
         return;
 
     VisualViewport &visualViewport = m_page->frameHost().visualViewport();
-    TopControls &topControls = m_page->frameHost().topControls();
+    TopControls &topControls = GetTopControls();
 
     float topControlsViewportAdjustment = topControls.layoutHeight() - topControls.contentOffset();
     visualViewport.setTopControlsAdjustment(topControlsViewportAdjustment);
@@ -286,6 +302,11 @@ ElementImpl* WebViewImpl::GetElementById(const char *id) const
 PageScaleConstraintsSet& WebViewImpl::GetPageScaleConstraintsSet(void) const
 {
     return m_page->frameHost().pageScaleConstraintsSet();
+}
+
+TopControls& WebViewImpl::GetTopControls(void)
+{
+    return m_page->frameHost().topControls();
 }
 
 WebInputEventResult WebViewImpl::handleCharEvent(const WebKeyboardEvent &event)
@@ -533,6 +554,7 @@ void WebViewImpl::Initialize(WebViewHost *host)
 {
     ASSERT(nullptr == m_host);
     m_host = host;
+    m_layerTreeView = host->GetLayerTreeView();
 
     m_frame = LocalFrame::create(this, &(m_page->frameHost()));
     m_frame->init();
@@ -540,15 +562,10 @@ void WebViewImpl::Initialize(WebViewHost *host)
 
 void WebViewImpl::invalidateRect(const IntRect &rect)
 {
-#if 0 // BKTODO:
-    if (m_layerTreeView)
-        updateLayerTreeViewport();
-    else if (m_client)
-        m_client->didInvalidateRect(rect);
-#else
-    if (nullptr != m_host)
+    if (nullptr != m_layerTreeView)
+        UpdateLayerTreeViewport();
+    else if (nullptr != m_host)
         m_host->Invalidate(rect);
-#endif
 }
 
 #if 0 // BKTODO:
@@ -717,6 +734,11 @@ bool WebViewImpl::MapKeyCodeForScroll(
     return true;
 }
 
+float WebViewImpl::MaximumPageScaleFactor(void) const
+{
+    return GetPageScaleConstraintsSet().finalConstraints().maximumScale;
+}
+
 float WebViewImpl::MinimumPageScaleFactor(void) const
 {
     return GetPageScaleConstraintsSet().finalConstraints().minimumScale;
@@ -875,6 +897,12 @@ void WebViewImpl::RefreshPageScaleFactorAfterLayout(void)
     UpdateLayerTreeViewport();
 }
 
+void WebViewImpl::registerForAnimations(WebLayer *layer)
+{
+    if (nullptr != m_layerTreeView)
+        m_layerTreeView->registerForAnimations(layer);
+}
+
 void WebViewImpl::Resize(const IntSize &size)
 {
     ASSERT(isMainThread());
@@ -1002,29 +1030,27 @@ void WebViewImpl::ResizeWithBrowserControls(
 
 void WebViewImpl::ResumeTreeViewCommitsIfRenderingReady(void)
 {
-#if 0 // BKTODO:
-    LocalFrame* frame = mainFrameImpl()->frame();
+    LocalFrame *frame = m_frame.get();
     if (!frame->loader().stateMachine()->committedFirstRealDocumentLoad())
         return;
     if (!frame->document()->isRenderingReady())
         return;
-    if (m_layerTreeView) {
+
+    if (nullptr != m_layerTreeView)
+    {
         m_layerTreeView->setDeferCommits(false);
-        m_layerTreeView->setNeedsBeginFrame();
+        ASSERT(false); // BKTODO: m_layerTreeView->setNeedsBeginFrame();
     }
-#endif
 }
 
 void WebViewImpl::scheduleAnimation(void)
 {
-#if 0 // BKTODO:
-    if (m_layerTreeView)
-    {
-        m_layerTreeView->setNeedsBeginFrame();
+    if (!m_loadFinished)
         return;
-    }
-#endif
-    if (nullptr != m_host && m_loadFinished)
+
+    if (nullptr != m_layerTreeView)
+        ASSERT(false); // BKTODO: m_layerTreeView->setNeedsBeginFrame();
+    else if (nullptr != m_host)
         m_host->ScheduleAnimation();
 }
 
@@ -1088,16 +1114,15 @@ void WebViewImpl::SendResizeEventAndRepaint(void)
         m_frame->document()->enqueueResizeEvent();
     }
 
-#if 0 // BKTODO:
-    if (m_layerTreeView)
+    if (nullptr != m_layerTreeView)
+    {
         UpdateLayerTreeViewport();
-#else
-    if (nullptr != m_host)
+    }
+    else if (nullptr != m_host)
     {
         IntRect damagedRect(IntPoint(0, 0), m_size);
         m_host->Invalidate(damagedRect);
     }
-#endif
     UpdatePageOverlays();
 }
 
@@ -1180,6 +1205,47 @@ void WebViewImpl::SetPageScaleFactor(float scaleFactor)
     m_page->frameHost().visualViewport().setScale(scaleFactor);
 }
 
+void WebViewImpl::setRootGraphicsLayer(GraphicsLayer *layer)
+{
+    if (nullptr == m_layerTreeView)
+        return;
+
+    // In SPv2, we attach layers via PaintArtifactCompositor, rather than
+    // supplying a root GraphicsLayer from PaintLayerCompositor.
+    ASSERT(!RuntimeEnabledFeatures::slimmingPaintV2Enabled());
+
+    VisualViewport &visualViewport = m_page->frameHost().visualViewport();
+    visualViewport.attachToLayerTree(layer, graphicsLayerFactory());
+    if (nullptr != layer)
+    {
+        m_rootGraphicsLayer = visualViewport.rootGraphicsLayer();
+        m_rootLayer = m_rootGraphicsLayer->platformLayer();
+        UpdateRootLayerTransform();
+        m_layerTreeView->setRootLayer(*m_rootLayer);
+        // We register viewport layers here since there may not be a layer
+        // tree view prior to this point.
+        visualViewport.registerLayersWithTreeView(m_layerTreeView);
+        UpdatePageOverlays();
+        // TODO(enne): Work around page visibility changes not being
+        // propagated to the WebView in some circumstances.  This needs to
+        // be refreshed here when setting a new root layer to avoid being
+        // stuck in a presumed incorrectly invisible state.
+        bool visible = page()->visibilityState() == PageVisibilityStateVisible;
+        m_layerTreeView->setVisible(visible);
+    }
+    else
+    {
+        m_rootGraphicsLayer = nullptr;
+        m_rootLayer = nullptr;
+        // This means that we're transitioning to a new page. Suppress
+        // commits until Blink generates invalidations so we don't
+        // attempt to paint too early in the next page load.
+        m_layerTreeView->setDeferCommits(true);
+        m_layerTreeView->clearRootLayer();
+        visualViewport.clearLayersForTreeView(m_layerTreeView);
+    }
+}
+
 void WebViewImpl::SetScaleFactor(float scaleFactor)
 {
     if (m_frame)
@@ -1191,12 +1257,13 @@ void WebViewImpl::SetVisibilityState(PageVisibilityState visibilityState, bool i
     ASSERT(isMainThread());
     ASSERT(m_page);
     m_page->setVisibilityState(visibilityState, isInitialState);
-#if 0 // BKTODO:
-    if (m_layerTreeView) {
-        bool visible = visibilityState == WebPageVisibilityStateVisible;
+    if (nullptr != m_layerTreeView)
+    {
+        bool visible = visibilityState == PageVisibilityStateVisible;
         m_layerTreeView->setVisible(visible);
     }
 
+#if 0 // BKTODO:
     if (visibilityState == WebPageVisibilityStateVisible) {
         m_scheduler->setPageInBackground(false);
     }
@@ -1285,17 +1352,17 @@ void WebViewImpl::UpdateICBAndResizeViewport(void)
 
 void WebViewImpl::UpdateLayerTreeBackgroundColor(void)
 {
-#if 0 // BKTODO:
-    if (!m_layerTreeView)
+    if (nullptr == m_layerTreeView)
         return;
 
-    m_layerTreeView->setBackgroundColor(alphaChannel(m_backgroundColorOverride) ? m_backgroundColorOverride : backgroundColor());
-#endif
+    m_layerTreeView->setBackgroundColor(BackgroundColor());
 }
 
 void WebViewImpl::UpdateLayerTreeViewport(void)
 {
-    // BKTODO:
+    if (!m_page || nullptr == m_layerTreeView)
+        return;
+    m_layerTreeView->setPageScaleFactorAndLimits(PageScaleFactor(), MinimumPageScaleFactor(), MaximumPageScaleFactor());
 }
 
 void WebViewImpl::UpdateLifecycle(void)
@@ -1368,11 +1435,9 @@ void WebViewImpl::updatePageDefinedViewportConstraints(const ViewportDescription
     // If we're not reading the viewport meta tag, allow GPU rasterization.
     if (!Settings::viewportMetaEnabled())
     {
-#if 0 // BKTODO:
         m_matchesHeuristicsForGpuRasterization = true;
-        if (m_layerTreeView)
+        if (nullptr != m_layerTreeView)
             m_layerTreeView->heuristicsForGpuRasterizationUpdated(m_matchesHeuristicsForGpuRasterization);
-#endif
     }
 
     if (!Settings::viewportEnabled() || !m_page || m_size.isZero())
@@ -1444,6 +1509,17 @@ void WebViewImpl::UpdatePageOverlays(void)
     if (m_pageColorOverlay)
         m_pageColorOverlay->update();
 #endif
+}
+
+void WebViewImpl::UpdateRootLayerTransform(void)
+{
+    if (nullptr != m_rootGraphicsLayer)
+    {
+        TransformationMatrix transform;
+        transform.translate(m_rootLayerOffset.width(), m_rootLayerOffset.height());
+        transform = transform.scale(m_rootLayerScale);
+        m_rootGraphicsLayer->setTransform(transform);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

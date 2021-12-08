@@ -16,9 +16,6 @@
 #include "chromium/base/time/time.h"
 #include "third_party/zed/include/zed/container_utilites.hpp"
 #include "third_party/zed/include/zed/float.hpp"
-#ifdef BLINKIT_UI_ENABLED
-#   include "blinkit/win/scoped_paint_scheduler.h"
-#endif
 
 using namespace blink;
 
@@ -243,10 +240,6 @@ int MessageLoop::Run(BkMessageFilter filter, void *userData)
     std::optional<int> ret;
     while (!ret.has_value())
     {
-#ifdef BLINKIT_UI_ENABLED
-        ScopedPaintScheduler paintScheduler;
-#endif
-
         DWORD dwWait = MsgWaitForMultipleObjectsEx(1, m_hEvent, INFINITE, QS_ALLINPUT,
             MWMO_ALERTABLE | MWMO_INPUTAVAILABLE);
 #ifndef NDEBUG

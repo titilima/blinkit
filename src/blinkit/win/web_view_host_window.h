@@ -16,11 +16,12 @@
 #include "blinkit/blink/renderer/platform/Timer.h"
 #include "blinkit/ui/web_view_host.h"
 #include "blinkit/win/mouse_session.h"
-#include "blinkit/win/paint_session.h"
 
 struct BkWebViewClient;
 
 namespace BlinKit {
+
+class LayerTreeHost;
 
 class WebViewHostWindow final : public WebViewHost
 {
@@ -32,7 +33,9 @@ public:
     WebViewImpl* GetView(void) const { return m_view; }
 
     void Redraw(const blink::IntRect &rect);
-    void StartAnimationTimer(double delay);
+    void StartAnimationTimer(double delay) {
+        //m_animationTimer.startOneShot(delay, BLINK_FROM_HERE);
+    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
@@ -40,10 +43,6 @@ public:
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private:
     std::unique_ptr<SkCanvas> CreateCanvas(int width, int height);
-#if 0 // BKTODO:
-    void ScheduleNextAnimationTask(double delay);
-    void ScheduledAnimationTask(void);
-#endif
     void UpdateScaleFactor(void);
 
     bool ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
@@ -54,7 +53,7 @@ private:
     void OnKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags);
     void OnMouse(UINT message, WPARAM wParam, LPARAM lParam);
     static BOOL OnNCCreate(HWND hwnd, LPCREATESTRUCT cs);
-    void OnNCDestroy(HWND hwnd);
+    void OnNCDestroy(void);
     void OnPaint(HWND hwnd);
     void OnShowWindow(HWND hwnd, BOOL fShow, UINT status);
     void OnSize(HWND hwnd, UINT state, int cx, int cy);
@@ -62,6 +61,7 @@ private:
     void OnAnimationTimer(blink::Timer<WebViewHostWindow> *);
 
     // WebViewHost
+    blink::WebLayerTreeView* GetLayerTreeView(void) const override;
     void Invalidate(const blink::IntRect &rect) override;
     void ScheduleAnimation(void) override;
     void ChangeTitle(const std::string &title) override;
@@ -72,12 +72,13 @@ private:
     WebViewImpl *m_view;
     UINT m_dpi = 96;
 
+    std::unique_ptr<LayerTreeHost> m_layerTreeHost;
     std::unique_ptr<SkCanvas> m_canvas;
     HDC m_memoryDC = nullptr;
     HBITMAP m_oldBitmap = nullptr;
 
     MouseSession m_mouseSession;
-    PaintSession m_paintSession;
+    // PaintSession m_paintSession;
 
     const std::shared_ptr<bool> m_hostAliveFlag;
     blink::Timer<WebViewHostWindow> m_animationTimer;
@@ -85,6 +86,12 @@ private:
     bool m_animationTaskScheduled = false;
     bool m_changingSizeOrPosition = false;
     blink::WebCursorInfo m_cursorInfo;
+
+    friend class ScopedPaintSession;
+    ScopedPaintSession *m_currentPaintSession = nullptr;
+    class ScopedAnimationScheduler;
+    bool m_animationScheduled = false;
+    unsigned m_animationScheduledTimes = 0;
 };
 
 } // namespace BlinKit

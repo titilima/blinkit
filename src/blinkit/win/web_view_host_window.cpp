@@ -15,6 +15,7 @@
 #include "blinkit/app/win_app.h"
 #include "blinkit/blink/renderer/core/editing/Editor.h"
 #include "blinkit/blink/renderer/platform/Task.h"
+#include "blinkit/cc/trees/layer_tree_host.h"
 #include "blinkit/ui/web_view_impl.h"
 #include "blinkit/win/bk_bitmap.h"
 #include "blinkit/win/context_menu_controller.h"
@@ -27,7 +28,6 @@ using namespace blink;
 namespace BlinKit {
 
 static std::unordered_map<HWND, WebViewHostWindow *> g_hosts;
-static constexpr double AnimationFrameLimit = 1.0 / 24.0;
 
 #ifndef NDEBUG
 class MessageLogger
@@ -46,6 +46,23 @@ private:
 };
 #endif
 
+class WebViewHostWindow::ScopedAnimationScheduler
+{
+public:
+    ScopedAnimationScheduler(WebViewHostWindow &hostWindow) : m_hostWindow(hostWindow) {}
+    ~ScopedAnimationScheduler(void)
+    {
+        if (m_hostWindow.m_animationScheduledTimes > 0)
+        {
+            m_hostWindow.GetView()->UpdateLifecycle();
+            m_hostWindow.m_animationScheduledTimes = 0;
+        }
+        m_hostWindow.m_animationScheduled = false;
+    }
+private:
+    WebViewHostWindow &m_hostWindow;
+};
+
 static PageVisibilityState GetPageVisibilityState(LONG style)
 {
     return 0 != (style & WS_VISIBLE) ? PageVisibilityStateVisible : PageVisibilityStateHidden;
@@ -60,6 +77,7 @@ static SkColor WindowColor(void)
 WebViewHostWindow::WebViewHostWindow(const BkWebViewClient &client, HWND hWnd, LPCREATESTRUCT cs)
     : m_hWnd(hWnd)
     , m_view(new WebViewImpl(client, GetPageVisibilityState(cs->style), WindowColor()))
+    , m_layerTreeHost(std::make_unique<LayerTreeHost>())
     , m_hostAliveFlag(std::make_shared<bool>(true))
     , m_animationTimer(this, &WebViewHostWindow::OnAnimationTimer)
 {
@@ -187,18 +205,43 @@ void WebViewHostWindow::DidChangeCursor(const WebCursorInfo &cursorInfo)
     ::SetCursor(m_cursorInfo.externalHandle);
 }
 
+WebLayerTreeView* WebViewHostWindow::GetLayerTreeView(void) const
+{
+    return m_layerTreeHost.get();
+}
+
 void WebViewHostWindow::Invalidate(const IntRect &rect)
 {
-    m_paintSession.UniteDamagedRect(rect);
+    ASSERT(false); // BKTODO:
+#if 0
+    if (nullptr != m_currentPaintSession)
+    {
+        m_currentPaintSession->UniteDamagedRect(rect);
+        return;
+    }
+
+    m_view->PaintContent(m_canvas.get(), rect);
+
+    RECT rc = { rect.x(), rect.y(), rect.maxX(), rect.maxY() };
+    InvalidateRect(m_hWnd, &rc, FALSE);
+
+    --m_animationScheduledTimes;
+#endif
 }
 
 void WebViewHostWindow::OnAnimationTimer(Timer<WebViewHostWindow> *)
 {
-    ASSERT(false);
+#if 0
+    m_paintSession.AttachToScheduler(*this);
+    m_paintSession.Begin(*this);
+    m_paintSession.Flush(*this);
+    m_paintSession.DetachFromScheduler();
+#endif
 }
 
 void WebViewHostWindow::OnChar(HWND hwnd, TCHAR ch, int)
 {
+    // m_paintSession.Begin(*this);
     m_view->ProcessKeyEvent(WebInputEvent::Char, ch, 0);
 }
 
@@ -227,6 +270,8 @@ void WebViewHostWindow::OnIMEStartComposition(HWND hwnd)
 
 void WebViewHostWindow::OnKey(HWND, UINT vk, BOOL fDown, int, UINT)
 {
+    //m_paintSession.Begin(*this);
+
     WebInputEvent::Type type = fDown ? WebInputEvent::RawKeyDown : WebInputEvent::KeyUp;
     int modifiers = 0;
     if (GetKeyState(VK_SHIFT) < 0)
@@ -242,20 +287,15 @@ void WebViewHostWindow::OnMouse(UINT message, WPARAM wParam, LPARAM lParam)
 {
     if (m_changingSizeOrPosition)
         return;
-    m_paintSession.Begin(*this);
+    //m_paintSession.Begin(*this);
 
     const auto callback = [this](const MouseEvent &e) {
         m_view->ProcessMouseEvent(e);
     };
     m_mouseSession.Process(m_hWnd, message, wParam, lParam, callback);
 
-    if (m_paintSession.IsAttached())
-    {
-        m_paintSession.DetachFromScheduler();
-
-        m_paintSession.Flush(*this);
+    if (m_animationScheduled)
         UpdateWindow(m_hWnd);
-    }
 }
 
 BOOL WebViewHostWindow::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
@@ -271,7 +311,7 @@ BOOL WebViewHostWindow::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
     return TRUE;
 }
 
-void WebViewHostWindow::OnNCDestroy(HWND hwnd)
+void WebViewHostWindow::OnNCDestroy(void)
 {
     delete this;
 }
@@ -282,13 +322,7 @@ void WebViewHostWindow::OnPaint(HWND hwnd)
 
     PAINTSTRUCT ps;
     HDC hdc = BeginPaint(hwnd, &ps);
-
-    int x = ps.rcPaint.left;
-    int y = ps.rcPaint.top;
-    int w = ps.rcPaint.right - ps.rcPaint.left;
-    int h = ps.rcPaint.bottom - ps.rcPaint.top;
-    BitBlt(hdc, x, y, w, h, m_memoryDC, x, y, SRCCOPY);
-
+    m_layerTreeHost->Paint(hdc, &ps.rcPaint);
     EndPaint(hwnd, &ps);
 }
 
@@ -306,7 +340,7 @@ void WebViewHostWindow::OnSize(HWND, UINT state, int cx, int cy)
     if (m_canvas)
     {
         SkImageInfo imageInfo = m_canvas->imageInfo();
-        if (imageInfo.width() != cx && imageInfo.height() != cy)
+        if (imageInfo.width() == cx && imageInfo.height() == cy)
             resetCanvas = false;
     }
     if (resetCanvas)
@@ -314,6 +348,7 @@ void WebViewHostWindow::OnSize(HWND, UINT state, int cx, int cy)
         m_canvas = CreateCanvas(cx, cy);
         m_canvas->drawColor(m_view->BaseBackgroundColor());
     }
+
     m_view->Resize(IntSize(cx, cy));
 }
 
@@ -329,11 +364,19 @@ bool WebViewHostWindow::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam,
     WebViewHostWindow *host = zed::query_value(g_hosts, hWnd, nullptr);
     if (nullptr == host)
         return false;
+
+    if (WM_NCDESTROY == Msg)
+    {
+        host->OnNCDestroy();
+        return false;
+    }
+
     return host->ProcessWindowMessageImpl(hWnd, Msg, wParam, lParam, result);
 }
 
 bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
 {
+    ScopedAnimationScheduler _(*this);
     switch (Msg)
     {
         case WM_ERASEBKGND:
@@ -404,10 +447,6 @@ bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wPa
             OnDPIChanged(hWnd, HIWORD(wParam), reinterpret_cast<LPRECT>(lParam));
             break;
 
-        case WM_NCDESTROY:
-            HANDLE_WM_NCDESTROY(hWnd, wParam, lParam, OnNCDestroy);
-            return false;
-
         default:
             if (!MessageTask::Process(Msg, wParam, lParam))
                 return false;
@@ -423,52 +462,12 @@ void WebViewHostWindow::Redraw(const IntRect &rect)
 
 void WebViewHostWindow::ScheduleAnimation(void)
 {
-    if (!m_paintSession.IsAttached())
-        m_paintSession.AttachToScheduler(*this);
-}
-
-#if 0 // BKTODO:
-void WebViewHostWindow::ScheduleAnimationTaskIfNecessary(void)
-{
-    if (m_changingSizeOrPosition || m_animationTaskScheduled)
+    if (nullptr != m_currentPaintSession)
         return;
 
-    double delta = m_paintSession.TimeDeltaSinceLastLeft();
-    double delay = std::max(0.0, AnimationFrameLimit - delta);
-    ScheduleNextAnimationTask(delay);
+    m_animationScheduled = true;
+    ++m_animationScheduledTimes;
 }
-
-void WebViewHostWindow::ScheduleNextAnimationTask(double delay)
-{
-    ASSERT(!m_animationTaskScheduled);
-    m_animationTaskScheduled = true;
-
-    if (!zed::almost_equals(delay, 0.0))
-        delay *= base::Time::kMillisecondsPerSecond;
-    auto task = std::bind(&WebViewHostWindow::ScheduledAnimationTask, this);
-    AppImpl::Get().taskRunner()->postDelayedTask(BLINK_FROM_HERE, new Task(std::move(task)), delay);
-}
-
-void WebViewHostWindow::ScheduledAnimationTask(void)
-{
-    double delta = m_paintSession.TimeDeltaSinceLastLeft();
-    if (delta < AnimationFrameLimit)
-    {
-        double delay = AnimationFrameLimit - delta;
-        if (delay > 0.01)
-        {
-            m_animationTaskScheduled = false;
-            ScheduleNextAnimationTask(delay);
-            return;
-        }
-    }
-
-    ASSERT(m_animationTaskScheduled);
-    m_animationTaskScheduled = false;
-
-    m_paintSession.Update(*m_view);
-}
-#endif
 
 void WebViewHostWindow::ShowContextMenu(const WebContextMenuData &data)
 {
@@ -513,11 +512,6 @@ void WebViewHostWindow::ShowContextMenu(const WebContextMenuData &data)
             return;
     }
     menuController.RunEditorFunction(m_view->GetFrame().editor(), pfn);
-}
-
-void WebViewHostWindow::StartAnimationTimer(double delay)
-{
-    ASSERT(false);
 }
 
 void WebViewHostWindow::UpdateScaleFactor(void)

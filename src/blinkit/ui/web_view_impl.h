@@ -18,6 +18,7 @@
 #include "blinkit/blink/public/web/WebInputEvent.h"
 #include "blinkit/blink/renderer/core/loader/FrameLoaderClient.h"
 #include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsLayer.h"
 #include "blinkit/blink/renderer/web/ContextMenuClientImpl.h"
 #include "blinkit/blink/renderer/web/DragClientImpl.h"
 #include "blinkit/blink/renderer/web/EditorClientImpl.h"
@@ -27,7 +28,6 @@
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page_visibility_state.h"
 #include "third_party/blink/renderer/core/page/page_widget_delegate.h"
-#include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
 #endif
 #include "third_party/skia/include/core/SkColor.h"
 #include "third_party/zed/include/zed/mutex.hpp"
@@ -36,9 +36,11 @@
 namespace blink {
 class BrowserControls;
 class PageScaleConstraintsSet;
+class TopControls;
 struct ViewportDescription;
 struct WebContextMenuData;
 struct WebCursorInfo;
+class WebLayerTreeView;
 }
 
 namespace BlinKit {
@@ -62,6 +64,10 @@ public:
 
     blink::IntSize MainFrameSize(void);
 
+    void registerForAnimations(blink::WebLayer *layer);
+
+    void setRootGraphicsLayer(blink::GraphicsLayer *layer);
+
     SkColor BaseBackgroundColor(void) const { return m_baseBackgroundColor; }
     void clearContextMenu(void);
     void convertViewportToWindow(blink::IntRect *rect) const;
@@ -70,6 +76,7 @@ public:
     blink::FloatSize elasticOverscroll(void) const { return m_elasticOverscroll; }
     blink::LocalFrame* focusedCoreFrame(void) const { return m_frame.get(); }
     blink::LocalFrame& GetFrame(void) const { return *m_frame; }
+    blink::GraphicsLayerFactory* graphicsLayerFactory(void) const { return m_graphicsLayerFactory.get(); }
     bool HasHost(void) const { return nullptr != m_host; }
     void invalidateRect(const blink::IntRect &rect);
     void layoutUpdated(blink::LocalFrame *frame);
@@ -114,8 +121,11 @@ private:
 
     blink::IntSize FrameSize(void);
 #endif
+    SkColor BackgroundColor(void) const;
     float ClampPageScaleFactorToLimits(float scaleFactor) const;
     blink::IntSize ContentsSize(void) const;
+
+    blink::TopControls& GetTopControls(void);
     // Called anytime top controls layout height or content offset have changed.
     void DidUpdateTopControls(void);
     bool EndActiveFlingAnimation(void);
@@ -128,6 +138,7 @@ private:
     static bool MapKeyCodeForScroll(int keyCode, blink::ScrollDirectionPhysical *scrollDirection,
         blink::ScrollGranularity *scrollGranularity);
     float MinimumPageScaleFactor(void) const;
+    float MaximumPageScaleFactor(void) const;
     void mouseContextMenu(const blink::WebMouseEvent &event);
     float PageScaleFactor(void) const;
     void PerformResize(void);
@@ -148,6 +159,7 @@ private:
     void SetPageScaleFactor(float scaleFactor);
     static bool ShouldShowContextMenu(const blink::WebContextMenuData &data);
     void UpdatePageOverlays(void);
+    void UpdateRootLayerTransform(void);
 
     // BKTODO: bool IsAcceleratedCompositingActive(void) const;
 
@@ -175,6 +187,15 @@ private:
 
     const BkWebViewClient m_client;
     BlinKit::WebViewHost *m_host = nullptr;
+
+    std::unique_ptr<blink::GraphicsLayerFactory> m_graphicsLayerFactory;
+    bool m_matchesHeuristicsForGpuRasterization = false;
+    blink::WebLayerTreeView *m_layerTreeView = nullptr;
+    blink::WebLayer *m_rootLayer = nullptr;
+    blink::GraphicsLayer *m_rootGraphicsLayer = nullptr;
+    blink::IntSize m_rootLayerOffset;
+    float m_rootLayerScale = 1.f;
+
     std::unique_ptr<blink::ChromeClient> m_chromeClient;
     blink::ContextMenuClientImpl m_contextMenuClientImpl;
     blink::DragClientImpl m_dragClientImpl;

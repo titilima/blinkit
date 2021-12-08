@@ -20,12 +20,18 @@
 
 class WebViewImpl;
 
+namespace blink {
+class WebLayerTreeView;
+}
+
 namespace BlinKit {
 
 class WebViewHost
 {
 public:
     virtual ~WebViewHost(void) = default;
+
+    virtual blink::WebLayerTreeView* GetLayerTreeView(void) const = 0;
 
     virtual void Invalidate(const blink::IntRect &rect) = 0;
     virtual void ScheduleAnimation(void) = 0;
