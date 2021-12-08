@@ -140,6 +140,13 @@ const StylePropertySet* ElementData::inlineStyle(void) const
     return m_inlineStyle.get();
 }
 
+const StylePropertySet* ElementData::presentationAttributeStyle(void) const
+{
+    if (!m_isUnique)
+        return 0;
+    return toUniqueElementData(this)->m_presentationAttributeStyle.get();
+}
+
 DEFINE_TRACE(ElementData)
 {
     if (m_isUnique)

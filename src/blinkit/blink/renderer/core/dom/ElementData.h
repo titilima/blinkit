@@ -190,7 +190,7 @@ public:
     // presentation attribute style. Lots of table cells likely have the same
     // attributes. Most modern pages don't use presentation attributes though
     // so this might not make sense.
-    mutable RefPtrWillBeMember<StylePropertySet> m_presentationAttributeStyle;
+    mutable GCRefPtr<StylePropertySet> m_presentationAttributeStyle;
     AttributeVector m_attributeVector;
 };
 
@@ -204,13 +204,6 @@ inline void ElementData::deref()
     destroy();
 }
 #endif
-
-inline const StylePropertySet* ElementData::presentationAttributeStyle() const
-{
-    if (!m_isUnique)
-        return 0;
-    return toUniqueElementData(this)->m_presentationAttributeStyle.get();
-}
 
 inline AttributeCollection ElementData::attributes() const
 {
