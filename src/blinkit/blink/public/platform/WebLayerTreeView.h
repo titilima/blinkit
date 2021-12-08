@@ -66,6 +66,7 @@ public:
     virtual void setRootLayer(const WebLayer&) { }
     virtual void clearRootLayer() { }
 
+#if 0 // BKTODO:
     virtual void attachCompositorAnimationTimeline(WebCompositorAnimationTimeline*) { }
     virtual void detachCompositorAnimationTimeline(WebCompositorAnimationTimeline*) { }
 
@@ -74,12 +75,15 @@ public:
     virtual void setViewportSize(const IntSize& deviceViewportSize) { }
 
     virtual void setDeviceScaleFactor(float) { }
+#endif
 
     // Sets the background color for the viewport.
     virtual void setBackgroundColor(WebColor) { }
 
+#if 0 // BKTODO:
     // Sets the background transparency for the viewport. The default is 'false'.
     virtual void setHasTransparentBackground(bool) { }
+#endif
 
     // Sets whether this view is visible. In threaded mode, a view that is not visible will not
     // composite or trigger updateAnimations() or layout() calls until it becomes visible.
@@ -88,10 +92,12 @@ public:
     // Sets the current page scale factor and minimum / maximum limits. Both limits are initially 1 (no page scale allowed).
     virtual void setPageScaleFactorAndLimits(float pageScaleFactor, float minimum, float maximum) { }
 
+#if 0 // BKTODO:
     // Starts an animation of the page scale to a target scale factor and scroll offset.
     // If useAnchor is true, destination is a point on the screen that will remain fixed for the duration of the animation.
     // If useAnchor is false, destination is the final top-left scroll position.
     virtual void startPageScaleAnimation(const WebPoint& destination, bool useAnchor, float newPageScale, double durationSec) { }
+#endif
 
     virtual void heuristicsForGpuRasterizationUpdated(bool) { }
 
@@ -99,13 +105,16 @@ public:
     // (fully shown).
     virtual void setTopControlsShownRatio(float) { }
 
+#if 0 // BKTODO:
     // Update top controls permitted and current states
     virtual void updateTopControlsState(WebTopControlsState constraints, WebTopControlsState current, bool animate) { }
+#endif
 
     // Set top controls height. If |shrinkViewport| is set to true, then Blink shrunk the viewport clip
     // layers by the top controls height.
     virtual void setTopControlsHeight(float height, bool shrinkViewport) { }
 
+#if 0 // BKTODO:
     // Flow control and scheduling ---------------------------------------
 
     // Indicates that an animation needs to be updated.
@@ -130,6 +139,7 @@ public:
     // The caller is responsible for keeping the WebCompositeAndReadbackAsyncCallback
     // object alive until it is called.
     virtual void compositeAndReadbackAsync(WebCompositeAndReadbackAsyncCallback*) { }
+#endif
 
     // Prevents updates to layer tree from becoming visible.
     virtual void setDeferCommits(bool deferCommits) { }
@@ -146,6 +156,7 @@ public:
         const WebLayer* outerViewportScrollLayer) { }
     virtual void clearViewportLayers() { }
 
+#if 0 // BKTODO:
     // Used to update the active selection bounds.
     virtual void registerSelection(const WebSelection&) { }
     virtual void clearSelection() { }
@@ -165,6 +176,7 @@ public:
 
     // Toggles scroll bottleneck rects on the HUD layer
     virtual void setShowScrollBottleneckRects(bool) { }
+#endif
 };
 
 } // namespace blink

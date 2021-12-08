@@ -59,7 +59,6 @@ class WebContentLayerClient;
 class WebExternalTextureLayer;
 class WebExternalTextureLayerClient;
 class WebFilterAnimationCurve;
-class WebFilterOperations;
 class WebFloatAnimationCurve;
 class WebGraphicsContext3D;
 class WebImageLayer;
@@ -86,12 +85,14 @@ public:
     virtual WebExternalTextureLayer* createExternalTextureLayer(WebExternalTextureLayerClient*) { return nullptr; }
 
     virtual WebImageLayer* createImageLayer() { return nullptr; }
+#endif
 
     // The ownership of the WebScrollbarThemeGeometry pointer is passed to Chromium.
-    virtual WebScrollbarLayer* createScrollbarLayer(WebScrollbar*, WebScrollbarThemePainter, WebScrollbarThemeGeometry*) { return nullptr; }
+    virtual WebScrollbarLayer* createScrollbarLayer(std::unique_ptr<WebScrollbar> &&, WebScrollbarThemePainter, std::unique_ptr<WebScrollbarThemeGeometry> &) { return nullptr; }
 
     virtual WebScrollbarLayer* createSolidColorScrollbarLayer(WebScrollbar::Orientation, int thumbThickness, int trackStart, bool isLeftSideVerticalScrollbar) { return nullptr; }
 
+#if 0 // BKTODO:
     // Animation ----------------------------------------------------
 
     virtual WebCompositorAnimation* createAnimation(const WebCompositorAnimationCurve&, WebCompositorAnimation::TargetProperty, int groupId = 0, int animationId = 0) { return nullptr; }
@@ -108,8 +109,6 @@ public:
     virtual WebTransformAnimationCurve* createTransformAnimationCurve() { return nullptr; }
 
     virtual WebTransformOperations* createTransformOperations() { return nullptr; }
-
-    virtual WebFilterOperations* createFilterOperations() { return nullptr; }
 
     virtual WebCompositorAnimationPlayer* createAnimationPlayer() { return nullptr; }
 

@@ -19,8 +19,12 @@ namespace BlinKit {
 
 class CompositorSupport final : public blink::WebCompositorSupport
 {
-public:
+private:
     blink::WebContentLayer* createContentLayer(blink::WebContentLayerClient *client) override;
+    blink::WebScrollbarLayer* createScrollbarLayer(std::unique_ptr<blink::WebScrollbar> &&scrollbar,
+        blink::WebScrollbarThemePainter painter, std::unique_ptr<blink::WebScrollbarThemeGeometry> &geometry) override;
+    blink::WebScrollbarLayer* createSolidColorScrollbarLayer(blink::WebScrollbar::Orientation orientation,
+        int thumbThickness, int trackStart, bool isLeftSideVerticalScrollbar) override;
 };
 
 } // namespace BlinKit

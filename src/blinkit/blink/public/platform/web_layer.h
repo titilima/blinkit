@@ -57,6 +57,9 @@ class LayerClient;
 }
 
 namespace blink {
+
+class FilterOperations;
+class Region;
 class WebCompositorAnimationDelegate;
 class WebFilterOperations;
 class WebLayerScrollClient;
@@ -67,9 +70,11 @@ class WebLayer {
 public:
     virtual ~WebLayer() { }
 
-#if 0 // BKTODO:
     // Returns a positive ID that will be unique across all WebLayers allocated in this process.
-    virtual int id() const = 0;
+    int id() const {
+        static_assert(sizeof(WebLayer *) == sizeof(int));
+        return reinterpret_cast<int>(this);
+    }
 
     // Sets a region of the layer as invalid, i.e. needs to update its content.
     virtual void invalidateRect(const IntRect&) = 0;
@@ -80,7 +85,9 @@ public:
     // These functions do not take ownership of the WebLayer* parameter.
     virtual void addChild(WebLayer*) = 0;
     virtual void insertChild(WebLayer*, size_t index) = 0;
+#if 0 // BKTODO:
     virtual void replaceChild(WebLayer* reference, WebLayer* newLayer) = 0;
+#endif
     virtual void removeFromParent() = 0;
     virtual void removeAllChildren() = 0;
 
@@ -96,18 +103,18 @@ public:
     virtual void setOpacity(float) = 0;
     virtual float opacity() const = 0;
 
+#if 0 // BKTODO:
     virtual void setBlendMode(WebBlendMode) = 0;
     virtual WebBlendMode blendMode() const = 0;
 
     virtual void setIsRootForIsolatedGroup(bool) = 0;
     virtual bool isRootForIsolatedGroup() = 0;
+#endif
 
     virtual void setOpaque(bool) = 0;
     virtual bool opaque() const = 0;
-#endif
 
     virtual void setPosition(const FloatPoint&) = 0;
-#if 0 // BKTODO:
     virtual FloatPoint position() const = 0;
 
     virtual void setTransform(const SkMatrix44&) = 0;
@@ -115,19 +122,19 @@ public:
 
     virtual void setTransformOrigin(const FloatPoint3D&) { }
     virtual FloatPoint3D transformOrigin() const { return FloatPoint3D(); }
-#endif
 
     // Sets whether the layer draws its content when compositing.
     virtual void setDrawsContent(bool) = 0;
-#if 0 // BKTODO:
     virtual bool drawsContent() const = 0;
 
     // Set to true if the backside of this layer's contents should be visible
     // when composited. Defaults to false.
     virtual void setDoubleSided(bool) = 0;
 
+#if 0 // BKTODO:
     // Sets whether the layer's transform should be flattened.
     virtual void setShouldFlattenTransform(bool) = 0;
+#endif
 
     // Sets the id of the layer's 3d rendering context. Layers in the same 3d
     // rendering context id are sorted with one another according to their 3d
@@ -148,12 +155,13 @@ public:
 
     // Clear the filters in use by passing in a newly instantiated
     // WebFilterOperations object.
-    virtual void setFilters(const WebFilterOperations&) = 0;
+    virtual void setFilters(FilterOperations &&) = 0;
 
     // Clear the background filters in use by passing in a newly instantiated
     // WebFilterOperations object.
-    virtual void setBackgroundFilters(const WebFilterOperations&) = 0;
+    virtual void setBackgroundFilters(FilterOperations &&) = 0;
 
+#if 0 // BKTODO:
     // An animation delegate is notified when animations are started and
     // stopped. The WebLayer does not take ownership of the delegate, and it is
     // the responsibility of the client to reset the layer's delegate before
@@ -181,6 +189,7 @@ public:
 
     // Returns true if this layer has any active animations - useful for tests.
     virtual bool hasActiveAnimation() = 0;
+#endif
 
     // If a scroll parent is set, this layer will inherit its parent's scroll
     // delta and offset even though it will not be a descendant of the scroll
@@ -193,7 +202,7 @@ public:
     virtual void setClipParent(WebLayer*) = 0;
 
     // Scrolling
-    virtual void setScrollPositionDouble(DoublePoint) = 0;
+    virtual void setScrollPositionDouble(const DoublePoint &) = 0;
     virtual DoublePoint scrollPositionDouble() const = 0;
     // Blink tells cc the scroll offset through setScrollPositionDouble() using
     // floating precision but it currently can only position cc layers at integer
@@ -206,11 +215,13 @@ public:
     // from the scroll offset, to be clear that this is Blink's limitation. Once
     // Blink can fully handle fractional scroll offset, it can stop calling
     // this function and cc side would just work.
-    virtual void setScrollCompensationAdjustment(DoublePoint) = 0;
+    virtual void setScrollCompensationAdjustment(const DoublePoint &) = 0;
 
     // To set a WebLayer as scrollable we must specify the corresponding clip layer.
     virtual void setScrollClipLayer(WebLayer*) = 0;
+#if 0 // BKTODO:
     virtual bool scrollable() const = 0;
+#endif
     virtual void setUserScrollable(bool horizontal, bool vertical) = 0;
     virtual bool userScrollableHorizontal() const = 0;
     virtual bool userScrollableVertical() const = 0;
@@ -224,9 +235,10 @@ public:
     virtual void setShouldScrollOnMainThread(bool) = 0;
     virtual bool shouldScrollOnMainThread() const = 0;
 
-    virtual void setNonFastScrollableRegion(const std::vector<IntRect>&) = 0;
-    virtual std::vector<IntRect> nonFastScrollableRegion() const = 0;
+    virtual void setNonFastScrollableRegion(const Region &) = 0;
+    virtual Region nonFastScrollableRegion() const = 0;
 
+#if 0 // BKTODO:
     virtual void setTouchEventHandlerRegion(const std::vector<IntRect>&) = 0;
     virtual std::vector<IntRect> touchEventHandlerRegion() const = 0;
 
@@ -238,11 +250,12 @@ public:
 
     // FIXME: Make pure once cc is updated.  crbug.com/347272
     virtual void setScrollBlocksOn(WebScrollBlocksOn) { }
-#if 0 // BKTODO:
     virtual WebScrollBlocksOn scrollBlocksOn() const { return WebScrollBlocksOnNone; }
 
     virtual void setIsContainerForFixedPositionLayers(bool) = 0;
+#if 0 // BKTODO:
     virtual bool isContainerForFixedPositionLayers() const = 0;
+#endif
 
     // This function sets layer position constraint. The constraint will be used
     // to adjust layer position during threaded scrolling.
@@ -256,6 +269,7 @@ public:
     // deleting the scroll client.
     virtual void setScrollClient(WebLayerScrollClient*) = 0;
 
+#if 0 // BKTODO:
     // Forces this layer to use a render surface. There is no benefit in doing
     // so, but this is to facilitate benchmarks and tests.
     virtual void setForceRenderSurface(bool) = 0;
