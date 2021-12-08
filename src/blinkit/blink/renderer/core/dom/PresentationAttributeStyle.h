@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PresentationAttributeStyle.h
+// Description: computePresentationAttributeStyle
+//      Author: Ziming Li
+//     Created: 2021-12-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,15 +43,14 @@
 #ifndef PresentationAttributeStyle_h
 #define PresentationAttributeStyle_h
 
-#include "platform/heap/Handle.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
 
 namespace blink {
 
 class Element;
 class StylePropertySet;
 
-PassRefPtrWillBeRawPtr<StylePropertySet> computePresentationAttributeStyle(Element&);
+GCRefPtr<StylePropertySet> computePresentationAttributeStyle(Element&);
 
 } // namespace blink
 
