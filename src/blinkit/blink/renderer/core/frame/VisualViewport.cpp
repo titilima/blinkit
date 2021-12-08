@@ -41,6 +41,7 @@
 
 #include "core/frame/VisualViewport.h"
 
+#include "blinkit/blink/public/platform/web_scrollbar_layer.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
@@ -62,10 +63,8 @@
 #include "platform/scroll/ScrollbarThemeOverlay.h"
 #include "public/platform/Platform.h"
 #include "public/platform/WebCompositorSupport.h"
-#include "public/platform/WebLayer.h"
 #include "public/platform/WebLayerTreeView.h"
 #include "public/platform/WebScrollbar.h"
-#include "public/platform/WebScrollbarLayer.h"
 
 using blink::WebLayer;
 using blink::WebLayerTreeView;
@@ -295,7 +294,7 @@ void VisualViewport::attachToLayerTree(GraphicsLayer* currentLayerTreeRoot, Grap
         return;
     }
 
-    if (currentLayerTreeRoot->parent() && currentLayerTreeRoot->parent() == m_innerViewportScrollLayer)
+    if (currentLayerTreeRoot->parent() && currentLayerTreeRoot->parent() == m_innerViewportScrollLayer.get())
         return;
 
     if (!m_innerViewportScrollLayer) {
@@ -367,7 +366,7 @@ void VisualViewport::setupScrollbar(WebScrollbar::Orientation orientation)
     bool isHorizontal = orientation == WebScrollbar::Horizontal;
     GraphicsLayer* scrollbarGraphicsLayer = isHorizontal ?
         m_overlayScrollbarHorizontal.get() : m_overlayScrollbarVertical.get();
-    OwnPtr<WebScrollbarLayer>& webScrollbarLayer = isHorizontal ?
+    std::unique_ptr<WebScrollbarLayer>& webScrollbarLayer = isHorizontal ?
         m_webOverlayScrollbarHorizontal : m_webOverlayScrollbarVertical;
 
     ScrollbarThemeOverlay& theme = ScrollbarThemeOverlay::mobileTheme();
@@ -749,7 +748,7 @@ String VisualViewport::debugName(const GraphicsLayer* graphicsLayer) const
         name =  "Overlay Scrollbar Horizontal Layer";
     } else if (graphicsLayer == m_overlayScrollbarVertical.get()) {
         name =  "Overlay Scrollbar Vertical Layer";
-    } else if (graphicsLayer == m_rootTransformLayer) {
+    } else if (graphicsLayer == m_rootTransformLayer.get()) {
         name =  "Root Transform Layer";
     } else {
         ASSERT_NOT_REACHED();
