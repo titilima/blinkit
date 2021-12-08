@@ -36,8 +36,8 @@
 
 #include "core/layout/compositing/CompositedLayerMapping.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/DOMNodeIds.h"
+#include "blinkit/blink/renderer/core/dom/dom_node_ids.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
 #include "core/fetch/ImageResource.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
@@ -129,8 +129,7 @@ static IntRect backgroundRect(const LayoutObject* layoutObject)
 
 static inline bool isAcceleratedCanvas(const LayoutObject* layoutObject)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     if (layoutObject->isCanvas()) {
         HTMLCanvasElement* canvas = toHTMLCanvasElement(layoutObject->node());
         if (CanvasRenderingContext* context = canvas->renderingContext())
@@ -160,18 +159,10 @@ static bool contentLayerSupportsDirectBackgroundComposition(const LayoutObject* 
     return contentsRect(layoutObject).contains(backgroundRect(layoutObject));
 }
 
-static WebLayer* platformLayerForPlugin(LayoutObject* layoutObject)
+static constexpr WebLayer* platformLayerForPlugin(LayoutObject* layoutObject)
 {
-    ASSERT(false); // BKTODO:
+    ASSERT(!layoutObject->isEmbeddedObject());
     return nullptr;
-#if 0
-    if (!layoutObject->isEmbeddedObject())
-        return nullptr;
-    Widget* widget = toLayoutEmbeddedObject(layoutObject)->widget();
-    if (!widget || !widget->isPluginView())
-        return nullptr;
-    return toPluginView(widget)->platformLayer();
-#endif
 }
 
 static inline bool isAcceleratedContents(LayoutObject* layoutObject)
@@ -234,19 +225,19 @@ CompositedLayerMapping::~CompositedLayerMapping()
     destroyGraphicsLayers();
 }
 
-PassOwnPtr<GraphicsLayer> CompositedLayerMapping::createGraphicsLayer(CompositingReasons reasons)
+std::unique_ptr<GraphicsLayer> CompositedLayerMapping::createGraphicsLayer(CompositingReasons reasons)
 {
     GraphicsLayerFactory* graphicsLayerFactory = nullptr;
     if (Page* page = layoutObject()->frame()->page())
         graphicsLayerFactory = page->chromeClient().graphicsLayerFactory();
 
-    OwnPtr<GraphicsLayer> graphicsLayer = GraphicsLayer::create(graphicsLayerFactory, this);
+    std::unique_ptr<GraphicsLayer> graphicsLayer = GraphicsLayer::create(graphicsLayerFactory, this);
 
-    ASSERT(false); // BKTODO: graphicsLayer->setCompositingReasons(reasons);
+    // BKTODO: graphicsLayer->setCompositingReasons(reasons);
     if (Node* owningNode = m_owningLayer.layoutObject()->generatingNode())
-        ASSERT(false); // BKTODO: graphicsLayer->setOwnerNodeId(DOMNodeIds::idForNode(owningNode));
+        graphicsLayer->setOwnerNodeId(DOMNodeIds::idForNode(owningNode));
 
-    return graphicsLayer.release();
+    return graphicsLayer;
 }
 
 void CompositedLayerMapping::createPrimaryGraphicsLayer()
@@ -374,7 +365,7 @@ void CompositedLayerMapping::updateCompositingReasons()
 {
     // All other layers owned by this mapping will have the same compositing reason
     // for their lifetime, so they are initialized only when created.
-    ASSERT(false); // BKTODO: m_graphicsLayer->setCompositingReasons(m_owningLayer.compositingReasons());
+    // BKTODO: m_graphicsLayer->setCompositingReasons(m_owningLayer.compositingReasons());
 }
 
 bool CompositedLayerMapping::owningLayerClippedByLayerNotAboveCompositedAncestor(PaintLayer* scrollParent)
@@ -525,7 +516,7 @@ bool CompositedLayerMapping::updateGraphicsLayerConfiguration()
 
     updateChildClippingMaskLayer(needsChildClippingMask);
 
-    if (layerToApplyChildClippingMask == m_graphicsLayer) {
+    if (layerToApplyChildClippingMask == m_graphicsLayer.get()) {
         if (m_graphicsLayer->maskLayer() != m_childClippingMaskLayer.get()) {
             m_graphicsLayer->setMaskLayer(m_childClippingMaskLayer.get());
             maskLayerChanged = true;
@@ -559,20 +550,26 @@ bool CompositedLayerMapping::updateGraphicsLayerConfiguration()
         }
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
-    if (WebLayer* layer = platformLayerForPlugin(layoutObject)) {
-        m_graphicsLayer->setContentsToPlatformLayer(layer);
-    } else if (layoutObject->node() && layoutObject->node()->isFrameOwnerElement() && toHTMLFrameOwnerElement(layoutObject->node())->contentFrame()) {
+#if 0 // BKTODO:
+    if (WebLayer* layer = platformLayerForPlugin(layoutObject))
+    {
+        ASSERT(false); // BKTODO: m_graphicsLayer->setContentsToPlatformLayer(layer);
+    }
+    else if (layoutObject->node() && layoutObject->node()->isFrameOwnerElement() && toHTMLFrameOwnerElement(layoutObject->node())->contentFrame())
+    {
         Frame* frame = toHTMLFrameOwnerElement(layoutObject->node())->contentFrame();
         if (frame->isRemoteFrame()) {
             WebLayer* layer = toRemoteFrame(frame)->remotePlatformLayer();
             m_graphicsLayer->setContentsToPlatformLayer(layer);
         }
-    } else if (layoutObject->isVideo()) {
+    }
+    else if (layoutObject->isVideo())
+    {
         HTMLMediaElement* mediaElement = toHTMLMediaElement(layoutObject->node());
         m_graphicsLayer->setContentsToPlatformLayer(mediaElement->platformLayer());
-    } else if (isAcceleratedCanvas(layoutObject)) {
+    }
+    else if (isAcceleratedCanvas(layoutObject))
+    {
         HTMLCanvasElement* canvas = toHTMLCanvasElement(layoutObject->node());
         if (CanvasRenderingContext* context = canvas->renderingContext())
             m_graphicsLayer->setContentsToPlatformLayer(context->platformLayer());
@@ -1374,7 +1371,7 @@ void CompositedLayerMapping::setBackgroundLayerPaintsFixedRootBackground(bool ba
 }
 
 // Only a member function so it can call createGraphicsLayer.
-bool CompositedLayerMapping::toggleScrollbarLayerIfNeeded(OwnPtr<GraphicsLayer>& layer, bool needsLayer, CompositingReasons reason)
+bool CompositedLayerMapping::toggleScrollbarLayerIfNeeded(std::unique_ptr<GraphicsLayer>& layer, bool needsLayer, CompositingReasons reason)
 {
     if (needsLayer == !!layer)
         return false;
@@ -1903,8 +1900,7 @@ bool CompositedLayerMapping::containsPaintedContent() const
         return false;
 
     LayoutObject* layoutObject = this->layoutObject();
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     // FIXME: we could optimize cases where the image, video or canvas is known to fill the border box entirely,
     // and set background color on the layer in that case, instead of allocating backing store and painting.
     if (layoutObject->isVideo() && toLayoutVideo(layoutObject)->shouldDisplayVideo())
@@ -2278,7 +2274,7 @@ IntRect CompositedLayerMapping::recomputeInterestRect(const GraphicsLayer* graph
 
     IntSize offsetFromAnchorLayoutObject;
     const LayoutBoxModelObject* anchorLayoutObject;
-    if (graphicsLayer == m_squashingLayer) {
+    if (graphicsLayer == m_squashingLayer.get()) {
         // TODO(chrishtr): this is a speculative fix for crbug.com/561306. However, it should never be the case that
         // m_squashingLayer exists yet m_squashedLayers.size() == 0. There must be a bug elsewhere.
         if (m_squashedLayers.size() == 0)
@@ -2289,7 +2285,7 @@ IntRect CompositedLayerMapping::recomputeInterestRect(const GraphicsLayer* graph
         anchorLayoutObject = m_squashedLayers[0].paintLayer->layoutObject();
         offsetFromAnchorLayoutObject = m_squashedLayers[0].offsetFromLayoutObject;
     } else {
-        ASSERT(graphicsLayer == m_graphicsLayer || graphicsLayer == m_scrollingContentsLayer);
+        ASSERT(graphicsLayer == m_graphicsLayer.get() || graphicsLayer == m_scrollingContentsLayer.get());
         anchorLayoutObject = m_owningLayer.layoutObject();
         offsetFromAnchorLayoutObject = graphicsLayer->offsetFromLayoutObject();
     }
@@ -2375,7 +2371,7 @@ IntRect CompositedLayerMapping::computeInterestRect(const GraphicsLayer* graphic
     // Paint the whole layer if "mainFrameClipsContent" is false, meaning that WebPreferences::record_whole_document is true.
     bool shouldPaintWholePage = !Settings::mainFrameClipsContent();
     if (shouldPaintWholePage
-        || (graphicsLayer != m_graphicsLayer && graphicsLayer != m_squashingLayer && graphicsLayer != m_squashingLayer && graphicsLayer != m_scrollingContentsLayer))
+        || (graphicsLayer != m_graphicsLayer.get() && graphicsLayer != m_squashingLayer.get() && graphicsLayer != m_squashingLayer.get() && graphicsLayer != m_scrollingContentsLayer.get()))
         return wholeLayerRect;
 
     IntRect newInterestRect = recomputeInterestRect(graphicsLayer);
@@ -2415,7 +2411,7 @@ void CompositedLayerMapping::paintContents(const GraphicsLayer* graphicsLayer, G
     if (graphicsLayerPaintingPhase & GraphicsLayerPaintCompositedScroll)
         paintLayerFlags |= PaintLayerPaintingCompositingScrollingPhase;
 
-    if (graphicsLayer == m_backgroundLayer)
+    if (graphicsLayer == m_backgroundLayer.get())
         paintLayerFlags |= (PaintLayerPaintingRootBackgroundOnly | PaintLayerPaintingCompositingForegroundPhase); // Need PaintLayerPaintingCompositingForegroundPhase to walk child layers.
     else if (compositor()->fixedRootBackgroundLayer())
         paintLayerFlags |= PaintLayerPaintingSkipRootBackground;
