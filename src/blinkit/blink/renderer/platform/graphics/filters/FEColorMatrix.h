@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FEColorMatrix.H
+// Description: FEColorMatrix Class
+//      Author: Ziming Li
+//     Created: 2021-12-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007 Nikolas Zimmermann <zimmermann@kde.org>
  * Copyright (C) 2004, 2005 Rob Buis <buis@kde.org>
@@ -36,9 +47,9 @@ enum ColorMatrixType {
     FECOLORMATRIX_TYPE_LUMINANCETOALPHA = 4
 };
 
-class PLATFORM_EXPORT FEColorMatrix final : public FilterEffect {
+class FEColorMatrix final : public FilterEffect {
 public:
-    static PassRefPtrWillBeRawPtr<FEColorMatrix> create(Filter*, ColorMatrixType, const Vector<float>&);
+    static GCRefPtr<FEColorMatrix> create(Filter*, ColorMatrixType, const Vector<float>&);
 
     ColorMatrixType type() const;
     bool setType(ColorMatrixType);

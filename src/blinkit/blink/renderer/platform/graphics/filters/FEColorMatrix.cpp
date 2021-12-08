@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FEColorMatrix.cpp
+// Description: FEColorMatrix Class
+//      Author: Ziming Li
+//     Created: 2021-12-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007 Nikolas Zimmermann <zimmermann@kde.org>
  * Copyright (C) 2004, 2005 Rob Buis <buis@kde.org>
@@ -25,8 +36,10 @@
 
 #include "SkColorFilterImageFilter.h"
 #include "SkColorMatrixFilter.h"
-#include "platform/graphics/filters/SkiaImageFilterBuilder.h"
+// BKTODO: #include "platform/graphics/filters/SkiaImageFilterBuilder.h"
 #include "platform/text/TextStream.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -39,9 +52,9 @@ FEColorMatrix::FEColorMatrix(Filter* filter, ColorMatrixType type, const Vector<
 {
 }
 
-PassRefPtrWillBeRawPtr<FEColorMatrix> FEColorMatrix::create(Filter* filter, ColorMatrixType type, const Vector<float>& values)
+GCRefPtr<FEColorMatrix> FEColorMatrix::create(Filter* filter, ColorMatrixType type, const Vector<float>& values)
 {
-    return adoptRefWillBeNoop(new FEColorMatrix(filter, type, values));
+    return GCWrapShared(new FEColorMatrix(filter, type, values));
 }
 
 ColorMatrixType FEColorMatrix::type() const
@@ -162,10 +175,14 @@ bool FEColorMatrix::affectsTransparentPixels()
 
 PassRefPtr<SkImageFilter> FEColorMatrix::createImageFilter(SkiaImageFilterBuilder& builder)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     RefPtr<SkImageFilter> input(builder.build(inputEffect(0), operatingColorSpace()));
     SkAutoTUnref<SkColorFilter> filter(createColorFilter(m_type, m_values));
     SkImageFilter::CropRect rect = getCropRect(builder.cropOffset());
     return adoptRef(SkColorFilterImageFilter::Create(filter, input.get(), &rect));
+#endif
 }
 
 static TextStream& operator<<(TextStream& ts, const ColorMatrixType& type)
