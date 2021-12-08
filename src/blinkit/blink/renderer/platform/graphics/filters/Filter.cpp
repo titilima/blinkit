@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Filter.cpp
+// Description: Filter Class
+//      Author: Ziming Li
+//     Created: 2021-12-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Adobe Systems Incorporated. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -33,6 +44,8 @@
 #include "platform/graphics/filters/FilterEffect.h"
 #include "platform/graphics/filters/SourceGraphic.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
 Filter::Filter(const FloatRect& referenceBox, const FloatRect& filterRegion, float scale, UnitScaling unitScaling)
@@ -48,14 +61,14 @@ Filter::~Filter()
 {
 }
 
-PassRefPtrWillBeRawPtr<Filter> Filter::create(const FloatRect& referenceBox, const FloatRect& filterRegion, float scale, UnitScaling unitScaling)
+GCRefPtr<Filter> Filter::create(const FloatRect& referenceBox, const FloatRect& filterRegion, float scale, UnitScaling unitScaling)
 {
-    return adoptRefWillBeNoop(new Filter(referenceBox, filterRegion, scale, unitScaling));
+    return GCWrapShared(new Filter(referenceBox, filterRegion, scale, unitScaling));
 }
 
-PassRefPtrWillBeRawPtr<Filter> Filter::create(float scale)
+GCRefPtr<Filter> Filter::create(float scale)
 {
-    return adoptRefWillBeNoop(new Filter(FloatRect(), FloatRect(), scale, UserSpace));
+    return GCWrapShared(new Filter(FloatRect(), FloatRect(), scale, UserSpace));
 }
 
 DEFINE_TRACE(Filter)
@@ -101,9 +114,19 @@ FloatPoint3D Filter::resolve3dPoint(const FloatPoint3D& point) const
         point.z() * sqrtf(referenceBox().size().diagonalLengthSquared() / 2));
 }
 
-void Filter::setLastEffect(PassRefPtrWillBeRawPtr<FilterEffect> effect)
+void Filter::setLastEffect(const GCRefPtr<FilterEffect> &effect)
 {
     m_lastEffect = effect;
+}
+
+FilterEffect* Filter::lastEffect(void) const
+{
+    return m_lastEffect.get();
+}
+
+SourceGraphic* Filter::sourceGraphic(void) const
+{
+    return m_sourceGraphic.get();
 }
 
 } // namespace blink

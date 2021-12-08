@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Filter.h
+// Description: Filter Class
+//      Author: Ziming Li
+//     Created: 2021-12-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Dirk Schulze <krit@webkit.org>
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -21,7 +33,6 @@
 #ifndef Filter_h
 #define Filter_h
 
-#include "platform/PlatformExport.h"
 #include "platform/geometry/FloatPoint3D.h"
 #include "platform/geometry/FloatRect.h"
 #include "platform/geometry/IntRect.h"
@@ -34,7 +45,8 @@ namespace blink {
 class SourceGraphic;
 class FilterEffect;
 
-class PLATFORM_EXPORT Filter final : public RefCountedWillBeGarbageCollectedFinalized<Filter> {
+class Filter final : public BlinKit::GCObject
+{
     WTF_MAKE_NONCOPYABLE(Filter);
 public:
     enum UnitScaling {
@@ -42,8 +54,8 @@ public:
         BoundingBox
     };
 
-    static PassRefPtrWillBeRawPtr<Filter> create(const FloatRect& referenceBox, const FloatRect& filterRegion, float scale, UnitScaling);
-    static PassRefPtrWillBeRawPtr<Filter> create(float scale);
+    static GCRefPtr<Filter> create(const FloatRect& referenceBox, const FloatRect& filterRegion, float scale, UnitScaling);
+    static GCRefPtr<Filter> create(float scale);
 
     ~Filter();
     DECLARE_TRACE();
@@ -62,10 +74,10 @@ public:
     const FloatRect& filterRegion() const { return m_filterRegion; }
     const FloatRect& referenceBox() const { return m_referenceBox; }
 
-    void setLastEffect(PassRefPtrWillBeRawPtr<FilterEffect>);
-    FilterEffect* lastEffect() const { return m_lastEffect.get(); }
+    void setLastEffect(const GCRefPtr<FilterEffect> &);
+    FilterEffect* lastEffect(void) const;
 
-    SourceGraphic* sourceGraphic() const { return m_sourceGraphic.get(); }
+    SourceGraphic* sourceGraphic(void) const;
 
 private:
     Filter(const FloatRect& referenceBox, const FloatRect& filterRegion, float scale, UnitScaling);
@@ -75,8 +87,8 @@ private:
     float m_scale;
     UnitScaling m_unitScaling;
 
-    RefPtrWillBeMember<SourceGraphic> m_sourceGraphic;
-    RefPtrWillBeMember<FilterEffect> m_lastEffect;
+    GCRefPtr<SourceGraphic> m_sourceGraphic;
+    GCRefPtr<FilterEffect> m_lastEffect;
 };
 
 } // namespace blink
