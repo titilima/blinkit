@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FilterOperation.h
+// Description: FilterOperation Classes
+//      Author: Ziming Li
+//     Created: 2021-12-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -27,21 +39,18 @@
 #define FilterOperation_h
 
 #include "platform/Length.h"
-#include "platform/PlatformExport.h"
 #include "platform/graphics/Color.h"
 #include "platform/graphics/filters/Filter.h"
 #include "platform/heap/Handle.h"
 #include "wtf/Noncopyable.h"
-#include "wtf/OwnPtr.h"
-#include "wtf/PassOwnPtr.h"
-#include "wtf/RefCounted.h"
 #include "wtf/text/WTFString.h"
 
 namespace blink {
 
 // CSS Filters
 
-class PLATFORM_EXPORT FilterOperation : public RefCountedWillBeGarbageCollectedFinalized<FilterOperation> {
+class FilterOperation : public BlinKit::GCObject
+{
     WTF_MAKE_NONCOPYABLE(FilterOperation);
 public:
     enum OperationType {
@@ -85,7 +94,7 @@ public:
     virtual ~FilterOperation() { }
     DEFINE_INLINE_VIRTUAL_TRACE() { }
 
-    static PassRefPtrWillBeRawPtr<FilterOperation> blend(const FilterOperation* from, const FilterOperation* to, double progress);
+    static GCRefPtr<FilterOperation> blend(const FilterOperation* from, const FilterOperation* to, double progress);
     virtual bool operator==(const FilterOperation&) const = 0;
     bool operator!=(const FilterOperation& o) const { return !(*this == o); }
 
@@ -106,17 +115,17 @@ protected:
     OperationType m_type;
 
 private:
-    virtual PassRefPtrWillBeRawPtr<FilterOperation> blend(const FilterOperation* from, double progress) const = 0;
+    virtual GCRefPtr<FilterOperation> blend(const FilterOperation* from, double progress) const = 0;
 };
 
 #define DEFINE_FILTER_OPERATION_TYPE_CASTS(thisType, operationType) \
     DEFINE_TYPE_CASTS(thisType, FilterOperation, op, op->type() == FilterOperation::operationType, op.type() == FilterOperation::operationType);
 
-class PLATFORM_EXPORT ReferenceFilterOperation : public FilterOperation {
+class ReferenceFilterOperation : public FilterOperation {
 public:
-    static PassRefPtrWillBeRawPtr<ReferenceFilterOperation> create(const String& url, const AtomicString& fragment)
+    static GCRefPtr<ReferenceFilterOperation> create(const String& url, const AtomicString& fragment)
     {
-        return adoptRefWillBeNoop(new ReferenceFilterOperation(url, fragment));
+        return BlinKit::GCWrapShared(new ReferenceFilterOperation(url, fragment));
     }
 
     bool affectsOpacity() const override { return true; }
@@ -125,13 +134,13 @@ public:
     const String& url() const { return m_url; }
     const AtomicString& fragment() const { return m_fragment; }
 
-    Filter* filter() const { return m_filter.get(); }
-    void setFilter(PassRefPtrWillBeRawPtr<Filter> filter) { m_filter = filter; }
+    Filter* filter(void) const;
+    void setFilter(const GCRefPtr<Filter> &filter);
 
     DECLARE_VIRTUAL_TRACE();
 
 private:
-    PassRefPtrWillBeRawPtr<FilterOperation> blend(const FilterOperation* from, double progress) const override
+    GCRefPtr<FilterOperation> blend(const FilterOperation* from, double progress) const override
     {
         ASSERT_NOT_REACHED();
         return nullptr;
@@ -145,34 +154,29 @@ private:
         return m_url == other->m_url;
     }
 
-    ReferenceFilterOperation(const String& url, const AtomicString& fragment)
-        : FilterOperation(REFERENCE)
-        , m_url(url)
-        , m_fragment(fragment)
-    {
-    }
+    ReferenceFilterOperation(const String& url, const AtomicString& fragment);
 
     String m_url;
     AtomicString m_fragment;
-    RefPtrWillBeMember<Filter> m_filter;
+    GCRefPtr<Filter> m_filter;
 };
 
 DEFINE_FILTER_OPERATION_TYPE_CASTS(ReferenceFilterOperation, REFERENCE);
 
 // GRAYSCALE, SEPIA, SATURATE and HUE_ROTATE are variations on a basic color matrix effect.
 // For HUE_ROTATE, the angle of rotation is stored in m_amount.
-class PLATFORM_EXPORT BasicColorMatrixFilterOperation : public FilterOperation {
+class BasicColorMatrixFilterOperation : public FilterOperation {
 public:
-    static PassRefPtrWillBeRawPtr<BasicColorMatrixFilterOperation> create(double amount, OperationType type)
+    static GCRefPtr<BasicColorMatrixFilterOperation> create(double amount, OperationType type)
     {
-        return adoptRefWillBeNoop(new BasicColorMatrixFilterOperation(amount, type));
+        return BlinKit::GCWrapShared(new BasicColorMatrixFilterOperation(amount, type));
     }
 
     double amount() const { return m_amount; }
 
 
 private:
-    PassRefPtrWillBeRawPtr<FilterOperation> blend(const FilterOperation* from, double progress) const override;
+    GCRefPtr<FilterOperation> blend(const FilterOperation* from, double progress) const override;
     bool operator==(const FilterOperation& o) const override
     {
         if (!isSameType(o))
@@ -199,11 +203,11 @@ inline bool isBasicColorMatrixFilterOperation(const FilterOperation& operation)
 DEFINE_TYPE_CASTS(BasicColorMatrixFilterOperation, FilterOperation, op, isBasicColorMatrixFilterOperation(*op), isBasicColorMatrixFilterOperation(op));
 
 // INVERT, BRIGHTNESS, CONTRAST and OPACITY are variations on a basic component transfer effect.
-class PLATFORM_EXPORT BasicComponentTransferFilterOperation : public FilterOperation {
+class BasicComponentTransferFilterOperation : public FilterOperation {
 public:
-    static PassRefPtrWillBeRawPtr<BasicComponentTransferFilterOperation> create(double amount, OperationType type)
+    static GCRefPtr<BasicComponentTransferFilterOperation> create(double amount, OperationType type)
     {
-        return adoptRefWillBeNoop(new BasicComponentTransferFilterOperation(amount, type));
+        return BlinKit::GCWrapShared(new BasicComponentTransferFilterOperation(amount, type));
     }
 
     double amount() const { return m_amount; }
@@ -212,7 +216,7 @@ public:
 
 
 private:
-    PassRefPtrWillBeRawPtr<FilterOperation> blend(const FilterOperation* from, double progress) const override;
+    GCRefPtr<FilterOperation> blend(const FilterOperation* from, double progress) const override;
     bool operator==(const FilterOperation& o) const override
     {
         if (!isSameType(o))
@@ -238,11 +242,11 @@ inline bool isBasicComponentTransferFilterOperation(const FilterOperation& opera
 
 DEFINE_TYPE_CASTS(BasicComponentTransferFilterOperation, FilterOperation, op, isBasicComponentTransferFilterOperation(*op), isBasicComponentTransferFilterOperation(op));
 
-class PLATFORM_EXPORT BlurFilterOperation : public FilterOperation {
+class BlurFilterOperation : public FilterOperation {
 public:
-    static PassRefPtrWillBeRawPtr<BlurFilterOperation> create(const Length& stdDeviation)
+    static GCRefPtr<BlurFilterOperation> create(const Length& stdDeviation)
     {
-        return adoptRefWillBeNoop(new BlurFilterOperation(stdDeviation));
+        return BlinKit::GCWrapShared(new BlurFilterOperation(stdDeviation));
     }
 
     const Length& stdDeviation() const { return m_stdDeviation; }
@@ -252,7 +256,7 @@ public:
 
 
 private:
-    PassRefPtrWillBeRawPtr<FilterOperation> blend(const FilterOperation* from, double progress) const override;
+    GCRefPtr<FilterOperation> blend(const FilterOperation* from, double progress) const override;
     bool operator==(const FilterOperation& o) const override
     {
         if (!isSameType(o))
@@ -272,11 +276,11 @@ private:
 
 DEFINE_FILTER_OPERATION_TYPE_CASTS(BlurFilterOperation, BLUR);
 
-class PLATFORM_EXPORT DropShadowFilterOperation : public FilterOperation {
+class DropShadowFilterOperation : public FilterOperation {
 public:
-    static PassRefPtrWillBeRawPtr<DropShadowFilterOperation> create(const IntPoint& location, int stdDeviation, Color color)
+    static GCRefPtr<DropShadowFilterOperation> create(const IntPoint& location, int stdDeviation, Color color)
     {
-        return adoptRefWillBeNoop(new DropShadowFilterOperation(location, stdDeviation, color));
+        return BlinKit::GCWrapShared(new DropShadowFilterOperation(location, stdDeviation, color));
     }
 
     int x() const { return m_location.x(); }
@@ -290,7 +294,7 @@ public:
 
 
 private:
-    PassRefPtrWillBeRawPtr<FilterOperation> blend(const FilterOperation* from, double progress) const override;
+    GCRefPtr<FilterOperation> blend(const FilterOperation* from, double progress) const override;
     bool operator==(const FilterOperation& o) const override
     {
         if (!isSameType(o))

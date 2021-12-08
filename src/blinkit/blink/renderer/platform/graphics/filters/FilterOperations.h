@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FilterOperations.h
+// Description: FilterOperations Class
+//      Author: Ziming Li
+//     Created: 2021-12-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -26,7 +38,6 @@
 #ifndef FilterOperations_h
 #define FilterOperations_h
 
-#include "platform/PlatformExport.h"
 #include "platform/geometry/IntRectOutsets.h"
 #include "platform/graphics/filters/FilterOperation.h"
 #include "wtf/RefPtr.h"
@@ -36,12 +47,9 @@ namespace blink {
 
 typedef IntRectOutsets FilterOutsets;
 
-class PLATFORM_EXPORT FilterOperations {
-#if ENABLE(OILPAN)
+class FilterOperations
+{
     DISALLOW_NEW();
-#else
-    USING_FAST_MALLOC(FilterOperations);
-#endif
 public:
     FilterOperations();
     FilterOperations(const FilterOperations& other) { *this = other; }
@@ -59,7 +67,7 @@ public:
         m_operations.clear();
     }
 
-    typedef WillBeHeapVector<RefPtrWillBeMember<FilterOperation>> FilterOperationVector;
+    typedef std::vector<GCRefPtr<FilterOperation>> FilterOperationVector;
 
     FilterOperationVector& operations() { return m_operations; }
     const FilterOperationVector& operations() const { return m_operations; }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FilterOperation.cpp
+// Description: FilterOperation Classes
+//      Author: Ziming Li
+//     Created: 2021-12-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -25,11 +36,29 @@
 
 #include "platform/graphics/filters/FilterOperation.h"
 
-#include "platform/animation/AnimationUtilities.h"
+#include "blinkit/blink/renderer/platform/animation/AnimationUtilities.h"
+#include "blinkit/blink/renderer/platform/graphics/filters/FilterOperation.h"
 
 namespace blink {
 
-PassRefPtrWillBeRawPtr<FilterOperation> FilterOperation::blend(const FilterOperation* from, const FilterOperation* to, double progress)
+ReferenceFilterOperation::ReferenceFilterOperation(const String &url, const AtomicString &fragment)
+    : FilterOperation(REFERENCE)
+    , m_url(url)
+    , m_fragment(fragment)
+{
+}
+
+Filter* ReferenceFilterOperation::filter(void) const
+{
+    return m_filter.get();
+}
+
+void ReferenceFilterOperation::setFilter(const GCRefPtr<Filter> &filter)
+{
+    m_filter = filter;
+}
+
+GCRefPtr<FilterOperation> FilterOperation::blend(const FilterOperation* from, const FilterOperation* to, double progress)
 {
     ASSERT(from || to);
     if (to)
@@ -43,7 +72,7 @@ DEFINE_TRACE(ReferenceFilterOperation)
     FilterOperation::trace(visitor);
 }
 
-PassRefPtrWillBeRawPtr<FilterOperation> BasicColorMatrixFilterOperation::blend(const FilterOperation* from, double progress) const
+GCRefPtr<FilterOperation> BasicColorMatrixFilterOperation::blend(const FilterOperation* from, double progress) const
 {
     double fromAmount;
     if (from) {
@@ -82,7 +111,7 @@ PassRefPtrWillBeRawPtr<FilterOperation> BasicColorMatrixFilterOperation::blend(c
     return BasicColorMatrixFilterOperation::create(result, m_type);
 }
 
-PassRefPtrWillBeRawPtr<FilterOperation> BasicComponentTransferFilterOperation::blend(const FilterOperation* from, double progress) const
+GCRefPtr<FilterOperation> BasicComponentTransferFilterOperation::blend(const FilterOperation* from, double progress) const
 {
     double fromAmount;
     if (from) {
@@ -120,7 +149,7 @@ PassRefPtrWillBeRawPtr<FilterOperation> BasicComponentTransferFilterOperation::b
     return BasicComponentTransferFilterOperation::create(result, m_type);
 }
 
-PassRefPtrWillBeRawPtr<FilterOperation> BlurFilterOperation::blend(const FilterOperation* from, double progress) const
+GCRefPtr<FilterOperation> BlurFilterOperation::blend(const FilterOperation* from, double progress) const
 {
     LengthType lengthType = m_stdDeviation.type();
     if (!from)
@@ -130,7 +159,7 @@ PassRefPtrWillBeRawPtr<FilterOperation> BlurFilterOperation::blend(const FilterO
     return BlurFilterOperation::create(m_stdDeviation.blend(fromOp->m_stdDeviation, progress, ValueRangeNonNegative));
 }
 
-PassRefPtrWillBeRawPtr<FilterOperation> DropShadowFilterOperation::blend(const FilterOperation* from, double progress) const
+GCRefPtr<FilterOperation> DropShadowFilterOperation::blend(const FilterOperation* from, double progress) const
 {
     if (!from) {
         return DropShadowFilterOperation::create(
