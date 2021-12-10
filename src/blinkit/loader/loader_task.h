@@ -18,6 +18,7 @@
 #include "bk_def.h"
 #include "blinkit/blink/renderer/platform/weborigin/KURL.h"
 #include "blinkit/gc/gc_def.h"
+#include "third_party/zed/include/zed/threading/task_queue.hpp"
 #ifdef BLINKIT_UI_ENABLED
 #   include "blinkit/blink/renderer/wtf/text/AtomicString.h"
 #endif
@@ -32,12 +33,12 @@ class WebURLLoaderClient;
 
 namespace BlinKit {
 
-class LoaderTask
+class LoaderTask : public zed::task_queue::task
 {
 public:
-    virtual ~LoaderTask(void);
+    ~LoaderTask(void) override;
 
-    void Run(void);
+    void run(void) override;
 
     virtual const blink::KURL& URI(void) const = 0;
     virtual int PreProcess(void) { return BK_ERR_SUCCESS; }

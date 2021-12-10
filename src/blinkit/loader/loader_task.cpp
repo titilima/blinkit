@@ -33,7 +33,7 @@ LoaderTask::LoaderTask(WebURLLoader *loader, const std::shared_ptr<WebTaskRunner
 
 LoaderTask::~LoaderTask(void) = default;
 
-void LoaderTask::Run(void)
+void LoaderTask::run(void)
 {
     ASSERT(!isMainThread());
 

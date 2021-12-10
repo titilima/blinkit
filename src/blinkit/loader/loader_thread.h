@@ -14,34 +14,22 @@
 
 #pragma once
 
-#include <queue>
-#include "third_party/zed/include/zed/mutex.hpp"
-#include "third_party/zed/include/zed/threading/signal.hpp"
+#include "third_party/zed/include/zed/threading/task_queue.hpp"
 
 namespace BlinKit {
 
 class LoaderTask;
 
-struct LoaderSignalTraits {
-    static bool Wait(const std::queue<LoaderTask *> &q) { return !q.empty(); }
-};
-
-class LoaderThread
+class LoaderThread final : private zed::task_thread
 {
 public:
-    static std::unique_ptr<LoaderThread> Create(void);
-    virtual ~LoaderThread(void) = default;
-
-    void AddTask(LoaderTask *task);
-protected:
     LoaderThread(void) = default;
 
-    void Exit(void) { AddTask(nullptr); }
-    void Run(void);
+    void AddTask(LoaderTask *task);
 private:
-    zed::mutex m_mutex;
-    zed::signal m_signal;
-    std::queue<LoaderTask *> m_tasks;
+#ifndef NDEBUG
+    void on_enter_loop(void) override;
+#endif
 };
 
 } // namespace BlinKit
