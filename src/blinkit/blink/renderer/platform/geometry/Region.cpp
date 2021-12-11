@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Region.cpp
+// Description: Region Class
+//      Author: Ziming Li
+//     Created: 2021-12-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010, 2011 Apple Inc. All rights reserved.
  *
@@ -45,9 +56,9 @@ Region::Region(const IntRect& rect)
 {
 }
 
-Vector<IntRect> Region::rects() const
+std::vector<IntRect> Region::rects() const
 {
-    Vector<IntRect> rects;
+    std::vector<IntRect> rects;
 
     for (Shape::SpanIterator span = m_shape.spansBegin(), end = m_shape.spansEnd(); span != end && span + 1 != end; ++span) {
         int y = span->y;
@@ -57,7 +68,7 @@ Vector<IntRect> Region::rects() const
             int x = *segment;
             int width = *(segment + 1) - x;
 
-            rects.append(IntRect(x, y, width, height));
+            rects.emplace_back(x, y, width, height);
         }
     }
 
@@ -194,8 +205,8 @@ bool Region::Shape::compareShapes(const Shape& aShape, const Shape& bShape)
 
 void Region::Shape::trimCapacities()
 {
-    m_segments.shrinkToReasonableCapacity();
-    m_spans.shrinkToReasonableCapacity();
+    m_segments.shrink_to_fit();
+    m_spans.shrink_to_fit();
 }
 
 struct Region::Shape::CompareContainsOperation {
@@ -228,21 +239,21 @@ Region::Shape::Shape(const IntRect& rect)
 
 Region::Shape::Shape(size_t segmentsCapacity, size_t spansCapacity)
 {
-    m_segments.reserveCapacity(segmentsCapacity);
-    m_spans.reserveCapacity(spansCapacity);
+    m_segments.reserve(segmentsCapacity);
+    m_spans.reserve(spansCapacity);
 }
 
 void Region::Shape::appendSpan(int y)
 {
-    m_spans.append(Span(y, m_segments.size()));
+    m_spans.emplace_back(y, m_segments.size());
 }
 
 bool Region::Shape::canCoalesce(SegmentIterator begin, SegmentIterator end)
 {
-    if (m_spans.isEmpty())
+    if (m_spans.empty())
         return false;
 
-    SegmentIterator lastSpanBegin = m_segments.data() + m_spans.last().segmentIndex;
+    SegmentIterator lastSpanBegin = m_segments.data() + m_spans.back().segmentIndex;
     SegmentIterator lastSpanEnd = m_segments.data() + m_segments.size();
 
     // Check if both spans have an equal number of segments.
@@ -263,7 +274,7 @@ void Region::Shape::appendSpan(int y, SegmentIterator begin, SegmentIterator end
         return;
 
     appendSpan(y);
-    m_segments.appendRange(begin, end);
+    m_segments.insert(m_segments.end(), begin, end);
 }
 
 void Region::Shape::appendSpans(const Shape& shape, SpanIterator begin, SpanIterator end)
@@ -274,7 +285,7 @@ void Region::Shape::appendSpans(const Shape& shape, SpanIterator begin, SpanIter
 
 void Region::Shape::appendSegment(int x)
 {
-    m_segments.append(x);
+    m_segments.emplace_back(x);
 }
 
 Region::Shape::SpanIterator Region::Shape::spansBegin() const

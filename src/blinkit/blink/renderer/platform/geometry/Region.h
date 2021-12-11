@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Region.h
+// Description: Region Class
+//      Author: Ziming Li
+//     Created: 2021-12-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010, 2011 Apple Inc. All rights reserved.
  *
@@ -26,14 +38,13 @@
 #ifndef Region_h
 #define Region_h
 
-#include "platform/PlatformExport.h"
 #include "platform/geometry/IntRect.h"
 #include "wtf/Allocator.h"
-#include "wtf/Vector.h"
 
 namespace blink {
 
-class PLATFORM_EXPORT Region {
+class Region
+{
     DISALLOW_NEW();
 public:
     Region();
@@ -43,7 +54,7 @@ public:
     bool isEmpty() const { return m_bounds.isEmpty(); }
     bool isRect() const { return m_shape.isRect(); }
 
-    Vector<IntRect> rects() const;
+    std::vector<IntRect> rects() const;
 
     void unite(const Region&);
     void intersect(const Region&);
@@ -83,7 +94,7 @@ private:
         Shape(size_t segmentsCapacity, size_t spansCapacity);
 
         IntRect bounds() const;
-        bool isEmpty() const { return m_spans.isEmpty(); }
+        bool isEmpty() const { return m_spans.empty(); }
         bool isRect() const { return m_spans.size() <= 2 && m_segments.size() <= 2; }
 
         typedef const Span* SpanIterator;
@@ -129,8 +140,8 @@ private:
 
         bool canCoalesce(SegmentIterator begin, SegmentIterator end);
 
-        Vector<int, 32> m_segments;
-        Vector<Span, 16> m_spans;
+        std::vector<int> m_segments;
+        std::vector<Span> m_spans;
 
         friend bool operator==(const Shape&, const Shape&);
     };
