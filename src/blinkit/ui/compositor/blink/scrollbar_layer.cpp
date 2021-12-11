@@ -11,8 +11,8 @@
 
 #include "./scrollbar_layer.h"
 
-#include "blinkit/cc/layers/painted_scrollbar_layer.h"
-#include "blinkit/cc/layers/solid_color_scrollbar_layer.h"
+#include "blinkit/ui/compositor/layers/painted_scrollbar_layer.h"
+#include "blinkit/ui/compositor/layers/solid_color_scrollbar_layer.h"
 
 using namespace blink;
 

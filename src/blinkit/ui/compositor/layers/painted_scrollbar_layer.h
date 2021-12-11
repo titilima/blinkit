@@ -14,7 +14,7 @@
 #define BLINKIT_PAINTED_SCROLLBAR_LAYER_H
 
 #include "blinkit/blink/public/platform/WebScrollbarThemePainter.h"
-#include "blinkit/cc/blink/layer.h"
+#include "blinkit/ui/compositor/blink/layer.h"
 
 namespace blink {
 class WebScrollbarThemeGeometry;

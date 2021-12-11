@@ -14,7 +14,7 @@
 #define BLINKIT_SOLID_COLOR_SCROLLBAR_LAYER_H
 
 #include "blinkit/blink/public/platform/WebScrollbar.h"
-#include "blinkit/cc/blink/layer.h"
+#include "blinkit/ui/compositor/blink/layer.h"
 
 namespace BlinKit {
 

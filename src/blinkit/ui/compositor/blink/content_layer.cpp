@@ -11,7 +11,7 @@
 
 #include "./content_layer.h"
 
-#include "blinkit/cc/blink/layer.h"
+#include "blinkit/ui/compositor/blink/layer.h"
 
 using namespace blink;
 

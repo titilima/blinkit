@@ -11,7 +11,7 @@
 
 #include "./layer.h"
 
-#include "blinkit/cc/trees/layer_tree_host.h"
+#include "blinkit/ui/compositor/layer_tree_host.h"
 
 using namespace blink;
 

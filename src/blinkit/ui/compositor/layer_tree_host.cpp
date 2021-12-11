@@ -11,7 +11,7 @@
 
 #include "./layer_tree_host.h"
 
-#include "blinkit/cc/blink/layer.h"
+#include "blinkit/ui/compositor/blink/layer.h"
 #include "third_party/zed/include/zed/container_utilites.hpp"
 
 using namespace blink;
