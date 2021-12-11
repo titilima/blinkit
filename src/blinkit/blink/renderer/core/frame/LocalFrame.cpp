@@ -123,33 +123,11 @@ public:
     RawPtrWillBeMember<Node> node;
 };
 
-inline float parentPageZoomFactor(LocalFrame* frame)
-{
-    return 1.0;
-#if 0 // BKTODO:
-    Frame* parent = frame->tree().parent();
-    if (!parent || !parent->isLocalFrame())
-        return 1;
-    return toLocalFrame(parent)->pageZoomFactor();
-#endif
-}
-
-inline float parentTextZoomFactor(LocalFrame* frame)
-{
-    return 1.0;
-#if 0 // BKTODO:
-    Frame* parent = frame->tree().parent();
-    if (!parent || !parent->isLocalFrame())
-        return 1;
-    return toLocalFrame(parent)->textZoomFactor();
-#endif
-}
-
 } // namespace
 
-GCUniquePtr<LocalFrame> LocalFrame::create(FrameLoaderClient* client, FrameHost* host)
+GCUniquePtr<LocalFrame> LocalFrame::create(FrameLoaderClient *client, FrameHost *host, float scaleFactor)
 {
-    return GCWrapUnique(new LocalFrame(client, host));
+    return GCWrapUnique(new LocalFrame(client, host, scaleFactor));
 }
 
 void LocalFrame::setView(PassRefPtrWillBeRawPtr<FrameView> view)
@@ -589,19 +567,9 @@ FloatSize LocalFrame::resizePageRectsKeepingRatio(const FloatSize& originalSize,
     return resultSize;
 }
 
-void LocalFrame::setPageZoomFactor(float factor)
+void LocalFrame::SetScaleFactor(float scaleFactor)
 {
-    setPageAndTextZoomFactors(factor, m_textZoomFactor);
-}
-
-void LocalFrame::setTextZoomFactor(float factor)
-{
-    setPageAndTextZoomFactors(m_pageZoomFactor, factor);
-}
-
-void LocalFrame::setPageAndTextZoomFactors(float pageZoomFactor, float textZoomFactor)
-{
-    if (m_pageZoomFactor == pageZoomFactor && m_textZoomFactor == textZoomFactor)
+    if (zed::almost_equals(m_scaleFactor, scaleFactor))
         return;
 
     Page* page = this->page();
@@ -622,19 +590,17 @@ void LocalFrame::setPageAndTextZoomFactors(float pageZoomFactor, float textZoomF
 #endif
     }
 
-    if (m_pageZoomFactor != pageZoomFactor) {
-        if (FrameView* view = this->view()) {
-            // Update the scroll position when doing a full page zoom, so the content stays in relatively the same position.
-            LayoutPoint scrollPosition = view->scrollPosition();
-            float percentDifference = (pageZoomFactor / m_pageZoomFactor);
-            view->setScrollPosition(
-                DoublePoint(scrollPosition.x() * percentDifference, scrollPosition.y() * percentDifference),
-                ProgrammaticScroll);
-        }
+    if (FrameView *view = this->view())
+    {
+        // Update the scroll position when doing a full page zoom, so the content stays in relatively the same position.
+        LayoutPoint scrollPosition = view->scrollPosition();
+        float percentDifference = (scaleFactor / m_scaleFactor);
+        view->setScrollPosition(
+            DoublePoint(scrollPosition.x() * percentDifference, scrollPosition.y() * percentDifference),
+            ProgrammaticScroll);
     }
 
-    m_pageZoomFactor = pageZoomFactor;
-    m_textZoomFactor = textZoomFactor;
+    m_scaleFactor = scaleFactor;
 
 #if 0 // BKTODO:
     for (RefPtrWillBeRawPtr<Frame> child = tree().firstChild(); child; child = child->tree().nextSibling()) {
@@ -900,7 +866,7 @@ bool LocalFrame::shouldThrottleRendering() const
     return view() && view()->shouldThrottleRendering();
 }
 
-inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host)
+inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host, float scaleFactor)
     : Frame(client, host)
     , m_loader(this)
     // BKTODO: , m_navigationScheduler(NavigationScheduler::create(this))
@@ -912,16 +878,8 @@ inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host)
     , m_console(FrameConsole::create(*this))
     , m_inputMethodController(InputMethodController::create(*this))
     , m_navigationDisableCount(0)
-    , m_pageZoomFactor(parentPageZoomFactor(this))
-    , m_textZoomFactor(parentTextZoomFactor(this))
-    , m_inViewSourceMode(false)
+    , m_scaleFactor(scaleFactor)
 {
-#if 0 // BKTODO:
-    if (isLocalRoot())
-        m_instrumentingAgents = InstrumentingAgents::create();
-    else
-        m_instrumentingAgents = localFrameRoot()->m_instrumentingAgents;
-#endif
 }
 
 WebFrameScheduler* LocalFrame::frameScheduler()

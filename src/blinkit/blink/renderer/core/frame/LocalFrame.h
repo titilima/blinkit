@@ -94,7 +94,7 @@ class CORE_EXPORT LocalFrame : public Frame
 {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(LocalFrame);
 public:
-    static GCUniquePtr<LocalFrame> create(FrameLoaderClient*, FrameHost*);
+    static GCUniquePtr<LocalFrame> create(FrameLoaderClient*, FrameHost*, float scaleFactor);
 
     void init();
     void setView(PassRefPtrWillBeRawPtr<FrameView>);
@@ -154,20 +154,13 @@ public:
     // See GraphicsLayerClient.h for accepted flags.
     String layerTreeAsText(unsigned flags = 0) const;
 
-#if 0 // BKTODO:
-    void setPrinting(bool printing, const FloatSize& pageSize, const FloatSize& originalPageSize, float maximumShrinkRatio);
-    bool shouldUsePrintingLayout() const;
-#endif
     FloatSize resizePageRectsKeepingRatio(const FloatSize& originalSize, const FloatSize& expectedSize);
 
-    bool inViewSourceMode() const;
-    void setInViewSourceMode(bool = true);
+    constexpr bool inViewSourceMode(void) const { return false; }
 
-    void setPageZoomFactor(float);
-    float pageZoomFactor() const { return m_pageZoomFactor; }
-    void setTextZoomFactor(float);
-    float textZoomFactor() const { return m_textZoomFactor; }
-    void setPageAndTextZoomFactors(float pageZoomFactor, float textZoomFactor);
+    float pageZoomFactor(void) const { return m_scaleFactor; }
+    float textZoomFactor(void) const { return m_scaleFactor; }
+    void SetScaleFactor(float scaleFactor);
 
     void deviceScaleFactorChanged();
     double devicePixelRatio() const;
@@ -209,7 +202,7 @@ public:
 private:
     friend class FrameNavigationDisabler;
 
-    LocalFrame(FrameLoaderClient*, FrameHost*);
+    LocalFrame(FrameLoaderClient*, FrameHost*, float);
 
     // Internal Frame helper overrides:
     WindowProxyManager* windowProxyManager() const override;
@@ -244,12 +237,7 @@ private:
 
     int m_navigationDisableCount;
 
-    float m_pageZoomFactor;
-    float m_textZoomFactor;
-
-    bool m_inViewSourceMode;
-
-    // BKTODO: RefPtrWillBeMember<InstrumentingAgents> m_instrumentingAgents;
+    float m_scaleFactor;
 
     // TODO(dcheng): Temporary to try to debug https://crbug.com/531291
     enum class SupplementStatus { Uncleared, Clearing, Cleared };
@@ -314,16 +302,6 @@ inline FrameConsole& LocalFrame::console() const
 inline InputMethodController& LocalFrame::inputMethodController() const
 {
     return *m_inputMethodController;
-}
-
-inline bool LocalFrame::inViewSourceMode() const
-{
-    return m_inViewSourceMode;
-}
-
-inline void LocalFrame::setInViewSourceMode(bool mode)
-{
-    m_inViewSourceMode = mode;
 }
 
 inline EventHandler& LocalFrame::eventHandler() const
