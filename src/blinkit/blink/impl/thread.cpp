@@ -11,13 +11,15 @@
 
 #include "./thread.h"
 
+#include "third_party/zed/include/zed/thread.hpp"
+
 using namespace blink;
 
 namespace BlinKit {
 
 bool Thread::isCurrentThread(void) const
 {
-    return CurrentThreadId() == threadId();
+    return zed::current_thread::id() == threadId();
 }
 
 } // namespace BlinKit

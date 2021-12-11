@@ -21,11 +21,6 @@ namespace BlinKit {
 class Thread : public blink::WebThread
 {
 public:
-    static blink::PlatformThreadId CurrentThreadId(void);
-#ifndef NDEBUG
-    static void SetName(const char *name);
-#endif
-
     blink::PlatformThreadId threadId(void) const final
     {
         ASSERT(0 != m_threadId); // BKTODO: Initialize id in other threads.
