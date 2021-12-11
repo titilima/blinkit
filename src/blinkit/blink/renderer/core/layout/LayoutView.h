@@ -237,7 +237,7 @@ private:
 
     friend class ForceHorriblySlowRectMapping;
 
-    bool shouldUsePrintingLayout() const;
+    constexpr bool shouldUsePrintingLayout(void) const { return false; }
 
     int viewLogicalWidthForBoxSizing() const;
     int viewLogicalHeightForBoxSizing() const;

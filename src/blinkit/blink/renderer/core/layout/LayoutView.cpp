@@ -844,17 +844,6 @@ void LayoutView::selectionStartEnd(int& startPos, int& endPos)
     endPos = m_selectionEndPos;
 }
 
-bool LayoutView::shouldUsePrintingLayout() const
-{
-#if 0 // BKTODO:
-    if (!document().printing() || !m_frameView)
-        return false;
-    return m_frameView->frame().shouldUsePrintingLayout();
-#else
-    return false;
-#endif
-}
-
 LayoutRect LayoutView::viewRect() const
 {
     if (shouldUsePrintingLayout())
