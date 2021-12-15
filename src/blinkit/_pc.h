@@ -67,7 +67,7 @@ extern HMODULE theModule;
 #   include <CoreFoundation/CoreFoundation.h>
 #endif
 
-#include "base/logging.h"
+#include "chromium/base/logging.h"
 #include "third_party/zed/include/zed/log.hpp"
 #ifdef BLINKIT_UI_ENABLED
 #   include "skia/_skia.h"
@@ -81,5 +81,9 @@ extern HMODULE theModule;
 #       include "blinkit/blink/renderer/core/layout/LayoutObject.h"
 #   endif
 #endif
+
+namespace BlinKit {}
+namespace blink { using namespace BlinKit; }
+namespace BlinKit { using namespace blink; }
 
 #endif // BLINKIT_BLINKIT__PC_H
