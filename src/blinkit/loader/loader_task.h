@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -11,8 +12,6 @@
 
 #ifndef BLINKIT_LOADER_TASK_H
 #define BLINKIT_LOADER_TASK_H
-
-#pragma once
 
 #include <string_view>
 #include "bk_def.h"
@@ -38,36 +37,36 @@ class LoaderTask : public zed::task_queue::task
 public:
     ~LoaderTask(void) override;
 
-    void run(void) override;
-
-    virtual const blink::KURL& URI(void) const = 0;
+    virtual const KURL& URI(void) const = 0;
     virtual int PreProcess(void) { return BK_ERR_SUCCESS; }
 
-    static void ReportError(blink::WebURLLoaderClient *client, blink::WebTaskRunner *taskRunner, int errorCode, const zed::url &URL);
+    static void ReportError(WebURLLoaderClient *client, WebTaskRunner *taskRunner, int errorCode, const zed::url &URL);
 protected:
-    LoaderTask(blink::WebURLLoader *loader, const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
+    LoaderTask(WebURLLoader *loader, const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client);
 
-    const std::shared_ptr<blink::WebTaskRunner> m_taskRunner;
-    blink::WebURLLoaderClient *m_client;
+    const std::shared_ptr<WebTaskRunner> m_taskRunner;
+    WebURLLoaderClient *m_client;
 private:
     virtual int PerformRequest(void) = 0;
-    virtual int PopulateResponse(blink::ResourceResponse &resourceResponse, std::string_view &body) const = 0;
+    virtual int PopulateResponse(ResourceResponse &resourceResponse, std::string_view &body) const = 0;
+
+    void run(void) final;
 
     GCGuard m_clientGuard;
-    blink::WebURLLoader *m_loader;
+    WebURLLoader *m_loader;
 };
 
 #ifdef BLINKIT_UI_ENABLED
 class LoaderTaskForUI : public LoaderTask
 {
 public:
-    const blink::KURL& URI(void) const final { return m_URI; }
+    const KURL& URI(void) const final { return m_URI; }
 protected:
-    LoaderTaskForUI(const blink::ResourceRequest &request, blink::WebURLLoader *loader, const std::shared_ptr<blink::WebTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
+    LoaderTaskForUI(const ResourceRequest &request, WebURLLoader *loader, const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client);
 
     AtomicString MIMEType(void) const;
 
-    const blink::KURL m_URI;
+    const KURL m_URI;
     std::string m_data;
 };
 #endif

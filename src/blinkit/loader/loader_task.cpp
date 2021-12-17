@@ -9,7 +9,7 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "loader_task.h"
+#include "./loader_task.h"
 
 #include "blinkit/blink/public/platform/WebTaskRunner.h"
 #include "blinkit/blink/public/platform/WebTraceLocation.h"
@@ -21,8 +21,6 @@
 #ifdef BLINKIT_UI_ENABLED
 #   include "blinkit/blink/renderer/platform/MIMETypeRegistry.h"
 #endif
-
-using namespace blink;
 
 namespace BlinKit {
 
