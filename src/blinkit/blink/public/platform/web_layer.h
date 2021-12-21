@@ -53,7 +53,6 @@ class SkImageFilter;
 
 namespace cc {
 class Layer;
-class LayerClient;
 }
 
 namespace blink {
@@ -276,12 +275,7 @@ public:
 
     // True if the layer is not part of a tree attached to a WebLayerTreeView.
     virtual bool isOrphan() const = 0;
-#endif
 
-    // Sets the cc-side layer client.
-    virtual void setLayerClient(cc::LayerClient*) = 0;
-
-#if 0 // BKTODO:
     // Gets the underlying cc layer.
     virtual const cc::Layer* ccLayer() const = 0;
 
