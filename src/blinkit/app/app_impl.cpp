@@ -20,14 +20,20 @@
 #include "chromium/base/time/time.h"
 #ifdef BLINKIT_UI_ENABLED
 #   include "blinkit/blink/impl/compositor_support.h"
+#   include "blinkit/ui/compositor/compositor.h"
 #endif
-
-using namespace blink;
 
 namespace BlinKit {
 
-AppImpl::AppImpl(BkAppClient *client) : m_firstMonotonicallyIncreasingTime(base::Time::Now().ToDoubleT())
+AppImpl::AppImpl(BkAppClient *client)
+    : m_firstMonotonicallyIncreasingTime(base::Time::Now().ToDoubleT())
+#ifdef BLINKIT_UI_ENABLED
+    , m_compositor(std::make_unique<Compositor>())
+#endif
 {
+#ifndef NDEBUG
+    zed::current_thread::set_name("BlinKit Thread");
+#endif
     GCHeap::Initialize();
 
     memset(&m_client, 0, sizeof(BkAppClient));
@@ -39,7 +45,7 @@ AppImpl::AppImpl(BkAppClient *client) : m_firstMonotonicallyIncreasingTime(base:
         memcpy(&m_client, client, size);
     }
 
-    m_threadId = Thread::CurrentThreadId();
+    m_threadId = zed::current_thread::id();
     m_mainThread = this;
 
     blink::Initialize(this);
@@ -76,20 +82,6 @@ AppImpl& AppImpl::Get(void)
     return *app;
 }
 
-LoaderThread& AppImpl::GetLoaderThread(void)
-{
-    ASSERT(isMainThread());
-    if (!m_loaderThread)
-        m_loaderThread = LoaderThread::Create();
-    return *m_loaderThread;
-}
-
-bool AppImpl::LoadResourceFromClient(const char *URI, std::string &dst) const
-{
-    ASSERT(nullptr != m_client.LoadResource);
-    return m_client.LoadResource(URI, BufferImpl::Wrap(dst), m_client.UserData);
-}
-
 double AppImpl::monotonicallyIncreasingTimeSeconds(void)
 {
     double t = currentTimeSeconds();
@@ -103,6 +95,14 @@ WebCompositorSupport* AppImpl::compositorSupport(void)
     return &s_compositorSupport;
 }
 
+LoaderThread& AppImpl::GetLoaderThread(void)
+{
+    ASSERT(isMainThread());
+    if (!m_loaderThread)
+        m_loaderThread = std::make_unique<LoaderThread>();
+    return *m_loaderThread;
+}
+
 #   ifndef NDEBUG
 WebData AppImpl::loadResource(const char *name)
 {
@@ -110,7 +110,13 @@ WebData AppImpl::loadResource(const char *name)
     return WebData();
 }
 #   endif
-#endif
+
+bool AppImpl::LoadResourceFromClient(const char *URI, std::string &dst) const
+{
+    ASSERT(nullptr != m_client.LoadResource);
+    return m_client.LoadResource(URI, BufferImpl::Wrap(dst), m_client.UserData);
+}
+#endif // BLINKIT_UI_ENABLED
 
 } // namespace BlinKit
 

@@ -22,41 +22,49 @@ class CrawlerImpl;
 
 namespace BlinKit {
 
+class Compositor;
 class LoaderThread;
 
-class AppImpl : public blink::Platform, public Thread
+class AppImpl : public Platform, public Thread
 {
 public:
     virtual ~AppImpl(void);
 
     static AppImpl& Get(void);
 
-    LoaderThread& GetLoaderThread(void);
     void Log(const char *s);
+
+#ifdef BLINKIT_UI_ENABLED
+    LoaderThread& GetLoaderThread(void);
+    Compositor& GetCompositor(void) { return *m_compositor; }
 
     bool HasClientLoader(void) const { return nullptr != m_client.LoadResource; }
     bool LoadResourceFromClient(const char *URI, std::string &dst) const;
+#endif
 protected:
     AppImpl(BkAppClient *client);
 
 #ifdef BLINKIT_UI_ENABLED
 #   ifndef NDEBUG
-    blink::WebData loadResource(const char *name) override;
+    WebData loadResource(const char *name) override;
 #   endif
 #endif
 private:
-    // blink::Platform
-    blink::WebURLLoader* createURLLoader(void) final;
-    blink::WebThread* currentThread(void) final;
+    // Platform
+    WebURLLoader* createURLLoader(void) final;
+    WebThread* currentThread(void) final;
     double currentTimeSeconds(void) final;
     double monotonicallyIncreasingTimeSeconds(void) final;
 #ifdef BLINKIT_UI_ENABLED
-    blink::WebCompositorSupport* compositorSupport(void);
+    WebCompositorSupport* compositorSupport(void);
 #endif
 
     BkAppClient m_client;
     double m_firstMonotonicallyIncreasingTime;
+#ifdef BLINKIT_UI_ENABLED
     std::unique_ptr<LoaderThread> m_loaderThread;
+    std::unique_ptr<Compositor> m_compositor;
+#endif
 };
 
 } // namespace BlinKit
