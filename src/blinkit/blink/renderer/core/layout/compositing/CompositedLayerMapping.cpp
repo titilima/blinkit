@@ -167,12 +167,12 @@ static constexpr WebLayer* platformLayerForPlugin(LayoutObject* layoutObject)
 
 static inline bool isAcceleratedContents(LayoutObject* layoutObject)
 {
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
+#if 0 // BKTODO:
     return isAcceleratedCanvas(layoutObject)
         || (layoutObject->isEmbeddedObject() && toLayoutEmbeddedObject(layoutObject)->requiresAcceleratedCompositing())
         || layoutObject->isVideo();
+#else
+    return false;
 #endif
 }
 

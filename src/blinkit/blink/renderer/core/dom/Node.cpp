@@ -37,6 +37,7 @@
 
 #include "blinkit/blink/renderer/bindings/core/duk/exception_state.h"
 #include "blinkit/blink/renderer/core/dom/document_type.h"
+#include "blinkit/blink/renderer/core/dom/dom_node_ids.h"
 #include "blinkit/blink/renderer/platform/ScriptForbiddenScope.h"
 #include "blinkit/blink/renderer/core/events/event_target_data_map.h"
 #include "core/HTMLNames.h"
@@ -47,7 +48,6 @@
 #include "core/dom/Attribute.h"
 #include "core/dom/ChildListMutationScope.h"
 #include "core/dom/ChildNodeList.h"
-#include "core/dom/DOMNodeIds.h"
 #include "core/dom/Document.h"
 #include "core/dom/DocumentFragment.h"
 #include "core/dom/Element.h"
