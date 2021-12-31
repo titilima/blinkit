@@ -21,8 +21,8 @@ namespace BlinKit {
 class SolidColorScrollbarLayer final : public Layer
 {
 public:
-    SolidColorScrollbarLayer(blink::WebScrollbar::Orientation orientation, int thumbThickness, int trackStart,
-        bool isLeftSideVerticalScrollbar);
+    SolidColorScrollbarLayer(LayerClient *client, WebScrollbar::Orientation orientation, int thumbThickness,
+        int trackStart, bool isLeftSideVerticalScrollbar);
 };
 
 } // namespace BlinKit

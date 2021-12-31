@@ -15,21 +15,23 @@
 
 #include "blinkit/blink/public/platform/WebScrollbar.h"
 #include "blinkit/blink/public/platform/web_scrollbar_layer.h"
+#include "blinkit/ui/compositor/layers/layer_client.h"
 
 namespace BlinKit {
 
 class Layer;
 
-class ScrollbarLayer final : public blink::WebScrollbarLayer
+class ScrollbarLayer final : public WebScrollbarLayer, public LayerClient
 {
 public:
-    ScrollbarLayer(std::unique_ptr<blink::WebScrollbar> &&scrollbar, blink::WebScrollbarThemePainter painter,
-        std::unique_ptr<blink::WebScrollbarThemeGeometry> &geometry);
-    ScrollbarLayer(blink::WebScrollbar::Orientation orientation, int thumbThickness, int trackStart,
+    ScrollbarLayer(std::unique_ptr<WebScrollbar> &&scrollbar, WebScrollbarThemePainter painter,
+        std::unique_ptr<WebScrollbarThemeGeometry> &geometry);
+    ScrollbarLayer(WebScrollbar::Orientation orientation, int thumbThickness, int trackStart,
         bool isLeftSideVerticalScrollbar);
 private:
-    blink::WebLayer* layer(void) override;
-    void setScrollLayer(blink::WebLayer *layer) override;
+    WebLayer* layer(void) override;
+    void setScrollLayer(WebLayer *layer) override;
+    void PaintContents(WebDisplayItemList *displayItemList) override;
 
     int m_scrollLayerId;
     std::unique_ptr<Layer> m_layer;

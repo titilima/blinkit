@@ -23,7 +23,7 @@ ScrollbarLayer::ScrollbarLayer(
     WebScrollbarThemePainter painter,
     std::unique_ptr<WebScrollbarThemeGeometry> &geometry)
     : m_scrollLayerId(Layer::INVALID_ID)
-    , m_layer(std::make_unique<PaintedScrollbarLayer>(std::move(scrollbar), painter, geometry))
+    , m_layer(std::make_unique<PaintedScrollbarLayer>(this, std::move(scrollbar), painter, geometry))
 {
 }
 
@@ -33,13 +33,18 @@ ScrollbarLayer::ScrollbarLayer(
     int trackStart,
     bool isLeftSideVerticalScrollbar)
     : m_scrollLayerId(Layer::INVALID_ID)
-    , m_layer(std::make_unique<SolidColorScrollbarLayer>(orientation, thumbThickness, trackStart, isLeftSideVerticalScrollbar))
+    , m_layer(std::make_unique<SolidColorScrollbarLayer>(this, orientation, thumbThickness, trackStart, isLeftSideVerticalScrollbar))
 {
 }
 
 WebLayer* ScrollbarLayer::layer(void)
 {
     return m_layer.get();
+}
+
+void ScrollbarLayer::PaintContents(WebDisplayItemList *displayItemList)
+{
+    // ASSERT(false); // BKTODO:
 }
 
 void ScrollbarLayer::setScrollLayer(WebLayer *layer)

@@ -14,6 +14,7 @@
 #define BLINKIT_CONTENT_LAYER_H
 
 #include "blinkit/blink/public/platform/web_content_layer.h"
+#include "blinkit/ui/compositor/layers/layer_client.h"
 
 namespace blink {
 class WebContentLayerClient;
@@ -23,15 +24,16 @@ namespace BlinKit {
 
 class Layer;
 
-class ContentLayer final : public blink::WebContentLayer
+class ContentLayer final : public WebContentLayer, public LayerClient
 {
 public:
-    ContentLayer(blink::WebContentLayerClient *client);
+    ContentLayer(WebContentLayerClient *client);
     ~ContentLayer(void) override;
 private:
-    blink::WebLayer* layer(void) override;
+    WebLayer* layer(void) override;
+    void PaintContents(WebDisplayItemList *displayItemList) override;
 
-    blink::WebContentLayerClient *m_client;
+    WebContentLayerClient *m_client;
     std::unique_ptr<Layer> m_layer;
 };
 

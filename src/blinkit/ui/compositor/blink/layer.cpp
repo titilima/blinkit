@@ -11,11 +11,25 @@
 
 #include "./layer.h"
 
+#include "blinkit/app/app_impl.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutPoint.h"
+#include "blinkit/ui/compositor/compositor.h"
 #include "blinkit/ui/compositor/layer_tree_host.h"
-
-using namespace blink;
+#include "blinkit/ui/compositor/layers/compositing_layer.h"
+#include "blinkit/ui/compositor/tasks/layer_tasks.h"
+#include "blinkit/ui/compositor/tasks/raster_task.h"
 
 namespace BlinKit {
+
+Layer::Layer(LayerClient *client) : m_client(client)
+{
+    PostTaskToCompositor(new NewLayerTask(this));
+}
+
+Layer::~Layer(void)
+{
+    PostTaskToCompositor(new DestroyLayerTask(this));
+}
 
 void Layer::addChild(WebLayer *child)
 {
@@ -35,7 +49,6 @@ void Layer::AddDrawableDescendants(int num)
         m_parent->AddDrawableDescendants(num);
 }
 
-
 void Layer::insertChild(WebLayer *child, size_t index)
 {
     ASSERT(IsPropertyChangeAllowed());
@@ -47,11 +60,11 @@ void Layer::insertChild(WebLayer *child, size_t index)
     childImpl->SetParent(this);
     childImpl->m_stackingOrderChanged = true;
 
-    if (m_children.size() <= index)
-        m_children.emplace_back(childImpl);
-    else
-        m_children.insert(m_children.begin() + index, childImpl);
+    if (m_children.size() < index)
+        index = m_children.size();
+    m_children.insert(m_children.begin() + index, childImpl);
 
+    PostTaskToCompositor(new SyncChildLayerTask(this, index, childImpl));
     SetNeedsFullTreeSync();
 }
 
@@ -72,15 +85,28 @@ void Layer::invalidateRect(const IntRect &rect)
         SetNeedsUpdate();
 }
 
+void Layer::PostTaskToCompositor(CompositorTask *task)
+{
+    AppImpl::Get().GetCompositor().PostTask(task);
+}
+
 void Layer::removeAllChildren(void)
 {
     ASSERT(IsPropertyChangeAllowed());
-    while (!m_children.empty())
+
+    if (m_children.empty())
+        return;
+
+    Children children;
+    children.swap(m_children);
+    for (Layer *child : children)
     {
-        Layer *layer = m_children.front();
-        ASSERT(this == layer->m_parent);
-        layer->removeFromParent();
+        ASSERT(this == child->m_parent);
+        child->m_parent = nullptr;
     }
+
+    PostTaskToCompositor(new RemoveChildLayersTask(this));
+    SetNeedsFullTreeSync();
 }
 
 void Layer::RemoveChildOrDependent(Layer *child)
@@ -112,6 +138,8 @@ void Layer::RemoveChildOrDependent(Layer *child)
         AddDrawableDescendants(-drawableDescendants);
 
         m_children.erase(it);
+
+        PostTaskToCompositor(new RemoveLayerTask(child));
         SetNeedsFullTreeSync();
         return;
     }
@@ -120,8 +148,9 @@ void Layer::RemoveChildOrDependent(Layer *child)
 void Layer::removeFromParent(void)
 {
     ASSERT(IsPropertyChangeAllowed());
-    if (nullptr != m_parent)
-        m_parent->RemoveChildOrDependent(this);
+    if (nullptr == m_parent)
+        return;
+    m_parent->RemoveChildOrDependent(this);
 }
 
 void Layer::setBackgroundColor(WebColor color)
@@ -148,8 +177,6 @@ void Layer::setBounds(const IntSize &size)
         return;
 
     m_bounds = size;
-    if (nullptr == m_layerTreeHost)
-        return;
 
 #if 0 // BKTODO: Check the logic later.
     if (ClipNode* clip_node = layer_tree_host_->property_trees()->clip_tree.Node(
@@ -161,7 +188,12 @@ void Layer::setBounds(const IntSize &size)
     }
 #endif
 
-    SetNeedsCommitNoRebuild();
+    Sync([size](CompositingLayer &cl) {
+        cl.SetBounds(size);
+    });
+
+    if (nullptr != m_layerTreeHost)
+        SetNeedsCommitNoRebuild();
 }
 
 void Layer::setClipParent(WebLayer *parent)
@@ -196,6 +228,18 @@ void Layer::setDoubleSided(bool doubleSided)
         return;
 
     m_doubleSided = doubleSided;
+    SetNeedsCommit();
+}
+
+void Layer::setDrawsContent(bool drawsContent)
+{
+    if (m_drawsContent == drawsContent)
+        return;
+    m_drawsContent = drawsContent;
+
+    Sync([drawsContent](CompositingLayer &cl) {
+        cl.SetDrawsContent(drawsContent);
+    });
     SetNeedsCommit();
 }
 
@@ -304,6 +348,7 @@ void Layer::setMasksToBounds(bool masksToBounds)
 
 void Layer::SetNeedsCommit(void)
 {
+    m_dirty = true;
     if (nullptr == m_layerTreeHost)
         return;
 
@@ -317,6 +362,7 @@ void Layer::SetNeedsCommit(void)
 
 void Layer::SetNeedsCommitNoRebuild(void)
 {
+    m_dirty = true;
     if (nullptr == m_layerTreeHost)
         return;
 
@@ -425,6 +471,9 @@ void Layer::setPosition(const FloatPoint &position)
     }
 #endif
 
+    Sync([position](CompositingLayer &cl) {
+        cl.SetPosition(position);
+    });
     SetNeedsCommit();
 }
 
@@ -649,7 +698,62 @@ void Layer::setUserScrollable(bool horizontal, bool vertical)
     SetNeedsCommit();
 }
 
+void Layer::Sync(std::function<void(CompositingLayer &)> &&callback)
+{
+    PostTaskToCompositor(new SyncLayerTask(this, std::move(callback)));
+}
+
+IntRect Layer::TakeDirtyRect(void)
+{
+    ASSERT(m_dirty);
+
+    IntRect ret(m_updateRect);
+    m_updateRect = IntRect();
+    return ret;
+}
+
+void Layer::Update(RasterTask &rasterSession)
+{
+    if (!m_dirty)
+        return;
+    rasterSession.AddDirtyLayer(this);
+    m_dirty = false;
+}
+
+void Layer::UpdateChildren(RasterTask &rasterSession)
+{
+    for (Layer *child : m_children)
+    {
+        child->Update(rasterSession);
+        child->UpdateChildren(rasterSession);
+        // BKTODO: child->clearChildrenDirty();
+    }
+
+    if (nullptr != m_mask)
+        m_mask->Update(rasterSession);
+}
+
 #ifndef NDEBUG
+void Layer::DebugPrint(int depth) const
+{
+    std::string indents;
+    for (int i = 0; i < depth; ++i)
+        indents.append("  ");
+    BKLOG("%s[0x%p]", indents.c_str(), this);
+    BKLOG("%s  .position = (%.1f, %.1f)", indents.c_str(), m_position.x(), m_position.y());
+    BKLOG("%s  .bounds = %dx%d", indents.c_str(), m_bounds.width(), m_bounds.height());
+    if (m_drawsContent)
+        BKLOG("%s  .drawsContent", indents.c_str());
+
+    if (m_children.empty())
+        return;
+    BKLOG("%s  .children:", indents.c_str());
+
+    int childrenDepth = depth + 2;
+    for (Layer *child : m_children)
+        child->DebugPrint(childrenDepth);
+}
+
 bool Layer::HasAncestor(const Layer *ancestor) const
 {
     for (const Layer *layer = m_parent; nullptr != layer; layer = layer->m_parent)

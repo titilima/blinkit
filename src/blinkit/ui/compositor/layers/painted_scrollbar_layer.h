@@ -25,8 +25,8 @@ namespace BlinKit {
 class PaintedScrollbarLayer final : public Layer
 {
 public:
-    PaintedScrollbarLayer(std::unique_ptr<blink::WebScrollbar> &&scrollbar, blink::WebScrollbarThemePainter painter,
-        std::unique_ptr<blink::WebScrollbarThemeGeometry> &geometry);
+    PaintedScrollbarLayer(LayerClient *client, std::unique_ptr<WebScrollbar> &&scrollbar,
+        WebScrollbarThemePainter painter, std::unique_ptr<WebScrollbarThemeGeometry> &geometry);
 };
 
 } // namespace BlinKit

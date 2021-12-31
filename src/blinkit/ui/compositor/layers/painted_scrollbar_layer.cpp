@@ -11,14 +11,14 @@
 
 #include "./painted_scrollbar_layer.h"
 
-using namespace blink;
-
 namespace BlinKit {
 
 PaintedScrollbarLayer::PaintedScrollbarLayer(
+    LayerClient *client,
     std::unique_ptr<WebScrollbar> &&scrollbar,
     WebScrollbarThemePainter painter,
     std::unique_ptr<WebScrollbarThemeGeometry> &geometry)
+    : Layer(client)
 {
 }
 

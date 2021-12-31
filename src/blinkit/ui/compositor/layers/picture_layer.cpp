@@ -1,24 +1,20 @@
-#pragma once
 // -------------------------------------------------
-// BlinKit
+// BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: layer_client.h
-// Description: Placeholder for cc Part
+//   File Name: picture_layer.cpp
+// Description: PictureLayer Class
 //      Author: Ziming Li
-//     Created: 2021-07-17
+//     Created: 2021-12-11
 // -------------------------------------------------
 // Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_LAYER_CLIENT_H
-#define BLINKIT_LAYER_CLIENT_H
+#include "./picture_layer.h"
 
-namespace cc {
+namespace BlinKit {
 
-class LayerClient
+PictureLayer::PictureLayer(LayerClient *client) : Layer(client)
 {
-};
+}
 
-} // namespace cc
-
-#endif // BLINKIT_LAYER_CLIENT_H
+} // namespace BlinKit

@@ -11,15 +11,15 @@
 
 #include "./solid_color_scrollbar_layer.h"
 
-using namespace blink;
-
 namespace BlinKit {
 
 SolidColorScrollbarLayer::SolidColorScrollbarLayer(
+    LayerClient *client,
     WebScrollbar::Orientation orientation,
     int thumbThickness,
     int trackStart,
     bool isLeftSideVerticalScrollbar)
+    : Layer(client)
 {
 }
 
