@@ -36,9 +36,6 @@ struct BkWebViewClient {
     bool_t (BKAPI * TitleChange)(BkWebView, const char *, void *);
 };
 
-BKEXPORT BkWebView BKAPI BkCreateWebView(struct BkWebViewClient *client);
-BKEXPORT int BKAPI BkDestroyWebView(BkWebView view);
-
 BKEXPORT int BKAPI BkLoadUI(BkWebView view, const char *URI);
 
 BKEXPORT BkElement BKAPI BkGetElementById(BkWebView view, const char *id);
@@ -48,6 +45,34 @@ typedef void (BKAPI * BkClickObserver)(void *);
 BKEXPORT bool_t BKAPI BkAddClickObserver(BkWebView view, const char *id, BkClickObserver ob, void *userData);
 
 #ifdef _WIN32
+
+#   ifndef BLINKIT_EXPORTS
+inline HWND BkCreateWebViewWindow(
+    PCTSTR lpClassName,
+    PCTSTR lpWindowName,
+    DWORD dwStyle,
+    int x, int y, int nWidth, int nHeight,
+    HWND hWndParent,
+    HMENU hMenu,
+    HINSTANCE hInstance,
+    struct BkWebViewClient *client)
+{
+    return CreateWindow(lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, client);
+}
+
+inline HWND BkCreateWebViewControl(
+    PCTSTR lpClassName,
+    DWORD dwStyle,
+    int x, int y, int nWidth, int nHeight,
+    HWND hWndParent,
+    UINT uID,
+    HINSTANCE hInstance,
+    struct BkWebViewClient *client)
+{
+    dwStyle |= WS_CHILD;
+    return BkCreateWebViewWindow(lpClassName, NULL, dwStyle, x, y, nWidth, nHeight, hWndParent, (HMENU)uID, hInstance, client);
+}
+#   endif
 
 BKEXPORT BkWebView BKAPI BkGetWebView(HWND hWnd);
 

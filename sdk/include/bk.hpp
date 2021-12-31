@@ -96,8 +96,6 @@ private:
 };
 
 class web_view_client_root : public client_root_impl<web_view_client_root, BkWebViewClient> {
-public:
-    BkWebView create_web_view(const char *uri = nullptr) const;
 protected:
     void adjust_raw_client(BkWebViewClient &client) const override;
 private:
@@ -472,15 +470,6 @@ inline void BKAPI request_client_root::request_failed_callback(int code, void *p
 inline void web_view_client_root::adjust_raw_client(BkWebViewClient &client) const
 {
     client.DocumentReady = document_ready_callback;
-}
-
-inline BkWebView web_view_client_root::create_web_view(const char *uri) const
-{
-    BkWebViewClient client = get_client();
-    BkWebView ret = BkCreateWebView(&client);
-    if (nullptr != ret && nullptr != uri)
-        BkLoadUI(ret, uri);
-    return ret;
 }
 
 inline void BKAPI web_view_client_root::document_ready_callback(BkWebView v, void *p)
