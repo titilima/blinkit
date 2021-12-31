@@ -37,11 +37,10 @@ namespace BlinKit {
 WinApp::WinApp(BkAppClient *client)
     : AppImpl(client)
     , m_messageLoop(std::make_unique<MessageLoop>())
+#ifdef BLINKIT_UI_ENABLED
     , m_contextMenuController(std::make_unique<ContextMenuController>())
-{
-#ifndef NDEBUG
-    Thread::SetName("BlinKit Thread");
 #endif
+{
 }
 
 WinApp::~WinApp(void) = default;
