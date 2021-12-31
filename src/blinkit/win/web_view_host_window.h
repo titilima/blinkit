@@ -16,23 +16,21 @@
 #include "blinkit/blink/renderer/platform/Timer.h"
 #include "blinkit/ui/web_view_host.h"
 #include "blinkit/win/mouse_session.h"
+#include "third_party/zed/include/zed/mutex.hpp"
 
 struct BkWebViewClient;
 
 namespace BlinKit {
 
-class LayerTreeHost;
-
 class WebViewHostWindow final : public WebViewHost
 {
 public:
     WebViewHostWindow(const BkWebViewClient &client, HWND hWnd, LPCREATESTRUCT cs);
-    ~WebViewHostWindow(void);
+    ~WebViewHostWindow(void) override;
 
     HWND GetHWND(void) const { return m_hWnd; }
-    WebViewImpl* GetView(void) const { return m_view; }
 
-    void Redraw(const blink::IntRect &rect);
+    void Redraw(const IntRect &rect);
     void StartAnimationTimer(double delay) {
         //m_animationTimer.startOneShot(delay, BLINK_FROM_HERE);
     }
@@ -42,8 +40,8 @@ public:
     static bool ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private:
-    std::unique_ptr<SkCanvas> CreateCanvas(int width, int height);
-    void UpdateScaleFactor(void);
+    void EnsureCanvas(const IntSize &hostSize);
+    static float ScaleFactorFromDPI(UINT dpi);
 
     bool ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
 
@@ -58,21 +56,19 @@ private:
     void OnShowWindow(HWND hwnd, BOOL fShow, UINT status);
     void OnSize(HWND hwnd, UINT state, int cx, int cy);
 
-    void OnAnimationTimer(blink::Timer<WebViewHostWindow> *);
+    void OnAnimationTimer(Timer<WebViewHostWindow> *);
 
     // WebViewHost
-    blink::WebLayerTreeView* GetLayerTreeView(void) const override;
-    void Invalidate(const blink::IntRect &rect) override;
+    void Invalidate(const IntRect &rect) override;
     void ScheduleAnimation(void) override;
+    std::unique_ptr<PaintUITask> PreparePaintTask(void) override;
     void ChangeTitle(const std::string &title) override;
-    void DidChangeCursor(const blink::WebCursorInfo &cursorInfo) override;
-    void ShowContextMenu(const blink::WebContextMenuData &data) override;
+    void DidChangeCursor(const WebCursorInfo &cursorInfo) override;
+    void ShowContextMenu(const WebContextMenuData &data) override;
 
     HWND m_hWnd;
-    WebViewImpl *m_view;
-    UINT m_dpi = 96;
 
-    std::unique_ptr<LayerTreeHost> m_layerTreeHost;
+    zed::mutex m_canvasLock;
     std::unique_ptr<SkCanvas> m_canvas;
     HDC m_memoryDC = nullptr;
     HBITMAP m_oldBitmap = nullptr;
@@ -81,14 +77,13 @@ private:
     // PaintSession m_paintSession;
 
     const std::shared_ptr<bool> m_hostAliveFlag;
-    blink::Timer<WebViewHostWindow> m_animationTimer;
+    Timer<WebViewHostWindow> m_animationTimer;
 
     bool m_animationTaskScheduled = false;
     bool m_changingSizeOrPosition = false;
-    blink::WebCursorInfo m_cursorInfo;
+    WebCursorInfo m_cursorInfo;
 
     friend class ScopedPaintSession;
-    ScopedPaintSession *m_currentPaintSession = nullptr;
     class ScopedAnimationScheduler;
     bool m_animationScheduled = false;
     unsigned m_animationScheduledTimes = 0;

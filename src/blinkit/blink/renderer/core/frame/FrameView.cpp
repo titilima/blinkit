@@ -2617,7 +2617,7 @@ void FrameView::updateFrameTimingRequestsIfNeeded()
 
     for (const auto& iter : graphicsLayerTimingRequests) {
         const GraphicsLayer* graphicsLayer = iter.first;
-        graphicsLayer->platformLayer()->setFrameTimingRequests(iter.second);
+        ASSERT(false); // BKTODO: graphicsLayer->platformLayer()->setFrameTimingRequests(iter.second);
     }
 }
 

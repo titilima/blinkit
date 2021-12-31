@@ -54,7 +54,7 @@ public:
     WebViewImpl(const BkWebViewClient &client, blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor = SK_ColorWHITE);
     ~WebViewImpl(void);
 
-    void Initialize(BlinKit::WebViewHost *host);
+    void Initialize(BlinKit::WebViewHost *host, float scaleFactor = 1.0);
 
     static WebViewImpl* From(blink::Document &document);
 

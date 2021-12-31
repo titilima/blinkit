@@ -37,9 +37,10 @@
 
 #include "core/frame/LocalDOMWindow.h"
 
-#include "bindings/core/v8/ScriptController.h"
-#include "blinkit/crawler/dom/crawler_document.h"
+#include "blinkit/blink/renderer/bindings/core/duk/duk_timer.h"
+#include "blinkit/blink/renderer/bindings/core/duk/script_controller.h"
 #include "blinkit/blink/renderer/core/html/HTMLDocument.h"
+#include "blinkit/crawler/dom/crawler_document.h"
 #include "core/css/CSSComputedStyleDeclaration.h"
 #include "core/css/CSSRuleList.h"
 #include "core/css/DOMWindowCSS.h"
@@ -1623,6 +1624,22 @@ LocalFrame* LocalDOMWindow::frame() const
     if (m_frameObserver->frame())
         ASSERT_WITH_SECURITY_IMPLICATION(m_frameObserver->frame()->domWindow() == this);
     return m_frameObserver->frame();
+}
+
+unsigned LocalDOMWindow::AddDOMTimer(std::unique_ptr<DukTimer> &&timer)
+{
+    ASSERT(false); // BKTODO:
+    return 0;
+}
+
+void LocalDOMWindow::LaunchDOMTimer(unsigned id, DukTimer &timer)
+{
+    ASSERT(false); // BKTODO:
+}
+
+void LocalDOMWindow::ProcessDOMTimer(unsigned id, DukTimer &timer)
+{
+    ASSERT(false); // BKTODO:
 }
 
 } // namespace blink

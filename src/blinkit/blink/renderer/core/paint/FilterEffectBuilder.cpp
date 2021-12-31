@@ -144,10 +144,10 @@ DEFINE_TRACE(FilterEffectBuilder)
 bool FilterEffectBuilder::build(Element* element, const FilterOperations& operations, float zoom, const SkPaint* fillPaint, const SkPaint* strokePaint)
 {
     // Create a parent filter for shorthand filters. These have already been scaled by the CSS code for page zoom, so scale is 1.0 here.
-    RefPtrWillBeRawPtr<Filter> parentFilter = Filter::create(1.0f);
-    RefPtrWillBeRawPtr<FilterEffect> previousEffect = parentFilter->sourceGraphic();
+    GCRefPtr<Filter> parentFilter = Filter::create(1.0f);
+    GCRefPtr<FilterEffect> previousEffect(parentFilter->sourceGraphic());
     for (size_t i = 0; i < operations.operations().size(); ++i) {
-        RefPtrWillBeRawPtr<FilterEffect> effect = nullptr;
+        GCRefPtr<FilterEffect> effect;
         FilterOperation* filterOperation = operations.operations().at(i).get();
         switch (filterOperation->type()) {
         case FilterOperation::REFERENCE: {
@@ -251,20 +251,20 @@ bool FilterEffectBuilder::build(Element* element, const FilterOperations& operat
                 // Unlike SVG, filters applied here should not clip to their primitive subregions.
                 effect->setClipsToBounds(false);
                 effect->setOperatingColorSpace(ColorSpaceDeviceRGB);
-                effect->inputEffects().append(previousEffect);
+                effect->inputEffects().emplace_back(previousEffect);
             }
             previousEffect = effect.release();
         }
     }
 
-    m_referenceFilters.append(parentFilter);
+    m_referenceFilters.emplace_back(parentFilter);
 
     // We need to keep the old effects alive until this point, so that SVG reference filters
     // can share cached resources across frames.
     m_lastEffect = previousEffect;
 
     // If we didn't make any effects, tell our caller we are not valid
-    if (!m_lastEffect.get())
+    if (!m_lastEffect)
         return false;
 
     return true;

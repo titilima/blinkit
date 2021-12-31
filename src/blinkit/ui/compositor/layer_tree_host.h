@@ -19,13 +19,23 @@
 
 namespace BlinKit {
 
+class CompositorTask;
 class Layer;
+class PaintUITask;
+class TreeCompositor;
 
-class LayerTreeHost final : public blink::WebLayerTreeView
+class LayerTreeHost final : public WebLayerTreeView
 {
 public:
+    LayerTreeHost(void);
+    ~LayerTreeHost(void) override;
+
     void RegisterLayer(Layer *layer);
     void UnregisterLayer(Layer *layer);
+
+    const IntSize& DeviceViewportSize(void) const { return m_deviceViewportSize; }
+
+    void Update(std::unique_ptr<PaintUITask> &paintTask);
 
     void SetNeedsCommit(void);
     void SetNeedsFullTreeSync(void);
@@ -36,23 +46,29 @@ public:
 #ifndef NDEBUG
     bool InPaintLayerContents(void) const { return m_inPaintLayerContents; }
 #endif
+
+    void setViewportSize(const IntSize &deviceViewportSize) override;
+    void setDeviceScaleFactor(float scaleFactor) override;
 private:
     void SetPropertyTreesNeedRebuild(void);
     void SetRootLayerImpl(Layer *layer);
 
-    void setRootLayer(const blink::WebLayer &layer) override;
+    void PostTaskToCompositor(CompositorTask *task);
+    void Sync(std::function<void(TreeCompositor &)> &&callback);
+
+    void setRootLayer(const WebLayer &layer) override;
     void clearRootLayer(void) override;
-    void setBackgroundColor(blink::WebColor color) override { m_backgroundColor = color; }
+    void setBackgroundColor(WebColor color) override { m_backgroundColor = color; }
     void setVisible(bool visible) override;
-    void setPageScaleFactorAndLimits(float pageScaleFactor, float minimum, float maximum) override;
+    void setPageScaleFactorAndLimits(float pageScaleFactor, float minimum, float maximum) override; // BKTODO: Check if necessary.
     void heuristicsForGpuRasterizationUpdated(bool matchesHeuristics) override;
     void setTopControlsShownRatio(float ratio) override;
     void setTopControlsHeight(float height, bool shrinkViewport) override;
     void setDeferCommits(bool deferCommits) override;
-    void registerForAnimations(blink::WebLayer *layer) override;
-    void registerViewportLayers(const blink::WebLayer *overscrollElasticityLayer,
-        const blink::WebLayer *pageScaleLayer, const blink::WebLayer *innerViewportScrollLayer,
-        const blink::WebLayer *outerViewportScrollLayer) override;
+    void registerForAnimations(WebLayer *layer) override;
+    void registerViewportLayers(const WebLayer *overscrollElasticityLayer,
+        const WebLayer *pageScaleLayer, const WebLayer *innerViewportScrollLayer,
+        const WebLayer *outerViewportScrollLayer) override;
     void clearViewportLayers(void) override;
 
     Layer *m_rootLayer = nullptr;
@@ -64,6 +80,10 @@ private:
     bool m_inPaintLayerContents = false;
 #endif
     SkColor m_backgroundColor = SK_ColorWHITE;
+
+    IntSize m_deviceViewportSize;
+    float m_deviceScaleFactor = 1.f;
+
     float m_topControlsShownRatio = 0.f;
     float m_topControlsHeight = 0.f;
     float m_pageScaleFactor = 1.f;

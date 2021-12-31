@@ -22,12 +22,12 @@
 #include "platform/graphics/GraphicsContext.h"
 #include "platform/graphics/GraphicsLayer.h"
 #include "platform/graphics/filters/FilterEffect.h"
-#include "platform/graphics/filters/SkiaImageFilterBuilder.h"
+// BKTODO: #include "platform/graphics/filters/SkiaImageFilterBuilder.h"
 #include "platform/graphics/paint/FilterDisplayItem.h"
 #include "platform/graphics/paint/PaintController.h"
 #include "public/platform/Platform.h"
 #include "public/platform/WebCompositorSupport.h"
-#include "public/platform/WebFilterOperations.h"
+// BKTODO: #include "public/platform/WebFilterOperations.h"
 
 namespace blink {
 
@@ -46,11 +46,14 @@ FilterPainter::FilterPainter(PaintLayer& layer, GraphicsContext& context, const 
 
     ASSERT(layer.filterInfo());
 
+    ASSERT(false); // BKTODO:
+#if 0
     SkiaImageFilterBuilder builder;
     lastEffect->determineFilterPrimitiveSubregion(MapRectForward);
     RefPtr<SkImageFilter> imageFilter = builder.build(lastEffect.get(), ColorSpaceDeviceRGB);
     if (!imageFilter)
         return;
+#endif
 
     if (!rootRelativeBoundsComputed) {
         rootRelativeBounds = layer.physicalBoundingBoxIncludingReflectionAndStackingChildren(offsetFromRoot);

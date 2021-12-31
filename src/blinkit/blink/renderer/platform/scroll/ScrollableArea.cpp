@@ -551,7 +551,7 @@ void ScrollableArea::cancelProgrammaticScrollAnimation()
 bool ScrollableArea::shouldScrollOnMainThread() const
 {
     if (GraphicsLayer* layer = layerForScrolling()) {
-        return layer->platformLayer()->shouldScrollOnMainThread();
+        ASSERT(false); // BKTODO: return layer->platformLayer()->shouldScrollOnMainThread();
     }
     return true;
 }

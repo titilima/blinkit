@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FilterDisplayItem.cpp
+// Description: FilterDisplayItem Classes
+//      Author: Ziming Li
+//     Created: 2021-12-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -14,13 +25,13 @@ void BeginFilterDisplayItem::replay(GraphicsContext& context) const
     FloatRect imageFilterBounds(FloatPoint(), m_bounds.size());
     context.save();
     context.translate(m_bounds.x(), m_bounds.y());
-    context.beginLayer(1, SkXfermode::kSrcOver_Mode, &imageFilterBounds, ColorFilterNone, m_imageFilter.get());
+    ASSERT(false); // BKTODO: context.beginLayer(1, SkXfermode::kSrcOver_Mode, &imageFilterBounds, ColorFilterNone, m_imageFilter.get());
     context.translate(-m_bounds.x(), -m_bounds.y());
 }
 
 void BeginFilterDisplayItem::appendToWebDisplayItemList(const IntRect& visualRect, WebDisplayItemList* list) const
 {
-    list->appendFilterItem(visualRect, *m_webFilterOperations, m_bounds);
+    ASSERT(false); // BKTODO: list->appendFilterItem(visualRect, *m_webFilterOperations, m_bounds);
 }
 
 bool BeginFilterDisplayItem::drawsContent() const

@@ -221,8 +221,10 @@ void WebViewImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 void WebViewImpl::dispatchDidFinishLoad(void)
 {
     m_loadFinished = true;
+#if 0
     if (nullptr != m_host)
         m_host->ScheduleAnimation();
+#endif
 
     auto task = [this] {
         m_client.DocumentReady(this, m_client.UserData);
@@ -550,13 +552,13 @@ void WebViewImpl::HidePopups(void)
 #endif
 }
 
-void WebViewImpl::Initialize(WebViewHost *host)
+void WebViewImpl::Initialize(WebViewHost *host, float scaleFactor)
 {
     ASSERT(nullptr == m_host);
     m_host = host;
     m_layerTreeView = host->GetLayerTreeView();
 
-    m_frame = LocalFrame::create(this, &(m_page->frameHost()));
+    m_frame = LocalFrame::create(this, &(m_page->frameHost()), scaleFactor);
     m_frame->init();
 }
 
@@ -1039,7 +1041,7 @@ void WebViewImpl::ResumeTreeViewCommitsIfRenderingReady(void)
     if (nullptr != m_layerTreeView)
     {
         m_layerTreeView->setDeferCommits(false);
-        ASSERT(false); // BKTODO: m_layerTreeView->setNeedsBeginFrame();
+        m_layerTreeView->setNeedsBeginFrame();
     }
 }
 
@@ -1049,7 +1051,7 @@ void WebViewImpl::scheduleAnimation(void)
         return;
 
     if (nullptr != m_layerTreeView)
-        ASSERT(false); // BKTODO: m_layerTreeView->setNeedsBeginFrame();
+        m_layerTreeView->setNeedsBeginFrame();
     else if (nullptr != m_host)
         m_host->ScheduleAnimation();
 }
@@ -1249,7 +1251,7 @@ void WebViewImpl::setRootGraphicsLayer(GraphicsLayer *layer)
 void WebViewImpl::SetScaleFactor(float scaleFactor)
 {
     if (m_frame)
-        m_frame->setPageZoomFactor(scaleFactor);
+        m_frame->SetScaleFactor(scaleFactor);
 }
 
 void WebViewImpl::SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState)
@@ -1529,22 +1531,6 @@ extern "C" {
 BKEXPORT bool_t BKAPI BkAddClickObserver(BkWebView view, const char *id, BkClickObserver ob, void *userData)
 {
     return view->AddClickObserver(id, ob, userData);
-}
-
-BKEXPORT BkWebView BKAPI BkCreateWebView(struct BkWebViewClient *client)
-{   
-    WebViewImpl *ret = new WebViewImpl(*client, PageVisibilityStateHidden);
-    if (nullptr != ret)
-        ret->Initialize(nullptr);
-    return ret;
-}
-
-BKEXPORT int BKAPI BkDestroyWebView(BkWebView view)
-{
-    if (view->HasHost())
-        return BK_ERR_FORBIDDEN;
-    delete view;
-    return BK_ERR_SUCCESS;
 }
 
 BKEXPORT BkElement BKAPI BkGetElementById(BkWebView view, const char *id)

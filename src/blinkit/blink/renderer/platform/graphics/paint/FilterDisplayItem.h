@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FilterDisplayItem.h
+// Description: FilterDisplayItem Classes
+//      Author: Ziming Li
+//     Created: 2021-12-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,7 +19,7 @@
 
 #include "platform/geometry/FloatRect.h"
 #include "platform/graphics/paint/DisplayItem.h"
-#include "public/platform/WebFilterOperations.h"
+// #include "public/platform/WebFilterOperations.h"
 #include "wtf/PassOwnPtr.h"
 #include "wtf/PassRefPtr.h"
 #ifndef NDEBUG
@@ -16,13 +28,15 @@
 
 namespace blink {
 
-class PLATFORM_EXPORT BeginFilterDisplayItem final : public PairedBeginDisplayItem {
+class BeginFilterDisplayItem final : public PairedBeginDisplayItem {
 public:
+#if 0 // BKTODO:
     BeginFilterDisplayItem(const DisplayItemClient& client, PassRefPtr<SkImageFilter> imageFilter, const FloatRect& bounds, PassOwnPtr<WebFilterOperations> filterOperations = nullptr)
         : PairedBeginDisplayItem(client, BeginFilter, sizeof(*this))
         , m_imageFilter(imageFilter)
         , m_webFilterOperations(std::move(filterOperations))
         , m_bounds(bounds) { }
+#endif
 
     void replay(GraphicsContext&) const override;
     void appendToWebDisplayItemList(const IntRect&, WebDisplayItemList*) const override;
@@ -42,12 +56,12 @@ private:
 #endif
 
     // FIXME: m_imageFilter should be replaced with m_webFilterOperations when copying data to the compositor.
-    RefPtr<SkImageFilter> m_imageFilter;
-    OwnPtr<WebFilterOperations> m_webFilterOperations;
+    // BKTODO: RefPtr<SkImageFilter> m_imageFilter;
+    // BKTODO: OwnPtr<WebFilterOperations> m_webFilterOperations;
     const FloatRect m_bounds;
 };
 
-class PLATFORM_EXPORT EndFilterDisplayItem final : public PairedEndDisplayItem {
+class EndFilterDisplayItem final : public PairedEndDisplayItem {
 public:
     EndFilterDisplayItem(const DisplayItemClient& client)
         : PairedEndDisplayItem(client, EndFilter, sizeof(*this)) { }

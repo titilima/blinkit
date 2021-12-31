@@ -36,7 +36,6 @@
 #ifndef WebScrollbarImpl_h
 #define WebScrollbarImpl_h
 
-#include "platform/PlatformExport.h"
 #include "platform/heap/Handle.h"
 #include "public/platform/WebScrollbar.h"
 #include "wtf/Allocator.h"
@@ -45,13 +44,14 @@
 namespace blink {
 
 class Scrollbar;
-class PLATFORM_EXPORT WebScrollbarImpl final : public WebScrollbar {
-    USING_FAST_MALLOC(WebScrollbarImpl);
+
+class WebScrollbarImpl final : public WebScrollbar
+{
     WTF_MAKE_NONCOPYABLE(WebScrollbarImpl);
 public:
-    static WebScrollbarImpl* create(Scrollbar* scrollbar)
+    static std::unique_ptr<WebScrollbarImpl> create(Scrollbar* scrollbar)
     {
-        return new WebScrollbarImpl(scrollbar);
+        return zed::wrap_unique(new WebScrollbarImpl(scrollbar));
     }
 
     // Implement WebScrollbar methods
@@ -77,7 +77,7 @@ public:
 private:
     explicit WebScrollbarImpl(Scrollbar*);
 
-    RefPtrWillBePersistent<Scrollbar> m_scrollbar;
+    GCRefPtr<Scrollbar> m_scrollbar;
 };
 
 } // namespace blink

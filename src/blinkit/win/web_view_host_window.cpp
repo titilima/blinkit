@@ -14,12 +14,14 @@
 #include <windowsx.h>
 #include "blinkit/app/win_app.h"
 #include "blinkit/blink/renderer/core/editing/Editor.h"
-#include "blinkit/blink/renderer/platform/Task.h"
-#include "blinkit/cc/trees/layer_tree_host.h"
+#include "blinkit/ui/compositor/paint_ui_task.h"
+#include "blinkit/ui/compositor/tile.h"
+#include "blinkit/ui/scoped_animation_session.h"
 #include "blinkit/ui/web_view_impl.h"
 #include "blinkit/win/bk_bitmap.h"
 #include "blinkit/win/context_menu_controller.h"
 #include "blinkit/win/message_task.h"
+#include "blinkit/win/paint_window_task.h"
 #include "third_party/zed/include/zed/float.hpp"
 #include "third_party/zed/include/zed/log.hpp"
 
@@ -46,38 +48,14 @@ private:
 };
 #endif
 
-class WebViewHostWindow::ScopedAnimationScheduler
-{
-public:
-    ScopedAnimationScheduler(WebViewHostWindow &hostWindow) : m_hostWindow(hostWindow) {}
-    ~ScopedAnimationScheduler(void)
-    {
-        if (m_hostWindow.m_animationScheduledTimes > 0)
-        {
-            m_hostWindow.GetView()->UpdateLifecycle();
-            m_hostWindow.m_animationScheduledTimes = 0;
-        }
-        m_hostWindow.m_animationScheduled = false;
-    }
-private:
-    WebViewHostWindow &m_hostWindow;
-};
-
 static PageVisibilityState GetPageVisibilityState(LONG style)
 {
     return 0 != (style & WS_VISIBLE) ? PageVisibilityStateVisible : PageVisibilityStateHidden;
 }
 
-static SkColor WindowColor(void)
-{
-    COLORREF color = GetSysColor(COLOR_WINDOW);
-    return SkColorSetARGB(0xff, GetRValue(color), GetGValue(color), GetBValue(color));
-}
-
 WebViewHostWindow::WebViewHostWindow(const BkWebViewClient &client, HWND hWnd, LPCREATESTRUCT cs)
-    : m_hWnd(hWnd)
-    , m_view(new WebViewImpl(client, GetPageVisibilityState(cs->style), WindowColor()))
-    , m_layerTreeHost(std::make_unique<LayerTreeHost>())
+    : WebViewHost(client, GetPageVisibilityState(cs->style))
+    , m_hWnd(hWnd)
     , m_hostAliveFlag(std::make_shared<bool>(true))
     , m_animationTimer(this, &WebViewHostWindow::OnAnimationTimer)
 {
@@ -86,9 +64,8 @@ WebViewHostWindow::WebViewHostWindow(const BkWebViewClient &client, HWND hWnd, L
     m_animationTimer.SetHostAliveFlag(m_hostAliveFlag);
 
     HDC dc = GetDC(m_hWnd);
-    m_dpi = GetDeviceCaps(dc, LOGPIXELSY);
-    ASSERT(0 != m_dpi);
-    ASSERT(GetDeviceCaps(dc, LOGPIXELSX) == m_dpi);
+    UINT dpi = GetDeviceCaps(dc, LOGPIXELSY);
+    ASSERT(0 != dpi && GetDeviceCaps(dc, LOGPIXELSX) == dpi);
     m_memoryDC = CreateCompatibleDC(dc);
     ReleaseDC(m_hWnd, dc);
 
@@ -97,8 +74,7 @@ WebViewHostWindow::WebViewHostWindow(const BkWebViewClient &client, HWND hWnd, L
     if (GetClassLong(m_hWnd, GCL_STYLE) & CS_DBLCLKS)
         m_mouseSession.EnableDoubleClick();
 
-    m_view->Initialize(this);
-    UpdateScaleFactor();
+    InitializeView(ScaleFactorFromDPI(dpi));
 }
 
 WebViewHostWindow::~WebViewHostWindow(void)
@@ -109,27 +85,12 @@ WebViewHostWindow::~WebViewHostWindow(void)
 
     if (nullptr != m_hWnd)
         g_hosts.erase(m_hWnd);
-    delete m_view;
 }
 
 void WebViewHostWindow::ChangeTitle(const std::string &title)
 {
     std::wstring ws = zed::multi_byte_to_wide_string(title, CP_UTF8);
     SetWindowTextW(m_hWnd, ws.c_str());
-}
-
-std::unique_ptr<SkCanvas> WebViewHostWindow::CreateCanvas(int width, int height)
-{
-    BkBitmap bitmap;
-
-    ASSERT(width > 0);
-    ASSERT(height > 0);
-
-    HBITMAP hBitmap = bitmap.InstallDIBSection(width, height, m_memoryDC);
-    HBITMAP oldBitmap = SelectBitmap(m_memoryDC, hBitmap);
-    if (nullptr == m_oldBitmap)
-        m_oldBitmap = oldBitmap;
-    return std::make_unique<SkCanvas>(bitmap);
 }
 
 void WebViewHostWindow::DidChangeCursor(const WebCursorInfo &cursorInfo)
@@ -205,9 +166,27 @@ void WebViewHostWindow::DidChangeCursor(const WebCursorInfo &cursorInfo)
     ::SetCursor(m_cursorInfo.externalHandle);
 }
 
-WebLayerTreeView* WebViewHostWindow::GetLayerTreeView(void) const
+void WebViewHostWindow::EnsureCanvas(const IntSize &hostSize)
 {
-    return m_layerTreeHost.get();
+    ASSERT(!hostSize.isEmpty());
+
+    const IntSize canvasSize = Tile::GetAlignedSize(hostSize);
+    if (m_canvas)
+    {
+        SkImageInfo imageInfo = m_canvas->imageInfo();
+        if (canvasSize.width() <= imageInfo.width() && canvasSize.height() <= imageInfo.height())
+            return;
+    }
+
+    BkBitmap bitmap;
+
+    HBITMAP hBitmap = bitmap.InstallDIBSection(canvasSize.width(), canvasSize.height(), m_memoryDC);
+    HBITMAP oldBitmap = SelectBitmap(m_memoryDC, hBitmap);
+    if (nullptr == m_oldBitmap)
+        m_oldBitmap = oldBitmap;
+
+    m_canvas = std::make_unique<SkCanvas>(bitmap);
+    m_canvas->drawColor(GetView()->BaseBackgroundColor());
 }
 
 void WebViewHostWindow::Invalidate(const IntRect &rect)
@@ -242,13 +221,12 @@ void WebViewHostWindow::OnAnimationTimer(Timer<WebViewHostWindow> *)
 void WebViewHostWindow::OnChar(HWND hwnd, TCHAR ch, int)
 {
     // m_paintSession.Begin(*this);
-    m_view->ProcessKeyEvent(WebInputEvent::Char, ch, 0);
+    GetView()->ProcessKeyEvent(WebInputEvent::Char, ch, 0);
 }
 
 void WebViewHostWindow::OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc)
 {
-    m_dpi = newDPI;
-    UpdateScaleFactor();
+    SetScaleFactor(ScaleFactorFromDPI(newDPI));
     SetWindowPos(hwnd, nullptr, rc->left, rc->top, rc->right - rc->left, rc->bottom - rc->top,
         SWP_NOZORDER | SWP_NOACTIVATE);
 }
@@ -256,7 +234,7 @@ void WebViewHostWindow::OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc)
 void WebViewHostWindow::OnIMEStartComposition(HWND hwnd)
 {
     IntRect anchor, focus;
-    if (m_view->SelectionBounds(anchor, focus))
+    if (GetView()->SelectionBounds(anchor, focus))
     {
         COMPOSITIONFORM cf = { 0 };
         cf.dwStyle = CFS_POINT | CFS_FORCE_POSITION;
@@ -280,7 +258,7 @@ void WebViewHostWindow::OnKey(HWND, UINT vk, BOOL fDown, int, UINT)
         modifiers |= WebInputEvent::ControlKey;
     if (GetKeyState(VK_MENU) < 0)
         modifiers |= WebInputEvent::AltKey;
-    m_view->ProcessKeyEvent(type, vk, modifiers);
+    GetView()->ProcessKeyEvent(type, vk, modifiers);
 }
 
 void WebViewHostWindow::OnMouse(UINT message, WPARAM wParam, LPARAM lParam)
@@ -290,7 +268,7 @@ void WebViewHostWindow::OnMouse(UINT message, WPARAM wParam, LPARAM lParam)
     //m_paintSession.Begin(*this);
 
     const auto callback = [this](const MouseEvent &e) {
-        m_view->ProcessMouseEvent(e);
+        GetView()->ProcessMouseEvent(e);
     };
     m_mouseSession.Process(m_hWnd, message, wParam, lParam, callback);
 
@@ -322,13 +300,12 @@ void WebViewHostWindow::OnPaint(HWND hwnd)
 
     PAINTSTRUCT ps;
     HDC hdc = BeginPaint(hwnd, &ps);
-    m_layerTreeHost->Paint(hdc, &ps.rcPaint);
     EndPaint(hwnd, &ps);
 }
 
 void WebViewHostWindow::OnShowWindow(HWND, BOOL fShow, UINT)
 {
-    m_view->SetVisibilityState(fShow ? PageVisibilityStateVisible : PageVisibilityStateHidden);
+    GetView()->SetVisibilityState(fShow ? PageVisibilityStateVisible : PageVisibilityStateHidden);
 }
 
 void WebViewHostWindow::OnSize(HWND, UINT state, int cx, int cy)
@@ -336,29 +313,26 @@ void WebViewHostWindow::OnSize(HWND, UINT state, int cx, int cy)
     if (SIZE_MINIMIZED == state)
         return;
 
-    bool resetCanvas = true;
-    if (m_canvas)
-    {
-        SkImageInfo imageInfo = m_canvas->imageInfo();
-        if (imageInfo.width() == cx && imageInfo.height() == cy)
-            resetCanvas = false;
-    }
-    if (resetCanvas)
-    {
-        m_canvas = CreateCanvas(cx, cy);
-        m_canvas->drawColor(m_view->BaseBackgroundColor());
-    }
+    const IntSize hostSize(cx, cy);
+    EnsureCanvas(hostSize);
+    Resize(hostSize);
+}
 
-    m_view->Resize(IntSize(cx, cy));
+std::unique_ptr<PaintUITask> WebViewHostWindow::PreparePaintTask(void)
+{
+    return std::make_unique<PaintWindowTask>(m_hWnd, m_memoryDC, GetLayerTreeView(), m_canvasLock, m_canvas.get());
 }
 
 bool WebViewHostWindow::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
 {
     // MessageLogger _(Msg);
-    if (WM_NCCREATE == Msg)
+    switch (Msg)
     {
-        *result = HANDLE_WM_NCCREATE(hWnd, wParam, lParam, OnNCCreate);
-        return true;
+        case WM_NCCREATE:
+            HANDLE_WM_NCCREATE(hWnd, wParam, lParam, OnNCCreate);
+            [[fallthrough]];
+        case WM_NCCALCSIZE:
+            return false;
     }
 
     WebViewHostWindow *host = zed::query_value(g_hosts, hWnd, nullptr);
@@ -376,7 +350,7 @@ bool WebViewHostWindow::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam,
 
 bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
 {
-    ScopedAnimationScheduler _(*this);
+    ScopedAnimationSession _(*this);
     switch (Msg)
     {
         case WM_ERASEBKGND:
@@ -425,10 +399,10 @@ bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wPa
             break;
 
         case WM_SETFOCUS:
-            m_view->SetFocus(true);
+            GetView()->SetFocus(true);
             break;
         case WM_KILLFOCUS:
-            m_view->SetFocus(false);
+            GetView()->SetFocus(false);
             break;
 
         case WM_ENTERSIZEMOVE:
@@ -457,13 +431,31 @@ bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wPa
 
 void WebViewHostWindow::Redraw(const IntRect &rect)
 {
-    m_view->PaintContent(m_canvas.get(), rect);
+    GetView()->PaintContent(m_canvas.get(), rect);
+}
+
+float WebViewHostWindow::ScaleFactorFromDPI(UINT dpi)
+{
+    switch (dpi)
+    {
+        case 120:
+            return 1.25;
+        case 144:
+            return 1.5;
+        case 192:
+            return 2.0;
+    }
+    ASSERT(96 == dpi);
+    return 1.0;
 }
 
 void WebViewHostWindow::ScheduleAnimation(void)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (nullptr != m_currentPaintSession)
         return;
+#endif
 
     m_animationScheduled = true;
     ++m_animationScheduledTimes;
@@ -485,7 +477,7 @@ void WebViewHostWindow::ShowContextMenu(const WebContextMenuData &data)
 
     if (CommandID::SelectAll == returnCmd)
     {
-        m_view->GetFrame().selection().selectAll();
+        GetView()->GetFrame().selection().selectAll();
         return;
     }
 
@@ -511,30 +503,15 @@ void WebViewHostWindow::ShowContextMenu(const WebContextMenuData &data)
             ASSERT_NOT_REACHED();
             return;
     }
-    menuController.RunEditorFunction(m_view->GetFrame().editor(), pfn);
+    menuController.RunEditorFunction(GetView()->GetFrame().editor(), pfn);
 }
 
-void WebViewHostWindow::UpdateScaleFactor(void)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+SkColor WebViewHost::DefaultBackgroundColor(void)
 {
-    float scaleFactor = 1.0;
-    switch (m_dpi)
-    {
-        case 96:
-            break;
-        case 120:
-            scaleFactor = 1.25;
-            break;
-        case 144:
-            scaleFactor = 1.5;
-            break;
-        case 192:
-            scaleFactor = 2.0;
-            break;
-        default:
-            NOTREACHED();
-            return;
-    }
-    m_view->SetScaleFactor(scaleFactor);
+    COLORREF color = GetSysColor(COLOR_WINDOW);
+    return SkColorSetARGB(0xff, GetRValue(color), GetGValue(color), GetBValue(color));
 }
 
 } // namespace BlinKit

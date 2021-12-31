@@ -11,8 +11,8 @@
 
 #include "./compositor_support.h"
 
-#include "blinkit/cc/blink/content_layer.h"
-#include "blinkit/cc/blink/scrollbar_layer.h"
+#include "blinkit/ui/compositor/blink/content_layer.h"
+#include "blinkit/ui/compositor/blink/scrollbar_layer.h"
 
 using namespace blink;
 

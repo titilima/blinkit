@@ -1245,7 +1245,7 @@ GCRefPtr<CSSValue> ComputedStyleCSSValueMapping::valueForShadowList(const Shadow
 
 GCRefPtr<CSSValue> ComputedStyleCSSValueMapping::valueForFilter(const ComputedStyle& style, const FilterOperations& filterOperations)
 {
-    if (filterOperations.operations().isEmpty())
+    if (filterOperations.operations().empty())
         return cssValuePool().createIdentifierValue(CSSValueNone);
 
     GCRefPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();

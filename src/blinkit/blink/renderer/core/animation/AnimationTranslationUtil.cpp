@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimationTranslationUtil.cpp
+// Description: Animation Translation Utilities
+//      Author: Ziming Li
+//     Created: 2021-12-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -26,7 +37,7 @@
 #include "core/animation/AnimationTranslationUtil.h"
 
 #include "platform/graphics/filters/FilterOperations.h"
-#include "platform/graphics/filters/SkiaImageFilterBuilder.h"
+// BKTODO: #include "platform/graphics/filters/SkiaImageFilterBuilder.h"
 #include "platform/transforms/InterpolatedTransformOperation.h"
 #include "platform/transforms/Matrix3DTransformOperation.h"
 #include "platform/transforms/MatrixTransformOperation.h"
@@ -115,10 +126,13 @@ void toWebTransformOperations(const TransformOperations& transformOperations, We
 
 void toWebFilterOperations(const FilterOperations& inOperations, WebFilterOperations* outOperations)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     SkiaImageFilterBuilder builder;
     FilterOutsets outsets = inOperations.outsets();
     builder.setCropOffset(FloatSize(outsets.left(), outsets.top()));
     builder.buildFilterOperations(inOperations, outOperations);
+#endif
 }
 
 } // namespace blink

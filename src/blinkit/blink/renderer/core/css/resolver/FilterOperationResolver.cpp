@@ -178,7 +178,7 @@ FilterOperations FilterOperationResolver::createFilterOperations(StyleResolverSt
                     amount /= 100;
             }
 
-            operations.operations().append(BasicColorMatrixFilterOperation::create(amount, operationType));
+            operations.operations().emplace_back(BasicColorMatrixFilterOperation::create(amount, operationType));
             break;
         }
         case CSSValueHueRotate: {
@@ -186,7 +186,7 @@ FilterOperations FilterOperationResolver::createFilterOperations(StyleResolverSt
             if (filterValue->length() == 1)
                 angle = firstValue->computeDegrees();
 
-            operations.operations().append(BasicColorMatrixFilterOperation::create(angle, operationType));
+            operations.operations().emplace_back(BasicColorMatrixFilterOperation::create(angle, operationType));
             break;
         }
         case CSSValueInvert:
@@ -200,14 +200,14 @@ FilterOperations FilterOperationResolver::createFilterOperations(StyleResolverSt
                     amount /= 100;
             }
 
-            operations.operations().append(BasicComponentTransferFilterOperation::create(amount, operationType));
+            operations.operations().emplace_back(BasicComponentTransferFilterOperation::create(amount, operationType));
             break;
         }
         case CSSValueBlur: {
             Length stdDeviation = Length(0, Fixed);
             if (filterValue->length() >= 1)
                 stdDeviation = firstValue->convertToLength(conversionData);
-            operations.operations().append(BlurFilterOperation::create(stdDeviation));
+            operations.operations().emplace_back(BlurFilterOperation::create(stdDeviation));
             break;
         }
         case CSSValueDropShadow: {
@@ -218,7 +218,7 @@ FilterOperations FilterOperationResolver::createFilterOperations(StyleResolverSt
             if (item->color)
                 shadowColor = state.document().textLinkColors().colorFromCSSValue(*item->color, state.style()->color());
 
-            operations.operations().append(DropShadowFilterOperation::create(location, blur, shadowColor));
+            operations.operations().emplace_back(DropShadowFilterOperation::create(location, blur, shadowColor));
             break;
         }
         default:

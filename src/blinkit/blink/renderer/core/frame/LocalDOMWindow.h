@@ -54,6 +54,10 @@
 #include "wtf/Assertions.h"
 #include "wtf/Forward.h"
 
+namespace BlinKit {
+class DukTimer;
+}
+
 namespace blink {
 
 class DOMWindowEventQueue;
@@ -95,6 +99,8 @@ public:
     DECLARE_VIRTUAL_TRACE();
 
     PassRefPtrWillBeRawPtr<Document> installNewDocument(const String& mimeType, const DocumentInit&, bool forceXHTML = false);
+
+    unsigned AddDOMTimer(std::unique_ptr<BlinKit::DukTimer> &&timer);
 
     // EventTarget overrides:
     ExecutionContext* executionContext() const override;
@@ -259,6 +265,9 @@ private:
     void willDetachFrameHost();
     void frameDestroyed();
 
+    void LaunchDOMTimer(unsigned id, BlinKit::DukTimer &timer);
+    void ProcessDOMTimer(unsigned id, BlinKit::DukTimer &timer);
+
     BlinKit::GCObject* ObjectForGC(void) final { return nullptr; }
 
     GCRefPtr<WindowFrameObserver> m_frameObserver;
@@ -292,6 +301,9 @@ private:
     // BKTODO: RefPtr<SerializedScriptValue> m_pendingStateObject;
 
     WillBeHeapHashSet<OwnPtrWillBeMember<PostMessageTimer>> m_postMessageTimers;
+
+    unsigned m_nextTimerId = 1;
+    std::unordered_map<unsigned, std::unique_ptr<BlinKit::DukTimer>> m_domTimers;
 };
 
 DEFINE_TYPE_CASTS(LocalDOMWindow, DOMWindow, x, x->isLocalDOMWindow(), x.isLocalDOMWindow());

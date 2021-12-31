@@ -62,7 +62,8 @@ class ScrollableArea;
 class WebCompositorAnimationTimeline;
 class WebLayerTreeView;
 
-class CORE_EXPORT ScrollingCoordinator final {
+class CORE_EXPORT ScrollingCoordinator final
+{
     WTF_MAKE_NONCOPYABLE(ScrollingCoordinator);
 public:
     static std::unique_ptr<ScrollingCoordinator> create(Page*);
@@ -113,7 +114,7 @@ public:
     MainThreadScrollingReasons mainThreadScrollingReasons() const;
     bool shouldUpdateScrollLayerPositionOnMainThread() const { return mainThreadScrollingReasons() != 0; }
 
-    PassOwnPtr<WebScrollbarLayer> createSolidColorScrollbarLayer(ScrollbarOrientation, int thumbThickness, int trackStart, bool isLeftSideVerticalScrollbar);
+    std::unique_ptr<WebScrollbarLayer> createSolidColorScrollbarLayer(ScrollbarOrientation, int thumbThickness, int trackStart, bool isLeftSideVerticalScrollbar);
 
     void willDestroyScrollableArea(ScrollableArea*);
     // Returns true if the coordinator handled this change.
@@ -162,7 +163,7 @@ private:
     void setTouchEventTargetRects(LayerHitTestRects&);
     void computeTouchEventTargetRects(LayerHitTestRects&);
 
-    WebScrollbarLayer* addWebScrollbarLayer(ScrollableArea*, ScrollbarOrientation, PassOwnPtr<WebScrollbarLayer>);
+    WebScrollbarLayer* addWebScrollbarLayer(ScrollableArea *, ScrollbarOrientation, std::unique_ptr<WebScrollbarLayer> &);
     WebScrollbarLayer* getWebScrollbarLayer(ScrollableArea*, ScrollbarOrientation);
     void removeWebScrollbarLayer(ScrollableArea*, ScrollbarOrientation);
 
@@ -170,7 +171,7 @@ private:
 
     OwnPtr<WebCompositorAnimationTimeline> m_programmaticScrollAnimatorTimeline;
 
-    using ScrollbarMap = WillBeHeapHashMap<RawPtrWillBeMember<ScrollableArea>, OwnPtr<WebScrollbarLayer>>;
+    using ScrollbarMap = std::unordered_map<ScrollableArea *, std::unique_ptr<WebScrollbarLayer>>;
     ScrollbarMap m_horizontalScrollbars;
     ScrollbarMap m_verticalScrollbars;
     HashSet<const PaintLayer*> m_layersWithTouchRects;

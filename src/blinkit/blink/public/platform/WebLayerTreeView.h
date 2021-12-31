@@ -69,13 +69,13 @@ public:
 #if 0 // BKTODO:
     virtual void attachCompositorAnimationTimeline(WebCompositorAnimationTimeline*) { }
     virtual void detachCompositorAnimationTimeline(WebCompositorAnimationTimeline*) { }
+#endif
 
     // View properties ---------------------------------------------------
 
     virtual void setViewportSize(const IntSize& deviceViewportSize) { }
 
     virtual void setDeviceScaleFactor(float) { }
-#endif
 
     // Sets the background color for the viewport.
     virtual void setBackgroundColor(WebColor) { }
@@ -114,7 +114,6 @@ public:
     // layers by the top controls height.
     virtual void setTopControlsHeight(float height, bool shrinkViewport) { }
 
-#if 0 // BKTODO:
     // Flow control and scheduling ---------------------------------------
 
     // Indicates that an animation needs to be updated.
@@ -128,6 +127,7 @@ public:
     // Indicates that blink needs a BeginFrame and to update compositor state.
     virtual void setNeedsCompositorUpdate() { setNeedsAnimate(); }
 
+#if 0 // BKTODO:
     // Relays the end of a fling animation.
     virtual void didStopFlinging() { }
 
@@ -160,11 +160,16 @@ public:
     // Used to update the active selection bounds.
     virtual void registerSelection(const WebSelection&) { }
     virtual void clearSelection() { }
+#endif
 
     // Debugging / dangerous ---------------------------------------------
 
-    virtual int layerTreeId() const { return 0; }
+    int layerTreeId() const {
+        static_assert(sizeof(WebLayerTreeView *) == sizeof(int));
+        return reinterpret_cast<int>(this);
+    }
 
+#if 0 // BKTODO:
     // Toggles the FPS counter in the HUD layer
     virtual void setShowFPSCounter(bool) { }
 

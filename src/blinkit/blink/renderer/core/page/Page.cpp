@@ -220,7 +220,8 @@ ClientRectList* Page::nonFastScrollableRects(const LocalFrame* frame)
         return ClientRectList::create();
 
     // Now retain non-fast scrollable regions
-    return ClientRectList::create(frame->view()->layerForScrolling()->platformLayer()->nonFastScrollableRegion());
+    ASSERT(false); // BKTODO: return ClientRectList::create(frame->view()->layerForScrolling()->platformLayer()->nonFastScrollableRegion());
+    return nullptr;
 }
 
 void Page::setMainFrame(Frame* mainFrame)

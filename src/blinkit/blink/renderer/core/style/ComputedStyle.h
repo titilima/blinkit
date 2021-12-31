@@ -990,11 +990,11 @@ public:
 
     FilterOperations& mutableFilter() { return rareNonInheritedData.access()->m_filter.access()->m_operations; }
     const FilterOperations& filter() const { return rareNonInheritedData->m_filter->m_operations; }
-    bool hasFilter() const { return !rareNonInheritedData->m_filter->m_operations.operations().isEmpty(); }
+    bool hasFilter() const { return !rareNonInheritedData->m_filter->m_operations.operations().empty(); }
 
     FilterOperations& mutableBackdropFilter() { return rareNonInheritedData.access()->m_backdropFilter.access()->m_operations; }
     const FilterOperations& backdropFilter() const { return rareNonInheritedData->m_backdropFilter->m_operations; }
-    bool hasBackdropFilter() const { return !rareNonInheritedData->m_backdropFilter->m_operations.operations().isEmpty(); }
+    bool hasBackdropFilter() const { return !rareNonInheritedData->m_backdropFilter->m_operations.operations().empty(); }
 
     WebBlendMode blendMode() const { return static_cast<WebBlendMode>(rareNonInheritedData->m_effectiveBlendMode); }
     void setBlendMode(WebBlendMode v) { rareNonInheritedData.access()->m_effectiveBlendMode = v; }

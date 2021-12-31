@@ -36,7 +36,9 @@
 
 #include "platform/graphics/GraphicsLayer.h"
 
-#include "SkImageFilter.h"
+#include <unordered_set>
+#include "blinkit/blink/public/platform/web_layer.h"
+#include "third_party/skia/include/core/SkImageFilter.h"
 #include "SkMatrix44.h"
 #include "base/trace_event/trace_event_argument.h"
 // BKTODO: #include "cc/layers/layer.h"
@@ -51,7 +53,7 @@
 #include "platform/graphics/GraphicsLayerFactory.h"
 #include "platform/graphics/Image.h"
 #include "platform/graphics/LinkHighlight.h"
-#include "platform/graphics/filters/SkiaImageFilterBuilder.h"
+// BKTODO: #include "platform/graphics/filters/SkiaImageFilterBuilder.h"
 #include "platform/graphics/paint/DrawingRecorder.h"
 #include "platform/graphics/paint/PaintController.h"
 #include "platform/scroll/ScrollableArea.h"
@@ -59,11 +61,9 @@
 #include "public/platform/Platform.h"
 #include "public/platform/WebCompositorAnimation.h"
 #include "public/platform/WebCompositorSupport.h"
-#include "public/platform/WebFilterOperations.h"
-#include "public/platform/WebLayer.h"
+// BKTODO: #include "public/platform/WebFilterOperations.h"
 #include "wtf/CurrentTime.h"
 #include "wtf/HashMap.h"
-#include "wtf/HashSet.h"
 #include "wtf/MathExtras.h"
 #include "wtf/text/StringUTF8Adaptor.h"
 #include "wtf/text/WTFString.h"
@@ -93,7 +93,7 @@ static PaintInvalidationTrackingMap& paintInvalidationTrackingMap()
     return map;
 }
 
-PassOwnPtr<GraphicsLayer> GraphicsLayer::create(GraphicsLayerFactory* factory, GraphicsLayerClient* client)
+std::unique_ptr<GraphicsLayer> GraphicsLayer::create(GraphicsLayerFactory* factory, GraphicsLayerClient* client)
 {
     return factory->createGraphicsLayer(client);
 }
@@ -126,7 +126,6 @@ GraphicsLayer::GraphicsLayer(GraphicsLayerClient* client)
     , m_paintCount(0)
     , m_contentsLayer(0)
     , m_contentsLayerId(0)
-    // BKTODO: , m_scrollableArea(nullptr)
     , m_3dRenderingContext(0)
 {
 #if ENABLE(ASSERT)
@@ -135,12 +134,8 @@ GraphicsLayer::GraphicsLayer(GraphicsLayerClient* client)
 #endif
 
     m_contentLayerDelegate = adoptPtr(new ContentLayerDelegate(this));
-    ASSERT(false); // BKTODO:
-#if 0
-    m_layer = adoptPtr(Platform::current()->compositorSupport()->createContentLayer(m_contentLayerDelegate.get()));
+    m_layer = zed::wrap_unique(Platform::current()->compositorSupport()->createContentLayer(m_contentLayerDelegate.get()));
     m_layer->layer()->setDrawsContent(m_drawsContent && m_contentsVisible);
-    m_layer->layer()->setLayerClient(this);
-#endif
 
     // TODO(rbyers): Expose control over this to the web - crbug.com/489802:
     setScrollBlocksOn(WebScrollBlocksOnStartTouch | WebScrollBlocksOnWheelEvent);
@@ -203,7 +198,7 @@ bool GraphicsLayer::hasAncestor(GraphicsLayer* ancestor) const
 bool GraphicsLayer::setChildren(const GraphicsLayerVector& newChildren)
 {
     // If the contents of the arrays are the same, nothing to do.
-    if (newChildren == m_children)
+    if (&newChildren == &m_children)
         return false;
 
     removeAllChildren();
@@ -225,7 +220,7 @@ void GraphicsLayer::addChildInternal(GraphicsLayer* childLayer)
         childLayer->removeFromParent();
 
     childLayer->setParent(this);
-    m_children.append(childLayer);
+    m_children.emplace_back(childLayer);
 
     // Don't call updateChildList here, this function is used in cases where it
     // should not be called until all children are processed.
@@ -245,7 +240,7 @@ void GraphicsLayer::addChildBelow(GraphicsLayer* childLayer, GraphicsLayer* sibl
     bool found = false;
     for (unsigned i = 0; i < m_children.size(); i++) {
         if (sibling == m_children[i]) {
-            m_children.insert(i, childLayer);
+            m_children.insert(m_children.begin() + i, childLayer);
             found = true;
             break;
         }
@@ -254,15 +249,15 @@ void GraphicsLayer::addChildBelow(GraphicsLayer* childLayer, GraphicsLayer* sibl
     childLayer->setParent(this);
 
     if (!found)
-        m_children.append(childLayer);
+        m_children.emplace_back(childLayer);
 
     updateChildList();
 }
 
 void GraphicsLayer::removeAllChildren()
 {
-    while (!m_children.isEmpty()) {
-        GraphicsLayer* curLayer = m_children.last();
+    while (!m_children.empty()) {
+        GraphicsLayer* curLayer = m_children.back();
         ASSERT(curLayer->parent());
         curLayer->removeFromParent();
     }
@@ -270,9 +265,12 @@ void GraphicsLayer::removeAllChildren()
 
 void GraphicsLayer::removeFromParent()
 {
-    if (m_parent) {
+    if (m_parent)
+    {
         // We use reverseFind so that removeAllChildren() isn't n^2.
-        m_parent->m_children.remove(m_parent->m_children.reverseFind(this));
+        auto &parentChildren = m_parent->m_children;
+        auto it = std::find(parentChildren.rbegin(), parentChildren.rend(), this) + 1;
+        parentChildren.erase(it.base());
         setParent(0);
     }
 
@@ -442,31 +440,27 @@ void GraphicsLayer::updateContentsRect()
     }
 }
 
-static HashSet<int>* s_registeredLayerSet;
+static std::unordered_set<int> s_registeredLayerSet;
 
 void GraphicsLayer::registerContentsLayer(WebLayer* layer)
 {
-    if (!s_registeredLayerSet)
-        s_registeredLayerSet = new HashSet<int>;
-    if (s_registeredLayerSet->contains(layer->id()))
+    if (zed::key_exists(s_registeredLayerSet, layer->id()))
         CRASH();
-    s_registeredLayerSet->add(layer->id());
+    s_registeredLayerSet.emplace(layer->id());
 }
 
 void GraphicsLayer::unregisterContentsLayer(WebLayer* layer)
 {
-    ASSERT(s_registeredLayerSet);
-    if (!s_registeredLayerSet->contains(layer->id()))
+    if (!zed::key_exists(s_registeredLayerSet, layer->id()))
         CRASH();
-    s_registeredLayerSet->remove(layer->id());
+    s_registeredLayerSet.erase(layer->id());
 }
 
 void GraphicsLayer::setContentsTo(WebLayer* layer)
 {
     bool childrenChanged = false;
     if (layer) {
-        ASSERT(s_registeredLayerSet);
-        if (!s_registeredLayerSet->contains(layer->id()))
+        if (!zed::key_exists(s_registeredLayerSet, layer->id()))
             CRASH();
         if (m_contentsLayerId != layer->id()) {
             setupContentsLayer(layer);
@@ -493,7 +487,6 @@ void GraphicsLayer::setupContentsLayer(WebLayer* contentsLayer)
     m_contentsLayer = contentsLayer;
     m_contentsLayerId = m_contentsLayer->id();
 
-    m_contentsLayer->setLayerClient(this);
     m_contentsLayer->setTransformOrigin(FloatPoint3D());
     m_contentsLayer->setUseParentBackfaceVisibility(true);
 
@@ -512,7 +505,7 @@ void GraphicsLayer::setupContentsLayer(WebLayer* contentsLayer)
 
 void GraphicsLayer::clearContentsLayerIfUnregistered()
 {
-    if (!m_contentsLayerId || s_registeredLayerSet->contains(m_contentsLayerId))
+    if (!m_contentsLayerId || zed::key_exists(s_registeredLayerSet, m_contentsLayerId))
         return;
 
     m_contentsLayer = 0;
@@ -809,7 +802,8 @@ String GraphicsLayer::layerTreeAsText(LayerTreeFlags flags) const
 
 static const cc::Layer* ccLayerForWebLayer(const WebLayer* webLayer)
 {
-    return webLayer ? webLayer->ccLayer() : nullptr;
+    ASSERT(false); // BKTODO: return webLayer ? webLayer->ccLayer() : nullptr;
+    return nullptr;
 }
 
 String GraphicsLayer::debugName(cc::Layer* layer) const
@@ -846,12 +840,12 @@ void GraphicsLayer::setCompositingReasons(CompositingReasons reasons)
 {
     m_debugInfo.setCompositingReasons(reasons);
 }
+#endif
 
 void GraphicsLayer::setOwnerNodeId(int nodeId)
 {
-    m_debugInfo.setOwnerNodeId(nodeId);
+    // BKTODO: m_debugInfo.setOwnerNodeId(nodeId);
 }
-#endif
 
 void GraphicsLayer::setPosition(const FloatPoint& point)
 {
@@ -903,7 +897,7 @@ void GraphicsLayer::setShouldFlattenTransform(bool shouldFlatten)
 
     m_shouldFlattenTransform = shouldFlatten;
 
-    m_layer->layer()->setShouldFlattenTransform(shouldFlatten);
+    ASSERT(false); // BKTODO: m_layer->layer()->setShouldFlattenTransform(shouldFlatten);
 }
 
 void GraphicsLayer::setRenderingContext(int context)
@@ -1021,7 +1015,7 @@ void GraphicsLayer::setBlendMode(WebBlendMode blendMode)
     if (m_blendMode == blendMode)
         return;
     m_blendMode = blendMode;
-    platformLayer()->setBlendMode(blendMode);
+    ASSERT(false); // BKTODO: platformLayer()->setBlendMode(blendMode);
 }
 
 void GraphicsLayer::setScrollBlocksOn(WebScrollBlocksOn scrollBlocksOn)
@@ -1037,7 +1031,7 @@ void GraphicsLayer::setIsRootForIsolatedGroup(bool isolated)
     if (m_isRootForIsolatedGroup == isolated)
         return;
     m_isRootForIsolatedGroup = isolated;
-    platformLayer()->setIsRootForIsolatedGroup(isolated);
+    ASSERT(false); // BKTODO: platformLayer()->setIsRootForIsolatedGroup(isolated);
 }
 
 void GraphicsLayer::setContentsNeedsDisplay()
@@ -1118,7 +1112,7 @@ void GraphicsLayer::setContentsToImage(Image* image, RespectImageOrientationEnum
             registerContentsLayer(m_imageLayer->layer());
         }
         m_imageLayer->setImage(skImage.get());
-        m_imageLayer->layer()->setOpaque(image->currentFrameKnownToBeOpaque());
+        ASSERT(false); // BKTODO: m_imageLayer->layer()->setOpaque(image->currentFrameKnownToBeOpaque());
         updateContentsRect();
     } else {
         if (m_imageLayer) {
@@ -1134,26 +1128,30 @@ bool GraphicsLayer::addAnimation(PassOwnPtr<WebCompositorAnimation> popAnimation
 {
     OwnPtr<WebCompositorAnimation> animation(std::move(popAnimation));
     ASSERT(animation);
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     platformLayer()->setAnimationDelegate(this);
 
     // Remove any existing animations with the same animation id and target property.
     platformLayer()->removeAnimation(animation->id(), animation->targetProperty());
     return platformLayer()->addAnimation(animation.leakPtr());
+#endif
 }
 
 void GraphicsLayer::pauseAnimation(int animationId, double timeOffset)
 {
-    platformLayer()->pauseAnimation(animationId, timeOffset);
+    ASSERT(false); // BKTODO: platformLayer()->pauseAnimation(animationId, timeOffset);
 }
 
 void GraphicsLayer::removeAnimation(int animationId)
 {
-    platformLayer()->removeAnimation(animationId);
+    ASSERT(false); // BKTODO: platformLayer()->removeAnimation(animationId);
 }
 
 void GraphicsLayer::abortAnimation(int animationId)
 {
-    platformLayer()->abortAnimation(animationId);
+    ASSERT(false); // BKTODO: platformLayer()->abortAnimation(animationId);
 }
 
 WebLayer* GraphicsLayer::platformLayer() const
@@ -1161,29 +1159,31 @@ WebLayer* GraphicsLayer::platformLayer() const
     return m_layer->layer();
 }
 
-void GraphicsLayer::setFilters(const FilterOperations& filters)
+void GraphicsLayer::setFilters(FilterOperations &&filters)
 {
+#if 0 // BKTODO:
     SkiaImageFilterBuilder builder;
-    ASSERT(false); // BKTODO:
-#if 0
-    OwnPtr<WebFilterOperations> webFilters = adoptPtr(Platform::current()->compositorSupport()->createFilterOperations());
+    std::unique_ptr<WebFilterOperations> webFilters = zed::wrap_unique(Platform::current()->compositorSupport()->createFilterOperations());
     FilterOutsets outsets = filters.outsets();
     builder.setCropOffset(FloatSize(outsets.left(), outsets.top()));
     builder.buildFilterOperations(filters, webFilters.get());
     m_layer->layer()->setFilters(*webFilters);
+#else
+    m_layer->layer()->setFilters(std::move(filters));
 #endif
 }
 
-void GraphicsLayer::setBackdropFilters(const FilterOperations& filters)
+void GraphicsLayer::setBackdropFilters(FilterOperations &&filters)
 {
+#if 0 // BKTODO:
     SkiaImageFilterBuilder builder;
-    ASSERT(false); // BKTODO:
-#if 0
     OwnPtr<WebFilterOperations> webFilters = adoptPtr(Platform::current()->compositorSupport()->createFilterOperations());
     FilterOutsets outsets = filters.outsets();
     builder.setCropOffset(FloatSize(outsets.left(), outsets.top()));
     builder.buildFilterOperations(filters, webFilters.get());
     m_layer->layer()->setBackgroundFilters(*webFilters);
+#else
+    m_layer->layer()->setBackgroundFilters(std::move(filters));
 #endif
 }
 
@@ -1205,7 +1205,6 @@ void GraphicsLayer::addLinkHighlight(LinkHighlight* linkHighlight)
 {
     ASSERT(linkHighlight && !m_linkHighlights.contains(linkHighlight));
     m_linkHighlights.append(linkHighlight);
-    linkHighlight->layer()->setLayerClient(this);
     updateChildList();
 }
 
@@ -1215,7 +1214,6 @@ void GraphicsLayer::removeLinkHighlight(LinkHighlight* linkHighlight)
     updateChildList();
 }
 
-#if 0 // BKTODO:
 void GraphicsLayer::setScrollableArea(ScrollableArea* scrollableArea, bool isViewport)
 {
     if (m_scrollableArea == scrollableArea)
@@ -1230,7 +1228,6 @@ void GraphicsLayer::setScrollableArea(ScrollableArea* scrollableArea, bool isVie
     else
         m_layer->layer()->setScrollClient(this);
 }
-#endif
 
 void GraphicsLayer::notifyAnimationStarted(double monotonicTime, int group)
 {
@@ -1240,26 +1237,18 @@ void GraphicsLayer::notifyAnimationStarted(double monotonicTime, int group)
 
 void GraphicsLayer::notifyAnimationFinished(double, int group)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (m_scrollableArea)
         m_scrollableArea->notifyCompositorAnimationFinished(group);
-#endif
 }
 
 void GraphicsLayer::notifyAnimationAborted(double, int group)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (m_scrollableArea)
         m_scrollableArea->notifyCompositorAnimationAborted(group);
-#endif
 }
 
 void GraphicsLayer::didScroll()
 {
-    ASSERT(false); // BKTODO:
-#if 0
     if (m_scrollableArea) {
         DoublePoint newPosition = m_scrollableArea->minimumScrollPosition() + toDoubleSize(m_layer->layer()->scrollPositionDouble());
 
@@ -1267,7 +1256,6 @@ void GraphicsLayer::didScroll()
         // so we need to use the ScrollableArea version. The FrameView method should go away soon anyway.
         m_scrollableArea->ScrollableArea::setScrollPosition(newPosition, CompositorScroll);
     }
-#endif
 }
 
 #if 0 // BKTODO:
@@ -1290,13 +1278,13 @@ PaintController& GraphicsLayer::paintController()
 void GraphicsLayer::setElementId(uint64_t id)
 {
     if (WebLayer* layer = platformLayer())
-        layer->setElementId(id);
+        ASSERT(false); // BKTODO: layer->setElementId(id);
 }
 
 void GraphicsLayer::setCompositorMutableProperties(uint32_t properties)
 {
     if (WebLayer* layer = platformLayer())
-        layer->setCompositorMutableProperties(properties);
+        ASSERT(false); // BKTODO: layer->setCompositorMutableProperties(properties);
 }
 
 } // namespace blink

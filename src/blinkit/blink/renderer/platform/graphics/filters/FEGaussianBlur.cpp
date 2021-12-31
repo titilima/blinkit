@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FEGaussianBlur.cpp
+// Description: FEGaussianBlur Class
+//      Author: Ziming Li
+//     Created: 2021-12-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007 Nikolas Zimmermann <zimmermann@kde.org>
  * Copyright (C) 2004, 2005 Rob Buis <buis@kde.org>
@@ -26,7 +37,7 @@
 #include "platform/graphics/filters/FEGaussianBlur.h"
 
 #include "platform/graphics/filters/Filter.h"
-#include "platform/graphics/filters/SkiaImageFilterBuilder.h"
+// BKTODO: #include "platform/graphics/filters/SkiaImageFilterBuilder.h"
 #include "platform/text/TextStream.h"
 
 #include "SkBlurImageFilter.h"
@@ -110,11 +121,15 @@ FloatRect FEGaussianBlur::determineAbsolutePaintRect(const FloatRect& originalRe
 
 PassRefPtr<SkImageFilter> FEGaussianBlur::createImageFilter(SkiaImageFilterBuilder& builder)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     RefPtr<SkImageFilter> input(builder.build(inputEffect(0), operatingColorSpace()));
     float stdX = filter()->applyHorizontalScale(m_stdX);
     float stdY = filter()->applyVerticalScale(m_stdY);
     SkImageFilter::CropRect rect = getCropRect(builder.cropOffset());
     return adoptRef(SkBlurImageFilter::Create(SkFloatToScalar(stdX), SkFloatToScalar(stdY), input.get(), &rect));
+#endif
 }
 
 TextStream& FEGaussianBlur::externalRepresentation(TextStream& ts, int indent) const

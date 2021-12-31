@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FEComponentTransfer.cpp
+// Description: FEComponentTransfer Class
+//      Author: Ziming Li
+//     Created: 2021-12-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007 Nikolas Zimmermann <zimmermann@kde.org>
  * Copyright (C) 2004, 2005 Rob Buis <buis@kde.org>
@@ -26,7 +37,7 @@
 
 #include "SkColorFilterImageFilter.h"
 #include "SkTableColorFilter.h"
-#include "platform/graphics/filters/SkiaImageFilterBuilder.h"
+// BKTODO: #include "platform/graphics/filters/SkiaImageFilterBuilder.h"
 #include "platform/text/TextStream.h"
 #include "wtf/MathExtras.h"
 #include <algorithm>
@@ -130,6 +141,9 @@ bool FEComponentTransfer::affectsTransparentPixels()
 
 PassRefPtr<SkImageFilter> FEComponentTransfer::createImageFilter(SkiaImageFilterBuilder& builder)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     RefPtr<SkImageFilter> input(builder.build(inputEffect(0), operatingColorSpace()));
 
     unsigned char rValues[256], gValues[256], bValues[256], aValues[256];
@@ -139,6 +153,7 @@ PassRefPtr<SkImageFilter> FEComponentTransfer::createImageFilter(SkiaImageFilter
 
     SkImageFilter::CropRect cropRect = getCropRect(builder.cropOffset());
     return adoptRef(SkColorFilterImageFilter::Create(colorFilter, input.get(), &cropRect));
+#endif
 }
 
 void FEComponentTransfer::getValues(unsigned char rValues[256], unsigned char gValues[256], unsigned char bValues[256], unsigned char aValues[256])

@@ -103,7 +103,12 @@ PaintLayerFilterInfo::~PaintLayerFilterInfo()
     removeReferenceFilterClients();
 }
 
-void PaintLayerFilterInfo::setBuilder(PassRefPtrWillBeRawPtr<FilterEffectBuilder> builder)
+FilterEffectBuilder* PaintLayerFilterInfo::builder(void) const
+{
+    return m_builder.get();
+}
+
+void PaintLayerFilterInfo::setBuilder(const GCRefPtr<FilterEffectBuilder> &builder)
 {
     m_builder = builder;
 }
@@ -117,12 +122,12 @@ void PaintLayerFilterInfo::updateReferenceFilterClients(const FilterOperations& 
 {
     removeReferenceFilterClients();
     for (size_t i = 0; i < operations.size(); ++i) {
+        ASSERT(false); // BKTODO:
+#if 0
         RefPtrWillBeRawPtr<FilterOperation> filterOperation = operations.operations().at(i);
         if (filterOperation->type() != FilterOperation::REFERENCE)
             continue;
         ReferenceFilterOperation* referenceFilterOperation = toReferenceFilterOperation(filterOperation.get());
-        ASSERT(false); // BKTODO:
-#if 0
         DocumentResourceReference* documentReference = ReferenceFilterBuilder::documentResourceReference(referenceFilterOperation);
         DocumentResource* cachedSVGDocument = documentReference ? documentReference->document() : 0;
 

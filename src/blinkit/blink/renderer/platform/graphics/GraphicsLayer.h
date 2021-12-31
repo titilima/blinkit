@@ -38,8 +38,8 @@
 #ifndef GraphicsLayer_h
 #define GraphicsLayer_h
 
-#include "cc/layers/layer_client.h"
-#include "platform/PlatformExport.h"
+#include "blinkit/blink/public/platform/web_content_layer.h"
+#include "blinkit/blink/public/platform/web_image_layer.h"
 #include "platform/geometry/FloatPoint.h"
 #include "platform/geometry/FloatPoint3D.h"
 #include "platform/geometry/FloatSize.h"
@@ -58,8 +58,6 @@
 #include "platform/heap/Handle.h"
 #include "platform/transforms/TransformationMatrix.h"
 #include "public/platform/WebCompositorAnimationDelegate.h"
-#include "public/platform/WebContentLayer.h"
-#include "public/platform/WebImageLayer.h"
 #include "public/platform/WebLayerScrollClient.h"
 #include "public/platform/WebScrollBlocksOn.h"
 #include "third_party/skia/include/core/SkPaint.h"
@@ -67,11 +65,14 @@
 #include "wtf/PassOwnPtr.h"
 #include "wtf/Vector.h"
 
+namespace BlinKit {
+class GraphicsLayerFactoryImpl;
+}
+
 namespace blink {
 
 class FloatRect;
 class GraphicsLayerFactory;
-class GraphicsLayerFactoryChromium;
 class Image;
 class LinkHighlight;
 class JSONObject;
@@ -80,15 +81,18 @@ class ScrollableArea;
 class WebCompositorAnimation;
 class WebLayer;
 
-typedef Vector<GraphicsLayer*, 64> GraphicsLayerVector;
+using GraphicsLayerVector = std::vector<GraphicsLayer *>;
 
 // GraphicsLayer is an abstraction for a rendering surface with backing store,
 // which may have associated transformation and animations.
 
-class PLATFORM_EXPORT GraphicsLayer : public WebCompositorAnimationDelegate, public WebLayerScrollClient, public cc::LayerClient, public DisplayItemClient {
-    WTF_MAKE_NONCOPYABLE(GraphicsLayer); USING_FAST_MALLOC(GraphicsLayer);
+class GraphicsLayer : public WebCompositorAnimationDelegate
+                    , public WebLayerScrollClient
+                    , public DisplayItemClient
+{
+    WTF_MAKE_NONCOPYABLE(GraphicsLayer);
 public:
-    static PassOwnPtr<GraphicsLayer> create(GraphicsLayerFactory*, GraphicsLayerClient*);
+    static std::unique_ptr<GraphicsLayer> create(GraphicsLayerFactory*, GraphicsLayerClient*);
 
     ~GraphicsLayer() override;
 
@@ -105,7 +109,7 @@ public:
     GraphicsLayer* parent() const { return m_parent; }
     void setParent(GraphicsLayer*); // Internal use only.
 
-    const Vector<GraphicsLayer*>& children() const { return m_children; }
+    const std::vector<GraphicsLayer *>& children() const { return m_children; }
     // Returns true if the child list changed.
     bool setChildren(const GraphicsLayerVector&);
 
@@ -188,8 +192,8 @@ public:
     void setScrollBlocksOn(WebScrollBlocksOn);
     void setIsRootForIsolatedGroup(bool);
 
-    void setFilters(const FilterOperations&);
-    void setBackdropFilters(const FilterOperations&);
+    void setFilters(FilterOperations &&);
+    void setBackdropFilters(FilterOperations &&);
 
     void setFilterQuality(SkFilterQuality);
 
@@ -246,10 +250,8 @@ public:
     unsigned numLinkHighlights() { return m_linkHighlights.size(); }
     LinkHighlight* linkHighlight(int i) { return m_linkHighlights[i]; }
 
-#if 0 // BKTODO:
     void setScrollableArea(ScrollableArea*, bool isViewport);
     ScrollableArea* scrollableArea() const { return m_scrollableArea; }
-#endif
 
     WebContentLayer* contentLayer() const { return m_layer.get(); }
 
@@ -292,8 +294,8 @@ protected:
     bool shouldFlattenTransform() const { return m_shouldFlattenTransform; }
 
     explicit GraphicsLayer(GraphicsLayerClient*);
-    // GraphicsLayerFactoryChromium that wants to create a GraphicsLayer need to be friends.
-    friend class GraphicsLayerFactoryChromium;
+    // GraphicsLayerFactoryImpl that wants to create a GraphicsLayer need to be friends.
+    friend class BlinKit::GraphicsLayerFactoryImpl;
     // for testing
     friend class CompositedLayerMappingTest;
     friend class FakeGraphicsLayerFactory;
@@ -364,7 +366,7 @@ private:
 
     GraphicsLayerPaintingPhase m_paintingPhase;
 
-    Vector<GraphicsLayer*> m_children;
+    std::vector<GraphicsLayer *> m_children;
     GraphicsLayer* m_parent;
 
     GraphicsLayer* m_maskLayer; // Reference to mask layer. We don't own this.
@@ -380,7 +382,7 @@ private:
 
     int m_paintCount;
 
-    OwnPtr<WebContentLayer> m_layer;
+    std::unique_ptr<WebContentLayer> m_layer;
     OwnPtr<WebImageLayer> m_imageLayer;
     WebLayer* m_contentsLayer;
     // We don't have ownership of m_contentsLayer, but we do want to know if a given layer is the
@@ -393,7 +395,7 @@ private:
 
     OwnPtr<ContentLayerDelegate> m_contentLayerDelegate;
 
-    // BKTODO: RawPtrWillBeWeakPersistent<ScrollableArea> m_scrollableArea;
+    ScrollableArea *m_scrollableArea = nullptr;
     // BKTODO: GraphicsLayerDebugInfo m_debugInfo;
     int m_3dRenderingContext;
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FEDropShadow.cpp
+// Description: FEDropShadow Class
+//      Author: Ziming Li
+//     Created: 2021-12-06
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) Research In Motion Limited 2011. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -22,7 +33,7 @@
 
 #include "platform/graphics/filters/FEGaussianBlur.h"
 #include "platform/graphics/filters/Filter.h"
-#include "platform/graphics/filters/SkiaImageFilterBuilder.h"
+// BKTODO: #include "platform/graphics/filters/SkiaImageFilterBuilder.h"
 #include "platform/text/TextStream.h"
 #include "third_party/skia/include/effects/SkDropShadowImageFilter.h"
 
@@ -67,6 +78,9 @@ FloatRect FEDropShadow::mapRect(const FloatRect& rect, bool forward)
 
 PassRefPtr<SkImageFilter> FEDropShadow::createImageFilter(SkiaImageFilterBuilder& builder)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     RefPtr<SkImageFilter> input(builder.build(inputEffect(0), operatingColorSpace()));
     float dx = filter()->applyHorizontalScale(m_dx);
     float dy = filter()->applyVerticalScale(m_dy);
@@ -75,6 +89,7 @@ PassRefPtr<SkImageFilter> FEDropShadow::createImageFilter(SkiaImageFilterBuilder
     Color color = adaptColorToOperatingColorSpace(m_shadowColor.combineWithAlpha(m_shadowOpacity));
     SkImageFilter::CropRect cropRect = getCropRect(builder.cropOffset());
     return adoptRef(SkDropShadowImageFilter::Create(SkFloatToScalar(dx), SkFloatToScalar(dy), SkFloatToScalar(stdX), SkFloatToScalar(stdY), color.rgb(), SkDropShadowImageFilter::kDrawShadowAndForeground_ShadowMode, input.get(), &cropRect));
+#endif
 }
 
 

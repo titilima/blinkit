@@ -11,16 +11,38 @@
 
 #include "./layer_tree_host.h"
 
+#include "blinkit/app/app_impl.h"
 #include "blinkit/ui/compositor/blink/layer.h"
+#include "blinkit/ui/compositor/compositor.h"
+#include "blinkit/ui/compositor/tasks/raster_task.h"
+#include "blinkit/ui/compositor/tasks/tree_tasks.h"
+#include "blinkit/ui/compositor/tree_compositor.h"
 #include "third_party/zed/include/zed/container_utilites.hpp"
-
-using namespace blink;
 
 namespace BlinKit {
 
+LayerTreeHost::LayerTreeHost(void)
+{
+    PostTaskToCompositor(new NewTreeTask(this));
+}
+
+LayerTreeHost::~LayerTreeHost(void)
+{
+    PostTaskToCompositor(new DestroyTreeTask(this));
+}
+
 void LayerTreeHost::clearRootLayer(void)
 {
-    SetRootLayerImpl(nullptr);
+    if (nullptr == m_rootLayer)
+        return;
+
+    m_rootLayer->SetLayerTreeHost(nullptr);
+    m_rootLayer = nullptr;
+
+    Sync([](TreeCompositor &compositor) {
+        compositor.SetRootLayer(nullptr);
+        compositor.SetNeedsFullTreeSync();
+    });
 }
 
 void LayerTreeHost::clearViewportLayers(void)
@@ -36,6 +58,11 @@ void LayerTreeHost::heuristicsForGpuRasterizationUpdated(bool matchesHeuristics)
 void LayerTreeHost::Paint(HDC hdc, const RECT *rc)
 {
     // BKTODO:
+}
+
+void LayerTreeHost::PostTaskToCompositor(CompositorTask *task)
+{
+    AppImpl::Get().GetCompositor().PostTask(task);
 }
 
 void LayerTreeHost::registerForAnimations(WebLayer *layer)
@@ -76,11 +103,25 @@ void LayerTreeHost::setDeferCommits(bool deferCommits)
     // BKTODO: proxy_->SetDeferCommits(deferCommits);
 }
 
+void LayerTreeHost::setDeviceScaleFactor(float scaleFactor)
+{
+    if (zed::almost_equals(m_deviceScaleFactor, scaleFactor))
+        return;
+    m_deviceScaleFactor = scaleFactor;
+
+    // BKTODO: property_trees_.needs_rebuild = true;
+    SetNeedsCommit();
+}
+
 void LayerTreeHost::SetNeedsCommit(void)
 {
 #if 0 // BKTODO:
     proxy_->SetNeedsCommit();
     NotifySwapPromiseMonitorsOfSetNeedsCommit();
+#else
+    Sync([](TreeCompositor &compositor) {
+        compositor.SetNeedsCommit();
+    });
 #endif
 }
 
@@ -91,6 +132,10 @@ void LayerTreeHost::SetNeedsFullTreeSync(void)
     needs_meta_info_recomputation_ = true;
 
     property_trees_.needs_rebuild = true;
+#else
+    Sync([](TreeCompositor &compositor) {
+        compositor.SetNeedsFullTreeSync();
+    });
 #endif
     SetNeedsCommit();
 }
@@ -125,10 +170,23 @@ void LayerTreeHost::SetPropertyTreesNeedRebuild(void)
     SetNeedsUpdateLayers();
 }
 
-void LayerTreeHost::setRootLayer(const WebLayer &layer)
+void LayerTreeHost::setRootLayer(const WebLayer &webLayer)
 {
-    const Layer *impl = static_cast<const Layer *>(&layer);
-    SetRootLayerImpl(const_cast<Layer *>(impl));
+    Layer *layer = const_cast<Layer *>(static_cast<const Layer *>(&webLayer));
+
+    if (m_rootLayer == layer)
+        return;
+
+    if (nullptr != m_rootLayer)
+        m_rootLayer->SetLayerTreeHost(nullptr);
+
+    m_rootLayer = layer;
+
+    ASSERT(nullptr == m_rootLayer->Parent());
+    m_rootLayer->SetLayerTreeHost(this);
+
+    PostTaskToCompositor(new SetRootLayerTask(this, layer));
+    SetNeedsFullTreeSync();
 }
 
 void LayerTreeHost::SetRootLayerImpl(Layer *layer)
@@ -144,6 +202,8 @@ void LayerTreeHost::SetRootLayerImpl(Layer *layer)
         ASSERT(nullptr == m_rootLayer->Parent());
         m_rootLayer->SetLayerTreeHost(this);
     }
+
+    PostTaskToCompositor(new SetRootLayerTask(this, layer));
 
 #if 0 // BKTODO:
     if (hud_layer_.get())
@@ -177,6 +237,17 @@ void LayerTreeHost::setTopControlsShownRatio(float ratio)
     SetNeedsCommit();
 }
 
+void LayerTreeHost::setViewportSize(const IntSize &deviceViewportSize)
+{
+    if (m_deviceViewportSize == deviceViewportSize)
+        return;
+
+    m_deviceViewportSize = deviceViewportSize;
+
+    SetPropertyTreesNeedRebuild();
+    SetNeedsCommit();
+}
+
 void LayerTreeHost::setVisible(bool visible)
 {
 #if 0 // BKTODO:
@@ -192,6 +263,11 @@ void LayerTreeHost::setVisible(bool visible)
 #endif
 }
 
+void LayerTreeHost::Sync(std::function<void(TreeCompositor &)> &&callback)
+{
+    PostTaskToCompositor(new SyncTreeTask(this, std::move(callback)));
+}
+
 void LayerTreeHost::UnregisterLayer(Layer *layer)
 {
     ASSERT(zed::key_exists(m_layers, layer));
@@ -201,6 +277,21 @@ void LayerTreeHost::UnregisterLayer(Layer *layer)
         animation_host_->UnregisterLayer(layer->id(), LayerTreeType::ACTIVE);
 #endif
     m_layers.erase(layer);
+}
+
+void LayerTreeHost::Update(std::unique_ptr<PaintUITask> &paintTask)
+{
+    if (nullptr == m_rootLayer || m_deviceViewportSize.isEmpty())
+        return;
+
+    std::unique_ptr<RasterTask> task = std::make_unique<RasterTask>(m_deviceViewportSize);
+    m_rootLayer->Update(*task);
+    m_rootLayer->UpdateChildren(*task);
+    if (task->HasNothingToDo())
+        return;
+
+    task->SavePaintTask(paintTask);
+    PostTaskToCompositor(task.release());
 }
 
 } // namespace BlinKit

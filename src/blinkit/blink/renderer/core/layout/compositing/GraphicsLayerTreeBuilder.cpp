@@ -57,10 +57,9 @@ GraphicsLayerTreeBuilder::~GraphicsLayerTreeBuilder()
 {
 }
 
-static bool shouldAppendLayer(const PaintLayer& layer)
+static constexpr bool shouldAppendLayer(const PaintLayer& layer)
 {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     Node* node = layer.layoutObject()->node();
     if (node && isHTMLVideoElement(*node)) {
         HTMLVideoElement* element = toHTMLVideoElement(node);
@@ -102,7 +101,7 @@ void GraphicsLayerTreeBuilder::rebuild(PaintLayer& layer, AncestorInfo info)
 
         // If a negative z-order child is compositing, we get a foreground layer which needs to get parented.
         if (hasCompositedLayerMapping && currentCompositedLayerMapping->foregroundLayer())
-            infoForChildren.childLayersOfEnclosingCompositedLayer->append(currentCompositedLayerMapping->foregroundLayer());
+            infoForChildren.childLayersOfEnclosingCompositedLayer->emplace_back(currentCompositedLayerMapping->foregroundLayer());
     }
 
     PaintLayerStackingNodeIterator iterator(*layer.stackingNode(), NormalFlowChildren | PositiveZOrderChildren);
@@ -118,14 +117,14 @@ void GraphicsLayerTreeBuilder::rebuild(PaintLayer& layer, AncestorInfo info)
             currentCompositedLayerMapping->setSublayers(layerChildren);
 
         if (shouldAppendLayer(layer))
-            info.childLayersOfEnclosingCompositedLayer->append(currentCompositedLayerMapping->childForSuperlayers());
+            info.childLayersOfEnclosingCompositedLayer->emplace_back(currentCompositedLayerMapping->childForSuperlayers());
     }
 
     if (layer.scrollParent()
         && layer.scrollParent()->hasCompositedLayerMapping()
         && layer.scrollParent()->compositedLayerMapping()->needsToReparentOverflowControls()
         && layer.scrollParent()->scrollableArea()->topmostScrollChild() == &layer)
-        info.childLayersOfEnclosingCompositedLayer->append(layer.scrollParent()->compositedLayerMapping()->detachLayerForOverflowControls(*info.enclosingCompositedLayer));
+        info.childLayersOfEnclosingCompositedLayer->emplace_back(layer.scrollParent()->compositedLayerMapping()->detachLayerForOverflowControls(*info.enclosingCompositedLayer));
 }
 
 }

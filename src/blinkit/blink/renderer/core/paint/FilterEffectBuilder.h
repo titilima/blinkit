@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FilterEffectBuilder.h
+// Description: FilterEffectBuilder Class
+//      Author: Ziming Li
+//     Created: 2021-12-07
+// -------------------------------------------------
+// Copyright (C) 2021 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -26,7 +37,6 @@
 #ifndef FilterEffectBuilder_h
 #define FilterEffectBuilder_h
 
-#include "core/CoreExport.h"
 #include "platform/graphics/filters/FilterEffect.h"
 #include "platform/heap/Handle.h"
 #include "wtf/PassRefPtr.h"
@@ -42,12 +52,12 @@ class Filter;
 class FilterOperations;
 class Element;
 
-class CORE_EXPORT FilterEffectBuilder final : public RefCountedWillBeGarbageCollectedFinalized<FilterEffectBuilder> {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(FilterEffectBuilder);
+class FilterEffectBuilder final : public BlinKit::GCObject
+{
 public:
-    static PassRefPtrWillBeRawPtr<FilterEffectBuilder> create()
+    static GCRefPtr<FilterEffectBuilder> create()
     {
-        return adoptRefWillBeNoop(new FilterEffectBuilder());
+        return BlinKit::GCWrapShared(new FilterEffectBuilder());
     }
 
     virtual ~FilterEffectBuilder();
@@ -55,7 +65,7 @@ public:
 
     bool build(Element*, const FilterOperations&, float zoom, const SkPaint* fillPaint = nullptr, const SkPaint* strokePaint = nullptr);
 
-    PassRefPtrWillBeRawPtr<FilterEffect> lastEffect() const
+    GCRefPtr<FilterEffect> lastEffect() const
     {
         return m_lastEffect;
     }
@@ -63,8 +73,8 @@ public:
 private:
     FilterEffectBuilder();
 
-    RefPtrWillBeMember<FilterEffect> m_lastEffect;
-    WillBeHeapVector<RefPtrWillBeMember<Filter>> m_referenceFilters;
+    GCRefPtr<FilterEffect> m_lastEffect;
+    std::vector<GCRefPtr<Filter>> m_referenceFilters;
 };
 
 } // namespace blink

@@ -43,7 +43,7 @@
 #ifndef WebFilterKeyframe_h
 #define WebFilterKeyframe_h
 
-#include "WebFilterOperations.h"
+// BKTODO: #include "WebFilterOperations.h"
 // BKTODO: #include "WebPrivateOwnPtr.h"
 
 #if INSIDE_BLINK
@@ -55,7 +55,7 @@ namespace blink {
 class WebFilterKeyframe {
 public:
 #if INSIDE_BLINK
-    BLINK_PLATFORM_EXPORT WebFilterKeyframe(double time, PassOwnPtr<WebFilterOperations>);
+    // BKTODO: BLINK_PLATFORM_EXPORT WebFilterKeyframe(double time, PassOwnPtr<WebFilterOperations>);
 #endif
 
     BLINK_PLATFORM_EXPORT ~WebFilterKeyframe();

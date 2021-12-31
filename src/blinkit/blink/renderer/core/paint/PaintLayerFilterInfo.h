@@ -90,8 +90,8 @@ public:
     // If there is none, this function does nothing.
     static void removeFilterInfoForLayer(PaintLayer*);
 
-    FilterEffectBuilder* builder() const { return m_builder.get(); }
-    void setBuilder(PassRefPtrWillBeRawPtr<FilterEffectBuilder>);
+    FilterEffectBuilder* builder(void) const;
+    void setBuilder(const GCRefPtr<FilterEffectBuilder> &);
 
     void updateReferenceFilterClients(const FilterOperations&);
     void notifyFinished(Resource*) override;
@@ -104,7 +104,7 @@ private:
 
     PaintLayer* m_layer;
 
-    RefPtrWillBePersistent<FilterEffectBuilder> m_builder;
+    GCRefPtr<FilterEffectBuilder> m_builder;
 
     static PaintLayerFilterInfoMap* s_filterMap;
 
