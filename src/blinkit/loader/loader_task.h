@@ -32,7 +32,7 @@ class WebURLLoaderClient;
 
 namespace BlinKit {
 
-class LoaderTask : public zed::task_queue::task
+class LoaderTask : public zed::task_thread::task
 {
 public:
     ~LoaderTask(void) override;

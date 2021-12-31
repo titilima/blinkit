@@ -28,7 +28,7 @@ void LoaderThread::AddTask(LoaderTask *task)
 #ifndef NDEBUG
 void LoaderThread::on_enter_loop(void)
 {
-    Thread::SetName("Loader Thread");
+    zed::current_thread::set_name("Loader Thread");
 }
 #endif
 
