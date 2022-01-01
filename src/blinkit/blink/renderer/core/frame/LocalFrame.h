@@ -159,7 +159,7 @@ public:
     constexpr bool inViewSourceMode(void) const { return false; }
 
     float pageZoomFactor(void) const { return m_scaleFactor; }
-    float textZoomFactor(void) const { return m_scaleFactor; }
+    constexpr float textZoomFactor(void) const { return 1.0f; }
     void SetScaleFactor(float scaleFactor);
 
     void deviceScaleFactorChanged();
