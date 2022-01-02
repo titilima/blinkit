@@ -59,7 +59,7 @@ bool RasterTask::Invalidate(Layer *layer)
             return false;
     }
 
-    dirtyRect.setLocation(roundedIntPoint(layer->position()));
+    dirtyRect.moveBy(roundedIntPoint(layer->position()));
     m_dirtyRect.unite(dirtyRect);
     return true;
 }
