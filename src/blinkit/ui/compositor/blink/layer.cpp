@@ -82,7 +82,10 @@ void Layer::invalidateRect(const IntRect &rect)
     m_updateRect.unite(rect);
 
     if (drawsContent())
+    {
+        m_dirty = true;
         SetNeedsUpdate();
+    }
 }
 
 void Layer::PostTaskToCompositor(CompositorTask *task)
@@ -453,9 +456,6 @@ void Layer::setPosition(const FloatPoint &position)
         return;
     m_position = position;
 
-    if (nullptr == m_layerTreeHost)
-        return;
-
 #if 0 // BKTODO: Check the logic later.
     if (TransformNode* transform_node =
         layer_tree_host_->property_trees()->transform_tree.Node(
@@ -474,7 +474,9 @@ void Layer::setPosition(const FloatPoint &position)
     Sync([position](CompositingLayer &cl) {
         cl.SetPosition(position);
     });
-    SetNeedsCommit();
+
+    if (nullptr != m_layerTreeHost)
+        SetNeedsCommit();
 }
 
 void Layer::setPositionConstraint(const WebLayerPositionConstraint &constraint)
