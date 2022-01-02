@@ -13,9 +13,11 @@
 #ifndef BLINKIT_TREE_COMPOSITOR_H
 #define BLINKIT_TREE_COMPOSITOR_H
 
-#include "blinkit/ui/compositor/tile.h"
-
 class SkCanvas;
+
+namespace blink {
+class IntRect;
+}
 
 namespace BlinKit {
 
@@ -33,7 +35,7 @@ public:
 
     void SetRootLayer(CompositingLayer *layer);
 
-    void PerformComposition(SkCanvas *canvas, const TileGrid::Range &dirtyTiles);
+    void PerformComposition(SkCanvas *canvas, const IntRect &dirtyRect);
 private:
     void SyncLayerTreeIfNecessary(void);
 

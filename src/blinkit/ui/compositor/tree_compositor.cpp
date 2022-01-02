@@ -15,7 +15,7 @@
 
 namespace BlinKit {
 
-void TreeCompositor::PerformComposition(SkCanvas *canvas, const TileGrid::Range &dirtyTiles)
+void TreeCompositor::PerformComposition(SkCanvas *canvas, const IntRect &dirtyRect)
 {
     SyncLayerTreeIfNecessary();
 
@@ -23,7 +23,7 @@ void TreeCompositor::PerformComposition(SkCanvas *canvas, const TileGrid::Range 
         return;
 
     for (CompositingLayer *layer : m_compositedLayers)
-        layer->BlendTo(canvas, dirtyTiles);
+        layer->BlendTo(canvas, dirtyRect);
 }
 
 void TreeCompositor::SetRootLayer(CompositingLayer *layer)
