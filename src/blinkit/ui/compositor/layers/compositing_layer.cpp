@@ -25,8 +25,13 @@ void CompositingLayer::BlendTo(SkCanvas *canvas, const IntRect &dirtyRect)
     if (!m_drawsContent || !m_bitmap)
         return;
 
-    // BKTODO: Only draw in dirty tiles.
-    canvas->drawBitmap(*m_bitmap, m_position.x(), m_position.y());
+    IntRect bitmapRect(roundedIntPoint(m_position), m_bounds);
+    bitmapRect.intersect(dirtyRect);
+    if (bitmapRect.isEmpty())
+        return;
+
+    bitmapRect.moveBy(-roundedIntPoint(m_position));
+    canvas->drawBitmapRect(*m_bitmap, SkIRect(bitmapRect), dirtyRect, nullptr);
 }
 
 void CompositingLayer::DetachChildren(void)
