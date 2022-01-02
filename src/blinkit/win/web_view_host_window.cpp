@@ -15,7 +15,6 @@
 #include "blinkit/app/win_app.h"
 #include "blinkit/blink/renderer/core/editing/Editor.h"
 #include "blinkit/ui/compositor/paint_ui_task.h"
-#include "blinkit/ui/compositor/tile.h"
 #include "blinkit/ui/scoped_animation_session.h"
 #include "blinkit/ui/web_view_impl.h"
 #include "blinkit/win/bk_bitmap.h"
@@ -170,17 +169,16 @@ void WebViewHostWindow::EnsureCanvas(const IntSize &hostSize)
 {
     ASSERT(!hostSize.isEmpty());
 
-    const IntSize canvasSize = Tile::GetAlignedSize(hostSize);
     if (m_canvas)
     {
         SkImageInfo imageInfo = m_canvas->imageInfo();
-        if (canvasSize.width() <= imageInfo.width() && canvasSize.height() <= imageInfo.height())
+        if (hostSize.width() <= imageInfo.width() && hostSize.height() <= imageInfo.height())
             return;
     }
 
     BkBitmap bitmap;
 
-    HBITMAP hBitmap = bitmap.InstallDIBSection(canvasSize.width(), canvasSize.height(), m_memoryDC);
+    HBITMAP hBitmap = bitmap.InstallDIBSection(hostSize.width(), hostSize.height(), m_memoryDC);
     HBITMAP oldBitmap = SelectBitmap(m_memoryDC, hBitmap);
     if (nullptr == m_oldBitmap)
         m_oldBitmap = oldBitmap;
