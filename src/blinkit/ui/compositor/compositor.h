@@ -13,10 +13,13 @@
 #ifndef BLINKIT_COMPOSITOR_H
 #define BLINKIT_COMPOSITOR_H
 
-#include "blinkit/ui/compositor/tile.h"
 #include "third_party/zed/include/zed/threading/task_queue.hpp"
 
 class SkCanvas;
+
+namespace blink {
+class IntRect;
+}
 
 namespace BlinKit {
 
@@ -39,7 +42,7 @@ public:
 
     void DestroyTree(int treeId);
     void NewTree(int treeId);
-    void PerformComposition(int treeId, SkCanvas *canvas, const TileGrid::Range &dirtyTiles);
+    void PerformComposition(int treeId, SkCanvas *canvas, const IntRect &dirtyRect);
     void SyncTree(int treeId, const std::function<void(TreeCompositor &)> &callback);
     void SetRootLayer(int treeId, int layerId);
 

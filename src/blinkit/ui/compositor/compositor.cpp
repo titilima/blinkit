@@ -82,9 +82,9 @@ void Compositor::NewTree(int treeId)
     m_trees.emplace(treeId, new TreeCompositor);
 }
 
-void Compositor::PerformComposition(int treeId, SkCanvas *canvas, const TileGrid::Range &dirtyTiles)
+void Compositor::PerformComposition(int treeId, SkCanvas *canvas, const IntRect &dirtyRect)
 {
-    LookupTree(treeId)->PerformComposition(canvas, dirtyTiles);
+    LookupTree(treeId)->PerformComposition(canvas, dirtyRect);
 }
 
 void Compositor::PostCallback(Callback &&callback)
