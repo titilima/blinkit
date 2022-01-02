@@ -4188,9 +4188,6 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tasks\raster_task.cpp">
       <Filter>ui\compositor\tasks</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tile.cpp">
-      <Filter>ui\compositor</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\win\paint_window_task.cpp">
       <Filter>win</Filter>
     </ClCompile>
@@ -8572,9 +8569,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\TransformState.h">
       <Filter>blink\renderer\platform\geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tile.h">
-      <Filter>ui\compositor</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\paint_window_task.h">
       <Filter>win</Filter>

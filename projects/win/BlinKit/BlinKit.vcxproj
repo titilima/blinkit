@@ -1430,7 +1430,6 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tasks\layer_tasks.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tasks\raster_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tasks\tree_tasks.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tile.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tree_compositor.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\element_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\EventNames.cpp" />
@@ -2904,7 +2903,6 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tasks\layer_tasks.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tasks\raster_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tasks\tree_tasks.h" />
-    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tile.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tree_compositor.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\element_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\input_events.h" />
