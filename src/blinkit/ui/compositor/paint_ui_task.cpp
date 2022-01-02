@@ -14,7 +14,6 @@
 #include "blinkit/blink/public/platform/WebLayerTreeView.h"
 #include "blinkit/blink/renderer/wtf/MainThread.h"
 #include "blinkit/ui/compositor/compositor.h"
-#include "blinkit/ui/compositor/tile.h"
 #include "third_party/zed/include/zed/mutex.hpp"
 
 namespace BlinKit {
@@ -29,7 +28,7 @@ void PaintUITask::PerformComposition(Compositor &compositor, const IntRect &dirt
     m_dirtyRect = dirtyRect;
 
     auto _ = m_lock.guard();
-    compositor.PerformComposition(m_treeId, m_canvas, TileGrid::GetRangeForRect(m_dirtyRect));
+    compositor.PerformComposition(m_treeId, m_canvas, m_dirtyRect);
 }
 
 void PaintUITask::PerformPaint(const std::function<void(IntRect &)> &callback)
