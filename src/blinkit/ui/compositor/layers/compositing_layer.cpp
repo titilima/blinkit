@@ -12,7 +12,6 @@
 #include "./compositing_layer.h"
 
 #include "blinkit/ui/compositor/blink/display_item_list.h"
-#include "blinkit/ui/compositor/tile.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 
@@ -21,7 +20,7 @@ namespace BlinKit {
 CompositingLayer::CompositingLayer(void) = default;
 CompositingLayer::~CompositingLayer(void) = default;
 
-void CompositingLayer::BlendTo(SkCanvas *canvas, const TileGrid::Range &dirtyTiles)
+void CompositingLayer::BlendTo(SkCanvas *canvas, const IntRect &dirtyRect)
 {
     if (!m_drawsContent || !m_bitmap)
         return;
@@ -47,12 +46,10 @@ void CompositingLayer::DetachFromParent(void)
 
 const SkBitmap& CompositingLayer::EnsureBitmap(void)
 {
-    IntSize size = Tile::GetAlignedSize(m_bounds);
-
     if (m_bitmap)
     {
         const SkImageInfo &info = m_bitmap->info();
-        if (size.width() <= info.width() && size.height() <= info.height())
+        if (m_bounds.width() <= info.width() && m_bounds.height() <= info.height())
             return *m_bitmap;
 
         m_bitmap->reset();
@@ -63,7 +60,7 @@ const SkBitmap& CompositingLayer::EnsureBitmap(void)
         ASSERT(m_bitmap);
     }
 
-    m_bitmap->allocN32Pixels(size.width(), size.height(), kPremul_SkAlphaType);
+    m_bitmap->allocN32Pixels(m_bounds.width(), m_bounds.height(), kPremul_SkAlphaType);
     return *m_bitmap;
 }
 

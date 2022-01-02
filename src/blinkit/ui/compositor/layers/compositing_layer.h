@@ -14,7 +14,7 @@
 #define BLINKIT_COMPOSITING_LAYER_H
 
 #include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
-#include "blinkit/ui/compositor/tile.h"
+#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
 
 class SkBitmap;
 class SkCanvas;
@@ -47,7 +47,7 @@ public:
 
     void Update(const DisplayItemList &displayItemList);
     void SyncToCompositor(std::vector<CompositingLayer *> &compositedLayers);
-    void BlendTo(SkCanvas *canvas, const TileGrid::Range &dirtyTiles);
+    void BlendTo(SkCanvas *canvas, const IntRect &dirtyRect);
 
 #ifndef NDEBUG
     void DebugPrint(void) const {
