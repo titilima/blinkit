@@ -1509,7 +1509,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebImage.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebInputEventResult.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayerScrollClient.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayerTreeView.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLocalizedString.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebNativeScrollBehavior.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebPointerProperties.h" />
@@ -1539,6 +1538,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_image_layer.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_layer.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_layer_position_constraint.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_layer_tree_view.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_scrollbar_layer.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\web\blink.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebContextMenuData.h" />

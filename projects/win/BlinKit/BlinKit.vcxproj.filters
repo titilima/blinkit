@@ -8249,9 +8249,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayerScrollClient.h">
       <Filter>blink\public\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayerTreeView.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLocalizedString.h">
       <Filter>blink\public\platform</Filter>
     </ClInclude>
@@ -8584,6 +8581,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\playback\clip_items.h">
       <Filter>ui\compositor\playback</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_layer_tree_view.h">
+      <Filter>blink\public\platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

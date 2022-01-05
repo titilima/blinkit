@@ -14,7 +14,7 @@
 #define BLINKIT_LAYER_TREE_HOST_H
 
 #include <unordered_set>
-#include "blinkit/blink/public/platform/WebLayerTreeView.h"
+#include "blinkit/blink/public/platform/web_layer_tree_view.h"
 #include "third_party/skia/include/core/SkColor.h"
 
 namespace BlinKit {
