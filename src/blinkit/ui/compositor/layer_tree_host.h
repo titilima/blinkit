@@ -62,7 +62,9 @@ private:
     void heuristicsForGpuRasterizationUpdated(bool matchesHeuristics) override;
     void setTopControlsShownRatio(float ratio) override;
     void setTopControlsHeight(float height, bool shrinkViewport) override;
-    void setDeferCommits(bool deferCommits) override;
+    void setDeferCommits(bool deferCommits) override {
+        m_deferCommits = deferCommits;
+    }
     void registerForAnimations(WebLayer *layer) override;
     void registerViewportLayers(const WebLayer *overscrollElasticityLayer,
         const WebLayer *pageScaleLayer, const WebLayer *innerViewportScrollLayer,
@@ -72,6 +74,7 @@ private:
     Layer *m_rootLayer = nullptr;
     std::unordered_set<Layer *> m_layers;
 
+    bool m_deferCommits = false;
     bool m_visible = false;
     bool m_topControlsShrinkBlinkSize = false;
 #ifndef NDEBUG

@@ -85,11 +85,6 @@ void LayerTreeHost::registerViewportLayers(
 #endif
 }
 
-void LayerTreeHost::setDeferCommits(bool deferCommits)
-{
-    // BKTODO: proxy_->SetDeferCommits(deferCommits);
-}
-
 void LayerTreeHost::setDeviceScaleFactor(float scaleFactor)
 {
     if (zed::almost_equals(m_deviceScaleFactor, scaleFactor))
@@ -252,7 +247,7 @@ void LayerTreeHost::UnregisterLayer(Layer *layer)
 
 void LayerTreeHost::Update(std::unique_ptr<PaintUITask> &paintTask)
 {
-    if (nullptr == m_rootLayer || m_deviceViewportSize.isEmpty())
+    if (nullptr == m_rootLayer || m_deferCommits || m_deviceViewportSize.isEmpty())
         return;
 
     std::unique_ptr<RasterTask> task = std::make_unique<RasterTask>(m_deviceViewportSize);
