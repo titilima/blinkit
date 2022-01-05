@@ -13,6 +13,8 @@
 #ifndef BLINKIT_DISPLAY_ITEM_H
 #define BLINKIT_DISPLAY_ITEM_H
 
+#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+
 class SkCanvas;
 
 namespace BlinKit {
@@ -24,7 +26,9 @@ public:
 
     virtual void Playback(SkCanvas &canvas) = 0;
 protected:
-    DisplayItem(void) = default;
+    DisplayItem(const IntRect &visualRect) : m_visualRect(visualRect) {}
+private:
+    const IntRect m_visualRect;
 };
 
 } // namespace BlinKit

@@ -13,7 +13,6 @@
 #ifndef BLINKIT_DRAWING_ITEM_H
 #define BLINKIT_DRAWING_ITEM_H
 
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
 #include "blinkit/blink/renderer/wtf/RefPtr.h"
 #include "blinkit/ui/compositor/playback/display_item.h"
 
@@ -29,7 +28,6 @@ public:
 
     void Playback(SkCanvas &canvas) override;
 private:
-    const IntRect m_visualRect;
     RefPtr<const SkPicture> m_picture;
 };
 

@@ -15,7 +15,7 @@
 
 namespace BlinKit {
 
-DrawingItem::DrawingItem(const IntRect &visualRect, const SkPicture *picture) : m_visualRect(visualRect), m_picture(picture)
+DrawingItem::DrawingItem(const IntRect &visualRect, const SkPicture *picture) : DisplayItem(visualRect), m_picture(picture)
 {
 }
 
