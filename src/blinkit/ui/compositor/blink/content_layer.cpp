@@ -28,9 +28,9 @@ WebLayer* ContentLayer::layer(void)
     return m_layer.get();
 }
 
-void ContentLayer::PaintContents(WebDisplayItemList *displayItemList)
+void ContentLayer::PaintContents(WebDisplayItemList &displayItemList)
 {
-    m_client->paintContents(displayItemList);
+    m_client->paintContents(&displayItemList);
 }
 
 } // namespace BlinKit

@@ -22,7 +22,7 @@ class DisplayItem
 public:
     virtual ~DisplayItem(void) = default;
 
-    virtual void Playback(SkCanvas *canvas) = 0;
+    virtual void Playback(SkCanvas &canvas) = 0;
 protected:
     DisplayItem(void) = default;
 };

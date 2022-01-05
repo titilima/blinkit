@@ -13,75 +13,20 @@
 #ifndef BLINKIT_LAYER_TASKS_H
 #define BLINKIT_LAYER_TASKS_H
 
-#include "blinkit/ui/compositor/compositor_task.h"
-#include "third_party/zed/include/zed/memory.hpp"
+#include "blinkit/ui/compositor/tasks/compositor_task.h"
 
 namespace BlinKit {
 
-class CompositingLayer;
 class Layer;
 
-class DestroyLayerTask final : public CompositorTask
+class ReleaseBitmapTask final : public CompositorTask
 {
 public:
-    DestroyLayerTask(Layer *layer);
+    ReleaseBitmapTask(Layer *layer);
 private:
     void Run(Compositor &compositor) override;
 
-    const int m_id;
-};
-
-class NewLayerTask final : public CompositorTask
-{
-public:
-    NewLayerTask(Layer *layer);
-private:
-    void Run(Compositor &compositor) override;
-
-    const int m_id;
-};
-
-class RemoveChildLayersTask final : public CompositorTask
-{
-public:
-    RemoveChildLayersTask(Layer *layer);
-private:
-    void Run(Compositor &compositor) override;
-
-    const int m_id;
-};
-
-class RemoveLayerTask final : public CompositorTask
-{
-public:
-    RemoveLayerTask(Layer *layer);
-private:
-    void Run(Compositor &compositor) override;
-
-    const int m_id;
-};
-
-class SyncChildLayerTask final : public CompositorTask
-{
-public:
-    SyncChildLayerTask(Layer *parent, size_t index, Layer *child);
-private:
-    void Run(Compositor &compositor) override;
-
-    const int m_parentId;
-    const int m_childId;
-    const size_t m_index;
-};
-
-class SyncLayerTask final : public CompositorTask
-{
-public:
-    SyncLayerTask(Layer *layer, std::function<void(CompositingLayer &)> &&callback);
-private:
-    void Run(Compositor &compositor) override;
-
-    const int m_id;
-    const std::function<void(CompositingLayer &)> m_callback;
+    const int m_layerId;
 };
 
 } // namespace BlinKit

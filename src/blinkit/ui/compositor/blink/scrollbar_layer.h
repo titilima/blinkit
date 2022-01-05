@@ -31,7 +31,7 @@ public:
 private:
     WebLayer* layer(void) override;
     void setScrollLayer(WebLayer *layer) override;
-    void PaintContents(WebDisplayItemList *displayItemList) override;
+    void PaintContents(WebDisplayItemList &displayItemList) override;
 
     int m_scrollLayerId;
     std::unique_ptr<Layer> m_layer;

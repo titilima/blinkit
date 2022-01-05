@@ -15,12 +15,9 @@
 
 #include "blinkit/blink/public/platform/WebTaskRunner.h"
 #include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/ui/compositor/raster/raster_result.h"
 
 class SkCanvas;
-
-namespace blink {
-class WebLayerTreeView;
-}
 
 namespace zed {
 class mutex;
@@ -33,13 +30,12 @@ class Compositor;
 class PaintUITask : public WebTaskRunner::Task
 {
 public:
-    void PerformComposition(Compositor &compositor, const IntRect &dirtyRect);
+    void PerformComposition(Compositor &compositor, const RasterResult &rasterResult, const IntRect &dirtyRect);
 protected:
-    PaintUITask(WebLayerTreeView *tree, zed::mutex &lock, SkCanvas *canvas);
+    PaintUITask(zed::mutex &lock, SkCanvas *canvas);
 
     void PerformPaint(const std::function<void(IntRect &)> &callback);
 private:
-    const int m_treeId;
     zed::mutex &m_lock;
     SkCanvas *m_canvas;
     IntRect m_dirtyRect;

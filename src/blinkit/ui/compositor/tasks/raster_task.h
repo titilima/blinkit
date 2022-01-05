@@ -13,8 +13,9 @@
 #ifndef BLINKIT_RASTER_TASK_H
 #define BLINKIT_RASTER_TASK_H
 
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
-#include "blinkit/ui/compositor/compositor_task.h"
+#include "blinkit/ui/compositor/tasks/compositor_task.h"
+#include "blinkit/ui/compositor/raster/raster_input.h"
+#include "blinkit/ui/compositor/raster/raster_result.h"
 
 namespace blink {
 class WebTaskRunner;
@@ -24,6 +25,7 @@ namespace BlinKit {
 
 class Layer;
 class PaintUITask;
+class RasterContext;
 
 class RasterTask final : public CompositorTask
 {
@@ -31,21 +33,19 @@ public:
     RasterTask(const IntSize &viewportSize);
     ~RasterTask(void) override;
 
-    bool HasNothingToDo(void) const { return m_entries.empty(); }
+    bool HasNothingToDo(void) const { return m_input.empty(); }
+    const RasterResult& Result(void) const { return m_result; }
 
-    void AddDirtyLayer(Layer *layer);
+    bool AddDirtyLayer(Layer &layer);
+    void Rasterize(const RasterContext &context, const Layer &layer, bool updateDirtyRect);
 
     void SavePaintTask(std::unique_ptr<PaintUITask> &paintTask);
 private:
-    void RecordPainting(Layer *layer);
-    bool Invalidate(Layer *layer);
-
     void Run(Compositor &compositor) override;
 
     const IntSize m_viewportSize;
-
-    class Entry;
-    std::vector<std::unique_ptr<Entry>> m_entries;
+    RasterInput m_input;
+    RasterResult m_result;
     IntRect m_dirtyRect;
 
     std::shared_ptr<WebTaskRunner> m_taskRunner;

@@ -22,17 +22,17 @@
 
 namespace BlinKit {
 
-class CompositingLayer;
 class CompositorTask;
 class LayerClient;
 class LayerTreeHost;
+class RasterContext;
 class RasterTask;
 
 class Layer : public WebLayer
 {
 public:
     ~Layer(void) override;
-    enum { INVALID_ID = -1 };
+    enum { INVALID_ID = 0 };
 
     LayerClient* Client(void) { return m_client; }
     Layer* Parent(void) { return m_parent; }
@@ -42,8 +42,10 @@ public:
     const LayerTreeHost* GetLayerTreeHost(void) const { return m_layerTreeHost; }
     void SetLayerTreeHost(LayerTreeHost *host);
 
-    void Update(RasterTask &rasterSession);
-    void UpdateChildren(RasterTask &rasterSession);
+    const FloatPoint& Position(void) const { return m_position; }
+    const IntSize& Bounds(void) const { return m_bounds; }
+
+    void Update(const RasterContext &context, RasterTask &session);
 
     // Called when there's been a change in layer structure.  Implies both
     // SetNeedsUpdate and SetNeedsCommit, but not SetNeedsPushProperties.
@@ -56,8 +58,6 @@ public:
 #endif
 
     // WebLayer
-    IntSize bounds(void) const override { return m_bounds; }
-    FloatPoint position(void) const override { return m_position; }
     bool drawsContent(void) const override { return m_drawsContent; }
 protected:
     Layer(LayerClient *client);
@@ -66,7 +66,6 @@ private:
     int NumDescendantsThatDrawContent(void) const { return m_numDescendantsThatDrawContent; }
 
     void PostTaskToCompositor(CompositorTask *task);
-    void Sync(std::function<void(CompositingLayer &)> &&callback);
 
 #ifndef NDEBUG
     void DebugPrint(int depth) const;
@@ -98,6 +97,7 @@ private:
     void removeFromParent(void) override;
     void removeAllChildren(void) override;
     void setBounds(const IntSize &size) override;
+    IntSize bounds(void) const override { return m_bounds; }
     void setMasksToBounds(bool masksToBounds) override;
     bool masksToBounds(void) const override { return m_masksToBounds; }
     void setMaskLayer(WebLayer *maskLayer) override;
@@ -107,6 +107,7 @@ private:
     void setOpaque(bool opaque) override;
     bool opaque(void) const { return m_opaque; }
     void setPosition(const FloatPoint &position) override;
+    FloatPoint position(void) const override { return m_position; }
     void setTransform(const SkMatrix44 &transform) override;
     SkMatrix44 transform(void) const override { return m_transform; }
     void setTransformOrigin(const FloatPoint3D &transformOrigin) override;
@@ -167,7 +168,7 @@ private:
     int m_numDescendantsThatDrawContent = 0;
     float m_opacity = 1.f;
     bool m_opaque = false;
-    FloatPoint m_position;
+    FloatPoint m_position; // of parent
     WebLayerPositionConstraint m_positionConstraint;
     WebScrollBlocksOn m_scrollBlocksOn = WebScrollBlocksOnNone;
     WebLayerScrollClient *m_scrollClient = nullptr;

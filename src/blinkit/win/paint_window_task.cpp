@@ -13,8 +13,8 @@
 
 namespace BlinKit {
 
-PaintWindowTask::PaintWindowTask(HWND hWnd, HDC hMemoryDC, WebLayerTreeView *tree, zed::mutex &lock, SkCanvas *canvas)
-    : PaintUITask(tree, lock, canvas), m_hWnd(hWnd), m_hMemoryDC(hMemoryDC)
+PaintWindowTask::PaintWindowTask(HWND hWnd, HDC hMemoryDC, zed::mutex &lock, SkCanvas *canvas)
+    : PaintUITask(lock, canvas), m_hWnd(hWnd), m_hMemoryDC(hMemoryDC)
 {
 }
 

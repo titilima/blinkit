@@ -16,12 +16,13 @@
 namespace blink {
 class WebDisplayItemList;
 }
+
 namespace BlinKit {
 
 class LayerClient
 {
 public:
-    virtual void PaintContents(WebDisplayItemList *displayItemList) = 0;
+    virtual void PaintContents(WebDisplayItemList &displayItemList) = 0;
 protected:
     LayerClient(void) = default;
 };

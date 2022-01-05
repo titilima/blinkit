@@ -13,7 +13,7 @@
 
 #include "blinkit/ui/web_view_impl.h"
 #include "blinkit/ui/compositor/layer_tree_host.h"
-#include "blinkit/ui/compositor/paint_ui_task.h"
+#include "blinkit/ui/compositor/tasks/paint_ui_task.h"
 
 namespace BlinKit {
 

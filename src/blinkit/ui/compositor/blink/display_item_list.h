@@ -23,11 +23,9 @@ namespace BlinKit {
 class DisplayItemList : public WebDisplayItemList
 {
 public:
-    ~DisplayItemList(void) override;
+    DisplayItemList(void) = default;
 
-    void Playback(SkCanvas *canvas) const;
-protected:
-    DisplayItemList(void);
+    void Playback(SkCanvas &canvas) const;
 private:
     void appendDrawingItem(const IntRect &visualRect, const SkPicture *picture) override;
     void appendClipItem(const IntRect& visualRect, const IntRect& clipRect, const std::vector<SkRRect>& roundedClipRects) override {

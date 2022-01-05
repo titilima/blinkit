@@ -22,7 +22,6 @@ namespace BlinKit {
 class CompositorTask;
 class Layer;
 class PaintUITask;
-class TreeCompositor;
 
 class LayerTreeHost final : public WebLayerTreeView
 {
@@ -54,7 +53,6 @@ private:
     void SetRootLayerImpl(Layer *layer);
 
     void PostTaskToCompositor(CompositorTask *task);
-    void Sync(std::function<void(TreeCompositor &)> &&callback);
 
     void setRootLayer(const WebLayer &layer) override;
     void clearRootLayer(void) override;

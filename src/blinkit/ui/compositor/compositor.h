@@ -13,8 +13,10 @@
 #ifndef BLINKIT_COMPOSITOR_H
 #define BLINKIT_COMPOSITOR_H
 
+#include "blinkit/ui/compositor/raster/raster_result.h"
 #include "third_party/zed/include/zed/threading/task_queue.hpp"
 
+class SkBitmap;
 class SkCanvas;
 
 namespace blink {
@@ -23,10 +25,8 @@ class IntRect;
 
 namespace BlinKit {
 
-class CompositingLayer;
 class CompositorTask;
-class DisplayItemList;
-class TreeCompositor;
+struct PaintContext;
 
 class Compositor final : private zed::thread<Compositor>
 {
@@ -40,31 +40,25 @@ public:
     using Callback = std::function<void(Compositor &)>;
     void PostCallback(Callback &&callback);
 
-    void DestroyTree(int treeId);
-    void NewTree(int treeId);
-    void PerformComposition(int treeId, SkCanvas *canvas, const IntRect &dirtyRect);
-    void SyncTree(int treeId, const std::function<void(TreeCompositor &)> &callback);
-    void SetRootLayer(int treeId, int layerId);
-
-    void DestroyLayer(int layerId);
-    void NewLayer(int layerId);
-    void RemoveChildLayers(int layerId);
-    void RemoveLayer(int layerId);
-    void SyncLayer(int layerId, const std::function<void(CompositingLayer &)> &callback);
-    void SyncChildLayer(int parentLayerId, size_t index, int childLayerId);
-    void UpdateLayer(int layerId, const DisplayItemList &displayItemList);
+    void ReleaseBitmap(int layerId);
+    void PaintLayer(const PaintContext &input);
+    void PerformComposition(SkCanvas &canvas, const RasterResult &rasterResult, const IntRect &dirtyRect);
 private:
-    CompositingLayer* LookupLayer(int layerId) const;
-    TreeCompositor* LookupTree(int treeId) const;
+    const SkBitmap& RequireBitmap(int layerId, const IntSize &size);
+    void BlendBitmapToCanvas(SkCanvas &canvas, int layerId, const IntPoint &from, const IntPoint &to,
+        const IntSize &size) const;
 
     void TaskLoop(void);
+
+#ifndef NDEBUG
+    static void DrawDebugInfo(SkCanvas &canvas, const IntSize &layerBounds);
+#endif
 
     class CallbackTask;
     bool m_running = true;
     zed::task_queue<CompositorTask> m_queue;
 
-    std::unordered_map<int, std::unique_ptr<CompositingLayer>> m_layers;
-    std::unordered_map<int, std::unique_ptr<TreeCompositor>> m_trees;
+    std::unordered_map<int, std::unique_ptr<SkBitmap>> m_layerBitmaps;
 };
 
 } // namespace BlinKit

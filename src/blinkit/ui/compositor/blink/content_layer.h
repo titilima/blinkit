@@ -31,7 +31,7 @@ public:
     ~ContentLayer(void) override;
 private:
     WebLayer* layer(void) override;
-    void PaintContents(WebDisplayItemList *displayItemList) override;
+    void PaintContents(WebDisplayItemList &displayItemList) override;
 
     WebContentLayerClient *m_client;
     std::unique_ptr<Layer> m_layer;

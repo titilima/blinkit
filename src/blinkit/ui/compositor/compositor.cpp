@@ -11,9 +11,13 @@
 
 #include "./compositor.h"
 
-#include "blinkit/ui/compositor/compositor_task.h"
-#include "blinkit/ui/compositor/layers/compositing_layer.h"
-#include "blinkit/ui/compositor/tree_compositor.h"
+#include "blinkit/ui/compositor/raster/raster_input.h"
+#include "blinkit/ui/compositor/tasks/compositor_task.h"
+#include "third_party/skia/include/core/SkBitmap.h"
+#include "third_party/skia/include/core/SkCanvas.h"
+#ifndef NDEBUG
+#   include "third_party/skia/include/core/SkTypeface.h"
+#endif
 
 namespace BlinKit {
 
@@ -40,51 +44,50 @@ Compositor::~Compositor(void)
     });
     join();
 
-    ASSERT(m_layers.empty());
-    ASSERT(m_trees.empty());
+    ASSERT(m_layerBitmaps.empty());
 }
 
-void Compositor::DestroyLayer(int layerId)
+void Compositor::BlendBitmapToCanvas(
+    SkCanvas &canvas,
+    int layerId,
+    const IntPoint &from, const IntPoint &to,
+    const IntSize &size) const
 {
-    m_layers.erase(layerId);
+    auto it = m_layerBitmaps.find(layerId);
+    ASSERT(m_layerBitmaps.end() != it);
+
+    canvas.drawBitmapRect(
+        *(it->second),
+        SkIRect::MakeXYWH(from.x(), from.y(), size.width(), size.height()),
+        SkRect::MakeXYWH(to.x(), to.y(), size.width(), size.height()),
+        nullptr
+    );
 }
 
-void Compositor::DestroyTree(int treeId)
+void Compositor::PaintLayer(const PaintContext &input)
 {
-    m_trees.erase(treeId);
+    SkCanvas canvas(RequireBitmap(input.layerId, input.layerBounds));
+#if 0 // TODO: Check the logic later.
+    canvas.concat(m_transform);
+#endif
+    canvas.clipRect(input.dirtyRect, SkRegion::kIntersect_Op, true);
+    input.displayItems->Playback(canvas);
+
+#ifndef NDEBUG
+    // DrawDebugInfo(canvas, input.layerBounds);
+#endif
 }
 
-CompositingLayer* Compositor::LookupLayer(int layerId) const
+void Compositor::PerformComposition(SkCanvas &canvas, const RasterResult &rasterResult, const IntRect &dirtyRect)
 {
-    ASSERT(0 != layerId);
+    for (const LayerData &data : rasterResult)
+    {
+        IntRect rect(data.rect);
+        rect.intersect(dirtyRect);
 
-    auto it = m_layers.find(layerId);
-    ASSERT(m_layers.end() != it);
-    return it->second.get();
-}
-
-TreeCompositor* Compositor::LookupTree(int treeId) const
-{
-    ASSERT(0 != treeId);
-
-    auto it = m_trees.find(treeId);
-    ASSERT(m_trees.end() != it);
-    return it->second.get();
-}
-
-void Compositor::NewLayer(int layerId)
-{
-    m_layers.emplace(layerId, new CompositingLayer);
-}
-
-void Compositor::NewTree(int treeId)
-{
-    m_trees.emplace(treeId, new TreeCompositor);
-}
-
-void Compositor::PerformComposition(int treeId, SkCanvas *canvas, const IntRect &dirtyRect)
-{
-    LookupTree(treeId)->PerformComposition(canvas, dirtyRect);
+        IntPoint from(rect.x() - data.rect.x(), rect.y() - data.rect.y());
+        BlendBitmapToCanvas(canvas, data.id, from, rect.location(), rect.size());
+    }
 }
 
 void Compositor::PostCallback(Callback &&callback)
@@ -100,36 +103,33 @@ void Compositor::PostTasks(std::vector<CompositorTask *> &tasks)
     });
 }
 
-void Compositor::RemoveChildLayers(int layerId)
+void Compositor::ReleaseBitmap(int layerId)
 {
-    LookupLayer(layerId)->DetachChildren();
+    m_layerBitmaps.erase(layerId);
 }
 
-void Compositor::RemoveLayer(int layerId)
+const SkBitmap& Compositor::RequireBitmap(int layerId, const IntSize &size)
 {
-    LookupLayer(layerId)->DetachFromParent();
-}
+    SkBitmap *ret;
 
-void Compositor::SetRootLayer(int treeId, int layerId)
-{
-    LookupTree(treeId)->SetRootLayer(LookupLayer(layerId));
-}
+    auto it = m_layerBitmaps.find(layerId);
+    if (m_layerBitmaps.end() != it)
+    {
+        const SkImageInfo &info = it->second->info();
+        if (size.width() <= info.width() && size.height() <= info.height())
+            return *(it->second);
 
-void Compositor::SyncChildLayer(int parentLayerId, size_t index, int childLayerId)
-{
-    CompositingLayer *parentLayer = LookupLayer(parentLayerId);
-    CompositingLayer *childLayer = LookupLayer(childLayerId);
-    parentLayer->InsertChild(index, childLayer);
-}
+        ret = it->second.get();
+        ret->reset();
+    }
+    else
+    {
+        ret = new SkBitmap;
+        m_layerBitmaps.emplace(layerId, ret);
+    }
 
-void Compositor::SyncLayer(int layerId, const std::function<void(CompositingLayer &)> &callback)
-{
-    callback(*LookupLayer(layerId));
-}
-
-void Compositor::SyncTree(int treeId, const std::function<void(TreeCompositor &)> &callback)
-{
-    callback(*LookupTree(treeId));
+    ret->allocN32Pixels(size.width(), size.height(), kPremul_SkAlphaType);
+    return *ret;
 }
 
 void Compositor::TaskLoop(void)
@@ -158,9 +158,31 @@ void Compositor::TaskLoop(void)
     }
 }
 
-void Compositor::UpdateLayer(int layerId, const DisplayItemList &displayItemList)
+#ifndef NDEBUG
+void Compositor::DrawDebugInfo(SkCanvas &canvas, const IntSize &layerBounds)
 {
-    LookupLayer(layerId)->Update(displayItemList);
+    SkPaint paint;
+
+    static const SkColor colors[] = {
+        SK_ColorBLACK, SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE, SK_ColorYELLOW, SK_ColorCYAN, SK_ColorMAGENTA
+    };
+    paint.setColor(colors[rand() % std::size(colors)]);
+
+    paint.setStrokeWidth(4);
+    paint.setTextSize(13);
+    paint.setTextEncoding(SkPaint::kUTF8_TextEncoding);
+
+    static SkTypeface *typeface = SkTypeface::RefDefault(SkTypeface::kNormal);
+    paint.setTypeface(typeface);
+
+    paint.setStrokeWidth(1);
+    canvas.drawLine(0, 0, layerBounds.width(), layerBounds.height(), paint);
+    canvas.drawLine(layerBounds.width(), 0, 0, layerBounds.height(), paint);
+
+    char text[128];
+    int len = sprintf(text, "%dx%d", layerBounds.width(), layerBounds.height());
+    canvas.drawText(text, len, 5, 15, paint);
 }
+#endif
 
 } // namespace BlinKit

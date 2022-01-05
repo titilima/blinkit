@@ -14,22 +14,14 @@
 #include "blinkit/app/app_impl.h"
 #include "blinkit/ui/compositor/blink/layer.h"
 #include "blinkit/ui/compositor/compositor.h"
+#include "blinkit/ui/compositor/raster/raster_context.h"
 #include "blinkit/ui/compositor/tasks/raster_task.h"
-#include "blinkit/ui/compositor/tasks/tree_tasks.h"
-#include "blinkit/ui/compositor/tree_compositor.h"
 #include "third_party/zed/include/zed/container_utilites.hpp"
 
 namespace BlinKit {
 
-LayerTreeHost::LayerTreeHost(void)
-{
-    PostTaskToCompositor(new NewTreeTask(this));
-}
-
-LayerTreeHost::~LayerTreeHost(void)
-{
-    PostTaskToCompositor(new DestroyTreeTask(this));
-}
+LayerTreeHost::LayerTreeHost(void) = default;
+LayerTreeHost::~LayerTreeHost(void) = default;
 
 void LayerTreeHost::clearRootLayer(void)
 {
@@ -38,11 +30,6 @@ void LayerTreeHost::clearRootLayer(void)
 
     m_rootLayer->SetLayerTreeHost(nullptr);
     m_rootLayer = nullptr;
-
-    Sync([](TreeCompositor &compositor) {
-        compositor.SetRootLayer(nullptr);
-        compositor.SetNeedsFullTreeSync();
-    });
 }
 
 void LayerTreeHost::clearViewportLayers(void)
@@ -118,10 +105,6 @@ void LayerTreeHost::SetNeedsCommit(void)
 #if 0 // BKTODO:
     proxy_->SetNeedsCommit();
     NotifySwapPromiseMonitorsOfSetNeedsCommit();
-#else
-    Sync([](TreeCompositor &compositor) {
-        compositor.SetNeedsCommit();
-    });
 #endif
 }
 
@@ -132,10 +115,6 @@ void LayerTreeHost::SetNeedsFullTreeSync(void)
     needs_meta_info_recomputation_ = true;
 
     property_trees_.needs_rebuild = true;
-#else
-    Sync([](TreeCompositor &compositor) {
-        compositor.SetNeedsFullTreeSync();
-    });
 #endif
     SetNeedsCommit();
 }
@@ -185,7 +164,6 @@ void LayerTreeHost::setRootLayer(const WebLayer &webLayer)
     ASSERT(nullptr == m_rootLayer->Parent());
     m_rootLayer->SetLayerTreeHost(this);
 
-    PostTaskToCompositor(new SetRootLayerTask(this, layer));
     SetNeedsFullTreeSync();
 }
 
@@ -202,8 +180,6 @@ void LayerTreeHost::SetRootLayerImpl(Layer *layer)
         ASSERT(nullptr == m_rootLayer->Parent());
         m_rootLayer->SetLayerTreeHost(this);
     }
-
-    PostTaskToCompositor(new SetRootLayerTask(this, layer));
 
 #if 0 // BKTODO:
     if (hud_layer_.get())
@@ -263,11 +239,6 @@ void LayerTreeHost::setVisible(bool visible)
 #endif
 }
 
-void LayerTreeHost::Sync(std::function<void(TreeCompositor &)> &&callback)
-{
-    PostTaskToCompositor(new SyncTreeTask(this, std::move(callback)));
-}
-
 void LayerTreeHost::UnregisterLayer(Layer *layer)
 {
     ASSERT(zed::key_exists(m_layers, layer));
@@ -285,8 +256,7 @@ void LayerTreeHost::Update(std::unique_ptr<PaintUITask> &paintTask)
         return;
 
     std::unique_ptr<RasterTask> task = std::make_unique<RasterTask>(m_deviceViewportSize);
-    m_rootLayer->Update(*task);
-    m_rootLayer->UpdateChildren(*task);
+    m_rootLayer->Update(RasterContext(), *task);
     if (task->HasNothingToDo())
         return;
 

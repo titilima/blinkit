@@ -27,7 +27,7 @@ public:
     DrawingItem(const IntRect &visualRect, const SkPicture *picture);
     ~DrawingItem(void) override;
 
-    void Playback(SkCanvas *canvas) override;
+    void Playback(SkCanvas &canvas) override;
 private:
     const IntRect m_visualRect;
     RefPtr<const SkPicture> m_picture;

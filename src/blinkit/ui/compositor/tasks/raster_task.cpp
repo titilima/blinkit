@@ -12,25 +12,13 @@
 #include "./raster_task.h"
 
 #include "blinkit/app/app_impl.h"
-#include "blinkit/ui/compositor/blink/display_item_list.h"
 #include "blinkit/ui/compositor/blink/layer.h"
 #include "blinkit/ui/compositor/compositor.h"
 #include "blinkit/ui/compositor/layers/layer_client.h"
-#include "blinkit/ui/compositor/paint_ui_task.h"
+#include "blinkit/ui/compositor/raster/raster_context.h"
+#include "blinkit/ui/compositor/tasks/paint_ui_task.h"
 
 namespace BlinKit {
-
-class RasterTask::Entry final : public DisplayItemList
-{
-public:
-    Entry(Layer *layer) : m_id(layer->id()) {}
-
-    int Id(void) const { return m_id; }
-private:
-    const int m_id;
-};
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 RasterTask::RasterTask(const IntSize &viewportSize) : m_viewportSize(viewportSize)
 {
@@ -38,47 +26,44 @@ RasterTask::RasterTask(const IntSize &viewportSize) : m_viewportSize(viewportSiz
 
 RasterTask::~RasterTask(void) = default;
 
-void RasterTask::AddDirtyLayer(Layer *layer)
+bool RasterTask::AddDirtyLayer(Layer &layer)
 {
-    if (!layer->drawsContent())
-        return;
+    ASSERT(layer.drawsContent());
 
-    if (!Invalidate(layer))
-        return;
-
-    RecordPainting(layer);
-}
-
-bool RasterTask::Invalidate(Layer *layer)
-{
-    IntRect dirtyRect = layer->TakeDirtyRect();
+    IntRect dirtyRect = layer.TakeDirtyRect();
     if (dirtyRect.isEmpty())
     {
-        dirtyRect.setSize(layer->bounds());
+        dirtyRect.setSize(layer.Bounds());
         if (dirtyRect.isEmpty())
             return false;
     }
 
-    dirtyRect.moveBy(roundedIntPoint(layer->position()));
-    m_dirtyRect.unite(dirtyRect);
+    PaintContext &context = m_input.emplace_back(layer.id(), layer.Bounds(), dirtyRect);
+    layer.Client()->PaintContents(*context.displayItems);
     return true;
 }
 
-void RasterTask::RecordPainting(Layer *layer)
+void RasterTask::Rasterize(const RasterContext &context, const Layer &layer, bool updateDirtyRect)
 {
-    m_entries.emplace_back(std::make_unique<Entry>(layer));
-    layer->Client()->PaintContents(m_entries.back().get());
+    IntPoint offset = context.CalculateOffset(layer.Position());
+    const LayerData &layerData = m_result.emplace_back(layer.id(), IntRect(offset, layer.Bounds()));
+    if (updateDirtyRect)
+    {
+        IntRect dirtyRect(m_input.back().dirtyRect);
+        dirtyRect.moveBy(offset);
+        m_dirtyRect.unite(dirtyRect);
+    }
 }
 
 void RasterTask::Run(Compositor &compositor)
 {
     ASSERT(!HasNothingToDo());
 
-    for (const auto &e : m_entries)
-        compositor.UpdateLayer(e->Id(), *e);
+    for (const PaintContext &context : m_input)
+        compositor.PaintLayer(context);
 
     ASSERT(m_paintTask);
-    m_paintTask->PerformComposition(compositor, m_dirtyRect);
+    m_paintTask->PerformComposition(compositor, m_result, m_dirtyRect);
 
     ASSERT(m_taskRunner);
     m_taskRunner->postTask(BLINK_FROM_HERE, m_paintTask.release());

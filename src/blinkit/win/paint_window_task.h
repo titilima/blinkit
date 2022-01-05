@@ -13,14 +13,14 @@
 #ifndef BLINKIT_PAINT_WINDOW_TASK_H
 #define BLINKIT_PAINT_WINDOW_TASK_H
 
-#include "blinkit/ui/compositor/paint_ui_task.h"
+#include "blinkit/ui/compositor/tasks/paint_ui_task.h"
 
 namespace BlinKit {
 
 class PaintWindowTask final : public PaintUITask
 {
 public:
-    PaintWindowTask(HWND hWnd, HDC hMemoryDC, WebLayerTreeView *tree, zed::mutex &lock, SkCanvas *canvas);
+    PaintWindowTask(HWND hWnd, HDC hMemoryDC, zed::mutex &lock, SkCanvas *canvas);
 private:
     void run(void) override;
 

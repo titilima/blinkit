@@ -21,9 +21,9 @@ DrawingItem::DrawingItem(const IntRect &visualRect, const SkPicture *picture) : 
 
 DrawingItem::~DrawingItem(void) = default;
 
-void DrawingItem::Playback(SkCanvas *canvas)
+void DrawingItem::Playback(SkCanvas &canvas)
 {
-    m_picture->playback(canvas);
+    m_picture->playback(&canvas);
 }
 
 } // namespace BlinKit

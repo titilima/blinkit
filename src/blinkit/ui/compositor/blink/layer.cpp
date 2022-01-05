@@ -15,7 +15,7 @@
 #include "blinkit/blink/renderer/platform/geometry/LayoutPoint.h"
 #include "blinkit/ui/compositor/compositor.h"
 #include "blinkit/ui/compositor/layer_tree_host.h"
-#include "blinkit/ui/compositor/layers/compositing_layer.h"
+#include "blinkit/ui/compositor/raster/raster_context.h"
 #include "blinkit/ui/compositor/tasks/layer_tasks.h"
 #include "blinkit/ui/compositor/tasks/raster_task.h"
 
@@ -23,12 +23,11 @@ namespace BlinKit {
 
 Layer::Layer(LayerClient *client) : m_client(client)
 {
-    PostTaskToCompositor(new NewLayerTask(this));
 }
 
 Layer::~Layer(void)
 {
-    PostTaskToCompositor(new DestroyLayerTask(this));
+    PostTaskToCompositor(new ReleaseBitmapTask(this));
 }
 
 void Layer::addChild(WebLayer *child)
@@ -64,7 +63,6 @@ void Layer::insertChild(WebLayer *child, size_t index)
         index = m_children.size();
     m_children.insert(m_children.begin() + index, childImpl);
 
-    PostTaskToCompositor(new SyncChildLayerTask(this, index, childImpl));
     SetNeedsFullTreeSync();
 }
 
@@ -108,7 +106,6 @@ void Layer::removeAllChildren(void)
         child->m_parent = nullptr;
     }
 
-    PostTaskToCompositor(new RemoveChildLayersTask(this));
     SetNeedsFullTreeSync();
 }
 
@@ -142,7 +139,6 @@ void Layer::RemoveChildOrDependent(Layer *child)
 
         m_children.erase(it);
 
-        PostTaskToCompositor(new RemoveLayerTask(child));
         SetNeedsFullTreeSync();
         return;
     }
@@ -191,10 +187,6 @@ void Layer::setBounds(const IntSize &size)
     }
 #endif
 
-    Sync([size](CompositingLayer &cl) {
-        cl.SetBounds(size);
-    });
-
     if (nullptr != m_layerTreeHost)
         SetNeedsCommitNoRebuild();
 }
@@ -239,10 +231,6 @@ void Layer::setDrawsContent(bool drawsContent)
     if (m_drawsContent == drawsContent)
         return;
     m_drawsContent = drawsContent;
-
-    Sync([drawsContent](CompositingLayer &cl) {
-        cl.SetDrawsContent(drawsContent);
-    });
     SetNeedsCommit();
 }
 
@@ -471,10 +459,6 @@ void Layer::setPosition(const FloatPoint &position)
     }
 #endif
 
-    Sync([position](CompositingLayer &cl) {
-        cl.SetPosition(position);
-    });
-
     if (nullptr != m_layerTreeHost)
         SetNeedsCommit();
 }
@@ -700,11 +684,6 @@ void Layer::setUserScrollable(bool horizontal, bool vertical)
     SetNeedsCommit();
 }
 
-void Layer::Sync(std::function<void(CompositingLayer &)> &&callback)
-{
-    PostTaskToCompositor(new SyncLayerTask(this, std::move(callback)));
-}
-
 IntRect Layer::TakeDirtyRect(void)
 {
     ASSERT(m_dirty);
@@ -714,25 +693,28 @@ IntRect Layer::TakeDirtyRect(void)
     return ret;
 }
 
-void Layer::Update(RasterTask &rasterSession)
+void Layer::Update(const RasterContext &context, RasterTask &session)
 {
-    if (!m_dirty)
-        return;
-    rasterSession.AddDirtyLayer(this);
-    m_dirty = false;
-}
-
-void Layer::UpdateChildren(RasterTask &rasterSession)
-{
-    for (Layer *child : m_children)
+    if (m_drawsContent)
     {
-        child->Update(rasterSession);
-        child->UpdateChildren(rasterSession);
-        // BKTODO: child->clearChildrenDirty();
+        bool updateDirtyRect = false;
+        if (m_dirty)
+        {
+            updateDirtyRect = session.AddDirtyLayer(*this);
+            m_dirty = false;
+        }
+        session.Rasterize(context, *this, updateDirtyRect);
     }
 
+    RasterContext contextForChildren(context, *this);
+
+    for (Layer *child : m_children)
+        child->Update(contextForChildren, session);
+
+#if 0 // BKTODO:
     if (nullptr != m_mask)
-        m_mask->Update(rasterSession);
+        m_mask->Update(context, rasterSession);
+#endif
 }
 
 #ifndef NDEBUG

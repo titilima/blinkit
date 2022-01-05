@@ -42,7 +42,7 @@ WebLayer* ScrollbarLayer::layer(void)
     return m_layer.get();
 }
 
-void ScrollbarLayer::PaintContents(WebDisplayItemList *displayItemList)
+void ScrollbarLayer::PaintContents(WebDisplayItemList &displayItemList)
 {
     // ASSERT(false); // BKTODO:
 }

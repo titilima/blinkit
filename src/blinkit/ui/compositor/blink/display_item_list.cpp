@@ -15,15 +15,12 @@
 
 namespace BlinKit {
 
-DisplayItemList::DisplayItemList(void) = default;
-DisplayItemList::~DisplayItemList(void) = default;
-
 void DisplayItemList::appendDrawingItem(const IntRect &visualRect, const SkPicture *picture)
 {
     m_displayItems.emplace_back(std::make_unique<DrawingItem>(visualRect, picture));
 }
 
-void DisplayItemList::Playback(SkCanvas *canvas) const
+void DisplayItemList::Playback(SkCanvas &canvas) const
 {
     for (const auto &item : m_displayItems)
         item->Playback(canvas);

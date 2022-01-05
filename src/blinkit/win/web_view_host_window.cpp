@@ -14,7 +14,7 @@
 #include <windowsx.h>
 #include "blinkit/app/win_app.h"
 #include "blinkit/blink/renderer/core/editing/Editor.h"
-#include "blinkit/ui/compositor/paint_ui_task.h"
+#include "blinkit/ui/compositor/tasks/paint_ui_task.h"
 #include "blinkit/ui/scoped_animation_session.h"
 #include "blinkit/ui/web_view_impl.h"
 #include "blinkit/win/bk_bitmap.h"
@@ -173,7 +173,10 @@ void WebViewHostWindow::EnsureCanvas(const IntSize &hostSize)
     {
         SkImageInfo imageInfo = m_canvas->imageInfo();
         if (hostSize.width() <= imageInfo.width() && hostSize.height() <= imageInfo.height())
+        {
+            m_canvas->drawColor(SK_ColorRED);
             return;
+        }
     }
 
     BkBitmap bitmap;
@@ -184,7 +187,8 @@ void WebViewHostWindow::EnsureCanvas(const IntSize &hostSize)
         m_oldBitmap = oldBitmap;
 
     m_canvas = std::make_unique<SkCanvas>(bitmap);
-    m_canvas->drawColor(GetView()->BaseBackgroundColor());
+    // m_canvas->drawColor(GetView()->BaseBackgroundColor());
+    m_canvas->drawColor(SK_ColorRED);
 }
 
 void WebViewHostWindow::Invalidate(const IntRect &rect)
@@ -318,7 +322,7 @@ void WebViewHostWindow::OnSize(HWND, UINT state, int cx, int cy)
 
 std::unique_ptr<PaintUITask> WebViewHostWindow::PreparePaintTask(void)
 {
-    return std::make_unique<PaintWindowTask>(m_hWnd, m_memoryDC, GetLayerTreeView(), m_canvasLock, m_canvas.get());
+    return std::make_unique<PaintWindowTask>(m_hWnd, m_memoryDC, m_canvasLock, m_canvas.get());
 }
 
 bool WebViewHostWindow::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
