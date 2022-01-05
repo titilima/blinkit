@@ -28,12 +28,9 @@ public:
     void Playback(SkCanvas &canvas) const;
 private:
     void appendDrawingItem(const IntRect &visualRect, const SkPicture *picture) override;
-    void appendClipItem(const IntRect& visualRect, const IntRect& clipRect, const std::vector<SkRRect>& roundedClipRects) override {
-        ASSERT(false); // BKTODO:
-    }
-    void appendEndClipItem(const IntRect& visualRect) override {
-        ASSERT(false); // BKTODO:
-    }
+    void appendClipItem(const IntRect &visualRect, const IntRect &clipRect,
+        const std::vector<SkRRect> &roundedClipRects) override;
+    void appendEndClipItem(const IntRect &visualRect) override;
     void appendClipPathItem(const IntRect& visualRect, const SkPath&, SkRegion::Op, bool antialias) override {
         ASSERT(false); // BKTODO:
     }

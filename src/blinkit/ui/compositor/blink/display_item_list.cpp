@@ -11,13 +11,24 @@
 
 #include "./display_item_list.h"
 
+#include "blinkit/ui/compositor/playback/clip_items.h"
 #include "blinkit/ui/compositor/playback/drawing_item.h"
 
 namespace BlinKit {
 
+void DisplayItemList::appendClipItem(const IntRect &visualRect, const IntRect &clipRect, const std::vector<SkRRect> &roundedClipRects)
+{
+    m_displayItems.emplace_back(std::make_unique<ClipItem>(visualRect, clipRect, roundedClipRects));
+}
+
 void DisplayItemList::appendDrawingItem(const IntRect &visualRect, const SkPicture *picture)
 {
     m_displayItems.emplace_back(std::make_unique<DrawingItem>(visualRect, picture));
+}
+
+void DisplayItemList::appendEndClipItem(const IntRect &visualRect)
+{
+    m_displayItems.emplace_back(std::make_unique<EndClipItem>(visualRect));
 }
 
 void DisplayItemList::Playback(SkCanvas &canvas) const
