@@ -316,6 +316,9 @@
     <Filter Include="ui\compositor\playback">
       <UniqueIdentifier>{3b64a6d3-831a-4d80-bdfd-c386e8130bef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ui\compositor\raster">
+      <UniqueIdentifier>{010eca88-e9a6-4df0-9b4a-4d51f184eb55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -4173,9 +4176,6 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\compositor.cpp">
       <Filter>ui\compositor</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\layers\compositing_layer.cpp">
-      <Filter>ui\compositor\layers</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tasks\layer_tasks.cpp">
       <Filter>ui\compositor\tasks</Filter>
     </ClCompile>
@@ -4191,13 +4191,10 @@
     <ClCompile Include="..\..\..\src\blinkit\win\paint_window_task.cpp">
       <Filter>win</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\paint_ui_task.cpp">
-      <Filter>ui\compositor</Filter>
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\raster\raster_context.cpp">
+      <Filter>ui\compositor\raster</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tree_compositor.cpp">
-      <Filter>ui\compositor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tasks\tree_tasks.cpp">
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tasks\paint_ui_task.cpp">
       <Filter>ui\compositor\tasks</Filter>
     </ClCompile>
   </ItemGroup>
@@ -8360,12 +8357,6 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\compositor.h">
       <Filter>ui\compositor</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\compositor_task.h">
-      <Filter>ui\compositor</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\layers\compositing_layer.h">
-      <Filter>ui\compositor\layers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tasks\layer_tasks.h">
       <Filter>ui\compositor\tasks</Filter>
     </ClInclude>
@@ -8573,13 +8564,19 @@
     <ClInclude Include="..\..\..\src\blinkit\win\paint_window_task.h">
       <Filter>win</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\paint_ui_task.h">
-      <Filter>ui\compositor</Filter>
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\raster\raster_result.h">
+      <Filter>ui\compositor\raster</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tree_compositor.h">
-      <Filter>ui\compositor</Filter>
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\raster\raster_context.h">
+      <Filter>ui\compositor\raster</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tasks\tree_tasks.h">
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\raster\raster_input.h">
+      <Filter>ui\compositor\raster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tasks\compositor_task.h">
+      <Filter>ui\compositor\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tasks\paint_ui_task.h">
       <Filter>ui\compositor\tasks</Filter>
     </ClInclude>
   </ItemGroup>
