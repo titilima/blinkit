@@ -42,8 +42,8 @@
 #include "WebCompositorAnimationCurve.h"
 #include "WebScrollOffsetAnimationCurve.h"
 #include "WebScrollbar.h"
-#include "WebScrollbarThemePainter.h"
 #include "blinkit/blink/public/platform/web_layer_tree_view.h"
+#include "blinkit/blink/public/platform/web_scrollbar_theme_painter.h"
 #include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
 
 namespace cc {

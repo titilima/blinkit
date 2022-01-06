@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: WebScrollbarThemeGeometry.h
+//   File Name: web_scrollbar_theme_geometry.h
 // Description: WebScrollbarThemeGeometry Class
 //      Author: Ziming Li
 //     Created: 2021-07-20
@@ -43,7 +43,7 @@ namespace blink {
 
 class WebScrollbar;
 
-class BLINK_PLATFORM_EXPORT WebScrollbarThemeGeometry {
+class WebScrollbarThemeGeometry {
 public:
     virtual ~WebScrollbarThemeGeometry() { }
 

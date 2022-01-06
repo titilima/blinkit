@@ -39,8 +39,8 @@
 #define WebScrollbarLayer_h
 
 #include "blinkit/blink/public/platform/web_layer.h"
-#include "WebScrollbarThemeGeometry.h"
-#include "WebScrollbarThemePainter.h"
+#include "blinkit/blink/public/platform/web_scrollbar_theme_geometry.h"
+#include "blinkit/blink/public/platform/web_scrollbar_theme_painter.h"
 
 namespace blink {
 

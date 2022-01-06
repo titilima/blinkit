@@ -39,6 +39,9 @@
 #include "blinkit/blink/public/platform/web_layer_position_constraint.h"
 #include "blinkit/blink/public/platform/web_layer_tree_view.h"
 #include "blinkit/blink/public/platform/web_scrollbar_layer.h"
+#include "blinkit/blink/public/platform/web_scrollbar_theme_painter.h"
+#include "blinkit/blink/renderer/platform/exported/WebScrollbarThemeGeometryNative.h"
+
 #include "core/dom/Document.h"
 // BKTODO: #include "core/dom/Fullscreen.h"
 #include "core/dom/Node.h"
@@ -58,7 +61,6 @@
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/TraceEvent.h"
 #include "platform/exported/WebScrollbarImpl.h"
-#include "platform/exported/WebScrollbarThemeGeometryNative.h"
 #include "platform/geometry/Region.h"
 #include "platform/geometry/TransformState.h"
 #include "platform/graphics/GraphicsLayer.h"
@@ -70,8 +72,6 @@
 #include "public/platform/Platform.h"
 #include "public/platform/WebCompositorAnimationTimeline.h"
 #include "public/platform/WebCompositorSupport.h"
-#include "public/platform/WebScrollbarThemeGeometry.h"
-#include "public/platform/WebScrollbarThemePainter.h"
 #include "wtf/text/StringBuilder.h"
 
 using blink::WebLayer;

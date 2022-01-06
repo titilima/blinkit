@@ -37,17 +37,16 @@
 #ifndef WebScrollbarThemeGeometryNative_h
 #define WebScrollbarThemeGeometryNative_h
 
-#include "platform/PlatformExport.h"
-#include "public/platform/WebScrollbarThemeGeometry.h"
-#include "wtf/Allocator.h"
-#include "wtf/Noncopyable.h"
+#include "blinkit/blink/public/platform/web_scrollbar_theme_geometry.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
 
 namespace blink {
 
 class ScrollbarTheme;
 class WebScrollbar;
 
-class PLATFORM_EXPORT WebScrollbarThemeGeometryNative : public WebScrollbarThemeGeometry
+class WebScrollbarThemeGeometryNative : public WebScrollbarThemeGeometry
 {
     WTF_MAKE_NONCOPYABLE(WebScrollbarThemeGeometryNative);
 public:

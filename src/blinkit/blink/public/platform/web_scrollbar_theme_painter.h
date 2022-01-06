@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: WebScrollbarThemePainter.h
+//   File Name: web_scrollbar_theme_painter.h
 // Description: WebScrollbarThemePainter Class
 //      Author: Ziming Li
 //     Created: 2021-07-17
