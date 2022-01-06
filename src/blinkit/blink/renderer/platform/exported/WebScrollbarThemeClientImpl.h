@@ -37,16 +37,15 @@
 #ifndef WebScrollbarThemeClientImpl_h
 #define WebScrollbarThemeClientImpl_h
 
-#include "platform/PlatformExport.h"
-#include "platform/scroll/ScrollbarThemeClient.h"
-#include "public/platform/WebScrollbar.h"
-#include "wtf/Allocator.h"
-#include "wtf/Noncopyable.h"
+#include "blinkit/blink/public/platform/web_scrollbar.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollbarThemeClient.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
 
 namespace blink {
 
 // Adapts a WebScrollbar to the ScrollbarThemeClient interface
-class PLATFORM_EXPORT WebScrollbarThemeClientImpl : public ScrollbarThemeClient {
+class WebScrollbarThemeClientImpl : public ScrollbarThemeClient {
     DISALLOW_NEW();
     WTF_MAKE_NONCOPYABLE(WebScrollbarThemeClientImpl);
 public:

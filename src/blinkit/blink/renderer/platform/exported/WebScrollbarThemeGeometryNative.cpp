@@ -36,9 +36,9 @@
 
 #include "platform/exported/WebScrollbarThemeGeometryNative.h"
 
-#include "platform/exported/WebScrollbarThemeClientImpl.h"
-#include "platform/scroll/ScrollbarTheme.h"
-#include "public/platform/WebScrollbar.h"
+#include "blinkit/blink/public/platform/web_scrollbar.h"
+#include "blinkit/blink/renderer/platform/exported/WebScrollbarThemeClientImpl.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollbarTheme.h"
 #include "third_party/zed/include/zed/memory.hpp"
 
 namespace blink {

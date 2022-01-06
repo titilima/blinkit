@@ -36,10 +36,10 @@
 #ifndef WebScrollbarImpl_h
 #define WebScrollbarImpl_h
 
-#include "platform/heap/Handle.h"
-#include "public/platform/WebScrollbar.h"
-#include "wtf/Allocator.h"
-#include "wtf/Noncopyable.h"
+#include "blinkit/blink/public/platform/web_scrollbar.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
 
 namespace blink {
 

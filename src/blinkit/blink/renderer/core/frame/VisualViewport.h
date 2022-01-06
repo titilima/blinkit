@@ -42,12 +42,12 @@
 #ifndef VisualViewport_h
 #define VisualViewport_h
 
-#include "platform/geometry/FloatPoint.h"
-#include "platform/geometry/FloatRect.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/graphics/GraphicsLayerClient.h"
-#include "platform/scroll/ScrollableArea.h"
-#include "public/platform/WebScrollbar.h"
+#include "blinkit/blink/public/platform/web_scrollbar.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
+#include "blinkit/blink/renderer/platform/geometry/IntSize.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsLayerClient.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollableArea.h"
 
 namespace blink {
 class WebLayerTreeView;

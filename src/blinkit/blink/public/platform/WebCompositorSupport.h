@@ -37,12 +37,12 @@
 #ifndef WebCompositorSupport_h
 #define WebCompositorSupport_h
 
-#include "WebCommon.h"
-#include "WebCompositorAnimation.h"
-#include "WebCompositorAnimationCurve.h"
-#include "WebScrollOffsetAnimationCurve.h"
-#include "WebScrollbar.h"
+#include "blinkit/blink/public/platform/WebCommon.h"
+#include "blinkit/blink/public/platform/WebCompositorAnimation.h"
+#include "blinkit/blink/public/platform/WebCompositorAnimationCurve.h"
 #include "blinkit/blink/public/platform/web_layer_tree_view.h"
+#include "blinkit/blink/public/platform/WebScrollOffsetAnimationCurve.h"
+#include "blinkit/blink/public/platform/web_scrollbar.h"
 #include "blinkit/blink/public/platform/web_scrollbar_theme_painter.h"
 #include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
 

@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: WebScrollbar.h
+//   File Name: web_scrollbar.h
 // Description: WebScrollbar Class
 //      Author: Ziming Li
 //     Created: 2021-07-13
@@ -42,7 +42,7 @@
 namespace blink {
 
 // A const accessor interface for a WebKit scrollbar
-class BLINK_PLATFORM_EXPORT WebScrollbar {
+class WebScrollbar {
 public:
     enum Orientation {
         Horizontal,

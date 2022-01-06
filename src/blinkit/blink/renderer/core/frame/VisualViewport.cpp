@@ -43,6 +43,7 @@
 
 #include "blinkit/blink/public/platform/web_layer_tree_view.h"
 #include "blinkit/blink/public/platform/web_scrollbar_layer.h"
+
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
@@ -64,7 +65,6 @@
 #include "platform/scroll/ScrollbarThemeOverlay.h"
 #include "public/platform/Platform.h"
 #include "public/platform/WebCompositorSupport.h"
-#include "public/platform/WebScrollbar.h"
 
 using blink::WebLayer;
 using blink::WebLayerTreeView;
