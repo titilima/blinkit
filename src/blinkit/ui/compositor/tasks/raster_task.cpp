@@ -26,33 +26,23 @@ RasterTask::RasterTask(const IntSize &viewportSize) : m_viewportSize(viewportSiz
 
 RasterTask::~RasterTask(void) = default;
 
-bool RasterTask::AddDirtyLayer(Layer &layer)
+void RasterTask::AddDirtyLayer(Layer &layer, const IntRect &layerRect)
 {
     ASSERT(layer.drawsContent());
 
-    IntRect dirtyRect = layer.TakeDirtyRect();
-    if (dirtyRect.isEmpty())
-    {
-        dirtyRect.setSize(layer.Bounds());
-        if (dirtyRect.isEmpty())
-            return false;
-    }
+    m_dirtyRect.unite(layer.TakeDirtyRect());
 
-    PaintContext &context = m_input.emplace_back(layer.id(), layer.Bounds(), dirtyRect);
-    layer.Client()->PaintContents(*context.displayItems);
-    return true;
+    IntRect dirtyRectInLayer(m_dirtyRect);
+    dirtyRectInLayer.intersect(layerRect);
+    dirtyRectInLayer.moveBy(-layerRect.location());
+
+    PaintContext &paintContext = m_input.emplace_back(layer.id(), layer.Bounds(), dirtyRectInLayer);
+    layer.Client()->PaintContents(*paintContext.displayItems);
 }
 
-void RasterTask::Rasterize(const RasterContext &context, const Layer &layer, bool updateDirtyRect)
+void RasterTask::Rasterize(const Layer &layer, const IntRect &layerRect)
 {
-    IntPoint offset = context.CalculateOffset(layer.Position());
-    const LayerData &layerData = m_result.emplace_back(layer.id(), IntRect(offset, layer.Bounds()));
-    if (updateDirtyRect)
-    {
-        IntRect dirtyRect(m_input.back().dirtyRect);
-        dirtyRect.moveBy(offset);
-        m_dirtyRect.unite(dirtyRect);
-    }
+    m_result.emplace_back(layer.id(), layerRect);
 }
 
 void RasterTask::Run(Compositor &compositor)

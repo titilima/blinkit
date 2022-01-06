@@ -705,7 +705,8 @@ IntRect Layer::TakeDirtyRect(void)
     ASSERT(m_dirty);
 
     IntRect ret(m_updateRect);
-    m_updateRect = IntRect();
+    if (!m_updateRect.isEmpty())
+        m_updateRect = IntRect();
     return ret;
 }
 
@@ -713,13 +714,13 @@ void Layer::Update(const RasterContext &context, RasterTask &session)
 {
     if (m_drawsContent)
     {
-        bool updateDirtyRect = false;
+        const IntRect layerRect = context.CalculateLayerRect(*this);
         if (m_dirty)
         {
-            updateDirtyRect = session.AddDirtyLayer(*this);
+            session.AddDirtyLayer(*this, layerRect);
             m_dirty = false;
         }
-        session.Rasterize(context, *this, updateDirtyRect);
+        session.Rasterize(*this, layerRect);
     }
 
     RasterContext contextForChildren(context, *this);

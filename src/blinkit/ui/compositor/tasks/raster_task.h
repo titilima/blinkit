@@ -36,8 +36,8 @@ public:
     bool HasNothingToDo(void) const { return m_input.empty(); }
     const RasterResult& Result(void) const { return m_result; }
 
-    bool AddDirtyLayer(Layer &layer);
-    void Rasterize(const RasterContext &context, const Layer &layer, bool updateDirtyRect);
+    void AddDirtyLayer(Layer &layer, const IntRect &layerRect);
+    void Rasterize(const Layer &layer, const IntRect &layerRect);
 
     void SavePaintTask(std::unique_ptr<PaintUITask> &paintTask);
 private:
