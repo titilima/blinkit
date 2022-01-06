@@ -13,13 +13,14 @@
 #ifndef BLINKIT_SCROLLBAR_LAYER_H
 #define BLINKIT_SCROLLBAR_LAYER_H
 
-#include "blinkit/blink/public/platform/WebScrollbar.h"
+#include "blinkit/blink/public/platform/web_scrollbar.h"
 #include "blinkit/blink/public/platform/web_scrollbar_layer.h"
 #include "blinkit/ui/compositor/layers/layer_client.h"
 
 namespace BlinKit {
 
 class Layer;
+class ScrollbarPainter;
 
 class ScrollbarLayer final : public WebScrollbarLayer, public LayerClient
 {
@@ -36,6 +37,7 @@ private:
 
     int m_scrollLayerId;
     std::unique_ptr<Layer> m_layer;
+    std::unique_ptr<ScrollbarPainter> m_painter;
 };
 
 } // namespace BlinKit

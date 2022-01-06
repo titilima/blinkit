@@ -31,6 +31,7 @@ class RasterTask;
 class Layer : public WebLayer
 {
 public:
+    Layer(LayerClient *client);
     ~Layer(void) override;
     enum { INVALID_ID = 0 };
 
@@ -60,8 +61,6 @@ public:
     // WebLayer
     void removeFromParent(void) override;
     bool drawsContent(void) const override { return m_drawsContent; }
-protected:
-    Layer(LayerClient *client);
 private:
     void AddDrawableDescendants(int num);
     int NumDescendantsThatDrawContent(void) const { return m_numDescendantsThatDrawContent; }
