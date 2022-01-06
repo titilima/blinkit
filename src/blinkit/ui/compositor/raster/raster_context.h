@@ -14,6 +14,7 @@
 #define BLINKIT_RASTER_CONTEXT_H
 
 #include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
 #include "blinkit/blink/renderer/wtf/Allocator.h"
 
 namespace BlinKit {
@@ -30,6 +31,7 @@ public:
     IntPoint CalculateOffset(const FloatPoint &position) const {
         return roundedIntPoint(m_offset + position);
     }
+    IntRect CalculateLayerRect(const Layer &layer) const;
 private:
     const FloatPoint m_offset;
 };

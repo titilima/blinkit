@@ -27,4 +27,9 @@ RasterContext::RasterContext(const RasterContext &parent, const Layer &currentLa
     ASSERT(isMainThread());
 }
 
+IntRect RasterContext::CalculateLayerRect(const Layer &layer) const
+{
+    return IntRect(roundedIntPoint(m_offset + layer.Position()), layer.Bounds());
+}
+
 } // namespace BlinKit
