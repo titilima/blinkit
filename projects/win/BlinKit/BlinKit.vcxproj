@@ -1123,8 +1123,8 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarImpl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarThemeClientImpl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarThemeGeometryNative.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarThemePainter.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebTraceLocation.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\web_scrollbar_theme_painter.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\FileChooser.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\FileMetadata.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\FontFamilyNames.cpp" />
@@ -1420,8 +1420,8 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\blink\layer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\blink\scrollbar_layer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\compositor.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\layers\painted_scrollbar_layer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\layers\picture_layer.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\layers\scrollbar_painters.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\layers\solid_color_scrollbar_layer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\layer_tree_host.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\playback\clip_items.cpp" />
@@ -1514,11 +1514,8 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebPointerProperties.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebReferrerPolicy.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScreenInfo.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbar.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarBehavior.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarButtonsPlacement.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarThemeGeometry.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarThemePainter.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollBlocksOn.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollOffsetAnimationCurve.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollStateData.h" />
@@ -1539,7 +1536,10 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_layer.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_layer_position_constraint.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_layer_tree_view.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_scrollbar.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_scrollbar_layer.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_scrollbar_theme_geometry.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_scrollbar_theme_painter.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\web\blink.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebContextMenuData.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebInputEvent.h" />
@@ -2573,6 +2573,9 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleVisualData.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\StyleWillChangeData.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\style\TransformOrigin.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarImpl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarThemeClientImpl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarThemeGeometryNative.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\AlternateFontFamily.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\Character.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\CustomFontData.h" />
@@ -2890,8 +2893,8 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\blink\scrollbar_layer.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\compositor.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\layers\layer_client.h" />
-    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\layers\painted_scrollbar_layer.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\layers\picture_layer.h" />
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\layers\scrollbar_painters.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\layers\solid_color_scrollbar_layer.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\layer_tree_host.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\playback\clip_items.h" />

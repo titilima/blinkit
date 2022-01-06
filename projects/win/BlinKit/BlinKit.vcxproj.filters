@@ -3933,9 +3933,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\layout\line\BreakingContext.cpp">
       <Filter>blink\renderer\core\layout\line</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarThemePainter.cpp">
-      <Filter>blink\renderer\platform\exported</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\win\FontPlatformDataWin.cpp">
       <Filter>blink\renderer\platform\fonts\win</Filter>
     </ClCompile>
@@ -4161,9 +4158,6 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\blink\scrollbar_layer.cpp">
       <Filter>ui\compositor\blink</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\layers\painted_scrollbar_layer.cpp">
-      <Filter>ui\compositor\layers</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\layers\solid_color_scrollbar_layer.cpp">
       <Filter>ui\compositor\layers</Filter>
     </ClCompile>
@@ -4199,6 +4193,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\playback\clip_items.cpp">
       <Filter>ui\compositor\playback</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\layers\scrollbar_painters.cpp">
+      <Filter>ui\compositor\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\web_scrollbar_theme_painter.cpp">
+      <Filter>blink\renderer\platform\exported</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -8264,19 +8264,10 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScreenInfo.h">
       <Filter>blink\public\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbar.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarBehavior.h">
       <Filter>blink\public\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarButtonsPlacement.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarThemeGeometry.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollbarThemePainter.h">
       <Filter>blink\public\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebScrollBlocksOn.h">
@@ -8341,9 +8332,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\blink\scrollbar_layer.h">
       <Filter>ui\compositor\blink</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\layers\painted_scrollbar_layer.h">
-      <Filter>ui\compositor\layers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\layers\solid_color_scrollbar_layer.h">
       <Filter>ui\compositor\layers</Filter>
@@ -8583,6 +8571,27 @@
       <Filter>ui\compositor\playback</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_layer_tree_view.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\layers\scrollbar_painters.h">
+      <Filter>ui\compositor\layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_scrollbar_theme_geometry.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarImpl.h">
+      <Filter>blink\renderer\platform\exported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarThemeClientImpl.h">
+      <Filter>blink\renderer\platform\exported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebScrollbarThemeGeometryNative.h">
+      <Filter>blink\renderer\platform\exported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_scrollbar_theme_painter.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_scrollbar.h">
       <Filter>blink\public\platform</Filter>
     </ClInclude>
   </ItemGroup>
