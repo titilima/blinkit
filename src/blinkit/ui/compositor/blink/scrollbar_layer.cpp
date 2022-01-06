@@ -37,6 +37,11 @@ ScrollbarLayer::ScrollbarLayer(
 {
 }
 
+ScrollbarLayer::~ScrollbarLayer(void)
+{
+    m_layer->removeFromParent();
+}
+
 WebLayer* ScrollbarLayer::layer(void)
 {
     return m_layer.get();

@@ -23,7 +23,10 @@ WebViewHost::WebViewHost(const BkWebViewClient &client, PageVisibilityState visi
 {
 }
 
-WebViewHost::~WebViewHost(void) = default;
+WebViewHost::~WebViewHost(void)
+{
+    delete m_view;
+}
 
 void WebViewHost::EnterAnimationSession(void)
 {

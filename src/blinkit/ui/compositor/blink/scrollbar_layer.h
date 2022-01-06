@@ -28,6 +28,7 @@ public:
         std::unique_ptr<WebScrollbarThemeGeometry> &geometry);
     ScrollbarLayer(WebScrollbar::Orientation orientation, int thumbThickness, int trackStart,
         bool isLeftSideVerticalScrollbar);
+    ~ScrollbarLayer(void) override;
 private:
     WebLayer* layer(void) override;
     void setScrollLayer(WebLayer *layer) override;

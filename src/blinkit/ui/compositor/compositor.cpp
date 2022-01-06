@@ -16,6 +16,7 @@
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 #ifndef NDEBUG
+#   include "blinkit/ui/compositor/blink/layer.h"
 #   include "third_party/skia/include/core/SkTypeface.h"
 #endif
 
@@ -45,6 +46,7 @@ Compositor::~Compositor(void)
     join();
 
     ASSERT(m_layerBitmaps.empty());
+    ASSERT(g_allLayers.empty());
 }
 
 void Compositor::BlendBitmapToCanvas(
@@ -148,10 +150,7 @@ void Compositor::TaskLoop(void)
             t->Run(*this);
 
             if (!m_running)
-            {
-                delete this;
                 return;
-            }
 
             tasks.pop();
         }

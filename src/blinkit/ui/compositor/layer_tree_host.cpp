@@ -21,7 +21,12 @@
 namespace BlinKit {
 
 LayerTreeHost::LayerTreeHost(void) = default;
-LayerTreeHost::~LayerTreeHost(void) = default;
+
+LayerTreeHost::~LayerTreeHost(void)
+{
+    if (nullptr != m_rootLayer)
+        m_rootLayer->SetLayerTreeHost(nullptr);
+}
 
 void LayerTreeHost::clearRootLayer(void)
 {

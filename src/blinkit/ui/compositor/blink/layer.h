@@ -58,6 +58,7 @@ public:
 #endif
 
     // WebLayer
+    void removeFromParent(void) override;
     bool drawsContent(void) const override { return m_drawsContent; }
 protected:
     Layer(LayerClient *client);
@@ -94,7 +95,6 @@ private:
     void invalidate(void) override;
     void addChild(WebLayer *child) override;
     void insertChild(WebLayer *child, size_t index) override;
-    void removeFromParent(void) override;
     void removeAllChildren(void) override;
     void setBounds(const IntSize &size) override;
     IntSize bounds(void) const override { return m_bounds; }
@@ -190,6 +190,10 @@ private:
     bool m_useParentBackfaceVisibility = false;
     bool m_userScrollableHorizontal = true, m_userScrollableVertical = true;
 };
+
+#ifndef NDEBUG
+extern std::unordered_set<Layer *> g_allLayers;
+#endif
 
 } // namespace BlinKit
 

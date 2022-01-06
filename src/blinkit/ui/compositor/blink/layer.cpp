@@ -21,13 +21,29 @@
 
 namespace BlinKit {
 
+#ifndef NDEBUG
+std::unordered_set<Layer *> g_allLayers;
+#endif
+
 Layer::Layer(LayerClient *client) : m_client(client)
 {
+#ifndef NDEBUG
+    g_allLayers.emplace(this);
+#endif
 }
 
 Layer::~Layer(void)
 {
+    ASSERT(nullptr == m_parent);
+    ASSERT(nullptr == m_layerTreeHost);
+
+    for (Layer *child : m_children)
+        child->m_parent = nullptr;
+
     PostTaskToCompositor(new ReleaseBitmapTask(this));
+#ifndef NDEBUG
+    g_allLayers.erase(this);
+#endif
 }
 
 void Layer::addChild(WebLayer *child)

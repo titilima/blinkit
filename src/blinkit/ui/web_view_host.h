@@ -37,7 +37,7 @@ class WebViewHost
 public:
     virtual ~WebViewHost(void);
 
-    WebViewImpl* GetView(void) const { return m_view.get(); }
+    WebViewImpl* GetView(void) const { return m_view; }
     WebLayerTreeView* GetLayerTreeView(void) const;
 
     void EnterAnimationSession(void);
@@ -62,7 +62,7 @@ protected:
     void Resize(const IntSize &size);
     void SetScaleFactor(float scaleFactor);
 private:
-    std::unique_ptr<WebViewImpl> m_view;
+    WebViewImpl *m_view;
     std::unique_ptr<LayerTreeHost> m_layerTreeHost;
 };
 
