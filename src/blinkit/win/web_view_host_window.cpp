@@ -21,8 +21,6 @@
 #include "blinkit/win/context_menu_controller.h"
 #include "blinkit/win/message_task.h"
 #include "blinkit/win/paint_window_task.h"
-#include "third_party/zed/include/zed/float.hpp"
-#include "third_party/zed/include/zed/log.hpp"
 
 using namespace blink;
 
