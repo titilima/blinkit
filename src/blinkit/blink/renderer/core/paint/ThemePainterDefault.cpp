@@ -33,18 +33,17 @@
  *
  */
 
-#include "core/paint/ThemePainterDefault.h"
+#include "./ThemePainterDefault.h"
 
-#include "core/layout/LayoutObject.h"
-#include "core/layout/LayoutProgress.h"
-#include "core/layout/LayoutTheme.h"
-#include "core/paint/PaintInfo.h"
-#include "platform/LayoutTestSupport.h"
-#include "platform/graphics/Color.h"
-#include "platform/graphics/GraphicsContext.h"
-#include "platform/graphics/GraphicsContextStateSaver.h"
-#include "public/platform/Platform.h"
-#include "public/platform/WebThemeEngine.h"
+#include "blinkit/blink/public/platform/Platform.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/core/layout/LayoutProgress.h"
+#include "blinkit/blink/renderer/core/layout/LayoutTheme.h"
+#include "blinkit/blink/renderer/core/paint/PaintInfo.h"
+#include "blinkit/blink/renderer/platform/LayoutTestSupport.h"
+#include "blinkit/blink/renderer/platform/graphics/Color.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsContext.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsContextStateSaver.h"
 
 namespace blink {
 

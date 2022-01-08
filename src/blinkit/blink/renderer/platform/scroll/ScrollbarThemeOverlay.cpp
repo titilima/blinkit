@@ -34,18 +34,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/scroll/ScrollbarThemeOverlay.h"
-
-#include "platform/PlatformMouseEvent.h"
-#include "platform/graphics/GraphicsContext.h"
-#include "platform/graphics/paint/DrawingRecorder.h"
-#include "platform/scroll/ScrollbarThemeClient.h"
-#include "platform/transforms/TransformationMatrix.h"
-#include "public/platform/Platform.h"
-#include "public/platform/WebThemeEngine.h"
-#include "wtf/MathExtras.h"
+#include "./ScrollbarThemeOverlay.h"
 
 #include <algorithm>
+#include "blinkit/blink/public/platform/Platform.h"
+#include "blinkit/blink/public/platform/web_theme_engine.h"
+#include "blinkit/blink/renderer/platform/PlatformMouseEvent.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsContext.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/DrawingRecorder.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollbarThemeClient.h"
+#include "blinkit/blink/renderer/platform/transforms/TransformationMatrix.h"
+#include "blinkit/blink/renderer/wtf/MathExtras.h"
 
 namespace blink {
 

@@ -33,19 +33,19 @@
  *
  */
 
-#include "core/layout/LayoutThemeDefault.h"
+#include "./LayoutThemeDefault.h"
 
-#include "core/CSSValueKeywords.h"
-#include "core/layout/LayoutObject.h"
-#include "core/layout/LayoutProgress.h"
-#include "core/layout/LayoutThemeFontProvider.h"
-// BKTODO: #include "core/paint/MediaControlsPainter.h"
-#include "platform/LayoutTestSupport.h"
-#include "platform/PlatformResourceLoader.h"
-#include "platform/graphics/Color.h"
-#include "platform/scroll/ScrollbarTheme.h"
-#include "public/platform/Platform.h"
-#include "public/platform/WebThemeEngine.h"
+#include "blinkit/blink/public/platform/Platform.h"
+#include "blinkit/blink/public/platform/web_theme_engine.h"
+#include "blinkit/blink/renderer/core/CSSValueKeywords.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/core/layout/LayoutProgress.h"
+#include "blinkit/blink/renderer/core/layout/LayoutThemeFontProvider.h"
+// BKTODO: #include "blinkit/blink/renderer/core/paint/MediaControlsPainter.h"
+#include "blinkit/blink/renderer/platform/LayoutTestSupport.h"
+#include "blinkit/blink/renderer/platform/PlatformResourceLoader.h"
+#include "blinkit/blink/renderer/platform/graphics/Color.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollbarTheme.h"
 
 namespace blink {
 

@@ -34,29 +34,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/scroll/ScrollbarTheme.h"
+#include "./ScrollbarTheme.h"
 
 #include <optional>
-#include "platform/PlatformMouseEvent.h"
-#include "platform/RuntimeEnabledFeatures.h"
-#include "platform/graphics/Color.h"
-#include "platform/graphics/GraphicsContext.h"
-#include "platform/graphics/paint/CompositingRecorder.h"
-#include "platform/graphics/paint/CullRect.h"
-#include "platform/graphics/paint/DrawingDisplayItem.h"
-#include "platform/graphics/paint/DrawingRecorder.h"
-#include "platform/graphics/paint/PaintController.h"
-#include "platform/scroll/ScrollbarThemeClient.h"
+#include "blinkit/blink/public/platform/Platform.h"
+#include "blinkit/blink/public/platform/WebScrollbarBehavior.h"
+#include "blinkit/blink/renderer/platform/PlatformMouseEvent.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/platform/graphics/Color.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsContext.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/CompositingRecorder.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/CullRect.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/DrawingDisplayItem.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/DrawingRecorder.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/PaintController.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollbarThemeClient.h"
 #if 0 // BKTODO:
-#include "platform/scroll/ScrollbarThemeMock.h"
-#include "platform/scroll/ScrollbarThemeOverlayMock.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollbarThemeMock.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollbarThemeOverlayMock.h"
 #endif
-#include "public/platform/Platform.h"
-#include "public/platform/WebScrollbarBehavior.h"
-#include "third_party/zed/include/zed/float.hpp"
 
 #if !OS(MACOSX)
-#include "public/platform/WebThemeEngine.h"
+#   include "blinkit/blink/public/platform/web_theme_engine.h"
 #endif
 
 namespace blink {

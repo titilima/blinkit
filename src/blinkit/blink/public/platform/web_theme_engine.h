@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: WebThemeEngine.h
+//   File Name: web_theme_engine.h
 // Description: WebThemeEngine Class
 //      Author: Ziming Li
 //     Created: 2021-07-28
@@ -42,8 +42,8 @@
 #ifndef WebThemeEngine_h
 #define WebThemeEngine_h
 
-#include "WebCanvas.h"
-#include "WebColor.h"
+#include "blinkit/blink/public/platform/WebCanvas.h"
+#include "blinkit/blink/public/platform/WebColor.h"
 #include "blinkit/blink/renderer/platform/geometry/IntSize.h"
 
 namespace blink {

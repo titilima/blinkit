@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ThemePainterDefault.h
+// Description: ThemePainterDefault Class
+//      Author: Ziming Li
+//     Created: 2022-01-08
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * This file is part of the WebKit project.
  *
@@ -29,8 +40,8 @@
 #ifndef ThemePainterDefault_h
 #define ThemePainterDefault_h
 
-#include "core/paint/ThemePainter.h"
-#include "public/platform/WebThemeEngine.h"
+#include "blinkit/blink/public/platform/web_theme_engine.h"
+#include "blinkit/blink/renderer/core/paint/ThemePainter.h"
 
 namespace blink {
 
