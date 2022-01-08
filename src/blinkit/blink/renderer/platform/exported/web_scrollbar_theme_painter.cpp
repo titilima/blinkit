@@ -71,8 +71,7 @@ void WebScrollbarThemePainter::paintScrollbarBackground(WebCanvas* canvas, const
     SkRect clip = SkRect::MakeXYWH(rect.x(), rect.y(), rect.width(), rect.height());
     canvas->clipRect(clip);
 
-    IntRect intRect(rect);
-    SkPictureBuilder pictureBuilder(intRect);
+    SkPictureBuilder pictureBuilder(rect);
     pictureBuilder.context().setDeviceScaleFactor(m_deviceScaleFactor);
     m_theme->paintScrollbarBackground(pictureBuilder.context(), *m_scrollbar);
     pictureBuilder.endRecording()->playback(canvas);
@@ -106,8 +105,7 @@ void WebScrollbarThemePainter::paintForwardTrackPart(WebCanvas* canvas, const In
 
 void WebScrollbarThemePainter::paintBackButtonStart(WebCanvas* canvas, const IntRect& rect)
 {
-    IntRect intRect(rect);
-    SkPictureBuilder pictureBuilder(intRect);
+    SkPictureBuilder pictureBuilder(rect);
     pictureBuilder.context().setDeviceScaleFactor(m_deviceScaleFactor);
     m_theme->paintButton(pictureBuilder.context(), *m_scrollbar, rect, BackButtonStartPart);
     pictureBuilder.endRecording()->playback(canvas);
