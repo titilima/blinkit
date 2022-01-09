@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IntRect.cpp
+// Description: IntRect Class
+//      Author: Ziming Li
+//     Created: 2022-01-09
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006, 2009 Apple Inc. All rights reserved.
  *
@@ -23,13 +34,24 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/geometry/IntRect.h"
-
-#include "platform/geometry/FloatRect.h"
-#include "platform/geometry/LayoutRect.h"
-#include "third_party/skia/include/core/SkRect.h"
+#include "./IntRect.h"
 
 #include <algorithm>
+#include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutRect.h"
+#include "third_party/skia/include/core/SkRect.h"
+
+#ifndef NDEBUG
+namespace zed {
+template <>
+void log_serializer::push<blink::IntRect>(std::vector<std::string> &dst, const blink::IntRect &rect)
+{
+    char buf[64];
+    sprintf(buf, "[IntRect (%d, %d) of %dx%x]", rect.x(), rect.y(), rect.width(), rect.height());
+    dst.emplace_back(buf);
+}
+}
+#endif
 
 namespace blink {
 

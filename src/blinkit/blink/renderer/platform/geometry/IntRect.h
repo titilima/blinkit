@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IntRect.h
+// Description: IntRect Class
+//      Author: Ziming Li
+//     Created: 2022-01-09
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006, 2009 Apple Inc. All rights reserved.
  *
@@ -26,11 +38,11 @@
 #ifndef IntRect_h
 #define IntRect_h
 
-#include "platform/geometry/IntPoint.h"
-#include "platform/geometry/IntRectOutsets.h"
-#include "wtf/Allocator.h"
-#include "wtf/Vector.h"
-#include "wtf/VectorTraits.h"
+#include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/IntRectOutsets.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
+#include "blinkit/blink/renderer/wtf/VectorTraits.h"
 
 #if OS(MACOSX)
 typedef struct CGRect CGRect;
@@ -227,5 +239,12 @@ PLATFORM_EXPORT IntRect enclosingIntRect(const NSRect&);
 } // namespace blink
 
 WTF_ALLOW_MOVE_INIT_AND_COMPARE_WITH_MEM_FUNCTIONS(blink::IntRect);
+
+#ifndef NDEBUG
+namespace zed {
+template <>
+void log_serializer::push<blink::IntRect>(std::vector<std::string> &dst, const blink::IntRect &rect);
+}
+#endif
 
 #endif // IntRect_h
