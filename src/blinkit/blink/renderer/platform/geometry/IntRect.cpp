@@ -47,7 +47,7 @@ template <>
 void log_serializer::push<blink::IntRect>(std::vector<std::string> &dst, const blink::IntRect &rect)
 {
     char buf[64];
-    sprintf(buf, "[IntRect (%d, %d) of %dx%x]", rect.x(), rect.y(), rect.width(), rect.height());
+    sprintf(buf, "[IntRect (%d, %d) of %dx%d]", rect.x(), rect.y(), rect.width(), rect.height());
     dst.emplace_back(buf);
 }
 }
