@@ -121,7 +121,7 @@ void WinThemeEngine::paint(WebCanvas *canvas, Part part, State state, const IntR
 
     SkCanvas dcCanvas(bitmap);
 
-    const SkColor placeholder = SkColorSetARGB(1, 0, 0, 0);
+    constexpr SkColor placeholder = SkColorSetARGBMacro(1, 0, 0, 0);
     dcCanvas.clear(placeholder);
 
     (this->*m_paint)(hdc, part, state, rect.size(), extra);
@@ -146,6 +146,7 @@ void WinThemeEngine::paint(WebCanvas *canvas, Part part, State state, const IntR
                 SkGetPackedB32(pixels[i]));
         }
     }
+    bitmap.setImmutable();
     canvas->drawBitmap(bitmap, static_cast<SkScalar>(rect.x()), static_cast<SkScalar>(rect.y()));
 
     SelectObject(hdc, oldBitmap);
