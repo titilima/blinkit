@@ -30,11 +30,11 @@ void RasterTask::AddDirtyLayer(Layer &layer, const IntRect &layerRect)
 {
     ASSERT(layer.drawsContent());
 
-    m_dirtyRect.unite(layer.TakeDirtyRect());
+    const IntRect dirtyRectInLayer = layer.TakeDirtyRect();
 
-    IntRect dirtyRectInLayer(m_dirtyRect);
-    dirtyRectInLayer.intersect(layerRect);
-    dirtyRectInLayer.moveBy(-layerRect.location());
+    IntRect dirtyRect(dirtyRectInLayer);
+    dirtyRect.moveBy(layerRect.location());
+    m_dirtyRect.unite(dirtyRect);
 
     PaintContext &paintContext = m_input.emplace_back(layer.id(), layer.Bounds(), dirtyRectInLayer);
     layer.Client()->PaintContents(*paintContext.displayItems);

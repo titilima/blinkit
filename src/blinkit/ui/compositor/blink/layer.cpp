@@ -96,7 +96,17 @@ void Layer::insertChild(WebLayer *child, size_t index)
 
 void Layer::invalidate(void)
 {
-    invalidateRect(IntRect(IntPoint(), m_bounds));
+    if (m_fullyInvaldated)
+        return;
+
+    SetNeedsPushProperties();
+    m_fullyInvaldated = true;
+
+    if (drawsContent())
+    {
+        m_dirty = true;
+        SetNeedsUpdate();
+    }
 }
 
 void Layer::invalidateRect(const IntRect &rect)
@@ -716,9 +726,14 @@ IntRect Layer::TakeDirtyRect(void)
 {
     ASSERT(m_dirty);
 
-    IntRect ret(m_updateRect);
-    if (!m_updateRect.isEmpty())
-        m_updateRect = IntRect();
+    IntRect ret;
+    if (m_fullyInvaldated)
+        ret.setSize(m_bounds);
+    else
+        ret = m_updateRect;
+
+    m_fullyInvaldated = false;
+    m_updateRect = IntRect();
     return ret;
 }
 

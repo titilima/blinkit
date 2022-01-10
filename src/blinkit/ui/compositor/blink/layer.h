@@ -180,12 +180,15 @@ private:
     bool m_stackingOrderChanged = false;
     SkMatrix44 m_transform;
     FloatPoint3D m_transformOrigin;
+
+    bool m_fullyInvaldated = false;
     // The update rect is the region of the compositor resource that was
     // actually updated by the compositor. For layers that may do updating
     // outside the compositor's control (i.e. plugin layers), this information
     // is not available and the update rect will remain empty.
     // Note this rect is in layer space (not content space).
     IntRect m_updateRect;
+
     bool m_useParentBackfaceVisibility = false;
     bool m_userScrollableHorizontal = true, m_userScrollableVertical = true;
 };
