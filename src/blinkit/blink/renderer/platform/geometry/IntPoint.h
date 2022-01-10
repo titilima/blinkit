@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IntPoint.h
+// Description: IntPoint Class
+//      Author: Ziming Li
+//     Created: 2022-01-10
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -27,10 +39,9 @@
 #ifndef IntPoint_h
 #define IntPoint_h
 
-#include "platform/geometry/IntSize.h"
-#include "wtf/Allocator.h"
-#include "wtf/MathExtras.h"
-#include "wtf/VectorTraits.h"
+#include "blinkit/blink/renderer/platform/geometry/IntSize.h"
+#include "blinkit/blink/renderer/wtf/MathExtras.h"
+#include "blinkit/blink/renderer/wtf/VectorTraits.h"
 
 #if OS(MACOSX)
 typedef struct CGPoint CGPoint;
@@ -42,8 +53,8 @@ typedef struct CGPoint CGPoint;
 
 namespace blink {
 
-class PLATFORM_EXPORT IntPoint {
-    USING_FAST_MALLOC(IntPoint);
+class IntPoint
+{
 public:
     IntPoint() : m_x(0), m_y(0) { }
     IntPoint(int x, int y) : m_x(x), m_y(y) { }
@@ -164,5 +175,12 @@ inline int IntPoint::distanceSquaredToPoint(const IntPoint& point) const
 } // namespace blink
 
 WTF_ALLOW_MOVE_INIT_AND_COMPARE_WITH_MEM_FUNCTIONS(blink::IntPoint);
+
+#ifndef NDEBUG
+namespace zed {
+template <>
+void log_serializer::push<blink::IntPoint>(std::vector<std::string> &dst, const blink::IntPoint &point);
+}
+#endif
 
 #endif // IntPoint_h

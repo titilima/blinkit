@@ -43,6 +43,15 @@
 
 #ifndef NDEBUG
 namespace zed {
+
+template <>
+void log_serializer::push<blink::IntPoint>(std::vector<std::string> &dst, const blink::IntPoint &point)
+{
+    char buf[64];
+    sprintf(buf, "[IntPoint (%d, %d)]", point.x(), point.y());
+    dst.emplace_back(buf);
+}
+
 template <>
 void log_serializer::push<blink::IntRect>(std::vector<std::string> &dst, const blink::IntRect &rect)
 {
@@ -50,8 +59,17 @@ void log_serializer::push<blink::IntRect>(std::vector<std::string> &dst, const b
     sprintf(buf, "[IntRect (%d, %d) of %dx%d]", rect.x(), rect.y(), rect.width(), rect.height());
     dst.emplace_back(buf);
 }
+
+template <>
+void log_serializer::push<blink::IntSize>(std::vector<std::string> &dst, const blink::IntSize &size)
+{
+    char buf[64];
+    sprintf(buf, "[IntSize %dx%d]", size.width(), size.height());
+    dst.emplace_back(buf);
 }
-#endif
+
+}
+#endif // NDEBUG
 
 namespace blink {
 

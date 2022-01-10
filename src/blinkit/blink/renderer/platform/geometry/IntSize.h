@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IntSize.h
+// Description: IntSize Class
+//      Author: Ziming Li
+//     Created: 2022-01-10
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2004, 2005, 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -27,9 +39,8 @@
 #ifndef IntSize_h
 #define IntSize_h
 
-#include "platform/PlatformExport.h"
-#include "public/platform/WebCommon.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/public/platform/WebCommon.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
 
 #if OS(MACOSX)
 typedef struct CGSize CGSize;
@@ -41,7 +52,8 @@ typedef struct CGSize CGSize;
 
 namespace blink {
 
-class PLATFORM_EXPORT IntSize {
+class IntSize
+{
     DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
 public:
     IntSize() : m_width(0), m_height(0) { }
@@ -170,5 +182,12 @@ inline bool operator!=(const IntSize& a, const IntSize& b)
 }
 
 } // namespace blink
+
+#ifndef NDEBUG
+namespace zed {
+template <>
+void log_serializer::push<blink::IntSize>(std::vector<std::string> &dst, const blink::IntSize &size);
+}
+#endif
 
 #endif // IntSize_h

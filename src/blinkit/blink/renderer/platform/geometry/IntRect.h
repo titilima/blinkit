@@ -40,9 +40,7 @@
 
 #include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
 #include "blinkit/blink/renderer/platform/geometry/IntRectOutsets.h"
-#include "blinkit/blink/renderer/wtf/Allocator.h"
 #include "blinkit/blink/renderer/wtf/Vector.h"
-#include "blinkit/blink/renderer/wtf/VectorTraits.h"
 
 #if OS(MACOSX)
 typedef struct CGRect CGRect;
