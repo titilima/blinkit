@@ -217,9 +217,13 @@ void WebViewImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 }
 #endif
 
+void WebViewImpl::dispatchDidFinishDocumentLoad(bool)
+{
+    ResumeTreeViewCommitsIfRenderingReady();
+}
+
 void WebViewImpl::dispatchDidFinishLoad(void)
 {
-    m_loadFinished = true;
 #if 0
     if (nullptr != m_host)
         m_host->ScheduleAnimation();
@@ -670,7 +674,6 @@ int WebViewImpl::LoadUI(const char *URI)
         ASSERT(!u.scheme_is_in_http_family()); // Standard URL is for crawlers only!
         return BK_ERR_URI;
     }
-    m_loadFinished = false;
 
     ResourceRequest request(u);
     m_frame->loader().load(FrameLoadRequest(nullptr, request));
@@ -1031,10 +1034,9 @@ void WebViewImpl::ResizeWithBrowserControls(
 
 void WebViewImpl::ResumeTreeViewCommitsIfRenderingReady(void)
 {
-    LocalFrame *frame = m_frame.get();
-    if (!frame->loader().stateMachine()->committedFirstRealDocumentLoad())
+    if (!m_frame->loader().stateMachine()->committedFirstRealDocumentLoad())
         return;
-    if (!frame->document()->isRenderingReady())
+    if (!m_frame->document()->isRenderingReady())
         return;
 
     if (nullptr != m_layerTreeView)
@@ -1046,9 +1048,6 @@ void WebViewImpl::ResumeTreeViewCommitsIfRenderingReady(void)
 
 void WebViewImpl::scheduleAnimation(void)
 {
-    if (!m_loadFinished)
-        return;
-
     if (nullptr != m_layerTreeView)
         m_layerTreeView->setNeedsBeginFrame();
     else if (nullptr != m_host)

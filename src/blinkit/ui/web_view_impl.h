@@ -169,6 +169,7 @@ private:
 #endif
     // FrameLoaderClient
     void dispatchDidReceiveTitle(const String &title) override;
+    void dispatchDidFinishDocumentLoad(bool documentIsEmpty) override;
     void dispatchDidFinishLoad(void) override;
     void transitionToCommittedForNewPage(void) override;
     void didRemoveAllPendingStylesheet(void) override;
@@ -228,7 +229,6 @@ private:
     std::unique_ptr<blink::ResizeViewportAnchor> m_resizeViewportAnchor;
 #endif
 
-    bool m_loadFinished = false;
     mutable std::unordered_map<blink::Element *, std::unique_ptr<ElementImpl>> m_exposedElements;
 };
 
