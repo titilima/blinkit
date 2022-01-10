@@ -196,4 +196,11 @@ extern std::unordered_set<Layer *> g_allLayers;
 
 } // namespace BlinKit
 
+#ifndef NDEBUG
+namespace zed {
+template <>
+void log_serializer::push<BlinKit::Layer>(std::vector<std::string> &dst, const BlinKit::Layer &layer);
+}
+#endif
+
 #endif // BLINKIT_LAYER_H

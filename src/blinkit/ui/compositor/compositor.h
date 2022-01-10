@@ -51,7 +51,7 @@ private:
     void TaskLoop(void);
 
 #ifndef NDEBUG
-    static void DrawDebugInfo(SkCanvas &canvas, const IntSize &layerBounds);
+    static void DrawDebugInfo(SkCanvas &canvas, int layerId, const IntSize &layerBounds);
 #endif
 
     class CallbackTask;

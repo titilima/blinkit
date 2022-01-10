@@ -19,6 +19,18 @@
 #include "blinkit/ui/compositor/tasks/layer_tasks.h"
 #include "blinkit/ui/compositor/tasks/raster_task.h"
 
+#ifndef NDEBUG
+namespace zed {
+template <>
+void log_serializer::push<BlinKit::Layer>(std::vector<std::string> &dst, const BlinKit::Layer &layer)
+{
+    char buf[32];
+    sprintf(buf, "[Layer 0x%p]", &layer);
+    dst.emplace_back(buf);
+}
+}
+#endif
+
 namespace BlinKit {
 
 #ifndef NDEBUG
@@ -740,7 +752,7 @@ void Layer::DebugPrint(int depth) const
     std::string indents;
     for (int i = 0; i < depth; ++i)
         indents.append("  ");
-    BKLOG("%s[0x%p]", indents.c_str(), this);
+    ZLOG("{}{}", indents, *this);
     BKLOG("%s  .position = (%.1f, %.1f)", indents.c_str(), m_position.x(), m_position.y());
     BKLOG("%s  .bounds = %dx%d", indents.c_str(), m_bounds.width(), m_bounds.height());
     if (m_drawsContent)

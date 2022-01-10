@@ -76,7 +76,7 @@ void Compositor::PaintLayer(const PaintContext &input)
     input.displayItems->Playback(canvas);
 
 #ifndef NDEBUG
-    // DrawDebugInfo(canvas, input.layerBounds);
+    // DrawDebugInfo(canvas, input.layerId, input.layerBounds);
 #endif
 }
 
@@ -158,7 +158,7 @@ void Compositor::TaskLoop(void)
 }
 
 #ifndef NDEBUG
-void Compositor::DrawDebugInfo(SkCanvas &canvas, const IntSize &layerBounds)
+void Compositor::DrawDebugInfo(SkCanvas &canvas, int layerId, const IntSize &layerBounds)
 {
     SkPaint paint;
 
@@ -179,7 +179,7 @@ void Compositor::DrawDebugInfo(SkCanvas &canvas, const IntSize &layerBounds)
     canvas.drawLine(layerBounds.width(), 0, 0, layerBounds.height(), paint);
 
     char text[128];
-    int len = sprintf(text, "%dx%d", layerBounds.width(), layerBounds.height());
+    int len = sprintf(text, "0x%08X %dx%d", layerId, layerBounds.width(), layerBounds.height());
     canvas.drawText(text, len, 5, 15, paint);
 }
 #endif
