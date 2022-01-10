@@ -45,7 +45,7 @@ BEGIN
             VALUE "FileDescription", "BkBase - Base Module in BlinKit Framework"
             VALUE "FileVersion", "1.4.0.1"
             VALUE "InternalName", "BkBase.dll"
-            VALUE "LegalCopyright", "Copyright (C) 2001-2021"
+            VALUE "LegalCopyright", "Copyright (C) 2001-2022"
             VALUE "OriginalFilename", "BkBase.dll"
             VALUE "ProductName", "BlinKit"
             VALUE "ProductVersion", "1.4.0.1"
