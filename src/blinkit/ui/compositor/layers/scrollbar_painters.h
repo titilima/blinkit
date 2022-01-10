@@ -38,10 +38,11 @@ public:
         std::unique_ptr<WebScrollbarThemeGeometry> &geometry);
     ~ThemedScrollbarPainter(void) override;
 private:
-    void PaintButtons(SkCanvas *canvas, const IntPoint &offset);
+    void PaintButtons(SkCanvas *canvas);
 
     void Paint(SkCanvas *canvas, const IntSize &bounds) override;
 
+    class CanvasWrapper;
     std::unique_ptr<WebScrollbar> m_scrollbar;
     WebScrollbarThemePainter m_painter;
     std::unique_ptr<WebScrollbarThemeGeometry> m_geometry;
