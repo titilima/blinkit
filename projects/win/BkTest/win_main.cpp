@@ -35,29 +35,23 @@ class Client final : public crawler_client_impl<Client>
 public:
     int Run(const char *URL)
     {
-        m_URL = URL;
-
         BkAppClient appClient = { 0 };
         appClient.SizeOfStruct = sizeof(BkAppClient);
         appClient.UserData = this;
         appClient.Exit = Exit;
-        return BkCrawlerMain(&appClient, Init);
+        BkInitialize(&appClient);
+
+        m_crawler = create_crawler();
+        BkRunCrawler(m_crawler, URL);
+
+        return BkRunMessageLoop();
     }
 private:
-    static void BKAPI Init(void *pThis)
-    {
-        reinterpret_cast<Client *>(pThis)->init();
-    }
     static void BKAPI Exit(void *pThis)
     {
         BkDestroyCrawler(reinterpret_cast<Client *>(pThis)->m_crawler);
     }
 
-    void init(void)
-    {
-        m_crawler = create_crawler();
-        BkRunCrawler(m_crawler, URL);
-    }
     bool get_config(int cfg, std::string &dst) override
     {
         switch (cfg)
@@ -73,15 +67,14 @@ private:
     void document_ready(BkJSContext ctx) override
     {
         BkEvaluate(ctx, ReadyCode, std::size(ReadyCode) - 1, nullptr);
-        BkExit(EXIT_SUCCESS);
+        ::PostQuitMessage(EXIT_SUCCESS);
     }
 
     BkCrawler m_crawler = nullptr;
-    std::string m_URL;
 };
 
 #ifndef TEST_CRAWLER_ONLY
-static void BKAPI DocumentReady(void *)
+static void BKAPI DocumentReady(BkWebView v, void *)
 {
     // BKTODO: Add test code here.
 }
@@ -94,12 +87,6 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
         case WM_CREATE:
         {
             BkWebView v = BkGetWebView(hWnd);
-
-            BkWebViewClient client = { 0 };
-            client.SizeOfStruct = sizeof(BkWebViewClient);
-            client.DocumentReady = DocumentReady;
-            BkWebViewSetClient(v, &client);
-
             BkLoadUI(v, "res:ui.html");
             break;
         }
@@ -131,22 +118,19 @@ static int Run(HINSTANCE hInstance, int nShowCmd)
     if (!InitApplication(hInstance))
         return EXIT_FAILURE;
 
-    HWND hWnd = CreateWindow(ClassName, TEXT("BlinKit Test Program"), WS_OVERLAPPEDWINDOW,
+    BkWebViewClient client = { 0 };
+    client.SizeOfStruct = sizeof(BkWebViewClient);
+    client.DocumentReady = DocumentReady;
+    HWND hWnd = BkCreateWebViewWindow(ClassName, TEXT("BlinKit Test Program"), WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
-        nullptr, nullptr, nullptr, nullptr);
+        nullptr, nullptr, nullptr, &client);
     if (nullptr == hWnd)
         return EXIT_FAILURE;
 
     ShowWindow(hWnd, nShowCmd);
     UpdateWindow(hWnd);
 
-    MSG msg;
-    while (GetMessage(&msg, nullptr, 0, 0))
-    {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-    return EXIT_SUCCESS;
+    return BkRunMessageLoop();
 }
 #endif // TEST_CRAWLER_ONLY
 
@@ -156,11 +140,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE, PTSTR, int nShowCmd)
     Client client;
     return client.Run(URL);
 #else
-    int r;
-
     BkInitialize(nullptr);
-    r = Run(hInstance, nShowCmd);
-    BkFinalize();
-    return r;
+    return Run(hInstance, nShowCmd);
 #endif
 }
