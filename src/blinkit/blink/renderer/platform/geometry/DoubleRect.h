@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DoubleRect.h
+// Description: DoubleRect Class
+//      Author: Ziming Li
+//     Created: 2022-01-10
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,9 +17,8 @@
 #ifndef DoubleRect_h
 #define DoubleRect_h
 
-#include "platform/geometry/DoublePoint.h"
-#include "platform/geometry/DoubleSize.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/renderer/platform/geometry/DoublePoint.h"
+#include "blinkit/blink/renderer/platform/geometry/DoubleSize.h"
 
 namespace blink {
 
@@ -15,7 +26,8 @@ class FloatRect;
 class IntRect;
 class LayoutRect;
 
-class PLATFORM_EXPORT DoubleRect {
+class DoubleRect
+{
     STACK_ALLOCATED();
 public:
     DoubleRect() { }
@@ -64,12 +76,12 @@ private:
     DoubleSize m_size;
 };
 
-PLATFORM_EXPORT IntRect enclosingIntRect(const DoubleRect&);
+IntRect enclosingIntRect(const DoubleRect&);
 
 // Returns a valid IntRect contained within the given DoubleRect.
-PLATFORM_EXPORT IntRect enclosedIntRect(const DoubleRect&);
+IntRect enclosedIntRect(const DoubleRect&);
 
-PLATFORM_EXPORT IntRect roundedIntRect(const DoubleRect&);
+IntRect roundedIntRect(const DoubleRect&);
 
 }
 

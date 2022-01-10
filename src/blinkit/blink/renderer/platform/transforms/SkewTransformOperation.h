@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SkewTransformOperation.h
+// Description: SkewTransformOperation Class
+//      Author: Ziming Li
+//     Created: 2022-01-10
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -25,11 +37,12 @@
 #ifndef SkewTransformOperation_h
 #define SkewTransformOperation_h
 
-#include "platform/transforms/TransformOperation.h"
+#include "blinkit/blink/renderer/platform/transforms/TransformOperation.h"
 
 namespace blink {
 
-class PLATFORM_EXPORT SkewTransformOperation final : public TransformOperation {
+class SkewTransformOperation final : public TransformOperation
+{
 public:
     static PassRefPtr<SkewTransformOperation> create(double angleX, double angleY, OperationType type)
     {

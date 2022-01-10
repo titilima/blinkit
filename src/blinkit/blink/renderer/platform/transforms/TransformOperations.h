@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TransformOperations.h
+// Description: TransformOperations Class
+//      Author: Ziming Li
+//     Created: 2022-01-10
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -25,20 +37,20 @@
 #ifndef TransformOperations_h
 #define TransformOperations_h
 
-#include "platform/geometry/LayoutSize.h"
-#include "platform/transforms/TransformOperation.h"
-#include "wtf/Allocator.h"
-#include "wtf/RefPtr.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutSize.h"
+#include "blinkit/blink/renderer/platform/transforms/TransformOperation.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 class FloatBox;
 
-class PLATFORM_EXPORT EmptyTransformOperations final {
+class EmptyTransformOperations final {
     DISALLOW_NEW();
 };
 
-class PLATFORM_EXPORT TransformOperations {
+class TransformOperations
+{
     DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
 public:
     explicit TransformOperations(bool makeIdentity = false);

@@ -40,12 +40,10 @@
 #ifndef FloatSize_h
 #define FloatSize_h
 
-#include "platform/geometry/IntPoint.h"
+#include <iosfwd>
+#include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
 #include "third_party/skia/include/core/SkSize.h"
 #include "third_party/zed/include/zed/float.hpp"
-#include "wtf/Allocator.h"
-#include "wtf/MathExtras.h"
-#include <iosfwd>
 
 #if OS(MACOSX)
 typedef struct CGSize CGSize;
@@ -60,7 +58,8 @@ namespace blink {
 class IntSize;
 class LayoutSize;
 
-class PLATFORM_EXPORT FloatSize {
+class FloatSize
+{
     DISALLOW_NEW();
 public:
     FloatSize() : m_width(0), m_height(0) { }

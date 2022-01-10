@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Matrix3DTransformOperation.h
+// Description: Matrix3DTransformOperation Class
+//      Author: Ziming Li
+//     Created: 2022-01-10
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All rights reserved.
  *
@@ -26,11 +38,12 @@
 #ifndef Matrix3DTransformOperation_h
 #define Matrix3DTransformOperation_h
 
-#include "platform/transforms/TransformOperation.h"
+#include "blinkit/blink/renderer/platform/transforms/TransformOperation.h"
 
 namespace blink {
 
-class PLATFORM_EXPORT Matrix3DTransformOperation final : public TransformOperation {
+class Matrix3DTransformOperation final : public TransformOperation
+{
 public:
     static PassRefPtr<Matrix3DTransformOperation> create(const TransformationMatrix& matrix)
     {

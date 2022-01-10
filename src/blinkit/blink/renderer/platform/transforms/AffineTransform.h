@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AffineTransform.h
+// Description: AffineTransform Class
+//      Author: Ziming Li
+//     Created: 2022-01-10
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006 Apple Computer, Inc.  All rights reserved.
  *               2010 Dirk Schulze <krit@webkit.org>
@@ -27,10 +39,8 @@
 #ifndef AffineTransform_h
 #define AffineTransform_h
 
-#include "platform/transforms/TransformationMatrix.h"
-
-#include "wtf/Allocator.h"
-#include <string.h> // for memcpy
+#include <cstring> // for memcpy
+#include "blinkit/blink/renderer/platform/transforms/TransformationMatrix.h"
 
 namespace blink {
 
@@ -43,7 +53,8 @@ class TransformationMatrix;
 
 #define IDENTITY_TRANSFORM { 1, 0, 0, 1, 0, 0 }
 
-class PLATFORM_EXPORT AffineTransform {
+class AffineTransform
+{
     DISALLOW_NEW();
 public:
     typedef double Transform[6];

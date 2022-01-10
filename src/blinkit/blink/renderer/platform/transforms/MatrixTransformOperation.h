@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MatrixTransformOperation.h
+// Description: MatrixTransformOperation Class
+//      Author: Ziming Li
+//     Created: 2022-01-10
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -25,12 +37,13 @@
 #ifndef MatrixTransformOperation_h
 #define MatrixTransformOperation_h
 
-#include "platform/transforms/TransformOperation.h"
-#include "platform/transforms/TransformationMatrix.h"
+#include "blinkit/blink/renderer/platform/transforms/TransformOperation.h"
+#include "blinkit/blink/renderer/platform/transforms/TransformationMatrix.h"
 
 namespace blink {
 
-class PLATFORM_EXPORT MatrixTransformOperation final : public TransformOperation {
+class MatrixTransformOperation final : public TransformOperation
+{
 public:
     static PassRefPtr<MatrixTransformOperation> create(double a, double b, double c, double d, double e, double f)
     {

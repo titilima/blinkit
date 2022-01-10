@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TransformationMatrix.h
+// Description: TransformationMatrix Class
+//      Author: Ziming Li
+//     Created: 2022-01-10
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -26,14 +38,13 @@
 #ifndef TransformationMatrix_h
 #define TransformationMatrix_h
 
-#include "SkMatrix44.h"
-#include "platform/geometry/FloatPoint.h"
-#include "platform/geometry/FloatPoint3D.h"
-#include "platform/geometry/IntPoint.h"
-#include "wtf/Alignment.h"
-#include "wtf/Allocator.h"
-#include "wtf/CPU.h"
-#include <string.h> // for memcpy
+#include <cstring> // for memcpy
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint3D.h"
+#include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
+#include "blinkit/blink/renderer/wtf/Alignment.h"
+#include "blinkit/blink/renderer/wtf/CPU.h"
+#include "third_party/skia/include/utils/SkMatrix44.h"
 
 namespace blink {
 
@@ -50,8 +61,8 @@ class FloatBox;
 // TransformationMatrix must not be allocated on Oilpan's heap since
 // Oilpan doesn't (yet) have an ability to allocate the TransformationMatrix
 // with 16-byte alignment. PartitionAlloc has the ability.
-class PLATFORM_EXPORT TransformationMatrix {
-    USING_FAST_MALLOC(TransformationMatrix);
+class TransformationMatrix
+{
 public:
 
 #if CPU(APPLE_ARMV7S) || defined(TRANSFORMATION_MATRIX_USE_X86_64_SSE2)

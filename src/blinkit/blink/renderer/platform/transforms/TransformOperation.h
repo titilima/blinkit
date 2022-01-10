@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TransformOperation.h
+// Description: TransformOperation Class
+//      Author: Ziming Li
+//     Created: 2022-01-10
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -25,16 +37,17 @@
 #ifndef TransformOperation_h
 #define TransformOperation_h
 
-#include "platform/geometry/FloatSize.h"
-#include "platform/transforms/TransformationMatrix.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatSize.h"
+#include "blinkit/blink/renderer/platform/transforms/TransformationMatrix.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
 
 namespace blink {
 
 // CSS Transforms (may become part of CSS3)
 
-class PLATFORM_EXPORT TransformOperation : public RefCounted<TransformOperation> {
+class TransformOperation : public RefCounted<TransformOperation>
+{
     WTF_MAKE_NONCOPYABLE(TransformOperation);
 public:
     enum OperationType {
