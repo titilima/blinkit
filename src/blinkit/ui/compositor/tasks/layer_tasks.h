@@ -19,10 +19,10 @@ namespace BlinKit {
 
 class Layer;
 
-class ReleaseBitmapTask final : public CompositorTask
+class ReleaseSnapshotTask final : public CompositorTask
 {
 public:
-    ReleaseBitmapTask(Layer *layer);
+    ReleaseSnapshotTask(Layer *layer);
 private:
     void Run(Compositor &compositor) override;
 

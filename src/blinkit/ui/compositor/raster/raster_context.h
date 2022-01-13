@@ -16,6 +16,7 @@
 #include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
 #include "blinkit/blink/renderer/platform/geometry/IntRect.h"
 #include "blinkit/blink/renderer/wtf/Allocator.h"
+#include "third_party/skia/include/core/SkMatrix.h"
 
 namespace BlinKit {
 
@@ -32,8 +33,11 @@ public:
         return roundedIntPoint(m_offset + position);
     }
     IntRect CalculateLayerRect(const Layer &layer) const;
+    IntRect CalculateDirtyRectForLayer(const Layer &layer, const IntSize &viewportSize) const;
+    IntRect CalculateVisibleRect(const Layer &layer, const IntSize &viewportSize) const;
 private:
     const FloatPoint m_offset;
+    const SkMatrix m_transform;
 };
 
 } // namespace BlinKit

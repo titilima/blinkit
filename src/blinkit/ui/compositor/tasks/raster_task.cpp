@@ -14,7 +14,6 @@
 #include "blinkit/app/app_impl.h"
 #include "blinkit/ui/compositor/blink/layer.h"
 #include "blinkit/ui/compositor/compositor.h"
-#include "blinkit/ui/compositor/layers/layer_client.h"
 #include "blinkit/ui/compositor/raster/raster_context.h"
 #include "blinkit/ui/compositor/tasks/paint_ui_task.h"
 
@@ -26,23 +25,15 @@ RasterTask::RasterTask(const IntSize &viewportSize) : m_viewportSize(viewportSiz
 
 RasterTask::~RasterTask(void) = default;
 
-void RasterTask::AddDirtyLayer(Layer &layer, const IntRect &layerRect)
+void RasterTask::Rasterize(const Layer &layer, const IntRect &visibleRect)
 {
-    ASSERT(layer.drawsContent());
-
-    const IntRect dirtyRectInLayer = layer.TakeDirtyRect();
-
-    IntRect dirtyRect(dirtyRectInLayer);
-    dirtyRect.moveBy(layerRect.location());
-    m_dirtyRect.unite(dirtyRect);
-
-    PaintContext &paintContext = m_input.emplace_back(layer.id(), layer.Bounds(), dirtyRectInLayer);
-    layer.Client()->PaintContents(*paintContext.displayItems);
+    m_result.emplace_back(layer.id(), visibleRect);
 }
 
-void RasterTask::Rasterize(const Layer &layer, const IntRect &layerRect)
+PaintContext& RasterTask::RequireDirtyContext(const Layer &layer)
 {
-    m_result.emplace_back(layer.id(), layerRect);
+    ASSERT(layer.drawsContent());
+    return m_input.emplace_back(layer);
 }
 
 void RasterTask::Run(Compositor &compositor)
@@ -50,7 +41,7 @@ void RasterTask::Run(Compositor &compositor)
     ASSERT(!HasNothingToDo());
 
     for (const PaintContext &context : m_input)
-        compositor.PaintLayer(context);
+        compositor.UpdateSnapshot(m_viewportSize, context);
 
     ASSERT(m_paintTask);
     m_paintTask->PerformComposition(compositor, m_result, m_dirtyRect);

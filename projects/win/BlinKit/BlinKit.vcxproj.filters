@@ -319,6 +319,9 @@
     <Filter Include="ui\compositor\raster">
       <UniqueIdentifier>{010eca88-e9a6-4df0-9b4a-4d51f184eb55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ui\compositor\snapshots">
+      <UniqueIdentifier>{0911792d-a108-4d64-add4-2d10250ff8be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -4199,6 +4202,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\web_scrollbar_theme_painter.cpp">
       <Filter>blink\renderer\platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\raster\raster_input.cpp">
+      <Filter>ui\compositor\raster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\snapshots\layer_snapshot.cpp">
+      <Filter>ui\compositor\snapshots</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\snapshots\simple_snapshot.cpp">
+      <Filter>ui\compositor\snapshots</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -8692,6 +8704,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_theme_engine.h">
       <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\snapshots\layer_snapshot.h">
+      <Filter>ui\compositor\snapshots</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\snapshots\simple_snapshot.h">
+      <Filter>ui\compositor\snapshots</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -18,17 +18,16 @@
 
 namespace BlinKit {
 
+class Layer;
+
 struct PaintContext {
     const int layerId;
-    const IntSize layerBounds;
-    const IntRect dirtyRect;
-    std::unique_ptr<DisplayItemList> displayItems;
+    const IntSize bounds;
 
-    PaintContext(int layerId, const IntSize &layerBounds, const IntRect &dirtyRect)
-        : layerId(layerId), layerBounds(layerBounds), dirtyRect(dirtyRect)
-        , displayItems(std::make_unique<DisplayItemList>())
-    {
-    }
+    std::unique_ptr<DisplayItemList> displayItems;
+    IntRect dirtyRect;
+
+    PaintContext(const Layer &layer);
 };
 
 using RasterInput = std::vector<PaintContext>;

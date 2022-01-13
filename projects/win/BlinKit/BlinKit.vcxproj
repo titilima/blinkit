@@ -1427,6 +1427,9 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\playback\clip_items.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\playback\drawing_item.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\raster\raster_context.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\raster\raster_input.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\snapshots\layer_snapshot.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\snapshots\simple_snapshot.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tasks\layer_tasks.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tasks\paint_ui_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tasks\raster_task.cpp" />
@@ -2936,6 +2939,8 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\raster\raster_context.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\raster\raster_input.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\raster\raster_result.h" />
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\snapshots\layer_snapshot.h" />
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\snapshots\simple_snapshot.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tasks\compositor_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tasks\layer_tasks.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tasks\paint_ui_task.h" />

@@ -12,9 +12,8 @@
 #include "./compositor.h"
 
 #include "blinkit/ui/compositor/raster/raster_input.h"
+#include "blinkit/ui/compositor/snapshots/layer_snapshot.h"
 #include "blinkit/ui/compositor/tasks/compositor_task.h"
-#include "third_party/skia/include/core/SkBitmap.h"
-#include "third_party/skia/include/core/SkCanvas.h"
 #ifndef NDEBUG
 #   include "blinkit/ui/compositor/blink/layer.h"
 #   include "third_party/skia/include/core/SkTypeface.h"
@@ -45,39 +44,19 @@ Compositor::~Compositor(void)
     });
     join();
 
-    ASSERT(m_layerBitmaps.empty());
+    ASSERT(m_snapshots.empty());
     ASSERT(g_allLayers.empty());
 }
 
-void Compositor::BlendBitmapToCanvas(
+void Compositor::BlendSnapshotToCanvas(
     SkCanvas &canvas,
     int layerId,
     const IntPoint &from, const IntPoint &to,
     const IntSize &size) const
 {
-    auto it = m_layerBitmaps.find(layerId);
-    ASSERT(m_layerBitmaps.end() != it);
-
-    canvas.drawBitmapRect(
-        *(it->second),
-        SkIRect::MakeXYWH(from.x(), from.y(), size.width(), size.height()),
-        SkRect::MakeXYWH(to.x(), to.y(), size.width(), size.height()),
-        nullptr
-    );
-}
-
-void Compositor::PaintLayer(const PaintContext &input)
-{
-    SkCanvas canvas(RequireBitmap(input.layerId, input.layerBounds));
-#if 0 // TODO: Check the logic later.
-    canvas.concat(m_transform);
-#endif
-    canvas.clipRect(input.dirtyRect, SkRegion::kIntersect_Op, true);
-    input.displayItems->Playback(canvas);
-
-#ifndef NDEBUG
-    // DrawDebugInfo(canvas, input.layerId, input.layerBounds);
-#endif
+    auto it = m_snapshots.find(layerId);
+    ASSERT(m_snapshots.end() != it);
+    it->second->BlendToCanvas(canvas, from, to, size);
 }
 
 void Compositor::PerformComposition(SkCanvas &canvas, const RasterResult &rasterResult, const IntRect &dirtyRect)
@@ -88,7 +67,7 @@ void Compositor::PerformComposition(SkCanvas &canvas, const RasterResult &raster
         rect.intersect(dirtyRect);
 
         IntPoint from(rect.x() - data.rect.x(), rect.y() - data.rect.y());
-        BlendBitmapToCanvas(canvas, data.id, from, rect.location(), rect.size());
+        BlendSnapshotToCanvas(canvas, data.id, from, rect.location(), rect.size());
     }
 }
 
@@ -105,32 +84,25 @@ void Compositor::PostTasks(std::vector<CompositorTask *> &tasks)
     });
 }
 
-void Compositor::ReleaseBitmap(int layerId)
+void Compositor::ReleaseSnapshot(int layerId)
 {
-    m_layerBitmaps.erase(layerId);
+    m_snapshots.erase(layerId);
 }
 
-const SkBitmap& Compositor::RequireBitmap(int layerId, const IntSize &size)
+LayerSnapshot& Compositor::RequireSnapshot(int layerId, const IntSize &layerBounds, const IntSize &viewportSize)
 {
-    SkBitmap *ret;
+    const LayerSnapshot::Type type = LayerSnapshot::AssumeSnapshotType(layerBounds, viewportSize);
 
-    auto it = m_layerBitmaps.find(layerId);
-    if (m_layerBitmaps.end() != it)
+    auto it = m_snapshots.find(layerId);
+    if (m_snapshots.end() != it)
     {
-        const SkImageInfo &info = it->second->info();
-        if (size.width() <= info.width() && size.height() <= info.height())
-            return *(it->second);
-
-        ret = it->second.get();
-        ret->reset();
-    }
-    else
-    {
-        ret = new SkBitmap;
-        m_layerBitmaps.emplace(layerId, ret);
+        if (!it->second->TryToReuse(type, layerBounds, viewportSize))
+            it->second.reset(LayerSnapshot::Create(type, layerBounds, viewportSize));
+        return *(it->second);
     }
 
-    ret->allocN32Pixels(size.width(), size.height(), kPremul_SkAlphaType);
+    LayerSnapshot *ret = LayerSnapshot::Create(type, layerBounds, viewportSize);
+    m_snapshots.emplace(layerId, ret);
     return *ret;
 }
 
@@ -155,6 +127,22 @@ void Compositor::TaskLoop(void)
             tasks.pop();
         }
     }
+}
+
+void Compositor::UpdateSnapshot(const IntSize &viewportSize, const PaintContext &input)
+{
+    LayerSnapshot &snapshot = RequireSnapshot(input.layerId, input.bounds, viewportSize);
+
+    const auto callback = [&input](SkCanvas &canvas) {
+#if 0 // TODO: Check the logic later.
+        canvas.concat(m_transform);
+#endif
+        canvas.clipRect(input.dirtyRect, SkRegion::kIntersect_Op, true);
+        input.displayItems->Playback(canvas);
+
+        // DrawDebugInfo(canvas, input.layerId, input.layerBounds);
+    };
+    snapshot.Update(callback);
 }
 
 #ifndef NDEBUG

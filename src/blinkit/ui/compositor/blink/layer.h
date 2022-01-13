@@ -25,6 +25,7 @@ namespace BlinKit {
 class CompositorTask;
 class LayerClient;
 class LayerTreeHost;
+struct PaintContext;
 class RasterContext;
 class RasterTask;
 
@@ -35,9 +36,8 @@ public:
     ~Layer(void) override;
     enum { INVALID_ID = 0 };
 
-    LayerClient* Client(void) { return m_client; }
+    LayerClient* Client(void) const { return m_client; }
     Layer* Parent(void) { return m_parent; }
-    IntRect TakeDirtyRect(void);
 
     LayerTreeHost* GetLayerTreeHost(void) { return m_layerTreeHost; }
     const LayerTreeHost* GetLayerTreeHost(void) const { return m_layerTreeHost; }
@@ -45,6 +45,7 @@ public:
 
     const FloatPoint& Position(void) const { return m_position; }
     const IntSize& Bounds(void) const { return m_bounds; }
+    const SkMatrix44& Transform(void) const { return m_transform; }
 
     void Update(const RasterContext &context, RasterTask &session);
 
@@ -64,6 +65,8 @@ public:
 private:
     void AddDrawableDescendants(int num);
     int NumDescendantsThatDrawContent(void) const { return m_numDescendantsThatDrawContent; }
+
+    void PreparePaintData(PaintContext &dst, const RasterContext &context, const IntRect &visibleRect);
 
     void PostTaskToCompositor(CompositorTask *task);
 
@@ -178,16 +181,11 @@ private:
     // Tracks whether this layer may have changed stacking order with its
     // siblings.
     bool m_stackingOrderChanged = false;
-    SkMatrix44 m_transform;
+    SkMatrix44 m_transform{ SkMatrix44::kIdentity_Constructor };
     FloatPoint3D m_transformOrigin;
 
-    bool m_fullyInvaldated = false;
-    // The update rect is the region of the compositor resource that was
-    // actually updated by the compositor. For layers that may do updating
-    // outside the compositor's control (i.e. plugin layers), this information
-    // is not available and the update rect will remain empty.
-    // Note this rect is in layer space (not content space).
-    IntRect m_updateRect;
+    bool m_fullyInvalidation = false;
+    IntRect m_dirtyRect; // of viewport
 
     bool m_useParentBackfaceVisibility = false;
     bool m_userScrollableHorizontal = true, m_userScrollableVertical = true;

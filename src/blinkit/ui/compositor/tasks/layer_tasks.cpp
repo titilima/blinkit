@@ -16,13 +16,13 @@
 
 namespace BlinKit {
 
-ReleaseBitmapTask::ReleaseBitmapTask(Layer *layer) : m_layerId(layer->id())
+ReleaseSnapshotTask::ReleaseSnapshotTask(Layer *layer) : m_layerId(layer->id())
 {
 }
 
-void ReleaseBitmapTask::Run(Compositor &compositor)
+void ReleaseSnapshotTask::Run(Compositor &compositor)
 {
-    compositor.ReleaseBitmap(m_layerId);
+    compositor.ReleaseSnapshot(m_layerId);
 }
 
 } // namespace BlinKit

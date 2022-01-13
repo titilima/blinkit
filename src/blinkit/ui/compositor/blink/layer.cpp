@@ -52,7 +52,7 @@ Layer::~Layer(void)
     for (Layer *child : m_children)
         child->m_parent = nullptr;
 
-    PostTaskToCompositor(new ReleaseBitmapTask(this));
+    PostTaskToCompositor(new ReleaseSnapshotTask(this));
 #ifndef NDEBUG
     g_allLayers.erase(this);
 #endif
@@ -96,11 +96,11 @@ void Layer::insertChild(WebLayer *child, size_t index)
 
 void Layer::invalidate(void)
 {
-    if (m_fullyInvaldated)
+    if (m_fullyInvalidation)
         return;
 
     SetNeedsPushProperties();
-    m_fullyInvaldated = true;
+    m_fullyInvalidation = true;
 
     if (drawsContent())
     {
@@ -111,11 +111,11 @@ void Layer::invalidate(void)
 
 void Layer::invalidateRect(const IntRect &rect)
 {
-    if (rect.isEmpty())
+    if (rect.isEmpty() || m_fullyInvalidation)
         return;
 
     SetNeedsPushProperties();
-    m_updateRect.unite(rect);
+    m_dirtyRect.unite(rect);
 
     if (drawsContent())
     {
@@ -127,6 +127,16 @@ void Layer::invalidateRect(const IntRect &rect)
 void Layer::PostTaskToCompositor(CompositorTask *task)
 {
     AppImpl::Get().GetCompositor().PostTask(task);
+}
+
+void Layer::PreparePaintData(PaintContext &dst, const RasterContext &context, const IntRect &visibleRect)
+{
+    ASSERT(m_dirty);
+
+    if (m_fullyInvalidation)
+        dst.dirtyRect = visibleRect;
+    else
+        dst.dirtyRect = m_dirtyRect;
 }
 
 void Layer::removeAllChildren(void)
@@ -722,32 +732,23 @@ void Layer::setUserScrollable(bool horizontal, bool vertical)
     SetNeedsCommit();
 }
 
-IntRect Layer::TakeDirtyRect(void)
-{
-    ASSERT(m_dirty);
-
-    IntRect ret;
-    if (m_fullyInvaldated)
-        ret.setSize(m_bounds);
-    else
-        ret = m_updateRect;
-
-    m_fullyInvaldated = false;
-    m_updateRect = IntRect();
-    return ret;
-}
-
 void Layer::Update(const RasterContext &context, RasterTask &session)
 {
     if (m_drawsContent)
     {
-        const IntRect layerRect = context.CalculateLayerRect(*this);
+        const IntRect visibleRect = context.CalculateVisibleRect(*this, session.ViewportSize());
         if (m_dirty)
         {
-            session.AddDirtyLayer(*this, layerRect);
+            auto &paintData = session.RequireDirtyContext(*this);
+            PreparePaintData(paintData, context, visibleRect);
+
+            session.UpdateDirtyRect(paintData.dirtyRect);
+
+            m_fullyInvalidation = false;
+            m_dirtyRect = IntRect();
             m_dirty = false;
         }
-        session.Rasterize(*this, layerRect);
+        session.Rasterize(*this, visibleRect);
     }
 
     RasterContext contextForChildren(context, *this);
@@ -755,10 +756,8 @@ void Layer::Update(const RasterContext &context, RasterTask &session)
     for (Layer *child : m_children)
         child->Update(contextForChildren, session);
 
-#if 0 // BKTODO:
     if (nullptr != m_mask)
-        m_mask->Update(context, rasterSession);
-#endif
+        ASSERT(false); // BKTODO: m_mask->Update(context, rasterSession);
 }
 
 #ifndef NDEBUG

@@ -24,6 +24,7 @@ class WebTaskRunner;
 namespace BlinKit {
 
 class Layer;
+struct PaintContext;
 class PaintUITask;
 class RasterContext;
 
@@ -33,11 +34,16 @@ public:
     RasterTask(const IntSize &viewportSize);
     ~RasterTask(void) override;
 
+    const IntSize& ViewportSize(void) const { return m_viewportSize; }
+
     bool HasNothingToDo(void) const { return m_input.empty(); }
     const RasterResult& Result(void) const { return m_result; }
 
-    void AddDirtyLayer(Layer &layer, const IntRect &layerRect);
-    void Rasterize(const Layer &layer, const IntRect &layerRect);
+    PaintContext& RequireDirtyContext(const Layer &layer);
+    void Rasterize(const Layer &layer, const IntRect &visibleRect);
+    void UpdateDirtyRect(const IntRect &dirtyRect) {
+        m_dirtyRect.unite(dirtyRect);
+    }
 
     void SavePaintTask(std::unique_ptr<PaintUITask> &paintTask);
 private:

@@ -16,16 +16,12 @@
 #include "blinkit/ui/compositor/raster/raster_result.h"
 #include "third_party/zed/include/zed/threading/task_queue.hpp"
 
-class SkBitmap;
 class SkCanvas;
-
-namespace blink {
-class IntRect;
-}
 
 namespace BlinKit {
 
 class CompositorTask;
+class LayerSnapshot;
 struct PaintContext;
 
 class Compositor final : private zed::thread<Compositor>
@@ -40,12 +36,12 @@ public:
     using Callback = std::function<void(Compositor &)>;
     void PostCallback(Callback &&callback);
 
-    void ReleaseBitmap(int layerId);
-    void PaintLayer(const PaintContext &input);
+    void ReleaseSnapshot(int layerId);
+    void UpdateSnapshot(const IntSize &viewportSize, const PaintContext &input);
     void PerformComposition(SkCanvas &canvas, const RasterResult &rasterResult, const IntRect &dirtyRect);
 private:
-    const SkBitmap& RequireBitmap(int layerId, const IntSize &size);
-    void BlendBitmapToCanvas(SkCanvas &canvas, int layerId, const IntPoint &from, const IntPoint &to,
+    LayerSnapshot& RequireSnapshot(int layerId, const IntSize &layerBounds, const IntSize &viewportSize);
+    void BlendSnapshotToCanvas(SkCanvas &canvas, int layerId, const IntPoint &from, const IntPoint &to,
         const IntSize &size) const;
 
     void TaskLoop(void);
@@ -58,7 +54,7 @@ private:
     bool m_running = true;
     zed::task_queue<CompositorTask> m_queue;
 
-    std::unordered_map<int, std::unique_ptr<SkBitmap>> m_layerBitmaps;
+    std::unordered_map<int, std::unique_ptr<LayerSnapshot>> m_snapshots;
 };
 
 } // namespace BlinKit
