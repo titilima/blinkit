@@ -84,11 +84,12 @@ enum RuleMatchingBehavior {
 
 const unsigned styleSharingListSize = 15;
 const unsigned styleSharingMaxDepth = 32;
-using StyleSharingList = WillBeHeapDeque<RawPtrWillBeMember<Element>, styleSharingListSize>;
+using StyleSharingList = std::deque<Element *>;
 using ActiveInterpolationsMap = HashMap<PropertyHandle, Vector<RefPtr<Interpolation>, 1>>;
 
 // This class selects a ComputedStyle for a given element based on a collection of stylesheets.
-class CORE_EXPORT StyleResolver final {
+class StyleResolver final
+{
     WTF_MAKE_NONCOPYABLE(StyleResolver);
 public:
     static std::unique_ptr<StyleResolver> create(Document& document)
@@ -268,7 +269,7 @@ private:
     // BKTODO: bool m_printMediaType;
 
     unsigned m_styleSharingDepth;
-    WillBeHeapVector<OwnPtrWillBeMember<StyleSharingList>, styleSharingMaxDepth> m_styleSharingLists;
+    std::vector<std::unique_ptr<StyleSharingList>> m_styleSharingLists;
 
     // BKTODO: OwnPtr<StyleResolverStats> m_styleResolverStats;
 
