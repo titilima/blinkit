@@ -74,7 +74,7 @@ private:
     Layer *m_rootLayer = nullptr;
     std::unordered_set<Layer *> m_layers;
 
-    bool m_deferCommits = false;
+    bool m_deferCommits = true;
     bool m_visible = false;
     bool m_topControlsShrinkBlinkSize = false;
 #ifndef NDEBUG
