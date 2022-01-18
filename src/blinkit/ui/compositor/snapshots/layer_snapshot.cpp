@@ -12,17 +12,14 @@
 #include "./layer_snapshot.h"
 
 #include "blinkit/ui/compositor/snapshots/simple_snapshot.h"
+#include "blinkit/ui/compositor/snapshots/vertical_scrolling_snapshot.h"
 
 namespace BlinKit {
 
-LayerSnapshot::LayerSnapshot(const IntSize &layerBounds) : m_layerBounds(layerBounds)
-{
-}
-
 LayerSnapshot::Type LayerSnapshot::AssumeSnapshotType(const IntSize &layerBounds, const IntSize &viewportSize)
 {
-    const int maxWidth = viewportSize.width() + BlockUnit;
-    const int maxHeight = viewportSize.height() + BlockUnit;
+    const int maxWidth = viewportSize.width() + Tile::Size;
+    const int maxHeight = viewportSize.height() + Tile::Size;
 
     if (layerBounds.height() > maxHeight)
     {
@@ -46,11 +43,17 @@ LayerSnapshot* LayerSnapshot::Create(Type type, const IntSize &layerBounds, cons
             return new SimpleSnapshot(layerBounds);
 
         case Type::VerticalScrolling:
-            ASSERT(false); // BKTODO:
-            return nullptr;
+        {
+            VerticalScrollingSnapshot *ret = new VerticalScrollingSnapshot;
+            ret->UpdateTiles(layerBounds, viewportSize);
+            return ret;
+        }
         case Type::HorizontalScrolling:
+        {
             ASSERT(false); // BKTODO:
             return nullptr;
+        }
+
         default:
             ASSERT(Type::Gridded == type);
     }
