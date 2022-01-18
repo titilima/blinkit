@@ -171,10 +171,7 @@ void WebViewHostWindow::EnsureCanvas(const IntSize &hostSize)
     {
         SkImageInfo imageInfo = m_canvas->imageInfo();
         if (hostSize.width() <= imageInfo.width() && hostSize.height() <= imageInfo.height())
-        {
-            m_canvas->drawColor(SK_ColorRED);
             return;
-        }
     }
 
     BkBitmap bitmap;
@@ -185,8 +182,7 @@ void WebViewHostWindow::EnsureCanvas(const IntSize &hostSize)
         m_oldBitmap = oldBitmap;
 
     m_canvas = std::make_unique<SkCanvas>(bitmap);
-    // m_canvas->drawColor(GetView()->BaseBackgroundColor());
-    m_canvas->drawColor(SK_ColorRED);
+    m_canvas->drawColor(GetView()->BaseBackgroundColor());
 }
 
 void WebViewHostWindow::Invalidate(const IntRect &rect)
