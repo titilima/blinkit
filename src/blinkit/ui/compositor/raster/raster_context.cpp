@@ -42,9 +42,23 @@ IntRect RasterContext::CalculateLayerRect(const Layer &layer) const
     return IntRect(roundedIntPoint(m_offset + layer.Position()), layer.Bounds());
 }
 
+SkMatrix RasterContext::CalculateTransform(const Layer &layer) const
+{
+    SkMatrix ret;
+
+    const SkMatrix offset = SkMatrix::MakeTrans(
+        -(m_offset.x() + layer.Position().x()),
+        -(m_offset.y() + layer.Position().y())
+    );
+    ret = SkMatrix::Concat(m_transform, offset);
+
+    return ret;
+}
+
 IntRect RasterContext::CalculateVisibleRect(const Layer &layer, const IntSize &viewportSize) const
 {
     ASSERT(m_transform.isIdentity()); // BKTODO:
+    ASSERT(layer.ScrollPosition() == DoublePoint::zero()); // BKTODO:
 
     IntRect layerRect(roundedIntPoint(m_offset + layer.Position()), layer.Bounds());
     layerRect.intersect(IntRect(IntPoint(), viewportSize));

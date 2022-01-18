@@ -35,6 +35,7 @@ public:
     IntRect CalculateLayerRect(const Layer &layer) const;
     IntRect CalculateDirtyRectForLayer(const Layer &layer, const IntSize &viewportSize) const;
     IntRect CalculateVisibleRect(const Layer &layer, const IntSize &viewportSize) const;
+    SkMatrix CalculateTransform(const Layer &layer) const;
 private:
     const FloatPoint m_offset;
     const SkMatrix m_transform;

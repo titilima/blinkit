@@ -22,7 +22,7 @@ namespace BlinKit {
 
 class CompositorTask;
 class LayerSnapshot;
-struct PaintContext;
+struct LayerContext;
 
 class Compositor final : private zed::thread<Compositor>
 {
@@ -37,12 +37,10 @@ public:
     void PostCallback(Callback &&callback);
 
     void ReleaseSnapshot(int layerId);
-    void UpdateSnapshot(const IntSize &viewportSize, const PaintContext &input);
+    void UpdateSnapshot(const IntSize &viewportSize, const LayerContext &input);
     void PerformComposition(SkCanvas &canvas, const RasterResult &rasterResult, const IntRect &dirtyRect);
 private:
     LayerSnapshot& RequireSnapshot(int layerId, const IntSize &layerBounds, const IntSize &viewportSize);
-    void BlendSnapshotToCanvas(SkCanvas &canvas, int layerId, const IntPoint &from, const IntPoint &to,
-        const IntSize &size) const;
 
     void TaskLoop(void);
 

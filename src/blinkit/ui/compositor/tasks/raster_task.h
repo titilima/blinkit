@@ -24,7 +24,7 @@ class WebTaskRunner;
 namespace BlinKit {
 
 class Layer;
-struct PaintContext;
+struct LayerContext;
 class PaintUITask;
 class RasterContext;
 
@@ -39,7 +39,7 @@ public:
     bool HasNothingToDo(void) const { return m_input.empty(); }
     const RasterResult& Result(void) const { return m_result; }
 
-    PaintContext& RequireDirtyContext(const Layer &layer);
+    LayerContext& RequireDirtyContext(const Layer &layer);
     void Rasterize(const Layer &layer, const IntRect &visibleRect);
     void UpdateDirtyRect(const IntRect &dirtyRect) {
         m_dirtyRect.unite(dirtyRect);

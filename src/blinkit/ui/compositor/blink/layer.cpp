@@ -129,16 +129,6 @@ void Layer::PostTaskToCompositor(CompositorTask *task)
     AppImpl::Get().GetCompositor().PostTask(task);
 }
 
-void Layer::PreparePaintData(PaintContext &dst, const RasterContext &context, const IntRect &visibleRect)
-{
-    ASSERT(m_dirty);
-
-    if (m_fullyInvalidation)
-        dst.dirtyRect = visibleRect;
-    else
-        dst.dirtyRect = m_dirtyRect;
-}
-
 void Layer::removeAllChildren(void)
 {
     ASSERT(IsPropertyChangeAllowed());
@@ -739,10 +729,11 @@ void Layer::Update(const RasterContext &context, RasterTask &session)
         const IntRect visibleRect = context.CalculateVisibleRect(*this, session.ViewportSize());
         if (m_dirty)
         {
-            auto &paintData = session.RequireDirtyContext(*this);
-            PreparePaintData(paintData, context, visibleRect);
+            LayerContext &dirtyContext = session.RequireDirtyContext(*this);
+            dirtyContext.layerRect.setLocation(context.CalculateOffset(m_position));
+            dirtyContext.dirtyRect = m_fullyInvalidation ? visibleRect : m_dirtyRect;
 
-            session.UpdateDirtyRect(paintData.dirtyRect);
+            session.UpdateDirtyRect(dirtyContext.dirtyRect);
 
             m_fullyInvalidation = false;
             m_dirtyRect = IntRect();

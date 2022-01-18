@@ -20,17 +20,17 @@ namespace BlinKit {
 
 class Layer;
 
-struct PaintContext {
+struct LayerContext {
     const int layerId;
-    const IntSize bounds;
+    IntRect layerRect; // of viewport
 
     std::unique_ptr<DisplayItemList> displayItems;
-    IntRect dirtyRect;
+    IntRect dirtyRect; // of viewport
 
-    PaintContext(const Layer &layer);
+    LayerContext(const Layer &layer);
 };
 
-using RasterInput = std::vector<PaintContext>;
+using RasterInput = std::vector<LayerContext>;
 
 } // namespace BlinKit
 

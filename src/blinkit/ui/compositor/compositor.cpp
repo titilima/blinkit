@@ -48,26 +48,13 @@ Compositor::~Compositor(void)
     ASSERT(g_allLayers.empty());
 }
 
-void Compositor::BlendSnapshotToCanvas(
-    SkCanvas &canvas,
-    int layerId,
-    const IntPoint &from, const IntPoint &to,
-    const IntSize &size) const
-{
-    auto it = m_snapshots.find(layerId);
-    ASSERT(m_snapshots.end() != it);
-    it->second->BlendToCanvas(canvas, from, to, size);
-}
-
 void Compositor::PerformComposition(SkCanvas &canvas, const RasterResult &rasterResult, const IntRect &dirtyRect)
 {
     for (const LayerData &data : rasterResult)
     {
-        IntRect rect(data.rect);
-        rect.intersect(dirtyRect);
-
-        IntPoint from(rect.x() - data.rect.x(), rect.y() - data.rect.y());
-        BlendSnapshotToCanvas(canvas, data.id, from, rect.location(), rect.size());
+        auto it = m_snapshots.find(data.id);
+        ASSERT(m_snapshots.end() != it);
+        it->second->BlendToCanvas(canvas, dirtyRect);
     }
 }
 
@@ -129,20 +116,19 @@ void Compositor::TaskLoop(void)
     }
 }
 
-void Compositor::UpdateSnapshot(const IntSize &viewportSize, const PaintContext &input)
+void Compositor::UpdateSnapshot(const IntSize &viewportSize, const LayerContext &input)
 {
-    LayerSnapshot &snapshot = RequireSnapshot(input.layerId, input.bounds, viewportSize);
+    LayerSnapshot &snapshot = RequireSnapshot(input.layerId, input.layerRect.size(), viewportSize);
 
     const auto callback = [&input](SkCanvas &canvas) {
 #if 0 // TODO: Check the logic later.
         canvas.concat(m_transform);
 #endif
-        canvas.clipRect(input.dirtyRect, SkRegion::kIntersect_Op, true);
         input.displayItems->Playback(canvas);
 
         // DrawDebugInfo(canvas, input.layerId, input.layerBounds);
     };
-    snapshot.Update(callback);
+    snapshot.Update(input.layerRect.location(), input.dirtyRect, callback);
 }
 
 #ifndef NDEBUG

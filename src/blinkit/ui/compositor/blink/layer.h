@@ -43,8 +43,9 @@ public:
     const LayerTreeHost* GetLayerTreeHost(void) const { return m_layerTreeHost; }
     void SetLayerTreeHost(LayerTreeHost *host);
 
-    const FloatPoint& Position(void) const { return m_position; }
     const IntSize& Bounds(void) const { return m_bounds; }
+    const FloatPoint& Position(void) const { return m_position; }
+    const DoublePoint& ScrollPosition(void) const { return m_scrollPosition; }
     const SkMatrix44& Transform(void) const { return m_transform; }
 
     void Update(const RasterContext &context, RasterTask &session);
@@ -65,8 +66,6 @@ public:
 private:
     void AddDrawableDescendants(int num);
     int NumDescendantsThatDrawContent(void) const { return m_numDescendantsThatDrawContent; }
-
-    void PreparePaintData(PaintContext &dst, const RasterContext &context, const IntRect &visibleRect);
 
     void PostTaskToCompositor(CompositorTask *task);
 
