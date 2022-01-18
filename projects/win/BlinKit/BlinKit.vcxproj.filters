@@ -4212,6 +4212,15 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\snapshots\simple_snapshot.cpp">
       <Filter>ui\compositor\snapshots</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\snapshots\single_axis_scrolling_snapshot.cpp">
+      <Filter>ui\compositor\snapshots</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\snapshots\vertical_scrolling_snapshot.cpp">
+      <Filter>ui\compositor\snapshots</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\snapshots\tile.cpp">
+      <Filter>ui\compositor\snapshots</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -8709,6 +8718,15 @@
       <Filter>ui\compositor\snapshots</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\snapshots\simple_snapshot.h">
+      <Filter>ui\compositor\snapshots</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\snapshots\single_axis_scrolling_snapshot.h">
+      <Filter>ui\compositor\snapshots</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\snapshots\vertical_scrolling_snapshot.h">
+      <Filter>ui\compositor\snapshots</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\snapshots\tile.h">
       <Filter>ui\compositor\snapshots</Filter>
     </ClInclude>
   </ItemGroup>
