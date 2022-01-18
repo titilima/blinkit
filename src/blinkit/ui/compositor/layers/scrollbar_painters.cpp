@@ -13,7 +13,9 @@
 
 #include "blinkit/blink/public/platform/web_scrollbar.h"
 #include "blinkit/blink/public/platform/web_scrollbar_theme_geometry.h"
+#include "blinkit/ui/compositor/snapshots/tile.h"
 #include "third_party/skia/include/core/SkCanvas.h"
+#include "third_party/skia/include/core/SkPictureRecorder.h"
 
 namespace BlinKit {
 
@@ -29,55 +31,65 @@ ThemedScrollbarPainter::ThemedScrollbarPainter(
 
 ThemedScrollbarPainter::~ThemedScrollbarPainter(void) = default;
 
-void ThemedScrollbarPainter::Paint(SkCanvas *canvas, const IntPoint &offset, const IntSize &bounds)
-{
-    IntRect rect(offset, bounds);
-
-    m_painter.paintScrollbarBackground(canvas, rect);
-
-    if (m_geometry->hasButtons(m_scrollbar.get()))
-    {
-        rect = m_geometry->backButtonStartRect(m_scrollbar.get());
-        if (!rect.isEmpty())
-            m_painter.paintBackButtonStart(canvas, rect);
-        rect = m_geometry->backButtonEndRect(m_scrollbar.get());
-        if (!rect.isEmpty())
-            m_painter.paintBackButtonEnd(canvas, rect);
-        rect = m_geometry->forwardButtonStartRect(m_scrollbar.get());
-        if (!rect.isEmpty())
-            m_painter.paintForwardButtonStart(canvas, rect);
-        rect = m_geometry->forwardButtonEndRect(m_scrollbar.get());
-        if (!rect.isEmpty())
-            m_painter.paintForwardButtonEnd(canvas, rect);
-    }
-
-    rect = m_geometry->trackRect(m_scrollbar.get());
-    if (!rect.isEmpty())
-    {
-        m_painter.paintTrackBackground(canvas, rect);
-
-        if (m_geometry->hasThumb(m_scrollbar.get()))
-        {
-            m_painter.paintForwardTrackPart(canvas, rect);
-            m_painter.paintBackTrackPart(canvas, rect);
-            m_painter.paintThumb(canvas, m_geometry->thumbRect(m_scrollbar.get()));
-        }
-
-        m_painter.paintTickmarks(canvas, rect);
-    }
-}
-
-void ThemedScrollbarPainter::Paint(SkCanvas *canvas, const IntSize &bounds)
+SkPicture* ThemedScrollbarPainter::Paint(const IntSize &bounds)
 {
     ASSERT(m_scrollbar->size() == bounds);
 
-    const IntPoint offset = m_scrollbar->location();
-    SkMatrix transform = SkMatrix::MakeTrans(-offset.x(), -offset.y());
+    Tile tile(bounds);
+    tile.UpdatePosition(m_scrollbar->location());
 
-    canvas->save();
-    canvas->setMatrix(transform);
-    Paint(canvas, offset, bounds);
-    canvas->restore();
+    const IntRect &rect = tile.Rect();
+    const auto callback = [this, &rect](SkCanvas &canvas) {
+        m_painter.paintScrollbarBackground(&canvas, rect);
+        PaintButtons(&canvas);
+        PaintTrack(&canvas);
+    };
+    tile.Update(rect, callback);
+
+    SkPictureRecorder recorder;
+    SkCanvas *canvas = recorder.beginRecording(rect);
+    canvas->drawBitmap(tile.Bitmap(), rect.x(), rect.y());
+    return recorder.endRecordingAsPicture();
+}
+
+void ThemedScrollbarPainter::PaintButtons(SkCanvas *canvas)
+{
+    if (!m_geometry->hasButtons(m_scrollbar.get()))
+        return;
+
+    IntRect rect = m_geometry->backButtonStartRect(m_scrollbar.get());
+    if (!rect.isEmpty())
+        m_painter.paintBackButtonStart(canvas, rect);
+
+    rect = m_geometry->backButtonEndRect(m_scrollbar.get());
+    if (!rect.isEmpty())
+        m_painter.paintBackButtonEnd(canvas, rect);
+
+    rect = m_geometry->forwardButtonStartRect(m_scrollbar.get());
+    if (!rect.isEmpty())
+        m_painter.paintForwardButtonStart(canvas, rect);
+
+    rect = m_geometry->forwardButtonEndRect(m_scrollbar.get());
+    if (!rect.isEmpty())
+        m_painter.paintForwardButtonEnd(canvas, rect);
+}
+
+void ThemedScrollbarPainter::PaintTrack(SkCanvas *canvas)
+{
+    IntRect rect = m_geometry->trackRect(m_scrollbar.get());
+    if (rect.isEmpty())
+        return;
+
+    m_painter.paintTrackBackground(canvas, rect);
+
+    if (m_geometry->hasThumb(m_scrollbar.get()))
+    {
+        m_painter.paintForwardTrackPart(canvas, rect);
+        m_painter.paintBackTrackPart(canvas, rect);
+        m_painter.paintThumb(canvas, m_geometry->thumbRect(m_scrollbar.get()));
+    }
+
+    m_painter.paintTickmarks(canvas, rect);
 }
 
 } // namespace BlinKit

@@ -14,7 +14,6 @@
 #include "blinkit/blink/public/platform/WebDisplayItemList.h"
 #include "blinkit/ui/compositor/layers/scrollbar_painters.h"
 #include "blinkit/ui/compositor/layers/solid_color_scrollbar_layer.h"
-#include "third_party/skia/include/core/SkPictureRecorder.h"
 
 using namespace blink;
 
@@ -52,13 +51,7 @@ WebLayer* ScrollbarLayer::layer(void)
 
 void ScrollbarLayer::PaintContents(WebDisplayItemList &displayItemList)
 {
-    const IntSize &bounds = m_layer->Bounds();
-
-    SkPictureRecorder recorder;
-    SkCanvas *canvas = recorder.beginRecording(bounds.width(), bounds.height());
-    m_painter->Paint(canvas, bounds);
-
-    displayItemList.appendDrawingItem(IntRect(), recorder.endRecordingAsPicture());
+    displayItemList.appendDrawingItem(IntRect(), m_painter->Paint(m_layer->Bounds()));
 }
 
 void ScrollbarLayer::setScrollLayer(WebLayer *layer)

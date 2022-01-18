@@ -14,10 +14,11 @@
 #define BLINKIT_SCROLLBAR_PAINTERS_H
 
 #include "blinkit/blink/public/platform/web_scrollbar_theme_painter.h"
+#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+
+class SkPicture;
 
 namespace blink {
-class IntPoint;
-class IntSize;
 class WebScrollbarThemeGeometry;
 }
 
@@ -28,7 +29,7 @@ class ScrollbarPainter
 public:
     virtual ~ScrollbarPainter(void) = default;
 
-    virtual void Paint(SkCanvas *canvas, const IntSize &bounds) = 0;
+    virtual SkPicture* Paint(const IntSize &bounds) = 0;
 };
 
 class ThemedScrollbarPainter final : public ScrollbarPainter
@@ -38,9 +39,10 @@ public:
         std::unique_ptr<WebScrollbarThemeGeometry> &geometry);
     ~ThemedScrollbarPainter(void) override;
 private:
-    void Paint(SkCanvas *canvas, const IntPoint &offset, const IntSize &bounds);
+    void PaintButtons(SkCanvas *canvas);
+    void PaintTrack(SkCanvas *canvas);
 
-    void Paint(SkCanvas *canvas, const IntSize &bounds) override;
+    SkPicture* Paint(const IntSize &bounds) override;
 
     std::unique_ptr<WebScrollbar> m_scrollbar;
     WebScrollbarThemePainter m_painter;
