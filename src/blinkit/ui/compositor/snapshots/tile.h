@@ -38,7 +38,7 @@ public:
         m_rect.setLocation(position);
     }
 
-    const SkImageInfo& BitmapInfo(void) const { return m_bitmap.info(); }
+    const SkBitmap& Bitmap(void) const { return m_bitmap; }
 private:
     void ResetBitmap(void);
 
