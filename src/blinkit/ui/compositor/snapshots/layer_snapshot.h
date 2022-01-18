@@ -34,14 +34,12 @@ public:
 
     virtual bool TryToReuse(Type assumedType, const IntSize &layerBounds, const IntSize &viewportSize) = 0;
 
-    virtual void Update(const std::function<void(SkCanvas &)> &callback) = 0;
+    using UpdateCallback = std::function<void(SkCanvas &)>;
+    virtual void Update(const IntPoint &position, const IntRect &dirtyRect, const UpdateCallback &callback) = 0;
 
-    virtual void BlendToCanvas(SkCanvas &canvas, const IntPoint &from, const IntPoint &to, const IntSize &size) = 0;
+    virtual void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect) = 0;
 protected:
-    LayerSnapshot(const IntSize &layerBounds);
-
-    static constexpr unsigned BlockUnit = 256;
-    IntSize m_layerBounds;
+    LayerSnapshot(void) = default;
 };
 
 } // namespace BlinKit
