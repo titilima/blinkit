@@ -13,29 +13,18 @@
 
 namespace BlinKit {
 
-SimpleSnapshot::SimpleSnapshot(const IntSize &layerBounds) : LayerSnapshot(layerBounds)
+SimpleSnapshot::SimpleSnapshot(const IntSize &layerBounds) : m_tile(layerBounds)
 {
-    Resize();
 }
 
-void SimpleSnapshot::BlendToCanvas(SkCanvas &canvas, const IntPoint &from, const IntPoint &to, const IntSize &size)
+void SimpleSnapshot::BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect)
 {
-    canvas.drawBitmapRect(
-        m_bitmap,
-        SkIRect::MakeXYWH(from.x(), from.y(), size.width(), size.height()),
-        SkRect::MakeXYWH(to.x(), to.y(), size.width(), size.height()),
-        nullptr
-    );
-}
-
-void SimpleSnapshot::Resize(void)
-{
-    m_bitmap.allocN32Pixels(m_layerBounds.width(), m_layerBounds.height(), kPremul_SkAlphaType);
+    m_tile.BlendToCanvas(canvas, dirtyRect);
 }
 
 bool SimpleSnapshot::TryToReuse(Type assumedType, const IntSize &layerBounds, const IntSize &)
 {
-    const SkImageInfo &info = m_bitmap.info();
+    const SkImageInfo &info = m_tile.Bitmap().info();
 
     bool sizeIsFit = (info.width() >= layerBounds.width()) && (info.height() >= layerBounds.height());
 
@@ -45,16 +34,15 @@ bool SimpleSnapshot::TryToReuse(Type assumedType, const IntSize &layerBounds, co
             return false;
     }
 
-    m_layerBounds = layerBounds;
     if (!sizeIsFit)
-        Resize();
+        ASSERT(false); // BKTODO: Resize(m_bitmap, m_layerBounds);
     return true;
 }
 
-void SimpleSnapshot::Update(const std::function<void(SkCanvas &)> &callback)
+void SimpleSnapshot::Update(const IntPoint &position, const IntRect &dirtyRect, const UpdateCallback &callback)
 {
-    SkCanvas canvas(m_bitmap);
-    callback(canvas);
+    m_tile.UpdatePosition(position);
+    m_tile.Update(dirtyRect, callback);
 }
 
 } // namespace BlinKit

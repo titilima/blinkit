@@ -14,6 +14,7 @@
 #define BLINKIT_SIMPLE_SNAPSHOT_H
 
 #include "blinkit/ui/compositor/snapshots/layer_snapshot.h"
+#include "blinkit/ui/compositor/snapshots/tile.h"
 
 namespace BlinKit {
 
@@ -22,13 +23,11 @@ class SimpleSnapshot final : public LayerSnapshot
 public:
     SimpleSnapshot(const IntSize &layerBounds);
 private:
-    void Resize(void);
-
     bool TryToReuse(Type assumedType, const IntSize &layerBounds, const IntSize &viewportSize) override;
-    void Update(const std::function<void(SkCanvas &)> &callback) override;
-    void BlendToCanvas(SkCanvas &canvas, const IntPoint &from, const IntPoint &to, const IntSize &size) override;
+    void Update(const IntPoint &position, const IntRect &dirtyRect, const UpdateCallback &callback) override;
+    void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect) override;
 
-    SkBitmap m_bitmap;
+    Tile m_tile;
 };
 
 } // namespace BlinKit
