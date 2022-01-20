@@ -57,29 +57,17 @@ void SingleAxisScrollingSnapshot::Update(const IntPoint &position, const IntRect
         return;
     }
 
-    const IntPoint offset = dirtyRect.location();
-    const IntSize dirtySize = dirtyRect.size();
-
-    SkBitmap bitmap;
-    bitmap.allocN32Pixels(dirtyRect.width(), dirtyRect.height(), kPremul_SkAlphaType);
-
-    SkCanvas canvas(bitmap);
-    if (0 != offset.x() && 0 != offset.y())
-    {
-        SkMatrix transform = SkMatrix::MakeTrans(-offset.x(), -offset.y());
-        canvas.setMatrix(transform);
-    }
-    callback(canvas);
-
+    Tile tile(dirtyRect);
+    tile.Update(dirtyRect, callback);
     for (const DirtyEntry &e : dirtyTiles)
     {
         IntPoint from(e.dirtyRect.location());
-        from.moveBy(-offset);
+        from.move(-dirtyRect.x(), -dirtyRect.y());
 
         IntPoint to(e.dirtyRect.location());
-        to.moveBy(-e.tile->Rect().location());
+        to.move(-e.tile->Rect().x(), -e.tile->Rect().y());
 
-        e.tile->Update(bitmap, from, to, e.dirtyRect.size());
+        e.tile->Update(tile.Bitmap(), from, to, e.dirtyRect.size());
     }
 }
 
