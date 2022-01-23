@@ -1,7 +1,8 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: IntSizeHash.h
+//   File Name: int_size_hash.h
 // Description: Hashers for IntSize
 //      Author: Ziming Li
 //     Created: 2021-07-18
@@ -31,10 +32,9 @@
 #ifndef IntSizeHash_h
 #define IntSizeHash_h
 
-#include "platform/geometry/IntSize.h"
-#include "wtf/Allocator.h"
-#include "wtf/HashMap.h"
-#include "wtf/HashSet.h"
+#include "blinkit/blink/renderer/platform/geometry/int_size.h"
+#include "blinkit/blink/renderer/wtf/HashMap.h"
+#include "blinkit/blink/renderer/wtf/HashSet.h"
 
 namespace WTF {
 
