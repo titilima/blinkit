@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: int_rect_outsets.h
+// Description: IntRectOutsets Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Adobe Systems Incorporated. All rights reserved.
  *
@@ -30,8 +42,7 @@
 #ifndef IntRectOutsets_h
 #define IntRectOutsets_h
 
-#include "platform/PlatformExport.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
 
 namespace blink {
 
@@ -40,7 +51,8 @@ namespace blink {
 // upward.
 //
 // Negative lengths can be used to express insets.
-class PLATFORM_EXPORT IntRectOutsets {
+class IntRectOutsets
+{
     DISALLOW_NEW();
 public:
     IntRectOutsets()
