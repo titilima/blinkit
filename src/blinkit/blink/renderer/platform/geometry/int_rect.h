@@ -206,7 +206,7 @@ inline IntRect unionRect(const IntRect& a, const IntRect& b)
     return c;
 }
 
-PLATFORM_EXPORT IntRect unionRect(const Vector<IntRect>&);
+IntRect unionRect(const Vector<IntRect>&);
 
 inline IntRect unionRectEvenIfEmpty(const IntRect& a, const IntRect& b)
 {
@@ -215,7 +215,7 @@ inline IntRect unionRectEvenIfEmpty(const IntRect& a, const IntRect& b)
     return c;
 }
 
-PLATFORM_EXPORT IntRect unionRectEvenIfEmpty(const Vector<IntRect>&);
+IntRect unionRectEvenIfEmpty(const Vector<IntRect>&);
 
 inline bool operator==(const IntRect& a, const IntRect& b)
 {
