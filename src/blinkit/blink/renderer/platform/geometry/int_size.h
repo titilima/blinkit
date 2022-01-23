@@ -2,7 +2,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: IntSize.h
+//   File Name: int_size.h
 // Description: IntSize Class
 //      Author: Ziming Li
 //     Created: 2022-01-10

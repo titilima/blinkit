@@ -2,7 +2,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: IntRect.h
+//   File Name: int_rect.h
 // Description: IntRect Class
 //      Author: Ziming Li
 //     Created: 2022-01-09
@@ -38,8 +38,8 @@
 #ifndef IntRect_h
 #define IntRect_h
 
-#include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
-#include "blinkit/blink/renderer/platform/geometry/IntRectOutsets.h"
+#include "blinkit/blink/renderer/platform/geometry/int_point.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect_outsets.h"
 #include "blinkit/blink/renderer/wtf/Vector.h"
 
 #if OS(MACOSX)
@@ -58,8 +58,8 @@ namespace blink {
 class FloatRect;
 class LayoutRect;
 
-class PLATFORM_EXPORT IntRect {
-    USING_FAST_MALLOC(IntRect);
+class IntRect
+{
 public:
     IntRect() { }
     IntRect(const IntPoint& location, const IntSize& size)

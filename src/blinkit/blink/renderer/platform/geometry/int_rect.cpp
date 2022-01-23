@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: IntRect.cpp
+//   File Name: int_rect.cpp
 // Description: IntRect Class
 //      Author: Ziming Li
 //     Created: 2022-01-09
@@ -34,7 +34,7 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "./IntRect.h"
+#include "./int_rect.h"
 
 #include <algorithm>
 #include "blinkit/blink/renderer/platform/geometry/FloatRect.h"

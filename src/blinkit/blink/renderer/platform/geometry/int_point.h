@@ -2,7 +2,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: IntPoint.h
+//   File Name: int_point.h
 // Description: IntPoint Class
 //      Author: Ziming Li
 //     Created: 2022-01-10
@@ -39,7 +39,7 @@
 #ifndef IntPoint_h
 #define IntPoint_h
 
-#include "blinkit/blink/renderer/platform/geometry/IntSize.h"
+#include "blinkit/blink/renderer/platform/geometry/int_size.h"
 #include "blinkit/blink/renderer/wtf/MathExtras.h"
 #include "blinkit/blink/renderer/wtf/VectorTraits.h"
 
