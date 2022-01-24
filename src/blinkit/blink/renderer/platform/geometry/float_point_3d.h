@@ -2,7 +2,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: FloatPoint3D.h
+//   File Name: float_point_3d.h
 // Description: FloatPoint3D Class
 //      Author: Ziming Li
 //     Created: 2021-12-05
@@ -35,9 +35,8 @@
 #ifndef FloatPoint3D_h
 #define FloatPoint3D_h
 
-#include "platform/geometry/FloatPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
 #include "third_party/skia/include/core/SkPoint3.h"
-#include "wtf/Allocator.h"
 
 namespace blink {
 
@@ -209,5 +208,12 @@ inline float FloatPoint3D::distanceTo(const FloatPoint3D& a) const
 void PrintTo(const FloatPoint3D&, std::ostream*);
 
 } // namespace blink
+
+#ifndef NDEBUG
+namespace zed {
+template <>
+void log_serializer::push<blink::FloatPoint3D>(std::vector<std::string> &dst, const blink::FloatPoint3D &point);
+}
+#endif
 
 #endif // FloatPoint3D_h

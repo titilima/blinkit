@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: float_point_3d.cpp
+// Description: FloatPoint3D Class
+//      Author: Ziming Li
+//     Created: 2022-01-24
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 2004, 2005, 2006 Nikolas Zimmermann <wildfox@kde.org>
                   2004, 2005 Rob Buis <buis@kde.org>
@@ -19,10 +30,21 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include "platform/geometry/FloatPoint3D.h"
+#include "./float_point_3d.h"
 
-#include "wtf/MathExtras.h"
-#include <math.h>
+#include <cmath>
+
+#ifndef NDEBUG
+namespace zed {
+template <>
+void log_serializer::push<blink::FloatPoint3D>(std::vector<std::string> &dst, const blink::FloatPoint3D &point)
+{
+    char buf[128];
+    sprintf(buf, "[FloatPoint3D (%.1f, %.1f, %.1f)]", point.x(), point.y(), point.z());
+    dst.emplace_back(buf);
+}
+}
+#endif // NDEBUG
 
 namespace blink {
 
