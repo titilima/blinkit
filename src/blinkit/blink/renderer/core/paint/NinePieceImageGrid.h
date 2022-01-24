@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NinePieceImageGrid.h
+// Description: NinePieceImageGrid Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,13 +17,10 @@
 #ifndef NinePieceImageGrid_h
 #define NinePieceImageGrid_h
 
-#include "core/CoreExport.h"
-#include "platform/geometry/FloatRect.h"
-#include "platform/geometry/FloatSize.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/graphics/Image.h"
-#include "platform/heap/Heap.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatSize.h"
+#include "blinkit/blink/renderer/platform/graphics/Image.h"
+#include "blinkit/blink/renderer/platform/heap/Heap.h"
 
 namespace blink {
 
@@ -58,14 +67,15 @@ inline NinePiece& operator++(NinePiece& piece)
 //       |         |              +------------------+
 //
 // it generates drawing information for the nine border pieces.
-class CORE_EXPORT NinePieceImageGrid {
+class NinePieceImageGrid
+{
     STACK_ALLOCATED();
 
 public:
     NinePieceImageGrid(const NinePieceImage&, IntSize imageSize, IntRect borderImageArea,
         const IntRectOutsets& borderWidths);
 
-    struct CORE_EXPORT NinePieceDrawInfo {
+    struct NinePieceDrawInfo {
         STACK_ALLOCATED();
         bool isDrawable;
         bool isCornerPiece;
