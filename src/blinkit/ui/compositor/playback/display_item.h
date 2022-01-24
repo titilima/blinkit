@@ -14,8 +14,7 @@
 #define BLINKIT_DISPLAY_ITEM_H
 
 #include "blinkit/blink/renderer/platform/geometry/int_rect.h"
-
-class SkCanvas;
+#include "third_party/skia/include/core/SkCanvas.h"
 
 namespace BlinKit {
 
@@ -29,6 +28,16 @@ protected:
     DisplayItem(const IntRect &visualRect) : m_visualRect(visualRect) {}
 private:
     const IntRect m_visualRect;
+};
+
+class RestoreCanvasItem final : public DisplayItem
+{
+public:
+    RestoreCanvasItem(const IntRect &visualRect) : DisplayItem(visualRect) {}
+private:
+    void Playback(SkCanvas &canvas) override {
+        canvas.restore();
+    }
 };
 
 } // namespace BlinKit

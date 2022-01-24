@@ -2,8 +2,8 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: clip_items.h
-// Description: ClipItem Classes
+//   File Name: clip_item.h
+// Description: ClipItem Class
 //      Author: Ziming Li
 //     Created: 2022-01-05
 // -------------------------------------------------
@@ -29,15 +29,6 @@ private:
 
     const IntRect m_clipRect;
     const std::vector<SkRRect> m_roundedClipRects;
-};
-
-class EndClipItem final : public DisplayItem
-{
-public:
-    EndClipItem(const IntRect &visualRect);
-    ~EndClipItem(void) override;
-private:
-    void Playback(SkCanvas &canvas) override;
 };
 
 } // namespace BlinKit

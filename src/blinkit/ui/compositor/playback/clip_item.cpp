@@ -2,16 +2,15 @@
 // BlinKit - BlinKit Library
 // -------------------------------------------------
 //   File Name: clip_items.cpp
-// Description: ClipItem Classes
+// Description: ClipItem Class
 //      Author: Ziming Li
 //     Created: 2022-01-05
 // -------------------------------------------------
 // Copyright (C) 2022 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "./clip_items.h"
+#include "./clip_item.h"
 
-#include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkRRect.h"
 
 namespace BlinKit {
@@ -37,19 +36,6 @@ void ClipItem::Playback(SkCanvas &canvas)
         else
             canvas.clipRRect(rrect, op, antiAlias);
     }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-EndClipItem::EndClipItem(const IntRect &visualRect) : DisplayItem(visualRect)
-{
-}
-
-EndClipItem::~EndClipItem(void) = default;
-
-void EndClipItem::Playback(SkCanvas &canvas)
-{
-    canvas.restore();
 }
 
 } // namespace BlinKit
