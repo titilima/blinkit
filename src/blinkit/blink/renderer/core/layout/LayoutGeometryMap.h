@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutGeometryMap.h
+// Description: LayoutGeometryMap Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -26,15 +38,12 @@
 #ifndef LayoutGeometryMap_h
 #define LayoutGeometryMap_h
 
-#include "core/CoreExport.h"
-#include "core/layout/LayoutGeometryMapStep.h"
-#include "core/layout/LayoutObject.h"
-#include "platform/geometry/FloatPoint.h"
-#include "platform/geometry/FloatQuad.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/geometry/LayoutSize.h"
-#include "wtf/Allocator.h"
-#include "wtf/OwnPtr.h"
+#include "blinkit/blink/renderer/core/layout/LayoutGeometryMapStep.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatQuad.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutSize.h"
+#include "blinkit/blink/renderer/wtf/OwnPtr.h"
 
 namespace blink {
 
@@ -44,7 +53,8 @@ class TransformationMatrix;
 class TransformState;
 
 // Can be used while walking the layout tree to cache data about offsets and transforms.
-class CORE_EXPORT LayoutGeometryMap {
+class LayoutGeometryMap
+{
     DISALLOW_NEW();
     WTF_MAKE_NONCOPYABLE(LayoutGeometryMap);
 public:

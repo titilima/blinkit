@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DragData.h
+// Description: DragData Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Apple Inc.  All rights reserved.
  *
@@ -26,13 +38,12 @@
 #ifndef DragData_h
 #define DragData_h
 
-#include "core/CoreExport.h"
-#include "core/page/DragActions.h"
-#include "platform/geometry/IntPoint.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Forward.h"
-#include "wtf/HashMap.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/core/page/DragActions.h"
+#include "blinkit/blink/renderer/platform/geometry/int_point.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/HashMap.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 
@@ -49,7 +60,8 @@ enum DragApplicationFlags {
     DragApplicationIsCopyKeyDown = 8
 };
 
-class CORE_EXPORT DragData {
+class DragData
+{
     STACK_ALLOCATED();
 public:
     enum FilenameConversionPolicy { DoNotConvertFilenames, ConvertFilenames };

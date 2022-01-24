@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -16,18 +17,16 @@
 #ifndef ImageBitmap_h
 #define ImageBitmap_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "core/html/HTMLImageElement.h"
+#include "blinkit/blink/renderer/bindings/core/duk/script_wrappable.h"
+#include "blinkit/blink/renderer/core/html/HTMLImageElement.h"
 // BKTODO: #include "core/html/canvas/CanvasImageSource.h"
-#include "core/imagebitmap/ImageBitmapSource.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/graphics/Image.h"
-#include "platform/graphics/ImageBuffer.h"
-#include "platform/graphics/StaticBitmapImage.h"
-#include "platform/heap/Handle.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
+#include "blinkit/blink/renderer/core/imagebitmap/ImageBitmapSource.h"
+#include "blinkit/blink/renderer/platform/graphics/Image.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageBuffer.h"
+#include "blinkit/blink/renderer/platform/graphics/StaticBitmapImage.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
 
 namespace blink {
 

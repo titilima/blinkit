@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ColorChooserClient.h
+// Description: ColorChooserClient Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,10 +43,10 @@
 #ifndef ColorChooserClient_h
 #define ColorChooserClient_h
 
-#include "platform/ColorSuggestion.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/platform/ColorSuggestion.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 

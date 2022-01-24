@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -37,10 +38,9 @@
 #ifndef AutoscrollController_h
 #define AutoscrollController_h
 
-#include "core/CoreExport.h"
-#include "platform/geometry/IntPoint.h"
-#include "platform/heap/Handle.h"
-#include "wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/platform/geometry/int_point.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
 
 namespace blink {
 
@@ -63,7 +63,8 @@ enum AutoscrollType {
 };
 
 // AutscrollController handels autoscroll and pan scroll for EventHandler.
-class CORE_EXPORT AutoscrollController final {
+class AutoscrollController final
+{
 public:
     static std::unique_ptr<AutoscrollController> create(Page&);
 

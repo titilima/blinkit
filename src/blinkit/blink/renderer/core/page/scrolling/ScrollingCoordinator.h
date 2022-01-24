@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -37,13 +38,12 @@
 #ifndef ScrollingCoordinator_h
 #define ScrollingCoordinator_h
 
-#include "core/CoreExport.h"
-#include "core/layout/LayoutObject.h"
-#include "platform/PlatformWheelEvent.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/scroll/ScrollTypes.h"
-#include "wtf/Noncopyable.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/platform/PlatformWheelEvent.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollTypes.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 class WebScrollbarLayer;

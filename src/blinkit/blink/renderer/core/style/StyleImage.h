@@ -35,14 +35,12 @@
 #ifndef StyleImage_h
 #define StyleImage_h
 
-#include "core/CoreExport.h"
-#include "core/css/CSSValue.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/geometry/LayoutSize.h"
-#include "platform/graphics/Image.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/core/css/CSSValue.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutSize.h"
+#include "blinkit/blink/renderer/platform/graphics/Image.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 

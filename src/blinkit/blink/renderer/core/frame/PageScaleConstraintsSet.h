@@ -42,21 +42,17 @@
 #ifndef PageScaleConstraintsSet_h
 #define PageScaleConstraintsSet_h
 
-#include "core/CoreExport.h"
-#include "core/dom/ViewportDescription.h"
-#include "core/frame/PageScaleConstraints.h"
-#include "platform/Length.h"
-#include "platform/geometry/IntSize.h"
+#include "blinkit/blink/renderer/core/dom/ViewportDescription.h"
+#include "blinkit/blink/renderer/core/frame/PageScaleConstraints.h"
+#include "blinkit/blink/renderer/platform/Length.h"
 #include "third_party/zed/include/zed/memory.hpp"
-#include "wtf/Allocator.h"
-// BKTODO: #include "wtf/PassOwnPtr.h"
 
 namespace blink {
 
 // This class harmonizes the viewport (particularly page scale) constraints from
 // the meta viewport tag and other sources.
-class CORE_EXPORT PageScaleConstraintsSet {
-    USING_FAST_MALLOC(PageScaleConstraintsSet);
+class PageScaleConstraintsSet
+{
 public:
     static std::unique_ptr<PageScaleConstraintsSet> create()
     {

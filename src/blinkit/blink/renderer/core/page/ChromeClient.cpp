@@ -30,22 +30,21 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/page/ChromeClient.h"
+#include "./ChromeClient.h"
 
-#include "core/dom/Document.h"
-#include "core/frame/LocalFrame.h"
-#include "core/html/HTMLInputElement.h"
-#include "core/inspector/InspectorInstrumentation.h"
-#include "core/layout/HitTestResult.h"
+#include <algorithm>
+#include "blinkit/blink/public/platform/WebScreenInfo.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/html/HTMLInputElement.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorInstrumentation.h"
+#include "blinkit/blink/renderer/core/layout/HitTestResult.h"
 #if 0 // BKTODO:
 #include "core/page/FrameTree.h"
 #include "core/page/ScopedPageLoadDeferrer.h"
 #include "core/page/WindowFeatures.h"
 #endif
-#include "platform/geometry/IntRect.h"
 // BKTODO: #include "platform/network/NetworkHints.h"
-#include "public/platform/WebScreenInfo.h"
-#include <algorithm>
 
 namespace blink {
 

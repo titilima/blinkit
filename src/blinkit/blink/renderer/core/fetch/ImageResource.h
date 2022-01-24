@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -34,14 +35,13 @@
 #ifndef ImageResource_h
 #define ImageResource_h
 
-#include "core/CoreExport.h"
-#include "core/fetch/ResourcePtr.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/IntSizeHash.h"
-#include "platform/geometry/LayoutSize.h"
-#include "platform/graphics/ImageObserver.h"
-#include "platform/graphics/ImageOrientation.h"
-#include "wtf/HashMap.h"
+#include "blinkit/blink/renderer/core/fetch/ResourcePtr.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_size_hash.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutSize.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageObserver.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageOrientation.h"
+#include "blinkit/blink/renderer/wtf/HashMap.h"
 
 namespace blink {
 
@@ -53,7 +53,8 @@ class Length;
 class MemoryCache;
 // BKTODO: class SecurityOrigin;
 
-class CORE_EXPORT ImageResource final : public Resource, public ImageObserver {
+class ImageResource final : public Resource, public ImageObserver
+{
     friend class MemoryCache;
 
 public:

@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -37,22 +38,18 @@
 #ifndef PaintInfo_h
 #define PaintInfo_h
 
-#include "core/CoreExport.h"
+#include <limits>
 // TODO(jchaffraix): Once we unify PaintBehavior and PaintLayerFlags, we should move
 // PaintLayerFlags to PaintPhase and rename it. Thus removing the need for this #include.#include "core/paint/PaintLayerPaintingInfo.h"
-#include "core/paint/PaintLayerPaintingInfo.h"
-#include "core/paint/PaintPhase.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/LayoutRect.h"
-#include "platform/graphics/GraphicsContext.h"
-#include "platform/graphics/paint/CullRect.h"
-#include "platform/graphics/paint/DisplayItem.h"
-#include "platform/transforms/AffineTransform.h"
-#include "wtf/Allocator.h"
-#include "wtf/HashMap.h"
-#include "wtf/ListHashSet.h"
-
-#include <limits>
+#include "blinkit/blink/renderer/core/paint/PaintLayerPaintingInfo.h"
+#include "blinkit/blink/renderer/core/paint/PaintPhase.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutRect.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsContext.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/CullRect.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/DisplayItem.h"
+#include "blinkit/blink/renderer/platform/transforms/AffineTransform.h"
+#include "blinkit/blink/renderer/wtf/HashMap.h"
+#include "blinkit/blink/renderer/wtf/ListHashSet.h"
 
 namespace blink {
 
@@ -61,7 +58,8 @@ class LayoutBoxModelObject;
 class LayoutObject;
 class PaintInvalidationState;
 
-struct CORE_EXPORT PaintInfo {
+struct PaintInfo
+{
     PaintInfo(GraphicsContext& newContext, const IntRect& cullRect, PaintPhase newPhase, GlobalPaintFlags globalPaintFlags, PaintLayerFlags paintFlags,
         LayoutObject* newPaintingRoot = nullptr, const LayoutBoxModelObject* newPaintContainer = nullptr)
         : context(newContext)

@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DateTimeChooser.h
+// Description: DateTimeChooser Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -31,12 +43,10 @@
 #ifndef DateTimeChooser_h
 #define DateTimeChooser_h
 
-#include "core/CoreExport.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Allocator.h"
-#include "wtf/RefCounted.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
@@ -71,7 +81,8 @@ struct DateTimeChooserParameters {
 };
 
 // For pickers like color pickers and date pickers.
-class CORE_EXPORT DateTimeChooser : public RefCountedWillBeGarbageCollectedFinalized<DateTimeChooser> {
+class DateTimeChooser : public RefCountedWillBeGarbageCollectedFinalized<DateTimeChooser>
+{
 public:
     virtual ~DateTimeChooser();
 

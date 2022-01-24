@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PlatformWheelEvent.h
+// Description: PlatformWheelEvent Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2009 Apple Inc. All rights reserved.
  *
@@ -26,8 +38,8 @@
 #ifndef PlatformWheelEvent_h
 #define PlatformWheelEvent_h
 
-#include "platform/PlatformEvent.h"
-#include "platform/geometry/IntPoint.h"
+#include "blinkit/blink/renderer/platform/PlatformEvent.h"
+#include "blinkit/blink/renderer/platform/geometry/int_point.h"
 
 namespace blink {
 
@@ -53,7 +65,8 @@ enum PlatformWheelEventPhase {
 };
 #endif
 
-class PlatformWheelEvent : public PlatformEvent {
+class PlatformWheelEvent : public PlatformEvent
+{
 public:
     PlatformWheelEvent()
         : PlatformEvent(PlatformEvent::Wheel)

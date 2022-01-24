@@ -12,7 +12,7 @@
 #include "./win_theme_engine.h"
 
 #include <vsstyle.h>
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 #include "blinkit/win/bk_bitmap.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkColorPriv.h"

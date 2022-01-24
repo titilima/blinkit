@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CompositingLayerAssigner.h
+// Description: CompositingLayerAssigner Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2014 Google Inc. All rights reserved.
@@ -27,17 +39,17 @@
 #ifndef CompositingLayerAssigner_h
 #define CompositingLayerAssigner_h
 
-#include "core/layout/compositing/PaintLayerCompositor.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/LayoutPoint.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/renderer/core/layout/compositing/PaintLayerCompositor.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutPoint.h"
 
 namespace blink {
 
 class CompositedLayerMapping;
 class PaintLayer;
 
-class CompositingLayerAssigner {
+class CompositingLayerAssigner
+{
     STACK_ALLOCATED();
 public:
     explicit CompositingLayerAssigner(PaintLayerCompositor*);

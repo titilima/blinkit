@@ -35,24 +35,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/css/CSSGradientValue.h"
+#include "./CSSGradientValue.h"
 
-#include "core/CSSValueKeywords.h"
-#include "core/css/CSSCalculationValue.h"
-#include "core/css/CSSToLengthConversionData.h"
-#include "core/css/CSSValuePair.h"
-#include "core/dom/NodeComputedStyle.h"
-#include "core/dom/TextLinkColors.h"
-#include "core/layout/LayoutObject.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/graphics/Gradient.h"
-#include "platform/graphics/GradientGeneratedImage.h"
-#include "platform/graphics/Image.h"
-#include "platform/graphics/skia/SkiaUtils.h"
-#include "wtf/text/StringBuilder.h"
-#include "wtf/text/WTFString.h"
 #include <algorithm>
 #include <utility>
+#include "blinkit/blink/renderer/core/CSSValueKeywords.h"
+#include "blinkit/blink/renderer/core/css/CSSCalculationValue.h"
+#include "blinkit/blink/renderer/core/css/CSSToLengthConversionData.h"
+#include "blinkit/blink/renderer/core/css/CSSValuePair.h"
+#include "blinkit/blink/renderer/core/dom/NodeComputedStyle.h"
+#include "blinkit/blink/renderer/core/dom/TextLinkColors.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/platform/graphics/Gradient.h"
+#include "blinkit/blink/renderer/platform/graphics/GradientGeneratedImage.h"
+#include "blinkit/blink/renderer/platform/graphics/Image.h"
+#include "blinkit/blink/renderer/platform/graphics/skia/SkiaUtils.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 

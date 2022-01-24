@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -42,8 +43,7 @@
 #ifndef WebScreenInfo_h
 #define WebScreenInfo_h
 
-// BKTODO: #include "public/platform/modules/screen_orientation/WebScreenOrientationType.h"
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 
 namespace blink {
 

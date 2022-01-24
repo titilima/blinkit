@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CaretBase.h
+// Description: CaretBase Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -26,11 +38,9 @@
 #ifndef CaretBase_h
 #define CaretBase_h
 
-#include "core/CoreExport.h"
-#include "core/editing/VisiblePosition.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/LayoutRect.h"
-#include "wtf/Noncopyable.h"
+#include "blinkit/blink/renderer/core/editing/VisiblePosition.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutRect.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
 
 namespace blink {
 
@@ -40,9 +50,9 @@ class GraphicsContext;
 class LayoutBlock;
 class LayoutView;
 
-class CORE_EXPORT CaretBase {
+class CaretBase
+{
     WTF_MAKE_NONCOPYABLE(CaretBase);
-    USING_FAST_MALLOC_WILL_BE_REMOVED(CaretBase);
 protected:
     enum CaretVisibility { Visible, Hidden };
     explicit CaretBase(CaretVisibility = Hidden);

@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -43,11 +44,7 @@
 #define WebCursorInfo_h
 
 #include "WebImage.h"
-#if 0 // BKTODO:
-#include "WebPoint.h"
-#else
-#include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
-#endif
+#include "blinkit/blink/renderer/platform/geometry/int_point.h"
 
 #ifdef WIN32
 typedef struct HICON__* HICON;

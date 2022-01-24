@@ -37,11 +37,10 @@
 #ifndef CSSImageGeneratorValue_h
 #define CSSImageGeneratorValue_h
 
-#include "core/CoreExport.h"
-#include "core/css/CSSValue.h"
-#include "platform/geometry/IntSizeHash.h"
-#include "wtf/HashCountedSet.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/core/css/CSSValue.h"
+#include "blinkit/blink/renderer/platform/geometry/int_size_hash.h"
+#include "blinkit/blink/renderer/wtf/HashCountedSet.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 
@@ -61,9 +60,10 @@ struct SizeAndCount {
     int count;
 };
 
-using LayoutObjectSizeCountMap = std::unordered_map<const LayoutObject*, SizeAndCount>;
+using LayoutObjectSizeCountMap = std::unordered_map<const LayoutObject *, SizeAndCount>;
 
-class CORE_EXPORT CSSImageGeneratorValue : public CSSValue {
+class CSSImageGeneratorValue : public CSSValue
+{
 public:
     ~CSSImageGeneratorValue();
 

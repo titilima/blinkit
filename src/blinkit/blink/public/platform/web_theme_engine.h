@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -44,13 +45,14 @@
 
 #include "blinkit/blink/public/platform/WebCanvas.h"
 #include "blinkit/blink/public/platform/WebColor.h"
-#include "blinkit/blink/renderer/platform/geometry/IntSize.h"
+#include "blinkit/blink/renderer/platform/geometry/int_size.h"
 
 namespace blink {
 
 class IntRect;
 
-class WebThemeEngine {
+class WebThemeEngine
+{
 public:
     // The current state of the associated Part.
     enum State {

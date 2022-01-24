@@ -37,19 +37,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/page/SpatialNavigation.h"
+#include "./SpatialNavigation.h"
 
-#include "core/HTMLNames.h"
-#include "core/frame/FrameView.h"
-#include "core/frame/LocalFrame.h"
-#include "core/frame/Settings.h"
-#include "core/html/HTMLAreaElement.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/frame/FrameView.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/frame/Settings.h"
+#include "blinkit/blink/renderer/core/html/HTMLAreaElement.h"
 // BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
-#include "core/html/HTMLImageElement.h"
-#include "core/layout/LayoutBox.h"
+#include "blinkit/blink/renderer/core/html/HTMLImageElement.h"
+#include "blinkit/blink/renderer/core/layout/LayoutBox.h"
 // BKTODO: #include "core/page/FrameTree.h"
-#include "core/page/Page.h"
-#include "platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/core/page/Page.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 
 namespace blink {
 

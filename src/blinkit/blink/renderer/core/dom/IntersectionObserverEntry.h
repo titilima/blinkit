@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IntersectionObserverEntry.h
+// Description: IntersectionObserverEntry Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,10 +17,9 @@
 #ifndef IntersectionObserverEntry_h
 #define IntersectionObserverEntry_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/dom/ClientRect.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/heap/Handle.h"
+#include "blinkit/blink/renderer/core/dom/ClientRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
 
 namespace blink {
 

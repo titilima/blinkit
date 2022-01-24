@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -16,9 +17,9 @@
 #ifndef WebDisplayItemList_h
 #define WebDisplayItemList_h
 
-#include "WebBlendMode.h"
+#include "blinkit/blink/public/platform/WebBlendMode.h"
 #include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/skia/include/core/SkColorFilter.h"
 #include "third_party/skia/include/core/SkRRect.h"
 #include "third_party/skia/include/core/SkRegion.h"

@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -16,15 +17,15 @@
 #ifndef ImageBitmapSource_h
 #define ImageBitmapSource_h
 
-#include "core/CoreExport.h"
-#include "core/dom/ExceptionCode.h"
-#include "platform/geometry/IntSize.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/platform/geometry/int_size.h"
 
 namespace blink {
 
 class ImageBitmap;
 
-class CORE_EXPORT ImageBitmapSource {
+class ImageBitmapSource
+{
 public:
     virtual IntSize bitmapSourceSize() const { return IntSize(); }
     // BKTODO: virtual ScriptPromise createImageBitmap(ScriptState*, EventTarget&, int sx, int sy, int sw, int sh, ExceptionState&);

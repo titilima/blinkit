@@ -45,8 +45,7 @@
 #include "WebScrollBlocksOn.h"
 #include "blinkit/blink/renderer/platform/geometry/DoublePoint.h"
 #include "blinkit/blink/renderer/platform/geometry/FloatPoint3D.h"
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
-#include "blinkit/blink/renderer/platform/geometry/IntSize.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 
 class SkMatrix44;
 class SkImageFilter;

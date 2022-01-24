@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IconURL.h
+// Description: IconURL Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -31,9 +43,8 @@
 #ifndef IconURL_h
 #define IconURL_h
 
-#include "platform/geometry/IntSize.h"
-#include "platform/weborigin/KURL.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/renderer/platform/geometry/int_size.h"
+#include "blinkit/blink/renderer/platform/weborigin/KURL.h"
 
 namespace blink {
 

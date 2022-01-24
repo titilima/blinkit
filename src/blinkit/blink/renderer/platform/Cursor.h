@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Cursor.h
+// Description: Cursor Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -26,16 +38,14 @@
 #ifndef Cursor_h
 #define Cursor_h
 
-#include "platform/PlatformExport.h"
-#include "platform/geometry/IntPoint.h"
-#include "platform/graphics/Image.h"
-#include "wtf/Assertions.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/platform/graphics/Image.h"
+#include "blinkit/blink/renderer/wtf/Assertions.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 
-class PLATFORM_EXPORT Cursor {
-    USING_FAST_MALLOC(Cursor);
+class Cursor
+{
 public:
     enum Type {
         Pointer = 0,
@@ -117,51 +127,51 @@ private:
     float m_imageScaleFactor;
 };
 
-PLATFORM_EXPORT IntPoint determineHotSpot(Image*, bool hotSpotSpecified, const IntPoint& specifiedHotSpot);
+IntPoint determineHotSpot(Image*, bool hotSpotSpecified, const IntPoint& specifiedHotSpot);
 
-PLATFORM_EXPORT const Cursor& pointerCursor();
-PLATFORM_EXPORT const Cursor& crossCursor();
-PLATFORM_EXPORT const Cursor& handCursor();
-PLATFORM_EXPORT const Cursor& moveCursor();
-PLATFORM_EXPORT const Cursor& iBeamCursor();
-PLATFORM_EXPORT const Cursor& waitCursor();
-PLATFORM_EXPORT const Cursor& helpCursor();
-PLATFORM_EXPORT const Cursor& eastResizeCursor();
-PLATFORM_EXPORT const Cursor& northResizeCursor();
-PLATFORM_EXPORT const Cursor& northEastResizeCursor();
-PLATFORM_EXPORT const Cursor& northWestResizeCursor();
-PLATFORM_EXPORT const Cursor& southResizeCursor();
-PLATFORM_EXPORT const Cursor& southEastResizeCursor();
-PLATFORM_EXPORT const Cursor& southWestResizeCursor();
-PLATFORM_EXPORT const Cursor& westResizeCursor();
-PLATFORM_EXPORT const Cursor& northSouthResizeCursor();
-PLATFORM_EXPORT const Cursor& eastWestResizeCursor();
-PLATFORM_EXPORT const Cursor& northEastSouthWestResizeCursor();
-PLATFORM_EXPORT const Cursor& northWestSouthEastResizeCursor();
-PLATFORM_EXPORT const Cursor& columnResizeCursor();
-PLATFORM_EXPORT const Cursor& rowResizeCursor();
-PLATFORM_EXPORT const Cursor& middlePanningCursor();
-PLATFORM_EXPORT const Cursor& eastPanningCursor();
-PLATFORM_EXPORT const Cursor& northPanningCursor();
-PLATFORM_EXPORT const Cursor& northEastPanningCursor();
-PLATFORM_EXPORT const Cursor& northWestPanningCursor();
-PLATFORM_EXPORT const Cursor& southPanningCursor();
-PLATFORM_EXPORT const Cursor& southEastPanningCursor();
-PLATFORM_EXPORT const Cursor& southWestPanningCursor();
-PLATFORM_EXPORT const Cursor& westPanningCursor();
-PLATFORM_EXPORT const Cursor& verticalTextCursor();
-PLATFORM_EXPORT const Cursor& cellCursor();
-PLATFORM_EXPORT const Cursor& contextMenuCursor();
-PLATFORM_EXPORT const Cursor& noDropCursor();
-PLATFORM_EXPORT const Cursor& notAllowedCursor();
-PLATFORM_EXPORT const Cursor& progressCursor();
-PLATFORM_EXPORT const Cursor& aliasCursor();
-PLATFORM_EXPORT const Cursor& zoomInCursor();
-PLATFORM_EXPORT const Cursor& zoomOutCursor();
-PLATFORM_EXPORT const Cursor& copyCursor();
-PLATFORM_EXPORT const Cursor& noneCursor();
-PLATFORM_EXPORT const Cursor& grabCursor();
-PLATFORM_EXPORT const Cursor& grabbingCursor();
+const Cursor& pointerCursor();
+const Cursor& crossCursor();
+const Cursor& handCursor();
+const Cursor& moveCursor();
+const Cursor& iBeamCursor();
+const Cursor& waitCursor();
+const Cursor& helpCursor();
+const Cursor& eastResizeCursor();
+const Cursor& northResizeCursor();
+const Cursor& northEastResizeCursor();
+const Cursor& northWestResizeCursor();
+const Cursor& southResizeCursor();
+const Cursor& southEastResizeCursor();
+const Cursor& southWestResizeCursor();
+const Cursor& westResizeCursor();
+const Cursor& northSouthResizeCursor();
+const Cursor& eastWestResizeCursor();
+const Cursor& northEastSouthWestResizeCursor();
+const Cursor& northWestSouthEastResizeCursor();
+const Cursor& columnResizeCursor();
+const Cursor& rowResizeCursor();
+const Cursor& middlePanningCursor();
+const Cursor& eastPanningCursor();
+const Cursor& northPanningCursor();
+const Cursor& northEastPanningCursor();
+const Cursor& northWestPanningCursor();
+const Cursor& southPanningCursor();
+const Cursor& southEastPanningCursor();
+const Cursor& southWestPanningCursor();
+const Cursor& westPanningCursor();
+const Cursor& verticalTextCursor();
+const Cursor& cellCursor();
+const Cursor& contextMenuCursor();
+const Cursor& noDropCursor();
+const Cursor& notAllowedCursor();
+const Cursor& progressCursor();
+const Cursor& aliasCursor();
+const Cursor& zoomInCursor();
+const Cursor& zoomOutCursor();
+const Cursor& copyCursor();
+const Cursor& noneCursor();
+const Cursor& grabCursor();
+const Cursor& grabbingCursor();
 
 } // namespace blink
 

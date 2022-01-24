@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageInputType.h
+// Description: ImageInputType Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -33,12 +45,13 @@
 #ifndef ImageInputType_h
 #define ImageInputType_h
 
-#include "core/html/forms/BaseButtonInputType.h"
-#include "platform/geometry/IntPoint.h"
+#include "blinkit/blink/renderer/core/html/forms/BaseButtonInputType.h"
+#include "blinkit/blink/renderer/platform/geometry/int_point.h"
 
 namespace blink {
 
-class ImageInputType final : public BaseButtonInputType {
+class ImageInputType final : public BaseButtonInputType
+{
 public:
     static PassRefPtrWillBeRawPtr<InputType> create(HTMLInputElement&);
     virtual PassRefPtr<ComputedStyle> customStyleForLayoutObject(PassRefPtr<ComputedStyle>);

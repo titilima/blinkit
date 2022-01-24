@@ -1,17 +1,27 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayerClipRecorder.cpp
+// Description: LayerClipRecorder Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/paint/LayerClipRecorder.h"
+#include "./LayerClipRecorder.h"
 
-#include "core/layout/ClipRect.h"
-#include "core/layout/LayoutView.h"
-#include "core/paint/PaintLayer.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/graphics/GraphicsContext.h"
-#include "platform/graphics/GraphicsLayer.h"
-#include "platform/graphics/paint/ClipRecorder.h"
-#include "platform/graphics/paint/PaintController.h"
+#include "blinkit/blink/renderer/core/layout/ClipRect.h"
+#include "blinkit/blink/renderer/core/layout/LayoutView.h"
+#include "blinkit/blink/renderer/core/paint/PaintLayer.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsContext.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsLayer.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/ClipRecorder.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/PaintController.h"
 
 namespace blink {
 

@@ -1,19 +1,29 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NinePieceImagePainter.cpp
+// Description: NinePieceImagePainter Class
+//      Author: Ziming Li
+//     Created: 2022-01-24
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/paint/NinePieceImagePainter.h"
+#include "./NinePieceImagePainter.h"
 
-#include "core/frame/UseCounter.h"
-#include "core/layout/ImageQualityController.h"
-#include "core/layout/LayoutBoxModelObject.h"
-#include "core/paint/BoxPainter.h"
-#include "core/paint/NinePieceImageGrid.h"
-#include "core/style/ComputedStyle.h"
-#include "core/style/NinePieceImage.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/geometry/LayoutRect.h"
-#include "platform/graphics/GraphicsContext.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/core/layout/ImageQualityController.h"
+#include "blinkit/blink/renderer/core/layout/LayoutBoxModelObject.h"
+#include "blinkit/blink/renderer/core/paint/BoxPainter.h"
+#include "blinkit/blink/renderer/core/paint/NinePieceImageGrid.h"
+#include "blinkit/blink/renderer/core/style/ComputedStyle.h"
+#include "blinkit/blink/renderer/core/style/NinePieceImage.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutRect.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsContext.h"
 
 namespace blink {
 

@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -36,31 +37,28 @@
 #ifndef FrameView_h
 #define FrameView_h
 
-#include "core/CoreExport.h"
-#include "core/dom/DocumentLifecycle.h"
-#include "core/frame/FrameViewAutoSizeInfo.h"
-#include "core/frame/LayoutSubtreeRootList.h"
-#include "core/frame/RootFrameViewport.h"
+#include "blinkit/blink/public/platform/WebDisplayMode.h"
+#include "blinkit/blink/renderer/core/dom/DocumentLifecycle.h"
+#include "blinkit/blink/renderer/core/frame/FrameViewAutoSizeInfo.h"
+#include "blinkit/blink/renderer/core/frame/LayoutSubtreeRootList.h"
+#include "blinkit/blink/renderer/core/frame/RootFrameViewport.h"
 // BKTODO: #include "core/layout/LayoutAnalyzer.h"
-#include "core/paint/PaintInvalidationCapableScrollableArea.h"
-#include "core/paint/PaintPhase.h"
-#include "platform/RuntimeEnabledFeatures.h"
-#include "platform/Widget.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/LayoutRect.h"
-#include "platform/graphics/Color.h"
-#include "platform/graphics/paint/ClipPaintPropertyNode.h"
-#include "platform/graphics/paint/TransformPaintPropertyNode.h"
-#include "platform/scroll/ScrollTypes.h"
-#include "platform/scroll/Scrollbar.h"
-#include "public/platform/WebDisplayMode.h"
-#include "wtf/Allocator.h"
-#include "wtf/Forward.h"
-#include "wtf/HashSet.h"
-#include "wtf/ListHashSet.h"
-#include "wtf/OwnPtr.h"
-#include "wtf/TemporaryChange.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/core/paint/PaintInvalidationCapableScrollableArea.h"
+#include "blinkit/blink/renderer/core/paint/PaintPhase.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/platform/Widget.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutRect.h"
+#include "blinkit/blink/renderer/platform/graphics/Color.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/ClipPaintPropertyNode.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/TransformPaintPropertyNode.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollTypes.h"
+#include "blinkit/blink/renderer/platform/scroll/Scrollbar.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/HashSet.h"
+#include "blinkit/blink/renderer/wtf/ListHashSet.h"
+#include "blinkit/blink/renderer/wtf/OwnPtr.h"
+#include "blinkit/blink/renderer/wtf/TemporaryChange.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 

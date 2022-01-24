@@ -41,7 +41,7 @@
 #include "WebCommon.h"
 #include "WebTopControlsState.h"
 #include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
-#include "blinkit/blink/renderer/platform/geometry/IntSize.h"
+#include "blinkit/blink/renderer/platform/geometry/int_size.h"
 
 class SkBitmap;
 
@@ -160,16 +160,11 @@ public:
     // Used to update the active selection bounds.
     virtual void registerSelection(const WebSelection&) { }
     virtual void clearSelection() { }
-#endif
 
     // Debugging / dangerous ---------------------------------------------
 
-    int layerTreeId() const {
-        static_assert(sizeof(WebLayerTreeView *) == sizeof(int));
-        return reinterpret_cast<int>(this);
-    }
+    virtual int layerTreeId() const { return 0; }
 
-#if 0 // BKTODO:
     // Toggles the FPS counter in the HUD layer
     virtual void setShowFPSCounter(bool) { }
 

@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: BorderData.h
+// Description: BorderData Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -25,15 +37,15 @@
 #ifndef BorderData_h
 #define BorderData_h
 
-#include "core/style/BorderValue.h"
-#include "core/style/NinePieceImage.h"
-#include "platform/LengthSize.h"
-#include "platform/geometry/IntRect.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/renderer/core/style/BorderValue.h"
+#include "blinkit/blink/renderer/core/style/NinePieceImage.h"
+#include "blinkit/blink/renderer/platform/LengthSize.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 
 namespace blink {
 
-class BorderData {
+class BorderData
+{
     DISALLOW_NEW();
 friend class ComputedStyle;
 public:

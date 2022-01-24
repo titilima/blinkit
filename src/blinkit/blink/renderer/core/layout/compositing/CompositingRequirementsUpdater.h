@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CompositingRequirementsUpdater.h
+// Description: CompositingRequirementsUpdater Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2014 Google Inc. All rights reserved.
@@ -27,10 +39,9 @@
 #ifndef CompositingRequirementsUpdater_h
 #define CompositingRequirementsUpdater_h
 
-#include "platform/geometry/IntRect.h"
-#include "platform/graphics/CompositingReasons.h"
-#include "wtf/Allocator.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/graphics/CompositingReasons.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 
@@ -38,7 +49,8 @@ class CompositingReasonFinder;
 class PaintLayer;
 class LayoutView;
 
-class CompositingRequirementsUpdater {
+class CompositingRequirementsUpdater
+{
     STACK_ALLOCATED();
 public:
     CompositingRequirementsUpdater(LayoutView&, CompositingReasonFinder&);

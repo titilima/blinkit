@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -38,13 +39,12 @@
 #ifndef DocumentMarkerController_h
 #define DocumentMarkerController_h
 
-#include "core/CoreExport.h"
-#include "core/editing/iterators/TextIterator.h"
-#include "core/editing/markers/DocumentMarker.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/heap/Handle.h"
-#include "wtf/HashMap.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/core/editing/iterators/TextIterator.h"
+#include "blinkit/blink/renderer/core/editing/markers/DocumentMarker.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/HashMap.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 

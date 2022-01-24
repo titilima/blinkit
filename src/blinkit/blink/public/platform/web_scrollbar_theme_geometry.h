@@ -37,13 +37,14 @@
 #ifndef WebScrollbarThemeGeometry_h
 #define WebScrollbarThemeGeometry_h
 
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 
 namespace blink {
 
 class WebScrollbar;
 
-class WebScrollbarThemeGeometry {
+class WebScrollbarThemeGeometry
+{
 public:
     virtual ~WebScrollbarThemeGeometry() { }
 

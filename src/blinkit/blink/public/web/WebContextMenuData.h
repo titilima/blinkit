@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -43,7 +44,7 @@
 #define WebContextMenuData_h
 
 #include "blinkit/blink/public/web/WebMenuItemInfo.h"
-#include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/int_point.h"
 #include "blinkit/blink/renderer/platform/weborigin/KURL.h"
 #include "blinkit/blink/renderer/wtf/text/WTFString.h"
 #if 0 // BKTODO:

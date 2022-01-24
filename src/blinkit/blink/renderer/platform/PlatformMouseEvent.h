@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PlatformMouseEvent.h
+// Description: PlatformMouseEvent Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2009 Apple Inc. All rights reserved.
  *
@@ -26,9 +38,9 @@
 #ifndef PlatformMouseEvent_h
 #define PlatformMouseEvent_h
 
-#include "platform/PlatformEvent.h"
-#include "platform/geometry/IntPoint.h"
-#include "public/platform/WebPointerProperties.h"
+#include "blinkit/blink/public/platform/WebPointerProperties.h"
+#include "blinkit/blink/renderer/platform/PlatformEvent.h"
+#include "blinkit/blink/renderer/platform/geometry/int_point.h"
 
 namespace blink {
 
@@ -36,7 +48,8 @@ namespace blink {
 // spec but not in MouseEvent spec.
 enum MouseButton { NoButton = -1, LeftButton, MiddleButton, RightButton };
 
-class PlatformMouseEvent : public PlatformEvent {
+class PlatformMouseEvent : public PlatformEvent
+{
 public:
     enum SyntheticEventType {
         // Real mouse input events or synthetic events that behave just like real events

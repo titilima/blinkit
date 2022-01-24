@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CursorData.h
+// Description: CursorData Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -25,12 +37,12 @@
 #ifndef CursorData_h
 #define CursorData_h
 
-#include "core/style/StyleImage.h"
-#include "platform/geometry/IntPoint.h"
+#include "blinkit/blink/renderer/core/style/StyleImage.h"
 
 namespace blink {
 
-class CursorData {
+class CursorData
+{
     DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
 public:
     CursorData(PassRefPtrWillBeRawPtr<StyleImage> image, bool hotSpotSpecified, const IntPoint& hotSpot)

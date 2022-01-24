@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageQualityController.h
+// Description: ImageQualityController Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,23 +43,22 @@
 #ifndef ImageQualityController_h
 #define ImageQualityController_h
 
-#include "base/gtest_prod_util.h"
-#include "core/CoreExport.h"
-#include "core/layout/LayoutObject.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/geometry/LayoutSize.h"
-#include "platform/graphics/Image.h"
-#include "platform/graphics/ImageOrientation.h"
-#include "platform/graphics/ImageSource.h"
-#include "wtf/HashMap.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutSize.h"
+#include "blinkit/blink/renderer/platform/graphics/Image.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageOrientation.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageSource.h"
+#include "blinkit/blink/renderer/wtf/HashMap.h"
+#include "chromium/base/gtest_prod_util.h"
 
 namespace blink {
 
 typedef HashMap<const void*, LayoutSize> LayerSizeMap;
 typedef HashMap<const LayoutObject*, LayerSizeMap> ObjectLayerSizeMap;
 
-class CORE_EXPORT ImageQualityController final {
-    WTF_MAKE_NONCOPYABLE(ImageQualityController); USING_FAST_MALLOC(ImageQualityController);
+class ImageQualityController final
+{
+    WTF_MAKE_NONCOPYABLE(ImageQualityController);
 public:
     ~ImageQualityController();
 

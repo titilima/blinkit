@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -40,20 +41,19 @@
 #ifndef ImageData_h
 #define ImageData_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
+#include "blinkit/blink/renderer/bindings/core/duk/script_wrappable.h"
 // BKTODO: #include "core/dom/DOMTypedArray.h"
-#include "core/imagebitmap/ImageBitmapSource.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/heap/Handle.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/core/imagebitmap/ImageBitmapSource.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 
 class ExceptionState;
 
-class CORE_EXPORT ImageData final : public GarbageCollectedFinalized<ImageData>, public ScriptWrappable, public ImageBitmapSource {
+class ImageData final : public GarbageCollectedFinalized<ImageData>, public ScriptWrappable, public ImageBitmapSource
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     static ImageData* create(const IntSize&);

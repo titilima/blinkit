@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -42,15 +43,16 @@
 #ifndef WebFallbackThemeEngine_h
 #define WebFallbackThemeEngine_h
 
-#include "WebCanvas.h"
-#include "WebColor.h"
-#include "blinkit/blink/renderer/platform/geometry/IntSize.h"
+#include "blinkit/blink/public/platform/WebCanvas.h"
+#include "blinkit/blink/public/platform/WebColor.h"
+#include "blinkit/blink/renderer/platform/geometry/int_size.h"
 
 namespace blink {
 
 class IntRect;
 
-class WebFallbackThemeEngine {
+class WebFallbackThemeEngine
+{
 public:
     // The UI part which is being accessed.
     enum Part {

@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -45,7 +46,6 @@
 #include "blinkit/blink/public/platform/web_scrollbar.h"
 #include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
 #include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
-#include "blinkit/blink/renderer/platform/geometry/IntSize.h"
 #include "blinkit/blink/renderer/platform/graphics/GraphicsLayerClient.h"
 #include "blinkit/blink/renderer/platform/scroll/ScrollableArea.h"
 

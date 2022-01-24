@@ -36,8 +36,7 @@
 #ifndef WebScrollbar_h
 #define WebScrollbar_h
 
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
-#include "blinkit/blink/renderer/platform/geometry/IntSize.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 
 namespace blink {
 

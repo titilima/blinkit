@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -32,9 +33,9 @@
 #ifndef CSSCursorImageValue_h
 #define CSSCursorImageValue_h
 
-#include "core/css/CSSImageValue.h"
-#include "platform/geometry/IntPoint.h"
-#include "wtf/HashSet.h"
+#include "blinkit/blink/renderer/core/css/CSSImageValue.h"
+#include "blinkit/blink/renderer/platform/geometry/int_point.h"
+#include "blinkit/blink/renderer/wtf/HashSet.h"
 
 namespace blink {
 

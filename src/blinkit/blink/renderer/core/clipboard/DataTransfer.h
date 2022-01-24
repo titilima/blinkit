@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -35,18 +36,16 @@
 #ifndef DataTransfer_h
 #define DataTransfer_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "core/clipboard/DataTransferAccessPolicy.h"
-#include "core/fetch/ImageResource.h"
-#include "core/fetch/ResourcePtr.h"
-#include "core/page/DragActions.h"
-#include "platform/geometry/IntPoint.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Forward.h"
-#include "wtf/RefCounted.h"
-#include "wtf/RefPtr.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/bindings/core/duk/script_wrappable.h"
+#include "blinkit/blink/renderer/core/clipboard/DataTransferAccessPolicy.h"
+#include "blinkit/blink/renderer/core/fetch/ImageResource.h"
+#include "blinkit/blink/renderer/core/fetch/ResourcePtr.h"
+#include "blinkit/blink/renderer/core/page/DragActions.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 
@@ -63,7 +62,8 @@ class Range;
 // Used for drag and drop and copy/paste.
 // Drag and Drop: http://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html
 // Clipboard API (copy/paste): http://dev.w3.org/2006/webapi/clipops/clipops.html
-class CORE_EXPORT DataTransfer final : public BlinKit::GCObject, public ScriptWrappable {
+class DataTransfer final : public BlinKit::GCObject, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     // Whether this transfer is serving a drag-drop or copy-paste request.

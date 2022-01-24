@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HitTestingTransformState.h
+// Description: HitTestingTransformState Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc.  All rights reserved.
  *
@@ -26,13 +38,12 @@
 #ifndef HitTestingTransformState_h
 #define HitTestingTransformState_h
 
-#include "platform/geometry/FloatPoint.h"
-#include "platform/geometry/FloatQuad.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/transforms/AffineTransform.h"
-#include "platform/transforms/TransformationMatrix.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatQuad.h"
+#include "blinkit/blink/renderer/platform/transforms/AffineTransform.h"
+#include "blinkit/blink/renderer/platform/transforms/TransformationMatrix.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
 
 namespace blink {
 
@@ -40,7 +51,8 @@ namespace blink {
 // So there's really no need for a ref counted version. So This class should be removed and replaced
 // with TransformState. There are some minor differences (like the way translate() works slightly
 // differently than move()) so care has to be taken when this is done.
-class HitTestingTransformState : public RefCounted<HitTestingTransformState> {
+class HitTestingTransformState : public RefCounted<HitTestingTransformState>
+{
 public:
     static PassRefPtr<HitTestingTransformState> create(const FloatPoint& p, const FloatQuad& quad, const FloatQuad& area)
     {

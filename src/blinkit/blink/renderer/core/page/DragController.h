@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -37,12 +38,11 @@
 #ifndef DragController_h
 #define DragController_h
 
-#include "core/CoreExport.h"
-#include "core/page/DragActions.h"
-#include "platform/geometry/IntPoint.h"
-#include "platform/heap/Handle.h"
-#include "platform/weborigin/KURL.h"
-#include "wtf/Forward.h"
+#include "blinkit/blink/renderer/core/page/DragActions.h"
+#include "blinkit/blink/renderer/platform/geometry/int_point.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/platform/weborigin/KURL.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
 
 namespace blink {
 
@@ -60,7 +60,8 @@ class Node;
 class Page;
 class PlatformMouseEvent;
 
-class CORE_EXPORT DragController final {
+class DragController final
+{
     WTF_MAKE_NONCOPYABLE(DragController);
 public:
     ~DragController();

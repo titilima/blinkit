@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -37,20 +38,18 @@
 #ifndef FrameSelection_h
 #define FrameSelection_h
 
-#include "core/CoreExport.h"
-#include "core/dom/Range.h"
-#include "core/editing/CaretBase.h"
-#include "core/editing/EditingStyle.h"
-#include "core/editing/EphemeralRange.h"
-#include "core/editing/VisiblePosition.h"
-#include "core/editing/VisibleSelection.h"
-#include "core/editing/iterators/TextIteratorFlags.h"
-#include "core/layout/ScrollAlignment.h"
-#include "platform/Timer.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/LayoutRect.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Noncopyable.h"
+#include "blinkit/blink/renderer/core/dom/Range.h"
+#include "blinkit/blink/renderer/core/editing/CaretBase.h"
+#include "blinkit/blink/renderer/core/editing/EditingStyle.h"
+#include "blinkit/blink/renderer/core/editing/EphemeralRange.h"
+#include "blinkit/blink/renderer/core/editing/VisiblePosition.h"
+#include "blinkit/blink/renderer/core/editing/VisibleSelection.h"
+#include "blinkit/blink/renderer/core/editing/iterators/TextIteratorFlags.h"
+#include "blinkit/blink/renderer/core/layout/ScrollAlignment.h"
+#include "blinkit/blink/renderer/platform/Timer.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutRect.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
 
 namespace blink {
 

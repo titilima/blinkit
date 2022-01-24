@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -39,13 +40,12 @@
 #ifndef Widget_h
 #define Widget_h
 
-#include "platform/PlatformExport.h"
-#include "platform/geometry/FloatPoint.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/heap/Handle.h"
-#include "public/platform/WebFocusType.h"
-#include "wtf/Forward.h"
-#include "wtf/RefCounted.h"
+#include "blinkit/blink/public/platform/WebFocusType.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
 
 namespace blink {
 
@@ -59,7 +59,8 @@ class HostWindow;
 // Widgets are connected in a hierarchy, with the restriction that plugins and
 // scrollbars are always leaves of the tree. Only FrameView can have children
 // (and therefore the Widget class has no concept of children).
-class PLATFORM_EXPORT Widget {
+class Widget
+{
 public:
     Widget();
     virtual ~Widget();
