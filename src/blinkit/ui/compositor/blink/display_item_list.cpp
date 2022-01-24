@@ -11,8 +11,9 @@
 
 #include "./display_item_list.h"
 
-#include "blinkit/ui/compositor/playback/clip_items.h"
+#include "blinkit/ui/compositor/playback/clip_item.h"
 #include "blinkit/ui/compositor/playback/drawing_item.h"
+#include "blinkit/ui/compositor/playback/transform_item.h"
 
 namespace BlinKit {
 
@@ -28,7 +29,17 @@ void DisplayItemList::appendDrawingItem(const IntRect &visualRect, const SkPictu
 
 void DisplayItemList::appendEndClipItem(const IntRect &visualRect)
 {
-    m_displayItems.emplace_back(std::make_unique<EndClipItem>(visualRect));
+    m_displayItems.emplace_back(std::make_unique<RestoreCanvasItem>(visualRect));
+}
+
+void DisplayItemList::appendTransformItem(const IntRect &visualRect, const SkMatrix44 &matrix)
+{
+    m_displayItems.emplace_back(std::make_unique<TransformItem>(visualRect, matrix));
+}
+
+void DisplayItemList::appendEndTransformItem(const IntRect &visualRect)
+{
+    m_displayItems.emplace_back(std::make_unique<RestoreCanvasItem>(visualRect));
 }
 
 void DisplayItemList::Playback(SkCanvas &canvas) const

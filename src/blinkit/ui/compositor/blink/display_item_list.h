@@ -43,12 +43,8 @@ private:
     void appendEndFloatClipItem(const IntRect& visualRect) override {
         ASSERT(false); // BKTODO:
     }
-    void appendTransformItem(const IntRect& visualRect, const SkMatrix44&) override {
-        ASSERT(false); // BKTODO:
-    }
-    void appendEndTransformItem(const IntRect& visualRect) override {
-        ASSERT(false); // BKTODO:
-    }
+    void appendTransformItem(const IntRect &visualRect, const SkMatrix44 &matrix) override;
+    void appendEndTransformItem(const IntRect &visualRect) override;
     void appendCompositingItem(const IntRect& visualRect, float opacity,
         SkXfermode::Mode, SkRect* bounds, SkColorFilter*) override {
         ASSERT(false); // BKTODO:
