@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TransformationMatrix.cpp
+// Description: TransformationMatrix Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2009 Torch Mobile, Inc.
@@ -25,23 +36,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/transforms/TransformationMatrix.h"
-
-#include "platform/geometry/FloatBox.h"
-#include "platform/geometry/FloatQuad.h"
-#include "platform/geometry/FloatRect.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/LayoutRect.h"
-#include "platform/transforms/AffineTransform.h"
-
-#include "wtf/Assertions.h"
-#include "wtf/MathExtras.h"
+#include "./TransformationMatrix.h"
 
 #include <cmath>
 #include <cstdlib>
-
+#include "blinkit/blink/renderer/platform/geometry/FloatBox.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatQuad.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutRect.h"
+#include "blinkit/blink/renderer/platform/transforms/AffineTransform.h"
+#include "blinkit/blink/renderer/wtf/Assertions.h"
 #if CPU(X86_64)
-#include <emmintrin.h>
+#   include <emmintrin.h>
 #endif
 
 namespace blink {

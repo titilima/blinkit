@@ -39,9 +39,7 @@
 #define TransformationMatrix_h
 
 #include <cstring> // for memcpy
-#include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
 #include "blinkit/blink/renderer/platform/geometry/FloatPoint3D.h"
-#include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
 #include "blinkit/blink/renderer/wtf/Alignment.h"
 #include "blinkit/blink/renderer/wtf/CPU.h"
 #include "third_party/skia/include/utils/SkMatrix44.h"
