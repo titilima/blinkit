@@ -30,7 +30,9 @@ private:
     void appendDrawingItem(const IntRect &visualRect, const SkPicture *picture) override;
     void appendClipItem(const IntRect &visualRect, const IntRect &clipRect,
         const std::vector<SkRRect> &roundedClipRects) override;
-    void appendEndClipItem(const IntRect &visualRect) override;
+    void appendEndClipItem(const IntRect &visualRect) override {
+        AppendRestoreCanvasItem(visualRect);
+    }
     void appendClipPathItem(const IntRect& visualRect, const SkPath&, SkRegion::Op, bool antialias) override {
         ASSERT(false); // BKTODO:
     }
@@ -44,7 +46,9 @@ private:
         ASSERT(false); // BKTODO:
     }
     void appendTransformItem(const IntRect &visualRect, const SkMatrix44 &matrix) override;
-    void appendEndTransformItem(const IntRect &visualRect) override;
+    void appendEndTransformItem(const IntRect &visualRect) override {
+        AppendRestoreCanvasItem(visualRect);
+    }
     void appendCompositingItem(const IntRect& visualRect, float opacity,
         SkXfermode::Mode, SkRect* bounds, SkColorFilter*) override {
         ASSERT(false); // BKTODO:
@@ -58,13 +62,15 @@ private:
     void appendEndFilterItem(const IntRect& visualRect) override {
         ASSERT(false); // BKTODO:
     }
-    void appendScrollItem(const IntRect& visualRect, const IntSize& scrollOffset, ScrollContainerId) override {
-        ASSERT(false); // BKTODO:
-    }
+    void appendScrollItem(const IntRect &visualRect, const IntSize &scrollOffset, ScrollContainerId) override;
     void appendEndScrollItem(const IntRect& visualRect) override {
-        ASSERT(false); // BKTODO:
+        AppendRestoreCanvasItem(visualRect);
     }
 private:
+    void AppendRestoreCanvasItem(const IntRect& visualRect) {
+        m_displayItems.emplace_back(std::make_unique<RestoreCanvasItem>(visualRect));
+    }
+
     std::vector<std::unique_ptr<DisplayItem>> m_displayItems;
 };
 

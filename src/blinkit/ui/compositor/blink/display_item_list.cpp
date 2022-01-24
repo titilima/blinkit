@@ -27,19 +27,17 @@ void DisplayItemList::appendDrawingItem(const IntRect &visualRect, const SkPictu
     m_displayItems.emplace_back(std::make_unique<DrawingItem>(visualRect, picture));
 }
 
-void DisplayItemList::appendEndClipItem(const IntRect &visualRect)
+void DisplayItemList::appendScrollItem(const IntRect &visualRect, const IntSize &scrollOffset, ScrollContainerId)
 {
-    m_displayItems.emplace_back(std::make_unique<RestoreCanvasItem>(visualRect));
+    SkMatrix44 matrix(SkMatrix44::kUninitialized_Constructor);
+    matrix.setTranslate(-scrollOffset.width(), -scrollOffset.height(), 0);
+    // TODO(wkorman): Should we translate the visual rect as well?
+    m_displayItems.emplace_back(std::make_unique<TransformItem>(visualRect, matrix));
 }
 
 void DisplayItemList::appendTransformItem(const IntRect &visualRect, const SkMatrix44 &matrix)
 {
     m_displayItems.emplace_back(std::make_unique<TransformItem>(visualRect, matrix));
-}
-
-void DisplayItemList::appendEndTransformItem(const IntRect &visualRect)
-{
-    m_displayItems.emplace_back(std::make_unique<RestoreCanvasItem>(visualRect));
 }
 
 void DisplayItemList::Playback(SkCanvas &canvas) const
