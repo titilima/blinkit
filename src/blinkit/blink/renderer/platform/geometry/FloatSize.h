@@ -41,7 +41,7 @@
 #define FloatSize_h
 
 #include <iosfwd>
-#include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/int_point.h"
 #include "third_party/skia/include/core/SkSize.h"
 #include "third_party/zed/include/zed/float.hpp"
 

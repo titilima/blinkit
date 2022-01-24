@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FloatSize.cpp
+// Description: FloatSize Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2005 Nokia.  All rights reserved.
@@ -24,13 +35,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/geometry/FloatSize.h"
+#include "./FloatSize.h"
 
-#include "platform/FloatConversion.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/geometry/LayoutSize.h"
+#include <cmath>
 #include <limits>
-#include <math.h>
+#include "blinkit/blink/renderer/platform/FloatConversion.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutSize.h"
 
 namespace blink {
 
