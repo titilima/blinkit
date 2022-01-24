@@ -13,8 +13,6 @@
 
 #include "chromium/base/time/time.h"
 
-using namespace blink;
-
 namespace BlinKit {
 
 InputEvent::InputEvent(WebInputEvent::Type type) : m_type(type), m_timeStampSeconds(base::Time::Now().ToDoubleT())

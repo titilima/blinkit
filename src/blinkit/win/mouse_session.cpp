@@ -14,8 +14,6 @@
 #include <windowsx.h>
 #include "blinkit/ui/input_events.h"
 
-using namespace blink;
-
 namespace BlinKit {
 
 WebInputEvent::Type MouseSession::AdjustEventTypeForMouseMove(void)

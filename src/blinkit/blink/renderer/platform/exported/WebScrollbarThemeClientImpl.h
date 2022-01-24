@@ -45,7 +45,8 @@
 namespace blink {
 
 // Adapts a WebScrollbar to the ScrollbarThemeClient interface
-class WebScrollbarThemeClientImpl : public ScrollbarThemeClient {
+class WebScrollbarThemeClientImpl : public ScrollbarThemeClient
+{
     DISALLOW_NEW();
     WTF_MAKE_NONCOPYABLE(WebScrollbarThemeClientImpl);
 public:
