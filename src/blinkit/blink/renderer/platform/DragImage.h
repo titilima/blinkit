@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DragImage.h
+// Description: DragImage Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Apple Inc.  All rights reserved.
  *
@@ -26,14 +38,12 @@
 #ifndef DragImage_h
 #define DragImage_h
 
-#include "platform/geometry/FloatSize.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/graphics/GraphicsTypes.h"
-#include "platform/graphics/ImageOrientation.h"
-#include "platform/graphics/paint/DisplayItemClient.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatSize.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsTypes.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageOrientation.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/DisplayItemClient.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
 #include "third_party/skia/include/core/SkBitmap.h"
-#include "wtf/Allocator.h"
-#include "wtf/Forward.h"
 
 class SkImage;
 
@@ -43,8 +53,8 @@ class FontDescription;
 class Image;
 class KURL;
 
-class PLATFORM_EXPORT DragImage {
-    USING_FAST_MALLOC(DragImage);
+class DragImage
+{
     WTF_MAKE_NONCOPYABLE(DragImage);
 public:
     static PassOwnPtr<DragImage> create(Image*,
