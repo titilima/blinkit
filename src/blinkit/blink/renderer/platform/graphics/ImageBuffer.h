@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -39,22 +40,20 @@
 #ifndef ImageBuffer_h
 #define ImageBuffer_h
 
-#include "platform/PlatformExport.h"
-#include "platform/geometry/FloatRect.h"
-#include "platform/geometry/IntSize.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
 // BKTODO: #include "platform/graphics/Canvas2DLayerBridge.h"
-#include "platform/graphics/GraphicsTypes.h"
-#include "platform/graphics/GraphicsTypes3D.h"
-#include "platform/graphics/ImageBufferSurface.h"
-#include "platform/transforms/AffineTransform.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsTypes.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsTypes3D.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageBufferSurface.h"
+#include "blinkit/blink/renderer/platform/transforms/AffineTransform.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/OwnPtr.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/Uint8ClampedArray.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 #include "third_party/skia/include/core/SkPaint.h"
-#include "wtf/Forward.h"
-#include "wtf/OwnPtr.h"
-#include "wtf/PassOwnPtr.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/Uint8ClampedArray.h"
-#include "wtf/Vector.h"
-#include "wtf/text/WTFString.h"
 
 namespace WTF {
 

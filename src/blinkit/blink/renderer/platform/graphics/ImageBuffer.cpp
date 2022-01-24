@@ -41,38 +41,34 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/graphics/ImageBuffer.h"
+#include "./ImageBuffer.h"
 
 #include "GrContext.h"
-#include "platform/MIMETypeRegistry.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/graphics/GraphicsContext.h"
-#include "platform/graphics/GraphicsTypes3D.h"
-#include "platform/graphics/ImageBufferClient.h"
-#include "platform/graphics/StaticBitmapImage.h"
-#include "platform/graphics/UnacceleratedImageBufferSurface.h"
+#include "blinkit/blink/public/platform/Platform.h"
+#include "blinkit/blink/public/platform/WebExternalTextureMailbox.h"
+#include "blinkit/blink/renderer/platform/MIMETypeRegistry.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsContext.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsTypes3D.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageBufferClient.h"
+#include "blinkit/blink/renderer/platform/graphics/StaticBitmapImage.h"
+#include "blinkit/blink/renderer/platform/graphics/UnacceleratedImageBufferSurface.h"
+#include "blinkit/blink/renderer/wtf/ArrayBufferContents.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
+#include "blinkit/blink/renderer/wtf/text/Base64.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 #if 0 // BKTODO:
 #include "platform/graphics/gpu/DrawingBuffer.h"
 #include "platform/graphics/gpu/Extensions3DUtil.h"
 #endif
-#include "platform/graphics/skia/SkiaUtils.h"
+#include "blinkit/blink/renderer/platform/graphics/skia/SkiaUtils.h"
 #if 0 // BKTODO:
 #include "platform/image-encoders/skia/JPEGImageEncoder.h"
 #include "platform/image-encoders/skia/PNGImageEncoder.h"
 #include "platform/image-encoders/skia/WEBPImageEncoder.h"
-#endif
-#include "public/platform/Platform.h"
-#include "public/platform/WebExternalTextureMailbox.h"
-#if 0 // BKTODO:
 #include "public/platform/WebGraphicsContext3D.h"
 #include "public/platform/WebGraphicsContext3DProvider.h"
 #endif
 #include "third_party/skia/include/core/SkPicture.h"
-#include "wtf/ArrayBufferContents.h"
-#include "wtf/MathExtras.h"
-#include "wtf/Vector.h"
-#include "wtf/text/Base64.h"
-#include "wtf/text/WTFString.h"
 
 namespace blink {
 
