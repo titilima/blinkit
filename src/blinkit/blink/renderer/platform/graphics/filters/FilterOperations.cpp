@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FilterOperations.cpp
+// Description: FilterOperations Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -23,11 +34,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/graphics/filters/FilterOperations.h"
+#include "./FilterOperations.h"
 
-#include "platform/LengthFunctions.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/graphics/filters/FEGaussianBlur.h"
+#include "blinkit/blink/renderer/platform/LengthFunctions.h"
+#include "blinkit/blink/renderer/platform/graphics/filters/FEGaussianBlur.h"
 
 namespace blink {
 

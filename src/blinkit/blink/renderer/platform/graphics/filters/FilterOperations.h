@@ -38,10 +38,9 @@
 #ifndef FilterOperations_h
 #define FilterOperations_h
 
-#include "platform/geometry/IntRectOutsets.h"
-#include "platform/graphics/filters/FilterOperation.h"
-#include "wtf/RefPtr.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect_outsets.h"
+#include "blinkit/blink/renderer/platform/graphics/filters/FilterOperation.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 
