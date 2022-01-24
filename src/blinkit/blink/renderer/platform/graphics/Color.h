@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Color.h
+// Description: Color Class
+//      Author: Ziming Li
+//     Created: 2022-01-24
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2004, 2005, 2006, 2010 Apple Inc. All rights reserved.
  *
@@ -26,10 +38,9 @@
 #ifndef Color_h
 #define Color_h
 
-#include "platform/animation/AnimationUtilities.h"
-#include "wtf/Allocator.h"
-#include "wtf/Forward.h"
-#include "wtf/text/Unicode.h"
+#include "blinkit/blink/renderer/platform/animation/AnimationUtilities.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/text/Unicode.h"
 
 namespace blink {
 
@@ -37,14 +48,14 @@ class Color;
 
 typedef unsigned RGBA32; // RGBA quadruplet
 
-PLATFORM_EXPORT RGBA32 makeRGB(int r, int g, int b);
-PLATFORM_EXPORT RGBA32 makeRGBA(int r, int g, int b, int a);
+RGBA32 makeRGB(int r, int g, int b);
+RGBA32 makeRGBA(int r, int g, int b, int a);
 
-PLATFORM_EXPORT RGBA32 makeRGBA32FromFloats(float r, float g, float b, float a);
-PLATFORM_EXPORT RGBA32 makeRGBAFromHSLA(double h, double s, double l, double a);
-PLATFORM_EXPORT RGBA32 makeRGBAFromCMYKA(float c, float m, float y, float k, float a);
+RGBA32 makeRGBA32FromFloats(float r, float g, float b, float a);
+RGBA32 makeRGBAFromHSLA(double h, double s, double l, double a);
+RGBA32 makeRGBAFromCMYKA(float c, float m, float y, float k, float a);
 
-PLATFORM_EXPORT int differenceSquared(const Color&, const Color&);
+int differenceSquared(const Color&, const Color&);
 
 inline int redChannel(RGBA32 color) { return (color >> 16) & 0xFF; }
 inline int greenChannel(RGBA32 color) { return (color >> 8) & 0xFF; }
@@ -57,9 +68,10 @@ struct NamedColor {
     unsigned ARGBValue;
 };
 
-PLATFORM_EXPORT const NamedColor* findColor(register const char* str, register unsigned len);
+const NamedColor* findColor(register const char* str, register unsigned len);
 
-class PLATFORM_EXPORT Color {
+class Color
+{
     DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
 public:
     Color() : m_color(Color::transparent) { }
@@ -147,8 +159,8 @@ inline bool operator!=(const Color& a, const Color& b)
     return !(a == b);
 }
 
-PLATFORM_EXPORT Color colorFromPremultipliedARGB(RGBA32);
-PLATFORM_EXPORT RGBA32 premultipliedARGBFromColor(const Color&);
+Color colorFromPremultipliedARGB(RGBA32);
+RGBA32 premultipliedARGBFromColor(const Color&);
 
 inline Color blend(const Color& from, const Color& to, double progress, bool blendPremultiplied = true)
 {
