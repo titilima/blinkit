@@ -1424,8 +1424,9 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\layers\scrollbar_painters.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\layers\solid_color_scrollbar_layer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\layer_tree_host.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\playback\clip_items.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\playback\clip_item.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\playback\drawing_item.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\playback\transform_item.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\raster\raster_context.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\raster\raster_input.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\snapshots\layer_snapshot.cpp" />
@@ -3035,9 +3036,10 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\layers\scrollbar_painters.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\layers\solid_color_scrollbar_layer.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\layer_tree_host.h" />
-    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\playback\clip_items.h" />
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\playback\clip_item.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\playback\display_item.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\playback\drawing_item.h" />
+    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\playback\transform_item.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\raster\raster_context.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\raster\raster_input.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\raster\raster_result.h" />

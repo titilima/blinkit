@@ -657,6 +657,7 @@
     <ClInclude Include="..\..\..\third_party\skia\include\core\SkWriteBuffer.h" />
     <ClInclude Include="..\..\..\third_party\skia\include\core\SkWriter32.h" />
     <ClInclude Include="..\..\..\third_party\skia\include\core\SkXfermode.h" />
+    <ClInclude Include="..\..\..\third_party\skia\include\utils\SkMatrix44.h" />
     <ClInclude Include="..\..\..\third_party\skia\src\core\Sk4px.h" />
     <ClInclude Include="..\..\..\third_party\skia\src\core\SkAAClip.h" />
     <ClInclude Include="..\..\..\third_party\skia\src\core\SkAdvancedTypefaceMetrics.h" />

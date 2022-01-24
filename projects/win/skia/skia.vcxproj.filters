@@ -57,6 +57,9 @@
     <Filter Include="utils\win">
       <UniqueIdentifier>{f2925938-5411-4062-9250-cd146c6304e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\utils">
+      <UniqueIdentifier>{e3f41098-182b-4451-99bd-cab2978192d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -1977,6 +1980,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\third_party\skia\src\utils\SkBitmapSourceDeserializer.h">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\skia\include\utils\SkMatrix44.h">
+      <Filter>include\utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
