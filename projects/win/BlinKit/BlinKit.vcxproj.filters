@@ -558,9 +558,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\wtf\text\TextCodecUserDefined.cpp">
       <Filter>blink\renderer\wtf\text</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\IntRect.cpp">
-      <Filter>blink\renderer\platform\geometry</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\FloatRect.cpp">
       <Filter>blink\renderer\platform\geometry</Filter>
     </ClCompile>
@@ -4221,6 +4218,9 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\snapshots\tile.cpp">
       <Filter>ui\compositor\snapshots</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\int_rect.cpp">
+      <Filter>blink\renderer\platform\geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -4691,9 +4691,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\TransitionEventInit.h">
       <Filter>blink\renderer\core\events</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\IntSizeHash.h">
-      <Filter>blink\renderer\platform\geometry</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\FontFaceDescriptors.h">
       <Filter>blink\renderer\core\css</Filter>
     </ClInclude>
@@ -4756,9 +4753,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\impl\win_theme_engine.h">
       <Filter>blink\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\IntRect.h">
-      <Filter>blink\renderer\platform\geometry</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\RefPtr.h">
       <Filter>blink\renderer\wtf</Filter>
@@ -5020,12 +5014,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\WebInputEventConversion.h">
       <Filter>blink\renderer\web</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\IntSize.h">
-      <Filter>blink\renderer\platform\geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\IntPoint.h">
-      <Filter>blink\renderer\platform\geometry</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\forms\FormController.h">
       <Filter>blink\renderer\core\html\forms</Filter>
@@ -8546,9 +8534,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\FloatSize.h">
       <Filter>blink\renderer\platform\geometry</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\IntRectOutsets.h">
-      <Filter>blink\renderer\platform\geometry</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\LayoutPoint.h">
       <Filter>blink\renderer\platform\geometry</Filter>
     </ClInclude>
@@ -8728,6 +8713,213 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\snapshots\tile.h">
       <Filter>ui\compositor\snapshots</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\int_point.h">
+      <Filter>blink\renderer\platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\int_rect.h">
+      <Filter>blink\renderer\platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\int_rect_outsets.h">
+      <Filter>blink\renderer\platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\int_size.h">
+      <Filter>blink\renderer\platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\int_size_hash.h">
+      <Filter>blink\renderer\platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\AsyncMethodRunner.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\CalculationValue.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\ColorSuggestion.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\ContentType.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\ContextMenu.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\ContextMenuItem.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\Cursor.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\DateComponents.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\Decimal.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\DragImage.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\EventDispatchForbiddenScope.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\FileChooser.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\FileMetadata.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\FloatConversion.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\FontFamilyNames.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\HostWindow.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\KeyboardCodes.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\KillRing.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\Language.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\LayoutUnit.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\Length.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\LengthBox.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\LengthFunctions.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\LengthPoint.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\LengthSize.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\LifecycleNotifier.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\LifecycleObserver.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\MIMETypeRegistry.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\NotImplemented.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\ParsingUtilities.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PasteMode.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PlatformEvent.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PlatformExport.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PlatformKeyboardEvent.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PlatformMouseEvent.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PlatformResourceLoader.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PlatformWheelEvent.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PODArena.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PODFreeListArena.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PODInterval.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PODIntervalTree.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PODRedBlackTree.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PopupMenu.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\Prerender.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\PrerenderClient.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\RefCountedSupplement.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\ScriptForbiddenScope.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\SecureTextInput.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\Supplementable.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\ThemeTypes.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\UUID.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\Widget.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\WindowsKeyboardCodes.h">
+      <Filter>blink\renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\animation\AnimationUtilities.h">
+      <Filter>blink\renderer\platform\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\animation\CubicBezierControlPoints.h">
+      <Filter>blink\renderer\platform\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\animation\TimingFunction.h">
+      <Filter>blink\renderer\platform\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\animation\UnitBezier.h">
+      <Filter>blink\renderer\platform\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ProgrammaticScrollAnimator.h">
+      <Filter>blink\renderer\platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollbarTheme.h">
+      <Filter>blink\renderer\platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollbarThemeAura.h">
+      <Filter>blink\renderer\platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollbarThemeClient.h">
+      <Filter>blink\renderer\platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollbarThemeNonMacCommon.h">
+      <Filter>blink\renderer\platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollbarThemeOverlay.h">
+      <Filter>blink\renderer\platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\scroll\ScrollTypes.h">
+      <Filter>blink\renderer\platform\scroll</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
