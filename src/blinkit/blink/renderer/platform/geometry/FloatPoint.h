@@ -42,7 +42,6 @@
 #include <algorithm>
 #include <iosfwd>
 #include "blinkit/blink/renderer/platform/geometry/FloatSize.h"
-#include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
 #include "third_party/skia/include/core/SkPoint.h"
 
 #if OS(MACOSX)
@@ -289,5 +288,12 @@ bool findIntersection(const FloatPoint& p1, const FloatPoint& p2, const FloatPoi
 void PrintTo(const FloatPoint&, std::ostream*);
 
 }
+
+#ifndef NDEBUG
+namespace zed {
+template <>
+void log_serializer::push<blink::FloatPoint>(std::vector<std::string> &dst, const blink::FloatPoint &point);
+}
+#endif
 
 #endif

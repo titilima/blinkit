@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FloatPoint.cpp
+// Description: FloatPoint Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006, 2007 Apple Inc.  All rights reserved.
  * Copyright (C) 2005 Nokia.  All rights reserved.
@@ -24,15 +35,25 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/geometry/FloatPoint.h"
+#include "./FloatPoint.h"
 
-#include "SkPoint.h"
-#include "platform/FloatConversion.h"
-#include "platform/geometry/DoublePoint.h"
-#include "platform/geometry/LayoutPoint.h"
-#include "platform/geometry/LayoutSize.h"
-#include <limits>
-#include <math.h>
+#include <climits>
+#include <cmath>
+#include "blinkit/blink/renderer/platform/FloatConversion.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutPoint.h"
+#include "third_party/skia/include/core/SkPoint.h"
+
+#ifndef NDEBUG
+namespace zed {
+template <>
+void log_serializer::push<blink::FloatPoint>(std::vector<std::string> &dst, const blink::FloatPoint &point)
+{
+    char buf[64];
+    sprintf(buf, "[FloatPoint (%.1f, %.1f)]", point.x(), point.y());
+    dst.emplace_back(buf);
+}
+}
+#endif // NDEBUG
 
 namespace blink {
 
