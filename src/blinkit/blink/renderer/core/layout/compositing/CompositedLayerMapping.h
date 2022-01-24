@@ -37,13 +37,10 @@
 #ifndef CompositedLayerMapping_h
 #define CompositedLayerMapping_h
 
-#include "core/layout/compositing/GraphicsLayerUpdater.h"
-#include "core/paint/PaintLayer.h"
-#include "platform/geometry/FloatPoint.h"
-#include "platform/geometry/FloatPoint3D.h"
-#include "platform/graphics/GraphicsLayer.h"
-#include "platform/graphics/GraphicsLayerClient.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/renderer/core/layout/compositing/GraphicsLayerUpdater.h"
+#include "blinkit/blink/renderer/core/paint/PaintLayer.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsLayer.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsLayerClient.h"
 
 namespace blink {
 

@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -43,10 +44,6 @@
 #include "blinkit/blink/public/platform/web_image_layer.h"
 #include "blinkit/blink/public/platform/WebLayerScrollClient.h"
 #include "blinkit/blink/public/platform/WebScrollBlocksOn.h"
-#include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
-#include "blinkit/blink/renderer/platform/geometry/FloatPoint3D.h"
-#include "blinkit/blink/renderer/platform/geometry/FloatSize.h"
-#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 #include "blinkit/blink/renderer/platform/graphics/Color.h"
 #include "blinkit/blink/renderer/platform/graphics/ContentLayerDelegate.h"
 #include "blinkit/blink/renderer/platform/graphics/GraphicsContext.h"

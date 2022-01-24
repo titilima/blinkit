@@ -38,13 +38,13 @@
 #ifndef WebLayer_h
 #define WebLayer_h
 
-#include "WebBlendMode.h"
-#include "WebColor.h"
-#include "WebCommon.h"
-#include "WebCompositorAnimation.h"
-#include "WebScrollBlocksOn.h"
+#include "blinkit/blink/public/platform/WebBlendMode.h"
+#include "blinkit/blink/public/platform/WebColor.h"
+#include "blinkit/blink/public/platform/WebCommon.h"
+#include "blinkit/blink/public/platform/WebCompositorAnimation.h"
+#include "blinkit/blink/public/platform/WebScrollBlocksOn.h"
 #include "blinkit/blink/renderer/platform/geometry/DoublePoint.h"
-#include "blinkit/blink/renderer/platform/geometry/FloatPoint3D.h"
+#include "blinkit/blink/renderer/platform/geometry/float_point_3d.h"
 #include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 
 class SkMatrix44;

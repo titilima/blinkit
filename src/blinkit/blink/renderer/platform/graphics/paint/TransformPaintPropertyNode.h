@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TransformPaintPropertyNode.h
+// Description: TransformPaintPropertyNode Class
+//      Author: Ziming Li
+//     Created: 2022-01-24
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,14 +17,11 @@
 #ifndef TransformPaintPropertyNode_h
 #define TransformPaintPropertyNode_h
 
-#include "platform/PlatformExport.h"
-#include "platform/geometry/FloatPoint3D.h"
-#include "platform/transforms/TransformationMatrix.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
-#include "wtf/RefPtr.h"
-
 #include <iosfwd>
+#include "blinkit/blink/renderer/platform/transforms/TransformationMatrix.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 

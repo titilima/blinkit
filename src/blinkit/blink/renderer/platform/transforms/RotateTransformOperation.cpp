@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: RotateTransformOperation.cpp
+// Description: RotateTransformOperation Class
+//      Author: Ziming Li
+//     Created: 2022-01-24
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Antti Koivisto (koivisto@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008 Apple Inc. All rights reserved.
@@ -19,12 +30,11 @@
  *
  */
 
-#include "platform/transforms/RotateTransformOperation.h"
+#include "./RotateTransformOperation.h"
 
-#include "platform/animation/AnimationUtilities.h"
-#include "platform/geometry/FloatPoint3D.h"
-#include "wtf/MathExtras.h"
 #include <algorithm>
+#include "blinkit/blink/renderer/platform/animation/AnimationUtilities.h"
+#include "blinkit/blink/renderer/platform/geometry/float_point_3d.h"
 
 namespace blink {
 

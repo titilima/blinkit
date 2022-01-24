@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Transform3DDisplayItem.h
+// Description: Transform3DDisplayItem Classes
+//      Author: Ziming Li
+//     Created: 2022-01-24
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,15 +17,14 @@
 #ifndef Transform3DDisplayItem_h
 #define Transform3DDisplayItem_h
 
-#include "platform/geometry/FloatPoint3D.h"
-#include "platform/graphics/paint/DisplayItem.h"
-#include "platform/transforms/TransformationMatrix.h"
-#include "wtf/Assertions.h"
-#include "wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/DisplayItem.h"
+#include "blinkit/blink/renderer/platform/transforms/TransformationMatrix.h"
+#include "blinkit/blink/renderer/wtf/Assertions.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
 
 namespace blink {
 
-class PLATFORM_EXPORT BeginTransform3DDisplayItem final : public PairedBeginDisplayItem {
+class BeginTransform3DDisplayItem final : public PairedBeginDisplayItem {
 public:
     BeginTransform3DDisplayItem(
         const DisplayItemClient& client,
@@ -50,7 +61,7 @@ private:
     const FloatPoint3D m_transformOrigin;
 };
 
-class PLATFORM_EXPORT EndTransform3DDisplayItem final : public PairedEndDisplayItem {
+class EndTransform3DDisplayItem final : public PairedEndDisplayItem {
 public:
     EndTransform3DDisplayItem(const DisplayItemClient& client, Type type)
         : PairedEndDisplayItem(client, type, sizeof(*this))
