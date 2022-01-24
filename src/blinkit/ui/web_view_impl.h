@@ -26,7 +26,6 @@
 #include "third_party/blink/renderer/core/frame/resize_viewport_anchor.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page_visibility_state.h"
-#include "third_party/blink/renderer/core/page/page_widget_delegate.h"
 #endif
 #include "third_party/skia/include/core/SkColor.h"
 #include "third_party/zed/include/zed/mutex.hpp"
