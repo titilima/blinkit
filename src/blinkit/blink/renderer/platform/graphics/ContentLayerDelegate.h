@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ContentLayerDelegate.h
+// Description: ContentLayerDelegate Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -25,12 +37,10 @@
 #ifndef ContentLayerDelegate_h
 #define ContentLayerDelegate_h
 
-#include "platform/PlatformExport.h"
-#include "platform/geometry/IntSize.h"
-#include "public/platform/WebContentLayerClient.h"
-#include "wtf/Allocator.h"
-#include "wtf/Noncopyable.h"
-#include "wtf/PassOwnPtr.h"
+#include "blinkit/blink/public/platform/WebContentLayerClient.h"
+#include "blinkit/blink/renderer/platform/geometry/int_size.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
 
 class SkCanvas;
 
@@ -38,9 +48,9 @@ namespace blink {
 
 class GraphicsLayer;
 
-class PLATFORM_EXPORT ContentLayerDelegate : public WebContentLayerClient {
+class ContentLayerDelegate : public WebContentLayerClient
+{
     WTF_MAKE_NONCOPYABLE(ContentLayerDelegate);
-    USING_FAST_MALLOC(ContentLayerDelegate);
 public:
     explicit ContentLayerDelegate(GraphicsLayer*);
     ~ContentLayerDelegate() override;

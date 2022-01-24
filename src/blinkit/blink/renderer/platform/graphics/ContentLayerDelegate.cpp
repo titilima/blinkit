@@ -33,21 +33,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/graphics/ContentLayerDelegate.h"
+#include "./ContentLayerDelegate.h"
 
-// BKTODO: #include "platform/EventTracer.h"
-#include "platform/RuntimeEnabledFeatures.h"
-#include "platform/TraceEvent.h"
-#include "platform/TracedValue.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/graphics/GraphicsContext.h"
-#include "platform/graphics/GraphicsLayer.h"
-#include "platform/graphics/paint/PaintArtifactToSkCanvas.h"
-#include "platform/graphics/paint/PaintController.h"
-#include "public/platform/WebDisplayItemList.h"
-// BKTODO: #include "public/platform/WebRect.h"
+#include "blinkit/blink/public/platform/WebDisplayItemList.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/platform/TraceEvent.h"
+#include "blinkit/blink/renderer/platform/TracedValue.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsContext.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsLayer.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/PaintArtifactToSkCanvas.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/PaintController.h"
 #include "third_party/skia/include/core/SkPicture.h"
-// BKTODO: #include "ui/gfx/geometry/rect.h"
 
 namespace blink {
 
