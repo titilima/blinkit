@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CrossfadeGeneratedImage.h
+// Description: CrossfadeGeneratedImage Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -26,15 +38,14 @@
 #ifndef CrossfadeGeneratedImage_h
 #define CrossfadeGeneratedImage_h
 
-#include "platform/geometry/IntSize.h"
-#include "platform/graphics/GeneratedImage.h"
-#include "platform/graphics/Image.h"
-#include "platform/graphics/ImageObserver.h"
+#include "blinkit/blink/renderer/platform/graphics/GeneratedImage.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageObserver.h"
 #include "wtf/RefPtr.h"
 
 namespace blink {
 
-class PLATFORM_EXPORT CrossfadeGeneratedImage final : public GeneratedImage {
+class CrossfadeGeneratedImage final : public GeneratedImage
+{
 public:
     static PassRefPtr<CrossfadeGeneratedImage> create(PassRefPtr<Image> fromImage, PassRefPtr<Image> toImage, float percentage, IntSize crossfadeSize, const IntSize& size)
     {

@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DragImage.h
+// Description: DragImage Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Samuel Weinig (sam.weinig@gmail.com)
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.  All rights reserved.
@@ -28,22 +40,22 @@
 #ifndef BitmapImage_h
 #define BitmapImage_h
 
-#include "platform/geometry/IntSize.h"
-#include "platform/graphics/Color.h"
-#include "platform/graphics/FrameData.h"
-#include "platform/graphics/Image.h"
-#include "platform/graphics/ImageAnimationPolicy.h"
-#include "platform/graphics/ImageOrientation.h"
-#include "platform/graphics/ImageSource.h"
-#include "platform/image-decoders/ImageAnimation.h"
-#include "wtf/Forward.h"
-#include "wtf/OwnPtr.h"
+#include "blinkit/blink/renderer/platform/graphics/Color.h"
+#include "blinkit/blink/renderer/platform/graphics/FrameData.h"
+#include "blinkit/blink/renderer/platform/graphics/Image.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageAnimationPolicy.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageOrientation.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageSource.h"
+#include "blinkit/blink/renderer/platform/image-decoders/ImageAnimation.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/OwnPtr.h"
 
 namespace blink {
 
 template <typename T> class Timer;
 
-class PLATFORM_EXPORT BitmapImage final : public Image {
+class BitmapImage final : public Image
+{
     friend class GeneratedImage;
     friend class CrossfadeGeneratedImage;
     friend class GradientGeneratedImage;

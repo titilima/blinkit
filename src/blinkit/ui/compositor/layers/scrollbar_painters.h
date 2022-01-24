@@ -14,7 +14,7 @@
 #define BLINKIT_SCROLLBAR_PAINTERS_H
 
 #include "blinkit/blink/public/platform/web_scrollbar_theme_painter.h"
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 
 class SkPicture;
 

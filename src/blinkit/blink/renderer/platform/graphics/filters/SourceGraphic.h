@@ -34,14 +34,14 @@
 #ifndef SourceGraphic_h
 #define SourceGraphic_h
 
-#include "platform/geometry/IntRect.h"
-#include "platform/graphics/filters/FilterEffect.h"
+#include "blinkit/blink/renderer/platform/graphics/filters/FilterEffect.h"
 
 class SkPicture;
 
 namespace blink {
 
-class SourceGraphic final : public FilterEffect {
+class SourceGraphic final : public FilterEffect
+{
 public:
     static GCRefPtr<SourceGraphic> create(Filter*);
     ~SourceGraphic() override;

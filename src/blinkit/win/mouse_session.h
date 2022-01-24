@@ -15,7 +15,7 @@
 
 #include <functional>
 #include "blinkit/blink/public/web/WebInputEvent.h"
-#include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/int_point.h"
 
 namespace BlinKit {
 
@@ -31,12 +31,12 @@ public:
     void DisableDoubleClick(void) { m_doubleClickEnabled = false; }
 private:
     MouseEvent Prepare(UINT msg, WPARAM wParam, LPARAM lParam);
-    blink::WebInputEvent::Type AdjustEventTypeForMouseMove(void);
+    WebInputEvent::Type AdjustEventTypeForMouseMove(void);
 
     bool m_doubleClickEnabled = false;
     bool m_mouseEntered = false;
     double m_lastMouseDownTime;
-    blink::IntPoint m_lastPosition, m_lastMouseDownPosition;
+    IntPoint m_lastPosition, m_lastMouseDownPosition;
 };
 
 } // namespace BlinKit

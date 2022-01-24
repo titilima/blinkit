@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CullRect.h
+// Description: CullRect Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,13 +17,12 @@
 #ifndef CullRect_h
 #define CullRect_h
 
-#include "platform/geometry/IntRect.h"
-#include "platform/transforms/AffineTransform.h"
-#include "wtf/Allocator.h"
-#include "wtf/HashMap.h"
-#include "wtf/ListHashSet.h"
-
 #include <limits>
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/transforms/AffineTransform.h"
+#include "blinkit/blink/renderer/wtf/HashMap.h"
+#include "blinkit/blink/renderer/wtf/ListHashSet.h"
+
 
 namespace blink {
 
@@ -23,7 +34,8 @@ class LayoutRect;
 class LayoutUnit;
 class PaintInvalidationState;
 
-class PLATFORM_EXPORT CullRect {
+class CullRect
+{
     DISALLOW_NEW();
 public:
     explicit CullRect(const IntRect& rect) : m_rect(rect) { }

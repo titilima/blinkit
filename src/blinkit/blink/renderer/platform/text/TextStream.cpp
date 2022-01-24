@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TextStream.cpp
+// Description: TextStream Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2008, 2010 Apple Inc. All rights reserved.
  *
@@ -23,20 +34,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/text/TextStream.h"
+#include "./TextStream.h"
 
-#include "platform/LayoutUnit.h"
-#include "platform/geometry/FloatPoint.h"
-#include "platform/geometry/FloatRect.h"
-#include "platform/geometry/FloatSize.h"
-#include "platform/geometry/IntPoint.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/LayoutPoint.h"
-#include "platform/geometry/LayoutRect.h"
-#include "platform/geometry/LayoutSize.h"
-#include "wtf/MathExtras.h"
-#include "wtf/StringExtras.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutRect.h"
+#include "blinkit/blink/renderer/wtf/StringExtras.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 

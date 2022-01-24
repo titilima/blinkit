@@ -33,12 +33,12 @@
 #ifndef Filter_h
 #define Filter_h
 
-#include "platform/geometry/FloatPoint3D.h"
-#include "platform/geometry/FloatRect.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Noncopyable.h"
-#include "wtf/RefCounted.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint3D.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
 
 namespace blink {
 

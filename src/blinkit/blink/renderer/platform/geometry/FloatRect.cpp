@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FloatRect.cpp
+// Description: FloatRect Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006, 2007 Apple Inc.  All rights reserved.
  * Copyright (C) 2005 Nokia.  All rights reserved.
@@ -24,13 +35,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/geometry/FloatRect.h"
+#include "./FloatRect.h"
 
-#include "platform/FloatConversion.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/LayoutRect.h"
-#include "third_party/skia/include/core/SkRect.h"
-#include "wtf/MathExtras.h"
+#include "blinkit/blink/renderer/platform/FloatConversion.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutRect.h"
 
 namespace blink {
 

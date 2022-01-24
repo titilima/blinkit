@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutRect.h
+// Description: LayoutRect Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2012, Google Inc. All rights reserved.
  *
@@ -31,19 +43,19 @@
 #ifndef LayoutRect_h
 #define LayoutRect_h
 
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/LayoutPoint.h"
-#include "platform/geometry/LayoutRectOutsets.h"
-#include "wtf/Allocator.h"
-#include "wtf/Vector.h"
 #include <iosfwd>
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutRectOutsets.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 
 class FloatRect;
 class DoubleRect;
 
-class PLATFORM_EXPORT LayoutRect {
+class LayoutRect
+{
     DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
 public:
     LayoutRect() { }

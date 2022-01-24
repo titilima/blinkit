@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimationUtilities.h
+// Description: Animation Utilities
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc.  All rights reserved.
  *
@@ -26,13 +38,9 @@
 #ifndef AnimationUtilities_h
 #define AnimationUtilities_h
 
-#include "platform/LayoutUnit.h"
-#include "platform/PlatformExport.h"
-#include "platform/geometry/FloatPoint.h"
-#include "platform/geometry/IntPoint.h"
-#include "wtf/MathExtras.h"
-
 #include <type_traits>
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
+#include "blinkit/blink/renderer/platform/LayoutUnit.h"
 
 namespace blink {
 

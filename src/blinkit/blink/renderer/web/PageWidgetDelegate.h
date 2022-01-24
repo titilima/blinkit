@@ -45,8 +45,7 @@
 #include "blinkit/blink/public/platform/WebCanvas.h"
 #include "blinkit/blink/public/platform/WebInputEventResult.h"
 #include "blinkit/blink/public/web/WebInputEvent.h"
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
-#include "blinkit/blink/renderer/wtf/OwnPtr.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 
 namespace blink {
 

@@ -38,19 +38,19 @@
 #ifndef Image_h
 #define Image_h
 
-#include "platform/PlatformExport.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/graphics/Color.h"
-#include "platform/graphics/GraphicsTypes.h"
-#include "platform/graphics/ImageAnimationPolicy.h"
-#include "platform/graphics/ImageOrientation.h"
+#include "blinkit/blink/renderer/platform/PlatformExport.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/graphics/Color.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsTypes.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageAnimationPolicy.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageOrientation.h"
+#include "blinkit/blink/renderer/wtf/Assertions.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 #include "third_party/skia/include/core/SkCanvas.h"
-#include "wtf/Assertions.h"
-#include "wtf/Noncopyable.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
-#include "wtf/RefPtr.h"
-#include "wtf/text/WTFString.h"
 
 class SkBitmap;
 class SkImage;

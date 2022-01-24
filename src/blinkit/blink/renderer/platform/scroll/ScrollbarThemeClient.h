@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -37,20 +38,17 @@
 #ifndef ScrollbarThemeClient_h
 #define ScrollbarThemeClient_h
 
-#include "platform/PlatformExport.h"
-#include "platform/geometry/IntPoint.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/graphics/paint/DisplayItemClient.h"
-#include "platform/scroll/ScrollTypes.h"
-#include "wtf/PassOwnPtr.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/DisplayItemClient.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollTypes.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 
 class Widget;
 
-class PLATFORM_EXPORT ScrollbarThemeClient : public DisplayItemClient {
+class ScrollbarThemeClient : public DisplayItemClient
+{
 public:
     virtual int x() const = 0;
     virtual int y() const = 0;

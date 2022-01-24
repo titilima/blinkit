@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FloatQuad.h
+// Description: FloatQuad Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All rights reserved.
  *
@@ -29,20 +41,18 @@
 #ifndef FloatQuad_h
 #define FloatQuad_h
 
-#include "platform/geometry/FloatPoint.h"
-#include "platform/geometry/FloatRect.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/LayoutSize.h"
-#include "wtf/Allocator.h"
 #include <iosfwd>
+#include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutSize.h"
 
 namespace blink {
 
 // A FloatQuad is a collection of 4 points, often representing the result of
 // mapping a rectangle through transforms. When initialized from a rect, the
 // points are in clockwise order from top left.
-class PLATFORM_EXPORT FloatQuad {
-    USING_FAST_MALLOC(FloatQuad);
+class FloatQuad
+{
 public:
     FloatQuad()
     {

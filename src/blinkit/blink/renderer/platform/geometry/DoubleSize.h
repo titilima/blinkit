@@ -17,16 +17,14 @@
 #ifndef DoubleSize_h
 #define DoubleSize_h
 
-#include "platform/geometry/FloatSize.h"
-#include "platform/geometry/IntSize.h"
-#include "wtf/Allocator.h"
-#include "wtf/MathExtras.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatSize.h"
 
 namespace blink {
 
 class LayoutSize;
 
-class DoubleSize {
+class DoubleSize
+{
     DISALLOW_NEW();
 public:
     DoubleSize() : m_width(0), m_height(0) { }

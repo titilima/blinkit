@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DisplayItemClient.h
+// Description: DisplayItemClient Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,9 +17,8 @@
 #ifndef DisplayItemClient_h
 #define DisplayItemClient_h
 
-#include "platform/PlatformExport.h"
-#include "platform/geometry/IntRect.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
@@ -16,7 +27,8 @@ namespace blink {
 // in which its display items are created during painting.
 // After the document cycle, a pointer/reference to DisplayItemClient should be
 // no longer dereferenced unless we can make sure the client is still valid.
-class PLATFORM_EXPORT DisplayItemClient {
+class DisplayItemClient
+{
 public:
 #if ENABLE(ASSERT)
     DisplayItemClient();

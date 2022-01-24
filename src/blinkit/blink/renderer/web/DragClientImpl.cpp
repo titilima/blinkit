@@ -39,14 +39,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "web/DragClientImpl.h"
+#include "./DragClientImpl.h"
 
-#include "core/clipboard/DataObject.h"
-#include "core/clipboard/DataTransfer.h"
-#include "core/frame/LocalFrame.h"
-#include "platform/DragImage.h"
-#include "platform/geometry/IntSize.h"
-#include "public/platform/WebCommon.h"
+#include "blinkit/blink/public/platform/WebCommon.h"
+#include "blinkit/blink/renderer/core/clipboard/DataObject.h"
+#include "blinkit/blink/renderer/core/clipboard/DataTransfer.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/platform/DragImage.h"
 #if 0 // BKTODO:
 #include "public/platform/WebDragData.h"
 #include "public/platform/WebImage.h"
@@ -55,8 +54,8 @@
 #include "public/web/WebViewClient.h"
 #include "web/WebViewImpl.h"
 #endif
-#include "wtf/Assertions.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/wtf/Assertions.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 

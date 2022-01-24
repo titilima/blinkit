@@ -16,11 +16,9 @@
 #ifndef DoublePoint_h
 #define DoublePoint_h
 
-#include "platform/geometry/DoubleSize.h"
-#include "platform/geometry/FloatPoint.h"
-#include "platform/geometry/IntPoint.h"
-#include "wtf/Allocator.h"
 #include <algorithm>
+#include "blinkit/blink/renderer/platform/geometry/DoubleSize.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
 
 namespace blink {
 

@@ -14,8 +14,7 @@
 #define BLINKIT_INPUT_EVENTS_H
 
 #include "blinkit/blink/public/web/WebInputEvent.h"
-#include "blinkit/blink/renderer/platform/geometry/IntPoint.h"
-#include "blinkit/blink/renderer/wtf/Allocator.h"
+#include "blinkit/blink/renderer/platform/geometry/int_point.h"
 
 namespace BlinKit {
 
@@ -23,30 +22,30 @@ class InputEvent
 {
     STACK_ALLOCATED();
 public:
-    blink::WebInputEvent::Type GetType(void) const { return m_type; }
+    WebInputEvent::Type GetType(void) const { return m_type; }
     double TimeStampInSeconds(void) const { return m_timeStampSeconds; }
 protected:
-    InputEvent(blink::WebInputEvent::Type type);
+    InputEvent(WebInputEvent::Type type);
 
-    void Translate(blink::WebInputEvent &dst) const;
+    void Translate(WebInputEvent &dst) const;
 private:
-    const blink::WebInputEvent::Type m_type;
+    const WebInputEvent::Type m_type;
     const double m_timeStampSeconds;
 };
 
 class MouseEvent final : public InputEvent
 {
 public:
-    MouseEvent(blink::WebInputEvent::Type type, blink::WebPointerProperties::Button button, int x, int y);
+    MouseEvent(WebInputEvent::Type type, WebPointerProperties::Button button, int x, int y);
 
-    const blink::IntPoint& Position(void) const { return m_position; }
+    const IntPoint& Position(void) const { return m_position; }
 
-    void AdjustMovement(const blink::IntPoint &lastPoint);
-    void AdjustClickCount(double lastMouseDownTime, const blink::IntPoint &lastMouseDownPoint);
-    blink::WebMouseEvent Translate(void) const;
+    void AdjustMovement(const IntPoint &lastPoint);
+    void AdjustClickCount(double lastMouseDownTime, const IntPoint &lastMouseDownPoint);
+    WebMouseEvent Translate(void) const;
 private:
-    const blink::WebPointerProperties::Button m_button;
-    const blink::IntPoint m_position;
+    const WebPointerProperties::Button m_button;
+    const IntPoint m_position;
     int m_movementX = 0, m_movementY = 0;
     int m_clickCount = 0;
 };

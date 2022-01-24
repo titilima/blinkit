@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TransformState.h
+// Description: TransformState Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc.  All rights reserved.
  *
@@ -26,18 +38,16 @@
 #ifndef TransformState_h
 #define TransformState_h
 
-#include "platform/geometry/FloatPoint.h"
-#include "platform/geometry/FloatQuad.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/geometry/LayoutSize.h"
-#include "platform/transforms/AffineTransform.h"
-#include "platform/transforms/TransformationMatrix.h"
-#include "wtf/Allocator.h"
-#include "wtf/OwnPtr.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatQuad.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutSize.h"
+#include "blinkit/blink/renderer/platform/transforms/AffineTransform.h"
+#include "blinkit/blink/renderer/platform/transforms/TransformationMatrix.h"
+#include "blinkit/blink/renderer/wtf/OwnPtr.h"
 
 namespace blink {
 
-class PLATFORM_EXPORT TransformState {
+class TransformState
+{
     STACK_ALLOCATED();
 public:
     enum TransformDirection { ApplyTransformDirection, UnapplyInverseTransformDirection };

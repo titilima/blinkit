@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutSize.h
+// Description: LayoutSize Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2012, Google Inc. All rights reserved.
  *
@@ -31,12 +43,9 @@
 #ifndef LayoutSize_h
 #define LayoutSize_h
 
-#include "platform/LayoutUnit.h"
-#include "platform/geometry/DoubleSize.h"
-#include "platform/geometry/FloatPoint.h"
-#include "platform/geometry/FloatSize.h"
-#include "platform/geometry/IntSize.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/renderer/platform/LayoutUnit.h"
+#include "blinkit/blink/renderer/platform/geometry/DoubleSize.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
 
 namespace blink {
 
@@ -45,7 +54,8 @@ enum AspectRatioFit {
     AspectRatioFitGrow
 };
 
-class LayoutSize {
+class LayoutSize
+{
     DISALLOW_NEW();
 public:
     LayoutSize() { }

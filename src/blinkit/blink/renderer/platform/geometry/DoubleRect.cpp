@@ -1,12 +1,22 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DoubleRect.cpp
+// Description: DoubleRect Class
+//      Author: Ziming Li
+//     Created: 2022-01-24
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "platform/geometry/DoubleRect.h"
+#include "./DoubleRect.h"
 
-#include "platform/geometry/FloatRect.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/LayoutRect.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutRect.h"
 
 namespace blink {
 

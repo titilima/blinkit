@@ -37,15 +37,13 @@
 #ifndef DeferredImageDecoder_h
 #define DeferredImageDecoder_h
 
-#include "platform/PlatformExport.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/image-decoders/ImageDecoder.h"
+#include "blinkit/blink/renderer/platform/geometry/int_size.h"
+#include "blinkit/blink/renderer/platform/image-decoders/ImageDecoder.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/OwnPtr.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkPixelRef.h"
-#include "wtf/Allocator.h"
-#include "wtf/Forward.h"
-#include "wtf/OwnPtr.h"
-#include "wtf/Vector.h"
 
 class SkImage;
 
@@ -55,9 +53,9 @@ class ImageFrameGenerator;
 class SharedBuffer;
 struct FrameData;
 
-class PLATFORM_EXPORT DeferredImageDecoder final {
+class DeferredImageDecoder final
+{
     WTF_MAKE_NONCOPYABLE(DeferredImageDecoder);
-    USING_FAST_MALLOC(DeferredImageDecoder);
 public:
     static PassOwnPtr<DeferredImageDecoder> create(const std::shared_ptr<SharedBuffer> &data, ImageDecoder::AlphaOption, ImageDecoder::GammaAndColorProfileOption);
 

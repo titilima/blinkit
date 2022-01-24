@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageBufferSurface.h
+// Description: ImageBufferSurface Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2013, Google Inc. All rights reserved.
  *
@@ -31,14 +43,12 @@
 #ifndef ImageBufferSurface_h
 #define ImageBufferSurface_h
 
-#include "platform/PlatformExport.h"
-#include "platform/geometry/IntSize.h"
-#include "platform/graphics/GraphicsTypes.h"
-#include "platform/graphics/GraphicsTypes3D.h"
+#include "blinkit/blink/renderer/platform/geometry/int_size.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsTypes.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsTypes3D.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
 #include "third_party/skia/include/core/SkPaint.h"
-#include "wtf/Allocator.h"
-#include "wtf/Noncopyable.h"
-#include "wtf/PassRefPtr.h"
 
 class SkBitmap;
 class SkCanvas;
@@ -53,8 +63,9 @@ class WebLayer;
 class FloatRect;
 class GraphicsContext;
 
-class PLATFORM_EXPORT ImageBufferSurface {
-    WTF_MAKE_NONCOPYABLE(ImageBufferSurface); USING_FAST_MALLOC(ImageBufferSurface);
+class ImageBufferSurface
+{
+    WTF_MAKE_NONCOPYABLE(ImageBufferSurface);
 public:
     virtual ~ImageBufferSurface();
 

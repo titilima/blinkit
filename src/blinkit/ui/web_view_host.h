@@ -17,7 +17,7 @@
 
 #include "blinkit/blink/public/platform/WebCursorInfo.h"
 #include "blinkit/blink/public/web/WebContextMenuData.h"
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 
 class WebViewImpl;

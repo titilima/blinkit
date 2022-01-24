@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: GradientGeneratedImage.h
+// Description: GradientGeneratedImage Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2012 Apple Computer, Inc.  All rights reserved.
  *
@@ -26,16 +38,15 @@
 #ifndef GradientGeneratedImage_h
 #define GradientGeneratedImage_h
 
-#include "platform/geometry/IntSize.h"
-#include "platform/graphics/GeneratedImage.h"
-#include "platform/graphics/Gradient.h"
-#include "platform/graphics/Image.h"
-#include "platform/graphics/ImageBuffer.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/platform/graphics/GeneratedImage.h"
+#include "blinkit/blink/renderer/platform/graphics/Gradient.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageBuffer.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 
-class PLATFORM_EXPORT GradientGeneratedImage : public GeneratedImage {
+class GradientGeneratedImage : public GeneratedImage
+{
 public:
     static PassRefPtr<GradientGeneratedImage> create(PassRefPtr<Gradient> generator, const IntSize& size)
     {

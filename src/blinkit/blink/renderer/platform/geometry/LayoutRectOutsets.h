@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutRectOutsets.h
+// Description: LayoutRectOutsets Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2012, Google Inc. All rights reserved.
  *
@@ -31,13 +43,12 @@
 #ifndef LayoutRectOutsets_h
 #define LayoutRectOutsets_h
 
-#include "platform/LayoutUnit.h"
-#include "platform/PlatformExport.h"
-#include "platform/geometry/FloatRectOutsets.h"
-#include "platform/geometry/IntRectOutsets.h"
-#include "platform/text/TextDirection.h"
-#include "platform/text/WritingMode.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/renderer/platform/LayoutUnit.h"
+#include "blinkit/blink/renderer/platform/PlatformExport.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRectOutsets.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect_outsets.h"
+#include "blinkit/blink/renderer/platform/text/TextDirection.h"
+#include "blinkit/blink/renderer/platform/text/WritingMode.h"
 
 namespace blink {
 
@@ -46,7 +57,8 @@ namespace blink {
 // upward.
 //
 // Negative lengths can be used to express insets.
-class PLATFORM_EXPORT LayoutRectOutsets {
+class LayoutRectOutsets
+{
     DISALLOW_NEW();
 public:
     LayoutRectOutsets() : m_top(0), m_right(0), m_bottom(0), m_left(0) { }

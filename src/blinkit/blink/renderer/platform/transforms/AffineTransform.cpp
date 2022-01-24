@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AffineTransform.cpp
+// Description: AffineTransform Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006 Apple Computer, Inc.  All rights reserved.
  *               2010 Dirk Schulze <krit@webkit.org>
@@ -25,13 +36,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/transforms/AffineTransform.h"
+#include "./AffineTransform.h"
 
-#include "platform/FloatConversion.h"
-#include "platform/geometry/FloatQuad.h"
-#include "platform/geometry/FloatRect.h"
-#include "platform/geometry/IntRect.h"
-#include "wtf/MathExtras.h"
+#include "blinkit/blink/renderer/platform/FloatConversion.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatQuad.h"
 
 namespace blink {
 

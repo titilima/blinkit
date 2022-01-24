@@ -13,15 +13,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "platform/scroll/ProgrammaticScrollAnimator.h"
+#include "./ProgrammaticScrollAnimator.h"
 
-#include "platform/geometry/IntPoint.h"
-#include "platform/graphics/GraphicsLayer.h"
-#include "platform/scroll/ScrollableArea.h"
-#include "public/platform/Platform.h"
-#include "public/platform/WebCompositorAnimation.h"
-#include "public/platform/WebCompositorSupport.h"
-#include "public/platform/WebScrollOffsetAnimationCurve.h"
+#include "blinkit/blink/public/platform/Platform.h"
+#include "blinkit/blink/public/platform/WebCompositorAnimation.h"
+#include "blinkit/blink/public/platform/WebCompositorSupport.h"
+#include "blinkit/blink/public/platform/WebScrollOffsetAnimationCurve.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsLayer.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollableArea.h"
 
 namespace blink {
 

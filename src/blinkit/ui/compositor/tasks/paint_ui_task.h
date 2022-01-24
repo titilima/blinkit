@@ -14,7 +14,7 @@
 #define BLINKIT_PAINT_UI_TASK_H
 
 #include "blinkit/blink/public/platform/WebTaskRunner.h"
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 #include "blinkit/ui/compositor/raster/raster_result.h"
 
 class SkCanvas;

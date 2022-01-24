@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ClipDisplayItem.h
+// Description: ClipDisplayItem Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,17 +17,17 @@
 #ifndef ClipDisplayItem_h
 #define ClipDisplayItem_h
 
-#include "SkRegion.h"
-#include "platform/PlatformExport.h"
-#include "platform/geometry/FloatRoundedRect.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/graphics/paint/DisplayItem.h"
-#include "wtf/PassOwnPtr.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRoundedRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/DisplayItem.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
+#include "third_party/skia/include/core/SkRegion.h"
 
 namespace blink {
 
-class PLATFORM_EXPORT ClipDisplayItem final : public PairedBeginDisplayItem {
+class ClipDisplayItem final : public PairedBeginDisplayItem
+{
 public:
     ClipDisplayItem(const DisplayItemClient& client, Type type, const IntRect& clipRect)
         : PairedBeginDisplayItem(client, type, sizeof(*this))

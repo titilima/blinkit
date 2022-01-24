@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: GeneratedImage.h
+// Description: GeneratedImage Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Computer, Inc.  All rights reserved.
  *
@@ -26,13 +38,12 @@
 #ifndef GeneratedImage_h
 #define GeneratedImage_h
 
-#include "platform/geometry/IntSize.h"
-#include "platform/graphics/Image.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/platform/graphics/Image.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 
-class PLATFORM_EXPORT GeneratedImage : public Image {
+class GeneratedImage : public Image {
 public:
     bool currentFrameHasSingleSecurityOrigin() const override { return true; }
 

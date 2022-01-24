@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: GraphicsContext.cpp
+// Description: GraphicsContext Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2004, 2005, 2006, 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -24,17 +35,18 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/graphics/GraphicsContext.h"
+#include "./GraphicsContext.h"
 
-#include "platform/TraceEvent.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/graphics/ColorSpace.h"
-#include "platform/graphics/Gradient.h"
-#include "platform/graphics/GraphicsContextStateSaver.h"
-#include "platform/graphics/ImageBuffer.h"
-#include "platform/graphics/Path.h"
-#include "platform/graphics/paint/PaintController.h"
-#include "platform/weborigin/KURL.h"
+#include "blinkit/blink/renderer/platform/TraceEvent.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/graphics/ColorSpace.h"
+#include "blinkit/blink/renderer/platform/graphics/Gradient.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsContextStateSaver.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageBuffer.h"
+#include "blinkit/blink/renderer/platform/graphics/Path.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/PaintController.h"
+#include "blinkit/blink/renderer/platform/weborigin/KURL.h"
+#include "blinkit/blink/renderer/wtf/Assertions.h"
 // BKTODO: #include "skia/ext/platform_canvas.h"
 #include "third_party/skia/include/core/SkAnnotation.h"
 #include "third_party/skia/include/core/SkColorFilter.h"
@@ -46,8 +58,6 @@
 #include "third_party/skia/include/effects/SkLumaColorFilter.h"
 #include "third_party/skia/include/effects/SkPictureImageFilter.h"
 #include "third_party/skia/include/utils/SkNullCanvas.h"
-#include "wtf/Assertions.h"
-#include "wtf/MathExtras.h"
 
 namespace blink {
 

@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ImageFrame.h
+// Description: ImageFrame Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) Research In Motion Limited 2009-2010. All rights reserved.
@@ -27,18 +39,17 @@
 #ifndef ImageFrame_h
 #define ImageFrame_h
 
-#include "platform/PlatformExport.h"
-#include "platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/wtf/Assertions.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
 #include "third_party/skia/include/core/SkBitmap.h"
-#include "wtf/Allocator.h"
-#include "wtf/Assertions.h"
-#include "wtf/PassRefPtr.h"
 
 namespace blink {
 
 // ImageFrame represents the decoded image data.  This buffer is what all
 // decoders write a single frame into.
-class PLATFORM_EXPORT ImageFrame final {
+class ImageFrame final
+{
     DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
 public:
     enum Status { FrameEmpty, FramePartial, FrameComplete };

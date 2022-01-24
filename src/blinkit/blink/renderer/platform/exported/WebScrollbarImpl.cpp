@@ -33,10 +33,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/exported/WebScrollbarImpl.h"
+#include "./WebScrollbarImpl.h"
 
-#include "platform/geometry/IntRect.h"
-#include "platform/scroll/Scrollbar.h"
+#include "blinkit/blink/renderer/platform/scroll/Scrollbar.h"
 
 namespace blink {
 

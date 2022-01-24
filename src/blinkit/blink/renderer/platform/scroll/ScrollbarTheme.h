@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollbarTheme.h
+// Description: ScrollbarTheme Class
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -26,12 +38,10 @@
 #ifndef ScrollbarTheme_h
 #define ScrollbarTheme_h
 
-#include "platform/PlatformExport.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/graphics/paint/DisplayItem.h"
-#include "platform/scroll/ScrollTypes.h"
-#include "platform/scroll/ScrollbarThemeClient.h"
-#include "public/platform/WebScrollbarButtonsPlacement.h"
+#include "blinkit/blink/public/platform/WebScrollbarButtonsPlacement.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/DisplayItem.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollTypes.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollbarThemeClient.h"
 
 namespace blink {
 
@@ -40,8 +50,9 @@ class GraphicsContext;
 class PlatformMouseEvent;
 class ScrollbarThemePaintParams;
 
-class PLATFORM_EXPORT ScrollbarTheme {
-    WTF_MAKE_NONCOPYABLE(ScrollbarTheme); USING_FAST_MALLOC(ScrollbarTheme);
+class ScrollbarTheme
+{
+    WTF_MAKE_NONCOPYABLE(ScrollbarTheme);
 public:
     ScrollbarTheme() { }
     virtual ~ScrollbarTheme() { }

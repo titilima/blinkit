@@ -5,23 +5,23 @@
 #ifndef PaintController_h
 #define PaintController_h
 
-#include "platform/PlatformExport.h"
-#include "platform/RuntimeEnabledFeatures.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/geometry/LayoutPoint.h"
-#include "platform/graphics/ContiguousContainer.h"
-#include "platform/graphics/paint/DisplayItem.h"
-#include "platform/graphics/paint/DisplayItemList.h"
-#include "platform/graphics/paint/PaintArtifact.h"
-#include "platform/graphics/paint/PaintChunk.h"
-#include "platform/graphics/paint/PaintChunker.h"
-#include "platform/graphics/paint/Transform3DDisplayItem.h"
-#include "wtf/Alignment.h"
-#include "wtf/HashMap.h"
-#include "wtf/HashSet.h"
-#include "wtf/PassOwnPtr.h"
-#include "wtf/Vector.h"
 #include <utility>
+#include "blinkit/blink/renderer/platform/PlatformExport.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutPoint.h"
+#include "blinkit/blink/renderer/platform/graphics/ContiguousContainer.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/DisplayItem.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/DisplayItemList.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/PaintArtifact.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/PaintChunk.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/PaintChunker.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/Transform3DDisplayItem.h"
+#include "blinkit/blink/renderer/wtf/Alignment.h"
+#include "blinkit/blink/renderer/wtf/HashMap.h"
+#include "blinkit/blink/renderer/wtf/HashSet.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 

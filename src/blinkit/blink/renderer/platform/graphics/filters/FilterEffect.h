@@ -35,17 +35,16 @@
 #ifndef FilterEffect_h
 #define FilterEffect_h
 
-#include "platform/geometry/FloatRect.h"
-#include "platform/geometry/IntRect.h"
-#include "platform/graphics/Color.h"
-#include "platform/graphics/ColorSpace.h"
-#include "platform/heap/Handle.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/graphics/Color.h"
+#include "blinkit/blink/renderer/platform/graphics/ColorSpace.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
 #include "third_party/skia/include/core/SkImageFilter.h"
-#include "wtf/Noncopyable.h"
-#include "wtf/PassOwnPtr.h"
-#include "wtf/RefCounted.h"
-#include "wtf/RefPtr.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 

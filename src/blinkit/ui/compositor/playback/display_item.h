@@ -13,7 +13,7 @@
 #ifndef BLINKIT_DISPLAY_ITEM_H
 #define BLINKIT_DISPLAY_ITEM_H
 
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 
 class SkCanvas;
 

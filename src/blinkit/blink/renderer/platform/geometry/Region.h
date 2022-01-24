@@ -38,8 +38,7 @@
 #ifndef Region_h
 #define Region_h
 
-#include "platform/geometry/IntRect.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 
 namespace blink {
 

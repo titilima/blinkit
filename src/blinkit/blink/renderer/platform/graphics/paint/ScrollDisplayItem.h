@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollDisplayItem.h
+// Description: ScrollDisplayItem Classes
+//      Author: Ziming Li
+//     Created: 2022-01-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,14 +17,13 @@
 #ifndef ScrollDisplayItem_h
 #define ScrollDisplayItem_h
 
-#include "platform/geometry/IntSize.h"
-#include "platform/graphics/paint/DisplayItem.h"
-#include "wtf/Allocator.h"
-#include "wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/DisplayItem.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
 
 namespace blink {
 
-class PLATFORM_EXPORT BeginScrollDisplayItem final : public PairedBeginDisplayItem {
+class BeginScrollDisplayItem final : public PairedBeginDisplayItem
+{
 public:
     BeginScrollDisplayItem(const DisplayItemClient& client, Type type, const IntSize& currentOffset)
         : PairedBeginDisplayItem(client, type, sizeof(*this))
@@ -41,7 +52,8 @@ private:
     const IntSize m_currentOffset;
 };
 
-class PLATFORM_EXPORT EndScrollDisplayItem final : public PairedEndDisplayItem {
+class EndScrollDisplayItem final : public PairedEndDisplayItem
+{
 public:
     EndScrollDisplayItem(const DisplayItemClient& client, Type type)
         : PairedEndDisplayItem(client, type, sizeof(*this))
