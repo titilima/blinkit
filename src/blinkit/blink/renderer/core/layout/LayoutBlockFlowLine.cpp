@@ -811,8 +811,6 @@ inline const InlineIterator& LayoutBlockFlow::restartLayoutRunsAndFloatsInRange(
 
 void LayoutBlockFlow::appendFloatsToLastLine(LineLayoutState& layoutState, const InlineIterator& cleanLineStart, const InlineBidiResolver& resolver, const BidiStatus& cleanLineBidiStatus)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     const FloatingObjectSet& floatingObjectSet = m_floatingObjects->set();
     FloatingObjectSetIterator it = floatingObjectSet.begin();
     FloatingObjectSetIterator end = floatingObjectSet.end();
@@ -843,7 +841,6 @@ void LayoutBlockFlow::appendFloatsToLastLine(LineLayoutState& layoutState, const
         layoutState.setFloatIndex(layoutState.floatIndex() + 1);
     }
     layoutState.setLastFloat(!floatingObjectSet.isEmpty() ? floatingObjectSet.last().get() : 0);
-#endif
 }
 
 void LayoutBlockFlow::layoutRunsAndFloatsInRange(LineLayoutState& layoutState,
