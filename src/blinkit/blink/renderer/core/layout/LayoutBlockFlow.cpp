@@ -881,6 +881,12 @@ LayoutUnit LayoutBlockFlow::adjustForUnsplittableChild(LayoutBox& child, LayoutU
     return logicalOffset + paginationStrut;
 }
 
+static FloatingObject* GetFloatingObjectFromLayoutBox(const LayoutBoxToFloatInfoMap &map, LayoutBox *box)
+{
+    auto it = map.find(box);
+    return map.end() != it ? it->second.get() : nullptr;
+}
+
 void LayoutBlockFlow::rebuildFloatsFromIntruding()
 {
     if (m_floatingObjects)
@@ -957,7 +963,7 @@ void LayoutBlockFlow::rebuildFloatsFromIntruding()
             FloatingObjectSetIterator end = floatingObjectSet.end();
             for (FloatingObjectSetIterator it = floatingObjectSet.begin(); it != end; ++it) {
                 const FloatingObject& floatingObject = *it->get();
-                FloatingObject* oldFloatingObject = floatMap.get(floatingObject.layoutObject());
+                FloatingObject* oldFloatingObject = GetFloatingObjectFromLayoutBox(floatMap, floatingObject.layoutObject());
                 LayoutUnit logicalBottom = logicalBottomForFloat(floatingObject);
                 if (oldFloatingObject) {
                     LayoutUnit oldLogicalBottom = logicalBottomForFloat(*oldFloatingObject);
@@ -982,7 +988,7 @@ void LayoutBlockFlow::rebuildFloatsFromIntruding()
                         oldFloatingObject->originatingLine()->markDirty();
                     }
 
-                    floatMap.remove(floatingObject.layoutObject());
+                    floatMap.erase(floatingObject.layoutObject());
                 } else {
                     changeLogicalTop = 0;
                     changeLogicalBottom = std::max(changeLogicalBottom, logicalBottom);
@@ -992,7 +998,7 @@ void LayoutBlockFlow::rebuildFloatsFromIntruding()
 
         LayoutBoxToFloatInfoMap::iterator end = floatMap.end();
         for (LayoutBoxToFloatInfoMap::iterator it = floatMap.begin(); it != end; ++it) {
-            OwnPtr<FloatingObject>& floatingObject = it->value;
+            std::unique_ptr<FloatingObject>& floatingObject = it->second;
             if (!floatingObject->isDescendant()) {
                 changeLogicalTop = 0;
                 changeLogicalBottom = std::max(changeLogicalBottom, logicalBottomForFloat(*floatingObject));
@@ -1894,7 +1900,7 @@ LayoutUnit LayoutBlockFlow::getClearDelta(LayoutBox* child, LayoutUnit logicalTo
 
 void LayoutBlockFlow::createFloatingObjects()
 {
-    m_floatingObjects = adoptPtr(new FloatingObjects(this, isHorizontalWritingMode()));
+    m_floatingObjects = std::make_unique<FloatingObjects>(this, isHorizontalWritingMode());
 }
 
 void LayoutBlockFlow::styleWillChange(StyleDifference diff, const ComputedStyle& newStyle)
@@ -2163,8 +2169,7 @@ void LayoutBlockFlow::clearFloats(EClear clear)
 
 bool LayoutBlockFlow::containsFloat(LayoutBox* layoutBox) const
 {
-    ASSERT(false); // BKTODO: return m_floatingObjects && m_floatingObjects->set().contains<FloatingObjectHashTranslator>(layoutBox);
-    return false;
+    return m_floatingObjects && m_floatingObjects->set().contains(layoutBox);
 }
 
 void LayoutBlockFlow::removeFloatingObjects()
@@ -2287,17 +2292,14 @@ FloatingObject* LayoutBlockFlow::insertFloatingObject(LayoutBox& floatBox)
     } else {
         // Don't insert the object again if it's already in the list
         const FloatingObjectSet& floatingObjectSet = m_floatingObjects->set();
-        ASSERT(false); // BKTODO:
-#if 0
-        FloatingObjectSetIterator it = floatingObjectSet.find<FloatingObjectHashTranslator>(&floatBox);
+        FloatingObjectSetIterator it = floatingObjectSet.find(&floatBox);
         if (it != floatingObjectSet.end())
             return it->get();
-#endif
     }
 
     // Create the special object entry & append it to the list
 
-    OwnPtr<FloatingObject> newObj = FloatingObject::create(&floatBox);
+    std::unique_ptr<FloatingObject> newObj = FloatingObject::create(&floatBox);
 
     // Our location is irrelevant if we're unsplittable or no pagination is in effect.
     // Just go ahead and lay out the float.
@@ -2309,16 +2311,14 @@ FloatingObject* LayoutBlockFlow::insertFloatingObject(LayoutBox& floatBox)
 
     setLogicalWidthForFloat(*newObj, logicalWidthForChild(floatBox) + marginStartForChild(floatBox) + marginEndForChild(floatBox));
 
-    return m_floatingObjects->add(newObj.release());
+    return m_floatingObjects->add(std::move(newObj));
 }
 
 void LayoutBlockFlow::removeFloatingObject(LayoutBox* floatBox)
 {
     if (m_floatingObjects) {
         const FloatingObjectSet& floatingObjectSet = m_floatingObjects->set();
-        ASSERT(false); // BKTODO:
-#if 0
-        FloatingObjectSetIterator it = floatingObjectSet.find<FloatingObjectHashTranslator>(floatBox);
+        FloatingObjectSetIterator it = floatingObjectSet.find(floatBox);
         if (it != floatingObjectSet.end()) {
             FloatingObject& floatingObject = *it->get();
             if (childrenInline()) {
@@ -2347,7 +2347,6 @@ void LayoutBlockFlow::removeFloatingObject(LayoutBox* floatBox)
             }
             m_floatingObjects->remove(&floatingObject);
         }
-#endif
     }
 }
 
@@ -2482,15 +2481,11 @@ bool LayoutBlockFlow::hasOverhangingFloat(LayoutBox* layoutBox)
         return false;
 
     const FloatingObjectSet& floatingObjectSet = m_floatingObjects->set();
-    ASSERT(false); // BKTODO:
-    return false;
-#if 0
-    FloatingObjectSetIterator it = floatingObjectSet.find<FloatingObjectHashTranslator>(layoutBox);
+    FloatingObjectSetIterator it = floatingObjectSet.find(layoutBox);
     if (it == floatingObjectSet.end())
         return false;
 
     return logicalBottomForFloat(*it->get()) > logicalHeight();
-#endif
 }
 
 void LayoutBlockFlow::addIntrudingFloats(LayoutBlockFlow* prev, LayoutUnit logicalLeftOffset, LayoutUnit logicalTopOffset)
@@ -2512,8 +2507,6 @@ void LayoutBlockFlow::addIntrudingFloats(LayoutBlockFlow* prev, LayoutUnit logic
     for (FloatingObjectSetIterator prevIt = prevSet.begin(); prevIt != prevEnd; ++prevIt) {
         FloatingObject& floatingObject = *prevIt->get();
         if (logicalBottomForFloat(floatingObject) > logicalTopOffset) {
-            ASSERT(false); // BKTODO:
-#if 0
             if (!m_floatingObjects || !m_floatingObjects->set().contains(&floatingObject)) {
                 // We create the floating object list lazily.
                 if (!m_floatingObjects)
@@ -2530,7 +2523,6 @@ void LayoutBlockFlow::addIntrudingFloats(LayoutBlockFlow* prev, LayoutUnit logic
 
                 m_floatingObjects->add(floatingObject.copyToNewContainer(offset));
             }
-#endif
         }
     }
 }

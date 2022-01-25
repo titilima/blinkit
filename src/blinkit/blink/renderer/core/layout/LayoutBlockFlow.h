@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LayoutBlockFlow.h
+// Description: LayoutBlockFlow Class
+//      Author: Ziming Li
+//     Created: 2022-01-24
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -36,11 +48,10 @@
 #ifndef LayoutBlockFlow_h
 #define LayoutBlockFlow_h
 
-#include "core/CoreExport.h"
-#include "core/layout/FloatingObjects.h"
-#include "core/layout/LayoutBlock.h"
-#include "core/layout/line/TrailingObjects.h"
-#include "core/style/ComputedStyleConstants.h"
+#include "blinkit/blink/renderer/core/layout/FloatingObjects.h"
+#include "blinkit/blink/renderer/core/layout/LayoutBlock.h"
+#include "blinkit/blink/renderer/core/layout/line/TrailingObjects.h"
+#include "blinkit/blink/renderer/core/style/ComputedStyleConstants.h"
 
 namespace blink {
 
@@ -84,7 +95,8 @@ enum IndentTextOrNot { DoNotIndentText, IndentText };
 // This is suggested by CSS to correctly the layout mixed inlines and blocks
 // lines (http://www.w3.org/TR/CSS21/visuren.html#anonymous-block-level). See
 // LayoutBlock::addChild about how the invariant is enforced.
-class CORE_EXPORT LayoutBlockFlow : public LayoutBlock {
+class LayoutBlockFlow : public LayoutBlock
+{
 public:
     explicit LayoutBlockFlow(ContainerNode*);
     ~LayoutBlockFlow() override;
@@ -565,7 +577,7 @@ private:
 
 protected:
     OwnPtr<LayoutBlockFlowRareData> m_rareData;
-    OwnPtr<FloatingObjects> m_floatingObjects;
+    std::unique_ptr<FloatingObjects> m_floatingObjects;
 
     friend class MarginInfo;
     friend class LineBreaker;
