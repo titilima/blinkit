@@ -285,7 +285,7 @@ private:
 
     unsigned m_hitTestCount;
     unsigned m_hitTestCacheHits;
-    GCUniquePtr<HitTestCache> m_hitTestCache;
+    std::unique_ptr<HitTestCache> m_hitTestCache;
 
     // BKTODO: Vector<LayoutMedia*> m_mediaForPositionNotification;
 };
