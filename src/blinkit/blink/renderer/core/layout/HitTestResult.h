@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -33,20 +34,19 @@
 #ifndef HitTestResult_h
 #define HitTestResult_h
 
-#include "core/CoreExport.h"
-#include "core/editing/PositionWithAffinity.h"
-#include "core/layout/HitTestLocation.h"
-#include "core/layout/HitTestRequest.h"
-#include "platform/geometry/FloatQuad.h"
-#include "platform/geometry/FloatRect.h"
-#include "platform/geometry/LayoutRect.h"
-#include "platform/heap/Handle.h"
-#include "platform/text/TextDirection.h"
-#include "wtf/Forward.h"
-#include "wtf/ListHashSet.h"
-#include "wtf/OwnPtr.h"
-#include "wtf/RefPtr.h"
-#include "wtf/VectorTraits.h"
+#include "blinkit/blink/renderer/core/editing/PositionWithAffinity.h"
+#include "blinkit/blink/renderer/core/layout/HitTestLocation.h"
+#include "blinkit/blink/renderer/core/layout/HitTestRequest.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatQuad.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
+#include "blinkit/blink/renderer/platform/geometry/LayoutRect.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/platform/text/TextDirection.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/ListHashSet.h"
+#include "blinkit/blink/renderer/wtf/OwnPtr.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
+#include "blinkit/blink/renderer/wtf/VectorTraits.h"
 
 namespace blink {
 
@@ -60,7 +60,8 @@ class Node;
 class LayoutObject;
 class Scrollbar;
 
-class CORE_EXPORT HitTestResult {
+class HitTestResult
+{
     DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();
 
 public:
@@ -74,7 +75,6 @@ public:
     HitTestResult(const HitTestResult&);
     ~HitTestResult();
     HitTestResult& operator=(const HitTestResult&);
-    DECLARE_TRACE();
 
     bool equalForCacheability(const HitTestResult&) const;
     void cacheValues(const HitTestResult&);
@@ -96,7 +96,7 @@ public:
     Node* innerNodeOrImageMapImage() const;
 
     Element* URLElement() const { return m_innerURLElement; }
-    Scrollbar* scrollbar() const { return m_scrollbar.get(); }
+    Scrollbar* scrollbar(void) const;
     bool isOverWidget() const { return m_isOverWidget; }
 
     // Forwarded from HitTestLocation
@@ -175,10 +175,10 @@ private:
     LayoutPoint m_localPoint; // A point in the local coordinate space of m_innerNode's layoutObject. Allows us to efficiently
         // determine where inside the layoutObject we hit on subsequent operations.
     Element *m_innerURLElement = nullptr;
-    RefPtrWillBeMember<Scrollbar> m_scrollbar;
+    GCRefPtr<Scrollbar> m_scrollbar;
     bool m_isOverWidget; // Returns true if we are over a widget (and not in the border/padding area of a LayoutPart for example).
 
-    mutable OwnPtrWillBeMember<NodeSet> m_listBasedTestResult;
+    mutable std::unique_ptr<NodeSet> m_listBasedTestResult;
 };
 
 } // namespace blink

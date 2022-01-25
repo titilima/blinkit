@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -16,11 +17,9 @@
 #ifndef HitTestCache_h
 #define HitTestCache_h
 
-#include "core/CoreExport.h"
-#include "core/layout/HitTestResult.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Noncopyable.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/core/layout/HitTestResult.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
 
 namespace blink {
 
@@ -45,13 +44,13 @@ namespace blink {
 // size of 1.
 #define HIT_TEST_CACHE_SIZE (2)
 
-class CORE_EXPORT HitTestCache final {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(HitTestCache);
+class HitTestCache final
+{
     WTF_MAKE_NONCOPYABLE(HitTestCache);
 public:
-    static GCUniquePtr<HitTestCache> create()
+    static std::unique_ptr<HitTestCache> create()
     {
-        return BlinKit::GCWrapUnique(new HitTestCache);
+        return zed::wrap_unique(new HitTestCache);
     }
 
     // Check the cache for a possible hit and update |result| if
@@ -62,8 +61,6 @@ public:
 
     // Adds a HitTestResult to the cache.
     void addCachedResult(const HitTestResult&, uint64_t domTreeVersion);
-
-    DECLARE_TRACE();
 
 private:
     HitTestCache()
@@ -87,7 +84,7 @@ private:
     };
 
     unsigned m_updateIndex;
-    WillBeHeapVector<HitTestResult, HIT_TEST_CACHE_SIZE> m_items;
+    std::vector<HitTestResult> m_items;
     uint64_t m_domTreeVersion;
 };
 

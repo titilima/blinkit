@@ -13,9 +13,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/layout/HitTestCache.h"
+#include "./HitTestCache.h"
 
-#include "public/platform/Platform.h"
+#include "blinkit/blink/public/platform/Platform.h"
 
 namespace blink {
 
@@ -73,11 +73,6 @@ void HitTestCache::clear()
 {
     m_updateIndex = 0;
     m_items.clear();
-}
-
-DEFINE_TRACE(HitTestCache)
-{
-    visitor->trace(m_items);
 }
 
 } // namespace blink

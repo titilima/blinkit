@@ -30,34 +30,34 @@
  *
 */
 
-#include "core/layout/HitTestResult.h"
+#include "./HitTestResult.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/PseudoElement.h"
-#include "core/dom/shadow/ComposedTreeTraversal.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/editing/FrameSelection.h"
-#include "core/editing/VisibleUnits.h"
-#include "core/editing/markers/DocumentMarkerController.h"
-#include "core/fetch/ImageResource.h"
-#include "core/frame/LocalFrame.h"
-#include "core/html/HTMLAnchorElement.h"
-#include "core/html/HTMLAreaElement.h"
-#include "core/html/HTMLImageElement.h"
-#include "core/html/HTMLInputElement.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/PseudoElement.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ComposedTreeTraversal.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/editing/FrameSelection.h"
+#include "blinkit/blink/renderer/core/editing/VisibleUnits.h"
+#include "blinkit/blink/renderer/core/editing/markers/DocumentMarkerController.h"
+#include "blinkit/blink/renderer/core/fetch/ImageResource.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/html/HTMLAnchorElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLAreaElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLImageElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLInputElement.h"
 #if 0 // BKTODO:
 #include "core/html/HTMLMapElement.h"
 #include "core/html/HTMLMediaElement.h"
 #endif
-#include "core/html/HTMLTextAreaElement.h"
-#include "core/html/parser/HTMLParserIdioms.h"
-#include "core/layout/LayoutImage.h"
-#include "core/layout/LayoutTextFragment.h"
+#include "blinkit/blink/renderer/core/html/HTMLTextAreaElement.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLParserIdioms.h"
+#include "blinkit/blink/renderer/core/layout/LayoutImage.h"
+#include "blinkit/blink/renderer/core/layout/LayoutTextFragment.h"
 #if 0 // BKTODO:
 #include "core/page/FrameTree.h"
 #include "core/svg/SVGElement.h"
 #endif
-#include "platform/scroll/Scrollbar.h"
+#include "blinkit/blink/renderer/platform/scroll/Scrollbar.h"
 
 namespace blink {
 
@@ -110,7 +110,8 @@ HitTestResult::HitTestResult(const HitTestResult& other)
     , m_isOverWidget(other.isOverWidget())
 {
     // Only copy the NodeSet in case of list hit test.
-    m_listBasedTestResult = adoptPtrWillBeNoop(other.m_listBasedTestResult ? new NodeSet(*other.m_listBasedTestResult) : 0);
+    if (other.m_listBasedTestResult)
+        m_listBasedTestResult = std::make_unique<NodeSet>(*other.m_listBasedTestResult);
 }
 
 HitTestResult::~HitTestResult()
@@ -156,20 +157,8 @@ void HitTestResult::populateFromCachedResult(const HitTestResult& other)
     m_cacheable = other.m_cacheable;
 
     // Only copy the NodeSet in case of list hit test.
-    m_listBasedTestResult = adoptPtrWillBeNoop(other.m_listBasedTestResult ? new NodeSet(*other.m_listBasedTestResult) : 0);
-}
-
-DEFINE_TRACE(HitTestResult)
-{
-#if 0 // BKTODO:
-    visitor->trace(m_innerNode);
-    visitor->trace(m_innerPossiblyPseudoNode);
-    visitor->trace(m_innerURLElement);
-#endif
-    visitor->trace(m_scrollbar);
-#if ENABLE(OILPAN)
-    visitor->trace(m_listBasedTestResult);
-#endif
+    if (other.m_listBasedTestResult)
+        m_listBasedTestResult = std::make_unique<NodeSet>(*other.m_listBasedTestResult);
 }
 
 PositionWithAffinity HitTestResult::position() const
@@ -506,14 +495,14 @@ void HitTestResult::append(const HitTestResult& other)
 const HitTestResult::NodeSet& HitTestResult::listBasedTestResult() const
 {
     if (!m_listBasedTestResult)
-        m_listBasedTestResult = adoptPtrWillBeNoop(new NodeSet);
+        m_listBasedTestResult = std::make_unique<NodeSet>();
     return *m_listBasedTestResult;
 }
 
 HitTestResult::NodeSet& HitTestResult::mutableListBasedTestResult()
 {
     if (!m_listBasedTestResult)
-        m_listBasedTestResult = adoptPtrWillBeNoop(new NodeSet);
+        m_listBasedTestResult = std::make_unique<NodeSet>();
     return *m_listBasedTestResult;
 }
 
@@ -561,6 +550,11 @@ Node* HitTestResult::innerNodeOrImageMapImage() const
         return m_innerNode;
 
     return imageMapImageElement;
+}
+
+Scrollbar* HitTestResult::scrollbar(void) const
+{
+    return m_scrollbar.get();
 }
 
 } // namespace blink
