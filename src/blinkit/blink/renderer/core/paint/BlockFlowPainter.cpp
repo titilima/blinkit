@@ -19,7 +19,7 @@
 #include "core/layout/LayoutBlockFlow.h"
 #include "core/paint/ClipScope.h"
 #include "core/paint/LayoutObjectDrawingRecorder.h"
-// BKTODO: #include "core/paint/ObjectPainter.h"
+#include "core/paint/ObjectPainter.h"
 #include "core/paint/PaintInfo.h"
 #include "core/paint/PaintLayer.h"
 
@@ -48,7 +48,7 @@ void BlockFlowPainter::paintFloats(const PaintInfo& paintInfo, const LayoutPoint
             *floatingObject, LayoutPoint(paintOffset.x()
             + m_layoutBlockFlow.xPositionForFloatIncludingMargin(*floatingObject) - floatingLayoutObject->location().x(), paintOffset.y()
             + m_layoutBlockFlow.yPositionForFloatIncludingMargin(*floatingObject) - floatingLayoutObject->location().y()));
-        ASSERT(false); // BKTODO: ObjectPainter(*floatingLayoutObject).paintAsPseudoStackingContext(floatPaintInfo, childPoint);
+        ObjectPainter(*floatingLayoutObject).paintAsPseudoStackingContext(floatPaintInfo, childPoint);
     }
 }
 
