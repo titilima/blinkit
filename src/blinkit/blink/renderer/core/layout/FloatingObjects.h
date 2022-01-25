@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -35,11 +36,9 @@
 #ifndef FloatingObjects_h
 #define FloatingObjects_h
 
-#include "core/layout/line/RootInlineBox.h"
-#include "platform/PODFreeListArena.h"
-#include "platform/PODIntervalTree.h"
-#include "wtf/ListHashSet.h"
-#include "wtf/OwnPtr.h"
+#include "blinkit/blink/renderer/core/layout/line/RootInlineBox.h"
+#include "blinkit/blink/renderer/platform/PODFreeListArena.h"
+#include "blinkit/blink/renderer/platform/PODIntervalTree.h"
 
 namespace blink {
 
@@ -49,8 +48,9 @@ class LayoutBox;
 // FIXME this should be removed once LayoutBlockFlow::nextFloatLogicalBottomBelow doesn't need it anymore. (Bug 123931)
 enum ShapeOutsideFloatOffsetMode { ShapeOutsideFloatShapeOffset, ShapeOutsideFloatMarginBoxOffset };
 
-class FloatingObject {
-    WTF_MAKE_NONCOPYABLE(FloatingObject); USING_FAST_MALLOC(FloatingObject);
+class FloatingObject
+{
+    WTF_MAKE_NONCOPYABLE(FloatingObject);
 public:
 #ifndef NDEBUG
     // Used by the PODIntervalTree for debugging the FloatingObject.
@@ -60,11 +60,11 @@ public:
     // Note that Type uses bits so you can use FloatLeftRight as a mask to query for both left and right.
     enum Type { FloatLeft = 1, FloatRight = 2, FloatLeftRight = 3 };
 
-    static PassOwnPtr<FloatingObject> create(LayoutBox*);
+    static std::unique_ptr<FloatingObject> create(LayoutBox*);
 
-    PassOwnPtr<FloatingObject> copyToNewContainer(LayoutSize, bool shouldPaint = false, bool isDescendant = false) const;
+    std::unique_ptr<FloatingObject> copyToNewContainer(LayoutSize, bool shouldPaint = false, bool isDescendant = false) const;
 
-    PassOwnPtr<FloatingObject> unsafeClone() const;
+    std::unique_ptr<FloatingObject> unsafeClone() const;
 
     Type type() const { return static_cast<Type>(m_type); }
     LayoutBox* layoutObject() const { return m_layoutObject; }
@@ -124,43 +124,82 @@ private:
 #endif
 };
 
-struct FloatingObjectHashFunctions {
-    STATIC_ONLY(FloatingObjectHashFunctions);
-    static unsigned hash(FloatingObject* key) { return DefaultHash<LayoutBox*>::Hash::hash(key->layoutObject()); }
-    static unsigned hash(const OwnPtr<FloatingObject>& key) { return hash(key.get()); }
-    static unsigned hash(const PassOwnPtr<FloatingObject>& key) { return hash(key.get()); }
-    static bool equal(OwnPtr<FloatingObject>& a, FloatingObject* b) { return a->layoutObject() == b->layoutObject(); }
-    static bool equal(OwnPtr<FloatingObject>& a, const OwnPtr<FloatingObject>& b) { return equal(a, b.get()); }
-    static bool equal(OwnPtr<FloatingObject>& a, const PassOwnPtr<FloatingObject>& b) { return equal(a, b.get()); }
-
-    static const bool safeToCompareToEmptyOrDeleted = true;
-};
-struct FloatingObjectHashTranslator {
-    STATIC_ONLY(FloatingObjectHashTranslator);
-    static unsigned hash(LayoutBox* key) { return DefaultHash<LayoutBox*>::Hash::hash(key); }
-    static bool equal(FloatingObject* a, LayoutBox* b) { return a->layoutObject() == b; }
-    static bool equal(const OwnPtr<FloatingObject>& a, LayoutBox* b) { return a->layoutObject() == b; }
-};
-
-class FloatingObjectSet final : std::list<std::unique_ptr<FloatingObject>>
+class FloatingObjectSet
 {
 public:
     using const_iterator = std::list<std::unique_ptr<FloatingObject>>::const_iterator;
+    const_iterator begin(void) const { return m_objects.begin(); }
+    const_iterator end(void) const { return m_objects.end(); }
 
-    using std::list<std::unique_ptr<FloatingObject>>::begin;
-    using std::list<std::unique_ptr<FloatingObject>>::end;
-    using std::list<std::unique_ptr<FloatingObject>>::size;
+    size_t size(void) const { return m_indices.size(); }
+    bool isEmpty(void) const { return m_indices.empty(); }
+    void clear(void)
+    {
+        m_indices.clear();
+        m_objects.clear();
+    }
 
-    bool isEmpty(void) const { return this->empty(); }
-    std::unique_ptr<FloatingObject>& last(void) { return this->back(); }
-    const std::unique_ptr<FloatingObject>& last(void) const { return this->back(); }
+    const std::unique_ptr<FloatingObject>& last(void) const
+    {
+        ASSERT(!m_objects.empty());
+        return m_objects.back();
+    }
+
+    void add(std::unique_ptr<FloatingObject> &&floatingObject)
+    {
+        iterator it = m_objects.emplace(m_objects.end(), std::move(floatingObject));
+        m_indices.emplace((*it)->layoutObject(), it);
+    }
+
+    bool contains(LayoutBox *floatBox) const {
+        return zed::key_exists(m_indices, floatBox);
+    }
+    bool contains(FloatingObject *floatingObject) const {
+        return contains(floatingObject->layoutObject());
+    }
+
+    const_iterator find(LayoutBox *floatBox) const
+    {
+        auto it = m_indices.find(floatBox);
+        if (m_indices.end() != it)
+            return it->second;
+        else
+            return m_objects.end();
+    }
+    const_iterator find(FloatingObject *floatingObject) const {
+        return find(floatingObject->layoutObject());
+    }
+
+    std::unique_ptr<FloatingObject> take(FloatingObject *floatingObject)
+    {
+        auto it = m_indices.find(floatingObject->layoutObject());
+        ASSERT(m_indices.end() != it);
+
+        std::unique_ptr<FloatingObject> ret = std::move(*(it->second));
+        m_objects.erase(it->second);
+        m_indices.erase(it);
+        return ret;
+    }
+    std::unique_ptr<FloatingObject> takeFirst(void)
+    {
+        ASSERT(!m_objects.empty());
+        std::unique_ptr<FloatingObject> ret = std::move(m_objects.front());
+        m_objects.pop_front();
+        m_indices.erase(ret->layoutObject());
+        return ret;
+    }
+private:
+    using iterator = std::list<std::unique_ptr<FloatingObject>>::iterator;
+
+    std::list<std::unique_ptr<FloatingObject>> m_objects;
+    std::unordered_map<LayoutBox *, iterator> m_indices;
 };
 
 typedef FloatingObjectSet::const_iterator FloatingObjectSetIterator;
 typedef PODInterval<LayoutUnit, FloatingObject*> FloatingObjectInterval;
 typedef PODIntervalTree<LayoutUnit, FloatingObject*> FloatingObjectTree;
 typedef PODFreeListArena<PODRedBlackTree<FloatingObjectInterval>::Node> IntervalArena;
-typedef HashMap<LayoutBox*, OwnPtr<FloatingObject>> LayoutBoxToFloatInfoMap;
+typedef std::unordered_map<LayoutBox *, std::unique_ptr<FloatingObject>> LayoutBoxToFloatInfoMap;
 
 class FloatingObjects {
     WTF_MAKE_NONCOPYABLE(FloatingObjects); USING_FAST_MALLOC(FloatingObjects);
@@ -170,7 +209,7 @@ public:
 
     void clear();
     void moveAllToFloatInfoMap(LayoutBoxToFloatInfoMap&);
-    FloatingObject* add(PassOwnPtr<FloatingObject>);
+    FloatingObject* add(std::unique_ptr<FloatingObject> &&);
     void remove(FloatingObject*);
     void addPlacedObject(FloatingObject&);
     void removePlacedObject(FloatingObject&);

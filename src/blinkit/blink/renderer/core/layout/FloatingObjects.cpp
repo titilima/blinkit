@@ -32,12 +32,10 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/layout/FloatingObjects.h"
+#include "./FloatingObjects.h"
 
-#include "core/layout/LayoutBlockFlow.h"
-#include "core/layout/LayoutBox.h"
-#include "core/layout/LayoutView.h"
-#include "core/layout/shapes/ShapeOutsideInfo.h"
+#include "blinkit/blink/renderer/core/layout/LayoutView.h"
+#include "blinkit/blink/renderer/core/layout/shapes/ShapeOutsideInfo.h"
 
 using namespace WTF;
 
@@ -88,26 +86,26 @@ FloatingObject::FloatingObject(LayoutBox* layoutObject, Type type, const LayoutR
 {
 }
 
-PassOwnPtr<FloatingObject> FloatingObject::create(LayoutBox* layoutObject)
+std::unique_ptr<FloatingObject> FloatingObject::create(LayoutBox* layoutObject)
 {
-    OwnPtr<FloatingObject> newObj = adoptPtr(new FloatingObject(layoutObject));
+    std::unique_ptr<FloatingObject> newObj = zed::wrap_unique(new FloatingObject(layoutObject));
     newObj->setShouldPaint(!layoutObject->hasSelfPaintingLayer()); // If a layer exists, the float will paint itself. Otherwise someone else will.
     newObj->setIsDescendant(true);
 
-    return newObj.release();
+    return newObj;
 }
 
-PassOwnPtr<FloatingObject> FloatingObject::copyToNewContainer(LayoutSize offset, bool shouldPaint, bool isDescendant) const
+std::unique_ptr<FloatingObject> FloatingObject::copyToNewContainer(LayoutSize offset, bool shouldPaint, bool isDescendant) const
 {
-    return adoptPtr(new FloatingObject(layoutObject(), type(), LayoutRect(frameRect().location() - offset, frameRect().size()), shouldPaint, isDescendant, isLowestNonOverhangingFloatInChild()));
+    return zed::wrap_unique(new FloatingObject(layoutObject(), type(), LayoutRect(frameRect().location() - offset, frameRect().size()), shouldPaint, isDescendant, isLowestNonOverhangingFloatInChild()));
 }
 
-PassOwnPtr<FloatingObject> FloatingObject::unsafeClone() const
+std::unique_ptr<FloatingObject> FloatingObject::unsafeClone() const
 {
-    OwnPtr<FloatingObject> cloneObject = adoptPtr(new FloatingObject(layoutObject(), type(), m_frameRect, m_shouldPaint, m_isDescendant, false));
+    std::unique_ptr<FloatingObject> cloneObject = zed::wrap_unique(new FloatingObject(layoutObject(), type(), m_frameRect, m_shouldPaint, m_isDescendant, false));
     cloneObject->m_paginationStrut = m_paginationStrut;
     cloneObject->m_isPlaced = m_isPlaced;
-    return cloneObject.release();
+    return cloneObject;
 }
 
 template <FloatingObject::Type FloatTypeValue>
@@ -178,15 +176,12 @@ FloatingObjects::~FloatingObjects()
 }
 void FloatingObjects::clearLineBoxTreePointers()
 {
-    ASSERT(false); // BKTODO:
-#if 0
     // Clear references to originating lines, since the lines are being deleted
     FloatingObjectSetIterator end = m_set.end();
     for (FloatingObjectSetIterator it = m_set.begin(); it != end; ++it) {
         ASSERT(!((*it)->originatingLine()) || (*it)->originatingLine()->lineLayoutItem().isEqual(m_layoutObject));
         (*it)->setOriginatingLine(nullptr);
     }
-#endif
 }
 
 FloatingObjects::FloatingObjects(const LayoutBlockFlow* layoutObject, bool horizontalWritingMode)
@@ -201,7 +196,7 @@ FloatingObjects::FloatingObjects(const LayoutBlockFlow* layoutObject, bool horiz
 
 void FloatingObjects::clear()
 {
-    ASSERT(false); // BKTODO: m_set.clear();
+    m_set.clear();
     m_placedFloatsTree.clear();
     m_leftObjectsCount = 0;
     m_rightObjectsCount = 0;
@@ -222,8 +217,6 @@ LayoutUnit FloatingObjects::lowestFloatLogicalBottom(FloatingObject::Type floatT
     }
 
     LayoutUnit lowestFloatBottom = 0;
-    ASSERT(false); // BKTODO:
-#if 0
     const FloatingObjectSet& floatingObjectSet = set();
     FloatingObjectSetIterator end = floatingObjectSet.end();
     if (floatType == FloatingObject::FloatLeftRight) {
@@ -262,7 +255,6 @@ LayoutUnit FloatingObjects::lowestFloatLogicalBottom(FloatingObject::Type floatT
         }
         setCachedLowestFloatLogicalBottom(isInHorizontalWritingMode, floatType, lowestFloatingObject);
     }
-#endif
 
     return lowestFloatBottom;
 }
@@ -318,13 +310,11 @@ void FloatingObjects::markLowestFloatLogicalBottomCacheAsDirty()
 
 void FloatingObjects::moveAllToFloatInfoMap(LayoutBoxToFloatInfoMap& map)
 {
-    while (!m_set.isEmpty()) {
-        ASSERT(false); // BKTODO:
-#if 0
-        OwnPtr<FloatingObject> floatingObject = m_set.takeFirst();
-        LayoutBox* layoutObject = floatingObject->layoutObject();
-        map.add(layoutObject, floatingObject.release());
-#endif
+    while (!m_set.isEmpty())
+    {
+        std::unique_ptr<FloatingObject> floatingObject = m_set.takeFirst();
+        LayoutBox *layoutObject = floatingObject->layoutObject();
+        map.emplace(layoutObject, std::move(floatingObject));
     }
     clear();
 }
@@ -382,11 +372,11 @@ void FloatingObjects::removePlacedObject(FloatingObject& floatingObject)
     markLowestFloatLogicalBottomCacheAsDirty();
 }
 
-FloatingObject* FloatingObjects::add(PassOwnPtr<FloatingObject> floatingObject)
+FloatingObject* FloatingObjects::add(std::unique_ptr<FloatingObject> &&floatingObject)
 {
-    FloatingObject* newObject = floatingObject.leakPtr();
+    FloatingObject* newObject = floatingObject.get();
     increaseObjectsCount(newObject->type());
-    ASSERT(false); // BKTODO: m_set.add(adoptPtr(newObject));
+    m_set.add(std::move(floatingObject));
     if (newObject->isPlaced())
         addPlacedObject(*newObject);
     markLowestFloatLogicalBottomCacheAsDirty();
@@ -396,15 +386,12 @@ FloatingObject* FloatingObjects::add(PassOwnPtr<FloatingObject> floatingObject)
 void FloatingObjects::remove(FloatingObject* toBeRemoved)
 {
     decreaseObjectsCount(toBeRemoved->type());
-    ASSERT(false); // BKTODO:
-#if 0
-    OwnPtr<FloatingObject> floatingObject = m_set.take(toBeRemoved);
+    std::unique_ptr<FloatingObject> floatingObject = m_set.take(toBeRemoved);
     ASSERT(floatingObject->isPlaced() || !floatingObject->isInPlacedTree());
     if (floatingObject->isPlaced())
         removePlacedObject(*floatingObject);
     markLowestFloatLogicalBottomCacheAsDirty();
     ASSERT(!floatingObject->originatingLine());
-#endif
 }
 
 void FloatingObjects::computePlacedFloatsTree()
@@ -413,8 +400,6 @@ void FloatingObjects::computePlacedFloatsTree()
     if (m_set.isEmpty())
         return;
     m_placedFloatsTree.initIfNeeded(m_layoutObject->view()->intervalArena());
-    ASSERT(false); // BKTODO:
-#if 0
     FloatingObjectSetIterator it = m_set.begin();
     FloatingObjectSetIterator end = m_set.end();
     for (; it != end; ++it) {
@@ -422,7 +407,6 @@ void FloatingObjects::computePlacedFloatsTree()
         if (floatingObject.isPlaced())
             m_placedFloatsTree.add(intervalForFloatingObject(floatingObject));
     }
-#endif
 }
 
 LayoutUnit FloatingObjects::logicalLeftOffsetForPositioningFloat(LayoutUnit fixedOffset, LayoutUnit logicalTop, LayoutUnit *heightRemaining)
