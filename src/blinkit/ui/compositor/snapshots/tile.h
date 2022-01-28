@@ -13,7 +13,7 @@
 #ifndef BLINKIT_TILE_H
 #define BLINKIT_TILE_H
 
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 
 class SkCanvas;
@@ -26,7 +26,7 @@ public:
     Tile(const IntRect &rect);
     Tile(const IntSize &size) : Tile(IntRect(IntPoint::zero(), size)) {}
 
-    static constexpr unsigned Size = 256;
+    static constexpr int Size = 256;
 
     void Reset(const IntRect &rect);
     void Update(const IntRect &dirtyRect, const std::function<void(SkCanvas &)> &callback);
@@ -39,11 +39,25 @@ public:
     }
 
     const SkBitmap& Bitmap(void) const { return m_bitmap; }
+    const SkBitmap& Lock(void);
+
+#ifndef NDEBUG
+    void EnableDebugInfo(void) { m_drawDebugInfo = true; }
+    void DisableDebugInfo(void) { m_drawDebugInfo = false; }
+#endif
 private:
     void ResetBitmap(void);
+#ifndef NDEBUG
+    void DrawDebugInfo(SkCanvas &canvas) const;
+#endif
 
+    bool m_painted = false;
     IntRect m_rect; // of viewport
     SkBitmap m_bitmap;
+
+#ifndef NDEBUG
+    bool m_drawDebugInfo;
+#endif
 };
 
 } // namespace BlinKit
