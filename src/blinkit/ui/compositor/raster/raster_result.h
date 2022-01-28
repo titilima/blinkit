@@ -13,7 +13,7 @@
 #ifndef BLINKIT_RASTER_RESULT_H
 #define BLINKIT_RASTER_RESULT_H
 
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 
 namespace BlinKit {
 
