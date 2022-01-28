@@ -23,12 +23,12 @@ namespace BlinKit {
 class Tile
 {
 public:
-    Tile(const IntRect &rect);
+    Tile(const IntRect &rect, const IntSize &offset = IntSize());
     Tile(const IntSize &size) : Tile(IntRect(IntPoint::zero(), size)) {}
 
     static constexpr int Size = 256;
 
-    void Reset(const IntRect &rect);
+    void Reset(const IntRect &rect, const IntSize &offset = IntSize());
     void Update(const IntRect &dirtyRect, const std::function<void(SkCanvas &)> &callback);
     void Update(const SkBitmap &bitmap, const IntPoint &from, const IntPoint &to, const IntSize &size);
     void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect);
@@ -37,6 +37,8 @@ public:
     void UpdatePosition(const IntPoint &position) {
         m_rect.setLocation(position);
     }
+
+    const IntSize& Offset(void) const { return m_offset; }
 
     const SkBitmap& Bitmap(void) const { return m_bitmap; }
     const SkBitmap& Lock(void);
@@ -52,7 +54,8 @@ private:
 #endif
 
     bool m_painted = false;
-    IntRect m_rect; // of viewport
+    IntRect m_rect;   // of viewport
+    IntSize m_offset; // of owner
     SkBitmap m_bitmap;
 
 #ifndef NDEBUG

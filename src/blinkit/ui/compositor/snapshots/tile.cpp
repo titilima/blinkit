@@ -17,13 +17,13 @@
 #endif
 
 #ifndef NDEBUG
-static bool g_debugInfoEnabled = false;
+static bool g_debugInfoEnabled = true;
 #endif
 
 namespace BlinKit {
 
-Tile::Tile(const IntRect &rect)
-    : m_rect(rect)
+Tile::Tile(const IntRect &rect, const IntSize &offset)
+    : m_rect(rect), m_offset(offset)
 #ifndef NDEBUG
     , m_drawDebugInfo(g_debugInfoEnabled)
 #endif
@@ -44,11 +44,12 @@ const SkBitmap& Tile::Lock(void)
     return m_bitmap;
 }
 
-void Tile::Reset(const IntRect &rect)
+void Tile::Reset(const IntRect &rect, const IntSize &offset)
 {
     m_painted = false;
-    m_rect = rect;
-    
+    m_rect    = rect;
+    m_offset  = offset;
+
     const SkImageInfo &info = m_bitmap.info();
     if (info.width() < m_rect.width() || info.height() < m_rect.height())
         ResetBitmap();
@@ -68,7 +69,17 @@ void Tile::Update(const IntRect &dirtyRect, const std::function<void(SkCanvas &)
 #ifndef NDEBUG
     canvas.save();
 #endif
-    if (m_painted)
+
+    if (!m_offset.isZero())
+    {
+        ASSERT(m_painted); // SHOULD BE performing single-tiled partial invalidation!
+
+        SkMatrix transform = SkMatrix::MakeTrans(-m_offset.width(), -m_offset.height());
+        canvas.setMatrix(transform);
+
+        canvas.clipRect(dirtyRect, SkRegion::kIntersect_Op, true);
+    }
+    else if (m_painted)
     {
         ASSERT(m_rect.contains(dirtyRect));
 
@@ -83,6 +94,7 @@ void Tile::Update(const IntRect &dirtyRect, const std::function<void(SkCanvas &)
     }
 
     callback(canvas);
+
 #ifndef NDEBUG
     canvas.restore();
     DrawDebugInfo(canvas);
@@ -92,9 +104,21 @@ void Tile::Update(const IntRect &dirtyRect, const std::function<void(SkCanvas &)
 void Tile::Update(const SkBitmap &bitmap, const IntPoint &from, const IntPoint &to, const IntSize &size)
 {
     SkCanvas canvas(m_bitmap);
+
     SkIRect srcRect = SkIRect::MakeXYWH(from.x(), from.y(), size.width(), size.height());
     SkRect dstRect = SkRect::MakeXYWH(to.x(), to.y(), size.width(), size.height());
+
+    if (!m_painted)
+        m_painted = true;
+#ifndef NDEBUG
+    else
+        canvas.clipRect(dstRect, SkRegion::kIntersect_Op, true);
+#endif
     canvas.drawBitmapRect(bitmap, srcRect, dstRect, nullptr);
+
+#ifndef NDEBUG
+    DrawDebugInfo(canvas);
+#endif
 }
 
 #ifndef NDEBUG
