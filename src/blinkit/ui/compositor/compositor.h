@@ -44,10 +44,6 @@ private:
 
     void TaskLoop(void);
 
-#ifndef NDEBUG
-    static void DrawDebugInfo(SkCanvas &canvas, int layerId, const IntSize &layerBounds);
-#endif
-
     class CallbackTask;
     bool m_running = true;
     zed::task_queue<CompositorTask> m_queue;

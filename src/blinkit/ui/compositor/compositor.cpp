@@ -130,31 +130,4 @@ void Compositor::UpdateSnapshot(const LayerContext &input, const IntSize &viewpo
     snapshot.Update(viewportSize, input, callback);
 }
 
-#ifndef NDEBUG
-void Compositor::DrawDebugInfo(SkCanvas &canvas, int layerId, const IntSize &layerBounds)
-{
-    SkPaint paint;
-
-    static const SkColor colors[] = {
-        SK_ColorBLACK, SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE, SK_ColorYELLOW, SK_ColorCYAN, SK_ColorMAGENTA
-    };
-    paint.setColor(colors[rand() % std::size(colors)]);
-
-    paint.setStrokeWidth(4);
-    paint.setTextSize(13);
-    paint.setTextEncoding(SkPaint::kUTF8_TextEncoding);
-
-    static SkTypeface *typeface = SkTypeface::RefDefault(SkTypeface::kNormal);
-    paint.setTypeface(typeface);
-
-    paint.setStrokeWidth(1);
-    canvas.drawLine(0, 0, layerBounds.width(), layerBounds.height(), paint);
-    canvas.drawLine(layerBounds.width(), 0, 0, layerBounds.height(), paint);
-
-    char text[128];
-    int len = sprintf(text, "0x%08X %dx%d", layerId, layerBounds.width(), layerBounds.height());
-    canvas.drawText(text, len, 5, 15, paint);
-}
-#endif
-
 } // namespace BlinKit
