@@ -56,7 +56,9 @@ public:
 
 #ifndef NDEBUG
     void DebugPrint(void) const {
+        ZLOG("========== Layer::DebugPrint Begin ==========");
         DebugPrint(0);
+        ZLOG("==========  Layer::DebugPrint End  ==========");
     }
 #endif
 
@@ -64,10 +66,9 @@ public:
     void removeFromParent(void) override;
     bool drawsContent(void) const override { return m_drawsContent; }
 private:
-    void AddDrawableDescendants(int num);
-    int NumDescendantsThatDrawContent(void) const { return m_numDescendantsThatDrawContent; }
-
     void PostTaskToCompositor(CompositorTask *task);
+
+    void UpdateContent(const RasterContext &context, RasterTask &session);
 
 #ifndef NDEBUG
     void DebugPrint(int depth) const;
@@ -146,6 +147,7 @@ private:
     void setScrollClient(WebLayerScrollClient *scrollClient) override { m_scrollClient = scrollClient; }
 
     LayerClient *m_client;
+    LayerTreeHost *m_layerTreeHost = nullptr;
 
     Layer *m_parent = nullptr;
     using Children = std::vector<Layer *>;
@@ -153,41 +155,45 @@ private:
     Layer *m_mask = nullptr, *m_replica = nullptr;
     Layer *m_scrollParent = nullptr, *m_clipParent = nullptr;
 
-    // BKTODO: Use bitfields for all boolean members.
     SkColor m_backgroundColor = 0;
+
+    FloatPoint m_position; // of parent
     IntSize m_bounds;
-    bool m_dirty = false, m_doubleSided = true, m_drawsContent = true;
-    FilterOperations m_filters, m_backgroundFilters;
-    bool m_haveScrollEventHandlers = false, m_haveWheelEventHandlers = false;
+    DoublePoint m_scrollPosition, m_scrollCompensationAdjustment;
+
+    /**
+     * Boolean Bitfields
+     */
+    bool m_dirty : 1;
+    bool m_doubleSided : 1;
+    bool m_drawsContent : 1;
+    bool m_fullyInvalidation : 1;
+    bool m_haveScrollEventHandlers : 1;
+    bool m_haveWheelEventHandlers : 1;
     // When true, the layer is about to perform an update. Any commit requests
     // will be handled implicitly after the update completes.
-    bool m_ignoreSetNeedsCommit = false;
-    bool m_isContainerForFixedPositionLayers = false;
-    LayerTreeHost *m_layerTreeHost = nullptr;
-    bool m_masksToBounds = false;
+    bool m_ignoreSetNeedsCommit : 1;
+    bool m_isContainerForFixedPositionLayers : 1;
+    bool m_masksToBounds : 1;
+    bool m_needsRebuild : 1;
+    bool m_opaque : 1;
+    bool m_shouldScrollOnMainThread : 1;
+    bool m_useParentBackfaceVisibility : 1;
+    bool m_userScrollableHorizontal : 1;
+    bool m_userScrollableVertical : 1;
+
+    FilterOperations m_filters, m_backgroundFilters;
     Region m_nonFastScrollableRegion;
-    int m_numDescendantsThatDrawContent = 0;
     float m_opacity = 1.f;
-    bool m_opaque = false;
-    FloatPoint m_position; // of parent
     WebLayerPositionConstraint m_positionConstraint;
     WebScrollBlocksOn m_scrollBlocksOn = WebScrollBlocksOnNone;
     WebLayerScrollClient *m_scrollClient = nullptr;
     int m_scrollClipLayerId = Layer::INVALID_ID;
-    DoublePoint m_scrollPosition, m_scrollCompensationAdjustment;
-    bool m_shouldScrollOnMainThread = true;
     int m_sortingContextId = 0;
-    // Tracks whether this layer may have changed stacking order with its
-    // siblings.
-    bool m_stackingOrderChanged = false;
     SkMatrix44 m_transform{ SkMatrix44::kIdentity_Constructor };
     FloatPoint3D m_transformOrigin;
 
-    bool m_fullyInvalidation = false;
-    IntRect m_dirtyRect; // of viewport
-
-    bool m_useParentBackfaceVisibility = false;
-    bool m_userScrollableHorizontal = true, m_userScrollableVertical = true;
+    IntRect m_dirtyRect; // of layer
 };
 
 #ifndef NDEBUG
@@ -195,12 +201,5 @@ extern std::unordered_set<Layer *> g_allLayers;
 #endif
 
 } // namespace BlinKit
-
-#ifndef NDEBUG
-namespace zed {
-template <>
-void log_serializer::push<BlinKit::Layer>(std::vector<std::string> &dst, const BlinKit::Layer &layer);
-}
-#endif
 
 #endif // BLINKIT_LAYER_H

@@ -37,7 +37,7 @@ public:
     void PostCallback(Callback &&callback);
 
     void ReleaseSnapshot(int layerId);
-    void UpdateSnapshot(const IntSize &viewportSize, const LayerContext &input);
+    void UpdateSnapshot(const LayerContext &input, const IntSize &viewportSize);
     void PerformComposition(SkCanvas &canvas, const RasterResult &rasterResult, const IntRect &dirtyRect);
 private:
     LayerSnapshot& RequireSnapshot(int layerId, const IntSize &layerBounds, const IntSize &viewportSize);

@@ -13,7 +13,6 @@
 #ifndef BLINKIT_RASTER_INPUT_H
 #define BLINKIT_RASTER_INPUT_H
 
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
 #include "blinkit/ui/compositor/blink/display_item_list.h"
 
 namespace BlinKit {
@@ -21,13 +20,14 @@ namespace BlinKit {
 class Layer;
 
 struct LayerContext {
-    const int layerId;
-    IntRect layerRect; // of viewport
-
+    const int id;
+    const IntSize bounds;
     std::unique_ptr<DisplayItemList> displayItems;
+
+    IntPoint position; // of viewport
     IntRect dirtyRect; // of viewport
 
-    LayerContext(const Layer &layer);
+    LayerContext(const Layer &layer, const IntSize &layerBounds);
 };
 
 using RasterInput = std::vector<LayerContext>;

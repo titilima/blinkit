@@ -36,10 +36,15 @@ SkPicture* ThemedScrollbarPainter::Paint(const IntSize &bounds)
     ASSERT(m_scrollbar->size() == bounds);
 
     Tile tile(bounds);
+#ifndef NDEBUG
+    tile.DisableDebugInfo();
+#endif
     tile.UpdatePosition(m_scrollbar->location());
 
     const IntRect &rect = tile.Rect();
     const auto callback = [this, &rect](SkCanvas &canvas) {
+        if (rect.x() != 0 || rect.y() != 0)
+            canvas.setMatrix(SkMatrix::MakeTrans(-rect.x(), -rect.y()));
         m_painter.paintScrollbarBackground(&canvas, rect);
         PaintButtons(&canvas);
         PaintTrack(&canvas);
@@ -47,8 +52,8 @@ SkPicture* ThemedScrollbarPainter::Paint(const IntSize &bounds)
     tile.Update(rect, callback);
 
     SkPictureRecorder recorder;
-    SkCanvas *canvas = recorder.beginRecording(rect);
-    canvas->drawBitmap(tile.Bitmap(), rect.x(), rect.y());
+    SkCanvas *canvas = recorder.beginRecording(SkRect::MakeIWH(bounds.width(), bounds.height()));
+    canvas->drawBitmap(tile.Lock(), 0, 0);
     return recorder.endRecordingAsPicture();
 }
 

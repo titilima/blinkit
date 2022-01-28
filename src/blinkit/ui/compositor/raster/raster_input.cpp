@@ -17,9 +17,9 @@
 
 namespace BlinKit {
 
-LayerContext::LayerContext(const Layer &layer) : layerId(layer.id()), displayItems(std::make_unique<DisplayItemList>())
+LayerContext::LayerContext(const Layer &layer, const IntSize &layerBounds)
+    : id(layer.id()), bounds(layerBounds), displayItems(std::make_unique<DisplayItemList>())
 {
-    layerRect.setSize(layer.Bounds());
     layer.Client()->PaintContents(*displayItems);
 }
 

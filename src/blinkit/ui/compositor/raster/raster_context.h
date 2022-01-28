@@ -13,9 +13,9 @@
 #ifndef BLINKIT_RASTER_CONTEXT_H
 #define BLINKIT_RASTER_CONTEXT_H
 
+#include "blinkit/blink/renderer/platform/geometry/DoubleSize.h"
 #include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
-#include "blinkit/blink/renderer/wtf/Allocator.h"
+#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/skia/include/core/SkMatrix.h"
 
 namespace BlinKit {
@@ -29,15 +29,12 @@ public:
     RasterContext(void);
     RasterContext(const RasterContext &parent, const Layer &currentLayer);
 
-    IntPoint CalculateOffset(const FloatPoint &position) const {
-        return roundedIntPoint(m_offset + position);
-    }
-    IntRect CalculateLayerRect(const Layer &layer) const;
-    IntRect CalculateDirtyRectForLayer(const Layer &layer, const IntSize &viewportSize) const;
-    IntRect CalculateVisibleRect(const Layer &layer, const IntSize &viewportSize) const;
-    SkMatrix CalculateTransform(const Layer &layer) const;
+    IntPoint CalculatePosition(const FloatPoint &position) const;
+    IntRect CalculateVisibleRect(const FloatPoint &layerPosition, const IntSize &layerBounds,
+        const IntRect &viewportRect) const;
 private:
-    const FloatPoint m_offset;
+    const FloatSize m_offset;
+    const DoubleSize m_scrollOffset;
     const SkMatrix m_transform;
 };
 

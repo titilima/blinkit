@@ -24,7 +24,7 @@ public:
     SimpleSnapshot(const IntSize &layerBounds);
 private:
     bool TryToReuse(Type assumedType, const IntSize &layerBounds, const IntSize &viewportSize) override;
-    void Update(const IntPoint &position, const IntRect &dirtyRect, const UpdateCallback &callback) override;
+    void Update(const IntSize &viewportSize, const LayerContext &context, const UpdateCallback &callback) override;
     void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect) override;
 
     Tile m_tile;

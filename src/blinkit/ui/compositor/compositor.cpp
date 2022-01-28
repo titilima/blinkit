@@ -11,7 +11,6 @@
 
 #include "./compositor.h"
 
-#include "blinkit/ui/compositor/raster/raster_input.h"
 #include "blinkit/ui/compositor/snapshots/layer_snapshot.h"
 #include "blinkit/ui/compositor/tasks/compositor_task.h"
 #ifndef NDEBUG
@@ -116,9 +115,9 @@ void Compositor::TaskLoop(void)
     }
 }
 
-void Compositor::UpdateSnapshot(const IntSize &viewportSize, const LayerContext &input)
+void Compositor::UpdateSnapshot(const LayerContext &input, const IntSize &viewportSize)
 {
-    LayerSnapshot &snapshot = RequireSnapshot(input.layerId, input.layerRect.size(), viewportSize);
+    LayerSnapshot &snapshot = RequireSnapshot(input.id, input.bounds, viewportSize);
 
     const auto callback = [&input](SkCanvas &canvas) {
 #if 0 // TODO: Check the logic later.
@@ -128,7 +127,7 @@ void Compositor::UpdateSnapshot(const IntSize &viewportSize, const LayerContext 
 
         // DrawDebugInfo(canvas, input.layerId, input.layerBounds);
     };
-    snapshot.Update(input.layerRect.location(), input.dirtyRect, callback);
+    snapshot.Update(viewportSize, input, callback);
 }
 
 #ifndef NDEBUG

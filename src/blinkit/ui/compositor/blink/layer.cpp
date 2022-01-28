@@ -11,6 +11,7 @@
 
 #include "./layer.h"
 
+#include <optional>
 #include "blinkit/app/app_impl.h"
 #include "blinkit/blink/renderer/platform/geometry/LayoutPoint.h"
 #include "blinkit/ui/compositor/compositor.h"
@@ -19,25 +20,29 @@
 #include "blinkit/ui/compositor/tasks/layer_tasks.h"
 #include "blinkit/ui/compositor/tasks/raster_task.h"
 
-#ifndef NDEBUG
-namespace zed {
-template <>
-void log_serializer::push<BlinKit::Layer>(std::vector<std::string> &dst, const BlinKit::Layer &layer)
-{
-    char buf[32];
-    sprintf(buf, "[Layer 0x%p]", &layer);
-    dst.emplace_back(buf);
-}
-}
-#endif
-
 namespace BlinKit {
 
 #ifndef NDEBUG
 std::unordered_set<Layer *> g_allLayers;
 #endif
 
-Layer::Layer(LayerClient *client) : m_client(client)
+Layer::Layer(LayerClient *client)
+    : m_client(client)
+    , m_dirty(false)
+    , m_doubleSided(false)
+    , m_drawsContent(true)
+    , m_fullyInvalidation(false)
+    , m_haveScrollEventHandlers(false)
+    , m_haveWheelEventHandlers(false)
+    , m_ignoreSetNeedsCommit(false)
+    , m_isContainerForFixedPositionLayers(false)
+    , m_masksToBounds(false)
+    , m_needsRebuild(false)
+    , m_opaque(false)
+    , m_shouldScrollOnMainThread(true)
+    , m_useParentBackfaceVisibility(false)
+    , m_userScrollableHorizontal(true)
+    , m_userScrollableVertical(true)
 {
 #ifndef NDEBUG
     g_allLayers.emplace(this);
@@ -63,19 +68,6 @@ void Layer::addChild(WebLayer *child)
     insertChild(child, m_children.size());
 }
 
-void Layer::AddDrawableDescendants(int num)
-{
-    ASSERT(m_numDescendantsThatDrawContent >= 0);
-    ASSERT(m_numDescendantsThatDrawContent + num >= 0);
-    if (num == 0)
-        return;
-
-    m_numDescendantsThatDrawContent += num;
-    SetNeedsCommit();
-    if (nullptr != m_parent)
-        m_parent->AddDrawableDescendants(num);
-}
-
 void Layer::insertChild(WebLayer *child, size_t index)
 {
     ASSERT(IsPropertyChangeAllowed());
@@ -83,9 +75,7 @@ void Layer::insertChild(WebLayer *child, size_t index)
     Layer *childImpl = static_cast<Layer *>(child);
 
     childImpl->removeFromParent();
-    AddDrawableDescendants(childImpl->NumDescendantsThatDrawContent() + (childImpl->drawsContent() ? 1 : 0));
     childImpl->SetParent(this);
-    childImpl->m_stackingOrderChanged = true;
 
     if (m_children.size() < index)
         index = m_children.size();
@@ -171,10 +161,6 @@ void Layer::RemoveChildOrDependent(Layer *child)
             continue;
 
         child->SetParent(nullptr);
-
-        int drawableDescendants = child->NumDescendantsThatDrawContent() + (child->drawsContent() ? 1 : 0);
-        AddDrawableDescendants(-drawableDescendants);
-
         m_children.erase(it);
 
         SetNeedsFullTreeSync();
@@ -377,11 +363,11 @@ void Layer::setMasksToBounds(bool masksToBounds)
 
 void Layer::SetNeedsCommit(void)
 {
-    m_dirty = true;
     if (nullptr == m_layerTreeHost)
         return;
 
     SetNeedsPushProperties();
+    m_needsRebuild = true;
     // BKTODO: layer_tree_host_->property_trees()->needs_rebuild = true;
     if (m_ignoreSetNeedsCommit)
         return;
@@ -391,7 +377,6 @@ void Layer::SetNeedsCommit(void)
 
 void Layer::SetNeedsCommitNoRebuild(void)
 {
-    m_dirty = true;
     if (nullptr == m_layerTreeHost)
         return;
 
@@ -724,48 +709,108 @@ void Layer::setUserScrollable(bool horizontal, bool vertical)
 
 void Layer::Update(const RasterContext &context, RasterTask &session)
 {
-    if (m_drawsContent)
+    std::optional<bool> needsRebuild;
+    if (m_needsRebuild)
     {
-        const IntRect visibleRect = context.CalculateVisibleRect(*this, session.ViewportSize());
+        needsRebuild = session.SetNeedsRebuild(true);
+        m_needsRebuild = false;
+    }
+
+    if (m_drawsContent)
+        UpdateContent(context, session);
+
+    {
+        RasterContext contextForChildren(context, *this);
+        for (Layer *child : m_children)
+            child->Update(contextForChildren, session);
+    }
+
+    if (nullptr != m_mask)
+        ASSERT(false); // BKTODO: m_mask->Update(context, rasterSession);
+
+    if (needsRebuild.has_value())
+        session.SetNeedsRebuild(needsRebuild.value());
+}
+
+void Layer::UpdateContent(const RasterContext &context, RasterTask &session)
+{
+    ASSERT(m_drawsContent);
+
+    const IntRect visibleRect = context.CalculateVisibleRect(m_position, m_bounds, session.GetViewportRect());
+    if (m_dirty || session.NeedsRebuild())
+    {
+        LayerContext &layerContext = session.RequireLayerContext(*this, m_bounds);
+        layerContext.position = context.CalculatePosition(m_position);
         if (m_dirty)
         {
-            LayerContext &dirtyContext = session.RequireDirtyContext(*this);
-            dirtyContext.layerRect.setLocation(context.CalculateOffset(m_position));
-            dirtyContext.dirtyRect = m_fullyInvalidation ? visibleRect : m_dirtyRect;
-
-            session.UpdateDirtyRect(dirtyContext.dirtyRect);
+            if (m_fullyInvalidation)
+            {
+                layerContext.dirtyRect.setSize(m_bounds);
+                session.UpdateDirtyRect(visibleRect);
+            }
+            else
+            {
+                layerContext.dirtyRect = m_dirtyRect;
+                m_dirtyRect.moveBy(layerContext.position);
+                session.UpdateDirtyRect(m_dirtyRect);
+            }
 
             m_fullyInvalidation = false;
             m_dirtyRect = IntRect();
             m_dirty = false;
         }
-        session.Rasterize(*this, visibleRect);
+        else
+        {
+            session.UpdateDirtyRect(visibleRect);
+        }
     }
 
-    RasterContext contextForChildren(context, *this);
-
-    for (Layer *child : m_children)
-        child->Update(contextForChildren, session);
-
-    if (nullptr != m_mask)
-        ASSERT(false); // BKTODO: m_mask->Update(context, rasterSession);
+    session.Rasterize(*this, visibleRect);
 }
 
 #ifndef NDEBUG
+
 void Layer::DebugPrint(int depth) const
 {
     std::string indents;
     for (int i = 0; i < depth; ++i)
         indents.append("  ");
-    ZLOG("{}{}", indents, *this);
-    BKLOG("%s  .position = (%.1f, %.1f)", indents.c_str(), m_position.x(), m_position.y());
-    BKLOG("%s  .bounds = %dx%d", indents.c_str(), m_bounds.width(), m_bounds.height());
+
+    BKLOG("%s[Layer 0x%p]", indents.c_str(), this);
+
+    if (FloatPoint::zero() != m_position)
+        ZLOG("{}  .position = {}", indents, m_position);
+    if (!m_bounds.isEmpty())
+        ZLOG("{}  .bounds = {}", indents, m_bounds);
+    if (DoublePoint::zero() != m_scrollPosition)
+        BKLOG("%s  .scrollPosition = (%.2lf, %.2lf)", indents.c_str(), m_scrollPosition.x(), m_scrollPosition.y());
+
+    if (m_doubleSided)
+        ZLOG("{}  .doubleSided", indents);
     if (m_drawsContent)
-        BKLOG("%s  .drawsContent", indents.c_str());
+        ZLOG("{}  .drawsContent", indents);
+    if (m_haveScrollEventHandlers)
+        ZLOG("{}  .haveScrollEventHandlers", indents);
+    if (m_haveWheelEventHandlers)
+        ZLOG("{}  .haveWheelEventHandlers", indents);
+    if (m_isContainerForFixedPositionLayers)
+        ZLOG("{}  .isContainerForFixedPositionLayers", indents);
+    if (m_masksToBounds)
+        ZLOG("{}  .masksToBounds", indents);
+    if (m_opaque)
+        ZLOG("{}  .opaque", indents);
+    if (!m_positionConstraint.IsDefault())
+        ZLOG("{}  .positionConstraint = {}", indents, m_positionConstraint);
+    if (!m_transformOrigin.isZero())
+        ZLOG("{}  .transformOrigin = {}", indents, m_transformOrigin);
+    if (m_useParentBackfaceVisibility)
+        ZLOG("{}  .useParentBackfaceVisibility", indents);
+    if (!m_userScrollableHorizontal || !m_userScrollableVertical)
+        ZLOG("{}  .userScrollable = ({}, {})", indents, m_userScrollableHorizontal, m_userScrollableVertical);
 
     if (m_children.empty())
         return;
-    BKLOG("%s  .children:", indents.c_str());
+    BKLOG("%s  .children(%d):", indents.c_str(), m_children.size());
 
     int childrenDepth = depth + 2;
     for (Layer *child : m_children)

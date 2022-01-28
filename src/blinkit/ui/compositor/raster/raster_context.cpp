@@ -22,47 +22,31 @@ RasterContext::RasterContext(void) : m_transform(SkMatrix::I())
 }
 
 RasterContext::RasterContext(const RasterContext &parent, const Layer &currentLayer)
-    : m_offset(parent.m_offset + currentLayer.Position())
+    : m_offset(parent.m_offset + toFloatSize(currentLayer.Position()))
+    , m_scrollOffset(parent.m_scrollOffset + toDoubleSize(currentLayer.ScrollPosition()))
     , m_transform(SkMatrix::Concat(parent.m_transform, currentLayer.Transform()))
 {
     ASSERT(isMainThread());
 }
 
-IntRect RasterContext::CalculateDirtyRectForLayer(const Layer &layer, const IntSize &viewportSize) const
+IntPoint RasterContext::CalculatePosition(const FloatPoint &position) const
+{
+    FloatPoint ret(position + m_offset);
+    if (!m_scrollOffset.isZero())
+        ret -= toFloatSize(m_scrollOffset);
+    return roundedIntPoint(ret);
+}
+
+IntRect RasterContext::CalculateVisibleRect(
+    const FloatPoint &layerPosition, const IntSize &layerBounds,
+    const IntRect &viewportRect) const
 {
     ASSERT(m_transform.isIdentity()); // BKTODO:
 
-    IntRect layerRect(roundedIntPoint(m_offset + layer.Position()), layer.Bounds());
-    layerRect.intersect(IntRect(IntPoint(), viewportSize));
-    return layerRect;
-}
-
-IntRect RasterContext::CalculateLayerRect(const Layer &layer) const
-{
-    return IntRect(roundedIntPoint(m_offset + layer.Position()), layer.Bounds());
-}
-
-SkMatrix RasterContext::CalculateTransform(const Layer &layer) const
-{
-    SkMatrix ret;
-
-    const SkMatrix offset = SkMatrix::MakeTrans(
-        -(m_offset.x() + layer.Position().x()),
-        -(m_offset.y() + layer.Position().y())
-    );
-    ret = SkMatrix::Concat(m_transform, offset);
-
-    return ret;
-}
-
-IntRect RasterContext::CalculateVisibleRect(const Layer &layer, const IntSize &viewportSize) const
-{
-    ASSERT(m_transform.isIdentity()); // BKTODO:
-    ASSERT(layer.ScrollPosition() == DoublePoint::zero()); // BKTODO:
-
-    IntRect layerRect(roundedIntPoint(m_offset + layer.Position()), layer.Bounds());
-    layerRect.intersect(IntRect(IntPoint(), viewportSize));
-    return layerRect;
+    IntRect layerRect(roundedIntPoint(layerPosition + m_offset), layerBounds);
+    if (!m_scrollOffset.isZero())
+        layerRect.contract(roundedIntSize(m_scrollOffset));
+    return intersection(layerRect, viewportRect);
 }
 
 } // namespace BlinKit

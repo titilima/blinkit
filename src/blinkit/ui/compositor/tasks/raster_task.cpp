@@ -30,10 +30,10 @@ void RasterTask::Rasterize(const Layer &layer, const IntRect &visibleRect)
     m_result.emplace_back(layer.id(), visibleRect);
 }
 
-LayerContext& RasterTask::RequireDirtyContext(const Layer &layer)
+LayerContext& RasterTask::RequireLayerContext(const Layer &layer, const IntSize &layerBounds)
 {
     ASSERT(layer.drawsContent());
-    return m_input.emplace_back(layer);
+    return m_input.emplace_back(layer, layerBounds);
 }
 
 void RasterTask::Run(Compositor &compositor)
@@ -41,7 +41,7 @@ void RasterTask::Run(Compositor &compositor)
     ASSERT(!HasNothingToDo());
 
     for (const LayerContext &context : m_input)
-        compositor.UpdateSnapshot(m_viewportSize, context);
+        compositor.UpdateSnapshot(context, m_viewportSize);
 
     ASSERT(m_paintTask);
     m_paintTask->PerformComposition(compositor, m_result, m_dirtyRect);

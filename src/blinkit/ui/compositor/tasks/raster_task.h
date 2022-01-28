@@ -34,15 +34,23 @@ public:
     RasterTask(const IntSize &viewportSize);
     ~RasterTask(void) override;
 
-    const IntSize& ViewportSize(void) const { return m_viewportSize; }
+    IntRect GetViewportRect(void) const { return IntRect(IntPoint(), m_viewportSize); }
 
     bool HasNothingToDo(void) const { return m_input.empty(); }
     const RasterResult& Result(void) const { return m_result; }
 
-    LayerContext& RequireDirtyContext(const Layer &layer);
+    LayerContext& RequireLayerContext(const Layer &layer, const IntSize &layerBounds);
     void Rasterize(const Layer &layer, const IntRect &visibleRect);
     void UpdateDirtyRect(const IntRect &dirtyRect) {
         m_dirtyRect.unite(dirtyRect);
+    }
+
+    bool NeedsRebuild(void) const { return m_needsRebuild; }
+    bool SetNeedsRebuild(bool needsRebuild)
+    {
+        bool ret = m_needsRebuild;
+        m_needsRebuild = needsRebuild;
+        return ret;
     }
 
     void SavePaintTask(std::unique_ptr<PaintUITask> &paintTask);
@@ -53,6 +61,8 @@ private:
     RasterInput m_input;
     RasterResult m_result;
     IntRect m_dirtyRect;
+
+    bool m_needsRebuild = false;
 
     std::shared_ptr<WebTaskRunner> m_taskRunner;
     std::unique_ptr<PaintUITask> m_paintTask;

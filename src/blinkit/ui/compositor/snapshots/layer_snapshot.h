@@ -13,7 +13,7 @@
 #ifndef BLINKIT_LAYER_SNAPSHOT_H
 #define BLINKIT_LAYER_SNAPSHOT_H
 
-#include "blinkit/blink/renderer/platform/geometry/IntRect.h"
+#include "blinkit/ui/compositor/raster/raster_input.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 
@@ -35,7 +35,7 @@ public:
     virtual bool TryToReuse(Type assumedType, const IntSize &layerBounds, const IntSize &viewportSize) = 0;
 
     using UpdateCallback = std::function<void(SkCanvas &)>;
-    virtual void Update(const IntPoint &position, const IntRect &dirtyRect, const UpdateCallback &callback) = 0;
+    virtual void Update(const IntSize &viewportSize, const LayerContext &context, const UpdateCallback &callback) = 0;
 
     virtual void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect) = 0;
 protected:
