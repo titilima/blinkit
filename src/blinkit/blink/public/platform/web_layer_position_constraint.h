@@ -67,8 +67,35 @@ struct WebLayerPositionConstraint {
             && isFixedToRightEdge == o.isFixedToRightEdge
             && isFixedToBottomEdge == o.isFixedToBottomEdge;
     }
+
+#ifndef NDEBUG
+    bool IsDefault(void) const { return !(isFixedPosition || isFixedToRightEdge || isFixedToBottomEdge); }
+#endif
 };
 
 } // namespace blink
+
+#ifndef NDEBUG
+namespace zed {
+template <>
+inline void log_serializer::push<blink::WebLayerPositionConstraint>(
+    std::vector<std::string> &dst,
+    const blink::WebLayerPositionConstraint &positionConstraint)
+{
+    std::string s(1, '[');
+    if (positionConstraint.isFixedPosition)
+        s.append(" FixedPosition,");
+    if (positionConstraint.isFixedToRightEdge)
+        s.append(" FixedToRightEdge,");
+    if (positionConstraint.isFixedToBottomEdge)
+        s.append(" FixedToBottomEdge,");
+    if (s.length() > 1)
+        s.back() = ' ';
+    s.push_back(']');
+
+    dst.emplace_back(s);
+}
+}
+#endif
 
 #endif // WebLayerPositionConstraint_h

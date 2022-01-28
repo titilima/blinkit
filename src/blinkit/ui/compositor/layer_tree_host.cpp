@@ -254,6 +254,7 @@ void LayerTreeHost::Update(std::unique_ptr<PaintUITask> &paintTask)
 {
     if (nullptr == m_rootLayer || m_deferCommits || m_deviceViewportSize.isEmpty())
         return;
+    // m_rootLayer->DebugPrint();
 
     std::unique_ptr<RasterTask> task = std::make_unique<RasterTask>(m_deviceViewportSize);
     m_rootLayer->Update(RasterContext(), *task);
