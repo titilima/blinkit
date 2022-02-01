@@ -17,7 +17,7 @@
 #endif
 
 #ifndef NDEBUG
-static bool g_debugInfoEnabled = true;
+static bool g_debugInfoEnabled = false;
 #endif
 
 namespace BlinKit {
