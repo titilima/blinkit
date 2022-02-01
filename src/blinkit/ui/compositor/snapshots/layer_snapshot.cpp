@@ -45,7 +45,7 @@ LayerSnapshot* LayerSnapshot::Create(Type type, const IntSize &layerBounds, cons
         case Type::VerticalScrolling:
         {
             VerticalScrollingSnapshot *ret = new VerticalScrollingSnapshot;
-            ret->ResetTiles(layerBounds, viewportSize);
+            ret->Initialize(layerBounds, viewportSize);
             return ret;
         }
         case Type::HorizontalScrolling:

@@ -13,7 +13,6 @@
 #ifndef BLINKIT_SINGLE_AXIS_SCROLLING_SNAPSHOT_H
 #define BLINKIT_SINGLE_AXIS_SCROLLING_SNAPSHOT_H
 
-#include <tuple>
 #include "blinkit/ui/compositor/snapshots/layer_snapshot.h"
 
 namespace BlinKit {
@@ -25,9 +24,17 @@ class SingleAxisScrollingSnapshot : public LayerSnapshot
 public:
     ~SingleAxisScrollingSnapshot(void) override;
 
-    void UpdateTiles(const IntSize &layerBounds, const IntSize &viewportSize);
+    void Initialize(const IntSize &layerBounds, const IntSize &viewportSize);
 protected:
     SingleAxisScrollingSnapshot(void);
+
+    int LayerWidth(void) const { return m_layerBounds.width(); }
+    int LayerHeight(void) const { return m_layerBounds.height(); }
+    void ReuseTiles(int visibleSize, int scrollingSize, const IntSize &tileOffset);
+
+    static int CalculateTileCount(int visibleSize, int scrollingSize);
+    static int CalculateTileStartPosition(int layerStartPosition);
+    static int CalculateTileStartOffset(int layerStartPosition);
 
     struct Metrics {
         IntSize tileSize, offset;
@@ -35,18 +42,23 @@ protected:
         int scrollingSize;
     };
     virtual Metrics GetMetrics(const IntSize &layerBounds, const IntSize &viewportSize) const = 0;
-private:
-    struct DirtyEntry {
-        Tile *tile;
-        IntRect dirtyRect; // of tile
-    };
-    std::vector<DirtyEntry> Translate(const IntRect &dirtyRect) const;
 
-    void Update(const IntPoint &position, const IntRect &dirtyRect, const UpdateCallback &callback) final;
+    struct TileInfo {
+        IntRect rect;   // of viewport
+        IntSize offset; // of owner
+    };
+    virtual std::vector<TileInfo> CalculateVisibleTiles(const IntPoint &layerPosition, const IntSize &viewportSize) const = 0;
+private:
+    void LayoutTiles(const IntPoint &layerPosition, const IntSize &viewportSize);
+
+    void Update(const IntSize &viewportSize, const LayerContext &context, const UpdateCallback &callback) final;
     void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect) final;
 
-    int m_scrollPosition = 0;
+    IntSize m_layerBounds;
     std::vector<std::unique_ptr<Tile>> m_tiles;
+
+    class TileFinder;
+    class Updater;
 };
 
 } // namespace BlinKit

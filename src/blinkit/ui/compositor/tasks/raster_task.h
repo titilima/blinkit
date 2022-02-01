@@ -60,7 +60,7 @@ private:
     const IntSize m_viewportSize;
     RasterInput m_input;
     RasterResult m_result;
-    IntRect m_dirtyRect;
+    IntRect m_dirtyRect; // of viewport
 
     bool m_needsRebuild = false;
 

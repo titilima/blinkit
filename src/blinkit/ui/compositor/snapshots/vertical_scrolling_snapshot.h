@@ -24,6 +24,7 @@ public:
 private:
     bool TryToReuse(Type assumedType, const IntSize &layerBounds, const IntSize &viewportSize) override;
     Metrics GetMetrics(const IntSize &layerBounds, const IntSize &viewportSize) const override;
+    std::vector<TileInfo> CalculateVisibleTiles(const IntPoint &layerPosition, const IntSize &viewportSize) const override;
 };
 
 } // namespace BlinKit

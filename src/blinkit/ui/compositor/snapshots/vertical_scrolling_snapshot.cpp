@@ -15,6 +15,29 @@
 
 namespace BlinKit {
 
+std::vector<SingleAxisScrollingSnapshot::TileInfo> VerticalScrollingSnapshot::CalculateVisibleTiles(
+    const IntPoint &layerPosition,
+    const IntSize &viewportSize) const
+{
+    int tileCount = CalculateTileCount(viewportSize.height(), LayerHeight());
+
+    std::vector<TileInfo> ret;
+    ret.reserve(tileCount);
+
+    TileInfo tile;
+    tile.rect.setSize(IntSize(LayerWidth(), Tile::Size));
+    tile.rect.setY(CalculateTileStartPosition(layerPosition.y()));
+    tile.offset.setHeight(CalculateTileStartOffset(layerPosition.y()));
+    for (int i = 0; i < tileCount; ++i)
+    {
+        ret.emplace_back(tile);
+        tile.rect.move(0, Tile::Size);
+        tile.offset.expand(0, Tile::Size);
+    }
+
+    return ret;
+}
+
 SingleAxisScrollingSnapshot::Metrics VerticalScrollingSnapshot::GetMetrics(
     const IntSize &layerBounds, const IntSize &viewportSize) const
 {
@@ -31,7 +54,7 @@ bool VerticalScrollingSnapshot::TryToReuse(Type assumedType, const IntSize &laye
     if (Type::VerticalScrolling != assumedType)
         return false;
 
-    UpdateTiles(layerBounds, viewportSize);
+    ReuseTiles(viewportSize.height(), layerBounds.height(), IntSize(0, Tile::Size));
     return true;
 }
 

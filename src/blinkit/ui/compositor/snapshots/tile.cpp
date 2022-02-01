@@ -72,12 +72,12 @@ void Tile::Update(const IntRect &dirtyRect, const std::function<void(SkCanvas &)
 
     if (!m_offset.isZero())
     {
-        ASSERT(m_painted); // SHOULD BE performing single-tiled partial invalidation!
-
         SkMatrix transform = SkMatrix::MakeTrans(-m_offset.width(), -m_offset.height());
         canvas.setMatrix(transform);
-
-        canvas.clipRect(dirtyRect, SkRegion::kIntersect_Op, true);
+        if (m_painted)
+            canvas.clipRect(dirtyRect, SkRegion::kIntersect_Op, true);
+        else
+            m_painted = true;
     }
     else if (m_painted)
     {

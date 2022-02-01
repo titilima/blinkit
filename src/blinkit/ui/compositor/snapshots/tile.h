@@ -33,6 +33,8 @@ public:
     void Update(const SkBitmap &bitmap, const IntPoint &from, const IntPoint &to, const IntSize &size);
     void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect);
 
+    bool Painted(void) const { return m_painted; }
+
     const IntRect& Rect(void) const { return m_rect; }
     void UpdatePosition(const IntPoint &position) {
         m_rect.setLocation(position);
