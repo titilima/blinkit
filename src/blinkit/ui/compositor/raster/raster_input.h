@@ -24,8 +24,8 @@ struct LayerContext {
     const IntSize bounds;
     std::unique_ptr<DisplayItemList> displayItems;
 
-    IntPoint position; // of viewport
-    IntRect dirtyRect; // of viewport
+    IntPoint positionOfViewport;
+    IntRect dirtyRectOfLayer;
 
     LayerContext(const Layer &layer, const IntSize &layerBounds);
 };

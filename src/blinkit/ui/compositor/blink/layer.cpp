@@ -740,18 +740,18 @@ void Layer::UpdateContent(const RasterContext &context, RasterTask &session)
     if (m_dirty || session.NeedsRebuild())
     {
         LayerContext &layerContext = session.RequireLayerContext(*this, m_bounds);
-        layerContext.position = context.CalculatePosition(m_position);
+        layerContext.positionOfViewport = context.CalculatePosition(m_position);
         if (m_dirty)
         {
             if (m_fullyInvalidation)
             {
-                layerContext.dirtyRect.setSize(m_bounds);
+                layerContext.dirtyRectOfLayer.setSize(m_bounds);
                 session.UpdateDirtyRect(visibleRect);
             }
             else
             {
-                layerContext.dirtyRect = m_dirtyRect;
-                m_dirtyRect.moveBy(layerContext.position);
+                layerContext.dirtyRectOfLayer = m_dirtyRect;
+                m_dirtyRect.moveBy(layerContext.positionOfViewport);
                 session.UpdateDirtyRect(m_dirtyRect);
             }
 

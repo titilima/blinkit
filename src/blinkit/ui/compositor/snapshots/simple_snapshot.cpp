@@ -43,10 +43,10 @@ bool SimpleSnapshot::TryToReuse(Type assumedType, const IntSize &layerBounds, co
 
 void SimpleSnapshot::Update(const IntSize &viewportSize, const LayerContext &context, const UpdateCallback &callback)
 {
-    m_tile.UpdatePosition(context.position);
+    m_tile.UpdatePosition(context.positionOfViewport);
 
-    IntRect dirtyRect(context.dirtyRect);
-    dirtyRect.moveBy(context.position);
+    IntRect dirtyRect(context.dirtyRectOfLayer);
+    dirtyRect.moveBy(context.positionOfViewport);
     m_tile.Update(dirtyRect, callback);
 }
 
