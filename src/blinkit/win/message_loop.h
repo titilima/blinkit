@@ -9,15 +9,17 @@
 // Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_MESSAGE_LOOP_H
-#define BLINKIT_BLINKIT_MESSAGE_LOOP_H
+#ifndef BLINKIT_MESSAGE_LOOP_H
+#define BLINKIT_MESSAGE_LOOP_H
 
 #pragma once
 
 #include <list>
+#include <queue>
 #include <unordered_set>
 #include "bk_app.h"
 #include "blinkit/blink/public/platform/WebTaskRunner.h"
+#include "third_party/zed/include/zed/mutex.hpp"
 
 namespace BlinKit {
 
@@ -29,11 +31,14 @@ public:
 
     int Run(BkMessageFilter filter, void *userData);
 
-    std::shared_ptr<blink::WebTaskRunner> GetTaskRunner(void) const;
-    bool PostTask(const blink::WebTraceLocation &loc, std::function<void()> &&task);
+    std::shared_ptr<WebTaskRunner> GetTaskRunner(void) const;
+    void AddTask(WebTaskRunner::Task *task);
 private:
     struct TimerData;
     struct TimerTaskData;
+
+    using TaskQueue = std::queue<std::unique_ptr<WebTaskRunner::Task>>;
+    TaskQueue TakeTasks(void);
 
     void InstallTimer(TimerData *timerData);
     void SetTimer(const LARGE_INTEGER &dueTime, std::function<void()> &&task);
@@ -49,8 +54,9 @@ private:
     void Cleanup(const LARGE_INTEGER &tick);
     static void APIENTRY CleanupCallback(PVOID arg, DWORD low, DWORD high);
 
-    const DWORD m_threadId;
-    HANDLE m_hEvent[1]; // Just a placeholder for waiting.
+    zed::mutex m_taskLock;
+    HANDLE m_taskEvent;
+    TaskQueue m_tasks;
 
     std::unordered_set<HANDLE> m_activeTimers;
     std::list<std::pair<HANDLE, LARGE_INTEGER>> m_alternateTimers; // FILO for reusage.
@@ -67,4 +73,4 @@ private:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BLINKIT_MESSAGE_LOOP_H
+#endif // BLINKIT_MESSAGE_LOOP_H

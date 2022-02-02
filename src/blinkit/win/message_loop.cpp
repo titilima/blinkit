@@ -12,7 +12,6 @@
 #include "./message_loop.h"
 
 #include <optional>
-#include "blinkit/win/message_task.h"
 #include "chromium/base/time/time.h"
 #include "third_party/zed/include/zed/container_utilites.hpp"
 #include "third_party/zed/include/zed/float.hpp"
@@ -66,7 +65,7 @@ private:
 class MessageLoop::TaskRunnerImpl final : public WebTaskRunner
 {
 public:
-    TaskRunnerImpl(MessageLoop &loop) : m_loop(loop) {}
+    TaskRunnerImpl(MessageLoop &loop) : m_loop(loop), m_threadId(::GetCurrentThreadId()){}
 private:
     static void RunTask(Task *task)
     {
@@ -74,15 +73,15 @@ private:
         delete task;
     }
     // TaskRunner overrides
-    void postTask(const WebTraceLocation &loc, Task *task) override
+    void postTask(const WebTraceLocation &, Task *task) override
     {
-        m_loop.PostTask(loc, std::bind(&TaskRunnerImpl::RunTask, task));
+        m_loop.AddTask(task);
     }
     void postDelayedTask(const WebTraceLocation &loc, Task *task, double delayMs) override
     {
         if (zed::almost_equals(delayMs, 0.0))
         {
-            m_loop.PostTask(loc, std::bind(&TaskRunnerImpl::RunTask, task));
+            m_loop.AddTask(task);
             return;
         }
 
@@ -90,31 +89,34 @@ private:
         desiredTick += base::TimeDelta::FromMillisecondsD(delayMs);
 
         TimerData *timerData = new TimerData(std::bind(&TaskRunnerImpl::RunTask, task), desiredTick);
-        if (GetCurrentThreadId() == m_loop.m_threadId)
+        if (GetCurrentThreadId() == m_threadId)
         {
             m_loop.InstallTimer(timerData);
             return;
         }
         else
         {
+            ASSERT(false); // BKTODO:
+#if 0
             auto timerTask = std::bind(&MessageLoop::InstallTimer, &m_loop, timerData);
             if (m_loop.PostTask(loc, std::move(timerTask)))
                 return;
+#endif
         }
 
         delete timerData;
     }
 
     MessageLoop &m_loop;
+    const DWORD m_threadId;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 MessageLoop::MessageLoop(void)
-    : m_threadId(::GetCurrentThreadId())
+    : m_taskEvent(::CreateEvent(nullptr, FALSE, FALSE, nullptr))
     , m_hSchedulerTimer(CreateWaitableTimer(nullptr, FALSE, nullptr))
 {
-    m_hEvent[0] = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 }
 
 MessageLoop::~MessageLoop(void)
@@ -132,7 +134,13 @@ MessageLoop::~MessageLoop(void)
         CancelWaitableTimer(m_hSchedulerTimer);
     CloseHandle(m_hSchedulerTimer);
 
-    CloseHandle(m_hEvent[0]);
+    CloseHandle(m_taskEvent);
+}
+
+void MessageLoop::AddTask(WebTaskRunner::Task *task)
+{
+    auto _ = m_taskLock.guard();
+    m_tasks.emplace(task);
 }
 
 void MessageLoop::Cleanup(const LARGE_INTEGER &tick)
@@ -201,11 +209,6 @@ void MessageLoop::OnTimerFired(HANDLE hTimer, const LARGE_INTEGER &tick)
     m_alternateTimers.emplace_front(hTimer, tick);
 }
 
-bool MessageLoop::PostTask(const WebTraceLocation &, std::function<void()> &&task)
-{
-    return MessageTask::Post(m_threadId, std::move(task));
-}
-
 HANDLE MessageLoop::RequireTimer(void)
 {
     HANDLE hTimer;
@@ -240,7 +243,7 @@ int MessageLoop::Run(BkMessageFilter filter, void *userData)
     std::optional<int> ret;
     while (!ret.has_value())
     {
-        DWORD dwWait = MsgWaitForMultipleObjectsEx(1, m_hEvent, INFINITE, QS_ALLINPUT,
+        DWORD dwWait = MsgWaitForMultipleObjectsEx(1, &m_taskEvent, INFINITE, QS_ALLINPUT,
             MWMO_ALERTABLE | MWMO_INPUTAVAILABLE);
 #ifndef NDEBUG
         if (WAIT_FAILED == dwWait)
@@ -249,6 +252,13 @@ int MessageLoop::Run(BkMessageFilter filter, void *userData)
             ASSERT(WAIT_FAILED != dwWait);
         }
 #endif
+
+        TaskQueue tasks = TakeTasks();
+        while (!tasks.empty())
+        {
+            tasks.front()->run();
+            tasks.pop();
+        }
 
         MSG msg;
         while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -259,8 +269,6 @@ int MessageLoop::Run(BkMessageFilter filter, void *userData)
                 break;
             }
 
-            if (MessageTask::Process(msg.message, msg.wParam, msg.lParam))
-                continue;
             if (filter(&msg, userData))
                 continue;
 
@@ -317,6 +325,14 @@ void MessageLoop::SetTimer(const LARGE_INTEGER &dueTime, std::function<void()> &
 
     TimerTaskData *taskData = new TimerTaskData(*this, hTimer, std::move(task));
     SetWaitableTimer(hTimer, &dueTime, 0, TimerCallback, taskData, FALSE);
+}
+
+MessageLoop::TaskQueue MessageLoop::TakeTasks(void)
+{
+    TaskQueue ret;
+    auto _ = m_taskLock.guard();
+    ret.swap(m_tasks);
+    return ret;
 }
 
 void APIENTRY MessageLoop::TimerCallback(PVOID arg, DWORD low, DWORD high)
