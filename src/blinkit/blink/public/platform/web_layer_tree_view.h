@@ -75,7 +75,9 @@ public:
 
     virtual void setViewportSize(const IntSize& deviceViewportSize) { }
 
+#if 0 // BKTODO:
     virtual void setDeviceScaleFactor(float) { }
+#endif
 
     // Sets the background color for the viewport.
     virtual void setBackgroundColor(WebColor) { }
