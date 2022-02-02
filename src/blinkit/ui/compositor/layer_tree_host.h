@@ -47,7 +47,6 @@ public:
 #endif
 
     void setViewportSize(const IntSize &deviceViewportSize) override;
-    void setDeviceScaleFactor(float scaleFactor) override;
 private:
     void SetPropertyTreesNeedRebuild(void);
     void SetRootLayerImpl(Layer *layer);
@@ -74,7 +73,7 @@ private:
     Layer *m_rootLayer = nullptr;
     std::unordered_set<Layer *> m_layers;
 
-    bool m_deferCommits = true;
+    bool m_deferCommits = true, m_needsCommit = false;
     bool m_visible = false;
     bool m_topControlsShrinkBlinkSize = false;
 #ifndef NDEBUG
@@ -83,7 +82,6 @@ private:
     SkColor m_backgroundColor = SK_ColorWHITE;
 
     IntSize m_deviceViewportSize;
-    float m_deviceScaleFactor = 1.f;
 
     float m_topControlsShownRatio = 0.f;
     float m_topControlsHeight = 0.f;

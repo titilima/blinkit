@@ -15,6 +15,7 @@
 #include "blinkit/ui/compositor/blink/layer.h"
 #include "blinkit/ui/compositor/compositor.h"
 #include "blinkit/ui/compositor/raster/raster_context.h"
+#include "blinkit/ui/compositor/tasks/paint_ui_task.h"
 #include "blinkit/ui/compositor/tasks/raster_task.h"
 #include "third_party/zed/include/zed/container_utilites.hpp"
 
@@ -90,22 +91,13 @@ void LayerTreeHost::registerViewportLayers(
 #endif
 }
 
-void LayerTreeHost::setDeviceScaleFactor(float scaleFactor)
-{
-    if (zed::almost_equals(m_deviceScaleFactor, scaleFactor))
-        return;
-    m_deviceScaleFactor = scaleFactor;
-
-    // BKTODO: property_trees_.needs_rebuild = true;
-    SetNeedsCommit();
-}
-
 void LayerTreeHost::SetNeedsCommit(void)
 {
 #if 0 // BKTODO:
     proxy_->SetNeedsCommit();
     NotifySwapPromiseMonitorsOfSetNeedsCommit();
 #endif
+    m_needsCommit = true;
 }
 
 void LayerTreeHost::SetNeedsFullTreeSync(void)
@@ -129,6 +121,7 @@ void LayerTreeHost::SetNeedsUpdateLayers(void)
 
 void LayerTreeHost::setPageScaleFactorAndLimits(float pageScaleFactor, float minimum, float maximum)
 {
+    // BKTODO: Maybe useless.
     if (zed::almost_equals(m_pageScaleFactor, pageScaleFactor)
         && zed::almost_equals(m_minPageScaleFactor, minimum)
         && zed::almost_equals(m_maxPageScaleFactor, maximum))
@@ -258,9 +251,12 @@ void LayerTreeHost::Update(std::unique_ptr<PaintUITask> &paintTask)
 
     std::unique_ptr<RasterTask> task = std::make_unique<RasterTask>(m_deviceViewportSize);
     m_rootLayer->Update(RasterContext(), *task);
-    if (task->HasNothingToDo())
-        return;
 
+    if (!m_needsCommit)
+        return;
+    m_needsCommit = false;
+
+    paintTask->SetViewportSize(m_deviceViewportSize);
     task->SavePaintTask(paintTask);
     PostTaskToCompositor(task.release());
 }
