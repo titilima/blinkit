@@ -15,12 +15,17 @@
 
 namespace BlinKit {
 
-static std::unordered_map<WebViewHost *, unsigned> g_sessions;
+struct SessionData {
+    unsigned level = 0;
+    bool fullPaint = false;
+};
+
+static std::unordered_map<WebViewHost *, SessionData> g_sessions;
 
 ScopedAnimationSession::ScopedAnimationSession(WebViewHost &host) : m_host(&host)
 {
-    unsigned &level = g_sessions[m_host];
-    if (1 == ++level)
+    SessionData &data = g_sessions[m_host];
+    if (1 == ++data.level)
         m_host->EnterAnimationSession();
 }
 
@@ -29,12 +34,20 @@ ScopedAnimationSession::~ScopedAnimationSession(void)
     auto it = g_sessions.find(m_host);
     ASSERT(g_sessions.end() != it);
 
-    unsigned &level = it->second;
-    if (0 == --level)
+    SessionData &data = it->second;
+    if (0 == --data.level)
     {
+        bool fullPaint = data.fullPaint;
         g_sessions.erase(it);
-        m_host->LeaveAnimationSession();
+        m_host->LeaveAnimationSession(fullPaint);
     }
+}
+
+void ScopedAnimationSession::SetFullPaint(void)
+{
+    auto it = g_sessions.find(m_host);
+    ASSERT(g_sessions.end() != it);
+    it->second.fullPaint = true;
 }
 
 }

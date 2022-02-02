@@ -41,7 +41,7 @@ public:
     WebLayerTreeView* GetLayerTreeView(void) const;
 
     void EnterAnimationSession(void);
-    void LeaveAnimationSession(void);
+    void LeaveAnimationSession(bool fullPaint);
 
     virtual void Invalidate(const IntRect &rect) = 0;
     virtual void ScheduleAnimation(void) = 0;

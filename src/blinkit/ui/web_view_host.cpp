@@ -42,14 +42,18 @@ WebLayerTreeView* WebViewHost::GetLayerTreeView(void) const
 void WebViewHost::InitializeView(float scaleFactor)
 {
     m_view->Initialize(this, scaleFactor);
-    m_layerTreeHost->setDeviceScaleFactor(scaleFactor);
+    m_layerTreeHost->SetNeedsCommit();
 }
 
-void WebViewHost::LeaveAnimationSession(void)
+void WebViewHost::LeaveAnimationSession(bool fullPaint)
 {
     m_view->UpdateLifecycle();
 
     std::unique_ptr<PaintUITask> paintTask = PreparePaintTask();
+    paintTask->SetBackgroundColor(m_view->BaseBackgroundColor());
+    if (fullPaint)
+        paintTask->SetFullPaint();
+
     m_layerTreeHost->Update(paintTask);
 }
 
@@ -62,7 +66,7 @@ void WebViewHost::Resize(const IntSize &size)
 void WebViewHost::SetScaleFactor(float scaleFactor)
 {
     m_view->SetScaleFactor(scaleFactor);
-    m_layerTreeHost->setDeviceScaleFactor(scaleFactor);
+    m_layerTreeHost->SetNeedsCommit();
 }
 
 } // namespace BlinKit

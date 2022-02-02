@@ -22,6 +22,8 @@ class ScopedAnimationSession
 public:
     ScopedAnimationSession(WebViewHost &host);
     ~ScopedAnimationSession(void);
+
+    void SetFullPaint(void);
 private:
     WebViewHost *m_host;
 };
