@@ -1454,7 +1454,6 @@
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\icu_stub.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\message_loop.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\win\message_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\mouse_session.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\paint_window_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\time_ticker.cpp" />
@@ -3060,7 +3059,6 @@
     <ClInclude Include="..\..\..\src\blinkit\win\bk_bitmap.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\context_menu_controller.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\message_loop.h" />
-    <ClInclude Include="..\..\..\src\blinkit\win\message_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\mouse_session.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\paint_window_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\time_ticker.h" />

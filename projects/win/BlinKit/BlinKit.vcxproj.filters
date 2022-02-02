@@ -411,9 +411,6 @@
     <ClCompile Include="..\..\..\src\blinkit\win\message_loop.cpp">
       <Filter>win</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\win\message_task.cpp">
-      <Filter>win</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\win\time_ticker.cpp">
       <Filter>win</Filter>
     </ClCompile>
@@ -4326,9 +4323,6 @@
       <Filter>win</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\message_loop.h">
-      <Filter>win</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\win\message_task.h">
       <Filter>win</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\time_ticker.h">
