@@ -38,8 +38,6 @@ LayerContext& RasterTask::RequireLayerContext(const Layer &layer, const IntSize 
 
 void RasterTask::Run(Compositor &compositor)
 {
-    ASSERT(!HasNothingToDo());
-
     for (const LayerContext &context : m_input)
         compositor.UpdateSnapshot(context, m_viewportSize);
 

@@ -36,7 +36,6 @@ public:
 
     IntRect GetViewportRect(void) const { return IntRect(IntPoint(), m_viewportSize); }
 
-    bool HasNothingToDo(void) const { return m_input.empty(); }
     const RasterResult& Result(void) const { return m_result; }
 
     LayerContext& RequireLayerContext(const Layer &layer, const IntSize &layerBounds);
