@@ -117,6 +117,7 @@ void LayerTreeHost::SetNeedsUpdateLayers(void)
     proxy_->SetNeedsUpdateLayers();
     NotifySwapPromiseMonitorsOfSetNeedsCommit();
 #endif
+    SetNeedsCommit();
 }
 
 void LayerTreeHost::setPageScaleFactorAndLimits(float pageScaleFactor, float minimum, float maximum)
