@@ -19,7 +19,6 @@
 #include "blinkit/ui/web_view_impl.h"
 #include "blinkit/win/bk_bitmap.h"
 #include "blinkit/win/context_menu_controller.h"
-#include "blinkit/win/message_task.h"
 #include "blinkit/win/paint_window_task.h"
 
 using namespace blink;
@@ -27,6 +26,9 @@ using namespace blink;
 namespace BlinKit {
 
 static std::unordered_map<HWND, WebViewHostWindow *> g_hosts;
+
+constexpr int INITIAL_CANVAS_WIDTH  = 16;
+constexpr int INITIAL_CANVAS_HEIGHT = 16;
 
 #ifndef NDEBUG
 class MessageLogger
@@ -63,7 +65,7 @@ WebViewHostWindow::WebViewHostWindow(const BkWebViewClient &client, HWND hWnd, L
     HDC dc = GetDC(m_hWnd);
     UINT dpi = GetDeviceCaps(dc, LOGPIXELSY);
     ASSERT(0 != dpi && GetDeviceCaps(dc, LOGPIXELSX) == dpi);
-    m_memoryDC = CreateCompatibleDC(dc);
+    InitializeCanvas(dc);
     ReleaseDC(m_hWnd, dc);
 
     m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_ARROW);
@@ -163,23 +165,13 @@ void WebViewHostWindow::DidChangeCursor(const WebCursorInfo &cursorInfo)
     ::SetCursor(m_cursorInfo.externalHandle);
 }
 
-void WebViewHostWindow::EnsureCanvas(const IntSize &hostSize)
+void WebViewHostWindow::InitializeCanvas(HDC hdc)
 {
-    ASSERT(!hostSize.isEmpty());
-
-    if (m_canvas)
-    {
-        SkImageInfo imageInfo = m_canvas->imageInfo();
-        if (hostSize.width() <= imageInfo.width() && hostSize.height() <= imageInfo.height())
-            return;
-    }
+    m_memoryDC = CreateCompatibleDC(hdc);
 
     BkBitmap bitmap;
-
-    HBITMAP hBitmap = bitmap.InstallDIBSection(hostSize.width(), hostSize.height(), m_memoryDC);
-    HBITMAP oldBitmap = SelectBitmap(m_memoryDC, hBitmap);
-    if (nullptr == m_oldBitmap)
-        m_oldBitmap = oldBitmap;
+    HBITMAP hBitmap = bitmap.InstallDIBSection(INITIAL_CANVAS_WIDTH, INITIAL_CANVAS_HEIGHT, m_memoryDC);
+    m_oldBitmap = SelectBitmap(m_memoryDC, hBitmap);
 
     m_canvas = std::make_unique<SkCanvas>(bitmap);
     m_canvas->drawColor(GetView()->BaseBackgroundColor());
@@ -306,17 +298,13 @@ void WebViewHostWindow::OnShowWindow(HWND, BOOL fShow, UINT)
 
 void WebViewHostWindow::OnSize(HWND, UINT state, int cx, int cy)
 {
-    if (SIZE_MINIMIZED == state)
-        return;
-
-    const IntSize hostSize(cx, cy);
-    EnsureCanvas(hostSize);
-    Resize(hostSize);
+    if (SIZE_MINIMIZED != state)
+        Resize(IntSize(cx, cy));
 }
 
 std::unique_ptr<PaintUITask> WebViewHostWindow::PreparePaintTask(void)
 {
-    return std::make_unique<PaintWindowTask>(m_hWnd, m_memoryDC, m_canvasLock, m_canvas.get());
+    return std::make_unique<PaintWindowTask>(m_hWnd, m_memoryDC, m_canvasLock, m_canvas);
 }
 
 bool WebViewHostWindow::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
@@ -346,7 +334,7 @@ bool WebViewHostWindow::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam,
 
 bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
 {
-    ScopedAnimationSession _(*this);
+    ScopedAnimationSession animationSession(*this);
     switch (Msg)
     {
         case WM_ERASEBKGND:
@@ -392,6 +380,7 @@ bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wPa
 
         case WM_SIZE:
             HANDLE_WM_SIZE(hWnd, wParam, lParam, OnSize);
+            animationSession.SetFullPaint();
             break;
 
         case WM_SETFOCUS:
@@ -418,8 +407,7 @@ bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wPa
             break;
 
         default:
-            if (!MessageTask::Process(Msg, wParam, lParam))
-                return false;
+            return false;
     }
 
     return true;

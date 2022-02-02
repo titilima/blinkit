@@ -37,7 +37,11 @@ bool SimpleSnapshot::TryToReuse(Type assumedType, const IntSize &layerBounds, co
     }
 
     if (!sizeIsFit)
-        ASSERT(false); // BKTODO: Resize(m_bitmap, m_layerBounds);
+    {
+        IntRect rect = m_tile.Rect();
+        rect.setSize(layerBounds);
+        m_tile.Reset(rect);
+    }
     return true;
 }
 
@@ -47,6 +51,10 @@ void SimpleSnapshot::Update(const IntSize &viewportSize, const LayerContext &con
 
     IntRect dirtyRect(context.dirtyRectOfLayer);
     dirtyRect.moveBy(context.positionOfViewport);
+    dirtyRect.intersect(m_tile.Rect());
+    if (dirtyRect.isEmpty())
+        return;
+
     m_tile.Update(dirtyRect, callback);
 }
 

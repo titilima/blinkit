@@ -16,6 +16,7 @@
 #include "blinkit/blink/public/platform/WebTaskRunner.h"
 #include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 #include "blinkit/ui/compositor/raster/raster_result.h"
+#include "third_party/skia/include/core/SkColor.h"
 
 class SkCanvas;
 
@@ -30,14 +31,30 @@ class Compositor;
 class PaintUITask : public WebTaskRunner::Task
 {
 public:
+    void SetBackgroundColor(SkColor color) {
+        m_backgroundColor = color;
+    }
+    void SetViewportSize(const IntSize &size) {
+        m_viewportSize = size;
+    }
+    void SetFullPaint(void) {
+        m_fullPaint = true;
+    }
+
     void PerformComposition(Compositor &compositor, const RasterResult &rasterResult, const IntRect &dirtyRect);
 protected:
-    PaintUITask(zed::mutex &lock, SkCanvas *canvas);
+    PaintUITask(zed::mutex &lock, std::unique_ptr<SkCanvas> &canvas);
 
-    void PerformPaint(const std::function<void(IntRect &)> &callback);
+    void PerformPaint(const std::function<void(const IntRect &)> &callback);
 private:
+    void EnsureCanvas(void);
+    virtual std::unique_ptr<SkCanvas> CreateCanvas(const IntSize &size) = 0;
+
     zed::mutex &m_lock;
-    SkCanvas *m_canvas;
+    std::unique_ptr<SkCanvas> &m_canvas;
+    SkColor m_backgroundColor = SK_ColorWHITE;
+    IntSize m_viewportSize;
+    bool m_fullPaint = false;
     IntRect m_dirtyRect;
 };
 

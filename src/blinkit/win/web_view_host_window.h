@@ -40,7 +40,7 @@ public:
     static bool ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private:
-    void EnsureCanvas(const IntSize &hostSize);
+    void InitializeCanvas(HDC hdc);
     static float ScaleFactorFromDPI(UINT dpi);
 
     bool ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);

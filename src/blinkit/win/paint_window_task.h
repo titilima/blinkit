@@ -20,9 +20,10 @@ namespace BlinKit {
 class PaintWindowTask final : public PaintUITask
 {
 public:
-    PaintWindowTask(HWND hWnd, HDC hMemoryDC, zed::mutex &lock, SkCanvas *canvas);
+    PaintWindowTask(HWND hWnd, HDC hMemoryDC, zed::mutex &lock, std::unique_ptr<SkCanvas> &canvas);
 private:
     void run(void) override;
+    std::unique_ptr<SkCanvas> CreateCanvas(const IntSize &size) override;
 
     HWND m_hWnd;
     HDC m_hMemoryDC;
