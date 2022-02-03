@@ -21,8 +21,8 @@ using namespace blink;
 namespace BlinKit {
 
 struct MessageLoop::TimerData {
-    TimerData(std::function<void()> &&t, const base::TimeTicks &desiredFireTick)
-        : task(std::move(t)), m_fireTick(desiredFireTick)
+    TimerData(WebTaskRunner::Task *t, const base::TimeTicks &desiredFireTick)
+        : task(t), m_fireTick(desiredFireTick)
     {
     }
 
@@ -35,7 +35,7 @@ struct MessageLoop::TimerData {
         return ret;
     }
 
-    std::function<void()> task;
+    std::unique_ptr<WebTaskRunner::Task> task;
 private:
     base::TimeTicks m_fireTick;
 };
@@ -43,21 +43,21 @@ private:
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct MessageLoop::TimerTaskData {
-    TimerTaskData(MessageLoop &theLoop, HANDLE hTimer, std::function<void()> &&task)
+    TimerTaskData(MessageLoop &theLoop, HANDLE hTimer, std::unique_ptr<WebTaskRunner::Task> &&task)
         : m_theLoop(theLoop), m_hTimer(hTimer), m_task(std::move(task))
     {
     }
 
     void Run(const LARGE_INTEGER &tick)
     {
-        m_task();
+        m_task->run();
         m_theLoop.OnTimerFired(m_hTimer, tick);
         delete this;
     }
 private:
     MessageLoop &m_theLoop;
     HANDLE m_hTimer;
-    std::function<void()> m_task;
+    std::unique_ptr<WebTaskRunner::Task> m_task;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,11 +67,6 @@ class MessageLoop::TaskRunnerImpl final : public WebTaskRunner
 public:
     TaskRunnerImpl(MessageLoop &loop) : m_loop(loop), m_threadId(::GetCurrentThreadId()){}
 private:
-    static void RunTask(Task *task)
-    {
-        task->run();
-        delete task;
-    }
     // TaskRunner overrides
     void postTask(const WebTraceLocation &, Task *task) override
     {
@@ -88,7 +83,7 @@ private:
         base::TimeTicks desiredTick = base::TimeTicks::Now();
         desiredTick += base::TimeDelta::FromMillisecondsD(delayMs);
 
-        TimerData *timerData = new TimerData(std::bind(&TaskRunnerImpl::RunTask, task), desiredTick);
+        TimerData *timerData = new TimerData(task, desiredTick);
         if (GetCurrentThreadId() == m_threadId)
         {
             m_loop.InstallTimer(timerData);
@@ -319,7 +314,7 @@ void MessageLoop::ScheduleTimers(void)
     }
 }
 
-void MessageLoop::SetTimer(const LARGE_INTEGER &dueTime, std::function<void()> &&task)
+void MessageLoop::SetTimer(const LARGE_INTEGER &dueTime, std::unique_ptr<WebTaskRunner::Task> &&task)
 {
     HANDLE hTimer = RequireTimer();
 

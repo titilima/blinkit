@@ -41,7 +41,7 @@ private:
     TaskQueue TakeTasks(void);
 
     void InstallTimer(TimerData *timerData);
-    void SetTimer(const LARGE_INTEGER &dueTime, std::function<void()> &&task);
+    void SetTimer(const LARGE_INTEGER &dueTime, std::unique_ptr<WebTaskRunner::Task> &&task);
     HANDLE RequireTimer(void);
     void OnTimerFired(HANDLE hTimer, const LARGE_INTEGER &tick);
     static void APIENTRY TimerCallback(PVOID arg, DWORD low, DWORD high);
