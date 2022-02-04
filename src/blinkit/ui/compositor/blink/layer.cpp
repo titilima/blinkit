@@ -799,6 +799,8 @@ void Layer::DebugPrint(int depth) const
         ZLOG("{}  .masksToBounds", indents);
     if (m_opaque)
         ZLOG("{}  .opaque", indents);
+    if (!zed::almost_equals(m_opacity, 1.f))
+        BKLOG("%s  .opacity = %.2f", indents.c_str(), m_opacity);
     if (!m_positionConstraint.IsDefault())
         ZLOG("{}  .positionConstraint = {}", indents, m_positionConstraint);
     if (!m_transformOrigin.isZero())

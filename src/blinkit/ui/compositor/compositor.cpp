@@ -49,11 +49,18 @@ Compositor::~Compositor(void)
 
 void Compositor::PerformComposition(SkCanvas &canvas, const RasterResult &rasterResult, const IntRect &dirtyRect)
 {
+    SkPaint paint;
+    paint.setAntiAlias(false);
+    paint.setFilterQuality(kLow_SkFilterQuality);
+
     for (const LayerData &data : rasterResult)
     {
         auto it = m_snapshots.find(data.id);
         ASSERT(m_snapshots.end() != it);
-        it->second->BlendToCanvas(canvas, dirtyRect);
+
+        paint.setXfermodeMode(data.opaque ? SkXfermode::kSrc_Mode : SkXfermode::kSrcATop_Mode);
+
+        it->second->BlendToCanvas(canvas, dirtyRect, &paint);
     }
 }
 

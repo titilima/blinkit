@@ -21,6 +21,8 @@ struct LayerData {
     const int id;
     const IntRect rect;
 
+    bool opaque = true;
+
     LayerData(int id, const IntRect &rect) : id(id), rect(rect) {}
 };
 

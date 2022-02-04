@@ -37,7 +37,7 @@ public:
     using UpdateCallback = std::function<void(SkCanvas &)>;
     virtual void Update(const IntSize &viewportSize, const LayerContext &context, const UpdateCallback &callback) = 0;
 
-    virtual void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect) = 0;
+    virtual void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect, const SkPaint *paint) = 0;
 protected:
     LayerSnapshot(void) = default;
 };

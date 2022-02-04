@@ -25,7 +25,6 @@ namespace BlinKit {
 class CompositorTask;
 class LayerClient;
 class LayerTreeHost;
-struct PaintContext;
 class RasterContext;
 class RasterTask;
 
@@ -44,6 +43,7 @@ public:
     void SetLayerTreeHost(LayerTreeHost *host);
 
     const IntSize& Bounds(void) const { return m_bounds; }
+    bool Opaque(void) const { return m_opaque; }
     const FloatPoint& Position(void) const { return m_position; }
     const DoublePoint& ScrollPosition(void) const { return m_scrollPosition; }
     const SkMatrix44& Transform(void) const { return m_transform; }

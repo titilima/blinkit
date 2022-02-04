@@ -52,7 +52,7 @@ private:
     void LayoutTiles(const IntPoint &layerPosition, const IntSize &viewportSize);
 
     void Update(const IntSize &viewportSize, const LayerContext &context, const UpdateCallback &callback) final;
-    void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect) final;
+    void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect, const SkPaint *paint) final;
 
     IntSize m_layerBounds;
     std::vector<std::unique_ptr<Tile>> m_tiles;

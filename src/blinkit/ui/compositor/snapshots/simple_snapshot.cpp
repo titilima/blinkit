@@ -17,11 +17,11 @@ SimpleSnapshot::SimpleSnapshot(const IntSize &layerBounds) : m_tile(layerBounds)
 {
 }
 
-void SimpleSnapshot::BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect)
+void SimpleSnapshot::BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect, const SkPaint *paint)
 {
     IntRect rect = intersection(m_tile.Rect(), dirtyRect);
     if (!rect.isEmpty())
-        m_tile.BlendToCanvas(canvas, rect);
+        m_tile.BlendToCanvas(canvas, rect, paint);
 }
 
 bool SimpleSnapshot::TryToReuse(Type assumedType, const IntSize &layerBounds, const IntSize &)
@@ -49,11 +49,19 @@ void SimpleSnapshot::Update(const IntSize &viewportSize, const LayerContext &con
 {
     m_tile.UpdatePosition(context.positionOfViewport);
 
-    IntRect dirtyRect(context.dirtyRectOfLayer);
-    dirtyRect.moveBy(context.positionOfViewport);
-    dirtyRect.intersect(m_tile.Rect());
-    if (dirtyRect.isEmpty())
-        return;
+    IntRect dirtyRect;
+    if (m_tile.Painted())
+    {
+        dirtyRect = context.dirtyRectOfLayer;
+        dirtyRect.moveBy(context.positionOfViewport);
+        dirtyRect.intersect(m_tile.Rect());
+        if (dirtyRect.isEmpty())
+            return;
+    }
+    else
+    {
+        dirtyRect.setSize(m_tile.Rect().size());
+    }
 
     m_tile.Update(dirtyRect, callback);
 }

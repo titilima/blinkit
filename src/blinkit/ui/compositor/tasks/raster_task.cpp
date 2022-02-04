@@ -27,7 +27,8 @@ RasterTask::~RasterTask(void) = default;
 
 void RasterTask::Rasterize(const Layer &layer, const IntRect &visibleRect)
 {
-    m_result.emplace_back(layer.id(), visibleRect);
+    LayerData &layerData = m_result.emplace_back(layer.id(), visibleRect);
+    layerData.opaque = layer.Opaque();
 }
 
 LayerContext& RasterTask::RequireLayerContext(const Layer &layer, const IntSize &layerBounds)

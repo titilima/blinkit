@@ -55,7 +55,7 @@ private:
 SingleAxisScrollingSnapshot::SingleAxisScrollingSnapshot(void) = default;
 SingleAxisScrollingSnapshot::~SingleAxisScrollingSnapshot(void) = default;
 
-void SingleAxisScrollingSnapshot::BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect)
+void SingleAxisScrollingSnapshot::BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect, const SkPaint *paint)
 {
     for (const auto &tile : m_tiles)
     {
@@ -63,7 +63,7 @@ void SingleAxisScrollingSnapshot::BlendToCanvas(SkCanvas &canvas, const IntRect 
         if (!tileRect.intersects(dirtyRect))
             continue;
 
-        tile->BlendToCanvas(canvas, intersection(tileRect, dirtyRect));
+        tile->BlendToCanvas(canvas, intersection(tileRect, dirtyRect), paint);
     }
 }
 
