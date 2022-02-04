@@ -31,7 +31,7 @@ public:
     void Reset(const IntRect &rect, const IntSize &offset = IntSize());
     void Update(const IntRect &dirtyRect, const std::function<void(SkCanvas &)> &callback);
     void Update(const SkBitmap &bitmap, const IntPoint &from, const IntPoint &to, const IntSize &size);
-    void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect);
+    void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect, const SkPaint *paint);
 
     bool Painted(void) const { return m_painted; }
 

@@ -31,11 +31,11 @@ Tile::Tile(const IntRect &rect, const IntSize &offset)
     ResetBitmap();
 }
 
-void Tile::BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect)
+void Tile::BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect, const SkPaint *paint)
 {
     SkRect srcRect(dirtyRect);
     srcRect.offset(-m_rect.x(), -m_rect.y());
-    canvas.drawBitmapRect(m_bitmap, srcRect, dirtyRect, nullptr);
+    canvas.drawBitmapRect(m_bitmap, srcRect, dirtyRect, paint);
 }
 
 const SkBitmap& Tile::Lock(void)
@@ -93,6 +93,7 @@ void Tile::Update(const IntRect &dirtyRect, const std::function<void(SkCanvas &)
         m_painted = true;
     }
 
+    canvas.clear(SK_ColorTRANSPARENT);
     callback(canvas);
 
 #ifndef NDEBUG
