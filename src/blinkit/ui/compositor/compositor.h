@@ -20,6 +20,8 @@ class SkCanvas;
 
 namespace BlinKit {
 
+class AnimationFrame;
+class AnimationProxy;
 class CompositorTask;
 class LayerSnapshot;
 struct LayerContext;
@@ -38,8 +40,10 @@ public:
 
     void ReleaseSnapshot(int layerId);
     void UpdateSnapshot(const LayerContext &input, const IntSize &viewportSize);
-    void PerformComposition(SkCanvas &canvas, const RasterResult &rasterResult, const IntRect &dirtyRect);
+    void PerformComposition(AnimationProxy &proxy, const IntSize &viewportSize, const RasterResult &rasterResult,
+        const IntRect &dirtyRect);
 private:
+    SkCanvas* BeginPaint(AnimationProxy &proxy, const IntSize &viewportSize);
     LayerSnapshot& RequireSnapshot(int layerId, const IntSize &layerBounds, const IntSize &viewportSize);
 
     void TaskLoop(void);
@@ -48,6 +52,7 @@ private:
     bool m_running = true;
     zed::task_queue<CompositorTask> m_queue;
 
+    std::unique_ptr<AnimationFrame> m_backingStoreFrame;
     std::unordered_map<int, std::unique_ptr<LayerSnapshot>> m_snapshots;
 };
 

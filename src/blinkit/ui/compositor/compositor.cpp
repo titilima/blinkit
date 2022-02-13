@@ -11,6 +11,8 @@
 
 #include "./compositor.h"
 
+#include "blinkit/ui/animation/animation_frame.h"
+#include "blinkit/ui/animation/animation_proxy.h"
 #include "blinkit/ui/compositor/snapshots/layer_snapshot.h"
 #include "blinkit/ui/compositor/tasks/compositor_task.h"
 #ifndef NDEBUG
@@ -47,8 +49,29 @@ Compositor::~Compositor(void)
     ASSERT(g_allLayers.empty());
 }
 
-void Compositor::PerformComposition(SkCanvas &canvas, const RasterResult &rasterResult, const IntRect &dirtyRect)
+SkCanvas* Compositor::BeginPaint(AnimationProxy &proxy, const IntSize &viewportSize)
 {
+    bool createNewFrame = true;
+    if (m_backingStoreFrame)
+    {
+        IntSize size = m_backingStoreFrame->GetSize();
+        if (size.width() >= viewportSize.width() && size.height() >= viewportSize.height())
+            createNewFrame = false;
+    }
+
+    if (createNewFrame)
+        m_backingStoreFrame = proxy.CreateAnimationFrame(viewportSize);
+    return m_backingStoreFrame->GetCanvas();
+}
+
+void Compositor::PerformComposition(
+    AnimationProxy &proxy,
+    const IntSize &viewportSize,
+    const RasterResult &rasterResult,
+    const IntRect &dirtyRect)
+{
+    SkCanvas *canvas = BeginPaint(proxy, viewportSize);
+
     SkPaint paint;
     paint.setAntiAlias(false);
     paint.setFilterQuality(kLow_SkFilterQuality);
@@ -60,8 +83,10 @@ void Compositor::PerformComposition(SkCanvas &canvas, const RasterResult &raster
 
         paint.setXfermodeMode(data.opaque ? SkXfermode::kSrc_Mode : SkXfermode::kSrcATop_Mode);
 
-        it->second->BlendToCanvas(canvas, dirtyRect, &paint);
+        it->second->BlendToCanvas(*canvas, dirtyRect, &paint);
     }
+
+    proxy.Flush(m_backingStoreFrame, dirtyRect);
 }
 
 void Compositor::PostCallback(Callback &&callback)
@@ -131,8 +156,6 @@ void Compositor::UpdateSnapshot(const LayerContext &input, const IntSize &viewpo
         canvas.concat(m_transform);
 #endif
         input.displayItems->Playback(canvas);
-
-        // DrawDebugInfo(canvas, input.layerId, input.layerBounds);
     };
     snapshot.Update(viewportSize, input, callback);
 }

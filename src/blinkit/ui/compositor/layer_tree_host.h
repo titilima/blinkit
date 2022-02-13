@@ -19,28 +19,25 @@
 
 namespace BlinKit {
 
+class AnimationProxy;
 class CompositorTask;
 class Layer;
-class PaintUITask;
 
 class LayerTreeHost final : public WebLayerTreeView
 {
 public:
-    LayerTreeHost(void);
+    LayerTreeHost(AnimationProxy &proxy);
     ~LayerTreeHost(void) override;
 
     void RegisterLayer(Layer *layer);
     void UnregisterLayer(Layer *layer);
 
     const IntSize& DeviceViewportSize(void) const { return m_deviceViewportSize; }
-
-    void Update(std::unique_ptr<PaintUITask> &paintTask);
+    void Commit(void);
 
     void SetNeedsCommit(void);
     void SetNeedsFullTreeSync(void);
     void SetNeedsUpdateLayers(void);
-
-    void Paint(HDC hdc, const RECT *rc);
 
 #ifndef NDEBUG
     bool InPaintLayerContents(void) const { return m_inPaintLayerContents; }
@@ -61,19 +58,19 @@ private:
     void heuristicsForGpuRasterizationUpdated(bool matchesHeuristics) override;
     void setTopControlsShownRatio(float ratio) override;
     void setTopControlsHeight(float height, bool shrinkViewport) override;
-    void setDeferCommits(bool deferCommits) override {
-        m_deferCommits = deferCommits;
-    }
+    void setNeedsAnimate(void) override;
+    void setDeferCommits(bool deferCommits) override;
     void registerForAnimations(WebLayer *layer) override;
     void registerViewportLayers(const WebLayer *overscrollElasticityLayer,
         const WebLayer *pageScaleLayer, const WebLayer *innerViewportScrollLayer,
         const WebLayer *outerViewportScrollLayer) override;
     void clearViewportLayers(void) override;
 
+    AnimationProxy &m_proxy;
+
     Layer *m_rootLayer = nullptr;
     std::unordered_set<Layer *> m_layers;
 
-    bool m_deferCommits = true, m_needsCommit = false;
     bool m_visible = false;
     bool m_topControlsShrinkBlinkSize = false;
 #ifndef NDEBUG

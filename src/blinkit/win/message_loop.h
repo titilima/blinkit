@@ -23,6 +23,8 @@
 
 namespace BlinKit {
 
+class AnimationScheduler;
+
 class MessageLoop
 {
 public:
@@ -38,6 +40,7 @@ private:
     struct TimerTaskData;
 
     using TaskQueue = std::queue<std::unique_ptr<WebTaskRunner::Task>>;
+    void RunTasks(void);
     TaskQueue TakeTasks(void);
 
     void InstallTimer(TimerData *timerData);
@@ -69,6 +72,10 @@ private:
 
     class TaskRunnerImpl;
     mutable std::shared_ptr<TaskRunnerImpl> m_taskRunner;
+
+#ifdef BLINKIT_UI_ENABLED
+    std::unique_ptr<AnimationScheduler> m_animationScheduler;
+#endif
 };
 
 } // namespace BlinKit

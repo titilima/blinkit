@@ -209,6 +209,8 @@ void Layer::setBounds(const IntSize &size)
             layer_tree_host_->property_trees()->clip_tree.set_needs_update(true);
         }
     }
+#else
+    m_dirty = m_fullyInvalidation = true;
 #endif
 
     if (nullptr != m_layerTreeHost)

@@ -12,6 +12,7 @@
 #include "./message_loop.h"
 
 #include <optional>
+#include "blinkit/ui/animation/animation_scheduler.h"
 #include "chromium/base/time/time.h"
 #include "third_party/zed/include/zed/container_utilites.hpp"
 #include "third_party/zed/include/zed/float.hpp"
@@ -111,6 +112,9 @@ private:
 MessageLoop::MessageLoop(void)
     : m_taskEvent(::CreateEvent(nullptr, FALSE, FALSE, nullptr))
     , m_hSchedulerTimer(CreateWaitableTimer(nullptr, FALSE, nullptr))
+#ifdef BLINKIT_UI_ENABLED
+    , m_animationScheduler(std::make_unique<AnimationScheduler>())
+#endif
 {
 }
 
@@ -247,13 +251,9 @@ int MessageLoop::Run(BkMessageFilter filter, void *userData)
             ASSERT(WAIT_FAILED != dwWait);
         }
 #endif
+        RunTasks();
 
-        TaskQueue tasks = TakeTasks();
-        while (!tasks.empty())
-        {
-            tasks.front()->run();
-            tasks.pop();
-        }
+        bool animationScheduled = false;
 
         MSG msg;
         while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -269,9 +269,33 @@ int MessageLoop::Run(BkMessageFilter filter, void *userData)
 
             TranslateMessage(&msg);
             DispatchMessage(&msg);
+
+            m_animationScheduler->ScheduleAnimations();
+            animationScheduled = true;
         }
+
+        if (!animationScheduled)
+            m_animationScheduler->ScheduleAnimations();
     }
     return ret.value();
+}
+
+void MessageLoop::RunTasks(void)
+{
+    TaskQueue tasks;
+    {
+        auto _ = m_taskLock.guard();
+        if (m_tasks.empty())
+            return;
+
+        tasks.swap(m_tasks);
+    }
+
+    while (!tasks.empty())
+    {
+        tasks.front()->run();
+        tasks.pop();
+    }
 }
 
 void MessageLoop::ScheduleTimers(void)

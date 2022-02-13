@@ -23,16 +23,14 @@ class WebTaskRunner;
 
 namespace BlinKit {
 
+class AnimationProxy;
 class Layer;
 struct LayerContext;
-class PaintUITask;
-class RasterContext;
 
 class RasterTask final : public CompositorTask
 {
 public:
-    RasterTask(const IntSize &viewportSize);
-    ~RasterTask(void) override;
+    RasterTask(const IntSize &viewportSize, AnimationProxy &proxy);
 
     IntRect GetViewportRect(void) const { return IntRect(IntPoint(), m_viewportSize); }
 
@@ -51,20 +49,17 @@ public:
         m_needsRebuild = needsRebuild;
         return ret;
     }
-
-    void SavePaintTask(std::unique_ptr<PaintUITask> &paintTask);
 private:
     void Run(Compositor &compositor) override;
 
     const IntSize m_viewportSize;
+    AnimationProxy &m_proxy;
+
     RasterInput m_input;
     RasterResult m_result;
     IntRect m_dirtyRect; // of viewport
 
     bool m_needsRebuild = false;
-
-    std::shared_ptr<WebTaskRunner> m_taskRunner;
-    std::unique_ptr<PaintUITask> m_paintTask;
 };
 
 } // namespace BlinKit

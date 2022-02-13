@@ -12,16 +12,18 @@
 #include "./layer_tree_host.h"
 
 #include "blinkit/app/app_impl.h"
+#include "blinkit/ui/animation/animation_proxy.h"
 #include "blinkit/ui/compositor/blink/layer.h"
 #include "blinkit/ui/compositor/compositor.h"
 #include "blinkit/ui/compositor/raster/raster_context.h"
-#include "blinkit/ui/compositor/tasks/paint_ui_task.h"
 #include "blinkit/ui/compositor/tasks/raster_task.h"
 #include "third_party/zed/include/zed/container_utilites.hpp"
 
 namespace BlinKit {
 
-LayerTreeHost::LayerTreeHost(void) = default;
+LayerTreeHost::LayerTreeHost(AnimationProxy &proxy) : m_proxy(proxy)
+{
+}
 
 LayerTreeHost::~LayerTreeHost(void)
 {
@@ -43,14 +45,17 @@ void LayerTreeHost::clearViewportLayers(void)
     registerViewportLayers(nullptr, nullptr, nullptr, nullptr);
 }
 
+void LayerTreeHost::Commit(void)
+{
+    std::unique_ptr<RasterTask> task = std::make_unique<RasterTask>(m_deviceViewportSize, m_proxy);
+    // m_rootLayer->DebugPrint();
+    m_rootLayer->Update(RasterContext(), *task);
+    PostTaskToCompositor(task.release());
+}
+
 void LayerTreeHost::heuristicsForGpuRasterizationUpdated(bool matchesHeuristics)
 {
     // BKTODO: Check if necessary.
-}
-
-void LayerTreeHost::Paint(HDC hdc, const RECT *rc)
-{
-    // BKTODO:
 }
 
 void LayerTreeHost::PostTaskToCompositor(CompositorTask *task)
@@ -91,13 +96,24 @@ void LayerTreeHost::registerViewportLayers(
 #endif
 }
 
+void LayerTreeHost::setDeferCommits(bool deferCommits)
+{
+    m_proxy.SetDeferCommits(deferCommits);
+}
+
+void LayerTreeHost::setNeedsAnimate(void)
+{
+    m_proxy.SetNeedsAnimate();
+}
+
 void LayerTreeHost::SetNeedsCommit(void)
 {
 #if 0 // BKTODO:
     proxy_->SetNeedsCommit();
     NotifySwapPromiseMonitorsOfSetNeedsCommit();
+#else
+    m_proxy.SetNeedsCommit();
 #endif
-    m_needsCommit = true;
 }
 
 void LayerTreeHost::SetNeedsFullTreeSync(void)
@@ -242,24 +258,6 @@ void LayerTreeHost::UnregisterLayer(Layer *layer)
         animation_host_->UnregisterLayer(layer->id(), LayerTreeType::ACTIVE);
 #endif
     m_layers.erase(layer);
-}
-
-void LayerTreeHost::Update(std::unique_ptr<PaintUITask> &paintTask)
-{
-    if (nullptr == m_rootLayer || m_deferCommits || m_deviceViewportSize.isEmpty())
-        return;
-    // m_rootLayer->DebugPrint();
-
-    std::unique_ptr<RasterTask> task = std::make_unique<RasterTask>(m_deviceViewportSize);
-    m_rootLayer->Update(RasterContext(), *task);
-
-    if (!m_needsCommit)
-        return;
-    m_needsCommit = false;
-
-    paintTask->SetViewportSize(m_deviceViewportSize);
-    task->SavePaintTask(paintTask);
-    PostTaskToCompositor(task.release());
 }
 
 } // namespace BlinKit

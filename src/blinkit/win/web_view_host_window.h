@@ -22,6 +22,8 @@ struct BkWebViewClient;
 
 namespace BlinKit {
 
+class AnimationFrame;
+
 class WebViewHostWindow final : public WebViewHost
 {
 public:
@@ -30,7 +32,6 @@ public:
 
     HWND GetHWND(void) const { return m_hWnd; }
 
-    void Redraw(const IntRect &rect);
     void StartAnimationTimer(double delay) {
         //m_animationTimer.startOneShot(delay, BLINK_FROM_HERE);
     }
@@ -58,23 +59,22 @@ private:
 
     void OnAnimationTimer(Timer<WebViewHostWindow> *);
 
+    // AnimationProxy
+    std::unique_ptr<AnimationFrame> CreateAnimationFrame(const IntSize &size) override;
+    void Flush(std::unique_ptr<AnimationFrame> &frame, const IntRect &rect) override;
     // WebViewHost
-    void Invalidate(const IntRect &rect) override;
-    void ScheduleAnimation(void) override;
-    std::unique_ptr<PaintUITask> PreparePaintTask(void) override;
     void ChangeTitle(const std::string &title) override;
     void DidChangeCursor(const WebCursorInfo &cursorInfo) override;
     void ShowContextMenu(const WebContextMenuData &data) override;
 
     HWND m_hWnd;
 
-    zed::mutex m_canvasLock;
-    std::unique_ptr<SkCanvas> m_canvas;
+    zed::mutex m_paintLock;
     HDC m_memoryDC = nullptr;
+    std::unique_ptr<AnimationFrame> m_currentFrame;
     HBITMAP m_oldBitmap = nullptr;
 
     MouseSession m_mouseSession;
-    // PaintSession m_paintSession;
 
     const std::shared_ptr<bool> m_hostAliveFlag;
     Timer<WebViewHostWindow> m_animationTimer;
@@ -82,11 +82,6 @@ private:
     bool m_animationTaskScheduled = false;
     bool m_changingSizeOrPosition = false;
     WebCursorInfo m_cursorInfo;
-
-    friend class ScopedPaintSession;
-    class ScopedAnimationScheduler;
-    bool m_animationScheduled = false;
-    unsigned m_animationScheduledTimes = 0;
 };
 
 } // namespace BlinKit
