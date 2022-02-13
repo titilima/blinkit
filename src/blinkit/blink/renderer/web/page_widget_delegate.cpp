@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: PageWidgetDelegate.cpp
+//   File Name: page_widget_delegate.cpp
 // Description: PageWidgetDelegate Class
 //      Author: Ziming Li
 //     Created: 2021-08-14
@@ -39,26 +39,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "web/PageWidgetDelegate.h"
+#include "./page_widget_delegate.h"
 
-#include "core/frame/FrameView.h"
-#include "core/frame/LocalFrame.h"
-#include "core/input/EventHandler.h"
-#include "core/layout/LayoutView.h"
-#include "core/layout/compositing/PaintLayerCompositor.h"
-#include "core/page/AutoscrollController.h"
-#include "core/page/Page.h"
-#include "core/paint/TransformRecorder.h"
-// BKTODO: #include "platform/Logging.h"
-#include "platform/graphics/GraphicsContext.h"
-#include "platform/graphics/paint/ClipRecorder.h"
-#include "platform/graphics/paint/CullRect.h"
-#include "platform/graphics/paint/DrawingRecorder.h"
-#include "platform/graphics/paint/SkPictureBuilder.h"
-#include "platform/transforms/AffineTransform.h"
-// BKTODO: #include "public/web/WebInputEvent.h"
-#include "web/WebInputEventConversion.h"
-#include "wtf/CurrentTime.h"
+#include "blinkit/blink/renderer/core/frame/FrameView.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/input/EventHandler.h"
+#include "blinkit/blink/renderer/core/page/AutoscrollController.h"
+#include "blinkit/blink/renderer/core/page/Page.h"
+#include "blinkit/blink/renderer/web/WebInputEventConversion.h"
+#include "blinkit/blink/renderer/wtf/CurrentTime.h"
 
 namespace blink {
 
@@ -71,52 +60,6 @@ void PageWidgetDelegate::animate(Page& page, double monotonicFrameBeginTime)
 void PageWidgetDelegate::updateAllLifecyclePhases(Page& page, LocalFrame& root)
 {
     page.animator().updateAllLifecyclePhases(root);
-}
-
-static void paintInternal(Page& page, WebCanvas* canvas,
-    const IntRect& rect, LocalFrame& root, const GlobalPaintFlags globalPaintFlags)
-{
-    if (rect.isEmpty())
-        return;
-
-    IntRect intRect(rect);
-    SkPictureBuilder pictureBuilder(intRect);
-    {
-        GraphicsContext& paintContext = pictureBuilder.context();
-
-        // FIXME: device scale factor settings are layering violations and should not
-        // be used within Blink paint code.
-        float scaleFactor = page.deviceScaleFactor();
-        paintContext.setDeviceScaleFactor(scaleFactor);
-
-        AffineTransform scale;
-        scale.scale(scaleFactor);
-        TransformRecorder scaleRecorder(paintContext, root, scale);
-
-        IntRect dirtyRect(rect);
-        FrameView* view = root.view();
-        if (view) {
-            ClipRecorder clipRecorder(paintContext, root, DisplayItem::PageWidgetDelegateClip, LayoutRect(dirtyRect));
-
-            view->paint(paintContext, globalPaintFlags, CullRect(dirtyRect));
-        } else if (!DrawingRecorder::useCachedDrawingIfPossible(paintContext, root, DisplayItem::PageWidgetDelegateBackgroundFallback)) {
-            DrawingRecorder drawingRecorder(paintContext, root, DisplayItem::PageWidgetDelegateBackgroundFallback, dirtyRect);
-            paintContext.fillRect(dirtyRect, Color::white);
-        }
-    }
-    pictureBuilder.endRecording()->playback(canvas);
-}
-
-void PageWidgetDelegate::paint(Page& page, WebCanvas* canvas,
-    const IntRect& rect, LocalFrame& root)
-{
-    paintInternal(page, canvas, rect, root, GlobalPaintNormalPhase);
-}
-
-void PageWidgetDelegate::paintIgnoringCompositing(Page& page, WebCanvas* canvas,
-    const IntRect& rect, LocalFrame& root)
-{
-    paintInternal(page, canvas, rect, root, GlobalPaintFlattenCompositingLayers);
 }
 
 WebInputEventResult PageWidgetDelegate::handleInputEvent(PageWidgetEventHandler& handler, const WebInputEvent& event, LocalFrame* root)
@@ -228,49 +171,6 @@ WebInputEventResult PageWidgetEventHandler::handleMouseWheel(LocalFrame& mainFra
 WebInputEventResult PageWidgetEventHandler::handleTouchEvent(LocalFrame& mainFrame, const WebTouchEvent& event)
 {
     return mainFrame.eventHandler().handleTouchEvent(PlatformTouchEventBuilder(mainFrame.view(), event));
-}
-
-#define WEBINPUT_EVENT_CASE(type) case WebInputEvent::type: return #type;
-
-const char* PageWidgetEventHandler::inputTypeToName(WebInputEvent::Type type)
-{
-    switch (type) {
-        WEBINPUT_EVENT_CASE(MouseDown)
-        WEBINPUT_EVENT_CASE(MouseUp)
-        WEBINPUT_EVENT_CASE(MouseMove)
-        WEBINPUT_EVENT_CASE(MouseEnter)
-        WEBINPUT_EVENT_CASE(MouseLeave)
-        WEBINPUT_EVENT_CASE(ContextMenu)
-        WEBINPUT_EVENT_CASE(MouseWheel)
-        WEBINPUT_EVENT_CASE(RawKeyDown)
-        WEBINPUT_EVENT_CASE(KeyDown)
-        WEBINPUT_EVENT_CASE(KeyUp)
-        WEBINPUT_EVENT_CASE(Char)
-        WEBINPUT_EVENT_CASE(GestureScrollBegin)
-        WEBINPUT_EVENT_CASE(GestureScrollEnd)
-        WEBINPUT_EVENT_CASE(GestureScrollUpdate)
-        WEBINPUT_EVENT_CASE(GestureFlingStart)
-        WEBINPUT_EVENT_CASE(GestureFlingCancel)
-        WEBINPUT_EVENT_CASE(GestureShowPress)
-        WEBINPUT_EVENT_CASE(GestureTap)
-        WEBINPUT_EVENT_CASE(GestureTapUnconfirmed)
-        WEBINPUT_EVENT_CASE(GestureTapDown)
-        WEBINPUT_EVENT_CASE(GestureTapCancel)
-        WEBINPUT_EVENT_CASE(GestureDoubleTap)
-        WEBINPUT_EVENT_CASE(GestureTwoFingerTap)
-        WEBINPUT_EVENT_CASE(GestureLongPress)
-        WEBINPUT_EVENT_CASE(GestureLongTap)
-        WEBINPUT_EVENT_CASE(GesturePinchBegin)
-        WEBINPUT_EVENT_CASE(GesturePinchEnd)
-        WEBINPUT_EVENT_CASE(GesturePinchUpdate)
-        WEBINPUT_EVENT_CASE(TouchStart)
-        WEBINPUT_EVENT_CASE(TouchMove)
-        WEBINPUT_EVENT_CASE(TouchEnd)
-        WEBINPUT_EVENT_CASE(TouchCancel)
-    default:
-        ASSERT_NOT_REACHED();
-        return "";
-    }
 }
 #endif
 

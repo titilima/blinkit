@@ -1,7 +1,8 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: PageWidgetDelegate.h
+//   File Name: page_widget_delegate.h
 // Description: PageWidgetDelegate Class
 //      Author: Ziming Li
 //     Created: 2021-08-14
@@ -42,10 +43,8 @@
 #ifndef PageWidgetDelegate_h
 #define PageWidgetDelegate_h
 
-#include "blinkit/blink/public/platform/WebCanvas.h"
 #include "blinkit/blink/public/platform/WebInputEventResult.h"
 #include "blinkit/blink/public/web/WebInputEvent.h"
-#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 
 namespace blink {
 
@@ -58,7 +57,8 @@ class WebMouseEvent;
 class WebMouseWheelEvent;
 class WebTouchEvent;
 
-class PageWidgetEventHandler {
+class PageWidgetEventHandler
+{
 public:
     virtual void handleMouseMove(LocalFrame& mainFrame, const WebMouseEvent&);
     virtual void handleMouseLeave(LocalFrame& mainFrame, const WebMouseEvent&);
@@ -72,13 +72,12 @@ public:
     virtual WebInputEventResult handleTouchEvent(LocalFrame& mainFrame, const WebTouchEvent&);
 #endif
     virtual ~PageWidgetEventHandler() { }
-protected:
-    // BKTODO: const char* inputTypeToName(WebInputEvent::Type);
 };
 
 
 // Common implementation of WebViewImpl and WebPagePopupImpl.
-class PageWidgetDelegate {
+class PageWidgetDelegate
+{
 public:
     static void animate(Page&, double monotonicFrameBeginTime);
 
@@ -87,9 +86,6 @@ public:
 
     // See documents of methods with the same names in FrameView class.
     static void updateAllLifecyclePhases(Page&, LocalFrame& root);
-
-    static void paint(Page&, WebCanvas*, const IntRect&, LocalFrame& root);
-    static void paintIgnoringCompositing(Page&, WebCanvas*, const IntRect&, LocalFrame& root);
 
     // See FIXME in the function body about nullptr |root|.
     static WebInputEventResult handleInputEvent(PageWidgetEventHandler&, const WebInputEvent&, LocalFrame* root);

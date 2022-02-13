@@ -21,7 +21,7 @@
 #include "blinkit/blink/renderer/web/ContextMenuClientImpl.h"
 #include "blinkit/blink/renderer/web/DragClientImpl.h"
 #include "blinkit/blink/renderer/web/EditorClientImpl.h"
-#include "blinkit/blink/renderer/web/PageWidgetDelegate.h"
+#include "blinkit/blink/renderer/web/page_widget_delegate.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/resize_viewport_anchor.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"

@@ -1323,7 +1323,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\ContextMenuClientImpl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\DragClientImpl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\EditorClientImpl.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\PageWidgetDelegate.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\page_widget_delegate.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\ResizeViewportAnchor.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\WebDataSourceImpl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\WebInputEventConversion.cpp" />
@@ -2860,7 +2860,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ContextMenuClientImpl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\DragClientImpl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\EditorClientImpl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\PageWidgetDelegate.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\page_widget_delegate.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ResizeViewportAnchor.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ViewportAnchor.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\WebDataSourceImpl.h" />

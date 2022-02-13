@@ -3978,9 +3978,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\weborigin\kurl.cpp">
       <Filter>blink\renderer\platform\weborigin</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\PageWidgetDelegate.cpp">
-      <Filter>blink\renderer\web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_theme_engine.cpp">
       <Filter>blink\impl</Filter>
     </ClCompile>
@@ -4220,6 +4217,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\ui\animation\animation_frame.cpp">
       <Filter>ui\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\page_widget_delegate.cpp">
+      <Filter>blink\renderer\web</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -6743,9 +6743,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\EditorClientImpl.h">
       <Filter>blink\renderer\web</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\PageWidgetDelegate.h">
-      <Filter>blink\renderer\web</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ResizeViewportAnchor.h">
       <Filter>blink\renderer\web</Filter>
     </ClInclude>
@@ -9022,6 +9019,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\animation\animation_frame.h">
       <Filter>ui\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\page_widget_delegate.h">
+      <Filter>blink\renderer\web</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
