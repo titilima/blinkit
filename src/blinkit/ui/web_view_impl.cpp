@@ -569,16 +569,7 @@ void WebViewImpl::invalidateRect(const IntRect &rect)
 {
     if (nullptr != m_layerTreeView)
         UpdateLayerTreeViewport();
-    else if (nullptr != m_host)
-        m_host->Invalidate(rect);
 }
-
-#if 0 // BKTODO:
-bool WebViewImpl::IsAcceleratedCompositingActive(void) const
-{
-    return false; // BKTODO: Support GPU.
-}
-#endif
 
 bool WebViewImpl::KeyEventDefault(const WebKeyboardEvent &event)
 {
@@ -777,12 +768,6 @@ float WebViewImpl::PageScaleFactor(void) const
     if (m_page)
         return m_page->frameHost().visualViewport().scale();
     return 1.0;
-}
-
-void WebViewImpl::PaintContent(SkCanvas *canvas, const IntRect &rect)
-{
-    if (!m_size.isEmpty())
-        PageWidgetDelegate::paint(*m_page, canvas, rect, *m_frame);
 }
 
 void WebViewImpl::PerformResize(void)
@@ -1050,8 +1035,6 @@ void WebViewImpl::scheduleAnimation(void)
 {
     if (nullptr != m_layerTreeView)
         m_layerTreeView->setNeedsBeginFrame();
-    else if (nullptr != m_host)
-        m_host->ScheduleAnimation();
 }
 
 bool WebViewImpl::ScrollViewWithKeyboard(int keyCode, int modifiers)
@@ -1115,14 +1098,7 @@ void WebViewImpl::SendResizeEventAndRepaint(void)
     }
 
     if (nullptr != m_layerTreeView)
-    {
         UpdateLayerTreeViewport();
-    }
-    else if (nullptr != m_host)
-    {
-        IntRect damagedRect(IntPoint(0, 0), m_size);
-        m_host->Invalidate(damagedRect);
-    }
     UpdatePageOverlays();
 }
 

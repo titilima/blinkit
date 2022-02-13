@@ -17,10 +17,8 @@
 
 #include "blinkit/blink/public/platform/WebCursorInfo.h"
 #include "blinkit/blink/public/web/WebContextMenuData.h"
-#include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/ui/animation/animation_proxy.h"
 #include "third_party/skia/include/core/SkCanvas.h"
-
-class WebViewImpl;
 
 namespace blink {
 enum PageVisibilityState;
@@ -30,22 +28,14 @@ class WebLayerTreeView;
 namespace BlinKit {
 
 class LayerTreeHost;
-class PaintUITask;
 
-class WebViewHost
+class WebViewHost : public AnimationProxy
 {
 public:
     virtual ~WebViewHost(void);
 
-    WebViewImpl* GetView(void) const { return m_view; }
+    WebViewImpl* GetView(void) const override { return m_view; }
     WebLayerTreeView* GetLayerTreeView(void) const;
-
-    void EnterAnimationSession(void);
-    void LeaveAnimationSession(bool fullPaint);
-
-    virtual void Invalidate(const IntRect &rect) = 0;
-    virtual void ScheduleAnimation(void) = 0;
-    virtual std::unique_ptr<PaintUITask> PreparePaintTask(void) = 0;
 
     virtual void ChangeTitle(const std::string &title) {}
 
@@ -62,6 +52,8 @@ protected:
     void Resize(const IntSize &size);
     void SetScaleFactor(float scaleFactor);
 private:
+    void Commit(void) final;
+
     WebViewImpl *m_view;
     std::unique_ptr<LayerTreeHost> m_layerTreeHost;
 };

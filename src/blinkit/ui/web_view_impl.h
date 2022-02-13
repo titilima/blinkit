@@ -58,7 +58,6 @@ public:
 
     void BeginFrame(double tick);
     void UpdateLifecycle(void);
-    void PaintContent(SkCanvas *canvas, const blink::IntRect &rect);
 
     blink::IntSize MainFrameSize(void);
 
@@ -158,8 +157,6 @@ private:
     static bool ShouldShowContextMenu(const blink::WebContextMenuData &data);
     void UpdatePageOverlays(void);
     void UpdateRootLayerTransform(void);
-
-    // BKTODO: bool IsAcceleratedCompositingActive(void) const;
 
     // FrameClient
 #ifdef BLINKIT_FULL_BUILD

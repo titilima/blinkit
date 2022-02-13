@@ -13,13 +13,12 @@
 
 #include "blinkit/ui/web_view_impl.h"
 #include "blinkit/ui/compositor/layer_tree_host.h"
-#include "blinkit/ui/compositor/tasks/paint_ui_task.h"
 
 namespace BlinKit {
 
 WebViewHost::WebViewHost(const BkWebViewClient &client, PageVisibilityState visibilityState)
     : m_view(new WebViewImpl(client, visibilityState, DefaultBackgroundColor()))
-    , m_layerTreeHost(std::make_unique<LayerTreeHost>())
+    , m_layerTreeHost(std::make_unique<LayerTreeHost>(*this))
 {
 }
 
@@ -28,10 +27,9 @@ WebViewHost::~WebViewHost(void)
     delete m_view;
 }
 
-void WebViewHost::EnterAnimationSession(void)
+void WebViewHost::Commit(void)
 {
-    double tick = monotonicallyIncreasingTime();
-    m_view->BeginFrame(tick);
+    m_layerTreeHost->Commit();
 }
 
 WebLayerTreeView* WebViewHost::GetLayerTreeView(void) const
@@ -43,18 +41,6 @@ void WebViewHost::InitializeView(float scaleFactor)
 {
     m_view->Initialize(this, scaleFactor);
     m_layerTreeHost->SetNeedsCommit();
-}
-
-void WebViewHost::LeaveAnimationSession(bool fullPaint)
-{
-    m_view->UpdateLifecycle();
-
-    std::unique_ptr<PaintUITask> paintTask = PreparePaintTask();
-    paintTask->SetBackgroundColor(m_view->BaseBackgroundColor());
-    if (fullPaint)
-        paintTask->SetFullPaint();
-
-    m_layerTreeHost->Update(paintTask);
 }
 
 void WebViewHost::Resize(const IntSize &size)
