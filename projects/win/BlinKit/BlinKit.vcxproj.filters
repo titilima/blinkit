@@ -322,6 +322,9 @@
     <Filter Include="ui\compositor\snapshots">
       <UniqueIdentifier>{0911792d-a108-4d64-add4-2d10250ff8be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ui\animation">
+      <UniqueIdentifier>{5f926940-6d81-485f-9dc0-afd4580f2974}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -404,9 +407,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\loader\tasks\file_loader_task_win.cpp">
       <Filter>loader\tasks</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\win\bk_bitmap.cpp">
-      <Filter>win</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\win\message_loop.cpp">
       <Filter>win</Filter>
@@ -4134,9 +4134,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\graphics_layer_factory_impl.cpp">
       <Filter>blink\impl</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\scoped_animation_session.cpp">
-      <Filter>ui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\ui\web_view_host.cpp">
       <Filter>ui</Filter>
     </ClCompile>
@@ -4176,14 +4173,8 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tasks\raster_task.cpp">
       <Filter>ui\compositor\tasks</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\win\paint_window_task.cpp">
-      <Filter>win</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\raster\raster_context.cpp">
       <Filter>ui\compositor\raster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\ui\compositor\tasks\paint_ui_task.cpp">
-      <Filter>ui\compositor\tasks</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\playback\clip_item.cpp">
       <Filter>ui\compositor\playback</Filter>
@@ -4220,6 +4211,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\ui\compositor\playback\transform_item.cpp">
       <Filter>ui\compositor\playback</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\animation\animation_scheduler.cpp">
+      <Filter>ui\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\animation\animation_proxy.cpp">
+      <Filter>ui\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\animation\animation_frame.cpp">
+      <Filter>ui\animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -4318,9 +4318,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\file_loader_task.h">
       <Filter>loader\tasks</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\win\bk_bitmap.h">
-      <Filter>win</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\message_loop.h">
       <Filter>win</Filter>
@@ -8324,9 +8321,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\impl\graphics_layer_factory_impl.h">
       <Filter>blink\impl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\scoped_animation_session.h">
-      <Filter>ui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\blink\content_layer.h">
       <Filter>ui\compositor\blink</Filter>
     </ClInclude>
@@ -8546,9 +8540,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\geometry\TransformState.h">
       <Filter>blink\renderer\platform\geometry</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\win\paint_window_task.h">
-      <Filter>win</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\raster\raster_result.h">
       <Filter>ui\compositor\raster</Filter>
     </ClInclude>
@@ -8559,9 +8550,6 @@
       <Filter>ui\compositor\raster</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tasks\compositor_task.h">
-      <Filter>ui\compositor\tasks</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\ui\compositor\tasks\paint_ui_task.h">
       <Filter>ui\compositor\tasks</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\playback\clip_item.h">
@@ -9025,6 +9013,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\compositor\playback\transform_item.h">
       <Filter>ui\compositor\playback</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\animation\animation_scheduler.h">
+      <Filter>ui\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\animation\animation_proxy.h">
+      <Filter>ui\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\animation\animation_frame.h">
+      <Filter>ui\animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
