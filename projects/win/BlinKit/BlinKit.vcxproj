@@ -1318,7 +1318,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\WebTaskRunner.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\Widget.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\win\SystemInfo.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\ChromeClientImpl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\chrome_client_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\ContextMenuAllowedScope.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\ContextMenuClientImpl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\DragClientImpl.cpp" />
@@ -2855,7 +2855,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\weborigin\KURLHash.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\Widget.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\WindowsKeyboardCodes.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ChromeClientImpl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\chrome_client_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ContextMenuAllowedScope.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ContextMenuClientImpl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\DragClientImpl.h" />

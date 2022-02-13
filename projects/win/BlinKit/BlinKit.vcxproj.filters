@@ -3954,9 +3954,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\loader\frame_loader_client.cpp">
       <Filter>blink\renderer\core\loader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\ChromeClientImpl.cpp">
-      <Filter>blink\renderer\web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\DragClientImpl.cpp">
       <Filter>blink\renderer\web</Filter>
     </ClCompile>
@@ -4219,6 +4216,9 @@
       <Filter>ui\animation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\page_widget_delegate.cpp">
+      <Filter>blink\renderer\web</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\chrome_client_impl.cpp">
       <Filter>blink\renderer\web</Filter>
     </ClCompile>
   </ItemGroup>
@@ -6731,9 +6731,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebTextDirection.h">
       <Filter>blink\public\web</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ChromeClientImpl.h">
-      <Filter>blink\renderer\web</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\ContextMenuClientImpl.h">
       <Filter>blink\renderer\web</Filter>
     </ClInclude>
@@ -9021,6 +9018,9 @@
       <Filter>ui\animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\page_widget_delegate.h">
+      <Filter>blink\renderer\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\chrome_client_impl.h">
       <Filter>blink\renderer\web</Filter>
     </ClInclude>
   </ItemGroup>
