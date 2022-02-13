@@ -13,7 +13,7 @@
 
 #include <vsstyle.h>
 #include "blinkit/blink/renderer/platform/geometry/int_rect.h"
-#include "blinkit/win/bk_bitmap.h"
+#include "blinkit/ui/animation/animation_frame.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkColorPriv.h"
 
@@ -116,16 +116,15 @@ void WinThemeEngine::paint(WebCanvas *canvas, Part part, State state, const IntR
 
     HDC hdc = CreateCompatibleDC(nullptr);
 
-    BkBitmap bitmap;
-    HGDIOBJ oldBitmap = SelectObject(hdc, bitmap.InstallDIBSection(rect.width(), rect.height(), hdc));
-
-    SkCanvas dcCanvas(bitmap);
+    AnimationFrame frame(hdc, rect.size());
+    HGDIOBJ oldBitmap = SelectObject(hdc, frame);
 
     constexpr SkColor placeholder = SkColorSetARGBMacro(1, 0, 0, 0);
-    dcCanvas.clear(placeholder);
+    frame.GetCanvas()->clear(placeholder);
 
     (this->*m_paint)(hdc, part, state, rect.size(), extra);
 
+    SkBitmap &bitmap = frame.GetBitmap();
     // Post-process the pixels to fix up the alpha values (see big comment above).
     const SkPMColor placeholderValue = SkPreMultiplyColor(placeholder);
     const int pixelCount = rect.width() * rect.height();
