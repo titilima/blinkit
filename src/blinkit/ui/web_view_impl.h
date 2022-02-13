@@ -86,7 +86,7 @@ public:
     bool SelectionBounds(blink::IntRect &anchor, blink::IntRect &focus) const;
     void SetScaleFactor(float scaleFactor);
     void SetFocus(bool focus);
-    void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState = false);
+    void SetVisibilityState(blink::PageVisibilityState visibilityState);
     void showContextMenu(const blink::WebContextMenuData &data);
     const blink::IntSize& Size(void) const { return m_size; }
     void updatePageDefinedViewportConstraints(const blink::ViewportDescription &description);
