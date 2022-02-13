@@ -312,7 +312,6 @@ bool WebViewHostWindow::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam,
 
 bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
 {
-    ScheduleAnimation();
     switch (Msg)
     {
         case WM_ERASEBKGND:

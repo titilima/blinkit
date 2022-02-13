@@ -18,18 +18,12 @@ namespace BlinKit {
 
 AnimationScheduler *AnimationProxy::m_scheduler = nullptr;
 
-void AnimationProxy::ScheduleAnimation(void)
-{
-    m_scheduler->Register(this);
-}
-
 void AnimationProxy::SetNeedsAnimate(void)
 {
-    if (!m_scheduler->IsProxyRegistered(this))
-        return;
-
     if (m_animateRequested)
         return;
+
+    m_scheduler->Register(this);
     m_animateRequested = true;
 
     double tick = monotonicallyIncreasingTime();
@@ -38,13 +32,8 @@ void AnimationProxy::SetNeedsAnimate(void)
 
 void AnimationProxy::Update(void)
 {
-    WebViewImpl *view = GetView();
-    if (!m_animateRequested)
-    {
-        double tick = monotonicallyIncreasingTime();
-        view->BeginFrame(tick);
-    }
-    view->UpdateLifecycle();
+    ASSERT(m_animateRequested);
+    GetView()->UpdateLifecycle();
 }
 
 } // namespace BlinKit

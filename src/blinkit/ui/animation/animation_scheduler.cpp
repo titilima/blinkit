@@ -27,12 +27,12 @@ void AnimationScheduler::ScheduleAnimations(void)
 
     for (AnimationProxy *proxy : m_registeredProxies)
     {
-        if (proxy->m_deferCommits)
-            continue;
-
-        proxy->Update();
-        if (proxy->m_commitRequested)
-            proxy->Commit();
+        if (!proxy->m_deferCommits)
+        {
+            proxy->Update();
+            if (proxy->m_commitRequested)
+                proxy->Commit();
+        }
 
         proxy->m_animateRequested = false;
         proxy->m_commitRequested = false;

@@ -14,7 +14,6 @@
 #define BLINKIT_ANIMATION_SCHEDULER_H
 
 #include <unordered_set>
-#include "third_party/zed/include/zed/container_utilites.hpp"
 
 namespace BlinKit {
 
@@ -25,9 +24,6 @@ class AnimationScheduler
 public:
     AnimationScheduler(void);
 
-    bool IsProxyRegistered(AnimationProxy *proxy) const {
-        return zed::key_exists(m_registeredProxies, proxy);
-    }
     void Register(AnimationProxy *proxy) {
         m_registeredProxies.emplace(proxy);
     }

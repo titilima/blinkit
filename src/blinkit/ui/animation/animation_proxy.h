@@ -42,8 +42,6 @@ public:
     virtual void Flush(std::unique_ptr<AnimationFrame> &frame, const IntRect &rect) = 0;
 protected:
     AnimationProxy(void) = default;
-
-    void ScheduleAnimation(void);
 private:
     friend class AnimationScheduler;
 
