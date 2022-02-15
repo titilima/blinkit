@@ -59,6 +59,11 @@ private:
 
     void OnAnimationTimer(Timer<WebViewHostWindow> *);
 
+    void SetResizingTimer(void);
+    void KillResizingTimer(void);
+    void AdjustUpdateWhileResizing(DWORD tick);
+    static void CALLBACK ResizingTimerProc(HWND, UINT, UINT_PTR timerId, DWORD tick);
+
     // AnimationProxy
     std::unique_ptr<AnimationFrame> CreateAnimationFrame(const IntSize &size) override;
     void Flush(std::unique_ptr<AnimationFrame> &frame, const IntRect &rect) override;
@@ -82,6 +87,10 @@ private:
     bool m_animationTaskScheduled = false;
     bool m_changingSizeOrPosition = false;
     WebCursorInfo m_cursorInfo;
+
+    DWORD m_resizingTick = 0;
+    UINT_PTR m_resizingTimerId = 0;
+    static std::unordered_map<UINT_PTR, WebViewHostWindow *> m_resizingHosts;
 };
 
 } // namespace BlinKit

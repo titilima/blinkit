@@ -24,8 +24,8 @@ namespace BlinKit {
 
 static std::unordered_map<HWND, WebViewHostWindow *> g_hosts;
 
-constexpr int INITIAL_CANVAS_WIDTH  = 16;
-constexpr int INITIAL_CANVAS_HEIGHT = 16;
+static constexpr int INITIAL_CANVAS_WIDTH  = 16;
+static constexpr int INITIAL_CANVAS_HEIGHT = 16;
 
 #ifndef NDEBUG
 class MessageLogger
@@ -48,6 +48,10 @@ static PageVisibilityState GetPageVisibilityState(LONG style)
 {
     return 0 != (style & WS_VISIBLE) ? PageVisibilityStateVisible : PageVisibilityStateHidden;
 }
+
+static constexpr UINT RESIZING_TIMER_ELAPSE = 100;
+static constexpr DWORD RESIZING_COMMIT_ELAPSE = 500;
+std::unordered_map<UINT_PTR, WebViewHostWindow *> WebViewHostWindow::m_resizingHosts;
 
 WebViewHostWindow::WebViewHostWindow(const BkWebViewClient &client, HWND hWnd, LPCREATESTRUCT cs)
     : WebViewHost(client, GetPageVisibilityState(cs->style))
@@ -81,6 +85,15 @@ WebViewHostWindow::~WebViewHostWindow(void)
 
     if (nullptr != m_hWnd)
         g_hosts.erase(m_hWnd);
+}
+
+void WebViewHostWindow::AdjustUpdateWhileResizing(DWORD tick)
+{
+    if (tick - m_resizingTick < RESIZING_COMMIT_ELAPSE)
+        return;
+
+    m_resizingTick = tick;
+    CommitAnimationImmediately();
 }
 
 void WebViewHostWindow::ChangeTitle(const std::string &title)
@@ -186,6 +199,14 @@ void WebViewHostWindow::InitializeCanvas(HDC hdc)
     m_oldBitmap = SelectBitmap(m_memoryDC, *m_currentFrame);
 }
 
+void WebViewHostWindow::KillResizingTimer(void)
+{
+    ASSERT(0 != m_resizingTimerId);
+    KillTimer(nullptr, m_resizingTimerId);
+    m_resizingHosts.erase(m_resizingTimerId);
+    m_resizingTimerId = 0;
+}
+
 void WebViewHostWindow::OnAnimationTimer(Timer<WebViewHostWindow> *)
 {
 #if 0
@@ -281,8 +302,11 @@ void WebViewHostWindow::OnShowWindow(HWND, BOOL fShow, UINT)
 
 void WebViewHostWindow::OnSize(HWND, UINT state, int cx, int cy)
 {
-    if (SIZE_MINIMIZED != state)
-        Resize(IntSize(cx, cy));
+    if (SIZE_MINIMIZED == state)
+        return;
+
+    m_resizingTick = GetTickCount();
+    Resize(IntSize(cx, cy));
 }
 
 bool WebViewHostWindow::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
@@ -368,8 +392,10 @@ bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wPa
 
         case WM_ENTERSIZEMOVE:
             m_changingSizeOrPosition = true;
+            SetResizingTimer();
             break;
         case WM_EXITSIZEMOVE:
+            KillResizingTimer();
             m_changingSizeOrPosition = false;
             break;
 
@@ -389,6 +415,13 @@ bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wPa
     return true;
 }
 
+void CALLBACK WebViewHostWindow::ResizingTimerProc(HWND, UINT, UINT_PTR timerId, DWORD tick)
+{
+    auto it = m_resizingHosts.find(timerId);
+    ASSERT(m_resizingHosts.end() != it);
+    it->second->AdjustUpdateWhileResizing(tick);
+}
+
 float WebViewHostWindow::ScaleFactorFromDPI(UINT dpi)
 {
     switch (dpi)
@@ -402,6 +435,13 @@ float WebViewHostWindow::ScaleFactorFromDPI(UINT dpi)
     }
     ASSERT(USER_DEFAULT_SCREEN_DPI == dpi);
     return 1.0;
+}
+
+void WebViewHostWindow::SetResizingTimer(void)
+{
+    ASSERT(0 == m_resizingTimerId);
+    m_resizingTimerId = SetTimer(nullptr, 0, RESIZING_TIMER_ELAPSE, ResizingTimerProc);
+    m_resizingHosts[m_resizingTimerId] = this;
 }
 
 void WebViewHostWindow::ShowContextMenu(const WebContextMenuData &data)
