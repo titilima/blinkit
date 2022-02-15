@@ -18,6 +18,26 @@ namespace BlinKit {
 
 AnimationScheduler *AnimationProxy::m_scheduler = nullptr;
 
+void AnimationProxy::CommitAnimationImmediately(void)
+{
+    SetNeedsAnimate();
+    PerformAnimation();
+    m_scheduler->Unregister(this);
+}
+
+void AnimationProxy::PerformAnimation(void)
+{
+    ASSERT(m_animateRequested);
+    if (!m_deferCommits)
+    {
+        GetView()->UpdateLifecycle();
+
+        if (m_commitRequested)
+            Commit();
+    }
+    m_animateRequested = m_commitRequested = false;
+}
+
 void AnimationProxy::SetNeedsAnimate(void)
 {
     if (m_animateRequested)
@@ -28,12 +48,6 @@ void AnimationProxy::SetNeedsAnimate(void)
 
     double tick = monotonicallyIncreasingTime();
     GetView()->BeginFrame(tick);
-}
-
-void AnimationProxy::Update(void)
-{
-    ASSERT(m_animateRequested);
-    GetView()->UpdateLifecycle();
 }
 
 } // namespace BlinKit

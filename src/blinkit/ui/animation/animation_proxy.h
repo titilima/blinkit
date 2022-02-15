@@ -35,15 +35,17 @@ public:
         m_commitRequested = true;
     }
 
-    void Update(void);
-    virtual void Commit(void) = 0;
-
     virtual std::unique_ptr<AnimationFrame> CreateAnimationFrame(const IntSize &size) = 0;
     virtual void Flush(std::unique_ptr<AnimationFrame> &frame, const IntRect &rect) = 0;
 protected:
     AnimationProxy(void) = default;
+
+    void CommitAnimationImmediately(void);
 private:
     friend class AnimationScheduler;
+
+    void PerformAnimation(void);
+    virtual void Commit(void) = 0;
 
     static AnimationScheduler *m_scheduler;
     bool m_deferCommits = true;
