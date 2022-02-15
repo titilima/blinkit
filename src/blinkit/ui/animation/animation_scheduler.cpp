@@ -11,6 +11,7 @@
 
 #include "./animation_scheduler.h"
 
+#include "blinkit/blink/renderer/wtf/MainThread.h"
 #include "blinkit/ui/animation/animation_proxy.h"
 
 namespace BlinKit {
@@ -20,24 +21,26 @@ AnimationScheduler::AnimationScheduler(void)
     AnimationProxy::m_scheduler = this;
 }
 
+void AnimationScheduler::Register(AnimationProxy *proxy)
+{
+    ASSERT(isMainThread());
+    m_registeredProxies.emplace(proxy);
+}
+
 void AnimationScheduler::ScheduleAnimations(void)
 {
     if (m_registeredProxies.empty())
         return;
 
     for (AnimationProxy *proxy : m_registeredProxies)
-    {
-        if (!proxy->m_deferCommits)
-        {
-            proxy->Update();
-            if (proxy->m_commitRequested)
-                proxy->Commit();
-        }
-
-        proxy->m_animateRequested = false;
-        proxy->m_commitRequested = false;
-    }
+        proxy->PerformAnimation();
     m_registeredProxies.clear();
+}
+
+void AnimationScheduler::Unregister(AnimationProxy *proxy)
+{
+    ASSERT(isMainThread());
+    m_registeredProxies.erase(proxy);
 }
 
 } // namespace BlinKit

@@ -24,9 +24,8 @@ class AnimationScheduler
 public:
     AnimationScheduler(void);
 
-    void Register(AnimationProxy *proxy) {
-        m_registeredProxies.emplace(proxy);
-    }
+    void Register(AnimationProxy *proxy);
+    void Unregister(AnimationProxy *proxy);
 
     void ScheduleAnimations(void);
 private:
