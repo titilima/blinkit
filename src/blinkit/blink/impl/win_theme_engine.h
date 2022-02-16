@@ -19,30 +19,32 @@
 
 namespace BlinKit {
 
-class WinThemeEngine final : public blink::WebThemeEngine
+class WinThemeEngine final : public WebThemeEngine
 {
 public:
     WinThemeEngine(void);
     ~WinThemeEngine(void);
 private:
-    void PaintByUser32(HDC hdc, Part part, State state, const blink::IntSize &size, const ExtraParams *extra);
-    void PaintByUxTheme(HDC hdc, Part part, State state, const blink::IntSize &size, const ExtraParams *extra);
-    static void PaintScrollbarCorner(HDC hdc, const blink::IntSize &size);
-    void PaintButtonByUxTheme(HDC hdc, State state, const blink::IntSize &size, const ButtonExtraParams *extra);
-    void PaintScrollArrowByUxTheme(HDC hdc, Part part, State state, const blink::IntSize &size, const ScrollbarTrackExtraParams *extra);
-    void PaintScrollPartByUxTheme(HDC hdc, Part part, State state, const blink::IntSize &size, const ScrollbarTrackExtraParams *extra);
-    void PaintTextFieldByUxTheme(HDC hdc, State state, const blink::IntSize &size, const TextFieldExtraParams *extra);
-    void Draw(HDC hdc, PCWSTR classList, int partId, int stateId, const blink::IntSize &size);
+    void PaintByUser32(HDC hdc, Part part, State state, const IntRect &rect, const ExtraParams *extra);
+    void PaintByUxTheme(HDC hdc, Part part, State state, const IntRect &rect, const ExtraParams *extra);
+    static void PaintScrollbarCorner(HDC hdc, const IntSize &size);
+    void PaintButtonByUxTheme(HDC hdc, State state, const IntSize &size, const ButtonExtraParams &extra);
+    void PaintProgressBarByUxTheme(HDC hdc, State state, const IntRect &rect, const ProgressBarExtraParams &extra);
+    void PaintScrollArrowByUxTheme(HDC hdc, Part part, State state, const IntSize &size, const ScrollbarTrackExtraParams &extra);
+    void PaintScrollPartByUxTheme(HDC hdc, Part part, State state, const IntSize &size, const ScrollbarTrackExtraParams &extra);
+    void PaintTextFieldByUxTheme(HDC hdc, State state, const IntSize &size, const TextFieldExtraParams &extra);
+    void Draw(HDC hdc, PCWSTR classList, int partId, int stateId, const IntSize &size);
+    void Draw(HDC hdc, PCWSTR classList, int partId, int stateId, const RECT &rect, const DTBGOPTS *options);
 
-    // blink::WebThemeEngine
-    blink::IntSize GetViewportSize(Part part) override;
-    void paint(blink::WebCanvas *canvas, Part part, State state, const blink::IntRect &rect, const ExtraParams *extra) override;
+    // WebThemeEngine
+    IntSize GetViewportSize(Part part) override;
+    void paint(WebCanvas *canvas, Part part, State state, const IntRect &rect, const ExtraParams *extra) override;
 
     using GetMetricsType = decltype(GetSystemMetricsForDpi) *;
     GetMetricsType m_getMetrics;
 
     HMODULE m_uxtheme;
-    void (WinThemeEngine::*m_paint)(HDC, Part, State, const blink::IntSize &, const ExtraParams *);
+    void (WinThemeEngine::*m_paint)(HDC, Part, State, const IntRect &, const ExtraParams *);
 
     using OpenThemeType = decltype(OpenThemeDataForDpi) *;
     OpenThemeType m_openTheme;
