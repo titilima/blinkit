@@ -47,6 +47,9 @@ void LayerTreeHost::clearViewportLayers(void)
 
 void LayerTreeHost::Commit(void)
 {
+    if (m_deviceViewportSize.isEmpty())
+        return;
+
     std::unique_ptr<RasterTask> task = std::make_unique<RasterTask>(m_deviceViewportSize, m_proxy);
     // m_rootLayer->DebugPrint();
     m_rootLayer->Update(RasterContext(), *task);
