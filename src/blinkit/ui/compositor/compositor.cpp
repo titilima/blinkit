@@ -49,7 +49,7 @@ Compositor::~Compositor(void)
     ASSERT(g_allLayers.empty());
 }
 
-SkCanvas* Compositor::BeginPaint(AnimationProxy &proxy, const IntSize &viewportSize)
+SkCanvas* Compositor::BeginPaint(const IntSize &viewportSize)
 {
     bool createNewFrame = true;
     if (m_backingStoreFrame)
@@ -60,7 +60,7 @@ SkCanvas* Compositor::BeginPaint(AnimationProxy &proxy, const IntSize &viewportS
     }
 
     if (createNewFrame)
-        m_backingStoreFrame = proxy.CreateAnimationFrame(viewportSize);
+        m_backingStoreFrame = std::make_unique<AnimationFrame>(viewportSize);
     return m_backingStoreFrame->GetCanvas();
 }
 
@@ -70,7 +70,7 @@ void Compositor::PerformComposition(
     const RasterResult &rasterResult,
     const IntRect &dirtyRect)
 {
-    SkCanvas *canvas = BeginPaint(proxy, viewportSize);
+    SkCanvas *canvas = BeginPaint(viewportSize);
 
     SkPaint paint;
     paint.setAntiAlias(false);

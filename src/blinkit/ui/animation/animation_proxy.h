@@ -35,7 +35,6 @@ public:
         m_commitRequested = true;
     }
 
-    virtual std::unique_ptr<AnimationFrame> CreateAnimationFrame(const IntSize &size) = 0;
     virtual void Flush(std::unique_ptr<AnimationFrame> &frame, const IntRect &rect) = 0;
 protected:
     AnimationProxy(void) = default;

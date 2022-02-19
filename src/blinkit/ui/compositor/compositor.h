@@ -43,7 +43,7 @@ public:
     void PerformComposition(AnimationProxy &proxy, const IntSize &viewportSize, const RasterResult &rasterResult,
         const IntRect &dirtyRect);
 private:
-    SkCanvas* BeginPaint(AnimationProxy &proxy, const IntSize &viewportSize);
+    SkCanvas* BeginPaint(const IntSize &viewportSize);
     LayerSnapshot& RequireSnapshot(int layerId, const IntSize &layerBounds, const IntSize &viewportSize);
 
     void TaskLoop(void);

@@ -23,9 +23,7 @@ namespace BlinKit {
 class AnimationFrame
 {
 public:
-#ifdef _Z_OS_WINDOWS
-    AnimationFrame(HDC hdc, const IntSize &size);
-#endif
+    AnimationFrame(const IntSize &size);
     ~AnimationFrame(void);
 
     SkBitmap& GetBitmap(void) { return m_bitmap; }

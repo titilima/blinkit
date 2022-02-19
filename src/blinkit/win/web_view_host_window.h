@@ -65,7 +65,6 @@ private:
     static void CALLBACK ResizingTimerProc(HWND, UINT, UINT_PTR timerId, DWORD tick);
 
     // AnimationProxy
-    std::unique_ptr<AnimationFrame> CreateAnimationFrame(const IntSize &size) override;
     void Flush(std::unique_ptr<AnimationFrame> &frame, const IntRect &rect) override;
     // WebViewHost
     void ChangeTitle(const std::string &title) override;

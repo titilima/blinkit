@@ -102,11 +102,6 @@ void WebViewHostWindow::ChangeTitle(const std::string &title)
     SetWindowTextW(m_hWnd, ws.c_str());
 }
 
-std::unique_ptr<AnimationFrame> WebViewHostWindow::CreateAnimationFrame(const IntSize &size)
-{
-    return std::make_unique<AnimationFrame>(m_memoryDC, size);
-}
-
 void WebViewHostWindow::DidChangeCursor(const WebCursorInfo &cursorInfo)
 {
     if (m_changingSizeOrPosition)
@@ -195,7 +190,7 @@ void WebViewHostWindow::Flush(std::unique_ptr<AnimationFrame> &frame, const IntR
 void WebViewHostWindow::InitializeCanvas(HDC hdc)
 {
     m_memoryDC = CreateCompatibleDC(hdc);
-    m_currentFrame = std::make_unique<AnimationFrame>(m_memoryDC, IntSize(INITIAL_CANVAS_WIDTH, INITIAL_CANVAS_HEIGHT));
+    m_currentFrame = std::make_unique<AnimationFrame>(IntSize(INITIAL_CANVAS_WIDTH, INITIAL_CANVAS_HEIGHT));
     m_oldBitmap = SelectBitmap(m_memoryDC, *m_currentFrame);
 }
 

@@ -118,7 +118,7 @@ void WinThemeEngine::paint(WebCanvas *canvas, Part part, State state, const IntR
 
     HDC hdc = CreateCompatibleDC(nullptr);
 
-    AnimationFrame frame(hdc, rect.size());
+    AnimationFrame frame(rect.size());
     HGDIOBJ oldBitmap = SelectObject(hdc, frame);
 
     constexpr SkColor placeholder = SkColorSetARGBMacro(1, 0, 0, 0);

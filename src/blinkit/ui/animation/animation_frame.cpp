@@ -24,7 +24,7 @@ IntSize AnimationFrame::GetSize(void) const
 }
 
 #ifdef _Z_OS_WINDOWS
-AnimationFrame::AnimationFrame(HDC hdc, const IntSize &size)
+AnimationFrame::AnimationFrame(const IntSize &size)
 {
     BITMAPINFOHEADER bih = { 0 };
     bih.biSize = sizeof(bih);
@@ -36,7 +36,7 @@ AnimationFrame::AnimationFrame(HDC hdc, const IntSize &size)
     bih.biXPelsPerMeter = bih.biYPelsPerMeter = 1;
 
     PVOID bits = nullptr;
-    m_hBitmap = CreateDIBSection(hdc, reinterpret_cast<BITMAPINFO *>(&bih), 0, &bits, nullptr, 0);
+    m_hBitmap = CreateDIBSection(nullptr, reinterpret_cast<BITMAPINFO *>(&bih), DIB_RGB_COLORS, &bits, nullptr, 0);
     if (nullptr == m_hBitmap)
     {
         ASSERT(nullptr != m_hBitmap);
