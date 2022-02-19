@@ -25,6 +25,8 @@ class AnimationScheduler;
 class AnimationProxy
 {
 public:
+    virtual ~AnimationProxy(void);
+
     virtual WebViewImpl* GetView(void) const = 0;
 
     void SetDeferCommits(bool deferCommits) {
@@ -37,7 +39,7 @@ public:
 
     virtual void Flush(std::unique_ptr<AnimationFrame> &frame, const IntRect &rect) = 0;
 protected:
-    AnimationProxy(void) = default;
+    AnimationProxy(void);
 
     void CommitAnimationImmediately(void);
 private:

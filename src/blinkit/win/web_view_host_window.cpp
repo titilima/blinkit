@@ -15,6 +15,7 @@
 #include "blinkit/app/win_app.h"
 #include "blinkit/blink/renderer/core/editing/Editor.h"
 #include "blinkit/ui/animation/animation_frame.h"
+#include "blinkit/ui/compositor/compositor.h"
 #include "blinkit/ui/web_view_impl.h"
 #include "blinkit/win/context_menu_controller.h"
 
@@ -79,12 +80,14 @@ WebViewHostWindow::WebViewHostWindow(const BkWebViewClient &client, HWND hWnd, L
 
 WebViewHostWindow::~WebViewHostWindow(void)
 {
+    AppImpl::Get().GetCompositor().Detach(this);
+
     if (nullptr != m_oldBitmap)
         SelectBitmap(m_memoryDC, m_oldBitmap);
     DeleteDC(m_memoryDC);
 
-    if (nullptr != m_hWnd)
-        g_hosts.erase(m_hWnd);
+    g_hosts.erase(m_hWnd);
+    m_hWnd = nullptr;
 }
 
 void WebViewHostWindow::AdjustUpdateWhileResizing(DWORD tick)

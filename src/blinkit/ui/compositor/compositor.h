@@ -13,6 +13,7 @@
 #ifndef BLINKIT_COMPOSITOR_H
 #define BLINKIT_COMPOSITOR_H
 
+#include <unordered_set>
 #include "blinkit/ui/compositor/raster/raster_result.h"
 #include "third_party/zed/include/zed/threading/task_queue.hpp"
 
@@ -32,6 +33,12 @@ public:
     Compositor(void);
     ~Compositor(void);
 
+    void Attach(AnimationProxy *proxy);
+    void Detach(AnimationProxy *proxy);
+#ifndef NDEBUG
+    bool IsProxyAttached(AnimationProxy *proxy);
+#endif
+
     void PostTask(CompositorTask *task) { m_queue.add(task); }
     void PostTasks(std::vector<CompositorTask *> &tasks);
 
@@ -40,7 +47,7 @@ public:
 
     void ReleaseSnapshot(int layerId);
     void UpdateSnapshot(const LayerContext &input, const IntSize &viewportSize);
-    void PerformComposition(AnimationProxy &proxy, const IntSize &viewportSize, const RasterResult &rasterResult,
+    void PerformComposition(AnimationProxy *proxy, const IntSize &viewportSize, const RasterResult &rasterResult,
         const IntRect &dirtyRect);
 private:
     SkCanvas* BeginPaint(const IntSize &viewportSize);
@@ -54,6 +61,9 @@ private:
 
     std::unique_ptr<AnimationFrame> m_backingStoreFrame;
     std::unordered_map<int, std::unique_ptr<LayerSnapshot>> m_snapshots;
+
+    zed::mutex m_lockForProxies;
+    std::unordered_set<AnimationProxy *> m_livingProxies;
 };
 
 } // namespace BlinKit

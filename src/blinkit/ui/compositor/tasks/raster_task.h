@@ -53,7 +53,7 @@ private:
     void Run(Compositor &compositor) override;
 
     const IntSize m_viewportSize;
-    AnimationProxy &m_proxy;
+    AnimationProxy *m_proxy;
 
     RasterInput m_input;
     RasterResult m_result;

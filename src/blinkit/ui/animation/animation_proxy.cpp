@@ -11,12 +11,26 @@
 
 #include "./animation_proxy.h"
 
+#include "blinkit/app/app_impl.h"
 #include "blinkit/ui/animation/animation_scheduler.h"
+#include "blinkit/ui/compositor/compositor.h"
 #include "blinkit/ui/web_view_impl.h"
 
 namespace BlinKit {
 
 AnimationScheduler *AnimationProxy::m_scheduler = nullptr;
+
+AnimationProxy::AnimationProxy(void)
+{
+    AppImpl::Get().GetCompositor().Attach(this);
+}
+
+AnimationProxy::~AnimationProxy(void)
+{
+#ifndef NDEBUG
+    ASSERT(!AppImpl::Get().GetCompositor().IsProxyAttached(this)); // Should be detached already!
+#endif
+}
 
 void AnimationProxy::CommitAnimationImmediately(void)
 {

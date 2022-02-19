@@ -18,7 +18,7 @@
 namespace BlinKit {
 
 RasterTask::RasterTask(const IntSize &viewportSize, AnimationProxy &proxy)
-    : m_viewportSize(viewportSize), m_proxy(proxy)
+    : m_viewportSize(viewportSize), m_proxy(&proxy)
 {
 }
 

@@ -32,7 +32,7 @@ class LayerTreeHost;
 class WebViewHost : public AnimationProxy
 {
 public:
-    virtual ~WebViewHost(void);
+    ~WebViewHost(void) override;
 
     WebViewImpl* GetView(void) const override { return m_view; }
     WebLayerTreeView* GetLayerTreeView(void) const;

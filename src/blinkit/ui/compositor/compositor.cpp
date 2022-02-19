@@ -49,6 +49,12 @@ Compositor::~Compositor(void)
     ASSERT(g_allLayers.empty());
 }
 
+void Compositor::Attach(AnimationProxy *proxy)
+{
+    auto _ = m_lockForProxies.guard();
+    m_livingProxies.emplace(proxy);
+}
+
 SkCanvas* Compositor::BeginPaint(const IntSize &viewportSize)
 {
     bool createNewFrame = true;
@@ -64,8 +70,14 @@ SkCanvas* Compositor::BeginPaint(const IntSize &viewportSize)
     return m_backingStoreFrame->GetCanvas();
 }
 
+void Compositor::Detach(AnimationProxy *proxy)
+{
+    auto _ = m_lockForProxies.guard();
+    m_livingProxies.erase(proxy);
+}
+
 void Compositor::PerformComposition(
-    AnimationProxy &proxy,
+    AnimationProxy *proxy,
     const IntSize &viewportSize,
     const RasterResult &rasterResult,
     const IntRect &dirtyRect)
@@ -86,7 +98,9 @@ void Compositor::PerformComposition(
         it->second->BlendToCanvas(*canvas, dirtyRect, &paint);
     }
 
-    proxy.Flush(m_backingStoreFrame, dirtyRect);
+    auto _ = m_lockForProxies.guard();
+    if (zed::key_exists(m_livingProxies, proxy))
+        proxy->Flush(m_backingStoreFrame, dirtyRect);
 }
 
 void Compositor::PostCallback(Callback &&callback)
@@ -159,5 +173,13 @@ void Compositor::UpdateSnapshot(const LayerContext &input, const IntSize &viewpo
     };
     snapshot.Update(viewportSize, input, callback);
 }
+
+#ifndef NDEBUG
+bool Compositor::IsProxyAttached(AnimationProxy *proxy)
+{
+    auto _ = m_lockForProxies.guard();
+    return zed::key_exists(m_livingProxies, proxy);
+}
+#endif
 
 } // namespace BlinKit
