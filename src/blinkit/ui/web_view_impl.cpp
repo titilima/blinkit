@@ -902,6 +902,9 @@ void WebViewImpl::Resize(const IntSize &size)
     ResizeViewportAnchor anchor(*view, m_page->frameHost().visualViewport());
     ResizeViewWhileAnchored(view);
     SendResizeEventAndRepaint();
+
+    if (nullptr != m_client.SizeChanged)
+        m_resizePending = true;
 }
 
 #if 0 // BKTODO:
@@ -1329,6 +1332,13 @@ void WebViewImpl::UpdateLifecycle(void)
     UpdateLayerTreeBackgroundColor();
 
     PageWidgetDelegate::updateAllLifecyclePhases(*m_page, *m_frame);
+
+    if (m_resizePending)
+    {
+        m_resizePending = false;
+        ASSERT(nullptr != m_client.SizeChanged);
+        m_client.SizeChanged(this, m_size.width(), m_size.height(), m_client.UserData);
+    }
 
 #if 0 // BKTODO:
     if (m_pageColorOverlay)

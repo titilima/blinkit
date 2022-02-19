@@ -211,6 +211,7 @@ private:
     bool m_imeAcceptEvents = true;
     bool m_doingDragAndDrop = false;
     bool m_ignoreInputEvents = false;
+    bool m_resizePending = false;
     // Webkit expects keyPress events to be suppressed if the associated keyDown
     // event was handled. Safari implements this behavior by peeking out the
     // associated WM_CHAR event if the keydown was handled. We emulate

@@ -100,8 +100,10 @@ protected:
     void adjust_raw_client(BkWebViewClient &client) const override;
 private:
     virtual void document_ready(BkWebView v) = 0;
+    virtual void size_changed(BkWebView v, int width, int height) {}
 
     static void BKAPI document_ready_callback(BkWebView v, void *p);
+    static void BKAPI size_changed_callback(BkWebView v, int w, int h, void *p);
 };
 
 template <class T>
@@ -470,11 +472,17 @@ inline void BKAPI request_client_root::request_failed_callback(int code, void *p
 inline void web_view_client_root::adjust_raw_client(BkWebViewClient &client) const
 {
     client.DocumentReady = document_ready_callback;
+    client.SizeChanged = size_changed_callback;
 }
 
 inline void BKAPI web_view_client_root::document_ready_callback(BkWebView v, void *p)
 {
     get_client_root(p)->document_ready(v);
+}
+
+inline void BKAPI web_view_client_root::size_changed_callback(BkWebView v, int w, int h, void *p)
+{
+    get_client_root(p)->size_changed(v, w, h);
 }
 
 #ifdef __ATLWIN_H__

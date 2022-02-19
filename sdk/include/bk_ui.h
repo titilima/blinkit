@@ -34,6 +34,7 @@ struct BkWebViewClient {
     void *UserData;
     void (BKAPI * DocumentReady)(BkWebView, void *);
     bool_t (BKAPI * TitleChange)(BkWebView, const char *, void *);
+    void (BKAPI * SizeChanged)(BkWebView, int, int, void *);
 };
 
 BKEXPORT int BKAPI BkLoadUI(BkWebView view, const char *URI);
