@@ -290,6 +290,14 @@ void WebViewHostWindow::OnPaint(HWND hwnd)
 
     PAINTSTRUCT ps;
     HDC hdc = BeginPaint(hwnd, &ps);
+
+    int x = ps.rcPaint.left;
+    int y = ps.rcPaint.top;
+    int cx = ps.rcPaint.right - ps.rcPaint.top;
+    int cy = ps.rcPaint.bottom - ps.rcPaint.top;
+    if (auto _ = m_paintLock.guard())
+        BitBlt(hdc, x, y, cx, cy, m_memoryDC, x, y, SRCCOPY);
+
     EndPaint(hwnd, &ps);
 }
 
