@@ -16,6 +16,7 @@
 #include "blinkit/ui/animation/animation_frame.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkColorPriv.h"
+#include "third_party/zed/include/zed/win/hmodule.hpp"
 
 namespace BlinKit {
 
@@ -34,9 +35,7 @@ WinThemeEngine::WinThemeEngine(void)
     , m_paint(&WinThemeEngine::PaintByUser32)
 {
     HMODULE user32 = GetModuleHandle(TEXT("User32.dll"));
-    FARPROC getMetrics = GetProcAddress(user32, "GetSystemMetricsForDpi");
-    if (nullptr != getMetrics)
-        m_getMetrics = reinterpret_cast<GetMetricsType>(getMetrics);
+    zed::hmodule::get_proc_address(user32, "GetSystemMetricsForDpi", m_getMetrics);
 
     m_uxtheme = LoadLibrary(TEXT("UxTheme.dll"));
     if (nullptr == m_uxtheme)
@@ -46,9 +45,7 @@ WinThemeEngine::WinThemeEngine(void)
         return;
 
     m_paint = &WinThemeEngine::PaintByUxTheme;
-
-    m_openTheme = reinterpret_cast<OpenThemeType>(GetProcAddress(m_uxtheme, "OpenThemeDataForDpi"));
-    if (nullptr == m_openTheme)
+    if (!zed::hmodule::get_proc_address(m_uxtheme, "OpenThemeDataForDpi", m_openTheme))
         m_openTheme = OpenThemeWrapper;
 }
 
