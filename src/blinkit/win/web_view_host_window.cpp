@@ -255,6 +255,19 @@ void WebViewHostWindow::OnKey(HWND, UINT vk, BOOL fDown, int, UINT)
     GetView()->ProcessKeyEvent(type, vk, modifiers);
 }
 
+void WebViewHostWindow::OnKillFocus(HWND hwnd, HWND hwndNewFocus)
+{
+    WebViewImpl *v = GetView();
+    v->SetIsActive(false);
+    v->SetFocus(false);
+}
+
+void WebViewHostWindow::OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags)
+{
+    if (GetFocus() != hwnd)
+        SetFocus(hwnd);
+}
+
 void WebViewHostWindow::OnMouse(UINT message, WPARAM wParam, LPARAM lParam)
 {
     if (m_changingSizeOrPosition)
@@ -264,6 +277,12 @@ void WebViewHostWindow::OnMouse(UINT message, WPARAM wParam, LPARAM lParam)
         GetView()->ProcessMouseEvent(e);
     };
     m_mouseSession.Process(m_hWnd, message, wParam, lParam, callback);
+}
+
+int WebViewHostWindow::OnMouseActivate(HWND hwnd, HWND hwndTopLevel, UINT codeHitTest, UINT msg)
+{
+    SetFocus(hwnd);
+    return MA_ACTIVATE;
 }
 
 BOOL WebViewHostWindow::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
@@ -299,6 +318,13 @@ void WebViewHostWindow::OnPaint(HWND hwnd)
         BitBlt(hdc, x, y, cx, cy, m_memoryDC, x, y, SRCCOPY);
 
     EndPaint(hwnd, &ps);
+}
+
+void WebViewHostWindow::OnSetFocus(HWND hwnd, HWND hwndOldFocus)
+{
+    WebViewImpl *v = GetView();
+    v->SetFocus(true);
+    v->SetIsActive(true);
 }
 
 void WebViewHostWindow::OnShowWindow(HWND, BOOL fShow, UINT)
@@ -363,6 +389,8 @@ bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wPa
         }
 
         case WM_LBUTTONDOWN:
+            HANDLE_WM_LBUTTONDOWN(hWnd, wParam, lParam, OnLButtonDown);
+            [[fallthrough]];
         case WM_LBUTTONUP:
         case WM_MOUSEMOVE:
         case WM_RBUTTONDOWN:
@@ -389,11 +417,14 @@ bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wPa
             HANDLE_WM_SIZE(hWnd, wParam, lParam, OnSize);
             break;
 
+        case WM_MOUSEACTIVATE:
+            *result = HANDLE_WM_MOUSEACTIVATE(hWnd, wParam, lParam, OnMouseActivate);
+            break;
         case WM_SETFOCUS:
-            GetView()->SetFocus(true);
+            HANDLE_WM_SETFOCUS(hWnd, wParam, lParam, OnSetFocus);
             break;
         case WM_KILLFOCUS:
-            GetView()->SetFocus(false);
+            HANDLE_WM_KILLFOCUS(hWnd, wParam, lParam, OnKillFocus);
             break;
 
         case WM_ENTERSIZEMOVE:

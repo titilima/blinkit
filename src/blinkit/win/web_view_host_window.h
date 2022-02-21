@@ -50,10 +50,14 @@ private:
     void OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc);
     void OnIMEStartComposition(HWND hwnd);
     void OnKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags);
+    void OnKillFocus(HWND hwnd, HWND hwndNewFocus);
+    void OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags);
     void OnMouse(UINT message, WPARAM wParam, LPARAM lParam);
+    int OnMouseActivate(HWND hwnd, HWND hwndTopLevel, UINT codeHitTest, UINT msg);
     static BOOL OnNCCreate(HWND hwnd, LPCREATESTRUCT cs);
     void OnNCDestroy(void);
     void OnPaint(HWND hwnd);
+    void OnSetFocus(HWND hwnd, HWND hwndOldFocus);
     void OnShowWindow(HWND hwnd, BOOL fShow, UINT status);
     void OnSize(HWND hwnd, UINT state, int cx, int cy);
 
