@@ -84,8 +84,9 @@ public:
     void Resize(const blink::IntSize &size);
     void scheduleAnimation(void);
     bool SelectionBounds(blink::IntRect &anchor, blink::IntRect &focus) const;
-    void SetScaleFactor(float scaleFactor);
     void SetFocus(bool focus);
+    void SetIsActive(bool active);
+    void SetScaleFactor(float scaleFactor);
     void SetVisibilityState(blink::PageVisibilityState visibilityState);
     void showContextMenu(const blink::WebContextMenuData &data);
     const blink::IntSize& Size(void) const { return m_size; }

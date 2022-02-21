@@ -1160,6 +1160,12 @@ void WebViewImpl::SetFocus(bool focus)
     }
 }
 
+void WebViewImpl::SetIsActive(bool active)
+{
+    if (m_page)
+        m_page->focusController().setActive(active);
+}
+
 void WebViewImpl::SetPageScaleFactor(float scaleFactor)
 {
     ASSERT(m_page);
