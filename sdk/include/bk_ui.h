@@ -35,6 +35,9 @@ struct BkWebViewClient {
     void (BKAPI * DocumentReady)(BkWebView, void *);
     bool_t (BKAPI * TitleChange)(BkWebView, const char *, void *);
     void (BKAPI * SizeChanged)(BkWebView, int, int, void *);
+#ifdef _WIN32
+    bool_t (BKAPI * ProcessMessage)(HWND, UINT, WPARAM, LPARAM, LRESULT *, void *);
+#endif
 };
 
 BKEXPORT int BKAPI BkLoadUI(BkWebView view, const char *URI);
@@ -78,8 +81,6 @@ inline HWND BkCreateWebViewControl(
 BKEXPORT BkWebView BKAPI BkGetWebView(HWND hWnd);
 
 BKEXPORT LRESULT CALLBACK BkDefWindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
-
-BKEXPORT bool_t BKAPI BkProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
 
 #endif // _WIN32
 

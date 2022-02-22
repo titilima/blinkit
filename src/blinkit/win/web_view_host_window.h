@@ -27,7 +27,7 @@ class AnimationFrame;
 class WebViewHostWindow final : public WebViewHost
 {
 public:
-    WebViewHostWindow(const BkWebViewClient &client, HWND hWnd, LPCREATESTRUCT cs);
+    static WebViewHostWindow* CreateInstance(HWND hWnd, LPCREATESTRUCT cs);
     ~WebViewHostWindow(void) override;
 
     HWND GetHWND(void) const { return m_hWnd; }
@@ -38,13 +38,15 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
-    static bool ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
+    bool ProcessMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT &result);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private:
+    WebViewHostWindow(const BkWebViewClient &client, HWND hWnd, LPCREATESTRUCT cs);
+
+    bool ForwardMessageToClient(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT &result);
+
     void InitializeCanvas(HDC hdc);
     static float ScaleFactorFromDPI(UINT dpi);
-
-    bool ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
 
     void OnChar(HWND hwnd, TCHAR ch, int cRepeat);
     void OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc);
@@ -54,8 +56,8 @@ private:
     void OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags);
     void OnMouse(UINT message, WPARAM wParam, LPARAM lParam);
     int OnMouseActivate(HWND hwnd, HWND hwndTopLevel, UINT codeHitTest, UINT msg);
-    static BOOL OnNCCreate(HWND hwnd, LPCREATESTRUCT cs);
-    void OnNCDestroy(void);
+    bool OnNCCreate(WPARAM wParam, LPARAM lParam, LRESULT &result);
+    bool OnNCDestroy(HWND hwnd, WPARAM wParam, LPARAM lParam, LRESULT &result);
     void OnPaint(HWND hwnd);
     void OnSetFocus(HWND hwnd, HWND hwndOldFocus);
     void OnShowWindow(HWND hwnd, BOOL fShow, UINT status);
@@ -71,9 +73,9 @@ private:
     // AnimationProxy
     void Flush(std::unique_ptr<AnimationFrame> &frame, const IntRect &rect) override;
     // WebViewHost
-    void ChangeTitle(const std::string &title) override;
     void DidChangeCursor(const WebCursorInfo &cursorInfo) override;
     void ShowContextMenu(const WebContextMenuData &data) override;
+    void ProcessTitleChange(const String &title) override;
 
     HWND m_hWnd;
 

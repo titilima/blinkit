@@ -99,10 +99,14 @@ void WebViewHostWindow::AdjustUpdateWhileResizing(DWORD tick)
     CommitAnimationImmediately();
 }
 
-void WebViewHostWindow::ChangeTitle(const std::string &title)
+WebViewHostWindow* WebViewHostWindow::CreateInstance(HWND hWnd, LPCREATESTRUCT cs)
 {
-    std::wstring ws = zed::multi_byte_to_wide_string(title, CP_UTF8);
-    SetWindowTextW(m_hWnd, ws.c_str());
+    BkWebViewClient *client = reinterpret_cast<BkWebViewClient *>(cs->lpCreateParams);
+    if (nullptr != client)
+        return new WebViewHostWindow(*client, hWnd, cs);
+
+    ASSERT(nullptr != client);
+    return nullptr;
 }
 
 void WebViewHostWindow::DidChangeCursor(const WebCursorInfo &cursorInfo)
@@ -188,6 +192,13 @@ void WebViewHostWindow::Flush(std::unique_ptr<AnimationFrame> &frame, const IntR
     HDC hdc = GetDC(m_hWnd);
     BitBlt(hdc, rect.x(), rect.y(), rect.width(), rect.height(), m_memoryDC, rect.x(), rect.y(), SRCCOPY);
     ReleaseDC(m_hWnd, hdc);
+}
+
+bool WebViewHostWindow::ForwardMessageToClient(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT &result)
+{
+    if (nullptr == m_client.ProcessMessage)
+        return false;
+    return m_client.ProcessMessage(hWnd, Msg, wParam, lParam, &result, m_client.UserData);
 }
 
 void WebViewHostWindow::InitializeCanvas(HDC hdc)
@@ -285,22 +296,21 @@ int WebViewHostWindow::OnMouseActivate(HWND hwnd, HWND hwndTopLevel, UINT codeHi
     return MA_ACTIVATE;
 }
 
-BOOL WebViewHostWindow::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
+bool WebViewHostWindow::OnNCCreate(WPARAM wParam, LPARAM lParam, LRESULT &result)
 {
-    BkWebViewClient *client = reinterpret_cast<BkWebViewClient *>(cs->lpCreateParams);
-    if (nullptr == client)
-    {
-        ASSERT(nullptr != client);
-        return FALSE;
-    }
-
-    new WebViewHostWindow(*client, hwnd, cs);
-    return TRUE;
+    result = TRUE;
+    return ForwardMessageToClient(m_hWnd, WM_NCCREATE, wParam, lParam, result);
 }
 
-void WebViewHostWindow::OnNCDestroy(void)
+bool WebViewHostWindow::OnNCDestroy(HWND hwnd, WPARAM wParam, LPARAM lParam, LRESULT &result)
 {
+    auto pfn = m_client.ProcessMessage;
+    void *ud = m_client.UserData;
+
     delete this;
+
+    result = 0;
+    return pfn(hwnd, WM_NCDESTROY, wParam, lParam, &result, ud);
 }
 
 void WebViewHostWindow::OnPaint(HWND hwnd)
@@ -341,37 +351,13 @@ void WebViewHostWindow::OnSize(HWND, UINT state, int cx, int cy)
     Resize(IntSize(cx, cy));
 }
 
-bool WebViewHostWindow::ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
+bool WebViewHostWindow::ProcessMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT &result)
 {
-    // MessageLogger _(Msg);
-    switch (Msg)
-    {
-        case WM_NCCREATE:
-            HANDLE_WM_NCCREATE(hWnd, wParam, lParam, OnNCCreate);
-            [[fallthrough]];
-        case WM_NCCALCSIZE:
-            return false;
-    }
-
-    WebViewHostWindow *host = zed::query_value(g_hosts, hWnd, nullptr);
-    if (nullptr == host)
-        return false;
-
-    if (WM_NCDESTROY == Msg)
-    {
-        host->OnNCDestroy();
-        return false;
-    }
-
-    return host->ProcessWindowMessageImpl(hWnd, Msg, wParam, lParam, result);
-}
-
-bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
-{
+    bool handled = true;
     switch (Msg)
     {
         case WM_ERASEBKGND:
-            *result = FALSE;
+            result = FALSE;
             break;
         case WM_PAINT:
             HANDLE_WM_PAINT(hWnd, wParam, lParam, OnPaint);
@@ -384,7 +370,7 @@ bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wPa
                 return false;
 
             ::SetCursor(m_cursorInfo.externalHandle);
-            *result = TRUE;
+            result = TRUE;
             break;
         }
 
@@ -418,7 +404,7 @@ bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wPa
             break;
 
         case WM_MOUSEACTIVATE:
-            *result = HANDLE_WM_MOUSEACTIVATE(hWnd, wParam, lParam, OnMouseActivate);
+            result = HANDLE_WM_MOUSEACTIVATE(hWnd, wParam, lParam, OnMouseActivate);
             break;
         case WM_SETFOCUS:
             HANDLE_WM_SETFOCUS(hWnd, wParam, lParam, OnSetFocus);
@@ -445,11 +431,30 @@ bool WebViewHostWindow::ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wPa
             OnDPIChanged(hWnd, HIWORD(wParam), reinterpret_cast<LPRECT>(lParam));
             break;
 
+        case WM_NCCREATE:
+            return OnNCCreate(wParam, lParam, result);
+        case WM_NCDESTROY:
+            return OnNCDestroy(hWnd, wParam, lParam, result);
         default:
-            return false;
+            handled = false;
     }
 
+    if (!ForwardMessageToClient(hWnd, Msg, wParam, lParam, result))
+        return handled;
     return true;
+}
+
+void WebViewHostWindow::ProcessTitleChange(const String &title)
+{
+    if (nullptr == m_client.TitleChange)
+        return;
+
+    std::string newTitle = title.stdUtf8();
+    if (m_client.TitleChange(GetView(), newTitle.c_str(), m_client.UserData))
+        return;
+
+    std::wstring ws = zed::multi_byte_to_wide_string(newTitle, CP_UTF8);
+    SetWindowTextW(m_hWnd, ws.c_str());
 }
 
 void CALLBACK WebViewHostWindow::ResizingTimerProc(HWND, UINT, UINT_PTR timerId, DWORD tick)
@@ -544,19 +549,22 @@ extern "C" {
 
 BKEXPORT LRESULT CALLBACK BkDefWindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-    LRESULT r = 0;
-    bool handled = WebViewHostWindow::ProcessWindowMessage(hWnd, Msg, wParam, lParam, &r);
-    if (handled)
-    {
-        switch (Msg)
+    do {
+        WebViewHostWindow *host = zed::query_value(g_hosts, hWnd, nullptr);
+        if (nullptr == host)
         {
-            case WM_NCCREATE:
-            case WM_NCDESTROY:
+            if (WM_NCCREATE != Msg)
                 break;
-            default:
-                return r;
+
+            host = WebViewHostWindow::CreateInstance(hWnd, reinterpret_cast<LPCREATESTRUCT>(lParam));
+            if (nullptr == host)
+                return FALSE;
         }
-    }
+
+        LRESULT r = 0;
+        if (host->ProcessMessage(hWnd, Msg, wParam, lParam, r))
+            return r;
+    } while (false);
 
     WNDPROC defProc = IsWindowUnicode(hWnd) ? DefWindowProcW : DefWindowProcA;
     return defProc(hWnd, Msg, wParam, lParam);
@@ -567,11 +575,6 @@ BKEXPORT BkWebView BKAPI BkGetWebView(HWND hWnd)
     if (WebViewHostWindow *host = zed::query_value(g_hosts, hWnd, nullptr))
         return host->GetView();
     return nullptr;
-}
-
-BKEXPORT bool_t BKAPI BkProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result)
-{
-    return WebViewHostWindow::ProcessWindowMessage(hWnd, Msg, wParam, lParam, result);
 }
 
 } // extern "C"
