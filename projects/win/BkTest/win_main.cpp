@@ -79,7 +79,7 @@ static void BKAPI DocumentReady(BkWebView v, void *)
     // BKTODO: Add test code here.
 }
 
-static LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+static bool CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result, void *)
 {
     LRESULT r = 0;
     switch (Msg)
@@ -95,9 +95,10 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
             PostQuitMessage(EXIT_SUCCESS);
             break;
         default:
-            r = BkDefWindowProc(hWnd, Msg, wParam, lParam);
+            return false;
     }
-    return r;
+    *result = r;
+    return true;
 }
 
 static const TCHAR ClassName[] = TEXT("BkTestWindow");
@@ -106,7 +107,7 @@ static bool InitApplication(HINSTANCE hInstance)
 {
     WNDCLASS wc = { 0 };
     wc.style = CS_HREDRAW | CS_VREDRAW;
-    wc.lpfnWndProc = WndProc;
+    wc.lpfnWndProc = BkDefWindowProc;
     wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wc.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
     wc.lpszClassName = ClassName;
@@ -121,6 +122,7 @@ static int Run(HINSTANCE hInstance, int nShowCmd)
     BkWebViewClient client = { 0 };
     client.SizeOfStruct = sizeof(BkWebViewClient);
     client.DocumentReady = DocumentReady;
+    client.ProcessMessage = WndProc;
     HWND hWnd = BkCreateWebViewWindow(ClassName, TEXT("BlinKit Test Program"), WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
         nullptr, nullptr, nullptr, &client);
