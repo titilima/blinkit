@@ -47,6 +47,7 @@ private:
 
     void InitializeCanvas(HDC hdc, int cx, int cy);
     static float ScaleFactorFromDPI(UINT dpi);
+    void MakeBitBlt(const IntRect &rect);
 
     void OnChar(HWND hwnd, TCHAR ch, int cRepeat);
     BOOL OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);
@@ -72,7 +73,8 @@ private:
     static void CALLBACK ResizingTimerProc(HWND, UINT, UINT_PTR timerId, DWORD tick);
 
     // AnimationProxy
-    void Flush(std::unique_ptr<AnimationFrame> &frame, const IntRect &rect) override;
+    void FlushFrame(const SkBitmap &bitmap, const IntPoint &position, const IntSize &size, const SkPaint &paint) override;
+    void SwapFrame(std::unique_ptr<AnimationFrame> &frame, const IntSize &size) override;
     // WebViewHost
     void DidChangeCursor(const WebCursorInfo &cursorInfo) override;
     void ShowContextMenu(const WebContextMenuData &data) override;

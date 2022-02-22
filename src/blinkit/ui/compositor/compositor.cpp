@@ -82,7 +82,11 @@ void Compositor::PerformComposition(
     const RasterResult &rasterResult,
     const IntRect &dirtyRect)
 {
-    SkCanvas *canvas = BeginPaint(viewportSize);
+    SkCanvas *canvas = BeginPaint(dirtyRect.size());
+
+    const IntPoint offset = dirtyRect.location();
+    if (IntPoint::zero() != offset)
+        canvas->setMatrix(SkMatrix::MakeTrans(-offset.x(), -offset.y()));
 
     SkPaint paint;
     paint.setAntiAlias(false);
@@ -99,8 +103,20 @@ void Compositor::PerformComposition(
     }
 
     auto _ = m_lockForProxies.guard();
-    if (zed::key_exists(m_livingProxies, proxy))
-        proxy->Flush(m_backingStoreFrame, dirtyRect);
+    if (!zed::key_exists(m_livingProxies, proxy))
+        return;
+
+    const IntSize size = dirtyRect.size();
+    if (size == viewportSize)
+    {
+        ASSERT(IntPoint::zero() == offset); // SHOULD BE full invalidation!
+        proxy->SwapFrame(m_backingStoreFrame, size);
+    }
+    else
+    {
+        paint.setXfermodeMode(SkXfermode::kSrc_Mode);
+        proxy->FlushFrame(m_backingStoreFrame->GetBitmap(), offset, size, paint);
+    }
 }
 
 void Compositor::PostCallback(Callback &&callback)

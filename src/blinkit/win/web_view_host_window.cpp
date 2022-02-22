@@ -171,16 +171,17 @@ void WebViewHostWindow::DidChangeCursor(const WebCursorInfo &cursorInfo)
     ::SetCursor(m_cursorInfo.externalHandle);
 }
 
-void WebViewHostWindow::Flush(std::unique_ptr<AnimationFrame> &frame, const IntRect &rect)
+void WebViewHostWindow::FlushFrame(const SkBitmap &bitmap, const IntPoint &position, const IntSize &size, const SkPaint &paint)
 {
+    IntRect dirtyRect(position, size);
+
     auto _ = m_paintLock.guard();
 
-    m_currentFrame.swap(frame);
-    SelectBitmap(m_memoryDC, *m_currentFrame);
+    SkCanvas *canvas = m_currentFrame->GetCanvas();
+    SkIRect src = SkIRect::MakeWH(size.width(), size.height());
+    canvas->drawBitmapRect(bitmap, src, dirtyRect, &paint);
 
-    HDC hdc = GetDC(m_hWnd);
-    BitBlt(hdc, rect.x(), rect.y(), rect.width(), rect.height(), m_memoryDC, rect.x(), rect.y(), SRCCOPY);
-    ReleaseDC(m_hWnd, hdc);
+    MakeBitBlt(dirtyRect);
 }
 
 bool WebViewHostWindow::ForwardMessageToClient(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT &result)
@@ -194,6 +195,8 @@ void WebViewHostWindow::InitializeCanvas(HDC hdc, int cx, int cy)
 {
     m_memoryDC = CreateCompatibleDC(hdc);
 
+    cx = std::max(cx, 1);
+    cy = std::max(cy, 1);
     m_currentFrame = std::make_unique<AnimationFrame>(IntSize(cx, cy));
     m_currentFrame->GetCanvas()->clear(DefaultBackgroundColor());
 
@@ -206,6 +209,13 @@ void WebViewHostWindow::KillResizingTimer(void)
     KillTimer(nullptr, m_resizingTimerId);
     m_resizingHosts.erase(m_resizingTimerId);
     m_resizingTimerId = 0;
+}
+
+void WebViewHostWindow::MakeBitBlt(const IntRect &rect)
+{
+    HDC hdc = GetDC(m_hWnd);
+    BitBlt(hdc, rect.x(), rect.y(), rect.width(), rect.height(), m_memoryDC, rect.x(), rect.y(), SRCCOPY);
+    ReleaseDC(m_hWnd, hdc);
 }
 
 void WebViewHostWindow::OnAnimationTimer(Timer<WebViewHostWindow> *)
@@ -315,6 +325,8 @@ bool WebViewHostWindow::OnNCDestroy(HWND hwnd, WPARAM wParam, LPARAM lParam, LRE
     void *ud = m_client.UserData;
 
     delete this;
+    if (nullptr == pfn)
+        return false;
 
     result = 0;
     return pfn(hwnd, WM_NCDESTROY, wParam, lParam, &result, ud);
@@ -538,6 +550,18 @@ void WebViewHostWindow::ShowContextMenu(const WebContextMenuData &data)
             return;
     }
     menuController.RunEditorFunction(GetView()->GetFrame().editor(), pfn);
+}
+
+void WebViewHostWindow::SwapFrame(std::unique_ptr<AnimationFrame> &frame, const IntSize &size)
+{
+    IntRect dirtyRect(IntPoint(), size);
+
+    auto _ = m_paintLock.guard();
+
+    m_currentFrame.swap(frame);
+    SelectBitmap(m_memoryDC, *m_currentFrame);
+
+    MakeBitBlt(dirtyRect);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

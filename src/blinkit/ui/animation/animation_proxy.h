@@ -15,6 +15,8 @@
 
 #include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 
+class SkBitmap;
+class SkPaint;
 class WebViewImpl;
 
 namespace BlinKit {
@@ -37,7 +39,9 @@ public:
         m_commitRequested = true;
     }
 
-    virtual void Flush(std::unique_ptr<AnimationFrame> &frame, const IntRect &rect) = 0;
+    virtual void FlushFrame(const SkBitmap &bitmap, const IntPoint &position, const IntSize &size,
+        const SkPaint &paint) = 0;
+    virtual void SwapFrame(std::unique_ptr<AnimationFrame> &frame, const IntSize &size) = 0;
 protected:
     AnimationProxy(void);
 
