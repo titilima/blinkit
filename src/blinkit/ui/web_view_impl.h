@@ -49,10 +49,10 @@ class WebViewHost;
 class WebViewImpl final : public blink::FrameLoaderClient, public blink::PageWidgetEventHandler
 {
 public:
-    WebViewImpl(const BkWebViewClient &client, blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor = SK_ColorWHITE);
+    WebViewImpl(BlinKit::WebViewHost &host, blink::PageVisibilityState visibilityState, SkColor baseBackgroundColor);
     ~WebViewImpl(void);
 
-    void Initialize(BlinKit::WebViewHost *host, float scaleFactor = 1.0);
+    void Initialize(float scaleFactor = 1.0);
 
     static WebViewImpl* From(blink::Document &document);
 
@@ -74,13 +74,11 @@ public:
     blink::LocalFrame* focusedCoreFrame(void) const { return m_frame.get(); }
     blink::LocalFrame& GetFrame(void) const { return *m_frame; }
     blink::GraphicsLayerFactory* graphicsLayerFactory(void) const { return m_graphicsLayerFactory.get(); }
-    bool HasHost(void) const { return nullptr != m_host; }
     void invalidateRect(const blink::IntRect &rect);
     void layoutUpdated(blink::LocalFrame *frame);
     blink::Page* page(void) const { return m_page.get(); }
     void ProcessKeyEvent(blink::WebInputEvent::Type type, int code, int modifiers);
     void ProcessMouseEvent(const BlinKit::MouseEvent &e);
-    bool ProcessTitleChange(const std::string &newTitle) const;
     void Resize(const blink::IntSize &size);
     void scheduleAnimation(void);
     bool SelectionBounds(blink::IntRect &anchor, blink::IntRect &focus) const;
@@ -182,8 +180,7 @@ private:
     void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) final;
 #endif
 
-    const BkWebViewClient m_client;
-    BlinKit::WebViewHost *m_host = nullptr;
+    BlinKit::WebViewHost &m_host;
 
     std::unique_ptr<blink::GraphicsLayerFactory> m_graphicsLayerFactory;
     bool m_matchesHeuristicsForGpuRasterization = false;

@@ -17,7 +17,8 @@
 namespace BlinKit {
 
 WebViewHost::WebViewHost(const BkWebViewClient &client, PageVisibilityState visibilityState)
-    : m_view(new WebViewImpl(client, visibilityState, DefaultBackgroundColor()))
+    : m_client(client)
+    , m_view(new WebViewImpl(*this, visibilityState, DefaultBackgroundColor()))
     , m_layerTreeHost(std::make_unique<LayerTreeHost>(*this))
 {
 }
@@ -39,8 +40,19 @@ WebLayerTreeView* WebViewHost::GetLayerTreeView(void) const
 
 void WebViewHost::InitializeView(float scaleFactor)
 {
-    m_view->Initialize(this, scaleFactor);
+    m_view->Initialize(scaleFactor);
     m_layerTreeHost->SetNeedsCommit();
+}
+
+void WebViewHost::ProcessDocumentReady(void)
+{
+    m_client.DocumentReady(m_view, m_client.UserData);
+}
+
+void WebViewHost::ProcessSizeChanged(const IntSize &size)
+{
+    if (nullptr != m_client.SizeChanged)
+        m_client.SizeChanged(m_view, size.width(), size.height(), m_client.UserData);
 }
 
 void WebViewHost::Resize(const IntSize &size)

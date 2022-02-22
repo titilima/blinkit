@@ -37,20 +37,24 @@ public:
     WebViewImpl* GetView(void) const override { return m_view; }
     WebLayerTreeView* GetLayerTreeView(void) const;
 
-    virtual void ChangeTitle(const std::string &title) {}
-
     virtual void DidChangeCursor(const WebCursorInfo &cursorInfo) = 0;
 
     virtual void ShowContextMenu(const WebContextMenuData &data) = 0;
     virtual void ClearContextMenu(void) {}
 
     static SkColor DefaultBackgroundColor(void);
+
+    void ProcessDocumentReady(void);
+    virtual void ProcessTitleChange(const String &title) = 0;
+    void ProcessSizeChanged(const IntSize &size);
 protected:
     WebViewHost(const BkWebViewClient &client, PageVisibilityState visibilityState);
 
     void InitializeView(float scaleFactor);
     void Resize(const IntSize &size);
     void SetScaleFactor(float scaleFactor);
+
+    const BkWebViewClient m_client;
 private:
     void Commit(void) final;
 

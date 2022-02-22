@@ -61,8 +61,8 @@ static const float ViewportAnchorCoordY = 0;
 
 const WebInputEvent* WebViewImpl::m_currentInputEvent = nullptr;
 
-WebViewImpl::WebViewImpl(const BkWebViewClient &client, PageVisibilityState visibilityState, SkColor baseBackgroundColor)
-    : m_client(client)
+WebViewImpl::WebViewImpl(WebViewHost &host, PageVisibilityState visibilityState, SkColor baseBackgroundColor)
+    : m_host(host)
     , m_graphicsLayerFactory(std::make_unique<GraphicsLayerFactoryImpl>(*this))
     , m_chromeClient(ChromeClientImpl::create(this))
     , m_contextMenuClientImpl(this)
@@ -140,8 +140,7 @@ float WebViewImpl::ClampPageScaleFactorToLimits(float scaleFactor) const
 
 void WebViewImpl::clearContextMenu(void)
 {
-    if (nullptr != m_host)
-        m_host->ClearContextMenu();
+    m_host.ClearContextMenu();
 }
 
 IntSize WebViewImpl::ContentsSize(void) const
@@ -163,8 +162,7 @@ void WebViewImpl::didChangeContentsSize(void)
 
 void WebViewImpl::didChangeCursor(const WebCursorInfo &cursorInfo)
 {
-    if (nullptr != m_host)
-        m_host->DidChangeCursor(cursorInfo);
+    m_host.DidChangeCursor(cursorInfo);
 }
 
 void WebViewImpl::didRemoveAllPendingStylesheet(void)
@@ -216,27 +214,12 @@ void WebViewImpl::dispatchDidFinishDocumentLoad(bool)
 
 void WebViewImpl::dispatchDidFinishLoad(void)
 {
-#if 0
-    if (nullptr != m_host)
-        m_host->ScheduleAnimation();
-#endif
-
-    auto task = [this] {
-        m_client.DocumentReady(this, m_client.UserData);
-    };
-    AppImpl::Get().taskRunner()->postTask(BLINK_FROM_HERE, std::move(task));
+    AppImpl::Get().taskRunner()->postTask(BLINK_FROM_HERE, std::bind(&WebViewHost::ProcessDocumentReady, &m_host));
 }
 
 void WebViewImpl::dispatchDidReceiveTitle(const String &title)
 {
-    if (nullptr == m_client.TitleChange && nullptr == m_host)
-        return;
-
-    std::string newTitle = title.stdUtf8();
-    if (nullptr != m_client.TitleChange && m_client.TitleChange(this, newTitle.c_str(), m_client.UserData))
-        return;
-    if (nullptr != m_host)
-        m_host->ChangeTitle(newTitle);
+    m_host.ProcessTitleChange(title);
 }
 
 bool WebViewImpl::EndActiveFlingAnimation(void)
@@ -547,12 +530,9 @@ void WebViewImpl::HidePopups(void)
 #endif
 }
 
-void WebViewImpl::Initialize(WebViewHost *host, float scaleFactor)
+void WebViewImpl::Initialize(float scaleFactor)
 {
-    ASSERT(nullptr == m_host);
-    m_host = host;
-
-    m_layerTreeView = host->GetLayerTreeView();
+    m_layerTreeView = m_host.GetLayerTreeView();
     ASSERT(nullptr != m_layerTreeView);
 
     m_frame = LocalFrame::create(this, &(m_page->frameHost()), scaleFactor);
@@ -839,13 +819,6 @@ void WebViewImpl::ProcessMouseEvent(const BlinKit::MouseEvent &e)
     ProcessInput(e.Translate());
 }
 
-bool WebViewImpl::ProcessTitleChange(const std::string &title) const
-{
-    if (nullptr == m_client.TitleChange)
-        return false;
-    return m_client.TitleChange(const_cast<WebViewImpl *>(this), title.c_str(), m_client.UserData);
-}
-
 void WebViewImpl::RefreshPageScaleFactorAfterLayout(void)
 {
     if (!m_frame || !m_page || nullptr == m_page->mainFrame())
@@ -898,13 +871,11 @@ void WebViewImpl::Resize(const IntSize &size)
     if (nullptr == view)
         return;
     m_size = size;
+    m_resizePending = true;
 
     ResizeViewportAnchor anchor(*view, m_page->frameHost().visualViewport());
     ResizeViewWhileAnchored(view);
     SendResizeEventAndRepaint();
-
-    if (nullptr != m_client.SizeChanged)
-        m_resizePending = true;
 }
 
 #if 0 // BKTODO:
@@ -1270,8 +1241,8 @@ bool WebViewImpl::ShouldShowContextMenu(const WebContextMenuData &data)
 
 void WebViewImpl::showContextMenu(const WebContextMenuData &data)
 {
-    if (nullptr != m_host && ShouldShowContextMenu(data))
-        m_host->ShowContextMenu(data);
+    if (ShouldShowContextMenu(data))
+        m_host.ShowContextMenu(data);
 }
 
 void WebViewImpl::transitionToCommittedForNewPage(void)
@@ -1342,8 +1313,7 @@ void WebViewImpl::UpdateLifecycle(void)
     if (m_resizePending)
     {
         m_resizePending = false;
-        ASSERT(nullptr != m_client.SizeChanged);
-        m_client.SizeChanged(this, m_size.width(), m_size.height(), m_client.UserData);
+        m_host.ProcessSizeChanged(m_size);
     }
 
 #if 0 // BKTODO:
