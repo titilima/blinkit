@@ -25,9 +25,6 @@ namespace BlinKit {
 
 static std::unordered_map<HWND, WebViewHostWindow *> g_hosts;
 
-static constexpr int INITIAL_CANVAS_WIDTH  = 16;
-static constexpr int INITIAL_CANVAS_HEIGHT = 16;
-
 #ifndef NDEBUG
 class MessageLogger
 {
@@ -64,18 +61,10 @@ WebViewHostWindow::WebViewHostWindow(const BkWebViewClient &client, HWND hWnd, L
 
     m_animationTimer.SetHostAliveFlag(m_hostAliveFlag);
 
-    HDC dc = GetDC(m_hWnd);
-    UINT dpi = GetDeviceCaps(dc, LOGPIXELSY);
-    ASSERT(0 != dpi && GetDeviceCaps(dc, LOGPIXELSX) == dpi);
-    InitializeCanvas(dc);
-    ReleaseDC(m_hWnd, dc);
-
     m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_ARROW);
 
     if (GetClassLong(m_hWnd, GCL_STYLE) & CS_DBLCLKS)
         m_mouseSession.EnableDoubleClick();
-
-    InitializeView(ScaleFactorFromDPI(dpi));
 }
 
 WebViewHostWindow::~WebViewHostWindow(void)
@@ -201,10 +190,13 @@ bool WebViewHostWindow::ForwardMessageToClient(HWND hWnd, UINT Msg, WPARAM wPara
     return m_client.ProcessMessage(hWnd, Msg, wParam, lParam, &result, m_client.UserData);
 }
 
-void WebViewHostWindow::InitializeCanvas(HDC hdc)
+void WebViewHostWindow::InitializeCanvas(HDC hdc, int cx, int cy)
 {
     m_memoryDC = CreateCompatibleDC(hdc);
-    m_currentFrame = std::make_unique<AnimationFrame>(IntSize(INITIAL_CANVAS_WIDTH, INITIAL_CANVAS_HEIGHT));
+
+    m_currentFrame = std::make_unique<AnimationFrame>(IntSize(cx, cy));
+    m_currentFrame->GetCanvas()->clear(DefaultBackgroundColor());
+
     m_oldBitmap = SelectBitmap(m_memoryDC, *m_currentFrame);
 }
 
@@ -229,6 +221,21 @@ void WebViewHostWindow::OnAnimationTimer(Timer<WebViewHostWindow> *)
 void WebViewHostWindow::OnChar(HWND hwnd, TCHAR ch, int)
 {
     GetView()->ProcessKeyEvent(WebInputEvent::Char, ch, 0);
+}
+
+BOOL WebViewHostWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct)
+{
+    RECT rc;
+    GetClientRect(hwnd, &rc);
+
+    HDC dc = GetDC(hwnd);
+    UINT dpi = GetDeviceCaps(dc, LOGPIXELSY);
+    ASSERT(0 != dpi && GetDeviceCaps(dc, LOGPIXELSX) == dpi);
+    InitializeCanvas(dc, rc.right, rc.bottom);
+    ReleaseDC(hwnd, dc);
+
+    InitializeView(ScaleFactorFromDPI(dpi));
+    return TRUE;
 }
 
 void WebViewHostWindow::OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc)
@@ -308,8 +315,6 @@ bool WebViewHostWindow::OnNCDestroy(HWND hwnd, WPARAM wParam, LPARAM lParam, LRE
     void *ud = m_client.UserData;
 
     delete this;
-    if (nullptr == pfn)
-        return false;
 
     result = 0;
     return pfn(hwnd, WM_NCDESTROY, wParam, lParam, &result, ud);
@@ -432,7 +437,9 @@ bool WebViewHostWindow::ProcessMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARA
             ASSERT(HIWORD(wParam) == LOWORD(lParam));
             OnDPIChanged(hWnd, HIWORD(wParam), reinterpret_cast<LPRECT>(lParam));
             break;
-
+        case WM_CREATE:
+            result = HANDLE_WM_CREATE(hWnd, wParam, lParam, OnCreate);
+            break;
         case WM_NCCREATE:
             return OnNCCreate(wParam, lParam, result);
         case WM_NCDESTROY:

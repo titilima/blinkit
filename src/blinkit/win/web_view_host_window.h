@@ -45,10 +45,11 @@ private:
 
     bool ForwardMessageToClient(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT &result);
 
-    void InitializeCanvas(HDC hdc);
+    void InitializeCanvas(HDC hdc, int cx, int cy);
     static float ScaleFactorFromDPI(UINT dpi);
 
     void OnChar(HWND hwnd, TCHAR ch, int cRepeat);
+    BOOL OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);
     void OnDPIChanged(HWND hwnd, UINT newDPI, const RECT *rc);
     void OnIMEStartComposition(HWND hwnd);
     void OnKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags);
