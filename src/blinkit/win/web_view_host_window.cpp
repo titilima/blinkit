@@ -308,6 +308,8 @@ bool WebViewHostWindow::OnNCDestroy(HWND hwnd, WPARAM wParam, LPARAM lParam, LRE
     void *ud = m_client.UserData;
 
     delete this;
+    if (nullptr == pfn)
+        return false;
 
     result = 0;
     return pfn(hwnd, WM_NCDESTROY, wParam, lParam, &result, ud);
