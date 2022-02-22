@@ -117,24 +117,21 @@ class web_view_client_impl : public client_impl<T, web_view_client_root> {};
 
 #ifdef __ATLWIN_H__
 
-class message_handler
-{
-protected:
-    BOOL ProcessWindowMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &r);
-};
-
 template <class T, class TBase = ATL::CWindow, class TWinTraits = ATL::CControlWinTraits>
-class ATL_NO_VTABLE web_view_window_impl : public ATL::CWindowImpl<T, TBase, TWinTraits>
+class ATL_NO_VTABLE web_view_window_impl : public ATL::CWindowImplBaseT<TBase, TWinTraits>
                                          , public web_view_client_impl<T>
-                                         , public message_handler
 {
 public:
+    static PCTSTR GetWndCaption(void) { return nullptr; }
+
     HWND Create(HWND hWndParent, ATL::_U_RECT rect = nullptr, PCTSTR szWindowName = nullptr,
         DWORD dwStyle = 0, DWORD dwExStyle = 0, ATL::_U_MENUorID MenuOrID = 0U);
+
+    virtual void OnFinalMessage(HWND) {}
 protected:
-    BEGIN_MSG_MAP(web_view_window_impl)
-        CHAIN_MSG_MAP(message_handler)
-    END_MSG_MAP()
+    void adjust_raw_client(BkWebViewClient &client) const override;
+private:
+    static bool_t BKAPI process_message_callback(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT *r, void *p);
 };
 
 #endif
@@ -487,9 +484,11 @@ inline void BKAPI web_view_client_root::size_changed_callback(BkWebView v, int w
 
 #ifdef __ATLWIN_H__
 
-inline BOOL message_handler::ProcessWindowMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &r)
+template <class T, class TBase, class TWinTraits>
+void web_view_window_impl<T, TBase, TWinTraits>::adjust_raw_client(BkWebViewClient &client) const
 {
-    return BkProcessWindowMessage(h, m, w, l, &r);
+    web_view_client_impl<T>::adjust_raw_client(client);
+    client.ProcessMessage = process_message_callback;
 }
 
 template <class T, class TBase, class TWinTraits>
@@ -500,9 +499,40 @@ HWND web_view_window_impl<T, TBase, TWinTraits>::Create(
     DWORD dwStyle, DWORD dwExStyle,
     ATL::_U_MENUorID MenuOrID)
 {
+    ATL::CWndClassInfo &wc = T::GetWndClassInfo();
+    if (nullptr == wc.m_lpszOrigName)
+        wc.m_lpszOrigName = this->GetWndClassName();
+    wc.m_wc.lpfnWndProc = ::BkDefWindowProc;
+    WNDPROC p = nullptr;
+    ATOM atom = wc.Register(&p);
+
+    dwStyle = T::GetWndStyle(dwStyle);
+    dwExStyle = T::GetWndExStyle(dwExStyle);
+
+    if (szWindowName == NULL)
+        szWindowName = T::GetWndCaption();
+
     BkWebViewClient client = web_view_client_impl<T>::get_client();
-    return ATL::CWindowImpl<T, TBase, TWinTraits>::Create(hWndParent, rect, szWindowName,
-        dwStyle, dwExStyle, MenuOrID, &client);
+    return CWindowImplBaseT<TBase, TWinTraits>::Create(hWndParent, rect, szWindowName,
+        dwStyle, dwExStyle, MenuOrID, atom, &client);
+}
+
+template <class T, class TBase, class TWinTraits>
+bool_t BKAPI web_view_window_impl<T, TBase, TWinTraits>::process_message_callback(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT *r, void *p)
+{
+    T *pThis = web_view_client_impl<T>::get_this(p);
+
+    if (WM_NCCREATE == m)
+        pThis->m_hWnd = h;
+
+    auto b = pThis->ProcessWindowMessage(h, m, w, l, *r);
+
+    if (WM_NCDESTROY == m)
+    {
+        pThis->m_hWnd = nullptr;
+        static_cast<web_view_window_impl<T, TBase, TWinTraits> *>(pThis)->OnFinalMessage(h);
+    }
+    return b;
 }
 
 #endif
