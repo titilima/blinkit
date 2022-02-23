@@ -13,10 +13,7 @@
 
 #include "third_party/skia/include/core/SkCanvas.h"
 #ifndef NDEBUG
-#   include "third_party/skia/include/core/SkData.h"
-#   include "third_party/skia/include/core/SkImageEncoder.h"
 #   include "third_party/skia/include/core/SkTypeface.h"
-#   include "third_party/zed/include/zed/file/file.hpp"
 #endif
 
 #ifndef NDEBUG
@@ -158,14 +155,6 @@ void Tile::DrawDebugInfo(SkCanvas &canvas) const
     char text[128];
     int len = sprintf(text, "(%d, %d) %dx%d", m_rect.x(), m_rect.y(), m_rect.width(), m_rect.height());
     canvas.drawText(text, len, 5, 15, paint);
-}
-
-void Tile::SaveAsPNG(zed::path::psz_t filePath)
-{
-    std::unique_ptr<SkImageEncoder> encoder(CreatePNGImageEncoder());
-    SkData *data = encoder->encodeData(m_bitmap, 100);
-    zed::file::write(filePath, data->data(), data->size());
-    data->deref();
 }
 #endif
 

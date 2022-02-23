@@ -15,9 +15,6 @@
 
 #include "blinkit/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/skia/include/core/SkBitmap.h"
-#ifndef NDEBUG
-#   include "third_party/zed/include/zed/file/path.hpp"
-#endif
 
 class SkCanvas;
 
@@ -51,8 +48,6 @@ public:
 #ifndef NDEBUG
     void EnableDebugInfo(void) { m_drawDebugInfo = true; }
     void DisableDebugInfo(void) { m_drawDebugInfo = false; }
-
-    void SaveAsPNG(zed::path::psz_t filePath);
 #endif
 private:
     void ResetBitmap(void);
