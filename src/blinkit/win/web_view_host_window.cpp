@@ -372,6 +372,8 @@ void WebViewHostWindow::OnSize(HWND, UINT state, int cx, int cy)
 
 bool WebViewHostWindow::ProcessMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT &result)
 {
+    // MessageLogger _(Msg);
+
     bool handled = true;
     switch (Msg)
     {
@@ -402,6 +404,7 @@ bool WebViewHostWindow::ProcessMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARA
         case WM_RBUTTONUP:
         case WM_MBUTTONDOWN:
         case WM_MBUTTONUP:
+        case WM_MOUSELEAVE:
             OnMouse(Msg, wParam, lParam);
             break;
 
