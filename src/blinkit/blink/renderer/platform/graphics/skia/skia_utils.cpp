@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: skia_utils.cpp
+// Description: Skia Utils
+//      Author: Ziming Li
+//     Created: 2022-02-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2006,2007,2008, Google Inc. All rights reserved.
  *
@@ -28,10 +39,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/graphics/skia/SkiaUtils.h"
+#include "./skia_utils.h"
 
-#include "platform/graphics/GraphicsContext.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsContext.h"
 #include "third_party/skia/include/effects/SkCornerPathEffect.h"
+#include "third_party/zed/include/zed/file/file.hpp"
 
 namespace blink {
 
@@ -349,7 +361,18 @@ void drawPlatformFocusRing(const PrimitiveType& primitive, SkCanvas* canvas, SkC
 #endif
 }
 
-template void PLATFORM_EXPORT drawPlatformFocusRing<SkRect>(const SkRect&, SkCanvas*, SkColor, int width);
-template void PLATFORM_EXPORT drawPlatformFocusRing<SkPath>(const SkPath&, SkCanvas*, SkColor, int width);
+template void drawPlatformFocusRing<SkRect>(const SkRect&, SkCanvas*, SkColor, int width);
+template void drawPlatformFocusRing<SkPath>(const SkPath&, SkCanvas*, SkColor, int width);
 
 }  // namespace blink
+
+namespace BlinKit {
+
+bool SaveBitmapAsPNG(const SkBitmap &bitmap, zed::path::psz_t filePath)
+{
+    std::unique_ptr<SkImageEncoder> encoder(CreatePNGImageEncoder());
+    RefPtr<SkData> data = adoptRef(encoder->encodeData(bitmap, 100));
+    return zed::file::write(filePath, data->data(), data->size());
+}
+
+} // namespace BlinKit

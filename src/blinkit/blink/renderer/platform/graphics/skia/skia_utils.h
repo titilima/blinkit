@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: skia_utils.h
+// Description: Skia Utils
+//      Author: Ziming Li
+//     Created: 2022-02-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2006,2007,2008, Google Inc. All rights reserved.
  *
@@ -33,31 +45,31 @@
 #ifndef SkiaUtils_h
 #define SkiaUtils_h
 
-#include "platform/PlatformExport.h"
-#include "platform/graphics/GraphicsTypes.h"
-#include "platform/graphics/Image.h"
-#include "platform/transforms/AffineTransform.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsTypes.h"
+#include "blinkit/blink/renderer/platform/graphics/Image.h"
+#include "blinkit/blink/renderer/platform/transforms/AffineTransform.h"
+#include "blinkit/blink/renderer/wtf/MathExtras.h"
 #include "third_party/skia/include/core/SkCanvas.h"
-#include "wtf/MathExtras.h"
+#include "third_party/zed/include/zed/file/path.hpp"
 
 namespace blink {
 
 class GraphicsContext;
 
-SkXfermode::Mode PLATFORM_EXPORT WebCoreCompositeToSkiaComposite(CompositeOperator, WebBlendMode = WebBlendModeNormal);
-CompositeOperator PLATFORM_EXPORT compositeOperatorFromSkia(SkXfermode::Mode);
-WebBlendMode PLATFORM_EXPORT blendModeFromSkia(SkXfermode::Mode);
+SkXfermode::Mode WebCoreCompositeToSkiaComposite(CompositeOperator, WebBlendMode = WebBlendModeNormal);
+CompositeOperator compositeOperatorFromSkia(SkXfermode::Mode);
+WebBlendMode blendModeFromSkia(SkXfermode::Mode);
 
 // Map alpha values from [0, 1] to [0, 256] for alpha blending.
-int PLATFORM_EXPORT clampedAlphaForBlending(float);
+int clampedAlphaForBlending(float);
 
 // Multiply a color's alpha channel by an additional alpha factor where
 // alpha is in the range [0, 1].
-SkColor PLATFORM_EXPORT scaleAlpha(SkColor, float);
+SkColor scaleAlpha(SkColor, float);
 
 // Multiply a color's alpha channel by an additional alpha factor where
 // alpha is in the range [0, 256].
-SkColor PLATFORM_EXPORT scaleAlpha(SkColor, int);
+SkColor scaleAlpha(SkColor, int);
 
 // Skia has problems when passed infinite, etc floats, filter them to 0.
 inline SkScalar WebCoreFloatToSkScalar(float f)
@@ -93,7 +105,7 @@ inline WindRule SkFillTypeToWindRule(SkPath::FillType fillType)
     return RULE_NONZERO;
 }
 
-SkMatrix PLATFORM_EXPORT affineTransformToSkMatrix(const AffineTransform&);
+SkMatrix affineTransformToSkMatrix(const AffineTransform&);
 
 bool nearlyIntegral(float value);
 
@@ -127,5 +139,9 @@ inline SkCanvas::SrcRectConstraint WebCoreClampingModeToSkiaRectConstraint(Image
 }
 
 } // namespace blink
+
+namespace BlinKit {
+bool SaveBitmapAsPNG(const SkBitmap &bitmap, zed::path::psz_t filePath);
+}
 
 #endif  // SkiaUtils_h
