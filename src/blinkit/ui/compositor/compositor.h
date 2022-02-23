@@ -60,7 +60,7 @@ public:
     }
 #endif
 private:
-    SkCanvas* BeginPaint(const IntSize &viewportSize);
+    SkCanvas BeginPaint(const IntSize &viewportSize);
     LayerSnapshot& RequireSnapshot(int layerId, const IntSize &layerBounds, const IntSize &viewportSize);
 
     void TaskLoop(void);

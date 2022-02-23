@@ -56,7 +56,7 @@ void Compositor::Attach(AnimationProxy *proxy)
     m_livingProxies.emplace(proxy);
 }
 
-SkCanvas* Compositor::BeginPaint(const IntSize &viewportSize)
+SkCanvas Compositor::BeginPaint(const IntSize &viewportSize)
 {
     bool createNewFrame = true;
     if (m_backingStoreFrame)
@@ -68,7 +68,7 @@ SkCanvas* Compositor::BeginPaint(const IntSize &viewportSize)
 
     if (createNewFrame)
         m_backingStoreFrame = std::make_unique<AnimationFrame>(viewportSize);
-    return m_backingStoreFrame->GetCanvas();
+    return m_backingStoreFrame->BeginPaint();
 }
 
 void Compositor::Detach(AnimationProxy *proxy)
@@ -86,9 +86,10 @@ void Compositor::PerformComposition(
     const IntPoint offset = dirtyRect.location();
     const IntSize size = dirtyRect.size();
 
-    SkCanvas *canvas = BeginPaint(size);
+    SkCanvas canvas = BeginPaint(size);
+
     if (IntPoint::zero() != offset)
-        canvas->setMatrix(SkMatrix::MakeTrans(-offset.x(), -offset.y()));
+        canvas.setMatrix(SkMatrix::MakeTrans(-offset.x(), -offset.y()));
 
     SkPaint paint;
     paint.setAntiAlias(false);
@@ -101,7 +102,7 @@ void Compositor::PerformComposition(
 
         paint.setXfermodeMode(data.opaque ? SkXfermode::kSrc_Mode : SkXfermode::kSrcATop_Mode);
 
-        it->second->BlendToCanvas(*canvas, dirtyRect, &paint);
+        it->second->BlendToCanvas(canvas, dirtyRect, &paint);
     }
 
     auto _ = m_lockForProxies.guard();

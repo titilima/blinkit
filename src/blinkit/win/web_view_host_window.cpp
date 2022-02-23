@@ -177,9 +177,9 @@ void WebViewHostWindow::FlushFrame(const SkBitmap &bitmap, const IntPoint &posit
 
     auto _ = m_paintLock.guard();
 
-    SkCanvas *canvas = m_currentFrame->GetCanvas();
+    SkCanvas canvas = m_currentFrame->BeginPaint();
     SkIRect src = SkIRect::MakeWH(size.width(), size.height());
-    canvas->drawBitmapRect(bitmap, src, dirtyRect, &paint);
+    canvas.drawBitmapRect(bitmap, src, dirtyRect, &paint);
 
     MakeBitBlt(dirtyRect);
 }
@@ -198,7 +198,7 @@ void WebViewHostWindow::InitializeCanvas(HDC hdc, int cx, int cy)
     cx = std::max(cx, 1);
     cy = std::max(cy, 1);
     m_currentFrame = std::make_unique<AnimationFrame>(IntSize(cx, cy));
-    m_currentFrame->GetCanvas()->clear(DefaultBackgroundColor());
+    m_currentFrame->BeginPaint().clear(DefaultBackgroundColor());
 
     m_oldBitmap = SelectBitmap(m_memoryDC, *m_currentFrame);
 }
