@@ -52,8 +52,12 @@ public:
     void UpdateSnapshot(const LayerContext &input, const IntSize &viewportSize);
     void PerformComposition(AnimationProxy *proxy, const IntSize &viewportSize, const RasterResult &rasterResult,
         const IntRect &dirtyRect);
+
 #ifndef NDEBUG
     void DumpSnapshots(zed::path::psz_t path);
+    void DumpBackingStoreFrame(zed::path::psz_t path) {
+        m_backingStoreFrameFolder.assign(path);
+    }
 #endif
 private:
     SkCanvas* BeginPaint(const IntSize &viewportSize);
@@ -70,6 +74,11 @@ private:
 
     zed::mutex m_lockForProxies;
     std::unordered_set<AnimationProxy *> m_livingProxies;
+
+#ifndef NDEBUG
+    zed::path::string_t GenerateBackingStoreFrameFileName(void) const;
+    zed::path::string_t m_backingStoreFrameFolder;
+#endif
 };
 
 } // namespace BlinKit

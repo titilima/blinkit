@@ -273,7 +273,7 @@ int MessageLoop::Run(BkMessageFilter filter, void *userData)
 
 #ifndef NDEBUG
             if (WM_KEYDOWN == msg.message && VK_CAPITAL == msg.wParam)
-                RunDebugCommand();
+                RunDebugCommands();
 #endif
             TranslateMessage(&msg);
             DispatchMessage(&msg);
@@ -376,14 +376,24 @@ void APIENTRY MessageLoop::TimerSchedulerCallback(PVOID arg, DWORD, DWORD)
 }
 
 #ifndef NDEBUG
-void MessageLoop::RunDebugCommand(void)
+
+static const WCHAR SnapshotsFolder[] = L"C:\\BkSnapshots\\";
+
+void MessageLoop::RunDebugCommands(void)
 {
-#if 1
+#if 0
     AppImpl::Get().GetCompositor().PostCallback([](Compositor &compositor) {
-        compositor.DumpSnapshots(L"C:\\BkSnapshots\\");
+        compositor.DumpSnapshots(SnapshotsFolder);
+    });
+#endif
+
+#if 0
+    AppImpl::Get().GetCompositor().PostCallback([](Compositor &compositor) {
+        compositor.DumpBackingStoreFrame(SnapshotsFolder);
     });
 #endif
 }
+
 #endif
 
 } // namespace BlinKit

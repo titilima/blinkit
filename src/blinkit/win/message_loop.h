@@ -58,7 +58,7 @@ private:
     static void APIENTRY CleanupCallback(PVOID arg, DWORD low, DWORD high);
 
 #ifndef NDEBUG
-    void RunDebugCommand(void);
+    void RunDebugCommands(void);
 #endif
 
     zed::mutex m_taskLock;

@@ -16,6 +16,7 @@
 #include "blinkit/ui/compositor/snapshots/layer_snapshot.h"
 #include "blinkit/ui/compositor/tasks/compositor_task.h"
 #ifndef NDEBUG
+#   include "blinkit/blink/renderer/platform/graphics/skia/skia_utils.h"
 #   include "blinkit/ui/compositor/blink/layer.h"
 #   include "third_party/skia/include/core/SkTypeface.h"
 #endif
@@ -107,6 +108,13 @@ void Compositor::PerformComposition(
     if (!zed::key_exists(m_livingProxies, proxy))
         return;
 
+#ifndef NDEBUG
+    if (!m_backingStoreFrameFolder.empty())
+    {
+        zed::path::string_t fileName = GenerateBackingStoreFrameFileName();
+        SaveBitmapAsPNG(m_backingStoreFrame->GetBitmap(), fileName.c_str());
+    }
+#endif
     if (size == viewportSize)
     {
         ASSERT(IntPoint::zero() == offset); // SHOULD BE full invalidation!
@@ -195,6 +203,21 @@ void Compositor::DumpSnapshots(zed::path::psz_t path)
 {
     for (const auto &[_, snapshot] : m_snapshots)
         snapshot->DumpTo(path);
+}
+
+zed::path::string_t Compositor::GenerateBackingStoreFrameFileName(void) const
+{
+    zed::path::string_t ret(m_backingStoreFrameFolder);
+
+#ifdef _Z_OS_WINDOWS
+    WCHAR buf[MAX_PATH];
+    wsprintfW(buf, L"%08X.png", m_backingStoreFrame.get());
+    ret.append(buf);
+#else
+    ASSERT(false); // BKTODO:
+#endif
+
+    return ret;
 }
 
 bool Compositor::IsProxyAttached(AnimationProxy *proxy)
