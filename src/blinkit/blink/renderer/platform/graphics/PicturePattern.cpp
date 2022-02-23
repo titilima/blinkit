@@ -1,10 +1,21 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PicturePattern.cpp
+// Description: PicturePattern Class
+//      Author: Ziming Li
+//     Created: 2022-02-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "platform/graphics/PicturePattern.h"
+#include "./PicturePattern.h"
 
-#include "platform/graphics/skia/SkiaUtils.h"
+#include "blinkit/blink/renderer/platform/graphics/skia/skia_utils.h"
 #include "third_party/skia/include/core/SkPicture.h"
 #include "third_party/skia/include/core/SkShader.h"
 

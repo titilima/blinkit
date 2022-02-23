@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: GraphicsContext.h
+// Description: GraphicsContext Class
+//      Author: Ziming Li
+//     Created: 2022-02-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2008-2009 Torch Mobile, Inc.
@@ -28,22 +40,22 @@
 #ifndef GraphicsContext_h
 #define GraphicsContext_h
 
-#include "platform/PlatformExport.h"
-#include "platform/fonts/Font.h"
-#include "platform/geometry/FloatRect.h"
-#include "platform/geometry/FloatRoundedRect.h"
-#include "platform/graphics/DashArray.h"
-#include "platform/graphics/DrawLooperBuilder.h"
-#include "platform/graphics/GraphicsContextState.h"
-#include "platform/graphics/ImageOrientation.h"
-#include "platform/graphics/skia/SkiaUtils.h"
+#include "blinkit/blink/renderer/platform/PlatformExport.h"
+#include "blinkit/blink/renderer/platform/fonts/Font.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRoundedRect.h"
+#include "blinkit/blink/renderer/platform/graphics/DashArray.h"
+#include "blinkit/blink/renderer/platform/graphics/DrawLooperBuilder.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsContextState.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageOrientation.h"
+#include "blinkit/blink/renderer/platform/graphics/skia/skia_utils.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
 #include "third_party/skia/include/core/SkMetaData.h"
 #include "third_party/skia/include/core/SkPictureRecorder.h"
 #include "third_party/skia/include/core/SkRegion.h"
-#include "wtf/Allocator.h"
-#include "wtf/Forward.h"
-#include "wtf/Noncopyable.h"
-#include "wtf/PassOwnPtr.h"
 
 class SkBitmap;
 class SkImage;

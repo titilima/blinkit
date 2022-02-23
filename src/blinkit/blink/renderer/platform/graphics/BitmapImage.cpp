@@ -35,20 +35,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/graphics/BitmapImage.h"
+#include "./BitmapImage.h"
 
-#include "platform/PlatformInstrumentation.h"
-#include "platform/Timer.h"
-#include "platform/TraceEvent.h"
-#include "platform/geometry/FloatRect.h"
+#include "blinkit/blink/renderer/platform/PlatformInstrumentation.h"
+#include "blinkit/blink/renderer/platform/Timer.h"
+#include "blinkit/blink/renderer/platform/TraceEvent.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
 // BKTODO: #include "platform/graphics/BitmapImageMetrics.h"
-#include "platform/graphics/DeferredImageDecoder.h"
-#include "platform/graphics/ImageObserver.h"
-#include "platform/graphics/StaticBitmapImage.h"
-#include "platform/graphics/skia/SkiaUtils.h"
+#include "blinkit/blink/renderer/platform/graphics/DeferredImageDecoder.h"
+#include "blinkit/blink/renderer/platform/graphics/ImageObserver.h"
+#include "blinkit/blink/renderer/platform/graphics/StaticBitmapImage.h"
+#include "blinkit/blink/renderer/platform/graphics/skia/skia_utils.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 #include "third_party/skia/include/core/SkCanvas.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/text/WTFString.h"
 
 namespace blink {
 

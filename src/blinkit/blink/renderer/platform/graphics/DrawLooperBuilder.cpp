@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DrawLooperBuilder.cpp
+// Description: DrawLooperBuilder Class
+//      Author: Ziming Li
+//     Created: 2022-02-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -28,18 +39,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/graphics/DrawLooperBuilder.h"
+#include "./DrawLooperBuilder.h"
 
-#include "platform/geometry/FloatSize.h"
-#include "platform/graphics/Color.h"
-#include "platform/graphics/skia/SkiaUtils.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatSize.h"
+#include "blinkit/blink/renderer/platform/graphics/Color.h"
+#include "blinkit/blink/renderer/platform/graphics/skia/skia_utils.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "third_party/skia/include/core/SkColorFilter.h"
 #include "third_party/skia/include/core/SkDrawLooper.h"
 #include "third_party/skia/include/core/SkPaint.h"
 #include "third_party/skia/include/core/SkXfermode.h"
 #include "third_party/skia/include/effects/SkBlurMaskFilter.h"
-#include "wtf/RefPtr.h"
 
 namespace blink {
 

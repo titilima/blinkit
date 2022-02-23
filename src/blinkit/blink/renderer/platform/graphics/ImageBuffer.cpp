@@ -60,7 +60,7 @@
 #include "platform/graphics/gpu/DrawingBuffer.h"
 #include "platform/graphics/gpu/Extensions3DUtil.h"
 #endif
-#include "blinkit/blink/renderer/platform/graphics/skia/SkiaUtils.h"
+#include "blinkit/blink/renderer/platform/graphics/skia/skia_utils.h"
 #if 0 // BKTODO:
 #include "platform/image-encoders/skia/JPEGImageEncoder.h"
 #include "platform/image-encoders/skia/PNGImageEncoder.h"

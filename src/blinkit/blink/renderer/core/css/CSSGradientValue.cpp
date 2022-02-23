@@ -49,7 +49,7 @@
 #include "blinkit/blink/renderer/platform/graphics/Gradient.h"
 #include "blinkit/blink/renderer/platform/graphics/GradientGeneratedImage.h"
 #include "blinkit/blink/renderer/platform/graphics/Image.h"
-#include "blinkit/blink/renderer/platform/graphics/skia/SkiaUtils.h"
+#include "blinkit/blink/renderer/platform/graphics/skia/skia_utils.h"
 #include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 #include "blinkit/blink/renderer/wtf/text/WTFString.h"
 

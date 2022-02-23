@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: Path.cpp
+// Description: Path Class
+//      Author: Ziming Li
+//     Created: 2022-02-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006 Apple Computer, Inc.  All rights reserved.
  *                     2006 Rob Buis <buis@kde.org>
@@ -29,14 +40,13 @@
 
 #include "platform/graphics/Path.h"
 
-#include <math.h>
-#include "platform/geometry/FloatPoint.h"
-#include "platform/geometry/FloatRect.h"
-#include "platform/graphics/GraphicsContext.h"
-#include "platform/graphics/skia/SkiaUtils.h"
-#include "platform/transforms/AffineTransform.h"
+#include <cmath>
+#include "blinkit/blink/renderer/platform/geometry/FloatPoint.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsContext.h"
+#include "blinkit/blink/renderer/platform/graphics/skia/skia_utils.h"
+#include "blinkit/blink/renderer/platform/transforms/AffineTransform.h"
 #include "third_party/skia/include/pathops/SkPathOps.h"
-#include "wtf/MathExtras.h"
 
 namespace blink {
 

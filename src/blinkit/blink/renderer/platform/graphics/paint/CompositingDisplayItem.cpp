@@ -1,13 +1,24 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CompositingDisplayItem.cpp
+// Description: CompositingDisplayItem Classes
+//      Author: Ziming Li
+//     Created: 2022-02-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "platform/graphics/paint/CompositingDisplayItem.h"
+#include "./CompositingDisplayItem.h"
 
-#include "platform/RuntimeEnabledFeatures.h"
-#include "platform/graphics/GraphicsContext.h"
-#include "platform/graphics/skia/SkiaUtils.h"
-#include "public/platform/WebDisplayItemList.h"
+#include "blinkit/blink/public/platform/WebDisplayItemList.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/platform/graphics/GraphicsContext.h"
+#include "blinkit/blink/renderer/platform/graphics/skia/skia_utils.h"
 
 namespace blink {
 

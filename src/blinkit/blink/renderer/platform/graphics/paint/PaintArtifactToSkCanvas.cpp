@@ -1,18 +1,29 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PaintArtifactToSkCanvas.cpp
+// Description: PaintArtifact Helpers
+//      Author: Ziming Li
+//     Created: 2022-02-23
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "platform/graphics/paint/PaintArtifactToSkCanvas.h"
+#include "./PaintArtifactToSkCanvas.h"
 
-#include "platform/graphics/paint/ClipPaintPropertyNode.h"
-#include "platform/graphics/paint/DrawingDisplayItem.h"
-#include "platform/graphics/paint/EffectPaintPropertyNode.h"
-#include "platform/graphics/paint/PaintArtifact.h"
-#include "platform/graphics/paint/PaintChunk.h"
-#include "platform/graphics/paint/TransformPaintPropertyNode.h"
-#include "platform/graphics/skia/SkiaUtils.h"
-#include "platform/transforms/AffineTransform.h"
-#include "platform/transforms/TransformationMatrix.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/ClipPaintPropertyNode.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/DrawingDisplayItem.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/EffectPaintPropertyNode.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/PaintArtifact.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/PaintChunk.h"
+#include "blinkit/blink/renderer/platform/graphics/paint/TransformPaintPropertyNode.h"
+#include "blinkit/blink/renderer/platform/graphics/skia/skia_utils.h"
+#include "blinkit/blink/renderer/platform/transforms/AffineTransform.h"
+#include "blinkit/blink/renderer/platform/transforms/TransformationMatrix.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkPicture.h"
 #include "third_party/skia/include/core/SkPictureRecorder.h"
