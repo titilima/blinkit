@@ -16,6 +16,10 @@
 #include "chromium/base/time/time.h"
 #include "third_party/zed/include/zed/container_utilites.hpp"
 #include "third_party/zed/include/zed/float.hpp"
+#ifndef NDEBUG
+#   include "blinkit/app/app_impl.h"
+#   include "blinkit/ui/compositor/compositor.h"
+#endif
 
 using namespace blink;
 
@@ -267,6 +271,10 @@ int MessageLoop::Run(BkMessageFilter filter, void *userData)
             if (filter(&msg, userData))
                 continue;
 
+#ifndef NDEBUG
+            if (WM_KEYDOWN == msg.message && VK_CAPITAL == msg.wParam)
+                RunDebugCommand();
+#endif
             TranslateMessage(&msg);
             DispatchMessage(&msg);
 
@@ -366,5 +374,16 @@ void APIENTRY MessageLoop::TimerSchedulerCallback(PVOID arg, DWORD, DWORD)
 {
     reinterpret_cast<MessageLoop *>(arg)->ScheduleTimers();
 }
+
+#ifndef NDEBUG
+void MessageLoop::RunDebugCommand(void)
+{
+#if 1
+    AppImpl::Get().GetCompositor().PostCallback([](Compositor &compositor) {
+        compositor.DumpSnapshots(L"C:\\BkSnapshots\\");
+    });
+#endif
+}
+#endif
 
 } // namespace BlinKit

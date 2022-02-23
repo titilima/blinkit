@@ -26,6 +26,9 @@ private:
     bool TryToReuse(Type assumedType, const IntSize &layerBounds, const IntSize &viewportSize) override;
     void Update(const IntSize &viewportSize, const LayerContext &context, const UpdateCallback &callback) override;
     void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect, const SkPaint *paint) override;
+#ifndef NDEBUG
+    void DumpTo(zed::path::psz_t path) override;
+#endif
 
     Tile m_tile;
 };

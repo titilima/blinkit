@@ -53,6 +53,9 @@ private:
 
     void Update(const IntSize &viewportSize, const LayerContext &context, const UpdateCallback &callback) final;
     void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect, const SkPaint *paint) final;
+#ifndef NDEBUG
+    void DumpTo(zed::path::psz_t path) final;
+#endif
 
     IntSize m_layerBounds;
     std::vector<std::unique_ptr<Tile>> m_tiles;

@@ -16,6 +16,9 @@
 #include <unordered_set>
 #include "blinkit/ui/compositor/raster/raster_result.h"
 #include "third_party/zed/include/zed/threading/task_queue.hpp"
+#ifndef NDEBUG
+#   include "third_party/zed/include/zed/file/path.hpp"
+#endif
 
 class SkCanvas;
 
@@ -49,6 +52,9 @@ public:
     void UpdateSnapshot(const LayerContext &input, const IntSize &viewportSize);
     void PerformComposition(AnimationProxy *proxy, const IntSize &viewportSize, const RasterResult &rasterResult,
         const IntRect &dirtyRect);
+#ifndef NDEBUG
+    void DumpSnapshots(zed::path::psz_t path);
+#endif
 private:
     SkCanvas* BeginPaint(const IntSize &viewportSize);
     LayerSnapshot& RequireSnapshot(int layerId, const IntSize &layerBounds, const IntSize &viewportSize);

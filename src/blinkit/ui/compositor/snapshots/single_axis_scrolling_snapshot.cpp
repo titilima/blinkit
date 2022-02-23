@@ -205,6 +205,13 @@ void SingleAxisScrollingSnapshot::Update(const IntSize &viewportSize, const Laye
         updater.AddIfDirty(tile.get());
 }
 
+#ifndef NDEBUG
+void SingleAxisScrollingSnapshot::DumpTo(zed::path::psz_t path)
+{
+    ASSERT(false); // BKTODO:
+}
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 SingleAxisScrollingSnapshot::Updater::~Updater(void)

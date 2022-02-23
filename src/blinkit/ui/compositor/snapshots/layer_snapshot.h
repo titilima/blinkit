@@ -16,6 +16,9 @@
 #include "blinkit/ui/compositor/raster/raster_input.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkCanvas.h"
+#ifndef NDEBUG
+#   include "third_party/zed/include/zed/file/path.hpp"
+#endif
 
 namespace BlinKit {
 
@@ -38,6 +41,10 @@ public:
     virtual void Update(const IntSize &viewportSize, const LayerContext &context, const UpdateCallback &callback) = 0;
 
     virtual void BlendToCanvas(SkCanvas &canvas, const IntRect &dirtyRect, const SkPaint *paint) = 0;
+
+#ifndef NDEBUG
+    virtual void DumpTo(zed::path::psz_t path) = 0;
+#endif
 protected:
     LayerSnapshot(void) = default;
 };

@@ -82,9 +82,10 @@ void Compositor::PerformComposition(
     const RasterResult &rasterResult,
     const IntRect &dirtyRect)
 {
-    SkCanvas *canvas = BeginPaint(dirtyRect.size());
-
     const IntPoint offset = dirtyRect.location();
+    const IntSize size = dirtyRect.size();
+
+    SkCanvas *canvas = BeginPaint(size);
     if (IntPoint::zero() != offset)
         canvas->setMatrix(SkMatrix::MakeTrans(-offset.x(), -offset.y()));
 
@@ -106,7 +107,6 @@ void Compositor::PerformComposition(
     if (!zed::key_exists(m_livingProxies, proxy))
         return;
 
-    const IntSize size = dirtyRect.size();
     if (size == viewportSize)
     {
         ASSERT(IntPoint::zero() == offset); // SHOULD BE full invalidation!
@@ -191,6 +191,12 @@ void Compositor::UpdateSnapshot(const LayerContext &input, const IntSize &viewpo
 }
 
 #ifndef NDEBUG
+void Compositor::DumpSnapshots(zed::path::psz_t path)
+{
+    for (const auto &[_, snapshot] : m_snapshots)
+        snapshot->DumpTo(path);
+}
+
 bool Compositor::IsProxyAttached(AnimationProxy *proxy)
 {
     auto _ = m_lockForProxies.guard();

@@ -66,4 +66,19 @@ void SimpleSnapshot::Update(const IntSize &viewportSize, const LayerContext &con
     m_tile.Update(dirtyRect, callback);
 }
 
+#ifndef NDEBUG
+void SimpleSnapshot::DumpTo(zed::path::psz_t path)
+{
+    zed::path::string_t fileName(path);
+#ifdef _Z_OS_WINDOWS
+    WCHAR buf[MAX_PATH];
+    wsprintfW(buf, L"%08X.png", this);
+    fileName.append(buf);
+#else
+    ASSERT(false); // BKTODO:
+#endif
+    m_tile.SaveAsPNG(fileName.c_str());
+}
+#endif
+
 } // namespace BlinKit

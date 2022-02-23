@@ -57,6 +57,10 @@ private:
     void Cleanup(const LARGE_INTEGER &tick);
     static void APIENTRY CleanupCallback(PVOID arg, DWORD low, DWORD high);
 
+#ifndef NDEBUG
+    void RunDebugCommand(void);
+#endif
+
     zed::mutex m_taskLock;
     HANDLE m_taskEvent;
     TaskQueue m_tasks;
