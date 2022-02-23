@@ -11,6 +11,10 @@
 
 #include "./simple_snapshot.h"
 
+#ifndef NDEBUG
+#   include "blinkit/blink/renderer/platform/graphics/skia/skia_utils.h"
+#endif
+
 namespace BlinKit {
 
 SimpleSnapshot::SimpleSnapshot(const IntSize &layerBounds) : m_tile(layerBounds)
@@ -77,7 +81,7 @@ void SimpleSnapshot::DumpTo(zed::path::psz_t path)
 #else
     ASSERT(false); // BKTODO:
 #endif
-    m_tile.SaveAsPNG(fileName.c_str());
+    SaveBitmapAsPNG(m_tile.Bitmap(), fileName.c_str());
 }
 #endif
 
