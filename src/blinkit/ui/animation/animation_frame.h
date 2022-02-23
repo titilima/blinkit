@@ -29,19 +29,15 @@ public:
     SkBitmap& GetBitmap(void) { return m_bitmap; }
     const SkBitmap& GetBitmap(void) const { return m_bitmap; }
 
-    SkCanvas* GetCanvas(void) const
-    {
-        ASSERT(m_canvas);
-        return m_canvas.get();
-    }
     IntSize GetSize(void) const;
+
+    SkCanvas BeginPaint(void) const;
 
 #ifdef _Z_OS_WINDOWS
     operator HBITMAP() const { return m_hBitmap; }
 #endif
 private:
     SkBitmap m_bitmap;
-    std::unique_ptr<SkCanvas> m_canvas;
 
 #ifdef _Z_OS_WINDOWS
     static void ReleaseBitmap(void *, void *context);

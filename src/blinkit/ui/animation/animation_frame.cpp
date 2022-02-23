@@ -17,6 +17,11 @@ namespace BlinKit {
 
 AnimationFrame::~AnimationFrame(void) = default;
 
+SkCanvas AnimationFrame::BeginPaint(void) const
+{
+    return SkCanvas(m_bitmap);
+}
+
 IntSize AnimationFrame::GetSize(void) const
 {
     const SkImageInfo &info = m_bitmap.info();
@@ -45,8 +50,6 @@ AnimationFrame::AnimationFrame(const IntSize &size)
 
     const SkImageInfo info = SkImageInfo::MakeN32(size.width(), size.height(), kOpaque_SkAlphaType);
     m_bitmap.installPixels(info, bits, info.minRowBytes(), nullptr, ReleaseBitmap, m_hBitmap);
-
-    m_canvas = std::make_unique<SkCanvas>(m_bitmap);
 }
 
 void AnimationFrame::ReleaseBitmap(void *, void *context)
