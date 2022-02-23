@@ -119,7 +119,7 @@ void WinThemeEngine::paint(WebCanvas *canvas, Part part, State state, const IntR
     HGDIOBJ oldBitmap = SelectObject(hdc, frame);
 
     constexpr SkColor placeholder = SkColorSetARGBMacro(1, 0, 0, 0);
-    frame.GetCanvas()->clear(placeholder);
+    frame.BeginPaint().clear(placeholder);
 
     (this->*m_paint)(hdc, part, state, rect, extra);
 
