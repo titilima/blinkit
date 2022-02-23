@@ -1240,7 +1240,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\Path.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\Pattern.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\PicturePattern.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\skia\SkiaUtils.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\skia\skia_utils.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\StaticBitmapImage.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\StrokeData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\UnacceleratedImageBufferSurface.cpp" />
@@ -2765,6 +2765,8 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\Path.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\Pattern.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\PicturePattern.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\skia\skia_utils.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\skia\SkSizeHash.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\StaticBitmapImage.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\StrokeData.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\UnacceleratedImageBufferSurface.h" />

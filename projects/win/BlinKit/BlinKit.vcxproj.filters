@@ -2211,9 +2211,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\GraphicsContextState.cpp">
       <Filter>blink\renderer\platform\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\skia\SkiaUtils.cpp">
-      <Filter>blink\renderer\platform\graphics\skia</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\Gradient.cpp">
       <Filter>blink\renderer\platform\graphics</Filter>
     </ClCompile>
@@ -4220,6 +4217,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\chrome_client_impl.cpp">
       <Filter>blink\renderer\web</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\skia\skia_utils.cpp">
+      <Filter>blink\renderer\platform\graphics\skia</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -9022,6 +9022,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\web\chrome_client_impl.h">
       <Filter>blink\renderer\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\skia\skia_utils.h">
+      <Filter>blink\renderer\platform\graphics\skia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\skia\SkSizeHash.h">
+      <Filter>blink\renderer\platform\graphics\skia</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
