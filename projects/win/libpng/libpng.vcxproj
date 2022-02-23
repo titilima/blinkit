@@ -251,6 +251,8 @@
     <ClCompile Include="..\..\..\third_party\libpng\pngset.c" />
     <ClCompile Include="..\..\..\third_party\libpng\pngtrans.c" />
     <ClCompile Include="..\..\..\third_party\libpng\pngwio.c" />
+    <ClCompile Include="..\..\..\third_party\libpng\pngwrite.c" />
+    <ClCompile Include="..\..\..\third_party\libpng\pngwtran.c" />
     <ClCompile Include="..\..\..\third_party\libpng\pngwutil.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

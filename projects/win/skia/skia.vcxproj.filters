@@ -1010,6 +1010,9 @@
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkNWayCanvas.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\images\SkImageDecoder_libpng.cpp">
+      <Filter>images</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\skia\_pc.h">
