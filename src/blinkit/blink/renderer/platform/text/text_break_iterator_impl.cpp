@@ -14,6 +14,7 @@
 #include <queue>
 #include "blinkit/blink/renderer/platform/text/brkiter/char_break_iterator.h"
 #include "blinkit/blink/renderer/platform/text/brkiter/line_break_iterator.h"
+#include "blinkit/blink/renderer/platform/text/brkiter/word_break_iterator.h"
 
 using namespace BlinKit;
 
@@ -70,8 +71,9 @@ TextBreakIterator* sentenceBreakIterator(const UChar *string, int length)
 
 TextBreakIterator* wordBreakIterator(const UChar *string, int length)
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
+    static WordBreakIterator s_wordBreakIterator;
+    s_wordBreakIterator.Attach(string, length);
+    return &s_wordBreakIterator;
 }
 
 TextBreakIterator* wordBreakIterator(const String &string, int start, int length)
