@@ -8246,9 +8246,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLayerScrollClient.h">
       <Filter>blink\public\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebLocalizedString.h">
-      <Filter>blink\public\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\WebNativeScrollBehavior.h">
       <Filter>blink\public\platform</Filter>
     </ClInclude>
@@ -9028,6 +9025,81 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\skia\SkSizeHash.h">
       <Filter>blink\renderer\platform\graphics\skia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\public\platform\web_localized_string.h">
+      <Filter>blink\public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\BidiCharacterRun.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\BidiContext.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\BidiResolver.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\BidiRunList.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\BidiTextRun.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\DateTimeFormat.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\LineEnding.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\LocaleToScriptMapping.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\LocaleWin.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\PlatformLocale.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\SegmentedString.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\StringTruncator.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\TabSize.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextBoundaries.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextBreakIteratorInternalICU.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextDirection.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextPath.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextRun.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextRunIterator.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\TextStream.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\UnicodeBidi.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\UnicodeUtilities.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\WritingMode.h">
+      <Filter>blink\renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\brkiter\word_break_iterator.h">
+      <Filter>blink\renderer\platform\text\brkiter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
