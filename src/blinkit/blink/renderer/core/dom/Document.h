@@ -1419,7 +1419,7 @@ private:
 
     GCUniquePtr<ElementDataCache> m_elementDataCache;
 
-    using LocaleIdentifierToLocaleMap = HashMap<AtomicString, OwnPtr<Locale>>;
+    using LocaleIdentifierToLocaleMap = std::unordered_map<AtomicString, std::unique_ptr<Locale>>;
     LocaleIdentifierToLocaleMap m_localeCache;
 
     std::unique_ptr<AnimationTimeline> m_timeline;
