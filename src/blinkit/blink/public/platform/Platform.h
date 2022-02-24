@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -50,15 +51,14 @@
 #include "WebAudioDevice.h"
 #include "WebBatteryStatusListener.h"
 #endif
-#include "WebCommon.h"
-#include "WebData.h"
+#include "blinkit/blink/public/platform/WebCommon.h"
+#include "blinkit/blink/public/platform/WebData.h"
 #if 0 // BKTODO:
 #include "WebDeviceLightListener.h"
 #include "WebGamepadListener.h"
 #include "WebGamepads.h"
 #include "WebGestureDevice.h"
 #include "WebGraphicsContext3D.h"
-#include "WebLocalizedString.h"
 #include "WebPlatformEventType.h"
 #include "WebSize.h"
 #include "WebSpeechSynthesizer.h"
@@ -68,6 +68,7 @@
 #include "WebVector.h"
 #include "WebWaitableEvent.h"
 #endif
+#include "blinkit/blink/public/platform/web_localized_string.h"
 #include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 // BKTODO: class GrContext;
@@ -380,12 +381,16 @@ public:
 
     // May return null on some platforms.
     virtual WebPublicSuffixList* publicSuffixList() { return nullptr; }
+#endif
 
 
+#ifdef BLINKIT_UI_ENABLED
     // Resources -----------------------------------------------------------
 
     // Returns a localized string resource (with substitution parameters).
-    virtual WebString queryLocalizedString(WebLocalizedString::Name) { return WebString(); }
+    virtual String queryLocalizedString(WebLocalizedString::Name) { return String(); }
+#endif
+#if 0 // BKTODO:
     virtual WebString queryLocalizedString(WebLocalizedString::Name, const WebString& parameter) { return WebString(); }
     virtual WebString queryLocalizedString(WebLocalizedString::Name, const WebString& parameter1, const WebString& parameter2) { return WebString(); }
 

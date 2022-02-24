@@ -106,7 +106,7 @@ LoaderThread& AppImpl::GetLoaderThread(void)
 #   ifndef NDEBUG
 WebData AppImpl::loadResource(const char *name)
 {
-    BKLOG("WARNING: Resource '%s' not found.", name);
+    ZLOG("WARNING: Resource '{}' not found.", name);
     return WebData();
 }
 #   endif
@@ -115,6 +115,12 @@ bool AppImpl::LoadResourceFromClient(const char *URI, std::string &dst) const
 {
     ASSERT(nullptr != m_client.LoadResource);
     return m_client.LoadResource(URI, BufferImpl::Wrap(dst), m_client.UserData);
+}
+
+String AppImpl::queryLocalizedString(WebLocalizedString::Name name)
+{
+    ASSERT(false); // BKTODO:
+    return String();
 }
 #endif // BLINKIT_UI_ENABLED
 

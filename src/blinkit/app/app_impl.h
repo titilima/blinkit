@@ -56,6 +56,7 @@ private:
     double currentTimeSeconds(void) final;
     double monotonicallyIncreasingTimeSeconds(void) final;
 #ifdef BLINKIT_UI_ENABLED
+    String queryLocalizedString(WebLocalizedString::Name name) final;
     WebCompositorSupport* compositorSupport(void);
 #endif
 
