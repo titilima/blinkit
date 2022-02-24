@@ -152,7 +152,7 @@ void Pasteboard::writeHTML(const String& markup, const KURL& documentURL, const 
 #endif
     replaceNBSPWithSpace(text);
 
-    ASSERT(false); // BKTODO: Platform::current()->clipboard()->writeHTML(markup, documentURL, text, canSmartCopyOrDelete);
+    writePlainText(text, canSmartCopyOrDelete ? CanSmartReplace : CannotSmartReplace); // Plain text is enough for a UI framework.
 }
 
 } // namespace blink

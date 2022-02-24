@@ -1216,27 +1216,7 @@ bool WebViewImpl::ShouldShowContextMenu(const WebContextMenuData &data)
 {
     if (data.isEditable)
         return true;
-
-    switch (data.inputFieldType)
-    {
-        case WebContextMenuData::InputFieldTypePlainText:
-            return true;
-        case WebContextMenuData::InputFieldTypePassword:
-            return false;
-    }
-
-    ASSERT(false); // BKTODO:
-#if 0
-    if (!data.node.isElementNode())
-        return false;
-
-    const WebElement e = data.node.toConst<WebElement>();
-    WebString name = e.tagName();
-    if (name == "TEXTAREA")
-        return true;
-#endif
-
-    return false;
+    return WebContextMenuData::InputFieldTypePlainText == data.inputFieldType;
 }
 
 void WebViewImpl::showContextMenu(const WebContextMenuData &data)

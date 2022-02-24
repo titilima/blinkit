@@ -119,7 +119,13 @@ bool AppImpl::LoadResourceFromClient(const char *URI, std::string &dst) const
 
 String AppImpl::queryLocalizedString(WebLocalizedString::Name name)
 {
-    ASSERT(false); // BKTODO:
+    switch (name)
+    {
+        case WebLocalizedString::InputElementAltText:
+            break;
+        default:
+            NOTREACHED(); // BKTODO:
+    }
     return String();
 }
 #endif // BLINKIT_UI_ENABLED

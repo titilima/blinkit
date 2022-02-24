@@ -345,15 +345,9 @@ void MarkupFormatter::appendCloseTag(StringBuilder& result, const Element& eleme
     result.append('>');
 }
 
-static inline bool attributeIsInSerializedNamespace(const Attribute& attribute)
+static constexpr bool attributeIsInSerializedNamespace(const Attribute& attribute)
 {
-    ASSERT(false); // BKTODO:
     return false;
-#if 0
-    return attribute.namespaceURI() == XMLNames::xmlNamespaceURI
-        || attribute.namespaceURI() == XLinkNames::xlinkNamespaceURI
-        || attribute.namespaceURI() == XMLNSNames::xmlnsNamespaceURI;
-#endif
 }
 
 void MarkupFormatter::appendAttribute(StringBuilder& result, const Element& element, const Attribute& attribute, Namespaces* namespaces)
