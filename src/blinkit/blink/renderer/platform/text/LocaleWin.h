@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LocaleWin.h
+// Description: LocaleWin Class
+//      Author: Ziming Li
+//     Created: 2022-02-24
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -32,16 +44,17 @@
 #define LocaleWin_h
 
 #include <windows.h>
-#include "platform/text/PlatformLocale.h"
-#include "wtf/Forward.h"
-#include "wtf/Vector.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/platform/text/PlatformLocale.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
-class PLATFORM_EXPORT LocaleWin : public Locale {
+class LocaleWin : public Locale
+{
 public:
-    static PassOwnPtr<LocaleWin> create(LCID, bool defaultsForLocale);
+    static std::unique_ptr<LocaleWin> create(LCID, bool defaultsForLocale);
     ~LocaleWin();
     const Vector<String>& weekDayShortLabels() override;
     unsigned firstDayOfWeek() override;

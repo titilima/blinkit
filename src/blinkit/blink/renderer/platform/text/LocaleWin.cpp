@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LocaleWin.cpp
+// Description: LocaleWin Class
+//      Author: Ziming Li
+//     Created: 2022-02-24
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -28,21 +39,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/text/LocaleWin.h"
+#include "./LocaleWin.h"
 
 #include <limits>
-#include "platform/DateComponents.h"
-#include "platform/Language.h"
-#include "platform/LayoutTestSupport.h"
-#include "platform/text/DateTimeFormat.h"
-#include "wtf/CurrentTime.h"
-#include "wtf/DateMath.h"
-#include "wtf/HashMap.h"
-#include "wtf/OwnPtr.h"
-#include "wtf/PassOwnPtr.h"
-#include "wtf/text/StringBuffer.h"
-#include "wtf/text/StringBuilder.h"
-#include "wtf/text/StringHash.h"
+#include "blinkit/blink/renderer/platform/DateComponents.h"
+#include "blinkit/blink/renderer/platform/Language.h"
+#include "blinkit/blink/renderer/platform/LayoutTestSupport.h"
+#include "blinkit/blink/renderer/platform/text/DateTimeFormat.h"
+#include "blinkit/blink/renderer/wtf/CurrentTime.h"
+#include "blinkit/blink/renderer/wtf/DateMath.h"
+#include "blinkit/blink/renderer/wtf/HashMap.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuffer.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/wtf/text/StringHash.h"
 
 namespace blink {
 
@@ -144,7 +153,7 @@ static LCID LCIDFromLocale(const String& locale, bool defaultsForLocale)
     return lcid;
 }
 
-PassOwnPtr<Locale> Locale::create(const String& locale)
+std::unique_ptr<Locale> Locale::create(const String& locale)
 {
     // Whether the default settings for the locale should be used, ignoring user overrides.
     bool defaultsForLocale = LayoutTestSupport::isRunningLayoutTest();
@@ -163,9 +172,9 @@ inline LocaleWin::LocaleWin(LCID lcid, bool defaultsForLocale)
     m_firstDayOfWeek = (value + 1) % 7;
 }
 
-PassOwnPtr<LocaleWin> LocaleWin::create(LCID lcid, bool defaultsForLocale)
+std::unique_ptr<LocaleWin> LocaleWin::create(LCID lcid, bool defaultsForLocale)
 {
-    return adoptPtr(new LocaleWin(lcid, defaultsForLocale));
+    return zed::wrap_unique(new LocaleWin(lcid, defaultsForLocale));
 }
 
 LocaleWin::~LocaleWin()

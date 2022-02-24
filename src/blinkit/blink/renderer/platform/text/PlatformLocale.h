@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PlatformLocale.h
+// Description: Locale Class
+//      Author: Ziming Li
+//     Created: 2022-02-24
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -26,20 +38,19 @@
 #ifndef PlatformLocale_h
 #define PlatformLocale_h
 
-#include "platform/DateComponents.h"
-#include "platform/Language.h"
-#include "public/platform/WebLocalizedString.h"
-#include "wtf/Allocator.h"
-#include "wtf/PassOwnPtr.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/public/platform/web_localized_string.h"
+#include "blinkit/blink/renderer/platform/DateComponents.h"
+#include "blinkit/blink/renderer/platform/Language.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
-class PLATFORM_EXPORT Locale {
+class Locale
+{
     WTF_MAKE_NONCOPYABLE(Locale);
-    USING_FAST_MALLOC(Locale);
 public:
-    static PassOwnPtr<Locale> create(const String& localeIdentifier);
+    static std::unique_ptr<Locale> create(const String& localeIdentifier);
     static Locale& defaultLocale();
 
     String queryString(WebLocalizedString::Name);

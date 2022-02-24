@@ -39,12 +39,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/text/PlatformLocale.h"
+#include "./PlatformLocale.h"
 
-#include "platform/text/DateTimeFormat.h"
-#include "public/platform/Platform.h"
-#include "wtf/MainThread.h"
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/public/platform/Platform.h"
+#include "blinkit/blink/renderer/platform/text/DateTimeFormat.h"
+#include "blinkit/blink/renderer/wtf/MainThread.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 namespace blink {
 
@@ -188,7 +188,7 @@ String DateTimeStringBuilder::toString()
 
 Locale& Locale::defaultLocale()
 {
-    static Locale* locale = Locale::create(defaultLanguage()).leakPtr();
+    static Locale* locale = Locale::create(defaultLanguage()).release();
     ASSERT(isMainThread());
     return *locale;
 }
@@ -200,8 +200,7 @@ Locale::~Locale()
 String Locale::queryString(WebLocalizedString::Name name)
 {
     // FIXME: Returns a string locazlied for this locale.
-    ASSERT(false); // BKTODO: return Platform::current()->queryLocalizedString(name);
-    return String();
+    return Platform::current()->queryLocalizedString(name);
 }
 
 String Locale::queryString(WebLocalizedString::Name name, const String& parameter)
