@@ -167,6 +167,7 @@ private:
     void dispatchDidFinishLoad(void) override;
     void transitionToCommittedForNewPage(void) override;
     void didRemoveAllPendingStylesheet(void) override;
+    void LoadURI(const blink::KURL &uri) override;
     // PageWidgetEventHandler
     void handleMouseDown(blink::LocalFrame &frame, const blink::WebMouseEvent &event) override;
     void handleMouseUp(blink::LocalFrame &frame, const blink::WebMouseEvent &event) override;

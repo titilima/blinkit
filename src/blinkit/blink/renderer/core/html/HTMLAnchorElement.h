@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -35,11 +36,10 @@
 #ifndef HTMLAnchorElement_h
 #define HTMLAnchorElement_h
 
-#include "core/CoreExport.h"
-#include "core/HTMLNames.h"
-#include "core/dom/DOMURLUtils.h"
-#include "core/dom/Document.h"
-#include "core/html/HTMLElement.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/DOMURLUtils.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/core/html/HTMLElement.h"
 // BKTODO: #include "platform/LinkHash.h"
 
 namespace blink {
@@ -68,8 +68,8 @@ enum {
     RelationNoOpener = 0x00040000,
 };
 
-class CORE_EXPORT HTMLAnchorElement : public HTMLElement, public DOMURLUtils {
-    DEFINE_WRAPPERTYPEINFO();
+class HTMLAnchorElement : public HTMLElement, public DOMURLUtils
+{
 public:
     static PassRefPtrWillBeRawPtr<HTMLAnchorElement> create(Document&);
 
@@ -97,8 +97,6 @@ public:
     LinkHash visitedLinkHash() const;
     void invalidateCachedVisitedLinkHash() { m_cachedVisitedLinkHash = 0; }
 #endif
-
-    void sendPings(const KURL& destinationURL) const;
 
 protected:
     HTMLAnchorElement(const QualifiedName&, Document&);

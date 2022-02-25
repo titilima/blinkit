@@ -40,6 +40,8 @@ public:
 
     bool HasClientLoader(void) const { return nullptr != m_client.LoadResource; }
     bool LoadResourceFromClient(const char *URI, std::string &dst) const;
+
+    void OpenURL(const char *URL) const;
 #endif
 protected:
     AppImpl(BkAppClient *client);
@@ -50,6 +52,10 @@ protected:
 #   endif
 #endif
 private:
+#ifdef BLINKIT_UI_ENABLED
+    static void DefaultOpenURL(const char *URL);
+#endif
+
     // Platform
     WebURLLoader* createURLLoader(void) final;
     WebThread* currentThread(void) final;

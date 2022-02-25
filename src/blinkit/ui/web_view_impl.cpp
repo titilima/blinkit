@@ -644,6 +644,11 @@ int WebViewImpl::LoadUI(const char *URI)
     return BK_ERR_SUCCESS;
 }
 
+void WebViewImpl::LoadURI(const KURL &uri)
+{
+    m_host.ProcessLoadURI(uri.spec().c_str());
+}
+
 #if 0 // BKTODO:
 void WebViewImpl::MainFrameLayoutUpdated(void)
 {

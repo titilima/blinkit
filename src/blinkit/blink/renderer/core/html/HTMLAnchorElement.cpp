@@ -32,23 +32,23 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/html/HTMLAnchorElement.h"
+#include "./HTMLAnchorElement.h"
 
-#include "core/events/KeyboardEvent.h"
-#include "core/events/MouseEvent.h"
-#include "core/frame/FrameHost.h"
-#include "core/frame/Settings.h"
-#include "core/frame/UseCounter.h"
-#include "core/html/HTMLImageElement.h"
-#include "core/html/parser/HTMLParserIdioms.h"
-#include "core/layout/LayoutImage.h"
-#include "core/loader/FrameLoadRequest.h"
-#include "core/loader/FrameLoaderClient.h"
+#include "blinkit/blink/renderer/core/events/KeyboardEvent.h"
+#include "blinkit/blink/renderer/core/events/MouseEvent.h"
+#include "blinkit/blink/renderer/core/frame/FrameHost.h"
+#include "blinkit/blink/renderer/core/frame/Settings.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/core/html/HTMLImageElement.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLParserIdioms.h"
+#include "blinkit/blink/renderer/core/layout/LayoutImage.h"
+#include "blinkit/blink/renderer/core/loader/FrameLoaderClient.h"
 // BKTODO: #include "core/loader/PingLoader.h"
-#include "core/page/ChromeClient.h"
-#include "platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/core/page/ChromeClient.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
 // BKTODO: #include "platform/network/NetworkHints.h"
 // BKTODO: #include "platform/weborigin/SecurityPolicy.h"
+#include "blinkit/app/app_impl.h"
 
 namespace blink {
 
@@ -316,22 +316,6 @@ bool HTMLAnchorElement::isLiveLink() const
     return isLink() && !hasEditableStyle();
 }
 
-void HTMLAnchorElement::sendPings(const KURL& destinationURL) const
-{
-    ASSERT(false); // BKTODO:
-#if 0
-    const AtomicString& pingValue = getAttribute(pingAttr);
-    if (pingValue.isNull() || !document().settings() || !document().settings()->hyperlinkAuditingEnabled())
-        return;
-
-    UseCounter::count(document(), UseCounter::HTMLAnchorElementPingAttribute);
-
-    SpaceSplitString pingURLs(pingValue, SpaceSplitString::ShouldNotFoldCase);
-    for (unsigned i = 0; i < pingURLs.size(); i++)
-        PingLoader::sendLinkAuditPing(document().frame(), document().completeURL(pingURLs[i]), destinationURL);
-#endif
-}
-
 void HTMLAnchorElement::handleClick(Event* event)
 {
     event->setDefaultHandled();
@@ -343,42 +327,15 @@ void HTMLAnchorElement::handleClick(Event* event)
     StringBuilder url;
     url.append(stripLeadingAndTrailingHTMLSpaces(fastGetAttribute(hrefAttr)));
     appendServerMapMousePosition(url, event);
+
     KURL completedURL = document().completeURL(url.toString());
-
-    // Schedule the ping before the frame load. Prerender in Chrome may kill the renderer as soon as the navigation is
-    // sent out.
-    sendPings(completedURL);
-
-    ResourceRequest request(completedURL);
-    request.setUIStartTime(event->platformTimeStamp());
-    request.setInputPerfMetricReportPolicy(InputToLoadPerfMetricReportPolicy::ReportLink);
-
-    ASSERT(false); // BKTODO:
-#if 0
-    ReferrerPolicy policy;
-    if (RuntimeEnabledFeatures::referrerPolicyAttributeEnabled() && hasAttribute(referrerpolicyAttr) && SecurityPolicy::referrerPolicyFromString(fastGetAttribute(referrerpolicyAttr), &policy) && !hasRel(RelationNoReferrer)) {
-        request.setHTTPReferrer(SecurityPolicy::generateReferrer(policy, completedURL, document().outgoingReferrer()));
+    if (completedURL.scheme_is_in_http_family())
+    {
+        AppImpl::Get().OpenURL(completedURL.spec().c_str());
+        return;
     }
 
-    if (hasAttribute(downloadAttr)) {
-        request.setRequestContext(WebURLRequest::RequestContextDownload);
-        bool isSameOrigin = completedURL.protocolIsData() || document().securityOrigin()->canRequest(completedURL);
-        const AtomicString& suggestedName = (isSameOrigin ? fastGetAttribute(downloadAttr) : nullAtom);
-
-        frame->loader().client()->loadURLExternally(request, NavigationPolicyDownload, suggestedName, false);
-    } else {
-        request.setRequestContext(WebURLRequest::RequestContextHyperlink);
-        FrameLoadRequest frameRequest(&document(), request, getAttribute(targetAttr));
-        frameRequest.setTriggeringEvent(event);
-        if (hasRel(RelationNoReferrer)) {
-            frameRequest.setShouldSendReferrer(NeverSendReferrer);
-            frameRequest.setShouldSetOpener(NeverSetOpener);
-        }
-        if (hasRel(RelationNoOpener))
-            frameRequest.setShouldSetOpener(NeverSetOpener);
-        frame->loader().load(frameRequest);
-    }
-#endif
+    frame->loader().client()->LoadURI(completedURL);
 }
 
 bool isEnterKeyKeydownEvent(Event* event)

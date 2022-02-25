@@ -32,12 +32,16 @@ BK_DECLARE_HANDLE(BkElement, ElementImpl);
 struct BkWebViewClient {
     size_t SizeOfStruct; // sizeof(BkWebViewClient)
     void *UserData;
+
     void (BKAPI * DocumentReady)(BkWebView, void *);
+
+#ifdef _WIN32
+    bool_t(BKAPI * ProcessMessage)(HWND, UINT, WPARAM, LPARAM, LRESULT *, void *);
+#endif
+
     bool_t (BKAPI * TitleChange)(BkWebView, const char *, void *);
     void (BKAPI * SizeChanged)(BkWebView, int, int, void *);
-#ifdef _WIN32
-    bool_t (BKAPI * ProcessMessage)(HWND, UINT, WPARAM, LPARAM, LRESULT *, void *);
-#endif
+    void (BKAPI * LoadURI)(BkWebView, const char *, void *);
 };
 
 BKEXPORT int BKAPI BkLoadUI(BkWebView view, const char *URI);

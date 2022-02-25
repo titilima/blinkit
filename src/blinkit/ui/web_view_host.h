@@ -47,6 +47,7 @@ public:
     void ProcessDocumentReady(void);
     virtual void ProcessTitleChange(const String &title) = 0;
     void ProcessSizeChanged(const IntSize &size);
+    void ProcessLoadURI(const char *URI);
 protected:
     WebViewHost(const BkWebViewClient &client, PageVisibilityState visibilityState);
 

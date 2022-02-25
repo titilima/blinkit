@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -41,22 +42,21 @@
 #ifndef FrameLoaderClient_h
 #define FrameLoaderClient_h
 
-#include "core/CoreExport.h"
-#include "core/dom/Document.h"
-#include "core/dom/IconURL.h"
-#include "core/fetch/ResourceLoaderOptions.h"
-#include "core/frame/FrameClient.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/core/dom/IconURL.h"
+#include "blinkit/blink/renderer/core/fetch/ResourceLoaderOptions.h"
+#include "blinkit/blink/renderer/core/frame/FrameClient.h"
 #if 0 // BKTODO:
 #include "core/loader/FrameLoaderTypes.h"
 #include "core/loader/NavigationPolicy.h"
 #endif
-#include "platform/heap/Handle.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
 #if 0 // BKTODO:
 #include "platform/network/ResourceLoadPriority.h"
 #include "platform/weborigin/Referrer.h"
 #endif
-#include "wtf/Forward.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace BlinKit {
 class AppCaller;
@@ -276,6 +276,12 @@ public:
         UnloadHandler,
     };
     virtual void suddenTerminationDisablerChanged(bool present, SuddenTerminationDisablerType) { }
+#endif
+
+#ifdef BLINKIT_UI_ENABLED
+    virtual void LoadURI(const KURL &uri) {
+        NOTREACHED();
+    }
 #endif
 protected:
     FrameLoaderClient(void) = default;

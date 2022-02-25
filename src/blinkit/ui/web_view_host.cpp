@@ -49,6 +49,12 @@ void WebViewHost::ProcessDocumentReady(void)
     m_client.DocumentReady(m_view, m_client.UserData);
 }
 
+void WebViewHost::ProcessLoadURI(const char *URI)
+{
+    if (nullptr != m_client.LoadURI)
+        m_client.LoadURI(m_view, URI, m_client.UserData);
+}
+
 void WebViewHost::ProcessSizeChanged(const IntSize &size)
 {
     if (nullptr != m_client.SizeChanged)

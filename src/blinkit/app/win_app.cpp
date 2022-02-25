@@ -14,6 +14,7 @@
 #include "blinkit/win/message_loop.h"
 #include "third_party/zed/include/zed/string/conv.hpp"
 #ifdef BLINKIT_UI_ENABLED
+#   include <shellapi.h>
 #   include "blinkit/blink/impl/win_clipboard.h"
 #   include "blinkit/blink/impl/win_scrollbar_behavior.h"
 #   include "blinkit/blink/impl/win_theme_engine.h"
@@ -116,6 +117,14 @@ void AppImpl::Log(const char *s)
     ws.append(L"\r\n");
     ::OutputDebugStringW(ws.c_str());
 }
+
+#ifdef BLINKIT_UI_ENABLED
+void AppImpl::DefaultOpenURL(const char *URL)
+{
+    std::wstring ws = zed::multi_byte_to_wide_string(URL);
+    ::ShellExecuteW(nullptr, L"open", ws.c_str(), nullptr, nullptr, SW_SHOWDEFAULT);
+}
+#endif
 
 } // namespace BlinKit
 

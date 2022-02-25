@@ -117,6 +117,16 @@ bool AppImpl::LoadResourceFromClient(const char *URI, std::string &dst) const
     return m_client.LoadResource(URI, BufferImpl::Wrap(dst), m_client.UserData);
 }
 
+void AppImpl::OpenURL(const char *URL) const
+{
+    if (nullptr != m_client.OpenURL)
+    {
+        if (m_client.OpenURL(URL, m_client.UserData))
+            return;
+    }
+    DefaultOpenURL(URL);
+}
+
 String AppImpl::queryLocalizedString(WebLocalizedString::Name name)
 {
     switch (name)
