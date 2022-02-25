@@ -136,6 +136,29 @@ private:
 
 #endif
 
+template <class T>
+class click_handler_impl1
+{
+public:
+    using callback = void (T::*)(void);
+    void add_click_observer(BkWebView v, const char *id, callback cb);
+private:
+    struct context;
+    static void BKAPI callback_impl(void *p);
+    std::list<context> m_contexts;
+};
+
+template <class T>
+class click_handler_impl2
+{
+public:
+    using callback = std::function<void()>;
+    void add_click_observer(BkWebView v, const char *id, callback &&cb);
+private:
+    static void BKAPI callback_impl(void *p);
+    std::list<callback> m_callbacks;
+};
+
 class js_call
 {
 public:
@@ -536,6 +559,43 @@ bool_t BKAPI web_view_window_impl<T, TBase, TWinTraits>::process_message_callbac
 }
 
 #endif
+
+template <class T>
+struct click_handler_impl1<T>::context
+{
+    callback cb;
+    T *p;
+    void execute(void) { (p->*cb)(); }
+
+    context(callback cb, T *p) : cb(cb), p(p) {}
+};
+
+template <class T>
+void click_handler_impl1<T>::add_click_observer(BkWebView v, const char *id, callback cb)
+{
+    context &ctx = m_contexts.emplace_back(cb, static_cast<T *>(this));
+    BkAddClickObserver(v, id, click_handler_impl1::callback_impl, &ctx);
+}
+
+template <class T>
+void BKAPI click_handler_impl1<T>::callback_impl(void *p)
+{
+    reinterpret_cast<context *>(p)->execute();
+}
+
+template <class T>
+void click_handler_impl2<T>::add_click_observer(BkWebView v, const char *id, callback &&cb)
+{
+    callback &cb2 = m_callbacks.emplace_back(std::move(cb));
+    BkAddClickObserver(v, id, click_handler_impl2::callback_impl, &cb2);
+}
+
+template <class T>
+void BKAPI click_handler_impl2<T>::callback_impl(void *p)
+{
+    callback *cb = reinterpret_cast<callback *>(p);
+    (*cb)();
+}
 
 inline js_call* js_call::prepare(std::function<void(BkJSContext)> &&callback)
 {
