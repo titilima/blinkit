@@ -97,6 +97,13 @@ BKEXPORT bool_t BKAPI BkGetElementAttribute(BkElement e, const char *name, struc
 BKEXPORT void BKAPI BkSetElementAttribute(BkElement e, const char *name, const char *value);
 BKEXPORT void BKAPI BkSetElementIntegalAttribute(BkElement e, const char *name, int value);
 
+enum BkPropertyId {
+    BK_PROP_TEXTFIELD_VALUE = 0,
+};
+
+BKEXPORT bool_t BKAPI BkGetElementProperty(BkElement e, int propId, struct BkBuffer *dst);
+BKEXPORT bool_t BKAPI BkSetElementProperty(BkElement e, int propId, const char *value, bool notify);
+
 BKEXPORT void BKAPI BkAddClassToElement(BkElement e, const char *className);
 BKEXPORT void BKAPI BkRemoveClassFromElement(BkElement e, const char *className);
 BKEXPORT void BKAPI BkToggleElementClass(BkElement e, const char *className);

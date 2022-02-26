@@ -17,6 +17,8 @@ BkDefWindowProc
 BkGetElementAttribute
 BkSetElementAttribute
 BkSetElementIntegalAttribute
+BkGetElementProperty
+BkSetElementProperty
 BkAddClassToElement
 BkRemoveClassFromElement
 BkToggleElementClass
