@@ -251,7 +251,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\css\CSSPropertyEquality.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\css\CSSTimingData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\css\CSSTransitionData.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\DeferredLegacyStyleInterpolation.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\deferred_legacy_style_interpolation.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\DocumentAnimations.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\DoubleStyleInterpolation.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\EffectInput.cpp" />
@@ -1616,7 +1616,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CSSValueInterpolationType.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CSSVisibilityInterpolationType.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\DefaultSVGInterpolation.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\DeferredLegacyStyleInterpolation.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\deferred_legacy_style_interpolation.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\DocumentAnimations.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\DoubleStyleInterpolation.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\EffectInput.h" />

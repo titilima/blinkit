@@ -2319,9 +2319,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\StylePropertyShorthand.cpp">
       <Filter>blink\renderer\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\DeferredLegacyStyleInterpolation.cpp">
-      <Filter>blink\renderer\core\animation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\CSSKeyframeRule.cpp">
       <Filter>blink\renderer\core\css</Filter>
     </ClCompile>
@@ -4220,6 +4217,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\skia\skia_utils.cpp">
       <Filter>blink\renderer\platform\graphics\skia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\deferred_legacy_style_interpolation.cpp">
+      <Filter>blink\renderer\core\animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -7505,9 +7505,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\DefaultSVGInterpolation.h">
       <Filter>blink\renderer\core\animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\DeferredLegacyStyleInterpolation.h">
-      <Filter>blink\renderer\core\animation</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\DocumentAnimations.h">
       <Filter>blink\renderer\core\animation</Filter>
     </ClInclude>
@@ -9100,6 +9097,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\text\brkiter\word_break_iterator.h">
       <Filter>blink\renderer\platform\text\brkiter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\deferred_legacy_style_interpolation.h">
+      <Filter>blink\renderer\core\animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
