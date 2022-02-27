@@ -91,7 +91,7 @@ void Pattern::adjustExternalMemoryAllocated(int64_t delta)
 {
     delta = std::max(-m_externalMemoryAllocated, delta);
 
-    ASSERT(false); // BKTODO: v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(delta);
+    // BKTODO: v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(delta);
 
     m_externalMemoryAllocated += delta;
 }
