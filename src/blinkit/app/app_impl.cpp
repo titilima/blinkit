@@ -23,6 +23,10 @@
 #   include "blinkit/ui/compositor/compositor.h"
 #endif
 
+#ifndef NDEBUG
+bool g_flagForDebugging = false;
+#endif
+
 namespace BlinKit {
 
 AppImpl::AppImpl(BkAppClient *client)

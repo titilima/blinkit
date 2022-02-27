@@ -58,6 +58,10 @@
 #include <unordered_map>
 #include <vector>
 
+#ifndef NDEBUG
+extern bool g_flagForDebugging;
+#endif
+
 #ifdef OS_WIN
 #   include <Windows.h>
 extern HMODULE theModule;

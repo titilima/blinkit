@@ -382,6 +382,14 @@ static const WCHAR SnapshotsFolder[] = L"C:\\BkSnapshots\\";
 void MessageLoop::RunDebugCommands(void)
 {
 #if 0
+    if (!g_flagForDebugging)
+    {
+        g_flagForDebugging = true;
+        ZLOG("g_flagForDebugging is set to true.");
+    }
+#endif
+
+#if 0
     AppImpl::Get().GetCompositor().PostCallback([](Compositor &compositor) {
         compositor.DumpSnapshots(SnapshotsFolder);
     });
