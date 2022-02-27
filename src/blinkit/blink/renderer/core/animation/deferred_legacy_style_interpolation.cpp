@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: DeferredLegacyStyleInterpolation.cpp
+//   File Name: deferred_legacy_style_interpolation.cpp
 // Description: DeferredLegacyStyleInterpolation Class
 //      Author: Ziming Li
 //     Created: 2021-08-01
@@ -13,20 +13,20 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/animation/DeferredLegacyStyleInterpolation.h"
+#include "./deferred_legacy_style_interpolation.h"
 
-#include "core/animation/ElementAnimations.h"
-#include "core/animation/css/CSSAnimatableValueFactory.h"
-#include "core/css/CSSBasicShapeValues.h"
-#include "core/css/CSSImageValue.h"
-#include "core/css/CSSPrimitiveValue.h"
-#include "core/css/CSSQuadValue.h"
+#include "blinkit/blink/renderer/core/animation/ElementAnimations.h"
+#include "blinkit/blink/renderer/core/animation/css/CSSAnimatableValueFactory.h"
+#include "blinkit/blink/renderer/core/css/CSSBasicShapeValues.h"
+#include "blinkit/blink/renderer/core/css/CSSImageValue.h"
+#include "blinkit/blink/renderer/core/css/CSSPrimitiveValue.h"
+#include "blinkit/blink/renderer/core/css/CSSQuadValue.h"
 // BKTODO: #include "core/css/CSSSVGDocumentValue.h"
-#include "core/css/CSSShadowValue.h"
-#include "core/css/CSSValueList.h"
-#include "core/css/CSSValuePair.h"
-#include "core/css/resolver/StyleResolver.h"
-#include "core/css/resolver/StyleResolverState.h"
+#include "blinkit/blink/renderer/core/css/CSSShadowValue.h"
+#include "blinkit/blink/renderer/core/css/CSSValueList.h"
+#include "blinkit/blink/renderer/core/css/CSSValuePair.h"
+#include "blinkit/blink/renderer/core/css/resolver/StyleResolver.h"
+#include "blinkit/blink/renderer/core/css/resolver/StyleResolverState.h"
 
 namespace blink {
 

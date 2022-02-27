@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: deferred_legacy_style_interpolation.h
+// Description: DeferredLegacyStyleInterpolation Class
+//      Author: Ziming Li
+//     Created: 2022-02-27
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,10 +17,9 @@
 #ifndef DeferredLegacyStyleInterpolation_h
 #define DeferredLegacyStyleInterpolation_h
 
-#include "core/CoreExport.h"
-#include "core/animation/LegacyStyleInterpolation.h"
-#include "core/animation/StyleInterpolation.h"
-#include "core/css/CSSValue.h"
+#include "blinkit/blink/renderer/core/animation/LegacyStyleInterpolation.h"
+#include "blinkit/blink/renderer/core/animation/StyleInterpolation.h"
+#include "blinkit/blink/renderer/core/css/CSSValue.h"
 
 namespace blink {
 
@@ -24,9 +35,10 @@ class CSSSVGDocumentValue;
 class CSSValueList;
 class CSSValuePair;
 
-class CORE_EXPORT DeferredLegacyStyleInterpolation : public StyleInterpolation {
+class DeferredLegacyStyleInterpolation : public StyleInterpolation
+{
 public:
-    static PassRefPtr<DeferredLegacyStyleInterpolation> create(PassRefPtrWillBeRawPtr<CSSValue> start, PassRefPtrWillBeRawPtr<CSSValue> end, CSSPropertyID id)
+    static PassRefPtr<DeferredLegacyStyleInterpolation> create(CSSValue *start, CSSValue *end, CSSPropertyID id)
     {
         return adoptRef(new DeferredLegacyStyleInterpolation(start, end, id));
     }
@@ -47,7 +59,7 @@ public:
     static bool interpolationRequiresStyleResolve(const CSSQuadValue&);
 
 private:
-    DeferredLegacyStyleInterpolation(PassRefPtrWillBeRawPtr<CSSValue> start, PassRefPtrWillBeRawPtr<CSSValue> end, CSSPropertyID id)
+    DeferredLegacyStyleInterpolation(CSSValue *start, CSSValue *end, CSSPropertyID id)
         : StyleInterpolation(InterpolableNumber::create(0), InterpolableNumber::create(1), id)
         , m_startCSSValue(start)
         , m_endCSSValue(end)
@@ -55,8 +67,8 @@ private:
     {
     }
 
-    RefPtrWillBePersistent<CSSValue> m_startCSSValue;
-    RefPtrWillBePersistent<CSSValue> m_endCSSValue;
+    GCRefPtr<CSSValue> m_startCSSValue;
+    GCRefPtr<CSSValue> m_endCSSValue;
     mutable RefPtr<LegacyStyleInterpolation> m_innerInterpolation;
     mutable bool m_outdated;
 };
