@@ -14,6 +14,7 @@
 #define BLINKIT_ANIMATION_PROXY_H
 
 #include "blinkit/blink/renderer/platform/geometry/int_rect.h"
+#include "blinkit/blink/renderer/platform/Timer.h"
 
 class SkBitmap;
 class SkPaint;
@@ -52,9 +53,14 @@ private:
     void PerformAnimation(void);
     virtual void Commit(void) = 0;
 
+    void OnAnimationTimerFired(Timer<AnimationProxy> *);
+
     static AnimationScheduler *m_scheduler;
     bool m_deferCommits = true;
     bool m_animateRequested = false, m_commitRequested = false;
+
+    const std::shared_ptr<bool> m_hostAliveFlag;
+    Timer<AnimationProxy> m_animationTimer;
 };
 
 } // namespace BlinKit

@@ -54,12 +54,8 @@ std::unordered_map<UINT_PTR, WebViewHostWindow *> WebViewHostWindow::m_resizingH
 WebViewHostWindow::WebViewHostWindow(const BkWebViewClient &client, HWND hWnd, LPCREATESTRUCT cs)
     : WebViewHost(client, GetPageVisibilityState(cs->style))
     , m_hWnd(hWnd)
-    , m_hostAliveFlag(std::make_shared<bool>(true))
-    , m_animationTimer(this, &WebViewHostWindow::OnAnimationTimer)
 {
     g_hosts.emplace(m_hWnd, this);
-
-    m_animationTimer.SetHostAliveFlag(m_hostAliveFlag);
 
     m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_ARROW);
 
@@ -216,16 +212,6 @@ void WebViewHostWindow::MakeBitBlt(const IntRect &rect)
     HDC hdc = GetDC(m_hWnd);
     BitBlt(hdc, rect.x(), rect.y(), rect.width(), rect.height(), m_memoryDC, rect.x(), rect.y(), SRCCOPY);
     ReleaseDC(m_hWnd, hdc);
-}
-
-void WebViewHostWindow::OnAnimationTimer(Timer<WebViewHostWindow> *)
-{
-#if 0
-    m_paintSession.AttachToScheduler(*this);
-    m_paintSession.Begin(*this);
-    m_paintSession.Flush(*this);
-    m_paintSession.DetachFromScheduler();
-#endif
 }
 
 void WebViewHostWindow::OnChar(HWND hwnd, TCHAR ch, int)

@@ -13,7 +13,6 @@
 #ifndef BLINKIT_WEB_VIEW_HOST_WINDOW_H
 #define BLINKIT_WEB_VIEW_HOST_WINDOW_H
 
-#include "blinkit/blink/renderer/platform/Timer.h"
 #include "blinkit/ui/web_view_host.h"
 #include "blinkit/win/mouse_session.h"
 #include "third_party/zed/include/zed/mutex.hpp"
@@ -31,10 +30,6 @@ public:
     ~WebViewHostWindow(void) override;
 
     HWND GetHWND(void) const { return m_hWnd; }
-
-    void StartAnimationTimer(double delay) {
-        //m_animationTimer.startOneShot(delay, BLINK_FROM_HERE);
-    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
@@ -65,8 +60,6 @@ private:
     void OnShowWindow(HWND hwnd, BOOL fShow, UINT status);
     void OnSize(HWND hwnd, UINT state, int cx, int cy);
 
-    void OnAnimationTimer(Timer<WebViewHostWindow> *);
-
     void SetResizingTimer(void);
     void KillResizingTimer(void);
     void AdjustUpdateWhileResizing(DWORD tick);
@@ -89,10 +82,6 @@ private:
 
     MouseSession m_mouseSession;
 
-    const std::shared_ptr<bool> m_hostAliveFlag;
-    Timer<WebViewHostWindow> m_animationTimer;
-
-    bool m_animationTaskScheduled = false;
     bool m_changingSizeOrPosition = false;
     WebCursorInfo m_cursorInfo;
 

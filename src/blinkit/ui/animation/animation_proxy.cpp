@@ -18,15 +18,22 @@
 
 namespace BlinKit {
 
+static constexpr double AnimationInterval = 1.0 / 24;
+
 AnimationScheduler *AnimationProxy::m_scheduler = nullptr;
 
 AnimationProxy::AnimationProxy(void)
+    : m_hostAliveFlag(std::make_shared<bool>(true))
+    , m_animationTimer(this, &AnimationProxy::OnAnimationTimerFired)
 {
     AppImpl::Get().GetCompositor().Attach(this);
+
+    m_animationTimer.SetHostAliveFlag(m_hostAliveFlag);
 }
 
 AnimationProxy::~AnimationProxy(void)
 {
+    *m_hostAliveFlag = false;
 #ifndef NDEBUG
     ASSERT(!AppImpl::Get().GetCompositor().IsProxyAttached(this)); // Should be detached already!
 #endif
@@ -37,6 +44,11 @@ void AnimationProxy::CommitAnimationImmediately(void)
     SetNeedsAnimate();
     PerformAnimation();
     m_scheduler->Unregister(this);
+}
+
+void AnimationProxy::OnAnimationTimerFired(Timer<AnimationProxy> *)
+{
+    SetNeedsAnimate();
 }
 
 void AnimationProxy::PerformAnimation(void)
@@ -51,7 +63,10 @@ void AnimationProxy::PerformAnimation(void)
         view->UpdateLifecycle();
 
         if (m_commitRequested)
+        {
             Commit();
+            m_animationTimer.startOneShot(AnimationInterval, BLINK_FROM_HERE);
+        }
     }
     m_animateRequested = m_commitRequested = false;
 }
