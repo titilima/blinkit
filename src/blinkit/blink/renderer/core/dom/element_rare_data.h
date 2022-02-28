@@ -1,7 +1,8 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: ElementRareData.h
+//   File Name: element_rare_data.h
 // Description: ElementRareData Class
 //      Author: Ziming Li
 //     Created: 2021-10-01
@@ -33,21 +34,21 @@
 #ifndef ElementRareData_h
 #define ElementRareData_h
 
+#include "blinkit/blink/renderer/core/animation/ElementAnimations.h"
+#include "blinkit/blink/renderer/core/dom/Attr.h"
+#include "blinkit/blink/renderer/core/dom/CompositorProxiedPropertySet.h"
+#include "blinkit/blink/renderer/core/dom/DatasetDOMStringMap.h"
+#include "blinkit/blink/renderer/core/dom/NamedNodeMap.h"
+#include "blinkit/blink/renderer/core/dom/NodeIntersectionObserverData.h"
+#include "blinkit/blink/renderer/core/dom/NodeRareData.h"
+#include "blinkit/blink/renderer/core/dom/PseudoElement.h"
+#include "blinkit/blink/renderer/core/dom/custom/CustomElementDefinition.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ElementShadow.h"
 #include "blinkit/blink/renderer/core/html/class_list.h"
-#include "core/animation/ElementAnimations.h"
-#include "core/dom/Attr.h"
-#include "core/dom/CompositorProxiedPropertySet.h"
-#include "core/dom/DatasetDOMStringMap.h"
-#include "core/dom/NamedNodeMap.h"
-#include "core/dom/NodeIntersectionObserverData.h"
-#include "core/dom/NodeRareData.h"
-#include "core/dom/PseudoElement.h"
-#include "core/dom/custom/CustomElementDefinition.h"
-#include "core/dom/shadow/ElementShadow.h"
-#include "core/style/StyleInheritedData.h"
-#include "platform/heap/Handle.h"
-#include "wtf/HashSet.h"
-#include "wtf/OwnPtr.h"
+#include "blinkit/blink/renderer/core/style/StyleInheritedData.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/HashSet.h"
+#include "blinkit/blink/renderer/wtf/OwnPtr.h"
 
 namespace blink {
 
@@ -116,11 +117,13 @@ public:
     IntSize savedLayerScrollOffset() const { return m_savedLayerScrollOffset; }
     void setSavedLayerScrollOffset(IntSize size) { m_savedLayerScrollOffset = size; }
 
+#ifdef BLINKIT_UI_ENABLED
     ElementAnimations* elementAnimations() { return m_elementAnimations.get(); }
-    void setElementAnimations(ElementAnimations* elementAnimations)
+    void setElementAnimations(std::unique_ptr<ElementAnimations> &&elementAnimations)
     {
-        m_elementAnimations = elementAnimations;
+        m_elementAnimations = std::move(elementAnimations);
     }
+#endif
 
     bool hasPseudoElements() const;
     void clearPseudoElements();
@@ -163,7 +166,9 @@ private:
     GCRefPtr<InlineCSSStyleDeclaration> m_cssomWrapper;
     OwnPtr<CompositorProxiedPropertySet> m_proxiedProperties;
 
-    PersistentWillBeMember<ElementAnimations> m_elementAnimations;
+#ifdef BLINKIT_UI_ENABLED
+    std::unique_ptr<ElementAnimations> m_elementAnimations;
+#endif
     PersistentWillBeMember<NodeIntersectionObserverData> m_intersectionObserverData;
 
     RefPtr<ComputedStyle> m_computedStyle;

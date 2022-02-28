@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: ElementRareData.cpp
+//   File Name: element_rare_data.cpp
 // Description: ElementRareData Class
 //      Author: Ziming Li
 //     Created: 2021-10-01
@@ -39,9 +39,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/dom/ElementRareData.h"
-#include "core/dom/CompositorProxiedPropertySet.h"
-#include "core/style/ComputedStyle.h"
+#include "./element_rare_data.h"
+
+#include "blinkit/blink/renderer/core/dom/CompositorProxiedPropertySet.h"
+#include "blinkit/blink/renderer/core/style/ComputedStyle.h"
 
 using namespace BlinKit;
 
@@ -52,7 +53,10 @@ struct SameSizeAsElementRareData : NodeRareData {
     LayoutSize sizeForResizing;
     IntSize scrollOffset;
     void* pointers[12];
-    PersistentWillBeMember<void*> persistentMember[2];
+    PersistentWillBeMember<void*> persistentMember;
+#ifdef BLINKIT_UI_ENABLED
+    std::unique_ptr<void> uniqueMember;
+#endif
     GCUniquePtr<void> uniqueRoot;
 };
 
@@ -79,7 +83,6 @@ DEFINE_TRACE_AFTER_DISPATCH(ElementRareData)
     if (m_attrNodeList)
         visitor->trace(*m_attrNodeList);
 #endif
-    visitor->trace(m_elementAnimations);
     // BKTODO: visitor->trace(m_cssomWrapper);
     visitor->trace(m_customElementDefinition);
     visitor->trace(m_generatedBefore);
