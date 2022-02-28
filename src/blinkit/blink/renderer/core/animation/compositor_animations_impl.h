@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: compositor_animations_impl.h
+// Description: CompositorAnimationsImpl Class
+//      Author: Ziming Li
+//     Created: 2022-02-28
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2013, Google Inc. All rights reserved.
  *
@@ -31,13 +43,12 @@
 #ifndef CompositorAnimationsImpl_h
 #define CompositorAnimationsImpl_h
 
-#include "core/CoreExport.h"
-#include "core/animation/EffectModel.h"
-#include "core/animation/KeyframeEffectModel.h"
-#include "core/animation/Timing.h"
-#include "platform/animation/TimingFunction.h"
-#include "public/platform/WebCompositorAnimation.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/public/platform/WebCompositorAnimation.h"
+#include "blinkit/blink/renderer/core/animation/EffectModel.h"
+#include "blinkit/blink/renderer/core/animation/keyframe_effect_model.h"
+#include "blinkit/blink/renderer/core/animation/Timing.h"
+#include "blinkit/blink/renderer/platform/animation/TimingFunction.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
 
 namespace blink {
 

@@ -13,22 +13,22 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/html/HTMLImageFallbackHelper.h"
+#include "./HTMLImageFallbackHelper.h"
 
-#include "core/HTMLNames.h"
-#include "core/InputTypeNames.h"
-#include "core/dom/ElementRareData.h"
-#include "core/dom/Text.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/fetch/ImageResource.h"
-#include "core/html/HTMLDivElement.h"
-#include "core/html/HTMLElement.h"
-#include "core/html/HTMLImageElement.h"
-#include "core/html/HTMLImageLoader.h"
-#include "core/html/HTMLInputElement.h"
-#include "core/html/HTMLStyleElement.h"
-#include "wtf/PassOwnPtr.h"
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/InputTypeNames.h"
+#include "blinkit/blink/renderer/core/dom/element_rare_data.h"
+#include "blinkit/blink/renderer/core/dom/Text.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/fetch/ImageResource.h"
+#include "blinkit/blink/renderer/core/html/HTMLDivElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLImageElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLImageLoader.h"
+#include "blinkit/blink/renderer/core/html/HTMLInputElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLStyleElement.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 namespace blink {
 

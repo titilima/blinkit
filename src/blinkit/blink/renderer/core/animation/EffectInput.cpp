@@ -39,19 +39,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/animation/EffectInput.h"
+#include "./EffectInput.h"
 
-#include "core/animation/AnimationInputHelpers.h"
-#include "core/animation/KeyframeEffectModel.h"
-#include "core/animation/StringKeyframe.h"
-#include "core/css/CSSStyleSheet.h"
-#include "core/dom/Document.h"
-#include "core/dom/Element.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/NodeComputedStyle.h"
-#include "wtf/ASCIICType.h"
-#include "wtf/HashSet.h"
-#include "wtf/NonCopyingSort.h"
+#include "blinkit/blink/renderer/core/animation/AnimationInputHelpers.h"
+#include "blinkit/blink/renderer/core/animation/keyframe_effect_model.h"
+#include "blinkit/blink/renderer/core/animation/StringKeyframe.h"
+#include "blinkit/blink/renderer/core/css/CSSStyleSheet.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/core/dom/Element.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/dom/NodeComputedStyle.h"
+#include "blinkit/blink/renderer/wtf/ASCIICType.h"
+#include "blinkit/blink/renderer/wtf/HashSet.h"
+#include "blinkit/blink/renderer/wtf/NonCopyingSort.h"
 
 namespace blink {
 

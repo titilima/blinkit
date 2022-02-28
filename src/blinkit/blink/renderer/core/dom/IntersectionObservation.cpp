@@ -1,16 +1,27 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: IntersectionObservation.cpp
+// Description: IntersectionObservation Class
+//      Author: Ziming Li
+//     Created: 2022-02-28
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/dom/IntersectionObservation.h"
+#include "./IntersectionObservation.h"
 
-#include "core/dom/ElementRareData.h"
-#include "core/dom/IntersectionObserver.h"
-#include "core/frame/FrameView.h"
-#include "core/layout/LayoutBox.h"
-#include "core/layout/LayoutText.h"
-#include "core/layout/LayoutView.h"
-#include "core/paint/PaintLayer.h"
+#include "blinkit/blink/renderer/core/dom/element_rare_data.h"
+#include "blinkit/blink/renderer/core/dom/IntersectionObserver.h"
+#include "blinkit/blink/renderer/core/frame/FrameView.h"
+#include "blinkit/blink/renderer/core/layout/LayoutBox.h"
+#include "blinkit/blink/renderer/core/layout/LayoutText.h"
+#include "blinkit/blink/renderer/core/layout/LayoutView.h"
+#include "blinkit/blink/renderer/core/paint/PaintLayer.h"
 
 namespace blink {
 

@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSAnimations.h
+// Description: CSSAnimations Class
+//      Author: Ziming Li
+//     Created: 2022-02-28
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,17 +43,15 @@
 #ifndef CSSAnimations_h
 #define CSSAnimations_h
 
-#include "core/animation/InertEffect.h"
-#include "core/animation/Interpolation.h"
-#include "core/animation/css/CSSAnimationData.h"
-#include "core/animation/css/CSSAnimationUpdate.h"
-#include "core/css/CSSKeyframesRule.h"
-#include "core/css/StylePropertySet.h"
-#include "core/css/resolver/StyleResolverState.h"
-#include "core/dom/Document.h"
-#include "core/dom/Element.h"
-#include "wtf/HashMap.h"
-#include "wtf/text/AtomicString.h"
+#include "blinkit/blink/renderer/core/animation/css/CSSAnimationData.h"
+#include "blinkit/blink/renderer/core/animation/css/css_animation_update.h"
+#include "blinkit/blink/renderer/core/css/CSSKeyframesRule.h"
+#include "blinkit/blink/renderer/core/css/StylePropertySet.h"
+#include "blinkit/blink/renderer/core/css/resolver/StyleResolverState.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/core/dom/Element.h"
+#include "blinkit/blink/renderer/wtf/HashMap.h"
+#include "blinkit/blink/renderer/wtf/text/AtomicString.h"
 
 namespace blink {
 
@@ -50,7 +60,8 @@ class Element;
 class StylePropertyShorthand;
 class StyleResolver;
 
-class CSSAnimations final {
+class CSSAnimations final
+{
     WTF_MAKE_NONCOPYABLE(CSSAnimations);
     DISALLOW_NEW();
 public:

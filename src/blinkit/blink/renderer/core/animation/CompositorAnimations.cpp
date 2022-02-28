@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CompositorAnimations.cpp
+// Description: CompositorAnimations Class
+//      Author: Ziming Li
+//     Created: 2022-02-28
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -28,35 +39,34 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/animation/CompositorAnimations.h"
-
-#include "core/animation/AnimationEffect.h"
-#include "core/animation/AnimationTranslationUtil.h"
-#include "core/animation/CompositorAnimationsImpl.h"
-#include "core/animation/ElementAnimations.h"
-#include "core/animation/animatable/AnimatableDouble.h"
-#include "core/animation/animatable/AnimatableFilterOperations.h"
-#include "core/animation/animatable/AnimatableTransform.h"
-#include "core/animation/animatable/AnimatableValue.h"
-#include "core/layout/LayoutBoxModelObject.h"
-#include "core/layout/LayoutObject.h"
-#include "core/layout/compositing/CompositedLayerMapping.h"
-#include "core/paint/PaintLayer.h"
-#include "platform/RuntimeEnabledFeatures.h"
-#include "platform/geometry/FloatBox.h"
-#include "public/platform/Platform.h"
-#include "public/platform/WebCompositorAnimation.h"
-#include "public/platform/WebCompositorAnimationPlayer.h"
-#include "public/platform/WebCompositorSupport.h"
-#include "public/platform/WebFilterAnimationCurve.h"
-#include "public/platform/WebFilterKeyframe.h"
-#include "public/platform/WebFloatAnimationCurve.h"
-#include "public/platform/WebFloatKeyframe.h"
-#include "public/platform/WebTransformAnimationCurve.h"
-#include "public/platform/WebTransformKeyframe.h"
+#include "./CompositorAnimations.h"
 
 #include <algorithm>
 #include <cmath>
+#include "blinkit/blink/public/platform/Platform.h"
+#include "blinkit/blink/public/platform/WebCompositorAnimation.h"
+#include "blinkit/blink/public/platform/WebCompositorAnimationPlayer.h"
+#include "blinkit/blink/public/platform/WebCompositorSupport.h"
+#include "blinkit/blink/public/platform/WebFilterAnimationCurve.h"
+#include "blinkit/blink/public/platform/WebFilterKeyframe.h"
+#include "blinkit/blink/public/platform/WebFloatAnimationCurve.h"
+#include "blinkit/blink/public/platform/WebFloatKeyframe.h"
+#include "blinkit/blink/public/platform/WebTransformAnimationCurve.h"
+#include "blinkit/blink/public/platform/WebTransformKeyframe.h"
+#include "blinkit/blink/renderer/core/animation/AnimationEffect.h"
+#include "blinkit/blink/renderer/core/animation/AnimationTranslationUtil.h"
+#include "blinkit/blink/renderer/core/animation/compositor_animations_impl.h"
+#include "blinkit/blink/renderer/core/animation/ElementAnimations.h"
+#include "blinkit/blink/renderer/core/animation/animatable/AnimatableDouble.h"
+#include "blinkit/blink/renderer/core/animation/animatable/AnimatableFilterOperations.h"
+#include "blinkit/blink/renderer/core/animation/animatable/AnimatableTransform.h"
+#include "blinkit/blink/renderer/core/animation/animatable/AnimatableValue.h"
+#include "blinkit/blink/renderer/core/layout/LayoutBoxModelObject.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/core/layout/compositing/CompositedLayerMapping.h"
+#include "blinkit/blink/renderer/core/paint/PaintLayer.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatBox.h"
 
 namespace blink {
 

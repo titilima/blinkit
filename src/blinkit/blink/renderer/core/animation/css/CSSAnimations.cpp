@@ -50,7 +50,7 @@
 #include "blinkit/blink/renderer/core/animation/deferred_legacy_style_interpolation.h"
 #include "blinkit/blink/renderer/core/animation/ElementAnimations.h"
 #include "blinkit/blink/renderer/core/animation/Interpolation.h"
-#include "blinkit/blink/renderer/core/animation/KeyframeEffectModel.h"
+#include "blinkit/blink/renderer/core/animation/keyframe_effect_model.h"
 #include "blinkit/blink/renderer/core/animation/css/CSSAnimatableValueFactory.h"
 #include "blinkit/blink/renderer/core/animation/css/CSSPropertyEquality.h"
 #include "blinkit/blink/renderer/core/css/CSSKeyframeRule.h"
@@ -490,7 +490,7 @@ void CSSAnimations::maybeApplyPendingUpdate(Element* element)
             newFrames[1]->clearPropertyValue(id);
 
             GCRefPtr<InertEffect> inertAnimationForSampling = InertEffect::create(oldAnimation->model(), oldAnimation->specifiedTiming(), false, inheritedTime);
-            Vector<RefPtr<Interpolation>> sample;
+            std::vector<RefPtr<Interpolation>> sample;
             inertAnimationForSampling->sample(sample);
             if (sample.size() == 1) {
                 newFrames[0]->setPropertyValue(id, toLegacyStyleInterpolation(sample.at(0).get())->currentValue());

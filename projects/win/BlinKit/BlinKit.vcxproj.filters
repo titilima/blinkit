@@ -1440,9 +1440,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\document_type.cpp">
       <Filter>blink\renderer\core\dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementRareData.cpp">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ProcessingInstruction.cpp">
       <Filter>blink\renderer\core\dom</Filter>
     </ClCompile>
@@ -1479,9 +1476,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\KeyframeEffect.cpp">
       <Filter>blink\renderer\core\animation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\SampledEffect.cpp">
-      <Filter>blink\renderer\core\animation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\EffectInput.cpp">
       <Filter>blink\renderer\core\animation</Filter>
     </ClCompile>
@@ -1500,17 +1494,8 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\css\CSSAnimations.cpp">
       <Filter>blink\renderer\core\animation\css</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\InertEffect.cpp">
-      <Filter>blink\renderer\core\animation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\css\resolver\StyleResolverState.cpp">
       <Filter>blink\renderer\core\css\resolver</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\KeyframeEffectModel.cpp">
-      <Filter>blink\renderer\core\animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\InterpolationEffect.cpp">
-      <Filter>blink\renderer\core\animation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\StringKeyframe.cpp">
       <Filter>blink\renderer\core\animation</Filter>
@@ -4221,6 +4206,21 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\deferred_legacy_style_interpolation.cpp">
       <Filter>blink\renderer\core\animation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\sampled_effect.cpp">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\keyframe_effect_model.cpp">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\interpolation_effect.cpp">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\inert_effect.cpp">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\element_rare_data.cpp">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -5514,9 +5514,6 @@
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementData.h">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementRareData.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementTraversal.h">
@@ -7457,9 +7454,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CompositorAnimations.h">
       <Filter>blink\renderer\core\animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CompositorAnimationsImpl.h">
-      <Filter>blink\renderer\core\animation</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\CompositorPendingAnimations.h">
       <Filter>blink\renderer\core\animation</Filter>
     </ClInclude>
@@ -7532,9 +7526,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\ImageSliceStyleInterpolation.h">
       <Filter>blink\renderer\core\animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\InertEffect.h">
-      <Filter>blink\renderer\core\animation</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\InterpolableValue.h">
       <Filter>blink\renderer\core\animation</Filter>
     </ClInclude>
@@ -7542,9 +7533,6 @@
       <Filter>blink\renderer\core\animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\InterpolationComponent.h">
-      <Filter>blink\renderer\core\animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\InterpolationEffect.h">
       <Filter>blink\renderer\core\animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\InterpolationEnvironment.h">
@@ -7563,9 +7551,6 @@
       <Filter>blink\renderer\core\animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\KeyframeEffect.h">
-      <Filter>blink\renderer\core\animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\KeyframeEffectModel.h">
       <Filter>blink\renderer\core\animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\LegacyStyleInterpolation.h">
@@ -7599,9 +7584,6 @@
       <Filter>blink\renderer\core\animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\PropertyHandle.h">
-      <Filter>blink\renderer\core\animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\SampledEffect.h">
       <Filter>blink\renderer\core\animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\ShadowInterpolationFunctions.h">
@@ -9100,6 +9082,45 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\deferred_legacy_style_interpolation.h">
       <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\sampled_effect.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\keyframe_effect_model.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\interpolation_effect.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\css\css_animation_update.h">
+      <Filter>blink\renderer\core\animation\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\css\CSSAnimatableValueFactory.h">
+      <Filter>blink\renderer\core\animation\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\css\CSSAnimationData.h">
+      <Filter>blink\renderer\core\animation\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\css\CSSAnimations.h">
+      <Filter>blink\renderer\core\animation\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\css\CSSPropertyEquality.h">
+      <Filter>blink\renderer\core\animation\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\css\CSSTimingData.h">
+      <Filter>blink\renderer\core\animation\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\css\CSSTransitionData.h">
+      <Filter>blink\renderer\core\animation\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\compositor_animations_impl.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\inert_effect.h">
+      <Filter>blink\renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\element_rare_data.h">
+      <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

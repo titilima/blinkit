@@ -33,26 +33,26 @@
 #ifndef StyleResolverState_h
 #define StyleResolverState_h
 
-#include "core/CSSPropertyNames.h"
-#include "core/CoreExport.h"
-#include "core/animation/css/CSSAnimationUpdate.h"
+#include "blinkit/blink/renderer/core/CSSPropertyNames.h"
+#include "blinkit/blink/renderer/core/animation/css/css_animation_update.h"
 // BKTODO: #include "core/css/CSSSVGDocumentValue.h"
-#include "core/css/CSSToLengthConversionData.h"
-#include "core/css/resolver/CSSToStyleMap.h"
-#include "core/css/resolver/ElementResolveContext.h"
-#include "core/css/resolver/ElementStyleResources.h"
-#include "core/css/resolver/FontBuilder.h"
-#include "core/dom/Document.h"
-#include "core/dom/Element.h"
-#include "core/style/CachedUAStyle.h"
-#include "core/style/ComputedStyle.h"
-#include "core/style/StyleInheritedData.h"
+#include "blinkit/blink/renderer/core/css/CSSToLengthConversionData.h"
+#include "blinkit/blink/renderer/core/css/resolver/CSSToStyleMap.h"
+#include "blinkit/blink/renderer/core/css/resolver/ElementResolveContext.h"
+#include "blinkit/blink/renderer/core/css/resolver/ElementStyleResources.h"
+#include "blinkit/blink/renderer/core/css/resolver/FontBuilder.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/core/dom/Element.h"
+#include "blinkit/blink/renderer/core/style/CachedUAStyle.h"
+#include "blinkit/blink/renderer/core/style/ComputedStyle.h"
+#include "blinkit/blink/renderer/core/style/StyleInheritedData.h"
 
 namespace blink {
 
 class FontDescription;
 
-class CORE_EXPORT StyleResolverState {
+class StyleResolverState
+{
     STACK_ALLOCATED();
     WTF_MAKE_NONCOPYABLE(StyleResolverState);
 public:

@@ -1,7 +1,8 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: CSSAnimationUpdate.h
+//   File Name: css_animation_update.h
 // Description: CSSAnimationUpdate Class
 //      Author: Ziming Li
 //     Created: 2021-07-12
@@ -16,18 +17,18 @@
 #ifndef CSSAnimationUpdate_h
 #define CSSAnimationUpdate_h
 
-#include "core/animation/AnimationStack.h"
-#include "core/animation/InertEffect.h"
-#include "core/animation/Interpolation.h"
-#include "core/animation/KeyframeEffectModel.h"
-#include "core/animation/css/CSSAnimatableValueFactory.h"
-#include "core/animation/css/CSSPropertyEquality.h"
-#include "core/css/CSSKeyframesRule.h"
-#include "core/layout/LayoutObject.h"
-#include "wtf/Allocator.h"
-#include "wtf/HashMap.h"
-#include "wtf/Vector.h"
-#include "wtf/text/AtomicString.h"
+#include "blinkit/blink/renderer/core/animation/AnimationStack.h"
+#include "blinkit/blink/renderer/core/animation/inert_effect.h"
+#include "blinkit/blink/renderer/core/animation/Interpolation.h"
+#include "blinkit/blink/renderer/core/animation/keyframe_effect_model.h"
+#include "blinkit/blink/renderer/core/animation/css/CSSAnimatableValueFactory.h"
+#include "blinkit/blink/renderer/core/animation/css/CSSPropertyEquality.h"
+#include "blinkit/blink/renderer/core/css/CSSKeyframesRule.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
+#include "blinkit/blink/renderer/wtf/HashMap.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
+#include "blinkit/blink/renderer/wtf/text/AtomicString.h"
 
 namespace blink {
 
@@ -35,7 +36,8 @@ class Animation;
 
 // This class stores the CSS Animations/Transitions information we use during a style recalc.
 // This includes updates to animations/transitions as well as the Interpolations to be applied.
-class CSSAnimationUpdate final {
+class CSSAnimationUpdate final
+{
     DISALLOW_NEW();
     WTF_MAKE_NONCOPYABLE(CSSAnimationUpdate);
 public:

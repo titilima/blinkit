@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NodeRareData.cpp
+// Description: NodeRareData Class
+//      Author: Ziming Li
+//     Created: 2022-02-28
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -28,13 +39,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/dom/NodeRareData.h"
+#include "./NodeRareData.h"
 
-#include "core/dom/Element.h"
-#include "core/dom/ElementRareData.h"
-#include "core/frame/FrameHost.h"
-#include "core/layout/LayoutObject.h"
-#include "platform/heap/Handle.h"
+#include "blinkit/blink/renderer/core/dom/Element.h"
+#include "blinkit/blink/renderer/core/dom/element_rare_data.h"
+#include "blinkit/blink/renderer/core/frame/FrameHost.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
 
 namespace blink {
 
