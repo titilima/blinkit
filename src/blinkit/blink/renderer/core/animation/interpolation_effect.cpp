@@ -1,12 +1,23 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: interpolation_effect.cpp
+// Description: InterpolationEffect Class
+//      Author: Ziming Li
+//     Created: 2022-02-28
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/animation/InterpolationEffect.h"
+#include "./interpolation_effect.h"
 
 namespace blink {
 
-void InterpolationEffect::getActiveInterpolations(double fraction, double iterationDuration, Vector<RefPtr<Interpolation>>& result) const
+void InterpolationEffect::getActiveInterpolations(double fraction, double iterationDuration, std::vector<RefPtr<Interpolation>>& result) const
 {
     size_t existingSize = result.size();
     size_t resultIndex = 0;
@@ -21,11 +32,11 @@ void InterpolationEffect::getActiveInterpolations(double fraction, double iterat
             if (resultIndex < existingSize)
                 result[resultIndex++] = interpolation;
             else
-                result.append(interpolation);
+                result.emplace_back(interpolation);
         }
     }
     if (resultIndex < existingSize)
-        result.shrink(resultIndex);
+        result.resize(resultIndex);
 }
 
 void InterpolationEffect::addInterpolationsFromKeyframes(PropertyHandle property, Element* element, const ComputedStyle* baseStyle, Keyframe::PropertySpecificKeyframe& keyframeA, Keyframe::PropertySpecificKeyframe& keyframeB, double applyFrom, double applyTo)

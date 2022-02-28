@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: interpolation_effect.h
+// Description: InterpolationEffect Class
+//      Author: Ziming Li
+//     Created: 2022-02-28
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,23 +17,23 @@
 #ifndef InterpolationEffect_h
 #define InterpolationEffect_h
 
-#include "core/CoreExport.h"
-#include "core/animation/Interpolation.h"
-#include "core/animation/Keyframe.h"
-#include "platform/RuntimeEnabledFeatures.h"
-#include "platform/animation/TimingFunction.h"
-#include "wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/core/animation/Interpolation.h"
+#include "blinkit/blink/renderer/core/animation/Keyframe.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/platform/animation/TimingFunction.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
 
 namespace blink {
 
-class CORE_EXPORT InterpolationEffect : public RefCounted<InterpolationEffect> {
+class InterpolationEffect : public RefCounted<InterpolationEffect>
+{
 public:
     static PassRefPtr<InterpolationEffect> create()
     {
         return adoptRef(new InterpolationEffect());
     }
 
-    void getActiveInterpolations(double fraction, double iterationDuration, Vector<RefPtr<Interpolation>>&) const;
+    void getActiveInterpolations(double fraction, double iterationDuration, std::vector<RefPtr<Interpolation>>&) const;
 
     void addInterpolation(PassRefPtr<Interpolation> interpolation, PassRefPtr<TimingFunction> easing, double start, double end, double applyFrom, double applyTo)
     {
