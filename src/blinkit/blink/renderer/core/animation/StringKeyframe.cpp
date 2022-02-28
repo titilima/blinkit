@@ -71,7 +71,9 @@ StringKeyframe::StringKeyframe(const StringKeyframe& copyFrom)
     : Keyframe(copyFrom.m_offset, copyFrom.m_composite, copyFrom.m_easing)
     , m_cssPropertyMap(copyFrom.m_cssPropertyMap->mutableCopy())
     , m_presentationAttributeMap(copyFrom.m_presentationAttributeMap->mutableCopy())
+#if 0 // BKTODO:
     , m_svgAttributeMap(copyFrom.m_svgAttributeMap)
+#endif
 {
 }
 
@@ -96,10 +98,12 @@ void StringKeyframe::setPresentationAttributeValue(CSSPropertyID property, const
         m_presentationAttributeMap->setProperty(property, value, false, styleSheetContents);
 }
 
+#if 0 // BKTODO:
 void StringKeyframe::setSVGAttributeValue(const QualifiedName& attributeName, const String& value)
 {
     m_svgAttributeMap.set(&attributeName, value);
 }
+#endif
 
 PropertyHandleSet StringKeyframe::properties() const
 {
@@ -117,8 +121,10 @@ PropertyHandleSet StringKeyframe::properties() const
     for (unsigned i = 0; i < m_presentationAttributeMap->propertyCount(); ++i)
         properties.insert(PropertyHandle(m_presentationAttributeMap->propertyAt(i).id(), true));
 
+#if 0 // BKTODO:
     for (const auto& key: m_svgAttributeMap.keys())
         properties.insert(PropertyHandle(*key));
+#endif
 
     return properties;
 }

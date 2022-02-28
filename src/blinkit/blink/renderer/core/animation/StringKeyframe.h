@@ -35,7 +35,9 @@ public:
     void setCSSPropertyValue(CSSPropertyID, const String& value, Element*, StyleSheetContents*);
     void setCSSPropertyValue(CSSPropertyID, PassRefPtrWillBeRawPtr<CSSValue>);
     void setPresentationAttributeValue(CSSPropertyID, const String& value, Element*, StyleSheetContents*);
+#if 0 // BKTODO:
     void setSVGAttributeValue(const QualifiedName&, const String& value);
+#endif
 
     CSSValue* cssPropertyValue(CSSPropertyID property) const
     {
@@ -51,10 +53,12 @@ public:
         return m_presentationAttributeMap->propertyAt(static_cast<unsigned>(index)).value();
     }
 
+#if 0 // BKTODO:
     String svgPropertyValue(const QualifiedName& attributeName) const
     {
         return m_svgAttributeMap.get(&attributeName);
     }
+#endif
 
     PropertyHandleSet properties() const override;
 
@@ -126,7 +130,9 @@ private:
 
     GCRefPtr<MutableStylePropertySet> m_cssPropertyMap;
     GCRefPtr<MutableStylePropertySet> m_presentationAttributeMap;
+#if 0 // BKTODO:
     HashMap<const QualifiedName*, String> m_svgAttributeMap;
+#endif
 };
 
 using CSSPropertySpecificKeyframe = StringKeyframe::CSSPropertySpecificKeyframe;
