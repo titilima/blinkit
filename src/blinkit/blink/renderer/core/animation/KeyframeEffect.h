@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -42,13 +43,12 @@
 #ifndef KeyframeEffect_h
 #define KeyframeEffect_h
 
-#include "core/CoreExport.h"
-#include "core/animation/AnimationEffect.h"
-#include "core/animation/EffectInput.h"
-#include "core/animation/EffectModel.h"
-#include "core/animation/TimingInput.h"
-#include "platform/heap/Handle.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/core/animation/AnimationEffect.h"
+#include "blinkit/blink/renderer/core/animation/EffectInput.h"
+#include "blinkit/blink/renderer/core/animation/EffectModel.h"
+#include "blinkit/blink/renderer/core/animation/TimingInput.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 
@@ -59,7 +59,8 @@ class ExceptionState;
 class PropertyHandle;
 class SampledEffect;
 
-class CORE_EXPORT KeyframeEffect final : public AnimationEffect {
+class KeyframeEffect final : public AnimationEffect
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     enum Priority { DefaultPriority, TransitionPriority };
@@ -120,7 +121,7 @@ private:
 
     RawPtrWillBeMember<Element> m_target;
     GCRefPtr<EffectModel> m_model;
-    Member<SampledEffect> m_sampledEffect;
+    GCRefPtr<SampledEffect> m_sampledEffect;
 
     Priority m_priority;
 

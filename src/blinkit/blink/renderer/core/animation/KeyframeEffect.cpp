@@ -39,21 +39,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/animation/KeyframeEffect.h"
+#include "./KeyframeEffect.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/animation/Animation.h"
-#include "core/animation/AnimationTimeline.h"
-#include "core/animation/CompositorAnimations.h"
-#include "core/animation/ElementAnimations.h"
-#include "core/animation/Interpolation.h"
-#include "core/animation/KeyframeEffectModel.h"
-#include "core/animation/KeyframeEffectOptions.h"
-#include "core/animation/PropertyHandle.h"
-#include "core/dom/Element.h"
-#include "core/dom/NodeComputedStyle.h"
-#include "core/frame/UseCounter.h"
-#include "core/paint/PaintLayer.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/core/animation/Animation.h"
+#include "blinkit/blink/renderer/core/animation/AnimationTimeline.h"
+#include "blinkit/blink/renderer/core/animation/CompositorAnimations.h"
+#include "blinkit/blink/renderer/core/animation/ElementAnimations.h"
+#include "blinkit/blink/renderer/core/animation/Interpolation.h"
+#include "blinkit/blink/renderer/core/animation/keyframe_effect_model.h"
+#include "blinkit/blink/renderer/core/animation/KeyframeEffectOptions.h"
+#include "blinkit/blink/renderer/core/animation/PropertyHandle.h"
+#include "blinkit/blink/renderer/core/dom/Element.h"
+#include "blinkit/blink/renderer/core/dom/NodeComputedStyle.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/core/paint/PaintLayer.h"
 // BKTODO: #include "core/svg/SVGElement.h"
 
 using namespace BlinKit;
@@ -195,13 +195,13 @@ void KeyframeEffect::applyEffects()
     if (m_sampledEffect) {
         changed = m_model->sample(clampTo<int>(iteration, 0), timeFraction(), iterationDuration(), m_sampledEffect->mutableInterpolations());
     } else {
-        Vector<RefPtr<Interpolation>> interpolations;
+        std::vector<RefPtr<Interpolation>> interpolations;
         m_model->sample(clampTo<int>(iteration, 0), timeFraction(), iterationDuration(), interpolations);
-        if (!interpolations.isEmpty()) {
-            SampledEffect* sampledEffect = SampledEffect::create(this);
+        if (!interpolations.empty()) {
+            GCRefPtr<SampledEffect> sampledEffect = SampledEffect::create(this);
             sampledEffect->mutableInterpolations().swap(interpolations);
             m_sampledEffect = sampledEffect;
-            ensureAnimationStack(m_target).add(sampledEffect);
+            ensureAnimationStack(m_target).add(sampledEffect.get());
             changed = true;
         } else {
             return;
