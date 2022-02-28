@@ -44,7 +44,11 @@ void AnimationProxy::PerformAnimation(void)
     ASSERT(m_animateRequested);
     if (!m_deferCommits)
     {
-        GetView()->UpdateLifecycle();
+        WebViewImpl *view = GetView();
+
+        double tick = monotonicallyIncreasingTime();
+        view->BeginFrame(tick);
+        view->UpdateLifecycle();
 
         if (m_commitRequested)
             Commit();
@@ -54,14 +58,11 @@ void AnimationProxy::PerformAnimation(void)
 
 void AnimationProxy::SetNeedsAnimate(void)
 {
-    if (m_animateRequested)
-        return;
-
-    m_scheduler->Register(this);
-    m_animateRequested = true;
-
-    double tick = monotonicallyIncreasingTime();
-    GetView()->BeginFrame(tick);
+    if (!m_animateRequested)
+    {
+        m_scheduler->Register(this);
+        m_animateRequested = true;
+    }
 }
 
 } // namespace BlinKit
