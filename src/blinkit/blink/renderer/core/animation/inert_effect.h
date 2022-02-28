@@ -1,7 +1,8 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: InertEffect.h
+//   File Name: inert_effect.h
 // Description: InertEffect Class
 //      Author: Ziming Li
 //     Created: 2021-11-01
@@ -42,17 +43,17 @@
 #ifndef InertEffect_h
 #define InertEffect_h
 
-#include "core/CoreExport.h"
-#include "core/animation/AnimationEffect.h"
-#include "core/animation/EffectModel.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/core/animation/AnimationEffect.h"
+#include "blinkit/blink/renderer/core/animation/EffectModel.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 
-class CORE_EXPORT InertEffect final : public AnimationEffect {
+class InertEffect final : public AnimationEffect
+{
 public:
     static GCRefPtr<InertEffect> create(EffectModel*, const Timing&, bool paused, double inheritedTime);
-    void sample(Vector<RefPtr<Interpolation>>&) const;
+    void sample(std::vector<RefPtr<Interpolation>>&) const;
     EffectModel* model() const { return m_model.get(); }
     bool paused() const { return m_paused; }
 

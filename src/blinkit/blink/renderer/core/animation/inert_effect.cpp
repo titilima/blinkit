@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: InertEffect.cpp
+//   File Name: inert_effect.cpp
 // Description: InertEffect Class
 //      Author: Ziming Li
 //     Created: 2021-11-01
@@ -39,9 +39,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/animation/InertEffect.h"
+#include "./inert_effect.h"
 
-#include "core/animation/Interpolation.h"
+#include "blinkit/blink/renderer/core/animation/Interpolation.h"
 
 using namespace BlinKit;
 
@@ -60,7 +60,7 @@ InertEffect::InertEffect(const GCRefPtr<EffectModel>& model, const Timing& timin
 {
 }
 
-void InertEffect::sample(Vector<RefPtr<Interpolation>>& result) const
+void InertEffect::sample(std::vector<RefPtr<Interpolation>>& result) const
 {
     updateInheritedTime(m_inheritedTime, TimingUpdateOnDemand);
     if (!isInEffect()) {
