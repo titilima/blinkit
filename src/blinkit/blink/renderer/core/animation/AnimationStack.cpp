@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimationStack.cpp
+// Description: AnimationStack Class
+//      Author: Ziming Li
+//     Created: 2022-02-28
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -28,21 +39,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/animation/AnimationStack.h"
+#include "./AnimationStack.h"
 
-#include "core/animation/CompositorAnimations.h"
-#include "core/animation/InvalidatableInterpolation.h"
-#include "core/animation/css/CSSAnimations.h"
-#include "platform/RuntimeEnabledFeatures.h"
-#include "wtf/BitArray.h"
-#include "wtf/NonCopyingSort.h"
 #include <algorithm>
+#include "blinkit/blink/renderer/core/animation/CompositorAnimations.h"
+#include "blinkit/blink/renderer/core/animation/InvalidatableInterpolation.h"
+#include "blinkit/blink/renderer/core/animation/css/CSSAnimations.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/wtf/BitArray.h"
+#include "blinkit/blink/renderer/wtf/NonCopyingSort.h"
 
 namespace blink {
 
 namespace {
 
-void copyToActiveInterpolationsMap(const Vector<RefPtr<Interpolation>>& source, AnimationStack::PropertyHandleFilter propertyHandleFilter, ActiveInterpolationsMap& target)
+void copyToActiveInterpolationsMap(const std::vector<RefPtr<Interpolation>>& source, AnimationStack::PropertyHandleFilter propertyHandleFilter, ActiveInterpolationsMap& target)
 {
     for (const auto& interpolation : source) {
         PropertyHandle property = interpolation->property();
@@ -61,7 +72,7 @@ void copyToActiveInterpolationsMap(const Vector<RefPtr<Interpolation>>& source, 
     }
 }
 
-bool compareEffects(const Member<SampledEffect>& effect1, const Member<SampledEffect>& effect2)
+bool compareEffects(const GCRefPtr<SampledEffect>& effect1, const GCRefPtr<SampledEffect>& effect2)
 {
     ASSERT(effect1 && effect2);
     return effect1->sequenceNumber() < effect2->sequenceNumber();
@@ -70,9 +81,9 @@ bool compareEffects(const Member<SampledEffect>& effect1, const Member<SampledEf
 void copyNewAnimationsToActiveInterpolationsMap(const HeapVector<Member<const InertEffect>>& newAnimations, AnimationStack::PropertyHandleFilter propertyHandleFilter, ActiveInterpolationsMap& result)
 {
     for (const auto& newAnimation : newAnimations) {
-        Vector<RefPtr<Interpolation>> sample;
+        std::vector<RefPtr<Interpolation>> sample;
         newAnimation->sample(sample);
-        if (!sample.isEmpty())
+        if (!sample.empty())
             copyToActiveInterpolationsMap(sample, propertyHandleFilter, result);
     }
 }
@@ -98,7 +109,7 @@ ActiveInterpolationsMap AnimationStack::activeInterpolations(AnimationStack* ani
     ActiveInterpolationsMap result;
 
     if (animationStack) {
-        HeapVector<Member<SampledEffect>>& effects = animationStack->m_effects;
+        std::vector<GCRefPtr<SampledEffect>>& effects = animationStack->m_effects;
         // std::sort doesn't work with OwnPtrs
         nonCopyingSort(effects.begin(), effects.end(), compareEffects);
         animationStack->removeClearedEffects();
@@ -122,7 +133,7 @@ void AnimationStack::removeClearedEffects()
         if (effect->effect())
             m_effects[dest++].swap(effect);
     }
-    m_effects.shrink(dest);
+    m_effects.resize(dest);
 }
 
 DEFINE_TRACE(AnimationStack)

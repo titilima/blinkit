@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimationStack.h
+// Description: AnimationStack Class
+//      Author: Ziming Li
+//     Created: 2022-02-28
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,15 +43,13 @@
 #ifndef AnimationStack_h
 #define AnimationStack_h
 
-#include "core/CoreExport.h"
-#include "core/animation/Animation.h"
-#include "core/animation/EffectModel.h"
-#include "core/animation/KeyframeEffect.h"
-#include "core/animation/PropertyHandle.h"
-#include "core/animation/SampledEffect.h"
-#include "platform/geometry/FloatBox.h"
-#include "wtf/HashSet.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/core/animation/Animation.h"
+#include "blinkit/blink/renderer/core/animation/EffectModel.h"
+#include "blinkit/blink/renderer/core/animation/KeyframeEffect.h"
+#include "blinkit/blink/renderer/core/animation/PropertyHandle.h"
+#include "blinkit/blink/renderer/core/animation/sampled_effect.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatBox.h"
+#include "blinkit/blink/renderer/wtf/HashSet.h"
 
 namespace blink {
 
@@ -47,14 +57,15 @@ using ActiveInterpolationsMap = HashMap<PropertyHandle, ActiveInterpolations>;
 
 class InertEffect;
 
-class CORE_EXPORT AnimationStack {
+class AnimationStack
+{
     DISALLOW_NEW();
     WTF_MAKE_NONCOPYABLE(AnimationStack);
 public:
     AnimationStack();
 
-    void add(SampledEffect* effect) { m_effects.append(effect); }
-    bool isEmpty() const { return m_effects.isEmpty(); }
+    void add(SampledEffect* effect) { m_effects.emplace_back(effect); }
+    bool isEmpty() const { return m_effects.empty(); }
     bool hasActiveAnimationsOnCompositor(CSSPropertyID) const;
 
     using PropertyHandleFilter = bool (*)(const PropertyHandle&);
@@ -67,7 +78,7 @@ private:
     void removeClearedEffects();
 
     // Effects sorted by priority. Lower priority at the start of the list.
-    HeapVector<Member<SampledEffect>> m_effects;
+    std::vector<GCRefPtr<SampledEffect>> m_effects;
 
     friend class AnimationAnimationStackTest;
 };
