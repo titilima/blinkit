@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: SampledEffect.cpp
+//   File Name: sampled_effect.cpp
 // Description: SampledEffect Class
 //      Author: Ziming Li
 //     Created: 2021-07-18
@@ -13,10 +13,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/animation/SampledEffect.h"
+#include "./sampled_effect.h"
 
-#include "core/animation/InterpolationEnvironment.h"
-#include "core/animation/InvalidatableInterpolation.h"
+#include "blinkit/blink/renderer/core/animation/InterpolationEnvironment.h"
+#include "blinkit/blink/renderer/core/animation/InvalidatableInterpolation.h"
 #if 0 // BKTODO:
 #include "core/animation/SVGInterpolation.h"
 #include "core/svg/SVGElement.h"
