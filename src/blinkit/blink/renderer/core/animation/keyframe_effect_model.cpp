@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: KeyframeEffectModel.cpp
+//   File Name: keyframe_effect_model.cpp
 // Description: KeyframeEffectModel Classes
 //      Author: Ziming Li
 //     Created: 2021-07-18
@@ -39,18 +39,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/animation/KeyframeEffectModel.h"
+#include "./keyframe_effect_model.h"
 
-#include "core/animation/AnimationEffect.h"
-#include "core/animation/CompositorAnimations.h"
-#include "core/animation/css/CSSAnimatableValueFactory.h"
-#include "core/animation/css/CSSPropertyEquality.h"
-#include "core/css/resolver/StyleResolver.h"
-#include "core/dom/Document.h"
-#include "platform/animation/AnimationUtilities.h"
-#include "platform/geometry/FloatBox.h"
-#include "platform/transforms/TransformationMatrix.h"
-#include "wtf/text/StringHash.h"
+#include "blinkit/blink/renderer/core/animation/AnimationEffect.h"
+#include "blinkit/blink/renderer/core/animation/CompositorAnimations.h"
+#include "blinkit/blink/renderer/core/animation/css/CSSAnimatableValueFactory.h"
+#include "blinkit/blink/renderer/core/animation/css/CSSPropertyEquality.h"
+#include "blinkit/blink/renderer/core/css/resolver/StyleResolver.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/platform/animation/AnimationUtilities.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatBox.h"
+#include "blinkit/blink/renderer/platform/transforms/TransformationMatrix.h"
+#include "blinkit/blink/renderer/wtf/text/StringHash.h"
 
 namespace blink {
 
@@ -73,7 +73,7 @@ void KeyframeEffectModelBase::setFrames(KeyframeVector& keyframes)
     m_lastFraction = std::numeric_limits<double>::quiet_NaN();
 }
 
-bool KeyframeEffectModelBase::sample(int iteration, double fraction, double iterationDuration, Vector<RefPtr<Interpolation>>& result) const
+bool KeyframeEffectModelBase::sample(int iteration, double fraction, double iterationDuration, std::vector<RefPtr<Interpolation>>& result) const
 {
     ASSERT(iteration >= 0);
     ASSERT(!isNull(fraction));

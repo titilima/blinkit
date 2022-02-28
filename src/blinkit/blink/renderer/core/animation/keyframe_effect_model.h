@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: keyframe_effect_model.h
+// Description: KeyframeEffectModel Classes
+//      Author: Ziming Li
+//     Created: 2022-02-28
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,27 +43,27 @@
 #ifndef KeyframeEffectModel_h
 #define KeyframeEffectModel_h
 
-#include "core/CoreExport.h"
-#include "core/animation/AnimationEffect.h"
-#include "core/animation/EffectModel.h"
-#include "core/animation/InterpolationEffect.h"
-#include "core/animation/PropertyHandle.h"
-#include "core/animation/StringKeyframe.h"
-#include "core/animation/animatable/AnimatableValueKeyframe.h"
-#include "platform/animation/TimingFunction.h"
-#include "platform/heap/Handle.h"
-#include "wtf/HashMap.h"
-#include "wtf/HashSet.h"
-#include "wtf/PassOwnPtr.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/core/animation/AnimationEffect.h"
+#include "blinkit/blink/renderer/core/animation/EffectModel.h"
+#include "blinkit/blink/renderer/core/animation/interpolation_effect.h"
+#include "blinkit/blink/renderer/core/animation/PropertyHandle.h"
+#include "blinkit/blink/renderer/core/animation/StringKeyframe.h"
+#include "blinkit/blink/renderer/core/animation/animatable/AnimatableValueKeyframe.h"
+#include "blinkit/blink/renderer/platform/animation/TimingFunction.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/HashMap.h"
+#include "blinkit/blink/renderer/wtf/HashSet.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 
 class Element;
 class KeyframeEffectModelTest;
 
-class CORE_EXPORT KeyframeEffectModelBase : public EffectModel {
+class KeyframeEffectModelBase : public EffectModel
+{
 public:
     // FIXME: Implement accumulation.
 
@@ -92,7 +104,7 @@ public:
     }
 
     // EffectModel implementation.
-    bool sample(int iteration, double fraction, double iterationDuration, Vector<RefPtr<Interpolation>>&) const override;
+    bool sample(int iteration, double fraction, double iterationDuration, std::vector<RefPtr<Interpolation>>&) const override;
 
     bool isKeyframeEffectModel() const override { return true; }
 
