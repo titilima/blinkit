@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - quickjs Library
+// -------------------------------------------------
+//   File Name: quickjs.c
+// Description: QuickJS APIs
+//      Author: Ziming Li
+//     Created: 2022-03-01
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * QuickJS Javascript Engine
  * 
@@ -28,7 +39,9 @@
 #include <inttypes.h>
 #include <string.h>
 #include <assert.h>
-#include <sys/time.h>
+#ifdef _Z_OS_POSIX
+#   include <sys/time.h>
+#endif
 #include <time.h>
 #include <fenv.h>
 #include <math.h>
@@ -46,6 +59,9 @@
 #include "libregexp.h"
 #ifdef CONFIG_BIGNUM
 #include "libbf.h"
+#endif
+#ifdef _Z_OS_WINDOWS
+#   include "port_win.h"
 #endif
 
 #define OPTIMIZE         1
@@ -110,9 +126,11 @@
 //#define FORCE_GC_AT_MALLOC
 
 #ifdef CONFIG_ATOMICS
-#include <pthread.h>
-#include <stdatomic.h>
-#include <errno.h>
+#   ifdef _Z_OS_POSIX
+#       include <pthread.h>
+#       include <stdatomic.h>
+#   endif
+#   include <errno.h>
 #endif
 
 enum {
@@ -6359,7 +6377,7 @@ static void dbuf_put_leb128(DynBuf *s, uint32_t v)
 static void dbuf_put_sleb128(DynBuf *s, int32_t v1)
 {
     uint32_t v = v1;
-    dbuf_put_leb128(s, (2 * v) ^ -(v >> 31));
+    dbuf_put_leb128(s, (2 * v) ^ -(int32_t)(v >> 31));
 }
 
 static int get_leb128(uint32_t *pval, const uint8_t *buf,
@@ -6392,7 +6410,7 @@ static int get_sleb128(int32_t *pval, const uint8_t *buf,
         *pval = 0;
         return -1;
     }
-    *pval = (val >> 1) ^ -(val & 1);
+    *pval = (val >> 1) ^ -(int32_t)(val & 1);
     return ret;
 }
 
@@ -10165,7 +10183,7 @@ static JSValue js_atof(JSContext *ctx, const char *str, const char **pp,
     int sep, is_neg;
     BOOL is_float, has_legacy_octal;
     int atod_type = flags & ATOD_TYPE_MASK;
-    char buf1[64], *buf;
+    char buf1[64], *buf = NULL;
     int i, j, len;
     BOOL buf_allocated = FALSE;
     JSValue val;
@@ -10237,9 +10255,13 @@ static JSValue js_atof(JSContext *ctx, const char *str, const char **pp,
             } else
 #endif
             {
+#ifdef _Z_OS_WINDOWS
+                double d = is_neg ? -DBL_MAX : DBL_MAX;
+#else
                 double d = 1.0 / 0.0;
                 if (is_neg)
                     d = -d;
+#endif
                 val = JS_NewFloat64(ctx, d);
             }
             goto done;
@@ -41734,7 +41756,11 @@ static JSValue js_math_min_max(JSContext *ctx, JSValueConst this_val,
     uint32_t tag;
 
     if (unlikely(argc == 0)) {
+#ifdef _Z_OS_WINDOWS
+        return __JS_NewFloat64(ctx, is_max ? -DBL_MAX : DBL_MAX);
+#else
         return __JS_NewFloat64(ctx, is_max ? -1.0 / 0.0 : 1.0 / 0.0);
+#endif
     }
 
     tag = JS_VALUE_GET_TAG(argv[0]);

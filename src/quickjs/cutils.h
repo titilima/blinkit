@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - quickjs Library
+// -------------------------------------------------
+//   File Name: cutils.h
+// Description: C utilities
+//      Author: Ziming Li
+//     Created: 2022-03-01
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * C utilities
  * 
@@ -35,8 +47,10 @@
 /* set if CPU is big endian */
 #undef WORDS_BIGENDIAN
 
+#ifdef _Z_OS_POSIX
 #define likely(x)       __builtin_expect(!!(x), 1)
 #define unlikely(x)     __builtin_expect(!!(x), 0)
+#endif
 #define force_inline inline __attribute__((always_inline))
 #define no_inline __attribute__((noinline))
 #define __maybe_unused __attribute__((unused))
@@ -216,7 +230,7 @@ struct __attribute__((packed)) packed_u32 {
 struct __attribute__((packed)) packed_u16 {
     uint16_t v;
 };
-#endif
+#endif // _Z_OS_WINDOWS
 
 static inline uint64_t get_u64(const uint8_t *tab)
 {
@@ -333,13 +347,8 @@ static inline int dbuf_put_u64(DynBuf *s, uint64_t val)
 {
     return dbuf_put(s, (uint8_t *)&val, 8);
 }
-#ifdef _Z_OS_WINDOWS
-int dbuf_printf(DynBuf *s, const char *fmt, ...);
-#else
 int __attribute__((format(printf, 2, 3))) dbuf_printf(DynBuf *s,
                                                       const char *fmt, ...);
-#endif
-
 void dbuf_free(DynBuf *s);
 static inline BOOL dbuf_error(DynBuf *s) {
     return s->error;
