@@ -27,6 +27,10 @@
 
 #include <stdlib.h>
 #include <inttypes.h>
+#ifdef _Z_OS_WINDOWS
+#   include <intrin.h>
+#   pragma intrinsic(_BitScanForward, _BitScanReverse)
+#endif
 
 /* set if CPU is big endian */
 #undef WORDS_BIGENDIAN
@@ -111,6 +115,56 @@ static inline int64_t min_int64(int64_t a, int64_t b)
         return b;
 }
 
+#ifdef _Z_OS_WINDOWS
+static inline int clz32(unsigned int a)
+{
+    unsigned long index = 0;
+    return 0 == _BitScanReverse(&index, a) ? 32 : 31 - index;
+}
+
+static inline int ctz32(unsigned int a)
+{
+    unsigned long index = 0;
+    return 0 == _BitScanForward(&index, a) ? 32 : index;
+}
+#   ifdef _M_X64
+static inline int clz64(uint64_t a)
+{
+    unsigned long index = 0;
+    return 0 == _BitScanReverse64(&index, a) ? 64 : 64 - index;
+}
+
+static inline int ctz64(uint64_t a)
+{
+    unsigned long index = 0;
+    return 0 == _BitScanForward64(&index, a) ? 64 : index;
+}
+#   else
+static inline int clz64(uint64_t a)
+{
+    uint32_t h = a >> 32;
+    int ret = clz32(h);
+    if (32 == ret)
+    {
+        uint32_t l = a & 0xffffffff;
+        ret += clz32(l);
+    }
+    return ret;
+}
+
+static inline int ctz64(uint64_t a)
+{
+    uint32_t l = a & 0xffffffff;
+    int ret = ctz32(l);
+    if (32 == ret)
+    {
+        uint32_t h = a >> 32;
+        ret += ctz32(h);
+    }
+    return ret;
+}
+#   endif // _M_X64
+#else
 /* WARNING: undefined if a = 0 */
 static inline int clz32(unsigned int a)
 {
@@ -134,7 +188,23 @@ static inline int ctz64(uint64_t a)
 {
     return __builtin_ctzll(a);
 }
+#endif // _Z_OS_WINDOWS
 
+#ifdef _Z_OS_WINDOWS
+#   pragma pack(push, 1)
+struct packed_u64 {
+    uint64_t v;
+};
+
+struct packed_u32 {
+    uint32_t v;
+};
+
+struct packed_u16 {
+    uint16_t v;
+};
+#   pragma pack(pop)
+#else
 struct __attribute__((packed)) packed_u64 {
     uint64_t v;
 };
@@ -146,6 +216,7 @@ struct __attribute__((packed)) packed_u32 {
 struct __attribute__((packed)) packed_u16 {
     uint16_t v;
 };
+#endif
 
 static inline uint64_t get_u64(const uint8_t *tab)
 {
@@ -262,8 +333,13 @@ static inline int dbuf_put_u64(DynBuf *s, uint64_t val)
 {
     return dbuf_put(s, (uint8_t *)&val, 8);
 }
+#ifdef _Z_OS_WINDOWS
+int dbuf_printf(DynBuf *s, const char *fmt, ...);
+#else
 int __attribute__((format(printf, 2, 3))) dbuf_printf(DynBuf *s,
                                                       const char *fmt, ...);
+#endif
+
 void dbuf_free(DynBuf *s);
 static inline BOOL dbuf_error(DynBuf *s) {
     return s->error;
