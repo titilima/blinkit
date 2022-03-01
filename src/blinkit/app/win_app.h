@@ -47,6 +47,7 @@ private:
     // blink::Thread
     std::shared_ptr<blink::WebTaskRunner> taskRunner(void) override;
 
+    unsigned m_refCnt = 0;
     std::unique_ptr<MessageLoop> m_messageLoop;
 #ifdef BLINKIT_UI_ENABLED
     std::unique_ptr<WinThemeEngine> m_themeEngine;

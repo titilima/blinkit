@@ -67,8 +67,13 @@ WinApp& WinApp::Get(void)
 
 int WinApp::RunMessageLoop(BkMessageFilter filter, void *userData)
 {
-    int ret = m_messageLoop->Run(filter, userData);
-    delete this;
+    int ret;
+
+    ++m_refCnt;
+    ret = m_messageLoop->Run(filter, userData);
+    if (0 == --m_refCnt)
+        delete this;
+
     return ret;
 }
 
