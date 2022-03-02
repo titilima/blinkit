@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -37,13 +38,13 @@
 #ifndef RangeBoundaryPoint_h
 #define RangeBoundaryPoint_h
 
-#include "core/dom/Node.h"
-#include "core/dom/NodeTraversal.h"
-#include "core/editing/Position.h"
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
+#include "blinkit/blink/renderer/core/editing/Position.h"
 
 namespace blink {
 
-class RangeBoundaryPoint {
+class RangeBoundaryPoint
+{
     DISALLOW_NEW();
 public:
     explicit RangeBoundaryPoint(PassRefPtrWillBeRawPtr<Node> container);

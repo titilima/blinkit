@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -42,14 +43,13 @@
 #ifndef DOMSelection_h
 #define DOMSelection_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/editing/Position.h"
-#include "core/editing/VisibleSelection.h"
-#include "core/frame/DOMWindowProperty.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Forward.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/editing/Position.h"
+#include "blinkit/blink/renderer/core/editing/VisibleSelection.h"
+#include "blinkit/blink/renderer/core/frame/DOMWindowProperty.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
 
 namespace blink {
 

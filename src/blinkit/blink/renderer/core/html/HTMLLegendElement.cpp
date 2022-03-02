@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLLegendElement.cpp
+// Description: HTMLLegendElement Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -22,12 +33,12 @@
  *
  */
 
-#include "core/html/HTMLLegendElement.h"
+#include "./HTMLLegendElement.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/html/HTMLFieldSetElement.h"
-#include "core/html/HTMLFormControlElement.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/html/HTMLFieldSetElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLFormControlElement.h"
 
 namespace blink {
 

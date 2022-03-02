@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -42,16 +43,14 @@
 #ifndef Animation_h
 #define Animation_h
 
-#include "core/CSSPropertyNames.h"
-#include "core/CoreExport.h"
-#include "core/animation/AnimationEffect.h"
-#include "core/dom/ActiveDOMObject.h"
-#include "core/dom/DOMException.h"
-#include "core/events/EventTarget.h"
-#include "platform/heap/Handle.h"
-#include "public/platform/WebCompositorAnimationDelegate.h"
-#include "public/platform/WebCompositorAnimationPlayerClient.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/public/platform/WebCompositorAnimationDelegate.h"
+#include "blinkit/blink/public/platform/WebCompositorAnimationPlayerClient.h"
+#include "blinkit/blink/renderer/core/CSSPropertyNames.h"
+#include "blinkit/blink/renderer/core/animation/AnimationEffect.h"
+#include "blinkit/blink/renderer/core/dom/ActiveDOMObject.h"
+#include "blinkit/blink/renderer/core/dom/DOMException.h"
+#include "blinkit/blink/renderer/core/events/event_target.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 
@@ -60,11 +59,12 @@ class Element;
 class ExceptionState;
 class WebCompositorAnimationPlayer;
 
-class CORE_EXPORT Animation final
+class Animation final
     : public EventTargetWithInlineData
     , public ActiveDOMObject
     , public WebCompositorAnimationDelegate
-    , public WebCompositorAnimationPlayerClient {
+    , public WebCompositorAnimationPlayerClient
+{
     DEFINE_WRAPPERTYPEINFO();
     REFCOUNTED_GARBAGE_COLLECTED_EVENT_TARGET(Animation);
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(Animation);

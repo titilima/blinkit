@@ -33,13 +33,13 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
-#include "core/dom/TreeScopeAdopter.h"
+#include "./TreeScopeAdopter.h"
 
-#include "core/dom/Attr.h"
-#include "core/dom/NodeRareData.h"
-#include "core/dom/NodeTraversal.h"
-#include "core/dom/shadow/ElementShadow.h"
-#include "core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/dom/Attr.h"
+#include "blinkit/blink/renderer/core/dom/NodeRareData.h"
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ElementShadow.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
 
 namespace blink {
 

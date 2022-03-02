@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -35,13 +36,13 @@
 #ifndef DocumentFragment_h
 #define DocumentFragment_h
 
-#include "core/CoreExport.h"
-#include "core/dom/ContainerNode.h"
-#include "core/dom/ParserContentPolicy.h"
+#include "blinkit/blink/renderer/core/dom/container_node.h"
+#include "blinkit/blink/renderer/core/dom/ParserContentPolicy.h"
 
 namespace blink {
 
-class CORE_EXPORT DocumentFragment : public ContainerNode {
+class DocumentFragment : public ContainerNode
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     static GCRefPtr<DocumentFragment> create(Document&);

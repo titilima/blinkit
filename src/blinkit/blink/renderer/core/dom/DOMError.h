@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMError.h
+// Description: DOMError Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All Rights Reserved.
  *
@@ -26,16 +38,14 @@
 #ifndef DOMError_h
 #define DOMError_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "core/dom/DOMException.h"
-#include "core/dom/ExceptionCode.h"
-#include "platform/heap/Handle.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/core/dom/DOMException.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
-class CORE_EXPORT DOMError : public GarbageCollectedFinalized<DOMError>, public ScriptWrappable {
+class DOMError : public GarbageCollectedFinalized<DOMError>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     static DOMError* create(const String& name)

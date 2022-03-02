@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -16,14 +17,12 @@
 #ifndef IntersectionObserver_h
 #define IntersectionObserver_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/dom/Element.h"
-#include "core/dom/IntersectionObservation.h"
-#include "core/dom/IntersectionObserverEntry.h"
-#include "platform/heap/Handle.h"
-#include "wtf/HashSet.h"
-#include "wtf/RefCounted.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/dom/IntersectionObservation.h"
+#include "blinkit/blink/renderer/core/dom/IntersectionObserverEntry.h"
+#include "blinkit/blink/renderer/wtf/HashSet.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 
@@ -32,7 +31,8 @@ class IntersectionObserverCallback;
 class IntersectionObserverInit;
 
 // TODO(oilpan): Switch to GarbageCollected<> after oilpan ships
-class IntersectionObserver final : public BlinKit::GCObject, public ScriptWrappable {
+class IntersectionObserver final : public BlinKit::GCObject, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 
 public:

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLLabelElement.cpp
+// Description: HTMLLabelElement Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -22,20 +33,19 @@
  *
  */
 
-#include "core/html/HTMLLabelElement.h"
+#include "./HTMLLabelElement.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/Document.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/editing/EditingUtilities.h"
-#include "core/editing/FrameSelection.h"
-#include "core/editing/SelectionController.h"
-#include "core/events/MouseEvent.h"
-#include "core/frame/LocalFrame.h"
-#include "core/frame/UseCounter.h"
-#include "core/html/FormAssociatedElement.h"
-#include "core/input/EventHandler.h"
-#include "core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/editing/EditingUtilities.h"
+#include "blinkit/blink/renderer/core/editing/FrameSelection.h"
+#include "blinkit/blink/renderer/core/editing/SelectionController.h"
+#include "blinkit/blink/renderer/core/events/MouseEvent.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/core/html/FormAssociatedElement.h"
+#include "blinkit/blink/renderer/core/input/EventHandler.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
 
 namespace blink {
 

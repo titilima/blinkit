@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NodeIterator.h
+// Description: NodeIterator Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2000 Frederik Holljen (frederik.holljen@hig.no)
@@ -25,18 +37,17 @@
 #ifndef NodeIterator_h
 #define NodeIterator_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/dom/NodeFilter.h"
-#include "core/dom/NodeIteratorBase.h"
-#include "platform/heap/Handle.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
+#include "blinkit/blink/renderer/core/dom/NodeFilter.h"
+#include "blinkit/blink/renderer/core/dom/NodeIteratorBase.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
 
 namespace blink {
 
 class ExceptionState;
 
-class NodeIterator final : public RefCountedWillBeGarbageCollected<NodeIterator>, public ScriptWrappable, public NodeIteratorBase {
+class NodeIterator final : public RefCountedWillBeGarbageCollected<NodeIterator>, public ScriptWrappable, public NodeIteratorBase
+{
     DEFINE_WRAPPERTYPEINFO();
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(NodeIterator);
 public:

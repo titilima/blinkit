@@ -13,17 +13,16 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/page/CustomContextMenuProvider.h"
+#include "./CustomContextMenuProvider.h"
 
-#include "core/dom/Document.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/events/EventDispatcher.h"
-#include "core/events/MouseEvent.h"
-#include "core/html/HTMLMenuElement.h"
-#include "core/html/HTMLMenuItemElement.h"
-#include "core/page/ContextMenuController.h"
-#include "core/page/Page.h"
-#include "platform/ContextMenu.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/events/EventDispatcher.h"
+#include "blinkit/blink/renderer/core/events/MouseEvent.h"
+#include "blinkit/blink/renderer/core/html/HTMLMenuElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLMenuItemElement.h"
+#include "blinkit/blink/renderer/core/page/ContextMenuController.h"
+#include "blinkit/blink/renderer/core/page/Page.h"
+#include "blinkit/blink/renderer/platform/ContextMenu.h"
 
 namespace blink {
 

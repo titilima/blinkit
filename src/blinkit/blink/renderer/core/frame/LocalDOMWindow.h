@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -38,21 +39,17 @@
 #ifndef LocalDOMWindow_h
 #define LocalDOMWindow_h
 
-#include "core/CoreExport.h"
 // BKTODO: #include "core/dom/MessagePort.h"
-#include "core/events/EventTarget.h"
-#include "core/frame/DOMWindow.h"
+#include "blinkit/blink/renderer/core/frame/DOMWindow.h"
 #if 0 // BKTODO:
 #include "core/frame/DOMWindowLifecycleNotifier.h"
 #include "core/frame/DOMWindowLifecycleObserver.h"
 #endif
-#include "core/frame/LocalFrame.h"
-#include "core/frame/LocalFrameLifecycleObserver.h"
-#include "platform/Supplementable.h"
-#include "platform/heap/Handle.h"
-
-#include "wtf/Assertions.h"
-#include "wtf/Forward.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrameLifecycleObserver.h"
+#include "blinkit/blink/renderer/platform/Supplementable.h"
+#include "blinkit/blink/renderer/wtf/Assertions.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
 
 namespace BlinKit {
 class DukTimer;

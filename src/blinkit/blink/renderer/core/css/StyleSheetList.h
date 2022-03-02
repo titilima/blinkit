@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -32,20 +33,21 @@
 #ifndef StyleSheetList_h
 #define StyleSheetList_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/css/CSSStyleSheet.h"
-#include "core/dom/TreeScope.h"
-#include "wtf/Forward.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/css/CSSStyleSheet.h"
+#include "blinkit/blink/renderer/core/dom/TreeScope.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 
 class HTMLStyleElement;
 class StyleSheet;
 
-class StyleSheetList final : public RefCountedWillBeGarbageCollected<StyleSheetList>, public ScriptWrappable {
+class StyleSheetList final : public RefCountedWillBeGarbageCollected<StyleSheetList>, public ScriptWrappable
+{
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(StyleSheetList);
     DEFINE_WRAPPERTYPEINFO();
 public:

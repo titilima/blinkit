@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -16,14 +17,11 @@
 #ifndef DOMWindow_h
 #define DOMWindow_h
 
-#include "core/CoreExport.h"
-#include "core/events/EventTarget.h"
-#include "core/frame/DOMWindowBase64.h"
-#include "core/frame/Location.h"
-#include "platform/heap/Handle.h"
-#include "platform/scroll/ScrollableArea.h"
-
-#include "wtf/Forward.h"
+#include "blinkit/blink/renderer/core/events/event_target.h"
+#include "blinkit/blink/renderer/core/frame/DOMWindowBase64.h"
+#include "blinkit/blink/renderer/core/frame/Location.h"
+#include "blinkit/blink/renderer/platform/scroll/ScrollableArea.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
 
 namespace blink {
 

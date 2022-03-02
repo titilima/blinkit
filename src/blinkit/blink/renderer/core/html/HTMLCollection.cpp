@@ -32,21 +32,20 @@
  *
  */
 
-#include "core/html/HTMLCollection.h"
+#include "./HTMLCollection.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/ClassCollection.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/dom/NodeRareData.h"
-#include "core/html/DocumentNameCollection.h"
-#include "core/html/HTMLDataListOptionsCollection.h"
-#include "core/html/HTMLElement.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/ClassCollection.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/dom/NodeRareData.h"
+#include "blinkit/blink/renderer/core/html/DocumentNameCollection.h"
+#include "blinkit/blink/renderer/core/html/HTMLDataListOptionsCollection.h"
 // BKTODO: #include "core/html/HTMLObjectElement.h"
-#include "core/html/HTMLOptionElement.h"
-#include "core/html/HTMLOptionsCollection.h"
-#include "core/html/HTMLTagCollection.h"
-#include "core/html/WindowNameCollection.h"
-#include "wtf/HashSet.h"
+#include "blinkit/blink/renderer/core/html/HTMLOptionElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLOptionsCollection.h"
+#include "blinkit/blink/renderer/core/html/HTMLTagCollection.h"
+#include "blinkit/blink/renderer/core/html/WindowNameCollection.h"
+#include "blinkit/blink/renderer/wtf/HashSet.h"
 
 namespace blink {
 

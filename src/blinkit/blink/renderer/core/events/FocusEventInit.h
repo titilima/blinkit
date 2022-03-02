@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "blinkit/blink/renderer/core/events/EventTarget.h"
+#include "blinkit/blink/renderer/core/events/event_target.h"
 #include "blinkit/blink/renderer/core/events/UIEventInit.h"
 
 namespace blink {

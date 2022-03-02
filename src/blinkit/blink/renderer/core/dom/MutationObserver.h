@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -42,14 +43,13 @@
 #ifndef MutationObserver_h
 #define MutationObserver_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "platform/heap/Handle.h"
-#include "wtf/HashSet.h"
-#include "wtf/PassOwnPtr.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
-#include "wtf/RefPtr.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/wtf/HashSet.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 

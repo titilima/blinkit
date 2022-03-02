@@ -35,18 +35,16 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/dom/SelectorQuery.h"
+#include "./SelectorQuery.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/css/SelectorChecker.h"
-#include "core/css/parser/CSSParser.h"
-#include "core/dom/Document.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/Node.h"
-#include "core/dom/StaticNodeList.h"
-#include "core/dom/shadow/ElementShadow.h"
-#include "core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/core/css/SelectorChecker.h"
+#include "blinkit/blink/renderer/core/css/parser/CSSParser.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/dom/StaticNodeList.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ElementShadow.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
 
 namespace blink {
 

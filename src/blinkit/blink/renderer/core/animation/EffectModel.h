@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -42,19 +43,18 @@
 #ifndef EffectModel_h
 #define EffectModel_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CSSPropertyNames.h"
-#include "core/CoreExport.h"
-#include "core/animation/PropertyHandle.h"
-#include "platform/heap/Handle.h"
-#include "wtf/HashMap.h"
-#include "wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/CSSPropertyNames.h"
+#include "blinkit/blink/renderer/core/animation/PropertyHandle.h"
+#include "blinkit/blink/renderer/wtf/HashMap.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
 
 namespace blink {
 
 class Interpolation;
 
-class CORE_EXPORT EffectModel : public BlinKit::GCObject, public ScriptWrappable {
+class EffectModel : public BlinKit::GCObject, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     enum CompositeOperation {

@@ -33,17 +33,17 @@
  *
  */
 
-#include "core/html/HTMLFieldSetElement.h"
+#include "./HTMLFieldSetElement.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/dom/NodeListsNodeData.h"
-#include "core/html/HTMLCollection.h"
-#include "core/html/HTMLFormControlsCollection.h"
-#include "core/html/HTMLLegendElement.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/dom/NodeListsNodeData.h"
+#include "blinkit/blink/renderer/core/html/HTMLCollection.h"
+#include "blinkit/blink/renderer/core/html/HTMLFormControlsCollection.h"
+#include "blinkit/blink/renderer/core/html/HTMLLegendElement.h"
 // BKTODO: #include "core/html/HTMLObjectElement.h"
-#include "core/layout/LayoutFieldset.h"
-#include "wtf/StdLibExtras.h"
+#include "blinkit/blink/renderer/core/layout/LayoutFieldset.h"
+#include "blinkit/blink/renderer/wtf/StdLibExtras.h"
 
 namespace blink {
 

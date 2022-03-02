@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -35,15 +36,13 @@
 #ifndef Event_h
 #define Event_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "core/dom/DOMHighResTimeStamp.h"
-#include "core/dom/DOMTimeStamp.h"
-#include "core/events/EventInit.h"
-#include "core/events/EventPath.h"
-#include "platform/heap/Handle.h"
-#include "wtf/RefCounted.h"
-#include "wtf/text/AtomicString.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/dom/DOMHighResTimeStamp.h"
+#include "blinkit/blink/renderer/core/dom/DOMTimeStamp.h"
+#include "blinkit/blink/renderer/core/events/EventInit.h"
+#include "blinkit/blink/renderer/core/events/EventPath.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/text/AtomicString.h"
 
 namespace blink {
 
@@ -51,7 +50,8 @@ class DOMWrapperWorld;
 class EventTarget;
 class ExecutionContext;
 
-class CORE_EXPORT Event : public BlinKit::GCObject,  public ScriptWrappable {
+class Event : public BlinKit::GCObject, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     enum PhaseType {

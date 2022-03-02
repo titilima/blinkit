@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -37,21 +38,20 @@
 #ifndef DOMStringMap_h
 #define DOMStringMap_h
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Noncopyable.h"
-#include "wtf/Vector.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
 class Element;
 
-class DOMStringMap : public NoBaseWillBeGarbageCollected<DOMStringMap>, public ScriptWrappable {
+class DOMStringMap : public NoBaseWillBeGarbageCollected<DOMStringMap>, public ScriptWrappable
+{
     DECLARE_EMPTY_VIRTUAL_DESTRUCTOR_WILL_BE_REMOVED(DOMStringMap);
     DEFINE_WRAPPERTYPEINFO();
-    USING_FAST_MALLOC_WILL_BE_REMOVED(DOMStringMap);
     WTF_MAKE_NONCOPYABLE(DOMStringMap);
 public:
 #if !ENABLE(OILPAN)

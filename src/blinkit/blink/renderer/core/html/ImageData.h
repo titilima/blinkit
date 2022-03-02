@@ -41,11 +41,10 @@
 #ifndef ImageData_h
 #define ImageData_h
 
-#include "blinkit/blink/renderer/bindings/core/duk/script_wrappable.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
 // BKTODO: #include "core/dom/DOMTypedArray.h"
 #include "blinkit/blink/renderer/core/imagebitmap/ImageBitmapSource.h"
 #include "blinkit/blink/renderer/platform/geometry/int_rect.h"
-#include "blinkit/blink/renderer/platform/heap/Handle.h"
 #include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {

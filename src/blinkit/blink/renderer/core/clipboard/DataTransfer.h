@@ -36,7 +36,7 @@
 #ifndef DataTransfer_h
 #define DataTransfer_h
 
-#include "blinkit/blink/renderer/bindings/core/duk/script_wrappable.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
 #include "blinkit/blink/renderer/core/clipboard/DataTransferAccessPolicy.h"
 #include "blinkit/blink/renderer/core/fetch/ImageResource.h"
 #include "blinkit/blink/renderer/core/fetch/ResourcePtr.h"

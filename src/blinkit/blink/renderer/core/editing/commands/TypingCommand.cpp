@@ -34,27 +34,25 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/editing/commands/TypingCommand.h"
+#include "./TypingCommand.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/Document.h"
-#include "core/dom/Element.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/editing/EditingUtilities.h"
-#include "core/editing/Editor.h"
-#include "core/editing/FrameSelection.h"
-#include "core/editing/VisiblePosition.h"
-#include "core/editing/VisibleUnits.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/editing/EditingUtilities.h"
+#include "blinkit/blink/renderer/core/editing/Editor.h"
+#include "blinkit/blink/renderer/core/editing/FrameSelection.h"
+#include "blinkit/blink/renderer/core/editing/VisiblePosition.h"
+#include "blinkit/blink/renderer/core/editing/VisibleUnits.h"
 #if 0 // BKTODO:
 #include "core/editing/commands/BreakBlockquoteCommand.h"
 #include "core/editing/commands/InsertLineBreakCommand.h"
 #include "core/editing/commands/InsertParagraphSeparatorCommand.h"
 #endif
-#include "core/editing/commands/InsertTextCommand.h"
+#include "blinkit/blink/renderer/core/editing/commands/InsertTextCommand.h"
 // BKTODO: #include "core/editing/spellcheck/SpellChecker.h"
-#include "core/frame/LocalFrame.h"
-#include "core/html/HTMLBRElement.h"
-#include "core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/html/HTMLBRElement.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
 
 namespace blink {
 

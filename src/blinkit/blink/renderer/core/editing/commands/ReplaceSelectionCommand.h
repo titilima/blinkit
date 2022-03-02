@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -37,8 +38,8 @@
 #ifndef ReplaceSelectionCommand_h
 #define ReplaceSelectionCommand_h
 
-#include "core/dom/NodeTraversal.h"
-#include "core/editing/commands/CompositeEditCommand.h"
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
+#include "blinkit/blink/renderer/core/editing/commands/CompositeEditCommand.h"
 
 namespace blink {
 

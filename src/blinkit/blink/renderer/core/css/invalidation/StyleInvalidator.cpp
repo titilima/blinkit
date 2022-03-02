@@ -13,16 +13,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/css/invalidation/StyleInvalidator.h"
+#include "./StyleInvalidator.h"
 
-#include "core/css/invalidation/InvalidationSet.h"
-#include "core/dom/Document.h"
-#include "core/dom/Element.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/dom/shadow/ElementShadow.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/inspector/InspectorTraceEvents.h"
-#include "core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/core/css/invalidation/InvalidationSet.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ElementShadow.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorTraceEvents.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
 
 namespace blink {
 

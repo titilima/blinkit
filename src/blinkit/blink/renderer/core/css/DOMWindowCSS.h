@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMWindowCSS.h
+// Description: DOMWindowCSS Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Motorola Mobility Inc. All rights reserved.
  *
@@ -30,15 +42,15 @@
 #ifndef DOMWindowCSS_h
 #define DOMWindowCSS_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Forward.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
 
 namespace blink {
 
-class DOMWindowCSS : public RefCountedWillBeGarbageCollected<DOMWindowCSS>, public ScriptWrappable {
+class DOMWindowCSS : public RefCountedWillBeGarbageCollected<DOMWindowCSS>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     static bool supports(const String& property, const String& value);

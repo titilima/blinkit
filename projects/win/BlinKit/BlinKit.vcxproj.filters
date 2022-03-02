@@ -325,6 +325,9 @@
     <Filter Include="ui\animation">
       <UniqueIdentifier>{5f926940-6d81-485f-9dc0-afd4580f2974}</UniqueIdentifier>
     </Filter>
+    <Filter Include="blink\renderer\bindings\core\qjs">
+      <UniqueIdentifier>{93496125-5028-4eb5-92ff-867f6a8bec3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -719,24 +722,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\FrameSelection.cpp">
       <Filter>blink\renderer\core\editing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeTraversal.cpp">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ContainerNode.cpp">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\Document.cpp">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\Element.cpp">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\Node.cpp">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\EventTarget.cpp">
-      <Filter>blink\renderer\core\events</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\StyleChangeReason.cpp">
       <Filter>blink\renderer\core\dom</Filter>
@@ -4221,6 +4206,24 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\element_rare_data.cpp">
       <Filter>blink\renderer\core\dom</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\event_target.cpp">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\node.cpp">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\container_node.cpp">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\document.cpp">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\element.cpp">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\node_traversal.cpp">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -4388,22 +4391,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\FrameLoader.h">
       <Filter>blink\renderer\core\loader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\Document.h">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentInit.h">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ContainerNode.h">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\Node.h">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventTarget.h">
-      <Filter>blink\renderer\core\events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\Element.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\TemporaryChange.h">
@@ -5516,9 +5504,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementData.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementTraversal.h">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\EmptyNodeList.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
@@ -5628,9 +5613,6 @@
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeRareData.h">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeTraversal.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeWithIndex.h">
@@ -9120,6 +9102,33 @@
       <Filter>blink\renderer\core\animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\element_rare_data.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_wrappable.h">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\event_target.h">
+      <Filter>blink\renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_wrappable.h">
+      <Filter>blink\renderer\bindings\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\node.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\container_node.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\document.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\element.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\node_traversal.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\element_traversal.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
   </ItemGroup>

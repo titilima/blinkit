@@ -33,13 +33,13 @@
  *
  */
 
-#include "core/dom/TreeWalker.h"
+#include "./TreeWalker.h"
 
 // BKTODO: #include "bindings/core/v8/ExceptionMessages.h"
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/ContainerNode.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/NodeTraversal.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/core/dom/container_node.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
 
 namespace blink {
 

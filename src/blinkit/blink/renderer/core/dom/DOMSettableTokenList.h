@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -36,17 +37,17 @@
 #ifndef DOMSettableTokenList_h
 #define DOMSettableTokenList_h
 
-#include "core/dom/DOMTokenList.h"
-#include "core/dom/SpaceSplitString.h"
-#include "platform/heap/Handle.h"
-#include "wtf/RefCounted.h"
-#include "wtf/text/AtomicString.h"
+#include "blinkit/blink/renderer/core/dom/DOMTokenList.h"
+#include "blinkit/blink/renderer/core/dom/SpaceSplitString.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/text/AtomicString.h"
 
 namespace blink {
 
 class ExceptionState;
 
-class CORE_EXPORT DOMSettableTokenListObserver : public WillBeGarbageCollectedMixin {
+class DOMSettableTokenListObserver : public WillBeGarbageCollectedMixin
+{
 public:
     // Called when the value property is set, even if the tokens in
     // the set have not changed.
@@ -55,7 +56,7 @@ public:
     DEFINE_INLINE_VIRTUAL_TRACE() { }
 };
 
-class CORE_EXPORT DOMSettableTokenList
+class DOMSettableTokenList
     : public DOMTokenList
 #if !ENABLE(OILPAN)
     , public RefCounted<DOMSettableTokenList>

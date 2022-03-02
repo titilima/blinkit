@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -36,17 +37,16 @@
 #ifndef DOMTokenList_h
 #define DOMTokenList_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Vector.h"
-#include "wtf/text/AtomicString.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
+#include "blinkit/blink/renderer/wtf/text/AtomicString.h"
 
 namespace blink {
 
 class Element;
 class ExceptionState;
 
-class CORE_EXPORT DOMTokenList : public ScriptWrappable
+class DOMTokenList : public ScriptWrappable
 {
     WTF_MAKE_NONCOPYABLE(DOMTokenList);
 public:

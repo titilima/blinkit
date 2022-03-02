@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: GenericEventQueue.h
+// Description: GenericEventQueue Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Victor Carbune (victor@rosedu.org)
  *
@@ -26,18 +38,17 @@
 #ifndef GenericEventQueue_h
 #define GenericEventQueue_h
 
-#include "core/CoreExport.h"
-#include "core/events/EventQueue.h"
-#include "core/events/EventTarget.h"
-#include "platform/Timer.h"
-#include "wtf/PassOwnPtr.h"
-#include "wtf/RefPtr.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/core/events/EventQueue.h"
+#include "blinkit/blink/renderer/core/events/event_target.h"
+#include "blinkit/blink/renderer/platform/Timer.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 
-class CORE_EXPORT GenericEventQueue final : public EventQueue {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(GenericEventQueue);
+class GenericEventQueue final : public EventQueue
+{
 public:
     static PassOwnPtrWillBeRawPtr<GenericEventQueue> create(EventTarget*);
     ~GenericEventQueue() override;

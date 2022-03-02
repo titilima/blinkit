@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -32,11 +33,10 @@
 #ifndef CSSStyleDeclaration_h
 #define CSSStyleDeclaration_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CSSPropertyNames.h"
-#include "core/CoreExport.h"
-#include "wtf/Forward.h"
-#include "wtf/Noncopyable.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/CSSPropertyNames.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
 
 namespace blink {
 

@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyleMedia.h
+// Description: StyleMedia Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies)
@@ -27,17 +39,17 @@
 #ifndef StyleMedia_h
 #define StyleMedia_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/frame/DOMWindowProperty.h"
-#include "platform/heap/Handle.h"
-#include "wtf/RefCounted.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/frame/DOMWindowProperty.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
 class LocalFrame;
 
-class StyleMedia final : public RefCountedWillBeGarbageCollected<StyleMedia>, public DOMWindowProperty, public ScriptWrappable {
+class StyleMedia final : public RefCountedWillBeGarbageCollected<StyleMedia>, public DOMWindowProperty, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(StyleMedia);
 public:

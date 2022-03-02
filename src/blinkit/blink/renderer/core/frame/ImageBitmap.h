@@ -17,7 +17,7 @@
 #ifndef ImageBitmap_h
 #define ImageBitmap_h
 
-#include "blinkit/blink/renderer/bindings/core/duk/script_wrappable.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
 #include "blinkit/blink/renderer/core/html/HTMLImageElement.h"
 // BKTODO: #include "core/html/canvas/CanvasImageSource.h"
 #include "blinkit/blink/renderer/core/imagebitmap/ImageBitmapSource.h"

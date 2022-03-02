@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTableSectionElement.cpp
+// Description: HTMLTableSectionElement Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1997 Martin Jones (mjones@kde.org)
  *           (C) 1997 Torben Weis (weis@kde.org)
@@ -22,16 +33,16 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/html/HTMLTableSectionElement.h"
+#include "./HTMLTableSectionElement.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/HTMLNames.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/NodeListsNodeData.h"
-#include "core/html/HTMLCollection.h"
-#include "core/html/HTMLTableElement.h"
-#include "core/html/HTMLTableRowElement.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/dom/NodeListsNodeData.h"
+#include "blinkit/blink/renderer/core/html/HTMLCollection.h"
+#include "blinkit/blink/renderer/core/html/HTMLTableElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLTableRowElement.h"
 
 namespace blink {
 

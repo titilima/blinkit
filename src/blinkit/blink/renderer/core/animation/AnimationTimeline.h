@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -42,17 +43,15 @@
 #ifndef AnimationTimeline_h
 #define AnimationTimeline_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
+#include "blinkit/blink/public/platform/WebCompositorAnimationTimeline.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/animation/Animation.h"
+#include "blinkit/blink/renderer/core/animation/EffectModel.h"
+#include "blinkit/blink/renderer/core/dom/Element.h"
+#include "blinkit/blink/renderer/platform/Timer.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 #include "blinkit/gc/gc_object_set.h"
-#include "core/CoreExport.h"
-#include "core/animation/Animation.h"
-#include "core/animation/EffectModel.h"
-#include "core/dom/Element.h"
-#include "platform/Timer.h"
-#include "platform/heap/Handle.h"
-#include "public/platform/WebCompositorAnimationTimeline.h"
-#include "wtf/RefPtr.h"
-#include "wtf/Vector.h"
 
 namespace blink {
 

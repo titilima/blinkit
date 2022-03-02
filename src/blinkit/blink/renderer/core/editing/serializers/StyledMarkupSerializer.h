@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: StyledMarkupSerializer.h
+// Description: StyledMarkupSerializer Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2008, 2009, 2010, 2011 Google Inc. All rights reserved.
@@ -29,17 +41,18 @@
 #ifndef StyledMarkupSerializer_h
 #define StyledMarkupSerializer_h
 
-#include "core/dom/NodeTraversal.h"
-#include "core/editing/EditingStrategy.h"
-#include "core/editing/EditingStyle.h"
-#include "core/editing/Position.h"
-#include "core/editing/serializers/StyledMarkupAccumulator.h"
-#include "wtf/Forward.h"
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
+#include "blinkit/blink/renderer/core/editing/EditingStrategy.h"
+#include "blinkit/blink/renderer/core/editing/EditingStyle.h"
+#include "blinkit/blink/renderer/core/editing/Position.h"
+#include "blinkit/blink/renderer/core/editing/serializers/StyledMarkupAccumulator.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
 
 namespace blink {
 
 template<typename Strategy>
-class StyledMarkupSerializer final {
+class StyledMarkupSerializer final
+{
     STACK_ALLOCATED();
 public:
     StyledMarkupSerializer(EAbsoluteURLs, EAnnotateForInterchange, const PositionTemplate<Strategy>& start, const PositionTemplate<Strategy>& end, Node* highestNodeToBeSerialized, ConvertBlocksToInlines);

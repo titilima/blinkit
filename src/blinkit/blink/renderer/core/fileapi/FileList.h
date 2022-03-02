@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FileList.h
+// Description: FileList Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -26,18 +38,17 @@
 #ifndef FileList_h
 #define FileList_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "core/fileapi/File.h"
-#include "platform/heap/Handle.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
-#include "wtf/RefPtr.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/fileapi/File.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 
-class CORE_EXPORT FileList final : public GarbageCollected<FileList>, public ScriptWrappable {
+class FileList final : public GarbageCollected<FileList>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     static FileList* create()

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SimplifyMarkupCommand.cpp
+// Description: SimplifyMarkupCommand Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Computer, Inc.  All rights reserved.
  *
@@ -23,13 +34,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/editing/commands/SimplifyMarkupCommand.h"
+#include "./SimplifyMarkupCommand.h"
 
-#include "core/dom/NodeComputedStyle.h"
-#include "core/dom/NodeTraversal.h"
-#include "core/layout/LayoutInline.h"
-#include "core/layout/LayoutObject.h"
-#include "core/style/ComputedStyle.h"
+#include "blinkit/blink/renderer/core/dom/NodeComputedStyle.h"
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
+#include "blinkit/blink/renderer/core/layout/LayoutInline.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/core/style/ComputedStyle.h"
 
 namespace blink {
 

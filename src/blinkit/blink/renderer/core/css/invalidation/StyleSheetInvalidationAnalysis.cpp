@@ -34,17 +34,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/css/invalidation/StyleSheetInvalidationAnalysis.h"
+#include "./StyleSheetInvalidationAnalysis.h"
 
-#include "core/css/CSSSelectorList.h"
-#include "core/css/StyleRuleImport.h"
-#include "core/css/StyleSheetContents.h"
-#include "core/dom/ContainerNode.h"
-#include "core/dom/Document.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/dom/TreeScope.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/html/HTMLStyleElement.h"
+#include "blinkit/blink/renderer/core/css/CSSSelectorList.h"
+#include "blinkit/blink/renderer/core/css/StyleRuleImport.h"
+#include "blinkit/blink/renderer/core/css/StyleSheetContents.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/dom/TreeScope.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/html/HTMLStyleElement.h"
 
 using namespace BlinKit;
 

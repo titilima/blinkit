@@ -35,12 +35,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/editing/commands/UndoStack.h"
+#include "./UndoStack.h"
 
-#include "core/dom/ContainerNode.h"
-#include "core/editing/commands/UndoStep.h"
-#include "platform/EventDispatchForbiddenScope.h"
-#include "wtf/TemporaryChange.h"
+#include "blinkit/blink/renderer/core/dom/container_node.h"
+#include "blinkit/blink/renderer/core/editing/commands/UndoStep.h"
+#include "blinkit/blink/renderer/platform/EventDispatchForbiddenScope.h"
+#include "blinkit/blink/renderer/wtf/TemporaryChange.h"
 
 namespace blink {
 

@@ -35,20 +35,18 @@
  *
  */
 
-#include "core/editing/markers/DocumentMarkerController.h"
+#include "./DocumentMarkerController.h"
 
-#include "core/dom/Node.h"
-#include "core/dom/NodeTraversal.h"
-#include "core/dom/Range.h"
-#include "core/dom/Text.h"
-#include "core/editing/iterators/TextIterator.h"
-#include "core/editing/markers/RenderedDocumentMarker.h"
-#include "core/frame/FrameView.h"
-#include "core/layout/LayoutObject.h"
 #include <algorithm>
-
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
+#include "blinkit/blink/renderer/core/dom/Range.h"
+#include "blinkit/blink/renderer/core/dom/Text.h"
+#include "blinkit/blink/renderer/core/editing/iterators/TextIterator.h"
+#include "blinkit/blink/renderer/core/editing/markers/RenderedDocumentMarker.h"
+#include "blinkit/blink/renderer/core/frame/FrameView.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
 #ifndef NDEBUG
-#include <stdio.h>
+#   include <cstdio>
 #endif
 
 namespace blink {

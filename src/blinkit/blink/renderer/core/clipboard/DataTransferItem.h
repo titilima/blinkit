@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DataTransferItem.h
+// Description: DataTransferItem Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -31,12 +43,10 @@
 #ifndef DataTransferItem_h
 #define DataTransferItem_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Forward.h"
-#include "wtf/RefCounted.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 
@@ -46,7 +56,8 @@ class DataTransfer;
 class StringCallback;
 class ExecutionContext;
 
-class CORE_EXPORT DataTransferItem final : public GarbageCollected<DataTransferItem>, public ScriptWrappable {
+class DataTransferItem final : public GarbageCollected<DataTransferItem>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
     WTF_MAKE_NONCOPYABLE(DataTransferItem);
 public:

@@ -29,25 +29,25 @@
  *
  */
 
-#include "core/html/HTMLDetailsElement.h"
+#include "./HTMLDetailsElement.h"
 
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/CSSPropertyNames.h"
-#include "core/CSSValueKeywords.h"
-#include "core/HTMLNames.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/dom/Text.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/events/Event.h"
-#include "core/events/EventSender.h"
-#include "core/frame/UseCounter.h"
-#include "core/html/HTMLContentElement.h"
-#include "core/html/HTMLDivElement.h"
-#include "core/html/HTMLSummaryElement.h"
-#include "core/html/shadow/DetailsMarkerControl.h"
-#include "core/html/shadow/ShadowElementNames.h"
-#include "core/layout/LayoutBlockFlow.h"
-#include "platform/text/PlatformLocale.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionStatePlaceholder.h"
+#include "blinkit/blink/renderer/core/CSSPropertyNames.h"
+#include "blinkit/blink/renderer/core/CSSValueKeywords.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/dom/Text.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/events/Event.h"
+#include "blinkit/blink/renderer/core/events/EventSender.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/core/html/HTMLContentElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLDivElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLSummaryElement.h"
+#include "blinkit/blink/renderer/core/html/shadow/DetailsMarkerControl.h"
+#include "blinkit/blink/renderer/core/html/shadow/ShadowElementNames.h"
+#include "blinkit/blink/renderer/core/layout/LayoutBlockFlow.h"
+#include "blinkit/blink/renderer/platform/text/PlatformLocale.h"
 
 namespace blink {
 

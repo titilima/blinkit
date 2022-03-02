@@ -33,16 +33,16 @@
  *
  */
 
-#include "core/html/FormAssociatedElement.h"
+#include "./FormAssociatedElement.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/IdTargetObserver.h"
-#include "core/dom/NodeTraversal.h"
-#include "core/html/HTMLFormControlElement.h"
-#include "core/html/HTMLFormElement.h"
-#include "core/html/HTMLLabelElement.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/IdTargetObserver.h"
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
+#include "blinkit/blink/renderer/core/html/HTMLFormControlElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLFormElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLLabelElement.h"
 // BKTODO: #include "core/html/HTMLObjectElement.h"
-#include "core/html/ValidityState.h"
+#include "blinkit/blink/renderer/core/html/ValidityState.h"
 
 namespace blink {
 

@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ClientRect.h
+// Description: ClientRect Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All Rights Reserved.
  *
@@ -27,16 +39,15 @@
 #ifndef ClientRect_h
 #define ClientRect_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "platform/geometry/FloatRect.h"
-#include "platform/heap/Handle.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
 
 namespace blink {
 
 class IntRect;
 
-class CORE_EXPORT ClientRect final : public GarbageCollected<ClientRect>, public ScriptWrappable {
+class ClientRect final : public GarbageCollected<ClientRect>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     static ClientRect* create()

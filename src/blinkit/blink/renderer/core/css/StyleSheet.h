@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -32,10 +33,9 @@
 #ifndef StyleSheet_h
 #define StyleSheet_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Forward.h"
-#include "wtf/RefCounted.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
 
 namespace blink {
 
@@ -45,7 +45,8 @@ class MediaList;
 class Node;
 class StyleSheet;
 
-class CORE_EXPORT StyleSheet : public BlinKit::GCObject, public ScriptWrappable {
+class StyleSheet : public BlinKit::GCObject, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     StyleSheet() { }

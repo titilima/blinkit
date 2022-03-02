@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -31,11 +32,10 @@
 #ifndef Navigator_h
 #define Navigator_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/frame/DOMWindowProperty.h"
-#include "platform/Supplementable.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Forward.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/frame/DOMWindowProperty.h"
+#include "blinkit/blink/renderer/platform/Supplementable.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
 
 namespace blink {
 

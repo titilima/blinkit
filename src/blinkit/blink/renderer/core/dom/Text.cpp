@@ -30,27 +30,27 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/dom/Text.h"
+#include "./Text.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/SVGNames.h"
-#include "core/css/resolver/StyleResolver.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/LayoutTreeBuilder.h"
-#include "core/dom/LayoutTreeBuilderTraversal.h"
-#include "core/dom/NodeComputedStyle.h"
-#include "core/dom/NodeTraversal.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/events/ScopedEventQueue.h"
-#include "core/layout/LayoutText.h"
-#include "core/layout/LayoutTextCombine.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionStatePlaceholder.h"
+#include "blinkit/blink/renderer/core/SVGNames.h"
+#include "blinkit/blink/renderer/core/css/resolver/StyleResolver.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/dom/LayoutTreeBuilder.h"
+#include "blinkit/blink/renderer/core/dom/LayoutTreeBuilderTraversal.h"
+#include "blinkit/blink/renderer/core/dom/NodeComputedStyle.h"
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/events/ScopedEventQueue.h"
+#include "blinkit/blink/renderer/core/layout/LayoutText.h"
+#include "blinkit/blink/renderer/core/layout/LayoutTextCombine.h"
 #if 0 // BKTODO:
 #include "core/layout/svg/LayoutSVGInlineText.h"
 #include "core/svg/SVGForeignObjectElement.h"
 #endif
-#include "wtf/text/CString.h"
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/wtf/text/CString.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 using namespace BlinKit;
 

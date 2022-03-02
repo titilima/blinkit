@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -38,12 +39,10 @@
 #ifndef ShadowRoot_h
 #define ShadowRoot_h
 
-#include "core/CoreExport.h"
-#include "core/dom/ContainerNode.h"
-#include "core/dom/DocumentFragment.h"
-#include "core/dom/Element.h"
-#include "core/dom/TreeScope.h"
-#include "wtf/DoublyLinkedList.h"
+#include "blinkit/blink/renderer/core/dom/DocumentFragment.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/dom/TreeScope.h"
+#include "blinkit/blink/renderer/wtf/DoublyLinkedList.h"
 
 namespace blink {
 

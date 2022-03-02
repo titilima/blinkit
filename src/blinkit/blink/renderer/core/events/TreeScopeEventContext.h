@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -38,13 +39,11 @@
 #ifndef TreeScopeEventContext_h
 #define TreeScopeEventContext_h
 
-#include "core/CoreExport.h"
-#include "core/dom/Node.h"
-#include "core/dom/TreeScope.h"
-#include "core/events/EventTarget.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefPtr.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/core/dom/Node.h"
+#include "blinkit/blink/renderer/core/dom/TreeScope.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 

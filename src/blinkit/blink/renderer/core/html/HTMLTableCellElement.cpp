@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTableCellElement.cpp
+// Description: HTMLTableCellElement Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1997 Martin Jones (mjones@kde.org)
  *           (C) 1997 Torben Weis (weis@kde.org)
@@ -22,18 +33,17 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/html/HTMLTableCellElement.h"
+#include "./HTMLTableCellElement.h"
 
-#include "core/CSSPropertyNames.h"
-#include "core/CSSValueKeywords.h"
-#include "core/HTMLNames.h"
-#include "core/dom/Attribute.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/html/HTMLTableElement.h"
-#include "core/html/parser/HTMLParserIdioms.h"
-#include "core/layout/LayoutTableCell.h"
+#include "blinkit/blink/renderer/core/CSSPropertyNames.h"
+#include "blinkit/blink/renderer/core/CSSValueKeywords.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/Attribute.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/html/HTMLTableElement.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLParserIdioms.h"
+#include "blinkit/blink/renderer/core/layout/LayoutTableCell.h"
 
-using namespace std;
 using namespace std;
 
 namespace blink {

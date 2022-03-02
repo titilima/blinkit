@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: EditingAlgorithm.h
+// Description: EditingAlgorithm Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,10 +17,8 @@
 #ifndef EditingStrategy_h
 #define EditingStrategy_h
 
-#include "core/CoreExport.h"
-#include "core/dom/NodeTraversal.h"
-#include "core/dom/shadow/ComposedTreeTraversal.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ComposedTreeTraversal.h"
 
 namespace blink {
 
@@ -20,7 +30,8 @@ class PositionIteratorAlgorithm;
 
 // Editing algorithm defined on node traversal.
 template <typename Traversal>
-class CORE_TEMPLATE_CLASS_EXPORT EditingAlgorithm : public Traversal {
+class EditingAlgorithm : public Traversal
+{
     STATIC_ONLY(EditingAlgorithm);
 public:
     static int caretMaxOffset(const Node&);

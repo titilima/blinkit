@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMStringList.h
+// Description: DOMStringList Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All Rights Reserved.
  *
@@ -26,13 +38,11 @@
 #ifndef DOMStringList_h
 #define DOMStringList_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "platform/heap/Handle.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
-#include "wtf/Vector.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
@@ -40,7 +50,8 @@ class ExecutionContext;
 
 // FIXME: Some consumers of this class may benefit from lazily fetching items rather
 //        than creating the list statically as is currently the only option.
-class CORE_EXPORT DOMStringList final : public RefCountedWillBeGarbageCollectedFinalized<DOMStringList>, public ScriptWrappable {
+class DOMStringList final : public RefCountedWillBeGarbageCollectedFinalized<DOMStringList>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     // We would like to remove DOMStringList from the platform if possible.

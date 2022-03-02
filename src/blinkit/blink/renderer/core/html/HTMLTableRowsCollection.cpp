@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLTableRowsCollection.cpp
+// Description: HTMLTableRowsCollection Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2011, 2012, 2014 Apple Inc. All rights reserved.
  *
@@ -26,12 +37,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/html/HTMLTableRowsCollection.h"
+#include "./HTMLTableRowsCollection.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/html/HTMLTableElement.h"
-#include "core/html/HTMLTableRowElement.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/html/HTMLTableElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLTableRowElement.h"
 
 namespace blink {
 

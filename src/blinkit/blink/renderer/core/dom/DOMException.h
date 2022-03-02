@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMException.h
+// Description: DOMException Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -29,17 +41,16 @@
 #ifndef DOMException_h
 #define DOMException_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Forward.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
 typedef int ExceptionCode;
 
-class CORE_EXPORT DOMException final : public GarbageCollectedFinalized<DOMException>, public ScriptWrappable {
+class DOMException final : public GarbageCollectedFinalized<DOMException>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     static DOMException* create(ExceptionCode, const String& sanitizedMessage = String(), const String& unsanitizedMessage = String());

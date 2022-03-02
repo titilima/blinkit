@@ -34,24 +34,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/editing/commands/DeleteSelectionCommand.h"
+#include "./DeleteSelectionCommand.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/Document.h"
-#include "core/dom/Element.h"
-#include "core/dom/NodeTraversal.h"
-#include "core/dom/Text.h"
-#include "core/editing/EditingBoundary.h"
-#include "core/editing/EditingUtilities.h"
-#include "core/editing/Editor.h"
-#include "core/editing/VisibleUnits.h"
-#include "core/frame/LocalFrame.h"
-#include "core/html/HTMLBRElement.h"
-#include "core/html/HTMLInputElement.h"
-#include "core/html/HTMLStyleElement.h"
-#include "core/html/HTMLTableRowElement.h"
-#include "core/layout/LayoutTableCell.h"
-#include "core/layout/LayoutText.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
+#include "blinkit/blink/renderer/core/dom/Text.h"
+#include "blinkit/blink/renderer/core/editing/EditingBoundary.h"
+#include "blinkit/blink/renderer/core/editing/EditingUtilities.h"
+#include "blinkit/blink/renderer/core/editing/Editor.h"
+#include "blinkit/blink/renderer/core/editing/VisibleUnits.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/html/HTMLBRElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLInputElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLStyleElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLTableRowElement.h"
+#include "blinkit/blink/renderer/core/layout/LayoutTableCell.h"
+#include "blinkit/blink/renderer/core/layout/LayoutText.h"
 
 namespace blink {
 

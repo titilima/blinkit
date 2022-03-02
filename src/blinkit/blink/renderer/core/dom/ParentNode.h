@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -42,10 +43,8 @@
 #ifndef ParentNode_h
 #define ParentNode_h
 
-#include "core/dom/ContainerNode.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/html/HTMLCollection.h"
-#include "platform/heap/Handle.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/html/HTMLCollection.h"
 
 namespace blink {
 

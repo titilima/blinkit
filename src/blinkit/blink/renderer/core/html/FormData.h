@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -42,12 +43,10 @@
 #ifndef FormData_h
 #define FormData_h
 
-#include "core/CoreExport.h"
-#include "platform/heap/Handle.h"
-#include "platform/network/EncodedFormData.h"
-#include "wtf/Forward.h"
-#include "wtf/text/TextEncoding.h"
-#include "blinkit/blink/renderer/bindings/core/duk/script_wrappable.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/platform/network/EncodedFormData.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/text/TextEncoding.h"
 
 namespace blink {
 
@@ -55,7 +54,7 @@ class Blob;
 class ExecutionContext;
 class HTMLFormElement;
 
-class CORE_EXPORT FormData final : public ScriptWrappable { // BKTODO: , public PairIterable<String, FormDataEntryValue> {
+class FormData final : public ScriptWrappable { // BKTODO: , public PairIterable<String, FormDataEntryValue> {
     DEFINE_WRAPPERTYPEINFO();
 
 public:

@@ -39,15 +39,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/events/ScopedEventQueue.h"
+#include "./ScopedEventQueue.h"
 
-#include "core/events/Event.h"
-#include "core/events/EventDispatchMediator.h"
-#include "core/events/EventDispatcher.h"
-#include "core/events/EventTarget.h"
-#include "wtf/OwnPtr.h"
-
-using namespace BlinKit;
+#include "blinkit/blink/renderer/core/events/Event.h"
+#include "blinkit/blink/renderer/core/events/EventDispatchMediator.h"
+#include "blinkit/blink/renderer/core/events/EventDispatcher.h"
+#include "blinkit/blink/renderer/core/events/event_target.h"
+#include "blinkit/blink/renderer/wtf/OwnPtr.h"
 
 namespace blink {
 

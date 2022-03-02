@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NodeFilter.h
+// Description: NodeFilter Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2000 Frederik Holljen (frederik.holljen@hig.no)
@@ -25,14 +37,14 @@
 #ifndef NodeFilter_h
 #define NodeFilter_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/dom/NodeFilterCondition.h"
-#include "platform/heap/Handle.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/dom/NodeFilterCondition.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 
-class NodeFilter final : public RefCountedWillBeGarbageCollected<NodeFilter>, public ScriptWrappable {
+class NodeFilter final : public RefCountedWillBeGarbageCollected<NodeFilter>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     /**

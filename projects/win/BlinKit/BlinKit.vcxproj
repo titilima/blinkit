@@ -448,7 +448,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ClientRectList.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\Comment.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\CompositorProxiedPropertySet.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ContainerNode.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\container_node.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ContextLifecycleNotifier.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\CSSSelectorWatch.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\custom\CustomElement.cpp" />
@@ -465,7 +465,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\custom\CustomElementUpgradeCandidateMap.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DatasetDOMStringMap.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DecodedDataDocumentParser.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\Document.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\document.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentEncodingData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentFragment.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentInit.cpp" />
@@ -488,7 +488,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMURLUtils.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMURLUtilsReadOnly.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\dom_node_ids.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\Element.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementDataCache.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\element_rare_data.cpp" />
@@ -516,7 +516,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\MutationRecord.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\NamedNodeMap.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\NameNodeList.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\Node.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\node.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeChildRemovalTracker.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeFilter.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeIntersectionObserverData.cpp" />
@@ -525,7 +525,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeList.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeListsNodeData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeRareData.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeTraversal.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\node_traversal.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\NthIndexCache.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\PendingScript.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\PresentationAttributeStyle.cpp" />
@@ -630,8 +630,8 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\EventDispatchMediator.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\EventListenerMap.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\EventPath.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\EventTarget.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\event_factory.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\event_target.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\FocusEvent.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\GenericEventQueue.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\events\KeyboardEvent.cpp" />
@@ -1583,6 +1583,8 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_streamer.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_wrappable.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_wrappers.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_wrappable.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_wrappable.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ExceptionState.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ExceptionStatePlaceholder.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ScriptController.h" />
@@ -1868,7 +1870,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ClientRectList.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\Comment.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\CompositorProxiedPropertySet.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ContainerNode.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\container_node.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ContextLifecycleNotifier.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ContextLifecycleObserver.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\CSSSelectorWatch.h" />
@@ -1876,7 +1878,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\custom\CustomElementUpgradeCandidateMap.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DatasetDOMStringMap.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DecodedDataDocumentParser.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\Document.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\document.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentEncodingData.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentFragment.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DocumentInit.h" />
@@ -1904,12 +1906,12 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMTokenList.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMURLUtils.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\DOMURLUtilsReadOnly.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\Element.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\element.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementData.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementDataCache.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementRegistrationOptions.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementTraversal.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\element_rare_data.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\element_traversal.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\EmptyNodeList.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ExceptionCode.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ExecutionContext.h" />
@@ -1941,7 +1943,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\MutationRecord.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NamedNodeMap.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NameNodeList.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\Node.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\node.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeChildRemovalTracker.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeComputedStyle.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeFilter.h" />
@@ -1952,8 +1954,8 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeList.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeListsNodeData.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeRareData.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeTraversal.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NodeWithIndex.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\node_traversal.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NonDocumentTypeChildNode.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NonElementParentNode.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\NthIndexCache.h" />
@@ -2062,7 +2064,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventPath.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventQueue.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventSender.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventTarget.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\event_target.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\event_target_data_map.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\FocusEvent.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\FocusEventInit.h" />

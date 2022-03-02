@@ -19,18 +19,17 @@
  *
  */
 
-#include "core/html/forms/RadioInputType.h"
+#include "./RadioInputType.h"
 
-#include "core/HTMLNames.h"
-#include "core/InputTypeNames.h"
-#include "core/dom/Document.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/events/KeyboardEvent.h"
-#include "core/events/MouseEvent.h"
-#include "core/html/HTMLInputElement.h"
-#include "core/page/SpatialNavigation.h"
-#include "platform/text/PlatformLocale.h"
-#include "wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/InputTypeNames.h"
+#include "core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/events/KeyboardEvent.h"
+#include "blinkit/blink/renderer/core/events/MouseEvent.h"
+#include "blinkit/blink/renderer/core/html/HTMLInputElement.h"
+#include "blinkit/blink/renderer/core/page/SpatialNavigation.h"
+#include "blinkit/blink/renderer/platform/text/PlatformLocale.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
 
 namespace blink {
 

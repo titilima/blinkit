@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -16,13 +17,13 @@
 #ifndef InputDeviceCapabilities_h
 #define InputDeviceCapabilities_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
 #include "core/input/InputDeviceCapabilitiesInit.h"
 
 namespace blink {
 
-class CORE_EXPORT InputDeviceCapabilities final : public ScriptWrappable {
+class InputDeviceCapabilities final : public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 
 public:

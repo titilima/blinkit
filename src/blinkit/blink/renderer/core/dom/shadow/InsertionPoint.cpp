@@ -39,14 +39,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/dom/shadow/InsertionPoint.h"
+#include "./InsertionPoint.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/Document.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/dom/QualifiedName.h"
-#include "core/dom/StaticNodeList.h"
-#include "core/dom/shadow/ElementShadow.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/dom/QualifiedName.h"
+#include "blinkit/blink/renderer/core/dom/StaticNodeList.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ElementShadow.h"
 
 namespace blink {
 

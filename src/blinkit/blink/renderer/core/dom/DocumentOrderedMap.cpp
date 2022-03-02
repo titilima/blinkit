@@ -39,12 +39,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/dom/DocumentOrderedMap.h"
+#include "./DocumentOrderedMap.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/Element.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/dom/TreeScope.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
 // BKTODO: #include "core/html/HTMLMapElement.h"
 
 namespace blink {

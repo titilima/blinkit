@@ -33,25 +33,25 @@
  *
  */
 
-#include "core/html/HTMLFormControlElement.h"
+#include "./HTMLFormControlElement.h"
 
-#include "core/dom/ElementTraversal.h"
-#include "core/events/Event.h"
-#include "core/frame/UseCounter.h"
-#include "core/html/HTMLDataListElement.h"
-#include "core/html/HTMLFieldSetElement.h"
-#include "core/html/HTMLFormElement.h"
-#include "core/html/HTMLInputElement.h"
-#include "core/html/HTMLLegendElement.h"
-#include "core/html/ValidityState.h"
-#include "core/html/parser/HTMLParserIdioms.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/events/Event.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/core/html/HTMLDataListElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLFieldSetElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLFormElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLInputElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLLegendElement.h"
+#include "blinkit/blink/renderer/core/html/ValidityState.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLParserIdioms.h"
 // BKTODO: #include "core/inspector/ConsoleMessage.h"
-#include "core/layout/LayoutBox.h"
-#include "core/layout/LayoutTheme.h"
-#include "core/page/Page.h"
-#include "core/page/ValidationMessageClient.h"
-#include "platform/text/BidiTextRun.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/core/layout/LayoutBox.h"
+#include "blinkit/blink/renderer/core/layout/LayoutTheme.h"
+#include "blinkit/blink/renderer/core/page/Page.h"
+#include "blinkit/blink/renderer/core/page/ValidationMessageClient.h"
+#include "blinkit/blink/renderer/platform/text/BidiTextRun.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 

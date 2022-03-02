@@ -30,15 +30,15 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/css/CSSStyleRule.h"
+#include "./CSSStyleRule.h"
 
-#include "core/css/CSSSelector.h"
-#include "core/css/CSSStyleSheet.h"
-#include "core/css/PropertySetCSSStyleDeclaration.h"
-#include "core/css/StylePropertySet.h"
-#include "core/css/StyleRule.h"
-#include "core/css/parser/CSSParser.h"
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/core/css/CSSSelector.h"
+#include "blinkit/blink/renderer/core/css/CSSStyleSheet.h"
+#include "blinkit/blink/renderer/core/css/PropertySetCSSStyleDeclaration.h"
+#include "blinkit/blink/renderer/core/css/StylePropertySet.h"
+#include "blinkit/blink/renderer/core/css/StyleRule.h"
+#include "blinkit/blink/renderer/core/css/parser/CSSParser.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 namespace blink {
 

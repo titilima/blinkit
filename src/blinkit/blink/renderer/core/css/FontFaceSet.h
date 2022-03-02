@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -37,17 +38,17 @@
 #ifndef FontFaceSet_h
 #define FontFaceSet_h
 
+#include "blinkit/blink/renderer/core/css/FontFace.h"
+#include "blinkit/blink/renderer/core/dom/ActiveDOMObject.h"
+#include "blinkit/blink/renderer/core/events/EventListener.h"
+#include "blinkit/blink/renderer/core/events/event_target.h"
+#include "blinkit/blink/renderer/platform/AsyncMethodRunner.h"
+#include "blinkit/blink/renderer/platform/RefCountedSupplement.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 #include "blinkit/gc/gc_object_set.h"
-#include "core/css/FontFace.h"
-#include "core/dom/ActiveDOMObject.h"
-#include "core/events/EventListener.h"
-#include "core/events/EventTarget.h"
-#include "platform/AsyncMethodRunner.h"
-#include "platform/RefCountedSupplement.h"
-#include "wtf/Allocator.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
-#include "wtf/Vector.h"
 
 // Mac OS X 10.6 SDK defines check() macro that interfares with our check() method
 #ifdef check

@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -42,13 +43,11 @@
 #ifndef AnimationEffect_h
 #define AnimationEffect_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "core/animation/Timing.h"
-#include "platform/heap/Handle.h"
-#include "wtf/OwnPtr.h"
-#include "wtf/PassOwnPtr.h"
-#include "wtf/RefCounted.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/animation/Timing.h"
+#include "blinkit/blink/renderer/wtf/OwnPtr.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
 
 namespace blink {
 
@@ -72,7 +71,8 @@ static inline double nullValue()
     return std::numeric_limits<double>::quiet_NaN();
 }
 
-class CORE_EXPORT AnimationEffect : public BlinKit::GCObject, public ScriptWrappable {
+class AnimationEffect : public BlinKit::GCObject, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
     friend class Animation; // Calls attach/detach, updateInheritedTime.
 public:

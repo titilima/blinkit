@@ -30,18 +30,18 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/html/HTMLAreaElement.h"
+#include "./HTMLAreaElement.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/html/HTMLImageElement.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/html/HTMLImageElement.h"
 // BKTODO: #include "core/html/HTMLMapElement.h"
-#include "core/layout/HitTestResult.h"
-#include "core/layout/LayoutImage.h"
-#include "core/layout/LayoutView.h"
-#include "platform/LengthFunctions.h"
-#include "platform/graphics/Path.h"
-#include "platform/transforms/AffineTransform.h"
+#include "blinkit/blink/renderer/core/layout/HitTestResult.h"
+#include "blinkit/blink/renderer/core/layout/LayoutImage.h"
+#include "blinkit/blink/renderer/core/layout/LayoutView.h"
+#include "blinkit/blink/renderer/platform/LengthFunctions.h"
+#include "blinkit/blink/renderer/platform/graphics/Path.h"
+#include "blinkit/blink/renderer/platform/transforms/AffineTransform.h"
 
 namespace blink {
 

@@ -34,14 +34,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/editing/commands/EditCommand.h"
+#include "./EditCommand.h"
 
-#include "core/dom/Document.h"
-#include "core/dom/NodeTraversal.h"
-#include "core/editing/FrameSelection.h"
-#include "core/editing/commands/CompositeEditCommand.h"
-#include "core/frame/LocalFrame.h"
-#include "core/layout/LayoutText.h"
+#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
+#include "blinkit/blink/renderer/core/editing/FrameSelection.h"
+#include "blinkit/blink/renderer/core/editing/commands/CompositeEditCommand.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/layout/LayoutText.h"
 
 namespace blink {
 

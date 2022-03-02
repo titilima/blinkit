@@ -15,7 +15,7 @@
 #pragma once
 
 #include "blinkit/blink/renderer/bindings/core/duk/duk_node.h"
-#include "blinkit/blink/renderer/core/dom/ContainerNode.h"
+#include "blinkit/blink/renderer/core/dom/container_node.h"
 
 namespace BlinKit {
 

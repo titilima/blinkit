@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: PlainTextRange.cpp
+// Description: PlainTextRange Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All rights reserved.
  * Copyright (C) 2005 Alexey Proskuryakov.
@@ -24,15 +35,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/editing/PlainTextRange.h"
+#include "./PlainTextRange.h"
 
-#include "core/dom/ContainerNode.h"
-#include "core/dom/Document.h"
-#include "core/dom/Range.h"
-#include "core/editing/EphemeralRange.h"
-#include "core/editing/VisiblePosition.h"
-#include "core/editing/VisibleUnits.h"
-#include "core/editing/iterators/TextIterator.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/Range.h"
+#include "blinkit/blink/renderer/core/editing/EphemeralRange.h"
+#include "blinkit/blink/renderer/core/editing/VisiblePosition.h"
+#include "blinkit/blink/renderer/core/editing/VisibleUnits.h"
+#include "blinkit/blink/renderer/core/editing/iterators/TextIterator.h"
 
 namespace blink {
 

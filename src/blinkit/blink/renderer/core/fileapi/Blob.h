@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -42,19 +43,16 @@
 #ifndef Blob_h
 #define Blob_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "core/dom/DOMArrayBuffer.h"
-#include "core/dom/DOMArrayBufferView.h"
+#include "blinkit/blink/renderer/core/dom/DOMArrayBuffer.h"
+#include "blinkit/blink/renderer/core/dom/DOMArrayBufferView.h"
 #if 0 // BKTODO:
-#include "core/html/URLRegistry.h"
-#include "core/imagebitmap/ImageBitmapSource.h"
+#include "blinkit/blink/renderer/core/html/URLRegistry.h"
+#include "blinkit/blink/renderer/core/imagebitmap/ImageBitmapSource.h"
 #endif
-#include "platform/blob/BlobData.h"
-#include "platform/heap/Handle.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/platform/blob/BlobData.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
@@ -62,7 +60,7 @@ class BlobPropertyBag;
 class ExceptionState;
 class ExecutionContext;
 
-class CORE_EXPORT Blob : public GarbageCollectedFinalized<Blob>, public ScriptWrappable { // BKTODO: , public URLRegistrable, public ImageBitmapSource {
+class Blob : public GarbageCollectedFinalized<Blob>, public ScriptWrappable { // BKTODO: , public URLRegistrable, public ImageBitmapSource {
     DEFINE_WRAPPERTYPEINFO();
 public:
     static Blob* create(ExceptionState&)

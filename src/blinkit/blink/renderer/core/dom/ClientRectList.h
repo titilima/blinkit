@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -38,17 +39,13 @@
 #ifndef ClientRectList_h
 #define ClientRectList_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "core/dom/ClientRect.h"
-#include "platform/geometry/FloatQuad.h"
-#include "platform/heap/Handle.h"
+#include "blinkit/blink/renderer/core/dom/ClientRect.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatQuad.h"
 
 namespace blink {
 
-class ClientRect;
-
-class CORE_EXPORT ClientRectList final : public GarbageCollected<ClientRectList>, public ScriptWrappable {
+class ClientRectList final : public GarbageCollected<ClientRectList>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     static ClientRectList* create()

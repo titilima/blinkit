@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FocusEvent.h
+// Description: FocusEvent Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -26,14 +38,14 @@
 #ifndef FocusEvent_h
 #define FocusEvent_h
 
-#include "core/events/EventTarget.h"
-#include "core/events/FocusEventInit.h"
-#include "core/events/UIEvent.h"
+#include "blinkit/blink/renderer/core/events/event_target.h"
+#include "blinkit/blink/renderer/core/events/FocusEventInit.h"
+#include "blinkit/blink/renderer/core/events/UIEvent.h"
 
 namespace blink {
 
-class FocusEvent final : public UIEvent {
-    DEFINE_WRAPPERTYPEINFO();
+class FocusEvent final : public UIEvent
+{
 public:
     static PassRefPtrWillBeRawPtr<FocusEvent> create()
     {

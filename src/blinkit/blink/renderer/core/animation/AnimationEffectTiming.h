@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AnimationEffectTiming.h
+// Description: AnimationEffectTiming Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,16 +17,16 @@
 #ifndef AnimationEffectTiming_h
 #define AnimationEffectTiming_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "core/animation/AnimationEffect.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/animation/AnimationEffect.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
 class UnrestrictedDoubleOrString;
 
-class CORE_EXPORT AnimationEffectTiming : public GarbageCollected<AnimationEffectTiming>, public ScriptWrappable {
+class AnimationEffectTiming : public GarbageCollected<AnimationEffectTiming>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     static AnimationEffectTiming* create(AnimationEffect* parent);

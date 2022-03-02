@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -37,15 +38,13 @@
 #ifndef Position_h
 #define Position_h
 
-#include "core/CoreExport.h"
-#include "core/dom/ContainerNode.h"
-#include "core/editing/EditingBoundary.h"
-#include "core/editing/EditingStrategy.h"
-#include "platform/heap/Handle.h"
-#include "platform/text/TextDirection.h"
-#include "wtf/Assertions.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/core/dom/container_node.h"
+#include "blinkit/blink/renderer/core/editing/EditingBoundary.h"
+#include "blinkit/blink/renderer/core/editing/EditingStrategy.h"
+#include "blinkit/blink/renderer/platform/text/TextDirection.h"
+#include "blinkit/blink/renderer/wtf/Assertions.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 

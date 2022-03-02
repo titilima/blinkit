@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: LiveNodeListBase.h
+// Description: LiveNodeListBase Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,12 +37,9 @@
 #ifndef LiveNodeListBase_h
 #define LiveNodeListBase_h
 
-#include "core/CoreExport.h"
-#include "core/HTMLNames.h"
-#include "core/dom/Document.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/html/CollectionType.h"
-#include "platform/heap/Handle.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/html/CollectionType.h"
 
 namespace blink {
 
@@ -39,7 +48,8 @@ enum class NodeListRootType {
     TreeScope,
 };
 
-class CORE_EXPORT LiveNodeListBase : public WillBeGarbageCollectedMixin {
+class LiveNodeListBase : public WillBeGarbageCollectedMixin
+{
 public:
     LiveNodeListBase(ContainerNode& ownerNode, NodeListRootType rootType, NodeListInvalidationType invalidationType,
         CollectionType collectionType)

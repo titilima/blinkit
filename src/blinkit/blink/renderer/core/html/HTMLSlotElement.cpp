@@ -39,12 +39,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/html/HTMLSlotElement.h"
+#include "./HTMLSlotElement.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/NodeTraversal.h"
-#include "core/dom/shadow/ElementShadow.h"
-#include "core/dom/shadow/InsertionPoint.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ElementShadow.h"
+#include "blinkit/blink/renderer/core/dom/shadow/InsertionPoint.h"
 
 namespace blink {
 

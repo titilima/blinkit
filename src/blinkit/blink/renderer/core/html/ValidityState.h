@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ValidityState.h
+// Description: ValidityState Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * This file is part of the WebKit project.
  *
@@ -24,15 +36,15 @@
 #ifndef ValidityState_h
 #define ValidityState_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/html/FormAssociatedElement.h"
-#include "wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/html/FormAssociatedElement.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
 
 namespace blink {
 
-class ValidityState final : public NoBaseWillBeGarbageCollectedFinalized<ValidityState>, public ScriptWrappable {
+class ValidityState final : public NoBaseWillBeGarbageCollectedFinalized<ValidityState>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
-    USING_FAST_MALLOC_WILL_BE_REMOVED(ValidityState);
     WTF_MAKE_NONCOPYABLE(ValidityState);
 public:
     static PassOwnPtrWillBeRawPtr<ValidityState> create(FormAssociatedElement* control)

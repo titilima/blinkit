@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -33,8 +34,7 @@
 #ifndef CSSStyleRule_h
 #define CSSStyleRule_h
 
-#include "core/css/CSSRule.h"
-#include "platform/heap/Handle.h"
+#include "blinkit/blink/renderer/core/css/CSSRule.h"
 
 namespace blink {
 
@@ -42,7 +42,8 @@ class CSSStyleDeclaration;
 class StyleRuleCSSStyleDeclaration;
 class StyleRule;
 
-class CORE_EXPORT CSSStyleRule final : public CSSRule {
+class CSSStyleRule final : public CSSRule
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     static PassRefPtrWillBeRawPtr<CSSStyleRule> create(StyleRule* rule, CSSStyleSheet* sheet)

@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -40,13 +41,12 @@
 #ifndef Location_h
 #define Location_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "core/dom/DOMStringList.h"
-#include "core/frame/DOMWindowProperty.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/dom/DOMStringList.h"
+#include "blinkit/blink/renderer/core/frame/DOMWindowProperty.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
@@ -59,7 +59,8 @@ class KURL;
 // in a RemoteFrame. Rather than making DOMWindowProperty support RemoteFrames and generating a lot
 // code churn, Location is implemented as a one-off with some custom lifetime management code. Namely,
 // it needs a manual call to reset() from DOMWindow::reset() to ensure it doesn't retain a stale Frame pointer.
-class CORE_EXPORT Location final : public RefCountedWillBeGarbageCollected<Location>, public ScriptWrappable {
+class Location final : public RefCountedWillBeGarbageCollected<Location>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     static PassRefPtrWillBeRawPtr<Location> create(Frame* frame)

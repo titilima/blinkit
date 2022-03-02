@@ -35,24 +35,24 @@
  *
  */
 
-#include "core/html/HTMLOptionElement.h"
+#include "./HTMLOptionElement.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/HTMLNames.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
 // BKTODO: #include "core/dom/AXObjectCache.h"
-#include "core/dom/Document.h"
-#include "core/dom/NodeComputedStyle.h"
-#include "core/dom/NodeTraversal.h"
-#include "core/dom/ScriptLoader.h"
-#include "core/dom/Text.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/html/HTMLDataListElement.h"
-#include "core/html/HTMLOptGroupElement.h"
-#include "core/html/HTMLSelectElement.h"
-#include "core/html/parser/HTMLParserIdioms.h"
-#include "core/layout/LayoutTheme.h"
-#include "wtf/Vector.h"
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/NodeComputedStyle.h"
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
+#include "blinkit/blink/renderer/core/dom/ScriptLoader.h"
+#include "blinkit/blink/renderer/core/dom/Text.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/html/HTMLDataListElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLOptGroupElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLSelectElement.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLParserIdioms.h"
+#include "blinkit/blink/renderer/core/layout/LayoutTheme.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 namespace blink {
 

@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -16,14 +17,14 @@
 #ifndef DOMArrayBufferBase_h
 #define DOMArrayBufferBase_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "wtf/ArrayBuffer.h"
-#include "wtf/RefCounted.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/wtf/ArrayBuffer.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
 
 namespace blink {
 
-class CORE_EXPORT DOMArrayBufferBase : public RefCounted<DOMArrayBufferBase>, public ScriptWrappable {
+class DOMArrayBufferBase : public RefCounted<DOMArrayBufferBase>, public ScriptWrappable
+{
 public:
     virtual ~DOMArrayBufferBase() { }
 

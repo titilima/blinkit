@@ -36,22 +36,22 @@
  *
  */
 
-#include "core/dom/ExecutionContext.h"
+#include "./ExecutionContext.h"
 
-#include "core/dom/ExecutionContextTask.h"
+#include "blinkit/blink/renderer/core/dom/ExecutionContextTask.h"
 // BKTODO: #include "core/events/ErrorEvent.h"
-#include "core/events/EventTarget.h"
+#include "blinkit/blink/renderer/core/events/event_target.h"
 // BKTODO: #include "core/fetch/MemoryCache.h"
-#include "core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
 // BKTODO: #include "core/html/PublicURLManager.h"
-#include "core/inspector/InspectorInstrumentation.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorInstrumentation.h"
 #if 0 // BKTODO:
 #include "core/inspector/ScriptCallStack.h"
 #include "core/workers/WorkerGlobalScope.h"
 #include "core/workers/WorkerThread.h"
 #endif
-#include "platform/RuntimeEnabledFeatures.h"
-#include "wtf/MainThread.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/wtf/MainThread.h"
 
 namespace blink {
 

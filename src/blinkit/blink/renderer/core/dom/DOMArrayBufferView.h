@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -16,16 +17,15 @@
 #ifndef DOMArrayBufferView_h
 #define DOMArrayBufferView_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "core/dom/DOMArrayBuffer.h"
-#include "core/dom/DOMSharedArrayBuffer.h"
-#include "wtf/ArrayBufferView.h"
-#include "wtf/RefCounted.h"
+#include "blinkit/blink/renderer/core/dom/DOMArrayBuffer.h"
+#include "blinkit/blink/renderer/core/dom/DOMSharedArrayBuffer.h"
+#include "blinkit/blink/renderer/wtf/ArrayBufferView.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
 
 namespace blink {
 
-class CORE_EXPORT DOMArrayBufferView : public RefCounted<DOMArrayBufferView>, public ScriptWrappable {
+class DOMArrayBufferView : public RefCounted<DOMArrayBufferView>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     typedef WTF::ArrayBufferView::ViewType ViewType;

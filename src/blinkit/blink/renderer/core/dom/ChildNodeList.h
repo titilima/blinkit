@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ChildNodeList.h
+// Description: ChildNodeList Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,14 +37,15 @@
 #ifndef ChildNodeList_h
 #define ChildNodeList_h
 
-#include "core/dom/ContainerNode.h"
-#include "core/dom/NodeList.h"
-#include "core/html/CollectionIndexCache.h"
-#include "wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/core/dom/container_node.h"
+#include "blinkit/blink/renderer/core/dom/NodeList.h"
+#include "blinkit/blink/renderer/core/html/CollectionIndexCache.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
 
 namespace blink {
 
-class ChildNodeList final : public NodeList {
+class ChildNodeList final : public NodeList
+{
 public:
     static PassRefPtrWillBeRawPtr<ChildNodeList> create(ContainerNode& rootNode)
     {

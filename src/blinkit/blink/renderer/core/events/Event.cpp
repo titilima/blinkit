@@ -31,19 +31,17 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/events/Event.h"
+#include "./Event.h"
 
-#include "core/dom/StaticNodeList.h"
-#include "core/events/EventDispatchMediator.h"
-#include "core/events/EventTarget.h"
+#include "blinkit/blink/renderer/core/dom/StaticNodeList.h"
+#include "blinkit/blink/renderer/core/events/EventDispatchMediator.h"
+#include "blinkit/blink/renderer/core/events/event_target.h"
 // BKTODO: #include "core/frame/OriginsUsingFeatures.h"
-#include "core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
 // BKTODO: #include "core/svg/SVGElement.h"
 // BKTODO: #include "core/timing/DOMWindowPerformance.h"
 // BKTODO: #include "core/timing/Performance.h"
-#include "wtf/CurrentTime.h"
-
-using namespace BlinKit;
+#include "blinkit/blink/renderer/wtf/CurrentTime.h"
 
 namespace blink {
 

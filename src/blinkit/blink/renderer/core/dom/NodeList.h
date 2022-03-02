@@ -35,7 +35,7 @@
 #ifndef NodeList_h
 #define NodeList_h
 
-#include "blinkit/blink/renderer/bindings/core/duk/script_wrappable.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
 
 namespace blink {
 

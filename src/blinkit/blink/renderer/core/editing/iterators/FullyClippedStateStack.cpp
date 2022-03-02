@@ -1,14 +1,24 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: FullyClippedStateStack.cpp
+// Description: FullyClippedStateStack Stuff
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/editing/iterators/FullyClippedStateStack.h"
+#include "./FullyClippedStateStack.h"
 
-#include "core/dom/ContainerNode.h"
-#include "core/dom/Node.h"
-#include "core/editing/EditingUtilities.h"
-#include "core/layout/LayoutBox.h"
-#include "core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/core/dom/container_node.h"
+#include "blinkit/blink/renderer/core/editing/EditingUtilities.h"
+#include "blinkit/blink/renderer/core/layout/LayoutBox.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
 
 namespace blink {
 

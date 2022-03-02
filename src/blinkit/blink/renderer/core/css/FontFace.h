@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -42,15 +43,15 @@
 #ifndef FontFace_h
 #define FontFace_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CSSPropertyNames.h"
-#include "core/css/CSSValue.h"
-#include "core/dom/ActiveDOMObject.h"
-#include "core/dom/DOMException.h"
-#include "platform/fonts/FontTraits.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefCounted.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/CSSPropertyNames.h"
+#include "blinkit/blink/renderer/core/css/CSSValue.h"
+#include "blinkit/blink/renderer/core/dom/ActiveDOMObject.h"
+#include "blinkit/blink/renderer/core/dom/DOMException.h"
+#include "blinkit/blink/renderer/platform/fonts/FontTraits.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 

@@ -13,14 +13,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/dom/shadow/SlotAssignment.h"
+#include "./SlotAssignment.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/dom/NodeTraversal.h"
-#include "core/dom/shadow/InsertionPoint.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/html/HTMLSlotElement.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/dom/shadow/InsertionPoint.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/html/HTMLSlotElement.h"
 
 namespace blink {
 

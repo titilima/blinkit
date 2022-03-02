@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: ScrollState.h
+// Description: ScrollState Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,15 +17,14 @@
 #ifndef ScrollState_h
 #define ScrollState_h
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "core/dom/Element.h"
-#include "public/platform/WebScrollStateData.h"
+#include "blinkit/blink/public/platform/WebScrollStateData.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/core/dom/Element.h"
 
 namespace blink {
 
-class CORE_EXPORT ScrollState final : public RefCountedWillBeGarbageCollectedFinalized<ScrollState>, public ScriptWrappable {
+class ScrollState final : public RefCountedWillBeGarbageCollectedFinalized<ScrollState>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 
 public:

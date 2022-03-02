@@ -35,18 +35,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/dom/shadow/ElementShadow.h"
+#include "./ElementShadow.h"
 
-#include "core/css/StyleSheetList.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/dom/NodeTraversal.h"
-#include "core/dom/shadow/DistributedNodes.h"
-#include "core/frame/UseCounter.h"
-#include "core/html/HTMLContentElement.h"
-#include "core/html/HTMLShadowElement.h"
-#include "core/inspector/InspectorInstrumentation.h"
-#include "platform/EventDispatchForbiddenScope.h"
-#include "platform/ScriptForbiddenScope.h"
+#include "blinkit/blink/renderer/core/css/StyleSheetList.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/dom/shadow/DistributedNodes.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/core/html/HTMLContentElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLShadowElement.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorInstrumentation.h"
+#include "blinkit/blink/renderer/platform/EventDispatchForbiddenScope.h"
+#include "blinkit/blink/renderer/platform/ScriptForbiddenScope.h"
 
 using namespace BlinKit;
 

@@ -35,21 +35,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/dom/shadow/ShadowRoot.h"
+#include "./ShadowRoot.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/css/StyleSheetList.h"
-#include "core/css/resolver/StyleResolver.h"
-#include "core/css/resolver/StyleResolverParentScope.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/dom/StyleEngine.h"
-#include "core/dom/Text.h"
-#include "core/dom/shadow/ElementShadow.h"
+#include "blinkit/blink/public/platform/Platform.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/core/css/StyleSheetList.h"
+#include "blinkit/blink/renderer/core/css/resolver/StyleResolver.h"
+#include "blinkit/blink/renderer/core/css/resolver/StyleResolverParentScope.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/dom/StyleEngine.h"
+#include "blinkit/blink/renderer/core/dom/Text.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ElementShadow.h"
 #include "core/dom/shadow/InsertionPoint.h"
-#include "core/dom/shadow/ShadowRootRareData.h"
-#include "core/editing/serializers/Serialization.h"
-#include "core/html/HTMLShadowElement.h"
-#include "public/platform/Platform.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRootRareData.h"
+#include "blinkit/blink/renderer/core/editing/serializers/Serialization.h"
+#include "blinkit/blink/renderer/core/html/HTMLShadowElement.h"
 
 namespace blink {
 

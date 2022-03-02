@@ -13,10 +13,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/dom/NthIndexCache.h"
+#include "./NthIndexCache.h"
 
-#include "core/dom/Document.h"
-#include "core/dom/ElementTraversal.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
 
 namespace blink {
 

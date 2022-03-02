@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -34,10 +35,9 @@
 #ifndef CSSRule_h
 #define CSSRule_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "platform/heap/Handle.h"
-#include "wtf/RefCounted.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
@@ -46,10 +46,11 @@ class CSSRuleList;
 class CSSStyleSheet;
 class StyleRuleBase;
 
-class CSSRule : public BlinKit::GCObject, public ScriptWrappable {
+class CSSRule : public BlinKit::GCObject, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
-    virtual ~CSSRule() { }
+    ~CSSRule(void) override {}
 
     enum Type {
         STYLE_RULE = 1,

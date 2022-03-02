@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NamedNodeMap.h
+// Description: NamedNodeMap Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,20 +37,19 @@
 #ifndef NamedNodeMap_h
 #define NamedNodeMap_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/dom/Element.h"
-#include "wtf/PassOwnPtr.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/text/AtomicString.h"
+#include "blinkit/blink/renderer/core/dom/Element.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/text/AtomicString.h"
 
 namespace blink {
 
 class Attr;
 class ExceptionState;
 
-class NamedNodeMap final : public NoBaseWillBeGarbageCollected<NamedNodeMap>, public ScriptWrappable {
+class NamedNodeMap final : public NoBaseWillBeGarbageCollected<NamedNodeMap>, public ScriptWrappable
+{
     DEFINE_WRAPPERTYPEINFO();
-    USING_FAST_MALLOC_WILL_BE_REMOVED(NamedNodeMap);
     friend class Element;
 public:
     static PassOwnPtrWillBeRawPtr<NamedNodeMap> create(Element* element)
