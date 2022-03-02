@@ -1,5 +1,6 @@
+#pragma once
 // -------------------------------------------------
-// BlinKit - js Library
+// BlinKit - BlinKit Library
 // -------------------------------------------------
 //   File Name: script_source_code.h
 // Description: ScriptSourceCode Class
@@ -9,17 +10,15 @@
 // Copyright (C) 2018 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_JS_SCRIPT_SOURCE_CODE_H
-#define BLINKIT_JS_SCRIPT_SOURCE_CODE_H
+#ifndef BLINKIT_SCRIPT_SOURCE_CODE_H
+#define BLINKIT_SCRIPT_SOURCE_CODE_H
 
-#pragma once
-
-#include "core/fetch/ResourcePtr.h"
-#include "core/fetch/ScriptResource.h"
-#include "platform/weborigin/KURL.h"
-#include "wtf/text/TextPosition.h"
-#include "wtf/text/WTFString.h"
-#include "script_streamer.h"
+#include "blinkit/blink/renderer/bindings/core/script_streamer.h"
+#include "blinkit/blink/renderer/core/fetch/ResourcePtr.h"
+#include "blinkit/blink/renderer/core/fetch/ScriptResource.h"
+#include "blinkit/blink/renderer/platform/weborigin/KURL.h"
+#include "blinkit/blink/renderer/wtf/text/TextPosition.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
@@ -46,4 +45,4 @@ private:
 
 } // namespace blink
 
-#endif // BLINKIT_JS_SCRIPT_SOURCE_CODE_H
+#endif // BLINKIT_SCRIPT_SOURCE_CODE_H
