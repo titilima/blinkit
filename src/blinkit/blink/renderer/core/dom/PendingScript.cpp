@@ -34,14 +34,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/dom/PendingScript.h"
+#include "./PendingScript.h"
 
-#include "bindings/core/v8/ScriptSourceCode.h"
-#include "bindings/core/v8/ScriptStreamer.h"
-#include "core/dom/Element.h"
-#include "core/fetch/ScriptResource.h"
+#include "blinkit/blink/renderer/bindings/core/script_source_code.h"
+#include "blinkit/blink/renderer/bindings/core/script_streamer.h"
+#include "blinkit/blink/renderer/core/dom/Element.h"
+#include "blinkit/blink/renderer/core/fetch/ScriptResource.h"
 // BKTODO: #include "core/frame/SubresourceIntegrity.h"
-#include "platform/SharedBuffer.h"
+#include "blinkit/blink/renderer/platform/SharedBuffer.h"
 
 namespace blink {
 

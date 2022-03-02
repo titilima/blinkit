@@ -36,22 +36,20 @@
 
 #include "core/html/parser/HTMLScriptRunner.h"
 
-#include "bindings/core/v8/ScriptSourceCode.h"
-#include "core/dom/Element.h"
-#include "core/events/Event.h"
-#include "core/dom/IgnoreDestructiveWriteCountIncrementer.h"
+#include "blinkit/blink/public/platform/Platform.h"
+#include "blinkit/blink/public/platform/WebFrameScheduler.h"
+#include "blinkit/blink/renderer/bindings/core/script_source_code.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/dom/IgnoreDestructiveWriteCountIncrementer.h"
 // BKTODO: #include "core/dom/Microtask.h"
-#include "core/dom/ScriptLoader.h"
-#include "core/fetch/ScriptResource.h"
-#include "core/frame/LocalFrame.h"
-#include "core/html/parser/HTMLInputStream.h"
-#include "core/html/parser/HTMLScriptRunnerHost.h"
-#include "core/html/parser/NestingLevelIncrementer.h"
-#include "platform/NotImplemented.h"
-#include "public/platform/Platform.h"
-#include "public/platform/WebFrameScheduler.h"
-
-using namespace BlinKit;
+#include "blinkit/blink/renderer/core/dom/ScriptLoader.h"
+#include "blinkit/blink/renderer/core/events/Event.h"
+#include "blinkit/blink/renderer/core/fetch/ScriptResource.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLInputStream.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLScriptRunnerHost.h"
+#include "blinkit/blink/renderer/core/html/parser/NestingLevelIncrementer.h"
+#include "blinkit/blink/renderer/platform/NotImplemented.h"
 
 namespace blink {
 
