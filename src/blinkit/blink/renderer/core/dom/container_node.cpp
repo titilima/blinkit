@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: ContainerNode.cpp
+//   File Name: container_node.cpp
 // Description: ContainerNode Class
 //      Author: Ziming Li
 //     Created: 2021-07-10
@@ -31,41 +31,40 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/dom/ContainerNode.h"
+#include "./container_node.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/ChildFrameDisconnector.h"
-#include "core/dom/ChildListMutationScope.h"
-#include "core/dom/ClassCollection.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/NameNodeList.h"
-#include "core/dom/NodeChildRemovalTracker.h"
-#include "core/dom/NodeComputedStyle.h"
-#include "core/dom/NodeRareData.h"
-#include "core/dom/NodeTraversal.h"
-#include "core/dom/NthIndexCache.h"
-#include "core/dom/SelectorQuery.h"
-#include "core/dom/StaticNodeList.h"
-#include "core/dom/StyleEngine.h"
-#include "core/dom/shadow/ElementShadow.h"
-#include "core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/core/dom/ChildFrameDisconnector.h"
+#include "blinkit/blink/renderer/core/dom/ChildListMutationScope.h"
+#include "blinkit/blink/renderer/core/dom/ClassCollection.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/dom/NameNodeList.h"
+#include "blinkit/blink/renderer/core/dom/NodeChildRemovalTracker.h"
+#include "blinkit/blink/renderer/core/dom/NodeComputedStyle.h"
+#include "blinkit/blink/renderer/core/dom/NodeRareData.h"
+#include "blinkit/blink/renderer/core/dom/NthIndexCache.h"
+#include "blinkit/blink/renderer/core/dom/SelectorQuery.h"
+#include "blinkit/blink/renderer/core/dom/StaticNodeList.h"
+#include "blinkit/blink/renderer/core/dom/StyleEngine.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ElementShadow.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
 #if 0 // BKTODO: MutationEvent is not recommended, remove it later. See also: https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent
 #include "core/events/MutationEvent.h"
 #endif
-#include "core/frame/FrameView.h"
-#include "core/html/HTMLCollection.h"
+#include "blinkit/blink/renderer/core/frame/FrameView.h"
+#include "blinkit/blink/renderer/core/html/HTMLCollection.h"
 // BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
-#include "core/html/HTMLTagCollection.h"
-#include "core/html/RadioNodeList.h"
-#include "core/inspector/InspectorInstrumentation.h"
-#include "core/layout/LayoutInline.h"
-#include "core/layout/LayoutText.h"
-#include "core/layout/LayoutTheme.h"
-#include "core/layout/LayoutView.h"
-#include "core/layout/line/InlineTextBox.h"
-#include "platform/EventDispatchForbiddenScope.h"
-#include "platform/ScriptForbiddenScope.h"
+#include "blinkit/blink/renderer/core/html/HTMLTagCollection.h"
+#include "blinkit/blink/renderer/core/html/RadioNodeList.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorInstrumentation.h"
+#include "blinkit/blink/renderer/core/layout/LayoutInline.h"
+#include "blinkit/blink/renderer/core/layout/LayoutText.h"
+#include "blinkit/blink/renderer/core/layout/LayoutTheme.h"
+#include "blinkit/blink/renderer/core/layout/LayoutView.h"
+#include "blinkit/blink/renderer/core/layout/line/InlineTextBox.h"
+#include "blinkit/blink/renderer/platform/EventDispatchForbiddenScope.h"
+#include "blinkit/blink/renderer/platform/ScriptForbiddenScope.h"
 
 namespace blink {
 

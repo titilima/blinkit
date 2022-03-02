@@ -1,7 +1,8 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: ContainerNode.h
+//   File Name: container_node.h
 // Description: ContainerNode Class
 //      Author: Ziming Li
 //     Created: 2021-07-05
@@ -35,12 +36,11 @@
 #ifndef ContainerNode_h
 #define ContainerNode_h
 
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/CoreExport.h"
-#include "core/dom/Node.h"
-#include "core/html/CollectionType.h"
-#include "wtf/OwnPtr.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionStatePlaceholder.h"
+#include "blinkit/blink/renderer/core/dom/node.h"
+#include "blinkit/blink/renderer/core/html/CollectionType.h"
+#include "blinkit/blink/renderer/wtf/OwnPtr.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 
