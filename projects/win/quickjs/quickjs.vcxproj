@@ -21,8 +21,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\quickjs\cutils.h" />
     <ClInclude Include="..\..\..\src\quickjs\port_win.h" />
-    <ClInclude Include="..\..\..\src\quickjs\quickjs.h" />
     <ClInclude Include="..\..\..\src\quickjs\_prefix.h" />
+    <ClInclude Include="..\..\..\third_party\quickjs\quickjs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\quickjs\cutils.c" />

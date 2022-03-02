@@ -18,13 +18,13 @@
     <ClInclude Include="..\..\..\src\quickjs\_prefix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\quickjs\quickjs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\quickjs\cutils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\quickjs\port_win.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\quickjs\quickjs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
