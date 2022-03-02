@@ -1,8 +1,8 @@
 #pragma once
 // -------------------------------------------------
-// BlinKit - blink Library
+// BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: ExceptionStatePlaceholder.h
+//   File Name: exception_state_placeholders.h
 // Description: ExceptionState Placeholders
 //      Author: Ziming Li
 //     Created: 2021-07-05
@@ -10,10 +10,10 @@
 // Copyright (C) 2021 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_EXCEPTION_STATE_PLACEHOLDERS_H
-#define BLINKIT_BLINKIT_EXCEPTION_STATE_PLACEHOLDERS_H
+#ifndef BLINKIT_EXCEPTION_STATE_PLACEHOLDERS_H
+#define BLINKIT_EXCEPTION_STATE_PLACEHOLDERS_H
 
-#include "blinkit/blink/renderer/bindings/core/duk/exception_state.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
 
 namespace blink {
 
@@ -36,4 +36,4 @@ public:
 #define IGNORE_EXCEPTION                (::blink::DummyExceptionStateForTesting().ReturnThis())
 #define IGNORE_EXCEPTION_FOR_TESTING    (::blink::DummyExceptionStateForTesting().ReturnThis())
 
-#endif // BLINKIT_BLINKIT_EXCEPTION_STATE_PLACEHOLDERS_H
+#endif // BLINKIT_EXCEPTION_STATE_PLACEHOLDERS_H

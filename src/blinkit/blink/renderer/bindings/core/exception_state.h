@@ -10,8 +10,8 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_EXCEPTION_STATE_H
-#define BLINKIT_BLINKIT_EXCEPTION_STATE_H
+#ifndef BLINKIT_EXCEPTION_STATE_H
+#define BLINKIT_EXCEPTION_STATE_H
 
 #include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
 #include "blinkit/blink/renderer/wtf/Allocator.h"
@@ -69,4 +69,4 @@ public:
 
 } // namespace blink
 
-#endif // BLINKIT_BLINKIT_EXCEPTION_STATE_H
+#endif // BLINKIT_EXCEPTION_STATE_H
