@@ -21,7 +21,7 @@
 #   define WIN32_LEAN_AND_MEAN
 #   include <Windows.h>
 
-#   pragma warning(disable: 4018 4244)
+#   pragma warning(disable: 4018 4244 4267)
 
 #   define EMSCRIPTEN
 
