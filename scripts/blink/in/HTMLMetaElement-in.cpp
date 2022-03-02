@@ -20,19 +20,18 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/html/HTMLMetaElement.h"
+#include "./HTMLMetaElement.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/Document.h"
-#include "core/dom/ElementTraversal.h"
-#include "core/frame/LocalFrame.h"
-#include "core/frame/Settings.h"
-#include "core/html/HTMLHeadElement.h"
-#include "core/html/parser/HTMLParserIdioms.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/element_traversal.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/frame/Settings.h"
+#include "blinkit/blink/renderer/core/html/HTMLHeadElement.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLParserIdioms.h"
 // BKTODO: #include "core/inspector/ConsoleMessage.h"
-#include "core/loader/FrameLoaderClient.h"
+#include "blinkit/blink/renderer/core/loader/FrameLoaderClient.h"
 // BKTODO: #include "core/loader/HttpEquiv.h"
-#include "platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
 
 namespace blink {
 
