@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: node_traversal.h
+// Description: NodeTraversal Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -26,10 +38,7 @@
 #ifndef NodeTraversal_h
 #define NodeTraversal_h
 
-#include "core/CoreExport.h"
-#include "core/dom/ContainerNode.h"
-#include "core/dom/Node.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/renderer/core/dom/container_node.h"
 
 namespace blink {
 

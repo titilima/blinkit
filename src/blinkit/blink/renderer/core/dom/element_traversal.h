@@ -1,3 +1,15 @@
+#pragma once
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: element_traversal.h
+// Description: Traversal Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -26,9 +38,8 @@
 #ifndef ElementTraversal_h
 #define ElementTraversal_h
 
-#include "core/dom/Element.h"
-#include "core/dom/NodeTraversal.h"
-#include "wtf/Allocator.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/dom/node_traversal.h"
 
 namespace blink {
 
