@@ -34,16 +34,16 @@
  * SUCH DAMAGE.
  */
 
-#include "core/html/forms/BaseChooserOnlyDateAndTimeInputType.h"
+#include "./BaseChooserOnlyDateAndTimeInputType.h"
 
 #if !ENABLE(INPUT_MULTIPLE_FIELDS_UI)
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/dom/Document.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/frame/FrameHost.h"
-#include "core/html/HTMLDivElement.h"
-#include "core/html/HTMLInputElement.h"
-#include "core/page/ChromeClient.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/frame/FrameHost.h"
+#include "blinkit/blink/renderer/core/html/HTMLDivElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLInputElement.h"
+#include "blinkit/blink/renderer/core/page/ChromeClient.h"
 // BKTODO: #include "platform/UserGestureIndicator.h"
 
 namespace blink {

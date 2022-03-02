@@ -34,18 +34,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/fileapi/File.h"
+#include "./File.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/ExceptionCode.h"
+#include "blinkit/blink/public/platform/Platform.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
 // BKTODO: #include "core/fileapi/FilePropertyBag.h"
-#include "platform/FileMetadata.h"
-#include "platform/MIMETypeRegistry.h"
-#include "platform/blob/BlobData.h"
-#include "public/platform/Platform.h"
+#include "blinkit/blink/renderer/platform/FileMetadata.h"
+#include "blinkit/blink/renderer/platform/MIMETypeRegistry.h"
+#include "blinkit/blink/renderer/platform/blob/BlobData.h"
 // BKTODO: #include "public/platform/WebFileUtilities.h"
-#include "wtf/CurrentTime.h"
-#include "wtf/DateMath.h"
+#include "blinkit/blink/renderer/wtf/CurrentTime.h"
+#include "blinkit/blink/renderer/wtf/DateMath.h"
 
 namespace blink {
 

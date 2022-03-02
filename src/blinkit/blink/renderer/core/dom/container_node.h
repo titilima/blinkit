@@ -36,11 +36,8 @@
 #ifndef ContainerNode_h
 #define ContainerNode_h
 
-#include "blinkit/blink/renderer/bindings/core/v8/ExceptionStatePlaceholder.h"
 #include "blinkit/blink/renderer/core/dom/node.h"
 #include "blinkit/blink/renderer/core/html/CollectionType.h"
-#include "blinkit/blink/renderer/wtf/OwnPtr.h"
-#include "blinkit/blink/renderer/wtf/Vector.h"
 
 namespace blink {
 

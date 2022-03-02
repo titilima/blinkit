@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DatasetDOMStringMap.cpp
+// Description: DatasetDOMStringMap Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Apple Inc. All rights reserved.
  *
@@ -23,14 +34,14 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/dom/DatasetDOMStringMap.h"
+#include "./DatasetDOMStringMap.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/Attribute.h"
-#include "core/dom/Element.h"
-#include "core/dom/ExceptionCode.h"
-#include "wtf/ASCIICType.h"
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/dom/Attribute.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/wtf/ASCIICType.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 namespace blink {
 

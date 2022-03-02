@@ -39,15 +39,15 @@
  * SUCH DAMAGE.
  */
 
-#include "core/css/CSSGroupingRule.h"
+#include "./CSSGroupingRule.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/css/CSSRuleList.h"
-#include "core/css/CSSStyleSheet.h"
-#include "core/css/parser/CSSParser.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/frame/UseCounter.h"
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/css/CSSRuleList.h"
+#include "blinkit/blink/renderer/core/css/CSSStyleSheet.h"
+#include "blinkit/blink/renderer/core/css/parser/CSSParser.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 using namespace BlinKit;
 

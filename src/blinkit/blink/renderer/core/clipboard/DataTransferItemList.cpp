@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DataTransferItemList.cpp
+// Description: DataTransferItemList Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
  * Copyright (C) 2008, 2009 Google Inc.
@@ -24,13 +35,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/clipboard/DataTransferItemList.h"
+#include "./DataTransferItemList.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/clipboard/DataObject.h"
-#include "core/clipboard/DataTransfer.h"
-#include "core/clipboard/DataTransferItem.h"
-#include "core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/clipboard/DataObject.h"
+#include "blinkit/blink/renderer/core/clipboard/DataTransfer.h"
+#include "blinkit/blink/renderer/core/clipboard/DataTransferItem.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
 
 namespace blink {
 

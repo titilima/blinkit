@@ -13,23 +13,23 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/dom/IntersectionObserver.h"
+#include "./IntersectionObserver.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/css/parser/CSSParserTokenRange.h"
-#include "core/css/parser/CSSTokenizer.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/ExecutionContext.h"
-#include "core/dom/IntersectionObserverCallback.h"
-#include "core/dom/IntersectionObserverController.h"
-#include "core/dom/IntersectionObserverEntry.h"
-// BKTODO: #include "core/dom/IntersectionObserverInit.h"
-#include "core/dom/NodeIntersectionObserverData.h"
-// BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
-#include "core/layout/LayoutView.h"
-#include "platform/Timer.h"
-#include "wtf/MainThread.h"
 #include <algorithm>
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/css/parser/CSSParserTokenRange.h"
+#include "blinkit/blink/renderer/core/css/parser/CSSTokenizer.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/dom/ExecutionContext.h"
+#include "blinkit/blink/renderer/core/dom/IntersectionObserverCallback.h"
+#include "blinkit/blink/renderer/core/dom/IntersectionObserverController.h"
+#include "blinkit/blink/renderer/core/dom/IntersectionObserverEntry.h"
+// BKTODO: #include "core/dom/IntersectionObserverInit.h"
+#include "blinkit/blink/renderer/core/dom/NodeIntersectionObserverData.h"
+// BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
+#include "blinkit/blink/renderer/core/layout/LayoutView.h"
+#include "blinkit/blink/renderer/platform/Timer.h"
+#include "blinkit/blink/renderer/wtf/MainThread.h"
 
 namespace blink {
 

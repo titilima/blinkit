@@ -36,7 +36,7 @@
 #include "./HTMLFormElement.h"
 
 #include <limits>
-#include "blinkit/blink/renderer/bindings/core/v8/ScriptController.h"
+#include "blinkit/blink/renderer/bindings/core/script_controller.h"
 #include "blinkit/blink/renderer/core/HTMLNames.h"
 #include "blinkit/blink/renderer/core/dom/Attribute.h"
 #include "blinkit/blink/renderer/core/dom/element_traversal.h"

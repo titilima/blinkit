@@ -33,10 +33,10 @@
 
 #include "./HTMLScriptElement.h"
 
-#include "blinkit/blink/renderer/bindings/core/v8/ExceptionStatePlaceholder.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
 #include "blinkit/blink/renderer/core/HTMLNames.h"
 #include "blinkit/blink/renderer/core/dom/Attribute.h"
-#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
 #include "blinkit/blink/renderer/core/dom/ScriptLoader.h"
 #include "blinkit/blink/renderer/core/dom/ScriptRunner.h"
 #include "blinkit/blink/renderer/core/dom/Text.h"

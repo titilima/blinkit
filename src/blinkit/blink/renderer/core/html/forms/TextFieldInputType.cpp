@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: TextFieldInputType.cpp
+// Description: TextFieldInputType Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -29,30 +40,30 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/html/forms/TextFieldInputType.h"
+#include "./TextFieldInputType.h"
 
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/HTMLNames.h"
-#include "core/dom/NodeComputedStyle.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/editing/FrameSelection.h"
-#include "core/editing/iterators/TextIterator.h"
-#include "core/events/BeforeTextInsertedEvent.h"
-#include "core/events/KeyboardEvent.h"
-#include "core/events/TextEvent.h"
-#include "core/frame/FrameHost.h"
-#include "core/frame/LocalFrame.h"
-#include "core/html/FormData.h"
-#include "core/html/HTMLInputElement.h"
-#include "core/html/shadow/ShadowElementNames.h"
-#include "core/html/shadow/TextControlInnerElements.h"
-#include "core/layout/LayoutDetailsMarker.h"
-#include "core/layout/LayoutTextControlSingleLine.h"
-#include "core/layout/LayoutTheme.h"
-#include "core/page/ChromeClient.h"
-#include "core/paint/PaintLayer.h"
-#include "platform/EventDispatchForbiddenScope.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/NodeComputedStyle.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/editing/FrameSelection.h"
+#include "blinkit/blink/renderer/core/editing/iterators/TextIterator.h"
+#include "blinkit/blink/renderer/core/events/BeforeTextInsertedEvent.h"
+#include "blinkit/blink/renderer/core/events/KeyboardEvent.h"
+#include "blinkit/blink/renderer/core/events/TextEvent.h"
+#include "blinkit/blink/renderer/core/frame/FrameHost.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/html/FormData.h"
+#include "blinkit/blink/renderer/core/html/HTMLInputElement.h"
+#include "blinkit/blink/renderer/core/html/shadow/ShadowElementNames.h"
+#include "blinkit/blink/renderer/core/html/shadow/TextControlInnerElements.h"
+#include "blinkit/blink/renderer/core/layout/LayoutDetailsMarker.h"
+#include "blinkit/blink/renderer/core/layout/LayoutTextControlSingleLine.h"
+#include "blinkit/blink/renderer/core/layout/LayoutTheme.h"
+#include "blinkit/blink/renderer/core/page/ChromeClient.h"
+#include "blinkit/blink/renderer/core/paint/PaintLayer.h"
+#include "blinkit/blink/renderer/platform/EventDispatchForbiddenScope.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 

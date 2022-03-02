@@ -29,28 +29,27 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/css/CSSStyleSheet.h"
+#include "./CSSStyleSheet.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/HTMLNames.h"
-#include "core/SVGNames.h"
-#include "core/css/CSSImportRule.h"
-#include "core/css/CSSRuleList.h"
-#include "core/css/MediaList.h"
-#include "core/css/StyleRule.h"
-#include "core/css/StyleSheetContents.h"
-#include "core/css/parser/CSSParser.h"
-#include "core/dom/Document.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/Node.h"
-#include "core/frame/UseCounter.h"
-#include "core/html/HTMLStyleElement.h"
-#include "core/inspector/InspectorInstrumentation.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/SVGNames.h"
+#include "blinkit/blink/renderer/core/css/CSSImportRule.h"
+#include "blinkit/blink/renderer/core/css/CSSRuleList.h"
+#include "blinkit/blink/renderer/core/css/MediaList.h"
+#include "blinkit/blink/renderer/core/css/StyleRule.h"
+#include "blinkit/blink/renderer/core/css/StyleSheetContents.h"
+#include "blinkit/blink/renderer/core/css/parser/CSSParser.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/core/html/HTMLStyleElement.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorInstrumentation.h"
 #if 0 // BKTODO:
 #include "core/svg/SVGStyleElement.h"
 #include "platform/weborigin/SecurityOrigin.h"
 #endif
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 using namespace BlinKit;
 

@@ -61,18 +61,18 @@
  * version of this file under any of the LGPL, the MPL or the GPL.
  */
 
-#include "core/html/HTMLDocument.h"
+#include "./HTMLDocument.h"
 
-#include "bindings/core/v8/ScriptController.h"
-#include "core/HTMLNames.h"
-#include "core/frame/FrameView.h"
-#include "core/frame/LocalDOMWindow.h"
-#include "core/frame/LocalFrame.h"
-#include "core/html/HTMLBodyElement.h"
-#include "core/page/FocusController.h"
+#include "blinkit/blink/renderer/bindings/core/script_controller.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/frame/FrameView.h"
+#include "blinkit/blink/renderer/core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/html/HTMLBodyElement.h"
+#include "blinkit/blink/renderer/core/page/FocusController.h"
 // BKTODO: #include "core/page/FrameTree.h"
-#include "core/page/Page.h"
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/core/page/Page.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 namespace blink {
 

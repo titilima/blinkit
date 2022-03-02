@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DeleteFromTextNodeCommand.cpp
+// Description: DeleteFromTextNodeCommand Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2008 Apple Inc. All rights reserved.
  *
@@ -23,11 +34,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/editing/commands/DeleteFromTextNodeCommand.h"
+#include "./DeleteFromTextNodeCommand.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/dom/Text.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
+#include "blinkit/blink/renderer/core/dom/Text.h"
 
 namespace blink {
 

@@ -30,22 +30,22 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/css/PropertySetCSSStyleDeclaration.h"
+#include "./PropertySetCSSStyleDeclaration.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/HTMLNames.h"
-#include "core/StylePropertyShorthand.h"
-#include "core/css/CSSCustomPropertyDeclaration.h"
-#include "core/css/CSSKeyframesRule.h"
-#include "core/css/CSSStyleSheet.h"
-#include "core/css/StylePropertySet.h"
-#include "core/css/parser/CSSVariableParser.h"
-#include "core/dom/Element.h"
-#include "core/dom/MutationObserverInterestGroup.h"
-#include "core/dom/MutationRecord.h"
-#include "core/dom/StyleEngine.h"
-#include "core/inspector/InspectorInstrumentation.h"
-#include "platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/StylePropertyShorthand.h"
+#include "blinkit/blink/renderer/core/css/CSSCustomPropertyDeclaration.h"
+#include "blinkit/blink/renderer/core/css/CSSKeyframesRule.h"
+#include "blinkit/blink/renderer/core/css/CSSStyleSheet.h"
+#include "blinkit/blink/renderer/core/css/StylePropertySet.h"
+#include "blinkit/blink/renderer/core/css/parser/CSSVariableParser.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/dom/MutationObserverInterestGroup.h"
+#include "blinkit/blink/renderer/core/dom/MutationRecord.h"
+#include "blinkit/blink/renderer/core/dom/StyleEngine.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorInstrumentation.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
 
 namespace blink {
 

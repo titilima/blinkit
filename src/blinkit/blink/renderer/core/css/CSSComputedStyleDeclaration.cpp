@@ -32,24 +32,24 @@
  * 02110-1301  USA
  */
 
-#include "core/css/CSSComputedStyleDeclaration.h"
+#include "./CSSComputedStyleDeclaration.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/CSSPropertyNames.h"
-#include "core/css/CSSPrimitiveValueMappings.h"
-#include "core/css/CSSPropertyMetadata.h"
-#include "core/css/CSSSelector.h"
-#include "core/css/CSSValuePool.h"
-#include "core/css/ComputedStyleCSSValueMapping.h"
-#include "core/css/parser/CSSParser.h"
-#include "core/css/parser/CSSVariableParser.h"
-#include "core/css/resolver/StyleResolver.h"
-#include "core/dom/Document.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/PseudoElement.h"
-#include "core/layout/LayoutObject.h"
-#include "core/style/ComputedStyle.h"
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/CSSPropertyNames.h"
+#include "blinkit/blink/renderer/core/css/CSSPrimitiveValueMappings.h"
+#include "blinkit/blink/renderer/core/css/CSSPropertyMetadata.h"
+#include "blinkit/blink/renderer/core/css/CSSSelector.h"
+#include "blinkit/blink/renderer/core/css/CSSValuePool.h"
+#include "blinkit/blink/renderer/core/css/ComputedStyleCSSValueMapping.h"
+#include "blinkit/blink/renderer/core/css/parser/CSSParser.h"
+#include "blinkit/blink/renderer/core/css/parser/CSSVariableParser.h"
+#include "blinkit/blink/renderer/core/css/resolver/StyleResolver.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/dom/PseudoElement.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/core/style/ComputedStyle.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 namespace blink {
 

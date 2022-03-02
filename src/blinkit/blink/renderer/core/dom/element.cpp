@@ -36,7 +36,6 @@
 
 #include "./element.h"
 
-#include "blinkit/blink/renderer/bindings/core/duk/exception_state.h"
 #include "blinkit/blink/renderer/core/CSSValueKeywords.h"
 #include "blinkit/blink/renderer/core/SVGNames.h"
 #include "blinkit/blink/renderer/core/XLinkNames.h"
@@ -55,7 +54,6 @@
 // BKTODO: #include "core/dom/AXObjectCache.h"
 #include "blinkit/blink/renderer/core/dom/Attr.h"
 #include "blinkit/blink/renderer/core/dom/CSSSelectorWatch.h"
-#include "blinkit/blink/renderer/core/dom/ClientRect.h"
 #include "blinkit/blink/renderer/core/dom/ClientRectList.h"
 #include "blinkit/blink/renderer/core/dom/DatasetDOMStringMap.h"
 #include "blinkit/blink/renderer/core/dom/ElementDataCache.h"

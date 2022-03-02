@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: AppendNodeCommand.cpp
+// Description: AppendNodeCommand Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -23,9 +34,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/editing/commands/AppendNodeCommand.h"
+#include "./AppendNodeCommand.h"
 
-#include "bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
 
 namespace blink {
 

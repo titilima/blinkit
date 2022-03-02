@@ -40,23 +40,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/html/forms/NumberInputType.h"
+#include "./NumberInputType.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/HTMLNames.h"
-#include "core/InputTypeNames.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/events/BeforeTextInsertedEvent.h"
-#include "core/events/KeyboardEvent.h"
-#include "core/events/ScopedEventQueue.h"
-#include "core/html/HTMLInputElement.h"
-#include "core/html/parser/HTMLParserIdioms.h"
-// BKTODO: #include "core/inspector/ConsoleMessage.h"
-#include "core/layout/LayoutTextControl.h"
-#include "platform/text/PlatformLocale.h"
-#include "wtf/MathExtras.h"
-#include "wtf/PassOwnPtr.h"
 #include <limits>
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/InputTypeNames.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/events/BeforeTextInsertedEvent.h"
+#include "blinkit/blink/renderer/core/events/KeyboardEvent.h"
+#include "blinkit/blink/renderer/core/events/ScopedEventQueue.h"
+#include "blinkit/blink/renderer/core/html/HTMLInputElement.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLParserIdioms.h"
+// BKTODO: #include "core/inspector/ConsoleMessage.h"
+#include "blinkit/blink/renderer/core/layout/LayoutTextControl.h"
+#include "blinkit/blink/renderer/platform/text/PlatformLocale.h"
+#include "blinkit/blink/renderer/wtf/MathExtras.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
 
 namespace blink {
 

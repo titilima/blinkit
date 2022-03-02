@@ -33,16 +33,16 @@
 
 #include "core/frame/Navigator.h"
 
-#include "bindings/core/v8/ScriptController.h"
-#include "core/dom/Document.h"
-#include "core/frame/FrameHost.h"
-#include "core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/bindings/core/script_controller.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/frame/FrameHost.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
 // BKTODO: #include "core/frame/NavigatorID.h"
-#include "core/frame/Settings.h"
-#include "core/loader/CookieJar.h"
-#include "core/loader/FrameLoader.h"
-#include "core/page/ChromeClient.h"
-#include "platform/Language.h"
+#include "blinkit/blink/renderer/core/frame/Settings.h"
+#include "blinkit/blink/renderer/core/loader/CookieJar.h"
+#include "blinkit/blink/renderer/core/loader/FrameLoader.h"
+#include "blinkit/blink/renderer/core/page/ChromeClient.h"
+#include "blinkit/blink/renderer/platform/Language.h"
 
 namespace blink {
 

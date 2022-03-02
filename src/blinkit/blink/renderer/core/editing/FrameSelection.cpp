@@ -37,7 +37,7 @@
 #include "./FrameSelection.h"
 
 #include <cstdio>
-#include "blinkit/blink/renderer/bindings/core/duk/exception_state.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
 #include "blinkit/blink/renderer/core/HTMLNames.h"
 #include "blinkit/blink/renderer/core/InputTypeNames.h"
 #include "blinkit/blink/renderer/core/css/StylePropertySet.h"

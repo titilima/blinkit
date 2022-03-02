@@ -40,9 +40,7 @@
 
 #include "blinkit/blink/public/platform/Platform.h"
 #include "blinkit/blink/public/platform/WebThread.h"
-#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
-#include "blinkit/blink/renderer/bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "blinkit/blink/renderer/bindings/core/duk/script_controller.h"
+#include "blinkit/blink/renderer/bindings/core/script_controller.h"
 // BKTODO: #include "core/SVGElementFactory.h"
 #if 0 // BKTODO:
 #include "core/XMLNSNames.h"

@@ -30,37 +30,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/loader/ImageLoader.h"
+#include "./ImageLoader.h"
 
-#include "bindings/core/v8/ScriptController.h"
-#include "core/dom/Document.h"
-#include "core/dom/Element.h"
-#include "core/dom/IncrementLoadEventDelayCount.h"
+#include "blinkit/blink/renderer/bindings/core/script_controller.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/dom/IncrementLoadEventDelayCount.h"
 // BKTODO: #include "core/dom/Microtask.h"
-#include "core/events/Event.h"
-#include "core/events/EventSender.h"
-#include "core/fetch/FetchRequest.h"
+#include "blinkit/blink/renderer/core/events/Event.h"
+#include "blinkit/blink/renderer/core/events/EventSender.h"
+#include "blinkit/blink/renderer/core/fetch/FetchRequest.h"
 // BKTODO: #include "core/fetch/MemoryCache.h"
-#include "core/fetch/ResourceFetcher.h"
-#include "core/frame/LocalFrame.h"
-#include "core/frame/Settings.h"
-#include "core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/core/fetch/ResourceFetcher.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/frame/Settings.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
 // BKTODO: #include "core/html/CrossOriginAttribute.h"
-#include "core/html/HTMLImageElement.h"
-#include "core/html/parser/HTMLParserIdioms.h"
-#include "core/layout/LayoutImage.h"
+#include "blinkit/blink/renderer/core/html/HTMLImageElement.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLParserIdioms.h"
+#include "blinkit/blink/renderer/core/layout/LayoutImage.h"
 #if 0 // BKTODO:
 #include "core/layout/LayoutVideo.h"
 #include "core/layout/svg/LayoutSVGImage.h"
 #include "core/svg/graphics/SVGImage.h"
 #include "platform/Logging.h"
 #endif
-#include "platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
 #if 0 // BKTODO:
 #include "platform/weborigin/SecurityOrigin.h"
 #include "platform/weborigin/SecurityPolicy.h"
 #endif
-#include "public/platform/WebURLRequest.h"
 
 using namespace BlinKit;
 
@@ -83,13 +81,9 @@ static inline bool pageIsBeingDismissed(Document* document)
     return document->pageDismissalEventBeingDispatched() != Document::NoDismissal;
 }
 
-static ImageLoader::BypassMainWorldBehavior shouldBypassMainWorldCSP(ImageLoader* loader)
+static constexpr ImageLoader::BypassMainWorldBehavior shouldBypassMainWorldCSP(ImageLoader* loader)
 {
-    ASSERT(loader);
-    ASSERT(loader->element());
-    if (loader->element()->document().frame() && loader->element()->document().frame()->script().shouldBypassMainWorldCSP())
-        return ImageLoader::BypassMainWorldCSP;
-    return ImageLoader::DoNotBypassMainWorldCSP;
+    return ImageLoader::BypassMainWorldCSP;
 }
 
 #if 0 // BKTODO:

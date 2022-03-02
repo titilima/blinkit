@@ -39,22 +39,19 @@
  */
 
 
-#include "core/editing/DOMSelection.h"
+#include "./DOMSelection.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/dom/Document.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/Node.h"
-#include "core/dom/Range.h"
-#include "core/dom/TreeScope.h"
-#include "core/editing/EditingUtilities.h"
-#include "core/editing/FrameSelection.h"
-#include "core/editing/iterators/TextIterator.h"
-#include "core/frame/LocalFrame.h"
-#include "core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/dom/Range.h"
+#include "blinkit/blink/renderer/core/editing/EditingUtilities.h"
+#include "blinkit/blink/renderer/core/editing/FrameSelection.h"
+#include "blinkit/blink/renderer/core/editing/iterators/TextIterator.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
 // BKTODO: #include "core/inspector/ConsoleMessage.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 

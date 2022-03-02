@@ -31,16 +31,16 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/html/HTMLTitleElement.h"
+#include "./HTMLTitleElement.h"
 
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/HTMLNames.h"
-#include "core/dom/ChildListMutationScope.h"
-#include "core/dom/Document.h"
-#include "core/dom/Text.h"
-#include "core/style/ComputedStyle.h"
-#include "core/style/StyleInheritedData.h"
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/ChildListMutationScope.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/Text.h"
+#include "blinkit/blink/renderer/core/style/ComputedStyle.h"
+#include "blinkit/blink/renderer/core/style/StyleInheritedData.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 namespace blink {
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NamedNodeMap.cpp
+// Description: NamedNodeMap Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -22,12 +33,12 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/dom/NamedNodeMap.h"
+#include "./NamedNodeMap.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/Attr.h"
-#include "core/dom/Element.h"
-#include "core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/dom/Attr.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
 
 namespace blink {
 

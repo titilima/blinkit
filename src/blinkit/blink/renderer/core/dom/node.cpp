@@ -35,7 +35,6 @@
 
 #include "./node.h"
 
-#include "blinkit/blink/renderer/bindings/core/duk/exception_state.h"
 #include "blinkit/blink/renderer/core/css/CSSSelector.h"
 #include "blinkit/blink/renderer/core/css/resolver/StyleResolver.h"
 // BKTODO: #include "core/dom/AXObjectCache.h"
@@ -43,11 +42,9 @@
 #include "blinkit/blink/renderer/core/dom/Attribute.h"
 #include "blinkit/blink/renderer/core/dom/ChildListMutationScope.h"
 #include "blinkit/blink/renderer/core/dom/ChildNodeList.h"
-#include "blinkit/blink/renderer/core/dom/Document.h"
 #include "blinkit/blink/renderer/core/dom/DocumentFragment.h"
 #include "blinkit/blink/renderer/core/dom/document_type.h"
 #include "blinkit/blink/renderer/core/dom/dom_node_ids.h"
-#include "blinkit/blink/renderer/core/dom/Element.h"
 #include "blinkit/blink/renderer/core/dom/element_rare_data.h"
 #include "blinkit/blink/renderer/core/dom/element_traversal.h"
 #include "blinkit/blink/renderer/core/dom/ExceptionCode.h"

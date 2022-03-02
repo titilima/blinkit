@@ -32,8 +32,7 @@
 
 #include "./Text.h"
 
-#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
-#include "blinkit/blink/renderer/bindings/core/v8/ExceptionStatePlaceholder.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
 #include "blinkit/blink/renderer/core/SVGNames.h"
 #include "blinkit/blink/renderer/core/css/resolver/StyleResolver.h"
 #include "blinkit/blink/renderer/core/dom/ExceptionCode.h"

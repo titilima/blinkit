@@ -28,14 +28,14 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
-#include "core/css/MediaList.h"
+#include "./MediaList.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/css/CSSStyleSheet.h"
-#include "core/css/MediaQuery.h"
-#include "core/css/MediaQueryExp.h"
-#include "core/css/parser/MediaQueryParser.h"
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/css/CSSStyleSheet.h"
+#include "blinkit/blink/renderer/core/css/MediaQuery.h"
+#include "blinkit/blink/renderer/core/css/MediaQueryExp.h"
+#include "blinkit/blink/renderer/core/css/parser/MediaQueryParser.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 namespace blink {
 

@@ -38,7 +38,7 @@
 #define Range_h
 
 #include "blinkit/blink/renderer/bindings/core/qjs/script_wrappable.h"
-#include "blinkit/blink/renderer/bindings/core/v8/ExceptionStatePlaceholder.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
 #include "blinkit/blink/renderer/core/dom/RangeBoundaryPoint.h"
 #include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
 #include "blinkit/blink/renderer/platform/geometry/int_rect.h"

@@ -33,9 +33,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/dom/DOMSettableTokenList.h"
+#include "./DOMSettableTokenList.h"
 
-#include "bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
 
 namespace blink {
 

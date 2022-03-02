@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: HTMLSummaryElement.cpp
+// Description: HTMLSummaryElement Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies)
  *
@@ -18,18 +29,18 @@
  *
  */
 
-#include "core/html/HTMLSummaryElement.h"
+#include "./HTMLSummaryElement.h"
 
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/HTMLNames.h"
-#include "core/dom/shadow/ComposedTreeTraversal.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/events/KeyboardEvent.h"
-#include "core/html/HTMLContentElement.h"
-#include "core/html/HTMLDetailsElement.h"
-#include "core/html/shadow/DetailsMarkerControl.h"
-#include "core/html/shadow/ShadowElementNames.h"
-#include "core/layout/LayoutBlockFlow.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ComposedTreeTraversal.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/events/KeyboardEvent.h"
+#include "blinkit/blink/renderer/core/html/HTMLContentElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLDetailsElement.h"
+#include "blinkit/blink/renderer/core/html/shadow/DetailsMarkerControl.h"
+#include "blinkit/blink/renderer/core/html/shadow/ShadowElementNames.h"
+#include "blinkit/blink/renderer/core/layout/LayoutBlockFlow.h"
 
 namespace blink {
 

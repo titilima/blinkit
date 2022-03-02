@@ -35,7 +35,7 @@
 
 #include "./HTMLTableRowElement.h"
 
-#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
 #include "blinkit/blink/renderer/core/HTMLNames.h"
 #include "blinkit/blink/renderer/core/dom/element_traversal.h"
 #include "blinkit/blink/renderer/core/dom/ExceptionCode.h"

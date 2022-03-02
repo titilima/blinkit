@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: CSSKeyframeRule.cpp
+// Description: CSSKeyframeRule Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2012 Apple Inc. All rights reserved.
  *
@@ -23,13 +34,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/css/CSSKeyframeRule.h"
+#include "./CSSKeyframeRule.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/css/CSSKeyframesRule.h"
-#include "core/css/CSSStyleSheet.h"
-#include "core/css/KeyframeStyleRuleCSSStyleDeclaration.h"
-#include "core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/css/CSSKeyframesRule.h"
+#include "blinkit/blink/renderer/core/css/CSSStyleSheet.h"
+#include "blinkit/blink/renderer/core/css/KeyframeStyleRuleCSSStyleDeclaration.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
 
 namespace blink {
 

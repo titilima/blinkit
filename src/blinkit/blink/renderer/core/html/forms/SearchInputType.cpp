@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: SearchInputType.cpp
+// Description: SearchInputType Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -28,19 +39,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/html/forms/SearchInputType.h"
+#include "./SearchInputType.h"
 
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/HTMLNames.h"
-#include "core/InputTypeNames.h"
-#include "core/dom/ExecutionContextTask.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/events/KeyboardEvent.h"
-#include "core/html/HTMLInputElement.h"
-#include "core/html/shadow/ShadowElementNames.h"
-#include "core/html/shadow/TextControlInnerElements.h"
-#include "core/layout/LayoutSearchField.h"
-#include "wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/InputTypeNames.h"
+#include "blinkit/blink/renderer/core/dom/ExecutionContextTask.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/events/KeyboardEvent.h"
+#include "blinkit/blink/renderer/core/html/HTMLInputElement.h"
+#include "blinkit/blink/renderer/core/html/shadow/ShadowElementNames.h"
+#include "blinkit/blink/renderer/core/html/shadow/TextControlInnerElements.h"
+#include "blinkit/blink/renderer/core/layout/LayoutSearchField.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
 
 namespace blink {
 

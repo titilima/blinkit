@@ -34,14 +34,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/editing/commands/TextInsertionBaseCommand.h"
+#include "./TextInsertionBaseCommand.h"
 
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/dom/Element.h"
-#include "core/dom/Node.h"
-#include "core/editing/FrameSelection.h"
-#include "core/events/BeforeTextInsertedEvent.h"
-#include "core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/editing/FrameSelection.h"
+#include "blinkit/blink/renderer/core/events/BeforeTextInsertedEvent.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
 
 namespace blink {
 

@@ -32,18 +32,14 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/dom/Attr.h"
+#include "./Attr.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/dom/Document.h"
-#include "core/dom/Element.h"
-#include "core/dom/Text.h"
-#include "core/events/ScopedEventQueue.h"
-#include "wtf/text/AtomicString.h"
-#include "wtf/text/StringBuilder.h"
-
-using namespace BlinKit;
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/dom/Text.h"
+#include "blinkit/blink/renderer/core/events/ScopedEventQueue.h"
+#include "blinkit/blink/renderer/wtf/text/AtomicString.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 namespace blink {
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: VisiblePosition.cpp
+// Description: VisiblePosition Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
  * Portions Copyright (c) 2011 Motorola Mobility, Inc.  All rights reserved.
@@ -24,24 +35,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/editing/VisiblePosition.h"
+#include "./VisiblePosition.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/HTMLNames.h"
-#include "core/dom/Document.h"
-#include "core/dom/Range.h"
-#include "core/dom/Text.h"
-#include "core/editing/EditingUtilities.h"
-#include "core/editing/TextAffinity.h"
-#include "core/editing/VisibleUnits.h"
-#include "core/html/HTMLElement.h"
-#include "core/layout/LayoutBlock.h"
-#include "core/layout/line/RootInlineBox.h"
-#include "platform/geometry/FloatQuad.h"
-#include "wtf/text/CString.h"
-
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/Range.h"
+#include "blinkit/blink/renderer/core/dom/Text.h"
+#include "blinkit/blink/renderer/core/editing/EditingUtilities.h"
+#include "blinkit/blink/renderer/core/editing/TextAffinity.h"
+#include "blinkit/blink/renderer/core/editing/VisibleUnits.h"
+#include "blinkit/blink/renderer/core/html/HTMLElement.h"
+#include "blinkit/blink/renderer/core/layout/LayoutBlock.h"
+#include "blinkit/blink/renderer/core/layout/line/RootInlineBox.h"
+#include "blinkit/blink/renderer/platform/geometry/FloatQuad.h"
+#include "blinkit/blink/renderer/wtf/text/CString.h"
 #ifndef NDEBUG
-#include <stdio.h>
+#   include <cstdio>
 #endif
 
 namespace blink {

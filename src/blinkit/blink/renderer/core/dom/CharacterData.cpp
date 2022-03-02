@@ -30,21 +30,21 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/dom/CharacterData.h"
+#include "./CharacterData.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/Document.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/MutationObserverInterestGroup.h"
-#include "core/dom/MutationRecord.h"
-#include "core/dom/ProcessingInstruction.h"
-#include "core/dom/Text.h"
-#include "core/editing/FrameSelection.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/dom/MutationObserverInterestGroup.h"
+#include "blinkit/blink/renderer/core/dom/MutationRecord.h"
+#include "blinkit/blink/renderer/core/dom/ProcessingInstruction.h"
+#include "blinkit/blink/renderer/core/dom/Text.h"
+#include "blinkit/blink/renderer/core/editing/FrameSelection.h"
 #if 0 // BKTODO: MutationEvent stuff is not recommended, remove it later. See also: https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent
 #include "core/events/MutationEvent.h"
 #endif
-#include "core/inspector/InspectorInstrumentation.h"
-#include "wtf/CheckedArithmetic.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorInstrumentation.h"
+#include "blinkit/blink/renderer/wtf/CheckedArithmetic.h"
 
 namespace blink {
 

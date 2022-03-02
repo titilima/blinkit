@@ -30,13 +30,13 @@
  *
  */
 
-#include "core/html/HTMLOptionsCollection.h"
+#include "./HTMLOptionsCollection.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/StaticNodeList.h"
-#include "core/html/HTMLOptionElement.h"
-#include "core/html/HTMLSelectElement.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/dom/StaticNodeList.h"
+#include "blinkit/blink/renderer/core/html/HTMLOptionElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLSelectElement.h"
 
 namespace blink {
 

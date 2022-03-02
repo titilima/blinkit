@@ -29,18 +29,17 @@
  *
  */
 
-#include "core/html/HTMLMeterElement.h"
+#include "./HTMLMeterElement.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/HTMLNames.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/frame/UseCounter.h"
-#include "core/html/parser/HTMLParserIdioms.h"
-#include "core/html/shadow/MeterShadowElement.h"
-#include "core/layout/LayoutMeter.h"
-#include "core/layout/LayoutTheme.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLParserIdioms.h"
+#include "blinkit/blink/renderer/core/html/shadow/MeterShadowElement.h"
+#include "blinkit/blink/renderer/core/layout/LayoutMeter.h"
+#include "blinkit/blink/renderer/core/layout/LayoutTheme.h"
 
 namespace blink {
 

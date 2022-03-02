@@ -37,16 +37,16 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/frame/Location.h"
+#include "./Location.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/DOMURLUtilsReadOnly.h"
-#include "core/dom/Document.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/frame/LocalDOMWindow.h"
-#include "core/frame/LocalFrame.h"
-#include "core/loader/FrameLoader.h"
-#include "platform/weborigin/KURL.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/dom/DOMURLUtilsReadOnly.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/loader/FrameLoader.h"
+#include "blinkit/blink/renderer/platform/weborigin/KURL.h"
 // BKTODO: #include "platform/weborigin/SecurityOrigin.h"
 
 namespace blink {

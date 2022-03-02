@@ -29,18 +29,15 @@
  *
  */
 
-#include "core/html/HTMLProgressElement.h"
+#include "./HTMLProgressElement.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/HTMLNames.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/html/parser/HTMLParserIdioms.h"
-#include "core/html/shadow/ProgressShadowElement.h"
-#include "core/layout/LayoutProgress.h"
-
-using namespace BlinKit;
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLParserIdioms.h"
+#include "blinkit/blink/renderer/core/html/shadow/ProgressShadowElement.h"
+#include "blinkit/blink/renderer/core/layout/LayoutProgress.h"
 
 namespace blink {
 

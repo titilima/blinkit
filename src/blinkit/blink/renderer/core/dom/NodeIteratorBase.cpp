@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: NodeIteratorBase.cpp
+// Description: NodeIteratorBase Class
+//      Author: Ziming Li
+//     Created: 2022-03-02
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2000 Frederik Holljen (frederik.holljen@hig.no)
@@ -22,11 +33,11 @@
  *
  */
 
-#include "core/dom/NodeIteratorBase.h"
+#include "./NodeIteratorBase.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/Node.h"
-#include "core/dom/NodeFilter.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/dom/node.h"
+#include "blinkit/blink/renderer/core/dom/NodeFilter.h"
 
 namespace blink {
 
