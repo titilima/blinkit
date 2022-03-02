@@ -1,7 +1,8 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: EventTarget.h
+//   File Name: event_target.h
 // Description: EventTarget Class
 //      Author: Ziming Li
 //     Created: 2021-07-05
@@ -43,15 +44,14 @@
 #ifndef EventTarget_h
 #define EventTarget_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "core/CoreExport.h"
-#include "core/EventNames.h"
-#include "core/EventTargetNames.h"
-#include "core/EventTypeNames.h"
-#include "core/events/EventListenerMap.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Allocator.h"
-#include "wtf/text/AtomicString.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
+#include "blinkit/blink/renderer/core/CoreExport.h"
+#include "blinkit/blink/renderer/core/EventNames.h"
+#include "blinkit/blink/renderer/core/EventTargetNames.h"
+#include "blinkit/blink/renderer/core/EventTypeNames.h"
+#include "blinkit/blink/renderer/core/events/EventListenerMap.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
+#include "blinkit/blink/renderer/wtf/text/AtomicString.h"
 
 namespace blink {
 
@@ -76,7 +76,8 @@ struct FiringEventIterator {
 };
 using FiringEventIteratorVector = Vector<FiringEventIterator, 1>;
 
-class CORE_EXPORT EventTargetData final : public NoBaseWillBeGarbageCollectedFinalized<EventTargetData> {
+class EventTargetData final : public NoBaseWillBeGarbageCollectedFinalized<EventTargetData>
+{
     WTF_MAKE_NONCOPYABLE(EventTargetData);
     USING_FAST_MALLOC_WILL_BE_REMOVED(EventTargetData);
 public:
@@ -121,7 +122,8 @@ public:
 //
 // Optionally, add a FooEvent.idl class, but that's outside the scope of this
 // comment (and much more straightforward).
-class CORE_EXPORT EventTarget : public ScriptWrappable {
+class EventTarget : public ScriptWrappable
+{
 public:
     virtual ~EventTarget();
 

@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: EventTarget.cpp
+//   File Name: event_target.cpp
 // Description: EventTarget Class
 //      Author: Ziming Li
 //     Created: 2021-07-05
@@ -40,21 +40,20 @@
  *
  */
 
-#include "core/events/EventTarget.h"
+#include "./event_target.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/editing/Editor.h"
-#include "core/events/Event.h"
-#include "core/inspector/InspectorInstrumentation.h"
-#include "core/frame/LocalDOMWindow.h"
-#include "core/frame/UseCounter.h"
-#include "platform/EventDispatchForbiddenScope.h"
-#include "wtf/StdLibExtras.h"
-#include "wtf/Threading.h"
-#include "wtf/Vector.h"
+#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/editing/Editor.h"
+#include "blinkit/blink/renderer/core/events/Event.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorInstrumentation.h"
+#include "blinkit/blink/renderer/core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/platform/EventDispatchForbiddenScope.h"
+#include "blinkit/blink/renderer/wtf/StdLibExtras.h"
+#include "blinkit/blink/renderer/wtf/Threading.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 
-using namespace BlinKit;
 using namespace WTF;
 
 namespace blink {
