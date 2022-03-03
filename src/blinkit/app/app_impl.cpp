@@ -14,6 +14,7 @@
 #include "bkcommon/buffer_impl.hpp"
 #include "blinkit/blink/impl/url_loader.h"
 #include "blinkit/blink/public/web/blink.h"
+#include "blinkit/blink/renderer/bindings/core/qjs/script_wrappable_impl.h"
 #include "blinkit/blink/renderer/wtf/MainThread.h"
 #include "blinkit/gc/gc_heap.h"
 #include "blinkit/loader/loader_thread.h"
@@ -30,7 +31,8 @@ bool g_flagForDebugging = false;
 namespace BlinKit {
 
 AppImpl::AppImpl(BkAppClient *client)
-    : m_firstMonotonicallyIncreasingTime(base::Time::Now().ToDoubleT())
+    : m_runtime(JS_NewRuntime())
+    , m_firstMonotonicallyIncreasingTime(base::Time::Now().ToDoubleT())
 #ifdef BLINKIT_UI_ENABLED
     , m_compositor(std::make_unique<Compositor>())
 #endif
@@ -39,6 +41,7 @@ AppImpl::AppImpl(BkAppClient *client)
     zed::current_thread::set_name("BlinKit Thread");
 #endif
     GCHeap::Initialize();
+    ScriptWrappable::Initialize(m_runtime);
 
     memset(&m_client, 0, sizeof(BkAppClient));
     if (nullptr != client)
@@ -60,6 +63,7 @@ AppImpl::~AppImpl(void)
     if (nullptr != m_client.Exit)
         m_client.Exit(m_client.UserData);
     GCHeap::Finalize();
+    JS_FreeRuntime(m_runtime);
 }
 
 WebURLLoader* AppImpl::createURLLoader(void)
