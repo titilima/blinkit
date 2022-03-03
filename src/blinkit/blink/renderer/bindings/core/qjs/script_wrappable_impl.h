@@ -24,8 +24,6 @@ class ScriptWrappable
     WTF_MAKE_NONCOPYABLE(ScriptWrappable);
 public:
     virtual ~ScriptWrappable(void);
-
-    static void Initialize(JSRuntime *runtime);
 protected:
     ScriptWrappable(void) = default;
 private:

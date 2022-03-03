@@ -17,7 +17,6 @@
 #include "bk_app.h"
 #include "blinkit/blink/impl/thread.h"
 #include "blinkit/blink/public/platform/Platform.h"
-#include "third_party/quickjs/quickjs.h"
 
 class CrawlerImpl;
 
@@ -68,7 +67,6 @@ private:
 #endif
 
     BkAppClient m_client;
-    JSRuntime *m_runtime;
     double m_firstMonotonicallyIncreasingTime;
 #ifdef BLINKIT_UI_ENABLED
     std::unique_ptr<LoaderThread> m_loaderThread;

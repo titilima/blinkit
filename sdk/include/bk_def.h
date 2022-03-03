@@ -75,7 +75,8 @@ enum BkError {
     BK_ERR_URI
 };
 
-BK_DECLARE_HANDLE(BkJSContext, ContextImpl);
+typedef struct JSContext *BkJSContext; /* JSContext is from QuickJS */
+
 BK_DECLARE_HANDLE(BkRequest, RequestImpl);
 BK_DECLARE_HANDLE(BkResponse, ResponseImpl);
 BK_DECLARE_HANDLE(BkWorkController, ControllerImpl);

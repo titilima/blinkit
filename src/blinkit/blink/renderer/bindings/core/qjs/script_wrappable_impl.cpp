@@ -11,20 +11,14 @@
 
 #include "./script_wrappable_impl.h"
 
-namespace blink {
+#include "blinkit/js/runtime.h"
 
-static JSRuntime *g_runtime = nullptr;
+namespace blink {
 
 ScriptWrappable::~ScriptWrappable(void)
 {
     if (0 != m_contextObject)
         JS_FreeValueRT(g_runtime, m_contextObject);
-}
-
-void ScriptWrappable::Initialize(JSRuntime *runtime)
-{
-    ASSERT(nullptr == g_runtime);
-    g_runtime = runtime;
 }
 
 } // namespace blink
