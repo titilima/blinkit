@@ -39,12 +39,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/loader/CookieJar.h"
+#include "./CookieJar.h"
 
-#include "core/dom/Document.h"
-#include "core/frame/LocalFrame.h"
-#include "core/loader/FrameLoaderClient.h"
-#include "public/platform/Platform.h"
+#include "blinkit/blink/public/platform/Platform.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/loader/frame_loader_client.h"
 #if 0 // BKTODO:
 #include "public/platform/WebCookieJar.h"
 #include "public/platform/WebURL.h"
@@ -52,6 +52,7 @@
 #ifdef BLINKIT_CRAWLER_ENABLED
 #   include "blinkit/crawler/crawler_impl.h"
 #endif
+
 namespace blink {
 
 static WebCookieJar* toCookieJar(const Document* document)

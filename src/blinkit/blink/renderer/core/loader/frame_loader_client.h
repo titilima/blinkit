@@ -2,7 +2,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: FrameLoaderClient.h
+//   File Name: frame_loader_client.h
 // Description: FrameLoaderClient Class
 //      Author: Ziming Li
 //     Created: 2021-07-15
@@ -42,7 +42,7 @@
 #ifndef FrameLoaderClient_h
 #define FrameLoaderClient_h
 
-#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
 #include "blinkit/blink/renderer/core/dom/IconURL.h"
 #include "blinkit/blink/renderer/core/fetch/ResourceLoaderOptions.h"
 #include "blinkit/blink/renderer/core/frame/FrameClient.h"
@@ -79,6 +79,7 @@ class LocalFrame;
 class ResourceError;
 class ResourceRequest;
 class ResourceResponse;
+class ScriptController;
 class SecurityOrigin;
 class SharedWorkerRepositoryClient;
 class SubstituteData;
@@ -93,7 +94,8 @@ class WebServiceWorkerProvider;
 class WebSocketHandle;
 class Widget;
 
-class CORE_EXPORT FrameLoaderClient : public FrameClient {
+class FrameLoaderClient : public FrameClient
+{
 public:
     virtual void dispatchWillSendRequest(DocumentLoader*, unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse) {}
     virtual void dispatchDidReceiveResponse(DocumentLoader*, unsigned long identifier, const ResourceResponse&) {}
@@ -277,6 +279,8 @@ public:
     };
     virtual void suddenTerminationDisablerChanged(bool present, SuddenTerminationDisablerType) { }
 #endif
+
+    virtual std::unique_ptr<ScriptController> CreateContext(LocalFrame &frame) = 0;
 
 #ifdef BLINKIT_UI_ENABLED
     virtual void LoadURI(const KURL &uri) {

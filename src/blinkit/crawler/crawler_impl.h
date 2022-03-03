@@ -16,7 +16,7 @@
 
 #include <functional>
 #include "bk_crawler.h"
-#include "blinkit/blink/renderer/core/loader/FrameLoaderClient.h"
+#include "blinkit/blink/renderer/core/loader/frame_loader_client.h"
 #include "third_party/zed/include/zed/shared_mutex.hpp"
 
 class CookieJarImpl;

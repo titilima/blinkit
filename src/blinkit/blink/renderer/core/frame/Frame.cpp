@@ -38,23 +38,23 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/frame/Frame.h"
+#include "./Frame.h"
 
 #include "blinkit/blink/renderer/core/dom/document_type.h"
-#include "core/events/Event.h"
-#include "core/frame/LocalDOMWindow.h"
-#include "core/frame/FrameHost.h"
-#include "core/frame/Settings.h"
+#include "blinkit/blink/renderer/core/events/Event.h"
+#include "blinkit/blink/renderer/core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/frame/FrameHost.h"
+#include "blinkit/blink/renderer/core/frame/Settings.h"
 // BKTODO: #include "core/html/HTMLFrameElementBase.h"
-#include "core/input/EventHandler.h"
-#include "core/inspector/InspectorInstrumentation.h"
-#include "core/inspector/InstanceCounters.h"
-#include "core/layout/LayoutPart.h"
+#include "blinkit/blink/renderer/core/input/EventHandler.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorInstrumentation.h"
+#include "blinkit/blink/renderer/core/inspector/InstanceCounters.h"
+#include "blinkit/blink/renderer/core/layout/LayoutPart.h"
 // BKTODO: #include "core/loader/EmptyClients.h"
-#include "core/loader/FrameLoaderClient.h"
-#include "core/page/FocusController.h"
-#include "core/page/Page.h"
-#include "wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/core/loader/frame_loader_client.h"
+#include "blinkit/blink/renderer/core/page/FocusController.h"
+#include "blinkit/blink/renderer/core/page/Page.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
 // BKTODO: #include "wtf/RefCountedLeakCounter.h"
 
 namespace blink {

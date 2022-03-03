@@ -77,7 +77,7 @@
 #include "blinkit/blink/renderer/core/loader/DocumentLoader.h"
 #include "blinkit/blink/renderer/core/loader/FormSubmission.h"
 #include "blinkit/blink/renderer/core/loader/FrameLoadRequest.h"
-#include "blinkit/blink/renderer/core/loader/FrameLoaderClient.h"
+#include "blinkit/blink/renderer/core/loader/frame_loader_client.h"
 #include "blinkit/blink/renderer/core/loader/LinkLoader.h"
 #include "blinkit/blink/renderer/core/loader/MixedContentChecker.h"
 #if 0 // BKTODO:

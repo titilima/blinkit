@@ -39,15 +39,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/dom/CSSSelectorWatch.h"
+#include "./CSSSelectorWatch.h"
 
-#include "core/css/StylePropertySet.h"
-#include "core/css/parser/CSSParser.h"
-#include "core/dom/Document.h"
-#include "core/dom/ExecutionContext.h"
-#include "core/frame/LocalFrame.h"
-#include "core/loader/FrameLoaderClient.h"
-#include "core/style/StyleRareNonInheritedData.h"
+#include "blinkit/blink/renderer/core/css/StylePropertySet.h"
+#include "blinkit/blink/renderer/core/css/parser/CSSParser.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/ExecutionContext.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/loader/frame_loader_client.h"
+#include "blinkit/blink/renderer/core/style/StyleRareNonInheritedData.h"
 
 namespace blink {
 

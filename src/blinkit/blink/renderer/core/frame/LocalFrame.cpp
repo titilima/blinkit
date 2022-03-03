@@ -71,7 +71,7 @@
 #include "blinkit/blink/renderer/core/layout/LayoutView.h"
 #include "blinkit/blink/renderer/core/layout/compositing/PaintLayerCompositor.h"
 #include "blinkit/blink/renderer/core/loader/FrameLoadRequest.h"
-#include "blinkit/blink/renderer/core/loader/FrameLoaderClient.h"
+#include "blinkit/blink/renderer/core/loader/frame_loader_client.h"
 // BKTODO: #include "core/loader/NavigationScheduler.h"
 #include "blinkit/blink/renderer/core/page/FocusController.h"
 #include "blinkit/blink/renderer/core/page/Page.h"
@@ -870,7 +870,7 @@ inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host, float 
     : Frame(client, host)
     , m_loader(this)
     // BKTODO: , m_navigationScheduler(NavigationScheduler::create(this))
-    , m_script(ScriptController::Create(*this))
+    , m_script(client->CreateContext(*this))
     , m_editor(Editor::create(*this))
     // BKTODO:, m_spellChecker(SpellChecker::create(*this))
     , m_selection(FrameSelection::create(this))

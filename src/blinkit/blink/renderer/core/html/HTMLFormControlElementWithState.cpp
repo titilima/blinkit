@@ -33,14 +33,14 @@
  *
  */
 
-#include "core/html/HTMLFormControlElementWithState.h"
+#include "./HTMLFormControlElementWithState.h"
 
-#include "core/frame/FrameHost.h"
-#include "core/frame/LocalFrame.h"
-#include "core/html/HTMLFormElement.h"
-#include "core/html/forms/FormController.h"
-#include "core/loader/FrameLoaderClient.h"
-#include "core/page/ChromeClient.h"
+#include "blinkit/blink/renderer/core/frame/FrameHost.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/html/HTMLFormElement.h"
+#include "blinkit/blink/renderer/core/html/forms/FormController.h"
+#include "blinkit/blink/renderer/core/loader/frame_loader_client.h"
+#include "blinkit/blink/renderer/core/page/ChromeClient.h"
 
 namespace blink {
 

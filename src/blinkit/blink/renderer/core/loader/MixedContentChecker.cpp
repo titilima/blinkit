@@ -37,21 +37,21 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/loader/MixedContentChecker.h"
+#include "./MixedContentChecker.h"
 
-#include "core/dom/Document.h"
-#include "core/frame/LocalFrame.h"
-#include "core/frame/Settings.h"
-#include "core/frame/UseCounter.h"
+#include "blinkit/blink/public/platform/Platform.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/frame/Settings.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
 // BKTODO: #include "core/inspector/ConsoleMessage.h"
-#include "core/loader/DocumentLoader.h"
-#include "core/loader/FrameLoader.h"
-#include "core/loader/FrameLoaderClient.h"
-#include "platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/core/loader/DocumentLoader.h"
+#include "blinkit/blink/renderer/core/loader/FrameLoader.h"
+#include "blinkit/blink/renderer/core/loader/frame_loader_client.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
 // BKTODO: #include "platform/weborigin/SchemeRegistry.h"
 // BKTODO: #include "platform/weborigin/SecurityOrigin.h"
-#include "public/platform/Platform.h"
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 namespace blink {
 
