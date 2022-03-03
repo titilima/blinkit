@@ -22,9 +22,6 @@
     <Filter Include="crawler\dom">
       <UniqueIdentifier>{5734710b-fcbf-452f-b9de-b374a6498dda}</UniqueIdentifier>
     </Filter>
-    <Filter Include="js">
-      <UniqueIdentifier>{a0cca361-2b22-4783-b400-ec602e1eef80}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ui">
       <UniqueIdentifier>{82c3ccb8-480c-4a0a-aba8-a43cd33110cb}</UniqueIdentifier>
     </Filter>
@@ -115,17 +112,11 @@
     <Filter Include="blink\renderer\bindings\core">
       <UniqueIdentifier>{63fa1c90-e90f-4783-9c71-539f557dc139}</UniqueIdentifier>
     </Filter>
-    <Filter Include="blink\renderer\bindings\core\duk">
-      <UniqueIdentifier>{69504a2c-8771-4ef7-bf13-60bf36bf5c66}</UniqueIdentifier>
-    </Filter>
     <Filter Include="blink\renderer\core\html">
       <UniqueIdentifier>{9a3e69c7-a6f5-4cee-bc16-c597f7f23303}</UniqueIdentifier>
     </Filter>
     <Filter Include="blink\renderer\core\html\parser">
       <UniqueIdentifier>{05644c9b-20d5-4ea3-b689-c96515d49d1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="blink\renderer\bindings\core\v8">
-      <UniqueIdentifier>{292d762e-2dc1-4e39-92e0-ac8780748a34}</UniqueIdentifier>
     </Filter>
     <Filter Include="blink\renderer\core\editing">
       <UniqueIdentifier>{af6c68cc-1ce0-4c84-a298-ea48d27fbbff}</UniqueIdentifier>
@@ -357,30 +348,6 @@
     <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.cpp">
       <Filter>crawler\dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\js\context_impl.cpp">
-      <Filter>js</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\js\function_manager.cpp">
-      <Filter>js</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\js\heap_retained.cpp">
-      <Filter>js</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\js\js_callee_context_impl.cpp">
-      <Filter>js</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\js\js_caller_context_impl.cpp">
-      <Filter>js</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\js\js_value_impl.cpp">
-      <Filter>js</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\js\crawler_context.cpp">
-      <Filter>js</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\js\simple_context.cpp">
-      <Filter>js</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\ui\web_view_impl.cpp">
       <Filter>ui</Filter>
     </ClCompile>
@@ -416,9 +383,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\win\time_ticker.cpp">
       <Filter>win</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\js\module_manager.cpp">
-      <Filter>js</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\url_loader.cpp">
       <Filter>blink\impl</Filter>
@@ -599,96 +563,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\exported\WebTraceLocation.cpp">
       <Filter>blink\renderer\platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_anchor_element.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_attr.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_console.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_container_node.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_document.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_element.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event_listener.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event_target.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_exception_state.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_global.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_html_collection.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_image_element.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_location.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_named_node_map.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_navigator.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_node.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_node_list.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_script_element.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_script_object.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_timer.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_window.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_xhr.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\prototype_helper.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_controller.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_source_code.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_streamer.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\exception_state.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_wrappers.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\Attr.cpp">
       <Filter>blink\renderer\core\dom</Filter>
@@ -3927,9 +3801,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\web\EditorClientImpl.cpp">
       <Filter>blink\renderer\web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\js\web_view_context.cpp">
-      <Filter>js</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_object.cpp">
       <Filter>gc</Filter>
     </ClCompile>
@@ -4064,9 +3935,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\ui\click_observer_wrapper.cpp">
       <Filter>ui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_dom_token_list.cpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\app\app_thread_request_client.cpp">
       <Filter>app</Filter>
@@ -4224,6 +4092,21 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\node_traversal.cpp">
       <Filter>blink\renderer\core\dom</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\exception_state.cpp">
+      <Filter>blink\renderer\bindings\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_streamer.cpp">
+      <Filter>blink\renderer\bindings\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_source_code.cpp">
+      <Filter>blink\renderer\bindings\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_controller_impl.cpp">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_wrappable_impl.cpp">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -4253,30 +4136,6 @@
     <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.h">
       <Filter>crawler\dom</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\js\context_impl.h">
-      <Filter>js</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\js\function_manager.h">
-      <Filter>js</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\js\heap_retained.h">
-      <Filter>js</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\js\js_callee_context_impl.h">
-      <Filter>js</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\js\js_caller_context_impl.h">
-      <Filter>js</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\js\js_value_impl.h">
-      <Filter>js</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\js\crawler_context.h">
-      <Filter>js</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\js\simple_context.h">
-      <Filter>js</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -4290,9 +4149,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\sdk\include\bk_def.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\sdk\include\bk_js.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\sdk\include\bk_ui.h">
@@ -4327,9 +4183,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\time_ticker.h">
       <Filter>win</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\js\module_manager.h">
-      <Filter>js</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\impl\thread.h">
       <Filter>blink\impl</Filter>
@@ -4397,107 +4250,8 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\TemporaryChange.h">
       <Filter>blink\renderer\wtf</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_anchor_element.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_array_like_object_impl.hpp">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_attr.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_console.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_container_node.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_document.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_element.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event_listener.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event_target.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_exception_state.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_global.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_html_collection.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_image_element.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_location.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_named_node_map.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_navigator.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_node.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_node_list.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_script_element.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_script_object.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_timer.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_window.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_xhr.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\prototype_helper.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_controller.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_source_code.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_streamer.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\exception_state.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_wrappable.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_wrappers.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\LocalDOMWindow.h">
       <Filter>blink\renderer\core\frame</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ExceptionState.h">
-      <Filter>blink\renderer\bindings\core\v8</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\inspector\InspectorInstrumentation.h">
       <Filter>blink\renderer\core\inspector</Filter>
@@ -4508,9 +4262,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\inspector\InstanceCounters.h">
       <Filter>blink\renderer\core\inspector</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ScriptWrappable.h">
-      <Filter>blink\renderer\bindings\core\v8</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\EventListenerOptions.h">
       <Filter>blink\renderer\core\events</Filter>
     </ClInclude>
@@ -4519,9 +4270,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\weborigin\KURL.h">
       <Filter>blink\renderer\platform\weborigin</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ExceptionStatePlaceholder.h">
-      <Filter>blink\renderer\bindings\core\v8</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\css\parser\CSSParserMode.h">
       <Filter>blink\renderer\core\css\parser</Filter>
@@ -4622,9 +4370,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\custom\CustomElementDescriptorHash.h">
       <Filter>blink\renderer\core\dom\custom</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ScriptController.h">
-      <Filter>blink\renderer\bindings\core\v8</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ElementRegistrationOptions.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
@@ -4685,12 +4430,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\IntersectionObserverInit.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ScriptSourceCode.h">
-      <Filter>blink\renderer\bindings\core\v8</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ScriptStreamer.h">
-      <Filter>blink\renderer\bindings\core\v8</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\HTMLElementLookupTrie.h">
       <Filter>blink\renderer\core</Filter>
     </ClInclude>
@@ -4705,9 +4444,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\text\icu\UnicodeIcu.h">
       <Filter>blink\renderer\wtf\text\icu</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\js\web_view_context.h">
-      <Filter>js</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\fonts\FontCache.h">
       <Filter>blink\renderer\platform\fonts</Filter>
@@ -8063,9 +7799,6 @@
     <ClInclude Include="..\..\..\src\blinkit\ui\click_observer_wrapper.h">
       <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_dom_token_list.h">
-      <Filter>blink\renderer\bindings\core\duk</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\app\app_thread_request_client.h">
       <Filter>app</Filter>
     </ClInclude>
@@ -9104,9 +8837,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\element_rare_data.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_wrappable.h">
-      <Filter>blink\renderer\bindings\core\qjs</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\events\event_target.h">
       <Filter>blink\renderer\core\events</Filter>
     </ClInclude>
@@ -9130,6 +8860,27 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\element_traversal.h">
       <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\exception_state_placeholder.h">
+      <Filter>blink\renderer\bindings\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\exception_state.h">
+      <Filter>blink\renderer\bindings\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_controller.h">
+      <Filter>blink\renderer\bindings\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_streamer.h">
+      <Filter>blink\renderer\bindings\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_source_code.h">
+      <Filter>blink\renderer\bindings\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_controller_impl.h">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_wrappable_impl.h">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

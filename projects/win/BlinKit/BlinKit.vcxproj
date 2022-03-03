@@ -170,37 +170,11 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_clipboard.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_scrollbar_behavior.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_theme_engine.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_anchor_element.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_attr.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_console.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_container_node.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_document.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_dom_token_list.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_element.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event_listener.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event_target.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_exception_state.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_global.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_html_collection.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_image_element.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_location.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_named_node_map.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_navigator.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_node.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_node_list.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_script_element.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_script_object.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_timer.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_window.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_xhr.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\exception_state.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\prototype_helper.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_controller.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_source_code.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_streamer.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_wrappers.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\exception_state.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_controller_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_wrappable_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_source_code.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_streamer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\controller\blink_initializer.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\animatable\AnimatableClipPathOperation.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\animation\animatable\AnimatableColor.cpp" />
@@ -1394,16 +1368,6 @@
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_object.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_trace_visitor.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\gc\lifecycle_data_manager.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\js\context_impl.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\js\crawler_context.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\js\function_manager.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\js\heap_retained.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\js\js_callee_context_impl.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\js\js_caller_context_impl.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\js\js_value_impl.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\js\module_manager.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\js\simple_context.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\js\web_view_context.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\loader_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\tasks\client_loader_task.cpp" />
@@ -1467,7 +1431,6 @@
     <ClInclude Include="..\..\..\sdk\include\bk_app.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_crawler.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_def.h" />
-    <ClInclude Include="..\..\..\sdk\include\bk_js.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_ui.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_thread_request_client.h" />
@@ -1550,47 +1513,14 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebInputEvent.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebMenuItemInfo.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebTextDirection.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_anchor_element.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_array_like_object_impl.hpp" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_attr.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_console.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_container_node.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_document.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_dom_token_list.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_element.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event_listener.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_event_target.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_exception_state.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_global.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_html_collection.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_image_element.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_location.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_named_node_map.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_navigator.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_node.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_node_list.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_script_element.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_script_object.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_timer.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_window.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\duk_xhr.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\exception_state.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\prototype_helper.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_controller.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_source_code.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_streamer.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_wrappable.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\duk\script_wrappers.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_wrappable.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\exception_state.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\exception_state_placeholder.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_controller_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_wrappable_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_controller.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_source_code.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_streamer.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_wrappable.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ExceptionState.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ExceptionStatePlaceholder.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ScriptController.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ScriptSourceCode.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ScriptStreamer.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\v8\ScriptWrappable.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\Animation.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\AnimationClock.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\animation\AnimationEffect.h" />
@@ -3042,16 +2972,6 @@
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_trace_visitor.h" />
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_weak_object_set.h" />
     <ClInclude Include="..\..\..\src\blinkit\gc\lifecycle_data_manager.h" />
-    <ClInclude Include="..\..\..\src\blinkit\js\context_impl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\js\crawler_context.h" />
-    <ClInclude Include="..\..\..\src\blinkit\js\function_manager.h" />
-    <ClInclude Include="..\..\..\src\blinkit\js\heap_retained.h" />
-    <ClInclude Include="..\..\..\src\blinkit\js\js_callee_context_impl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\js\js_caller_context_impl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\js\js_value_impl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\js\module_manager.h" />
-    <ClInclude Include="..\..\..\src\blinkit\js\simple_context.h" />
-    <ClInclude Include="..\..\..\src\blinkit\js\web_view_context.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\loader_thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\client_loader_task.h" />
@@ -3109,9 +3029,6 @@
     <ProjectReference Include="..\BkCommon\BkCommon.vcxproj">
       <Project>{a3dd911e-272c-4dad-b537-7340ed0af312}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\duktape\duktape.vcxproj">
-      <Project>{c8a7568b-b29b-430c-99a1-e43120933154}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\harfbuzz\harfbuzz.vcxproj">
       <Project>{43f87c52-7fd3-43ec-b9b3-fc3ef9ccfdf1}</Project>
     </ProjectReference>
@@ -3123,6 +3040,9 @@
     </ProjectReference>
     <ProjectReference Include="..\ots\ots.vcxproj">
       <Project>{35ddb613-6c23-4b17-9b1a-643c91b09a16}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\quickjs\quickjs.vcxproj">
+      <Project>{e02829c3-a156-4c99-a9c8-7ed8f52ab56c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\skia\skia.vcxproj">
       <Project>{295edf31-49b6-48e3-b7c5-377c60665a78}</Project>
