@@ -29,7 +29,7 @@
 #include "blinkit/blink/renderer/core/html/HTMLHeadElement.h"
 #include "blinkit/blink/renderer/core/html/parser/HTMLParserIdioms.h"
 // BKTODO: #include "core/inspector/ConsoleMessage.h"
-#include "blinkit/blink/renderer/core/loader/FrameLoaderClient.h"
+#include "blinkit/blink/renderer/core/loader/frame_loader_client.h"
 // BKTODO: #include "core/loader/HttpEquiv.h"
 #include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
 
