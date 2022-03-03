@@ -29,23 +29,22 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/dom/StyleElement.h"
+#include "./StyleElement.h"
 
-#include "bindings/core/v8/ScriptController.h"
-#include "core/css/MediaList.h"
-#include "core/css/MediaQueryEvaluator.h"
-#include "core/css/StyleSheetContents.h"
-#include "core/dom/Document.h"
-#include "core/dom/Element.h"
-#include "core/dom/ScriptableDocumentParser.h"
-#include "core/dom/StyleEngine.h"
-#include "core/dom/shadow/ShadowRoot.h"
-#include "core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/bindings/core/script_controller.h"
+#include "blinkit/blink/renderer/core/css/MediaList.h"
+#include "blinkit/blink/renderer/core/css/MediaQueryEvaluator.h"
+#include "blinkit/blink/renderer/core/css/StyleSheetContents.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/dom/ScriptableDocumentParser.h"
+#include "blinkit/blink/renderer/core/dom/StyleEngine.h"
+#include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
 // BKTODO: #include "core/frame/csp/ContentSecurityPolicy.h"
-#include "core/html/HTMLStyleElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLStyleElement.h"
 // BKTODO: #include "core/svg/SVGStyleElement.h"
-#include "platform/TraceEvent.h"
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/platform/TraceEvent.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 using namespace BlinKit;
 

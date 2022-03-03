@@ -34,23 +34,19 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/events/EventDispatcher.h"
+#include "./EventDispatcher.h"
 
-#include "core/dom/ContainerNode.h"
-#include "core/dom/Document.h"
-#include "core/dom/Element.h"
-#include "core/events/EventDispatchMediator.h"
-#include "core/events/MouseEvent.h"
-#include "core/events/ScopedEventQueue.h"
-#include "core/events/WindowEventContext.h"
-#include "core/frame/FrameView.h"
-#include "core/frame/LocalDOMWindow.h"
-#include "core/inspector/InspectorTraceEvents.h"
-#include "platform/EventDispatchForbiddenScope.h"
-#include "platform/TraceEvent.h"
-#include "wtf/RefPtr.h"
-
-using namespace BlinKit;
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/events/EventDispatchMediator.h"
+#include "blinkit/blink/renderer/core/events/MouseEvent.h"
+#include "blinkit/blink/renderer/core/events/ScopedEventQueue.h"
+#include "blinkit/blink/renderer/core/events/WindowEventContext.h"
+#include "blinkit/blink/renderer/core/frame/FrameView.h"
+#include "blinkit/blink/renderer/core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorTraceEvents.h"
+#include "blinkit/blink/renderer/platform/EventDispatchForbiddenScope.h"
+#include "blinkit/blink/renderer/platform/TraceEvent.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 

@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -39,20 +40,18 @@
 #ifndef StyleEngine_h
 #define StyleEngine_h
 
-#include "core/CoreExport.h"
-#include "core/css/CSSFontSelectorClient.h"
-#include "core/css/invalidation/StyleInvalidator.h"
-#include "core/css/resolver/StyleResolver.h"
-#include "core/dom/Document.h"
-#include "core/dom/DocumentOrderedList.h"
-#include "core/dom/DocumentStyleSheetCollection.h"
-#include "platform/heap/Handle.h"
-#include "wtf/Allocator.h"
-#include "wtf/ListHashSet.h"
-#include "wtf/RefPtr.h"
-#include "wtf/TemporaryChange.h"
-#include "wtf/Vector.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/core/css/CSSFontSelectorClient.h"
+#include "blinkit/blink/renderer/core/css/invalidation/StyleInvalidator.h"
+#include "blinkit/blink/renderer/core/css/resolver/StyleResolver.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/DocumentOrderedList.h"
+#include "blinkit/blink/renderer/core/dom/DocumentStyleSheetCollection.h"
+#include "blinkit/blink/renderer/wtf/Allocator.h"
+#include "blinkit/blink/renderer/wtf/ListHashSet.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
+#include "blinkit/blink/renderer/wtf/TemporaryChange.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
@@ -65,10 +64,9 @@ class StyleRuleFontFace;
 class StyleSheet;
 class StyleSheetContents;
 
-class CORE_EXPORT StyleEngine final : public BlinKit::GCObject // BKTODO: GCObject may be unnecessary.
-                                    , public BlinKit::GCStubImpl<StyleEngine, CSSFontSelectorClient>
+class StyleEngine final : public GCObject // BKTODO: GCObject may be unnecessary.
+                        , public CSSFontSelectorClient
 {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(StyleEngine);
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(StyleEngine);
 public:
 

@@ -69,9 +69,6 @@ public:
     virtual bool affects(PropertyHandle) const { return false; }
     virtual bool isTransformRelatedEffect() const { return false; }
     virtual bool isKeyframeEffectModel() const { return false; }
-
-private:
-    BlinKit::GCObject* ObjectForGC(void) final { return this; }
 };
 
 } // namespace blink

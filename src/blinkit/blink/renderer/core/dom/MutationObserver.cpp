@@ -39,20 +39,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/dom/MutationObserver.h"
+#include "./MutationObserver.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "blinkit/blink/renderer/core/dom/ExecutionContext.h"
-#include "core/dom/ExceptionCode.h"
-// BKTODO: #include "core/dom/Microtask.h"
-#include "core/dom/MutationCallback.h"
-// BKTODO: #include "core/dom/MutationObserverInit.h"
-#include "core/dom/MutationObserverRegistration.h"
-#include "core/dom/MutationRecord.h"
-#include "core/dom/Node.h"
-#include "core/inspector/InspectorInstrumentation.h"
-#include "wtf/MainThread.h"
 #include <algorithm>
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/dom/ExecutionContext.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+// BKTODO: #include "core/dom/Microtask.h"
+#include "blinkit/blink/renderer/core/dom/MutationCallback.h"
+// BKTODO: #include "core/dom/MutationObserverInit.h"
+#include "blinkit/blink/renderer/core/dom/MutationObserverRegistration.h"
+#include "blinkit/blink/renderer/core/dom/MutationRecord.h"
+#include "blinkit/blink/renderer/core/dom/node.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorInstrumentation.h"
+#include "blinkit/blink/renderer/wtf/MainThread.h"
 
 namespace blink {
 

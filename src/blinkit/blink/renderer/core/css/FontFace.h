@@ -149,8 +149,6 @@ private:
     using LoadedProperty = ScriptPromiseProperty<RawPtrWillBeMember<FontFace>, RawPtrWillBeMember<FontFace>, Member<DOMException>>;
 #endif
 
-    BlinKit::GCObject* ObjectForGC(void) final { return this; }
-
     AtomicString m_family;
     String m_otsParseMessage;
     GCRefPtr<CSSValue> m_style;

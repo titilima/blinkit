@@ -41,15 +41,14 @@
  *
  */
 
-#include "core/events/EventListenerMap.h"
+#include "./EventListenerMap.h"
 
-#include "core/events/EventTarget.h"
-#include "wtf/StdLibExtras.h"
-#include "wtf/Vector.h"
-
+#include "blinkit/blink/renderer/core/events/event_target.h"
+#include "blinkit/blink/renderer/wtf/StdLibExtras.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
 #if ENABLE(ASSERT)
-#include "wtf/Threading.h"
-#include "wtf/ThreadingPrimitives.h"
+#   include "blinkit/blink/renderer/wtf/Threading.h"
+#   include "blinkit/blink/renderer/wtf/ThreadingPrimitives.h"
 #endif
 
 using namespace WTF;

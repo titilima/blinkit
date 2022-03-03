@@ -62,7 +62,7 @@ class Range;
 // Used for drag and drop and copy/paste.
 // Drag and Drop: http://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html
 // Clipboard API (copy/paste): http://dev.w3.org/2006/webapi/clipops/clipops.html
-class DataTransfer final : public BlinKit::GCObject, public ScriptWrappable
+class DataTransfer final : public GCObject, public ScriptWrappable
 {
     DEFINE_WRAPPERTYPEINFO();
 public:
@@ -133,8 +133,6 @@ private:
 
     bool hasFileOfType(const String&) const;
     bool hasStringOfType(const String&) const;
-
-    BlinKit::GCObject* ObjectForGC(void) override { return this; }
 
     // Instead of using this member directly, prefer to use the can*() methods above.
     DataTransferAccessPolicy m_policy;

@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -40,13 +41,12 @@
 #ifndef ResourceLoader_h
 #define ResourceLoader_h
 
-#include "core/CoreExport.h"
-#include "core/fetch/ResourceLoaderOptions.h"
-#include "platform/network/ResourceRequest.h"
-#include "public/platform/WebURLLoader.h"
-#include "public/platform/WebURLLoaderClient.h"
-#include "wtf/Forward.h"
-#include "wtf/RefCounted.h"
+#include "blinkit/blink/public/platform/WebURLLoader.h"
+#include "blinkit/blink/public/platform/WebURLLoaderClient.h"
+#include "blinkit/blink/renderer/core/fetch/ResourceLoaderOptions.h"
+#include "blinkit/blink/renderer/platform/network/ResourceRequest.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
+#include "blinkit/blink/renderer/wtf/RefCounted.h"
 
 namespace blink {
 
@@ -56,7 +56,8 @@ class ResourceError;
 class ResourceFetcher;
 class ThreadedDataReceiver;
 
-class CORE_EXPORT ResourceLoader final : public BlinKit::GCObject, protected WebURLLoaderClient {
+class ResourceLoader final : public GCObject, protected WebURLLoaderClient
+{
 public:
     static ResourceLoader* create(ResourceFetcher*, Resource*, const ResourceRequest&, const ResourceLoaderOptions&);
     ~ResourceLoader() override;
@@ -113,7 +114,7 @@ private:
 
     ResourceRequest& applyOptions(ResourceRequest&) const;
 
-    BlinKit::GCObject* ObjectForGC(void) final { return this; }
+    GCObject* ObjectForGC(void) final { return this; }
 
     std::unique_ptr<WebURLLoader> m_loader;
     GCRefPtr<ResourceFetcher> m_fetcher;

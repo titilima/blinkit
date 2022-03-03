@@ -39,20 +39,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/dom/custom/CustomElementRegistrationContext.h"
+#include "./CustomElementRegistrationContext.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/HTMLNames.h"
-#include "core/SVGNames.h"
-#include "core/dom/Document.h"
-#include "core/dom/Element.h"
-#include "core/dom/custom/CustomElement.h"
-#include "core/dom/custom/CustomElementDefinition.h"
-#include "core/dom/custom/CustomElementScheduler.h"
-#include "core/html/HTMLElement.h"
-#include "core/html/HTMLUnknownElement.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/SVGNames.h"
+#include "blinkit/blink/renderer/core/dom/custom/CustomElement.h"
+#include "blinkit/blink/renderer/core/dom/custom/CustomElementDefinition.h"
+#include "blinkit/blink/renderer/core/dom/custom/CustomElementScheduler.h"
+#include "blinkit/blink/renderer/core/html/HTMLUnknownElement.h"
 // BKTODO: #include "core/svg/SVGUnknownElement.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 

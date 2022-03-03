@@ -226,8 +226,6 @@ protected:
     void setCanBubble(bool bubble) { m_canBubble = bubble; }
 
 private:
-    BlinKit::GCObject* ObjectForGC(void) final { return this; }
-
     AtomicString m_type;
     unsigned m_canBubble:1;
     unsigned m_cancelable:1;

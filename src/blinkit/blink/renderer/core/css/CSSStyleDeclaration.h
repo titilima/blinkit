@@ -90,8 +90,6 @@ public:
 
 protected:
     CSSStyleDeclaration() { }
-private:
-    BlinKit::GCObject* ObjectForGC(void) final { return this; }
 };
 
 } // namespace blink

@@ -84,8 +84,6 @@ protected:
     static AtomicString addTokens(const AtomicString&, const Vector<String>&);
     static AtomicString removeToken(const AtomicString&, const AtomicString&);
     static AtomicString removeTokens(const AtomicString&, const Vector<String>&);
-private:
-    BlinKit::GCObject* ObjectForGC(void) final { return nullptr; }
 };
 
 } // namespace blink

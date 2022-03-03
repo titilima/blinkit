@@ -51,10 +51,6 @@
 #include "blinkit/blink/renderer/wtf/Assertions.h"
 #include "blinkit/blink/renderer/wtf/Forward.h"
 
-namespace BlinKit {
-class DukTimer;
-}
-
 namespace blink {
 
 class DOMWindowEventQueue;
@@ -78,17 +74,17 @@ enum PageshowEventPersistence {
 
 // Note: if you're thinking of returning something DOM-related by reference,
 // please ping dcheng@chromium.org first. You probably don't want to do that.
-class CORE_EXPORT LocalDOMWindow final : public DOMWindow
-                                       , public WillBeHeapSupplementable<LocalDOMWindow>
-                                       // BKTODO: , public DOMWindowLifecycleNotifier
+class LocalDOMWindow final : public DOMWindow
+                           , public WillBeHeapSupplementable<LocalDOMWindow>
+                           // BKTODO: , public DOMWindowLifecycleNotifier
 {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(LocalDOMWindow);
     WILL_BE_USING_PRE_FINALIZER(LocalDOMWindow, dispose);
 public:
     static GCRefPtr<Document> createDocument(const String& mimeType, const DocumentInit&, bool forceXHTML);
-    static GCUniquePtr<LocalDOMWindow> create(LocalFrame& frame)
+    static std::unique_ptr<LocalDOMWindow> create(LocalFrame& frame)
     {
-        return BlinKit::GCWrapUnique(new LocalDOMWindow(frame));
+        return zed::wrap_unique(new LocalDOMWindow(frame));
     }
 
     ~LocalDOMWindow() override;
@@ -96,8 +92,6 @@ public:
     DECLARE_VIRTUAL_TRACE();
 
     PassRefPtrWillBeRawPtr<Document> installNewDocument(const String& mimeType, const DocumentInit&, bool forceXHTML = false);
-
-    unsigned AddDOMTimer(std::unique_ptr<BlinKit::DukTimer> &&timer);
 
     // EventTarget overrides:
     ExecutionContext* executionContext() const override;
@@ -262,11 +256,6 @@ private:
     void willDetachFrameHost();
     void frameDestroyed();
 
-    void LaunchDOMTimer(unsigned id, BlinKit::DukTimer &timer);
-    void ProcessDOMTimer(unsigned id, BlinKit::DukTimer &timer);
-
-    BlinKit::GCObject* ObjectForGC(void) final { return nullptr; }
-
     GCRefPtr<WindowFrameObserver> m_frameObserver;
     GCRefPtr<Document> m_document;
 
@@ -298,9 +287,6 @@ private:
     // BKTODO: RefPtr<SerializedScriptValue> m_pendingStateObject;
 
     WillBeHeapHashSet<OwnPtrWillBeMember<PostMessageTimer>> m_postMessageTimers;
-
-    unsigned m_nextTimerId = 1;
-    std::unordered_map<unsigned, std::unique_ptr<BlinKit::DukTimer>> m_domTimers;
 };
 
 DEFINE_TYPE_CASTS(LocalDOMWindow, DOMWindow, x, x->isLocalDOMWindow(), x.isLocalDOMWindow());

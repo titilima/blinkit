@@ -58,8 +58,6 @@ public:
 protected:
     NodeList() { }
 private:
-    BlinKit::GCObject* ObjectForGC(void) override { return this; }
-
     // BKTODO: IterationSource* startIteration(ScriptState*, ExceptionState&) override;
 };
 

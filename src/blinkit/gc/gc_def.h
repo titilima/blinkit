@@ -48,12 +48,7 @@ public:
     void IncRef(void);
     void Release(void);
 
-    static GCObject* GCCast(GCObject *o)
-    {
-        return o;
-    }
-
-    virtual void trace(blink::Visitor *visitor) {}
+    virtual void trace(Visitor *visitor) {}
 protected:
     GCObject(void);
 
@@ -67,32 +62,6 @@ private:
     GCObject(const GCObject &o) = delete;
 
     unsigned m_refCnt = 0;
-};
-
-/**
- * GCStub
- */
-
-class GCStub
-{
-public:
-    virtual ~GCStub(void) = default;
-
-    static GCObject* GCCast(GCStub *o)
-    {
-        return nullptr != o ? o->ObjectForGC() : nullptr;
-    }
-
-    virtual GCObject* ObjectForGC(void) = 0;
-protected:
-    GCStub(void) = default;
-};
-
-template <class T, class B, typename = typename std::enable_if<std::is_base_of<GCStub, B>::value>::type>
-class GCStubImpl : public B
-{
-public:
-    GCObject* ObjectForGC(void) final { return static_cast<T *>(this); }
 };
 
 /**
@@ -217,7 +186,6 @@ class GCGuard final : private GCRefPtrBase
 {
 public:
     GCGuard(GCObject &o) : GCRefPtrBase(&o) {}
-    GCGuard(GCStub *stub) : GCRefPtrBase(stub->ObjectForGC()) {}
 };
 
 template <class T>
@@ -380,11 +348,6 @@ private:
 };
 
 } // namespace BlinKit
-
-namespace blink {
-using BlinKit::GCRefPtr;
-using BlinKit::GCUniquePtr;
-}
 
 namespace std {
 

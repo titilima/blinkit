@@ -128,7 +128,7 @@ protected:
     LayoutObject* m_layoutObject;
 };
 
-#define NODE_BASE_CLASSES   public EventTarget, public BlinKit::GCObject
+#define NODE_BASE_CLASSES   public EventTarget, public GCObject
 
 // This class represents a DOM node in the DOM tree.
 // https://dom.spec.whatwg.org/#interface-node
@@ -817,7 +817,6 @@ private:
     WillBeHeapHashSet<RawPtrWillBeMember<MutationObserverRegistration>>* transientMutationObserverRegistry();
 
     bool ShouldPerformFullGC(void) const override;
-    BlinKit::GCObject* ObjectForGC(void) final { return this; }
 
     uint32_t m_nodeFlags;
     ContainerNode *m_parentOrShadowHostNode = nullptr;

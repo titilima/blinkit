@@ -37,8 +37,8 @@
 #ifndef Range_h
 #define Range_h
 
-#include "blinkit/blink/renderer/bindings/core/qjs/script_wrappable.h"
 #include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
 #include "blinkit/blink/renderer/core/dom/RangeBoundaryPoint.h"
 #include "blinkit/blink/renderer/platform/geometry/FloatRect.h"
 #include "blinkit/blink/renderer/platform/geometry/int_rect.h"
@@ -59,7 +59,7 @@ class Node;
 class NodeWithIndex;
 class Text;
 
-class CORE_EXPORT Range final : public BlinKit::GCObject, public ScriptWrappable
+class Range final : public BlinKit::GCObject, public ScriptWrappable
 {
     DEFINE_WRAPPERTYPEINFO();
 public:
@@ -181,8 +181,6 @@ private:
     static void processNodes(ActionType, WillBeHeapVector<RefPtrWillBeMember<Node>>&, PassRefPtrWillBeRawPtr<Node> oldContainer, PassRefPtrWillBeRawPtr<Node> newContainer, ExceptionState&);
     enum ContentsProcessDirection { ProcessContentsForward, ProcessContentsBackward };
     static GCRefPtr<Node> processAncestorsAndTheirSiblings(ActionType, Node* container, ContentsProcessDirection, PassRefPtrWillBeRawPtr<Node> clonedContainer, Node* commonRoot, ExceptionState&);
-
-    BlinKit::GCObject* ObjectForGC(void) override { return this; }
 
     Document *m_ownerDocument; // Cannot be null.
     RangeBoundaryPoint m_start;

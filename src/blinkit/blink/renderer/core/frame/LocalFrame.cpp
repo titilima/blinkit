@@ -417,7 +417,7 @@ void LocalFrame::willDetachFrameHost()
         page()->scrollingCoordinator()->willDestroyScrollableArea(m_view.get());
 }
 
-void LocalFrame::setDOMWindow(GCUniquePtr<LocalDOMWindow> &&domWindow)
+void LocalFrame::setDOMWindow(std::unique_ptr<LocalDOMWindow> &&domWindow)
 {
     // Oilpan: setDOMWindow() cannot be used when finalizing. Which
     // is acceptable as its actions are either not needed or handled

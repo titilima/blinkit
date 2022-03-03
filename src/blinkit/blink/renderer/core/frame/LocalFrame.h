@@ -87,10 +87,10 @@ class WebFrameHostScheduler;
 class WebFrameScheduler;
 template <typename Strategy> class PositionWithAffinityTemplate;
 
-class CORE_EXPORT LocalFrame : public Frame
-                             , public LocalFrameLifecycleNotifier
-                             , public WillBeHeapSupplementable<LocalFrame>
-                             , public DisplayItemClient
+class LocalFrame : public Frame
+                 , public LocalFrameLifecycleNotifier
+                 , public WillBeHeapSupplementable<LocalFrame>
+                 , public DisplayItemClient
 {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(LocalFrame);
 public:
@@ -121,7 +121,7 @@ public:
     void willDetachFrameHost();
 
     LocalDOMWindow* localDOMWindow() const;
-    void setDOMWindow(GCUniquePtr<LocalDOMWindow> &&);
+    void setDOMWindow(std::unique_ptr<LocalDOMWindow> &&);
     FrameView* view() const;
     Document* document() const;
     void setPagePopupOwner(Element&);
@@ -222,7 +222,7 @@ private:
     // BKTODO: OwnPtrWillBeMember<NavigationScheduler> m_navigationScheduler;
 
     GCUniquePtr<FrameView> m_view;
-    GCUniquePtr<LocalDOMWindow> m_domWindow;
+    std::unique_ptr<LocalDOMWindow> m_domWindow;
     // Usually 0. Non-null if this is the top frame of PagePopup.
     RefPtrWillBeMember<Element> m_pagePopupOwner;
 

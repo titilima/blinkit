@@ -173,8 +173,6 @@ protected:
     String m_name;
 
     const CalculatedTiming& ensureCalculated() const;
-private:
-    BlinKit::GCObject* ObjectForGC(void) final { return this; }
 };
 
 } // namespace blink

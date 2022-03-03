@@ -81,15 +81,15 @@ public:
 
     bool contains(T *o) const
     {
-        return GCWeakObjectSetImpl::contains(T::GCCast(o));
+        return GCWeakObjectSetImpl::contains(o);
     }
     void emplace(T *o)
     {
-        GCWeakObjectSetImpl::emplace(T::GCCast(o));
+        GCWeakObjectSetImpl::emplace(o);
     }
     void erase(T *o)
     {
-        GCWeakObjectSetImpl::erase(T::GCCast(o));
+        GCWeakObjectSetImpl::erase(o);
     }
     iterator erase(iterator it)
     {

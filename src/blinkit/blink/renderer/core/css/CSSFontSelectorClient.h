@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -42,15 +43,15 @@
 #ifndef CSSFontSelectorClient_h
 #define CSSFontSelectorClient_h
 
-#include "core/CoreExport.h"
-#include "platform/heap/Handle.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
 
 namespace blink {
 
 class CSSFontSelector;
 class Visitor;
 
-class CORE_EXPORT CSSFontSelectorClient : public BlinKit::GCStub {
+class CSSFontSelectorClient
+{
 public:
     virtual ~CSSFontSelectorClient() { }
 

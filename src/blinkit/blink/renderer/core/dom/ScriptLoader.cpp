@@ -32,45 +32,43 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/dom/ScriptLoader.h"
+#include "./ScriptLoader.h"
 
-#include "bindings/core/v8/ScriptController.h"
-#include "bindings/core/v8/ScriptSourceCode.h"
-#include "core/HTMLNames.h"
-#include "core/SVGNames.h"
-#include "core/dom/Document.h"
-#include "core/dom/IgnoreDestructiveWriteCountIncrementer.h"
-#include "core/dom/ScriptLoaderClient.h"
-#include "core/dom/ScriptRunner.h"
-#include "core/dom/ScriptableDocumentParser.h"
-#include "core/dom/Text.h"
-#include "core/events/Event.h"
+#include "blinkit/blink/public/platform/WebFrameScheduler.h"
+#include "blinkit/blink/renderer/bindings/core/script_controller.h"
+#include "blinkit/blink/renderer/bindings/core/script_source_code.h"
+#include "blinkit/blink/renderer/core/HTMLNames.h"
+#include "blinkit/blink/renderer/core/SVGNames.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/IgnoreDestructiveWriteCountIncrementer.h"
+#include "blinkit/blink/renderer/core/dom/ScriptLoaderClient.h"
+#include "blinkit/blink/renderer/core/dom/ScriptRunner.h"
+#include "blinkit/blink/renderer/core/dom/ScriptableDocumentParser.h"
+#include "blinkit/blink/renderer/core/dom/Text.h"
+#include "blinkit/blink/renderer/core/events/Event.h"
 // BKTODO: #include "core/fetch/AccessControlStatus.h"
-#include "core/fetch/FetchRequest.h"
-#include "core/fetch/ResourceFetcher.h"
-#include "core/fetch/ScriptResource.h"
-#include "core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/fetch/FetchRequest.h"
+#include "blinkit/blink/renderer/core/fetch/ResourceFetcher.h"
+#include "blinkit/blink/renderer/core/fetch/ScriptResource.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
 // BKTODO: #include "core/frame/SubresourceIntegrity.h"
-#include "core/frame/UseCounter.h"
+#include "blinkit/blink/renderer/core/frame/UseCounter.h"
 #if 0 // BKTODO:
 #include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/CrossOriginAttribute.h"
 #endif
-#include "core/html/HTMLScriptElement.h"
-#include "core/html/imports/HTMLImport.h"
-#include "core/html/parser/HTMLParserIdioms.h"
+#include "blinkit/blink/renderer/core/html/HTMLScriptElement.h"
+#include "blinkit/blink/renderer/core/html/imports/HTMLImport.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLParserIdioms.h"
 #if 0 // BKTODO:
 #include "core/inspector/ConsoleMessage.h"
 #include "core/svg/SVGScriptElement.h"
 #endif
-#include "platform/MIMETypeRegistry.h"
+#include "blinkit/blink/renderer/platform/MIMETypeRegistry.h"
 // BKTODO: #include "platform/weborigin/SecurityOrigin.h"
-#include "public/platform/WebFrameScheduler.h"
-#include "wtf/StdLibExtras.h"
-#include "wtf/text/StringBuilder.h"
-#include "wtf/text/StringHash.h"
-
-using namespace BlinKit;
+#include "blinkit/blink/renderer/wtf/StdLibExtras.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/wtf/text/StringHash.h"
 
 namespace blink {
 

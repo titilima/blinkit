@@ -42,7 +42,7 @@
 
 #include "./event_target.h"
 
-#include "blinkit/blink/renderer/bindings/core/v8/ExceptionState.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
 #include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
 #include "blinkit/blink/renderer/core/editing/Editor.h"
 #include "blinkit/blink/renderer/core/events/Event.h"

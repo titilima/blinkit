@@ -37,12 +37,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/html/ImageData.h"
+#include "./ImageData.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/frame/ImageBitmap.h"
-#include "platform/RuntimeEnabledFeatures.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/frame/ImageBitmap.h"
+#include "blinkit/blink/renderer/platform/RuntimeEnabledFeatures.h"
 
 namespace blink {
 

@@ -114,8 +114,6 @@ protected:
     const CSSParserContext& parserContext() const;
 
 private:
-    BlinKit::GCObject* ObjectForGC(void) final { return this; }
-
     mutable unsigned char m_hasCachedSelectorText : 1;
     unsigned char m_parentIsRule : 1;
 

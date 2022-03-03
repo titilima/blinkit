@@ -39,39 +39,40 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/loader/FrameFetchContext.h"
+#include "./FrameFetchContext.h"
 
-#include "bindings/core/v8/ScriptController.h"
+#include <algorithm>
 #include "blinkit/blink/public/platform/Platform.h"
 #include "blinkit/blink/public/platform/WebThread.h"
-#include "core/dom/Document.h"
+#include "blinkit/blink/renderer/bindings/core/script_controller.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
 // BKTODO: #include "core/fetch/ClientHintsPreferences.h"
-#include "core/fetch/ResourceLoader.h"
-#include "core/fetch/UniqueIdentifier.h"
-#include "core/frame/FrameConsole.h"
-#include "core/frame/FrameHost.h"
-#include "core/frame/FrameView.h"
-#include "core/frame/LocalFrame.h"
-#include "core/frame/Settings.h"
+#include "blinkit/blink/renderer/core/fetch/ResourceLoader.h"
+#include "blinkit/blink/renderer/core/fetch/UniqueIdentifier.h"
+#include "blinkit/blink/renderer/core/frame/FrameConsole.h"
+#include "blinkit/blink/renderer/core/frame/FrameHost.h"
+#include "blinkit/blink/renderer/core/frame/FrameView.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/frame/Settings.h"
 // BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
-#include "core/html/imports/HTMLImportsController.h"
+#include "blinkit/blink/renderer/core/html/imports/HTMLImportsController.h"
 // BKTODO: #include "core/inspector/ConsoleMessage.h"
-#include "core/inspector/InspectorInstrumentation.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorInstrumentation.h"
 // BKTODO: #include "core/inspector/InspectorResourceAgent.h"
-#include "core/inspector/InspectorTraceEvents.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorTraceEvents.h"
 // BKTODO: #include "core/inspector/InstrumentingAgents.h"
-#include "core/loader/DocumentLoader.h"
-#include "core/loader/FrameLoader.h"
-#include "core/loader/FrameLoaderClient.h"
-#include "core/loader/LinkLoader.h"
-#include "core/loader/MixedContentChecker.h"
+#include "blinkit/blink/renderer/core/loader/DocumentLoader.h"
+#include "blinkit/blink/renderer/core/loader/FrameLoader.h"
+#include "blinkit/blink/renderer/core/loader/FrameLoaderClient.h"
+#include "blinkit/blink/renderer/core/loader/LinkLoader.h"
+#include "blinkit/blink/renderer/core/loader/MixedContentChecker.h"
 #if 0 // BKTODO:
 #include "core/loader/NetworkHintsInterface.h"
 #include "core/loader/PingLoader.h"
 #include "core/loader/ProgressTracker.h"
 #include "core/loader/appcache/ApplicationCacheHost.h"
 #endif
-#include "core/page/Page.h"
+#include "blinkit/blink/renderer/core/page/Page.h"
 #if 0 // BKTODO:
 #include "core/svg/graphics/SVGImageChromeClient.h"
 #include "core/timing/DOMWindowPerformance.h"
@@ -82,8 +83,6 @@
 #include "platform/weborigin/SecurityPolicy.h"
 #include "public/platform/WebFrameScheduler.h"
 #endif
-
-#include <algorithm>
 
 namespace blink {
 

@@ -37,16 +37,14 @@
 
 #include "./DragController.h"
 
-#include "blinkit/blink/renderer/bindings/core/v8/ExceptionStatePlaceholder.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
 #include "blinkit/blink/renderer/core/HTMLNames.h"
 #include "blinkit/blink/renderer/core/InputTypeNames.h"
 #include "blinkit/blink/renderer/core/clipboard/DataObject.h"
 #include "blinkit/blink/renderer/core/clipboard/DataTransfer.h"
 #include "blinkit/blink/renderer/core/clipboard/DataTransferAccessPolicy.h"
-#include "blinkit/blink/renderer/core/dom/Document.h"
 #include "blinkit/blink/renderer/core/dom/DocumentFragment.h"
-#include "blinkit/blink/renderer/core/dom/Element.h"
-#include "blinkit/blink/renderer/core/dom/Node.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
 #include "blinkit/blink/renderer/core/dom/Text.h"
 #include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
 #include "blinkit/blink/renderer/core/editing/DragCaretController.h"

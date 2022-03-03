@@ -39,12 +39,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/fileapi/Blob.h"
+#include "./Blob.h"
 
-#include "bindings/core/v8/ExceptionState.h"
-// BKTODO: #include "core/dom/DOMURL.h"
-#include "core/dom/ExceptionCode.h"
-#include "core/dom/ExecutionContext.h"
+#include "blinkit/blink/renderer/bindings/core/exception_state.h"
+ // BKTODO: #include "core/dom/DOMURL.h"
+#include "blinkit/blink/renderer/core/dom/ExceptionCode.h"
+#include "blinkit/blink/renderer/core/dom/ExecutionContext.h"
 #if 0 // BKTODO:
 #include "core/fileapi/BlobPropertyBag.h"
 #include "platform/blob/BlobRegistry.h"
