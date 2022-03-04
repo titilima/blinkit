@@ -11,11 +11,14 @@
 
 #include "../script_controller.h"
 
+#include "blinkit/blink/renderer/bindings/core/script_source_code.h"
+#include "blinkit/blink/renderer/bindings/core/qjs/qjs_bindings.h"
+#include "blinkit/js/runtime.h"
+
 namespace blink {
 
 ScriptController::ScriptController(LocalFrame &frame) : m_frame(frame)
 {
-    ASSERT(false); // BKTODO:
 }
 
 ScriptController::~ScriptController(void) = default;
@@ -30,18 +33,36 @@ void ScriptController::clearWindowProxy(void)
     ASSERT(false); // BKTODO:
 }
 
-std::unique_ptr<ScriptController> ScriptController::Create(LocalFrame &frame)
+void ScriptController::EnsureContext(void)
 {
-    return zed::wrap_unique(new ScriptController(frame));
+    if (nullptr != m_ctx)
+        return;
+
+    m_ctx = JS_NewContext(g_runtime);
+
+    JSValue global = JS_GetGlobalObject(m_ctx);
+
+    using namespace qjs;
+    AddConsole(m_ctx, global);
+    OnContextCreated(m_ctx, global);
+
+    JS_FreeValue(m_ctx, global);
 }
 
 void ScriptController::executeScriptInMainWorld(const ScriptSourceCode &sourceCode)
 {
-    ASSERT(false); // BKTODO:
+    EnsureContext();
+
+    std::string input = sourceCode.source().stdUtf8();
+    JSValue ret = JS_Eval(m_ctx, input.c_str(), input.length(), sourceCode.FileName().c_str(), JS_EVAL_TYPE_GLOBAL);
+    // TODO: Process error.
+    JS_FreeValue(m_ctx, ret);
 }
 
 void ScriptController::updateDocument(void)
 {
+    if (nullptr == m_ctx)
+        return;
     ASSERT(false); // BKTODO:
 }
 

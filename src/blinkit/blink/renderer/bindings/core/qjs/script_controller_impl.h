@@ -45,6 +45,7 @@
 
 #include "blinkit/blink/renderer/platform/heap/Handle.h"
 #include "blinkit/blink/renderer/wtf/Noncopyable.h"
+#include "third_party/quickjs/quickjs.h"
 
 namespace blink {
 
@@ -52,8 +53,9 @@ class ScriptController
 {
     WTF_MAKE_NONCOPYABLE(ScriptController);
 public:
-    static std::unique_ptr<ScriptController> Create(LocalFrame &frame);
-    ~ScriptController(void);
+    virtual ~ScriptController(void);
+
+    operator JSContext*() const { return m_ctx; }
 
     /**
      * Common Exports
@@ -64,10 +66,15 @@ public:
     void executeScriptInMainWorld(const ScriptSourceCode &sourceCode);
     constexpr bool shouldBypassMainWorldCSP(void) const { return true; }
     void updateDocument(void);
-private:
+protected:
     ScriptController(LocalFrame &frame);
 
+    void EnsureContext(void);
+private:
+    virtual void OnContextCreated(JSContext *ctx, JSValue global) {}
+
     LocalFrame &m_frame;
+    JSContext *m_ctx = nullptr;
 };
 
 } // namespace blink
