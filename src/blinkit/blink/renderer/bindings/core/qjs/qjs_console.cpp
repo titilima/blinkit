@@ -11,6 +11,7 @@
 
 #include "./qjs_bindings.h"
 
+#include "blinkit/blink/renderer/bindings/core/qjs/qjs.h"
 #include "blinkit/blink/renderer/bindings/core/qjs/qjs_c_function_list_entries.h"
 
 namespace BlinKit {
@@ -24,18 +25,15 @@ static JSValue Log(JSContext *ctx, JSValueConst, int argc, JSValueConst *argv)
 {
     std::string log;
 
+    Context context(*ctx);
     for (int i = 0; i < argc; ++i)
     {
-        JSValue v = JS_ToString(ctx, argv[i]);
-        if (JS_IsException(v))
-            return v;
-
-        size_t l = 0;
-        const char *ps = JS_ToCStringLen(ctx, &l, v);
-        log.append(ps, l);
-        log.push_back(' ');
-
-        JS_FreeValue(ctx, v);
+        std::string s;
+        if (context.ToString(s, argv[i]))
+        {
+            log.append(s);
+            log.push_back(' ');
+        }
     }
 
     if (!log.empty())
