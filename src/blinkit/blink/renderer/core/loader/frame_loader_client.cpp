@@ -13,10 +13,29 @@
 
 #include "bkcommon/bk_strings.h"
 #include "blinkit/blink/renderer/web/WebDataSourceImpl.h"
+#include "blinkit/js/web_view_context.h"
 
 using namespace BlinKit;
 
 namespace blink {
+
+std::unique_ptr<ScriptController> FrameLoaderClient::CreateContext(LocalFrame &frame)
+{
+    const Type type = GetType();
+
+#ifdef BLINKIT_CRAWLER_ENABLED
+    if (Type::Crawler == type)
+        ASSERT(false); // BKTODO:
+#endif
+
+#ifdef BLINKIT_UI_ENABLED
+    if (Type::WebView == type)
+        return std::make_unique<WebViewContext>(frame);
+#endif
+
+    NOTREACHED();
+    return nullptr;
+}
 
 PassRefPtrWillBeRawPtr<DocumentLoader> FrameLoaderClient::createDocumentLoader(
     LocalFrame *frame,

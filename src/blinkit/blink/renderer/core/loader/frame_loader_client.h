@@ -97,6 +97,8 @@ class Widget;
 class FrameLoaderClient : public FrameClient
 {
 public:
+    std::unique_ptr<ScriptController> CreateContext(LocalFrame &frame);
+
     virtual void dispatchWillSendRequest(DocumentLoader*, unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse) {}
     virtual void dispatchDidReceiveResponse(DocumentLoader*, unsigned long identifier, const ResourceResponse&) {}
     virtual void dispatchDidFinishLoading(DocumentLoader*, unsigned long identifier) {}
@@ -279,8 +281,6 @@ public:
     };
     virtual void suddenTerminationDisablerChanged(bool present, SuddenTerminationDisablerType) { }
 #endif
-
-    virtual std::unique_ptr<ScriptController> CreateContext(LocalFrame &frame) = 0;
 
 #ifdef BLINKIT_UI_ENABLED
     virtual void LoadURI(const KURL &uri) {
