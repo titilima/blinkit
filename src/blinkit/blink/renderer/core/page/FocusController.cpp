@@ -50,7 +50,7 @@
 #include "blinkit/blink/renderer/core/events/Event.h"
 #include "blinkit/blink/renderer/core/frame/FrameClient.h"
 #include "blinkit/blink/renderer/core/frame/FrameView.h"
-#include "blinkit/blink/renderer/core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/frame/local_dom_window.h"
 #include "blinkit/blink/renderer/core/frame/LocalFrame.h"
 // BKTODO: #include "core/frame/RemoteFrame.h"
 #include "blinkit/blink/renderer/core/frame/Settings.h"

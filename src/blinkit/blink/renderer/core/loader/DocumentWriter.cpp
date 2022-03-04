@@ -37,20 +37,19 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/loader/DocumentWriter.h"
+#include "./DocumentWriter.h"
 
-#include "core/dom/Document.h"
-#include "core/dom/ScriptableDocumentParser.h"
-#include "core/frame/FrameView.h"
-#include "core/frame/LocalDOMWindow.h"
-#include "core/frame/LocalFrame.h"
-#include "core/frame/Settings.h"
-#include "core/html/parser/TextResourceDecoder.h"
-#include "core/loader/FrameLoader.h"
-#include "core/loader/FrameLoaderStateMachine.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/ScriptableDocumentParser.h"
+#include "blinkit/blink/renderer/core/frame/FrameView.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/frame/Settings.h"
+#include "blinkit/blink/renderer/core/html/parser/TextResourceDecoder.h"
+#include "blinkit/blink/renderer/core/loader/FrameLoader.h"
+#include "blinkit/blink/renderer/core/loader/FrameLoaderStateMachine.h"
 #include "platform/weborigin/KURL.h"
 // BKTODO: #include "platform/weborigin/SecurityOrigin.h"
-#include "wtf/PassOwnPtr.h"
+#include "blinkit/blink/renderer/wtf/PassOwnPtr.h"
 
 using namespace BlinKit;
 

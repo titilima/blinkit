@@ -35,13 +35,11 @@
  *
  */
 
-#include "core/events/WindowEventContext.h"
+#include "./WindowEventContext.h"
 
-#include "core/dom/Document.h"
-#include "core/dom/Node.h"
-#include "core/events/Event.h"
-#include "core/events/NodeEventContext.h"
-#include "core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/events/Event.h"
+#include "blinkit/blink/renderer/core/events/NodeEventContext.h"
 
 namespace blink {
 

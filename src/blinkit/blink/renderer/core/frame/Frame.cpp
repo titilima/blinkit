@@ -42,7 +42,7 @@
 
 #include "blinkit/blink/renderer/core/dom/document_type.h"
 #include "blinkit/blink/renderer/core/events/Event.h"
-#include "blinkit/blink/renderer/core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/frame/local_dom_window.h"
 #include "blinkit/blink/renderer/core/frame/FrameHost.h"
 #include "blinkit/blink/renderer/core/frame/Settings.h"
 // BKTODO: #include "core/html/HTMLFrameElementBase.h"

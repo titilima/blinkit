@@ -57,7 +57,7 @@
 #include "blinkit/blink/renderer/core/frame/FrameConsole.h"
 #include "blinkit/blink/renderer/core/frame/FrameHost.h"
 #include "blinkit/blink/renderer/core/frame/FrameView.h"
-#include "blinkit/blink/renderer/core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/frame/local_dom_window.h"
 #include "blinkit/blink/renderer/core/frame/Settings.h"
 #if 0 // BKTODO:
 #include "core/html/HTMLFrameElementBase.h"
@@ -417,7 +417,7 @@ void LocalFrame::willDetachFrameHost()
         page()->scrollingCoordinator()->willDestroyScrollableArea(m_view.get());
 }
 
-void LocalFrame::setDOMWindow(std::unique_ptr<LocalDOMWindow> &&domWindow)
+void LocalFrame::setDOMWindow(GCUniquePtr<LocalDOMWindow> &&domWindow)
 {
     // Oilpan: setDOMWindow() cannot be used when finalizing. Which
     // is acceptable as its actions are either not needed or handled

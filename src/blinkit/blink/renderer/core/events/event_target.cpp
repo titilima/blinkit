@@ -47,7 +47,7 @@
 #include "blinkit/blink/renderer/core/editing/Editor.h"
 #include "blinkit/blink/renderer/core/events/Event.h"
 #include "blinkit/blink/renderer/core/inspector/InspectorInstrumentation.h"
-#include "blinkit/blink/renderer/core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/frame/local_dom_window.h"
 #include "blinkit/blink/renderer/core/frame/UseCounter.h"
 #include "blinkit/blink/renderer/platform/EventDispatchForbiddenScope.h"
 #include "blinkit/blink/renderer/wtf/StdLibExtras.h"

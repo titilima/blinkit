@@ -33,15 +33,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/page/PointerLockController.h"
+#include "./PointerLockController.h"
 
-#include "core/dom/Element.h"
-#include "core/events/Event.h"
-#include "core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/events/Event.h"
+#include "blinkit/blink/renderer/core/frame/local_dom_window.h"
 // BKTODO: #include "core/inspector/ConsoleMessage.h"
-#include "core/page/ChromeClient.h"
-#include "core/page/Page.h"
-#include "platform/PlatformMouseEvent.h"
+#include "blinkit/blink/renderer/core/page/ChromeClient.h"
+#include "blinkit/blink/renderer/core/page/Page.h"
+#include "blinkit/blink/renderer/platform/PlatformMouseEvent.h"
 
 namespace blink {
 

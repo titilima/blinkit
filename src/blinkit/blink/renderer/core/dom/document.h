@@ -61,7 +61,7 @@
 #include "blinkit/blink/renderer/core/dom/custom/CustomElement.h"
 // BKTODO: #include "core/fetch/ClientHintsPreferences.h"
 #include "blinkit/blink/renderer/core/frame/DOMTimerCoordinator.h"
-#include "blinkit/blink/renderer/core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/frame/local_dom_window.h"
 // BKTODO: #include "core/frame/OriginsUsingFeatures.h"
 #include "blinkit/blink/renderer/core/html/CollectionType.h"
 #include "blinkit/blink/renderer/core/html/parser/ParserSynchronizationPolicy.h"

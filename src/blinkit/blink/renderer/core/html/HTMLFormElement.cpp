@@ -46,7 +46,6 @@
 #include "blinkit/blink/renderer/core/events/Event.h"
 #include "blinkit/blink/renderer/core/events/GenericEventQueue.h"
 #include "blinkit/blink/renderer/core/events/ScopedEventQueue.h"
-#include "blinkit/blink/renderer/core/frame/LocalDOMWindow.h"
 #include "blinkit/blink/renderer/core/frame/LocalFrame.h"
 #include "blinkit/blink/renderer/core/frame/UseCounter.h"
 // BKTODO: #include "core/frame/csp/ContentSecurityPolicy.h"

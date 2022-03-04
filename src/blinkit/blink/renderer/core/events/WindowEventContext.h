@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -38,7 +39,7 @@
 #ifndef WindowEventContext_h
 #define WindowEventContext_h
 
-#include "core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/frame/local_dom_window.h"
 // BKTODO: #include "platform/heap/Handle.h"
 // BKTODO: #include "wtf/RefPtr.h"
 
@@ -49,8 +50,8 @@ class Event;
 class Node;
 class NodeEventContext;
 
-class WindowEventContext {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(WindowEventContext);
+class WindowEventContext
+{
     WTF_MAKE_NONCOPYABLE(WindowEventContext);
 public:
     WindowEventContext(Event&, const NodeEventContext& topNodeEventContext);

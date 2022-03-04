@@ -13,14 +13,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "core/frame/EventHandlerRegistry.h"
+#include "./EventHandlerRegistry.h"
 
-#include "core/frame/LocalDOMWindow.h"
-#include "core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/frame/local_dom_window.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
 // BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
-#include "core/page/ChromeClient.h"
-#include "core/page/Page.h"
-#include "core/page/scrolling/ScrollingCoordinator.h"
+#include "blinkit/blink/renderer/core/page/ChromeClient.h"
+#include "blinkit/blink/renderer/core/page/Page.h"
+#include "blinkit/blink/renderer/core/page/scrolling/ScrollingCoordinator.h"
 
 namespace blink {
 

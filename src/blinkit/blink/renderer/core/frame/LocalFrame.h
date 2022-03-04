@@ -121,7 +121,7 @@ public:
     void willDetachFrameHost();
 
     LocalDOMWindow* localDOMWindow() const;
-    void setDOMWindow(std::unique_ptr<LocalDOMWindow> &&);
+    void setDOMWindow(GCUniquePtr<LocalDOMWindow> &&);
     FrameView* view() const;
     Document* document() const;
     void setPagePopupOwner(Element&);
@@ -222,7 +222,7 @@ private:
     // BKTODO: OwnPtrWillBeMember<NavigationScheduler> m_navigationScheduler;
 
     GCUniquePtr<FrameView> m_view;
-    std::unique_ptr<LocalDOMWindow> m_domWindow;
+    GCUniquePtr<LocalDOMWindow> m_domWindow;
     // Usually 0. Non-null if this is the top frame of PagePopup.
     RefPtrWillBeMember<Element> m_pagePopupOwner;
 

@@ -25,7 +25,7 @@
 #include "blinkit/blink/renderer/core/frame/Frame.h"
 #include "blinkit/blink/renderer/core/frame/FrameClient.h"
 #include "blinkit/blink/renderer/core/frame/FrameConsole.h"
-#include "blinkit/blink/renderer/core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/frame/local_dom_window.h"
 #include "blinkit/blink/renderer/core/frame/Location.h"
 // BKTODO: #include "core/frame/RemoteFrame.h"
 #include "blinkit/blink/renderer/core/frame/Settings.h"

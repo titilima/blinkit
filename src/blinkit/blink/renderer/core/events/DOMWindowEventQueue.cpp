@@ -35,12 +35,12 @@
  *
  */
 
-#include "core/events/DOMWindowEventQueue.h"
+#include "./DOMWindowEventQueue.h"
 
-#include "core/events/Event.h"
-#include "core/frame/LocalDOMWindow.h"
-#include "core/frame/SuspendableTimer.h"
-#include "core/inspector/InspectorInstrumentation.h"
+#include "blinkit/blink/renderer/core/events/Event.h"
+#include "blinkit/blink/renderer/core/frame/local_dom_window.h"
+#include "blinkit/blink/renderer/core/frame/SuspendableTimer.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorInstrumentation.h"
 
 using namespace BlinKit;
 

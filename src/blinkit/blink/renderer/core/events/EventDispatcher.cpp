@@ -42,7 +42,7 @@
 #include "blinkit/blink/renderer/core/events/ScopedEventQueue.h"
 #include "blinkit/blink/renderer/core/events/WindowEventContext.h"
 #include "blinkit/blink/renderer/core/frame/FrameView.h"
-#include "blinkit/blink/renderer/core/frame/LocalDOMWindow.h"
+#include "blinkit/blink/renderer/core/frame/local_dom_window.h"
 #include "blinkit/blink/renderer/core/inspector/InspectorTraceEvents.h"
 #include "blinkit/blink/renderer/platform/EventDispatchForbiddenScope.h"
 #include "blinkit/blink/renderer/platform/TraceEvent.h"

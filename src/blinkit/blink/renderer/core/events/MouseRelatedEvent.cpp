@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: MouseRelatedEvent.cpp
+// Description: MouseRelatedEvent Class
+//      Author: Ziming Li
+//     Created: 2022-03-04
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -20,14 +31,13 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "core/events/MouseRelatedEvent.h"
+#include "./MouseRelatedEvent.h"
 
-#include "core/dom/Document.h"
-#include "core/frame/LocalDOMWindow.h"
-#include "core/frame/FrameView.h"
-#include "core/frame/LocalFrame.h"
-#include "core/layout/LayoutObject.h"
-#include "core/paint/PaintLayer.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/frame/FrameView.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/layout/LayoutObject.h"
+#include "blinkit/blink/renderer/core/paint/PaintLayer.h"
 
 namespace blink {
 

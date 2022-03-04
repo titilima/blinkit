@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - BlinKit Library
+// -------------------------------------------------
+//   File Name: DOMWindowProperty.cpp
+// Description: DOMWindowProperty Class
+//      Author: Ziming Li
+//     Created: 2022-03-04
+// -------------------------------------------------
+// Copyright (C) 2022 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google, Inc. All Rights Reserved.
  * Copyright (C) 2012 Apple Inc. All Rights Reserved.
@@ -24,10 +35,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/frame/DOMWindowProperty.h"
+#include "./DOMWindowProperty.h"
 
-#include "core/frame/LocalDOMWindow.h"
-#include "core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/frame/local_dom_window.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
 
 namespace blink {
 

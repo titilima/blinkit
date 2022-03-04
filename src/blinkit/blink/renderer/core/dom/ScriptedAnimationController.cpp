@@ -34,17 +34,16 @@
  *
  */
 
-#include "core/dom/ScriptedAnimationController.h"
+#include "./ScriptedAnimationController.h"
 
-#include "core/css/MediaQueryListListener.h"
-#include "core/dom/Document.h"
-#include "core/dom/FrameRequestCallback.h"
-#include "core/events/Event.h"
-#include "core/frame/FrameView.h"
-#include "core/frame/LocalDOMWindow.h"
-#include "core/inspector/InspectorInstrumentation.h"
-#include "core/inspector/InspectorTraceEvents.h"
-#include "core/loader/DocumentLoader.h"
+#include "blinkit/blink/renderer/core/css/MediaQueryListListener.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/FrameRequestCallback.h"
+#include "blinkit/blink/renderer/core/events/Event.h"
+#include "blinkit/blink/renderer/core/frame/FrameView.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorInstrumentation.h"
+#include "blinkit/blink/renderer/core/inspector/InspectorTraceEvents.h"
+#include "blinkit/blink/renderer/core/loader/DocumentLoader.h"
 // BKTODO: #include "platform/Logging.h"
 
 using namespace BlinKit;
