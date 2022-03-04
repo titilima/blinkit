@@ -319,6 +319,9 @@
     <Filter Include="blink\renderer\bindings\core\qjs">
       <UniqueIdentifier>{93496125-5028-4eb5-92ff-867f6a8bec3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="js">
+      <UniqueIdentifier>{23bffa28-65d4-4149-9209-3729445c3106}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -1037,9 +1040,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\EventDispatchForbiddenScope.cpp">
       <Filter>blink\renderer\platform</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\LocalDOMWindow.cpp">
-      <Filter>blink\renderer\core\frame</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\DOMWindow.cpp">
       <Filter>blink\renderer\core\frame</Filter>
@@ -4107,6 +4107,15 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_wrappable_impl.cpp">
       <Filter>blink\renderer\bindings\core\qjs</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\js\web_view_context.cpp">
+      <Filter>js</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_console.cpp">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\local_dom_window.cpp">
+      <Filter>blink\renderer\core\frame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -4211,9 +4220,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\SharedBuffer.h">
       <Filter>blink\renderer\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\FrameLoaderClient.h">
-      <Filter>blink\renderer\core\loader</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\platform\heap\Handle.h">
       <Filter>blink\renderer\platform\heap</Filter>
     </ClInclude>
@@ -4249,9 +4255,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\wtf\TemporaryChange.h">
       <Filter>blink\renderer\wtf</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\LocalDOMWindow.h">
-      <Filter>blink\renderer\core\frame</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\inspector\InspectorInstrumentation.h">
       <Filter>blink\renderer\core\inspector</Filter>
@@ -8881,6 +8884,24 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_wrappable_impl.h">
       <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\frame_loader_client.h">
+      <Filter>blink\renderer\core\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\js\web_view_context.h">
+      <Filter>js</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\js\runtime.h">
+      <Filter>js</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_bindings.h">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_c_function_list_entries.h">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\local_dom_window.h">
+      <Filter>blink\renderer\core\frame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

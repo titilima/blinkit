@@ -171,6 +171,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_scrollbar_behavior.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_theme_engine.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\exception_state.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_console.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_controller_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_wrappable_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_source_code.cpp" />
@@ -654,9 +655,9 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\FrameViewAutoSizeInfo.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\ImageBitmap.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\LayoutSubtreeRootList.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\LocalDOMWindow.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\LocalFrame.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\LocalFrameLifecycleNotifier.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\local_dom_window.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\Location.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\Navigator.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\frame\PageScaleConstraints.cpp" />
@@ -1368,6 +1369,7 @@
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_object.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_trace_visitor.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\gc\lifecycle_data_manager.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\js\web_view_context.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\loader_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\tasks\client_loader_task.cpp" />
@@ -1515,6 +1517,8 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebTextDirection.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\exception_state.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\exception_state_placeholder.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_bindings.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_c_function_list_entries.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_controller_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_wrappable_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\script_controller.h" />
@@ -2045,10 +2049,10 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\FrameViewAutoSizeInfo.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\ImageBitmap.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\LayoutSubtreeRootList.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\LocalDOMWindow.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\LocalFrame.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\LocalFrameLifecycleNotifier.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\LocalFrameLifecycleObserver.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\local_dom_window.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\Location.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\Navigator.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\frame\PageScaleConstraints.h" />
@@ -2378,8 +2382,8 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\layout\ViewFragmentationContext.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\DocumentLoader.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\FrameLoader.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\FrameLoaderClient.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\FrameLoadRequest.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\frame_loader_client.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\ImageLoader.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\LinkLoader.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\loader\LinkLoaderClient.h" />
@@ -2972,6 +2976,8 @@
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_trace_visitor.h" />
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_weak_object_set.h" />
     <ClInclude Include="..\..\..\src\blinkit\gc\lifecycle_data_manager.h" />
+    <ClInclude Include="..\..\..\src\blinkit\js\runtime.h" />
+    <ClInclude Include="..\..\..\src\blinkit\js\web_view_context.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\loader_thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\client_loader_task.h" />
