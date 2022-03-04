@@ -171,6 +171,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_scrollbar_behavior.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\impl\win_theme_engine.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\exception_state.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_console.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_controller_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_wrappable_impl.cpp" />
@@ -1517,6 +1518,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\public\web\WebTextDirection.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\exception_state.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\exception_state_placeholder.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_bindings.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_c_function_list_entries.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\script_controller_impl.h" />
