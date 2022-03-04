@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: LocalDOMWindow.cpp
+//   File Name: local_dom_window.cpp
 // Description: LocalDOMWindow Class
 //      Author: Ziming Li
 //     Created: 2021-07-24
@@ -35,7 +35,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "./LocalDOMWindow.h"
+#include "./local_dom_window.h"
 
 #include "blinkit/blink/public/platform/Platform.h"
 #include "blinkit/blink/public/platform/WebFrameScheduler.h"

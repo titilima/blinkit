@@ -2,7 +2,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: LocalDOMWindow.h
+//   File Name: local_dom_window.h
 // Description: LocalDOMWindow Class
 //      Author: Ziming Li
 //     Created: 2021-07-08
@@ -82,9 +82,9 @@ class LocalDOMWindow final : public DOMWindow
     WILL_BE_USING_PRE_FINALIZER(LocalDOMWindow, dispose);
 public:
     static GCRefPtr<Document> createDocument(const String& mimeType, const DocumentInit&, bool forceXHTML);
-    static std::unique_ptr<LocalDOMWindow> create(LocalFrame& frame)
+    static GCUniquePtr<LocalDOMWindow> create(LocalFrame &frame)
     {
-        return zed::wrap_unique(new LocalDOMWindow(frame));
+        return GCWrapUnique(new LocalDOMWindow(frame));
     }
 
     ~LocalDOMWindow() override;
