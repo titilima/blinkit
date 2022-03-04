@@ -16,7 +16,7 @@
 
 #include "bk_ui.h"
 #include "blinkit/blink/public/web/WebInputEvent.h"
-#include "blinkit/blink/renderer/core/loader/FrameLoaderClient.h"
+#include "blinkit/blink/renderer/core/loader/frame_loader_client.h"
 #include "blinkit/blink/renderer/platform/graphics/GraphicsLayer.h"
 #include "blinkit/blink/renderer/web/ContextMenuClientImpl.h"
 #include "blinkit/blink/renderer/web/DragClientImpl.h"
