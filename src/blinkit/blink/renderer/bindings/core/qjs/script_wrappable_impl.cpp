@@ -15,10 +15,13 @@
 
 namespace blink {
 
+ScriptWrappable::ScriptWrappable(void) : m_scriptObject(JS_UNINITIALIZED)
+{
+}
+
 ScriptWrappable::~ScriptWrappable(void)
 {
-    if (0 != m_contextObject)
-        JS_FreeValueRT(g_runtime, m_contextObject);
+    JS_FreeValueRT(g_runtime, m_scriptObject);
 }
 
 } // namespace blink

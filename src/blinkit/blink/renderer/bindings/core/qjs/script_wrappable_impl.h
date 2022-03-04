@@ -25,9 +25,9 @@ class ScriptWrappable
 public:
     virtual ~ScriptWrappable(void);
 protected:
-    ScriptWrappable(void) = default;
+    ScriptWrappable(void);
 private:
-    JSValue m_contextObject = 0;
+    JSValue m_scriptObject;
 };
 
 } // namespace blink

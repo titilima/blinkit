@@ -21,11 +21,18 @@ ScriptController::ScriptController(LocalFrame &frame) : m_frame(frame)
 {
 }
 
-ScriptController::~ScriptController(void) = default;
+ScriptController::~ScriptController(void)
+{
+    ASSERT(nullptr == m_ctx);
+}
 
 void ScriptController::clearForClose(void)
 {
-    ASSERT(false); // BKTODO:
+    if (nullptr != m_ctx)
+    {
+        JS_FreeContext(m_ctx);
+        m_ctx = nullptr;
+    }
 }
 
 void ScriptController::clearWindowProxy(void)
