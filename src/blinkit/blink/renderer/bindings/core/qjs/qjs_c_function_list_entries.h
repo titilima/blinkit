@@ -47,8 +47,22 @@ public:
         this->prop_flags = prop_flags;
         this->def_type = JS_DEF_OBJECT;
         this->magic = 0;
-        this->u.prop_list.tab = tab;
-        this->u.prop_list.len = len;
+        this->u.prop_list = { tab, len };
+    }
+};
+
+class AliasEntry final : public JSCFunctionListEntry
+{
+    STACK_ALLOCATED()
+public:
+    // JS_ALIAS_DEF
+    AliasEntry(const char *name, const char *from)
+    {
+        this->name = name;
+        this->prop_flags = JS_PROP_WRITABLE | JS_PROP_CONFIGURABLE;
+        this->def_type = JS_DEF_ALIAS;
+        this->magic = 0;
+        this->u.alias = { from, -1 };
     }
 };
 
