@@ -1,7 +1,8 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: HTMLDocument.h
+//   File Name: html_document.h
 // Description: HTMLDocument Class
 //      Author: Ziming Li
 //     Created: 2021-11-06
@@ -34,20 +35,21 @@
 #ifndef HTMLDocument_h
 #define HTMLDocument_h
 
-#include "core/dom/Document.h"
-#include "core/fetch/ResourceClient.h"
-#include "wtf/HashCountedSet.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/fetch/ResourceClient.h"
+#include "blinkit/blink/renderer/wtf/HashCountedSet.h"
 
 namespace blink {
 
 class HTMLBodyElement;
 
-class CORE_EXPORT HTMLDocument : public Document, public ResourceClient {
+class HTMLDocument : public Document, public ResourceClient
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     static GCRefPtr<HTMLDocument> create(const DocumentInit& initializer = DocumentInit())
     {
-        return BlinKit::GCWrapShared(new HTMLDocument(initializer));
+        return GCWrapShared(new HTMLDocument(initializer));
     }
     ~HTMLDocument() override;
 

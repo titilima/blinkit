@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: HTMLDocument.cpp
+//   File Name: html_document.cpp
 // Description: HTMLDocument Class
 //      Author: Ziming Li
 //     Created: 2021-07-24
@@ -61,7 +61,7 @@
  * version of this file under any of the LGPL, the MPL or the GPL.
  */
 
-#include "./HTMLDocument.h"
+#include "./html_document.h"
 
 #include "blinkit/blink/renderer/bindings/core/script_controller.h"
 #include "blinkit/blink/renderer/core/HTMLNames.h"
