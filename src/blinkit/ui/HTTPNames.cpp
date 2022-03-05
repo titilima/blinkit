@@ -22,7 +22,8 @@ const AtomicString& Content_Type = reinterpret_cast<AtomicString*>(&NamesStorage
 const AtomicString& GET = reinterpret_cast<AtomicString*>(&NamesStorage)[3];
 const AtomicString& POST = reinterpret_cast<AtomicString*>(&NamesStorage)[4];
 const AtomicString& Referer = reinterpret_cast<AtomicString*>(&NamesStorage)[5];
-const AtomicString& User_Agent = reinterpret_cast<AtomicString*>(&NamesStorage)[6];
+const AtomicString& Refresh = reinterpret_cast<AtomicString*>(&NamesStorage)[6];
+const AtomicString& User_Agent = reinterpret_cast<AtomicString*>(&NamesStorage)[7];
 
 void init()
 {
@@ -39,6 +40,7 @@ void init()
         { "GET", 1490282, 3 },
         { "POST", 13393727, 4 },
         { "Referer", 15797945, 7 },
+        { "Refresh", 7822740, 7 },
         { "User-Agent", 13018365, 10 },
     };
 

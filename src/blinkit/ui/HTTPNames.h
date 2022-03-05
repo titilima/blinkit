@@ -20,9 +20,10 @@ PLATFORM_EXPORT extern const WTF::AtomicString& Content_Type;
 PLATFORM_EXPORT extern const WTF::AtomicString& GET;
 PLATFORM_EXPORT extern const WTF::AtomicString& POST;
 PLATFORM_EXPORT extern const WTF::AtomicString& Referer;
+PLATFORM_EXPORT extern const WTF::AtomicString& Refresh;
 PLATFORM_EXPORT extern const WTF::AtomicString& User_Agent;
 
-const unsigned HTTPNamesCount = 7;
+const unsigned HTTPNamesCount = 8;
 
 PLATFORM_EXPORT void init();
 
