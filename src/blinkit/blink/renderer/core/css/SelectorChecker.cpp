@@ -51,7 +51,7 @@
 #include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
 #include "blinkit/blink/renderer/core/editing/FrameSelection.h"
 #include "blinkit/blink/renderer/core/frame/LocalFrame.h"
-#include "blinkit/blink/renderer/core/html/HTMLDocument.h"
+#include "blinkit/blink/renderer/core/html/html_document.h"
 // BKTODO: #include "core/html/HTMLFrameElementBase.h"
 #include "blinkit/blink/renderer/core/html/HTMLInputElement.h"
 #include "blinkit/blink/renderer/core/html/HTMLOptionElement.h"

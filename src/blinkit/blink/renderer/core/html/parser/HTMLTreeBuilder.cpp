@@ -47,7 +47,7 @@
 #include "blinkit/blink/renderer/core/dom/DocumentFragment.h"
 #include "blinkit/blink/renderer/core/dom/element_traversal.h"
 #include "blinkit/blink/renderer/core/frame/UseCounter.h"
-#include "blinkit/blink/renderer/core/html/HTMLDocument.h"
+#include "blinkit/blink/renderer/core/html/html_document.h"
 #include "blinkit/blink/renderer/core/html/HTMLFormElement.h"
 #include "blinkit/blink/renderer/core/html/parser/AtomicHTMLToken.h"
 #include "blinkit/blink/renderer/core/html/parser/HTMLDocumentParser.h"

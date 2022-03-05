@@ -39,16 +39,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/html/imports/HTMLImportLoader.h"
+#include "./HTMLImportLoader.h"
 
-#include "core/dom/Document.h"
-#include "core/dom/DocumentParser.h"
-#include "core/dom/StyleEngine.h"
+#include "blinkit/blink/renderer/core/dom/DocumentParser.h"
+#include "blinkit/blink/renderer/core/dom/StyleEngine.h"
 // BKTODO: #include "core/dom/custom/CustomElementSyncMicrotaskQueue.h"
-#include "core/html/HTMLDocument.h"
-#include "core/html/imports/HTMLImportChild.h"
-#include "core/html/imports/HTMLImportsController.h"
-#include "core/loader/DocumentWriter.h"
+#include "blinkit/blink/renderer/core/html/html_document.h"
+#include "blinkit/blink/renderer/core/html/imports/HTMLImportChild.h"
+#include "blinkit/blink/renderer/core/html/imports/HTMLImportsController.h"
+#include "blinkit/blink/renderer/core/loader/DocumentWriter.h"
 // BKTODO: #include "platform/network/ContentSecurityPolicyResponseHeaders.h"
 
 

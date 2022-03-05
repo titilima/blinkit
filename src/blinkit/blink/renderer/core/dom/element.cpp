@@ -97,7 +97,7 @@
 #include "blinkit/blink/renderer/core/html/class_list.h"
 // BKTODO: #include "core/html/HTMLCanvasElement.h"
 #include "blinkit/blink/renderer/core/html/HTMLCollection.h"
-#include "blinkit/blink/renderer/core/html/HTMLDocument.h"
+#include "blinkit/blink/renderer/core/html/html_document.h"
 #include "blinkit/blink/renderer/core/html/HTMLElement.h"
 #include "blinkit/blink/renderer/core/html/HTMLFormControlsCollection.h"
 #if 0 // BKTODO:
