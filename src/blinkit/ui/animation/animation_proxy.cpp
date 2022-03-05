@@ -33,7 +33,10 @@ AnimationProxy::AnimationProxy(void)
 
 AnimationProxy::~AnimationProxy(void)
 {
+    m_scheduler->Unregister(this);
+
     *m_hostAliveFlag = false;
+
 #ifndef NDEBUG
     ASSERT(!AppImpl::Get().GetCompositor().IsProxyAttached(this)); // Should be detached already!
 #endif
