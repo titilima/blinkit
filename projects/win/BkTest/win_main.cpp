@@ -12,16 +12,12 @@
 #include <Windows.h>
 #include <tchar.h>
 #include <bk_app.h>
+#include <bk_js.h>
 #include <bk.hpp>
 
 using namespace bk;
 
 // #define TEST_CRAWLER_ONLY
-
-static const char UserScript[] = R"(
-({
-})
-)";
 
 static const char ReadyCode[] = R"(
     var e = document.querySelector('h1');
@@ -52,20 +48,9 @@ private:
         BkDestroyCrawler(reinterpret_cast<Client *>(pThis)->m_crawler);
     }
 
-    bool get_config(int cfg, std::string &dst) override
+    void document_ready(BkCrawler crawler) override
     {
-        switch (cfg)
-        {
-            case BK_CFG_OBJECT_SCRIPT:
-                dst = UserScript;
-                break;
-            default:
-                return false;
-        }
-        return true;
-    }
-    void document_ready(BkJSContext ctx) override
-    {
+        BkJSContext ctx = BkGetJSContextFromCrawler(crawler);
         BkEvaluate(ctx, ReadyCode, std::size(ReadyCode) - 1, nullptr);
         ::PostQuitMessage(EXIT_SUCCESS);
     }
