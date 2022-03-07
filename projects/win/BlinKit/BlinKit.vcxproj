@@ -727,7 +727,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDirectoryElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDivElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDListElement.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDocument.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLFieldSetElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLFontElement.cpp" />
@@ -785,6 +784,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLUListElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLUnknownElement.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLWBRElement.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\html_document.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\ImageData.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\imports\HTMLImport.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\imports\HTMLImportChild.cpp" />
@@ -1370,6 +1370,8 @@
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_object.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_trace_visitor.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\gc\lifecycle_data_manager.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\js\crawler_context.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\js\js.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\web_view_context.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\loader_thread.cpp" />
@@ -1434,6 +1436,7 @@
     <ClInclude Include="..\..\..\sdk\include\bk_app.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_crawler.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_def.h" />
+    <ClInclude Include="..\..\..\sdk\include\bk_js.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_ui.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_thread_request_client.h" />
@@ -2135,7 +2138,6 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDirectoryElement.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDivElement.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDListElement.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDocument.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLElement.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLFieldSetElement.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLFontElement.h" />
@@ -2193,6 +2195,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLUListElement.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLUnknownElement.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLWBRElement.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\html_document.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\ImageData.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\imports\HTMLImportLoader.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\LabelableElement.h" />
@@ -2978,6 +2981,7 @@
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_trace_visitor.h" />
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_weak_object_set.h" />
     <ClInclude Include="..\..\..\src\blinkit\gc\lifecycle_data_manager.h" />
+    <ClInclude Include="..\..\..\src\blinkit\js\crawler_context.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\runtime.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\web_view_context.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\loader_task.h" />

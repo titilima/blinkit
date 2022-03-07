@@ -1536,9 +1536,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\editing\serializers\Serialization.cpp">
       <Filter>blink\renderer\core\editing\serializers</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDocument.cpp">
-      <Filter>blink\renderer\core\html</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLFormControlsCollection.cpp">
       <Filter>blink\renderer\core\html</Filter>
     </ClCompile>
@@ -4119,6 +4116,15 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs.cpp">
       <Filter>blink\renderer\bindings\core\qjs</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\js\crawler_context.cpp">
+      <Filter>js</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\html_document.cpp">
+      <Filter>blink\renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\js\js.cpp">
+      <Filter>js</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -4926,9 +4932,6 @@
       <Filter>blink\renderer\core\html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDListElement.h">
-      <Filter>blink\renderer\core\html</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLDocument.h">
       <Filter>blink\renderer\core\html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\HTMLElement.h">
@@ -8908,6 +8911,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs.h">
       <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\js\crawler_context.h">
+      <Filter>js</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\html\html_document.h">
+      <Filter>blink\renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\sdk\include\bk_js.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
