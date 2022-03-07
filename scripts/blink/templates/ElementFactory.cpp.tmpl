@@ -3,16 +3,15 @@
 
 #include "./{{namespace}}ElementFactory.h"
 
-#include "{{namespace}}Names.h"
+#include "blinkit/blink/renderer/core/{{namespace}}Names.h"
 {% for tag in tags|groupby('interface') %}
-#include "core/{{namespace|lower}}/{{tag[0]}}.h"
+#include "blinkit/blink/renderer/core/{{namespace|lower}}/{{tag[0]}}.h"
 {% endfor %}
 {% if fallback_interface %}
-#include "core/{{namespace|lower}}/{{fallback_interface}}.h"
+#include "blinkit/blink/renderer/core/{{namespace|lower}}/{{fallback_interface}}.h"
 {% endif %}
-#include "core/dom/custom/CustomElement.h"
-#include "core/dom/custom/CustomElementRegistrationContext.h"
-#include "core/dom/Document.h"
+#include "blinkit/blink/renderer/core/dom/custom/CustomElement.h"
+#include "blinkit/blink/renderer/core/dom/custom/CustomElementRegistrationContext.h"
 
 namespace blink {
 

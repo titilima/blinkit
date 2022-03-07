@@ -5,8 +5,8 @@
 #ifndef HTMLElementFactory_h
 #define HTMLElementFactory_h
 
-#include "platform/heap/Handle.h"
-#include "wtf/Forward.h"
+#include "blinkit/blink/renderer/platform/heap/Handle.h"
+#include "blinkit/blink/renderer/wtf/Forward.h"
 
 namespace blink {
 
@@ -14,7 +14,8 @@ class Document;
 class HTMLElement;
 class HTMLFormElement;
 
-class HTMLElementFactory {
+class HTMLElementFactory
+{
 public:
     static GCRefPtr<HTMLElement> createHTMLElement(
         const AtomicString& localName,
