@@ -27,6 +27,8 @@ public:
 
     bool ToString(std::string &dst, JSValue v);
 private:
+    std::string ToStringNotChecked(JSValue v);
+
     JSContext *m_ctx;
 };
 
