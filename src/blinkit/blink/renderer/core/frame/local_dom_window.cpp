@@ -72,7 +72,6 @@
 #include "blinkit/blink/renderer/core/frame/ScrollToOptions.h"
 #include "blinkit/blink/renderer/core/frame/Settings.h"
 #include "blinkit/blink/renderer/core/frame/SuspendableTimer.h"
-#include "blinkit/blink/renderer/core/html/HTMLDocument.h"
 // BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
 #include "blinkit/blink/renderer/core/input/EventHandler.h"
 // BKTODO: #include "core/inspector/ConsoleMessageStorage.h"
@@ -89,9 +88,12 @@
 // BKTODO: #include "core/page/WindowFeatures.h"
 #include "blinkit/blink/renderer/core/page/scrolling/ScrollingCoordinator.h"
 #include "blinkit/blink/renderer/platform/EventDispatchForbiddenScope.h"
-#include "blinkit/crawler/dom/crawler_document.h"
-
-using namespace BlinKit;
+#ifdef BLINKIT_CRAWLER_ENABLED
+#   include "blinkit/crawler/dom/crawler_document.h"
+#endif
+#ifdef BLINKIT_UI_ENABLED
+#   include "blinkit/blink/renderer/core/html/html_document.h"
+#endif
 
 namespace blink {
 
@@ -383,7 +385,7 @@ GCRefPtr<Document> LocalDOMWindow::createDocument(const String& mimeType, const 
     {
 #ifdef BLINKIT_CRAWLER_ENABLED
         case FrameClient::Type::Crawler:
-            ASSERT(false); // BKTODO:
+            document = CrawlerDocument::Create(init);
             break;
 #endif
 #ifdef BLINKIT_UI_ENABLED

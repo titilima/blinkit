@@ -34,7 +34,7 @@ public:
     std::string GetCookies(const std::string &URL) const;
     bool ScriptEnabled(const std::string &URL) const;
     bool ProcessRequestComplete(BkResponse response, BkWorkController controller);
-    bool HijackRequest(const char *URL, std::string &dst) const;
+    bool HijackScript(const char *URL, std::string &dst) const;
     void ModifyRequest(const char *URL, BkRequest req);
     void HijackResponse(BkResponse response);
     bool ProcessConsoleMessage(int type, const char *msg);
@@ -45,7 +45,7 @@ public:
     int Run(const char *URL);
     CookieJarImpl* GetCookieJar(bool createIfNotExists);
     void SetCookieJar(CookieJarImpl *cookieJar);
-    int CallJS(BkJSCallback callback, void *userData);
+    BkJSContext GetJSContext(void);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     bool DirtyFlag(void) const { return m_dirty; }
@@ -57,18 +57,13 @@ private:
     Type GetType(void) const override { return Type::Crawler; }
 #endif
     // FrameLoaderClient
+    void dispatchDidFinishLoad(void) override;
     String userAgent(void) override;
-#if 0 // BKTODO:
-    void DidFinishLoad(void) override;
-    void TransitionToCommittedForNewPage(void) override;
-    void DispatchDidReceiveTitle(const String &title) override {}
-    void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) override;
-#endif
 
     mutable zed::shared_mutex m_mutex;
 
     BkCrawlerClient m_client;
-    std::unique_ptr<blink::LocalFrame> m_frame;
+    BlinKit::GCUniquePtr<blink::LocalFrame> m_frame;
     bool m_dirty = false;
 
     CookieJarImpl *m_cookieJar = nullptr;

@@ -270,4 +270,10 @@ bool HTMLDocument::isCaseSensitiveAttribute(const QualifiedName& attributeName)
     return !isPossibleHTMLAttr || !htmlCaseInsensitiveAttributesSet->contains(attributeName.localName().impl());
 }
 
+GCRefPtr<Element> HTMLDocument::createElement(const AtomicString &name, Element *form, bool createdByParser)
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
 }
+
+} // namespace blink

@@ -271,7 +271,7 @@ Node::Node(TreeScope* treeScope, ConstructionType type)
     , m_previous(nullptr)
     , m_next(nullptr)
 {
-    ASSERT(m_treeScope || type == CreateDocument || type == CreateShadowRoot);
+    ASSERT(m_treeScope || CreateDocument == (CreateDocument & type) || type == CreateShadowRoot);
 #if !ENABLE(OILPAN)
     if (m_treeScope)
         m_treeScope->guardRef();

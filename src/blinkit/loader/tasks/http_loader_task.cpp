@@ -142,13 +142,11 @@ void HTTPLoaderTask::PopulateHijackedResponse(const std::string &URL, const std:
 
 void HTTPLoaderTask::PopulateResourceResponse(ResourceResponse &response) const
 {
-    ASSERT(false); // BKTODO:
-#if 0
     std::string currentURL;
     m_response->GetData(BK_RESPONSE_CURRENT_URL, BufferImpl::Wrap(currentURL));
-    response.SetURL(GURL(currentURL));
+    response.setURL(KURL(currentURL));
 
-    response.SetHTTPStatusCode(m_response->StatusCode());
+    response.setHTTPStatusCode(m_response->StatusCode());
 
     std::string contentType;
     m_response->GetHeader(Strings::HttpHeader::ContentType, BufferImpl::Wrap(contentType));
@@ -156,21 +154,18 @@ void HTTPLoaderTask::PopulateResourceResponse(ResourceResponse &response) const
     bool hasCharset = false;
     std::string mimeType, charset;
     net::HttpUtil::ParseContentType(contentType, &mimeType, &charset, &hasCharset, nullptr);
-    response.SetMimeType(AtomicString::FromStdUTF8(mimeType));
+    response.setMimeType(AtomicString::fromStdUTF8(mimeType));
     if (hasCharset)
         response.setTextEncodingName(AtomicString::fromStdUTF8(charset));
-#endif
 }
 
 int HTTPLoaderTask::PopulateResponse(ResourceResponse &resourceResponse, std::string_view &body) const
 {
     CrawlerImpl *crawler = m_resourceRequest.Crawler();
 
-    ASSERT(false); // BKTODO:
-#if 0
-    switch (m_resourceRequest.GetHijackType())
+    switch (m_resourceRequest.GetType())
     {
-        case HijackType::kMainHTML:
+        case ResourceRequest::Type::MainHTML:
         {
             if (crawler->ProcessRequestComplete(m_response, const_cast<HTTPLoaderTask *>(this)))
                 return BK_ERR_CANCELLED;
@@ -178,11 +173,9 @@ int HTTPLoaderTask::PopulateResponse(ResourceResponse &resourceResponse, std::st
         }
 
         default:
-            ASSERT(HijackType::kScript == m_resourceRequest.GetHijackType());
+            ASSERT(ResourceRequest::Type::Script == m_resourceRequest.GetType());
             crawler->HijackResponse(m_response);
-            break;
     }
-#endif
 
     PopulateResourceResponse(resourceResponse);
     body = std::string_view(reinterpret_cast<const char *>(m_response->Content()), m_response->ContentLength());
@@ -207,11 +200,12 @@ int HTTPLoaderTask::PreProcess(void)
     }
 
     BkSetRequestMethod(m_request, m_resourceRequest.httpMethod().stdUTF8().c_str());
-    ASSERT(false); // BKTODO:
-#if 0
-    for (const auto &it : m_resourceRequest.allHeaders().GetRawMap())
-        BkSetRequestHeader(m_request, it.first.c_str(), it.second.c_str());
-#endif
+    for (const auto &it : m_resourceRequest.httpHeaderFields())
+    {
+        std::string name = it.key.stdUTF8();
+        std::string value = it.value.stdUTF8();
+        BkSetRequestHeader(m_request, name.c_str(), value.c_str());
+    }
 
     CrawlerImpl *crawler = m_resourceRequest.Crawler();
 
@@ -229,17 +223,14 @@ bool HTTPLoaderTask::ProcessHijackRequest(const std::string &URL)
 {
     ASSERT(isMainThread());
 
-    ASSERT(false); // BKTODO:
-#if 0
-    if (HijackType::kScript != m_resourceRequest.GetHijackType())
+    if (ResourceRequest::Type::Script != m_resourceRequest.GetType())
         return false;
 
     std::string hijack;
-    if (!m_resourceRequest.Crawler()->HijackRequest(URL.c_str(), hijack))
+    if (!m_resourceRequest.Crawler()->HijackScript(URL.c_str(), hijack))
         return false;
 
     PopulateHijackedResponse(URL, hijack);
-#endif
     return true;
 }
 

@@ -535,7 +535,7 @@ void HTMLSelectElement::setLength(unsigned newLen, ExceptionState& exceptionStat
 
     if (diff < 0) { // Add dummy elements.
         do {
-            GCRefPtr<Element> e = document().createElement(optionTag, false);
+            GCRefPtr<Element> e = document().createElement(optionTag.localName(), nullptr, false);
             appendChild(e.get(), exceptionState);
             if (exceptionState.hadException())
                 break;

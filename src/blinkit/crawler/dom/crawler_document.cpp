@@ -11,10 +11,8 @@
 
 #include "crawler_document.h"
 
+#include "blinkit/blink/renderer/core/HTMLNames.h"
 #include "blinkit/crawler/dom/crawler_script_element.h"
-// BKTODO: #include "third_party/blink/renderer/core/html_names.h"
-
-using namespace blink;
 
 namespace BlinKit {
 
@@ -23,14 +21,14 @@ CrawlerDocument::CrawlerDocument(const DocumentInit &init) : Document(init, HTML
     // Nothing
 }
 
-#if 0 // BKTODO:
-Element* CrawlerDocument::CreateElement(const AtomicString &localName, CreateElementFlags flags)
+GCRefPtr<Element> CrawlerDocument::createElement(const AtomicString &name, Element *form, bool createdByParser)
 {
-    using namespace html_names;
-    if (localName == kScriptTag.LocalName())
-        return CrawlerScriptElement::Create(*this, flags);
-    return new CrawlerElement(localName, this);
+    using namespace HTMLNames;
+
+    ASSERT(nullptr == form); // BKTODO:
+    if (scriptTag.localName() == name)
+        ASSERT(false); // BKTODO:
+    return GCWrapShared(new CrawlerElement(name, this));
 }
-#endif
 
 } // namespace BlinKit

@@ -222,19 +222,21 @@ enum DocumentClass {
 
 using DocumentClassFlags = unsigned char;
 
-class CORE_EXPORT Document : public ContainerNode
-                           , public TreeScope
-                           , public ExecutionContext
-                           , public WillBeHeapSupplementable<Document>
-                           // BKTODO: , public DocumentLifecycleNotifier
+class Document : public ContainerNode
+               , public TreeScope
+               , public ExecutionContext
+               , public WillBeHeapSupplementable<Document>
+               // BKTODO: , public DocumentLifecycleNotifier
 {
     DEFINE_WRAPPERTYPEINFO();
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(Document);
 public:
+#if 0
     static PassRefPtrWillBeRawPtr<Document> create(const DocumentInit& initializer = DocumentInit())
     {
         return adoptRefWillBeNoop(new Document(initializer));
     }
+#endif
     ~Document() override;
 
     MediaQueryMatcher& mediaQueryMatcher();
@@ -311,7 +313,7 @@ public:
     GCRefPtr<Attr> createAttributeNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState&, bool shouldIgnoreNamespaceChecks = false);
     GCRefPtr<Node> importNode(Node* importedNode, bool deep, ExceptionState&);
     GCRefPtr<Element> createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState&);
-    GCRefPtr<Element> createElement(const QualifiedName&, bool createdByParser);
+    virtual GCRefPtr<Element> createElement(const AtomicString &name, Element *form, bool createdByParser) = 0;
 
     Element* elementFromPoint(int x, int y) const;
     std::vector<Element *> elementsFromPoint(int x, int y) const;
@@ -1130,6 +1132,10 @@ private:
     friend class IgnoreDestructiveWriteCountIncrementer;
     friend class NthIndexCache;
 
+    static ConstructionType AdjustConstructionType(DocumentClassFlags classFlags) {
+        return 0 != (CrawlerDocumentClass & classFlags) ? CreateCrawlerDocument : CreateDocument;
+    }
+
     bool isDocumentFragment() const = delete; // This will catch anyone doing an unnecessary check.
     bool isDocumentNode() const = delete; // This will catch anyone doing an unnecessary check.
     bool isElementNode() const = delete; // This will catch anyone doing an unnecessary check.
@@ -1377,7 +1383,9 @@ private:
     bool m_isSrcdocDocument;
     bool m_isMobileDocument;
 
-    LayoutView* m_layoutView;
+#ifdef BLINKIT_UI_ENABLED
+    LayoutView *m_layoutView = nullptr;
+#endif
 
 #if !ENABLE(OILPAN)
     WeakPtrFactory<Document> m_weakFactory;

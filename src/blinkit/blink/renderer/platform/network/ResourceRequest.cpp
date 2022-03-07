@@ -35,97 +35,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "platform/network/ResourceRequest.h"
+#include "./ResourceRequest.h"
 
-#include "platform/HTTPNames.h"
+#include "blinkit/blink/public/platform/WebURLRequest.h"
+#include "blinkit/blink/renderer/platform/HTTPNames.h"
 // BKTODO: #include "platform/weborigin/SecurityOrigin.h"
-#include "public/platform/WebURLRequest.h"
 
 namespace blink {
 
 double ResourceRequest::s_defaultTimeoutInterval = INT_MAX;
-
-#if 0 // BKTODO:
-ResourceRequest::ResourceRequest(CrossThreadResourceRequestData* data)
-    : ResourceRequest()
-{
-    setURL(data->m_url);
-    setCachePolicy(data->m_cachePolicy);
-    setTimeoutInterval(data->m_timeoutInterval);
-    setFirstPartyForCookies(data->m_firstPartyForCookies);
-    setRequestorOrigin(data->m_requestorOrigin);
-    setHTTPMethod(AtomicString(data->m_httpMethod));
-    setPriority(data->m_priority, data->m_intraPriorityValue);
-
-    m_httpHeaderFields.adopt(data->m_httpHeaders.release());
-
-    setHTTPBody(data->m_httpBody);
-    setAllowStoredCredentials(data->m_allowStoredCredentials);
-    setReportUploadProgress(data->m_reportUploadProgress);
-    setHasUserGesture(data->m_hasUserGesture);
-    setDownloadToFile(data->m_downloadToFile);
-    setUseStreamOnResponse(data->m_useStreamOnResponse);
-    setSkipServiceWorker(data->m_skipServiceWorker);
-    setShouldResetAppCache(data->m_shouldResetAppCache);
-    setRequestorID(data->m_requestorID);
-    setRequestorProcessID(data->m_requestorProcessID);
-    setAppCacheHostID(data->m_appCacheHostID);
-    setRequestContext(data->m_requestContext);
-    setFrameType(data->m_frameType);
-    setFetchRequestMode(data->m_fetchRequestMode);
-    setFetchCredentialsMode(data->m_fetchCredentialsMode);
-    setFetchRedirectMode(data->m_fetchRedirectMode);
-    setLoFiState(data->m_loFiState);
-    m_referrerPolicy = data->m_referrerPolicy;
-    m_didSetHTTPReferrer = data->m_didSetHTTPReferrer;
-    m_checkForBrowserSideNavigation = data->m_checkForBrowserSideNavigation;
-    m_uiStartTime = data->m_uiStartTime;
-    m_originatesFromReservedIPRange = data->m_originatesFromReservedIPRange;
-    m_inputPerfMetricReportPolicy = data->m_inputPerfMetricReportPolicy;
-    m_followedRedirect = data->m_followedRedirect;
-}
-
-PassOwnPtr<CrossThreadResourceRequestData> ResourceRequest::copyData() const
-{
-    OwnPtr<CrossThreadResourceRequestData> data = adoptPtr(new CrossThreadResourceRequestData());
-    data->m_url = url().copy();
-    data->m_cachePolicy = cachePolicy();
-    data->m_timeoutInterval = timeoutInterval();
-    data->m_firstPartyForCookies = firstPartyForCookies().copy();
-    data->m_requestorOrigin = requestorOrigin() ? requestorOrigin()->isolatedCopy() : nullptr;
-    data->m_httpMethod = httpMethod().string().isolatedCopy();
-    data->m_httpHeaders = httpHeaderFields().copyData();
-    data->m_priority = priority();
-    data->m_intraPriorityValue = m_intraPriorityValue;
-
-    if (m_httpBody)
-        data->m_httpBody = m_httpBody->deepCopy();
-    data->m_allowStoredCredentials = m_allowStoredCredentials;
-    data->m_reportUploadProgress = m_reportUploadProgress;
-    data->m_hasUserGesture = m_hasUserGesture;
-    data->m_downloadToFile = m_downloadToFile;
-    data->m_useStreamOnResponse = m_useStreamOnResponse;
-    data->m_skipServiceWorker = m_skipServiceWorker;
-    data->m_shouldResetAppCache = m_shouldResetAppCache;
-    data->m_requestorID = m_requestorID;
-    data->m_requestorProcessID = m_requestorProcessID;
-    data->m_appCacheHostID = m_appCacheHostID;
-    data->m_requestContext = m_requestContext;
-    data->m_frameType = m_frameType;
-    data->m_fetchRequestMode = m_fetchRequestMode;
-    data->m_fetchCredentialsMode = m_fetchCredentialsMode;
-    data->m_fetchRedirectMode = m_fetchRedirectMode;
-    data->m_loFiState = m_loFiState;
-    data->m_referrerPolicy = m_referrerPolicy;
-    data->m_didSetHTTPReferrer = m_didSetHTTPReferrer;
-    data->m_checkForBrowserSideNavigation = m_checkForBrowserSideNavigation;
-    data->m_uiStartTime = m_uiStartTime;
-    data->m_originatesFromReservedIPRange = m_originatesFromReservedIPRange;
-    data->m_inputPerfMetricReportPolicy = m_inputPerfMetricReportPolicy;
-    data->m_followedRedirect = m_followedRedirect;
-    return data.release();
-}
-#endif
 
 bool ResourceRequest::isEmpty() const
 {

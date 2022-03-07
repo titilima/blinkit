@@ -40,8 +40,7 @@ BKEXPORT void BKAPI BkClearCookieJar(BkCookieJar cookieJar);
 BK_DECLARE_HANDLE(BkCrawler, CrawlerImpl);
 
 enum BkCrawlerConfig {
-    BK_CFG_OBJECT_SCRIPT = 0,
-    BK_CFG_USER_AGENT,
+    BK_CFG_USER_AGENT = 0,
 };
 
 struct BkCrawlerClient {
@@ -53,7 +52,7 @@ struct BkCrawlerClient {
      *   - REQUIRED.
      *   - Thread: client.
      */
-    void (BKAPI * DocumentReady)(BkJSContext, void *);
+    void (BKAPI * DocumentReady)(BkCrawler, void *);
 
     /**
      * Fires after a main(HTML) request completed.
@@ -89,7 +88,7 @@ struct BkCrawlerClient {
      *   - Thread: BlinKit.
      *   - Return true to use the hijacked data as the script, and the request will not be performed.
      */
-    bool_t (BKAPI * HijackRequest)(const char *URL, struct BkBuffer *hijacked, void *);
+    bool_t (BKAPI * HijackScript)(const char *URL, struct BkBuffer *hijacked, void *);
 
     /**
      * Modify requests before performing, e.g. adding or replacing HTTP headers.
@@ -123,12 +122,12 @@ struct BkCrawlerClient {
 BKEXPORT BkCrawler BKAPI BkCreateCrawler(struct BkCrawlerClient *client);
 BKEXPORT void BKAPI BkDestroyCrawler(BkCrawler crawler);
 
-BKEXPORT void BKAPI BkCrawlerEnableCookies(BkCrawler crawler, BkCookieJar *cookieJar);
+BKEXPORT void BKAPI BkEnableCrawlerCookies(BkCrawler crawler, BkCookieJar *cookieJar);
 BKEXPORT void BKAPI BkSetCookieJar(BkCrawler crawler, BkCookieJar cookieJar);
 
 BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL);
 
-BKEXPORT int BKAPI BkCrawlerCallJS(BkCrawler crawler, BkJSCallback callback, void *userData);
+BKEXPORT BkJSContext BKAPI BkGetJSContextFromCrawler(BkCrawler crawler);
 
 /**
  * Miscellaneous

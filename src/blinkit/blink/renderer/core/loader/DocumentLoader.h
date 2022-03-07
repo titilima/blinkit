@@ -41,30 +41,29 @@
 #ifndef DocumentLoader_h
 #define DocumentLoader_h
 
-#include "core/CoreExport.h"
 #if 0 // BKTODO:
 #include "core/dom/WeakIdentifierMap.h"
 #include "core/fetch/ClientHintsPreferences.h"
 #endif
-#include "core/fetch/RawResource.h"
-#include "core/fetch/ResourceLoaderOptions.h"
-#include "core/fetch/ResourcePtr.h"
-#include "core/fetch/SubstituteData.h"
+#include "blinkit/blink/renderer/core/fetch/RawResource.h"
+#include "blinkit/blink/renderer/core/fetch/ResourceLoaderOptions.h"
+#include "blinkit/blink/renderer/core/fetch/ResourcePtr.h"
+#include "blinkit/blink/renderer/core/fetch/SubstituteData.h"
 #if 0 // BKTODO:
 #include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/loader/DocumentLoadTiming.h"
 #endif
-#include "core/loader/DocumentWriter.h"
+#include "blinkit/blink/renderer/core/loader/DocumentWriter.h"
 #if 0 // BKTODO:
 #include "core/loader/FrameLoaderTypes.h"
 #include "core/loader/NavigationPolicy.h"
 #endif
-#include "platform/SharedBuffer.h"
-#include "platform/network/ResourceError.h"
-#include "platform/network/ResourceRequest.h"
-#include "platform/network/ResourceResponse.h"
-#include "wtf/HashSet.h"
-#include "wtf/RefPtr.h"
+#include "blinkit/blink/renderer/platform/SharedBuffer.h"
+#include "blinkit/blink/renderer/platform/network/ResourceError.h"
+#include "blinkit/blink/renderer/platform/network/ResourceRequest.h"
+#include "blinkit/blink/renderer/platform/network/ResourceResponse.h"
+#include "blinkit/blink/renderer/wtf/HashSet.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
 
 namespace blink {
 
@@ -77,8 +76,8 @@ class MHTMLArchive;
 class ResourceLoader;
 class ThreadedDataReceiver;
 
-class CORE_EXPORT DocumentLoader : public BlinKit::GCObject, private RawResourceClient {
-    USING_FAST_MALLOC_WILL_BE_REMOVED(DocumentLoader);
+class DocumentLoader : public GCObject, private RawResourceClient
+{
 public:
     static PassRefPtrWillBeRawPtr<DocumentLoader> create(LocalFrame* frame, const ResourceRequest& request, const SubstituteData& data)
     {
@@ -183,6 +182,7 @@ protected:
 private:
     static GCUniquePtr<DocumentWriter> createWriterFor(const Document* ownerDocument, const DocumentInit&, const AtomicString& mimeType, const AtomicString& encoding, bool dispatch, ParserSynchronizationPolicy);
 
+    const AtomicString& AdjustEncoding(void) const;
     void ensureWriter(const AtomicString& mimeType, const KURL& overridingURL = KURL());
     void endWriting(DocumentWriter*);
 

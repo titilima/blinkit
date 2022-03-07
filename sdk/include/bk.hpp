@@ -21,7 +21,6 @@
 #include <vector>
 #include "bk_crawler.h"
 #include "bk_http.h"
-#include "bk_js.h"
 #include "bk_ui.h"
 
 namespace bk {
@@ -73,10 +72,10 @@ protected:
     void adjust_raw_client(BkCrawlerClient &client) const override;
     virtual bool get_config(int cfg, std::string &dst) { return false; }
 private:
-    virtual void document_ready(BkJSContext ctx) = 0;
+    virtual void document_ready(BkCrawler crawler) = 0;
     virtual void on_crawler_error(int code, const char *url) { assert(false); /* TODO: Process error yourself! */ }
 
-    static void BKAPI document_ready_callback(BkJSContext ctx, void *p);
+    static void BKAPI document_ready_callback(BkCrawler crawler, void *p);
     static bool_t BKAPI get_config_callback(int cfg, BkBuffer *dst, void *p);
     static void BKAPI error_callback(int code, const char *url, void *p);
 };
@@ -159,224 +158,6 @@ private:
     std::list<callback> m_callbacks;
 };
 
-class js_call
-{
-public:
-    static js_call* prepare(std::function<void(BkJSContext)> &&callback);
-    int commit_to(BkCrawler crawler) { return BkCrawlerCallJS(crawler, callback_impl, this); }
-private:
-    js_call(std::function<void(BkJSContext)> &&callback) : m_callback(std::move(callback)) {}
-
-    static void BKAPI callback_impl(BkJSContext ctx, void *userData);
-
-    std::function<void(BkJSContext)> m_callback;
-};
-
-class js_value
-{
-public:
-    js_value(BkJSValue val = nullptr) : m_val(val) {}
-    ~js_value(void)
-    {
-        if (nullptr != m_val)
-            BkReleaseValue(m_val);
-    }
-
-    BkJSValue* operator&() { return &m_val; }
-    operator bool() const { return nullptr != m_val; }
-    operator BkJSValue() const { return m_val; }
-
-    bool to_boolean(bool def_val) const
-    {
-        bool_t ret = def_val;
-        if (nullptr != m_val)
-            BkGetBooleanValue(m_val, &ret);
-        return ret;
-    }
-    std::string to_string(void) const
-    {
-        std::string ret;
-        if (nullptr != m_val)
-            BkGetValueAsString(m_val, make_buffer(ret));
-        return ret;
-    }
-private:
-    BkJSValue m_val;
-};
-
-class js_array
-{
-public:
-    js_array(BkJSArray arr) : m_arr(arr) {}
-    operator BkJSArray() const { return m_arr; }
-
-    bool get_boolean(unsigned i, bool def_val) const
-    {
-        bool ret = def_val;
-        if (nullptr != m_arr)
-        {
-            js_value v(BkArrayGetMember(m_arr, i));
-            ret = v.to_boolean(def_val);
-        }
-        return ret;
-    }
-    std::string get_string(unsigned i, const char *def_val = "") const
-    {
-        std::string ret(def_val);
-        if (nullptr != m_arr)
-        {
-            js_value v(BkArrayGetMember(m_arr, i));
-            if (v)
-                ret = v.to_string();
-        }
-        return ret;
-    }
-
-    std::string to_json(void) const
-    {
-        std::string ret("null");
-        if (nullptr != m_arr)
-            BkArrayToJSON(m_arr, make_buffer(ret));
-        return ret;
-    }
-private:
-    BkJSArray m_arr;
-};
-
-class js_object
-{
-public:
-    js_object(BkJSObject obj) : m_obj(obj) {}
-    operator BkJSObject() const { return m_obj; }
-
-    bool get_boolean(const char *name, bool def_val) const
-    {
-        bool ret = def_val;
-        if (nullptr != m_obj)
-        {
-            js_value v(BkObjectGetMember(m_obj, name));
-            ret = v.to_boolean(def_val);
-        }
-        return ret;
-    }
-    std::string get_string(const char *name, const char *def_val = "") const
-    {
-        std::string ret(def_val);
-        if (nullptr != m_obj)
-        {
-            js_value v(BkObjectGetMember(m_obj, name));
-            if (v)
-                ret = v.to_string();
-        }
-        return ret;
-    }
-
-    std::string to_json(void) const
-    {
-        std::string ret("null");
-        if (nullptr != m_obj)
-            BkObjectToJSON(m_obj, make_buffer(ret));
-        return ret;
-    }
-private:
-    BkJSObject m_obj;
-};
-
-class js_function
-{
-public:
-    static js_function* prepare(BkJSContext js_ctx, int ctx, const char *name)
-    {
-        js_function *ret = nullptr;
-        BkJSCallerContext fn_ctx = BkPrepareFunctionCall(js_ctx, ctx, name);
-        if (nullptr != fn_ctx)
-            ret = new js_function(fn_ctx);
-        return ret;
-    }
-    static js_function* prepare(BkJSContext js_ctx, const char *code)
-    {
-        js_function *ret = nullptr;
-        BkJSCallerContext fn_ctx = BkPrepareScriptFunction(js_ctx, code);
-        if (nullptr != fn_ctx)
-            ret = new js_function(fn_ctx);
-        return ret;
-    }
-
-    int call(BkJSValue *ret = nullptr)
-    {
-        int r = BkCallFunction(m_ctx, ret);
-        delete this;
-        return r;
-    }
-
-    class arg_list
-    {
-    public:
-        void push(int n)
-        {
-            BkPushInteger(m_ctx, n);
-        }
-        void push(const std::string_view &s)
-        {
-            BkPushString(m_ctx, s.data(), s.length());
-        }
-        void push_json_string(const std::string_view &j)
-        {
-            BkPushJSONString(m_ctx, j.data(), j.length());
-        }
-    private:
-        friend class js_function;
-        arg_list(BkJSCallerContext ctx) : m_ctx(ctx) {}
-
-        BkJSCallerContext m_ctx;
-    };
-    typedef std::function<void(arg_list &)> args_callback;
-
-    int call(const args_callback &cb, BkJSValue *ret = nullptr)
-    {
-        arg_list args(m_ctx);
-        cb(args);
-        return call(ret);
-    }
-private:
-    js_function(BkJSCallerContext ctx) : m_ctx(ctx) {}
-
-    BkJSCallerContext m_ctx;
-};
-
-class function_context
-{
-public:
-    operator BkJSCalleeContext() const { return m_ctx; }
-private:
-    friend class function_manager;
-    function_context(BkJSCalleeContext ctx) : m_ctx(ctx) {}
-    BkJSCalleeContext m_ctx;
-};
-
-typedef std::function<void(function_context &)> user_function;
-
-class function_manager
-{
-public:
-    function_manager(void) = default;
-
-    void register_function(BkJSContext ctx, int memberContext, const char *name, const user_function &fn)
-    {
-        m_functions.push_back(fn);
-        BkRegisterFunction(ctx, memberContext, name, impl, &(m_functions.back()));
-    }
-private:
-    static void BKAPI impl(BkJSCalleeContext ctx, void *p)
-    {
-        function_context fnctx(ctx);
-        user_function *fn = reinterpret_cast<user_function *>(p);
-        (*fn)(fnctx);
-    }
-
-    std::list<user_function> m_functions;
-};
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Implementations
 
@@ -442,9 +223,9 @@ inline void crawler_client_root::adjust_raw_client(BkCrawlerClient &client) cons
     client.Error = error_callback;
 }
 
-inline void BKAPI crawler_client_root::document_ready_callback(BkJSContext ctx, void *p)
+inline void BKAPI crawler_client_root::document_ready_callback(BkCrawler crawler, void *p)
 {
-    get_client_root(p)->document_ready(ctx);
+    get_client_root(p)->document_ready(crawler);
 }
 
 inline bool_t BKAPI crawler_client_root::get_config_callback(int cfg, BkBuffer *dst, void *p)
@@ -595,18 +376,6 @@ void BKAPI click_handler_impl2<T>::callback_impl(void *p)
 {
     callback *cb = reinterpret_cast<callback *>(p);
     (*cb)();
-}
-
-inline js_call* js_call::prepare(std::function<void(BkJSContext)> &&callback)
-{
-    return new js_call(std::move(callback));
-}
-
-inline void BKAPI js_call::callback_impl(BkJSContext ctx, void *userData)
-{
-    js_call *This = reinterpret_cast<js_call *>(userData);
-    (This->m_callback)(ctx);
-    delete This;
 }
 
 } // namespace bk

@@ -674,7 +674,11 @@ bool FrameFetchContext::isMainFrame() const
 
 bool FrameFetchContext::defersLoading() const
 {
-    return frame()->page()->defersLoading();
+#ifdef BLINKIT_UI_ENABLED
+    if (Page *page = frame()->page())
+        return page->defersLoading(); // BKTODO: Remove this.
+#endif
+    return false;
 }
 
 bool FrameFetchContext::isLoadComplete() const

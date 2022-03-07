@@ -146,7 +146,7 @@
 // BKTODO: #include "core/html/HTMLCanvasElement.h"
 #include "blinkit/blink/renderer/core/html/HTMLCollection.h"
 // BKTODO: #include "core/html/HTMLDialogElement.h"
-#include "blinkit/blink/renderer/core/html/HTMLDocument.h"
+#include "blinkit/blink/renderer/core/html/html_document.h"
 // BKTODO: #include "core/html/HTMLFrameOwnerElement.h"
 #include "blinkit/blink/renderer/core/html/HTMLHeadElement.h"
 #include "blinkit/blink/renderer/core/html/HTMLHtmlElement.h"
@@ -402,7 +402,7 @@ private:
 };
 
 Document::Document(const DocumentInit& initializer, DocumentClassFlags documentClasses)
-    : ContainerNode(0, CreateDocument)
+    : ContainerNode(0, AdjustConstructionType(documentClasses))
     , TreeScope(*this)
     , m_aliveFlag(std::make_shared<bool>(true))
     , m_hasNodesWithPlaceholderStyle(false)
@@ -456,7 +456,6 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_sawElementsInKnownNamespaces(false)
     , m_isSrcdocDocument(false)
     , m_isMobileDocument(false)
-    , m_layoutView(0)
 #if !ENABLE(OILPAN)
     , m_weakFactory(this)
 #endif
@@ -481,16 +480,23 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_nodeCount(0)
 {
     m_elementDataCacheClearTimer.SetHostAliveFlag(m_aliveFlag);
-    if (nullptr != m_frame) {
+    if (nullptr != m_frame)
+    {
+#if 0 // BKTODO: Check the logic later.
         ASSERT(m_frame->page());
-        // BKTODO: provideContextFeaturesToDocumentFrom(*this, *m_frame->page());
+        provideContextFeaturesToDocumentFrom(*this, *m_frame->page());
+#endif
 
         m_fetcher = m_frame->loader().documentLoader()->fetcher();
         FrameFetchContext::provideDocumentToContext(m_fetcher->context(), this);
-    } else if (m_importsController) {
+    }
+    else if (m_importsController)
+    {
         m_fetcher = FrameFetchContext::createContextAndFetcher(nullptr);
         FrameFetchContext::provideDocumentToContext(m_fetcher->context(), this);
-    } else {
+    }
+    else
+    {
         m_fetcher = ResourceFetcher::create(nullptr);
     }
 
@@ -789,15 +795,22 @@ static inline QualifiedName createQualifiedName(const AtomicString& namespaceURI
 
 GCRefPtr<Element> Document::createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState& exceptionState)
 {
+    ASSERT(false); // BKTODO: Check if necessary.
+#if 0
     QualifiedName qName(createQualifiedName(namespaceURI, qualifiedName, exceptionState));
     if (qName == QualifiedName::null())
         return nullptr;
 
     return createElement(qName, false);
+#else
+    return nullptr;
+#endif
 }
 
 GCRefPtr<Element> Document::createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, const AtomicString& typeExtension, ExceptionState& exceptionState)
 {
+    ASSERT(false); // BKTODO: Check if necessary.
+#if 0
     QualifiedName qName(createQualifiedName(namespaceURI, qualifiedName, exceptionState));
     if (qName == QualifiedName::null())
         return nullptr;
@@ -812,6 +825,9 @@ GCRefPtr<Element> Document::createElementNS(const AtomicString& namespaceURI, co
         CustomElementRegistrationContext::setIsAttributeAndTypeExtension(element.get(), typeExtension);
 
     return element;
+#else
+    return nullptr;
+#endif
 }
 
 #if 0 // BKTODO:
@@ -959,7 +975,7 @@ GCRefPtr<Node> Document::importNode(Node* importedNode, bool deep, ExceptionStat
             exceptionState.throwDOMException(NamespaceError, "The imported node has an invalid namespace.");
             return nullptr;
         }
-        GCRefPtr<Element> newElement = createElement(oldElement->tagQName(), false);
+        GCRefPtr<Element> newElement = createElement(oldElement->localName(), nullptr, false);
 
         newElement->cloneDataFromElement(*oldElement);
 
@@ -1070,13 +1086,12 @@ bool Document::hasValidNamespaceForAttributes(const QualifiedName& qName)
     return hasValidNamespaceForElements(qName);
 }
 
+#if 0 // BKTODO:
 // FIXME: This should really be in a possible ElementFactory class
 GCRefPtr<Element> Document::createElement(const QualifiedName& qName, bool createdByParser)
 {
     GCRefPtr<Element> e;
 
-    ASSERT(false); // BKTODO:
-#if 0
     // FIXME: Use registered namespaces and look up in a hash to find the right factory.
     if (qName.namespaceURI() == xhtmlNamespaceURI)
         e = HTMLElementFactory::createHTMLElement(qName.localName(), *this, 0, createdByParser);
@@ -1090,12 +1105,12 @@ GCRefPtr<Element> Document::createElement(const QualifiedName& qName, bool creat
 
     if (e->prefix() != qName.prefix())
         e->setTagNameForCreateElementNS(qName);
-#endif
 
     ASSERT(qName == e->tagQName());
 
     return e;
 }
+#endif
 
 String Document::readyState() const
 {
@@ -2251,18 +2266,28 @@ void Document::attach(const AttachContext& context)
     ASSERT(m_lifecycle.state() == DocumentLifecycle::Inactive);
     // BKTODO: ASSERT(!m_axObjectCache || this != &axObjectCacheOwner());
 
-    m_layoutView = new LayoutView(this);
-    setLayoutObject(m_layoutView);
+#ifdef BLINKIT_UI_ENABLED
+    if (isUINode())
+    {
+        m_layoutView = new LayoutView(this);
+        setLayoutObject(m_layoutView);
 
-    m_layoutView->setIsInWindow(true);
-    m_layoutView->setStyle(StyleResolver::styleForDocument(*this));
-    m_layoutView->compositor()->setNeedsCompositingUpdate(CompositingUpdateAfterCompositingInputChange);
+        m_layoutView->setIsInWindow(true);
+        m_layoutView->setStyle(StyleResolver::styleForDocument(*this));
+        m_layoutView->compositor()->setNeedsCompositingUpdate(CompositingUpdateAfterCompositingInputChange);
+    }
+#endif
 
     ContainerNode::attach(context);
 
-    // The TextAutosizer can't update layout view info while the Document is detached, so update now in case anything changed.
-    if (TextAutosizer* autosizer = textAutosizer())
-        autosizer->updatePageInfo();
+#ifdef BLINKIT_UI_ENABLED
+    if (isUINode())
+    {
+        // The TextAutosizer can't update layout view info while the Document is detached, so update now in case anything changed.
+        if (TextAutosizer* autosizer = textAutosizer())
+            autosizer->updatePageInfo();
+    }
+#endif
 
     m_lifecycle.advanceTo(DocumentLifecycle::StyleClean);
 }
@@ -2286,7 +2311,10 @@ void Document::detach(const AttachContext& context)
     // Don't allow script to run in the middle of detach() because a detaching Document is not in a
     // consistent state.
     ScriptForbiddenScope forbidScript;
-    view()->dispose();
+#ifdef BLINKIT_UI_ENABLED
+    if (FrameView *view = this->view())
+        view->dispose();
+#endif
     m_markers->prepareForDestruction();
     if (LocalDOMWindow* window = this->domWindow())
         window->willDetachDocumentFromFrame();
@@ -2361,7 +2389,10 @@ void Document::detach(const AttachContext& context)
 
     styleEngine().didDetach();
 
-    frameHost()->eventHandlerRegistry().documentDetached(*this);
+#ifdef BLINKIT_UI_ENABLED
+    if (FrameHost *frameHost = this->frameHost())
+        frameHost->eventHandlerRegistry().documentDetached(*this);
+#endif
 
     m_frame->inputMethodController().documentDetached();
 
@@ -3296,9 +3327,11 @@ void Document::setViewportDescription(const ViewportDescription& viewportDescrip
 
 void Document::updateViewportDescription()
 {
-    if (frame() && frame()->isMainFrame()) {
-        frameHost()->chromeClient().dispatchViewportPropertiesDidChange(m_viewportDescription);
-    }
+#ifdef BLINKIT_UI_ENABLED
+    if (!isUINode() || nullptr == frame())
+        return;
+    frameHost()->chromeClient().dispatchViewportPropertiesDidChange(m_viewportDescription);
+#endif
 }
 
 void Document::processReferrerPolicy(const String& policy)
@@ -3499,8 +3532,10 @@ GCRefPtr<Document> Document::cloneDocumentWithoutChildren()
             return XMLDocument::createXHTML(init.withRegistrationContext(registrationContext()));
         return XMLDocument::create(init);
     }
-#endif
     return create(init);
+#else
+    return nullptr;
+#endif
 }
 
 void Document::cloneDataFromDocument(const Document& other)

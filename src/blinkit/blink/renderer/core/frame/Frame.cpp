@@ -71,25 +71,12 @@ int64_t generateFrameID()
     return ++next;
 }
 
-#if 0 // BKTODO:
-#ifndef NDEBUG
-WTF::RefCountedLeakCounter& frameCounter()
-{
-    DEFINE_STATIC_LOCAL(WTF::RefCountedLeakCounter, staticFrameCounter, ("Frame"));
-    return staticFrameCounter;
-}
-#endif
-#endif
-
 } // namespace
 
 Frame::~Frame()
 {
     InstanceCounters::decrementCounter(InstanceCounters::FrameCounter);
     // BKTODO: ASSERT(!m_owner);
-#ifndef NDEBUG
-    // BKTODO: frameCounter().decrement();
-#endif
 }
 
 DEFINE_TRACE(Frame)
@@ -348,11 +335,12 @@ Frame::Frame(FrameClient* client, FrameHost* host)
 {
     InstanceCounters::incrementCounter(InstanceCounters::FrameCounter);
 
-    ASSERT(page());
-
-#ifndef NDEBUG
-    // BKTODO: frameCounter().increment();
+#ifdef BLINKIT_CRAWLER_ENABLED
+    if (FrameClient::Type::Crawler == client->GetType())
+        return;
 #endif
+
+    ASSERT(page());
 
 #if 0 // BKTODO:
     if (m_owner) {

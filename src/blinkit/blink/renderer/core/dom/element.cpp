@@ -312,7 +312,7 @@ GCRefPtr<Element> Element::cloneElementWithoutChildren()
 
 GCRefPtr<Element> Element::cloneElementWithoutAttributesAndChildren()
 {
-    return document().createElement(tagQName(), false);
+    return document().createElement(localName(), nullptr, false);
 }
 
 PassRefPtrWillBeRawPtr<Attr> Element::detachAttribute(size_t index)

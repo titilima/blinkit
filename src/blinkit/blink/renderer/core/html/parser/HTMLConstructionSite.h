@@ -38,15 +38,15 @@
 #ifndef HTMLConstructionSite_h
 #define HTMLConstructionSite_h
 
-#include "core/dom/Document.h"
-#include "core/dom/ParserContentPolicy.h"
-#include "core/html/parser/HTMLElementStack.h"
-#include "core/html/parser/HTMLFormattingElementList.h"
-#include "wtf/Noncopyable.h"
-#include "wtf/PassRefPtr.h"
-#include "wtf/RefPtr.h"
-#include "wtf/Vector.h"
-#include "wtf/text/StringBuilder.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
+#include "blinkit/blink/renderer/core/dom/ParserContentPolicy.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLElementStack.h"
+#include "blinkit/blink/renderer/core/html/parser/HTMLFormattingElementList.h"
+#include "blinkit/blink/renderer/wtf/Noncopyable.h"
+#include "blinkit/blink/renderer/wtf/PassRefPtr.h"
+#include "blinkit/blink/renderer/wtf/RefPtr.h"
+#include "blinkit/blink/renderer/wtf/Vector.h"
+#include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 
 namespace blink {
 
@@ -116,9 +116,9 @@ enum FlushMode {
 class AtomicHTMLToken;
 class Document;
 class Element;
-class HTMLFormElement;
 
-class HTMLConstructionSite final {
+class HTMLConstructionSite final
+{
     WTF_MAKE_NONCOPYABLE(HTMLConstructionSite);
     DISALLOW_NEW();
 public:
@@ -208,9 +208,9 @@ public:
     Element* head() const { return m_head->element(); }
     const GCRefPtr<HTMLStackItem>& headStackItem() const { return m_head; }
 
-    void setForm(HTMLFormElement*);
-    HTMLFormElement* form(void) const;
-    PassRefPtrWillBeRawPtr<HTMLFormElement> takeForm();
+    void setForm(Element*);
+    Element* form(void) const;
+    GCRefPtr<Element> takeForm();
 
     ParserContentPolicy parserContentPolicy() { return m_parserContentPolicy; }
 
@@ -247,8 +247,7 @@ private:
 
     void findFosterSite(HTMLConstructionSiteTask&);
 
-    GCRefPtr<HTMLElement> createHTMLElement(AtomicHTMLToken*);
-    GCRefPtr<Element> createElement(AtomicHTMLToken*, const AtomicString& namespaceURI);
+    GCRefPtr<Element> createElement(AtomicHTMLToken*);
 
     void mergeAttributesFromTokenIntoElement(AtomicHTMLToken*, Element*);
     void dispatchDocumentElementAvailableIfNeeded();
@@ -264,7 +263,7 @@ private:
     GCRefPtr<ContainerNode> m_attachmentRoot;
 
     GCRefPtr<HTMLStackItem> m_head;
-    GCRefPtr<HTMLFormElement> m_form;
+    GCRefPtr<Element> m_form;
     mutable HTMLElementStack m_openElements;
     mutable HTMLFormattingElementList m_activeFormattingElements;
 

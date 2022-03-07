@@ -362,8 +362,10 @@ GCRefPtr<DocumentFragment> createFragmentFromMarkupWithContext(Document& documen
     if (!findNodesSurroundingContext(taggedFragment.get(), nodeBeforeContext, nodeAfterContext))
         return nullptr;
 
+    ASSERT(false); // BKTODO:
+#if 0
     RefPtrWillBeRawPtr<Document> taggedDocument = Document::create();
-    ASSERT(false); // BKTODO: taggedDocument->setContextFeatures(document.contextFeatures());
+    taggedDocument->setContextFeatures(document.contextFeatures());
 
     RefPtrWillBeRawPtr<Element> root = Element::create(QualifiedName::null(), taggedDocument.get());
     root->appendChild(taggedFragment.get());
@@ -388,6 +390,9 @@ GCRefPtr<DocumentFragment> createFragmentFromMarkupWithContext(Document& documen
     trimFragment(fragment.get(), nodeBeforeContext.get(), nodeAfterContext.get());
 
     return fragment;
+#else
+    return nullptr;
+#endif
 }
 
 String createMarkup(const Node* node, EChildrenOnly childrenOnly, EAbsoluteURLs shouldResolveURLs)

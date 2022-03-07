@@ -1856,7 +1856,7 @@ void HTMLTreeBuilder::processEndTagForInBody(AtomicHTMLToken* token)
         return;
     }
     if (token->name() == formTag) {
-        GCRefPtr<HTMLFormElement> node = m_tree.takeForm();
+        GCRefPtr<Element> node = m_tree.takeForm();
         if (!node || !m_tree.openElements()->inScope(node.get())) {
             parseError(token);
             return;

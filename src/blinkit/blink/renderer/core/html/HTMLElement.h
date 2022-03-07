@@ -34,8 +34,7 @@
 #ifndef HTMLElement_h
 #define HTMLElement_h
 
-#include "core/CoreExport.h"
-#include "core/dom/Element.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
 
 namespace blink {
 
@@ -50,7 +49,8 @@ enum TranslateAttributeMode {
     TranslateAttributeInherit
 };
 
-class CORE_EXPORT HTMLElement : public Element {
+class HTMLElement : public Element
+{
     DEFINE_WRAPPERTYPEINFO();
 public:
     DECLARE_ELEMENT_FACTORY_WITH_TAGNAME(HTMLElement);
@@ -161,6 +161,7 @@ template <> inline bool isElementOfType<const HTMLElement>(const HTMLElement&) {
 inline HTMLElement::HTMLElement(const QualifiedName& tagName, Document& document, ConstructionType type = CreateHTMLElement)
     : Element(tagName, &document, type)
 {
+    ASSERT(document.isUINode());
     ASSERT(!tagName.localName().isNull());
 }
 

@@ -213,9 +213,6 @@ DEFINE_TRACE(FrameLoader)
 
 void FrameLoader::init()
 {
-    // init() may dispatch JS events, so protect a reference to m_frame.
-    RefPtrWillBeRawPtr<LocalFrame> protect(m_frame.get());
-
     KURL emptyURL;
     ResourceRequest initialRequest(emptyURL);
 #if 0
@@ -1207,8 +1204,10 @@ void FrameLoader::commitProvisionalLoad()
     if (!prepareForCommit())
         return;
 
+#if 0 // BKTODO:
     if (isLoadingMainFrame())
         m_frame->page()->chromeClient().needTouchEvents(false);
+#endif
 
     client()->transitionToCommittedForNewPage();
     // BKTODO: m_frame->navigationScheduler().cancel();
@@ -1510,12 +1509,18 @@ void FrameLoader::startLoad(FrameLoadRequest& frameLoadRequest)
         detachDocumentLoader(m_provisionalDocumentLoader);
     }
 
-    // beforeunload fired above, and detaching a DocumentLoader can fire
-    // events, which can detach this frame.
-    if (!m_frame->host())
-        return;
+    FrameLoaderClient *client = this->client();
+#ifdef BLINKIT_UI_ENABLED
+    if (FrameClient::Type::WebView == client->GetType())
+    {
+        // beforeunload fired above, and detaching a DocumentLoader can fire
+        // events, which can detach this frame.
+        if (!m_frame->host())
+            return;
+    }
+#endif
 
-    m_provisionalDocumentLoader = client()->createDocumentLoader(m_frame, request, frameLoadRequest.substituteData().isValid() ? frameLoadRequest.substituteData() : defaultSubstituteDataForURL(request.url()));
+    m_provisionalDocumentLoader = client->createDocumentLoader(m_frame, request, frameLoadRequest.substituteData().isValid() ? frameLoadRequest.substituteData() : defaultSubstituteDataForURL(request.url()));
 #if 0 // BKTODO:
     m_provisionalDocumentLoader->setNavigationType(navigationType);
     m_provisionalDocumentLoader->setReplacesCurrentHistoryItem(type == FrameLoadTypeReplaceCurrentItem);
@@ -1540,7 +1545,7 @@ void FrameLoader::startLoad(FrameLoadRequest& frameLoadRequest)
         m_provisionalDocumentLoader->appendRedirect(m_frame->document()->url());
     m_provisionalDocumentLoader->appendRedirect(m_provisionalDocumentLoader->request().url());
     // BKTODO: double triggeringEventTime = frameLoadRequest.triggeringEvent() ? frameLoadRequest.triggeringEvent()->platformTimeStamp() : 0;
-    client()->dispatchDidStartProvisionalLoad();
+    client->dispatchDidStartProvisionalLoad();
     ASSERT(m_provisionalDocumentLoader);
     m_provisionalDocumentLoader->startLoadingMainResource();
 }

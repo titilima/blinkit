@@ -13,7 +13,12 @@
 
 #include "bkcommon/bk_strings.h"
 #include "blinkit/blink/renderer/web/WebDataSourceImpl.h"
-#include "blinkit/js/web_view_context.h"
+#ifdef BLINKIT_CRAWLER_ENABLED
+#   include "blinkit/js/crawler_context.h"
+#endif
+#ifdef BLINKIT_UI_ENABLED
+#   include "blinkit/js/web_view_context.h"
+#endif
 
 using namespace BlinKit;
 
@@ -25,7 +30,7 @@ std::unique_ptr<ScriptController> FrameLoaderClient::CreateContext(LocalFrame &f
 
 #ifdef BLINKIT_CRAWLER_ENABLED
     if (Type::Crawler == type)
-        ASSERT(false); // BKTODO:
+        return std::make_unique<CrawlerContext>(frame);
 #endif
 
 #ifdef BLINKIT_UI_ENABLED

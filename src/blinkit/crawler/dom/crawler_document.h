@@ -14,16 +14,21 @@
 
 #pragma once
 
-#include "blinkit/blink/renderer/core/dom/Document.h"
+#include "blinkit/blink/renderer/core/dom/document.h"
 
 namespace BlinKit {
 
-class CrawlerDocument final : public blink::Document
+class CrawlerDocument final : public Document
 {
 public:
-    CrawlerDocument(const blink::DocumentInit &init);
+    static GCRefPtr<CrawlerDocument> Create(const DocumentInit &initializer)
+    {
+        return GCWrapShared(new CrawlerDocument(initializer));
+    }
 private:
-    // BKTODO: blink::Element* CreateElement(const AtomicString &localName, CreateElementFlags flags) override;
+    CrawlerDocument(const DocumentInit &init);
+
+    GCRefPtr<Element> createElement(const AtomicString &name, Element *form, bool createdByParser) override;
 };
 
 } // namespace BlinKit

@@ -602,14 +602,11 @@ void DocumentLoader::responseReceived(Resource* resource, const ResourceResponse
         return;
     }
 
-#ifdef BLINKIT_CRAWLER_ENABLED
+#if 0 // BKTODO: Check if necessary.
     if (m_response.isHTTP()) {
         int status = m_response.httpStatusCode();
-        ASSERT(false); // BKTODO:
-#if 0
         if ((status < 200 || status >= 300) && m_frame->owner())
             m_frame->owner()->renderFallbackContent();
-#endif
     }
 #endif
 }
@@ -620,14 +617,14 @@ void DocumentLoader::ensureWriter(const AtomicString& mimeType, const KURL& over
     if (m_writer)
         return;
 
-    const AtomicString& encoding = m_frame->host()->overrideEncoding().isNull() ? response().textEncodingName() : m_frame->host()->overrideEncoding();
+    const AtomicString &encoding = AdjustEncoding();
 
     // Prepare a DocumentInit before clearing the frame, because it may need to
     // inherit an aliased security context.
     DocumentInit init(url(), m_frame);
     init.withNewRegistrationContext();
     m_frame->loader().clear();
-    ASSERT(m_frame->page());
+    ASSERT(m_frame->page() || FrameClient::Type::Crawler == m_frame->client()->GetType());
 
     ParserSynchronizationPolicy parsingPolicy = AllowAsynchronousParsing;
     if ((m_substituteData.isValid() && m_substituteData.forceSynchronousLoad()) || !Document::threadedParsingEnabledForTesting())
@@ -645,7 +642,8 @@ void DocumentLoader::ensureWriter(const AtomicString& mimeType, const KURL& over
 #ifdef BLINKIT_CRAWLER_ENABLED
     if (FrameClient::Type::Crawler == m_frame->client()->GetType())
     {
-        ASSERT(false); // BKTODO: m_frame->document()->maybeHandleHttpRefresh(m_response.httpHeaderField(HTTPNames::Refresh), Document::HttpRefreshFromHeader);
+        m_frame->document()->maybeHandleHttpRefresh(m_response.httpHeaderField(HTTPNames::Refresh),
+            Document::HttpRefreshFromHeader);
     }
 #endif
 }
@@ -1009,6 +1007,17 @@ void DocumentLoader::replaceDocumentWhileExecutingJavaScriptURL(const DocumentIn
 ResourceFetcher* DocumentLoader::fetcher(void) const
 {
     return m_fetcher.get();
+}
+
+const AtomicString& DocumentLoader::AdjustEncoding(void) const
+{
+    if (FrameHost *host = m_frame->host())
+    {
+        const AtomicString &overrideEncoding = host->overrideEncoding();
+        if (!overrideEncoding.isNull())
+            return overrideEncoding;
+    }
+    return response().textEncodingName();
 }
 
 // BKTODO: DEFINE_WEAK_IDENTIFIER_MAP(DocumentLoader);

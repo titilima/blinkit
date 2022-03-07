@@ -125,11 +125,6 @@ public:
 
 } // namespace
 
-GCUniquePtr<LocalFrame> LocalFrame::create(FrameLoaderClient *client, FrameHost *host, float scaleFactor)
-{
-    return GCWrapUnique(new LocalFrame(client, host, scaleFactor));
-}
-
 void LocalFrame::setView(PassRefPtrWillBeRawPtr<FrameView> view)
 {
     ASSERT(!m_view || m_view.get() != view);
@@ -567,6 +562,7 @@ FloatSize LocalFrame::resizePageRectsKeepingRatio(const FloatSize& originalSize,
     return resultSize;
 }
 
+#ifdef BLINKIT_UI_ENABLED
 void LocalFrame::SetScaleFactor(float scaleFactor)
 {
     if (zed::almost_equals(m_scaleFactor, scaleFactor))
@@ -612,6 +608,7 @@ void LocalFrame::SetScaleFactor(float scaleFactor)
     document->setNeedsStyleRecalc(SubtreeStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::Zoom));
     document->updateLayoutIgnorePendingStylesheets();
 }
+#endif
 
 void LocalFrame::deviceScaleFactorChanged()
 {
@@ -866,7 +863,8 @@ bool LocalFrame::shouldThrottleRendering() const
     return view() && view()->shouldThrottleRendering();
 }
 
-inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host, float scaleFactor)
+#ifdef BLINKIT_UI_ENABLED
+LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host, float scaleFactor)
     : Frame(client, host)
     , m_loader(this)
     // BKTODO: , m_navigationScheduler(NavigationScheduler::create(this))
@@ -881,6 +879,22 @@ inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host, float 
     , m_scaleFactor(scaleFactor)
 {
 }
+#else
+LocalFrame::LocalFrame(FrameLoaderClient *client)
+    : Frame(client, nullptr)
+    , m_loader(this)
+    // BKTODO: , m_navigationScheduler(NavigationScheduler::create(this))
+    , m_script(client->CreateContext(*this))
+    , m_editor(Editor::create(*this))
+    // BKTODO:, m_spellChecker(SpellChecker::create(*this))
+    , m_selection(FrameSelection::create(this))
+    , m_eventHandler(std::make_unique<EventHandler>(this))
+    , m_console(FrameConsole::create(*this))
+    , m_inputMethodController(InputMethodController::create(*this))
+    , m_navigationDisableCount(0)
+{
+}
+#endif
 
 WebFrameScheduler* LocalFrame::frameScheduler()
 {

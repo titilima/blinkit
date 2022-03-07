@@ -95,6 +95,8 @@ private:
 
     String debugName() const override { return "HTMLDocument"; }
 
+    GCRefPtr<Element> createElement(const AtomicString &name, Element *form, bool createdByParser) override;
+
     HashCountedSet<AtomicString> m_namedItemCounts;
     HashCountedSet<AtomicString> m_extraNamedItemCounts;
 };

@@ -94,7 +94,10 @@ class LocalFrame : public Frame
 {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(LocalFrame);
 public:
-    static GCUniquePtr<LocalFrame> create(FrameLoaderClient*, FrameHost*, float scaleFactor);
+    template <class... Args>
+    static GCUniquePtr<LocalFrame> create(Args&&... args) {
+        return GCWrapUnique(new LocalFrame(std::forward<Args>(args)...));
+    }
 
     void init();
     void setView(PassRefPtrWillBeRawPtr<FrameView>);
@@ -158,9 +161,11 @@ public:
 
     constexpr bool inViewSourceMode(void) const { return false; }
 
+#ifdef BLINKIT_UI_ENABLED
     float pageZoomFactor(void) const { return m_scaleFactor; }
     constexpr float textZoomFactor(void) const { return 1.0f; }
     void SetScaleFactor(float scaleFactor);
+#endif
 
     void deviceScaleFactorChanged();
     double devicePixelRatio() const;
@@ -202,7 +207,11 @@ public:
 private:
     friend class FrameNavigationDisabler;
 
-    LocalFrame(FrameLoaderClient*, FrameHost*, float);
+#ifdef BLINKIT_UI_ENABLED
+    LocalFrame(FrameLoaderClient*, FrameHost* = nullptr, float = 1.0);
+#else
+    LocalFrame(FrameLoaderClient*);
+#endif
 
     // Internal Frame helper overrides:
     WindowProxyManager* windowProxyManager() const override;
@@ -237,7 +246,9 @@ private:
 
     int m_navigationDisableCount;
 
-    float m_scaleFactor;
+#ifdef BLINKIT_UI_ENABLED
+    float m_scaleFactor = 1.0;
+#endif
 
     // TODO(dcheng): Temporary to try to debug https://crbug.com/531291
     enum class SupplementStatus { Uncleared, Clearing, Cleared };

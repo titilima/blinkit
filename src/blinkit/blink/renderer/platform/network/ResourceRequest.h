@@ -39,18 +39,17 @@
 #ifndef ResourceRequest_h
 #define ResourceRequest_h
 
-#include "platform/HTTPNames.h"
-#include "platform/network/EncodedFormData.h"
-#include "platform/network/HTTPHeaderMap.h"
-#include "platform/network/HTTPParsers.h"
+#include "blinkit/blink/renderer/platform/HTTPNames.h"
+#include "blinkit/blink/renderer/platform/network/EncodedFormData.h"
+#include "blinkit/blink/renderer/platform/network/HTTPHeaderMap.h"
+#include "blinkit/blink/renderer/platform/network/HTTPParsers.h"
 // BKTODO: #include "platform/network/ResourceLoadPriority.h"
-#include "platform/weborigin/KURL.h"
+#include "blinkit/blink/renderer/platform/weborigin/KURL.h"
 #if 0 // BKTODO:
 #include "platform/weborigin/Referrer.h"
 #include "platform/weborigin/SecurityOrigin.h"
 #include "public/platform/WebURLRequest.h"
 #endif
-#include "wtf/OwnPtr.h"
 #ifdef BLINKIT_CRAWLER_ENABLED
 #   include "bk_crawler.h"
 #endif
@@ -82,7 +81,8 @@ enum InputToLoadPerfMetricReportPolicy {
 
 struct CrossThreadResourceRequestData;
 
-class PLATFORM_EXPORT ResourceRequest final {
+class ResourceRequest final
+{
     DISALLOW_NEW();
 public:
     class ExtraData : public RefCounted<ExtraData> {
@@ -105,14 +105,15 @@ public:
         initialize(url);
     }
 
-#if 0 // BKTODO:
-    explicit ResourceRequest(CrossThreadResourceRequestData*);
-
-    // Gets a copy of the data suitable for passing to another thread.
-    PassOwnPtr<CrossThreadResourceRequestData> copyData() const;
-#endif
-
 #ifdef BLINKIT_CRAWLER_ENABLED
+    enum class Type {
+        UI, MainHTML, Script
+    };
+    Type GetType(void) const { return m_type; }
+    void SetType(Type type) {
+        m_type = type;
+    }
+
     BkCrawler Crawler(void) const { return m_crawler; }
     bool IsForCrawler(void) const { return nullptr != m_crawler; }
     void SetCrawler(BkCrawler crawler) { m_crawler = crawler; }
@@ -289,6 +290,7 @@ private:
     const CacheControlHeader& cacheControlHeader() const;
 
 #ifdef BLINKIT_CRAWLER_ENABLED
+    Type m_type = Type::UI;
     BkCrawler m_crawler = nullptr;
 #endif
     KURL m_url;
@@ -339,49 +341,6 @@ bool equalIgnoringHeaderFields(const ResourceRequest&, const ResourceRequest&);
 
 inline bool operator==(const ResourceRequest& a, const ResourceRequest& b) { return ResourceRequest::compare(a, b); }
 inline bool operator!=(ResourceRequest& a, const ResourceRequest& b) { return !(a == b); }
-
-#if 0 // BKTODO:
-struct CrossThreadResourceRequestData {
-    WTF_MAKE_NONCOPYABLE(CrossThreadResourceRequestData); USING_FAST_MALLOC(CrossThreadResourceRequestData);
-public:
-    CrossThreadResourceRequestData() { }
-    KURL m_url;
-
-    ResourceRequestCachePolicy m_cachePolicy;
-    double m_timeoutInterval;
-    KURL m_firstPartyForCookies;
-    RefPtr<SecurityOrigin> m_requestorOrigin;
-
-    String m_httpMethod;
-    OwnPtr<CrossThreadHTTPHeaderMapData> m_httpHeaders;
-    RefPtr<EncodedFormData> m_httpBody;
-    bool m_allowStoredCredentials;
-    bool m_reportUploadProgress;
-    bool m_hasUserGesture;
-    bool m_downloadToFile;
-    bool m_skipServiceWorker;
-    bool m_useStreamOnResponse;
-    bool m_shouldResetAppCache;
-    ResourceLoadPriority m_priority;
-    int m_intraPriorityValue;
-    int m_requestorID;
-    int m_requestorProcessID;
-    int m_appCacheHostID;
-    WebURLRequest::RequestContext m_requestContext;
-    WebURLRequest::FrameType m_frameType;
-    WebURLRequest::FetchRequestMode m_fetchRequestMode;
-    WebURLRequest::FetchCredentialsMode m_fetchCredentialsMode;
-    WebURLRequest::FetchRedirectMode m_fetchRedirectMode;
-    WebURLRequest::LoFiState m_loFiState;
-    ReferrerPolicy m_referrerPolicy;
-    bool m_didSetHTTPReferrer;
-    bool m_checkForBrowserSideNavigation;
-    double m_uiStartTime;
-    bool m_originatesFromReservedIPRange;
-    InputToLoadPerfMetricReportPolicy m_inputPerfMetricReportPolicy;
-    bool m_followedRedirect;
-};
-#endif
 
 } // namespace blink
 
