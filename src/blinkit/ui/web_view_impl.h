@@ -107,6 +107,7 @@ public:
     bool AddClickObserver(const char *id, BkClickObserver ob, void *userData);
     ElementImpl* GetElementById(const char *id) const;
     int LoadUI(const char *URI);
+    BkJSContext GetJSContext(void);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private:
     void UpdateLayerTreeBackgroundColor(void);

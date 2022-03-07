@@ -36,7 +36,7 @@ struct BkWebViewClient {
     void (BKAPI * DocumentReady)(BkWebView, void *);
 
 #ifdef _WIN32
-    bool_t(BKAPI * ProcessMessage)(HWND, UINT, WPARAM, LPARAM, LRESULT *, void *);
+    bool_t (BKAPI * ProcessMessage)(HWND, UINT, WPARAM, LPARAM, LRESULT *, void *);
 #endif
 
     bool_t (BKAPI * TitleChange)(BkWebView, const char *, void *);
@@ -51,6 +51,8 @@ BKEXPORT BkElement BKAPI BkGetElementById(BkWebView view, const char *id);
 typedef void (BKAPI * BkClickObserver)(void *);
 
 BKEXPORT bool_t BKAPI BkAddClickObserver(BkWebView view, const char *id, BkClickObserver ob, void *userData);
+
+BKEXPORT BkJSContext BKAPI BkGetJSContextFromWebView(BkWebView view);
 
 #ifdef _WIN32
 

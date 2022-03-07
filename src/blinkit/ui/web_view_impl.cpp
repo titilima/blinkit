@@ -15,6 +15,7 @@
 #include "blinkit/blink/impl/graphics_layer_factory_impl.h"
 #include "blinkit/blink/public/platform/web_layer_tree_view.h"
 #include "blinkit/blink/public/web/WebContextMenuData.h"
+#include "blinkit/blink/renderer/bindings/core/script_controller.h"
 #include "blinkit/blink/renderer/core/editing/Editor.h"
 #include "blinkit/blink/renderer/core/editing/FrameSelection.h"
 #include "blinkit/blink/renderer/core/editing/InputMethodController.h"
@@ -277,6 +278,11 @@ ElementImpl* WebViewImpl::GetElementById(const char *id) const
     ElementImpl *ret = new ElementImpl(*element);
     m_exposedElements.emplace(element, ret);
     return ret;
+}
+
+BkJSContext WebViewImpl::GetJSContext(void)
+{
+    return m_frame->script().EnsureContext();
 }
 
 PageScaleConstraintsSet& WebViewImpl::GetPageScaleConstraintsSet(void) const
@@ -1460,6 +1466,11 @@ BKEXPORT bool_t BKAPI BkAddClickObserver(BkWebView view, const char *id, BkClick
 BKEXPORT BkElement BKAPI BkGetElementById(BkWebView view, const char *id)
 {
     return view->GetElementById(id);
+}
+
+BKEXPORT BkJSContext BKAPI BkGetJSContextFromWebView(BkWebView view)
+{
+    return view->GetJSContext();
 }
 
 BKEXPORT int BKAPI BkLoadUI(BkWebView view, const char *URI)
