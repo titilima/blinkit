@@ -40,20 +40,21 @@ void ScriptController::clearWindowProxy(void)
     ASSERT(false); // BKTODO:
 }
 
-void ScriptController::EnsureContext(void)
+JSContext* ScriptController::EnsureContext(void)
 {
-    if (nullptr != m_ctx)
-        return;
+    if (nullptr == m_ctx)
+    {
+        m_ctx = JS_NewContext(g_runtime);
 
-    m_ctx = JS_NewContext(g_runtime);
+        JSValue global = JS_GetGlobalObject(m_ctx);
 
-    JSValue global = JS_GetGlobalObject(m_ctx);
+        using namespace qjs;
+        AddConsole(m_ctx, global);
+        OnContextCreated(m_ctx, global);
 
-    using namespace qjs;
-    AddConsole(m_ctx, global);
-    OnContextCreated(m_ctx, global);
-
-    JS_FreeValue(m_ctx, global);
+        JS_FreeValue(m_ctx, global);
+    }
+    return m_ctx;
 }
 
 void ScriptController::executeScriptInMainWorld(const ScriptSourceCode &sourceCode)

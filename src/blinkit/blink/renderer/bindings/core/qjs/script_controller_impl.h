@@ -57,6 +57,8 @@ public:
 
     operator JSContext*() const { return m_ctx; }
 
+    JSContext* EnsureContext(void);
+
     /**
      * Common Exports
      */
@@ -68,8 +70,6 @@ public:
     void updateDocument(void);
 protected:
     ScriptController(LocalFrame &frame);
-
-    void EnsureContext(void);
 private:
     virtual void OnContextCreated(JSContext *ctx, JSValue global) {}
 
