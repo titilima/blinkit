@@ -15,6 +15,7 @@
 #include "blinkit/blink/renderer/web/WebDataSourceImpl.h"
 #ifdef BLINKIT_CRAWLER_ENABLED
 #   include "blinkit/js/crawler_context.h"
+#   include "blinkit/js/runtime.h"
 #endif
 #ifdef BLINKIT_UI_ENABLED
 #   include "blinkit/js/web_view_context.h"
@@ -30,7 +31,7 @@ std::unique_ptr<ScriptController> FrameLoaderClient::CreateContext(LocalFrame &f
 
 #ifdef BLINKIT_CRAWLER_ENABLED
     if (Type::Crawler == type)
-        return std::make_unique<CrawlerContext>(frame);
+        return std::make_unique<CrawlerContext>(frame, GetJSRuntime());
 #endif
 
 #ifdef BLINKIT_UI_ENABLED
@@ -56,5 +57,12 @@ String FrameLoaderClient::userAgent(void)
 {
     return String::fromUTF8(Strings::DefaultUserAgent);
 }
+
+#ifdef BLINKIT_CRAWLER_ENABLED
+BkJSRuntime FrameLoaderClient::GetJSRuntime(void) const
+{
+    return g_runtime;
+}
+#endif
 
 } // namespace blink

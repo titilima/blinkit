@@ -26,6 +26,7 @@ BkToggleElementClass
 BkGetElementPosition
 
 BkCreateCrawler
+BkCreateCrawlerWithJSRuntime
 BkDestroyCrawler
 BkEnableCrawlerCookies
 BkSetCookieJar

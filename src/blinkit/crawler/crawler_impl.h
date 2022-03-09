@@ -24,7 +24,7 @@ class CookieJarImpl;
 class CrawlerImpl final : public blink::FrameLoaderClient
 {
 public:
-    CrawlerImpl(const BkCrawlerClient &client);
+    CrawlerImpl(const BkCrawlerClient &client, BkJSRuntime runtime);
     ~CrawlerImpl(void);
 
     static CrawlerImpl* From(const blink::Document &document);
@@ -37,7 +37,6 @@ public:
     bool HijackScript(const char *URL, std::string &dst) const;
     void ModifyRequest(const char *URL, BkRequest req);
     void HijackResponse(BkResponse response);
-    bool ProcessConsoleMessage(int type, const char *msg);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
@@ -62,7 +61,8 @@ private:
 
     mutable zed::shared_mutex m_mutex;
 
-    BkCrawlerClient m_client;
+    const BkCrawlerClient m_client;
+    BkJSRuntime m_runtime;
     BlinKit::GCUniquePtr<blink::LocalFrame> m_frame;
     bool m_dirty = false;
 

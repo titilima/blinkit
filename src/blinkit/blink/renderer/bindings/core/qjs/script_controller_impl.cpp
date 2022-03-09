@@ -38,7 +38,7 @@ void ScriptController::Prototypes::Cleanup(JSContext *ctx)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ScriptController::ScriptController(LocalFrame &frame) : m_frame(frame)
+ScriptController::ScriptController(LocalFrame &frame, JSRuntime *runtime) : m_frame(frame), m_runtime(runtime)
 {
 }
 
@@ -67,7 +67,7 @@ JSContext* ScriptController::EnsureContext(void)
 {
     if (nullptr == m_ctx)
     {
-        m_ctx = JS_NewContext(g_runtime);
+        m_ctx = JS_NewContext(m_runtime);
         JS_SetContextOpaque(m_ctx, this);
 
         JSValue global = JS_GetGlobalObject(m_ctx);

@@ -15,7 +15,7 @@
 
 namespace BlinKit {
 
-CrawlerContext::CrawlerContext(LocalFrame &frame) : ScriptController(frame)
+CrawlerContext::CrawlerContext(LocalFrame &frame, JSRuntime *runtime) : ScriptController(frame, runtime)
 {
 }
 

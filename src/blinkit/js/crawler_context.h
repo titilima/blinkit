@@ -20,7 +20,7 @@ namespace BlinKit {
 class CrawlerContext final : public ScriptController
 {
 public:
-    CrawlerContext(LocalFrame &frame);
+    CrawlerContext(LocalFrame &frame, JSRuntime *runtime);
 private:
     static void FillElementPrototypes(ElementPrototypes &dst, JSContext *ctx, JSValue elementPrototype);
 

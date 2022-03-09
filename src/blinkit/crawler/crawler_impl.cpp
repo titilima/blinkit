@@ -20,6 +20,7 @@
 #include "blinkit/blink/renderer/core/loader/FrameLoadRequest.h"
 #include "blinkit/blink/renderer/wtf/MainThread.h"
 #include "blinkit/crawler/cookie_jar_impl.h"
+#include "blinkit/js/runtime.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/loader/fetch/resource_error.h"
 #endif
@@ -27,8 +28,9 @@
 using namespace blink;
 using namespace BlinKit;
 
-CrawlerImpl::CrawlerImpl(const BkCrawlerClient &client)
+CrawlerImpl::CrawlerImpl(const BkCrawlerClient &client, BkJSRuntime runtime)
     : m_client(client)
+    , m_runtime(runtime)
     , m_frame(LocalFrame::create(this))
 {
     ASSERT(isMainThread());
@@ -151,14 +153,6 @@ void CrawlerImpl::ModifyRequest(const char *URL, BkRequest req)
         m_client.ModifyRequest(URL, req, m_client.UserData);
 }
 
-bool CrawlerImpl::ProcessConsoleMessage(int type, const char *msg)
-{
-    if (nullptr == m_client.ConsoleMessage)
-        return false;
-    m_client.ConsoleMessage(type, msg, m_client.UserData);
-    return true;
-}
-
 bool CrawlerImpl::ProcessRequestComplete(BkResponse response, BkWorkController controller)
 {
     if (nullptr == m_client.RequestComplete)
@@ -238,7 +232,12 @@ BKEXPORT void BKAPI BkEnableCrawlerCookies(BkCrawler crawler, BkCookieJar *cooki
 
 BKEXPORT BkCrawler BKAPI BkCreateCrawler(BkCrawlerClient *client)
 {
-    return new CrawlerImpl(*client);
+    return new CrawlerImpl(*client, g_runtime);
+}
+
+BKEXPORT BkCrawler BKAPI BkCreateCrawlerWithJSRuntime(struct BkCrawlerClient *client, BkJSRuntime runtime)
+{
+    return new CrawlerImpl(*client, runtime);
 }
 
 BKEXPORT void BKAPI BkDestroyCrawler(BkCrawler crawler)

@@ -43,6 +43,8 @@ enum BkCrawlerConfig {
     BK_CFG_USER_AGENT = 0,
 };
 
+typedef struct JSRuntime *BkJSRuntime;
+
 struct BkCrawlerClient {
     size_t SizeOfStruct; // sizeof(BkCrawlerClient)
     void *UserData;
@@ -50,13 +52,11 @@ struct BkCrawlerClient {
     /**
      * Fires when a document is completely loaded and initialized.
      *   - REQUIRED.
-     *   - Thread: client.
      */
     void (BKAPI * DocumentReady)(BkCrawler, void *);
 
     /**
      * Fires after a main(HTML) request completed.
-     *   - Thread: BlinKit.
      *   - Call BkHijackResponse to modify the HTML.
      *   - Call BkControllerContinueWorking to continue loading & initializing DOM.
      *   - Call BkControllerCancelWork to ignore the next loader steps.
@@ -65,40 +65,34 @@ struct BkCrawlerClient {
 
     /**
      * Get configurations for the crawler.
-     *   - Thread: BlinKit.
      *   - See also: BkCrawlerConfig.
      */
     bool_t (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
 
     /**
      * Get cookies for the URL being requested.
-     *   - Thread: BlinKit.
      */
     bool_t (BKAPI * GetCookies)(const char *URL, const char *cookiesFromJar, struct BkBuffer *cookiesToSet, void *);
 
     /**
      * Get script enable status for the URL being requested.
-     *   - Thread: BlinKit.
      *   - If `IsScriptEnabled` is NULL, script is disabled.
      */
     bool_t (BKAPI * IsScriptEnabled)(const char *URL, void *);
 
     /**
      * Hijack script requests before performing.
-     *   - Thread: BlinKit.
      *   - Return true to use the hijacked data as the script, and the request will not be performed.
      */
     bool_t (BKAPI * HijackScript)(const char *URL, struct BkBuffer *hijacked, void *);
 
     /**
      * Modify requests before performing, e.g. adding or replacing HTTP headers.
-     *   - Thread: BlinKit.
      */
     void (BKAPI * ModifyRequest)(const char *URL, BkRequest, void *);
 
     /**
      * Hijack script responses.
-     *   - Thread: BlinKit.
      *   - Call BkHijackResponse to modify the script content.
      */
     void (BKAPI * HijackResponse)(BkResponse, void *);
@@ -106,20 +100,13 @@ struct BkCrawlerClient {
     /**
      * Fires when an error occurs.
      *   - REQUIRED.
-     *   - Thread: client.
      *   - See also: BkError.
      */
     void (BKAPI * Error)(int code, const char *message, void *);
-
-    /**
-     * Fires when `window.console` outputs a string.
-     *   - Thread: BlinKit.
-     *   - See also: BkConsoleMessageType.
-     */
-    void (BKAPI * ConsoleMessage)(int type, const char *, void *);
 };
 
 BKEXPORT BkCrawler BKAPI BkCreateCrawler(struct BkCrawlerClient *client);
+BKEXPORT BkCrawler BKAPI BkCreateCrawlerWithJSRuntime(struct BkCrawlerClient *client, BkJSRuntime runtime);
 BKEXPORT void BKAPI BkDestroyCrawler(BkCrawler crawler);
 
 BKEXPORT void BKAPI BkEnableCrawlerCookies(BkCrawler crawler, BkCookieJar *cookieJar);
