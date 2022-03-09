@@ -4125,6 +4125,24 @@
     <ClCompile Include="..\..\..\src\blinkit\js\js.cpp">
       <Filter>js</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_window.cpp">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_event_target.cpp">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_container_node.cpp">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_document.cpp">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_node.cpp">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_element.cpp">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
