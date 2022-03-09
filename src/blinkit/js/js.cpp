@@ -12,8 +12,32 @@
 #include "bk_js.h"
 
 #include "blinkit/blink/renderer/bindings/core/qjs/qjs.h"
+#include "blinkit/blink/renderer/bindings/core/qjs/qjs_bindings.h"
+#include "blinkit/js/runtime.h"
+
+using namespace BlinKit;
 
 extern "C" {
+
+BKEXPORT BkJSContext BKAPI BkCreateJSContext(BkJSRuntime runtime, unsigned featureFlags)
+{
+    JSContext *ret;
+
+    if (nullptr == runtime)
+        runtime = g_runtime;
+
+    ret = JS_NewContext(g_runtime);
+    if (nullptr != ret && 0 != featureFlags)
+    {
+        JSValue global = JS_GetGlobalObject(ret);
+
+        if (BK_CTX_CONSOLE & featureFlags)
+            qjs::AddConsole(ret, global);
+
+        JS_FreeValue(ret, global);
+    }
+    return ret;
+}
 
 BKEXPORT int BKAPI BkEvaluate(BkJSContext ctx, const char *code, unsigned len, BkBuffer *ret)
 {
@@ -28,7 +52,7 @@ BKEXPORT int BKAPI BkEvaluate(BkJSContext ctx, const char *code, unsigned len, B
         if (JS_UNDEFINED != v)
         {
             std::string s;
-            BlinKit::qjs::Context context(*ctx);
+            qjs::Context context(*ctx);
             if (context.ToString(s, v))
                 BkSetBufferData(ret, s.data(), s.length());
             else
@@ -41,6 +65,11 @@ BKEXPORT int BKAPI BkEvaluate(BkJSContext ctx, const char *code, unsigned len, B
     }
     JS_FreeValue(ctx, v);
     return r;
+}
+
+BKEXPORT void BKAPI BkReleaseJSContext(BkJSContext ctx)
+{
+    JS_FreeContext(ctx);
 }
 
 } // extern "C"

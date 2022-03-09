@@ -43,8 +43,6 @@ enum BkCrawlerConfig {
     BK_CFG_USER_AGENT = 0,
 };
 
-typedef struct JSRuntime *BkJSRuntime;
-
 struct BkCrawlerClient {
     size_t SizeOfStruct; // sizeof(BkCrawlerClient)
     void *UserData;

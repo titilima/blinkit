@@ -75,6 +75,7 @@ enum BkError {
     BK_ERR_URI
 };
 
+typedef struct JSRuntime *BkJSRuntime; /* JSRuntime is from QuickJS */
 typedef struct JSContext *BkJSContext; /* JSContext is from QuickJS */
 
 BK_DECLARE_HANDLE(BkRequest, RequestImpl);

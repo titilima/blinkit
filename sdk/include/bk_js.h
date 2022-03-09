@@ -19,6 +19,13 @@
 extern "C" {
 #endif
 
+enum BkContextFeature {
+    BK_CTX_CONSOLE = 0x1
+};
+
+BKEXPORT BkJSContext BKAPI BkCreateJSContext(BkJSRuntime runtime, unsigned featureFlags);
+BKEXPORT void BKAPI BkReleaseJSContext(BkJSContext ctx);
+
 BKEXPORT int BKAPI BkEvaluate(BkJSContext ctx, const char *code, unsigned len, struct BkBuffer *ret);
 
 #ifdef __cplusplus

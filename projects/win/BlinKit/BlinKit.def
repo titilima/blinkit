@@ -40,4 +40,6 @@ BkReleaseCookieJar
 BkGetCookie
 BkSetCookie
 
+BkCreateJSContext
+BkReleaseJSContext
 BkEvaluate
