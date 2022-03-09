@@ -64,10 +64,12 @@
 #include "./html_document.h"
 
 #include "blinkit/blink/renderer/bindings/core/script_controller.h"
+#include "blinkit/blink/renderer/core/HTMLElementFactory.h"
 #include "blinkit/blink/renderer/core/HTMLNames.h"
 #include "blinkit/blink/renderer/core/frame/FrameView.h"
 #include "blinkit/blink/renderer/core/frame/LocalFrame.h"
 #include "blinkit/blink/renderer/core/html/HTMLBodyElement.h"
+#include "blinkit/blink/renderer/core/html/HTMLFormElement.h"
 #include "blinkit/blink/renderer/core/page/FocusController.h"
 // BKTODO: #include "core/page/FrameTree.h"
 #include "blinkit/blink/renderer/core/page/Page.h"
@@ -272,8 +274,8 @@ bool HTMLDocument::isCaseSensitiveAttribute(const QualifiedName& attributeName)
 
 GCRefPtr<Element> HTMLDocument::createElement(const AtomicString &name, Element *form, bool createdByParser)
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
+    ASSERT(nullptr == form || form->hasTagName(formTag));
+    return HTMLElementFactory::createHTMLElement(name, *this, toHTMLFormElement(form), createdByParser);
 }
 
 } // namespace blink
