@@ -24,9 +24,20 @@ class ScriptWrappable
     WTF_MAKE_NONCOPYABLE(ScriptWrappable);
 public:
     virtual ~ScriptWrappable(void);
+
+    static void Initialize(void);
+
+    template <class T>
+    static T* Cast(JSValue v) {
+        return static_cast<T *>(CastImpl(v));
+    }
 protected:
     ScriptWrappable(void);
 private:
+    static ScriptWrappable* CastImpl(JSValue v);
+    static JSValue NewObject(JSContext *ctx, JSValueConst proto, ScriptWrappable *nativeObject);
+
+    friend class ScriptController;
     JSValue m_scriptObject;
 };
 

@@ -22,7 +22,9 @@ class CrawlerContext final : public ScriptController
 public:
     CrawlerContext(LocalFrame &frame);
 private:
-    void OnContextCreated(JSContext *ctx, JSValue global) override;
+    static void FillElementPrototypes(ElementPrototypes &dst, JSContext *ctx, JSValue elementPrototype);
+
+    void OnContextCreated(JSContext *ctx, JSValue global, Prototypes &prototypes) override;
 };
 
 } // namespace BlinKit

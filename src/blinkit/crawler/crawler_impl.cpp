@@ -51,12 +51,8 @@ void CrawlerImpl::CancelLoading(void)
 
 void CrawlerImpl::Destroy(void)
 {
-    ASSERT(false); // BKTODO:
-#if 0
-    ASSERT(IsClientThread());
-    auto task = std::bind(std::default_delete<CrawlerImpl>(), this);
-    m_appCaller.Call(BLINK_FROM_HERE, std::move(task));
-#endif
+    ASSERT(isMainThread());
+    delete this;
 }
 
 void CrawlerImpl::dispatchDidFinishLoad(void)

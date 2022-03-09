@@ -22,7 +22,7 @@ class WebViewContext final : public ScriptController
 public:
     WebViewContext(LocalFrame &frame);
 private:
-    void OnContextCreated(JSContext *ctx, JSValue global) override;
+    void OnContextCreated(JSContext *ctx, JSValue global, Prototypes &prototypes) override;
 };
 
 } // namespace BlinKit

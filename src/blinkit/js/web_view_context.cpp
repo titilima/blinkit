@@ -19,8 +19,15 @@ WebViewContext::WebViewContext(LocalFrame &frame) : ScriptController(frame)
 {
 }
 
-void WebViewContext::OnContextCreated(JSContext *ctx, JSValue global)
+void WebViewContext::OnContextCreated(JSContext *ctx, JSValue global, Prototypes &prototypes)
 {
+    using namespace qjs;
+
+    JSValue eventTargetPrototype = CreateEventTargetPrototype(ctx);
+
+    prototypes.window = CreateWindowPrototypeForUI(ctx);
+
+    JS_FreeValue(ctx, eventTargetPrototype);
 }
 
 } // namespace BlinKit

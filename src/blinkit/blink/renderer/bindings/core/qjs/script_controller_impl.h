@@ -45,9 +45,15 @@
 
 #include "blinkit/blink/renderer/platform/heap/Handle.h"
 #include "blinkit/blink/renderer/wtf/Noncopyable.h"
+#include "blinkit/blink/renderer/wtf/text/AtomicStringHash.h"
 #include "third_party/quickjs/quickjs.h"
 
 namespace blink {
+
+class Element;
+class LocalDOMWindow;
+class Node;
+class ScriptWrappable;
 
 class ScriptController
 {
@@ -56,8 +62,13 @@ public:
     virtual ~ScriptController(void);
 
     operator JSContext*() const { return m_ctx; }
+    static ScriptController* From(JSContext *ctx);
 
     JSContext* EnsureContext(void);
+    LocalDOMWindow* GetWindow(void);
+
+    JSValue ReturnNode(Node *node);
+    JSValue ReturnElement(Element *element);
 
     /**
      * Common Exports
@@ -70,11 +81,31 @@ public:
     void updateDocument(void);
 protected:
     ScriptController(LocalFrame &frame);
+
+    using ElementPrototypes = std::unordered_map<WTF::AtomicString, JSValue>;
+    struct Prototypes {
+        JSValue window = JS_UNINITIALIZED;
+
+        JSValue eventTarget = JS_UNINITIALIZED;
+        JSValue node = JS_UNINITIALIZED;
+        JSValue containerNode = JS_UNINITIALIZED;
+
+        JSValue document = JS_UNINITIALIZED;
+
+        ElementPrototypes elements;
+        JSValue genericElement = JS_UNINITIALIZED;
+
+        void Cleanup(JSContext *ctx);
+    };
 private:
-    virtual void OnContextCreated(JSContext *ctx, JSValue global) {}
+    virtual void OnContextCreated(JSContext *ctx, JSValue global, Prototypes &prototypes) {}
+
+    JSValue ReturnElementImpl(Element *element);
+    static JSValue ReturnImpl(JSContext *ctx, ScriptWrappable *nativeObject, JSValueConst prototype);
 
     LocalFrame &m_frame;
     JSContext *m_ctx = nullptr;
+    Prototypes m_prototypes;
 };
 
 } // namespace blink

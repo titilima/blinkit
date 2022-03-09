@@ -550,8 +550,13 @@ PassRefPtrWillBeRawPtr<MediaQueryList> LocalDOMWindow::matchMedia(const String& 
 
 void LocalDOMWindow::willDetachFrameHost()
 {
-    frame()->host()->eventHandlerRegistry().didRemoveAllEventHandlers(*this);
-    // BKTODO: frame()->host()->consoleMessageStorage().frameWindowDiscarded(this);
+#ifdef BLINKIT_UI_ENABLED
+    if (FrameHost *host = frame()->host())
+    {
+        host->eventHandlerRegistry().didRemoveAllEventHandlers(*this);
+        // BKTODO: host->consoleMessageStorage().frameWindowDiscarded(this);
+    }
+#endif
     // BKTODO: LocalDOMWindow::notifyContextDestroyed();
 }
 

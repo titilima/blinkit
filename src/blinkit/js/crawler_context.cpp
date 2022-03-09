@@ -19,8 +19,23 @@ CrawlerContext::CrawlerContext(LocalFrame &frame) : ScriptController(frame)
 {
 }
 
-void CrawlerContext::OnContextCreated(JSContext *ctx, JSValue global)
+void CrawlerContext::FillElementPrototypes(ElementPrototypes &dst, JSContext *ctx, JSValue elementPrototype)
 {
+    // BKTODO:
+}
+
+void CrawlerContext::OnContextCreated(JSContext *ctx, JSValue global, Prototypes &prototypes)
+{
+    using namespace qjs;
+
+    prototypes.window = CreateWindowPrototypeForCrawler(ctx);
+    prototypes.eventTarget = CreateEventTargetPrototype(ctx);
+    prototypes.node = CreateNodePrototypeForCrawler(ctx, prototypes.eventTarget);
+    prototypes.containerNode = CreateContainerNodePrototypeForCrawler(ctx, prototypes.node);
+    prototypes.document = CreateDocumentPrototypeForCrawler(ctx, prototypes.containerNode);
+
+    prototypes.genericElement = CreateElementPrototypeForCrawler(ctx, prototypes.containerNode);
+    FillElementPrototypes(prototypes.elements, ctx, prototypes.genericElement);
 }
 
 } // namespace BlinKit
