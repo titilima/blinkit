@@ -52,6 +52,7 @@ protected:
 #   endif
 #endif
 private:
+    static void InitializeJSStuff(void);
 #ifdef BLINKIT_UI_ENABLED
     static void DefaultOpenURL(const char *URL);
 #endif

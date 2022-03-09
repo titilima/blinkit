@@ -14,6 +14,7 @@
 #include "bkcommon/buffer_impl.hpp"
 #include "blinkit/blink/impl/url_loader.h"
 #include "blinkit/blink/public/web/blink.h"
+#include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
 #include "blinkit/blink/renderer/wtf/MainThread.h"
 #include "blinkit/gc/gc_heap.h"
 #include "blinkit/js/runtime.h"
@@ -42,7 +43,7 @@ AppImpl::AppImpl(BkAppClient *client)
     zed::current_thread::set_name("BlinKit Thread");
 #endif
     GCHeap::Initialize();
-    g_runtime = JS_NewRuntime();
+    InitializeJSStuff();
 
     memset(&m_client, 0, sizeof(BkAppClient));
     if (nullptr != client)
@@ -89,6 +90,13 @@ AppImpl& AppImpl::Get(void)
 {
     AppImpl *app = static_cast<AppImpl *>(Platform::current());
     return *app;
+}
+
+void AppImpl::InitializeJSStuff(void)
+{
+    ASSERT(nullptr == g_runtime);
+    g_runtime = JS_NewRuntime();
+    ScriptWrappable::Initialize();
 }
 
 double AppImpl::monotonicallyIncreasingTimeSeconds(void)
