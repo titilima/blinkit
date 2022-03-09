@@ -14,15 +14,37 @@
 namespace BlinKit {
 namespace qjs {
 
+JSValue ReturnString(JSContext *ctx, const String &s)
+{
+    CString ret = s.utf8();
+    return JS_NewStringLen(ctx, ret.data(), ret.length());
+}
+
+AtomicString ToAtomicString(JSContext *ctx, JSValue v)
+{
+    size_t l = 0;
+    const char *ps = JS_ToCStringLen(ctx, &l, v);
+    return AtomicString::fromUTF8(ps, l);
+}
+
+std::string ToStdString(JSContext *ctx, JSValue v)
+{
+    size_t l = 0;
+    const char *ps = JS_ToCStringLen(ctx, &l, v);
+    return std::string(ps, l);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Context::Context(JSContext &ctx) : m_ctx(&ctx)
 {
 }
 
-std::string Context::ToStringNotChecked(JSValue v)
+JSValue Context::ReturnException(void)
 {
-    size_t l = 0;
-    const char *ps = JS_ToCStringLen(m_ctx, &l, v);
-    return std::string(ps, l);
+    ASSERT(hadException());
+    ASSERT(false); // BKTODO:
+    return JS_EXCEPTION;
 }
 
 bool Context::ToString(std::string &dst, JSValue v)
@@ -31,14 +53,14 @@ bool Context::ToString(std::string &dst, JSValue v)
 
     if (JS_IsString(v))
     {
-        dst = ToStringNotChecked(v);
+        dst = ToStdString(m_ctx, v);
         return true;
     }
 
     JSValue s = JS_ToString(m_ctx, v);
     if (JS_IsString(s))
     {
-        dst = ToStringNotChecked(s);
+        dst = ToStdString(m_ctx, s);
         ret = true;
     }
     JS_FreeValue(m_ctx, s);
