@@ -19,49 +19,68 @@
 namespace BlinKit {
 namespace qjs {
 
-class CFunctionEntry final : public JSCFunctionListEntry
+class CFunctionListEntry : public JSCFunctionListEntry
+{
+protected:
+    CFunctionListEntry(const char *name, uint8_t propFlags, uint8_t defType, int16_t magic = 0)
+    {
+        this->name = name;
+        this->prop_flags = propFlags;
+        this->def_type = defType;
+        this->magic = magic;
+    }
+};
+
+// JS_CFUNC_DEF
+class CFunctionEntry final : public CFunctionListEntry
 {
     STACK_ALLOCATED()
 public:
-    // JS_CFUNC_DEF
-    CFunctionEntry(const char *name, uint8_t length, JSCFunction func1)
+    CFunctionEntry(const char *name, uint8_t length, JSCFunction func1, int16_t magic = 0)
+        : CFunctionListEntry(name, JS_PROP_WRITABLE | JS_PROP_CONFIGURABLE, JS_DEF_CFUNC, magic)
     {
-        this->name = name;
-        this->prop_flags = JS_PROP_WRITABLE | JS_PROP_CONFIGURABLE;
-        this->def_type = JS_DEF_CFUNC;
-        this->magic = 0;
         this->u.func.length = length;
         this->u.func.cproto = JS_CFUNC_generic;
         this->u.func.cfunc.generic = func1;
     }
 };
 
-class ObjectEntry final : public JSCFunctionListEntry
+// JS_CGETSET_DEF
+class CGetSetEntry final : public CFunctionListEntry
 {
     STACK_ALLOCATED()
 public:
-    // JS_OBJECT_DEF
-    ObjectEntry(const char *name, const JSCFunctionListEntry *tab, int len, uint8_t prop_flags)
+    using Getter = JSValue (*)(JSContext *, JSValueConst);
+    using Setter = JSValue (*)(JSContext *, JSValueConst, JSValueConst);
+
+    CGetSetEntry(const char *name, Getter fgetter, Setter fsetter, int16_t magic = 0)
+        : CFunctionListEntry(name, JS_PROP_CONFIGURABLE, JS_DEF_CGETSET, magic)
     {
-        this->name = name;
-        this->prop_flags = prop_flags;
-        this->def_type = JS_DEF_OBJECT;
-        this->magic = 0;
+        this->u.getset.get.getter = fgetter;
+        this->u.getset.set.setter = fsetter;
+    }
+};
+
+// JS_OBJECT_DEF
+class ObjectEntry final : public CFunctionListEntry
+{
+    STACK_ALLOCATED()
+public:
+    ObjectEntry(const char *name, const JSCFunctionListEntry *tab, int len, uint8_t prop_flags)
+        : CFunctionListEntry(name, prop_flags, JS_DEF_OBJECT)
+    {
         this->u.prop_list = { tab, len };
     }
 };
 
-class AliasEntry final : public JSCFunctionListEntry
+// JS_ALIAS_DEF
+class AliasEntry final : public CFunctionListEntry
 {
     STACK_ALLOCATED()
 public:
-    // JS_ALIAS_DEF
     AliasEntry(const char *name, const char *from)
+        : CFunctionListEntry(name, JS_PROP_WRITABLE | JS_PROP_CONFIGURABLE, JS_DEF_ALIAS)
     {
-        this->name = name;
-        this->prop_flags = JS_PROP_WRITABLE | JS_PROP_CONFIGURABLE;
-        this->def_type = JS_DEF_ALIAS;
-        this->magic = 0;
         this->u.alias = { from, -1 };
     }
 };
