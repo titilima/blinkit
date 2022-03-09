@@ -35,7 +35,7 @@ protected:
     ScriptWrappable(void);
 private:
     static ScriptWrappable* CastImpl(JSValue v);
-    static JSValue NewObject(JSContext *ctx, JSValueConst proto, ScriptWrappable *nativeObject);
+    static void NewObject(ScriptWrappable *dst, JSContext *ctx, JSValueConst proto);
 
     friend class ScriptController;
     JSValue m_scriptObject;

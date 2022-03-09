@@ -124,9 +124,9 @@ JSValue ScriptController::ReturnElementImpl(Element *element)
 JSValue ScriptController::ReturnImpl(JSContext *ctx, ScriptWrappable *nativeObject, JSValueConst prototype)
 {
     ASSERT(nullptr != nativeObject);
-    if (JS_UNINITIALIZED != nativeObject->m_scriptObject)
-        return JS_DupValue(ctx, nativeObject->m_scriptObject);
-    return ScriptWrappable::NewObject(ctx, prototype, nativeObject);
+    if (JS_UNINITIALIZED == nativeObject->m_scriptObject)
+        ScriptWrappable::NewObject(nativeObject, ctx, prototype);
+    return JS_DupValue(ctx, nativeObject->m_scriptObject);
 }
 
 JSValue ScriptController::ReturnNode(Node *node)

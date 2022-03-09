@@ -41,12 +41,12 @@ void ScriptWrappable::Initialize(void)
     JS_NewClass(g_runtime, g_scriptWrappableClassId, &def);
 }
 
-JSValue ScriptWrappable::NewObject(JSContext *ctx, JSValueConst proto, ScriptWrappable *nativeObject)
+void ScriptWrappable::NewObject(ScriptWrappable *dst, JSContext *ctx, JSValueConst proto)
 {
-    ASSERT(JS_UNINITIALIZED == nativeObject->m_scriptObject);
-    nativeObject->m_scriptObject = JS_NewObjectProtoClass(ctx, proto, g_scriptWrappableClassId);
-    JS_SetOpaque(nativeObject->m_scriptObject, nativeObject);
-    return nativeObject->m_scriptObject;
+    ASSERT(nullptr != dst);
+    ASSERT(JS_UNINITIALIZED == dst->m_scriptObject);
+    dst->m_scriptObject = JS_NewObjectProtoClass(ctx, proto, g_scriptWrappableClassId);
+    JS_SetOpaque(dst->m_scriptObject, dst);
 }
 
 } // namespace blink
