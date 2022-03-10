@@ -456,12 +456,13 @@ bool WebViewHostWindow::ProcessMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARA
 
 void WebViewHostWindow::ProcessTitleChange(const String &title)
 {
-    if (nullptr == m_client.TitleChange)
-        return;
-
     std::string newTitle = title.stdUtf8();
-    if (m_client.TitleChange(GetView(), newTitle.c_str(), m_client.UserData))
-        return;
+
+    if (nullptr != m_client.TitleChange)
+    {
+        if (m_client.TitleChange(GetView(), newTitle.c_str(), m_client.UserData))
+            return;
+    }
 
     std::wstring ws = zed::multi_byte_to_wide_string(newTitle, CP_UTF8);
     SetWindowTextW(m_hWnd, ws.c_str());
