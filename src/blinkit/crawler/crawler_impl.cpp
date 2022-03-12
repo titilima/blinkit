@@ -81,14 +81,6 @@ CrawlerImpl* CrawlerImpl::From(const Document &document)
     return static_cast<CrawlerImpl *>(document.frame()->client());
 }
 
-bool CrawlerImpl::GetConfig(int cfg, std::string &dst) const
-{
-    ASSERT(isMainThread());
-    if (nullptr != m_client.GetConfig)
-        return m_client.GetConfig(cfg, BufferImpl::Wrap(dst), m_client.UserData);
-    return false;
-}
-
 CookieJarImpl* CrawlerImpl::GetCookieJar(bool createIfNotExists)
 {
     if (createIfNotExists)
@@ -103,28 +95,6 @@ CookieJarImpl* CrawlerImpl::GetCookieJar(bool createIfNotExists)
         auto _ = m_mutex.guard_shared();
         return m_cookieJar;
     }
-}
-
-std::string CrawlerImpl::GetCookies(const std::string &URL) const
-{
-    std::string ret;
-    {
-        auto _ = m_mutex.guard_shared();
-        if (nullptr != m_cookieJar)
-        {
-            std::shared_lock<CookieJarImpl> lock(*m_cookieJar);
-            ret = m_cookieJar->Get(URL.c_str());
-        }
-    }
-
-    if (nullptr != m_client.GetCookies)
-    {
-        std::string userSetCookies;
-        if (m_client.GetCookies(URL.c_str(), ret.c_str(), BufferImpl::Wrap(userSetCookies), m_client.UserData))
-            ret = userSetCookies;
-    }
-
-    return ret;
 }
 
 BkJSContext CrawlerImpl::GetJSContext(void)
@@ -156,8 +126,7 @@ bool CrawlerImpl::ProcessRequestComplete(BkResponse response, BkWorkController c
     if (nullptr == m_client.RequestComplete)
         return false;
 
-    auto task = std::bind(m_client.RequestComplete, response, controller, m_client.UserData);
-    ASSERT(false); // BKTODO: m_clientCaller.Post(BLINK_FROM_HERE, task);
+    m_client.RequestComplete(response, controller, m_client.UserData);
     return true;
 }
 
@@ -209,18 +178,6 @@ void CrawlerImpl::TransitionToCommittedForNewPage(void)
     // Nothing to do for crawlers.
 }
 #endif
-
-String CrawlerImpl::userAgent(void)
-{
-    if (nullptr != m_client.GetConfig)
-    {
-        std::string userAgent;
-        m_client.GetConfig(BK_CFG_USER_AGENT, BufferImpl::Wrap(userAgent), m_client.UserData);
-        if (!userAgent.empty())
-            return String::fromStdUTF8(userAgent);
-    }
-    return FrameLoaderClient::userAgent();
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

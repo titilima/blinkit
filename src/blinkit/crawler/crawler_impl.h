@@ -30,8 +30,6 @@ public:
     static CrawlerImpl* From(const blink::Document &document);
 
     // BkCrawlerClient Wrappers
-    bool GetConfig(int cfg, std::string &dst) const;
-    std::string GetCookies(const std::string &URL) const;
     bool ScriptEnabled(const std::string &URL) const;
     bool ProcessRequestComplete(BkResponse response, BkWorkController controller);
     bool HijackScript(const char *URL, std::string &dst) const;
@@ -57,7 +55,6 @@ private:
 #endif
     // FrameLoaderClient
     void dispatchDidFinishLoad(void) override;
-    String userAgent(void) override;
     BkJSContext RequireJSContext(void) const override;
 
     mutable zed::shared_mutex m_mutex;

@@ -170,7 +170,7 @@ public:
 
     virtual PassRefPtrWillBeRawPtr<DocumentLoader> createDocumentLoader(LocalFrame*, const ResourceRequest&, const SubstituteData&);
 
-    virtual String userAgent(void);
+    String userAgent(void);
 
     // BKTODO: virtual String doNotTrackValue() = 0;
 

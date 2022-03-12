@@ -29,7 +29,7 @@ BKEXPORT BkCookieJar BKAPI BkCreateCookieJar(void);
 BKEXPORT void BKAPI BkReleaseCookieJar(BkCookieJar cookieJar);
 
 BKEXPORT void BKAPI BkGetCookie(BkCookieJar cookieJar, const char *URL, struct BkBuffer *dst);
-BKEXPORT bool BKAPI BkSetCookie(BkCookieJar cookieJar, const char *setCookieHeader, const char *URL);
+BKEXPORT bool BKAPI BkSaveCookie(BkCookieJar cookieJar, const char *URL, const char *setCookieHeader);
 
 BKEXPORT void BKAPI BkClearCookieJar(BkCookieJar cookieJar);
 
@@ -38,10 +38,6 @@ BKEXPORT void BKAPI BkClearCookieJar(BkCookieJar cookieJar);
  */
 
 BK_DECLARE_HANDLE(BkCrawler, CrawlerImpl);
-
-enum BkCrawlerConfig {
-    BK_CFG_USER_AGENT = 0,
-};
 
 struct BkCrawlerClient {
     size_t SizeOfStruct; // sizeof(BkCrawlerClient)
@@ -60,17 +56,6 @@ struct BkCrawlerClient {
      *   - Call BkControllerCancelWork to ignore the next loader steps.
      */
     void (BKAPI * RequestComplete)(BkResponse, BkWorkController, void *);
-
-    /**
-     * Get configurations for the crawler.
-     *   - See also: BkCrawlerConfig.
-     */
-    bool_t (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
-
-    /**
-     * Get cookies for the URL being requested.
-     */
-    bool_t (BKAPI * GetCookies)(const char *URL, const char *cookiesFromJar, struct BkBuffer *cookiesToSet, void *);
 
     /**
      * Get script enable status for the URL being requested.

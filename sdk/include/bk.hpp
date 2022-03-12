@@ -70,13 +70,11 @@ public:
     BkCrawler create_crawler(void) const;
 protected:
     void adjust_raw_client(BkCrawlerClient &client) const override;
-    virtual bool get_config(int cfg, std::string &dst) { return false; }
 private:
     virtual void document_ready(BkCrawler crawler) = 0;
     virtual void on_crawler_error(int code, const char *url) { assert(false); /* TODO: Process error yourself! */ }
 
     static void BKAPI document_ready_callback(BkCrawler crawler, void *p);
-    static bool_t BKAPI get_config_callback(int cfg, BkBuffer *dst, void *p);
     static void BKAPI error_callback(int code, const char *url, void *p);
 };
 
@@ -219,22 +217,12 @@ inline BkCrawler crawler_client_root::create_crawler(void) const
 inline void crawler_client_root::adjust_raw_client(BkCrawlerClient &client) const
 {
     client.DocumentReady = document_ready_callback;
-    client.GetConfig = get_config_callback;
     client.Error = error_callback;
 }
 
 inline void BKAPI crawler_client_root::document_ready_callback(BkCrawler crawler, void *p)
 {
     get_client_root(p)->document_ready(crawler);
-}
-
-inline bool_t BKAPI crawler_client_root::get_config_callback(int cfg, BkBuffer *dst, void *p)
-{
-    std::string s;
-    if (!get_client_root(p)->get_config(cfg, s))
-        return false;
-    BkSetBufferData(dst, s.data(), s.length());
-    return true;
 }
 
 inline void BKAPI crawler_client_root::error_callback(int code, const char *url, void *p)
