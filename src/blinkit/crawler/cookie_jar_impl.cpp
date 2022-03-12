@@ -47,7 +47,7 @@ std::string CookieJarImpl::Get(const char *URL, const CookieOptions *options) co
 {
     std::string ret;
 
-    ASSERT(false); // BKTODO:
+    ASSERT(m_cookies.empty()); // BKTODO:
 #if 0
     GURL u(URL);
     const CookieOptions &o = nullptr != options ? *options : m_options;
@@ -84,7 +84,7 @@ void CookieJarImpl::Release(void)
         delete this;
 }
 
-bool CookieJarImpl::Set(const char *setCookieHeader, const char *URL)
+bool CookieJarImpl::Save(const char *URL, const char *setCookieHeader)
 {
     base::Time now = base::Time::Now();
 
@@ -162,9 +162,9 @@ BKEXPORT void BKAPI BkGetCookie(BkCookieJar cookieJar, const char *URL, BkBuffer
         BkSetBufferData(dst, ret.data(), ret.length());
 }
 
-BKEXPORT bool BKAPI BkSetCookie(BkCookieJar cookieJar, const char *setCookieHeader, const char *URL)
+BKEXPORT bool BKAPI BkSaveCookie(BkCookieJar cookieJar, const char *URL, const char *setCookieHeader)
 {
-    return cookieJar->Set(setCookieHeader, URL);
+    return cookieJar->Save(setCookieHeader, URL);
 }
 
 } // extern "C"

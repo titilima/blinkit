@@ -34,7 +34,7 @@ public:
     void Clear(void);
 
     std::string Get(const char *URL, const net::CookieOptions *options = nullptr) const;
-    bool Set(const char *setCookieHeader, const char *URL);
+    bool Save(const char *URL, const char *setCookieHeader);
 
     void lock_shared(void) { m_mutex.lock_shared(); }
     void unlock_shared(void) { m_mutex.unlock_shared(); }
