@@ -561,7 +561,7 @@ bool WebViewImpl::KeyEventDefault(const WebKeyboardEvent &event)
             if (event.windowsKeyCode == VKEY_SPACE)
             {
                 int keyCode = (0 != (event.modifiers & WebInputEvent::ShiftKey) ? VKEY_PRIOR : VKEY_NEXT);
-                ASSERT(false); // BKTODO: return scrollViewWithKeyboard(keyCode, event.modifiers);
+                return ScrollViewWithKeyboard(keyCode, event.modifiers);
             }
             break;
         case WebInputEvent::RawKeyDown:
