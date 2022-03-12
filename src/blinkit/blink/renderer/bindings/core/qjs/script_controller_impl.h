@@ -80,7 +80,7 @@ public:
     constexpr bool shouldBypassMainWorldCSP(void) const { return true; }
     void updateDocument(void);
 protected:
-    ScriptController(LocalFrame &frame, JSRuntime *runtime);
+    ScriptController(LocalFrame &frame);
 
     using ElementPrototypes = std::unordered_map<WTF::AtomicString, JSValue>;
     struct Prototypes {
@@ -104,7 +104,6 @@ private:
     static JSValue ReturnImpl(JSContext *ctx, ScriptWrappable *nativeObject, JSValueConst prototype);
 
     LocalFrame &m_frame;
-    JSRuntime *m_runtime;
     JSContext *m_ctx = nullptr;
     Prototypes m_prototypes;
 };

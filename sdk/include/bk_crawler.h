@@ -101,10 +101,14 @@ struct BkCrawlerClient {
      *   - See also: BkError.
      */
     void (BKAPI * Error)(int code, const char *message, void *);
+
+    /**
+     * Require a JS context.
+     */
+    BkJSContext (BKAPI * RequireJSContext)(void *);
 };
 
 BKEXPORT BkCrawler BKAPI BkCreateCrawler(struct BkCrawlerClient *client);
-BKEXPORT BkCrawler BKAPI BkCreateCrawlerWithJSRuntime(struct BkCrawlerClient *client, BkJSRuntime runtime);
 BKEXPORT void BKAPI BkDestroyCrawler(BkCrawler crawler);
 
 BKEXPORT void BKAPI BkEnableCrawlerCookies(BkCrawler crawler, BkCookieJar *cookieJar);

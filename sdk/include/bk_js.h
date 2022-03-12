@@ -19,6 +19,8 @@
 extern "C" {
 #endif
 
+typedef struct JSRuntime *BkJSRuntime; /* JSRuntime is from QuickJS */
+
 enum BkContextFeature {
     BK_CTX_CONSOLE = 0x1
 };

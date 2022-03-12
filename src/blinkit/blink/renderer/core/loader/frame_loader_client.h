@@ -283,7 +283,7 @@ public:
 #endif
 
 #ifdef BLINKIT_CRAWLER_ENABLED
-    virtual BkJSRuntime GetJSRuntime(void) const;
+    virtual BkJSContext RequireJSContext(void) const;
 #endif
 #ifdef BLINKIT_UI_ENABLED
     virtual void LoadURI(const KURL &uri) {

@@ -12,11 +12,10 @@
 #include "./web_view_context.h"
 
 #include "blinkit/blink/renderer/bindings/core/qjs/qjs_bindings.h"
-#include "blinkit/js/runtime.h"
 
 namespace BlinKit {
 
-WebViewContext::WebViewContext(LocalFrame &frame) : ScriptController(frame, g_runtime)
+WebViewContext::WebViewContext(LocalFrame &frame) : ScriptController(frame)
 {
 }
 

@@ -31,7 +31,7 @@ std::unique_ptr<ScriptController> FrameLoaderClient::CreateContext(LocalFrame &f
 
 #ifdef BLINKIT_CRAWLER_ENABLED
     if (Type::Crawler == type)
-        return std::make_unique<CrawlerContext>(frame, GetJSRuntime());
+        return std::make_unique<CrawlerContext>(frame);
 #endif
 
 #ifdef BLINKIT_UI_ENABLED
@@ -59,9 +59,9 @@ String FrameLoaderClient::userAgent(void)
 }
 
 #ifdef BLINKIT_CRAWLER_ENABLED
-BkJSRuntime FrameLoaderClient::GetJSRuntime(void) const
+BkJSContext FrameLoaderClient::RequireJSContext(void) const
 {
-    return g_runtime;
+    return JS_NewContext(g_runtime);
 }
 #endif
 

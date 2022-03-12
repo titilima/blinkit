@@ -24,7 +24,7 @@ class CookieJarImpl;
 class CrawlerImpl final : public blink::FrameLoaderClient
 {
 public:
-    CrawlerImpl(const BkCrawlerClient &client, BkJSRuntime runtime);
+    CrawlerImpl(const BkCrawlerClient &client);
     ~CrawlerImpl(void);
 
     static CrawlerImpl* From(const blink::Document &document);
@@ -52,17 +52,17 @@ public:
     void CancelLoading(void);
 private:
     // FrameClient
-#ifdef BLINKIT_FULL_BUILD
+#ifdef BLINKIT_UI_ENABLED
     Type GetType(void) const override { return Type::Crawler; }
 #endif
     // FrameLoaderClient
     void dispatchDidFinishLoad(void) override;
     String userAgent(void) override;
+    BkJSContext RequireJSContext(void) const override;
 
     mutable zed::shared_mutex m_mutex;
 
     const BkCrawlerClient m_client;
-    BkJSRuntime m_runtime;
     BlinKit::GCUniquePtr<blink::LocalFrame> m_frame;
     bool m_dirty = false;
 

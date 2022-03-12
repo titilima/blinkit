@@ -15,6 +15,7 @@
 #include "blinkit/blink/renderer/bindings/core/script_wrappable.h"
 #include "blinkit/blink/renderer/bindings/core/qjs/qjs_bindings.h"
 #include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/loader/frame_loader_client.h"
 #include "blinkit/blink/renderer/core/frame/LocalFrame.h"
 #include "blinkit/js/runtime.h"
 
@@ -38,7 +39,7 @@ void ScriptController::Prototypes::Cleanup(JSContext *ctx)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ScriptController::ScriptController(LocalFrame &frame, JSRuntime *runtime) : m_frame(frame), m_runtime(runtime)
+ScriptController::ScriptController(LocalFrame &frame) : m_frame(frame)
 {
 }
 
@@ -67,7 +68,7 @@ JSContext* ScriptController::EnsureContext(void)
 {
     if (nullptr == m_ctx)
     {
-        m_ctx = JS_NewContext(m_runtime);
+        m_ctx = m_frame.loader().client()->RequireJSContext();
         JS_SetContextOpaque(m_ctx, this);
 
         JSValue global = JS_GetGlobalObject(m_ctx);
