@@ -31,6 +31,13 @@ LoaderTask::LoaderTask(WebURLLoader *loader, const std::shared_ptr<WebTaskRunner
 
 LoaderTask::~LoaderTask(void) = default;
 
+void LoaderTask::CommitResponse(const ResourceResponse &response, const std::string_view &body)
+{
+    m_client->didReceiveResponse(m_loader, response);
+    m_client->didReceiveData(m_loader, body.data(), body.length(), 0);
+    m_client->didFinishLoading(m_loader, body.length());
+}
+
 void LoaderTask::run(void)
 {
     ASSERT(!isMainThread());
@@ -50,15 +57,9 @@ void LoaderTask::run(void)
                 return; // The task will process the response itself.
 
             if (BK_ERR_SUCCESS == r)
-            {
-                m_client->didReceiveResponse(m_loader, response);
-                m_client->didReceiveData(m_loader, body.data(), body.length(), 0);
-                m_client->didFinishLoading(m_loader, body.length());
-            }
+                CommitResponse(response, body);
             else
-            {
                 ASSERT(false); // BKTODO:  m_client->DidFail(ResourceError(r, u));
-            }
             delete this;
         };
         m_taskRunner->postTask(BLINK_FROM_HERE, callback);

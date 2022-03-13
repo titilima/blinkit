@@ -44,8 +44,9 @@ public:
 protected:
     LoaderTask(WebURLLoader *loader, const std::shared_ptr<WebTaskRunner> &taskRunner, WebURLLoaderClient *client);
 
+    void CommitResponse(const ResourceResponse &response, const std::string_view &body);
+
     const std::shared_ptr<WebTaskRunner> m_taskRunner;
-    WebURLLoaderClient *m_client;
 private:
     virtual int PerformRequest(void) = 0;
     virtual int PopulateResponse(ResourceResponse &resourceResponse, std::string_view &body) const = 0;
@@ -54,6 +55,7 @@ private:
 
     GCGuard m_clientGuard;
     WebURLLoader *m_loader;
+    WebURLLoaderClient *m_client;
 };
 
 #ifdef BLINKIT_UI_ENABLED
