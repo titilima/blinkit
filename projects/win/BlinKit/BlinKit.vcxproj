@@ -518,8 +518,8 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptableDocumentParser.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptedAnimationController.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptedIdleTaskController.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptLoader.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptRunner.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\script_loader.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\SelectorQuery.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ShadowTreeStyleSheetCollection.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\shadow\ComposedTreeTraversal.cpp" />
@@ -1916,9 +1916,10 @@
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptableDocumentParser.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptedAnimationController.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptedIdleTaskController.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptLoader.h" />
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptLoaderClient.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptRunner.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\script_element_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\script_loader.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\script_loader_client.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\SelectorQuery.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ShadowTreeStyleSheetCollection.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\SimulatedClickOptions.h" />

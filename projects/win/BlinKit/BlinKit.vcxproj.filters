@@ -1860,9 +1860,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\loader\LinkLoader.cpp">
       <Filter>blink\renderer\core\loader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptLoader.cpp">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\PendingScript.cpp">
       <Filter>blink\renderer\core\dom</Filter>
     </ClCompile>
@@ -4143,6 +4140,9 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_element.cpp">
       <Filter>blink\renderer\bindings\core\qjs</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\script_loader.cpp">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -5424,12 +5424,6 @@
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptedIdleTaskController.h">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptLoader.h">
-      <Filter>blink\renderer\core\dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\ScriptLoaderClient.h">
       <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\SelectorQuery.h">
@@ -8938,6 +8932,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\sdk\include\bk_js.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\script_loader_client.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\script_element_impl.h">
+      <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\script_loader.h">
+      <Filter>blink\renderer\core\dom</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
