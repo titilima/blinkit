@@ -37,14 +37,11 @@
 #include "blinkit/blink/public/platform/WebFrameScheduler.h"
 #include "blinkit/blink/renderer/bindings/core/script_controller.h"
 #include "blinkit/blink/renderer/bindings/core/script_source_code.h"
-#include "blinkit/blink/renderer/core/HTMLNames.h"
 #include "blinkit/blink/renderer/core/SVGNames.h"
 #include "blinkit/blink/renderer/core/dom/document.h"
 #include "blinkit/blink/renderer/core/dom/IgnoreDestructiveWriteCountIncrementer.h"
-#include "blinkit/blink/renderer/core/dom/ScriptRunner.h"
 #include "blinkit/blink/renderer/core/dom/ScriptableDocumentParser.h"
 #include "blinkit/blink/renderer/core/dom/Text.h"
-#include "blinkit/blink/renderer/core/events/Event.h"
 // BKTODO: #include "core/fetch/AccessControlStatus.h"
 #include "blinkit/blink/renderer/core/fetch/FetchRequest.h"
 #include "blinkit/blink/renderer/core/fetch/ResourceFetcher.h"
@@ -56,7 +53,6 @@
 #include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/CrossOriginAttribute.h"
 #endif
-#include "blinkit/blink/renderer/core/html/HTMLScriptElement.h"
 #include "blinkit/blink/renderer/core/html/imports/HTMLImport.h"
 #include "blinkit/blink/renderer/core/html/parser/HTMLParserIdioms.h"
 #if 0 // BKTODO:
@@ -462,7 +458,16 @@ String ScriptLoader::scriptContent() const
 ScriptLoaderClient* ScriptLoader::client() const
 {
     if (isHTMLScriptLoader(m_element))
-        return toHTMLScriptElement(m_element);
+    {
+#ifdef BLINKIT_CRAWLER_ENABLED
+        if (m_element->isCrawlerNode())
+            return static_cast<CrawlerScriptElement *>(m_element);
+#endif
+#ifdef BLINKIT_UI_ENABLED
+        if (m_element->isUINode())
+            return toHTMLScriptElement(m_element);
+#endif
+    }
 
     if (isSVGScriptLoader(m_element))
         ASSERT(false); // BKTODO: return toSVGScriptElement(m_element);
@@ -474,7 +479,16 @@ ScriptLoaderClient* ScriptLoader::client() const
 ScriptLoader* toScriptLoaderIfPossible(Element* element)
 {
     if (isHTMLScriptLoader(element))
-        return toHTMLScriptElement(element)->loader();
+    {
+#ifdef BLINKIT_CRAWLER_ENABLED
+        if (element->isCrawlerNode())
+            return static_cast<CrawlerScriptElement *>(element)->loader();
+#endif
+#ifdef BLINKIT_UI_ENABLED
+        if (element->isUINode())
+            return toHTMLScriptElement(element)->loader();
+#endif
+    }
 
     if (isSVGScriptLoader(element))
         ASSERT(false); // BKTODO: return toSVGScriptElement(element)->loader();

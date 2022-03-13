@@ -43,15 +43,10 @@
 #include "blinkit/blink/renderer/core/dom/DocumentFragment.h"
 #include "blinkit/blink/renderer/core/dom/document_type.h"
 #include "blinkit/blink/renderer/core/dom/element.h"
-#include "blinkit/blink/renderer/core/dom/ScriptLoader.h"
+#include "blinkit/blink/renderer/core/dom/script_loader.h"
 #include "blinkit/blink/renderer/core/dom/TemplateContentDocumentFragment.h"
 #include "blinkit/blink/renderer/core/dom/Text.h"
 #include "blinkit/blink/renderer/core/frame/LocalFrame.h"
-#include "blinkit/blink/renderer/core/html/HTMLFormElement.h"
-#include "blinkit/blink/renderer/core/html/HTMLHtmlElement.h"
-// BKTODO: #include "core/html/HTMLPlugInElement.h"
-#include "blinkit/blink/renderer/core/html/HTMLScriptElement.h"
-#include "blinkit/blink/renderer/core/html/HTMLTemplateElement.h"
 #include "blinkit/blink/renderer/core/html/parser/AtomicHTMLToken.h"
 #include "blinkit/blink/renderer/core/html/parser/HTMLParserIdioms.h"
 #include "blinkit/blink/renderer/core/html/parser/HTMLStackItem.h"
@@ -61,6 +56,16 @@
 // BKTODO: #include "core/svg/SVGScriptElement.h"
 #include "blinkit/blink/renderer/platform/NotImplemented.h"
 #include "blinkit/blink/renderer/platform/text/TextBreakIterator.h"
+#ifdef BLINKIT_CRAWLER_ENABLED
+#   include "blinkit/crawler/dom/crawler_script_element.h"
+#endif
+#ifdef BLINKIT_UI_ENABLED
+#   include "blinkit/blink/renderer/core/html/HTMLFormElement.h"
+#   include "blinkit/blink/renderer/core/html/HTMLHtmlElement.h"
+// BKTODO: #include "core/html/HTMLPlugInElement.h"
+#   include "blinkit/blink/renderer/core/html/HTMLScriptElement.h"
+#   include "blinkit/blink/renderer/core/html/HTMLTemplateElement.h"
+#endif
 
 namespace blink {
 
@@ -625,8 +630,8 @@ void HTMLConstructionSite::insertHTMLFormElement(AtomicHTMLToken* token, bool is
 {
     GCRefPtr<Element> element = createElement(token);
     ASSERT(isHTMLFormElement(element.get()));
-    m_form = toHTMLFormElement(element.get());
-    ASSERT(false); // BKTODO: m_form->setDemoted(isDemoted);
+    m_form = element;
+    ASSERT(!isDemoted); // BKTODO: m_form->setDemoted(isDemoted);
     attachLater(currentNode(), m_form);
     m_openElements.push(HTMLStackItem::create(m_form, token));
 }
@@ -658,6 +663,20 @@ void HTMLConstructionSite::insertFormattingElement(AtomicHTMLToken* token)
     m_activeFormattingElements.append(currentElementRecord()->stackItem());
 }
 
+static GCRefPtr<Element> CreateScriptElement(Document &document, bool insertedByParser, bool alreadyStarted)
+{
+#ifdef BLINKIT_UI_ENABLED
+    if (document.isUINode())
+        return HTMLScriptElement::create(document, insertedByParser, alreadyStarted);
+#endif
+#ifdef BLINKIT_CRAWLER_ENABLED
+    if (document.isCrawlerNode())
+        return CrawlerScriptElement::Create(document, insertedByParser, alreadyStarted);
+#endif
+    NOTREACHED();
+    return nullptr;
+}
+
 void HTMLConstructionSite::insertScriptElement(AtomicHTMLToken* token)
 {
     // http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#already-started
@@ -667,7 +686,7 @@ void HTMLConstructionSite::insertScriptElement(AtomicHTMLToken* token)
     // those flags or effects thereof.
     const bool parserInserted = m_parserContentPolicy != AllowScriptingContentAndDoNotMarkAlreadyStarted;
     const bool alreadyStarted = m_isParsingFragment && parserInserted;
-    GCRefPtr<HTMLScriptElement> element = HTMLScriptElement::create(ownerDocumentForCurrentNode(), parserInserted, alreadyStarted);
+    GCRefPtr<Element> element = CreateScriptElement(ownerDocumentForCurrentNode(), parserInserted, alreadyStarted);
     setAttributes(element.get(), token, m_parserContentPolicy);
     if (scriptingContentIsAllowed(m_parserContentPolicy))
         attachLater(currentNode(), element);
