@@ -66,6 +66,4 @@ private:
     CookieJarImpl *m_cookieJar = nullptr;
 };
 
-// BKTODO: DEFINE_TYPE_CASTS(CrawlerImpl, ::blink::FrameLoaderClient, client, client->IsCrawler(), client.IsCrawler());
-
 #endif // BLINKIT_BLINKIT_CRAWLER_IMPL_H
