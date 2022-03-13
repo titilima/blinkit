@@ -34,76 +34,20 @@
 #include "./HTMLScriptElement.h"
 
 #include "blinkit/blink/renderer/bindings/core/exception_state_placeholder.h"
-#include "blinkit/blink/renderer/core/HTMLNames.h"
-#include "blinkit/blink/renderer/core/dom/Attribute.h"
-#include "blinkit/blink/renderer/core/dom/document.h"
-#include "blinkit/blink/renderer/core/dom/ScriptLoader.h"
-#include "blinkit/blink/renderer/core/dom/ScriptRunner.h"
 #include "blinkit/blink/renderer/core/dom/Text.h"
-#include "blinkit/blink/renderer/core/events/Event.h"
-
-using namespace BlinKit;
 
 namespace blink {
 
 using namespace HTMLNames;
 
 inline HTMLScriptElement::HTMLScriptElement(Document& document, bool wasInsertedByParser, bool alreadyStarted)
-    : HTMLElement(scriptTag, document)
-    , m_loader(ScriptLoader::create(this, wasInsertedByParser, alreadyStarted))
+    : ScriptElementImpl(document, wasInsertedByParser, alreadyStarted)
 {
 }
 
 GCRefPtr<HTMLScriptElement> HTMLScriptElement::create(Document& document, bool wasInsertedByParser, bool alreadyStarted)
 {
     return GCWrapShared(new HTMLScriptElement(document, wasInsertedByParser, alreadyStarted));
-}
-
-bool HTMLScriptElement::isURLAttribute(const Attribute& attribute) const
-{
-    return attribute.name() == srcAttr || HTMLElement::isURLAttribute(attribute);
-}
-
-bool HTMLScriptElement::hasLegalLinkAttribute(const QualifiedName& name) const
-{
-    return name == srcAttr || HTMLElement::hasLegalLinkAttribute(name);
-}
-
-const QualifiedName& HTMLScriptElement::subResourceAttributeName() const
-{
-    return srcAttr;
-}
-
-void HTMLScriptElement::childrenChanged(const ChildrenChange& change)
-{
-    HTMLElement::childrenChanged(change);
-    if (change.isChildInsertion())
-        m_loader->childrenChanged();
-}
-
-void HTMLScriptElement::didMoveToNewDocument(Document& oldDocument)
-{
-    ScriptRunner::movePendingScript(oldDocument, document(), m_loader.get());
-    HTMLElement::didMoveToNewDocument(oldDocument);
-}
-
-void HTMLScriptElement::parseAttribute(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& value)
-{
-    if (name == srcAttr)
-        m_loader->handleSourceAttribute(value);
-    else
-        HTMLElement::parseAttribute(name, oldValue, value);
-}
-
-Node::InsertionNotificationRequest HTMLScriptElement::insertedInto(ContainerNode* insertionPoint)
-{
-    HTMLElement::insertedInto(insertionPoint);
-    return InsertionShouldCallDidNotifySubtreeInsertions;
-}
-
-void HTMLScriptElement::didNotifySubtreeInsertionsToDocument()
-{
-    m_loader->didNotifySubtreeInsertionsToDocument();
 }
 
 void HTMLScriptElement::setText(const String &value)
@@ -116,62 +60,9 @@ KURL HTMLScriptElement::src() const
     return document().completeURL(sourceAttributeValue());
 }
 
-String HTMLScriptElement::sourceAttributeValue() const
-{
-    return getAttribute(srcAttr).string();
-}
-
-String HTMLScriptElement::charsetAttributeValue() const
-{
-    return getAttribute(charsetAttr).string();
-}
-
-String HTMLScriptElement::typeAttributeValue() const
-{
-    return getAttribute(typeAttr).string();
-}
-
-String HTMLScriptElement::languageAttributeValue() const
-{
-    return getAttribute(languageAttr).string();
-}
-
-#ifdef BLINKIT_CRAWLER_ENABLED
-String HTMLScriptElement::forAttributeValue() const
-{
-    return String();
-}
-
-String HTMLScriptElement::eventAttributeValue() const
-{
-    return String();
-}
-#endif
-
-bool HTMLScriptElement::asyncAttributeValue() const
-{
-    return false;
-}
-
-bool HTMLScriptElement::deferAttributeValue() const
-{
-    return false;
-}
-
-bool HTMLScriptElement::hasSourceAttribute() const
-{
-    return fastHasAttribute(srcAttr);
-}
-
-void HTMLScriptElement::dispatchLoadEvent()
-{
-    ASSERT(!m_loader->haveFiredLoadEvent());
-    dispatchEvent(Event::create(EventTypeNames::load));
-}
-
 GCRefPtr<Element> HTMLScriptElement::cloneElementWithoutAttributesAndChildren()
 {
-    return GCWrapShared(new HTMLScriptElement(document(), false, m_loader->alreadyStarted()));
+    return GCWrapShared(new HTMLScriptElement(document(), false, loader()->alreadyStarted()));
 }
 
 }

@@ -9,50 +9,18 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "crawler_script_element.h"
-
-#if 0 // BKTODO:
-#include "third_party/blink/renderer/core/html_names.h"
-
-using namespace blink;
+#include "./crawler_script_element.h"
 
 namespace BlinKit {
 
-CrawlerScriptElement::CrawlerScriptElement(Document &document, const CreateElementFlags flags)
-    : CrawlerElement(html_names::kScriptTag.LocalName(), &document)
-    , ScriptElementBase(flags.IsCreatedByParser(), flags.WasAlreadyStarted())
+CrawlerScriptElement::CrawlerScriptElement(Document &document, bool insertedByParser, bool alreadyStarted)
+    : ScriptElementImpl(document, insertedByParser, alreadyStarted)
 {
 }
 
-void CrawlerScriptElement::ChildrenChanged(const ChildrenChange &change)
+GCRefPtr<Element> CrawlerScriptElement::cloneElementWithoutAttributesAndChildren(void)
 {
-    CrawlerElement::ChildrenChanged(change);
-    ScriptElementBase::ChildrenChangedImpl(change);
-}
-
-void CrawlerScriptElement::DidNotifySubtreeInsertionsToDocument(void)
-{
-    ScriptElementBase::DidNotifySubtreeInsertionsToDocumentImpl();
-}
-
-Node::InsertionNotificationRequest CrawlerScriptElement::InsertedInto(ContainerNode &insertionPoint)
-{
-    CrawlerElement::InsertedInto(insertionPoint);
-    return ScriptElementBase::InsertedIntoImpl(insertionPoint);
-}
-
-bool CrawlerScriptElement::IsURLAttribute(const Attribute &attribute) const
-{
-    if (ScriptElementBase::IsURLAttributeImpl(attribute.GetName()))
-        return true;
-    return CrawlerElement::IsURLAttribute(attribute);
-}
-
-void CrawlerScriptElement::ParseAttribute(const AttributeModificationParams &params)
-{
-    if (!ScriptElementBase::ParseAttributeImpl(params))
-        CrawlerElement::ParseAttribute(params);
+    return GCWrapShared(new CrawlerScriptElement(document(), false, loader()->alreadyStarted()));
 }
 
 } // namespace BlinKit
-#endif

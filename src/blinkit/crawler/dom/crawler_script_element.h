@@ -14,42 +14,25 @@
 
 #pragma once
 
-#include "blinkit/blink/renderer/core/dom/ScriptLoaderClient.h"
+#include "blinkit/blink/renderer/core/dom/script_element_impl.h"
 #include "blinkit/crawler/dom/crawler_element.h"
 
 namespace BlinKit {
 
-#if 0 // BKTODO:
-class CrawlerScriptElement final : public CrawlerElement, public blink::ScriptElementBase
+class CrawlerScriptElement final : public ScriptElementImpl<CrawlerElement>
 {
 public:
-    static CrawlerScriptElement* Create(blink::Document &document, const CreateElementFlags flags)
+    static GCRefPtr<CrawlerScriptElement> Create(Document &document, bool insertedByParser,
+        bool alreadyStarted = false)
     {
-        return new CrawlerScriptElement(document, flags);
+        return GCWrapShared(new CrawlerScriptElement(document, insertedByParser, alreadyStarted));
     }
 private:
-    CrawlerScriptElement(blink::Document &document, const CreateElementFlags flags);
+    CrawlerScriptElement(Document &document, bool insertedByParser, bool alreadyStarted);
 
-    // Node overrides
-    InsertionNotificationRequest InsertedInto(ContainerNode &insertionPoint) override;
-    void DidNotifySubtreeInsertionsToDocument(void) override;
-    // ContainerNode overrides
-    void ChildrenChanged(const ChildrenChange &change) override;
     // Element overrides
-    void ParseAttribute(const AttributeModificationParams &params) override;
-#if 0
-    void DidMoveToNewDocument(Document& old_document) override;
-#endif
-    bool IsURLAttribute(const blink::Attribute &attribute) const override;
-#if 0
-    bool HasLegalLinkAttribute(const blink::QualifiedName&) const override;
-    const blink::QualifiedName& SubResourceAttributeName() const override;
-#endif
-
-    // ScriptElementBase
-    blink::Element& GetElement(void) const override { return const_cast<CrawlerScriptElement &>(*this); }
+    GCRefPtr<Element> cloneElementWithoutAttributesAndChildren(void) override;
 };
-#endif
 
 } // namespace BlinKit
 

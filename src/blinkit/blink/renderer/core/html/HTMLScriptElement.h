@@ -35,13 +35,12 @@
 #ifndef HTMLScriptElement_h
 #define HTMLScriptElement_h
 
-#include "blinkit/blink/renderer/core/dom/ScriptLoader.h"
-#include "blinkit/blink/renderer/core/dom/ScriptLoaderClient.h"
+#include "blinkit/blink/renderer/core/dom/script_element_impl.h"
 #include "blinkit/blink/renderer/core/html/HTMLElement.h"
 
 namespace blink {
 
-class HTMLScriptElement final : public HTMLElement, public ScriptLoaderClient
+class HTMLScriptElement final : public BlinKit::ScriptElementImpl<HTMLElement>
 {
 public:
     static GCRefPtr<HTMLScriptElement> create(Document&, bool wasInsertedByParser, bool alreadyStarted = false);
@@ -52,38 +51,10 @@ public:
     KURL src() const;
 
     constexpr bool async(void) const { return false; }
-
-    ScriptLoader* loader() const { return m_loader.get(); }
 private:
     HTMLScriptElement(Document&, bool wasInsertedByParser, bool alreadyStarted);
 
-    void parseAttribute(const QualifiedName&, const AtomicString&, const AtomicString&) override;
-    InsertionNotificationRequest insertedInto(ContainerNode*) override;
-    void didNotifySubtreeInsertionsToDocument() override;
-    void childrenChanged(const ChildrenChange&) override;
-    void didMoveToNewDocument(Document& oldDocument) override;
-
-    bool isURLAttribute(const Attribute&) const override;
-    bool hasLegalLinkAttribute(const QualifiedName&) const override;
-    const QualifiedName& subResourceAttributeName() const override;
-
-    String sourceAttributeValue() const override;
-    String charsetAttributeValue() const override;
-    String typeAttributeValue() const override;
-    String languageAttributeValue() const override;
-#ifdef BLINKIT_CRAWLER_ENABLED
-    String forAttributeValue() const override;
-    String eventAttributeValue() const override;
-#endif
-    bool asyncAttributeValue() const override;
-    bool deferAttributeValue() const override;
-    bool hasSourceAttribute() const override;
-
-    void dispatchLoadEvent() override;
-
     GCRefPtr<Element> cloneElementWithoutAttributesAndChildren() override;
-
-    std::unique_ptr<ScriptLoader> m_loader;
 };
 
 } // namespace blink
