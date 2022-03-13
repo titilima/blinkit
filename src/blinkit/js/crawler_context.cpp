@@ -12,11 +12,22 @@
 #include "./crawler_context.h"
 
 #include "blinkit/blink/renderer/bindings/core/qjs/qjs_bindings.h"
+#include "blinkit/blink/renderer/core/frame/LocalFrame.h"
+#include "blinkit/blink/renderer/core/loader/DocumentLoader.h"
+#include "blinkit/crawler/crawler_impl.h"
 
 namespace BlinKit {
 
 CrawlerContext::CrawlerContext(LocalFrame &frame) : ScriptController(frame)
 {
+}
+
+bool CrawlerContext::canExecuteScripts(ReasonForCallingCanExecuteScripts reason)
+{
+    FrameLoader &loader = m_frame.loader();
+
+    const KURL &url = loader.documentLoader()->url();
+    return static_cast<CrawlerImpl *>(loader.client())->ScriptEnabled(url.spec());
 }
 
 void CrawlerContext::FillElementPrototypes(ElementPrototypes &dst, JSContext *ctx, JSValue elementPrototype)

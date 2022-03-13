@@ -24,6 +24,7 @@ public:
 private:
     static void FillElementPrototypes(ElementPrototypes &dst, JSContext *ctx, JSValue elementPrototype);
 
+    bool canExecuteScripts(ReasonForCallingCanExecuteScripts reason) override;
     void OnContextCreated(JSContext *ctx, JSValue global, Prototypes &prototypes) override;
 };
 

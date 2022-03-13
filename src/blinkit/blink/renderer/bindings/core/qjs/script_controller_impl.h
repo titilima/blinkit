@@ -97,13 +97,14 @@ protected:
 
         void Cleanup(JSContext *ctx);
     };
+
+    LocalFrame &m_frame;
 private:
     virtual void OnContextCreated(JSContext *ctx, JSValue global, Prototypes &prototypes) {}
 
     JSValue ReturnElementImpl(Element *element);
     static JSValue ReturnImpl(JSContext *ctx, ScriptWrappable *nativeObject, JSValueConst prototype);
 
-    LocalFrame &m_frame;
     JSContext *m_ctx = nullptr;
     Prototypes m_prototypes;
 };
