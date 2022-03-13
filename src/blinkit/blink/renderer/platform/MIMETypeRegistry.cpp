@@ -132,12 +132,13 @@ bool MIMETypeRegistry::isSupportedImageMIMETypeForEncoding(const String& mimeTyp
 
 bool MIMETypeRegistry::isSupportedJavaScriptMIMEType(const String& mimeType)
 {
+    if (equalIgnoringCase(mimeType, "text/javascript"))
+        return true;
+#ifndef NDEBUG
+    std::string s = mimeType.stdUtf8();
+#endif
     ASSERT(false); // BKTODO:
     return false;
-#if 0
-    return Platform::current()->mimeRegistry()->supportsJavaScriptMIMEType(mimeType.lower())
-        != WebMimeRegistry::IsNotSupported;
-#endif
 }
 
 bool MIMETypeRegistry::isSupportedNonImageMIMEType(const String& mimeType)

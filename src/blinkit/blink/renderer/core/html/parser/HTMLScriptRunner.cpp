@@ -34,7 +34,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/html/parser/HTMLScriptRunner.h"
+#include "./HTMLScriptRunner.h"
 
 #include "blinkit/blink/public/platform/Platform.h"
 #include "blinkit/blink/public/platform/WebFrameScheduler.h"
@@ -42,7 +42,7 @@
 #include "blinkit/blink/renderer/core/dom/element.h"
 #include "blinkit/blink/renderer/core/dom/IgnoreDestructiveWriteCountIncrementer.h"
 // BKTODO: #include "core/dom/Microtask.h"
-#include "blinkit/blink/renderer/core/dom/ScriptLoader.h"
+#include "blinkit/blink/renderer/core/dom/script_loader.h"
 #include "blinkit/blink/renderer/core/events/Event.h"
 #include "blinkit/blink/renderer/core/fetch/ScriptResource.h"
 #include "blinkit/blink/renderer/core/frame/LocalFrame.h"

@@ -34,16 +34,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "core/dom/ScriptRunner.h"
+#include "./ScriptRunner.h"
 
-#include "core/dom/Document.h"
-#include "core/dom/Element.h"
-#include "core/dom/ScriptLoader.h"
-#include "platform/heap/Handle.h"
+#include "blinkit/blink/public/platform/Platform.h"
+ // BKTODO: #include "public/platform/WebScheduler.h"
+#include "blinkit/blink/public/platform/WebThread.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
+#include "blinkit/blink/renderer/core/dom/script_loader.h"
 // BKTODO: #include "platform/scheduler/CancellableTaskFactory.h"
-#include "public/platform/Platform.h"
-// BKTODO: #include "public/platform/WebScheduler.h"
-#include "public/platform/WebThread.h"
 
 namespace blink {
 

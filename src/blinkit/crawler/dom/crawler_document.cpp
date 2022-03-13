@@ -25,9 +25,9 @@ GCRefPtr<Element> CrawlerDocument::createElement(const AtomicString &name, Eleme
 {
     using namespace HTMLNames;
 
-    ASSERT(nullptr == form); // BKTODO:
+    // BKTODO: Is it necessary to process the form?
     if (scriptTag.localName() == name)
-        ASSERT(false); // BKTODO:
+        return CrawlerScriptElement::Create(*this, createdByParser);
     return GCWrapShared(new CrawlerElement(name, this));
 }
 

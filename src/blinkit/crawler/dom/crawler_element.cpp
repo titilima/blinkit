@@ -14,18 +14,22 @@
 #include "blinkit/blink/renderer/core/dom/Attr.h"
 #include "blinkit/blink/renderer/core/HTMLNames.h"
 
-using namespace blink;
-using namespace HTMLNames;
+using namespace blink::HTMLNames;
 
 namespace BlinKit {
 
-CrawlerElement::CrawlerElement(const AtomicString &localName, Document *document)
-    : Element(QualifiedName(nullAtom, localName, xhtmlNamespaceURI), document, CreateCrawlerElement)
+CrawlerElement::CrawlerElement(const QualifiedName &tagName, Document &document)
+    : Element(tagName, &document, CreateCrawlerElement)
 #ifndef NDEBUG
-    , m_localNameForDebug(localName.stdUTF8())
+    , m_localNameForDebug(tagName.localName().stdUTF8())
 #endif
 {
     // Nothing
+}
+
+CrawlerElement::CrawlerElement(const AtomicString &localName, Document *document)
+    : CrawlerElement(QualifiedName(nullAtom, localName, xhtmlNamespaceURI), *document)
+{
 }
 
 bool CrawlerElement::isDisabledFormControl(void) const

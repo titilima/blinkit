@@ -1,3 +1,4 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
@@ -9,20 +10,22 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_CRAWLER_ELEMENT_H
-#define BLINKIT_BLINKIT_CRAWLER_ELEMENT_H
+#ifndef BLINKIT_CRAWLER_ELEMENT_H
+#define BLINKIT_CRAWLER_ELEMENT_H
 
 #pragma once
 
-#include "blinkit/blink/renderer/core/dom/Element.h"
+#include "blinkit/blink/renderer/core/dom/element.h"
 
 namespace BlinKit {
 
-class CrawlerElement : public blink::Element
+class CrawlerElement : public Element
 {
 public:
-    CrawlerElement(const AtomicString &localName, blink::Document *document);
+    CrawlerElement(const AtomicString &localName, Document *document);
 protected:
+    CrawlerElement(const QualifiedName &tagName, Document &document);
+
     bool isURLAttribute(const blink::Attribute &attribute) const override;
 private:
     bool isFormControlElement(void) const final;
@@ -35,4 +38,4 @@ private:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BLINKIT_CRAWLER_ELEMENT_H
+#endif // BLINKIT_CRAWLER_ELEMENT_H
