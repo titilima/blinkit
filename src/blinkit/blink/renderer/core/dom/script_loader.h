@@ -1,7 +1,8 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: ScriptLoader.h
+//   File Name: script_loader.h
 // Description: ScriptLoader Class
 //      Author: Ziming Li
 //     Created: 2021-11-06
@@ -32,13 +33,13 @@
 #ifndef ScriptLoader_h
 #define ScriptLoader_h
 
-#include "core/dom/PendingScript.h"
-#include "core/fetch/FetchRequest.h"
-#include "core/fetch/ResourceClient.h"
-#include "core/fetch/ResourcePtr.h"
-#include "core/fetch/ScriptResource.h"
-#include "wtf/text/TextPosition.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/core/dom/PendingScript.h"
+#include "blinkit/blink/renderer/core/fetch/FetchRequest.h"
+#include "blinkit/blink/renderer/core/fetch/ResourceClient.h"
+#include "blinkit/blink/renderer/core/fetch/ResourcePtr.h"
+#include "blinkit/blink/renderer/core/fetch/ScriptResource.h"
+#include "blinkit/blink/renderer/wtf/text/TextPosition.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 

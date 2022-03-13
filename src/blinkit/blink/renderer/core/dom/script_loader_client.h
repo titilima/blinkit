@@ -1,7 +1,8 @@
+#pragma once
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: ScriptLoaderClient.h
+//   File Name: script_loader_client.h
 // Description: ScriptLoaderClient Class
 //      Author: Ziming Li
 //     Created: 2021-11-06
@@ -32,12 +33,12 @@
 #ifndef ScriptLoaderClient_h
 #define ScriptLoaderClient_h
 
-#include "core/CoreExport.h"
-#include "wtf/text/WTFString.h"
+#include "blinkit/blink/renderer/wtf/text/WTFString.h"
 
 namespace blink {
 
-class CORE_EXPORT ScriptLoaderClient {
+class ScriptLoaderClient
+{
 public:
     virtual ~ScriptLoaderClient() { }
 

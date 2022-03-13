@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: ScriptLoader.cpp
+//   File Name: script_loader.cpp
 // Description: ScriptLoader Class
 //      Author: Ziming Li
 //     Created: 2021-07-21
@@ -32,7 +32,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "./ScriptLoader.h"
+#include "./script_loader.h"
 
 #include "blinkit/blink/public/platform/WebFrameScheduler.h"
 #include "blinkit/blink/renderer/bindings/core/script_controller.h"
@@ -41,7 +41,6 @@
 #include "blinkit/blink/renderer/core/SVGNames.h"
 #include "blinkit/blink/renderer/core/dom/document.h"
 #include "blinkit/blink/renderer/core/dom/IgnoreDestructiveWriteCountIncrementer.h"
-#include "blinkit/blink/renderer/core/dom/ScriptLoaderClient.h"
 #include "blinkit/blink/renderer/core/dom/ScriptRunner.h"
 #include "blinkit/blink/renderer/core/dom/ScriptableDocumentParser.h"
 #include "blinkit/blink/renderer/core/dom/Text.h"
@@ -69,6 +68,12 @@
 #include "blinkit/blink/renderer/wtf/StdLibExtras.h"
 #include "blinkit/blink/renderer/wtf/text/StringBuilder.h"
 #include "blinkit/blink/renderer/wtf/text/StringHash.h"
+#ifdef BLINKIT_CRAWLER_ENABLED
+#   include "blinkit/crawler/dom/crawler_script_element.h"
+#endif
+#ifdef BLINKIT_UI_ENABLED
+#   include "blinkit/blink/renderer/core/html/HTMLScriptElement.h"
+#endif
 
 namespace blink {
 
