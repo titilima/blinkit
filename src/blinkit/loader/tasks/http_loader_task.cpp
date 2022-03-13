@@ -59,21 +59,16 @@ void HTTPLoaderTask::CommitHijackedResponse(void)
         {
             std::string cookie;
             m_response->GetCookie(i, BufferImpl::Wrap(cookie));
-            cookieJar->Set(cookie.c_str(), currentURL.c_str());
+            cookieJar->Save(currentURL.c_str(), cookie.c_str());
         }
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
-    GURL URL(currentURL);
-    ResourceResponse resourceResponse(URL);
-    PopulateResourceResponse(resourceResponse);
+    ResourceResponse response;
+    response.setURL(KURL(currentURL));
+    PopulateResourceResponse(response);
 
-    m_client->DidReceiveResponse(resourceResponse);
-    m_client->DidReceiveData(reinterpret_cast<const char *>(m_response->Content()), m_response->ContentLength());
-    m_client->DidFinishLoading();
-#endif
-
+    std::string_view body(reinterpret_cast<const char *>(m_response->Content()), m_response->ContentLength());
+    CommitResponse(response, body);
     delete this;
 }
 
@@ -208,12 +203,12 @@ int HTTPLoaderTask::PreProcess(void)
     }
 
     CrawlerImpl *crawler = m_resourceRequest.Crawler();
-
-    std::string cookies = crawler->GetCookies(URL);
-    if (!cookies.empty())
-        BkSetRequestHeader(m_request, Strings::HttpHeader::Cookie, cookies.c_str());
-
-    BKLOG("// BKTODO: Add body.");
+    if (CookieJarImpl *cookieJar = crawler->GetCookieJar(false))
+    {
+        std::string cookies = cookieJar->Get(URL.c_str());
+        if (!cookies.empty())
+            BkSetRequestHeader(m_request, Strings::HttpHeader::Cookie, cookies.c_str());
+    }
 
     crawler->ModifyRequest(URL.c_str(), m_request);
     return BK_ERR_SUCCESS;
