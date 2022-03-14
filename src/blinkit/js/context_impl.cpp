@@ -70,17 +70,32 @@ BKEXPORT BkContext BKAPI BkCreateContext(unsigned features)
     return new ContextImpl(features);
 }
 
-BKEXPORT int BKAPI BkEvaluate(BkContext ctx, const char *code, unsigned len, BkBuffer *ret)
+BKEXPORT int BKAPI BkEvaluate(BkJSContext ctx, const char *code, unsigned len, BkBuffer *ret)
 {
-    int r;
+    int r = BK_ERR_SUCCESS;
 
     if (0 == len)
         len = strlen(code);
 
-    std::string s;
-    r = ctx->Evaluate(std::string(code, len), s);
-    if (BK_ERR_SUCCESS == r)
-        BkSetBufferData(ret, s.data(), s.length());
+    std::string input(code, len);
+    JSValue v = JS_Eval(ctx, input.c_str(), input.length(), "eval", JS_EVAL_TYPE_GLOBAL);
+    if (!JS_IsException(v))
+    {
+        if (!JS_IsUndefined(v))
+        {
+            std::string output;
+            qjs::Context context(*ctx);
+            if (context.ToString(output, v))
+                BkSetBufferData(ret, output.data(), output.length());
+            else
+                r = BK_ERR_TYPE;
+        }
+    }
+    else
+    {
+        r = BK_ERR_EXCEPTION;
+    }
+    JS_FreeValue(ctx, v);
 
     return r;
 }

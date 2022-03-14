@@ -28,7 +28,7 @@ BKEXPORT void BKAPI BkReleaseContext(BkContext ctx);
 
 BKEXPORT BkJSContext BKAPI BkGetJSContext(BkContext ctx);
 
-BKEXPORT int BKAPI BkEvaluate(BkContext ctx, const char *code, unsigned len, struct BkBuffer *ret);
+BKEXPORT int BKAPI BkEvaluate(BkJSContext jsCtx, const char *code, unsigned len, struct BkBuffer *ret);
 
 #ifdef __cplusplus
 }
