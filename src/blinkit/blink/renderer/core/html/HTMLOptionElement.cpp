@@ -43,7 +43,7 @@
 #include "blinkit/blink/renderer/core/dom/document.h"
 #include "blinkit/blink/renderer/core/dom/NodeComputedStyle.h"
 #include "blinkit/blink/renderer/core/dom/node_traversal.h"
-#include "blinkit/blink/renderer/core/dom/ScriptLoader.h"
+#include "blinkit/blink/renderer/core/dom/script_loader.h"
 #include "blinkit/blink/renderer/core/dom/Text.h"
 #include "blinkit/blink/renderer/core/dom/shadow/ShadowRoot.h"
 #include "blinkit/blink/renderer/core/html/HTMLDataListElement.h"
