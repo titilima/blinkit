@@ -4119,9 +4119,6 @@
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\html\html_document.cpp">
       <Filter>blink\renderer\core\html</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\js\js.cpp">
-      <Filter>js</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_window.cpp">
       <Filter>blink\renderer\bindings\core\qjs</Filter>
     </ClCompile>
@@ -4142,6 +4139,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\core\dom\script_loader.cpp">
       <Filter>blink\renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\js\context_impl.cpp">
+      <Filter>js</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -8941,6 +8941,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink\renderer\core\dom\script_loader.h">
       <Filter>blink\renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\js\context_impl.h">
+      <Filter>js</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

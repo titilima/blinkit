@@ -1376,8 +1376,8 @@
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_object.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\gc\gc_trace_visitor.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\gc\lifecycle_data_manager.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\js\context_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\crawler_context.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\js\js.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\web_view_context.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\loader_thread.cpp" />
@@ -2988,6 +2988,7 @@
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_trace_visitor.h" />
     <ClInclude Include="..\..\..\src\blinkit\gc\gc_weak_object_set.h" />
     <ClInclude Include="..\..\..\src\blinkit\gc\lifecycle_data_manager.h" />
+    <ClInclude Include="..\..\..\src\blinkit\js\context_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\crawler_context.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\runtime.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\web_view_context.h" />
