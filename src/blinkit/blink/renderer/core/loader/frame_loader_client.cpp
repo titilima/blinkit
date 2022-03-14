@@ -13,6 +13,7 @@
 
 #include "bkcommon/bk_strings.h"
 #include "blinkit/blink/renderer/web/WebDataSourceImpl.h"
+#include "blinkit/js/context_impl.h"
 #ifdef BLINKIT_CRAWLER_ENABLED
 #   include "blinkit/js/crawler_context.h"
 #   include "blinkit/js/runtime.h"
@@ -59,9 +60,9 @@ String FrameLoaderClient::userAgent(void)
 }
 
 #ifdef BLINKIT_CRAWLER_ENABLED
-BkJSContext FrameLoaderClient::RequireJSContext(void) const
+BkContext FrameLoaderClient::RequireScriptContext(void) const
 {
-    return JS_NewContext(g_runtime);
+    return new ContextImpl(JS_NewContext(g_runtime));
 }
 #endif
 

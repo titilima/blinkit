@@ -75,17 +75,16 @@ enum BkError {
     BK_ERR_URI
 };
 
-typedef struct JSContext *BkJSContext; /* JSContext is from QuickJS */
-
 BK_DECLARE_HANDLE(BkRequest, RequestImpl);
 BK_DECLARE_HANDLE(BkResponse, ResponseImpl);
 BK_DECLARE_HANDLE(BkWorkController, ControllerImpl);
 
+BK_DECLARE_HANDLE(BkContext, ContextImpl);
+typedef struct JSContext *BkJSContext; /* JSContext is from QuickJS */
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-typedef void (BKAPI * BkJSCallback)(BkJSContext, void *);
 
 struct BkBuffer {
     void* (BKAPI * Allocator)(size_t, void *);

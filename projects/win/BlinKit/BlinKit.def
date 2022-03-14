@@ -39,6 +39,7 @@ BkReleaseCookieJar
 BkGetCookie
 BkSaveCookie
 
-BkCreateJSContext
-BkReleaseJSContext
+BkWrapContext
+BkReleaseContext
+BkGetJSContext
 BkEvaluate

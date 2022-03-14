@@ -42,6 +42,7 @@
 #ifndef FrameLoaderClient_h
 #define FrameLoaderClient_h
 
+#include "bk_js.h"
 #include "blinkit/blink/renderer/core/dom/document.h"
 #include "blinkit/blink/renderer/core/dom/IconURL.h"
 #include "blinkit/blink/renderer/core/fetch/ResourceLoaderOptions.h"
@@ -283,7 +284,7 @@ public:
 #endif
 
 #ifdef BLINKIT_CRAWLER_ENABLED
-    virtual BkJSContext RequireJSContext(void) const;
+    virtual BkContext RequireScriptContext(void) const;
 #endif
 #ifdef BLINKIT_UI_ENABLED
     virtual void LoadURI(const KURL &uri) {

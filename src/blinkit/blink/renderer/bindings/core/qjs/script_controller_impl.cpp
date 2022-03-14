@@ -17,7 +17,7 @@
 #include "blinkit/blink/renderer/core/dom/element.h"
 #include "blinkit/blink/renderer/core/loader/frame_loader_client.h"
 #include "blinkit/blink/renderer/core/frame/LocalFrame.h"
-#include "blinkit/js/runtime.h"
+#include "blinkit/js/context_impl.h"
 
 namespace blink {
 
@@ -66,21 +66,27 @@ void ScriptController::clearWindowProxy(void)
 
 JSContext* ScriptController::EnsureContext(void)
 {
+    using namespace qjs;
+
     if (nullptr == m_ctx)
     {
-        m_ctx = m_frame.loader().client()->RequireJSContext();
+        ContextImpl *ctx = m_frame.loader().client()->RequireScriptContext();
+
+        std::swap(m_ctx, ctx->m_ctx);
         JS_SetContextOpaque(m_ctx, this);
 
         JSValue global = JS_GetGlobalObject(m_ctx);
 
-        using namespace qjs;
-        AddConsole(m_ctx, global);
+        if (!ctx->m_consoleEnabled)
+            AddConsole(m_ctx, global);
         OnContextCreated(m_ctx, global, m_prototypes);
 
         ASSERT(JS_IsObject(m_prototypes.window));
         JS_SetPrototype(m_ctx, global, m_prototypes.window);
 
         JS_FreeValue(m_ctx, global);
+
+        delete ctx;
     }
     return m_ctx;
 }

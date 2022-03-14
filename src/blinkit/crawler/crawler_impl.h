@@ -55,7 +55,7 @@ private:
 #endif
     // FrameLoaderClient
     void dispatchDidFinishLoad(void) override;
-    BkJSContext RequireJSContext(void) const override;
+    BkContext RequireScriptContext(void) const override;
 
     mutable zed::shared_mutex m_mutex;
 

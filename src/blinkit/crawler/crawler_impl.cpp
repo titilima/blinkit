@@ -57,6 +57,7 @@ void CrawlerImpl::Destroy(void)
 
 void CrawlerImpl::dispatchDidFinishLoad(void)
 {
+    m_frame->script().EnsureContext();
     AppImpl::Get().taskRunner()->postTask(BLINK_FROM_HERE, std::bind(m_client.DocumentReady, this, m_client.UserData));
 }
 
@@ -130,12 +131,12 @@ bool CrawlerImpl::ProcessRequestComplete(BkResponse response, BkWorkController c
     return true;
 }
 
-BkJSContext CrawlerImpl::RequireJSContext(void) const
+BkContext CrawlerImpl::RequireScriptContext(void) const
 {
-    if (nullptr != m_client.RequireJSContext)
-        return m_client.RequireJSContext(m_client.UserData);
+    if (nullptr != m_client.RequireScriptContext)
+        return m_client.RequireScriptContext(m_client.UserData);
     else
-        return FrameLoaderClient::RequireJSContext();
+        return FrameLoaderClient::RequireScriptContext();
 }
 
 int CrawlerImpl::Run(const char *URL)

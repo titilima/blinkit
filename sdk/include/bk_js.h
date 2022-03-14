@@ -19,16 +19,16 @@
 extern "C" {
 #endif
 
-typedef struct JSRuntime *BkJSRuntime; /* JSRuntime is from QuickJS */
-
 enum BkContextFeature {
     BK_CTX_CONSOLE = 0x1
 };
 
-BKEXPORT BkJSContext BKAPI BkCreateJSContext(BkJSRuntime runtime, unsigned featureFlags);
-BKEXPORT void BKAPI BkReleaseJSContext(BkJSContext ctx);
+BKEXPORT BkContext BKAPI BkWrapContext(BkJSContext jsCtx, unsigned features);
+BKEXPORT void BKAPI BkReleaseContext(BkContext ctx);
 
-BKEXPORT int BKAPI BkEvaluate(BkJSContext ctx, const char *code, unsigned len, struct BkBuffer *ret);
+BKEXPORT BkJSContext BKAPI BkGetJSContext(BkContext ctx);
+
+BKEXPORT int BKAPI BkEvaluate(BkContext ctx, const char *code, unsigned len, struct BkBuffer *ret);
 
 #ifdef __cplusplus
 }

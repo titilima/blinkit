@@ -88,9 +88,9 @@ struct BkCrawlerClient {
     void (BKAPI * Error)(int code, const char *message, void *);
 
     /**
-     * Require a JS context.
+     * Require a script context.
      */
-    BkJSContext (BKAPI * RequireJSContext)(void *);
+    BkContext (BKAPI * RequireScriptContext)(void *);
 };
 
 BKEXPORT BkCrawler BKAPI BkCreateCrawler(struct BkCrawlerClient *client);
