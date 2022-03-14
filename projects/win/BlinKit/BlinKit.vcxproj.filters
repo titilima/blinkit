@@ -262,9 +262,6 @@
     <Filter Include="blink\renderer\platform\image-decoders\png">
       <UniqueIdentifier>{3324d246-6d7d-41f9-a1fa-73591dba73a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="blink\controller">
-      <UniqueIdentifier>{d9a66d41-0572-449b-ba1d-54e8e3108bdf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="blink\renderer\platform\win">
       <UniqueIdentifier>{f87a8e82-f3cd-4bb5-b107-a5e827564e84}</UniqueIdentifier>
     </Filter>
@@ -321,6 +318,9 @@
     </Filter>
     <Filter Include="js">
       <UniqueIdentifier>{23bffa28-65d4-4149-9209-3729445c3106}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="blink\renderer\controller">
+      <UniqueIdentifier>{d9a66d41-0572-449b-ba1d-54e8e3108bdf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -3574,7 +3574,7 @@
       <Filter>blink\renderer\platform\exported</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\controller\blink_initializer.cpp">
-      <Filter>blink\controller</Filter>
+      <Filter>blink\renderer\controller</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink\renderer\platform\graphics\filters\FilterOperations.cpp">
       <Filter>blink\renderer\platform\graphics\filters</Filter>
@@ -4142,6 +4142,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\js\context_impl.cpp">
       <Filter>js</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\qjs_location.cpp">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -8944,6 +8947,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\js\context_impl.h">
       <Filter>js</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink\renderer\bindings\core\qjs\prototype_traits.h">
+      <Filter>blink\renderer\bindings\core\qjs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
