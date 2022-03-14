@@ -22,6 +22,7 @@ namespace qjs {
 
 namespace Strings {
 static const char Document[] = "document";
+static const char Location[] = "location";
 static const char Window[] = "window";
 }
 
@@ -41,7 +42,15 @@ static JSValue GetDocument(JSContext *ctx, JSValueConst)
     ScriptController *scriptController = ScriptController::From(ctx);
 
     LocalDOMWindow *window = scriptController->GetWindow();
-    return scriptController->ReturnNode(window->document());
+    return scriptController->ReturnScriptWrappable(window->document());
+}
+
+static JSValue GetLocation(JSContext *ctx, JSValueConst)
+{
+    ScriptController *scriptController = ScriptController::From(ctx);
+
+    LocalDOMWindow *window = scriptController->GetWindow();
+    return scriptController->ReturnScriptWrappable(window->location());
 }
 
 static JSValue GetWindow(JSContext *ctx, JSValueConst thisVal)
@@ -50,11 +59,22 @@ static JSValue GetWindow(JSContext *ctx, JSValueConst thisVal)
 }
 
 #ifdef BLINKIT_CRAWLER_ENABLED
+namespace Crawler {
+
+static JSValue SetLocation(JSContext *ctx, JSValueConst thisVal, JSValueConst newLocation)
+{
+    ASSERT(false); // BKTODO:
+    return JS_UNDEFINED;
+}
+
+} // namespace Crawler
+
 JSValue CreateWindowPrototypeForCrawler(JSContext *ctx)
 {
     static const JSCFunctionListEntry Funcs[] = {
         CFunctionEntry(Strings::AddEventListener, 2, AddEventListener),
         CGetSetEntry(Strings::Document, GetDocument, nullptr),
+        CGetSetEntry(Strings::Location, GetLocation, Crawler::SetLocation),
         CGetSetEntry(Strings::Window, GetWindow, nullptr)
     };
 
@@ -70,6 +90,7 @@ JSValue CreateWindowPrototypeForUI(JSContext *ctx)
     static const JSCFunctionListEntry Funcs[] = {
         CFunctionEntry(Strings::AddEventListener, 2, AddEventListener),
         CGetSetEntry(Strings::Document, GetDocument, nullptr),
+        CGetSetEntry(Strings::Location, GetLocation, nullptr),
         CGetSetEntry(Strings::Window, GetWindow, nullptr)
     };
 

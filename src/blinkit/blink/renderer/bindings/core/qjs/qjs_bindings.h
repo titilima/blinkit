@@ -38,6 +38,8 @@ JSValue CreateNodePrototypeForCrawler(JSContext *ctx, JSValue eventTargetPrototy
 JSValue CreateContainerNodePrototypeForCrawler(JSContext *ctx, JSValue nodePrototype);
 JSValue CreateDocumentPrototypeForCrawler(JSContext *ctx, JSValue containerNodePrototype);
 JSValue CreateElementPrototypeForCrawler(JSContext *ctx, JSValue containerNodePrototype);
+
+JSValue CreateLocationPrototypeForCrawler(JSContext *ctx);
 #endif
 
 #ifdef BLINKIT_UI_ENABLED
@@ -46,6 +48,8 @@ JSValue CreateWindowPrototypeForUI(JSContext *ctx);
 JSValue CreateNodePrototypeForUI(JSContext *ctx, JSValue eventTargetPrototype);
 JSValue CreateContainerNodePrototypeForUI(JSContext *ctx, JSValue nodePrototype);
 JSValue CreateDocumentPrototypeForUI(JSContext *ctx, JSValue containerNodePrototype);
+
+JSValue CreateLocationPrototypeForUI(JSContext *ctx);
 #endif
 
 } // namespace qjs
