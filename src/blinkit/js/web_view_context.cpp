@@ -23,11 +23,18 @@ void WebViewContext::OnContextCreated(JSContext *ctx, JSValue global, Prototypes
 {
     using namespace qjs;
 
-    JSValue eventTargetPrototype = CreateEventTargetPrototype(ctx);
+    prototypes.prototypes[PROTO_Window] = CreateWindowPrototypeForUI(ctx);
 
-    prototypes.window = CreateWindowPrototypeForUI(ctx);
+    JSValue protoEventTarget = CreateEventTargetPrototype(ctx);
+    RegisterEventTargetPrototypes(ctx, prototypes, protoEventTarget);
+    JS_FreeValue(ctx, protoEventTarget);
 
-    JS_FreeValue(ctx, eventTargetPrototype);
+    prototypes.prototypes[PROTO_Location] = CreateLocationPrototypeForUI(ctx);
+}
+
+void WebViewContext::RegisterEventTargetPrototypes(JSContext *ctx, Prototypes &dst, JSValue protoEventTarget)
+{
+    ASSERT(false); // BKTODO:
 }
 
 } // namespace BlinKit

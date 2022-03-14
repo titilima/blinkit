@@ -43,6 +43,7 @@
 #ifndef BLINKIT_SCRIPT_CONTROLLER_IMPL_H
 #define BLINKIT_SCRIPT_CONTROLLER_IMPL_H
 
+#include "blinkit/blink/renderer/bindings/core/qjs/prototype_traits.h"
 #include "blinkit/blink/renderer/platform/heap/Handle.h"
 #include "blinkit/blink/renderer/wtf/Noncopyable.h"
 #include "blinkit/blink/renderer/wtf/text/AtomicStringHash.h"
@@ -67,6 +68,14 @@ public:
     JSContext* EnsureContext(void);
     LocalDOMWindow* GetWindow(void);
 
+    template <class T>
+    JSValue ReturnScriptWrappable(T *p)
+    {
+        JSValue proto = m_prototypes.prototypes[qjs::PrototypeTrait<T>::PROTO];
+        ASSERT(JS_IsObject(proto));
+        return ReturnImpl(m_ctx, p, proto);
+    }
+
     JSValue ReturnNode(Node *node);
     JSValue ReturnElement(Element *element);
 
@@ -84,17 +93,10 @@ protected:
 
     using ElementPrototypes = std::unordered_map<WTF::AtomicString, JSValue>;
     struct Prototypes {
-        JSValue window = JS_UNINITIALIZED;
-
-        JSValue eventTarget = JS_UNINITIALIZED;
-        JSValue node = JS_UNINITIALIZED;
-        JSValue containerNode = JS_UNINITIALIZED;
-
-        JSValue document = JS_UNINITIALIZED;
-
+        JSValue prototypes[qjs::PROTO_MAX];
         ElementPrototypes elements;
-        JSValue genericElement = JS_UNINITIALIZED;
 
+        Prototypes(void);
         void Cleanup(JSContext *ctx);
     };
 

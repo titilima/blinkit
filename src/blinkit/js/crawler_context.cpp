@@ -30,23 +30,47 @@ bool CrawlerContext::canExecuteScripts(ReasonForCallingCanExecuteScripts reason)
     return static_cast<CrawlerImpl *>(loader.client())->ScriptEnabled(url.spec());
 }
 
-void CrawlerContext::FillElementPrototypes(ElementPrototypes &dst, JSContext *ctx, JSValue elementPrototype)
-{
-    // BKTODO:
-}
-
 void CrawlerContext::OnContextCreated(JSContext *ctx, JSValue global, Prototypes &prototypes)
 {
     using namespace qjs;
 
-    prototypes.window = CreateWindowPrototypeForCrawler(ctx);
-    prototypes.eventTarget = CreateEventTargetPrototype(ctx);
-    prototypes.node = CreateNodePrototypeForCrawler(ctx, prototypes.eventTarget);
-    prototypes.containerNode = CreateContainerNodePrototypeForCrawler(ctx, prototypes.node);
-    prototypes.document = CreateDocumentPrototypeForCrawler(ctx, prototypes.containerNode);
+    prototypes.prototypes[PROTO_Window] = CreateWindowPrototypeForCrawler(ctx);
 
-    prototypes.genericElement = CreateElementPrototypeForCrawler(ctx, prototypes.containerNode);
-    FillElementPrototypes(prototypes.elements, ctx, prototypes.genericElement);
+    JSValue protoEventTarget = CreateEventTargetPrototype(ctx);
+    RegisterEventTargetPrototypes(ctx, prototypes, protoEventTarget);
+    JS_FreeValue(ctx, protoEventTarget);
+
+    prototypes.prototypes[PROTO_Location] = CreateLocationPrototypeForCrawler(ctx);
+}
+
+void CrawlerContext::RegisterContainerNodePrototypes(JSContext *ctx, Prototypes &dst, JSValue protoContainerNode)
+{
+    using namespace qjs;
+
+    dst.prototypes[PROTO_Document] = CreateDocumentPrototypeForCrawler(ctx, protoContainerNode);
+    dst.prototypes[PROTO_Element] = CreateElementPrototypeForCrawler(ctx, protoContainerNode);
+    RegisterElementPrototypes(dst.elements, ctx, dst.prototypes[PROTO_Element]);
+}
+
+void CrawlerContext::RegisterElementPrototypes(ElementPrototypes &dst, JSContext *ctx, JSValue elementPrototype)
+{
+    // BKTODO:
+}
+
+void CrawlerContext::RegisterEventTargetPrototypes(JSContext *ctx, Prototypes &dst, JSValue protoEventTarget)
+{
+    JSValue protoNode = qjs::CreateNodePrototypeForCrawler(ctx, protoEventTarget);
+    RegisterNodePrototypes(ctx, dst, protoNode);
+    JS_FreeValue(ctx, protoNode);
+}
+
+void CrawlerContext::RegisterNodePrototypes(JSContext *ctx, Prototypes &dst, JSValue protoNode)
+{
+    using namespace qjs;
+
+    JSValue protoContainerNode = CreateContainerNodePrototypeForCrawler(ctx, protoNode);
+    RegisterContainerNodePrototypes(ctx, dst, protoContainerNode);
+    JS_FreeValue(ctx, protoContainerNode);
 }
 
 } // namespace BlinKit

@@ -22,6 +22,8 @@ class WebViewContext final : public ScriptController
 public:
     WebViewContext(LocalFrame &frame);
 private:
+    static void RegisterEventTargetPrototypes(JSContext *ctx, Prototypes &dst, JSValue protoEventTarget);
+
     void OnContextCreated(JSContext *ctx, JSValue global, Prototypes &prototypes) override;
 };
 

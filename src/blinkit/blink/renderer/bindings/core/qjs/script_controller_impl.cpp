@@ -21,20 +21,22 @@
 
 namespace blink {
 
+ScriptController::Prototypes::Prototypes(void)
+{
+    for (size_t i = 0; i < std::size(prototypes); ++i)
+        prototypes[i] = JS_UNINITIALIZED;
+}
+
 void ScriptController::Prototypes::Cleanup(JSContext *ctx)
 {
-    JS_FreeValue(ctx, genericElement);
     for (const auto &it : elements)
         JS_FreeValue(ctx, it.second);
     elements.clear();
-
-    JS_FreeValue(ctx, document);
-    
-    JS_FreeValue(ctx, containerNode);
-    JS_FreeValue(ctx, node);
-    JS_FreeValue(ctx, eventTarget);
-
-    JS_FreeValue(ctx, window);
+    for (size_t i = 0; i < std::size(prototypes); ++i)
+    {
+        JS_FreeValue(ctx, prototypes[i]);
+        prototypes[i] = JS_UNINITIALIZED;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,8 +83,9 @@ JSContext* ScriptController::EnsureContext(void)
             AddConsole(m_ctx, global);
         OnContextCreated(m_ctx, global, m_prototypes);
 
-        ASSERT(JS_IsObject(m_prototypes.window));
-        JS_SetPrototype(m_ctx, global, m_prototypes.window);
+        JSValue window = m_prototypes.prototypes[PROTO_Window];
+        ASSERT(JS_IsObject(window));
+        JS_SetPrototype(m_ctx, global, window);
 
         JS_FreeValue(m_ctx, global);
 
@@ -124,7 +127,10 @@ JSValue ScriptController::ReturnElementImpl(Element *element)
 {
     auto it = m_prototypes.elements.find(element->localName());
 
-    JSValue prototype = m_prototypes.elements.end() != it ? it->second : m_prototypes.genericElement;
+    JSValue prototype = m_prototypes.elements.end() != it
+        ? it->second
+        : m_prototypes.prototypes[qjs::PROTO_Element];
+    ASSERT(JS_IsObject(prototype));
     return ReturnImpl(m_ctx, element, prototype);
 }
 
@@ -143,8 +149,9 @@ JSValue ScriptController::ReturnNode(Node *node)
 
     if (node->isDocumentNode())
     {
-        ASSERT(JS_IsObject(m_prototypes.document));
-        return ReturnImpl(m_ctx, node, m_prototypes.document);
+        JSValue prototype = m_prototypes.prototypes[qjs::PROTO_Document];
+        ASSERT(JS_IsObject(prototype));
+        return ReturnImpl(m_ctx, node, prototype);
     }
 
     if (node->isElementNode())

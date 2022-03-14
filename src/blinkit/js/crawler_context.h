@@ -22,7 +22,10 @@ class CrawlerContext final : public ScriptController
 public:
     CrawlerContext(LocalFrame &frame);
 private:
-    static void FillElementPrototypes(ElementPrototypes &dst, JSContext *ctx, JSValue elementPrototype);
+    static void RegisterEventTargetPrototypes(JSContext *ctx, Prototypes &dst, JSValue protoEventTarget);
+    static void RegisterNodePrototypes(JSContext *ctx, Prototypes &dst, JSValue protoNode);
+    static void RegisterContainerNodePrototypes(JSContext *ctx, Prototypes &dst, JSValue protoContainerNode);
+    static void RegisterElementPrototypes(ElementPrototypes &dst, JSContext *ctx, JSValue elementPrototype);
 
     bool canExecuteScripts(ReasonForCallingCanExecuteScripts reason) override;
     void OnContextCreated(JSContext *ctx, JSValue global, Prototypes &prototypes) override;
