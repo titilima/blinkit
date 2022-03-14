@@ -40,6 +40,12 @@ String KURL::PartToString(const zed::url_parts::part& part) const
     return String::fromUTF8(scheme.data(), scheme.length());
 }
 
+String KURL::strippedForUseAsHref(void) const
+{
+    ZASSERT(raw_parts().username.length == 0 && raw_parts().password.length == 0); // BKTODO:
+    return String::fromStdUTF8(spec());
+}
+
 const KURL& blankURL(void)
 {
     static KURL staticBlankURL("about:blank");

@@ -49,6 +49,8 @@ public:
     String host(void) const { return is_valid() ? PartToString(raw_parts().host) : String(); }
     String path(void) const { return is_valid() ? PartToString(raw_parts().path) : String(); }
 
+    String strippedForUseAsHref(void) const;
+
     std::string ExtractFileName(void) const;
 private:
     String PartToString(const zed::url_parts::part& part) const;
