@@ -64,7 +64,7 @@ inline const KURL& Location::url() const
 {
     const KURL& url = toLocalFrame(m_frame)->document()->url();
     if (!url.isValid())
-        ASSERT(false); // BKTODO: return blankURL(); // Use "about:blank" while the page is still loading (before we have a frame).
+        return blankURL(); // Use "about:blank" while the page is still loading (before we have a frame).
 
     return url;
 }
@@ -74,8 +74,7 @@ String Location::href() const
     if (!m_frame)
         return String();
 
-    ASSERT(false); // BKTODO: return url().strippedForUseAsHref();
-    return String();
+    return url().strippedForUseAsHref();
 }
 
 String Location::protocol() const
