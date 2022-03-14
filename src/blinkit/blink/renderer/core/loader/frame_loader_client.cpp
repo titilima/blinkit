@@ -62,7 +62,7 @@ String FrameLoaderClient::userAgent(void)
 #ifdef BLINKIT_CRAWLER_ENABLED
 BkContext FrameLoaderClient::RequireScriptContext(void) const
 {
-    return new ContextImpl(JS_NewContext(g_runtime));
+    return new ContextImpl;
 }
 #endif
 

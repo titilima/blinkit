@@ -17,13 +17,14 @@
 
 using namespace BlinKit;
 
-ContextImpl::ContextImpl(JSContext *ctx, unsigned features)
-    : m_ctx(ctx)
+ContextImpl::ContextImpl(unsigned features)
+    : m_ctx(JS_NewContext(g_runtime))
     , m_consoleEnabled(0 != (BK_CTX_CONSOLE & features))
 {
     using namespace qjs;
 
-    JS_SetContextOpaque(ctx, this);
+    if (0 == features)
+        return;
 
     JSValue global = JS_GetGlobalObject(m_ctx);
     if (m_consoleEnabled)
@@ -64,6 +65,11 @@ int ContextImpl::Evaluate(const std::string &code, std::string &ret)
 
 extern "C" {
 
+BKEXPORT BkContext BKAPI BkCreateContext(unsigned features)
+{
+    return new ContextImpl(features);
+}
+
 BKEXPORT int BKAPI BkEvaluate(BkContext ctx, const char *code, unsigned len, BkBuffer *ret)
 {
     int r;
@@ -87,15 +93,6 @@ BKEXPORT BkJSContext BKAPI BkGetJSContext(BkContext ctx)
 BKEXPORT void BKAPI BkReleaseContext(BkContext ctx)
 {
     delete ctx;
-}
-
-BKEXPORT BkContext BKAPI BkWrapContext(BkJSContext jsCtx, unsigned features)
-{
-    if (nullptr == jsCtx)
-        jsCtx = JS_NewContext(g_runtime);
-    else if (nullptr != JS_GetContextOpaque(jsCtx))
-        return nullptr; // May be wrapped by some one else.
-    return new ContextImpl(jsCtx, features);
 }
 
 } // extern "C"

@@ -23,7 +23,7 @@ enum BkContextFeature {
     BK_CTX_CONSOLE = 0x1
 };
 
-BKEXPORT BkContext BKAPI BkWrapContext(BkJSContext jsCtx, unsigned features);
+BKEXPORT BkContext BKAPI BkCreateContext(unsigned features);
 BKEXPORT void BKAPI BkReleaseContext(BkContext ctx);
 
 BKEXPORT BkJSContext BKAPI BkGetJSContext(BkContext ctx);

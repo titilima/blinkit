@@ -23,7 +23,7 @@ class ScriptController;
 class ContextImpl
 {
 public:
-    ContextImpl(JSContext *ctx, unsigned features = 0);
+    ContextImpl(unsigned features = 0);
     virtual ~ContextImpl(void);
 
     JSContext* GetJSContext(void) const { return m_ctx; }
